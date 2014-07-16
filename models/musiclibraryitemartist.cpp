@@ -90,11 +90,6 @@ const QString & MusicLibraryItemArtist::cover() const
 
     return m_coverName.isEmpty() ? constDefaultCover : m_coverName;
 }
-#else
-QPixmap * MusicLibraryItemArtist::cover() const
-{
-    return Covers::self()->get(coverSong(), MusicLibraryItemAlbum::iconSize(largeImages()));
-}
 #endif
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)
@@ -189,11 +184,6 @@ void MusicLibraryItemArtist::updateIndexes()
     }
 }
 
-bool MusicLibraryItemArtist::largeImages() const
-{
-    return m_parentItem && Type_Root==m_parentItem->itemType() &&
-           static_cast<MusicLibraryItemRoot *>(m_parentItem)->useLargeImages();
-}
 
 Song MusicLibraryItemArtist::coverSong() const
 {

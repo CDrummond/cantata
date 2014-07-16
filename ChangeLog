@@ -1,3 +1,9 @@
+1.5.0
+-----
+1. Remove cover size setting, set automtically.
+2. Artist images only shown in grid view.
+3. No images, or icons, shown in basic tree view.
+
 1.4.0
 -----
   1. Allow setting of custom device name for UMS and MTP devices.

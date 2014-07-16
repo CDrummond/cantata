@@ -40,24 +40,6 @@ class MusicLibraryItemSong;
 class MusicLibraryItemAlbum : public MusicLibraryItemContainer
 {
 public:
-    enum CoverSize
-    {
-        CoverNone       = 0,
-        CoverSmall      = 1,
-        CoverMedium     = 2,
-        CoverLarge      = 3,
-        CoverExtraLarge = 4
-    };
-
-    #ifndef ENABLE_UBUNTU
-    static void setup();
-    static CoverSize currentCoverSize();
-    static void setCoverSize(CoverSize size);
-    static int iconSize(MusicLibraryItemAlbum::CoverSize sz, bool iconMode=false);
-    static int iconSize(bool iconMode=false);
-    static void setItemSize(const QSize &sz);
-    static QSize itemSize();
-    #endif
     static void setSortByDate(bool sd);
     static bool sortByDate();
 
@@ -69,8 +51,6 @@ public:
     QString displayData(bool full=false) const;
     #ifdef ENABLE_UBUNTU
     const QString & cover() const;
-    #else
-    QPixmap * cover() const;
     #endif
     quint32 year() const { return m_year; }
     quint32 totalTime();
@@ -99,11 +79,10 @@ public:
     void setCover(const QString &c) { m_coverName="file://"+c; m_coverRequested=false; }
     const QString & coverName() { return m_coverName; }
     #endif
-    
-private:
     Song coverSong() const;
+
+private:
     void setYear(const MusicLibraryItemSong *song);
-    bool largeImages() const;
     void updateStats();
 
 private:

@@ -87,13 +87,7 @@ public:
     QSet<QString> getAlbumArtists();
     bool update(const QSet<Song> &songs);
 //    void uncheckAll();
-    bool useAlbumImages() const { return rootItem->useAlbumImages(); }
-    void setUseAlbumImages(bool a) { rootItem->setUseAlbumImages(a); }
-    bool useArtistImages() const { return rootItem->useArtistImages(); }
-    void setUseArtistImages(bool a) { rootItem->setUseArtistImages(a); }
     const QDateTime & lastUpdate() { return databaseTime; }
-    bool useLargeImages() const { return rootItem->useLargeImages(); }
-    void setLargeImages(bool a) { rootItem->setLargeImages(a); }
     void setSupportsAlbumArtistTag(bool s) { rootItem->setSupportsAlbumArtistTag(s); }
     void toggleGrouping();
     const QSet<QString> & genres() const { return rootItem->genres(); }

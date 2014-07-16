@@ -61,15 +61,6 @@ static void addAlbumSorts(QComboBox *box)
     box->addItem(i18n("Year, Artist, Album"), AlbumsModel::Sort_YearArtist);
 }
 
-static void addImageSizes(QComboBox *box)
-{
-    box->addItem(i18n("None"), MusicLibraryItemAlbum::CoverNone);
-    box->addItem(i18n("Small"), MusicLibraryItemAlbum::CoverSmall);
-    box->addItem(i18n("Medium"), MusicLibraryItemAlbum::CoverMedium);
-    box->addItem(i18n("Large"), MusicLibraryItemAlbum::CoverLarge);
-    box->addItem(i18n("Extra Large"), MusicLibraryItemAlbum::CoverExtraLarge);
-}
-
 static QString viewTypeString(ItemView::Mode mode)
 {
     switch (mode) {
@@ -79,7 +70,7 @@ static QString viewTypeString(ItemView::Mode mode)
     case ItemView::Mode_DetailedTree: return i18n("Detailed Tree");
     case ItemView::Mode_GroupedTree:  return i18n("Grouped Albums");
     case ItemView::Mode_List:         return i18n("List");
-    case ItemView::Mode_IconTop:      return i18n("Icon/List");
+    case ItemView::Mode_IconTop:      return i18n("Grid");
     case ItemView::Mode_Table:        return i18n("Table");
     }
 }
@@ -132,7 +123,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #endif
 
     setupUi(this);
-    addImageSizes(libraryCoverSize);
     QList<ItemView::Mode> standardViews=QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                                                                 << ItemView::Mode_DetailedTree << ItemView::Mode_List;
     addViewTypes(libraryView, QList<ItemView::Mode>() << standardViews << ItemView::Mode_IconTop);
@@ -142,7 +132,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addViewTypes(searchView, QList<ItemView::Mode>() << ItemView::Mode_List << ItemView::Mode_Table);
     addViewTypes(playQueueView, QList<ItemView::Mode>() << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
 
-    addImageSizes(albumsCoverSize);
     addAlbumSorts(albumSort);
 
     addView(i18n("Play Queue"), QLatin1String("PlayQueuePage"));
@@ -183,10 +172,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     folderViewLabel->setText(i18n("Style:"));
     #endif
 
-    connect(libraryView, SIGNAL(currentIndexChanged(int)), SLOT(libraryViewChanged()));
-    connect(libraryCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(libraryCoverSizeChanged()));
-    connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
-    connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
     connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playlistsViewChanged()));
     connect(playQueueView, SIGNAL(currentIndexChanged(int)), SLOT(playQueueViewChanged()));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
@@ -245,12 +230,9 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
 void InterfaceSettings::load()
 {
-    libraryArtistImage->setChecked(Settings::self()->libraryArtistImage());
     selectEntry(libraryView, Settings::self()->libraryView());
-    libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
     libraryYear->setChecked(Settings::self()->libraryYear());
     selectEntry(albumsView, Settings::self()->albumsView());
-    albumsCoverSize->setCurrentIndex(Settings::self()->albumsCoverSize());
     selectEntry(albumSort, Settings::self()->albumSort());
     selectEntry(folderView, Settings::self()->folderView());
     selectEntry(playlistsView, Settings::self()->playlistsView());
@@ -284,8 +266,6 @@ void InterfaceSettings::load()
     playQueueBackgroundFile->setText(Settings::self()->playQueueBackgroundFile());
 
     playQueueConfirmClear->setChecked(Settings::self()->playQueueConfirmClear());
-    albumsViewChanged();
-    albumsCoverSizeChanged();
     playlistsViewChanged();
     playQueueViewChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
@@ -326,17 +306,13 @@ void InterfaceSettings::load()
     setPlayQueueBackgroundOpacityLabel();
     setPlayQueueBackgroundBlurLabel();
     enablePlayQueueBackgroundOptions();
-    libraryViewChanged();
 }
 
 void InterfaceSettings::save()
 {
-    Settings::self()->saveLibraryArtistImage(libraryArtistImage->isChecked());
     Settings::self()->saveLibraryView(getValue(libraryView));
-    Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
     Settings::self()->saveLibraryYear(libraryYear->isChecked());
     Settings::self()->saveAlbumsView(getValue(albumsView));
-    Settings::self()->saveAlbumsCoverSize(albumsCoverSize->currentIndex());
     Settings::self()->saveAlbumSort(getValue(albumSort));
     Settings::self()->saveFolderView(getValue(folderView));
     Settings::self()->savePlaylistsView(getValue(playlistsView));
@@ -494,47 +470,6 @@ void InterfaceSettings::addView(const QString &v, const QString &prop)
     QListWidgetItem *item=new QListWidgetItem(v, views);
     item->setCheckState(Qt::Unchecked);
     item->setData(Qt::UserRole, prop);
-}
-
-void InterfaceSettings::libraryViewChanged()
-{
-    int vt=getValue(libraryView);
-    if (ItemView::Mode_IconTop==vt && 0==libraryCoverSize->currentIndex()) {
-        libraryCoverSize->setCurrentIndex(2);
-    }
-
-    bool isIcon=ItemView::Mode_IconTop==vt;
-    bool isSimpleTree=ItemView::Mode_SimpleTree==vt || ItemView::Mode_BasicTree==vt;
-    libraryArtistImage->setEnabled(!isIcon && !isSimpleTree);
-    if (isIcon) {
-        libraryArtistImage->setChecked(true);
-    } else if (isSimpleTree) {
-        libraryArtistImage->setChecked(false);
-    }
-}
-
-void InterfaceSettings::libraryCoverSizeChanged()
-{
-    if (ItemView::Mode_IconTop==getValue(libraryView) && 0==libraryCoverSize->currentIndex()) {
-        libraryView->setCurrentIndex(1);
-    }
-    if (0==libraryCoverSize->currentIndex()) {
-        libraryArtistImage->setChecked(false);
-    }
-}
-
-void InterfaceSettings::albumsViewChanged()
-{
-    if (ItemView::Mode_IconTop==getValue(albumsView) && 0==albumsCoverSize->currentIndex()) {
-        albumsCoverSize->setCurrentIndex(2);
-    }
-}
-
-void InterfaceSettings::albumsCoverSizeChanged()
-{
-    if (ItemView::Mode_IconTop==getValue(albumsView) && 0==albumsCoverSize->currentIndex()) {
-        albumsView->setCurrentIndex(1);
-    }
 }
 
 void InterfaceSettings::playQueueViewChanged()

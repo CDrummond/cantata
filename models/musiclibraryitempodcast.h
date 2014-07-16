@@ -58,7 +58,6 @@ public:
     bool load();
     RssStatus loadRss(QNetworkReply *dev);
     bool save();
-    QPixmap * cover() const;
     void remove(int row);
     void remove(MusicLibraryItemSong *i);
     Type itemType() const { return Type_Podcast; }
@@ -71,10 +70,9 @@ public:
     void setPlayed(MusicLibraryItemSong *song);
     void addAll(const QList<MusicLibraryItemPodcastEpisode *> &others);
     MusicLibraryItemPodcastEpisode * getEpisode(const QString &file) const;
+    Song coverSong() const;
 
 private:
-    Song coverSong() const;
-    bool largeImages() const;
     void updateStats();
 
 private:

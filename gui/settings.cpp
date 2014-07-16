@@ -408,29 +408,6 @@ int Settings::onlineView()
 }
 #endif
 
-bool Settings::libraryArtistImage()
-{
-    #ifndef ENABLE_UBUNTU
-    if (cfg.get("libraryArtistImage", false)) {
-        int view=libraryView();
-        return ItemView::Mode_SimpleTree!=view && ItemView::Mode_BasicTree!=view;
-    }
-    #endif
-    return false;
-}
-
-int Settings::libraryCoverSize()
-{
-    int size=cfg.get("libraryCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
-    return size>MusicLibraryItemAlbum::CoverExtraLarge || size<0 ? MusicLibraryItemAlbum::CoverMedium : size;
-}
-
-int Settings::albumsCoverSize()
-{
-    int size=cfg.get("albumsCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
-    return size>MusicLibraryItemAlbum::CoverExtraLarge || size<0 ? MusicLibraryItemAlbum::CoverMedium : size;
-}
-
 int Settings::albumSort()
 {
     if (version()<CANTATA_MAKE_VERSION(1, 3, 52)) {
@@ -1112,21 +1089,6 @@ void Settings::saveOnlineView(int v)
     cfg.set("onlineView", ItemView::modeStr((ItemView::Mode)v));
 }
 #endif
-
-void Settings::saveLibraryArtistImage(bool v)
-{
-    cfg.set("libraryArtistImage", v);
-}
-
-void Settings::saveLibraryCoverSize(int v)
-{
-    cfg.set("libraryCoverSize", v);
-}
-
-void Settings::saveAlbumsCoverSize(int v)
-{
-    cfg.set("albumsCoverSize", v);
-}
 
 void Settings::saveAlbumSort(int v)
 {

@@ -88,37 +88,15 @@ LibraryPage::~LibraryPage()
     view->save(metaObject()->className());
 }
 
-void LibraryPage::setView(int v)
-{
-    setItemSize(v);
-    view->setMode((ItemView::Mode)v);
-    MusicLibraryModel::self()->setLargeImages(ItemView::Mode_IconTop==v);
-}
-
 void LibraryPage::showEvent(QShowEvent *e)
 {
     view->focusView();
     QWidget::showEvent(e);
 }
 
-void LibraryPage::setItemSize(int v)
-{
-    if (ItemView::Mode_IconTop!=v) {
-        MusicLibraryItemAlbum::setItemSize(QSize(0, 0));
-    } else {
-        QFontMetrics fm(font());
-
-        int size=MusicLibraryItemAlbum::iconSize(true);
-        QSize grid(size+8, size+(fm.height()*2.5));
-        view->setGridSize(grid);
-        MusicLibraryItemAlbum::setItemSize(grid-QSize(4, 4));
-    }
-}
-
 void LibraryPage::refresh()
 {
     view->goToTop();
-
     if (!MusicLibraryModel::self()->fromXML()) {
         emit loadLibrary();
     }

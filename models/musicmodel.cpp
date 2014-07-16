@@ -100,40 +100,23 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     #ifndef ENABLE_UBUNTU
-    case Qt::DecorationRole: {
-        QPixmap *pix=0;
+    case Qt::DecorationRole:
         switch (item->itemType()) {
-        case MusicLibraryItem::Type_Root: {
-            QImage img=static_cast<MusicLibraryItemRoot *>(item)->image();
-            if (!img.isNull()) {
-                return img;
-            }
+        case MusicLibraryItem::Type_Root:
             return static_cast<MusicLibraryItemRoot *>(item)->icon();
-        }
-        case MusicLibraryItem::Type_Artist: {
-            MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
-            return artist->isVarious() ? Icons::self()->variousArtistsIcon : Icons::self()->artistIcon;
-        }
+        case MusicLibraryItem::Type_Artist:
+            return static_cast<MusicLibraryItemArtist *>(item)->isVarious() ? Icons::self()->variousArtistsIcon : Icons::self()->artistIcon;
         #ifdef ENABLE_ONLINE_SERVICES
         case MusicLibraryItem::Type_Podcast:
-            pix=static_cast<MusicLibraryItemPodcast *>(item)->cover();
-            break;
+            return Icons::self()->podcastIcon;
         #endif
         case MusicLibraryItem::Type_Album:
-            if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || !root(item)->useAlbumImages()) {
-                return Icons::self()->albumIcon;
-            } else {
-                pix=static_cast<MusicLibraryItemAlbum *>(item)->cover();
-            }
-            break;
-        case MusicLibraryItem::Type_Song: return Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
-        default: return QVariant();
+            return Icons::self()->albumIcon;
+        case MusicLibraryItem::Type_Song:
+            return Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
+        default:
+            return QVariant();
         }
-        if (pix) {
-            return *pix;
-        }
-        return QVariant();
-    }
     #endif
     case Cantata::Role_BriefMainText:
         if (MusicLibraryItem::Type_Album==item->itemType()) {
@@ -176,17 +159,6 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
                 (0==item->childCount()
                     ? item->displayData(true)
                     : (item->displayData(true)+"<br/>"+data(index, Cantata::Role_SubText).toString()));
-    #ifndef ENABLE_UBUNTU
-    case Cantata::Role_ImageSize: {
-        const MusicLibraryItemRoot *r=root(item);
-        if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) { // icon/list style view...
-            return MusicLibraryItemAlbum::iconSize(r->useLargeImages());
-        } else if ((r->useAlbumImages() && MusicLibraryItem::Type_Album==item->itemType()) || MusicLibraryItem::Type_Podcast==item->itemType() || (r->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType())) {
-            return MusicLibraryItemAlbum::iconSize();
-        }
-        break;
-    }
-    #endif
     case Cantata::Role_SubText:
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root: {
@@ -208,53 +180,67 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
                                                Utils::formatTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
         default: return QVariant();
         }
-    case Cantata::Role_Image: {
-        QPixmap *pix=0;
+    case Cantata::Role_ListImage:
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Album:
-            pix=static_cast<MusicLibraryItemAlbum *>(item)->cover();
+            return true;
+        #ifdef ENABLE_ONLINE_SERVICES
+        case MusicLibraryItem::Type_Podcast:
+            return true;
+        #endif
+        default:
+            return false;
+        }
+    case Cantata::Role_Image:
+        #ifdef ENABLE_UBUNTU
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Album:
+            return static_cast<MusicLibraryItemAlbum *>(item)->cover();
+        case MusicLibraryItem::Type_Artist:
+            return static_cast<MusicLibraryItemArtist *>(item)->cover();
+        default:
+            return QString();
+        }
+        #else
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Album:
+            return true;
+        case MusicLibraryItem::Type_Artist:
+            return true;
+        #ifdef ENABLE_ONLINE_SERVICES
+        case MusicLibraryItem::Type_Podcast:
+            return true;
+        #endif
+        default:
+            return false;
+        }
+        #endif
+    #ifndef ENABLE_UBUNTU
+    case Cantata::Role_CoverSong: {
+        QVariant v;
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Album:
+            v.setValue<Song>(static_cast<MusicLibraryItemAlbum *>(item)->coverSong());
             break;
         case MusicLibraryItem::Type_Artist:
-            if (static_cast<MusicLibraryItemRoot *>(item->parentItem())->useArtistImages()) {
-                pix=static_cast<MusicLibraryItemArtist *>(item)->cover();
-            }
+            v.setValue<Song>(static_cast<MusicLibraryItemArtist *>(item)->coverSong());
             break;
         #ifdef ENABLE_ONLINE_SERVICES
         case MusicLibraryItem::Type_Podcast:
-            if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return Icons::self()->podcastIcon;
-            } else {
-                pix=static_cast<MusicLibraryItemPodcast *>(item)->cover();
-            }
+            v.setValue<Song>(static_cast<MusicLibraryItemPodcast *>(item)->coverSong());
             break;
         #endif
         default:
-            #ifdef ENABLE_UBUNTU
-            return QString();
-            #endif
             break;
         }
-        if (pix) {
-            return *pix;
-        }
-        return QVariant();
+        return v;
     }
+    #endif
     case Cantata::Role_TitleText:
         if (MusicLibraryItem::Type_Album==item->itemType()) {
             return i18nc("Album by Artist", "%1 by %2", item->data(), item->parentItem()->data());
         }
         return item->data();
-    #ifndef ENABLE_UBUNTU
-    case Qt::SizeHintRole: {
-        const MusicLibraryItemRoot *r=root(item);
-        if (!r->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType()) {
-            return QVariant();
-        }
-        if (r->useLargeImages() && MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) {
-            return MusicLibraryItemAlbum::itemSize();
-        }
-    }
-    #endif
     default:
         break;
     }

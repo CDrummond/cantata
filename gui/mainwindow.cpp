@@ -522,9 +522,7 @@ MainWindow::MainWindow(QWidget *parent)
     singlePlayQueueAction->setChecked(false);
     consumePlayQueueAction->setChecked(false);
 
-    MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     MusicLibraryItemAlbum::setSortByDate(Settings::self()->libraryYear());
-    AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
     expandedSize=Settings::self()->mainWindowSize();
     collapsedSize=Settings::self()->mainWindowCollapsedSize();
 
@@ -970,7 +968,6 @@ void MainWindow::initSizes()
     FancyTabWidget::setup();
     GroupedView::setup();
     ActionItemDelegate::setup();
-    MusicLibraryItemAlbum::setup();
 }
 
 void MainWindow::showError(const QString &message, bool showActions)
@@ -1356,7 +1353,6 @@ void MainWindow::readSettings()
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
     libraryPage->setView(Settings::self()->libraryView());
-    MusicLibraryModel::self()->setUseArtistImages(Settings::self()->libraryArtistImage());
     playlistsPage->setView(Settings::self()->playlistsView());
     #ifdef ENABLE_STREAMS
     streamsPage->setView(Settings::self()->streamsView());
@@ -1398,47 +1394,19 @@ void MainWindow::readSettings()
     MPDConnection::self()->setVolumeFadeDuration(Settings::self()->stopFadeDuration());
 }
 
-static inline bool diffCoverSize(int a, int b)
-{
-    return (a==ItemView::Mode_IconTop && b!=ItemView::Mode_IconTop) || (a!=ItemView::Mode_IconTop && b==ItemView::Mode_IconTop);
-}
-
 void MainWindow::updateSettings()
 {
     connectToMpd();
     Settings::self()->save();
-    bool diffLibCovers=((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->libraryCoverSize() ||
-                       diffCoverSize(Settings::self()->libraryView(), libraryPage->viewMode());
-    bool diffLibArtistImages=diffLibCovers ||
-                       (libraryPage->viewMode()==ItemView::Mode_IconTop && Settings::self()->libraryView()!=ItemView::Mode_IconTop) ||
-                       (libraryPage->viewMode()!=ItemView::Mode_IconTop && Settings::self()->libraryView()==ItemView::Mode_IconTop) ||
-                       Settings::self()->libraryArtistImage()!=MusicLibraryModel::self()->useArtistImages();
-    bool diffAlCovers=((int)AlbumsModel::currentCoverSize())!=Settings::self()->albumsCoverSize() ||
-                      albumsPage->viewMode()!=Settings::self()->albumsView() ||
-                      diffCoverSize(Settings::self()->albumsView(), albumsPage->viewMode());
     bool diffLibYear=MusicLibraryItemAlbum::sortByDate()!=Settings::self()->libraryYear();
     bool diffGrouping=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle() ||
                       Song::useComposer()!=Settings::self()->useComposer();
 
     readSettings();
 
-    if (diffLibCovers) {
-        MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
-    }
     if (diffLibYear) {
         MusicLibraryItemAlbum::setSortByDate(Settings::self()->libraryYear());
     }
-    if (diffLibArtistImages || diffLibCovers) {
-        libraryPage->setView(libraryPage->viewMode());
-    }
-    if (diffAlCovers) {
-        AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
-    }
-    if (diffAlCovers || diffGrouping) {
-        albumsPage->setView(albumsPage->viewMode());
-        albumsPage->clear();
-    }
-
     if (diffGrouping) {
         MusicLibraryModel::self()->toggleGrouping();
         #ifdef ENABLE_DEVICES_SUPPORT
@@ -1446,13 +1414,13 @@ void MainWindow::updateSettings()
         #endif
     }
 
-    if (diffLibCovers || diffLibYear || diffLibArtistImages || diffAlCovers) {
+    if (diffLibYear) {
         libraryPage->clear();
         albumsPage->goTop();
         libraryPage->refresh();
     }
     #if defined ENABLE_ONLINE_SERVICES || defined ENABLE_DEVICES_SUPPORT
-    if (diffLibCovers || diffLibYear || Settings::self()->libraryArtistImage()!=MusicLibraryModel::self()->useArtistImages()) {
+    if (diffLibYear) {
         #ifdef ENABLE_ONLINE_SERVICES
         onlinePage->refresh();
         #endif

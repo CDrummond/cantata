@@ -59,9 +59,6 @@ public:
     MusicLibraryItemRoot(const QString &name=QString(), bool albumArtistSupport=true, bool flatHierarchy=false)
         : MusicLibraryItemContainer(name, 0)
         , supportsAlbumArtist(albumArtistSupport)
-        , albumImages(true)
-        , artistImages(false)
-        , largeImages(false)
         , isFlat(flatHierarchy)
         , m_model(0) {
     }
@@ -92,12 +89,6 @@ public:
     void add(const QSet<Song> &songs);
     bool supportsAlbumArtistTag() const { return supportsAlbumArtist; }
     void setSupportsAlbumArtistTag(bool s) { supportsAlbumArtist=s; }
-    bool useAlbumImages() const { return albumImages; }
-    void setUseAlbumImages(bool a) { albumImages=a; }
-    bool useArtistImages() const { return artistImages; }
-    void setUseArtistImages(bool a) { artistImages=a; }
-    bool useLargeImages() const { return largeImages; }
-    void setLargeImages(bool a) { largeImages=a; }
     virtual void toggleGrouping();
     void applyGrouping();
     void clearItems();
@@ -118,10 +109,7 @@ protected:
 
 protected:
     bool supportsAlbumArtist; // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
-    bool albumImages:1;
-    bool artistImages:1;
-    bool largeImages:1;
-    bool isFlat:1;
+    bool isFlat;
     QHash<QString, int> m_indexes;
     MusicModel *m_model;
 };

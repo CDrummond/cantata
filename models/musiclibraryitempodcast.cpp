@@ -241,11 +241,6 @@ Song MusicLibraryItemPodcast::coverSong() const
     return song;
 }
 
-QPixmap * MusicLibraryItemPodcast::cover() const
-{
-    return Covers::self()->get(coverSong(), MusicLibraryItemAlbum::iconSize(largeImages()));
-}
-
 void MusicLibraryItemPodcast::remove(int row)
 {
     delete m_childItems.takeAt(row);
@@ -304,12 +299,6 @@ MusicLibraryItemPodcastEpisode * MusicLibraryItemPodcast::getEpisode(const QStri
         }
     }
     return 0;
-}
-
-bool MusicLibraryItemPodcast::largeImages() const
-{
-    return m_parentItem && Type_Root==m_parentItem->itemType() &&
-           static_cast<MusicLibraryItemRoot *>(m_parentItem)->useLargeImages();
 }
 
 const QString & MusicLibraryItemPodcastEpisode::published()

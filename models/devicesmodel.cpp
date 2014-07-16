@@ -186,6 +186,9 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         }
         return v;
     }
+    case Cantata::Role_ListImage:
+    case Cantata::Role_Image:
+        return MusicLibraryItem::Type_Album==item->itemType();
     default:
         break;
     }
@@ -300,10 +303,6 @@ void DevicesModel::setCover(const Song &song, const QImage &img, const QString &
 void DevicesModel::setCover(const Song &song, const QImage &img)
 {
     DBUG << "Set album cover" << song.file << img.isNull();
-    if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-        return;
-    }
-
     if (img.isNull()) {
         return;
     }

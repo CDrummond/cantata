@@ -47,8 +47,6 @@ SoundCloudService::SoundCloudService(MusicModel *m)
     if (iconFile.isEmpty()) {
         iconFile=QString(CANTATA_SYS_ICONS_DIR+"soundcloud.png");
     }
-    setUseArtistImages(false);
-    setUseAlbumImages(false);
 }
 
 Song SoundCloudService::fixPath(const Song &orig, bool) const

@@ -369,18 +369,9 @@ QHash<int, QByteArray> PlayQueueModel::roleNames() const
 
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 {
-    if (Qt::SizeHintRole!=role && (!index.isValid() || index.row() >= songs.size())) {
+    if (!index.isValid() || index.row() >= songs.size()) {
         return QVariant();
     }
-
-    // Mark background of song currently being played
-
-//     if (role == Qt::BackgroundRole && songs.at(index.row()).id == currentSongId) {
-//         QPalette palette;
-//         QColor col(palette.color(QPalette::Highlight));
-//         col.setAlphaF(0.2);
-//         return QVariant(col);
-//     }
 
     switch (role) {
     case Cantata::Role_MainText: {

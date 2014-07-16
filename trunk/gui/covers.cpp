@@ -176,6 +176,9 @@ static QImage loadImage(const QString &fileName)
 
 static inline QString albumKey(const Song &s)
 {
+    if (Song::SingleTracks==s.type) {
+        return QLatin1String("-single-tracks-");
+    }
     return "{"+s.albumArtist()+"}{"+s.albumId()+"}";
 }
 
@@ -1082,11 +1085,17 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
         key=cacheKey(song, size);
         pix=cache.object(key);
 
-        if (!pix && song.isArtistImageRequest() && song.isVariousArtists()) {
-            // Load VA image...
-            pix=new QPixmap(Icons::self()->variousArtistsIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-            cache.insert(key, pix, 1);
-            cacheSizes.insert(size);
+        if (!pix) {
+            if (song.isArtistImageRequest() && song.isVariousArtists()) {
+                // Load VA image...
+                pix=new QPixmap(Icons::self()->variousArtistsIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+            } else if (Song::SingleTracks==song.type) {
+                pix=new QPixmap(Icons::self()->albumIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+            }
+            if (pix) {
+                cache.insert(key, pix, 1);
+                cacheSizes.insert(size);
+            }
         }
         if (!pix) {
             if (urgent) {

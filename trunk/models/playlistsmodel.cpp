@@ -268,10 +268,13 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         PlaylistItem *pl=static_cast<PlaylistItem *>(item);
 
         switch(role) {
-        #ifdef ENABLE_UBUNTU
+        case Cantata::Role_ListImage:
         case Cantata::Role_Image:
+            #ifdef ENABLE_UBUNTU
             return QString();
-        #endif
+            #else
+            return false;
+            #endif
         case Cantata::Role_IsCollection:
             return true;
         case Cantata::Role_CollectionId:
@@ -353,10 +356,13 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         SongItem *s=static_cast<SongItem *>(item);
 
         switch (role) {
-        #ifdef ENABLE_UBUNTU
+        case Cantata::Role_ListImage:
         case Cantata::Role_Image:
+            #ifdef ENABLE_UBUNTU
             return QString();
-        #endif
+            #else
+            return false;
+            #endif
         case Cantata::Role_IsCollection:
             return false;
         case Cantata::Role_CollectionId:

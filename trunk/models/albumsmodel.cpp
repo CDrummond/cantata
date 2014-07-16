@@ -54,37 +54,6 @@ static int sortAlbums=AlbumsModel::Sort_AlbumArtist;
 
 GLOBAL_STATIC(AlbumsModel, instance)
 
-#ifndef ENABLE_UBUNTU
-static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverMedium;
-static QSize itemSize;
-static bool iconMode=true;
-
-int AlbumsModel::iconSize()
-{
-    return MusicLibraryItemAlbum::iconSize(coverSize, iconMode);
-}
-
-void AlbumsModel::setIconMode(bool u)
-{
-    iconMode=u;
-}
-
-MusicLibraryItemAlbum::CoverSize AlbumsModel::currentCoverSize()
-{
-    return coverSize;
-}
-
-void AlbumsModel::setItemSize(const QSize &sz)
-{
-    itemSize=sz;
-}
-
-void AlbumsModel::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
-{
-    coverSize=size;
-}
-#endif
-
 AlbumsModel::Sort AlbumsModel::toSort(const QString &str)
 {
     for (int i=0; i<=Sort_YearArtist; ++i) {
@@ -204,25 +173,17 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         switch (role) {
         default:
             return ActionModel::data(index, role);
-        #ifdef ENABLE_UBUNTU
+        case Cantata::Role_ListImage:
         case Cantata::Role_Image: {
+            #ifdef ENABLE_UBUNTU
             QString cover=al->cover();
             return cover.isEmpty() ? constDefaultCover : cover;
+            #else
+            return true;
+            #endif
         }
-        #else
-        case Cantata::Role_Image:
-        case Qt::DecorationRole: {
-            int iSize=iconSize();
-            if (iSize) {
-                QPixmap *pix=al->cover();
-                if (pix) {
-                    return *pix;
-                }
-            } else {
-                return Icons::self()->albumIcon;
-            }
-        }
-        #endif
+        case Qt::DecorationRole:
+            return Icons::self()->albumIcon;
         case Qt::ToolTipRole:
             return 0==al->songs.count()
                     ? QString()
@@ -241,19 +202,17 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return al->albumDisplay();
         case Cantata::Role_BriefMainText:
             return al->album;
-        #ifndef ENABLE_UBUNTU
-        case Cantata::Role_ImageSize:
-            return iconSize();
-        case Qt::SizeHintRole:
-            if (!itemSize.isNull()) {
-                return itemSize;
-            }
-            break;
-        #endif
         case Cantata::Role_SubText:
             return al->artist;
         case Cantata::Role_TitleText:
             return i18nc("Album by Artist", "%1 by %2", al->album, al->artist);
+        #ifndef ENABLE_UBUNTU
+        case Cantata::Role_CoverSong: {
+            QVariant v;
+            v.setValue<Song>(al->coverSong());
+            return v;
+        }
+        #endif
         }
     } else {
         SongItem *si=static_cast<SongItem *>(item);
@@ -261,13 +220,14 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         switch (role) {
         default:
             return ActionModel::data(index, role);
-        #ifdef ENABLE_UBUNTU
         case Cantata::Role_Image:
+            #ifdef ENABLE_UBUNTU
             return QString();
-        #else
+            #else
+            return false;
+            #endif
         case Qt::DecorationRole:
             return Song::Playlist==si->type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
-        #endif
         case Qt::ToolTipRole:
             return si->toolTip();
         case Cantata::Role_MainText:
@@ -487,11 +447,11 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
 
 void AlbumsModel::coverLoaded(const Song &song, int s)
 {
+    Q_UNUSED(s)
     #ifdef ENABLE_UBUNTU
     Q_UNUSED(song)
-    Q_UNUSED(s)
     #else
-    if (s==iconSize() && !song.isArtistImageRequest()) {
+    if (!song.isArtistImageRequest()) {
         QList<AlbumItem *>::Iterator it=items.begin();
         QList<AlbumItem *>::Iterator end=items.end();
         const QString &albumArtist=song.albumArtist();
@@ -717,14 +677,6 @@ QString AlbumsModel::AlbumItem::cover()
     }
 
     return coverFile;
-}
-#else
-QPixmap * AlbumsModel::AlbumItem::cover()
-{
-    if (Song::SingleTracks!=type && songs.count()) {
-        return Covers::self()->get(coverSong(), iconSize());
-    }
-    return 0;
 }
 #endif
 

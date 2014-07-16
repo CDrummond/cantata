@@ -86,13 +86,6 @@ AlbumsPage::~AlbumsPage()
     view->save(metaObject()->className());
 }
 
-void AlbumsPage::setView(int v)
-{
-    setItemSize(v);
-    view->setMode((ItemView::Mode)v);
-    AlbumsModel::self()->setIconMode(ItemView::Mode_IconTop==v);
-}
-
 void AlbumsPage::showEvent(QShowEvent *e)
 {
     view->focusView();
@@ -103,20 +96,6 @@ void AlbumsPage::clear()
 {
     AlbumsModel::self()->clear();
     view->update();
-}
-
-void AlbumsPage::setItemSize(int v)
-{
-    if (ItemView::Mode_IconTop!=v) {
-        AlbumsModel::setItemSize(QSize(0, 0));
-    } else {
-        QFontMetrics fm(font());
-
-        int size=AlbumsModel::iconSize();
-        QSize grid(size+8, size+(fm.height()*2.5));
-        view->setGridSize(grid);
-        AlbumsModel::setItemSize(grid-QSize(4, 4));
-    }
 }
 
 QStringList AlbumsPage::selectedFiles(bool allowPlaylists, bool randomAlbums) const

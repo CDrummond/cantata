@@ -48,10 +48,6 @@ private:
     void addView(const QString &v, const QString &prop);
 
 private Q_SLOTS:
-    void libraryViewChanged();
-    void libraryCoverSizeChanged();
-    void albumsViewChanged();
-    void albumsCoverSizeChanged();
     void playlistsViewChanged();
     void playQueueViewChanged();
     void forceSingleClickChanged();

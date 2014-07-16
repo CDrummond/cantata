@@ -156,9 +156,9 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             return static_cast<Device *>(item)->capacityString();
         }
         return QVariant();
-    case Cantata::Role_Actions:
+    case Cantata::Role_Actions: {
+        QVariant v;
         if (MusicLibraryItem::Type_Root==item->itemType()) {
-            QVariant v;
             QList<Action *> actions;
             if (Device::AudioCd!=static_cast<Device *>(item)->devType()) {
                 actions << configureAction;
@@ -175,19 +175,11 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             }
             #endif
             v.setValue<QList<Action *> >(actions);
-            return v;
-        } /*else if (HttpServer::self()->isAlive()) {
-            MusicLibraryItem *root=static_cast<MusicLibraryItem *>(item);
-            while (root && MusicLibraryItem::Type_Root!=root->itemType()) {
-                root=root->parentItem();
-            }
-            if (root && static_cast<Device *>(root)->canPlaySongs()) {
-                QVariant v;
-                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
-                return v;
-            }
-        } */
-        break;
+        } else if (root(item)->canPlaySongs() && HttpServer::self()->isAlive()) {
+            v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
+        }
+        return v;
+    }
     default:
         break;
     }

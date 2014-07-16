@@ -385,6 +385,7 @@ bool AlbumDetailsDialog::eventFilter(QObject *object, QEvent *event)
                 s.file=AudioCdDevice::coverUrl(udi);
                 s.artist=artist->text().trimmed();
                 s.album=title->text().trimmed();
+                s.type=Song::Cdda;
                 dlg->show(s, coverImage);
             }
         }

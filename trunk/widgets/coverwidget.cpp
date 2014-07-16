@@ -29,6 +29,9 @@
 #include "support/localize.h"
 #include "support/gtkstyle.h"
 #include "support/utils.h"
+#ifdef ENABLE_ONLINE_SERVICES
+#include "online/onlineservice.h"
+#endif
 #include <QLinearGradient>
 #include <QPen>
 #include <QMouseEvent>
@@ -76,7 +79,11 @@ bool CoverWidget::event(QEvent *event)
     switch(event->type()) {
     case QEvent::ToolTip: {
         const Song &current=CurrentCover::self()->song();
-        if (current.isEmpty() || (current.isStream() && !current.isCantataStream() && !current.isCdda())) {
+        if (current.isEmpty() || (current.isStream() && !current.isCantataStream() && !current.isCdda())
+            #ifdef ENABLE_ONLINE_SERVICES
+            || OnlineService::showLogoAsCover(current)
+            #endif
+            ) {
             setToolTip(QString());
             break;
         }

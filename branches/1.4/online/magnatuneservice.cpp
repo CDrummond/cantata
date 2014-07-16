@@ -130,7 +130,6 @@ void MagnatuneService::createLoader()
 Song MagnatuneService::fixPath(const Song &orig, bool) const
 {
     Song s=orig;
-    s.type=Song::OnlineSvrTrack;
     if (MB_None!=membership) {
         QUrl url;
         #if QT_VERSION < 0x050000
@@ -153,6 +152,7 @@ Song MagnatuneService::fixPath(const Song &orig, bool) const
     //        s.genre=downloadTypeStr(download);
     //    }
     }
+    s.setIsFromOnlineService(constName);
     return encode(s);
 }
 

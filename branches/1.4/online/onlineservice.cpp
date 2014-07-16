@@ -31,6 +31,8 @@
 #include "qtiocompressor/qtiocompressor.h"
 #include "support/thread.h"
 #include "gui/settings.h"
+#include "podcastservice.h"
+#include "soundcloudservice.h"
 #include <QFile>
 #include <QXmlStreamReader>
 
@@ -190,7 +192,8 @@ Song OnlineService::encode(const Song &song)
                 QString::number(song.time)+constDeliminator+
                 QString::number(song.year)+constDeliminator+
                 QString::number(song.track)+constDeliminator+
-                QString::number(song.disc);
+                QString::number(song.disc)+constDeliminator+
+                song.onlineService();
     return encoded;
 }
 
@@ -204,7 +207,7 @@ bool OnlineService::decode(Song &song)
 
     if (pos>0) {
         QStringList parts=song.file.mid(pos+constUrlGuard.length()).split(constDeliminator);
-        if (parts.length()>=9) {
+        if (parts.length()>=10) {
             song.artist=parts.at(0);
             song.albumartist=parts.at(1);
             song.album=parts.at(2);
@@ -214,12 +217,19 @@ bool OnlineService::decode(Song &song)
             song.year=parts.at(6).toUInt();
             song.track=parts.at(7).toUInt();
             song.disc=parts.at(8).toUInt();
+            song.setIsFromOnlineService(parts.at(9));
             song.type=Song::OnlineSvrTrack;
             song.file=song.file.left(pos);
             return true;
         }
     }
     return false;
+}
+
+bool OnlineService::showLogoAsCover(const Song &song)
+{
+    return song.isFromOnlineService() && (PodcastService::constName==song.onlineService() ||
+                                          SoundCloudService::constName==song.onlineService());
 }
 
 OnlineService::OnlineService(MusicModel *m, const QString &name)

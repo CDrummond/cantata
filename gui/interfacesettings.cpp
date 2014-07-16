@@ -287,7 +287,6 @@ void InterfaceSettings::load()
     }
 
     enableStartupState();
-    cacheScaledCovers->setChecked(Settings::self()->cacheScaledCovers());
     fetchCovers->setChecked(Settings::self()->fetchCovers());
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
@@ -362,7 +361,6 @@ void InterfaceSettings::save()
     } else if (startupStateRestore->isChecked()) {
         Settings::self()->saveStartupState(Settings::SS_Previous);
     }
-    Settings::self()->saveCacheScaledCovers(cacheScaledCovers->isChecked());
     Settings::self()->saveFetchCovers(fetchCovers->isChecked());
     #ifndef ENABLE_KDE_SUPPORT
     if (loadedLangs && lang) {

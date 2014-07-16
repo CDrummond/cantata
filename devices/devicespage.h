@@ -52,6 +52,7 @@ public:
     void focusSearch() { view->focusSearch(); }
     void refresh();
     void showEvent(QShowEvent *e);
+    void resort() { proxy.sort(); }
 
 public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);

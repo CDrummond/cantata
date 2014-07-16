@@ -149,6 +149,12 @@ bool ProxyModel::isChildOfRoot(const QModelIndex &idx) const
     return false;
 }
 
+void ProxyModel::resort()
+{
+    invalidate();
+    sort();
+}
+
 void ProxyModel::sort(int column, Qt::SortOrder order)
 {
     if (!isSorted || dynamicSortFilter()) {

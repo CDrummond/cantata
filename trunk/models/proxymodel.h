@@ -45,6 +45,7 @@ public:
     bool isEmpty() const { return filterGenre.isEmpty() && filterStrings.isEmpty() && 0==filter; }
     bool enabled() const { return filterEnabled; }
     const QString & filterText() const { return origFilterText; }
+    void resort();
     void sort() { isSorted=false; sort(0); }
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
     QList<int> mapToSourceRows(const QModelIndexList &list) const;

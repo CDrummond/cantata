@@ -55,6 +55,7 @@ public:
     void showAlbum(const QString &artist, const QString &album);
     void focusSearch() { view->focusSearch(); }
     void showEvent(QShowEvent *e);
+    void resort() { proxy.resort(); }
 
 private:
     void setItemSize(int v);

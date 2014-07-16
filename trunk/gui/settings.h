@@ -292,7 +292,6 @@ public:
     void savePodcastAutoDownload(bool v);
     void saveStartupState(int v);
     void saveSearchCategory(const QString &v);
-    void saveCacheScaledCovers(bool v);
     void saveFetchCovers(bool v);
     #ifndef ENABLE_KDE_SUPPORT
     void saveLang(const QString &v);

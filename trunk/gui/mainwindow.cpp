@@ -1352,6 +1352,7 @@ void MainWindow::readSettings()
     Song::setUseComposer(Settings::self()->useComposer());
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
+    MusicLibraryItemAlbum::setSortByDate(Settings::self()->libraryYear());
     libraryPage->setView(Settings::self()->libraryView());
     playlistsPage->setView(Settings::self()->playlistsView());
     #ifdef ENABLE_STREAMS
@@ -1398,37 +1399,35 @@ void MainWindow::updateSettings()
 {
     connectToMpd();
     Settings::self()->save();
+    bool diffAlbumSort=AlbumsModel::self()->albumSort()!=Settings::self()->albumSort();
     bool diffLibYear=MusicLibraryItemAlbum::sortByDate()!=Settings::self()->libraryYear();
     bool diffGrouping=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle() ||
                       Song::useComposer()!=Settings::self()->useComposer();
 
     readSettings();
 
-    if (diffLibYear) {
-        MusicLibraryItemAlbum::setSortByDate(Settings::self()->libraryYear());
-    }
     if (diffGrouping) {
         MusicLibraryModel::self()->toggleGrouping();
         #ifdef ENABLE_DEVICES_SUPPORT
         DevicesModel::self()->toggleGrouping();
         #endif
+        #ifdef ENABLE_ONLINE_SERVICES
+        OnlineServicesModel::self()->toggleGrouping();
+        #endif
     }
 
-    if (diffLibYear) {
-        libraryPage->clear();
-        albumsPage->goTop();
-        libraryPage->refresh();
+    if (diffAlbumSort) {
+        albumsPage->resort();
     }
-    #if defined ENABLE_ONLINE_SERVICES || defined ENABLE_DEVICES_SUPPORT
     if (diffLibYear) {
+        libraryPage->resort();
         #ifdef ENABLE_ONLINE_SERVICES
-        onlinePage->refresh();
+        onlinePage->resort();
         #endif
         #ifdef ENABLE_DEVICES_SUPPORT
-        devicesPage->refresh();
+        devicesPage->resort();
         #endif
     }
-    #endif
 
     bool wasAutoExpand=playQueue->isAutoExpand();
     bool wasStartClosed=playQueue->isStartClosed();

@@ -1416,11 +1416,6 @@ void Settings::saveSearchCategory(const QString &v)
     cfg.set("searchCategory", v);
 }
 
-void Settings::saveCacheScaledCovers(bool v)
-{
-    cfg.set("cacheScaledCovers", v);
-}
-
 void Settings::saveFetchCovers(bool v)
 {
     cfg.set("fetchCovers", v);

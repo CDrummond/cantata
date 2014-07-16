@@ -104,6 +104,7 @@ class OnlineService : public OnlineServiceMusicRoot, public QObject
 public:
     static Song encode(const Song &song);
     static bool decode(Song &song);
+    static bool showLogoAsCover(const Song &song);
 
     OnlineService(MusicModel *m, const QString &name);
     virtual ~OnlineService() { }

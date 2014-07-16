@@ -445,6 +445,11 @@ stopHttpStreamOnPause=<Boolean>
     continue to play the 'silence' (NOTE: This will use more bandwidth).
     Default is true.
 
+cacheScaledCovers=<Boolean>
+    Controls whether Cantata should save scaled covers into a disk based cache.
+    This speed up cover retrieval and drawing on subsequent runs.
+    Default is true.
+
 e.g.
 [General]
 iconTheme=oxygen

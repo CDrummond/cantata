@@ -53,6 +53,7 @@ public:
     void focusSearch() { view->focusSearch(); }
     void goTop() { view->goToTop(); }
     void showEvent(QShowEvent *e);
+    void resort() { proxy.resort(); }
 
 private:
     void setItemSize(int v);

@@ -316,7 +316,7 @@ within the folder of the current track, or within its parent folder. If no image
           <string>Sort albums:</string>
          </property>
          <property name="buddy">
-          <cstring>albumsCoverSize</cstring>
+          <cstring>albumSort</cstring>
          </property>
         </widget>
        </item>

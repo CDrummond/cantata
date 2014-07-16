@@ -313,7 +313,6 @@ if (MUSICBRAINZ5_FOUND OR QJSON_FOUND OR NOT ENABLE_QT5)
     endif (MSVC)
 endif (MUSICBRAINZ5_FOUND OR QJSON_FOUND OR NOT ENABLE_QT5)
 
-configure_file(config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 include_directories(${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${QTINCLUDES} ${ZLIB_INCLUDE_DIRS})
 
 set(CANTATA_CORE_SRCS ${CANTATA_CORE_SRCS}
@@ -722,6 +721,8 @@ if (UNIX AND NOT APPLE)
     endif (NOT ENABLE_UBUNTU)
     target_link_libraries(cantata -lpthread)
 endif (UNIX AND NOT APPLE)
+
+configure_file(config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 
 if (ENABLE_KDE)
     message("-- Building KDE version")

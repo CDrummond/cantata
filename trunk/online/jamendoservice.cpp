@@ -345,6 +345,7 @@ Song JamendoService::fixPath(const Song &orig, bool) const
     s.file+=FMT_MP3==format ? QLatin1String("mp31") : QLatin1String("ogg2");
     s.genre=FMT_MP3==format ? QLatin1String("mp3") : QLatin1String("ogg");
     s.type=Song::OnlineSvrTrack;
+    s.setIsFromOnlineService(constName);
     return encode(s);
 }
 

@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QWidget" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>347</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="toolbar" native="true">
+     <layout class="QHBoxLayout" name="toolbarLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="margin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="ToolButton" name="prevTrackButton"/>
+      </item>
+      <item>
+       <widget class="ToolButton" name="playPauseTrackButton"/>
+      </item>
+      <item>
+       <widget class="ToolButton" name="stopTrackButton"/>
+      </item>
+      <item>
+       <widget class="ToolButton" name="nextTrackButton"/>
+      </item>
+      <item>
+       <spacer name="coverWidgetSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>4</width>
+          <height>4</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="CoverWidget" name="coverWidget"/>
+      </item>
+      <item>
+       <widget class="NowPlayingWidget" name="nowPlaying"/>
+      </item>
+      <item>
+       <spacer name="volumeSliderSpacera">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>4</width>
+          <height>4</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="VolumeSlider" name="volumeSlider"/>
+      </item>
+      <item>
+       <spacer name="volumeSliderSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>4</width>
+          <height>4</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="ToolButton" name="songInfoButton"/>
+      </item>
+      <item>
+       <widget class="MenuButton" name="menuButton"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="MessageWidget" name="messageWidget"/>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="stack">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="AutohidingSplitter" name="splitter">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QWidget" name="tabWidgetContainer">
+       <layout class="QVBoxLayout" name="vlayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="FancyTabWidget" name="tabWidget">
+          <property name="minimumSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="playQueueWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>2</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QVBoxLayout" name="vlayoutx">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="SearchWidget" name="playQueueSearchWidget"/>
+        </item>
+        <item>
+         <widget class="PlayQueueView" name="playQueue"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="hlayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="margin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="ToolButton" name="stopDynamicButton"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="dynamicLabel">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>[Dynamic]</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="SqueezedTextLabel" name="playQueueStatsLabel"/>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>6</width>
+              <height>21</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="UrlLabel" name="fullScreenLabel">
+            <property name="text">
+             <string>Exit Full Screen</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ScrobblingLove" name="loveTrack"/>
+          </item>
+          <item>
+           <widget class="ScrobblingStatus" name="scrobblingStatus"/>
+          </item>
+          <item>
+           <widget class="ToolButton" name="repeatButton">
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ToolButton" name="singleButton">
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ToolButton" name="randomButton">
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ToolButton" name="consumeButton">
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="SpacerWidget" name="midSpacer" native="true"/>
+          </item>
+          <item>
+           <widget class="ToolButton" name="centerPlayQueueButton"/>
+          </item>
+          <item>
+           <widget class="ToolButton" name="savePlayQueueButton"/>
+          </item>
+          <item>
+           <widget class="SpacerWidget" name="horizontalSpacer_4" native="true"/>
+          </item>
+          <item>
+           <widget class="ToolButton" name="clearPlayQueueButton"/>
+          </item>
+          <item>
+           <widget class="SizeWidget" name="sizeWidget"/>
+          </item>
+          <item>
+           <widget class="SizeGrip" name="sizeGrip" native="true"/>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="ContextWidget" name="context"/>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SqueezedTextLabel</class>
+   <extends>QLabel</extends>
+   <header>support/squeezedtextlabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>NowPlayingWidget</class>
+   <extends>QWidget</extends>
+   <header>widgets/nowplayingwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PlayQueueView</class>
+   <extends>QTreeView</extends>
+   <header>widgets/playqueueview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>FancyTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>support/fancytabwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MessageWidget</class>
+   <extends>QFrame</extends>
+   <header>support/messagewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AutohidingSplitter</class>
+   <extends>QSplitter</extends>
+   <header>widgets/autohidingsplitter.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MenuButton</class>
+   <extends>QToolButton</extends>
+   <header>widgets/menubutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>widgets/toolbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ContextWidget</class>
+   <extends>QWidget</extends>
+   <header>context/contextwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SearchWidget</class>
+   <extends>QLineEdit</extends>
+   <header>widgets/searchwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SpacerWidget</class>
+   <extends>QWidget</extends>
+   <header>widgets/spacerwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SizeWidget</class>
+   <extends>QWidget</extends>
+   <header>widgets/sizewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SizeGrip</class>
+   <extends>QWidget</extends>
+   <header>widgets/sizegrip.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CoverWidget</class>
+   <extends>QLabel</extends>
+   <header>widgets/coverwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>VolumeSlider</class>
+   <extends>QSlider</extends>
+   <header>widgets/volumeslider.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ScrobblingStatus</class>
+   <extends>QToolButton</extends>
+   <header>scrobbling/scrobblingstatus.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ScrobblingLove</class>
+   <extends>QToolButton</extends>
+   <header>scrobbling/scrobblinglove.h</header>
+  </customwidget>
+  <customwidget>
+   <class>UrlLabel</class>
+   <extends>QLabel</extends>
+   <header>support/urllabel.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

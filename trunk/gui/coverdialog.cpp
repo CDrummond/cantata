@@ -1339,7 +1339,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
     if (song.isCdda()) {
         QString dir = Utils::cacheDir(Covers::constCddaCoverDir, true);
         if (!dir.isEmpty()) {
-            QString destName=dir+filePath.mid(7)+src.mid(src.length()-4);
+            QString destName=dir+filePath.mid(Song::constCddaProtocol.length())+src.mid(src.length()-4);
             if (QFile::exists(destName)) {
                 QFile::remove(destName);
             }

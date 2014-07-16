@@ -73,10 +73,10 @@ public:
     void deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
 
     void cancelAllJobs() { cancelAll(); cancelAllDownloads(); }
+    MusicLibraryItemPodcast * getPodcast(const QUrl &url) const;
 
 private:
     void cancelAll();
-    MusicLibraryItemPodcast * getPodcast(const QUrl &url) const;
     MusicLibraryItemPodcastEpisode * getEpisode(const MusicLibraryItemPodcast *podcast, const QUrl &episode);
     void startRssUpdateTimer();
     void stopRssUpdateTimer();

@@ -33,12 +33,18 @@
 #ifdef ENABLE_ONLINE_SERVICES
 #include "online/soundcloudservice.h"
 #include "online/podcastservice.h"
+#include "online/jamendoservice.h"
 #include "models/onlineservicesmodel.h"
+#endif
+#ifdef ENABLE_DEVICES_SUPPORT
+#include "devices/device.h"
+#include "models/devicesmodel.h"
 #endif
 #ifdef TAGLIB_FOUND
 #include "tags/tags.h"
 #endif
 #include "support/globalstatic.h"
+#include "widgets/icons.h"
 #include <QFile>
 #include <QDir>
 #include <QUrl>
@@ -472,6 +478,29 @@ void CoverDownloader::stop()
 void CoverDownloader::download(const Song &song)
 {
     DBUG << song.file << song.artist << song.albumartist << song.album;
+    #ifdef ENABLE_ONLINE_SERVICES
+    if (song.isFromOnlineService()) {
+        QString serviceName=song.onlineService();
+        QString imageUrl=song.extraField(Song::OnlineImageUrl);
+        // Jamendo image URL is just the album ID!
+        if (!imageUrl.isEmpty() && !imageUrl.startsWith("http:/") && imageUrl.length()<15 && serviceName==JamendoService::constName) {
+            imageUrl=JamendoService::imageUrl(imageUrl);
+        }
+
+        Job job(song, QString(), false);
+        job.type=JobHttpJpg;
+        DBUG << "Online image url" << imageUrl;
+        if (!imageUrl.isEmpty()) {
+            NetworkJob *j=network()->get(imageUrl);
+            jobs.insert(j, job);
+            connect(j, SIGNAL(finished()), this, SLOT(onlineJobFinished()));
+        } else {
+            failed(job);
+        }
+        return;
+    }
+    #endif
+
     bool isArtistImage=song.isArtistImageRequest();
 
     if (jobs.end()!=findJob(Job(song, QString(), isArtistImage))) {
@@ -683,6 +712,55 @@ void CoverDownloader::jobFinished()
     }
 
     reply->deleteLater();
+}
+
+void CoverDownloader::onlineJobFinished()
+{
+    #ifdef ENABLE_ONLINE_SERVICES
+    NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
+
+    if (!reply) {
+        return;
+    }
+    reply->deleteLater();
+
+    DBUG << "status" << reply->error() << reply->errorString();
+
+    QHash<NetworkJob *, Job>::Iterator it(jobs.find(reply));
+    QHash<NetworkJob *, Job>::Iterator end(jobs.end());
+
+    if (it!=end) {
+        QByteArray data=QNetworkReply::NoError==reply->error() ? reply->readAll() : QByteArray();
+        if (data.isEmpty()) {
+            DBUG << reply->url().toString() << "empty!";
+            return;
+        }
+
+        Job job=it.value();
+        const Song &song=job.song;
+        QString id=song.onlineService();
+        QString fileName;
+        QImage img=data.isEmpty() ? QImage() : QImage::fromData(data, Covers::imageFormat(data));
+
+        bool png=Covers::isPng(data);
+        DBUG << "Got image" << id << song.artist << song.album << png;
+        if (!img.isNull()) {
+            if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height()) {
+                img=img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            }
+            QString cacheName=song.extraField(Song::OnlineImageCacheName);
+            fileName=cacheName.isEmpty()
+                        ? Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.artist : (song.artist+" - "+song.album))+(png ? ".png" : ".jpg")
+                        : cacheName;
+            QFile f(fileName);
+            if (f.open(QIODevice::WriteOnly)) {
+                DBUG << "Saved image to" << fileName;
+                f.write(data);
+            }
+        }
+        emit cover(job.song, img, fileName);
+    }
+    #endif
 }
 
 void CoverDownloader::failed(const Job &job)
@@ -991,36 +1069,79 @@ QPixmap * Covers::saveScaledCover(const QImage &img, const Song &song, int size)
     return pix;
 }
 
-QPixmap * Covers::get(const Song &song, int size)
+QPixmap * Covers::get(const Song &song, int size, bool urgent)
 {
-    if (song.isUnknown()) {
-        return 0;
+    // DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << size << urgent;
+    QString key;
+    QPixmap *pix=0;
+    if (0==size) {
+        size=22;
     }
 
-    QString key=cacheKey(song, size);
-    QPixmap *pix(cache.object(key));
+    if (!song.isUnknown()) {
+        key=cacheKey(song, size);
+        pix=cache.object(key);
 
-    if (!pix) {
-        if (cacheScaledCovers) {
-            tryToLoad(setSizeRequest(song, size));
-        } else {
-            tryToLocate(setSizeRequest(song, size));
+        if (!pix && song.isArtistImageRequest() && song.isVariousArtists()) {
+            // Load VA image...
+            pix=new QPixmap(Icons::self()->variousArtistsIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+            cache.insert(key, pix, 1);
+            cacheSizes.insert(size);
+        }
+        if (!pix) {
+            if (urgent) {
+                Image img=findImage(song, false);
+                if (!img.img.isNull()) {
+                    pix=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+                    cache.insert(key, pix);
+                    cacheSizes.insert(size);
+                    return pix;
+                }
+            }
+            if (cacheScaledCovers) {
+                tryToLoad(setSizeRequest(song, size));
+            } else {
+                tryToLocate(setSizeRequest(song, size));
+            }
+
+            // Create a dummy image so that we dont keep on locating/loading/downloading files that do not exist!
+            pix=new QPixmap(1, 1);
+            cache.insert(key, pix, 1);
+            cacheSizes.insert(size);
         }
 
-        // Create a dummy image so that we dont keep on locating/loading/downloading files that do not exist!
-        pix=new QPixmap(1, 1);
+        if (pix && pix->width()>1) {
+            return pix;
+        }
+    }
+    #ifdef ENABLE_ONLINE_SERVICES
+    bool podcast=!song.isArtistImageRequest() && song.isFromOnlineService() && PodcastService::constName==song.onlineService();
+    key=song.isArtistImageRequest()
+            ? QLatin1String("artist-")
+            : podcast
+                ? QLatin1String("podcast-")
+                : QLatin1String("album-");
+    #else
+    bool podcast=false;
+    key=song.isArtistImageRequest() ? QLatin1String("artist-") : QLatin1String("album-");
+    #endif
+    key+=QString::number(size);
+    pix=cache.object(key);
+    if (!pix) {
+        Icon &icn=song.isArtistImageRequest()
+                    ? Icons::self()->artistIcon
+                    : podcast
+                        ? Icons::self()->podcastIcon
+                        : Icons::self()->albumIcon;
+        pix=new QPixmap(icn.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
         cache.insert(key, pix, 1);
         cacheSizes.insert(size);
     }
-
-    return pix && pix->width()>1 ? pix : 0;
+    return pix;
 }
 
 void Covers::coverDownloaded(const Song &song, const QImage &img, const QString &file)
 {
-    if (!img.isNull()) {
-        updateCache(song, img, true);
-    }
     gotAlbumCover(song, img, file);
 }
 
@@ -1032,6 +1153,11 @@ void Covers::artistImageDownloaded(const Song &song, const QImage &img, const QS
 void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesOnly)
 {
     clearScaledCache(song);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    bool emitLoaded=!song.isFromDevice();
+    #else
+    bool emitLoaded=true;
+    #endif
     foreach (int s, cacheSizes) {
         QString key=cacheKey(song, s);
         QPixmap *pix(cache.object(key));
@@ -1039,7 +1165,8 @@ void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesO
         if (pix && (!dummyEntriesOnly || pix->width()<2)) {
             cache.remove(key);
             if (!img.isNull()) {
-                if (saveScaledCover(scale(song, img, s), song, s)) {
+                DBUG_CLASS("Covers");
+                if (saveScaledCover(scale(song, img, s), song, s) && emitLoaded) {
                     emit loaded(song, s);
                 }
             }
@@ -1061,6 +1188,11 @@ void Covers::tryToLocate(const Song &song)
 
 void Covers::tryToDownload(const Song &song)
 {
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (song.isFromDevice()) {
+        return;
+    }
+    #endif
     if (!downloader) {
         downloader=new CoverDownloader();
         connect(this, SIGNAL(download(Song)), downloader, SLOT(download(Song)), Qt::QueuedConnection);
@@ -1100,24 +1232,46 @@ Covers::Image Covers::locateImage(const Song &song)
     DBUG_CLASS("Covers") << song.file << song.artist << song.albumartist << song.album << song.type;
     #ifdef ENABLE_ONLINE_SERVICES
     if (song.isFromOnlineService()) {
+        QString id=song.onlineService();
         Covers::Image img;
-        if (SoundCloudService::constName==song.onlineService()) {
+        if (SoundCloudService::constName==id) {
             img.fileName=SoundCloudService::iconPath();
-        } else if (PodcastService::constName==song.onlineService()) {
+        } else if (PodcastService::constName==id) {
             img.fileName=PodcastService::iconPath();
+        }
+
+        img.fileName=song.extraField(Song::OnlineImageCacheName);
+        if (img.fileName.isEmpty()) {
+            img.fileName=Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.artist : (song.artist+" - "+song.album))+".jpg";
+            if (!QFile::exists(img.fileName)) {
+                img.fileName=Utils::changeExtension(img.fileName, ".png");
+            }
         }
         if (!img.fileName.isEmpty()) {
             img.img=loadImage(img.fileName);
             if (!img.img.isNull()) {
-                DBUG_CLASS("Covers") << song.onlineService();
+                DBUG_CLASS("Covers") <<  "Got cover online image" << QString(img.fileName) << "for" << id;
                 return img;
             }
         }
-    }
-    if (Song::OnlineSvrTrack==song.type) {
-        return OnlineServicesModel::self()->readImage(song);
+        DBUG_CLASS("Covers") << "Failed to locate online image for" << id;
+        return Image();
     }
     #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (song.isFromDevice()) {
+        Device *dev=DevicesModel::self()->device(song.deviceId());
+        Image img;
+        if (dev) {
+            img=dev->requestCover(song);
+        }
+        if (img.img.isNull()) {
+            DBUG_CLASS("Covers") << "Failed to locate device image for" << song.deviceId();
+        }
+        return img;
+    }
+    #endif
+
     bool isArtistImage=song.isArtistImageRequest();
     QString prevFileName=Covers::self()->getFilename(song, isArtistImage);
     if (!prevFileName.isEmpty()) {
@@ -1324,7 +1478,7 @@ Covers::Image Covers::locateImage(const Song &song)
     }
 
     DBUG_CLASS("Covers") << "Failed to locate image";
-    return Image(QImage(), QString());
+    return Image();
 }
 
 // Dont return song files as cover files!
@@ -1353,16 +1507,25 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
         }
     }
     #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (song.isFromDevice()) {
+        Device *dev=DevicesModel::self()->device(song.deviceId());
+        if (dev) {
+            return dev->requestCover(song);
+        }
+        return Image();
+    }
+    #endif
 
     QString key=song.isArtistImageRequest() ? artistKey(song) : albumKey(song);
     if (currentImageRequests.contains(key)) {
-        return Covers::Image();
+        return Image();
     }
 
     if (!urgent) {
         currentImageRequests.insert(key);
         tryToLocate(song);
-        return Covers::Image();
+        return Image();
     }
 
     Image img=findImage(song, false);
@@ -1403,10 +1566,15 @@ void Covers::loaded(const QList<LoadedCover> &covers)
     }
 }
 
-void Covers::emitCoverUpdated(const Song &song, const QImage &img, const QString &file)
+void Covers::updateCover(const Song &song, const QImage &img, const QString &file)
 {
     updateCache(song, img, false);
-    filenames[song.isArtistImageRequest() ? artistKey(song) : albumKey(song)]=file;
+    if (!file.isEmpty()) {
+        filenames[song.isArtistImageRequest() ? artistKey(song) : albumKey(song)]=file;
+    }
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (!song.isFromDevice())
+    #endif
     emit coverUpdated(song, img, file);
 }
 
@@ -1440,9 +1608,8 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
     }
     if (emitResult) {
         if (song.isSpecificSizeRequest()) {
-            if (!img.isNull() && saveScaledCover(scale(song, img, song.size), song, song.size)) {
-                DBUG << "loaded cover" << song.file << song.artist << song.albumartist << song.album << song.mbAlbumId() << img.width() << img.height() << fileName << song.size;
-                emit loaded(song, song.size);
+            if (!img.isNull()) {
+                updateCache(song, img, true);
             }
         } else {
             DBUG << "emit cover" << song.file << song.artist << song.albumartist << song.album << song.mbAlbumId() << img.width() << img.height() << fileName;
@@ -1462,9 +1629,8 @@ void Covers::gotArtistImage(const Song &song, const QImage &img, const QString &
     }
     if (emitResult) {
         if (song.isSpecificSizeRequest()) {
-            if (!img.isNull() && saveScaledCover(scale(song, img, song.size), song, song.size)) {
-                DBUG << "loaded artistImage" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName << song.size;
-                emit loaded(song, song.size);
+            if (!img.isNull()) {
+                updateCache(song, img, true);
             }
         } else {
             DBUG << "emit artistImage" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName;

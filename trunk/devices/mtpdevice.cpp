@@ -55,9 +55,11 @@
 #include <unistd.h>
 //#define TIME_MTP_OPERATIONS
 #ifdef TIME_MTP_OPERATIONS
-#include <QDebug>
 #include <QElapsedTimer>
 #endif
+#include <QDebug>
+
+#define DBUG(CLASS) if (Covers::debugEnabled()) qWarning() << CLASS << __FUNCTION__
 
 // Enable the following #define to have Cantata attempt to ascertain the AlbumArtist tag by
 // looking at the file path
@@ -1208,11 +1210,14 @@ void MtpConnection::getCover(const Song &song)
 {
     File c=getCoverDetils(song);
 
+    DBUG("MtpConnection") << c.name << c.id;
+
     if (0!=c.id) {
         QByteArray data;
         if (0==LIBMTP_Get_File_To_Handler(device, c.id, fileReceiver, &data, 0, 0)) {
             QImage img;
             if (img.loadFromData(data)) {
+                DBUG("MtpConnection") << "loaded cover";
                 emit cover(song, img);
             }
         }
@@ -1555,12 +1560,15 @@ void MtpDevice::cleanDirs(const QSet<QString> &dirs)
     emit cleanMusicDirs(dirs);
 }
 
-void MtpDevice::requestCover(const Song &song)
+Covers::Image MtpDevice::requestCover(const Song &song)
 {
+    DBUG("MtpDevice") << song.file;
     requestAbort(false);
     if (isConnected()) {
+        DBUG("MtpDevice") << "Get cover from connection";
         emit getCover(song);
     }
+    return Covers::Image();
 }
 
 void MtpDevice::putSongStatus(int status, const QString &file, bool fixedVa, bool copiedCover)

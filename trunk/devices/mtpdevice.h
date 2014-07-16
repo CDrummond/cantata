@@ -171,7 +171,7 @@ public:
     void copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover);
     void removeSong(const Song &s);
     void cleanDirs(const QSet<QString> &dirs);
-    void requestCover(const Song &song);
+    Covers::Image requestCover(const Song &song);
     double usedCapacity();
     QString capacityString();
     qint64 freeSpace();

@@ -22,7 +22,7 @@
  */
 
 #include "onlineview.h"
-#include "models/onlineservicesmodel.h"
+#include "gui/covers.h"
 #include "support/localize.h"
 
 OnlineView::OnlineView(QWidget *p)
@@ -42,7 +42,7 @@ void OnlineView::update(const Song &song, bool force)
             return;
         }
         setHeader(song.describe(true));
-        Covers::Image cImg=OnlineServicesModel::self()->readImage(song);
+        Covers::Image cImg=Covers::self()->requestImage(song, true);
         if (!cImg.img.isNull()) {
             setHtml(createPicTag(cImg.img, cImg.fileName));
         } else {

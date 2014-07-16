@@ -71,8 +71,14 @@
 #include "modeltest.h"
 #endif
 
+
 #include <QDebug>
-#define DBUG qDebug()
+static bool debugIsEnabled=false;
+#define DBUG if (debugIsEnabled) qWarning() << metaObject()->className() << __FUNCTION__
+void DevicesModel::enableDebug()
+{
+    debugIsEnabled=true;
+}
 
 QString DevicesModel::fixDevicePath(const QString &path)
 {
@@ -272,11 +278,14 @@ Device * DevicesModel::device(const QString &udi)
 void DevicesModel::setCover(const Song &song, const QImage &img, const QString &file)
 {
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+    DBUG << "Set CDDA cover" << song.file << img.isNull() << file << song.isCdda();
     if (song.isCdda()) {
         int idx=indexOf(song.title);
         if (idx>=0) {
             Device *dev=static_cast<Device *>(collections.at(idx));
             if (Device::AudioCd==dev->devType()) {
+                DBUG << "Set cover of CD";
+                Covers::self()->updateCover(song, img, file);
                 static_cast<AudioCdDevice *>(dev)->setCover(song, img, file);
             }
         }
@@ -290,6 +299,7 @@ void DevicesModel::setCover(const Song &song, const QImage &img, const QString &
 
 void DevicesModel::setCover(const Song &song, const QImage &img)
 {
+    DBUG << "Set album cover" << song.file << img.isNull();
     if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
         return;
     }
@@ -309,7 +319,9 @@ void DevicesModel::setCover(const Song &song, const QImage &img)
     MusicLibraryItemArtist *artistItem = dev->artist(song, false);
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-        if (albumItem && albumItem->saveToCache(img)) {
+        if (albumItem) {
+            DBUG << "Set cover of album";
+            Covers::self()->updateCover(song, img, QString());
             QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(i, 0, QModelIndex())));
             emit dataChanged(idx, idx);
         }

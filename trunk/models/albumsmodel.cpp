@@ -56,7 +56,6 @@ GLOBAL_STATIC(AlbumsModel, instance)
 
 #ifndef ENABLE_UBUNTU
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverMedium;
-static QPixmap *theDefaultIcon=0;
 static QSize itemSize;
 static bool iconMode=true;
 
@@ -65,17 +64,8 @@ int AlbumsModel::iconSize()
     return MusicLibraryItemAlbum::iconSize(coverSize, iconMode);
 }
 
-static int stdIconSize()
-{
-    return iconMode ? 128 : MusicLibraryItemAlbum::iconSize(coverSize);
-}
-
 void AlbumsModel::setIconMode(bool u)
 {
-    if (iconMode!=u && theDefaultIcon) {
-        delete theDefaultIcon;
-        theDefaultIcon=0;
-    }
     iconMode=u;
 }
 
@@ -91,13 +81,7 @@ void AlbumsModel::setItemSize(const QSize &sz)
 
 void AlbumsModel::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
 {
-    if (size!=coverSize) {
-        if (theDefaultIcon) {
-            delete theDefaultIcon;
-            theDefaultIcon=0;
-        }
-        coverSize=size;
-    }
+    coverSize=size;
 }
 #endif
 
@@ -234,20 +218,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 if (pix) {
                     return *pix;
                 }
-            } else if (Qt::DecorationRole==role) {
+            } else {
                 return Icons::self()->albumIcon;
             }
-
-            if (!theDefaultIcon) {
-                int cSize=iSize;
-                int stdSize=stdIconSize();
-                if (0==cSize) {
-                    cSize=stdSize=22;
-                }
-                theDefaultIcon = new QPixmap(Icons::self()->albumIcon.pixmap(stdSize, stdSize)
-                                            .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-            }
-            return *theDefaultIcon;
         }
         #endif
         case Qt::ToolTipRole:

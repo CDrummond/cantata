@@ -191,8 +191,8 @@ struct Song
     // podcast functions...
     bool hasBeenPlayed() const { return 0!=id; }
     void setPlayed(bool p) { id=p ? 1 : 0; }
-    void setPodcastImage(const QString &i) { setExtraField(PodcastLocalPath, i); }
-    QString podcastImage() const { return extraField(PodcastLocalPath); }
+    void setPodcastImage(const QString &i) { setExtraField(PodcastImage, i); }
+    QString podcastImage() const { return extraField(PodcastImage); }
     void setPodcastPublishedDate(const QString &pd) { setExtraField(PodcastPublishedDate, pd); }
     QString podcastPublishedDate() const { return extraField(PodcastPublishedDate); }
     QString podcastLocalPath() const { return extraField(PodcastLocalPath); }

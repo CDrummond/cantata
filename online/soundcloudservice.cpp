@@ -51,7 +51,9 @@ SoundCloudService::SoundCloudService(MusicModel *m)
 
 Song SoundCloudService::fixPath(const Song &orig, bool) const
 {
-    return encode(orig);
+    Song s(orig);
+    s.setIsFromOnlineService(constName);
+    return encode(s);
 }
 
 void SoundCloudService::clear()
@@ -147,7 +149,6 @@ void SoundCloudService::jobFinished()
                 song.genre=details["genre"].toString();
                 song.year=details["release_year"].toInt();
                 song.time=details["duration"].toUInt()/1000;
-                song.setIsFromOnlineService(constName);
                 if (!update) {
                     update=new OnlineServiceMusicRoot();
                 }

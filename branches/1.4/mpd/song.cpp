@@ -29,6 +29,9 @@
 #include "song.h"
 #include "models/musiclibraryitemalbum.h"
 #include "support/localize.h"
+#if !defined CANTATA_NO_UI_FUNCTIONS && defined ENABLE_ONLINE_SERVICES
+#include "online/onlineservice.h"
+#endif
 #include <QStringList>
 #include <QSet>
 #include <QChar>
@@ -473,6 +476,11 @@ QString Song::artistSong() const
 
 QString Song::trackAndTitleStr(bool showArtistIfDifferent) const
 {
+    #if !defined CANTATA_NO_UI_FUNCTIONS && defined ENABLE_ONLINE_SERVICES
+    if (OnlineSvrTrack==type && OnlineService::showLogoAsCover(*this)) {
+        return artistSong();
+    }
+    #endif
 //    if (isFromOnlineService()) {
 //        return (disc>0 && disc!=constOnlineDiscId ? (QString::number(disc)+QLatin1Char('.')) : QString())+
 //               (track>0 ? (track>9 ? QString::number(track) : (QLatin1Char('0')+QString::number(track))) : QString())+
@@ -613,6 +621,16 @@ bool Song::capitalise()
     title=capitalize(title);
 
     return artist!=origArtist || albumartist!=origAlbumArtist || album!=origAlbum || title!=origTitle;
+}
+
+QString Song::albumKey() const
+{
+    #if !defined CANTATA_NO_UI_FUNCTIONS && defined ENABLE_ONLINE_SERVICES
+    if (OnlineSvrTrack==type && OnlineService::showLogoAsCover(*this)) {
+        return onlineService();
+    }
+    #endif
+    return albumArtist()+QLatin1Char(':')+albumId()+QLatin1Char(':')+QString::number(disc);
 }
 
 QString Song::basicArtist() const

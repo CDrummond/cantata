@@ -55,6 +55,7 @@ Song SoundCloudService::fixPath(const Song &orig, bool) const
 {
     Song s(orig);
     s.setIsFromOnlineService(constName);
+    s.album=constName;
     return encode(s);
 }
 

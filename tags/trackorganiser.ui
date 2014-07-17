@@ -89,7 +89,7 @@
         <item row="3" column="0" colspan="2">
          <widget class="QCheckBox" name="ignoreThe">
           <property name="text">
-           <string>Ignore 'The' in artist names</string>
+           <string>Append 'The' to artist names</string>
           </property>
          </widget>
         </item>

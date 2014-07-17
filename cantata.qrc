@@ -61,10 +61,6 @@
 <file alias="artist64.png">icons/view-media-artist64.png</file>
 <file alias="artist128.png">icons/view-media-artist128.png</file>
 <file alias="artist.svg">icons/view-media-artist.svg</file>
-<file alias="lib16.png">icons/view-media-library16.png</file>
-<file alias="lib22.png">icons/view-media-library22.png</file>
-<file alias="lib32.png">icons/view-media-library32.png</file>
-<file alias="lib48.png">icons/view-media-library48.png</file>
 <file alias="radio16.png">icons/view-radiostream16.png</file>
 <file alias="radio22.png">icons/view-radiostream22.png</file>
 <file alias="radio32.png">icons/view-radiostream32.png</file>

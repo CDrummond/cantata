@@ -82,7 +82,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     interface->load();
     context->load();
     scrobbling->load();
-    pages.insert(QLatin1String("collection"), pageWidget->addPage(server, i18n("Collection"), Icons::self()->libraryIcon, i18n("Collection Settings")));
+    pages.insert(QLatin1String("collection"), pageWidget->addPage(server, i18n("Collection"), Icons::self()->audioFileIcon, i18n("Collection Settings")));
     pageWidget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
     pageWidget->addPage(files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
     pages.insert(QLatin1String("interface"), pageWidget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings")));
@@ -102,11 +102,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     http = new HttpServerSettings(0);
     if (http->haveMultipleInterfaces()) {
         http->load();
-        Icon icon("network-server");
-        if (icon.isNull()) {
-            icon=Icons::self()->audioFileIcon;
-        }
-        pageWidget->addPage(http, i18n("HTTP Server"), icon, i18n("HTTP Server Settings"));
+        pageWidget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
     } else {
         http->deleteLater();
         http=0;

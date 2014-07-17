@@ -1,6 +1,11 @@
-configure_file(cantata.iss.cmake ${CMAKE_CURRENT_BINARY_DIR}/cantata.iss)
-install(FILES "Cantata README.txt"  "Qt4 README.txt"  "Qt License (LGPL V2).txt"  "TagLib README.txt" DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(FILES ../LICENSE DESTINATION ${CMAKE_INSTALL_PREFIX} RENAME "Cantata License (GPL V3).txt")
+set(WINDOWS_APP_NAME Cantata)
+set(WINDOWS_COMPANY_NAME Cantata)
+set(WINDOWS_URL "http://cantata.googlecode.com")
+configure_file(cantata.nsi.cmake ${CMAKE_CURRENT_BINARY_DIR}/cantata.nsi)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cantata.nsi cantata.ico LICENSE.txt "Cantata README.txt" "Qt4 README.txt" "Qt License (LGPL V2).txt" "TagLib README.txt" DESTINATION ${CMAKE_INSTALL_PREFIX})
+# These two are ued by Inno Setup Compiler builds
+#configure_file(cantata.iss.cmake ${CMAKE_CURRENT_BINARY_DIR}/cantata.iss)
+install(FILES LICENSE.txt DESTINATION ${CMAKE_INSTALL_PREFIX} RENAME "Cantata License (GPL V3).txt")
 
 # Qt translation files...
 file(GLOB qt_trans ${QT_TRANSLATIONS_DIR}/qt_*.qm)

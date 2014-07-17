@@ -187,6 +187,11 @@ QByteArray HttpServer::encodeUrl(const Song &s)
     if (s.track) {
         query.addQueryItem("track", QString::number(s.track));
     }
+    #ifdef ENABLE_ONLINE_SERVICES
+    if (s.isFromOnlineService()) {
+        query.addQueryItem("onlineservice", s.onlineService());
+    }
+    #endif
     query.addQueryItem("id", QString::number(s.id));
     query.addQueryItem("cantata", "song");
     #if QT_VERSION >= 0x050000
@@ -278,6 +283,11 @@ Song HttpServer::decodeUrl(const QUrl &url) const
         if (q.hasQueryItem("id")) {
             s.id=q.queryItemValue("id").toInt();
         }
+        #ifdef ENABLE_ONLINE_SERVICES
+        if (q.hasQueryItem("onlineservice")) {
+            s.setIsFromOnlineService(q.queryItemValue("onlineservice"));
+        }
+        #endif
         s.file=url.path();
         s.type=Song::CantataStream;
         #ifdef Q_OS_WIN

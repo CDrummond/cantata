@@ -477,7 +477,7 @@ QString Song::artistSong() const
 QString Song::trackAndTitleStr(bool showArtistIfDifferent) const
 {
     #if !defined CANTATA_NO_UI_FUNCTIONS && defined ENABLE_ONLINE_SERVICES
-    if (OnlineSvrTrack==type && OnlineService::showLogoAsCover(*this)) {
+    if ((OnlineSvrTrack==type || Song::CantataStream) && OnlineService::showLogoAsCover(*this)) {
         return artistSong();
     }
     #endif
@@ -626,7 +626,7 @@ bool Song::capitalise()
 QString Song::albumKey() const
 {
     #if !defined CANTATA_NO_UI_FUNCTIONS && defined ENABLE_ONLINE_SERVICES
-    if (OnlineSvrTrack==type && OnlineService::showLogoAsCover(*this)) {
+    if ((OnlineSvrTrack==type || Song::CantataStream) && OnlineService::showLogoAsCover(*this)) {
         return onlineService();
     }
     #endif

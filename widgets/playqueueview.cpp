@@ -147,17 +147,15 @@ void PlayQueueView::readConfig()
             curentCover=QImage();
             curentBackground=QPixmap();
             view()->viewport()->update();
-            if (!CurrentCover::self()->image().isNull()) {
-                setImage(CurrentCover::self()->image());
-            }
+            setImage(QImage());
         }
         break;
     case BI_Cover:
         if (BI_None==origType) {
             updatePalette();
         }
-        if ((origType!=backgroundImageType || backgroundOpacity!=origOpacity || backgroundBlur!=origBlur) && !CurrentCover::self()->image().isNull()) {
-            setImage(CurrentCover::self()->image());
+        if ((origType!=backgroundImageType || backgroundOpacity!=origOpacity || backgroundBlur!=origBlur)) {
+            setImage(CurrentCover::self()->isValid() ? CurrentCover::self()->image() : QImage());
         }
         break;
    case BI_Custom:
@@ -448,6 +446,7 @@ void PlayQueueView::setImage(const QImage &img)
     animator.stop();
     if (BI_Custom==backgroundImageType || !isVisible()) {
         setFade(1.0);
+        update();
     } else {
         fadeValue=0.0;
         animator.setDuration(250);

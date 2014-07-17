@@ -228,8 +228,8 @@ bool OnlineService::decode(Song &song)
 
 bool OnlineService::showLogoAsCover(const Song &song)
 {
-    return song.isFromOnlineService() && (PodcastService::constName==song.onlineService() ||
-                                          SoundCloudService::constName==song.onlineService());
+    return song.isFromOnlineService() && (SoundCloudService::constName==song.onlineService() ||
+                                          (PodcastService::constName==song.onlineService() && song.extraField(Song::OnlineImageCacheName).isEmpty()));
 }
 
 OnlineService::OnlineService(MusicModel *m, const QString &name)

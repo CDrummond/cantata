@@ -174,11 +174,45 @@ static QImage loadImage(const QString &fileName)
     return img;
 }
 
+
+static inline bool isOnlineServiceImage(const Song &s)
+{
+    #ifdef ENABLE_ONLINE_SERVICES
+    return OnlineService::showLogoAsCover(s);
+    #else
+    return false;
+    #endif
+}
+
+#ifdef ENABLE_ONLINE_SERVICES
+static Covers::Image serviceImage(const Song &s)
+{
+    Covers::Image img;
+    if (SoundCloudService::constName==s.onlineService()) {
+        img.fileName=SoundCloudService::iconPath();
+    } else if (PodcastService::constName==s.onlineService()) {
+        img.fileName=PodcastService::iconPath();
+    }
+    if (!img.fileName.isEmpty()) {
+        img.img=loadImage(img.fileName);
+        if (!img.img.isNull()) {
+            DBUG_CLASS("Covers") << s.onlineService();
+        }
+    }
+    return img;
+}
+#endif
+
 static inline QString albumKey(const Song &s)
 {
     if (Song::SingleTracks==s.type) {
         return QLatin1String("-single-tracks-");
     }
+    #ifdef ENABLE_ONLINE_SERVICES
+    if (isOnlineServiceImage(s)) {
+        return s.onlineService();
+    }
+    #endif
     return "{"+s.albumArtist()+"}{"+s.albumId()+"}";
 }
 
@@ -1061,7 +1095,7 @@ QPixmap * Covers::saveScaledCover(const QImage &img, const Song &song, int size)
         return 0;
     }
 
-    if (cacheScaledCovers) {
+    if (cacheScaledCovers && !isOnlineServiceImage(song)) {
         QString fileName=getScaledCoverName(song, size, true);
         bool status=img.save(fileName, "PNG");
         DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << size << fileName << status;
@@ -1092,6 +1126,14 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
             } else if (Song::SingleTracks==song.type) {
                 pix=new QPixmap(Icons::self()->albumIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             }
+            #ifdef ENABLE_ONLINE_SERVICES
+            else if (isOnlineServiceImage(song)) {
+                Covers::Image img=serviceImage(song);
+                if (!img.img.isNull()) {
+                    pix=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+                }
+            }
+            #endif
             if (pix) {
                 cache.insert(key, pix, 1);
                 cacheSizes.insert(size);
@@ -1242,11 +1284,10 @@ Covers::Image Covers::locateImage(const Song &song)
     #ifdef ENABLE_ONLINE_SERVICES
     if (song.isFromOnlineService()) {
         QString id=song.onlineService();
-        Covers::Image img;
-        if (SoundCloudService::constName==id) {
-            img.fileName=SoundCloudService::iconPath();
-        } else if (PodcastService::constName==id) {
-            img.fileName=PodcastService::iconPath();
+        Covers::Image img=serviceImage(song);
+        if (!img.img.isNull()) {
+            DBUG_CLASS("Covers") <<  "Got cover online image" << QString(img.fileName) << "for" << id; 
+            return img;
         }
 
         img.fileName=song.extraField(Song::OnlineImageCacheName);
@@ -1261,7 +1302,7 @@ Covers::Image Covers::locateImage(const Song &song)
             if (!img.img.isNull()) {
                 DBUG_CLASS("Covers") <<  "Got cover online image" << QString(img.fileName) << "for" << id;
                 return img;
-            }
+           }
         }
         DBUG_CLASS("Covers") << "Failed to locate online image for" << id;
         return Image();
@@ -1502,17 +1543,9 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
 
     #ifdef ENABLE_ONLINE_SERVICES
     if (urgent && song.isFromOnlineService()) {
-        Covers::Image img;
-        if (SoundCloudService::constName==song.onlineService()) {
-            img.fileName=SoundCloudService::iconPath();
-        } else if (PodcastService::constName==song.onlineService()) {
-            img.fileName=PodcastService::iconPath();
-        }
-        if (!img.fileName.isEmpty()) {
-            img.img=loadImage(img.fileName);
-            if (!img.img.isNull()) {
-                return img;
-            }
+        Covers::Image img=serviceImage(song);
+        if (!img.img.isNull()) {
+            return img;
         }
     }
     #endif

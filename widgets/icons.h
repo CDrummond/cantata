@@ -54,7 +54,6 @@ public:
     Icon consumeIcon;
     Icon repeatIcon;
     Icon shuffleIcon;
-    Icon libraryIcon;
     #ifdef ENABLE_STREAMS
     Icon streamCategoryIcon;
     #endif

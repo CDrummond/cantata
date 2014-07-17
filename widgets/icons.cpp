@@ -405,7 +405,6 @@ Icons::Icons()
     if (importIcon.isNull()) {
         importIcon=Icon("down");
     }
-    libraryIcon=Icon::create("lib", constStdSizes);
     radioStreamIcon=Icon::create("radio", constStdSizes);
     addRadioStreamIcon=Icon::create("addradio", constStdSizes);
     variousArtistsIcon=Icon::create("va", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128, true);
@@ -466,7 +465,7 @@ Icons::Icons()
 
     #ifdef ENABLE_STREAMS
     if (streamCategoryIcon.isNull()) {
-        streamCategoryIcon=libraryIcon;
+        streamCategoryIcon=folderIcon;
     }
     #endif
 }

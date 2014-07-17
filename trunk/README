@@ -894,8 +894,9 @@ This assumes the following folder structure:
 
 4. make install
 
-5. Run Inno Setup Compiler, and use the windows-installer.iss that has been
-   generated in the build folder. This will place the setup exe in z:\cantata
+5. Run Nullsoft Scriptable Install System, and use the cantata.nsi that has
+   been generated in the install folder. This will place the setup exe into
+   the install folder as well.
 
 This build is as per Qt-only, but does not have support for dbus, local dynamic
 playlists, device support, or replaygain calculation.

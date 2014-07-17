@@ -101,9 +101,6 @@ public:
         , needToFixVa(false)
         , jobAbortRequested(false)
         , transcoding(false) {
-        setUseArtistImages(false);
-        setUseAlbumImages(true);
-        setLargeImages(false);
         Q_UNUSED(m)
         Q_UNUSED(id)
     }

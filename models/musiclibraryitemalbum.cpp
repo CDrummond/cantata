@@ -288,7 +288,7 @@ Song MusicLibraryItemAlbum::coverSong() const
                 song.setExtraField(Song::OnlineImageUrl, m_imageUrl);
             }
             #endif
-            #ifdef ENABLE_ONLINE_SERVICES
+            #ifdef ENABLE_DEVICES_SUPPORT
             if (root->isDevice()) {
                 song.setIsFromDevice(static_cast<Device *>(root)->id());
             }

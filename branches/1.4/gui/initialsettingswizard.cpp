@@ -78,7 +78,7 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     #else
     introPage->setBackground(Icons::self()->appIcon);
     #endif
-    connectionPage->setBackground(Icons::self()->libraryIcon);
+    connectionPage->setBackground(Icons::self()->audioFileIcon);
     filesPage->setBackground(Icons::self()->filesIcon);
     finishedPage->setBackground(Icon("dialog-ok"));
 

@@ -1,6 +1,6 @@
 1.5.0
 -----
-1. Remove cover size setting, set automtically.
+1. Remove cover size setting, set automatically.
 2. Artist images only shown in grid view.
 3. No images, or icons, shown in basic tree view.
 4. Remove GUI option to control saving of scaled covers. This is enabled by

@@ -258,8 +258,9 @@ HttpSocket::HttpSocket(const QString &iface, quint16 port)
     if (isListening() && ifaceAddress.isEmpty()) {
         ifaceAddress=QLatin1String("127.0.0.1");
     }
+    setUrlAddress();
 
-    DBUG << isListening() << ifaceAddress << serverPort();
+    DBUG << isListening() << urlAddr;
 
     connect(MPDConnection::self(), SIGNAL(socketAddress(QString)), this, SLOT(mpdAddress(QString)));
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QList<Song>,bool)), this, SLOT(cantataStreams(QList<Song>,bool)));
@@ -564,4 +565,17 @@ bool HttpSocket::write(QTcpSocket *socket, char *buffer, qint32 bytesRead, bool 
         return false;
     }
     return true;
+}
+
+void HttpSocket::setUrlAddress()
+{
+    if (ifaceAddress.isEmpty()) {
+        ifaceAddress=QString();
+    } else {
+        QUrl url;
+        url.setScheme("http");
+        url.setHost(ifaceAddress);
+        url.setPort(serverPort());
+        urlAddr=url.toString();
+    }
 }

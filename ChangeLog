@@ -7,6 +7,8 @@
    default, and can be toggled via the config file.
 5. Dont re-load view when sort changes.
 6. Simplify view config pages.
+7. Use QUrl with server details to build HTTP address used to compare MPD http
+   file paths against.
 
 1.4.0
 -----

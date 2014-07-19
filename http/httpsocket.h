@@ -44,6 +44,7 @@ public:
     void incomingConnection(int socket);
     QString address() const { return ifaceAddress; }
     QString configuredInterface() { return cfgInterface; }
+    QString urlAddress() const { return urlAddr; }
 
 public Q_SLOTS:
     void terminate();
@@ -63,12 +64,14 @@ private Q_SLOTS:
 
 private:
     bool write(QTcpSocket *socket, char *buffer, qint32 bytesRead, bool &stop);
+    void setUrlAddress();
 
 private:
     QSet<QString> newlyAddedFiles; // Holds cantata strema filenames as added to MPD via "add"
     QMap<qint32, QString> streamIds; // Maps MPD playqueue song ID to fileName
     QString cfgInterface;
     QString ifaceAddress;
+    QString urlAddr;
     QString mpdAddr;
     bool terminated;
 };

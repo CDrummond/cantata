@@ -1,5 +1,5 @@
-!define APPNAME "Cantata"
-!define COMPANYNAME "Cantata"
+!define APPNAME "@WINDOWS_APP_NAME@"
+!define COMPANYNAME "@WINDOWS_COMPANY_NAME@"
 !define DESCRIPTION "MPD Client"
 !define VERSIONMAJOR @CPACK_PACKAGE_VERSION_MAJOR@
 !define VERSIONMINOR @CPACK_PACKAGE_VERSION_MINOR@
@@ -8,27 +8,92 @@
 #!define UPDATEURL "http://..." # "Product Updates" link
 !define ABOUTURL "http://cantata.googlecode.com" # "Publisher" link
  
-RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
+RequestExecutionLevel admin
+
+SetCompressor /SOLID lzma
+!include "MUI2.nsh"
  
 InstallDir "$PROGRAMFILES\@WINDOWS_APP_NAME@"
-LicenseData "LICENSE.txt"
 # This will be in the installer/uninstaller's title bar
 Name "@WINDOWS_APP_NAME@"
 Icon "cantata.ico"
 outFile "Cantata-@CANTATA_VERSION_FULL@-Setup.exe"
- 
-page license
-page directory
-Page instfiles
- 
-RequestExecutionLevel admin
- 
+
+!define MUI_ABORTWARNING
+!define MUI_ICON "cantata.ico"
+
+!insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
+!insertmacro MUI_PAGE_DIRECTORY
+!insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_PAGE_FINISH
+
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_UNPAGE_FINISH
+
+!insertmacro MUI_LANGUAGE "English" ;first language is the default language
+!insertmacro MUI_LANGUAGE "French"
+!insertmacro MUI_LANGUAGE "German"
+!insertmacro MUI_LANGUAGE "Spanish"
+!insertmacro MUI_LANGUAGE "SpanishInternational"
+!insertmacro MUI_LANGUAGE "SimpChinese"
+!insertmacro MUI_LANGUAGE "TradChinese"
+!insertmacro MUI_LANGUAGE "Japanese"
+!insertmacro MUI_LANGUAGE "Korean"
+!insertmacro MUI_LANGUAGE "Italian"
+!insertmacro MUI_LANGUAGE "Dutch"
+!insertmacro MUI_LANGUAGE "Danish"
+!insertmacro MUI_LANGUAGE "Swedish"
+!insertmacro MUI_LANGUAGE "Norwegian"
+!insertmacro MUI_LANGUAGE "NorwegianNynorsk"
+!insertmacro MUI_LANGUAGE "Finnish"
+!insertmacro MUI_LANGUAGE "Greek"
+!insertmacro MUI_LANGUAGE "Russian"
+!insertmacro MUI_LANGUAGE "Portuguese"
+!insertmacro MUI_LANGUAGE "PortugueseBR"
+!insertmacro MUI_LANGUAGE "Polish"
+!insertmacro MUI_LANGUAGE "Ukrainian"
+!insertmacro MUI_LANGUAGE "Czech"
+!insertmacro MUI_LANGUAGE "Slovak"
+!insertmacro MUI_LANGUAGE "Croatian"
+!insertmacro MUI_LANGUAGE "Bulgarian"
+!insertmacro MUI_LANGUAGE "Hungarian"
+!insertmacro MUI_LANGUAGE "Thai"
+!insertmacro MUI_LANGUAGE "Romanian"
+!insertmacro MUI_LANGUAGE "Latvian"
+!insertmacro MUI_LANGUAGE "Macedonian"
+!insertmacro MUI_LANGUAGE "Estonian"
+!insertmacro MUI_LANGUAGE "Turkish"
+!insertmacro MUI_LANGUAGE "Lithuanian"
+!insertmacro MUI_LANGUAGE "Slovenian"
+!insertmacro MUI_LANGUAGE "Serbian"
+!insertmacro MUI_LANGUAGE "SerbianLatin"
+!insertmacro MUI_LANGUAGE "Arabic"
+!insertmacro MUI_LANGUAGE "Farsi"
+!insertmacro MUI_LANGUAGE "Hebrew"
+!insertmacro MUI_LANGUAGE "Indonesian"
+!insertmacro MUI_LANGUAGE "Mongolian"
+!insertmacro MUI_LANGUAGE "Luxembourgish"
+!insertmacro MUI_LANGUAGE "Albanian"
+!insertmacro MUI_LANGUAGE "Breton"
+!insertmacro MUI_LANGUAGE "Belarusian"
+!insertmacro MUI_LANGUAGE "Icelandic"
+!insertmacro MUI_LANGUAGE "Malay"
+!insertmacro MUI_LANGUAGE "Bosnian"
+!insertmacro MUI_LANGUAGE "Kurdish"
+!insertmacro MUI_LANGUAGE "Irish"
+!insertmacro MUI_LANGUAGE "Uzbek"
+!insertmacro MUI_LANGUAGE "Galician"
+!insertmacro MUI_LANGUAGE "Afrikaans"
+!insertmacro MUI_LANGUAGE "Catalan"
+!insertmacro MUI_LANGUAGE "Esperanto"
+
 section "install"
     # Files for the install directory - to build the installer, these should be in the same directory as the install script (this file)
     setOutPath $INSTDIR
     # Files added here should be removed by the uninstaller (see section "uninstall")
     file "cantata.exe"
-    file "cantata.ico"
     file "Cantata License (GPL V3).txt"
     file "Cantata README.txt"
     file "zlib1.dll"
@@ -350,20 +415,19 @@ section "install"
     writeUninstaller "$INSTDIR\uninstall.exe"
  
     # Start Menu
-    createDirectory "$SMPROGRAMS\@WINDOWS_COMPANY_NAME@"
-    createShortCut "$SMPROGRAMS\@WINDOWS_COMPANY_NAME@\@WINDOWS_APP_NAME@.lnk" "$INSTDIR\cantata.exe" "" "$INSTDIR\cantata.ico"
+    createShortCut "$SMPROGRAMS\@WINDOWS_APP_NAME@.lnk" "$INSTDIR\cantata.exe" "" "$INSTDIR\cantata.exe"
  
     # Registry information for add/remove programs
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "DisplayName" "@WINDOWS_APP_NAME@"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "InstallLocation" "$\"$INSTDIR$\""
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "DisplayIcon" "$\"$INSTDIR\cantata.ico$\""
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "Publisher" "$\"@WINDOWS_COMPANY_NAME@$\""
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "DisplayIcon" "$\"$INSTDIR\cantata.exe$\""
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "Publisher" "@WINDOWS_COMPANY_NAME@"
 #    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "HelpLink" "$\"${HELPURL}$\""
 #    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "URLUpdateInfo" "$\"${UPDATEURL}$\""
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "URLInfoAbout" "$\"@WINDOWS_URL@$\""
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "DisplayVersion" "$\"@CANTATA_VERSION_FULL@$\""
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "DisplayVersion" "@CANTATA_VERSION_FULL@"
     WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "VersionMajor" @CPACK_PACKAGE_VERSION_MAJOR@
     WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "VersionMinor" @CPACK_PACKAGE_VERSION_MINOR@
     # There is no option for modifying or repairing the install
@@ -377,12 +441,9 @@ sectionEnd
  
 section "uninstall"
     # Remove Start Menu launcher
-    delete "$SMPROGRAMS\@WINDOWS_COMPANY_NAME@\@WINDOWS_APP_NAME@.lnk"
-    # Try to remove the Start Menu folder - this will only happen if it is empty
-    rmDir "$SMPROGRAMS\@WINDOWS_COMPANY_NAME@"
+    delete "$SMPROGRAMS\@WINDOWS_APP_NAME@.lnk"
  
     delete "$INSTDIR\cantata.exe"
-    delete "$INSTDIR\cantata.ico"
     delete "$INSTDIR\Cantata README.txt"
     delete "$INSTDIR\Cantata License (GPL V3).txt"
     delete "$INSTDIR\config\lyrics_providers.xml"

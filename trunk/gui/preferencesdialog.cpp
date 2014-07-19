@@ -102,7 +102,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     http = new HttpServerSettings(0);
     if (http->haveMultipleInterfaces()) {
         http->load();
-        pageWidget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
+        Icon icon("network-server");
+        if (icon.isNull()) {
+            icon=Icons::self()->streamIcon;
+        }
+        pageWidget->addPage(http, i18n("HTTP Server"), icon, i18n("HTTP Server Settings"));
     } else {
         http->deleteLater();
         http=0;

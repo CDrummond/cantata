@@ -131,8 +131,7 @@ void HttpServer::readConfig()
 
 QString HttpServer::address() const
 {
-    return socket ? QLatin1String("http://")+socket->address()+QChar(':')+QString::number(socket->serverPort())
-                  : QLatin1String("http://127.0.0.1:*");
+    return socket ? socket->urlAddress() : QLatin1String("http://127.0.0.1:*");
 }
 
 bool HttpServer::isOurs(const QString &url) const

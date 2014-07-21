@@ -22,6 +22,8 @@
  */
 
 #include "nowplayingwidget.h"
+#include "ratingwidget.h"
+#include "volumeslider.h"
 #include "mpd/song.h"
 #include "gui/settings.h"
 #include "mpd/mpdconnection.h"
@@ -29,7 +31,7 @@
 #include "support/utils.h"
 #include "support/localize.h"
 #include <QLabel>
-#include <QGridLayout>
+#include <QBoxLayout>
 #include <QProxyStyle>
 #include <QTimer>
 #include <QApplication>
@@ -137,7 +139,6 @@ protected:
 
 PosSlider::PosSlider(QWidget *p)
     : QSlider(p)
-    , shown(false)
 {
     setPageStep(0);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
@@ -148,15 +149,6 @@ PosSlider::PosSlider(QWidget *p)
     setMaximumHeight(h);
     updateStyleSheet();
     setMouseTracking(true);
-}
-
-void PosSlider::showEvent(QShowEvent *e)
-{
-    QSlider::showEvent(e);
-    if (!shown) {
-        updateStyleSheet();
-        shown=true;
-    }
 }
 
 void PosSlider::updateStyleSheet()
@@ -246,6 +238,7 @@ void PosSlider::setRange(int min, int max)
 
 NowPlayingWidget::NowPlayingWidget(QWidget *p)
     : QWidget(p)
+    , shown(false)
     , timer(0)
     , lastVal(0)
     , pollCount(0)
@@ -255,6 +248,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     artist=new SqueezedTextLabel(this);
     slider=new PosSlider(this);
     time=new TimeLabel(this, slider);
+    ratingWidget=new RatingWidget(this);
     QFont f=track->font();
     QFont small=Utils::smallFont(f);
     f.setBold(true);
@@ -262,14 +256,23 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     artist->setFont(small);
     time->setFont(small);
     slider->setOrientation(Qt::Horizontal);
-    QGridLayout *layout=new QGridLayout(this);
+    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
+    QBoxLayout *topLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
+    QBoxLayout *botLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
     int space=Utils::layoutSpacing(this);
     layout->setMargin(space);
     layout->setSpacing(space/2);
-    layout->addWidget(track, 0, 0, 1, 2);
-    layout->addWidget(artist, 1, 0);
-    layout->addWidget(time, 1, 1);
-    layout->addWidget(slider, 3, 0, 1, 2);
+    topLayout->setMargin(0);
+    botLayout->setMargin(0);
+    topLayout->setSpacing(space/2);
+    botLayout->setSpacing(space/2);
+    topLayout->addWidget(track);
+    topLayout->addWidget(ratingWidget);
+    layout->addLayout(topLayout);
+    botLayout->addWidget(artist);
+    botLayout->addWidget(time);
+    layout->addLayout(botLayout);
+    layout->addWidget(slider);
     connect(slider, SIGNAL(sliderPressed()), this, SLOT(pressed()));
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
     connect(slider, SIGNAL(positionSet()), this, SIGNAL(sliderReleased()));
@@ -280,11 +283,15 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     clearTimes();
     update(Song());
+    connect(ratingWidget, SIGNAL(valueChanged(int)), SLOT(setRating(int)));
+    connect(this, SIGNAL(setRating(QString,quint8)), MPDConnection::self(), SLOT(setRating(QString,quint8)));
 }
 
 void NowPlayingWidget::update(const Song &song)
 {
     QString name=song.name();
+    currentSongFile=song.file;
+    ratingWidget->setEnabled(!song.isEmpty() && Song::Standard==song.type);
     if (song.isEmpty()) {
         track->setText(" ");
         artist->setText(" ");
@@ -366,6 +373,13 @@ void NowPlayingWidget::saveConfig()
     time->saveConfig();
 }
 
+void NowPlayingWidget::rating(const QString &file, quint8 r)
+{
+    if (file==currentSongFile) {
+        ratingWidget->setValue(r);
+    }
+}
+
 void NowPlayingWidget::updateTimes()
 {
     if (slider->value()<172800 && slider->value() != slider->maximum()) {
@@ -399,4 +413,19 @@ void NowPlayingWidget::released()
         timer->start();
     }
     emit sliderReleased();
+}
+
+void NowPlayingWidget::setRating(int v)
+{
+    emit setRating(currentSongFile, v);
+}
+
+void NowPlayingWidget::showEvent(QShowEvent *e)
+{
+    QWidget::showEvent(e);
+    if (!shown) {
+        slider->updateStyleSheet();
+        shown=true;
+        ratingWidget->setColor(VolumeSlider::clampColor(track->palette().text().color()));
+    }
 }

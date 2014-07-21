@@ -37,6 +37,8 @@ class VolumeSlider : public QSlider
     Q_OBJECT
 
 public:
+    static QColor clampColor(const QColor &col);
+
     VolumeSlider(QWidget *p=0);
     virtual ~VolumeSlider() { }
 

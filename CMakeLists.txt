@@ -218,13 +218,14 @@ if (ENABLE_QT5)
     find_package(Qt5Xml REQUIRED)
     find_package(Qt5Network REQUIRED)
     find_package(Qt5Concurrent REQUIRED)
-    find_package(Qt5Svg REQUIRED) # Only actually required for SVG icons...
+    find_package(Qt5Svg REQUIRED)
     set(QTCORELIBS ${Qt5Core_LIBRARIES})
     set(QTNETWORKLIBS ${Qt5Network_LIBRARIES})
     set(QTGUILIBS ${Qt5Gui_LIBRARIES})
-    set(QTLIBS ${QTCORELIBS} ${Qt5Widgets_LIBRARIES} ${QTNETWORKLIBS} ${QTGUILIBS} ${Qt5Xml_LIBRARIES} ${Qt5Concurrent_LIBRARIES})
-    set(QTINCLUDES ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS} ${Qt5Concurrent_INCLUDE_DIRS})
-    add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5Network_DEFINITIONS} ${Qt5Xml_DEFINITIONS} ${Qt5Concurrent_DEFINITIONS})
+    set(QTLIBS ${QTCORELIBS} ${Qt5Widgets_LIBRARIES} ${QTNETWORKLIBS} ${QTGUILIBS} ${Qt5Xml_LIBRARIES} ${Qt5Concurrent_LIBRARIES} ${Qt5Svg_LIBRARIES})
+    set(QTINCLUDES ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS} ${Qt5Concurrent_INCLUDE_DIRS}
+                   ${Qt5Svg_INCLUDE_DIRS})
+    add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5Network_DEFINITIONS} ${Qt5Xml_DEFINITIONS} ${Qt5Concurrent_DEFINITIONS} ${Qt5Svg_DEFINITIONS})
     set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
     if (NOT ENABLE_UBUNTU)
         # Does Ubuntu/Touch version need DBus?
@@ -242,11 +243,11 @@ if (ENABLE_QT5)
         find_package(Qt5Qml REQUIRED)
     endif (ENABLE_UBUNTU)
 else (ENABLE_QT5)
-    find_package(Qt4 REQUIRED QtCore QtGui QtXml QtNetwork QtSvg)  # SVG only actually required for SVG icons...
+    find_package(Qt4 REQUIRED QtCore QtGui QtXml QtNetwork QtSvg)
     set(QTCORELIBS ${QT_QTCORE_LIBRARY})
     set(QTNETWORKLIBS ${QT_QTNETWORK_LIBRARY})
     set(QTGUILIBS ${QT_QTGUI_LIBRARY})
-    set(QTLIBS ${QT_QTXML_LIBRARY} ${QTCORELIBS} ${QTGUILIBS} ${QTNETWORKLIBS})
+    set(QTLIBS ${QT_QTXML_LIBRARY} ${QTCORELIBS} ${QTGUILIBS} ${QTNETWORKLIBS} ${QT_QTSVG_LIBRARY})
     if (QT_QTDBUS_FOUND)
         set(QTLIBS ${QTLIBS} ${QT_QTDBUS_LIBRARY})
     endif (QT_QTDBUS_FOUND)
@@ -347,7 +348,7 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS} ${CANTATA_SRCS}
     widgets/volumeslider.cpp widgets/genrecombo.cpp widgets/menubutton.cpp widgets/icons.cpp widgets/toolbutton.cpp widgets/wizardpage.cpp
     widgets/statuslabel.cpp widgets/searchwidget.cpp widgets/messageoverlay.cpp widgets/basicitemdelegate.cpp widgets/sizegrip.cpp
     widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp widgets/songdialog.cpp widgets/stretchheaderview.cpp
-    widgets/tableview.cpp widgets/thinsplitterhandle.cpp widgets/coverwidget.cpp
+    widgets/tableview.cpp widgets/thinsplitterhandle.cpp widgets/coverwidget.cpp widgets/ratingwidget.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
     context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp context/togglelist.cpp
@@ -361,7 +362,7 @@ set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS} ${CANTATA_MOC_HDRS}
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/nowplayingwidget.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h widgets/genrecombo.h
     widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h widgets/tableview.h
-    widgets/coverwidget.h
+    widgets/coverwidget.h widgets/ratingwidget.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h

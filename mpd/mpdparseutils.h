@@ -79,6 +79,7 @@ namespace MPDParseUtils
                                   QSet<QString> *childDirs=0);
     extern DirViewItemRoot * parseDirViewItems(const QByteArray &data, bool isMopidy);
     extern QList<Output> parseOuputs(const QByteArray &data);
+    extern QByteArray parseSticker(const QByteArray &data, const QByteArray &sticker);
     extern QString addStreamName(const QString &url, const QString &name);
     extern QString getStreamName(const QString &url);
     extern QString getAndRemoveStreamName(QString &url);

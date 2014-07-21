@@ -38,6 +38,8 @@
 struct Song
 {
     static const quint16 constNullKey;
+    static const quint8 constNullRating;
+    static const quint8 constRatingRequested;
     static const QLatin1Char constGenreSep;
 
     static bool useComposer();
@@ -86,6 +88,7 @@ struct Song
     mutable bool guessed : 1;
     qint32 id;
     qint32 size;
+    mutable quint8 rating;
 
     // Only used in PlayQueue/PlayLists...
     quint16 key;

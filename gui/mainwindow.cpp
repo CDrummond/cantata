@@ -145,6 +145,8 @@ static int nextKey(int &key)
     return k;
 }
 
+static const char *constRatingKey="rating";
+
 MainWindow::MainWindow(QWidget *parent)
     : MAIN_WINDOW_BASE_CLASS(parent)
     , prevPage(-1)
@@ -725,6 +727,15 @@ MainWindow::MainWindow(QWidget *parent)
     Action *sep=new Action(this);
     sep->setSeparator(true);
     playQueue->addAction(sep);
+    ratingAction=new Action(i18n("Set Rating"), this);
+    ratingAction->setMenu(new QMenu(0));
+    for (int i=0; i<6; ++i) {
+        Action *action=new Action(0==i ? i18n("No Rating") : QString::number(i), ratingAction);
+        action->setProperty(constRatingKey, i);
+        ratingAction->menu()->addAction(action);
+        connect(action, SIGNAL(triggered(bool)), SLOT(setRating()));
+    }
+    playQueue->addAction(ratingAction);
     playQueue->addAction(stopAfterTrackAction);
     playQueue->addAction(setPriorityAction);
     playQueue->addAction(locateTrackAction);
@@ -797,6 +808,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(stopAfterTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterTrack()));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(nowPlaying, SIGNAL(sliderReleased()), this, SLOT(setPosition()));
+    connect(&playQueueModel, SIGNAL(currentSongRating(QString,quint8)), nowPlaying, SLOT(rating(QString,quint8)));
     connect(randomPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
     connect(repeatPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
     connect(singlePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setSingle(bool)));
@@ -1065,6 +1077,7 @@ void MainWindow::playQueueItemsSelected(bool s)
     #endif
     addPlayQueueToStoredPlaylistAction->setEnabled(haveItems);
     stopAfterTrackAction->setEnabled(singleSelection);
+    ratingAction->setEnabled(s && haveItems);
 }
 
 void MainWindow::connectToMpd(const MPDConnectionDetails &details)
@@ -1335,6 +1348,14 @@ void MainWindow::controlDynamicButton()
     stopDynamicButton->setVisible(dynamicLabel->isVisible() && PAGE_DYNAMIC!=tabWidget->currentIndex());
     playQueueModel.enableUndo(!Dynamic::self()->isRunning());
     #endif
+}
+
+void MainWindow::setRating()
+{
+    Action *act=qobject_cast<Action *>(sender());
+    if (act) {
+        playQueueModel.setRating(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes()), act->property(constRatingKey).toUInt());
+    }
 }
 
 void MainWindow::readSettings()

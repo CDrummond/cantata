@@ -32,6 +32,7 @@ class QTimer;
 class QLabel;
 class SqueezedTextLabel;
 class TimeLabel;
+class RatingWidget;
 struct Song;
 
 class PosSlider : public QSlider
@@ -41,7 +42,6 @@ public:
     PosSlider(QWidget *p);
     virtual ~PosSlider() { }
 
-    void showEvent(QShowEvent *e);
     void updateStyleSheet();
     void mouseMoveEvent(QMouseEvent *e);
     void wheelEvent(QWheelEvent *ev);
@@ -49,9 +49,6 @@ public:
 
 Q_SIGNALS:
     void positionSet();
-
-private:
-    bool shown;
 };
 
 class NowPlayingWidget : public QWidget
@@ -75,20 +72,31 @@ Q_SIGNALS:
     void sliderReleased();
 
     void mpdPoll();
+    void setRating(const QString &file, quint8 r);
+
+public Q_SLOTS:
+    void rating(const QString &file, quint8 r);
 
 private Q_SLOTS:
     void updateTimes();
     void updatePos();
     void pressed();
     void released();
+    void setRating(int v);
 
 private:
+    void showEvent(QShowEvent *e);
+
+private:
+    bool shown;
     SqueezedTextLabel *track;
     SqueezedTextLabel *artist;
     TimeLabel *time;
     PosSlider *slider;
+    RatingWidget *ratingWidget;
     QTimer *timer;
     QTime startTime;
+    QString currentSongFile;
     int lastVal;
     int pollCount;
     int pollMpd;

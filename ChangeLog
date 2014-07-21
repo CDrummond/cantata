@@ -9,6 +9,7 @@
 6. Simplify view config pages.
 7. Use QUrl with server details to build HTTP address used to compare MPD http
    file paths against.
+8. Store song ratings in MPD's sticker DB.
 
 1.4.0
 -----

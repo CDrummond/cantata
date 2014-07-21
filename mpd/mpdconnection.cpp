@@ -72,13 +72,14 @@ static const QByteArray constIdlePlayerValue("player");
 static const QByteArray constIdleMixerValue("mixer");
 static const QByteArray constIdleOptionsValue("options");
 static const QByteArray constIdleOutputValue("output");
-//static const QByteArray constIdleStickerValue("sticker");
+static const QByteArray constIdleStickerValue("sticker");
 static const QByteArray constIdleSubscriptionValue("subscription");
 static const QByteArray constIdleMessageValue("message");
 #ifdef ENABLE_DYNAMIC
 static const QByteArray constDynamicIn("cantata-dynamic-in");
 static const QByteArray constDynamicOut("cantata-dynamic-out");
 #endif
+static const QByteArray constRatingSticker("rating");
 
 static inline int socketTimeout(int dataSize)
 {
@@ -1307,6 +1308,8 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
                 statusUpdated=true;
             } else if (constIdleOutputValue==value) {
                 outputs();
+            } else if (constIdleStickerValue==value) {
+                emit stickerDbChanged();
             }
             #ifdef ENABLE_DYNAMIC
             else if (constIdleSubscriptionValue==value) {
@@ -1822,6 +1825,79 @@ int MPDConnection::getVolume()
         return sv.volume;
     }
     return -1;
+}
+
+void MPDConnection::setRating(const QString &file, quint8 val)
+{
+    bool ok=0==val
+                ? sendCommand("sticker delete song "+encodeName(file)+' '+constRatingSticker, 0!=val).ok
+                : sendCommand("sticker set song "+encodeName(file)+' '+constRatingSticker+' '+quote(val)).ok;
+
+    if (!ok && 0==val) {
+        clearError();
+    }
+
+    if (ok) {
+        emit rating(file, val);
+    } else {
+        getRating(file);
+    }
+}
+
+void MPDConnection::setRating(const QStringList &files, quint8 val)
+{
+    if (1==files.count()) {
+        setRating(files.at(0), val);
+        return;
+    }
+
+    QList<QStringList> fileLists;
+    if (files.count()>maxFilesPerAddCommand) {
+        int numChunks=(files.count()/maxFilesPerAddCommand)+(files.count()%maxFilesPerAddCommand ? 1 : 0);
+        for (int i=0; i<numChunks; ++i) {
+            fileLists.append(files.mid(i*maxFilesPerAddCommand, maxFilesPerAddCommand));
+        }
+    } else {
+        fileLists.append(files);
+    }
+
+    bool ok=true;
+    foreach (const QStringList &list, fileLists) {
+        QByteArray cmd = "command_list_begin\n";
+
+        foreach (const QString &f, list) {
+            if (0==val) {
+                cmd+="sticker delete song "+encodeName(f)+' '+constRatingSticker+'\n';
+            } else {
+                cmd+="sticker set song "+encodeName(f)+' '+constRatingSticker+' '+quote(val)+'\n';
+            }
+        }
+
+        cmd += "command_list_end";
+        ok=sendCommand(cmd, 0!=val).ok;
+        if (!ok) {
+            break;
+        }
+    }
+
+    if (!ok && 0==val) {
+        clearError();
+    }
+}
+
+void MPDConnection::getRating(const QString &file)
+{
+    quint8 r=0;
+    Response resp=sendCommand("sticker get song "+encodeName(file)+' '+constRatingSticker, false);
+    if (resp.ok) {
+        QByteArray val=MPDParseUtils::parseSticker(resp.data, constRatingSticker);
+        if (!val.isEmpty()) {
+            r=val.toUInt();
+        }
+    } else { // Ignore errors about uknown sticker...
+        clearError();
+    }
+    emit rating(file, r);
 }
 
 bool MPDConnection::fadingVolume()

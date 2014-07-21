@@ -175,6 +175,7 @@ QString PlayQueueModel::headerText(int col)
     case COL_PRIO:      return i18n("Priority");
     case COL_COMPOSER:  return i18n("Composer");
     case COL_PERFORMER: return i18n("Performer");
+    case COL_RATING:    return i18n("Rating");
     default:            return QString();
     }
 }
@@ -217,6 +218,10 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(this, SIGNAL(clearEntries()), MPDConnection::self(), SLOT(clear()));
     connect(this, SIGNAL(addAndPlay(QString)), MPDConnection::self(), SLOT(addAndPlay(QString)));
     connect(this, SIGNAL(startPlayingSongId(qint32)), MPDConnection::self(), SLOT(startPlayingSongId(qint32)));
+    connect(this, SIGNAL(getRating(QString)), MPDConnection::self(), SLOT(getRating(QString)));
+    connect(this, SIGNAL(setRating(QStringList,quint8)), MPDConnection::self(), SLOT(setRating(QStringList,quint8)));
+    connect(MPDConnection::self(), SIGNAL(rating(QString,quint8)), SLOT(ratingResult(QString,quint8)));
+    connect(MPDConnection::self(), SIGNAL(stickerDbChanged()), SLOT(stickerDbChanged()));
     #ifdef ENABLE_DEVICES_SUPPORT //TODO: Problems here with devices support!!!
     connect(DevicesModel::self(), SIGNAL(invalid(QList<Song>)), SLOT(remove(QList<Song>)));
     connect(DevicesModel::self(), SIGNAL(updatedDetails(QList<Song>)), SLOT(updateDetails(QList<Song>)));
@@ -306,9 +311,11 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             case COL_YEAR:
             case COL_PRIO:
                 return int(Qt::AlignVCenter|Qt::AlignRight);
+            case COL_RATING:
+                return int(Qt::AlignCenter);
             }
         case Cantata::Role_Hideable:
-            return COL_YEAR==section || COL_DISC==section || COL_GENRE==section || COL_PRIO==section || COL_COMPOSER==section || COL_PERFORMER==section ? true : false;
+            return COL_YEAR==section || COL_DISC==section || COL_GENRE==section || COL_PRIO==section || COL_COMPOSER==section || COL_PERFORMER==section || COL_RATING==section;
         case Cantata::Role_Width:
             switch (section) {
             case COL_TRACK:     return 0.075;
@@ -322,6 +329,7 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             case COL_PRIO:      return 0.015;
             case COL_COMPOSER:  return 0.2;
             case COL_PERFORMER: return 0.2;
+            case COL_RATING:    return 0.08;
             }
         default:
             break;
@@ -412,7 +420,12 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         return songs.at(index.row()).id;
     case Cantata::Role_Song: {
         QVariant var;
-        var.setValue<Song>(songs.at(index.row()));
+        const Song &s=songs.at(index.row());
+        if (Song::Standard==s.type && Song::constNullRating==s.rating) {
+            emit getRating(s.file);
+            s.rating=Song::constRatingRequested;
+        }
+        var.setValue<Song>(s);
         return var;
     }
     case Cantata::Role_AlbumDuration: {
@@ -557,6 +570,16 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return song.composer();
         case COL_PERFORMER:
             return song.performer();
+//        case COL_RATING:{
+//            QVariant var;
+//            const Song &s=songs.at(index.row());
+//            if (Song::Standard==s.type && Song::constNullRating==s.rating) {
+//                emit getRating(s.file);
+//                s.rating=Song::constRatingRequested;
+//            }
+//            var.setValue(s.rating);
+//            return var;
+//        }
         default:
             break;
         }
@@ -586,6 +609,8 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         case COL_YEAR:
         case COL_PRIO:
             return int(Qt::AlignVCenter|Qt::AlignRight);
+        case COL_RATING:
+            return int(Qt::AlignCenter);
         }
     #ifndef ENABLE_UBUNTU
     case Cantata::Role_Decoration: {
@@ -840,6 +865,15 @@ void PlayQueueModel::updateCurrentSong(quint32 id)
     }
 
     currentSongRowNum=getRowById(currentSongId);
+    if (currentSongRowNum>0 && currentSongRowNum<=songs.count()) {
+        const Song &song=songs.at(currentSongRowNum);
+        if (Song::constNullRating==song.rating) {
+            song.rating=Song::constRatingRequested;
+            emit getRating(song.file);
+        } else if (Song::constRatingRequested!=song.rating) {
+            emit currentSongRating(song.file, song.rating);
+        }
+    }
     emit dataChanged(index(currentSongRowNum, 0), index(currentSongRowNum, columnCount(QModelIndex())-1));
 
     if (-1!=currentSongId && stopAfterTrackId==currentSongId) {
@@ -1084,6 +1118,20 @@ void PlayQueueModel::crop(const QList<int> &rowsToKeep)
     }
 }
 
+void PlayQueueModel::setRating(const QList<int> &rows, quint8 rating) const
+{
+    QSet<QString> files;
+    foreach (const int &r, rows) {
+        if (r>-1 && r<songs.count()) {
+            const Song &s=songs.at(r);
+            if (Song::Standard==s.type && !files.contains(s.file)) {
+                files.insert(s.file);
+            }
+        }
+    }
+    emit setRating(files.toList(), rating);
+}
+
 void PlayQueueModel::enableUndo(bool e)
 {
     if (e==undoEnabled) {
@@ -1277,6 +1325,35 @@ void PlayQueueModel::removeDuplicates()
     }
     if (!toRemove.isEmpty()) {
         emit removeSongs(toRemove);
+    }
+}
+
+void PlayQueueModel::ratingResult(const QString &file, quint8 r)
+{
+    QList<Song>::iterator it=songs.begin();
+    QList<Song>::iterator end=songs.end();
+    int numCols=columnCount(QModelIndex())-1;
+
+    for (int row=0; it!=end; ++it, ++row) {
+        if (Song::Standard==(*it).type && r!=(*it).rating && (*it).file==file) {
+            (*it).rating=r;
+            emit dataChanged(index(row, 0), index(row, numCols));
+            if ((*it).id==currentSongId) {
+                emit currentSongRating(file, r);
+            }
+        }
+    }
+}
+
+void PlayQueueModel::stickerDbChanged()
+{
+    // Sticker DB changed, need to re-request ratings...
+    QSet<QString> requests;
+    foreach (const Song &song, songs) {
+        if (Song::Standard==song.type && song.rating<Song::constRatingRequested && !requests.contains(song.file)) {
+            emit getRating(song.file);
+            requests.insert(song.file);
+        }
     }
 }
 

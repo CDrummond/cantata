@@ -787,6 +787,18 @@ QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)
     return outputs;
 }
 
+static const QByteArray constSticker("sticker: ");
+QByteArray MPDParseUtils::parseSticker(const QByteArray &data, const QByteArray &sticker)
+{
+    QList<QByteArray> lines = data.split('\n');
+    QByteArray key=constSticker+sticker+'=';
+    foreach (const QByteArray &line, lines) {
+        if (line.startsWith(key)) {
+            return line.mid(key.length());
+        }
+    }
+    return QByteArray();
+}
 
 QString MPDParseUtils::addStreamName(const QString &url, const QString &name)
 {

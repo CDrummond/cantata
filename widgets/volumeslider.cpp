@@ -66,7 +66,7 @@ public:
 static int widthStep=4;
 static int constHeightStep=2;
 
-static QColor clampColor(const QColor &col)
+QColor VolumeSlider::clampColor(const QColor &col)
 {
     static const int constMin=64;
     static const int constMax=240;

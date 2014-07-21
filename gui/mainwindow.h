@@ -266,6 +266,7 @@ public Q_SLOTS:
     void updateConnectionsMenu();
     void controlConnectionsMenu(bool enable=true);
     void controlDynamicButton();
+    void setRating();
 
 private:
     void expand();
@@ -345,6 +346,7 @@ private:
     Action *clearPlayQueueAction;
     Action *cancelAction;
     Action *clearNewStateAction;
+    Action *ratingAction;
     TrayItem *trayItem;
     QPoint lastPos;
     QSize expandedSize;

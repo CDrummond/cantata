@@ -32,6 +32,7 @@
 #include "support/localize.h"
 #include "gui/plurals.h"
 #include "widgets/icons.h"
+#include "widgets/ratingwidget.h"
 #include "support/gtkstyle.h"
 #include "support/utils.h"
 #include "models/roles.h"
@@ -190,11 +191,13 @@ public:
     GroupedViewDelegate(GroupedView *p)
         : ActionItemDelegate(p)
         , view(p)
+        , ratingPainter(0)
     {
     }
 
     virtual ~GroupedViewDelegate()
     {
+        delete ratingPainter;
     }
 
     QSize sizeHint(Type type, bool isCollection) const
@@ -322,6 +325,7 @@ public:
         if (song.priority>0) {
             track=track+QLatin1String(" [")+QString::number(song.priority)+QChar(']');
         }
+
         painter->save();
         painter->setFont(f);
         QColor col(option.palette.color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
@@ -401,9 +405,14 @@ public:
         GroupedView::drawPlayState(painter, option, r, state);
         painter->setPen(col);
 
+        int ratingsStart=rtl ? 0 : drawRatings(painter, song, r, fm, option.palette.color(QPalette::Active, QPalette::Text)); // TODO!!!
+
         int durationWidth=showTrackDuration ? fm.width(duration)+8 : 0;
         QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
         QRect textRect(r.x(), r.y(), r.width()-durationWidth, textHeight);
+        if (ratingsStart>0) {
+            textRect.setWidth(ratingsStart-r.x());
+        }
         track = fm.elidedText(track, Qt::ElideRight, textRect.width(), QPalette::WindowText);
         painter->drawText(textRect, track, textOpt);
         if (showTrackDuration) {
@@ -417,8 +426,32 @@ public:
         painter->restore();
     }
 
+    int drawRatings(QPainter *painter, const Song &song, const QRect &r, const QFontMetrics &fm, const QColor &col) const
+    {
+        if (song.rating>0 && song.rating<RatingPainter::constNumPixmaps) {
+            if (!ratingPainter) {
+                ratingPainter=new RatingPainter(r.height()-(constBorder*8));
+                ratingPainter->setColor(col);
+            }
+
+            painter->save();
+            painter->setOpacity(painter->opacity()*0.5);
+            const QSize &ratingSize=ratingPainter->size();
+            int spacing=constBorder*2;
+            int durationWidth=fm.width("0:00:00")+spacing;
+            QRect ratingRect(r.x()+r.width()-(durationWidth+ratingSize.width()+spacing),
+                             r.y()+(r.height()-ratingSize.height())/2,
+                             ratingSize.width(), ratingSize.height());
+            ratingPainter->paint(painter, ratingRect, song.rating);
+            painter->restore();
+            return ratingRect.x()-spacing;
+        }
+        return 0;
+    }
+
 private:
     GroupedView *view;
+    mutable RatingPainter *ratingPainter;
 };
 
 GroupedView::GroupedView(QWidget *parent, bool isPlayQueue)

@@ -50,11 +50,6 @@
   - Move code out of MainWindow class.
 
 - General
-  - Ratings (use KRatingWidget?)
-    - Not sure, would need support in cantata-dynamic
-    - MPD's 'stickers' could be used, but there is no way to query tag+value
-      you can only query for tracks that have tag. So, could query for all
-      tracks with tag=rating, but not tag=rating and value=4
   - mixramp tag calculation
   - mixramp MPD settings
     - Does MPD need to be restarted to change settings?

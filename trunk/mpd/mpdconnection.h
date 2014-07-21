@@ -301,6 +301,10 @@ public Q_SLOTS:
     void sendDynamicMessage(const QStringList &msg);
     int getVolume();
 
+    void setRating(const QString &file, quint8 val);
+    void setRating(const QStringList &files, quint8 val);
+    void getRating(const QString &file);
+
 Q_SIGNALS:
     void stateChanged(bool connected);
     void passwordError();
@@ -349,6 +353,9 @@ Q_SIGNALS:
     void dynamicSupport(bool e);
     void dynamicResponse(const QStringList &resp);
 
+    void rating(const QString &file, quint8 val);
+    void stickerDbChanged();
+
 private Q_SLOTS:
     void idleDataReady();
     void onSocketStateChanged(QAbstractSocket::SocketState socketState);
@@ -384,6 +391,7 @@ private:
     void stopVolumeFade();
     void emitStatusUpdated(MPDStatusValues &v);
     void clearError();
+    void getRatings(QList<Song> &songs);
 
 private:
     Thread *thread;

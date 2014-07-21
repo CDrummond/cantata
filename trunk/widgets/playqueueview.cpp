@@ -38,6 +38,7 @@
 #include "support/actioncollection.h"
 #include "support/action.h"
 #include "models/roles.h"
+#include "widgets/ratingwidget.h"
 #include <QFile>
 #include <QPainter>
 #include <QApplication>
@@ -49,8 +50,8 @@ void qt_blurImage(QPainter *p, QImage &blurImage, qreal radius, bool quality, bo
 class PlayQueueTreeViewItemDelegate : public BasicItemDelegate
 {
 public:
-    PlayQueueTreeViewItemDelegate(QObject *p) : BasicItemDelegate(p) { }
-    virtual ~PlayQueueTreeViewItemDelegate() { }
+    PlayQueueTreeViewItemDelegate(QObject *p) : BasicItemDelegate(p), ratingPainter(0) { }
+    virtual ~PlayQueueTreeViewItemDelegate() { delete ratingPainter; }
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
         if (!index.isValid()) {
@@ -67,7 +68,28 @@ public:
         }
 
         BasicItemDelegate::paint(painter, v4, index);
+
+        if (index.column()==PlayQueueModel::COL_RATING) {
+            Song song=index.data(Cantata::Role_Song).value<Song>();
+            if (song.rating>0 && song.rating<RatingPainter::constNumPixmaps) {
+                const QRect &r=option.rect;
+                if (!ratingPainter) {
+                    ratingPainter=new RatingPainter(r.height()-4);
+                    ratingPainter->setColor(option.palette.color(QPalette::Active, QPalette::Text));
+                }
+                painter->save();
+                painter->setOpacity(painter->opacity()*0.5);
+                painter->setClipRect(r);
+                const QSize &ratingSize=ratingPainter->size();
+                QRect ratingRect(r.x()+(r.width()-ratingSize.width())/2, r.y()+(r.height()-ratingSize.height())/2,
+                                 ratingSize.width(), ratingSize.height());
+                ratingPainter->paint(painter, ratingRect, song.rating);
+                painter->restore();
+            }
+        }
     }
+
+    mutable RatingPainter *ratingPainter;
 };
 
 PlayQueueTreeView::PlayQueueTreeView(PlayQueueView *parent)

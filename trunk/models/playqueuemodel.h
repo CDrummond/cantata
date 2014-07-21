@@ -58,6 +58,7 @@ public:
         COL_PRIO,
         COL_COMPOSER,
         COL_PERFORMER,
+        COL_RATING,
 
         COL_COUNT
     };
@@ -124,6 +125,7 @@ public:
     void removeAll();
     void remove(const QList<int> &rowsToRemove);
     void crop(const QList<int> &rowsToKeep);
+    void setRating(const QList<int> &rows, quint8 rating) const;
     #ifndef ENABLE_UBUNTU
     Action * shuffleAct() { return shuffleAction; }
     Action * removeDuplicatesAct() { return removeDuplicatesAction; }
@@ -159,6 +161,8 @@ private Q_SLOTS:
     void undo();
     void redo();
     void removeDuplicates();
+    void ratingResult(const QString &file, quint8 r);
+    void stickerDbChanged();
     // Touch version...
     void setCover(const Song &song, const QImage &img, const QString &file);
 
@@ -168,6 +172,8 @@ Q_SIGNALS:
     void filesAdded(const QStringList filenames, const quint32 row, const quint32 size, int action, quint8 priority);
     void populate(const QStringList &items, const QList<quint8> &priority);
     void move(const QList<quint32> &items, const quint32 row, const quint32 size);
+    void getRating(const QString &file) const;
+    void setRating(const QStringList &files, quint8 rating) const;
     void statsUpdated(int songs, quint32 time);
     void fetchingStreams();
     void streamsFetched();
@@ -177,6 +183,7 @@ Q_SIGNALS:
     void clearEntries();
     void addAndPlay(const QString &file);
     void startPlayingSongId(qint32 id);
+    void currentSongRating(const QString &file, quint8 r);
 
 private:
     QList<Song> songs;

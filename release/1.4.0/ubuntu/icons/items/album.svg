@@ -1,0 +1,22 @@
+<svg id="svg3367" xmlns="http://www.w3.org/2000/svg" height="128" width="128" version="1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs id="defs3369">
+<linearGradient id="linearGradient3029" y2="14.203" gradientUnits="userSpaceOnUse" x2="35.391" gradientTransform="matrix(0,1.1714,-1.1714,0,51.06,-4.1145)" y1="32.416" x1="12.274">
+<stop id="stop3265" stop-color="#dedbde" offset="0"/>
+<stop id="stop3267" stop-color="#e6e6e6" offset=".5"/>
+<stop id="stop3269" stop-color="#d2d2d2" offset="1"/>
+</linearGradient>
+<linearGradient id="linearGradient3031" y2="45.033" gradientUnits="userSpaceOnUse" x2="-21.916" gradientTransform="translate(50.265)" y1="3" x1="-21.916">
+<stop id="stop3774" stop-color="#b4b4b4" offset="0"/>
+<stop id="stop3776" stop-color="#969696" offset="1"/>
+</linearGradient>
+<linearGradient id="linearGradient3033" y2="32.509" gradientUnits="userSpaceOnUse" x2="21.448" gradientTransform="matrix(.9375 0 0 .9375 1.5 1.5)" y1="15.5" x1="21.448">
+<stop id="stop3430" stop-color="#aaa" offset="0"/>
+<stop id="stop3432" stop-color="#d4d4d4" offset="1"/>
+</linearGradient>
+</defs>
+<g id="g3024" transform="matrix(2.9241 0 0 2.9241 -5.7724 -5.7724)">
+<path id="path2781" fill="url(#linearGradient3029)" d="m44.5 24c0-11.363-9.137-20.5-20.5-20.5s-20.5 9.137-20.5 20.5 9.137 20.5 20.5 20.5 20.5-9.137 20.5-20.5zm-13 0c0 4.1281-3.2893 7.5-7.5 7.5-4.2933 0-7.5-3.4553-7.5-7.5 0-4.1273 3.0415-7.5 7.5-7.5s7.5 3.4545 7.5 7.5z" stroke="url(#linearGradient3031)"/>
+<path id="path2474" opacity=".5" fill="#fff" d="m24 16c-4.416 0-8 3.584-8 8s3.584 8 8 8 8-3.584 8-8-3.584-8-8-8zm0 4c2.208 0 4 1.792 4 4s-1.792 4-4 4-4-1.792-4-4 1.792-4 4-4z"/>
+<path id="path3418" stroke-linejoin="round" d="m24 16.5c-4.14 0-7.5 3.36-7.5 7.5s3.36 7.5 7.5 7.5 7.5-3.36 7.5-7.5-3.36-7.5-7.5-7.5zm0 3.75c2.07 0 3.75 1.68 3.75 3.75s-1.68 3.75-3.75 3.75-3.75-1.68-3.75-3.75 1.68-3.75 3.75-3.75z" stroke="url(#linearGradient3033)" fill="none"/>
+</g>
+</svg>

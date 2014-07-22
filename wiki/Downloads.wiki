@@ -1,7 +1,11 @@
 =Downloads=
 As of January 14th 2014, google code no longer allows adding new downloads. Therefore, the google code download page has been replaced with this page. New downloads (from 1.3.0 onwards) will be served from google drive.
 
+As of 1.4.0, the Windows installer now uses the Nullsoft install system. Therefore, please remove any previous Cantata installs before installing.
+
 || *Version* || *Source Code* || *Windows* || *Released* || *Comment* ||
+|| *1.4* || || || ||
+|| 1.4.0 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60WDI1WjRtUDJ4QlU cantata-1.4.0.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60SHZhTW1RXzlWQk0 Cantata-1.4.0-Setup.exe] || 22 July 2014 || ||
 || *1.3* || || || ||
 || 1.3.4 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60WTYtaXk3c1IzNVU cantata-1.3.4.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60blpEa1NEYXlyakk Cantata-1.3.4-Setup.exe] || 8 April 2014 || ||
 || 1.3.3 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60ZUN1NThacGFrdFE cantata-1.3.3.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60QllHeWZVUnVZVVE Cantata-1.3.3-Setup.exe] || 25 March 2014 || ||

@@ -294,13 +294,14 @@ void DynamicRulesDialog::showAbout()
                          i18n("<p>Cantata will query your library using all of the rules listed. "
                               "The list of <i>Include</i> rules will be used to build a set of songs that can be used. "
                               "The list of <i>Exclude</i> rules will be used to build a set of songs that cannot be used. "
-                              "If there are no <i>Include</i> rules, Cantata will assume that all songs (bar those from <i>Exclude</i>) can be used. <br/>"
-                              "e.g. to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', you would need the following: "
+                              "If there are no <i>Include</i> rules, Cantata will assume that all songs (bar those from <i>Exclude</i>) can be used.</p>"
+                              "<p>e.g. to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', you would need the following: "
                               "<ul><li>Include AlbumArtist=Wibble Genre=Rock</li><li>Include AlbumArtist=Various Artists</li></ul> "
                               "To have Cantata look for 'Songs by Wibble but not from album Abc', you would need the following: "
                               "<ul><li>Include AlbumArtist=Wibble</li><li>Exclude AlbumArtist=Wibble Album=Abc</li></ul>"
                               "After the set of usable songs has been created, Cantata will randomly select songs to "
-                              "keep the play queue filled with 10 entries.</p>")
+                              "keep the play queue filled with 10 entries. If a range of ratings has been specified, then "
+                              "only songs with a rating within this range will be used.</p>")
                         );
 
 }

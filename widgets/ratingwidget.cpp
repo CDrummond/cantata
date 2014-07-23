@@ -32,7 +32,6 @@
 #include <QLabel>
 
 const int RatingPainter::constNumStars;
-const int RatingPainter::constNumPixmaps;
 
 static const int constBorder=2;
 
@@ -60,16 +59,19 @@ void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
         }
         renderer.load(bytes);
 
-        for (int p=0; p<constNumPixmaps; ++p) {
-            pixmaps[p]=QPixmap(pixmapSize);
+        for (int p=0; p<2; ++p) {
+            pixmaps[p]=QPixmap(starSz, starSz);
             pixmaps[p].fill(Qt::transparent);
             QPainter painter(&(pixmaps[p]));
-            for (int i=0; i<constNumStars; ++i) {
-                renderer.render(&painter, i<p ? "on" : "off", QRectF(i*(starSz+constBorder), 0, starSz, starSz));
-            }
+            renderer.render(&painter, 1==p ? "on" : "off", QRectF(0, 0, starSz, starSz));
         }
     }
-    p->drawPixmap(r, pixmaps[rating]);
+
+    QRect pr(r.x(), r.y()+(r.height()-starSz)/2, starSz, starSz);
+    for (int i=0; i<constNumStars; ++i) {
+        p->drawPixmap(pr, pixmaps[i<rating ? 1 : 0]);
+        pr.setX(pr.x()+starSz+constBorder);
+    }
 }
 
 void RatingPainter::setColor(const QColor &c)

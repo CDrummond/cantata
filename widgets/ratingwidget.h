@@ -31,7 +31,6 @@ class RatingPainter
 {
 public:
     static const int constNumStars=5;
-    static const int constNumPixmaps=constNumStars+1;
 
     RatingPainter(int s);
 
@@ -46,7 +45,7 @@ private:
     int starSz;
     QSize pixmapSize;
     QColor col;
-    QPixmap pixmaps[constNumPixmaps];
+    QPixmap pixmaps[2];
 };
 
 class RatingWidget : public QWidget

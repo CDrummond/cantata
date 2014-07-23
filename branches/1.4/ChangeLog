@@ -1,3 +1,7 @@
+1.4.1
+-----
+1. Remove unused var warning when compiling without online services.
+
 1.4.0
 -----
   1. Allow setting of custom device name for UMS and MTP devices.

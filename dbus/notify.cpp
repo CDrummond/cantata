@@ -75,7 +75,7 @@ const QDBusArgument& operator>> (const QDBusArgument &arg, QImage &image)
 {
   // This is needed to link but shouldn't be called.
   Q_ASSERT(0);
-  Q_UNUSED(image);
+  Q_UNUSED(image)
   return arg;
 }
 

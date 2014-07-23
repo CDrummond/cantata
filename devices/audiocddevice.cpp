@@ -182,7 +182,7 @@ void AudioCdDevice::connectService(bool useCddb)
         mb=0;
     }
     #else
-    Q_UNUSED(useCddb);
+    Q_UNUSED(useCddb)
     #endif
 
     #ifdef CDDB_FOUND

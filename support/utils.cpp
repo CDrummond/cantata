@@ -246,7 +246,7 @@ void Utils::setFilePerms(const QString &file, const char *groupName)
     ::chmod(fn.constData(), 0==gid ? 0644 : 0664);
     if (0!=gid) {
         int rv=::chown(fn.constData(), geteuid(), gid);
-        Q_UNUSED(rv);
+        Q_UNUSED(rv)
     }
     // Reset umask
     ::umask(oldMask);
@@ -254,8 +254,8 @@ void Utils::setFilePerms(const QString &file, const char *groupName)
 #else
 void Utils::setFilePerms(const QString &file, const char *groupName)
 {
-    Q_UNUSED(file);
-    Q_UNUSED(groupName);
+    Q_UNUSED(file)
+    Q_UNUSED(groupName)
 }
 #endif
 
@@ -266,8 +266,8 @@ void Utils::setFilePerms(const QString &file, const char *groupName)
 bool Utils::createWorldReadableDir(const QString &dir, const QString &base, const char *groupName)
 {
     #ifdef Q_OS_WIN
-    Q_UNUSED(base);
-    Q_UNUSED(groupName);
+    Q_UNUSED(base)
+    Q_UNUSED(groupName)
     return makeDir(dir, 0775);
     #else
     //
@@ -283,7 +283,7 @@ bool Utils::createWorldReadableDir(const QString &dir, const QString &base, cons
         foreach (const QString &p, parts) {
             d+=constDirSep+p;
             int rv=::chown(QFile::encodeName(d).constData(), geteuid(), gid);
-            Q_UNUSED(rv);
+            Q_UNUSED(rv)
         }
     }
     // Reset umask

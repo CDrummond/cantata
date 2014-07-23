@@ -260,7 +260,7 @@ bool WindowManager::mousePressEvent(QObject *object, QEvent *event)
 
 bool WindowManager::mouseMoveEvent(QObject *object, QEvent *event)
 {
-    Q_UNUSED(object);
+    Q_UNUSED(object)
 
     // stop timer
     if (_dragTimer.isActive()){
@@ -299,8 +299,8 @@ bool WindowManager::mouseMoveEvent(QObject *object, QEvent *event)
 
 bool WindowManager::mouseReleaseEvent(QObject *object, QEvent *event)
 {
-    Q_UNUSED(object);
-    Q_UNUSED(event);
+    Q_UNUSED(object)
+    Q_UNUSED(event)
     resetDrag();
     return false;
 }
@@ -662,7 +662,7 @@ bool WindowManager::AppEventFilter::eventFilter(QObject *object, QEvent *event)
 
 bool WindowManager::AppEventFilter::appMouseEvent(QObject *object, QEvent *event)
 {
-    Q_UNUSED(object);
+    Q_UNUSED(object)
 
     // store target window (see later)
     QWidget *window(_parent->_target.data()->window());

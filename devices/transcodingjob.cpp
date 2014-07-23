@@ -71,7 +71,7 @@ void TranscodingJob::stop()
 
 void TranscodingJob::finished(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    Q_UNUSED(exitStatus);
+    Q_UNUSED(exitStatus)
     if (!process) {
         return;
     }

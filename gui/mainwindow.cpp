@@ -730,7 +730,16 @@ MainWindow::MainWindow(QWidget *parent)
     ratingAction=new Action(i18n("Set Rating"), this);
     ratingAction->setMenu(new QMenu(0));
     for (int i=0; i<6; ++i) {
-        Action *action=new Action(0==i ? i18n("No Rating") : QString::number(i), ratingAction);
+        QString text;
+        if (0==i) {
+            text=i18n("No Rating");
+        } else {
+            text=QString::number(i)+QLatin1Char(' ');
+            for (int s=0; s<i; ++s) {
+                text+=QChar(0x2605);
+            }
+        }
+        Action *action=new Action(text, ratingAction);
         action->setProperty(constRatingKey, i);
         ratingAction->menu()->addAction(action);
         connect(action, SIGNAL(triggered(bool)), SLOT(setRating()));

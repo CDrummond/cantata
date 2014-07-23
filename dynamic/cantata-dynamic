@@ -247,14 +247,21 @@ $includeRules;
 $excludeRules;
 $lastIncludeRules;
 $lastExcludeRules;
+$ratingFrom=0;
+$ratingTo=0;
+$lastRatingFrom=0;
+$lastRatingTo=0;
 $initialRead=1;
 $rulesTimestamp=0;
+$numMpdSongs=0;
 
 # Determine if rules file has been updated
 sub checkRulesChanged() {
     if ($initialRead==1) { # Always changed on first run...
         $rulesChanged=1;
         $initialRead=0;
+    } elsif ($lastRatingFrom!=$ratingFrom || $lastRatingTo!=$ratingTo) {
+        $rulesChanged=1;
     } elsif ( scalar(@lastIncludeRules)!=scalar(@includeRules) ||
               scalar(@lastExcludeRules)!=scalar(@excludeRules)) { # Different number of rules
         $rulesChanged=1;
@@ -390,6 +397,8 @@ sub readRules() {
             my $currentRule="";
             @includeRules=();
             @excludeRules=();
+            $ratingFrom=0;
+            $ratingTo=0;
             close($fileHandle);
             foreach my $line (@lines) {
                 if (! ($line=~ m/^(#)/)) {
@@ -411,12 +420,23 @@ sub readRules() {
                         @dates=();
                         @similarArtists=();
                         @genres=();
+                    } elsif ($key=~ m/^(Rating)/) {
+                        my @vals = split("-", $val);
+                        if (scalar(@vals)==2) {
+                            $ratingFrom=int($vals[0]);
+                            $ratingTo=int($vals[1]);
+                            if ($ratingFrom > $ratingTo) {
+                                my $tmp=$ratingFrom;
+                                $ratingFrom=$ratingTo;
+                                $ratingTo=$tmp;
+                            }
+                        }
                     } else {
                         if ($key eq "Date") {
                             my @dateVals = split("-", $val);
                             if (scalar(@dateVals)==2) {
-                                my $fromDate=scalar($dateVals[0]);
-                                my $toDate=scalar($dateVals[1]);
+                                my $fromDate=int($dateVals[0]);
+                                my $toDate=int($dateVals[1]);
                                 if ($fromDate > $toDate) { # Fix dates if from>to!!!
                                     my $tmp=$fromDate;
                                     $fromDate=$toDate;
@@ -461,7 +481,7 @@ sub readRules() {
 
                                 @mpdArtists=uniq(@mpdArtists); 
 
-                                # Now chec which last.fm artists MPD actually has...    
+                                # Now check which last.fm artists MPD actually has...
                                 my $pos=0;
                                 foreach my $artist (@artistSearchResults) {
                                     my @match = grep(/^$artist/i, @mpdArtists);
@@ -494,7 +514,8 @@ sub readRules() {
                 foreach my $rule (@excludeRules) {
                     print "${rule}\n";
                 }
-                print "---------------------\n"
+                print "---------------------\n";
+                print "RATING: ${ratingFrom} -> ${ratingTo}\n";
             }
 
             &checkRulesChanged();
@@ -537,6 +558,7 @@ sub sendMessage() {
 sub getSongs() {
     # If we have no current songs, or rules have changed, or MPD has been updated - then we need to run the rules against MPD to get song list...
     if (scalar(@mpdSongs)<1 || $rulesChanged==1 || $mpdDbUpdated==1) {
+        $numMpdSongs=0;
         my @excludeSongs=();
         if (scalar(@excludeRules)>0) {
             # Get list of songs that should be removed from the song list...
@@ -601,6 +623,7 @@ sub getSongs() {
             }
             print "---------------------\n"
         }
+        $numMpdSongs=scalar(@mpdSongs);
     }
 }
 
@@ -646,6 +669,35 @@ sub canAdd() {
         }
     }
     return 1;
+}
+
+# Is a file with rating from .. rating to?
+sub inRatingsRange() {
+    if ($ratingFrom<=0 && $ratingTo<=0) {
+        return 1;
+    }
+    if ($numMpdSongs<1) {
+        return 0;
+    }
+    my $file=shift;
+    my @entries = &getEntries("sticker get song \"${file}\" rating", 'sticker');
+    foreach my $entry (@entries) {
+        my @parts = split("=", $entry);
+        if (2==scalar(@parts)) {
+            my $rating=scalar($parts[1]);
+            if ($rating >= $ratingFrom && $rating <= $ratingTo) {
+                return 1;
+            }
+        }
+    }
+    # Song is not within range, so 'blank' its name out of list
+    my $pos=shift;
+    if (1==$testMode) {
+        print "$file is NOT in rating range - remove:${pos} total:${numMpdSongs}!\n";
+    }
+    splice @mpdSongs, $pos, 1;
+    $numMpdSongs--;
+    return 0;
 }
 
 sub storeSong() {
@@ -738,33 +790,48 @@ sub populatePlayQueue() {
 
                 &readRules();
                 &getSongs();
-                my $numMpdSongs=scalar(@mpdSongs);
                 if ($numMpdSongs>0) {
                     # fill up playlist to 10 random tunes
                     my $failues=0;
                     my $added=0;
-                    while ($playQueueLength < $PLAY_QUEUE_DESIRED_LENGTH) {
+                    while ($playQueueLength < $PLAY_QUEUE_DESIRED_LENGTH && $numMpdSongs>0) {
                         my $pos=int(rand($numMpdSongs));
-                        if ($failues > 100 || &canAdd(${mpdSongs[$pos]}, $numMpdSongs)) {
-                            my $file=${mpdSongs[$pos]};
-                            $file =~ s/\\/\\\\/g;
-                            $file =~ s/\"/\\\"/g;
-                            if (&sendCommand("add \"${file}\"") ne '') {
-                                &storeSong(${mpdSongs[$pos]});
-                                $playQueueLength++;
-                                $failues=0;
-                                $added++;
+                        my $origFile=${mpdSongs[$pos]};
+                        my $file=$origFile;
+                        $file =~ s/\\/\\\\/g;
+                        $file =~ s/\"/\\\"/g;
+
+                        if (&inRatingsRange($file, $pos)) {
+                            if ($failues > 100 || &canAdd($origFile, $numMpdSongs)) {
+                                if (&sendCommand("add \"${file}\"") ne '') {
+                                    &storeSong($origFile);
+                                    $playQueueLength++;
+                                    $failues=0;
+                                    $added++;
+                                }
+                            } else { # Song is already in playqueue history...
+                                $failues++;
                             }
-                        } else { # Song is already in playqueue history...
-                            $failues++;
                         }
                     }
                     # If we are not currently playing and we filled playqueue - then play first!
-                    if ($isPlaying==0 && $added==$PLAY_QUEUE_DESIRED_LENGTH) {
+                    if ($numMpdSongs>0 && $isPlaying==0 && $added==$PLAY_QUEUE_DESIRED_LENGTH) {
                         &sendCommand("play 0")
                     }
                 }
-                &waitForEvent();
+
+                if ($numMpdSongs>0) {
+                    &waitForEvent();
+                } else {
+                    if (1==$isServerMode) {
+                        $currentStatus="NO_SONGS";
+                        $dynamicIsActive=0;
+                        &sendStatus();
+                    } else {
+                        &sendMessage("showError", "NO_SONGS");
+                        exit(0);
+                    }
+                }
             } elsif (0==$isServerMode) {
                 sleep 2;
             }

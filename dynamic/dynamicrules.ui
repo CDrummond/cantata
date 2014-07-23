@@ -81,7 +81,42 @@
         </property>
        </spacer>
       </item>
-      <item row="4" column="0">
+      <item row="4" column="0" rowspan="1" colspan="2">
+       <widget class="QGroupBox" name="ratingsGroupBox">
+       <property name="title">
+        <string>Song rating range</string>
+       </property>
+       <layout class="QHBoxLayout" name="ratingsGroupBoxLayout">
+        <item>
+         <widget class="RatingWidget" name="ratingFrom"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="ratingToLabel">
+          <property name="text">
+           <string> to </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="RatingWidget" name="ratingTo"/>
+        </item>
+        <item>
+        <spacer name="ratingSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>2</width>
+            <height>2</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+       </widget>
+      </item>
+      <item row="5" column="0">
        <widget class="UrlLabel" name="aboutLabel">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -94,7 +129,7 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="1" colspan="2">
+      <item row="5" column="1" colspan="2">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -133,6 +168,11 @@
    <extends>QFrame</extends>
    <header>support/messagewidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RatingWidget</class>
+   <extends>QWidget</extends>
+   <header>widgets/ratingwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

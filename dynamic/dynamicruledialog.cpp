@@ -27,7 +27,6 @@
 
 static const int constMinDate=1800;
 static const int constMaxDate=2100;
-static const QChar constDateSep('-');
 
 DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     : Dialog(parent)
@@ -125,7 +124,7 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
     int dateFrom=0;
     int dateTo=0;
     if (!date.isEmpty()) {
-        int idx=date.indexOf(constDateSep);
+        int idx=date.indexOf(Dynamic::constRangeSep);
         if (-1==idx) {
             dateFrom=date.toInt();
         } else {
@@ -184,7 +183,7 @@ Dynamic::Rule DynamicRuleDialog::rule() const
     bool haveTo=dateTo>=constMinDate && dateTo<=constMaxDate && dateTo!=dateFrom;
 
     if (haveFrom && haveTo) {
-        r.insert(Dynamic::constDateKey, QString::number(dateFrom)+constDateSep+QString::number(dateTo));
+        r.insert(Dynamic::constDateKey, QString::number(dateFrom)+Dynamic::constRangeSep+QString::number(dateTo));
     } else if (haveFrom) {
         r.insert(Dynamic::constDateKey, QString::number(dateFrom));
     } else if (haveTo) {

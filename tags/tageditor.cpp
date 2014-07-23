@@ -43,6 +43,7 @@
 #include <QEventLoop>
 #include <QDir>
 #include <QTimer>
+#include <QDebug>
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -101,6 +102,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     , haveGenres(false)
     , haveDiscs(false)
     , haveYears(false)
+    , haveRatings(false)
     , saving(false)
     , composerSupport(false)
     , commentSupport(false)
@@ -135,6 +137,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
             continue;
         }
         Song song(s);
+        s.rating=Song::constNullRating;;
         if (s.guessed) {
             song.revertGuessedTags();
         }
@@ -155,8 +158,17 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     setupUi(mainWidet);
     if (isMopidy) {
         connect(mopidyNote, SIGNAL(leftClickedUrl()), SLOT(showMopidyMessage()));
+        REMOVE(ratingWidget);
+        REMOVE(ratingLabel);
+        REMOVE(ratingVarious);
     } else {
         REMOVE(mopidyNote);
+        connect(this, SIGNAL(getRating(QString)), MPDConnection::self(), SLOT(getRating(QString)));
+        connect(this, SIGNAL(setRating(QString,quint8)), MPDConnection::self(), SLOT(setRating(QString,quint8)));
+        connect(MPDConnection::self(), SIGNAL(rating(QString,quint8)), this, SLOT(rating(QString,quint8)));
+        ratingWidget->setShowZeroForNull(true);
+        QColor col=palette().color(QPalette::WindowText);
+        ratingVarious->setStyleSheet(QString("QLabel{color:rgba(%1,%2,%3,128);}").arg(col.red()).arg(col.green()).arg(col.blue()));
     }
     setMainWidget(mainWidet);
     ButtonCodes buttons=Ok|Cancel|Reset|User3;
@@ -271,6 +283,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         all.genre=1==songGenres.count() ? *(songGenres.begin()) : QString();
         all.year=1==songYears.count() ? *(songYears.begin()) : 0;
         all.disc=1==songDiscs.count() ? *(songDiscs.begin()) : 0;
+        all.rating=Song::constNullRating;
         original.prepend(all);
         artist->setFocus();
         haveArtists=songArtists.count()>1;
@@ -292,6 +305,9 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
             first=false;
         } else {
             trackName->insertItem(trackName->count(), s.filePath());
+            if (!isMopidy) {
+                emit getRating(s.file);
+            }
         }
     }
     connect(title, SIGNAL(textChanged(const QString &)), SLOT(checkChanged()));
@@ -315,6 +331,9 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(year, SIGNAL(valueChanged(int)), SLOT(checkChanged()));
     connect(trackName, SIGNAL(activated(int)), SLOT(setIndex(int)));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
+    if (ratingWidget) {
+        connect(ratingWidget, SIGNAL(valueChanged(int)), SLOT(checkRating()));
+    }
     adjustSize();
     int w=Utils::scaleForDpi(600);
     if (width()<w) {
@@ -363,11 +382,14 @@ void TagEditor::fillSong(Song &s, bool isAll, bool skipEmpty) const
     if (!isAll || 0!=year->value()) {
         s.year=year->value();
     }
+    if (ratingWidget) {
+        s.rating=ratingWidget->value();
+    }
 }
 
 void TagEditor::setVariousHint()
 {
-    if(0==currentSongIndex && original.count()>1) {
+    if (0==currentSongIndex && original.count()>1) {
         Song all=original.at(0);
         artist->setPlaceholderText(all.artist.isEmpty() && haveArtists ? TagSpinBox::variousStr() : QString());
         album->setPlaceholderText(all.album.isEmpty() && haveAlbums ? TagSpinBox::variousStr() : QString());
@@ -381,6 +403,11 @@ void TagEditor::setVariousHint()
         genre->setPlaceholderText(all.genre.isEmpty() && haveGenres ? TagSpinBox::variousStr() : QString());
         disc->setVarious(0==all.disc && haveDiscs);
         year->setVarious(0==all.year && haveYears);
+        if (ratingWidget) {
+            ratingVarious->setVisible(Song::constNullRating==all.rating && haveRatings);
+        }
+    } else if (ratingVarious) {
+        ratingVarious->setVisible(false);
     }
 }
 
@@ -412,6 +439,7 @@ void TagEditor::setLabelStates()
     discLabel->setOn(o.disc!=e.disc);
     genreLabel->setOn(o.genre!=e.genre);
     yearLabel->setOn(o.year!=e.year);
+    ratingLabel->setOn(o.rating!=e.rating);
 }
 
 void TagEditor::readComments()
@@ -689,7 +717,7 @@ void TagEditor::updateEditedStatus(int index)
 {
     bool isAll=0==index && original.count()>1;
     Song s=edited.at(index);
-    if (equalTags(s, original.at(index), isAll, composerSupport, commentSupport)) {
+    if (equalTags(s, original.at(index), isAll, composerSupport, commentSupport) && s.rating==original.at(index).rating) {
         if (editedIndexes.contains(index)) {
             editedIndexes.remove(index);
             updateTrackName(index, false);
@@ -733,7 +761,7 @@ void TagEditor::updateEdited(bool isFromAll)
         }
     }
 
-    if (equalTags(s, original.at(currentSongIndex), isFromAll || isAll, composerSupport, commentSupport)) {
+    if (equalTags(s, original.at(currentSongIndex), isFromAll || isAll, composerSupport, commentSupport) && s.rating==original.at(currentSongIndex).rating) {
         if (editedIndexes.contains(currentSongIndex)) {
             editedIndexes.remove(currentSongIndex);
             updateTrackName(currentSongIndex, false);
@@ -764,6 +792,9 @@ void TagEditor::setSong(const Song &s)
     disc->setValue(s.disc);
     genre->setText(s.genre);
     year->setValue(s.year);
+    if (ratingWidget) {
+        ratingWidget->setValue(s.rating);
+    }
 }
 
 void TagEditor::setIndex(int idx)
@@ -787,6 +818,7 @@ void TagEditor::setIndex(int idx)
     titleLabel->setEnabled(!isMultiple);
     track->setEnabled(!isMultiple);
     trackLabel->setEnabled(!isMultiple);
+
     if (isMultiple) {
         title->setText(QString());
         track->setValue(0);
@@ -810,6 +842,92 @@ void TagEditor::showMopidyMessage()
                                        "music listing. Therefore, you will need to stop Cantata, manually refresh "
                                        "Mopidy's database, and restart Cantata for any changes to be active."),
                             QLatin1String("Mopidy"));
+}
+
+void TagEditor::rating(const QString &f, quint8 r)
+{
+    if (!ratingWidget) {
+        return;
+    }
+    for (int i=original.count()>1 ? 1 : 0; i<original.count(); ++i) {
+        Song s=original.at(i);
+        if (Song::constNullRating==s.rating && s.rating!=r && s.file==f) {
+            s.rating=r;
+            original.replace(i, s);
+            s=edited.at(i);
+            if (Song::constNullRating==s.rating) {
+                s.rating=r;
+                edited.replace(i, s);
+            }
+            if (i==currentSongIndex && 0==ratingWidget->value()) {
+                ratingWidget->setValue(r);
+            }
+        }
+    }
+
+    if (original.count()>1 && !haveRatings) {
+        quint8 rating=Song::constNullRating;
+        bool first=true;
+        for (int i=1; i<original.count() && !haveRatings; ++i) {
+            quint8 r=original.at(i).rating;
+            if (Song::constNullRating==r) {
+                continue;
+            }
+            if (first) {
+                rating=r;
+                first=false;
+            } else if (r!=rating) {
+                haveRatings=true;
+                rating=Song::constNullRating;
+            }
+        }
+        Song s=original.at(0);
+        if (s.rating!=rating) {
+            s.rating=rating;
+            original.replace(0, s);
+            s=edited.at(0);
+            if (Song::constNullKey==s.rating && s.rating!=rating) {
+                s.rating=rating;
+                edited.replace(0, s);
+            }
+            if (0==currentSongIndex) {
+                ratingWidget->setValue(rating);
+            }
+        }
+        setVariousHint();
+    }
+}
+
+void TagEditor::checkRating()
+{
+    checkChanged();
+    if (original.count()>1 && 0==currentSongIndex) {
+        quint8 rating=Song::constNullRating;
+        bool first=true;
+        haveRatings=false;
+        for (int i=1; i<edited.count() && !haveRatings; ++i) {
+            quint8 r=edited.at(i).rating;
+            if (Song::constNullRating==r) {
+                continue;
+            }
+            if (first) {
+                rating=r;
+                first=false;
+            } else if (r!=rating) {
+                haveRatings=true;
+                rating=Song::constNullRating;
+            }
+        }
+        Song s=edited.at(0);
+        if (s.rating!=rating) {
+            s.rating=rating;
+            edited.replace(0, s);
+            if (0==currentSongIndex) {
+                ratingWidget->setValue(rating);
+            }
+        }
+        setVariousHint();
+    }
 }
 
 bool TagEditor::applyUpdates()
@@ -859,6 +977,11 @@ bool TagEditor::applyUpdates()
         }
         Song orig=original.at(idx);
         Song edit=edited.at(idx);
+
+        if (ratingWidget && orig.rating!=edit.rating) {
+            emit setRating(orig.file, edit.rating);
+        }
+
         if (equalTags(orig, edit, false, composerSupport, commentSupport)) {
             continue;
         }
@@ -942,9 +1065,11 @@ void TagEditor::slotButtonClicked(int button)
             }
             editedIndexes.clear();
             setSong(original.at(currentSongIndex));
+            checkRating();
         } else {
             setSong(original.at(currentSongIndex));
         }
+        setLabelStates();
         enableOkButton();
         break;
     case User1: // Next

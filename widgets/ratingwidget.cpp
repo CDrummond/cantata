@@ -23,6 +23,7 @@
 
 #include "ratingwidget.h"
 #include "support/icon.h"
+#include "mpd/song.h"
 #include <QMouseEvent>
 #include <QPainter>
 #include <QFontMetrics>
@@ -86,6 +87,7 @@ RatingWidget::RatingWidget(QWidget *parent)
     , rp(Icon::stdSize(QApplication::fontMetrics().height()*0.9))
     , val(0)
     , hoverVal(-1)
+    , showZeroForNull(false)
 {
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     setMouseTracking(true);
@@ -115,7 +117,7 @@ void RatingWidget::paintEvent(QPaintEvent *e)
     if (!isEnabled()) {
         p.setOpacity(0.5);
     }
-    rp.paint(&p, rect(), -1==hoverVal ? val : hoverVal);
+    rp.paint(&p, rect(), -1==hoverVal ? (showZeroForNull && val==Song::constNullRating ? 0 : val) : hoverVal);
 }
 
 void RatingWidget::mousePressEvent(QMouseEvent *e)

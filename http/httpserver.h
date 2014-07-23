@@ -37,7 +37,7 @@ class QTimer;
 
 class HttpServer : public QObject
 {
-    #ifdef ENABLE_HTTP_SERVER
+    #if defined ENABLE_HTTP_SERVER || defined ENABLE_KDE_SUPPORT
     Q_OBJECT
     #endif
 

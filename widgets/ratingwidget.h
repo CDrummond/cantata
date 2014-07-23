@@ -61,6 +61,7 @@ public:
     int value() const { return val; }
     void setValue(int v);
     void setColor(const QColor &c);
+    void setShowZeroForNull(bool s) { showZeroForNull=s; }
 
 Q_SIGNALS:
     void valueChanged(int v);
@@ -80,6 +81,7 @@ private:
     RatingPainter rp;
     int val;
     int hoverVal;
+    bool showZeroForNull;
 };
 
 #endif

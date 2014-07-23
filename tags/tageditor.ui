@@ -150,6 +150,30 @@
     <widget class="TagSpinBox" name="year"/>
    </item>
    <item row="10" column="0">
+    <widget class="StateLabel" name="ratingLabel">
+     <property name="text">
+      <string>Rating:</string>
+     </property>
+     <property name="buddy">
+      <cstring>ratingWidget</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="1">
+    <layout class="QHBoxLayout" name="ratingLayout">
+     <item>
+      <widget class="RatingWidget" name="ratingWidget"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="ratingVarious">
+       <property name="text">
+        <string>&lt;i&gt;(Various)&lt;/i&gt;</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="11" column="0">
     <widget class="StateLabel" name="commentLabel">
      <property name="text">
       <string>Comment:</string>
@@ -159,7 +183,7 @@
      </property>
     </widget>
    </item>
-   <item row="10" column="1">
+   <item row="11" column="1">
     <widget class="LineEdit" name="comment"/>
    </item>
   </layout>
@@ -254,6 +278,11 @@
    <class>UrlLabel</class>
    <extends>QLabel</extends>
    <header>support/urllabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>RatingWidget</class>
+   <extends>QWidget</extends>
+   <header>widgets/ratingwidget.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

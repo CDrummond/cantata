@@ -180,6 +180,7 @@ static inline bool isOnlineServiceImage(const Song &s)
     #ifdef ENABLE_ONLINE_SERVICES
     return OnlineService::showLogoAsCover(s);
     #else
+    Q_UNUSED(s)
     return false;
     #endif
 }

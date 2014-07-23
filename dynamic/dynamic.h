@@ -56,10 +56,12 @@ public:
 
     typedef QMap<QString, QString> Rule;
     struct Entry {
-        Entry(const QString &n=QString()) : name(n) { }
+        Entry(const QString &n=QString()) : name(n), ratingFrom(0), ratingTo(0) { }
         bool operator==(const Entry &o) const { return name==o.name; }
         QString name;
         QList<Rule> rules;
+        int ratingFrom;
+        int ratingTo;
     };
 
     static Dynamic * self();
@@ -74,8 +76,10 @@ public:
     static const QString constTitleKey;
     static const QString constGenreKey;
     static const QString constDateKey;
+    static const QString constRatingKey;
     static const QString constExactKey;
     static const QString constExcludeKey;
+    static const QChar constRangeSep;
 
     Dynamic();
     virtual ~Dynamic() { }

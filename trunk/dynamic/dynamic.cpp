@@ -141,9 +141,12 @@ const QString Dynamic::constAlbumKey=QLatin1String("Album");
 const QString Dynamic::constTitleKey=QLatin1String("Title");
 const QString Dynamic::constGenreKey=QLatin1String("Genre");
 const QString Dynamic::constDateKey=QLatin1String("Date");
+const QString Dynamic::constRatingKey=QLatin1String("Rating");
 const QString Dynamic::constExactKey=QLatin1String("Exact");
 const QString Dynamic::constExcludeKey=QLatin1String("Exclude");
+const QChar Dynamic::constRangeSep=QLatin1Char('-');
 
+const QChar constKeyValSep=QLatin1Char(':');
 const QString constOk=QLatin1String("0");
 const QString constFilename=QLatin1String("FILENAME:");
 
@@ -252,13 +255,16 @@ bool Dynamic::save(const Entry &e)
 
     QString string;
     QTextStream str(&string);
+    if (e.ratingFrom!=0 || e.ratingTo!=0) {
+        str << constRatingKey << constKeyValSep << e.ratingFrom << constRangeSep << e.ratingTo<< '\n';
+    }
     foreach (const Rule &rule, e.rules) {
         if (!rule.isEmpty()) {
             str << constRuleKey << '\n';
             Rule::ConstIterator it(rule.constBegin());
             Rule::ConstIterator end(rule.constEnd());
             for (; it!=end; ++it) {
-                str << it.key() << ':' << it.value() << '\n';
+                str << it.key() << constKeyValSep << it.value() << '\n';
             }
         }
     }
@@ -529,8 +535,8 @@ void Dynamic::loadLocal()
         foreach (const QString &rf, rulesFiles) {
             QFile f(dirName+rf);
             if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
-                QStringList keys=QStringList() << constArtistKey << constSimilarArtistsKey << constAlbumArtistKey << constDateKey << constExactKey
-                                               << constAlbumKey << constTitleKey << constGenreKey << constExcludeKey;
+                QStringList keys=QStringList() << constArtistKey << constSimilarArtistsKey << constAlbumArtistKey << constDateKey
+                                               << constExactKey << constAlbumKey << constTitleKey << constGenreKey << constExcludeKey;
 
                 Entry e;
                 e.name=rf.left(rf.length()-constExtension.length());
@@ -550,9 +556,15 @@ void Dynamic::loadLocal()
                             e.rules.append(r);
                             r.clear();
                         }
+                    } else if (str.startsWith(constRatingKey+constKeyValSep)) {
+                        QStringList vals=str.mid(constRatingKey.length()+1).split(constRangeSep);
+                        if (2==vals.count()) {
+                            e.ratingFrom=vals.at(0).toUInt();
+                            e.ratingTo=vals.at(1).toUInt();
+                        }
                     } else {
                         foreach (const QString &k, keys) {
-                            if (str.startsWith(k+':')) {
+                            if (str.startsWith(k+constKeyValSep)) {
                                 r.insert(k, str.mid(k.length()+1));
                             }
                         }
@@ -575,8 +587,8 @@ void Dynamic::parseRemote(const QStringList &response)
     beginResetModel();
     entryList.clear();
     currentEntry=QString();
-    QStringList keys=QStringList() << constArtistKey << constSimilarArtistsKey << constAlbumArtistKey << constDateKey << constExactKey
-                                   << constAlbumKey << constTitleKey << constGenreKey << constExcludeKey;
+    QStringList keys=QStringList() << constArtistKey << constSimilarArtistsKey << constAlbumArtistKey << constDateKey
+                                   << constExactKey << constAlbumKey << constTitleKey << constGenreKey << constExcludeKey;
     Entry e;
     Rule r;
 
@@ -595,6 +607,7 @@ void Dynamic::parseRemote(const QStringList &response)
                     entryList.append(e);
                 }
                 e.name=str.mid(9, str.length()-15); // Remove extension...
+                e.ratingFrom=e.ratingTo=0;
                 e.rules.clear();
                 r.clear();
             } else if (str==constRuleKey) {
@@ -602,9 +615,15 @@ void Dynamic::parseRemote(const QStringList &response)
                     e.rules.append(r);
                     r.clear();
                 }
+            } else if (str.startsWith(constRatingKey+constKeyValSep)) {
+                QStringList vals=str.mid(constRatingKey.length()+1).split(constRangeSep);
+                if (2==vals.count()) {
+                    e.ratingFrom=vals.at(0).toUInt();
+                    e.ratingTo=vals.at(1).toUInt();
+                }
             } else {
                 foreach (const QString &k, keys) {
-                    if (str.startsWith(k+':')) {
+                    if (str.startsWith(k+constKeyValSep)) {
                         r.insert(k, str.mid(k.length()+1));
                     }
                 }

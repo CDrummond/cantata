@@ -188,6 +188,8 @@ void DynamicRulesDialog::edit(const QString &name)
         model->setItem(model->rowCount(), 0, item);
     }
     origName=name;
+    ratingFrom->setValue(e.ratingFrom);
+    ratingTo->setValue(e.ratingTo);
     show();
 }
 
@@ -333,6 +335,11 @@ bool DynamicRulesDialog::save()
 
     Dynamic::Entry entry;
     entry.name=name;
+    int from=ratingFrom->value();
+    int to=ratingTo->value();
+    entry.ratingFrom=qMin(from, to);
+    entry.ratingTo=qMax(from, to);
+
     for (int i=0; i<model->rowCount(); ++i) {
         QStandardItem *itm=model->item(i);
         if (itm) {
@@ -346,7 +353,6 @@ bool DynamicRulesDialog::save()
             entry.rules.append(rule);
         }
     }
-
 
     bool saved=Dynamic::self()->save(entry);
 

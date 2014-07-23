@@ -49,6 +49,8 @@ public:
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void update();
+    void getRating(const QString &f);
+    void setRating(const QString &f, quint8 r);
 
 private:
     void enableOkButton();
@@ -76,6 +78,8 @@ private Q_SLOTS:
     void setSong(const Song &s);
     void setIndex(int idx);
     void showMopidyMessage();
+    void rating(const QString &f, quint8 r);
+    void checkRating();
 
 private:
     QString baseDir;
@@ -95,6 +99,7 @@ private:
     bool haveGenres;
     bool haveDiscs;
     bool haveYears;
+    bool haveRatings;
     bool saving;
     bool composerSupport;
     bool commentSupport;

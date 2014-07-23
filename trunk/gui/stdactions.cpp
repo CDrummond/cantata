@@ -66,7 +66,7 @@ StdActions::StdActions()
     addToStoredPlaylistAction = ActionCollection::get()->createAction("addtostoredplaylist", i18n("Add To Playlist"), Icons::self()->playlistIcon);
     #ifdef TAGLIB_FOUND
     organiseFilesAction = ActionCollection::get()->createAction("organizefiles", i18n("Organize Files"), "inode-directory");
-    editTagsAction = ActionCollection::get()->createAction("edittags", i18n("Edit Tags"), "document-edit");
+    editTagsAction = ActionCollection::get()->createAction("edittags", i18n("Edit Track Information"), "document-edit");
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction = ActionCollection::get()->createAction("replaygain", i18n("ReplayGain"), Icons::self()->audioFileIcon);

@@ -292,6 +292,9 @@ void NowPlayingWidget::update(const Song &song)
     QString name=song.name();
     currentSongFile=song.file;
     ratingWidget->setEnabled(!song.isEmpty() && Song::Standard==song.type);
+    if (!ratingWidget->isEnabled()) {
+        ratingWidget->setValue(0);
+    }
     if (song.isEmpty()) {
         track->setText(" ");
         artist->setText(" ");

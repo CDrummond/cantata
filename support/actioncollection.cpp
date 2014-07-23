@@ -116,7 +116,7 @@ QList<QAction *> ActionCollection::actions() const {
 
 Action *ActionCollection::addAction(const QString &name, Action *action) {
   QAction *act = addAction(name, static_cast<QAction *>(action));
-  Q_UNUSED(act);
+  Q_UNUSED(act)
   Q_ASSERT(act == action);
   return action;
 }

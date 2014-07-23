@@ -499,7 +499,7 @@ void AutohidingSplitter::setWidgetForHiding()
 
 void AutohidingSplitter::updateAfterSplitterMoved(int pos, int index)
 {
-    Q_UNUSED(pos);
+    Q_UNUSED(pos)
     if (!autoHideEnabled || index<=0 || index>count()) {
         return;
     }

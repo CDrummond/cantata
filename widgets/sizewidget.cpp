@@ -38,5 +38,5 @@ SizeWidget::SizeWidget(QWidget *parent)
 
 void SizeWidget::paintEvent(QPaintEvent *e)
 {
-    Q_UNUSED(e);
+    Q_UNUSED(e)
 }

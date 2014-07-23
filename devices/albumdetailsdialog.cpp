@@ -51,7 +51,7 @@ public:
     EditorDelegate(QObject *parent=0) : BasicItemDelegate(parent) { }
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const {
-        Q_UNUSED(option);
+        Q_UNUSED(option)
         if (COL_TRACK==index.column()) {
             QSpinBox *editor = new QSpinBox(parent);
             editor->setMinimum(0);
@@ -83,7 +83,7 @@ public:
     }
 
     void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const {
-        Q_UNUSED(index);
+        Q_UNUSED(index)
         editor->setGeometry(option.rect);
     }
 };

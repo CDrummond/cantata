@@ -99,7 +99,7 @@ public:
     PlaylistsModel(QObject *parent = 0);
     ~PlaylistsModel();
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent); return COL_COUNT; }
+    int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return COL_COUNT; }
     bool canFetchMore(const QModelIndex &index) const;
     void fetchMore(const QModelIndex &index);
     bool hasChildren(const QModelIndex &parent = QModelIndex()) const;

@@ -332,6 +332,17 @@ private:
     QList<Item *> hiddenCategories;
 };
 
+#elif defined ENABLE_KDE_SUPPORT
+#include <QObject>
+class StreamsModel : public QObject
+{
+    Q_OBJECT
+public:
+    static const QString constPrefix;
+    static const QString constPlayListName;
+    static QString modifyUrl(const QString &u,  bool addPrefix=true, const QString &name=QString());
+    static bool validProtocol(const QString &file);
+};
 #else
 namespace StreamsModel
 {

@@ -1,6 +1,8 @@
 1.4.1
 -----
 1. Remove unused var warning when compiling without online services.
+2. Remove some moc/QObject warnings in KDE builds without streams or http
+   server.
 
 1.4.0
 -----

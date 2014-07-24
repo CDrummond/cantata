@@ -78,7 +78,7 @@ public:
                     ratingPainter->setColor(option.palette.color(QPalette::Active, QPalette::Text));
                 }
                 painter->save();
-                painter->setOpacity(painter->opacity()*0.5);
+                painter->setOpacity(painter->opacity()*0.75);
                 painter->setClipRect(r);
                 const QSize &ratingSize=ratingPainter->size();
                 QRect ratingRect(r.x()+(r.width()-ratingSize.width())/2, r.y()+(r.height()-ratingSize.height())/2,

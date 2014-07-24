@@ -192,6 +192,7 @@ Scrobbler::Scrobbler()
     connect(this, SIGNAL(clientMessage(QString,QString,QString)), MPDConnection::self(), SLOT(sendClientMessage(QString,QString,QString)));
     connect(MPDConnection::self(), SIGNAL(clientMessageFailed(QString,QString)), SLOT(clientMessageFailed(QString,QString)));
     connect(MPDConnection::self(), SIGNAL(statusUpdated(MPDStatusValues)), this, SLOT(mpdStatusUpdated(MPDStatusValues)));
+    connect(MPDConnection::self(), SIGNAL(currentSongUpdated(Song)), this, SLOT(setSong(Song)));
 }
 
 Scrobbler::~Scrobbler()
@@ -216,10 +217,8 @@ void Scrobbler::setActive()
 
     if (isEnabled() || scrobbleViaMpd) {
         connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(mpdStateUpdated()));
-        connect(MPDConnection::self(), SIGNAL(currentSongUpdated(Song)), this, SLOT(setSong(Song)));
     } else {
         disconnect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(mpdStateUpdated()));
-        disconnect(MPDConnection::self(), SIGNAL(currentSongUpdated(Song)), this, SLOT(setSong(Song)));
     }
 
     if (!isAuthenticated()) {
@@ -333,13 +332,12 @@ void Scrobbler::setLoveEnabled(bool e)
 void Scrobbler::setSong(const Song &s)
 {
     DBUG << isEnabled() << s.isStandardStream() << s.time << s.file;
-    if (!scrobbleViaMpd && !isEnabled()) {
-        return;
-    }
-
     if (currentSong.artist != s.artist || currentSong.title!=s.title || currentSong.album!=s.album) {
         nowPlayingSent=scrobbledCurrent=loveSent=lovePending=nowPlayingIsPending=false;
         currentSong=s;
+        if (!scrobbleViaMpd && !isEnabled()) {
+            return;
+        }
         emit songChanged(!s.isStandardStream() && !s.isEmpty());
         if (scrobbleViaMpd || !isEnabled() || s.isStandardStream() || s.time<30) {
             return;

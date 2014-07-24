@@ -435,7 +435,7 @@ public:
             }
 
             painter->save();
-            painter->setOpacity(painter->opacity()*0.5);
+            painter->setOpacity(painter->opacity()*0.75);
             const QSize &ratingSize=ratingPainter->size();
             int spacing=constBorder*2;
             int durationWidth=fm.width("0:00:00")+spacing;

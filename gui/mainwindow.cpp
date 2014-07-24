@@ -1411,6 +1411,7 @@ void MainWindow::readSettings()
     tabWidget->setStyle(Settings::self()->sidebar());
     coverWidget->setEnabled(Settings::self()->showCoverWidget());
     stopTrackButton->setVisible(Settings::self()->showStopButton());
+    nowPlaying->readConfig();
     setCollapsedSize();
     toggleMonoIcons();
     toggleSplitterAutoHide();

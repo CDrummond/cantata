@@ -222,7 +222,7 @@ public:
         if (showCover) {
             Song cSong=index.data(Cantata::Role_CoverSong).value<Song>();
             if (!cSong.isEmpty()) {
-                QPixmap *cp=Covers::self()->get(cSong, iconMode ? gridCoverSize : listCoverSize);
+                QPixmap *cp=Covers::self()->get(cSong, iconMode ? gridCoverSize : listCoverSize, getCoverInUiThread(index));
                 if (cp) {
                     pix=*cp;
                 }
@@ -371,6 +371,8 @@ public:
         painter->restore();
     }
 
+    virtual bool getCoverInUiThread(const QModelIndex &) const { return false; }
+
 protected:
     ListView *view;
 };
@@ -503,6 +505,12 @@ public:
 
     void setSimple(bool s) { simpleStyle=s; }
     void setNoIcons(bool n) { noIcons=n; }
+
+    virtual bool getCoverInUiThread(const QModelIndex &idx) const
+    {
+        // Want album covers in artists view to load quickly...
+        return idx.isValid() && idx.parent().isValid() && !idx.parent().parent().isValid();
+    }
 
     bool simpleStyle;
     bool noIcons;

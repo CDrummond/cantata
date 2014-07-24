@@ -58,6 +58,7 @@ public:
     struct Entry {
         Entry(const QString &n=QString()) : name(n), ratingFrom(0), ratingTo(0) { }
         bool operator==(const Entry &o) const { return name==o.name; }
+        bool haveRating() const { return ratingFrom>=0 && ratingTo>0; }
         QString name;
         QList<Rule> rules;
         int ratingFrom;

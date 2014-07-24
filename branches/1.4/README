@@ -832,13 +832,14 @@ Debug or Release build.
 
 Cantata contains code/icons from:
 
-    Amarok             - amarok.kde.org (Transcoding, Cover fetching code in cover
-                         dialog)
+    Amarok             - amarok.kde.org (Transcoding, Cover fetching code in
+                         cover dialog)
     Clementine         - www.clementine-player.org (Lyrics searches, CUE file
-                         parsing, digitally imported support, and stretched header
-                         view)
+                         parsing, digitally imported support, and stretched
+                         header view)
     Be::MPC            - Wikipedia parsing code
-    Quassel            - quassel-irc.org (Qt-only keyboard short-cut config support)
+    Quassel            - quassel-irc.org (Qt-only keyboard short-cut config
+                         support)
     Solid              - solid.kde.org (Device detection for Qt-only builds)
     Musique            - Copied code for Gtk theme detection
     Asunder            - CDDB code
@@ -849,8 +850,8 @@ Cantata contains code/icons from:
     IcoMoon            - http://icomoon.io/#icons (Monochrome sidebar icons)
     Qxt                - Multi-media key support
     QtSolutions        - QtIOCompressor, and QtSingleApplication
-    Trojita            - http://quickgit.kde.org/?p=trojita.git (Template for the 
-                         Ubuntu CMake configuration)
+    Trojita            - http://quickgit.kde.org/?p=trojita.git (Template for
+                         the Ubuntu CMake configuration)
     sudoku-app         - https://code.launchpad.net/~sudoku-touch-dev/sudoku-app/trunk
                          (Ubuntu about page)
     ubuntu-ui-extras   - https://github.com/iBeliever/ubuntu-ui-extras (Ubuntu 
@@ -904,7 +905,9 @@ playlists, device support, or replaygain calculation.
 TagLib
 ------
 
-Windows version of taglib was built from TagLib 1.8, using the following cmake command:
+Windows version of taglib was built from TagLib 1.8, using the following cmake
+command:
+
     cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PREFIX=z:\dev\taglib
 
 

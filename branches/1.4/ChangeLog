@@ -67,8 +67,8 @@
  38. Remove artist image support for online-services.
  39. Update context-view when artist, or album, image is updated.
  40. When current song is from an online-service (Jamendo, Magnatune, etc) then
-     only show cover and title in context view. No attempt is made to get artist,
-     album, or song information - as these are likely to fail anyway.
+     only show cover and title in context view. No attempt is made to get
+     artist, album, or song information - as these are likely to fail anyway.
  41. Use an external-helper app to read/write tags - to isolate Cantata from
      TagLib crashes.
  42. Add -DUSE_OLD_DBUS_TYPEDEF=ON to CMake options. This can be used to force
@@ -917,7 +917,8 @@
      for treeviews - e.g. The album count appears under each artist, etc.
  33. Install cantata-dynamic to $prefix/share/cantata/scripts - as this script
      is not intended to be run by users.
- 34. Use com.googlecode.cantata instead of org.kde.cantata for DBUS service, etc.
+ 34. Use com.googlecode.cantata instead of org.kde.cantata for DBUS service,
+     etc.
  35. Add action icons to grouped-albums style playlists at the top level.
  36. Scale image in lyrics view if it is less than 300x300px
  37. Allow to move streams to different categories via drag-n-drop.
@@ -1834,35 +1835,46 @@ SVN:Tue Oct  5 22:48:21 CEST 2010
 * Fixed loading playlists with spaces, quotes (") and backslashed (\)
 
 SVN:Mon Oct  4 21:35:02 CEST 2010
-* new icons for library view (credits go to the folks from amarok where i stole them)
+* new icons for library view (credits go to the folks from amarok where i stole
+  them)
 * sortable playlists view
-* fixed bug which was introduced by PlaylistProxyModel, playlist headers not showing on startup
+* fixed bug which was introduced by PlaylistProxyModel, playlist headers not
+  showing on startup
 * delete keyhandler for playlists view
-* keep a row in playlist selected when removing entries (subsequent delete button presses)
+* keep a row in playlist selected when removing entries (subsequent delete
+  button presses)
 
 SVN:Sat Oct  2 01:12:24 CEST 2010
-* removed last.fm error message popups (modal popup for such unimportant errors was a bit over the top)
-* added "Replace Playlist" button to all views (has been only been in rightclick menu so far)
-* two modes for loading saved playlists "Add to Playlist" adds to current playlist, "Load" replaces current playlist (doubleclick adds to current)
+* removed last.fm error message popups (modal popup for such unimportant errors
+  was a bit over the top)
+* added "Replace Playlist" button to all views (has been only been in rightclick
+  menu so far)
+* two modes for loading saved playlists "Add to Playlist" adds to current
+  playlist, "Load" replaces current playlist (doubleclick adds to current)
 * added right click menu to "Playlists" tab page
 * added doubleclick handler for DirView
-* only execute doubleclick handler on Songs/Files, doubleclick on higher levels only expands the treenode
+* only execute doubleclick handler on Songs/Files, doubleclick on higher levels
+  only expands the treenode
 * caseinsensitive and locale aware sorting for library and dir view
 * searchable dirview
 * enabled autoplay on drag&drop
 * start playing again when replacing playlist and MPD has been playing before
-* fixed moving around songs in playlist which are not in sequential order (Ctrl+Click -> Move)
-  (all songs are moved together in sequential order onto the destination position, spaces between them disappear)
-* preserve playlist selections over refreshs (primary usefull when moving around songs in playlist)
+* fixed moving around songs in playlist which are not in sequential order
+  (Ctrl+Click -> Move) (all songs are moved together in sequential order onto
+  the destination position, spaces between them disappear)
+* preserve playlist selections over refreshs (primary usefull when moving around
+  songs in playlist)
 * searchable playlist
-* added icons to library view (different icons for nodetypes and maybe scaled down albumart upcoming)
+* added icons to library view (different icons for nodetypes and maybe scaled
+  down albumart upcoming)
 
 SVN:Tue Sep 28 22:32:12 CEST 2010
 * enabled clear button for kde search field in library view
 * added right click menus
 * enabled password protected connections
 * adapted row height for playlist
-* fixed dropping of files from the library into the playlist, when the droptarget is not a song
+* fixed dropping of files from the library into the playlist, when the
+  droptarget is not a song
 * removed search button; search box searches onChange anyway
 * clickable sliders
 * added date to playlist
@@ -1875,7 +1887,8 @@ fixed:
 * Dragging and dropping of albums and artists now also works! (ticket #145)
 * Initial sorting of music library and filesystem view on startup
 new:
-* Added support for enabling/disabling consume mode (items from playlist are removed once played)
+* Added support for enabling/disabling consume mode (items from playlist are
+  removed once played)
 * No more Qt 4.4 checks. Qt 4.4 is stable so move on!
 * Better KDE integration (ticket #183, patch by aanisimov)
 * Completely disjunctive searching (patch by M. Grachten)
@@ -1885,9 +1898,12 @@ removed:
 
 0.5.0:
 fixed:
-* a file name containing a " character would make it impossible to add it to the play list
-* fix a segfault when adding a selection containing one or more artists to the playlist
-* Now only items displayed in the library can be added to the playlist (usefull when searching)
+* a file name containing a " character would make it impossible to add it to the
+  play list
+* fix a segfault when adding a selection containing one or more artists to the
+  playlist
+* Now only items displayed in the library can be added to the playlist (usefull
+  when searching)
 * Fixed the restoring of the playlist
 * Check for duplicates when adding from the DirView
 * Re-search when chaning album/artist etc

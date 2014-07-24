@@ -190,6 +190,7 @@ public:
     bool filteredOnly();
     bool showCoverWidget();
     bool showStopButton();
+    bool showRatingWidget();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -301,6 +302,7 @@ public:
     void saveFilteredOnly(bool v);
     void saveShowCoverWidget(bool v);
     void saveShowStopButton(bool v);
+    void saveShowRatingWidget(bool v);
     void save(bool force=false);
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();

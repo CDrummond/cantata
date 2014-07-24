@@ -934,6 +934,11 @@ bool Settings::showStopButton()
     return cfg.get("showStopButton", false);
 }
 
+bool Settings::showRatingWidget()
+{
+    return cfg.get("showRatingWidget", true);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1451,6 +1456,11 @@ void Settings::saveShowCoverWidget(bool v)
 void Settings::saveShowStopButton(bool v)
 {
     return cfg.set("showStopButton", v);
+}
+
+void Settings::saveShowRatingWidget(bool v)
+{
+    return cfg.set("showRatingWidget", v);
 }
 
 void Settings::save(bool force)

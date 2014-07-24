@@ -595,6 +595,37 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="toolbarTab">
+      <attribute name="title">
+       <string>Toolbar</string>
+      </attribute>
+      <layout class="QFormLayout" name="toolbarTabLayout">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+       </property>
+       <item row="0" column="0" colspan="2">
+        <widget class="QCheckBox" name="showStopButton">
+         <property name="text">
+          <string>Show stop button</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QCheckBox" name="showCoverWidget">
+         <property name="text">
+          <string>Show cover of current track</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QCheckBox" name="showRatingWidget">
+         <property name="text">
+          <string>Show track rating</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="tab_7">
       <attribute name="title">
        <string>External</string>
@@ -741,20 +772,6 @@
            </property>
            <property name="text">
             <string>Make interface more touch friendly</string>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="0" colspan="2">
-          <widget class="QCheckBox" name="showStopButton">
-           <property name="text">
-            <string>Show stop button in toolbar</string>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="0" colspan="2">
-          <widget class="QCheckBox" name="showCoverWidget">
-           <property name="text">
-            <string>Show cover of current track in toolbar</string>
            </property>
           </widget>
          </item>

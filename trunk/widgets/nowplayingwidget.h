@@ -64,6 +64,7 @@ public:
     void setRange(int min, int max);
     void clearTimes();
     int value() const;
+    void readConfig();
     void saveConfig();
     void setEnabled(bool e) { slider->setEnabled(e); }
     bool isEnabled() const { return slider->isEnabled(); }

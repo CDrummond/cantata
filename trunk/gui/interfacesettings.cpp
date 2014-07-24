@@ -272,6 +272,7 @@ void InterfaceSettings::load()
     touchFriendly->setChecked(Settings::self()->touchFriendly());
     showStopButton->setChecked(Settings::self()->showStopButton());
     showCoverWidget->setChecked(Settings::self()->showCoverWidget());
+    showRatingWidget->setChecked(Settings::self()->showRatingWidget());
     if (systemTrayCheckBox) {
         systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
     }
@@ -351,6 +352,7 @@ void InterfaceSettings::save()
     Settings::self()->saveTouchFriendly(touchFriendly->isChecked());
     Settings::self()->saveShowStopButton(showStopButton->isChecked());
     Settings::self()->saveShowCoverWidget(showCoverWidget->isChecked());
+    Settings::self()->saveShowRatingWidget(showRatingWidget->isChecked());
     Settings::self()->saveUseSystemTray(systemTrayCheckBox && systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup && systemTrayPopup->isChecked());
     Settings::self()->saveMinimiseOnClose(minimiseOnClose->isChecked());

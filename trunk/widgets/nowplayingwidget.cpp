@@ -371,6 +371,11 @@ int NowPlayingWidget::value() const
     return slider->value();
 }
 
+void NowPlayingWidget::readConfig()
+{
+    ratingWidget->setVisible(Settings::self()->showRatingWidget());
+}
+
 void NowPlayingWidget::saveConfig()
 {
     time->saveConfig();

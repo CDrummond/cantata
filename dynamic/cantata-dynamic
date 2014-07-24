@@ -247,13 +247,18 @@ $includeRules;
 $excludeRules;
 $lastIncludeRules;
 $lastExcludeRules;
-$ratingFrom=0;
-$ratingTo=0;
-$lastRatingFrom=0;
-$lastRatingTo=0;
 $initialRead=1;
 $rulesTimestamp=0;
 $numMpdSongs=0;
+
+$ratingFrom=0;
+$ratingTo=0;
+# If we have no include rules, then song list is taken from tracks with ratings
+# Therefore, there is no need to subsequently filter - and ratingFilter woudl be
+# set to 0
+$ratingFilter=1;
+$lastRatingFrom=0;
+$lastRatingTo=0;
 
 # Determine if rules file has been updated
 sub checkRulesChanged() {
@@ -346,6 +351,7 @@ sub saveRule() {
 #
 # File format:
 #
+#   Rating:<Range>
 #   Rule
 #   <Tag>:<Value>
 #   <Tag>:<Value>
@@ -353,6 +359,7 @@ sub saveRule() {
 #
 # e.g.
 #
+#   Rating:1-5
 #   Rule
 #   AlbumArtist:Various Artists
 #   Genre:Dance
@@ -554,6 +561,76 @@ sub sendMessage() {
     }
 }
 
+# Parse sticker value, and check that its in range.
+sub songRatingInRange() {
+    my $stickerEntry=shift;
+    my @parts = split("=", $stickerEntry);
+     if (2==scalar(@parts)) {
+        my $rating=scalar($parts[1]);
+        if ($rating >= $ratingFrom && $rating <= $ratingTo) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+# Get all songs with a rating between ratingFrom & ratingTo
+sub getRatedSongs() {
+    my @entries = ();
+    my $data=&sendCommand("sticker find song / rating");
+    if (defined($data)) {
+        my @lines=split('\n', $data);
+        my $file="";
+        foreach my $line (@lines) {
+            if ($line=~ m/^(file\:)/) {
+                my $sep = index($line, ':');
+                if ($sep>0) {
+                    $file=substr($line, $sep+2, length($line)-($sep+1));
+                }
+            } elsif ($line=~ m/^(sticker\:)/) {
+                my $sep = index($line, ':');
+                if ($sep>0) {
+                    my $entry=substr($line, $sep+2, length($line)-($sep+1));
+                    if (1==&songRatingInRange($entry)) {
+                        push (@entries, $file);
+                    }
+                }
+            }  
+        }
+    }
+    return @entries;
+}
+
+# Is a file with rating from .. rating to?
+sub checkSongRatingInRange() {
+    if ($ratingFilter = 0) {
+        # Rating filter disabled - i,e. had no include rule, so song list is
+        # taken from those with a rating...
+        return 1;
+    }
+    if ($ratingFrom<=0 && $ratingTo<=0) { # No filter, so must be in range!
+        return 1;
+    }
+    if ($numMpdSongs<1) { # No songs!
+        return 0;
+    }
+    my $file=shift;
+    my @entries = &getEntries("sticker get song \"${file}\" rating", 'sticker');
+    foreach my $entry (@entries) {
+        if (1==&songRatingInRange($entry)) {
+            return 1;
+        }
+    }
+    # Song is not within range, so 'blank' its name out of list
+    my $pos=shift;
+    if (1==$testMode) {
+        print "$file is NOT in rating range - remove:${pos} total:${numMpdSongs}!\n";
+    }
+    splice @mpdSongs, $pos, 1;
+    $numMpdSongs--;
+    return 0;
+}
+
 # Use rules to obtain a list of songs from MPD...
 sub getSongs() {
     # If we have no current songs, or rules have changed, or MPD has been updated - then we need to run the rules against MPD to get song list...
@@ -587,6 +664,15 @@ sub getSongs() {
                     }
                 }
                 @mpdSongs=uniq(@mpdSongs);
+            }
+        } elsif ($ratingTo>=0) {
+            if (1==$testMode) { print "No include rules, so get all songs in rating range ${ratingFrom}..${ratingTo}...\n"; }
+            my @songs = &getRatedSongs();
+            foreach my $song (@songs) {
+                if (! $excludeSongSet{$song}) {
+                    $mpdSongs[$mpdSong]=$song;
+                    $mpdSong++;
+                }
             }
         } else {
             if (1==$testMode) { print "No include rules, so get all songs...\n"; }
@@ -669,35 +755,6 @@ sub canAdd() {
         }
     }
     return 1;
-}
-
-# Is a file with rating from .. rating to?
-sub inRatingsRange() {
-    if ($ratingFrom<=0 && $ratingTo<=0) {
-        return 1;
-    }
-    if ($numMpdSongs<1) {
-        return 0;
-    }
-    my $file=shift;
-    my @entries = &getEntries("sticker get song \"${file}\" rating", 'sticker');
-    foreach my $entry (@entries) {
-        my @parts = split("=", $entry);
-        if (2==scalar(@parts)) {
-            my $rating=scalar($parts[1]);
-            if ($rating >= $ratingFrom && $rating <= $ratingTo) {
-                return 1;
-            }
-        }
-    }
-    # Song is not within range, so 'blank' its name out of list
-    my $pos=shift;
-    if (1==$testMode) {
-        print "$file is NOT in rating range - remove:${pos} total:${numMpdSongs}!\n";
-    }
-    splice @mpdSongs, $pos, 1;
-    $numMpdSongs--;
-    return 0;
 }
 
 sub storeSong() {
@@ -801,7 +858,7 @@ sub populatePlayQueue() {
                         $file =~ s/\\/\\\\/g;
                         $file =~ s/\"/\\\"/g;
 
-                        if (&inRatingsRange($file, $pos)) {
+                        if (&checkSongRatingInRange($file, $pos)) {
                             if ($failues > 100 || &canAdd($origFile, $numMpdSongs)) {
                                 if (&sendCommand("add \"${file}\"") ne '') {
                                     &storeSong($origFile);

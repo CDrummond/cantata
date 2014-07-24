@@ -215,7 +215,8 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         return IS_ACTIVE(entryList.at(index.row()).name) ? QIcon::fromTheme("media-playback-start") : Icons::self()->dynamicRuleIcon;
     case Cantata::Role_SubText: {
-        return Plurals::rules(entryList.at(index.row()).rules.count());
+        const Entry &e=entryList.at(index.row());
+        return Plurals::rules(e.rules.count())+(e.haveRating() ? i18n(" - Rating: %1..%2", e.ratingFrom, e.ratingTo) : QString());
     }
     case Cantata::Role_Actions: {
         QVariant v;

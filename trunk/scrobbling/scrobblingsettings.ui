@@ -34,7 +34,20 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QComboBox" name="scrobbler"/>
+    <layout class="QHBoxLayout" name="scrobblerLayout">
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QComboBox" name="scrobbler"/>
+     </item>
+     <item>
+     <widget class="QLabel" name="scrobblerName"/>
+     </item>
+    </layout>
    </item>
    <item row="1" column="0">
     <widget class="BuddyLabel" name="userLabel">

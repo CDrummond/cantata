@@ -241,7 +241,7 @@
    <item>
     <widget class="QLabel" name="label_7">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE&lt;/b&gt; Only enter values for the tags you wish to be search on. &lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Only enter values for the tags you wish to be search on. &lt;/i&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -273,7 +273,7 @@
    <item>
     <widget class="QLabel" name="label_7x">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE&lt;/b&gt; For genre, end string with an asterisk to match various genres. e.g 'rock*' matches 'Hard Rock' and 'Rock and Roll'. &lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; For genre, end string with an asterisk to match various genres. e.g 'rock*' matches 'Hard Rock' and 'Rock and Roll'. &lt;/i&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

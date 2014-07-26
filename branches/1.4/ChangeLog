@@ -5,6 +5,8 @@
    server.
 3. Update current song to scrobble, even if disabled, so that when enabled we
    can scrobble.
+4. Seems like MPDSribble itself is broken with regards to sening "love" status,
+   so remove MPDScribble from list of scrobblers.
 
 1.4.0
 -----

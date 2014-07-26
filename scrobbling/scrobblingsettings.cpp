@@ -59,8 +59,14 @@ ScrobblingSettings::ScrobblingSettings(QWidget *parent)
             firstMpdClient=k;
         }
     }
-    scrobbler->setVisible(scrobbler->count()>1);
-    scrobblerLabel->setVisible(scrobbler->count()>1);
+    if (scrobbler->count()>1) {
+        scrobblerName->setVisible(false);
+    } else {
+        scrobblerName->setText(scrobbler->itemText(0));
+        scrobbler->setVisible(false);
+        scrobblerLabel->setBuddy(0);
+    }
+    scrobblerName->setVisible(scrobbler->count()<2);
     noteLabel->setVisible(!firstMpdClient.isEmpty());
     if (!firstMpdClient.isEmpty()) {
         noteLabel->setText(i18n("<i><b>NOTE:</b> If you use a scrobbler which is marked as '(via MPD)' (such as %1), "

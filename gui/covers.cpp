@@ -93,6 +93,7 @@ static const char * constExtensions[]={".jpg", ".png", 0};
 static bool saveInMpdDir=true;
 static bool fetchCovers=true;
 static QString constCoverInTagPrefix=QLatin1String("{tag}");
+static QString constNoCover=QLatin1String("{nocover}");
 
 static QImage scale(const Song &song, const QImage &img, int size)
 {
@@ -804,10 +805,10 @@ void CoverDownloader::onlineJobFinished()
 void CoverDownloader::failed(const Job &job)
 {
     if (job.isArtist) {
-        DBUG << "failed to download artist image";
+        DBUG << "artist image" << job.song.artist;
         emit artistImage(job.song, QImage(), QString());
     } else {
-        DBUG << "Failed to download cover image";
+        DBUG << "cover image" << job.song.artist << job.song.album;
         emit cover(job.song, QImage(), QString());
     }
 }
@@ -1148,6 +1149,8 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                     cache.insert(key, pix);
                     cacheSizes.insert(size);
                     return pix;
+                } else if (constNoCover==img.fileName) {
+                    return 0;
                 }
             }
             if (cacheScaledCovers) {
@@ -1326,6 +1329,10 @@ Covers::Image Covers::locateImage(const Song &song)
     bool isArtistImage=song.isArtistImageRequest();
     QString prevFileName=Covers::self()->getFilename(song, isArtistImage);
     if (!prevFileName.isEmpty()) {
+        if (constNoCover==prevFileName) {
+            DBUG_CLASS("Covers") << "No cover";
+            return Image(QImage(), constNoCover);
+        }
         #ifdef TAGLIB_FOUND
         QImage img;
         if (prevFileName.startsWith(constCoverInTagPrefix)) {
@@ -1535,7 +1542,7 @@ Covers::Image Covers::locateImage(const Song &song)
 // Dont return song files as cover files!
 static Covers::Image fix(const Covers::Image &img)
 {
-    return Covers::Image(img.img, img.fileName.startsWith(constCoverInTagPrefix) ? QString() : img.fileName);
+    return Covers::Image(img.img, img.fileName.startsWith(constCoverInTagPrefix) || constNoCover==img.fileName ? QString() : img.fileName);
 }
 
 Covers::Image Covers::requestImage(const Song &song, bool urgent)
@@ -1572,7 +1579,7 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
     }
 
     Image img=findImage(song, false);
-    if (img.img.isNull() && Song::OnlineSvrTrack!=song.type) {
+    if (img.img.isNull() && Song::OnlineSvrTrack!=song.type && constNoCover!=img.fileName) {
         DBUG << song.file << song.artist << song.albumartist << song.album << "Need to download";
         currentImageRequests.insert(key);
         tryToDownload(song);
@@ -1644,11 +1651,11 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
 {
     QString key=albumKey(song);
     currentImageRequests.remove(key);
-    if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/")) {
+//    if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/")) {
         mutex.lock();
-        filenames.insert(key, fileName);
+        filenames.insert(key, fileName.isEmpty() ? constNoCover : fileName);
         mutex.unlock();
-    }
+//    }
     if (emitResult) {
         if (song.isSpecificSizeRequest()) {
             if (!img.isNull()) {
@@ -1665,11 +1672,11 @@ void Covers::gotArtistImage(const Song &song, const QImage &img, const QString &
 {
     QString key=artistKey(song);
     currentImageRequests.remove(key);
-    if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/")) {
+//    if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/")) {
         mutex.lock();
-        filenames.insert(key, fileName);
+        filenames.insert(key, fileName.isEmpty() ? constNoCover : fileName);
         mutex.unlock();
-    }
+//    }
     if (emitResult) {
         if (song.isSpecificSizeRequest()) {
             if (!img.isNull()) {

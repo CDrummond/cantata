@@ -53,6 +53,7 @@ public:
                                                 albumartist==o.albumartist && album==o.album; }
         bool operator!=(const Track &o) const { return !(*this==o); }
         void clear() { title=artist=albumartist=album=QString(); track=length=0; timestamp=0; }
+        bool isEmpty() { return 0==track && 0==length && 0==timestamp && title.isEmpty() && artist.isEmpty() && albumartist.isEmpty() && album.isEmpty(); }
         QString title;
         QString artist;
         QString albumartist;
@@ -134,6 +135,7 @@ private:
     QString sessionKey;
     QQueue<Track> songQueue;
     QQueue<Track> lastScrobbledSongs;
+    Track inactiveSong; // Song set whilst inactive
     Track currentSong;
     PausableTimer * scrobbleTimer;
     QTimer * retryTimer;

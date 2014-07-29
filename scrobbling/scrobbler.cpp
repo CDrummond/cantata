@@ -256,7 +256,7 @@ void Scrobbler::loadSettings()
     if (fakeScrobbling) {
         sessionKey=constFakeScrobbling;
     }
-    DBUG << scrobbler << userName << sessionKey << scrobblingEnabled;
+    DBUG << scrobbler << userName << sessionKey.isEmpty() << scrobblingEnabled;
     emit authenticated(isAuthenticated());
     emit enabled(isEnabled());
     emit loveEnabled(loveIsEnabled);

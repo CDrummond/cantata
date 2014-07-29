@@ -22,6 +22,7 @@
 4. Seems like MPDSribble itself is broken with regards to sening "love" status,
    so remove MPDScribble from list of scrobblers.
 5. Last.fm replies are XML, so decode these properly!
+6. Don't log scrobbler session key to debug file.
 
 1.4.0
 -----

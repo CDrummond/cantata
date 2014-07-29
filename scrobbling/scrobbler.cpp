@@ -135,7 +135,7 @@ static QByteArray format(const QMap<QString, QString> &params)
             data+='&';
         }
     }
-    DBUG_CLASS("Scrobber") << data;
+    DBUG_CLASS("Scrobbler") << data;
     return data;
 }
 

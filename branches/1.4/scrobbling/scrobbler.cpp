@@ -48,6 +48,7 @@
 
 #include <QDebug>
 static bool debugIsEnabled=false;
+static bool fakeScrobbling=false;
 #define DBUG if (debugIsEnabled) qWarning() << metaObject()->className() << __FUNCTION__
 #define DBUG_CLASS(C) if (debugIsEnabled) qWarning() << C << __FUNCTION__
 void Scrobbler::enableDebug()
@@ -57,9 +58,6 @@ void Scrobbler::enableDebug()
 
 const QLatin1String Scrobbler::constCacheDir("scrobbling");
 const QLatin1String Scrobbler::constCacheFile("tracks.xml.gz");
-static const QLatin1String constOk("OK");
-static const QLatin1String constBadSession("BADSESSION");
-static const QLatin1String constFailed("FAILED");
 static const QLatin1String constSettingsGroup("Scrobbling");
 static const QString constSecretKey=QLatin1String("0753a75ccded9b17b872744d4bb60b35");
 static const int constMaxBatchSize=50;
@@ -68,6 +66,8 @@ GLOBAL_STATIC(Scrobbler, instance)
 
 enum LastFmErrors
 {
+    NoError = 0, // ??
+
     InvalidService = 2,
     InvalidMethod,
     AuthenticationFailed,
@@ -176,7 +176,7 @@ Scrobbler::Scrobbler()
     hardFailTimer->setInterval(60*1000);
     hardFailTimer->setSingleShot(true);
     scrobbleTimer = new PausableTimer();
-    scrobbleTimer->setInterval(9000000); // huge number to avoid scrobbling just started song start (rare case)
+    scrobbleTimer->setInterval(9000000); // fakeScrobblinghuge number to avoid scrobbling just started song start (rare case)
     scrobbleTimer->setSingleShot(true);
     nowPlayingTimer = new PausableTimer();
     nowPlayingTimer->setSingleShot(true);
@@ -228,6 +228,8 @@ void Scrobbler::setActive()
     }
 }
 
+static const QLatin1String constFakeScrobbling("fake");
+
 void Scrobbler::loadSettings()
 {
     Configuration cfg(constSettingsGroup);
@@ -239,6 +241,10 @@ void Scrobbler::loadSettings()
     loveIsEnabled=cfg.get("loveEnabled", loveIsEnabled);
     scrobbler=cfg.get("scrobbler", scrobbler);
     scrobbleViaMpd=viaMpd(scrobblerUrl());
+    fakeScrobbling=constFakeScrobbling==scrobbler;
+    if (fakeScrobbling) {
+        sessionKey=constFakeScrobbling;
+    }
     DBUG << scrobbler << userName << sessionKey << scrobblingEnabled;
     emit authenticated(isAuthenticated());
     emit enabled(isEnabled());
@@ -248,6 +254,10 @@ void Scrobbler::loadSettings()
 
 void Scrobbler::setDetails(const QString &s, const QString &u, const QString &p)
 {
+    if (fakeScrobbling) {
+        return;
+    }
+
     if (u!=scrobbler || u!=userName || p!=password) {
         DBUG << "details changed";
         Configuration cfg(constSettingsGroup);
@@ -304,9 +314,11 @@ void Scrobbler::love()
     params["sk"] = sessionKey;
     sign(params);
     DBUG << currentSong.title << currentSong.artist;
-    QNetworkReply *job=NetworkAccessManager::self()->postFormData(QUrl(scrobblerUrl()), format(params));
-    connect(job, SIGNAL(finished()), this, SLOT(handleResp()));
     loveSent=true;
+    if (!fakeScrobbling) {
+        QNetworkReply *job=NetworkAccessManager::self()->postFormData(QUrl(scrobblerUrl()), format(params));
+        connect(job, SIGNAL(finished()), this, SLOT(handleResp()));
+    }
 }
 
 void Scrobbler::setEnabled(bool e)
@@ -394,10 +406,12 @@ void Scrobbler::scrobbleNowPlaying()
     }
     params["sk"] = sessionKey;
     sign(params);
-    DBUG << currentSong.title << currentSong.artist;
-    QNetworkReply *job=NetworkAccessManager::self()->postFormData(QUrl(scrobblerUrl()), format(params));
-    connect(job, SIGNAL(finished()), this, SLOT(handleResp()));
+    DBUG << currentSong.title << currentSong.artist << currentSong.albumartist << currentSong.album << currentSong.track << currentSong.length;
     nowPlayingSent=true;
+    if (!fakeScrobbling) {
+        QNetworkReply *job=NetworkAccessManager::self()->postFormData(QUrl(scrobblerUrl()), format(params));
+        connect(job, SIGNAL(finished()), this, SLOT(handleResp()));
+    }
 }
 
 void Scrobbler::handleResp()
@@ -440,7 +454,7 @@ void Scrobbler::scrobbleQueued()
         DBUG << "queued:" << songQueue.size() << "batchSize:" << batchSize;
         for (int i=0; i<batchSize; ++i) {
             Track s=songQueue.takeAt(0);
-
+            DBUG << s.artist << s.albumartist << s.album << s.title << s.track << s.length << s.timestamp;
             params[QString("track[%1]").arg(i)] = s.title;
             if (!s.album.isEmpty()) {
                 params[QString("album[%1]").arg(i)] = s.album;
@@ -460,8 +474,12 @@ void Scrobbler::scrobbleQueued()
         }
         params["sk"] = sessionKey;
         sign(params);
-        scrobbleJob=NetworkAccessManager::self()->postFormData(scrobblerUrl(), format(params));
-        connect(scrobbleJob, SIGNAL(finished()), this, SLOT(scrobbleFinished()));
+        if (fakeScrobbling) {
+            lastScrobbledSongs.clear();
+        } else {
+            scrobbleJob=NetworkAccessManager::self()->postFormData(scrobblerUrl(), format(params));
+            connect(scrobbleJob, SIGNAL(finished()), this, SLOT(scrobbleFinished()));
+        }
     }
 }
 
@@ -474,30 +492,68 @@ void Scrobbler::scrobbleFinished()
     }
     job->deleteLater();
     if (job==scrobbleJob) {
-        DBUG << job->errorString();
+        QByteArray data=job->readAll();
+        DBUG << job->errorString() << data << songQueue.size() << lastScrobbledSongs.size();
         scrobbleJob=0;
-        QStringList data = QString(job->readAll()).split("\n", QString::SkipEmptyParts);
-        bool ok=!data.isEmpty();
-        DBUG << data << ok << songQueue.size() << lastScrobbledSongs.size();
 
-        if (ok && constOk!=data[0]) {
-            handle(data[0]);
-            ok=false;
+        int errorCode=NoError;
+        QXmlStreamReader reader(data);
+        while (!reader.atEnd() && !reader.hasError()) {
+            reader.readNext();
+            if (reader.isStartElement()) {
+                if (QLatin1String("lfm")==reader.name().toString()) {
+                    QString status=reader.attributes().value("status").toString().toUpper();
+                    DBUG << status;
+                    if (QLatin1String("failed")==status) {
+                        while (!reader.atEnd() && !reader.hasError()) {
+                            reader.readNext();
+                            if (reader.isStartElement()) {
+                                if (QLatin1String("error")==reader.name().toString()) {
+                                    errorCode=reader.attributes().value(QLatin1String("code")).toString().toInt();
+                                    QString errorStr=errorString(errorCode, reader.readElementText());
+                                    emit error(i18n("%1 error: %2", scrobbler, errorStr));
+                                    DBUG << errorStr;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
         }
 
-        if (ok) {
+        switch (errorCode) {
+        case NoError:
+            failedCount=0;
+            DBUG << "Scrobble succeeded";
             lastScrobbledSongs.clear();
-        } else {
-            DBUG << "Move last scrobbled into queued";
-            songQueue << lastScrobbledSongs;
-            lastScrobbledSongs.clear();
+            return;
+        case AuthenticationFailed:
+        case InvalidSessionKey:
+        case TokenNotAuthorised:
+            sessionKey.clear();
+            authenticate();
+            failedCount=0;
+            break;
+        default:
+            if (++failedCount > 2 && !hardFailTimer->isActive()) {
+                sessionKey.clear();
+                hardFailTimer->setInterval((failedCount > 120 ? 120 : failedCount)*60*1000);
+                hardFailTimer->start();
+            }
+            break;
         }
+
+        DBUG << "Move last scrobbled into queued";
+        songQueue << lastScrobbledSongs;
+        lastScrobbledSongs.clear();
     }
 }
 
 bool Scrobbler::ensureAuthenticated()
 {
-    if (!sessionKey.isEmpty()) {
+    if (fakeScrobbling || !sessionKey.isEmpty()) {
         return true;
     }
     authenticate();
@@ -506,6 +562,9 @@ bool Scrobbler::ensureAuthenticated()
 
 void Scrobbler::authenticate()
 {
+    if (fakeScrobbling) {
+        return;
+    }
     if (hardFailTimer->isActive() || authJob || scrobbleViaMpd) {
         DBUG << "authentication delayed";
         return;
@@ -585,28 +644,6 @@ void Scrobbler::authResp()
         if (lovePending) {
             love();
         }
-    }
-}
-
-void Scrobbler::handle(const QString &status)
-{
-    DBUG << status;
-    if (constBadSession==status) {
-        sessionKey.clear();
-        authenticate();
-        failedCount=0;
-    } else if(status.startsWith(constFailed)) {
-//        QStringList dat = status.split(" ");
-//        if (dat.size()>1) {
-//            emit error(i18n("%1 error: %2", scrobbler, dat.join(" ")));
-//        }
-        if (++failedCount > 2 && !hardFailTimer->isActive()) {
-            sessionKey.clear();
-            hardFailTimer->setInterval((failedCount > 120 ? 120 : failedCount)*60*1000);
-            hardFailTimer->start();
-        }
-    } else {
-        failedCount=0;
     }
 }
 

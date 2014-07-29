@@ -516,7 +516,7 @@ void Scrobbler::scrobbleFinished()
             reader.readNext();
             if (reader.isStartElement()) {
                 if (QLatin1String("lfm")==reader.name().toString()) {
-                    QString status=reader.attributes().value("status").toString().toUpper();
+                    QString status=reader.attributes().value("status").toString().toLower();
                     DBUG << status;
                     if (QLatin1String("failed")==status) {
                         while (!reader.atEnd() && !reader.hasError()) {

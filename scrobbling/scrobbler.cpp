@@ -221,6 +221,17 @@ void Scrobbler::setActive()
         disconnect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(mpdStateUpdated()));
     }
 
+    if (isEnabled() && !inactiveSong.isEmpty()) {
+        Song s;
+        s.title=inactiveSong.title;
+        s.artist=inactiveSong.artist;
+        s.albumartist=inactiveSong.albumartist;
+        s.album=inactiveSong.album;
+        s.track=inactiveSong.track;
+        s.time=inactiveSong.length;
+        setSong(s);
+        inactiveSong.clear();
+    }
     if (!isAuthenticated()) {
         authenticate();
     } else if (!songQueue.isEmpty()) {
@@ -343,13 +354,16 @@ void Scrobbler::setLoveEnabled(bool e)
 
 void Scrobbler::setSong(const Song &s)
 {
-    DBUG << isEnabled() << s.isStandardStream() << s.time << s.file;
+    DBUG << isEnabled() << s.isStandardStream() << s.time << s.file << s.title << s.artist << s.album << s.albumartist;
+    if (!scrobbleViaMpd && !isEnabled()) {
+        inactiveSong=s;
+        return;
+    }
+
+    inactiveSong.clear();
     if (currentSong.artist != s.artist || currentSong.title!=s.title || currentSong.album!=s.album) {
         nowPlayingSent=scrobbledCurrent=loveSent=lovePending=nowPlayingIsPending=false;
         currentSong=s;
-        if (!scrobbleViaMpd && !isEnabled()) {
-            return;
-        }
         emit songChanged(!s.isStandardStream() && !s.isEmpty());
         if (scrobbleViaMpd || !isEnabled() || s.isStandardStream() || s.time<30) {
             return;

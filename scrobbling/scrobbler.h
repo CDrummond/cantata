@@ -116,7 +116,6 @@ private Q_SLOTS:
 private:
     void setActive();
     void loadSettings();
-    void handle(const QString &status);
     bool ensureAuthenticated();
     void loadCache();
     void saveCache();

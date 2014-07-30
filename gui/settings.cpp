@@ -144,9 +144,7 @@ Settings::Settings()
     #endif
 {
     // Only need to read system defaults if we have not previously been configured...
-    if (version()<CANTATA_MAKE_VERSION(0, 8, 0)
-            ? cfg.get("connectionHost", QString()).isEmpty()
-            : !cfg.hasGroup(MPDConnectionDetails::configGroupName())) {
+    if (!cfg.hasGroup(MPDConnectionDetails::configGroupName())) {
         mpdDefaults.read();
     }
 }
@@ -166,68 +164,47 @@ QString Settings::currentConnection()
 MPDConnectionDetails Settings::connectionDetails(const QString &name)
 {
     MPDConnectionDetails details;
-    if (version()<CANTATA_MAKE_VERSION(0, 8, 0) || (name.isEmpty() && !cfg.hasGroup(MPDConnectionDetails::configGroupName(name)))) {
-        details.hostname=cfg.get("connectionHost", name.isEmpty() ? mpdDefaults.host : QString());
-        #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
-        if (cfg.get("connectionPasswd", false)) {
-            if (openWallet()) {
-                wallet->readPassword("mpd", details.password);
-            }
-        } else if (name.isEmpty()) {
-           details.password=mpdDefaults.passwd;
-        }
-        #else
-        details.password=cfg.get("connectionPasswd", name.isEmpty() ? mpdDefaults.passwd : QString());
-        #endif
-        details.port=cfg.get("connectionPort", name.isEmpty() ? mpdDefaults.port : 6600);
+    QString n=MPDConnectionDetails::configGroupName(name);
+    details.name=name;
+    if (!cfg.hasGroup(n)) {
+        details.name=QString();
+        n=MPDConnectionDetails::configGroupName(details.name);
+    }
+    if (cfg.hasGroup(n)) {
+        cfg.beginGroup(n);
+        details.hostname=cfg.get("host", name.isEmpty() ? mpdDefaults.host : QString());
+        details.port=cfg.get("port", name.isEmpty() ? mpdDefaults.port : 6600);
         #ifdef Q_OS_WIN
-        details.dir=Utils::fixPath(QDir::fromNativeSeparators(cfg.get("mpdDir", mpdDefaults.dir)));
+        details.dir=Utils::fixPath(QDir::fromNativeSeparators(cfg.get("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music")));
         #else
-        details.dir=Utils::fixPath(cfg.get("mpdDir", mpdDefaults.dir));
+        details.dir=Utils::fixPath(cfg.get("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
         #endif
-    } else {
-        QString n=MPDConnectionDetails::configGroupName(name);
-        details.name=name;
-        if (!cfg.hasGroup(n)) {
-            details.name=QString();
-            n=MPDConnectionDetails::configGroupName(details.name);
-        }
-        if (cfg.hasGroup(n)) {
-            cfg.beginGroup(n);
-            details.hostname=cfg.get("host", name.isEmpty() ? mpdDefaults.host : QString());
-            details.port=cfg.get("port", name.isEmpty() ? mpdDefaults.port : 6600);
-            #ifdef Q_OS_WIN
-            details.dir=Utils::fixPath(QDir::fromNativeSeparators(cfg.get("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music")));
-            #else
-            details.dir=Utils::fixPath(cfg.get("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
-            #endif
-            #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
-            if (KWallet::Wallet::isEnabled()) {
-                if (cfg.get("passwd", false)) {
-                    if (openWallet()) {
-                        wallet->readPassword(name.isEmpty() ? "mpd" : name, details.password);
-                    }
-                } else if (name.isEmpty()) {
-                    details.password=mpdDefaults.passwd;
+        #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
+        if (KWallet::Wallet::isEnabled()) {
+            if (cfg.get("passwd", false)) {
+                if (openWallet()) {
+                    wallet->readPassword(name.isEmpty() ? "mpd" : name, details.password);
                 }
-            } else
-            #endif // ENABLE_KWALLET
+            } else if (name.isEmpty()) {
+                details.password=mpdDefaults.passwd;
+            }
+        } else
+        #endif // ENABLE_KWALLET
             details.password=cfg.get("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
-            details.coverName=cfg.get("coverName", QString());
-            #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-            details.streamUrl=cfg.get("streamUrl", QString());
-            #endif
-            cfg.endGroup();
-        } else {
-            details.hostname=mpdDefaults.host;
-            details.port=mpdDefaults.port;
-            details.dir=mpdDefaults.dir;
-            details.password=mpdDefaults.passwd;
-            details.coverName=QString();
-            #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-            details.streamUrl=QString();
-            #endif
-        }
+        details.coverName=cfg.get("coverName", QString());
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        details.streamUrl=cfg.get("streamUrl", QString());
+        #endif
+        cfg.endGroup();
+    } else {
+        details.hostname=mpdDefaults.host;
+        details.port=mpdDefaults.port;
+        details.dir=mpdDefaults.dir;
+        details.password=mpdDefaults.passwd;
+        details.coverName=QString();
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        details.streamUrl=QString();
+        #endif
     }
     details.setDirReadable();
     return details;
@@ -367,9 +344,7 @@ bool Settings::storeBackdropsInMpdDir()
 #ifndef ENABLE_UBUNTU
 int Settings::libraryView()
 {
-    int v=version();
-    QString def=ItemView::modeStr(v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree);
-    return ItemView::toMode(cfg.get("libraryView", def));
+    return ItemView::toMode(cfg.get("libraryView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
 }
 
 int Settings::albumsView()
@@ -379,27 +354,17 @@ int Settings::albumsView()
 
 int Settings::folderView()
 {
-    int v=version();
-    QString def=ItemView::modeStr(v<CANTATA_MAKE_VERSION(1, 0, 51) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree);
-    return ItemView::toMode(cfg.get("folderView", def));
+    return ItemView::toMode(cfg.get("folderView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
 }
 
 int Settings::playlistsView()
 {
-    int v=version();
-    QString def=ItemView::modeStr(v<CANTATA_MAKE_VERSION(0, 9, 50)
-                                    ? ItemView::Mode_SimpleTree
-                                    : v<CANTATA_MAKE_VERSION(1, 0, 51)
-                                        ? ItemView::Mode_GroupedTree
-                                        : ItemView::Mode_DetailedTree);
-    return ItemView::toMode(cfg.get("playlistsView", def));
+    return ItemView::toMode(cfg.get("playlistsView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
 }
 
 int Settings::streamsView()
 {
-    int v=version();
-    QString def=ItemView::modeStr(v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree);
-    return ItemView::toMode(cfg.get("streamsView", def));
+    return ItemView::toMode(cfg.get("streamsView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
 }
 
 int Settings::onlineView()
@@ -423,27 +388,7 @@ int Settings::albumSort()
 int Settings::sidebar()
 {
     if (version()<CANTATA_MAKE_VERSION(1, 2, 52)) {
-        switch (cfg.get("sidebar", 1)) {
-        default:
-        case 1: return FancyTabWidget::Side|FancyTabWidget::Large;
-        case 2: return FancyTabWidget::Side|FancyTabWidget::Small;
-        case 3: return FancyTabWidget::Side|FancyTabWidget::Tab;
-        case 4: return FancyTabWidget::Top|FancyTabWidget::Tab;
-        case 5: return FancyTabWidget::Top|FancyTabWidget::Tab|FancyTabWidget::IconOnly;
-        case 6: return FancyTabWidget::Bot|FancyTabWidget::Tab;
-        case 7: return FancyTabWidget::Bot|FancyTabWidget::Tab|FancyTabWidget::IconOnly;
-        case 8: return FancyTabWidget::Side|FancyTabWidget::Large|FancyTabWidget::IconOnly;
-        case 9: return FancyTabWidget::Side|FancyTabWidget::Small|FancyTabWidget::IconOnly;
-        case 10: return FancyTabWidget::Side|FancyTabWidget::Tab|FancyTabWidget::IconOnly;
-        case 11: return FancyTabWidget::Bot|FancyTabWidget::Large;
-        case 12: return FancyTabWidget::Bot|FancyTabWidget::Large|FancyTabWidget::IconOnly;
-        case 13: return FancyTabWidget::Top|FancyTabWidget::Large;
-        case 14: return FancyTabWidget::Top|FancyTabWidget::Large|FancyTabWidget::IconOnly;
-        case 15: return FancyTabWidget::Bot|FancyTabWidget::Small;
-        case 16: return FancyTabWidget::Bot|FancyTabWidget::Small|FancyTabWidget::IconOnly;
-        case 17: return FancyTabWidget::Top|FancyTabWidget::Small;
-        case 18: return FancyTabWidget::Top|FancyTabWidget::Small|FancyTabWidget::IconOnly;
-        }
+        return (int)(FancyTabWidget::Side|FancyTabWidget::Large);
     } else {
         return cfg.get("sidebar", (int)(FancyTabWidget::Side|FancyTabWidget::Large))&FancyTabWidget::All_Mask;
     }
@@ -466,31 +411,17 @@ bool Settings::useComposer()
 
 QStringList Settings::lyricProviders()
 {
-    QStringList def;
-    def << "lyrics.wikia.com"
-        << "lyricstime.com"
-        << "lyricsreg.com"
-        << "lyricsmania.com"
-        << "metrolyrics.com"
-        << "azlyrics.com"
-        << "songlyrics.com"
-        << "elyrics.net"
-        << "lyricsdownload.com"
-        << "lyrics.com"
-        << "lyricsbay.com"
-        << "directlyrics.com"
-        << "loudson.gs"
-        << "teksty.org"
-        << "tekstowo.pl (POLISH)"
-        << "vagalume.uol.com.br"
-        << "vagalume.uol.com.br (PORTUGUESE)";
-    return cfg.get("lyricProviders", def);
+    return cfg.get("lyricProviders", QStringList() << "lyrics.wikia.com" << "lyricstime.com" << "lyricsreg.com"
+                                                   << "lyricsmania.com" << "metrolyrics.com" << "azlyrics.com"
+                                                   << "songlyrics.com" << "elyrics.net" << "lyricsdownload.com"
+                                                   << "lyrics.com" << "lyricsbay.com" << "directlyrics.com"
+                                                   << "loudson.gs" << "teksty.org" << "tekstowo.pl (POLISH)"
+                                                   << "vagalume.uol.com.br" << "vagalume.uol.com.br (PORTUGUESE)");
 }
 
 QStringList Settings::wikipediaLangs()
 {
-    QStringList def=QStringList() << "en:en";
-    return cfg.get("wikipediaLangs", def);
+    return cfg.get("wikipediaLangs", QStringList() << "en:en");
 }
 
 bool Settings::wikipediaIntroOnly()
@@ -500,9 +431,6 @@ bool Settings::wikipediaIntroOnly()
 
 int Settings::contextBackdrop()
 {
-    if (version()<CANTATA_MAKE_VERSION(1, 0, 53)) {
-        return cfg.get("contextBackdrop", true) ? 1 : 0;
-    }
     return  cfg.get("contextBackdrop", 1);
 }
 
@@ -568,11 +496,7 @@ QString Settings::page()
 
 QStringList Settings::hiddenPages()
 {
-    QStringList def=QStringList() << "PlayQueuePage" << "FolderPage" << "SearchPage" << "ContextPage";
-    QStringList config=cfg.get("hiddenPages", def);
-    if (version()<CANTATA_MAKE_VERSION(1, 2, 51) && !config.contains("SearchPage")) {
-        config.append("SearchPage");
-    }
+    QStringList config=cfg.get("hiddenPages", QStringList() << "PlayQueuePage" << "FolderPage" << "SearchPage" << "ContextPage");
     // If splitter auto-hide is enabled, then playqueue cannot be in sidebar!
     if (splitterAutoHide() && !config.contains("PlayQueuePage")) {
         config << "PlayQueuePage";
@@ -604,13 +528,7 @@ bool Settings::showDeleteAction()
 
 int Settings::devicesView()
 {
-    if (version()<CANTATA_MAKE_VERSION(1, 0, 51)) {
-        int v=cfg.get("devicesView", (int)ItemView::Mode_DetailedTree);
-        cfg.set("devicesView", ItemView::modeStr((ItemView::Mode)v));
-        return v;
-    } else {
-        return ItemView::toMode(cfg.get("devicesView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
-    }
+    return ItemView::toMode(cfg.get("devicesView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
 }
 #endif
 
@@ -638,11 +556,7 @@ int Settings::version()
 
 int Settings::stopFadeDuration()
 {
-    int v=cfg.get("stopFadeDuration", (int)DefaultFade);
-    if (0!=v && (v<MinFade || v>MaxFade)) {
-        v=DefaultFade;
-    }
-    return v;
+    return cfg.get("stopFadeDuration", (int)DefaultFade, (int)MinFade, (int)MaxFade);
 }
 
 int Settings::httpAllocatedPort()
@@ -689,9 +603,6 @@ bool Settings::playQueueScroll()
 
 int Settings::playQueueBackground()
 {
-    if (version()<CANTATA_MAKE_VERSION(1, 0, 53)) {
-        return cfg.get("playQueueBackground", false) ? 1 : 1;
-    }
     return  cfg.get("playQueueBackground", 0);
 }
 
@@ -1238,11 +1149,6 @@ void Settings::saveSearchView(int v)
 
 void Settings::saveStopFadeDuration(int v)
 {
-    if (v<=MinFade) {
-        v=0;
-    } else if (v>MaxFade) {
-        v=MaxFade;
-    }
     cfg.set("stopFadeDuration", v);
 }
 

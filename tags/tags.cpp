@@ -74,6 +74,7 @@
 #include <taglib/relativevolumeframe.h>
 #include <taglib/attachedpictureframe.h>
 #include <taglib/unsynchronizedlyricsframe.h>
+#include <taglib/popularimeterframe.h>
 #ifdef TAGLIB_EXTRAS_FOUND
 #include <taglib-extras/audiblefiletyperesolver.h>
 #include <taglib-extras/realmediafiletyperesolver.h>
@@ -110,6 +111,22 @@ TagLib::String qString2TString(const QString &str)
 {
     QString val = str.trimmed();
     return val.isEmpty() ? TagLib::String::null : TagLib::String(val.toUtf8().data(), TagLib::String::UTF8);
+}
+
+static int convertRating(double r) {
+    return qRound(r/2.0);
+}
+
+static double parseDoubleString(const TagLib::String &str) {
+    if (str.isEmpty()) {
+        return 0.0;
+    }
+
+    QString s=tString2QString(str);
+    bool ok=false;
+    double v=s.toDouble(&ok);
+
+    return ok ? v : 0.0;
 }
 
 static double parseRgString(const TagLib::String &str) {
@@ -271,7 +288,7 @@ static void setRva2Tag(TagLib::ID3v2::Tag *tag, const std::string &tagName, doub
 }
 // -- taken from rgtag.cpp from libebur128 -- END
 
-static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics)
+static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics, int *rating)
 {
     if (song) {
         const TagLib::ID3v2::FrameList &albumArtist = tag->frameListMap()["TPE2"];
@@ -397,6 +414,37 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
             }
         }
     }
+
+    if (rating) {
+        // First check for FMPS rating
+        const TagLib::ID3v2::FrameList &frames = tag->frameList("TXXX");
+        TagLib::ID3v2::FrameList::ConstIterator it = frames.begin();
+        TagLib::ID3v2::FrameList::ConstIterator end = frames.end();
+
+        for (; it != end; ++it) {
+            TagLib::ID3v2::UserTextIdentificationFrame *fr=dynamic_cast<TagLib::ID3v2::UserTextIdentificationFrame*>(*it);
+            if (fr) {
+                if (fr->description().upper() == "FMPS_RATING") {
+                    *rating=convertRating(parseDoubleString(fr->fieldList().back())*10);
+                    return;
+                }
+            }
+        }
+
+        const TagLib::ID3v2::FrameList &popm = tag->frameListMap()["POPM"];
+        it = popm.begin();
+        end = popm.end();
+
+        for (; it != end; ++it) {
+            TagLib::ID3v2::PopularimeterFrame *p=dynamic_cast< TagLib::ID3v2::PopularimeterFrame * >(*it);
+            if (p) {
+                if (p->email().isEmpty()) {
+                    *rating=convertRating(p->rating() / 256.0 * 10.0);
+                    return;
+                }
+            }
+        }
+    }
 }
 
 static bool updateID3v2Tag(TagLib::ID3v2::Tag *tag, const char *tagName, const QString &value)
@@ -497,7 +545,7 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
     return changed;
 }
 
-static void readAPETags(TagLib::APE::Tag *tag, Song *song, ReplayGain *rg, QImage *img)
+static void readAPETags(TagLib::APE::Tag *tag, Song *song, ReplayGain *rg, QImage *img, int *rating)
 {
     const TagLib::APE::ItemListMap &map = tag->itemListMap();
 
@@ -549,6 +597,10 @@ static void readAPETags(TagLib::APE::Tag *tag, Song *song, ReplayGain *rg, QImag
                 img->loadFromData(data);
             }
         }
+    }
+
+    if (rating) {
+        *rating=convertRating(parseDoubleString(map["FMPS_RATING"].toString())*10.0);
     }
 }
 
@@ -624,7 +676,7 @@ static TagLib::String readVorbisTag(TagLib::Ogg::XiphComment *tag, const char *f
     return TagLib::String();
 }
 
-static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics)
+static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics, int *rating)
 {
     if (song) {
         TagLib::String str=readVorbisTag(tag, "ALBUMARTIST");
@@ -697,6 +749,10 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
         if (!str.isEmpty()) {
             *lyrics=tString2QString(str);
         }
+    }
+
+    if (rating) {
+        *rating=convertRating(parseDoubleString(readVorbisTag(tag, "FMPS_RATING"))*10.0);
     }
 }
 
@@ -780,7 +836,7 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
 }
 
 #ifdef TAGLIB_MP4_FOUND
-static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImage *img)
+static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImage *img, int *rating)
 {
     TagLib::MP4::ItemListMap &map = tag->itemListMap();
 
@@ -825,6 +881,11 @@ static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImag
                 TagLib::MP4::CoverArt coverArt = coverArtList.front();
                 img->loadFromData((const uchar *) coverArt.data().data(), coverArt.data().size());
             }
+        }
+    }
+    if (rating) {
+        if (map.contains("----:com.apple.iTunes:FMPS_Rating")) {
+            *rating=convertRating(parseDoubleString(map["----:com.apple.iTunes:FMPS_Rating"].toStringList().front())*10.0);
         }
     }
 }
@@ -904,10 +965,8 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
 #endif
 
 #ifdef TAGLIB_ASF_FOUND
-static void readASFTags(TagLib::ASF::Tag *tag, Song *song, ReplayGain *rg)
+static void readASFTags(TagLib::ASF::Tag *tag, Song *song, int *rating)
 {
-    Q_UNUSED(rg)
-
     if (song) {
         const TagLib::ASF::AttributeListMap &map = tag->attributeListMap();
 
@@ -927,6 +986,13 @@ static void readASFTags(TagLib::ASF::Tag *tag, Song *song, ReplayGain *rg)
             for (; it!=end; ++it) {
                 song->addGenre(tString2QString((*it).toString()));
             }
+        }
+    }
+    if (rating) {
+        const TagLib::ASF::AttributeListMap &map = tag->attributeListMap();
+
+        if (map.contains("FMPS/Rating") && !map["FMPS/Rating"].isEmpty()) {
+            *rating=convertRating(parseDoubleString(map["FMPS/Rating"].front().toString())*10.0);
         }
     }
 }
@@ -979,7 +1045,7 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
 }
 #endif
 
-static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, QImage *img, QString *lyrics)
+static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, QImage *img, QString *lyrics, int *rating)
 {
     TagLib::Tag *tag=fileref.tag();
     if (song) {
@@ -993,40 +1059,40 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
 
     if (TagLib::MPEG::File *file = dynamic_cast< TagLib::MPEG::File * >(fileref.file())) {
         if (file->ID3v2Tag() && !file->ID3v2Tag()->isEmpty()) {
-            readID3v2Tags(file->ID3v2Tag(), song, rg, img, lyrics);
+            readID3v2Tags(file->ID3v2Tag(), song, rg, img, lyrics, rating);
         } else if (file->APETag()) {
-            readAPETags(file->APETag(), song, rg, img);
+            readAPETags(file->APETag(), song, rg, img, rating);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
     } else if (TagLib::Ogg::Vorbis::File *file = dynamic_cast< TagLib::Ogg::Vorbis::File * >(fileref.file()))  {
         if (file->tag()) {
-            readVorbisCommentTags(file->tag(), song, rg, img, lyrics);
+            readVorbisCommentTags(file->tag(), song, rg, img, lyrics, rating);
         }
     } else if (TagLib::Ogg::FLAC::File *file = dynamic_cast< TagLib::Ogg::FLAC::File * >(fileref.file())) {
         if (file->tag()) {
-            readVorbisCommentTags(file->tag(), song, rg, img, lyrics);
+            readVorbisCommentTags(file->tag(), song, rg, img, lyrics, rating);
         }
     } else if (TagLib::Ogg::Speex::File *file = dynamic_cast< TagLib::Ogg::Speex::File * >(fileref.file())) {
         if (file->tag()) {
-            readVorbisCommentTags(file->tag(), song, rg, img, lyrics);
+            readVorbisCommentTags(file->tag(), song, rg, img, lyrics, rating);
         }
     #ifdef TAGLIB_OPUS_FOUND
     } else if (TagLib::Ogg::Opus::File *file = dynamic_cast< TagLib::Ogg::Opus::File * >(fileref.file())) {
         if (file->tag()) {
-            readVorbisCommentTags(file->tag(), song, rg, img, lyrics);
+            readVorbisCommentTags(file->tag(), song, rg, img, lyrics, rating);
         }
     #endif
     } else if (TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file())) {
         if (file->xiphComment()) {
-            readVorbisCommentTags(file->xiphComment(), song, rg, img, lyrics);
+            readVorbisCommentTags(file->xiphComment(), song, rg, img, lyrics, rating);
             #if (TAGLIB_MAJOR_VERSION > 1) || (TAGLIB_MAJOR_VERSION == 1 && TAGLIB_MINOR_VERSION >= 7)
             if (img && img->isNull()) {
                 readFlacPicture(file->pictureList(), img);
             }
             #endif
         } else if (file->ID3v2Tag() && !file->ID3v2Tag()->isEmpty()) {
-            readID3v2Tags(file->ID3v2Tag(), song, rg, img, lyrics);
+            readID3v2Tags(file->ID3v2Tag(), song, rg, img, lyrics, rating);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
@@ -1034,39 +1100,39 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
     } else if (TagLib::MP4::File *file = dynamic_cast< TagLib::MP4::File * >(fileref.file())) {
         TagLib::MP4::Tag *tag = dynamic_cast< TagLib::MP4::Tag * >(file->tag());
         if (tag) {
-            readMP4Tags(tag, song, rg, img);
+            readMP4Tags(tag, song, rg, img, rating);
         }
     #endif
     } else if (TagLib::MPC::File *file = dynamic_cast< TagLib::MPC::File * >(fileref.file())) {
         if (file->APETag()) {
-            readAPETags(file->APETag(), song, rg, img);
+            readAPETags(file->APETag(), song, rg, img, rating);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
     } else if (TagLib::RIFF::AIFF::File *file = dynamic_cast< TagLib::RIFF::AIFF::File * >(fileref.file())) {
         if (file->tag()) {
-            readID3v2Tags(file->tag(), song, rg, img, lyrics);
+            readID3v2Tags(file->tag(), song, rg, img, lyrics, rating);
         }
     } else if (TagLib::RIFF::WAV::File *file = dynamic_cast< TagLib::RIFF::WAV::File * >(fileref.file())) {
         if (file->tag()) {
-            readID3v2Tags(file->tag(), song, rg, img, lyrics);
+            readID3v2Tags(file->tag(), song, rg, img, lyrics, rating);
         }
     #ifdef TAGLIB_ASF_FOUND
     } else if (TagLib::ASF::File *file = dynamic_cast< TagLib::ASF::File * >(fileref.file())) {
         TagLib::ASF::Tag *tag = dynamic_cast< TagLib::ASF::Tag * >(file->tag());
         if (tag) {
-            readASFTags(tag, song, rg);
+            readASFTags(tag, song, rating);
         }
     #endif
     } else if (TagLib::TrueAudio::File *file = dynamic_cast< TagLib::TrueAudio::File * >(fileref.file())) {
         if (file->ID3v2Tag(false)) {
-            readID3v2Tags(file->ID3v2Tag(false), song, rg, img, lyrics);
+            readID3v2Tags(file->ID3v2Tag(false), song, rg, img, lyrics, rating);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
     } else if (TagLib::WavPack::File *file = dynamic_cast< TagLib::WavPack::File * >(fileref.file())) {
         if (file->APETag()) {
-            readAPETags(file->APETag(), song, rg, img);
+            readAPETags(file->APETag(), song, rg, img, rating);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
@@ -1202,7 +1268,7 @@ Song read(const QString &fileName)
         return song;
     }
 
-    readTags(fileref, &song, 0, 0, 0);
+    readTags(fileref, &song, 0, 0, 0, 0);
     song.file=fileName;
     song.time=fileref.audioProperties() ? fileref.audioProperties()->length() : 0;
     return song;
@@ -1217,7 +1283,7 @@ QImage readImage(const QString &fileName)
         return img;
     }
 
-    readTags(fileref, 0, 0, &img, 0);
+    readTags(fileref, 0, 0, &img, 0, 0);
     return img;
 }
 
@@ -1230,7 +1296,7 @@ QString readLyrics(const QString &fileName)
         return lyrics;
     }
 
-    readTags(fileref, 0, 0, 0, &lyrics);
+    readTags(fileref, 0, 0, 0, &lyrics, 0);
     return lyrics;
 }
 
@@ -1304,7 +1370,7 @@ ReplayGain readReplaygain(const QString &fileName)
     }
 
     ReplayGain rg;
-    readTags(fileref, 0, &rg, 0, 0);
+    readTags(fileref, 0, &rg, 0, 0, 0);
     return rg;
 }
 
@@ -1353,6 +1419,17 @@ QString oggMimeType(const QString &fileName)
     }
     #endif
     return QLatin1String("audio/ogg");
+}
+
+int readRating(const QString &fileName)
+{
+    LOCK_MUTEX
+    int rating=-1;
+    TagLib::FileRef fileref = getFileRef(fileName);
+    if (!fileref.isNull()) {
+        readTags(fileref, 0, 0, 0, 0, &rating);
+    }
+    return rating;
 }
 
 QMap<QString, QString> readAll(const QString &fileName)

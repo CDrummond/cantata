@@ -154,6 +154,8 @@ void TagHelper::process()
         outStream << (int)Tags::embedImage(fileName, cover);
     } else if (QLatin1String("oggMimeType")==request) {
         outStream << Tags::oggMimeType(fileName);
+    } else if (QLatin1String("readRating")==request) {
+        outStream << Tags::readRating(fileName);
     } else if (QLatin1String("readAll")==request) {
         outStream << Tags::readAll(fileName);
     } else {

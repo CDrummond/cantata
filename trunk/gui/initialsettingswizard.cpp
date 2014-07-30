@@ -222,6 +222,6 @@ void InitialSettingsWizard::accept()
     } else {
         MPDUser::self()->cleanup();
     }
-    Settings::self()->save(true);
+    Settings::self()->save();
     QDialog::accept();
 }

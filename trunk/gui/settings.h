@@ -33,12 +33,8 @@ class Wallet;
 }
 #endif
 
-class QTimer;
-
-class Settings : public QObject
+class Settings
 {
-    Q_OBJECT
-
 public:
     enum Constants
     {
@@ -303,7 +299,7 @@ public:
     void saveShowCoverWidget(bool v);
     void saveShowStopButton(bool v);
     void saveShowRatingWidget(bool v);
-    void save(bool force=false);
+    void save();
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();
     #else
@@ -313,12 +309,8 @@ public:
 
     bool firstRun() const { return isFirstRun; }
 
-private Q_SLOTS:
-    void actualSave();
-
 private:
     bool isFirstRun;
-    QTimer *timer;
     int ver;
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     KWallet::Wallet *wallet;

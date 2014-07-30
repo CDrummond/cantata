@@ -43,7 +43,8 @@ namespace MessageBox {
     enum Type {
         Error,
         Question,
-        Warning
+        Warning,
+        Information
     };
 
     extern ButtonCode questionYesNoCancel(QWidget *parent, const QString &message, const QString &title=QString(),
@@ -76,6 +77,9 @@ namespace MessageBox {
     }
     inline ButtonCode warningYesNoList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString()) {
         return msgListEx(parent, Warning, message, strlist, title);
+    }
+    inline void informationList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString()) {
+        msgListEx(parent, Information, message, strlist, title);
     }
 }
 #endif

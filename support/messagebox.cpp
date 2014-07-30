@@ -125,12 +125,21 @@ MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const Q
         dlg->setButtons(Dialog::Yes|Dialog::No);
         iconLabel->setPixmap(Icon("dialog-warning").pixmap(iconSize, iconSize));
         break;
+    case Information:
+        dlg->setCaption(title.isEmpty() ? i18n("Information") : title);
+        dlg->setButtons(Dialog::Ok);
+        iconLabel->setPixmap(Icon("dialog-information").pixmap(iconSize, iconSize));
+        break;
     }
     #endif
     lay->addWidget(iconLabel, 0, 0, 1, 1);
-    lay->addWidget(new QLabel(message, wid), 0, 1, 1, 1);
+    QLabel *msgLabel=new QLabel(message, wid);
+    msgLabel->setWordWrap(true);
+    msgLabel->setTextInteractionFlags(Qt::NoTextInteraction);
+    lay->addWidget(msgLabel, 0, 1, 1, 1);
     QListWidget *list=new QListWidget(wid);
     lay->addWidget(list, 1, 0, 1, 2);
+    lay->setMargin(0);
     list->insertItems(0, strlist);
     dlg->setMainWidget(wid);
     #ifdef ENABLE_KDE_SUPPORT

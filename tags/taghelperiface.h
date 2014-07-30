@@ -67,6 +67,7 @@ public:
     int updateReplaygain(const QString &fileName, const Tags::ReplayGain &rg);
     int embedImage(const QString &fileName, const QByteArray &cover);
     QString oggMimeType(const QString &fileName);
+    int readRating(const QString &fileName);
     QMap<QString, QString> readAll(const QString &fileName);
 
 private:

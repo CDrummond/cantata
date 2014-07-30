@@ -623,7 +623,7 @@ void TagEditor::adjustTrackNumbers()
     }
 
     if (isAll) {
-        for (int i=0; i<edited.count(); ++i) {
+        for (int i=1; i<edited.count(); ++i) {
             Song s=edited.at(i);
             s.track+=adj;
             edited.replace(i, s);

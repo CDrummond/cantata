@@ -311,10 +311,7 @@ int main(int argc, char *argv[])
     installDebugMessageHandler();
 
     // Translations
-    QString lang=qgetenv("CANTATA_LANG");
-    if (lang.isEmpty()) {
-        lang=Settings::self()->lang();
-    }
+    QString lang=Settings::self()->lang();
     loadTranslation("qt", QLibraryInfo::location(QLibraryInfo::TranslationsPath), lang);
     #ifdef Q_OS_WIN
     loadTranslation("qt", CANTATA_SYS_TRANS_DIR, lang);

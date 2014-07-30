@@ -23,6 +23,7 @@
    so remove MPDScribble from list of scrobblers.
 5. Last.fm replies are XML, so decode these properly!
 6. Don't log scrobbler session key to debug file.
+7. Remove extra margin in podcast settings dialog.
 
 1.4.0
 -----

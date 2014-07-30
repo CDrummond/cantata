@@ -1265,6 +1265,18 @@ void ItemView::hideSpinner()
     }
 }
 
+void ItemView::updating()
+{
+    showSpinner();
+    showMessage(i18n("Updating..."), -1);
+}
+
+void ItemView::updated()
+{
+    hideSpinner();
+    showMessage(QString(), 0);
+}
+
 void ItemView::collectionRemoved(quint32 key)
 {
     if (groupedView) {

@@ -150,6 +150,8 @@ public Q_SLOTS:
     void focusView();
     void showSpinner(bool v=true);
     void hideSpinner();
+    void updating();
+    void updated();
     void collectionRemoved(quint32 key);
     void updateRows();
     void updateRows(const QModelIndex &idx);

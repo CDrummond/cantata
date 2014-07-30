@@ -4,39 +4,39 @@ As of January 14th 2014, google code no longer allows adding new downloads. Ther
 As of 1.4.0, the Windows installer now uses the Nullsoft install system. Therefore, please remove any previous Cantata installs before installing.
 
 || *Version* || *Source Code* || *Windows* || *Released* || *Comment* ||
-|| *1.4* || || || ||
+|| *1.4* || || || || ||
 || 1.4.0 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60WDI1WjRtUDJ4QlU cantata-1.4.0.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60SHZhTW1RXzlWQk0 Cantata-1.4.0-Setup.exe] || 22 July 2014 || ||
-|| *1.3* || || || ||
+|| *1.3* || || || || ||
 || 1.3.4 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60WTYtaXk3c1IzNVU cantata-1.3.4.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60blpEa1NEYXlyakk Cantata-1.3.4-Setup.exe] || 8 April 2014 || ||
 || 1.3.3 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60ZUN1NThacGFrdFE cantata-1.3.3.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60QllHeWZVUnVZVVE Cantata-1.3.3-Setup.exe] || 25 March 2014 || ||
 || 1.3.2 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60TFIwWHBWR1JhVHc cantata-1.3.2.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60TkhxWXlyRDBkSkk Cantata-1.3.2-Setup.exe] || 9 March 2014 || ||
 || 1.3.1 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60YmdyaExDZUo4NGs cantata-1.3.1.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60ZGhwRXdWZG5BYnc Cantata-1.3.1-Setup.exe] || 1 March 2014 || ||
 || 1.3.0.1 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60czZxNXJtdWllc0E cantata-1.3.0.1.tar.bz2] || || 21 February 2014 || Compile fix for KDE builds ||
 || 1.3.0 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60Y19WY0ZiTHlwNVk cantata-1.3.0.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60c3lhOTQ2U2d4aFk Cantata-1.3.0-Setup.exe] || 20 February 2014 || ||
-|| *1.2* || || || ||
+|| *1.2* || || || || ||
 || 1.2.2 || [https://cantata.googlecode.com/files/cantata-1.2.2.tar.bz2 cantata-1.2.2.tar.bz2] || [https://cantata.googlecode.com/files/Cantata-1.2.2-Setup.exe Cantata-1.2.2-Setup.exe] || 5 January 2014 || ||
 || 1.2.1 || [https://cantata.googlecode.com/files/cantata-1.2.1.tar.bz2 cantata-1.2.1.tar.bz2] || [https://cantata.googlecode.com/files/Cantata-1.2.1-Setup.exe Cantata-1.2.1-Setup.exe] || 23 December 2013 || ||
 || 1.2.0 || [https://cantata.googlecode.com/files/cantata-1.2.0.tar.bz2 cantata-1.2.0.tar.bz2] || [https://cantata.googlecode.com/files/Cantata-1.2.0-Setup.exe Cantata-1.2.0-Setup.exe] || 14 December 2013 || ||
-|| *1.1* || || || ||
+|| *1.1* || || || || ||
 || 1.1.3 || [https://cantata.googlecode.com/files/cantata-1.1.3.tar.bz2 cantata-1.1.3.tar.bz2] || [https://cantata.googlecode.com/files/Cantata-1.1.3-Setup.exe Cantata-1.1.3-Setup.exe] || 8 October 2013 || ||
 || 1.1.2 || [https://cantata.googlecode.com/files/cantata-1.1.2.tar.bz2 cantata-1.1.2.tar.bz2] || [https://cantata.googlecode.com/files/Cantata-1.1.2-Setup.exe Cantata-1.1.2-Setup.exe] || 2 September 2013 || ||
 || 1.1.1 || [https://cantata.googlecode.com/files/cantata-1.1.1.tar.bz2 cantata-1.1.1.tar.bz2] || [https://cantata.googlecode.com/files/Cantata-1.1.1-Setup.exe Cantata-1.1.1-Setup.exe] || 21 August 2013 || ||
 || 1.1.0 || [https://cantata.googlecode.com/files/cantata-1.1.0.tar.bz2 cantata-1.1.0.tar.bz2] || [https://cantata.googlecode.com/files/Cantata-1.1.0-Setup.exe Cantata-1.1.0-Setup.exe] || 14 August 2013 || ||
-|| *1.0* || || || ||
+|| *1.0* || || || || ||
 || 1.0.3 || [https://cantata.googlecode.com/files/cantata-1.0.3.tar.bz2 cantata-1.0.3.tar.bz2] || [https://cantata.googlecode.com/files/Cantata-1.0.3-Setup.exe Cantata-1.0.3-Setup.exe] || May 2013 || ||
 || 1.0.2 || [https://cantata.googlecode.com/files/cantata-1.0.2.tar.bz2 cantata-1.0.2.tar.bz2] || [https://cantata.googlecode.com/files/Cantata-1.0.2-Setup.exe Cantata-1.0.2-Setup.exe] || May 2013 || ||
 || 1.0.1 || [https://cantata.googlecode.com/files/cantata-1.0.1.tar.bz2 cantata-1.0.1.tar.bz2] || [https://cantata.googlecode.com/files/cantata-1.0.1-windows.zip cantata-1.0.1-windows.zip] || May 2013 || ||
 || 1.0.0 || [https://cantata.googlecode.com/files/cantata-1.0.0.tar.bz2 cantata-1.0.0.tar.bz2] || [https://cantata.googlecode.com/files/cantata-1.0.0-windows.zip cantata-1.0.0-windows.zip] || May 2013 || ||
-|| *0.9* || || || ||
+|| *0.9* || || || || ||
 || 0.9.2 || [https://cantata.googlecode.com/files/cantata-0.9.2.tar.bz2 cantata-0.9.2.tar.bz2] || [https://cantata.googlecode.com/files/cantata-0.9.2-windows.zip cantata-0.9.2-windows.zip] || January 2013 || ||
 || 0.9.1 || [https://cantata.googlecode.com/files/cantata-0.9.1.tar.bz2 cantata-0.9.1.tar.bz2] || [https://cantata.googlecode.com/files/cantata-0.9.1-windows.zip cantata-0.9.1-windows.zip] || December 2012 || ||
 || 0.9.0 || [https://cantata.googlecode.com/files/cantata-0.9.0.tar.bz2 cantata-0.9.0.tar.bz2] || [https://cantata.googlecode.com/files/cantata-0.9.0-windows.zip cantata-0.9.0-windows.zip] || December 2012 || ||
-|| *0.8* || || || ||
+|| *0.8* || || || || ||
 || 0.8.3.1 || [https://cantata.googlecode.com/files/cantata-0.8.3.1.tar.bz2 cantata-0.8.3.1.tar.bz2] || || September 2012 || Compile fix for Qt-only builds ||
 || 0.8.3 || [https://cantata.googlecode.com/files/cantata-0.8.3.tar.bz2 cantata-0.8.3.tar.bz2] || [https://cantata.googlecode.com/files/cantata-0.8.3-windows.zip cantata-0.8.3-windows.zip] || September 2012 || ||
 || 0.8.2 || [https://cantata.googlecode.com/files/cantata-0.8.2.tar.bz2 cantata-0.8.2.tar.bz2] || [https://cantata.googlecode.com/files/cantata-0.8.2-windows.zip cantata-0.8.2-windows.zip] || July 2012 || ||
 || 0.8.1 || [https://cantata.googlecode.com/files/cantata-0.8.1.tar.bz2 cantata-0.8.1.tar.bz2] || [https://cantata.googlecode.com/files/cantata-0.8.1-windows.zip cantata-0.8.1-windows.zip] || July 2012 || ||
 || 0.8.0 || [https://cantata.googlecode.com/files/cantata-0.8.0.tar.bz2 cantata-0.8.0.tar.bz2] || [https://cantata.googlecode.com/files/cantata-0.8.0-windows.zip cantata-0.8.0-windows.zip] || July 2012 || ||
-|| *0.7* || || || ||
+|| *0.7* || || || || ||
 || 0.7.1 || [https://cantata.googlecode.com/files/cantata-0.7.1.tar.bz2 cantata-0.7.1.tar.bz2] || || May 2012 || ||
 || 0.7.0 || [https://cantata.googlecode.com/files/cantata-0.7.0.tar.bz2 cantata-0.7.0.tar.bz2] || || May 2012 || ||

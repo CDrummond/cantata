@@ -344,13 +344,7 @@ MainWindow::MainWindow(QWidget *parent)
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, playQueuePage);
     layout->setContentsMargins(0, 0, 0, 0);
     bool playQueueInSidebar=!hiddenPages.contains(playQueuePage->metaObject()->className());
-    if (playQueueInSidebar && (Settings::self()->firstRun() || Settings::self()->version()<CANTATA_MAKE_VERSION(0, 8, 0))) {
-        playQueueInSidebar=false;
-    }
     bool contextInSidebar=!hiddenPages.contains(contextPage->metaObject()->className());
-    if (contextInSidebar && (Settings::self()->firstRun() || Settings::self()->version()<CANTATA_MAKE_VERSION(1, 0, 52))) {
-        contextInSidebar=false;
-    }
     layout=new QBoxLayout(QBoxLayout::TopToBottom, contextPage);
     layout->setContentsMargins(0, 0, 0, 0);
 
@@ -2212,11 +2206,6 @@ void MainWindow::locateTracks(const QList<Song> &songs)
     }
 }
 
-void MainWindow::locateTrack()
-{
-    locateTracks(playQueue->selectedSongs());
-}
-
 void MainWindow::locateArtist(const QString &artist)
 {
     if (songInfoAction->isCheckable()) {
@@ -2525,19 +2514,16 @@ void MainWindow::startContextTimer()
 
 int MainWindow::calcMinHeight()
 {
-    if (tabWidget->style()&FancyTabWidget::Side && tabWidget->style()&FancyTabWidget::Large) {
-        return toolbar->height()+(tabWidget->visibleCount()*tabWidget->tabSize().height());
-    } else {
-        return Utils::scaleForDpi(256);
-    }
+    return tabWidget->style()&FancyTabWidget::Side && tabWidget->style()&FancyTabWidget::Large
+            ? toolbar->height()+(tabWidget->visibleCount()*tabWidget->tabSize().height())
+            : Utils::scaleForDpi(256);
 }
 
 int MainWindow::calcCollapsedSize()
 {
-    if (showMenuAction && menuButton && showMenuAction->isChecked()) {
-        return toolbar->height()+menuBar()->height();
-    }
-    return toolbar->height();
+    return showMenuAction && menuButton && showMenuAction->isChecked()
+            ? toolbar->height()+menuBar()->height()
+            : toolbar->height();
 }
 
 void MainWindow::setCollapsedSize()

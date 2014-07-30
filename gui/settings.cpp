@@ -137,7 +137,6 @@ static Settings::StartupState getStartupState(const QString &str)
 
 Settings::Settings()
     : isFirstRun(false)
-    , timer(0)
     , ver(-1)
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     , wallet(0)
@@ -151,6 +150,7 @@ Settings::Settings()
 
 Settings::~Settings()
 {
+    save();
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     delete wallet;
     #endif
@@ -1369,27 +1369,11 @@ void Settings::saveShowRatingWidget(bool v)
     return cfg.set("showRatingWidget", v);
 }
 
-void Settings::save(bool force)
+void Settings::save()
 {
-    if (force) {
-        if (version()!=PACKAGE_VERSION || isFirstRun) {
-            cfg.set("version", PACKAGE_VERSION_STRING);
-            ver=PACKAGE_VERSION;
-        }
-        cfg.sync();
-        if (timer) {
-            timer->stop();
-        }
-    } else {
-        if (!timer) {
-            timer=new QTimer(this);
-            connect(timer, SIGNAL(timeout()), this, SLOT(actualSave()));
-        }
-        timer->start(30*1000);
+    if (version()!=PACKAGE_VERSION || isFirstRun) {
+        cfg.set("version", PACKAGE_VERSION_STRING);
+        ver=PACKAGE_VERSION;
     }
-}
-
-void Settings::actualSave()
-{
-    save(true);
+    cfg.sync();
 }

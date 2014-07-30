@@ -74,10 +74,10 @@ AlbumsPage::AlbumsPage(QWidget *p)
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
-    connect(MPDConnection::self(), SIGNAL(updatingLibrary()), this, SLOT(showSpinner()));
-    connect(MPDConnection::self(), SIGNAL(updatedLibrary()), this, SLOT(hideSpinner()));
-    connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(showSpinner()));
-    connect(MPDConnection::self(), SIGNAL(updatedDatabase()), this, SLOT(hideSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(updating()));
+    connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(updated()));
+    connect(MPDConnection::self(), SIGNAL(updatingDatabase()), view, SLOT(updating()));
+    connect(MPDConnection::self(), SIGNAL(updatedDatabase()), view, SLOT(updated()));
     view->load(metaObject()->className());
 }
 
@@ -271,16 +271,4 @@ void AlbumsPage::controlActions()
         }
     }
     StdActions::self()->addRandomToPlayQueueAction->setEnabled(allowRandomAlbum);
-}
-
-void AlbumsPage::showSpinner()
-{
-    view->showSpinner();
-    view->showMessage(i18n("Updating..."), -1);
-}
-
-void AlbumsPage::hideSpinner()
-{
-    view->hideSpinner();
-    view->showMessage(QString(), 0);
 }

@@ -1780,15 +1780,17 @@ StreamsModel::Item * StreamsModel::parseSomaFmEntry(QXmlStreamReader &doc, Categ
 
 void StreamsModel::importOldFavourites()
 {
-    if (!favourites->importedOld && Settings::self()->version()<CANTATA_MAKE_VERSION(1,3,54)) {
-        QString prevFile=Settings::self()->storeStreamsInMpdDir()
-                            ? MPDConnection::self()->getDetails().dir : Utils::dataDir(QString(), false);
+    if (!favourites->importedOld) {
+        if (Settings::self()->version()<CANTATA_MAKE_VERSION(1,3,54)) {
+            QString prevFile=Settings::self()->storeStreamsInMpdDir()
+                                ? MPDConnection::self()->getDetails().dir : Utils::dataDir(QString(), false);
 
-        if (!prevFile.isEmpty()) {
-            prevFile+="streams.xml.gz";
-        }
-        if (!prevFile.isEmpty() && QFile::exists(prevFile)) {
-            importIntoFavourites(prevFile);
+            if (!prevFile.isEmpty()) {
+                prevFile+="streams.xml.gz";
+                if (QFile::exists(prevFile)) {
+                    importIntoFavourites(prevFile);
+                }
+            }
         }
         favourites->importedOld=true;
     }

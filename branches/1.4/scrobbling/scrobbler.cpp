@@ -130,7 +130,7 @@ static QByteArray format(const QMap<QString, QString> &params)
     QMapIterator<QString, QString> i(params);
     while (i.hasNext()) {
         i.next();
-        data+=QUrl::toPercentEncoding(i.key())+'='+QUrl::toPercentEncoding(i.value());
+        data+=i.key().toLatin1()+'='+QUrl::toPercentEncoding(i.value());
         if (i.hasNext()) {
             data+='&';
         }

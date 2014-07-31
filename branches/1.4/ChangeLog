@@ -13,6 +13,7 @@
  8. When adjusting track numbers in tag editor, start from first actual track.
  9. Only enable 'center on current track' action if there is a current track.
 10. Use comma to split multiple genres in tooltip.
+11. Don't URL encode scrobble keys, just values.
 
 1.4.0
 -----

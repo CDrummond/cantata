@@ -136,7 +136,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
             continue;
         }
         Song song(s);
-        s.rating=Song::constNullRating;;
+        s.rating=Song::Rating_Null;
         if (s.guessed) {
             song.revertGuessedTags();
         }
@@ -283,7 +283,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         all.genre=1==songGenres.count() ? *(songGenres.begin()) : QString();
         all.year=1==songYears.count() ? *(songYears.begin()) : 0;
         all.disc=1==songDiscs.count() ? *(songDiscs.begin()) : 0;
-        all.rating=Song::constNullRating;
+        all.rating=Song::Rating_Null;
         original.prepend(all);
         artist->setFocus();
         haveArtists=songArtists.count()>1;
@@ -404,7 +404,7 @@ void TagEditor::setVariousHint()
         disc->setVarious(0==all.disc && haveDiscs);
         year->setVarious(0==all.year && haveYears);
         if (ratingWidget) {
-            ratingVarious->setVisible(Song::constNullRating==all.rating && haveRatings);
+            ratingVarious->setVisible(Song::Rating_Null==all.rating && haveRatings);
         }
     } else if (ratingVarious) {
         ratingVarious->setVisible(false);
@@ -690,7 +690,7 @@ void TagEditor::readRatings()
             }
             Song s=edited.at(i);
             int r=Tags::readRating(baseDir+s.file);
-            if (r>=0 && r<=RatingPainter::constNumStars && s.rating!=r) {
+            if (r>=0 && r<=Song::Rating_Max && s.rating!=r) {
                 s.rating=r;
                 edited.replace(i, s);
                 updated.append(s.file);
@@ -706,7 +706,7 @@ void TagEditor::readRatings()
     } else {
         Song s=edited.at(currentSongIndex);
         int r=Tags::readRating(baseDir+s.file);
-        if (r>=0 && r<=RatingPainter::constNumStars && s.rating!=r) {
+        if (r>=0 && r<=Song::Rating_Max && s.rating!=r) {
             s.rating=r;
             edited.replace(currentSongIndex, s);
             setSong(s);
@@ -896,11 +896,11 @@ void TagEditor::rating(const QString &f, quint8 r)
     }
     for (int i=original.count()>1 ? 1 : 0; i<original.count(); ++i) {
         Song s=original.at(i);
-        if (Song::constNullRating==s.rating && s.rating!=r && s.file==f) {
+        if (Song::Rating_Null==s.rating && s.rating!=r && s.file==f) {
             s.rating=r;
             original.replace(i, s);
             s=edited.at(i);
-            if (Song::constNullRating==s.rating) {
+            if (Song::Rating_Null==s.rating) {
                 s.rating=r;
                 edited.replace(i, s);
             }
@@ -911,11 +911,11 @@ void TagEditor::rating(const QString &f, quint8 r)
     }
 
     if (original.count()>1 && !haveRatings) {
-        quint8 rating=Song::constNullRating;
+        quint8 rating=Song::Rating_Null;
         bool first=true;
         for (int i=1; i<original.count() && !haveRatings; ++i) {
             quint8 r=original.at(i).rating;
-            if (Song::constNullRating==r) {
+            if (Song::Rating_Null==r) {
                 continue;
             }
             if (first) {
@@ -923,7 +923,7 @@ void TagEditor::rating(const QString &f, quint8 r)
                 first=false;
             } else if (r!=rating) {
                 haveRatings=true;
-                rating=Song::constNullRating;
+                rating=Song::Rating_Null;
             }
         }
         Song s=original.at(0);
@@ -947,12 +947,12 @@ void TagEditor::checkRating()
 {
     checkChanged();
     if (original.count()>1 && 0==currentSongIndex) {
-        quint8 rating=Song::constNullRating;
+        quint8 rating=Song::Rating_Null;
         bool first=true;
         haveRatings=false;
         for (int i=1; i<edited.count() && !haveRatings; ++i) {
             quint8 r=edited.at(i).rating;
-            if (Song::constNullRating==r) {
+            if (Song::Rating_Null==r) {
                 continue;
             }
             if (first) {
@@ -960,7 +960,7 @@ void TagEditor::checkRating()
                 first=false;
             } else if (r!=rating) {
                 haveRatings=true;
-                rating=Song::constNullRating;
+                rating=Song::Rating_Null;
             }
         }
         Song s=edited.at(0);

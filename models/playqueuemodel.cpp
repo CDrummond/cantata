@@ -421,9 +421,9 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     case Cantata::Role_Song: {
         QVariant var;
         const Song &s=songs.at(index.row());
-        if (Song::Standard==s.type && Song::constNullRating==s.rating) {
+        if (Song::Standard==s.type && Song::Rating_Null==s.rating) {
             emit getRating(s.file);
-            s.rating=Song::constRatingRequested;
+            s.rating=Song::Rating_Requested;
         }
         var.setValue<Song>(s);
         return var;
@@ -867,10 +867,10 @@ void PlayQueueModel::updateCurrentSong(quint32 id)
     currentSongRowNum=getRowById(currentSongId);
     if (currentSongRowNum>0 && currentSongRowNum<=songs.count()) {
         const Song &song=songs.at(currentSongRowNum);
-        if (Song::constNullRating==song.rating) {
-            song.rating=Song::constRatingRequested;
+        if (Song::Rating_Null==song.rating) {
+            song.rating=Song::Rating_Requested;
             emit getRating(song.file);
-        } else if (Song::constRatingRequested!=song.rating) {
+        } else if (Song::Rating_Requested!=song.rating) {
             emit currentSongRating(song.file, song.rating);
         }
     }
@@ -1350,7 +1350,7 @@ void PlayQueueModel::stickerDbChanged()
     // Sticker DB changed, need to re-request ratings...
     QSet<QString> requests;
     foreach (const Song &song, songs) {
-        if (Song::Standard==song.type && song.rating<Song::constRatingRequested && !requests.contains(song.file)) {
+        if (Song::Standard==song.type && song.rating<=Song::Rating_Max && !requests.contains(song.file)) {
             emit getRating(song.file);
             requests.insert(song.file);
         }

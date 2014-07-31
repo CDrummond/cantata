@@ -144,8 +144,6 @@ void Song::setUseComposer(bool u)
 }
 
 const quint16 Song::constNullKey(0xFFFF);
-const quint8 Song::constNullRating(0xFF);
-const quint8 Song::constRatingRequested(0xFE);
 
 Song::Song()
     : disc(0)
@@ -157,7 +155,7 @@ Song::Song()
     , guessed(false)
     , id(-1)
     , size(0)
-    , rating(constNullRating)
+    , rating(Rating_Null)
     , key(constNullKey)
 {
 }

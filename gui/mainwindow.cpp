@@ -723,7 +723,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(sep);
     ratingAction=new Action(i18n("Set Rating"), this);
     ratingAction->setMenu(new QMenu(0));
-    for (int i=0; i<6; ++i) {
+    for (int i=0; i<((Song::Rating_Max/Song::Rating_Step)+1); ++i) {
         QString text;
         if (0==i) {
             text=i18n("No Rating");
@@ -734,7 +734,7 @@ MainWindow::MainWindow(QWidget *parent)
             }
         }
         Action *action=new Action(text, ratingAction);
-        action->setProperty(constRatingKey, i);
+        action->setProperty(constRatingKey, i*Song::Rating_Step);
         ratingAction->menu()->addAction(action);
         connect(action, SIGNAL(triggered(bool)), SLOT(setRating()));
     }

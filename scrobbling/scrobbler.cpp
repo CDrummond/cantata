@@ -386,7 +386,7 @@ void Scrobbler::setSong(const Song &s)
         }
         scrobbleTimer->setInterval(timeout);
 
-        if (MPDState_Playing==MPDStatus::self()->state() && s.time>30) {
+        if (MPDState_Playing==MPDStatus::self()->state()) {
             mpdStateUpdated();
         }
     }

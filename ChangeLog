@@ -28,6 +28,8 @@
  9. Only enable 'center on current track' action if there is a current track.
 10. Use comma to split multiple genres in tooltip.
 11. Don't URL encode scrobble keys, just values.
+12. If now playing has been sent, track has not been scrobbled, then when track
+    is played after beeing paused for more than 5 seconds resend now playing.
 
 1.4.0
 -----

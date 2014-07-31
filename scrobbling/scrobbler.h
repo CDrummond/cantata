@@ -140,6 +140,7 @@ private:
     PausableTimer * scrobbleTimer;
     QTimer * retryTimer;
     PausableTimer * nowPlayingTimer;
+    time_t lastNowPlaying;
     QTimer * hardFailTimer;
     bool nowPlayingIsPending;
     bool lovePending;

@@ -61,6 +61,7 @@ const QLatin1String Scrobbler::constCacheFile("tracks.xml.gz");
 static const QLatin1String constSettingsGroup("Scrobbling");
 static const QString constSecretKey=QLatin1String("0753a75ccded9b17b872744d4bb60b35");
 static const int constMaxBatchSize=50;
+static const int constNowPlayingInterval=5000;
 
 GLOBAL_STATIC(Scrobbler, instance)
 
@@ -161,6 +162,7 @@ Scrobbler::Scrobbler()
     , scrobblingEnabled(false)
     , loveIsEnabled(false)
     , scrobbler("Last.fm")
+    , lastNowPlaying(0)
     , nowPlayingIsPending(false)
     , lovePending(false)
     , lastScrobbleFailed(false)
@@ -180,7 +182,7 @@ Scrobbler::Scrobbler()
     scrobbleTimer->setSingleShot(true);
     nowPlayingTimer = new PausableTimer();
     nowPlayingTimer->setSingleShot(true);
-    nowPlayingTimer->setInterval(5000);
+    nowPlayingTimer->setInterval(constNowPlayingInterval);
     retryTimer = new QTimer(this);
     retryTimer->setSingleShot(true);
     retryTimer->setInterval(10000);
@@ -370,7 +372,10 @@ void Scrobbler::setSong(const Song &s)
         }
 
         int elapsed=MPDStatus::self()->timeElapsed()*1000;
-        int nowPlayingTimemout=5000;
+        if (elapsed<0) {
+            elapsed=0;
+        }
+        int nowPlayingTimemout=constNowPlayingInterval;
         if (elapsed>4000) {
             nowPlayingTimemout=10;
         } else {
@@ -422,6 +427,7 @@ void Scrobbler::scrobbleNowPlaying()
     sign(params);
     DBUG << currentSong.title << currentSong.artist << currentSong.albumartist << currentSong.album << currentSong.track << currentSong.length;
     nowPlayingSent=true;
+    lastNowPlaying=time(NULL);
     if (!fakeScrobbling) {
         QNetworkReply *job=NetworkAccessManager::self()->postFormData(QUrl(scrobblerUrl()), format(params));
         connect(job, SIGNAL(finished()), this, SLOT(handleResp()));
@@ -739,21 +745,33 @@ void Scrobbler::mpdStateUpdated()
             scrobbleTimer->pause();
             nowPlayingTimer->pause();
             break;
-        case MPDState_Playing:
-            if (0==currentSong.timestamp) {
-                currentSong.timestamp = time(NULL)-MPDStatus::self()->timeElapsed();
-            }
+        case MPDState_Playing: {
+            time_t now=time(NULL);
+            currentSong.timestamp = now-MPDStatus::self()->timeElapsed();
+            DBUG << "Timestamp:" << currentSong.timestamp << "scrobbledCurrent:" << scrobbledCurrent << "nowPlayingSent:" << nowPlayingSent
+                 << "now:" << now << "lastNowPlaying:" << lastNowPlaying;
             if (!scrobbledCurrent) {
                 scrobbleTimer->start();
             }
+            // Send now playing if it has not already been sent, or if not scrobbled current track and its been
+            // over X seconds since now paying was sent.
             if (!nowPlayingSent) {
                 nowPlayingTimer->start();
+            } else if (!scrobbledCurrent && now-lastNowPlaying>constNowPlayingInterval) {
+                int remainging=(MPDStatus::self()->timeTotal()-MPDStatus::self()->timeElapsed())*1000;
+                DBUG << "reamining:" << remainging;
+                if (remainging>constNowPlayingInterval) {
+                    nowPlayingTimer->setInterval(constNowPlayingInterval);
+                    nowPlayingSent=false;
+                    nowPlayingTimer->start();
+                }
             }
             break;
+        }
         default:
             scrobbleTimer->stop();
             nowPlayingTimer->stop();
-            nowPlayingTimer->setInterval(5000);
+            nowPlayingTimer->setInterval(constNowPlayingInterval);
         }
     }
 }

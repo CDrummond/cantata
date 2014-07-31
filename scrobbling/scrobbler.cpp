@@ -354,6 +354,29 @@ void Scrobbler::setLoveEnabled(bool e)
     }
 }
 
+void Scrobbler::calcScrobbleIntervals()
+{
+    int elapsed=MPDStatus::self()->timeElapsed()*1000;
+    if (elapsed<0) {
+        elapsed=0;
+    }
+    int nowPlayingTimemout=constNowPlayingInterval;
+    if (elapsed>4000) {
+        nowPlayingTimemout=10;
+    } else {
+        nowPlayingTimemout-=elapsed;
+    }
+    nowPlayingTimer->setInterval(nowPlayingTimemout);
+    int timeout=qMin(currentSong.length/2, (quint32)240)*1000; // Scrobble at 1/2 way point or 4 mins - whichever comes first!
+    DBUG << "timeout" << timeout << elapsed << nowPlayingTimemout;
+    if (timeout>elapsed) {
+        timeout-=elapsed;
+    } else {
+        timeout=100;
+    }
+    scrobbleTimer->setInterval(timeout);
+}
+
 void Scrobbler::setSong(const Song &s)
 {
     DBUG << isEnabled() << s.isStandardStream() << s.time << s.file << s.title << s.artist << s.album << s.albumartist;
@@ -372,26 +395,7 @@ void Scrobbler::setSong(const Song &s)
             return;
         }
 
-        int elapsed=MPDStatus::self()->timeElapsed()*1000;
-        if (elapsed<0) {
-            elapsed=0;
-        }
-        int nowPlayingTimemout=constNowPlayingInterval;
-        if (elapsed>4000) {
-            nowPlayingTimemout=10;
-        } else {
-            nowPlayingTimemout-=elapsed;
-        }
-        nowPlayingTimer->setInterval(nowPlayingTimemout);
-        int timeout=qMin(s.time/2, 240)*1000; // Scrobble at 1/2 way point or 4 mins - whichever comes first!
-        DBUG << "timeout" << timeout << elapsed << nowPlayingTimemout;
-        if (timeout>elapsed) {
-            timeout-=elapsed;
-        } else {
-            timeout=100;
-        }
-        scrobbleTimer->setInterval(timeout);
-
+        calcScrobbleIntervals();
         if (MPDState_Playing==MPDStatus::self()->state()) {
             mpdStateUpdated(true);
         }
@@ -742,7 +746,10 @@ void Scrobbler::mpdStateUpdated(bool songChanged)
 {
     if (isEnabled() && !scrobbleViaMpd) {
         DBUG << songChanged << lastState << MPDStatus::self()->state();
-        if (!songChanged && lastState==MPDStatus::self()->state()) {
+        bool stateChange=songChanged || lastState!=MPDStatus::self()->state();
+        bool isRepeat=!stateChange && MPDState_Playing==MPDStatus::self()->state() &&
+                      MPDStatus::self()->timeElapsed()>=0 && MPDStatus::self()->timeElapsed()<2;
+        if (!stateChange && !isRepeat) {
             return;
         }
         lastState=MPDStatus::self()->state();
@@ -755,7 +762,16 @@ void Scrobbler::mpdStateUpdated(bool songChanged)
             time_t now=time(NULL);
             currentSong.timestamp = now-MPDStatus::self()->timeElapsed();
             DBUG << "Timestamp:" << currentSong.timestamp << "scrobbledCurrent:" << scrobbledCurrent << "nowPlayingSent:" << nowPlayingSent
-                 << "now:" << now << "lastNowPlaying:" << lastNowPlaying;
+                 << "now:" << now << "lastNowPlaying:" << lastNowPlaying << "isRepeat:" << isRepeat;
+
+            if (isRepeat) {
+                calcScrobbleIntervals();
+                nowPlayingSent=scrobbledCurrent=nowPlayingIsPending=false;
+                lastNowPlaying=0;
+                scrobbleTimer->start();
+                nowPlayingTimer->start();
+                return;
+            }
             if (!scrobbledCurrent) {
                 scrobbleTimer->start();
             }

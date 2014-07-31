@@ -121,6 +121,7 @@ private:
     bool ensureAuthenticated();
     void loadCache();
     void saveCache();
+    void calcScrobbleIntervals();
     void cancelJobs();
     void reset();
     void loadScrobblers();

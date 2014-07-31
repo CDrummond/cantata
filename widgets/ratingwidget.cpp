@@ -31,8 +31,8 @@
 #include <QApplication>
 #include <QLabel>
 
-const int RatingPainter::constNumStars;
-
+static bool allowHalfStars=true; // TODO: Make this configurable???
+static const int constNumStars=Song::Rating_Max/Song::Rating_Step;
 static const int constBorder=2;
 
 RatingPainter::RatingPainter(int s)
@@ -44,7 +44,7 @@ RatingPainter::RatingPainter(int s)
 
 void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
 {
-    if (rating<0 || rating>constNumStars) {
+    if (rating<0 || rating>Song::Rating_Max) {
         return;
     }
     if (isNull()) {
@@ -65,11 +65,19 @@ void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
             QPainter painter(&(pixmaps[p]));
             renderer.render(&painter, 1==p ? "on" : "off", QRectF(0, 0, starSz, starSz));
         }
+        pixmaps[2]=QPixmap(starSz, starSz);
+        pixmaps[2].fill(Qt::transparent);
+        QPainter painter(&(pixmaps[2]));
+        int halfSz=(starSz/2.0)+0.5;
+        painter.drawPixmap(0, 0, pixmaps[1], 0, 0, halfSz, starSz);
+        painter.drawPixmap(halfSz, 0, pixmaps[0], halfSz, 0, starSz-halfSz, starSz);
     }
 
     QRect pr(r.x(), r.y()+(r.height()-starSz)/2, starSz, starSz);
+    int fullStars=rating/Song::Rating_Step;
+    bool half=allowHalfStars && rating%Song::Rating_Step;
     for (int i=0; i<constNumStars; ++i) {
-        p->drawPixmap(pr, pixmaps[i<rating ? 1 : 0]);
+        p->drawPixmap(pr, pixmaps[half && i==fullStars ? 2 : i<fullStars ? 1 : 0]);
         pr.setX(pr.x()+starSz+constBorder);
     }
 }
@@ -119,7 +127,7 @@ void RatingWidget::paintEvent(QPaintEvent *e)
     if (!isEnabled()) {
         p.setOpacity(0.5);
     }
-    rp.paint(&p, rect(), -1==hoverVal ? (showZeroForNull && val==Song::constNullRating ? 0 : val) : hoverVal);
+    rp.paint(&p, rect(), -1==hoverVal ? (showZeroForNull && val==Song::Rating_Null ? 0 : val) : hoverVal);
 }
 
 void RatingWidget::mousePressEvent(QMouseEvent *e)
@@ -146,9 +154,8 @@ void RatingWidget::leaveEvent(QEvent *e)
 QRect RatingWidget::contentsRect() const
 {
     const QRect &r=rect();
-    const int width = rp.starSize() * RatingPainter::constNumStars;
+    const int width = rp.size().width();
     const int x = r.x() + (r.width() - width) / 2;
-
     return QRect(x, r.y(), width, r.height());
 }
 
@@ -156,5 +163,12 @@ int RatingWidget::valueForPos(const QPoint &pos) const
 {
     const QRect contents = contentsRect();
     const double raw = double(pos.x() - contents.left()) / contents.width();
-    return (raw*RatingPainter::constNumStars)+0.5;
+    if (!allowHalfStars) {
+        int v=(raw*Song::Rating_Max);
+        if (v%Song::Rating_Step) {
+            v++;
+        }
+        return v;
+    }
+    return (raw*Song::Rating_Max)+0.5;
 }

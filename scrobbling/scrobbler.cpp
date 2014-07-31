@@ -30,7 +30,6 @@
 #include "config.h"
 #include "gui/covers.h"
 #include "network/networkaccessmanager.h"
-#include "mpd/mpdstatus.h"
 #include "mpd/mpdconnection.h"
 #include "support/localize.h"
 #include "support/globalstatic.h"
@@ -171,6 +170,7 @@ Scrobbler::Scrobbler()
     , scrobbledCurrent(false)
     , scrobbleViaMpd(false)
     , failedCount(0)
+    , lastState(MPDState_Inactive)
     , authJob(0)
     , scrobbleJob(0)
 {
@@ -366,6 +366,7 @@ void Scrobbler::setSong(const Song &s)
     if (currentSong.artist != s.artist || currentSong.title!=s.title || currentSong.album!=s.album) {
         nowPlayingSent=scrobbledCurrent=loveSent=lovePending=nowPlayingIsPending=false;
         currentSong=s;
+        lastNowPlaying=0;
         emit songChanged(!s.isStandardStream() && !s.isEmpty());
         if (scrobbleViaMpd || !isEnabled() || s.isStandardStream() || s.time<30) {
             return;
@@ -392,7 +393,7 @@ void Scrobbler::setSong(const Song &s)
         scrobbleTimer->setInterval(timeout);
 
         if (MPDState_Playing==MPDStatus::self()->state()) {
-            mpdStateUpdated();
+            mpdStateUpdated(true);
         }
     }
 }
@@ -737,10 +738,15 @@ void Scrobbler::saveCache()
     }
 }
 
-void Scrobbler::mpdStateUpdated()
+void Scrobbler::mpdStateUpdated(bool songChanged)
 {
     if (isEnabled() && !scrobbleViaMpd) {
-        switch (MPDStatus::self()->state()) {
+        DBUG << songChanged << lastState << MPDStatus::self()->state();
+        if (!songChanged && lastState==MPDStatus::self()->state()) {
+            return;
+        }
+        lastState=MPDStatus::self()->state();
+        switch (lastState) {
         case MPDState_Paused:
             scrobbleTimer->pause();
             nowPlayingTimer->pause();
@@ -757,10 +763,10 @@ void Scrobbler::mpdStateUpdated()
             // over X seconds since now paying was sent.
             if (!nowPlayingSent) {
                 nowPlayingTimer->start();
-            } else if (!scrobbledCurrent && now-lastNowPlaying>constNowPlayingInterval) {
-                int remainging=(MPDStatus::self()->timeTotal()-MPDStatus::self()->timeElapsed())*1000;
-                DBUG << "reamining:" << remainging;
-                if (remainging>constNowPlayingInterval) {
+            } else if (!scrobbledCurrent && ((now-lastNowPlaying)*1000)>constNowPlayingInterval) {
+                int remaining=(MPDStatus::self()->timeTotal()-MPDStatus::self()->timeElapsed())*1000;
+                DBUG << "remaining:" << remaining;
+                if (remaining>constNowPlayingInterval) {
                     nowPlayingTimer->setInterval(constNowPlayingInterval);
                     nowPlayingSent=false;
                     nowPlayingTimer->start();

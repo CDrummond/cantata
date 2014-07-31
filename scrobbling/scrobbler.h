@@ -35,6 +35,7 @@
 #include <QUrl>
 #include <QMap>
 #include <time.h>
+#include "mpd/mpdstatus.h"
 
 class QTimer;
 class QNetworkReply;
@@ -110,7 +111,7 @@ private Q_SLOTS:
     void authenticate();
     void authResp();
     void scrobbleFinished();
-    void mpdStateUpdated();
+    void mpdStateUpdated(bool songChanged=false);
     void mpdStatusUpdated(const MPDStatusValues &vals);
     void clientMessageFailed(const QString &client, const QString &msg);
 
@@ -150,6 +151,7 @@ private:
     bool scrobbledCurrent;
     bool scrobbleViaMpd;
     int failedCount;
+    MPDState lastState;
 
     QNetworkReply *authJob;
     QNetworkReply *scrobbleJob;

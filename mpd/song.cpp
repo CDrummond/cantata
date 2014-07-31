@@ -143,8 +143,6 @@ void Song::setUseComposer(bool u)
     useComposerIfSet=u;
 }
 
-const quint16 Song::constNullKey(0xFFFF);
-
 Song::Song()
     : disc(0)
     , priority(0)
@@ -156,7 +154,7 @@ Song::Song()
     , id(-1)
     , size(0)
     , rating(Rating_Null)
-    , key(constNullKey)
+    , key(Null_Key)
 {
 }
 

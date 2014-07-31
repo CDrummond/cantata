@@ -37,9 +37,14 @@
 
 struct Song
 {
+    enum RatingConstants {
+        Rating_Step = 2,
+        Rating_Max = 10,
+        Rating_Requested = 0xFE,
+        Rating_Null = 0xFF
+    };
+
     static const quint16 constNullKey;
-    static const quint8 constNullRating;
-    static const quint8 constRatingRequested;
     static const QLatin1Char constGenreSep;
 
     static bool useComposer();

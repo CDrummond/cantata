@@ -428,7 +428,7 @@ public:
 
     int drawRatings(QPainter *painter, const Song &song, const QRect &r, const QFontMetrics &fm, const QColor &col) const
     {
-        if (song.rating>0 && song.rating<=RatingPainter::constNumStars) {
+        if (song.rating>0 && song.rating<=Song::Rating_Max) {
             if (!ratingPainter) {
                 ratingPainter=new RatingPainter(r.height()-(constBorder*8));
                 ratingPainter->setColor(col);

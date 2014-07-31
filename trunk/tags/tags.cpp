@@ -114,7 +114,8 @@ TagLib::String qString2TString(const QString &str)
 }
 
 static int convertRating(double r) {
-    return qRound(r/2.0);
+    return (int)r;
+    //return qRound(r/2.0);
 }
 
 static double parseDoubleString(const TagLib::String &str) {

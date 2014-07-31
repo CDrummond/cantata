@@ -931,7 +931,7 @@ void TagEditor::rating(const QString &f, quint8 r)
             s.rating=rating;
             original.replace(0, s);
             s=edited.at(0);
-            if (Song::constNullKey==s.rating && s.rating!=rating) {
+            if (Song::Rating_Null==s.rating && s.rating!=rating) {
                 s.rating=rating;
                 edited.replace(0, s);
             }

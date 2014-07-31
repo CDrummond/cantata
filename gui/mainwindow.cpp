@@ -1626,7 +1626,6 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     StdActions::self()->prevTrackAction->setEnabled(StdActions::self()->stopPlaybackAction->isEnabled() && songs.count()>1);
     StdActions::self()->savePlayQueueAction->setEnabled(!songs.isEmpty());
     promptClearPlayQueueAction->setEnabled(!songs.isEmpty());
-    centerPlayQueueAction->setEnabled(songs.count()>1);
 
     int topRow=-1;
     QModelIndex topIndex=playQueueModel.lastCommandWasUnodOrRedo() ? playQueue->indexAt(QPoint(0, 0)) : QModelIndex();
@@ -1698,6 +1697,7 @@ void MainWindow::updateCurrentSong(const Song &song, bool wasEmpty)
     scrollPlayQueue(wasEmpty);
     context->update(current);
     trayItem->songChanged(song, isPlaying);
+    centerPlayQueueAction->setEnabled(!song.isEmpty());
 }
 
 void MainWindow::scrollPlayQueue(bool wasEmpty)

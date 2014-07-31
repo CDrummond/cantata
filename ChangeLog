@@ -14,18 +14,19 @@
 
 1.4.1
 -----
-1. Remove unused var warning when compiling without online services.
-2. Remove some moc/QObject warnings in KDE builds without streams or http
-   server.
-3. Update current song to scrobble, even if disabled, so that when enabled we
-   can scrobble.
-4. Seems like MPDSribble itself is broken with regards to sening "love" status,
-   so remove MPDScribble from list of scrobblers.
-5. Last.fm replies are XML, so decode these properly!
-6. Don't log scrobbler session key to debug file.
-7. Remove extra margin in podcast settings dialog.
-8. When adjusting track numbers in tag editor, start from first actual track.
-9. Only enable 'center on current track' action if there is a current track.
+ 1. Remove unused var warning when compiling without online services.
+ 2. Remove some moc/QObject warnings in KDE builds without streams or http
+    server.
+ 3. Update current song to scrobble, even if disabled, so that when enabled we
+    can scrobble.
+ 4. Seems like MPDSribble itself is broken with regards to sening "love" status,
+    so remove MPDScribble from list of scrobblers.
+ 5. Last.fm replies are XML, so decode these properly!
+ 6. Don't log scrobbler session key to debug file.
+ 7. Remove extra margin in podcast settings dialog.
+ 8. When adjusting track numbers in tag editor, start from first actual track.
+ 9. Only enable 'center on current track' action if there is a current track.
+10. Use comma to split multiple genres in tooltip.
 
 1.4.0
 -----

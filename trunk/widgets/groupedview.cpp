@@ -152,7 +152,7 @@ static Type getType(const QModelIndex &index)
 {
     QModelIndex prev=index.row()>0 ? index.sibling(index.row()-1, 0) : QModelIndex();
     quint16 thisKey=index.data(Cantata::Role_Key).toUInt();
-    quint16 prevKey=prev.isValid() ? prev.data(Cantata::Role_Key).toUInt() : Song::constNullKey;
+    quint16 prevKey=prev.isValid() ? prev.data(Cantata::Role_Key).toUInt() : (quint16)Song::Null_Key;
 
     return thisKey==prevKey ? AlbumTrack : AlbumHeader;
 }
@@ -287,7 +287,7 @@ public:
         } else if (AlbumHeader==type) {
             if (stream) {
                 QModelIndex next=index.sibling(index.row()+1, 0);
-                quint16 nextKey=next.isValid() ? next.data(Cantata::Role_Key).toUInt() : Song::constNullKey;
+                quint16 nextKey=next.isValid() ? next.data(Cantata::Role_Key).toUInt() : (quint16)Song::Null_Key;
                 if (nextKey!=song.key && !song.name().isEmpty()) {
                     title=song.name();
                     track=streamText(song, trackTitle, false);
@@ -461,7 +461,7 @@ GroupedView::GroupedView(QWidget *parent, bool isPlayQueue)
     , autoExpand(true)
     , filterActive(false)
     , isMultiLevel(false)
-    , currentAlbum(Song::constNullKey)
+    , currentAlbum(Song::Null_Key)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setAcceptDrops(true);
@@ -569,7 +569,7 @@ void GroupedView::updateRows(const QModelIndex &parent)
     }
 
     qint32 count=model()->rowCount(parent);
-    quint16 lastKey=Song::constNullKey;
+    quint16 lastKey=Song::Null_Key;
     quint32 collection=parent.data(Cantata::Role_CollectionId).toUInt();
     QSet<quint16> keys;
 
@@ -594,7 +594,7 @@ void GroupedView::updateCollectionRows()
         return;
     }
 
-    currentAlbum=Song::constNullKey;
+    currentAlbum=Song::Null_Key;
     qint32 count=model()->rowCount();
     for (int i=0; i<count; ++i) {
         updateRows(model()->index(i, 0));
@@ -732,7 +732,7 @@ void GroupedView::coverLoaded(const Song &song, int size)
         return;
     }
     quint32 count=model()->rowCount();
-    quint16 lastKey=Song::constNullKey;
+    quint16 lastKey=Song::Null_Key;
     QString albumArtist=song.albumArtist();
     QString album=song.album;
 
@@ -742,7 +742,7 @@ void GroupedView::coverLoaded(const Song &song, int size)
             continue;
         }
         if (isMultiLevel && model()->hasChildren(index)) {
-            lastKey=Song::constNullKey;
+            lastKey=Song::Null_Key;
             quint32 childCount=model()->rowCount(index);
             for (quint32 c=0; c<childCount; ++c) {
                 QModelIndex child=model()->index(c, 0, index);

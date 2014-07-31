@@ -728,7 +728,6 @@ MainWindow::MainWindow(QWidget *parent)
         if (0==i) {
             text=i18n("No Rating");
         } else {
-            text=QString::number(i)+QLatin1Char(' ');
             for (int s=0; s<i; ++s) {
                 text+=QChar(0x2605);
             }

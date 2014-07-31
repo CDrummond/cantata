@@ -524,7 +524,7 @@ QString Song::toolTip() const
     if (disc>0) {
         addField(i18n("Disc number"), QString::number(disc), toolTip);
     }
-    addField(i18n("Genre"), genre, toolTip);
+    addField(i18n("Genre"), QString(genre).replace(constGenreSep, QLatin1String(", ")), toolTip);
     if (year>0) {
         addField(i18n("Year"), QString::number(year), toolTip);
     }

@@ -1184,6 +1184,7 @@ void MPDConnection::getStatus()
             stopVolumeFade();
         }
         if (stopAfterCurrent && (currentSongId!=sv.songId || (songPos>0 && sv.timeElapsed<(qint32)songPos))) {
+            stopVolumeFade();
             if (sendCommand("stop").ok) {
                 sv.state=MPDState_Stopped;
             }

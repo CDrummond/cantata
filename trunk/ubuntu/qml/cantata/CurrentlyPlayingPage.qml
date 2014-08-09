@@ -26,9 +26,9 @@
 *************************************************************************/
 
 import QtQuick 2.0
-import Ubuntu.Components 0.1
+import Ubuntu.Components 1.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
-import Ubuntu.Components.Popups 0.1
+import Ubuntu.Components.Popups 1.0
 import 'qrc:/qml/cantata/components'
 
 Page {
@@ -90,7 +90,7 @@ Page {
             action: Action {
                 iconSource: Qt.resolvedUrl("../../icons/toolbar/navigation-menu.svg")
                 text: i18n.tr("Actions")
-                onTriggered: actionsPopover = PopupUtils.open(actionsPopoverComponent, actionActionToolbarButton) //TODO: Fix anchor
+                onTriggered: actionsPopover = PopupUtils.open(actionsPopoverComponent) //TODO: TEST!!!
             }
             visible: isPhone
         }
@@ -99,18 +99,11 @@ Page {
     Component {
         id: actionsPopoverComponent
 
-        Popover {
+        Dialog {
             id: actionsPopover
 
-            Column {
-                id: containerLayout
-                anchors {
-                    left: parent.left
-                    top: parent.top
-                    right: parent.right
-                }
-
-                ListItem.Header { text: i18n.tr("Playback") }
+            contents: [
+                ListItem.Header { text: i18n.tr("Playback") },
                 ListItem.Standard {
                     Label {
                         anchors {
@@ -145,7 +138,7 @@ Page {
                             }
                         }
                     }
-                }
+                },
                 ListItem.Standard {
                     Label {
                         anchors {
@@ -180,12 +173,12 @@ Page {
                             }
                         }
                     }
-                }
+                },
 
                 ListItem.Header {
                     id: volumeHeader
                     text: i18n.tr("Volume")
-                }
+                },
 
                 ListItem.Standard {
                     anchors {
@@ -230,7 +223,7 @@ Page {
                         }
                     }
                 }
-            }
+            ]
         }
     }
 

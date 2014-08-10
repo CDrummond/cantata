@@ -46,10 +46,7 @@ Page {
     ]
 
     HostSettingsContent {
-        width: Math.round(parent.width / 1.3)
-        height: parent.height - root.header.height
-        y: units.gu(2)
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.fill: parent
     }
 
 }

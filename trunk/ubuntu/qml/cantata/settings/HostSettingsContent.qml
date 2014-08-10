@@ -29,162 +29,172 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 import U1db 1.0 as U1db
+Flickable {
+    clip: true
 
-Column {
-    id: connectionDetailsColumn
-    spacing: units.gu(1)
+    contentHeight: connectionDetailsColumn.height
 
     property color textFieldColor: "#c2c2b8" //#f3f3e7 * 0.8 (#f3f3e7: label color)
 
-    Component.onCompleted: {
-        fillWithU1dbData()
-        tryToConnect()
-    }
+    Column {
+        id: connectionDetailsColumn
+        spacing: units.gu(1)
 
-    function fillWithU1dbData() {
-        var contents = settingsBackend.getConnectionContents()
-        if (typeof contents != "undefined") {
-            hostTextField.text = contents["host"]
-            portTextField.text = contents["port"]
-            passwordTextField.text = contents["password"]
-            musicfolderTextField.text = contents["musicfolder"]
-        }
-    }
+        width: Math.round(parent.width / 1.3)
+        height: parent.parent.height - root.header.height
+        y: units.gu(2)
+        anchors.horizontalCenter: parent.horizontalCenter
 
-    function saveDataToU1db() {
-        var contents = {};
-        contents["host"] = hostTextField.text
-        contents["port"] = portTextField.text
-        contents["password"] = passwordTextField.text
-        contents["musicfolder"] = musicfolderTextField.text
-        settingsBackend.setConnectionContents(contents)
-    }
-
-    Label {
-        id: hostLabel
-        text: i18n.tr("Host:")
-        anchors {
-            left: connectionDetailsColumn.left;
-            right: connectionDetailsColumn.right;
-        }
-
-        fontSize: "medium"
-    }
-
-    TextField {
-        id: hostTextField
-        color: textFieldColor
-        anchors {
-            left: connectionDetailsColumn.left;
-            right: connectionDetailsColumn.right;
-        }
-
-        KeyNavigation.priority: KeyNavigation.BeforeItem
-        KeyNavigation.tab: portTextField
-    }
-
-    Label {
-        id: portLabel
-        text: i18n.tr("Port:")
-        anchors {
-            left: connectionDetailsColumn.left;
-            right: connectionDetailsColumn.right;
-        }
-
-        fontSize: "medium"
-    }
-
-    TextField {
-        id: portTextField
-        color: textFieldColor
-        anchors {
-            left: connectionDetailsColumn.left;
-            right: connectionDetailsColumn.right;
-        }
-        validator: IntValidator { bottom: 1; top: 65535 }
-
-        KeyNavigation.priority: KeyNavigation.BeforeItem
-        KeyNavigation.tab: passwordTextField
-        KeyNavigation.backtab: hostTextField
-
-        placeholderText: "6600"
-    }
-
-    Label {
-        id: passwordLabel
-        text: i18n.tr("Password:")
-
-        fontSize: "medium"
-    }
-
-    TextField {
-        id: passwordTextField
-        color: textFieldColor
-        anchors {
-            left: connectionDetailsColumn.left;
-            right: connectionDetailsColumn.right;
-        }
-
-        KeyNavigation.priority: KeyNavigation.BeforeItem
-        KeyNavigation.tab: musicfolderTextField
-        KeyNavigation.backtab: portTextField
-
-        echoMode: TextInput.Password
-
-        onAccepted: { //Invoked when the enter key is pressed
-            connectButton.clicked()
-        }
-    }
-
-    Label {
-        id: musicfolderLabel
-        text: i18n.tr("Music Folder:")
-        anchors {
-            left: connectionDetailsColumn.left;
-            right: connectionDetailsColumn.right;
-        }
-
-        fontSize: "medium"
-    }
-
-    TextField {
-        id: musicfolderTextField
-        color: textFieldColor
-        anchors {
-            left: connectionDetailsColumn.left;
-            right: connectionDetailsColumn.right;
-        }
-
-        KeyNavigation.priority: KeyNavigation.BeforeItem
-        KeyNavigation.backtab: passwordTextField
-        placeholderText: "http://HOST/music" // TODO: Update this when hostTextField changes?
-    }
-
-    Item {
-        height: units.gu(0.5)
-        anchors {
-            left: connectionDetailsColumn.left;
-            right: connectionDetailsColumn.right;
-        }
-    }
-
-    Button {
-        id: connectButton
-        text: i18n.tr("Connect")
-        color: UbuntuColors.orange
-
-        width: parent.width
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-        }
-
-        onClicked: {
+        Component.onCompleted: {
+            fillWithU1dbData()
             tryToConnect()
-            connectionDetailsColumn.saveDataToU1db()
         }
-    }
 
-    function tryToConnect() {
-        backend.connectTo(hostTextField.text, (portTextField.text === "")?6600:portTextField.text, passwordTextField.text, musicfolderTextField.text)
+        function fillWithU1dbData() {
+            var contents = settingsBackend.getConnectionContents()
+            if (typeof contents != "undefined") {
+                hostTextField.text = contents["host"]
+                portTextField.text = contents["port"]
+                passwordTextField.text = contents["password"]
+                musicfolderTextField.text = contents["musicfolder"]
+            }
+        }
+
+        function saveDataToU1db() {
+            var contents = {};
+            contents["host"] = hostTextField.text
+            contents["port"] = portTextField.text
+            contents["password"] = passwordTextField.text
+            contents["musicfolder"] = musicfolderTextField.text
+            settingsBackend.setConnectionContents(contents)
+        }
+
+        Label {
+            id: hostLabel
+            text: i18n.tr("Host:")
+            anchors {
+                left: connectionDetailsColumn.left;
+                right: connectionDetailsColumn.right;
+            }
+
+            fontSize: "medium"
+        }
+
+        TextField {
+            id: hostTextField
+            color: textFieldColor
+            anchors {
+                left: connectionDetailsColumn.left;
+                right: connectionDetailsColumn.right;
+            }
+
+            KeyNavigation.priority: KeyNavigation.BeforeItem
+            KeyNavigation.tab: portTextField
+        }
+
+        Label {
+            id: portLabel
+            text: i18n.tr("Port:")
+            anchors {
+                left: connectionDetailsColumn.left;
+                right: connectionDetailsColumn.right;
+            }
+
+            fontSize: "medium"
+        }
+
+        TextField {
+            id: portTextField
+            color: textFieldColor
+            anchors {
+                left: connectionDetailsColumn.left;
+                right: connectionDetailsColumn.right;
+            }
+            validator: IntValidator { bottom: 1; top: 65535 }
+
+            KeyNavigation.priority: KeyNavigation.BeforeItem
+            KeyNavigation.tab: passwordTextField
+            KeyNavigation.backtab: hostTextField
+
+            placeholderText: "6600"
+        }
+
+        Label {
+            id: passwordLabel
+            text: i18n.tr("Password:")
+
+            fontSize: "medium"
+        }
+
+        TextField {
+            id: passwordTextField
+            color: textFieldColor
+            anchors {
+                left: connectionDetailsColumn.left;
+                right: connectionDetailsColumn.right;
+            }
+
+            KeyNavigation.priority: KeyNavigation.BeforeItem
+            KeyNavigation.tab: musicfolderTextField
+            KeyNavigation.backtab: portTextField
+
+            echoMode: TextInput.Password
+
+            onAccepted: { //Invoked when the enter key is pressed
+                connectButton.clicked()
+            }
+        }
+
+        Label {
+            id: musicfolderLabel
+            text: i18n.tr("Music Folder:")
+            anchors {
+                left: connectionDetailsColumn.left;
+                right: connectionDetailsColumn.right;
+            }
+
+            fontSize: "medium"
+        }
+
+        TextField {
+            id: musicfolderTextField
+            color: textFieldColor
+            anchors {
+                left: connectionDetailsColumn.left;
+                right: connectionDetailsColumn.right;
+            }
+
+            KeyNavigation.priority: KeyNavigation.BeforeItem
+            KeyNavigation.backtab: passwordTextField
+            placeholderText: "http://HOST/music" // TODO: Update this when hostTextField changes?
+        }
+
+        Item {
+            height: units.gu(0.5)
+            anchors {
+                left: connectionDetailsColumn.left;
+                right: connectionDetailsColumn.right;
+            }
+        }
+
+        Button {
+            id: connectButton
+            text: i18n.tr("Connect")
+            color: UbuntuColors.orange
+
+            width: parent.width
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+            }
+
+            onClicked: {
+                tryToConnect()
+                connectionDetailsColumn.saveDataToU1db()
+            }
+        }
+
+        function tryToConnect() {
+            backend.connectTo(hostTextField.text, (portTextField.text === "")?6600:portTextField.text, passwordTextField.text, musicfolderTextField.text)
+        }
     }
 }

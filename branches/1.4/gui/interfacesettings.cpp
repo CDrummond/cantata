@@ -189,9 +189,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
     connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playlistsViewChanged()));
     connect(playQueueView, SIGNAL(currentIndexChanged(int)), SLOT(playQueueViewChanged()));
-    connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
-    connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
-    connect(minimiseOnClose, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
     connect(touchFriendly, SIGNAL(toggled(bool)), SLOT(touchFriendlyChanged()));
     connect(views, SIGNAL(itemChanged(QListWidgetItem*)), SLOT(viewItemChanged(QListWidgetItem*)));
@@ -231,10 +228,19 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     if (!enableNotifications) {
         REMOVE(systemTrayPopup)
     }
-    if (!enableTrayItem) {
+    if (enableTrayItem) {
+        connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
+        connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
+        connect(minimiseOnClose, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
+    } else {
         REMOVE(systemTrayCheckBox)
+        REMOVE(minimiseOnClose)
+        REMOVE(startupState)
     }
 
+    if (!enableNotifications && !enableTrayItem) {
+        tabWidget->removeTab(6);
+    }
     #if defined Q_OS_WIN || defined Q_OS_MAC || !defined QT_QTDBUS_FOUND
     if (systemTrayPopup && systemTrayCheckBox) {
         connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(systemTrayCheckBoxToggled()));
@@ -294,19 +300,24 @@ void InterfaceSettings::load()
     showCoverWidget->setChecked(Settings::self()->showCoverWidget());
     if (systemTrayCheckBox) {
         systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
+        if (minimiseOnClose) {
+            minimiseOnClose->setChecked(Settings::self()->minimiseOnClose());
+            minimiseOnClose->setEnabled(systemTrayCheckBox->isChecked());
+        }
+        if (startupState) {
+            switch (Settings::self()->startupState()) {
+            case Settings::SS_ShowMainWindow: startupStateShow->setChecked(true); break;
+            case Settings::SS_HideMainWindow: startupStateHide->setChecked(true); break;
+            case Settings::SS_Previous: startupStateRestore->setChecked(true); break;
+            }
+
+            enableStartupState();
+        }
     }
     if (systemTrayPopup) {
         systemTrayPopup->setChecked(Settings::self()->showPopups());
     }
-    minimiseOnClose->setChecked(Settings::self()->minimiseOnClose());
-    minimiseOnClose->setEnabled(systemTrayCheckBox->isChecked());
-    switch (Settings::self()->startupState()) {
-    case Settings::SS_ShowMainWindow: startupStateShow->setChecked(true); break;
-    case Settings::SS_HideMainWindow: startupStateHide->setChecked(true); break;
-    case Settings::SS_Previous: startupStateRestore->setChecked(true); break;
-    }
 
-    enableStartupState();
     cacheScaledCovers->setChecked(Settings::self()->cacheScaledCovers());
     fetchCovers->setChecked(Settings::self()->fetchCovers());
 
@@ -378,8 +389,8 @@ void InterfaceSettings::save()
     Settings::self()->saveShowCoverWidget(showCoverWidget->isChecked());
     Settings::self()->saveUseSystemTray(systemTrayCheckBox && systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup && systemTrayPopup->isChecked());
-    Settings::self()->saveMinimiseOnClose(minimiseOnClose->isChecked());
-    if (startupStateShow->isChecked()) {
+    Settings::self()->saveMinimiseOnClose(minimiseOnClose && minimiseOnClose->isChecked());
+    if (!startupState || startupStateShow->isChecked()) {
         Settings::self()->saveStartupState(Settings::SS_ShowMainWindow);
     } else if (startupStateHide->isChecked()) {
         Settings::self()->saveStartupState(Settings::SS_HideMainWindow);
@@ -562,7 +573,9 @@ void InterfaceSettings::touchFriendlyChanged()
 
 void InterfaceSettings::enableStartupState()
 {
-    startupState->setEnabled(systemTrayCheckBox->isChecked() && minimiseOnClose->isChecked());
+    if (systemTrayCheckBox && minimiseOnClose && startupState) {
+        startupState->setEnabled(systemTrayCheckBox->isChecked() && minimiseOnClose->isChecked());
+    }
 }
 
 void InterfaceSettings::langChanged()

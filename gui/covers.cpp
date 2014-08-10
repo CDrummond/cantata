@@ -1548,7 +1548,12 @@ Covers::Image Covers::locateImage(const Song &song)
 // Dont return song files as cover files!
 static Covers::Image fix(const Covers::Image &img)
 {
-    return Covers::Image(img.img, img.fileName.startsWith(constCoverInTagPrefix) || constNoCover==img.fileName ? QString() : img.fileName);
+    return Covers::Image(img.img, img.validFileName() ? img.fileName : QString());
+}
+
+bool Covers::Image::validFileName() const
+{
+    return !fileName.isEmpty() && !fileName.startsWith(constCoverInTagPrefix) && constNoCover!=fileName;
 }
 
 Covers::Image Covers::requestImage(const Song &song, bool urgent)

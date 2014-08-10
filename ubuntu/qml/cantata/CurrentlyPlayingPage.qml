@@ -90,139 +90,169 @@ Page {
             action: Action {
                 iconSource: Qt.resolvedUrl("../../icons/toolbar/navigation-menu.svg")
                 text: i18n.tr("Actions")
-                onTriggered: actionsPopover = PopupUtils.open(actionsPopoverComponent) //TODO: TEST!!!
+                onTriggered: actionsDialog = PopupUtils.open(actionsDialogComponent)
             }
-            visible: isPhone
         }
     }
 
     Component {
-        id: actionsPopoverComponent
+        id: actionsDialogComponent
 
         Dialog {
-            id: actionsPopover
+            id: actionsDialog
+
+            title: i18n.tr("Playback Options")
 
             contents: [
-                ListItem.Header { text: i18n.tr("Playback") },
-                ListItem.Standard {
-                    Label {
-                        anchors {
-                            left: parent.left
-                            leftMargin: units.gu(1)
-                            verticalCenter: parent.verticalCenter
-                        }
+                Column {
+                    id: containerLayout
 
-                        color: volumeHeader.color
-
-                        text: i18n.tr("Repeat")
-                    }
-
-                    CheckBox {
-                        id: repeatCheckBox
-                        anchors {
-                            right: parent.right
-                            rightMargin: units.gu(1)
-                            verticalCenter: parent.verticalCenter
-                        }
-
-                        checked: backend.isRepeating
-
-                        Connections {
-                            target: backend
-                            onIsRepeatingChanged: repeatCheckBox.checked = backend.isRepeating
-                        }
-
-                        onTriggered: {
-                            if (checked !== backend.isRepeating) {
-                                backend.setIsRepeating(checked)
+                    ListItem.Header { text: i18n.tr("Playback") }
+                    ListItem.Standard {
+                        Label {
+                            anchors {
+                                left: parent.left
+                                leftMargin: units.gu(1)
+                                verticalCenter: parent.verticalCenter
                             }
-                        }
-                    }
-                },
-                ListItem.Standard {
-                    Label {
-                        anchors {
-                            left: parent.left
-                            leftMargin: units.gu(1)
-                            verticalCenter: parent.verticalCenter
+
+                            color: volumeHeader.color
+
+                            text: i18n.tr("Repeat")
                         }
 
-                        color: volumeHeader.color
-
-                        text: i18n.tr("Random")
-                    }
-
-                    CheckBox {
-                        id: randomCheckBox
-                        anchors {
-                            right: parent.right
-                            rightMargin: units.gu(1)
-                            verticalCenter: parent.verticalCenter
-                        }
-
-                        checked: backend.isRandomOrder
-
-                        Connections {
-                            target: backend
-                            onIsRandomOrderChanged: randomCheckBox.checked = backend.isRandomOrder
-                        }
-
-                        onTriggered: {
-                            if (checked !== backend.isRandomOrder) {
-                                backend.setIsRandomOrder(checked)
+                        CheckBox {
+                            id: repeatCheckBox
+                            anchors {
+                                right: parent.right
+                                rightMargin: units.gu(1)
+                                verticalCenter: parent.verticalCenter
                             }
-                        }
-                    }
-                },
 
-                ListItem.Header {
-                    id: volumeHeader
-                    text: i18n.tr("Volume")
-                },
-
-                ListItem.Standard {
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                        leftMargin: units.gu(1)
-                        rightMargin: units.gu(1)
-                    }
-                    Row {
-                        width: parent.width
-                        spacing: units.gu(1)
-
-                        Image {
-                            id: speakerImage
-                            height: units.gu(3)
-                            width: units.gu(3)
-                            smooth: true
-                            anchors.verticalCenter: parent.verticalCenter
-                            source: "../../icons/toolbar/speaker.svg"
-                        }
-
-                        Slider {
-                            id: volumeSlider2
-                            width: parent.width - speakerImage.width - parent.spacing
-                            live: false
-                            minimumValue: 0
-                            maximumValue: 100
-                            value: backend.mpdVolume
-
-                            onValueChanged: {
-                                backend.setMpdVolume(value)
-                            }
+                            checked: backend.isRepeating
 
                             Connections {
                                 target: backend
-                                onMpdVolumeChanged: volumeSlider2.value = backend.mpdVolume
+                                onIsRepeatingChanged: repeatCheckBox.checked = backend.isRepeating
                             }
 
-                            function formatValue(v) {
-                                return Math.round(v) + "%"
+                            onTriggered: {
+                                if (checked !== backend.isRepeating) {
+                                    backend.setIsRepeating(checked)
+                                }
                             }
                         }
                     }
+                    ListItem.Standard {
+                        Label {
+                            anchors {
+                                left: parent.left
+                                leftMargin: units.gu(1)
+                                verticalCenter: parent.verticalCenter
+                            }
+
+                            color: volumeHeader.color
+
+                            text: i18n.tr("Random")
+                        }
+
+                        CheckBox {
+                            id: randomCheckBox
+                            anchors {
+                                right: parent.right
+                                rightMargin: units.gu(1)
+                                verticalCenter: parent.verticalCenter
+                            }
+
+                            checked: backend.isRandomOrder
+
+                            Connections {
+                                target: backend
+                                onIsRandomOrderChanged: randomCheckBox.checked = backend.isRandomOrder
+                            }
+
+                            onTriggered: {
+                                if (checked !== backend.isRandomOrder) {
+                                    backend.setIsRandomOrder(checked)
+                                }
+                            }
+                        }
+                    }
+
+                    ListItem.Header {
+                        id: volumeHeader
+                        text: i18n.tr("Volume")
+                        visible: isPhone
+                    }
+
+                    ListItem.Standard {
+                        anchors {
+                            left: parent.left
+                            right: parent.right
+                            leftMargin: units.gu(1)
+                            rightMargin: units.gu(1)
+                        }
+                        visible: isPhone
+                        Row {
+                            width: parent.width
+                            spacing: units.gu(1)
+
+                            Image {
+                                id: speakerImage
+                                height: units.gu(3)
+                                width: units.gu(3)
+                                smooth: true
+                                anchors.verticalCenter: parent.verticalCenter
+                                source: "../../icons/toolbar/speaker.svg"
+                            }
+
+                            Slider {
+                                id: volumeSlider2
+                                width: parent.width - speakerImage.width - parent.spacing
+                                live: false
+                                minimumValue: 0
+                                maximumValue: 100
+                                value: backend.mpdVolume
+
+                                onValueChanged: {
+                                    backend.setMpdVolume(value)
+                                }
+
+                                Connections {
+                                    target: backend
+                                    onMpdVolumeChanged: volumeSlider2.value = backend.mpdVolume
+                                }
+
+                                function formatValue(v) {
+                                    return Math.round(v) + "%"
+                                }
+                            }
+                        }
+                    }
+
+                    Item {
+                        id: dialogSpacer
+
+                        height: units.gu(3)
+                        width: parent.width
+                    }
+
+                    Button {
+                         text: i18n.tr("Close")
+                         color: UbuntuColors.orange
+
+                         anchors {
+                             left: parent.left
+                             right: parent.right
+                             leftMargin: units.gu(1)
+                             rightMargin: units.gu(1)
+                         }
+
+                         onClicked: PopupUtils.close(actionsDialog)
+                    }
                 }
+
+
             ]
         }
     }

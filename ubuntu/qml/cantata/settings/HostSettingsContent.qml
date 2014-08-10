@@ -171,6 +171,7 @@ Column {
     Button {
         id: connectButton
         text: i18n.tr("Connect")
+        color: UbuntuColors.orange
 
         width: parent.width
         anchors {

@@ -461,6 +461,7 @@ struct MapEntry {
     QString str;
 };
 
+#ifdef TAGLIB_FOUND
 static QString clean(QString v)
 {
     if (v.length()>1) {
@@ -469,6 +470,7 @@ static QString clean(QString v)
     }
     return v;
 }
+#endif
 
 void SongView::loadTags()
 {
@@ -552,6 +554,23 @@ void SongView::loadTags()
         }
     }
     #endif
+
+    int audioPos=1024;
+    if (audioProperties.isEmpty()) {
+        if (MPDStatus::self()->bitrate()>0) {
+            audioProperties.insert(audioPos++, createRow(i18n("Bitrate"), i18n("%1 kb/s", MPDStatus::self()->bitrate())));
+        }
+        if (MPDStatus::self()->samplerate()>0) {
+            audioProperties.insert(audioPos++, createRow(i18n("Sample rate"), i18n("%1 Hz", MPDStatus::self()->samplerate())));
+        }
+        if (MPDStatus::self()->channels()>0) {
+            audioProperties.insert(audioPos++, createRow(i18n("Channels"), QString::number(MPDStatus::self()->channels())));
+        }
+    }
+    if (MPDStatus::self()->bits()>0) {
+        audioProperties.insert(audioPos++, createRow(i18n("Bits"), QString::number(MPDStatus::self()->bits())));
+    }
+    audioProperties.insert(audioPos++, createRow(i18n("Filename"), currentSong.filePath()));
 
     if (tags.isEmpty()) {
         int pos=0;

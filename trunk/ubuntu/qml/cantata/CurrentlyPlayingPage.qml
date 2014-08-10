@@ -238,7 +238,7 @@ Page {
                     }
 
                     Button {
-                         text: i18n.tr("Close")
+                         text: i18n.tr("Ready")
                          color: UbuntuColors.orange
 
                          anchors {

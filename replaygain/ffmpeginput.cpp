@@ -348,7 +348,10 @@ static int decodeAudio(FfmpegInput::Handle *handle, int *frame_size_ptr)
     } else {
         *frame_size_ptr = 0;
     }
-    #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55, 39, 101)
+
+    #if LIBAVCODEC_VERSION_INT <= AV_VERSION_INT(54, 23, 100)
+    av_free(&frame);
+    #elif LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55, 39, 101)
     avcodec_free_frame(&frame);
     #else
     av_frame_free(&frame);

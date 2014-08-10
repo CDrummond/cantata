@@ -136,7 +136,7 @@ void TrayItem::setup()
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->quitAction);
     trayItem->setContextMenu(trayItemMenu);
-    trayItem->setIcon(QIcon::hasThemeIcon("cantata-panel") ? Icon("cantata-panel") : Icons::self()->appIcon);
+    trayItem->setIcon(QIcon::fromTheme(QIcon::hasThemeIcon("cantata-panel") ? "cantata-panel" : "cantata"));
     trayItem->setToolTip(i18n("Cantata"));
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));

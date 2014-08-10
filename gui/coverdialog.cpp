@@ -433,7 +433,7 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
     isArtist=song.isArtistImageRequest();
     Covers::Image img=current.img.isNull() ? Covers::locateImage(song) : current;
 
-    if (!img.fileName.isEmpty() && !QFileInfo(img.fileName).isWritable()) {
+    if (img.validFileName() && !QFileInfo(img.fileName).isWritable()) {
         MessageBox::error(parentWidget(),
                           (isArtist
                             ? i18n("An image already exists for this artist, and the file is not writeable.")

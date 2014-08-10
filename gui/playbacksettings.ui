@@ -85,7 +85,7 @@
       <item row="4" column="0" colspan="2">
        <widget class="QLabel" name="noteLabel">
         <property name="text">
-         <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you press and hold the stop button, then a menu will be shown allowing you to choose whether to stop playback now, or after the current track.&lt;/i&gt;</string>
+         <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you press and hold the stop button, then a menu will be shown allowing you to choose whether to stop playback now, or after the current track. (The stop button can be enabled in the Interface/Toolbar section)&lt;/i&gt;</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

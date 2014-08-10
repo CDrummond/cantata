@@ -227,6 +227,12 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
         } else if (line.startsWith(constStatusBitrateKey)) {
             v.bitrate=line.mid(constStatusBitrateKey.length()).toUInt();
         } else if (line.startsWith(constStatusAudioKey)) {
+            QList<QByteArray> values=line.mid(constStatusAudioKey.length()).split(':');
+            if (3==values.length()) {
+                v.samplerate=values.at(0).toUInt();
+                v.bits=values.at(1).toUInt();
+                v.channels=values.at(2).toUInt();
+            }
         } else if (line.startsWith(constStatusUpdatingDbKey)) {
             v.updatingDb=line.mid(constStatusUpdatingDbKey.length()).toInt();
         } else if (line.startsWith(constStatusErrorKey)) {

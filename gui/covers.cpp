@@ -1124,9 +1124,13 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
         if (!pix) {
             if (song.isArtistImageRequest() && song.isVariousArtists()) {
                 // Load VA image...
+                #ifndef ENABLE_UBUNTU
                 pix=new QPixmap(Icons::self()->variousArtistsIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+                #endif
             } else if (Song::SingleTracks==song.type) {
+                #ifndef ENABLE_UBUNTU
                 pix=new QPixmap(Icons::self()->albumIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+                #endif
             }
             #ifdef ENABLE_ONLINE_SERVICES
             else if (isOnlineServiceImage(song)) {
@@ -1182,6 +1186,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
     #endif
     key+=QString::number(size);
     pix=cache.object(key);
+    #ifndef ENABLE_UBUNTU
     if (!pix) {
         Icon &icn=song.isArtistImageRequest()
                     ? Icons::self()->artistIcon
@@ -1192,6 +1197,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
         cache.insert(key, pix, 1);
         cacheSizes.insert(size);
     }
+    #endif
     return pix;
 }
 

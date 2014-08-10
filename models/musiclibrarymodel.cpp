@@ -528,8 +528,7 @@ void MusicLibraryModel::updatingMpd()
 void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img, const QString &file)
 {
     #ifdef ENABLE_UBUNTU
-    if (!rootItem->useArtistImages() || img.isNull() || file.isEmpty() ||
-        song.file.startsWith("http://") || song.name().startsWith("http://")) {
+    if (img.isNull() || file.isEmpty() || song.file.startsWith("http://") || song.name().startsWith("http://")) {
         return;
     }
 

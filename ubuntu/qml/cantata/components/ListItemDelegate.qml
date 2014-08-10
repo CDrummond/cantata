@@ -57,7 +57,6 @@ Empty {
             id: iconImage
             smooth: true
             opacity: 0.9
-            visible: iconShown
             anchors.fill: parent
         }
     }

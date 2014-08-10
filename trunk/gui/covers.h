@@ -181,7 +181,7 @@ public:
             : img(i)
             , fileName(f) {
         }
-
+        bool validFileName() const;
         QImage img;
         QString fileName;
     };

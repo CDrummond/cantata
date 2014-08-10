@@ -33,6 +33,7 @@
     is played after beeing paused for more than 5 seconds resend now playing.
 13. Rescrobble, and re-send now playing, if track is repeated.
 14. Exceptions are required for all non Qt5 builds.
+15. Fix crash in settings dialog when some system-tray options removed.
 
 1.4.0
 -----

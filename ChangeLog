@@ -31,6 +31,7 @@
 11. Don't URL encode scrobble keys, just values.
 12. If now playing has been sent, track has not been scrobbled, then when track
     is played after beeing paused for more than 5 seconds resend now playing.
+13. Rescrobble, and re-send now playing, if track is repeated.
 
 1.4.0
 -----

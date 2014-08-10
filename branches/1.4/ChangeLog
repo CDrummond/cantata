@@ -20,6 +20,7 @@
 14. Exceptions are required for all non Qt5 builds.
 15. Fix crash in settings dialog when some system-tray options removed.
 16. Use QIcon::fromTheme to set system-tray icon.
+17. Fix compilation wih older ffmpeg versions.
 
 1.4.0
 -----

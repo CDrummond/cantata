@@ -188,11 +188,7 @@ int main(int argc, char *argv[])
     MPDStats::self();
     MPDConnection::self();
 
-    MusicLibraryModel::self()->setUseArtistImages(true);
-    MusicLibraryModel::self()->setUseAlbumImages(true);
-
     MPDBackend backend;
-
     QGuiApplication app(argc, argv);
     installDebugMessageHandler();
     qmlRegisterType<MPDBackend>("MPDBackend", 1, 0, "MPDBackend");

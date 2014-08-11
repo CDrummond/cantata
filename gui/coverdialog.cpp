@@ -356,7 +356,7 @@ CoverDialog::CoverDialog(QWidget *parent)
     , showAction(0)
     , removeAction(0)
 {
-    Configuration cfg("CoverDialog");
+    Configuration cfg(objectName());
     enabledProviders=cfg.get("enabledProviders", (int)Prov_All);
 
     iCount++;
@@ -395,7 +395,7 @@ CoverDialog::CoverDialog(QWidget *parent)
     list->setSpacing(spacing);
     list->setViewMode(QListView::IconMode);
     list->setResizeMode(QListView::Adjust);
-    list->setMinimumSize((list->gridSize().width()*4)+(spacing*5), list->gridSize().height()*3);
+    list->setMinimumSize((list->gridSize().width()*3)+style()->pixelMetric(QStyle::PM_ScrollBarExtent)+spacing, list->gridSize().height()*2);
     list->setSortingEnabled(false);
 
     addFileButton->setIcon(Icon("document-open"));
@@ -419,7 +419,7 @@ CoverDialog::CoverDialog(QWidget *parent)
 
 CoverDialog::~CoverDialog()
 {
-    Configuration cfg("CoverDialog");
+    Configuration cfg(objectName());
     cfg.set("enabledProviders", enabledProviders);
 
     iCount--;
@@ -452,7 +452,6 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
         list->addItem(existing);
     }
     query->setText(isArtist ? song.albumArtist() : QString(song.albumArtist()+QLatin1String(" ")+song.album));
-    adjustSize();
     Dialog::show();
     sendQuery();
 }

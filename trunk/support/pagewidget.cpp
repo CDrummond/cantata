@@ -24,6 +24,7 @@
 #include "pagewidget.h"
 #include "icon.h"
 #include "gtkstyle.h"
+#include "dialog.h"
 #include <QListWidget>
 #include <QStackedWidget>
 #include <QBoxLayout>
@@ -247,7 +248,6 @@ PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const Icon &ic
     layout->addWidget(cfg);
     layout->setMargin(0);
     cfg->setParent(this);
-    cfg->adjustSize();
     adjustSize();
 }
 
@@ -283,15 +283,12 @@ PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const
 
     int rows = list->model()->rowCount();
     int width = 0;
-    int height = 0;
     for (int i = 0; i < rows; ++i) {
         QSize rowSize=list->sizeHintForIndex(list->model()->index(i, 0));
         width = qMax(width, rowSize.width());
-        height += rowSize.height();
     }
     width+=25;
     list->setFixedWidth(width);
-    list->setMinimumHeight(height);
 
     QSize stackSize = stack->size();
     for (int i = 0; i < stack->count(); ++i) {
@@ -300,12 +297,9 @@ PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const
             stackSize = stackSize.expandedTo(widget->minimumSizeHint());
         }
     }
-    stack->setMinimumSize(stackSize);
+    setMinimumHeight(qMax(minimumHeight(), stackSize.height()));
+    setMinimumWidth(qMax(minimumWidth(), stackSize.width()+width+layout()->spacing()));
 
-    QSize sz=size();
-    sz=sz.expandedTo(stackSize);
-    sz=sz.expandedTo(QSize(width, height));
-    setMinimumSize(sz);
     list->setCurrentRow(0);
     stack->setCurrentIndex(0);
     pages.insert(listItem, page);

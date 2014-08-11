@@ -37,7 +37,7 @@ Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
     , buttonTypes(0)
     , mw(0)
     , buttonBox(0)
-    , managedAccels(false)
+    , shown(false)
     #endif
 {
     if (!name.isEmpty()) {
@@ -345,12 +345,19 @@ QAbstractButton *Dialog::getButton(ButtonCode button)
 
 void Dialog::showEvent(QShowEvent *e)
 {
-    if (!managedAccels) {
+    if (!shown) {
+        shown=true;
         AcceleratorManager::manage(this);
-        managedAccels=true;
-    }
-    if (defButton) {
-        setDefaultButton((ButtonCode)defButton);
+        if (defButton) {
+            setDefaultButton((ButtonCode)defButton);
+        }
+        if (buttonBox && mw) {
+            QSize mwSize=mw->minimumSize();
+            if (mwSize.width()>0 && mwSize.height()>0) {
+                setMinimumHeight(qMax(minimumHeight(), buttonBox->height()+layout()->spacing()+mwSize.height()+(2*layout()->margin())));
+                setMinimumWidth(qMax(minimumWidth(), mwSize.width()+(2*layout()->margin())));
+            }
+        }
     }
     QDialog::showEvent(e);
 }

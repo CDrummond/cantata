@@ -45,7 +45,7 @@ Q_SIGNALS:
     void clicked();
 
 private Q_SLOTS:
-    void coverImage(const QImage &img);
+    void coverImage(const QImage &);
 
 private:
     bool pressed;

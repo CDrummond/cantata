@@ -37,7 +37,12 @@
 #include <QStringList>
 #include <QTextCodec>
 #include <QDebug>
+#define TAGLIB_VERSION CANTATA_MAKE_VERSION(TAGLIB_MAJOR_VERSION, TAGLIB_MINOR_VERSION, TAGLIB_PATCH_VERSION)
+
+#include <taglib/taglib.h>
+#if TAGLIB_VERSION >= CANTATA_MAKE_VERSION(1,8,0)
 #include <taglib/tpropertymap.h>
+#endif
 #include <taglib/fileref.h>
 #include <taglib/aifffile.h>
 #ifdef TAGLIB_ASF_FOUND
@@ -660,7 +665,7 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
 
     if (img) {
         TagLib::Ogg::FieldListMap map = tag->fieldListMap();
-        #if (TAGLIB_MAJOR_VERSION > 1) || (TAGLIB_MAJOR_VERSION == 1 && TAGLIB_MINOR_VERSION >= 7)
+        #if TAGLIB_VERSION >= CANTATA_MAKE_VERSION(1,7,0)
         // METADATA_BLOCK_PICTURE is the Ogg standard way of encoding a covers.
         // https://wiki.xiph.org/index.php/VorbisComment#Cover_art
         if (map.contains("METADATA_BLOCK_PICTURE")) {
@@ -700,7 +705,7 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
     }
 }
 
-#if (TAGLIB_MAJOR_VERSION > 1) || (TAGLIB_MAJOR_VERSION == 1 && TAGLIB_MINOR_VERSION >= 7)
+#if TAGLIB_VERSION >= CANTATA_MAKE_VERSION(1,7,0)
 static void readFlacPicture(const TagLib::List<TagLib::FLAC::Picture*> &pics, QImage *img)
 {
     if (!pics.isEmpty() && 1==pics.size()) {
@@ -1020,7 +1025,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
     } else if (TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file())) {
         if (file->xiphComment()) {
             readVorbisCommentTags(file->xiphComment(), song, rg, img, lyrics);
-            #if (TAGLIB_MAJOR_VERSION > 1) || (TAGLIB_MAJOR_VERSION == 1 && TAGLIB_MINOR_VERSION >= 7)
+            #if TAGLIB_VERSION >= CANTATA_MAKE_VERSION(1,7,0)
             if (img && img->isNull()) {
                 readFlacPicture(file->pictureList(), img);
             }
@@ -1363,6 +1368,7 @@ QMap<QString, QString> readAll(const QString &fileName)
         return allTags;
     }
 
+    #if TAGLIB_VERSION >= CANTATA_MAKE_VERSION(1,8,0)
     TagLib::PropertyMap properties=fileref.file()->properties();
     TagLib::PropertyMap::ConstIterator it = properties.begin();
     TagLib::PropertyMap::ConstIterator end = properties.end();
@@ -1376,6 +1382,7 @@ QMap<QString, QString> readAll(const QString &fileName)
         allTags.insert(QLatin1String("X-AUDIO:SAMPLERATE"), QString("%1 Hz").arg(properties->sampleRate()));
         allTags.insert(QLatin1String("X-AUDIO:CHANNELS"), QString::number(properties->channels()));
     }
+    #endif
     return allTags;
 }
 

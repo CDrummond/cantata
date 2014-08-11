@@ -168,7 +168,7 @@ private:
     QDialogButtonBox *buttonBox;
     QMap<ButtonCode, QAbstractButton *> userButtons;
     QSize cfgSize;
-    bool managedAccels;
+    bool shown;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Dialog::ButtonCodes)

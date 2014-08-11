@@ -135,20 +135,17 @@ void CoverWidget::paintEvent(QPaintEvent *)
     QRect r((width()-pix->width())/2, (height()-pix->height())/2, pix->width(), pix->height());
     p.drawPixmap(r.x(), r.y(), *pix);
     if (underMouse()) {
-        QRectF rf(r.x()+0.5, r.y()+0.5, r.width()-1, r.height()-1);
+        QRectF rf(r.x(), r.y(), r.width(), r.height());
         QColor col(palette().color(QPalette::Highlight));
-        double radius=pix->width()>128 ? 6.0 : 4.0;
+        double radius=pix->width()>128 ? 7.5 : 5.5;
         p.setRenderHint(QPainter::Antialiasing);
-        col.setAlphaF(0.75);
+        col.setAlphaF(0.8);
         p.setPen(col);
         p.drawPath(Utils::buildPath(rf, radius));
-        col.setAlphaF(0.35);
-        p.setPen(col);
-        p.drawPath(Utils::buildPath(rf.adjusted(-1, -1, 1, 1), radius+2));
     }
 }
 
-void CoverWidget::coverImage(const QImage &i)
+void CoverWidget::coverImage(const QImage &)
 {
     QImage img=CurrentCover::self()->image();
     if (img.isNull()) {
@@ -166,35 +163,6 @@ void CoverWidget::coverImage(const QImage &i)
     pix->fill(Qt::transparent);
     QPainter painter(pix);
     painter.setRenderHint(QPainter::Antialiasing);
-    QPainterPath path=Utils::buildPath(QRectF(0.5, 0.5, img.width()-1, img.height()-1), img.width()>128 ? 6.0 : 4.0);
-    painter.fillPath(path, img);
-
-//    QPainterPath glassPath;
-//    glassPath.moveTo(pix->rect().topLeft());
-//    glassPath.lineTo(pix->rect().topRight());
-//    glassPath.quadTo(pix->rect().center()/2, pix->rect().bottomLeft());
-//    painter.setClipPath(path);
-//    painter.setPen(Qt::NoPen);
-//    painter.setBrush(QColor(255, 255, 255, 64));
-//    painter.drawPath(glassPath);
-//    painter.setClipping(false);
-    QColor col=palette().foreground().color();
-    bool gradientBorder=col.red()>=196 && col.blue()>=196 && col.green()>=196;
-    if (!gradientBorder && GtkStyle::isActive()) {
-        QColor gtkCol=GtkStyle::symbolicColor();
-        gradientBorder=gtkCol.red()>=196 && gtkCol.blue()>=196 && gtkCol.green()>=196;
-    }
-
-    int alpha=i.isNull() && !gradientBorder? 96 : 128;
-    col.setAlpha(alpha);
-
-    if (gradientBorder) {
-        QLinearGradient grad(0, 0, 0, height());
-        grad.setColorAt(0, QColor(0, 0, 0, alpha));
-        grad.setColorAt(1, col);
-        painter.strokePath(path, QPen(grad, 1));
-    } else {
-        painter.strokePath(path, QPen(col, 1));
-    }
+    painter.fillPath(Utils::buildPath(QRectF(0, 0, img.width(), img.height()), img.width()>128 ? 6.5 : 4.5), img);
     repaint();
 }

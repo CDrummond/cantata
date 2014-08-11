@@ -69,6 +69,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     setButtons(Ok|Apply|Cancel);
 
     pageWidget = new PageWidget(this);
+    setMainWidget(pageWidget);
     server = new ServerSettings(0);
     playback = new PlaybackSettings(0);
     files = new FileSettings(0);
@@ -129,11 +130,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     #endif
     pageWidget->addPage(cache, i18n("Cache"), Icons::self()->folderIcon, i18n("Cached Items"));
     setCaption(i18n("Configure"));
-    setMainWidget(pageWidget);
     setAttribute(Qt::WA_DeleteOnClose);
-    int h=sizeHint().height();
-    setMinimumHeight(h);
-    setMinimumWidth(h*1.1);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }
 

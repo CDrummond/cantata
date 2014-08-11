@@ -570,7 +570,6 @@ void SongView::loadTags()
     if (MPDStatus::self()->bits()>0) {
         audioProperties.insert(audioPos++, createRow(i18n("Bits"), QString::number(MPDStatus::self()->bits())));
     }
-    audioProperties.insert(audioPos++, createRow(i18n("Filename"), currentSong.filePath()));
 
     if (tags.isEmpty()) {
         int pos=0;
@@ -612,9 +611,19 @@ void SongView::loadTags()
             }
         }
     }
-    if (!tagInfo.isEmpty()) {
-        tagInfo+=QLatin1String("</table>");
+    if (tagInfo.isEmpty()) {
+        tagInfo=QLatin1String("<table>");
+    } else {
+        tagInfo+=QLatin1String("<tr/>");
     }
+    if (MPDConnection::self()->getDetails().dirReadable) {
+        QString path=Utils::getDir(MPDConnection::self()->getDetails().dir+currentSong.filePath());
+        tagInfo+=createRow(i18n("Filename"), QLatin1String("<a href=\"file://")+path+QLatin1String("\">")+
+                                             currentSong.filePath()+QLatin1String("</a>"));
+    } else {
+        tagInfo+=createRow(i18n("Filename"), currentSong.filePath());
+    }
+    tagInfo+=QLatin1String("</table>");
 
     setHtml(tagInfo, Page_Tags);
 }

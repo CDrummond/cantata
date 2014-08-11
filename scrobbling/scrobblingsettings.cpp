@@ -28,6 +28,11 @@
 #include "support/lineedit.h"
 #include <QPushButton>
 
+#define REMOVE(w) \
+    w->setVisible(false); \
+    w->deleteLater(); \
+    w=0;
+
 ScrobblingSettings::ScrobblingSettings(QWidget *parent)
     : QWidget(parent)
 {
@@ -67,8 +72,9 @@ ScrobblingSettings::ScrobblingSettings(QWidget *parent)
         scrobblerLabel->setBuddy(0);
     }
     scrobblerName->setVisible(scrobbler->count()<2);
-    noteLabel->setVisible(!firstMpdClient.isEmpty());
-    if (!firstMpdClient.isEmpty()) {
+    if (firstMpdClient.isEmpty()) {
+        REMOVE(noteLabel)
+    } else {
         noteLabel->setText(i18n("<i><b>NOTE:</b> If you use a scrobbler which is marked as '(via MPD)' (such as %1), "
                                 "then you will need to have this already started and running. "
                                 "Cantata can only 'Love' tracks via this, and cannot enable/disable scrobbling.</i>", firstMpdClient));

@@ -455,7 +455,7 @@ void TouchProxyStyle::drawComplexControl(ComplexControl control, const QStyleOpt
 
 void TouchProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    if (PE_PanelScrollAreaCorner==element && SB_Thin==sbarType && option) {
+    if (PE_PanelScrollAreaCorner==element && option && SB_Standard!=sbarType) {
         painter->fillRect(option->rect, option->palette.brush(QPalette::Base));
     } else {
         baseStyle()->drawPrimitive(element, option, painter, widget);

@@ -22,6 +22,7 @@
 16. Use QIcon::fromTheme to set system-tray icon.
 17. Fix compilation with older ffmpeg versions.
 18. Fix compilation with taglib versions older than 1.8
+19. Use KDE cmake macro to enable exceptions in KDE builds.
 
 1.4.0
 -----

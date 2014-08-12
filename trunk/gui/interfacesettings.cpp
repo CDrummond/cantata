@@ -32,6 +32,7 @@
 #include "widgets/playqueueview.h"
 #include "support/pathrequester.h"
 #include <QComboBox>
+#include <QDesktopWidget>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QDir>
 #include <QMap>
@@ -232,6 +233,20 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         connect(systemTrayPopup, SIGNAL(toggled(bool)), SLOT(systemTrayPopupToggled()));
     }
     #endif
+
+    // If we are on a display less than 800 pixels tall (e.g. a netbook), then re-arrange
+    // the view settings to allow dialog to shrink more...
+    bool reArrange=!qgetenv("CANTATA_NETBOOK").isEmpty();
+    if (!reArrange) {
+        QDesktopWidget *dw=QApplication::desktop();
+        if (dw) {
+            reArrange=dw->availableGeometry(this).size().height()<=800;
+        }
+    }
+    if (reArrange) {
+        viewsLayout->removeWidget(otherViewGroupBox);
+        viewsLayout->addWidget(otherViewGroupBox, 0, 1, 3, 1);
+    }
 }
 
 void InterfaceSettings::load()

@@ -187,8 +187,8 @@
       <attribute name="title">
        <string>Views</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
+      <layout class="QGridLayout" name="viewsLayout">
+       <item row="0" column="0">
         <widget class="QGroupBox" name="artistsViewGroupBox">
          <property name="title">
           <string>Artists</string>
@@ -220,7 +220,7 @@
          </layout>
         </widget>
        </item>
-       <item>
+       <item row="1" column="0">
         <widget class="QGroupBox" name="albumsViewGroupBox">
          <property name="title">
           <string>Albums</string>
@@ -258,7 +258,7 @@
          </layout>
         </widget>
        </item>
-       <item>
+       <item row="2" column="0">
         <widget class="QGroupBox" name="playlistsViewGroupBox">
          <property name="title">
           <string>Playlists</string>
@@ -276,7 +276,7 @@
              <cstring>playlistsView</cstring>
             </property>
            </widget>
-          </item>
+          </item>removeWidget
           <item row="0" column="1">
            <widget class="QComboBox" name="playlistsView"/>
           </item>
@@ -289,8 +289,8 @@
           </item>
          </layout>
         </widget>
-       </item>
-       <item>
+       </item>removeWidget
+       <item row="3" column="0">
         <widget class="QGroupBox" name="otherViewGroupBox">
          <property name="title">
           <string>Other Views</string>
@@ -364,7 +364,7 @@
          </layout>
         </widget>
        </item>
-       <item>
+       <item row="4" column="0">
         <spacer name="verticalSpacer_3xx">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

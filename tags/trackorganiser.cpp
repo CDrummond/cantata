@@ -157,6 +157,7 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi, bool for
     } else {
         REMOVE(mopidyNote);
     }
+    connect(ratingsNote, SIGNAL(leftClickedUrl()), SLOT(showRatingsMessage()));
     Dialog::show();
     enableButtonOk(false);
     updateView();
@@ -486,6 +487,13 @@ void TrackOrganiser::showMopidyMessage()
                             QLatin1String("Mopidy"));
 }
 
+void TrackOrganiser::showRatingsMessage()
+{
+    MessageBox::information(this, i18n("Song ratings are not stored in the song files, but within MPD's 'sticker' database.\n\n"
+                                       "If you rename a file (or the folder it is within), then the rating associated with the song will be lost."),
+                            QLatin1String("Ratings"));
+}
+
 void TrackOrganiser::setFilenameScheme(const QString &text)
 {
     if (filenameScheme->text()!=text) {
@@ -558,4 +566,3 @@ Device * TrackOrganiser::getDevice(QWidget *p)
     return dev;
 }
 #endif
-

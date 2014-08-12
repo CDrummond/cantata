@@ -60,6 +60,7 @@ private Q_SLOTS:
     void controlRemoveAct();
     void removeItems();
     void showMopidyMessage();
+    void showRatingsMessage();
     void setFilenameScheme(const QString &text);
 
 private:

@@ -23,6 +23,9 @@
 17. Fix compilation with older ffmpeg versions.
 18. Fix compilation with taglib versions older than 1.8
 19. Use KDE cmake macro to enable exceptions in KDE builds.
+20. Don't alter text of 'Other Views' tab in preferences dialog if streams,
+    online, and device support are disabled - as there are still 2 views;
+    folders and search.
 
 1.4.0
 -----

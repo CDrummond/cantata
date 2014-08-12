@@ -132,6 +132,13 @@
     </widget>
    </item>
    <item>
+    <widget class="UrlLabel" name="ratingsNote">
+     <property name="text" stdset="0">
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Ratings will be lost if a file is renamed.&lt;/i&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QProgressBar" name="progress"/>
    </item>
   </layout>

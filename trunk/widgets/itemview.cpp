@@ -392,6 +392,9 @@ public:
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
+        if (noIcons) {
+            return QStyledItemDelegate::sizeHint(option, index);
+        }
         if (!simpleStyle || !index.data(Cantata::Role_CapacityText).toString().isEmpty()) {
             return ListDelegate::sizeHint(option, index);
         }

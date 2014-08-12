@@ -168,11 +168,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addView(i18n("Search (via MPD)"), QLatin1String("SearchPage"));
     addView(i18n("Info - Current song information (artist, album, and lyrics)"), QLatin1String("ContextPage"));
 
-    #if !defined ENABLE_STREAMS && !defined ENABLE_ONLINE_SERVICES && !defined ENABLE_DEVICES_SUPPORT
-    tabWidget->setTabText(4, i18n("Folders"));
-    folderViewLabel->setText(i18n("Style:"));
-    #endif
-
     connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playlistsViewChanged()));
     connect(playQueueView, SIGNAL(currentIndexChanged(int)), SLOT(playQueueViewChanged()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));

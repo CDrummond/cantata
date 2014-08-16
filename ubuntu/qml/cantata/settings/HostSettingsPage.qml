@@ -26,8 +26,8 @@
 *************************************************************************/
 
 import QtQuick 2.0
-import Ubuntu.Components 0.1
-import Ubuntu.Components.ListItems 0.1 as ListItem
+import Ubuntu.Components 1.1
+import Ubuntu.Components.ListItems 1.0 as ListItem
 import U1db 1.0 as U1db
 
 Page {
@@ -36,14 +36,6 @@ Page {
     visible: false
     width: parent.width
     title: qsTr(i18n.tr("Connection %1")).arg(backend.isConnected?i18n.tr("(Connected)"):i18n.tr("(Not Connected)"))
-
-    actions: [
-        Action {
-            id: backAction
-            text: i18n.tr("Back")
-            onTriggered: pageStack.pop()
-        }
-    ]
 
     HostSettingsContent {
         anchors.fill: parent

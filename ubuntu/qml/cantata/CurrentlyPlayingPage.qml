@@ -27,7 +27,7 @@
 
 import QtQuick 2.0
 import Ubuntu.Components 1.1
-import Ubuntu.Components.ListItems 0.1 as ListItem
+import Ubuntu.Components.ListItems 1.0 as ListItem
 import Ubuntu.Components.Popups 1.0
 import 'qrc:/qml/cantata/components'
 
@@ -61,39 +61,20 @@ Page {
              }
          }
     }
-    
-    actions: [
+
+    head.actions: [
         Action {
-            id: playPauseAction
-            text: i18n.tr("Play/Pause")
-            onTriggered: backend.playPause()
+            iconSource: Qt.resolvedUrl("../../icons/toolbar/clear.svg")
+            text: i18n.tr("Clear")
+            onTriggered: PopupUtils.open(dialog)
         },
+
         Action {
-            id: goBackAction
-            text: i18n.tr("Back")
-            onTriggered: pageStack.pop()
+            iconSource: Qt.resolvedUrl("../../icons/toolbar/navigation-menu.svg")
+            text: i18n.tr("Actions")
+            onTriggered: actionsDialog = PopupUtils.open(actionsDialogComponent)
         }
     ]
-
-    tools: ToolbarItems {
-        pageStack: pageStack
-
-        ToolbarButton {
-            action: Action {
-                iconSource: Qt.resolvedUrl("../../icons/toolbar/clear.svg")
-                text: i18n.tr("Clear")
-                onTriggered: PopupUtils.open(dialog)
-            }
-        }
-        ToolbarButton {
-            id: actionActionToolbarButton
-            action: Action {
-                iconSource: Qt.resolvedUrl("../../icons/toolbar/navigation-menu.svg")
-                text: i18n.tr("Actions")
-                onTriggered: actionsDialog = PopupUtils.open(actionsDialogComponent)
-            }
-        }
-    }
 
     Component {
         id: actionsDialogComponent

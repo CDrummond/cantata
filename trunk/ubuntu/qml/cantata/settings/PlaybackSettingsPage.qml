@@ -26,8 +26,8 @@
 *************************************************************************/
 
 import QtQuick 2.0
-import Ubuntu.Components 0.1
-import Ubuntu.Components.ListItems 0.1 as ListItem
+import Ubuntu.Components 1.1
+import Ubuntu.Components.ListItems 1.0 as ListItem
 
 Page {
     id: playbackSettingsPage
@@ -40,14 +40,6 @@ Page {
     title: i18n.tr("Playback Settings")
 
     property color textFieldColor: "#c2c2b8" //#f3f3e7 * 0.8 (#f3f3e7: label color)
-
-    actions: [
-        Action {
-            id: backAction
-            text: i18n.tr("Back")
-            onTriggered: pageStack.pop()
-        }
-    ]
 
     PlaybackSettingsContent {
         anchors {

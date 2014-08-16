@@ -26,8 +26,8 @@
 *************************************************************************/
 
 import QtQuick 2.0
-import Ubuntu.Components 0.1
-import Ubuntu.Components.ListItems 0.1 as ListItem
+import Ubuntu.Components 1.1
+import Ubuntu.Components.ListItems 1.0 as ListItem
 import 'qrc:/qml/cantata/'
 import 'qrc:/qml/cantata/components'
 
@@ -81,49 +81,25 @@ Page {
         }
     }
 
-    actions: [
+    head.actions: [
         Action {
-            id: currentlyPlayingAction
-            text: i18n.tr("Currently playing")
+            iconSource: Qt.resolvedUrl("../../icons/toolbar/media-playback-start.svg")
+            text: i18n.tr("Playing")
             onTriggered: pageStack.push(currentlyPlayingPage)
         },
+
         Action {
-            id: settingsAction
+            iconSource: Qt.resolvedUrl("../../icons/toolbar/settings.svg")
             text: i18n.tr("Settings")
             onTriggered: pageStack.push(settingsPage)
         },
+
         Action {
-            id: aboutAction
+            iconSource: Qt.resolvedUrl("../../icons/toolbar/help.svg")
             text: i18n.tr("About")
             onTriggered: pageStack.push(aboutPage)
         }
     ]
-
-    tools: ToolbarItems {
-        ToolbarButton {
-            action: Action {
-                iconSource: Qt.resolvedUrl("../../icons/toolbar/media-playback-start.svg")
-                text: i18n.tr("Playing")
-                onTriggered: pageStack.push(currentlyPlayingPage)
-            }
-        }
-
-        ToolbarButton {
-            action: Action {
-                iconSource: Qt.resolvedUrl("../../icons/toolbar/settings.svg")
-                text: i18n.tr("Settings")
-                onTriggered: pageStack.push(settingsPage)
-            }
-        }
-
-        ToolbarButton {
-            action: Action {
-                iconSource: Qt.resolvedUrl("../../icons/toolbar/help.svg")
-                text: i18n.tr("About")
-                onTriggered: pageStack.push(aboutPage)
-            }
-        }
-    }
 
     ListView {
         id: subListView

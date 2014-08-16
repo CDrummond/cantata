@@ -64,13 +64,13 @@ Page {
 
     head.actions: [
         Action {
-            iconSource: Qt.resolvedUrl("../../icons/toolbar/clear.svg")
+            iconName: "edit-clear"
             text: i18n.tr("Clear")
             onTriggered: PopupUtils.open(dialog)
         },
 
         Action {
-            iconSource: Qt.resolvedUrl("../../icons/toolbar/navigation-menu.svg")
+            iconName: "stock_music"
             text: i18n.tr("Actions")
             onTriggered: actionsDialog = PopupUtils.open(actionsDialogComponent)
         }

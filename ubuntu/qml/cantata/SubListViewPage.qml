@@ -83,19 +83,19 @@ Page {
 
     head.actions: [
         Action {
-            iconSource: Qt.resolvedUrl("../../icons/toolbar/media-playback-start.svg")
+            iconName: "media-playback-start"
             text: i18n.tr("Playing")
             onTriggered: pageStack.push(currentlyPlayingPage)
         },
 
         Action {
-            iconSource: Qt.resolvedUrl("../../icons/toolbar/settings.svg")
+            iconName: "settings"
             text: i18n.tr("Settings")
             onTriggered: pageStack.push(settingsPage)
         },
 
         Action {
-            iconSource: Qt.resolvedUrl("../../icons/toolbar/help.svg")
+            iconName: "info"
             text: i18n.tr("About")
             onTriggered: pageStack.push(aboutPage)
         }

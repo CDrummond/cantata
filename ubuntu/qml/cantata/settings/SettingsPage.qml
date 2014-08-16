@@ -65,30 +65,30 @@ Page {
                         anchors.fill: parent
                     }
 
-                    UbuntuShape {
-                        id: notReadyShape
-                        height: notReadyLabel.height + 2 * notReadyLabel.anchors.margins
-                        anchors {
-                            left: parent.left
-                            right: parent.right
-                            bottom: parent.bottom
-                            margins: units.gu(2)
-                        }
+//                    UbuntuShape {
+//                        id: notReadyShape
+//                        height: notReadyLabel.height + 2 * notReadyLabel.anchors.margins
+//                        anchors {
+//                            left: parent.left
+//                            right: parent.right
+//                            bottom: parent.bottom
+//                            margins: units.gu(2)
+//                        }
 
-                        color: "#88CCCCCC"
+//                        color: "#88CCCCCC"
 
-                        Label {
-                            id: notReadyLabel
-                            text: i18n.tr("Not all functionality on this page has been implemented yet, partly due to constraints of the Ubuntu SDK.")
-                            wrapMode: Text.Wrap
-                            anchors {
-                                top: parent.top
-                                right: parent.right
-                                left: parent.left
-                                margins: units.gu(1)
-                            }
-                        }
-                    }
+//                        Label {
+//                            id: notReadyLabel
+//                            text: i18n.tr("Not all functionality on this page has been implemented yet, partly due to constraints of the Ubuntu SDK.")
+//                            wrapMode: Text.Wrap
+//                            anchors {
+//                                top: parent.top
+//                                right: parent.right
+//                                left: parent.left
+//                                margins: units.gu(1)
+//                            }
+//                        }
+//                    }
                 }
             },
             ConditionalLayout {
@@ -129,30 +129,30 @@ Page {
                         }
                     }
 
-                    UbuntuShape {
-                        id: notReadyShape2
-                        height: notReadyLabel2.height + 2 * notReadyLabel2.anchors.margins
-                        anchors {
-                            left: parent.left
-                            right: tabletCategories.right
-                            bottom: parent.bottom
-                            margins: units.gu(1)
-                        }
+//                    UbuntuShape {
+//                        id: notReadyShape2
+//                        height: notReadyLabel2.height + 2 * notReadyLabel2.anchors.margins
+//                        anchors {
+//                            left: parent.left
+//                            right: tabletCategories.right
+//                            bottom: parent.bottom
+//                            margins: units.gu(1)
+//                        }
 
-                        color: "#88CCCCCC"
+//                        color: "#88CCCCCC"
 
-                        Label {
-                            id: notReadyLabel2
-                            text: i18n.tr("Not all functionality on this page has been implemented yet, partly due to constraints of the Ubuntu SDK.")
-                            wrapMode: Text.Wrap
-                            anchors {
-                                top: parent.top
-                                right: parent.right
-                                left: parent.left
-                                margins: units.gu(1)
-                            }
-                        }
-                    }
+//                        Label {
+//                            id: notReadyLabel2
+//                            text: i18n.tr("Not all functionality on this page has been implemented yet, partly due to constraints of the Ubuntu SDK.")
+//                            wrapMode: Text.Wrap
+//                            anchors {
+//                                top: parent.top
+//                                right: parent.right
+//                                left: parent.left
+//                                margins: units.gu(1)
+//                            }
+//                        }
+//                    }
 
                     Loader {
                         id: stack

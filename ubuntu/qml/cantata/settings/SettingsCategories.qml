@@ -63,16 +63,18 @@ Flickable {
             }
         }
 
-        ListItem.Standard {
-            id: playbackSettingsLabel
-            enabled: false
-            text: i18n.tr("Playback")
-            progression: true
-            selected: !root.isPhone && selectedIndex === 2
-            onClicked:  {
-                selectedIndex = 2
-                if (push) pageStack.push(playbackSettingsPage)
-            }
-        }
+        //Let's hide those as long as they aren't implemented.
+
+//        ListItem.Standard {
+//            id: playbackSettingsLabel
+//            enabled: false
+//            text: i18n.tr("Playback")
+//            progression: true
+//            selected: !root.isPhone && selectedIndex === 2
+//            onClicked:  {
+//                selectedIndex = 2
+//                if (push) pageStack.push(playbackSettingsPage)
+//            }
+//        }
     }
 }

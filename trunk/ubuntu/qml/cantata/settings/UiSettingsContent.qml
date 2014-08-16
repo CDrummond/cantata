@@ -57,31 +57,31 @@ Flickable {
             // TODO: albumSort
             var contents = settingsBackend.getUiContents()
             if (contents !== undefined) {
-                artistYear.checked = contents["artistYear"]
+//                artistYear.checked = contents["artistYear"]
                 coverFetch.checked = contents["coverFetch"]
                 playQueueScroll.checked = contents["playQueueScroll"]
-                albumsView.checked = !arrayContains(contents["hiddenViews"], "albums")
-                foldersView.checked = !arrayContains(contents["hiddenViews"], "folders")
-                playlistsView.checked = !arrayContains(contents["hiddenViews"], "playlists")
+//                albumsView.checked = !arrayContains(contents["hiddenViews"], "albums")
+//                foldersView.checked = !arrayContains(contents["hiddenViews"], "folders")
+//                playlistsView.checked = !arrayContains(contents["hiddenViews"], "playlists")
             } else {
-                artistYear.checked = false
+//                artistYear.checked = false
                 coverFetch.checked = true
                 playQueueScroll.checked = true
-                albumsView.checked = true
-                foldersView.checked = true
-                playlistsView.checked = true
+//                albumsView.checked = true
+//                foldersView.checked = true
+//                playlistsView.checked = true
             }
         }
 
         function saveDataToU1db() {
             var contents = {};
-            contents["artistYear"] = artistYear.checked
+//            contents["artistYear"] = artistYear.checked
             contents["coverFetch"] = coverFetch.checked
             contents["playQueueScroll"] = playQueueScroll.checked
-            contents["hiddenViews"] = []
-            if (!albumsView.checked) contents["hiddenViews"].push("albums")
-            if (!foldersView.checked) contents["hiddenViews"].push("folders")
-            if (!playlistsView.checked) contents["hiddenViews"].push("playlists")
+//            contents["hiddenViews"] = []
+//            if (!albumsView.checked) contents["hiddenViews"].push("albums")
+//            if (!foldersView.checked) contents["hiddenViews"].push("folders")
+//            if (!playlistsView.checked) contents["hiddenViews"].push("playlists")
             // TODO: albumSort
             settingsBackend.setUiContents(contents)
         }
@@ -92,33 +92,33 @@ Flickable {
             width: parent.width
         }
 
-        UbuntuShape {
-            id: notReadyShape
-            width: parent.width
-            height: isPhone?notReadyLabel.height + 2 * notReadyLabel.anchors.margins:0
+//        UbuntuShape {
+//            id: notReadyShape
+//            width: parent.width
+//            height: isPhone?notReadyLabel.height + 2 * notReadyLabel.anchors.margins:0
 
-            color: "#88CCCCCC"
+//            color: "#88CCCCCC"
 
-            visible: isPhone
+//            visible: isPhone
 
-            Label {
-                id: notReadyLabel
-                text: i18n.tr("Not all functionality on this page has been implemented yet, partly due to constraints of the Ubuntu SDK.")
-                wrapMode: Text.Wrap
-                anchors {
-                    top: parent.top
-                    right: parent.right
-                    left: parent.left
-                    margins: units.gu(1)
-                }
-            }
-        }
+//            Label {
+//                id: notReadyLabel
+//                text: i18n.tr("Not all functionality on this page has been implemented yet, partly due to constraints of the Ubuntu SDK.")
+//                wrapMode: Text.Wrap
+//                anchors {
+//                    top: parent.top
+//                    right: parent.right
+//                    left: parent.left
+//                    margins: units.gu(1)
+//                }
+//            }
+//        }
 
-        Item {
-            id: notReadySpacer
-            height: units.gu(2)
-            width: parent.width
-        }
+//        Item {
+//            id: notReadySpacer
+//            height: units.gu(2)
+//            width: parent.width
+//        }
 
         Grid {
             anchors.horizontalCenter: parent.horizontalCenter
@@ -170,95 +170,99 @@ Flickable {
             CheckBox {
                 id: coverFetch
                 KeyNavigation.priority: KeyNavigation.BeforeItem
-                KeyNavigation.tab: artistYear
+//                KeyNavigation.tab: artistYear
                 KeyNavigation.backtab: playQueueScroll
             }
 
-            Label {
-                id: artistYearLabel
-                text: i18n.tr("Sort albums in artists view by year:")
-                fontSize: "medium"
-                verticalAlignment: Text.AlignVCenter
-                height: artistYear.height
-            }
+            //I don't see the point of implementing these options.
+            //Too many options, which nearly no user will miss if they aren't there, aren't good for phone (!) apps in my opinion.
+            //If we once implement options to adjust the order in which list items are shown, it will in my opinion be easier for the user if the options are shown on the page the list is on.
 
-            CheckBox {
-                id: artistYear
-                KeyNavigation.priority: KeyNavigation.BeforeItem
-                KeyNavigation.tab: albumsView
-                KeyNavigation.backtab: coverFetch
-                enabled: false
-            }
+//            Label {
+//                id: artistYearLabel
+//                text: i18n.tr("Sort albums in artists view by year:")
+//                fontSize: "medium"
+//                verticalAlignment: Text.AlignVCenter
+//                height: artistYear.height
+//            }
 
-            Label {
-                id: albumsViewLabel
-                text: i18n.tr("Show albums view:")
-                fontSize: "medium"
-                verticalAlignment: Text.AlignVCenter
-                height: albumsView.height
-            }
+//            CheckBox {
+//                id: artistYear
+//                KeyNavigation.priority: KeyNavigation.BeforeItem
+//                KeyNavigation.tab: albumsView
+//                KeyNavigation.backtab: coverFetch
+//                enabled: false
+//            }
 
-            CheckBox {
-                id: albumsView
-                KeyNavigation.priority: KeyNavigation.BeforeItem
-                KeyNavigation.tab: foldersView
-                KeyNavigation.backtab: coverFetch
-                enabled: false
-            }
+//            Label {
+//                id: albumsViewLabel
+//                text: i18n.tr("Show albums view:")
+//                fontSize: "medium"
+//                verticalAlignment: Text.AlignVCenter
+//                height: albumsView.height
+//            }
 
-            Label {
-                id: foldersViewLabel
-                text: i18n.tr("Show folders view:")
-                fontSize: "medium"
-                verticalAlignment: Text.AlignVCenter
-                height: foldersView.height
-            }
+//            CheckBox {
+//                id: albumsView
+//                KeyNavigation.priority: KeyNavigation.BeforeItem
+//                KeyNavigation.tab: foldersView
+//                KeyNavigation.backtab: coverFetch
+//                enabled: false
+//            }
 
-            CheckBox {
-                id: foldersView
-                KeyNavigation.priority: KeyNavigation.BeforeItem
-                KeyNavigation.tab: albumSort
-                KeyNavigation.backtab: playlistsView
-                enabled: false
-            }
+//            Label {
+//                id: foldersViewLabel
+//                text: i18n.tr("Show folders view:")
+//                fontSize: "medium"
+//                verticalAlignment: Text.AlignVCenter
+//                height: foldersView.height
+//            }
 
-            Label {
-                id: playlistsViewLabel
-                text: i18n.tr("Show playlists view:")
-                fontSize: "medium"
-                verticalAlignment: Text.AlignVCenter
-                height: playlistsView.height
-            }
+//            CheckBox {
+//                id: foldersView
+//                KeyNavigation.priority: KeyNavigation.BeforeItem
+//                KeyNavigation.tab: albumSort
+//                KeyNavigation.backtab: playlistsView
+//                enabled: false
+//            }
 
-            CheckBox {
-                id: playlistsView
-                KeyNavigation.priority: KeyNavigation.BeforeItem
-                KeyNavigation.tab: albumSort
-                KeyNavigation.backtab: foldersView
-                enabled: false
-            }
-        }
+//            Label {
+//                id: playlistsViewLabel
+//                text: i18n.tr("Show playlists view:")
+//                fontSize: "medium"
+//                verticalAlignment: Text.AlignVCenter
+//                height: playlistsView.height
+//            }
 
-        Item {
-            id: spacer
-            height: units.gu(1)
-            width: parent.width
-        }
+//            CheckBox {
+//                id: playlistsView
+//                KeyNavigation.priority: KeyNavigation.BeforeItem
+//                KeyNavigation.tab: albumSort
+//                KeyNavigation.backtab: foldersView
+//                enabled: false
+//            }
+//        }
 
-        OptionSelector {
-            id: albumSort
-            text: i18n.tr("Sort albums in albums view by:")
-            model: [ i18n.tr("Album, Artist, Year"),
-                i18n.tr("Album, Year, Artist"),
-                i18n.tr("Artist, Album, Year"),
-                i18n.tr("Artist, Year, Album"),
-                i18n.tr("Year, Album, Artist"),
-                i18n.tr("Year, Artist, Album") ]
-            width: parent.width
-            selectedIndex: 0
-            KeyNavigation.priority: KeyNavigation.BeforeItem
-            KeyNavigation.backtab: foldersView
-            enabled: false
+//        Item {
+//            id: spacer
+//            height: units.gu(1)
+//            width: parent.width
+//        }
+
+//        OptionSelector {
+//            id: albumSort
+//            text: i18n.tr("Sort albums in albums view by:")
+//            model: [ i18n.tr("Album, Artist, Year"),
+//                i18n.tr("Album, Year, Artist"),
+//                i18n.tr("Artist, Album, Year"),
+//                i18n.tr("Artist, Year, Album"),
+//                i18n.tr("Year, Album, Artist"),
+//                i18n.tr("Year, Artist, Album") ]
+//            width: parent.width
+//            selectedIndex: 0
+//            KeyNavigation.priority: KeyNavigation.BeforeItem
+//            KeyNavigation.backtab: foldersView
+//            enabled: false
         }
 
         Item {

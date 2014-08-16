@@ -188,7 +188,7 @@ Flickable {
             }
 
             onClicked: {
-                tryToConnect()
+                connectionDetailsColumn.tryToConnect()
                 connectionDetailsColumn.saveDataToU1db()
             }
         }

@@ -57,7 +57,8 @@ The following options may be passed to CMake:
         Some Qt4 builds still use com.trolltech.QtDBus.QtTypeName, whereas
         newer ones use org.qtproject.QtDBus.QtTypeName. If you get build
         failures such as "fatal error: playeradaptor.h: No such file or
-        directory" then try calling CMake with this option set to true.
+        directory" then try calling CMake with this option set to ON.
+        Default: OFF
 
     -DENABLE_HTTP_STREAM_PLAYBACK=ON
         Enable support for playing back MPD HTTP streams via Phonon (Qt4),
@@ -65,14 +66,14 @@ The following options may be passed to CMake:
         Default: OFF
 
     -ENABLE_LIBVLC=ON
-        Enabled usage of libVLC for MPD HTTP stream playback. Bug report 493
+        Enable usage of libVLC for MPD HTTP stream playback. Bug report 493
         (https://code.google.com/p/cantata/issues/detail?id=493) contains
         more information.
         Default: OFF
 
     -DENABLE_EXTERNAL_TAGS=ON
         Enable usage of external app for reading/writing tags. Helps to
-        isoloate Cantata from TagLib crashes.
+        isolate Cantata from TagLib crashes.
         Default: ON
 
     -DENABLE_HTTP_SERVER=ON

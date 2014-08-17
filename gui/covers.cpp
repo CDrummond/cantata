@@ -255,6 +255,7 @@ static void clearScaledCache(const Song &song)
         return;
     }
 
+    DBUG_CLASS("Covers") << song.file << song.artist << song.albumartist << song.album;
     QStringList sizeDirNames=d.entryList(QStringList() << "*", QDir::Dirs|QDir::NoDotAndDotDot);
 
     if (artistImage) {
@@ -1218,7 +1219,12 @@ void Covers::artistImageDownloaded(const Song &song, const QImage &img, const QS
 
 void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesOnly)
 {
-    clearScaledCache(song);
+    // Only remove all scaled entries from disk if the cover has been set by the CoverDialog
+    // This is the only case where dummyEntriesOnly==false
+    // dummyEntriesOnly => entries in cache that have a 'dummy' pixmap
+    if (!dummyEntriesOnly) {
+        clearScaledCache(song);
+    }
     #ifdef ENABLE_DEVICES_SUPPORT
     bool emitLoaded=!song.isFromDevice();
     #else

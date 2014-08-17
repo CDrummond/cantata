@@ -111,6 +111,7 @@ public:
     Q_INVOKABLE int getCrossfade() { return MPDStatus::self()->crossFade(); }
     Q_INVOKABLE QStringList getOutputs () { return outputSettings; }
     Q_INVOKABLE QString getReplayGain () { return replayGainSetting; }
+    Q_INVOKABLE void resetAllModels();
 
     PlayQueueProxyModel * getPlayQueueProxyModel() { return &playQueueProxyModel; }
     MusicLibraryProxyModel * getArtistsProxyModel() { return &artistsProxyModel; }

@@ -55,6 +55,7 @@
     online, and device support are disabled - as there are still 2 views;
     folders and search.
 21. Only remove cached scaled covers if updated via cover dialog.
+22. If auto-splitter hide is disabled, then restore sizes.
 
 1.4.0
 -----

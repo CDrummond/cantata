@@ -122,6 +122,9 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
             painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
                                 actionRect.y()+(actionRect.height()-pix.height())/2, pix);
         }
+        if (largeIcons && 2==actions.count() && AP_VTop==actionPos) {
+            adjustActionRect(rtl, actionPos, actionRect, iconSize>>4);
+        }
         adjustActionRect(rtl, actionPos, actionRect, iconSize);
     }
 
@@ -182,6 +185,9 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index) const
             return a;
         }
 
+        if (largeIcons && 2==actions.count() && AP_VTop==actionPos) {
+            adjustActionRect(rtl, actionPos, actionRect, iconSize>>4);
+        }
         ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect, iconSize);
     }
 

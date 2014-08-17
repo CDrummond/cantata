@@ -265,6 +265,7 @@ void AutohidingSplitter::setAutoHideEnabled(bool ah)
             widgetAutohidden[i]=false;
         }
         disconnect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
+        setSizes(expandedSizes);
     }
 }
 

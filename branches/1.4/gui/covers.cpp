@@ -1076,7 +1076,12 @@ void Covers::artistImageDownloaded(const Song &song, const QImage &img, const QS
 
 void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesOnly)
 {
-    clearScaledCache(song);
+    // Only remove all scaled entries from disk if the cover has been set by the CoverDialog
+    // This is the only case where dummyEntriesOnly==false
+    // dummyEntriesOnly => entries in cache that have a 'dummy' pixmap
+    if (!dummyEntriesOnly) {
+        clearScaledCache(song);
+    }
     foreach (int s, cacheSizes) {
         QString key=cacheKey(song, s);
         QPixmap *pix(cache.object(key));

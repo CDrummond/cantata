@@ -26,6 +26,7 @@
 20. Don't alter text of 'Other Views' tab in preferences dialog if streams,
     online, and device support are disabled - as there are still 2 views;
     folders and search.
+21. Only remove cached scaled covers if updated via cover dialog.
 
 1.4.0
 -----

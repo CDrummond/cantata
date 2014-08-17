@@ -48,8 +48,8 @@
 #include <QKeyEvent>
 #include <QProxyStyle>
 
-static int listDecorationSize=22;
-static int treeDecorationSize=16;
+static int detailedViewDecorationSize=22;
+static int simpleViewDecorationSize=16;
 static int listCoverSize=22;
 static int gridCoverSize=22;
 
@@ -68,11 +68,11 @@ void ItemView::setup()
     int height=QApplication::fontMetrics().height();
 
     if (height>22) {
-        listDecorationSize=Icon::stdSize(height*1.4);
-        treeDecorationSize=Icon::stdSize(height);
+        detailedViewDecorationSize=Icon::stdSize(height*1.4);
+        simpleViewDecorationSize=Icon::stdSize(height);
     } else {
-        listDecorationSize=22;
-        treeDecorationSize=16;
+        detailedViewDecorationSize=22;
+        simpleViewDecorationSize=16;
     }
     listCoverSize=qMax(32, adjust(2*height));
     gridCoverSize=qMax(128, adjust(8*height));
@@ -230,7 +230,7 @@ public:
         }
 
         if (!pix) {
-            pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
+            pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(detailedViewDecorationSize, detailedViewDecorationSize);
         }
 
         bool oneLine = childText.isEmpty();
@@ -454,7 +454,7 @@ public:
                 }
 
                 if (pix.isNull()) {
-                    pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(treeDecorationSize, treeDecorationSize);
+                    pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(simpleViewDecorationSize, simpleViewDecorationSize);
                 }
 
                 if (!pix.isNull()) {

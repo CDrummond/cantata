@@ -215,7 +215,8 @@ void SearchPage::setSearchCategories()
 {
     int newState=(MPDConnection::self()->composerTagSupported() ? State_ComposerSupported : 0)|
                  (MPDConnection::self()->commentTagSupported() ? State_CommmentSupported : 0)|
-                 (MPDConnection::self()->performerTagSupported() ? State_PerformerSupported : 0);;
+                 (MPDConnection::self()->performerTagSupported() ? State_PerformerSupported : 0)|
+                 (MPDConnection::self()->modifiedFindSupported() ? State_ModifiedSupported : 0);
 
     if (state==newState) {
         // No changes to be made!
@@ -239,8 +240,11 @@ void SearchPage::setSearchCategories()
     if (state&State_CommmentSupported) {
         categories << QPair<QString, QString>(i18n("Comment:"), QLatin1String("comment"));
     }
-    categories << QPair<QString, QString>(i18n("Date:"), QLatin1String("date"))
-               << QPair<QString, QString>(i18n("File:"), QLatin1String("file"))
+    categories << QPair<QString, QString>(i18n("Date:"), QLatin1String("date"));
+    if (state&State_ModifiedSupported) {
+        categories << QPair<QString, QString>(i18n("Modified:"), MPDConnection::constModifiedSince);
+    }
+    categories << QPair<QString, QString>(i18n("File:"), QLatin1String("file"))
                << QPair<QString, QString>(i18n("Any:"), QLatin1String("any"));
     view->setSearchCategories(categories);
 }

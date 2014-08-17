@@ -15,6 +15,12 @@
 10. Simplify toolbar cover widget, no border.
 11. Allow Qt preference dialog to shrink smaller. If screen size is less than
     800px, then views page is re-arranged to allow much smaller dialog.
+12. Support MPDs "find modified-since" with MPD 0.19 and newer. If a number is
+    entered it is taken to be 'modifed since X days in past', otherwise a date
+    should be entered (e.g. 01/12/2001 to find all tracks since 1st Dec 2001)
+    Cantata will first try to convert from your locale date format, default
+    date format, and then ISO date format.
+13. Allow to enter raw MPD queries into search field.
 
 1.4.1
 -----

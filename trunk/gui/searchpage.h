@@ -70,9 +70,10 @@ public Q_SLOTS:
 private:
     enum State
     {
-        State_ComposerSupported=0x01,
-        State_CommmentSupported=0x02,
-        State_PerformerSupported=0x04
+        State_ComposerSupported  = 0x01,
+        State_CommmentSupported  = 0x02,
+        State_PerformerSupported = 0x04,
+        State_ModifiedSupported  = 0x08
     };
 
     int state;

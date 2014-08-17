@@ -182,6 +182,7 @@ public:
         AddReplaceAndPlay=2
     };
 
+    static QString constModifiedSince;
     static MPDConnection * self();
     static QByteArray quote(int val);
     static QByteArray encodeName(const QString &name);
@@ -209,6 +210,7 @@ public:
     bool composerTagSupported() const { return tagTypes.contains(QLatin1String("Composer")); }
     bool commentTagSupported() const { return tagTypes.contains(QLatin1String("Comment")); }
     bool performerTagSupported() const { return tagTypes.contains(QLatin1String("Performer")); }
+    bool modifiedFindSupported() const { return ver>=MPD_MAKE_VERSION(0, 19, 0); }
 
     long version() const { return ver; }
     static bool isPlaylist(const QString &file);

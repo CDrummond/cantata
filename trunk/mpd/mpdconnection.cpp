@@ -39,6 +39,7 @@
 #include <QTimer>
 #include <QDir>
 #include <QHostInfo>
+#include <QDateTime>
 #include <QPropertyAnimation>
 #include "support/thread.h"
 #include "gui/settings.h"
@@ -97,6 +98,8 @@ static QByteArray log(const QByteArray &data)
 }
 
 GLOBAL_STATIC(MPDConnection, instance)
+
+QString MPDConnection::constModifiedSince=QLatin1String("modified-since");
 
 QByteArray MPDConnection::quote(int val)
 {
@@ -1540,10 +1543,39 @@ void MPDConnection::setPriority(const QList<qint32> &ids, quint8 priority)
 void MPDConnection::search(const QString &field, const QString &value, int id)
 {
     QList<Song> songs;
-    Response response=sendCommand("search "+field.toLatin1()+" "+encodeName(value));
-    if (response.ok) {
-        songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Search);
-        qSort(songs);
+    QByteArray cmd;
+
+    if (constModifiedSince==field) {
+        QString dateVal;
+        if (value.length()>7 && (value.contains(QLatin1Char('/')) || value.contains(QLatin1Char('-')))) {
+            QDateTime dt=QDateTime::fromString(value, Qt::SystemLocaleShortDate);
+            if (!dt.isValid()) {
+                dt=QDateTime::fromString(value, Qt::DefaultLocaleShortDate);
+            }
+            if (!dt.isValid()) {
+                dt=QDateTime::fromString(value, Qt::ISODate);
+            }
+            if (dt.isValid()) {
+                cmd="find "+field.toLatin1()+" "+encodeName(dt.toString(Qt::ISODate));
+            }
+        }
+        if (dateVal.isEmpty() && !value.contains(QLatin1Char('/')) && !value.contains(QLatin1Char('-'))) {
+            bool ok=false;
+            int numDays=value.simplified().trimmed().toInt(&ok);
+            if (ok && numDays<0xFFFF) {
+                cmd="find "+field.toLatin1()+" "+quote(QDateTime::currentDateTime().toTime_t()-(numDays*24*60*60));
+            }
+        }
+    } else {
+        cmd="search "+field.toLatin1()+" "+encodeName(value);
+    }
+
+    if (!cmd.isEmpty()) {
+        Response response=sendCommand(cmd);
+        if (response.ok) {
+            songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Search);
+            qSort(songs);
+        }
     }
     emit searchResponse(id, songs);
 }

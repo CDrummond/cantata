@@ -1294,10 +1294,14 @@ Covers::Image Covers::locateImage(const Song &song)
     #ifdef ENABLE_ONLINE_SERVICES
     if (song.isFromOnlineService()) {
         QString id=song.onlineService();
-        Covers::Image img=serviceImage(song);
-        if (!img.img.isNull()) {
-            DBUG_CLASS("Covers") <<  "Got cover online image" << QString(img.fileName) << "for" << id; 
-            return img;
+        Covers::Image img;
+
+        if (isOnlineServiceImage(song)) {
+            img=serviceImage(song);
+            if (!img.img.isNull()) {
+                DBUG_CLASS("Covers") <<  "Got cover online image" << QString(img.fileName) << "for" << id;
+                return img;
+            }
         }
 
         img.fileName=song.extraField(Song::OnlineImageCacheName);

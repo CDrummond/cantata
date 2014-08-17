@@ -173,19 +173,16 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         switch (role) {
         default:
             return ActionModel::data(index, role);
-        case Cantata::Role_ListImage:
+        #ifdef ENABLE_UBUNTU
         case Cantata::Role_Image: {
-            #ifdef ENABLE_UBUNTU
             QString cover=al->cover();
             return cover.isEmpty() ? constDefaultCover : cover;
-            #else
-            return true;
-            #endif
         }
-        #ifndef ENABLE_UBUNTU
+        #endif
+        case Cantata::Role_ListImage:
+            return true;
         case Qt::DecorationRole:
             return Icons::self()->albumIcon;
-        #endif
         case Qt::ToolTipRole:
             return 0==al->songs.count()
                     ? QString()
@@ -208,13 +205,11 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return al->artist;
         case Cantata::Role_TitleText:
             return i18nc("Album by Artist", "%1 by %2", al->album, al->artist);
-        #ifndef ENABLE_UBUNTU
         case Cantata::Role_CoverSong: {
             QVariant v;
             v.setValue<Song>(al->coverSong());
             return v;
         }
-        #endif
         }
     } else {
         SongItem *si=static_cast<SongItem *>(item);
@@ -222,16 +217,14 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         switch (role) {
         default:
             return ActionModel::data(index, role);
+        #ifdef ENABLE_UBUNTU
         case Cantata::Role_Image:
-            #ifdef ENABLE_UBUNTU
             return QString();
-            #else
+        #endif
+        case Cantata::Role_ListImage:
             return false;
-            #endif
-        #ifndef ENABLE_UBUNTU
         case Qt::DecorationRole:
             return Song::Playlist==si->type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
-        #endif
         case Qt::ToolTipRole:
             return si->toolTip();
         case Cantata::Role_MainText:

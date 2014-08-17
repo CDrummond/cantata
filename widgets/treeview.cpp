@@ -162,23 +162,8 @@ void TreeView::drag(Qt::DropActions supportedActions, QAbstractItemView *view, c
         }
         QDrag *drag = new QDrag(view);
         drag->setMimeData(data);
-        QPixmap pix;
-
-        if (1==items.count()) {
-            QVariant var=view->model()->data(items.first(), Cantata::Role_Image);
-            QImage img=var.value<QImage>();
-            if (img.isNull()) {
-                pix=var.value<QPixmap>();
-            } else {
-                pix=QPixmap::fromImage(img);
-            }
-        }
         int pixSize=Icon::stdSize(Utils::scaleForDpi(32));
-        if (pix.isNull()) {
-            drag->setPixmap(Icons::self()->audioFileIcon.pixmap(pixSize, pixSize));
-        } else {
-            drag->setPixmap(pix.width()<pixSize ? pix : pix.scaled(QSize(pixSize, pixSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        }
+        drag->setPixmap(Icons::self()->audioFileIcon.pixmap(pixSize, pixSize));
         drag->start(supportedActions);
     }
 }

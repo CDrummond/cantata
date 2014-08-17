@@ -23,6 +23,7 @@
 #ifndef ROLES_H
 #define ROLES_H
 
+#include "config.h"
 #include <QAbstractItemModel>
 
 namespace Cantata {
@@ -33,7 +34,9 @@ namespace Cantata {
         Role_BriefMainText,
         Role_SubText,
         Role_TitleText,
+        #ifdef ENABLE_UBUNTU
         Role_Image,
+        #endif
         Role_ListImage, // Should image been shown in list/tree view?
         Role_CoverSong,
         Role_Capacity,

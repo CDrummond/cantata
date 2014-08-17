@@ -152,15 +152,10 @@ public:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
         Q_UNUSED(option)
-        bool iconMode = view && QListView::IconMode==view->viewMode();
-        bool gridView = view && QListView::IconMode==view->viewMode();
-        bool showImage = index.data(iconMode ? Cantata::Role_Image : Cantata::Role_ListImage).toBool();
-        int imageSize = showImage ? (gridView ? gridCoverSize : listCoverSize) : 0;
-
-        if (iconMode) {
-            // Use same calculation as in LibraryPage/AlbumsPage...
-            return QSize(imageSize+8, imageSize+(QApplication::fontMetrics().height()*2.5));
+        if (view && QListView::IconMode==view->viewMode()) {
+            return QSize(gridCoverSize+8, gridCoverSize+(QApplication::fontMetrics().height()*2.5));
         } else {
+            int imageSize = index.data(Cantata::Role_ListImage).toBool() ? listCoverSize : 0;
             // TODO: Any point to checking one-line here? All models return sub-text...
             //       Things will be quicker if we dont call SubText here...
             bool oneLine = false ; // index.data(Cantata::Role_SubText).toString().isEmpty();
@@ -216,10 +211,9 @@ public:
         QRect r(option.rect);
         QRect r2(r);
         QString childText = index.data(Cantata::Role_SubText).toString();
-        bool showCover = index.data(iconMode ? Cantata::Role_Image : Cantata::Role_ListImage).toBool();
-        QPixmap pix;
 
-        if (showCover) {
+        QPixmap pix;
+        if (iconMode || index.data(Cantata::Role_ListImage).toBool()) {
             Song cSong=index.data(Cantata::Role_CoverSong).value<Song>();
             if (!cSong.isEmpty()) {
                 QPixmap *cp=Covers::self()->get(cSong, iconMode ? gridCoverSize : listCoverSize, getCoverInUiThread(index));
@@ -228,7 +222,6 @@ public:
                 }
             }
         }
-
         if (!pix) {
             pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(detailedViewDecorationSize, detailedViewDecorationSize);
         }
@@ -441,9 +434,7 @@ public:
 
             if (!noIcons) {
                 QPixmap pix;
-
-                bool showCover = index.data(Cantata::Role_ListImage).toBool();
-                if (showCover) {
+                if (index.data(Cantata::Role_ListImage).toBool()) {
                     Song cSong=index.data(Cantata::Role_CoverSong).value<Song>();
                     if (!cSong.isEmpty()) {
                         QPixmap *cp=Covers::self()->get(cSong, listCoverSize);

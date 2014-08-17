@@ -217,7 +217,6 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
         break;
     }
     case Cantata::Role_ListImage:
-    case Cantata::Role_Image:
         return MusicLibraryItem::Type_Album==item->itemType() || MusicLibraryItem::Type_Podcast==item->itemType();
     case Qt::DecorationRole:
         if (MusicLibraryItem::Type_Song==item->itemType() && item->parentItem() && MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {

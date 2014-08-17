@@ -138,13 +138,9 @@ void CoverWidget::paintEvent(QPaintEvent *)
     QRect r((width()-pix->width())/2, (height()-pix->height())/2, pix->width(), pix->height());
     p.drawPixmap(r.x(), r.y(), *pix);
     if (underMouse()) {
-        QRectF rf(r.x(), r.y(), r.width(), r.height());
-        QColor col(palette().color(QPalette::Highlight));
-        double radius=pix->width()>128 ? 7.5 : 5.5;
         p.setRenderHint(QPainter::Antialiasing);
-        col.setAlphaF(0.8);
-        p.setPen(col);
-        p.drawPath(Utils::buildPath(rf, radius));
+        p.setPen(QPen(palette().color(QPalette::Highlight), 2));
+        p.drawPath(Utils::buildPath(QRectF(r.x()+0.5, r.y()+0.5, r.width()-1, r.height()-1), pix->width()>128 ? 6 : 4));
     }
 }
 
@@ -154,7 +150,7 @@ void CoverWidget::coverImage(const QImage &)
     if (img.isNull()) {
         return;
     }
-    int size=height()-(2*constBorder);
+    int size=height();
     img=img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     if (pix && pix->size()!=img.size()) {
         delete pix;

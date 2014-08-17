@@ -84,6 +84,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void searchFinished(int id, const QList<Song> &result);
+    void coverLoaded(const Song &song, int s);
 
 private:
     void clearItems();

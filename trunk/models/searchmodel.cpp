@@ -26,6 +26,7 @@
 #include "roles.h"
 #include "mpd/mpdconnection.h"
 #include "playqueuemodel.h"
+#include "gui/covers.h"
 #include <QString>
 #include <QVariant>
 #include <QMimeData>
@@ -63,6 +64,9 @@ SearchModel::SearchModel(QObject *parent)
 {
     connect(this, SIGNAL(search(QString,QString,int)), MPDConnection::self(), SLOT(search(QString,QString,int)));
     connect(MPDConnection::self(), SIGNAL(searchResponse(int,QList<Song>)), this, SLOT(searchFinished(int,QList<Song>)));
+    #ifndef ENABLE_UBUNTU
+    connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
+    #endif
 }
 
 SearchModel::~SearchModel()
@@ -216,6 +220,13 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         return song->title.isEmpty() ? song->file : song->trackAndTitleStr();
     case Cantata::Role_SubText:
         return song->artist+QLatin1String(" - ")+song->displayAlbum();
+    case Cantata::Role_ListImage:
+        return true;
+    case Cantata::Role_CoverSong: {
+        QVariant v;
+        v.setValue<Song>(*song);
+        return v;
+    }
     default:
         return ActionModel::data(index, role);
     }
@@ -324,4 +335,23 @@ void SearchModel::searchFinished(int id, const QList<Song> &result)
 
     emit statsUpdated(songList.size(), time);
     emit searched();
+}
+
+void SearchModel::coverLoaded(const Song &song, int s)
+{
+    Q_UNUSED(s)
+    #ifdef ENABLE_UBUNTU
+    Q_UNUSED(song)
+    #else
+    if (!song.isArtistImageRequest()) {
+        int row=0;
+        foreach (const Song &s, songList) {
+            if (s.albumArtist()==song.albumArtist() && s.album==song.album) {
+                QModelIndex idx=index(row, 0, QModelIndex());
+                emit dataChanged(idx, idx);
+            }
+            row++;
+        }
+    }
+    #endif
 }

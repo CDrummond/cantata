@@ -20,7 +20,7 @@
     should be entered (e.g. 01/12/2001 to find all tracks since 1st Dec 2001)
     Cantata will first try to convert from your locale date format, default
     date format, and then ISO date format.
-13. Allow to enter raw MPD queries into search field.
+13. Show covers in search results.
 
 1.4.1
 -----

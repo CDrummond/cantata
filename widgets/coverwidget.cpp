@@ -93,6 +93,9 @@ bool CoverWidget::event(QEvent *event)
         if (!current.composer().isEmpty()) {
             toolTip+=i18n("<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>", current.composer());
         }
+        if (!current.performer().isEmpty() && current.performer()!=current.albumArtist()) {
+            toolTip+=i18n("<tr><td align=\"right\"><b>Performer:</b></td><td>%1</td></tr>", current.performer());
+        }
         toolTip+=i18n("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
                       "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
                       "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>", current.albumArtist(), current.album, QString::number(current.year));

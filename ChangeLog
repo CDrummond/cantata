@@ -21,6 +21,7 @@
     Cantata will first try to convert from your locale date format, default
     date format, and then ISO date format.
 13. Show covers in search results.
+14. Show perfomer in cover tooltip if this is set and different to album artist.
 
 1.4.1
 -----

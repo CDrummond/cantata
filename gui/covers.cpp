@@ -1147,14 +1147,19 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
         }
         if (!pix) {
             if (urgent) {
-                Image img=findImage(song, false);
-                if (!img.img.isNull()) {
-                    pix=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+                QImage cached=loadScaledCover(song, size);
+                if (cached.isNull()) {
+                    Image img=findImage(song, false);
+                    if (!img.img.isNull()) {
+                        return saveScaledCover(scale(song, img.img, size), song, size);
+                    } else if (constNoCover==img.fileName) {
+                        return 0;
+                    }
+                } else {
+                    pix=new QPixmap(QPixmap::fromImage(cached));
                     cache.insert(key, pix);
                     cacheSizes.insert(size);
                     return pix;
-                } else if (constNoCover==img.fileName) {
-                    return 0;
                 }
             }
             if (cacheScaledCovers) {

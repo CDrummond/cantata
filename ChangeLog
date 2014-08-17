@@ -5,7 +5,7 @@
  3. No images, or icons, shown in basic tree view.
  4. Remove GUI option to control saving of scaled covers. This is enabled by
     default, and can be toggled via the config file.
- 5. Dont re-load view when sort changes.
+ 5. Don't re-load view when sort changes.
  6. Simplify view config pages.
  7. Use QUrl with server details to build HTTP address used to compare MPD http
     file paths against.
@@ -16,12 +16,13 @@
 11. Allow Qt preference dialog to shrink smaller. If screen size is less than
     800px, then views page is re-arranged to allow much smaller dialog.
 12. Support MPDs "find modified-since" with MPD 0.19 and newer. If a number is
-    entered it is taken to be 'modifed since X days in past', otherwise a date
+    entered it is taken to be 'modified since X days in past', otherwise a date
     should be entered (e.g. 01/12/2001 to find all tracks since 1st Dec 2001)
     Cantata will first try to convert from your locale date format, default
     date format, and then ISO date format.
 13. Show covers in search results.
-14. Show perfomer in cover tooltip if this is set and different to album artist.
+14. Show performer in cover tooltip if this is set and different to album
+    artist.
 15. Always large action icons for grid view.
 16. Increase gap between add and play icons in grid view.
 

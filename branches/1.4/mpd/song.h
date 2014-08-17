@@ -127,6 +127,7 @@ struct Song
     QString displayTitle() const { return !albumartist.isEmpty() && albumartist!=artist ? artistSong() : title; }
     QString trackAndTitleStr(bool showArtistIfDifferent=true) const;
     QString toolTip() const;
+    QString displayGenre() const { return QString(genre).replace(constGenreSep, QLatin1String(", ")); }
 
     QString extraField(int f) const { return extra[f]; }
     void setExtraField(int f, const QString &v);

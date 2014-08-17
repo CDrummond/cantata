@@ -75,7 +75,7 @@ void ItemView::setup()
         treeDecorationSize=16;
     }
     listCoverSize=qMax(32, adjust(2*height));
-    gridCoverSize=qMax(128, adjust(7*height));;
+    gridCoverSize=qMax(128, adjust(7*height));
 }
 
 KeyEventHandler::KeyEventHandler(QAbstractItemView *v, QAction *a)

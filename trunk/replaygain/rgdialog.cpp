@@ -417,7 +417,7 @@ void RgDialog::updateView()
 
     for (; it!=end; ++it) {
         if (100==it.value()) {
-            finished++;;
+            finished++;
         }
         totalProgress+=(*it);
     }

@@ -900,7 +900,7 @@ void ItemView::setLevel(int l, bool haveChildren)
 //                listView->setAlternatingRowColors(false);
                 listView->setWordWrap(true);
                 listView->setDragDropMode(QAbstractItemView::DragOnly);
-                static_cast<ActionItemDelegate *>(listView->itemDelegate())->setLargeIcons(iconGridSize.width()>(ActionItemDelegate::constLargeActionIconSize*4));
+                static_cast<ActionItemDelegate *>(listView->itemDelegate())->setLargeIcons(true);
             }
         } else if(QListView::ListMode!=listView->viewMode()) {
             listView->setGridSize(listGridSize);

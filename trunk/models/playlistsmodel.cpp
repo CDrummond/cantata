@@ -440,7 +440,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     }
                     return s->year;
                 case COL_GENRE:
-                    return s->genre;
+                    return s->displayGenre();
                 case COL_COMPOSER:
                     return s->composer();
                 case COL_PERFORMER:

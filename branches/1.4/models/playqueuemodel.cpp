@@ -559,7 +559,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             }
             return song.year;
         case COL_GENRE:
-            return song.genre;
+            return song.displayGenre();
         case COL_PRIO:
             return song.priority;
         case COL_COMPOSER:

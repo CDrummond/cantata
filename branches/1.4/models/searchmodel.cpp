@@ -199,7 +199,7 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
                 }
                 return song->year;
             case COL_GENRE:
-                return song->genre;
+                return song->displayGenre();
             case COL_COMPOSER:
                 return song->composer();
             case COL_PERFORMER:

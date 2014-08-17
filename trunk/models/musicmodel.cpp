@@ -191,8 +191,8 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         default:
             return false;
         }
+    #ifdef ENABLE_UBUNTU
     case Cantata::Role_Image:
-        #ifdef ENABLE_UBUNTU
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Album:
             return static_cast<MusicLibraryItemAlbum *>(item)->cover();
@@ -201,21 +201,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         default:
             return QString();
         }
-        #else
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Album:
-            return true;
-        case MusicLibraryItem::Type_Artist:
-            return true;
-        #ifdef ENABLE_ONLINE_SERVICES
-        case MusicLibraryItem::Type_Podcast:
-            return true;
-        #endif
-        default:
-            return false;
-        }
-        #endif
-    #ifndef ENABLE_UBUNTU
+    #endif
     case Cantata::Role_CoverSong: {
         QVariant v;
         switch (item->itemType()) {
@@ -235,7 +221,6 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         }
         return v;
     }
-    #endif
     case Cantata::Role_TitleText:
         if (MusicLibraryItem::Type_Album==item->itemType()) {
             return i18nc("Album by Artist", "%1 by %2", item->data(), item->parentItem()->data());

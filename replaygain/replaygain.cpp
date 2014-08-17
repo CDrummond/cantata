@@ -91,7 +91,7 @@ void ReplayGain::showProgress()
 
     for (; it!=end; ++it) {
         if ((*it).finished) {
-            finished++;;
+            finished++;
         }
         totalProgress+=(*it).finished ? 100 : (*it).progress;
     }

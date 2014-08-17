@@ -37,8 +37,8 @@ Cantata is a graphical client for MPD. It contains the following features:
     installed)
  9. Dynamic playlists.
 10. Online services; Jamendo, Magnatune, SoundCloud, and Podcasts.
-11. Radio stream support - with the ability to search for streams via TuneIn or
-    ShoutCast.
+11. Radio stream support - with the ability to search for streams via TuneIn,
+    ShoutCast, or Dirble.
 12. USB-Mass-Storage and MTP device support. (Linux only, and if relevant
     libraries installed)
 13. Audio CD ripping and playback. (Linux only, and if relevant libraries
@@ -50,11 +50,14 @@ Cantata is a graphical client for MPD. It contains the following features:
     (Linux only), and standard media keys (via Qxt)
 17. Ubuntu/ambiance theme integration - including dragging of window via
     toolbar.
+18. Basic support for touch-style interface (views are made 'flickable')
+19. Ratings support.
 
 Cantata started off as a fork of QtMPC, mainly to provide better KDE
 integration - by using KDE libraries/classes wherever possible. However, the
 code (and user interface) is now *very* different to that of QtMPC, and both
-KDE and Qt (Linux) builds have the same feature set.
+KDE and Qt (Linux) builds have the same feature set. Also, as of 1.4.0, by
+default Cantata is built as a Qt-only application (with no KDE dependencies)
 
 Unlike most other MPD clients, Cantata caches a copy of the MPD music library.
 This is so that it can create a proper hierarchy of artists and albums (where
@@ -63,9 +66,7 @@ the Artist tag), to provide album counts, tracks counts, etc in the browser
 views and tooltips, and also to help with copying songs to/from devices.
 
 This cache is updated only when MPD indicates that its version of the collection
-is different to Cantata's. If you press the 'Refresh Database' button in either
-the artist, albums, folders, or playlists views, then this cache is deleted and
-recreated with the response from MPD.
+is different to Cantata's.
 
 By default, Cantata will use the "listallinfo" command to retrieve the music
 collection. However, it has been noted that MPD 0.18 requires more memory for
@@ -88,23 +89,28 @@ Cantata requires the following Qt libraries:
 
 Cantata may also use the following optional libraries:
 
-1. KDElibs4
-2. TagLib - Tag edit dialog, replaygain, track organizer, and UMS device
-            support.
-3. LibMTP - MTP devices.
-4. FFMPEG (libavcodec) - ReplayGain detection code.
-5. SpeexDSP - ReplayGain detection code.
-6. MPG123 - ReplayGain detection code.
-7. CDParanoia - Read/rip Audio CDs.
-8. CDDB - either this or MusicBrainz5 required for Audio CDs
-9. MusicBrainz5 - either this or CDDB required for Audio CDs
+ 1. KDElibs4
+ 2. TagLib - Tag edit dialog, replaygain, track organizer, and UMS device
+             support.
+ 3. LibMTP - MTP devices.
+ 4. FFMPEG (libavcodec) - ReplayGain detection code.
+ 5. SpeexDSP - ReplayGain detection code.
+ 6. MPG123 - ReplayGain detection code.
+ 7. CDParanoia - Read/rip Audio CDs.
+ 8. CDDB - either this or MusicBrainz5 required for Audio CDs
+ 9. MusicBrainz5 - either this or CDDB required for Audio CDs
+10. LibQJson - only for Qt4, and KDE4, builds. If this is not found on the
+    system then Cantata will use its own bundled copy.
+11. LibEbur128 - ReplayGain detection code. If this is not found on the
+    system then Cantata will use its own bundled copy.
 
 
 3. Building
 ===========
 
 Please refer to the INSTALL file for general build instructions. Details on how
-Cantata is build for Windows can be found in section 16.
+Cantata is build for Windows can be found in section 16, and Mac OSX in section
+17.
 
 Some Qt4 builds still use com.trolltech.QtDBus.QtTypeName, whereas newer ones
 use org.qtproject.QtDBus.QtTypeName. If you get build failures such as "fatal
@@ -465,6 +471,7 @@ alwaysUseHttp=true
 alwaysUseLsInfo=true
 menu=3
 stopHttpStreamOnPause=true
+cacheScaledCovers=true
 
 
 8. CUE Files
@@ -720,7 +727,7 @@ the user the script is run as should have read/write permissions to this file.
 'mpdHost', 'mpdPort', and 'mpdPassword' are the connection details of the MPD
 server.
 
-'httpPort' if this is set to non-zero, then the script will server up a *very*
+'httpPort' if this is set to non-zero, then the script will serve up a *very*
 simple HTTP control page - allowing playlists to be started and stopped.
 
 

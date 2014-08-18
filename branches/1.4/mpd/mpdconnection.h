@@ -167,8 +167,6 @@ struct MPDConnectionDetails {
     #endif
 };
 
-#define MPD_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))
-
 class MPDConnection : public QObject
 {
     Q_OBJECT
@@ -203,14 +201,14 @@ public:
     const MPDConnectionDetails & getDetails() const { return details; }
     void setDirReadable() { details.setDirReadable(); }
     bool isConnected() const { return State_Connected==state; }
-    bool canUsePriority() const { return ver>=MPD_MAKE_VERSION(0, 17, 0) && !mopidy; }
+    bool canUsePriority() const { return ver>=CANTATA_MAKE_VERSION(0, 17, 0) && !mopidy; }
     const QSet<QString> & urlHandlers() const { return handlers; }
     const QSet<QString> & tags() const { return tagTypes; }
     bool composerTagSupported() const { return tagTypes.contains(QLatin1String("Composer")); }
     bool commentTagSupported() const { return tagTypes.contains(QLatin1String("Comment")); }
     bool performerTagSupported() const { return tagTypes.contains(QLatin1String("Performer")); }
-    bool modifiedFindSupported() const { return ver>=MPD_MAKE_VERSION(0, 19, 0); }
-    bool replaygainSupported() const { return ver>=MPD_MAKE_VERSION(0, 16, 0); }
+    bool modifiedFindSupported() const { return ver>=CANTATA_MAKE_VERSION(0, 19, 0); }
+    bool replaygainSupported() const { return ver>=CANTATA_MAKE_VERSION(0, 16, 0); }
 
     long version() const { return ver; }
     static bool isPlaylist(const QString &file);

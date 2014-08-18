@@ -513,7 +513,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                                       bool isMopidy, MusicLibraryItemRoot *rootItem, bool parsePlaylists,
                                       QSet<QString> *childDirs)
 {
-    bool canSplitCue=mpdVersion>=MPD_MAKE_VERSION(0,17,0);
+    bool canSplitCue=mpdVersion>=CANTATA_MAKE_VERSION(0,17,0);
     QList<QByteArray> currentItem;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();

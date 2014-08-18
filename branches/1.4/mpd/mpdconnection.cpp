@@ -616,7 +616,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
                     }
                 } else if (!response.getError(command).isEmpty()) {
                     emit error(i18n("MPD reported the following error: %1", response.getError(command)));
-                } /*else if ("listallinfo"==command && ver>=MPD_MAKE_VERSION(0,18,0)) {
+                } /*else if ("listallinfo"==command && ver>=CANTATA_MAKE_VERSION(0,18,0)) {
                     disconnectFromMPD();
                     emit stateChanged(false);
                     emit error(i18n("Failed to load library. Please increase \"max_output_buffer_size\" in MPD's config file."));
@@ -1734,7 +1734,7 @@ bool MPDConnection::listDirInfo(const QString &dir, MusicLibraryItemRoot *root)
 #ifdef ENABLE_DYNAMIC
 bool MPDConnection::checkRemoteDynamicSupport()
 {
-    if (ver>=MPD_MAKE_VERSION(0,17,0)) {
+    if (ver>=CANTATA_MAKE_VERSION(0,17,0)) {
         Response response;
         if (-1!=idleSocket.write("channels\n")) {
             idleSocket.waitForBytesWritten(socketTimeout(9));

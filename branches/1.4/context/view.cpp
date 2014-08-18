@@ -94,6 +94,7 @@ ViewTextSelector::ViewTextSelector(QWidget *p)
     setAttribute(Qt::WA_Hover, true);
     menu=new QMenu(this);
     setStyleSheet(QLatin1String("QLabel:hover {color:palette(highlight);}"));
+    setMargin(Utils::scaleForDpi(2));
 }
 
 static QString viewText(const QString &s)

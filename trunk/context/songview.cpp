@@ -121,7 +121,7 @@ static QString actualFile(const Song &song)
 }
 
 SongView::SongView(QWidget *p)
-    : View(p, QStringList() << i18n("Lyrics") << i18n("Information") << i18n("Tags"))
+    : View(p, QStringList() << i18n("Lyrics") << i18n("Information") << i18n("Metadata"))
     , scrollTimer(0)
     , songPos(0)
     , currentProvider(-1)
@@ -131,7 +131,7 @@ SongView::SongView(QWidget *p)
     , currentProv(0)
     , lyricsNeedsUpdating(true)
     , infoNeedsUpdating(true)
-    , tagsNeedsUpdating(true)
+    , metadataNeedsUpdating(true)
 {
     scrollAction = ActionCollection::get()->createAction("scrolllyrics", i18n("Scroll Lyrics"), "go-down");
     refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), "view-refresh");
@@ -361,10 +361,10 @@ void SongView::curentViewChanged()
         return;
     }
     switch (currentView()) {
-    case Page_Lyrics:      loadLyrics(); break;
-    case Page_Information: loadInfo();   break;
-    case Page_Tags:        loadTags();   break;
-    default:                             break;
+    case Page_Lyrics:      loadLyrics();   break;
+    case Page_Information: loadInfo();     break;
+    case Page_Metadata:    loadMetadata(); break;
+    default:                               break;
     }
 }
 
@@ -472,12 +472,12 @@ static QString clean(QString v)
 }
 #endif
 
-void SongView::loadTags()
+void SongView::loadMetadata()
 {
-    if (!tagsNeedsUpdating) {
+    if (!metadataNeedsUpdating) {
         return;
     }
-    tagsNeedsUpdating=false;
+    metadataNeedsUpdating=false;
 
     QMultiMap<int, QString> tags;
     QMultiMap<int, QString> audioProperties;
@@ -625,7 +625,7 @@ void SongView::loadTags()
     }
     tagInfo+=QLatin1String("</table>");
 
-    setHtml(tagInfo, Page_Tags);
+    setHtml(tagInfo, Page_Metadata);
 }
 
 void SongView::refreshInfo()
@@ -712,7 +712,7 @@ void SongView::update(const Song &s, bool force)
 {
     if (s.isEmpty() || s.title.isEmpty() || s.artist.isEmpty()) {
         currentSong=s;
-        infoNeedsUpdating=tagsNeedsUpdating=lyricsNeedsUpdating=false;
+        infoNeedsUpdating=metadataNeedsUpdating=lyricsNeedsUpdating=false;
         clear();
         abort();
         return;
@@ -750,7 +750,7 @@ void SongView::update(const Song &s, bool force)
             currentProvider=-1;
         }
 
-        infoNeedsUpdating=tagsNeedsUpdating=lyricsNeedsUpdating=true;
+        infoNeedsUpdating=metadataNeedsUpdating=lyricsNeedsUpdating=true;
         setHeader(song.title);
         curentViewChanged();
     }

@@ -1013,17 +1013,21 @@ void MPDConnection::setCrossFade(int secs)
 
 void MPDConnection::setReplayGain(const QString &v)
 {
-    sendCommand("replay_gain_mode "+v.toLatin1());
+    if (replaygainSupported()) {
+        sendCommand("replay_gain_mode "+v.toLatin1());
+    }
 }
 
 void MPDConnection::getReplayGain()
 {
-    QStringList lines=QString(sendCommand("replay_gain_status").data).split('\n', QString::SkipEmptyParts);
+    if (replaygainSupported()) {
+        QStringList lines=QString(sendCommand("replay_gain_status").data).split('\n', QString::SkipEmptyParts);
 
-    if (2==lines.count() && "OK"==lines[1] && lines[0].startsWith(QLatin1String("replay_gain_mode: "))) {
-        emit replayGain(lines[0].mid(18));
-    } else {
-        emit replayGain(QString());
+        if (2==lines.count() && "OK"==lines[1] && lines[0].startsWith(QLatin1String("replay_gain_mode: "))) {
+            emit replayGain(lines[0].mid(18));
+        } else {
+            emit replayGain(QString());
+        }
     }
 }
 

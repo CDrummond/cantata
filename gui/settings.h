@@ -298,7 +298,6 @@ public:
     #else
     QString iconTheme();
     #endif
-    int id3v2Version();
 
     bool firstRun() const { return isFirstRun; }
 

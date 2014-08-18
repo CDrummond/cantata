@@ -30,7 +30,6 @@ import Ubuntu.Layouts 1.0
 
 Page {
     id: aboutPage
-    anchors.fill: parent
     title: i18n.tr("About")
     visible: false
 
@@ -181,14 +180,14 @@ Page {
                     anchors.fill: parent
                     clip: true
 
-                    contentHeight: aboutColumn2.height + 2 * aboutColumn2.marginTop  + root.header.height //doubled marginTop to get the same margin at the bottom
+                    contentHeight: aboutColumn2.height + 2 * aboutColumn2.marginTop //doubled marginTop to get the same margin at the bottom
 
                     Column {
                         id: aboutColumn2
                         spacing: units.gu(3)
                         width: parent.width
-                        property real marginTop: units.gu(6)
-                        y: marginTop + root.header.height
+                        property real marginTop: units.gu(3)
+                        y: marginTop
 
                         UbuntuShape {
                             property real maxWidth: units.gu(45)

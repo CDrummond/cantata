@@ -713,7 +713,10 @@ elseif (NOT ENABLE_UBUNTU)
     install(FILES mpd/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/mpd)
 endif (WIN32)
 
-add_subdirectory(po)
+if (NOT ENABLE_UBUNTU)
+    add_subdirectory(po)
+endif (NOT ENABLE_UBUNTU)
+
 add_subdirectory(support)
 add_subdirectory(3rdparty/qtiocompressor)
 target_link_libraries(cantata support-core qtiocompressor ${CANTATA_LIBS} ${QTLIBS} ${ZLIB_LIBRARIES})

@@ -180,6 +180,13 @@ public:
         AddReplaceAndPlay=2
     };
 
+    enum VolumeFade
+    {
+        MinFade     = 400,
+        MaxFade     = 4000,
+        DefaultFade = 2000
+    };
+
     static QString constModifiedSince;
     static MPDConnection * self();
     static QByteArray quote(int val);

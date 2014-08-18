@@ -556,7 +556,7 @@ int Settings::version()
 
 int Settings::stopFadeDuration()
 {
-    return cfg.get("stopFadeDuration", (int)DefaultFade, (int)MinFade, (int)MaxFade);
+    return cfg.get("stopFadeDuration", (int)MPDConnection::DefaultFade, (int)MPDConnection::MinFade, (int)MPDConnection::MaxFade);
 }
 
 int Settings::httpAllocatedPort()

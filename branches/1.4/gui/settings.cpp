@@ -661,11 +661,7 @@ int Settings::version()
 
 int Settings::stopFadeDuration()
 {
-    int v=cfg.get("stopFadeDuration", (int)DefaultFade);
-    if (0!=v && (v<MinFade || v>MaxFade)) {
-        v=DefaultFade;
-    }
-    return v;
+    return cfg.get("stopFadeDuration", (int)MPDConnection::DefaultFade, (int)MPDConnection::MinFade, (int)MPDConnection::MaxFade);
 }
 
 int Settings::httpAllocatedPort()
@@ -1271,11 +1267,6 @@ void Settings::saveSearchView(int v)
 
 void Settings::saveStopFadeDuration(int v)
 {
-    if (v<=MinFade) {
-        v=0;
-    } else if (v>MaxFade) {
-        v=MaxFade;
-    }
     cfg.set("stopFadeDuration", v);
 }
 

@@ -40,13 +40,6 @@ class Settings : public QObject
     Q_OBJECT
 
 public:
-    enum Constants
-    {
-        MinFade     = 400,
-        MaxFade     = 4000,
-        DefaultFade = 2000
-    };
-
     enum StartupState
     {
         SS_ShowMainWindow,

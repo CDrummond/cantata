@@ -39,7 +39,7 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    stopFadeDuration->setRange(Settings::MinFade, Settings::MaxFade);
+    stopFadeDuration->setRange(MPDConnection::MinFade, MPDConnection::MaxFade);
     stopFadeDuration->setSingleStep(100);
 
     outputsView->setItemDelegate(new BasicItemDelegate(outputsView));

@@ -40,10 +40,10 @@ public:
     virtual ~AlbumsPage();
 
     void clear();
-    QStringList selectedFiles(bool allowPlaylists=false, bool randomAlbums=false) const;
+    QStringList selectedFiles(bool allowPlaylists=false) const;
     QList<Song> selectedSongs(bool allowPlaylists=false) const;
     Song coverRequest() const;
-    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
+    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
     #ifdef ENABLE_DEVICES_SUPPORT
     void addSelectionToDevice(const QString &udi);
     void deleteSongs();

@@ -169,9 +169,8 @@ void PlaylistsPage::clear()
 //    return PlaylistsModel::self()->filenames(mapped, true);
 //}
 
-void PlaylistsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
+void PlaylistsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
-    Q_UNUSED(randomAlbums)
     addItemsToPlayList(view->selectedIndexes(), name, replace, priorty);
 }
 

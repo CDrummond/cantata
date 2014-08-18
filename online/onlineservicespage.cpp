@@ -191,11 +191,9 @@ QList<Song> OnlineServicesPage::selectedSongs(bool allowPlaylists) const
     return OnlineServicesModel::self()->songs(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()));
 }
 
-void OnlineServicesPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
+void OnlineServicesPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
-    Q_UNUSED(randomAlbums)
     QStringList files=selectedFiles();
-
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
             emit add(files, replace, priorty);

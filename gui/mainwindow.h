@@ -200,7 +200,6 @@ public Q_SLOTS:
     void removeFromPlayQueue() { playQueueModel.remove(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes())); }
     void replacePlayQueue() { addToPlayQueue(true); }
     void addToPlayQueue() { addToPlayQueue(false); }
-    void addRandomToPlayQueue() { addToPlayQueue(false, 0, true); }
     void addWithPriority();
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name) { addToExistingStoredPlaylist(name, playQueue->hasFocus()); }
@@ -274,7 +273,7 @@ private:
     void enableStopActions(bool enable);
     void updateStatus(MPDStatus * const status);
     void readSettings();
-    void addToPlayQueue(bool replace, quint8 priority=0, bool randomAlbums=false);
+    void addToPlayQueue(bool replace, quint8 priority=0);
     #ifdef TAGLIB_FOUND
     void editTags(const QList<Song> &songs, bool isPlayQueue);
     #endif

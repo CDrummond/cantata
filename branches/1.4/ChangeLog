@@ -32,6 +32,7 @@
 24. Don't center align context view headers and images - as this does not
     always work for images.
 25. Attempt to align song view selector with header.
+26. Remove 'Add albums in random order' from search view context menu.
 
 1.4.0
 -----

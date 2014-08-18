@@ -56,7 +56,6 @@ SearchPage::SearchPage(QWidget *p)
     locateAction=new Action(Icon("edit-find"), i18n("Locate In Library"), this);
     view->allowTableView(new SearchTableView(view));
     view->addAction(StdActions::self()->addToPlayQueueAction);
-    view->addAction(StdActions::self()->addRandomToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
@@ -151,9 +150,8 @@ QList<Song> SearchPage::selectedSongs(bool allowPlaylists) const
     return model.songs(mapped, allowPlaylists);
 }
 
-void SearchPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
+void SearchPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
-    Q_UNUSED(randomAlbums)
     QStringList files=selectedFiles(true);
 
     if (!files.isEmpty()) {
@@ -207,7 +205,6 @@ void SearchPage::controlActions()
     StdActions::self()->addWithPriorityAction->setEnabled(enable);
     StdActions::self()->replacePlayQueueAction->setEnabled(enable);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
-    StdActions::self()->addRandomToPlayQueueAction->setEnabled(false);
     locateAction->setEnabled(enable);
 }
 

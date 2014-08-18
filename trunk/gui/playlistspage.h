@@ -44,7 +44,7 @@ public:
     void refresh();
     void clear();
     //QStringList selectedFiles() const;
-    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
+    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
     void setView(int mode);
     void focusSearch() { view->focusSearch(); }
     #ifdef ENABLE_DEVICES_SUPPORT

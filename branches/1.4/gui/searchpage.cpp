@@ -56,7 +56,6 @@ SearchPage::SearchPage(QWidget *p)
     locateAction=new Action(Icon("edit-find"), i18n("Locate In Library"), this);
     view->allowTableView(new SearchTableView(view));
     view->addAction(StdActions::self()->addToPlayQueueAction);
-    view->addAction(StdActions::self()->addRandomToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(StdActions::self()->addToStoredPlaylistAction);

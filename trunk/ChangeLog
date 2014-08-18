@@ -27,6 +27,7 @@
 16. Increase gap between add and play icons in grid view.
 17. Disable volume fade on stop by default - this is really something MPD
     itself should implement.
+18. Remove 'Add albums in random order' from view context menus.
 
 1.4.1
 -----
@@ -62,6 +63,7 @@
 24. Don't center align context view headers and images - as this does not
     always work for images.
 25. Attempt to align song view selector with header.
+26. Remove 'Add albums in random order' from search view context menu.
 
 1.4.0
 -----

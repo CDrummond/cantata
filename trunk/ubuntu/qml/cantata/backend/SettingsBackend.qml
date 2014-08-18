@@ -32,6 +32,8 @@ import 'qrc:/qml/cantata/'
 
 Item {
 
+    signal fetchCoversChanged()
+
     U1db.Database {
         id: db
         path: appDir + "/u1db"
@@ -52,9 +54,9 @@ Item {
 
         onContentsChanged: {
             if (contents != undefined) {
-                console.log("Update cover fetch")
                 backend.setCoverFetch(contents["coverFetch"]) //TODO: Untick fetch checkbox => Delete saved images => Reopen app => Tick fetch checkbox => First few album covers are not loaded
-                backend.resetAllModels()
+//                backend.resetAllModels() //TODO-R: Remove code
+                fetchCoversChanged()
             }
         }
     }

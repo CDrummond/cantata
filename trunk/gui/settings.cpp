@@ -142,6 +142,8 @@ Settings::Settings()
     , wallet(0)
     #endif
 {
+    // Call 'version' so that it initialises 'ver' and 'isFirstRun'
+    version();
     // Only need to read system defaults if we have not previously been configured...
     if (!cfg.hasGroup(MPDConnectionDetails::configGroupName())) {
         mpdDefaults.read();

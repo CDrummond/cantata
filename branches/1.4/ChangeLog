@@ -29,6 +29,8 @@
 21. Only remove cached scaled covers if updated via cover dialog.
 22. If auto-splitter hide is disabled, then restore sizes.
 23. ReplayGain settings only valid for MPD v0.16 onwards.
+24. Don't center align context view headers and images - as this does not
+    always work for images.
 
 1.4.0
 -----

@@ -181,8 +181,10 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         #endif
         case Cantata::Role_ListImage:
             return true;
+        #ifndef ENABLE_UBUNTU
         case Qt::DecorationRole:
             return Icons::self()->albumIcon;
+        #endif
         case Qt::ToolTipRole:
             return 0==al->songs.count()
                     ? QString()
@@ -223,8 +225,10 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         #endif
         case Cantata::Role_ListImage:
             return false;
+        #ifndef ENABLE_UBUNTU
         case Qt::DecorationRole:
             return Song::Playlist==si->type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
+        #endif
         case Qt::ToolTipRole:
             return si->toolTip();
         case Cantata::Role_MainText:

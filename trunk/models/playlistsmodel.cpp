@@ -335,8 +335,10 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return 0==pl->songs.count()
                 ? pl->visibleName()
                 : pl->visibleName()+"\n"+Plurals::tracksWithDuration(pl->songs.count(), Utils::formatTime(pl->totalTime()));
+        #ifndef ENABLE_UBUNTU
         case Qt::DecorationRole:
             return multiCol ? QVariant() : (pl->isSmartPlaylist ? Icons::self()->dynamicRuleIcon : Icons::self()->playlistIcon);
+        #endif
         case Cantata::Role_SubText:
             if (!pl->loaded) {
                 pl->loaded=true;
@@ -448,8 +450,10 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return s->entryName();
         case Qt::ToolTipRole:
             return s->toolTip();
+        #ifndef ENABLE_UBUNTU
         case Qt::DecorationRole:
             return multiCol ? QVariant() : (s->title.isEmpty() ? Icons::self()->streamIcon : Icons::self()->audioFileIcon);
+        #endif
         case Cantata::Role_MainText:
             return s->title.isEmpty() ? s->file : s->title;
         case Cantata::Role_SubText:

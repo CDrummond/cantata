@@ -65,6 +65,7 @@
     always work for images.
 25. Attempt to align song view selector with header.
 26. Remove 'Add albums in random order' from search view context menu.
+27. Remove mention of streams from initial settings wizard file settings.
 
 1.4.0
 -----

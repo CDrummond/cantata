@@ -107,7 +107,8 @@ if (NOT CMAKE_BUILD_TYPE)
 endif (NOT CMAKE_BUILD_TYPE)
 
 if (ENABLE_UBUNTU)
-    set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/click")
+    set(UBUNTU_CLICK_FOLDER ${CMAKE_BINARY_DIR}/click/)
+    set(CMAKE_INSTALL_PREFIX ${UBUNTU_CLICK_FOLDER})
 elseif (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     if (ENABLE_KDE)
         find_program(KDE4_KDECONFIG_EXECUTABLE NAMES kde4-config
@@ -760,16 +761,14 @@ if (ENABLE_UBUNTU)
         ubuntu/qml/cantata/components/Notification.qml ubuntu/qml/cantata/backend/SettingsBackend.qml
     )
 
-    # click package...
-    set(UBUNTU_CLICK_FOLDER ${CMAKE_BINARY_DIR}/click/)
+    # Make click folder
     file(MAKE_DIRECTORY ${UBUNTU_CLICK_FOLDER})
-    # Hard link target into click folder
-    add_custom_command(TARGET cantata COMMAND ln ARGS -f ${CMAKE_BINARY_DIR}/cantata ${UBUNTU_CLICK_FOLDER})
-    # Hard link other files required for package
-    set(UBUNTU_EXTRA ubuntu/manifest.json ubuntu/cantata-ubuntu.json ubuntu/cantata-ubuntu.desktop /ubuntu/icons/desktop/cantata.png)
-    foreach (extraFile ${UBUNTU_EXTRA})
-    	add_custom_command(TARGET cantata COMMAND ln ARGS -f ${CMAKE_SOURCE_DIR}/${extraFile} ${UBUNTU_CLICK_FOLDER})
-    endforeach (extraFile ${UBUNTU_EXTRA})
+
+    # Install into click folder
+    install(TARGETS cantata DESTINATION ${UBUNTU_CLICK_FOLDER})
+    install(FILES ubuntu/manifest.json ubuntu/cantata-ubuntu.json ubuntu/cantata-ubuntu.desktop ubuntu/icons/desktop/cantata.png DESTINATION ${UBUNTU_CLICK_FOLDER})
+
+    # If the IDE does not automatically build the click file, run "click build click" in the build directory
 
 else (ENABLE_UBUNTU)
     if (NOT ENABLE_STREAMS OR NOT ENABLE_DYNAMIC OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_DEVICES_SUPPORT AND NOT WIN32 AND NOT APPLE))

@@ -49,7 +49,7 @@ Configuration::~Configuration()
 int Configuration::get(const QString &key, int def, int min, int max)
 {
     int v=get(key, def);
-    return v<min || v>max ? def : v;
+    return v<min ? min : (v>max ? max : v);
 }
 
 #ifdef ENABLE_KDE_SUPPORT

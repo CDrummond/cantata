@@ -59,6 +59,7 @@
 23. ReplayGain settings only valid for MPD v0.16 onwards.
 24. Don't center align context view headers and images - as this does not
     always work for images.
+25. Attempt to align song view selector with header.
 
 1.4.0
 -----

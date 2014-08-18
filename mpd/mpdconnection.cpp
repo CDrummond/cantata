@@ -1948,7 +1948,6 @@ bool MPDConnection::startVolumeFade()
         return false;
     }
 
-    Response response=sendCommand("status");
     restoreVolume=getVolume();
     if (restoreVolume<5) {
         return false;

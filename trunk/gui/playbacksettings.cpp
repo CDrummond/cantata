@@ -148,12 +148,13 @@ void PlaybackSettings::updateOutputs(const QList<Output> &outputs)
 
 void PlaybackSettings::mpdConnectionStateChanged(bool c)
 {
+    bool rgSupported=c && MPDConnection::self()->replaygainSupported();
     outputsView->setEnabled(c);
     outputsViewLabel->setEnabled(c);
     crossfading->setEnabled(c);
-    replayGain->setEnabled(c);
     crossfadingLabel->setEnabled(c);
-    replayGainLabel->setEnabled(c);
+    replayGainLabel->setEnabled(rgSupported);
+    replayGain->setEnabled(rgSupported);
     messageIcon->setPixmap(Icon(c ? "dialog-information" : "dialog-warning").pixmap(messageIcon->minimumSize()));
     if (c) {
         messageLabel->setText(i18n("<i>Connected to %1<br/>The entries below apply to the currently connected MPD collection.</i>",

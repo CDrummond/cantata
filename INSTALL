@@ -25,14 +25,6 @@ KDE4
 4. make
 5. sudo make install
 
-Ubuntu
-------
-1. mkdir build
-2. cd build
-3. cmake .. -DENABLE_UBUNTU=ON
-4. make
-5. click build click
-
 
 CMake Options
 =============

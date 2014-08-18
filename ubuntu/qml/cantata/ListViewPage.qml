@@ -83,6 +83,16 @@ Page {
         }
     ]
 
+    Connections {
+        target: settingsBackend
+
+        onFetchCoversChanged: {
+            var saveModel = listView.model
+            listView.model = undefined
+            listView.model = saveModel
+        }
+    }
+
     ListView {
         id: listView
         anchors {

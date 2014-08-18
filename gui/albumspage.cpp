@@ -41,7 +41,6 @@ AlbumsPage::AlbumsPage(QWidget *p)
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
 
     view->addAction(StdActions::self()->addToPlayQueueAction);
-    view->addAction(StdActions::self()->addRandomToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
@@ -98,56 +97,13 @@ void AlbumsPage::clear()
     view->update();
 }
 
-QStringList AlbumsPage::selectedFiles(bool allowPlaylists, bool randomAlbums) const
+QStringList AlbumsPage::selectedFiles(bool allowPlaylists) const
 {
     QModelIndexList selected = view->selectedIndexes();
     if (selected.isEmpty()) {
         return QStringList();
     }
-    bool filteredOnly=proxy.enabled() && Settings::self()->filteredOnly();
-    QModelIndexList mapped=proxy.mapToSource(selected, filteredOnly);
-    if (randomAlbums) {
-        if (filteredOnly) {
-            QMap<quint32, QModelIndexList> albums;
-            foreach (const QModelIndex &idx, mapped) {
-                if (idx.parent().isValid()) {
-                    albums[idx.parent().row()].append(idx);
-                }
-            }
-            QList<quint32> keys=albums.keys();
-            if (keys.isEmpty()) {
-                return QStringList();
-            } else if (1==keys.count()) {
-                mapped=albums.begin().value();
-            } else {
-                mapped.clear();
-                while (!keys.isEmpty()) {
-                    mapped.append(albums[keys.takeAt(Utils::random(keys.count()))]);
-                }
-            }
-        } else {
-            QModelIndexList albumIndexes;
-            foreach (const QModelIndex &idx, mapped) {
-                if (static_cast<AlbumsModel::Item *>(idx.internalPointer())->isAlbum()) {
-                    albumIndexes.append(idx);
-                }
-            }
-
-            if (albumIndexes.isEmpty()) {
-                return QStringList();
-            }
-
-            if (1==albumIndexes.count()) {
-                mapped=albumIndexes;
-            } else {
-                mapped.clear();
-                while (!albumIndexes.isEmpty()) {
-                    mapped.append(albumIndexes.takeAt(Utils::random(albumIndexes.count())));
-                }
-            }
-        }
-    }
-    return AlbumsModel::self()->filenames(mapped, allowPlaylists);
+    return AlbumsModel::self()->filenames(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()), allowPlaylists);
 }
 
 QList<Song> AlbumsPage::selectedSongs(bool allowPlaylists) const
@@ -172,9 +128,9 @@ Song AlbumsPage::coverRequest() const
     return Song();
 }
 
-void AlbumsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
+void AlbumsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
-    QStringList files=selectedFiles(name.isEmpty(), randomAlbums);
+    QStringList files=selectedFiles(name.isEmpty());
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
@@ -260,15 +216,4 @@ void AlbumsPage::controlActions()
     #endif
     #endif // TAGLIB_FOUND
     StdActions::self()->setCoverAction->setEnabled(1==selected.count() && static_cast<AlbumsModel::Item *>(proxy.mapToSource(selected.at(0)).internalPointer())->isAlbum());
-
-    bool allowRandomAlbum=!selected.isEmpty();
-    if (allowRandomAlbum) {
-        foreach (const QModelIndex &idx, selected) {
-            if (!static_cast<AlbumsModel::Item *>(proxy.mapToSource(idx).internalPointer())->isAlbum()) {
-                allowRandomAlbum=false;
-                break;
-            }
-        }
-    }
-    StdActions::self()->addRandomToPlayQueueAction->setEnabled(allowRandomAlbum);
 }

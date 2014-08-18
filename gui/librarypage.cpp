@@ -43,7 +43,6 @@ LibraryPage::LibraryPage(QWidget *p)
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
 
     view->addAction(StdActions::self()->addToPlayQueueAction);
-    view->addAction(StdActions::self()->addRandomToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
@@ -113,73 +112,13 @@ static inline QString nameKey(const QString &artist, const QString &album)
     return '{'+artist+"}{"+album+'}';
 }
 
-QStringList LibraryPage::selectedFiles(bool allowPlaylists, bool randomAlbums) const
+QStringList LibraryPage::selectedFiles(bool allowPlaylists) const
 {
     QModelIndexList selected = view->selectedIndexes();
     if (selected.isEmpty()) {
         return QStringList();
     }
-
-    bool filteredOnly=proxy.enabled() && Settings::self()->filteredOnly();
-    QModelIndexList mapped=proxy.mapToSource(selected, filteredOnly);
-    if (randomAlbums) {
-        if (filteredOnly) {
-            QMap<quint32, QModelIndexList> albums;
-            foreach (const QModelIndex &idx, mapped) {
-                if (idx.parent().isValid() && idx.parent().parent().isValid()) {
-                    albums[(idx.parent().parent().row()<<16)+idx.parent().row()].append(idx);
-                }
-            }
-            QList<quint32> keys=albums.keys();
-            if (keys.isEmpty()) {
-                return QStringList();
-            } else if (1==keys.count()) {
-                mapped=albums.begin().value();
-            } else {
-                mapped.clear();
-                while (!keys.isEmpty()) {
-                    mapped.append(albums[keys.takeAt(Utils::random(keys.count()))]);
-                }
-            }
-        } else {
-            QModelIndexList albumIndexes;
-            QSet<QString> albumNames;
-            foreach (const QModelIndex &idx, mapped) {
-                MusicLibraryItem *item=static_cast<MusicLibraryItem *>(idx.internalPointer());
-                if (MusicLibraryItem::Type_Album==item->itemType()) {
-                    QString name=nameKey(item->parentItem()->data(), item->data());
-                    if (!albumNames.contains(name)) {
-                        albumNames.insert(name);
-                        albumIndexes.append(idx);
-                    }
-                } else if (MusicLibraryItem::Type_Artist==item->itemType()) {
-                    for (int row=0; row<static_cast<MusicLibraryItemContainer *>(item)->childCount(); ++row) {
-                        MusicLibraryItem *album=static_cast<MusicLibraryItemContainer *>(item)->childItem(row);
-                        QString name=nameKey(item->data(), album->data());
-                        if (!albumNames.contains(name)) {
-                            albumNames.insert(name);
-                            albumIndexes.append(MusicLibraryModel::self()->index(row, 0, idx));
-                        }
-                    }
-                }
-            }
-
-            if (albumIndexes.isEmpty()) {
-                return QStringList();
-            }
-
-            if (1==albumIndexes.count()) {
-                mapped=albumIndexes;
-            } else {
-                mapped.clear();
-                while (!albumIndexes.isEmpty()) {
-                    mapped.append(albumIndexes.takeAt(Utils::random(albumIndexes.count())));
-                }
-            }
-        }
-    }
-
-    return MusicLibraryModel::self()->filenames(mapped, allowPlaylists);
+    return MusicLibraryModel::self()->filenames(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()), allowPlaylists);
 }
 
 QList<Song> LibraryPage::selectedSongs(bool allowPlaylists) const
@@ -210,9 +149,9 @@ Song LibraryPage::coverRequest() const
     return Song();
 }
 
-void LibraryPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
+void LibraryPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
-    QStringList files=selectedFiles(name.isEmpty(), randomAlbums);
+    QStringList files=selectedFiles(name.isEmpty());
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
@@ -391,5 +330,4 @@ void LibraryPage::controlActions()
             }
         }
     }
-    StdActions::self()->addRandomToPlayQueueAction->setEnabled(allowRandomAlbum);
 }

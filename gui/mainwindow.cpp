@@ -825,7 +825,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playQueue, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playQueueItemActivated(const QModelIndex &)));
     connect(StdActions::self()->removeAction, SIGNAL(triggered(bool)), this, SLOT(removeItems()));
     connect(StdActions::self()->addToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addToPlayQueue()));
-    connect(StdActions::self()->addRandomToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addRandomToPlayQueue()));
     connect(StdActions::self()->replacePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(replacePlayQueue()));
     connect(playQueue->removeFromAct(), SIGNAL(triggered(bool)), this, SLOT(removeFromPlayQueue()));
     connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(clear()));
@@ -1875,11 +1874,11 @@ void MainWindow::centerPlayQueue()
     }
 }
 
-void MainWindow::addToPlayQueue(bool replace, quint8 priority, bool randomAlbums)
+void MainWindow::addToPlayQueue(bool replace, quint8 priority)
 {
     playQueueSearchWidget->clear();
     if (currentPage) {
-        currentPage->addSelectionToPlaylist(QString(), replace, priority, randomAlbums);
+        currentPage->addSelectionToPlaylist(QString(), replace, priority);
     }
 }
 

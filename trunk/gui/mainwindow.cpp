@@ -709,18 +709,16 @@ MainWindow::MainWindow(QWidget *parent)
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueProxyModel);
     playQueue->addAction(playQueue->removeFromAct());
+    playQueue->addAction(playQueueModel.removeDuplicatesAct());
     playQueue->addAction(promptClearPlayQueueAction);
+    playQueue->addAction(cropPlayQueueAction);
     playQueue->addAction(StdActions::self()->savePlayQueueAction);
     playQueue->addAction(addStreamToPlayQueueAction);
     playQueue->addAction(addPlayQueueToStoredPlaylistAction);
-    playQueue->addAction(cropPlayQueueAction);
     playQueue->addAction(playQueueModel.shuffleAct());
     playQueue->addAction(playQueueModel.sortAct());
     playQueue->addAction(playQueueModel.undoAct());
     playQueue->addAction(playQueueModel.redoAct());
-    Action *sep=new Action(this);
-    sep->setSeparator(true);
-    playQueue->addAction(sep);
     ratingAction=new Action(i18n("Set Rating"), this);
     ratingAction->setMenu(new QMenu(0));
     for (int i=0; i<((Song::Rating_Max/Song::Rating_Step)+1); ++i) {
@@ -738,13 +736,12 @@ MainWindow::MainWindow(QWidget *parent)
         connect(action, SIGNAL(triggered(bool)), SLOT(setRating()));
     }
     playQueue->addAction(ratingAction);
-    playQueue->addAction(stopAfterTrackAction);
     playQueue->addAction(setPriorityAction);
+    playQueue->addAction(stopAfterTrackAction);
     playQueue->addAction(locateTrackAction);
     #ifdef TAGLIB_FOUND
     playQueue->addAction(editPlayQueueTagsAction);
     #endif
-    playQueue->addAction(playQueueModel.removeDuplicatesAct());
     playQueue->readConfig();
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 

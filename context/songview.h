@@ -47,7 +47,7 @@ class SongView : public View
     enum Pages {
         Page_Lyrics,
         Page_Information,
-        Page_Tags
+        Page_Metadata
     };
 
 public:
@@ -88,7 +88,7 @@ private Q_SLOTS:
 private:
     void loadLyrics();
     void loadInfo();
-    void loadTags();
+    void loadMetadata();
     void searchForInfo();
     void hideSpinner();
     void abort();
@@ -128,7 +128,7 @@ private:
 
     bool lyricsNeedsUpdating;
     bool infoNeedsUpdating;
-    bool tagsNeedsUpdating;
+    bool metadataNeedsUpdating;
     Action *refreshInfoAction;
     Action *cancelInfoJobAction;
     ContextEngine *engine;

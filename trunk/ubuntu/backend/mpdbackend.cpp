@@ -155,12 +155,6 @@ void MPDBackend::setCoverFetch(bool s) {
     Covers::self()->setFetchCovers(s);
 }
 
-void MPDBackend::resetAllModels() { //TODO: Better idea?
-    MusicLibraryModel::self()->resetModel();
-    AlbumsModel::self()->resetModel();
-    PlaylistsModel::self()->resetModel();
-}
-
 void MPDBackend::playPause() {
     switch (MPDStatus::self()->state()) {
     case MPDState_Playing:

@@ -55,7 +55,6 @@ Item {
         onContentsChanged: {
             if (contents != undefined) {
                 backend.setCoverFetch(contents["coverFetch"]) //TODO: Untick fetch checkbox => Delete saved images => Reopen app => Tick fetch checkbox => First few album covers are not loaded
-//                backend.resetAllModels() //TODO-R: Remove code
                 fetchCoversChanged()
             }
         }

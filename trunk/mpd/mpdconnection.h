@@ -184,7 +184,7 @@ public:
     {
         MinFade     = 400,
         MaxFade     = 4000,
-        DefaultFade = 2000
+        DefaultFade = MinFade // disable volume fade by default. prev:2000
     };
 
     static QString constModifiedSince;

@@ -1944,7 +1944,7 @@ bool MPDConnection::fadingVolume()
 
 bool MPDConnection::startVolumeFade()
 {
-    if (fadeDuration<1) {
+    if (fadeDuration<=MinFade) {
         return false;
     }
 

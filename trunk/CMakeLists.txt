@@ -107,8 +107,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif (NOT CMAKE_BUILD_TYPE)
 
 if (ENABLE_UBUNTU)
-    set(UBUNTU_CLICK_FOLDER ${CMAKE_BINARY_DIR}/click/)
-    set(CMAKE_INSTALL_PREFIX ${UBUNTU_CLICK_FOLDER})
+    set(CMAKE_INSTALL_PREFIX /)
 elseif (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     if (ENABLE_KDE)
         find_program(KDE4_KDECONFIG_EXECUTABLE NAMES kde4-config
@@ -749,6 +748,8 @@ endif (ENABLE_KDE)
 macro_display_feature_log()
 
 if (ENABLE_UBUNTU)
+    set(UBUNTU_PROJECT_TYPE "ClickApp" CACHE INTERNAL "Tells QtCreator this is a Click application project")
+
     add_custom_target(components_QmlFiles ALL SOURCES 
         ubuntu/qml/cantata/main.qml ubuntu/qml/cantata/AboutPage.qml ubuntu/qml/cantata/ListViewPage.qml
         ubuntu/qml/cantata/SubListViewPage.qml ubuntu/qml/cantata/CurrentlyPlayingPage.qml
@@ -760,15 +761,17 @@ if (ENABLE_UBUNTU)
         ubuntu/qml/cantata/components/PlayQueueListItemDelegate.qml ubuntu/qml/cantata/components/LabelVisual.qml
         ubuntu/qml/cantata/components/Notification.qml ubuntu/qml/cantata/backend/SettingsBackend.qml
     )
+    add_custom_target(click_files ALL SOURCES
+        ubuntu/manifest.json
+        ubuntu/cantata-ubuntu.json
+        ubuntu/cantata-ubuntu.desktop
+    )
+    add_custom_target(images ALL SOURCES #TODO: Add other icons
+         ubuntu/icons/desktop/cantata.png
+    )
 
-    # Make click folder
-    file(MAKE_DIRECTORY ${UBUNTU_CLICK_FOLDER})
-
-    # Install into click folder
-    install(TARGETS cantata DESTINATION ${UBUNTU_CLICK_FOLDER})
-    install(FILES ubuntu/manifest.json ubuntu/cantata-ubuntu.json ubuntu/cantata-ubuntu.desktop ubuntu/icons/desktop/cantata.png DESTINATION ${UBUNTU_CLICK_FOLDER})
-
-    # If the IDE does not automatically build the click file, run "click build click" in the build directory
+    install(TARGETS cantata RUNTIME DESTINATION .)
+    install(FILES ubuntu/manifest.json ubuntu/cantata-ubuntu.json ubuntu/cantata-ubuntu.desktop ubuntu/icons/desktop/cantata.png DESTINATION .)
 
 else (ENABLE_UBUNTU)
     if (NOT ENABLE_STREAMS OR NOT ENABLE_DYNAMIC OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_DEVICES_SUPPORT AND NOT WIN32 AND NOT APPLE))

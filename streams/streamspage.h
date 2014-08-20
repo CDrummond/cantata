@@ -42,7 +42,7 @@ public:
     StreamsPage(QWidget *p);
     virtual ~StreamsPage();
 
-    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
+    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
     void setView(int v) { view->setMode((ItemView::Mode)v); searchView->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); searchView->focusSearch(); }
     void goBack() { itemView()->backActivated(); }

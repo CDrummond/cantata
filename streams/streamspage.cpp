@@ -137,10 +137,9 @@ void StreamsPage::showEvent(QShowEvent *e)
     QWidget::showEvent(e);
 }
 
-void StreamsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
+void StreamsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
     Q_UNUSED(name)
-    Q_UNUSED(randomAlbums)
     addItemsToPlayQueue(itemView()->selectedIndexes(), replace, priorty);
 }
 

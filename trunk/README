@@ -26,7 +26,7 @@ Table of Contents
 
 Cantata is a graphical client for MPD. It contains the following features:
 
- 1. Support for Qt4, Qt5, Windows, and KDE builds.
+ 1. Support for Qt4, Qt5, KDE, MacOSX, Windows, and Ubuntu Touch builds.
  2. Multiple MPD collections.
  3. Highly customisable layout.
  4. Songs grouped by album in play queue.
@@ -51,7 +51,8 @@ Cantata is a graphical client for MPD. It contains the following features:
 17. Ubuntu/ambiance theme integration - including dragging of window via
     toolbar.
 18. Basic support for touch-style interface (views are made 'flickable')
-19. Ratings support.
+19. Scrobbling.
+20. Ratings support.
 
 Cantata started off as a fork of QtMPC, mainly to provide better KDE
 integration - by using KDE libraries/classes wherever possible. However, the
@@ -439,7 +440,7 @@ menu=<Integer>
     used. If set to 2 then a menu button is used. If set to 3 then both the
     menubar and menu button are used - and there will be a menu item to toggle
     between menubar and menu button. NOTE: This menu item is not present when
-    run under Unity or MacOS - as these always have a menubar - in which case
+    run under Unity or MacOSX - as these always have a menubar - in which case
     menu=3 will cause both a menubar and menu button to be present.
 
 stopHttpStreamOnPause=<Boolean>
@@ -772,7 +773,8 @@ The Cantata source folder contains the following structure:
     ubuntu     - Convergent Ubuntu version (requires the Ubuntu SDK); 
                  cmake option: -DENABLE_UBUNTU=ON
     widgets    - Widgets that are probably Cantata specific.
-    windows    - Files relevant to creating the windows installer.
+    windows    - Files specfic to Windows builds..
+    mac        - Files specfic to MacOSX builds.
 
 Cantata's SVG icons have been 'cleaned' using:
   scour --strip-xml-prolog --indent=none -i in.svg -o out.svg

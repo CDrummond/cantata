@@ -32,7 +32,6 @@
 #include "widgets/playqueueview.h"
 #include "support/pathrequester.h"
 #include <QComboBox>
-#include <QDesktopWidget>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QDir>
 #include <QMap>
@@ -101,7 +100,7 @@ static inline int getValue(QComboBox *box)
 
 static const char * constValueProperty="value";
 
-InterfaceSettings::InterfaceSettings(QWidget *p)
+InterfaceSettings::InterfaceSettings(QWidget *p, bool limitedHeight)
     : QWidget(p)
     #ifndef ENABLE_KDE_SUPPORT
     , loadedLangs(false)
@@ -231,14 +230,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
     // If we are on a display less than 800 pixels tall (e.g. a netbook), then re-arrange
     // the view settings to allow dialog to shrink more...
-    bool reArrange=!qgetenv("CANTATA_NETBOOK").isEmpty();
-    if (!reArrange) {
-        QDesktopWidget *dw=QApplication::desktop();
-        if (dw) {
-            reArrange=dw->availableGeometry(this).size().height()<=800;
-        }
-    }
-    if (reArrange) {
+    if (limitedHeight) {
         viewsLayout->removeWidget(otherViewGroupBox);
         viewsLayout->addWidget(otherViewGroupBox, 0, 1, 3, 1);
     }

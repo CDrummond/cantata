@@ -35,25 +35,11 @@ class PageWidget : public KPageWidget
 {
     Q_OBJECT
 public:
-    PageWidget(QWidget *p, bool listView=false) : KPageWidget(p) {
-        setFaceType(listView ? Tree : List);
-        connect(this, SIGNAL(currentPageChanged(KPageWidgetItem *, KPageWidgetItem *)), this, SIGNAL(currentPageChanged()));
-    }
+    PageWidget(QWidget *p, bool listView=false);
     virtual ~PageWidget() { }
-    PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header) {
-        PageWidgetItem *item=KPageWidget::addPage(widget, name);
-        item->setIcon(icon);
-        item->setHeader(header);
-        adjustSize();
-        return item;
-    }
-    QAbstractItemView * createView() {
-        QAbstractItemView *v=KPageWidget::createView();
-        if (Tree==faceType()) {
-            static_cast<QTreeView *>(v)->setIndentation(0);
-        }
-        return v;
-    }
+
+    PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
+    QAbstractItemView * createView();
 
 Q_SIGNALS:
     void currentPageChanged();

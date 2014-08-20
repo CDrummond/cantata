@@ -34,6 +34,7 @@
 #include <QFontMetrics>
 #include <QTextLayout>
 #include <QPainter>
+#include <QStyledItemDelegate>
 
 static int layoutText(QTextLayout *layout, int maxWidth)
 {
@@ -54,15 +55,18 @@ static int layoutText(QTextLayout *layout, int maxWidth)
     return textWidth;
 }
 
-class PageWidgetItemDelegate : public QAbstractItemDelegate
+class PageWidgetItemDelegate : public QStyledItemDelegate
 {
 public:
-    PageWidgetItemDelegate(QObject *parent)
-        : QAbstractItemDelegate(parent)
+    PageWidgetItemDelegate(QObject *parent, bool std)
+        : QStyledItemDelegate(parent)
+        , standard(std)
         , underMouse(false)
     {
-        int height=QApplication::fontMetrics().height();
-        iconSize=height>22 ? Icon::stdSize(height*2.5) : 32;
+        if (!standard) {
+            int height=QApplication::fontMetrics().height();
+            iconSize=height>22 ? Icon::stdSize(height*2.5) : 32;
+        }
     }
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -71,8 +75,37 @@ public:
             return;
         }
         bool mouseOver=option.state&QStyle::State_MouseOver;
-        bool gtk=mouseOver && GtkStyle::isActive();
         bool selected=option.state&QStyle::State_Selected;
+
+        if (standard) {
+            if (GtkStyle::isActive()) {
+                bool mouseOver=option.state&QStyle::State_MouseOver;
+                QStyleOptionViewItemV4 opt = option;
+                initStyleOption(&opt, index);
+
+                if (!underMouse) {
+                    mouseOver=false;
+                }
+
+                if (mouseOver) {
+                    opt.showDecorationSelected=true;
+
+                    GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
+                    opt.showDecorationSelected=false;
+                    opt.state&=~(QStyle::State_MouseOver|QStyle::State_Selected);
+                    opt.backgroundBrush=QBrush(Qt::transparent);
+                    if (selected) {
+                        opt.palette.setBrush(QPalette::Text, opt.palette.highlightedText());
+                    }
+                }
+                QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, opt.widget);
+            } else {
+                QStyledItemDelegate::paint(painter, option, index);
+            }
+            return;
+        }
+
+        bool gtk=mouseOver && GtkStyle::isActive();
         bool drawBgnd=true;
 
         if (!underMouse) {
@@ -131,6 +164,9 @@ public:
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
+        if (standard) {
+            return QStyledItemDelegate::sizeHint(option, index);
+        }
         if (!index.isValid()) {
             return QSize(0, 0);
         }
@@ -184,8 +220,10 @@ public:
     }
 
     void setUnderMouse(bool u) { underMouse=u; }
+    bool standardList() const { return standard; }
 
 private:
+    bool standard;
     int iconSize;
     bool underMouse;
 };
@@ -251,7 +289,7 @@ PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const Icon &ic
     adjustSize();
 }
 
-PageWidget::PageWidget(QWidget *p)
+PageWidget::PageWidget(QWidget *p, bool listView)
     : QWidget(p)
 {
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::LeftToRight, this);
@@ -265,7 +303,7 @@ PageWidget::PageWidget(QWidget *p)
     list->setViewMode(QListView::ListMode);
     list->setVerticalScrollMode(QListView::ScrollPerPixel);
     list->setMovement(QListView::Static);
-    PageWidgetItemDelegate *delegate=new PageWidgetItemDelegate(list);
+    PageWidgetItemDelegate *delegate=new PageWidgetItemDelegate(list, listView);
     list->setItemDelegate(delegate);
     list->setSelectionBehavior(QAbstractItemView::SelectItems);
     list->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -287,7 +325,8 @@ PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const
         QSize rowSize=list->sizeHintForIndex(list->model()->index(i, 0));
         width = qMax(width, rowSize.width());
     }
-    width+=25;
+
+    width+=static_cast<PageWidgetItemDelegate *>(list->itemDelegate())->standardList() ? 8 : 25;
     list->setFixedWidth(width);
 
     QSize stackSize = stack->size();

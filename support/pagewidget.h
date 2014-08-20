@@ -28,13 +28,15 @@
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KPageWidget>
+#include <QTreeView>
 typedef KPageWidgetItem PageWidgetItem;
 
 class PageWidget : public KPageWidget
 {
     Q_OBJECT
 public:
-    PageWidget(QWidget *p) : KPageWidget(p) {
+    PageWidget(QWidget *p, bool listView=false) : KPageWidget(p) {
+        setFaceType(listView ? Tree : List);
         connect(this, SIGNAL(currentPageChanged(KPageWidgetItem *, KPageWidgetItem *)), this, SIGNAL(currentPageChanged()));
     }
     virtual ~PageWidget() { }
@@ -44,6 +46,13 @@ public:
         item->setHeader(header);
         adjustSize();
         return item;
+    }
+    QAbstractItemView * createView() {
+        QAbstractItemView *v=KPageWidget::createView();
+        if (Tree==faceType()) {
+            static_cast<QTreeView *>(v)->setIndentation(0);
+        }
+        return v;
     }
 
 Q_SIGNALS:
@@ -74,7 +83,7 @@ class PageWidget : public QWidget
     Q_OBJECT
 
 public:
-    PageWidget(QWidget *p);
+    PageWidget(QWidget *p, bool listView=false);
     virtual ~PageWidget() { }
     PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
     int count();

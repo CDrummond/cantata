@@ -54,6 +54,7 @@
 #include "shortcutssettingspage.h"
 #endif
 #include "scrobbling/scrobblingsettings.h"
+#include <QDesktopWidget>
 
 static int iCount=0;
 
@@ -68,12 +69,22 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     iCount++;
     setButtons(Ok|Apply|Cancel);
 
-    pageWidget = new PageWidget(this);
+    // If we are on a display less than 800 pixels tall (e.g. a netbook), then re-arrange
+    // the view settings to allow dialog to shrink more...
+    bool limitedHeight=!qgetenv("CANTATA_NETBOOK").isEmpty();
+    if (!limitedHeight) {
+        QDesktopWidget *dw=QApplication::desktop();
+        if (dw) {
+            limitedHeight=dw->availableGeometry(this).size().height()<=800;
+        }
+    }
+
+    pageWidget = new PageWidget(this, limitedHeight);
     setMainWidget(pageWidget);
     server = new ServerSettings(0);
     playback = new PlaybackSettings(0);
     files = new FileSettings(0);
-    interface = new InterfaceSettings(0);
+    interface = new InterfaceSettings(0, limitedHeight);
     context = new ContextSettings(0);
     cache = new CacheSettings(0);
     scrobbling = new ScrobblingSettings(0);

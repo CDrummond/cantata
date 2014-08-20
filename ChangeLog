@@ -14,7 +14,8 @@
  9. If we fail to download a cover, don't keep trying next time song is played.
 10. Simplify toolbar cover widget, no border.
 11. Allow Qt preference dialog to shrink smaller. If screen size is less than
-    800px, then views page is re-arranged to allow much smaller dialog.
+    800px, then views page is re-arranged to allow much smaller dialog and
+    category selector uses smaller icons.
 12. Support MPDs "find modified-since" with MPD 0.19 and newer. If a number is
     entered it is taken to be 'modified since X days in past', otherwise a date
     should be entered (e.g. 01/12/2001 to find all tracks since 1st Dec 2001)

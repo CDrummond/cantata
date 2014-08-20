@@ -22,6 +22,34 @@
  */
 
 #include "pagewidget.h"
+
+#ifdef ENABLE_KDE_SUPPORT
+PageWidget::PageWidget(QWidget *p, bool listView)
+    : KPageWidget(p)
+{
+    setFaceType(listView ? Tree : List);
+    connect(this, SIGNAL(currentPageChanged(KPageWidgetItem *, KPageWidgetItem *)), this, SIGNAL(currentPageChanged()));
+}
+
+PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header)
+{
+    PageWidgetItem *item=KPageWidget::addPage(widget, name);
+    item->setIcon(icon);
+    item->setHeader(header);
+    adjustSize();
+    return item;
+}
+
+QAbstractItemView * PageWidget::createView()
+{
+    QAbstractItemView *v=KPageWidget::createView();
+    if (Tree==faceType()) {
+        static_cast<QTreeView *>(v)->setIndentation(0);
+    }
+    return v;
+}
+#else
+
 #include "icon.h"
 #include "gtkstyle.h"
 #include "dialog.h"
@@ -370,3 +398,5 @@ void PageWidget::setCurrentPage(PageWidgetItem *item)
         }
     }
 }
+
+#endif // ENABLE_KDE_SUPPORT

@@ -14,7 +14,7 @@ add_library(support-core STATIC ${SUPPORT_CORE_MOC_SRCS} ${SUPPORT_CORE_SRCS})
 if (NOT ENABLE_UBUNTU)
     set(SUPPORT_SRCS icon.cpp fancytabwidget.cpp messagewidget.cpp buddylabel.cpp action.cpp actioncollection.cpp flickcharm.cpp
         configuration.cpp lineedit.cpp gtkstyle.cpp spinner.cpp messagebox.cpp inputdialog.cpp thread.cpp squeezedtextlabel.cpp
-        touchproxystyle.cpp)
+        touchproxystyle.cpp pagewidget.cpp)
 
     set(SUPPORT_MOC_HDRS fancytabwidget.h messagewidget.h inputdialog.h pagewidget.h  action.h actioncollection.h flickcharm.h)
 
@@ -34,7 +34,7 @@ if (NOT ENABLE_UBUNTU)
         kde4_add_ui_files(SUPPORT_UI_HDRS ${SUPPORT_UIS})
         set(SUPPORT_SRCS ${SUPPORT_SRCS} dialog.cpp)
     else (ENABLE_KDE_SUPPORT)
-        set(SUPPORT_SRCS ${SUPPORT_SRCS} pathrequester.cpp kmessagewidget.cpp dialog.cpp pagewidget.cpp shortcutsmodel.cpp
+        set(SUPPORT_SRCS ${SUPPORT_SRCS} pathrequester.cpp kmessagewidget.cpp dialog.cpp shortcutsmodel.cpp
             shortcutssettingswidget.cpp keysequencewidget.cpp acceleratormanager.cpp proxystyle.cpp urllabel.cpp)
         set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} pathrequester.h kmessagewidget.h urllabel.h
              dialog.h shortcutsmodel.h shortcutssettingswidget.h keysequencewidget.h spinner.h acceleratormanager_private.h)

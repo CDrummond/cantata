@@ -32,6 +32,7 @@
 18. Remove 'Add albums in random order' from view context menus.
 19. Reorganize playqueue context menu.
 20. Use 'Metadata' and not 'Tags' as metadata/tags view in context song pane.
+21. Minor changes to song progress slider.
 
 1.4.1
 -----

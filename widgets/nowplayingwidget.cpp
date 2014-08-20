@@ -144,7 +144,7 @@ PosSlider::PosSlider(QWidget *p)
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     setFocusPolicy(Qt::NoFocus);
     setStyle(new ProxyStyle());
-    int h=fontMetrics().height()*0.5;
+    int h=qMax((int)(fontMetrics().height()*0.5), 8);
     setMinimumHeight(h);
     setMaximumHeight(h);
     updateStyleSheet();

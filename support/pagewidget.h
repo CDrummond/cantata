@@ -35,14 +35,18 @@ class PageWidget : public KPageWidget
 {
     Q_OBJECT
 public:
-    PageWidget(QWidget *p, bool listView=false);
+    PageWidget(QWidget *p, bool listView=false, bool headers=true);
     virtual ~PageWidget() { }
 
     PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
     QAbstractItemView * createView();
+    bool showPageHeader() const { return showHeaders; }
 
 Q_SIGNALS:
     void currentPageChanged();
+
+private:
+    bool showHeaders;
 };
 
 #else
@@ -56,7 +60,7 @@ class QStackedWidget;
 class PageWidgetItem : public QWidget
 {
 public:
-    PageWidgetItem(QWidget *p, const QString &header, const Icon &icon, QWidget *cfg);
+    PageWidgetItem(QWidget *p, const QString &header, const Icon &icon, QWidget *cfg, bool showHeader);
     virtual ~PageWidgetItem() { }
     QWidget * widget() const { return wid; }
 
@@ -69,7 +73,7 @@ class PageWidget : public QWidget
     Q_OBJECT
 
 public:
-    PageWidget(QWidget *p, bool listView=false);
+    PageWidget(QWidget *p, bool listView=false, bool headers=true);
     virtual ~PageWidget() { }
     PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
     int count();
@@ -80,6 +84,7 @@ Q_SIGNALS:
     void currentPageChanged();
 
 private:
+    bool showHeaders;
     QListWidget *list;
     QStackedWidget *stack;
     QMap<QListWidgetItem *, PageWidgetItem*> pages;

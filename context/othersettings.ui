@@ -203,7 +203,7 @@
       <string>Always collapse into a single pane</string>
      </property>
      <property name="toolTip">
-      <string>Only show 'Artist', 'Album', or 'Lyrics' even if sufficient width to show all three.</string>
+      <string>Only show 'Artist', 'Album', or 'Track' even if sufficient width to show all three.</string>
      </property>
     </widget>
    </item>

@@ -35,6 +35,7 @@
 #include "widgets/groupedview.h"
 #include "roles.h"
 #include "gui/plurals.h"
+#include "gui/covers.h"
 #include "support/localize.h"
 #include "support/utils.h"
 #include "support/globalstatic.h"
@@ -95,6 +96,7 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     connect(this, SIGNAL(moveInPlaylist(const QString &, const QList<quint32> &, quint32, quint32)), MPDConnection::self(), SLOT(moveInPlaylist(const QString &, const
     QList<quint32> &, quint32, quint32)));
     #ifndef ENABLE_UBUNTU
+    connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
     newAction=new QAction(Icon("document-new"), i18n("New Playlist..."), this);
     connect(newAction, SIGNAL(triggered(bool)), this, SIGNAL(addToNew()));
     Action::initIcon(newAction);
@@ -360,13 +362,14 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return QString();
         #endif
         case Cantata::Role_ListImage:
-            return false;
+            return true;
         case Cantata::Role_IsCollection:
             return false;
         case Cantata::Role_CollectionId:
             return s->parent->key;
         case Cantata::Role_Key:
             return s->key;
+        case Cantata::Role_CoverSong:
         case Cantata::Role_Song: {
             QVariant var;
             var.setValue<Song>(*s);
@@ -948,6 +951,33 @@ void PlaylistsModel::mpdConnectionStateChanged(bool connected)
     } else {
         getPlaylists();
     }
+}
+
+void PlaylistsModel::coverLoaded(const Song &song, int s)
+{
+    Q_UNUSED(s)
+    #ifdef ENABLE_UBUNTU
+    Q_UNUSED(song)
+    #else
+    if (!song.isArtistImageRequest()) {
+        int plRow=0;
+        foreach (const PlaylistItem *pl, items) {
+            QModelIndex plIdx;
+            int songRow=0;
+            foreach (const SongItem *s, pl->songs) {
+                if (s->albumArtist()==song.albumArtist() && s->album==song.album) {
+                    if (!plIdx.isValid()) {
+                        plIdx=index(plRow, 0, QModelIndex());
+                    }
+                    QModelIndex idx=index(songRow, 0, plIdx);
+                    emit dataChanged(idx, idx);
+                }
+                songRow++;
+            }
+            plRow++;
+        }
+    }
+    #endif
 }
 
 void PlaylistsModel::updateItemMenu(bool create)

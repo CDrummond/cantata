@@ -156,6 +156,7 @@ private Q_SLOTS:
     void emitAddToExisting();
     void playlistRenamed(const QString &from, const QString &to);
     void mpdConnectionStateChanged(bool connected);
+    void coverLoaded(const Song &song, int s);
 
 private:
     void updateGenreList();

@@ -239,7 +239,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Cantata does not show the full wikipedia pages (with images, links, etc), instead it shows a trimmed down version. This trimming is not always 100% accurate, hence by default Cantata will only show the basic introduction to each article. If you elect to show the full article, then there may be parsing errors. You will also need to remove any currently cached articles (using the 'Cache' page).&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Cantata only shows a trimmed down version of wikipedia pages (no images, links, etc). This trimming is not always 100% accurate, which is why Cantata defaults to only showing the introduction. If you elect to show the full article, then there may be parsing errors. You will also need to remove any currently cached articles (using the 'Cache' page).&lt;/i&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

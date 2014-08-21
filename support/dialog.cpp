@@ -37,8 +37,8 @@ Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
     , buttonTypes(0)
     , mw(0)
     , buttonBox(0)
-    , shown(false)
     #endif
+    , shown(false)
 {
     if (!name.isEmpty()) {
         setObjectName(name);
@@ -52,14 +52,6 @@ Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
     }
 }
 
-void Dialog::resize(const QSize &sz)
-{
-    if (cfgSize.isEmpty()) {
-        QDialog::resize(sz);
-        cfgSize=sz;
-    }
-}
-
 Dialog::~Dialog()
 {
     if (!objectName().isEmpty() && size()!=cfgSize) {
@@ -68,7 +60,44 @@ Dialog::~Dialog()
     }
 }
 
-#ifndef ENABLE_KDE_SUPPORT
+void Dialog::resize(const QSize &sz)
+{
+    if (cfgSize.isEmpty()) {
+        DLG_BASE::resize(sz);
+        cfgSize=sz;
+    }
+}
+
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KPushButton>
+#include <QLayout>
+
+void Dialog::showEvent(QShowEvent *e)
+{
+    if (!shown) {
+        shown=true;
+        QSize mwSize=mainWidget()->minimumSize();
+        if (mwSize.width()>0 && mwSize.height()>0) {
+            QSize btnSize(24, 32);
+            for (int i=0; i<15; ++i) {
+                int code=1<<i;
+                KPushButton *btn=KDialog::button((KDialog::ButtonCode)code);
+                if (btn) {
+                    btnSize=btn->sizeHint();
+                    break;
+                }
+            }
+            QLayout *lay=layout();
+            int sp=lay ? layout()->spacing() : KDialog::spacingHint();
+            int mar=lay ? layout()->margin() : KDialog::marginHint();
+            setMinimumHeight(qMax(minimumHeight(), btnSize.height()+sp+mwSize.height()+(2*mar)));
+            setMinimumWidth(qMax(minimumWidth(), mwSize.width()+(2*mar)));
+        }
+    }
+    KDialog::showEvent(e);
+}
+#else
+
 #include "icon.h"
 #include "acceleratormanager.h"
 #include <QDialogButtonBox>
@@ -363,4 +392,3 @@ void Dialog::showEvent(QShowEvent *e)
 }
 
 #endif
-

@@ -42,8 +42,7 @@ public:
     void setEnabled(bool e);
     void update(const Song &s);
     const Song & song() const { return current; }
-    bool isEmpty() const { return empty; }
-    bool isValid() const { return !empty && valid; }
+    bool isValid() const { return valid; }
     const QString & fileName() const { return coverFileName; }
     const QImage &image() const { return img; }
 
@@ -63,7 +62,6 @@ private:
 
 private:
     bool enabled;
-    bool empty;
     bool valid;
     Song current;
     mutable QImage img;

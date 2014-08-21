@@ -119,7 +119,6 @@ GLOBAL_STATIC(CurrentCover, instance)
 CurrentCover::CurrentCover()
     : QObject(0)
     , enabled(false)
-    , empty(true)
     , valid(false)
 {
 }

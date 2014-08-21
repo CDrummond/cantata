@@ -155,7 +155,7 @@ void HttpStream::updateStatus()
     state=status->state();
     switch (status->state()) {
     case MPDState_Playing:
-        #if LIBVLC_FOUND
+        #ifdef LIBVLC_FOUND
         if (libvlc_Playing!=libvlc_media_player_get_state(player)) {
             libvlc_media_player_play(player);
         }
@@ -171,7 +171,7 @@ void HttpStream::updateStatus()
         break;
     case MPDState_Inactive:
     case MPDState_Stopped:
-        #if LIBVLC_FOUND
+        #ifdef LIBVLC_FOUND
         libvlc_media_player_stop(player);
         #else
         player->stop();
@@ -179,7 +179,7 @@ void HttpStream::updateStatus()
         break;
     case MPDState_Paused:
         if (stopOnPause) {
-            #if LIBVLC_FOUND
+            #ifdef LIBVLC_FOUND
             libvlc_media_player_stop(player);
             #else
             player->stop();

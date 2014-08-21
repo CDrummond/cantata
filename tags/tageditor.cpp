@@ -342,6 +342,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     if (commentSupport) {
         QTimer::singleShot(0, this, SLOT(readComments()));
     }
+    trackName->lineEdit()->setReadOnly(true);
 }
 
 TagEditor::~TagEditor()

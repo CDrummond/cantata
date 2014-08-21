@@ -34,6 +34,8 @@
 20. Use 'Metadata' and not 'Tags' as metadata/tags view in context song pane.
 21. Minor changes to song progress slider.
 22. Show covers in playlist tree and list views.
+23. Use read-only editable combo for filename in tag editor, so that text can
+    be selected.
 
 1.4.1
 -----

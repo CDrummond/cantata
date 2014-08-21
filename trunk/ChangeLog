@@ -13,7 +13,7 @@
     and values 0 to 10. In the UI, ratings are show as 5 stars.
  9. If we fail to download a cover, don't keep trying next time song is played.
 10. Simplify toolbar cover widget, no border.
-11. Allow Qt preference dialog to shrink smaller. If screen size is less than
+11. Allow preference dialog to shrink smaller. If screen size is less than
     800px, then views page is re-arranged to allow much smaller dialog,
     category selector uses smaller icons, and headers are removed.. You can
     check this setting by calling cantata as follows: CANTATA_NETBOOK=1 cantata

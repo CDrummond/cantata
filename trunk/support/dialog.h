@@ -29,16 +29,19 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KDialog>
 #include <KDE/KStandardGuiItem>
-struct Dialog : public KDialog {
+class Dialog : public KDialog {
+public:
     Dialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize());
     virtual ~Dialog();
 
     const QSize & configuredSize() const { return cfgSize; }
     void resize(int w, int h) { resize(QSize(w, h)); }
     void resize(const QSize &sz);
-
+private:
+    void showEvent(QShowEvent *e);
 private:
     QSize cfgSize;
+    bool shown;
 };
 typedef KGuiItem GuiItem;
 namespace StdGuiItem {

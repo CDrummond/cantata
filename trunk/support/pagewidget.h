@@ -26,30 +26,30 @@
 
 #include "icon.h"
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KPageWidget>
-#include <QTreeView>
-typedef KPageWidgetItem PageWidgetItem;
+//#ifdef ENABLE_KDE_SUPPORT
+//#include <KDE/KPageWidget>
+//#include <QTreeView>
+//typedef KPageWidgetItem PageWidgetItem;
 
-class PageWidget : public KPageWidget
-{
-    Q_OBJECT
-public:
-    PageWidget(QWidget *p, bool listView=false, bool headers=true);
-    virtual ~PageWidget() { }
+//class PageWidget : public KPageWidget
+//{
+//    Q_OBJECT
+//public:
+//    PageWidget(QWidget *p, bool listView=false, bool headers=true);
+//    virtual ~PageWidget() { }
 
-    PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
-    QAbstractItemView * createView();
-    bool showPageHeader() const { return showHeaders; }
+//    PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
+//    QAbstractItemView * createView();
+//    bool showPageHeader() const { return showHeaders; }
 
-Q_SIGNALS:
-    void currentPageChanged();
+//Q_SIGNALS:
+//    void currentPageChanged();
 
-private:
-    bool showHeaders;
-};
+//private:
+//    bool showHeaders;
+//};
 
-#else
+//#else
 #include <QWidget>
 #include <QMap>
 
@@ -90,6 +90,6 @@ private:
     QMap<QListWidgetItem *, PageWidgetItem*> pages;
 };
 
-#endif
+//#endif
 
 #endif

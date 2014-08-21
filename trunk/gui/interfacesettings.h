@@ -33,7 +33,7 @@ class InterfaceSettings : public QWidget, private Ui::InterfaceSettings
     Q_OBJECT
 
 public:
-    InterfaceSettings(QWidget *p, bool limitedHeight);
+    InterfaceSettings(QWidget *p);
     virtual ~InterfaceSettings() { }
 
     void load();

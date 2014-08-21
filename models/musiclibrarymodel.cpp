@@ -528,15 +528,19 @@ void MusicLibraryModel::updatingMpd()
 void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img, const QString &file)
 {
     #ifdef ENABLE_UBUNTU
-    if (img.isNull() || file.isEmpty() || song.file.startsWith("http://") || song.name().startsWith("http://")) {
-        return;
+
+    if (img.isNull() || song.file.startsWith("http://") || song.name().startsWith("http://")) {
+        if (!file.isEmpty()) return; //If empty, we need to execute the stuff below to set m_coverRequested to false
     }
 
     MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
+
     if (artistItem && artistItem->coverName().isEmpty()) {
-        artistItem->setCover(file);
-        QModelIndex idx=index(artistItem->row(), 0, QModelIndex());
-        emit dataChanged(idx, idx);
+        artistItem->setCover(file); //Always execute to set m_coverRequested to false
+        if (!file.isEmpty()) {
+            QModelIndex idx=index(artistItem->row(), 0, QModelIndex());
+            emit dataChanged(idx, idx);
+        }
     }
     #else
     Q_UNUSED(song)

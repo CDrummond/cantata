@@ -200,12 +200,9 @@
         </widget>
        </item>
        <item row="6" column="0" colspan="2">
-        <widget class="UrlLabel" name="mopidyNote">
+        <widget class="UrlNoteLabel" name="mopidyNote">
          <property name="text">
-          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Connected to a Mopidy server (manual update required).&lt;/i&gt;</string>
-         </property>
-         <property name="textInteractionFlags">
-          <set>Qt::NoTextInteraction</set>
+          <string>Connected to a Mopidy server (manual update required).</string>
          </property>
         </widget>
        </item>
@@ -408,6 +405,11 @@
    <class>UrlLabel</class>
    <extends>QLabel</extends>
    <header>support/urllabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>UrlNoteLabel</class>
+   <extends>QLabel</extends>
+   <header>widgets/notelabel.h</header>
   </customwidget>
   <customwidget>
    <class>SplitLabelWidget</class>

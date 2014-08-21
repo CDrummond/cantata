@@ -23,14 +23,15 @@
 
 #include "interfacesettings.h"
 #include "settings.h"
-#include "widgets/itemview.h"
-#include "support/localize.h"
 #include "models/musiclibraryitemalbum.h"
 #include "models/albumsmodel.h"
+#include "support/localize.h"
+#include "support/utils.h"
 #include "support/fancytabwidget.h"
+#include "support/pathrequester.h"
 #include "widgets/basicitemdelegate.h"
 #include "widgets/playqueueview.h"
-#include "support/pathrequester.h"
+#include "widgets/itemview.h"
 #include <QComboBox>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QDir>
@@ -100,7 +101,7 @@ static inline int getValue(QComboBox *box)
 
 static const char * constValueProperty="value";
 
-InterfaceSettings::InterfaceSettings(QWidget *p, bool limitedHeight)
+InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
     #ifndef ENABLE_KDE_SUPPORT
     , loadedLangs(false)
@@ -230,7 +231,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p, bool limitedHeight)
 
     // If we are on a display less than 800 pixels tall (e.g. a netbook), then re-arrange
     // the view settings to allow dialog to shrink more...
-    if (limitedHeight) {
+    if (Utils::limitedHeight(this)) {
         viewsLayout->removeWidget(otherViewGroupBox);
         viewsLayout->addWidget(otherViewGroupBox, 0, 1, 3, 1);
         viewsLayout->addItem(new QSpacerItem(0, 2, QSizePolicy::Expanding, QSizePolicy::Minimum), 0, 2, 1, 1);

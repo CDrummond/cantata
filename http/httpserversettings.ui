@@ -35,32 +35,16 @@
     </layout>
    </item>
    <item>
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+    <widget class="NoteLabel" name="label_4">
+     <property name="text">
+      <string>MPD usually only plays songs that are stored within its folders. Cantata contains a minimal HTTP server that can be used to serve other files to MPD. This, however, will only work whilst Cantata is running.</string>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>16</height>
-      </size>
-     </property>
-    </spacer>
+    </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_4">
+    <widget class="NoteLabel" name="label_4b">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; MPD usually only plays songs that are stored within its folders. Cantata contains a minimal HTTP server that can be used to serve other files to MPD. This, however, will only work whilst Cantata is running.&lt;br/&gt;&lt;br/&gt;
-&lt;b&gt;NOTE:&lt;/b&gt; If you choose 'Local loopback' for 'Network interface', then MPD &lt;b&gt;must&lt;/b&gt; also be on this computer.&lt;/i&gt;</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::NoTextInteraction</set>
+      <string>If you choose 'Local loopback' for 'Network interface', then MPD &lt;b&gt;must&lt;/b&gt; also be on this computer.</string>
      </property>
     </widget>
    </item>
@@ -84,6 +68,11 @@
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>support/buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>NoteLabel</class>
+   <extends>QLabel</extends>
+   <header>widgets/notelabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops/>

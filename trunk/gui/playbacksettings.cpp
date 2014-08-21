@@ -35,7 +35,7 @@
     w->deleteLater(); \
     w=0;
 
-PlaybackSettings::PlaybackSettings(QWidget *p)
+PlaybackSettings::PlaybackSettings(QWidget *p, bool limitedHeight)
     : QWidget(p)
 {
     setupUi(this);
@@ -56,7 +56,7 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
     connect(this, SIGNAL(getReplayGain()), MPDConnection::self(), SLOT(getReplayGain()));
     connect(aboutReplayGain, SIGNAL(leftClickedUrl()), SLOT(showAboutReplayGain()));
-    int iconSize=Icon::dlgIconSize();
+    int iconSize=limitedHeight ? 22 : Icon::dlgIconSize();
     messageIcon->setMinimumSize(iconSize, iconSize);
     messageIcon->setMaximumSize(iconSize, iconSize);
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());

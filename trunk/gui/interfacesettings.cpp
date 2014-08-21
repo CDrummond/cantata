@@ -233,6 +233,16 @@ InterfaceSettings::InterfaceSettings(QWidget *p, bool limitedHeight)
     if (limitedHeight) {
         viewsLayout->removeWidget(otherViewGroupBox);
         viewsLayout->addWidget(otherViewGroupBox, 0, 1, 3, 1);
+        styleLayout->removeWidget(sbIconsOnly);
+        styleLayout->removeWidget(sbMonoIcons);
+        styleLayout->removeWidget(sbAutoHide);
+        QVBoxLayout *sbOther = new QVBoxLayout();
+        sbOther->addWidget(sbIconsOnly);
+        sbOther->addWidget(sbMonoIcons);
+        sbOther->addWidget(sbAutoHide);
+        sbLayout->addItem(new QSpacerItem(Utils::layoutSpacing(this)*8, 2, QSizePolicy::Fixed, QSizePolicy::Fixed));
+        sbLayout->addLayout(sbOther);
+        sbLayout->addItem(new QSpacerItem(0, 2, QSizePolicy::Expanding, QSizePolicy::Minimum));
     }
 }
 

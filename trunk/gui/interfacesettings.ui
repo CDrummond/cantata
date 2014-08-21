@@ -95,56 +95,60 @@
          <property name="title">
           <string>Options</string>
          </property>
-         <layout class="QFormLayout" name="styleLayout">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::ExpandingFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="BuddyLabel" name="sbStyleLabel">
-            <property name="text">
-             <string>Style:</string>
+         <layout class="QHBoxLayout" name="sbLayout">
+          <item>
+           <layout class="QFormLayout" name="styleLayout">
+            <property name="fieldGrowthPolicy">
+             <enum>QFormLayout::ExpandingFieldsGrow</enum>
             </property>
-            <property name="buddy">
-             <cstring>sbStyle</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="sbStyle"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="BuddyLabel" name="sbPositionLabel">
-            <property name="text">
-             <string>Position:</string>
-            </property>
-            <property name="buddy">
-             <cstring>sbPosition</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QComboBox" name="sbPosition"/>
-          </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QCheckBox" name="sbIconsOnly">
-            <property name="text">
-             <string>Only show icons, no text</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0" colspan="2">
-           <widget class="QCheckBox" name="sbMonoIcons">
-            <property name="text">
-             <string>Use monochrome icons</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0" colspan="2">
-           <widget class="QCheckBox" name="sbAutoHide">
-            <property name="text">
-             <string>Auto-hide</string>
-            </property>
-           </widget>
+             <item row="0" column="0">
+             <widget class="BuddyLabel" name="sbStyleLabel">
+              <property name="text">
+               <string>Style:</string>
+              </property>
+              <property name="buddy">
+               <cstring>sbStyle</cstring>
+              </property>
+             </widget>
+             </item>
+             <item row="0" column="1">
+             <widget class="QComboBox" name="sbStyle"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="BuddyLabel" name="sbPositionLabel">
+              <property name="text">
+               <string>Position:</string>
+              </property>
+              <property name="buddy">
+               <cstring>sbPosition</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QComboBox" name="sbPosition"/>
+            </item>
+            <item row="2" column="0" colspan="2">
+             <widget class="QCheckBox" name="sbIconsOnly">
+              <property name="text">
+               <string>Only show icons, no text</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0" colspan="2">
+             <widget class="QCheckBox" name="sbMonoIcons">
+              <property name="text">
+               <string>Use monochrome icons</string>
+              </property>
+             </widget>
+             </item>
+            <item row="4" column="0" colspan="2">
+             <widget class="QCheckBox" name="sbAutoHide">
+              <property name="text">
+               <string>Auto-hide</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>

@@ -24,8 +24,9 @@
 #include "pagewidget.h"
 
 #ifdef ENABLE_KDE_SUPPORT
-PageWidget::PageWidget(QWidget *p, bool listView)
+PageWidget::PageWidget(QWidget *p, bool listView, bool headers)
     : KPageWidget(p)
+    , showHeaders(headers)
 {
     setFaceType(listView ? Tree : List);
     connect(this, SIGNAL(currentPageChanged(KPageWidgetItem *, KPageWidgetItem *)), this, SIGNAL(currentPageChanged()));
@@ -286,39 +287,42 @@ protected:
     QListWidget *view;
 };
 
-PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const Icon &icon, QWidget *cfg)
+PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const Icon &icon, QWidget *cfg, bool showHeader)
     : QWidget(p)
     , wid(cfg)
 {
-    static int size=-1;
-
-    if (-1==size) {
-        size=QApplication::fontMetrics().height();
-        if (size>20) {
-            size=Icon::stdSize(size*1.25);
-        } else {
-            size=22;
-        }
-    }
-
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
-    QBoxLayout *titleLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
-    titleLayout->addWidget(new QLabel("<b>"+header+"</b>", this));
-    titleLayout->addItem(new QSpacerItem(16, 16, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    if (showHeader) {
+        QBoxLayout *titleLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
+        titleLayout->addWidget(new QLabel("<b>"+header+"</b>", this));
+        titleLayout->addItem(new QSpacerItem(16, 16, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-    QLabel *icn=new QLabel(this);
-    icn->setPixmap(icon.pixmap(size, size));
-    titleLayout->addWidget(icn);
-    layout->addLayout(titleLayout);
-    layout->addItem(new QSpacerItem(8, 8, QSizePolicy::Fixed, QSizePolicy::Fixed));
+        static int iconSize=-1;
+
+        if (-1==iconSize) {
+            iconSize=QApplication::fontMetrics().height();
+            if (iconSize>20) {
+                iconSize=Icon::stdSize(iconSize*1.25);
+            } else {
+                iconSize=22;
+            }
+        }
+
+        QLabel *icn=new QLabel(this);
+        icn->setPixmap(icon.pixmap(iconSize, iconSize));
+        titleLayout->addWidget(icn);
+        layout->addLayout(titleLayout);
+        layout->addItem(new QSpacerItem(8, 8, QSizePolicy::Fixed, QSizePolicy::Fixed));
+    }
     layout->addWidget(cfg);
     layout->setMargin(0);
     cfg->setParent(this);
     adjustSize();
 }
 
-PageWidget::PageWidget(QWidget *p, bool listView)
+PageWidget::PageWidget(QWidget *p, bool listView, bool headers)
     : QWidget(p)
+    , showHeaders(headers)
 {
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::LeftToRight, this);
     list = new QListWidget(p);
@@ -341,7 +345,7 @@ PageWidget::PageWidget(QWidget *p, bool listView)
 
 PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header)
 {
-    PageWidgetItem *page=new PageWidgetItem(stack, header, icon, widget);
+    PageWidgetItem *page=new PageWidgetItem(stack, header, icon, widget, showHeaders);
     QListWidgetItem *listItem=new QListWidgetItem(name, list);
     listItem->setIcon(icon);
     stack->addWidget(page);

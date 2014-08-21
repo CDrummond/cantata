@@ -485,60 +485,16 @@
          </layout>
         </item>
         <item>
-         <spacer name="verticalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>13</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="musicFolderNoteLabel">
+         <widget class="NoteLabel" name="musicFolderNoteLabel">
           <property name="text">
-           <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music folder' setting is used to lookup cover-art, lyrics, etc. If you're MPD instance is on a remote host, you may set this to a HTTP URL.&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-          <property name="textInteractionFlags">
-           <set>Qt::NoTextInteraction</set>
+           <string>The 'Music folder' setting is used to lookup cover-art, lyrics, etc. If you're MPD instance is on a remote host, you may set this to a HTTP URL.</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="verticalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>13</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="socketNoteLabel">
+         <widget class="NoteLabel" name="socketNoteLabel">
           <property name="text">
-           <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; When using a local socket the full absolute path to the socket needs to be set. (Port number is not required.)&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-          <property name="textInteractionFlags">
-           <set>Qt::NoTextInteraction</set>
+           <string>When using a local socket the full absolute path to the socket needs to be set. (Port number is not required.)</string>
           </property>
          </widget>
         </item>
@@ -751,89 +707,23 @@
      </widget>
     </item>
     <item>
-     <spacer name="verticalSpacer_5x">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>8</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
-     <widget class="QLabel" name="persNote">
+     <widget class="NoteLabel" name="persNote">
       <property name="text">
-       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.&lt;/i&gt;</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-      <property name="textInteractionFlags">
-       <set>Qt::NoTextInteraction</set>
+       <string>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</string>
       </property>
      </widget>
     </item>
     <item>
-     <spacer name="verticalSpacer_7f2_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>8</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
-     <widget class="QLabel" name="persNote_2">
+     <widget class="NoteLabel" name="persNote_2">
       <property name="text">
-       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Cantata can only save backdrops and artist images within the music folder hierarchy if this is 2 levels deep. i.e. 'Artist/Album/Tracks'.&lt;/i&gt;</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-      <property name="textInteractionFlags">
-       <set>Qt::NoTextInteraction</set>
+       <string>Cantata can only save backdrops and artist images within the music folder hierarchy if this is 2 levels deep. i.e. 'Artist/Album/Tracks'.</string>
       </property>
      </widget>
     </item>
     <item>
-     <spacer name="verticalSpacer_7f2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>8</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
-     <widget class="StateLabel" name="httpNote">
+     <widget class="NoteLabel" name="httpNote">
       <property name="text">
-       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music folder' is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.&lt;/i&gt;</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-      <property name="textInteractionFlags">
-       <set>Qt::NoTextInteraction</set>
+       <string>The 'Music folder' is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</string>
       </property>
      </widget>
     </item>
@@ -977,9 +867,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>StateLabel</class>
+   <class>NoteLabel</class>
    <extends>QLabel</extends>
-   <header>widgets/statelabel.h</header>
+   <header>widgets/notelabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

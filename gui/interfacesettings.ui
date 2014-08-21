@@ -56,34 +56,9 @@
            <widget class="QListWidget" name="views"/>
           </item>
           <item>
-           <spacer name="verticalSpacer_xx">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>4</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QLabel" name="sbPlayQueueLabel">
+           <widget class="NoteLabel" name="sbPlayQueueLabel">
             <property name="text">
-             <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; By default, the play queue appears to the side of the other views, and the Info view is accessible by pressing its icon in the main toolbar. Checking the appropriate option above will cause the view to be merged into the sidebar as per other views.&lt;/i&gt;</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="textInteractionFlags">
-             <set>Qt::NoTextInteraction</set>
+             <string>By default, the play queue appears to the side of the other views, and the Info view is accessible by pressing its icon in the main toolbar. Checking the appropriate option above will cause the view to be merged into the sidebar as per other views.</string>
             </property>
            </widget>
           </item>
@@ -763,98 +738,23 @@
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>4</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="StateLabel" name="singleClickLabel">
+        <widget class="NoteLabel" name="singleClickLabel">
          <property name="text">
-          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Changing the 'Enforce single-click activation of items' setting will require a re-start of Cantata.&lt;/i&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-         <property name="textInteractionFlags">
-          <set>Qt::NoTextInteraction</set>
+          <string>Changing the 'Enforce single-click activation of items' setting will require a re-start of Cantata.</string>
          </property>
         </widget>
        </item>
        <item>
-        <spacer name="verticalSpacer_2b">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>4</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="StateLabel" name="langNoteLabel">
+        <widget class="NoteLabel" name="langNoteLabel">
          <property name="text">
-          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Changing the language setting will require a re-start of Cantata.&lt;/i&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-         <property name="textInteractionFlags">
-          <set>Qt::NoTextInteraction</set>
+          <string>Changing the language setting will require a re-start of Cantata.</string>
          </property>
         </widget>
        </item>
        <item>
-        <spacer name="verticalSpacer_2tf">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>4</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="StateLabel" name="touchFriendlyNoteLabel">
+        <widget class="NoteLabel" name="touchFriendlyNoteLabel">
          <property name="text">
-          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Changing the 'touch friendly' setting will require a re-start of Cantata.&lt;/i&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-         <property name="textInteractionFlags">
-          <set>Qt::NoTextInteraction</set>
+          <string>Changing the 'touch friendly' setting will require a re-start of Cantata.</string>
          </property>
         </widget>
        </item>
@@ -884,9 +784,9 @@
    <header>support/buddylabel.h</header>
   </customwidget>
   <customwidget>
-   <class>StateLabel</class>
+   <class>NoteLabel</class>
    <extends>QLabel</extends>
-   <header>widgets/statelabel.h</header>
+   <header>widgets/notelabel.h</header>
   </customwidget>
   <customwidget>
    <class>PathRequester</class>

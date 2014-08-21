@@ -35,6 +35,7 @@
 #include <QTime>
 #include <QWidget>
 #include <QStyle>
+#include <QDesktopWidget>
 #if QT_VERSION >= 0x050000
 #include <QStandardPaths>
 #else
@@ -856,6 +857,22 @@ bool Utils::isHighDpi()
 int Utils::scaleForDpi(int v)
 {
     return isHighDpi() ? v*2 : v;
+}
+
+bool Utils::limitedHeight(QWidget *w)
+{
+    static bool init=false;
+    static bool limited=false;
+    if (!init) {
+        limited=!qgetenv("CANTATA_NETBOOK").isEmpty();
+        if (!limited) {
+            QDesktopWidget *dw=QApplication::desktop();
+            if (dw) {
+                limited=dw->availableGeometry(w).size().height()<=800;
+            }
+        }
+    }
+    return limited;
 }
 
 Utils::Desktop Utils::currentDe()

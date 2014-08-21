@@ -823,6 +823,7 @@ void TagEditor::updateEdited(bool isFromAll)
 
 void TagEditor::setSong(const Song &s)
 {
+    blockSignals(true);
     title->setText(s.title);
     artist->setText(s.artist);
     albumArtist->setText(s.albumartist);
@@ -840,6 +841,8 @@ void TagEditor::setSong(const Song &s)
     if (ratingWidget) {
         ratingWidget->setValue(s.rating);
     }
+    blockSignals(false);
+    checkChanged();
 }
 
 void TagEditor::setIndex(int idx)

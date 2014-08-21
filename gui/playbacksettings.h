@@ -34,7 +34,7 @@ class PlaybackSettings : public QWidget, private Ui::PlaybackSettings
     Q_OBJECT
 
 public:
-    PlaybackSettings(QWidget *p);
+    PlaybackSettings(QWidget *p, bool limitedHeight);
     virtual ~PlaybackSettings() { }
 
     void load();

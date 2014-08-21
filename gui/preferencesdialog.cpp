@@ -82,7 +82,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     pageWidget = new PageWidget(this, limitedHeight);
     setMainWidget(pageWidget);
     server = new ServerSettings(0);
-    playback = new PlaybackSettings(0);
+    playback = new PlaybackSettings(0, limitedHeight);
     files = new FileSettings(0);
     interface = new InterfaceSettings(0, limitedHeight);
     context = new ContextSettings(0);

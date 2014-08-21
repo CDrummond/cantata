@@ -282,9 +282,6 @@ MainWindow::MainWindow(QWidget *parent)
     streamPlayAction->setVisible(false);
     #endif
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
-    #ifdef TAGLIB_FOUND
-    editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", i18n("Edit Song Tags"), "document-edit");
-    #endif
     addAction(expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All")));
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
     addAction(collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All")));
@@ -740,7 +737,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(stopAfterTrackAction);
     playQueue->addAction(locateTrackAction);
     #ifdef TAGLIB_FOUND
-    playQueue->addAction(editPlayQueueTagsAction);
+    playQueue->addAction(StdActions::self()->editTagsAction);
     #endif
     playQueue->readConfig();
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
@@ -833,7 +830,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(fullScreenAction, SIGNAL(triggered(bool)), this, SLOT(fullScreen()));
     #ifdef TAGLIB_FOUND
     connect(StdActions::self()->editTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
-    connect(editPlayQueueTagsAction, SIGNAL(triggered(bool)), this, SLOT(editPlayQueueTags()));
     connect(StdActions::self()->organiseFilesAction, SIGNAL(triggered(bool)), SLOT(organiseFiles()));
     #endif
     connect(context, SIGNAL(findArtist(QString)), this, SLOT(locateArtist(QString)));
@@ -1070,9 +1066,6 @@ void MainWindow::playQueueItemsSelected(bool s)
     setPriorityAction->setEnabled(s && haveItems);
     locateTrackAction->setEnabled(singleSelection);
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);
-    #ifdef TAGLIB_FOUND
-    editPlayQueueTagsAction->setEnabled(s && haveItems && MPDConnection::self()->getDetails().dirReadable);
-    #endif
     addPlayQueueToStoredPlaylistAction->setEnabled(haveItems);
     stopAfterTrackAction->setEnabled(singleSelection);
     ratingAction->setEnabled(s && haveItems);
@@ -1243,8 +1236,8 @@ void MainWindow::checkMpdDir()
     #endif
 
     #ifdef TAGLIB_FOUND
-    if (editPlayQueueTagsAction->isEnabled()) {
-        editPlayQueueTagsAction->setEnabled(MPDConnection::self()->getDetails().dirReadable);
+    if (StdActions::self()->editTagsAction->isEnabled()) {
+        StdActions::self()->editTagsAction->setEnabled(MPDConnection::self()->getDetails().dirReadable);
     }
     #endif
     if (currentPage) {
@@ -2262,30 +2255,19 @@ void MainWindow::collapseAll()
 void MainWindow::editTags()
 {
     #ifdef TAGLIB_FOUND
+    if (TagEditor::instanceCount() || !canShowDialog()) {
+        return;
+    }
     QList<Song> songs;
-    if (currentPage==folderPage) {
+    bool isPlayQueue=playQueue->hasFocus();
+    if (isPlayQueue) {
+        songs=playQueue->selectedSongs();
+    } else if (currentPage==folderPage) {
         songs=folderPage->selectedSongs(FolderPage::ES_FillEmpty);
     } else if (currentPage) {
         songs=currentPage->selectedSongs();
     }
-    editTags(songs, false);
-    #endif
-}
-
-void MainWindow::editPlayQueueTags()
-{
-    #ifdef TAGLIB_FOUND
-    editTags(playQueue->selectedSongs(), true);
-    #endif
-}
-
-#ifdef TAGLIB_FOUND
-void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
-{
-    if (songs.isEmpty() && isPlayQueue) {
-        MessageBox::error(this, i18n("Can only edit tags of songs within MPD's music collection."));
-    }
-    if (songs.isEmpty() || TagEditor::instanceCount() || !canShowDialog()) {
+    if (songs.isEmpty()) {
         return;
     }
     QSet<QString> artists, albumArtists, composers, albums, genres;
@@ -2297,15 +2279,13 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
         if (udi.isEmpty()) {
             return;
         }
-    } else
-    #else
-    Q_UNUSED(isPlayQueue)
+    }
     #endif
     MusicLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
     TagEditor *dlg=new TagEditor(this, songs, artists, albumArtists, composers, albums, genres, udi);
     dlg->show();
+    #endif
 }
-#endif
 
 void MainWindow::organiseFiles()
 {

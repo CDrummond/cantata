@@ -34,6 +34,8 @@
 25. Attempt to align song view selector with header.
 26. Remove 'Add albums in random order' from search view context menu.
 27. Remove mention of streams from initial settings wizard file settings.
+28. Fix updating of playqueue background when option changed in preferences
+    dialog.
 
 1.4.0
 -----

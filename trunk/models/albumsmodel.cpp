@@ -420,9 +420,10 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
 void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &file)
 {
     #ifdef ENABLE_UBUNTU
-    if (img.isNull() || file.isEmpty()) {
-        return;
+    if (img.isNull()) {
+        if (!file.isEmpty()) return; //If empty, we need to execute the stuff below to set m_coverRequested to false
     }
+
     QList<AlbumItem *>::Iterator it=items.begin();
     QList<AlbumItem *>::Iterator end=items.end();
     QString artist=MusicLibraryItemRoot::artistName(song);
@@ -431,10 +432,12 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
     for (int row=0; it!=end; ++it, ++row) {
         if ((*it)->artist==artist && (*it)->albumId()==albumId) {
             if ((*it)->coverRequested) {
-                (*it)->coverFile="file://"+file;
                 (*it)->coverRequested=false;
-                QModelIndex idx=index(row, 0, QModelIndex());
-                emit dataChanged(idx, idx);
+                if (!file.isEmpty()) {
+                    (*it)->coverFile="file://"+file;
+                    QModelIndex idx=index(row, 0, QModelIndex());
+                    emit dataChanged(idx, idx);
+                }
             }
             return;
         }

@@ -249,7 +249,6 @@ public Q_SLOTS:
     void locateArtist(const QString &artist);
     void locateAlbum(const QString &artist, const QString &album);
     void editTags();
-    void editPlayQueueTags();
     void organiseFiles();
     void addToDevice(const QString &udi);
     void deleteSongs();
@@ -274,9 +273,6 @@ private:
     void updateStatus(MPDStatus * const status);
     void readSettings();
     void addToPlayQueue(bool replace, quint8 priority=0);
-    #ifdef TAGLIB_FOUND
-    void editTags(const QList<Song> &songs, bool isPlayQueue);
-    #endif
     bool currentIsStream() const { return playQueueModel.rowCount() && -1!=current.id && current.isStream(); }
     void updateWindowTitle();
     void showTab(int page) { tabWidget->setCurrentIndex(page); }
@@ -335,9 +331,6 @@ private:
     Action *quitAction;
     Action *restoreAction;
     Action *locateTrackAction;
-    #ifdef TAGLIB_FOUND
-    Action *editPlayQueueTagsAction;
-    #endif
     Action *searchTabAction;
     Action *expandAllAction;
     Action *collapseAllAction;

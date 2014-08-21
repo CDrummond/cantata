@@ -26,7 +26,7 @@
 
 #include <QObject>
 
-#if LIBVLC_FOUND
+#ifdef LIBVLC_FOUND
 #include <vlc/vlc.h>
 #elif QT_VERSION < 0x050000
 #include <phonon/mediaobject.h>
@@ -54,7 +54,7 @@ private:
     bool stopOnPause;
     int state;
 
-    #if LIBVLC_FOUND
+    #ifdef LIBVLC_FOUND
     libvlc_instance_t *instance;
     libvlc_media_player_t *player;
     libvlc_media_t *media;

@@ -53,7 +53,7 @@ void HttpStream::setEnabled(bool e)
         disconnect(MPDConnection::self(), SIGNAL(streamUrl(QString)), this, SLOT(streamUrl(QString)));
         disconnect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
         if (player) {
-            #if LIBVLC_FOUND
+            #ifdef LIBVLC_FOUND
             libvlc_media_player_stop(player);
             #else
             player->stop();
@@ -66,7 +66,7 @@ void HttpStream::streamUrl(const QString &url)
 {
     MPDStatus * const status = MPDStatus::self();
     static const char *constUrlProperty="url";
-    #if LIBVLC_FOUND
+    #ifdef LIBVLC_FOUND
     if (player) {
         libvlc_media_player_stop(player);
         libvlc_media_player_release(player);
@@ -81,7 +81,7 @@ void HttpStream::streamUrl(const QString &url)
     }
     #endif
     if (!url.isEmpty() && !player) {
-        #if LIBVLC_FOUND
+        #ifdef LIBVLC_FOUND
         instance = libvlc_new(0, NULL);
         QByteArray byteArrayUrl = url.toUtf8();
         media = libvlc_media_new_location(instance, byteArrayUrl.constData());
@@ -103,7 +103,7 @@ void HttpStream::streamUrl(const QString &url)
         state=status->state();
         switch (status->state()) {
         case MPDState_Playing:
-            #if LIBVLC_FOUND
+            #ifdef LIBVLC_FOUND
             if(libvlc_media_player_get_state(player)!=libvlc_Playing){
                 libvlc_media_player_play(player);
             }
@@ -119,7 +119,7 @@ void HttpStream::streamUrl(const QString &url)
             break;
         case MPDState_Inactive:
         case MPDState_Stopped:
-            #if LIBVLC_FOUND
+            #ifdef LIBVLC_FOUND
             libvlc_media_player_stop(player);
             #else
             player->stop();
@@ -127,7 +127,7 @@ void HttpStream::streamUrl(const QString &url)
             break;
         case MPDState_Paused:
             if (stopOnPause) {
-                #if LIBVLC_FOUND
+                #ifdef LIBVLC_FOUND
                 libvlc_media_player_stop(player);
                 #else
                 player->stop();

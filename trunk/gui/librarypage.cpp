@@ -304,7 +304,6 @@ void LibraryPage::controlActions()
     StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
     #ifdef TAGLIB_FOUND
     StdActions::self()->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);
-    StdActions::self()->editTagsAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     StdActions::self()->replaygainAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
     #endif

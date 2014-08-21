@@ -75,9 +75,9 @@ ScrobblingSettings::ScrobblingSettings(QWidget *parent)
     if (firstMpdClient.isEmpty()) {
         REMOVE(noteLabel)
     } else {
-        noteLabel->setText(i18n("<i><b>NOTE:</b> If you use a scrobbler which is marked as '(via MPD)' (such as %1), "
+        noteLabel->setText(i18n("If you use a scrobbler which is marked as '(via MPD)' (such as %1), "
                                 "then you will need to have this already started and running. "
-                                "Cantata can only 'Love' tracks via this, and cannot enable/disable scrobbling.</i>", firstMpdClient));
+                                "Cantata can only 'Love' tracks via this, and cannot enable/disable scrobbling.", firstMpdClient));
     }
 }
 

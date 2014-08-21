@@ -77,7 +77,12 @@ void Dialog::showEvent(QShowEvent *e)
     if (!shown) {
         shown=true;
         QSize mwSize=mainWidget()->minimumSize();
-        if (mwSize.width()>0 && mwSize.height()>0) {
+
+        if (mwSize.width()<16 || mwSize.height()<16) {
+            mwSize=mainWidget()->minimumSizeHint();
+        }
+
+        if (mwSize.width()>15 && mwSize.height()>15) {
             QSize btnSize(24, 32);
             for (int i=0; i<15; ++i) {
                 int code=1<<i;
@@ -382,7 +387,10 @@ void Dialog::showEvent(QShowEvent *e)
         }
         if (buttonBox && mw) {
             QSize mwSize=mw->minimumSize();
-            if (mwSize.width()>0 && mwSize.height()>0) {
+            if (mwSize.width()<16 || mwSize.height()<16) {
+                mwSize=mw->minimumSizeHint();
+            }
+            if (mwSize.width()>15 && mwSize.height()>15) {
                 setMinimumHeight(qMax(minimumHeight(), buttonBox->height()+layout()->spacing()+mwSize.height()+(2*layout()->margin())));
                 setMinimumWidth(qMax(minimumWidth(), mwSize.width()+(2*layout()->margin())));
             }

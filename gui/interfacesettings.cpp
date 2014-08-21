@@ -233,6 +233,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p, bool limitedHeight)
     if (limitedHeight) {
         viewsLayout->removeWidget(otherViewGroupBox);
         viewsLayout->addWidget(otherViewGroupBox, 0, 1, 3, 1);
+        viewsLayout->addItem(new QSpacerItem(0, 2, QSizePolicy::Expanding, QSizePolicy::Minimum), 0, 2, 1, 1);
         styleLayout->removeWidget(sbIconsOnly);
         styleLayout->removeWidget(sbMonoIcons);
         styleLayout->removeWidget(sbAutoHide);

@@ -69,7 +69,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     iCount++;
     setButtons(Ok|Apply|Cancel);
 
-    pageWidget = new PageWidget(this, Utils::limitedHeight(this));
+    bool limitedHeight=Utils::limitedHeight(this);
+    pageWidget = new PageWidget(this, limitedHeight, !limitedHeight);
     setMainWidget(pageWidget);
     server = new ServerSettings(0);
     playback = new PlaybackSettings(0);

@@ -83,12 +83,20 @@ const QString & MusicLibraryItemArtist::cover() const
     if (m_coverName.isEmpty() && !m_coverRequested && childCount()) {
         m_coverRequested=true;
         m_coverName=Covers::self()->requestImage(coverSong()).fileName;
-        if (m_coverName.isEmpty()) {
+        if (!m_coverName.isEmpty()) {
             m_coverRequested=false;
         }
     }
 
     return m_coverName.isEmpty() ? constDefaultCover : m_coverName;
+}
+
+void MusicLibraryItemArtist::setCover(const QString &c)
+{
+    if (!c.isEmpty()) {
+        m_coverName="file://"+c;
+    }
+    m_coverRequested=false;
 }
 #endif
 

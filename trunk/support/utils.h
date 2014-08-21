@@ -112,6 +112,7 @@ namespace Utils
     extern int layoutSpacing(QWidget *w);
     extern bool isHighDpi();
     extern int scaleForDpi(int v);
+    extern bool limitedHeight(QWidget *w);
 
     enum Desktop {
         KDE,

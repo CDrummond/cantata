@@ -12,15 +12,9 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QLabel" name="connectionNote">
+    <widget class="PlainNoteLabel" name="connectionNote">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; These settings are only editable when the device is not connected.&lt;/i&gt;</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::NoTextInteraction</set>
+      <string>These settings are only editable when the device is not connected.</string>
      </property>
     </widget>
    </item>
@@ -161,15 +155,9 @@
            </layout>
           </item>
           <item>
-           <widget class="QLabel" name="label_4">
+           <widget class="PlainNoteLabel" name="label_4">
             <property name="text">
-             <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata's config file. To have Cantata prompt for the password before accessing the share, set the password to '-'&lt;/i&gt;</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="textInteractionFlags">
-             <set>Qt::NoTextInteraction</set>
+             <string>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata's config file. To have Cantata prompt for the password before accessing the share, set the password to '-'</string>
             </property>
            </widget>
           </item>
@@ -264,9 +252,9 @@
            </layout>
           </item>
           <item>
-           <widget class="QLabel" name="label_4x">
+           <widget class="PlainNoteLabel" name="label_4x">
             <property name="text">
-             <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata's config file. To have Cantata prompt for the password before accessing the share, set the password to '-'&lt;/i&gt;</string>
+             <string>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata's config file. To have Cantata prompt for the password before accessing the share, set the password to '-'</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -367,9 +355,9 @@
            </layout>
           </item>
           <item>
-           <widget class="QLabel" name="label_5">
+           <widget class="PlainNoteLabel" name="label_5">
             <property name="text">
-             <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Due to the way sshfs works, a suitable ssh-askpass application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter the password.&lt;/i&gt;</string>
+             <string>Due to the way sshfs works, a suitable ssh-askpass application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter the password.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -417,24 +405,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="infoLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="PlainNoteLabel" name="infoLabel">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.&lt;/i&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::NoTextInteraction</set>
+      <string>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</string>
      </property>
     </widget>
    </item>
@@ -455,6 +428,11 @@
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>support/buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PlainNoteLabel</class>
+   <extends>QLabel</extends>
+   <header>widgets/notelabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

@@ -223,66 +223,16 @@
     <widget class="QLabel" name="errorLabel"/>
    </item>
    <item>
-    <spacer name="verticalSpacer_3xz">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>4</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_7">
+    <widget class="NoteLabel" name="label_7">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Only enter values for the tags you wish to be search on. &lt;/i&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::NoTextInteraction</set>
+      <string>Only enter values for the tags you wish to be search on.</string>
      </property>
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer_3x">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>4</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_7x">
+    <widget class="NoteLabel" name="label_7x">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; For genre, end string with an asterisk to match various genres. e.g 'rock*' matches 'Hard Rock' and 'Rock and Roll'. &lt;/i&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::NoTextInteraction</set>
+      <string>For genre, end string with an asterisk to match various genres. e.g 'rock*' matches 'Hard Rock' and 'Rock and Roll'.</string>
      </property>
     </widget>
    </item>
@@ -309,6 +259,11 @@
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>support/buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>NoteLabel</class>
+   <extends>QLabel</extends>
+   <header>widgets/notelabel.h</header>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>

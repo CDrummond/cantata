@@ -125,16 +125,16 @@
     </layout>
    </item>
    <item>
-    <widget class="UrlLabel" name="mopidyNote">
+    <widget class="UrlNoteLabel" name="mopidyNote">
      <property name="text" stdset="0">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Connected to a Mopidy server (manual update required).&lt;/i&gt;</string>
+      <string>Connected to a Mopidy server (manual update required).</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="UrlLabel" name="ratingsNote">
+    <widget class="UrlNoteLabel" name="ratingsNote">
      <property name="text" stdset="0">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Ratings will be lost if a file is renamed.&lt;/i&gt;</string>
+      <string>Ratings will be lost if a file is renamed.</string>
      </property>
     </widget>
    </item>
@@ -155,9 +155,9 @@
    <header>support/buddylabel.h</header>
   </customwidget>
   <customwidget>
-   <class>UrlLabel</class>
+   <class>UrlNoteLabel</class>
    <extends>QLabel</extends>
-   <header>support/urllabel.h</header>
+   <header>widgets/notelabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

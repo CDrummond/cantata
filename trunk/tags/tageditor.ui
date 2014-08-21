@@ -189,94 +189,44 @@
   </layout>
   </item>
   <item>
-   <spacer name="verticalSpacer_3x">
-    <property name="orientation">
-     <enum>Qt::Vertical</enum>
-    </property>
-    <property name="sizeType">
-     <enum>QSizePolicy::Fixed</enum>
-    </property>
-    <property name="sizeHint" stdset="0">
-     <size>
-      <width>20</width>
-      <height>4</height>
-     </size>
-    </property>
-   </spacer>
-  </item>
-  <item>
-   <widget class="QLabel" name="label_7x">
+   <widget class="PlainNoteLabel" name="label_7x">
     <property name="text">
-     <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Multiple genres should be separated via a semicolon (e.g. 'Rock;Hard Rock')&lt;/i&gt;</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-    </property>
-    <property name="wordWrap">
-     <bool>true</bool>
-    </property>
-    <property name="textInteractionFlags">
-     <set>Qt::NoTextInteraction</set>
+     <string>Multiple genres should be separated via a semicolon (e.g. 'Rock;Hard Rock')</string>
     </property>
    </widget>
   </item>
   <item>
-   <spacer name="verticalSpacer_3y">
-    <property name="orientation">
-     <enum>Qt::Vertical</enum>
-    </property>
-    <property name="sizeType">
-     <enum>QSizePolicy::Fixed</enum>
-    </property>
-    <property name="sizeHint" stdset="0">
-     <size>
-      <width>20</width>
-      <height>4</height>
-     </size>
-    </property>
-   </spacer>
-  </item>
-  <item>
-   <widget class="QLabel" name="label_7y">
+   <widget class="PlainNoteLabel" name="label_7y">
     <property name="text">
-     <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Ratings are stored in an external database, and &lt;b&gt;not&lt;/b&gt; in the song's file.&lt;/i&gt;</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-    </property>
-    <property name="wordWrap">
-     <bool>true</bool>
-    </property>
-    <property name="textInteractionFlags">
-     <set>Qt::NoTextInteraction</set>
+     <string>Ratings are stored in an external database, and &lt;b&gt;not&lt;/b&gt; in the song's file.</string>
     </property>
    </widget>
   </item>
   <item>
-   <spacer name="mopidyNoteSpacer">
-    <property name="orientation">
-     <enum>Qt::Vertical</enum>
-    </property>
-    <property name="sizeType">
-     <enum>QSizePolicy::MinimumExpanding</enum>
-    </property>
-    <property name="sizeHint" stdset="0">
-     <size>
-      <width>20</width>
-      <height>0</height>
-     </size>
-    </property>
-   </spacer>
-  </item>
-  <item>
-   <widget class="UrlLabel" name="mopidyNote">
+   <widget class="PlainUrlNoteLabel" name="mopidyNote">
     <property name="text" stdset="0">
-     <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Connected to a Mopidy server (manual update required).&lt;/i&gt;</string>
+     <string>Connected to a Mopidy server (manual update required).</string>
     </property>
    </widget>
   </item>
   <item>
    <widget class="QProgressBar" name="progress"/>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>2</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
@@ -305,6 +255,16 @@
    <class>StateLabel</class>
    <extends>QLabel</extends>
    <header>widgets/statelabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PlainNoteLabel</class>
+   <extends>QLabel</extends>
+   <header>widgets/notelabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PlainUrlNoteLabel</class>
+   <extends>QLabel</extends>
+   <header>widgets/notelabel.h</header>
   </customwidget>
   <customwidget>
    <class>UrlLabel</class>

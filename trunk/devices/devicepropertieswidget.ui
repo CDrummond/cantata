@@ -15,15 +15,9 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QLabel" name="remoteDeviceNote">
+    <widget class="PlainNoteLabel" name="remoteDeviceNote">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; These settings are only valid, and editable, when the device is connected.&lt;/i&gt;</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::NoTextInteraction</set>
+      <string>These settings are only valid, and editable, when the device is connected.</string>
      </property>
     </widget>
    </item>
@@ -260,6 +254,11 @@
    <class>ValueSlider</class>
    <extends>QSlider</extends>
    <header>devices/valueslider.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PlainNoteLabel</class>
+   <extends>QLabel</extends>
+   <header>widgets/notelabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

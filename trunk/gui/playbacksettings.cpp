@@ -24,6 +24,7 @@
 #include "playbacksettings.h"
 #include "settings.h"
 #include "support/localize.h"
+#include "support/utils.h"
 #include "mpd/mpdconnection.h"
 #include "support/icon.h"
 #include "widgets/basicitemdelegate.h"
@@ -35,7 +36,7 @@
     w->deleteLater(); \
     w=0;
 
-PlaybackSettings::PlaybackSettings(QWidget *p, bool limitedHeight)
+PlaybackSettings::PlaybackSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
@@ -56,7 +57,7 @@ PlaybackSettings::PlaybackSettings(QWidget *p, bool limitedHeight)
     connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
     connect(this, SIGNAL(getReplayGain()), MPDConnection::self(), SLOT(getReplayGain()));
     connect(aboutReplayGain, SIGNAL(leftClickedUrl()), SLOT(showAboutReplayGain()));
-    int iconSize=limitedHeight ? 22 : Icon::dlgIconSize();
+    int iconSize=Utils::limitedHeight(this) ? 22 : Icon::dlgIconSize();
     messageIcon->setMinimumSize(iconSize, iconSize);
     messageIcon->setMaximumSize(iconSize, iconSize);
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());

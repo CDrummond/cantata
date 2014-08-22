@@ -433,7 +433,7 @@ bool Settings::wikipediaIntroOnly()
 
 int Settings::contextBackdrop()
 {
-    return  cfg.get("contextBackdrop", 1);
+    return getBoolAsInt("contextBackdrop", 1);
 }
 
 int Settings::contextBackdropOpacity()
@@ -605,7 +605,7 @@ bool Settings::playQueueScroll()
 
 int Settings::playQueueBackground()
 {
-    return  cfg.get("playQueueBackground", 0);
+    return getBoolAsInt("playQueueBackground", 0);
 }
 
 int Settings::playQueueBackgroundOpacity()
@@ -1050,6 +1050,11 @@ void Settings::saveWikipediaIntroOnly(bool v)
 
 void Settings::saveContextBackdrop(int v)
 {
+    #ifdef ENABLE_KDE_SUPPORT
+    if (cfg.get("contextBackdrop", QString()).length()>1) {
+        cfg.removeEntry("contextBackdrop");
+    }
+    #endif
     cfg.set("contextBackdrop", v);
 }
 
@@ -1186,6 +1191,11 @@ void Settings::savePlayQueueScroll(bool v)
 
 void Settings::savePlayQueueBackground(int v)
 {
+    #ifdef ENABLE_KDE_SUPPORT
+    if (cfg.get("playQueueBackground", QString()).length()>1) {
+        cfg.removeEntry("playQueueBackground");
+    }
+    #endif
     cfg.set("playQueueBackground", v);
 }
 
@@ -1378,4 +1388,18 @@ void Settings::save()
         ver=PACKAGE_VERSION;
     }
     cfg.sync();
+}
+
+int Settings::getBoolAsInt(const QString &key, int def)
+{
+    // Old config, sometimes bool was used - which has now been converted
+    // to an int...
+    QString v=cfg.get(key, QString::number(def));
+    if (QLatin1String("false")==v) {
+        return 0;
+    }
+    if (QLatin1String("true")==v) {
+        return 1;
+    }
+    return v.toInt();
 }

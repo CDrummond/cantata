@@ -95,7 +95,8 @@ public:
     void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint);
     QModelIndex indexAt(const QPoint &point);
     void setModel(QAbstractItemModel *m) { view()->setModel(m); }
-    void addAction(QAction *a);
+    void addAction(QAction *a, bool withSelectionOnly=false);
+    void addSeparator();
     void setFocus();
     bool hasFocus();
     QAbstractItemModel * model() { return view()->model(); }
@@ -118,6 +119,9 @@ public Q_SLOTS:
     void setImage(const QImage &img);
     void streamFetchStatus(const QString &msg);
 
+private Q_SLOTS:
+    void showMenu(const QPoint &p);
+
 Q_SIGNALS:
     void itemsSelected(bool);
     void doubleClicked(const QModelIndex &);
@@ -128,6 +132,8 @@ private:
     void drawBackdrop(QWidget *widget, const QSize &size);
 
 private:
+    QMenu *contextMenu;
+    QMenu *selectContextMenu;
     Action *removeFromAction;
     ItemView::Mode mode;
     PlayQueueGroupedView *groupedView;

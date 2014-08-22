@@ -705,17 +705,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueProxyModel);
-    playQueue->addAction(playQueue->removeFromAct());
-    playQueue->addAction(playQueueModel.removeDuplicatesAct());
-    playQueue->addAction(promptClearPlayQueueAction);
-    playQueue->addAction(cropPlayQueueAction);
-    playQueue->addAction(StdActions::self()->savePlayQueueAction);
-    playQueue->addAction(addStreamToPlayQueueAction);
-    playQueue->addAction(addPlayQueueToStoredPlaylistAction);
-    playQueue->addAction(playQueueModel.shuffleAct());
-    playQueue->addAction(playQueueModel.sortAct());
-    playQueue->addAction(playQueueModel.undoAct());
-    playQueue->addAction(playQueueModel.redoAct());
+    playQueue->addAction(playQueue->removeFromAct(), true);
     ratingAction=new Action(i18n("Set Rating"), this);
     ratingAction->setMenu(new QMenu(0));
     for (int i=0; i<((Song::Rating_Max/Song::Rating_Step)+1); ++i) {
@@ -732,13 +722,24 @@ MainWindow::MainWindow(QWidget *parent)
         ratingAction->menu()->addAction(action);
         connect(action, SIGNAL(triggered(bool)), SLOT(setRating()));
     }
-    playQueue->addAction(ratingAction);
-    playQueue->addAction(setPriorityAction);
-    playQueue->addAction(stopAfterTrackAction);
-    playQueue->addAction(locateTrackAction);
+    playQueue->addAction(ratingAction, true);
+    playQueue->addAction(setPriorityAction, true);
+    playQueue->addAction(stopAfterTrackAction, true);
+    playQueue->addAction(locateTrackAction, true);
     #ifdef TAGLIB_FOUND
-    playQueue->addAction(StdActions::self()->editTagsAction);
+    playQueue->addAction(StdActions::self()->editTagsAction, true);
     #endif
+    playQueue->addSeparator();
+    playQueue->addAction(playQueueModel.removeDuplicatesAct());
+    playQueue->addAction(promptClearPlayQueueAction);
+    playQueue->addAction(cropPlayQueueAction);
+    playQueue->addAction(StdActions::self()->savePlayQueueAction);
+    playQueue->addAction(addStreamToPlayQueueAction);
+    playQueue->addAction(addPlayQueueToStoredPlaylistAction);
+    playQueue->addAction(playQueueModel.shuffleAct());
+    playQueue->addAction(playQueueModel.sortAct());
+    playQueue->addAction(playQueueModel.undoAct());
+    playQueue->addAction(playQueueModel.redoAct());
     playQueue->readConfig();
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 

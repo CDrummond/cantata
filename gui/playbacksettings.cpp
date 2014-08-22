@@ -57,7 +57,7 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
     connect(this, SIGNAL(getReplayGain()), MPDConnection::self(), SLOT(getReplayGain()));
     connect(aboutReplayGain, SIGNAL(leftClickedUrl()), SLOT(showAboutReplayGain()));
-    int iconSize=Utils::limitedHeight(this) ? 22 : Icon::dlgIconSize();
+    int iconSize=Utils::limitedHeight(this) ? 32 : Icon::dlgIconSize();
     messageIcon->setMinimumSize(iconSize, iconSize);
     messageIcon->setMaximumSize(iconSize, iconSize);
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());

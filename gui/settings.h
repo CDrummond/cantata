@@ -302,6 +302,9 @@ public:
     bool firstRun() const { return isFirstRun; }
 
 private:
+    int getBoolAsInt(const QString &key, int def);
+
+private:
     bool isFirstRun;
     int ver;
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET

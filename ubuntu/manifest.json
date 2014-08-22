@@ -1,6 +1,6 @@
 {
     "name": "com.ubuntu.developer.nikwen.cantata-touch",
-    "framework": "ubuntu-sdk-14.04-qml-dev1",
+    "framework": "ubuntu-sdk-14.10-dev2",
     "architecture": "armhf",
     "hooks": {
         "cantata": {

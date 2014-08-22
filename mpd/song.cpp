@@ -619,8 +619,19 @@ bool Song::capitalise()
     albumartist=capitalize(albumartist);
     album=capitalize(album);
     title=capitalize(title);
+    QString c=composer();
+    if (!c.isEmpty()) {
+        setComposer(capitalize(c));
+    }
+    /* Performer is not currently in tag editor...
+    QString p=performer();
+    if (!p.isEmpty()) {
+        setPerformer(capitalize(p));
+    }
+    */
 
-    return artist!=origArtist || albumartist!=origAlbumArtist || album!=origAlbum || title!=origTitle;
+    return artist!=origArtist || albumartist!=origAlbumArtist || album!=origAlbum || title!=origTitle ||
+           (!c.isEmpty() && c!=composer()) /*|| (!p.isEmpty() && p!=performer())*/ ;
 }
 
 QString Song::albumKey() const

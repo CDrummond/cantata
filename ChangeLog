@@ -36,6 +36,7 @@
 22. Show covers in playlist tree and list views.
 23. Use read-only editable combo for filename in tag editor, so that text can
     be selected.
+24. Also catpitalise composer in tag editor.
 
 1.4.1
 -----

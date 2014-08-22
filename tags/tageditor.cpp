@@ -610,10 +610,9 @@ void TagEditor::capitalise()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
 
-    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
-                                                                     "'Album' of <b>all</b> tracks?")
-                                                              : i18n("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
-                                                                     "'Album'"),
+    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Capitalize the first letter of text fields (e.g. 'Title', 'Artist', etc) "
+                                                                     "of <b>all</b> tracks?")
+                                                              : i18n("Capitalize the first letter of text fields (e.g. 'Title', 'Artist', etc)?"),
                                                   i18n("Capitalize"), GuiItem(i18n("Capitalize")), StdGuiItem::cancel())) {
         return;
     }

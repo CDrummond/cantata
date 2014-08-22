@@ -36,6 +36,7 @@
 27. Remove mention of streams from initial settings wizard file settings.
 28. Fix updating of playqueue background when option changed in preferences
     dialog.
+29. Fix reading of playqueue, and context, backdrop settings.
 
 1.4.0
 -----

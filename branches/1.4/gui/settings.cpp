@@ -523,10 +523,7 @@ bool Settings::wikipediaIntroOnly()
 
 int Settings::contextBackdrop()
 {
-    if (version()<CANTATA_MAKE_VERSION(1, 0, 53)) {
-        return cfg.get("contextBackdrop", true) ? 1 : 0;
-    }
-    return  cfg.get("contextBackdrop", 1);
+    return getBoolAsInt("contextBackdrop", 1);
 }
 
 int Settings::contextBackdropOpacity()
@@ -708,10 +705,7 @@ bool Settings::playQueueScroll()
 
 int Settings::playQueueBackground()
 {
-    if (version()<CANTATA_MAKE_VERSION(1, 0, 53)) {
-        return cfg.get("playQueueBackground", false) ? 1 : 1;
-    }
-    return  cfg.get("playQueueBackground", 0);
+    return getBoolAsInt("playQueueBackground", 0);
 }
 
 int Settings::playQueueBackgroundOpacity()
@@ -1166,6 +1160,11 @@ void Settings::saveWikipediaIntroOnly(bool v)
 
 void Settings::saveContextBackdrop(int v)
 {
+    #ifdef ENABLE_KDE_SUPPORT
+    if (cfg.get("contextBackdrop", QString()).length()>1) {
+        cfg.removeEntry("contextBackdrop");
+    }
+    #endif
     cfg.set("contextBackdrop", v);
 }
 
@@ -1302,6 +1301,11 @@ void Settings::savePlayQueueScroll(bool v)
 
 void Settings::savePlayQueueBackground(int v)
 {
+    #ifdef ENABLE_KDE_SUPPORT
+    if (cfg.get("playQueueBackground", QString()).length()>1) {
+        cfg.removeEntry("playQueueBackground");
+    }
+    #endif
     cfg.set("playQueueBackground", v);
 }
 
@@ -1511,3 +1515,18 @@ void Settings::actualSave()
 {
     save(true);
 }
+
+int Settings::getBoolAsInt(const QString &key, int def)
+{
+    // Old config, sometimes bool was used - which has now been converted
+    // to an int...
+    QString v=cfg.get(key, QString::number(def));
+    if (QLatin1String("false")==v) {
+        return 0;
+    }
+    if (QLatin1String("true")==v) {
+        return 1;
+    }
+    return v.toInt();
+}
+

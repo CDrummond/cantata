@@ -314,6 +314,9 @@ private Q_SLOTS:
     void actualSave();
 
 private:
+    int getBoolAsInt(const QString &key, int def);
+
+private:
     bool isFirstRun;
     QTimer *timer;
     int ver;

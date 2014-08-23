@@ -36,8 +36,6 @@ Flickable {
     property bool push: true
     property int selectedIndex: -1 //-1 indicates that the menu will be shown on phones, while the first entry is shown on tablets
 
-    Component.onCompleted: console.log("categories ready")
-
     Column {
         id: column
         width: parent.width

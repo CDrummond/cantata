@@ -28,16 +28,17 @@
 import QtQuick 2.0
 import Ubuntu.Components 1.1
 import Ubuntu.Components.ListItems 1.0 as ListItem
+import Ubuntu.Layouts 1.0
 import 'qrc:/qml/cantata/'
 import 'qrc:/qml/cantata/backend'
 import 'qrc:/qml/cantata/components'
 import 'qrc:/qml/cantata/settings'
- 
+
 MainView {
     id: root
-    objectName: "mainView"
-    applicationName: "com.ubuntu.developer.nikwen.cantata-touch"
- 
+
+    applicationName: "com.ubuntu.developer.nikwen.cantata-touch-reboot"
+
     width: units.gu(100)
     height: units.gu(75)
 
@@ -49,94 +50,147 @@ MainView {
 
     PageStack {
         id: pageStack
-        anchors.fill: parent
 
         Component.onCompleted: {
             push(tabs)
             push(hostSettingsPage)
         }
 
-        Tabs {
-            id: tabs
-            anchors.fill: parent
+        Layouts {
+            id: layouts
 
-            Tab {
-                id: artistTab
-                title: i18n.tr("Artists")
+            onCurrentLayoutChanged: {
+                console.log("Current layout: " + currentLayout)
+            }
 
-                page: ListViewPage {
-                    id: artistPage
-                    model: artistsProxyModel
-                    modelName: "artists"
-                    emptyViewVisible: !backend.artistsFound
-                    emptyViewText: i18n.tr("No artists found")
+            layouts: [
+                ConditionalLayout {
+                    name: "tablet"
+                    when: !isPhone
+
+                    ItemLayout {
+                        id: currentlyPlayingPage
+                        item: "currentlyPlayingPage"
+                    }
+
+                    ItemLayout {
+                        id: settingsPage
+                        item: "settingsPage"
+                    }
+
+                    ItemLayout {
+                        id: hostSettingsPage
+                        item: "hostSettingsPage"
+                    }
+
+                    ItemLayout {
+                        id: uiSettingsPage
+                        item: "uiSettingsPage"
+                    }
+
+                    ItemLayout {
+                        id: playbackSettingsPage
+                        item: "playbackSettingsPage"
+                    }
+
+                    ItemLayout {
+                        id: aboutPage
+                        item: "aboutPage"
+                    }
+
+                }
+            ]
+
+            Tabs {
+                Layouts.item: "tabs"
+                id: tabs
+                anchors.fill: parent
+
+                Tab {
+                    id: artistTab
+                    title: i18n.tr("Artists")
+
+                    page: ListViewPage {
+                        id: artistPage
+                        model: artistsProxyModel
+                        modelName: "artists"
+                        emptyViewVisible: !backend.artistsFound
+                        emptyViewText: i18n.tr("No artists found")
+                    }
+                }
+
+                Tab {
+                    id: albumsTab
+                    title: i18n.tr("Albums")
+
+                    page: ListViewPage {
+                        id: albumPage
+                        model: albumsProxyModel
+                        modelName: "albums"
+                        emptyViewVisible: !backend.albumsFound
+                        emptyViewText: i18n.tr("No albums found")
+                    }
+                }
+
+                Tab {
+                    id: foldersTab
+                    title: i18n.tr("Folders")
+
+                    page: ListViewPage {
+                        id: foldersPage
+                        model: foldersProxyModel
+                        modelName: "folders"
+                        emptyViewVisible: !backend.foldersFound
+                        emptyViewText: i18n.tr("No folders found")
+                    }
+                }
+
+                Tab {
+                    id: playlistsTab
+                    title: i18n.tr("Playlists")
+
+                    page: ListViewPage {
+                        id: playlistsPage
+                        model: playlistsProxyModel
+                        modelName: "playlists"
+                        editable: true
+                        emptyViewVisible: !backend.playlistsFound
+                        emptyViewText: i18n.tr("No playlists found")
+                    }
                 }
             }
 
-            Tab {
-                id: albumsTab
-                title: i18n.tr("Albums")
-
-                page: ListViewPage {
-                    id: albumPage
-                    model: albumsProxyModel
-                    modelName: "albums"
-                    emptyViewVisible: !backend.albumsFound
-                    emptyViewText: i18n.tr("No albums found")
-                }
+            CurrentlyPlayingPage {
+                Layouts.item: "currentlyPlayingPage"
+                id: currentlyPlayingPage
             }
 
-            Tab {
-                id: foldersTab
-                title: i18n.tr("Folders")
-
-                page: ListViewPage {
-                    id: foldersPage
-                    model: foldersProxyModel
-                    modelName: "folders"
-                    emptyViewVisible: !backend.foldersFound
-                    emptyViewText: i18n.tr("No folders found")
-                }
+            SettingsPage {
+                Layouts.item: "settingsPage"
+                id: settingsPage
             }
 
-            Tab {
-                id: playlistsTab
-                title: i18n.tr("Playlists")
+            HostSettingsPage {
+                Layouts.item: "hostSettingsPage"
+                id: hostSettingsPage
+            }
 
-                page: ListViewPage {
-                    id: playlistsPage
-                    model: playlistsProxyModel
-                    modelName: "playlists"
-                    editable: true
-                    emptyViewVisible: !backend.playlistsFound
-                    emptyViewText: i18n.tr("No playlists found")
-                }
+            UiSettingsPage {
+                Layouts.item: "uiSettingsPage"
+                id: uiSettingsPage
+            }
+
+            PlaybackSettingsPage {
+                Layouts.item: "playbackSettingsPage"
+                id: playbackSettingsPage
+            }
+
+            AboutPage {
+                Layouts.item: "aboutPage"
+                id: aboutPage
             }
         }
 
-        CurrentlyPlayingPage {
-            id: currentlyPlayingPage
-        }
-
-        SettingsPage {
-            id: settingsPage
-        }
-
-        HostSettingsPage {
-            id: hostSettingsPage
-        }
-
-        UiSettingsPage {
-            id: uiSettingsPage
-        }
-
-        PlaybackSettingsPage {
-            id: playbackSettingsPage
-        }
-
-        AboutPage {
-            id: aboutPage
-        }
     }
 
     Notification {

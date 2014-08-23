@@ -41,7 +41,7 @@ Page {
 
     property int buttonSize: isPhone?units.gu(6):units.gu(7)
 
-    property Popover actionsPopover;
+    property Dialog actionsDialog
 
     Component {
          id: dialog

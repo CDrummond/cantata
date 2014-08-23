@@ -52,7 +52,7 @@ MainView {
         id: pageStack
 
         Component.onCompleted: {
-            push(tabs)
+            push(tabs) //TODO: Different on tablet!!!
             push(hostSettingsPage)
         }
 
@@ -63,36 +63,6 @@ MainView {
                 ConditionalLayout {
                     name: "tablet"
                     when: !isPhone
-
-                    ItemLayout {
-                        id: currentlyPlayingPage
-                        item: "currentlyPlayingPage"
-                    }
-
-                    ItemLayout {
-                        id: settingsPage
-                        item: "settingsPage"
-                    }
-
-                    ItemLayout {
-                        id: hostSettingsPage
-                        item: "hostSettingsPage"
-                    }
-
-                    ItemLayout {
-                        id: uiSettingsPage
-                        item: "uiSettingsPage"
-                    }
-
-                    ItemLayout {
-                        id: playbackSettingsPage
-                        item: "playbackSettingsPage"
-                    }
-
-                    ItemLayout {
-                        id: aboutPage
-                        item: "aboutPage"
-                    }
 
                 }
             ]

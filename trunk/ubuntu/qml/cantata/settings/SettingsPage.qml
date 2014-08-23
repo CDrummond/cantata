@@ -32,91 +32,30 @@ import Ubuntu.Layouts 1.0
 
 Page {
     id: settingsPage
+    objectName: "settingsPage"
 
     visible: false
-    anchors.fill: parent
-    title: qsTr(i18n.tr("Settings %1")).arg((layouts.currentLayout === "tablet" && tabletCategories !== undefined && tabletCategories.selectedIndex === 0) ? backend.isConnected?i18n.tr("(Connected)"):i18n.tr("(Not Connected)") : "")
+    title: qsTr(i18n.tr("Settings %1")).arg((layouts.currentLayout === "tablet" && (categories.selectedIndex === 0 || categories.selectedIndex === -1)) ? backend.isConnected?i18n.tr("(Connected)"):i18n.tr("(Not Connected)") : "")
 
-    property HostSettingsPage hostSettings: hostSettingsPage
-    property SettingsCategories tabletCategories
+    property bool tabletSettings: layouts.width > units.gu(80)
 
     Layouts {
         id: layouts
-        anchors {
-            top: parent.top
-            bottom: parent.bottom
-            left: parent.left
-            right: parent.right
-            topMargin: root.header.height
-        }
+        anchors.fill: parent
 
         layouts: [
             ConditionalLayout {
-                name: "phone"
-                when: layouts.width <= units.gu(80)
-
-                Rectangle {
-                    anchors.fill: parent
-                    color: "transparent"
-
-                    SettingsCategories {
-                        id: phoneCategories
-                        push: true
-                        anchors.fill: parent
-                    }
-
-//                    UbuntuShape {
-//                        id: notReadyShape
-//                        height: notReadyLabel.height + 2 * notReadyLabel.anchors.margins
-//                        anchors {
-//                            left: parent.left
-//                            right: parent.right
-//                            bottom: parent.bottom
-//                            margins: units.gu(2)
-//                        }
-
-//                        color: "#88CCCCCC"
-
-//                        Label {
-//                            id: notReadyLabel
-//                            text: i18n.tr("Not all functionality on this page has been implemented yet, partly due to constraints of the Ubuntu SDK.")
-//                            wrapMode: Text.Wrap
-//                            anchors {
-//                                top: parent.top
-//                                right: parent.right
-//                                left: parent.left
-//                                margins: units.gu(1)
-//                            }
-//                        }
-//                    }
-                }
-            },
-            ConditionalLayout {
                 name: "tablet"
-                when: layouts.width > units.gu(80)
+                when: tabletSettings
 
                 Item {
                     anchors.fill: parent
 
-                    SettingsCategories {
+                    ItemLayout {
                         id: tabletCategories
-                        push: false
+                        item: "categories"
 
                         width: Math.min(parent.width / 3, units.gu(50))
-
-                        onSelectedIndexChanged: {
-                            switch (selectedIndex) {
-                            case 0:
-                                stack.setSource("HostSettingsContent.qml")
-                                break
-                            case 1:
-                                stack.setSource("UiSettingsContent.qml")
-                                break
-                            case 2:
-                                stack.setSource("PlaybackSettingsContent.qml")
-                                break
-                            }
-                        }
 
                         anchors {
                             top: parent.top
@@ -124,39 +63,34 @@ Page {
                             bottom: parent.bottom
                         }
 
-                        Component.onCompleted: {
-                            settingsPage.tabletCategories = this
+                        Connections {
+                            target: categories
+
+                            onSelectedIndexChanged: stack.updateSource()
                         }
                     }
 
-//                    UbuntuShape {
-//                        id: notReadyShape2
-//                        height: notReadyLabel2.height + 2 * notReadyLabel2.anchors.margins
-//                        anchors {
-//                            left: parent.left
-//                            right: tabletCategories.right
-//                            bottom: parent.bottom
-//                            margins: units.gu(1)
-//                        }
-
-//                        color: "#88CCCCCC"
-
-//                        Label {
-//                            id: notReadyLabel2
-//                            text: i18n.tr("Not all functionality on this page has been implemented yet, partly due to constraints of the Ubuntu SDK.")
-//                            wrapMode: Text.Wrap
-//                            anchors {
-//                                top: parent.top
-//                                right: parent.right
-//                                left: parent.left
-//                                margins: units.gu(1)
-//                            }
-//                        }
-//                    }
-
                     Loader {
                         id: stack
-                        source: "HostSettingsContent.qml"
+
+                        Component.onCompleted: {
+                            updateSource()
+                        }
+
+                        function updateSource() {
+                            switch (categories.selectedIndex) {
+                            case -1:
+                            case 0:
+                                setSource("HostSettingsContent.qml")
+                                break
+                            case 1:
+                                setSource("UiSettingsContent.qml")
+                                break
+//                            case 2:
+//                                setSource("PlaybackSettingsContent.qml")
+//                                break
+                            }
+                        }
 
                         anchors {
                             top: parent.top
@@ -173,8 +107,53 @@ Page {
             }
         ]
 
-    }
+        onCurrentLayoutChanged: {
+            if (pageStack.currentPage.objectName === settingsPage.objectName) {
+                if (categories.selectedIndex >= 0 && currentLayout === "") {
+                    switch (categories.selectedIndex) {
+                    case 0:
+                        pageStack.push(hostSettingsPage)
+                        break
+                    case 1:
+                        pageStack.push(uiSettingsPage)
+                        break
+//                    case 2:
+//                        pageStack.setSource(playbackSettingsPage)
+//                        break
+                    }
+                }
+            } else if (tabletSettings) { //Not in foreground and tabletSettings
+                while (pageStack.currentPage.objectName !== settingsPage.objectName) {
+                    pageStack.pop()
+                }
+                if (pageStack.currentPage.objectName === hostSettingsPage.objectName) {
+                    categories.selectedIndex = 0
+                } else if (pageStack.currentPage.objectName === uiSettingsPage.objectName) {
+                    categories.selectedIndex = 1
+//                } else if (pageStack.currentPage.objectName === playbackSettingsPage.objectName) {
+//                    categories.selectedIndex = 2
+                }
+            }
+        }
 
+        Connections {
+            target: pageStack
+
+            onCurrentPageChanged: {
+                if (!tabletSettings && pageStack.currentPage.objectName === settingsPage.objectName) {
+                    categories.selectedIndex = -1
+                }
+            }
+        }
+
+        SettingsCategories {
+            id: categories
+            Layouts.item: "categories"
+            push: layouts.currentLayout === ""
+            anchors.fill: parent
+        }
+
+    }
 
 }
 

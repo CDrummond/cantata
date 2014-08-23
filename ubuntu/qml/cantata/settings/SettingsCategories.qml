@@ -34,7 +34,9 @@ Flickable {
     clip: true
 
     property bool push: true
-    property int selectedIndex: 0
+    property int selectedIndex: -1 //-1 indicates that the menu will be shown on phones, while the first entry is shown on tablets
+
+    Component.onCompleted: console.log("categories ready")
 
     Column {
         id: column
@@ -45,7 +47,7 @@ Flickable {
             id: connectionSettingsLabel
             text: i18n.tr("Connection")
             progression: true
-            selected: !root.isPhone && selectedIndex === 0
+            selected: tabletSettings && (selectedIndex === 0 || selectedIndex === -1)
             onClicked: {
                 selectedIndex = 0
                 if (push) pageStack.push(hostSettingsPage)
@@ -56,7 +58,7 @@ Flickable {
             id: uiSettingsLabel
             text: i18n.tr("UI")
             progression: true
-            selected: !root.isPhone && selectedIndex === 1
+            selected: tabletSettings && selectedIndex === 1
             onClicked:  {
                 selectedIndex = 1
                 if (push) pageStack.push(uiSettingsPage)
@@ -70,7 +72,7 @@ Flickable {
 //            enabled: false
 //            text: i18n.tr("Playback")
 //            progression: true
-//            selected: !root.isPhone && selectedIndex === 2
+//            selected: tabletSettings && selectedIndex === 2
 //            onClicked:  {
 //                selectedIndex = 2
 //                if (push) pageStack.push(playbackSettingsPage)

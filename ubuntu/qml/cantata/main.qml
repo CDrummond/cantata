@@ -59,10 +59,6 @@ MainView {
         Layouts {
             id: layouts
 
-            onCurrentLayoutChanged: {
-                console.log("Current layout: " + currentLayout)
-            }
-
             layouts: [
                 ConditionalLayout {
                     name: "tablet"

@@ -109,7 +109,8 @@ QSize ToolButton::sizeHint() const
     } else {
         sh=QToolButton::sizeHint();
     }
-    sh=QSize(qMax(sh.width(), sh.height())*(Utils::touchFriendly() ? TouchProxyStyle::constScaleFactor : 1.0), qMax(sh.width(), sh.height()));
+    bool touchFriendly=Utils::touchFriendly();
+    sh=QSize(qMax(sh.width(), sh.height())*(touchFriendly ? TouchProxyStyle::constScaleFactor : 1.0), touchFriendly ? sh.height() : qMax(sh.width(), sh.height()));
     return sh;
 }
 

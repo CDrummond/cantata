@@ -75,6 +75,7 @@ private Q_SLOTS:
     void checkChanged();
     void adjustTrackNumbers();
     void readRatings();
+    void writeRatings();
     void updateEdited(bool isFromAll=false);
     void setSong(const Song &s);
     void setIndex(int idx);

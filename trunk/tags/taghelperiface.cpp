@@ -245,6 +245,23 @@ int TagHelperIface::readRating(const QString &fileName)
     return resp;
 }
 
+int TagHelperIface::updateRating(const QString &fileName, int rating)
+{
+    DBUG << fileName;
+    int resp=Tags::Update_Failed;
+    QByteArray message;
+    QDataStream outStream(&message, QIODevice::WriteOnly);
+    outStream << QString(__FUNCTION__) << fileName << rating;
+    Reply reply=sendMessage(message);
+    if (reply.status) {
+        QDataStream inStream(reply.data);
+        inStream >> resp;
+    } else {
+        resp=Tags::Update_BadFile;
+    }
+    return resp;
+}
+
 QMap<QString, QString> TagHelperIface::readAll(const QString &fileName)
 {
     DBUG << fileName;

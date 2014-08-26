@@ -118,9 +118,16 @@ TagLib::String qString2TString(const QString &str)
     return val.isEmpty() ? TagLib::String::null : TagLib::String(val.toUtf8().data(), TagLib::String::UTF8);
 }
 
-static int convertRating(double r) {
-    return (int)r;
-    //return qRound(r/2.0);
+static int convertToCantataRating(double r) {
+    return (int)r*10.0;
+    //return qRound(r/2.0)*10.0;
+}
+
+static std::string convertFromCantataRating(int rating) {
+    std::stringstream ss;
+    ss.precision(2);
+    ss << std::fixed << (rating/10.0);
+    return ss.str();
 }
 
 static double parseDoubleString(const TagLib::String &str) {
@@ -431,7 +438,7 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
             TagLib::ID3v2::UserTextIdentificationFrame *fr=dynamic_cast<TagLib::ID3v2::UserTextIdentificationFrame*>(*it);
             if (fr) {
                 if (fr->description().upper() == "FMPS_RATING") {
-                    *rating=convertRating(parseDoubleString(fr->fieldList().back())*10);
+                    *rating=convertToCantataRating(parseDoubleString(fr->fieldList().back()));
                     return;
                 }
             }
@@ -445,7 +452,7 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
             TagLib::ID3v2::PopularimeterFrame *p=dynamic_cast< TagLib::ID3v2::PopularimeterFrame * >(*it);
             if (p) {
                 if (p->email().isEmpty()) {
-                    *rating=convertRating(p->rating() / 256.0 * 10.0);
+                    *rating=convertToCantataRating(p->rating() / 256.0);
                     return;
                 }
             }
@@ -481,7 +488,7 @@ static bool isId3V24(TagLib::ID3v2::Header *header)
     return header && header->majorVersion()>3;
 }
 
-static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img)
+static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int rating)
 {
     bool changed=false;
 
@@ -548,6 +555,16 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
         changed=true;
     }
 
+    if (rating>-1) {
+        int old=-1;
+        readID3v2Tags(tag, 0, 0, 0, 0, &old);
+        if (old!=rating) {
+            while (clearTxxxTag(tag, "FMPS_RATING"));
+            setTxxxTag(tag, "FMPS_RATING", convertFromCantataRating(rating));
+            changed=true;
+        }
+    }
+
     return changed;
 }
 
@@ -606,7 +623,7 @@ static void readAPETags(TagLib::APE::Tag *tag, Song *song, ReplayGain *rg, QImag
     }
 
     if (rating) {
-        *rating=convertRating(parseDoubleString(map["FMPS_RATING"].toString())*10.0);
+        *rating=convertToCantataRating(parseDoubleString(map["FMPS_RATING"].toString()));
     }
 }
 
@@ -626,7 +643,7 @@ static bool updateAPETag(TagLib::APE::Tag *tag, const char *tagName, const QStri
     return false;
 }
 
-static bool writeAPETags(TagLib::APE::Tag *tag, const Song &from, const Song &to, const RgTags &rg)
+static bool writeAPETags(TagLib::APE::Tag *tag, const Song &from, const Song &to, const RgTags &rg, int rating)
 {
     bool changed=false;
 
@@ -667,6 +684,16 @@ static bool writeAPETags(TagLib::APE::Tag *tag, const Song &from, const Song &to
         }
         changed=true;
     }
+
+    if (rating>-1) {
+        int old=-1;
+        readAPETags(tag, 0, 0, 0, &old);
+        if (old!=rating) {
+            tag->addValue("FMPS_RATING", convertFromCantataRating(rating));
+            changed=true;
+        }
+    }
+
     return changed;
 }
 
@@ -758,7 +785,7 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
     }
 
     if (rating) {
-        *rating=convertRating(parseDoubleString(readVorbisTag(tag, "FMPS_RATING"))*10.0);
+        *rating=convertToCantataRating(parseDoubleString(readVorbisTag(tag, "FMPS_RATING")));
     }
 }
 
@@ -788,7 +815,7 @@ static bool updateVorbisCommentTag(TagLib::Ogg::XiphComment *tag, const char *ta
     return false;
 }
 
-static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img)
+static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int rating)
 {
     bool changed=false;
 
@@ -838,6 +865,16 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
         #endif
         changed=true;
     }
+
+    if (rating>-1) {
+        int old=-1;
+        readVorbisCommentTags(tag, 0, 0, 0, 0, &old);
+        if (old!=rating) {
+            tag->addField("FMPS_RATING", convertFromCantataRating(rating));
+            changed=true;
+        }
+    }
+
     return changed;
 }
 
@@ -891,7 +928,7 @@ static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImag
     }
     if (rating) {
         if (map.contains("----:com.apple.iTunes:FMPS_Rating")) {
-            *rating=convertRating(parseDoubleString(map["----:com.apple.iTunes:FMPS_Rating"].toStringList().front())*10.0);
+            *rating=convertToCantataRating(parseDoubleString(map["----:com.apple.iTunes:FMPS_Rating"].toStringList().front()));
         }
     }
 }
@@ -912,7 +949,7 @@ static bool updateMP4Tag(TagLib::MP4::Tag *tag, const char *tagName, const QStri
     return false;
 }
 
-static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img)
+static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int rating)
 {
     bool changed=false;
 
@@ -966,6 +1003,16 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
         map.insert("covr", coverItem);
     }
 
+    if (rating>-1) {
+        int old=-1;
+        readMP4Tags(tag, 0, 0, 0, &old);
+        if (old!=rating) {
+            TagLib::MP4::ItemListMap &map = tag->itemListMap();
+            map["----:com.apple.iTunes:FMPS_Rating"] = TagLib::MP4::Item(TagLib::StringList(convertFromCantataRating(rating)));
+            changed=true;
+        }
+    }
+
     return changed;
 }
 #endif
@@ -998,7 +1045,7 @@ static void readASFTags(TagLib::ASF::Tag *tag, Song *song, int *rating)
         const TagLib::ASF::AttributeListMap &map = tag->attributeListMap();
 
         if (map.contains("FMPS/Rating") && !map["FMPS/Rating"].isEmpty()) {
-            *rating=convertRating(parseDoubleString(map["FMPS/Rating"].front().toString())*10.0);
+            *rating=convertToCantataRating(parseDoubleString(map["FMPS/Rating"].front().toString()));
         }
     }
 }
@@ -1019,7 +1066,7 @@ static bool updateASFTag(TagLib::ASF::Tag *tag, const char *tagName, const QStri
     return false;
 }
 
-static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to, const RgTags &rg)
+static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to, const RgTags &rg, int rating)
 {
     Q_UNUSED(rg)
     bool changed=false;
@@ -1047,6 +1094,16 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
             changed=true;
         }
     }
+
+    if (rating>-1) {
+        int old=-1;
+        readASFTags(tag, 0, &old);
+        if (old!=rating) {
+            tag->addAttribute("FMPS/Rating", TagLib::String(convertFromCantataRating(rating)));
+            changed=true;
+        }
+    }
+
     return changed;
 }
 #endif
@@ -1148,7 +1205,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
     }
 }
 
-static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, bool saveComment)
+static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int rating, bool saveComment)
 {
     bool changed=false;
     TagLib::Tag *tag=fileref.tag();
@@ -1184,81 +1241,81 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
     }
     if (TagLib::MPEG::File *file = dynamic_cast< TagLib::MPEG::File * >(fileref.file())) {
         if (file->ID3v2Tag() && !file->ID3v2Tag()->isEmpty()) {
-            changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg, img) || changed;
+            changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg, img, rating) || changed;
         } else if (file->APETag()) {
-            changed=writeAPETags(file->APETag(), from, to, rg) || changed;
+            changed=writeAPETags(file->APETag(), from, to, rg, rating) || changed;
 //         } else if (file->ID3v1Tag()) {
-//             changed=writeID3v1Tags(fileref, from, to, rg, img) || changed;
+//             changed=writeID3v1Tags(fileref, from, to, rg, img, rating) || changed;
         } else if (file->ID3v2Tag(true)) {
-            changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg, img) || changed;
+            changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg, img, rating) || changed;
         }
     } else if (TagLib::Ogg::Vorbis::File *file = dynamic_cast< TagLib::Ogg::Vorbis::File * >(fileref.file()))  {
         if (file->tag()) {
-            changed=writeVorbisCommentTags(file->tag(), from, to, rg, img) || changed;
+            changed=writeVorbisCommentTags(file->tag(), from, to, rg, img, rating) || changed;
         }
     } else if (TagLib::Ogg::FLAC::File *file = dynamic_cast< TagLib::Ogg::FLAC::File * >(fileref.file())) {
         if (file->tag()) {
-            changed=writeVorbisCommentTags(file->tag(), from, to, rg, img) || changed;
+            changed=writeVorbisCommentTags(file->tag(), from, to, rg, img, rating) || changed;
         }
     } else if (TagLib::Ogg::Speex::File *file = dynamic_cast< TagLib::Ogg::Speex::File * >(fileref.file())) {
         if (file->tag()) {
-            changed=writeVorbisCommentTags(file->tag(), from, to, rg, img) || changed;
+            changed=writeVorbisCommentTags(file->tag(), from, to, rg, img, rating) || changed;
         }
     #ifdef TAGLIB_OPUS_FOUND
     } else if (TagLib::Ogg::Opus::File *file = dynamic_cast< TagLib::Ogg::Opus::File * >(fileref.file())) {
         if (file->tag()) {
-            changed=writeVorbisCommentTags(file->tag(), from, to, rg, img) || changed;
+            changed=writeVorbisCommentTags(file->tag(), from, to, rg, img, rating) || changed;
         }
     #endif
     } else if (TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file())) {
         if (file->xiphComment()) {
-            changed=writeVorbisCommentTags(file->xiphComment(), from, to, rg, img) || changed;
+            changed=writeVorbisCommentTags(file->xiphComment(), from, to, rg, img, rating) || changed;
         } else if (file->ID3v2Tag() && !file->ID3v2Tag()->isEmpty()) {
-            changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg, img) || changed;
+            changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg, img, rating) || changed;
 //         } else if (file->ID3v1Tag()) {
-//             changed=writeID3v1Tags(fileref, from, to, rg, img) || changed;
+//             changed=writeID3v1Tags(fileref, from, to, rg, img, rating) || changed;
         } else if (file->ID3v2Tag(true)) {
-            changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg, img) || changed;
+            changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg, img, rating) || changed;
         }
     #ifdef TAGLIB_MP4_FOUND
     } else if (TagLib::MP4::File *file = dynamic_cast< TagLib::MP4::File * >(fileref.file())) {
         TagLib::MP4::Tag *tag = dynamic_cast<TagLib::MP4::Tag * >(file->tag());
         if (tag) {
-            changed=writeMP4Tags(tag, from, to, rg, img) || changed;
+            changed=writeMP4Tags(tag, from, to, rg, img, rating) || changed;
         }
     #endif
     } else if (TagLib::MPC::File *file = dynamic_cast< TagLib::MPC::File * >(fileref.file())) {
         if (file->APETag(true)) {
-            changed=writeAPETags(file->APETag(), from, to, rg) || changed;
+            changed=writeAPETags(file->APETag(), from, to, rg, rating) || changed;
 //         } else if (file->ID3v1Tag()) {
-//             changed=writeID3v1Tags(fileref, from, to, rg, img) || changed;
+//             changed=writeID3v1Tags(fileref, from, to, rg, img, rating) || changed;
         }
     } else if (TagLib::RIFF::AIFF::File *file = dynamic_cast< TagLib::RIFF::AIFF::File * >(fileref.file())) {
         if (file->tag()) {
-            changed=writeID3v2Tags(file->tag(), from, to, rg, img) || changed;
+            changed=writeID3v2Tags(file->tag(), from, to, rg, img, rating) || changed;
         }
     } else if (TagLib::RIFF::WAV::File *file = dynamic_cast< TagLib::RIFF::WAV::File * >(fileref.file())) {
         if (file->tag()) {
-            changed=writeID3v2Tags(file->tag(), from, to, rg, img) || changed;
+            changed=writeID3v2Tags(file->tag(), from, to, rg, img, rating) || changed;
         }
     #ifdef TAGLIB_ASF_FOUND
     } else if (TagLib::ASF::File *file = dynamic_cast< TagLib::ASF::File * >(fileref.file())) {
         TagLib::ASF::Tag *tag = dynamic_cast< TagLib::ASF::Tag * >(file->tag());
         if (tag) {
-            changed=writeASFTags(tag, from, to, rg) || changed;
+            changed=writeASFTags(tag, from, to, rg, rating) || changed;
         }
     #endif
     } else if (TagLib::TrueAudio::File *file = dynamic_cast< TagLib::TrueAudio::File * >(fileref.file())) {
         if (file->ID3v2Tag(true)) {
-            changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg, img) || changed;
+            changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg, img, rating) || changed;
 //         } else if (file->ID3v1Tag()) {
-//             changed=writeID3v1Tags(fileref, from, to, rg, img) || changed;
+//             changed=writeID3v1Tags(fileref, from, to, rg, img, rating) || changed;
         }
     } else if (TagLib::WavPack::File *file = dynamic_cast< TagLib::WavPack::File * >(fileref.file())) {
         if (file->APETag(true)) {
-            changed=writeAPETags(file->APETag(), from, to, rg) || changed;
+            changed=writeAPETags(file->APETag(), from, to, rg, rating) || changed;
 //         } else if (file->ID3v1Tag()) {
-//             changed=writeID3v1Tags(fileref, from, to, rg, img) || changed;
+//             changed=writeID3v1Tags(fileref, from, to, rg, img, rating) || changed;
         }
     }
 
@@ -1313,9 +1370,9 @@ QString readComment(const QString &fileName)
     return fileref.isNull() ? QString() : tString2QString(fileref.tag()->comment());
 }
 
-static Update update(const TagLib::FileRef fileref, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int id3Ver=-1, bool saveComment=false)
+static Update update(const TagLib::FileRef fileref, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int id3Ver=-1, bool saveComment=false, int rating=-1)
 {
-    if (writeTags(fileref, from, to, rg, img, saveComment)) {
+    if (writeTags(fileref, from, to, rg, img, rating, saveComment)) {
         TagLib::MPEG::File *mpeg=dynamic_cast<TagLib::MPEG::File *>(fileref.file());
         if (mpeg) {
             #ifdef TAGLIB_CAN_SAVE_ID3VER
@@ -1436,6 +1493,13 @@ int readRating(const QString &fileName)
         readTags(fileref, 0, 0, 0, 0, &rating);
     }
     return rating;
+}
+
+Update updateRating(const QString &fileName, int rating)
+{
+    LOCK_MUTEX
+    TagLib::FileRef fileref = getFileRef(fileName);
+    return fileref.isNull() ? Update_Failed : update(fileref, Song(), Song(), RgTags(), QByteArray(), -1, false, rating);
 }
 
 QMap<QString, QString> readAll(const QString &fileName)

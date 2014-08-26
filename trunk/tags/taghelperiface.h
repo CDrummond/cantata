@@ -68,6 +68,7 @@ public:
     int embedImage(const QString &fileName, const QByteArray &cover);
     QString oggMimeType(const QString &fileName);
     int readRating(const QString &fileName);
+    int updateRating(const QString &fileName, int rating);
     QMap<QString, QString> readAll(const QString &fileName);
 
 private:

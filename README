@@ -872,6 +872,8 @@ Cantata contains code/icons from:
     ubuntu-ui-extras   - https://github.com/iBeliever/ubuntu-ui-extras (Ubuntu 
                          notification code)
     QMPDClient         - Last.fm scrobbling
+    address-book-app   - http://bazaar.launchpad.net/~phablet-team/address-book-app/trunk/files
+                         (PageWithBottomEdge)
 
 
 16. Windows

@@ -36,5 +36,6 @@
         <file>qml/cantata/settings/UiSettingsPage.qml</file>
         <file>qml/cantata/components/Notification.qml</file>
         <file>qml/cantata/backend/SettingsBackend.qml</file>
+        <file>qml/cantata/components/PageWithBottomEdge.qml</file>
     </qresource>
 </RCC>

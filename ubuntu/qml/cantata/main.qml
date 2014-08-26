@@ -59,11 +59,6 @@ MainView {
         Layouts {
             id: layouts
 
-            onHeightChanged: {
-                console.log("main: " + root.height)
-                console.log("layouts: " + height)
-            }
-
 //            layouts: [
 //                ConditionalLayout {
 //                    name: "tablet"

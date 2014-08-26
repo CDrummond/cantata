@@ -34,9 +34,6 @@ import 'qrc:/qml/cantata/components'
 Page {
     id: currentlyPlayingPage
 
-    visible: false
-    width: parent.width
-
     title: i18n.tr("Currently Playing")
 
     property int buttonSize: isPhone?units.gu(6):units.gu(7)

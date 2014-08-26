@@ -70,6 +70,7 @@ MainView {
             Tabs {
                 Layouts.item: "tabs"
                 id: tabs
+                visible: false
 
                 Tab {
                     id: artistTab
@@ -128,26 +129,31 @@ MainView {
             SettingsPage {
                 Layouts.item: "settingsPage"
                 id: settingsPage
+                visible: false
             }
 
             HostSettingsPage {
                 Layouts.item: "hostSettingsPage"
                 id: hostSettingsPage
+                visible: false
             }
 
             UiSettingsPage {
                 Layouts.item: "uiSettingsPage"
                 id: uiSettingsPage
+                visible: false
             }
 
-            PlaybackSettingsPage {
-                Layouts.item: "playbackSettingsPage"
-                id: playbackSettingsPage
-            }
+//            PlaybackSettingsPage {
+//                Layouts.item: "playbackSettingsPage"
+//                id: playbackSettingsPage
+//                visible: false
+//            }
 
             AboutPage {
                 Layouts.item: "aboutPage"
                 id: aboutPage
+                visible: false
             }
         }
 

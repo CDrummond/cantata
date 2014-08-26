@@ -33,7 +33,6 @@ import U1db 1.0 as U1db
 Page {
     id: uiSettingsPage
 
-    visible: false
     anchors.fill: parent
     title: i18n.tr("UI Settings")
 

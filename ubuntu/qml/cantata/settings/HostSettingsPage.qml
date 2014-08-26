@@ -33,7 +33,6 @@ import U1db 1.0 as U1db
 Page {
     id: hostSettingsPage
 
-    visible: false
     width: parent.width
     title: qsTr(i18n.tr("Connection %1")).arg(backend.isConnected?i18n.tr("(Connected)"):i18n.tr("(Not Connected)"))
 

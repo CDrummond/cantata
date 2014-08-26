@@ -32,7 +32,6 @@ import Ubuntu.Components.ListItems 1.0 as ListItem
 Page {
     id: playbackSettingsPage
 
-    visible: false
     anchors {
         fill: parent
         topMargin: root.header.height + units.gu(2)

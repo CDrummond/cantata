@@ -34,8 +34,6 @@ import 'qrc:/qml/cantata/components'
 PageWithBottomEdge {
     id: subListViewPage
 
-    visible: false
-
     property bool editable: false
     property variant rows
     property string modelName

@@ -81,6 +81,7 @@ namespace Tags
     inline Update embedImage(const QString &fileName, const QByteArray &cover) { return (Update)TagHelperIface::self()->embedImage(fileName, cover); }
     inline QString oggMimeType(const QString &fileName) { return TagHelperIface::self()->oggMimeType(fileName); }
     inline int readRating(const QString &fileName) { return TagHelperIface::self()->readRating(fileName); }
+    inline Update updateRating(const QString &fileName, int rating) { return (Update)TagHelperIface::self()->updateRating(fileName, rating); }
     inline QMap<QString, QString> readAll(const QString &fileName) { return TagHelperIface::self()->readAll(fileName); }
     #else
     inline void init() { }
@@ -96,6 +97,7 @@ namespace Tags
     extern Update embedImage(const QString &fileName, const QByteArray &cover);
     extern QString oggMimeType(const QString &fileName);
     extern int readRating(const QString &fileName);
+    extern Update updateRating(const QString &fileName, int rating);
     extern QMap<QString, QString> readAll(const QString &fileName);
     #endif
     extern QString id3Genre(int id);

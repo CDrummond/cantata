@@ -156,6 +156,10 @@ void TagHelper::process()
         outStream << Tags::oggMimeType(fileName);
     } else if (QLatin1String("readRating")==request) {
         outStream << Tags::readRating(fileName);
+    } else if (QLatin1String("updateRating")==request) {
+        int rating=-1;
+        inStream >> rating;
+        outStream << (int)Tags::updateRating(fileName, rating);
     } else if (QLatin1String("readAll")==request) {
         outStream << Tags::readAll(fileName);
     } else {

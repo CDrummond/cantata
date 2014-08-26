@@ -105,15 +105,26 @@ void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painte
     painter->setOpacity(opacityB4);
 }
 
-#ifndef NO_GTK_SUPPORT
-// For some reason, dconf does not seem to terminate correctly when run under some desktops (e.g. KDE)
-// Destroying the QProcess seems to block, causing the app to appear to hang before starting.
-// So, create QProcess on the heap - and only wait 1.5s for response. Connect finished to deleteLater
-// so that the object is destroyed.
-static QString readDconfSetting(const QString &setting)
+QString GtkStyle::readDconfSetting(const QString &setting, const QString scheme)
 {
+    #ifdef NO_GTK_SUPPORT
+    Q_UNUSED(setting)
+    #else
+    // For some reason, dconf does not seem to terminate correctly when run under some desktops (e.g. KDE)
+    // Destroying the QProcess seems to block, causing the app to appear to hang before starting.
+    // So, create QProcess on the heap - and only wait 1.5s for response. Connect finished to deleteLater
+    // so that the object is destroyed.
+    static bool first=true;
+    static bool ok=true;
+
+    if (first) {
+        first=false;
+    } else if (!ok) { // Failed before, so dont bothe rcalling dconf again!
+        return QString();
+    }
+
     QProcess *process=new QProcess();
-    process->start(QLatin1String("dconf"), QStringList() << QLatin1String("read") << QLatin1String("/org/gnome/desktop/interface/")+setting);
+    process->start(QLatin1String("dconf"), QStringList() << QLatin1String("read") << (scheme.isEmpty() ? QLatin1String("/org/gnome/desktop/interface/") : scheme)+setting);
     QObject::connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
 
     if (process->waitForFinished(1500)) {
@@ -121,11 +132,13 @@ static QString readDconfSetting(const QString &setting)
         resp = resp.trimmed();
         resp.remove('\'');
         return resp;
+    } else { // If we failed 1 time, dont bother next time!
+        ok=false;
     }
     process->kill();
+    #endif
     return QString();
 }
-#endif
 
 #ifndef NO_GTK_SUPPORT
 static QString iconThemeSetting;

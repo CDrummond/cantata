@@ -37,6 +37,8 @@
 23. Use read-only editable combo for filename in tag editor, so that text can
     be selected.
 24. Also catpitalise composer in tag editor.
+25. Also read /com/canonical/desktop/interface/scrollbar-mode to determine if
+    overlay scrollbars have been disabled.
 
 1.4.1
 -----

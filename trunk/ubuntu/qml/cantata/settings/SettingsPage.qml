@@ -34,7 +34,6 @@ Page {
     id: settingsPage
     objectName: "settingsPage"
 
-    visible: false
     title: qsTr(i18n.tr("Settings %1")).arg((layouts.currentLayout === "tablet" && (categories.selectedIndex === 0 || categories.selectedIndex === -1)) ? backend.isConnected?i18n.tr("(Connected)"):i18n.tr("(Not Connected)") : "")
 
     property bool tabletSettings: layouts.width > units.gu(80)

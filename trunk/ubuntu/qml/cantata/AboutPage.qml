@@ -31,7 +31,6 @@ import Ubuntu.Layouts 1.0
 Page {
     id: aboutPage
     title: i18n.tr("About")
-    visible: false
 
     Layouts {
         id: aboutTabLayout

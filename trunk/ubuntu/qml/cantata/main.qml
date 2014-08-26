@@ -59,18 +59,22 @@ MainView {
         Layouts {
             id: layouts
 
-            layouts: [
-                ConditionalLayout {
-                    name: "tablet"
-                    when: !isPhone
+            onHeightChanged: {
+                console.log("main: " + root.height)
+                console.log("layouts: " + height)
+            }
 
-                }
-            ]
+//            layouts: [
+//                ConditionalLayout {
+//                    name: "tablet"
+//                    when: !isPhone
+
+//                }
+//            ]
 
             Tabs {
                 Layouts.item: "tabs"
                 id: tabs
-                anchors.fill: parent
 
                 Tab {
                     id: artistTab
@@ -124,11 +128,6 @@ MainView {
                         emptyViewText: i18n.tr("No playlists found")
                     }
                 }
-            }
-
-            CurrentlyPlayingPage {
-                Layouts.item: "currentlyPlayingPage"
-                id: currentlyPlayingPage
             }
 
             SettingsPage {

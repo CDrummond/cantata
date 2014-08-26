@@ -31,10 +31,9 @@ import Ubuntu.Components.ListItems 1.0 as ListItem
 import 'qrc:/qml/cantata/'
 import 'qrc:/qml/cantata/components'
 
-Page {
+PageWithBottomEdge {
     id: subListViewPage
 
-    anchors.fill: parent
     visible: false
 
     property bool editable: false
@@ -54,7 +53,7 @@ Page {
     function add(index, replace, mainText) {
         backend.add(modelName, hierarchy(index), replace)
         if (replace) {
-            pageStack.push(currentlyPlayingPage)
+            pageStack.push(Qt.resolvedUrl("CurrentlyPlayingPage.qml"))
         } else if (mainText !== undefined && mainText !== "") {
             notification.show(qsTr(i18n.tr("Added \"%1\"")).arg(mainText))
         }
@@ -66,7 +65,7 @@ Page {
     
     function onDelegateClicked(index, text) {
         var component = Qt.createComponent("SubListViewPage.qml")
-        if (component.status == Component.Ready) {
+        if (component.status === Component.Ready) {
             var page = component.createObject(parent, {"model": model, "title": text, "modelName": modelName})
             page.init(hierarchy(index))
             pageStack.push(page)
@@ -83,12 +82,6 @@ Page {
 
     head.actions: [
         Action {
-            iconName: "media-playback-start"
-            text: i18n.tr("Playing")
-            onTriggered: pageStack.push(currentlyPlayingPage)
-        },
-
-        Action {
             iconName: "settings"
             text: i18n.tr("Settings")
             onTriggered: pageStack.push(settingsPage)
@@ -100,6 +93,9 @@ Page {
             onTriggered: pageStack.push(aboutPage)
         }
     ]
+
+    bottomEdgePageSource: Qt.resolvedUrl("CurrentlyPlayingPage.qml")
+    bottomEdgeTitle: i18n.tr("Currently Playing")
 
     Connections {
         target: settingsBackend
@@ -113,9 +109,10 @@ Page {
 
     ListView {
         id: subListView
-        anchors {
-            fill: parent
-        }
+
+        height: parent.height //NOT "anchors.fill: parent" as otherwise the bottom edge gesture will continue behind the header
+        width: parent.width
+
         clip: true
 
         property bool hasProgression: false

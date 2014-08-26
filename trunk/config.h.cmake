@@ -46,7 +46,7 @@
 #cmakedefine ENABLE_UBUNTU 1
 
 #ifdef ENABLE_UBUNTU
-#define CANTATA_REV_URL "com.ubuntu.developer.nikwen.cantata-touch" //Sadly, it requires the com.ubuntu.developer.nikwen prefix to be published to the click store
+#define CANTATA_REV_URL "com.ubuntu.developer.nikwen.cantata-touch-reboot" //Sadly, it requires the com.ubuntu.developer.nikwen prefix to be published to the click store
 #else
 #define CANTATA_REV_URL "com.googlecode.cantata"
 #endif

@@ -48,7 +48,7 @@ public:
     void polish(QPalette &pal) { ProxyStyle::polish(pal); }
     void polish(QApplication *app) { ProxyStyle::polish(app); }
 
-private:
+protected:
     bool touchStyleSpin;
     double spinButtonRatio;
     SbType sbarType;

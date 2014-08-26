@@ -294,7 +294,6 @@ void GtkStyle::applyTheme(QWidget *widget)
                     } else {
                         int space=line.indexOf(' ');
                         if (space>2) {
-                            QString key=line.left(space);
                             css.insert(line.left(space), line);
                         }
                     }

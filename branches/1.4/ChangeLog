@@ -37,6 +37,7 @@
 28. Fix updating of playqueue background when option changed in preferences
     dialog.
 29. Fix reading of playqueue, and context, backdrop settings.
+30. Fix uneven view heights when touch friendly setting is enabled.
 
 1.4.0
 -----

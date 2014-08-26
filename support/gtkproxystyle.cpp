@@ -52,13 +52,15 @@ static bool useOverlayStyleScrollbars(bool use)
         if (!env.isEmpty() && env!="1") {
             return false;
         }
+        QString mode=GtkStyle::readDconfSetting(QLatin1String("scrollbar-mode"), QLatin1String("/com/canonical/desktop/interface/"));
+        return mode!=QLatin1String("normal");
     }
     return use;
 }
 
 GtkProxyStyle::GtkProxyStyle(bool thinSb, bool styleSpin, const QMap<QString, QString> &c, bool modView)
     : TouchProxyStyle(styleSpin, useOverlayStyleScrollbars(thinSb))
-    , modViewFrame(modView)
+    , modViewFrame(modView && (SB_Gtk==sbarType || !styleHint(SH_ScrollView_FrameOnlyAroundContents, 0, 0, 0)))
     , css(c)
 {
     shortcutHander=new ShortcutHandler(this);
@@ -99,7 +101,6 @@ void GtkProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
             painter->drawLine(r.topLeft()+QPoint(0, 1), r.bottomLeft()+QPoint(0, -1));
         }
     }
-
 }
 
 void GtkProxyStyle::polish(QWidget *widget)

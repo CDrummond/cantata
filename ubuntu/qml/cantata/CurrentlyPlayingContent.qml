@@ -34,103 +34,7 @@ import 'qrc:/qml/cantata/components'
 Item {
     id: currentlyPlayingContent
 
-    property int buttonSize: isPhone?units.gu(6):units.gu(7)
-
-    Row {
-        id: controlsRow
-        height: Math.max(buttonsRow.height, currentSongInfoColumn.height, volumeRectangle.height)
-        width: buttonsRow.width + currentSongInfoColumn.width + spacing
-        spacing: units.gu(2)
-        visible: !isPhone
-
-        anchors {
-            top: parent.top
-            left: parent.left
-            topMargin: units.gu(1)
-            leftMargin: units.gu(1)
-        }
-
-        ControlButtonsRow {
-            id: buttonsRow
-        }
-
-        Column {
-            id: currentSongInfoColumn
-            anchors.verticalCenter: parent.verticalCenter
-            property int preferedWidth: Math.max(titleLabel.width, artistLabel.width)
-            property int restWidth: currentlyPlayingContent.width - buttonsRow.width - buttonsRow.anchors.leftMargin - volumeColumn.anchors.leftMargin - volumeColumn.anchors.rightMargin
-            width: (restWidth - volumeColumn.preferedWidth < preferedWidth)?Math.min(preferedWidth, restWidth/2):preferedWidth
-
-            Label {
-                id: titleLabel
-                wrapMode: Text.NoWrap
-                elide: Text.ElideRight
-                text: backend.currentSongMainText
-                fontSize: "large"
-            }
-
-            Label {
-                id: artistLabel
-                wrapMode: Text.NoWrap
-                elide: Text.ElideRight
-                text: backend.currentSongSubText
-            }
-        }
-    }
-
-    Rectangle {
-        id: volumeRectangle
-        color: root.backgroundColor
-        anchors.verticalCenter: controlsRow.verticalCenter
-        visible: !isPhone
-
-        anchors {
-            top: parent.top
-            right: parent.right
-            left: controlsRow.right
-            topMargin: units.gu(1)
-            leftMargin: Math.max(parent.width - controlsRow.width - buttonsRow.anchors.leftMargin - volumeColumn.preferedWidth, 0)
-        }
-
-        Column {
-            id: volumeColumn
-            property int preferedWidth: units.gu(30)
-
-            anchors {
-                top: parent.top
-                right: parent.right
-                left: parent.left
-                leftMargin: controlsRow.spacing * 3 / 4
-                rightMargin: units.gu(1)
-            }
-
-            Label {
-                text: i18n.tr("Volume: ")
-            }
-
-            Slider {
-                id: volumeSlider
-                width: parent.width
-                live: false
-                minimumValue: 0
-                maximumValue: 100
-                value: backend.mpdVolume
-
-                onValueChanged: {
-                    backend.setMpdVolume(value)
-                }
-
-                Connections {
-                    target: backend
-                    onMpdVolumeChanged: volumeSlider.value = backend.mpdVolume
-                }
-
-                function formatValue(v) {
-                    return Math.round(v) + "%"
-                }
-            }
-        }
-    }
+    property int buttonSize: isPhone ? units.gu(6) : units.gu(7)
 
     Column {
         id: currentSongInfoColumn2
@@ -140,7 +44,7 @@ Item {
         }
         width: parent.width
         spacing: units.gu(0.5)
-        visible: isPhone && !(backend.playQueueEmpty || backend.isStopped) && backend.isConnected
+        visible: !(backend.playQueueEmpty || backend.isStopped) && backend.isConnected
 
         Label {
             id: titleLabel2
@@ -176,9 +80,9 @@ Item {
         id: playQueueLabel
         text: i18n.tr("Play Queue:")
         anchors {
-            top: isPhone?(buttonsRow2.visible?buttonsRow2.bottom:parent.top):controlsRow.bottom
+            top: buttonsRow2.visible?buttonsRow2.bottom:parent.top
             left: parent.left
-            topMargin: (isPhone)?units.gu(1):units.gu(2)
+            topMargin: units.gu(1)
             leftMargin: units.gu(1)
         }
     }

@@ -64,7 +64,7 @@ MainView {
                 id: artistTab
                 title: i18n.tr("Artists")
 
-                page: ListViewPage {
+                page: ListViewPage { //TODO: Vanishes quite often
                     id: artistPage
                     model: artistsProxyModel
                     modelName: "artists"

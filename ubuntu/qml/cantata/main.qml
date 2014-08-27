@@ -52,109 +52,91 @@ MainView {
         id: pageStack
 
         Component.onCompleted: {
-            push(tabs) //TODO: Different on tablet!!!
+            push(tabs)
             push(hostSettingsPage)
         }
 
-        Layouts {
-            id: layouts
+        Tabs {
+            id: tabs
+            visible: false
 
-//            layouts: [
-//                ConditionalLayout {
-//                    name: "tablet"
-//                    when: !isPhone
+            Tab {
+                id: artistTab
+                title: i18n.tr("Artists")
 
-//                }
-//            ]
-
-            Tabs {
-                Layouts.item: "tabs"
-                id: tabs
-                visible: false
-
-                Tab {
-                    id: artistTab
-                    title: i18n.tr("Artists")
-
-                    page: ListViewPage {
-                        id: artistPage
-                        model: artistsProxyModel
-                        modelName: "artists"
-                        emptyViewVisible: !backend.artistsFound
-                        emptyViewText: i18n.tr("No artists found")
-                    }
-                }
-
-                Tab {
-                    id: albumsTab
-                    title: i18n.tr("Albums")
-
-                    page: ListViewPage {
-                        id: albumPage
-                        model: albumsProxyModel
-                        modelName: "albums"
-                        emptyViewVisible: !backend.albumsFound
-                        emptyViewText: i18n.tr("No albums found")
-                    }
-                }
-
-                Tab {
-                    id: foldersTab
-                    title: i18n.tr("Folders")
-
-                    page: ListViewPage {
-                        id: foldersPage
-                        model: foldersProxyModel
-                        modelName: "folders"
-                        emptyViewVisible: !backend.foldersFound
-                        emptyViewText: i18n.tr("No folders found")
-                    }
-                }
-
-                Tab {
-                    id: playlistsTab
-                    title: i18n.tr("Playlists")
-
-                    page: ListViewPage {
-                        id: playlistsPage
-                        model: playlistsProxyModel
-                        modelName: "playlists"
-                        editable: true
-                        emptyViewVisible: !backend.playlistsFound
-                        emptyViewText: i18n.tr("No playlists found")
-                    }
+                page: ListViewPage {
+                    id: artistPage
+                    model: artistsProxyModel
+                    modelName: "artists"
+                    emptyViewVisible: !backend.artistsFound
+                    emptyViewText: i18n.tr("No artists found")
                 }
             }
 
-            SettingsPage {
-                Layouts.item: "settingsPage"
-                id: settingsPage
-                visible: false
+            Tab {
+                id: albumsTab
+                title: i18n.tr("Albums")
+
+                page: ListViewPage {
+                    id: albumPage
+                    model: albumsProxyModel
+                    modelName: "albums"
+                    emptyViewVisible: !backend.albumsFound
+                    emptyViewText: i18n.tr("No albums found")
+                }
             }
 
-            HostSettingsPage {
-                Layouts.item: "hostSettingsPage"
-                id: hostSettingsPage
-                visible: false
+            Tab {
+                id: foldersTab
+                title: i18n.tr("Folders")
+
+                page: ListViewPage {
+                    id: foldersPage
+                    model: foldersProxyModel
+                    modelName: "folders"
+                    emptyViewVisible: !backend.foldersFound
+                    emptyViewText: i18n.tr("No folders found")
+                }
             }
 
-            UiSettingsPage {
-                Layouts.item: "uiSettingsPage"
-                id: uiSettingsPage
-                visible: false
-            }
+            Tab {
+                id: playlistsTab
+                title: i18n.tr("Playlists")
 
-//            PlaybackSettingsPage {
-//                Layouts.item: "playbackSettingsPage"
-//                id: playbackSettingsPage
-//                visible: false
-//            }
-
-            AboutPage {
-                Layouts.item: "aboutPage"
-                id: aboutPage
-                visible: false
+                page: ListViewPage {
+                    id: playlistsPage
+                    model: playlistsProxyModel
+                    modelName: "playlists"
+                    editable: true
+                    emptyViewVisible: !backend.playlistsFound
+                    emptyViewText: i18n.tr("No playlists found")
+                }
             }
+        }
+
+        SettingsPage {
+            id: settingsPage
+            visible: false
+        }
+
+        HostSettingsPage {
+            id: hostSettingsPage
+            visible: false
+        }
+
+        UiSettingsPage {
+            id: uiSettingsPage
+            visible: false
+        }
+
+//        PlaybackSettingsPage {
+//            id: playbackSettingsPage
+//            visible: false
+//        }
+
+        AboutPage {
+            id: aboutPage
+            visible: false
         }
 
     }

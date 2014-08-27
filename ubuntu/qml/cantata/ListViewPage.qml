@@ -28,6 +28,7 @@
 import QtQuick 2.2
 import Ubuntu.Components 1.1
 import Ubuntu.Components.ListItems 1.0 as ListItem
+import Ubuntu.Layouts 1.0
 import 'qrc:/qml/cantata/'
 import 'qrc:/qml/cantata/components'
 
@@ -79,6 +80,7 @@ PageWithBottomEdge {
 
     bottomEdgePageSource: Qt.resolvedUrl("CurrentlyPlayingPage.qml")
     bottomEdgeTitle: i18n.tr("Currently Playing")
+    bottomEdgeEnabled: isPhone
 
     Connections {
         target: settingsBackend
@@ -90,47 +92,108 @@ PageWithBottomEdge {
         }
     }
 
-    ListView {
-        id: listView
+    Layouts {
+        id: layouts
 
         height: parent.height //NOT "anchors.fill: parent" as otherwise the bottom edge gesture will continue behind the header
         width: parent.width
 
-        clip: true
+        anchors {
+            top: parent.top
+            left: parent.left
+        }
 
-        property bool hasProgression: false
+        layouts: [
+            ConditionalLayout {
+                id: tabletLayout
+                name: "tablet"
+                when: !isPhone
 
-        delegate: ListItemDelegate {
-            id: delegate
-            text: model.mainText
-            subText: model.subText
-            iconSource: model.image
-            confirmRemoval: true
-            removable: listViewPage.editable
+                Item {
+                    anchors.fill: parent
 
-            progression: model.hasChildren;
-            forceProgressionSpacing: listView.hasProgression
+                    ItemLayout {
+                        item: "listView"
 
-            firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
-            secondButtonImageSource: "../../icons/toolbar/add.svg"
+                        width: parent.width / 2
+                        anchors {
+                            top: parent.top
+                            bottom: parent.bottom
+                            left: parent.left
+                        }
+                    }
 
-            onFirstImageButtonClicked: listViewPage.add(index, true, model.mainText)
-            onSecondImageButtonClicked: listViewPage.add(index, false, model.mainText)
+                    ItemLayout {
+                        item: "emptyView"
+                        anchors.centerIn: parent
+                    }
 
-            onClicked: model.hasChildren ? listViewPage.onDelegateClicked(index, model.titleText) : "";
-            onItemRemoved: listViewPage.remove(index)
+                    CurrentlyPlayingContent { //TODO: Is it possible to use the same page for all ListViewPages?
+                        id: currentlyPlayingPage
 
-            onProgressionChanged: {
-                if (progression) {
-                    listView.hasProgression = true
+                        width: parent.width / 2
+                        anchors {
+                            top: parent.top
+                            bottom: parent.bottom
+                            right: parent.right
+                        }
+                    }
+                }
+
+
+            }
+
+        ]
+
+        ListView {
+            id: listView
+            Layouts.item: "listView"
+
+            height: parent.height
+            width: parent.width
+
+            anchors {
+                top: parent.top
+                left: parent.left
+            }
+
+            clip: true
+
+            property bool hasProgression: false
+
+            delegate: ListItemDelegate {
+                id: delegate
+                text: model.mainText
+                subText: model.subText
+                iconSource: model.image
+                confirmRemoval: true
+                removable: listViewPage.editable
+
+                progression: model.hasChildren;
+                forceProgressionSpacing: listView.hasProgression
+
+                firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
+                secondButtonImageSource: "../../icons/toolbar/add.svg"
+
+                onFirstImageButtonClicked: listViewPage.add(index, true, model.mainText)
+                onSecondImageButtonClicked: listViewPage.add(index, false, model.mainText)
+
+                onClicked: model.hasChildren ? listViewPage.onDelegateClicked(index, model.titleText) : "";
+                onItemRemoved: listViewPage.remove(index)
+
+                onProgressionChanged: {
+                    if (progression) {
+                        listView.hasProgression = true
+                    }
                 }
             }
         }
-    }
 
-    Label {
-        id: emptyLabel
-        anchors.centerIn: parent
-        fontSize: "large"
+        Label {
+            id: emptyLabel
+            Layouts.item: "emptyView"
+            anchors.centerIn: listView
+            fontSize: "large"
+        }
     }
 }

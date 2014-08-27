@@ -770,7 +770,7 @@ if (ENABLE_UBUNTU)
         ubuntu/qml/cantata/components/ControlButtonsRow.qml ubuntu/qml/cantata/components/ListItemDelegate.qml
         ubuntu/qml/cantata/components/PlayQueueListItemDelegate.qml ubuntu/qml/cantata/components/LabelVisual.qml
         ubuntu/qml/cantata/components/Notification.qml ubuntu/qml/cantata/backend/SettingsBackend.qml
-        ubuntu/qml/cantata/components/PageWithBottomEdge.qml
+        ubuntu/qml/cantata/components/PageWithBottomEdge.qml ubuntu/qml/cantata/CurrentlyPlayingContent.qml
     )
     add_custom_target(click_files ALL SOURCES
         ubuntu/manifest.json

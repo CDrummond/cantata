@@ -37,7 +37,7 @@ Item {
     property int buttonSize: isPhone ? units.gu(6) : units.gu(7)
 
     Column {
-        id: currentSongInfoColumn2
+        id: currentSongInfoColumn
         anchors {
             top: parent.top
             topMargin: units.gu(1)
@@ -47,7 +47,7 @@ Item {
         visible: !(backend.playQueueEmpty || backend.isStopped) && backend.isConnected
 
         Label {
-            id: titleLabel2
+            id: titleLabel
             width: parent.width
             text: backend.currentSongMainText
             wrapMode: Text.NoWrap
@@ -57,7 +57,7 @@ Item {
         }
 
         Label {
-            id: artistLabel2
+            id: artistLabel
             width: parent.width
             text: backend.currentSongSubText
             wrapMode: Text.NoWrap
@@ -67,11 +67,11 @@ Item {
     }
 
     ControlButtonsRow {
-        id: buttonsRow2
-        visible: currentSongInfoColumn2.visible
+        id: buttonsRow
+        visible: currentSongInfoColumn.visible
 
         anchors {
-            top: currentSongInfoColumn2.bottom
+            top: currentSongInfoColumn.bottom
             horizontalCenter: parent.horizontalCenter
         }
     }
@@ -80,7 +80,7 @@ Item {
         id: playQueueLabel
         text: i18n.tr("Play Queue:")
         anchors {
-            top: buttonsRow2.visible?buttonsRow2.bottom:parent.top
+            top: buttonsRow.visible?buttonsRow.bottom:parent.top
             left: parent.left
             topMargin: units.gu(1)
             leftMargin: units.gu(1)

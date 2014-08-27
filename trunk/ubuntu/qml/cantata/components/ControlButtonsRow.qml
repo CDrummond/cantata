@@ -28,15 +28,15 @@ import QtQuick 2.2
 import Ubuntu.Components 1.1
 import 'qrc:/qml/cantata'
 
-Row {
+Row { //TODO: Use Icon Component
     id: buttonsRow
     height: Math.max(previousSongButton.height, playPauseButton.height, nextSongButton.height)
     width: 3 * currentlyPlayingPage.buttonSize + 2 * spacing
 
     Image {
         id: previousSongButton
-        width: currentlyPlayingPage.buttonSize
-        height: currentlyPlayingPage.buttonSize
+        width: currentlyPlayingContent.buttonSize
+        height: currentlyPlayingContent.buttonSize
         smooth: true
         source: "../../../icons/toolbar/media-skip-backward.svg"
 
@@ -51,8 +51,8 @@ Row {
 
     Image {
         id: playPauseButton
-        width: currentlyPlayingPage.buttonSize
-        height: currentlyPlayingPage.buttonSize
+        width: currentlyPlayingContent.buttonSize
+        height: currentlyPlayingContent.buttonSize
         smooth: true
         source: backend.isPlaying?"../../../icons/toolbar/media-playback-pause.svg":"../../../icons/toolbar/media-playback-start.svg"
 
@@ -67,8 +67,8 @@ Row {
 
     Image {
         id: nextSongButton
-        width: currentlyPlayingPage.buttonSize
-        height: currentlyPlayingPage.buttonSize
+        width: currentlyPlayingContent.buttonSize
+        height: currentlyPlayingContent.buttonSize
         smooth: true
         source: "../../../icons/toolbar/media-skip-forward.svg"
 

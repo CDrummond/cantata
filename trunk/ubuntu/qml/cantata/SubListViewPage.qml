@@ -50,10 +50,10 @@ PageWithBottomEdge {
 
     function add(index, replace, mainText) {
         backend.add(modelName, hierarchy(index), replace)
-        if (replace) {
+        if (replace && isPhone) {
             pageStack.push(Qt.resolvedUrl("CurrentlyPlayingPage.qml"))
         } else if (mainText !== undefined && mainText !== "") {
-            notification.show(qsTr(i18n.tr("Added \"%1\"")).arg(mainText))
+            notification.show(qsTr(replace ? i18n.tr("Playing \"%1\"") : i18n.tr("Added \"%1\"")).arg(mainText))
         }
     }
 

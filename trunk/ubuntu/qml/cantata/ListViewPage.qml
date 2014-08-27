@@ -43,10 +43,10 @@ PageWithBottomEdge {
 
     function add(index, replace, mainText) {
         backend.add(modelName, index, replace)
-        if (replace) {
+        if (replace && isPhone) {
             pageStack.push(Qt.resolvedUrl("CurrentlyPlayingPage.qml"))
         } else if (mainText !== undefined && mainText !== "") {
-            notification.show(qsTr(i18n.tr("Added \"%1\"")).arg(mainText))
+            notification.show(qsTr(replace ? i18n.tr("Playing \"%1\"") : i18n.tr("Added \"%1\"")).arg(mainText))
         }
     }
 
@@ -92,7 +92,7 @@ PageWithBottomEdge {
         }
     }
 
-    Layouts {
+    Layouts { //TODO: Same for SubListViewPage
         id: layouts
 
         height: parent.height //NOT "anchors.fill: parent" as otherwise the bottom edge gesture will continue behind the header
@@ -107,15 +107,17 @@ PageWithBottomEdge {
             ConditionalLayout {
                 id: tabletLayout
                 name: "tablet"
-                when: !isPhone
+                when: !isPhone //TODO: Fix width of isPhone
 
                 Item {
                     anchors.fill: parent
 
+                    property real spacing: units.gu(2) //TODO: Visual divider?
+
                     ItemLayout {
                         item: "listView"
 
-                        width: parent.width / 2
+                        width: (parent.width - spacing) / 2
                         anchors {
                             top: parent.top
                             bottom: parent.bottom
@@ -131,7 +133,7 @@ PageWithBottomEdge {
                     CurrentlyPlayingContent { //TODO: Is it possible to use the same page for all ListViewPages?
                         id: currentlyPlayingPage
 
-                        width: parent.width / 2
+                        width: (parent.width - spacing) / 2
                         anchors {
                             top: parent.top
                             bottom: parent.bottom

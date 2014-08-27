@@ -158,7 +158,6 @@ Page {
                     ListItem.Header {
                         id: volumeHeader
                         text: i18n.tr("Volume")
-                        visible: isPhone
                     }
 
                     ListItem.Standard {
@@ -168,7 +167,6 @@ Page {
                             leftMargin: units.gu(1)
                             rightMargin: units.gu(1)
                         }
-                        visible: isPhone
                         Row {
                             width: parent.width
                             spacing: units.gu(1)

@@ -36,8 +36,6 @@ Page {
 
     title: i18n.tr("Currently Playing")
 
-    property int buttonSize: isPhone?units.gu(6):units.gu(7)
-
     property Dialog actionsDialog
 
     Component {
@@ -59,7 +57,7 @@ Page {
          }
     }
 
-    head.actions: [
+    head.actions: [ //TODO: Better solution when using just the content
         Action {
             iconName: "edit-clear"
             text: i18n.tr("Clear")
@@ -235,214 +233,9 @@ Page {
         }
     }
 
-    Row {
-        id: controlsRow
-        height: Math.max(buttonsRow.height, currentSongInfoColumn.height, volumeRectangle.height)
-        width: buttonsRow.width + currentSongInfoColumn.width + spacing
-        spacing: units.gu(2)
-        visible: !isPhone
+    CurrentlyPlayingContent {
+        id: currentlyPlayingContent
 
-        anchors {
-            top: parent.top
-            left: parent.left
-            topMargin: units.gu(1)
-            leftMargin: units.gu(1)
-        }
-
-        ControlButtonsRow {
-            id: buttonsRow
-        }
-
-        Column {
-            id: currentSongInfoColumn
-            anchors.verticalCenter: parent.verticalCenter
-            property int preferedWidth: Math.max(titleLabel.width, artistLabel.width)
-            property int restWidth: currentlyPlayingPage.width - buttonsRow.width - buttonsRow.anchors.leftMargin - volumeColumn.anchors.leftMargin - volumeColumn.anchors.rightMargin
-            width: (restWidth - volumeColumn.preferedWidth < preferedWidth)?Math.min(preferedWidth, restWidth/2):preferedWidth
-
-            Label {
-                id: titleLabel
-                wrapMode: Text.NoWrap
-                elide: Text.ElideRight
-                text: backend.currentSongMainText
-                fontSize: "large"
-            }
-
-            Label {
-                id: artistLabel
-                wrapMode: Text.NoWrap
-                elide: Text.ElideRight
-                text: backend.currentSongSubText
-            }
-        }
-    }
-
-    Rectangle {
-        id: volumeRectangle
-        color: root.backgroundColor
-        anchors.verticalCenter: controlsRow.verticalCenter
-        visible: !isPhone
-
-        anchors {
-            top: parent.top
-            right: parent.right
-            left: controlsRow.right
-            topMargin: units.gu(1)
-            leftMargin: Math.max(parent.width - controlsRow.width - buttonsRow.anchors.leftMargin - volumeColumn.preferedWidth, 0)
-        }
-
-        Column {
-            id: volumeColumn
-            property int preferedWidth: units.gu(30)
-
-            anchors {
-                top: parent.top
-                right: parent.right
-                left: parent.left
-                leftMargin: controlsRow.spacing * 3 / 4
-                rightMargin: units.gu(1)
-            }
-
-            Label {
-                text: i18n.tr("Volume: ")
-            }
-
-            Slider {
-                id: volumeSlider
-                width: parent.width
-                live: false
-                minimumValue: 0
-                maximumValue: 100
-                value: backend.mpdVolume
-
-                onValueChanged: {
-                    backend.setMpdVolume(value)
-                }
-
-                Connections {
-                    target: backend
-                    onMpdVolumeChanged: volumeSlider.value = backend.mpdVolume
-                }
-
-                function formatValue(v) {
-                    return Math.round(v) + "%"
-                }
-            }
-        }
-    }
-
-    Column {
-        id: currentSongInfoColumn2
-        anchors {
-            top: parent.top
-            topMargin: units.gu(1)
-        }
-        width: parent.width
-        spacing: units.gu(0.5)
-        visible: isPhone && !(backend.playQueueEmpty || backend.isStopped) && backend.isConnected
-
-        Label {
-            id: titleLabel2
-            width: parent.width
-            text: backend.currentSongMainText
-            wrapMode: Text.NoWrap
-            elide: Text.ElideRight
-            horizontalAlignment: Text.AlignHCenter
-            fontSize: "large"
-        }
-
-        Label {
-            id: artistLabel2
-            width: parent.width
-            text: backend.currentSongSubText
-            wrapMode: Text.NoWrap
-            elide: Text.ElideRight
-            horizontalAlignment: Text.AlignHCenter
-        }
-    }
-
-    ControlButtonsRow {
-        id: buttonsRow2
-        visible: currentSongInfoColumn2.visible
-
-        anchors {
-            top: currentSongInfoColumn2.bottom
-            horizontalCenter: parent.horizontalCenter
-        }
-    }
-
-    Label {
-        id: playQueueLabel
-        text: i18n.tr("Play Queue:")
-        anchors {
-            top: isPhone?(buttonsRow2.visible?buttonsRow2.bottom:parent.top):controlsRow.bottom
-            left: parent.left
-            topMargin: (isPhone)?units.gu(1):units.gu(2)
-            leftMargin: units.gu(1)
-        }
-    }
-
-    Label {
-        id: playQueueStatusLabel
-        text: backend.playQueueStatus
-        anchors {
-            top: playQueueLabel.top
-            right: parent.right
-            rightMargin: units.gu(1)
-        }
-        visible: !backend.playQueueEmpty && backend.isConnected;
-    }
-
-    ListView {
-        id: playqueueListView
-        clip: true
-        model: playQueueProxyModel
-
-        anchors {
-            top: playQueueLabel.bottom
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
-
-        Connections {
-            target: backend
-            onCurrentSongPlayqueuePositionChanged: {
-                var uiContents = settingsBackend.getUiContents()
-                if (uiContents !== undefined && uiContents["playQueueScroll"]) {
-                    playqueueListView.positionViewAtIndex(backend.getCurrentSongPlayqueuePosition(), ListView.Contain)
-                }
-            }
-        }
-
-        delegate: PlayQueueListItemDelegate {
-            id: delegate
-            text: model.mainText
-            subText: model.subText
-            timeText: model.time
-            iconSource: model.image
-            confirmRemoval: true
-            removable: true
-            currentTrack: index === backend.getCurrentSongPlayqueuePosition()
-            onItemRemoved: {
-                backend.removeFromPlayQueue(index)
-            }
-
-            onClicked: backend.startPlayingSongAtPos(index)
-
-            Connections {
-                target: backend
-                onCurrentSongPlayqueuePositionChanged: {
-                    delegate.currentTrack = (index === backend.getCurrentSongPlayqueuePosition())
-                }
-            }
-        }
-    }
-
-    Label {
-        anchors.centerIn: playqueueListView
-        text: i18n.tr("No songs queued for playing")
-        fontSize: "large"
-        visible: backend.playQueueEmpty || !backend.isConnected
+        anchors.fill: parent
     }
 }

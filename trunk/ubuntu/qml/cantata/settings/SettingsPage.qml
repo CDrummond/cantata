@@ -107,6 +107,10 @@ Page {
         ]
 
         onCurrentLayoutChanged: {
+            if (pageStack === null || pageStack.currentPage === null) { //TODO: Find out why this happens (quick fix here)
+                return
+            }
+
             if (pageStack.currentPage.objectName === settingsPage.objectName) {
                 if (categories.selectedIndex >= 0 && currentLayout === "") {
                     switch (categories.selectedIndex) {

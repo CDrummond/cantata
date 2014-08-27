@@ -39,8 +39,8 @@ MainView {
 
     applicationName: "com.ubuntu.developer.nikwen.cantata-touch-reboot"
 
-    width: units.gu(100)
-    height: units.gu(75)
+//    width: units.gu(100)
+//    height: units.gu(75)
 
     backgroundColor: "#395996"
 

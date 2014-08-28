@@ -676,7 +676,9 @@ void TagEditor::readRatings()
 
     if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Read ratings for all tracks from the music files?")
                                                               : i18n("Read rating from music file?"),
-                                                  i18n("Ratings"), GuiItem(i18n("Read Rating")), StdGuiItem::cancel())) {
+                                                  i18n("Ratings"),
+                                                  isAll ? GuiItem(i18n("Read Ratings")) : GuiItem(i18n("Read Rating")),
+                                                  StdGuiItem::cancel())) {
         return;
     }
 
@@ -730,7 +732,9 @@ void TagEditor::writeRatings()
 
     if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Write ratings for all tracks to the music files?")
                                                               : i18n("Write rating to music file?"),
-                                                  i18n("Ratings"), GuiItem(i18n("Read Rating")), StdGuiItem::cancel())) {
+                                                  i18n("Ratings"),
+                                                  isAll ? GuiItem(i18n("Write Ratings")) : GuiItem(i18n("Write Rating")),
+                                                  StdGuiItem::cancel())) {
         return;
     }
 

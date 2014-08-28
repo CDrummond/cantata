@@ -729,16 +729,25 @@ void TagEditor::readRatings()
 
 void TagEditor::writeRatings()
 {
-    for (int i=original.count()>1 ? 1 : 0; i<original.count(); ++i) {
-        if (nullRating(original.at(i))) {
-            MessageBox::error(this, i18n("Not all Song ratings have been read from MPD!\n\n"
-                                         "Song ratings are not stored in the song files, but within MPD's 'sticker' database. "
-                                         "In order to save these into the actual file, Cantata must first read them all from MPD."));
+    bool isAll=0==currentSongIndex && original.count()>1;
+
+    if (isAll) {
+        for (int i=1; i<original.count(); ++i) {
+            if (nullRating(original.at(i))) {
+                MessageBox::error(this, i18n("Not all Song ratings have been read from MPD!")+QLatin1String("\n\n")+
+                                  i18n("Song ratings are not stored in the song files, but within MPD's 'sticker' database. "
+                                       "In order to save these into the actual file, Cantata must first read them from MPD."));
+                return;
+            }
+        }
+    } else {
+        if (nullRating(original.at(currentSongIndex))) {
+            MessageBox::error(this, i18n("Song rating has not been read from MPD!")+QLatin1String("\n\n")+
+                              i18n("Song ratings are not stored in the song files, but within MPD's 'sticker' database. "
+                                   "In order to save these into the actual file, Cantata must first read them from MPD."));
             return;
         }
     }
-
-    bool isAll=0==currentSongIndex && original.count()>1;
 
     if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Write ratings for all tracks to the music files?")
                                                               : i18n("Write rating to music file?"),

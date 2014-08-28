@@ -84,6 +84,16 @@ int TagEditor::instanceCount()
     return iCount;
 }
 
+static inline bool nullRating(const quint8 &rating)
+{
+    return rating>Song::Rating_Max;
+}
+
+static inline bool nullRating(const Song &s)
+{
+    return nullRating(s.rating);
+}
+
 TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
                      const QSet<QString> &existingArtists, const QSet<QString> &existingAlbumArtists, const QSet<QString> &existingComposers,
                      const QSet<QString> &existingAlbums, const QSet<QString> &existingGenres, const QString &udi)
@@ -136,7 +146,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
             continue;
         }
         Song song(s);
-        s.rating=Song::Rating_Requested;
+        s.rating=Song::Rating_Null;
         if (s.guessed) {
             song.revertGuessedTags();
         }
@@ -406,7 +416,7 @@ void TagEditor::setVariousHint()
         disc->setVarious(0==all.disc && haveDiscs);
         year->setVarious(0==all.year && haveYears);
         if (ratingWidget) {
-            ratingVarious->setVisible(Song::Rating_Null==all.rating && haveRatings);
+            ratingVarious->setVisible(nullRating(all) && haveRatings);
         }
     } else if (ratingVarious) {
         ratingVarious->setVisible(false);
@@ -720,7 +730,7 @@ void TagEditor::readRatings()
 void TagEditor::writeRatings()
 {
     foreach (const Song &s, original) {
-        if (Song::Rating_Requested==s.rating) {
+        if (nullRating(s)) {
             MessageBox::error(this, i18n("Not all Song ratings have been read from MPD!\n\n"
                                          "Song ratings are not stored in the song files, but within MPD's 'sticker' database. "
                                          "In order to save these into the actual file, Cantata must first read them all from MPD."));
@@ -955,11 +965,11 @@ void TagEditor::rating(const QString &f, quint8 r)
     }
     for (int i=original.count()>1 ? 1 : 0; i<original.count(); ++i) {
         Song s=original.at(i);
-        if (Song::Rating_Requested==s.rating && s.rating!=r && s.file==f) {
+        if (nullRating(s) && s.rating!=r && s.file==f) {
             s.rating=r;
             original.replace(i, s);
             s=edited.at(i);
-            if (Song::Rating_Requested==s.rating) {
+            if (nullRating(s)) {
                 s.rating=r;
                 edited.replace(i, s);
             }
@@ -974,7 +984,7 @@ void TagEditor::rating(const QString &f, quint8 r)
         bool first=true;
         for (int i=1; i<original.count() && !haveRatings; ++i) {
             quint8 r=original.at(i).rating;
-            if (Song::Rating_Null==r || Song::Rating_Null==r) {
+            if (nullRating(r)) {
                 continue;
             }
             if (first) {
@@ -990,7 +1000,7 @@ void TagEditor::rating(const QString &f, quint8 r)
             s.rating=rating;
             original.replace(0, s);
             s=edited.at(0);
-            if (Song::Rating_Requested==s.rating && s.rating!=rating) {
+            if (nullRating(s) && s.rating!=rating) {
                 s.rating=rating;
                 edited.replace(0, s);
             }
@@ -1011,7 +1021,7 @@ void TagEditor::checkRating()
         haveRatings=false;
         for (int i=1; i<edited.count() && !haveRatings; ++i) {
             quint8 r=edited.at(i).rating;
-            if (Song::Rating_Null==r || Song::Rating_Requested==r) {
+            if (nullRating(r)) {
                 continue;
             }
             if (first) {

@@ -50,8 +50,8 @@
     w=0;
 
 //
-// NOTE: Cantata does NOT read, and store, comments from MPD. For comment support, Cantata will read these from the files when the tag editor is opened
-//       These are placed into the Song's 'name' field (as this is not currently used in this editor)
+// NOTE: Cantata does NOT read, and store, comments from MPD. For comment support, Cantata will read these from the
+// files when the tag editor is opened.
 //
 static bool equalTags(const Song &a, const Song &b, bool compareCommon, bool composerSupport, bool commentSupport)
 {

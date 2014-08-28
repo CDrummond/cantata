@@ -729,8 +729,8 @@ void TagEditor::readRatings()
 
 void TagEditor::writeRatings()
 {
-    foreach (const Song &s, original) {
-        if (nullRating(s)) {
+    for (int i=original.count()>1 ? 1 : 0; i<original.count(); ++i) {
+        if (nullRating(original.at(i))) {
             MessageBox::error(this, i18n("Not all Song ratings have been read from MPD!\n\n"
                                          "Song ratings are not stored in the song files, but within MPD's 'sticker' database. "
                                          "In order to save these into the actual file, Cantata must first read them all from MPD."));

@@ -118,9 +118,9 @@ TagLib::String qString2TString(const QString &str)
     return val.isEmpty() ? TagLib::String::null : TagLib::String(val.toUtf8().data(), TagLib::String::UTF8);
 }
 
-static int convertToCantataRating(double r) {
-    return (int)r*10.0;
-    //return qRound(r/2.0)*10.0;
+static inline int convertToCantataRating(double r) {
+    return qRound(r*10.0);
+    //return qRound((r*10.0)/2.0);
 }
 
 static std::string convertFromCantataRating(int rating) {
@@ -142,7 +142,8 @@ static double parseDoubleString(const TagLib::String &str) {
     return ok ? v : 0.0;
 }
 
-static double parseRgString(const TagLib::String &str) {
+static double parseRgString(const TagLib::String &str)
+{
     if (str.isEmpty()) {
         return 0.0;
     }

@@ -275,7 +275,7 @@ void Song::guessTags()
 
         if (!title.isEmpty()) {
             int dot=title.lastIndexOf('.');
-            if (dot==title.length()-4) {
+            if (dot>0 && dot<title.length()-2) {
                 title=title.left(dot);
             }
             static const QSet<QChar> constSeparators=QSet<QChar>() << QLatin1Char(' ') << QLatin1Char('-') << QLatin1Char('_') << QLatin1Char('.');

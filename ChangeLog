@@ -39,6 +39,8 @@
 24. Also catpitalise composer in tag editor.
 25. Also read /com/canonical/desktop/interface/scrollbar-mode to determine if
     overlay scrollbars have been disabled.
+26. When guessing song details from filename (due to missing tags), remove any
+    extension - not just three letter extensions!
 
 1.4.1
 -----

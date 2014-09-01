@@ -32,15 +32,17 @@ Empty {
     property bool progression: false
     property bool forceProgressionSpacing: false
 
-    property alias firstButtonImageSource: firstImage.source
-    property alias secondButtonImageSource: secondImage.source
+    property alias firstButtonIconName: firstIcon.name
+    property alias secondButtonIconName: secondIcon.name
+    property alias firstButtonIconSource: firstIcon.source
+    property alias secondButtonIconSource: secondIcon.source
 
     signal firstImageButtonClicked()
     signal secondImageButtonClicked()
 
-    property bool firstButtonShown: firstImage.source != ""
-    property bool secondButtonShown: secondImage.source != ""
-    property bool iconShown: iconImage.source != ""
+    property bool firstButtonShown: firstIcon.source !== "" || firstIcon.name !== ""
+    property bool secondButtonShown: secondIcon.source !== "" || secondIcon.name !== ""
+    property bool iconShown: iconImage.source !== ""
 
     UbuntuShape {
         id: iconShape
@@ -65,7 +67,7 @@ Empty {
         id: middleVisuals
         anchors {
             left: iconShown?iconShape.right:parent.left
-            right: secondButtonShown?secondImage.left:(firstButtonShown?firstImage.left:((listItemDelegate.progression || listItemDelegate.forceProgressionSpacing)?progressionImage.right:parent.right))
+            right: secondButtonShown?secondIcon.left:(firstButtonShown?firstIcon.left:((listItemDelegate.progression || listItemDelegate.forceProgressionSpacing)?progressionImage.right:parent.right))
             leftMargin: units.gu(iconShown?1:2)
             rightMargin: units.gu(firstButtonShown?1:2)
             verticalCenter: parent.verticalCenter
@@ -94,8 +96,8 @@ Empty {
         }
     }
 
-    Image {
-        id: secondImage
+    Icon {
+        id: secondIcon
         width: units.gu(3)
         height: units.gu(3)
         smooth: true
@@ -103,7 +105,7 @@ Empty {
         visible: secondButtonShown
 
         anchors {
-            right: firstImage.left
+            right: firstIcon.left
             rightMargin: units.gu(1)
             verticalCenter: parent.verticalCenter
         }
@@ -116,8 +118,8 @@ Empty {
         }
     }
 
-    Image {
-        id: firstImage
+    Icon {
+        id: firstIcon
         width: units.gu(3)
         height: units.gu(3)
         smooth: true

@@ -127,9 +127,9 @@ PageWithBottomEdge {
                 iconSource: model.image
                 confirmRemoval: true
                 removable: subListViewPage.editable
-            
-                firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
-                secondButtonImageSource: "../../icons/toolbar/add.svg"
+
+                firstButtonIconName: "media-playback-start"
+                secondButtonIconName: "add"
                 progression: model.hasChildren
                 forceProgressionSpacing: subListView.hasProgression
 

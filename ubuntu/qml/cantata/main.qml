@@ -42,16 +42,9 @@ MainView {
 //    width: units.gu(100)
 //    height: units.gu(75)
 
-    backgroundColor: "#395996"
-
     useDeprecatedToolbar: false //displays the new header
 
     property bool isPhone: width < units.gu(60)
-
-//    Component.onCompleted: {
-//        Qt.application.organization = "asdf"
-//        console.log(Qt.application.organization)
-//    }
 
     PageStack {
         id: pageStack

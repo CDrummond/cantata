@@ -282,6 +282,9 @@ MainWindow::MainWindow(QWidget *parent)
     streamPlayAction->setVisible(false);
     #endif
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
+    #ifdef TAGLIB_FOUND
+    editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", StdActions::self()->editTagsAction->text(), StdActions::self()->editTagsAction->icon());
+    #endif
     addAction(expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All")));
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
     addAction(collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All")));
@@ -727,7 +730,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(stopAfterTrackAction, true);
     playQueue->addAction(locateTrackAction, true);
     #ifdef TAGLIB_FOUND
-    playQueue->addAction(StdActions::self()->editTagsAction, true);
+    playQueue->addAction(editPlayQueueTagsAction, true);
     #endif
     playQueue->addSeparator();
     playQueue->addAction(playQueueModel.removeDuplicatesAct());
@@ -831,6 +834,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(fullScreenAction, SIGNAL(triggered(bool)), this, SLOT(fullScreen()));
     #ifdef TAGLIB_FOUND
     connect(StdActions::self()->editTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
+    connect(editPlayQueueTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
     connect(StdActions::self()->organiseFilesAction, SIGNAL(triggered(bool)), SLOT(organiseFiles()));
     #endif
     connect(context, SIGNAL(findArtist(QString)), this, SLOT(locateArtist(QString)));
@@ -1067,6 +1071,9 @@ void MainWindow::playQueueItemsSelected(bool s)
     setPriorityAction->setEnabled(s && haveItems);
     locateTrackAction->setEnabled(singleSelection);
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);
+    #ifdef TAGLIB_FOUND
+    editPlayQueueTagsAction->setEnabled(s && haveItems && MPDConnection::self()->getDetails().dirReadable);
+    #endif
     addPlayQueueToStoredPlaylistAction->setEnabled(haveItems);
     stopAfterTrackAction->setEnabled(singleSelection);
     ratingAction->setEnabled(s && haveItems);

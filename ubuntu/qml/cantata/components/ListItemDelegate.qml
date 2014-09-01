@@ -50,7 +50,7 @@ Empty {
         height: units.gu(5.5)
         anchors {
             left: parent.left
-            leftMargin: units.gu(2)
+            leftMargin: units.gu(1) //Originally: 2
             verticalCenter: parent.verticalCenter
         }
         visible: iconShown

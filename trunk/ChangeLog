@@ -41,6 +41,7 @@
     overlay scrollbars have been disabled.
 26. When guessing song details from filename (due to missing tags), remove any
     extension - not just three letter extensions!
+27. In tag editor, only show '(Various)' hint for the 'All tracks' entry.
 
 1.4.1
 -----

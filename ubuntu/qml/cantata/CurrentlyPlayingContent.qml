@@ -29,6 +29,7 @@ import QtQuick 2.2
 import Ubuntu.Components 1.1
 import Ubuntu.Components.ListItems 1.0 as ListItem
 import Ubuntu.Components.Popups 1.0
+import Qt.labs.settings 1.0
 import 'qrc:/qml/cantata/components'
 
 Item {
@@ -113,8 +114,7 @@ Item {
         Connections {
             target: backend
             onCurrentSongPlayqueuePositionChanged: {
-                var uiContents = settingsBackend.getUiContents()
-                if (uiContents !== undefined && uiContents["playQueueScroll"]) {
+                if (settingsBackend.scrollPlayQueue) {
                     playqueueListView.positionViewAtIndex(backend.getCurrentSongPlayqueuePosition(), ListView.Contain)
                 }
             }

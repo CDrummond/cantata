@@ -28,7 +28,6 @@
 import QtQuick 2.2
 import Ubuntu.Components 1.1
 import Ubuntu.Components.ListItems 1.0 as ListItem
-//import U1db 1.0 as U1db
 import Qt.labs.settings 1.0
 
 Flickable {
@@ -51,7 +50,7 @@ Flickable {
             tryToConnect()
         }
 
-        Settings {
+        Settings { //Here as it is not needed anywhere else (easier here)
             id: settings
             category: "connection"
             property alias host: hostTextField.text

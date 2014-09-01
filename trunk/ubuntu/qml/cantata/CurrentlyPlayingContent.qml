@@ -114,9 +114,18 @@ Item {
         Connections {
             target: backend
             onCurrentSongPlayqueuePositionChanged: {
-                if (settingsBackend.scrollPlayQueue) {
-                    playqueueListView.positionViewAtIndex(backend.getCurrentSongPlayqueuePosition(), ListView.Contain)
-                }
+                playqueueListView.scrollToCurrent()
+            }
+        }
+
+        Component.onCompleted: { //TODO-r: Scroll to current position, but wrong numbers during swipe gesture
+            scrollToCurrent()
+        }
+
+        function scrollToCurrent() {
+            if (settingsBackend.scrollPlayQueue) {
+                console.log("pos: " + backend.getCurrentSongPlayqueuePosition())
+                playqueueListView.positionViewAtIndex(backend.getCurrentSongPlayqueuePosition(), ListView.Contain)
             }
         }
 

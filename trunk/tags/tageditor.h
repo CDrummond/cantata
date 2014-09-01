@@ -65,6 +65,7 @@ private:
     Device * getDevice(const QString &udi, QWidget *p);
     #endif
     void closeEvent(QCloseEvent *event);
+    void controlInitialActionsState();
 
 private Q_SLOTS:
     void readComments();
@@ -105,6 +106,8 @@ private:
     bool saving;
     bool composerSupport;
     bool commentSupport;
+    QAction *readRatingsAct;
+    QAction *writeRatingsAct;
 };
 
 #endif

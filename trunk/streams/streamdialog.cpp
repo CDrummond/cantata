@@ -28,10 +28,11 @@
 #include "streamdialog.h"
 #include "gui/settings.h"
 #include "models/streamsmodel.h"
-#include "support/localize.h"
 #include "widgets/icons.h"
 #include "mpd/mpdconnection.h"
 #include "support/buddylabel.h"
+#include "support/localize.h"
+#include "support/utils.h"
 #include "config.h"
 
 StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
@@ -100,8 +101,7 @@ void StreamDialog::setWidgetVisiblity()
     bool s=save();
     nameEntry->setVisible(s);
     nameLabel->setVisible(s);
-    QApplication::processEvents();
-    adjustSize();
+    Utils::resizeWindow(this, true, false);
 }
 
 void StreamDialog::changed()

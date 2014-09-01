@@ -319,6 +319,8 @@ void DevicePropertiesWidget::transcoderChanged()
             transcoderValue->setVisible(false);
         }
     }
+
+    Utils::resizeWindow(this, true, false);
     checkSaveable();
 }
 

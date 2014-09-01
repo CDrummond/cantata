@@ -875,6 +875,25 @@ bool Utils::limitedHeight(QWidget *w)
     return limited;
 }
 
+void Utils::resizeWindow(QWidget *w, bool preserveWidth, bool preserveHeight)
+{
+    QWidget *window=w ? w->window() : 0;
+    if (window) {
+        QSize was=window->size();
+        window->setMinimumSize(QSize(0, 0));
+        window->adjustSize();
+        QSize now=window->size();
+        window->setMinimumSize(now);
+        if (preserveWidth && preserveHeight) {
+            window->resize(qMax(was.width(), now.width()), qMax(was.height(), now.height()));
+        } else if (preserveWidth) {
+            window->resize(qMax(was.width(), now.width()), now.height());
+        } else if (preserveHeight) {
+            window->resize(now.width(), qMax(was.height(), now.height()));
+        }
+    }
+}
+
 Utils::Desktop Utils::currentDe()
 {
     #if !defined Q_OS_WIN && !defined Q_OS_MAC

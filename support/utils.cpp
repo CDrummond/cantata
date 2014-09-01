@@ -36,6 +36,7 @@
 #include <QWidget>
 #include <QStyle>
 #include <QDesktopWidget>
+#include <QEventLoop>
 #if QT_VERSION >= 0x050000
 #include <QStandardPaths>
 #else
@@ -880,6 +881,7 @@ void Utils::resizeWindow(QWidget *w, bool preserveWidth, bool preserveHeight)
     QWidget *window=w ? w->window() : 0;
     if (window) {
         QSize was=window->size();
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         window->setMinimumSize(QSize(0, 0));
         window->adjustSize();
         QSize now=window->size();

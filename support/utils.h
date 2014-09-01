@@ -113,6 +113,7 @@ namespace Utils
     extern bool isHighDpi();
     extern int scaleForDpi(int v);
     extern bool limitedHeight(QWidget *w);
+    extern void resizeWindow(QWidget *w, bool preserveWidth=true, bool preserveHeight=true);
 
     enum Desktop {
         KDE,

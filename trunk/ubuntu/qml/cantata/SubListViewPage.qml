@@ -57,6 +57,15 @@ PageWithBottomEdge {
         }
     }
 
+    function addAll(replace) {
+        backend.add(modelName, rows, replace)
+        if (replace && isPhone) {
+            pageStack.push(Qt.resolvedUrl("CurrentlyPlayingPage.qml"))
+        } else if (mainText !== undefined && mainText !== "") {
+            notification.show(qsTr(replace ? i18n.tr("Playing all \"%1\"") : i18n.tr("Added all \"%1\"")).arg(title))
+        }
+    }
+
     function remove(index) {
         backend.remove(modelName, hierarchy(index))
     }
@@ -79,6 +88,16 @@ PageWithBottomEdge {
     }
 
     head.actions: [
+        Action {
+            iconName: "media-playback-start"
+            text: i18n.tr("Play all")
+            onTriggered: addAll(true)
+        },
+        Action {
+            iconName: "add"
+            text: i18n.tr("Add all")
+            onTriggered: addAll(false)
+        },
         Action {
             iconName: "settings"
             text: i18n.tr("Settings")

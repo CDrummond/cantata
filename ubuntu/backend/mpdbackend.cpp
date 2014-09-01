@@ -45,7 +45,6 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
 
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(onConnected(bool)));
 
-    // TODO: These need to be confiurable via QML UI!
     AlbumsModel::self()->setEnabled(true);
     DirViewModel::self()->setEnabled(true);
     PlaylistsModel::self()->setEnabled(true);

@@ -115,6 +115,8 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     , saving(false)
     , composerSupport(false)
     , commentSupport(false)
+    , readRatingsAct(0)
+    , writeRatingsAct(0)
 {
     iCount++;
     bool isMopidy=false;
@@ -186,7 +188,6 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     }
     setButtons(buttons);
     setCaption(i18n("Tags"));
-    progress->setVisible(false);
     if (songs.count()>1) {
         setButtonGuiItem(User2, StdGuiItem::back(true));
         setButtonGuiItem(User1,StdGuiItem::forward(true));
@@ -201,8 +202,12 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     toolsMenu->addAction(i18n("Set 'Album Artist' from 'Artist'"), this, SLOT(setAlbumArtistFromArtist()));
     toolsMenu->addAction(i18n("Capitalize"), this, SLOT(capitalise()));
     toolsMenu->addAction(i18n("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
-    toolsMenu->addAction(i18n("Read Ratings from File"), this, SLOT(readRatings()));
-    toolsMenu->addAction(i18n("Write Ratings to File"), this, SLOT(writeRatings()));
+    if (!isMopidy) {
+        readRatingsAct=toolsMenu->addAction(i18n("Read Ratings from File"), this, SLOT(readRatings()));
+        writeRatingsAct=toolsMenu->addAction(i18n("Write Ratings to File"), this, SLOT(writeRatings()));
+    }
+    readRatingsAct->setEnabled(false);
+    writeRatingsAct->setEnabled(false);
     setButtonMenu(User3, toolsMenu, InstantPopup);
     enableButton(Ok, false);
     enableButton(Reset, false);
@@ -309,6 +314,15 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     }
     edited=original;
     setIndex(0);
+
+    if (!isMopidy || commentSupport) {
+        progress->setVisible(true);
+        progress->setRange(0, (original.count()>1 ? (original.count()-1) : 1)*(commentSupport && !isMopidy ? 2 : 1));
+        progress->setValue(0);
+    } else {
+        progress->setVisible(false);
+    }
+
     bool first=original.count()>1;
     foreach (const Song &s, original) {
         if (first) {
@@ -456,13 +470,13 @@ void TagEditor::setLabelStates()
 
 void TagEditor::readComments()
 {
-    progress->setVisible(true);
-    progress->setRange(0, original.count());
     bool haveMultiple=original.count()>1;
     bool updated=false;
 
     for (int i=0; i<original.count(); ++i) {
-        progress->setValue(i+1);
+        if (0!=i || !haveMultiple) {
+            progress->setValue(progress->value()+1);
+        }
         if (i && 0==i%10) {
             QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         }
@@ -482,7 +496,7 @@ void TagEditor::readComments()
     if (updated) {
         edited=original;
     }
-    progress->setVisible(false);
+    controlInitialActionsState();
     if (haveMultiple) {
         setVariousHint();
     } else {
@@ -975,6 +989,8 @@ void TagEditor::rating(const QString &f, quint8 r)
     for (int i=original.count()>1 ? 1 : 0; i<original.count(); ++i) {
         Song s=original.at(i);
         if (nullRating(s) && s.rating!=r && s.file==f) {
+            progress->setValue(progress->value()+1);
+            controlInitialActionsState();
             s.rating=r;
             original.replace(i, s);
             s=edited.at(i);
@@ -1240,5 +1256,18 @@ void TagEditor::closeEvent(QCloseEvent *event)
         event->ignore();
     } else {
         Dialog::closeEvent(event);
+    }
+}
+
+void TagEditor::controlInitialActionsState()
+{
+    if (progress->value()>=progress->maximum()) {
+        progress->setVisible(false);
+        if (readRatingsAct) {
+            readRatingsAct->setEnabled(true);
+        }
+        if (writeRatingsAct) {
+            writeRatingsAct->setEnabled(true);
+        }
     }
 }

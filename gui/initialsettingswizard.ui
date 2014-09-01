@@ -805,10 +805,33 @@
       </property>
      </spacer>
     </item>
-    <item row="4" column="0">
+    <item row="4" column="0" colspan="2">
+     <widget class="NoteLabel" name="albumArtistsNoteLabel">
+      <property name="text">
+       <string>Cantata will groups tracks into albums by using the 'AlbumArtist' tag if it is set, otherwise it will fallback to the 'Artist' tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the 'AlbumArtist' tag for the grouping to function correctly. It is suggested to use 'Various Artists' in this scenario.</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <spacer name="verticalSpacer_6y">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>32</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="6" column="0">
      <widget class="QLabel" name="groupWarningIcon"/>
     </item>
-    <item row="4" column="1">
+    <item row="6" column="1">
      <widget class="QLabel" name="groupWarningLabel">
       <property name="sizePolicy">
        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -827,7 +850,7 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="0" colspan="2">
+    <item row="7" column="0" colspan="2">
      <spacer name="verticalSpacer_8">
       <property name="orientation">
        <enum>Qt::Vertical</enum>

@@ -28,7 +28,7 @@ import QtQuick 2.2
 import Ubuntu.Components 1.1
 import 'qrc:/qml/cantata'
 
-Row { //TODO: Use Icon Component
+Row {
     id: buttonsRow
     height: Math.max(previousSongButton.height, playPauseButton.height, nextSongButton.height)
     width: 3 * currentlyPlayingPage.buttonSize + 2 * spacing

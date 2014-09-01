@@ -50,7 +50,7 @@ Empty {
         height: units.gu(5.5)
         anchors {
             left: parent.left
-            leftMargin: units.gu(1) //Originally: 2
+            leftMargin: units.gu(2)
             verticalCenter: parent.verticalCenter
         }
         visible: iconShown
@@ -96,12 +96,10 @@ Empty {
         }
     }
 
-    Icon {
+    Icon { //TODO: Revert changes regarding icons!
         id: secondIcon
         width: units.gu(3)
         height: units.gu(3)
-        smooth: true
-        opacity: 0.9
         visible: secondButtonShown
 
         anchors {
@@ -122,8 +120,6 @@ Empty {
         id: firstIcon
         width: units.gu(3)
         height: units.gu(3)
-        smooth: true
-        opacity: 0.9
         visible: firstButtonShown
 
         anchors {

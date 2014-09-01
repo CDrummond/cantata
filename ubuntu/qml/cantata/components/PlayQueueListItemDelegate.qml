@@ -57,7 +57,7 @@ Empty {
         smooth: true
         opacity: 0.9
         visible: currentTrack
-        source: "../../../icons/toolbar/media-playback-start-light.svg"
+        source: "../../../icons/toolbar/media-playback-start.svg"
 
         anchors {
             left: parent.left

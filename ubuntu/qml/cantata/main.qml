@@ -48,6 +48,11 @@ MainView {
 
     property bool isPhone: width < units.gu(60)
 
+//    Component.onCompleted: {
+//        Qt.application.organization = "asdf"
+//        console.log(Qt.application.organization)
+//    }
+
     PageStack {
         id: pageStack
 

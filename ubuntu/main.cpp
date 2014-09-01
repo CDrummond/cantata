@@ -61,6 +61,8 @@
 //#endif
 //#include "contextwidget.h"
 
+#include <iostream>
+
 #include <QMutex>
 #include <QMutexLocker>
 #include <QTextStream>
@@ -176,7 +178,6 @@ static void installDebugMessageHandler()
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setOrganizationName(CANTATA_REV_URL);
     QThread::currentThread()->setObjectName("GUI");
 
     Utils::initRand();
@@ -190,7 +191,11 @@ int main(int argc, char *argv[])
 
     MPDBackend backend;
     QGuiApplication app(argc, argv);
+    app.setApplicationName(PACKAGE_NAME);
+    app.setOrganizationName(PACKAGE_NAME);
+    app.setOrganizationDomain(CANTATA_URL);
     installDebugMessageHandler();
+    qDebug() << "Organization: " << app.organizationName();
     qmlRegisterType<MPDBackend>("MPDBackend", 1, 0, "MPDBackend");
     QQuickView view;
     view.setMinimumSize(QSize(360, 540));

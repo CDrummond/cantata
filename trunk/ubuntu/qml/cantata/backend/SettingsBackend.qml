@@ -27,66 +27,30 @@
 
 import QtQuick 2.2
 import Ubuntu.Components 1.1
-import U1db 1.0 as U1db
+import Qt.labs.settings 1.0
 import 'qrc:/qml/cantata/'
 
 Item {
 
-    signal fetchCoversChanged()
+    readonly property alias uiSettings: uiSettings
 
-    U1db.Database {
-        id: db
-        path: appDir + "/u1db"
+    readonly property alias scrollPlayQueue: uiSettings.scrollPlayQueue
+    readonly property alias fetchCovers: uiSettings.fetchCovers
+
+    Component.onCompleted: {
+        backend.setCoverFetch(fetchCovers)
     }
 
-    U1db.Document {
-        id: uiDocument
-        database: db
-        docId: 'ui'
-        create: true
-        defaults: {
-            "playQueueScroll": true,
-            "coverFetch": true,
-            "artistYear": true,
-            "hiddenViews": ["folders"],
-            "albumSort": "album-artist"
-        }
-
-        onContentsChanged: {
-            if (contents != undefined) {
-                backend.setCoverFetch(contents["coverFetch"])
-                fetchCoversChanged()
-            }
-        }
+    onFetchCoversChanged: {
+        backend.setCoverFetch(fetchCovers)
     }
 
-    U1db.Document {
-        id: connectionDocument
-        database: db
-        docId: 'connections'
-        create: true
-        defaults: {
-            "host": "",
-            "port": "",
-            "password": "",
-            "musicfolder": ""
-        }
-    }
+    Settings {
+        id: uiSettings
 
-    function getUiContents() {
-        return uiDocument.contents
-    }
-
-    function setUiContents(contents) {
-        uiDocument.contents = contents
-    }
-
-    function getConnectionContents() {
-        return connectionDocument.contents
-    }
-
-    function setConnectionContents(contents) {
-        connectionDocument.contents = contents
+        category: "ui"
+        property bool scrollPlayQueue: true
+        property bool fetchCovers: true
     }
 
 }

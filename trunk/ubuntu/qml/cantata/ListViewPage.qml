@@ -174,8 +174,8 @@ PageWithBottomEdge {
                 progression: model.hasChildren;
                 forceProgressionSpacing: listView.hasProgression
 
-                firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
-                secondButtonImageSource: "../../icons/toolbar/add.svg"
+                firstButtonIconName: "media-playback-start"
+                secondButtonIconName: "add"
 
                 onFirstImageButtonClicked: listViewPage.add(index, true, model.mainText)
                 onSecondImageButtonClicked: listViewPage.add(index, false, model.mainText)

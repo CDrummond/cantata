@@ -37,32 +37,14 @@ Flickable {
 
     Column {
         id: column
-        spacing: units.gu(1)
         height: childrenRect.height
-        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width
 
-        Item {
-            id: topSpacer
-            height: units.gu(2)
+        ListItem.Standard {
+            text: i18n.tr("Scroll play queue to active track")
             width: parent.width
-        }
 
-        Grid {
-            anchors.horizontalCenter: parent.horizontalCenter
-            columns: 2
-            rowSpacing: units.gu(2)
-            columnSpacing: parent.width/10
-            height: childrenRect.height
-
-            Label {
-                id: scrollPlayQueueLabel
-                text: i18n.tr("Scroll play queue to active track:")
-                fontSize: "medium"
-                verticalAlignment: Text.AlignVCenter
-                height: scrollPlayQueueCheckBox.height
-            }
-
-            CheckBox {
+            control: CheckBox {
                 id: scrollPlayQueueCheckBox
                 checked: true
                 KeyNavigation.priority: KeyNavigation.BeforeItem
@@ -76,16 +58,13 @@ Flickable {
                     settingsBackend.uiSettings.scrollPlayQueue = scrollPlayQueueCheckBox.checked
                 }
             }
+        }
 
-            Label {
-                id: fetchCoversLabel
-                text: i18n.tr("Fetch missing covers from last.fm:")
-                fontSize: "medium"
-                verticalAlignment: Text.AlignVCenter
-                height: fetchCoversCheckBox.height
-            }
+        ListItem.Standard {
+            text: i18n.tr("Fetch missing covers from last.fm")
+            width: parent.width
 
-            CheckBox {
+            control: CheckBox {
                 id: fetchCoversCheckBox
                 checked: true
                 KeyNavigation.priority: KeyNavigation.BeforeItem
@@ -99,12 +78,6 @@ Flickable {
                     settingsBackend.uiSettings.fetchCovers = fetchCoversCheckBox.checked
                 }
             }
-        }
-
-        Item {
-            id: bottomSpacer
-            height: units.gu(2)
-            width: parent.width
         }
     }
 }

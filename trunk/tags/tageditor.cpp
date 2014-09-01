@@ -148,7 +148,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
             continue;
         }
         Song song(s);
-        s.rating=Song::Rating_Null;
+        song.rating=Song::Rating_Null;
         if (s.guessed) {
             song.revertGuessedTags();
         }

@@ -306,6 +306,7 @@ void LibraryPage::controlActions()
     StdActions::self()->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     StdActions::self()->replaygainAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
+    StdActions::self()->editTagsAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     StdActions::self()->deleteSongsAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());

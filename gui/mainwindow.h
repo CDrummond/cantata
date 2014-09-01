@@ -331,6 +331,9 @@ private:
     Action *quitAction;
     Action *restoreAction;
     Action *locateTrackAction;
+    #ifdef TAGLIB_FOUND
+    Action *editPlayQueueTagsAction;
+    #endif
     Action *searchTabAction;
     Action *expandAllAction;
     Action *collapseAllAction;

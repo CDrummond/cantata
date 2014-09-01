@@ -28,7 +28,9 @@
 import QtQuick 2.2
 import Ubuntu.Components 1.1
 import Ubuntu.Components.ListItems 1.0 as ListItem
-import U1db 1.0 as U1db
+//import U1db 1.0 as U1db
+import Qt.labs.settings 1.0
+
 Flickable {
     clip: true
 
@@ -46,27 +48,16 @@ Flickable {
         anchors.horizontalCenter: parent.horizontalCenter
 
         Component.onCompleted: {
-            fillWithU1dbData()
             tryToConnect()
         }
 
-        function fillWithU1dbData() {
-            var contents = settingsBackend.getConnectionContents()
-            if (typeof contents != "undefined") {
-                hostTextField.text = contents["host"]
-                portTextField.text = contents["port"]
-                passwordTextField.text = contents["password"]
-                musicfolderTextField.text = contents["musicfolder"]
-            }
-        }
-
-        function saveDataToU1db() {
-            var contents = {};
-            contents["host"] = hostTextField.text
-            contents["port"] = portTextField.text
-            contents["password"] = passwordTextField.text
-            contents["musicfolder"] = musicfolderTextField.text
-            settingsBackend.setConnectionContents(contents)
+        Settings {
+            id: settings
+            category: "connection"
+            property alias host: hostTextField.text
+            property alias port: portTextField.text
+            property alias password: passwordTextField.text
+            property alias musicfolder: musicfolderTextField.text
         }
 
         Label {
@@ -188,13 +179,13 @@ Flickable {
             }
 
             onClicked: {
+                console.log("Org: " + Qt.application.organization)
                 connectionDetailsColumn.tryToConnect()
-                connectionDetailsColumn.saveDataToU1db()
             }
         }
 
         function tryToConnect() {
-            backend.connectTo(hostTextField.text, (portTextField.text === "")?6600:portTextField.text, passwordTextField.text, musicfolderTextField.text)
+            backend.connectTo(settings.host, (settings.port === "")?6600:settings.port, settings.password, settings.musicfolder)
         }
     }
 }

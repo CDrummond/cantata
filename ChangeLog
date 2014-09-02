@@ -44,6 +44,7 @@
 27. In tag editor, only show '(Various)' hint for the 'All tracks' entry.
 28. Add note about 'AlbumArtist' tag to initial settings wizard.
 29. Resize device properties dialog when changing transcoder.
+30. Initialise sidebar icon sizes before constructing.
 
 1.4.1
 -----

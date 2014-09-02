@@ -45,6 +45,7 @@
 28. Add note about 'AlbumArtist' tag to initial settings wizard.
 29. Resize device properties dialog when changing transcoder.
 30. Initialise sidebar icon sizes before constructing.
+31. Use QDesktopWidget::logicalDpiX()/96.0 to set DPI scale factor.
 
 1.4.1
 -----

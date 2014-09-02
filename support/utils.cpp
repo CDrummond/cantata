@@ -846,18 +846,17 @@ int Utils::layoutSpacing(QWidget *w)
     return spacing;
 }
 
-bool Utils::isHighDpi()
+double Utils::screenDpiScale()
 {
-    static int fontHeight=-1;
-    if (-1==fontHeight) {
-        fontHeight=QApplication::fontMetrics().height();
+    static double scaleFactor=-1.0;
+    if (scaleFactor<0) {
+        QWidget *dw=QApplication::desktop();
+        if (!dw) {
+            return 1.0;
+        }
+        scaleFactor=qMin(qMax(dw->logicalDpiX()/96.0, 1.0), 4.0);
     }
-    return fontHeight>22;
-}
-
-int Utils::scaleForDpi(int v)
-{
-    return isHighDpi() ? v*2 : v;
+    return scaleFactor;
 }
 
 bool Utils::limitedHeight(QWidget *w)

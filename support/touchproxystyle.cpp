@@ -164,8 +164,8 @@ TouchProxyStyle::TouchProxyStyle(bool touchSpin, bool gtkOverlayStyleScrollbar)
     spinButtonRatio=touchSpin && Utils::touchFriendly() ? 1.5 : 1.25;
     if (Utils::touchFriendly()) {
         sbarType=SB_Thin;
-        sbarPlainViewWidth=Utils::isHighDpi() ? 4 : 2;
-    } else if(gtkOverlayStyleScrollbar) {
+        sbarPlainViewWidth=Utils::scaleForDpi(2);
+    } else if (gtkOverlayStyleScrollbar) {
         sbarType=SB_Gtk;
         sbarPlainViewWidth=QApplication::fontMetrics().height()/1.75;
     } else {

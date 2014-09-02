@@ -110,8 +110,9 @@ namespace Utils
     extern double smallFontFactor(const QFont &f);
     extern QFont smallFont(QFont f);
     extern int layoutSpacing(QWidget *w);
-    extern bool isHighDpi();
-    extern int scaleForDpi(int v);
+    extern double screenDpiScale();
+    inline bool isHighDpi() { return screenDpiScale()>1.35; }
+    inline int scaleForDpi(int v) { return qRound(screenDpiScale()*v); }
     extern bool limitedHeight(QWidget *w);
     extern void resizeWindow(QWidget *w, bool preserveWidth=true, bool preserveHeight=true);
 

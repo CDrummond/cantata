@@ -133,7 +133,6 @@ protected:
 
 private:
     void addMenuAction(QMenu *menu, QAction *action);
-    void initSizes();
     void setupTrayIcon();
 
 Q_SIGNALS:

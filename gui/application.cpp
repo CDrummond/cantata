@@ -31,6 +31,10 @@
 #include "tags/taghelperiface.h"
 #endif
 #include "scrobbling/scrobbler.h"
+#include "support/fancytabwidget.h"
+#include "widgets/itemview.h"
+#include "widgets/groupedview.h"
+#include "widgets/actionitemdelegate.h"
 
 void Application::initObjects()
 {
@@ -46,5 +50,10 @@ void Application::initObjects()
     Utils::initRand();
     Song::initTranslations();
     Utils::setTouchFriendly(Settings::self()->touchFriendly());
-}
 
+    // Init sizes (before any widgets constructed!)
+    ItemView::setup();
+    FancyTabWidget::setup();
+    GroupedView::setup();
+    ActionItemDelegate::setup();
+}

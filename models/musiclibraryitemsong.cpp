@@ -56,12 +56,12 @@ void MusicLibraryItemSong::initGenres() const
 {
     // Reduce memory usage by only storing genres in a set if required...
     if (0==m_genres) {
-        QSet<QString> g=m_song.genre.split(QLatin1Char(';'), QString::SkipEmptyParts).toSet();
+        QStringList g=m_song.genres();
         if (g.count()<2) {
             m_genres=(QSet<QString> *)1;
         } else {
             m_genres=new QSet<QString>();
-            *m_genres=g;
+            *m_genres=g.toSet();
         }
     }
 }

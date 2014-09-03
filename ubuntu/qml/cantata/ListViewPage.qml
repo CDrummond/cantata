@@ -39,7 +39,7 @@ PageWithBottomEdge {
     property bool editable: false
     property alias model: listView.model
     property alias emptyViewVisible: emptyLabel.visible
-    property alias emptyViewText: emptyLabel.text
+    property alias emptyViewText: emptyLabel.text //TODO: Fix position in tablet view
 
     function add(index, replace, mainText) {
         backend.add(modelName, index, replace)

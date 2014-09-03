@@ -1053,6 +1053,18 @@ quint32 PlaylistsModel::allocateKey()
     return 0xFFFFFFFF;
 }
 
+PlaylistsModel::SongItem::SongItem(const Song &s, PlaylistItem *p)
+    : Song(s)
+    , parent(p)
+    , genreSet(0)
+{
+    QStringList g=genres();
+    if (g.count()>1) {
+        genreSet=new QSet<QString>();
+        *genreSet=g.toSet();
+    }
+}
+
 PlaylistsModel::PlaylistItem::PlaylistItem(const Playlist &pl, quint32 k)
     : name(pl.name)
     , time(0)
@@ -1075,7 +1087,7 @@ void PlaylistsModel::PlaylistItem::updateGenres()
     genres.clear();
     foreach (const SongItem *s, songs) {
         if (!s->genre.isEmpty()) {
-            genres.insert(s->genre);
+            genres+=s->allGenres();
         }
     }
 }

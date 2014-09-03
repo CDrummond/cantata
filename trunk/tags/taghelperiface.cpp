@@ -233,7 +233,7 @@ QString TagHelperIface::oggMimeType(const QString &fileName)
 int TagHelperIface::readRating(const QString &fileName)
 {
     DBUG << fileName;
-    int resp;
+    int resp=0;
     QByteArray message;
     QDataStream outStream(&message, QIODevice::WriteOnly);
     outStream << QString(__FUNCTION__) << fileName;

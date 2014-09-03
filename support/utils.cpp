@@ -715,7 +715,7 @@ QString Utils::systemDir(const QString &sub)
     #if defined Q_OS_WIN
     return fixPath(QCoreApplication::applicationDirPath())+(sub.isEmpty() ? QString() : (sub+constDirSep));
     #elif defined Q_OS_MAC
-    return fixPath(QCoreApplication::applicationDirPath())+QLatin1String("Contents/Resources/")+(sub.isEmpty() ? QString() : (sub+constDirSep));
+    return fixPath(QCoreApplication::applicationDirPath())+QLatin1String("../Resources/")+(sub.isEmpty() ? QString() : (sub+constDirSep));
     #else
     return fixPath(QString(INSTALL_PREFIX "/share/")+QCoreApplication::applicationName()+constDirSep+(sub.isEmpty() ? QString() : sub));
     #endif
@@ -726,7 +726,7 @@ QString Utils::helper(const QString &app)
     #if defined Q_OS_WIN
     return systemDir(QLatin1String("helpers"))+app+QLatin1String(".exe");
     #elif defined Q_OS_MAC
-    return systemDir(QLatin1String("helpers"))+app;
+    return fixPath(QCoreApplication::applicationDirPath())+app;
     #else
     return QString(INSTALL_PREFIX "/lib/")+QCoreApplication::applicationName()+constDirSep+app;
     #endif

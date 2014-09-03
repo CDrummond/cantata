@@ -82,7 +82,9 @@ MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString 
     , m_numTracks(0)
     , m_originalName(original!=data ? original : QString())
     , m_id(mbId)
+    #ifdef ENABLE_UBUNTU
     , m_coverRequested(false)
+    #endif
     , m_type(Song::Standard)
 {
 }

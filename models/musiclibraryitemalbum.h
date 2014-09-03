@@ -93,9 +93,9 @@ private:
     quint32 m_numTracks;
     QString m_originalName;
     QString m_id;
-    mutable bool m_coverRequested;
     mutable Song m_coverSong;
     #ifdef ENABLE_UBUNTU
+    mutable bool m_coverRequested;
     mutable QString m_coverName;
     #endif
     Song::Type m_type;

@@ -82,18 +82,21 @@
        </spacer>
       </item>
       <item row="4" column="0" rowspan="1" colspan="2">
-       <widget class="QGroupBox" name="ratingsGroupBox">
-       <property name="title">
-        <string>Song rating range</string>
-       </property>
        <layout class="QHBoxLayout" name="ratingsGroupBoxLayout">
+       <item>
+        <widget class="QLabel" name="ratingRangeLabel">
+         <property name="text">
+          <string>Song with ratings between:</string>
+         </property>
+        </widget>
+       </item>
         <item>
          <widget class="RatingWidget" name="ratingFrom"/>
         </item>
         <item>
          <widget class="QLabel" name="ratingToLabel">
           <property name="text">
-           <string> to </string>
+           <string> - </string>
           </property>
          </widget>
         </item>
@@ -114,7 +117,6 @@
          </spacer>
         </item>
        </layout>
-       </widget>
       </item>
       <item row="5" column="0">
        <widget class="UrlLabel" name="aboutLabel">

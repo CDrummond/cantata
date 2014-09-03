@@ -849,7 +849,7 @@ bool Settings::showStopButton()
 
 bool Settings::showRatingWidget()
 {
-    return cfg.get("showRatingWidget", true);
+    return cfg.get("showRatingWidget", false);
 }
 
 void Settings::removeConnectionDetails(const QString &v)

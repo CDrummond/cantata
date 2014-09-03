@@ -67,7 +67,7 @@ bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
     } else {
         PlaylistsModel::SongItem *s = static_cast<PlaylistsModel::SongItem *>(item);
 
-        if (!filterGenre.isEmpty() && s->genre!=filterGenre) {
+        if (!filterGenre.isEmpty() && !s->hasGenre(filterGenre)) {
             return false;
         }
         return matchesFilter(*s);

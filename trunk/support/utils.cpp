@@ -24,6 +24,7 @@
 #include "utils.h"
 #include "config.h"
 #include "localize.h"
+#include "thread.h"
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
@@ -293,11 +294,6 @@ bool Utils::createWorldReadableDir(const QString &dir, const QString &base, cons
     return status;
     #endif
 }
-
-struct Thread : public QThread
-{
-    using QThread::msleep;
-};
 
 void Utils::msleep(int msecs)
 {

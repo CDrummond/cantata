@@ -60,10 +60,12 @@ public:
     Thread(const QString &name, QObject *p=0);
     virtual ~Thread();
 
+    // Make QThread::msleep accessible!
+    using QThread::msleep;
+
     virtual void run();
 public Q_SLOTS:
     void stop() { quit(); }
 };
 
 #endif
-

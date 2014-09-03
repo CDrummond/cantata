@@ -65,10 +65,14 @@ public:
     struct PlaylistItem;
     struct SongItem : public Item, public Song
     {
-        SongItem() : parent(0) { }
-        SongItem(const Song &s, PlaylistItem *p=0) : Song(s), parent(p) { }
+        SongItem() : parent(0), genreSet(0) { }
+        SongItem(const Song &s, PlaylistItem *p=0);
+        virtual ~SongItem() { delete genreSet; }
         bool isPlaylist() { return false; }
+        bool hasGenre(const QString &g) const { return genreSet ? genreSet->contains(g) : genre==g; }
+        QSet<QString> allGenres() const { return genreSet ? *genreSet : genres().toSet(); }
         PlaylistItem *parent;
+        QSet<QString> *genreSet; // Only store genres in a set if more than 1
     };
 
     struct PlaylistItem : public Item

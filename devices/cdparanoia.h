@@ -58,7 +58,7 @@ public:
     double sizeOfTrack(int n); //in MiB
     int frameOffsetOfTrack(int n);
     bool isAudioTrack(int n);
-    void reset();
+    void reset() { init(); }
 
 private:
     bool init();

@@ -37,8 +37,6 @@ CdParanoia::CdParanoia(const QString &device, bool full, bool noSkip, bool playb
     , neverSkip(noSkip)
     , maxRetries(20)
 {
-    paranoia = 0;
-    drive = 0;
     QMutexLocker locker(&mutex);
     if (!lockedDevices.contains(device)) {
         dev = device;
@@ -125,11 +123,6 @@ int CdParanoia::lastSectorOfTrack(int track)
 //    return paranoia ? cdda_disc_lastsector(drive) : -1;
 //}
 
-void CdParanoia::reset()
-{
-    init();
-}
-
 bool CdParanoia::init()
 {
     free();
@@ -148,7 +141,8 @@ bool CdParanoia::init()
     return true;
 }
 
-void CdParanoia::free() {
+void CdParanoia::free()
+{
     if (paranoia) {
         paranoia_free(paranoia);
         paranoia = 0;

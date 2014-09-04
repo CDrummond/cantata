@@ -46,7 +46,7 @@ static void insertCodec(const QString &cmd, const QString &param,const QString &
         enc.outputParam=outputParam;
         if (-1!=index) {
             Encoder orig=installedEncoders.takeAt(index);
-            orig.name+=QLatin1String(" (ffmpeg)");
+            orig.name+=usingAvconv ? QLatin1String(" (avconv)") : QLatin1String(" (ffmpeg)");
             installedEncoders.insert(index, orig);
             enc.name+=QLatin1String(" (")+cmd+QChar(')');
             installedEncoders.insert(index+1, enc);

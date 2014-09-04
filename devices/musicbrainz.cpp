@@ -369,23 +369,17 @@ void MusicBrainz::lookup(bool full)
                 }
             }
         }
-    }
-    catch (MusicBrainz5::CConnectionError &e) {
+    } catch (MusicBrainz5::CConnectionError &e) {
         DBUG << "MusicBrainz error" << e.what();
-    }
-    catch (MusicBrainz5::CTimeoutError &e) {
+    } catch (MusicBrainz5::CTimeoutError &e) {
         DBUG << "MusicBrainz error - %1" << e.what();
-    }
-    catch (MusicBrainz5::CAuthenticationError &e) {
+    } catch (MusicBrainz5::CAuthenticationError &e) {
         DBUG << "MusicBrainz error - %1" << e.what();
-    }
-    catch (MusicBrainz5::CFetchError &e) {
+    } catch (MusicBrainz5::CFetchError &e) {
         DBUG << "MusicBrainz error - %1" << e.what();
-    }
-    catch (MusicBrainz5::CRequestError &e) {
+    } catch (MusicBrainz5::CRequestError &e) {
         DBUG << "MusicBrainz error - %1" << e.what();
-    }
-    catch (MusicBrainz5::CResourceNotFoundError &e) {
+    } catch (MusicBrainz5::CResourceNotFoundError &e) {
         DBUG << "MusicBrainz error - %1" << e.what();
     }
 

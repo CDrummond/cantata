@@ -210,6 +210,9 @@ static inline QString albumKey(const Song &s)
     if (Song::SingleTracks==s.type) {
         return QLatin1String("-single-tracks-");
     }
+    if (s.isStandardStream()) {
+        return QLatin1String("-stream-");
+    }
     #ifdef ENABLE_ONLINE_SERVICES
     if (isOnlineServiceImage(s)) {
         return s.onlineService();
@@ -1122,16 +1125,15 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
         key=cacheKey(song, size);
         pix=cache.object(key);
 
+        #ifndef ENABLE_UBUNTU
         if (!pix) {
             if (song.isArtistImageRequest() && song.isVariousArtists()) {
                 // Load VA image...
-                #ifndef ENABLE_UBUNTU
                 pix=new QPixmap(Icons::self()->variousArtistsIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-                #endif
             } else if (Song::SingleTracks==song.type) {
-                #ifndef ENABLE_UBUNTU
                 pix=new QPixmap(Icons::self()->albumIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-                #endif
+            } else if (song.isStandardStream()) {
+                pix=new QPixmap(Icons::self()->streamIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             }
             #ifdef ENABLE_ONLINE_SERVICES
             else if (isOnlineServiceImage(song)) {
@@ -1146,6 +1148,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                 cacheSizes.insert(size);
             }
         }
+        #endif
         if (!pix) {
             if (urgent) {
                 QImage cached=loadScaledCover(song, size);

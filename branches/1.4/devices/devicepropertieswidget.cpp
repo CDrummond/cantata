@@ -29,6 +29,7 @@
 #include "support/utils.h"
 #include <QValidator>
 #include <QTabWidget>
+#include <QApplication>
 
 class CoverNameValidator : public QValidator
 {
@@ -319,6 +320,18 @@ void DevicePropertiesWidget::transcoderChanged()
             transcoderValue->setVisible(false);
         }
     }
+
+    QWidget *win=window();
+    if (win) {
+        QSize was=win->size();
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+        win->setMinimumSize(QSize(0, 0));
+        win->adjustSize();
+        QSize now=win->size();
+        win->setMinimumSize(now);
+        win->resize(qMax(was.width(), now.width()), now.height());
+    }
+
     checkSaveable();
 }
 

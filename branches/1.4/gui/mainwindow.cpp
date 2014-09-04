@@ -443,7 +443,6 @@ MainWindow::MainWindow(QWidget *parent)
     } else {
         tabWidget->toggleTab(PAGE_CONTEXT, false);
     }
-    initSizes();
 
     expandInterfaceAction->setChecked(Settings::self()->showPlaylist());
     fullScreenAction->setEnabled(expandInterfaceAction->isChecked());
@@ -962,15 +961,6 @@ void MainWindow::addMenuAction(QMenu *menu, QAction *action)
 {
     menu->addAction(action);
     addAction(action); // Bind action to window, so that it works when fullscreen!
-}
-
-void MainWindow::initSizes()
-{
-    ItemView::setup();
-    FancyTabWidget::setup();
-    GroupedView::setup();
-    ActionItemDelegate::setup();
-    MusicLibraryItemAlbum::setup();
 }
 
 void MainWindow::showError(const QString &message, bool showActions)

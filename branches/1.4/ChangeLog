@@ -1,3 +1,14 @@
+1.4.2
+-----
+1. When guessing song details from filename (due to missing tags), remove any
+   extension - not just three letter extensions!
+2. In tag editor, only show '(Various)' hint for the 'All tracks' entry.
+3. Also catpitalise composer in tag editor.
+4. Resize device properties dialog when changing transcoder.
+5. Initialise sidebar icon sizes before constructing.
+6. Display multiple genres as separate entries in playlists page genre combo.
+7. Resize cover in grouped view if it is too wide.
+
 1.4.1
 -----
  1. Remove unused var warning when compiling without online services.

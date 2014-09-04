@@ -275,7 +275,7 @@ void Song::guessTags()
 
         if (!title.isEmpty()) {
             int dot=title.lastIndexOf('.');
-            if (dot==title.length()-4) {
+            if (dot>0 && dot<title.length()-2) {
                 title=title.left(dot);
             }
             static const QSet<QChar> constSeparators=QSet<QChar>() << QLatin1Char(' ') << QLatin1Char('-') << QLatin1Char('_') << QLatin1Char('.');
@@ -619,6 +619,16 @@ bool Song::capitalise()
     albumartist=capitalize(albumartist);
     album=capitalize(album);
     title=capitalize(title);
+    QString c=composer();
+    if (!c.isEmpty()) {
+        setComposer(capitalize(c));
+    }
+    /* Performer is not currently in tag editor...
+    QString p=performer();
+    if (!p.isEmpty()) {
+        setPerformer(capitalize(p));
+    }
+    */
 
     return artist!=origArtist || albumartist!=origAlbumArtist || album!=origAlbum || title!=origTitle;
 }

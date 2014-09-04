@@ -381,6 +381,19 @@ void TagEditor::setVariousHint()
         genre->setPlaceholderText(all.genre.isEmpty() && haveGenres ? TagSpinBox::variousStr() : QString());
         disc->setVarious(0==all.disc && haveDiscs);
         year->setVarious(0==all.year && haveYears);
+    } else {
+        artist->setPlaceholderText(QString());
+        album->setPlaceholderText(QString());
+        albumArtist->setPlaceholderText(QString());
+        if (composerSupport) {
+            composer->setPlaceholderText(QString());
+        }
+        if (commentSupport) {
+            comment->setPlaceholderText(QString());
+        }
+        genre->setPlaceholderText(QString());
+        disc->setVarious(false);
+        year->setVarious(false);
     }
 }
 

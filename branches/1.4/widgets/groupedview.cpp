@@ -360,6 +360,10 @@ public:
                 pix=cover ? *cover : (stream && !song.isCdda() ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(constCoverSize, constCoverSize);
             }
 
+            if (pix.width()>constCoverSize) {
+                pix=pix.scaled(constCoverSize, constCoverSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            }
+
             if (rtl) {
                 painter->drawPixmap(r.x()+r.width()-(pix.width()-constBorder), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
                 r.adjust(0, 0, -(constCoverSize+constBorder), 0);

@@ -360,8 +360,12 @@ public:
             if (isCollection) {
                 pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constCoverSize, constCoverSize);
             } else {
-                QPixmap *cover=stream ? 0 : Covers::self()->get(song, constCoverSize);
+                QPixmap *cover=/*stream ? 0 : */Covers::self()->get(song, constCoverSize);
                 pix=cover ? *cover : (stream && !song.isCdda() ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(constCoverSize, constCoverSize);
+            }
+
+            if (pix.width()>constCoverSize) {
+                pix=pix.scaled(constCoverSize, constCoverSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             }
 
             if (rtl) {

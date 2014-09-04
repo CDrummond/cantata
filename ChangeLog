@@ -36,17 +36,21 @@
 22. Show covers in playlist tree and list views.
 23. Use read-only editable combo for filename in tag editor, so that text can
     be selected.
-24. Also catpitalise composer in tag editor.
-25. Also read /com/canonical/desktop/interface/scrollbar-mode to determine if
+24. Also read /com/canonical/desktop/interface/scrollbar-mode to determine if
     overlay scrollbars have been disabled.
-26. When guessing song details from filename (due to missing tags), remove any
-    extension - not just three letter extensions!
-27. In tag editor, only show '(Various)' hint for the 'All tracks' entry.
-28. Add note about 'AlbumArtist' tag to initial settings wizard.
-29. Resize device properties dialog when changing transcoder.
-30. Initialise sidebar icon sizes before constructing.
-31. Use QDesktopWidget::logicalDpiX()/96.0 to set DPI scale factor.
-32. Display multiple genres as separate entries in playlists page genre combo.
+25. Add note about 'AlbumArtist' tag to initial settings wizard.
+26. Use QDesktopWidget::logicalDpiX()/96.0 to set DPI scale factor.
+
+1.4.2
+-----
+1. When guessing song details from filename (due to missing tags), remove any
+   extension - not just three letter extensions!
+2. In tag editor, only show '(Various)' hint for the 'All tracks' entry.
+3. Also catpitalise composer in tag editor.
+4. Resize device properties dialog when changing transcoder.
+5. Initialise sidebar icon sizes before constructing.
+6. Display multiple genres as separate entries in playlists page genre combo.
+7. Resize cover in grouped view if it is too wide.
 
 1.4.1
 -----

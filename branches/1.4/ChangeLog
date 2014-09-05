@@ -8,6 +8,8 @@
 5. Initialise sidebar icon sizes before constructing.
 6. Display multiple genres as separate entries in playlists page genre combo.
 7. Resize cover in grouped view if it is too wide.
+8. In context view, when creating links to similar artists compare artists
+   names case-insensitively.
 
 1.4.1
 -----

@@ -77,6 +77,21 @@ static QString buildUrl(const QString &artist, const QString &album=QString())
     return url.toString();
 }
 
+static QString checkHaveArtist(const QSet<QString> &mpdArtists, const QString &artist)
+{
+    if (mpdArtists.contains(artist)) {
+        return QLatin1String("<a href=\"")+buildUrl(artist)+QLatin1String("\">")+artist+QLatin1String("</a>");
+    } else {
+        // Check for AC/DC -> AC-DC
+        QString mod=artist;
+        mod=mod.replace("/", "-");
+        if (mod!=artist && mpdArtists.contains(mod)) {
+            return QLatin1String("<a href=\"")+buildUrl(mod)+QLatin1String("\">")+artist+QLatin1String("</a>");
+        }
+    }
+    return QString();
+}
+
 ArtistView::ArtistView(QWidget *parent)
     : View(parent)
     , currentSimilarJob(0)
@@ -432,21 +447,27 @@ QStringList ArtistView::parseSimilarResponse(const QByteArray &resp)
 void ArtistView::buildSimilar(const QStringList &artists)
 {
     QSet<QString> mpdArtists=MusicLibraryModel::self()->getAlbumArtists();
+    QSet<QString> mpdLowerArtists;
     bool first=true;
     foreach (QString artist, artists) {
         if (similarArtists.isEmpty()) {
             similarArtists=QLatin1String("<br/>")+View::subHeader(i18n("Similar Artists"));
         }
-        if (mpdArtists.contains(artist)) {
-            artist=QLatin1String("<a href=\"")+buildUrl(artist)+QLatin1String("\">")+artist+QLatin1String("</a>");
-        } else {
-            // Check for AC/DC -> AC-DC
-            QString mod=artist;
-            mod=mod.replace("/", "-");
-            if (mod!=artist && mpdArtists.contains(mod)) {
-                artist=QLatin1String("<a href=\"")+buildUrl(mod)+QLatin1String("\">")+artist+QLatin1String("</a>");
+        // Check if we have artist in collection...
+        QString artistLink=checkHaveArtist(mpdArtists, artist);
+        if (artistLink.isEmpty()) {
+            // ...and check case-insensitively...
+            if (mpdLowerArtists.isEmpty()) {
+                foreach (const QString &a, mpdArtists) {
+                    mpdLowerArtists.insert(a.toLower());
+                }
             }
+            artistLink=checkHaveArtist(mpdLowerArtists, artist.toLower());
         }
+        if (!artistLink.isEmpty()) {
+            artist=artistLink;
+        }
+
         if (first) {
             first=false;
         } else {

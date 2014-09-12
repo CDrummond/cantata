@@ -935,29 +935,19 @@ command:
 The following steps are used to compile Cantata, and create the OS X application
 bundle.
 
-1. Install Homebrew and use it to install the packages qt, cmake, oxygen-icons,
-   and ffmpeg.
-2. Open a terminal window in the source directory and run the following
-   commands, replacing <user> with your local username:
+These steps assume the following structure:
 
-  Create the build directory:
+    src/
+    build/
+    install/
+    icons/
 
-    mkdir build
-    cd build
-    cmake ..
-    make
-
-  Make the .app bundle:
-
-    sudo make install
-
-  Fix permissions on the .app bundle:
-
-    sudo chown -R <user>:staff cantata.app/
-
-  Copy icons to the .app bundle (assuming oxygen-icons was installed to default
-  location):
-
-    mkdir cantata.app/Contents/Resources/icons
-    cp -r /usr/local/share/icons/oxygen cantata.app/Contents/Resources/icons
-
+1. Install Qt5.3.1 from https://qt-project.org/downloads
+2. Install HomeBrew
+3. brew install cmake taglib ffmpeg speex
+4. Download oxygen icons required for Cantata from the following link
+    https://drive.google.com/file/d/0Bzghs6gQWi60cXlvUURjeEVRUms/edit?usp=sharing
+5. Unzip this *within* icons/
+6. Call cmake:
+    cmake ../trunk/ -DCMAKE_PREFIX_PATH=/Users/$USER/Qt/5.3/clang_64/ -DCMAKE_BUILD_TYPE=Release -DCANTATA_OXYGEN_DIR=`pwd`/../icons -DCMAKE_INSTALL_PREFIX=`pwd`/../install
+7. make install

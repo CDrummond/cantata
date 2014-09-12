@@ -111,10 +111,6 @@ static void raiseWindow(QWidget *w);
 #include <QString>
 #include <QTimer>
 #include <QToolBar>
-#if defined Q_OS_MAC && QT_VERSION >= 0x050000
-// QMacNativeToolBar requres Qt Mac Extras to be installed on Qt 5.0 and 5.1.
-#include <QMacNativeToolBar>
-#endif
 #if QT_VERSION >= 0x050000
 #include <QProcess>
 #endif
@@ -196,13 +192,8 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef Q_OS_WIN
     GtkStyle::applyTheme(this); // Despite its name, it *might* also apply touch style to spinboxes...
     #else
-    #if defined Q_OS_MAC && QT_VERSION>=0x050000
-    QMacNativeToolBar *topToolBar = new QMacNativeToolBar(this);
-    topToolBar->showInWindowForWidget(this);
-    #else // defined Q_OS_MAC && QT_VERSION>=0x050000
     setUnifiedTitleAndToolBarOnMac(true);
     QToolBar *topToolBar = addToolBar("ToolBar");
-    #endif // defined Q_OS_MAC && QT_VERSION>=0x050000
     toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     topToolBar->setObjectName("MainToolBar");
     topToolBar->addWidget(toolbar);

@@ -176,11 +176,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         cfg.beginGroup(n);
         details.hostname=cfg.get("host", name.isEmpty() ? mpdDefaults.host : QString());
         details.port=cfg.get("port", name.isEmpty() ? mpdDefaults.port : 6600);
-        #ifdef Q_OS_WIN
-        details.dir=Utils::fixPath(QDir::fromNativeSeparators(cfg.get("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music")));
-        #else
-        details.dir=Utils::fixPath(cfg.get("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
-        #endif
+        details.dir=cfg.getPath("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music");
         #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
         if (KWallet::Wallet::isEnabled()) {
             if (cfg.get("passwd", false)) {
@@ -448,7 +444,7 @@ int Settings::contextBackdropBlur()
 
 QString Settings::contextBackdropFile()
 {
-    return cfg.get("contextBackdropFile", QString());
+    return cfg.getPath("contextBackdropFile", QString());
 }
 
 bool Settings::contextDarkBackground()
@@ -620,7 +616,7 @@ int Settings::playQueueBackgroundBlur()
 
 QString Settings::playQueueBackgroundFile()
 {
-    return cfg.get("playQueueBackgroundFile", QString());
+    return cfg.getPath("playQueueBackgroundFile", QString());
 }
 
 bool Settings::playQueueConfirmClear()
@@ -874,7 +870,7 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     cfg.beginGroup(n);
     cfg.set("host", v.hostname);
     cfg.set("port", (int)v.port);
-    cfg.set("dir", v.dir);
+    cfg.setPath("dir", v.dir);
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     if (KWallet::Wallet::isEnabled()) {
         cfg.set("passwd", !v.password.isEmpty());
@@ -1070,7 +1066,7 @@ void Settings::saveContextBackdropBlur(int v)
 
 void Settings::saveContextBackdropFile(const QString &v)
 {
-    cfg.set("contextBackdropFile", v);
+    cfg.setPath("contextBackdropFile", v);
 }
 
 void Settings::saveContextDarkBackground(bool v)
@@ -1211,7 +1207,7 @@ void Settings::savePlayQueueBackgroundBlur(int v)
 
 void Settings::savePlayQueueBackgroundFile(const QString &v)
 {
-    cfg.set("playQueueBackgroundFile", v);
+    cfg.setPath("playQueueBackgroundFile", v);
 }
 
 void Settings::savePlayQueueConfirmClear(bool v)

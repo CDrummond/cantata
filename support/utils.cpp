@@ -122,6 +122,29 @@ QString Utils::fixPath(const QString &dir)
     return d;
 }
 
+#ifndef Q_OS_WIN
+static const QLatin1String constTilda("~");
+QString Utils::homeToTilda(const QString &s)
+{
+    QString hp=QDir::homePath();
+    if (s==hp) {
+        return constTilda;
+    }
+    if (s.startsWith(hp+constDirSepStr)) {
+        return constTilda+fixPath(s.mid(hp.length()));
+    }
+    return s;
+}
+
+QString Utils::tildaToHome(const QString &s)
+{
+    if (s==constTilda) {
+        return fixPath(QDir::homePath());
+    }
+    return s.startsWith(constTilda+constDirSep) ? fixPath(QDir::homePath()+constDirSepStr+s.mid(1)) : s;
+}
+#endif
+
 QString Utils::convertDirForDisplay(const QString &dir)
 {
     if (dir.isEmpty() || dir.startsWith(constHttp)) {
@@ -132,7 +155,8 @@ QString Utils::convertDirForDisplay(const QString &dir)
     if (d.endsWith(constDirSep)) {
         d=d.left(d.length()-1);
     }
-    return QDir::toNativeSeparators(d);
+    d=homeToTilda(QDir::toNativeSeparators(d));
+    return d.endsWith(constDirSep) ? d.left(d.length()-1) : d;
 }
 
 QString Utils::convertDirFromDisplay(const QString &dir)
@@ -145,7 +169,7 @@ QString Utils::convertDirFromDisplay(const QString &dir)
     if (d.startsWith(constHttp)) {
         return fixPath(d);
     }
-    return fixPath(QDir::fromNativeSeparators(d));
+    return tildaToHome(fixPath(QDir::fromNativeSeparators(d)));
 }
 
 QString Utils::getDir(const QString &file)

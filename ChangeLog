@@ -40,6 +40,8 @@
     overlay scrollbars have been disabled.
 25. Add note about 'AlbumArtist' tag to initial settings wizard.
 26. Use QDesktopWidget::logicalDpiX()/96.0 to set DPI scale factor.
+27. Expand ~/ QDir::homePath() when read from UI.
+28. Save QDir::homePath()/ as ~ in config file, and convert when read.
 
 1.4.2
 -----

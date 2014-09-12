@@ -10,6 +10,7 @@
 7. Resize cover in grouped view if it is too wide.
 8. In context view, when creating links to similar artists compare artists
    names case-insensitively.
+9. Fix downloading of podcasts when url is redirected.
 
 1.4.1
 -----

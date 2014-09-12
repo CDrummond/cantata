@@ -93,8 +93,6 @@ PodcastService::PodcastService(MusicModel *m)
     , rssUpdateTimer(0)
 {
     loaded=true;
-    setUseArtistImages(false);
-    setUseAlbumImages(false);
     QMetaObject::invokeMethod(this, "loadAll", Qt::QueuedConnection);
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(currentMpdSong(const Song &)));
     if (iconFile.isEmpty()) {
@@ -179,8 +177,8 @@ void PodcastService::rssJobFinished()
     bool isNew=j->property(constNewFeedProperty).toBool();
 
     if (j->ok()) {
-        if (updateUrls.contains(j->url())){
-            updateUrls.remove(j->url());
+        if (updateUrls.contains(j->origUrl())){
+            updateUrls.remove(j->origUrl());
             if (updateUrls.isEmpty()) {
                 lastRssUpdate=QDateTime::currentDateTime();
                 Settings::self()->saveLastRssUpdate(lastRssUpdate);
@@ -207,7 +205,7 @@ void PodcastService::rssJobFinished()
                 endInsertRows();
 //                emitNeedToSort();
             } else {
-                MusicLibraryItemPodcast *orig = getPodcast(j->url());
+                MusicLibraryItemPodcast *orig = getPodcast(j->origUrl());
                 if (!orig) {
                     delete podcast;
                     return;
@@ -268,13 +266,13 @@ void PodcastService::rssJobFinished()
         } else if (isNew) {
             delete podcast;
             if (MusicLibraryItemPodcast::VideoPodcast==loadStatus) {
-                emitError(i18n("Cantata only supports audio podcasts! %1 contains only video podcasts.", j->url().toString()), isNew);
+                emitError(i18n("Cantata only supports audio podcasts! %1 contains only video podcasts.", j->origUrl().toString()), isNew);
             } else {
-                emitError(i18n("Failed to parse %1", j->url().toString()), isNew);
+                emitError(i18n("Failed to parse %1", j->origUrl().toString()), isNew);
             }
         }
     } else {
-        emitError(i18n("Failed to download %1", j->url().toString()), isNew);
+        emitError(i18n("Failed to download %1", j->origUrl().toString()), isNew);
     }
     setBusy(!rssJobs.isEmpty() || !downloadJobs.isEmpty());
 }
@@ -354,7 +352,7 @@ void PodcastService::refreshSubscription(MusicLibraryItem *item)
 bool PodcastService::processingUrl(const QUrl &url) const
 {
     foreach (NetworkJob *j, rssJobs) {
-        if (j->url()==url) {
+        if (j->origUrl()==url) {
             return true;
         }
     }
@@ -373,7 +371,7 @@ void PodcastService::addUrl(const QUrl &url, bool isNew)
 bool PodcastService::downloadingEpisode(const QUrl &url) const
 {
     foreach (NetworkJob *j, downloadJobs) {
-        if (j->url()==url) {
+        if (j->origUrl()==url) {
             return true;
         }
     }
@@ -464,7 +462,7 @@ void PodcastService::downloadEpisode(const MusicLibraryItemPodcast *podcast, con
 void PodcastService::cancelDownload(const QUrl &url)
 {
     foreach (NetworkJob *j, downloadJobs) {
-        if (j->url()==url) {
+        if (j->origUrl()==url) {
             cancelDownload(j);
             downloadJobs.removeAll(j);
             break;
@@ -509,7 +507,7 @@ void PodcastService::downloadJobFinished()
             if (QFile::rename(partial, dest)) {
                 MusicLibraryItemPodcast *pod=getPodcast(job->property(constRssUrlProperty).toUrl());
                 if (pod) {
-                    MusicLibraryItemPodcastEpisode *song=getEpisode(pod, job->url());
+                    MusicLibraryItemPodcastEpisode *song=getEpisode(pod, job->origUrl());
                     if (song) {
                         song->setLocalPath(dest);
                         song->setDownloadProgress(-1);
@@ -567,7 +565,7 @@ void PodcastService::downloadPercent(int pc)
     }
     MusicLibraryItemPodcast *pod=getPodcast(job->property(constRssUrlProperty).toUrl());
     if (pod) {
-        MusicLibraryItemPodcastEpisode *song=getEpisode(pod, job->url());
+        MusicLibraryItemPodcastEpisode *song=getEpisode(pod, job->origUrl());
         if (song) {
             song->setDownloadProgress(pc);
             emitDataChanged(createIndex(song));

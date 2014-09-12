@@ -36,6 +36,7 @@
 #else
 #include <QSettings>
 #endif
+#include "utils.h"
 
 class Configuration
     #ifndef ENABLE_KDE_SUPPORT
@@ -97,6 +98,8 @@ public:
     void         removeEntry(const QString &key)                 { remove(key); }
     #endif
     int          get(const QString &key, int def, int min, int max);
+    QString      getPath(const QString &key, const QString &def);
+    void         setPath(const QString &key, const QString &val) { return set(key, Utils::homeToTilda(val)); }
 
 private:
     #ifdef ENABLE_KDE_SUPPORT

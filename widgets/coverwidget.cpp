@@ -55,6 +55,9 @@ CoverWidget::~CoverWidget()
 
 void CoverWidget::setSize(int min)
 {
+    #ifdef Q_OS_MAC
+    min*=0.9;
+    #endif
     setFixedSize(min, min);
 }
 

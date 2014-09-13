@@ -89,6 +89,9 @@
 #if !defined Q_OS_WIN && !defined Q_OS_MAC
 #include "devices/mountpoints.h"
 #endif
+#ifdef Q_OS_MAC
+#include "support/windowmanager.h"
+#endif
 #ifdef ENABLE_DYNAMIC
 #include "dynamic/dynamicpage.h"
 #include "dynamic/dynamic.h"
@@ -194,6 +197,11 @@ MainWindow::MainWindow(QWidget *parent)
     #else
     setUnifiedTitleAndToolBarOnMac(true);
     QToolBar *topToolBar = addToolBar("ToolBar");
+    #ifdef Q_OS_MAC
+    WindowManager *wm=new WindowManager(topToolBar);
+    wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
+    wm->registerWidgetAndChildren(topToolBar);
+    #endif
     toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     topToolBar->setObjectName("MainToolBar");
     topToolBar->addWidget(toolbar);

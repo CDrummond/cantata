@@ -40,6 +40,11 @@
 
 GLOBAL_STATIC(Icons, instance)
 
+#ifdef Q_OS_MAC
+static const QColor macMonoIconCol(96, 96, 96);
+static const QColor macMonoIconColSel(240, 240, 240);
+#endif
+
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
 
 static const int constDarkLimit=80;
@@ -319,7 +324,7 @@ static Icon loadSidebarIcon(const QString &name, const QColor &normal, const QCo
     return loadMonoSvgIcon(QLatin1String("sidebar"), name, normal, selected);
 }
 
-#if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
+#if !defined Q_OS_WIN && !defined ENABLE_UBUNTU
 static void setDisabledOpacity(Icon &icon)
 {
     static const double constDisabledOpacity=0.5;
@@ -480,8 +485,13 @@ void Icons::initSidebarIcons()
 {
     if (Settings::self()->monoSidebarIcons()) {
         monoSb=true;
+        #ifdef Q_OS_MAC
+        QColor textCol=macMonoIconCol;
+        QColor highlightedTexCol=macMonoIconColSel;
+        #else
         QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
         QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
+        #endif
         playqueueIcon=loadSidebarIcon(QLatin1String("playqueue"), textCol, highlightedTexCol);
         artistsIcon=loadSidebarIcon(QLatin1String("artists"), textCol, highlightedTexCol);
         albumsIcon=loadSidebarIcon(QLatin1String("albums"), textCol, highlightedTexCol);
@@ -536,10 +546,16 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     Q_UNUSED(toolbarText)
     #endif
     QColor stdColor=calcIconColor();
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
+    #if !defined Q_OS_WIN && !defined ENABLE_UBUNTU
+    #ifndef Q_OS_MAC
     if (GtkStyle::useSymbolicIcons()) {
+    #endif
         bool rtl=QApplication::isRightToLeft();
+        #ifdef Q_OS_MAC
+        QColor col=macMonoIconCol;
+        #else
         QColor col=GtkStyle::symbolicColor();
+        #endif
         toolbarPrevIcon=loadMediaIcon(QLatin1String(rtl ? "prev-rtl" : "prev"), col, col);
         toolbarPlayIcon=loadMediaIcon(QLatin1String(rtl ? "play-rtl" : "play"), col, col);
         toolbarPauseIcon=loadMediaIcon(QLatin1String("pause"), col, col);
@@ -556,7 +572,9 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
             toolbarMenuIcon=createMenuIcon(col);
         }
         #endif
+    #ifndef Q_OS_MAC
     } else
+    #endif
     #endif
     {
         #ifdef USE_SYSTEM_MENU_ICON
@@ -578,7 +596,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
         infoIcon=Icon("dialog-information");
     }
 
-    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN && !defined Q_OS_MAC
+    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
     if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
         QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
         contextIcon=loadSidebarIcon("info", col, col);
@@ -587,18 +605,18 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
         contextIcon=Icon("dialog-information");
 
     if (toolbarPrevIcon.isNull()) {
-        toolbarPrevIcon=Icon::getMediaIcon("media-skip-backward");
+        toolbarPrevIcon=Icon("media-skip-backward");
     }
     if (toolbarPlayIcon.isNull()) {
-        toolbarPlayIcon=Icon::getMediaIcon("media-playback-start");
+        toolbarPlayIcon=Icon("media-playback-start");
     }
     if (toolbarPauseIcon.isNull()) {
-        toolbarPauseIcon=Icon::getMediaIcon("media-playback-pause");
+        toolbarPauseIcon=Icon("media-playback-pause");
     }
     if (toolbarStopIcon.isNull()) {
-        toolbarStopIcon=Icon::getMediaIcon("media-playback-stop");
+        toolbarStopIcon=Icon("media-playback-stop");
     }
     if (toolbarNextIcon.isNull()) {
-        toolbarNextIcon=Icon::getMediaIcon("media-skip-forward");
+        toolbarNextIcon=Icon("media-skip-forward");
     }
 }

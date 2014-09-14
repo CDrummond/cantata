@@ -268,7 +268,9 @@ MainWindow::MainWindow(QWidget *parent)
     songInfoAction->setShortcut(Qt::Key_F12);
     songInfoAction->setCheckable(true);
     fullScreenAction = ActionCollection::get()->createAction("fullScreen", i18n("Full Screen"), menuIcons ? "view-fullscreen" : "");
+    #ifndef Q_OS_MAC
     fullScreenAction->setShortcut(Qt::Key_F11);
+    #endif
     randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"), Icons::self()->shuffleIcon);
     repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"), Icons::self()->repeatIcon);
     singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), Icons::self()->singleIcon, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
@@ -2028,7 +2030,9 @@ void MainWindow::showSongInfo()
 void MainWindow::fullScreen()
 {
     if (expandInterfaceAction->isChecked()) {
+        #ifndef Q_OS_MAC
         fullScreenLabel->setVisible(!isFullScreen());
+        #endif
         expandInterfaceAction->setEnabled(isFullScreen());
         if (isFullScreen()) {
             showNormal();

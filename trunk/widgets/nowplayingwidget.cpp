@@ -41,6 +41,7 @@
 #include <QMouseEvent>
 #include <QSlider>
 #include <QToolTip>
+#include <QSpacerItem>
 
 class ProxyStyle : public QProxyStyle
 {
@@ -280,6 +281,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     botLayout->addWidget(artist);
     botLayout->addWidget(time);
     layout->addLayout(botLayout);
+    layout->addItem(new QSpacerItem(1, space/4, QSizePolicy::Fixed, QSizePolicy::Fixed));
     layout->addWidget(slider);
     connect(slider, SIGNAL(sliderPressed()), this, SLOT(pressed()));
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));

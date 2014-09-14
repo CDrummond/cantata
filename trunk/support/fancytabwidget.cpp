@@ -253,6 +253,7 @@ void FancyTabProxyStyle::polish(QPalette &palette)
 
 bool FancyTabProxyStyle::eventFilter(QObject* o, QEvent* e)
 {
+    #ifndef Q_OS_MAC
     QTabBar *bar = qobject_cast<QTabBar*>(o);
     if (bar && (e->type() == QEvent::MouseMove || e->type() == QEvent::Leave)) {
         QMouseEvent *event = static_cast<QMouseEvent*>(e);
@@ -264,6 +265,7 @@ bool FancyTabProxyStyle::eventFilter(QObject* o, QEvent* e)
             bar->update();
         }
     }
+    #endif
 
     return false;
 }
@@ -271,7 +273,9 @@ bool FancyTabProxyStyle::eventFilter(QObject* o, QEvent* e)
 FancyTab::FancyTab(FancyTabBar* tabbar)
     : QWidget(tabbar), tabbar(tabbar), faderValue(0)
 {
+    #ifndef Q_OS_MAC
     animator.setPropertyName("fader");
+    #endif
     animator.setTargetObject(this);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 }

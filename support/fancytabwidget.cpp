@@ -39,6 +39,9 @@
 #include "gtkstyle.h"
 #include "action.h"
 #include "utils.h"
+#ifdef Q_OS_MAC
+#include "osxstyle.h"
+#endif
 #include <QHBoxLayout>
 #include <QMouseEvent>
 #include <QPainter>
@@ -202,13 +205,22 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
         if (!selected && GtkStyle::isActive()) {
             GtkStyle::drawSelection(styleOpt, p, (fader*1.0)/150.0);
         } else {
+            #ifdef Q_OS_MAC
+            OSXStyle::self()->drawSelection(styleOpt, p, selected ? 1.0 : (fader*1.0)/150.0);
+            #else
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, p, 0);
+            #endif
         }
     }
 
     int textFlags = Qt::AlignTop | Qt::AlignVCenter;
+    #ifdef Q_OS_MAC
+    p->setPen(selected && option->state&State_Active
+              ? OSXStyle::self()->viewPalette().highlightedText().color() : OSXStyle::self()->viewPalette().foreground().color());
+    #else
     p->setPen(selected && option->state&State_Active
               ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
+    #endif
 
     drawIcon(v3Opt->icon, iconRect, p, v3Opt->iconSize,
              selected && option->state&State_Active);
@@ -490,7 +502,11 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
         if (!selected && gtkStyle) {
             GtkStyle::drawSelection(styleOpt, painter, tabs[tabIndex]->fader()/150.0);
         } else {
+            #ifdef Q_OS_MAC
+            OSXStyle::self()->drawSelection(styleOpt, painter, selected ? 1.0 : tabs[tabIndex]->fader()/150.0);
+            #else
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, painter, 0);
+            #endif
         }
     }
 
@@ -500,7 +516,12 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
         QRect tabIconRect(tabTextRect);
         tabIconRect.adjust(+4, +4, -4, -4);
         tabTextRect.translate(0, -2);
-        painter->setPen(selected ? palette().highlightedText().color() : palette().foreground().color());
+
+        #ifdef Q_OS_MAC
+        painter->setPen(selected ? OSXStyle::self()->viewPalette().highlightedText().color() : OSXStyle::self()->viewPalette().foreground().color());
+        #else
+        painter->setPen(selected ? QApplication::palette().highlightedText().color() : palette().foreground().color());
+        #endif
         int textFlags = Qt::AlignCenter | Qt::AlignBottom;
         painter->drawText(tabTextRect, textFlags, tabText);
 

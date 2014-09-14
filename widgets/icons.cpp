@@ -37,13 +37,11 @@
 #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
 #include "support/gtkstyle.h"
 #endif
+#ifdef Q_OS_MAC
+#include "support/osxstyle.h"
+#endif
 
 GLOBAL_STATIC(Icons, instance)
-
-#ifdef Q_OS_MAC
-static const QColor macMonoIconCol(96, 96, 96);
-static const QColor macMonoIconColSel(240, 240, 240);
-#endif
 
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
 
@@ -486,8 +484,8 @@ void Icons::initSidebarIcons()
     if (Settings::self()->monoSidebarIcons()) {
         monoSb=true;
         #ifdef Q_OS_MAC
-        QColor textCol=macMonoIconCol;
-        QColor highlightedTexCol=macMonoIconColSel;
+        QColor textCol=OSXStyle::self()->monoIconColor();
+        QColor highlightedTexCol=OSXStyle::self()->viewPalette().highlightedText().color();
         #else
         QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
         QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
@@ -552,7 +550,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     #endif
         bool rtl=QApplication::isRightToLeft();
         #ifdef Q_OS_MAC
-        QColor col=macMonoIconCol;
+        QColor col=OSXStyle::self()->monoIconColor();
         #else
         QColor col=GtkStyle::symbolicColor();
         #endif

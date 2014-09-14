@@ -314,8 +314,11 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             case COL_RATING:
                 return int(Qt::AlignCenter);
             }
+        case Cantata::Role_InitiallyHidden:
+            return COL_YEAR==section || COL_DISC==section || COL_GENRE==section || COL_PRIO==section ||
+                   COL_COMPOSER==section || COL_PERFORMER==section || COL_RATING==section;
         case Cantata::Role_Hideable:
-            return COL_YEAR==section || COL_DISC==section || COL_GENRE==section || COL_PRIO==section || COL_COMPOSER==section || COL_PERFORMER==section || COL_RATING==section;
+            return COL_TITLE!=section && COL_ARTIST!=section;
         case Cantata::Role_Width:
             switch (section) {
             case COL_TRACK:     return 0.075;

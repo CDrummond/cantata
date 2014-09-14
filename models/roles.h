@@ -61,6 +61,7 @@ namespace Cantata {
 
         // TableView...
         Role_Width,
+        Role_InitiallyHidden,
         Role_Hideable,
 
         // PlayQueueModel...

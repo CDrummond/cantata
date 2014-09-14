@@ -1110,7 +1110,8 @@ void MainWindow::streamUrl(const QString &u)
 
 void MainWindow::refreshDbPromp()
 {
-    if (QDialogButtonBox::GnomeLayout==style()->styleHint(QStyle::SH_DialogButtonLayout)) {
+    int btnLayout=style()->styleHint(QStyle::SH_DialogButtonLayout);
+    if (QDialogButtonBox::GnomeLayout==btnLayout || QDialogButtonBox::MacLayout==btnLayout) {
         messageWidget->setActions(QList<QAction*>() << cancelAction << doDbRefreshAction);
     } else {
         messageWidget->setActions(QList<QAction*>() << doDbRefreshAction << cancelAction);
@@ -1827,7 +1828,8 @@ void MainWindow::playQueueItemActivated(const QModelIndex &index)
 void MainWindow::promptClearPlayQueue()
 {
     if (Settings::self()->playQueueConfirmClear()) {
-        if (QDialogButtonBox::GnomeLayout==style()->styleHint(QStyle::SH_DialogButtonLayout)) {
+        int btnLayout=style()->styleHint(QStyle::SH_DialogButtonLayout);
+        if (QDialogButtonBox::GnomeLayout==btnLayout || QDialogButtonBox::MacLayout==btnLayout) {
             messageWidget->setActions(QList<QAction*>() << cancelAction << clearPlayQueueAction);
         } else {
             messageWidget->setActions(QList<QAction*>() << clearPlayQueueAction << cancelAction);

@@ -571,7 +571,11 @@ FancyTabWidget::FancyTabWidget(QWidget *parent, bool allowContextMenu)
 
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->setMargin(0);
+    #ifdef Q_OS_MAC
+    mainLayout->setSpacing(1);
+    #else
     mainLayout->setSpacing(0);
+    #endif
     mainLayout->addWidget(sideWidget);
     mainLayout->addLayout(topLayout);
     setLayout(mainLayout);

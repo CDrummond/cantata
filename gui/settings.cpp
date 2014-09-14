@@ -848,6 +848,11 @@ bool Settings::showRatingWidget()
     return cfg.get("showRatingWidget", false);
 }
 
+bool Settings::infoTooltips()
+{
+    return cfg.get("infoTooltips", true);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1364,17 +1369,22 @@ void Settings::saveFilteredOnly(bool v)
 
 void Settings::saveShowCoverWidget(bool v)
 {
-    return cfg.set("showCoverWidget", v);
+    cfg.set("showCoverWidget", v);
 }
 
 void Settings::saveShowStopButton(bool v)
 {
-    return cfg.set("showStopButton", v);
+    cfg.set("showStopButton", v);
 }
 
 void Settings::saveShowRatingWidget(bool v)
 {
-    return cfg.set("showRatingWidget", v);
+    cfg.set("showRatingWidget", v);
+}
+
+void Settings::saveInfoTooltips(bool v)
+{
+    cfg.set("infoTooltips", v);
 }
 
 void Settings::save()

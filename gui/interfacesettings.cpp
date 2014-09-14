@@ -289,6 +289,7 @@ void InterfaceSettings::load()
     playlistsViewChanged();
     playQueueViewChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
+    infoTooltips->setChecked(Settings::self()->infoTooltips());
     touchFriendly->setChecked(Settings::self()->touchFriendly());
     showStopButton->setChecked(Settings::self()->showStopButton());
     showCoverWidget->setChecked(Settings::self()->showCoverWidget());
@@ -373,6 +374,7 @@ void InterfaceSettings::save()
 
     Settings::self()->savePlayQueueConfirmClear(playQueueConfirmClear->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
+    Settings::self()->saveInfoTooltips(infoTooltips->isChecked());
     Settings::self()->saveTouchFriendly(touchFriendly->isChecked());
     Settings::self()->saveShowStopButton(showStopButton->isChecked());
     Settings::self()->saveShowCoverWidget(showCoverWidget->isChecked());

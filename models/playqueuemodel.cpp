@@ -589,6 +589,9 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         break;
     }
     case Qt::ToolTipRole: {
+        if (!Settings::self()->infoTooltips()) {
+            return QVariant();
+        }
         Song s=songs.at(index.row());
         if (s.album.isEmpty() && s.isStream()) {
             return basicPath(s);

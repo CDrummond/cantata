@@ -186,6 +186,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return Icons::self()->albumIcon;
         #endif
         case Qt::ToolTipRole:
+            if (!Settings::self()->infoTooltips()) {
+                return QVariant();
+            }
             return 0==al->songs.count()
                     ? QString()
                     : (al->artist+QLatin1Char('\n')+al->albumDisplay()+QLatin1Char('\n')+
@@ -230,6 +233,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return Song::Playlist==si->type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
         #endif
         case Qt::ToolTipRole:
+            if (!Settings::self()->infoTooltips()) {
+                return QVariant();
+            }
             return si->toolTip();
         case Cantata::Role_MainText:
         case Qt::DisplayRole:

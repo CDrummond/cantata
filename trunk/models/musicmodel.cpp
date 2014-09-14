@@ -37,6 +37,7 @@
 #include "roles.h"
 #include "support/localize.h"
 #include "gui/plurals.h"
+#include "gui/settings.h"
 #include "widgets/icons.h"
 #include "gui/covers.h"
 #include <QStringList>
@@ -144,6 +145,9 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         }
         return item->displayData();
     case Qt::ToolTipRole:
+        if (!Settings::self()->infoTooltips()) {
+            return QVariant();
+        }
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             #ifdef ENABLE_ONLINE_SERVICES
             if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {

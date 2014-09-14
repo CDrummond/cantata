@@ -204,6 +204,9 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         return item->data();
     case Qt::ToolTipRole:
+        if (!Settings::self()->infoTooltips()) {
+            return QVariant();
+        }
         return 0==item->childCount()
             ? item->data()
             : item->data()+"\n"+Plurals::entries(item->childCount());

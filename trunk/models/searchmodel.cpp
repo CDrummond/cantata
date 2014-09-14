@@ -27,6 +27,7 @@
 #include "mpd/mpdconnection.h"
 #include "playqueuemodel.h"
 #include "gui/covers.h"
+#include "gui/settings.h"
 #include <QString>
 #include <QVariant>
 #include <QMimeData>
@@ -216,6 +217,9 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         }
         return song->entryName();
     case Qt::ToolTipRole:
+        if (!Settings::self()->infoTooltips()) {
+            return QVariant();
+        }
         return song->toolTip();
     case Cantata::Role_MainText:
         return song->title.isEmpty() ? song->file : song->trackAndTitleStr();

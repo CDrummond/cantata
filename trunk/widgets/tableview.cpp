@@ -55,6 +55,7 @@ void TableView::initHeader()
 
     StretchHeaderView *hdr=qobject_cast<StretchHeaderView *>(header());
     QList<int> hideable;
+    QList<int> initiallyHidden;
     if (!menu) {
         hdr->SetStretchEnabled(true);
         stretchToggled(true);
@@ -63,6 +64,9 @@ void TableView::initHeader()
             hdr->SetColumnWidth(i, model()->headerData(i, Qt::Horizontal, Cantata::Role_Width).toDouble());
             if (model()->headerData(i, Qt::Horizontal, Cantata::Role_Hideable).toBool()) {
                 hideable.append(i);
+            }
+            if (model()->headerData(i, Qt::Horizontal, Cantata::Role_InitiallyHidden).toBool()) {
+                initiallyHidden.append(i);
             }
         }
         #if QT_VERSION >= 0x050000
@@ -76,7 +80,7 @@ void TableView::initHeader()
     //Restore state
     QByteArray state=Settings::self()->headerState(configName);
     if (state.isEmpty()) {
-        foreach (int i, hideable) {
+        foreach (int i, initiallyHidden) {
             hdr->HideSection(i);
         }
     } else {

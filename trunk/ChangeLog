@@ -42,6 +42,7 @@
 26. Use QDesktopWidget::logicalDpiX()/96.0 to set DPI scale factor.
 27. Expand ~/ QDir::homePath() when read from UI.
 28. Save QDir::homePath()/ as ~ in config file, and convert when read.
+29. Allow all bar title and artist columns to be hidden in playqueue.
 
 1.4.2
 -----

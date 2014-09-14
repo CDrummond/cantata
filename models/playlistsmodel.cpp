@@ -220,8 +220,9 @@ QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, in
             case COL_YEAR:
                 return int(Qt::AlignVCenter|Qt::AlignRight);
             }
+        case Cantata::Role_InitiallyHidden:
         case Cantata::Role_Hideable:
-            return COL_YEAR==section || COL_GENRE==section || COL_COMPOSER==section || COL_PERFORMER==section ? true : false;
+            return COL_YEAR==section || COL_GENRE==section || COL_COMPOSER==section || COL_PERFORMER==section;
         case Cantata::Role_Width:
             switch (section) {
             case COL_TITLE:     return 0.4;

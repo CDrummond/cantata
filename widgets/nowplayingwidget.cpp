@@ -30,6 +30,9 @@
 #include "support/squeezedtextlabel.h"
 #include "support/utils.h"
 #include "support/localize.h"
+#ifdef Q_OS_MAC
+#include "support/osxstyle.h"
+#endif
 #include <QLabel>
 #include <QBoxLayout>
 #include <QProxyStyle>
@@ -156,22 +159,27 @@ void PosSlider::updateStyleSheet()
     int lineWidth=maximumHeight()>12 ? 2 : 1;
 
     QString boderFormat=QLatin1String("QSlider::groove:horizontal { border: %1px solid rgba(%2, %3, %4, %5); "
-                                      "background: solid rgba(%6, %7, %8, %9); "
-                                      "border-radius: %10px } ");
+                                      "background: solid rgba(%2, %3, %4, %6); "
+                                      "border-radius: %7px } ");
     QString fillFormat=QLatin1String("QSlider::")+QLatin1String(isRightToLeft() ? "add" : "sub")+
-                       QLatin1String("-page:horizontal {border: %1px solid palette(highlight); "
-                                     "background: solid palette(highlight); "
-                                     "border-radius: %2px; margin: %3px;}")+
+                       QLatin1String("-page:horizontal {border: %1px solid rgb(%3, %4, %5); "
+                                     "background: solid rgb(%3, %4, %5); "
+                                     "border-radius: %1px; margin: %2px;}")+
                        QLatin1String("QSlider::")+QLatin1String(isRightToLeft() ? "add" : "sub")+
                        QLatin1String("-page:horizontal:disabled {border: 0px; background: solid rgba(0, 0, 0, 0)}");
     QLabel lbl(parentWidget());
     lbl.ensurePolished();
     QColor textColor=lbl.palette().color(QPalette::Active, QPalette::Text);
+    #ifdef Q_OS_MAC
+    QColor fillColor=OSXStyle::self()->viewPalette().highlight().color();
+    #else
+    QColor fillColor=palette().highlight().color();
+    #endif
     int alpha=textColor.value()<32 ? 96 : 64;
 
     setStyleSheet(boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha)
-                             .arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/4).arg(lineWidth*2)+
-                  fillFormat.arg(lineWidth).arg(lineWidth).arg(lineWidth*2));
+                             .arg(alpha/4).arg(lineWidth*2)+
+                  fillFormat.arg(lineWidth).arg(lineWidth*2).arg(fillColor.red()).arg(fillColor.green()).arg(fillColor.blue()));
 }
 
 void PosSlider::mouseMoveEvent(QMouseEvent *e)

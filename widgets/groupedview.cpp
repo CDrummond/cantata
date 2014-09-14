@@ -34,6 +34,9 @@
 #include "widgets/icons.h"
 #include "widgets/ratingwidget.h"
 #include "support/gtkstyle.h"
+#ifdef Q_OS_MAC
+#include "support/osxstyle.h"
+#endif
 #include "support/utils.h"
 #include "models/roles.h"
 #include <QStyledItemDelegate>
@@ -240,7 +243,7 @@ public:
             } else {
                 painter->save();
                 painter->setOpacity(0.75);
-                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
+                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, view);
                 painter->restore();
             }
             painter->save();
@@ -248,7 +251,7 @@ public:
             if (mouseOver && gtk) {
                 GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
             } else {
-                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
+                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, view);
             }
             painter->restore();
             if (!state && !view->isExpanded(song.key, collection) && view->isCurrentAlbum(song.key)) {
@@ -261,7 +264,7 @@ public:
             if (mouseOver && gtk) {
                 GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
             } else {
-                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
+                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, view);
             }
         }
         QString title;
@@ -338,7 +341,13 @@ public:
                 border.adjust(0, textHeight+constBorder, 0, 0);
             }
             QLinearGradient g(border.topLeft(), border.bottomLeft());
+            #ifdef Q_OS_MAC
+            QColor gradCol(OSXStyle::self()->viewPalette().color(QPalette::Highlight));
+            QColor borderCol(OSXStyle::self()->viewPalette().color(QPalette::HighlightedText));
+            #else
             QColor gradCol(QApplication::palette().color(QPalette::Highlight));
+            QColor borderCol(QApplication::palette().color(QPalette::HighlightedText));
+            #endif
             gradCol.setAlphaF(option.state&QStyle::State_Selected ? 0.6 : 0.45);
             g.setColorAt(0, gradCol.dark(165));
             g.setColorAt(1, gradCol.light(165));
@@ -346,7 +355,7 @@ public:
             painter->fillPath(Utils::buildPath(border, 3), g);
             painter->setPen(QPen(gradCol, 1));
             painter->drawPath(Utils::buildPath(border.adjusted(-1, -1, 1, 1), 3.5));
-            painter->setPen(QPen(QApplication::palette().color(QPalette::HighlightedText), 1));
+            painter->setPen(QPen(borderCol, 1));
             painter->drawPath(Utils::buildPath(border, 3));
             painter->setRenderHint(QPainter::Antialiasing, false);
         }

@@ -209,8 +209,11 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
     }
 
     switch (role) {
-    case Qt::DisplayRole:
     case Qt::ToolTipRole:
+        if (!Settings::self()->infoTooltips()) {
+            return QVariant();
+        }
+    case Qt::DisplayRole:
         return entryList.at(index.row()).name;
     case Qt::DecorationRole:
         return IS_ACTIVE(entryList.at(index.row()).name) ? QIcon::fromTheme("media-playback-start") : Icons::self()->dynamicRuleIcon;

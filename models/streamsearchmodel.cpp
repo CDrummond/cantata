@@ -25,10 +25,11 @@
 #include "widgets/icons.h"
 #include "roles.h"
 #include "support/localize.h"
-#include "gui/plurals.h"
 #include "playqueuemodel.h"
 #include "network/networkaccessmanager.h"
 #include "gui/stdactions.h"
+#include "gui/settings.h"
+#include "gui/plurals.h"
 #include <QString>
 #include <QVariant>
 #include <QXmlStreamReader>
@@ -111,6 +112,9 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         return item->name;
     case Qt::ToolTipRole:
+        if (!Settings::self()->infoTooltips()) {
+            return QVariant();
+        }
         return item->isCategory() ? item->name : (item->name+QLatin1String("<br><small><i>")+item->url+QLatin1String("</i></small>"));
     case Cantata::Role_SubText:
         if (item->isCategory()) {

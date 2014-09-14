@@ -659,6 +659,9 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         return item->name;
     case Qt::ToolTipRole:
+        if (!Settings::self()->infoTooltips()) {
+            return QVariant();
+        }
         return item->isCategory() ? item->name : (item->name+QLatin1String("<br><small><i>")+item->url+QLatin1String("</i></small>"));
     case Cantata::Role_SubText:
         if (item->isCategory()) {

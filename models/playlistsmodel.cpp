@@ -36,6 +36,7 @@
 #include "roles.h"
 #include "gui/plurals.h"
 #include "gui/covers.h"
+#include "gui/settings.h"
 #include "support/localize.h"
 #include "support/utils.h"
 #include "support/globalstatic.h"
@@ -331,6 +332,9 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             }
             return pl->visibleName();
         case Qt::ToolTipRole:
+            if (!Settings::self()->infoTooltips()) {
+                return QVariant();
+            }
             if (!pl->loaded) {
                 pl->loaded=true;
                 emit playlistInfo(pl->name);
@@ -453,6 +457,9 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             }
             return s->entryName();
         case Qt::ToolTipRole:
+            if (!Settings::self()->infoTooltips()) {
+                return QVariant();
+            }
             return s->toolTip();
         #ifndef ENABLE_UBUNTU
         case Qt::DecorationRole:

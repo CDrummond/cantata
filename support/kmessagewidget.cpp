@@ -124,7 +124,11 @@ void KMsgWidgetPrivate::createLayout()
     Q_FOREACH(QAction* action, q->actions()) {
         QToolButton* button = new QToolButton(content);
         button->setDefaultAction(action);
-        button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        if (content->style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons)) {
+            button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        } else {
+            button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+        }
         buttons.append(button);
     }
 

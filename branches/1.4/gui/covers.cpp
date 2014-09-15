@@ -983,6 +983,18 @@ void Covers::stop()
 
 static inline Song setSizeRequest(Song s, int size) { s.setSpecificSizeRequest(size); return s; }
 
+void Covers::clearNameCache()
+{
+    mutex.lock();
+    filenames.clear();
+    mutex.unlock();
+}
+
+void Covers::clearScaleCache()
+{
+    cache.clear();
+}
+
 QPixmap * Covers::getScaledCover(const Song &song, int size)
 {
     if (size<4) {

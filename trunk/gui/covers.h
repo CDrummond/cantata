@@ -218,6 +218,8 @@ public:
     #endif
     void stop();
 
+    void clearNameCache();
+    void clearScaleCache();
     QPixmap * getScaledCover(const Song &song, int size);
     QPixmap * saveScaledCover(const QImage &img, const Song &song, int size);
     // Get cover image of specified size. If this is not found 0 will be returned, and the cover

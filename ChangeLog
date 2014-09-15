@@ -62,6 +62,8 @@
  9. Fix downloading of podcasts when url is redirected.
 10. If 'force single click' is disabled, then double-click on icon view will
     not add artist/album to playqueue but navigate into.
+11. When using Cache config page to clear disk cover/scaled-cover cache, also
+    clear memory cache.
 
 1.4.1
 -----

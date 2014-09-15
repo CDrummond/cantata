@@ -129,11 +129,12 @@ void CacheItemCounter::deleteAll()
     getCount();
 }
 
-CacheItem::CacheItem(const QString &title, const QString &d, const QStringList &t, QTreeWidget *p)
+CacheItem::CacheItem(const QString &title, const QString &d, const QStringList &t, QTreeWidget *p, Type ty)
     : QTreeWidgetItem(p, QStringList() << title)
     , counter(new CacheItemCounter(title, d, t))
     , empty(true)
     , usedSpace(0)
+    , type(ty)
 {
     connect(this, SIGNAL(getCount()), counter, SLOT(getCount()), Qt::QueuedConnection);
     connect(this, SIGNAL(deleteAll()), counter, SLOT(deleteAll()), Qt::QueuedConnection);
@@ -173,6 +174,11 @@ void CacheItem::clean()
 {
     setStatus(i18n("Deleting..."));
     emit deleteAll();
+    switch (type) {
+    case Type_Covers:       Covers::self()->clearNameCache(); break;
+    case Type_ScaledCovers: Covers::self()->clearScaleCache(); break;
+    default: break;
+    }
 }
 
 void CacheItem::calculate()
@@ -261,8 +267,10 @@ CacheSettings::CacheSettings(QWidget *parent)
 
     new CacheItem(i18n("Music Library"), Utils::cacheDir(MusicLibraryModel::constLibraryCache, false),
                   QStringList() << "*"+MusicLibraryModel::constLibraryExt << "*"+MusicLibraryModel::constLibraryCompressedExt, tree);
-    new CacheItem(i18n("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", tree);
-    new CacheItem(i18n("Scaled Covers"), Utils::cacheDir(Covers::constScaledCoverDir, false), QStringList() << "*.jpg" << "*.png", tree);
+    new CacheItem(i18n("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", tree,
+                  CacheItem::Type_Covers);
+    new CacheItem(i18n("Scaled Covers"), Utils::cacheDir(Covers::constScaledCoverDir, false), QStringList() << "*.jpg" << "*.png", tree,
+                  CacheItem::Type_ScaledCovers);
     new CacheItem(i18n("Backdrops"), Utils::cacheDir(ContextWidget::constCacheDir, false), QStringList() << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Lyrics"), Utils::cacheDir(SongView::constLyricsDir, false), QStringList() << "*"+SongView::constExtension, tree);
     new CacheItem(i18n("Artist Information"), Utils::cacheDir(ArtistView::constCacheDir, false), QStringList() << "*"+ArtistView::constInfoExt

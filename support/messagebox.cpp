@@ -33,6 +33,7 @@
 #include <QListWidget>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QAbstractButton>
+#include <QStyle>
 
 MessageBox::ButtonCode map(QMessageBox::StandardButton c)
 {
@@ -49,17 +50,17 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
 {
     QMessageBox box(isWarning ? QMessageBox::Warning : QMessageBox::Question, title.isEmpty() ? (isWarning ? i18n("Warning") : i18n("Question")) : title,
                     message, QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton), parent);
-
+    bool btnIcons=box.style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons);
     box.setDefaultButton(isWarning && !showCancel ? QMessageBox::No : QMessageBox::Yes);
     if (!yesText.text.isEmpty()) {
         QAbstractButton *btn=box.button(QMessageBox::Yes);
         btn->setText(yesText.text);
-        btn->setIcon(yesText.icon.isEmpty() || GtkStyle::isActive() ? Icon() : Icon(yesText.icon));
+        btn->setIcon(!yesText.icon.isEmpty() && btnIcons ? Icon(yesText.icon) : Icon());
     }
     if (!noText.text.isEmpty()) {
         QAbstractButton *btn=box.button(QMessageBox::No);
         btn->setText(noText.text);
-        btn->setIcon(noText.icon.isEmpty() || GtkStyle::isActive() ? Icon() : Icon(noText.icon));
+        btn->setIcon(!noText.icon.isEmpty() && btnIcons ? Icon(noText.icon) : Icon());
     }
     AcceleratorManager::manage(&box);
     return -1==box.exec() ? Cancel : map(box.standardButton(box.clickedButton()));

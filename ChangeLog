@@ -49,17 +49,19 @@
 
 1.4.2
 -----
-1. When guessing song details from filename (due to missing tags), remove any
-   extension - not just three letter extensions!
-2. In tag editor, only show '(Various)' hint for the 'All tracks' entry.
-3. Also capitalise composer in tag editor.
-4. Resize device properties dialog when changing transcoder.
-5. Initialise sidebar icon sizes before constructing.
-6. Display multiple genres as separate entries in playlists page genre combo.
-7. Resize cover in grouped view if it is too wide.
-8. In context view, when creating links to similar artists compare artists
-   names case-insensitively.
-9. Fix downloading of podcasts when url is redirected.
+ 1. When guessing song details from filename (due to missing tags), remove any
+    extension - not just three letter extensions!
+ 2. In tag editor, only show '(Various)' hint for the 'All tracks' entry.
+ 3. Also capitalise composer in tag editor.
+ 4. Resize device properties dialog when changing transcoder.
+ 5. Initialise sidebar icon sizes before constructing.
+ 6. Display multiple genres as separate entries in playlists page genre combo.
+ 7. Resize cover in grouped view if it is too wide.
+ 8. In context view, when creating links to similar artists compare artists
+    names case-insensitively.
+ 9. Fix downloading of podcasts when url is redirected.
+10. If 'force single click' is disabled, then double-click on icon view will
+    not add artist/album to playqueue but navigate into.
 
 1.4.1
 -----

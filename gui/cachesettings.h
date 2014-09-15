@@ -59,7 +59,14 @@ class CacheItem : public QObject, public QTreeWidgetItem
     Q_OBJECT
 
 public:
-    CacheItem(const QString &title, const QString &d, const QStringList &t, QTreeWidget *parent);
+    enum Type {
+        Type_Covers,
+        Type_ScaledCovers,
+        Type_Other
+    };
+
+public:
+    CacheItem(const QString &title, const QString &d, const QStringList &t, QTreeWidget *parent, Type ty=Type_Other);
     ~CacheItem();
 
     void calculate();
@@ -83,6 +90,7 @@ private:
     CacheItemCounter *counter;
     bool empty;
     quint64 usedSpace;
+    Type type;
 };
 
 class CacheTree : public QTreeWidget

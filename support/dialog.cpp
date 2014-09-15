@@ -111,6 +111,31 @@ void Dialog::showEvent(QShowEvent *e)
 #include <QSettings>
 #include <QStyle>
 
+#ifdef Q_OS_MAC
+#include <QProxyStyle>
+
+class ButtonProxyStyle : public QProxyStyle
+{
+public:
+    ButtonProxyStyle()
+        : QProxyStyle()
+    {
+        setBaseStyle(qApp->style());
+    }
+
+    int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const
+    {
+        if (QStyle::SH_DialogButtonLayout==stylehint) {
+            return QDialogButtonBox::GnomeLayout;
+        } else {
+            return QProxyStyle::styleHint(stylehint, opt, widget, returnData);
+        }
+    }
+};
+
+static ButtonProxyStyle *buttonProxyStyle=0;
+#endif
+
 namespace StdGuiItem {
 GuiItem ok() { return GuiItem(i18n("&OK"), "dialog-ok"); }
 GuiItem cancel() { return GuiItem(i18n("&Cancel"), "dialog-cancel"); }
@@ -201,6 +226,12 @@ void Dialog::setButtons(ButtonCodes buttons)
         buttonBox->setStandardButtons(btns);
     } else {
         buttonBox = new QDialogButtonBox(btns, Qt::Horizontal, this);
+        #ifdef Q_OS_MAC
+        if (!buttonProxyStyle) {
+            buttonProxyStyle=new ButtonProxyStyle();
+        }
+        buttonBox->setStyle(buttonProxyStyle);
+        #endif
     }
 
     if (buttons&Help) {

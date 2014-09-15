@@ -33,6 +33,7 @@
 #include <QMenu>
 #include <QPainter>
 #include <QPaintEvent>
+#include <QModelIndex>
 
 ListView::ListView(QWidget *parent)
     : QListView(parent)
@@ -48,6 +49,7 @@ ListView::ListView(QWidget *parent)
     setAttribute(Qt::WA_MouseTracking);
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(showCustomContextMenu(const QPoint &)));
+    connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(checkDoubleClick(const QModelIndex &)));
 }
 
 ListView::~ListView()
@@ -152,4 +154,12 @@ void ListView::showCustomContextMenu(const QPoint &pos)
     if (menu) {
         menu->popup(mapToGlobal(pos));
     }
+}
+
+void ListView::checkDoubleClick(const QModelIndex &idx)
+{
+    if (!TreeView::getForceSingleClick() && idx.model() && idx.model()->rowCount(idx)) {
+        return;
+    }
+    emit itemDoubleClicked(idx);
 }

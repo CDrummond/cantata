@@ -56,9 +56,11 @@ public:
 private Q_SLOTS:
     void correctSelection();
     void showCustomContextMenu(const QPoint &pos);
+    void checkDoubleClick(const QModelIndex &idx);
 
 Q_SIGNALS:
     bool itemsSelected(bool);
+    void itemDoubleClicked(const QModelIndex &idx);
 
 private:
     QObject *eventFilter;

@@ -206,6 +206,17 @@ void OnlineServicesPage::addSelectionToPlaylist(const QString &name, bool replac
     }
 }
 
+void OnlineServicesPage::focusSearch()
+{
+    if (view->searchVisible()) {
+        view->clearSearchText();
+        view->focusSearch();
+        controlSearch(true);
+    } else {
+        view->focusSearch();
+    }
+}
+
 void OnlineServicesPage::refresh()
 {
     OnlineServicesModel::self()->resetModel();

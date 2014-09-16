@@ -131,6 +131,20 @@ StreamsPage::~StreamsPage()
 {
 }
 
+void StreamsPage::focusSearch()
+{
+    if (view->searchVisible()) {
+        view->clearSearchText();
+        searchView->clearSearchText();
+        view->focusSearch();
+        searchView->focusSearch();
+        controlSearch(true);
+    } else {
+        view->focusSearch();
+        searchView->focusSearch();
+    }
+}
+
 void StreamsPage::showEvent(QShowEvent *e)
 {
     view->focusView();
@@ -484,18 +498,23 @@ StreamsModel::CategoryItem * StreamsPage::getSearchCategory()
 
 void StreamsPage::controlSearch(bool on)
 {
-    if (on!=searching) {
+    StreamsModel::CategoryItem *cat=0;
+    StreamSearchModel::Category searchCat=StreamSearchModel::TuneIn;
+
+    if (on) {
+        cat=getSearchCategory();
+        searchCat=StreamsModel::self()->isTuneIn(cat)
+            ? StreamSearchModel::TuneIn
+            : StreamsModel::self()->isShoutCast(cat)
+                ? StreamSearchModel::ShoutCast
+                    : StreamsModel::self()->isDirble(cat)
+                    ? StreamSearchModel::Dirble
+                    : StreamSearchModel::Filter;
+    }
+
+    if (on!=searching || StreamSearchModel::Filter==searchCat) {
         searching=on;
         if (searching) {
-            StreamsModel::CategoryItem *cat=getSearchCategory();
-            StreamSearchModel::Category searchCat=StreamsModel::self()->isTuneIn(cat)
-                                                    ? StreamSearchModel::TuneIn
-                                                    : StreamsModel::self()->isShoutCast(cat)
-                                                        ? StreamSearchModel::ShoutCast
-                                                        : StreamsModel::self()->isDirble(cat)
-                                                          ? StreamSearchModel::Dirble
-                                                          : StreamSearchModel::Filter;
-
             if (StreamSearchModel::Filter==searchCat) {
                 proxy=&streamsProxy;
                 searchModel.clear();

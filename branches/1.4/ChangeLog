@@ -15,6 +15,8 @@
     not add artist/album to playqueue but navigate into.
 11. When using Cache config page to clear disk cover/scaled-cover cache, also
     clear memory cache.
+12. Allow to change stream, and online-service, filter search category without
+    closing current search field.
 
 1.4.1
 -----

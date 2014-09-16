@@ -911,6 +911,11 @@ void ItemView::setModel(ProxyModel *m)
     view()->setModel(m);
 }
 
+bool ItemView::searchVisible() const
+{
+    return searchWidget->isVisible();
+}
+
 QString ItemView::searchText() const
 {
     return searchWidget->isVisible() ? searchWidget->text() : QString();

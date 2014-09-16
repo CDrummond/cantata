@@ -108,6 +108,7 @@ public:
     void setCurrentIndex(const QModelIndex &idx) { view()->setCurrentIndex(idx); }
     void select(const QModelIndex &idx);
     QModelIndexList selectedIndexes(bool sorted=true) const;
+    bool searchVisible() const;
     QString searchText() const;
     QString searchCategory() const;
     void clearSearchText();

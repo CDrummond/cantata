@@ -108,24 +108,26 @@ bool Pointer::eventFilter(QObject *o, QEvent *e)
 }
 #endif
 
-WindowManager::WindowManager(QObject *parent):
-    QObject(parent),
+WindowManager::WindowManager(QObject *parent)
+    : QObject(parent)
     #if defined Q_WS_X11 && QT_VERSION < 0x050000
-    _useWMMoveResize(true),
+    , _useWMMoveResize(true)
     #else
-    _useWMMoveResize(false),
+    , _useWMMoveResize(false)
     #endif
-    _dragMode(WM_DRAG_NONE),
+    , _dragMode(WM_DRAG_NONE)
     #ifdef ENABLE_KDE_SUPPORT
-    _dragDistance(KGlobalSettings::dndEventDelay()),
+    , _dragDistance(KGlobalSettings::dndEventDelay())
     #else
-    _dragDistance(QApplication::startDragDistance()),
+    , _dragDistance(QApplication::startDragDistance())
     #endif
-    _dragDelay(QApplication::startDragTime()),
-    _dragAboutToStart(false),
-    _dragInProgress(false),
-    _locked(false),
-    _cursorOverride(false)
+    , _dragDelay(QApplication::startDragTime())
+    , _dragAboutToStart(false)
+    , _dragInProgress(false)
+    , _locked(false)
+    #ifndef Q_OS_MAC
+    , _cursorOverride(false)
+    #endif
 {
     // install application wise event filter
     _appEventFilter = new AppEventFilter(this);
@@ -544,10 +546,12 @@ bool WindowManager::canDrag(QWidget *widget, QWidget *child, const QPoint &posit
 
 void WindowManager::resetDrag(void)
 {
+    #ifndef Q_OS_MAC
     if ((!useWMMoveResize()) && _target && _cursorOverride) {
         qApp->restoreOverrideCursor();
         _cursorOverride = false;
     }
+    #endif
 
     _target.clear();
     if (_dragTimer.isActive()) {
@@ -601,10 +605,12 @@ void WindowManager::startDrag(QWidget *widget, const QPoint& position)
         #endif
     }
 
+    #ifndef Q_OS_MAC
     if (!useWMMoveResize() && !_cursorOverride) {
         qApp->setOverrideCursor(Qt::DragMoveCursor);
         _cursorOverride = true;
     }
+    #endif
 
     _dragInProgress = true;
     return;

@@ -578,32 +578,6 @@ void OnlineServicesPage::refreshSubscription()
     srv->refreshSubscription(item);
 }
 
-static QString format(const QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> > &urls)
-{
-    static const QChar constBullet(0x2022);
-    static const QChar constHollowBullet(0x25E6);
-
-    QString rv;
-    QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator it(urls.constBegin());
-    QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator end(urls.constEnd());
-
-    if (1==urls.keys().count()) {
-        for (; it!=end; ++it) {
-            foreach (MusicLibraryItemPodcastEpisode *ep, it.value()) {
-                rv+=constBullet+QLatin1Char(' ')+ep->data()+QLatin1Char('\n');
-            }
-        }
-    } else {
-        for (; it!=end; ++it) {
-            rv+=constBullet+QLatin1Char(' ')+it.key()->data()+QLatin1Char('\n');
-            foreach (MusicLibraryItemPodcastEpisode *ep, it.value()) {
-                rv+=QLatin1String("    ")+constHollowBullet+QLatin1Char(' ')+ep->data()+QLatin1Char('\n');
-            }
-        }
-    }
-    return rv;
-}
-
 void OnlineServicesPage::downloadPodcast()
 {
     const QModelIndexList selected = view->selectedIndexes(true);

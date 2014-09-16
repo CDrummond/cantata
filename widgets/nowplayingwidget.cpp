@@ -154,7 +154,7 @@ PosSlider::PosSlider(QWidget *p)
     updateStyleSheet();
     setMouseTracking(true);
 }
-
+#include <QDebug>
 void PosSlider::updateStyleSheet()
 {
     int lineWidth=maximumHeight()>12 ? 2 : 1;
@@ -165,7 +165,7 @@ void PosSlider::updateStyleSheet()
     QString fillFormat=QLatin1String("QSlider::")+QLatin1String(isRightToLeft() ? "add" : "sub")+
                        QLatin1String("-page:horizontal {border: %1px solid rgb(%3, %4, %5); "
                                      "background: solid rgb(%3, %4, %5); "
-                                     "border-radius: %1px; margin: %2px;}")+
+                                     "border-radius: %1px; margin: %2px} ")+
                        QLatin1String("QSlider::")+QLatin1String(isRightToLeft() ? "add" : "sub")+
                        QLatin1String("-page:horizontal:disabled {border: 0px; background: solid rgba(0, 0, 0, 0)}");
     QLabel lbl(parentWidget());
@@ -174,11 +174,16 @@ void PosSlider::updateStyleSheet()
     #ifdef Q_OS_MAC
     QColor fillColor=OSXStyle::self()->viewPalette().highlight().color();
     #else
-    QColor fillColor=palette().highlight().color();
+    QColor fillColor=lbl.palette().highlight().color();
     #endif
     int alpha=textColor.value()<32 ? 96 : 64;
 
     setStyleSheet(boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha)
+                             .arg(alpha/4).arg(lineWidth*2)+
+                  fillFormat.arg(lineWidth).arg(lineWidth*2).arg(fillColor.red()).arg(fillColor.green()).arg(fillColor.blue()));
+
+
+    qWarning() << "SS:" << QString(boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha)
                              .arg(alpha/4).arg(lineWidth*2)+
                   fillFormat.arg(lineWidth).arg(lineWidth*2).arg(fillColor.red()).arg(fillColor.green()).arg(fillColor.blue()));
 }

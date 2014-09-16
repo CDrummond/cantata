@@ -28,7 +28,7 @@
 #include <QApplication>
 #include <QKeyEvent>
 #include <QHBoxLayout>
-#include <QMessageBox>
+#include "messagebox.h"
 #include <QToolButton>
 
 // This defines the unicode symbols for special keys (kCommandUnicode and friends)
@@ -72,9 +72,9 @@ void KeySequenceButton::keyPressEvent(QKeyEvent *e) {
     // Qt sometimes returns garbage keycodes, I observed -1, if it doesn't know a key.
     // We cannot do anything useful with those (several keys have -1, indistinguishable)
     // and QKeySequence.toString() will also yield a garbage string.
-    QMessageBox::information(this,
-                             tr("The key you just pressed is not supported by Qt."),
-                             tr("Unsupported Key"));
+    MessageBox::information(this,
+                            tr("The key you just pressed is not supported by Qt."),
+                            tr("Unsupported Key"));
     return d->cancelRecording();
   }
 
@@ -353,21 +353,20 @@ bool KeySequenceWidget::isKeySequenceAvailable(const QKeySequence &seq) {
         continue;
 
       if(!actIdx.data(ShortcutsModel::IsConfigurableRole).toBool()) {
-        QMessageBox::warning(this, tr("Shortcut Conflict"),
-                             tr("The \"%1\" shortcut is already in use, and cannot be configured.\nPlease choose another one.").arg(seq.toString(QKeySequence::NativeText)),
-                             QMessageBox::Ok);
+        MessageBox::error(this,
+                          tr("The \"%1\" shortcut is already in use, and cannot be configured.\n\nPlease choose another one.").arg(seq.toString(QKeySequence::NativeText)),
+                          tr("Shortcut Conflict"));
         return false;
       }
 
-      QMessageBox box(QMessageBox::Warning, tr("Shortcut Conflict"),
-                      (tr("The \"%1\" shortcut is ambiguous with the shortcut for the following action:")
-                       + "<br><ul><li>%2</li></ul><br>"
-                       + tr("Do you want to reassign this shortcut to the selected action?")
-                       ).arg(seq.toString(QKeySequence::NativeText), actIdx.data().toString()),
-                      QMessageBox::Cancel, this);
-      box.addButton(tr("Reassign"), QMessageBox::AcceptRole);
-      if(box.exec() == QMessageBox::Cancel)
+      QString message=tr("Ambiguous shortcut.")+QLatin1String("\n\n")+
+                      QString(tr("The \"%1\" shortcut is ambiguous with the shortcut for the following action:")
+                               + "\n  %2\n"
+                               + tr("Do you want to reassign this shortcut to the selected action?")
+                             ).arg(seq.toString(QKeySequence::NativeText), actIdx.data().toString());
+      if (MessageBox::Yes!=MessageBox::warningYesNo(this, message, tr("Shortcut Conflict"), GuiItem(tr("Reassign")))) {
         return false;
+      }
 
       _conflictingIndex = actIdx;
       return true;

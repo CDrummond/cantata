@@ -708,7 +708,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueProxyModel);
-    playQueue->addAction(playQueue->removeFromAct(), true);
+    playQueue->addAction(playQueue->removeFromAct());
     ratingAction=new Action(i18n("Set Rating"), this);
     ratingAction->setMenu(new QMenu(0));
     for (int i=0; i<((Song::Rating_Max/Song::Rating_Step)+1); ++i) {
@@ -725,14 +725,16 @@ MainWindow::MainWindow(QWidget *parent)
         ratingAction->menu()->addAction(action);
         connect(action, SIGNAL(triggered(bool)), SLOT(setRating()));
     }
-    playQueue->addAction(ratingAction, true);
-    playQueue->addAction(setPriorityAction, true);
-    playQueue->addAction(stopAfterTrackAction, true);
-    playQueue->addAction(locateTrackAction, true);
+    playQueue->addAction(ratingAction);
+    playQueue->addAction(setPriorityAction);
+    playQueue->addAction(stopAfterTrackAction);
+    playQueue->addAction(locateTrackAction);
     #ifdef TAGLIB_FOUND
-    playQueue->addAction(editPlayQueueTagsAction, true);
+    playQueue->addAction(editPlayQueueTagsAction);
     #endif
-    playQueue->addSeparator();
+    Action *sep=new Action(this);
+    sep->setSeparator(true);
+    playQueue->addAction(sep);
     playQueue->addAction(playQueueModel.removeDuplicatesAct());
     playQueue->addAction(promptClearPlayQueueAction);
     playQueue->addAction(cropPlayQueueAction);

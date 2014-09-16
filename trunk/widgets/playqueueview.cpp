@@ -42,7 +42,6 @@
 #include <QFile>
 #include <QPainter>
 #include <QApplication>
-#include <QMenu>
 #include <qglobal.h>
 
 // Exported by QtGui
@@ -128,8 +127,6 @@ void PlayQueueGroupedView::paintEvent(QPaintEvent *e)
 
 PlayQueueView::PlayQueueView(QWidget *parent)
     : QStackedWidget(parent)
-    , contextMenu(0)
-    , selectContextMenu(0)
     , mode(ItemView::Mode_Count)
     , groupedView(0)
     , treeView(0)
@@ -215,28 +212,26 @@ void PlayQueueView::setMode(ItemView::Mode m)
     case ItemView::Mode_GroupedTree:
         if (!groupedView) {
             groupedView=new PlayQueueGroupedView(this);
+            groupedView->setContextMenuPolicy(Qt::ActionsContextMenu);
             groupedView->setIndentation(0);
             groupedView->setItemsExpandable(false);
             groupedView->setExpandsOnDoubleClick(false);
-            groupedView->setContextMenuPolicy(Qt::CustomContextMenu);
             groupedView->installFilter(new KeyEventHandler(groupedView, removeFromAction));
             addWidget(groupedView);
             connect(groupedView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
             connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
-            connect(groupedView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(showMenu(QPoint)));
             updatePalette();
         }
         break;
     case ItemView::Mode_Table:
         if (!treeView) {
             treeView=new PlayQueueTreeView(this);
-            treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+            treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
             treeView->installFilter(new KeyEventHandler(treeView, removeFromAction));
             treeView->initHeader();
             addWidget(treeView);
             connect(treeView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
             connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
-            connect(treeView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(showMenu(QPoint)));
             updatePalette();
         }
     default:
@@ -319,28 +314,9 @@ QModelIndex PlayQueueView::indexAt(const QPoint &point)
     return view()->indexAt(point);
 }
 
-void PlayQueueView::addAction(QAction *a, bool withSelectionOnly)
+void PlayQueueView::addAction(QAction *a)
 {
-    if (!contextMenu) {
-        contextMenu=new QMenu(this);
-    }
-    if (!selectContextMenu) {
-        selectContextMenu=new QMenu(this);
-    }
-    if (!withSelectionOnly) {
-        contextMenu->addAction(a);
-    }
-    selectContextMenu->addAction(a);
-}
-
-void PlayQueueView::addSeparator()
-{
-    if (contextMenu) {
-        contextMenu->addSeparator();
-    }
-    if (selectContextMenu) {
-        selectContextMenu->addSeparator();
-    }
+    view()->addAction(a);
 }
 
 void PlayQueueView::setFocus()
@@ -510,15 +486,6 @@ void PlayQueueView::streamFetchStatus(const QString &msg)
         connect(msgOverlay, SIGNAL(cancel()), SLOT(hideSpinner()));
     }
     msgOverlay->setText(msg);
-}
-
-void PlayQueueView::showMenu(const QPoint &p)
-{
-    if (haveSelectedItems()) {
-        selectContextMenu->popup(view()->mapToGlobal(p));
-    } else {
-        contextMenu->popup(view()->mapToGlobal(p));
-    }
 }
 
 void PlayQueueView::drawBackdrop(QWidget *widget, const QSize &size)

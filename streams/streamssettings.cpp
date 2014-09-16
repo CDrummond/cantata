@@ -147,7 +147,7 @@ void StreamsSettings::installFromFile()
     name=name.replace("\\", "_");
     #endif
 
-    if (get(name) && MessageBox::No==MessageBox::warningYesNo(this, i18n("A category named <b>%1</b> already exists!<br/>Overwrite?", name))) {
+    if (get(name) && MessageBox::No==MessageBox::warningYesNo(this, i18n("A category named '%1' already exists!\n\nOverwrite?", name))) {
         return;
     }
     install(fileName, name);
@@ -173,7 +173,7 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
     Tar tar(fileName);
     if (!tar.open()) {
         if (showErrors) {
-            MessageBox::error(this, i18n("Failed top open package file"));
+            MessageBox::error(this, i18n("Failed top open package file."));
         }
         return false;
     }
@@ -268,7 +268,7 @@ void StreamsSettings::remove()
     }
 
     QListWidgetItem *item=categories->item(row);
-    if (!item->data(BuiltInRole).toBool() && MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove <b>%1</b>?", item->text()))) {
+    if (!item->data(BuiltInRole).toBool() && MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove '%1'?", item->text()))) {
         return;
     }
 

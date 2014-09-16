@@ -291,6 +291,9 @@ void DynamicRulesDialog::remove()
 void DynamicRulesDialog::showAbout()
 {
     MessageBox::information(this,
+                         #ifdef Q_OS_MAC
+                         i18n("About dynamic rules")+QLatin1String("<br/><br/>")+
+                         #endif
                          i18n("<p>Cantata will query your library using all of the rules listed. "
                               "The list of <i>Include</i> rules will be used to build a set of songs that can be used. "
                               "The list of <i>Exclude</i> rules will be used to build a set of songs that cannot be used. "
@@ -329,7 +332,7 @@ bool DynamicRulesDialog::save()
     }
 
     if (name!=origName && Dynamic::self()->exists(name) &&
-        MessageBox::No==MessageBox::warningYesNo(this, i18n("A set of rules named \'%1\' already exists!\nOverwrite?", name),
+        MessageBox::No==MessageBox::warningYesNo(this, i18n("A set of rules named '%1' already exists!\n\nOverwrite?", name),
                                                   i18n("Overwrite Rules"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
         return false;
     }

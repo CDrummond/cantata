@@ -158,7 +158,7 @@ void AlbumsPage::deleteSongs()
     QList<Song> songs=selectedSongs();
 
     if (!songs.isEmpty()) {
-        if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to delete the selected songs?\nThis cannot be undone."),
+        if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to delete the selected songs?\n\nThis cannot be undone."),
                                                       i18n("Delete Songs"), StdGuiItem::del(), StdGuiItem::cancel())) {
             emit deleteSongs(QString(), songs);
         }

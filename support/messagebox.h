@@ -59,12 +59,17 @@ namespace MessageBox {
     inline ButtonCode warningYesNo(QWidget *parent, const QString &message, const QString &title=QString(), const GuiItem &yesText=StdGuiItem::yes(), const GuiItem &noText=StdGuiItem::no()) {
         return questionYesNoCancel(parent, message, title, yesText, noText, false, true);
     }
+    #ifdef Q_OS_MAC
+    extern void error(QWidget *parent, const QString &message, const QString &title=QString());
+    extern void information(QWidget *parent, const QString &message, const QString &title=QString());
+    #else
     inline void error(QWidget *parent, const QString &message, const QString &title=QString()) {
         QMessageBox::warning(parent, title.isEmpty() ? i18n("Error") : title, message);
     }
     inline void information(QWidget *parent, const QString &message, const QString &title=QString()) {
         QMessageBox::information(parent, title.isEmpty() ? i18n("Information") : title, message);
     }
+    #endif
     extern ButtonCode msgListEx(QWidget *parent, Type type, const QString &message, const QStringList &strlist, const QString &title=QString());
     inline void errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString()) {
         msgListEx(parent, Error, message, strlist, title);

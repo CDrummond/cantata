@@ -573,7 +573,7 @@ void CoverDialog::downloadJobFinished()
                     previewDialog()->showImage(cropImage(img, isArtist), reply->property(constLargeProperty).toString());
                 } else if (DL_LargeSave==dlType) {
                     if (!temp) {
-                        MessageBox::error(this, i18n("Failed to set cover!\nCould not download to temporary file!"));
+                        MessageBox::error(this, i18n("Failed to set cover!\n\nCould not download to temporary file!"));
                     } else if (saveCover(temp->fileName(), img)) {
                         accept();
                     }
@@ -1347,7 +1347,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
                 return true;
             }
         }
-        MessageBox::error(this, i18n("Failed to set cover!\nCould not make copy!"));
+        MessageBox::error(this, i18n("Failed to set cover!\n\nCould not make copy!"));
         return false;
     }
     QString existingBackup;
@@ -1356,7 +1356,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
         static const QLatin1String constBakExt(".bak");
         existingBackup=existing->url()+constBakExt;
         if (!QFile::rename(existing->url(), existingBackup)) {
-            MessageBox::error(this, i18n("Failed to set cover!\nCould not backup original!"));
+            MessageBox::error(this, i18n("Failed to set cover!\n\nCould not backup original!"));
             return false;
         }
     }
@@ -1403,7 +1403,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
         if (existing && !existingBackup.isEmpty()) {
             QFile::rename(existingBackup, existing->url());
         }
-        MessageBox::error(this, i18n("Failed to set cover!\nCould not copy file to '%1'!", destName));
+        MessageBox::error(this, i18n("Failed to set cover!\n\nCould not copy file to '%1'!", destName));
         return false;
     }
 }

@@ -136,7 +136,7 @@ void DynamicPage::remove()
     QModelIndexList selected=view->selectedIndexes();
 
     if (selected.isEmpty() ||
-        MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected rules?\nThis cannot be undone."),
+        MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected rules?\n\nThis cannot be undone."),
                                                  i18n("Remove Dynamic Rules"), StdGuiItem::remove(), StdGuiItem::cancel())) {
         return;
     }

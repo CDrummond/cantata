@@ -321,14 +321,6 @@ void StreamProviderListDialog::readProviders(QIODevice *dev)
     updateView();
 }
 
-static QString nameString(QTreeWidgetItem *i)
-{
-    if (Cat_ListenLive==i->data(0, Role_Category).toInt()) {
-        return i->text(0)+QLatin1String(" <i>(")+i18n("ListenLive")+QLatin1String(")</i>");
-    }
-    return i->text(0);
-}
-
 void StreamProviderListDialog::slotButtonClicked(int button)
 {
     switch (button) {

@@ -229,10 +229,12 @@ void ServerSettings::add()
     bool addStandard=true;
 
     if (!haveBasicCollection && MPDUser::self()->isSupported()) {
+        static const QChar constBullet(0x2022);
+
         switch (MessageBox::questionYesNoCancel(this,
-                                   i18n("Which type of collection do you wish to connect to?<br/><ul>"
-                                   "<li>Standard - music collection may be shared, is on another machine, or is already setup</li>"
-                                   "<li>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance</li></ul>"),
+                                   i18n("Which type of collection do you wish to connect to?")+QLatin1String("\n\n")+
+                                   constBullet+QLatin1Char(' ')+i18n("Standard - music collection may be shared, is on another machine, or is already setup")+QLatin1Char('\n')+
+                                   constBullet+QLatin1Char(' ')+i18n("Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance"),
                                    i18n("Add Collection"), GuiItem(i18n("Standard")), GuiItem(i18n("Basic")))) {
         case MessageBox::Yes: addStandard=true; break;
         case MessageBox::No: addStandard=false; break;
@@ -274,7 +276,7 @@ void ServerSettings::remove()
 {
     int index=combo->currentIndex();
     QString cName=1==stackedWidget->currentIndex() ? MPDUser::translatedName() : name->text();
-    if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete <b>%1</b>?", cName),
+    if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete '%1'?", cName),
                                                                        i18n("Delete"), StdGuiItem::del(), StdGuiItem::cancel())) {
         bool isLast=index==(combo->count()-1);
         combo->removeItem(index);

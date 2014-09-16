@@ -337,12 +337,14 @@ void CacheSettings::deleteAll()
                 toDelete.first()->clean();
             }
         } else if (toDelete.count()>1) {
+            static const QChar constBullet(0x2022);
+
             QString items;
             foreach (CacheItem *i, toDelete) {
-                items+="<li>"+i->name()+"</li>";
+                items+=constBullet+QLatin1Char(' ')+i->name()+QLatin1Char('\n');
             }
 
-            if (MessageBox::No==MessageBox::warningYesNo(this, i18n("<p>Delete all from the following?<ul>%1</ul></p>", items),
+            if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete items from all selected categories?")+QLatin1String("\n\n")+items,
                                                          i18n("Delete Cache Items"), StdGuiItem::del(), StdGuiItem::cancel())) {
                 return;
             }

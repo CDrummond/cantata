@@ -45,11 +45,59 @@ MessageBox::ButtonCode map(QMessageBox::StandardButton c)
     }
 }
 
+#ifdef Q_OS_MAC
+static void splitMessage(const QString &orig, QString &msg, QString &sub)
+{
+    static QStringList constSeps=QStringList() << QLatin1String("\n\n") << QLatin1String("<br/><br/>");
+    msg=orig;
+
+    foreach (const QString &sep, constSeps) {
+        QStringList parts=orig.split(sep);
+        if (parts.count()>1) {
+            msg=parts.takeAt(0);
+            sub=parts.join(sep);
+            return;
+        }
+    }
+}
+
+void MessageBox::error(QWidget *parent, const QString &message, const QString &title)
+{
+    QString msg;
+    QString sub;
+    splitMessage(message, msg, sub);
+    QMessageBox box(QMessageBox::Warning, title.isEmpty() ? i18n("Error") : title, msg, QMessageBox::Ok, parent);
+    box.setInformativeText(sub);
+    //AcceleratorManager::manage(&box);
+    box.exec();
+}
+
+void MessageBox::information(QWidget *parent, const QString &message, const QString &title)
+{
+    QString msg;
+    QString sub;
+    splitMessage(message, msg, sub);
+    QMessageBox box(QMessageBox::Information, title.isEmpty() ? i18n("Information") : title, msg, QMessageBox::Ok, parent);
+    box.setInformativeText(sub);
+    //AcceleratorManager::manage(&box);
+    box.exec();
+}
+#endif
+
 MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QString &message, const QString &title,
                                const GuiItem &yesText, const GuiItem &noText, bool showCancel, bool isWarning)
 {
+    #ifdef Q_OS_MAC
+    QString msg;
+    QString sub;
+    splitMessage(message, msg, sub);
+    QMessageBox box(isWarning ? QMessageBox::Warning : QMessageBox::Question, title.isEmpty() ? (isWarning ? i18n("Warning") : i18n("Question")) : title,
+                    msg, QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton), parent);
+    box.setInformativeText(sub);
+    #else
     QMessageBox box(isWarning ? QMessageBox::Warning : QMessageBox::Question, title.isEmpty() ? (isWarning ? i18n("Warning") : i18n("Question")) : title,
                     message, QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton), parent);
+    #endif
     bool btnIcons=box.style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons);
     box.setDefaultButton(isWarning && !showCancel ? QMessageBox::No : QMessageBox::Yes);
     if (!yesText.text.isEmpty()) {

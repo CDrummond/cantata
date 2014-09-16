@@ -524,7 +524,7 @@ void TagEditor::applyVa()
 
     if (MessageBox::No==MessageBox::questionYesNo(this, (isAll ? i18n("Apply \"Various Artists\" workaround to <b>all</b> tracks?")
                                                                : i18n("Apply \"Various Artists\" workaround?"))+
-                                                           QLatin1String("<br/><hr/><br/>")+
+                                                           QLatin1String("<br/><br/>")+
                                                            i18n("<i>This will set 'Album artist' and 'Artist' to "
                                                                 "\"Various Artists\", and set 'Title' to "
                                                                 "\"TrackArtist - TrackTitle\"</i>"), i18n("Apply \"Various Artists\" Workaround"),
@@ -566,7 +566,7 @@ void TagEditor::revertVa()
 
     if (MessageBox::No==MessageBox::questionYesNo(this, (isAll ? i18n("Revert \"Various Artists\" workaround on <b>all</b> tracks?")
                                                                : i18n("Revert \"Various Artists\" workaround"))+
-                                                           QLatin1String("<br/><hr/><br/>")+
+                                                           QLatin1String("<br/><br/>")+
                                                            i18n("<i>Where the 'Album artist' is the same as 'Artist' "
                                                                 "and the 'Title' is of the format \"TrackArtist - TrackTitle\", "
                                                                 "'Artist' will be taken from 'Title' and 'Title' itself will be "

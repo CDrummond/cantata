@@ -277,7 +277,7 @@ void TrackOrganiser::renameFile()
             if (autoSkip) {
                 skip=true;
             } else {
-                switch(MessageBox::questionYesNoCancel(this, i18n("Source file does not exist!<br/>%1", dest),
+                switch(MessageBox::questionYesNoCancel(this, i18n("Source file does not exist!")+QLatin1String("\n\n")+dest,
                                                        QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
                 case MessageBox::Yes:
                     skip=true;
@@ -296,7 +296,7 @@ void TrackOrganiser::renameFile()
             if (autoSkip) {
                 skip=true;
             } else {
-                switch(MessageBox::questionYesNoCancel(this, i18n("Destination file already exists!<br/>%1", dest),
+                switch(MessageBox::questionYesNoCancel(this, i18n("Destination file already exists!")+QLatin1String("\n\n")+dest,
                                                        QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
                 case MessageBox::Yes:
                     skip=true;
@@ -318,7 +318,7 @@ void TrackOrganiser::renameFile()
                 if (autoSkip) {
                     skip=true;
                 } else {
-                    switch(MessageBox::questionYesNoCancel(this, i18n("Failed to create destination folder!<br/>%1", dir.absolutePath()),
+                    switch(MessageBox::questionYesNoCancel(this, i18n("Failed to create destination folder!")+QLatin1String("\n\n")+dir.absolutePath(),
                                                            QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
                     case MessageBox::Yes:
                         skip=true;
@@ -339,7 +339,7 @@ void TrackOrganiser::renameFile()
             if (autoSkip) {
                 skip=true;
             } else {
-                switch(MessageBox::questionYesNoCancel(this, i18n("Failed to rename %1 to %2", source, dest),
+                switch(MessageBox::questionYesNoCancel(this, i18n("Failed to rename '%1' to '%2'", source, dest),
                                                        QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
                 case MessageBox::Yes:
                     skip=true;

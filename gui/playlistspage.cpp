@@ -221,7 +221,7 @@ void PlaylistsPage::removeItems()
     }
 
     if (remPlaylists.count() &&
-        MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected playlists?\nThis cannot be undone."),
+        MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected playlists?\n\nThis cannot be undone."),
                                                  i18n("Remove Playlists"), StdGuiItem::remove(), StdGuiItem::cancel())) {
             return;
     }
@@ -242,7 +242,7 @@ void PlaylistsPage::savePlaylist()
 
     if (!name.isEmpty()) {
         if (PlaylistsModel::self()->exists(name)) {
-            if (MessageBox::No==MessageBox::warningYesNo(this, i18n("A playlist named <b>%1</b> already exists!<br/>Overwrite?", name),
+            if (MessageBox::No==MessageBox::warningYesNo(this, i18n("A playlist named '%1' already exists!\n\nOverwrite?", name),
                                                          i18n("Overwrite Playlist"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
                 return;
             }
@@ -269,7 +269,7 @@ void PlaylistsPage::renamePlaylist()
 
         if (!newName.isEmpty() && name!=newName) {
             if (PlaylistsModel::self()->exists(newName)) {
-                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("A playlist named <b>%1</b> already exists!<br/>Overwrite?", newName),
+                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("A playlist named '%1' already exists!\n\nOverwrite?", newName),
                                                              i18n("Overwrite Playlist"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
                     return;
                 }

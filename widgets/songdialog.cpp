@@ -46,11 +46,11 @@ bool SongDialog::songsOk(const QList<Song> &songs, const QString &base, bool isM
         if (!QFile::exists(base+file)) {
             DBUG << QString(base+file) << "does not exist";
             if (isMpd) {
-                MessageBox::error(wid, i18n("<p>Cannot access song files!<br/><br/>"
-                                            "Please check Cantata's \"Music folder\" setting, and MPD's \"music_directory\" setting.</p>"));
+                MessageBox::error(wid, i18n("Cannot access song files!\n\n"
+                                            "Please check Cantata's \"Music folder\" setting, and MPD's \"music_directory\" setting."));
             } else {
-                MessageBox::error(wid, i18n("<p>Cannot access song files!<br/><br/>"
-                                            "Please check that the device is still attached.</p>"));
+                MessageBox::error(wid, i18n("Cannot access song files!\n\n"
+                                            "Please check that the device is still attached."));
             }
             deleteLater();
             return false;

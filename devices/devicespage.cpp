@@ -443,9 +443,11 @@ void DevicesPage::refreshDevice()
             dev=DevicesModel::self()->device(udi);
         } else {
             if (dev->childCount() && Device::Mtp!=dev->devType()) {
-                switch (MessageBox::questionYesNoCancel(this, i18n("<p>Which type of refresh do you wish to perform?<ul>"
-                                                                   "<li>Partial - Only new songs are scanned <i>(quick)</i></li>"
-                                                                   "<li>Full - All songs are rescanned <i>(slow)</i></li></ul></p>"),
+                static const QChar constBullet(0x2022);
+
+                switch (MessageBox::questionYesNoCancel(this, i18n("Which type of refresh do you wish to perform?")+QLatin1String("\n\n")+
+                                                              constBullet+QLatin1Char(' ')+i18n("Partial - Only new songs are scanned (quick)")+QLatin1Char('\n')+
+                                                              constBullet+QLatin1Char(' ')+i18n("Full - All songs are rescanned (slow)"),
                                                         i18n("Refresh"), GuiItem(i18n("Partial")), GuiItem(i18n("Full")))) {
                 case MessageBox::Yes:
                     full=false;
@@ -493,7 +495,7 @@ void DevicesPage::deleteSongs()
     QList<Song> songs=DevicesModel::self()->songs(mapped);
 
     if (!songs.isEmpty()) {
-        if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to delete the selected songs?\nThis cannot be undone."),
+        if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to delete the selected songs?\n\nThis cannot be undone."),
                                                       i18n("Delete Songs"), StdGuiItem::del(), StdGuiItem::cancel())) {
             emit deleteSongs(udi, songs);
         }
@@ -520,7 +522,7 @@ void DevicesPage::forgetRemoteDevice()
     }
     QString udi=dev->id();
     QString devName=dev->data();
-    if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to forget <b>%1</b>?", devName))) {
+    if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to forget '%1'?", devName))) {
         DevicesModel::self()->removeRemoteDevice(udi);
     }
     #endif
@@ -539,9 +541,9 @@ void DevicesPage::toggleDevice()
         Device *dev=static_cast<Device *>(item);
         if (dev->isConnected() &&
             (Device::AudioCd==dev->devType()
-                ? MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to eject Audio CD <b>%1 - %2</b>?", dev->data(), dev->subText()),
+                ? MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to eject Audio CD '%1 - %2'?", dev->data(), dev->subText()),
                                                            i18n("Eject"), GuiItem(i18n("Eject")), StdGuiItem::cancel())
-                : MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to disconnect <b>%1</b>?", dev->data()),
+                : MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to disconnect '%1'?", dev->data()),
                                                            i18n("Disconnect"), GuiItem(i18n("Disconnect")), StdGuiItem::cancel()))) {
             return;
         }

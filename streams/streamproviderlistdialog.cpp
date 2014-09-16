@@ -254,7 +254,7 @@ void StreamProviderListDialog::jobFinished()
             temp.write(j->readAll());
             temp.close();
             if (!p->install(temp.fileName(), item->text(0), false)) {
-                MessageBox::error(this, i18n("Failed to install <b>%1</b>", item->text(0)));
+                MessageBox::error(this, i18n("Failed to install '%1'", item->text(0)));
                 setState(false);
             } else {
                 item->setCheckState(0, Qt::Unchecked);
@@ -263,7 +263,7 @@ void StreamProviderListDialog::jobFinished()
                 doNext();
             }
         } else {
-            MessageBox::error(this, i18n("Failed to download <b>%1</b>", item->text(0)));
+            MessageBox::error(this, i18n("Failed to download '%1'", item->text(0)));
             setState(false);
         }
     }
@@ -334,8 +334,8 @@ void StreamProviderListDialog::slotButtonClicked(int button)
     switch (button) {
     case User2:
     case User1: {
-        QStringList update;
-        QStringList install;
+        bool update=false;
+        bool install=false;
         processItems.clear();
         if (User2==button) {
             processItems.clear();
@@ -344,7 +344,7 @@ void StreamProviderListDialog::slotButtonClicked(int button)
                 for (int c=0; c<tli->childCount(); ++c) {
                     QTreeWidgetItem *ci=tli->child(c);
                     if (ci->data(0, Role_Updateable).toBool()) {
-                        update.append(nameString(ci));
+                        update=true;
                         processItems.append(ci);
                     }
                 }
@@ -352,30 +352,20 @@ void StreamProviderListDialog::slotButtonClicked(int button)
         } else {
             foreach (QTreeWidgetItem *i, checkedItems) {
                 if (installedProviders.keys().contains(i->text(0))) {
-                    update.append(nameString(i));
+                    update=true;
                 } else {
-                    install.append(nameString(i));
+                    install=true;
                 }
                 processItems.append(i);
             }
         }
-        QString message="<p>";
-        if (!install.isEmpty()) {
-            message+=i18n("Install the following?")+"</p><ul>";
-            foreach (const QString &n, install) {
-                message+="<li>"+n+"</li>";
-            }
-            message+="</ul>";
-            if (!update.isEmpty()) {
-                message+="<p>";
-            }
-        }
-        if (!update.isEmpty()) {
-            message+=i18n("Update the following?")+"</p><ul>";
-            foreach (const QString &n, update) {
-                message+="<li>"+n+"</li>";
-            }
-            message+="</ul>";
+        QString message;
+        if (install && update) {
+            message=i18n("Install/update the selected stream providers?");
+        } else if (install) {
+            message=i18n("Install the selected stream providers?");
+        } else if (update) {
+            message=i18n("Update the selected stream providers?");
         }
 
         if (!message.isEmpty() && MessageBox::Yes==MessageBox::questionYesNo(this, message, i18n("Install/Update"))) {

@@ -168,13 +168,13 @@ void PlaybackSettings::mpdConnectionStateChanged(bool c)
 
 void PlaybackSettings::showAboutReplayGain()
 {
-    MessageBox::information(this, i18n("<p>Replay Gain is a proposed standard published in 2001 to normalize the perceived loudness of computer "
+    MessageBox::information(this, i18n("Replay Gain is a proposed standard published in 2001 to normalize the perceived loudness of computer "
                                        "audio formats such as MP3 and Ogg Vorbis. It works on a track/album basis, and is now supported in a "
-                                       "growing number of players.</p>"
-                                       "<p>The following ReplayGain settings may be used:<ul>"
+                                       "growing number of players."
+                                       "<br/><br/>The following ReplayGain settings may be used:<ul>"
                                        "<li><i>None</i> - No ReplayGain is applied.</li>"
                                        "<li><i>Track</i> - Volume will be adjusted using the track's ReplayGain tags.</li>"
                                        "<li><i>Album</i> - Volume will be adjusted using the albums's ReplayGain tags.</li>"
                                        "<li><i>Auto</i> - Volume will be adjusted using the track's ReplayGain tags if random play is activated, otherwise the album's tags will be used.</li>"
-                                       "</ul></p>"));
+                                       "</ul>"));
 }

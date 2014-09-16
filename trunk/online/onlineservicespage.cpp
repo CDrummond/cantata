@@ -529,7 +529,7 @@ void OnlineServicesPage::unSubscribe()
         return;
     }
 
-    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Unsubscribe from <b>%1</b>?", item->data()))) {
+    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Unsubscribe from '%1'?", item->data()))) {
         return;
     }
 
@@ -571,7 +571,7 @@ void OnlineServicesPage::refreshSubscription()
         return;
     }
 
-    if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Refresh episode listing from <b>%1</b>?", item->data()))) {
+    if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Refresh episode listing from '%1'?", item->data()))) {
         return;
     }
 
@@ -580,6 +580,9 @@ void OnlineServicesPage::refreshSubscription()
 
 static QString format(const QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> > &urls)
 {
+    static const QChar constBullet(0x2022);
+    static const QChar constHollowBullet(0x25E6);
+
     QString rv;
     QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator it(urls.constBegin());
     QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator end(urls.constEnd());
@@ -587,16 +590,15 @@ static QString format(const QMap<MusicLibraryItemPodcast *, QList<MusicLibraryIt
     if (1==urls.keys().count()) {
         for (; it!=end; ++it) {
             foreach (MusicLibraryItemPodcastEpisode *ep, it.value()) {
-                rv+=QLatin1String("<li>")+ep->data()+QLatin1String("</li>");
+                rv+=constBullet+QLatin1Char(' ')+ep->data()+QLatin1Char('\n');
             }
         }
     } else {
         for (; it!=end; ++it) {
-            rv+=QLatin1String("<li>")+it.key()->data()+QLatin1String("<ul>");
+            rv+=constBullet+QLatin1Char(' ')+it.key()->data()+QLatin1Char('\n');
             foreach (MusicLibraryItemPodcastEpisode *ep, it.value()) {
-                rv+=QLatin1String("<li>")+ep->data()+QLatin1String("</li>");
+                rv+=QLatin1String("    ")+constHollowBullet+QLatin1Char(' ')+ep->data()+QLatin1Char('\n');
             }
-            rv+="</ul></li>";
         }
     }
     return rv;
@@ -639,17 +641,7 @@ void OnlineServicesPage::downloadPodcast()
     if (urls.isEmpty()) {
         MessageBox::information(this, i18n("All selected podcasts have already been downloaded!"));
     } else {
-        QString question;
-        if (1==count) {
-            question=QLatin1String("<p>")+i18n("Do you wish to download the following podcast episode?")+
-                     QLatin1String("<ul>")+format(urls)+QLatin1String("</ul></p>");
-        } else if (count<15) {
-            question=QLatin1String("<p>")+i18n("Do you wish to download the following podcast episodes?")+
-                     QLatin1String("<ul>")+format(urls)+QLatin1String("</ul></p>");
-        } else {
-            question=i18n("Do you wish to download the selected podcast episodes?");
-        }
-        if (MessageBox::No==MessageBox::questionYesNo(this, question)) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to download the selected podcast episodes?"))) {
             return;
         }
         QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator it(urls.constBegin());
@@ -697,17 +689,7 @@ void OnlineServicesPage::deleteDownloadedPodcast()
     if (urls.isEmpty()) {
         MessageBox::information(this, i18n("All selected downloaded podcast episodes have already been deleted!"));
     } else {
-        QString question;
-        if (1==count) {
-            question=QLatin1String("<p>")+i18n("Do you wish to delete the downloaded file of the following podcast episode?")+
-                     QLatin1String("<ul>")+format(urls)+QLatin1String("</ul></p>");
-        } else if (count<15) {
-            question=QLatin1String("<p>")+i18n("Do you wish to the delete downloaded files of the following podcast episodes?")+
-                     QLatin1String("<ul>")+format(urls)+QLatin1String("</ul></p>");
-        } else {
-            question=i18n("Do you wish to the delete downloaded files of the selected podcast episodes?");
-        }
-        if (MessageBox::No==MessageBox::questionYesNo(this, question)) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to the delete downloaded files of the selected podcast episodes?"))) {
             return;
         }
         QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator it(urls.constBegin());

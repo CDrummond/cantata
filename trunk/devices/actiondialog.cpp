@@ -320,14 +320,14 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         }
         show();
         if (!enoughSpace) {
-            MessageBox::information(this, i18n("There is insufficient space left on the destination device.\n"
+            MessageBox::information(this, i18n("There is insufficient space left on the destination device.\n\n"
                                                "The selected songs consume %1, but there is only %2 left.\n"
                                                "The songs will need to be transcoded to a smaller filesize in order to be successfully copied.",
                                                Utils::formatByteSize(spaceRequired),
                                                Utils::formatByteSize(spaceAvailable)));
         }
     } else {
-        MessageBox::error(parentWidget(), i18n("There is insufficient space left on the destination.\n"
+        MessageBox::error(parentWidget(), i18n("There is insufficient space left on the destination.\n\n"
                                                "The selected songs consume %1, but there is only %2 left.",
                                                Utils::formatByteSize(spaceRequired),
                                                Utils::formatByteSize(spaceAvailable)));
@@ -413,12 +413,12 @@ void ActionDialog::slotButtonClicked(int button)
         case Ok:
             if (haveVariousArtists &&
                 ((configureDestLabel->isVisible() && sourceUdi.isEmpty() && // Only warn if copying FROM library
-                  MessageBox::No==MessageBox::warningYesNo(this, i18n("<p>You have not configured the destination device.<br/>"
-                                                                      "Continue with the default settings?</p>"), i18n("Not Configured"),
+                  MessageBox::No==MessageBox::warningYesNo(this, i18n("You have not configured the destination device.\n\n"
+                                                                      "Continue with the default settings?"), i18n("Not Configured"),
                                                            GuiItem(i18n("Use Defaults")), StdGuiItem::cancel())) ||
                  (configureSourceLabel->isVisible() && !sourceUdi.isEmpty() && // Only warn if copying TO library
-                  MessageBox::No==MessageBox::warningYesNo(this, i18n("<p>You have not configured the source device.<br/>"
-                                                                      "Continue with the default settings?</p>"), i18n("Not Configured"),
+                  MessageBox::No==MessageBox::warningYesNo(this, i18n("You have not configured the source device.\n\n"
+                                                                      "Continue with the default settings?"), i18n("Not Configured"),
                                                            GuiItem(i18n("Use Defaults")), StdGuiItem::cancel())) ) ) {
                 return;
             }

@@ -258,7 +258,7 @@ void RgDialog::startScanning()
 {
     bool all=origTags.isEmpty() ||
              (origTags.count()==origSongs.count()
-                ? MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Scan <b>all</b> tracks?<br><br><i>NOTE: All tracks have existing ReplyGain tags.</i>"), QString(),
+                ? MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplyGain tags.</i>"), QString(),
                                                              GuiItem(i18n("Scan")), StdGuiItem::cancel())
                 : MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to scan all tracks, or only tracks without existing tags?"), QString(),
                                                             GuiItem(i18n("Untagged Tracks")), GuiItem(i18n("All Tracks"))));

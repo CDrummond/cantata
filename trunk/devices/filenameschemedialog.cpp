@@ -118,13 +118,21 @@ static QString tableEntry(const QAbstractButton *widget)
 void FilenameSchemeDialog::showHelp()
 {
     MessageBox::information(this,
-                           i18n("<p>The following variables will be replaced with their corresponding meaning for each track name.</p>")+
-                           QLatin1String("<p><table border=\"1\">")+
+                           i18n("The following variables will be replaced with their corresponding meaning for each track name.")+
+                           QLatin1String("<br/><br/>")+
+                           #ifdef Q_OS_MAC
+                           QLatin1String("<small>")+
+                           #endif
+                           QLatin1String("<table border=\"1\">")+
                            i18n("<tr><th><em>Variable</em></th><th><em>Button</em></th><th><em>Description</em></th></tr>")+
                            tableEntry(albumArtist)+tableEntry(albumTitle)+tableEntry(composer)+tableEntry(trackArtist)+
                            tableEntry(trackTitle)+tableEntry(trackArtistAndTitle)+tableEntry(trackNo)+tableEntry(cdNo)+
                            tableEntry(year)+tableEntry(genre)+
-                           QLatin1String("</table></p>"));
+                           QLatin1String("</table>")
+                           #ifdef Q_OS_MAC
+                           +QLatin1String("</small>")
+                           #endif
+                           );
 }
 
 void FilenameSchemeDialog::enableOkButton()

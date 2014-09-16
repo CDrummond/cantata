@@ -1488,7 +1488,11 @@ void MainWindow::showServerInfo()
     qSort(handlers);
     qSort(tags);
     long version=MPDConnection::self()->version();
-    MessageBox::information(this, QLatin1String("<p><table>")+
+    MessageBox::information(this, 
+                                  #ifdef Q_OS_MAC
+                                  i18n("Server Information")+QLatin1String("<br/><br/>")+
+                                  #endif
+                                  QLatin1String("<p><table>")+
                                   i18n("<tr><td colspan=\"2\"><b>Server</b></td></tr>"
                                        "<tr><td align=\"right\">Protocol:&nbsp;</td><td>%1.%2.%3</td></tr>"
                                        "<tr><td align=\"right\">Uptime:&nbsp;</td><td>%4</td></tr>"
@@ -1923,11 +1927,11 @@ void MainWindow::addToNewStoredPlaylist()
         QString name = InputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
 
         if (name==StreamsModel::constPlayListName) {
-            MessageBox::error(this, i18n("<b>%1</b> is used to store favorite streams, please choose another name.", name));
+            MessageBox::error(this, i18n("'%1' is used to store favorite streams, please choose another name.", name));
             continue;
         }
         if (PlaylistsModel::self()->exists(name)) {
-            switch(MessageBox::warningYesNoCancel(this, i18n("A playlist named <b>%1</b> already exists!<br/>Add to that playlist?", name),
+            switch(MessageBox::warningYesNoCancel(this, i18n("A playlist named '%1' already exists!\n\nAdd to that playlist?", name),
                                                   i18n("Existing Playlist"))) {
             case MessageBox::Cancel:  return;
             case MessageBox::Yes:     break;

@@ -174,9 +174,11 @@ private:
     //! true if drag is locked
     bool _locked;
 
+    #ifndef Q_OS_MAC
     //! cursor override
     /*! used to keep track of application cursor being overridden when dragging in non-WM mode */
     bool _cursorOverride;
+    #endif
 
     // provide application-wise event filter
     // it us used to unlock dragging and make sure event look is properly restored

@@ -99,7 +99,7 @@ void Action::updateToolTip(QAction *act)
         }
         act->setToolTip(QString::fromLatin1("%1 <span style=\"color: gray; font-size: small\">%2</span>")
                         .arg(tt)
-                        .arg(sc.toString()));
+                        .arg(sc.toString(QKeySequence::NativeText)));
     }
 }
 

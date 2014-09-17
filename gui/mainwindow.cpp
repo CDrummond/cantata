@@ -1640,7 +1640,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     bool scroll=autoScrollPlayQueue && playQueueProxyModel.isEmpty() && (wasEmpty || MPDState_Playing==MPDStatus::self()->state());
     playQueue->updateRows(idx.row(), current.key, scroll, wasEmpty);
     if (!scroll && topRow>0 && topRow<playQueueModel.rowCount()) {
-        playQueue->scrollTo(playQueueProxyModel.mapFromSource(playQueueModel.index(topRow, 0)), QAbstractItemView::PositionAtTop);
+        playQueue->scrollTo(playQueueProxyModel.mapFromSource(playQueueModel.index(topRow, PlayQueueModel::COL_TITLE)), QAbstractItemView::PositionAtTop);
     }
 
     if (songs.isEmpty()) {
@@ -1869,7 +1869,8 @@ void MainWindow::clearPlayQueue()
 
 void MainWindow::centerPlayQueue()
 {
-    QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
+    QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(),
+                                                                           playQueue->isGrouped() ? 0 : PlayQueueModel::COL_TITLE));
     if (idx.isValid()) {
         if (playQueue->isGrouped()) {
             playQueue->updateRows(idx.row(), current.key, true, true);

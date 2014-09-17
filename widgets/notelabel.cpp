@@ -25,6 +25,19 @@
 #include "support/utils.h"
 #include "support/localize.h"
 #include <QVBoxLayout>
+#include <QFont>
+
+static void init(QLabel *label)
+{
+    static const int constMinFontSize=9;
+
+    label->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
+    label->setWordWrap(true);
+    label->setTextInteractionFlags(Qt::NoTextInteraction);
+    if (label->font().pointSize()>constMinFontSize) {
+        label->setFont(Utils::smallFont(label->font()));
+    }
+}
 
 static QLabel * init(QWidget *p, bool url)
 {
@@ -43,9 +56,7 @@ static QLabel * init(QWidget *p, bool url)
     } else {
         label=new StateLabel(p);
     }
-    label->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
-    label->setWordWrap(true);
-    label->setTextInteractionFlags(Qt::NoTextInteraction);
+    init(label);
     l->addItem(new QSpacerItem(2, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed));
     l->addWidget(label);
     return label;
@@ -72,15 +83,11 @@ UrlNoteLabel::UrlNoteLabel(QWidget *parent)
 PlainNoteLabel::PlainNoteLabel(QWidget *parent)
     : StateLabel(parent)
 {
-    setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
-    setWordWrap(true);
-    setTextInteractionFlags(Qt::NoTextInteraction);
+    init(this);
 }
 
 PlainUrlNoteLabel::PlainUrlNoteLabel(QWidget *parent)
     : UrlLabel(parent)
 {
-    setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
-    setWordWrap(true);
-    setTextInteractionFlags(Qt::NoTextInteraction);
+    init(this);
 }

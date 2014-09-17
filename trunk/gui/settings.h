@@ -127,6 +127,7 @@ public:
     int playQueueBackgroundBlur();
     QString playQueueBackgroundFile();
     bool playQueueConfirmClear();
+    bool playQueueSearch();
     bool playListsStartClosed();
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     bool playStream();
@@ -252,6 +253,7 @@ public:
     void savePlayQueueBackgroundBlur(int v);
     void savePlayQueueBackgroundFile(const QString &v);
     void savePlayQueueConfirmClear(bool v);
+    void savePlayQueueSearch(bool v);
     void savePlayListsStartClosed(bool v);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     void savePlayStream(bool v);

@@ -624,6 +624,11 @@ bool Settings::playQueueConfirmClear()
     return cfg.get("playQueueConfirmClear", true);
 }
 
+bool Settings::playQueueSearch()
+{
+    return cfg.get("playQueueSearch", false);
+}
+
 bool Settings::playListsStartClosed()
 {
     return cfg.get("playListsStartClosed", true);
@@ -1218,6 +1223,11 @@ void Settings::savePlayQueueBackgroundFile(const QString &v)
 void Settings::savePlayQueueConfirmClear(bool v)
 {
     cfg.set("playQueueConfirmClear", v);
+}
+
+void Settings::savePlayQueueSearch(bool v)
+{
+    cfg.set("playQueueSearch", v);
 }
 
 void Settings::savePlayListsStartClosed(bool v)

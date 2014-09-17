@@ -275,6 +275,9 @@ MainWindow::MainWindow(QWidget *parent)
     repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"), Icons::self()->repeatIcon);
     singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), Icons::self()->singleIcon, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
     consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", i18n("Consume"), Icons::self()->consumeIcon, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
+    searchPlayQueueAction = ActionCollection::get()->createAction("searchplaylist", i18n("Find in Play Queue"), Icons::self()->searchIcon);
+    addAction(searchPlayQueueAction);
+    searchPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_F);
     setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"), Icon("favorites"));
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"));
@@ -633,6 +636,7 @@ MainWindow::MainWindow(QWidget *parent)
         addMenuAction(menu, clearNewStateAction);
         menu->addSeparator();
         addMenuAction(menu, StdActions::self()->searchAction);
+        addMenuAction(menu, searchPlayQueueAction);
         #ifndef ENABLE_KDE_SUPPORT
         if (Utils::KDE!=Utils::currentDe()) {
             menu->addSeparator();
@@ -844,6 +848,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(context, SIGNAL(playSong(QString)), &playQueueModel, SLOT(playSong(QString)));
     connect(locateTrackAction, SIGNAL(triggered(bool)), this, SLOT(locateTrack()));
     connect(StdActions::self()->searchAction, SIGNAL(triggered(bool)), SLOT(showSearch()));
+    connect(searchPlayQueueAction, SIGNAL(triggered()), this, SLOT(showPlayQueueSearch()));
     connect(playQueue, SIGNAL(focusSearch(QString)), playQueueSearchWidget, SLOT(activate(QString)));
     connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
     connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
@@ -1396,6 +1401,8 @@ void MainWindow::readSettings()
     tabWidget->setStyle(Settings::self()->sidebar());
     coverWidget->setEnabled(Settings::self()->showCoverWidget());
     stopTrackButton->setVisible(Settings::self()->showStopButton());
+    searchPlayQueueAction->setEnabled(Settings::self()->playQueueSearch());
+    searchPlayQueueAction->setVisible(Settings::self()->playQueueSearch());
     nowPlaying->readConfig();
     setCollapsedSize();
     toggleMonoIcons();
@@ -2233,15 +2240,20 @@ void MainWindow::dynamicStatus(const QString &message)
     #endif
 }
 
+void MainWindow::showPlayQueueSearch()
+{
+    playQueueSearchWidget->activate();
+}
+
 void MainWindow::showSearch()
 {
-    if (playQueue->hasFocus()) {
+    if (!searchPlayQueueAction->isEnabled() && playQueue->hasFocus()) {
         playQueueSearchWidget->activate();
     } else if (context->isVisible()) {
         context->search();
     } else if (currentPage && splitter->sizes().at(0)>0) {
         currentPage->focusSearch();
-    } else if (playQueuePage->isVisible() || playQueue->isVisible()) {
+    } else if (!searchPlayQueueAction->isEnabled() && (playQueuePage->isVisible() || playQueue->isVisible())) {
         playQueueSearchWidget->activate();
     }
 }

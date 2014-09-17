@@ -154,7 +154,7 @@ PosSlider::PosSlider(QWidget *p)
     updateStyleSheet();
     setMouseTracking(true);
 }
-#include <QDebug>
+
 void PosSlider::updateStyleSheet()
 {
     int lineWidth=maximumHeight()>12 ? 2 : 1;
@@ -179,11 +179,6 @@ void PosSlider::updateStyleSheet()
     int alpha=textColor.value()<32 ? 96 : 64;
 
     setStyleSheet(boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha)
-                             .arg(alpha/4).arg(lineWidth*2)+
-                  fillFormat.arg(lineWidth).arg(lineWidth*2).arg(fillColor.red()).arg(fillColor.green()).arg(fillColor.blue()));
-
-
-    qWarning() << "SS:" << QString(boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha)
                              .arg(alpha/4).arg(lineWidth*2)+
                   fillFormat.arg(lineWidth).arg(lineWidth*2).arg(fillColor.red()).arg(fillColor.green()).arg(fillColor.blue()));
 }

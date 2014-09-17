@@ -43,7 +43,7 @@
 
 GLOBAL_STATIC(Icons, instance)
 
-static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
+static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48; // << 64;
 
 static const int constDarkLimit=80;
 static const int constDarkValue=64;
@@ -107,7 +107,9 @@ static QPixmap createConsumeIconPixmap(int size, const QColor &col, double opaci
         border=4;
     } else if (48==size) {
         border=5;
-    }
+    } /*else if (64==size) {
+        border=6;
+    }*/
     p.setPen(QPen(col, size/10.0));
     p.setOpacity(opacity);
     p.setRenderHint(QPainter::Antialiasing, true);
@@ -147,7 +149,11 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
         lineWidth=8;
         space=6;
         borderX=4;
-    }
+    } /*else if (64==size) {
+        lineWidth=10;
+        space=10;
+        borderX=6;
+    }*/
 
     int borderY=((size-((3*lineWidth)+(2*space)))/2.0)+0.5;
 
@@ -254,7 +260,7 @@ static QPixmap recolour(const QImage &img, const QColor &col, double opacity=1.0
     return QPixmap::fromImage(i);
 }
 
-static Icon createRecolourableIcon(const QString &name, const QColor &stdColor)
+static Icon createRecolourableIcon(const QString &name, const QColor &stdColor, int extraSize=24)
 {
     if (QColor(Qt::black)==stdColor) {
         // Text colour is black, so is icon, therefore no need to recolour!!!
@@ -263,7 +269,8 @@ static Icon createRecolourableIcon(const QString &name, const QColor &stdColor)
 
     Icon icon;
 
-    foreach (int s, constStdSizes) {
+    QList<int> sizes=QList<int>() << constStdSizes << extraSize;
+    foreach (int s, sizes) {
         QImage img(QChar(':')+name+QString::number(s));
         if (!img.isNull()) {
             icon.addPixmap(recolour(img, stdColor));

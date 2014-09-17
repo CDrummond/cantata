@@ -52,7 +52,16 @@ int Configuration::get(const QString &key, int def, int min, int max)
     return v<min ? min : (v>max ? max : v);
 }
 
-QString Configuration::getPath(const QString &key, const QString &def)
+QString Configuration::getFilePath(const QString &key, const QString &def)
+{
+    #ifdef Q_OS_WIN
+    return Utils::fixPath(QDir::fromNativeSeparators(get(key, def)), false);
+    #else
+    return Utils::tildaToHome(Utils::fixPath(get(key, def), false));
+    #endif
+}
+
+QString Configuration::getDirPath(const QString &key, const QString &def)
 {
     #ifdef Q_OS_WIN
     return Utils::fixPath(QDir::fromNativeSeparators(get(key, def)));

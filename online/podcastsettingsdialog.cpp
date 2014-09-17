@@ -93,7 +93,7 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     origRssUpdate=Settings::self()->rssUpdate();
     setIndex(updateCombo, origRssUpdate);
     connect(updateCombo, SIGNAL(currentIndexChanged(int)), SLOT(checkSaveable()));
-    origPodcastDownloadPath=Utils::convertDirForDisplay(Settings::self()->podcastDownloadPath());
+    origPodcastDownloadPath=Utils::convertPathForDisplay(Settings::self()->podcastDownloadPath());
     origPodcastAutoDownload=Settings::self()->podcastAutoDownload();
     downloadPath->setText(origPodcastDownloadPath);
     autoDownload->setChecked(origPodcastAutoDownload);
@@ -120,7 +120,7 @@ void PodcastSettingsDialog::slotButtonClicked(int button)
         }
         if (downloadPath->text().trimmed()!=origPodcastDownloadPath) {
             changed|=DownloadPath;
-            Settings::self()->savePodcastDownloadPath(Utils::convertDirFromDisplay(downloadPath->text().trimmed()));
+            Settings::self()->savePodcastDownloadPath(Utils::convertPathFromDisplay(downloadPath->text().trimmed()));
         }
         if (origPodcastAutoDownload!=autoDownload->isChecked()) {
             changed|=AutoDownload;

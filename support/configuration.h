@@ -98,8 +98,10 @@ public:
     void         removeEntry(const QString &key)                 { remove(key); }
     #endif
     int          get(const QString &key, int def, int min, int max);
-    QString      getPath(const QString &key, const QString &def);
-    void         setPath(const QString &key, const QString &val) { return set(key, Utils::homeToTilda(val)); }
+    QString      getFilePath(const QString &key, const QString &def);
+    void         setFilePath(const QString &key, const QString &val) { return set(key, Utils::homeToTilda(val)); }
+    QString      getDirPath(const QString &key, const QString &def);
+    void         setDirPath(const QString &key, const QString &val) { return set(key, Utils::homeToTilda(val)); }
 
 private:
     #ifdef ENABLE_KDE_SUPPORT

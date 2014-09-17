@@ -68,6 +68,7 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     }
     layout->setWidget(row, QFormLayout::LabelRole, nameLabel);
     layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
+    layout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
     layout->setWidget(row++, QFormLayout::SpanningRole, statusText);
     setCaption(i18n("Add Stream"));

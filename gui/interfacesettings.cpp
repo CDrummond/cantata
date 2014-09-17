@@ -283,7 +283,7 @@ void InterfaceSettings::load()
     playQueueBackground_custom->setChecked(pqBgnd==playQueueBackground_custom->property(constValueProperty).toInt());
     playQueueBackgroundOpacity->setValue(Settings::self()->playQueueBackgroundOpacity());
     playQueueBackgroundBlur->setValue(Settings::self()->playQueueBackgroundBlur());
-    playQueueBackgroundFile->setText(Settings::self()->playQueueBackgroundFile());
+    playQueueBackgroundFile->setText(Utils::convertPathForDisplay(Settings::self()->playQueueBackgroundFile(), false));
 
     playQueueConfirmClear->setChecked(Settings::self()->playQueueConfirmClear());
     playlistsViewChanged();
@@ -370,7 +370,7 @@ void InterfaceSettings::save()
     }
     Settings::self()->savePlayQueueBackgroundOpacity(playQueueBackgroundOpacity->value());
     Settings::self()->savePlayQueueBackgroundBlur(playQueueBackgroundBlur->value());
-    Settings::self()->savePlayQueueBackgroundFile(playQueueBackgroundFile->text().trimmed());
+    Settings::self()->savePlayQueueBackgroundFile(Utils::convertPathFromDisplay(playQueueBackgroundFile->text(), false));
 
     Settings::self()->savePlayQueueConfirmClear(playQueueConfirmClear->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());

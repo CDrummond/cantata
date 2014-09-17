@@ -595,6 +595,7 @@ MainWindow::MainWindow(QWidget *parent)
         mainMenu->addAction(shortcutsAction);
         mainMenu->addSeparator();
         mainMenu->addAction(StdActions::self()->searchAction);
+        mainMenu->addAction(searchPlayQueueAction);
         mainMenu->addSeparator();
         mainMenu->addAction(serverInfoAction);
         mainMenu->addMenu(helpMenu());
@@ -604,6 +605,7 @@ MainWindow::MainWindow(QWidget *parent)
         mainMenu->addAction(clearNewStateAction);
         mainMenu->addSeparator();
         mainMenu->addAction(StdActions::self()->searchAction);
+        mainMenu->addAction(searchPlayQueueAction);
         mainMenu->addSeparator();
         mainMenu->addAction(serverInfoAction);
         mainMenu->addAction(aboutAction);

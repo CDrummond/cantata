@@ -35,7 +35,7 @@
 
 ToolButton::ToolButton(QWidget *parent)
     : QToolButton(parent)
-    #ifdef USE_SYSTEM_MENU_ICON
+    #if defined USE_SYSTEM_MENU_ICON && !defined Q_OS_MAC
     , hideMenuIndicator(GtkStyle::isActive())
     #else
     , hideMenuIndicator(true)

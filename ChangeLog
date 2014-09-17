@@ -46,6 +46,7 @@
 30. Add option to disable song info tooltips.
 31. Only show icons in message widget buttons if style uses icons for dialog
     buttons.
+32. Add option to have separate play queue search action.
 
 1.4.2
 -----

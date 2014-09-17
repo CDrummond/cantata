@@ -255,6 +255,7 @@ public Q_SLOTS:
     void deleteSongs(const QString &from, const QList<Song> &songs);
     void replayGain();
     void setCover();
+    void showPlayQueueSearch();
     void showSearch();
     void expandAll();
     void collapseAll();

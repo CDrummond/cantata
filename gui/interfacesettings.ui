@@ -387,7 +387,14 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="5" column="0" colspan="2">
+        <widget class="QCheckBox" name="playQueueSearch">
+         <property name="text">
+          <string>Separate action (and shortcut) for play queue search</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
         <spacer name="macSpacerHack">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -403,7 +410,7 @@
          </property>
         </spacer>
        </item>
-       <item row="6" column="0" colspan="2">
+       <item row="7" column="0" colspan="2">
         <widget class="QGroupBox" name="groupBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">

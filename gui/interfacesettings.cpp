@@ -286,6 +286,7 @@ void InterfaceSettings::load()
     playQueueBackgroundFile->setText(Utils::convertPathForDisplay(Settings::self()->playQueueBackgroundFile(), false));
 
     playQueueConfirmClear->setChecked(Settings::self()->playQueueConfirmClear());
+    playQueueSearch->setChecked(Settings::self()->playQueueSearch());
     playlistsViewChanged();
     playQueueViewChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
@@ -373,6 +374,7 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueBackgroundFile(Utils::convertPathFromDisplay(playQueueBackgroundFile->text(), false));
 
     Settings::self()->savePlayQueueConfirmClear(playQueueConfirmClear->isChecked());
+    Settings::self()->savePlayQueueSearch(playQueueSearch->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
     Settings::self()->saveInfoTooltips(infoTooltips->isChecked());
     Settings::self()->saveTouchFriendly(touchFriendly->isChecked());

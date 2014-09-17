@@ -104,7 +104,6 @@ StreamsPage::StreamsPage(QWidget *p)
 
     view->setUniformRowHeights(true);
     view->addAction(StdActions::self()->replacePlayQueueAction);
-    view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(editAction);
     view->addAction(StdActions::self()->removeAction);
     view->addAction(StreamsModel::self()->addToFavouritesAct());
@@ -616,7 +615,6 @@ void StreamsPage::controlActions()
         }
     }
     StdActions::self()->replacePlayQueueAction->setEnabled(haveSelection && onlyStreamsSelected);
-    StdActions::self()->addWithPriorityAction->setEnabled(haveSelection && onlyStreamsSelected);
     menuButton->controlState();
 }
 

@@ -98,7 +98,7 @@ QString Utils::stripAcceleratorMarkers(QString label)
     return label;
 }
 
-QString Utils::fixPath(const QString &dir)
+QString Utils::fixPath(const QString &dir, bool ensureEndsInSlash)
 {
     QString d(dir);
 
@@ -116,7 +116,7 @@ QString Utils::fixPath(const QString &dir)
         #endif
     }
     d.replace(QLatin1String("/./"), constDirSepStr);
-    if (!d.isEmpty() && !d.endsWith(constDirSep)) {
+    if (ensureEndsInSlash && !d.isEmpty() && !d.endsWith(constDirSep)) {
         d+=constDirSep;
     }
     return d;
@@ -131,7 +131,7 @@ QString Utils::homeToTilda(const QString &s)
         return constTilda;
     }
     if (s.startsWith(hp+constDirSepStr)) {
-        return constTilda+fixPath(s.mid(hp.length()));
+        return constTilda+fixPath(s.mid(hp.length()), false);
     }
     return s;
 }
@@ -141,35 +141,38 @@ QString Utils::tildaToHome(const QString &s)
     if (s==constTilda) {
         return fixPath(QDir::homePath());
     }
-    return s.startsWith(constTilda+constDirSep) ? fixPath(QDir::homePath()+constDirSepStr+s.mid(1)) : s;
+    if (s.startsWith(constTilda+constDirSep)) {
+        return fixPath(QDir::homePath()+constDirSepStr+s.mid(1), false);
+    }
+    return s;
 }
 #endif
 
-QString Utils::convertDirForDisplay(const QString &dir)
+QString Utils::convertPathForDisplay(const QString &path, bool isFolder)
 {
-    if (dir.isEmpty() || dir.startsWith(constHttp)) {
-        return dir;
+    if (path.isEmpty() || path.startsWith(constHttp)) {
+        return path;
     }
 
-    QString d(dir);
-    if (d.endsWith(constDirSep)) {
-        d=d.left(d.length()-1);
+    QString p(path);
+    if (p.endsWith(constDirSep)) {
+        p=p.left(p.length()-1);
     }
-    d=homeToTilda(QDir::toNativeSeparators(d));
-    return d.endsWith(constDirSep) ? d.left(d.length()-1) : d;
+    p=homeToTilda(QDir::toNativeSeparators(p));
+    return isFolder && p.endsWith(constDirSep) ? p.left(p.length()-1) : p;
 }
 
-QString Utils::convertDirFromDisplay(const QString &dir)
+QString Utils::convertPathFromDisplay(const QString &path, bool isFolder)
 {
-    QString d=dir.trimmed();
-    if (d.isEmpty()) {
-        return d;
+    QString p=path.trimmed();
+    if (p.isEmpty()) {
+        return p;
     }
 
-    if (d.startsWith(constHttp)) {
-        return fixPath(d);
+    if (p.startsWith(constHttp)) {
+        return fixPath(p);
     }
-    return tildaToHome(fixPath(QDir::fromNativeSeparators(d)));
+    return tildaToHome(fixPath(QDir::fromNativeSeparators(p), isFolder));
 }
 
 QString Utils::getDir(const QString &file)

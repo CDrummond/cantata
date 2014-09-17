@@ -63,7 +63,7 @@ namespace Utils
 
     extern QString strippedText(QString s);
     extern QString stripAcceleratorMarkers(QString label);
-    extern QString fixPath(const QString &d);
+    extern QString fixPath(const QString &d, bool ensureEndsInSlash=true);
     #ifdef Q_OS_WIN
     inline QString homeToTilda(const QString &s) { return s; }
     inline QString tildaToHome(const QString &s) { return s; }
@@ -72,10 +72,10 @@ namespace Utils
     extern QString tildaToHome(const QString &s);
     #endif
 
-    // Convert directory to a format suitable fo rUI - e.g. use native separators, and remove any traling separator
-    extern QString convertDirForDisplay(const QString &dir);
-    // Convert directory from a UI field - convert to / separators, and add a trailing separator
-    extern QString convertDirFromDisplay(const QString &dir);
+    // Convert path to a format suitable fo rUI - e.g. use native separators, and remove any trailing separator
+    extern QString convertPathForDisplay(const QString &dir, bool isFolder=true);
+    // Convert path from a UI field - convert to / separators, and add a trailing separator (if isFolder)
+    extern QString convertPathFromDisplay(const QString &dir, bool isFolder=true);
     extern QString getDir(const QString &file);
     extern QString getFile(const QString &file);
     extern QString changeExtension(const QString &file, const QString &extension);

@@ -148,7 +148,7 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
     origOpts=opts;
 
     if (props&Prop_Folder) {
-        musicFolder->setText(Utils::convertDirForDisplay(path));
+        musicFolder->setText(Utils::convertPathForDisplay(path));
         connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
         if (disabledProps&Prop_Folder) {
             musicFolder->setDisabled(true);

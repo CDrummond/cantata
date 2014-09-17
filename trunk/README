@@ -775,6 +775,8 @@ The Cantata source folder contains the following structure:
     widgets    - Widgets that are probably Cantata specific.
     windows    - Files specfic to Windows builds..
     mac        - Files specfic to MacOSX builds.
+    freecns/   - Repeat and Shuffle icons
+    cumulus      https://www.iconfinder.com/iconsets/freecns-cumulus
 
 Cantata's SVG icons have been 'cleaned' using:
   scour --strip-xml-prolog --indent=none -i in.svg -o out.svg

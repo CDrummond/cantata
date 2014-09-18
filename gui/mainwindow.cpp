@@ -2634,12 +2634,15 @@ void MainWindow::hideWindow()
 void MainWindow::restoreWindow()
 {
     bool wasHidden=isHidden();
-    #ifdef Q_OS_WIN // FIXME - need on mac?
+    #ifdef Q_OS_WIN
     raiseWindow(this);
     #endif
     raise();
     showNormal();
     activateWindow();
+    #ifdef Q_OS_MAC
+    raise();
+    #endif
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     // This section seems to be required for compiz, so that MPRIS.Raise actually shows the window, and not just highlight launcher.
     #if QT_VERSION < 0x050000

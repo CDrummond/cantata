@@ -24,11 +24,11 @@
 #ifndef COVERWIDGET_H
 #define COVERWIDGET_H
 
-#include <QLabel>
+#include <QWidget>
 
-class QPixmap;
+class CoverLabel;
 
-class CoverWidget : public QLabel
+class CoverWidget : public QWidget
 {
     Q_OBJECT
 
@@ -38,8 +38,8 @@ public:
 
     void setSize(int min);
     void setEnabled(bool e);
-    bool event(QEvent *event);
-    void paintEvent(QPaintEvent *);
+
+    void emitClicked() { emit clicked(); }
 
 Q_SIGNALS:
     void clicked();
@@ -48,8 +48,7 @@ private Q_SLOTS:
     void coverImage(const QImage &);
 
 private:
-    bool pressed;
-    QPixmap *pix;
+    CoverLabel *label;
 };
 
 #endif

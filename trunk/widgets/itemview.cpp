@@ -252,13 +252,18 @@ public:
             r.adjust(constBorder, 0, -constBorder, 0);
         }
         if (!pix.isNull()) {
-            int adjust=qMax(pix.width(), pix.height());
+            #if QT_VERSION >= 0x050100
+            QSize layoutSize = pix.size() / pix.devicePixelRatio();
+            #else
+            QSize layoutSize = pix.size();
+            #endif
+            int adjust=qMax(layoutSize.width(), layoutSize.height());
             if (AP_VTop==actionPos) {
-                int xpos=r.x()+((r.width()-pix.width())/2);
-                painter->drawPixmap(xpos, r.y(), pix.width(), pix.height(), pix);
+                int xpos=r.x()+((r.width()-layoutSize.width())/2);
+                painter->drawPixmap(xpos, r.y(), layoutSize.width(), layoutSize.height(), pix);
                 QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, QPalette::Text));
                 double alphas[]={0.25, 0.125, 0.061};
-                QRect border(xpos, r.y(), pix.width(), pix.height());
+                QRect border(xpos, r.y(), layoutSize.width(), layoutSize.height());
                 QRect shadow(border);
                 for (int i=0; i<3; ++i) {
                     shadow.adjust(1, 1, 1, 1);
@@ -287,10 +292,10 @@ public:
                 r.adjust(0, adjust+3, 0, -3);
             } else {
                 if (rtl) {
-                    painter->drawPixmap(r.x()+r.width()-pix.width(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+                    painter->drawPixmap(r.x()+r.width()-layoutSize.width(), r.y()+((r.height()-layoutSize.height())/2), layoutSize.width(), layoutSize.height(), pix);
                     r.adjust(3, 0, -(3+adjust), 0);
                 } else {
-                    painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+                    painter->drawPixmap(r.x(), r.y()+((r.height()-layoutSize.height())/2), layoutSize.width(), layoutSize.height(), pix);
                     r.adjust(adjust+3, 0, -3, 0);
                 }
             }

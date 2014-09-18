@@ -43,7 +43,8 @@
 
 GLOBAL_STATIC(Icons, instance)
 
-static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48; // << 64;
+static QList<int> constStdSmallSizes=QList<int>() << 16 << 22 << 32 ;
+static QList<int> constStdSizes=QList<int>() << constStdSmallSizes << 48; // << 64;
 
 static const int constDarkLimit=80;
 static const int constDarkValue=64;
@@ -110,7 +111,7 @@ static QPixmap createConsumeIconPixmap(int size, const QColor &col, double opaci
     } /*else if (64==size) {
         border=6;
     }*/
-    p.setPen(QPen(col, size/10.0));
+    p.setPen(QPen(col, size/8.0));
     p.setOpacity(opacity);
     p.setRenderHint(QPainter::Antialiasing, true);
     QRectF rect(border+0.5, border+0.5, size-(2*border), size-(2*border));
@@ -190,7 +191,7 @@ static QColor calcIconColor()
 static Icon createSingleIcon(const QColor &stdColor)
 {
     Icon icon;
-    foreach (int s, constStdSizes) {
+    foreach (int s, constStdSmallSizes) {
         icon.addPixmap(createSingleIconPixmap(s, stdColor));
     }
     return icon;
@@ -199,7 +200,7 @@ static Icon createSingleIcon(const QColor &stdColor)
 static Icon createConsumeIcon(const QColor &stdColor)
 {
     Icon icon;
-    foreach (int s, constStdSizes) {
+    foreach (int s, constStdSmallSizes) {
         icon.addPixmap(createConsumeIconPixmap(s, stdColor));
     }
     return icon;

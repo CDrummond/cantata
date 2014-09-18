@@ -182,6 +182,7 @@ public:
     bool showStopButton();
     bool showRatingWidget();
     bool infoTooltips();
+    bool retinaSupport();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -296,6 +297,7 @@ public:
     void saveShowStopButton(bool v);
     void saveShowRatingWidget(bool v);
     void saveInfoTooltips(bool v);
+    void saveRetinaSupport(bool v);
     void save();
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();

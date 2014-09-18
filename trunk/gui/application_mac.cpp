@@ -22,6 +22,7 @@
  */
 
 #include "application_mac.h"
+#include "settings.h"
 #include "support/utils.h"
 #include <QIcon>
 
@@ -29,7 +30,11 @@ Application::Application(int &argc, char **argv)
     : SingleApplication(argc, argv)
 {
     setAttribute(Qt::AA_DontShowIconsInMenus, true);
-//    setAttribute(Qt::AA_UseHighDpiPixmaps);
+    #if QT_VERSION >= 0x050100
+    if (Settings::self()->retinaSupport()) {
+        setAttribute(Qt::AA_UseHighDpiPixmaps);
+    }
+    #endif
 
     // Setup icon path...
     QStringList paths=QIcon::themeSearchPaths();

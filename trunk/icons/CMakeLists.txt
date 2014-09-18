@@ -46,3 +46,6 @@ if (NOT WIN32 AND NOT APPLE)
 
 endif (NOT WIN32 AND NOT APPLE)
 
+if (APPLE)
+    install(FILES trayicon-mono-dark.svg DESTINATION ${CANTATA_ICON_INSTALL_PREFIX}/scalable/apps RENAME cantata-panel.svg)
+endif (APPLE)

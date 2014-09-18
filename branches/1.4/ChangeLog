@@ -18,6 +18,7 @@
 12. Allow to change stream, and online-service, filter search category without
     closing current search field.
 13. Fix combo-box text changed signal for Qt5 builds.
+14. Don't have double spacer when cover-widget is hidden.
 
 1.4.1
 -----

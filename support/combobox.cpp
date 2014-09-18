@@ -40,6 +40,7 @@ ComboBox::ComboBox(QWidget *p)
     #endif
     , toggleState(false)
 {
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     if (-1==maxPopupItemCount) {
         if (QApplication::desktop()) {
             maxPopupItemCount=((QApplication::desktop()->height()/(QApplication::fontMetrics().height()*1.5))*0.75)+0.5;
@@ -47,6 +48,10 @@ ComboBox::ComboBox(QWidget *p)
             maxPopupItemCount=32;
         }
     }
+    #endif
+    #if QT_VERSION >= 0x050000
+    connect(this, SIGNAL(editTextChanged(QString)), this, SIGNAL(textChanged(QString)));
+    #endif
 }
 
 void ComboBox::setEditable(bool editable)
@@ -58,6 +63,7 @@ void ComboBox::setEditable(bool editable)
     }
 }
 
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
 void ComboBox::showPopup()
 {
     if (GtkStyle::isActive() && count()>(maxPopupItemCount-2)) {
@@ -119,3 +125,4 @@ void ComboBox::hidePopup()
     }
     QComboBox::hidePopup();
 }
+#endif

@@ -26,9 +26,6 @@
 
 #include <QComboBox>
 
-#if defined Q_OS_WIN || defined Q_OS_MAC
-class ComboBox : public QComboBox { public: ComboBox(QWidget *p) : QComboBox(p) { } };
-#else
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KComboBox>
 #endif
@@ -39,17 +36,27 @@ class ComboBox
     : public QComboBox
     #endif
 {
+    #if QT_VERSION >= 0x050000
+    Q_OBJECT
+    #endif
+
 public:
     ComboBox(QWidget *p);
     virtual ~ComboBox() { }
 
     void setEditable(bool editable);
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     void showPopup();
     void hidePopup();
+    #endif
+
+#if QT_VERSION >= 0x050000
+Q_SIGNALS:
+    void textChanged(const QString &t);
+#endif
 
 private:
     bool toggleState;
 };
-#endif
 
 #endif

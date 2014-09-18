@@ -17,6 +17,7 @@
     clear memory cache.
 12. Allow to change stream, and online-service, filter search category without
     closing current search field.
+13. Fix combo-box text changed signal for Qt5 builds.
 
 1.4.1
 -----

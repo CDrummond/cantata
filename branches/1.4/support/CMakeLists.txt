@@ -14,12 +14,15 @@ add_library(support-core STATIC ${SUPPORT_CORE_MOC_SRCS} ${SUPPORT_CORE_SRCS})
 if (NOT ENABLE_UBUNTU)
     set(SUPPORT_SRCS icon.cpp fancytabwidget.cpp messagewidget.cpp buddylabel.cpp action.cpp actioncollection.cpp flickcharm.cpp
         configuration.cpp lineedit.cpp gtkstyle.cpp spinner.cpp messagebox.cpp inputdialog.cpp thread.cpp squeezedtextlabel.cpp
-        touchproxystyle.cpp)
+        touchproxystyle.cpp combobox.cpp)
 
     set(SUPPORT_MOC_HDRS fancytabwidget.h messagewidget.h inputdialog.h pagewidget.h  action.h actioncollection.h flickcharm.h)
+    if (ENABLE_QT5)
+        set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} combobox.h)
+    endif (ENABLE_QT5)
 
     if (NOT WIN32 AND NOT APPLE)
-        set(SUPPORT_SRCS ${SUPPORT_SRCS} windowmanager.cpp gtkproxystyle.cpp combobox.cpp shortcuthandler.cpp)
+        set(SUPPORT_SRCS ${SUPPORT_SRCS} windowmanager.cpp gtkproxystyle.cpp shortcuthandler.cpp)
         set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} windowmanager.h shortcuthandler.h)
         add_subdirectory(themes)
     endif (NOT WIN32 AND NOT APPLE)

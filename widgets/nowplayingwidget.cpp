@@ -122,7 +122,11 @@ public:
             break;
         case QEvent::HoverEnter:
             if (isEnabled()) {
+                #ifdef Q_OS_MAC
+                setStyleSheet(QString("QLabel{color:%1;}").arg(OSXStyle::self()->viewPalette().highlight().color().name()));
+                #else
                 setStyleSheet(QLatin1String("QLabel{color:palette(highlight);}"));
+                #endif
             }
             break;
         case QEvent::HoverLeave:

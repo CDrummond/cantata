@@ -52,6 +52,7 @@ private Q_SLOTS:
     void playQueueViewChanged();
     void forceSingleClickChanged();
     void touchFriendlyChanged();
+    void retinaSupportChanged();
     void enableStartupState();
     void langChanged();
     void viewItemChanged(QListWidgetItem *changedItem);

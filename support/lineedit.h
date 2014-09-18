@@ -45,15 +45,15 @@ public:
     void setReadOnly(bool e);
 };
 
-#elif QT_VERSION >= 0x050200
-
-class LineEdit : public QLineEdit
-{
-public:
-    LineEdit(QWidget *parent = 0) : QLineEdit(parent) { setClearButtonEnabled(true); }
-    virtual ~LineEdit() { }
-    void setReadOnly(bool e);
-};
+//#elif QT_VERSION >= 0x050200
+//
+//class LineEdit : public QLineEdit
+//{
+//public:
+//    LineEdit(QWidget *parent = 0) : QLineEdit(parent) { setClearButtonEnabled(true); }
+//    virtual ~LineEdit() { }
+//    void setReadOnly(bool e);
+//};
 
 #else
 

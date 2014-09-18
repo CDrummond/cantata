@@ -87,7 +87,12 @@ int FancyTabWidget::iconSize(bool large)
 static void drawIcon(const QIcon &icon, const QRect &r, QPainter *p, const QSize &iconSize, bool selected)
 {
     QPixmap px = icon.pixmap(iconSize, selected ? QIcon::Selected : QIcon::Normal);
-    p->drawPixmap(r.x()+(r.width()-px.width())/2.0, r.y()+(r.height()-px.height())/2.0, px.width(), px.height(), px);
+    #if QT_VERSION >= 0x050100
+    QSize layoutSize = px.size() / px.devicePixelRatio();
+    #else
+    QSize layoutSize = px.size();
+    #endif
+    p->drawPixmap(r.x()+(r.width()-layoutSize.width())/2.0, r.y()+(r.height()-layoutSize.height())/2.0, layoutSize.width(), layoutSize.height(), px);
 }
 
 void FancyTabProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const

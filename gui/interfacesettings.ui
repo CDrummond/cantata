@@ -764,7 +764,14 @@
            </property>
           </widget>
          </item>
-         <item row="8" column="0">
+         <item row="8" column="0" colspan="2">
+          <widget class="QCheckBox" name="retinaSupport">
+           <property name="text">
+            <string>Support retina displays</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
           <widget class="BuddyLabel" name="langLabel">
            <property name="text">
             <string>Language:</string>
@@ -774,7 +781,7 @@
            </property>
           </widget>
          </item>
-         <item row="8" column="1">
+         <item row="9" column="1">
           <widget class="QComboBox" name="lang"/>
          </item>
         </layout>
@@ -797,6 +804,13 @@
         <widget class="NoteLabel" name="touchFriendlyNoteLabel">
          <property name="text">
           <string>Changing the 'touch friendly' setting will require a re-start of Cantata.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="NoteLabel" name="retinaSupportNoteLabel">
+         <property name="text">
+          <string>Enabling support for retina displays will produce sharper icons on the retina display, but may produce less sharp icons on non-retina displays. Changing this setting will require a re-start of Cantata.</string>
          </property>
         </widget>
        </item>

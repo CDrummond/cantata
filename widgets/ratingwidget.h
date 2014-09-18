@@ -44,6 +44,9 @@ private:
     QSize pixmapSize;
     QColor col;
     QPixmap pixmaps[3];
+    #if QT_VERSION >= 0x050100
+    double pixelRatio;
+    #endif
 };
 
 class RatingWidget : public QWidget

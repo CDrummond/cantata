@@ -198,6 +198,12 @@ sub getEntries() {
 }
 
 sub baseDir() {
+    if ($^O eq "darwin") {
+        # MacOSX
+        return "$ENV{'HOME'}/Library/Caches/cantata/cantata/dynamic";
+    }
+
+    # Linux
     my $cacheDir=$ENV{'XDG_CACHE_HOME'};
     if (!$cacheDir) {
         $cacheDir="$ENV{'HOME'}/.cache";
@@ -543,10 +549,16 @@ sub sendMessage() {
     my $method=shift;
     my $argument=shift;
     if (0==$isServerMode) {
-        system("qdbus com.googlecode.cantata /cantata ${method} ${argument}");
-        if ( $? == -1 ) {
-            # Maybe qdbus is not installed? Try dbus-send...
-            system("dbus-send --type=method_call --session --dest=com.googlecode.cantata /cantata com.googlecode.cantata.${method} string:${argument}");
+        if ($^O eq "darwin") {
+            # MacOSX
+            # TODO: How to send a dbus (or other) message to Cantata application????
+        } else {
+            # Linux
+            system("qdbus com.googlecode.cantata /cantata ${method} ${argument}");
+            if ( $? == -1 ) {
+                # Maybe qdbus is not installed? Try dbus-send...
+                system("dbus-send --type=method_call --session --dest=com.googlecode.cantata /cantata com.googlecode.cantata.${method} string:${argument}");
+            }
         }
     } else {
         my $clientId=shift;

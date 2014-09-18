@@ -149,13 +149,16 @@ public:
         const QPixmap pixmap = icon.pixmap(iconSize, iconSize);
 
         QFontMetrics fm = painter->fontMetrics();
-        int wp = pixmap.width();
-        int hp = pixmap.height();
+        #if QT_VERSION >= 0x050100
+        QSize layoutSize = pixmap.size() / pixmap.devicePixelRatio();
+        #else
+        QSize layoutSize = pixmap.size();
+        #endif
 
         QTextLayout iconTextLayout(text, option.font);
         QTextOption textOption(Qt::AlignHCenter);
         iconTextLayout.setTextOption(textOption);
-        int maxWidth = qMax(3 * wp, 8 * fm.height());
+        int maxWidth = qMax(3 * layoutSize.width(), 8 * fm.height());
         layoutText(&iconTextLayout, maxWidth);
 
         QPen pen = painter->pen();
@@ -183,9 +186,9 @@ public:
             painter->setPen(option.palette.color(cg, QPalette::Text));
         }
 
-        painter->drawPixmap(option.rect.x() + (option.rect.width()/2)-(wp/2), option.rect.y() + 5, pixmap);
+        painter->drawPixmap(option.rect.x() + (option.rect.width()/2)-(layoutSize.width()/2), option.rect.y() + 5, pixmap);
         if (!text.isEmpty()) {
-            iconTextLayout.draw(painter, QPoint(option.rect.x() + (option.rect.width()/2)-(maxWidth/2), option.rect.y() + hp+7));
+            iconTextLayout.draw(painter, QPoint(option.rect.x() + (option.rect.width()/2)-(maxWidth/2), option.rect.y() + layoutSize.height()+7));
         }
         painter->setPen(pen);
         drawFocus(painter, option, option.rect);
@@ -206,30 +209,32 @@ public:
 
         QFontMetrics fm = option.fontMetrics;
         int gap = fm.height();
-        int wp = pixmap.width();
-        int hp = pixmap.height();
+        #if QT_VERSION >= 0x050100
+        QSize layoutSize = pixmap.size() / pixmap.devicePixelRatio();
+        #else
+        QSize layoutSize = pixmap.size();
+        #endif
 
-        if (hp == 0) {
+        if (layoutSize.height() == 0) {
             /**
             * No pixmap loaded yet, we'll use the default icon size in this case.
             */
-            hp = iconSize;
-            wp = iconSize;
+            layoutSize=QSize(iconSize, iconSize);
         }
 
         QTextLayout iconTextLayout(text, option.font);
-        int wt = layoutText(&iconTextLayout, qMax(3 * wp, 8 * fm.height()));
+        int wt = layoutText(&iconTextLayout, qMax(3 * layoutSize.width(), 8 * fm.height()));
         int ht = iconTextLayout.boundingRect().height();
 
         int width, height;
         if (text.isEmpty()) {
-            height = hp;
+            height = layoutSize.height();
         } else {
-            height = hp + ht + 10;
+            height = layoutSize.height() + ht + 10;
 
         }
 
-        width = qMax(wt, wp) + gap;
+        width = qMax(wt, layoutSize.width()) + gap;
         return QSize(width, height);
     }
 

@@ -118,9 +118,15 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
 
     foreach (const QPointer<Action> &a, actions) {
         QPixmap pix=a->icon().pixmap(QSize(iconSize, iconSize));
-        if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
-            painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
-                                actionRect.y()+(actionRect.height()-pix.height())/2, pix);
+        #if QT_VERSION >= 0x050100
+        QSize pixSize = pix.isNull() ? QSize(0, 0) : (pix.size() / pix.devicePixelRatio());
+        #else
+        QSize pixSize = pix.size();
+        #endif
+
+        if (!pix.isNull() && actionRect.width()>=pixSize.width()/* && r.x()>=0 && r.y()>=0*/) {
+            painter->drawPixmap(actionRect.x()+(actionRect.width()-pixSize.width())/2,
+                                actionRect.y()+(actionRect.height()-pixSize.height())/2, pix);
         }
         if (largeIcons && 2==actions.count() && AP_VTop==actionPos) {
             adjustActionRect(rtl, actionPos, actionRect, iconSize>>4);

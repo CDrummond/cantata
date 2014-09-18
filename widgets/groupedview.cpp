@@ -373,17 +373,30 @@ public:
                 pix=cover ? *cover : (stream && !song.isCdda() ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(constCoverSize, constCoverSize);
             }
 
-            if (pix.width()>constCoverSize) {
-                pix=pix.scaled(constCoverSize, constCoverSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            #if QT_VERSION >= 0x050100
+            int maxSize=constCoverSize*pix.devicePixelRatio();
+            #else
+            int maxSize=constCoverSize;
+            #endif
+
+            if (pix.width()>maxSize) {
+                pix=pix.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             }
 
+            #if QT_VERSION >= 0x050100
+            QSize pixSize = pix.isNull() ? QSize(0, 0) : (pix.size() / pix.devicePixelRatio());
+            #else
+            QSize pixSize = pix.size();
+            #endif
+
             if (rtl) {
-                painter->drawPixmap(r.x()+r.width()-(pix.width()-constBorder), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+                painter->drawPixmap(r.x()+r.width()-(pixSize.width()-constBorder), r.y()+((r.height()-pixSize.height())/2), pixSize.width(), pixSize.height(), pix);
                 r.adjust(0, 0, -(constCoverSize+constBorder), 0);
             } else {
-                painter->drawPixmap(r.x()-2, r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+                painter->drawPixmap(r.x()-2, r.y()+((r.height()-pixSize.height())/2), pixSize.width(), pixSize.height(), pix);
                 r.adjust(constCoverSize+constBorder, 0, 0, 0);
             }
+
             int td=index.data(Cantata::Role_AlbumDuration).toUInt();
             QString totalDuration=td>0 ? Utils::formatTime(td) : QString();
             QRect duratioRect(r.x(), r.y(), r.width(), textHeight);

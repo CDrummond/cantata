@@ -7,14 +7,10 @@
 <file alias="repeat22.png">icons/view-media-repeat22.png</file>
 <file alias="repeat24.png">icons/view-media-repeat24.png</file>
 <file alias="repeat32.png">icons/view-media-repeat32.png</file>
-<file alias="repeat48.png">icons/view-media-repeat48.png</file>
-<!-- <file alias="repeat64.png">icons/view-media-repeat64.png</file> -->
 <file alias="shuffle16.png">icons/view-media-shuffle16.png</file>
 <file alias="shuffle22.png">icons/view-media-shuffle22.png</file>
 <file alias="shuffle24.png">icons/view-media-shuffle24.png</file>
 <file alias="shuffle32.png">icons/view-media-shuffle32.png</file>
-<file alias="shuffle48.png">icons/view-media-shuffle48.png</file>
-<!-- <file alias="shuffle64.png">icons/view-media-shuffle64.png</file> -->
 
 <file alias="sidebar-albums-dark">icons/sidebar-albums-dark.svg</file>
 <file alias="sidebar-artists-dark">icons/sidebar-artists-dark.svg</file>

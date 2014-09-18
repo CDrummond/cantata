@@ -228,6 +228,12 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         connect(systemTrayPopup, SIGNAL(toggled(bool)), SLOT(systemTrayPopupToggled()));
     }
     #endif
+    #if defined Q_OS_MAC && QT_VERSION >= 0x050100
+    connect(retinaSupport, SIGNAL(toggled(bool)), SLOT(retinaSupportChanged()));
+    #else
+    REMOVE(retinaSupport)
+    REMOVE(retinaSupportNoteLabel)
+    #endif
 
     // If we are on a display less than 800 pixels tall (e.g. a netbook), then re-arrange
     // the view settings to allow dialog to shrink more...
@@ -291,6 +297,9 @@ void InterfaceSettings::load()
     playQueueViewChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
     infoTooltips->setChecked(Settings::self()->infoTooltips());
+    if (retinaSupport) {
+        retinaSupport->setChecked(Settings::self()->retinaSupport());
+    }
     touchFriendly->setChecked(Settings::self()->touchFriendly());
     showStopButton->setChecked(Settings::self()->showStopButton());
     showCoverWidget->setChecked(Settings::self()->showCoverWidget());
@@ -377,6 +386,9 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueSearch(playQueueSearch->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
     Settings::self()->saveInfoTooltips(infoTooltips->isChecked());
+    if (retinaSupport) {
+        Settings::self()->saveRetinaSupport(retinaSupport->isChecked());
+    }
     Settings::self()->saveTouchFriendly(touchFriendly->isChecked());
     Settings::self()->saveShowStopButton(showStopButton->isChecked());
     Settings::self()->saveShowCoverWidget(showCoverWidget->isChecked());
@@ -521,6 +533,11 @@ void InterfaceSettings::forceSingleClickChanged()
 void InterfaceSettings::touchFriendlyChanged()
 {
     touchFriendlyNoteLabel->setOn(touchFriendly->isChecked()!=Settings::self()->touchFriendly());
+}
+
+void InterfaceSettings::retinaSupportChanged()
+{
+    retinaSupportNoteLabel->setOn(retinaSupport->isChecked()!=Settings::self()->retinaSupport());
 }
 
 void InterfaceSettings::enableStartupState()

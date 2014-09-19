@@ -236,7 +236,7 @@ static inline QString cacheKey(const Song &song, int size)
     return (song.isArtistImageRequest() ? artistKey(song) : albumKey(song))+QString::number(size);
 }
 
-static const QLatin1String constScaledFormat(".png");
+static const QLatin1String constScaledFormat(".jpg");
 static bool cacheScaledCovers=true;
 
 static QString getScaledCoverName(const Song &song, int size, bool createDir)
@@ -295,13 +295,13 @@ static QImage loadScaledCover(const Song &song, int size)
     QString fileName=getScaledCoverName(song, size, false);
     if (!fileName.isEmpty()) {
         if (QFile::exists(fileName)) {
-            QImage img(fileName, "PNG");
+            QImage img(fileName, "JPG");
             if (!img.isNull() && (img.width()==size || img.height()==size)) {
                 DBUG_CLASS("Covers") << song.albumArtist() << song.albumId() << size << "scaled cover found" << fileName;
                 return img;
             }
-        } else { // Remove any previous JPG scaled cover...
-            fileName=Utils::changeExtension(fileName, ".jpg");
+        } else { // Remove any previous PNG scaled cover...
+            fileName=Utils::changeExtension(fileName, ".png");
             if (QFile::exists(fileName)) {
                 QFile::remove(fileName);
             }
@@ -1131,7 +1131,7 @@ QPixmap * Covers::saveScaledCover(const QImage &img, const Song &song, int size)
 
     if (cacheScaledCovers && !isOnlineServiceImage(song)) {
         QString fileName=getScaledCoverName(song, size, true);
-        bool status=img.save(fileName, "PNG");
+        bool status=img.save(fileName, "JPG");
         DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << size << fileName << status;
     }
     QPixmap *pix=new QPixmap(QPixmap::fromImage(img));

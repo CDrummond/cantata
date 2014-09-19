@@ -52,8 +52,7 @@ void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
     }
 
     #if QT_VERSION >= 0x050100
-    double pixelRatio=Icon("dialog-ok").pixmap(16, 16).devicePixelRatio();
-    if (!isNull() && Utils::equal(pixelRatio, pixmaps[0].devicePixelRatio())) {
+    if (!isNull() && !Utils::equal(pixelRatio, pixmaps[0].devicePixelRatio())) {
         pixmaps[0]=QPixmap();
     }
     #endif

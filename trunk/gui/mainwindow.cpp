@@ -661,9 +661,8 @@ MainWindow::MainWindow(QWidget *parent)
         }
         #endif
         menu=new QMenu(i18n("&Queue"), this);
-//        addMenuAction(menu, promptClearPlayQueueAction);
-//        addMenuAction(menu, StdActions::self()->savePlayQueueAction);
-//        menu->addSeparator();
+        addMenuAction(menu, promptClearPlayQueueAction);
+        addMenuAction(menu, StdActions::self()->savePlayQueueAction);
         addMenuAction(menu, addStreamToPlayQueueAction);
         menu->addSeparator();
         addMenuAction(menu, playQueueModel.shuffleAct());

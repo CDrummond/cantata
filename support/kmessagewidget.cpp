@@ -142,6 +142,7 @@ void KMsgWidgetPrivate::createLayout()
         // Set alignment to make sure icon does not move down if text wraps
         layout->addWidget(iconLabel, 0, 0, 1, 1, Qt::AlignHCenter | Qt::AlignTop);
         layout->addWidget(textLabel, 0, 1);
+        layout->setMargin(4);
 
         QHBoxLayout* buttonLayout = new QHBoxLayout;
         buttonLayout->addStretch();
@@ -164,6 +165,7 @@ void KMsgWidgetPrivate::createLayout()
         }
 
         layout->addWidget(closeButton);
+        layout->setMargin(4);
     };
 
     if (q->isVisible()) {

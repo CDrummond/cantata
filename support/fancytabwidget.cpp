@@ -280,25 +280,29 @@ FancyTab::FancyTab(FancyTabBar* tabbar)
 {
     #ifndef Q_OS_MAC
     animator.setPropertyName("fader");
-    #endif
     animator.setTargetObject(this);
+    #endif
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 }
 
 void FancyTab::fadeIn()
 {
+    #ifndef Q_OS_MAC
     animator.stop();
     animator.setDuration(80);
     animator.setEndValue(50);
     animator.start();
+    #endif
 }
 
 void FancyTab::fadeOut()
 {
+    #ifndef Q_OS_MAC
     animator.stop();
     animator.setDuration(160);
     animator.setEndValue(0);
     animator.start();
+    #endif
 }
 
 void FancyTab::setFader(float value)

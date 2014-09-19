@@ -93,7 +93,9 @@ protected:
     void leaveEvent(QEvent *);
 
 private:
+    #ifndef Q_OS_MAC
     QPropertyAnimation animator;
+    #endif
     FancyTabBar *tabbar;
     float faderValue;
 };

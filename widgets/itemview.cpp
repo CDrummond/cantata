@@ -426,73 +426,74 @@ public:
         bool active=option.state&QStyle::State_Active;
         bool mouseOver=underMouse && option.state&QStyle::State_MouseOver;
 
-        if (!gtk && 1==text.count()) {
-            QStyledItemDelegate::paint(painter, option, index);
+        if (mouseOver && gtk) {
+            GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
         } else {
-            if (mouseOver && gtk) {
-                GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
-            } else {
-                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
-            }
-            QRect r(option.rect);
-            r.adjust(4, 0, -4, 0);
+            QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
+        }
+        QRect r(option.rect);
+        r.adjust(4, 0, -4, 0);
 
-            if (!noIcons) {
-                QPixmap pix;
-                if (index.data(Cantata::Role_ListImage).toBool()) {
-                    Song cSong=index.data(Cantata::Role_CoverSong).value<Song>();
-                    if (!cSong.isEmpty()) {
-                        QPixmap *cp=Covers::self()->get(cSong, listCoverSize);
-                        if (cp) {
-                            pix=*cp;
-                        }
-                    }
-                }
-
-                if (pix.isNull()) {
-                    pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(simpleViewDecorationSize, simpleViewDecorationSize);
-                }
-
-                if (!pix.isNull()) {
-                    int adjust=qMax(pix.width(), pix.height());
-                    if (rtl) {
-                        painter->drawPixmap(r.x()+r.width()-pix.width(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
-                        r.adjust(3, 0, -(3+adjust), 0);
-                    } else {
-                        painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
-                        r.adjust(adjust+3, 0, -3, 0);
+        if (!noIcons) {
+            QPixmap pix;
+            if (index.data(Cantata::Role_ListImage).toBool()) {
+                Song cSong=index.data(Cantata::Role_CoverSong).value<Song>();
+                if (!cSong.isEmpty()) {
+                    QPixmap *cp=Covers::self()->get(cSong, listCoverSize);
+                    if (cp) {
+                        pix=*cp;
                     }
                 }
             }
 
-            if (text.count()>0) {
-                QFont textFont(QApplication::font());
-                QFontMetrics textMetrics(textFont);
-                int textHeight=textMetrics.height();
-                QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
-                QTextOption textOpt(Qt::AlignVCenter);
-                QRect textRect(r.x(), r.y()+((r.height()-textHeight)/2), r.width(), textHeight);
-                QString str=textMetrics.elidedText(text.at(0), Qt::ElideRight, textRect.width(), QPalette::WindowText);
-
-                painter->save();
-                painter->setPen(color);
-                painter->setFont(textFont);
-                painter->drawText(textRect, str, textOpt);
-
-                if (text.count()>1) {
-                    int mainWidth=textMetrics.width(str);
-                    text.takeFirst();
-                    str=text.join(" - ");
-                    textRect=QRect(r.x()+(mainWidth+8), r.y()+((r.height()-textHeight)/2), r.width()-(mainWidth+8), textHeight);
-                    if (textRect.width()>4) {
-                        str = textMetrics.elidedText(str, Qt::ElideRight, textRect.width(), QPalette::WindowText);
-                        color.setAlphaF(subTextAlpha(selected));
-                        painter->setPen(color);
-                        painter->drawText(textRect, str, textOpt/*QTextOption(Qt::AlignVCenter|Qt::AlignRight)*/);
-                    }
-                }
-                painter->restore();
+            if (pix.isNull()) {
+                pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(simpleViewDecorationSize, simpleViewDecorationSize);
             }
+
+            if (!pix.isNull()) {
+                #if QT_VERSION >= 0x050100
+                QSize layoutSize = pix.size() / pix.devicePixelRatio();
+                #else
+                QSize layoutSize = pix.size();
+                #endif
+                int adjust=qMax(layoutSize.width(), layoutSize.height());
+                if (rtl) {
+                    painter->drawPixmap(r.x()+r.width()-layoutSize.width(), r.y()+((r.height()-layoutSize.height())/2), layoutSize.width(), layoutSize.height(), pix);
+                    r.adjust(3, 0, -(3+adjust), 0);
+                } else {
+                    painter->drawPixmap(r.x(), r.y()+((r.height()-layoutSize.height())/2), layoutSize.width(), layoutSize.height(), pix);
+                    r.adjust(adjust+3, 0, -3, 0);
+                }
+            }
+        }
+
+        if (text.count()>0) {
+            QFont textFont(QApplication::font());
+            QFontMetrics textMetrics(textFont);
+            int textHeight=textMetrics.height();
+            QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
+            QTextOption textOpt(Qt::AlignVCenter);
+            QRect textRect(r.x(), r.y()+((r.height()-textHeight)/2), r.width(), textHeight);
+            QString str=textMetrics.elidedText(text.at(0), Qt::ElideRight, textRect.width(), QPalette::WindowText);
+
+            painter->save();
+            painter->setPen(color);
+            painter->setFont(textFont);
+            painter->drawText(textRect, str, textOpt);
+
+            if (text.count()>1) {
+                int mainWidth=textMetrics.width(str);
+                text.takeFirst();
+                str=text.join(" - ");
+                textRect=QRect(r.x()+(mainWidth+8), r.y()+((r.height()-textHeight)/2), r.width()-(mainWidth+8), textHeight);
+                if (textRect.width()>4) {
+                    str = textMetrics.elidedText(str, Qt::ElideRight, textRect.width(), QPalette::WindowText);
+                    color.setAlphaF(subTextAlpha(selected));
+                    painter->setPen(color);
+                    painter->drawText(textRect, str, textOpt/*QTextOption(Qt::AlignVCenter|Qt::AlignRight)*/);
+                }
+            }
+            painter->restore();
         }
 
         if (mouseOver || Utils::touchFriendly()) {

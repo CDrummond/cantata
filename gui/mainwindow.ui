@@ -27,6 +27,22 @@
        <number>0</number>
       </property>
       <item>
+       <spacer name="toolbarSpacerA">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>4</width>
+          <height>4</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="ToolButton" name="prevTrackButton"/>
       </item>
       <item>
@@ -84,6 +100,22 @@
       </item>
       <item>
        <widget class="MenuButton" name="menuButton"/>
+      </item>
+      <item>
+       <spacer name="toolbarSpacerB">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>4</width>
+          <height>4</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>

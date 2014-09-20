@@ -91,6 +91,7 @@
 #endif
 #ifdef Q_OS_MAC
 #include "support/windowmanager.h"
+#include "support/osxstyle.h"
 #endif
 #ifdef ENABLE_DYNAMIC
 #include "dynamic/dynamicpage.h"
@@ -686,6 +687,9 @@ MainWindow::MainWindow(QWidget *parent)
             addMenuAction(menu, prefAction);
             menuBar()->addMenu(menu);
         }
+        #ifdef Q_OS_MAC
+        OSXStyle::self()->initWindowMenu(this);
+        #endif
         menu=new QMenu(i18n("&Help"), this);
         addMenuAction(menu, serverInfoAction);
         #ifdef ENABLE_KDE_SUPPORT

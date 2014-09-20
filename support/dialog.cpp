@@ -23,6 +23,9 @@
 
 #include "dialog.h"
 #include "configuration.h"
+#ifdef Q_OS_MAC
+#include "osxstyle.h"
+#endif
 
 #ifdef ENABLE_KDE_SUPPORT
 #define DLG_BASE KDialog
@@ -58,6 +61,9 @@ Dialog::~Dialog()
         Configuration cfg(objectName());
         cfg.set("size", size());
     }
+    #ifdef Q_OS_MAC
+    OSXStyle::self()->removeWindow(this);
+    #endif
 }
 
 void Dialog::resize(const QSize &sz)
@@ -426,6 +432,9 @@ void Dialog::showEvent(QShowEvent *e)
                 setMinimumWidth(qMax(minimumWidth(), mwSize.width()+(2*layout()->margin())));
             }
         }
+        #ifdef Q_OS_MAC
+        OSXStyle::self()->addWindow(this);
+        #endif
     }
     QDialog::showEvent(e);
 }

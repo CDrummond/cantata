@@ -33,6 +33,9 @@
 #ifdef ENABLE_ONLINE_SERVICES
 #include "online/onlineservice.h"
 #endif
+#ifdef Q_OS_MAC
+#include "support/osxstyle.h"
+#endif
 #include <QLinearGradient>
 #include <QPen>
 #include <QMouseEvent>
@@ -122,7 +125,11 @@ public:
         p.drawPixmap(r, pix);
         if (underMouse()) {
             p.setRenderHint(QPainter::Antialiasing);
+            #ifdef Q_OS_MAC
+            p.setPen(QPen(OSXStyle::self()->viewPalette().color(QPalette::Highlight), 2));
+            #else
             p.setPen(QPen(palette().color(QPalette::Highlight), 2));
+            #endif
             p.drawPath(Utils::buildPath(QRectF(r.x()+0.5, r.y()+0.5, r.width()-1, r.height()-1), layoutSize.width()>128 ? 4.5 : 3.5));
         }
     }

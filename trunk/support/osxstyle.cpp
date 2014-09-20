@@ -24,21 +24,26 @@
 #include "osxstyle.h"
 #include "globalstatic.h"
 #include "localize.h"
+#include "actioncollection.h"
+#include "action.h"
 #include <QApplication>
 #include <QStyle>
 #include <QTreeWidget>
 #include <QPainter>
-#include <QAction>
 #include <QMenu>
 #include <QMenuBar>
 #include <QWidget>
 #include <QMainWindow>
+#include <qnamespace.h>
 
 GLOBAL_STATIC(OSXStyle, instance)
 
 OSXStyle::OSXStyle()
     : view(0)
     , windowMenu(0)
+    , closeAct(0)
+    , minAct(0)
+    , zoomAct(0)
 {
 }
 
@@ -67,10 +72,23 @@ void OSXStyle::initWindowMenu(QMainWindow *mw)
 {
     if (!windowMenu && mw) {
         windowMenu=new QMenu(i18n("&Window"), mw);
+        closeAct=ActionCollection::get()->createAction("close-window", i18n("Close"));
+        minAct=ActionCollection::get()->createAction("minimize-window", i18n("Minimize"));
+        zoomAct=ActionCollection::get()->createAction("zoom-window", i18n("Zoom"));
+        windowMenu->addAction(closeAct);
+        windowMenu->addAction(minAct);
+        windowMenu->addAction(zoomAct);
+        windowMenu->addSeparator();
         addWindow(mw);
         mw->menuBar()->addMenu(windowMenu);
         actions[mw]->setChecked(true);
         connect(qApp, SIGNAL(focusWindowChanged(QWindow *)), SLOT(focusWindowChanged(QWindow *)));
+        closeAct->setShortcut(Qt::ControlModifier+Qt::Key_W);
+        minAct->setShortcut(Qt::ControlModifier+Qt::Key_M);
+        connect(closeAct, SIGNAL(triggered()), SLOT(closeWindow()));
+        connect(minAct, SIGNAL(triggered()), SLOT(minimizeWindow()));
+        connect(zoomAct, SIGNAL(triggered()), SLOT(zoomWindow()));
+        controlActions(mw);
     }
 }
 
@@ -138,8 +156,61 @@ void OSXStyle::focusWindowChanged(QWindow *win)
     QMap<QWidget *, QAction *>::Iterator end=actions.end();
 
     for (; it!=end; ++it) {
-        it.value()->setChecked(it.key()->windowHandle()==win);
+        if (it.key()->windowHandle()==win) {
+            it.value()->setChecked(true);
+            controlActions(it.key());
+        } else {
+            it.value()->setChecked(false);
+        }
     }
+}
+
+void OSXStyle::closeWindow()
+{
+    QWidget *w=currentWindow();
+    if (w) {
+        w->close();
+    }
+}
+
+void OSXStyle::minimizeWindow()
+{
+    QWidget *w=currentWindow();
+    if (w) {
+        w->showMinimized();
+    }
+}
+
+void OSXStyle::zoomWindow()
+{
+    QWidget *w=currentWindow();
+    if (w) {
+        if (w->isMaximized()) {
+            w->showNormal();
+        } else {
+            w->showMaximized();
+        }
+    }
+}
+
+QWidget * OSXStyle::currentWindow()
+{
+    QMap<QWidget *, QAction *>::Iterator it=actions.begin();
+    QMap<QWidget *, QAction *>::Iterator end=actions.end();
+
+    for (; it!=end; ++it) {
+        if (it.value()->isChecked()) {
+            return it.key();
+        }
+    }
+    return 0;
+}
+
+void OSXStyle::controlActions(QWidget *w)
+{
+    closeAct->setEnabled(w && w->windowFlags()&Qt::WindowCloseButtonHint);
+    minAct->setEnabled(w && w->windowFlags()&Qt::WindowMinimizeButtonHint);
+    zoomAct->setEnabled(w && w->minimumSize()!=w->maximumSize());
 }
 
 QTreeWidget * OSXStyle::viewWidget()

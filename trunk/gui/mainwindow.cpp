@@ -120,6 +120,7 @@ static void raiseWindow(QWidget *w);
 #endif
 #include <QDialogButtonBox>
 #include <QKeyEvent>
+#include <QSpacerItem>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KApplication>
 #include <KDE/KStandardAction>
@@ -193,6 +194,8 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
     Song::setUseComposer(Settings::self()->useComposer());
 
+    toolbarSpacerA->changeSize(Utils::layoutSpacing(this), 2, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    toolbarSpacerB->changeSize(Utils::layoutSpacing(this), 2, QSizePolicy::Fixed, QSizePolicy::Fixed);
     #ifdef Q_OS_WIN
     GtkStyle::applyTheme(this); // Despite its name, it *might* also apply touch style to spinboxes...
     #else

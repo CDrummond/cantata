@@ -24,6 +24,7 @@
 #include "coverwidget.h"
 #include "gui/currentcover.h"
 #include "gui/covers.h"
+#include "gui/settings.h"
 #include "mpd/song.h"
 #include "context/view.h"
 #include "support/localize.h"
@@ -48,7 +49,6 @@ public:
     CoverLabel(QWidget *p)
         : QLabel(p)
         , pressed(false)
-        , pix(0)
     {
     }
 
@@ -109,16 +109,21 @@ public:
 
     void paintEvent(QPaintEvent *)
     {
-        if (!pix) {
+        if (pix.isNull()) {
             return;
         }
         QPainter p(this);
-        QRect r((width()-pix->width())/2, (height()-pix->height())/2, pix->width(), pix->height());
-        p.drawPixmap(r.x(), r.y(), *pix);
+        #if QT_VERSION >= 0x050100
+        QSize layoutSize = pix.size() / pix.devicePixelRatio();
+        #else
+        QSize layoutSize = pix.size();
+        #endif
+        QRect r((width()-layoutSize.width())/2, (height()-layoutSize.height())/2, layoutSize.width(), layoutSize.height());
+        p.drawPixmap(r, pix);
         if (underMouse()) {
             p.setRenderHint(QPainter::Antialiasing);
             p.setPen(QPen(palette().color(QPalette::Highlight), 2));
-            p.drawPath(Utils::buildPath(QRectF(r.x()+0.5, r.y()+0.5, r.width()-1, r.height()-1), pix->width()>128 ? 6 : 4));
+            p.drawPath(Utils::buildPath(QRectF(r.x()+0.5, r.y()+0.5, r.width()-1, r.height()-1), layoutSize.width()>128 ? 6 : 4));
         }
     }
 
@@ -129,32 +134,42 @@ public:
             return;
         }
         int size=height();
+        int origSize=size;
+        double pixRatio=1.0;
+        #if QT_VERSION >= 0x050100
+        if (Settings::self()->retinaSupport()) {
+            pixRatio=qApp->devicePixelRatio();
+            size*=pixRatio;
+        }
+        #endif
         img=img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        if (pix && pix->size()!=img.size()) {
-            delete pix;
-            pix=0;
+        #if QT_VERSION >= 0x050100
+        img.setDevicePixelRatio(pixRatio);
+        #endif
+        if (pix.isNull() || pix.size()!=img.size()) {
+            pix=QPixmap(img.size());
+            #if QT_VERSION >= 0x050100
+            pix.setDevicePixelRatio(pixRatio);
+            #endif
         }
-        if (!pix) {
-            pix=new QPixmap(img.size());
-        }
-        pix->fill(Qt::transparent);
-        QPainter painter(pix);
+        pix.fill(Qt::transparent);
+        QPainter painter(&pix);
         painter.setRenderHint(QPainter::Antialiasing);
-        painter.fillPath(Utils::buildPath(QRectF(0, 0, img.width(), img.height()), img.width()>128 ? 6.5 : 4.5), img);
+        painter.setClipPath(Utils::buildPath(QRectF(0, 0, img.width()/pixRatio, img.height()/pixRatio), origSize>128 ? 6.5 : 4.5));
+        painter.drawImage(0, 0, img);
         repaint();
     }
 
     void deletePix()
     {
-        if (pix) {
-            delete pix;
-            pix=0;
+        if (!pix.isNull()) {
+            pix=QPixmap();
         }
     }
 
 private:
     bool pressed;
-    QPixmap *pix;
+    QPixmap pix;
 };
 
 CoverWidget::CoverWidget(QWidget *parent)

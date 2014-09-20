@@ -60,14 +60,22 @@ private Q_SLOTS:
     void showWindow();
     void windowTitleChanged();
     void focusWindowChanged(QWindow *win);
+    void closeWindow();
+    void minimizeWindow();
+    void zoomWindow();
 
 private:
+    QWidget * currentWindow();
+    void controlActions(QWidget *w);
     QTreeWidget * viewWidget();
 
 private:
     QTreeWidget *view;
     QMenu *windowMenu;
     QMap<QWidget *, QAction *> actions;
+    QAction *closeAct;
+    QAction *minAct;
+    QAction *zoomAct;
 
     friend class Dialog;
 };

@@ -734,6 +734,7 @@ void SongView::downloadFinished()
     if (reply) {
         reply->deleteLater();
         if (job==reply) {
+            job=0;
             if (reply->ok()) {
                 QString file=reply->property("file").toString();
                 if (!file.isEmpty() && file==currentSong.file) {
@@ -747,7 +748,6 @@ void SongView::downloadFinished()
                     }
                 }
             }
-            job=0;
         }
     }
     getLyrics();

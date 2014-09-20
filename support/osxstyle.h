@@ -36,6 +36,7 @@ class QWidget;
 class QMenu;
 class QAction;
 class QMainWindow;
+class QWindow;
 
 class OSXStyle : public QObject
 {
@@ -58,6 +59,7 @@ private:
 private Q_SLOTS:
     void showWindow();
     void windowTitleChanged();
+    void focusWindowChanged(QWindow *win);
 
 private:
     QTreeWidget * viewWidget();

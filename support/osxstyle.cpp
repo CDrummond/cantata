@@ -69,6 +69,8 @@ void OSXStyle::initWindowMenu(QMainWindow *mw)
         windowMenu=new QMenu(i18n("&Window"), mw);
         addWindow(mw);
         mw->menuBar()->addMenu(windowMenu);
+        actions[mw]->setChecked(true);
+        connect(qApp, SIGNAL(focusWindowChanged(QWindow *)), SLOT(focusWindowChanged(QWindow *)));
     }
 }
 
@@ -76,6 +78,7 @@ void OSXStyle::addWindow(QWidget *w)
 {
     if (w && windowMenu) {
         QAction *action=windowMenu->addAction(w->windowTitle());
+        action->setCheckable(true);
         connect(action, SIGNAL(triggered()), this, SLOT(showWindow()));
         connect(w, SIGNAL(windowTitleChanged(QString)), this, SLOT(windowTitleChanged()));
         actions.insert(w, action);
@@ -112,8 +115,8 @@ void OSXStyle::showWindow()
             w->showNormal();
             w->activateWindow();
             w->raise();
-            return;
         }
+        act->setChecked(it.value()==act);
     }
 }
 
@@ -126,6 +129,16 @@ void OSXStyle::windowTitleChanged()
     }
     if (actions.contains(w)) {
         actions[w]->setText(w->windowTitle());
+    }
+}
+
+void OSXStyle::focusWindowChanged(QWindow *win)
+{
+    QMap<QWidget *, QAction *>::Iterator it=actions.begin();
+    QMap<QWidget *, QAction *>::Iterator end=actions.end();
+
+    for (; it!=end; ++it) {
+        it.value()->setChecked(it.key()->windowHandle()==win);
     }
 }
 

@@ -1316,7 +1316,7 @@ void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesO
                     DBUG << "Set pixel ratio of updated cached pixmap" << devicePixelRatio;
                 }
                 #endif
-                if (pix && emitLoaded) {
+                if (p && emitLoaded) {
                     emit loaded(song, s);
                 }
             }

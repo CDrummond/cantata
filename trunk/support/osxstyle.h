@@ -25,14 +25,22 @@
 #define OSXSTYLE_H
 
 #include <QStyleOptionViewItemV4>
+#include <QMap>
+#include <QObject>
 
 class QPalette;
 class QTreeWidget;
 class QPainter;
 class QColor;
+class QWidget;
+class QMenu;
+class QAction;
+class QMainWindow;
 
-class OSXStyle
+class OSXStyle : public QObject
 {
+    Q_OBJECT
+
 public:
     static OSXStyle * self();
 
@@ -41,11 +49,25 @@ public:
     void drawSelection(QStyleOptionViewItemV4 opt, QPainter *painter, double opacity);
     QColor monoIconColor();
 
+    void initWindowMenu(QMainWindow *mw);
+
+private:
+    void addWindow(QWidget *w);
+    void removeWindow(QWidget *w);
+
+private Q_SLOTS:
+    void showWindow();
+    void windowTitleChanged();
+
 private:
     QTreeWidget * viewWidget();
 
 private:
     QTreeWidget *view;
+    QMenu *windowMenu;
+    QMap<QWidget *, QAction *> actions;
+
+    friend class Dialog;
 };
 
 #endif // OSXSTYLE_H

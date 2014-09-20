@@ -23,15 +23,22 @@
 
 #include "osxstyle.h"
 #include "globalstatic.h"
+#include "localize.h"
 #include <QApplication>
 #include <QStyle>
 #include <QTreeWidget>
 #include <QPainter>
+#include <QAction>
+#include <QMenu>
+#include <QMenuBar>
+#include <QWidget>
+#include <QMainWindow>
 
 GLOBAL_STATIC(OSXStyle, instance)
 
 OSXStyle::OSXStyle()
     : view(0)
+    , windowMenu(0)
 {
 }
 
@@ -54,6 +61,72 @@ void OSXStyle::drawSelection(QStyleOptionViewItemV4 opt, QPainter *painter, doub
 QColor OSXStyle::monoIconColor()
 {
     return QColor(96, 96, 96);
+}
+
+void OSXStyle::initWindowMenu(QMainWindow *mw)
+{
+    if (!windowMenu && mw) {
+        windowMenu=new QMenu(i18n("&Window"), mw);
+        addWindow(mw);
+        mw->menuBar()->addMenu(windowMenu);
+    }
+}
+
+void OSXStyle::addWindow(QWidget *w)
+{
+    if (w && windowMenu) {
+        QAction *action=windowMenu->addAction(w->windowTitle());
+        connect(action, SIGNAL(triggered()), this, SLOT(showWindow()));
+        connect(w, SIGNAL(windowTitleChanged(QString)), this, SLOT(windowTitleChanged()));
+        actions.insert(w, action);
+    }
+}
+
+void OSXStyle::removeWindow(QWidget *w)
+{
+    if (w && windowMenu) {
+        if (actions.contains(w)) {
+            QAction *act=actions.take(w);
+            windowMenu->removeAction(act);
+            disconnect(act, SIGNAL(triggered()), this, SLOT(showWindow()));
+            disconnect(w, SIGNAL(windowTitleChanged(QString)), this, SLOT(windowTitleChanged()));
+            act->deleteLater();
+        }
+    }
+}
+
+void OSXStyle::showWindow()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+
+    if (!act) {
+        return;
+    }
+
+    QMap<QWidget *, QAction *>::Iterator it=actions.begin();
+    QMap<QWidget *, QAction *>::Iterator end=actions.end();
+
+    for (; it!=end; ++it) {
+        if (it.value()==act) {
+            QWidget *w=it.key();
+            w->showNormal();
+            w->activateWindow();
+            w->raise();
+            return;
+        }
+    }
+}
+
+void OSXStyle::windowTitleChanged()
+{
+    QWidget *w=qobject_cast<QWidget *>(sender());
+
+    if (!w) {
+        return;
+    }
+    if (actions.contains(w)) {
+        actions[w]->setText(w->windowTitle());
+    }
 }
 
 QTreeWidget * OSXStyle::viewWidget()

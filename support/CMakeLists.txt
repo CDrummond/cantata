@@ -32,6 +32,7 @@ if (NOT ENABLE_UBUNTU)
     endif (NOT WIN32)
     if (APPLE)
         set(SUPPORT_SRCS ${SUPPORT_SRCS} osxstyle.cpp)
+        set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} osxstyle.h)
     endif (APPLE)
 
     if (ENABLE_KDE_SUPPORT)

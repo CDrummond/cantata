@@ -123,7 +123,7 @@ public:
         if (underMouse()) {
             p.setRenderHint(QPainter::Antialiasing);
             p.setPen(QPen(palette().color(QPalette::Highlight), 2));
-            p.drawPath(Utils::buildPath(QRectF(r.x()+0.5, r.y()+0.5, r.width()-1, r.height()-1), layoutSize.width()>128 ? 6 : 4));
+            p.drawPath(Utils::buildPath(QRectF(r.x()+0.5, r.y()+0.5, r.width()-1, r.height()-1), layoutSize.width()>128 ? 4.5 : 3.5));
         }
     }
 
@@ -155,7 +155,7 @@ public:
         pix.fill(Qt::transparent);
         QPainter painter(&pix);
         painter.setRenderHint(QPainter::Antialiasing);
-        painter.setClipPath(Utils::buildPath(QRectF(0, 0, img.width()/pixRatio, img.height()/pixRatio), origSize>128 ? 6.5 : 4.5));
+        painter.setClipPath(Utils::buildPath(QRectF(0, 0, img.width()/pixRatio, img.height()/pixRatio), origSize>128 ? 4.5 : 3.5));
         painter.drawImage(0, 0, img);
         repaint();
     }

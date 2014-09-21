@@ -131,7 +131,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     shortcuts->load();
     #endif
     pageWidget->addPage(cache, i18n("Cache"), Icons::self()->folderIcon, i18n("Cached Items"));
+    #ifdef Q_OS_MAC
+    setCaption(i18n("Cantata Preferences"));
+    #else
     setCaption(i18n("Configure"));
+    #endif
     setAttribute(Qt::WA_DeleteOnClose);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }

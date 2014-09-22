@@ -1038,14 +1038,14 @@ void TagEditor::rating(const QString &f, quint8 r)
         if (s.rating!=rating) {
             s.rating=rating;
             original.replace(0, s);
-            s=edited.at(0);
-            if (nullRating(s) && s.rating!=rating) {
-                s.rating=rating;
-                edited.replace(0, s);
-            }
-            if (0==currentSongIndex) {
-                ratingWidget->setValue(rating);
-            }
+        }
+        s=edited.at(0);
+        if (s.rating!=rating) {
+            s.rating=rating;
+            edited.replace(0, s);
+        }
+        if (0==currentSongIndex) {
+            ratingWidget->setValue(rating);
         }
         setVariousHint();
     }

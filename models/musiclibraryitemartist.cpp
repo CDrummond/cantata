@@ -50,7 +50,7 @@ bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibr
     if (aa->isVarious() != ab->isVarious()) {
         return aa->isVarious() > ab->isVarious();
     }
-    return aa->baseArtist().localeAwareCompare(ab->baseArtist())<0;
+    return aa->sortString().localeAwareCompare(ab->sortString())<0;
 }
 
 #ifdef ENABLE_UBUNTU
@@ -58,17 +58,23 @@ static const QString constDefaultCover=QLatin1String("qrc:/artist.svg");
 static const QString constDefaultVariousCover=QLatin1String("qrc:/variousartists.svg");
 #endif
 
-MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, const QString &artistName, MusicLibraryItemContainer *parent)
+MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, const QString &artistName, const QString &artistSort, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(data, parent)
     #ifdef ENABLE_UBUNTU
     , m_coverRequested(false)
     #endif
     , m_various(false)
+    , m_haveSort(false)
     , m_actualArtist(artistName==data ? QString() : artistName)
 {
-    if (m_itemData.startsWith(QLatin1String("The "))) {
-        m_nonTheArtist=m_itemData.mid(4);
-    } else if (Song::isVariousArtists(m_itemData)) {
+    if (!artistSort.isEmpty()) {
+        m_sortString=artistSort;
+        m_haveSort=true;
+    } else if (m_itemData.startsWith(QLatin1String("The "))) {
+        m_sortString=m_itemData.mid(4);
+    }
+
+    if (Song::isVariousArtists(m_itemData)) {
         m_various=true;
     }
 }
@@ -116,15 +122,10 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::createAlbum(const Song &s)
     // So, when creating an album entry we need to use the "Album (Artist)" value for display/sort, and still store just
     // "Album" (for saving to cache, tag editing, etc.)
     QString albumId=s.albumId();
-    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.albumName(), s.album, s.mbAlbumId(), s.year, this);
+    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.albumName(), s.album, s.mbAlbumId(), s.year, s.albumSort(), this);
     m_indexes.insert(albumId, m_childItems.count());
     m_childItems.append(item);
     return item;
-}
-
-const QString & MusicLibraryItemArtist::baseArtist() const
-{
-    return m_nonTheArtist.isEmpty() ? m_itemData : m_nonTheArtist;
 }
 
 bool MusicLibraryItemArtist::allSingleTrack() const

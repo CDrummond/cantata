@@ -386,7 +386,10 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
 
             if (!found) {
                 changesMade=true;
-                AlbumItem *a=new AlbumItem(artist, albumItem->data(), albumId, albumItem->year());
+                AlbumItem *a=new AlbumItem(artist, albumItem->data(), albumId,
+                                           artistItem->hasSort() ? artistItem->sortString() : QString(),
+                                           albumItem->hasSort() ? albumItem->sortString() : QString(),
+                                           albumItem->year());
                 a->setSongs(albumItem);
                 a->genres=albumItem->genres();
                 a->updated=true;
@@ -541,9 +544,10 @@ void AlbumsModel::setAlbumSort(int s)
     }
 }
 
-AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, const QString &i, quint16 y)
+AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, const QString &i, const QString &arSort, const QString &alSort, quint16 y)
     : artist(ar)
     , album(al)
+    , albumSortString(alSort)
     , id(i)
     , year(y)
     , updated(false)
@@ -554,8 +558,10 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, const QS
     , coverRequested(false)
     #endif
 {
-    if (artist.startsWith(QLatin1String("The "))) {
-        nonTheArtist=artist.mid(4);
+    if (!arSort.isEmpty()) {
+        artistSortString=arSort;
+    } else if (artist.startsWith(QLatin1String("The "))) {
+        artistSortString=artist.mid(4);
     }
 }
 
@@ -568,8 +574,8 @@ bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
 {
     switch (sortAlbums) {
     default:
-    case Sort_AlbumArtist:  {
-        int compare=album.localeAwareCompare(o.album);
+    case Sort_AlbumArtist: {
+        int compare=sortAlbum().localeAwareCompare(o.sortAlbum());
         if (0!=compare) {
             return compare<0;
         }
@@ -580,7 +586,7 @@ bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
         return year==o.year ? id.compare(o.id)<0 : year<o.year;
     }
     case Sort_AlbumYear: {
-        int compare=album.localeAwareCompare(o.album);
+        int compare=sortAlbum().localeAwareCompare(o.sortAlbum());
         if (0!=compare) {
             return compare<0;
         }
@@ -595,7 +601,7 @@ bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
         if (0!=compare) {
             return compare<0;
         }
-        compare=album.localeAwareCompare(o.album);
+        compare=sortAlbum().localeAwareCompare(o.sortAlbum());
         if (0!=compare) {
             return compare<0;
         }
@@ -609,12 +615,12 @@ bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
         if (year!=o.year) {
             return year<o.year;
         }
-        compare=album.localeAwareCompare(o.album);
+        compare=sortAlbum().localeAwareCompare(o.sortAlbum());
         return 0==compare ? id.compare(o.id)<0 : compare<0;
     }
     case Sort_YearAlbum:
         if (year==o.year) {
-            int compare=album.localeAwareCompare(o.album);
+            int compare=sortAlbum().localeAwareCompare(o.sortAlbum());
             if (0!=compare) {
                 return compare<0;
             }
@@ -628,7 +634,7 @@ bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
             if (0!=compare) {
                 return compare<0;
             }
-            compare=album.localeAwareCompare(o.album);
+            compare=sortAlbum().localeAwareCompare(o.sortAlbum());
             return 0==compare ? id.compare(o.id)<0 : compare<0;
         }
         return year<o.year;

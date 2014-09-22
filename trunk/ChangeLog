@@ -49,6 +49,8 @@
 32. Add option to have separate play queue search action.
 33. Revert back to storing scaled covers as JPG. PNG is taking too much space,
     especially with retina displays.
+34. Read ArtistSort, AlbumArtistSort, and AlbumSort from MPD. If found, use
+    these to sort items.
 
 1.4.2
 -----

@@ -77,7 +77,7 @@ public:
     const QString & albumId() const { return m_id.isEmpty() ? m_id : m_originalName; }
     const QString & sortString() const { return m_sortString.isEmpty() ? m_itemData : m_sortString; }
     bool hasSort() const { return !m_sortString.isEmpty(); }
-    #ifdef ENABLE_UBUNTUß
+    #ifdef ENABLE_UBUNTU
     void setCover(const QString &c) { m_coverName="file://"+c; m_coverRequested=false; }
     const QString & coverName() { return m_coverName; }
     #endif

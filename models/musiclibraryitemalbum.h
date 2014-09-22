@@ -45,7 +45,7 @@ public:
 
     static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
 
-    MusicLibraryItemAlbum(const QString &data, const QString &original, const QString &mbId, quint32 year, MusicLibraryItemContainer *parent);
+    MusicLibraryItemAlbum(const QString &data, const QString &original, const QString &mbId, quint32 year, const QString &sort, MusicLibraryItemContainer *parent);
     virtual ~MusicLibraryItemAlbum();
 
     QString displayData(bool full=false) const;
@@ -75,7 +75,9 @@ public:
     const QString & originalName() const { return m_originalName; }
     const QString & id() const { return m_id; }
     const QString & albumId() const { return m_id.isEmpty() ? m_id : m_originalName; }
-    #ifdef ENABLE_UBUNTU
+    const QString & sortString() const { return m_sortString.isEmpty() ? m_itemData : m_sortString; }
+    bool hasSort() const { return !m_sortString.isEmpty(); }
+    #ifdef ENABLE_UBUNTUß
     void setCover(const QString &c) { m_coverName="file://"+c; m_coverRequested=false; }
     const QString & coverName() { return m_coverName; }
     #endif
@@ -92,6 +94,7 @@ private:
     quint32 m_totalTime;
     quint32 m_numTracks;
     QString m_originalName;
+    QString m_sortString;
     QString m_id;
     mutable Song m_coverSong;
     #ifdef ENABLE_UBUNTU

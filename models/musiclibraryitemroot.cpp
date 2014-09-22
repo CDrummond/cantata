@@ -56,7 +56,7 @@ MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create
 MusicLibraryItemArtist * MusicLibraryItemRoot::createArtist(const Song &s)
 {
     QString aa=songArtist(s);
-    MusicLibraryItemArtist *item=new MusicLibraryItemArtist(aa, Song::Standard==s.type ? s.albumArtist() : QString(), this);
+    MusicLibraryItemArtist *item=new MusicLibraryItemArtist(aa, Song::Standard==s.type ? s.albumArtist() : QString(), s.artistSortString(), this);
     m_indexes.insert(aa, m_childItems.count());
     m_childItems.append(item);
     return item;
@@ -77,7 +77,7 @@ void MusicLibraryItemRoot::groupSingleTracks()
             if (!various) {
                 QHash<QString, int>::ConstIterator it=m_indexes.find(Song::variousArtists());
                 if (m_indexes.end()==it) {
-                    various=new MusicLibraryItemArtist(Song::variousArtists(), QString(), this);
+                    various=new MusicLibraryItemArtist(Song::variousArtists(), QString(), QString(), this);
                     created=true;
                 } else {
                     various=static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it));
@@ -265,6 +265,7 @@ static const QString constArtistElement=QLatin1String("Artist");
 static const QString constAlbumElement=QLatin1String("Album");
 static const QString constTrackElement=QLatin1String("Track");
 static const QString constNameAttribute=QLatin1String("name");
+static const QString constSortAttribute=QLatin1String("sort");
 static const QString constArtistAttribute=QLatin1String("artist");
 static const QString constAlbumArtistAttribute=QLatin1String("albumartist");
 static const QString constComposerAttribute=QLatin1String("composer");
@@ -338,6 +339,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
         if (!artist->actualArtist().isEmpty()) {
             writer.writeAttribute(constActualAttribute, artist->actualArtist());
         }
+        if (artist->hasSort()) {
+            writer.writeAttribute(constSortAttribute, artist->sortString());
+        }
         foreach (const MusicLibraryItem *al, artist->childItems()) {
             if (prog && prog->wasStopped()) {
                 return;
@@ -358,6 +362,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
             }
             if (!album->id().isEmpty()) {
                 writer.writeAttribute(constMbIdAttribute, album->id());
+            }
+            if (album->hasSort()) {
+                writer.writeAttribute(constSortAttribute, album->sortString());
             }
             QString artistName=artist->actualArtist().isEmpty() ? artist->data() : artist->actualArtist();
 
@@ -447,7 +454,7 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
     #endif
     return rv;
 }
-#include <QDebug>
+
 quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog)
 {
     if (isFlat) {
@@ -502,12 +509,14 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     song.artist=song.albumartist=actual;
                     song.setComposer(attributes.value(constNameAttribute).toString());
                 }
+                song.setAlbumArtistSort(attributes.value(constSortAttribute).toString());
                 artistItem = createArtist(song);
             } else if (constAlbumElement==element) {
                 song.album=attributes.value(constNameAttribute).toString();
                 song.year=attributes.value(constYearAttribute).toString().toUInt();
                 song.genre=attributes.value(constGenreAttribute).toString();
                 song.setMbAlbumId(attributes.value(constMbIdAttribute).toString());
+                song.setAlbumSort(attributes.value(constSortAttribute).toString());
                 if (!song.file.isEmpty()) {
                     song.file.append("dummy.mp3");
                 }

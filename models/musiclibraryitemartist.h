@@ -42,12 +42,13 @@ class MusicLibraryItemArtist : public MusicLibraryItemContainer
 public:
     static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
 
-    MusicLibraryItemArtist(const QString &data, const QString &artistName, MusicLibraryItemContainer *parent = 0);
+    MusicLibraryItemArtist(const QString &data, const QString &artistName, const QString &artistSort, MusicLibraryItemContainer *parent = 0);
     virtual ~MusicLibraryItemArtist() { }
 
     MusicLibraryItemAlbum * album(const Song &s, bool create=true);
     MusicLibraryItemAlbum * createAlbum(const Song &s);
-    const QString & baseArtist() const;
+    const QString & sortString() const { return m_sortString.isEmpty() ? m_itemData : m_sortString; }
+    bool hasSort() const { return m_haveSort && !m_sortString.isEmpty(); }
     bool isVarious() const { return m_various; }
     bool allSingleTrack() const;
     void addToSingleTracks(MusicLibraryItemArtist *other);
@@ -72,7 +73,8 @@ private:
     mutable bool m_coverRequested;
     #endif
     bool m_various;
-    QString m_nonTheArtist;
+    bool m_haveSort;
+    QString m_sortString; // Do we have an actual artist-sort, or is m_sortString just "Artist, The" ??? - needed for cache saving
     QString m_actualArtist;
     QHash<QString, int> m_indexes;
 };

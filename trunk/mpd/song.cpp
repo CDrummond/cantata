@@ -144,7 +144,8 @@ void Song::setUseComposer(bool u)
 }
 
 Song::Song()
-    : disc(0)
+    : extraFields(0)
+    , disc(0)
     , priority(0)
     , time(0)
     , track(0)
@@ -179,6 +180,7 @@ Song & Song::operator=(const Song &s)
     type = s.type;
     guessed = s.guessed;
     extra = s.extra;
+    extraFields = s.extraFields;
     return *this;
 }
 
@@ -194,6 +196,10 @@ bool Song::operator<(const Song &o) const
 
 int Song::compareTo(const Song &o) const
 {
+    //
+    // NOTE: This compare DOES NOT use XXXSORT tags
+    //
+
     if (type!=o.type) {
         return type<o.type ? -1 : 1;
     }
@@ -536,12 +542,14 @@ QString Song::toolTip() const
     #endif
 }
 
-void Song::setExtraField(int f, const QString &v)
+void Song::setExtraField(quint16 f, const QString &v)
 {
     if (v.isEmpty()) {
         extra.remove(f);
+        extraFields&=~f;
     } else {
         extra[f]=v;
+        extraFields=f;
     }
 }
 

@@ -65,6 +65,9 @@ static const QByteArray constTimeKey("Time: ");
 static const QByteArray constAlbumKey("Album: ");
 static const QByteArray constArtistKey("Artist: ");
 static const QByteArray constAlbumArtistKey("AlbumArtist: ");
+static const QByteArray constAlbumSortKey("AlbumSort: ");
+static const QByteArray constArtistSortKey("ArtistSort: ");
+static const QByteArray constAlbumArtistSortKey("AlbumArtistSort: ");
 static const QByteArray constComposerKey("Composer: ");
 static const QByteArray constPerformerKey("Performer: ");
 static const QByteArray constCommentKey("Comment: ");
@@ -314,6 +317,14 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             } else if (line.startsWith(constCommentKey)) {
                 song.setComment(QString::fromUtf8(line.mid(constCommentKey.length())));
             }
+        } else if (Loc_Library==location) {
+            if (line.startsWith(constAlbumSortKey)) {
+                song.setAlbumSort(QString::fromUtf8(line.mid(constAlbumSortKey.length())));
+            } else if (line.startsWith(constArtistSortKey)) {
+                song.setArtistSort(QString::fromUtf8(line.mid(constArtistSortKey.length())));
+            } else if (line.startsWith(constAlbumArtistSortKey)) {
+                song.setAlbumArtistSort(QString::fromUtf8(line.mid(constAlbumArtistSortKey.length())));
+            }
         }
     }
 
@@ -350,7 +361,6 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
                     }
                 }
             }
-
 
         if (!song.file.isEmpty()) {
             if (song.isStream()) {

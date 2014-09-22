@@ -67,13 +67,13 @@ bool MusicLibraryItemAlbum::lessThan(const MusicLibraryItem *a, const MusicLibra
     }
 
     if (!MusicLibraryItemAlbum::sortByDate() || aa->year()==ab->year()) {
-        int compare=aa->data().localeAwareCompare(ab->data());
+        int compare=aa->sortString().localeAwareCompare(ab->sortString());
         return compare==0 ? aa->id().compare(ab->id())<0 : compare<0;
     }
     return aa->year()<ab->year();
 }
 
-MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString &original, const QString &mbId, quint32 year, MusicLibraryItemContainer *parent)
+MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString &original, const QString &mbId, quint32 year, const QString &sort, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(data, parent)
     , m_year(year)
     , m_yearOfTrack(0xFFFF)
@@ -81,6 +81,7 @@ MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString 
     , m_totalTime(0)
     , m_numTracks(0)
     , m_originalName(original!=data ? original : QString())
+    , m_sortString(sort)
     , m_id(mbId)
     #ifdef ENABLE_UBUNTU
     , m_coverRequested(false)

@@ -52,20 +52,24 @@ struct Song
     static void setUseComposer(bool u);
 
     enum ExtraTags {
-        Composer,
-        Performer,
-        Comment,
-        MusicBrainzAlbumId,
-        Name,
+        Composer             = 0x0001,
+        Performer            = 0x0002,
+        Comment              = 0x0004,
+        MusicBrainzAlbumId   = 0x0008,
+        Name                 = 0x0010,
+
+        AlbumSort            = 0x0020,
+        ArtistSort           = 0x0040,
+        AlbumArtistSort      = 0x0080,
 
         // These are not real tags - but fields used elsewhere in the code...
-        PodcastPublishedDate,
-        PodcastLocalPath,
-        PodcastImage,
-        OnlineServiceName,
-        OnlineImageUrl,
-        OnlineImageCacheName,
-        DeviceId
+        PodcastPublishedDate = 0x0100,
+        PodcastLocalPath     = 0x0200,
+        PodcastImage         = 0x0400,
+        OnlineServiceName    = 0x0800,
+        OnlineImageUrl       = 0x1000,
+        OnlineImageCacheName = 0x2000,
+        DeviceId             = 0x4000
     };
 
     enum Type {
@@ -84,7 +88,8 @@ struct Song
     QString albumartist;
     QString title;
     QString genre;
-    QHash<int, QString> extra;
+    QHash<quint16, QString> extra;
+    quint16 extraFields;
     quint8 disc;
     mutable quint8 priority;
     quint16 time;
@@ -141,18 +146,37 @@ struct Song
     QString toolTip() const;
     QString displayGenre() const { return QString(genre).replace(constGenreSep, QLatin1String(", ")); }
 
-    QString extraField(int f) const { return extra[f]; }
-    void setExtraField(int f, const QString &v);
+    QString extraField(quint16 f) const { return hasExtraField(f) ? extra[f] : QString(); }
+    bool hasExtraField(quint16 f) const { return extraFields&f; }
+    void setExtraField(quint16 f, const QString &v);
     QString name() const { return extraField(Name); }
     void setName(const QString &v) { setExtraField(Name, v); }
+    bool hasName() const { return hasExtraField(Name); }
+
     QString mbAlbumId() const { return extraField(MusicBrainzAlbumId); }
     void setMbAlbumId(const QString &v) { setExtraField(MusicBrainzAlbumId, v); }
+    bool hasMbAlbumId() const { return hasExtraField(MusicBrainzAlbumId); }
     QString composer() const { return extraField(Composer); }
     void setComposer(const QString &v) { setExtraField(Composer, v); }
+    bool hasComposer() const { return hasExtraField(Composer); }
     QString performer() const { return extraField(Performer); }
     void setPerformer(const QString &v) { setExtraField(Performer, v); }
+    bool hasPerformer() const { return hasExtraField(Performer); }
     QString comment() const { return extraField(Comment); }
     void setComment(const QString &v) { setExtraField(Comment, v); }
+    bool hasComment() const { return hasExtraField(Comment); }
+    QString albumSort() const { return extraField(AlbumSort); }
+    void setAlbumSort(const QString &v) { setExtraField(AlbumSort, v); }
+    bool hasAlbumSort() const { return hasExtraField(AlbumSort); }
+    QString artistSort() const { return extraField(ArtistSort); }
+    void setArtistSort(const QString &v) { setExtraField(ArtistSort, v); }
+    bool hasArtistSort() const { return hasExtraField(ArtistSort); }
+    QString albumArtistSort() const { return extraField(AlbumArtistSort); }
+    void setAlbumArtistSort(const QString &v) { setExtraField(AlbumArtistSort, v); }
+    bool hasAlbumArtistSort() const { return hasExtraField(AlbumArtistSort); }
+
+    QString artistSortString() const { return hasAlbumArtistSort() ? albumArtistSort() : hasArtistSort() ? artistSort() : QString(); }
+
     void clearExtra() { extra.clear(); }
 
     static bool isVariousArtists(const QString &str);

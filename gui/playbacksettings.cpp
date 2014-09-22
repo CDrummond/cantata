@@ -61,7 +61,7 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     messageIcon->setMinimumSize(iconSize, iconSize);
     messageIcon->setMaximumSize(iconSize, iconSize);
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());
-    #if defined Q_OS_WIN || defined Q_OS_MAC
+    #if defined Q_OS_WIN || (defined Q_OS_MAC && !defined IOKIT_FOUND)
     REMOVE(inhibitSuspend)
     #endif
     outputsView->setVisible(outputsView->count()>1);
@@ -72,7 +72,7 @@ void PlaybackSettings::load()
 {
     stopOnExit->setChecked(Settings::self()->stopOnExit());
     stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     inhibitSuspend->setChecked(Settings::self()->inhibitSuspend());
     #endif
 
@@ -86,8 +86,7 @@ void PlaybackSettings::load()
 void PlaybackSettings::save()
 {
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
-    Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     Settings::self()->saveInhibitSuspend(inhibitSuspend->isChecked());
     #endif
 

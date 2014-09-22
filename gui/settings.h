@@ -151,7 +151,7 @@ public:
     bool showTimeRemaining();
     QStringList hiddenStreamCategories();
     QStringList hiddenOnlineProviders();
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     bool inhibitSuspend();
     #endif
     int rssUpdate();
@@ -277,7 +277,7 @@ public:
     void saveShowTimeRemaining(bool v);
     void saveHiddenStreamCategories(const QStringList &v);
     void saveHiddenOnlineProviders(const QStringList &v);
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     void saveInhibitSuspend(bool v);
     #endif
     void saveRssUpdate(int v);

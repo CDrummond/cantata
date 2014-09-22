@@ -44,8 +44,10 @@
 #include "support/thread.h"
 #include "gui/settings.h"
 #include "cuefile.h"
-#ifdef QT_QTDBUS_FOUND
+#if defined Q_OS_LINUX && defined QT_QTDBUS_FOUND
 #include "dbus/powermanagement.h"
+#elif defined Q_OS_MAC && defined IOKIT_FOUND
+#include "mac/powermanagement.h"
 #endif
 #include <QDebug>
 static bool debugEnabled=false;
@@ -241,7 +243,7 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<MPDConnectionDetails>("MPDConnectionDetails");
     qRegisterMetaType<Stream>("Stream");
     qRegisterMetaType<QList<Stream> >("QList<Stream>");
-    #ifdef QT_QTDBUS_FOUND
+    #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
     #endif
     #ifndef ENABLE_UBUNTU

@@ -305,6 +305,15 @@ endif (ENABLE_KDE)
 
 find_package(ZLIB REQUIRED)
 
+if (APPLE)
+    find_package(IOKit)
+    if (IOKIT_FOUND)
+        set(CANTATA_LIBS ${CANTATA_LIBS} ${IOKIT_LIBRARY})
+        set(CANTATA_SRCS ${CANTATA_SRCS} mac/powermanagement.cpp)
+        set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} mac/powermanagement.h)
+    endif (IOKIT_FOUND)
+endif (APPLE)
+
 # For Qt5, we use Qt's own QJSonDocument class, so no need to find libqjson
 if (NOT ENABLE_QT5 AND NOT WIN32 AND NOT APPLE)
     find_package(QJSON)

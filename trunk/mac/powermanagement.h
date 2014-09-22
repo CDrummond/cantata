@@ -21,27 +21,28 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "application_mac.h"
-#include "settings.h"
-#include "support/utils.h"
-#include <QIcon>
+#ifndef POWERMANAGEMENT_H
+#define POWERMANAGEMENT_H
 
-Application::Application(int &argc, char **argv)
-    : SingleApplication(argc, argv)
+#include <QObject>
+    
+class PowerManagement : public QObject
 {
-    setAttribute(Qt::AA_DontShowIconsInMenus, true);
-    #if QT_VERSION >= 0x050100
-    if (Settings::self()->retinaSupport()) {
-        setAttribute(Qt::AA_UseHighDpiPixmaps);
-    }
-    #endif
+    Q_OBJECT
 
-    // Setup icon path...
-    QStringList paths=QIcon::themeSearchPaths();
-    QString path=Utils::systemDir("icons");
-    if (!paths.contains(path)) {
-        QIcon::setThemeSearchPaths(QStringList() << path << paths);
-    }
+public:
+    static PowerManagement * self();
+    PowerManagement();
 
-    QIcon::setThemeName(QLatin1String("oxygen"));
-}
+    void setInhibitSuspend(bool i) { inhibitSuspendWhilstPlaying=i; }
+    bool inhibitSuspend() const { return inhibitSuspendWhilstPlaying; }
+    void emitResuming();
+
+Q_SIGNALS:
+    void resuming();
+
+private:
+    bool inhibitSuspendWhilstPlaying;
+};
+
+#endif

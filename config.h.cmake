@@ -44,6 +44,7 @@
 #cmakedefine ENABLE_MODEL_TEST 1
 #cmakedefine USE_SYSTEM_MENU_ICON 1
 #cmakedefine ENABLE_UBUNTU 1
+#cmakedefine IOKIT_FOUND 1
 
 #ifdef ENABLE_UBUNTU
 #define CANTATA_REV_URL "com.ubuntu.developer.nikwen.cantata-touch-reboot" //Sadly, it requires the com.ubuntu.developer.nikwen prefix to be published to the click store

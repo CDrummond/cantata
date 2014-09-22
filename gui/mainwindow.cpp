@@ -84,7 +84,9 @@
 #ifdef QT_QTDBUS_FOUND
 #include "dbus/mpris.h"
 #include "cantataadaptor.h"
+#ifdef Q_OS_LINUX
 #include "dbus/powermanagement.h"
+#endif
 #endif
 #if !defined Q_OS_WIN && !defined Q_OS_MAC
 #include "devices/mountpoints.h"
@@ -92,6 +94,9 @@
 #ifdef Q_OS_MAC
 #include "support/windowmanager.h"
 #include "support/osxstyle.h"
+#ifdef IOKIT_FOUND
+#include "mac/powermanagement.h"
+#endif
 #endif
 #ifdef ENABLE_DYNAMIC
 #include "dynamic/dynamicpage.h"
@@ -1398,7 +1403,7 @@ void MainWindow::readSettings()
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
     updateWindowTitle();
     TreeView::setForceSingleClick(Settings::self()->forceSingleClick());
-    #ifdef QT_QTDBUS_FOUND
+    #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     PowerManagement::self()->setInhibitSuspend(Settings::self()->inhibitSuspend());
     #endif
     #ifndef ENABLE_KDE_SUPPORT

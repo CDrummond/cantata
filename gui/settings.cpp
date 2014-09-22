@@ -711,7 +711,7 @@ QStringList Settings::hiddenOnlineProviders()
     return cfg.get("hiddenOnlineProviders", QStringList());
 }
 
-#if !defined Q_OS_WIN && !defined Q_OS_MAC
+#if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
 bool Settings::inhibitSuspend()
 {
     return cfg.get("inhibitSuspend", false);
@@ -1318,7 +1318,7 @@ void Settings::saveHiddenOnlineProviders(const QStringList &v)
     cfg.set("hiddenOnlineProviders", v);
 }
 
-#if !defined Q_OS_WIN && !defined Q_OS_MAC
+#if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
 void Settings::saveInhibitSuspend(bool v)
 {
     cfg.set("inhibitSuspend", v);

@@ -55,7 +55,7 @@ void ToolButton::paintEvent(QPaintEvent *e)
         QPainter p(this);
         QColor col(palette().color(QPalette::WindowText));
         QRect r(rect());
-        QPainterPath path=Utils::buildPath(QRectF(r.x()+0.5, r.y()+0.5, r.width()-2, r.height()-2), 2.5);
+        QPainterPath path=Utils::buildPath(QRectF(r.x()+1.5, r.y()+1.5, r.width()-3, r.height()-3), 2.5);
         p.setRenderHint(QPainter::Antialiasing, true);
         col.setAlphaF(0.4);
         p.setPen(col);

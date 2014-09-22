@@ -22,6 +22,7 @@
  */
 
 #include "icons.h"
+#include "treeview.h"
 #include "config.h"
 #include "gui/settings.h"
 #include "support/globalstatic.h"
@@ -41,6 +42,7 @@
 GLOBAL_STATIC(Icons, instance)
 
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
+static QList<int> constMonoSvgSizes=QList<int>() << constStdSizes << 64;
 
 static const int constDarkLimit=80;
 static const int constDarkValue=64;
@@ -294,9 +296,8 @@ static void updateMonoSvgIcon(Icon &i, const QString &type, const QString &name,
         Icon std;
         std.addFile(":"+type+"-"+name+"-dark", QSize(), mode);
         // Now recolour the icon!
-        QList<int> sizes=QList<int>() << 16 << 22 << 32 << 48 << 64;
         QColor col=clampColor(color, constDarkLimit, darkValue, constLightLimit, lightValue);
-        foreach (int s, sizes) {
+        foreach (int s, constMonoSvgSizes) {
             QImage img=std.pixmap(s, s, mode).toImage().convertToFormat(QImage::Format_ARGB32);
             recolourPix(img, col);
             i.addPixmap(QPixmap::fromImage(img), mode);
@@ -328,18 +329,11 @@ static void setDisabledOpacity(Icon &icon)
         QIcon::State state=(QIcon::State)i;
         for (int j=0; j<4; ++j) {
             QIcon::Mode mode=(QIcon::Mode)j;
-            QList<int> sizes=constStdSizes;
-            foreach (const int sz, sizes) {
+            foreach (const int sz, constMonoSvgSizes) {
                 if (QIcon::Disabled==mode) {
                     QPixmap pix=icon.pixmap(QSize(sz, sz), QIcon::Normal, state);
                     if (!pix.isNull()) {
-                        QPixmap dis(sz, sz);
-                        dis.fill(Qt::transparent);
-                        QPainter p(&dis);
-                        p.setOpacity(constDisabledOpacity);
-                        p.drawPixmap(0, 0, pix);
-                        p.end();
-                        copy.addPixmap(dis, mode, state);
+                        copy.addPixmap(QPixmap::fromImage(TreeView::setOpacity(pix.toImage(), constDisabledOpacity)), mode, state);
                     }
                 } else {
                     copy.addPixmap(icon.pixmap(QSize(sz, sz), mode, state), mode, state);

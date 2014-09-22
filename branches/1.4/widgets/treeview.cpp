@@ -51,7 +51,7 @@ QImage TreeView::setOpacity(const QImage &orig, double opacity)
     uchar *bits = img.bits();
     for (int i = 0; i < img.height()*img.bytesPerLine(); i+=4) {
         if (0!=bits[i+3]) {
-            bits[i+3] = opacity*255;
+            bits[i+3]*=opacity;
         }
     }
     return img;

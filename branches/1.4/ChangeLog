@@ -20,6 +20,7 @@
 13. Fix combo-box text changed signal for Qt5 builds.
 14. Don't have double spacer when cover-widget is hidden.
 15. Fix crash in context view if song tracks changed quickly.
+16. Better method of setting disabled opacity for monochrome icons.
 
 1.4.1
 -----

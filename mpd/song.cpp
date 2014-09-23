@@ -549,7 +549,7 @@ void Song::setExtraField(quint16 f, const QString &v)
         extraFields&=~f;
     } else {
         extra[f]=v;
-        extraFields=f;
+        extraFields|=f;
     }
 }
 

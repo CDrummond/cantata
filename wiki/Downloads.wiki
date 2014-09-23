@@ -5,15 +5,15 @@ As of 1.4.0, the Windows installer now uses the Nullsoft install system. Therefo
 
 || *Version* || *Source Code* || *Windows* || *Released* || *Comment* ||
 || *1.4* || || || || ||
-|| 1.4.1 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60eXhuZ1Z3bGM2bjQ cantata-1.4.1.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60OXctQ2VvRFNMWWc Cantata-1.4.1-Setup.exe] || 26 August 2014 || ||
-|| 1.4.0 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60WDI1WjRtUDJ4QlU cantata-1.4.0.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60SHZhTW1RXzlWQk0 Cantata-1.4.0-Setup.exe] || 22 July 2014 || ||
+|| 1.4.1 || [https://googledrive.com/host/0Bzghs6gQWi60eXhuZ1Z3bGM2bjQ cantata-1.4.1.tar.bz2] || [https://googledrive.com/host/0Bzghs6gQWi60OXctQ2VvRFNMWWc Cantata-1.4.1-Setup.exe] || 26 August 2014 || ||
+|| 1.4.0 || [https://googledrive.com/host/0Bzghs6gQWi60WDI1WjRtUDJ4QlU cantata-1.4.0.tar.bz2] || [https://googledrive.com/host/0Bzghs6gQWi60SHZhTW1RXzlWQk0 Cantata-1.4.0-Setup.exe] || 22 July 2014 || ||
 || *1.3* || || || || ||
-|| 1.3.4 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60WTYtaXk3c1IzNVU cantata-1.3.4.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60blpEa1NEYXlyakk Cantata-1.3.4-Setup.exe] || 8 April 2014 || ||
-|| 1.3.3 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60ZUN1NThacGFrdFE cantata-1.3.3.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60QllHeWZVUnVZVVE Cantata-1.3.3-Setup.exe] || 25 March 2014 || ||
-|| 1.3.2 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60TFIwWHBWR1JhVHc cantata-1.3.2.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60TkhxWXlyRDBkSkk Cantata-1.3.2-Setup.exe] || 9 March 2014 || ||
-|| 1.3.1 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60YmdyaExDZUo4NGs cantata-1.3.1.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60ZGhwRXdWZG5BYnc Cantata-1.3.1-Setup.exe] || 1 March 2014 || ||
-|| 1.3.0.1 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60czZxNXJtdWllc0E cantata-1.3.0.1.tar.bz2] || || 21 February 2014 || Compile fix for KDE builds ||
-|| 1.3.0 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60Y19WY0ZiTHlwNVk cantata-1.3.0.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60c3lhOTQ2U2d4aFk Cantata-1.3.0-Setup.exe] || 20 February 2014 || ||
+|| 1.3.4 || [https://googledrive.com/host/0Bzghs6gQWi60WTYtaXk3c1IzNVU cantata-1.3.4.tar.bz2] || [https://googledrive.com/host/0Bzghs6gQWi60blpEa1NEYXlyakk Cantata-1.3.4-Setup.exe] || 8 April 2014 || ||
+|| 1.3.3 || [https://googledrive.com/host/0Bzghs6gQWi60ZUN1NThacGFrdFE cantata-1.3.3.tar.bz2] || [https://googledrive.com/host/0Bzghs6gQWi60QllHeWZVUnVZVVE Cantata-1.3.3-Setup.exe] || 25 March 2014 || ||
+|| 1.3.2 || [https://googledrive.com/host/0Bzghs6gQWi60TFIwWHBWR1JhVHc cantata-1.3.2.tar.bz2] || [https://googledrive.com/host/0Bzghs6gQWi60TkhxWXlyRDBkSkk Cantata-1.3.2-Setup.exe] || 9 March 2014 || ||
+|| 1.3.1 || [https://googledrive.com/host/0Bzghs6gQWi60YmdyaExDZUo4NGs cantata-1.3.1.tar.bz2] || [https://googledrive.com/host/0Bzghs6gQWi60ZGhwRXdWZG5BYnc Cantata-1.3.1-Setup.exe] || 1 March 2014 || ||
+|| 1.3.0.1 || [https://googledrive.com/host/0Bzghs6gQWi60czZxNXJtdWllc0E cantata-1.3.0.1.tar.bz2] || || 21 February 2014 || Compile fix for KDE builds ||
+|| 1.3.0 || [https://googledrive.com/host/0Bzghs6gQWi60Y19WY0ZiTHlwNVk cantata-1.3.0.tar.bz2] || [https://googledrive.com/host/0Bzghs6gQWi60c3lhOTQ2U2d4aFk Cantata-1.3.0-Setup.exe] || 20 February 2014 || ||
 || *1.2* || || || || ||
 || 1.2.2 || [https://cantata.googlecode.com/files/cantata-1.2.2.tar.bz2 cantata-1.2.2.tar.bz2] || [https://cantata.googlecode.com/files/Cantata-1.2.2-Setup.exe Cantata-1.2.2-Setup.exe] || 5 January 2014 || ||
 || 1.2.1 || [https://cantata.googlecode.com/files/cantata-1.2.1.tar.bz2 cantata-1.2.1.tar.bz2] || [https://cantata.googlecode.com/files/Cantata-1.2.1-Setup.exe Cantata-1.2.1-Setup.exe] || 23 December 2013 || ||

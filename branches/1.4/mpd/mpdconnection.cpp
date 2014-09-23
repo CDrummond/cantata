@@ -513,7 +513,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
         #endif
         if (isUpdatingDb) {
             isUpdatingDb=false;
-            emit updatingDatabase(); // Stop any spinners...
+            emit updatedDatabase(); // Stop any spinners...
         }
         ConnectionReturn status=connectToMPD();
         switch (status) {

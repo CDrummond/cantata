@@ -721,6 +721,7 @@ else (ENABLE_KDE)
         install(PROGRAMS ${CMAKE_BINARY_DIR}/cantata.app/Contents/MacOS/cantata DESTINATION ${MACOSX_BUNDLE_APP_DIR})
         # Create our own plist file to enable HighDPI support
         configure_file(mac/Info.plist.cmake ${CMAKE_CURRENT_BINARY_DIR}/mac/Info.plist)
+        configure_file(mac/dmg/create-dmg.sh.in ${CMAKE_CURRENT_BINARY_DIR}/mac/create-dmg.sh)
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mac/Info.plist DESTINATION ${CANTATA_APP_CONTENTS_DIR})
         install_qt5_executable(cantata.app "qjpeg;qsvg;qsvgicon;qcocoa")
     elseif (NOT ENABLE_UBUNTU)

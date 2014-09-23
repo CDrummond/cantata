@@ -432,11 +432,27 @@ void Dialog::showEvent(QShowEvent *e)
                 setMinimumWidth(qMax(minimumWidth(), mwSize.width()+(2*layout()->margin())));
             }
         }
-        #ifdef Q_OS_MAC
-        OSXStyle::self()->addWindow(this);
-        #endif
     }
+    #ifdef Q_OS_MAC
+    if (!isModal()) {
+        OSXStyle::self()->addWindow(this);
+    }
+    #endif
     QDialog::showEvent(e);
 }
+
+#ifdef Q_OS_MAC
+void Dialog::hideEvent(QHideEvent *e)
+{
+    OSXStyle::self()->removeWindow(this);
+    QDialog::hideEvent(e);
+}
+
+void Dialog::closeEvent(QCloseEvent *e)
+{
+    OSXStyle::self()->removeWindow(this);
+    QDialog::closeEvent(e);
+}
+#endif
 
 #endif

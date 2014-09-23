@@ -25,7 +25,6 @@
 #include <QXmlStreamReader>
 #include <QStringList>
 #include <QSet>
-#include <QDebug>
 
 static const char * constITunesNameSpace = "http://www.itunes.com/dtds/podcast-1.0.dtd";
 static const char * constMediaNameSpace = "http://search.yahoo.com/mrss/";
@@ -94,7 +93,6 @@ static Episode parseEpisode(QXmlStreamReader &reader)
     while (!reader.atEnd()) {
         reader.readNext();
         const QStringRef name = reader.name();
-qWarning() << __FUNCTION__ << name << reader.isStartElement();
         if (reader.isStartElement()) {
             if (QLatin1String("title")==name) {
                 ep.name=reader.readElementText();
@@ -131,7 +129,6 @@ qWarning() << __FUNCTION__ << name << reader.isStartElement();
             break;
         }
     }
-qWarning() << "EP END";
     return ep;
 }
 
@@ -145,7 +142,6 @@ Channel RssParser::parse(QIODevice *dev, bool getEpisodes, bool getDescription)
 
             if (reader.isStartElement()) {
                 const QStringRef name = reader.name();
-                qWarning() << __FUNCTION__ << name << reader.isStartElement();
                 if (ch.name.isEmpty() && QLatin1String("title")==name) {
                     ch.name=reader.readElementText();
                 } else if (QLatin1String("image")==name && ch.image.isEmpty()) {
@@ -157,7 +153,6 @@ Channel RssParser::parse(QIODevice *dev, bool getEpisodes, bool getDescription)
                     }
                 } else if (getEpisodes && QLatin1String("item")==name) {
                     Episode ep=parseEpisode(reader);
-                    qWarning() << "EPISODE" << ep.name << ep.url;
                     if (!ep.name.isEmpty() && !ep.url.isEmpty()) {
                         ch.episodes.append(ep);
                     } else if (ep.video) {
@@ -179,6 +174,5 @@ Channel RssParser::parse(QIODevice *dev, bool getEpisodes, bool getDescription)
     if (ch.video && !ch.episodes.isEmpty()) {
         ch.video=false;
     }
-qWarning() << ch.name << ch.episodes.count();
     return ch;
 }

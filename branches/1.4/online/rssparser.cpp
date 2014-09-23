@@ -106,6 +106,7 @@ static Episode parseEpisode(QXmlStreamReader &reader)
                 }
             } else if (0==ep.duration && QLatin1String("content")==name && constMediaNameSpace==reader.namespaceUri()) {
                 ep.duration=reader.attributes().value(QLatin1String("duration")).toString().toUInt();
+                consumeCurrentElement(reader);
             } else if (QLatin1String("enclosure")==name) {
                 static QSet<QString> audioFormats;
                 if (audioFormats.isEmpty()) {

@@ -77,6 +77,7 @@
 14. Don't have double spacer when cover-widget is hidden.
 15. Fix crash in context view if song tracks changed quickly.
 16. Better method of setting disabled opacity for monochrome icons.
+17. Fix parsing of podcast RSS files containing "content" tag.
 
 1.4.1
 -----

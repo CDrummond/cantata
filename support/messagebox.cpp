@@ -66,7 +66,7 @@ void MessageBox::error(QWidget *parent, const QString &message, const QString &t
     QString msg;
     QString sub;
     splitMessage(message, msg, sub);
-    QMessageBox box(QMessageBox::Warning, title.isEmpty() ? i18n("Error") : title, msg, QMessageBox::Ok, parent);
+    QMessageBox box(QMessageBox::Warning, title.isEmpty() ? i18n("Error") : title, msg, QMessageBox::Ok, parent, Qt::Sheet);
     box.setInformativeText(sub);
     //AcceleratorManager::manage(&box);
     box.exec();
@@ -77,7 +77,7 @@ void MessageBox::information(QWidget *parent, const QString &message, const QStr
     QString msg;
     QString sub;
     splitMessage(message, msg, sub);
-    QMessageBox box(QMessageBox::Information, title.isEmpty() ? i18n("Information") : title, msg, QMessageBox::Ok, parent);
+    QMessageBox box(QMessageBox::Information, title.isEmpty() ? i18n("Information") : title, msg, QMessageBox::Ok, parent, Qt::Sheet);
     box.setInformativeText(sub);
     //AcceleratorManager::manage(&box);
     box.exec();
@@ -92,12 +92,13 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
     QString sub;
     splitMessage(message, msg, sub);
     QMessageBox box(isWarning ? QMessageBox::Warning : QMessageBox::Question, title.isEmpty() ? (isWarning ? i18n("Warning") : i18n("Question")) : title,
-                    msg, QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton), parent);
+                    msg, QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton), parent, Qt::Sheet);
     box.setInformativeText(sub);
     #else
     QMessageBox box(isWarning ? QMessageBox::Warning : QMessageBox::Question, title.isEmpty() ? (isWarning ? i18n("Warning") : i18n("Question")) : title,
                     message, QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton), parent);
     #endif
+
     bool btnIcons=box.style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons);
     box.setDefaultButton(isWarning && !showCancel ? QMessageBox::No : QMessageBox::Yes);
     if (!yesText.text.isEmpty()) {
@@ -191,6 +192,9 @@ MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const Q
     lay->setMargin(0);
     list->insertItems(0, strlist);
     dlg->setMainWidget(wid);
+    #ifdef Q_OS_MAC
+    dlg->setWindowFlags((dlg->windowFlags()&(~Qt::WindowType_Mask))|Qt::Sheet);
+    #endif
     #ifdef ENABLE_KDE_SUPPORT
     dlg->exec();
     #else

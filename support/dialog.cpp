@@ -230,6 +230,7 @@ void Dialog::setButtons(ButtonCodes buttons)
         needToCreate=false;
         buttonBox->clear();
         buttonBox->setStandardButtons(btns);
+        userButtons.clear();
     } else {
         buttonBox = new QDialogButtonBox(btns, Qt::Horizontal, this);
         #ifdef Q_OS_MAC

@@ -323,14 +323,19 @@ QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
 }
 #endif
 
-void AlbumsModel::update(const MusicLibraryItemRoot *root)
+void AlbumsModel::update(const MusicLibraryItemRoot *root, bool incremental)
 {
     if (!enabled) {
         return;
     }
 
     bool changesMade=false;
-    bool resettingModel=items.isEmpty() || 0==root->childCount();
+    bool resettingModel=!incremental || items.isEmpty() || 0==root->childCount();
+
+    if (!incremental) {
+        clear();
+    }
+
     if (resettingModel) {
         beginResetModel();
     }
@@ -518,7 +523,7 @@ void AlbumsModel::setEnabled(bool e)
         #else
         connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
         #endif
-        update(MusicLibraryModel::self()->root());
+        update(MusicLibraryModel::self()->root(), false);
     } else {
         clear();
         #ifdef ENABLE_UBUNTU

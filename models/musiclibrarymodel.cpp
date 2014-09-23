@@ -352,7 +352,7 @@ void MusicLibraryModel::clear()
     endResetModel();
 
     if (mpdModel) {
-        AlbumsModel::self()->update(rootItem);
+        AlbumsModel::self()->update(rootItem, false);
     }
 }
 
@@ -504,7 +504,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         rootItem->toXML(cacheFileName(), databaseTime, databaseTimeUnreliable);
     }
 
-    AlbumsModel::self()->update(rootItem);
+    AlbumsModel::self()->update(rootItem, incremental);
     emit updateGenres(rootItem->genres());
     #ifdef ENABLE_UBUNTU
     if (updatedSongs) {
@@ -647,7 +647,7 @@ void MusicLibraryModel::toggleGrouping()
     rootItem->toXML(cacheFileName(), databaseTime, databaseTimeUnreliable);
     endResetModel();
     if (mpdModel) {
-        AlbumsModel::self()->update(rootItem);
+        AlbumsModel::self()->update(rootItem, false);
     }
 }
 

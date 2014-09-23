@@ -178,6 +178,7 @@ public Q_SLOTS:
     void connectToMpd(const MPDConnectionDetails &details);
     void streamUrl(const QString &u);
     void refreshDbPromp();
+    void fullDbRefresh();
     void showServerInfo();
     void stopPlayback();
     void stopAfterCurrentTrack();
@@ -305,6 +306,7 @@ private:
     Action *prefAction;
     Action *refreshDbAction;
     Action *doDbRefreshAction;
+    Action *dbFullRefreshAction;
     Action *connectAction;
     Action *connectionsAction;
     Action *outputsAction;

@@ -519,7 +519,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
         #endif
         if (isUpdatingDb) {
             isUpdatingDb=false;
-            emit updatingDatabase(); // Stop any spinners...
+            emit updatedDatabase(); // Stop any spinners...
         }
         ConnectionReturn status=connectToMPD();
         switch (status) {
@@ -1305,6 +1305,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
                 playListInfo();
                 playListUpdated=true;
             } else if (constIdleUpdateValue==value) {
+                getStats();
                 getStatus();
             } else if (constIdleStoredPlaylistValue==value) {
                 listPlaylists();

@@ -51,6 +51,8 @@
     especially with retina displays.
 34. Read ArtistSort, AlbumArtistSort, and AlbumSort from MPD. If found, use
     these to sort items.
+35. Add 'Full Refresh' action - cuases caches to be removed, and models to be
+    completely refreshed.
 
 1.4.2
 -----

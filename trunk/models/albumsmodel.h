@@ -146,7 +146,7 @@ public Q_SLOTS:
     void coverLoaded(const Song &song, int s);
     // Touch version...
     void setCover(const Song &song, const QImage &img, const QString &file);
-    void update(const MusicLibraryItemRoot *root);
+    void update(const MusicLibraryItemRoot *root, bool incremental);
 
 private:
     bool enabled;

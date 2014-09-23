@@ -944,12 +944,23 @@ These steps assume the following structure:
     install/
     icons/
 
-1. Install Qt5.3.1 from https://qt-project.org/downloads
+1. Install Qt5.3.1 (or later) from https://qt-project.org/downloads
+
 2. Install HomeBrew
+
 3. brew install cmake taglib ffmpeg speex
+
 4. Download oxygen icons required for Cantata from the following link
     https://drive.google.com/file/d/0Bzghs6gQWi60cXlvUURjeEVRUms/edit?usp=sharing
+
 5. Unzip this *within* icons/
-6. Call cmake:
+
+6. Call cmake (e.g. from build folder):
     cmake ../trunk/ -DCMAKE_PREFIX_PATH=/Users/$USER/Qt/5.3/clang_64/ -DCMAKE_BUILD_TYPE=Release -DCANTATA_OXYGEN_DIR=`pwd`/../icons -DCMAKE_INSTALL_PREFIX=`pwd`/../install
+
 7. make install
+
+8. To create the DMG file (disk image, used for installs)
+
+   a. Go into the 'mac' folder within the build folder
+   b. Run ./create-dmg.sh

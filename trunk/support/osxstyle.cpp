@@ -94,7 +94,7 @@ void OSXStyle::initWindowMenu(QMainWindow *mw)
 
 void OSXStyle::addWindow(QWidget *w)
 {
-    if (w && windowMenu) {
+    if (w && windowMenu && !actions.contains(w)) {
         QAction *action=windowMenu->addAction(w->windowTitle());
         action->setCheckable(true);
         connect(action, SIGNAL(triggered()), this, SLOT(showWindow()));
@@ -105,14 +105,12 @@ void OSXStyle::addWindow(QWidget *w)
 
 void OSXStyle::removeWindow(QWidget *w)
 {
-    if (w && windowMenu) {
-        if (actions.contains(w)) {
-            QAction *act=actions.take(w);
-            windowMenu->removeAction(act);
-            disconnect(act, SIGNAL(triggered()), this, SLOT(showWindow()));
-            disconnect(w, SIGNAL(windowTitleChanged(QString)), this, SLOT(windowTitleChanged()));
-            act->deleteLater();
-        }
+    if (w && windowMenu && actions.contains(w)) {
+        QAction *act=actions.take(w);
+        windowMenu->removeAction(act);
+        disconnect(act, SIGNAL(triggered()), this, SLOT(showWindow()));
+        disconnect(w, SIGNAL(windowTitleChanged(QString)), this, SLOT(windowTitleChanged()));
+        act->deleteLater();
     }
 }
 

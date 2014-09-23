@@ -234,12 +234,12 @@ struct Song
 
     // podcast/soundcloud functions...
     void setIsFromOnlineService(const QString &service) { setExtraField(OnlineServiceName, service); }
-    bool isFromOnlineService() const { return extra.contains(OnlineServiceName); }
+    bool isFromOnlineService() const { return hasExtraField(OnlineServiceName); }
     QString onlineService() const { return extraField(OnlineServiceName); }
 
     // device functions...
     void setIsFromDevice(const QString &id) { setExtraField(DeviceId, id); }
-    bool isFromDevice() const { return extra.contains(DeviceId); }
+    bool isFromDevice() const { return hasExtraField(DeviceId); }
     QString deviceId() const { return extraField(DeviceId); }
 };
 

@@ -155,6 +155,11 @@ public:
     void resize(int w, int h) { resize(QSize(w, h)); }
     void resize(const QSize &sz);
 
+    #ifdef Q_OS_MAC
+    virtual void hideEvent(QHideEvent *e);
+    virtual void closeEvent(QCloseEvent *e);
+    #endif
+
 private Q_SLOTS:
     void buttonPressed(QAbstractButton *button);
 
@@ -162,7 +167,7 @@ private:
     void create();
     QAbstractButton *getButton(ButtonCode button);
     void setButtonGuiItem(QDialogButtonBox::StandardButton button, const GuiItem &item);
-    void showEvent(QShowEvent *e);
+    virtual void showEvent(QShowEvent *e);
 
 private:
     int defButton;

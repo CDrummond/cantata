@@ -49,7 +49,7 @@
 
 //#define TEST_PROVIDERS
 
-static const QLatin1String constProverListUrl("https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60dHBPajNjbjExZzQ");
+static const QLatin1String constProverListUrl("https://googledrive.com/host/0Bzghs6gQWi60dHBPajNjbjExZzQ");
 
 static QString fileMd5(const QString &fileName)
 {

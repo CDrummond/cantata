@@ -23,6 +23,9 @@
 16. Better method of setting disabled opacity for monochrome icons.
 17. Fix parsing of podcast RSS files containing "content" tag.
 18. Set user-agent for podcast URL queries, otherwise requests can fail.
+19. Use https://googledrive.com/host/XXX and not
+    https://drive.google.com/uc?export=download&id=XXX for stream provider URLs,
+    etc. Seems like the drive.google.com URLs have download limits.
 
 1.4.1
 -----

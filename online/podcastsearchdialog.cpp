@@ -52,6 +52,7 @@
 #include <QBuffer>
 #include <QCoreApplication>
 #include <QDesktopServices>
+#include <QNetworkRequest>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #include <QJsonDocument>
@@ -173,7 +174,10 @@ void PodcastPage::fetch(const QUrl &url)
     cancel();
     tree->clear();
     spinner->start();
-    job=NetworkAccessManager::self()->get(url);
+    QNetworkRequest req(url);
+    req.setRawHeader("User-Agent", QString("%1 %2").arg(QCoreApplication::applicationName(),
+                                                        QCoreApplication::applicationVersion()).toUtf8());
+    job=NetworkAccessManager::self()->get(req);
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
 }
 

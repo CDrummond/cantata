@@ -591,7 +591,7 @@ The streams page on Cantata's settings dialog, will allow you to install new
 providers from Cantata's Google Drive page. To do this, the dialog first
 downloads the list of providers, this is obtained from the following URL:
 
-https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60dHBPajNjbjExZzQ
+https://googledrive.com/host/0Bzghs6gQWi60dHBPajNjbjExZzQ
 
 This file is acutally named "list.xml" - for some reason Google Drive's
 download links never specify the actual name! The contents of this file will be
@@ -599,13 +599,13 @@ something like:
 
 <providers>
  <category type="0">
-  <provider name="1.fm" url="https://drive.google.com/uc?export=download&amp;id=0Bzghs6gQWi60RHRSa3dqeUtkNTA"/>
+  <provider name="1.fm" url="https://googledrive.com/host/0Bzghs6gQWi60RHRSa3dqeUtkNTA"/>
   ...
 
 If you want to manually download a provider, use the listed URL to download the
-.streams file. e.g. for the above ("&amp;" is replaceed with "&"):
+.streams file. e.g. for the above:
 
-    wget "https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60RHRSa3dqeUtkNTA" -O 1.fm.streams
+    wget "https://googledrive.com/host/0Bzghs6gQWi60RHRSa3dqeUtkNTA" -O 1.fm.streams
 
 Extract the contents with:
 

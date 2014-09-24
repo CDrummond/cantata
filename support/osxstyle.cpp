@@ -26,6 +26,7 @@
 #include "localize.h"
 #include "actioncollection.h"
 #include "action.h"
+#include "utils.h"
 #include <QApplication>
 #include <QStyle>
 #include <QTreeWidget>
@@ -127,10 +128,7 @@ void OSXStyle::showWindow()
 
     for (; it!=end; ++it) {
         if (it.value()==act) {
-            QWidget *w=it.key();
-            w->showNormal();
-            w->activateWindow();
-            w->raise();
+            Utils::raiseWindow(it.key());
         }
         act->setChecked(it.value()==act);
     }

@@ -966,3 +966,63 @@ QPainterPath Utils::buildPath(const QRectF &r, double radius)
     path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
     return path;
 }
+
+#ifdef Q_OS_WIN
+// This is down here, because windows.h includes ALL windows stuff - and we get conflicts with MessageBox :-(
+#include <windows.h>
+#elif defined ENABLE_KDE_SUPPORT
+#include <KDE/KWindowSystem>
+#elif !defined Q_OS_MAC && QT_VERSION < 0x050000
+#include <QX11Info>
+#include <X11/Xlib.h>
+#endif
+
+void Utils::raiseWindow(QWidget *w)
+{
+    if (!w) {
+        return;
+    }
+
+    #ifdef Q_OS_WIN
+    ::SetWindowPos(reinterpret_cast<HWND>(w->effectiveWinId()), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+    ::SetWindowPos(reinterpret_cast<HWND>(w->effectiveWinId()), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+    #elif !defined Q_OS_WIN && QT_VERSION>=0x050000
+    bool wasHidden=w->isHidden();
+    #endif
+
+    w->raise();
+    w->showNormal();
+    w->activateWindow();
+    #ifdef Q_OS_MAC
+    w->raise();
+    #endif
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    // This section seems to be required for compiz, so that MPRIS.Raise actually shows the window, and not just highlight launcher.
+    #if QT_VERSION < 0x050000
+    static const Atom constNetActive=XInternAtom(QX11Info::display(), "_NET_ACTIVE_WINDOW", False);
+    QX11Info info;
+    XEvent xev;
+    xev.xclient.type = ClientMessage;
+    xev.xclient.serial = 0;
+    xev.xclient.send_event = True;
+    xev.xclient.message_type = constNetActive;
+    xev.xclient.display = QX11Info::display();
+    xev.xclient.window = w->effectiveWinId();
+    xev.xclient.format = 32;
+    xev.xclient.data.l[0] = 2;
+    xev.xclient.data.l[1] = xev.xclient.data.l[2] = xev.xclient.data.l[3] = xev.xclient.data.l[4] = 0;
+    XSendEvent(QX11Info::display(), QX11Info::appRootWindow(info.screen()), False, SubstructureRedirectMask|SubstructureNotifyMask, &xev);
+    #else // QT_VERSION < 0x050000
+    QString wmctrl=Utils::findExe(QLatin1String("wmctrl"));
+    if (!wmctrl.isEmpty()) {
+        if (wasHidden) {
+            QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+        }
+        QProcess::execute(wmctrl, QStringList() << QLatin1String("-i") << QLatin1String("-a") << QString::number(w->effectiveWinId()));
+    }
+    #endif // QT_VERSION < 0x050000
+    #ifdef ENABLE_KDE_SUPPORT
+    KWindowSystem::forceActiveWindow(w->effectiveWinId());
+    #endif
+    #endif
+}

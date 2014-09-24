@@ -627,6 +627,13 @@ public:
                 int frameWidth=baseStyle()->pixelMetric(PM_DefaultFrameWidth, option, widget);
                 QFontMetrics fm(painter->fontMetrics());
                 copy.text=fm.elidedText(toolbutton->text, Qt::ElideRight, toolbutton->rect.width()-(iconWidth+8+(2*frameWidth)), QPalette::WindowText);
+                #ifdef Q_OS_MAC
+                if (!(option->state&State_Sunken || option->state&State_MouseOver)) {
+                    int fw=baseStyle()->pixelMetric(PM_DefaultFrameWidth,option, widget);
+                    copy.rect.adjust(fw, fw, -fw, -fw);
+                    baseStyle()->drawControl(CE_ToolButtonLabel, &copy, painter, widget);
+                } else
+                #endif
                 baseStyle()->drawComplexControl(control, &copy, painter, widget);
                 return;
             }
@@ -659,9 +666,6 @@ ItemView::ItemView(QWidget *p)
     backButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     Icon::init(backButton);
     backButton->setAutoRaise(true);
-    #ifdef Q_OS_MAC
-    backButton->setStyleSheet("QToolButton {border: 0}");
-    #endif
     backButton->setFocusPolicy(Qt::NoFocus);
     backButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     backButton->setStyle(new BackButtonProxyStyle());

@@ -196,18 +196,25 @@ NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
         return new NetworkJob(this, req.url());
     }
 
+    // Set User-Agent - required for some Podcasts...
+    QByteArray userAgent = QString("%1 %2").arg(QCoreApplication::applicationName(), QCoreApplication::applicationVersion()).toUtf8();
+    if (req.hasRawHeader("User-Agent")) {
+        userAgent+=' '+req.rawHeader("User-Agent");
+    }
+    QNetworkRequest request=req;
+    request.setRawHeader("User-Agent", userAgent);
+
     // Windows builds do not support HTTPS - unless QtNetwork is recompiled...
     NetworkJob *reply=0;
     if (QLatin1String("https")==req.url().scheme() && !QSslSocket::supportsSsl()) {
-        QUrl httpUrl=req.url();
+        QUrl httpUrl=request.url();
         httpUrl.setScheme(QLatin1String("http"));
-        QNetworkRequest httpReq=req;
-        httpReq.setUrl(httpUrl);
+        request.setUrl(httpUrl);
         DBUG << "no ssl, use" << httpUrl.toString();
-        reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(httpReq));
+        reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(request));
         reply->setOrigUrl(req.url());
     } else {
-        reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(req));
+        reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(request));
     }
 
     if (0!=timeout) {

@@ -123,6 +123,7 @@ namespace Utils
     inline int scaleForDpi(int v) { return qRound(screenDpiScale()*v); }
     extern bool limitedHeight(QWidget *w);
     extern void resizeWindow(QWidget *w, bool preserveWidth=true, bool preserveHeight=true);
+    extern void raiseWindow(QWidget *w);
 
     enum Desktop {
         KDE,

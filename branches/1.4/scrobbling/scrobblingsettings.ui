@@ -23,6 +23,9 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
+   <property name="fieldGrowthPolicy">
+    <enum>QFormLayout::ExpandingFieldsGrow</enum>
+   </property>
    <item row="0" column="0">
     <widget class="BuddyLabel" name="scrobblerLabel">
      <property name="text">

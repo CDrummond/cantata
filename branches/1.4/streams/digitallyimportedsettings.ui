@@ -42,6 +42,9 @@
       <string>Premium Account</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
       <item row="0" column="0">
        <widget class="BuddyLabel" name="label_2">
         <property name="text">

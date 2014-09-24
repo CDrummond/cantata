@@ -174,10 +174,7 @@ void PodcastPage::fetch(const QUrl &url)
     cancel();
     tree->clear();
     spinner->start();
-    QNetworkRequest req(url);
-    req.setRawHeader("User-Agent", QString("%1 %2").arg(QCoreApplication::applicationName(),
-                                                        QCoreApplication::applicationVersion()).toUtf8());
-    job=NetworkAccessManager::self()->get(req);
+    job=NetworkAccessManager::self()->get(url);
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
 }
 

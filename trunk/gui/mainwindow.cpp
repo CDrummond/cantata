@@ -113,9 +113,6 @@
 #ifdef ENABLE_HTTP_STREAM_PLAYBACK
 #include "mpd/httpstream.h"
 #endif
-#ifdef Q_OS_WIN
-static void raiseWindow(QWidget *w);
-#endif
 #include <QSet>
 #include <QString>
 #include <QTimer>
@@ -132,7 +129,6 @@ static void raiseWindow(QWidget *w);
 #include <KDE/KMenuBar>
 #include <KDE/KMenu>
 #include <KDE/KShortcutsDialog>
-#include <KDE/KWindowSystem>
 #include <KDE/KToggleAction>
 #else
 #include <QMenuBar>
@@ -2641,11 +2637,6 @@ void MainWindow::toggleMenubar()
     }
 }
 
-#if !defined Q_OS_WIN && !defined Q_OS_MAC && QT_VERSION < 0x050000
-#include <QX11Info>
-#include <X11/Xlib.h>
-#endif
-
 void MainWindow::hideWindow()
 {
     lastPos=pos();
@@ -2655,55 +2646,8 @@ void MainWindow::hideWindow()
 void MainWindow::restoreWindow()
 {
     bool wasHidden=isHidden();
-    #ifdef Q_OS_WIN
-    raiseWindow(this);
-    #endif
-    raise();
-    showNormal();
-    activateWindow();
-    #ifdef Q_OS_MAC
-    raise();
-    #endif
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    // This section seems to be required for compiz, so that MPRIS.Raise actually shows the window, and not just highlight launcher.
-    #if QT_VERSION < 0x050000
-    static const Atom constNetActive=XInternAtom(QX11Info::display(), "_NET_ACTIVE_WINDOW", False);
-    QX11Info info;
-    XEvent xev;
-    xev.xclient.type = ClientMessage;
-    xev.xclient.serial = 0;
-    xev.xclient.send_event = True;
-    xev.xclient.message_type = constNetActive;
-    xev.xclient.display = QX11Info::display();
-    xev.xclient.window = effectiveWinId();
-    xev.xclient.format = 32;
-    xev.xclient.data.l[0] = 2;
-    xev.xclient.data.l[1] = xev.xclient.data.l[2] = xev.xclient.data.l[3] = xev.xclient.data.l[4] = 0;
-    XSendEvent(QX11Info::display(), QX11Info::appRootWindow(info.screen()), False, SubstructureRedirectMask|SubstructureNotifyMask, &xev);
-    #else // QT_VERSION < 0x050000
-    QString wmctrl=Utils::findExe(QLatin1String("wmctrl"));
-    if (!wmctrl.isEmpty()) {
-        if (wasHidden) {
-            QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-        }
-        QProcess::execute(wmctrl, QStringList() << QLatin1String("-i") << QLatin1String("-a") << QString::number(effectiveWinId()));
-    }
-    #endif // QT_VERSION < 0x050000
-    #endif // !defined Q_OS_WIN && !defined Q_OS_MAC
+    Utils::raiseWindow(this);
     if (wasHidden && !lastPos.isNull()) {
         move(lastPos);
     }
-    #ifdef ENABLE_KDE_SUPPORT
-    KWindowSystem::forceActiveWindow(effectiveWinId());
-    #endif
 }
-
-#ifdef Q_OS_WIN
-// This is down here, because windows.h includes ALL windows stuff - and we get conflicts with MessageBox :-(
-#include <windows.h>
-static void raiseWindow(QWidget *w)
-{
-    ::SetWindowPos(reinterpret_cast<HWND>(w->effectiveWinId()), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
-    ::SetWindowPos(reinterpret_cast<HWND>(w->effectiveWinId()), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
-}
-#endif

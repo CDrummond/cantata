@@ -268,6 +268,7 @@ public Q_SLOTS:
     void setRating();
 
 private:
+    bool canClose();
     void expand();
     bool canShowDialog();
     void enableStopActions(bool enable);

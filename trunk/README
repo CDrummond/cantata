@@ -824,7 +824,8 @@ for just covers logging:
 
 As of Cantata 1.2.0, all logging output is saved to a file. On Linux systems
 this will be ~/.cache/cantata/cantata.log For Windows this will be
-C:\Users\USERNAME\AppData\Local\mpd\cantata\cache\cantata.log
+C:\Users\USERNAME\AppData\Local\mpd\cantata\cache\cantata.log And for OSX it
+will be /Users/$USER/Library/Caches/cantata/cantata/cantata.log
 
 When using the external helper to read/write tags, then there might also be
 additional logging in cantata-tags.log (in the same location as cantata.log)

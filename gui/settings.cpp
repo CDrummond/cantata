@@ -733,9 +733,12 @@ QString Settings::podcastDownloadPath()
     return Utils::fixPath(cfg.get("podcastDownloadPath", Utils::fixPath(QDir::homePath())+QLatin1String("Podcasts/")));
 }
 
-bool Settings::podcastAutoDownload()
+int Settings::podcastAutoDownloadLimit()
 {
-    return cfg.get("podcastAutoDownload", false);
+    if (cfg.hasEntry("podcastAutoDownload")) {
+        return cfg.get("podcastAutoDownload", false) ? 1000 : 0;
+    }
+    return cfg.get("podcastAutoDownloadLimit", 0, 0, 1000);
 }
 
 int Settings::maxCoverUpdatePerIteration()
@@ -1340,9 +1343,12 @@ void Settings::savePodcastDownloadPath(const QString &v)
     cfg.set("podcastDownloadPath", v);
 }
 
-void Settings::savePodcastAutoDownload(bool v)
+void Settings::savePodcastAutoDownloadLimit(int v)
 {
-    cfg.set("podcastAutoDownload", v);
+    if (cfg.hasEntry("podcastAutoDownload")) {
+        cfg.remove("podcastAutoDownload");
+    }
+    cfg.set("podcastAutoDownloadLimit", v);
 }
 
 void Settings::saveStartupState(int v)

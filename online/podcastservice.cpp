@@ -192,16 +192,20 @@ void PodcastService::rssJobFinished()
         MusicLibraryItemPodcast *podcast=new MusicLibraryItemPodcast(QString(), this);
         MusicLibraryItemPodcast::RssStatus loadStatus=podcast->loadRss(j->actualJob());
         if (MusicLibraryItemPodcast::Loaded==loadStatus) {
-            bool autoDownload=Settings::self()->podcastAutoDownload();
+            int autoDownload=Settings::self()->podcastAutoDownloadLimit();
 
             if (isNew) {
                 podcast->save();
                 beginInsertRows(index(), childCount(), childCount());
                 m_childItems.append(podcast);
                 if (autoDownload) {
+                    int ep=0;
                     foreach (MusicLibraryItem *i, podcast->childItems()) {
                         MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
                         downloadEpisode(podcast, QUrl(song->file()));
+                        if (autoDownload<1000 && ++ep>=autoDownload) {
+                            break;
+                        }
                     }
                 }
                 endInsertRows();

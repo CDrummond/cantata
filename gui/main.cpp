@@ -281,11 +281,7 @@ int main(int argc, char *argv[])
 
     #else // ENABLE_KDE_SUPPORT
     QCoreApplication::setApplicationName(PACKAGE_NAME);
-    #ifdef Q_OS_WIN
-    QCoreApplication::setOrganizationName("mpd");
-    #else
-    QCoreApplication::setOrganizationName(PACKAGE_NAME);
-    #endif
+    QCoreApplication::setOrganizationName(ORGANIZATION_NAME);
 
     Application app(argc, argv);
     if (!app.start()) {

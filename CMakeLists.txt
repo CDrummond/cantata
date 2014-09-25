@@ -1,5 +1,14 @@
 PROJECT(cantata)
 
+if (WIN32)
+    # For some reason I chose mpd as the organization name for Windows builds. So, for config compatability, this is
+    # left as mpd for now...
+    set(ORGANIZATION_NAME "mpd")
+else (WIN32)
+    # Otherwise its set to the same as the project name. Not sure what else to set it to!!!
+    set(ORGANIZATION_NAME ${CMAKE_PROJECT_NAME})
+endif (WIN32)
+
 cmake_minimum_required(VERSION 2.6)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)

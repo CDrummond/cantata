@@ -67,6 +67,7 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     autoDownload = new QCheckBox(i18n("Automatically download new episodes"), this);
 
     int row=0;
+    lay->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     lay->setMargin(0);
     lay->setWidget(row, QFormLayout::LabelRole, updateLabel);
     lay->setWidget(row++, QFormLayout::FieldRole, updateCombo);

@@ -449,7 +449,7 @@ QString Settings::contextBackdropFile()
 
 bool Settings::contextDarkBackground()
 {
-    return cfg.get("contextDarkBackground", false);
+    return cfg.get("contextDarkBackground", true);
 }
 
 int Settings::contextZoom()

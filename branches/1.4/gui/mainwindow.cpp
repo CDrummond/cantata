@@ -1039,7 +1039,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         if (event->spontaneous()) {
             event->ignore();
         }
-    } else {
+    } else if (canClose()) {
         MAIN_WINDOW_BASE_CLASS::closeEvent(event);
     }
 }
@@ -1185,14 +1185,10 @@ void MainWindow::showPreferencesDialog(const QString &page)
 
 void MainWindow::quit()
 {
-    #ifdef ENABLE_ONLINE_SERVICES
-    if (OnlineServicesModel::self()->isDownloading() &&
-        MessageBox::No==MessageBox::warningYesNo(this, i18n("Podcasts are currently being downloaded\n\nQuiting now will abort all downloads."),
-                                                 QString(), GuiItem(i18n("Abort downloads and quit")), GuiItem("Do not quit just yet"))) {
+    if (!canClose()) {
         return;
     }
-    OnlineServicesModel::self()->cancelAll();
-    #endif
+
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     if (RgDialog::instanceCount()) {
         return;
@@ -2252,6 +2248,19 @@ void MainWindow::showSearch()
     } else if (playQueuePage->isVisible() || playQueue->isVisible()) {
         playQueueSearchWidget->activate();
     }
+}
+
+bool MainWindow::canClose()
+{
+    #ifdef ENABLE_ONLINE_SERVICES
+    if (OnlineServicesModel::self()->isDownloading() &&
+        MessageBox::No==MessageBox::warningYesNo(this, i18n("Podcasts are currently being downloaded\n\nQuiting now will abort all downloads."),
+                                                 QString(), GuiItem(i18n("Abort downloads and quit")), GuiItem("Do not quit just yet"))) {
+        return false;
+    }
+    OnlineServicesModel::self()->cancelAll();
+    #endif
+    return true;
 }
 
 void MainWindow::expandAll()

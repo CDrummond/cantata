@@ -55,9 +55,7 @@ AlbumsPage::AlbumsPage(QWidget *p)
     #endif
     view->addAction(StdActions::self()->setCoverAction);
     #ifdef ENABLE_DEVICES_SUPPORT
-    QAction *sep=new QAction(this);
-    sep->setSeparator(true);
-    view->addAction(sep);
+    view->addSeparator();
     view->addAction(StdActions::self()->deleteSongsAction);
     #endif
     #endif // TAGLIB_FOUND

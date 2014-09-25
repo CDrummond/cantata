@@ -81,7 +81,7 @@ OnlineServicesModel::OnlineServicesModel(QObject *parent)
     searchAction = StreamsModel::self()->searchAct();
     #else
     // For Mac/Unity we try to hide icons from menubar menus. However, search is used in the menubar AND in the streams view. We
-    // need the icon on the streams view. Therefore, if the StdAction has no icon -  we create a new one and forward all signals...
+    // need the icon on the streams view. Therefore, if the StdAction has no icon - we create a new one and forward all signals...
     if (StdActions::self()->searchAction->icon().isNull()) {
         searchAction = new Action(Icon("edit-find"), StdActions::self()->searchAction->text(), this);
         searchAction->setToolTip(StdActions::self()->searchAction->toolTip());
@@ -177,6 +177,8 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
                 if (static_cast<MusicLibraryItemPodcastEpisode *>(item)->downloadProgress()>=0) {
                     return MultiMusicModel::data(index, role).toString()+QLatin1Char(' ')+
                            i18n("(Downloading: %1%)", static_cast<MusicLibraryItemPodcastEpisode *>(item)->downloadProgress());
+                } else if (MusicLibraryItemPodcastEpisode::QueuedForDownload==static_cast<MusicLibraryItemPodcastEpisode *>(item)->downloadProgress()) {
+                    return MultiMusicModel::data(index, role).toString()+QLatin1Char(' ')+i18n("(Download Queued)");
                 }
             }
             break;
@@ -222,6 +224,10 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
         if (MusicLibraryItem::Type_Song==item->itemType() && item->parentItem() && MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
             if (!static_cast<MusicLibraryItemPodcastEpisode *>(item)->localPath().isEmpty()) {
                 return Icons::self()->downloadedPodcastEpisodeIcon;
+            } else if (static_cast<MusicLibraryItemPodcastEpisode *>(item)->downloadProgress()>=0) {
+                return Icon("go-down");
+            } else if (MusicLibraryItemPodcastEpisode::QueuedForDownload==static_cast<MusicLibraryItemPodcastEpisode *>(item)->downloadProgress()) {
+                return Icon("clock");
             }
         }
         break;
@@ -234,6 +240,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             return f;
         }
         break;
+    case Cantata::Role_MainText:
     case Qt::DisplayRole:
         if (MusicLibraryItem::Type_Podcast==item->itemType() && static_cast<MusicLibraryItemPodcast *>(item)->unplayedEpisodes()) {
             return i18nc("podcast name (num unplayed episodes)", "%1 (%2)", item->data(), static_cast<MusicLibraryItemPodcast *>(item)->unplayedEpisodes());
@@ -437,6 +444,11 @@ void OnlineServicesModel::downloadPodcasts(MusicLibraryItemPodcast *pod, const Q
 void OnlineServicesModel::deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes)
 {
     podcast->deleteDownloadedPodcasts(pod, episodes);
+}
+
+void OnlineServicesModel::setPodcastsAsListened(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes, bool listened)
+{
+    podcast->setPodcastsAsListened(pod, episodes, listened);
 }
 
 bool OnlineServicesModel::isDownloading() const

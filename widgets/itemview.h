@@ -100,6 +100,7 @@ public:
     void allowGroupedView();
     void allowTableView(TableView *v);
     void addAction(QAction *act);
+    void addSeparator();
     void setMode(Mode m);
     Mode viewMode() const { return mode; }
     QAbstractItemView * view() const;

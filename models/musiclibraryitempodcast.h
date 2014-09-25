@@ -67,7 +67,7 @@ public:
     void removeFiles();
     void setUnplayedCount();
     quint32 unplayedEpisodes() const { return m_unplayedEpisodeCount; }
-    void setPlayed(MusicLibraryItemSong *song);
+    void setPlayed(MusicLibraryItemSong *song, bool played=true);
     void addAll(const QList<MusicLibraryItemPodcastEpisode *> &others);
     MusicLibraryItemPodcastEpisode * getEpisode(const QString &file) const;
     Song coverSong() const;
@@ -87,8 +87,13 @@ private:
 class MusicLibraryItemPodcastEpisode : public MusicLibraryItemSong
 {
 public:
+    enum DownloadState {
+        NotDownloading = -1,
+        QueuedForDownload = -2
+    };
+
     MusicLibraryItemPodcastEpisode(const Song &s, MusicLibraryItemContainer *parent)
-        : MusicLibraryItemSong(s, parent), downloadProg(-1) { }
+        : MusicLibraryItemSong(s, parent), downloadProg(NotDownloading) { }
     virtual ~MusicLibraryItemPodcastEpisode() { }
 
     const QString & published();

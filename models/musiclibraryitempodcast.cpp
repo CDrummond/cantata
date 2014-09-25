@@ -276,11 +276,15 @@ void MusicLibraryItemPodcast::setUnplayedCount()
     }
 }
 
-void MusicLibraryItemPodcast::setPlayed(MusicLibraryItemSong *song)
+void MusicLibraryItemPodcast::setPlayed(MusicLibraryItemSong *song, bool played)
 {
-    if (!song->song().hasBeenPlayed()) {
-        song->setPlayed(true);
-        m_unplayedEpisodeCount--;
+    if (played!=song->song().hasBeenPlayed()) {
+        song->setPlayed(played);
+        if (played) {
+            m_unplayedEpisodeCount--;
+        } else {
+            m_unplayedEpisodeCount++;
+        }
     }
 }
 

@@ -67,10 +67,11 @@ public:
     static QUrl fixUrl(const QUrl &orig);
     static bool isUrlOk(const QUrl &u) { return QLatin1String("http")==u.scheme() || QLatin1String("https")==u.scheme(); }
 
-    bool isDownloading() const { return !downloadJobs.isEmpty(); }
+    bool isDownloading() const { return 0!=downloadJob; }
     void cancelAllDownloads();
     void downloadPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
     void deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
+    void setPodcastsAsListened(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes, bool listened);
 
     void cancelAllJobs() { cancelAll(); cancelAllDownloads(); }
     MusicLibraryItemPodcast * getPodcast(const QUrl &url) const;
@@ -82,8 +83,11 @@ private:
     void stopRssUpdateTimer();
     bool downloadingEpisode(const QUrl &url) const;
     void downloadEpisode(const MusicLibraryItemPodcast *podcast, const QUrl &episode);
+    void cancelDownloads(const QList<MusicLibraryItemPodcastEpisode *> episodes);
     void cancelDownload(const QUrl &url);
-    void cancelDownload(NetworkJob *job);
+    void cancelDownload();
+    void doNextDownload();
+    void updateEpisode(const QUrl &rssUrl, const QUrl &url, int pc);
 
 private Q_SLOTS:
     void loadAll();
@@ -95,8 +99,18 @@ private Q_SLOTS:
     void downloadPercent(int pc);
 
 private:
+    struct DownloadEntry {
+        DownloadEntry(const QUrl &u=QUrl(), const QUrl &r=QUrl(), const QString &d=QString()) : url(u), rssUrl(r), dest(d) { }
+        bool operator==(const DownloadEntry &o) const { return o.url==url; }
+        QUrl url;
+        QUrl rssUrl;
+        QString dest;
+        MusicLibraryItemPodcastEpisode *ep;
+    };
+
     QList<NetworkJob *> rssJobs;
-    QList<NetworkJob *> downloadJobs;
+    NetworkJob * downloadJob;
+    QList<DownloadEntry> toDownload;
     QTimer *rssUpdateTimer;
     QDateTime lastRssUpdate;
     QTimer *deleteTimer;

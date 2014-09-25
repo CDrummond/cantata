@@ -53,6 +53,9 @@
     these to sort items.
 35. Add 'Full Refresh' action - cuases caches to be removed, and models to be
     completely refreshed.
+36. Add actions to mark podcast as episode as listened or new.
+37. Add action to cancel podcast downloads.
+38. Download podcasts sequentially.
 
 1.4.2
 -----
@@ -84,6 +87,7 @@
     etc. Seems like the drive.google.com URLs have download limits.
 20. Fix crash when changing buttons of dialogs in Qt builds.
 21. Fix setting of played state for podcasts.
+22. Fix display of unplayed podcast episode counts.
 
 1.4.1
 -----

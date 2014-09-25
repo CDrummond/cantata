@@ -67,7 +67,10 @@ public Q_SLOTS:
     void unSubscribe();
     void refreshSubscription();
     void downloadPodcast();
+    void cancelPodcastDownload();
     void deleteDownloadedPodcast();
+    void markPodcastAsNew();
+    void markPodcastAsListened();
     void showPreferencesPage();
     void providersChanged();
 
@@ -87,7 +90,10 @@ private:
     MusicLibraryProxyModel proxy;
     Action *downloadAction;
     Action *downloadPodcastAction;
+    Action *cancelPodcastDownloadAction;
     Action *deleteDownloadedPodcastAction;
+    Action *markPodcastAsNewAction;
+    Action *markPodcastAsListenedAction;
     QSet<QString> genres;
     bool onlineSearchRequest;
     QString searchService;

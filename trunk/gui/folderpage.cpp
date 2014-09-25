@@ -58,9 +58,7 @@ FolderPage::FolderPage(QWidget *p)
     #endif
     view->addAction(browseAction);
     #ifdef ENABLE_DEVICES_SUPPORT
-    QAction *sep=new QAction(this);
-    sep->setSeparator(true);
-    view->addAction(sep);
+    view->addSeparator();
     view->addAction(StdActions::self()->deleteSongsAction);
     #endif
 

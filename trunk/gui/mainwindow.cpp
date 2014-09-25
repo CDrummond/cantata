@@ -1225,8 +1225,8 @@ void MainWindow::quit()
 {
     #ifdef ENABLE_ONLINE_SERVICES
     if (OnlineServicesModel::self()->isDownloading() &&
-        MessageBox::No==MessageBox::warningYesNo(this, i18n("Podcasts are currently being downloaded\n\nQuiting now will abort all downloads."),
-                                                 QString(), GuiItem(i18n("Abort downloads and quit")), GuiItem("Do not quit just yet"))) {
+        MessageBox::No==MessageBox::warningYesNo(this, i18n("A Podcast is currently being downloaded\n\nQuiting now will abort the download."),
+                                                 QString(), GuiItem(i18n("Abort download and quit")), GuiItem("Do not quit just yet"))) {
         return;
     }
     OnlineServicesModel::self()->cancelAll();

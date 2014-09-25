@@ -55,9 +55,9 @@ private:
     QComboBox *updateCombo;
     int origRssUpdate;
     PathRequester *downloadPath;
-    QCheckBox *autoDownload;
+    QComboBox *autoDownloadCombo;
     QString origPodcastDownloadPath;
-    bool origPodcastAutoDownload;
+    int origPodcastAutoDownload;
     int changed;
 };
 

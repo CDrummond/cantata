@@ -84,6 +84,7 @@ public:
     bool subscribePodcast(const QUrl &url);
     void downloadPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
     void deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
+    void setPodcastsAsListened(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes, bool listened);
     bool isDownloading() const;
     void cancelAll();
     bool isHidden(OnlineService *srv) { return hiddenServices.contains(srv); }

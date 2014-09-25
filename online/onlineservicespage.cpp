@@ -58,6 +58,10 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     downloadAction = ActionCollection::get()->createAction("downloadtolibrary", i18n("Download To Library"), "go-down");
     downloadPodcastAction = ActionCollection::get()->createAction("downloadpodcast", i18n("Download Podcast Episodes"), "go-down");
     deleteDownloadedPodcastAction = ActionCollection::get()->createAction("deletedownloadedpodcast", i18n("Delete Downloaded Podcast Episodes"), "edit-delete");
+    cancelPodcastDownloadAction = ActionCollection::get()->createAction("cancelpodcastdownloaded", i18n("Cancel Podcast Episode Download"), Icons::self()->cancelIcon);
+    markPodcastAsNewAction = ActionCollection::get()->createAction("markpodcastasnew", i18n("Mark Podcast Episodes As New"), "document-new");
+    markPodcastAsListenedAction = ActionCollection::get()->createAction("markpodcastaslistened", i18n("Mark Podcast Episodes As Listened"));
+
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
@@ -80,30 +84,40 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
     connect(downloadPodcastAction, SIGNAL(triggered()), this, SLOT(downloadPodcast()));
     connect(deleteDownloadedPodcastAction, SIGNAL(triggered()), this, SLOT(deleteDownloadedPodcast()));
+    connect(cancelPodcastDownloadAction, SIGNAL(triggered()), this, SLOT(cancelPodcastDownload()));
+    connect(markPodcastAsNewAction, SIGNAL(triggered()), this, SLOT(markPodcastAsNew()));
+    connect(markPodcastAsListenedAction, SIGNAL(triggered()), this, SLOT(markPodcastAsListened()));
 
     QMenu *menu=new QMenu(this);
     menu->addAction(OnlineServicesModel::self()->configureAct());
     menu->addAction(OnlineServicesModel::self()->refreshAct());
-    QAction *sep=new QAction(this);
-    sep->setSeparator(true);
-    menu->addAction(sep);
+    menu->addSeparator();
     menu->addAction(OnlineServicesModel::self()->subscribeAct());
     menu->addAction(OnlineServicesModel::self()->unSubscribeAct());
     menu->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
     menu->addAction(downloadPodcastAction);
+    menu->addAction(cancelPodcastDownloadAction);
     menu->addAction(deleteDownloadedPodcastAction);
+    menu->addSeparator();
+    menu->addAction(markPodcastAsNewAction);
+    menu->addAction(markPodcastAsListenedAction);
     menu->addSeparator();
     QAction *configAction=new QAction(Icons::self()->configureIcon, i18n("Configure..."), this);
     menu->addAction(configAction);
     connect(configAction, SIGNAL(triggered(bool)), this, SLOT(showPreferencesPage()));
 
     view->addAction(downloadAction);
-    view->addAction(sep);
+    view->addSeparator();
     view->addAction(OnlineServicesModel::self()->subscribeAct());
     view->addAction(OnlineServicesModel::self()->unSubscribeAct());
     view->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
     view->addAction(downloadPodcastAction);
     view->addAction(deleteDownloadedPodcastAction);
+    view->addAction(cancelPodcastDownloadAction);
+    view->addAction(deleteDownloadedPodcastAction);
+    view->addSeparator();
+    view->addAction(markPodcastAsNewAction);
+    view->addAction(markPodcastAsListenedAction);
     menuButton->setMenu(menu);
     proxy.setSourceModel(OnlineServicesModel::self());
 //    proxy.setDynamicSortFilter(false);
@@ -412,6 +426,13 @@ void OnlineServicesPage::controlActions()
     StdActions::self()->addWithPriorityAction->setEnabled(!srvSelected && !selected.isEmpty());
     StdActions::self()->replacePlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
     StdActions::self()->addToStoredPlaylistAction->setEnabled(!srvSelected && !selected.isEmpty());
+    cancelPodcastDownloadAction->setVisible(canUnSubscribe);
+    cancelPodcastDownloadAction->setEnabled(canUnSubscribe); //  && OnlineServicesModel::self()->isDownloading());
+    markPodcastAsNewAction->setEnabled(canSubscribe || canUnSubscribe);
+    markPodcastAsNewAction->setVisible(canSubscribe || canUnSubscribe);
+    markPodcastAsListenedAction->setEnabled(canSubscribe || canUnSubscribe);
+    markPodcastAsListenedAction->setVisible(canSubscribe || canUnSubscribe);
+
     menuButton->controlState();
 }
 
@@ -586,7 +607,6 @@ void OnlineServicesPage::downloadPodcast()
     }
 
     QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> > urls;
-    int count=0;
     foreach (const QModelIndex &idx, selected) {
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
         switch (item->itemType()) {
@@ -595,16 +615,14 @@ void OnlineServicesPage::downloadPodcast()
                 MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(c);
                 if (episode->localPath().isEmpty() && !urls[static_cast<MusicLibraryItemPodcast *>(item)].contains(episode)) {
                     urls[static_cast<MusicLibraryItemPodcast *>(item)].append(episode);
-                    count++;
                 }
             }
             break;
         case MusicLibraryItem::Type_Song:
             if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
                 MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(item);
-                if (episode->localPath().isEmpty() && !urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].contains(episode)) {
+                if (episode->localPath().isEmpty() && !urls[static_cast<MusicLibraryItemPodcast *>(item)].contains(episode)) {
                     urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].append(episode);
-                    count++;
                 }
             }
         default:
@@ -612,9 +630,7 @@ void OnlineServicesPage::downloadPodcast()
         }
     }
 
-    if (urls.isEmpty()) {
-        MessageBox::information(this, i18n("All selected podcasts have already been downloaded!"));
-    } else {
+    if (!urls.isEmpty()) {
         if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to download the selected podcast episodes?"))) {
             return;
         }
@@ -626,6 +642,14 @@ void OnlineServicesPage::downloadPodcast()
     }
 }
 
+void OnlineServicesPage::cancelPodcastDownload()
+{
+    if (OnlineServicesModel::self()->isDownloading() &&
+        MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Cancel podcast episode downloads (both current and any that are queued)?"))) {
+        OnlineServicesModel::self()->cancelAll();
+    }
+}
+
 void OnlineServicesPage::deleteDownloadedPodcast()
 {
     const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
@@ -633,26 +657,23 @@ void OnlineServicesPage::deleteDownloadedPodcast()
         return;
     }
 
-    QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> > urls;
-    int count=0;
+    QMap<MusicLibraryItemPodcast *, QSet<MusicLibraryItemPodcastEpisode *> > urls;
     foreach (const QModelIndex &idx, selected) {
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Podcast:
             foreach (MusicLibraryItem *c, static_cast<MusicLibraryItemPodcast *>(item)->childItems()) {
                 MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(c);
-                if (!episode->localPath().isEmpty() && !urls[static_cast<MusicLibraryItemPodcast *>(item)].contains(episode)) {
-                    urls[static_cast<MusicLibraryItemPodcast *>(item)].append(episode);
-                    count++;
+                if (!episode->localPath().isEmpty()) {
+                    urls[static_cast<MusicLibraryItemPodcast *>(item)].insert(episode);
                 }
             }
             break;
         case MusicLibraryItem::Type_Song:
             if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
                 MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(item);
-                if (!episode->localPath().isEmpty() && !urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].contains(episode)) {
-                    urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].append(episode);
-                    count++;
+                if (!episode->localPath().isEmpty()) {
+                    urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].insert(episode);
                 }
             }
         default:
@@ -660,16 +681,100 @@ void OnlineServicesPage::deleteDownloadedPodcast()
         }
     }
 
-    if (urls.isEmpty()) {
-        MessageBox::information(this, i18n("All selected downloaded podcast episodes have already been deleted!"));
-    } else {
+    if (!urls.isEmpty()) {
         if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to the delete downloaded files of the selected podcast episodes?"))) {
             return;
         }
-        QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator it(urls.constBegin());
-        QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator end(urls.constEnd());
+        QMap<MusicLibraryItemPodcast *, QSet<MusicLibraryItemPodcastEpisode *> >::ConstIterator it(urls.constBegin());
+        QMap<MusicLibraryItemPodcast *, QSet<MusicLibraryItemPodcastEpisode *> >::ConstIterator end(urls.constEnd());
         for (; it!=end; ++it) {
-            OnlineServicesModel::self()->deleteDownloadedPodcasts(it.key(), it.value());
+            OnlineServicesModel::self()->deleteDownloadedPodcasts(it.key(), it.value().toList());
+        }
+    }
+}
+
+void OnlineServicesPage::markPodcastAsNew()
+{
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
+    if (selected.isEmpty()) {
+        return;
+    }
+
+    QMap<MusicLibraryItemPodcast *, QSet<MusicLibraryItemPodcastEpisode *> > urls;
+    foreach (const QModelIndex &idx, selected) {
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Podcast:
+            foreach (MusicLibraryItem *c, static_cast<MusicLibraryItemPodcast *>(item)->childItems()) {
+                MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(c);
+                if (episode->song().hasBeenPlayed()) {
+                    urls[static_cast<MusicLibraryItemPodcast *>(item)].insert(episode);
+                }
+            }
+            break;
+        case MusicLibraryItem::Type_Song:
+            if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
+                MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(item);
+                if (episode->song().hasBeenPlayed()) {
+                    urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].insert(episode);
+                }
+            }
+        default:
+            break;
+        }
+    }
+
+    if (!urls.isEmpty()) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to mark the selected podcast episodes as new?"))) {
+            return;
+        }
+        QMap<MusicLibraryItemPodcast *, QSet<MusicLibraryItemPodcastEpisode *> >::ConstIterator it(urls.constBegin());
+        QMap<MusicLibraryItemPodcast *, QSet<MusicLibraryItemPodcastEpisode *> >::ConstIterator end(urls.constEnd());
+        for (; it!=end; ++it) {
+            OnlineServicesModel::self()->setPodcastsAsListened(it.key(), it.value().toList(), false);
+        }
+    }
+}
+
+void OnlineServicesPage::markPodcastAsListened()
+{
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
+    if (selected.isEmpty()) {
+        return;
+    }
+
+    QMap<MusicLibraryItemPodcast *, QSet<MusicLibraryItemPodcastEpisode *> > urls;
+    foreach (const QModelIndex &idx, selected) {
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Podcast:
+            foreach (MusicLibraryItem *c, static_cast<MusicLibraryItemPodcast *>(item)->childItems()) {
+                MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(c);
+                if (!episode->song().hasBeenPlayed()) {
+                    urls[static_cast<MusicLibraryItemPodcast *>(item)].insert(episode);
+                }
+            }
+            break;
+        case MusicLibraryItem::Type_Song:
+            if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
+                MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(item);
+                if (!episode->song().hasBeenPlayed()) {
+                    urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].insert(episode);
+                }
+            }
+        default:
+            break;
+        }
+    }
+
+    if (!urls.isEmpty()) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to mark the selected podcast episodes as listened?"))) {
+            return;
+        }
+        QMap<MusicLibraryItemPodcast *, QSet<MusicLibraryItemPodcastEpisode *> >::ConstIterator it(urls.constBegin());
+        QMap<MusicLibraryItemPodcast *, QSet<MusicLibraryItemPodcastEpisode *> >::ConstIterator end(urls.constEnd());
+        for (; it!=end; ++it) {
+            OnlineServicesModel::self()->setPodcastsAsListened(it.key(), it.value().toList(), true);
         }
     }
 }

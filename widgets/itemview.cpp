@@ -768,6 +768,13 @@ void ItemView::addAction(QAction *act)
     }
 }
 
+void ItemView::addSeparator()
+{
+    QAction *act=new QAction(this);
+    act->setSeparator(true);
+    addAction(act);
+}
+
 void ItemView::setMode(Mode m)
 {
     if (m<0 || m>=Mode_Count || (Mode_GroupedTree==m && !groupedView) || (Mode_Table==m && !tableView)) {

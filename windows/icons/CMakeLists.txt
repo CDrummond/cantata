@@ -197,9 +197,17 @@ set(OXYGEN_ICONS
 32x32/actions/go-up.png
 22x22/actions/go-up.png
 16x16/actions/go-up.png
+64x64/actions/go-down.png
+48x48/actions/go-down.png
 32x32/actions/go-down.png
 22x22/actions/go-down.png
 16x16/actions/go-down.png
+22x22/apps/clock.png
+48x48/apps/clock.png
+32x32/apps/clock.png
+64x64/apps/clock.png
+16x16/apps/clock.png
+48x48/actions/document-save-as.png
 )
 
 foreach(ICON ${OXYGEN_ICONS})

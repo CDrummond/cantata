@@ -79,14 +79,10 @@ DevicesPage::DevicesPage(QWidget *p)
     view->addAction(StdActions::self()->replaygainAction);
     #endif
     #ifdef ENABLE_REMOTE_DEVICES
-    QAction *sepA=new QAction(this);
-    sepA->setSeparator(true);
-    view->addAction(sepA);
+    view->addSeparator();
     view->addAction(forgetDeviceAction);
     #endif
-    QAction *sep=new QAction(this);
-    sep->setSeparator(true);
-    view->addAction(sep);
+    view->addSeparator();
     view->addAction(StdActions::self()->deleteSongsAction);
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));

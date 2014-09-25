@@ -233,6 +233,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             return f;
         }
         break;
+    case Cantata::Role_MainText:
     case Qt::DisplayRole:
         if (MusicLibraryItem::Type_Podcast==item->itemType() && static_cast<MusicLibraryItemPodcast *>(item)->unplayedEpisodes()) {
             return i18nc("podcast name (num unplayed episodes)", "%1 (%2)", item->data(), static_cast<MusicLibraryItemPodcast *>(item)->unplayedEpisodes());

@@ -54,7 +54,8 @@ struct Song
         PodcastPublishedDate,
         PodcastLocalPath,
         PodcastImage,
-        OnlineServiceName
+        OnlineServiceName,
+        DecodedPath
     };
 
     enum Type {
@@ -195,6 +196,9 @@ struct Song
     QString podcastPublishedDate() const { return extraField(PodcastPublishedDate); }
     QString podcastLocalPath() const { return extraField(PodcastLocalPath); }
     void setPodcastLocalPath(const QString &l) { setExtraField(PodcastLocalPath, l); }
+
+    QString decodedPath() const { return extraField(DecodedPath); }
+    void setDecodedPath(const QString &v) { setExtraField(DecodedPath, v); }
 
     // podcast/soundcloud functions...
     void setIsFromOnlineService(const QString &service) { setExtraField(OnlineServiceName, service); }

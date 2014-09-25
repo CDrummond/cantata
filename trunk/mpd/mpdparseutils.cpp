@@ -340,6 +340,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         song.setName(getAndRemoveStreamName(song.file));
     } else {
         QString origFile=song.file;
+        bool modifiedFile=false;
 
         #ifdef ENABLE_HTTP_SERVER
         if (!song.file.isEmpty() && song.file.startsWith(constHttpProtocol) && HttpServer::self()->isOurs(song.file)) {
@@ -349,6 +350,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
                 mod.id=song.id;
                 song=mod;
             }
+            modifiedFile=true;
         } else
         #endif
             if (song.file.contains(Song::constCddaProtocol)) {
@@ -374,7 +376,10 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
                     }
                 } else {
                     #ifdef ENABLE_ONLINE_SERVICES
-                    if (!OnlineService::decode(song))
+                    if (OnlineService::decode(song)) {
+                        modifiedFile=true;
+                    }
+                    else
                     #endif
                     {
                         QString name=getAndRemoveStreamName(song.file);
@@ -393,6 +398,9 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         }
         // HTTP server, and OnlineServices, modify the path. But this then messes up
         // undo/restore of playqueue. Therefore, set path back to original value...
+        if (modifiedFile) {
+            song.setDecodedPath(song.file);
+        }
         song.file=origFile;
         song.setKey(location);
     }

@@ -58,13 +58,15 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     QFormLayout * lay=new QFormLayout(mw);
     BuddyLabel * updateLabel=new BuddyLabel(i18n("Check for new episodes:"), mw);
     BuddyLabel * downloadLabel=new BuddyLabel(i18n("Download episodes to:"), mw);
+    BuddyLabel * autoDownloadLabel=new BuddyLabel(i18n("Download automatically:"), mw);
 
     updateCombo = new QComboBox(this);
     updateLabel->setBuddy(updateCombo);
     downloadPath = new PathRequester(this);
     downloadLabel->setBuddy(downloadPath);
     downloadPath->setDirMode(true);
-    autoDownload = new QCheckBox(i18n("Automatically download new episodes"), this);
+    autoDownloadCombo = new QComboBox(this);
+    autoDownloadLabel->setBuddy(autoDownloadCombo);
 
     int row=0;
     lay->setMargin(0);
@@ -75,7 +77,8 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     lay->setWidget(row++, QFormLayout::FieldRole, downloadPath);
     lay->setWidget(row, QFormLayout::LabelRole, downloadLabel);
     lay->setWidget(row++, QFormLayout::FieldRole, downloadPath);
-    lay->setWidget(row++, QFormLayout::SpanningRole, autoDownload);
+    lay->setWidget(row, QFormLayout::LabelRole, autoDownloadLabel);
+    lay->setWidget(row++, QFormLayout::FieldRole, autoDownloadCombo);
 
     setButtons(Ok|Cancel);
     setMainWidget(mw);
@@ -91,22 +94,32 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     updateCombo->addItem(i18n("Every day"), 24*60);
     updateCombo->addItem(i18n("Every week"), 7*24*60);
 
+    autoDownloadCombo->addItem(i18n("Don't automatically download episodes"), 0);
+    autoDownloadCombo->addItem(i18n("Latest episode", 1), 1);
+    autoDownloadCombo->addItem(i18n("Latest %1 episodes", 2), 2);
+    autoDownloadCombo->addItem(i18n("Latest %1 episodes", 5), 5);
+    autoDownloadCombo->addItem(i18n("Latest %1 episodes", 10), 10);
+    autoDownloadCombo->addItem(i18n("Latest %1 episodes", 15), 15);
+    autoDownloadCombo->addItem(i18n("Latest %1 episodes", 20), 20);
+    autoDownloadCombo->addItem(i18n("Latest %1 episodes", 50), 50);
+    autoDownloadCombo->addItem(i18n("All episodes"), 1000);
+
     origRssUpdate=Settings::self()->rssUpdate();
     setIndex(updateCombo, origRssUpdate);
     connect(updateCombo, SIGNAL(currentIndexChanged(int)), SLOT(checkSaveable()));
     origPodcastDownloadPath=Utils::convertPathForDisplay(Settings::self()->podcastDownloadPath());
-    origPodcastAutoDownload=Settings::self()->podcastAutoDownload();
+    origPodcastAutoDownload=Settings::self()->podcastAutoDownloadLimit();
+    setIndex(autoDownloadCombo, origPodcastAutoDownload);
     downloadPath->setText(origPodcastDownloadPath);
-    autoDownload->setChecked(origPodcastAutoDownload);
     connect(downloadPath, SIGNAL(textChanged(QString)), SLOT(checkSaveable()));
-    connect(autoDownload, SIGNAL(toggled(bool)), SLOT(checkSaveable()));
+    connect(autoDownloadCombo, SIGNAL(currentIndexChanged(int)), SLOT(checkSaveable()));
     enableButton(Ok, false);
     changed=0;
 }
 
 void PodcastSettingsDialog::checkSaveable()
 {
-    enableButton(Ok, origPodcastAutoDownload!=autoDownload->isChecked() ||
+    enableButton(Ok, autoDownloadCombo->itemData(autoDownloadCombo->currentIndex()).toInt()!=origPodcastAutoDownload ||
                      updateCombo->itemData(updateCombo->currentIndex()).toInt()!=origRssUpdate ||
                      downloadPath->text().trimmed()!=origPodcastDownloadPath);
 }
@@ -123,9 +136,9 @@ void PodcastSettingsDialog::slotButtonClicked(int button)
             changed|=DownloadPath;
             Settings::self()->savePodcastDownloadPath(Utils::convertPathFromDisplay(downloadPath->text().trimmed()));
         }
-        if (origPodcastAutoDownload!=autoDownload->isChecked()) {
+        if (autoDownloadCombo->itemData(autoDownloadCombo->currentIndex()).toInt()!=origPodcastAutoDownload) {
             changed|=AutoDownload;
-            Settings::self()->savePodcastAutoDownload(autoDownload->isChecked());
+            Settings::self()->savePodcastAutoDownloadLimit(autoDownloadCombo->itemData(autoDownloadCombo->currentIndex()).toInt());
         }
         accept();
     case Close:

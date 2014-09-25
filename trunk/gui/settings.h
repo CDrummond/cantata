@@ -157,7 +157,7 @@ public:
     int rssUpdate();
     QDateTime lastRssUpdate();
     QString podcastDownloadPath();
-    bool podcastAutoDownload();
+    int podcastAutoDownloadLimit();
     int maxCoverUpdatePerIteration();
     int coverCacheSize();
     QStringList cueFileCodecs();
@@ -283,7 +283,7 @@ public:
     void saveRssUpdate(int v);
     void saveLastRssUpdate(const QDateTime &v);
     void savePodcastDownloadPath(const QString &v);
-    void savePodcastAutoDownload(bool v);
+    void savePodcastAutoDownloadLimit(int v);
     void saveStartupState(int v);
     void saveSearchCategory(const QString &v);
     void saveFetchCovers(bool v);

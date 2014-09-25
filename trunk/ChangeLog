@@ -56,6 +56,7 @@
 36. Add actions to mark podcast as episode as listened or new.
 37. Add action to cancel podcast downloads.
 38. Download podcasts sequentially.
+39. Configurable limit to auto podcast downloading.
 
 1.4.2
 -----

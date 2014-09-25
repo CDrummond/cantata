@@ -103,6 +103,7 @@ void TrayItem::setup()
     trayItem->setTitle(i18n("Cantata"));
     trayItem->setIconByName(QIcon::hasThemeIcon("cantata-panel") ? QLatin1String("cantata-panel") : QLatin1String("cantata"));
     trayItem->setToolTip("cantata", i18n("Cantata"), QString());
+    trayItem->setStandardActionsEnabled(false);
 
     trayItemMenu = new KMenu(0);
     trayItemMenu->addAction(StdActions::self()->prevTrackAction);
@@ -114,6 +115,9 @@ void TrayItem::setup()
     trayItem->setStatus(KStatusNotifierItem::Active);
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->restoreAction);
+    trayItemMenu->addSeparator();
+    trayItemMenu->addAction(mw->quitAction);
+
     connect(trayItem, SIGNAL(scrollRequested(int, Qt::Orientation)), this, SLOT(trayItemScrollRequested(int, Qt::Orientation)));
     connect(trayItem, SIGNAL(secondaryActivateRequested(const QPoint &)), mw, SLOT(playPauseTrack()));
     connect(trayItem, SIGNAL(activateRequested(bool, const QPoint &)), this, SLOT(clicked()));

@@ -973,11 +973,12 @@ QPainterPath Utils::buildPath(const QRectF &r, double radius)
     return path;
 }
 
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KWindowSystem>
+#endif
 #ifdef Q_OS_WIN
 // This is down here, because windows.h includes ALL windows stuff - and we get conflicts with MessageBox :-(
 #include <windows.h>
-#elif defined ENABLE_KDE_SUPPORT
-#include <KDE/KWindowSystem>
 #elif !defined Q_OS_MAC && QT_VERSION < 0x050000
 #include <QX11Info>
 #include <X11/Xlib.h>

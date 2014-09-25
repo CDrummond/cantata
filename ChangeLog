@@ -57,6 +57,7 @@
 37. Add action to cancel podcast downloads.
 38. Download podcasts sequentially.
 39. Configurable limit to auto podcast downloading.
+40. When starting, remove any previous partial podcast downloads.
 
 1.4.2
 -----

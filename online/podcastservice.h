@@ -88,6 +88,7 @@ private:
     void cancelDownload();
     void doNextDownload();
     void updateEpisode(const QUrl &rssUrl, const QUrl &url, int pc);
+    void clearPartialDownloads();
 
 private Q_SLOTS:
     void loadAll();

@@ -69,7 +69,8 @@ struct Song
         OnlineServiceName    = 0x0800,
         OnlineImageUrl       = 0x1000,
         OnlineImageCacheName = 0x2000,
-        DeviceId             = 0x4000
+        DeviceId             = 0x4000,
+        DecodedPath          = 0x8000
     };
 
     enum Type {
@@ -231,6 +232,10 @@ struct Song
     QString podcastPublishedDate() const { return extraField(PodcastPublishedDate); }
     QString podcastLocalPath() const { return extraField(PodcastLocalPath); }
     void setPodcastLocalPath(const QString &l) { setExtraField(PodcastLocalPath, l); }
+
+    QString decodedPath() const { return extraField(DecodedPath); }
+    void setDecodedPath(const QString &v) { setExtraField(DecodedPath, v); }
+    bool hasDecodedPath() const { return hasExtraField(DecodedPath); }
 
     // podcast/soundcloud functions...
     void setIsFromOnlineService(const QString &service) { setExtraField(OnlineServiceName, service); }

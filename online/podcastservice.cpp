@@ -622,11 +622,12 @@ void PodcastService::updateRss()
 void PodcastService::currentMpdSong(const Song &s)
 {
     if (s.isFromOnlineService() && s.album==constName) {
+        QString path=s.decodedPath();
         foreach (MusicLibraryItem *p, m_childItems) {
             MusicLibraryItemPodcast *podcast=static_cast<MusicLibraryItemPodcast *>(p);
             foreach (MusicLibraryItem *i, podcast->childItems()) {
                 MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
-                if (song->file()==s.file || song->song().podcastLocalPath()==s.file) {
+                if (song->file()==path || song->song().podcastLocalPath()==path) {
                     if (!song->song().hasBeenPlayed()) {
                         podcast->setPlayed(song);
                         emitDataChanged(createIndex(song));

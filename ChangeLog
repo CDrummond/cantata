@@ -83,6 +83,7 @@
     https://drive.google.com/uc?export=download&id=XXX for stream provider URLs,
     etc. Seems like the drive.google.com URLs have download limits.
 20. Fix crash when changing buttons of dialogs in Qt builds.
+21. Fix setting of played state for podcasts.
 
 1.4.1
 -----

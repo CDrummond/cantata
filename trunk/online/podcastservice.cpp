@@ -99,6 +99,8 @@ PodcastService::PodcastService(MusicModel *m)
     if (iconFile.isEmpty()) {
         iconFile=QString(CANTATA_SYS_ICONS_DIR+"podcasts.png");
     }
+
+    clearPartialDownloads();
 }
 
 Song PodcastService::fixPath(const Song &orig, bool) const
@@ -544,6 +546,23 @@ void PodcastService::updateEpisode(const QUrl &rssUrl, const QUrl &url, int pc)
         if (song && song->downloadProgress()!=pc) {
             song->setDownloadProgress(pc);
             emitDataChanged(createIndex(song));
+        }
+    }
+}
+
+void PodcastService::clearPartialDownloads()
+{
+    QString dest=Settings::self()->podcastDownloadPath();
+    if (dest.isEmpty()) {
+        return;
+    }
+
+    dest=Utils::fixPath(dest);
+    QStringList sub=QDir(dest).entryList(QDir::Dirs|QDir::NoDotAndDotDot);
+    foreach (const QString &d, sub) {
+        QStringList partials=QDir(dest+d).entryList(QStringList() << QLatin1Char('*')+constPartialExt, QDir::Files);
+        foreach (const QString &p, partials) {
+            QFile::remove(dest+d+Utils::constDirSep+p);
         }
     }
 }

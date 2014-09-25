@@ -48,6 +48,7 @@ MagnatuneSettingsDialog::MagnatuneSettingsDialog(QWidget *parent)
         dl->addItem(MagnatuneService::downloadTypeStr((MagnatuneService::DownloadType)i, true));
     }
 
+    layout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     layout->setWidget(0, QFormLayout::LabelRole, new BuddyLabel(i18n("Membership:"), mw, member));
     layout->setWidget(0, QFormLayout::FieldRole, member);
     layout->setWidget(1, QFormLayout::LabelRole, userLabel);

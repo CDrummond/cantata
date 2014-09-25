@@ -68,6 +68,7 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
 
     int row=0;
     lay->setMargin(0);
+    lay->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     lay->setWidget(row, QFormLayout::LabelRole, updateLabel);
     lay->setWidget(row++, QFormLayout::FieldRole, updateCombo);
     lay->setWidget(row, QFormLayout::LabelRole, downloadLabel);

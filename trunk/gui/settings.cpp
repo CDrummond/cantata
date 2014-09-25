@@ -1346,7 +1346,7 @@ void Settings::savePodcastDownloadPath(const QString &v)
 void Settings::savePodcastAutoDownloadLimit(int v)
 {
     if (cfg.hasEntry("podcastAutoDownload")) {
-        cfg.remove("podcastAutoDownload");
+        cfg.removeEntry("podcastAutoDownload");
     }
     cfg.set("podcastAutoDownloadLimit", v);
 }

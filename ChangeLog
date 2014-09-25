@@ -88,6 +88,7 @@
 20. Fix crash when changing buttons of dialogs in Qt builds.
 21. Fix setting of played state for podcasts.
 22. Fix display of unplayed podcast episode counts.
+23. Check if downloading podcasts in closeEvent() as well as quit()
 
 1.4.1
 -----

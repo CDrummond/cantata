@@ -1069,7 +1069,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         if (event->spontaneous()) {
             event->ignore();
         }
-    } else {
+    } else if (canClose()) {
         MAIN_WINDOW_BASE_CLASS::closeEvent(event);
     }
 }
@@ -1175,6 +1175,19 @@ void MainWindow::showAboutDialog()
 }
 #endif
 
+bool MainWindow::canClose()
+{
+    #ifdef ENABLE_ONLINE_SERVICES
+    if (OnlineServicesModel::self()->isDownloading() &&
+            MessageBox::No==MessageBox::warningYesNo(this, i18n("A Podcast is currently being downloaded\n\nQuiting now will abort the download."),
+                                                     QString(), GuiItem(i18n("Abort download and quit")), GuiItem("Do not quit just yet"))) {
+        return false;
+    }
+    OnlineServicesModel::self()->cancelAll();
+    #endif
+    return true;
+}
+
 void MainWindow::expand()
 {
     if (!expandInterfaceAction->isChecked()) {
@@ -1223,14 +1236,9 @@ void MainWindow::showPreferencesDialog(const QString &page)
 
 void MainWindow::quit()
 {
-    #ifdef ENABLE_ONLINE_SERVICES
-    if (OnlineServicesModel::self()->isDownloading() &&
-        MessageBox::No==MessageBox::warningYesNo(this, i18n("A Podcast is currently being downloaded\n\nQuiting now will abort the download."),
-                                                 QString(), GuiItem(i18n("Abort download and quit")), GuiItem("Do not quit just yet"))) {
+    if (!canClose()) {
         return;
     }
-    OnlineServicesModel::self()->cancelAll();
-    #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     if (RgDialog::instanceCount()) {
         return;

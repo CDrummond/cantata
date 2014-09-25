@@ -438,6 +438,15 @@ void PodcastService::setPodcastsAsListened(MusicLibraryItemPodcast *pod, const Q
     }
 }
 
+static QString encodeName(const QString &name)
+{
+    QString n=name;
+    n=n.replace("/", "_");
+    n=n.replace("\\", "_");
+    n=n.replace(":", "_");
+    return n;
+}
+
 void PodcastService::downloadEpisode(const MusicLibraryItemPodcast *podcast, const QUrl &episode)
 {
     QString dest=Settings::self()->podcastDownloadPath();
@@ -447,6 +456,7 @@ void PodcastService::downloadEpisode(const MusicLibraryItemPodcast *podcast, con
     if (downloadingEpisode(episode)) {
         return;
     }
+    dest=Utils::fixPath(dest)+Utils::fixPath(encodeName(podcast->data()))+Utils::getFile(episode.toString());
     toDownload.append(DownloadEntry(episode, podcast->rssUrl(), dest));
     updateEpisode(podcast->rssUrl(), episode, MusicLibraryItemPodcastEpisode::QueuedForDownload);
     doNextDownload();

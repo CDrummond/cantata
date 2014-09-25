@@ -693,12 +693,16 @@ QString Utils::dataDir(const QString &sub, bool create)
     if (location.isEmpty()) {
         #if QT_VERSION >= 0x050000
         location=QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-        location=location.replace(QCoreApplication::applicationName()+Utils::constDirSep+QCoreApplication::applicationName(),
-                                  QCoreApplication::applicationName());
+        if (QCoreApplication::organizationName()==QCoreApplication::applicationName()) {
+            location=location.replace(QCoreApplication::organizationName()+Utils::constDirSep+QCoreApplication::applicationName(),
+                                      QCoreApplication::applicationName());
+        }
         #else
         location=QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-        location=location.replace(QLatin1String("data")+Utils::constDirSep+QCoreApplication::applicationName()+Utils::constDirSep+QCoreApplication::applicationName(),
-                                  QCoreApplication::applicationName());
+        if (QCoreApplication::organizationName()==QCoreApplication::applicationName()) {
+            location=location.replace(QLatin1String("data")+Utils::constDirSep+QCoreApplication::applicationName()+Utils::constDirSep+QCoreApplication::applicationName(),
+                                      QCoreApplication::applicationName());
+        }
         #endif
     }
     return userDir(location+constDirSep, sub, create);
@@ -725,8 +729,10 @@ QString Utils::cacheDir(const QString &sub, bool create)
         #else
         location=QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
         #endif
-        location=location.replace(QCoreApplication::applicationName()+Utils::constDirSep+QCoreApplication::applicationName(),
-                                  QCoreApplication::applicationName());
+        if (QCoreApplication::organizationName()==QCoreApplication::applicationName()) {
+            location=location.replace(QCoreApplication::organizationName()+Utils::constDirSep+QCoreApplication::applicationName(),
+                                      QCoreApplication::applicationName());
+        }
     }
     return userDir(location+constDirSep, sub, create);
 

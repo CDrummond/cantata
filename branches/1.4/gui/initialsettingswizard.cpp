@@ -225,3 +225,11 @@ void InitialSettingsWizard::accept()
     Settings::self()->save(true);
     QDialog::accept();
 }
+
+void InitialSettingsWizard::reject()
+{
+    // Clear version number - so that wizard is shown next time Cantata is started.
+    Settings::self()->clearVersion();
+    QDialog::reject();
+}
+

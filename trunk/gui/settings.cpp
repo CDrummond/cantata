@@ -136,13 +136,13 @@ static Settings::StartupState getStartupState(const QString &str)
 }
 
 Settings::Settings()
-    : isFirstRun(false)
+    : state(AP_Configured)
     , ver(-1)
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     , wallet(0)
     #endif
 {
-    // Call 'version' so that it initialises 'ver' and 'isFirstRun'
+    // Call 'version' so that it initialises 'ver' and 'state'
     version();
     // Only need to read system defaults if we have not previously been configured...
     if (!cfg.hasGroup(MPDConnectionDetails::configGroupName())) {
@@ -540,7 +540,7 @@ int Settings::searchView()
 int Settings::version()
 {
     if (-1==ver) {
-        isFirstRun=!cfg.hasEntry("version");
+        state=cfg.hasEntry("version") ? AP_Configured : AP_FirstRun;
         QStringList parts=cfg.get("version", QLatin1String(PACKAGE_VERSION_STRING)).split('.');
         if (3==parts.size()) {
             ver=CANTATA_MAKE_VERSION(parts.at(0).toInt(), parts.at(1).toInt(), parts.at(2).toInt());
@@ -1415,11 +1415,19 @@ void Settings::saveRetinaSupport(bool v)
 
 void Settings::save()
 {
-    if (version()!=PACKAGE_VERSION || isFirstRun) {
-        cfg.set("version", PACKAGE_VERSION_STRING);
-        ver=PACKAGE_VERSION;
+    if (AP_NotConfigured!=state) {
+        if (version()!=PACKAGE_VERSION || AP_FirstRun==state) {
+            cfg.set("version", PACKAGE_VERSION_STRING);
+            ver=PACKAGE_VERSION;
+        }
     }
     cfg.sync();
+}
+
+void Settings::clearVersion()
+{
+    cfg.removeEntry("version");
+    state=AP_NotConfigured;
 }
 
 int Settings::getBoolAsInt(const QString &key, int def)

@@ -136,7 +136,7 @@ static Settings::StartupState getStartupState(const QString &str)
 }
 
 Settings::Settings()
-    : isFirstRun(false)
+    : state(AP_Configured)
     , timer(0)
     , ver(-1)
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
@@ -644,7 +644,7 @@ int Settings::searchView()
 int Settings::version()
 {
     if (-1==ver) {
-        isFirstRun=!cfg.hasEntry("version");
+        state=cfg.hasEntry("version") ? AP_Configured : AP_FirstRun;
         QStringList parts=cfg.get("version", QLatin1String(PACKAGE_VERSION_STRING)).split('.');
         if (3==parts.size()) {
             ver=CANTATA_MAKE_VERSION(parts.at(0).toInt(), parts.at(1).toInt(), parts.at(2).toInt());
@@ -1494,9 +1494,11 @@ void Settings::saveShowStopButton(bool v)
 void Settings::save(bool force)
 {
     if (force) {
-        if (version()!=PACKAGE_VERSION || isFirstRun) {
-            cfg.set("version", PACKAGE_VERSION_STRING);
-            ver=PACKAGE_VERSION;
+        if (AP_NotConfigured!=state) {
+            if (version()!=PACKAGE_VERSION || AP_FirstRun==state) {
+                cfg.set("version", PACKAGE_VERSION_STRING);
+                ver=PACKAGE_VERSION;
+            }
         }
         cfg.sync();
         if (timer) {
@@ -1509,6 +1511,12 @@ void Settings::save(bool force)
         }
         timer->start(30*1000);
     }
+}
+
+void Settings::clearVersion()
+{
+    cfg.removeEntry("version");
+    state=AP_NotConfigured;
 }
 
 void Settings::actualSave()

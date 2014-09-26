@@ -302,13 +302,14 @@ public:
     void saveShowCoverWidget(bool v);
     void saveShowStopButton(bool v);
     void save(bool force=false);
+    void clearVersion();
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();
     #else
     QString iconTheme();
     #endif
 
-    bool firstRun() const { return isFirstRun; }
+    bool firstRun() const { return AP_Configured!=state; }
 
 private Q_SLOTS:
     void actualSave();
@@ -317,7 +318,13 @@ private:
     int getBoolAsInt(const QString &key, int def);
 
 private:
-    bool isFirstRun;
+    enum AppState {
+        AP_FirstRun,
+        AP_NotConfigured,
+        AP_Configured
+    };
+
+    AppState state;
     QTimer *timer;
     int ver;
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET

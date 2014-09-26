@@ -47,6 +47,7 @@ private Q_SLOTS:
     void showError(const QString &message, bool showActions);
     void pageChanged(int p);
     void accept();
+    void reject();
     void controlNextButton();
 
 private:

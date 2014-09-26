@@ -40,7 +40,11 @@
 #endif
 #include <QWheelEvent>
 #include <QMenu>
+#ifdef Q_OS_MAC
+#include "mac/macnotify.h"
+#endif
 
+#ifndef Q_OS_MAC
 class VolumeSliderEventHandler : public QObject
 {
 public:
@@ -66,20 +70,24 @@ protected:
         return QObject::eventFilter(obj, event);
     }
 };
+#endif
 
 TrayItem::TrayItem(MainWindow *p)
     : QObject(p)
+    #ifndef Q_OS_MAC
     , mw(p)
     , trayItem(0)
     , trayItemMenu(0)
     #ifdef QT_QTDBUS_FOUND
     , notification(0)
     #endif
+    #endif
 {
 }
 
 void TrayItem::setup()
 {
+    #ifndef Q_OS_MAC
     if (!Settings::self()->useSystemTray()) {
         if (trayItem) {
             #ifndef ENABLE_KDE_SUPPORT
@@ -145,6 +153,7 @@ void TrayItem::setup()
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));
     #endif
+    #endif
 }
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -170,6 +179,9 @@ void TrayItem::trayItemScrollRequested(int delta, Qt::Orientation orientation)
 #else
 void TrayItem::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
 {
+    #ifdef Q_OS_MAC
+    Q_UNUSED(reason)
+    #else
     switch (reason) {
     case QSystemTrayIcon::Trigger:
         if (mw->isHidden()) {
@@ -184,11 +196,26 @@ void TrayItem::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
     default:
         break;
     }
+    #endif
 }
 #endif
 
 void TrayItem::songChanged(const Song &song, bool isPlaying)
 {
+    #ifdef Q_OS_MAC
+    if (Settings::self()->showPopups()) {
+        bool useable=song.isStandardStream()
+                        ? !song.title.isEmpty() && !song.name().isEmpty()
+                        : !song.title.isEmpty() && !song.artist.isEmpty() && !song.album.isEmpty();
+        if (useable) {
+            QString text=song.describe(false);
+            if (song.time>0) {
+                text+=QLatin1String(" - ")+Utils::formatTime(song.time);
+            }
+            MacNotify::showMessage(i18n("Cantata"), text);
+        }
+    }
+    #else
     if (Settings::self()->showPopups() || trayItem) {
         bool useable=song.isStandardStream()
                         ? !song.title.isEmpty() && !song.name().isEmpty()
@@ -233,4 +260,5 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
             #endif
         }
     }
+    #endif
 }

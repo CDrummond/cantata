@@ -321,6 +321,8 @@ if (APPLE)
         set(CANTATA_SRCS ${CANTATA_SRCS} mac/powermanagement.cpp)
         set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} mac/powermanagement.h)
     endif (IOKIT_FOUND)
+    find_package(Foundation REQUIRED)
+    set(CANTATA_LIBS ${CANTATA_LIBS} ${FOUNDATION_LIBRARY})
 endif (APPLE)
 
 # For Qt5, we use Qt's own QJSonDocument class, so no need to find libqjson
@@ -437,6 +439,7 @@ if (ENABLE_DYNAMIC)
         # Not installed for windows - script uses sym-links...
     elseif (APPLE)
         install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${MACOSX_BUNDLE_RESOURCES}/scripts/)
+        set(CANTATA_SRCS ${CANTATA_SRCS} mac/macnotify.mm)
     elseif (NOT ENABLE_UBUNTU)
         install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
     endif (WIN32)

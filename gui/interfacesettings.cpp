@@ -46,6 +46,7 @@
 #ifndef ENABLE_KDE_SUPPORT
 #include <QSystemTrayIcon>
 #endif
+#include <QSysInfo>
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -92,7 +93,6 @@ static void selectEntry(QComboBox *box, int v)
         }
     }
 }
-bool enableNotifications(true);
 
 static inline int getValue(QComboBox *box)
 {
@@ -110,14 +110,14 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #ifdef Q_OS_MAC
     // OSX always displays an entry in the taskbar - and the tray seems to confuse things.
     bool enableTrayItem=false;
+    bool enableNotifications=QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8;
     #else
-    REMOVE(macNotificationLabel)
     #ifdef QT_QTDBUS_FOUND
     // We have dbus, check that org.freedesktop.Notifications exists
     bool enableNotifications=QDBusConnection::sessionBus().interface()->isServiceRegistered("org.freedesktop.Notifications");
-    #else
+    #else // QT_QTDBUS_FOUND
     bool enableNotifications=true;
-    #endif
+    #endif // QT_QTDBUS_FOUND
     bool enableTrayItem=true;
     #ifndef ENABLE_KDE_SUPPORT
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
@@ -126,8 +126,8 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         enableNotifications=false;
         #endif
     }
-    #endif
-    #endif
+    #endif // !ENABLE_KDE_SUPPORT
+    #endif // Q_MAC_OS
 
     setupUi(this);
     QList<ItemView::Mode> standardViews=QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree

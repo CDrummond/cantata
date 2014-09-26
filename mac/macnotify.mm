@@ -23,12 +23,51 @@
 
 #include "macnotify.h"
 #include <QString>
+#include <QSysInfo>
 #include <Foundation/NSUserNotification.h>
+
+@interface UserNotificationItem : NSObject<NSUserNotificationCenterDelegate> { }
+
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification;
+@end
+
+@implementation UserNotificationItem
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification {
+    Q_UNUSED(center);
+    Q_UNUSED(notification);
+    return YES;
+}
+@end
+
+class UserNotificationItemClass
+{
+public:
+    UserNotificationItemClass() {
+        item = [UserNotificationItem alloc];
+        if (QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8) {
+            [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:item];
+        }
+    }
+    ~UserNotificationItemClass() {
+        if (QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8) {
+            [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:nil];
+        }
+        [item release];
+    }
+    UserNotificationItem *item;
+};
 
 void MacNotify::showMessage(const QString &title, const QString &text)
 {
-    NSUserNotification *userNotification = [[[NSUserNotification alloc] init] autorelease];
-    userNotification.title = title.toNSString();
-    userNotification.informativeText = text.toNSString();
-    [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
+    if (QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8) {
+        static UserNotificationItemClass *n=0;
+        if (!n) {
+            n=new UserNotificationItemClass();
+        }
+
+        NSUserNotification *userNotification = [[[NSUserNotification alloc] init] autorelease];
+        userNotification.title = title.toNSString();
+        userNotification.informativeText = text.toNSString();
+        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
+    }
 }

@@ -46,6 +46,7 @@ private Q_SLOTS:
     void installFromWeb();
     void remove();
     void configure();
+    void raiseWindow();
 
 private:
     bool install(const QString &fileName, const QString &name, bool showErrors=true);

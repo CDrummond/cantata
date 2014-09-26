@@ -39,6 +39,7 @@
 #else
 #include <QFileDialog>
 #endif
+#include <QTimer>
 
 enum Roles {
     KeyRole = Qt::UserRole,
@@ -166,6 +167,11 @@ void StreamsSettings::installFromWeb()
     }
 
     providerDialog->show(installed);
+    #ifdef Q_OS_MAC
+    // Under OSX when stream providers are installed/updated, and the dialog closed, it
+    // puts the pref dialog below the main window! This hack fixes this...
+    QTimer::singleShot(0, this, SLOT(raiseWindow()));
+    #endif
 }
 
 bool StreamsSettings::install(const QString &fileName, const QString &name, bool showErrors)
@@ -297,6 +303,13 @@ void StreamsSettings::configure()
 
     // TODO: Currently only digitally imported can be configured...
     DigitallyImportedSettings(this).show();
+}
+
+void StreamsSettings::raiseWindow()
+{
+    #ifdef Q_OS_MAC
+    Utils::raiseWindow(topLevelWidget());
+    #endif
 }
 
 QListWidgetItem *  StreamsSettings::get(const QString &name)

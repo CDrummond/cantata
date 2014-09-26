@@ -1662,9 +1662,12 @@ QList<StreamsModel::Item *> StreamsModel::parseShoutCastStations(QXmlStreamReade
     while (!doc.atEnd()) {
         doc.readNext();
         if (doc.isStartElement() && QLatin1String("station")==doc.name()) {
-            newItems.append(new Item(QLatin1String("http://yp.shoutcast.com/sbin/tunein-station.pls?id=")+
-                                        doc.attributes().value("id").toString(),
-                                     doc.attributes().value("name").toString(), cat));
+            QString name=doc.attributes().value("name").toString().trimmed().simplified();
+            if (!name.isEmpty()) {
+                newItems.append(new Item(QLatin1String("http://yp.shoutcast.com/sbin/tunein-station.pls?id=")+
+                                         doc.attributes().value("id").toString(),
+                                         doc.attributes().value("name").toString(), cat));
+            }
         } else if (doc.isEndElement() && QLatin1String("stationlist")==doc.name()) {
             return newItems;
         }
@@ -1707,8 +1710,11 @@ QList<StreamsModel::Item *> StreamsModel::parseDirbleStations(QIODevice *dev, Ca
 
     foreach (const QVariant &d, data) {
         QVariantMap map = d.toMap();
-        map["country"];
-        newItems.append(new Item(map["streamurl"].toString(), map["name"].toString(), cat, map["bitrate"].toString()));
+        QString name=map["name"].toString().trimmed().simplified();
+        QString url=map["streamurl"].toString().trimmed().simplified();
+        if (!name.isEmpty() && !url.isEmpty()) {
+            newItems.append(new Item(url, name, cat, map["bitrate"].toString()));
+        }
     }
     return newItems;
 }

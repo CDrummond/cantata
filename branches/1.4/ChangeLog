@@ -32,6 +32,7 @@
 23. Check if downloading podcasts in closeEvent() as well as quit()
 24. If initial settings wizard is canceled, ensure that it is shown at next
     start.
+25. Ignore empty station names in shoutcast and dirble.
 
 1.4.1
 -----

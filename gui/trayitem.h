@@ -49,6 +49,11 @@ public:
     virtual ~TrayItem() { }
 
     void setup();
+    #ifdef Q_OS_MAC
+    bool isActive() const { return false; }
+    void setIcon(const QIcon &) { }
+    void setToolTip(const QString &, const QString &, const QString &) { }
+    #else
     bool isActive() const { return 0!=trayItem; }
     #ifdef ENABLE_KDE_SUPPORT
     void setIconByName(const QString &name) {
@@ -74,6 +79,7 @@ public:
             #endif
         }
     }
+    #endif
     void songChanged(const Song &song, bool isPlaying);
 
 private Q_SLOTS:
@@ -85,6 +91,8 @@ private Q_SLOTS:
     #endif
 
 private:
+    #ifndef Q_OS_MAC
+
     MainWindow *mw;
     #ifdef ENABLE_KDE_SUPPORT
     KStatusNotifierItem *trayItem;
@@ -95,6 +103,8 @@ private:
     #endif
     #ifdef QT_QTDBUS_FOUND
     Notify *notification;
+    #endif
+
     #endif
 };
 

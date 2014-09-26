@@ -107,6 +107,11 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     , loadedLangs(false)
     #endif
 {
+    #ifdef Q_OS_MAC
+    // OSX always displays an entry in the taskbar - and the tray seems to confuse things.
+    bool enableTrayItem=false;
+    #else
+    REMOVE(macNotificationLabel)
     #ifdef QT_QTDBUS_FOUND
     // We have dbus, check that org.freedesktop.Notifications exists
     bool enableNotifications=QDBusConnection::sessionBus().interface()->isServiceRegistered("org.freedesktop.Notifications");
@@ -121,6 +126,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         enableNotifications=false;
         #endif
     }
+    #endif
     #endif
 
     setupUi(this);
@@ -221,6 +227,8 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
     if (!enableNotifications && !enableTrayItem) {
         tabWidget->removeTab(4);
+    } else if (!enableTrayItem && enableNotifications) {
+        tabWidget->setTabText(4, i18n("Notifications"));
     }
     #if defined Q_OS_WIN || defined Q_OS_MAC || !defined QT_QTDBUS_FOUND
     if (systemTrayPopup && systemTrayCheckBox) {

@@ -671,14 +671,21 @@
         </widget>
        </item>
        <item>
+        <widget class="NoteLabel" name="macNotificationLabel">
+         <property name="text">
+          <string>Notifications are only shown if Cantata is not focused.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer_3">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>20</width>
-           <height>90</height>
+           <width>2</width>
+           <height>2</height>
           </size>
          </property>
         </spacer>

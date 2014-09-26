@@ -299,19 +299,26 @@ public:
     void saveInfoTooltips(bool v);
     void saveRetinaSupport(bool v);
     void save();
+    void clearVersion();
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();
     #else
     QString iconTheme();
     #endif
 
-    bool firstRun() const { return isFirstRun; }
+    bool firstRun() const { return AP_Configured!=state; }
 
 private:
     int getBoolAsInt(const QString &key, int def);
 
 private:
-    bool isFirstRun;
+    enum AppState {
+        AP_FirstRun,
+        AP_NotConfigured,
+        AP_Configured
+    };
+
+    AppState state;
     int ver;
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     KWallet::Wallet *wallet;

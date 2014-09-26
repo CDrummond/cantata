@@ -91,6 +91,8 @@
 21. Fix setting of played state for podcasts.
 22. Fix display of unplayed podcast episode counts.
 23. Check if downloading podcasts in closeEvent() as well as quit()
+24. If initial settings wizard is canceled, ensure that it is shown at next
+    start.
 
 1.4.1
 -----

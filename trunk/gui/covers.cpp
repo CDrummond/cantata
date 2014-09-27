@@ -327,21 +327,34 @@ const char * Covers::imageFormat(const QByteArray &data)
 
 QString Covers::encodeName(QString name)
 {
-    name.replace("/", "_");
+    name.replace(QLatin1Char('/'), QLatin1Char('_'));
+    #if defined Q_OS_WIN
+    name.replace(QLatin1Char('?'), QLatin1Char('_'));
+    name.replace(QLatin1Char(':'), QLatin1Char('_'));
+    name.replace(QLatin1Char('<'), QLatin1Char('_'));
+    name.replace(QLatin1Char('>'), QLatin1Char('_'));
+    name.replace(QLatin1Char('\\'), QLatin1Char('_'));
+    name.replace(QLatin1Char('*'), QLatin1Char('_'));
+    name.replace(QLatin1Char('|'), QLatin1Char('_'));
+    name.replace(QLatin1Char('\"'), QLatin1Char('_'));
+    #elif defined Q_OS_MAC
+    name.replace(QLatin1Char(':'), QLatin1Char('_'));
+    if (name.startsWith(QLatin1Char('.'))) {
+        name[0]=QLatin1Char('_');
+    }
+    if (name.length()>255) {
+        name=name.left(255);
+    }
+    #else // Linux
     #ifdef ENABLE_UBUNTU
     // qrc:/ does not seem to like ?
-    name.replace("?", "_");
-    name.replace(":", "_");
-    name.replace("%", "_");
-    #elif defined Q_OS_WIN
-    name.replace("?", "_");
-    name.replace(":", "_");
-    name.replace("<", "_");
-    name.replace(">", "_");
-    name.replace("\\", "_");
-    name.replace("*", "_");
-    name.replace("|", "_");
-    name.replace("\"", "_");
+    name.replace(QLatin1Char('?'), QLatin1Char('_'));
+    name.replace(QLatin1Char(':'), QLatin1Char('_'));
+    name.replace(QLatin1Char('%'), QLatin1Char('_'));
+    #endif // ENABLE_UBUNTU
+    if (name.startsWith(QLatin1Char('.'))) {
+        name[0]=QLatin1Char('_');
+    }
     #endif
     return name;
 }
@@ -353,11 +366,11 @@ QString Covers::albumFileName(const Song &song)
         coverName=Covers::constFileName;
     }
     #ifndef ENABLE_UBUNTU
-    else if (coverName.contains("%")) {
+    else if (coverName.contains(QLatin1Char('%'))) {
         coverName.replace(DeviceOptions::constAlbumArtist, encodeName(song.albumArtist()));
         coverName.replace(DeviceOptions::constTrackArtist, encodeName(song.albumArtist()));
         coverName.replace(DeviceOptions::constAlbumTitle, encodeName(song.album));
-        coverName.replace("%", "");
+        coverName.replace(QLatin1String("%"), QLatin1String(""));
     }
     #endif
     return coverName;
@@ -366,7 +379,7 @@ QString Covers::albumFileName(const Song &song)
 QString Covers::artistFileName(const Song &song)
 {
     QString coverName=MPDConnection::self()->getDetails().coverName;
-    if (coverName.contains("%")){
+    if (coverName.contains(QLatin1Char('%'))) {
         return encodeName(song.albumArtist());
     }
     return constArtistImage;

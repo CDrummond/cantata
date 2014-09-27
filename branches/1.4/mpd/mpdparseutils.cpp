@@ -666,11 +666,13 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
 
                         // For each album that was updated/created, remove any source files referenced in cue file...
                         foreach (MusicLibraryItemAlbum *al, updatedAlbums) {
-                            al->removeAll(cueFiles);
-                            if (prevAlbum && al!=prevAlbum) {
-                                DBUG << "Removing" << cueFiles.count() << " files from " << prevAlbum->data();
-                                prevAlbum->removeAll(cueFiles);
+                            if (al) {
+                                al->removeAll(cueFiles);
                             }
+                        }
+                        if (prevAlbum && !updatedAlbums.contains(prevAlbum)) {
+                            DBUG << "Removing" << cueFiles.count() << " files from " << prevAlbum->data();
+                            prevAlbum->removeAll(cueFiles);
                         }
 
                         // Remove any artist/album that was created and is now empty.

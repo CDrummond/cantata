@@ -33,6 +33,7 @@
 24. If initial settings wizard is canceled, ensure that it is shown at next
     start.
 25. Ignore empty station names in shoutcast and dirble.
+26. Fix potential crash when parsing cue files.
 
 1.4.1
 -----

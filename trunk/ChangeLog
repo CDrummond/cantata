@@ -95,6 +95,8 @@
     start.
 25. Ignore empty station names in shoutcast and dirble.
 26. Fix potential crash when parsing cue files.
+27. Replace any of (/ ? < > \ : * | ") with underscore when creating cover file
+    cache names under windows.
 
 1.4.1
 -----

@@ -313,6 +313,15 @@ QString Covers::encodeName(QString name)
     name.replace("?", "_");
     name.replace(":", "_");
     name.replace("%", "_");
+    #elif defined Q_OS_WIN
+    name.replace("?", "_");
+    name.replace(":", "_");
+    name.replace("<", "_");
+    name.replace(">", "_");
+    name.replace("\\", "_");
+    name.replace("*", "_");
+    name.replace("|", "_");
+    name.replace("\"", "_");
     #endif
     return name;
 }

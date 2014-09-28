@@ -1,0 +1,40 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/cantata/main.qml</file>
+        <file>qml/cantata/AboutPage.qml</file>
+        <file>qml/cantata/CurrentlyPlayingPage.qml</file>
+        <file>icons/toolbar/settings.svg</file>
+        <file>icons/toolbar/add.svg</file>
+        <file>icons/toolbar/help.svg</file>
+        <file>icons/toolbar/media-playback-start.svg</file>
+        <file>icons/toolbar/media-playback-start-light.svg</file>
+        <file>icons/toolbar/media-skip-backward.svg</file>
+        <file>icons/toolbar/media-skip-forward.svg</file>
+        <file>icons/toolbar/media-playback-pause.svg</file>
+        <file alias="icons/cantata.svg">../icons/cantata.svg</file>
+        <file alias="album.svg">icons/items/album.svg</file>
+        <file alias="artist.svg">icons/items/artist.svg</file>
+        <file alias="folder.svg">icons/items/folder.svg</file>
+        <file alias="variousartists.svg">icons/items/variousartists.svg</file>
+        <file>icons/toolbar/navigation-menu.svg</file>
+        <file>icons/toolbar/clear.svg</file>
+        <file>icons/toolbar/speaker.svg</file>
+        <file>qml/cantata/components/LabelVisual.qml</file>
+        <file>qml/cantata/components/ListItemDelegate.qml</file>
+        <file>qml/cantata/components/PlayQueueListItemDelegate.qml</file>
+        <file>qml/cantata/ListViewPage.qml</file>
+        <file>qml/cantata/SubListViewPage.qml</file>
+        <file>qml/cantata/components/ControlButtonsRow.qml</file>
+        <file>icons/toolbar/chevron@27.png</file>
+        <file>qml/cantata/settings/HostSettingsContent.qml</file>
+        <file>qml/cantata/settings/HostSettingsPage.qml</file>
+        <file>qml/cantata/settings/PlaybackSettingsContent.qml</file>
+        <file>qml/cantata/settings/PlaybackSettingsPage.qml</file>
+        <file>qml/cantata/settings/SettingsCategories.qml</file>
+        <file>qml/cantata/settings/SettingsPage.qml</file>
+        <file>qml/cantata/settings/UiSettingsContent.qml</file>
+        <file>qml/cantata/settings/UiSettingsPage.qml</file>
+        <file>qml/cantata/components/Notification.qml</file>
+        <file>qml/cantata/backend/SettingsBackend.qml</file>
+    </qresource>
+</RCC>

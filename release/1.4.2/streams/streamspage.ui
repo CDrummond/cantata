@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StreamsPage</class>
+ <widget class="QWidget" name="StreamsPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>277</width>
+    <height>259</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="vlayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QStackedWidget" name="viewStack">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="ItemView" name="view"/>
+     <widget class="ItemView" name="searchView"/>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hlayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="ServiceStatusLabel" name="diStatusLabel"/>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>16</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="SizeWidget" name="sizeWidget"/>
+     </item>
+     <item>
+      <widget class="MenuButton" name="menuButton"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="replacePlayQueue"/>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ItemView</class>
+   <extends>QTreeView</extends>
+   <header>widgets/itemview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MenuButton</class>
+   <extends>QToolButton</extends>
+   <header>widgets/menubutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>widgets/toolbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SizeWidget</class>
+   <extends>QWidget</extends>
+   <header>widgets/sizewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ServiceStatusLabel</class>
+   <extends>QLabel</extends>
+   <header>widgets/servicestatuslabel.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

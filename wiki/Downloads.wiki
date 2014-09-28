@@ -5,6 +5,7 @@ As of 1.4.0, the Windows installer now uses the Nullsoft install system. Therefo
 
 || *Version* || *Source Code* || *Windows* || *Released* || *Comment* ||
 || *1.4* || || || || ||
+|| 1.4.2 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60UDFOeU1qSkIzaVE cantata-1.4.2.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60MmJxUUM3NnFidGc Cantata-1.4.2-Setup.exe] || 28 September 2014 || ||
 || 1.4.1 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60eXhuZ1Z3bGM2bjQ cantata-1.4.1.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60OXctQ2VvRFNMWWc Cantata-1.4.1-Setup.exe] || 26 August 2014 || ||
 || 1.4.0 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60WDI1WjRtUDJ4QlU cantata-1.4.0.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60SHZhTW1RXzlWQk0 Cantata-1.4.0-Setup.exe] || 22 July 2014 || ||
 || *1.3* || || || || ||

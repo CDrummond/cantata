@@ -1,5 +1,12 @@
 PROJECT(cantata)
 
+#  NOTE: If CANTATA_REV_URL, or CANTATA_URL, are changed, then cantata-dynamac,
+#        README, and cantata.desktop  will need updating.
+#        dbus/com.googlecode.cantata.xml and devices/mounter/com.googlecode.cantata.mounter.xml
+#        will also need renaming/updating.
+set(PROJECT_URL "cantata.googlecode.com")
+set(PROJECT_REV_URL "com.googlecode.cantata")
+
 if (WIN32)
     # For some reason I chose mpd as the organization name for Windows builds. So, for config compatability, this is
     # left as mpd for now...
@@ -439,7 +446,6 @@ if (ENABLE_DYNAMIC)
         # Not installed for windows - script uses sym-links...
     elseif (APPLE)
         install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${MACOSX_BUNDLE_RESOURCES}/scripts/)
-        set(CANTATA_SRCS ${CANTATA_SRCS} mac/macnotify.mm)
     elseif (NOT ENABLE_UBUNTU)
         install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
     endif (WIN32)
@@ -496,7 +502,7 @@ if (QT_QTDBUS_FOUND)
     if (ENABLE_QT5)
         qt5_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.Player.xml dbus/mpris.h Mpris)
         qt5_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.root.xml dbus/mpris.h Mpris)
-        qt5_add_dbus_adaptor(CANTATA_SRCS dbus/com.googlecode.cantata.xml gui/mainwindow.h MainWindow)
+        qt5_add_dbus_adaptor(CANTATA_SRCS dbus/${PROJECT_REV_URL}.xml gui/mainwindow.h MainWindow)
         qt5_add_dbus_interfaces(CANTATA_SRCS dbus/org.freedesktop.Notifications.xml)
         qt5_add_dbus_interfaces(CANTATA_SRCS dbus/org.freedesktop.UPower.xml)
         qt5_add_dbus_interfaces(CANTATA_SRCS dbus/org.gnome.SettingsDaemon.xml)
@@ -512,7 +518,7 @@ if (QT_QTDBUS_FOUND)
             qt4_add_dbus_interfaces(CANTATA_SRCS dbus/org.freedesktop.Notifications.xml)
         endif (USE_OLD_DBUS_TYPEDEF OR ((QT_VERSION_MINOR LESS 8) OR (QT_VERSION_MINOR EQUAL 8 AND QT_VERSION_PATCH LESS 2) ))
         qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.root.xml dbus/mpris.h Mpris)
-        qt4_add_dbus_adaptor(CANTATA_SRCS dbus/com.googlecode.cantata.xml gui/mainwindow.h MainWindow)
+        qt4_add_dbus_adaptor(CANTATA_SRCS dbus/${PROJECT_REV_URL}.xml gui/mainwindow.h MainWindow)
 
         if (NOT ENABLE_KDE)
             qt4_add_dbus_interfaces(CANTATA_SRCS dbus/org.freedesktop.UPower.xml)
@@ -523,6 +529,10 @@ if (QT_QTDBUS_FOUND)
         qt4_add_dbus_interfaces(CANTATA_SRCS dbus/org.freedesktop.PowerManagement.Inhibit.xml)
     endif (ENABLE_QT5)
 endif (QT_QTDBUS_FOUND)
+
+if (APPLE)
+    set(CANTATA_SRCS ${CANTATA_SRCS} mac/macnotify.mm)
+endif (APPLE)
 
 if (NOT WIN32 AND NOT APPLE)
     set(CANTATA_SRCS ${CANTATA_SRCS} devices/mountpoints.cpp)
@@ -631,9 +641,9 @@ if (TAGLIB_FOUND)
                 devices/remotedevicepropertieswidget.h)
             set(CANTATA_UIS ${CANTATA_UIS} devices/remotedevicepropertieswidget.ui)
             if (ENABLE_QT5)
-                qt5_add_dbus_interfaces(CANTATA_SRCS devices/mounter/com.googlecode.cantata.mounter.xml)
+                qt5_add_dbus_interfaces(CANTATA_SRCS devices/mounter/${PROJECT_REV_URL}.mounter.xml)
             else (ENABLE_QT5)
-                qt4_add_dbus_interfaces(CANTATA_SRCS devices/mounter/com.googlecode.cantata.mounter.xml)
+                qt4_add_dbus_interfaces(CANTATA_SRCS devices/mounter/${PROJECT_REV_URL}.mounter.xml)
             endif (ENABLE_QT5)
             add_subdirectory(devices/mounter)
             add_subdirectory(devices/avahi)

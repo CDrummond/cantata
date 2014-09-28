@@ -11,8 +11,8 @@
 	<key>CFBundleIconFile</key>
 	<string>@MACOSX_BUNDLE_ICON_FILE@</string>
 	<key>CFBundleIdentifier</key>
-	<string></string>
-	<key>CFBundleInfoDictionaryVersion</key>
+        <string>@PROJECT_REV_URL@</string>
+        <key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
 	<string>@MACOSX_BUNDLE_LONG_VERSION_STRING@</string>

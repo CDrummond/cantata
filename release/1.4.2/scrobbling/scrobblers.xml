@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scrobblers>
+ <scrobbler name="Last.fm" url="http://ws.audioscrobbler.com/2.0/"/>
+ <!-- <scrobbler name="Libre.fm" url="http://turtle.libre.fm"/> -->
+ <!-- <scrobbler name="MPDScribble" url="mpdscribble"/> -->
+</scrobblers>

@@ -5,11 +5,6 @@
 #include "support/utils.h"
 
 #define CANTATA_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))
-/*
-  NOTE: If CANTATA_REV_URL, or CANTATA_URL, are changed, then cantata-dynamac,
-        CMakeLists.txt, README, and cantata.desktop  will need updating.
-        dbus/com.googlecode.cantata.xml will also need renaming/updating.
-*/
 #define PACKAGE_NAME  "@PROJECT_NAME@"
 #define ORGANIZATION_NAME "@ORGANIZATION_NAME@"
 #define PACKAGE_VERSION CANTATA_MAKE_VERSION(@CPACK_PACKAGE_VERSION_MAJOR@, @CPACK_PACKAGE_VERSION_MINOR@, @CPACK_PACKAGE_VERSION_PATCH@)
@@ -50,9 +45,9 @@
 #ifdef ENABLE_UBUNTU
 #define CANTATA_REV_URL "com.ubuntu.developer.nikwen.cantata-touch-reboot" //Sadly, it requires the com.ubuntu.developer.nikwen prefix to be published to the click store
 #else
-#define CANTATA_REV_URL "com.googlecode.cantata"
+#define CANTATA_REV_URL "@PROJECT_REV_URL@"
 #endif
-#define CANTATA_URL "cantata.googlecode.com"
+#define CANTATA_URL "@PROJECT_URL@"
 
 #define CANTATA_SYS_CONFIG_DIR  Utils::systemDir(QLatin1String("config"))
 #define CANTATA_SYS_ICONS_DIR   Utils::systemDir(QLatin1String("icons"))

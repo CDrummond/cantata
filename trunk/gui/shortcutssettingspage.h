@@ -33,23 +33,13 @@ class QCheckBox;
 
 class ShortcutsSettingsPage : public QWidget
 {
-    Q_OBJECT
-
 public:
     ShortcutsSettingsPage(QWidget *p);
 
     void load();
     void save();
-
-private Q_SLOTS:
-    void mediaKeysIfaceChanged();
-    void showGnomeSettings();
-
 private:
     ShortcutsSettingsWidget *shortcuts;
-    QComboBox *mediaKeysIfaceCombo;
-    ToolButton *settingsButton;
-    QCheckBox *mediaKeysEnabled;
 };
 
 #endif

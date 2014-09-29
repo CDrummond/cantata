@@ -38,25 +38,18 @@ class MultiMediaKeysInterface;
 class MediaKeys
 {
 public:
-    enum InterfaceType {
-        NoInterface,
-        GnomeInteface,
-        QxtInterface
-    };
-
+    static void enableDebug();
     static MediaKeys * self();
-    static QString toString(InterfaceType i);
-    static InterfaceType toIface(const QString &i);
 
     MediaKeys();
     ~MediaKeys();
 
-    void load();
+    void start();
     void stop();
 
 private:
-    void enable(MultiMediaKeysInterface *iface);
-    void disable(MultiMediaKeysInterface *iface);
+    bool activate(MultiMediaKeysInterface *iface);
+    void deactivate(MultiMediaKeysInterface *iface);
 
 private:
     #ifdef QT_QTDBUS_FOUND

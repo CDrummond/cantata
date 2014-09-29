@@ -38,7 +38,8 @@ class GnomeMediaKeys : public MultiMediaKeysInterface
 public:
     GnomeMediaKeys(QObject *p);
 
-    void activate(bool a);
+    bool activate();
+    void deactivate();
 
 private:
     bool daemonIsRunning();

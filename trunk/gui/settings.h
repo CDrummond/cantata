@@ -102,9 +102,6 @@ public:
     int contextTrackView();
     QString page();
     QStringList hiddenPages();
-    #if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
-    QString mediaKeysIface();
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     bool overwriteSongs();
     bool showDeleteAction();
@@ -231,9 +228,6 @@ public:
     void saveContextTrackView(int v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
-    #if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
-    void saveMediaKeysIface(const QString &v);
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     void saveOverwriteSongs(bool v);
     void saveShowDeleteAction(bool v);

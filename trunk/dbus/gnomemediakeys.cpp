@@ -43,13 +43,21 @@ GnomeMediaKeys::GnomeMediaKeys(QObject *p)
 {
 }
 
-void GnomeMediaKeys::activate(bool a)
+bool GnomeMediaKeys::activate()
 {
-    if (a && !mk) {
-        if (daemonIsRunning()) {
-            grabKeys();
-        }
-    } else if (!a && mk) {
+    if (mk) {
+        return true;
+    }
+    if (daemonIsRunning()) {
+        grabKeys();
+        return true;
+    }
+    return false;
+}
+
+void GnomeMediaKeys::deactivate()
+{
+    if (mk) {
         releaseKeys();
         disconnectDaemon();
         if (watcher) {

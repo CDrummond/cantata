@@ -32,9 +32,6 @@
 #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
 #include <kwallet.h>
 #endif
-#ifndef ENABLE_KDE_SUPPORT
-#include "mediakeys.h"
-#endif
 #include <QFile>
 #include <QDir>
 #include <qglobal.h>
@@ -501,17 +498,6 @@ QStringList Settings::hiddenPages()
     }
     return config;
 }
-
-#if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
-QString Settings::mediaKeysIface()
-{
-    #if defined Q_OS_WIN
-    return cfg.get("mediaKeysIface", MediaKeys::toString(MediaKeys::QxtInterface));
-    #else
-    return cfg.get("mediaKeysIface", MediaKeys::toString(MediaKeys::GnomeInteface));
-    #endif
-}
-#endif
 
 #ifdef ENABLE_DEVICES_SUPPORT
 bool Settings::overwriteSongs()
@@ -1136,13 +1122,6 @@ void Settings::saveHiddenPages(const QStringList &v)
 {
     cfg.set("hiddenPages", v);
 }
-
-#if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
-void Settings::saveMediaKeysIface(const QString &v)
-{
-    cfg.set("mediaKeysIface", v);
-}
-#endif
 
 #ifdef ENABLE_DEVICES_SUPPORT
 void Settings::saveOverwriteSongs(bool v)

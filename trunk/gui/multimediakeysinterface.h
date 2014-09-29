@@ -30,23 +30,17 @@ class MultiMediaKeysInterface : public QObject
 {
     Q_OBJECT
 public:
-    MultiMediaKeysInterface(QObject *p) : QObject(p), enabled(false) { }
+    MultiMediaKeysInterface(QObject *p) : QObject(p) { }
     ~MultiMediaKeysInterface() { }
 
-    void setEnabled(bool e) { activate(e); enabled=e; }
-    bool isEnabled() const { return enabled; }
-
-private:
-    virtual void activate(bool a)=0;
+    virtual bool activate()=0;
+    virtual void deactivate()=0;
 
 Q_SIGNALS:
     void playPause();
     void stop();
     void next();
     void previous();
-
-protected:
-    bool enabled;
 };
 
 #endif

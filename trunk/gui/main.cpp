@@ -66,6 +66,9 @@
 #endif
 #include "context/contextwidget.h"
 #include "scrobbling/scrobbler.h"
+#ifndef ENABLE_KDE_SUPPORT
+#include "gui/mediakeys.h"
+#endif
 
 #include <QMutex>
 #include <QMutexLocker>
@@ -154,9 +157,10 @@ enum Debug {
     Dbg_Tags              = 0x00008000,
     Dbg_Scrobbling        = 0x00010000,
     Dbg_Devices           = 0x00020000,
+    DBG_Other             = 0x00040000,
 
     // NOTE: MUST UPDATE Dbg_All IF ADD NEW ITEMS!!!
-    Dbg_All               = 0x0003FFFF
+    Dbg_All               = 0x0007FFFF
 };
 
 static void installDebugMessageHandler()
@@ -231,6 +235,11 @@ static void installDebugMessageHandler()
         #ifdef ENABLE_DEVICES_SUPPORT
         if (dbg&Dbg_Devices) {
             DevicesModel::enableDebug();
+        }
+        #endif
+        #ifndef ENABLE_KDE_SUPPORT
+        if (dbg&DBG_Other) {
+            MediaKeys::enableDebug();
         }
         #endif
         if (dbg&Dbg_All && logToFile) {

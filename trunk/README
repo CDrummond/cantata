@@ -812,6 +812,7 @@ The following debug values may be used:
     External tags              32768   0x00008000
     Scrobbling                 65536   0x00010000
     Devices                   131072   0x00020000
+    Other                     262144   0x00040000 (e.g. MediaKeys)
 
 These values may be combined to enable multiple output. e.g. to enable MPD and
 covers logging:

@@ -22,8 +22,14 @@
  */
 
 #include "macnotify.h"
+#include "config.h"
 #include <QString>
 #include <QSysInfo>
+#ifdef QT_MAC_EXTRAS_FOUND
+#include <qmacfunctions.h>
+#include <QImage>
+#include <QPixmap>
+#endif
 #include <Foundation/NSUserNotification.h>
 
 @interface UserNotificationItem : NSObject<NSUserNotificationCenterDelegate> { }
@@ -57,7 +63,7 @@ public:
     UserNotificationItem *item;
 };
 
-void MacNotify::showMessage(const QString &title, const QString &text)
+void MacNotify::showMessage(const QString &title, const QString &text, const QImage &img)
 {
     if (QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8) {
         static UserNotificationItemClass *n=0;
@@ -68,6 +74,11 @@ void MacNotify::showMessage(const QString &title, const QString &text)
         NSUserNotification *userNotification = [[[NSUserNotification alloc] init] autorelease];
         userNotification.title = title.toNSString();
         userNotification.informativeText = text.toNSString();
+        #ifdef QT_MAC_EXTRAS_FOUND
+        userNotification.contentImage = QtMac::toNSImage(QPixmap::fromImage(img));
+        #else
+        Q_UNUSED(img)
+        #endif
         [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
     }
 }

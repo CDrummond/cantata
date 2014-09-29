@@ -212,7 +212,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
             if (song.time>0) {
                 text+=QLatin1String(" - ")+Utils::formatTime(song.time);
             }
-            MacNotify::showMessage(i18n("Cantata"), text);
+            MacNotify::showMessage(i18n("Cantata"), text, CurrentCover::self()->image());
         }
     }
     #else

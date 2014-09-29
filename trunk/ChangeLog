@@ -59,6 +59,7 @@
 39. Configurable limit to auto podcast downloading.
 40. When starting, remove any previous partial podcast downloads.
 41. Don't make media keys backend configurable, auto detect the best one.
+42. Remove Gtk combo popup size hack.
 
 1.4.2
 -----

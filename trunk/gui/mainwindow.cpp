@@ -195,8 +195,9 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
     Song::setUseComposer(Settings::self()->useComposer());
 
-    toolbarSpacerA->changeSize(Utils::layoutSpacing(this), 2, QSizePolicy::Fixed, QSizePolicy::Fixed);
-    toolbarSpacerB->changeSize(Utils::layoutSpacing(this), 2, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    int hSpace=Utils::layoutSpacing(this);
+    int vSpace=fontMetrics().height()<14 ? hSpace/2 : 0;
+    toolbarLayout->setContentsMargins(hSpace, vSpace, hSpace, vSpace);
     #ifdef Q_OS_WIN
     GtkStyle::applyTheme(this); // Despite its name, it *might* also apply touch style to spinboxes...
     #else

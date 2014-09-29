@@ -29,13 +29,15 @@ QxtMediaKeys::QxtMediaKeys(QObject *p)
 {
 }
 
-void QxtMediaKeys::activate(bool a)
+bool QxtMediaKeys::activate()
 {
-    if (a) {
-        createShortcuts();
-    } else {
-        clear();
-    }
+    createShortcuts();
+    return true; // Hmm... How to detect if this failed?
+}
+
+void QxtMediaKeys::deactivate()
+{
+    clear();
 }
 
 void QxtMediaKeys::createShortcuts()
@@ -64,3 +66,4 @@ void QxtMediaKeys::clear()
         shortcuts.clear();
     }
 }
+

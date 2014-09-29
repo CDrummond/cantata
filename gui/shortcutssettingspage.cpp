@@ -39,13 +39,8 @@
 #include <QCheckBox>
 #include <QProcess>
 
-static const char * constMkEnabledVal="mk-enabled-val";
-
 ShortcutsSettingsPage::ShortcutsSettingsPage(QWidget *p)
     : QWidget(p)
-    , mediaKeysIfaceCombo(0)
-    , settingsButton(0)
-    , mediaKeysEnabled(0)
 {
     QBoxLayout *lay=new QBoxLayout(QBoxLayout::TopToBottom, this);
     lay->setMargin(0);
@@ -56,121 +51,13 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(QWidget *p)
     shortcuts->view()->setAlternatingRowColors(false);
     shortcuts->view()->setItemDelegate(new BasicItemDelegate(shortcuts->view()));
     lay->addWidget(shortcuts);
-
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    Utils::Desktop de=Utils::currentDe();
-    bool useDesktop=true;
-    bool isGnome=Utils::Unity==de || Utils::Gnome==de;
-    #else
-    bool useDesktop=false;
-    bool isGnome=false;
-    #endif
-
-    #ifdef CANTATA_USE_QXT_MEDIAKEYS
-    bool useQxt=true;
-    #else
-    bool useQxt=false;
-    #endif
-
-    if (useDesktop || useQxt) {
-        QGroupBox *box=new QGroupBox(i18n("Multi-Media Keys"));
-
-        if (useDesktop && useQxt) {
-            QBoxLayout *boxLay=new QBoxLayout(QBoxLayout::LeftToRight, box);
-            mediaKeysIfaceCombo=new QComboBox(box);
-            boxLay->addWidget(mediaKeysIfaceCombo);
-            mediaKeysIfaceCombo->addItem(i18n("Do not use media keys to control Cantata"), (unsigned int)MediaKeys::NoInterface);
-            mediaKeysIfaceCombo->addItem(i18n("Use media keys to control Cantata"), (unsigned int)MediaKeys::QxtInterface);
-
-            mediaKeysIfaceCombo->addItem(isGnome
-                                         ? i18n("Use media keys, as configured in desktop settings, to control Cantata")
-                                         : i18n("Use media keys, as configured in GNOME/Unity settings, to control Cantata"), (unsigned int)MediaKeys::GnomeInteface);
-
-            settingsButton=new ToolButton(box);
-            settingsButton->setToolTip(i18n("Configure..."));
-            settingsButton->setIcon(Icons::self()->configureIcon);
-            boxLay->addWidget(settingsButton);
-            boxLay->addItem(new QSpacerItem(0, 1, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));
-            connect(settingsButton, SIGNAL(clicked(bool)), SLOT(showGnomeSettings()));
-            connect(mediaKeysIfaceCombo, SIGNAL(currentIndexChanged(int)), SLOT(mediaKeysIfaceChanged()));
-        } else if (useQxt) {
-            QBoxLayout *boxLay=new QBoxLayout(QBoxLayout::LeftToRight, box);
-            mediaKeysEnabled = new QCheckBox(i18n("Use media keys to control Cantata"), box);
-            boxLay->addWidget(mediaKeysEnabled);
-            boxLay->addItem(new QSpacerItem(0, 1, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));
-            mediaKeysEnabled->setProperty(constMkEnabledVal, (unsigned int)MediaKeys::QxtInterface);
-        } else if (useDesktop) {
-            QBoxLayout *boxLay=new QBoxLayout(QBoxLayout::LeftToRight, box);
-            QWidget *controlWidget = new QWidget(box);
-            mediaKeysEnabled = new QCheckBox(isGnome
-                                             ? i18n("Use media keys, as configured in desktop settings, to control Cantata")
-                                             : i18n("Use media keys, as configured in GNOME/Unity settings, to control Cantata"), controlWidget);
-            settingsButton=new ToolButton(controlWidget);
-            settingsButton->setToolTip(i18n("Configure..."));
-            settingsButton->setIcon(Icons::self()->configureIcon);
-            boxLay->addWidget(mediaKeysEnabled);
-            boxLay->addWidget(settingsButton);
-            boxLay->addItem(new QSpacerItem(0, 1, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));
-            mediaKeysEnabled->setProperty(constMkEnabledVal, (unsigned int)MediaKeys::GnomeInteface);
-            connect(mediaKeysEnabled, SIGNAL(toggled(bool)), settingsButton, SLOT(setEnabled(bool)));
-            connect(settingsButton, SIGNAL(clicked(bool)), SLOT(showGnomeSettings()));
-        }
-        lay->addWidget(box);
-    }
 }
 
 void ShortcutsSettingsPage::load()
 {
-    if (settingsButton) {
-        settingsButton->setEnabled(false);
-    }
-    if (mediaKeysIfaceCombo) {
-        unsigned int iface=(unsigned int)MediaKeys::toIface(Settings::self()->mediaKeysIface());
-        for (int i=0; i<mediaKeysIfaceCombo->count(); ++i) {
-            if (mediaKeysIfaceCombo->itemData(i).toUInt()==iface) {
-                mediaKeysIfaceCombo->setCurrentIndex(i);
-                if (settingsButton) {
-                    settingsButton->setEnabled(iface==MediaKeys::GnomeInteface);
-                }
-                break;
-            }
-        }
-    } else if (mediaKeysEnabled) {
-        mediaKeysEnabled->setChecked(MediaKeys::NoInterface!=MediaKeys::toIface(Settings::self()->mediaKeysIface()));
-        if (settingsButton) {
-            settingsButton->setEnabled(mediaKeysEnabled->isChecked());
-        }
-    }
 }
 
 void ShortcutsSettingsPage::save()
 {
     shortcuts->save();
-    if (mediaKeysIfaceCombo) {
-        Settings::self()->saveMediaKeysIface(MediaKeys::toString((MediaKeys::InterfaceType)mediaKeysIfaceCombo->itemData(mediaKeysIfaceCombo->currentIndex()).toUInt()));
-    } else if (mediaKeysEnabled) {
-        Settings::self()->saveMediaKeysIface(MediaKeys::toString(
-                                                mediaKeysEnabled->isChecked()
-                                                    ? (MediaKeys::InterfaceType)mediaKeysEnabled->property(constMkEnabledVal).toUInt()
-                                                    : MediaKeys::NoInterface));
-    }
-}
-
-void ShortcutsSettingsPage::mediaKeysIfaceChanged()
-{
-    if (!settingsButton) {
-        return;
-    }
-    settingsButton->setEnabled(MediaKeys::GnomeInteface==mediaKeysIfaceCombo->itemData(mediaKeysIfaceCombo->currentIndex()).toUInt());
-}
-
-void ShortcutsSettingsPage::showGnomeSettings()
-{
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    if (Utils::Unity==Utils::currentDe() && !Utils::findExe("unity-control-center").isEmpty()) {
-        QProcess::startDetached("unity-control-center", QStringList() << "keyboard");
-        return;
-    }
-    #endif
-    QProcess::startDetached("gnome-control-center", QStringList() << "keyboard");
 }

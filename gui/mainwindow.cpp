@@ -917,7 +917,7 @@ MainWindow::MainWindow(QWidget *parent)
         updateStats();
     }
     #ifndef ENABLE_KDE_SUPPORT
-    MediaKeys::self()->load();
+    MediaKeys::self()->start();
     #endif
     updateActionToolTips();
 }
@@ -1419,9 +1419,6 @@ void MainWindow::readSettings()
     TreeView::setForceSingleClick(Settings::self()->forceSingleClick());
     #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     PowerManagement::self()->setInhibitSuspend(Settings::self()->inhibitSuspend());
-    #endif
-    #ifndef ENABLE_KDE_SUPPORT
-    MediaKeys::self()->load();
     #endif
     context->readConfig();
     tabWidget->setHiddenPages(Settings::self()->hiddenPages());

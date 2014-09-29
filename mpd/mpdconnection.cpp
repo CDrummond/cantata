@@ -171,6 +171,16 @@ QString MPDConnection::Response::getError(const QByteArray &command)
                 // NOTE: NOT translated, as refers to config item
                 return QLatin1String("playlist_directory - ")+rv;
             }
+
+            // If we are reporting a stream error, remove any stream name added by Cantata...
+            int start=rv.indexOf(QLatin1String("http://"));
+            if (start>0) {
+                int pos=rv.indexOf(QChar('#'), start+6);
+                if (-1!=pos) {
+                    rv=rv.left(pos);
+                }
+            }
+
             return rv;
         }
     }

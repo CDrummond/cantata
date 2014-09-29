@@ -35,7 +35,8 @@ public:
     QxtMediaKeys(QObject *p);
     virtual ~QxtMediaKeys() { clear(); }
 
-    void activate(bool a);
+    bool activate();
+    void deactivate();
 
 private:
     void createShortcuts();

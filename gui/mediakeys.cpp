@@ -30,47 +30,16 @@
 #endif
 #include "multimediakeysinterface.h"
 #include "stdactions.h"
-#include "settings.h"
 #include "support/globalstatic.h"
+#include <QDebug>
+static bool debugIsEnabled=false;
+#define DBUG if (debugIsEnabled) qWarning() << "MediaKeys" << __FUNCTION__
+void MediaKeys::enableDebug()
+{
+    debugIsEnabled=true;
+}
 
 GLOBAL_STATIC(MediaKeys, instance)
-
-QString MediaKeys::toString(InterfaceType i)
-{
-    switch (i) {
-    case NoInterface:
-    default:
-        return QString();
-    case GnomeInteface:
-        return "gnome";
-    case QxtInterface:
-        return "qxt";
-    }
-}
-
-MediaKeys::InterfaceType MediaKeys::toIface(const QString &i)
-{
-    #if defined Q_OS_MAC
-    return NoInterface;
-    #endif
-
-    if (i==toString(GnomeInteface)) {
-        #ifdef QT_QTDBUS_FOUND
-        return GnomeInteface;
-        #else
-        return NoInterface;
-        #endif
-    }
-
-    if (i==toString(QxtInterface)) {
-        #if QT_VERSION < 0x050000
-        return QxtInterface;
-        #else
-        return NoInterface;
-        #endif
-    }
-    return NoInterface;
-}
 
 MediaKeys::MediaKeys()
 {
@@ -97,66 +66,37 @@ MediaKeys::~MediaKeys()
     #endif
 }
 
-void MediaKeys::load()
+void MediaKeys::start()
 {
-    InterfaceType current=NoInterface;
-    InterfaceType configured=toIface(Settings::self()->mediaKeysIface());
     #ifdef QT_QTDBUS_FOUND
-    if (gnome && gnome->isEnabled()) {
-        current=GnomeInteface;
-    }
-    #endif
-
-    #ifdef CANTATA_USE_QXT_MEDIAKEYS
-    if (qxt && qxt->isEnabled()) {
-        current=QxtInterface;
-    }
-    #endif
-
-    if (current==configured) {
+    gnome=new GnomeMediaKeys(0);
+    if (activate(gnome)) {
+        DBUG << "Using Gnome";
         return;
     }
-
-    #ifdef QT_QTDBUS_FOUND
-    if (gnome && GnomeInteface==current) {
-        disable(gnome);
-        gnome->deleteLater();
-        gnome=0;
-    }
+    DBUG << "Gnome failed";
+    gnome->deleteLater();
+    gnome=0;
     #endif
 
     #ifdef CANTATA_USE_QXT_MEDIAKEYS
-    if (qxt && QxtInterface==current) {
-        disable(qxt);
-        qxt->deleteLater();
-        qxt=0;
+    qxt=new QxtMediaKeys(0);
+    if (activate(qxt)) {
+        DBUG << "Using Qxt";
+        return;
     }
+    DBUG << "Qxt failed";
+    qxt->deleteLater();
+    qxt=0;
     #endif
-
-    #ifdef QT_QTDBUS_FOUND
-    if (GnomeInteface==configured) {
-        if (!gnome) {
-            gnome=new GnomeMediaKeys(0);
-        }
-        enable(gnome);
-    }
-    #endif
-
-    #ifdef CANTATA_USE_QXT_MEDIAKEYS
-    if (QxtInterface==configured) {
-        if (!qxt) {
-            qxt=new QxtMediaKeys(0);
-        }
-        enable(qxt);
-    }
-    #endif
+    DBUG << "None";
 }
 
 void MediaKeys::stop()
 {
     #ifdef QT_QTDBUS_FOUND
     if (gnome) {
-        disable(gnome);
+        deactivate(gnome);
         gnome->deleteLater();
         gnome=0;
     }
@@ -164,34 +104,36 @@ void MediaKeys::stop()
 
     #ifdef CANTATA_USE_QXT_MEDIAKEYS
     if (qxt) {
-        disable(qxt);
+        deactivate(qxt);
         qxt->deleteLater();
         qxt=0;
     }
     #endif
 }
 
-void MediaKeys::enable(MultiMediaKeysInterface *iface)
+bool MediaKeys::activate(MultiMediaKeysInterface *iface)
 {
-    if (!iface || iface->isEnabled()) {
-        return;
+    if (!iface) {
+        return false;
     }
-    QObject::connect(iface, SIGNAL(playPause()), StdActions::self()->playPauseTrackAction, SIGNAL(triggered()));
-    QObject::connect(iface, SIGNAL(stop()), StdActions::self()->stopPlaybackAction, SIGNAL(triggered()));
-    QObject::connect(iface, SIGNAL(next()), StdActions::self()->nextTrackAction, SIGNAL(triggered()));
-    QObject::connect(iface, SIGNAL(previous()), StdActions::self()->prevTrackAction, SIGNAL(triggered()));
-    iface->setEnabled(true);
+    if (iface->activate()) {
+        QObject::connect(iface, SIGNAL(playPause()), StdActions::self()->playPauseTrackAction, SIGNAL(triggered()));
+        QObject::connect(iface, SIGNAL(stop()), StdActions::self()->stopPlaybackAction, SIGNAL(triggered()));
+        QObject::connect(iface, SIGNAL(next()), StdActions::self()->nextTrackAction, SIGNAL(triggered()));
+        QObject::connect(iface, SIGNAL(previous()), StdActions::self()->prevTrackAction, SIGNAL(triggered()));
+        return true;
+    }
+    return false;
 }
 
-void MediaKeys::disable(MultiMediaKeysInterface *iface)
+void MediaKeys::deactivate(MultiMediaKeysInterface *iface)
 {
-    if (!iface || !iface->isEnabled()) {
+    if (!iface) {
         return;
     }
     QObject::disconnect(iface, SIGNAL(playPause()), StdActions::self()->playPauseTrackAction, SIGNAL(triggered()));
     QObject::disconnect(iface, SIGNAL(stop()), StdActions::self()->stopPlaybackAction, SIGNAL(triggered()));
     QObject::disconnect(iface, SIGNAL(next()), StdActions::self()->nextTrackAction, SIGNAL(triggered()));
     QObject::disconnect(iface, SIGNAL(previous()), StdActions::self()->prevTrackAction, SIGNAL(triggered()));
-    iface->setEnabled(false);
+    iface->deactivate();
 }
-

@@ -713,7 +713,7 @@ else (ENABLE_KDE)
     endif (WIN32)
 
     set(CANTATA_SRCS ${CANTATA_SRCS} gui/shortcutssettingspage.cpp gui/mediakeys.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/shortcutssettingspage.h gui/multimediakeysinterface.h)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/multimediakeysinterface.h)
 
     if (ENABLE_QT5)
         QT5_ADD_RESOURCES(CANTATA_RC_SRCS ${CANTATA_RCS})

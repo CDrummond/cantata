@@ -25,10 +25,11 @@
 #define MACNOTIFY_H
 
 class QString;
+class QImage;
 
 namespace MacNotify
 {
-    extern void showMessage(const QString &title, const QString &text);
+    extern void showMessage(const QString &title, const QString &text, const QImage &img);
 }
 
 #endif

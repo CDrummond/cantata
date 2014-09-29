@@ -18,6 +18,7 @@
  * 02110-1301  USA
  */
 #include "kmessagewidget.h"
+#include "localize.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <kaction.h>
@@ -102,6 +103,7 @@ void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
         icon=Icon("window-close");
     }
     closeAction->setIcon(icon);
+    closeAction->setToolTip(i18n("Close"));
     QObject::connect(closeAction, SIGNAL(triggered()), q, SLOT(animatedHide()));
     #endif
 
@@ -280,7 +282,6 @@ static void getColorsFromColorScheme(KColorScheme::BackgroundRole bgRole, QColor
     *fg = scheme.foreground().color();
 }
 #endif
-#include <QDebug>
 void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
 {
     d->messageType = type;

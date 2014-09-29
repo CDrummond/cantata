@@ -605,18 +605,18 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
         contextIcon=Icon("dialog-information");
 
     if (toolbarPrevIcon.isNull()) {
-        toolbarPrevIcon=Icon("media-skip-backward");
+        toolbarPrevIcon=Icon::getMediaIcon("media-skip-backward");
     }
     if (toolbarPlayIcon.isNull()) {
-        toolbarPlayIcon=Icon("media-playback-start");
+        toolbarPlayIcon=Icon::getMediaIcon("media-playback-start");
     }
     if (toolbarPauseIcon.isNull()) {
-        toolbarPauseIcon=Icon("media-playback-pause");
+        toolbarPauseIcon=Icon::getMediaIcon("media-playback-pause");
     }
     if (toolbarStopIcon.isNull()) {
-        toolbarStopIcon=Icon("media-playback-stop");
+        toolbarStopIcon=Icon::getMediaIcon("media-playback-stop");
     }
     if (toolbarNextIcon.isNull()) {
-        toolbarNextIcon=Icon("media-skip-forward");
+        toolbarNextIcon=Icon::getMediaIcon("media-skip-forward");
     }
 }

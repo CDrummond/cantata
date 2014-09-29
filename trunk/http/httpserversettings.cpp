@@ -36,15 +36,38 @@ static int isIfaceType(const QNetworkInterface &iface, const QString &prefix)
 static QString details(const QNetworkInterface &iface)
 {
     QString d=iface.humanReadableName();
-    if (!iface.addressEntries().isEmpty()) {
-        d+=QLatin1String(" - ")+iface.addressEntries().first().ip().toString();
+    QList<QNetworkAddressEntry> addresses=iface.addressEntries();
+    if (!addresses.isEmpty()) {
+        QString ipV4, ipV6;
+        foreach (const QNetworkAddressEntry &addr, addresses) {
+            QString ip=addr.ip().toString();
+            if (ip.isEmpty()) {
+                continue;
+            }
+            if (ip.endsWith(QLatin1Char('%')+d)) {
+                ip=ip.left(ip.length()-(d.length()+1));
+            }
+            if (QAbstractSocket::IPv4Protocol==addr.ip().protocol()) {
+                ipV4=ip;
+            } else if (QAbstractSocket::IPv6Protocol==addr.ip().protocol()) {
+                ipV6=ip;
+            }
+        }
+
+        QString ipAddr;
+        if (!ipV4.isEmpty()) {
+            ipAddr=ipV4;
+        } else if (!ipV6.isEmpty()) {
+            ipAddr=ipV6;
+        }
+        d+=QLatin1String(" - ")+ipAddr;
     }
     return d;
 }
 
 static QString displayName(const QNetworkInterface &iface)
 {
-    if (iface.name()=="lo") {
+    if (isIfaceType(iface , "lo")) {
         return i18n("Local loopback (%1)", details(iface));
     }
     if (isIfaceType(iface, "eth")) {

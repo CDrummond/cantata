@@ -25,6 +25,8 @@
 #define TOOLBUTTON_H
 
 #include <QToolButton>
+#include "support/icon.h"
+#include "config.h"
 
 class QMenu;
 class ToolButton : public QToolButton
@@ -35,10 +37,16 @@ public:
     void setMenu(QMenu *m);
     void paintEvent(QPaintEvent *e);
     void setHideMenuIndicator(bool h) { hideMenuIndicator=h; }
+    #ifdef UNITY_MENU_HACK
+    void setIcon(const Icon &i) { icon=i; }
+    #endif
 
 private:
     bool hideMenuIndicator;
     mutable QSize sh;
+    #ifdef UNITY_MENU_HACK
+    Icon icon;
+    #endif
 };
 
 #endif // MENUBUTTON_H

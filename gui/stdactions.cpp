@@ -39,11 +39,7 @@ GLOBAL_STATIC(StdActions, instance)
 
 StdActions::StdActions()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    bool menuIcons=true;
-    #else
     bool menuIcons=!QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
-    #endif
     prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::self()->toolbarPrevIcon);
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::self()->toolbarNextIcon);
     playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::self()->toolbarPlayIcon);
@@ -52,7 +48,7 @@ StdActions::StdActions()
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
-    savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), "document-save-as");
+    savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), menuIcons ? "document-save-as" : 0);
     addToPlayQueueAction = ActionCollection::get()->createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
     replacePlayQueueAction = ActionCollection::get()->createAction("replaceplaylist", i18n("Replace Play Queue"), "media-playback-start");
     addWithPriorityAction = ActionCollection::get()->createAction("addwithprio", i18n("Add With Priority"), Icon("favorites"));

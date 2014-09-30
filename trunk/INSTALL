@@ -155,6 +155,7 @@ The following options may be passed to CMake:
         
     -DCANTATA_MINGW_LIBS=<path>\mingwm10.dll;<path>libgcc_s_dw2-1.dll
         Extra MinGW libraries required for install stage.
+        Qt4 builds only - not required for Qt5.
         Default: <empty>
         
     -DCANTATA_OXYGEN_DIR=<path>

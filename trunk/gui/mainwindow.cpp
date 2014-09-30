@@ -176,11 +176,7 @@ MainWindow::MainWindow(QWidget *parent)
     QPoint p=pos();
     ActionCollection::setMainWidget(this);
     trayItem=new TrayItem(this);
-    #ifdef ENABLE_KDE_SUPPORT
-    bool menuIcons=true;
-    #else
     bool menuIcons=!QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
-    #endif
     #ifdef QT_QTDBUS_FOUND
     new CantataAdaptor(this);
     QDBusConnection::sessionBus().registerObject("/cantata", this);
@@ -267,7 +263,7 @@ MainWindow::MainWindow(QWidget *parent)
     addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::self()->playlistIcon);
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), menuIcons ? Icons::self()->addRadioStreamIcon : Icon());
-    promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::self()->clearListIcon);
+    promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), menuIcons ? Icons::self()->clearListIcon : Icon());
     centerPlayQueueAction = ActionCollection::get()->createAction("centerplaylist", i18n("Center On Current Track"), isRightToLeft() ? "go-previous" : "go-next");
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), menuIcons ? "view-media-playlist" : "");
     expandInterfaceAction->setCheckable(true);
@@ -287,13 +283,14 @@ MainWindow::MainWindow(QWidget *parent)
     searchPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_F);
     setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"), Icon("favorites"));
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), Icons::self()->radioStreamIcon);
+    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), menuIcons ? Icons::self()->radioStreamIcon : Icon());
     streamPlayAction->setCheckable(true);
     streamPlayAction->setChecked(false);
     streamPlayAction->setVisible(false);
     streamPlayButton->setDefaultAction(streamPlayAction);
     #endif
     streamPlayButton->setVisible(false);
+
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", StdActions::self()->editTagsAction->text(), StdActions::self()->editTagsAction->icon());
@@ -302,7 +299,7 @@ MainWindow::MainWindow(QWidget *parent)
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
     addAction(collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All")));
     collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
-    clearPlayQueueAction = ActionCollection::get()->createAction("confimclearplaylist", i18n("Remove All Songs"), Icons::self()->clearListIcon);
+    clearPlayQueueAction = ActionCollection::get()->createAction("confimclearplaylist", i18n("Remove All Songs"), menuIcons ? Icons::self()->clearListIcon : Icon());
     clearPlayQueueAction->setShortcut(Qt::AltModifier+Qt::Key_Return);
     cancelAction = ActionCollection::get()->createAction("cancel", i18n("Cancel"), Icons::self()->cancelIcon);
     cancelAction->setShortcut(Qt::AltModifier+Qt::Key_Escape);
@@ -530,6 +527,18 @@ MainWindow::MainWindow(QWidget *parent)
     singlePlayQueueAction->setChecked(false);
     consumePlayQueueAction->setChecked(false);
 
+    #ifdef UNITY_MENU_HACK
+    if (!menuIcons) {
+        // These buttons have actions that are in the menubar, as wall as in the main window.
+        // Under unity we dont want any icons in menus - so the actions themselves have no icons.
+        // But the toolbuttuns need icons!
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        streamPlayButton->setIcon(Icons::self()->radioStreamIcon);
+        #endif
+        savePlayQueueButton->setIcon(Icon("document-save-as"));
+        clearPlayQueueButton->setIcon(Icons::self()->clearListIcon);
+    }
+    #endif
     MusicLibraryItemAlbum::setSortByDate(Settings::self()->libraryYear());
     expandedSize=Settings::self()->mainWindowSize();
     collapsedSize=Settings::self()->mainWindowCollapsedSize();

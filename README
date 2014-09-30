@@ -883,6 +883,9 @@ Cantata contains code/icons from:
 16. Windows
 ===========
 
+Qt4 Build
+---------
+
 The following steps are used to compile Cantata, and create the windows
 installer.
 
@@ -901,32 +904,89 @@ This assumes the following folder structure:
 1. Install Qt, MinGW, cmake, TagLib and zlib. TagLib and zlib will probably
    need compiling.
 
-2. Download oxygen icons required for Cantata from the following link
+2. Set (or amend) the following environemnt variables:
+    QTDIR=z:\dev\Qt\4.8.4
+    PATH=z:\dev\Qt\4.8.4\bin;z:\dev\MinGW\bin;z:\dev\taglib\bin;z:\dev\cmake\bin
+
+3. Download oxygen icons required for Cantata from the following link
     https://drive.google.com/file/d/0Bzghs6gQWi60cXlvUURjeEVRUms/edit?usp=sharing
 
-3. Unzip this *within* icons/
+4. Unzip this *within* icons/
 
-4. Call cmake (e.g. from build folder):
+5. Call cmake (e.g. from build folder):
      cmake ../src -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DTAGLIB_CAN_SAVE_ID3VER=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DCANTATA_MINGW_LIBS=z:/dev/MinGW/bin/mingwm10.dll;z:/dev/MinGW/bin/libgcc_s_dw2-1.dll -DCANTATA_OXYGEN_DIR=z:/cantata/icons -DCMAKE_BUILD_TYPE=Release
 
    (Note: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the
           TagLib settings have been manually set)
 
-5. make
+6. make
 
-6. make install
+7. make install
 
-7. Run Nullsoft Scriptable Install System, and use the cantata.nsi that has
-   been generated in the install folder. This will place the setup exe into
-   the install folder as well.
-
-   - OR -
-
-   Run Inno Setup Compiler, and use the cantata.iss that has been generated in
-   the build folder. This will place the setup exe in z:\cantata
 
 This build is as per Qt-only, but does not have support for dbus, local dynamic
 playlists, device support, or replaygain calculation.
+
+
+Qt5 Build
+---------
+
+The following steps are used to compile Cantata, and create the windows
+installer.
+
+This assumes the following folder structure:
+
+    z:\cantata\src          [ Checkout of Cantata's source code ]
+    z:\cantata\build
+    z:\cantata\install      [ make install will place target files here ]
+    z:\cantata\icons        [ Oxygen icons folder ]
+    z:\dev\Qt
+    z:\dev\taglib
+    z:\dev\zlib
+
+
+1. Install Qt (5.3 or later), cmake, TagLib and zlib. TagLib and zlib will probably
+   need compiling.
+
+2. Set (or amend) the following environemnt variables:
+    QTDIR=z:\dev\Qt\5.3\mingw482_32
+    PATH=z:\dev\Qt\5.3\mingw482_32\bin;z:\dev\Qt\Tools\mingw482_32\bin;z:\dev\taglib\bin;z:\dev\cmake\bin
+
+3. Download oxygen icons required for Cantata from the following link
+    https://drive.google.com/file/d/0Bzghs6gQWi60cXlvUURjeEVRUms/edit?usp=sharing
+
+4. Unzip this *within* icons/
+
+5. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
+     ../src -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DTAGLIB_CAN_SAVE_ID3VER=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DENABLE_QT5=ON -DCANTATA_OXYGEN_DIR=z:/cantata/icons -DCMAKE_BUILD_TYPE=Release
+
+   (Note: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the
+          TagLib settings have been manually set)
+
+6. Build via QtCreator
+
+7. Create an 'install' project in QtCreator
+  - Projects
+  - Add/Clone Selected
+  - Expand Build Steps, and select install
+
+8. Build 'install' project via QtCreator
+
+This build is as per Qt-only, but does not have support for dbus, local dynamic
+playlists, device support, or replaygain calculation.
+
+
+Create Installer
+----------------
+01234567890123456789012345678901234567890123456789012345678901234567890123456789
+Run Nullsoft Scriptable Install System, and use the cantata.nsi that has been
+generated in the install folder. This will place the setup exe into the install
+folder as well.
+
+  - OR (Qt4 builds only) -
+
+Run Inno Setup Compiler, and use the cantata.iss that has been generated in the
+build folder. This will place the setup exe in z:\cantata
 
 
 TagLib
@@ -962,12 +1022,22 @@ These steps assume the following structure:
 
 5. Unzip this *within* icons/
 
-6. Call cmake (e.g. from build folder):
-    cmake ../trunk/ -DCMAKE_PREFIX_PATH=/Users/$USER/Qt/5.3/clang_64/ -DCMAKE_BUILD_TYPE=Release -DCANTATA_OXYGEN_DIR=`pwd`/../icons -DCMAKE_INSTALL_PREFIX=`pwd`/../install
+6. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
+     ../trunk/ -DCMAKE_PREFIX_PATH=/Users/$USER/Qt/5.3/clang_64/ -DCMAKE_BUILD_TYPE=Release -DCANTATA_OXYGEN_DIR=`pwd`/../icons -DCMAKE_INSTALL_PREFIX=`pwd`/../install
 
-7. make install
+7. Build via QtCreator
 
-8. To create the DMG file (disk image, used for installs)
+8. Create an 'install' project in QtCreator
+  - Projects
+  - Add/Clone Selected
+  - Expand Build Steps, and select install
 
-   a. Go into the 'mac' folder within the build folder
-   b. Run ./create-dmg.sh
+9. Build 'install' project via QtCreator
+
+
+Create Installer
+----------------
+
+1. Go into the 'mac' folder within the build folder
+
+2. Run ./create-dmg.sh

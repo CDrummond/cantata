@@ -212,6 +212,16 @@
            <widget class="ScrobblingStatus" name="scrobblingStatus"/>
           </item>
           <item>
+          <widget class="ToolButton" name="streamPlayButton">
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+          </item>
+          <item>
            <widget class="ToolButton" name="repeatButton">
             <property name="checkable">
              <bool>true</bool>

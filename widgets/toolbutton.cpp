@@ -64,7 +64,7 @@ void ToolButton::paintEvent(QPaintEvent *e)
         p.fillPath(path, col);
     }
     #endif
-    #if QT_VERSION > 0x050000
+    #if QT_VERSION > 0x050000 || defined UNITY_MENU_HACK
     // Hack to work-around Qt5 sometimes leaving toolbutton in 'raised' state.
     QStylePainter p(this);
     QStyleOptionToolButton opt;
@@ -75,6 +75,12 @@ void ToolButton::paintEvent(QPaintEvent *e)
     if (opt.state&QStyle::State_MouseOver && this!=QApplication::widgetAt(QCursor::pos())) {
         opt.state&=~QStyle::State_MouseOver;
     }
+    #ifdef UNITY_MENU_HACK
+    if (!icon.isNull()) {
+        opt.icon=icon;
+        opt.toolButtonStyle=Qt::ToolButtonIconOnly;
+    }
+    #endif
     p.drawComplexControl(QStyle::CC_ToolButton, opt);
     #else
     if (menu() && hideMenuIndicator) {

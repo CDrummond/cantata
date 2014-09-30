@@ -235,11 +235,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
             SLOT(setCover(const Song &, const QImage &, const QString &)));
     #else
 
-    #ifdef ENABLE_KDE_SUPPORT
-    bool menuIcons=true;
-    #else
     bool menuIcons=!QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
-    #endif
 
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);

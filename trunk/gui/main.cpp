@@ -104,11 +104,19 @@ static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QSt
 class PoTranslator : public QTranslator
 {
 public:
+    #if QT_VERSION < 0x050000
     QString translate(const char *context, const char *sourceText, const char *disambiguation = 0) const
     {
         QString ret = QTranslator::translate(context, sourceText, disambiguation);
         return !ret.isEmpty() ? ret : QTranslator::translate(NULL, sourceText, disambiguation);
     }
+    #else
+    QString translate(const char *context, const char *sourceText, const char *disambiguation = 0, int n=-1) const
+    {
+        QString ret = QTranslator::translate(context, sourceText, disambiguation, n);
+        return !ret.isEmpty() ? ret : QTranslator::translate(NULL, sourceText, disambiguation, n);
+    }
+    #endif
 };
 
 static void loadTranslation(const QString &prefix, const QString &path, const QString &overrideLanguage = QString())
@@ -125,7 +133,6 @@ static void loadTranslation(const QString &prefix, const QString &path, const QS
 
     QString language = overrideLanguage.isEmpty() ? QLocale::system().name() : overrideLanguage;
     QTranslator *t = new PoTranslator;
-
     if (t->load(prefix+"_"+language, path)) {
         QCoreApplication::installTranslator(t);
     } else {
@@ -317,9 +324,10 @@ int main(int argc, char *argv[])
 
     // Translations
     QString lang=Settings::self()->lang();
-    loadTranslation("qt", QLibraryInfo::location(QLibraryInfo::TranslationsPath), lang);
-    #ifdef Q_OS_WIN
+    #if defined Q_OS_WIN || defined Q_OS_MAC
     loadTranslation("qt", CANTATA_SYS_TRANS_DIR, lang);
+    #else
+    loadTranslation("qt", QLibraryInfo::location(QLibraryInfo::TranslationsPath), lang);
     #endif
     loadTranslation("cantata", CANTATA_SYS_TRANS_DIR, lang);
 

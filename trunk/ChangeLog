@@ -61,6 +61,8 @@
 41. Don't make media keys backend configurable, auto detect the best one.
 42. Remove Gtk combo popup size hack.
 43. Fix Qt5 translations.
+44. Add button to status bar to eanble/disable playback of MPD HTTP output
+    stream.
 
 1.4.2
 -----

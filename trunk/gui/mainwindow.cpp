@@ -287,11 +287,13 @@ MainWindow::MainWindow(QWidget *parent)
     searchPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_F);
     setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"), Icon("favorites"));
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"));
+    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), Icons::self()->radioStreamIcon);
     streamPlayAction->setCheckable(true);
     streamPlayAction->setChecked(false);
     streamPlayAction->setVisible(false);
+    streamPlayButton->setDefaultAction(streamPlayAction);
     #endif
+    streamPlayButton->setVisible(false);
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", StdActions::self()->editTagsAction->text(), StdActions::self()->editTagsAction->icon());
@@ -1125,6 +1127,7 @@ void MainWindow::streamUrl(const QString &u)
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction->setVisible(!u.isEmpty());
     streamPlayAction->setChecked(streamPlayAction->isVisible() && Settings::self()->playStream());
+    streamPlayButton->setVisible(!u.isEmpty());
     httpStream->setEnabled(streamPlayAction->isChecked());
     #else
     Q_UNUSED(u)

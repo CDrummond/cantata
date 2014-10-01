@@ -203,6 +203,7 @@ MainWindow::MainWindow(QWidget *parent)
     toolbarLayout->setContentsMargins(hSpace, vSpace, hSpace, vSpace);
     #ifdef Q_OS_WIN
     GtkStyle::applyTheme(this); // Despite its name, it *might* also apply touch style to spinboxes...
+    toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     #else
     setUnifiedTitleAndToolBarOnMac(true);
     QToolBar *topToolBar = addToolBar("ToolBar");
@@ -211,7 +212,7 @@ MainWindow::MainWindow(QWidget *parent)
     wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
     wm->registerWidgetAndChildren(topToolBar);
     #endif
-    toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     topToolBar->setObjectName("MainToolBar");
     topToolBar->addWidget(toolbar);
     topToolBar->setMovable(false);

@@ -229,7 +229,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
             if (song.time>0) {
                 text+=QLatin1String(" - ")+Utils::formatTime(song.time);
             }
-            MacNotify::showMessage(i18n("Cantata"), text, CurrentCover::self()->image());
+            MacNotify::showMessage(i18n("Now playing"), text, CurrentCover::self()->image());
         }
     }
     #else
@@ -255,7 +255,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                 trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
                 // The pure Qt implementation needs both the tray icon and the setting checked.
                 if (Settings::self()->showPopups() && isPlaying) {
-                    trayItem->showMessage(i18n("Cantata"), text, QSystemTrayIcon::Information, 5000);
+                    trayItem->showMessage(i18n("Now playing"), text, QSystemTrayIcon::Information, 5000);
                 }
                 #else
                 trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);

@@ -331,7 +331,11 @@ public:
 
         painter->save();
         painter->setFont(f);
+        #ifdef Q_OS_WIN
+        QColor col(option.palette.color(QPalette::Text));
+        #else
         QColor col(option.palette.color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
+        #endif
         QTextOption textOpt(Qt::AlignVCenter);
         QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));
 

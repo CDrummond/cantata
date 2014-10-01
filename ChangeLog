@@ -68,6 +68,7 @@
 47. Add prev/play/pause/etc actions to Unity launcher, and to windows taskbar
     entry.
 48. Fix current track highlight in grouped view under windows for header item.
+49. Use same selection drawing for all views.
 
 1.4.2
 -----

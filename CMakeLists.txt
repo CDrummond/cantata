@@ -1,7 +1,6 @@
 PROJECT(cantata)
 
-#  NOTE: If CANTATA_REV_URL, or CANTATA_URL, are changed, then cantata-dynamac,
-#        README, and cantata.desktop  will need updating.
+#  NOTE: If PROJECT_URL, or PROJECT_REV_URL, are changed, then cantata-dynamic, and README will need updating.
 #        dbus/com.googlecode.cantata.xml and devices/mounter/com.googlecode.cantata.mounter.xml
 #        will also need renaming/updating.
 set(PROJECT_URL "cantata.googlecode.com")
@@ -759,8 +758,11 @@ else (ENABLE_KDE)
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mac/Info.plist DESTINATION ${CANTATA_APP_CONTENTS_DIR})
         install_qt5_executable(cantata.app "qjpeg;qsvg;qsvgicon;qcocoa")
     elseif (NOT ENABLE_UBUNTU)
+        configure_file(cantata-remote.cmake ${CMAKE_BINARY_DIR}/cantata-remote)
+        configure_file(cantata.desktop.cmake ${CMAKE_BINARY_DIR}/cantata.desktop)
         ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
         install(TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
+        install(PROGRAMS ${CMAKE_BINARY_DIR}/cantata-remote DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
     endif (WIN32)
 
     if (NOT ENABLE_UBUNTU)
@@ -800,7 +802,7 @@ add_definitions(-DQT_NO_DEBUG_OUTPUT)
 
 if (UNIX AND NOT APPLE)
     if (NOT ENABLE_UBUNTU)
-        install(FILES cantata.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
+        install(FILES ${CMAKE_BINARY_DIR}/cantata.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
     endif (NOT ENABLE_UBUNTU)
     target_link_libraries(cantata -lpthread)
 endif (UNIX AND NOT APPLE)

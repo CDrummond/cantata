@@ -99,7 +99,18 @@ void ToolButton::paintEvent(QPaintEvent *e)
 QSize ToolButton::sizeHint() const
 {
     if (!hideMenuIndicator) {
-        QSize sz=QToolButton::sizeHint();
+        QSize sz;
+        #ifdef UNITY_MENU_HACK
+        if (!icon.isNull()) {
+            QStyleOptionToolButton opt;
+            opt.icon=icon;
+            opt.toolButtonStyle=Qt::ToolButtonIconOnly;
+            initStyleOption(&opt);
+            opt.features=QStyleOptionToolButton::None;
+            sz = style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.iconSize, this).expandedTo(QApplication::globalStrut());
+        } else
+        #endif
+            sz = QToolButton::sizeHint();
         return Utils::touchFriendly() ? QSize(sz.width()*TouchProxyStyle::constScaleFactor, sz.height()) : sz;
     }
 

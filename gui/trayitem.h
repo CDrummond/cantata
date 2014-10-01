@@ -39,6 +39,7 @@ class QMenu;
 class Notify;
 #endif
 class MainWindow;
+class QImage;
 struct Song;
 
 class TrayItem : public QObject
@@ -48,6 +49,7 @@ public:
     TrayItem(MainWindow *p);
     virtual ~TrayItem() { }
 
+    void showMessage(const QString &title, const QString &text, const QImage &img);
     void setup();
     #ifdef Q_OS_MAC
     bool isActive() const { return false; }

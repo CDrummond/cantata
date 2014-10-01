@@ -63,6 +63,7 @@
 43. Fix Qt5 translations.
 44. Add button to status bar to eanble/disable playback of MPD HTTP output
     stream.
+45. Show notification when outputs changed.
 
 1.4.2
 -----

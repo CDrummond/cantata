@@ -195,7 +195,7 @@ public:
             if (mouseOver && gtk) {
                 GtkStyle::drawSelection(opt, painter, selected ? 0.75 : 0.25);
             } else {
-                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, 0L);
+                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, itemView());
             }
         }
 
@@ -302,7 +302,11 @@ public:
         }
 
         QRect textRect;
+        #ifdef Q_OS_WIN
+        QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, QPalette::Text));
+        #else
         QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
+        #endif
         QTextOption textOpt(AP_VTop==actionPos ? Qt::AlignHCenter|Qt::AlignVCenter : Qt::AlignVCenter);
 
         textOpt.setWrapMode(QTextOption::NoWrap);
@@ -370,6 +374,7 @@ public:
     }
 
     virtual bool getCoverInUiThread(const QModelIndex &) const { return false; }
+    virtual QWidget * itemView() const { return view; }
 
 protected:
     ListView *view;
@@ -381,6 +386,7 @@ public:
     TreeDelegate(QAbstractItemView *p)
         : ListDelegate(0, p)
         , simpleStyle(true)
+        , treeView(p)
     {
     }
 
@@ -429,7 +435,7 @@ public:
         if (mouseOver && gtk) {
             GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
         } else {
-            QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
+            QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, itemView());
         }
         QRect r(option.rect);
         r.adjust(4, 0, -4, 0);
@@ -471,7 +477,11 @@ public:
             QFont textFont(QApplication::font());
             QFontMetrics textMetrics(textFont);
             int textHeight=textMetrics.height();
+            #ifdef Q_OS_WIN
+            QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, QPalette::Text));
+            #else
             QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
+            #endif
             QTextOption textOpt(Qt::AlignVCenter);
             QRect textRect(r.x(), r.y()+((r.height()-textHeight)/2), r.width(), textHeight);
             QString str=textMetrics.elidedText(text.at(0), Qt::ElideRight, textRect.width(), QPalette::WindowText);
@@ -499,8 +509,13 @@ public:
         if (mouseOver || Utils::touchFriendly()) {
             drawIcons(painter, option.rect, mouseOver || (selected && Utils::touchFriendly()), rtl, AP_HMiddle, index);
         }
+        #ifdef Q_OS_WIN
+        BasicItemDelegate::drawLine(painter, option.rect, option.palette.color(active ? QPalette::Active : QPalette::Inactive,
+                                                                               QPalette::Text));
+        #else
         BasicItemDelegate::drawLine(painter, option.rect, option.palette.color(active ? QPalette::Active : QPalette::Inactive,
                                                                                selected ? QPalette::HighlightedText : QPalette::Text));
+        #endif
     }
 
     void setSimple(bool s) { simpleStyle=s; }
@@ -512,8 +527,11 @@ public:
         return idx.isValid() && idx.parent().isValid() && !idx.parent().parent().isValid();
     }
 
+    virtual QWidget * itemView() const { return treeView; }
+
     bool simpleStyle;
     bool noIcons;
+    QAbstractItemView *treeView;
 };
 
 #if 0

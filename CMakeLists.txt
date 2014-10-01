@@ -325,6 +325,7 @@ endif (ENABLE_KDE)
 find_package(ZLIB REQUIRED)
 
 if (APPLE)
+    set(CANTATA_SRCS ${CANTATA_SRCS} mac/dockmenu.cpp)
     find_package(IOKit)
     if (IOKIT_FOUND)
         set(CANTATA_LIBS ${CANTATA_LIBS} ${IOKIT_LIBRARY})

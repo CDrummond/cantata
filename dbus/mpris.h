@@ -79,7 +79,7 @@ public:
 
     void PlayPause() { StdActions::self()->playPauseTrackAction->trigger(); }
     void Stop() { StdActions::self()->stopPlaybackAction->trigger(); }
-    void StopAfterCurrent() { StdActions::self()->stopAfterTrackAction->trigger(); }
+    void StopAfterCurrent() { StdActions::self()->stopAfterCurrentTrackAction->trigger(); }
 
     void Play() {
         MPDStatus * const status = MPDStatus::self();

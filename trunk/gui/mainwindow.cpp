@@ -94,6 +94,7 @@
 #ifdef Q_OS_MAC
 #include "support/windowmanager.h"
 #include "support/osxstyle.h"
+#include "mac/dockmenu.h"
 #ifdef IOKIT_FOUND
 #include "mac/powermanagement.h"
 #endif
@@ -250,11 +251,6 @@ MainWindow::MainWindow(QWidget *parent)
     prefAction->setMenuRole(QAction::PreferencesRole);
     quitAction->setMenuRole(QAction::QuitRole);
     aboutAction->setMenuRole(QAction::AboutRole);
-    OSXStyle::self()->addToDockMenu(StdActions::self()->prevTrackAction);
-    OSXStyle::self()->addToDockMenu(StdActions::self()->playPauseTrackAction);
-    OSXStyle::self()->addToDockMenu(StdActions::self()->stopPlaybackAction);
-    OSXStyle::self()->addToDockMenu(StdActions::self()->stopAfterCurrentTrackAction);
-    OSXStyle::self()->addToDockMenu(StdActions::self()->nextTrackAction);
     #endif
     #endif // ENABLE_KDE_SUPPORT
     restoreAction = ActionCollection::get()->createAction("showwindow", i18n("Show Window"));
@@ -941,6 +937,9 @@ MainWindow::MainWindow(QWidget *parent)
     }
     #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->start();
+    #endif
+    #ifdef Q_OS_MAC
+    dockMenu=new DockMenu(this);
     #endif
     updateActionToolTips();
 }
@@ -1929,6 +1928,9 @@ void MainWindow::updateStatus(MPDStatus * const status)
     if (thumbnailTooolbar) {
         thumbnailTooolbar->update(status);
     }
+    #endif
+    #ifdef Q_OS_MAC
+    dockMenu->update(status);
     #endif
 }
 

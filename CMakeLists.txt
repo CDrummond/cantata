@@ -340,9 +340,13 @@ if (APPLE)
         set(CANTATA_LIBS ${CANTATA_LIBS} ${Qt5MacExtras_LIBRARIES})
         set(QT_MAC_EXTRAS_FOUND 1)
     endif (Qt5MacExtras_FOUND)
-
+elseif (WIN32 AND ENABLE_QT5)
+    find_package(Qt5WinExtras REQUIRED)
+    include_directories(${Qt5WinExtras_INCLUDE_DIRS})
+    add_definitions(${Qt5WinExtras_DEFINITIONS})
+    set(CANTATA_LIBS ${CANTATA_LIBS} ${Qt5WinExtras_LIBRARIES})
+    set(CANTATA_SRCS ${CANTATA_SRCS} windows/thumbnailtoolbar.cpp)
 endif (APPLE)
-
 # For Qt5, we use Qt's own QJSonDocument class, so no need to find libqjson
 if (NOT ENABLE_QT5 AND NOT WIN32 AND NOT APPLE)
     find_package(QJSON)

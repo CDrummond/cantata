@@ -42,6 +42,7 @@ GLOBAL_STATIC(OSXStyle, instance)
 OSXStyle::OSXStyle()
     : view(0)
     , windowMenu(0)
+    , dockMenu(0)
     , closeAct(0)
     , minAct(0)
     , zoomAct(0)
@@ -91,6 +92,15 @@ void OSXStyle::initWindowMenu(QMainWindow *mw)
         connect(zoomAct, SIGNAL(triggered()), SLOT(zoomWindow()));
         controlActions(mw);
     }
+}
+
+void OSXStyle::addToDockMenu(Action *action)
+{
+    if (!dockMenu) {
+        dockMenu=new QMenu(0);
+        dockMenu->setAsDockMenu();
+    }
+    dockMenu->addAction(action);
 }
 
 void OSXStyle::addWindow(QWidget *w)

@@ -120,10 +120,10 @@ void VolumeSlider::initActions()
     StdActions::self()->increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeUp));
     StdActions::self()->decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeDown));
     #endif
-    connect(muteAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(toggleMute()));
+    connect(muteAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(toggleMute()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateMpdStatus()));
-    connect(StdActions::self()->increaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(increaseVolume()));
-    connect(StdActions::self()->decreaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(decreaseVolume()));
+    connect(StdActions::self()->increaseVolumeAction, SIGNAL(triggered()), this, SLOT(increaseVolume()));
+    connect(StdActions::self()->decreaseVolumeAction, SIGNAL(triggered()), this, SLOT(decreaseVolume()));
     connect(this, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
     addAction(StdActions::self()->increaseVolumeAction);
     addAction(StdActions::self()->decreaseVolumeAction);

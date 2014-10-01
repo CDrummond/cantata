@@ -6,7 +6,6 @@
   - CMake scripts not working
   - Build QtNetwork with SSL support? libeay32.dll and libssl32.dll will also
     need to be supplied with installer.
-  - With Qt5.2 use QWinThumbnailToolButton 
 
 - Streams
   - If radio stream is a playlist, Cantata currently only uses the 1st entry.

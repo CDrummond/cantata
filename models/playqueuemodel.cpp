@@ -243,16 +243,16 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     undoAction->setShortcut(Qt::ControlModifier+Qt::Key_Z);
     redoAction=ActionCollection::get()->createAction("playqueue-redo", i18n("Redo"), menuIcons ? "edit-redo" : "");
     redoAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Z);
-    connect(undoAction, SIGNAL(triggered(bool)), this, SLOT(undo()));
-    connect(redoAction, SIGNAL(triggered(bool)), this, SLOT(redo()));
-    connect(removeDuplicatesAction, SIGNAL(triggered(bool)), this, SLOT(removeDuplicates()));
+    connect(undoAction, SIGNAL(triggered()), this, SLOT(undo()));
+    connect(redoAction, SIGNAL(triggered()), this, SLOT(redo()));
+    connect(removeDuplicatesAction, SIGNAL(triggered()), this, SLOT(removeDuplicates()));
 
     shuffleAction=new Action(i18n("Shuffle"), this);
     shuffleAction->setMenu(new QMenu(0));
     Action *shuffleTracksAction = new Action(i18n("Tracks"), shuffleAction);
     Action *shuffleAlbumsAction = new Action(i18n("Albums"), shuffleAction);
-    connect(shuffleTracksAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
-    connect(shuffleAlbumsAction, SIGNAL(triggered(bool)), this, SLOT(shuffleAlbums()));
+    connect(shuffleTracksAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(shuffle()));
+    connect(shuffleAlbumsAction, SIGNAL(triggered()), this, SLOT(shuffleAlbums()));
     shuffleAction->menu()->addAction(shuffleTracksAction);
     shuffleAction->menu()->addAction(shuffleAlbumsAction);
 
@@ -1245,7 +1245,7 @@ void PlayQueueModel::addSortAction(const QString &name, const QString &key)
     Action *action=new Action(name, sortAction);
     action->setProperty(constSortByKey, key);
     sortAction->menu()->addAction(action);
-    connect(action, SIGNAL(triggered(bool)), SLOT(sortBy()));
+    connect(action, SIGNAL(triggered()), SLOT(sortBy()));
 }
 
 static bool artistSort(const Song &s1, const Song &s2)

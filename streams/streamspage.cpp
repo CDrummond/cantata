@@ -69,14 +69,14 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(searchView, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(searchView, SIGNAL(searchIsActive(bool)), this, SLOT(controlSearch(bool)));
     connect(searchView, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
-    connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
-    connect(StreamsModel::self()->addBookmarkAct(), SIGNAL(triggered(bool)), this, SLOT(addBookmark()));
-    connect(StreamsModel::self()->addToFavouritesAct(), SIGNAL(triggered(bool)), this, SLOT(addToFavourites()));
-    connect(StreamsModel::self()->configureAct(), SIGNAL(triggered(bool)), this, SLOT(configureStreams()));
-    connect(StreamsModel::self()->reloadAct(), SIGNAL(triggered(bool)), this, SLOT(reload()));
-    connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
-    connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
-    connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
+    connect(addAction, SIGNAL(triggered()), this, SLOT(add()));
+    connect(StreamsModel::self()->addBookmarkAct(), SIGNAL(triggered()), this, SLOT(addBookmark()));
+    connect(StreamsModel::self()->addToFavouritesAct(), SIGNAL(triggered()), this, SLOT(addToFavourites()));
+    connect(StreamsModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureStreams()));
+    connect(StreamsModel::self()->reloadAct(), SIGNAL(triggered()), this, SLOT(reload()));
+    connect(editAction, SIGNAL(triggered()), this, SLOT(edit()));
+    connect(importAction, SIGNAL(triggered()), this, SLOT(importXml()));
+    connect(exportAction, SIGNAL(triggered()), this, SLOT(exportXml()));
     connect(StreamsModel::self(), SIGNAL(error(const QString &)), this, SIGNAL(error(const QString &)));
     connect(StreamsModel::self(), SIGNAL(loading()), view, SLOT(showSpinner()));
     connect(StreamsModel::self(), SIGNAL(loaded()), view, SLOT(hideSpinner()));
@@ -98,7 +98,7 @@ StreamsPage::StreamsPage(QWidget *p)
     menu->addSeparator();
     QAction *configAction=new QAction(Icons::self()->configureIcon, i18n("Configure..."), this);
     menu->addAction(configAction);
-    connect(configAction, SIGNAL(triggered(bool)), this, SLOT(showPreferencesPage()));
+    connect(configAction, SIGNAL(triggered()), this, SLOT(showPreferencesPage()));
     menuButton->setMenu(menu);
     Icon::init(replacePlayQueue);
 

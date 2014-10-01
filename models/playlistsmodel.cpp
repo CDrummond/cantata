@@ -99,7 +99,7 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     #ifndef ENABLE_UBUNTU
     connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
     newAction=new QAction(Icon("document-new"), i18n("New Playlist..."), this);
-    connect(newAction, SIGNAL(triggered(bool)), this, SIGNAL(addToNew()));
+    connect(newAction, SIGNAL(triggered()), this, SIGNAL(addToNew()));
     Action::initIcon(newAction);
     #endif
     #if defined ENABLE_MODEL_TEST

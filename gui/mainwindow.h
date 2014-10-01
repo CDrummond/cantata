@@ -79,6 +79,9 @@ class HttpStream;
 class MPDStatus;
 struct MPDConnectionDetails;
 struct Output;
+#if defined Q_OS_WIN && QT_VERSION>=0x050000
+class ThumbnailToolBar;
+#endif
 
 // Dummy classes so that when class name is saved to the config file, we get a more meaningful name than QWidget!!!
 class PlayQueuePage : public QWidget
@@ -129,6 +132,9 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event);
+    #if defined Q_OS_WIN && QT_VERSION >= 0x050000
+    void showEvent(QShowEvent *event);
+    #endif
     void closeEvent(QCloseEvent *event);
 
 private:
@@ -391,6 +397,9 @@ private:
     int contextSwitchTime;
     enum { CS_Init, CS_Connected, CS_Disconnected } connectedState;
     bool stopAfterCurrent;
+    #if defined Q_OS_WIN && QT_VERSION>=0x050000
+    ThumbnailToolBar *thumbnailTooolbar;
+    #endif
     friend class TrayItem;
 };
 

@@ -37,6 +37,7 @@ class QMenu;
 class QAction;
 class QMainWindow;
 class QWindow;
+class Action;
 
 class OSXStyle : public QObject
 {
@@ -51,6 +52,7 @@ public:
     QColor monoIconColor();
 
     void initWindowMenu(QMainWindow *mw);
+    void addToDockMenu(Action *action);
 
 private:
     void addWindow(QWidget *w);
@@ -72,6 +74,7 @@ private:
 private:
     QTreeWidget *view;
     QMenu *windowMenu;
+    QMenu *dockMenu;
     QMap<QWidget *, QAction *> actions;
     QAction *closeAct;
     QAction *minAct;

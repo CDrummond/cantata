@@ -409,7 +409,7 @@ OpmlBrowsePage::OpmlBrowsePage(QWidget *p, const QString &n, const QString &i, c
     mainLayout->addWidget(text, 0);
     Action *act=new Action(i18n("Reload"), this);
     tree->addAction(act);
-    connect(act, SIGNAL(triggered(bool)), this, SLOT(reload()));
+    connect(act, SIGNAL(triggered()), this, SLOT(reload()));
     tree->setContextMenuPolicy(Qt::ActionsContextMenu);
     icn.addFile(i.isEmpty() || !QFile::exists(i) ? ":podcasts" : i);
 }

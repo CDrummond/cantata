@@ -558,7 +558,6 @@ StreamsModel::StreamsModel(QObject *parent)
     if (StdActions::self()->searchAction->icon().isNull()) {
         searchAction = new Action(Icon("edit-find"), StdActions::self()->searchAction->text(), this);
         searchAction->setToolTip(StdActions::self()->searchAction->toolTip());
-        connect(searchAction, SIGNAL(triggered(bool)), StdActions::self()->searchAction, SIGNAL(triggered(bool)));
         connect(searchAction, SIGNAL(triggered()), StdActions::self()->searchAction, SIGNAL(triggered()));
         connect(ActionCollection::get(), SIGNAL(tooltipUpdated(QAction *)), SLOT(tooltipUpdated(QAction *)));
     } else {

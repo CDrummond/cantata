@@ -119,6 +119,9 @@
 #include <QToolBar>
 #if QT_VERSION >= 0x050000
 #include <QProcess>
+#ifdef Q_OS_WIN
+#include "windows/thumbnailtoolbar.h"
+#endif
 #endif
 #include <QDialogButtonBox>
 #include <QKeyEvent>
@@ -172,6 +175,9 @@ MainWindow::MainWindow(QWidget *parent)
     , contextSwitchTime(0)
     , connectedState(CS_Init)
     , stopAfterCurrent(false)
+    #if defined Q_OS_WIN && QT_VERSION >= 0x050000
+    , thumbnailTooolbar(0)
+    #endif
 {
     QPoint p=pos();
     ActionCollection::setMainWidget(this);
@@ -234,23 +240,28 @@ MainWindow::MainWindow(QWidget *parent)
 
     prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? i18n("Configure Cantata...") : i18n("Preferences"),
                                                      menuIcons ? Icons::self()->configureIcon : Icon());
-    connect(prefAction, SIGNAL(triggered(bool)),this, SLOT(showPreferencesDialog()));
+    connect(prefAction, SIGNAL(triggered()),this, SLOT(showPreferencesDialog()));
     quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), menuIcons ? "application-exit" : "");
-    connect(quitAction, SIGNAL(triggered(bool)), this, SLOT(quit()));
+    connect(quitAction, SIGNAL(triggered()), this, SLOT(quit()));
     quitAction->setShortcut(QKeySequence::Quit);
     Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), menuIcons ? Icons::self()->appIcon : Icon());
-    connect(aboutAction, SIGNAL(triggered(bool)),this, SLOT(showAboutDialog()));
+    connect(aboutAction, SIGNAL(triggered()),this, SLOT(showAboutDialog()));
     #ifdef Q_OS_MAC
     prefAction->setMenuRole(QAction::PreferencesRole);
     quitAction->setMenuRole(QAction::QuitRole);
     aboutAction->setMenuRole(QAction::AboutRole);
+    OSXStyle::self()->addToDockMenu(StdActions::self()->prevTrackAction);
+    OSXStyle::self()->addToDockMenu(StdActions::self()->playPauseTrackAction);
+    OSXStyle::self()->addToDockMenu(StdActions::self()->stopPlaybackAction);
+    OSXStyle::self()->addToDockMenu(StdActions::self()->stopAfterCurrentTrackAction);
+    OSXStyle::self()->addToDockMenu(StdActions::self()->nextTrackAction);
     #endif
     #endif // ENABLE_KDE_SUPPORT
     restoreAction = ActionCollection::get()->createAction("showwindow", i18n("Show Window"));
-    connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(restoreWindow()));
+    connect(restoreAction, SIGNAL(triggered()), this, SLOT(restoreWindow()));
 
     serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), menuIcons ? "network-server" : "");
-    connect(serverInfoAction, SIGNAL(triggered(bool)),this, SLOT(showServerInfo()));
+    connect(serverInfoAction, SIGNAL(triggered()),this, SLOT(showServerInfo()));
     serverInfoAction->setEnabled(Settings::self()->firstRun());
     refreshDbAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), menuIcons ? "view-refresh" : "");
     doDbRefreshAction = new Action(refreshDbAction->icon(), i18n("Refresh"), this);
@@ -303,12 +314,12 @@ MainWindow::MainWindow(QWidget *parent)
     clearPlayQueueAction->setShortcut(Qt::AltModifier+Qt::Key_Return);
     cancelAction = ActionCollection::get()->createAction("cancel", i18n("Cancel"), Icons::self()->cancelIcon);
     cancelAction->setShortcut(Qt::AltModifier+Qt::Key_Escape);
-    connect(cancelAction, SIGNAL(triggered(bool)), messageWidget, SLOT(animatedHide()));
-    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), messageWidget, SLOT(animatedHide()));
-    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(clearPlayQueue()));
+    connect(cancelAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
+    connect(clearPlayQueueAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
+    connect(clearPlayQueueAction, SIGNAL(triggered()), this, SLOT(clearPlayQueue()));
     clearNewStateAction = ActionCollection::get()->createAction("clearnewstate", i18n("Clear 'New' State Of Artists and Albums"));
-    connect(clearNewStateAction, SIGNAL(triggered(bool)), MusicLibraryModel::self(), SLOT(clearNewState()));
-    connect(clearNewStateAction, SIGNAL(triggered(bool)), AlbumsModel::self(), SLOT(clearNewState()));
+    connect(clearNewStateAction, SIGNAL(triggered()), MusicLibraryModel::self(), SLOT(clearNewState()));
+    connect(clearNewStateAction, SIGNAL(triggered()), AlbumsModel::self(), SLOT(clearNewState()));
     connect(MusicLibraryModel::self(), SIGNAL(haveNewItems(bool)), clearNewStateAction, SLOT(setEnabled(bool)));
     clearNewStateAction->setEnabled(false);
 
@@ -364,36 +375,36 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", i18n("Play Queue"), Icons::self()->playqueueIcon));
     showPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Q);
     tabWidget->addTab(playQueuePage, TAB_ACTION(showPlayQueueAction), playQueueInSidebar);
-    connect(showPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(showPlayQueue()));
+    connect(showPlayQueueAction, SIGNAL(triggered()), this, SLOT(showPlayQueue()));
     libraryPage = new LibraryPage(this);
     addAction(libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Artists"), Icons::self()->artistsIcon));
     libraryTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(libraryPage, TAB_ACTION(libraryTabAction), !hiddenPages.contains(libraryPage->metaObject()->className()));
-    connect(libraryTabAction, SIGNAL(triggered(bool)), this, SLOT(showLibraryTab()));
+    connect(libraryTabAction, SIGNAL(triggered()), this, SLOT(showLibraryTab()));
     albumsPage = new AlbumsPage(this);
     addAction(albumsTabAction = ActionCollection::get()->createAction("showalbumstab", i18n("Albums"), Icons::self()->albumsIcon));
     albumsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(albumsPage, TAB_ACTION(albumsTabAction), !hiddenPages.contains(albumsPage->metaObject()->className()));
-    connect(albumsTabAction, SIGNAL(triggered(bool)), this, SLOT(showAlbumsTab()));
+    connect(albumsTabAction, SIGNAL(triggered()), this, SLOT(showAlbumsTab()));
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage = new FolderPage(this);
     addAction(foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), Icons::self()->foldersIcon));
     foldersTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(folderPage, TAB_ACTION(foldersTabAction), !hiddenPages.contains(folderPage->metaObject()->className()));
-    connect(foldersTabAction, SIGNAL(triggered(bool)), this, SLOT(showFoldersTab()));
+    connect(foldersTabAction, SIGNAL(triggered()), this, SLOT(showFoldersTab()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     playlistsPage = new PlaylistsPage(this);
     addAction(playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::self()->playlistsIcon));
     playlistsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
-    connect(playlistsTabAction, SIGNAL(triggered(bool)), this, SLOT(showPlaylistsTab()));
+    connect(playlistsTabAction, SIGNAL(triggered()), this, SLOT(showPlaylistsTab()));
     setPlaylistsEnabled(!hiddenPages.contains(playlistsPage->metaObject()->className()));
     #ifdef ENABLE_DYNAMIC
     dynamicPage = new DynamicPage(this);
     addAction(dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::self()->dynamicIcon));
     dynamicTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(dynamicPage, TAB_ACTION(dynamicTabAction), !hiddenPages.contains(dynamicPage->metaObject()->className()));
-    connect(dynamicTabAction, SIGNAL(triggered(bool)), this, SLOT(showDynamicTab()));
+    connect(dynamicTabAction, SIGNAL(triggered()), this, SLOT(showDynamicTab()));
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
     connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
@@ -404,7 +415,7 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::self()->streamsIcon));
     streamsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
-    connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
+    connect(streamsTabAction, SIGNAL(triggered()), this, SLOT(showStreamsTab()));
     connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(streamsPage, SIGNAL(error(QString)), this, SLOT(showError(QString)));
     connect(streamsPage, SIGNAL(showPreferencesPage(QString)), this, SLOT(showPreferencesDialog(QString)));
@@ -415,7 +426,7 @@ MainWindow::MainWindow(QWidget *parent)
     onlineTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
     onlinePage->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
-    connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
+    connect(onlineTabAction, SIGNAL(triggered()), this, SLOT(showOnlineTab()));
     connect(onlinePage, SIGNAL(showPreferencesPage(QString)), this, SLOT(showPreferencesDialog(QString)));
     connect(onlinePage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(OnlineServicesModel::self(), SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
@@ -426,12 +437,12 @@ MainWindow::MainWindow(QWidget *parent)
     devicesTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
-    connect(devicesTabAction, SIGNAL(triggered(bool)), this, SLOT(showDevicesTab()));
+    connect(devicesTabAction, SIGNAL(triggered()), this, SLOT(showDevicesTab()));
     #endif
     searchPage = new SearchPage(this);
     addAction(searchTabAction = ActionCollection::get()->createAction("showsearchtab", i18n("Search"), Icons::self()->searchTabIcon));
     searchTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
-    connect(searchTabAction, SIGNAL(triggered(bool)), this, SLOT(showSearchTab()));
+    connect(searchTabAction, SIGNAL(triggered()), this, SLOT(showSearchTab()));
     connect(searchPage, SIGNAL(locate(QList<Song>)), this, SLOT(locateTracks(QList<Song>)));
     tabWidget->addTab(searchPage, TAB_ACTION(searchTabAction), !hiddenPages.contains(searchPage->metaObject()->className()));
     tabWidget->addTab(contextPage, Icons::self()->infoSidebarIcon, i18n("Info"), songInfoAction->text(),
@@ -749,7 +760,7 @@ MainWindow::MainWindow(QWidget *parent)
         Action *action=new Action(text, ratingAction);
         action->setProperty(constRatingKey, i*Song::Rating_Step);
         ratingAction->menu()->addAction(action);
-        connect(action, SIGNAL(triggered(bool)), SLOT(setRating()));
+        connect(action, SIGNAL(triggered()), SLOT(setRating()));
     }
     playQueue->addAction(ratingAction);
     playQueue->addAction(setPriorityAction);
@@ -783,18 +794,18 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(searchPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    connect(StdActions::self()->deleteSongsAction, SIGNAL(triggered(bool)), SLOT(deleteSongs()));
+    connect(StdActions::self()->deleteSongsAction, SIGNAL(triggered()), SLOT(deleteSongs()));
     connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     #endif
-    connect(StdActions::self()->addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->addPrioHighAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->addPrioMediumAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->addPrioLowAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->addPrioDefaultAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->addPrioCustomAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->addPrioHighestAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->addPrioHighAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->addPrioMediumAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->addPrioLowAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->addPrioDefaultAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->addPrioCustomAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
     connect(this, SIGNAL(enableOutput(int, bool)), MPDConnection::self(), SLOT(enableOutput(int, bool)));
     connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
@@ -824,19 +835,19 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
     connect(MPDConnection::self(), SIGNAL(info(const QString &)), SLOT(showInformation(const QString &)));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
-    connect(refreshDbAction, SIGNAL(triggered(bool)), this, SLOT(refreshDbPromp()));
-    connect(doDbRefreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
-    connect(doDbRefreshAction, SIGNAL(triggered(bool)), messageWidget, SLOT(animatedHide()));
-    connect(dbFullRefreshAction, SIGNAL(triggered(bool)), this, SLOT(fullDbRefresh()));
-    connect(dbFullRefreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
-    connect(dbFullRefreshAction, SIGNAL(triggered(bool)), messageWidget, SLOT(animatedHide()));
-    connect(connectAction, SIGNAL(triggered(bool)), this, SLOT(connectToMpd()));
-    connect(StdActions::self()->prevTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToPrevious()));
-    connect(StdActions::self()->nextTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToNext()));
-    connect(StdActions::self()->playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
-    connect(StdActions::self()->stopPlaybackAction, SIGNAL(triggered(bool)), this, SLOT(stopPlayback()));
-    connect(StdActions::self()->stopAfterCurrentTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterCurrentTrack()));
-    connect(stopAfterTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterTrack()));
+    connect(refreshDbAction, SIGNAL(triggered()), this, SLOT(refreshDbPromp()));
+    connect(doDbRefreshAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(update()));
+    connect(doDbRefreshAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
+    connect(dbFullRefreshAction, SIGNAL(triggered()), this, SLOT(fullDbRefresh()));
+    connect(dbFullRefreshAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(update()));
+    connect(dbFullRefreshAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
+    connect(connectAction, SIGNAL(triggered()), this, SLOT(connectToMpd()));
+    connect(StdActions::self()->prevTrackAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(goToPrevious()));
+    connect(StdActions::self()->nextTrackAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(goToNext()));
+    connect(StdActions::self()->playPauseTrackAction, SIGNAL(triggered()), this, SLOT(playPauseTrack()));
+    connect(StdActions::self()->stopPlaybackAction, SIGNAL(triggered()), this, SLOT(stopPlayback()));
+    connect(StdActions::self()->stopAfterCurrentTrackAction, SIGNAL(triggered()), this, SLOT(stopAfterCurrentTrack()));
+    connect(stopAfterTrackAction, SIGNAL(triggered()), this, SLOT(stopAfterTrack()));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(nowPlaying, SIGNAL(sliderReleased()), this, SLOT(setPosition()));
     connect(&playQueueModel, SIGNAL(currentSongRating(QString,quint8)), nowPlaying, SLOT(rating(QString,quint8)));
@@ -852,35 +863,35 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playQueueSearchWidget, SIGNAL(textChanged(const QString)), this, SLOT(searchPlayQueue()));
     connect(playQueueSearchWidget, SIGNAL(active(bool)), this, SLOT(playQueueSearchActivated(bool)));
     connect(playQueue, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playQueueItemActivated(const QModelIndex &)));
-    connect(StdActions::self()->removeAction, SIGNAL(triggered(bool)), this, SLOT(removeItems()));
-    connect(StdActions::self()->addToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addToPlayQueue()));
-    connect(StdActions::self()->replacePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(replacePlayQueue()));
-    connect(playQueue->removeFromAct(), SIGNAL(triggered(bool)), this, SLOT(removeFromPlayQueue()));
-    connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(clear()));
-    connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(promptClearPlayQueue()));
-    connect(centerPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(centerPlayQueue()));
-    connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
-    connect(songInfoAction, SIGNAL(triggered(bool)), this, SLOT(showSongInfo()));
-    connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(expandOrCollapse()));
-    connect(fullScreenAction, SIGNAL(triggered(bool)), this, SLOT(fullScreen()));
+    connect(StdActions::self()->removeAction, SIGNAL(triggered()), this, SLOT(removeItems()));
+    connect(StdActions::self()->addToPlayQueueAction, SIGNAL(triggered()), this, SLOT(addToPlayQueue()));
+    connect(StdActions::self()->replacePlayQueueAction, SIGNAL(triggered()), this, SLOT(replacePlayQueue()));
+    connect(playQueue->removeFromAct(), SIGNAL(triggered()), this, SLOT(removeFromPlayQueue()));
+    connect(promptClearPlayQueueAction, SIGNAL(triggered()), playQueueSearchWidget, SLOT(clear()));
+    connect(promptClearPlayQueueAction, SIGNAL(triggered()), this, SLOT(promptClearPlayQueue()));
+    connect(centerPlayQueueAction, SIGNAL(triggered()), this, SLOT(centerPlayQueue()));
+    connect(cropPlayQueueAction, SIGNAL(triggered()), this, SLOT(cropPlayQueue()));
+    connect(songInfoAction, SIGNAL(triggered()), this, SLOT(showSongInfo()));
+    connect(expandInterfaceAction, SIGNAL(triggered()), this, SLOT(expandOrCollapse()));
+    connect(fullScreenAction, SIGNAL(triggered()), this, SLOT(fullScreen()));
     #ifdef TAGLIB_FOUND
-    connect(StdActions::self()->editTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
-    connect(editPlayQueueTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
-    connect(StdActions::self()->organiseFilesAction, SIGNAL(triggered(bool)), SLOT(organiseFiles()));
+    connect(StdActions::self()->editTagsAction, SIGNAL(triggered()), this, SLOT(editTags()));
+    connect(editPlayQueueTagsAction, SIGNAL(triggered()), this, SLOT(editTags()));
+    connect(StdActions::self()->organiseFilesAction, SIGNAL(triggered()), SLOT(organiseFiles()));
     #endif
     connect(context, SIGNAL(findArtist(QString)), this, SLOT(locateArtist(QString)));
     connect(context, SIGNAL(findAlbum(QString,QString)), this, SLOT(locateAlbum(QString,QString)));
     connect(context, SIGNAL(playSong(QString)), &playQueueModel, SLOT(playSong(QString)));
-    connect(locateTrackAction, SIGNAL(triggered(bool)), this, SLOT(locateTrack()));
-    connect(StdActions::self()->searchAction, SIGNAL(triggered(bool)), SLOT(showSearch()));
+    connect(locateTrackAction, SIGNAL(triggered()), this, SLOT(locateTrack()));
+    connect(StdActions::self()->searchAction, SIGNAL(triggered()), SLOT(showSearch()));
     connect(searchPlayQueueAction, SIGNAL(triggered()), this, SLOT(showPlayQueueSearch()));
     connect(playQueue, SIGNAL(focusSearch(QString)), playQueueSearchWidget, SLOT(activate(QString)));
-    connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
-    connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
-    connect(addStreamToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addStreamToPlayQueue()));
-    connect(StdActions::self()->setCoverAction, SIGNAL(triggered(bool)), SLOT(setCover()));
+    connect(expandAllAction, SIGNAL(triggered()), this, SLOT(expandAll()));
+    connect(collapseAllAction, SIGNAL(triggered()), this, SLOT(collapseAll()));
+    connect(addStreamToPlayQueueAction, SIGNAL(triggered()), this, SLOT(addStreamToPlayQueue()));
+    connect(StdActions::self()->setCoverAction, SIGNAL(triggered()), SLOT(setCover()));
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    connect(StdActions::self()->replaygainAction, SIGNAL(triggered(bool)), SLOT(replayGain()));
+    connect(StdActions::self()->replaygainAction, SIGNAL(triggered()), SLOT(replayGain()));
     #endif
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
@@ -1072,6 +1083,16 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         }
     }
 }
+
+#if defined Q_OS_WIN && QT_VERSION >= 0x050000
+void MainWindow::showEvent(QShowEvent *event)
+{
+    if (!thumbnailTooolbar) {
+        thumbnailTooolbar=new ThumbnailToolBar(this);
+    }
+    MAIN_WINDOW_BASE_CLASS::showEvent(event);
+}
+#endif
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
@@ -1469,6 +1490,11 @@ void MainWindow::readSettings()
     tabWidget->setStyle(Settings::self()->sidebar());
     coverWidget->setEnabled(Settings::self()->showCoverWidget());
     stopTrackButton->setVisible(Settings::self()->showStopButton());
+    #if defined Q_OS_WIN && QT_VERSION >= 0x050000
+    if (thumbnailTooolbar) {
+        thumbnailTooolbar->readSettings();
+    }
+    #endif
     searchPlayQueueAction->setEnabled(Settings::self()->playQueueSearch());
     searchPlayQueueAction->setVisible(Settings::self()->playQueueSearch());
     nowPlaying->readConfig();
@@ -1853,10 +1879,10 @@ void MainWindow::updateStatus(MPDStatus * const status)
     }
 
     playQueueModel.setState(status->state());
+    StdActions::self()->playPauseTrackAction->setEnabled(status->playlistLength()>0);
     switch (status->state()) {
     case MPDState_Playing:
         StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPauseIcon);
-        StdActions::self()->playPauseTrackAction->setEnabled(0!=status->playlistLength());
         enableStopActions(true);
         StdActions::self()->nextTrackAction->setEnabled(status->playlistLength()>1);
         StdActions::self()->prevTrackAction->setEnabled(status->playlistLength()>1);
@@ -1865,7 +1891,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
     case MPDState_Inactive:
     case MPDState_Stopped:
         StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
-        StdActions::self()->playPauseTrackAction->setEnabled(0!=status->playlistLength());
         enableStopActions(false);
         StdActions::self()->nextTrackAction->setEnabled(false);
         StdActions::self()->prevTrackAction->setEnabled(false);
@@ -1880,7 +1905,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
         break;
     case MPDState_Paused:
         StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
-        StdActions::self()->playPauseTrackAction->setEnabled(0!=status->playlistLength());
         enableStopActions(0!=status->playlistLength());
         StdActions::self()->nextTrackAction->setEnabled(status->playlistLength()>1);
         StdActions::self()->prevTrackAction->setEnabled(status->playlistLength()>1);
@@ -1901,6 +1925,11 @@ void MainWindow::updateStatus(MPDStatus * const status)
     // Update status info
     lastState = status->state();
     lastSongId = status->songId();
+    #if defined Q_OS_WIN && QT_VERSION>=0x050000
+    if (thumbnailTooolbar) {
+        thumbnailTooolbar->update(status);
+    }
+    #endif
 }
 
 void MainWindow::playQueueItemActivated(const QModelIndex &index)

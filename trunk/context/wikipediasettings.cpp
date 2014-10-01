@@ -92,7 +92,7 @@ WikipediaSettings::WikipediaSettings(QWidget *p)
 {
     label->setText(i18n("Choose the wikipedia languages you want to use when searching for artist and album information."));
     reload=new Action(i18n("Reload"), this);
-    connect(reload, SIGNAL(triggered(bool)), this, SLOT(getLangs()));
+    connect(reload, SIGNAL(triggered()), this, SLOT(getLangs()));
     available->addAction(reload);
     available->setContextMenuPolicy(Qt::ActionsContextMenu);
 }

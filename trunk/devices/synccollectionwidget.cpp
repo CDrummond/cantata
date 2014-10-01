@@ -58,11 +58,11 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
     connect(search, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
 
     copyAction=new Action(action, this);
-    connect(copyAction, SIGNAL(triggered(bool)), SLOT(copySongs()));
+    connect(copyAction, SIGNAL(triggered()), SLOT(copySongs()));
     checkAction=new Action(i18n("Check Items"), this);
-    connect(checkAction, SIGNAL(triggered(bool)), SLOT(checkItems()));
+    connect(checkAction, SIGNAL(triggered()), SLOT(checkItems()));
     unCheckAction=new Action(i18n("Uncheck Items"), this);
-    connect(unCheckAction, SIGNAL(triggered(bool)), SLOT(unCheckItems()));
+    connect(unCheckAction, SIGNAL(triggered()), SLOT(unCheckItems()));
     tree->addAction(copyAction);
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
@@ -81,8 +81,8 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
         tree->addAction(collapse);
         addAction(expand);
         addAction(collapse);
-        connect(expand, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
-        connect(collapse, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
+        connect(expand, SIGNAL(triggered()), this, SLOT(expandAll()));
+        connect(collapse, SIGNAL(triggered()), this, SLOT(collapseAll()));
     }
 
     connect(tree, SIGNAL(itemsSelected(bool)), checkAction, SLOT(setEnabled(bool)));

@@ -83,7 +83,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     removeAct->setEnabled(false);
     files->addAction(removeAct);
     connect(files, SIGNAL(itemSelectionChanged()), SLOT(controlRemoveAct()));
-    connect(removeAct, SIGNAL(triggered(bool)), SLOT(removeItems()));
+    connect(removeAct, SIGNAL(triggered()), SLOT(removeItems()));
 }
 
 TrackOrganiser::~TrackOrganiser()

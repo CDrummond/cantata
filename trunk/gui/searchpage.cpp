@@ -75,7 +75,7 @@ SearchPage::SearchPage(QWidget *p)
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(setSearchCategories()));
-    connect(locateAction, SIGNAL(triggered(bool)), SLOT(locateSongs()));
+    connect(locateAction, SIGNAL(triggered()), SLOT(locateSongs()));
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
     view->setMode(ItemView::Mode_List);

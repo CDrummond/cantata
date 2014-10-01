@@ -104,7 +104,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     menu->addSeparator();
     QAction *configAction=new QAction(Icons::self()->configureIcon, i18n("Configure..."), this);
     menu->addAction(configAction);
-    connect(configAction, SIGNAL(triggered(bool)), this, SLOT(showPreferencesPage()));
+    connect(configAction, SIGNAL(triggered()), this, SLOT(showPreferencesPage()));
 
     view->addAction(downloadAction);
     view->addSeparator();

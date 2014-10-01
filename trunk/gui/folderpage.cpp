@@ -70,7 +70,7 @@ FolderPage::FolderPage(QWidget *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
-    connect(browseAction, SIGNAL(triggered(bool)), this, SLOT(openFileManager()));
+    connect(browseAction, SIGNAL(triggered()), this, SLOT(openFileManager()));
     connect(MPDConnection::self(), SIGNAL(updatingFileList()), view, SLOT(updating()));
     connect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(updated()));
     connect(MPDConnection::self(), SIGNAL(updatingDatabase()), view, SLOT(updating()));

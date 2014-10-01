@@ -698,7 +698,7 @@ ItemView::ItemView(QWidget *p)
     connect(listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(activateItem(const QModelIndex &)));
     connect(listView, SIGNAL(itemDoubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
-    connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
+    connect(backAction, SIGNAL(triggered()), this, SLOT(backActivated()));
     connect(listViewEventHandler, SIGNAL(backspacePressed()), this, SLOT(backActivated()));
     searchWidget->setVisible(false);
 }

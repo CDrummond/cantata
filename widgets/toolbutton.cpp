@@ -65,6 +65,7 @@ void ToolButton::paintEvent(QPaintEvent *e)
     }
     #endif
     #if QT_VERSION > 0x050000 || defined UNITY_MENU_HACK
+    Q_UNUSED(e)
     // Hack to work-around Qt5 sometimes leaving toolbutton in 'raised' state.
     QStylePainter p(this);
     QStyleOptionToolButton opt;
@@ -82,7 +83,7 @@ void ToolButton::paintEvent(QPaintEvent *e)
     }
     #endif
     p.drawComplexControl(QStyle::CC_ToolButton, opt);
-    #else
+    #else // QT_VERSION > 0x050000 || defined UNITY_MENU_HACK
     if (menu() && hideMenuIndicator) {
         QStylePainter p(this);
         QStyleOptionToolButton opt;

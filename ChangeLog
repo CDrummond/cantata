@@ -67,6 +67,7 @@
 46. Connect MPRIS stopAfterCurrent signal to correct action.
 47. Add prev/play/pause/etc actions to Unity launcher, and to windows taskbar
     entry.
+48. Fix current track highlight in grouped view under windows for header item.
 
 1.4.2
 -----

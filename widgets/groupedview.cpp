@@ -338,7 +338,7 @@ public:
         if (state && GroupedView::State_StopAfterTrack!=state) {
             QRectF border(option.rect.x()+1.5, option.rect.y()+1.5, option.rect.width()-3, option.rect.height()-3);
             if (!title.isEmpty()) {
-                border.adjust(0, textHeight+constBorder, 0, 0);
+                border.adjust(0, (border.height()/2)+1, 0, 0);
             }
             QLinearGradient g(border.topLeft(), border.bottomLeft());
             #ifdef Q_OS_MAC

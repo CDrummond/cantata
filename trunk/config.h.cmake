@@ -57,4 +57,14 @@
 #define CANTATA_SYS_TRANS_DIR   Utils::systemDir(QLatin1String("translations"))
 #define CANTATA_SYS_SCRIPTS_DIR Utils::systemDir(QLatin1String("scripts"))
 
+#ifdef UNITY_HACK
+#define HIDE_MENU_ICON(A) menuIcons ? Icon() : A
+#define HIDE_MENU_ICON_NAME(A) menuIcons ? 0 : A
+#define UNITY_MENU_ICON_CHECK bool menuIcons=Utils::Unity!=Utils::currentDe() || !QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
+#else
+#define HIDE_MENU_ICON(A) A
+#define HIDE_MENU_ICON_NAME(A) A
+#define UNITY_MENU_ICON_CHECK
+#endif
+
 #endif

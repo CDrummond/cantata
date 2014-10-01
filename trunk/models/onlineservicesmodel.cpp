@@ -77,10 +77,10 @@ OnlineServicesModel::OnlineServicesModel(QObject *parent)
     subscribeAction = ActionCollection::get()->createAction("subscribeonlineservice", i18n("Add Subscription"), "list-add");
     unSubscribeAction = ActionCollection::get()->createAction("unsubscribeonlineservice", i18n("Remove Subscription"), "list-remove");
     refreshSubscriptionAction = ActionCollection::get()->createAction("refreshsubscription", i18n("Refresh Subscription"), "view-refresh");
-    #ifdef ENABLE_STREAMS
+    #if defined ENABLE_STREAMS || !defined UNITY_HACK
     searchAction = StreamsModel::self()->searchAct();
     #else
-    // For Mac/Unity we try to hide icons from menubar menus. However, search is used in the menubar AND in the streams view. We
+    // For Unity we try to hide icons from menubar menus. However, search is used in the menubar AND in the streams view. We
     // need the icon on the streams view. Therefore, if the StdAction has no icon - we create a new one and forward all signals...
     if (StdActions::self()->searchAction->icon().isNull()) {
         searchAction = new Action(Icon("edit-find"), StdActions::self()->searchAction->text(), this);
@@ -460,10 +460,10 @@ void OnlineServicesModel::cancelAll()
     podcast->cancelAllJobs();
 }
 
-// Required due to icon missing for StdActions::searchAction for Mac/Unity... See note in constructor above.
+// Required due to icon missing for StdActions::searchAction for Unity... See note in constructor above.
 void OnlineServicesModel::tooltipUpdated(QAction *act)
 {
-    #ifdef ENABLE_STREAMS
+    #if defined ENABLE_STREAMS || !defined UNITY_HACK
     Q_UNUSED(act)
     #else
     if (act!=searchAction && act==StdActions::self()->searchAction) {

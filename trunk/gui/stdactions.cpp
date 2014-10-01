@@ -39,7 +39,7 @@ GLOBAL_STATIC(StdActions, instance)
 
 StdActions::StdActions()
 {
-    bool menuIcons=!QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
+    UNITY_MENU_ICON_CHECK
     prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::self()->toolbarPrevIcon);
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::self()->toolbarNextIcon);
     playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::self()->toolbarPlayIcon);
@@ -48,7 +48,7 @@ StdActions::StdActions()
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
-    savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), menuIcons ? "document-save-as" : 0);
+    savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), HIDE_MENU_ICON_NAME("document-save-as"));
     addToPlayQueueAction = ActionCollection::get()->createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
     replacePlayQueueAction = ActionCollection::get()->createAction("replaceplaylist", i18n("Replace Play Queue"), "media-playback-start");
     addWithPriorityAction = ActionCollection::get()->createAction("addwithprio", i18n("Add With Priority"), Icon("favorites"));
@@ -73,7 +73,7 @@ StdActions::StdActions()
     #endif
     setCoverAction = ActionCollection::get()->createAction("setcover", i18n("Set Image"));
     removeAction = ActionCollection::get()->createAction("removeitems", i18n("Remove"), "list-remove");
-    searchAction = ActionCollection::get()->createAction("search", i18n("Find"), menuIcons ? "edit-find" : "");
+    searchAction = ActionCollection::get()->createAction("search", i18n("Find"), HIDE_MENU_ICON_NAME("edit-find"));
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
 
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());

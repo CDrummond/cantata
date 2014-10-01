@@ -553,14 +553,17 @@ StreamsModel::StreamsModel(QObject *parent)
     configureAction = ActionCollection::get()->createAction("configurestreams", i18n("Configure Streams"), Icons::self()->configureIcon);
     reloadAction = ActionCollection::get()->createAction("reloadstreams", i18n("Reload"), Icon("view-refresh"));
 
-    // For Mac/Unity we try to hide icons from menubar menus. However, search is used in the menubar AND in the streams view. We
+    #ifdef UNITY_HACK
+    // For Unity we try to hide icons from menubar menus. However, search is used in the menubar AND in the streams view. We
     // need the icon on the streams view. Therefore, if the StdAction has no icon -  we create a new one and forward all signals...
     if (StdActions::self()->searchAction->icon().isNull()) {
         searchAction = new Action(Icon("edit-find"), StdActions::self()->searchAction->text(), this);
         searchAction->setToolTip(StdActions::self()->searchAction->toolTip());
         connect(searchAction, SIGNAL(triggered()), StdActions::self()->searchAction, SIGNAL(triggered()));
         connect(ActionCollection::get(), SIGNAL(tooltipUpdated(QAction *)), SLOT(tooltipUpdated(QAction *)));
-    } else {
+    } else
+    #endif
+    {
         searchAction = StdActions::self()->searchAction;
     }
 
@@ -1158,9 +1161,13 @@ void StreamsModel::jobFinished()
 // Required due to icon missing for StdActions::searchAction for Mac/Unity... See note in constructor above.
 void StreamsModel::tooltipUpdated(QAction *act)
 {
+    #ifdef UNITY_HACK
     if (act!=searchAction && act==StdActions::self()->searchAction) {
         searchAction->setToolTip(StdActions::self()->searchAction->toolTip());
     }
+    #else
+    Q_UNUSED(act)
+    #endif
 }
 
 void StreamsModel::storedPlaylists(const QList<Playlist> &list)

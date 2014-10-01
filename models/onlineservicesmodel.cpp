@@ -77,7 +77,7 @@ OnlineServicesModel::OnlineServicesModel(QObject *parent)
     subscribeAction = ActionCollection::get()->createAction("subscribeonlineservice", i18n("Add Subscription"), "list-add");
     unSubscribeAction = ActionCollection::get()->createAction("unsubscribeonlineservice", i18n("Remove Subscription"), "list-remove");
     refreshSubscriptionAction = ActionCollection::get()->createAction("refreshsubscription", i18n("Refresh Subscription"), "view-refresh");
-    #if defined ENABLE_STREAMS || !defined UNITY_HACK
+    #if defined ENABLE_STREAMS || !defined UNITY_MENU_HACK
     searchAction = StreamsModel::self()->searchAct();
     #else
     // For Unity we try to hide icons from menubar menus. However, search is used in the menubar AND in the streams view. We
@@ -463,7 +463,7 @@ void OnlineServicesModel::cancelAll()
 // Required due to icon missing for StdActions::searchAction for Unity... See note in constructor above.
 void OnlineServicesModel::tooltipUpdated(QAction *act)
 {
-    #if defined ENABLE_STREAMS || !defined UNITY_HACK
+    #if defined ENABLE_STREAMS || !defined UNITY_MENU_HACK
     Q_UNUSED(act)
     #else
     if (act!=searchAction && act==StdActions::self()->searchAction) {

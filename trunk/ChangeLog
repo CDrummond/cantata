@@ -65,6 +65,7 @@
     stream.
 45. Show notification when outputs changed.
 46. Connect MPRIS stopAfterCurrent signal to correct action.
+47. Add prev/play/pause/etc actions to Unity launcher.
 
 1.4.2
 -----

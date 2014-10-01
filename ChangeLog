@@ -64,6 +64,7 @@
 44. Add button to status bar to eanble/disable playback of MPD HTTP output
     stream.
 45. Show notification when outputs changed.
+46. Connect MPRIS stopAfterCurrent signal to correct action.
 
 1.4.2
 -----

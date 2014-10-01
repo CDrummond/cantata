@@ -1295,44 +1295,75 @@ void MainWindow::checkMpdDir()
 
 void MainWindow::outputsUpdated(const QList<Output> &outputs)
 {
-    if (outputs.count()<2) {
-        outputsAction->setVisible(false);
+    const char *constMpdConName="mpd-name";
+    const char *constMpdEnabledOuptuts="mpd-outputs";
+    QString lastConn=property(constMpdConName).toString();
+    QString newConn=MPDConnection::self()->getDetails().name;
+    setProperty(constMpdConName, newConn);
+    outputsAction->setVisible(true);
+    QSet<QString> enabledMpd;
+    QSet<QString> lastEnabledMpd=QSet<QString>::fromList(property(constMpdEnabledOuptuts).toStringList());
+    QSet<QString> mpd;
+    QSet<QString> menuItems;
+    QMenu *menu=outputsAction->menu();
+    foreach (const Output &o, outputs) {
+        if (o.enabled) {
+            enabledMpd.insert(o.name);
+        }
+        mpd.insert(o.name);
+    }
+
+    foreach (QAction *act, menu->actions()) {
+        menuItems.insert(act->data().toString());
+    }
+
+    if (menuItems!=mpd) {
+        menu->clear();
+        QList<Output> out=outputs;
+        qSort(out);
+        int i=Qt::Key_1;
+        foreach (const Output &o, out) {
+            QAction *act=menu->addAction(o.name, this, SLOT(toggleOutput()));
+            act->setData(o.id);
+            act->setCheckable(true);
+            act->setChecked(o.enabled);
+            act->setShortcut(Qt::MetaModifier+nextKey(i));
+        }
     } else {
-        outputsAction->setVisible(true);
-        QSet<QString> mpd;
-        QSet<QString> menuItems;
-        QMenu *menu=outputsAction->menu();
         foreach (const Output &o, outputs) {
-            mpd.insert(o.name);
-        }
-
-        foreach (QAction *act, menu->actions()) {
-            menuItems.insert(act->data().toString());
-        }
-
-        if (menuItems!=mpd) {
-            menu->clear();
-            QList<Output> out=outputs;
-            qSort(out);
-            int i=Qt::Key_1;
-            foreach (const Output &o, out) {
-                QAction *act=menu->addAction(o.name, this, SLOT(toggleOutput()));
-                act->setData(o.id);
-                act->setCheckable(true);
-                act->setChecked(o.enabled);
-                act->setShortcut(Qt::MetaModifier+nextKey(i));
-            }
-        } else {
-            foreach (const Output &o, outputs) {
-                foreach (QAction *act, menu->actions()) {
-                    if (Utils::strippedText(act->text())==o.name) {
-                        act->setChecked(o.enabled);
-                        break;
-                    }
+            foreach (QAction *act, menu->actions()) {
+                if (Utils::strippedText(act->text())==o.name) {
+                    act->setChecked(o.enabled);
+                    break;
                 }
             }
         }
     }
+
+    if (newConn==lastConn && enabledMpd!=lastEnabledMpd) {
+        QSet<QString> switchedOn=enabledMpd-lastEnabledMpd;
+        QSet<QString> switchedOff=lastEnabledMpd-enabledMpd;
+
+        if (!switchedOn.isEmpty() && switchedOff.isEmpty()) {
+            QStringList names=switchedOn.toList();
+            qSort(names);
+            trayItem->showMessage(i18n("Outputs"), i18n("Enabled: %1", names.join(QLatin1String(", "))), Icons::self()->speakerIcon.pixmap(64, 64).toImage());
+        } else if (!switchedOff.isEmpty() && switchedOn.isEmpty()) {
+            QStringList names=switchedOff.toList();
+            qSort(names);
+            trayItem->showMessage(i18n("Outputs"), i18n("Disabled: %1", names.join(QLatin1String(", "))), Icons::self()->speakerIcon.pixmap(64, 64).toImage());
+        } else if (!switchedOn.isEmpty() && !switchedOff.isEmpty()) {
+            QStringList on=switchedOn.toList();
+            qSort(on);
+            QStringList off=switchedOff.toList();
+            qSort(off);
+            trayItem->showMessage(i18n("Outputs"),
+                                  i18n("Enabled: %1", on.join(QLatin1String(", ")))+QLatin1Char('\n')+
+                                  i18n("Disabled: %1", off.join(QLatin1String(", "))), Icons::self()->speakerIcon.pixmap(64, 64).toImage());
+        }
+    }
+    setProperty(constMpdEnabledOuptuts, QStringList() << enabledMpd.toList());
+    outputsAction->setVisible(outputs.count()>1);
 }
 
 void MainWindow::updateConnectionsMenu()

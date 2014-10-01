@@ -1359,7 +1359,9 @@ void MPDConnection::outputs()
 
 void MPDConnection::enableOutput(int id, bool enable)
 {
-    sendCommand((enable ? "enableoutput " : "disableoutput ")+quote(id));
+    if (sendCommand((enable ? "enableoutput " : "disableoutput ")+quote(id)).ok) {
+        outputs();
+    }
 }
 
 /*

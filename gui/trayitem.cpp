@@ -85,6 +85,23 @@ TrayItem::TrayItem(MainWindow *p)
 {
 }
 
+void TrayItem::showMessage(const QString &title, const QString &text, const QImage &img)
+{
+    #ifdef Q_OS_MAC
+    MacNotify::showMessage(title, text, img);
+    #elif defined QT_QTDBUS_FOUND
+    if (!notification) {
+        notification=new Notify(this);
+    }
+    notification->show(title, text, img);
+    #else
+    Q_UNUSED(img)
+    if (trayItem) {
+        trayItem->showMessage(title, text, QSystemTrayIcon::Information, 5000);
+    }
+    #endif
+}
+
 void TrayItem::setup()
 {
     #ifndef Q_OS_MAC

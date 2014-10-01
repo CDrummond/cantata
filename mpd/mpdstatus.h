@@ -44,7 +44,7 @@ struct MPDStatusValues {
         , single(false)
         , random(false)
         , playlist(0)
-        , playlistLength(-1)
+        , playlistLength(0)
         , crossFade(0)
         , state(MPDState_Inactive)
         , song(-1)

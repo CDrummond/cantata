@@ -136,7 +136,7 @@ RgDialog::RgDialog(QWidget *parent)
     qRegisterMetaType<Tags::ReplayGain>("Tags::ReplayGain");
     connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(toggleDisplay()));
     connect(view, SIGNAL(itemSelectionChanged()), SLOT(controlRemoveAct()));
-    connect(removeAct, SIGNAL(triggered(bool)), SLOT(removeItems()));
+    connect(removeAct, SIGNAL(triggered()), SLOT(removeItems()));
 
     italic=font();
     italic.setItalic(true);

@@ -885,8 +885,8 @@ void CoverDialog::menuRequested(const QPoint &pos)
         menu=new QMenu(list);
         showAction=menu->addAction(Icon("zoom-original"), i18n("Display"));
         removeAction=menu->addAction(Icon("list-remove"), i18n("Remove"));
-        connect(showAction, SIGNAL(triggered(bool)), SLOT(showImage()));
-        connect(removeAction, SIGNAL(triggered(bool)), SLOT(removeImages()));
+        connect(showAction, SIGNAL(triggered()), SLOT(showImage()));
+        connect(removeAction, SIGNAL(triggered()), SLOT(removeImages()));
     }
 
     QList<QListWidgetItem*> items=list->selectedItems();

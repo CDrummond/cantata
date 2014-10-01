@@ -95,9 +95,9 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
     connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(renamePlaylist(const QString &, const QString &)));
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<quint32> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<quint32> &)));
-    connect(StdActions::self()->savePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(savePlaylist()));
-    connect(renamePlaylistAction, SIGNAL(triggered(bool)), this, SLOT(renamePlaylist()));
-    connect(removeDuplicatesAction, SIGNAL(triggered(bool)), this, SLOT(removeDuplicates()));
+    connect(StdActions::self()->savePlayQueueAction, SIGNAL(triggered()), this, SLOT(savePlaylist()));
+    connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
+    connect(removeDuplicatesAction, SIGNAL(triggered()), this, SLOT(removeDuplicates()));
     connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
     connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
     QMenu *menu=new QMenu(this);

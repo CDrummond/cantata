@@ -36,7 +36,7 @@ public:
         SB_Gtk
     };
 
-    TouchProxyStyle(bool touchSpin=true, bool gtkOverlayStyleScrollbar=false);
+    TouchProxyStyle(int modView=0, bool touchSpin=true, bool gtkOverlayStyleScrollbar=false);
     ~TouchProxyStyle();
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;

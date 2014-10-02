@@ -35,6 +35,7 @@
 #include "basicitemdelegate.h"
 #include "icons.h"
 #include "support/gtkstyle.h"
+#include "support/proxystyle.h"
 #include "support/actioncollection.h"
 #include "support/action.h"
 #include "models/roles.h"
@@ -221,6 +222,10 @@ void PlayQueueView::setMode(ItemView::Mode m)
             connect(groupedView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
             connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
             updatePalette();
+            #ifdef Q_OS_MAC
+            groupedView->setAttribute(Qt::WA_MacShowFocusRect, 0);
+            #endif
+            groupedView->setProperty(ProxyStyle::constModifyFrameProp, ProxyStyle::VF_Top);
         }
         break;
     case ItemView::Mode_Table:
@@ -233,6 +238,10 @@ void PlayQueueView::setMode(ItemView::Mode m)
             connect(treeView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
             connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
             updatePalette();
+            #ifdef Q_OS_MAC
+            treeView->setAttribute(Qt::WA_MacShowFocusRect, 0);
+            #endif
+            treeView->setProperty(ProxyStyle::constModifyFrameProp, ProxyStyle::VF_Top);
         }
     default:
         break;
@@ -486,6 +495,11 @@ void PlayQueueView::streamFetchStatus(const QString &msg)
         connect(msgOverlay, SIGNAL(cancel()), SLOT(hideSpinner()));
     }
     msgOverlay->setText(msg);
+}
+
+void PlayQueueView::searchActive(bool a)
+{
+    view()->setProperty(ProxyStyle::constModifyFrameProp, a ? 0 : ProxyStyle::VF_Top);
 }
 
 void PlayQueueView::drawBackdrop(QWidget *widget, const QSize &size)

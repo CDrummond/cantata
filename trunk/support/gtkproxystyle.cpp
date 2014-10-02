@@ -58,9 +58,9 @@ static bool useOverlayStyleScrollbars(bool use)
     return use;
 }
 
-GtkProxyStyle::GtkProxyStyle(bool thinSb, bool styleSpin, const QMap<QString, QString> &c, bool modView)
-    : TouchProxyStyle(styleSpin, useOverlayStyleScrollbars(thinSb))
-    , modViewFrame(modView && (SB_Gtk==sbarType || !styleHint(SH_ScrollView_FrameOnlyAroundContents, 0, 0, 0)))
+GtkProxyStyle::GtkProxyStyle(int modView, bool thinSb, bool styleSpin, const QMap<QString, QString> &c)
+    : TouchProxyStyle(modView && (SB_Gtk==sbarType || !styleHint(SH_ScrollView_FrameOnlyAroundContents, 0, 0, 0)) ? modView : 0,
+                      styleSpin, useOverlayStyleScrollbars(thinSb))
     , css(c)
 {
     shortcutHander=new ShortcutHandler(this);
@@ -83,24 +83,6 @@ int GtkProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const Q
     }
 
     return TouchProxyStyle::styleHint(hint, option, widget, returnData);
-}
-
-void GtkProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
-{
-    TouchProxyStyle::drawPrimitive(element, option, painter, widget);
-    if (modViewFrame && PE_Frame==element && widget && widget->property(GtkStyle::constHideFrameProp).isValid()) {
-        const QRect &r=option->rect;
-        if (option->palette.base().color()==Qt::transparent) {
-            painter->setPen(QPen(QApplication::palette().color(QPalette::Base), 1));
-        } else {
-            painter->setPen(QPen(option->palette.base(), 1));
-        }
-        if (Qt::LeftToRight==option->direction) {
-            painter->drawLine(r.topRight()+QPoint(0, 1), r.bottomRight()+QPoint(0, -1));
-        } else {
-            painter->drawLine(r.topLeft()+QPoint(0, 1), r.bottomLeft()+QPoint(0, -1));
-        }
-    }
 }
 
 void GtkProxyStyle::polish(QWidget *widget)

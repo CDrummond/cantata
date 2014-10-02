@@ -23,15 +23,50 @@
 
 #include "proxystyle.h"
 #include "acceleratormanager.h"
+#include "gtkstyle.h"
+#include "utils.h"
 #include <QMenu>
+#include <QPainter>
+#include <QStyleOption>
+#include <QApplication>
 
 static const char * constAccelProp="managed-accel";
+const char * ProxyStyle::constModifyFrameProp="mod-frame";
 
 void ProxyStyle::polish(QWidget *widget)
 {
+    #ifndef Q_OS_MAC
     if (widget && qobject_cast<QMenu *>(widget) && !widget->property(constAccelProp).isValid()) {
         AcceleratorManager::manage(widget);
         widget->setProperty(constAccelProp, true);
     }
+    #endif
     baseStyle()->polish(widget);
+}
+
+void ProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+{
+    baseStyle()->drawPrimitive(element, option, painter, widget);
+    if (modViewFrame && PE_Frame==element && widget) {
+        QVariant v=widget->property(constModifyFrameProp);
+        if (v.isValid()) {
+            int mod=v.toInt();
+            const QRect &r=option->rect;
+            if (option->palette.base().color()==Qt::transparent) {
+                painter->setPen(QPen(QApplication::palette().color(QPalette::Base), 1));
+            } else {
+                painter->setPen(QPen(option->palette.base(), 1));
+            }
+            if (mod&VF_Side && modViewFrame&VF_Side) {
+                if (Qt::LeftToRight==option->direction) {
+                    painter->drawLine(r.topRight()+QPoint(0, 1), r.bottomRight()+QPoint(0, -1));
+                } else {
+                    painter->drawLine(r.topLeft()+QPoint(0, 1), r.bottomLeft()+QPoint(0, -1));
+                }
+            }
+            if (mod&VF_Top && modViewFrame&VF_Top) {
+                painter->drawLine(r.topLeft()+QPoint(1, 0), r.topRight());
+            }
+        }
+    }
 }

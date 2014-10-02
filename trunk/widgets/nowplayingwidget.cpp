@@ -43,10 +43,10 @@
 #include <QToolTip>
 #include <QSpacerItem>
 
-class ProxyStyle : public QProxyStyle
+class PosSliderProxyStyle : public QProxyStyle
 {
 public:
-    ProxyStyle()
+    PosSliderProxyStyle()
         : QProxyStyle()
     {
         setBaseStyle(qApp->style());
@@ -151,7 +151,7 @@ PosSlider::PosSlider(QWidget *p)
     setPageStep(0);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     setFocusPolicy(Qt::NoFocus);
-    setStyle(new ProxyStyle());
+    setStyle(new PosSliderProxyStyle());
     int h=qMax((int)(fontMetrics().height()*0.5), 8);
     setMinimumHeight(h);
     setMaximumHeight(h);

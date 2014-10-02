@@ -116,6 +116,7 @@ public Q_SLOTS:
     void hideSpinner();
     void setImage(const QImage &img);
     void streamFetchStatus(const QString &msg);
+    void searchActive(bool a);
 
 Q_SIGNALS:
     void itemsSelected(bool);

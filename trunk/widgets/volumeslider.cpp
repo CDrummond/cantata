@@ -43,10 +43,10 @@
 #include <KDE/KShortcut>
 #endif
 
-class ProxyStyle : public QProxyStyle
+class VolumeSliderProxyStyle : public QProxyStyle
 {
 public:
-    ProxyStyle()
+    VolumeSliderProxyStyle()
         : QProxyStyle()
     {
         setBaseStyle(qApp->style());
@@ -100,7 +100,7 @@ VolumeSlider::VolumeSlider(QWidget *p)
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     setOrientation(Qt::Horizontal);
     setFocusPolicy(Qt::NoFocus);
-    setStyle(new ProxyStyle());
+    setStyle(new VolumeSliderProxyStyle());
     setStyleSheet(QString("QSlider::groove:horizontal {border: 0px;} "
                           "QSlider::sub-page:horizontal {border: 0px;} "
                           "QSlider::handle:horizontal {width: 0px; height:0px; margin:0;}"));

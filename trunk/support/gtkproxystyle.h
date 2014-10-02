@@ -33,10 +33,9 @@ class ShortcutHandler;
 class GtkProxyStyle : public TouchProxyStyle
 {
 public:
-    GtkProxyStyle(bool thinSb, bool styleSpin, const QMap<QString, QString> &c, bool modView);
+    GtkProxyStyle(int modView, bool thinSb, bool styleSpin, const QMap<QString, QString> &c);
     ~GtkProxyStyle();
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
-    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
 
     void polish(QWidget *widget);
     void polish(QPalette &pal);
@@ -46,7 +45,6 @@ public:
 
 private:
     ShortcutHandler *shortcutHander;
-    bool modViewFrame;
     QMap<QString, QString> css;
 };
 

@@ -156,8 +156,8 @@ public:
     QComboBox *combo;
 };
 
-TouchProxyStyle::TouchProxyStyle(bool touchSpin, bool gtkOverlayStyleScrollbar)
-    : ProxyStyle()
+TouchProxyStyle::TouchProxyStyle(int modView, bool touchSpin, bool gtkOverlayStyleScrollbar)
+    : ProxyStyle(modView)
     , touchStyleSpin(touchSpin)
     , sbarPlainViewWidth(-1)
 {
@@ -458,7 +458,7 @@ void TouchProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption
     if (PE_PanelScrollAreaCorner==element && option && SB_Standard!=sbarType) {
         painter->fillRect(option->rect, option->palette.brush(QPalette::Base));
     } else {
-        baseStyle()->drawPrimitive(element, option, painter, widget);
+        ProxyStyle::drawPrimitive(element, option, painter, widget);
     }
 }
 

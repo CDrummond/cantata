@@ -471,6 +471,7 @@ MainWindow::MainWindow(QWidget *parent)
     songInfoButton->setDefaultAction(songInfoAction);
     fullScreenLabel->setVisible(false);
     connect(fullScreenLabel, SIGNAL(leftClickedUrl()), fullScreenAction, SIGNAL(triggered()));
+    connect(playQueueSearchWidget, SIGNAL(active(bool)), playQueue, SLOT(searchActive(bool)));
     if (Configuration(playQueuePage->metaObject()->className()).get(ItemView::constSearchActiveKey, false)) {
         playQueueSearchWidget->activate();
     } else {

@@ -612,7 +612,7 @@ bool Settings::playQueueConfirmClear()
 
 bool Settings::playQueueSearch()
 {
-    return cfg.get("playQueueSearch", false);
+    return cfg.get("playQueueSearch", true);
 }
 
 bool Settings::playListsStartClosed()

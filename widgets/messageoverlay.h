@@ -56,6 +56,7 @@ private:
     QString text;
     ToolButton *cancelButton;
     QTimer *timer;
+    bool closeOnLeft;
 };
 
 #endif

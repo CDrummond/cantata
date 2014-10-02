@@ -154,6 +154,7 @@ void PreferencesDialog::showPage(const QString &page)
             static_cast<InterfaceSettings *>(pages[parts.at(0)]->widget())->showPage(parts.at(1));
         }
     }
+    Utils::raiseWindow(this);
 }
 
 void PreferencesDialog::writeSettings()

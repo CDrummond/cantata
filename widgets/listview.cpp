@@ -121,7 +121,6 @@ void ListView::setBackgroundImage(const QIcon &icon)
     if (!icon.isNull()) {
         pal.setColor(QPalette::Base, Qt::transparent);
     }
-    setPalette(pal);
     viewport()->setPalette(pal);
     bgnd=TreeView::createBgndPixmap(icon);
 }

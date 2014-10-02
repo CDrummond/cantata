@@ -24,6 +24,7 @@
 #include "itemview.h"
 #include "groupedview.h"
 #include "tableview.h"
+#include "messageoverlay.h"
 #include "models/roles.h"
 #include "gui/covers.h"
 #include "models/proxymodel.h"
@@ -34,8 +35,8 @@
 #include "support/icon.h"
 #include "config.h"
 #include "support/gtkstyle.h"
+#include "support/proxystyle.h"
 #include "support/spinner.h"
-#include "messageoverlay.h"
 #include "support/action.h"
 #include "support/actioncollection.h"
 #include "support/configuration.h"
@@ -699,8 +700,8 @@ ItemView::ItemView(QWidget *p)
     TreeDelegate *td=new TreeDelegate(treeView);
     listView->setItemDelegate(ld);
     treeView->setItemDelegate(td);
-    listView->setProperty(GtkStyle::constHideFrameProp, true);
-    treeView->setProperty(GtkStyle::constHideFrameProp, true);
+    listView->setProperty(ProxyStyle::constModifyFrameProp, Utils::touchFriendly() ? ProxyStyle::VF_Top : (ProxyStyle::VF_Side|ProxyStyle::VF_Top));
+    treeView->setProperty(ProxyStyle::constModifyFrameProp, Utils::touchFriendly() ? ProxyStyle::VF_Top : (ProxyStyle::VF_Side|ProxyStyle::VF_Top));
     ViewEventHandler *listViewEventHandler=new ViewEventHandler(ld, listView);
     ViewEventHandler *treeViewEventHandler=new ViewEventHandler(td, treeView);
     listView->installFilter(listViewEventHandler);
@@ -719,6 +720,10 @@ ItemView::ItemView(QWidget *p)
     connect(backAction, SIGNAL(triggered()), this, SLOT(backActivated()));
     connect(listViewEventHandler, SIGNAL(backspacePressed()), this, SLOT(backActivated()));
     searchWidget->setVisible(false);
+    #ifdef Q_OS_MAC
+    treeView->setAttribute(Qt::WA_MacShowFocusRect, 0);
+    listView->setAttribute(Qt::WA_MacShowFocusRect, 0);
+    #endif
 }
 
 ItemView::~ItemView()
@@ -753,7 +758,10 @@ void ItemView::allowGroupedView()
         connect(groupedView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(groupedView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
-        groupedView->setProperty(GtkStyle::constHideFrameProp, true);
+        groupedView->setProperty(ProxyStyle::constModifyFrameProp, Utils::touchFriendly() ? ProxyStyle::VF_Top : (ProxyStyle::VF_Side|ProxyStyle::VF_Top));
+        #ifdef Q_OS_MAC
+        groupedView->setAttribute(Qt::WA_MacShowFocusRect, 0);
+        #endif
     }
 }
 
@@ -770,7 +778,10 @@ void ItemView::allowTableView(TableView *v)
         connect(tableView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
-        tableView->setProperty(GtkStyle::constHideFrameProp, true);
+        tableView->setProperty(ProxyStyle::constModifyFrameProp, Utils::touchFriendly() ? ProxyStyle::VF_Top : (ProxyStyle::VF_Side|ProxyStyle::VF_Top));
+        #ifdef Q_OS_MAC
+        tableView->setAttribute(Qt::WA_MacShowFocusRect, 0);
+        #endif
     }
 }
 
@@ -1446,6 +1457,9 @@ void ItemView::searchActive(bool a)
     if (!a && view()->isVisible()) {
         view()->setFocus();
     }
+    view()->setProperty(ProxyStyle::constModifyFrameProp, Utils::touchFriendly()
+                                ? (a ? 0 : ProxyStyle::VF_Top)
+                                : (a ? ProxyStyle::VF_Side : (ProxyStyle::VF_Side|ProxyStyle::VF_Top)));
 }
 
 void ItemView::collapseToLevel()

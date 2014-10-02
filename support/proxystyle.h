@@ -29,7 +29,15 @@
 class ProxyStyle : public QProxyStyle
 {
 public:
-    ProxyStyle() { }
+    static const char * constModifyFrameProp;
+
+    enum FrameMod {
+        VF_None = 0x00,
+        VF_Side = 0x01,
+        VF_Top  = 0x02
+    };
+
+    ProxyStyle(int modView) : modViewFrame(modView) { }
 
     void polish(QPalette &pal) { QProxyStyle::polish(pal); }
     void polish(QApplication *app) { QProxyStyle::polish(app); }
@@ -38,6 +46,10 @@ public:
     #else
     void polish(QWidget *widget);
     #endif
+    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
+
+private:
+    int modViewFrame;
 };
 
 #endif

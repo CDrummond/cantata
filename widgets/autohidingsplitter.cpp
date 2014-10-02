@@ -41,13 +41,20 @@ static int splitterSize(const QWidget *w)
     if (-1==size || !w || !w->isVisible()) {
         if (Utils::touchFriendly()) {
             size=4;
-        } else if (qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents)) {
+        }
+        #if defined Q_OS_MAC || defined Q_OS_WIN
+        else {
+            size=0;
+        }
+        #else
+        else if (qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents)) {
             int spacing=qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing);
             int splitterSize=qApp->style()->pixelMetric(QStyle::PM_SplitterWidth);
             size=qMin(spacing+2, splitterSize);
         } else {
             size=GtkStyle::isActive() ? 0 : 1;
         }
+        #endif
     }
     return size;
 }

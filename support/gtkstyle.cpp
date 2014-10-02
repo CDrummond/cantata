@@ -252,8 +252,6 @@ static QProxyStyle *proxyStyle=0;
 static bool symbolicIcons=false;
 static QColor symbolicIconColor(0, 0, 0);
 
-const char * GtkStyle::constHideFrameProp="hide-frame";
-
 void GtkStyle::applyTheme(QWidget *widget)
 {
     #ifdef NO_GTK_SUPPORT
@@ -263,7 +261,7 @@ void GtkStyle::applyTheme(QWidget *widget)
         QString theme=GtkStyle::themeName().toLower();
         bool thinSbar=false;
         bool touchStyleSpin=false;
-        bool modViewFrame=false;
+        int modViewFrame=0;
         QMap<QString, QString> css;
         if (!theme.isEmpty()) {
             QFile cssFile(Utils::systemDir(QLatin1String("themes"))+theme+QLatin1String(".css"));
@@ -285,7 +283,11 @@ void GtkStyle::applyTheme(QWidget *widget)
                             thinSbar=true;
                         }
                         touchStyleSpin=line.contains("spinbox:touch");
-                        modViewFrame=line.contains("modview:true");
+                        modViewFrame=line.contains("modview:ts")
+                                        ? ProxyStyle::VF_Side|ProxyStyle::VF_Top
+                                        : line.contains("modview:true")
+                                            ? ProxyStyle::VF_Side
+                                            : 0;
                         int pos=line.indexOf(symKey);
                         if (pos>0 && pos+6<line.length()) {
                             symbolicIcons=true;
@@ -301,17 +303,25 @@ void GtkStyle::applyTheme(QWidget *widget)
             }
         }
         if (!proxyStyle) {
-            proxyStyle=new GtkProxyStyle(thinSbar, touchStyleSpin || Utils::touchFriendly(), css, modViewFrame && !Utils::touchFriendly());
+            proxyStyle=new GtkProxyStyle(modViewFrame, thinSbar, touchStyleSpin || Utils::touchFriendly(), css);
         }
     }
     #endif
 
+    #if defined Q_OS_WIN
+    int modViewFrame=ProxyStyle::VF_Side;
+    #elif defined Q_OS_MAC
+    int modViewFrame=ProxyStyle::VF_Side|ProxyStyle::VF_Top;
+    #else
+    int modViewFrame=0;
+    #endif
+
     if (!proxyStyle && Utils::touchFriendly()) {
-        proxyStyle=new TouchProxyStyle;
+        proxyStyle=new TouchProxyStyle(modViewFrame);
     }
     #ifndef ENABLE_KDE_SUPPORT
     if (!proxyStyle) {
-        proxyStyle=new ProxyStyle();
+        proxyStyle=new ProxyStyle(modViewFrame);
     }
     #endif
     if (proxyStyle) {

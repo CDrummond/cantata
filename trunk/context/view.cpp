@@ -87,85 +87,6 @@ static TextBrowser * createView(QWidget *parent)
     return text;
 }
 
-ViewTextSelector::ViewTextSelector(QWidget *p)
-    : QLabel(p)
-    , current(0)
-{
-    setAttribute(Qt::WA_Hover, true);
-    menu=new QMenu(this);
-    setStyleSheet(QLatin1String("QLabel:hover {color:palette(highlight);}"));
-    setMargin(Utils::scaleForDpi(2));
-}
-
-static QString viewText(const QString &s)
-{
-    // 0x25BE is unicode for small down arrow...
-    return QLatin1String("<b>")+s+QLatin1String("  ")+QChar(0x25BE)+QLatin1String("</b>");
-}
-
-void ViewTextSelector::addItem(const QString &t)
-{
-    menu->addAction(t, this, SLOT(itemSelected()))->setData(items.count());
-    if (text().isEmpty()) {
-        setText(viewText(t));
-        current=items.count();
-    }
-    items.append(t);
-}
-
-void ViewTextSelector::itemSelected()
-{
-    QAction *act=qobject_cast<QAction *>(sender());
-    if (act) {
-        setCurrentIndex(act->data().toInt());
-    }
-}
-
-bool ViewTextSelector::event(QEvent *e)
-{
-    switch (e->type()) {
-    case QEvent::MouseButtonPress:
-        if (Qt::NoModifier==static_cast<QMouseEvent *>(e)->modifiers() && Qt::LeftButton==static_cast<QMouseEvent *>(e)->button()) {
-            menu->exec(mapToGlobal(static_cast<QMouseEvent *>(e)->pos()));
-        }
-    case QEvent::Wheel: {
-        int numDegrees = static_cast<QWheelEvent *>(e)->delta() / 8;
-        int numSteps = numDegrees / 15;
-        int newIndex = current;
-        if (numSteps > 0) {
-            for (int i = 0; i < numSteps; ++i) {
-                newIndex++;
-                if (newIndex>=items.count()) {
-                    newIndex=0;
-                }
-            }
-        } else {
-            for (int i = 0; i > numSteps; --i) {
-                newIndex--;
-                if (newIndex<0) {
-                    newIndex=items.count()-1;
-                }
-            }
-        }
-        setCurrentIndex(newIndex);
-        break;
-    }
-    default:
-        break;
-    }
-    return QLabel::event(e);
-}
-
-void ViewTextSelector::setCurrentIndex(int v)
-{
-    if (v<0 || v>=items.count() || v==current) {
-        return;
-    }
-    current=v;
-    setText(viewText(items.at(current)));
-    emit activated(current);
-}
-
 View::View(QWidget *parent, const QStringList &views)
     : QWidget(parent)
     , needToUpdate(false)
@@ -181,10 +102,11 @@ View::View(QWidget *parent, const QStringList &views)
         texts.append(t);
     } else {
         stack=new QStackedWidget(this);
-        selector=new ViewTextSelector(this);
+        selector=new SelectorLabel(this);
+        selector->setUseArrow(true);
         foreach (const QString &v, views) {
             TextBrowser *t=createView(stack);
-            selector->addItem(v);
+            selector->addItem(v, v);
             stack->addWidget(t);
             texts.append(t);
         }

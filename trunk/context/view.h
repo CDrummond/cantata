@@ -28,6 +28,7 @@
 #include <QSize>
 #include <QLabel>
 #include "mpd/song.h"
+#include "widgets/selectorlabel.h"
 
 class QImage;
 class Spinner;
@@ -37,28 +38,6 @@ class TextBrowser;
 class Action;
 class QStackedWidget;
 class QMenu;
-
-class ViewTextSelector : public QLabel
-{
-    Q_OBJECT
-public:
-    ViewTextSelector(QWidget *p);
-    void addItem(const QString &t);
-    bool event(QEvent *e);
-    int currentIndex() const { return current; }
-    void setCurrentIndex(int v);
-
-Q_SIGNALS:
-    void activated(int);
-
-private Q_SLOTS:
-    void itemSelected();
-
-private:
-    int current;
-    QStringList items;
-    QMenu *menu;
-};
 
 class View : public QWidget
 {
@@ -106,7 +85,7 @@ protected:
     Spinner *spinner;
     Action *cancelJobAction;
 
-    ViewTextSelector *selector;
+    SelectorLabel *selector;
     QStackedWidget *stack;
     TextBrowser *text; // short-cut to first text item...
     QList<TextBrowser *> texts;

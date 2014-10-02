@@ -82,9 +82,7 @@ SearchWidget::SearchWidget(QWidget *p)
 
     #ifdef Q_OS_MAC
     l->addItem(new QSpacerItem(2, 2, QSizePolicy::Fixed, QSizePolicy::Fixed), 1, 1);
-    // NOTE: Using spacing of 4 below, because if we have a combo-box then this increases the height by 4 pixels.
-    //       The spacing is below is removed in this case, but want all search widgets to have the same size.
-    l->addItem(new QSpacerItem(2, 4, QSizePolicy::Fixed, QSizePolicy::Fixed), 2, 0);
+    l->addItem(new QSpacerItem(2, 2, QSizePolicy::Fixed, QSizePolicy::Fixed), 2, 0);
     #endif
 
     Icon icon=Icon("dialog-close");
@@ -124,17 +122,12 @@ void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categori
 {
     QString currentCat;
     if (!cat) {
-        cat=new ComboBox(this);
+        cat=new SelectorLabel(this);
         QGridLayout *l=static_cast<QGridLayout *>(layout());
         l->addWidget(cat, 1, 0);
-        #ifdef Q_OS_MAC
-        QLayoutItem *spacer=l->itemAtPosition(2, 0);
-        if (spacer && dynamic_cast<QSpacerItem *>(spacer)) {
-            static_cast<QSpacerItem *>(spacer)->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
-        }
-        #endif
-        connect(cat, SIGNAL(currentIndexChanged(int)), SIGNAL(returnPressed()));
+        connect(cat, SIGNAL(activated(int)), SIGNAL(returnPressed()));
         setTabOrder(cat, edit);
+        cat->setFixedHeight(edit->height());
     } else {
         currentCat=category();
         if (!currentCat.isEmpty()) {
@@ -152,7 +145,7 @@ void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categori
 
     if (!currentCat.isEmpty()) {
         for (int i=0; i<cat->count(); ++i) {
-            if (cat->itemData(i).toString()==currentCat) {
+            if (cat->itemData(i)==currentCat) {
                 cat->setCurrentIndex(i);
                 cat->blockSignals(false);
                 return;
@@ -169,7 +162,7 @@ void SearchWidget::setCategory(const QString &id)
         return;
     }
     for (int i=0; i<cat->count(); ++i) {
-        if (cat->itemData(i).toString()==id) {
+        if (cat->itemData(i)==id) {
             cat->setCurrentIndex(i);
             return;
         }

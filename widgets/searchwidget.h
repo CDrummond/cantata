@@ -27,7 +27,7 @@
 #include "support/lineedit.h"
 #include "toolbutton.h"
 #include "support/squeezedtextlabel.h"
-#include "support/combobox.h"
+#include "selectorlabel.h"
 #include <QSet>
 #include <QList>
 #include <QPair>
@@ -44,7 +44,7 @@ public:
     void setLabel(const QString &s);
     void setText(const QString &t) { edit->setText(t); }
     QString text() const { return edit->text(); }
-    QString category() const { return cat ? cat->itemData(cat->currentIndex()).toString() : QString(); }
+    QString category() const { return cat ? cat->itemData(cat->currentIndex()) : QString(); }
     void setFocus() { edit->setFocus(); }
     bool hasFocus() const { return edit->hasFocus() || (closeButton && closeButton->hasFocus()); }
     bool isActive() const { return widgetIsActive; }
@@ -66,7 +66,7 @@ public Q_SLOTS:
 
 private:
     SqueezedTextLabel *label;
-    ComboBox *cat;
+    SelectorLabel *cat;
     LineEdit *edit;
     ToolButton *closeButton;
     bool widgetIsActive;

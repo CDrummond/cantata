@@ -439,11 +439,9 @@ void PlayQueueView::updatePalette()
         pal.setColor(QPalette::Base, Qt::transparent);
     }
     if (groupedView) {
-        groupedView->setPalette(pal);
         groupedView->viewport()->setPalette(pal);
     }
     if (treeView) {
-        treeView->setPalette(pal);
         treeView->viewport()->setPalette(pal);
     }
 }

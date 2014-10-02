@@ -19,6 +19,7 @@
  */
 #include "kmessagewidget.h"
 #include "localize.h"
+#include "utils.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <kaction.h>
@@ -87,8 +88,17 @@ void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
 
     wordWrap = false;
 
-    iconLabel = new QLabel(content);
-    iconLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    #ifdef Q_OS_MAC
+    bool closeOnLeft=true;
+    #else
+    bool closeOnLeft=Utils::Unity==Utils::currentDe();
+    #endif
+    if (closeOnLeft) {
+        iconLabel=0;
+    } else {
+        iconLabel = new QLabel(content);
+        iconLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    }
 
     textLabel = new SqueezedTextLabel(content);
     textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -110,7 +120,9 @@ void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
     closeButton = new QToolButton(content);
     closeButton->setAutoRaise(true);
     closeButton->setDefaultAction(closeAction);
-
+    #ifdef Q_OS_MAC
+    closeButton->setStyleSheet("QToolButton {border: 0}");
+    #endif
     q->setMessageType(KMsgWidget::Information);
 }
 
@@ -137,12 +149,16 @@ void KMsgWidgetPrivate::createLayout()
     // AutoRaise reduces visual clutter, but we don't want to turn it on if
     // there are other buttons, otherwise the close button will look different
     // from the others.
-    closeButton->setAutoRaise(buttons.isEmpty());
+    closeButton->setAutoRaise(!iconLabel || buttons.isEmpty());
 
     if (wordWrap) {
         QGridLayout* layout = new QGridLayout(content);
         // Set alignment to make sure icon does not move down if text wraps
-        layout->addWidget(iconLabel, 0, 0, 1, 1, Qt::AlignHCenter | Qt::AlignTop);
+        if (iconLabel) {
+            layout->addWidget(iconLabel, 0, 0, 1, 1, Qt::AlignHCenter | Qt::AlignTop);
+        } else {
+            layout->addWidget(closeButton, 0, 0, 1, 1, Qt::AlignHCenter | Qt::AlignTop);
+        }
         layout->addWidget(textLabel, 0, 1);
         layout->setMargin(4);
 
@@ -155,18 +171,27 @@ void KMsgWidgetPrivate::createLayout()
             button->show();
             buttonLayout->addWidget(button);
         }
-        buttonLayout->addWidget(closeButton);
+        if (iconLabel) {
+            buttonLayout->addWidget(closeButton);
+        }
         layout->addItem(buttonLayout, 1, 0, 1, 2);
     } else {
         QHBoxLayout* layout = new QHBoxLayout(content);
-        layout->addWidget(iconLabel);
+
+        if (iconLabel) {
+            layout->addWidget(iconLabel);
+        } else {
+            layout->addWidget(closeButton);
+        }
         layout->addWidget(textLabel);
 
         Q_FOREACH(QToolButton* button, buttons) {
             layout->addWidget(button);
         }
 
-        layout->addWidget(closeButton);
+        if (iconLabel) {
+            layout->addWidget(closeButton);
+        }
         layout->setMargin(4);
     };
 
@@ -287,9 +312,12 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
     d->messageType = type;
     QIcon icon;
     QColor bg0, bg1, bg2, border, fg;
+    bool useIcon=d->iconLabel;
     switch (type) {
     case Positive:
-        icon = QIcon::fromTheme("dialog-ok");
+        if (useIcon) {
+            icon = QIcon::fromTheme("dialog-ok");
+        }
         #ifdef ENABLE_KDE_SUPPORT
         getColorsFromColorScheme(KColorScheme::PositiveBackground, &bg1, &fg);
         #else
@@ -299,7 +327,9 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         #endif
         break;
     case Information:
-        icon = QIcon::fromTheme("dialog-information");
+        if (useIcon) {
+            icon = QIcon::fromTheme("dialog-information");
+        }
         // There is no "information" background role in KColorScheme, use the
         // colors of highlighted items instead
         bg1 = palette().highlight().color();
@@ -307,7 +337,9 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         border = bg1.darker(150);
         break;
     case Warning:
-        icon = QIcon::fromTheme("dialog-warning");
+        if (useIcon) {
+            icon = QIcon::fromTheme("dialog-warning");
+        }
         #ifdef ENABLE_KDE_SUPPORT
         getColorsFromColorScheme(KColorScheme::NeutralBackground, &bg1, &fg);
         #else
@@ -317,7 +349,9 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         #endif
         break;
     case Error:
-        icon = QIcon::fromTheme("dialog-error");
+        if (useIcon) {
+            icon = QIcon::fromTheme("dialog-error");
+        }
         #ifdef ENABLE_KDE_SUPPORT
         getColorsFromColorScheme(KColorScheme::NegativeBackground, &bg1, &fg);
         #else
@@ -358,13 +392,15 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         .arg(fg.name())
         );
 
-    // Icon
-    #ifdef ENABLE_KDE_SUPPORT
-    const int size = KIconLoader::global()->currentSize(KIconLoader::MainToolbar);
-    #else
-    const int size = Icon::stdSize(fontMetrics().height()*1.5);
-    #endif
-    d->iconLabel->setPixmap(icon.pixmap(size));
+    if (useIcon) {
+        // Icon
+        #ifdef ENABLE_KDE_SUPPORT
+        const int size = KIconLoader::global()->currentSize(KIconLoader::MainToolbar);
+        #else
+        const int size = Icon::stdSize(fontMetrics().height()*1.5);
+        #endif
+        d->iconLabel->setPixmap(icon.pixmap(size));
+    }
 }
 
 //QSize KMsgWidget::sizeHint() const

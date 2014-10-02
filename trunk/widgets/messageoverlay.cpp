@@ -34,6 +34,11 @@
 MessageOverlay::MessageOverlay(QObject *p)
     : QWidget(0)
     , timer(0)
+    #ifdef Q_OS_MAC
+    , closeOnLeft(true)
+     #else
+    , closeOnLeft(Utils::Unity==Utils::currentDe())
+    #endif
 {
     Q_UNUSED(p)
     spacing=fontMetrics().height();
@@ -96,8 +101,15 @@ void MessageOverlay::paintEvent(QPaintEvent *)
     p.drawPath(path);
 
     int pad=r.height()/4;
-    rf.adjust(pad, pad, cancelButton->isVisible() ? -((pad*2)+cancelButton->width()) : -pad, -pad);
-
+    if (cancelButton->isVisible()) {
+        if (Qt::LeftToRight==layoutDirection() && !closeOnLeft) {
+            rf.adjust(pad, pad, -((pad*2)+cancelButton->width()), -pad);
+        } else {
+            rf.adjust(((pad*2)+cancelButton->width()), pad, -pad, -pad);
+        }
+    } else {
+        rf.adjust(pad, pad, -pad, -pad);
+    }
     QFont fnt(QApplication::font());
     fnt.setBold(true);
     QFontMetrics fm(fnt);
@@ -133,7 +145,7 @@ void MessageOverlay::setSizeAndPosition()
     if (currentWidth!=desiredWidth) {
         int pad=height()/4;
         resize(desiredWidth, height());
-        cancelButton->move(QPoint(Qt::LeftToRight==layoutDirection()
+        cancelButton->move(QPoint(Qt::LeftToRight==layoutDirection() && !closeOnLeft
                                     ? desiredWidth-(cancelButton->width()+pad)
                                     : pad,
                                   (height()-cancelButton->height())/2));

@@ -70,6 +70,7 @@
 48. Fix current track highlight in grouped view under windows for header item.
 49. Use same selection drawing for all views.
 50. Fix size of collapsed window in windows builds.
+51. If run under Unity or OSX, then place close buttons on left.
 
 1.4.2
 -----

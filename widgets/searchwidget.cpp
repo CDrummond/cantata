@@ -62,17 +62,31 @@ SearchWidget::SearchWidget(QWidget *p)
     label=new SqueezedTextLabel(this);
     edit=new LineEdit(this);
     edit->setPlaceholderText(i18n("Search..."));
-    l->addWidget(label, 0, 0, 1, 5);
-    l->addWidget(edit, 1, 2);
+    closeButton=new ToolButton(this);
+    closeButton->setToolTip(i18n("Close Search Bar")+QLatin1String(" (")+QKeySequence(Qt::Key_Escape).toString()+QLatin1Char(')'));
+
     #ifdef Q_OS_MAC
-    l->addItem(new QSpacerItem(2, 2, QSizePolicy::Fixed, QSizePolicy::Fixed), 1, 3);
+    bool closeOnLeft=true;
+    #else
+    bool closeOnLeft=Utils::Unity==Utils::currentDe();
+    #endif
+
+    l->addWidget(label, 0, 0, 1, 3);
+    if (closeOnLeft) {
+        l->addWidget(closeButton, 1, 0);
+        l->addWidget(edit, 1, 2);
+    } else {
+        l->addWidget(edit, 1, 1);
+        l->addWidget(closeButton, 1, 2);
+    }
+
+    #ifdef Q_OS_MAC
+    l->addItem(new QSpacerItem(2, 2, QSizePolicy::Fixed, QSizePolicy::Fixed), 1, 1);
     // NOTE: Using spacing of 4 below, because if we have a combo-box then this increases the height by 4 pixels.
     //       The spacing is below is removed in this case, but want all search widgets to have the same size.
     l->addItem(new QSpacerItem(2, 4, QSizePolicy::Fixed, QSizePolicy::Fixed), 2, 0);
     #endif
-    closeButton=new ToolButton(this);
-    closeButton->setToolTip(i18n("Close Search Bar")+QLatin1String(" (")+QKeySequence(Qt::Key_Escape).toString()+QLatin1Char(')'));
-    l->addWidget(closeButton, 1, 4);
+
     Icon icon=Icon("dialog-close");
     if (icon.isNull()) {
         icon=Icon("window-close");
@@ -114,7 +128,6 @@ void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categori
         QGridLayout *l=static_cast<QGridLayout *>(layout());
         l->addWidget(cat, 1, 0);
         #ifdef Q_OS_MAC
-        l->addItem(new QSpacerItem(2, 2, QSizePolicy::Fixed, QSizePolicy::Fixed), 1, 1);
         QLayoutItem *spacer=l->itemAtPosition(2, 0);
         if (spacer && dynamic_cast<QSpacerItem *>(spacer)) {
             static_cast<QSpacerItem *>(spacer)->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);

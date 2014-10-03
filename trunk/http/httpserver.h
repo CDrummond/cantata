@@ -80,7 +80,6 @@ private:
 private Q_SLOTS:
     void stop();
     void startCloseTimer();
-    void mpdAddress(const QString &a);
     void cantataStreams(const QStringList &files);
     void cantataStreams(const QList<Song> &songs, bool isUpdate);
     void removedIds(const QSet<qint32> &ids);
@@ -93,7 +92,6 @@ private:
     Thread *thread;
     HttpSocket *socket;
 
-    QString mpdAddr;
     QSet<qint32> streamIds; // Currently playing MPD stream IDs
     QTimer *closeTimer;
     #endif

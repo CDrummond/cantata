@@ -73,6 +73,7 @@
 51. If run under Unity or OSX, then place close buttons on left.
 52. Fix auto-marking of played downloaded podcasts when connected via a local
     socket.
+53. Fix playback of local files by inbuilt HTTP server.
 
 1.4.2
 -----

@@ -75,7 +75,7 @@ bool SelectorLabel::event(QEvent *e)
     switch (e->type()) {
     case QEvent::MouseButtonPress:
         if (Qt::NoModifier==static_cast<QMouseEvent *>(e)->modifiers() && Qt::LeftButton==static_cast<QMouseEvent *>(e)->button()) {
-            menu->exec(mapToGlobal(static_cast<QMouseEvent *>(e)->pos()));
+            menu->exec(mapToGlobal(QPoint(0, 0)));
         }
         break;
     case QEvent::Wheel: {

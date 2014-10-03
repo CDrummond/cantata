@@ -709,6 +709,9 @@ void PodcastService::currentMpdSong(const Song &s)
     }
     if (check) {
         QString path=s.decodedPath();
+        if (path.isEmpty()) {
+            path=s.file;
+        }
         foreach (MusicLibraryItem *p, m_childItems) {
             MusicLibraryItemPodcast *podcast=static_cast<MusicLibraryItemPodcast *>(p);
             foreach (MusicLibraryItem *i, podcast->childItems()) {

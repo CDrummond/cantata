@@ -80,6 +80,9 @@ public:
     PageWidgetItem * currentPage() const;
     void setCurrentPage(PageWidgetItem *item);
 
+public Q_SLOTS:
+    void setFocus();
+
 Q_SIGNALS:
     void currentPageChanged();
 

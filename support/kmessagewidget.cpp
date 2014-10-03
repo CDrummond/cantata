@@ -375,7 +375,7 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
             "    stop: 0 %1,"
             "    stop: 0.1 %2,"
             "    stop: 1.0 %3);"
-            #ifndef Q_OS_MAC
+            #ifdef ENABLE_KDE_SUPPORT
             "border-radius: 5px;"
             #endif
             "border: 1px solid %4;"

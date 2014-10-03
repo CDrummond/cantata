@@ -224,6 +224,7 @@ public:
     bool isMuted() { return -1!=unmuteVol; }
     bool isMopdidy() const { return mopidy; }
     void setVolumeFadeDuration(int f) { fadeDuration=f; }
+    QString ipAddress() const { return details.isLocal() ? QString() : sock.address(); }
 
 public Q_SLOTS:
     void reconnect();

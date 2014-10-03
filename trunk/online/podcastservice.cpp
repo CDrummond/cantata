@@ -698,7 +698,16 @@ void PodcastService::updateRss()
 
 void PodcastService::currentMpdSong(const Song &s)
 {
-    if (s.isFromOnlineService() && s.album==constName) {
+    bool check=s.isFromOnlineService() && s.album==constName;
+
+    if (!check) {
+        QString downloadPath=Settings::self()->podcastDownloadPath();
+        if (downloadPath.isEmpty()) {
+            return;
+        }
+        check=s.file.startsWith(downloadPath);
+    }
+    if (check) {
         QString path=s.decodedPath();
         foreach (MusicLibraryItem *p, m_childItems) {
             MusicLibraryItemPodcast *podcast=static_cast<MusicLibraryItemPodcast *>(p);

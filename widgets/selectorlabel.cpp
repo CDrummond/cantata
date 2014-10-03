@@ -37,7 +37,8 @@ SelectorLabel::SelectorLabel(QWidget *p)
     setAttribute(Qt::WA_Hover, true);
     menu=new QMenu(this);
     #ifdef Q_OS_MAC
-    setStyleSheet(QString("QLabel:hover {color:%1;}").arg(OSXStyle::self()->viewPalette().highlight().color().name()));
+    // Mac text seems to be 2px too high. margin-top fixes this
+    setStyleSheet(QString("QLabel { margin-top: 2px} QLabel:hover {color:%1;}").arg(OSXStyle::self()->viewPalette().highlight().color().name()));
     #else
     setStyleSheet(QLatin1String("QLabel:hover {color:palette(highlight);}"));
     #endif

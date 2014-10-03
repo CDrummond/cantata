@@ -180,9 +180,12 @@ public:
             }
         }
 
+        #ifndef Q_OS_WIN
         if (selected) {
             painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
-        } else {
+        } else
+        #endif
+        {
             painter->setPen(option.palette.color(cg, QPalette::Text));
         }
 
@@ -412,6 +415,11 @@ void PageWidget::setCurrentPage(PageWidgetItem *item)
             list->setCurrentItem(it.key());
         }
     }
+}
+
+void PageWidget::setFocus()
+{
+    list->setFocus();
 }
 
 //#endif // ENABLE_KDE_SUPPORT

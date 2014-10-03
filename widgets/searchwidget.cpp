@@ -58,32 +58,27 @@ SearchWidget::SearchWidget(QWidget *p)
 {
     QGridLayout *l=new QGridLayout(this);
     l->setMargin(0);
+    #ifdef Q_OS_MAC
+    l->setSpacing(2);
+    bool closeOnLeft=true;
+    #else
     l->setSpacing(0);
+    bool closeOnLeft=Utils::Unity==Utils::currentDe();
+    #endif
     label=new SqueezedTextLabel(this);
     edit=new LineEdit(this);
     edit->setPlaceholderText(i18n("Search..."));
     closeButton=new ToolButton(this);
     closeButton->setToolTip(i18n("Close Search Bar")+QLatin1String(" (")+QKeySequence(Qt::Key_Escape).toString()+QLatin1Char(')'));
 
-    #ifdef Q_OS_MAC
-    bool closeOnLeft=true;
-    #else
-    bool closeOnLeft=Utils::Unity==Utils::currentDe();
-    #endif
-
     l->addWidget(label, 0, 0, 1, 3);
     if (closeOnLeft) {
-        l->addWidget(closeButton, 1, 0);
+        l->addWidget(closeButton, 1, 1);
         l->addWidget(edit, 1, 2);
     } else {
         l->addWidget(edit, 1, 1);
         l->addWidget(closeButton, 1, 2);
     }
-
-    #ifdef Q_OS_MAC
-    l->addItem(new QSpacerItem(2, 2, QSizePolicy::Fixed, QSizePolicy::Fixed), 1, 1);
-    l->addItem(new QSpacerItem(2, 2, QSizePolicy::Fixed, QSizePolicy::Fixed), 2, 0);
-    #endif
 
     Icon icon=Icon("dialog-close");
     if (icon.isNull()) {

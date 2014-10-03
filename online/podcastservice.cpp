@@ -700,7 +700,7 @@ void PodcastService::currentMpdSong(const Song &s)
 {
     bool check=s.isFromOnlineService() && s.album==constName;
 
-    if (!check) {
+    if (!check && s.file.startsWith(Utils::constDirSep) && MPDConnection::self()->getDetails().isLocal()) {
         QString downloadPath=Settings::self()->podcastDownloadPath();
         if (downloadPath.isEmpty()) {
             return;

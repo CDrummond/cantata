@@ -55,6 +55,7 @@
 #endif
 #include "scrobbling/scrobblingsettings.h"
 #include <QDesktopWidget>
+#include <QTimer>
 
 static int iCount=0;
 
@@ -138,6 +139,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     #endif
     setAttribute(Qt::WA_DeleteOnClose);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+    // Under OSX if we dont set focus, then a weird blue line is shown to the right of the item list
+    // this line looks like part of a focus highlight. Odd, but setting focus works-around this...
+    QTimer::singleShot(0, pageWidget, SLOT(setFocus()));
 }
 
 PreferencesDialog::~PreferencesDialog()

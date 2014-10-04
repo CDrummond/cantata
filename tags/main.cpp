@@ -29,6 +29,15 @@
 #include "tags.h"
 #include "taghelper.h"
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+static long __stdcall exceptionHandler(EXCEPTION_POINTERS *p)
+{
+    Q_UNUSED(p)
+    ::exit(0);
+}
+#endif
+
 static QString logFileName;
 static bool firstMsg=true;
 #if QT_VERSION < 0x050000
@@ -50,6 +59,10 @@ static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QSt
 
 int main(int argc, char *argv[])
 {
+    #ifdef Q_OS_WIN
+    // Prevent windows crash dialog from appearing...
+    SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)exceptionHandler);
+    #endif
     QCoreApplication app(argc, argv);
     if (3==app.arguments().length() || 4==app.arguments().length()) {
         if (4==app.arguments().length()) {

@@ -74,6 +74,8 @@
 52. Fix auto-marking of played downloaded podcasts when connected via a local
     socket.
 53. Fix playback of local files by inbuilt HTTP server.
+54. In catata-tags.exe set unhandled exception handler, to prevent windows
+    crash dialog appearing.
 
 1.4.2
 -----

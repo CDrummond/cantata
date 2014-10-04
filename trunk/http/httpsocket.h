@@ -41,7 +41,6 @@ public:
     HttpSocket(const QString &iface, quint16 port);
     virtual ~HttpSocket() { }
 
-    void incomingConnection(int socket);
     QString address() const { return ifaceAddress; }
     QString configuredInterface() { return cfgInterface; }
     QString urlAddress() const { return urlAddr; }
@@ -56,6 +55,7 @@ private:
     void sendErrorResponse(QTcpSocket *socket, int code);
 
 private Q_SLOTS:
+    void handleNewConnection();
     void readClient();
     void discardClient();
     void cantataStreams(const QStringList &files);

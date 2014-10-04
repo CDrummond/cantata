@@ -266,6 +266,7 @@ HttpSocket::HttpSocket(const QString &iface, quint16 port)
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QList<Song>,bool)), this, SLOT(cantataStreams(QList<Song>,bool)));
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QStringList)), this, SLOT(cantataStreams(QStringList)));
     connect(MPDConnection::self(), SIGNAL(removedIds(QSet<qint32>)), this, SLOT(removedIds(QSet<qint32>)));
+    connect(this, SIGNAL(newConnection()), SLOT(handleNewConnection()));
 }
 
 bool HttpSocket::openPort(const QHostAddress &a, quint16 p)
@@ -305,12 +306,14 @@ void HttpSocket::terminate()
     deleteLater();
 }
 
-void HttpSocket::incomingConnection(int socket)
+void HttpSocket::handleNewConnection()
 {
-    QTcpSocket *s = new QTcpSocket(this);
-    connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
-    connect(s, SIGNAL(disconnected()), this, SLOT(discardClient()));
-    s->setSocketDescriptor(socket);
+    DBUG;
+    while (hasPendingConnections()) {
+        QTcpSocket *s = nextPendingConnection();
+        connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
+        connect(s, SIGNAL(disconnected()), this, SLOT(discardClient()));
+    }
 }
 
 void HttpSocket::readClient()

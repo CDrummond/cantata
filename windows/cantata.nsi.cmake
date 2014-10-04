@@ -94,6 +94,7 @@ section "install"
     setOutPath $INSTDIR
     # Files added here should be removed by the uninstaller (see section "uninstall")
     file "cantata.exe"
+    file "cantata-tags.exe"
     file "Cantata License (GPL V3).txt"
     file "Cantata README.txt"
     file "Qt4 README.txt"
@@ -114,8 +115,6 @@ section "install"
     file "config\scrobblers.xml"
     file "config\tag_fixes.xml"
     file "config\weblinks.xml"
-    setOutPath $INSTDIR\helpers
-    file "helpers\cantata-tags.exe"
     setOutPath $INSTDIR\iconengines
     file "iconengines\qsvgicon4.dll"
     setOutPath $INSTDIR\icons
@@ -451,6 +450,7 @@ section "uninstall"
     delete "$SMPROGRAMS\@WINDOWS_APP_NAME@.lnk"
  
     delete "$INSTDIR\cantata.exe"
+    delete "$INSTDIR\cantata-tags.exe"
     delete "$INSTDIR\Cantata README.txt"
     delete "$INSTDIR\Cantata License (GPL V3).txt"
     delete "$INSTDIR\config\lyrics_providers.xml"

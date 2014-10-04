@@ -381,7 +381,7 @@ private:
     static ConnectionReturn convertSocketCode(MpdSocket &socket);
     QString errorString(ConnectionReturn status) const;
     ConnectionReturn connectToMPD();
-    void disconnectFromMPD();
+    void disconnectFromMPD(bool emitAddr=true);
     ConnectionReturn connectToMPD(MpdSocket &socket, bool enableIdle=false);
     Response sendCommand(const QByteArray &command, bool emitErrors=true, bool retry=true);
     void initialize();

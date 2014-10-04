@@ -417,7 +417,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
     return status;
 }
 
-void MPDConnection::disconnectFromMPD()
+void MPDConnection::disconnectFromMPD(bool emitAddr)
 {
     DBUG << "disconnectFromMPD";
     disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
@@ -575,8 +575,8 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
 
     if (QAbstractSocket::ConnectedState!=sock.state()) {
         DBUG << (void *)(&sock) << "Socket (state:" << sock.state() << ") need to reconnect";
-        sock.close();
-        ConnectionReturn status=connectToMPD(sock);
+        disconnectFromMPD(false);
+        ConnectionReturn status=connectToMPD();
         if (Success!=status) {
             // Failed to connect, so close *both* sockets!
             disconnectFromMPD();

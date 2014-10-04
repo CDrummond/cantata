@@ -583,6 +583,10 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             emit stateChanged(false);
             emit error(errorString(status), true);
             return Response(false);
+        } else {
+            // Refresh playqueue...
+            playListInfo();
+            getStatus();
         }
     }
 

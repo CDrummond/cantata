@@ -78,6 +78,8 @@
     crash dialog appearing.
 55. If a command fails to be sent to MPD, and the socket is in an error state,
     then completely disconnect and reconnect.
+56. For windows builds, when window is not focused, draw sidebar selection as
+    a darkened background.
 
 1.4.2
 -----

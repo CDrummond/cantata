@@ -213,6 +213,11 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
             #ifdef Q_OS_MAC
             OSXStyle::self()->drawSelection(styleOpt, p, selected ? 1.0 : (fader*1.0)/150.0);
             #else
+            #ifdef Q_OS_WIN
+            if (QPalette::Active!=styleOpt.palette.currentColorGroup()) {
+                styleOpt.palette.setColor(QPalette::Highlight, styleOpt.palette.color(QPalette::Window).darker(110));
+            }
+            #endif
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, p, 0);
             #endif
         }
@@ -518,6 +523,11 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
             #ifdef Q_OS_MAC
             OSXStyle::self()->drawSelection(styleOpt, painter, selected ? 1.0 : tabs[tabIndex]->fader()/150.0);
             #else
+            #ifdef Q_OS_WIN
+            if (QPalette::Active!=styleOpt.palette.currentColorGroup()) {
+                styleOpt.palette.setColor(QPalette::Highlight, styleOpt.palette.color(QPalette::Window).darker(110));
+            }
+            #endif
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, painter, 0);
             #endif
         }
@@ -533,7 +543,9 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
         #ifdef Q_OS_MAC
         painter->setPen(selected ? OSXStyle::self()->viewPalette().highlightedText().color() : OSXStyle::self()->viewPalette().foreground().color());
         #else
-        painter->setPen(selected ? QApplication::palette().highlightedText().color() : palette().foreground().color());
+//        painter->setPen(selected ? QApplication::palette().highlightedText().color() : palette().foreground().color());
+        painter->setPen(selected && styleOpt.state&QStyle::State_Active
+                           ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
         #endif
         int textFlags = Qt::AlignCenter | Qt::AlignBottom;
         painter->drawText(tabTextRect, textFlags, tabText);

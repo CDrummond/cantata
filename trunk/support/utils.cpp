@@ -755,7 +755,7 @@ QString Utils::systemDir(const QString &sub)
 QString Utils::helper(const QString &app)
 {
     #if defined Q_OS_WIN
-    return systemDir(QLatin1String("helpers"))+app+QLatin1String(".exe");
+    return fixPath(QCoreApplication::applicationDirPath())+app+QLatin1String(".exe");
     #elif defined Q_OS_MAC
     return fixPath(QCoreApplication::applicationDirPath())+app;
     #else

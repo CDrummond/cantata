@@ -62,6 +62,7 @@ public:
     void refreshSubscription(MusicLibraryItem *item);
     bool processingUrl(const QUrl &url) const;
     void addUrl(const QUrl &url, bool isNew=true);
+    static bool isPodcastFile(const QString &file);
     static const QString & iconPath() { return iconFile; }
     static QUrl fixUrl(const QString &url);
     static QUrl fixUrl(const QUrl &orig);

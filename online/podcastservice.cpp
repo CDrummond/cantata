@@ -49,6 +49,18 @@ static const char * constRssUrlProperty="rss-url";
 static const char * constDestProperty="dest";
 static const QLatin1String constPartialExt(".partial");
 
+bool PodcastService::isPodcastFile(const QString &file)
+{
+    if (file.startsWith(Utils::constDirSep) && MPDConnection::self()->getDetails().isLocal()) {
+        QString downloadPath=Settings::self()->podcastDownloadPath();
+        if (downloadPath.isEmpty()) {
+            return false;
+        }
+        return file.startsWith(downloadPath);
+    }
+    return false;
+}
+
 QUrl PodcastService::fixUrl(const QString &url)
 {
     QString trimmed(url.trimmed());
@@ -108,7 +120,7 @@ Song PodcastService::fixPath(const Song &orig, bool) const
     Song song=orig;
     song.setPodcastLocalPath(QString());
     song.setIsFromOnlineService(constName);
-    song.album=constName;
+    song.artist=constName;
     if (!orig.podcastLocalPath().isEmpty() && QFile::exists(orig.podcastLocalPath())) {
         if (!HttpServer::self()->forceUsage() && MPDConnection::self()->getDetails().isLocal()) {
             song.file=QLatin1String("file://")+orig.podcastLocalPath();
@@ -189,7 +201,6 @@ void PodcastService::rssJobFinished()
                 startRssUpdateTimer();
             }
         }
-
 
         MusicLibraryItemPodcast *podcast=new MusicLibraryItemPodcast(QString(), this);
         MusicLibraryItemPodcast::RssStatus loadStatus=podcast->loadRss(j->actualJob());
@@ -698,16 +709,7 @@ void PodcastService::updateRss()
 
 void PodcastService::currentMpdSong(const Song &s)
 {
-    bool check=s.isFromOnlineService() && s.album==constName;
-
-    if (!check && s.file.startsWith(Utils::constDirSep) && MPDConnection::self()->getDetails().isLocal()) {
-        QString downloadPath=Settings::self()->podcastDownloadPath();
-        if (downloadPath.isEmpty()) {
-            return;
-        }
-        check=s.file.startsWith(downloadPath);
-    }
-    if (check) {
+    if ((s.isFromOnlineService() && s.album==constName) || isPodcastFile(s.file)) {
         QString path=s.decodedPath();
         if (path.isEmpty()) {
             path=s.file;

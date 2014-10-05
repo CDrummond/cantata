@@ -34,7 +34,7 @@
 #include <QLabel>
 #include <QScrollBar>
 #include <QImage>
-#include <QGridLayout>
+#include <QVBoxLayout>
 #include <QNetworkReply>
 #include <QLocale>
 #include <QBuffer>
@@ -94,7 +94,7 @@ View::View(QWidget *parent, const QStringList &views)
     , selector(0)
     , stack(0)
 {
-    QGridLayout *layout=new QGridLayout(this);
+    QVBoxLayout *layout=new QVBoxLayout(this);
     header=new QLabel(this);
 
     if (views.isEmpty()) {
@@ -114,21 +114,19 @@ View::View(QWidget *parent, const QStringList &views)
         connect(selector, SIGNAL(activated(int)), this, SIGNAL(viewChanged()));
     }
 
-    layout->setMargin(0);
     header->setWordWrap(true);
     header->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
-    int row=0;
-    layout->addItem(new QSpacerItem(1, layout->spacing(), QSizePolicy::Fixed, QSizePolicy::Fixed), row++, 0);
-    layout->addWidget(header, row++, 0, 1, 2);
+    layout->setMargin(2);
+    layout->addWidget(header);
     if (views.isEmpty()) {
-        layout->addWidget(texts.at(0), row++, 0, 1, 2);
+        layout->addWidget(texts.at(0));
     } else {
-        layout->addWidget(selector, row, 0);
-        layout->addItem(new QSpacerItem(1, 1, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed), row++, 1);
-        layout->addWidget(stack, row++, 0, 1, 2);
+        layout->addWidget(selector);
+        layout->addItem(new QSpacerItem(1, 1, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));
+        layout->addWidget(stack);
     }
-    layout->addItem(new QSpacerItem(1, fontMetrics().height()/4, QSizePolicy::Fixed, QSizePolicy::Fixed), row++, 0);
+    layout->addItem(new QSpacerItem(1, fontMetrics().height()/4, QSizePolicy::Fixed, QSizePolicy::Fixed));
     if (headerTag.isEmpty()) {
         initHeaderTags();
     }

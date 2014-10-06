@@ -25,6 +25,7 @@
 #include "network/networkaccessmanager.h"
 #include "models/onlineservicesmodel.h"
 #include "models/musiclibraryitemsong.h"
+#include "mpd/mpdconnection.h"
 #include "config.h"
 #include <QCoreApplication>
 #include <QUrl>
@@ -140,7 +141,7 @@ void SoundCloudService::jobFinished()
                 url.setQuery(query);
                 #endif
                 // MPD does not seem to support https :-(
-                if (QLatin1String("https")==url.scheme()) {
+                if (QLatin1String("https")==url.scheme() && !MPDConnection::self()->urlHandlers().contains(QLatin1String("https"))) {
                     url.setScheme(QLatin1String("http"));
                 }
                 song.file=url.toString();

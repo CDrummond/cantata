@@ -199,7 +199,7 @@ Song OnlineService::encode(const Song &song)
 
 bool OnlineService::decode(Song &song)
 {
-    if (!song.file.startsWith(QLatin1String("http://"))) {
+    if (!song.file.startsWith(QLatin1String("http://")) && !song.file.startsWith(QLatin1String("https://"))) {
         return false;
     }
 

@@ -80,6 +80,7 @@
     then completely disconnect and reconnect.
 56. For windows builds, when window is not focused, draw sidebar selection as
     a darkened background.
+57. If MPD supports https, then there is no need to convert SoundCould URLs.
 
 1.4.2
 -----

@@ -255,7 +255,7 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
     return v;
 }
 
-static QSet<QString> constStdProtocols=QSet<QString>() << QLatin1String("http://")
+static QSet<QString> constStdProtocols=QSet<QString>() << constHttpProtocol
                                                        << QLatin1String("https://")
                                                        << QLatin1String("mms://")
                                                        << QLatin1String("mmsh://")
@@ -574,7 +574,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
 
                 DBUG << "Got playlist item" << currentSong.file << "prevFile:" << prevSongFile;
 
-                bool parseCue=canSplitCue && currentSong.isCueFile() && !mpdDir.startsWith("http://") && QFile::exists(mpdDir+currentSong.file);
+                bool parseCue=canSplitCue && currentSong.isCueFile() && !mpdDir.startsWith(constHttpProtocol) && QFile::exists(mpdDir+currentSong.file);
                 bool cueParseStatus=false;
                 if (parseCue) {
                     DBUG << "Parsing cue file:" << currentSong.file << "mpdDir:" << mpdDir;

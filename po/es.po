@@ -554,10 +554,6 @@ msgstr "Eliminando directorios no utilizados"
 msgid "Calculate ReplayGain for ripped tracks?"
 msgstr "¿Desea calcular la ganancia de reproducción para pistas extraídas?"
 
-#: devices/actiondialog.cpp:615
-msgid "ReplyGain"
-msgstr "Ganancia de reproducción"
-
 #: devices/actiondialog.cpp:616
 msgid "Calculate"
 msgstr "Calcular"
@@ -3012,7 +3008,7 @@ msgstr "Organizar ficheros"
 msgid "Edit Track Information"
 msgstr ""
 
-#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85
+#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85 devices/actiondialog.cpp:615
 msgid "ReplayGain"
 msgstr "Ganancia de reproducción"
 
@@ -3254,10 +3250,6 @@ msgstr "Añadir flujo a favoritos"
 msgid "Configure Streams"
 msgstr "Configuración de flujos"
 
-#: mpd/mpdconnection.cpp:166
-msgid "Uknown"
-msgstr "Desconocido"
-
 #: mpd/mpdconnection.cpp:208
 msgctxt "name (host)"
 msgid "\"%1\""
@@ -3325,7 +3317,7 @@ msgstr "Fallo al enviar '%1' a %2. Compruebe que %2 está registrado con MPD."
 msgid "Personal"
 msgstr "Personal"
 
-#: mpd/song.cpp:61 support/utils.cpp:645
+#: mpd/song.cpp:61 support/utils.cpp:645 mpd/mpdconnection.cpp:166
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -3788,7 +3780,7 @@ msgstr "¿Desea cancelar la lectura de las etiquetas existentes?"
 
 #: replaygain/rgdialog.cpp:261
 msgid ""
-"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplyGain tags."
+"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplayGain tags."
 "</i>"
 msgstr ""
 
@@ -6139,10 +6131,10 @@ msgstr "%1 actualizaciones disponibles"
 
 #~ msgid ""
 #~ "Scan <b>all</b> tracks?<br><br><i>NOTE: All tracks have existing "
-#~ "ReplyGain tags.</i>"
+#~ "ReplayGain tags.</i>"
 #~ msgstr ""
 #~ "¿Desea analizar <b>todas</b>las pistas?<br><br><i>NOTA: Todas las pistas "
-#~ "ya tienen etiquetas ReplyGain.</i>"
+#~ "ya tienen etiquetas ReplayGain.</i>"
 
 #~ msgid ""
 #~ "<i><b>NOTE:</b> If you use a scrobbler which is marked as '(via "

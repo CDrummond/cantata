@@ -553,10 +553,6 @@ msgstr "A használaton kívüli könyvtárak tisztítása"
 msgid "Calculate ReplayGain for ripped tracks?"
 msgstr "Kiszámítsam a lejátszási szintet leszedett számokra?"
 
-#: devices/actiondialog.cpp:615
-msgid "ReplyGain"
-msgstr "Lejátszási szint"
-
 #: devices/actiondialog.cpp:616
 msgid "Calculate"
 msgstr "Számítás"
@@ -2980,7 +2976,7 @@ msgstr "Fájlok rendezése"
 msgid "Edit Track Information"
 msgstr ""
 
-#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85
+#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85 devices/actiondialog.cpp:615
 msgid "ReplayGain"
 msgstr "Lejátszási szint"
 
@@ -3222,10 +3218,6 @@ msgstr "Hangfolyam hozzáadása a kedvencekhez"
 msgid "Configure Streams"
 msgstr "Hangfolyam beállítása"
 
-#: mpd/mpdconnection.cpp:166
-msgid "Uknown"
-msgstr "Ismeretlen"
-
 #: mpd/mpdconnection.cpp:208
 msgctxt "name (host)"
 msgid "\"%1\""
@@ -3295,7 +3287,7 @@ msgstr ""
 msgid "Personal"
 msgstr "Személyes"
 
-#: mpd/song.cpp:61 support/utils.cpp:645
+#: mpd/song.cpp:61 support/utils.cpp:645 mpd/mpdconnection.cpp:166
 msgid "Unknown"
 msgstr "Ismeretlen"
 
@@ -3757,7 +3749,7 @@ msgstr "A beállított címkék beolvasását beszakítod?"
 
 #: replaygain/rgdialog.cpp:261
 msgid ""
-"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplyGain tags."
+"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplayGain tags."
 "</i>"
 msgstr ""
 
@@ -6087,7 +6079,7 @@ msgstr "%1 számú frissítés érhető el"
 
 #~ msgid ""
 #~ "Scan <b>all</b> tracks?<br><br><i>NOTE: All tracks have existing "
-#~ "ReplyGain tags.</i>"
+#~ "ReplayGain tags.</i>"
 #~ msgstr ""
 #~ "Az <b>összes</b> számot átnézzem?<br><br><i>Megjegyzés: minden szám "
 #~ "rendelkezik lejátszási szint címkével.</i>"

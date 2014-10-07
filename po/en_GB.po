@@ -535,10 +535,6 @@ msgstr ""
 msgid "Calculate ReplayGain for ripped tracks?"
 msgstr ""
 
-#: devices/actiondialog.cpp:615
-msgid "ReplyGain"
-msgstr ""
-
 #: devices/actiondialog.cpp:616
 msgid "Calculate"
 msgstr ""
@@ -2801,7 +2797,7 @@ msgstr "Organise Files"
 msgid "Edit Track Information"
 msgstr ""
 
-#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85
+#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85 devices/actiondialog.cpp:615
 msgid "ReplayGain"
 msgstr ""
 
@@ -3043,10 +3039,6 @@ msgstr "Add Stream To Favourites"
 msgid "Configure Streams"
 msgstr ""
 
-#: mpd/mpdconnection.cpp:166
-msgid "Uknown"
-msgstr ""
-
 #: mpd/mpdconnection.cpp:208
 msgctxt "name (host)"
 msgid "\"%1\""
@@ -3111,7 +3103,7 @@ msgstr ""
 msgid "Personal"
 msgstr ""
 
-#: mpd/song.cpp:61 support/utils.cpp:645
+#: mpd/song.cpp:61 support/utils.cpp:645 mpd/mpdconnection.cpp:166
 msgid "Unknown"
 msgstr ""
 
@@ -3566,7 +3558,7 @@ msgstr ""
 
 #: replaygain/rgdialog.cpp:261
 msgid ""
-"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplyGain tags."
+"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplayGain tags."
 "</i>"
 msgstr ""
 

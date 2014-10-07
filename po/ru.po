@@ -546,10 +546,6 @@ msgstr "Очищение неиспользуемых папок"
 msgid "Calculate ReplayGain for ripped tracks?"
 msgstr "Рассчитать ReplayGain для скопированных с диска треков?"
 
-#: devices/actiondialog.cpp:615
-msgid "ReplyGain"
-msgstr "ReplyGain"
-
 #: devices/actiondialog.cpp:616
 msgid "Calculate"
 msgstr "Рассчитать"
@@ -3006,7 +3002,7 @@ msgstr "Систематизировать файлы"
 msgid "Edit Track Information"
 msgstr ""
 
-#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85
+#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85 devices/actiondialog.cpp:615
 msgid "ReplayGain"
 msgstr "ReplayGain"
 
@@ -3248,10 +3244,6 @@ msgstr "Добавить поток в Избранное"
 msgid "Configure Streams"
 msgstr "Настройка потоков"
 
-#: mpd/mpdconnection.cpp:166
-msgid "Uknown"
-msgstr "Неизвестно"
-
 #: mpd/mpdconnection.cpp:208
 msgctxt "name (host)"
 msgid "\"%1\""
@@ -3318,7 +3310,7 @@ msgstr ""
 msgid "Personal"
 msgstr "Частный"
 
-#: mpd/song.cpp:61 support/utils.cpp:645
+#: mpd/song.cpp:61 support/utils.cpp:645 mpd/mpdconnection.cpp:166
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -3780,7 +3772,7 @@ msgstr "Прервать чтение существующих тегов?"
 
 #: replaygain/rgdialog.cpp:261
 msgid ""
-"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplyGain tags."
+"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplayGain tags."
 "</i>"
 msgstr ""
 
@@ -5956,10 +5948,10 @@ msgstr ""
 
 #~ msgid ""
 #~ "Scan <b>all</b> tracks?<br><br><i>NOTE: All tracks have existing "
-#~ "ReplyGain tags.</i>"
+#~ "ReplayGain tags.</i>"
 #~ msgstr ""
 #~ "Сканировать <b>все</b> треки?<br><br><i>ВНИМАНИЕ: у всех треков уже есть "
-#~ "теги ReplyGain.</i>"
+#~ "теги ReplayGain.</i>"
 
 #~ msgid "ListenLive"
 #~ msgstr "ListenLive"

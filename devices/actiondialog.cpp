@@ -612,7 +612,7 @@ void ActionDialog::doNext()
             #ifdef ENABLE_REPLAYGAIN_SUPPORT
             if (Copy==mode && !albumsWithoutRgTags.isEmpty() && sourceIsAudioCd) {
                 QWidget *pw=parentWidget();
-                if (MessageBox::Yes==MessageBox::questionYesNo(pw, i18n("Calculate ReplayGain for ripped tracks?"), i18n("ReplyGain"),
+                if (MessageBox::Yes==MessageBox::questionYesNo(pw, i18n("Calculate ReplayGain for ripped tracks?"), i18n("ReplayGain"),
                                                                GuiItem(i18n("Calculate")), StdGuiItem::no())) {
                     RgDialog *dlg=new RgDialog(pw);
                     QList<Song> songs;

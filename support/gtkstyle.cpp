@@ -105,10 +105,11 @@ void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painte
     painter->setOpacity(opacityB4);
 }
 
-QString GtkStyle::readDconfSetting(const QString &setting, const QString scheme)
+QString GtkStyle::readDconfSetting(const QString &setting, const QString &scheme)
 {
     #ifdef NO_GTK_SUPPORT
     Q_UNUSED(setting)
+    Q_UNUSED(scheme)
     #else
     // For some reason, dconf does not seem to terminate correctly when run under some desktops (e.g. KDE)
     // Destroying the QProcess seems to block, causing the app to appear to hang before starting.
@@ -123,14 +124,30 @@ QString GtkStyle::readDconfSetting(const QString &setting, const QString scheme)
         return QString();
     }
 
+    QString schemeToUse=scheme.isEmpty() ? QLatin1String("/org/gnome/desktop/interface/") : scheme;
     QProcess *process=new QProcess();
-    process->start(QLatin1String("dconf"), QStringList() << QLatin1String("read") << (scheme.isEmpty() ? QLatin1String("/org/gnome/desktop/interface/") : scheme)+setting);
+    process->start(QLatin1String("dconf"), QStringList() << QLatin1String("read") << schemeToUse+setting);
     QObject::connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
 
     if (process->waitForFinished(1500)) {
         QString resp = process->readAllStandardOutput();
         resp = resp.trimmed();
         resp.remove('\'');
+
+        if (resp.isEmpty()) {
+            // Probably set to the default, and dconf does not store defaults! Therefore, need to read via gsettings...
+            schemeToUse=schemeToUse.mid(1, schemeToUse.length()-2).replace("/", ".");
+            QProcess *gsettingsProc=new QProcess();
+            gsettingsProc->start(QLatin1String("gsettings"), QStringList() << QLatin1String("get") << schemeToUse << setting);
+            QObject::connect(gsettingsProc, SIGNAL(finished(int)), process, SLOT(deleteLater()));
+            if (gsettingsProc->waitForFinished(1500)) {
+                resp = gsettingsProc->readAllStandardOutput();
+                resp = resp.trimmed();
+                resp.remove('\'');
+            } else {
+                gsettingsProc->kill();
+            }
+        }
         return resp;
     } else { // If we failed 1 time, dont bother next time!
         ok=false;

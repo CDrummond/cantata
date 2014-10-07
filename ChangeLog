@@ -84,6 +84,7 @@
 58. If playlist is loaded and replaces playqueue, then start playback of first
     track.
 59. Custom/thin scrollbars for context view.
+60. If fail to read a Gtk setting from DConf then try GSettings.
 
 1.4.2
 -----

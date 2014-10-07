@@ -47,6 +47,7 @@ namespace Cantata {
         Role_Key,
         Role_Id,
         Role_Song,
+        Role_SongWithRating,
         Role_AlbumDuration,
         Role_Status,
         Role_CurrentStatus,

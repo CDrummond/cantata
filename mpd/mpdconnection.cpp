@@ -757,7 +757,7 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
 
         if (AddReplaceAndPlay==action /*&& addedFile */&& !origList.isEmpty()) {
             // Dont emit error if fail plays, might be that playlist was not loaded...
-            sendCommand("play "+quote(0), false);
+            playFirstTrack(false);
         }
         emit added(origList);
     }
@@ -1072,9 +1072,14 @@ void MPDConnection::setPause(bool toggle)
 
 void MPDConnection::play()
 {
+    playFirstTrack(true);
+}
+
+void MPDConnection::playFirstTrack(bool emitErrors)
+{
     toggleStopAfterCurrent(false);
     stopVolumeFade();
-    sendCommand("play");
+    sendCommand("play", emitErrors);
 }
 
 //void MPDConnection::startPlayingSong(quint32 song)
@@ -1469,7 +1474,7 @@ void MPDConnection::loadPlaylist(const QString &name, bool replace)
 
     if (sendCommand("load "+encodeName(name)).ok) {
         if (replace) {
-            play();
+            playFirstTrack(false);
         }
         emit playlistLoaded(name);
     }

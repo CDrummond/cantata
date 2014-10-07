@@ -565,10 +565,6 @@ msgstr "사용되지 않는 폴더 지우기"
 msgid "Calculate ReplayGain for ripped tracks?"
 msgstr "리핑된 곡의 리플레이게인을 계산할까요?"
 
-#: devices/actiondialog.cpp:615
-msgid "ReplyGain"
-msgstr "리플레이게인"
-
 #: devices/actiondialog.cpp:616
 msgid "Calculate"
 msgstr "계산"
@@ -3017,7 +3013,7 @@ msgstr "파일구성"
 msgid "Edit Track Information"
 msgstr "곡 정보 수정"
 
-#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85
+#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85 devices/actiondialog.cpp:615
 msgid "ReplayGain"
 msgstr "리플레이게인"
 
@@ -3259,10 +3255,6 @@ msgstr "스트림을 즐겨찾기에 추가"
 msgid "Configure Streams"
 msgstr "스트림 설정"
 
-#: mpd/mpdconnection.cpp:166
-msgid "Uknown"
-msgstr "모름"
-
 #: mpd/mpdconnection.cpp:208
 msgctxt "name (host)"
 msgid "\"%1\""
@@ -3327,7 +3319,7 @@ msgstr "'%1'을 %2로 보낼 수 없음. %2가 MPD에 등록되어 있는지 확
 msgid "Personal"
 msgstr "개인"
 
-#: mpd/song.cpp:61 support/utils.cpp:645
+#: mpd/song.cpp:61 support/utils.cpp:645 mpd/mpdconnection.cpp:166
 msgid "Unknown"
 msgstr "모름"
 
@@ -3788,7 +3780,7 @@ msgstr "기존 태그 읽기를 취소할까요?"
 
 #: replaygain/rgdialog.cpp:261
 msgid ""
-"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplyGain tags."
+"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplayGain tags."
 "</i>"
 msgstr ""
 "<b>모든</b> 곡을 검색할까요?<br/><br/><i>모든 곡이 리플레이게인 태그가 있음."
@@ -6057,7 +6049,7 @@ msgstr "%1 업데이트 있음"
 
 #~ msgid ""
 #~ "Scan <b>all</b> tracks?<br><br><i>NOTE: All tracks have existing "
-#~ "ReplyGain tags.</i>"
+#~ "ReplayGain tags.</i>"
 #~ msgstr ""
 #~ "<b>전</b>곡을 검색할까요?<br><br><i>참고: 전곡은 기존 리플레이게인을 가지"
 #~ "고 있습니다.</i>"

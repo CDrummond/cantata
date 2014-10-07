@@ -570,10 +570,6 @@ msgstr "Uklízí se nepoužívané složky"
 msgid "Calculate ReplayGain for ripped tracks?"
 msgstr "Spočítat vyrovnání hlasitosti skladeb pro vytažené skladby?"
 
-#: devices/actiondialog.cpp:615
-msgid "ReplyGain"
-msgstr "Vyrovnání hlasitosti"
-
 #: devices/actiondialog.cpp:616
 msgid "Calculate"
 msgstr "Spočítat"
@@ -3099,7 +3095,7 @@ msgstr "Uspořádat soubory"
 msgid "Edit Track Information"
 msgstr "Upravit informace o skladbě"
 
-#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85
+#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85 devices/actiondialog.cpp:615
 msgid "ReplayGain"
 msgstr "Vyrovnání hlasitosti"
 
@@ -3341,10 +3337,6 @@ msgstr "Přidat proud do oblíbených"
 msgid "Configure Streams"
 msgstr "Nastavit proudy"
 
-#: mpd/mpdconnection.cpp:166
-msgid "Uknown"
-msgstr "Neznámý"
-
 #: mpd/mpdconnection.cpp:208
 msgctxt "name (host)"
 msgid "\"%1\""
@@ -3412,7 +3404,7 @@ msgstr ""
 msgid "Personal"
 msgstr "Osobní"
 
-#: mpd/song.cpp:61 support/utils.cpp:645
+#: mpd/song.cpp:61 support/utils.cpp:645 mpd/mpdconnection.cpp:166
 msgid "Unknown"
 msgstr "Neznámý"
 
@@ -3872,7 +3864,7 @@ msgstr "Zrušit čtení stávajících značek?"
 
 #: replaygain/rgdialog.cpp:261
 msgid ""
-"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplyGain tags."
+"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplayGain tags."
 "</i>"
 msgstr ""
 "Prohledat <b>všechny</b> skladby?<br/><br/><i>Všechny skladby mají "
@@ -6236,7 +6228,7 @@ msgstr "%1 aktualizací dostupných"
 
 #~ msgid ""
 #~ "Scan <b>all</b> tracks?<br><br><i>NOTE: All tracks have existing "
-#~ "ReplyGain tags.</i>"
+#~ "ReplayGain tags.</i>"
 #~ msgstr ""
 #~ "Prohledat <b>všechny</b> skladby?<br><br><i>POZNÁMKA: Všechny skladby "
 #~ "mají existující značky pro vyrovnání hlasitost.</i>"

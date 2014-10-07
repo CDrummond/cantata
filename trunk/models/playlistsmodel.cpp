@@ -284,6 +284,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return pl->key;
         case Cantata::Role_Key:
             return 0;
+        case Cantata::Role_SongWithRating:
         case Cantata::Role_Song: {
             QVariant var;
             var.setValue<Song>(Song());
@@ -375,6 +376,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case Cantata::Role_Key:
             return s->key;
         case Cantata::Role_CoverSong:
+        case Cantata::Role_SongWithRating:
         case Cantata::Role_Song: {
             QVariant var;
             var.setValue<Song>(*s);

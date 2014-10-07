@@ -229,7 +229,7 @@ public:
 
         Type type=getType(index);
         bool isCollection=index.data(Cantata::Role_IsCollection).toBool();
-        Song song=index.data(Cantata::Role_Song).value<Song>();
+        Song song=index.data(Cantata::Role_SongWithRating).value<Song>();
         int state=index.data(Cantata::Role_Status).toInt();
         quint32 collection=index.data(Cantata::Role_CollectionId).toUInt();
         bool selected=option.state&QStyle::State_Selected;

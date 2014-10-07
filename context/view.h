@@ -77,6 +77,9 @@ Q_SIGNALS:
 protected Q_SLOTS:
     virtual void abort();
 
+private Q_SLOTS:
+    void initStyle();
+
 protected:
     Song currentSong;
     QString stdHeader;

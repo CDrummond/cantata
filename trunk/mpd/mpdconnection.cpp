@@ -1468,6 +1468,9 @@ void MPDConnection::loadPlaylist(const QString &name, bool replace)
     }
 
     if (sendCommand("load "+encodeName(name)).ok) {
+        if (replace) {
+            play();
+        }
         emit playlistLoaded(name);
     }
 }

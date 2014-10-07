@@ -974,10 +974,10 @@ void PlayQueueModel::update(const QList<Song> &songList)
         for (qint32 i=0; i<songList.count(); ++i) {
             Song s=songList.at(i);
             bool newSong=i>=songs.count();
-            Song curentSongAtPos=newSong ? Song() : songs.at(i);
+            Song currentSongAtPos=newSong ? Song() : songs.at(i);
             bool isEmpty=s.isEmpty();
 
-            if (newSong || s.id!=curentSongAtPos.id) {
+            if (newSong || s.id!=currentSongAtPos.id) {
                 qint32 existingPos=newSong ? -1 : getRowById(s.id);
                 if (-1==existingPos) {
                     beginInsertRows(QModelIndex(), i, i);
@@ -990,6 +990,7 @@ void PlayQueueModel::update(const QList<Song> &songList)
                     beginMoveRows(QModelIndex(), existingPos, existingPos, QModelIndex(), i>existingPos ? i+1 : i);
                     Song old=songs.takeAt(existingPos);
 //                     old.pos=s.pos;
+                    s.rating=old.rating;
                     songs.insert(i, isEmpty ? old : s);
                     #ifdef ENABLE_UBUNTU
                     currentKeys.insert(isEmpty ? old.key : s.key);
@@ -997,17 +998,18 @@ void PlayQueueModel::update(const QList<Song> &songList)
                     endMoveRows();
                 }
             } else if (isEmpty) {
-                s=curentSongAtPos;
+                s=currentSongAtPos;
                 #ifdef ENABLE_UBUNTU
                 currentKeys.insert(s.key);
                 #endif
             } else {
-                s.key=curentSongAtPos.key;
+                s.key=currentSongAtPos.key;
+                s.rating=currentSongAtPos.rating;
                 #ifdef ENABLE_UBUNTU
                 currentKeys.insert(s.key);
                 #endif
                 songs.replace(i, s);
-                if (s.title!=curentSongAtPos.title || s.artist!=curentSongAtPos.artist || s.name()!=curentSongAtPos.name()) {
+                if (s.title!=currentSongAtPos.title || s.artist!=currentSongAtPos.artist || s.name()!=currentSongAtPos.name()) {
                     emit dataChanged(index(i, 0), index(i, columnCount(QModelIndex())-1));
                 }
             }

@@ -31,6 +31,7 @@
 #include "support/action.h"
 #include "widgets/icons.h"
 #include "support/localize.h"
+#include "support/touchproxystyle.h"
 #include <QLabel>
 #include <QScrollBar>
 #include <QImage>
@@ -44,6 +45,7 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include <QTimer>
 
 // Uncomment this #define to have header labels an images centered. Thsi is disabled, as the image
 // centering only works if there is some text larger than 1 line to be displayed underneath :-(
@@ -135,6 +137,10 @@ View::View(QWidget *parent, const QStringList &views)
     cancelJobAction->setEnabled(false);
     connect(cancelJobAction, SIGNAL(triggered()), SLOT(abort()));
     text=texts.at(0);
+
+    if (!Utils::touchFriendly()) {
+        QTimer::singleShot(0, this, SLOT(initStyle()));
+    }
 }
 
 View::~View()
@@ -286,4 +292,17 @@ void View::setHtml(const QString &h, int index)
 
 void View::abort()
 {
+}
+
+void View::initStyle()
+{
+    if (GtkStyle::isActive() && GtkStyle::thinScrollbars()) {
+        // Already have thin style scrollbars...
+        return;
+    }
+    TouchProxyStyle *tps=new TouchProxyStyle(0, false, true);
+    foreach (TextBrowser *t, texts) {
+        t->verticalScrollBar()->setStyle(tps);
+        t->horizontalScrollBar()->setStyle(tps);
+    }
 }

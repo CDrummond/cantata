@@ -251,6 +251,12 @@ static WindowManager *wm=0;
 static QProxyStyle *proxyStyle=0;
 static bool symbolicIcons=false;
 static QColor symbolicIconColor(0, 0, 0);
+static bool thinSbar=false;
+
+bool GtkStyle::thinScrollbars()
+{
+    return thinSbar;
+}
 
 void GtkStyle::applyTheme(QWidget *widget)
 {
@@ -259,7 +265,6 @@ void GtkStyle::applyTheme(QWidget *widget)
     #else
     if (widget && isActive()) {
         QString theme=GtkStyle::themeName().toLower();
-        bool thinSbar=false;
         bool touchStyleSpin=false;
         int modViewFrame=0;
         QMap<QString, QString> css;

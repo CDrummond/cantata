@@ -81,6 +81,8 @@
 56. For windows builds, when window is not focused, draw sidebar selection as
     a darkened background.
 57. If MPD supports https, then there is no need to convert SoundCould URLs.
+58. If playlist is loaded and replaces playqueue, then start playback of first
+    track.
 
 1.4.2
 -----

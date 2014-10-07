@@ -547,10 +547,6 @@ msgstr "Bereinige unbenutzte Ordner"
 msgid "Calculate ReplayGain for ripped tracks?"
 msgstr "Errechne ReplayGain der Stücke?"
 
-#: devices/actiondialog.cpp:615
-msgid "ReplyGain"
-msgstr "ReplayGain"
-
 #: devices/actiondialog.cpp:616
 msgid "Calculate"
 msgstr "Berechne"
@@ -2975,7 +2971,7 @@ msgstr "Dateien organisieren"
 msgid "Edit Track Information"
 msgstr ""
 
-#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85
+#: gui/stdactions.cpp:67 replaygain/rgdialog.cpp:85 devices/actiondialog.cpp:615
 msgid "ReplayGain"
 msgstr "ReplayGain"
 
@@ -3217,10 +3213,6 @@ msgstr "Füge Stream den Favoriten hinzu"
 msgid "Configure Streams"
 msgstr "Konfiguriere Streams"
 
-#: mpd/mpdconnection.cpp:166
-msgid "Uknown"
-msgstr "Unbekannt"
-
 #: mpd/mpdconnection.cpp:208
 msgctxt "name (host)"
 msgid "\"%1\""
@@ -3290,7 +3282,7 @@ msgstr ""
 msgid "Personal"
 msgstr "Persönlich"
 
-#: mpd/song.cpp:61 support/utils.cpp:645
+#: mpd/song.cpp:61 support/utils.cpp:645 mpd/mpdconnection.cpp:166
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -3748,7 +3740,7 @@ msgstr "Lesen der Dateien auf vorhandene Tags abbrechen?"
 
 #: replaygain/rgdialog.cpp:261
 msgid ""
-"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplyGain tags."
+"Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplayGain tags."
 "</i>"
 msgstr ""
 
@@ -5591,7 +5583,7 @@ msgstr ""
 
 #~ msgid ""
 #~ "Scan <b>all</b> tracks?<br><br><i>NOTE: All tracks have existing "
-#~ "ReplyGain tags.</i>"
+#~ "ReplayGain tags.</i>"
 #~ msgstr ""
 #~ "Suche in <b>allen</b> Stücken?<br><br><i>Hinweis: Alle Stücke besitzen "
 #~ "einen ReplayGain-Tag. </i>"

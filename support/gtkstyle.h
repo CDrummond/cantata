@@ -32,7 +32,7 @@ class QWidget;
 
 namespace GtkStyle
 {
-    QString readDconfSetting(const QString &setting, const QString scheme=QString());
+    QString readDconfSetting(const QString &setting, const QString &scheme=QString());
     extern bool isActive();
     extern void drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity);
     extern QString themeName();

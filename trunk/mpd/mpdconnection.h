@@ -402,6 +402,7 @@ private:
     void emitStatusUpdated(MPDStatusValues &v);
     void clearError();
     void getRatings(QList<Song> &songs);
+    void playFirstTrack(bool emitErrors);
 
 private:
     Thread *thread;

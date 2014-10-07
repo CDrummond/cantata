@@ -25,6 +25,9 @@
 #include "utils.h"
 #include "gtkstyle.h"
 #include "flickcharm.h"
+#ifdef Q_OS_MAC
+#include "osxstyle.h"
+#endif
 #include <QSpinBox>
 #include <QComboBox>
 #include <QScrollBar>
@@ -370,7 +373,11 @@ void TouchProxyStyle::drawComplexControl(ComplexControl control, const QStyleOpt
 
             if (slider.isValid()) {
                 bool inactive=!(sb->activeSubControls&SC_ScrollBarSlider && (option->state&State_MouseOver || option->state&State_Sunken));
+                #ifdef Q_OS_MAC
+                QColor col(OSXStyle::self()->viewPalette().highlight().color());
+                #else
                 QColor col(option->palette.highlight().color());
+                #endif
                 if (!(option->state&State_Active)) {
                     col=col.darker(115);
                 }

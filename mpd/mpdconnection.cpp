@@ -57,6 +57,9 @@ void MPDConnection::enableDebug()
     debugEnabled=true;
 }
 
+// Uncomment the following to report error strings in MPDStatus to the UI
+// ...disabled, as stickers (for ratings) can cause lots of errors to be reported - and these all need clearing, etc.
+// #define REPORT_MPD_ERRORS
 static const int constSocketCommsTimeout=2000;
 static const int constMaxReadAttempts=4;
 static int maxFilesPerAddCommand=10000;
@@ -269,8 +272,7 @@ MPDConnection::~MPDConnection()
         stopVolumeFade();
     }
 //     disconnect(&sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
-    disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
-    disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
+    connectIdleSignals(false);
     sock.disconnectFromHost();
     idleSocket.disconnectFromHost();
 }
@@ -350,8 +352,6 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
                 dynamicId.clear();
                 setupRemoteDynamic();
                 #endif
-                connect(&socket, SIGNAL(readyRead()), this, SLOT(idleDataReady()), Qt::QueuedConnection);
-                connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)), Qt::QueuedConnection);
                 DBUG << (void *)(&socket) << "Enabling idle";
                 socket.write("idle\n");
                 socket.waitForBytesWritten();
@@ -407,6 +407,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
     }
     ConnectionReturn status=Failed;
     if (Success==(status=connectToMPD(sock)) && Success==(status=connectToMPD(idleSocket, true))) {
+        connectIdleSignals(true);
         state=State_Connected;
         emit socketAddress(sock.address());
     } else {
@@ -420,8 +421,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
 void MPDConnection::disconnectFromMPD(bool emitAddr)
 {
     DBUG << "disconnectFromMPD";
-    disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
-    disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
+    connectIdleSignals(false);
     if (QAbstractSocket::ConnectedState==sock.state()) {
         sock.disconnectFromHost();
     }
@@ -432,7 +432,9 @@ void MPDConnection::disconnectFromMPD(bool emitAddr)
     idleSocket.close();
     state=State_Disconnected;
     ver=0;
-    emit socketAddress(QString());
+    if (emitAddr) {
+        emit socketAddress(QString());
+    }
 }
 
 // This function is mainly intended to be called after the computer (laptop) has been 'resumed'
@@ -566,6 +568,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
 
 MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bool emitErrors, bool retry)
 {
+    static bool reconnected=false; // If we reconnect, and send playlistinfo - dont want that call causing reconnects, and recursion!
     DBUG << (void *)(&sock) << "sendCommand:" << log(command) << emitErrors << retry;
 
     if (!isConnected()) {
@@ -573,7 +576,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         return Response(false);
     }
 
-    if (QAbstractSocket::ConnectedState!=sock.state()) {
+    if (QAbstractSocket::ConnectedState!=sock.state() && !reconnected) {
         DBUG << (void *)(&sock) << "Socket (state:" << sock.state() << ") need to reconnect";
         disconnectFromMPD(false);
         ConnectionReturn status=connectToMPD();
@@ -585,8 +588,9 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             return Response(false);
         } else {
             // Refresh playqueue...
+            reconnected=true;
             playListInfo();
-            getStatus();
+            reconnected=false;
         }
     }
 
@@ -606,7 +610,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
 
     if (!response.ok) {
         DBUG << log(command) << "failed";
-        if (response.data.isEmpty() && retry && QAbstractSocket::ConnectedState!=sock.state()) {
+        if (response.data.isEmpty() && retry && QAbstractSocket::ConnectedState!=sock.state() && !reconnected) {
             // Try one more time...
             // This scenario, where socket seems to be closed during/after 'write' seems to occur more often
             // when dynamizer is running. However, simply reconnecting seems to resolve the issue.
@@ -874,7 +878,7 @@ void MPDConnection::currentSong()
  */
 void MPDConnection::playListChanges()
 {
-    DBUG << lastUpdatePlayQueueVersion << playQueueIds.size();
+    DBUG << "playListChanges" << lastUpdatePlayQueueVersion << playQueueIds.size();
     if (0==lastUpdatePlayQueueVersion || 0==playQueueIds.size()) {
         playListInfo();
         return;
@@ -1255,6 +1259,17 @@ void MPDConnection::idleDataReady()
     parseIdleReturn(readFromSocket(idleSocket));
 }
 
+void MPDConnection::connectIdleSignals(bool c)
+{
+    if (c) {
+        connect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+        connect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
+    } else {
+        disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+        disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
+    }
+}
+
 /*
  * Socket state has changed, currently we only use this to gracefully
  * handle disconnects.
@@ -1263,7 +1278,7 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
 {
     if (socketState == QAbstractSocket::ClosingState){
         bool wasConnected=State_Connected==state;
-        disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+        connectIdleSignals(false);
         DBUG << "onSocketStateChanged";
         if (QAbstractSocket::ConnectedState==idleSocket.state()) {
             idleSocket.disconnectFromHost();
@@ -1277,7 +1292,7 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
             emit error(errorString(status), true);
         }
         if (QAbstractSocket::ConnectedState==idleSocket.state()) {
-            connect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+            connectIdleSignals(true);
         }
     }
 }
@@ -1999,6 +2014,9 @@ void MPDConnection::emitStatusUpdated(MPDStatusValues &v)
     if (restoreVolume>=0) {
         v.volume=restoreVolume;
     }
+    #ifndef REPORT_MPD_ERRORS
+    v.error=QString();
+    #endif
     emit statusUpdated(v);
     if (!v.error.isEmpty()) {
         clearError();
@@ -2007,6 +2025,7 @@ void MPDConnection::emitStatusUpdated(MPDStatusValues &v)
 
 void MPDConnection::clearError()
 {
+    #ifdef REPORT_MPD_ERRORS
     if (isConnected()) {
         DBUG << __FUNCTION__;
         if (-1!=sock.write("clearerror\n")) {
@@ -2014,6 +2033,7 @@ void MPDConnection::clearError()
             readReply(sock);
         }
     }
+    #endif
 }
 
 MpdSocket::MpdSocket(QObject *parent)

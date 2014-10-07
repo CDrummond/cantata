@@ -67,7 +67,7 @@ static QString details(const QNetworkInterface &iface)
 
 static QString displayName(const QNetworkInterface &iface)
 {
-    if (isIfaceType(iface , "lo")) {
+    if (iface.name()==QLatin1String("lo") || isIfaceType(iface , "lo")) {
         return i18n("Local loopback (%1)", details(iface));
     }
     if (isIfaceType(iface, "eth")) {

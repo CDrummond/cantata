@@ -83,6 +83,7 @@
 57. If MPD supports https, then there is no need to convert SoundCould URLs.
 58. If playlist is loaded and replaces playqueue, then start playback of first
     track.
+59. Custom/thin scrollbars for context view.
 
 1.4.2
 -----

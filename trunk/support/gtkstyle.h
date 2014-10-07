@@ -39,6 +39,7 @@ namespace GtkStyle
     extern QString iconTheme();
     extern void setThemeName(const QString &n);
     extern void setIconTheme(const QString &n);
+    extern bool thinScrollbars();
     extern void applyTheme(QWidget *widget);
     extern void registerWidget(QWidget *widget);
     extern bool useSymbolicIcons();

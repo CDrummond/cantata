@@ -108,11 +108,7 @@ void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
     KAction* closeAction = KStandardAction::close(q, SLOT(animatedHide()), q);
     #else
     QAction* closeAction = new QAction(q);
-    Icon icon=Icon("dialog-close");
-    if (icon.isNull()) {
-        icon=Icon("window-close");
-    }
-    closeAction->setIcon(icon);
+    closeAction->setIcon(Icon::std(Icon::Close));
     closeAction->setToolTip(i18n("Close"));
     QObject::connect(closeAction, SIGNAL(triggered()), q, SLOT(animatedHide()));
     #endif

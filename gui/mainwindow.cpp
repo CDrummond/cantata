@@ -1263,10 +1263,10 @@ void MainWindow::showPreferencesDialog(const QString &page)
     connect(pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
     connect(pref, SIGNAL(destroyed()), SLOT(controlConnectionsMenu()));
     connect(this, SIGNAL(showPreferencesPage(QString)), pref, SLOT(showPage(QString)));
-    pref->show();
     if (!page.isEmpty()) {
         pref->showPage(page);
     }
+    pref->show();
 }
 
 void MainWindow::quit()

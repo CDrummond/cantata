@@ -1079,7 +1079,7 @@ void MPDConnection::playFirstTrack(bool emitErrors)
 {
     toggleStopAfterCurrent(false);
     stopVolumeFade();
-    sendCommand("play", emitErrors);
+    sendCommand("play 0", emitErrors);
 }
 
 //void MPDConnection::startPlayingSong(quint32 song)

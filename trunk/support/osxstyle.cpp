@@ -206,7 +206,7 @@ void OSXStyle::controlActions(QWidget *w)
 {
     closeAct->setEnabled(w && w->windowFlags()&Qt::WindowCloseButtonHint);
     minAct->setEnabled(w && w->windowFlags()&Qt::WindowMinimizeButtonHint);
-    zoomAct->setEnabled(w && w->minimumSize()!=w->maximumSize());
+    zoomAct->setEnabled(w && w->minimumHeight()!=w->maximumHeight());
 }
 
 QTreeWidget * OSXStyle::viewWidget()

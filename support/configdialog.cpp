@@ -134,7 +134,7 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &de
     toolBar=addToolBar("ToolBar");
     toolBar->setMovable(false);
     toolBar->setContextMenuPolicy(Qt::PreventContextMenu);
-
+    toolBar->setStyleSheet("QToolBar { spacing:0px} ");
     QWidget *mw=new QWidget(this);
     QBoxLayout *lay=new QBoxLayout(QBoxLayout::TopToBottom, mw);
     stack=new QStackedWidget(mw);
@@ -190,7 +190,7 @@ void ConfigDialog::addPage(const QString &id, QWidget *widget, const QString &na
     QMap<QString, Page>::const_iterator it=pages.begin();
     QMap<QString, Page>::const_iterator end=pages.end();
     for (; it!=end; ++it) {
-        sz+=it.value().item->sizeHint().width()+8;
+        sz+=it.value().item->sizeHint().width()+4;
     }
     setMinimumWidth(sz);
     #else

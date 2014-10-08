@@ -687,7 +687,8 @@ ItemView::ItemView(QWidget *p)
     backButton->setAutoRaise(true);
     backButton->setFocusPolicy(Qt::NoFocus);
     backButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    backButton->setStyle(new BackButtonProxyStyle());
+    static BackButtonProxyStyle *backButtonStyle=new BackButtonProxyStyle();
+    backButton->setStyle(backButtonStyle);
     Action::updateToolTip(backAction);
     QAction *sep=new QAction(this);
     sep->setSeparator(true);

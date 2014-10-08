@@ -65,14 +65,9 @@ int PreferencesDialog::instanceCount()
 }
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
-    : Dialog(parent, "PreferencesDialog")
+    : ConfigDialog(parent, "PreferencesDialog")
 {
     iCount++;
-    setButtons(Ok|Apply|Cancel);
-
-    bool limitedHeight=Utils::limitedHeight(this);
-    pageWidget = new PageWidget(this, limitedHeight, !limitedHeight);
-    setMainWidget(pageWidget);
     server = new ServerSettings(0);
     playback = new PlaybackSettings(0);
     files = new FileSettings(0);
@@ -86,22 +81,22 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     interface->load();
     context->load();
     scrobbling->load();
-    pages.insert(QLatin1String("collection"), pageWidget->addPage(server, i18n("Collection"), Icons::self()->audioFileIcon, i18n("Collection Settings")));
-    pageWidget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
-    pageWidget->addPage(files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
-    pages.insert(QLatin1String("interface"), pageWidget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings")));
+    addPage(QLatin1String("collection"), server, i18n("Collection"), Icons::self()->audioFileIcon, i18n("Collection Settings"));
+    addPage(QLatin1String("playback"), playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
+    addPage(QLatin1String("files"), files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
+    addPage(QLatin1String("interface"), interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
     #ifdef ENABLE_STREAMS
     streams = new StreamsSettings(0);
-    pages.insert(QLatin1String("streams"), pageWidget->addPage(streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings")));
+    addPage(QLatin1String("streams"), streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings"));
     streams->load();
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
     online = new OnlineSettings(0);
-    pages.insert(QLatin1String("online"), pageWidget->addPage(online, i18n("Online"), Icon("applications-internet"), i18n("Online Providers")));
+    addPage(QLatin1String("online"), online, i18n("Online"), Icon("applications-internet"), i18n("Online Providers"));
     online->load();
     #endif
-    pageWidget->addPage(context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
-    pages.insert(QLatin1String("scrobbling"), pageWidget->addPage(scrobbling, i18n("Scrobbling"), Icons::self()->lastFmIcon, i18n("Scrobbling Settings")));
+    addPage(QLatin1String("context"), context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
+    addPage(QLatin1String("scrobbling"), scrobbling, i18n("Scrobbling"), Icons::self()->lastFmIcon, i18n("Scrobbling Settings"));
     #ifdef ENABLE_HTTP_SERVER
     http = new HttpServerSettings(0);
     if (http->haveMultipleInterfaces()) {
@@ -110,7 +105,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
         if (icon.isNull()) {
             icon=Icons::self()->streamIcon;
         }
-        pageWidget->addPage(http, i18n("HTTP Server"), icon, i18n("HTTP Server Settings"));
+        addPage(QLatin1String("http"), http, i18n("HTTP Server"), icon, i18n("HTTP Server Settings"));
     } else {
         http->deleteLater();
         http=0;
@@ -119,19 +114,19 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd = new AudioCdSettings(0);
     audiocd->load();
-    pageWidget->addPage(audiocd, i18n("Audio CD"), Icon("media-optical"), i18n("Audio CD Settings"));
+    addPage(QLatin1String("cd"), audiocd, i18n("Audio CD"), Icon("media-optical"), i18n("Audio CD Settings"));
     #endif
     #ifdef ENABLE_PROXY_CONFIG
     proxy = new ProxySettings(0);
     proxy->load();
-    pageWidget->addPage(proxy, i18n("Proxy"), Icon("preferences-system-network"), i18nc("Qt-only", "Proxy Settings"));
+    addPage(QLatin1String("proxy"), proxy, i18n("Proxy"), Icon("preferences-system-network"), i18nc("Qt-only", "Proxy Settings"));
     #endif
     #ifndef ENABLE_KDE_SUPPORT
-    shortcuts = new ShortcutsSettingsPage(pageWidget);
-    pageWidget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::self()->shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
+    shortcuts = new ShortcutsSettingsPage(0);
+    addPage(QLatin1String("shortcuts"), shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::self()->shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
     shortcuts->load();
     #endif
-    pageWidget->addPage(cache, i18n("Cache"), Icons::self()->folderIcon, i18n("Cached Items"));
+    addPage(QLatin1String("cache"), cache, i18n("Cache"), Icons::self()->folderIcon, i18n("Cached Items"));
     #ifdef Q_OS_MAC
     setCaption(i18n("Cantata Preferences"));
     #else
@@ -139,10 +134,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     #endif
     setAttribute(Qt::WA_DeleteOnClose);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-
-    // Under OSX if we dont set focus, then a weird blue line is shown to the right of the item list
-    // this line looks like part of a focus highlight. Odd, but setting focus works-around this...
-    QTimer::singleShot(0, pageWidget, SLOT(setFocus()));
+    setCurrentPage(QLatin1String("collection"));
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -153,10 +145,12 @@ PreferencesDialog::~PreferencesDialog()
 void PreferencesDialog::showPage(const QString &page)
 {
     QStringList parts=page.split(QLatin1Char(':'));
-    if (pages.contains(parts.at(0))) {
-        pageWidget->setCurrentPage(pages[parts.at(0)]);
-        if (parts.count()>1 && qobject_cast<InterfaceSettings *>(pages[parts.at(0)]->widget())) {
-            static_cast<InterfaceSettings *>(pages[parts.at(0)]->widget())->showPage(parts.at(1));
+    if (setCurrentPage(parts.at(0))) {
+        if (parts.count()>1) {
+            QWidget *cur=getPage(parts.at(0));
+            if (qobject_cast<InterfaceSettings *>(cur)) {
+                static_cast<InterfaceSettings *>(cur)->showPage(parts.at(1));
+            }
         }
     }
     Utils::raiseWindow(this);
@@ -195,26 +189,12 @@ void PreferencesDialog::writeSettings()
     emit settingsSaved();
 }
 
-void PreferencesDialog::slotButtonClicked(int button)
+void PreferencesDialog::save()
 {
-    switch (button) {
-    case Ok:
-    case Apply:
-        writeSettings();
-        break;
-    case Cancel:
-        server->cancel();
-        reject();
-        // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
-        Dialog::slotButtonClicked(button);
-        break;
-    default:
-        break;
-    }
+    writeSettings();
+}
 
-    if (Ok==button) {
-        accept();
-    }
-
-    Dialog::slotButtonClicked(button);
+void PreferencesDialog::cancel()
+{
+    server->cancel();
 }

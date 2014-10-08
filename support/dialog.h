@@ -71,6 +71,9 @@ namespace StdGuiItem {
 #include <QSet>
 #include <QApplication>
 #include "localize.h"
+#ifdef Q_OS_MAC
+#include <QProxyStyle>
+#endif
 
 struct GuiItem {
     GuiItem(const QString &t=QString(), const QString &i=QString())
@@ -109,6 +112,19 @@ class Dialog : public QDialog {
     Q_ENUMS(ButtonCode)
 
 public:
+
+    #ifdef Q_OS_MAC
+    class ButtonProxyStyle : public QProxyStyle
+    {
+    public:
+        ButtonProxyStyle();
+
+        int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const;
+    };
+
+    static ButtonProxyStyle * buttonProxyStyle();
+    #endif
+
     enum ButtonCode
     {
         None    = 0x00000000,

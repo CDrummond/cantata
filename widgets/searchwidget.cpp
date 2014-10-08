@@ -80,11 +80,7 @@ SearchWidget::SearchWidget(QWidget *p)
         l->addWidget(closeButton, 1, 2);
     }
 
-    Icon icon=Icon("dialog-close");
-    if (icon.isNull()) {
-        icon=Icon("window-close");
-    }
-    closeButton->setIcon(icon);
+    closeButton->setIcon(Icon::std(Icon::Close));
     Icon::init(closeButton);
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(edit, SIGNAL(textChanged(QString)), SIGNAL(textChanged(QString)));

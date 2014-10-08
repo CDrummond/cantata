@@ -147,7 +147,7 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &de
     setCentralWidget(mw);
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(macButtonPressed(QAbstractButton *)));
     buttonBox->setStyle(Dialog::buttonProxyStyle());
-    setWindowFlags(Qt::Dialog|Qt::WindowTitleHint|Qt::CustomizeWindowHint);
+    setWindowFlags(Qt::Dialog);
 
     #else
 

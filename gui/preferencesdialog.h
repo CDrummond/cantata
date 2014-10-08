@@ -25,8 +25,7 @@
 #define PREFERENCES_DIALOG_H
 
 #include "config.h"
-#include "support/dialog.h"
-#include "support/pagewidget.h"
+#include "support/configdialog.h"
 
 #ifndef ENABLE_KDE_SUPPORT
 class ProxySettings;
@@ -56,7 +55,7 @@ class ProxySettings;
 #endif
 class ScrobblingSettings;
 
-class PreferencesDialog : public Dialog
+class PreferencesDialog : public ConfigDialog
 {
     Q_OBJECT
 
@@ -67,7 +66,8 @@ public:
     virtual ~PreferencesDialog();
 
 private:
-    void slotButtonClicked(int button);
+    void save();
+    void cancel();
 
 public Q_SLOTS:
     void showPage(const QString &page);
@@ -79,7 +79,6 @@ Q_SIGNALS:
     void settingsSaved();
 
 private:
-    PageWidget *pageWidget;
     ServerSettings *server;
     PlaybackSettings *playback;
     FileSettings *files;
@@ -105,7 +104,6 @@ private:
     AudioCdSettings *audiocd;
     #endif
     ScrobblingSettings *scrobbling;
-    QMap<QString, PageWidgetItem *> pages;
 };
 
 #endif

@@ -53,7 +53,7 @@ public:
 
     void initWindowMenu(QMainWindow *mw);
 
-private:
+public:
     void addWindow(QWidget *w);
     void removeWindow(QWidget *w);
 

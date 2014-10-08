@@ -118,28 +118,29 @@ void Dialog::showEvent(QShowEvent *e)
 #include <QStyle>
 
 #ifdef Q_OS_MAC
-#include <QProxyStyle>
-
-class ButtonProxyStyle : public QProxyStyle
+Dialog::ButtonProxyStyle::ButtonProxyStyle()
+    : QProxyStyle()
 {
-public:
-    ButtonProxyStyle()
-        : QProxyStyle()
-    {
-        setBaseStyle(qApp->style());
-    }
+    setBaseStyle(qApp->style());
+}
 
-    int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const
-    {
-        if (QStyle::SH_DialogButtonLayout==stylehint) {
-            return QDialogButtonBox::GnomeLayout;
-        } else {
-            return QProxyStyle::styleHint(stylehint, opt, widget, returnData);
-        }
+int Dialog::ButtonProxyStyle::styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const
+{
+    if (QStyle::SH_DialogButtonLayout==stylehint) {
+        return QDialogButtonBox::GnomeLayout;
+    } else {
+        return QProxyStyle::styleHint(stylehint, opt, widget, returnData);
     }
-};
+}
 
-static ButtonProxyStyle *buttonProxyStyle=0;
+Dialog::ButtonProxyStyle * Dialog::buttonProxyStyle()
+{
+    static ButtonProxyStyle *style=0;
+    if (!style) {
+        style=new ButtonProxyStyle();
+    }
+    return style;
+}
 #endif
 
 namespace StdGuiItem {
@@ -234,10 +235,7 @@ void Dialog::setButtons(ButtonCodes buttons)
     } else {
         buttonBox = new QDialogButtonBox(btns, Qt::Horizontal, this);
         #ifdef Q_OS_MAC
-        if (!buttonProxyStyle) {
-            buttonProxyStyle=new ButtonProxyStyle();
-        }
-        buttonBox->setStyle(buttonProxyStyle);
+        buttonBox->setStyle(buttonProxyStyle());
         #endif
     }
 

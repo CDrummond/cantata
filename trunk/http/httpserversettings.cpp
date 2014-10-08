@@ -95,6 +95,10 @@ HttpServerSettings::HttpServerSettings(QWidget *p)
 {
     setupUi(this);
     initInterfaces(httpInterface);
+
+    #ifdef Q_OS_MAC
+    expandingSpacer->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    #endif
 }
 
 void HttpServerSettings::load()

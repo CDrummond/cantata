@@ -59,7 +59,7 @@
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer_2">
+    <spacer name="expandingSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
@@ -69,7 +69,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>8</height>
+       <height>0</height>
       </size>
      </property>
     </spacer>

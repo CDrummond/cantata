@@ -48,11 +48,7 @@ MessageOverlay::MessageOverlay(QObject *p)
     cancelButton=new ToolButton(this);
     Icon::init(cancelButton);
     cancelButton->setToolTip(i18n("Cancel"));
-    Icon icon=Icon("dialog-close");
-    if (icon.isNull()) {
-        icon=Icon("window-close");
-    }
-    cancelButton->setIcon(icon);
+    cancelButton->setIcon(Icon::std(Icon::Close));
     cancelButton->adjustSize();
     connect(cancelButton, SIGNAL(clicked()), SIGNAL(cancel()));
 }

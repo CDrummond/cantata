@@ -60,6 +60,12 @@ public:
     static QString currentTheme() { return QIcon::themeName(); }
     #endif
     static Icon create(const QString &name, const QList<int> &sizes, bool andSvg=false);
+
+    enum Std {
+        Close,
+        Clear
+    };
+    static Icon std(Std i);
 };
 
 #endif

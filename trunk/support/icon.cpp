@@ -109,3 +109,43 @@ Icon Icon::create(const QString &name, const QList<int> &sizes, bool andSvg)
     }
     return icon;
 }
+
+#ifdef Q_OS_MAC
+Icon Icon::std(Std i)
+{
+    static bool initResource=true;
+    if (initResource) {
+        Q_INIT_RESOURCE(support_mac_icons);
+        initResource=false;
+    }
+    Icon icon;
+    switch (i) {
+    case Close: icon.addFile(":support-mac-close"); break;
+    case Clear: icon.addFile(":support-mac-clear"); break;
+    default: break;
+    }
+    return icon;
+}
+#else
+Icon Icon::std(Std i)
+{
+    Icon icon;
+    switch (i) {
+    case Close:
+        icon=Icon("dialog-close");
+        if (icon.isNull()) {
+            icon=Icon("window-close");
+        }
+    break;
+    case Clear:
+        icon=Icon(qApp->isRightToLeft() ? "edit-clear-locationbar-ltr" : "edit-clear-locationbar-rtl");
+        if (icon.isNull()) {
+            icon=Icon("edit-clear");
+        }
+        break;
+    default: break;
+    }
+    return icon;
+}
+
+#endif

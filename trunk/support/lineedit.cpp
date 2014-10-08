@@ -62,15 +62,7 @@ LineEdit::LineEdit(QWidget *parent)
     : QLineEdit(parent)
 {
     clearButton = new QToolButton(this);
-    int iconSize=Icon::stdSize(fontMetrics().height());
-    Icon icon(isRightToLeft() ? "edit-clear-locationbar-ltr" : "edit-clear-locationbar-rtl");
-    QPixmap pixmap(icon.pixmap(iconSize, iconSize));
-    if (pixmap.isNull()) {
-        icon=Icon("edit-clear");
-        pixmap=icon.pixmap(iconSize, iconSize);
-    }
-    clearButton->setIcon(icon);
-    //clearButton->setIconSize(pixmap.size());
+    clearButton->setIcon(Icon::std(Icon::Clear));
     clearButton->setCursor(Qt::ArrowCursor);
     clearButton->setStyleSheet("QToolButton { border: none; padding: 0px; }");
     clearButton->hide();

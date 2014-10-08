@@ -300,9 +300,9 @@ void View::initStyle()
         // Already have thin style scrollbars...
         return;
     }
-    TouchProxyStyle *tps=new TouchProxyStyle(0, false, true);
+    static TouchProxyStyle *scrollbarStyle=new TouchProxyStyle(0, false, true);
     foreach (TextBrowser *t, texts) {
-        t->verticalScrollBar()->setStyle(tps);
-        t->horizontalScrollBar()->setStyle(tps);
+        t->verticalScrollBar()->setStyle(scrollbarStyle);
+        t->horizontalScrollBar()->setStyle(scrollbarStyle);
     }
 }

@@ -46,6 +46,7 @@
 #include <QAbstractItemView>
 #include <QTimer>
 #include <QPropertyAnimation>
+#include <QSysInfo>
 #include "icon.h"
 #include "osxstyle.h"
 #else
@@ -86,18 +87,26 @@ public:
             QPainter p(this);
             QColor col(Qt::black);
             QRect r(rect());
-            QLinearGradient bgndGrad(r.topLeft(), r.bottomLeft());
-            col.setAlphaF(0.01);
-            bgndGrad.setColorAt(0, col);
-            bgndGrad.setColorAt(1, col);
-            col.setAlphaF(0.1);
-            bgndGrad.setColorAt(0.25, col);
-            bgndGrad.setColorAt(0.75, col);
-            p.fillRect(r, bgndGrad);
-            p.setRenderHint(QPainter::Antialiasing, true);
-            col.setAlphaF(0.25);
-            drawFadedLine(&p, QRect(r.x(), r.y(), r.x(), r.y()+r.height()-1), col, false, 0.25);
-            drawFadedLine(&p, QRect(r.x()+r.width()-1, r.y(), r.x()+1, r.y()+r.height()-1), col, false, 0.25);
+
+            if (QSysInfo::MacintoshVersion > QSysInfo::MV_10_9) {
+                col.setAlphaF(0.1);
+                p.setClipRect(r);
+                p.setRenderHint(QPainter::Antialiasing, true);
+                p.fillPath(Utils::buildPath(r.adjusted(0, 0, 0, 32), 4), col);
+            } else {
+                QLinearGradient bgndGrad(r.topLeft(), r.bottomLeft());
+                col.setAlphaF(0.01);
+                bgndGrad.setColorAt(0, col);
+                bgndGrad.setColorAt(1, col);
+                col.setAlphaF(0.1);
+                bgndGrad.setColorAt(0.25, col);
+                bgndGrad.setColorAt(0.75, col);
+                p.fillRect(r, bgndGrad);
+                p.setRenderHint(QPainter::Antialiasing, true);
+                col.setAlphaF(0.25);
+                drawFadedLine(&p, QRect(r.x(), r.y(), r.x(), r.y()+r.height()-1), col, false, 0.25);
+                drawFadedLine(&p, QRect(r.x()+r.width()-1, r.y(), r.x()+1, r.y()+r.height()-1), col, false, 0.25);
+            }
         }
         QStylePainter p(this);
         QStyleOptionToolButton opt;

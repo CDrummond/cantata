@@ -11,7 +11,7 @@ tempFile=dmg/temp.dmg
 dmgFileName="@MACOSX_BUNDLE_BUNDLE_NAME@-@CANTATA_VERSION_FULL@.dmg"
 
 rm -rf "$tempFolder"
-rm -f "$dmgFileName"
+rm -f "$dmgFileName" "$tempFile"
 
 # Create folder structure for disk image
 mkdir -p "$tempFolder/.background"
@@ -27,3 +27,4 @@ hdiutil convert -format UDZO -imagekey zlib-level=9 "$tempFile" -o "$dmgFileName
 
 # Remove temporary files
 rm -rf "$tempFolder"
+rm -f "$tempFile"

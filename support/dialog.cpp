@@ -53,6 +53,9 @@ Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
             DLG_BASE::resize(defSize);
         }
     }
+    #ifdef Q_OS_MAC
+    setWindowIcon(QIcon());
+    #endif
 }
 
 Dialog::~Dialog()

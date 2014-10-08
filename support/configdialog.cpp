@@ -45,6 +45,7 @@
 #include <QTextEdit>
 #include <QAbstractItemView>
 #include <QTimer>
+#include <QPropertyAnimation>
 #include "icon.h"
 #include "osxstyle.h"
 #else
@@ -113,6 +114,7 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &de
     #ifdef __APPLE__
     : QMainWindow(parent)
     , shown(false)
+    , resizeAnim(0)
     #else
     : Dialog(parent, name, defSize)
     #endif
@@ -201,6 +203,20 @@ bool ConfigDialog::setCurrentPage(const QString &id)
         stack->setCurrentIndex(it.value().index);
         setCaption(it.value().item->text());
         it.value().item->setChecked(true);
+    }
+    int newH=it.value().widget->sizeHint().height()+toolBar->height()+buttonBox->height()+layout()->spacing()+(2*layout()->margin());
+    if (isVisible()) {
+        if (newH!=height()) {
+            if (!resizeAnim) {
+                resizeAnim=new QPropertyAnimation(this, "h");
+                resizeAnim->setDuration(250);
+            }
+            resizeAnim->setStartValue(height());
+            resizeAnim->setEndValue(newH);
+            resizeAnim->start();
+        }
+    } else {
+        setFixedHeight(newH);
     }
     #else
     pageWidget->setCurrentPage(pages[id]);

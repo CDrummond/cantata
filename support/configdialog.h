@@ -35,6 +35,7 @@ class QToolButton;
 class QButtonGroup;
 class QStackedWidget;
 class QDialogButtonBox;
+class QPropertyAnimation;
 #else
 class PageWidget;
 class PageWidgetItem;
@@ -50,6 +51,9 @@ class ConfigDialog : public
         #endif
 {
     Q_OBJECT
+    #ifdef __APPLE__
+    Q_PROPERTY(int h READ getH WRITE setH)
+    #endif
 
 public:
     ConfigDialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize());
@@ -63,6 +67,8 @@ public:
     void setCaption(const QString &c) { setWindowTitle(c); }
     void accept();
     void reject();
+    int getH() const { return height(); }
+    void setH(int h) { setFixedHeight(h); }
     #endif
 
     virtual void save()=0;
@@ -98,6 +104,7 @@ private:
     QDialogButtonBox *buttonBox;
     QMap<QString, Page> pages;
     bool shown;
+    QPropertyAnimation *resizeAnim;
     #else
     PageWidget *pageWidget;
     QMap<QString, PageWidgetItem *> pages;

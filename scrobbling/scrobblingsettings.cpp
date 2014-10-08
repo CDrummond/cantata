@@ -79,6 +79,10 @@ ScrobblingSettings::ScrobblingSettings(QWidget *parent)
                                 "then you will need to have this already started and running. "
                                 "Cantata can only 'Love' tracks via this, and cannot enable/disable scrobbling.", firstMpdClient));
     }
+
+    #ifdef Q_OS_MAC
+    expandingSpacer->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    #endif
 }
 
 void ScrobblingSettings::load()

@@ -111,6 +111,10 @@ ServerSettings::ServerSettings(QWidget *p)
     REMOVE(streamUrl)
     REMOVE(streamUrlNoteLabel)
     #endif
+
+    #ifdef Q_OS_MAC
+    expandingSpacer->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    #endif
 }
 
 void ServerSettings::load()

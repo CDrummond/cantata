@@ -66,6 +66,10 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     #endif
     outputsView->setVisible(outputsView->count()>1);
     outputsViewLabel->setVisible(outputsView->count()>1);
+
+    #ifdef Q_OS_MAC
+    expandingSpacer->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    #endif
 }
 
 void PlaybackSettings::load()

@@ -50,8 +50,8 @@ void FlatToolButton::paintEvent(QPaintEvent *e)
     QStylePainter p(this);
     QStyleOptionToolButton opt;
     initStyleOption(&opt);
-    if (isDown()) {
-        opt.state&=QStyle::State_Sunken;
-    }
+//    if (isDown()) {
+//        opt.state&=QStyle::State_Sunken;
+//    }
     p.drawComplexControl(QStyle::CC_ToolButton, opt);
 }

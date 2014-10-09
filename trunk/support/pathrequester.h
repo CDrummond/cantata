@@ -42,7 +42,8 @@ public:
 
 #else
 #include "lineedit.h"
-#include <QToolButton>
+#include "flattoolbutton.h"
+
 class PathRequester : public QWidget
 {
     Q_OBJECT
@@ -70,7 +71,7 @@ private Q_SLOTS:
 
 private:
     LineEdit *edit;
-    QToolButton *btn;
+    FlatToolButton *btn;
     bool dirMode;
     QString filter;
 };

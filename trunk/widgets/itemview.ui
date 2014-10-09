@@ -44,7 +44,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QToolButton" name="backButton"/>
+        <widget class="FlatToolButton" name="backButton"/>
        </item>
        <item>
         <widget class="ListView" name="listView"/>
@@ -56,6 +56,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>FlatToolButton</class>
+   <extends>QToolButton</extends>
+   <header>support/flattoolbutton.h</header>
+  </customwidget>
   <customwidget>
    <class>PaddedSqueezedTextLabel</class>
    <extends>QLabel</extends>

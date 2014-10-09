@@ -40,10 +40,10 @@
     <widget class="QComboBox" name="combo"/>
    </item>
    <item row="0" column="2">
-    <widget class="QToolButton" name="addButton"/>
+    <widget class="FlatToolButton" name="addButton"/>
    </item>
    <item row="0" column="3">
-    <widget class="QToolButton" name="removeButton"/>
+    <widget class="FlatToolButton" name="removeButton"/>
    </item>
    <item row="1" column="0" colspan="4">
     <widget class="QStackedWidget" name="stackedWidget">
@@ -309,6 +309,11 @@
    <extends>QLineEdit</extends>
    <header>support/pathrequester.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>FlatToolButton</class>
+   <extends>QToolButton</extends>
+   <header>support/flattoolbutton.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

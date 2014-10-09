@@ -1908,6 +1908,10 @@ int MPDConnection::getVolume()
 
 void MPDConnection::setRating(const QString &file, quint8 val)
 {
+    if (val>Song::Rating_Max) {
+        return;
+    }    
+
     bool ok=0==val
                 ? sendCommand("sticker delete song "+encodeName(file)+' '+constRatingSticker, 0!=val).ok
                 : sendCommand("sticker set song "+encodeName(file)+' '+constRatingSticker+' '+quote(val)).ok;
@@ -1975,6 +1979,9 @@ void MPDConnection::getRating(const QString &file)
         }
     } else { // Ignore errors about uknown sticker...
         clearError();
+    }
+    if (r>Song::Rating_Max) {
+        r=0;
     }
     emit rating(file, r);
 }

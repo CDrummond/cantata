@@ -1131,7 +1131,7 @@ bool TagEditor::applyUpdates()
         Song orig=original.at(idx);
         Song edit=edited.at(idx);
 
-        if (ratingWidget && orig.rating!=edit.rating) {
+        if (ratingWidget && orig.rating!=edit.rating && edit.rating<=Song::Rating_Max) {
             emit setRating(orig.file, edit.rating);
         }
 

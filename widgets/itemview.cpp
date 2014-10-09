@@ -40,7 +40,7 @@
 #include "support/action.h"
 #include "support/actioncollection.h"
 #include "support/configuration.h"
-#include <QToolButton>
+#include "support/flattoolbutton.h"
 #include <QStyle>
 #include <QStyleOptionViewItem>
 #include <QPainter>

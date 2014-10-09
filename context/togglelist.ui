@@ -66,18 +66,10 @@
     </spacer>
    </item>
    <item row="3" column="1">
-    <widget class="QToolButton" name="addButton">
-     <property name="autoRaise">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <widget class="FlatToolButton" name="addButton"/>
    </item>
    <item row="3" column="3">
-    <widget class="QToolButton" name="upButton">
-     <property name="autoRaise">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <widget class="FlatToolButton" name="upButton"/>
    </item>
    <item row="4" column="1">
     <spacer name="spacerA">
@@ -112,18 +104,10 @@
     </spacer>
    </item>
    <item row="5" column="1">
-    <widget class="QToolButton" name="removeButton">
-     <property name="autoRaise">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <widget class="FlatToolButton" name="removeButton"/>
    </item>
    <item row="5" column="3">
-    <widget class="QToolButton" name="downButton">
-     <property name="autoRaise">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <widget class="FlatToolButton" name="downButton"/>
    </item>
    <item row="6" column="1">
     <spacer name="verticalSpacer_2">
@@ -173,4 +157,11 @@
  </tabstops>
  <resources/>
  <connections/>
+ <customwidgets>
+  <customwidget>
+   <class>FlatToolButton</class>
+   <extends>QToolButton</extends>
+   <header>support/flattoolbutton.h</header>
+  </customwidget>
+ </customwidgets>
 </ui>

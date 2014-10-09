@@ -35,7 +35,7 @@ PathRequester::PathRequester(QWidget *parent)
     QHBoxLayout *layout=new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     edit=new LineEdit(this);
-    btn=new QToolButton(this);
+    btn=new FlatToolButton(this);
     layout->addWidget(edit);
     layout->addWidget(btn);
     btn->setAutoRaise(true);

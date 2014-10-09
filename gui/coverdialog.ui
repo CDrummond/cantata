@@ -25,14 +25,14 @@
     </widget>
    </item>
    <item row="0" column="2">
-    <widget class="QToolButton" name="addFileButton">
+    <widget class="FlatToolButton" name="addFileButton">
      <property name="toolTip">
       <string>Add a local file</string>
      </property>
     </widget>
    </item>
    <item row="0" column="3">
-    <widget class="QToolButton" name="configureButton">
+    <widget class="FlatToolButton" name="configureButton">
      <property name="toolTip">
       <string>Configure</string>
      </property>
@@ -44,6 +44,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>FlatToolButton</class>
+   <extends>QToolButton</extends>
+   <header>support/flattoolbutton.h</header>
+  </customwidget>
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>

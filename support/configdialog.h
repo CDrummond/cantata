@@ -68,7 +68,7 @@ public:
     void accept();
     void reject();
     int getH() const { return height(); }
-    void setH(int h) { setFixedHeight(h); }
+    void setH(int h);
     #endif
 
     virtual void save()=0;

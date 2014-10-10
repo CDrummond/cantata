@@ -47,7 +47,7 @@ SelectorLabel::SelectorLabel(QWidget *p)
 
 static QString addMarkup(const QString &s, bool arrow)
 {
-    return QLatin1String("<b>")+s+(arrow ? QLatin1String("  ")+QChar(0x25BE) : QLatin1String("&nbsp;"))+QLatin1String("</b>");;
+    return QLatin1String("<b>")+s+(arrow ? QLatin1String("&nbsp;")+QChar(0x25BE) : QString())+QLatin1String("</b>");
 }
 
 void SelectorLabel::addItem(const QString &text, const QString &data)

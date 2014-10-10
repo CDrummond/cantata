@@ -213,6 +213,10 @@ bool ConfigDialog::setCurrentPage(const QString &id)
         setCaption(it.value().item->text());
         it.value().item->setChecked(true);
     }
+    if (isVisible()) {
+        it.value().widget->ensurePolished();
+        ensurePolished();
+    }
     int newH=it.value().widget->sizeHint().height()+toolBar->height()+buttonBox->height()+layout()->spacing()+(2*layout()->margin());
     if (isVisible()) {
         if (newH!=height()) {
@@ -226,12 +230,26 @@ bool ConfigDialog::setCurrentPage(const QString &id)
         }
     } else {
         setFixedHeight(newH);
+        resize(width(), newH);
+        setMaximumHeight(QWIDGETSIZE_MAX);
     }
     #else
     pageWidget->setCurrentPage(pages[id]);
     #endif
     return true;
 }
+
+#ifdef __APPLE__
+void ConfigDialog::setH(int h)
+{
+    if (h==resizeAnim->endValue().toInt()) {
+        setMaximumHeight(QWIDGETSIZE_MAX);
+        resize(width(), h);
+    } else {
+        setFixedHeight(h);
+    }
+}
+#endif
 
 QWidget * ConfigDialog::getPage(const QString &id) const
 {

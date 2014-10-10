@@ -33,6 +33,7 @@
 
 #include "icon.h"
 #include "squeezedtextlabel.h"
+#include "flattoolbutton.h"
 #include <QEvent>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -113,8 +114,7 @@ void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
     QObject::connect(closeAction, SIGNAL(triggered()), q, SLOT(animatedHide()));
     #endif
 
-    closeButton = new QToolButton(content);
-    closeButton->setAutoRaise(true);
+    closeButton = new FlatToolButton(content);
     closeButton->setDefaultAction(closeAction);
     #ifdef Q_OS_MAC
     closeButton->setStyleSheet("QToolButton {border: 0}");

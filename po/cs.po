@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-10 20:59+0100\n"
-"PO-Revision-Date: 2014-10-03 19:55+0200\n"
+"PO-Revision-Date: 2014-10-11 12:14+0200\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -4145,6 +4145,8 @@ msgid ""
 "Only show 'Artist', 'Album', or 'Track' even if sufficient width to show all "
 "three."
 msgstr ""
+"Ukázat jen umělce, album nebo skladbu, i když je dost místa na ukázání "
+"všech tří."
 
 #. i18n: file: context/othersettings.ui:213
 #. i18n: ectx: property (text), widget (QCheckBox, wikipediaIntroOnly)
@@ -4163,6 +4165,12 @@ msgid ""
 "article, then there may be parsing errors. You will also need to remove any "
 "currently cached articles (using the 'Cache' page)."
 msgstr ""
+"Cantata ukáže pouze zkrácenou verzi stránek na Wikipedii (žádné obrázky, "
+"odkazy atd.). Toto ořezání obsahu není vždy stoprocentně přesné. To je "
+"důvodem toho, proč Cantata ve výchozím nastavení ukazuje pouze úvod. "
+"Pokud si zvolíte zobrazení celého článku, mohou se vyskytnout chyby "
+"ve zpracování. Také budete muset odstranit všechny články, které jsou "
+"nyní uloženy ve vyrovnávací paměti (pomocí stránky Vyrovnávací paměť)"
 
 #. i18n: file: context/togglelist.ui:17
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -4233,7 +4241,7 @@ msgstr "Ke kopírování:"
 #: po/rc.cpp:89 po/rc.cpp:1032 po/rc.cpp:1059 rc.cpp:89 rc.cpp:1032
 #: rc.cpp:1059
 msgid "Connected to a Mopidy server (manual update required)."
-msgstr ""
+msgstr "Připojeno k serveru Mopidy (vyžadována ruční aktualizace)."
 
 #. i18n: file: devices/albumdetails.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -4319,6 +4327,7 @@ msgstr "Nikdy nepřeskakovat při chybě čtení"
 msgid ""
 "These settings are only valid, and editable, when the device is connected."
 msgstr ""
+"Tato nastavení jsou platná, a upravitelná, jen když je zařízení připojeno."
 
 #. i18n: file: devices/devicepropertieswidget.ui:32
 #. i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
@@ -4468,7 +4477,7 @@ msgstr "Nahradit mezery podtržítky"
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
 #: po/rc.cpp:194 po/rc.cpp:1050 rc.cpp:194 rc.cpp:1050
 msgid "Append 'The' to artist names"
-msgstr ""
+msgstr "Připojit The ke jménům umělců"
 
 #. i18n: file: devices/devicepropertieswidget.ui:202
 #. i18n: ectx: property (title), widget (QGroupBox, transcoderFrame)
@@ -4607,7 +4616,7 @@ msgstr "Žánr alba."
 #. i18n: ectx: property (text), widget (PlainNoteLabel, connectionNote)
 #: po/rc.cpp:269 rc.cpp:269
 msgid "These settings are only editable when the device is not connected."
-msgstr ""
+msgstr "Tato nastavení jsou upravitelná, jen když není zařízení připojeno."
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:29
 #. i18n: ectx: property (text), widget (BuddyLabel, typeLabel)
@@ -4716,6 +4725,9 @@ msgid ""
 "Cantata's config file. To have Cantata prompt for the password before "
 "accessing the share, set the password to '-'"
 msgstr ""
+"Pokud zde zadáte heslo, bude uloženo <b>nezašifrované</"
+"b> v souboru s nastavením pro Cantatu. Aby Cantata vyzvala k zadání hesla "
+"před přístupem k sdílení, nastavte heslo na '-'"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:186
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel_2x)
@@ -4748,6 +4760,8 @@ msgid ""
 "Due to the way sshfs works, a suitable ssh-askpass application (ksshaskpass, "
 "ssh-askpass-gnome, etc.) will be required to enter the password."
 msgstr ""
+"Kvůli způsobu, jakým sshfs pracuje, bude k zadání hesla "
+"vyžadován vhodný program ssh-askpass (ksshaskpass, ssh-askpass-gnome, atd.)."
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:410
 #. i18n: ectx: property (text), widget (PlainNoteLabel, infoLabel)
@@ -4757,6 +4771,10 @@ msgid ""
 "access locally mounted folders. For normal media players, attached via USB, "
 "Cantata will automatically display the device when it is attached."
 msgstr ""
+"Tento dialog se používá jen pro přidání vzdálených "
+"zařízení (např. přes Samba), nebo pro přístup k místně připojeným složkám. "
+"Pro běžné přehrávače záznamů, připojené přes USB, Cantata zobrazí zařízení "
+"automaticky, když je připojeno."
 
 #. i18n: file: dynamic/dynamicpage.ui:26
 #. i18n: ectx: property (text), widget (StatusLabel, remoteRunningLabel)
@@ -4780,13 +4798,13 @@ msgstr "Upravit"
 #. i18n: ectx: property (text), widget (QLabel, ratingRangeLabel)
 #: po/rc.cpp:359 rc.cpp:359
 msgid "Song with ratings between:"
-msgstr ""
+msgstr "Písně s hodnocením mezi:"
 
 #. i18n: file: dynamic/dynamicrules.ui:99
 #. i18n: ectx: property (text), widget (QLabel, ratingToLabel)
 #: po/rc.cpp:362 rc.cpp:362
 msgid " - "
-msgstr ""
+msgstr " - "
 
 #. i18n: file: dynamic/dynamicrules.ui:130
 #. i18n: ectx: property (text), widget (UrlLabel, aboutLabel)
@@ -4853,6 +4871,8 @@ msgstr "Přesná shoda"
 #: po/rc.cpp:416 rc.cpp:416
 msgid "Only enter values for the tags you wish to be search on."
 msgstr ""
+"Zadejte hodnoty pouze pro značky, které si přejete "
+"hledat."
 
 #. i18n: file: dynamic/dynamicrule.ui:235
 #. i18n: ectx: property (text), widget (NoteLabel, label_7x)
@@ -4861,6 +4881,8 @@ msgid ""
 "For genre, end string with an asterisk to match various genres. e.g 'rock*' "
 "matches 'Hard Rock' and 'Rock and Roll'."
 msgstr ""
+"Když má žánr odpovídat různým žánrům, ukončete řetězec "
+"hvězdičkou. Např. 'rock*' odpovídá 'Hard Rock' a 'Rock and Roll'."
 
 #. i18n: file: gui/coverdialog.ui:30
 #. i18n: ectx: property (toolTip), widget (FlatToolButton, addFileButton)
@@ -4918,6 +4940,10 @@ msgid ""
 "music folder, and you do not have write access to this folder, then Cantata "
 "will revert to saving the files in your personal cache folder."
 msgstr ""
+"Pokud se rozhodnete, že má Cantata ukládat obaly, "
+"texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva "
+"pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší "
+"osobní složky pro ukládání vyrovnávací paměti."
 
 #. i18n: file: gui/filesettings.ui:57
 #. i18n: ectx: property (text), widget (NoteLabel, persNote_2)
@@ -4926,6 +4952,9 @@ msgid ""
 "Cantata can only save backdrops and artist images within the music folder "
 "hierarchy if this is 2 levels deep. (i.e. 'Artist/Album/Tracks')"
 msgstr ""
+"Cantata může pozadí a obrázky umělců ukládat ve složkách "
+"s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou "
+"úrovní dolů. (např. 'Artist/Album/Tracks')"
 
 #. i18n: file: gui/initialsettingswizard.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWizard, InitialSettingsWizard)
@@ -4951,6 +4980,14 @@ msgid ""
 "org</span></a></p><p>This 'wizard' will guide you through the basic settings "
 "required for Cantata to function correctly.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Cantata je klient pro Music Player Daemon (MPD). MPD "
+"je program pružný, schopný, běžící na pozadí (server), k přehrávání hudby.</p>"
+"<p>Více "
+"informací o MPD naleznete na stránkách MPD <a href=\"http://www.musicpd.org"
+"\"><span style=\" text-decoration: underline; color:#0000ff;\">http://www."
+"musicpd.org</span></a></p><p>Tento průvodce vás provede základními "
+"nastaveními, která jsou potřeba pro to, aby Cantata pracovala správně.</p></"
+"body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:108
 #. i18n: ectx: property (text), widget (QLabel, label_7)
@@ -4968,6 +5005,12 @@ msgid ""
 "a per-user basis. Please select how you would like to have Cantata initially "
 "connect to (or startup) MPD:</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Cantata je klient pro Music Player Daemon (MPD). MPD "
+"je program pružný, schopný, běžící na pozadí (server), k přehrávání hudby. "
+"MPD lze "
+"spustit buď pro celý systém, anebo uživatelsky. Vyberte, prosím, jak chcete, "
+"aby byla Cantata na začátku připojena k (nebo spouštěna) MPD:</p></body></"
+"html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:175
 #. i18n: ectx: property (text), widget (QRadioButton, advanced)
@@ -5058,6 +5101,9 @@ msgid ""
 "The 'Music folder' setting is used to lookup cover-art, lyrics, etc. If your "
 "MPD instance is on a remote host, you may set this to a HTTP URL."
 msgstr ""
+"Nastavení složky s hudbou je používáno k vyhledávání "
+"obalu alba, textu písně atd. Pokud se vaše instance MPD nachází na vzdáleném "
+"počítači, můžete tuto nastavit na adresu HTTP."
 
 #. i18n: file: gui/initialsettingswizard.ui:500
 #. i18n: ectx: property (text), widget (NoteLabel, socketNoteLabel)
@@ -5072,6 +5118,8 @@ msgid ""
 "When using a local socket the full absolute path to the socket needs to be "
 "set. (Port number is not required.)"
 msgstr ""
+"Při použití místní zásuvky je potřeba nastavit úplnou "
+"absolutní cestu k zásuvce. (Číslo přípojky požadováno není.)"
 
 #. i18n: file: gui/initialsettingswizard.ui:530
 #. i18n: ectx: property (text), widget (QLabel, label_13)
@@ -5112,6 +5160,9 @@ msgid ""
 "Cantata can only save backdrops and artist images within the music folder "
 "hierarchy if this is 2 levels deep. i.e. 'Artist/Album/Tracks'."
 msgstr ""
+"Cantata může pozadí a obrázky umělců ukládat ve složkách "
+"s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou "
+"úrovní dolů; to jest: 'Artist/Album/Tracks'."
 
 #. i18n: file: gui/initialsettingswizard.ui:729
 #. i18n: ectx: property (text), widget (NoteLabel, httpNote)
@@ -5121,6 +5172,9 @@ msgid ""
 "upload files to external HTTP servers. Therefore, the above settings should "
 "be left un-checked."
 msgstr ""
+"Složka s hudbou je nastavena na adresu HTTP a Cantata v "
+"současnosti nedokáže nahrávat soubory na vnější servery HTTP. Z tohoto "
+"důvodu by se nastavení výše měla ponechat zakázána."
 
 #. i18n: file: gui/initialsettingswizard.ui:759
 #. i18n: ectx: property (text), widget (QLabel, label_6)
@@ -5150,6 +5204,11 @@ msgid ""
 "grouping to function correctly. It is suggested to use 'Various Artists' in "
 "this scenario."
 msgstr ""
+"Cantata skladby seskupí do alb pomocí značky AlbumUmělec, pokud "
+"je to tak nastaveno, jinak použije značku Umělec. Pokud máte alba "
+"s více umělci, <b>musíte</b> nastavit značku AlbumUmělec, aby při "
+"seskupování pracovala správně. Při této možnosti se doporučuje použít "
+"Různí umělci."
 
 #. i18n: file: gui/initialsettingswizard.ui:846
 #. i18n: ectx: property (text), widget (QLabel, groupWarningLabel)
@@ -5200,6 +5259,11 @@ msgid ""
 "the appropriate option above will cause the view to be merged into the "
 "sidebar as per other views."
 msgstr ""
+"Ve výchozím nastavení se řada skladeb určeních k přehrání objevuje "
+"po straně ostatních pohledů, a pohled na informace je přístupný po "
+"stisknutí jeho ikony v hlavním nástrojovém pruhu. Zaškrtnutí příslušné "
+"volby výše způsobí to, že pohled bude sloučen s postranním panelem "
+"v souladu s ostatními pohledy."
 
 #. i18n: file: gui/interfacesettings.ui:82
 #. i18n: ectx: property (text), widget (BuddyLabel, sbStyleLabel)
@@ -5260,7 +5324,7 @@ msgstr "Třídit alba podle roku"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
 #: po/rc.cpp:596 rc.cpp:596
 msgid "Sort:"
-msgstr ""
+msgstr "Třídit:"
 
 #. i18n: file: gui/interfacesettings.ui:242
 #. i18n: ectx: property (text), widget (QCheckBox, playListsStartClosed)
@@ -5284,19 +5348,19 @@ msgstr "Jiné pohledy"
 #. i18n: ectx: property (text), widget (BuddyLabel, folderViewLabel)
 #: po/rc.cpp:611 rc.cpp:611
 msgid "Folders:"
-msgstr ""
+msgstr "Složky:"
 
 #. i18n: file: gui/interfacesettings.ui:277
 #. i18n: ectx: property (text), widget (BuddyLabel, streamsViewLabel)
 #: po/rc.cpp:614 rc.cpp:614
 msgid "Streams:"
-msgstr ""
+msgstr "Zdroje:"
 
 #. i18n: file: gui/interfacesettings.ui:290
 #. i18n: ectx: property (text), widget (BuddyLabel, onlineViewLabel)
 #: po/rc.cpp:617 rc.cpp:617
 msgid "Online:"
-msgstr ""
+msgstr "Internet:"
 
 #. i18n: file: gui/interfacesettings.ui:303
 #. i18n: ectx: property (text), widget (BuddyLabel, devicesViewLabel)
@@ -5339,6 +5403,8 @@ msgstr "Vyzvat před vyprázdněním"
 #: po/rc.cpp:644 rc.cpp:644
 msgid "Separate action (and shortcut) for play queue search"
 msgstr ""
+"Samostatná činnost (a klávesová zkratka) pro hledání v řadě skladeb určených "
+"k přehrání"
 
 #. i18n: file: gui/interfacesettings.ui:435
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_cover)
@@ -5350,25 +5416,25 @@ msgstr "Obal nynějšího alba"
 #. i18n: ectx: attribute (title), widget (QWidget, toolbarTab)
 #: po/rc.cpp:672 rc.cpp:672
 msgid "Toolbar"
-msgstr ""
+msgstr "Nástrojový pruh"
 
 #. i18n: file: gui/interfacesettings.ui:591
 #. i18n: ectx: property (text), widget (QCheckBox, showStopButton)
 #: po/rc.cpp:675 rc.cpp:675
 msgid "Show stop button"
-msgstr ""
+msgstr "Ukázat tlačítko pro zastavení"
 
 #. i18n: file: gui/interfacesettings.ui:598
 #. i18n: ectx: property (text), widget (QCheckBox, showCoverWidget)
 #: po/rc.cpp:678 rc.cpp:678
 msgid "Show cover of current track"
-msgstr ""
+msgstr "Ukázat obal nynější skladby"
 
 #. i18n: file: gui/interfacesettings.ui:605
 #. i18n: ectx: property (text), widget (QCheckBox, showRatingWidget)
 #: po/rc.cpp:681 rc.cpp:681
 msgid "Show track rating"
-msgstr ""
+msgstr "Ukázat hodnocení skladby"
 
 #. i18n: file: gui/interfacesettings.ui:613
 #. i18n: ectx: attribute (title), widget (QWidget, tab_7)
@@ -5504,6 +5570,15 @@ msgid ""
 "mouse)</li><li>Spin buttons will have + and - buttons at the side of the "
 "text field</li></ul></p>"
 msgstr ""
+"<p>Toto změní rozhraní Cantaty, jak je to popsáno dále:\n"
+"<ul><li>Tlačítka pro přehrávání a ovládání budou o 33 % širší</li><li>Pohledy "
+"budou odstrčitelné.</li><li>Pro táhnutí položek budete potřebovat najet do "
+"horního levého rohu</li><li>Posuvníky budou široké jen několik pixelů</li><li>"
+"Činnosti (např. "
+"Přidat do řady skladeb k přehrání) budou vždy viditelné (ne jen tehdy, když "
+"je položka pod "
+"myší)</li><li>Otočná tlačítka budou mít tlačítka + a - na straně "
+"textového pole.</li></ul></p>"
 
 #. i18n: file: gui/interfacesettings.ui:756
 #. i18n: ectx: property (text), widget (QCheckBox, touchFriendly)
@@ -5515,13 +5590,13 @@ msgstr "Udělat rozhraní dotekově přátelštější"
 #. i18n: ectx: property (text), widget (QCheckBox, infoTooltips)
 #: po/rc.cpp:746 rc.cpp:746
 msgid "Show song information tooltips"
-msgstr ""
+msgstr "Ukázat nástrojové rady s informacemi k písni"
 
 #. i18n: file: gui/interfacesettings.ui:770
 #. i18n: ectx: property (text), widget (QCheckBox, retinaSupport)
 #: po/rc.cpp:749 rc.cpp:749
 msgid "Support retina displays"
-msgstr ""
+msgstr "Podpora pro obrazovky retina (sítnice)"
 
 #. i18n: file: gui/interfacesettings.ui:777
 #. i18n: ectx: property (text), widget (BuddyLabel, langLabel)
@@ -5536,12 +5611,16 @@ msgid ""
 "Changing the 'Enforce single-click activation of items' setting will require "
 "a re-start of Cantata."
 msgstr ""
+"Změna nastavení Vynutit zapnutí jedním klepnutím u "
+"položek vyžaduje opětovné spuštění Cantaty."
 
 #. i18n: file: gui/interfacesettings.ui:799
 #. i18n: ectx: property (text), widget (NoteLabel, langNoteLabel)
 #: po/rc.cpp:758 rc.cpp:758
 msgid "Changing the language setting will require a re-start of Cantata."
 msgstr ""
+"Změna nastavení jazyka vyžaduje opětovné spuštění "
+"Cantaty."
 
 #. i18n: file: gui/interfacesettings.ui:806
 #. i18n: ectx: property (text), widget (NoteLabel, touchFriendlyNoteLabel)
@@ -5549,6 +5628,8 @@ msgstr ""
 msgid ""
 "Changing the 'touch friendly' setting will require a re-start of Cantata."
 msgstr ""
+"Změna nastavení rozhraní na dotykově přátelské vyžaduje opětovné spuštění "
+"Cantaty."
 
 #. i18n: file: gui/interfacesettings.ui:813
 #. i18n: ectx: property (text), widget (NoteLabel, retinaSupportNoteLabel)
@@ -5558,6 +5639,12 @@ msgid ""
 "retina display, but may produce less sharp icons on non-retina displays. "
 "Changing this setting will require a re-start of Cantata."
 msgstr ""
+"Povolení podpory pro obrazovky retina (retina = sítnice; obrazovky s vyšší "
+"hustotou pixelů, "
+"než jakou měly předchozí modely, firma Apple) povede k ostřejším ikonám "
+"na obrazovkách typu \"retina\", ale může vést k méně ostrým ikonám "
+"na obrazovkách, které typu \"retina\" nejsou. Změna tohoto nastavení "
+"vyžaduje opětovné spuštění Cantaty."
 
 #. i18n: file: gui/mainwindow.ui:181
 #. i18n: ectx: property (text), widget (QLabel, dynamicLabel)
@@ -5597,6 +5684,11 @@ msgid ""
 "you to choose whether to stop playback now, or after the current track. (The "
 "stop button can be enabled in the Interface/Toolbar section)"
 msgstr ""
+"Pokud stisknete a podržíte tlačítko pro zastavení, ukáže "
+"se nabídka, v níž si budete moci zvolit, zda se má přehrávání zastavit nyní, "
+"nebo po nynější skladbě. (Tlačítko pro zastavení lze povolit v části "
+"nastavení "
+"Rozhraní/Nástrojový pruh)"
 
 #. i18n: file: gui/playbacksettings.ui:82
 #. i18n: ectx: property (title), widget (QGroupBox, outputBox)
@@ -5682,6 +5774,10 @@ msgid ""
 "also have write permissions to this folder (and it's sub-folders), then "
 "Cantata will save any downloaded covers into the respective album folder."
 msgstr ""
+"Nastavení Složka s hudbou se používá pro hledání obrázků "
+"obalů (buď hodnota stanovená výše, nebo <code>cover.jpg / cover.png</code>). "
+"Pokud k této složce máte i oprávnění k zápisu (a do jejích podsložek), potom "
+"Cantata uloží všechny stažené obaly do příslušné složky alba."
 
 #. i18n: file: gui/serversettings.ui:188
 #. i18n: ectx: property (text), widget (NoteLabel, streamUrlNoteLabel)
@@ -5690,6 +5786,9 @@ msgid ""
 "'HTTP Stream URL' is only of use if you have MPD configured to output to a "
 "HTTP stream, and you wish Cantata to be able to play that stream."
 msgstr ""
+"Adresa (URL) proudu HTTP se používá jen tehdy, když máte "
+"nastaveno MPD na výstup do proudu HTTP, a přejete si, aby Cantata mohla "
+"tento proud přehrávat."
 
 #. i18n: file: gui/serversettings.ui:261
 #. i18n: ectx: property (text), widget (NoteLabel, basicMusicFolderNoteLabel)
@@ -5699,6 +5798,9 @@ msgid ""
 "update the music database. This can be performed by pressing the 'Refresh "
 "Database' button in the 'Artists' or 'Albums' views."
 msgstr ""
+"Pokud změníte nastavení pro složku s hudbou, budete "
+"muset hudební databázi obnovovat ručně. To je možné provádět stisknutím "
+"tlačítka Obnovit databázi v pohledech s umělci nebo alby."
 
 #. i18n: file: gui/serversettings.ui:268
 #. i18n: ectx: property (text), widget (NoteLabel, musicFolderNoteLabel_2)
@@ -5707,6 +5809,8 @@ msgid ""
 "If no setting is specified for 'Cover filename, then Cantata will use a "
 "default of <code>cover</code>"
 msgstr ""
+"Pokud není nastaveno žádné nastavení pro název souboru s "
+"obalem, pak bude Cantata používat výchozí <code>obal</code>"
 
 #. i18n: file: http/httpserversettings.ui:25
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
@@ -5722,6 +5826,10 @@ msgid ""
 "contains a minimal HTTP server that can be used to serve other files to MPD. "
 "This, however, will only work whilst Cantata is running."
 msgstr ""
+"MPD obvykle přehrává pouze ty písně, jež jsou uloženy v "
+"jeho složkách. Cantata obsahuje malý HTTP server, který se dá použít na "
+"podávání jiných souborů MPD. Nicméně toto bude pracovat, jen když Cantata "
+"běží."
 
 #. i18n: file: http/httpserversettings.ui:47
 #. i18n: ectx: property (text), widget (NoteLabel, label_4b)
@@ -5730,6 +5838,8 @@ msgid ""
 "If you choose 'Local loopback' for 'Network interface', then MPD <b>must</b> "
 "also be on this computer."
 msgstr ""
+"Pokud zvolíte pro síťové rozhraní místní smyčku, potom "
+"<b>musí</b> být MPD rovněž na tomto počítači."
 
 #. i18n: file: network/proxysettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, modeLabel)
@@ -5837,6 +5947,8 @@ msgid ""
 "These settings apply to Digitally Imported, JazzRadio.com, RockRadio.com, "
 "and Sky.fm"
 msgstr ""
+"Tato nastavení se použijí na Digitally Imported, "
+"JazzRadio.com, RockRadio.com, and Sky.fm."
 
 #. i18n: file: streams/digitallyimportedsettings.ui:164
 #. i18n: ectx: property (text), widget (NoteLabel, note2Label)
@@ -5845,6 +5957,9 @@ msgid ""
 "If you enter account details, then a 'DI' status item will appear under the "
 "list of streams. This will indicate if you are logged in or not."
 msgstr ""
+"Pokud zadáte podrobnosti účtu, stav 'DI' (Digitally "
+"Imported) se objeví pod seznamem proudů. To ukáže, zda jste přihlášen nebo "
+"nejste."
 
 #. i18n: file: streams/streamssettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -5870,6 +5985,8 @@ msgstr "Instalovat"
 #: po/rc.cpp:969 rc.cpp:969
 msgid "Built-in categories are shown in italic, and these cannot be removed."
 msgstr ""
+"Vestavěné skupiny jsou zobrazovány kurzívou, a tyto "
+"nelze odstranit."
 
 #. i18n: file: support/shortcutssettingswidget.ui:65
 #. i18n: ectx: property (title), widget (QGroupBox, actionBox)
@@ -5911,13 +6028,13 @@ msgstr "Číslo disku:"
 #. i18n: ectx: property (text), widget (StateLabel, ratingLabel)
 #: po/rc.cpp:1017 rc.cpp:1017
 msgid "Rating:"
-msgstr ""
+msgstr "Hodnocení:"
 
 #. i18n: file: tags/tageditor.ui:186
 #. i18n: ectx: property (text), widget (QLabel, ratingVarious)
 #: po/rc.cpp:1020 rc.cpp:1020
 msgid "<i>(Various)</i>"
-msgstr ""
+msgstr "<i>(Různé)</i>"
 
 #. i18n: file: tags/tageditor.ui:210
 #. i18n: ectx: property (text), widget (PlainNoteLabel, label_7x)
@@ -5925,6 +6042,8 @@ msgstr ""
 msgid ""
 "Multiple genres should be separated via a semicolon (e.g. 'Rock;Hard Rock')"
 msgstr ""
+"Více žánrů se musí oddělit středníkem (např. "
+"'Rock;Hard Rock')"
 
 #. i18n: file: tags/tageditor.ui:217
 #. i18n: ectx: property (text), widget (PlainNoteLabel, label_7y)
@@ -5933,6 +6052,7 @@ msgid ""
 "Ratings are stored in an external database, and <b>not</b> in the song's "
 "file."
 msgstr ""
+"Hodnocení jsou ukládána ve vnější databázi, <b>ne</b> v souboru s písní."
 
 #. i18n: file: tags/trackorganiser.ui:115
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
@@ -5950,7 +6070,7 @@ msgstr "Nový název"
 #. i18n: ectx: property (text), widget (UrlNoteLabel, ratingsNote)
 #: po/rc.cpp:1062 rc.cpp:1062
 msgid "Ratings will be lost if a file is renamed."
-msgstr ""
+msgstr "Hodnocení budou ztracena, pokud bude soubor přejmenován."
 
 #: po/rc.cpp:1063 rc.cpp:1063
 msgctxt "NAME OF TRANSLATORS"

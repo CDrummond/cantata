@@ -119,7 +119,7 @@ public:
 };
 #endif
 
-ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &defSize)
+ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &defSize, bool instantApply)
     #ifdef __APPLE__
     : QMainWindow(parent)
     , shown(false)
@@ -128,7 +128,11 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &de
     : Dialog(parent, name, defSize)
     #endif
 {
+    instantApply=false; // TODO!!!!
+
     #ifdef __APPLE__
+    Q_UNUSED(defSize)
+    Q_UNUSED(name)
 
     setUnifiedTitleAndToolBarOnMac(true);
     toolBar=addToolBar("ToolBar");
@@ -139,23 +143,32 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &de
     QBoxLayout *lay=new QBoxLayout(QBoxLayout::TopToBottom, mw);
     stack=new QStackedWidget(mw);
     group=new QButtonGroup(toolBar);
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Apply, Qt::Horizontal, mw);
-
     lay->addWidget(stack);
-    lay->addWidget(buttonBox);
+    if (instantApply) {
+        buttonBox=0;
+        setWindowFlags(Qt::Dialog);
+    } else {
+        buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Apply, Qt::Horizontal, mw);
+        lay->addWidget(buttonBox);
+        connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(macButtonPressed(QAbstractButton *)));
+        buttonBox->setStyle(Dialog::buttonProxyStyle());
+        // Hide window buttons if not instany apply - dont want user just closing dialog
+        setWindowFlags(Qt::Dialog|Qt::WindowTitleHint|Qt::CustomizeWindowHint);
+    }
+
     group->setExclusive(true);
     setCentralWidget(mw);
-    connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(macButtonPressed(QAbstractButton *)));
-    buttonBox->setStyle(Dialog::buttonProxyStyle());
-    setWindowFlags(Qt::Dialog);
 
     #else
 
     bool limitedHeight=Utils::limitedHeight(this);
     pageWidget = new PageWidget(this, limitedHeight, !limitedHeight);
     setMainWidget(pageWidget);
-    setButtons(Dialog::Ok|Dialog::Cancel|Dialog::Apply);
-
+    if (instantApply) {
+        // TODO: What???
+    } else {
+        setButtons(Dialog::Ok|Dialog::Cancel|Dialog::Apply);
+    }
     #endif
 }
 
@@ -217,7 +230,10 @@ bool ConfigDialog::setCurrentPage(const QString &id)
         it.value().widget->ensurePolished();
         ensurePolished();
     }
-    int newH=it.value().widget->sizeHint().height()+toolBar->height()+buttonBox->height()+layout()->spacing()+(2*layout()->margin());
+    int newH=buttonBox
+                ? (it.value().widget->sizeHint().height()+toolBar->height()+buttonBox->height()+layout()->spacing()+(2*layout()->margin()))
+                : (it.value().widget->sizeHint().height()+toolBar->height()+(2*layout()->margin()));
+
     if (isVisible()) {
         if (newH!=height()) {
             if (!resizeAnim) {
@@ -315,7 +331,8 @@ void ConfigDialog::reject()
 
 void ConfigDialog::keyPressEvent(QKeyEvent *e)
 {
-    if (Qt::Key_Escape==e->key() && Qt::NoModifier==e->modifiers()) {
+    // Only act on Esc if we are instant-apply (in which case there will be no button box)...
+    if (!buttonBox && Qt::Key_Escape==e->key() && Qt::NoModifier==e->modifiers()) {
         close();
     }
 }
@@ -406,6 +423,9 @@ void ConfigDialog::setFocus()
 void ConfigDialog::macButtonPressed(QAbstractButton *b)
 {
     #ifdef __APPLE__
+    if (!buttonBox) {
+        return;
+    }
     if (b==buttonBox->button(QDialogButtonBox::Ok)) {
         slotButtonClicked(Dialog::Ok);
     } else if (b==buttonBox->button(QDialogButtonBox::Apply)) {

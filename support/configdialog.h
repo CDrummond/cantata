@@ -56,7 +56,7 @@ class ConfigDialog : public
     #endif
 
 public:
-    ConfigDialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize());
+    ConfigDialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize(), bool instantApply=false);
     virtual ~ConfigDialog();
 
     void addPage(const QString &id, QWidget *widget, const QString &name, const Icon &icon, const QString &header);

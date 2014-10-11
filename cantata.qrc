@@ -48,19 +48,7 @@
 <file alias="tunein">streams/icons/tunein.svg</file>
 <file alias="dirble">streams/icons/dirble.svg</file>
 
-<file alias="va16.png">icons/view-media-artist-various16.png</file>
-<file alias="va22.png">icons/view-media-artist-various22.png</file>
-<file alias="va32.png">icons/view-media-artist-various32.png</file>
-<file alias="va48.png">icons/view-media-artist-various48.png</file>
-<file alias="va64.png">icons/view-media-artist-various64.png</file>
-<file alias="va128.png">icons/view-media-artist-various128.png</file>
 <file alias="va.svg">icons/view-media-artist-various.svg</file>
-<file alias="artist16.png">icons/view-media-artist16.png</file>
-<file alias="artist22.png">icons/view-media-artist22.png</file>
-<file alias="artist32.png">icons/view-media-artist32.png</file>
-<file alias="artist48.png">icons/view-media-artist48.png</file>
-<file alias="artist64.png">icons/view-media-artist64.png</file>
-<file alias="artist128.png">icons/view-media-artist128.png</file>
 <file alias="artist.svg">icons/view-media-artist.svg</file>
 <file alias="radio16.png">icons/view-radiostream16.png</file>
 <file alias="radio22.png">icons/view-radiostream22.png</file>

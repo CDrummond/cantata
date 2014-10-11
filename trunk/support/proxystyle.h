@@ -41,11 +41,7 @@ public:
 
     void polish(QPalette &pal) { QProxyStyle::polish(pal); }
     void polish(QApplication *app) { QProxyStyle::polish(app); }
-    #ifdef ENABLE_KDE_SUPPORT
-    void polish(QWidget *widget) { QProxyStyle::polish(widget); }
-    #else
     void polish(QWidget *widget);
-    #endif
     void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
 
 private:

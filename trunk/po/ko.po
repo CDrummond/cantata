@@ -539,7 +539,7 @@ msgid ""
 msgstr ""
 "대상 장치에 여유 공간이 부족합니다.\n"
 "\n"
-"선택된 곡에 필요한 공간은 %1이지만, 남은 공간은 %2입니다.\n"
+"선택된 곡에 필요한 공간은 %1이지만, 남은 공간은 %2입니다."
 
 #: devices/actiondialog.cpp:379
 msgid "Copy Songs"

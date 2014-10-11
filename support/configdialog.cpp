@@ -139,6 +139,12 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &de
     toolBar->setMovable(false);
     toolBar->setContextMenuPolicy(Qt::PreventContextMenu);
     toolBar->setStyleSheet("QToolBar { spacing:0px} ");
+    QWidget *left=new QWidget(toolBar);
+    left->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    toolBar->addWidget(left);
+    QWidget *right=new QWidget(toolBar);
+    right->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    rightSpacer=toolBar->addWidget(right);
     QWidget *mw=new QWidget(this);
     QBoxLayout *lay=new QBoxLayout(QBoxLayout::TopToBottom, mw);
     stack=new QStackedWidget(mw);
@@ -153,7 +159,7 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &de
         connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(macButtonPressed(QAbstractButton *)));
         buttonBox->setStyle(Dialog::buttonProxyStyle());
         // Hide window buttons if not instany apply - dont want user just closing dialog
-        setWindowFlags(Qt::Dialog|Qt::WindowTitleHint|Qt::CustomizeWindowHint);
+        setWindowFlags(Qt::Dialog|Qt::WindowTitleHint|Qt::CustomizeWindowHint|Qt::WindowMaximizeButtonHint );
     }
 
     group->setExclusive(true);
@@ -192,7 +198,7 @@ void ConfigDialog::addPage(const QString &id, QWidget *widget, const QString &na
     newPage.item->setChecked(false);
     newPage.item->setProperty("id", id);
     newPage.item->ensurePolished();
-    toolBar->addWidget(newPage.item);
+    toolBar->insertWidget(rightSpacer, newPage.item);
     newPage.widget=widget;
     newPage.index=stack->count();
     stack->addWidget(widget);

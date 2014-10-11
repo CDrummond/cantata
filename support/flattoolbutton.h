@@ -24,14 +24,8 @@
 #ifndef FLATTOOLBUTTON_H
 #define FLATTOOLBUTTON_H
 
-#ifdef ENABLE_KDE_SUPPORT
-class FlatToolButton : public KToolButton
-{
-public:
-    explicit FlatToolButton(QWidget *parent = 0) : KToolButton(parent) { setAutoRaise(true); }
-};
-#else
 #include <QToolButton>
+
 class FlatToolButton : public QToolButton
 {
 public:
@@ -42,6 +36,5 @@ public:
     explicit FlatToolButton(QWidget *parent = 0) : QToolButton(parent) { setAutoRaise(true); }
     #endif
 };
-#endif
 
 #endif // MENUBUTTON_H

@@ -30,12 +30,14 @@
 #include <QStyleOption>
 #include <QApplication>
 
+#if !defined Q_OS_MAC && !defined ENABLE_KDE_SUPPORT
 static const char * constAccelProp="managed-accel";
+#endif
 const char * ProxyStyle::constModifyFrameProp="mod-frame";
 
 void ProxyStyle::polish(QWidget *widget)
 {
-    #ifndef Q_OS_MAC
+    #if !defined Q_OS_MAC && !defined ENABLE_KDE_SUPPORT
     if (widget && qobject_cast<QMenu *>(widget) && !widget->property(constAccelProp).isValid()) {
         AcceleratorManager::manage(widget);
         widget->setProperty(constAccelProp, true);

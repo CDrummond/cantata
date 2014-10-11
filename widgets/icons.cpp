@@ -556,11 +556,11 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
         #else
         QColor col=GtkStyle::symbolicColor();
         #endif
-        toolbarPrevIcon=loadMediaIcon(QLatin1String(rtl ? "prev-rtl" : "prev"), col, col);
+        toolbarPrevIcon=loadMediaIcon(QLatin1String(rtl ? "next" : "prev"), col, col);
         toolbarPlayIcon=loadMediaIcon(QLatin1String(rtl ? "play-rtl" : "play"), col, col);
         toolbarPauseIcon=loadMediaIcon(QLatin1String("pause"), col, col);
         toolbarStopIcon=loadMediaIcon(QLatin1String("stop"), col, col);
-        toolbarNextIcon=loadMediaIcon(QLatin1String(rtl ? "next-rtl" : "next"), col, col);
+        toolbarNextIcon=loadMediaIcon(QLatin1String(rtl ? "prev" : "next"), col, col);
         infoIcon=loadSidebarIcon("info", col, col);
         #ifdef USE_SYSTEM_MENU_ICON
         toolbarMenuIcon=loadMonoSvgIcon(QLatin1String("menu"), QLatin1String("icon"), col, col);

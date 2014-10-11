@@ -36,6 +36,7 @@ class QButtonGroup;
 class QStackedWidget;
 class QDialogButtonBox;
 class QPropertyAnimation;
+class QAction;
 #else
 class PageWidget;
 class PageWidgetItem;
@@ -99,6 +100,7 @@ private:
         int index;
     };
     QToolBar *toolBar;
+    QAction *rightSpacer;
     QButtonGroup *group;
     QStackedWidget *stack;
     QDialogButtonBox *buttonBox;

@@ -380,9 +380,8 @@ private:
 
     static ConnectionReturn convertSocketCode(MpdSocket &socket);
     QString errorString(ConnectionReturn status) const;
-    void connectIdleSignals(bool c);
     ConnectionReturn connectToMPD();
-    void disconnectFromMPD(bool emitAddr=true);
+    void disconnectFromMPD();
     ConnectionReturn connectToMPD(MpdSocket &socket, bool enableIdle=false);
     Response sendCommand(const QByteArray &command, bool emitErrors=true, bool retry=true);
     void initialize();

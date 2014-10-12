@@ -118,6 +118,8 @@ public:
         p.drawComplexControl(QStyle::CC_ToolButton, opt);
     }
 };
+
+static const int constMinPad=16;
 #endif
 
 ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &defSize, bool instantApply)
@@ -146,6 +148,8 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &de
     QWidget *right=new QWidget(toolBar);
     right->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     rightSpacer=toolBar->addWidget(right);
+    left->setMinimumWidth(constMinPad);
+    right->setMinimumWidth(constMinPad);
     QWidget *mw=new QWidget(this);
     QBoxLayout *lay=new QBoxLayout(QBoxLayout::TopToBottom, mw);
     stack=new QStackedWidget(mw);
@@ -212,7 +216,7 @@ void ConfigDialog::addPage(const QString &id, QWidget *widget, const QString &na
     for (; it!=end; ++it) {
         sz+=it.value().item->sizeHint().width()+4;
     }
-    setMinimumWidth(sz);
+    setMinimumWidth(sz+(2*constMinPad));
     #else
 
     pages.insert(id, pageWidget->addPage(widget, name, icon, header));

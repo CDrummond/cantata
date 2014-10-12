@@ -258,6 +258,7 @@ private Q_SLOTS:
     void artistImageDownloaded(const Song &song, const QImage &img, const QString &file);
 
 private:
+    QPixmap * defaultPix(const Song &song, int size, int origSize);
     void tryToLocate(const Song &song);
     void tryToDownload(const Song &song);
     void tryToLoad(const Song &song);

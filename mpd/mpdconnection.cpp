@@ -272,7 +272,8 @@ MPDConnection::~MPDConnection()
         stopVolumeFade();
     }
 //     disconnect(&sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
-    connectIdleSignals(false);
+    disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+    disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
     sock.disconnectFromHost();
     idleSocket.disconnectFromHost();
 }
@@ -352,6 +353,8 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
                 dynamicId.clear();
                 setupRemoteDynamic();
                 #endif
+                connect(&socket, SIGNAL(readyRead()), this, SLOT(idleDataReady()), Qt::QueuedConnection);
+                connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)), Qt::QueuedConnection);
                 DBUG << (void *)(&socket) << "Enabling idle";
                 socket.write("idle\n");
                 socket.waitForBytesWritten();
@@ -407,7 +410,6 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
     }
     ConnectionReturn status=Failed;
     if (Success==(status=connectToMPD(sock)) && Success==(status=connectToMPD(idleSocket, true))) {
-        connectIdleSignals(true);
         state=State_Connected;
         emit socketAddress(sock.address());
     } else {
@@ -418,10 +420,11 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
     return status;
 }
 
-void MPDConnection::disconnectFromMPD(bool emitAddr)
+void MPDConnection::disconnectFromMPD()
 {
     DBUG << "disconnectFromMPD";
-    connectIdleSignals(false);
+    disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+    disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
     if (QAbstractSocket::ConnectedState==sock.state()) {
         sock.disconnectFromHost();
     }
@@ -432,9 +435,7 @@ void MPDConnection::disconnectFromMPD(bool emitAddr)
     idleSocket.close();
     state=State_Disconnected;
     ver=0;
-    if (emitAddr) {
-        emit socketAddress(QString());
-    }
+    emit socketAddress(QString());
 }
 
 // This function is mainly intended to be called after the computer (laptop) has been 'resumed'
@@ -578,8 +579,8 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
 
     if (QAbstractSocket::ConnectedState!=sock.state() && !reconnected) {
         DBUG << (void *)(&sock) << "Socket (state:" << sock.state() << ") need to reconnect";
-        disconnectFromMPD(false);
-        ConnectionReturn status=connectToMPD();
+        sock.close();
+        ConnectionReturn status=connectToMPD(sock);
         if (Success!=status) {
             // Failed to connect, so close *both* sockets!
             disconnectFromMPD();
@@ -590,6 +591,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             // Refresh playqueue...
             reconnected=true;
             playListInfo();
+            getStatus();
             reconnected=false;
         }
     }
@@ -1264,17 +1266,6 @@ void MPDConnection::idleDataReady()
     parseIdleReturn(readFromSocket(idleSocket));
 }
 
-void MPDConnection::connectIdleSignals(bool c)
-{
-    if (c) {
-        connect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
-        connect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
-    } else {
-        disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
-        disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
-    }
-}
-
 /*
  * Socket state has changed, currently we only use this to gracefully
  * handle disconnects.
@@ -1283,7 +1274,7 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
 {
     if (socketState == QAbstractSocket::ClosingState){
         bool wasConnected=State_Connected==state;
-        connectIdleSignals(false);
+        disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
         DBUG << "onSocketStateChanged";
         if (QAbstractSocket::ConnectedState==idleSocket.state()) {
             idleSocket.disconnectFromHost();
@@ -1297,7 +1288,7 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
             emit error(errorString(status), true);
         }
         if (QAbstractSocket::ConnectedState==idleSocket.state()) {
-            connectIdleSignals(true);
+            connect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)), Qt::QueuedConnection);
         }
     }
 }
@@ -1312,6 +1303,10 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
     Response response(data.endsWith(constOkNlValue), data);
     if (!response.ok) {
         DBUG << "idle failed? reconnect";
+        disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+        if (QAbstractSocket::ConnectedState==idleSocket.state()) {
+            idleSocket.disconnectFromHost();
+        }
         idleSocket.close();
         ConnectionReturn status=connectToMPD(idleSocket, true);
         if (Success!=status) {
@@ -1910,7 +1905,7 @@ void MPDConnection::setRating(const QString &file, quint8 val)
 {
     if (val>Song::Rating_Max) {
         return;
-    }    
+    }
 
     bool ok=0==val
                 ? sendCommand("sticker delete song "+encodeName(file)+' '+constRatingSticker, 0!=val).ok

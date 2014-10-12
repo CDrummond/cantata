@@ -77,7 +77,7 @@
 54. In catata-tags.exe set unhandled exception handler, to prevent windows
     crash dialog appearing.
 55. If a command fails to be sent to MPD, and the socket is in an error state,
-    then completely disconnect and reconnect.
+    then reconnect and update status and playqueue.
 56. For windows builds, when window is not focused, draw sidebar selection as
     a darkened background.
 57. If MPD supports https, then there is no need to convert SoundCould URLs.

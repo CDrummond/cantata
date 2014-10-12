@@ -414,6 +414,7 @@ private:
     // Cant use 1, as we could write a command just as an idle event is ready to read
     MpdSocket sock;
     MpdSocket idleSocket;
+    QTimer *connTimer;
     #ifdef ENABLE_DYNAMIC
     QByteArray dynamicId;
     #endif

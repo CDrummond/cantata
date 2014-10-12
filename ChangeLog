@@ -87,6 +87,7 @@
 60. If fail to read a Gtk setting from DConf then try GSettings.
 61. Send a message (default to 'status') at least once every 30 seconds to keep
     command connection alive.
+62. Fix inconsistent default cover sizes.
 
 1.4.2
 -----

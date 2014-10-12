@@ -1162,6 +1162,45 @@ QPixmap * Covers::saveScaledCover(const QImage &img, const Song &song, int size)
     return pix;
 }
 
+QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
+{
+    #if QT_VERSION < 0x050100
+    Q_UNUSED(origSize)
+    #endif
+    #ifdef ENABLE_ONLINE_SERVICES
+    bool podcast=!song.isArtistImageRequest() && song.isFromOnlineService() && PodcastService::constName==song.onlineService();
+    QString key=song.isArtistImageRequest()
+                ? QLatin1String("artist-")
+                : podcast
+                    ? QLatin1String("podcast-")
+                    : QLatin1String("album-");
+    #else
+    bool podcast=false;
+    key=song.isArtistImageRequest() ? QLatin1String("artist-") : QLatin1String("album-");
+    #endif
+    key+=QString::number(size);
+    QPixmap *pix=cache.object(key);
+    #ifndef ENABLE_UBUNTU
+    if (!pix) {
+        Icon &icn=song.isArtistImageRequest()
+                ? Icons::self()->artistIcon
+                : podcast
+                  ? Icons::self()->podcastIcon
+                  : Icons::self()->albumIcon;
+        pix=new QPixmap(icn.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        #if QT_VERSION >= 0x050100
+        if (size!=origSize) {
+            pix->setDevicePixelRatio(devicePixelRatio);
+            DBUG << "Set pixel ratio of dummy pixmap" << devicePixelRatio;
+        }
+        #endif
+        cache.insert(key, pix, 1);
+        cacheSizes.insert(size);
+    }
+    #endif
+    return pix;
+}
+
 QPixmap * Covers::get(const Song &song, int size, bool urgent)
 {
     // DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << size << urgent;
@@ -1226,7 +1265,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                         #endif
                         return pix;
                     } else if (constNoCover==img.fileName) {
-                        return 0;
+                        return defaultPix(song, size, origSize);
                     }
                 } else {
                     pix=new QPixmap(QPixmap::fromImage(cached));
@@ -1263,38 +1302,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
             return pix;
         }
     }
-    #ifdef ENABLE_ONLINE_SERVICES
-    bool podcast=!song.isArtistImageRequest() && song.isFromOnlineService() && PodcastService::constName==song.onlineService();
-    key=song.isArtistImageRequest()
-            ? QLatin1String("artist-")
-            : podcast
-                ? QLatin1String("podcast-")
-                : QLatin1String("album-");
-    #else
-    bool podcast=false;
-    key=song.isArtistImageRequest() ? QLatin1String("artist-") : QLatin1String("album-");
-    #endif
-    key+=QString::number(size);
-    pix=cache.object(key);
-    #ifndef ENABLE_UBUNTU
-    if (!pix) {
-        Icon &icn=song.isArtistImageRequest()
-                    ? Icons::self()->artistIcon
-                    : podcast
-                        ? Icons::self()->podcastIcon
-                        : Icons::self()->albumIcon;
-        pix=new QPixmap(icn.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        #if QT_VERSION >= 0x050100
-        if (size!=origSize) {
-            pix->setDevicePixelRatio(devicePixelRatio);
-            DBUG << "Set pixel ratio of dummy pixmap" << devicePixelRatio;
-        }
-        #endif
-        cache.insert(key, pix, 1);
-        cacheSizes.insert(size);
-    }
-    #endif
-    return pix;
+    return defaultPix(song, size, origSize);
 }
 
 void Covers::coverDownloaded(const Song &song, const QImage &img, const QString &file)

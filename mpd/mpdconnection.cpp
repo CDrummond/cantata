@@ -263,6 +263,9 @@ MPDConnection::MPDConnection()
     maxFilesPerAddCommand=Settings::self()->mpdListSize();
     alwaysUseLsInfo=Settings::self()->alwaysUseLsInfo();
     #endif
+    connTimer=new QTimer(this);
+    connect(connTimer, SIGNAL(timeout()), SLOT(getStatus()));
+    connTimer->setSingleShot(false);
 }
 
 MPDConnection::~MPDConnection()
@@ -404,6 +407,7 @@ QString MPDConnection::errorString(ConnectionReturn status) const
 
 MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
 {
+    connTimer->stop();
     if (State_Connected==state && (QAbstractSocket::ConnectedState!=sock.state() || QAbstractSocket::ConnectedState!=idleSocket.state())) {
         DBUG << "Something has gone wrong with sockets, so disconnect";
         disconnectFromMPD();
@@ -416,13 +420,14 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
         disconnectFromMPD();
         state=State_Disconnected;
     }
-
+    connTimer->start(30000);
     return status;
 }
 
 void MPDConnection::disconnectFromMPD()
 {
     DBUG << "disconnectFromMPD";
+    connTimer->stop();
     disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
     disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
     if (QAbstractSocket::ConnectedState==sock.state()) {
@@ -569,6 +574,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
 
 MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bool emitErrors, bool retry)
 {
+    connTimer->stop();
     static bool reconnected=false; // If we reconnect, and send playlistinfo - dont want that call causing reconnects, and recursion!
     DBUG << (void *)(&sock) << "sendCommand:" << log(command) << emitErrors << retry;
 
@@ -655,6 +661,11 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         }
     }
     DBUG << (void *)(&sock) << "sendCommand - sent";
+    if (QAbstractSocket::ConnectedState==sock.state()) {
+        connTimer->start(30000);
+    } else {
+        connTimer->stop();
+    }
     return response;
 }
 

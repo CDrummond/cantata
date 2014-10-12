@@ -47,6 +47,7 @@
 #include <QTimer>
 #include <QPropertyAnimation>
 #include <QSysInfo>
+#include <QDesktopWidget>
 #include "icon.h"
 #include "osxstyle.h"
 #else
@@ -403,9 +404,10 @@ void ConfigDialog::showEvent(QShowEvent *e)
         QTimer::singleShot(0, this, SLOT(setFocus()));
         shown=true;
         ensurePolished();
-        QWidget *p=parentWidget();
-        if (p) {
-            move(p->pos()+QPoint((p->width()-width())/2, (p->height()-height())/2));
+
+        QDesktopWidget *dw=QApplication::desktop();
+        if (dw) {
+            move(QPoint((dw->availableGeometry(this).size().width()-width())/2, 86));
         }
     }
     OSXStyle::self()->addWindow(this);

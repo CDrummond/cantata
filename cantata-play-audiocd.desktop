@@ -7,5 +7,6 @@ X-KDE-Priority=TopLevel
 [Desktop Action Play]
 Name=Play Audio CD with Cantata
 Name[de]=Audio CD mit Cantata abspielen
+Name[pl]=Odtwarzaj płytę audio przy użyciu Cantaty
 Icon=cantata
 Exec=cantata cdda://?dev=%d

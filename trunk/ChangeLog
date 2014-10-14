@@ -88,6 +88,7 @@
 61. Send a message (default to 'status') at least once every 30 seconds to keep
     command connection alive.
 62. Fix inconsistent default cover sizes.
+63. French translation - thanks to Jaussoin Timothée.
 
 1.4.2
 -----

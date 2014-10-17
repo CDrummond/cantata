@@ -89,6 +89,9 @@
     command connection alive.
 62. Fix inconsistent default cover sizes.
 63. French translation - thanks to Jaussoin Timothée.
+64. Seek 5seconds when control (or command for Mac) and lef/right arrow keys
+    are pressed. (Seek setting may be changed via config file - refer to
+    README for more details.)
 
 1.4.2
 -----

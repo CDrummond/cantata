@@ -852,6 +852,11 @@ bool Settings::retinaSupport()
     return cfg.get("retinaSupport", false);
 }
 
+int Settings::seekStep()
+{
+    return cfg.get("seekStep", 5, 2, 60);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

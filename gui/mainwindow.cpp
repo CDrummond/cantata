@@ -268,6 +268,15 @@ MainWindow::MainWindow(QWidget *parent)
     connectionsAction = ActionCollection::get()->createAction("connections", i18n("Collection"), HIDE_MENU_ICON_NAME("network-server"));
     outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), HIDE_MENU_ICON(Icons::self()->speakerIcon));
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
+    fwdAction = new Action(this);
+    revAction = new Action(this);
+    fwdAction->setShortcut((Qt::RightToLeft==layoutDirection() ? Qt::Key_Left : Qt::Key_Right)+Qt::ControlModifier);
+    revAction->setShortcut((Qt::RightToLeft==layoutDirection() ? Qt::Key_Right : Qt::Key_Left)+Qt::ControlModifier);
+    connect(fwdAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(forward()));
+    connect(revAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(reverse()));
+    addAction(fwdAction);
+    addAction(revAction);
+
     addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::self()->playlistIcon);
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), HIDE_MENU_ICON(Icons::self()->addRadioStreamIcon));

@@ -314,6 +314,9 @@ public Q_SLOTS:
     void setRating(const QStringList &files, quint8 val);
     void getRating(const QString &file);
 
+    void forward() { move(true); }
+    void reverse() { move(false); }
+
 Q_SIGNALS:
     void stateChanged(bool connected);
     void passwordError();
@@ -402,6 +405,7 @@ private:
     void clearError();
     void getRatings(QList<Song> &songs);
     void playFirstTrack(bool emitErrors);
+    void move(bool fwd);
 
 private:
     Thread *thread;

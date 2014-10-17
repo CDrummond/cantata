@@ -64,6 +64,7 @@ static const int constSocketCommsTimeout=2000;
 static const int constMaxReadAttempts=4;
 static int maxFilesPerAddCommand=10000;
 static bool alwaysUseLsInfo=false;
+static int seekStep=5;
 
 static const QByteArray constOkValue("OK");
 static const QByteArray constOkMpdValue("OK MPD");
@@ -262,6 +263,7 @@ MPDConnection::MPDConnection()
     #ifndef ENABLE_UBUNTU
     maxFilesPerAddCommand=Settings::self()->mpdListSize();
     alwaysUseLsInfo=Settings::self()->alwaysUseLsInfo();
+    seekStep=Settings::self()->seekStep();
     #endif
     connTimer=new QTimer(this);
     connect(connTimer, SIGNAL(timeout()), SLOT(getStatus()));
@@ -1093,6 +1095,29 @@ void MPDConnection::playFirstTrack(bool emitErrors)
     toggleStopAfterCurrent(false);
     stopVolumeFade();
     sendCommand("play 0", emitErrors);
+}
+
+void MPDConnection::move(bool fwd)
+{
+    qWarning() << fwd;
+    toggleStopAfterCurrent(false);
+    Response response=sendCommand("status");
+    if (response.ok) {
+        MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
+        if (fwd) {
+            if (sv.timeElapsed+seekStep<sv.timeTotal) {
+                setSeek(sv.song, sv.timeElapsed+seekStep);
+            }/* else {
+                goToNext();
+            }*/
+        } else if (!fwd){
+            if (sv.timeElapsed>=seekStep) {
+                setSeek(sv.song, sv.timeElapsed-seekStep);
+            }/* else {
+                goToPrevious();
+            }*/
+        }
+    }
 }
 
 //void MPDConnection::startPlayingSong(quint32 song)

@@ -180,6 +180,7 @@ public:
     bool showRatingWidget();
     bool infoTooltips();
     bool retinaSupport();
+    int seekStep();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

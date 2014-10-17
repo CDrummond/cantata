@@ -457,6 +457,10 @@ cacheScaledCovers=<Boolean>
     This speed up cover retrieval and drawing on subsequent runs.
     Default is true.
 
+seekStep=<Integer>
+    Configure seek time when Ctrl+Arrow keys is used.
+    Default is 5. (Values 2..60 are acceptable)
+
 e.g.
 [General]
 iconTheme=oxygen
@@ -473,6 +477,7 @@ alwaysUseLsInfo=true
 menu=3
 stopHttpStreamOnPause=true
 cacheScaledCovers=true
+seekStep=5
 
 
 8. CUE Files

@@ -311,7 +311,11 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             song.setMbAlbumId(line.mid(constAlbumId.length()));
         } else if ((Loc_Search==location || Loc_Playlists==location || Loc_PlayQueue==location)  &&
                    line.startsWith(constPerformerKey)) {
-            song.setPerformer(QString::fromUtf8(line.mid(constPerformerKey.length())));
+            if (song.hasPerformer()) {
+                song.setPerformer(song.performer()+QLatin1String(", ")+QString::fromUtf8(line.mid(constPerformerKey.length())));
+            } else {
+                song.setPerformer(QString::fromUtf8(line.mid(constPerformerKey.length())));
+            }
         } else if (Loc_PlayQueue==location) {
             if (line.startsWith(constPriorityKey)) {
                 song.priority = line.mid(constPriorityKey.length()).toUInt();

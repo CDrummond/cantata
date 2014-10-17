@@ -354,6 +354,8 @@ private:
     Action *cancelAction;
     Action *clearNewStateAction;
     Action *ratingAction;
+    Action *fwdAction;
+    Action *revAction;
     TrayItem *trayItem;
     QPoint lastPos;
     QSize expandedSize;

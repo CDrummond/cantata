@@ -208,6 +208,10 @@ set(OXYGEN_ICONS
 64x64/apps/clock.png
 16x16/apps/clock.png
 48x48/actions/document-save-as.png
+48x48/mimetypes/inode-directory.png
+64x64/mimetypes/inode-directory.png
+48x48/mimetypes/audio-x-generic.png
+64x64/mimetypes/audio-x-generic.png
 )
 
 foreach(ICON ${OXYGEN_ICONS})

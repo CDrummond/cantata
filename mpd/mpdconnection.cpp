@@ -1162,7 +1162,6 @@ void MPDConnection::setSingle(bool toggle)
 
 void MPDConnection::setSeek(quint32 song, quint32 time)
 {
-    toggleStopAfterCurrent(false);
     sendCommand("seek "+quote(song)+' '+quote(time));
 }
 

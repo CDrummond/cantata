@@ -1110,12 +1110,8 @@ void MPDConnection::seek(bool fwd)
             } else {
                 goToNext();
             }
-        } else if (!fwd){
-            if (sv.timeElapsed>=seekStep) {
-                setSeek(sv.song, sv.timeElapsed-seekStep);
-            }/* else {
-                goToPrevious();
-            }*/
+        } else {
+            setSeek(sv.song, sv.timeElapsed>=seekStep ? sv.timeElapsed-seekStep : 0);
         }
     }
 }

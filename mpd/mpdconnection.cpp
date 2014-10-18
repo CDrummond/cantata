@@ -819,13 +819,13 @@ void MPDConnection::removeSongs(const QList<qint32> &items)
     sendCommand(send);
 }
 
-void MPDConnection::move(quint32 from, quint32 to)
+void MPDConnection::seek(quint32 from, quint32 to)
 {
     toggleStopAfterCurrent(false);
     sendCommand("move "+quote(from)+' '+quote(to));
 }
 
-void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
+void MPDConnection::seek(const QList<quint32> &items, quint32 pos, quint32 size)
 {
     doMoveInPlaylist(QString(), items, pos, size);
     #if 0
@@ -1097,7 +1097,7 @@ void MPDConnection::playFirstTrack(bool emitErrors)
     sendCommand("play 0", emitErrors);
 }
 
-void MPDConnection::move(bool fwd)
+void MPDConnection::seek(bool fwd)
 {
     qWarning() << fwd;
     toggleStopAfterCurrent(false);
@@ -1107,9 +1107,9 @@ void MPDConnection::move(bool fwd)
         if (fwd) {
             if (sv.timeElapsed+seekStep<sv.timeTotal) {
                 setSeek(sv.song, sv.timeElapsed+seekStep);
-            }/* else {
+            } else {
                 goToNext();
-            }*/
+            }
         } else if (!fwd){
             if (sv.timeElapsed>=seekStep) {
                 setSeek(sv.song, sv.timeElapsed-seekStep);

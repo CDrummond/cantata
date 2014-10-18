@@ -240,8 +240,8 @@ public Q_SLOTS:
     void playListChanges();
     void playListInfo();
     void removeSongs(const QList<qint32> &items);
-    void move(quint32 from, quint32 to);
-    void move(const QList<quint32> &items, quint32 pos, quint32 size);
+    void seek(quint32 from, quint32 to);
+    void seek(const QList<quint32> &items, quint32 pos, quint32 size);
     void shuffle(quint32 from, quint32 to);
     void clear();
     void shuffle();
@@ -314,8 +314,8 @@ public Q_SLOTS:
     void setRating(const QStringList &files, quint8 val);
     void getRating(const QString &file);
 
-    void forward() { move(true); }
-    void reverse() { move(false); }
+    void forward() { seek(true); }
+    void reverse() { seek(false); }
 
 Q_SIGNALS:
     void stateChanged(bool connected);
@@ -405,7 +405,7 @@ private:
     void clearError();
     void getRatings(QList<Song> &songs);
     void playFirstTrack(bool emitErrors);
-    void move(bool fwd);
+    void seek(bool fwd);
 
 private:
     Thread *thread;

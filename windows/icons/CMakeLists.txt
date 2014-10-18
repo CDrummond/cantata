@@ -212,6 +212,8 @@ set(OXYGEN_ICONS
 64x64/mimetypes/inode-directory.png
 48x48/mimetypes/audio-x-generic.png
 64x64/mimetypes/audio-x-generic.png
+48x48/places/document-multiple.png
+64x64/places/document-multiple.png
 )
 
 foreach(ICON ${OXYGEN_ICONS})

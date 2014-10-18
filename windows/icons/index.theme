@@ -17,7 +17,7 @@ PanelSizes=16,22,32,48,64,128,256
 DialogDefault=32
 DialogSizes=16,22,32,48,64,128,256
 
-Directories=16x16/actions,16x16/apps,16x16/categories,16x16/devices,16x16/mimetypes,16x16/places,16x16/status,22x22/actions,22x22/animations,22x22/apps,22x22/categories,22x22/devices,22x22/mimetypes,22x22/places,22x22/status,32x32/actions,32x32/apps,32x32/categories,32x32/devices,32x32/mimetypes,32x32/places,32x32/status,48x48/actions,48x48/apps,48x48/categories,48x48/devices,48x48/mimetypes,48x48/status,64x64/apps,64x64/categories,64x64/devices,64x64/mimetypes,64x64/status,128x128/categories,128x128/devices,256x256/categories,256x256/devices,scalable/apps
+Directories=16x16/actions,16x16/apps,16x16/categories,16x16/devices,16x16/mimetypes,16x16/places,16x16/status,22x22/actions,22x22/animations,22x22/apps,22x22/categories,22x22/devices,22x22/mimetypes,22x22/places,22x22/status,32x32/actions,32x32/apps,32x32/categories,32x32/devices,32x32/mimetypes,32x32/places,32x32/status,48x48/actions,48x48/apps,48x48/categories,48x48/devices,48x48/mimetypes,48x48/places,48x48/status,64x64/apps,64x64/categories,64x64/devices,64x64/mimetypes,64x64/places,64x64/status,128x128/categories,128x128/devices,256x256/categories,256x256/devices,scalable/apps
 
 [16x16/actions]
 Size=16
@@ -154,6 +154,11 @@ Size=48
 Context=MimeTypes
 Type=Threshold
 
+[48x48/places]
+Size=48
+Context=Places
+Type=Threshold
+
 [48x48/status]
 Size=48
 Context=Status
@@ -177,6 +182,11 @@ Type=Threshold
 [64x64/mimetypes]
 Size=64
 Context=MimeTypes
+Type=Threshold
+
+[64x64/places]
+Size=64
+Context=Places
 Type=Threshold
 
 [64x64/status]

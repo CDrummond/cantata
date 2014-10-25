@@ -983,7 +983,6 @@ playlists, device support, or replaygain calculation.
 
 Create Installer
 ----------------
-01234567890123456789012345678901234567890123456789012345678901234567890123456789
 Run Nullsoft Scriptable Install System, and use the cantata.nsi that has been
 generated in the install folder. This will place the setup exe into the install
 folder as well.

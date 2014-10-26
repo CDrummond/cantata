@@ -1,0 +1,1047 @@
+Table of Contents
+=================
+
+ 1. Introduction
+ 2. Dependencies
+ 3. Building
+ 4. Bugs
+ 5. Translations
+ 6. Covers
+ 7. Advanced Config Items
+ 8. CUE Files
+ 9. Streams
+10. MultiMedia Keys
+11. Dynamic Helper Script - Local Mode
+12. Dynamic Helper Script - Server Mode
+13. Source Code
+14. Debug Logging
+15. Credits
+16. Windows
+17. Mac OSX
+
+
+
+1. Introduction
+===============
+
+Cantata is a graphical client for MPD. It contains the following features:
+
+ 1. Support for Qt4, Qt5, KDE, MacOSX, Windows, and Ubuntu Touch builds.
+ 2. Multiple MPD collections.
+ 3. Highly customisable layout.
+ 4. Songs grouped by album in play queue.
+ 5. Context view to show artist, album, and song information of current track.
+ 6. Simple tag editor.
+ 7. File organizer - use tags to organize files and folders.
+ 8. Ability to calculate ReplyGain tags. (Linux only, and if relevant libraries
+    installed)
+ 9. Dynamic playlists.
+10. Online services; Jamendo, Magnatune, SoundCloud, and Podcasts.
+11. Radio stream support - with the ability to search for streams via TuneIn,
+    ShoutCast, or Dirble.
+12. USB-Mass-Storage and MTP device support. (Linux only, and if relevant
+    libraries installed)
+13. Audio CD ripping and playback. (Linux only, and if relevant libraries
+    installed)
+14. Playback of non-MPD songs - via simple in-built HTTP server if connected
+    to MPD via a standard socket, otherwise filepath is sent to MPD.
+15. MPRISv2 DBUS interface.
+16. Support for KDE global shortcuts (KDE builds), GNOME media keys
+    (Linux only), and standard media keys (via Qxt)
+17. Ubuntu/ambiance theme integration - including dragging of window via
+    toolbar.
+18. Basic support for touch-style interface (views are made 'flickable')
+19. Scrobbling.
+20. Ratings support.
+
+Cantata started off as a fork of QtMPC, mainly to provide better KDE
+integration - by using KDE libraries/classes wherever possible. However, the
+code (and user interface) is now *very* different to that of QtMPC, and both
+KDE and Qt (Linux) builds have the same feature set. Also, as of 1.4.0, by
+default Cantata is built as a Qt-only application (with no KDE dependencies)
+
+Unlike most other MPD clients, Cantata caches a copy of the MPD music library.
+This is so that it can create a proper hierarchy of artists and albums (where
+Cantata will use the AlbumArtist tag if found, otherwise it will fallback to
+the Artist tag), to provide album counts, tracks counts, etc in the browser
+views and tooltips, and also to help with copying songs to/from devices.
+
+This cache is updated only when MPD indicates that its version of the collection
+is different to Cantata's.
+
+By default, Cantata will use the "listallinfo" command to retrieve the music
+collection. However, it has been noted that MPD 0.18 requires more memory for
+the collection details (due to MPD now reading more information), this may
+cause the "listallinfo" command to fail. If it does, Cantata (as of v1.3.0)
+will fallback to recursively calling "lsinfo" for each MPD folder.
+
+
+2. Dependencies
+===============
+
+Cantata requires the following Qt libraries:
+
+1. QtCore
+2. QtGui
+3. QtNetwork
+4. QtXml
+5. QtDBus (Only for Linux builds)
+6. QtWidgets (Qt5 builds - where widgets are now separated from QtGui)
+
+Cantata may also use the following optional libraries:
+
+ 1. KDElibs4
+ 2. TagLib - Tag edit dialog, replaygain, track organizer, and UMS device
+             support.
+ 3. LibMTP - MTP devices.
+ 4. FFMPEG (libavcodec) - ReplayGain detection code.
+ 5. SpeexDSP - ReplayGain detection code.
+ 6. MPG123 - ReplayGain detection code.
+ 7. CDParanoia - Read/rip Audio CDs.
+ 8. CDDB - either this or MusicBrainz5 required for Audio CDs
+ 9. MusicBrainz5 - either this or CDDB required for Audio CDs
+10. LibQJson - only for Qt4, and KDE4, builds. If this is not found on the
+    system then Cantata will use its own bundled copy.
+11. LibEbur128 - ReplayGain detection code. If this is not found on the
+    system then Cantata will use its own bundled copy.
+
+
+3. Building
+===========
+
+Please refer to the INSTALL file for general build instructions. Details on how
+Cantata is build for Windows can be found in section 16, and Mac OSX in section
+17.
+
+Some Qt4 builds still use com.trolltech.QtDBus.QtTypeName, whereas newer ones
+use org.qtproject.QtDBus.QtTypeName. If you get build failures such as "fatal
+error: playeradaptor.h: No such file or directory" then set
+-DUSE_OLD_DBUS_TYPEDEF=ON when calling CMake.
+
+
+4. Bugs
+=======
+
+Before reporting bugs, please check that this is not an MPD related issue with
+your system - e.g. please try recreating the issue with another MPD client,
+such as MPDroid, GMPC, etc.
+
+To report bugs please visit http://code.google.com/p/cantata
+
+When reporting a bug, please mention the Cantata version number, the Cantata
+build type (Linux/KDE, Linux/Qt, Windows), any cmake options you specified
+(other than the defaults listed at the top of the INSTALL file), and the
+version of MPD you are using.
+
+Please DO NOT attach images to the bug page - as the attachment quota is almost
+full. Instead, please provide links to any relevant screenshots.
+
+
+5. Translations
+===============
+
+Because Cantata started out as a KDE4 application, the translation files are
+based upon KDE's i18n framework - these are located within the 'po' folder.
+
+Translations for Qt-only builds are created from the KDE translations using
+'lconvert'. To work-around issues with plural translations, Qt builds will
+contain extra strings to handle plural forms.
+
+e.g.
+
+    KDE will have:
+        msgid "1 Track"
+        msgid_plural "%1 Tracks"
+        msgstr[0] ""
+        msgstr[1] ""
+
+    Qt will have:
+        msgid "1 Track"
+        msgstr ""
+
+        msgid "%1 Tracks"
+        msgstr ""
+
+In the code, cantata will use "%1 Tracks" for any count other than 1. If the
+language you are translating into has more plural forms (i.e. the above two
+strings are not sufficient), then please translate both into the form
+"Tracks: N" - e.g.
+
+    Qt would now have:
+        msgid "1 Track"
+        msgstr "Tracks: 1"
+
+        msgid "%1 Tracks"
+        msgstr "Tracks: %1"
+
+
+Creating a new translation
+--------------------------
+
+To generate a new translation for Cantata, please just copy cantata.pot (in the
+po folder) to whatever letter code your language uses (e.g. es.po for Spanish).
+Then edit this new file to add the translations.
+
+Please DO NOT use any tools to manually generate the translations from
+Cantata's source code, as this will probably not work. This is due to Cantata
+using the KDE framework for translations, and then generating the Qt-only ones
+from this.
+
+In the po folder there is a script named generate.sh, this is used to extract
+translatable strings and update current translations.
+
+
+6. Covers
+=========
+
+When displaying covers, Cantata will load album covers in the following order:
+
+...if configured to 'Cache scaled covers', Cantata will check its scaled-covers
+   cache folder (~/.cache/cantata/covers-scaled/SIZE) for:
+
+ 1. ${albumArtist}/${album}.png
+
+...if MPD folder exists, is not specified as a http URL, and is readable, then
+   cantata will look for the following within the folder containing the song:
+
+ 2. ${configuredName}.jpg - if set
+ 3. ${configuredName}.png - if set
+ 4. cover.jpg
+ 5. cover.png
+ 6. AlbumArt.jpg
+ 7. AlbumArt.png
+ 8. folder.jpg
+ 9. folder.png
+10. ${albumArtist} - ${album}.jpg
+11. ${albumArtist} - ${album}.png
+12. ${album}.jpg
+13. ${album}.png
+14. Image embedded within current song's tags.
+15. ANY other jpg, or png
+
+...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
+
+16. ${albumArtist}/${album}.jpg
+17. ${albumArtist}/${album}.png
+
+...if the MPD folder was specified as a http URL
+
+18. ${url}/${dirFromFile}/cover.jpg
+    - or ${url}/${dirFromFile}/${configuredName}.jpg (if set)
+19. ${url}/${dirFromFile}/cover.png
+    - or ${url}/${dirFromFile}/${configuredName}.png (if set)
+
+...lastly, if user has enabled downloading via last.fm
+
+20. Query last.fm using ${albumArtist} and ${album}. Cantata will attempt to
+    download the image specified with the "extralarge" size.
+
+Downloaded images will be saved as ${configuredName}.jpg/png (if set), or
+cover.jpg/png, within the song folder if possible. If not, then they will be
+saved in Cantata's cache folder.
+
+If configured to 'Cache scaled covers', then the resized cover (as displayed)
+will be saved as a PNG within covers-scaled.
+
+
+For artist images:
+
+...if configured to 'Cache scaled covers', Cantata will check its scaled-covers
+   cache folder (~/.cache/cantata/covers-scaled/SIZE) for:
+
+ 1. ${albumArtist}.png
+
+...if MPD folder exists, is not specified as a http URL, and is readable, then
+   cantata will look for the following within the folder containing the song:
+
+ 2. ${basicArtist}.jpg
+ 3. ${basicArtist}.png
+ 4. artist.jpg
+ 5. artist.png
+
+...the above will be repeated for the parent folder
+
+...if song is from a Various Artists album, or file is a non-MPD file, then
+   cantata will look for the following within the MPD root folder:
+
+ 6. ${basicArtist}/${basicArtist}.jpg
+ 7. ${basicArtist}/${basicArtist}.png
+ 8. ${basicArtist}/artist.jpg
+ 9. ${basicArtist}/artist.png
+
+...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
+
+10. ${albumArtist}.jpg
+11. ${albumArtist}.png
+
+...if the MPD folder was specified as a http URL
+
+12. ${url}/${dirFromFile}/artist.jpg
+13. ${url}/${dirFromFile}/artist.png
+ 
+...the above will be repeated for the parent folder
+
+...lastly, if user has enabled downloading via last.fm
+
+14. Query last.fm using ${albumArtist}. Cantata will attempt to download the
+    image specified with the "extralarge" size.
+
+Downloaded images will be saved as artist.jpg/png, within the artist folder
+if the folder hierarchy is 2 levels (artist/album/) and the user has write
+permissions. If not, then they will be saved in Cantata's cache folder.
+
+If configured to 'Cache scaled covers', then the resized cover (as displayed) 
+will be saved as a PNG within covers-scaled.
+
+
+For context view backdrops:
+
+...if MPD folder exists, is not specified as a http URL, and is readable, OR
+   the song's filename starts with '/', then cantata will look for the
+   following within the folder containing the song:
+
+ 1. ${currentArtist}-backdrop.jpg
+ 2. ${currentArtist}-backdrop.png
+ 3. backdrop.jpg
+ 4. backdrop.png
+
+...the above will be repeated for the parent folder
+
+...if song is from a Various Artists album, or file is a non-MPD file, then
+   cantata will look for the following within the MPD root folder:
+
+ 5. ${currentArtist}/${currentArtist}-backdrop.jpg
+ 6. ${currentArtist}/${currentArtist}-backdrop.png
+ 7. ${currentArtist}/backdrop.jpg
+ 8. ${currentArtist}/backdrop.png
+
+...then Cantata will check its cache folder (~/.cache/cantata/backdrops), for :
+
+ 9. ${currentArtist}.jpg
+
+...internet services:
+
+10. MusizBrainz is queried for an artist ID. If returned, this artist ID is used
+    to locate a cover from fanart.tv
+11. Download image from discogs
+
+...lastly:
+
+12. If all the above fails, a backdrop is created from all the album covers
+    featuring the artist.
+
+Downloaded images will be saved as backdrop.jpg, within the artist folder
+if the current song is not from a Various Artists album, the file is from MPD,
+the folder hierarchy is 2 levels (artist/album/), and the user has write
+permissions. If not, then they will be saved in Cantata's cache folder.
+
+
+7. Advanced Config Items
+========================
+
+Cantata contains a few advanced config items, for which there is currently no
+graphical way to control the setting. For these, you will need to edit
+Cantata's config by hand - whilst Cantata is NOT running!
+
+Under Linux, the Cantata config file will be:
+    Qt builds:  ~/.config/cantata/cantata.conf  ( Current User )
+                /etc/xdg/cantata.conf           ( All Users    )
+    KDE builds: ~/.kde/share/config/cantatarc   ( Current User )
+                /etc/kde4/cantatarc             ( All Users    )
+
+The following config items should be added to the "[General]" section.
+
+iconTheme=<Icon theme name>
+    For Qt-only Linux builds, this allows you to force cantata to use the
+    configured icon theme. This config is empty by default, and Cantata uses
+    the system configured icon theme.
+
+maxCoverUpdatePerIteration=<Integer>
+    Non cached covers, and cached covers in albums view, are not located and
+    loaded in the UI thread - as this causes lag when scrolling. A separate
+    background thread is use for this. These covers then need to be sent to the
+    UI thread to be displayed. This config controls the number of covers that
+    are sent in one batch. The default is 10. (Values 1..50 are acceptable)
+
+coverCacheSize=<Integer>
+    Cantata stores scaled versions of covers in a cache in memory, to reduce
+    memory usage and/or disk access. This setting controls the maximum size
+    (in megabytes) that Cantata will use for this cache. The default is 10
+    (Values 1..512 are acceptable)
+
+cueFileCodecs=<Comma separated list of codecs>
+    List of extra text codecs to try when loading CUE files. UTF-8 and System
+    default are tried first, and then the entries from this config are tried.
+    My Qt4.8 has the following codecs available:
+
+    GBK, CP936, MS936, windows-936, System, UTF-8, ISO-8859-1, latin1, CP819,
+    IBM819, iso-ir-100, csISOLatin1, ISO-8859-15, latin9, UTF-32LE, UTF-32BE,
+    UTF-32, UTF-16LE, UTF-16BE, UTF-16, mulelao-1, roman8, hp-roman8,
+    csHPRoman8, TIS-620, ISO, WINSAMI2, WS2, Apple, macintosh, MacRoman,
+    windows-1258, CP1258, windows-1257, CP1257, windows-1256, CP1256,
+    windows-1255, CP1255, windows-1254, CP1254, windows-1253, CP1253,
+    windows-1252, CP1252, windows-1251, CP1251, windows-1250, CP1250, IBM866,
+    CP866, csIBM866, IBM874, CP874, IBM850, CP850, csPC850Multilingual,
+    ISO-8859-16, iso-ir-226, latin10, ISO-8859-14, iso-ir-199, latin8,
+    iso-celtic, ISO-8859-13, ISO-8859-10, iso-ir-157, latin6, ISO-8859-10:1992,
+    csISOLatin6, ISO-8859-9, iso-ir-148, latin5, csISOLatin5, ISO-8859-8, ISO,
+    iso-ir-138, hebrew, csISOLatinHebrew, ISO-8859-7, ECMA-118, greek,
+    iso-ir-126, csISOLatinGreek, ISO-8859-6, ISO-8859-6-I, ECMA-114, ASMO-708,
+    arabic, iso-ir-127, csISOLatinArabic, ISO-8859-5, cyrillic, iso-ir-144,
+    csISOLatinCyrillic, ISO-8859-4, latin4, iso-ir-110, csISOLatin4, ISO-8859-3,
+    latin3, iso-ir-109, csISOLatin3, ISO-8859-2, latin2, iso-ir-101,
+    csISOLatin2, KOI8-U, KOI8-RU, KOI8-R, csKOI8R, Iscii-Mlm, Iscii-Knd,
+    Iscii-Tlg, Iscii-Tml, Iscii-Ori, Iscii-Gjr, Iscii-Pnj, Iscii-Bng, Iscii-Dev,
+    TSCII, GB18030, GB2312, gb2312.1980-0, gbk-0, EUC-JP, ISO-2022-JP,
+    Shift_JIS, jisx0201*-0, jisx0208*-0, JIS7, SJIS, MS_Kanji, EUC-KR,
+    ksc5601.1987-0, cp949, Big5, Big5-HKSCS, big5-0, big5hkscs-0, Big5-ETen,
+    CP950
+
+networkAccessEnabled=<Bool - true/false>
+    Configure whether Cantata should be allowed to make networks requests - for
+    accessing covers, etc. By default this is set to true.
+
+volumeStep=<Integer>
+    Volume % increments. Used when mouse wheel is activated over volume control.
+    Default is 5. (Values 1..20 are acceptable)
+
+undoSteps=<Integer>
+    Control maximum number of playqueue undo/redo steps. Set to 0 to disable
+    undo/redo.
+    Default is 10. (Values 0..20 are acceptable)
+
+mpdPoll=<Integer>
+    Specified in seconds, this controls how often Cantata should poll MPD to
+    determine its current state whilst playing. Set to 0 to disable polling,
+    and rely on MPD's IDLE mechanism to determine MPD state changes.
+    Default is 0 (no polling). (Values 0..60 are acceptable)
+
+mpdListSize=<Integer>
+    This config controls the maximum number of files sent in 1 chunk of an
+    "add" command when adding files to the playqueue.
+    Default is 10000. (Values 100..65535 are acceptable)
+
+alwaysUseHttp=<Boolean>
+    Set to 'true' to always serve non-MPD files via HTTP server. If set to
+    'false', then Cantata will only use its internal HTTP server for songs
+    from media devices, or when connected to MPD via a standard socket.
+    Default is false.
+
+alwaysUseLsInfo=<Boolean>
+    By default, Cantata uses MPD's listallinfo command to retrieve the whole
+    music collection. This can fail (especially with MPD 0.18.x which needs
+    more memory), and if it does Cantata will fall back to calling
+    "lsinfo <dir>" for each directory. Setting this config item to true will
+    cause Cantata to always use this alternative method.
+    Default is false.
+
+menu=<Integer>
+    Controls usage of menubar and menu button. If set to 1 then a menubar is
+    used. If set to 2 then a menu button is used. If set to 3 then both the
+    menubar and menu button are used - and there will be a menu item to toggle
+    between menubar and menu button. NOTE: This menu item is not present when
+    run under Unity or MacOSX - as these always have a menubar - in which case
+    menu=3 will cause both a menubar and menu button to be present.
+
+stopHttpStreamOnPause=<Boolean>
+    If Cantata is playing MPD's HTTP output stream, then this controls what
+    should happen when paused. When MPD's HTTP stream is paused, MPD will
+    output silence over the stream. If this option is set to true, then
+    Cantata will disconnect from MPD's HTTP stream. (NOTE: This will mean that
+    there will be a delay when un-pausing). If set to false, Cantata will
+    continue to play the 'silence' (NOTE: This will use more bandwidth).
+    Default is true.
+
+cacheScaledCovers=<Boolean>
+    Controls whether Cantata should save scaled covers into a disk based cache.
+    This speed up cover retrieval and drawing on subsequent runs.
+    Default is true.
+
+seekStep=<Integer>
+    Configure seek time when Ctrl+Arrow keys is used.
+    Default is 5. (Values 2..60 are acceptable)
+
+e.g.
+[General]
+iconTheme=oxygen
+maxCoverUpdatePerIteration=10
+coverCacheSize=10
+cueFileCodecs=GBK, big5-0
+networkAccessEnabled=false
+volumeStep=2
+undoSteps=20
+mpdPoll=true
+mpdListSize=5000
+alwaysUseHttp=true
+alwaysUseLsInfo=true
+menu=3
+stopHttpStreamOnPause=true
+cacheScaledCovers=true
+seekStep=5
+
+
+8. CUE Files
+============
+
+If Cantata is running with MPD>=0.17, then it will attempt to parse the contents
+of CUE files. The CUE file will be parsed to ascertain the album and track
+details. The track durations for all bar the last should be accurate, and
+Cantata will attempt to determine the duration of the last track - but this
+might not be 100% accurate.
+
+If the CUE file references an audio file that does not exist in the MPD music
+folder, then the CUE file contents will NOT be used.
+
+There is no reliable way for Cantata to ascertain the text encoding that a CUE
+file uses - so, for portability, it would be best if your CUE files used UTF-8
+encoding. When loading a CUE file, Cantata will attempt to load the file as if
+it was UTF-8 encoded, if this fails it will try with the "System" codec. You may
+add to this list of encodings to try by using the 'cueFileCodecs' config item
+(as detailed in section 7 above). If Cantata fails with all configured
+encodings, then it will 'peek' at the 1st 1k bytes, and ask Qt to see if it can
+determine the encoding - and fallback to UTF-8 otherwise. (This peeking and
+fallback was how Cantata behaved in pre 1.2 versions - and is how Clementine
+behaves (where Cantata's CUE file support originates from.))
+
+NOTE: If Cantata cannot access the CUE file (as MPD is running on a remote host,
+or you have not configured the music folder correctly, etc.) then Cantata will
+add the CUE File to the album's track listing.
+
+
+9. Streams
+==========
+
+As of 1.4.0, Cantata only comes with TuneIn, ShoutCast, IceCast and Dirble
+stream providers. To install new providers, you can either use Cantata's
+download dialog (to install for Cantata's Google Drive), or install from file.
+To import new stream categories into Cantata, these files need to be GZip
+compressed tarballs of the following format.
+
+  Filename: CATEGORY_NAME.streams  (e.g. German Radio.streams)
+
+  Contents: Either streams.xml, streams.xml.gz, OR settings.json, AND
+            Either icon.png OR icon.svg
+
+            streams.xml.gz should be GZip compressed.
+            icon.svg should be a non-compressed SVG file.
+
+            Icons for sub-categories (first level only) - these should be named
+            the same as the category (with / replaced by _) -
+            e.g. 'Hard_Soft Rock.svg' for 'Hard/Soft Rock')
+
+settings.json is really only intended to be used by Cantata for providers
+stored in its Google Drive. This JSON file has the following syntax:
+
+  { "type": "streamType", "url": "Stream listing URL" }
+  
+  "streamType" can be either di, soma, or listenlive. Cantata contains code to
+  download from "Stream listing URL" and parse the response based upon
+  "streamType"
+
+In general, for externally provided stream lists, it is more convenient to just
+list all a providers streams within stream.xml.gz. This has the following
+format:
+
+  <?xml version="1.0" encoding="UTF-8"?>
+  <streams version="1.0" addCategoryName="true">
+    <stream name="Station Name" url="http://station.stream.url"/>
+  </streams>
+
+if "addCategoryName" is set to true, then when Cantata adds a station from this
+category to either favourites or the playqueue, it will prepend the Category
+name to the station name.
+
+e.g. To create a stream category named "Wicked Radio" that has 2
+sub-categeries, and 3 stream URLs you would need:
+
+streams.xml.gz with:
+  <?xml version="1.0" encoding="UTF-8"?>
+  <streams version="1.0" addCategoryName="true">
+    <category name="Rock">
+      <stream name="Hard Rock" url="http://127.0.0.1/hard.ogg"/>
+      <stream name="Soft Rock" url="http://127.0.0.1/soft.ogg"/>
+    </category>
+    <stream name="Blues" url="http://127.0.0.1/blues.ogg"/>
+  </streams>
+
+streams.xml.gz & icon.svg need to be placed into a GZip compressed tarball
+named "Wicked Radio.streams"
+
+With the above example, Cantata would list the following in the streams view:
+
+> Wicked Radio
+   > Rock
+       Hard Rock
+       Soft Rock
+   Blues
+
+When "Hard Rock" is added to the playqueue, it will be listed as
+"Wicked Radio - Hard Rock"
+
+If Rock.png (or Rock.svg) and/or Blues.png (or Blues.svg) also exist in the
+tarball, then they will be copied to the install location and used as icons for
+the respective category.
+
+To create .streams file:
+    1. Place all files in a temp folder
+    2. cd into temp folder
+    3. tar cfz NAME.tar.gz *
+    4. mv NAME.tar.gz NAME.streams
+
+
+Google Drive
+------------
+
+The streams page on Cantata's settings dialog, will allow you to install new
+providers from Cantata's Google Drive page. To do this, the dialog first
+downloads the list of providers, this is obtained from the following URL:
+
+https://googledrive.com/host/0Bzghs6gQWi60dHBPajNjbjExZzQ
+
+This file is acutally named "list.xml" - for some reason Google Drive's
+download links never specify the actual name! The contents of this file will be
+something like:
+
+<providers>
+ <category type="0">
+  <provider name="1.fm" url="https://googledrive.com/host/0Bzghs6gQWi60RHRSa3dqeUtkNTA"/>
+  ...
+
+If you want to manually download a provider, use the listed URL to download the
+.streams file. e.g. for the above:
+
+    wget "https://googledrive.com/host/0Bzghs6gQWi60RHRSa3dqeUtkNTA" -O 1.fm.streams
+
+Extract the contents with:
+
+    tar zxvf 1.fm.streams
+
+If you wish to distribute a new stream provider via Cantata's Google Drive,
+please send me an email with the .streams file. My address is in the AUTHORS
+file.
+
+
+10. MultiMedia Keys
+===================
+
+Cantata may be controlled via the media keys on some keyboards. To enable this,
+the KDE version can be configured to use KDE's global shortcuts. 
+
+Linux Qt4 and Windows builds, as of 1.2, now also support basic media-keys
+shortcuts.
+
+Linux Qt4 and Qt5 builds can also use the GNOME settings daemon's MediaKeys
+interface. This interface is normally started automatically under GNOME/Unity
+- and you will also need to enable the setting in the shortcuts page of
+Cantata's configuration dialog (as of v1.1 this option is enabled by default)
+
+
+11. Dynamic Helper Script - Local Mode
+======================================
+
+When a dynamic playlist is loaded in Cantata, the cantata-dynamic helper script
+is executed in the background to do the actual song selection. In this way the
+dynamic playlist can still function even when cantata is terminated. It is
+possible for this script to be controlled on the command line (although it was
+never written with this in mind).
+
+The list of dynamic playlists may be obtained by looking in
+~/.local/share/cantata/dynamic
+
+To 'load' a dynamic playlist, all you need to do is symlink the desired one in
+~/.local/share/cantata/dynamic to ~/.cache/cantata/dynamic/rules. Then you can
+start the helper by calling '/usr/share/cantata/scripts/cantata-dynamic start'
+(or first call '/usr/share/cantata/scripts/cantata-dynamic stop' to stop any
+current playlist).
+
+To pass connection details, cantata-dynamic reads the same environment variables
+as mpc - namely MPD_HOST and MPD_PORT
+
+e.g. the following bash script (not tested!) will stop any current dynamic
+playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
+'hostname:1234' with password 'pass'
+
+    # Stop current dynamic playlist
+    /usr/share/cantata/scripts/cantata-dynamic stop
+    # Clear the playqueue (this requires mpc)
+    MPD_HOST=pass@hostname MPD_PORT=1234 mpc clear
+    # 'Load' new playlist
+    if [ -f "$HOME/.cache/cantata/dynamic/rules" ] ; then
+        rm "$HOME/.cache/cantata/dynamic/rules"
+    fi
+    ln -s "$HOME/.local/share/cantata/dynamic/MyPlaylist.rules" "$HOME/.cache/cantata/dynamic/rules"
+    # Restart dynamic script
+    MPD_HOST=pass@hostname MPD_PORT=1234 /usr/share/cantata/scripts/cantata-dynamic start
+
+
+12. Dynamic Helper Script - Server Mode
+=======================================
+
+In addition to the above, the helper script may be installed on the system
+containing MPD, and run in 'server' mode. This requires MPD>=0.17, as
+communications are via MPD's client-to-client messages.
+
+When run in this mode, it is intended that the script be run system-wide and
+started when the system (or MPD) is started. e.g. The script should be started
+as:
+
+    <prefix>/share/cantata/scripts/cantata-dynamic server <location of config file>
+
+    e.g.:  /usr/share/cantata/scripts/cantata-dynamic server /etc/cantata-dynamic.conf
+
+When run as described above, the script will automatically daemonize itself.
+
+To stop the dynamizer:
+
+     <prefix>/share/cantata/scripts/cantata-dynamic stopserver
+
+    e.g.:  /usr/share/cantata/scripts/cantata-dynamic stopserver
+
+When MPD informs Cantata that the 'cantata-dynamic-in' channel has been
+created, Cantata will automatically switch itself to server mode. The list of
+rules is then loaded from the server, and Cantata will change the backdrop of
+the dynamic page to indicate that the rules are comming from the server.
+
+Server mode is currently the only way for dynamic playlists to be used under
+Windows.
+
+
+Configuration
+-------------
+
+The server mode has a simple ini-style configuration file, that has the
+following parameters (shown here with the default values):
+
+    pidFile=/var/run/cantata-dynamic/pid
+    filesDir=/var/lib/mpd/dynamic
+    activeFile=/var/run/cantata-dynamic/rules
+    mpdHost=localhost
+    mpdPort=6600
+    mpdPassword=
+    httpPort=0
+
+'pidFile' When started, the script will store its PID within the file
+configured here. This is then used to detect if the script is running, etc.
+
+'filesDir' This controls where the dynamic rules are stored. The user the script
+is run as should have read/write permissions to this folder.
+
+'activeFile' When a set of rules is made 'active', all cantata does is create a
+symbolic link from the rules file to the file specified in 'activeFile'. Again,
+the user the script is run as should have read/write permissions to this file.
+
+'mpdHost', 'mpdPort', and 'mpdPassword' are the connection details of the MPD
+server.
+
+'httpPort' if this is set to non-zero, then the script will serve up a *very*
+simple HTTP control page - allowing playlists to be started and stopped.
+
+
+Installation
+-------------
+
+Within the dynamic/init folder are example configuration and init files. Copy
+one of the example init scripts (or create a new one) to
+/etc/init.d/cantata.dynamic - and create the appropriate links in /etc/rc?.d
+
+NOTE: These example scripts assume cantata has been installed to /usr, and that
+cantata-dynamic is in /usr/share/cantata/scripts. If this is not the case, then
+these will need to be edited.
+
+Copy dynamic/init/cantata-dynamic.conf to /etc, and edit as appropriate.
+
+
+13. Source Code
+===============
+
+The Cantata source folder contains the following structure:
+
+    3rdparty   - Third party libraries
+    cmake      - CMake scripts
+    context    - Context view classes
+    dbus       - DBUS related classes and XML files
+    devices    - Device related classes
+    dynamic    - Dynamic playlists
+    gui        - General GUI classes, e.g. MainWindow, AlbumsPage, etc.
+    http       - HTTP server
+    icons      - Icons
+    models     - Most models, apart from dynamic playlist and shortcut models
+    mpd        - MPD related classes; connection, status, song, etc.
+    network    - Generic Network classes (and proxy support for Qt builds)
+    online     - Jamendo, Magantune, SoundCloud, and Podcasts
+    po         - Translations
+    replaygain - ReplayGain calculation
+    streams    - Internet radio streams
+    support    - Generic classes that /may/ be useful to other projects.
+                 Mainly used for Qt/KDE and Gtk support.
+    tags       - Tag reading, editing, etc.
+    ubuntu     - Convergent Ubuntu version (requires the Ubuntu SDK); 
+                 cmake option: -DENABLE_UBUNTU=ON
+    widgets    - Widgets that are probably Cantata specific.
+    windows    - Files specfic to Windows builds..
+    mac        - Files specfic to MacOSX builds.
+    freecns/   - Repeat and Shuffle icons
+    cumulus      https://www.iconfinder.com/iconsets/freecns-cumulus
+
+Cantata's SVG icons have been 'cleaned' using:
+  scour --strip-xml-prolog --indent=none -i in.svg -o out.svg
+
+Symbolc media icons are taken from gnome icon theme, but have been scaled with
+  rsvg-convert -a -w 128 -f svg in.svg -o out.svg
+
+
+14. Debug Logging
+=================
+
+Cantata contains some debug logging that might help to diagnose certain issues.
+To enable this, you must set an environment variable before starting Cantata.
+Therefore, its probably better to start Cantata from the commandline.
+
+The following debug values may be used:
+
+    MPD communications             1   0x00000001
+    MPD Parsing                    2   0x00000002
+    Covers                         4   0x00000004
+    Wikipedia context info         8   0x00000008
+    Last.fm context info          16   0x00000010
+    Combined context info         32   0x00000020
+    Context widget                64   0x00000040
+    Context backdrop             128   0x00000080
+    Dynamic                      256   0x00000100
+    Stream fetching              512   0x00000200
+    Http server                 1024   0x00000400
+    Song dialog file checks     2048   0x00000800 (Tag Editor, etc)
+    Network access              4096   0x00001000
+    Context lyrics              8192   0x00002000
+    Threads                    16384   0x00004000
+    External tags              32768   0x00008000
+    Scrobbling                 65536   0x00010000
+    Devices                   131072   0x00020000
+    Other                     262144   0x00040000 (e.g. MediaKeys)
+
+These values may be combined to enable multiple output. e.g. to enable MPD and
+covers logging:
+
+    CANTATA_DEBUG=5 cantata
+    
+for just covers logging:
+
+    CANTATA_DEBUG=4 cantata
+
+As of Cantata 1.2.0, all logging output is saved to a file. On Linux systems
+this will be ~/.cache/cantata/cantata.log For Windows this will be
+C:\Users\USERNAME\AppData\Local\mpd\cantata\cache\cantata.log And for OSX it
+will be /Users/$USER/Library/Caches/cantata/cantata/cantata.log
+
+When using the external helper to read/write tags, then there might also be
+additional logging in cantata-tags.log (in the same location as cantata.log)
+
+To disable logging to file, and log to the terminal instead, use a negative
+number. e.g. CANTATA_DEBUG=-4
+
+With windows builds, it is probably easier to set the env var from a DOS
+command prompt box. e.g.:
+
+    1. Run cmd.exe from start menu.
+    2. cd c:\Program Files\Cantata
+    3. set CANTATA_DEBUG=4
+    4. cantata.exe
+
+NOTE: Debug logging will function regardless of whether you have created a
+Debug or Release build.
+
+
+15. Credits
+===========
+
+Cantata contains code/icons from:
+
+    Amarok             - amarok.kde.org (Transcoding, Cover fetching code in
+                         cover dialog)
+    Clementine         - www.clementine-player.org (Lyrics searches, CUE file
+                         parsing, digitally imported support, and stretched
+                         header view)
+    Be::MPC            - Wikipedia parsing code
+    Quassel            - quassel-irc.org (Qt-only keyboard short-cut config
+                         support)
+    Solid              - solid.kde.org (Device detection for Qt-only builds)
+    Musique            - Copied code for Gtk theme detection
+    Asunder            - CDDB code
+    libkcddb           - MusicBrainz code
+    libebur128         - https://github.com/jiixyj/libebur128 (Replay gain
+                         calculation)
+    QJson              - JSON parser, taken from https://github.com/flavio/qjson
+    IcoMoon            - http://icomoon.io/#icons (Monochrome sidebar icons)
+    Qxt                - Multi-media key support
+    QtSolutions        - QtIOCompressor, and QtSingleApplication
+    Trojita            - http://quickgit.kde.org/?p=trojita.git (Template for
+                         the Ubuntu CMake configuration)
+    sudoku-app         - https://code.launchpad.net/~sudoku-touch-dev/sudoku-app/trunk
+                         (Ubuntu about page)
+    ubuntu-ui-extras   - https://github.com/iBeliever/ubuntu-ui-extras (Ubuntu 
+                         notification code)
+    QMPDClient         - Last.fm scrobbling
+    address-book-app   - http://bazaar.launchpad.net/~phablet-team/address-book-app/trunk/files
+                         (PageWithBottomEdge)
+
+
+16. Windows
+===========
+
+Qt4 Build
+---------
+
+The following steps are used to compile Cantata, and create the windows
+installer.
+
+This assumes the following folder structure:
+
+    z:\cantata\src          [ Checkout of Cantata's source code ]
+    z:\cantata\build        
+    z:\cantata\install      [ make install will place target files here ]
+    z:\cantata\icons        [ Oxygen icons folder ]
+    z:\dev\MingGW
+    z:\dev\Qt\4.8.4
+    z:\dev\taglib
+    z:\dev\zlib
+
+
+1. Install Qt, MinGW, cmake, TagLib and zlib. TagLib and zlib will probably
+   need compiling.
+
+2. Set (or amend) the following environemnt variables:
+    QTDIR=z:\dev\Qt\4.8.4
+    PATH=z:\dev\Qt\4.8.4\bin;z:\dev\MinGW\bin;z:\dev\taglib\bin;z:\dev\cmake\bin
+
+3. Download oxygen icons required for Cantata from the following link
+    https://drive.google.com/file/d/0Bzghs6gQWi60cXlvUURjeEVRUms/edit?usp=sharing
+
+4. Unzip this *within* icons/
+
+5. Call cmake (e.g. from build folder):
+     cmake ../src -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DTAGLIB_CAN_SAVE_ID3VER=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DCANTATA_MINGW_LIBS=z:/dev/MinGW/bin/mingwm10.dll;z:/dev/MinGW/bin/libgcc_s_dw2-1.dll -DCANTATA_OXYGEN_DIR=z:/cantata/icons -DCMAKE_BUILD_TYPE=Release
+
+   (Note: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the
+          TagLib settings have been manually set)
+
+6. make
+
+7. make install
+
+
+This build is as per Qt-only, but does not have support for dbus, local dynamic
+playlists, device support, or replaygain calculation.
+
+
+Qt5 Build
+---------
+
+The following steps are used to compile Cantata, and create the windows
+installer.
+
+This assumes the following folder structure:
+
+    z:\cantata\src          [ Checkout of Cantata's source code ]
+    z:\cantata\build
+    z:\cantata\install      [ make install will place target files here ]
+    z:\cantata\icons        [ Oxygen icons folder ]
+    z:\dev\Qt
+    z:\dev\taglib
+    z:\dev\zlib
+
+
+1. Install Qt (5.3 or later), cmake, TagLib and zlib. TagLib and zlib will probably
+   need compiling.
+
+2. Set (or amend) the following environemnt variables:
+    QTDIR=z:\dev\Qt\5.3\mingw482_32
+    PATH=z:\dev\Qt\5.3\mingw482_32\bin;z:\dev\Qt\Tools\mingw482_32\bin;z:\dev\taglib\bin;z:\dev\cmake\bin
+
+3. Download oxygen icons required for Cantata from the following link
+    https://drive.google.com/file/d/0Bzghs6gQWi60cXlvUURjeEVRUms/edit?usp=sharing
+
+4. Unzip this *within* icons/
+
+5. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
+     ../src -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DTAGLIB_CAN_SAVE_ID3VER=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DENABLE_QT5=ON -DCANTATA_OXYGEN_DIR=z:/cantata/icons -DCMAKE_BUILD_TYPE=Release
+
+   (Note: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the
+          TagLib settings have been manually set)
+
+6. Build via QtCreator
+
+7. Create an 'install' project in QtCreator
+  - Projects
+  - Add/Clone Selected
+  - Expand Build Steps, and select install
+
+8. Build 'install' project via QtCreator
+
+This build is as per Qt-only, but does not have support for dbus, local dynamic
+playlists, device support, or replaygain calculation.
+
+
+Create Installer
+----------------
+Run Nullsoft Scriptable Install System, and use the cantata.nsi that has been
+generated in the install folder. This will place the setup exe into the install
+folder as well.
+
+  - OR (Qt4 builds only) -
+
+Run Inno Setup Compiler, and use the cantata.iss that has been generated in the
+build folder. This will place the setup exe in z:\cantata
+
+
+TagLib
+------
+
+Windows version of taglib was built from TagLib 1.8, using the following cmake
+command:
+
+    cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PREFIX=z:\dev\taglib
+
+
+17. Mac OSX
+===========
+
+The following steps are used to compile Cantata, and create the OS X application
+bundle.
+
+These steps assume the following structure:
+
+    src/
+    build/
+    install/
+    icons/
+
+1. Install Qt5.3.1 (or later) from https://qt-project.org/downloads
+
+2. Install HomeBrew
+
+3. brew install cmake taglib ffmpeg speex
+
+4. Download oxygen icons required for Cantata from the following link
+    https://drive.google.com/file/d/0Bzghs6gQWi60cXlvUURjeEVRUms/edit?usp=sharing
+
+5. Unzip this *within* icons/
+
+6. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
+     ../trunk/ -DCMAKE_PREFIX_PATH=/Users/$USER/Qt/5.3/clang_64/ -DCMAKE_BUILD_TYPE=Release -DCANTATA_OXYGEN_DIR=`pwd`/../icons -DCMAKE_INSTALL_PREFIX=`pwd`/../install
+
+7. Build via QtCreator
+
+8. Create an 'install' project in QtCreator
+  - Projects
+  - Add/Clone Selected
+  - Expand Build Steps, and select install
+
+9. Build 'install' project via QtCreator
+
+
+Create Installer
+----------------
+
+1. Go into the 'mac' folder within the build folder
+
+2. Run ./create-dmg.sh

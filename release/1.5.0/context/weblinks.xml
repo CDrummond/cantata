@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<weblinks>
-  <link name="Wikipedia" url="http://wikipedia.org/wiki/Special:Search/${artist}">
-  <link name="Last.fm" url="http://last.fm/music/${artist}">
-  <link name="Musicbrainz" url="http://musicbrainz.org/search?query=${artist}&amp;type=artist">
-</weblinks>

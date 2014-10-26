@@ -819,13 +819,13 @@ void MPDConnection::removeSongs(const QList<qint32> &items)
     sendCommand(send);
 }
 
-void MPDConnection::seek(quint32 from, quint32 to)
+void MPDConnection::move(quint32 from, quint32 to)
 {
     toggleStopAfterCurrent(false);
     sendCommand("move "+quote(from)+' '+quote(to));
 }
 
-void MPDConnection::seek(const QList<quint32> &items, quint32 pos, quint32 size)
+void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
 {
     doMoveInPlaylist(QString(), items, pos, size);
     #if 0

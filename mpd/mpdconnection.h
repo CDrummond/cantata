@@ -240,8 +240,8 @@ public Q_SLOTS:
     void playListChanges();
     void playListInfo();
     void removeSongs(const QList<qint32> &items);
-    void seek(quint32 from, quint32 to);
-    void seek(const QList<quint32> &items, quint32 pos, quint32 size);
+    void move(quint32 from, quint32 to);
+    void move(const QList<quint32> &items, quint32 pos, quint32 size);
     void shuffle(quint32 from, quint32 to);
     void clear();
     void shuffle();

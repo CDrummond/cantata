@@ -8,7 +8,7 @@
 
 tempFolder="dmg/@MACOSX_BUNDLE_BUNDLE_NAME@"
 tempFile=dmg/temp.dmg
-dmgFileName="@MACOSX_BUNDLE_BUNDLE_NAME@-@CANTATA_VERSION_FULL@.dmg"
+dmgFileName="@MACOSX_BUNDLE_BUNDLE_NAME@-@CANTATA_VERSION_WITH_SPIN@.dmg"
 
 rm -rf "$tempFolder"
 rm -f "$dmgFileName" "$tempFile"

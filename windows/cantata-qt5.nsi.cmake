@@ -110,6 +110,7 @@ section "install"
     file "icuuc52.dll"
     file "libgcc_s_dw2-1.dll"
     file "libstdc++-6.dll"
+    file "libtag.dll"
     file "libwinpthread-1.dll"
     file "zlib1.dll"
     setOutPath $INSTDIR\config

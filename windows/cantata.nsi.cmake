@@ -109,6 +109,7 @@ section "install"
     file "QtNetwork4.dll"
     file "QtSvg4.dll"
     file "QtXml4.dll"
+    file "libtag.dll"
     setOutPath $INSTDIR\config
     file "config\lyrics_providers.xml"
     file "config\podcast_directories.xml"

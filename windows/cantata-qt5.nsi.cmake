@@ -3,7 +3,7 @@
 !define DESCRIPTION "MPD Client"
 !define VERSIONMAJOR @CPACK_PACKAGE_VERSION_MAJOR@
 !define VERSIONMINOR @CPACK_PACKAGE_VERSION_MINOR@
-!define VERSIONBUILD @CPACK_PACKAGE_VERSION_PATCH@
+!define VERSIONBUILD @CPACK_PACKAGE_VERSION_PATCH@@CPACK_PACKAGE_VERSION_SPIN@
 #!define HELPURL "http://..." # "Support Information" link
 #!define UPDATEURL "http://..." # "Product Updates" link
 !define ABOUTURL "http://cantata.googlecode.com" # "Publisher" link
@@ -17,7 +17,7 @@ InstallDir "$PROGRAMFILES\@WINDOWS_APP_NAME@"
 # This will be in the installer/uninstaller's title bar
 Name "@WINDOWS_APP_NAME@"
 Icon "cantata.ico"
-outFile "Cantata-@CANTATA_VERSION_FULL@-Setup.exe"
+outFile "@WINDOWS_APP_NAME@-@CANTATA_VERSION_WITH_SPIN@-Setup.exe"
 
 !define MUI_ABORTWARNING
 !define MUI_ICON "cantata.ico"
@@ -445,7 +445,7 @@ section "install"
 #    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "HelpLink" "$\"${HELPURL}$\""
 #    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "URLUpdateInfo" "$\"${UPDATEURL}$\""
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "URLInfoAbout" "$\"@WINDOWS_URL@$\""
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "DisplayVersion" "@CANTATA_VERSION_FULL@"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "DisplayVersion" "@CANTATA_VERSION_WITH_SPIN@"
     WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "VersionMajor" @CPACK_PACKAGE_VERSION_MAJOR@
     WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@WINDOWS_COMPANY_NAME@ @WINDOWS_APP_NAME@" "VersionMinor" @CPACK_PACKAGE_VERSION_MINOR@
     # There is no option for modifying or repairing the install

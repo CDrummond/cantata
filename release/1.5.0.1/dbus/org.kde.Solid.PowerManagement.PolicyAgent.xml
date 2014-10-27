@@ -1,0 +1,16 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.kde.Solid.PowerManagement.PolicyAgent">
+    <method name="AddInhibition">
+      <arg type="u" direction="in" />
+      <arg type="s" direction="in" />
+      <arg type="s" direction="in" />
+
+      <arg type="u" direction="out" />
+    </method>
+
+    <method name="ReleaseInhibition">
+      <arg type="u" direction="in" />
+    </method>
+  </interface>
+</node>

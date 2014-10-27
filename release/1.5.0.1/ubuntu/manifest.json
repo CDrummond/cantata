@@ -1,0 +1,15 @@
+{
+    "name": "com.ubuntu.developer.nikwen.cantata-touch-reboot",
+    "framework": "ubuntu-sdk-14.10-dev2",
+    "architecture": "armhf",
+    "hooks": {
+        "cantata": {
+            "apparmor": "cantata-ubuntu.json",
+            "desktop": "cantata-ubuntu.desktop"
+        }
+    },
+    "title": "Cantata",
+    "description": "MPD Client for Ubuntu",
+    "maintainer": "Niklas Wenzel <nikwen.developer@gmail.com>",
+    "version": "0.2.0"
+}

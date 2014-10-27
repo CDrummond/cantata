@@ -1,0 +1,25 @@
+<svg id="svg2906" xmlns="http://www.w3.org/2000/svg" height="128" width="128" version="1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs id="defs2908">
+<linearGradient id="linearGradient3039" y2="16.19" gradientUnits="userSpaceOnUse" x2="62.989" gradientTransform="matrix(1.3408,0,0,1.33,-68.673,-1.51)" y1="13.183" x1="62.989">
+<stop id="stop6406" stop-color="#f9f9f9" offset="0"/>
+<stop id="stop6408" stop-color="#c9c9c9" offset="1"/>
+</linearGradient>
+<radialGradient id="radialGradient3041" gradientUnits="userSpaceOnUse" cy="5.0172" cx="3" gradientTransform="matrix(-1.7093e-8,2.28,-2.8952,-1.9417e-8,16.801,2.2898)" r="21">
+<stop id="stop3486" stop-color="#bdbdbd" offset="0"/>
+<stop id="stop3488" stop-color="#d0d0d0" offset="1"/>
+</radialGradient>
+<radialGradient id="radialGradient3043" gradientUnits="userSpaceOnUse" cy="14.113" cx="63.969" gradientTransform="matrix(2.0979,-1.262e-7,8.2824e-8,1.3475,-115.97,9.3537)" r="23.097">
+<stop id="stop3618-2" stop-color="#edb763" offset="0"/>
+<stop id="stop2559" stop-color="#de7f32" offset=".5"/>
+<stop id="stop3620-1" stop-color="#d24413" offset="1"/>
+</radialGradient>
+<linearGradient id="linearGradient3045" y2="15.944" gradientUnits="userSpaceOnUse" x2="65.34" gradientTransform="matrix(1.3408,0,0,1.3265,-72.463,-1.6032)" y1="45.114" x1="82.453">
+<stop id="stop3624-5" stop-color="#bb2b12" offset="0"/>
+<stop id="stop3626-7" stop-color="#cd7233" offset="1"/>
+</linearGradient>
+</defs>
+<g id="g3035" stroke-linejoin="round" stroke-linecap="round" transform="matrix(2.0162 0 0 2.0162 -1.0405 -9.2428)">
+<path id="path2856" d="m5.2811 9.6095c-0.9255 0.0102-1.6447 0.6555-1.6447 1.5305 0 7.334 0.043 12.953 0 19.618 1.9246 0 56.896-4.936 56.896-7.054v-8.58c0-0.875-0.643-1.54-1.569-1.53h-27.158c-2.745 0-4.691-3.999-6.704-3.999l-19.82 0.0145z" stroke="url(#radialGradient3041)" fill="url(#linearGradient3039)"/>
+<path id="path2866" d="m2.5259 20.468c-1.4382 0.164-0.8699 1.86-0.9846 2.814 0.5263 11.235 1.2577 22.244 1.7807 33.479 0.4584 1.281 2.1379 0.625 3.202 0.788h53.07c1.46-0.142 0.853-1.868 1.059-2.855 0.526-11.236 1.258-22.244 1.781-33.48-0.337-1.265-2.238-0.562-3.235-0.746h-56.673z" stroke="url(#linearGradient3045)" stroke-width=".99868" fill="url(#radialGradient3043)"/>
+</g>
+</svg>

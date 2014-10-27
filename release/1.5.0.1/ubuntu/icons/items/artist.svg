@@ -1,0 +1,14 @@
+<svg id="svg1307" xmlns="http://www.w3.org/2000/svg" height="128" width="128" version="1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs id="defs1309">
+<radialGradient id="radialGradient4433" gradientUnits="userSpaceOnUse" cy="115.71" cx="63.912" gradientTransform="matrix(1 0 0 .19780 0 92.822)" r="63.912">
+<stop id="stop3293-0" stop-color="#43ACE8" offset="0"/>
+<stop id="stop3295-3" stop-color="#43ACE8" stop-opacity="0" offset="1"/>
+</radialGradient>
+</defs>
+<g id="layer1">
+<path id="path2276-8" d="m71.673 8.711v-2.0908 2.0908z" fill-opacity=".75688" fill="#fff"/>
+<path id="path3289-7" opacity=".38140" d="m127.82 115.71a63.912 12.642 0 1 1 -127.82 0 63.912 12.642 0 1 1 127.82 0z" transform="matrix(.74813 0 0 .31172 33.798 61.811)" fill="url(#radialGradient4433)"/>
+<path id="path2876" d="m63.75 15c-4.6296 0.05915-9.1134 2.2397-12.787 7.3353-10.128 2.7139-12.74 17.106-13.63 27.111-1.1308 12.711 5.3732 20.701 14.225 24.137-0.12897 1.4427-0.45014 2.6716-0.89213 3.4199-1.6632 2.8158-5.4393 5.2584-11.969 7.1123-7.2854 2.0684-13.064 4.0783-17.248 7.7566-3.7041 3.2565-6.0963 7.0221-6.0963 11.846 0 12.52 96.921 13.183 96.921 0 0-4.8235-2.3921-8.5891-6.0963-11.846-4.1376-3.6375-9.9158-5.7741-17.248-7.8557-6.5786-1.8677-10.352-4.2333-11.994-7.0132-0.54845-0.92852-0.88943-2.5716-0.9417-4.4855 8.0534-3.7619 14.425-11.025 15.365-21.733 1.489-16.999-13.72-35.962-27.609-35.785z" stroke-opacity=".20732" stroke="#000" stroke-width="1.586"/>
+<path id="path2276" d="m38.379 25.541v-2.2697 2.2697z" fill-opacity=".75688" fill="#fff"/>
+</g>
+</svg>

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+. /etc/rc.conf
+. /etc/rc.d/functions
+
+[[ -d /run/cantata-dynamic ]] || install -d -g mpd -o mpd /run/cantata-dynamic
+
+case "$1" in
+        start)
+                stat_busy 'Starting Cantata MPD Dynamizer'
+                /usr/share/cantata/scripts/cantata-dynamic server /etc/cantata-dynamic.conf &> /dev/null &&
+                { add_daemon cantata-dynamic; stat_done; } || stat_fail
+                ;;
+        stop)
+                stat_busy 'Stopping Cantata MPD Dynamizer'
+                /usr/share/cantata/scripts/cantata-dynamic stopserver /etc/cantata-dynamic.conf &> /dev/null &&
+                { rm_daemon cantata-dynamic; stat_done; } || stat_fail
+                ;;
+        restart)
+                $0 stop
+                sleep 1
+                $0 start
+                ;;
+        *)
+                echo "usage: $0 {start|stop|restart}"
+esac
+exit 0

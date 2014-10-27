@@ -1,0 +1,4 @@
+<svg id="stars" xmlns="http://www.w3.org/2000/svg" height="110" width="220" version="1.0">
+<path id="on" stroke-linejoin="round" d="m54 5 12.409 38.199 40.161-0.002-32.492 23.606 12.414 38.197-32.492-23.61-32.492 23.61 12.414-38.197-32.495-23.606 40.164 0.002 12.409-38.199z" fill-rule="evenodd" stroke="#000" stroke-width="3" fill="#000"/>
+<path id="off" stroke-linejoin="round" d="m166.07 5 12.409 38.199 40.161-0.002-32.492 23.606l12.41 38.197-32.49-23.61-32.49 23.61 12.414-38.197-32.495-23.606 40.164 0.002 12.409-38.199z" stroke="#000" stroke-width="3" fill="none"/>
+</svg>

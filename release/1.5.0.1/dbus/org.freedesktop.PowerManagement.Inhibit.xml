@@ -1,0 +1,20 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.freedesktop.PowerManagement.Inhibit">
+    <method name="Inhibit">
+      <arg type="s" name="application" direction="in"/>
+      <arg type="s" name="reason" direction="in"/>
+      <arg type="u" name="cookie" direction="out"/>
+    </method>
+    <method name="UnInhibit">
+      <arg type="u" name="cookie" direction="in"/>
+    </method>
+
+    <signal name="HasInhibitChanged">
+      <arg type="b" name="has_inhibit" direction="out"/>
+    </signal>
+    <method name="HasInhibit">
+      <arg type="b" name="has_inhibit" direction="out"/>
+    </method>
+  </interface>
+</node>

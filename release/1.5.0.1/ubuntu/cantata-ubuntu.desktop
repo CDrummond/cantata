@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Terminal=false
+X-Ubuntu-Touch=true
+Name=Cantata Reboot
+Icon=cantata.png
+GenericName=MPD Client
+Exec=./cantata
+Categories=Qt;KDE;AudioVideo;Player;
+X-DBUS-StartupType=Unique
+X-DBUS-ServiceName=com.ubuntu.developer.nikwen.cantata-touch-reboot
+Keywords=Music;MPD;

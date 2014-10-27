@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FileSettings</class>
+ <widget class="QWidget" name="FileSettings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>569</width>
+    <height>379</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QCheckBox" name="storeCoversInMpdDir">
+     <property name="text">
+      <string>Save downloaded covers, and artist images, in music folder</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="storeLyricsInMpdDir">
+     <property name="text">
+      <string>Save downloaded lyrics in music folder</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="storeBackdropsInMpdDir">
+     <property name="text">
+      <string>Save downloaded backdrops in music folder</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="NoteLabel" name="label_2">
+     <property name="text">
+      <string>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="NoteLabel" name="persNote_2">
+     <property name="text">
+      <string>Cantata can only save backdrops and artist images within the music folder hierarchy if this is 2 levels deep. (i.e. 'Artist/Album/Tracks')</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="expandingSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>NoteLabel</class>
+   <extends>QLabel</extends>
+   <header>widgets/notelabel.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

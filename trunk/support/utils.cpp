@@ -161,7 +161,7 @@ QString Utils::convertPathForDisplay(const QString &path, bool isFolder)
     /* TODO: Display ~/Music or /home/user/Music / /Users/user/Music ???
     p=homeToTilda(QDir::toNativeSeparators(p));
     */
-    return isFolder && p.endsWith(constDirSep) ? p.left(p.length()-1) : p;
+    return QDir::toNativeSeparators(isFolder && p.endsWith(constDirSep) ? p.left(p.length()-1) : p);
 }
 
 QString Utils::convertPathFromDisplay(const QString &path, bool isFolder)

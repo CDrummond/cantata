@@ -43,6 +43,7 @@ public:
 #else
 #include "lineedit.h"
 #include "flattoolbutton.h"
+#include <QDir>
 
 class PathRequester : public QWidget
 {
@@ -51,8 +52,8 @@ public:
     PathRequester(QWidget *parent);
     virtual ~PathRequester() { }
 
-    QString text() const { return edit->text(); }
-    void setText(const QString &t) { edit->setText(t); }
+    QString text() const { return QDir::fromNativeSeparators(edit->text()); }
+    void setText(const QString &t) { edit->setText(QDir::toNativeSeparators(t)); }
     void setButtonVisible(bool v) { btn->setVisible(v); }
     void setFocus() { edit->setFocus(); }
     void setDirMode(bool m) { dirMode=m; }

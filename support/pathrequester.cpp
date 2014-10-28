@@ -47,10 +47,10 @@ PathRequester::PathRequester(QWidget *parent)
 void PathRequester::choose()
 {
     QString item=dirMode
-                    ? QFileDialog::getExistingDirectory(this, i18n("Select Folder"), edit->text())
-                    : QFileDialog::getOpenFileName(this, i18n("Select File"), Utils::getDir(edit->text()), filter);
+                    ? QFileDialog::getExistingDirectory(this, i18n("Select Folder"), text())
+                    : QFileDialog::getOpenFileName(this, i18n("Select File"), Utils::getDir(text()), filter);
     if (!item.isEmpty()) {
-        edit->setText(item);
+        setText(item);
     }
 }
 

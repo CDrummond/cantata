@@ -1347,6 +1347,11 @@ void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesO
                 }
                 #endif
                 if (p && emitLoaded) {
+                    #if QT_VERSION >= 0x050100
+                    if (pixRatio>1.00001) {
+                        s/=pixRatio;
+                    }
+                    #endif
                     emit loaded(song, s);
                 }
             }
@@ -1805,11 +1810,10 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
         mutex.unlock();
 //    }
     if (emitResult) {
-        if (song.isSpecificSizeRequest()) {
-            if (!img.isNull()) {
-                updateCache(song, img, true);
-            }
-        } else {
+        if (!img.isNull()) {
+            updateCache(song, img, true);
+        }
+        if (!song.isSpecificSizeRequest()) {
             DBUG << "emit cover" << song.file << song.artist << song.albumartist << song.album << song.mbAlbumId() << img.width() << img.height() << fileName;
             emit cover(song, img, fileName.startsWith(constCoverInTagPrefix) ? QString() : fileName);
         }
@@ -1826,11 +1830,10 @@ void Covers::gotArtistImage(const Song &song, const QImage &img, const QString &
         mutex.unlock();
 //    }
     if (emitResult) {
-        if (song.isSpecificSizeRequest()) {
-            if (!img.isNull()) {
-                updateCache(song, img, true);
-            }
-        } else {
+        if (!img.isNull()) {
+            updateCache(song, img, true);
+        }
+        if (!song.isSpecificSizeRequest()) {
             DBUG << "emit artistImage" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName;
             emit artistImage(song, img, fileName.startsWith(constCoverInTagPrefix) ? QString() : fileName);
         }

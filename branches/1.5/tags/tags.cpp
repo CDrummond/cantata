@@ -32,6 +32,7 @@
 #include <sstream>
 #include <ios>
 #include <QPair>
+#include <QDir>
 #include <QFile>
 #include <QString>
 #include <QStringList>
@@ -210,7 +211,7 @@ static TagLib::FileRef getFileRef(const QString &path)
     ensureFileTypeResolvers();
 
     #ifdef Q_OS_WIN
-    return TagLib::FileRef(reinterpret_cast<const wchar_t*>(path.constData()), true, TagLib::AudioProperties::Fast);
+    return TagLib::FileRef(reinterpret_cast<const wchar_t *>(path.utf16()), true, TagLib::AudioProperties::Fast);
     #else
     return TagLib::FileRef(QFile::encodeName(path).constData(), true, TagLib::AudioProperties::Fast);
     #endif

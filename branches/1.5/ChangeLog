@@ -5,6 +5,8 @@
 3. Convert filename to UTF16 before passing to TagLib for windows builds.
 4. When emiting signal to say cover is loaded, need to adjust size by pixel
    ratio.
+5. Fix updating of toolbar coverwidget if cover is downloaded after song has
+   started.
 
 1.5.0.1
 -------

@@ -216,14 +216,15 @@ void CurrentCover::update(const Song &s)
     }
 }
 
-void CurrentCover::coverRetrieved(const Song &s, const QImage &img, const QString &file)
+void CurrentCover::coverRetrieved(const Song &s, const QImage &newImage, const QString &file)
 {
     if (!s.isArtistImageRequest() && s.albumArtist()==current.albumArtist() && s.album==current.album) {
-        valid=!img.isNull();
+        valid=!newImage.isNull();
         if (valid) {
             coverFileName=file;
+            img=newImage;
             emit coverFile(file);
-            emit coverImage(img);
+            emit coverImage(newImage);
         } else {
             coverFileName=current.isStandardStream() ? noStreamCoverFileName : noCoverFileName;
             emit coverFile(coverFileName);

@@ -1315,7 +1315,7 @@ void Covers::artistImageDownloaded(const Song &song, const QImage &img, const QS
     gotArtistImage(song, img, file);
 }
 
-void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesOnly)
+bool Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesOnly)
 {
     // Only remove all scaled entries from disk if the cover has been set by the CoverDialog
     // This is the only case where dummyEntriesOnly==false
@@ -1328,6 +1328,8 @@ void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesO
     #else
     bool emitLoaded=true;
     #endif
+    bool updated=false;
+
     foreach (int s, cacheSizes) {
         QString key=cacheKey(song, s);
         QPixmap *pix(cache.object(key));
@@ -1353,10 +1355,13 @@ void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesO
                     }
                     #endif
                     emit loaded(song, s);
+                    updated=true;
                 }
             }
         }
     }
+
+    return updated;
 }
 
 void Covers::tryToLocate(const Song &song)
@@ -1810,10 +1815,11 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
         mutex.unlock();
 //    }
     if (emitResult) {
+        bool updatedCover=false;
         if (!img.isNull()) {
-            updateCache(song, img, true);
+            updatedCover=updateCache(song, img, true);
         }
-        if (!song.isSpecificSizeRequest()) {
+        if (updatedCover || !song.isSpecificSizeRequest()) {
             DBUG << "emit cover" << song.file << song.artist << song.albumartist << song.album << song.mbAlbumId() << img.width() << img.height() << fileName;
             emit cover(song, img, fileName.startsWith(constCoverInTagPrefix) ? QString() : fileName);
         }

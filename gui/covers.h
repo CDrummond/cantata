@@ -263,7 +263,7 @@ private:
     void tryToDownload(const Song &song);
     void tryToLoad(const Song &song);
     Image findImage(const Song &song, bool emitResult);
-    void updateCache(const Song &song, const QImage &img, bool dummyEntriesOnly);
+    bool updateCache(const Song &song, const QImage &img, bool dummyEntriesOnly);
     void gotAlbumCover(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
     void gotArtistImage(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
     QString getFilename(const Song &s, bool isArtist);

@@ -1,6 +1,8 @@
 1.5.1
 -----
 1. Show correct separators for windows builds.
+2. Supply TagLib 1.9.1 for windows builds.
+3. Convert filename to UTF16 before passing to TagLib for windows builds.
 
 1.5.0.1
 -------

@@ -996,10 +996,10 @@ build folder. This will place the setup exe in z:\cantata
 TagLib
 ------
 
-Windows version of taglib was built from TagLib 1.8, using the following cmake
-command:
+Windows version of taglib was built from TagLib 1.9.1, using QtCreator with the
+following passed to cmake:
 
-    cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PREFIX=z:\dev\taglib
+    -DCMAKE_BUILD_TYPE=Release -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PREFIX=z:\dev\taglib
 
 
 17. Mac OSX

@@ -14,6 +14,7 @@
 5. Fix updating of toolbar coverwidget if cover is downloaded after song has
    started.
 6. Fix compilation when online services disabled.
+7. Fix dynamic playlists with no include rules.
 
 1.5.0.1
 -------

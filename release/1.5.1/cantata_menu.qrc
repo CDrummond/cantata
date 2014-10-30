@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file alias="menu-icon-dark">icons/menu-icon-dark.svg</file>
+<file alias="menu-icon-light">icons/menu-icon-light.svg</file>
+</qresource>
+</RCC>

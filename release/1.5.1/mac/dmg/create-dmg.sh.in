@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# This script has been copied, and modified from the orignal create-dmg.sh
+# in Clemtine 1.2.3 - which in turn was taken from Tomahawk.
+#
+# author: max@last.fm, muesli@tomahawk-player.org
+# brief:  Produces a compressed DMG from a bundle directory
+
+tempFolder="dmg/@MACOSX_BUNDLE_BUNDLE_NAME@"
+tempFile=dmg/temp.dmg
+dmgFileName="@MACOSX_BUNDLE_BUNDLE_NAME@-@CANTATA_VERSION_WITH_SPIN@.dmg"
+
+rm -rf "$tempFolder"
+rm -f "$dmgFileName" "$tempFile"
+
+# Create folder structure for disk image
+mkdir -p "$tempFolder/.background"
+cp @CMAKE_CURRENT_SOURCE_DIR@/mac/dmg/background.png "$tempFolder/.background/background.png"
+cp @CMAKE_CURRENT_SOURCE_DIR@/mac/dmg/DS_Store.in "$tempFolder/.DS_Store"
+chmod go-rwx "$tempFolder/.DS_Store"
+ln -s /Applications "$tempFolder/Applications"
+cp -R "@CMAKE_INSTALL_PREFIX@/@MACOSX_BUNDLE_BUNDLE_NAME@.app" "$tempFolder"
+
+# Create DMG file
+hdiutil makehybrid -hfs -hfs-volume-name @MACOSX_BUNDLE_BUNDLE_NAME@ -hfs-openfolder "$tempFolder" "$tempFolder" -o "$tempFile"
+hdiutil convert -format UDZO -imagekey zlib-level=9 "$tempFile" -o "$dmgFileName"
+
+# Remove temporary files
+rm -rf "$tempFolder"
+rm -f "$tempFile"

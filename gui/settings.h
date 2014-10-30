@@ -80,6 +80,7 @@ public:
     int streamsView();
     int onlineView();
     #endif
+    bool libraryArtistImage();
     int albumSort();
     int sidebar();
     bool libraryYear();
@@ -207,6 +208,7 @@ public:
     void saveStreamsView(int v);
     void saveOnlineView(int v);
     #endif
+    void saveLibraryArtistImage(bool v);
     void saveAlbumSort(int v);
     void saveSidebar(int v);
     void saveLibraryYear(bool v);

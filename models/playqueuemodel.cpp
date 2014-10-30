@@ -103,7 +103,7 @@ static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
         if (QLatin1String("http")==u.scheme()) {
             useable.append(u.toString());
         } else if ((u.scheme().isEmpty() || QLatin1String("file")==u.scheme()) && checkExtension(u.path())) {
-            if (!HttpServer::self()->forceUsage() && MPDConnection::self()->getDetails().isLocal()  && !u.path().startsWith(QLatin1String("/media/"))) {
+            if (!HttpServer::self()->forceUsage() && MPDConnection::self()->localFilePlaybackSupported() && !u.path().startsWith(QLatin1String("/media/"))) {
                 useable.append(QLatin1String("file://")+u.path());
             } else if (HttpServer::self()->isAlive()) {
                 useable.append(HttpServer::self()->encodeUrl(u.path()));

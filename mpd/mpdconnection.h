@@ -217,6 +217,7 @@ public:
     bool performerTagSupported() const { return tagTypes.contains(QLatin1String("Performer")); }
     bool modifiedFindSupported() const { return ver>=CANTATA_MAKE_VERSION(0, 19, 0); }
     bool replaygainSupported() const { return ver>=CANTATA_MAKE_VERSION(0, 16, 0); }
+    bool localFilePlaybackSupported() const;
 
     long version() const { return ver; }
     static bool isPlaylist(const QString &file);

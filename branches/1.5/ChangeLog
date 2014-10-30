@@ -9,6 +9,7 @@
    started.
 6. Fix compilation when online services disabled.
 7. Fix dynamic playlists with no include rules.
+8. Re-add option to show artist images in tree and list views.
 
 1.5.0.1
 -------

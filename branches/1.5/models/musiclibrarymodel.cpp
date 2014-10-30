@@ -33,6 +33,7 @@
 #include "playqueuemodel.h"
 #include "dirviewmodel.h"
 #include "config.h"
+#include "roles.h"
 #include "gui/covers.h"
 #include "mpd/mpdparseutils.h"
 #include "mpd/mpdconnection.h"
@@ -133,6 +134,7 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCh
     : MusicModel(parent)
     , mpdModel(isMpdModel)
     , checkable(isCheckable)
+    , artistImages(false)
     , rootItem(new MusicLibraryItemRoot)
     , databaseTimeUnreliable(false)
 {
@@ -158,6 +160,18 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCh
 MusicLibraryModel::~MusicLibraryModel()
 {
     delete rootItem;
+}
+
+void MusicLibraryModel::readConfig()
+{
+    bool aa=Settings::self()->libraryArtistImage();
+    if (aa!=artistImages) {
+        artistImages=aa;
+        for (int r=0; r<rowCount(); ++r) {
+            QModelIndex index=createIndex(r, 0, rootItem->childItem(r));
+            emit dataChanged(index, index);
+        }
+    }
 }
 
 QModelIndex MusicLibraryModel::index(int row, int column, const QModelIndex &parent) const
@@ -234,6 +248,12 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             return f;
         }
     }
+
+    if (Cantata::Role_ListImage==role && artistImages) {
+        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+        return MusicLibraryItem::Type_Album==item->itemType() || MusicLibraryItem::Type_Artist==item->itemType();
+    }
+
     return MusicModel::data(index, role);
 }
 

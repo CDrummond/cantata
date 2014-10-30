@@ -1176,7 +1176,7 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
                     : QLatin1String("album-");
     #else
     bool podcast=false;
-    key=song.isArtistImageRequest() ? QLatin1String("artist-") : QLatin1String("album-");
+    QString key=song.isArtistImageRequest() ? QLatin1String("artist-") : QLatin1String("album-");
     #endif
     key+=QString::number(size);
     QPixmap *pix=cache.object(key);

@@ -1818,7 +1818,7 @@ msgstr "Espace occupé"
 
 #: gui/cachesettings.cpp:246
 msgid "Total space used: %1"
-msgstr "Espace occupé total"
+msgstr "Espace occupé total: %1"
 
 #: gui/cachesettings.cpp:257
 msgid ""

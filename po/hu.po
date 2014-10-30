@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-10 20:59+0100\n"
+"POT-Creation-Date: 2014-10-30 17:51+0000\n"
 "PO-Revision-Date: 2014-10-23 07:40+0100\n"
 "Last-Translator: Török Árpád <torar@freemail.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -49,11 +49,11 @@ msgstr "Előadói információk frissítése"
 msgid "Artist"
 msgstr "Előadó"
 
-#. i18n: file: gui/interfacesettings.ui:176
+#. i18n: file: gui/interfacesettings.ui:183
 #. i18n: ectx: property (title), widget (QGroupBox, albumsViewGroupBox)
 #: context/artistview.cpp:341 gui/interfacesettings.cpp:146
-#: gui/mainwindow.cpp:382 models/playqueuemodel.cpp:252 po/rc.cpp:590
-#: rc.cpp:590
+#: gui/mainwindow.cpp:391 models/playqueuemodel.cpp:252 po/rc.cpp:593
+#: rc.cpp:593
 msgid "Albums"
 msgstr "Albumok"
 
@@ -129,7 +129,7 @@ msgstr ""
 #. i18n: file: tags/tageditor.ui:54
 #. i18n: ectx: property (text), widget (StateLabel, titleLabel)
 #: context/lyricsdialog.cpp:61 gui/searchpage.cpp:235 po/rc.cpp:101
-#: po/rc.cpp:392 po/rc.cpp:990 rc.cpp:101 rc.cpp:392 rc.cpp:990
+#: po/rc.cpp:392 po/rc.cpp:993 rc.cpp:101 rc.cpp:392 rc.cpp:993
 msgid "Title:"
 msgstr "Cím:"
 
@@ -146,8 +146,8 @@ msgstr "Cím:"
 #. i18n: file: tags/tageditor.ui:67
 #. i18n: ectx: property (text), widget (StateLabel, artistLabel)
 #: context/lyricsdialog.cpp:63 devices/actiondialog.cpp:815
-#: gui/searchpage.cpp:226 po/rc.cpp:95 po/rc.cpp:377 po/rc.cpp:993 rc.cpp:95
-#: rc.cpp:377 rc.cpp:993
+#: gui/searchpage.cpp:226 po/rc.cpp:95 po/rc.cpp:377 po/rc.cpp:996 rc.cpp:95
+#: rc.cpp:377 rc.cpp:996
 msgid "Artist:"
 msgstr "Előadó:"
 
@@ -164,21 +164,21 @@ msgid "Song Information"
 msgstr "Dalinformációk"
 
 #: context/othersettings.cpp:45 gui/coverdialog.cpp:864
-#: gui/interfacesettings.cpp:204
+#: gui/interfacesettings.cpp:205
 msgid "Images (*.png *.jpg)"
 msgstr "Képek (*.png *.jpg)"
 
-#: context/othersettings.cpp:47 gui/interfacesettings.cpp:206
+#: context/othersettings.cpp:47 gui/interfacesettings.cpp:207
 msgctxt "pixels"
 msgid "10px"
 msgstr "10px"
 
-#: context/othersettings.cpp:104 gui/interfacesettings.cpp:593
+#: context/othersettings.cpp:104 gui/interfacesettings.cpp:610
 msgctxt "value%"
 msgid "%1%"
 msgstr "%1%"
 
-#: context/othersettings.cpp:109 gui/interfacesettings.cpp:598
+#: context/othersettings.cpp:109 gui/interfacesettings.cpp:615
 #, c-format
 msgctxt "pixels"
 msgid "%1px"
@@ -217,7 +217,7 @@ msgstr "Dalszöveg-fájl törlése"
 msgid "Refresh Track Information"
 msgstr "Száminformációk frissítése"
 
-#: context/songview.cpp:151 context/view.cpp:136 gui/mainwindow.cpp:312
+#: context/songview.cpp:151 context/view.cpp:136 gui/mainwindow.cpp:321
 #: widgets/messageoverlay.cpp:50
 msgid "Cancel"
 msgstr "Kilépés"
@@ -736,13 +736,13 @@ msgstr "Újrapróbál"
 #. i18n: file: tags/tageditor.ui:106
 #. i18n: ectx: property (text), widget (StateLabel, albumLabel)
 #: devices/actiondialog.cpp:816 gui/searchpage.cpp:234 po/rc.cpp:389
-#: po/rc.cpp:1002 rc.cpp:389 rc.cpp:1002
+#: po/rc.cpp:1005 rc.cpp:389 rc.cpp:1005
 msgid "Album:"
 msgstr "Album"
 
 #. i18n: file: tags/tageditor.ui:34
 #. i18n: ectx: property (text), widget (StateLabel, trackNameLabel)
-#: devices/actiondialog.cpp:817 po/rc.cpp:987 rc.cpp:987
+#: devices/actiondialog.cpp:817 po/rc.cpp:990 rc.cpp:990
 msgid "Track:"
 msgstr "Szám:"
 
@@ -1083,7 +1083,7 @@ msgstr "Biztosan le akarod választani '%1'?"
 msgid "Disconnect"
 msgstr "Leválasztás"
 
-#: devices/devicespage.cpp:562 gui/mainwindow.cpp:1247
+#: devices/devicespage.cpp:562 gui/mainwindow.cpp:1256
 msgid "Please close other dialogs first."
 msgstr "Légy szíves zárd be előbb a másik párbeszédet!"
 
@@ -1602,7 +1602,7 @@ msgstr "Kapacitás ismeretlen"
 
 #. i18n: file: gui/coverdialog.ui:23
 #. i18n: ectx: property (text), widget (QPushButton, search)
-#: devices/synccollectionwidget.cpp:53 gui/mainwindow.cpp:440
+#: devices/synccollectionwidget.cpp:53 gui/mainwindow.cpp:449
 #: online/podcastsearchdialog.cpp:337 po/rc.cpp:422 rc.cpp:422
 msgid "Search"
 msgstr "Keresés"
@@ -2081,8 +2081,8 @@ msgstr "Mutatás"
 #. i18n: ectx: property (text), widget (QPushButton, removeBtn)
 #. i18n: file: streams/streamssettings.ui:73
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: gui/coverdialog.cpp:887 gui/stdactions.cpp:75 po/rc.cpp:356 po/rc.cpp:966
-#: rc.cpp:356 rc.cpp:966
+#: gui/coverdialog.cpp:887 gui/stdactions.cpp:75 po/rc.cpp:356 po/rc.cpp:969
+#: rc.cpp:356 rc.cpp:969
 msgid "Remove"
 msgstr "Eltávolítás"
 
@@ -2184,28 +2184,28 @@ msgstr "Rács (osztás)"
 msgid "Table"
 msgstr "Táblázat"
 
-#. i18n: file: gui/interfacesettings.ui:343
+#. i18n: file: gui/interfacesettings.ui:350
 #. i18n: ectx: attribute (title), widget (QWidget, tab_5)
-#: gui/interfacesettings.cpp:144 gui/mainwindow.cpp:372 po/rc.cpp:626
-#: rc.cpp:626
+#: gui/interfacesettings.cpp:144 gui/mainwindow.cpp:381 po/rc.cpp:629
+#: rc.cpp:629
 msgid "Play Queue"
 msgstr "Sor lejátszása"
 
 #. i18n: file: gui/interfacesettings.ui:141
 #. i18n: ectx: property (title), widget (QGroupBox, artistsViewGroupBox)
-#: gui/interfacesettings.cpp:145 gui/mainwindow.cpp:377 po/rc.cpp:581
+#: gui/interfacesettings.cpp:145 gui/mainwindow.cpp:386 po/rc.cpp:581
 #: rc.cpp:581
 msgid "Artists"
 msgstr "Előadók"
 
-#: gui/interfacesettings.cpp:147 gui/mainwindow.cpp:388
+#: gui/interfacesettings.cpp:147 gui/mainwindow.cpp:397
 msgid "Folders"
 msgstr "Könyvtárak"
 
-#. i18n: file: gui/interfacesettings.ui:217
+#. i18n: file: gui/interfacesettings.ui:224
 #. i18n: ectx: property (title), widget (QGroupBox, playlistsViewGroupBox)
-#: gui/interfacesettings.cpp:148 gui/mainwindow.cpp:394 po/rc.cpp:599
-#: rc.cpp:599
+#: gui/interfacesettings.cpp:148 gui/mainwindow.cpp:403 po/rc.cpp:602
+#: rc.cpp:602
 msgid "Playlists"
 msgstr "Lejátszási listák"
 
@@ -2234,43 +2234,43 @@ msgstr "Keresés (MPD-n keresztül)"
 msgid "Info - Current song information (artist, album, and lyrics)"
 msgstr "Infó. - a jelenlegi szám adatai (előadó, album és dalszöveg)"
 
-#: gui/interfacesettings.cpp:189
+#: gui/interfacesettings.cpp:190
 msgid "Large"
 msgstr "Nagy"
 
-#: gui/interfacesettings.cpp:190
+#: gui/interfacesettings.cpp:191
 msgid "Small"
 msgstr "Kicsi"
 
-#: gui/interfacesettings.cpp:191
+#: gui/interfacesettings.cpp:192
 msgid "Tab-bar"
 msgstr "Lapsáv (fülek)"
 
-#: gui/interfacesettings.cpp:192
+#: gui/interfacesettings.cpp:193
 msgid "Left"
 msgstr "Bal"
 
-#: gui/interfacesettings.cpp:192
+#: gui/interfacesettings.cpp:193
 msgid "Right"
 msgstr "Jobb"
 
-#: gui/interfacesettings.cpp:193
+#: gui/interfacesettings.cpp:194
 msgid "Top"
 msgstr "Felső"
 
-#: gui/interfacesettings.cpp:194
+#: gui/interfacesettings.cpp:195
 msgid "Bottom"
 msgstr "Alsó"
 
-#: gui/interfacesettings.cpp:231
+#: gui/interfacesettings.cpp:232
 msgid "Notifications"
 msgstr "Értesítések"
 
-#: gui/interfacesettings.cpp:488
+#: gui/interfacesettings.cpp:492
 msgid "System default"
 msgstr "Rendszer alapbeállítása"
 
-#: gui/main.cpp:267 gui/mainwindow.cpp:1904 gui/trayitem.cpp:128
+#: gui/main.cpp:267 gui/mainwindow.cpp:1914 gui/trayitem.cpp:128
 #: gui/trayitem.cpp:130 gui/trayitem.cpp:169 gui/trayitem.cpp:248
 #: gui/trayitem.cpp:255 gui/trayitem.cpp:261 gui/trayitem.cpp:274
 #: gui/trayitem.cpp:276
@@ -2392,8 +2392,8 @@ msgstr "Csatlakozás"
 msgid "Collection"
 msgstr "Gyűjtemény"
 
-#: gui/mainwindow.cpp:269 gui/mainwindow.cpp:1372 gui/mainwindow.cpp:1376
-#: gui/mainwindow.cpp:1382
+#: gui/mainwindow.cpp:269 gui/mainwindow.cpp:1381 gui/mainwindow.cpp:1385
+#: gui/mainwindow.cpp:1391
 msgid "Outputs"
 msgstr "Kimenetek"
 
@@ -2401,51 +2401,51 @@ msgstr "Kimenetek"
 msgid "Stop After Track"
 msgstr "A szám után leáll"
 
-#: gui/mainwindow.cpp:271
+#: gui/mainwindow.cpp:280
 msgid "Add To Stored Playlist"
 msgstr "A tárolt lejátszási listához hozzáad"
 
-#: gui/mainwindow.cpp:272
+#: gui/mainwindow.cpp:281
 msgid "Crop"
 msgstr "Vágás"
 
-#: gui/mainwindow.cpp:273
+#: gui/mainwindow.cpp:282
 msgid "Add Stream URL"
 msgstr "Stream URL hozzáadása"
 
-#: gui/mainwindow.cpp:274
+#: gui/mainwindow.cpp:283
 msgid "Clear"
 msgstr "Töröl"
 
-#: gui/mainwindow.cpp:275
+#: gui/mainwindow.cpp:284
 msgid "Center On Current Track"
 msgstr "Központosítás az aktuális számra"
 
-#: gui/mainwindow.cpp:276
+#: gui/mainwindow.cpp:285
 msgid "Expanded Interface"
 msgstr "Lejátszó kinyitása"
 
-#: gui/mainwindow.cpp:278
+#: gui/mainwindow.cpp:287
 msgid "Show Current Song Information"
 msgstr "A lejátszó kibontása"
 
-#: gui/mainwindow.cpp:281
+#: gui/mainwindow.cpp:290
 msgid "Full Screen"
 msgstr "Teljes képernyő"
 
-#: gui/mainwindow.cpp:285
+#: gui/mainwindow.cpp:294
 msgid "Random"
 msgstr "Véletlenszerűen"
 
-#: gui/mainwindow.cpp:286
+#: gui/mainwindow.cpp:295
 msgid "Repeat"
 msgstr "Ismétlés"
 
-#: gui/mainwindow.cpp:287
+#: gui/mainwindow.cpp:296
 msgid "Single"
 msgstr "Egyszeri"
 
-#: gui/mainwindow.cpp:287
+#: gui/mainwindow.cpp:296
 msgid ""
 "When 'Single' is activated, playback is stopped after current song, or song "
 "is repeated if 'Repeat' is enabled."
@@ -2453,11 +2453,11 @@ msgstr ""
 "'Egyszeri' beállítása esetén a lejátszás az aktuális dal után leáll, vagy a "
 "dal ismétlődik, ha az 'Ismétlés' engedélyezett."
 
-#: gui/mainwindow.cpp:288
+#: gui/mainwindow.cpp:297
 msgid "Consume"
 msgstr "Elhasznál"
 
-#: gui/mainwindow.cpp:288
+#: gui/mainwindow.cpp:297
 msgid ""
 "When consume is activated, a song is removed from the play queue after it "
 "has been played."
@@ -2465,114 +2465,114 @@ msgstr ""
 "Amikor az 'Elhasznál' aktív, a dal a lejátszása után kikerül a lejátszási "
 "sorból."
 
-#: gui/mainwindow.cpp:289
+#: gui/mainwindow.cpp:298
 msgid "Find in Play Queue"
 msgstr "Keresés a lejátszási sorban"
 
-#: gui/mainwindow.cpp:292
+#: gui/mainwindow.cpp:301
 msgid "Set Priority"
 msgstr "Prioritás beállítása"
 
-#: gui/mainwindow.cpp:294
+#: gui/mainwindow.cpp:303
 msgid "Play Stream"
 msgstr "Hangfolyam (stream) lejátszása"
 
-#: gui/mainwindow.cpp:302 gui/searchpage.cpp:56
+#: gui/mainwindow.cpp:311 gui/searchpage.cpp:56
 msgid "Locate In Library"
 msgstr "Könyvtárban megkeres"
 
-#: gui/mainwindow.cpp:306
+#: gui/mainwindow.cpp:315
 msgid "Expand All"
 msgstr "Mind kibontása"
 
-#: gui/mainwindow.cpp:308
+#: gui/mainwindow.cpp:317
 msgid "Collapse All"
 msgstr "Mind elrejtése"
 
-#: gui/mainwindow.cpp:310
+#: gui/mainwindow.cpp:319
 msgid "Remove All Songs"
 msgstr "Összes dal eltávolítása"
 
-#: gui/mainwindow.cpp:317
+#: gui/mainwindow.cpp:326
 msgid "Clear 'New' State Of Artists and Albums"
 msgstr "Az albumok és az előadók 'Új' megjelölésének törlése"
 
-#: gui/mainwindow.cpp:401
+#: gui/mainwindow.cpp:410
 msgid "Dynamic"
 msgstr "Dinamikus"
 
-#: gui/mainwindow.cpp:412 gui/preferencesdialog.cpp:90
+#: gui/mainwindow.cpp:421 gui/preferencesdialog.cpp:90
 #: widgets/groupedview.cpp:298
 msgid "Streams"
 msgstr "Stream-ek"
 
-#: gui/mainwindow.cpp:422 gui/preferencesdialog.cpp:95
+#: gui/mainwindow.cpp:431 gui/preferencesdialog.cpp:95
 msgid "Online"
 msgstr "Online"
 
-#: gui/mainwindow.cpp:433
+#: gui/mainwindow.cpp:442
 msgid "Devices"
 msgstr "Eszközök"
 
-#: gui/mainwindow.cpp:445
+#: gui/mainwindow.cpp:454
 msgid "Info"
 msgstr "Info"
 
-#: gui/mainwindow.cpp:598
+#: gui/mainwindow.cpp:607
 msgid "Show Menubar"
 msgstr "Menüsáv megjelenítése"
 
-#: gui/mainwindow.cpp:650
+#: gui/mainwindow.cpp:659
 msgid "&Music"
 msgstr "Zene"
 
-#: gui/mainwindow.cpp:661
+#: gui/mainwindow.cpp:670
 msgid "&Edit"
 msgstr "Szerkesztés"
 
-#: gui/mainwindow.cpp:678
+#: gui/mainwindow.cpp:687
 msgid "&View"
 msgstr "Nézet"
 
-#: gui/mainwindow.cpp:690
+#: gui/mainwindow.cpp:699
 msgid "&Queue"
 msgstr "Sor"
 
-#: gui/mainwindow.cpp:702
+#: gui/mainwindow.cpp:711
 msgid "&Settings"
 msgstr "Beállítások"
 
-#: gui/mainwindow.cpp:719 support/dialog.cpp:158
+#: gui/mainwindow.cpp:728 support/dialog.cpp:158
 msgid "&Help"
 msgstr "Segítség"
 
-#: gui/mainwindow.cpp:747
+#: gui/mainwindow.cpp:756
 msgid "Set Rating"
 msgstr "Besorolás beállítása"
 
-#: gui/mainwindow.cpp:752
+#: gui/mainwindow.cpp:761
 msgid "No Rating"
 msgstr "Nincs besorolás"
 
-#: gui/mainwindow.cpp:1023
+#: gui/mainwindow.cpp:1032
 msgid "Failed to locate any songs matching the dynamic playlist rules."
 msgstr ""
 "A dinamikus lejátszási lista feltételeinek megfelelő fájl nem található."
 
-#: gui/mainwindow.cpp:1142 mpd/mpdconnection.cpp:483
+#: gui/mainwindow.cpp:1151 mpd/mpdconnection.cpp:498
 msgid "Connecting to %1"
 msgstr "Csatlakozás ehhez %1"
 
-#: gui/mainwindow.cpp:1176
+#: gui/mainwindow.cpp:1185
 msgid "Refresh MPD Database?"
 msgstr "Adatbázist frissítsem?"
 
-#: gui/mainwindow.cpp:1202
+#: gui/mainwindow.cpp:1211
 msgctxt "Qt-only"
 msgid "About Cantata"
 msgstr "Cantata névjegye"
 
-#: gui/mainwindow.cpp:1203
+#: gui/mainwindow.cpp:1212
 msgctxt "Qt-only"
 msgid ""
 "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; 2011-2014 Craig "
@@ -2583,7 +2583,7 @@ msgstr ""
 "Drummond<br/>Kiadva <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3 "
 "szerint.</a>"
 
-#: gui/mainwindow.cpp:1205
+#: gui/mainwindow.cpp:1214
 msgid ""
 "Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - &copy; 2007-2010 "
 "The QtMPC Authors<br/>"
@@ -2591,7 +2591,7 @@ msgstr ""
 "Ezen alapul <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - &copy; 2007-2010 "
 "The QtMPC Authors<br/>"
 
-#: gui/mainwindow.cpp:1206
+#: gui/mainwindow.cpp:1215
 msgctxt "Qt-only"
 msgid ""
 "Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt."
@@ -2600,7 +2600,7 @@ msgstr ""
 "A tartalmi nézet háttere innen származik <a href=\"http://www.fanart.tv"
 "\">FanArt.tv</a>"
 
-#: gui/mainwindow.cpp:1207
+#: gui/mainwindow.cpp:1216
 msgctxt "Qt-only"
 msgid ""
 "Context view metadata courtesy of <a href=\"http://www.wikipedia.org"
@@ -2609,7 +2609,7 @@ msgstr ""
 "A tartalmi nézet metaadatai innen származnak <a href=\"http://www.wikipedia."
 "org\">Wikipédia</a> és <a href=\"http://www.last.fm\">Last.fm</a>"
 
-#: gui/mainwindow.cpp:1208
+#: gui/mainwindow.cpp:1217
 msgid ""
 "Please consider uploading your own music fan-art to <a href=\"http://www."
 "fanart.tv\">FanArt.tv</a>"
@@ -2617,7 +2617,7 @@ msgstr ""
 "Fontold meg a kedvenc zenéd feltöltését ide <a href=\"http://www.fanart.tv"
 "\">FanArt.tv</a>"
 
-#: gui/mainwindow.cpp:1217
+#: gui/mainwindow.cpp:1226
 msgid ""
 "A Podcast is currently being downloaded\n"
 "\n"
@@ -2627,23 +2627,23 @@ msgstr ""
 "\n"
 "A kilépés megszakítja az adatfolyam letöltését."
 
-#: gui/mainwindow.cpp:1218
+#: gui/mainwindow.cpp:1227
 msgid "Abort download and quit"
 msgstr "Letöltés megszakítása és kilépés"
 
-#: gui/mainwindow.cpp:1372 gui/mainwindow.cpp:1383
+#: gui/mainwindow.cpp:1381 gui/mainwindow.cpp:1392
 msgid "Enabled: %1"
 msgstr "Engedélyezve: %1"
 
-#: gui/mainwindow.cpp:1376 gui/mainwindow.cpp:1384
+#: gui/mainwindow.cpp:1385 gui/mainwindow.cpp:1393
 msgid "Disabled: %1"
 msgstr "Nincs engedélyezve: %1"
 
-#: gui/mainwindow.cpp:1595 gui/mainwindow.cpp:1618
+#: gui/mainwindow.cpp:1605 gui/mainwindow.cpp:1628
 msgid "Server Information"
 msgstr "Szerver-információk"
 
-#: gui/mainwindow.cpp:1598
+#: gui/mainwindow.cpp:1608
 msgid ""
 "<tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td align=\"right"
 "\">Protocol:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td align=\"right\">Uptime:"
@@ -2657,7 +2657,7 @@ msgstr ""
 "%5</td></tr><tr><td align=\"right\">Kezelők:&nbsp;</td><td>%6</td></"
 "tr><tr><td align=\"right\">Címkék:&nbsp;</td><td>%7</td></tr>"
 
-#: gui/mainwindow.cpp:1609
+#: gui/mainwindow.cpp:1619
 msgid ""
 "<tr><td colspan=\"2\"><b>Database</b></td></tr><tr><td align=\"right"
 "\">Artists:&nbsp;</td><td>%1</td></tr><tr><td align=\"right\">Albums:&nbsp;</"
@@ -2671,45 +2671,45 @@ msgstr ""
 "tr><tr><td align=\"right\">Időtartam:&nbsp;</td><td>%4</td></tr><tr><td "
 "align=\"right\">Frissítve:&nbsp;</td><td>%5</td></tr>"
 
-#: gui/mainwindow.cpp:1757
+#: gui/mainwindow.cpp:1767
 msgid "Cantata (%1)"
 msgstr "Cantata (%1)"
 
-#: gui/mainwindow.cpp:1834 mpd/mpdconnection.cpp:635 mpd/mpdconnection.cpp:642
+#: gui/mainwindow.cpp:1844 mpd/mpdconnection.cpp:652 mpd/mpdconnection.cpp:659
 msgid "MPD reported the following error: %1"
 msgstr "Az MPD a következő hibát jelezte: %1"
 
-#: gui/mainwindow.cpp:1904
+#: gui/mainwindow.cpp:1914
 msgid "Playback stopped"
 msgstr "Lejátszás leállt"
 
-#: gui/mainwindow.cpp:1953
+#: gui/mainwindow.cpp:1963
 msgid "Remove all songs from play queue?"
 msgstr "A lejátszási sorból minden számot töröl?"
 
-#: gui/mainwindow.cpp:2013 models/playqueuemodel.cpp:175
+#: gui/mainwindow.cpp:2023 models/playqueuemodel.cpp:175
 msgid "Priority"
 msgstr "Prioritás"
 
-#: gui/mainwindow.cpp:2013
+#: gui/mainwindow.cpp:2023
 msgid "Enter priority (0..255):"
 msgstr "Add meg a prioritást (0-255):"
 
-#: gui/mainwindow.cpp:2036 gui/playlistspage.cpp:241
+#: gui/mainwindow.cpp:2046 gui/playlistspage.cpp:241
 msgid "Playlist Name"
 msgstr "Lejátszási lista neve"
 
-#: gui/mainwindow.cpp:2036 gui/playlistspage.cpp:241
+#: gui/mainwindow.cpp:2046 gui/playlistspage.cpp:241
 msgid "Enter a name for the playlist:"
 msgstr "Írj be egy nevet a lejátszási listának:"
 
-#: gui/mainwindow.cpp:2039
+#: gui/mainwindow.cpp:2049
 msgid "'%1' is used to store favorite streams, please choose another name."
 msgstr ""
 "'%1' lefoglalva a kedvenc adatfolyamok tárolására, kérlek válassz másik "
 "nevet!"
 
-#: gui/mainwindow.cpp:2043
+#: gui/mainwindow.cpp:2053
 msgid ""
 "A playlist named '%1' already exists!\n"
 "\n"
@@ -2719,25 +2719,25 @@ msgstr ""
 "\n"
 "Hozzáadjam ahhoz a listához?"
 
-#: gui/mainwindow.cpp:2044
+#: gui/mainwindow.cpp:2054
 msgid "Existing Playlist"
 msgstr "Létező lejátszási lista"
 
-#: gui/mainwindow.cpp:2096
+#: gui/mainwindow.cpp:2106
 msgid "Stream URL"
 msgstr "Stream URL-je"
 
-#: gui/mainwindow.cpp:2096
+#: gui/mainwindow.cpp:2106
 msgid "Enter URL of stream:"
 msgstr "A stream URL-je:"
 
-#: gui/mainwindow.cpp:2099
+#: gui/mainwindow.cpp:2109
 msgid "Invalid, or unsupported, URL!"
 msgstr "Érvénytelen, vagy nem támogatott URL!"
 
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_none)
-#. i18n: file: gui/interfacesettings.ui:428
+#. i18n: file: gui/interfacesettings.ui:435
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_none)
 #. i18n: file: gui/playbacksettings.ui:51
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, stopFadeDuration)
@@ -2747,7 +2747,7 @@ msgstr "Érvénytelen, vagy nem támogatott URL!"
 #. i18n: ectx: property (text), widget (QLabel, defaultShortcut)
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_none)
-#. i18n: file: gui/interfacesettings.ui:428
+#. i18n: file: gui/interfacesettings.ui:435
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_none)
 #. i18n: file: gui/playbacksettings.ui:51
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, stopFadeDuration)
@@ -2756,8 +2756,8 @@ msgstr "Érvénytelen, vagy nem támogatott URL!"
 #. i18n: file: support/shortcutssettingswidget.ui:78
 #. i18n: ectx: property (text), widget (QLabel, defaultShortcut)
 #: gui/playbacksettings.cpp:47 online/magnatuneservice.cpp:164 po/rc.cpp:6
-#: po/rc.cpp:650 po/rc.cpp:782 po/rc.cpp:806 po/rc.cpp:981 rc.cpp:6 rc.cpp:650
-#: rc.cpp:782 rc.cpp:806 rc.cpp:981
+#: po/rc.cpp:653 po/rc.cpp:785 po/rc.cpp:809 po/rc.cpp:984 rc.cpp:6 rc.cpp:653
+#: rc.cpp:785 rc.cpp:809 rc.cpp:984
 msgid "None"
 msgstr "Nincs"
 
@@ -2775,7 +2775,7 @@ msgstr ""
 
 #. i18n: file: gui/playbacksettings.ui:88
 #. i18n: ectx: property (text), widget (QLabel, messageLabel)
-#: gui/playbacksettings.cpp:167 po/rc.cpp:797 rc.cpp:797
+#: gui/playbacksettings.cpp:167 po/rc.cpp:800 rc.cpp:800
 msgid ""
 "<i>Not Connected!<br/>The entries below cannot be modified, as Cantata is "
 "not connected to MPD.</i>"
@@ -2921,7 +2921,7 @@ msgstr "Gyűjtemény beállításai"
 
 #. i18n: file: gui/playbacksettings.ui:29
 #. i18n: ectx: property (title), widget (QGroupBox, stopPlaybackBox)
-#: gui/preferencesdialog.cpp:85 po/rc.cpp:773 rc.cpp:773
+#: gui/preferencesdialog.cpp:85 po/rc.cpp:776 rc.cpp:776
 msgid "Playback"
 msgstr "Lejátszás"
 
@@ -3041,8 +3041,8 @@ msgstr "Beállítás"
 #. i18n: ectx: property (text), widget (BuddyLabel, composerLabel)
 #. i18n: file: tags/tageditor.ui:93
 #. i18n: ectx: property (text), widget (StateLabel, composerLabel)
-#: gui/searchpage.cpp:229 po/rc.cpp:98 po/rc.cpp:386 po/rc.cpp:999 rc.cpp:98
-#: rc.cpp:386 rc.cpp:999
+#: gui/searchpage.cpp:229 po/rc.cpp:98 po/rc.cpp:386 po/rc.cpp:1002 rc.cpp:98
+#: rc.cpp:386 rc.cpp:1002
 msgid "Composer:"
 msgstr "Zeneszerző:"
 
@@ -3058,7 +3058,7 @@ msgstr "Szereplő:"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #. i18n: file: tags/tageditor.ui:145
 #. i18n: ectx: property (text), widget (StateLabel, genreLabel)
-#: gui/searchpage.cpp:236 po/rc.cpp:104 po/rc.cpp:1011 rc.cpp:104 rc.cpp:1011
+#: gui/searchpage.cpp:236 po/rc.cpp:104 po/rc.cpp:1014 rc.cpp:104 rc.cpp:1014
 msgid "Genre:"
 msgstr "Műfaj:"
 
@@ -3070,7 +3070,7 @@ msgstr "Műfaj:"
 #. i18n: ectx: property (text), widget (BuddyLabel, commentLabel)
 #. i18n: file: tags/tageditor.ui:195
 #. i18n: ectx: property (text), widget (StateLabel, commentLabel)
-#: gui/searchpage.cpp:238 po/rc.cpp:410 po/rc.cpp:1023 rc.cpp:410 rc.cpp:1023
+#: gui/searchpage.cpp:238 po/rc.cpp:410 po/rc.cpp:1026 rc.cpp:410 rc.cpp:1026
 msgid "Comment:"
 msgstr "Megjegyzés:"
 
@@ -3110,8 +3110,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
 #. i18n: file: network/proxysettings.ui:63
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyHostLabel)
-#: gui/serversettings.cpp:100 po/rc.cpp:281 po/rc.cpp:320 po/rc.cpp:888
-#: rc.cpp:281 rc.cpp:320 rc.cpp:888
+#: gui/serversettings.cpp:100 po/rc.cpp:281 po/rc.cpp:320 po/rc.cpp:891
+#: rc.cpp:281 rc.cpp:320 rc.cpp:891
 msgid "Host:"
 msgstr "Elhelyező:"
 
@@ -3159,8 +3159,8 @@ msgstr "Törlés"
 msgid "New Collection %1"
 msgstr "Új gyűjtemény %1"
 
-#: gui/serversettings.cpp:338 mpd/mpdconnection.cpp:202
-#: mpd/mpdconnection.cpp:204
+#: gui/serversettings.cpp:338 mpd/mpdconnection.cpp:203
+#: mpd/mpdconnection.cpp:205
 msgid "Default"
 msgstr "Alapbeállítás"
 
@@ -3354,7 +3354,7 @@ msgstr "Egyedüli számok"
 
 #. i18n: file: online/onlinesettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
-#: models/onlineservicesmodel.cpp:75 po/rc.cpp:903 rc.cpp:903
+#: models/onlineservicesmodel.cpp:75 po/rc.cpp:906 rc.cpp:906
 msgid "Configure Service"
 msgstr "Szolgáltatás beállítása"
 
@@ -3482,42 +3482,42 @@ msgstr "Hangfolyam hozzáadása a kedvencekhez"
 msgid "Configure Streams"
 msgstr "Hangfolyam beállítása"
 
-#: mpd/mpdconnection.cpp:169 mpd/song.cpp:61 support/utils.cpp:647
+#: mpd/mpdconnection.cpp:170 mpd/song.cpp:61 support/utils.cpp:647
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: mpd/mpdconnection.cpp:211
+#: mpd/mpdconnection.cpp:212
 msgctxt "name (host)"
 msgid "\"%1\""
 msgstr "\"%1\""
 
-#: mpd/mpdconnection.cpp:213
+#: mpd/mpdconnection.cpp:214
 msgctxt "name (host:port)"
 msgid "\"%1\" (%2:%3)"
 msgstr "\"%1\" (%2:%3)"
 
-#: mpd/mpdconnection.cpp:396
+#: mpd/mpdconnection.cpp:411
 msgid "Connection to %1 failed"
 msgstr "Csatlakozás ehhez %1 sikertelen"
 
-#: mpd/mpdconnection.cpp:397
+#: mpd/mpdconnection.cpp:412
 msgid "Connection to %1 failed - please check your proxy settings"
 msgstr ""
 "Kapcsolódás %1 -hez nem sikerült - kérem ellenőrizd a proxy beállításait."
 
-#: mpd/mpdconnection.cpp:398
+#: mpd/mpdconnection.cpp:413
 msgid "Connection to %1 failed - incorrect password"
 msgstr "Csatlakozás ehhez %1 sikertelen - hibás jelszó"
 
-#: mpd/mpdconnection.cpp:575
+#: mpd/mpdconnection.cpp:591
 msgid "Failed to send command to %1 - not connected"
 msgstr "Csatlakozás ehhez %1 sikertelen - nincs csatlakozva"
 
-#: mpd/mpdconnection.cpp:631
+#: mpd/mpdconnection.cpp:648
 msgid "Failed to load. Please check user \"mpd\" has read permission."
 msgstr "Betöltés sikertelen. Ellenőrizd a felhasználó \"mpd\" olvasási jogát."
 
-#: mpd/mpdconnection.cpp:633
+#: mpd/mpdconnection.cpp:650
 msgid ""
 "Failed to load. MPD can only play local files if connected via a local "
 "socket."
@@ -3525,27 +3525,27 @@ msgstr ""
 "Betöltés sikertelen. Az MPD csak helyi fájlokat játszik le, ha helyi "
 "csatlakozóra csatolva."
 
-#: mpd/mpdconnection.cpp:639 mpd/mpdconnection.cpp:650
+#: mpd/mpdconnection.cpp:656 mpd/mpdconnection.cpp:667
 msgid "Failed to send command. Disconnected from %1"
 msgstr "Sikertelen parancsküldés. Leválasztva innen: %1"
 
-#: mpd/mpdconnection.cpp:1488
+#: mpd/mpdconnection.cpp:1522
 msgid "Failed to rename <b>%1</b> to <b>%2</b>"
 msgstr "Sikertelen átnevezés erről <b>%1</b> erre <b>%2</b>"
 
-#: mpd/mpdconnection.cpp:1500
+#: mpd/mpdconnection.cpp:1534
 msgid "Failed to save <b>%1</b>"
 msgstr "Sikertelen mentés"
 
-#: mpd/mpdconnection.cpp:1513
+#: mpd/mpdconnection.cpp:1547
 msgid "You cannot add parts of a cue sheet to a playlist!"
 msgstr "Kulcslap részletét nem adhatod a lejátszási listához!"
 
-#: mpd/mpdconnection.cpp:1516
+#: mpd/mpdconnection.cpp:1550
 msgid "You cannot add a playlist to another playlist!"
 msgstr "Nem adhatsz lejátszási listát másik listához!"
 
-#: mpd/mpdconnection.cpp:1693
+#: mpd/mpdconnection.cpp:1727
 msgid "Failed to send '%1' to %2. Please check %2 is registered with MPD."
 msgstr ""
 "Nem sikerült %1 elküldése %2 -re. Ellenőrizd, hogy %2 MPD-be be lett-e "
@@ -3643,8 +3643,8 @@ msgstr "Magnatune-beállítások"
 #. i18n: ectx: property (text), widget (BuddyLabel, userLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:51
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#: online/magnatunesettingsdialog.cpp:43 po/rc.cpp:894 po/rc.cpp:909
-#: po/rc.cpp:933 rc.cpp:894 rc.cpp:909 rc.cpp:933
+#: online/magnatunesettingsdialog.cpp:43 po/rc.cpp:897 po/rc.cpp:912
+#: po/rc.cpp:936 rc.cpp:897 rc.cpp:912 rc.cpp:936
 msgid "Username:"
 msgstr "Felhasználónév:"
 
@@ -3677,9 +3677,9 @@ msgstr "Felhasználónév:"
 #. i18n: file: streams/digitallyimportedsettings.ui:64
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: online/magnatunesettingsdialog.cpp:44 po/rc.cpp:293 po/rc.cpp:311
-#: po/rc.cpp:488 po/rc.cpp:830 po/rc.cpp:897 po/rc.cpp:912 po/rc.cpp:936
-#: rc.cpp:293 rc.cpp:311 rc.cpp:488 rc.cpp:830 rc.cpp:897 rc.cpp:912
-#: rc.cpp:936
+#: po/rc.cpp:488 po/rc.cpp:833 po/rc.cpp:900 po/rc.cpp:915 po/rc.cpp:939
+#: rc.cpp:293 rc.cpp:311 rc.cpp:488 rc.cpp:833 rc.cpp:900 rc.cpp:915
+#: rc.cpp:939
 msgid "Password:"
 msgstr "Jelszó:"
 
@@ -3995,13 +3995,13 @@ msgstr "Az összes rész"
 
 #. i18n: file: context/othersettings.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#. i18n: file: gui/interfacesettings.ui:422
+#. i18n: file: gui/interfacesettings.ui:429
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #. i18n: file: context/othersettings.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#. i18n: file: gui/interfacesettings.ui:422
+#. i18n: file: gui/interfacesettings.ui:429
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: po/rc.cpp:3 po/rc.cpp:647 rc.cpp:3 rc.cpp:647
+#: po/rc.cpp:3 po/rc.cpp:650 rc.cpp:3 rc.cpp:650
 msgid "Background Image"
 msgstr "Háttérkép"
 
@@ -4013,61 +4013,61 @@ msgstr "A művész képe"
 
 #. i18n: file: context/othersettings.ui:46
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_custom)
-#. i18n: file: gui/interfacesettings.ui:442
+#. i18n: file: gui/interfacesettings.ui:449
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_custom)
 #. i18n: file: context/othersettings.ui:46
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_custom)
-#. i18n: file: gui/interfacesettings.ui:442
+#. i18n: file: gui/interfacesettings.ui:449
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_custom)
-#: po/rc.cpp:12 po/rc.cpp:656 rc.cpp:12 rc.cpp:656
+#: po/rc.cpp:12 po/rc.cpp:659 rc.cpp:12 rc.cpp:659
 msgid "Custom image:"
 msgstr "Egyéni kép:"
 
 #. i18n: file: context/othersettings.ui:66
 #. i18n: ectx: property (text), widget (QLabel, label_4b)
-#. i18n: file: gui/interfacesettings.ui:462
+#. i18n: file: gui/interfacesettings.ui:469
 #. i18n: ectx: property (text), widget (QLabel, label_4b)
 #. i18n: file: context/othersettings.ui:66
 #. i18n: ectx: property (text), widget (QLabel, label_4b)
-#. i18n: file: gui/interfacesettings.ui:462
+#. i18n: file: gui/interfacesettings.ui:469
 #. i18n: ectx: property (text), widget (QLabel, label_4b)
-#: po/rc.cpp:15 po/rc.cpp:659 rc.cpp:15 rc.cpp:659
+#: po/rc.cpp:15 po/rc.cpp:662 rc.cpp:15 rc.cpp:662
 msgid "Blur:"
 msgstr "Elmosás:"
 
 #. i18n: file: context/othersettings.ui:103
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropBlurLabel)
-#. i18n: file: gui/interfacesettings.ui:508
+#. i18n: file: gui/interfacesettings.ui:515
 #. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundBlurLabel)
 #. i18n: file: context/othersettings.ui:103
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropBlurLabel)
-#. i18n: file: gui/interfacesettings.ui:508
+#. i18n: file: gui/interfacesettings.ui:515
 #. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundBlurLabel)
-#: po/rc.cpp:18 po/rc.cpp:662 rc.cpp:18 rc.cpp:662
+#: po/rc.cpp:18 po/rc.cpp:665 rc.cpp:18 rc.cpp:665
 msgid "10px"
 msgstr "10px"
 
 #. i18n: file: context/othersettings.ui:115
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#. i18n: file: gui/interfacesettings.ui:520
+#. i18n: file: gui/interfacesettings.ui:527
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: file: context/othersettings.ui:115
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#. i18n: file: gui/interfacesettings.ui:520
+#. i18n: file: gui/interfacesettings.ui:527
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: po/rc.cpp:21 po/rc.cpp:665 rc.cpp:21 rc.cpp:665
+#: po/rc.cpp:21 po/rc.cpp:668 rc.cpp:21 rc.cpp:668
 msgid "Opacity:"
 msgstr "Áttetszőség:"
 
 #. i18n: file: context/othersettings.ui:152
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropOpacityLabel)
-#. i18n: file: gui/interfacesettings.ui:566
+#. i18n: file: gui/interfacesettings.ui:573
 #. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundOpacityLabel)
 #. i18n: file: context/othersettings.ui:152
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropOpacityLabel)
-#. i18n: file: gui/interfacesettings.ui:566
+#. i18n: file: gui/interfacesettings.ui:573
 #. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundOpacityLabel)
-#: po/rc.cpp:25 po/rc.cpp:669 rc.cpp:25 rc.cpp:669
+#: po/rc.cpp:25 po/rc.cpp:672 rc.cpp:25 rc.cpp:672
 #, no-c-format
 msgid "40%"
 msgstr "40%"
@@ -4092,7 +4092,7 @@ msgstr "Ne legyen automatikus váltás"
 #. i18n: ectx: property (suffix), widget (QSpinBox, contextSwitchTime)
 #. i18n: file: gui/playbacksettings.ui:48
 #. i18n: ectx: property (suffix), widget (QSpinBox, stopFadeDuration)
-#: po/rc.cpp:34 po/rc.cpp:779 rc.cpp:34 rc.cpp:779
+#: po/rc.cpp:34 po/rc.cpp:782 rc.cpp:34 rc.cpp:782
 msgid " ms"
 msgstr " ms"
 
@@ -4216,8 +4216,8 @@ msgstr "Másolandó:"
 #. i18n: ectx: property (text), widget (PlainUrlNoteLabel, mopidyNote)
 #. i18n: file: tags/trackorganiser.ui:130
 #. i18n: ectx: property (text), widget (UrlNoteLabel, mopidyNote)
-#: po/rc.cpp:89 po/rc.cpp:1032 po/rc.cpp:1059 rc.cpp:89 rc.cpp:1032
-#: rc.cpp:1059
+#: po/rc.cpp:89 po/rc.cpp:1035 po/rc.cpp:1062 rc.cpp:89 rc.cpp:1035
+#: rc.cpp:1062
 msgid "Connected to a Mopidy server (manual update required)."
 msgstr "Mopidy kiszolgálóhoz csatlakozott (kézi frissítés kell)."
 
@@ -4235,7 +4235,7 @@ msgstr "Album részletei"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #. i18n: file: tags/tageditor.ui:158
 #. i18n: ectx: property (text), widget (StateLabel, yearLabel)
-#: po/rc.cpp:107 po/rc.cpp:1014 rc.cpp:107 rc.cpp:1014
+#: po/rc.cpp:107 po/rc.cpp:1017 rc.cpp:107 rc.cpp:1017
 msgid "Year:"
 msgstr "Év:"
 
@@ -4320,8 +4320,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
 #. i18n: file: gui/serversettings.ui:63
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: po/rc.cpp:155 po/rc.cpp:275 po/rc.cpp:821 streams/streamdialog.cpp:55
-#: rc.cpp:155 rc.cpp:275 rc.cpp:821
+#: po/rc.cpp:155 po/rc.cpp:275 po/rc.cpp:824 streams/streamdialog.cpp:55
+#: rc.cpp:155 rc.cpp:275 rc.cpp:824
 msgid "Name:"
 msgstr "Név:"
 
@@ -4345,8 +4345,8 @@ msgstr "Név:"
 #. i18n: ectx: property (text), widget (BuddyLabel, dirLabel)
 #. i18n: file: gui/serversettings.ui:233
 #. i18n: ectx: property (text), widget (BuddyLabel, dirLabel_2)
-#: po/rc.cpp:158 po/rc.cpp:491 po/rc.cpp:509 po/rc.cpp:833 po/rc.cpp:855
-#: rc.cpp:158 rc.cpp:491 rc.cpp:509 rc.cpp:833 rc.cpp:855
+#: po/rc.cpp:158 po/rc.cpp:491 po/rc.cpp:509 po/rc.cpp:836 po/rc.cpp:858
+#: rc.cpp:158 rc.cpp:491 rc.cpp:509 rc.cpp:836 rc.cpp:858
 msgid "Music folder:"
 msgstr "Zenekönyvtár:"
 
@@ -4394,7 +4394,7 @@ msgstr "Cache használata"
 #. i18n: ectx: property (title), widget (QGroupBox, filenamesGroupBox)
 #. i18n: file: tags/trackorganiser.ui:25
 #. i18n: ectx: property (title), widget (QGroupBox, optionsBox)
-#: po/rc.cpp:179 po/rc.cpp:1035 rc.cpp:179 rc.cpp:1035
+#: po/rc.cpp:179 po/rc.cpp:1038 rc.cpp:179 rc.cpp:1038
 msgid "Filenames"
 msgstr "Fájlnevek"
 
@@ -4406,7 +4406,7 @@ msgstr "Fájlnevek"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #. i18n: file: tags/trackorganiser.ui:61
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
-#: po/rc.cpp:182 po/rc.cpp:1038 rc.cpp:182 rc.cpp:1038
+#: po/rc.cpp:182 po/rc.cpp:1041 rc.cpp:182 rc.cpp:1041
 msgid "Filename scheme:"
 msgstr "Fájlnév-séma:"
 
@@ -4418,7 +4418,7 @@ msgstr "Fájlnév-séma:"
 #. i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
 #. i18n: file: tags/trackorganiser.ui:71
 #. i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
-#: po/rc.cpp:185 po/rc.cpp:1041 rc.cpp:185 rc.cpp:1041
+#: po/rc.cpp:185 po/rc.cpp:1044 rc.cpp:185 rc.cpp:1044
 msgid "VFAT safe"
 msgstr "VFAT tároló"
 
@@ -4430,7 +4430,7 @@ msgstr "VFAT tároló"
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
 #. i18n: file: tags/trackorganiser.ui:78
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
-#: po/rc.cpp:188 po/rc.cpp:1044 rc.cpp:188 rc.cpp:1044
+#: po/rc.cpp:188 po/rc.cpp:1047 rc.cpp:188 rc.cpp:1047
 msgid "Use only ASCII characters"
 msgstr "Kizárólag ASCII-es karakterek használata"
 
@@ -4442,7 +4442,7 @@ msgstr "Kizárólag ASCII-es karakterek használata"
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
 #. i18n: file: tags/trackorganiser.ui:85
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
-#: po/rc.cpp:191 po/rc.cpp:1047 rc.cpp:191 rc.cpp:1047
+#: po/rc.cpp:191 po/rc.cpp:1050 rc.cpp:191 rc.cpp:1050
 msgid "Replace spaces with underscores"
 msgstr "Szóközök cseréje aláhúzásra"
 
@@ -4454,7 +4454,7 @@ msgstr "Szóközök cseréje aláhúzásra"
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
 #. i18n: file: tags/trackorganiser.ui:92
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
-#: po/rc.cpp:194 po/rc.cpp:1050 rc.cpp:194 rc.cpp:1050
+#: po/rc.cpp:194 po/rc.cpp:1053 rc.cpp:194 rc.cpp:1053
 msgid "Append 'The' to artist names"
 msgstr "A 'The' hozzáfűzése az előadói nevekhez."
 
@@ -4612,7 +4612,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, label_9)
 #. i18n: file: network/proxysettings.ui:39
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyTypeLabel)
-#: po/rc.cpp:272 po/rc.cpp:368 po/rc.cpp:879 rc.cpp:272 rc.cpp:368 rc.cpp:879
+#: po/rc.cpp:272 po/rc.cpp:368 po/rc.cpp:882 rc.cpp:272 rc.cpp:368 rc.cpp:882
 msgid "Type:"
 msgstr "Típus:"
 
@@ -4648,8 +4648,8 @@ msgstr "Opciók"
 #. i18n: ectx: property (text), widget (BuddyLabel, portLabel)
 #. i18n: file: network/proxysettings.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyPortLabel)
-#: po/rc.cpp:284 po/rc.cpp:323 po/rc.cpp:485 po/rc.cpp:827 po/rc.cpp:891
-#: rc.cpp:284 rc.cpp:323 rc.cpp:485 rc.cpp:827 rc.cpp:891
+#: po/rc.cpp:284 po/rc.cpp:323 po/rc.cpp:485 po/rc.cpp:830 po/rc.cpp:894
+#: rc.cpp:284 rc.cpp:323 rc.cpp:485 rc.cpp:830 rc.cpp:894
 msgid "Port:"
 msgstr "Port:"
 
@@ -5066,7 +5066,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
 #. i18n: file: gui/serversettings.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
-#: po/rc.cpp:482 po/rc.cpp:824 rc.cpp:482 rc.cpp:824
+#: po/rc.cpp:482 po/rc.cpp:827 rc.cpp:482 rc.cpp:827
 msgid "Host (or local socket):"
 msgstr "Host (vagy helyi csatlakozó):"
 
@@ -5088,7 +5088,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (NoteLabel, socketNoteLabel)
 #. i18n: file: gui/serversettings.ui:181
 #. i18n: ectx: property (text), widget (NoteLabel, socketNoteLabel)
-#: po/rc.cpp:500 po/rc.cpp:849 rc.cpp:500 rc.cpp:849
+#: po/rc.cpp:500 po/rc.cpp:852 rc.cpp:500 rc.cpp:852
 msgid ""
 "When using a local socket the full absolute path to the socket needs to be "
 "set. (Port number is not required.)"
@@ -5241,24 +5241,24 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, sbStyleLabel)
 #. i18n: file: gui/interfacesettings.ui:153
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
-#. i18n: file: gui/interfacesettings.ui:188
+#. i18n: file: gui/interfacesettings.ui:195
 #. i18n: ectx: property (text), widget (BuddyLabel, label_xx)
-#. i18n: file: gui/interfacesettings.ui:229
+#. i18n: file: gui/interfacesettings.ui:236
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
-#. i18n: file: gui/interfacesettings.ui:352
+#. i18n: file: gui/interfacesettings.ui:359
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueViewLabel)
 #. i18n: file: gui/interfacesettings.ui:82
 #. i18n: ectx: property (text), widget (BuddyLabel, sbStyleLabel)
 #. i18n: file: gui/interfacesettings.ui:153
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
-#. i18n: file: gui/interfacesettings.ui:188
+#. i18n: file: gui/interfacesettings.ui:195
 #. i18n: ectx: property (text), widget (BuddyLabel, label_xx)
-#. i18n: file: gui/interfacesettings.ui:229
+#. i18n: file: gui/interfacesettings.ui:236
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
-#. i18n: file: gui/interfacesettings.ui:352
+#. i18n: file: gui/interfacesettings.ui:359
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueViewLabel)
-#: po/rc.cpp:563 po/rc.cpp:584 po/rc.cpp:593 po/rc.cpp:602 po/rc.cpp:629
-#: rc.cpp:563 rc.cpp:584 rc.cpp:593 rc.cpp:602 rc.cpp:629
+#: po/rc.cpp:563 po/rc.cpp:584 po/rc.cpp:596 po/rc.cpp:605 po/rc.cpp:632
+#: rc.cpp:563 rc.cpp:584 rc.cpp:596 rc.cpp:605 rc.cpp:632
 msgid "Style:"
 msgstr "Stílus:"
 
@@ -5292,204 +5292,210 @@ msgstr "Automatikus elrejtés"
 msgid "Sort albums by year"
 msgstr "Albumok rendezése év szerint"
 
-#. i18n: file: gui/interfacesettings.ui:201
+#. i18n: file: gui/interfacesettings.ui:173
+#. i18n: ectx: property (text), widget (QCheckBox, libraryArtistImage)
+#: po/rc.cpp:590 rc.cpp:590
+msgid "Show artist images"
+msgstr "Mutassa a művész képeit"
+
+#. i18n: file: gui/interfacesettings.ui:208
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
-#: po/rc.cpp:596 rc.cpp:596
+#: po/rc.cpp:599 rc.cpp:599
 msgid "Sort:"
 msgstr "Válogatás:"
 
-#. i18n: file: gui/interfacesettings.ui:242
+#. i18n: file: gui/interfacesettings.ui:249
 #. i18n: ectx: property (text), widget (QCheckBox, playListsStartClosed)
-#. i18n: file: gui/interfacesettings.ui:365
+#. i18n: file: gui/interfacesettings.ui:372
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueStartClosed)
-#. i18n: file: gui/interfacesettings.ui:242
+#. i18n: file: gui/interfacesettings.ui:249
 #. i18n: ectx: property (text), widget (QCheckBox, playListsStartClosed)
-#. i18n: file: gui/interfacesettings.ui:365
+#. i18n: file: gui/interfacesettings.ui:372
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueStartClosed)
-#: po/rc.cpp:605 po/rc.cpp:632 rc.cpp:605 rc.cpp:632
+#: po/rc.cpp:608 po/rc.cpp:635 rc.cpp:608 rc.cpp:635
 msgid "Initially collapse albums"
 msgstr "Induláskor az albumok becsukása"
 
-#. i18n: file: gui/interfacesettings.ui:252
+#. i18n: file: gui/interfacesettings.ui:259
 #. i18n: ectx: property (title), widget (QGroupBox, otherViewGroupBox)
-#: po/rc.cpp:608 rc.cpp:608
+#: po/rc.cpp:611 rc.cpp:611
 msgid "Other Views"
 msgstr "Egyéb nézetek"
 
-#. i18n: file: gui/interfacesettings.ui:264
+#. i18n: file: gui/interfacesettings.ui:271
 #. i18n: ectx: property (text), widget (BuddyLabel, folderViewLabel)
-#: po/rc.cpp:611 rc.cpp:611
+#: po/rc.cpp:614 rc.cpp:614
 msgid "Folders:"
 msgstr "Könyvtárak:"
 
-#. i18n: file: gui/interfacesettings.ui:277
+#. i18n: file: gui/interfacesettings.ui:284
 #. i18n: ectx: property (text), widget (BuddyLabel, streamsViewLabel)
-#: po/rc.cpp:614 rc.cpp:614
+#: po/rc.cpp:617 rc.cpp:617
 msgid "Streams:"
 msgstr "Adatfolyamok (stream):"
 
-#. i18n: file: gui/interfacesettings.ui:290
+#. i18n: file: gui/interfacesettings.ui:297
 #. i18n: ectx: property (text), widget (BuddyLabel, onlineViewLabel)
-#: po/rc.cpp:617 rc.cpp:617
+#: po/rc.cpp:620 rc.cpp:620
 msgid "Online:"
 msgstr "Online:"
 
-#. i18n: file: gui/interfacesettings.ui:303
+#. i18n: file: gui/interfacesettings.ui:310
 #. i18n: ectx: property (text), widget (BuddyLabel, devicesViewLabel)
-#: po/rc.cpp:620 rc.cpp:620
+#: po/rc.cpp:623 rc.cpp:623
 msgid "Devices:"
 msgstr "Eszközök:"
 
-#. i18n: file: gui/interfacesettings.ui:316
+#. i18n: file: gui/interfacesettings.ui:323
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #. i18n: file: support/shortcutssettingswidget.ui:22
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#. i18n: file: gui/interfacesettings.ui:316
+#. i18n: file: gui/interfacesettings.ui:323
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #. i18n: file: support/shortcutssettingswidget.ui:22
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#: po/rc.cpp:623 po/rc.cpp:972 rc.cpp:623 rc.cpp:972
+#: po/rc.cpp:626 po/rc.cpp:975 rc.cpp:626 rc.cpp:975
 msgid "Search:"
 msgstr "Keresés:"
 
-#. i18n: file: gui/interfacesettings.ui:372
+#. i18n: file: gui/interfacesettings.ui:379
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueAutoExpand)
-#: po/rc.cpp:635 rc.cpp:635
+#: po/rc.cpp:638 rc.cpp:638
 msgid "Automatically expand current album"
 msgstr "Aktuális album automatikus megnyitása"
 
-#. i18n: file: gui/interfacesettings.ui:379
+#. i18n: file: gui/interfacesettings.ui:386
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueScroll)
-#: po/rc.cpp:638 rc.cpp:638
+#: po/rc.cpp:641 rc.cpp:641
 msgid "Scroll to current track"
 msgstr "Aktuális számhoz görgetés"
 
-#. i18n: file: gui/interfacesettings.ui:386
+#. i18n: file: gui/interfacesettings.ui:393
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueConfirmClear)
-#: po/rc.cpp:641 rc.cpp:641
+#: po/rc.cpp:644 rc.cpp:644
 msgid "Prompt before clearing"
 msgstr "Törlés előtt jelezzen"
 
-#. i18n: file: gui/interfacesettings.ui:393
+#. i18n: file: gui/interfacesettings.ui:400
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueSearch)
-#: po/rc.cpp:644 rc.cpp:644
+#: po/rc.cpp:647 rc.cpp:647
 msgid "Separate action (and shortcut) for play queue search"
 msgstr "Önálló művelet (és billentyűparancs) a lejátszási sor kereséséhez"
 
-#. i18n: file: gui/interfacesettings.ui:435
+#. i18n: file: gui/interfacesettings.ui:442
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_cover)
-#: po/rc.cpp:653 rc.cpp:653
+#: po/rc.cpp:656 rc.cpp:656
 msgid "Current album cover"
 msgstr "Aktuális album borítója"
 
-#. i18n: file: gui/interfacesettings.ui:582
+#. i18n: file: gui/interfacesettings.ui:589
 #. i18n: ectx: attribute (title), widget (QWidget, toolbarTab)
-#: po/rc.cpp:672 rc.cpp:672
+#: po/rc.cpp:675 rc.cpp:675
 msgid "Toolbar"
 msgstr "Eszközsáv"
 
-#. i18n: file: gui/interfacesettings.ui:591
+#. i18n: file: gui/interfacesettings.ui:598
 #. i18n: ectx: property (text), widget (QCheckBox, showStopButton)
-#: po/rc.cpp:675 rc.cpp:675
+#: po/rc.cpp:678 rc.cpp:678
 msgid "Show stop button"
 msgstr "A stop gomb mutatása"
 
-#. i18n: file: gui/interfacesettings.ui:598
+#. i18n: file: gui/interfacesettings.ui:605
 #. i18n: ectx: property (text), widget (QCheckBox, showCoverWidget)
-#: po/rc.cpp:678 rc.cpp:678
+#: po/rc.cpp:681 rc.cpp:681
 msgid "Show cover of current track"
 msgstr "Az aktuális szám borítójának megjelenítése"
 
-#. i18n: file: gui/interfacesettings.ui:605
+#. i18n: file: gui/interfacesettings.ui:612
 #. i18n: ectx: property (text), widget (QCheckBox, showRatingWidget)
-#: po/rc.cpp:681 rc.cpp:681
+#: po/rc.cpp:684 rc.cpp:684
 msgid "Show track rating"
 msgstr "A szám értékelésének megjelenítése"
 
-#. i18n: file: gui/interfacesettings.ui:613
+#. i18n: file: gui/interfacesettings.ui:620
 #. i18n: ectx: attribute (title), widget (QWidget, tab_7)
-#: po/rc.cpp:684 rc.cpp:684
+#: po/rc.cpp:687 rc.cpp:687
 msgid "External"
 msgstr "Külső"
 
-#. i18n: file: gui/interfacesettings.ui:619
+#. i18n: file: gui/interfacesettings.ui:626
 #. i18n: ectx: property (text), widget (QCheckBox, systemTrayPopup)
-#: po/rc.cpp:687 rc.cpp:687
+#: po/rc.cpp:690 rc.cpp:690
 msgid "Show popup messages when changing tracks"
 msgstr "A számok váltáskor legyen felugró üzenet"
 
-#. i18n: file: gui/interfacesettings.ui:629
+#. i18n: file: gui/interfacesettings.ui:636
 #. i18n: ectx: property (text), widget (QCheckBox, systemTrayCheckBox)
-#: po/rc.cpp:690 rc.cpp:690
+#: po/rc.cpp:693 rc.cpp:693
 msgid "Show icon in notification area"
 msgstr "Ikon megjelenítése az értesítési területen"
 
-#. i18n: file: gui/interfacesettings.ui:639
+#. i18n: file: gui/interfacesettings.ui:646
 #. i18n: ectx: property (text), widget (QCheckBox, minimiseOnClose)
-#: po/rc.cpp:693 rc.cpp:693
+#: po/rc.cpp:696 rc.cpp:696
 msgid "Minimize to notification area when closed"
 msgstr "Bezáráskor az értesítési területre csukja össze"
 
-#. i18n: file: gui/interfacesettings.ui:646
+#. i18n: file: gui/interfacesettings.ui:653
 #. i18n: ectx: property (title), widget (QGroupBox, startupState)
-#: po/rc.cpp:696 rc.cpp:696
+#: po/rc.cpp:699 rc.cpp:699
 msgid "On Start-up"
 msgstr "Elinduláskor"
 
-#. i18n: file: gui/interfacesettings.ui:652
+#. i18n: file: gui/interfacesettings.ui:659
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateShow)
-#: po/rc.cpp:699 rc.cpp:699
+#: po/rc.cpp:702 rc.cpp:702
 msgid "Show main window"
 msgstr "A fő menüt mutassa"
 
-#. i18n: file: gui/interfacesettings.ui:659
+#. i18n: file: gui/interfacesettings.ui:666
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateHide)
-#: po/rc.cpp:702 rc.cpp:702
+#: po/rc.cpp:705 rc.cpp:705
 msgid "Hide main window"
 msgstr "A fő ablak elrejtése"
 
-#. i18n: file: gui/interfacesettings.ui:666
+#. i18n: file: gui/interfacesettings.ui:673
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateRestore)
-#: po/rc.cpp:705 rc.cpp:705
+#: po/rc.cpp:708 rc.cpp:708
 msgid "Restore previous state"
 msgstr "Az előző állapot helyreállítása"
 
-#. i18n: file: gui/interfacesettings.ui:690
+#. i18n: file: gui/interfacesettings.ui:697
 #. i18n: ectx: attribute (title), widget (QWidget, tab_4)
-#: po/rc.cpp:708 streams/streamproviderlistdialog.cpp:216 rc.cpp:708
+#: po/rc.cpp:711 streams/streamproviderlistdialog.cpp:216 rc.cpp:711
 msgid "General"
 msgstr "Általános:"
 
-#. i18n: file: gui/interfacesettings.ui:701
+#. i18n: file: gui/interfacesettings.ui:708
 #. i18n: ectx: property (toolTip), widget (QCheckBox, groupSingle)
-#: po/rc.cpp:711 rc.cpp:711
+#: po/rc.cpp:714 rc.cpp:714
 msgid "Place albums with only one track under 'Various Artists/Single Tracks'"
 msgstr "Az egy számos lemezeket a 'Vegyes előadók/Egyedüli számok'"
 
-#. i18n: file: gui/interfacesettings.ui:704
+#. i18n: file: gui/interfacesettings.ui:711
 #. i18n: ectx: property (text), widget (QCheckBox, groupSingle)
-#: po/rc.cpp:714 rc.cpp:714
+#: po/rc.cpp:717 rc.cpp:717
 msgid "Group single track albums"
 msgstr "Az egyszámos albumokat csoportosítsa"
 
-#. i18n: file: gui/interfacesettings.ui:711
+#. i18n: file: gui/interfacesettings.ui:718
 #. i18n: ectx: property (toolTip), widget (QCheckBox, useComposer)
-#: po/rc.cpp:717 rc.cpp:717
+#: po/rc.cpp:720 rc.cpp:720
 msgid ""
 "Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums."
 msgstr ""
 "Használd a 'Zeneszerző' címkét és ne az 'Eladó', vagy 'Album Előadó' címkét "
 "az albumok csoportosítására."
 
-#. i18n: file: gui/interfacesettings.ui:714
+#. i18n: file: gui/interfacesettings.ui:721
 #. i18n: ectx: property (text), widget (QCheckBox, useComposer)
-#: po/rc.cpp:720 rc.cpp:720
+#: po/rc.cpp:723 rc.cpp:723
 msgid "Group albums by composer"
 msgstr "Albumok csoportosítása zeneszerző szerint"
 
-#. i18n: file: gui/interfacesettings.ui:721
+#. i18n: file: gui/interfacesettings.ui:728
 #. i18n: ectx: property (toolTip), widget (QCheckBox, filteredOnly)
-#: po/rc.cpp:723 rc.cpp:723
+#: po/rc.cpp:726 rc.cpp:726
 msgid ""
 "<p>When adding artists, or albums to the playqueue, or editing tags, etc, "
 "then only use songs that pass the current Genre or string filter.</p><p>e.g. "
@@ -5503,33 +5509,33 @@ msgstr ""
 "műfaja lett  'Metal'-ként jelölve, akkor csak ezt az 5-öt adja hozzá, ha a "
 "nézetben a szűrő 'Metal'."
 
-#. i18n: file: gui/interfacesettings.ui:724
+#. i18n: file: gui/interfacesettings.ui:731
 #. i18n: ectx: property (text), widget (QCheckBox, filteredOnly)
-#: po/rc.cpp:726 rc.cpp:726
+#: po/rc.cpp:729 rc.cpp:729
 msgid "Only act on songs that pass filtering"
 msgstr "Csak a szűrőn átjutott dalok esetén lépjen"
 
-#. i18n: file: gui/interfacesettings.ui:731
+#. i18n: file: gui/interfacesettings.ui:738
 #. i18n: ectx: property (text), widget (QCheckBox, fetchCovers)
-#: po/rc.cpp:729 rc.cpp:729
+#: po/rc.cpp:732 rc.cpp:732
 msgid "Fetch missing covers from Last.fm"
 msgstr "A hiányzó borítók letöltése a Last.fm-ről"
 
-#. i18n: file: gui/interfacesettings.ui:738
+#. i18n: file: gui/interfacesettings.ui:745
 #. i18n: ectx: property (text), widget (QCheckBox, showDeleteAction)
-#: po/rc.cpp:732 rc.cpp:732
+#: po/rc.cpp:735 rc.cpp:735
 msgid "Show delete action in context menus"
 msgstr "Törlési művelet megjelenítése a helyi menükben"
 
-#. i18n: file: gui/interfacesettings.ui:745
+#. i18n: file: gui/interfacesettings.ui:752
 #. i18n: ectx: property (text), widget (QCheckBox, forceSingleClick)
-#: po/rc.cpp:735 rc.cpp:735
+#: po/rc.cpp:738 rc.cpp:738
 msgid "Enforce single-click activation of items"
 msgstr "Egykattintásos elemaktiválás alkalmazása"
 
-#. i18n: file: gui/interfacesettings.ui:753
+#. i18n: file: gui/interfacesettings.ui:760
 #. i18n: ectx: property (toolTip), widget (QCheckBox, touchFriendly)
-#: po/rc.cpp:739 rc.cpp:739
+#: po/rc.cpp:742 rc.cpp:742
 #, no-c-format
 msgid ""
 "<p>This will change Cantata's interface as detailed:\n"
@@ -5548,33 +5554,33 @@ msgstr ""
 "egérmutató rajta van)</li><li>a tekerés gomboknál a felirat mellett + és - "
 "jelek</li></ul></p>"
 
-#. i18n: file: gui/interfacesettings.ui:756
+#. i18n: file: gui/interfacesettings.ui:763
 #. i18n: ectx: property (text), widget (QCheckBox, touchFriendly)
-#: po/rc.cpp:743 rc.cpp:743
+#: po/rc.cpp:746 rc.cpp:746
 msgid "Make interface more touch friendly"
 msgstr "A felületet alakítsd sokkal érintésbarátabbra"
 
-#. i18n: file: gui/interfacesettings.ui:763
+#. i18n: file: gui/interfacesettings.ui:770
 #. i18n: ectx: property (text), widget (QCheckBox, infoTooltips)
-#: po/rc.cpp:746 rc.cpp:746
+#: po/rc.cpp:749 rc.cpp:749
 msgid "Show song information tooltips"
 msgstr "Dalinformációk-tipp megjelenítése"
 
-#. i18n: file: gui/interfacesettings.ui:770
+#. i18n: file: gui/interfacesettings.ui:777
 #. i18n: ectx: property (text), widget (QCheckBox, retinaSupport)
-#: po/rc.cpp:749 rc.cpp:749
+#: po/rc.cpp:752 rc.cpp:752
 msgid "Support retina displays"
 msgstr "Retina megjelenítők támogatása"
 
-#. i18n: file: gui/interfacesettings.ui:777
+#. i18n: file: gui/interfacesettings.ui:784
 #. i18n: ectx: property (text), widget (BuddyLabel, langLabel)
-#: po/rc.cpp:752 rc.cpp:752
+#: po/rc.cpp:755 rc.cpp:755
 msgid "Language:"
 msgstr "Nyelv:"
 
-#. i18n: file: gui/interfacesettings.ui:792
+#. i18n: file: gui/interfacesettings.ui:799
 #. i18n: ectx: property (text), widget (NoteLabel, singleClickLabel)
-#: po/rc.cpp:755 rc.cpp:755
+#: po/rc.cpp:758 rc.cpp:758
 msgid ""
 "Changing the 'Enforce single-click activation of items' setting will require "
 "a re-start of Cantata."
@@ -5582,23 +5588,23 @@ msgstr ""
 "A 'Egykattintásos elemaktiválás alkalmazása' beállítása a Cantata "
 "újraindítását igényli."
 
-#. i18n: file: gui/interfacesettings.ui:799
+#. i18n: file: gui/interfacesettings.ui:806
 #. i18n: ectx: property (text), widget (NoteLabel, langNoteLabel)
-#: po/rc.cpp:758 rc.cpp:758
+#: po/rc.cpp:761 rc.cpp:761
 msgid "Changing the language setting will require a re-start of Cantata."
 msgstr "A nyelvi beállítások változtatása a Cantata újraindítását igényli."
 
-#. i18n: file: gui/interfacesettings.ui:806
+#. i18n: file: gui/interfacesettings.ui:813
 #. i18n: ectx: property (text), widget (NoteLabel, touchFriendlyNoteLabel)
-#: po/rc.cpp:761 rc.cpp:761
+#: po/rc.cpp:764 rc.cpp:764
 msgid ""
 "Changing the 'touch friendly' setting will require a re-start of Cantata."
 msgstr ""
 "Az 'Érintésbarát' beállítás változtatása a Cantata újraindítását igényli."
 
-#. i18n: file: gui/interfacesettings.ui:813
+#. i18n: file: gui/interfacesettings.ui:820
 #. i18n: ectx: property (text), widget (NoteLabel, retinaSupportNoteLabel)
-#: po/rc.cpp:764 rc.cpp:764
+#: po/rc.cpp:767 rc.cpp:767
 msgid ""
 "Enabling support for retina displays will produce sharper icons on the "
 "retina display, but may produce less sharp icons on non-retina displays. "
@@ -5610,37 +5616,37 @@ msgstr ""
 
 #. i18n: file: gui/mainwindow.ui:181
 #. i18n: ectx: property (text), widget (QLabel, dynamicLabel)
-#: po/rc.cpp:767 rc.cpp:767
+#: po/rc.cpp:770 rc.cpp:770
 msgid "[Dynamic]"
 msgstr "[Dinamikus]"
 
 #. i18n: file: gui/mainwindow.ui:204
 #. i18n: ectx: property (text), widget (UrlLabel, fullScreenLabel)
-#: po/rc.cpp:770 rc.cpp:770
+#: po/rc.cpp:773 rc.cpp:773
 msgid "Exit Full Screen"
 msgstr "Kilépés a teljes képernyőből"
 
 #. i18n: file: gui/playbacksettings.ui:38
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6b)
-#: po/rc.cpp:776 rc.cpp:776
+#: po/rc.cpp:779 rc.cpp:779
 msgid "Fadeout on stop:"
 msgstr "Megálláskor lekeverés:"
 
 #. i18n: file: gui/playbacksettings.ui:58
 #. i18n: ectx: property (text), widget (QCheckBox, stopOnExit)
-#: po/rc.cpp:785 rc.cpp:785
+#: po/rc.cpp:788 rc.cpp:788
 msgid "Stop playback on exit"
 msgstr "Kilépéskor a lejátszás megállítása"
 
 #. i18n: file: gui/playbacksettings.ui:65
 #. i18n: ectx: property (text), widget (QCheckBox, inhibitSuspend)
-#: po/rc.cpp:788 rc.cpp:788
+#: po/rc.cpp:791 rc.cpp:791
 msgid "Inhibit suspend whilst playing"
 msgstr "Lejátszás közbeni felfüggesztés megakadályozás"
 
 #. i18n: file: gui/playbacksettings.ui:72
 #. i18n: ectx: property (text), widget (NoteLabel, noteLabel)
-#: po/rc.cpp:791 rc.cpp:791
+#: po/rc.cpp:794 rc.cpp:794
 msgid ""
 "If you press and hold the stop button, then a menu will be shown allowing "
 "you to choose whether to stop playback now, or after the current track. (The "
@@ -5652,43 +5658,43 @@ msgstr ""
 
 #. i18n: file: gui/playbacksettings.ui:82
 #. i18n: ectx: property (title), widget (QGroupBox, outputBox)
-#: po/rc.cpp:794 rc.cpp:794
+#: po/rc.cpp:797 rc.cpp:797
 msgid "Output"
 msgstr "Kimenet"
 
 #. i18n: file: gui/playbacksettings.ui:106
 #. i18n: ectx: property (text), widget (BuddyLabel, crossfadingLabel)
-#: po/rc.cpp:800 rc.cpp:800
+#: po/rc.cpp:803 rc.cpp:803
 msgid "Crossfade between tracks:"
 msgstr "Átúsztatás a számok között"
 
 #. i18n: file: gui/playbacksettings.ui:116
 #. i18n: ectx: property (suffix), widget (QSpinBox, crossfading)
-#: po/rc.cpp:803 rc.cpp:803
+#: po/rc.cpp:806 rc.cpp:806
 msgid " s"
 msgstr "s"
 
 #. i18n: file: gui/playbacksettings.ui:129
 #. i18n: ectx: property (text), widget (BuddyLabel, replayGainLabel)
-#: po/rc.cpp:809 rc.cpp:809
+#: po/rc.cpp:812 rc.cpp:812
 msgid "Replay gain:"
 msgstr "Lejátszási szint:"
 
 #. i18n: file: gui/playbacksettings.ui:172
 #. i18n: ectx: property (text), widget (UrlLabel, aboutReplayGain)
-#: po/rc.cpp:812 rc.cpp:812
+#: po/rc.cpp:815 rc.cpp:815
 msgid "About replay gain"
 msgstr "A lejátszási szintről"
 
 #. i18n: file: gui/playbacksettings.ui:181
 #. i18n: ectx: property (text), widget (QLabel, outputsViewLabel)
-#: po/rc.cpp:815 rc.cpp:815
+#: po/rc.cpp:818 rc.cpp:818
 msgid "Use the checkboxes below to control the active outputs."
 msgstr "Az aktív kimenet beállítására használd az lenti kijelölő gombokat."
 
 #. i18n: file: gui/serversettings.ui:35
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:818 rc.cpp:818
+#: po/rc.cpp:821 rc.cpp:821
 msgid "Collection:"
 msgstr "Gyűjtemény:"
 
@@ -5700,13 +5706,13 @@ msgstr "Gyűjtemény:"
 #. i18n: ectx: property (text), widget (BuddyLabel, coverNameLabel)
 #. i18n: file: gui/serversettings.ui:246
 #. i18n: ectx: property (text), widget (BuddyLabel, basicCoverNameLabel)
-#: po/rc.cpp:836 po/rc.cpp:858 rc.cpp:836 rc.cpp:858
+#: po/rc.cpp:839 po/rc.cpp:861 rc.cpp:839 rc.cpp:861
 msgid "Cover filename:"
 msgstr "Borító fájlneve:"
 
 #. i18n: file: gui/serversettings.ui:152
 #. i18n: ectx: property (toolTip), widget (LineEdit, coverName)
-#: po/rc.cpp:840 rc.cpp:840
+#: po/rc.cpp:843 rc.cpp:843
 #, no-c-format
 msgid ""
 "<p>Filename (without extension) to save downloaded covers as.<br/>If left "
@@ -5720,13 +5726,13 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:159
 #. i18n: ectx: property (text), widget (BuddyLabel, streamUrlLabel)
-#: po/rc.cpp:843 rc.cpp:843
+#: po/rc.cpp:846 rc.cpp:846
 msgid "HTTP stream URL:"
 msgstr "HTTP hangfolyam URL:"
 
 #. i18n: file: gui/serversettings.ui:174
 #. i18n: ectx: property (text), widget (NoteLabel, musicFolderNoteLabel)
-#: po/rc.cpp:846 rc.cpp:846
+#: po/rc.cpp:849 rc.cpp:849
 msgid ""
 "The 'Music folder' setting is used to lookup cover-art (either the value "
 "specified above, or <code>cover.jpg / cover.png</code> if not set). If you "
@@ -5740,7 +5746,7 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:188
 #. i18n: ectx: property (text), widget (NoteLabel, streamUrlNoteLabel)
-#: po/rc.cpp:852 rc.cpp:852
+#: po/rc.cpp:855 rc.cpp:855
 msgid ""
 "'HTTP Stream URL' is only of use if you have MPD configured to output to a "
 "HTTP stream, and you wish Cantata to be able to play that stream."
@@ -5751,7 +5757,7 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:261
 #. i18n: ectx: property (text), widget (NoteLabel, basicMusicFolderNoteLabel)
-#: po/rc.cpp:861 rc.cpp:861
+#: po/rc.cpp:864 rc.cpp:864
 msgid ""
 "If you change the 'Music folder' setting, then you will need to manually "
 "update the music database. This can be performed by pressing the 'Refresh "
@@ -5763,7 +5769,7 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:268
 #. i18n: ectx: property (text), widget (NoteLabel, musicFolderNoteLabel_2)
-#: po/rc.cpp:864 rc.cpp:864
+#: po/rc.cpp:867 rc.cpp:867
 msgid ""
 "If no setting is specified for 'Cover filename, then Cantata will use a "
 "default of <code>cover</code>"
@@ -5773,13 +5779,13 @@ msgstr ""
 
 #. i18n: file: http/httpserversettings.ui:25
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#: po/rc.cpp:867 rc.cpp:867
+#: po/rc.cpp:870 rc.cpp:870
 msgid "Network interface:"
 msgstr "Hálózati interfész:"
 
 #. i18n: file: http/httpserversettings.ui:40
 #. i18n: ectx: property (text), widget (NoteLabel, label_4)
-#: po/rc.cpp:870 rc.cpp:870
+#: po/rc.cpp:873 rc.cpp:873
 msgid ""
 "MPD usually only plays songs that are stored within its folders. Cantata "
 "contains a minimal HTTP server that can be used to serve other files to MPD. "
@@ -5791,7 +5797,7 @@ msgstr ""
 
 #. i18n: file: http/httpserversettings.ui:47
 #. i18n: ectx: property (text), widget (NoteLabel, label_4b)
-#: po/rc.cpp:873 rc.cpp:873
+#: po/rc.cpp:876 rc.cpp:876
 msgid ""
 "If you choose 'Local loopback' for 'Network interface', then MPD <b>must</b> "
 "also be on this computer."
@@ -5801,32 +5807,32 @@ msgstr ""
 
 #. i18n: file: network/proxysettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, modeLabel)
-#: po/rc.cpp:876 rc.cpp:876
+#: po/rc.cpp:879 rc.cpp:879
 msgid "Mode:"
 msgstr "Mód:"
 
 #. i18n: file: network/proxysettings.ui:50
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:882 rc.cpp:882
+#: po/rc.cpp:885 rc.cpp:885
 msgid "HTTP Proxy"
 msgstr "HTTP Proxy"
 
 #. i18n: file: network/proxysettings.ui:55
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:885 rc.cpp:885
+#: po/rc.cpp:888 rc.cpp:888
 msgid "SOCKS Proxy"
 msgstr "SOCKS Proxy"
 
 #. i18n: file: online/onlinesettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:900 rc.cpp:900
+#: po/rc.cpp:903 rc.cpp:903
 msgid "Use the checkboxes below to configure the list of active services."
 msgstr ""
 "Az aktív szolgáltatások beállítására használd az lenti kijelölő gombokat."
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:32
 #. i18n: ectx: property (text), widget (BuddyLabel, scrobblerLabel)
-#: po/rc.cpp:906 rc.cpp:906
+#: po/rc.cpp:909 rc.cpp:909
 msgid "Scrobble using:"
 msgstr "Karcolás használata:"
 
@@ -5838,7 +5844,7 @@ msgstr "Karcolás használata:"
 #. i18n: ectx: property (text), widget (QLabel, statusLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:94
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#: po/rc.cpp:915 po/rc.cpp:942 rc.cpp:915 rc.cpp:942
+#: po/rc.cpp:918 po/rc.cpp:945 rc.cpp:918 rc.cpp:945
 msgid "Status:"
 msgstr "Státusz:"
 
@@ -5850,26 +5856,26 @@ msgstr "Státusz:"
 #. i18n: ectx: property (text), widget (QPushButton, loginButton)
 #. i18n: file: streams/digitallyimportedsettings.ui:120
 #. i18n: ectx: property (text), widget (QPushButton, loginButton)
-#: po/rc.cpp:918 po/rc.cpp:945 streams/digitallyimportedsettings.cpp:138
-#: streams/digitallyimportedsettings.cpp:144 rc.cpp:918 rc.cpp:945
+#: po/rc.cpp:921 po/rc.cpp:948 streams/digitallyimportedsettings.cpp:138
+#: streams/digitallyimportedsettings.cpp:144 rc.cpp:921 rc.cpp:948
 msgid "Login"
 msgstr "Bejelentkezés"
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:131
 #. i18n: ectx: property (text), widget (QCheckBox, enableScrobbling)
-#: po/rc.cpp:921 rc.cpp:921
+#: po/rc.cpp:924 rc.cpp:924
 msgid "Scrobble tracks"
 msgstr "Karcolás-számok"
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:138
 #. i18n: ectx: property (text), widget (QCheckBox, showLove)
-#: po/rc.cpp:924 rc.cpp:924
+#: po/rc.cpp:927 rc.cpp:927
 msgid "Show 'Love' button"
 msgstr "Mutassa a 'Tetszik' gombot"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:927 rc.cpp:927
+#: po/rc.cpp:930 rc.cpp:930
 msgid ""
 "You can listen for free without an account, but Premium members can listen "
 "to higher quality streams without advertisements. Visit <a href=\"http://www."
@@ -5883,25 +5889,25 @@ msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:42
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: po/rc.cpp:930 rc.cpp:930
+#: po/rc.cpp:933 rc.cpp:933
 msgid "Premium Account"
 msgstr "Prémium fiók"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:81
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
-#: po/rc.cpp:939 rc.cpp:939
+#: po/rc.cpp:942 rc.cpp:942
 msgid "Stream type:"
 msgstr "Stream típusa:"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:127
 #. i18n: ectx: property (text), widget (QLabel, expiryLabel)
-#: po/rc.cpp:948 rc.cpp:948
+#: po/rc.cpp:951 rc.cpp:951
 msgid "Session expiry:"
 msgstr "Munkamenet lejárta:"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:157
 #. i18n: ectx: property (text), widget (NoteLabel, noteLabel)
-#: po/rc.cpp:951 rc.cpp:951
+#: po/rc.cpp:954 rc.cpp:954
 msgid ""
 "These settings apply to Digitally Imported, JazzRadio.com, RockRadio.com, "
 "and Sky.fm"
@@ -5911,7 +5917,7 @@ msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:164
 #. i18n: ectx: property (text), widget (NoteLabel, note2Label)
-#: po/rc.cpp:954 rc.cpp:954
+#: po/rc.cpp:957 rc.cpp:957
 msgid ""
 "If you enter account details, then a 'DI' status item will appear under the "
 "list of streams. This will indicate if you are logged in or not."
@@ -5921,81 +5927,81 @@ msgstr ""
 
 #. i18n: file: streams/streamssettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:957 rc.cpp:957
+#: po/rc.cpp:960 rc.cpp:960
 msgid "Use the checkboxes below to configure the list of active providers."
 msgstr ""
 "Az aktív szolgáltatók beállítására használd az lenti kijelölő gombokat."
 
 #. i18n: file: streams/streamssettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
-#: po/rc.cpp:960 rc.cpp:960
+#: po/rc.cpp:963 rc.cpp:963
 msgid "Configure Provider"
 msgstr "Szolgáltató beállítása"
 
 #. i18n: file: streams/streamssettings.ui:60
 #. i18n: ectx: property (text), widget (QPushButton, installButton)
-#: po/rc.cpp:963 rc.cpp:963
+#: po/rc.cpp:966 rc.cpp:966
 msgid "Install"
 msgstr "Telepítés"
 
 #. i18n: file: streams/streamssettings.ui:80
 #. i18n: ectx: property (text), widget (PlainNoteLabel, note)
-#: po/rc.cpp:969 rc.cpp:969
+#: po/rc.cpp:972 rc.cpp:972
 msgid "Built-in categories are shown in italic, and these cannot be removed."
 msgstr ""
 "Az előre meghatározott kategóriák dőlttel szedettek és nem távolíthatóak el."
 
 #. i18n: file: support/shortcutssettingswidget.ui:65
 #. i18n: ectx: property (title), widget (QGroupBox, actionBox)
-#: po/rc.cpp:975 rc.cpp:975
+#: po/rc.cpp:978 rc.cpp:978
 msgid "Shortcut for Selected Action"
 msgstr "Billentyűparancs a kiválasztott művelethez"
 
 #. i18n: file: support/shortcutssettingswidget.ui:71
 #. i18n: ectx: property (text), widget (QRadioButton, useDefault)
-#: po/rc.cpp:978 rc.cpp:978
+#: po/rc.cpp:981 rc.cpp:981
 msgid "Default:"
 msgstr "Alapbeállítás:"
 
 #. i18n: file: support/shortcutssettingswidget.ui:85
 #. i18n: ectx: property (text), widget (QRadioButton, useCustom)
-#: po/rc.cpp:984 rc.cpp:984
+#: po/rc.cpp:987 rc.cpp:987
 msgid "Custom:"
 msgstr "Egyéni:"
 
 #. i18n: file: tags/tageditor.ui:80
 #. i18n: ectx: property (text), widget (StateLabel, albumArtistLabel)
-#: po/rc.cpp:996 rc.cpp:996
+#: po/rc.cpp:999 rc.cpp:999
 msgid "Album artist:"
 msgstr "Album előadója:"
 
 #. i18n: file: tags/tageditor.ui:119
 #. i18n: ectx: property (text), widget (StateLabel, trackLabel)
-#: po/rc.cpp:1005 rc.cpp:1005
+#: po/rc.cpp:1008 rc.cpp:1008
 msgid "Track number:"
 msgstr "Szám sorszáma:"
 
 #. i18n: file: tags/tageditor.ui:132
 #. i18n: ectx: property (text), widget (StateLabel, discLabel)
-#: po/rc.cpp:1008 rc.cpp:1008
+#: po/rc.cpp:1011 rc.cpp:1011
 msgid "Disc number:"
 msgstr "Lemez száma:"
 
 #. i18n: file: tags/tageditor.ui:171
 #. i18n: ectx: property (text), widget (StateLabel, ratingLabel)
-#: po/rc.cpp:1017 rc.cpp:1017
+#: po/rc.cpp:1020 rc.cpp:1020
 msgid "Rating:"
 msgstr "Besorolás (minősítés):"
 
 #. i18n: file: tags/tageditor.ui:186
 #. i18n: ectx: property (text), widget (QLabel, ratingVarious)
-#: po/rc.cpp:1020 rc.cpp:1020
+#: po/rc.cpp:1023 rc.cpp:1023
 msgid "<i>(Various)</i>"
 msgstr "<i>(Vegyes)</i>"
 
 #. i18n: file: tags/tageditor.ui:210
 #. i18n: ectx: property (text), widget (PlainNoteLabel, label_7x)
-#: po/rc.cpp:1026 rc.cpp:1026
+#: po/rc.cpp:1029 rc.cpp:1029
 msgid ""
 "Multiple genres should be separated via a semicolon (e.g. 'Rock;Hard Rock')"
 msgstr ""
@@ -6004,7 +6010,7 @@ msgstr ""
 
 #. i18n: file: tags/tageditor.ui:217
 #. i18n: ectx: property (text), widget (PlainNoteLabel, label_7y)
-#: po/rc.cpp:1029 rc.cpp:1029
+#: po/rc.cpp:1032 rc.cpp:1032
 msgid ""
 "Ratings are stored in an external database, and <b>not</b> in the song's "
 "file."
@@ -6013,28 +6019,28 @@ msgstr ""
 
 #. i18n: file: tags/trackorganiser.ui:115
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
-#: po/rc.cpp:1053 rc.cpp:1053
+#: po/rc.cpp:1056 rc.cpp:1056
 msgid "Original Name"
 msgstr "Eredeti név"
 
 #. i18n: file: tags/trackorganiser.ui:120
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
-#: po/rc.cpp:1056 rc.cpp:1056
+#: po/rc.cpp:1059 rc.cpp:1059
 msgid "New Name"
 msgstr "Új név"
 
 #. i18n: file: tags/trackorganiser.ui:137
 #. i18n: ectx: property (text), widget (UrlNoteLabel, ratingsNote)
-#: po/rc.cpp:1062 rc.cpp:1062
+#: po/rc.cpp:1065 rc.cpp:1065
 msgid "Ratings will be lost if a file is renamed."
 msgstr "A besorolások elvesznek, ha a fájlt átnevezed."
 
-#: po/rc.cpp:1063 rc.cpp:1063
+#: po/rc.cpp:1066 rc.cpp:1066
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "Török Árpád"
 
-#: po/rc.cpp:1064 rc.cpp:1064
+#: po/rc.cpp:1067 rc.cpp:1067
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "torar@freemail.hu"
@@ -6279,6 +6285,7 @@ msgstr "AAC 128k"
 msgid "Logout"
 msgstr "Kijelentkezés"
 
+#: streams/streamdialog.cpp:56
 msgid "URL:"
 msgstr "URL:"
 
@@ -7605,9 +7612,6 @@ msgstr "%1 számú frissítés érhető el"
 
 #~ msgid "Covers:"
 #~ msgstr "Borítók:"
-
-#~ msgid "Show artist images"
-#~ msgstr "Mutassa a művész képeit"
 
 #~ msgid ""
 #~ "<i><b>NOTE:</b> When looking for artist images, Cantata will look for "

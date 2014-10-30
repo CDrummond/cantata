@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-10 20:59+0100\n"
+"POT-Creation-Date: 2014-10-30 17:51+0000\n"
 "PO-Revision-Date: 2014-10-14 16:46+0200\n"
 "Last-Translator: Piotr Wicijowski <piotr.wicijowski@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -51,11 +51,11 @@ msgstr "Odśwież informacje o artyście"
 msgid "Artist"
 msgstr "Artysta"
 
-#. i18n: file: gui/interfacesettings.ui:176
+#. i18n: file: gui/interfacesettings.ui:183
 #. i18n: ectx: property (title), widget (QGroupBox, albumsViewGroupBox)
 #: context/artistview.cpp:341 gui/interfacesettings.cpp:146
-#: gui/mainwindow.cpp:382 models/playqueuemodel.cpp:252 po/rc.cpp:590
-#: rc.cpp:590
+#: gui/mainwindow.cpp:391 models/playqueuemodel.cpp:252 po/rc.cpp:593
+#: rc.cpp:593
 msgid "Albums"
 msgstr "Albumy"
 
@@ -131,7 +131,7 @@ msgstr ""
 #. i18n: file: tags/tageditor.ui:54
 #. i18n: ectx: property (text), widget (StateLabel, titleLabel)
 #: context/lyricsdialog.cpp:61 gui/searchpage.cpp:235 po/rc.cpp:101
-#: po/rc.cpp:392 po/rc.cpp:990 rc.cpp:101 rc.cpp:392 rc.cpp:990
+#: po/rc.cpp:392 po/rc.cpp:993 rc.cpp:101 rc.cpp:392 rc.cpp:993
 msgid "Title:"
 msgstr "Tytuł:"
 
@@ -148,8 +148,8 @@ msgstr "Tytuł:"
 #. i18n: file: tags/tageditor.ui:67
 #. i18n: ectx: property (text), widget (StateLabel, artistLabel)
 #: context/lyricsdialog.cpp:63 devices/actiondialog.cpp:815
-#: gui/searchpage.cpp:226 po/rc.cpp:95 po/rc.cpp:377 po/rc.cpp:993 rc.cpp:95
-#: rc.cpp:377 rc.cpp:993
+#: gui/searchpage.cpp:226 po/rc.cpp:95 po/rc.cpp:377 po/rc.cpp:996 rc.cpp:95
+#: rc.cpp:377 rc.cpp:996
 msgid "Artist:"
 msgstr "Artysta:"
 
@@ -166,21 +166,21 @@ msgid "Song Information"
 msgstr "Informacje o utworze"
 
 #: context/othersettings.cpp:45 gui/coverdialog.cpp:864
-#: gui/interfacesettings.cpp:204
+#: gui/interfacesettings.cpp:205
 msgid "Images (*.png *.jpg)"
 msgstr "Obrazy (*.png *.jpg)"
 
-#: context/othersettings.cpp:47 gui/interfacesettings.cpp:206
+#: context/othersettings.cpp:47 gui/interfacesettings.cpp:207
 msgctxt "pixels"
 msgid "10px"
 msgstr "10px"
 
-#: context/othersettings.cpp:104 gui/interfacesettings.cpp:593
+#: context/othersettings.cpp:104 gui/interfacesettings.cpp:610
 msgctxt "value%"
 msgid "%1%"
 msgstr "%1%"
 
-#: context/othersettings.cpp:109 gui/interfacesettings.cpp:598
+#: context/othersettings.cpp:109 gui/interfacesettings.cpp:615
 #, c-format
 msgctxt "pixels"
 msgid "%1px"
@@ -219,7 +219,7 @@ msgstr "Usuń plik z tekstami"
 msgid "Refresh Track Information"
 msgstr "Odśwież informacje o utworze"
 
-#: context/songview.cpp:151 context/view.cpp:136 gui/mainwindow.cpp:312
+#: context/songview.cpp:151 context/view.cpp:136 gui/mainwindow.cpp:321
 #: widgets/messageoverlay.cpp:50
 msgid "Cancel"
 msgstr "Anuluj"
@@ -534,8 +534,8 @@ msgstr ""
 "Nie ma wystarczająco miejsca na docelowym urządzeniu.\n"
 "\n"
 "Zaznaczone utwory zajmują %1, jednak wolnego miejsca zostało jedynie %2.\n"
-"Utwory musiałyby zostać transkodowane do mniejszego rozmiary aby je skopiować "
-"z powodzeniem."
+"Utwory musiałyby zostać transkodowane do mniejszego rozmiary aby je "
+"skopiować z powodzeniem."
 
 #: devices/actiondialog.cpp:330
 msgid ""
@@ -741,13 +741,13 @@ msgstr "Spróbuj ponownie"
 #. i18n: file: tags/tageditor.ui:106
 #. i18n: ectx: property (text), widget (StateLabel, albumLabel)
 #: devices/actiondialog.cpp:816 gui/searchpage.cpp:234 po/rc.cpp:389
-#: po/rc.cpp:1002 rc.cpp:389 rc.cpp:1002
+#: po/rc.cpp:1005 rc.cpp:389 rc.cpp:1005
 msgid "Album:"
 msgstr "Album:"
 
 #. i18n: file: tags/tageditor.ui:34
 #. i18n: ectx: property (text), widget (StateLabel, trackNameLabel)
-#: devices/actiondialog.cpp:817 po/rc.cpp:987 rc.cpp:987
+#: devices/actiondialog.cpp:817 po/rc.cpp:990 rc.cpp:990
 msgid "Track:"
 msgstr "Utwór:"
 
@@ -830,10 +830,10 @@ msgid ""
 "If 'Title' is \"Wibble - Wobble\", then 'Artist' will be set to \"Wibble\" "
 "and 'Title' will be set to \"Wobble\""
 msgstr ""
-"Jeżeli 'Artysta albumu' jest taki sam jak 'Artysta' oraz 'Tytuł' jest formatu "
-"\"Artysta utworu - Tytuł utworu\", to wartość tagu 'Artysta' zostanie "
-"wydzielona z tagu 'Tytuł', natomiast nowa wartość tagu 'Tytuł' ustawiona "
-"będzie na 'Tytuł utworu', np.\n"
+"Jeżeli 'Artysta albumu' jest taki sam jak 'Artysta' oraz 'Tytuł' jest "
+"formatu \"Artysta utworu - Tytuł utworu\", to wartość tagu 'Artysta' "
+"zostanie wydzielona z tagu 'Tytuł', natomiast nowa wartość tagu 'Tytuł' "
+"ustawiona będzie na 'Tytuł utworu', np.\n"
 "Jeśli 'Tytuł' to \"Wibble - Wobble\", to 'Artysta' zostanie ustawiony na "
 "\"Wibble\" a 'Tytuł' na \"Wobble\""
 
@@ -1092,7 +1092,7 @@ msgstr "Czy na pewno rozłączyć się z '%1'?"
 msgid "Disconnect"
 msgstr "Rozłącz"
 
-#: devices/devicespage.cpp:562 gui/mainwindow.cpp:1247
+#: devices/devicespage.cpp:562 gui/mainwindow.cpp:1256
 msgid "Please close other dialogs first."
 msgstr "Proszę najpierw zamknąć inne okna dialogowe."
 
@@ -1631,7 +1631,7 @@ msgstr "Pojemność nieznana"
 
 #. i18n: file: gui/coverdialog.ui:23
 #. i18n: ectx: property (text), widget (QPushButton, search)
-#: devices/synccollectionwidget.cpp:53 gui/mainwindow.cpp:440
+#: devices/synccollectionwidget.cpp:53 gui/mainwindow.cpp:449
 #: online/podcastsearchdialog.cpp:337 po/rc.cpp:422 rc.cpp:422
 msgid "Search"
 msgstr "Szukaj"
@@ -1883,17 +1883,17 @@ msgid ""
 "with 10 entries. If a range of ratings has been specified, then only songs "
 "with a rating within this range will be used.</p>"
 msgstr ""
-"<p>Cantata odpyta bazę danych używając wszystkich podanych reguł. Lista reguł "
-"o nazwie <i>Zawiera</i> zostanie użyta do zbudowania listy utworów, które "
-"mogą zostać użyte. Lista reguł <i>Nie zawiera</i> zostanie użyta do "
-"zbudowania listy utworów, które nie mogą być użyte. Jeśli lista reguł <i>"
-"Zawiera</i> jest pusta, to Cantata przyjmuje, że wszystkie utwory (za "
-"wyjątkiem nie spełniających reguł <i>Nie zawiera</i>) mogą być użyte.</p><p>"
-"np. aby Cantata wyszukała wszystkich 'Rockowych utworów artysty Wibble lub "
-"Various Artists', należy użyć następujących reguł: <ul><li>Zawiera "
+"<p>Cantata odpyta bazę danych używając wszystkich podanych reguł. Lista "
+"reguł o nazwie <i>Zawiera</i> zostanie użyta do zbudowania listy utworów, "
+"które mogą zostać użyte. Lista reguł <i>Nie zawiera</i> zostanie użyta do "
+"zbudowania listy utworów, które nie mogą być użyte. Jeśli lista reguł "
+"<i>Zawiera</i> jest pusta, to Cantata przyjmuje, że wszystkie utwory (za "
+"wyjątkiem nie spełniających reguł <i>Nie zawiera</i>) mogą być użyte.</"
+"p><p>np. aby Cantata wyszukała wszystkich 'Rockowych utworów artysty Wibble "
+"lub Various Artists', należy użyć następujących reguł: <ul><li>Zawiera "
 "ArtystaAlbumu=Wibble Gatunek=Rock</li><li>Zawiera ArtystaAlbumu=Various "
-"Artists</li></ul> Aby Cantata wyszukała 'Utworów w wykonaniu Wibble ale nie z "
-"albumu Abc', należy użyć: <ul><li>Zawiera ArtystaAlbumu=Wibble</li><li>Nie "
+"Artists</li></ul> Aby Cantata wyszukała 'Utworów w wykonaniu Wibble ale nie "
+"z albumu Abc', należy użyć: <ul><li>Zawiera ArtystaAlbumu=Wibble</li><li>Nie "
 "zawiera ArtystaAlbumu=Wibble Album=Abc</li></ul>Po tym jak lista utworów "
 "możliwych do użycia zostanie stworzona, Cantata losowo wybierze utwory do "
 "wypełnienia kolejki odtwarzania przynajmniej 10 utworami. Jeśli w regułach "
@@ -2114,8 +2114,8 @@ msgstr "Wyświetl"
 #. i18n: ectx: property (text), widget (QPushButton, removeBtn)
 #. i18n: file: streams/streamssettings.ui:73
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: gui/coverdialog.cpp:887 gui/stdactions.cpp:75 po/rc.cpp:356 po/rc.cpp:966
-#: rc.cpp:356 rc.cpp:966
+#: gui/coverdialog.cpp:887 gui/stdactions.cpp:75 po/rc.cpp:356 po/rc.cpp:969
+#: rc.cpp:356 rc.cpp:969
 msgid "Remove"
 msgstr "Usuń"
 
@@ -2218,28 +2218,28 @@ msgstr "Siatka"
 msgid "Table"
 msgstr "Tabela"
 
-#. i18n: file: gui/interfacesettings.ui:343
+#. i18n: file: gui/interfacesettings.ui:350
 #. i18n: ectx: attribute (title), widget (QWidget, tab_5)
-#: gui/interfacesettings.cpp:144 gui/mainwindow.cpp:372 po/rc.cpp:626
-#: rc.cpp:626
+#: gui/interfacesettings.cpp:144 gui/mainwindow.cpp:381 po/rc.cpp:629
+#: rc.cpp:629
 msgid "Play Queue"
 msgstr "Kolejka odtwarzania"
 
 #. i18n: file: gui/interfacesettings.ui:141
 #. i18n: ectx: property (title), widget (QGroupBox, artistsViewGroupBox)
-#: gui/interfacesettings.cpp:145 gui/mainwindow.cpp:377 po/rc.cpp:581
+#: gui/interfacesettings.cpp:145 gui/mainwindow.cpp:386 po/rc.cpp:581
 #: rc.cpp:581
 msgid "Artists"
 msgstr "Artyści"
 
-#: gui/interfacesettings.cpp:147 gui/mainwindow.cpp:388
+#: gui/interfacesettings.cpp:147 gui/mainwindow.cpp:397
 msgid "Folders"
 msgstr "Katalogi"
 
-#. i18n: file: gui/interfacesettings.ui:217
+#. i18n: file: gui/interfacesettings.ui:224
 #. i18n: ectx: property (title), widget (QGroupBox, playlistsViewGroupBox)
-#: gui/interfacesettings.cpp:148 gui/mainwindow.cpp:394 po/rc.cpp:599
-#: rc.cpp:599
+#: gui/interfacesettings.cpp:148 gui/mainwindow.cpp:403 po/rc.cpp:602
+#: rc.cpp:602
 msgid "Playlists"
 msgstr "Playlisty"
 
@@ -2268,43 +2268,43 @@ msgid "Info - Current song information (artist, album, and lyrics)"
 msgstr ""
 "Informacje - szczegóły dotyczące obecnego utworu (artysta, album i teksty)"
 
-#: gui/interfacesettings.cpp:189
+#: gui/interfacesettings.cpp:190
 msgid "Large"
 msgstr "Duże"
 
-#: gui/interfacesettings.cpp:190
+#: gui/interfacesettings.cpp:191
 msgid "Small"
 msgstr "Małe"
 
-#: gui/interfacesettings.cpp:191
+#: gui/interfacesettings.cpp:192
 msgid "Tab-bar"
 msgstr "Pasek kart"
 
-#: gui/interfacesettings.cpp:192
+#: gui/interfacesettings.cpp:193
 msgid "Left"
 msgstr "Z lewej"
 
-#: gui/interfacesettings.cpp:192
+#: gui/interfacesettings.cpp:193
 msgid "Right"
 msgstr "Z prawej"
 
-#: gui/interfacesettings.cpp:193
+#: gui/interfacesettings.cpp:194
 msgid "Top"
 msgstr "U góry"
 
-#: gui/interfacesettings.cpp:194
+#: gui/interfacesettings.cpp:195
 msgid "Bottom"
 msgstr "U dołu"
 
-#: gui/interfacesettings.cpp:231
+#: gui/interfacesettings.cpp:232
 msgid "Notifications"
 msgstr "Powiadomienia"
 
-#: gui/interfacesettings.cpp:488
+#: gui/interfacesettings.cpp:492
 msgid "System default"
 msgstr "Domyślne systemowe"
 
-#: gui/main.cpp:267 gui/mainwindow.cpp:1904 gui/trayitem.cpp:128
+#: gui/main.cpp:267 gui/mainwindow.cpp:1914 gui/trayitem.cpp:128
 #: gui/trayitem.cpp:130 gui/trayitem.cpp:169 gui/trayitem.cpp:248
 #: gui/trayitem.cpp:255 gui/trayitem.cpp:261 gui/trayitem.cpp:274
 #: gui/trayitem.cpp:276
@@ -2426,8 +2426,8 @@ msgstr "Połącz"
 msgid "Collection"
 msgstr "Kolekcja"
 
-#: gui/mainwindow.cpp:269 gui/mainwindow.cpp:1372 gui/mainwindow.cpp:1376
-#: gui/mainwindow.cpp:1382
+#: gui/mainwindow.cpp:269 gui/mainwindow.cpp:1381 gui/mainwindow.cpp:1385
+#: gui/mainwindow.cpp:1391
 msgid "Outputs"
 msgstr "Wyjścia"
 
@@ -2435,51 +2435,51 @@ msgstr "Wyjścia"
 msgid "Stop After Track"
 msgstr "Zatrzymaj po utworze"
 
-#: gui/mainwindow.cpp:271
+#: gui/mainwindow.cpp:280
 msgid "Add To Stored Playlist"
 msgstr "Dodaj do zapisanej playlisty"
 
-#: gui/mainwindow.cpp:272
+#: gui/mainwindow.cpp:281
 msgid "Crop"
 msgstr "Usuń wszystkie poza"
 
-#: gui/mainwindow.cpp:273
+#: gui/mainwindow.cpp:282
 msgid "Add Stream URL"
 msgstr "Dodaj URL strumienia"
 
-#: gui/mainwindow.cpp:274
+#: gui/mainwindow.cpp:283
 msgid "Clear"
 msgstr "Wyczyść"
 
-#: gui/mainwindow.cpp:275
+#: gui/mainwindow.cpp:284
 msgid "Center On Current Track"
 msgstr "Wycentruj na obecnym utworze"
 
-#: gui/mainwindow.cpp:276
+#: gui/mainwindow.cpp:285
 msgid "Expanded Interface"
 msgstr "Interfejs rozszerzony"
 
-#: gui/mainwindow.cpp:278
+#: gui/mainwindow.cpp:287
 msgid "Show Current Song Information"
 msgstr "Pokaż informacje o obecnym utworze"
 
-#: gui/mainwindow.cpp:281
+#: gui/mainwindow.cpp:290
 msgid "Full Screen"
 msgstr "Pełen ekran"
 
-#: gui/mainwindow.cpp:285
+#: gui/mainwindow.cpp:294
 msgid "Random"
 msgstr "Losowo"
 
-#: gui/mainwindow.cpp:286
+#: gui/mainwindow.cpp:295
 msgid "Repeat"
 msgstr "Powtarzaj"
 
-#: gui/mainwindow.cpp:287
+#: gui/mainwindow.cpp:296
 msgid "Single"
 msgstr "Tryb pojedynczy"
 
-#: gui/mainwindow.cpp:287
+#: gui/mainwindow.cpp:296
 msgid ""
 "When 'Single' is activated, playback is stopped after current song, or song "
 "is repeated if 'Repeat' is enabled."
@@ -2488,11 +2488,11 @@ msgstr ""
 "utworze; utwór jest zapętlany, jeśli dodatkowo jest włączony tryb "
 "'Powtarzaj'."
 
-#: gui/mainwindow.cpp:288
+#: gui/mainwindow.cpp:297
 msgid "Consume"
 msgstr "Tryb konsumowania"
 
-#: gui/mainwindow.cpp:288
+#: gui/mainwindow.cpp:297
 msgid ""
 "When consume is activated, a song is removed from the play queue after it "
 "has been played."
@@ -2500,115 +2500,115 @@ msgstr ""
 "Gdy tryb konsumowania jest aktywny, obecny utwór jest usuwany z kolejki po "
 "jego zakończeniu."
 
-#: gui/mainwindow.cpp:289
+#: gui/mainwindow.cpp:298
 msgid "Find in Play Queue"
 msgstr "Znajdź w kolejce odtwarzania"
 
-#: gui/mainwindow.cpp:292
+#: gui/mainwindow.cpp:301
 msgid "Set Priority"
 msgstr "Ustaw priorytet"
 
-#: gui/mainwindow.cpp:294
+#: gui/mainwindow.cpp:303
 msgid "Play Stream"
 msgstr "Odtwarzaj strumień"
 
-#: gui/mainwindow.cpp:302 gui/searchpage.cpp:56
+#: gui/mainwindow.cpp:311 gui/searchpage.cpp:56
 msgid "Locate In Library"
 msgstr "Znajdź w bibliotece"
 
-#: gui/mainwindow.cpp:306
+#: gui/mainwindow.cpp:315
 msgid "Expand All"
 msgstr "Rozwiń wszystkie"
 
-#: gui/mainwindow.cpp:308
+#: gui/mainwindow.cpp:317
 msgid "Collapse All"
 msgstr "Zwiń wszystkie"
 
-#: gui/mainwindow.cpp:310
+#: gui/mainwindow.cpp:319
 msgid "Remove All Songs"
 msgstr "Usuń wszystkie utwory"
 
-#: gui/mainwindow.cpp:317
+#: gui/mainwindow.cpp:326
 msgid "Clear 'New' State Of Artists and Albums"
 msgstr "Wyczyść stan \"nowy\" artystów i albumów"
 
-#: gui/mainwindow.cpp:401
+#: gui/mainwindow.cpp:410
 msgid "Dynamic"
 msgstr "Dynamiczny"
 
-#: gui/mainwindow.cpp:412 gui/preferencesdialog.cpp:90
+#: gui/mainwindow.cpp:421 gui/preferencesdialog.cpp:90
 #: widgets/groupedview.cpp:298
 msgid "Streams"
 msgstr "Strumienie"
 
-#: gui/mainwindow.cpp:422 gui/preferencesdialog.cpp:95
+#: gui/mainwindow.cpp:431 gui/preferencesdialog.cpp:95
 msgid "Online"
 msgstr "On-line"
 
-#: gui/mainwindow.cpp:433
+#: gui/mainwindow.cpp:442
 msgid "Devices"
 msgstr "Urządzenia"
 
-#: gui/mainwindow.cpp:445
+#: gui/mainwindow.cpp:454
 msgid "Info"
 msgstr "Informacje"
 
-#: gui/mainwindow.cpp:598
+#: gui/mainwindow.cpp:607
 msgid "Show Menubar"
 msgstr "Pokaż pasek menu"
 
-#: gui/mainwindow.cpp:650
+#: gui/mainwindow.cpp:659
 msgid "&Music"
 msgstr "&Muzyka"
 
-#: gui/mainwindow.cpp:661
+#: gui/mainwindow.cpp:670
 msgid "&Edit"
 msgstr "&Edytuj"
 
-#: gui/mainwindow.cpp:678
+#: gui/mainwindow.cpp:687
 msgid "&View"
 msgstr "&Widok"
 
-#: gui/mainwindow.cpp:690
+#: gui/mainwindow.cpp:699
 msgid "&Queue"
 msgstr "&Kolejka"
 
-#: gui/mainwindow.cpp:702
+#: gui/mainwindow.cpp:711
 msgid "&Settings"
 msgstr "&Ustawienia"
 
-#: gui/mainwindow.cpp:719 support/dialog.cpp:158
+#: gui/mainwindow.cpp:728 support/dialog.cpp:158
 msgid "&Help"
 msgstr "&Pomoc"
 
-#: gui/mainwindow.cpp:747
+#: gui/mainwindow.cpp:756
 msgid "Set Rating"
 msgstr "Ustaw ocenę"
 
-#: gui/mainwindow.cpp:752
+#: gui/mainwindow.cpp:761
 msgid "No Rating"
 msgstr "Brak oceny"
 
-#: gui/mainwindow.cpp:1023
+#: gui/mainwindow.cpp:1032
 msgid "Failed to locate any songs matching the dynamic playlist rules."
 msgstr ""
 "Nie udało się znaleźć żadnych utworów pasujących do reguł dynamicznej "
 "playlisty."
 
-#: gui/mainwindow.cpp:1142 mpd/mpdconnection.cpp:483
+#: gui/mainwindow.cpp:1151 mpd/mpdconnection.cpp:498
 msgid "Connecting to %1"
 msgstr "Łączenie z %1"
 
-#: gui/mainwindow.cpp:1176
+#: gui/mainwindow.cpp:1185
 msgid "Refresh MPD Database?"
 msgstr "Odświeżyć bazę danych MPD?"
 
-#: gui/mainwindow.cpp:1202
+#: gui/mainwindow.cpp:1211
 msgctxt "Qt-only"
 msgid "About Cantata"
 msgstr "O programie Cantata"
 
-#: gui/mainwindow.cpp:1203
+#: gui/mainwindow.cpp:1212
 msgctxt "Qt-only"
 msgid ""
 "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; 2011-2014 Craig "
@@ -2619,7 +2619,7 @@ msgstr ""
 "Drummond<br/>Wydano na warunkach licencji <a href=\"http://www.gnu.org/"
 "licenses/gpl.html\">GPLv3</a>"
 
-#: gui/mainwindow.cpp:1205
+#: gui/mainwindow.cpp:1214
 msgid ""
 "Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - &copy; 2007-2010 "
 "The QtMPC Authors<br/>"
@@ -2627,7 +2627,7 @@ msgstr ""
 "Program bazujący na <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - &copy; "
 "2007-2010  Autorzy QtMPC "
 
-#: gui/mainwindow.cpp:1206
+#: gui/mainwindow.cpp:1215
 msgctxt "Qt-only"
 msgid ""
 "Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt."
@@ -2636,7 +2636,7 @@ msgstr ""
 "Tło widoku kontekstowego za uprzejmością <a href=\"http://www.fanart.tv"
 "\">FanArt.tv</a>"
 
-#: gui/mainwindow.cpp:1207
+#: gui/mainwindow.cpp:1216
 msgctxt "Qt-only"
 msgid ""
 "Context view metadata courtesy of <a href=\"http://www.wikipedia.org"
@@ -2645,7 +2645,7 @@ msgstr ""
 "Metadane widoku kontekstowego za uprzejmością <a href=\"http://www.wikipedia."
 "org\">Wikipedii</a> i <a href=\"http://www.last.fm\">Last.fm</a>"
 
-#: gui/mainwindow.cpp:1208
+#: gui/mainwindow.cpp:1217
 msgid ""
 "Please consider uploading your own music fan-art to <a href=\"http://www."
 "fanart.tv\">FanArt.tv</a>"
@@ -2653,7 +2653,7 @@ msgstr ""
 "Proszę rozpatrzeć przesłanie własnych obrazów na <a href=\"http://www.fanart."
 "tv\">FanArt.tv</a>"
 
-#: gui/mainwindow.cpp:1217
+#: gui/mainwindow.cpp:1226
 msgid ""
 "A Podcast is currently being downloaded\n"
 "\n"
@@ -2663,23 +2663,23 @@ msgstr ""
 "\n"
 "Wyjście z programu spowoduje przerwanie pobierania."
 
-#: gui/mainwindow.cpp:1218
+#: gui/mainwindow.cpp:1227
 msgid "Abort download and quit"
 msgstr "Przerwij pobieranie i zakończ"
 
-#: gui/mainwindow.cpp:1372 gui/mainwindow.cpp:1383
+#: gui/mainwindow.cpp:1381 gui/mainwindow.cpp:1392
 msgid "Enabled: %1"
 msgstr "Włączone: %1"
 
-#: gui/mainwindow.cpp:1376 gui/mainwindow.cpp:1384
+#: gui/mainwindow.cpp:1385 gui/mainwindow.cpp:1393
 msgid "Disabled: %1"
 msgstr "Wyłączone: %1"
 
-#: gui/mainwindow.cpp:1595 gui/mainwindow.cpp:1618
+#: gui/mainwindow.cpp:1605 gui/mainwindow.cpp:1628
 msgid "Server Information"
 msgstr "Informacje serwera"
 
-#: gui/mainwindow.cpp:1598
+#: gui/mainwindow.cpp:1608
 msgid ""
 "<tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td align=\"right"
 "\">Protocol:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td align=\"right\">Uptime:"
@@ -2693,7 +2693,7 @@ msgstr ""
 "td><td>%5</td></tr><tr><td align=\"right\">Obsługa URL:&nbsp;</td><td>%6</"
 "td></tr><tr><td align=\"right\">Tagi:&nbsp;</td><td>%7</td></tr>"
 
-#: gui/mainwindow.cpp:1609
+#: gui/mainwindow.cpp:1619
 msgid ""
 "<tr><td colspan=\"2\"><b>Database</b></td></tr><tr><td align=\"right"
 "\">Artists:&nbsp;</td><td>%1</td></tr><tr><td align=\"right\">Albums:&nbsp;</"
@@ -2707,45 +2707,45 @@ msgstr ""
 "tr><tr><td align=\"right\">Czas trwania:&nbsp;</td><td>%4</td></tr><tr><td "
 "align=\"right\">Aktualizacja:&nbsp;</td><td>%5</td></tr>"
 
-#: gui/mainwindow.cpp:1757
+#: gui/mainwindow.cpp:1767
 msgid "Cantata (%1)"
 msgstr "Cantata (%1)"
 
-#: gui/mainwindow.cpp:1834 mpd/mpdconnection.cpp:635 mpd/mpdconnection.cpp:642
+#: gui/mainwindow.cpp:1844 mpd/mpdconnection.cpp:652 mpd/mpdconnection.cpp:659
 msgid "MPD reported the following error: %1"
 msgstr "MPD zgłosił następujący błąd: %1"
 
-#: gui/mainwindow.cpp:1904
+#: gui/mainwindow.cpp:1914
 msgid "Playback stopped"
 msgstr "Odtwarzanie zatrzymane"
 
-#: gui/mainwindow.cpp:1953
+#: gui/mainwindow.cpp:1963
 msgid "Remove all songs from play queue?"
 msgstr "Usunąć wszystkie utwory z kolejki odtwarzania?"
 
-#: gui/mainwindow.cpp:2013 models/playqueuemodel.cpp:175
+#: gui/mainwindow.cpp:2023 models/playqueuemodel.cpp:175
 msgid "Priority"
 msgstr "Priorytet"
 
-#: gui/mainwindow.cpp:2013
+#: gui/mainwindow.cpp:2023
 msgid "Enter priority (0..255):"
 msgstr "Wpisz priorytet (0..255):"
 
-#: gui/mainwindow.cpp:2036 gui/playlistspage.cpp:241
+#: gui/mainwindow.cpp:2046 gui/playlistspage.cpp:241
 msgid "Playlist Name"
 msgstr "Nazwa playlisty"
 
-#: gui/mainwindow.cpp:2036 gui/playlistspage.cpp:241
+#: gui/mainwindow.cpp:2046 gui/playlistspage.cpp:241
 msgid "Enter a name for the playlist:"
 msgstr "Proszę wpisać nazwę dla playlisty:"
 
-#: gui/mainwindow.cpp:2039
+#: gui/mainwindow.cpp:2049
 msgid "'%1' is used to store favorite streams, please choose another name."
 msgstr ""
 "'%1' jest używane do przechowywania ulubionych strumieni, proszę wybrać inną "
 "nazwę."
 
-#: gui/mainwindow.cpp:2043
+#: gui/mainwindow.cpp:2053
 msgid ""
 "A playlist named '%1' already exists!\n"
 "\n"
@@ -2755,25 +2755,25 @@ msgstr ""
 "\n"
 "Dodać do tej playlisty?"
 
-#: gui/mainwindow.cpp:2044
+#: gui/mainwindow.cpp:2054
 msgid "Existing Playlist"
 msgstr "Istniejąca playlista"
 
-#: gui/mainwindow.cpp:2096
+#: gui/mainwindow.cpp:2106
 msgid "Stream URL"
 msgstr "URL strumienia"
 
-#: gui/mainwindow.cpp:2096
+#: gui/mainwindow.cpp:2106
 msgid "Enter URL of stream:"
 msgstr "Podaj adres URL strumienia:"
 
-#: gui/mainwindow.cpp:2099
+#: gui/mainwindow.cpp:2109
 msgid "Invalid, or unsupported, URL!"
 msgstr "Niepoprawny lub niewspierany adres URL!"
 
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_none)
-#. i18n: file: gui/interfacesettings.ui:428
+#. i18n: file: gui/interfacesettings.ui:435
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_none)
 #. i18n: file: gui/playbacksettings.ui:51
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, stopFadeDuration)
@@ -2783,7 +2783,7 @@ msgstr "Niepoprawny lub niewspierany adres URL!"
 #. i18n: ectx: property (text), widget (QLabel, defaultShortcut)
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_none)
-#. i18n: file: gui/interfacesettings.ui:428
+#. i18n: file: gui/interfacesettings.ui:435
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_none)
 #. i18n: file: gui/playbacksettings.ui:51
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, stopFadeDuration)
@@ -2792,8 +2792,8 @@ msgstr "Niepoprawny lub niewspierany adres URL!"
 #. i18n: file: support/shortcutssettingswidget.ui:78
 #. i18n: ectx: property (text), widget (QLabel, defaultShortcut)
 #: gui/playbacksettings.cpp:47 online/magnatuneservice.cpp:164 po/rc.cpp:6
-#: po/rc.cpp:650 po/rc.cpp:782 po/rc.cpp:806 po/rc.cpp:981 rc.cpp:6 rc.cpp:650
-#: rc.cpp:782 rc.cpp:806 rc.cpp:981
+#: po/rc.cpp:653 po/rc.cpp:785 po/rc.cpp:809 po/rc.cpp:984 rc.cpp:6 rc.cpp:653
+#: rc.cpp:785 rc.cpp:809 rc.cpp:984
 msgid "None"
 msgstr "Brak"
 
@@ -2811,7 +2811,7 @@ msgstr ""
 
 #. i18n: file: gui/playbacksettings.ui:88
 #. i18n: ectx: property (text), widget (QLabel, messageLabel)
-#: gui/playbacksettings.cpp:167 po/rc.cpp:797 rc.cpp:797
+#: gui/playbacksettings.cpp:167 po/rc.cpp:800 rc.cpp:800
 msgid ""
 "<i>Not Connected!<br/>The entries below cannot be modified, as Cantata is "
 "not connected to MPD.</i>"
@@ -2839,10 +2839,10 @@ msgstr ""
 "ustawienia ReplayGain mogą być użyte:<ul><li><i>Brak</i> - Informacja "
 "ReplayGain nie jest używana.</li><li><i>Utwór</i> - Głośność jest "
 "dostosowywana na podstawie tagu ReplayGain utworu.</li><li><i>Album</i> - "
-"Głośność jest dostosowywana na podstawie tagu ReplayGain albumu.</li><li><i>"
-"Automatycznie</i> - Głośność jest dostosowywana na podstawie tagu ReplayGain "
-"utworu jeśli włączone jest odtwarzanie losowe, w przeciwnym wypadku używany "
-"jest tag ReplayGain albumu.</li></ul>"
+"Głośność jest dostosowywana na podstawie tagu ReplayGain albumu.</"
+"li><li><i>Automatycznie</i> - Głośność jest dostosowywana na podstawie tagu "
+"ReplayGain utworu jeśli włączone jest odtwarzanie losowe, w przeciwnym "
+"wypadku używany jest tag ReplayGain albumu.</li></ul>"
 
 #: gui/playlistspage.cpp:59 tags/tageditor.cpp:1185 tags/trackorganiser.cpp:75
 msgid "Rename"
@@ -2968,7 +2968,7 @@ msgstr "Ustawienia kolekcji"
 
 #. i18n: file: gui/playbacksettings.ui:29
 #. i18n: ectx: property (title), widget (QGroupBox, stopPlaybackBox)
-#: gui/preferencesdialog.cpp:85 po/rc.cpp:773 rc.cpp:773
+#: gui/preferencesdialog.cpp:85 po/rc.cpp:776 rc.cpp:776
 msgid "Playback"
 msgstr "Odtwarzanie"
 
@@ -3088,8 +3088,8 @@ msgstr "Konfiguruj"
 #. i18n: ectx: property (text), widget (BuddyLabel, composerLabel)
 #. i18n: file: tags/tageditor.ui:93
 #. i18n: ectx: property (text), widget (StateLabel, composerLabel)
-#: gui/searchpage.cpp:229 po/rc.cpp:98 po/rc.cpp:386 po/rc.cpp:999 rc.cpp:98
-#: rc.cpp:386 rc.cpp:999
+#: gui/searchpage.cpp:229 po/rc.cpp:98 po/rc.cpp:386 po/rc.cpp:1002 rc.cpp:98
+#: rc.cpp:386 rc.cpp:1002
 msgid "Composer:"
 msgstr "Kompozytor:"
 
@@ -3105,7 +3105,7 @@ msgstr "Wykonawca:"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #. i18n: file: tags/tageditor.ui:145
 #. i18n: ectx: property (text), widget (StateLabel, genreLabel)
-#: gui/searchpage.cpp:236 po/rc.cpp:104 po/rc.cpp:1011 rc.cpp:104 rc.cpp:1011
+#: gui/searchpage.cpp:236 po/rc.cpp:104 po/rc.cpp:1014 rc.cpp:104 rc.cpp:1014
 msgid "Genre:"
 msgstr "Gatunek:"
 
@@ -3117,7 +3117,7 @@ msgstr "Gatunek:"
 #. i18n: ectx: property (text), widget (BuddyLabel, commentLabel)
 #. i18n: file: tags/tageditor.ui:195
 #. i18n: ectx: property (text), widget (StateLabel, commentLabel)
-#: gui/searchpage.cpp:238 po/rc.cpp:410 po/rc.cpp:1023 rc.cpp:410 rc.cpp:1023
+#: gui/searchpage.cpp:238 po/rc.cpp:410 po/rc.cpp:1026 rc.cpp:410 rc.cpp:1026
 msgid "Comment:"
 msgstr "Komentarz:"
 
@@ -3157,8 +3157,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
 #. i18n: file: network/proxysettings.ui:63
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyHostLabel)
-#: gui/serversettings.cpp:100 po/rc.cpp:281 po/rc.cpp:320 po/rc.cpp:888
-#: rc.cpp:281 rc.cpp:320 rc.cpp:888
+#: gui/serversettings.cpp:100 po/rc.cpp:281 po/rc.cpp:320 po/rc.cpp:891
+#: rc.cpp:281 rc.cpp:320 rc.cpp:891
 msgid "Host:"
 msgstr "Host:"
 
@@ -3206,8 +3206,8 @@ msgstr "Usuń"
 msgid "New Collection %1"
 msgstr "Nowa kolekcja %1"
 
-#: gui/serversettings.cpp:338 mpd/mpdconnection.cpp:202
-#: mpd/mpdconnection.cpp:204
+#: gui/serversettings.cpp:338 mpd/mpdconnection.cpp:203
+#: mpd/mpdconnection.cpp:205
 msgid "Default"
 msgstr "Domyślne"
 
@@ -3401,7 +3401,7 @@ msgstr "Pojedyncze utwory"
 
 #. i18n: file: online/onlinesettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
-#: models/onlineservicesmodel.cpp:75 po/rc.cpp:903 rc.cpp:903
+#: models/onlineservicesmodel.cpp:75 po/rc.cpp:906 rc.cpp:906
 msgid "Configure Service"
 msgstr "Konfiguruj serwis"
 
@@ -3529,43 +3529,43 @@ msgstr "Dodaj strumień do ulubionych"
 msgid "Configure Streams"
 msgstr "Konfiguruj strumienie"
 
-#: mpd/mpdconnection.cpp:169 mpd/song.cpp:61 support/utils.cpp:647
+#: mpd/mpdconnection.cpp:170 mpd/song.cpp:61 support/utils.cpp:647
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: mpd/mpdconnection.cpp:211
+#: mpd/mpdconnection.cpp:212
 msgctxt "name (host)"
 msgid "\"%1\""
 msgstr "\"%1\""
 
-#: mpd/mpdconnection.cpp:213
+#: mpd/mpdconnection.cpp:214
 msgctxt "name (host:port)"
 msgid "\"%1\" (%2:%3)"
 msgstr "\"%1\" (%2:%3)"
 
-#: mpd/mpdconnection.cpp:396
+#: mpd/mpdconnection.cpp:411
 msgid "Connection to %1 failed"
 msgstr "Połączenie z %1 nie powiodło się"
 
-#: mpd/mpdconnection.cpp:397
+#: mpd/mpdconnection.cpp:412
 msgid "Connection to %1 failed - please check your proxy settings"
 msgstr "Połączenie z %1 nie powiodło się - proszę sprawdzić ustawienia proxy"
 
-#: mpd/mpdconnection.cpp:398
+#: mpd/mpdconnection.cpp:413
 msgid "Connection to %1 failed - incorrect password"
 msgstr "Połączenie z %1 nie powiodło się - nieprawidłowe hasło"
 
-#: mpd/mpdconnection.cpp:575
+#: mpd/mpdconnection.cpp:591
 msgid "Failed to send command to %1 - not connected"
 msgstr "Nie powiodło się wysyłanie komendy do %1 - nie połączono"
 
-#: mpd/mpdconnection.cpp:631
+#: mpd/mpdconnection.cpp:648
 msgid "Failed to load. Please check user \"mpd\" has read permission."
 msgstr ""
 "Załadowanie nie powiodło się. Proszę upewnić się, że użytkownik \"mpd\" ma "
 "prawa odczytu."
 
-#: mpd/mpdconnection.cpp:633
+#: mpd/mpdconnection.cpp:650
 msgid ""
 "Failed to load. MPD can only play local files if connected via a local "
 "socket."
@@ -3573,27 +3573,27 @@ msgstr ""
 "Załadowanie nie powiodło się. MPD może odtwarzać lokalne pliki tylko gdy "
 "jest połączony poprzez lokalne gniazdo."
 
-#: mpd/mpdconnection.cpp:639 mpd/mpdconnection.cpp:650
+#: mpd/mpdconnection.cpp:656 mpd/mpdconnection.cpp:667
 msgid "Failed to send command. Disconnected from %1"
 msgstr "Wysyłanie komendy nie powiodło się. Rozłączono z %1"
 
-#: mpd/mpdconnection.cpp:1488
+#: mpd/mpdconnection.cpp:1522
 msgid "Failed to rename <b>%1</b> to <b>%2</b>"
 msgstr "Zmiana nazwy z <b>%1</b> na <b>%2</b> nie powiodła się"
 
-#: mpd/mpdconnection.cpp:1500
+#: mpd/mpdconnection.cpp:1534
 msgid "Failed to save <b>%1</b>"
 msgstr "Zapisanie <b>%1</b> nie powiodło się"
 
-#: mpd/mpdconnection.cpp:1513
+#: mpd/mpdconnection.cpp:1547
 msgid "You cannot add parts of a cue sheet to a playlist!"
 msgstr "Nie można dodać części pliku cue do playlisty!"
 
-#: mpd/mpdconnection.cpp:1516
+#: mpd/mpdconnection.cpp:1550
 msgid "You cannot add a playlist to another playlist!"
 msgstr "Nie można dodać playlisty do innej playlisty!"
 
-#: mpd/mpdconnection.cpp:1693
+#: mpd/mpdconnection.cpp:1727
 msgid "Failed to send '%1' to %2. Please check %2 is registered with MPD."
 msgstr ""
 "Wysłanie \"%1\" do %2 nie powiodło się. Należy sprawdzić, czy %2 jest "
@@ -3691,8 +3691,8 @@ msgstr "Ustawienia Magnatune"
 #. i18n: ectx: property (text), widget (BuddyLabel, userLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:51
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#: online/magnatunesettingsdialog.cpp:43 po/rc.cpp:894 po/rc.cpp:909
-#: po/rc.cpp:933 rc.cpp:894 rc.cpp:909 rc.cpp:933
+#: online/magnatunesettingsdialog.cpp:43 po/rc.cpp:897 po/rc.cpp:912
+#: po/rc.cpp:936 rc.cpp:897 rc.cpp:912 rc.cpp:936
 msgid "Username:"
 msgstr "Użytkownik:"
 
@@ -3725,9 +3725,9 @@ msgstr "Użytkownik:"
 #. i18n: file: streams/digitallyimportedsettings.ui:64
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: online/magnatunesettingsdialog.cpp:44 po/rc.cpp:293 po/rc.cpp:311
-#: po/rc.cpp:488 po/rc.cpp:830 po/rc.cpp:897 po/rc.cpp:912 po/rc.cpp:936
-#: rc.cpp:293 rc.cpp:311 rc.cpp:488 rc.cpp:830 rc.cpp:897 rc.cpp:912
-#: rc.cpp:936
+#: po/rc.cpp:488 po/rc.cpp:833 po/rc.cpp:900 po/rc.cpp:915 po/rc.cpp:939
+#: rc.cpp:293 rc.cpp:311 rc.cpp:488 rc.cpp:833 rc.cpp:900 rc.cpp:915
+#: rc.cpp:939
 msgid "Password:"
 msgstr "Hasło:"
 
@@ -4043,13 +4043,13 @@ msgstr "Wszystkie odcinki"
 
 #. i18n: file: context/othersettings.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#. i18n: file: gui/interfacesettings.ui:422
+#. i18n: file: gui/interfacesettings.ui:429
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #. i18n: file: context/othersettings.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#. i18n: file: gui/interfacesettings.ui:422
+#. i18n: file: gui/interfacesettings.ui:429
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: po/rc.cpp:3 po/rc.cpp:647 rc.cpp:3 rc.cpp:647
+#: po/rc.cpp:3 po/rc.cpp:650 rc.cpp:3 rc.cpp:650
 msgid "Background Image"
 msgstr "Obraz tła"
 
@@ -4061,61 +4061,61 @@ msgstr "Obraz artysty"
 
 #. i18n: file: context/othersettings.ui:46
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_custom)
-#. i18n: file: gui/interfacesettings.ui:442
+#. i18n: file: gui/interfacesettings.ui:449
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_custom)
 #. i18n: file: context/othersettings.ui:46
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_custom)
-#. i18n: file: gui/interfacesettings.ui:442
+#. i18n: file: gui/interfacesettings.ui:449
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_custom)
-#: po/rc.cpp:12 po/rc.cpp:656 rc.cpp:12 rc.cpp:656
+#: po/rc.cpp:12 po/rc.cpp:659 rc.cpp:12 rc.cpp:659
 msgid "Custom image:"
 msgstr "Własny obraz"
 
 #. i18n: file: context/othersettings.ui:66
 #. i18n: ectx: property (text), widget (QLabel, label_4b)
-#. i18n: file: gui/interfacesettings.ui:462
+#. i18n: file: gui/interfacesettings.ui:469
 #. i18n: ectx: property (text), widget (QLabel, label_4b)
 #. i18n: file: context/othersettings.ui:66
 #. i18n: ectx: property (text), widget (QLabel, label_4b)
-#. i18n: file: gui/interfacesettings.ui:462
+#. i18n: file: gui/interfacesettings.ui:469
 #. i18n: ectx: property (text), widget (QLabel, label_4b)
-#: po/rc.cpp:15 po/rc.cpp:659 rc.cpp:15 rc.cpp:659
+#: po/rc.cpp:15 po/rc.cpp:662 rc.cpp:15 rc.cpp:662
 msgid "Blur:"
 msgstr "Rozmycie:"
 
 #. i18n: file: context/othersettings.ui:103
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropBlurLabel)
-#. i18n: file: gui/interfacesettings.ui:508
+#. i18n: file: gui/interfacesettings.ui:515
 #. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundBlurLabel)
 #. i18n: file: context/othersettings.ui:103
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropBlurLabel)
-#. i18n: file: gui/interfacesettings.ui:508
+#. i18n: file: gui/interfacesettings.ui:515
 #. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundBlurLabel)
-#: po/rc.cpp:18 po/rc.cpp:662 rc.cpp:18 rc.cpp:662
+#: po/rc.cpp:18 po/rc.cpp:665 rc.cpp:18 rc.cpp:665
 msgid "10px"
 msgstr "10px"
 
 #. i18n: file: context/othersettings.ui:115
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#. i18n: file: gui/interfacesettings.ui:520
+#. i18n: file: gui/interfacesettings.ui:527
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: file: context/othersettings.ui:115
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#. i18n: file: gui/interfacesettings.ui:520
+#. i18n: file: gui/interfacesettings.ui:527
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: po/rc.cpp:21 po/rc.cpp:665 rc.cpp:21 rc.cpp:665
+#: po/rc.cpp:21 po/rc.cpp:668 rc.cpp:21 rc.cpp:668
 msgid "Opacity:"
 msgstr "Przezroczystość:"
 
 #. i18n: file: context/othersettings.ui:152
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropOpacityLabel)
-#. i18n: file: gui/interfacesettings.ui:566
+#. i18n: file: gui/interfacesettings.ui:573
 #. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundOpacityLabel)
 #. i18n: file: context/othersettings.ui:152
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropOpacityLabel)
-#. i18n: file: gui/interfacesettings.ui:566
+#. i18n: file: gui/interfacesettings.ui:573
 #. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundOpacityLabel)
-#: po/rc.cpp:25 po/rc.cpp:669 rc.cpp:25 rc.cpp:669
+#: po/rc.cpp:25 po/rc.cpp:672 rc.cpp:25 rc.cpp:672
 #, no-c-format
 msgid "40%"
 msgstr "40%"
@@ -4140,7 +4140,7 @@ msgstr "Nie zmieniaj automatycznie"
 #. i18n: ectx: property (suffix), widget (QSpinBox, contextSwitchTime)
 #. i18n: file: gui/playbacksettings.ui:48
 #. i18n: ectx: property (suffix), widget (QSpinBox, stopFadeDuration)
-#: po/rc.cpp:34 po/rc.cpp:779 rc.cpp:34 rc.cpp:779
+#: po/rc.cpp:34 po/rc.cpp:782 rc.cpp:34 rc.cpp:782
 msgid " ms"
 msgstr " ms"
 
@@ -4265,8 +4265,8 @@ msgstr "Do skopiowania:"
 #. i18n: ectx: property (text), widget (PlainUrlNoteLabel, mopidyNote)
 #. i18n: file: tags/trackorganiser.ui:130
 #. i18n: ectx: property (text), widget (UrlNoteLabel, mopidyNote)
-#: po/rc.cpp:89 po/rc.cpp:1032 po/rc.cpp:1059 rc.cpp:89 rc.cpp:1032
-#: rc.cpp:1059
+#: po/rc.cpp:89 po/rc.cpp:1035 po/rc.cpp:1062 rc.cpp:89 rc.cpp:1035
+#: rc.cpp:1062
 msgid "Connected to a Mopidy server (manual update required)."
 msgstr "Połączono z serwerem Mopidy (ręczna aktualizacja konieczna)."
 
@@ -4284,7 +4284,7 @@ msgstr "Szczegóły albumu"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #. i18n: file: tags/tageditor.ui:158
 #. i18n: ectx: property (text), widget (StateLabel, yearLabel)
-#: po/rc.cpp:107 po/rc.cpp:1014 rc.cpp:107 rc.cpp:1014
+#: po/rc.cpp:107 po/rc.cpp:1017 rc.cpp:107 rc.cpp:1017
 msgid "Year:"
 msgstr "Rok:"
 
@@ -4369,8 +4369,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
 #. i18n: file: gui/serversettings.ui:63
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: po/rc.cpp:155 po/rc.cpp:275 po/rc.cpp:821 streams/streamdialog.cpp:55
-#: rc.cpp:155 rc.cpp:275 rc.cpp:821
+#: po/rc.cpp:155 po/rc.cpp:275 po/rc.cpp:824 streams/streamdialog.cpp:55
+#: rc.cpp:155 rc.cpp:275 rc.cpp:824
 msgid "Name:"
 msgstr "Nazwa:"
 
@@ -4394,8 +4394,8 @@ msgstr "Nazwa:"
 #. i18n: ectx: property (text), widget (BuddyLabel, dirLabel)
 #. i18n: file: gui/serversettings.ui:233
 #. i18n: ectx: property (text), widget (BuddyLabel, dirLabel_2)
-#: po/rc.cpp:158 po/rc.cpp:491 po/rc.cpp:509 po/rc.cpp:833 po/rc.cpp:855
-#: rc.cpp:158 rc.cpp:491 rc.cpp:509 rc.cpp:833 rc.cpp:855
+#: po/rc.cpp:158 po/rc.cpp:491 po/rc.cpp:509 po/rc.cpp:836 po/rc.cpp:858
+#: rc.cpp:158 rc.cpp:491 rc.cpp:509 rc.cpp:836 rc.cpp:858
 msgid "Music folder:"
 msgstr "Katalog z muzyką:"
 
@@ -4443,7 +4443,7 @@ msgstr "Używaj pamięci podręcznej"
 #. i18n: ectx: property (title), widget (QGroupBox, filenamesGroupBox)
 #. i18n: file: tags/trackorganiser.ui:25
 #. i18n: ectx: property (title), widget (QGroupBox, optionsBox)
-#: po/rc.cpp:179 po/rc.cpp:1035 rc.cpp:179 rc.cpp:1035
+#: po/rc.cpp:179 po/rc.cpp:1038 rc.cpp:179 rc.cpp:1038
 msgid "Filenames"
 msgstr "Nazwy plików"
 
@@ -4455,7 +4455,7 @@ msgstr "Nazwy plików"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #. i18n: file: tags/trackorganiser.ui:61
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
-#: po/rc.cpp:182 po/rc.cpp:1038 rc.cpp:182 rc.cpp:1038
+#: po/rc.cpp:182 po/rc.cpp:1041 rc.cpp:182 rc.cpp:1041
 msgid "Filename scheme:"
 msgstr "Schemat nazwy pliku:"
 
@@ -4467,7 +4467,7 @@ msgstr "Schemat nazwy pliku:"
 #. i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
 #. i18n: file: tags/trackorganiser.ui:71
 #. i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
-#: po/rc.cpp:185 po/rc.cpp:1041 rc.cpp:185 rc.cpp:1041
+#: po/rc.cpp:185 po/rc.cpp:1044 rc.cpp:185 rc.cpp:1044
 msgid "VFAT safe"
 msgstr "Bezpieczne dla VFAT"
 
@@ -4479,7 +4479,7 @@ msgstr "Bezpieczne dla VFAT"
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
 #. i18n: file: tags/trackorganiser.ui:78
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
-#: po/rc.cpp:188 po/rc.cpp:1044 rc.cpp:188 rc.cpp:1044
+#: po/rc.cpp:188 po/rc.cpp:1047 rc.cpp:188 rc.cpp:1047
 msgid "Use only ASCII characters"
 msgstr "Używaj jedynie znaków ASCII"
 
@@ -4491,7 +4491,7 @@ msgstr "Używaj jedynie znaków ASCII"
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
 #. i18n: file: tags/trackorganiser.ui:85
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
-#: po/rc.cpp:191 po/rc.cpp:1047 rc.cpp:191 rc.cpp:1047
+#: po/rc.cpp:191 po/rc.cpp:1050 rc.cpp:191 rc.cpp:1050
 msgid "Replace spaces with underscores"
 msgstr "Zastąp spacje znakami podkreślenia"
 
@@ -4503,7 +4503,7 @@ msgstr "Zastąp spacje znakami podkreślenia"
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
 #. i18n: file: tags/trackorganiser.ui:92
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
-#: po/rc.cpp:194 po/rc.cpp:1050 rc.cpp:194 rc.cpp:1050
+#: po/rc.cpp:194 po/rc.cpp:1053 rc.cpp:194 rc.cpp:1053
 msgid "Append 'The' to artist names"
 msgstr "Dodaj 'The' to nazw artystów."
 
@@ -4659,7 +4659,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, label_9)
 #. i18n: file: network/proxysettings.ui:39
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyTypeLabel)
-#: po/rc.cpp:272 po/rc.cpp:368 po/rc.cpp:879 rc.cpp:272 rc.cpp:368 rc.cpp:879
+#: po/rc.cpp:272 po/rc.cpp:368 po/rc.cpp:882 rc.cpp:272 rc.cpp:368 rc.cpp:882
 msgid "Type:"
 msgstr "Typ:"
 
@@ -4695,8 +4695,8 @@ msgstr "Opcje"
 #. i18n: ectx: property (text), widget (BuddyLabel, portLabel)
 #. i18n: file: network/proxysettings.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyPortLabel)
-#: po/rc.cpp:284 po/rc.cpp:323 po/rc.cpp:485 po/rc.cpp:827 po/rc.cpp:891
-#: rc.cpp:284 rc.cpp:323 rc.cpp:485 rc.cpp:827 rc.cpp:891
+#: po/rc.cpp:284 po/rc.cpp:323 po/rc.cpp:485 po/rc.cpp:830 po/rc.cpp:894
+#: rc.cpp:284 rc.cpp:323 rc.cpp:485 rc.cpp:830 rc.cpp:894
 msgid "Port:"
 msgstr "Port:"
 
@@ -4754,10 +4754,10 @@ msgid ""
 "Cantata's config file. To have Cantata prompt for the password before "
 "accessing the share, set the password to '-'"
 msgstr ""
-"Jeżeli hasło zostanie wpisane tutaj, to będzie ono przechowywane w postaci <b>"
-"niezaszyfrowanej</b> w pliku konfiguracyjnym Cantaty. Aby program Cantata za "
-"każdym razem pytał o hasło podczas dostępu do udziału należy hasło ustawić na "
-"'-'"
+"Jeżeli hasło zostanie wpisane tutaj, to będzie ono przechowywane w postaci "
+"<b>niezaszyfrowanej</b> w pliku konfiguracyjnym Cantaty. Aby program Cantata "
+"za każdym razem pytał o hasło podczas dostępu do udziału należy hasło "
+"ustawić na '-'"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:186
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel_2x)
@@ -4790,8 +4790,8 @@ msgid ""
 "Due to the way sshfs works, a suitable ssh-askpass application (ksshaskpass, "
 "ssh-askpass-gnome, etc.) will be required to enter the password."
 msgstr ""
-"W związku z mechanizmem działania sshfs, odpowiednia aplikacja typu "
-"ssh-askpass (ksshaskpass, ssh-askpass-gnome, itp.) konieczna jest do wpisania "
+"W związku z mechanizmem działania sshfs, odpowiednia aplikacja typu ssh-"
+"askpass (ksshaskpass, ssh-askpass-gnome, itp.) konieczna jest do wpisania "
 "hasła."
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:410
@@ -4802,8 +4802,8 @@ msgid ""
 "access locally mounted folders. For normal media players, attached via USB, "
 "Cantata will automatically display the device when it is attached."
 msgstr ""
-"To okno dialogowe jest używane jedynie do dodawania zdalnych urządzeń (np. za "
-"pomocą protokołu Samba) albo w celu dostępu do lokalnie zamontowanych "
+"To okno dialogowe jest używane jedynie do dodawania zdalnych urządzeń (np. "
+"za pomocą protokołu Samba) albo w celu dostępu do lokalnie zamontowanych "
 "katalogów. W przypadku normalnych odtwarzaczy mediów podłączonych przez USB "
 "Cantata automatycznie wyświetli urządzenie gdy będzie ono podłączone."
 
@@ -4911,8 +4911,8 @@ msgid ""
 "For genre, end string with an asterisk to match various genres. e.g 'rock*' "
 "matches 'Hard Rock' and 'Rock and Roll'."
 msgstr ""
-"Dla gatunku, zakończenie tekstu przy użyciu gwiazdki dopasuje wiele gatunków, "
-"np. 'rock*' dopasuje zarówno 'Hard Rock' jak i 'Rock and Roll'."
+"Dla gatunku, zakończenie tekstu przy użyciu gwiazdki dopasuje wiele "
+"gatunków, np. 'rock*' dopasuje zarówno 'Hard Rock' jak i 'Rock and Roll'."
 
 #. i18n: file: gui/coverdialog.ui:30
 #. i18n: ectx: property (toolTip), widget (FlatToolButton, addFileButton)
@@ -4982,8 +4982,8 @@ msgid ""
 "Cantata can only save backdrops and artist images within the music folder "
 "hierarchy if this is 2 levels deep. (i.e. 'Artist/Album/Tracks')"
 msgstr ""
-"Cantata może przechowywać tła i obrazy artystów w katalogu muzyki, jeśli jego "
-"hierarchia jest głęboka na 2 poziomy (tzn. 'Artysta/Album/Utwory')"
+"Cantata może przechowywać tła i obrazy artystów w katalogu muzyki, jeśli "
+"jego hierarchia jest głęboka na 2 poziomy (tzn. 'Artysta/Album/Utwory')"
 
 #. i18n: file: gui/initialsettingswizard.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWizard, InitialSettingsWizard)
@@ -5012,10 +5012,10 @@ msgstr ""
 "<html><head/><body><p>Cantata jest przyjaznym dla użytkownika i bogatym w "
 "funkcje klientem Music Player Daemon (MPD). MPD jest elastyczną i potężną "
 "aplikacją serwerową do odtwarzania muzyki.</p><p>W celu uzyskania informacji "
-"na temat MPD prosimy o odwiedzenie strony <a href=\"http://www.musicpd.org\">"
-"<span style=\" text-decoration: underline; color:#0000ff;\">"
-"http://www.musicpd.org</span></a></p><p>Ten 'kreator konfiguracji' pomoże "
-"przy podstawowych ustawieniach potrzebnych do poprawnego działania programu "
+"na temat MPD prosimy o odwiedzenie strony <a href=\"http://www.musicpd.org"
+"\"><span style=\" text-decoration: underline; color:#0000ff;\">http://www."
+"musicpd.org</span></a></p><p>Ten 'kreator konfiguracji' pomoże przy "
+"podstawowych ustawieniach potrzebnych do poprawnego działania programu "
 "Cantata.</p></body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:108
@@ -5120,7 +5120,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
 #. i18n: file: gui/serversettings.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
-#: po/rc.cpp:482 po/rc.cpp:824 rc.cpp:482 rc.cpp:824
+#: po/rc.cpp:482 po/rc.cpp:827 rc.cpp:482 rc.cpp:827
 msgid "Host (or local socket):"
 msgstr "Host (albo gniazdo lokalne):"
 
@@ -5143,13 +5143,13 @@ msgstr ""
 #. i18n: ectx: property (text), widget (NoteLabel, socketNoteLabel)
 #. i18n: file: gui/serversettings.ui:181
 #. i18n: ectx: property (text), widget (NoteLabel, socketNoteLabel)
-#: po/rc.cpp:500 po/rc.cpp:849 rc.cpp:500 rc.cpp:849
+#: po/rc.cpp:500 po/rc.cpp:852 rc.cpp:500 rc.cpp:852
 msgid ""
 "When using a local socket the full absolute path to the socket needs to be "
 "set. (Port number is not required.)"
 msgstr ""
-"Gdy używane jest lokalne gniazdo, konieczne ustawienie jest pełnej absolutnej "
-"ścieżki do gniazda. (Numer portu nie jest wymagany.)"
+"Gdy używane jest lokalne gniazdo, konieczne ustawienie jest pełnej "
+"absolutnej ścieżki do gniazda. (Numer portu nie jest wymagany.)"
 
 #. i18n: file: gui/initialsettingswizard.ui:530
 #. i18n: ectx: property (text), widget (QLabel, label_13)
@@ -5190,8 +5190,8 @@ msgid ""
 "Cantata can only save backdrops and artist images within the music folder "
 "hierarchy if this is 2 levels deep. i.e. 'Artist/Album/Tracks'."
 msgstr ""
-"Cantata może przechowywać tła i obrazy artystów w katalogu muzyki, jeśli jego "
-"hierarchia jest głęboka na 2 poziomy tzn. 'Artysta/Album/Utwory'."
+"Cantata może przechowywać tła i obrazy artystów w katalogu muzyki, jeśli "
+"jego hierarchia jest głęboka na 2 poziomy tzn. 'Artysta/Album/Utwory'."
 
 #. i18n: file: gui/initialsettingswizard.ui:729
 #. i18n: ectx: property (text), widget (NoteLabel, httpNote)
@@ -5234,8 +5234,8 @@ msgid ""
 "this scenario."
 msgstr ""
 "Cantata grupuje utwory w albumy przy użyciu tagu 'ArtystaAlbumu', jeśli jest "
-"on ustawiony. W przeciwnym wypadku wykorzystywany jest tag 'Artysta'. Jeśli w "
-"kolekcji znajdują się albumy posiadające wiele artystów, to tag "
+"on ustawiony. W przeciwnym wypadku wykorzystywany jest tag 'Artysta'. Jeśli "
+"w kolekcji znajdują się albumy posiadające wiele artystów, to tag "
 "'ArtystaAlbumu' <b>musi</b> w nich być ustawiony aby grupowanie działało "
 "poprawnie. W takim przypadku sugeruje się użycie 'Various Artists'."
 
@@ -5297,24 +5297,24 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, sbStyleLabel)
 #. i18n: file: gui/interfacesettings.ui:153
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
-#. i18n: file: gui/interfacesettings.ui:188
+#. i18n: file: gui/interfacesettings.ui:195
 #. i18n: ectx: property (text), widget (BuddyLabel, label_xx)
-#. i18n: file: gui/interfacesettings.ui:229
+#. i18n: file: gui/interfacesettings.ui:236
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
-#. i18n: file: gui/interfacesettings.ui:352
+#. i18n: file: gui/interfacesettings.ui:359
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueViewLabel)
 #. i18n: file: gui/interfacesettings.ui:82
 #. i18n: ectx: property (text), widget (BuddyLabel, sbStyleLabel)
 #. i18n: file: gui/interfacesettings.ui:153
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
-#. i18n: file: gui/interfacesettings.ui:188
+#. i18n: file: gui/interfacesettings.ui:195
 #. i18n: ectx: property (text), widget (BuddyLabel, label_xx)
-#. i18n: file: gui/interfacesettings.ui:229
+#. i18n: file: gui/interfacesettings.ui:236
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
-#. i18n: file: gui/interfacesettings.ui:352
+#. i18n: file: gui/interfacesettings.ui:359
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueViewLabel)
-#: po/rc.cpp:563 po/rc.cpp:584 po/rc.cpp:593 po/rc.cpp:602 po/rc.cpp:629
-#: rc.cpp:563 rc.cpp:584 rc.cpp:593 rc.cpp:602 rc.cpp:629
+#: po/rc.cpp:563 po/rc.cpp:584 po/rc.cpp:596 po/rc.cpp:605 po/rc.cpp:632
+#: rc.cpp:563 rc.cpp:584 rc.cpp:596 rc.cpp:605 rc.cpp:632
 msgid "Style:"
 msgstr "Styl:"
 
@@ -5348,206 +5348,212 @@ msgstr "Automatycznie ukryj"
 msgid "Sort albums by year"
 msgstr "Sortuj albumy przy użyciu roku"
 
-#. i18n: file: gui/interfacesettings.ui:201
+#. i18n: file: gui/interfacesettings.ui:173
+#. i18n: ectx: property (text), widget (QCheckBox, libraryArtistImage)
+#: po/rc.cpp:590 rc.cpp:590
+msgid "Show artist images"
+msgstr "Pokaż obrazy artystów"
+
+#. i18n: file: gui/interfacesettings.ui:208
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
-#: po/rc.cpp:596 rc.cpp:596
+#: po/rc.cpp:599 rc.cpp:599
 msgid "Sort:"
 msgstr "Sortuj:"
 
-#. i18n: file: gui/interfacesettings.ui:242
+#. i18n: file: gui/interfacesettings.ui:249
 #. i18n: ectx: property (text), widget (QCheckBox, playListsStartClosed)
-#. i18n: file: gui/interfacesettings.ui:365
+#. i18n: file: gui/interfacesettings.ui:372
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueStartClosed)
-#. i18n: file: gui/interfacesettings.ui:242
+#. i18n: file: gui/interfacesettings.ui:249
 #. i18n: ectx: property (text), widget (QCheckBox, playListsStartClosed)
-#. i18n: file: gui/interfacesettings.ui:365
+#. i18n: file: gui/interfacesettings.ui:372
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueStartClosed)
-#: po/rc.cpp:605 po/rc.cpp:632 rc.cpp:605 rc.cpp:632
+#: po/rc.cpp:608 po/rc.cpp:635 rc.cpp:608 rc.cpp:635
 msgid "Initially collapse albums"
 msgstr "Zwiń albumy przy uruchomieniu"
 
-#. i18n: file: gui/interfacesettings.ui:252
+#. i18n: file: gui/interfacesettings.ui:259
 #. i18n: ectx: property (title), widget (QGroupBox, otherViewGroupBox)
-#: po/rc.cpp:608 rc.cpp:608
+#: po/rc.cpp:611 rc.cpp:611
 msgid "Other Views"
 msgstr "Inne widoki"
 
-#. i18n: file: gui/interfacesettings.ui:264
+#. i18n: file: gui/interfacesettings.ui:271
 #. i18n: ectx: property (text), widget (BuddyLabel, folderViewLabel)
-#: po/rc.cpp:611 rc.cpp:611
+#: po/rc.cpp:614 rc.cpp:614
 msgid "Folders:"
 msgstr "Katalogi:"
 
-#. i18n: file: gui/interfacesettings.ui:277
+#. i18n: file: gui/interfacesettings.ui:284
 #. i18n: ectx: property (text), widget (BuddyLabel, streamsViewLabel)
-#: po/rc.cpp:614 rc.cpp:614
+#: po/rc.cpp:617 rc.cpp:617
 msgid "Streams:"
 msgstr "Strumienie:"
 
-#. i18n: file: gui/interfacesettings.ui:290
+#. i18n: file: gui/interfacesettings.ui:297
 #. i18n: ectx: property (text), widget (BuddyLabel, onlineViewLabel)
-#: po/rc.cpp:617 rc.cpp:617
+#: po/rc.cpp:620 rc.cpp:620
 msgid "Online:"
 msgstr "Online:"
 
-#. i18n: file: gui/interfacesettings.ui:303
+#. i18n: file: gui/interfacesettings.ui:310
 #. i18n: ectx: property (text), widget (BuddyLabel, devicesViewLabel)
-#: po/rc.cpp:620 rc.cpp:620
+#: po/rc.cpp:623 rc.cpp:623
 msgid "Devices:"
 msgstr "Urządzenia:"
 
-#. i18n: file: gui/interfacesettings.ui:316
+#. i18n: file: gui/interfacesettings.ui:323
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #. i18n: file: support/shortcutssettingswidget.ui:22
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#. i18n: file: gui/interfacesettings.ui:316
+#. i18n: file: gui/interfacesettings.ui:323
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #. i18n: file: support/shortcutssettingswidget.ui:22
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#: po/rc.cpp:623 po/rc.cpp:972 rc.cpp:623 rc.cpp:972
+#: po/rc.cpp:626 po/rc.cpp:975 rc.cpp:626 rc.cpp:975
 msgid "Search:"
 msgstr "Szukaj:"
 
-#. i18n: file: gui/interfacesettings.ui:372
+#. i18n: file: gui/interfacesettings.ui:379
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueAutoExpand)
-#: po/rc.cpp:635 rc.cpp:635
+#: po/rc.cpp:638 rc.cpp:638
 msgid "Automatically expand current album"
 msgstr "Automatycznie rozwijaj obecny album"
 
-#. i18n: file: gui/interfacesettings.ui:379
+#. i18n: file: gui/interfacesettings.ui:386
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueScroll)
-#: po/rc.cpp:638 rc.cpp:638
+#: po/rc.cpp:641 rc.cpp:641
 msgid "Scroll to current track"
 msgstr "Przewiń do obecnego utworu"
 
-#. i18n: file: gui/interfacesettings.ui:386
+#. i18n: file: gui/interfacesettings.ui:393
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueConfirmClear)
-#: po/rc.cpp:641 rc.cpp:641
+#: po/rc.cpp:644 rc.cpp:644
 msgid "Prompt before clearing"
 msgstr "Pytaj przed czyszczeniem"
 
-#. i18n: file: gui/interfacesettings.ui:393
+#. i18n: file: gui/interfacesettings.ui:400
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueSearch)
-#: po/rc.cpp:644 rc.cpp:644
+#: po/rc.cpp:647 rc.cpp:647
 msgid "Separate action (and shortcut) for play queue search"
 msgstr "Osobna akcja (i skrót) dla wyszukiwania w kolejce"
 
-#. i18n: file: gui/interfacesettings.ui:435
+#. i18n: file: gui/interfacesettings.ui:442
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_cover)
-#: po/rc.cpp:653 rc.cpp:653
+#: po/rc.cpp:656 rc.cpp:656
 msgid "Current album cover"
 msgstr "Okładka obecnego albumu"
 
-#. i18n: file: gui/interfacesettings.ui:582
+#. i18n: file: gui/interfacesettings.ui:589
 #. i18n: ectx: attribute (title), widget (QWidget, toolbarTab)
-#: po/rc.cpp:672 rc.cpp:672
+#: po/rc.cpp:675 rc.cpp:675
 msgid "Toolbar"
 msgstr "Pasek narzędzi"
 
-#. i18n: file: gui/interfacesettings.ui:591
+#. i18n: file: gui/interfacesettings.ui:598
 #. i18n: ectx: property (text), widget (QCheckBox, showStopButton)
-#: po/rc.cpp:675 rc.cpp:675
+#: po/rc.cpp:678 rc.cpp:678
 msgid "Show stop button"
 msgstr "Pokazuj przycisk stop"
 
-#. i18n: file: gui/interfacesettings.ui:598
+#. i18n: file: gui/interfacesettings.ui:605
 #. i18n: ectx: property (text), widget (QCheckBox, showCoverWidget)
-#: po/rc.cpp:678 rc.cpp:678
+#: po/rc.cpp:681 rc.cpp:681
 msgid "Show cover of current track"
 msgstr "Pokazuj okładkę obecnego utworu"
 
-#. i18n: file: gui/interfacesettings.ui:605
+#. i18n: file: gui/interfacesettings.ui:612
 #. i18n: ectx: property (text), widget (QCheckBox, showRatingWidget)
-#: po/rc.cpp:681 rc.cpp:681
+#: po/rc.cpp:684 rc.cpp:684
 msgid "Show track rating"
 msgstr "Pokazuj ocenę utworu"
 
-#. i18n: file: gui/interfacesettings.ui:613
+#. i18n: file: gui/interfacesettings.ui:620
 #. i18n: ectx: attribute (title), widget (QWidget, tab_7)
-#: po/rc.cpp:684 rc.cpp:684
+#: po/rc.cpp:687 rc.cpp:687
 msgid "External"
 msgstr "Zewnętrzne"
 
-#. i18n: file: gui/interfacesettings.ui:619
+#. i18n: file: gui/interfacesettings.ui:626
 #. i18n: ectx: property (text), widget (QCheckBox, systemTrayPopup)
-#: po/rc.cpp:687 rc.cpp:687
+#: po/rc.cpp:690 rc.cpp:690
 msgid "Show popup messages when changing tracks"
 msgstr "Pokazuj wyskakujące okienka przy zmianie utworu"
 
-#. i18n: file: gui/interfacesettings.ui:629
+#. i18n: file: gui/interfacesettings.ui:636
 #. i18n: ectx: property (text), widget (QCheckBox, systemTrayCheckBox)
-#: po/rc.cpp:690 rc.cpp:690
+#: po/rc.cpp:693 rc.cpp:693
 msgid "Show icon in notification area"
 msgstr "Pokarz ikonę w tacce systemowej"
 
-#. i18n: file: gui/interfacesettings.ui:639
+#. i18n: file: gui/interfacesettings.ui:646
 #. i18n: ectx: property (text), widget (QCheckBox, minimiseOnClose)
-#: po/rc.cpp:693 rc.cpp:693
+#: po/rc.cpp:696 rc.cpp:696
 msgid "Minimize to notification area when closed"
 msgstr "Minimalizuj do tacki systemowej przy zamykaniu"
 
-#. i18n: file: gui/interfacesettings.ui:646
+#. i18n: file: gui/interfacesettings.ui:653
 #. i18n: ectx: property (title), widget (QGroupBox, startupState)
-#: po/rc.cpp:696 rc.cpp:696
+#: po/rc.cpp:699 rc.cpp:699
 msgid "On Start-up"
 msgstr "Przy uruchomieniu"
 
-#. i18n: file: gui/interfacesettings.ui:652
+#. i18n: file: gui/interfacesettings.ui:659
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateShow)
-#: po/rc.cpp:699 rc.cpp:699
+#: po/rc.cpp:702 rc.cpp:702
 msgid "Show main window"
 msgstr "Pokaż główne okno"
 
-#. i18n: file: gui/interfacesettings.ui:659
+#. i18n: file: gui/interfacesettings.ui:666
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateHide)
-#: po/rc.cpp:702 rc.cpp:702
+#: po/rc.cpp:705 rc.cpp:705
 msgid "Hide main window"
 msgstr "Ukryj główne okno"
 
-#. i18n: file: gui/interfacesettings.ui:666
+#. i18n: file: gui/interfacesettings.ui:673
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateRestore)
-#: po/rc.cpp:705 rc.cpp:705
+#: po/rc.cpp:708 rc.cpp:708
 msgid "Restore previous state"
 msgstr "Przywróć poprzedni stan"
 
-#. i18n: file: gui/interfacesettings.ui:690
+#. i18n: file: gui/interfacesettings.ui:697
 #. i18n: ectx: attribute (title), widget (QWidget, tab_4)
-#: po/rc.cpp:708 streams/streamproviderlistdialog.cpp:216 rc.cpp:708
+#: po/rc.cpp:711 streams/streamproviderlistdialog.cpp:216 rc.cpp:711
 msgid "General"
 msgstr "Ogólne"
 
-#. i18n: file: gui/interfacesettings.ui:701
+#. i18n: file: gui/interfacesettings.ui:708
 #. i18n: ectx: property (toolTip), widget (QCheckBox, groupSingle)
-#: po/rc.cpp:711 rc.cpp:711
+#: po/rc.cpp:714 rc.cpp:714
 msgid "Place albums with only one track under 'Various Artists/Single Tracks'"
 msgstr ""
 "Umieść albumy z tylko jednym utworem w grupie \"Various Artists/Single Tracks"
 "\""
 
-#. i18n: file: gui/interfacesettings.ui:704
+#. i18n: file: gui/interfacesettings.ui:711
 #. i18n: ectx: property (text), widget (QCheckBox, groupSingle)
-#: po/rc.cpp:714 rc.cpp:714
+#: po/rc.cpp:717 rc.cpp:717
 msgid "Group single track albums"
 msgstr "Grupuj pojedyncze utwory"
 
-#. i18n: file: gui/interfacesettings.ui:711
+#. i18n: file: gui/interfacesettings.ui:718
 #. i18n: ectx: property (toolTip), widget (QCheckBox, useComposer)
-#: po/rc.cpp:717 rc.cpp:717
+#: po/rc.cpp:720 rc.cpp:720
 msgid ""
 "Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums."
 msgstr ""
 "Do grupowania albumów użyj tagu \"Kompozytor\" zamiast tagów \"Artysta\" lub "
 "\"Artysta albumu\"."
 
-#. i18n: file: gui/interfacesettings.ui:714
+#. i18n: file: gui/interfacesettings.ui:721
 #. i18n: ectx: property (text), widget (QCheckBox, useComposer)
-#: po/rc.cpp:720 rc.cpp:720
+#: po/rc.cpp:723 rc.cpp:723
 msgid "Group albums by composer"
 msgstr "Grupuj albumy na podstawie kompozytora"
 
-#. i18n: file: gui/interfacesettings.ui:721
+#. i18n: file: gui/interfacesettings.ui:728
 #. i18n: ectx: property (toolTip), widget (QCheckBox, filteredOnly)
-#: po/rc.cpp:723 rc.cpp:723
+#: po/rc.cpp:726 rc.cpp:726
 msgid ""
 "<p>When adding artists, or albums to the playqueue, or editing tags, etc, "
 "then only use songs that pass the current Genre or string filter.</p><p>e.g. "
@@ -5561,33 +5567,33 @@ msgstr ""
 "tylko te utwory zostaną dodane, jeśli filtr gatunków ustawiony jest na "
 "\"Metal\"."
 
-#. i18n: file: gui/interfacesettings.ui:724
+#. i18n: file: gui/interfacesettings.ui:731
 #. i18n: ectx: property (text), widget (QCheckBox, filteredOnly)
-#: po/rc.cpp:726 rc.cpp:726
+#: po/rc.cpp:729 rc.cpp:729
 msgid "Only act on songs that pass filtering"
 msgstr "Działaj tylko na utworach, które pasują do filtru."
 
-#. i18n: file: gui/interfacesettings.ui:731
+#. i18n: file: gui/interfacesettings.ui:738
 #. i18n: ectx: property (text), widget (QCheckBox, fetchCovers)
-#: po/rc.cpp:729 rc.cpp:729
+#: po/rc.cpp:732 rc.cpp:732
 msgid "Fetch missing covers from Last.fm"
 msgstr "Pobierz brakujące okładki z Last.fm"
 
-#. i18n: file: gui/interfacesettings.ui:738
+#. i18n: file: gui/interfacesettings.ui:745
 #. i18n: ectx: property (text), widget (QCheckBox, showDeleteAction)
-#: po/rc.cpp:732 rc.cpp:732
+#: po/rc.cpp:735 rc.cpp:735
 msgid "Show delete action in context menus"
 msgstr "Pokazuj akcję usuwania w menu kontekstowym"
 
-#. i18n: file: gui/interfacesettings.ui:745
+#. i18n: file: gui/interfacesettings.ui:752
 #. i18n: ectx: property (text), widget (QCheckBox, forceSingleClick)
-#: po/rc.cpp:735 rc.cpp:735
+#: po/rc.cpp:738 rc.cpp:738
 msgid "Enforce single-click activation of items"
 msgstr "Wymuś aktywację elementów przy pojedynczym kliknięciu"
 
-#. i18n: file: gui/interfacesettings.ui:753
+#. i18n: file: gui/interfacesettings.ui:760
 #. i18n: ectx: property (toolTip), widget (QCheckBox, touchFriendly)
-#: po/rc.cpp:739 rc.cpp:739
+#: po/rc.cpp:742 rc.cpp:742
 #, no-c-format
 msgid ""
 "<p>This will change Cantata's interface as detailed:\n"
@@ -5599,40 +5605,40 @@ msgid ""
 "text field</li></ul></p>"
 msgstr ""
 "<p>To ustawienie wpłynie na interfejs w następujący sposób:\n"
-"<ul><li>Przyciski odtwarzania i kontroli będą 33% szersze</li><li>Widoki będą "
-"przesuwane przez przeciągnięcie</li><li>Aby przeciągnąć elementy trzeba "
+"<ul><li>Przyciski odtwarzania i kontroli będą 33% szersze</li><li>Widoki "
+"będą przesuwane przez przeciągnięcie</li><li>Aby przeciągnąć elementy trzeba "
 "kliknąć/dotknąć lewy górny róg</li><li>Paski przewijania będą szerokie tylko "
 "na kilka pikseli</li><li>Akcje (np. \"Dodaj do kolejki odtwarzania) będą "
 "zawsze widoczne (nie tylko po najechaniu na nie kursorem)</li><li>Wejścia "
 "numeryczne będą miały przyciski + i − obok pola tekstowego</li></ul></p>"
 
-#. i18n: file: gui/interfacesettings.ui:756
+#. i18n: file: gui/interfacesettings.ui:763
 #. i18n: ectx: property (text), widget (QCheckBox, touchFriendly)
-#: po/rc.cpp:743 rc.cpp:743
+#: po/rc.cpp:746 rc.cpp:746
 msgid "Make interface more touch friendly"
 msgstr "Interfejs dotykowy"
 
-#. i18n: file: gui/interfacesettings.ui:763
+#. i18n: file: gui/interfacesettings.ui:770
 #. i18n: ectx: property (text), widget (QCheckBox, infoTooltips)
-#: po/rc.cpp:746 rc.cpp:746
+#: po/rc.cpp:749 rc.cpp:749
 msgid "Show song information tooltips"
 msgstr "Pokazuj dymki z informacją utworu"
 
-#. i18n: file: gui/interfacesettings.ui:770
+#. i18n: file: gui/interfacesettings.ui:777
 #. i18n: ectx: property (text), widget (QCheckBox, retinaSupport)
-#: po/rc.cpp:749 rc.cpp:749
+#: po/rc.cpp:752 rc.cpp:752
 msgid "Support retina displays"
 msgstr "Obsługa wyświetlaczy retina"
 
-#. i18n: file: gui/interfacesettings.ui:777
+#. i18n: file: gui/interfacesettings.ui:784
 #. i18n: ectx: property (text), widget (BuddyLabel, langLabel)
-#: po/rc.cpp:752 rc.cpp:752
+#: po/rc.cpp:755 rc.cpp:755
 msgid "Language:"
 msgstr "Język:"
 
-#. i18n: file: gui/interfacesettings.ui:792
+#. i18n: file: gui/interfacesettings.ui:799
 #. i18n: ectx: property (text), widget (NoteLabel, singleClickLabel)
-#: po/rc.cpp:755 rc.cpp:755
+#: po/rc.cpp:758 rc.cpp:758
 msgid ""
 "Changing the 'Enforce single-click activation of items' setting will require "
 "a re-start of Cantata."
@@ -5640,22 +5646,22 @@ msgstr ""
 "Zmiana ustawienia 'Wymuś aktywację elementów przy pojedynczym kliknięciu' "
 "wymaga restartu Cantaty."
 
-#. i18n: file: gui/interfacesettings.ui:799
+#. i18n: file: gui/interfacesettings.ui:806
 #. i18n: ectx: property (text), widget (NoteLabel, langNoteLabel)
-#: po/rc.cpp:758 rc.cpp:758
+#: po/rc.cpp:761 rc.cpp:761
 msgid "Changing the language setting will require a re-start of Cantata."
 msgstr "Zmiana ustawienia języka wymaga restartu Cantaty."
 
-#. i18n: file: gui/interfacesettings.ui:806
+#. i18n: file: gui/interfacesettings.ui:813
 #. i18n: ectx: property (text), widget (NoteLabel, touchFriendlyNoteLabel)
-#: po/rc.cpp:761 rc.cpp:761
+#: po/rc.cpp:764 rc.cpp:764
 msgid ""
 "Changing the 'touch friendly' setting will require a re-start of Cantata."
 msgstr "Zmiana ustawienia 'Interfejs dotykowy' wymaga restartu Cantaty."
 
-#. i18n: file: gui/interfacesettings.ui:813
+#. i18n: file: gui/interfacesettings.ui:820
 #. i18n: ectx: property (text), widget (NoteLabel, retinaSupportNoteLabel)
-#: po/rc.cpp:764 rc.cpp:764
+#: po/rc.cpp:767 rc.cpp:767
 msgid ""
 "Enabling support for retina displays will produce sharper icons on the "
 "retina display, but may produce less sharp icons on non-retina displays. "
@@ -5663,42 +5669,42 @@ msgid ""
 msgstr ""
 "Włączenie obsługi wyświetlaczy retina spowoduje użycie bardziej wyrazistych "
 "ikon na wyświetlaczach retina, ale może doprowadzić do mniej wyrazistego "
-"wyświetlania ikon na wyświetlaczach nie-retina. Zmiana tego ustawienia wymaga "
-"restartu Cantaty."
+"wyświetlania ikon na wyświetlaczach nie-retina. Zmiana tego ustawienia "
+"wymaga restartu Cantaty."
 
 #. i18n: file: gui/mainwindow.ui:181
 #. i18n: ectx: property (text), widget (QLabel, dynamicLabel)
-#: po/rc.cpp:767 rc.cpp:767
+#: po/rc.cpp:770 rc.cpp:770
 msgid "[Dynamic]"
 msgstr "[Dynamiczne]"
 
 #. i18n: file: gui/mainwindow.ui:204
 #. i18n: ectx: property (text), widget (UrlLabel, fullScreenLabel)
-#: po/rc.cpp:770 rc.cpp:770
+#: po/rc.cpp:773 rc.cpp:773
 msgid "Exit Full Screen"
 msgstr "Wyjdź z pełnego ekranu"
 
 #. i18n: file: gui/playbacksettings.ui:38
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6b)
-#: po/rc.cpp:776 rc.cpp:776
+#: po/rc.cpp:779 rc.cpp:779
 msgid "Fadeout on stop:"
 msgstr "Wycisz przy zatrzymaniu:"
 
 #. i18n: file: gui/playbacksettings.ui:58
 #. i18n: ectx: property (text), widget (QCheckBox, stopOnExit)
-#: po/rc.cpp:785 rc.cpp:785
+#: po/rc.cpp:788 rc.cpp:788
 msgid "Stop playback on exit"
 msgstr "Zatrzymaj odtwarzanie przy wyjściu"
 
 #. i18n: file: gui/playbacksettings.ui:65
 #. i18n: ectx: property (text), widget (QCheckBox, inhibitSuspend)
-#: po/rc.cpp:788 rc.cpp:788
+#: po/rc.cpp:791 rc.cpp:791
 msgid "Inhibit suspend whilst playing"
 msgstr "Powstrzymaj przejście w stan wstrzymania podczas odtwarzania"
 
 #. i18n: file: gui/playbacksettings.ui:72
 #. i18n: ectx: property (text), widget (NoteLabel, noteLabel)
-#: po/rc.cpp:791 rc.cpp:791
+#: po/rc.cpp:794 rc.cpp:794
 msgid ""
 "If you press and hold the stop button, then a menu will be shown allowing "
 "you to choose whether to stop playback now, or after the current track. (The "
@@ -5711,43 +5717,43 @@ msgstr ""
 
 #. i18n: file: gui/playbacksettings.ui:82
 #. i18n: ectx: property (title), widget (QGroupBox, outputBox)
-#: po/rc.cpp:794 rc.cpp:794
+#: po/rc.cpp:797 rc.cpp:797
 msgid "Output"
 msgstr "Wyjście"
 
 #. i18n: file: gui/playbacksettings.ui:106
 #. i18n: ectx: property (text), widget (BuddyLabel, crossfadingLabel)
-#: po/rc.cpp:800 rc.cpp:800
+#: po/rc.cpp:803 rc.cpp:803
 msgid "Crossfade between tracks:"
 msgstr "Przenikanie między utworami:"
 
 #. i18n: file: gui/playbacksettings.ui:116
 #. i18n: ectx: property (suffix), widget (QSpinBox, crossfading)
-#: po/rc.cpp:803 rc.cpp:803
+#: po/rc.cpp:806 rc.cpp:806
 msgid " s"
 msgstr "s"
 
 #. i18n: file: gui/playbacksettings.ui:129
 #. i18n: ectx: property (text), widget (BuddyLabel, replayGainLabel)
-#: po/rc.cpp:809 rc.cpp:809
+#: po/rc.cpp:812 rc.cpp:812
 msgid "Replay gain:"
 msgstr "Replay gain:"
 
 #. i18n: file: gui/playbacksettings.ui:172
 #. i18n: ectx: property (text), widget (UrlLabel, aboutReplayGain)
-#: po/rc.cpp:812 rc.cpp:812
+#: po/rc.cpp:815 rc.cpp:815
 msgid "About replay gain"
 msgstr "O ReplayGain:"
 
 #. i18n: file: gui/playbacksettings.ui:181
 #. i18n: ectx: property (text), widget (QLabel, outputsViewLabel)
-#: po/rc.cpp:815 rc.cpp:815
+#: po/rc.cpp:818 rc.cpp:818
 msgid "Use the checkboxes below to control the active outputs."
 msgstr "Użyj poniższych pól wyboru aby kontrolować aktywne wyjścia."
 
 #. i18n: file: gui/serversettings.ui:35
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:818 rc.cpp:818
+#: po/rc.cpp:821 rc.cpp:821
 msgid "Collection:"
 msgstr "Kolekcja:"
 
@@ -5759,13 +5765,13 @@ msgstr "Kolekcja:"
 #. i18n: ectx: property (text), widget (BuddyLabel, coverNameLabel)
 #. i18n: file: gui/serversettings.ui:246
 #. i18n: ectx: property (text), widget (BuddyLabel, basicCoverNameLabel)
-#: po/rc.cpp:836 po/rc.cpp:858 rc.cpp:836 rc.cpp:858
+#: po/rc.cpp:839 po/rc.cpp:861 rc.cpp:839 rc.cpp:861
 msgid "Cover filename:"
 msgstr "Nazwa pliku okładki:"
 
 #. i18n: file: gui/serversettings.ui:152
 #. i18n: ectx: property (toolTip), widget (LineEdit, coverName)
-#: po/rc.cpp:840 rc.cpp:840
+#: po/rc.cpp:843 rc.cpp:843
 #, no-c-format
 msgid ""
 "<p>Filename (without extension) to save downloaded covers as.<br/>If left "
@@ -5780,13 +5786,13 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:159
 #. i18n: ectx: property (text), widget (BuddyLabel, streamUrlLabel)
-#: po/rc.cpp:843 rc.cpp:843
+#: po/rc.cpp:846 rc.cpp:846
 msgid "HTTP stream URL:"
 msgstr "URL strumienia HTTP:"
 
 #. i18n: file: gui/serversettings.ui:174
 #. i18n: ectx: property (text), widget (NoteLabel, musicFolderNoteLabel)
-#: po/rc.cpp:846 rc.cpp:846
+#: po/rc.cpp:849 rc.cpp:849
 msgid ""
 "The 'Music folder' setting is used to lookup cover-art (either the value "
 "specified above, or <code>cover.jpg / cover.png</code> if not set). If you "
@@ -5801,7 +5807,7 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:188
 #. i18n: ectx: property (text), widget (NoteLabel, streamUrlNoteLabel)
-#: po/rc.cpp:852 rc.cpp:852
+#: po/rc.cpp:855 rc.cpp:855
 msgid ""
 "'HTTP Stream URL' is only of use if you have MPD configured to output to a "
 "HTTP stream, and you wish Cantata to be able to play that stream."
@@ -5811,7 +5817,7 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:261
 #. i18n: ectx: property (text), widget (NoteLabel, basicMusicFolderNoteLabel)
-#: po/rc.cpp:861 rc.cpp:861
+#: po/rc.cpp:864 rc.cpp:864
 msgid ""
 "If you change the 'Music folder' setting, then you will need to manually "
 "update the music database. This can be performed by pressing the 'Refresh "
@@ -5823,70 +5829,70 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:268
 #. i18n: ectx: property (text), widget (NoteLabel, musicFolderNoteLabel_2)
-#: po/rc.cpp:864 rc.cpp:864
+#: po/rc.cpp:867 rc.cpp:867
 msgid ""
 "If no setting is specified for 'Cover filename, then Cantata will use a "
 "default of <code>cover</code>"
 msgstr ""
-"Jeśli nie ustawiono wartości dla nazwy pliku okładki, Cantata użyje domyślnej "
-"wartości <code>cover</code>"
+"Jeśli nie ustawiono wartości dla nazwy pliku okładki, Cantata użyje "
+"domyślnej wartości <code>cover</code>"
 
 #. i18n: file: http/httpserversettings.ui:25
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#: po/rc.cpp:867 rc.cpp:867
+#: po/rc.cpp:870 rc.cpp:870
 msgid "Network interface:"
 msgstr "Interfejs sieciowy:"
 
 #. i18n: file: http/httpserversettings.ui:40
 #. i18n: ectx: property (text), widget (NoteLabel, label_4)
-#: po/rc.cpp:870 rc.cpp:870
+#: po/rc.cpp:873 rc.cpp:873
 msgid ""
 "MPD usually only plays songs that are stored within its folders. Cantata "
 "contains a minimal HTTP server that can be used to serve other files to MPD. "
 "This, however, will only work whilst Cantata is running."
 msgstr ""
-"MPD zazwyczaj odtwarza jedynie utwory znajdujące się w jego katalogu. Cantata "
-"zawiera jednak minimalistyczny serwer HTTP który może być używany do "
+"MPD zazwyczaj odtwarza jedynie utwory znajdujące się w jego katalogu. "
+"Cantata zawiera jednak minimalistyczny serwer HTTP który może być używany do "
 "udostępniania innych plików serwerowi MPD. Ta funkcja działa jedynie wtedy, "
 "gdy program Cantata jest uruchomiony."
 
 #. i18n: file: http/httpserversettings.ui:47
 #. i18n: ectx: property (text), widget (NoteLabel, label_4b)
-#: po/rc.cpp:873 rc.cpp:873
+#: po/rc.cpp:876 rc.cpp:876
 msgid ""
 "If you choose 'Local loopback' for 'Network interface', then MPD <b>must</b> "
 "also be on this computer."
 msgstr ""
-"Jeżeli 'Interfejs sieciowy' ustawiony jest na 'Lokalny loopback', to MPD <b>"
-"musi</b> również być na tym samym komputerze."
+"Jeżeli 'Interfejs sieciowy' ustawiony jest na 'Lokalny loopback', to MPD "
+"<b>musi</b> również być na tym samym komputerze."
 
 #. i18n: file: network/proxysettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, modeLabel)
-#: po/rc.cpp:876 rc.cpp:876
+#: po/rc.cpp:879 rc.cpp:879
 msgid "Mode:"
 msgstr "Tryb:"
 
 #. i18n: file: network/proxysettings.ui:50
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:882 rc.cpp:882
+#: po/rc.cpp:885 rc.cpp:885
 msgid "HTTP Proxy"
 msgstr "HTTP Proxy"
 
 #. i18n: file: network/proxysettings.ui:55
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:885 rc.cpp:885
+#: po/rc.cpp:888 rc.cpp:888
 msgid "SOCKS Proxy"
 msgstr "SOCKS Proxy"
 
 #. i18n: file: online/onlinesettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:900 rc.cpp:900
+#: po/rc.cpp:903 rc.cpp:903
 msgid "Use the checkboxes below to configure the list of active services."
 msgstr "Użyj poniższych pól wyboru aby skonfigurować listę aktywnych serwisów."
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:32
 #. i18n: ectx: property (text), widget (BuddyLabel, scrobblerLabel)
-#: po/rc.cpp:906 rc.cpp:906
+#: po/rc.cpp:909 rc.cpp:909
 msgid "Scrobble using:"
 msgstr "Scrobbluj przy użyciu:"
 
@@ -5898,7 +5904,7 @@ msgstr "Scrobbluj przy użyciu:"
 #. i18n: ectx: property (text), widget (QLabel, statusLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:94
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#: po/rc.cpp:915 po/rc.cpp:942 rc.cpp:915 rc.cpp:942
+#: po/rc.cpp:918 po/rc.cpp:945 rc.cpp:918 rc.cpp:945
 msgid "Status:"
 msgstr "Stan:"
 
@@ -5910,26 +5916,26 @@ msgstr "Stan:"
 #. i18n: ectx: property (text), widget (QPushButton, loginButton)
 #. i18n: file: streams/digitallyimportedsettings.ui:120
 #. i18n: ectx: property (text), widget (QPushButton, loginButton)
-#: po/rc.cpp:918 po/rc.cpp:945 streams/digitallyimportedsettings.cpp:138
-#: streams/digitallyimportedsettings.cpp:144 rc.cpp:918 rc.cpp:945
+#: po/rc.cpp:921 po/rc.cpp:948 streams/digitallyimportedsettings.cpp:138
+#: streams/digitallyimportedsettings.cpp:144 rc.cpp:921 rc.cpp:948
 msgid "Login"
 msgstr "Login"
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:131
 #. i18n: ectx: property (text), widget (QCheckBox, enableScrobbling)
-#: po/rc.cpp:921 rc.cpp:921
+#: po/rc.cpp:924 rc.cpp:924
 msgid "Scrobble tracks"
 msgstr "Scrobbluj utwory"
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:138
 #. i18n: ectx: property (text), widget (QCheckBox, showLove)
-#: po/rc.cpp:924 rc.cpp:924
+#: po/rc.cpp:927 rc.cpp:927
 msgid "Show 'Love' button"
 msgstr "Pokazuj przycisk \"polub\""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:927 rc.cpp:927
+#: po/rc.cpp:930 rc.cpp:930
 msgid ""
 "You can listen for free without an account, but Premium members can listen "
 "to higher quality streams without advertisements. Visit <a href=\"http://www."
@@ -5943,35 +5949,35 @@ msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:42
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: po/rc.cpp:930 rc.cpp:930
+#: po/rc.cpp:933 rc.cpp:933
 msgid "Premium Account"
 msgstr "Konto premium"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:81
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
-#: po/rc.cpp:939 rc.cpp:939
+#: po/rc.cpp:942 rc.cpp:942
 msgid "Stream type:"
 msgstr "Typ strumienia:"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:127
 #. i18n: ectx: property (text), widget (QLabel, expiryLabel)
-#: po/rc.cpp:948 rc.cpp:948
+#: po/rc.cpp:951 rc.cpp:951
 msgid "Session expiry:"
 msgstr "Wygaśnięcie sesji:"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:157
 #. i18n: ectx: property (text), widget (NoteLabel, noteLabel)
-#: po/rc.cpp:951 rc.cpp:951
+#: po/rc.cpp:954 rc.cpp:954
 msgid ""
 "These settings apply to Digitally Imported, JazzRadio.com, RockRadio.com, "
 "and Sky.fm"
 msgstr ""
-"Te ustawienia odnoszą się do Digitally Imported, JazzRadio.com, RockRadio.com "
-"oraz Sky.fm"
+"Te ustawienia odnoszą się do Digitally Imported, JazzRadio.com, RockRadio."
+"com oraz Sky.fm"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:164
 #. i18n: ectx: property (text), widget (NoteLabel, note2Label)
-#: po/rc.cpp:954 rc.cpp:954
+#: po/rc.cpp:957 rc.cpp:957
 msgid ""
 "If you enter account details, then a 'DI' status item will appear under the "
 "list of streams. This will indicate if you are logged in or not."
@@ -5981,80 +5987,80 @@ msgstr ""
 
 #. i18n: file: streams/streamssettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:957 rc.cpp:957
+#: po/rc.cpp:960 rc.cpp:960
 msgid "Use the checkboxes below to configure the list of active providers."
 msgstr ""
 "Użyj poniższych pól wyboru aby skonfigurować listę aktywnych dostawców."
 
 #. i18n: file: streams/streamssettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
-#: po/rc.cpp:960 rc.cpp:960
+#: po/rc.cpp:963 rc.cpp:963
 msgid "Configure Provider"
 msgstr "Konfiguruj dostawcę"
 
 #. i18n: file: streams/streamssettings.ui:60
 #. i18n: ectx: property (text), widget (QPushButton, installButton)
-#: po/rc.cpp:963 rc.cpp:963
+#: po/rc.cpp:966 rc.cpp:966
 msgid "Install"
 msgstr "Instaluj"
 
 #. i18n: file: streams/streamssettings.ui:80
 #. i18n: ectx: property (text), widget (PlainNoteLabel, note)
-#: po/rc.cpp:969 rc.cpp:969
+#: po/rc.cpp:972 rc.cpp:972
 msgid "Built-in categories are shown in italic, and these cannot be removed."
 msgstr "Wbudowane kategorie wyświetlane są kursywą i nie mogą zostać usunięte."
 
 #. i18n: file: support/shortcutssettingswidget.ui:65
 #. i18n: ectx: property (title), widget (QGroupBox, actionBox)
-#: po/rc.cpp:975 rc.cpp:975
+#: po/rc.cpp:978 rc.cpp:978
 msgid "Shortcut for Selected Action"
 msgstr "Skrót dla zaznaczonej akcji"
 
 #. i18n: file: support/shortcutssettingswidget.ui:71
 #. i18n: ectx: property (text), widget (QRadioButton, useDefault)
-#: po/rc.cpp:978 rc.cpp:978
+#: po/rc.cpp:981 rc.cpp:981
 msgid "Default:"
 msgstr "Domyślny:"
 
 #. i18n: file: support/shortcutssettingswidget.ui:85
 #. i18n: ectx: property (text), widget (QRadioButton, useCustom)
-#: po/rc.cpp:984 rc.cpp:984
+#: po/rc.cpp:987 rc.cpp:987
 msgid "Custom:"
 msgstr "Własny:"
 
 #. i18n: file: tags/tageditor.ui:80
 #. i18n: ectx: property (text), widget (StateLabel, albumArtistLabel)
-#: po/rc.cpp:996 rc.cpp:996
+#: po/rc.cpp:999 rc.cpp:999
 msgid "Album artist:"
 msgstr "Artysta albumu:"
 
 #. i18n: file: tags/tageditor.ui:119
 #. i18n: ectx: property (text), widget (StateLabel, trackLabel)
-#: po/rc.cpp:1005 rc.cpp:1005
+#: po/rc.cpp:1008 rc.cpp:1008
 msgid "Track number:"
 msgstr "Numer utworu:"
 
 #. i18n: file: tags/tageditor.ui:132
 #. i18n: ectx: property (text), widget (StateLabel, discLabel)
-#: po/rc.cpp:1008 rc.cpp:1008
+#: po/rc.cpp:1011 rc.cpp:1011
 msgid "Disc number:"
 msgstr "Numer płyty:"
 
 #. i18n: file: tags/tageditor.ui:171
 #. i18n: ectx: property (text), widget (StateLabel, ratingLabel)
-#: po/rc.cpp:1017 rc.cpp:1017
+#: po/rc.cpp:1020 rc.cpp:1020
 msgid "Rating:"
 msgstr "Ocena:"
 
 #. i18n: file: tags/tageditor.ui:186
 #. i18n: ectx: property (text), widget (QLabel, ratingVarious)
-#: po/rc.cpp:1020 rc.cpp:1020
+#: po/rc.cpp:1023 rc.cpp:1023
 msgid "<i>(Various)</i>"
 msgstr "<i>(Various)</i>"
 
 #. i18n: file: tags/tageditor.ui:210
 #. i18n: ectx: property (text), widget (PlainNoteLabel, label_7x)
-#: po/rc.cpp:1026 rc.cpp:1026
+#: po/rc.cpp:1029 rc.cpp:1029
 msgid ""
 "Multiple genres should be separated via a semicolon (e.g. 'Rock;Hard Rock')"
 msgstr ""
@@ -6062,37 +6068,38 @@ msgstr ""
 
 #. i18n: file: tags/tageditor.ui:217
 #. i18n: ectx: property (text), widget (PlainNoteLabel, label_7y)
-#: po/rc.cpp:1029 rc.cpp:1029
+#: po/rc.cpp:1032 rc.cpp:1032
 msgid ""
 "Ratings are stored in an external database, and <b>not</b> in the song's "
 "file."
 msgstr ""
-"Oceny przechowywane są w zewnętrznej bazie danych i <b>nie</b> w pliku utworu."
+"Oceny przechowywane są w zewnętrznej bazie danych i <b>nie</b> w pliku "
+"utworu."
 
 #. i18n: file: tags/trackorganiser.ui:115
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
-#: po/rc.cpp:1053 rc.cpp:1053
+#: po/rc.cpp:1056 rc.cpp:1056
 msgid "Original Name"
 msgstr "Obecna nazwa"
 
 #. i18n: file: tags/trackorganiser.ui:120
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
-#: po/rc.cpp:1056 rc.cpp:1056
+#: po/rc.cpp:1059 rc.cpp:1059
 msgid "New Name"
 msgstr "Nowa nazwa"
 
 #. i18n: file: tags/trackorganiser.ui:137
 #. i18n: ectx: property (text), widget (UrlNoteLabel, ratingsNote)
-#: po/rc.cpp:1062 rc.cpp:1062
+#: po/rc.cpp:1065 rc.cpp:1065
 msgid "Ratings will be lost if a file is renamed."
 msgstr "Oceny zostaną utracone jeśli nazwa pliku zostanie zmieniona."
 
-#: po/rc.cpp:1063 rc.cpp:1063
+#: po/rc.cpp:1066 rc.cpp:1066
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "Piotr Wicijowski"
 
-#: po/rc.cpp:1064 rc.cpp:1064
+#: po/rc.cpp:1067 rc.cpp:1067
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "piotr[dot]wicijowski[at]gmail[dot]com"
@@ -6293,8 +6300,8 @@ msgid ""
 "will need to have this already started and running. Cantata can only 'Love' "
 "tracks via this, and cannot enable/disable scrobbling."
 msgstr ""
-"Jeśli użyty jest scrobbler oznaczony jako '(przy użyciu MPD)' (na przykład %"
-"1), to musi on być już uruchomiony i działający. Cantata może jedynie "
+"Jeśli użyty jest scrobbler oznaczony jako '(przy użyciu MPD)' (na przykład "
+"%1), to musi on być już uruchomiony i działający. Cantata może jedynie "
 "'Polubić' utwory przy jego pomocy, ale nie może wyłączyć lub włączyć "
 "scrobblowania."
 
@@ -6808,8 +6815,8 @@ msgid ""
 "Capitalize the first letter of text fields (e.g. 'Title', 'Artist', etc) of "
 "<b>all</b> tracks?"
 msgstr ""
-"Ustawić dużą pierwszą literę pól tekstowych (np. 'Tytuł', 'Artysta', itp.) <b>"
-"wszystkich</b> utworów?"
+"Ustawić dużą pierwszą literę pól tekstowych (np. 'Tytuł', 'Artysta', itp.) "
+"<b>wszystkich</b> utworów?"
 
 #: tags/tageditor.cpp:654
 msgid ""
@@ -6856,8 +6863,8 @@ msgid ""
 "read them from MPD."
 msgstr ""
 "Oceny utworów nie są przechowywane w plikach utworów, ale w bazie danych "
-"'sticker' serwera MPD. W celu zapisania ocen do plików, Cantata musi odczytać "
-"je najpierw z MPD."
+"'sticker' serwera MPD. W celu zapisania ocen do plików, Cantata musi "
+"odczytać je najpierw z MPD."
 
 #: tags/tageditor.cpp:773
 msgid "Song rating has not been read from MPD!"
@@ -7009,8 +7016,8 @@ msgid ""
 msgstr ""
 "Dostęp do plików utworów nie powiódł się!\n"
 "\n"
-"Proszę sprawdzić poprawność ustawień \"Katalog z muzyką\" w programie Cantata "
-"oraz \"music_directory\" w MPD."
+"Proszę sprawdzić poprawność ustawień \"Katalog z muzyką\" w programie "
+"Cantata oraz \"music_directory\" w MPD."
 
 #: widgets/songdialog.cpp:52
 msgid ""
@@ -7681,9 +7688,6 @@ msgstr "Dostępne aktualizacje: %1"
 
 #~ msgid "Covers:"
 #~ msgstr "Okładki:"
-
-#~ msgid "Show artist images"
-#~ msgstr "Pokaż obrazy artystów"
 
 #~ msgid ""
 #~ "<i><b>NOTE:</b> When looking for artist images, Cantata will look for "

@@ -2,7 +2,6 @@
 -----
 1. If connected to MPD>=0.19 using address 127.0.01, then pass local files as
    'file://' URLS.
-2. Re-add option to show artist images in tree and list views.
 
 1.5.1
 -----
@@ -15,6 +14,7 @@
    started.
 6. Fix compilation when online services disabled.
 7. Fix dynamic playlists with no include rules.
+8. Re-add option to show artist images in tree and list views.
 
 1.5.0.1
 -------

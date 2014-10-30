@@ -174,6 +174,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addView(i18n("Search (via MPD)"), QLatin1String("SearchPage"));
     addView(i18n("Info - Current song information (artist, album, and lyrics)"), QLatin1String("ContextPage"));
 
+    connect(libraryView, SIGNAL(currentIndexChanged(int)), SLOT(libraryViewChanged()));
     connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playlistsViewChanged()));
     connect(playQueueView, SIGNAL(currentIndexChanged(int)), SLOT(playQueueViewChanged()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
@@ -264,6 +265,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
 void InterfaceSettings::load()
 {
+    libraryArtistImage->setChecked(Settings::self()->libraryArtistImage());
     selectEntry(libraryView, Settings::self()->libraryView());
     libraryYear->setChecked(Settings::self()->libraryYear());
     selectEntry(albumsView, Settings::self()->albumsView());
@@ -349,10 +351,12 @@ void InterfaceSettings::load()
     setPlayQueueBackgroundOpacityLabel();
     setPlayQueueBackgroundBlurLabel();
     enablePlayQueueBackgroundOptions();
+    libraryViewChanged();
 }
 
 void InterfaceSettings::save()
 {
+    Settings::self()->saveLibraryArtistImage(libraryArtistImage->isChecked());
     Settings::self()->saveLibraryView(getValue(libraryView));
     Settings::self()->saveLibraryYear(libraryYear->isChecked());
     Settings::self()->saveAlbumsView(getValue(albumsView));
@@ -518,6 +522,19 @@ void InterfaceSettings::addView(const QString &v, const QString &prop)
     QListWidgetItem *item=new QListWidgetItem(v, views);
     item->setCheckState(Qt::Unchecked);
     item->setData(Qt::UserRole, prop);
+}
+
+void InterfaceSettings::libraryViewChanged()
+{
+    int vt=getValue(libraryView);
+    bool isIcon=ItemView::Mode_IconTop==vt;
+    bool isSimpleTree=ItemView::Mode_SimpleTree==vt || ItemView::Mode_BasicTree==vt;
+    libraryArtistImage->setEnabled(!isIcon && !isSimpleTree);
+    if (isIcon) {
+        libraryArtistImage->setChecked(true);
+    } else if (isSimpleTree) {
+        libraryArtistImage->setChecked(false);
+    }
 }
 
 void InterfaceSettings::playQueueViewChanged()

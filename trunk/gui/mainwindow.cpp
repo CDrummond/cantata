@@ -1475,6 +1475,7 @@ void MainWindow::readSettings()
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
     MusicLibraryItemAlbum::setSortByDate(Settings::self()->libraryYear());
+    MusicLibraryModel::self()->readConfig();
     libraryPage->setView(Settings::self()->libraryView());
     playlistsPage->setView(Settings::self()->playlistsView());
     #ifdef ENABLE_STREAMS

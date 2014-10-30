@@ -368,6 +368,11 @@ int Settings::onlineView()
 }
 #endif
 
+bool Settings::libraryArtistImage()
+{
+    return cfg.get("libraryArtistImage", false);
+}
+
 int Settings::albumSort()
 {
     if (version()<CANTATA_MAKE_VERSION(1, 3, 52)) {
@@ -1012,6 +1017,11 @@ void Settings::saveOnlineView(int v)
     cfg.set("onlineView", ItemView::modeStr((ItemView::Mode)v));
 }
 #endif
+
+void Settings::saveLibraryArtistImage(bool v)
+{
+    cfg.set("libraryArtistImage", v);
+}
 
 void Settings::saveAlbumSort(int v)
 {

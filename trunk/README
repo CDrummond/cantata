@@ -424,7 +424,8 @@ mpdListSize=<Integer>
 alwaysUseHttp=<Boolean>
     Set to 'true' to always serve non-MPD files via HTTP server. If set to
     'false', then Cantata will only use its internal HTTP server for songs
-    from media devices, or when connected to MPD via a standard socket.
+    from media devices, or when connected to MPD via a standard socket (when
+    MPD version is <0.19 or not connected to 127.0.0.1).
     Default is false.
 
 alwaysUseLsInfo=<Boolean>

@@ -55,6 +55,7 @@ public:
 
     MusicLibraryModel(QObject *parent=0, bool isMpdModel=true, bool isCheckable=false);
     ~MusicLibraryModel();
+    void readConfig();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -121,6 +122,7 @@ private:
 private:
     bool mpdModel;
     bool checkable;
+    bool artistImages;
     MusicLibraryItemRoot *rootItem;
     QDateTime databaseTime;
     bool databaseTimeUnreliable;

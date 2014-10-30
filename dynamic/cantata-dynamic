@@ -677,7 +677,7 @@ sub getSongs() {
                 }
                 @mpdSongs=uniq(@mpdSongs);
             }
-        } elsif ($ratingTo>=0) {
+        } elsif ($ratingTo>=1 && $ratingFrom>=0) {
             if (1==$testMode) { print "No include rules, so get all songs in rating range ${ratingFrom}..${ratingTo}...\n"; }
             my @songs = &getRatedSongs();
             foreach my $song (@songs) {

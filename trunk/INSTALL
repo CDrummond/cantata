@@ -163,6 +163,17 @@ The following options may be passed to CMake:
         Default: <empty>
 
 
+    Ubuntu specific:
+
+    -DENABLE_UBUNTU=ON
+        Build for Ubuntu Touch.
+        Default: OFF
+
+    -DENABLE_UBUNTU_COMMAND_LINE=ON
+        Build for the Ubuntu SDK from the command line.
+        Default: OFF
+
+
     Testing ONLY options:
 
     -DENABLE_MODEL_TEST=ON

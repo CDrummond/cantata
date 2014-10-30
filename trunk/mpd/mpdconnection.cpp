@@ -309,7 +309,7 @@ void MPDConnection::stop()
 bool MPDConnection::localFilePlaybackSupported() const
 {
     return details.isLocal() ||
-           (ver>=CANTATA_MAKE_VERSION(0, 19, 0) && handlers.contains(QLatin1String("file")) &&
+           (ver>=CANTATA_MAKE_VERSION(0, 19, 0) && /*handlers.contains(QLatin1String("file")) &&*/
            details.hostname==QLatin1String("127.0.0.1"));
 }
 

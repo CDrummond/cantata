@@ -3,6 +3,8 @@
 1. If connected to MPD>=0.19 using address 127.0.01, then pass local files as
    'file://' URLS.
 2. Ignore "The" when sorting albums.
+3. In Artists view, place "Various Artists" in alphabetical position - this is
+   consistent with albums view.
 
 1.5.2
 -----

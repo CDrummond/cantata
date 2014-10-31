@@ -35,6 +35,7 @@ class SelectorLabel : public QLabel
 public:
     SelectorLabel(QWidget *p);
     void setUseArrow(bool a) { useArrow=a; }
+    void clear() { if (menu) menu->clear(); }
     void addItem(const QString &text, const QString &data);
     bool event(QEvent *e);
     int currentIndex() const { return current; }

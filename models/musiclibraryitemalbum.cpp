@@ -73,6 +73,8 @@ bool MusicLibraryItemAlbum::lessThan(const MusicLibraryItem *a, const MusicLibra
     return aa->year()<ab->year();
 }
 
+static const QLatin1String constThe("The ");
+
 MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString &original, const QString &mbId, quint32 year, const QString &sort, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(data, parent)
     , m_year(year)
@@ -81,13 +83,17 @@ MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString 
     , m_totalTime(0)
     , m_numTracks(0)
     , m_originalName(original!=data ? original : QString())
-    , m_sortString(sort)
     , m_id(mbId)
     #ifdef ENABLE_UBUNTU
     , m_coverRequested(false)
     #endif
     , m_type(Song::Standard)
 {
+    if (!sort.isEmpty()) {
+        m_sortString=sort;
+    } else if (m_itemData.startsWith(constThe)) {
+        m_sortString=m_itemData.mid(4);
+    }
 }
 
 MusicLibraryItemAlbum::~MusicLibraryItemAlbum()

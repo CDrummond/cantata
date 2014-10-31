@@ -1223,8 +1223,8 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
         #ifndef ENABLE_UBUNTU
         if (!pix) {
             if (song.isArtistImageRequest() && song.isVariousArtists()) {
-                // Load VA image...
-                pix=new QPixmap(Icons::self()->variousArtistsIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+                // Load artist image...
+                pix=new QPixmap(Icons::self()->artistIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             } else if (Song::SingleTracks==song.type) {
                 pix=new QPixmap(Icons::self()->albumIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             } else if (song.isStandardStream()) {

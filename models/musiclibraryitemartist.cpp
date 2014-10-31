@@ -47,9 +47,9 @@ bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibr
     const MusicLibraryItemArtist *aa=static_cast<const MusicLibraryItemArtist *>(a);
     const MusicLibraryItemArtist *ab=static_cast<const MusicLibraryItemArtist *>(b);
 
-    if (aa->isVarious() != ab->isVarious()) {
-        return aa->isVarious() > ab->isVarious();
-    }
+//    if (aa->isVarious() != ab->isVarious()) {
+//        return aa->isVarious() > ab->isVarious();
+//    }
     return aa->sortString().localeAwareCompare(ab->sortString())<0;
 }
 

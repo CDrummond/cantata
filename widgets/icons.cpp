@@ -412,7 +412,6 @@ Icons::Icons()
     }
     radioStreamIcon=Icon::create("radio", constStdSizes);
     addRadioStreamIcon=Icon::create("addradio", constStdSizes);
-    variousArtistsIcon.addFile(":va.svg");
     artistIcon.addFile(":artist.svg");
     lastFmIcon.addFile(":lastfm.svg");
     #ifndef ENABLE_KDE_SUPPORT

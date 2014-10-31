@@ -64,7 +64,6 @@ public:
     Icon connectIcon;
     Icon disconnectIcon;
     Icon speakerIcon;
-    Icon variousArtistsIcon;
     Icon editIcon;
     Icon searchIcon;
     Icon clearListIcon;

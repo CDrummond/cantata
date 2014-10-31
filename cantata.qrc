@@ -48,7 +48,6 @@
 <file alias="tunein">streams/icons/tunein.svg</file>
 <file alias="dirble">streams/icons/dirble.svg</file>
 
-<file alias="va.svg">icons/view-media-artist-various.svg</file>
 <file alias="artist.svg">icons/view-media-artist.svg</file>
 <file alias="radio16.png">icons/view-radiostream16.png</file>
 <file alias="radio22.png">icons/view-radiostream22.png</file>

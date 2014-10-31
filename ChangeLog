@@ -5,6 +5,7 @@
 2. Ignore "The" when sorting albums.
 3. In Artists view, place "Various Artists" in alphabetical position - this is
    consistent with albums view.
+4. Use regular artist icon for "Various Artists"
 
 1.5.2
 -----

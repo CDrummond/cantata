@@ -549,10 +549,11 @@ void AlbumsModel::setAlbumSort(int s)
     }
 }
 
+static const QLatin1String constThe("The ");
+
 AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, const QString &i, const QString &arSort, const QString &alSort, quint16 y)
     : artist(ar)
     , album(al)
-    , albumSortString(alSort)
     , id(i)
     , year(y)
     , updated(false)
@@ -565,8 +566,14 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, const QS
 {
     if (!arSort.isEmpty()) {
         artistSortString=arSort;
-    } else if (artist.startsWith(QLatin1String("The "))) {
+    } else if (artist.startsWith(constThe)) {
         artistSortString=artist.mid(4);
+    }
+
+    if (!alSort.isEmpty()) {
+        albumSortString=alSort;
+    } else if (artist.startsWith(constThe)) {
+        albumSortString=artist.mid(4);
     }
 }
 

@@ -58,6 +58,8 @@ static const QString constDefaultCover=QLatin1String("qrc:/artist.svg");
 static const QString constDefaultVariousCover=QLatin1String("qrc:/variousartists.svg");
 #endif
 
+static const QLatin1String constThe("The ");
+
 MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, const QString &artistName, const QString &artistSort, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(data, parent)
     #ifdef ENABLE_UBUNTU
@@ -70,7 +72,7 @@ MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, const QStrin
     if (!artistSort.isEmpty()) {
         m_sortString=artistSort;
         m_haveSort=true;
-    } else if (m_itemData.startsWith(QLatin1String("The "))) {
+    } else if (m_itemData.startsWith(constThe)) {
         m_sortString=m_itemData.mid(4);
     }
 

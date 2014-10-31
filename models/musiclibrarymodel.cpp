@@ -164,6 +164,7 @@ MusicLibraryModel::~MusicLibraryModel()
 
 void MusicLibraryModel::readConfig()
 {
+    #ifndef ENABLE_UBUNTU
     bool aa=Settings::self()->libraryArtistImage();
     if (aa!=artistImages) {
         artistImages=aa;
@@ -172,6 +173,7 @@ void MusicLibraryModel::readConfig()
             emit dataChanged(index, index);
         }
     }
+    #endif
 }
 
 QModelIndex MusicLibraryModel::index(int row, int column, const QModelIndex &parent) const

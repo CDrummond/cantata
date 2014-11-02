@@ -1352,7 +1352,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
     }
     QString existingBackup;
 
-    if (existing && !existing->url().isEmpty()) {
+    if (existing && !existing->url().isEmpty() && !existing->url().startsWith(Covers::constCoverInTagPrefix)) {
         static const QLatin1String constBakExt(".bak");
         existingBackup=existing->url()+constBakExt;
         if (!QFile::rename(existing->url(), existingBackup)) {

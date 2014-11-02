@@ -87,11 +87,11 @@ const QLatin1String Covers::constScaledCoverDir("covers-scaled/");
 const QLatin1String Covers::constCddaCoverDir("cdda/");
 const QLatin1String Covers::constFileName("cover");
 const QLatin1String Covers::constArtistImage("artist");
+const QString Covers::constCoverInTagPrefix=QLatin1String("{tag}");
 
 static const char * constExtensions[]={".jpg", ".png", 0};
 static bool saveInMpdDir=true;
 static bool fetchCovers=true;
-static QString constCoverInTagPrefix=QLatin1String("{tag}");
 static QString constNoCover=QLatin1String("{nocover}");
 
 #if QT_VERSION >= 0x050100

@@ -12,6 +12,7 @@
 1. Fix Ubuntu Touch builds.
 2. When refreshing search menu, clear items first!
 3. Fix setting of cover when existing cover is embedded in music file.
+4. Fix OSX executable name for case-sensitive filesystems.
 
 1.5.1
 -----

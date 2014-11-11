@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>@MACOSX_BUNDLE_BUNDLE_NAME@</string>
+	<string>@MACOSX_BUNDLE_EXECUTABLE@</string>
 	<key>CFBundleGetInfoString</key>
 	<string></string>
 	<key>CFBundleIconFile</key>

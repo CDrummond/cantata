@@ -212,7 +212,7 @@
     </widget>
    </item>
    <item>
-    <widget class="PlainNoteLabel" name="label_7y">
+    <widget class="PlainNoteLabel" name="ratingNoteLabel">
      <property name="text">
       <string>Ratings are stored in an external database, and &lt;b&gt;not&lt;/b&gt; in the song's file.</string>
      </property>

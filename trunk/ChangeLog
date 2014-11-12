@@ -6,6 +6,8 @@
 3. In Artists view, place "Various Artists" in alphabetical position - this is
    consistent with albums view.
 4. Use regular artist icon for "Various Artists"
+5. If MPD does not support 'sticker' command, then inform user that ratings
+   cannot be stored.
 
 1.5.2
 -----
@@ -13,6 +15,7 @@
 2. When refreshing search menu, clear items first!
 3. Fix setting of cover when existing cover is embedded in music file.
 4. Fix OSX executable name for case-sensitive filesystems.
+5. Hide ratings widgets, etc, in tag editor for devices and Mopidy, etc.
 
 1.5.1
 -----

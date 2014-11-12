@@ -218,6 +218,7 @@ public:
     bool modifiedFindSupported() const { return ver>=CANTATA_MAKE_VERSION(0, 19, 0); }
     bool replaygainSupported() const { return ver>=CANTATA_MAKE_VERSION(0, 16, 0); }
     bool localFilePlaybackSupported() const;
+    bool stickersSupported() const { return canUseStickers; }
 
     long version() const { return ver; }
     static bool isPlaylist(const QString &file);
@@ -405,6 +406,7 @@ private:
     void emitStatusUpdated(MPDStatusValues &v);
     void clearError();
     void getRatings(QList<Song> &songs);
+    void getStickerSupport();
     void playFirstTrack(bool emitErrors);
     void seek(bool fwd);
 
@@ -413,6 +415,7 @@ private:
     long ver;
     QSet<QString> handlers;
     QSet<QString> tagTypes;
+    bool canUseStickers;
     MPDConnectionDetails details;
     QDateTime dbUpdate;
     // Use 2 sockets, 1 for commands and 1 to receive MPD idle events.

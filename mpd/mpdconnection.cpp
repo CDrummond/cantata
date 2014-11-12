@@ -223,6 +223,7 @@ void MPDConnectionDetails::setDirReadable()
 MPDConnection::MPDConnection()
     : thread(0)
     , ver(0)
+    , canUseStickers(false)
     , sock(this)
     , idleSocket(this)
     , lastStatusPlayQueueVersion(0)
@@ -479,6 +480,7 @@ void MPDConnection::reconnect()
         getStats();
         getUrlHandlers();
         getTagTypes();
+        getStickerSupport();
         playListInfo();
         outputs();
         reconnectStart=0;
@@ -555,6 +557,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
             getStats();
             getUrlHandlers();
             getTagTypes();
+            getStickerSupport();
             emit stateChanged(true);
             break;
         default:
@@ -1946,6 +1949,11 @@ void MPDConnection::setRating(const QString &file, quint8 val)
         return;
     }
 
+    if (!canUseStickers) {
+        emit error(i18n("Cannot store ratings, as the 'sticker' MPD command is not supported."));
+        return;
+    }
+
     bool ok=0==val
                 ? sendCommand("sticker delete song "+encodeName(file)+' '+constRatingSticker, 0!=val).ok
                 : sendCommand("sticker set song "+encodeName(file)+' '+constRatingSticker+' '+quote(val)).ok;
@@ -1965,6 +1973,11 @@ void MPDConnection::setRating(const QStringList &files, quint8 val)
 {
     if (1==files.count()) {
         setRating(files.at(0), val);
+        return;
+    }
+
+    if (!canUseStickers) {
+        emit error(i18n("Cannot store ratings, as the 'sticker' MPD command is not supported."));
         return;
     }
 
@@ -2005,19 +2018,28 @@ void MPDConnection::setRating(const QStringList &files, quint8 val)
 void MPDConnection::getRating(const QString &file)
 {
     quint8 r=0;
-    Response resp=sendCommand("sticker get song "+encodeName(file)+' '+constRatingSticker, false);
-    if (resp.ok) {
-        QByteArray val=MPDParseUtils::parseSticker(resp.data, constRatingSticker);
-        if (!val.isEmpty()) {
-            r=val.toUInt();
+    if (canUseStickers) {
+        Response resp=sendCommand("sticker get song "+encodeName(file)+' '+constRatingSticker, false);
+        if (resp.ok) {
+            QByteArray val=MPDParseUtils::parseSticker(resp.data, constRatingSticker);
+            if (!val.isEmpty()) {
+                r=val.toUInt();
+            }
+        } else { // Ignore errors about uknown sticker...
+            clearError();
         }
-    } else { // Ignore errors about uknown sticker...
-        clearError();
-    }
-    if (r>Song::Rating_Max) {
-        r=0;
+        if (r>Song::Rating_Max) {
+            r=0;
+        }
     }
     emit rating(file, r);
+}
+
+void MPDConnection::getStickerSupport()
+{
+    Response response=sendCommand("commands");
+    canUseStickers=response.ok &&
+        MPDParseUtils::parseList(response.data, QByteArray("command: ")).toSet().contains("sticker");
 }
 
 bool MPDConnection::fadingVolume()

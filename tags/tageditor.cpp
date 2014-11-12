@@ -120,12 +120,14 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
 {
     iCount++;
     bool isMopidy=false;
+    bool ratingsSupport=false;
     #ifdef ENABLE_DEVICES_SUPPORT
     if (deviceUdi.isEmpty()) {
         baseDir=MPDConnection::self()->getDetails().dir;
         composerSupport=MPDConnection::self()->composerTagSupported();
         commentSupport=MPDConnection::self()->commentTagSupported();
         isMopidy=MPDConnection::self()->isMopdidy();
+        ratingsSupport=MPDConnection::self()->stickersSupported();
     } else {
         Device *dev=getDevice(udi, parentWidget());
 
@@ -141,6 +143,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     composerSupport=MPDConnection::self()->composerTagSupported();
     commentSupport=MPDConnection::self()->commentTagSupported();
     isMopidy=MPDConnection::self()->isMopdidy();
+    ratingsSupport=MPDConnection::self()->stickersSupported();
     #endif
 
     foreach (const Song &s, songs) {
@@ -172,6 +175,13 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         REMOVE(ratingWidget);
         REMOVE(ratingLabel);
         REMOVE(ratingVarious);
+        REMOVE(ratingNoteLabel);
+    } else if (!ratingsSupport) {
+        REMOVE(mopidyNote);
+        REMOVE(ratingWidget);
+        REMOVE(ratingLabel);
+        REMOVE(ratingVarious);
+        REMOVE(ratingNoteLabel);
     } else {
         REMOVE(mopidyNote);
         connect(this, SIGNAL(getRating(QString)), MPDConnection::self(), SLOT(getRating(QString)));
@@ -202,12 +212,12 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     toolsMenu->addAction(i18n("Set 'Album Artist' from 'Artist'"), this, SLOT(setAlbumArtistFromArtist()));
     toolsMenu->addAction(i18n("Capitalize"), this, SLOT(capitalise()));
     toolsMenu->addAction(i18n("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
-    if (!isMopidy) {
+    if (ratingsSupport && !isMopidy) {
         readRatingsAct=toolsMenu->addAction(i18n("Read Ratings from File"), this, SLOT(readRatings()));
         writeRatingsAct=toolsMenu->addAction(i18n("Write Ratings to File"), this, SLOT(writeRatings()));
+        readRatingsAct->setEnabled(false);
+        writeRatingsAct->setEnabled(false);
     }
-    readRatingsAct->setEnabled(false);
-    writeRatingsAct->setEnabled(false);
     setButtonMenu(User3, toolsMenu, InstantPopup);
     enableButton(Ok, false);
     enableButton(Reset, false);
@@ -315,9 +325,9 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     edited=original;
     setIndex(0);
 
-    if (!isMopidy || commentSupport) {
+    if (ratingsSupport || commentSupport) {
         progress->setVisible(true);
-        progress->setRange(0, (original.count()>1 ? (original.count()-1) : 1)*(commentSupport && !isMopidy ? 2 : 1));
+        progress->setRange(0, (original.count()>1 ? (original.count()-1) : 1)*(commentSupport && ratingsSupport ? 2 : 1));
         progress->setValue(0);
     } else {
         progress->setVisible(false);
@@ -330,7 +340,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
             first=false;
         } else {
             trackName->insertItem(trackName->count(), s.filePath());
-            if (!isMopidy) {
+            if (!isMopidy && ratingsSupport) {
                 emit getRating(s.file);
             }
         }
@@ -479,7 +489,9 @@ void TagEditor::setLabelStates()
     discLabel->setOn(o.disc!=e.disc);
     genreLabel->setOn(o.genre!=e.genre);
     yearLabel->setOn(o.year!=e.year);
-    ratingLabel->setOn(o.rating!=e.rating);
+    if (ratingLabel) {
+        ratingLabel->setOn(o.rating!=e.rating);
+    }
 }
 
 void TagEditor::readComments()
@@ -1053,6 +1065,9 @@ void TagEditor::rating(const QString &f, quint8 r)
 
 void TagEditor::checkRating()
 {
+    if (!ratingWidget) {
+        return;
+    }
     checkChanged();
     if (original.count()>1 && 0==currentSongIndex) {
         quint8 rating=Song::Rating_Null;

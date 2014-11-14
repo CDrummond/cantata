@@ -237,7 +237,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         connect(systemTrayPopup, SIGNAL(toggled(bool)), SLOT(systemTrayPopupToggled()));
     }
     #endif
-    #if defined Q_OS_MAC && QT_VERSION >= 0x050100
+    #if QT_VERSION >= 0x050400 || (defined Q_OS_MAC && QT_VERSION >= 0x050100)
     connect(retinaSupport, SIGNAL(toggled(bool)), SLOT(retinaSupportChanged()));
     #else
     REMOVE(retinaSupport)

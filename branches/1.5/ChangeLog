@@ -8,6 +8,7 @@
 6. Use Control+Alt+Number as shortcut to toggle an output.
 7. Don't allow to set short-cuts for collections and outputs actions, as these
    are menus.
+8. Add high-dpi support to Linux and Windows Qt5.4 builds.
 
 1.5.1
 -----

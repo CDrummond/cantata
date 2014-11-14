@@ -22,6 +22,7 @@
  */
 
 #include "application_win.h"
+#include "settings.h"
 #include <QIcon>
 #include <windows.h>
 
@@ -32,6 +33,11 @@ Application::Application(int &argc, char **argv)
     installNativeEventFilter(this);
     #endif
     QIcon::setThemeName(QLatin1String("oxygen"));
+    #if QT_VERSION >= 0x050400
+    if (Settings::self()->retinaSupport()) {
+        setAttribute(Qt::AA_UseHighDpiPixmaps);
+    }
+    #endif
 }
 
 #if QT_VERSION >= 0x050000

@@ -33,6 +33,11 @@ Application::Application(Display *display, Qt::HANDLE visual, Qt::HANDLE colorma
     : KUniqueApplication(display, visual, colormap)
     , w(0)
 {
+    #if QT_VERSION >= 0x050400
+    if (Settings::self()->retinaSupport()) {
+        setAttribute(Qt::AA_UseHighDpiPixmaps);
+    }
+    #endif
 }
 #endif
 
@@ -40,6 +45,11 @@ Application::Application()
     : KUniqueApplication()
     , w(0)
 {
+    #if QT_VERSION >= 0x050400
+    if (Settings::self()->retinaSupport()) {
+        setAttribute(Qt::AA_UseHighDpiPixmaps);
+    }
+    #endif
 }
 
 Application::~Application() {

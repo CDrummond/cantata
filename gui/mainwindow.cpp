@@ -1358,7 +1358,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
             act->setData(o.id);
             act->setCheckable(true);
             act->setChecked(o.enabled);
-            act->setShortcut(Qt::MetaModifier+nextKey(i));
+            act->setShortcut(Qt::ControlModifier+Qt::AltModifier+nextKey(i));
         }
     } else {
         foreach (const Output &o, outputs) {

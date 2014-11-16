@@ -59,6 +59,7 @@ public:
     void setFile(const QString &fileName);
     const Data & results() const { return data; }
     int index() const { return idx; }
+    bool ok() const { return data.peakValue()>0.00001; }
 
 private:
     void run();

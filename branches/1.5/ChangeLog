@@ -9,6 +9,8 @@
 7. Don't allow to set short-cuts for collections and outputs actions, as these
    are menus.
 8. Add high-dpi support to Linux and Windows Qt5.4 builds.
+9. When calculating ReplayGain, if peak value is less than 0.00001 then assume
+   the calculation is invalid.
 
 1.5.1
 -----

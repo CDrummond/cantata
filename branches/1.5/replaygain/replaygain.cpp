@@ -110,7 +110,7 @@ void ReplayGain::showResults()
     for (int i=0; i<files.count(); ++i) {
         TrackScanner *s=scanners[i];
         const Track &t=tracks[i];
-        if (t.success) {
+        if (t.success && s->ok()) {
             printf("TRACK: %d %s %s\n", i, formatDouble(TrackScanner::reference(s->results().loudness)).toLatin1().constData(),
                                            formatDouble(s->results().peakValue()).toLatin1().constData());
             okScanners.append(s);

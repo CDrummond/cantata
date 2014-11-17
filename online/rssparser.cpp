@@ -117,7 +117,17 @@ static Episode parseEpisode(QXmlStreamReader &reader)
                 if (type.startsWith(QLatin1String("audio/")) || audioFormats.contains(type)) {
                     ep.url=QUrl::fromEncoded(reader.attributes().value(QLatin1String("url")).toString().toLatin1());
                 } else if (type.startsWith(QLatin1String("video/")) ) {
-                    ep.video=true;
+                    // At least one broken feed (BUG: 588) has the audio podcast listed as video/mp4,
+                    // ...but the path ends in .mp3 !!!
+                    QUrl url=QUrl::fromEncoded(reader.attributes().value(QLatin1String("url")).toString().toLatin1());
+                    QString path=url.path();
+                    if (path.endsWith(QLatin1String(".mp3"), Qt::CaseInsensitive) ||
+                        path.endsWith(QLatin1String(".ogg"), Qt::CaseInsensitive) ||
+                        path.endsWith(QLatin1String(".wma"), Qt::CaseInsensitive)) {
+                        ep.url=url;
+                    } else {
+                        ep.video=true;
+                    }
                 }
                 consumeCurrentElement(reader);
             } else if (QLatin1String("pubDate")==name) {

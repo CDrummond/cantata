@@ -1,5 +1,5 @@
 if (FFMPEG_FOUND OR MPG123_FOUND)
-    include_directories(${QTINCLUDES} ${ZLIB_INCLUDE_DIRS})
+    include_directories(${QTINCLUDES} ${ZLIB_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR})
     if (FFMPEG_FOUND)
         set(CANTATA_RG_SRCS ${CANTATA_RG_SRCS} ffmpeginput.cpp)
         include_directories(${FFMPEG_INCLUDE_DIRS})

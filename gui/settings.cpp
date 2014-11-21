@@ -174,6 +174,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         details.hostname=cfg.get("host", name.isEmpty() ? mpdDefaults.host : QString());
         details.port=cfg.get("port", name.isEmpty() ? mpdDefaults.port : 6600);
         details.dir=cfg.getDirPath("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music");
+        details.topLevel=cfg.get("topLevel", QString());
         #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
         if (KWallet::Wallet::isEnabled()) {
             if (cfg.get("passwd", false)) {
@@ -885,6 +886,7 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     cfg.set("host", v.hostname);
     cfg.set("port", (int)v.port);
     cfg.setDirPath("dir", v.dir);
+    cfg.set("topLevel", v.topLevel);
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     if (KWallet::Wallet::isEnabled()) {
         cfg.set("passwd", !v.password.isEmpty());

@@ -160,6 +160,7 @@ struct MPDConnectionDetails {
     quint16 port;
     QString password;
     QString dir;
+    QString topLevel;
     bool dirReadable;
     QString coverName;
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK

@@ -1446,14 +1446,14 @@ void MPDConnection::update()
 void MPDConnection::loadLibrary()
 {
     emit updatingLibrary();
-    Response response=alwaysUseLsInfo ? Response(false) : sendCommand("listallinfo", false);
+    Response response=alwaysUseLsInfo || !details.topLevel.isEmpty() ? Response(false) : sendCommand("listallinfo", false);
     MusicLibraryItemRoot *root=0;
     if (response.ok) {
         root = new MusicLibraryItemRoot;
         MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, mopidy, root);
     } else { // MPD >=0.18 can fail listallinfo for large DBs, so get info dir by dir...
         root = new MusicLibraryItemRoot;
-        if (!listDirInfo("/", root)) {
+        if (!listDirInfo(details.topLevel.isEmpty() ? "/" : details.topLevel, root)) {
             delete root;
             root=0;
         }

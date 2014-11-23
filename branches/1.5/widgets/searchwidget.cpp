@@ -142,9 +142,9 @@ void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categori
                 return;
             }
         }
-        cat->blockSignals(false);
-        cat->setCurrentIndex(0);
     }
+    cat->blockSignals(false);
+    cat->setCurrentIndex(0);
 }
 
 void SearchWidget::setCategory(const QString &id)

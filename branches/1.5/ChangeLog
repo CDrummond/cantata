@@ -13,6 +13,7 @@
     the calculation is invalid.
 10. When parsing podcast RSS, if episode is marked as video (e.g. video/mp4) but
     the url ends in an audio extension then use it is proably an audio podcast.
+11. Correctly initialise seach category.
 
 1.5.1
 -----

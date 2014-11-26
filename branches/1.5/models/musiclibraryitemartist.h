@@ -54,7 +54,6 @@ public:
     void addToSingleTracks(MusicLibraryItemArtist *other);
     bool isFromSingleTracks(const Song &s) const;
     void remove(MusicLibraryItemAlbum *album);
-    void updateIndexes();
     Type itemType() const { return Type_Artist; }
     #ifdef ENABLE_UBUNTU
     const QString & cover() const;
@@ -68,6 +67,9 @@ public:
     Song coverSong() const;
 
 private:
+    MusicLibraryItemAlbum * getAlbum(const QString &key) const;
+
+private:
     #ifdef ENABLE_UBUNTU
     mutable QString m_coverName;
     mutable bool m_coverRequested;
@@ -76,7 +78,7 @@ private:
     bool m_haveSort;
     QString m_sortString; // Do we have an actual artist-sort, or is m_sortString just "Artist, The" ??? - needed for cache saving
     QString m_actualArtist;
-    QHash<QString, int> m_indexes;
+    mutable QHash<QString, int> m_indexes;
 };
 
 #endif

@@ -53,6 +53,7 @@ private Q_SLOTS:
     void remove();
     void nameChanged();
     void basicDirChanged();
+    void topLevelChanged();
 
 private:
     void setDetails(const MPDConnectionDetails &details);

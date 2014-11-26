@@ -91,6 +91,7 @@ ServerSettings::ServerSettings(QWidget *p)
     connect(addButton, SIGNAL(clicked(bool)), SLOT(add()));
     connect(name, SIGNAL(textChanged(QString)), SLOT(nameChanged()));
     connect(basicDir, SIGNAL(textChanged(QString)), SLOT(basicDirChanged()));
+    connect(topLevel, SIGNAL(textChanged(QString)), SLOT(topLevelChanged()));
     addButton->setIcon(Icon("list-add"));
     removeButton->setIcon(Icon("list-remove"));
     addButton->setAutoRaise(true);
@@ -167,7 +168,7 @@ void ServerSettings::save()
                 existingInConfig.removeAt(i);
                 found=true;
                 if (c.details.hostname!=e.hostname || c.details.port!=e.port || c.details.password!=e.password ||
-                    c.details.dir!=e.dir || c.details.coverName!=e.coverName
+                    c.details.dir!=e.dir || c.details.coverName!=e.coverName || c.details.topLevel!=e.topLevel
                     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
                     || c.details.streamUrl!=e.streamUrl
                     #endif
@@ -308,6 +309,11 @@ void ServerSettings::basicDirChanged()
     }
 }
 
+void ServerSettings::topLevelChanged()
+{
+    topLevelNoteLabel->setOn(0==stackedWidget->currentIndex() && !topLevel->text().trimmed().isEmpty());
+}
+
 QString ServerSettings::generateName(int ignore) const
 {
     QString n;
@@ -344,6 +350,7 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         streamUrl->setText(details.streamUrl);
         #endif
+        topLevel->setText(details.topLevel);
         stackedWidget->setCurrentIndex(0);
     }
 }
@@ -364,6 +371,7 @@ MPDConnectionDetails ServerSettings::getDetails() const
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         details.streamUrl=streamUrl->text().trimmed();
         #endif
+        details.topLevel=topLevel->text().trimmed();
     } else {
         details=MPDUser::self()->details(true);
         details.dir=Utils::convertPathFromDisplay(basicDir->text());

@@ -8,6 +8,9 @@
 4. Use regular artist icon for "Various Artists"
 5. If MPD does not support 'sticker' command, then inform user that ratings
    cannot be stored.
+6. Add option to set MPD top-level path. Only tracks that are under this path
+   will be used to populate artist and album listings. This is mainly of use
+   when MPD is configured to use a UPnP backend.
 
 1.5.2
 -----

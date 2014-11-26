@@ -45,12 +45,8 @@
 MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create)
 {
     QString aa=songArtist(s);
-    QHash<QString, int>::ConstIterator it=m_indexes.find(aa);
-
-    if (m_indexes.end()==it) {
-        return create ? createArtist(s) : 0;
-    }
-    return static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it));
+    MusicLibraryItemArtist *artistItem=getArtist(aa);
+    return artistItem ? artistItem : (create ? createArtist(s) : 0);
 }
 
 MusicLibraryItemArtist * MusicLibraryItemRoot::createArtist(const Song &s)
@@ -75,12 +71,10 @@ void MusicLibraryItemRoot::groupSingleTracks()
     for (; it!=m_childItems.end(); ) {
         if (various!=(*it) && static_cast<MusicLibraryItemArtist *>(*it)->allSingleTrack()) {
             if (!various) {
-                QHash<QString, int>::ConstIterator it=m_indexes.find(Song::variousArtists());
-                if (m_indexes.end()==it) {
+                various=getArtist(Song::variousArtists());
+                if (!various) {
                     various=new MusicLibraryItemArtist(Song::variousArtists(), QString(), QString(), this);
                     created=true;
-                } else {
-                    various=static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it));
                 }
             }
             various->addToSingleTracks(static_cast<MusicLibraryItemArtist *>(*it));
@@ -92,26 +86,18 @@ void MusicLibraryItemRoot::groupSingleTracks()
     }
 
     if (various) {
-        m_indexes.clear();
         if (created) {
             m_childItems.append(various);
         }
-        it=m_childItems.begin();
-        QList<MusicLibraryItem *>::iterator end=m_childItems.end();
-        for (int i=0; it!=end; ++it, ++i) {
-            m_indexes.insert((*it)->data(), i);
-        }
+        refreshIndexes();
     }
 }
 
 bool MusicLibraryItemRoot::isFromSingleTracks(const Song &s) const
 {
     if (!isFlat && (supportsAlbumArtist && !s.file.isEmpty())) {
-        QHash<QString, int>::ConstIterator it=m_indexes.find(Song::variousArtists());
-
-        if (m_indexes.end()!=it) {
-            return static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it))->isFromSingleTracks(s);
-        }
+        MusicLibraryItemArtist *various=getArtist(Song::variousArtists());
+        return various && various->isFromSingleTracks(s);
     }
     return false;
 }
@@ -960,4 +946,42 @@ QString MusicLibraryItemRoot::songArtist(const Song &s) const
     }
 
     return artistName(s);
+}
+
+MusicLibraryItemArtist * MusicLibraryItemRoot::getArtist(const QString &key) const
+{
+    if (m_indexes.count()==m_childItems.count()) {
+        if (m_childItems.isEmpty()) {
+            return 0;
+        }
+
+        QHash<QString, int>::ConstIterator idx=m_indexes.find(key);
+
+        if (m_indexes.end()==idx) {
+            return 0;
+        }
+
+        // Check index value is within range
+        if (*idx>=0 && *idx<m_childItems.count()) {
+            MusicLibraryItemArtist *a=static_cast<MusicLibraryItemArtist *>(m_childItems.at(*idx));
+            // Check id actually matches!
+            if (a->data()==key) {
+                return a;
+            }
+        }
+    }
+
+    // Something wrong with m_indexes??? So, refresh them...
+    MusicLibraryItemArtist *ar=0;
+    m_indexes.clear();
+    QList<MusicLibraryItem *>::ConstIterator it=m_childItems.constBegin();
+    QList<MusicLibraryItem *>::ConstIterator end=m_childItems.constEnd();
+    for (int i=0; it!=end; ++it, ++i) {
+        MusicLibraryItemArtist *currenArtist=static_cast<MusicLibraryItemArtist *>(*it);
+        if (!ar && currenArtist->data()==key) {
+            ar=currenArtist;
+        }
+        m_indexes.insert(currenArtist->data(), i);
+    }
+    return ar;
 }

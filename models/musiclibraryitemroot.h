@@ -106,11 +106,12 @@ public:
 
 protected:
     QString songArtist(const Song &s) const;
+    MusicLibraryItemArtist * getArtist(const QString &key) const;
 
 protected:
     bool supportsAlbumArtist; // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
     bool isFlat;
-    QHash<QString, int> m_indexes;
+    mutable QHash<QString, int> m_indexes;
     MusicModel *m_model;
 };
 

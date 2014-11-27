@@ -837,7 +837,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDStats::self(), SIGNAL(updated()), this, SLOT(updateStats()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
     connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &)), this, SLOT(updatePlayQueue(const QList<Song> &)));
-    connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
+    connect(MPDConnection::self(), SIGNAL(currentSongUpdated(Song)), this, SLOT(updateCurrentSong(Song)));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
     connect(MPDConnection::self(), SIGNAL(info(const QString &)), SLOT(showInformation(const QString &)));
@@ -1753,7 +1753,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     } else if (wasEmpty || current.isStandardStream()) {
         // Check to see if it has been updated...
         Song pqSong=playQueueModel.getSongByRow(playQueueModel.currentSongRow());
-        if (wasEmpty || pqSong.artist!=current.artist || pqSong.album!=current.album || pqSong.title!=current.title || pqSong.year!=current.year || pqSong.name()!=current.name() ) {
+        if (wasEmpty || pqSong.isDifferent(current) ) {
             updateCurrentSong(pqSong, wasEmpty);
         }
     }
@@ -1767,26 +1767,28 @@ void MainWindow::updateWindowTitle()
     setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
 }
 
-void MainWindow::updateCurrentSong(const Song &song, bool wasEmpty)
+void MainWindow::updateCurrentSong(Song song, bool wasEmpty)
 {
-    current=song;
-    if (current.isCdda()) {
+    if (song.isCdda()) {
         emit getStatus();
-        if (current.isUnknown()) {
+        if (song.isUnknown()) {
             Song pqSong=playQueueModel.getSongById(current.id);
             if (!pqSong.isEmpty()) {
-                current=pqSong;
+                song=pqSong;
             }
         }
     }
 
-    if (current.isCantataStream()) {
-        Song mod=HttpServer::self()->decodeUrl(current.file);
+    if (song.isCantataStream()) {
+        Song mod=HttpServer::self()->decodeUrl(song.file);
         if (!mod.title.isEmpty()) {
-            current=mod;
-            current.id=song.id;
+            song=mod;
+            song.id=song.id;
         }
     }
+
+    bool diffSong=song.isDifferent(current);
+    current=song;
 
     CurrentCover::self()->update(current);
     #ifdef QT_QTDBUS_FOUND
@@ -1802,8 +1804,10 @@ void MainWindow::updateCurrentSong(const Song &song, bool wasEmpty)
     QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
     playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && isPlaying, wasEmpty);
     scrollPlayQueue(wasEmpty);
-    context->update(current);
-    trayItem->songChanged(song, isPlaying);
+    if (diffSong) {
+        context->update(current);
+        trayItem->songChanged(song, isPlaying);
+    }
     centerPlayQueueAction->setEnabled(!song.isEmpty());
 }
 

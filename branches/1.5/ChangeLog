@@ -15,6 +15,8 @@
     the url ends in an audio extension then use it is proably an audio podcast.
 11. Correctly initialise seach category.
 12. Fix potential crashes on refresh.
+13. Fix duplicate notification when Cantata is started whilst playing, or when
+    'Replace Play Queue' is used.
 
 1.5.1
 -----

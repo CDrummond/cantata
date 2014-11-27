@@ -128,6 +128,7 @@ struct Song
     int compareTo(const Song &o) const;
     virtual ~Song() { }
     bool isEmpty() const;
+    bool isDifferent(const Song &s) const { return year!=s.year || artist!=s.artist || album!=s.album || title!=s.title || name()!=s.name(); }
     void guessTags();
     void revertGuessedTags();
     void fillEmptyFields();

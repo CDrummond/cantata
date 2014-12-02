@@ -265,8 +265,8 @@ MainWindow::MainWindow(QWidget *parent)
     dbFullRefreshAction= new Action(refreshDbAction->icon(), i18n("Full Refresh"), this);
     refreshDbAction->setEnabled(false);
     connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::self()->connectIcon);
-    connectionsAction = menuIcons ? new Action(Icon("network-server"), i18n("Collection"), this) : new Action(i18n("Collection"), this);
-    outputsAction = menuIcons ? new Action(Icons::self()->speakerIcon, i18n("Outputs"), this) : new Action(i18n("Outputs"), this);
+    connectionsAction = new Action(HIDE_MENU_ICON(Icon("network-server")), i18n("Collection"), this);
+    outputsAction = new Action(HIDE_MENU_ICON(Icons::self()->speakerIcon), i18n("Outputs"), this);
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
     fwdAction = new Action(this);
     revAction = new Action(this);

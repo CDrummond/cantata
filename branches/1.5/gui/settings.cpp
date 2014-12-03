@@ -170,13 +170,13 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         n=MPDConnectionDetails::configGroupName(details.name);
     }
     if (cfg.hasGroup(n)) {
-        cfg.beginGroup(n);
-        details.hostname=cfg.get("host", name.isEmpty() ? mpdDefaults.host : QString());
-        details.port=cfg.get("port", name.isEmpty() ? mpdDefaults.port : 6600);
-        details.dir=cfg.getDirPath("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music");
+        Configuration grp(n);
+        details.hostname=grp.get("host", name.isEmpty() ? mpdDefaults.host : QString());
+        details.port=grp.get("port", name.isEmpty() ? mpdDefaults.port : 6600);
+        details.dir=grp.getDirPath("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music");
         #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
         if (KWallet::Wallet::isEnabled()) {
-            if (cfg.get("passwd", false)) {
+            if (grp.get("passwd", false)) {
                 if (openWallet()) {
                     wallet->readPassword(name.isEmpty() ? "mpd" : name, details.password);
                 }
@@ -185,12 +185,11 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             }
         } else
         #endif // ENABLE_KWALLET
-            details.password=cfg.get("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
-        details.coverName=cfg.get("coverName", QString());
+            details.password=grp.get("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
+        details.coverName=grp.get("coverName", QString());
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-        details.streamUrl=cfg.get("streamUrl", QString());
+        details.streamUrl=grp.get("streamUrl", QString());
         #endif
-        cfg.endGroup();
     } else {
         details.hostname=mpdDefaults.host;
         details.port=mpdDefaults.port;
@@ -881,13 +880,13 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
 
     QString n=MPDConnectionDetails::configGroupName(v.name);
 
-    cfg.beginGroup(n);
-    cfg.set("host", v.hostname);
-    cfg.set("port", (int)v.port);
-    cfg.setDirPath("dir", v.dir);
+    Configuration grp(n);
+    grp.set("host", v.hostname);
+    grp.set("port", (int)v.port);
+    grp.setDirPath("dir", v.dir);
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     if (KWallet::Wallet::isEnabled()) {
-        cfg.set("passwd", !v.password.isEmpty());
+        grp.set("passwd", !v.password.isEmpty());
         QString walletEntry=v.name.isEmpty() ? "mpd" : v.name;
         if (v.password.isEmpty()) {
             if (wallet) {
@@ -899,12 +898,11 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
         }
     } else
     #endif // ENABLE_KWALLET
-    cfg.set("passwd", v.password);
-    cfg.set("coverName", v.coverName);
+    grp.set("passwd", v.password);
+    grp.set("coverName", v.coverName);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    cfg.set("streamUrl", v.streamUrl);
+    grp.set("streamUrl", v.streamUrl);
     #endif
-    cfg.endGroup();
 }
 
 void Settings::saveCurrentConnection(const QString &v)

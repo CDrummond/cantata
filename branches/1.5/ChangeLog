@@ -18,6 +18,8 @@
     'Replace Play Queue' is used.
 14. Only show output change notification if outputs menu was not previously
     empty.
+15. Construct a new config object, rather than changing group, to avoid any
+    race conditions.
 
 1.5.1
 -----

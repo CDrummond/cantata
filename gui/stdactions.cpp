@@ -51,14 +51,14 @@ StdActions::StdActions()
     savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), HIDE_MENU_ICON_NAME("document-save-as"));
     addToPlayQueueAction = ActionCollection::get()->createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
     replacePlayQueueAction = ActionCollection::get()->createAction("replaceplaylist", i18n("Replace Play Queue"), "media-playback-start");
-    addWithPriorityAction = ActionCollection::get()->createAction("addwithprio", i18n("Add With Priority"), Icon("favorites"));
+    addWithPriorityAction = new Action(Icon("favorites"), i18n("Add With Priority"), 0);
     addPrioHighestAction = new Action(i18n("Highest Priority (255)"), 0);
     addPrioHighAction = new Action(i18n("High Priority (200)"), 0);
     addPrioMediumAction = new Action(i18n("Medium Priority (125)"), 0);
     addPrioLowAction = new Action(i18n("Low Priority (50)"), 0);
     addPrioDefaultAction = new Action(i18n("Default Priority (0)"), 0);
     addPrioCustomAction = new Action(i18n("Custom Priority..."), 0);
-    addToStoredPlaylistAction = ActionCollection::get()->createAction("addtostoredplaylist", i18n("Add To Playlist"), Icons::self()->playlistIcon);
+    addToStoredPlaylistAction = new Action(Icons::self()->playlistIcon, i18n("Add To Playlist"), 0);
     #ifdef TAGLIB_FOUND
     organiseFilesAction = ActionCollection::get()->createAction("organizefiles", i18n("Organize Files"), "inode-directory");
     editTagsAction = ActionCollection::get()->createAction("edittags", i18n("Edit Track Information"), "document-edit");

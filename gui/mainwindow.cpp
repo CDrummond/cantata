@@ -1371,7 +1371,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         }
     }
 
-    if (newConn==lastConn && enabledMpd!=lastEnabledMpd) {
+    if (newConn==lastConn && enabledMpd!=lastEnabledMpd && !menuItems.isEmpty()) {
         QSet<QString> switchedOn=enabledMpd-lastEnabledMpd;
         QSet<QString> switchedOff=lastEnabledMpd-enabledMpd;
 

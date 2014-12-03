@@ -277,7 +277,7 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(fwdAction);
     addAction(revAction);
 
-    addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::self()->playlistIcon);
+    addPlayQueueToStoredPlaylistAction = new Action(HIDE_MENU_ICON(Icons::self()->playlistIcon), i18n("Add To Stored Playlist"), this);
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), HIDE_MENU_ICON(Icons::self()->addRadioStreamIcon));
     promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), HIDE_MENU_ICON(Icons::self()->clearListIcon));

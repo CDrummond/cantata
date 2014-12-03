@@ -16,6 +16,8 @@
 12. Fix potential crashes on refresh.
 13. Fix duplicate notification when Cantata is started whilst playing, or when
     'Replace Play Queue' is used.
+14. Only show output change notification if outputs menu was not previously
+    empty.
 
 1.5.1
 -----

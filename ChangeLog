@@ -11,6 +11,8 @@
 6. Add option to set MPD top-level path. Only tracks that are under this path
    will be used to populate artist and album listings. This is mainly of use
    when MPD is configured to use a UPnP backend.
+7. Use lsinfo, and not listallinfo, to populate artists and albums by default.
+   Set alwaysUseLsInfo=false in Cantata's config file to disable this.
 
 1.5.2
 -----

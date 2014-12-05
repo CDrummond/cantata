@@ -801,7 +801,7 @@ QString Settings::lang()
 
 bool Settings::alwaysUseLsInfo()
 {
-    return cfg.get("alwaysUseLsInfo", false);
+    return cfg.get("alwaysUseLsInfo", true);
 }
 
 bool Settings::showMenubar()

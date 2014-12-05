@@ -429,12 +429,13 @@ alwaysUseHttp=<Boolean>
     Default is false.
 
 alwaysUseLsInfo=<Boolean>
-    By default, Cantata uses MPD's listallinfo command to retrieve the whole
-    music collection. This can fail (especially with MPD 0.18.x which needs
-    more memory), and if it does Cantata will fall back to calling
-    "lsinfo <dir>" for each directory. Setting this config item to true will
-    cause Cantata to always use this alternative method.
-    Default is false.
+    Versions of Cantata before 1.6 defaulted to using MPD's listallinfo
+    command to retrieve the whole music collection. This can fail (especially
+    with MPD 0.18.x which needs more memory), and if it does Cantata will
+    fallback to calling "lsinfo <dir>" for each directory. This fallback is now
+    the default from Cantata 1.6. To revert to first attempting listallinfo,
+    set this config item to false.
+    Default is true.
 
 menu=<Integer>
     Controls usage of menubar and menu button. If set to 1 then a menubar is
@@ -474,7 +475,7 @@ undoSteps=20
 mpdPoll=true
 mpdListSize=5000
 alwaysUseHttp=true
-alwaysUseLsInfo=true
+alwaysUseLsInfo=false
 menu=3
 stopHttpStreamOnPause=true
 cacheScaledCovers=true

@@ -20,6 +20,8 @@
     empty.
 15. Construct a new config object, rather than changing group, to avoid any
     race conditions.
+16. If fading volume on stop, then reset volume just before stopping. Some
+    outputs (e.g. pulse audio) only allow setting a volume whilst playing.
 
 1.5.1
 -----

@@ -1182,11 +1182,11 @@ void MPDConnection::setSeekId(qint32 songId, quint32 time)
 void MPDConnection::setVolume(int vol) //Range accepted by MPD: 0-100
 {
     if (-1==vol) {
-        if (volumeFade) {
-            sendCommand("stop");
-        }
         if (restoreVolume>=0) {
             sendCommand("setvol "+quote(restoreVolume), false);
+        }
+        if (volumeFade) {
+            sendCommand("stop");
         }
         restoreVolume=-1;
     } else if (vol>=0) {

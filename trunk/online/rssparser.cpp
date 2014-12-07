@@ -89,6 +89,8 @@ static QUrl parseImage(QXmlStreamReader &reader)
 static Episode parseEpisode(QXmlStreamReader &reader)
 {
     Episode ep;
+    bool isAudio=false;
+    QUrl guidUrl;
 
     while (!reader.atEnd()) {
         reader.readNext();
@@ -115,6 +117,7 @@ static Episode parseEpisode(QXmlStreamReader &reader)
                 }
                 QString type=reader.attributes().value(QLatin1String("type")).toString();
                 if (type.startsWith(QLatin1String("audio/")) || audioFormats.contains(type)) {
+                    isAudio=true;
                     ep.url=QUrl::fromEncoded(reader.attributes().value(QLatin1String("url")).toString().toLatin1());
                 } else if (type.startsWith(QLatin1String("video/")) ) {
                     // At least one broken feed (BUG: 588) has the audio podcast listed as video/mp4,
@@ -130,6 +133,8 @@ static Episode parseEpisode(QXmlStreamReader &reader)
                     }
                 }
                 consumeCurrentElement(reader);
+            } else if (QLatin1String("guid")==name) {
+                guidUrl=QUrl(reader.readElementText());
             } else if (QLatin1String("pubDate")==name) {
                  ep.publicationDate=parseRfc822DateTime(reader.readElementText());
             } else {
@@ -138,6 +143,12 @@ static Episode parseEpisode(QXmlStreamReader &reader)
         } else if (reader.isEndElement()) {
             break;
         }
+    }
+
+    // Sometimes the url entry in 'enclusure' is empty, but there is a url in 'guid' - so use
+    // that if present (BUG: 602)
+    if (isAudio && ep.url.isEmpty() && !guidUrl.isEmpty()) {
+        ep.url=guidUrl;
     }
     return ep;
 }

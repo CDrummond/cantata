@@ -40,6 +40,7 @@
     outputs (e.g. pulse audio) only allow setting a volume whilst playing.
 17. If 'url' entry is empty in 'enclusure' section of podcast RSS file, then
     use 'guid' text as url - if possible.
+18. Fix copying of covers to UMS, etc, devices if song is transcoded.
 
 1.5.1
 -----

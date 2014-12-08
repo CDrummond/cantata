@@ -422,7 +422,8 @@ void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
         transcoding=true;
         TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, currentDestFile, copyCover ? opts : DeviceOptions(Device::constNoCover),
                                                (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|
-                                               (Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone));
+                                                   (Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone),
+                                               currentSong);
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
         connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
         job->start();

@@ -490,7 +490,9 @@ void TagEditor::setLabelStates()
     genreLabel->setOn(o.genre!=e.genre);
     yearLabel->setOn(o.year!=e.year);
     if (ratingLabel) {
-        ratingLabel->setOn(o.rating!=e.rating);
+        ratingLabel->setOn(o.rating<=Song::Rating_Max &&
+                           e.rating<=Song::Rating_Max &&
+                           o.rating!=e.rating);
     }
 }
 

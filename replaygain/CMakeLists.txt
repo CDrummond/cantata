@@ -33,7 +33,7 @@ if (FFMPEG_FOUND OR MPG123_FOUND)
             install(TARGETS cantata-replaygain DESTINATION ${MACOSX_BUNDLE_APP_DIR})
         else (WIN32)
             ADD_EXECUTABLE(cantata-replaygain ${CANTATA_RG_SRCS} ${CANTATA_RG_MOC_SRCS})
-            install(TARGETS cantata-replaygain RUNTIME DESTINATION lib/cantata)
+            install(TARGETS cantata-replaygain RUNTIME DESTINATION ${LINUX_LIB_DIR}/cantata)
         endif (WIN32)
     endif (ENABLE_KDE_SUPPORT)
 

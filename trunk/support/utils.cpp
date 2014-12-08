@@ -759,7 +759,7 @@ QString Utils::helper(const QString &app)
     #elif defined Q_OS_MAC
     return fixPath(QCoreApplication::applicationDirPath())+app;
     #else
-    return QString(INSTALL_PREFIX "/lib/")+QCoreApplication::applicationName()+constDirSep+app;
+    return QString(INSTALL_PREFIX "/"LINUX_LIB_DIR"/")+QCoreApplication::applicationName()+constDirSep+app;
     #endif
 }
 

@@ -23,7 +23,7 @@ else (ENABLE_KDE_SUPPORT)
         install(TARGETS cantata-tags DESTINATION ${MACOSX_BUNDLE_APP_DIR})
     else (WIN32)
         ADD_EXECUTABLE(cantata-tags ${CANTATA_TAGS_SRCS} ${CANTATA_TAGS_MOC_SRCS})
-        install(TARGETS cantata-tags RUNTIME DESTINATION lib/cantata)
+        install(TARGETS cantata-tags RUNTIME DESTINATION ${LINUX_LIB_DIR}/cantata)
     endif (WIN32)
 endif (ENABLE_KDE_SUPPORT)
 

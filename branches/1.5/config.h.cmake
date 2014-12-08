@@ -67,4 +67,6 @@
 #define UNITY_MENU_ICON_CHECK
 #endif
 
+#define LINUX_LIB_DIR "@LINUX_LIB_DIR@"
+
 #endif

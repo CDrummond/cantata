@@ -41,6 +41,7 @@
 17. If 'url' entry is empty in 'enclusure' section of podcast RSS file, then
     use 'guid' text as url - if possible.
 18. Fix copying of covers to UMS, etc, devices if song is transcoded.
+19. Install helper apps to lib64 for 64bit linux builds.
 
 1.5.1
 -----

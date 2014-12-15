@@ -38,7 +38,7 @@
 #include "widgets/icons.h"
 #include "devices/mountpoints.h"
 #include "gui/stdactions.h"
-#include "support/actioncollection.h"
+#include "support/action.h"
 #include "config.h"
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "devices/audiocddevice.h"
@@ -102,12 +102,12 @@ DevicesModel::DevicesModel(QObject *parent)
     , enabled(false)
     , inhibitMenuUpdate(false)
 {
-    configureAction = ActionCollection::get()->createAction("configuredevice", i18n("Configure Device"), Icons::self()->configureIcon);
-    refreshAction = ActionCollection::get()->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
-    connectAction = ActionCollection::get()->createAction("connectdevice", i18n("Connect Device"), Icons::self()->connectIcon);
-    disconnectAction = ActionCollection::get()->createAction("disconnectdevice", i18n("Disconnect Device"), Icons::self()->disconnectIcon);
+    configureAction = new Action(Icons::self()->configureIcon, i18n("Configure Device"), this);
+    refreshAction = new Action(Icon("view-refresh"), i18n("Refresh Device"), this);
+    connectAction = new Action(Icons::self()->connectIcon, i18n("Connect Device"), this);
+    disconnectAction = new Action(Icons::self()->disconnectIcon, i18n("Disconnect Device"), this);
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-    editAction = ActionCollection::get()->createAction("editcd", i18n("Edit CD Details"), Icons::self()->editIcon);
+    editAction = new Action(Icons::self()->editIcon, i18n("Edit CD Details"), this);
     #endif
     updateItemMenu();
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));

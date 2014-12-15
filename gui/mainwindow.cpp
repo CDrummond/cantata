@@ -264,7 +264,7 @@ MainWindow::MainWindow(QWidget *parent)
     doDbRefreshAction = new Action(refreshDbAction->icon(), i18n("Refresh"), this);
     dbFullRefreshAction= new Action(refreshDbAction->icon(), i18n("Full Refresh"), this);
     refreshDbAction->setEnabled(false);
-    connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::self()->connectIcon);
+    connectAction = new Action(Icons::self()->connectIcon, i18n("Connect"), this);
     connectionsAction = new Action(HIDE_MENU_ICON(Icon("network-server")), i18n("Collection"), this);
     outputsAction = new Action(HIDE_MENU_ICON(Icons::self()->speakerIcon), i18n("Outputs"), this);
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
@@ -298,7 +298,7 @@ MainWindow::MainWindow(QWidget *parent)
     searchPlayQueueAction = ActionCollection::get()->createAction("searchplaylist", i18n("Find in Play Queue"), HIDE_MENU_ICON(Icons::self()->searchIcon));
     addAction(searchPlayQueueAction);
     searchPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_F);
-    setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"), Icon("favorites"));
+    setPriorityAction = new Action(Icon("favorites"), i18n("Set Priority"), this);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), HIDE_MENU_ICON(Icons::self()->radioStreamIcon));
     streamPlayAction->setCheckable(true);
@@ -310,7 +310,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
     #ifdef TAGLIB_FOUND
-    editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", StdActions::self()->editTagsAction->text(), StdActions::self()->editTagsAction->icon());
+    editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", Utils::strippedText(StdActions::self()->editTagsAction->text()), StdActions::self()->editTagsAction->icon());
     #endif
     addAction(expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All")));
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);

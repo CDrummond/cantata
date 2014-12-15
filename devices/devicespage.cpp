@@ -32,7 +32,6 @@
 #include "support/localize.h"
 #include "widgets/icons.h"
 #include "support/action.h"
-#include "support/actioncollection.h"
 #include "gui/stdactions.h"
 #ifdef ENABLE_REMOTE_DEVICES
 #include "remotedevicepropertiesdialog.h"
@@ -59,12 +58,12 @@ DevicesPage::DevicesPage(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    copyAction = ActionCollection::get()->createAction("copytolibrary", i18n("Copy To Library"), Icons::self()->importIcon);
+    copyAction = new Action(Icons::self()->importIcon, i18n("Copy To Library"), this);
     copyToLibraryButton->setDefaultAction(copyAction);
-    syncAction = ActionCollection::get()->createAction("syncdevice", i18n("Sync"), "folder-sync");
+    syncAction = new Action(Icon("folder-sync"), i18n("Sync"), this);
     connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
     #ifdef ENABLE_REMOTE_DEVICES
-    forgetDeviceAction=ActionCollection::get()->createAction("forgetdevice", i18n("Forget Device"), "list-remove");
+    forgetDeviceAction=new Action(Icon("list-remove"), i18n("Forget Device"), this);
     connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
     #endif
     connect(DevicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
@@ -103,7 +102,7 @@ DevicesPage::DevicesPage(QWidget *p)
     #endif
     QMenu *menu=new QMenu(this);
     #ifdef ENABLE_REMOTE_DEVICES
-    Action *addRemote=ActionCollection::get()->createAction("adddevice", i18n("Add Device"), "network-server");
+    Action *addRemote=new Action(Icon("network-server"), i18n("Add Device"), this);
     connect(addRemote, SIGNAL(triggered()), this, SLOT(addRemoteDevice()));
     menu->addAction(addRemote);
     menu->addAction(forgetDeviceAction);

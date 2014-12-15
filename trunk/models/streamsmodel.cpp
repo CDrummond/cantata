@@ -548,10 +548,10 @@ StreamsModel::StreamsModel(QObject *parent)
     favourites=new FavouritesCategoryItem(constFavouritesUrl, i18n("Favorites"), root, getIcon("favourites"));
     root->children.append(favourites);
     loadInstalledProviders();
-    addBookmarkAction = ActionCollection::get()->createAction("bookmarkcategory", i18n("Bookmark Category"), Icon("bookmark-new"));
-    addToFavouritesAction = ActionCollection::get()->createAction("addtofavourites", i18n("Add Stream To Favorites"), favouritesIcon());
-    configureAction = ActionCollection::get()->createAction("configurestreams", i18n("Configure Streams"), Icons::self()->configureIcon);
-    reloadAction = ActionCollection::get()->createAction("reloadstreams", i18n("Reload"), Icon("view-refresh"));
+    addBookmarkAction = new Action(Icon("bookmark-new"), i18n("Bookmark Category"), this);
+    addToFavouritesAction = new Action(favouritesIcon(), i18n("Add Stream To Favorites"), this);
+    configureAction = new Action(Icons::self()->configureIcon, i18n("Configure Streams"), this);
+    reloadAction = new Action(Icon("view-refresh"), i18n("Reload"), this);
 
     #ifdef UNITY_MENU_HACK
     // For Unity we try to hide icons from menubar menus. However, search is used in the menubar AND in the streams view. We

@@ -67,7 +67,7 @@ StdActions::StdActions()
     replaygainAction = ActionCollection::get()->createAction("replaygain", i18n("ReplayGain"), Icons::self()->audioFileIcon);
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction = ActionCollection::get()->createAction("copytodevice", i18n("Copy Songs To Device"), "multimedia-player");
+    copyToDeviceAction = new Action(HIDE_MENU_ICON(Icon("multimedia-player")), i18n("Copy Songs To Device"), 0);
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
     deleteSongsAction = ActionCollection::get()->createAction("deletesongs", i18n("Delete Songs"), "edit-delete");
     #endif

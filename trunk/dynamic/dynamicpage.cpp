@@ -27,7 +27,6 @@
 #include "support/localize.h"
 #include "widgets/icons.h"
 #include "support/action.h"
-#include "support/actioncollection.h"
 #include "mpd/mpdconnection.h"
 #include "widgets/statuslabel.h"
 #include "support/messagebox.h"
@@ -37,9 +36,9 @@ DynamicPage::DynamicPage(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    addAction = ActionCollection::get()->createAction("adddynamic", i18n("Add Dynamic Rules"), "document-new");
-    editAction = ActionCollection::get()->createAction("editdynamic", i18n("Edit Dynamic Rules"), Icons::self()->editIcon);
-    removeAction = ActionCollection::get()->createAction("removedynamic", i18n("Remove Dynamic Rules"), "list-remove");
+    addAction = new Action(Icon("document-new"), i18n("Add"), this);
+    editAction = new Action(Icons::self()->editIcon, i18n("Edit"), this);
+    removeAction = new Action(Icon("list-remove"), i18n("Remove"), this);
     toggleAction = new Action(this);
 
     addBtn->setDefaultAction(addAction);

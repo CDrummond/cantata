@@ -40,7 +40,7 @@ GLOBAL_STATIC(StdActions, instance)
 StdActions::StdActions()
 {
     UNITY_MENU_ICON_CHECK
-    prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::self()->toolbarPrevIcon);
+    prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::self()->toolbarPlayIcon);
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::self()->toolbarNextIcon);
     playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::self()->toolbarPlayIcon);
     stopPlaybackAction = ActionCollection::get()->createAction("stopplayback", i18n("Stop"), Icons::self()->toolbarStopIcon);
@@ -60,19 +60,19 @@ StdActions::StdActions()
     addPrioCustomAction = new Action(i18n("Custom Priority..."), 0);
     addToStoredPlaylistAction = new Action(Icons::self()->playlistIcon, i18n("Add To Playlist"), 0);
     #ifdef TAGLIB_FOUND
-    organiseFilesAction = ActionCollection::get()->createAction("organizefiles", i18n("Organize Files"), "inode-directory");
-    editTagsAction = ActionCollection::get()->createAction("edittags", i18n("Edit Track Information"), "document-edit");
+    organiseFilesAction = new Action(HIDE_MENU_ICON(Icon("inode-directory")), i18n("Organize Files"), 0);
+    editTagsAction = new Action(i18n("Edit Track Information"), 0);
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction = ActionCollection::get()->createAction("replaygain", i18n("ReplayGain"), Icons::self()->audioFileIcon);
+    replaygainAction = new Action(HIDE_MENU_ICON(Icons::self()->audioFileIcon), i18n("ReplayGain"), 0);
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction = ActionCollection::get()->createAction("copytodevice", i18n("Copy Songs To Device"), "multimedia-player");
+    copyToDeviceAction = new Action(HIDE_MENU_ICON(Icon("multimedia-player")), i18n("Copy Songs To Device"), 0);
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
-    deleteSongsAction = ActionCollection::get()->createAction("deletesongs", i18n("Delete Songs"), "edit-delete");
+    deleteSongsAction = new Action(Icon("edit-delete"), i18n("Delete Songs"), 0);
     #endif
-    setCoverAction = ActionCollection::get()->createAction("setcover", i18n("Set Image"));
-    removeAction = ActionCollection::get()->createAction("removeitems", i18n("Remove"), "list-remove");
+    setCoverAction = new Action(i18n("Set Image"), 0);
+    removeAction = new Action(HIDE_MENU_ICON(Icon("list-remove")), i18n("Remove"), 0);
     searchAction = ActionCollection::get()->createAction("search", i18n("Find"), HIDE_MENU_ICON_NAME("edit-find"));
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
 

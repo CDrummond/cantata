@@ -27,7 +27,7 @@
 #include "settings.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
-#include "support/actioncollection.h"
+#include "support/action.h"
 #include "support/utils.h"
 #include "stdactions.h"
 #include <QDesktopServices>
@@ -40,7 +40,7 @@ FolderPage::FolderPage(QWidget *p)
     setupUi(this);
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
-    browseAction = ActionCollection::get()->createAction("openfilemanager", i18n("Open In File Manager"), "system-file-manager");
+    browseAction = new Action(Icon("system-file-manager"), i18n("Open In File Manager"), this);
 
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);

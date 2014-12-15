@@ -37,7 +37,6 @@
 #include "support/localize.h"
 #include "widgets/icons.h"
 #include "gui/stdactions.h"
-#include "support/actioncollection.h"
 #include "support/inputdialog.h"
 #include "podcastsearchdialog.h"
 #include <QMenu>
@@ -55,12 +54,12 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
-    downloadAction = ActionCollection::get()->createAction("downloadtolibrary", i18n("Download To Library"), "go-down");
-    downloadPodcastAction = ActionCollection::get()->createAction("downloadpodcast", i18n("Download Podcast Episodes"), "go-down");
-    deleteDownloadedPodcastAction = ActionCollection::get()->createAction("deletedownloadedpodcast", i18n("Delete Downloaded Podcast Episodes"), "edit-delete");
-    cancelPodcastDownloadAction = ActionCollection::get()->createAction("cancelpodcastdownloaded", i18n("Cancel Podcast Episode Download"), Icons::self()->cancelIcon);
-    markPodcastAsNewAction = ActionCollection::get()->createAction("markpodcastasnew", i18n("Mark Podcast Episodes As New"), "document-new");
-    markPodcastAsListenedAction = ActionCollection::get()->createAction("markpodcastaslistened", i18n("Mark Podcast Episodes As Listened"));
+    downloadAction = new Action(Icon("go-down"), i18n("Download To Library"), this);
+    downloadPodcastAction = new Action(Icon("go-down"), i18n("Download Episodes"), this);
+    deleteDownloadedPodcastAction = new Action(Icon("edit-delete"), i18n("Delete Downloaded Episodes"), this);
+    cancelPodcastDownloadAction = new Action(Icons::self()->cancelIcon, i18n("Cancel Podcast Download"), this);
+    markPodcastAsNewAction = new Action(Icon("document-new"), i18n("Mark Episodes As New"), this);
+    markPodcastAsListenedAction = new Action(i18n("Mark Episodes As Listened"), this);
 
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));

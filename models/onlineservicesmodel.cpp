@@ -72,11 +72,11 @@ OnlineServicesModel::OnlineServicesModel(QObject *parent)
     , dev(0)
     , podcast(0)
 {
-    configureAction = ActionCollection::get()->createAction("configureonlineservice", i18n("Configure Service"), Icons::self()->configureIcon);
-    refreshAction = ActionCollection::get()->createAction("refreshonlineservice", i18n("Refresh Service"), "view-refresh");
-    subscribeAction = ActionCollection::get()->createAction("subscribeonlineservice", i18n("Add Subscription"), "list-add");
-    unSubscribeAction = ActionCollection::get()->createAction("unsubscribeonlineservice", i18n("Remove Subscription"), "list-remove");
-    refreshSubscriptionAction = ActionCollection::get()->createAction("refreshsubscription", i18n("Refresh Subscription"), "view-refresh");
+    configureAction = new Action(Icons::self()->configureIcon, i18n("Configure Service"), this);
+    refreshAction = new Action(Icon("view-refresh"), i18n("Refresh Service"), this);
+    subscribeAction = new Action(Icon("list-add"), i18n("Add Subscription"), this);
+    unSubscribeAction = new Action(Icon("list-remove"), i18n("Remove Subscription"), this);
+    refreshSubscriptionAction = new Action(Icon("view-refresh"), i18n("Refresh Subscription"), this);
     #if defined ENABLE_STREAMS || !defined UNITY_MENU_HACK
     searchAction = StreamsModel::self()->searchAct();
     #else

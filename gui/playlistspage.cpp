@@ -56,7 +56,7 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    renamePlaylistAction = ActionCollection::get()->createAction("renameplaylist", i18n("Rename"), "edit-rename");
+    renamePlaylistAction = new Action(Icon("edit-rename"), i18n("Rename"), this);
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);

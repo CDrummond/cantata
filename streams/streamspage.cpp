@@ -55,10 +55,10 @@ StreamsPage::StreamsPage(QWidget *p)
     , proxy(&streamsProxy)
 {
     setupUi(this);
-    importAction = ActionCollection::get()->createAction("importstreams", i18n("Import Streams Into Favorites"), "document-import");
-    exportAction = ActionCollection::get()->createAction("exportstreams", i18n("Export Favorite Streams"), "document-export");
+    importAction = new Action(Icon("document-import"), i18n("Import Streams Into Favorites"), this);
+    exportAction = new Action(Icon("document-export"), i18n("Export Favorite Streams"), this);
     addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favorites"), Icons::self()->addRadioStreamIcon);
-    editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::self()->editIcon);
+    editAction = new Action(Icons::self()->editIcon, i18n("Edit"), this);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));

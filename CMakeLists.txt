@@ -72,6 +72,7 @@ option(ENABLE_UDISKS2 "Build UDisks2 backend, and NOT UDisks, for Qt builds" OFF
 option(ENABLE_REMOTE_DEVICES "Enable support for remote (sshfs, samba) devices (EXPERIMENTAL)" OFF)
 option(ENABLE_MTP "Enable MTP library (required to support MTP devices)" ON)
 option(ENABLE_UNCACHED_MTP "Open MTP devices in un-cached mode (faster)" ON)
+option(USE_LIB64_FOR_HELPERS "Install helper apps to <prefix>/lib64/cantata for 64-bit non-KDE Linux builds" OFF)
 
 if (WIN32)
     set(CANTATA_ICON_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/icons/oxygen)

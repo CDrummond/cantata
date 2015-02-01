@@ -41,8 +41,10 @@
 17. If 'url' entry is empty in 'enclusure' section of podcast RSS file, then
     use 'guid' text as url - if possible.
 18. Fix copying of covers to UMS, etc, devices if song is transcoded.
-19. Install helper apps to lib64 for 64bit linux builds.
+19. Add an option for 64 bit non KDE linux builds to install helper apps to
+    lib64 instead of just lib. Pass -DUSE_LIB64_FOR_HELPERS=ON to cmake.
 20. In tag editor, only mark rating as changed if it has been.
+
 
 1.5.1
 -----

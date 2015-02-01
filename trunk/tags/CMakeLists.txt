@@ -4,7 +4,7 @@ set(CANTATA_TAGS_MOC_HDRS taghelper.h)
 
 if (ENABLE_KDE_SUPPORT)
     kde4_add_executable(cantata-tags ${CANTATA_TAGS_SRCS} ${CANTATA_TAGS_MOC_SRCS})
-    install(TARGETS cantata-tags RUNTIME DESTINATION lib/cantata)
+    install(TARGETS cantata-tags RUNTIME DESTINATION ${LINUX_LIB_DIR}/cantata)
     target_link_libraries(cantata-tags ${KDE4_KDECORE_LIBS})
 else (ENABLE_KDE_SUPPORT)
     if (ENABLE_QT5)

@@ -14,7 +14,7 @@ if (FFMPEG_FOUND OR MPG123_FOUND)
 
     if (ENABLE_KDE_SUPPORT)
         kde4_add_executable(cantata-replaygain ${CANTATA_RG_SRCS} ${CANTATA_RG_MOC_SRCS})
-        install(TARGETS cantata-replaygain RUNTIME DESTINATION lib/cantata)
+        install(TARGETS cantata-replaygain RUNTIME DESTINATION ${LINUX_LIB_DIR}/cantata)
     else (ENABLE_KDE_SUPPORT)
         if (ENABLE_QT5)
             QT5_WRAP_CPP(CANTATA_RG_MOC_SRCS ${CANTATA_RG_MOC_HDRS})

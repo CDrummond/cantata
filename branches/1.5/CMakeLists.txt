@@ -238,7 +238,7 @@ if (TAGLIB_FOUND)
 
     if (ENABLE_FFMPEG)
         find_package(FFMPEG)
-        macro_log_feature(FFMPEG_FOUND "libavcodec" "ReplayGain calculation." "http://ffmpeg.org")
+        macro_log_feature(FFMPEG_FOUND "libavcodec/libavutil/libavformat" "ReplayGain calculation." "http://ffmpeg.org")
     endif (ENABLE_FFMPEG)
     if (ENABLE_MPG123)
         find_package(MPG123)

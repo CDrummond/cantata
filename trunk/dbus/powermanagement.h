@@ -31,6 +31,7 @@
 class OrgKdeSolidPowerManagementPolicyAgentInterface;
 class OrgFreedesktopPowerManagementInhibitInterface;
 class OrgFreedesktopUPowerInterface;
+class OrgFreedesktopLogin1ManagerInterface;
 #endif
     
 class PowerManagement : public QObject
@@ -50,6 +51,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void mpdStatusUpdated();
+    void prepareForSleep(bool s);
 
 private:
     bool inhibitSuspendWhilstPlaying;
@@ -58,6 +60,7 @@ private:
     OrgKdeSolidPowerManagementPolicyAgentInterface *policy;
     OrgFreedesktopPowerManagementInhibitInterface *inhibit;
     OrgFreedesktopUPowerInterface *upower;
+    OrgFreedesktopLogin1ManagerInterface *login1;
     #endif
 };
 

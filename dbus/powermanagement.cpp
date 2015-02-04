@@ -30,6 +30,7 @@
 #include "inhibitinterface.h"
 #include "policyagentinterface.h"
 #include "upowerinterface.h"
+#include "login1interface.h"
 #endif
 #include "support/localize.h"
 #include "mpd/mpdstatus.h"
@@ -53,7 +54,10 @@ PowerManagement::PowerManagement()
                                                                 QDBusConnection::sessionBus(), this);
     upower = new OrgFreedesktopUPowerInterface(OrgFreedesktopUPowerInterface::staticInterfaceName(),
                                                QLatin1String("/org/freedesktop/UPower"), QDBusConnection::systemBus(), this);
+    login1 = new OrgFreedesktopLogin1ManagerInterface("org.freedesktop.login1",
+                                                      QLatin1String("/org/freedesktop/login1"), QDBusConnection::systemBus(), this);
     connect(upower, SIGNAL(Resuming()), this, SIGNAL(resuming()));
+    connect(login1, SIGNAL(PrepareForSleep(bool)), this, SLOT(prepareForSleep(bool)));
     #endif
 }
 
@@ -123,4 +127,15 @@ void PowerManagement::mpdStatusUpdated()
             stopSuppressingSleep();
         }
     }
+}
+
+void PowerManagement::prepareForSleep(bool s)
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    Q_UNUSED(s)
+    #else
+    if (!s) {
+        emit resuming();
+    }
+    #endif
 }

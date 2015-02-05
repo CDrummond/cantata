@@ -59,7 +59,7 @@ static bool useOverlayStyleScrollbars(bool use)
 }
 
 GtkProxyStyle::GtkProxyStyle(int modView, bool thinSb, bool styleSpin, const QMap<QString, QString> &c)
-    : TouchProxyStyle(modView && (SB_Gtk==sbarType || !styleHint(SH_ScrollView_FrameOnlyAroundContents, 0, 0, 0)) ? modView : 0,
+    : TouchProxyStyle(modView && (SB_Gtk==sbarType || !qApp->style()->styleHint(SH_ScrollView_FrameOnlyAroundContents, 0, 0, 0)) ? modView : 0,
                       styleSpin, useOverlayStyleScrollbars(thinSb))
     , css(c)
 {

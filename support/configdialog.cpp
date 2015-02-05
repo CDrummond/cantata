@@ -216,7 +216,7 @@ void ConfigDialog::addPage(const QString &id, QWidget *widget, const QString &na
     for (; it!=end; ++it) {
         sz+=it.value().item->sizeHint().width()+4;
     }
-    setMinimumWidth(sz+(2*constMinPad));
+    setMinimumWidth(sz+(2*constMinPad)+48);
     #else
 
     pages.insert(id, pageWidget->addPage(widget, name, icon, header));

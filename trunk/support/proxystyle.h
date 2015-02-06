@@ -37,8 +37,9 @@ public:
         VF_Top  = 0x02
     };
 
-    ProxyStyle(int modView) : modViewFrame(modView) { }
+    ProxyStyle(int modView=VF_None) : modViewFrame(modView) { }
 
+    void setModViewFrame(int modView) { modViewFrame=modView; }
     void polish(QPalette &pal) { QProxyStyle::polish(pal); }
     void polish(QApplication *app) { QProxyStyle::polish(app); }
     void polish(QWidget *widget);

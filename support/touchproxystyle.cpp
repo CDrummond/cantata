@@ -160,8 +160,7 @@ public:
 };
 
 TouchProxyStyle::TouchProxyStyle(int modView, bool touchSpin, bool gtkOverlayStyleScrollbar)
-    : ProxyStyle(modView)
-    , touchStyleSpin(touchSpin)
+    : touchStyleSpin(touchSpin)
     , sbarPlainViewWidth(-1)
 {
     spinButtonRatio=touchSpin && Utils::touchFriendly() ? 1.5 : 1.25;
@@ -174,6 +173,7 @@ TouchProxyStyle::TouchProxyStyle(int modView, bool touchSpin, bool gtkOverlaySty
     } else {
         sbarType=SB_Standard;
     }
+    setModViewFrame(modView && (SB_Gtk==sbarType || !qApp->style()->styleHint(SH_ScrollView_FrameOnlyAroundContents, 0, 0, 0)) ? modView : 0);
 }
 
 TouchProxyStyle::~TouchProxyStyle()

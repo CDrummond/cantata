@@ -14,6 +14,7 @@
 7. Use lsinfo, and not listallinfo, to populate artists and albums by default.
    Set alwaysUseLsInfo=false in Cantata's config file to disable this.
 8. Add 'Copy To Device' to playqueue.
+9. Do not reset current song when shuffling albums, or sorting playqueue.
 
 1.5.2
 -----

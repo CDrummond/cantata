@@ -118,7 +118,7 @@ public:
     qint32 currentSong() const { return currentSongId; }
     qint32 currentSongRow() const;
     void setState(MPDState st);
-    void update(const QList<Song> &songList);
+    void update(const QList<Song> &songList, bool isComplete);
     void setStopAfterTrack(qint32 track);
     void clearStopAfterTrack() { setStopAfterTrack(-1); }
     bool removeCantataStreams();
@@ -172,6 +172,7 @@ Q_SIGNALS:
     void filesAdded(const QStringList filenames, const quint32 row, const quint32 size, int action, quint8 priority);
     void populate(const QStringList &items, const QList<quint8> &priority);
     void move(const QList<quint32> &items, const quint32 row, const quint32 size);
+    void setOrder(const QList<quint32> &items);
     void getRating(const QString &file) const;
     void setRating(const QStringList &files, quint8 rating) const;
     void statsUpdated(int songs, quint32 time);

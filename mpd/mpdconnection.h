@@ -189,6 +189,7 @@ public:
     };
 
     static QString constModifiedSince;
+    static const int constMaxPqChaanges;
     static MPDConnection * self();
     static QByteArray quote(int val);
     static QByteArray encodeName(const QString &name);
@@ -245,6 +246,7 @@ public Q_SLOTS:
     void removeSongs(const QList<qint32> &items);
     void move(quint32 from, quint32 to);
     void move(const QList<quint32> &items, quint32 pos, quint32 size);
+    void setOrder(const QList<quint32> &items);
     void shuffle(quint32 from, quint32 to);
     void clear();
     void shuffle();
@@ -324,7 +326,7 @@ Q_SIGNALS:
     void stateChanged(bool connected);
     void passwordError();
     void currentSongUpdated(const Song &song);
-    void playlistUpdated(const QList<Song> &songs);
+    void playlistUpdated(const QList<Song> &songs, bool isComplete);
     void statsUpdated(const MPDStatsValues &stats);
     void statusUpdated(const MPDStatusValues &status);
     void outputsUpdated(const QList<Output> &outputs);

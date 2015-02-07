@@ -106,6 +106,7 @@ static QByteArray log(const QByteArray &data)
 GLOBAL_STATIC(MPDConnection, instance)
 
 QString MPDConnection::constModifiedSince=QLatin1String("modified-since");
+const int MPDConnection::constMaxPqChaanges=1000;
 
 QByteArray MPDConnection::quote(int val)
 {
@@ -873,6 +874,43 @@ void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
     #endif
 }
 
+void MPDConnection::setOrder(const QList<quint32> &items)
+{
+    QByteArray cmd = /*name.isEmpty() ? */"move " /*: ("playlistmove "+encodeName(name)+" ")*/;
+    QByteArray send;
+    QList<qint32> positions;
+    quint32 numChanges=0;
+    for (qint32 i=0; i<items.count(); ++i) {
+        positions.append(i);
+    }
+
+    for (qint32 to=0; to<items.count(); ++to) {
+        qint32 from=positions.indexOf(items.at(to));
+        if (from!=to) {
+            if (send.isEmpty()) {
+                send = "command_list_begin\n";
+            }
+            send += cmd;
+            send += quote(from);
+            send += " ";
+            send += quote(to);
+            send += '\n';
+            positions.move(from, to);
+            numChanges++;
+        }
+    }
+
+    if (!send.isEmpty()) {
+        send += "command_list_end";
+        // If there are more than X changes made to the playqueue, then doing partial updates
+        // can hang the UI. Therefore, set lastUpdatePlayQueueVersion to 0 to cause playlistInfo
+        // to be used to do a complete update.
+        if (sendCommand(send).ok && numChanges>constMaxPqChaanges) {
+            lastUpdatePlayQueueVersion=0;
+        }
+    }
+}
+
 void MPDConnection::shuffle()
 {
     toggleStopAfterCurrent(false);
@@ -918,6 +956,10 @@ void MPDConnection::playListChanges()
         emitStatusUpdated(sv);
         QList<MPDParseUtils::IdPos> changes=MPDParseUtils::parseChanges(response.data);
         if (!changes.isEmpty()) {
+            if (changes.count()>constMaxPqChaanges) {
+                playListInfo();
+                return;
+            }
             bool first=true;
             quint32 firstPos=0;
             QList<Song> songs;
@@ -1001,7 +1043,7 @@ void MPDConnection::playListChanges()
             if (!removed.isEmpty()) {
                 emit removedIds(removed);
             }
-            emit playlistUpdated(songs);
+            emit playlistUpdated(songs, false);
             if (songs.isEmpty()) {
                 stopVolumeFade();
             }
@@ -1035,7 +1077,7 @@ void MPDConnection::playListInfo()
             }
         }
         emit cantataStreams(cStreams, false);
-        emit playlistUpdated(songs);
+        emit playlistUpdated(songs, true);
         if (songs.isEmpty()) {
             stopVolumeFade();
         }
@@ -1109,7 +1151,6 @@ void MPDConnection::playFirstTrack(bool emitErrors)
 
 void MPDConnection::seek(bool fwd)
 {
-    qWarning() << fwd;
     toggleStopAfterCurrent(false);
     Response response=sendCommand("status");
     if (response.ok) {
@@ -1790,7 +1831,7 @@ bool MPDConnection::doMoveInPlaylist(const QString &name, const QList<quint32> &
     //first move all items (starting with the biggest) to the end so we don't have to deal with changing rownums
     for (int i = moveItems.size() - 1; i >= 0; i--) {
         if (moveItems.at(i) < pos && moveItems.at(i) != size - 1) {
-            // we are moving away an item that resides before the destinatino row, manipulate destination row
+            // we are moving away an item that resides before the destination row, manipulate destination row
             posOffset++;
         }
         send += cmd;

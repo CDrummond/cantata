@@ -387,6 +387,7 @@ private:
     QWidget *contextPage;
     #ifdef ENABLE_DEVICES_SUPPORT
     Action *devicesTabAction;
+    Action *copyToDeviceAction;
     DevicesPage *devicesPage;
     #endif
     SearchPage *searchPage;

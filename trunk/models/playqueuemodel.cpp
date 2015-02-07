@@ -210,6 +210,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(this, SIGNAL(populate(QStringList, QList<quint8>)), MPDConnection::self(), SLOT(populate(QStringList, QList<quint8>)));
     connect(this, SIGNAL(move(const QList<quint32> &, quint32, quint32)),
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
+    connect(this, SIGNAL(setOrder(const QList<quint32> &)), MPDConnection::self(), SLOT(setOrder(const QList<quint32> &)));
     connect(MPDConnection::self(), SIGNAL(prioritySet(const QList<qint32> &, quint8)), SLOT(prioritySet(const QList<qint32> &, quint8)));
     connect(MPDConnection::self(), SIGNAL(stopAfterCurrentChanged(bool)), SLOT(stopAfterCurrentChanged(bool)));
     connect(this, SIGNAL(stop(bool)), MPDConnection::self(), SLOT(stopPlaying(bool)));
@@ -918,7 +919,7 @@ void PlayQueueModel::setState(MPDState st)
 }
 
 // Update playqueue with contents returned from MPD.
-void PlayQueueModel::update(const QList<Song> &songList)
+void PlayQueueModel::update(const QList<Song> &songList, bool isComplete)
 {
     currentSongRowNum=-1;
     if (songList.isEmpty()) {
@@ -943,6 +944,11 @@ void PlayQueueModel::update(const QList<Song> &songList)
     #endif
     foreach (const Song &s, songList) {
         newIds.insert(s.id);
+    }
+
+    // If we have too many changes UI can hang, so it is sometimes better just to do a complete reset!
+    if (isComplete && songs.count()>MPDConnection::constMaxPqChaanges) {
+        songs.clear();
     }
 
     if (songs.isEmpty() || songList.isEmpty()) {
@@ -1250,33 +1256,33 @@ void PlayQueueModel::addSortAction(const QString &name, const QString &key)
     connect(action, SIGNAL(triggered()), SLOT(sortBy()));
 }
 
-static bool artistSort(const Song &s1, const Song &s2)
+static bool artistSort(const Song *s1, const Song *s2)
 {
-    int c=s1.artist.localeAwareCompare(s2.artist);
-    return c<0 || (c==0 && s1<s2);
+    int c=s1->artist.localeAwareCompare(s2->artist);
+    return c<0 || (c==0 && (*s1)<(*s2));
 }
 
-static bool albumArtistSort(const Song &s1, const Song &s2)
+static bool albumArtistSort(const Song *s1, const Song *s2)
 {
-    int c=s1.albumArtist().localeAwareCompare(s2.albumArtist());
-    return c<0 || (c==0 && s1<s2);
+    int c=s1->albumArtist().localeAwareCompare(s2->albumArtist());
+    return c<0 || (c==0 && (*s1)<(*s2));
 }
 
-static bool albumSort(const Song &s1, const Song &s2)
+static bool albumSort(const Song *s1, const Song *s2)
 {
-    int c=s1.albumId().localeAwareCompare(s2.albumId());
-    return c<0 || (c==0 && s1<s2);
+    int c=s1->albumId().localeAwareCompare(s2->albumId());
+    return c<0 || (c==0 && (*s1)<(*s2));
 }
 
-static bool genreSort(const Song &s1, const Song &s2)
+static bool genreSort(const Song *s1, const Song *s2)
 {
-    int c=s1.genre.localeAwareCompare(s2.genre);
-    return c<0 || (c==0 && s1<s2);
+    int c=s1->genre.localeAwareCompare(s2->genre);
+    return c<0 || (c==0 && (*s1)<(*s2));
 }
 
-static bool yearSort(const Song &s1, const Song &s2)
+static bool yearSort(const Song *s1, const Song *s2)
 {
-    return s1.year<s2.year || (s1.year==s2.year && s1<s2);
+    return s1->year<s2->year || (s1->year==s2->year && (*s1)<(*s2));
 }
 #endif
 
@@ -1286,7 +1292,11 @@ void PlayQueueModel::sortBy()
     Action *act=qobject_cast<Action *>(sender());
     if (act) {
         QString key=act->property(constSortByKey).toString();
-        QList<Song> copy=songs;
+        QList<const Song *> copy;
+        foreach (const Song &s, songs) {
+            copy.append(&s);
+        }
+
         if (constSortByArtistKey==key) {
             qSort(copy.begin(), copy.end(), artistSort);
         } else if (constSortByAlbumArtistKey==key) {
@@ -1298,14 +1308,11 @@ void PlayQueueModel::sortBy()
         } else if (constSortByYearKey==key) {
             qSort(copy.begin(), copy.end(), yearSort);
         }
-        if (copy!=songs) {
-            QStringList files;
-            foreach (const Song &s, copy) {
-                files.append(s.file);
-            }
-
-            emit filesAdded(files, 0, 0, MPDState_Playing==MPDStatus::self()->state() ? MPDConnection::AddReplaceAndPlay : MPDConnection::AddAndReplace , 0);
+        QList<quint32> positions;
+        foreach (const Song *s, copy) {
+            positions.append(getRowById(s->id));
         }
+        emit setOrder(positions);
     }
     #endif
 }
@@ -1461,11 +1468,16 @@ void PlayQueueModel::cancelStreamFetch()
     fetcher->cancel();
 }
 
+static bool songSort(const Song *s1, const Song *s2)
+{
+    return s1->disc<s2->disc || (s1->disc==s2->disc && (s1->track<s2->track || (s1->track==s2->track && (*s1)<(*s2))));
+}
+
 void PlayQueueModel::shuffleAlbums()
 {
-    QMap<quint32, QList<Song> > albums;
+    QMap<quint32, QList<const Song *> > albums;
     foreach (const Song &s, songs) {
-        albums[s.key].append(s);
+        albums[s.key].append(&s);
     }
 
     QList<quint32> keys=albums.keys();
@@ -1473,17 +1485,16 @@ void PlayQueueModel::shuffleAlbums()
         return;
     }
 
-    QStringList files;
+    QList<quint32> positions;
     while (!keys.isEmpty()) {
         quint32 key=keys.takeAt(Utils::random(keys.count()));
-        QList<Song> albumSongs=albums[key];
-        qSort(albumSongs);
-        foreach (const Song &song, albumSongs) {
-            files.append(song.file);
+        QList<const Song *> albumSongs=albums[key];
+        qSort(albumSongs.begin(), albumSongs.end(), songSort);
+        foreach (const Song *song, albumSongs) {
+            positions.append(getRowById(song->id));
         }
     }
-
-    emit filesAdded(files, 0, 0, MPDState_Playing==MPDStatus::self()->state() ? MPDConnection::AddReplaceAndPlay : MPDConnection::AddAndReplace , 0);
+    emit setOrder(positions);
 }
 
 void PlayQueueModel::stopAfterCurrentChanged(bool afterCurrent)

@@ -843,7 +843,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
     connect(MPDStats::self(), SIGNAL(updated()), this, SLOT(updateStats()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
-    connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &)), this, SLOT(updatePlayQueue(const QList<Song> &)));
+    connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &, bool)), this, SLOT(updatePlayQueue(const QList<Song> &, bool)));
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(Song)), this, SLOT(updateCurrentSong(Song)));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
@@ -1736,7 +1736,7 @@ void MainWindow::playQueueSearchActivated(bool a)
     }
 }
 
-void MainWindow::updatePlayQueue(const QList<Song> &songs)
+void MainWindow::updatePlayQueue(const QList<Song> &songs, bool isComplete)
 {
     StdActions::self()->playPauseTrackAction->setEnabled(!songs.isEmpty());
     StdActions::self()->nextTrackAction->setEnabled(StdActions::self()->stopPlaybackAction->isEnabled() && songs.count()>1);
@@ -1750,7 +1750,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
         topRow=playQueueProxyModel.mapToSource(topIndex).row();
     }
     bool wasEmpty=0==playQueueModel.rowCount();
-    playQueueModel.update(songs);
+    playQueueModel.update(songs, isComplete);
     QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
     bool scroll=autoScrollPlayQueue && playQueueProxyModel.isEmpty() && (wasEmpty || MPDState_Playing==MPDStatus::self()->state());
     playQueue->updateRows(idx.row(), current.key, scroll, wasEmpty);

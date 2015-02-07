@@ -278,6 +278,10 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(revAction);
 
     addPlayQueueToStoredPlaylistAction = new Action(HIDE_MENU_ICON(Icons::self()->playlistIcon), i18n("Add To Stored Playlist"), this);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    copyToDeviceAction = new Action(HIDE_MENU_ICON(StdActions::self()->copyToDeviceAction->icon()), Utils::strippedText(StdActions::self()->copyToDeviceAction->text()), this);
+    copyToDeviceAction->setMenu(DevicesModel::self()->menu());
+    #endif
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), HIDE_MENU_ICON(Icons::self()->addRadioStreamIcon));
     promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), HIDE_MENU_ICON(Icons::self()->clearListIcon));
@@ -785,6 +789,9 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(StdActions::self()->savePlayQueueAction);
     playQueue->addAction(addStreamToPlayQueueAction);
     playQueue->addAction(addPlayQueueToStoredPlaylistAction);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    playQueue->addAction(copyToDeviceAction);
+    #endif
     playQueue->addAction(playQueueModel.shuffleAct());
     playQueue->addAction(playQueueModel.sortAct());
     playQueue->addAction(playQueueModel.undoAct());
@@ -1130,6 +1137,9 @@ void MainWindow::playQueueItemsSelected(bool s)
     editPlayQueueTagsAction->setEnabled(s && haveItems && MPDConnection::self()->getDetails().dirReadable);
     #endif
     addPlayQueueToStoredPlaylistAction->setEnabled(haveItems);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    copyToDeviceAction->setEnabled(editPlayQueueTagsAction->isEnabled());
+    #endif
     stopAfterTrackAction->setEnabled(singleSelection);
     ratingAction->setEnabled(s && haveItems);
 }
@@ -2457,7 +2467,9 @@ void MainWindow::organiseFiles()
 void MainWindow::addToDevice(const QString &udi)
 {
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (currentPage) {
+    if (playQueue->hasFocus()) {
+        copyToDevice(QString(), udi, playQueue->selectedSongs());
+    } else if (currentPage) {
         currentPage->addSelectionToDevice(udi);
     }
     #else

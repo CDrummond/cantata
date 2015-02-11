@@ -381,6 +381,9 @@ void Scrobbler::setSong(const Song &s)
 {
     DBUG << isEnabled() << s.isStandardStream() << s.time << s.file << s.title << s.artist << s.album << s.albumartist;
     if (!scrobbleViaMpd && !isEnabled()) {
+        if (inactiveSong.artist != s.artist || inactiveSong.title!=s.title || inactiveSong.album!=s.album) {
+            emit songChanged(!s.isStandardStream() && !s.isEmpty());
+        }
         inactiveSong=s;
         return;
     }

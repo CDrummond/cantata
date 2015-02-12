@@ -77,6 +77,10 @@ struct Track {
 
 static QString calculateDiscId(const QList<Track> &tracks)
 {
+    if (tracks.isEmpty()) {
+        return QString();
+    }
+
     // Code based on libmusicbrainz/lib/diskid.cpp
     int numTracks = tracks.count()-1;
     QCryptographicHash sha(QCryptographicHash::Sha1);

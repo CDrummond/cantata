@@ -29,7 +29,7 @@
  9. When calculating ReplayGain, if peak value is less than 0.00001 then assume
     the calculation is invalid.
 10. When parsing podcast RSS, if episode is marked as video (e.g. video/mp4) but
-    the url ends in an audio extension then use it is proably an audio podcast.
+    the url ends in an audio extension then it is proably an audio podcast.
 11. Correctly initialise seach category.
 12. Fix potential crashes on refresh.
 13. Fix duplicate notification when Cantata is started whilst playing, or when
@@ -40,7 +40,7 @@
     race conditions.
 16. If fading volume on stop, then reset volume just before stopping. Some
     outputs (e.g. pulse audio) only allow setting a volume whilst playing.
-17. If 'url' entry is empty in 'enclusure' section of podcast RSS file, then
+17. If 'url' entry is empty in 'enclosure' section of podcast RSS file, then
     use 'guid' text as url - if possible.
 18. Fix copying of covers to UMS, etc, devices if song is transcoded.
 19. Add an option for 64 bit non KDE linux builds to install helper apps to

@@ -146,11 +146,12 @@ The following options may be passed to CMake:
     -DINSTALL_UBUNTU_ICONS=<ON if Ubuntu, OFF otherwise>
         Install monochrome system tray icons for Ubuntu.
 
-    -DUSE_LIB64_FOR_HELPERS=OFF
-        For non-KDE 64 bit builds, setting this to ON will cause Cantata's
-        helper apps (cantata-tags, cantata-replaygain) to be install into
-        /usr/lib64/cantata instead of /usr/lib/cantata
-        Default: OFF
+    -DCANTATA_HELPERS_LIB_DIR=<subdir>
+        For non-KDE 64 bit builds, this may be used to control the lib sub-dir
+        where Cantata helper apps will be placed. e.g. setting this to lib64
+        will cause the helper apps (cantata-tags, cantata-replaygain) to be
+        install into /usr/lib64/cantata instead of /usr/lib/cantata
+        Default: <empty (which means /usr/lib will be used) >
 
 
     Windows specific:

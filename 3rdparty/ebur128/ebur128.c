@@ -384,7 +384,8 @@ static int ebur128_use_speex_resampler(ebur128_state* st) {
 
 static void ebur128_check_true_peak(ebur128_state* st, size_t frames) {
 #ifdef USE_SPEEX_RESAMPLER
-  size_t c, i;
+  unsigned int c;
+  spx_uint32_t i;
   spx_uint32_t in_len = (spx_uint32_t) frames;
   spx_uint32_t out_len = (spx_uint32_t) st->d->resampler_buffer_output_frames;
   speex_resampler_process_interleaved_float(

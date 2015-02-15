@@ -951,7 +951,7 @@ QModelIndex StreamsModel::favouritesIndex() const
 
 static QString addDiHash(const StreamsModel::Item *item)
 {
-    return item->parent && item->parent->isDi()
+    return ( (item->parent && item->parent->isDi()) || DigitallyImported::self()->isDiUrl(item->url) )
             ? DigitallyImported::self()->modifyUrl(item->url) : item->url;
 }
 

@@ -60,6 +60,7 @@ public:
 
     const QString & statusString() const { return status; }
 
+    bool isDiUrl(const QString &u) const;
     QString modifyUrl(const QString &u) const;
 
 public Q_SLOTS:

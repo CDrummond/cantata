@@ -125,6 +125,23 @@ void DigitallyImported::save()
     emit updated();
 }
 
+bool DigitallyImported::isDiUrl(const QString &u) const
+{
+    qWarning() << u;
+    if (!u.startsWith(QLatin1String("http://"))) {
+        return false;
+    }
+    QUrl url(u);
+    if (!url.host().startsWith(QLatin1String("listen."))) {
+        return false;
+    }
+    QStringList pathParts=url.path().split(QLatin1Char('/'), QString::SkipEmptyParts);
+    if (2!=pathParts.count()) {
+        return false;
+    }
+    return pathParts.at(0)==constPublicValue;
+}
+
 QString DigitallyImported::modifyUrl(const QString &u) const
 {
     if (listenHash.isEmpty()) {

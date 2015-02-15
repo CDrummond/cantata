@@ -49,6 +49,10 @@
 21. For Linux non-KDE builds, use login1 interface to detect system resuming.
 22. Enable scrobble 'love' button even if scrobbling is disabled.
 23. Don't crash when detecting an audio CD with no tracks.
+24. When playing a digitally imported (or JazzRadiom, etc) stream from the
+    favourites section, then modify the URL if the user has a premium account
+    (to match what existing behaviour is stream is played from the station
+    list)
 
 1.5.1
 -----

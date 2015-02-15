@@ -127,7 +127,6 @@ void DigitallyImported::save()
 
 bool DigitallyImported::isDiUrl(const QString &u) const
 {
-    qWarning() << u;
     if (!u.startsWith(QLatin1String("http://"))) {
         return false;
     }

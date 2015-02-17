@@ -54,6 +54,7 @@
     (to match what existing behaviour is stream is played from the station
     list)
 25. Workaround build issues with SpeexDSP 1.2rc2
+26. Use correct stream icon in playqueue for streams with no song details.
 
 1.5.1
 -----

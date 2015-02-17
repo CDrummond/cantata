@@ -233,6 +233,19 @@ static inline QString artistKey(const Song &s)
 
 static inline QString cacheKey(const Song &song, int size)
 {
+    if (song.isArtistImageRequest() && song.isVariousArtists()) {
+        return QLatin1String("va")+QString::number(size);
+    } else if (Song::SingleTracks==song.type) {
+        return QLatin1String("single")+QString::number(size);
+    } else if (song.isStandardStream()) {
+        return QLatin1String("str")+QString::number(size);
+    }
+    #ifdef ENABLE_ONLINE_SERVICES
+    else if (isOnlineServiceImage(song)) {
+        return song.onlineService()+QString::number(size);
+    }
+    #endif
+
     return (song.isArtistImageRequest() ? artistKey(song) : albumKey(song))+QString::number(size);
 }
 
@@ -1216,7 +1229,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
         size*=devicePixelRatio;
     }
     #endif
-    if (!song.isUnknown()) {
+    if (!song.isUnknown() || song.isStandardStream()) {
         key=cacheKey(song, size);
         pix=cache.object(key);
 

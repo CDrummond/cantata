@@ -31,6 +31,7 @@
 #endif
 
 #ifdef USE_SPEEX_RESAMPLER
+  #include <stdint.h> /* Needed by speex headers below, BUG:627 */
   #include <speex/speex_resampler.h>
 #endif
 

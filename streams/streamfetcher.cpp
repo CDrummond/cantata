@@ -210,7 +210,11 @@ void StreamFetcher::doNext()
         if (!currentName.isEmpty()) {
             current=current.left(current.length()-(currentName.length()+1));
         }
-        if (u.scheme().startsWith(StreamsModel::constPrefix)) {
+        // MPD 0.19.2 can handle m3u8
+        if (u.path().endsWith(QLatin1String(".m3u8"))) {
+            DBUG << "use orig (m3u8)" << current;
+            done.append(MPDParseUtils::addStreamName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
+        } else if (u.scheme().startsWith(StreamsModel::constPrefix)) {
             data.clear();
             u.setScheme("http");
             job=NetworkAccessManager::self()->get(u, constTimeout);

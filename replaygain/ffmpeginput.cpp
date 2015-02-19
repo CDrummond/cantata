@@ -8,7 +8,6 @@
  */
 
 /* See LICENSE file for copyright and license details. */
-#define _POSIX_C_SOURCE 1
 #ifdef __cplusplus
 #define __STDC_CONSTANT_MACROS
 #ifdef _STDINT_H

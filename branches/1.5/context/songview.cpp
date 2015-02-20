@@ -450,9 +450,14 @@ void SongView::loadInfo()
     searchForInfo();
 }
 
+static inline QString fixNewLine(QString s)
+{
+    return s.replace(QLatin1String("\n"), QLatin1String("<br/>"));
+}
+
 static QString createRow(const QString &key, const QString &value)
 {
-    return value.isEmpty() ? QString() : QString("<tr><td>%1:&nbsp;</td><td>%2</td></tr>").arg(key).arg(value);
+    return value.isEmpty() ? QString() : QString("<tr><td>%1:&nbsp;</td><td>%2</td></tr>").arg(key).arg(fixNewLine(value));
 }
 
 struct MapEntry {
@@ -582,7 +587,7 @@ void SongView::loadMetadata()
         tags.insert(pos++, createRow(i18n("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc)));
         tags.insert(pos++, createRow(i18n("Genre"), currentSong.genres().join(", ")));
         tags.insert(pos++, createRow(i18n("Year"), 0==currentSong.track ? QString() : QString::number(currentSong.year)));
-        tags.insert(pos++, createRow(i18n("Comment"), currentSong.comment()));
+        tags.insert(pos++, createRow(i18n("Comment"), fixNewLine(currentSong.comment())));
     }
 
     QString tagInfo;

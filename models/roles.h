@@ -64,6 +64,7 @@ namespace Cantata {
         Role_Width,
         Role_InitiallyHidden,
         Role_Hideable,
+        Role_ContextMenuText,
 
         // PlayQueueModel...
         Role_Time

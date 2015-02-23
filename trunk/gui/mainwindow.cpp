@@ -282,7 +282,7 @@ MainWindow::MainWindow(QWidget *parent)
     copyToDeviceAction = new Action(HIDE_MENU_ICON(StdActions::self()->copyToDeviceAction->icon()), Utils::strippedText(StdActions::self()->copyToDeviceAction->text()), this);
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
     #endif
-    cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
+    cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop Others"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), HIDE_MENU_ICON(Icons::self()->addRadioStreamIcon));
     promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), HIDE_MENU_ICON(Icons::self()->clearListIcon));
     centerPlayQueueAction = ActionCollection::get()->createAction("centerplaylist", i18n("Center On Current Track"), isRightToLeft() ? "go-previous" : "go-next");

@@ -45,11 +45,18 @@ public:
     virtual ~ComboBox() { }
 
     void setEditable(bool editable);
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    void showPopup();
+    void hidePopup();
+    #endif
 
 #if QT_VERSION >= 0x050000
 Q_SIGNALS:
     void textChanged(const QString &t);
 #endif
+
+private:
+    bool toggleState;
 };
 
 #endif

@@ -167,7 +167,7 @@ QString PlayQueueModel::headerText(int col)
     case COL_TITLE:     return i18n("Title");
     case COL_ARTIST:    return i18n("Artist");
     case COL_ALBUM:     return i18n("Album");
-    case COL_TRACK:     return i18n("Track");
+    case COL_TRACK:     return i18nc("Track number", "#");
     case COL_LENGTH:    return i18n("Length");
     case COL_DISC:      return i18n("Disc");
     case COL_YEAR:      return i18n("Year");
@@ -330,6 +330,8 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             case COL_PERFORMER: return 0.2;
             case COL_RATING:    return 0.08;
             }
+        case Cantata::Role_ContextMenuText:
+            return COL_TRACK==section ? i18n("# (Track Number)") : headerText(section);
         default:
             break;
         }

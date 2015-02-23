@@ -96,7 +96,7 @@ void TableView::initHeader()
         menu->addAction(stretch);
         menu->addSeparator();
         foreach (int col, hideable) {
-            QAction *act=new QAction(model()->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString(), menu);
+            QAction *act=new QAction(model()->headerData(col, Qt::Horizontal, Cantata::Role_ContextMenuText).toString(), menu);
             act->setCheckable(true);
             act->setChecked(!hdr->isSectionHidden(col));
             menu->addAction(act);

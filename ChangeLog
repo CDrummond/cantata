@@ -17,6 +17,8 @@
  9. Do not reset current song when shuffling albums, or sorting playqueue.
 10. MPD 0.19.2 can handle m3u8, so pass stream URLs of this type straight to
     MPD.
+11. Re-add hack to force scrollbars in large combo popups and to restrict their
+    height. This should apply to all Linux Gtk-like styles, not just QGtkStyle.
 
 1.5.2
 -----

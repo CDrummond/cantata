@@ -39,6 +39,7 @@
 26. Use correct stream icon in playqueue for streams with no song details.
 27. Fix FreeBSD build.
 28. Respect carriage returns when displaying comments in context view.
+29. Fix replaygain calculation when ffmpeg is using planar formats.
 
 1.5.1
 -----

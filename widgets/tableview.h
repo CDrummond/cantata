@@ -37,13 +37,19 @@ public:
     void saveHeader();
 
 private Q_SLOTS:
-    void showMenu();
+    void showMenu(const QPoint &pos);
     void toggleHeaderItem(bool visible);
     void stretchToggled(bool e);
+    void alignmentChanged();
 
 protected:
     QMenu *menu;
     QString configName;
+    int menuIsForCol;
+    QAction *alignAction;
+    QAction *alignLeftAction;
+    QAction *alignCenterAction;
+    QAction *alignRightAction;
 };
 
 #endif

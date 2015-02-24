@@ -30,6 +30,7 @@
 #include <QIcon>
 #include <QAbstractItemModel>
 #include <QList>
+#include <QMap>
 #include "mpd/playlist.h"
 #include "mpd/song.h"
 #include "actionmodel.h"
@@ -112,6 +113,7 @@ public:
     QVariant data(const QModelIndex &, int) const;
     #ifndef ENABLE_UBUNTU
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole);
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     #endif
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -179,6 +181,7 @@ private:
     QMenu *itemMenu;
     quint32 dropAdjust;
     QAction *newAction;
+    QMap<int, int> alignments;
     #endif
 };
 

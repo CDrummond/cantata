@@ -36,6 +36,7 @@
 #include <QList>
 #include <QSet>
 #include <QStack>
+#include <QMap>
 
 class StreamFetcher;
 class Action;
@@ -89,6 +90,7 @@ public:
     QModelIndex parent(const QModelIndex &idx) const;
     #ifndef ENABLE_UBUNTU
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole);
     #endif
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &) const { return COL_COUNT; }
@@ -219,6 +221,7 @@ private:
     Action *redoAction;
     Action *shuffleAction;
     Action *sortAction;
+    QMap<int, int> alignments;
     #endif
 };
 

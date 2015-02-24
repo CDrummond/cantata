@@ -67,6 +67,8 @@ SearchModel::SearchModel(QObject *parent)
     connect(MPDConnection::self(), SIGNAL(searchResponse(int,QList<Song>)), this, SLOT(searchFinished(int,QList<Song>)));
     #ifndef ENABLE_UBUNTU
     connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
+    alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
+    alignments[COL_LENGTH]=alignments[COL_DISC]=alignments[COL_YEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
     #endif
 }
 
@@ -98,20 +100,7 @@ QVariant SearchModel::headerData(int section, Qt::Orientation orientation, int r
         case Qt::DisplayRole:
             return headerText(section);
         case Qt::TextAlignmentRole:
-            switch (section) {
-            case COL_TITLE:
-            case COL_ARTIST:
-            case COL_ALBUM:
-            case COL_GENRE:
-            case COL_COMPOSER:
-            case COL_PERFORMER:
-            default:
-                return int(Qt::AlignVCenter|Qt::AlignLeft);
-            case COL_LENGTH:
-            case COL_DISC:
-            case COL_YEAR:
-                return int(Qt::AlignVCenter|Qt::AlignRight);
-            }
+            return alignments[section];
         case Cantata::Role_InitiallyHidden:
         case Cantata::Role_Hideable:
             return COL_YEAR==section || COL_DISC==section || COL_GENRE==section || COL_COMPOSER==section || COL_PERFORMER==section;
@@ -133,9 +122,19 @@ QVariant SearchModel::headerData(int section, Qt::Orientation orientation, int r
     }
     return QVariant();
 }
+
+bool SearchModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role)
+{
+    if (Qt::Horizontal==orientation && Qt::TextAlignmentRole==role && section>=0) {
+        int al=value.toInt()|Qt::AlignVCenter;
+        if (al!=alignments[section]) {
+            alignments[section]=al;
+            return true;
+        }
+    }
+    return false;
+}
 #endif
-
-
 
 int SearchModel::rowCount(const QModelIndex &parent) const
 {
@@ -162,20 +161,7 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
                   ? Icons::self()->streamIcon
                   : Icons::self()->audioFileIcon;
     case Qt::TextAlignmentRole:
-        switch (index.column()) {
-        case COL_TITLE:
-        case COL_ARTIST:
-        case COL_ALBUM:
-        case COL_GENRE:
-        case COL_COMPOSER:
-        case COL_PERFORMER:
-        default:
-            return int(Qt::AlignVCenter|Qt::AlignLeft);
-        case COL_LENGTH:
-        case COL_DISC:
-        case COL_YEAR:
-            return int(Qt::AlignVCenter|Qt::AlignRight);
-        }
+        return alignments[index.column()];
     #endif
     case Qt::DisplayRole:
         if (multiCol) {

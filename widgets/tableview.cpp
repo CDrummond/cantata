@@ -28,11 +28,13 @@
 #include "models/roles.h"
 #include <QMenu>
 #include <QAction>
+#include <QActionGroup>
 
 TableView::TableView(const QString &cfgName, QWidget *parent, bool menuAlwaysAllowed)
     : TreeView(parent, menuAlwaysAllowed)
     , menu(0)
     , configName(cfgName)
+    , menuIsForCol(-1)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setAcceptDrops(true);
@@ -74,7 +76,7 @@ void TableView::initHeader()
         #else
         hdr->setMovable(true);
         #endif
-        connect(hdr, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu()));
+        connect(hdr, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu(QPoint)));
     }
 
     //Restore state
@@ -94,6 +96,22 @@ void TableView::initHeader()
         stretch->setChecked(hdr->is_stretch_enabled());
         connect(stretch, SIGNAL(toggled(bool)), hdr, SLOT(SetStretchEnabled(bool)));
         menu->addAction(stretch);
+
+        QMenu *alignmentMenu = new QMenu(menu);
+        QActionGroup *alignGroup = new QActionGroup(alignmentMenu);
+        alignLeftAction = new QAction(i18n("Left"), alignGroup);
+        alignCenterAction = new QAction(i18n("Center"), alignGroup);
+        alignRightAction = new QAction(i18n("Right"), alignGroup);
+
+        alignLeftAction->setCheckable(true);
+        alignCenterAction->setCheckable(true);
+        alignRightAction->setCheckable(true);
+        alignmentMenu->addActions(alignGroup->actions());
+        connect(alignGroup, SIGNAL(triggered(QAction*)), SLOT(alignmentChanged()));
+        alignAction=new QAction(i18n("Alignment"), menu);
+        alignAction->setMenu(alignmentMenu);
+        menu->addAction(alignAction);
+
         menu->addSeparator();
         foreach (int col, hideable) {
             QAction *act=new QAction(model()->headerData(col, Qt::Horizontal, Cantata::Role_ContextMenuText).toString(), menu);
@@ -113,9 +131,21 @@ void TableView::saveHeader()
     }
 }
 
-void TableView::showMenu()
+void TableView::showMenu(const QPoint &pos)
 {
-    menu->exec(QCursor::pos());
+    menuIsForCol=header()->logicalIndexAt(pos);
+    alignAction->setEnabled(-1!=menuIsForCol);
+    if (-1!=menuIsForCol) {
+        Qt::Alignment al = (Qt::AlignmentFlag)model()->headerData(menuIsForCol, Qt::Horizontal, Qt::TextAlignmentRole).toInt();
+        if (al&Qt::AlignLeft) {
+            alignLeftAction->setChecked(true);
+        } else if (al&Qt::AlignHCenter) {
+            alignCenterAction->setChecked(true);
+        } else if (al&Qt::AlignRight) {
+            alignRightAction->setChecked(true);
+        }
+    }
+    menu->exec(mapToGlobal(pos));
 }
 
 void TableView::toggleHeaderItem(bool visible)
@@ -134,3 +164,18 @@ void TableView::stretchToggled(bool e)
 {
     setHorizontalScrollBarPolicy(e ? Qt::ScrollBarAlwaysOff : Qt::ScrollBarAsNeeded);
 }
+
+void TableView::alignmentChanged()
+{
+    if (-1!=menuIsForCol) {
+        int al=alignLeftAction->isChecked()
+                ? Qt::AlignLeft
+                : alignRightAction->isChecked()
+                    ? Qt::AlignRight
+                    : Qt::AlignHCenter;
+        if (model()->setHeaderData(menuIsForCol, Qt::Horizontal, al, Qt::TextAlignmentRole)) {
+            header()->reset();
+        }
+    }
+}
+

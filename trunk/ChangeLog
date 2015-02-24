@@ -20,6 +20,7 @@
 11. Re-add hack to force scrollbars in large combo popups and to restrict their
     height. This should apply to all Linux Gtk-like styles, not just QGtkStyle.
 12. Use '#' for track number column title in table view.
+13. Allow setting of column alignments in table views.
 
 1.5.2
 -----

@@ -27,6 +27,7 @@
 #include "mpd/song.h"
 #include "actionmodel.h"
 #include <QList>
+#include <QMap>
 
 class SearchModel : public ActionModel
 {
@@ -57,6 +58,7 @@ public:
     QModelIndex parent(const QModelIndex &) const;
     #ifndef ENABLE_UBUNTU
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole);
     #endif
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &) const { return COL_COUNT; }
@@ -96,6 +98,9 @@ private:
     int currentId;
     QString currentKey;
     QString currentValue;
+    #ifndef ENABLE_UBUNTU
+    QMap<int, int> alignments;
+    #endif
 };
 
 #endif

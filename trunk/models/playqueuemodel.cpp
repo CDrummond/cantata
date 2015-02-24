@@ -266,6 +266,9 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     controlActions();
     shuffleAction->setEnabled(false);
     sortAction->setEnabled(false);
+    alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
+    alignments[COL_TRACK]=alignments[COL_LENGTH]=alignments[COL_DISC]=alignments[COL_YEAR]=alignments[COL_PRIO]=int(Qt::AlignVCenter|Qt::AlignRight);
+    alignments[COL_RATING]=int(Qt::AlignVCenter|Qt::AlignHCenter);
     #endif
 }
 
@@ -292,24 +295,7 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
         case Qt::DisplayRole:
             return headerText(section);
         case Qt::TextAlignmentRole:
-            switch (section) {
-            case COL_TITLE:
-            case COL_ARTIST:
-            case COL_ALBUM:
-            case COL_GENRE:
-            case COL_COMPOSER:
-            case COL_PERFORMER:
-            default:
-                return int(Qt::AlignVCenter|Qt::AlignLeft);
-            case COL_TRACK:
-            case COL_LENGTH:
-            case COL_DISC:
-            case COL_YEAR:
-            case COL_PRIO:
-                return int(Qt::AlignVCenter|Qt::AlignRight);
-            case COL_RATING:
-                return int(Qt::AlignCenter);
-            }
+            return alignments[section];
         case Cantata::Role_InitiallyHidden:
             return COL_YEAR==section || COL_DISC==section || COL_GENRE==section || COL_PRIO==section ||
                    COL_COMPOSER==section || COL_PERFORMER==section || COL_RATING==section;
@@ -338,6 +324,18 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
     }
 
     return QVariant();
+}
+
+bool PlayQueueModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role)
+{
+    if (Qt::Horizontal==orientation && Qt::TextAlignmentRole==role && section>=0) {
+        int al=value.toInt()|Qt::AlignVCenter;
+        if (al!=alignments[section]) {
+            alignments[section]=al;
+            return true;
+        }
+    }
+    return false;
 }
 #endif
 
@@ -598,26 +596,9 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return s.toolTip();
         }
     }
-    case Qt::TextAlignmentRole:
-        switch (index.column()) {
-        case COL_TITLE:
-        case COL_ARTIST:
-        case COL_ALBUM:
-        case COL_GENRE:
-        case COL_COMPOSER:
-        case COL_PERFORMER:
-        default:
-            return int(Qt::AlignVCenter|Qt::AlignLeft);
-        case COL_TRACK:
-        case COL_LENGTH:
-        case COL_DISC:
-        case COL_YEAR:
-        case COL_PRIO:
-            return int(Qt::AlignVCenter|Qt::AlignRight);
-        case COL_RATING:
-            return int(Qt::AlignCenter);
-        }
     #ifndef ENABLE_UBUNTU
+    case Qt::TextAlignmentRole:
+        return alignments[index.column()];
     case Cantata::Role_Decoration: {
         qint32 id=songs.at(index.row()).id;
         if (id==currentSongId) {

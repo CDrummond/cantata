@@ -370,7 +370,7 @@ static int decodeAudio(FfmpegInput::Handle *handle, int *frame_size_ptr)
     return ret;
 }
 #endif
-#include <QDebug>
+
 size_t FfmpegInput::readOnePacket()
 {
     if (!handle) {
@@ -407,7 +407,6 @@ size_t FfmpegInput::readOnePacket()
         av_free_packet(&handle->packet);
         goto next_frame;
     }
-    qWarning() << handle->codecContext->sample_fmt;
     switch (handle->codecContext->sample_fmt) {
     #if LIBAVCODEC_VERSION_MAJOR >= 54
     case AV_SAMPLE_FMT_S16:

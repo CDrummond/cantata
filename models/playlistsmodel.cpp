@@ -101,6 +101,8 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     newAction=new QAction(Icon("document-new"), i18n("New Playlist..."), this);
     connect(newAction, SIGNAL(triggered()), this, SIGNAL(addToNew()));
     Action::initIcon(newAction);
+    alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
+    alignments[COL_LENGTH]=alignments[COL_YEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
     #endif
     #if defined ENABLE_MODEL_TEST
     new ModelTest(this, this);
@@ -208,19 +210,7 @@ QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, in
         case Qt::DisplayRole:
             return headerText(section);
         case Qt::TextAlignmentRole:
-            switch (section) {
-            case COL_TITLE:
-            case COL_ARTIST:
-            case COL_ALBUM:
-            case COL_GENRE:
-            case COL_COMPOSER:
-            case COL_PERFORMER:
-            default:
-                return int(Qt::AlignVCenter|Qt::AlignLeft);
-            case COL_LENGTH:
-            case COL_YEAR:
-                return int(Qt::AlignVCenter|Qt::AlignRight);
-            }
+            return alignments[section];
         case Cantata::Role_InitiallyHidden:
         case Cantata::Role_Hideable:
             return COL_YEAR==section || COL_GENRE==section || COL_COMPOSER==section || COL_PERFORMER==section;
@@ -242,6 +232,18 @@ QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, in
 
     return QVariant();
 }
+
+bool PlaylistsModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role)
+{
+    if (Qt::Horizontal==orientation && Qt::TextAlignmentRole==role && section>=0) {
+        int al=value.toInt()|Qt::AlignVCenter;
+        if (al!=alignments[section]) {
+            alignments[section]=al;
+            return true;
+        }
+    }
+    return false;
+}
 #endif
 
 QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
@@ -250,21 +252,11 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
+    #ifndef ENABLE_UBUNTU
     if (Qt::TextAlignmentRole==role) {
-        switch (index.column()) {
-        case COL_TITLE:
-        case COL_ARTIST:
-        case COL_ALBUM:
-        case COL_GENRE:
-        case COL_COMPOSER:
-        case COL_PERFORMER:
-        default:
-            return int(Qt::AlignVCenter|Qt::AlignLeft);
-        case COL_LENGTH:
-        case COL_YEAR:
-            return int(Qt::AlignVCenter|Qt::AlignRight);
-        }
+        return alignments[index.column()];
     }
+    #endif
 
     Item *item=static_cast<Item *>(index.internalPointer());
 

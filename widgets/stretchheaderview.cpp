@@ -25,8 +25,8 @@
 #include <numeric>
 
 const int StretchHeaderView::kMinimumColumnWidth = 10;
-const int StretchHeaderView::kMagicNumber = 0x502c950f;
-
+const int StretchHeaderView::kMagicNumber = 0x502c951f;
+static const int constPrevMagicNumber=0x502c950f;
 StretchHeaderView::StretchHeaderView(Qt::Orientation orientation, QWidget* parent)
   : QHeaderView(orientation, parent),
     stretch_enabled_(false),
@@ -239,18 +239,24 @@ bool StretchHeaderView::RestoreState(const QByteArray& data) {
   int magic_number = 0;
   s >> magic_number;
 
-  if (magic_number != kMagicNumber || s.atEnd()) {
+  if ((magic_number != kMagicNumber && magic_number!=constPrevMagicNumber) || s.atEnd()) {
     return false;
   }
 
   QList<int> pixel_widths;
   QList<int> visual_indices;
+  QList<int> alignments;
   int sort_indicator_order = Qt::AscendingOrder;
   int sort_indicator_section = 0;
+  int version = 0;
 
   s >> stretch_enabled_;
   s >> pixel_widths;
   s >> visual_indices;
+  if (magic_number == kMagicNumber) {
+    s >> alignments;
+    s >> version;
+  }
   s >> column_widths_;
   s >> sort_indicator_order;
   s >> sort_indicator_section;
@@ -260,6 +266,7 @@ bool StretchHeaderView::RestoreState(const QByteArray& data) {
   const int persisted_column_count =
       qMin(qMin(visual_indices.count(), pixel_widths.count()), column_widths_.count());
 
+  QAbstractItemModel *m=model();
   // Set column visible state, visual indices and, if we're not in stretch mode,
   // pixel widths.
   for (int i=0 ; i<count() && i<persisted_column_count ; ++i) {
@@ -268,6 +275,9 @@ bool StretchHeaderView::RestoreState(const QByteArray& data) {
 
     if (!stretch_enabled_) {
       resizeSection(i, pixel_widths[i]);
+    }
+    if (m && magic_number == kMagicNumber) {
+      m->setHeaderData(i, Qt::Horizontal, alignments[i], Qt::TextAlignmentRole);
     }
   }
   
@@ -293,10 +303,13 @@ QByteArray StretchHeaderView::SaveState() const {
 
   QList<int> pixel_widths;
   QList<int> visual_indices;
+  QList<int> alignments;
+  QAbstractItemModel *m=model();
 
   for (int i=0 ; i<count() ; ++i) {
     pixel_widths << sectionSize(i);
     visual_indices << logicalIndex(i);
+    alignments << (m ? m->headerData(i, Qt::Horizontal, Qt::TextAlignmentRole).toInt() : -1);
   }
 
   s.setVersion(QDataStream::Qt_4_6);
@@ -305,6 +318,8 @@ QByteArray StretchHeaderView::SaveState() const {
   s << stretch_enabled_;
   s << pixel_widths;
   s << visual_indices;
+  s << alignments;
+  s << 0; // For future use...
   s << column_widths_;
   s << int(sortIndicatorOrder());
   s << sortIndicatorSection();

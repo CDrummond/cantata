@@ -2366,6 +2366,21 @@ void MainWindow::dynamicStatus(const QString &message)
     #endif
 }
 
+void MainWindow::setCollection(const QString &collection)
+{
+    if (!connectionsAction->isVisible()) {
+        return;
+    }
+    foreach (QAction *act, connectionsAction->menu()->actions()) {
+        if (Utils::strippedText(act->text())==collection) {
+            if (!act->isChecked()) {
+                act->trigger();
+            }
+            break;
+        }
+    }
+}
+
 void MainWindow::showPlayQueueSearch()
 {
     playQueueSearchWidget->activate();

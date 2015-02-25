@@ -166,6 +166,7 @@ public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
     void showInformation(const QString &message);
     void dynamicStatus(const QString &message);
+    void setCollection(const QString &collection);
     void hideWindow();
     void restoreWindow();
     void load(const QStringList &urls) { playQueueModel.load(urls); }

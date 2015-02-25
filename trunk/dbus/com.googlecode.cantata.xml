@@ -12,5 +12,8 @@
     <method name="load">
       <arg name="urls" type="as" direction="in"/>
     </method>
+    <method name="setCollection">
+        <arg type="s" name="name" direction="in"/>
+    </method>
   </interface>
 </node>

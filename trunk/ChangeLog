@@ -22,6 +22,8 @@
 12. Use '#' for track number column title in table view.
 13. Allow setting of column alignments in table views.
 14. Add 'setCollection' to Cantata's DBUS interface.
+15. Add 'Collections' and 'Outputs' menus to system tray menu (Linux and
+    Windows builds only)
 
 1.5.2
 -----

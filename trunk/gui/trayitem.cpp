@@ -122,6 +122,15 @@ void TrayItem::setup()
         return;
     }
 
+    #ifndef Q_OS_MAC
+    connectionsAction=new Action(Utils::strippedText(mw->connectionsAction->text()), this);
+    connectionsAction->setVisible(false);
+    connect(mw->connectionsAction, SIGNAL(changed()), SLOT(updateConnections()));
+    outputsAction=new Action(Utils::strippedText(mw->outputsAction->text()), this);
+    outputsAction->setVisible(false);
+    connect(mw->outputsAction, SIGNAL(changed()), SLOT(updateOutputs()));
+    #endif
+
     #ifdef ENABLE_KDE_SUPPORT
     trayItem = new KStatusNotifierItem(this);
     trayItem->setCategory(KStatusNotifierItem::ApplicationStatus);
@@ -138,6 +147,9 @@ void TrayItem::setup()
     trayItemMenu->addAction(StdActions::self()->nextTrackAction);
     trayItem->setContextMenu(trayItemMenu);
     trayItem->setStatus(KStatusNotifierItem::Active);
+    trayItemMenu->addSeparator();
+    trayItemMenu->addAction(connectionsAction);
+    trayItemMenu->addAction(outputsAction);
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->restoreAction);
     trayItemMenu->addSeparator();
@@ -160,6 +172,11 @@ void TrayItem::setup()
     trayItemMenu->addAction(StdActions::self()->stopPlaybackAction);
     trayItemMenu->addAction(StdActions::self()->stopAfterCurrentTrackAction);
     trayItemMenu->addAction(StdActions::self()->nextTrackAction);
+    #ifndef Q_OS_MAC
+    trayItemMenu->addSeparator();
+    trayItemMenu->addAction(connectionsAction);
+    trayItemMenu->addAction(outputsAction);
+    #endif
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->restoreAction);
     trayItemMenu->addSeparator();
@@ -277,5 +294,37 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
             #endif
         }
     }
+    #endif
+}
+
+#ifndef Q_OS_MAC
+static void copyMenu(Action *from, Action *to)
+{
+    to->setVisible(from->isVisible());
+    if (to->isVisible()) {
+        if (!to->menu()) {
+            to->setMenu(new QMenu(0));
+        }
+        QMenu *m=to->menu();
+        m->clear();
+
+        foreach (QAction *act, from->menu()->actions()) {
+            m->addAction(act);
+        }
+    }
+}
+#endif
+
+void TrayItem::updateConnections()
+{
+    #ifndef Q_OS_MAC
+    copyMenu(mw->connectionsAction, connectionsAction);
+    #endif
+}
+
+void TrayItem::updateOutputs()
+{
+    #ifndef Q_OS_MAC
+    copyMenu(mw->outputsAction, outputsAction);
     #endif
 }

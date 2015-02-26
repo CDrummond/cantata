@@ -68,6 +68,8 @@
 28. Respect carriage returns when displaying comments in context view.
 29. Fix replaygain calculation when ffmpeg is using planar formats.
 30. Enable 'save' button when reading ratings from multiple files.
+31. Fix cantata-remote script (used for Unity launcher integration) when this
+    uses qdbus.
 
 1.5.1
 -----

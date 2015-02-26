@@ -43,7 +43,8 @@ if [ "$qt" != "" ] ; then
         cantata &
         sleep 1s
     fi
-    $qt $service com.googlecode.cantata /org/mpris/MediaPlayer2 $1 > /dev/null
+    $qt $service /org/mpris/MediaPlayer2 $1 > /dev/null
+    exit
 fi
 
 # No qdbus so try dbus-send...

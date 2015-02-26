@@ -41,6 +41,7 @@ class Notify;
 class MainWindow;
 class QImage;
 struct Song;
+class Action;
 
 class TrayItem : public QObject
 {
@@ -91,6 +92,8 @@ private Q_SLOTS:
     #else
     void trayItemClicked(QSystemTrayIcon::ActivationReason reason);
     #endif
+    void updateConnections();
+    void updateOutputs();
 
 private:
     #ifndef Q_OS_MAC
@@ -106,6 +109,8 @@ private:
     #ifdef QT_QTDBUS_FOUND
     Notify *notification;
     #endif
+    Action *connectionsAction;
+    Action *outputsAction;
 
     #endif
 };

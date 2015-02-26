@@ -749,6 +749,8 @@ void TagEditor::readRatings()
                 s.rating=r;
                 edited.replace(i, s);
                 updated.append(s.file);
+                editedIndexes.insert(i);
+                updateTrackName(i, true);
                 if (i==currentSongIndex) {
                     setSong(s);
                 }
@@ -767,6 +769,7 @@ void TagEditor::readRatings()
             setSong(s);
         }
     }
+    enableOkButton();
 }
 
 void TagEditor::writeRatings()

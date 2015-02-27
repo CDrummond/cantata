@@ -287,18 +287,17 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         } else if (line.startsWith(constTitleKey)) {
             song.title =QString::fromUtf8(line.mid(constTitleKey.length()));
         } else if (line.startsWith(constTrackKey)) {
-            song.track = line.mid(constTrackKey.length()).split('/').at(0).toInt();
+            int v=line.mid(constTrackKey.length()).split('/').at(0).toInt();
+            song.track = v<0 ? 0 : v;
         } else if (Loc_Library!=location && Loc_Search!=location && line.startsWith(constIdKey)) {
             song.id = line.mid(constIdKey.length()).toUInt();
         } else if (line.startsWith(constDiscKey)) {
-            song.disc = line.mid(constDiscKey.length()).split('/').at(0).toInt();
+            int v = line.mid(constDiscKey.length()).split('/').at(0).toInt();
+            song.disc = v<0 ? 0 : v;
         } else if (line.startsWith(constDateKey)) {
             QByteArray value=line.mid(constDateKey.length());
-            if (value.length()>4) {
-                song.year = value.left(4).toUInt();
-            } else {
-                song.year = value.toUInt();
-            }
+            int v=value.length()>4 ? value.left(4).toUInt() : value.toUInt();
+            song.year=v<0 ? 0 : v;
         } else if (line.startsWith(constGenreKey)) {
             song.addGenre(QString::fromUtf8(line.mid(constGenreKey.length())));
         }  else if (line.startsWith(constNameKey)) {

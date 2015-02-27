@@ -37,15 +37,17 @@ public:
 
     enum Columns
     {
+        COL_TRACK,
+        COL_DISC,
         COL_TITLE,
         COL_ARTIST,
         COL_ALBUM,
-        COL_DISC,
         COL_LENGTH,
         COL_YEAR,
         COL_GENRE,
         COL_COMPOSER,
         COL_PERFORMER,
+        COL_RATING,
 
         COL_COUNT
     };
@@ -83,10 +85,12 @@ Q_SIGNALS:
     void statsUpdated(int songs, quint32 time);
 
     void search(const QString &field, const QString &value, int id);
+    void getRating(const QString &file) const;
 
 private Q_SLOTS:
     void searchFinished(int id, const QList<Song> &result);
     void coverLoaded(const Song &song, int s);
+    void ratingResult(const QString &file, quint8 r);
 
 private:
     void clearItems();

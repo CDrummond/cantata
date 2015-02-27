@@ -71,7 +71,7 @@ public:
         BasicItemDelegate::paint(painter, v4, index);
 
         if (index.column()==PlayQueueModel::COL_RATING) {
-            Song song=index.data(Cantata::Role_Song).value<Song>();
+            Song song=index.data(Cantata::Role_SongWithRating).value<Song>();
             if (song.rating>0 && song.rating<=Song::Rating_Max) {
                 const QRect &r=option.rect;
                 if (!ratingPainter) {

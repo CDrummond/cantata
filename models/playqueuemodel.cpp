@@ -376,6 +376,10 @@ QHash<int, QByteArray> PlayQueueModel::roleNames() const
 
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 {
+    if (!index.isValid() && Cantata::Role_RatingCol==role) {
+        return COL_RATING;
+    }
+
     if (!index.isValid() || index.row() >= songs.size()) {
         return QVariant();
     }

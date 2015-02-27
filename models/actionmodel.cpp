@@ -38,8 +38,14 @@ QVariant ActionModel::data(const QModelIndex &index, int role) const
     }
     #else
     Q_UNUSED(index)
-    if (Cantata::Role_Actions==role) {
+    switch(role) {
+    case Cantata::Role_Actions:
         v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
+        break;
+    case Cantata::Role_RatingCol:
+        return -1;
+    default:
+        break;
     }
     #endif
     return v;

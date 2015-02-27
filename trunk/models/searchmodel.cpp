@@ -98,6 +98,7 @@ QVariant SearchModel::headerData(int section, Qt::Orientation orientation, int r
     if (Qt::Horizontal==orientation) {
         switch (role) {
         case Qt::DisplayRole:
+        case Cantata::Role_ContextMenuText:
             return headerText(section);
         case Qt::TextAlignmentRole:
             return alignments[section];

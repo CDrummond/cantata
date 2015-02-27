@@ -81,6 +81,8 @@ TrayItem::TrayItem(MainWindow *p)
     #ifdef QT_QTDBUS_FOUND
     , notification(0)
     #endif
+    , connectionsAction(0)
+    , outputsAction(0)
     #endif
 {
 }
@@ -127,6 +129,8 @@ void TrayItem::setup()
     connectionsAction->setVisible(false);
     outputsAction=new Action(Utils::strippedText(mw->outputsAction->text()), this);
     outputsAction->setVisible(false);
+    updateConnections();
+    updateOutputs();
     #endif
 
     #ifdef ENABLE_KDE_SUPPORT
@@ -298,6 +302,9 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
 #ifndef Q_OS_MAC
 static void copyMenu(Action *from, Action *to)
 {
+    if (!to) {
+        return;
+    }
     to->setVisible(from->isVisible());
     if (to->isVisible()) {
         if (!to->menu()) {

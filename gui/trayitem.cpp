@@ -125,10 +125,8 @@ void TrayItem::setup()
     #ifndef Q_OS_MAC
     connectionsAction=new Action(Utils::strippedText(mw->connectionsAction->text()), this);
     connectionsAction->setVisible(false);
-    connect(mw->connectionsAction, SIGNAL(changed()), SLOT(updateConnections()));
     outputsAction=new Action(Utils::strippedText(mw->outputsAction->text()), this);
     outputsAction->setVisible(false);
-    connect(mw->outputsAction, SIGNAL(changed()), SLOT(updateOutputs()));
     #endif
 
     #ifdef ENABLE_KDE_SUPPORT

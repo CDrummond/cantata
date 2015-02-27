@@ -1405,6 +1405,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
     }
     setProperty(constMpdEnabledOuptuts, QStringList() << enabledMpd.toList());
     outputsAction->setVisible(outputs.count()>1);
+    trayItem->updateOutputs();
 }
 
 void MainWindow::updateConnectionsMenu()
@@ -1441,6 +1442,7 @@ void MainWindow::updateConnectionsMenu()
             }
         }
     }
+    trayItem->updateConnections();
 }
 
 void MainWindow::controlConnectionsMenu(bool enable)

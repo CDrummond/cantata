@@ -84,6 +84,8 @@ public:
     }
     #endif
     void songChanged(const Song &song, bool isPlaying);
+    void updateConnections();
+    void updateOutputs();
 
 private Q_SLOTS:
     #ifdef ENABLE_KDE_SUPPORT
@@ -92,8 +94,6 @@ private Q_SLOTS:
     #else
     void trayItemClicked(QSystemTrayIcon::ActivationReason reason);
     #endif
-    void updateConnections();
-    void updateOutputs();
 
 private:
     #ifndef Q_OS_MAC

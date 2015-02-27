@@ -71,6 +71,7 @@
 31. Fix cantata-remote script (used for Unity launcher integration) when this
     uses qdbus.
 32. Fix display of rating in tag dialog when only 1 file is being edited.
+33. Fix fetching of ratings in table style playqueue.
 
 1.5.1
 -----

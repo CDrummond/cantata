@@ -1029,7 +1029,7 @@ void TagEditor::rating(const QString &f, quint8 r)
                 s.rating=r;
                 edited.replace(i, s);
             }
-            if (i==currentSongIndex && 0==ratingWidget->value()) {
+            if (i==currentSongIndex && ratingWidget->value()>Song::Rating_Max) {
                 ratingWidget->setValue(r);
             }
         }

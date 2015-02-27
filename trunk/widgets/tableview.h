@@ -33,6 +33,7 @@ class TableView : public TreeView
 public:
     TableView(const QString &cfgName, QWidget *parent=0, bool menuAlwaysAllowed=false);
     virtual ~TableView() { }
+    void setModel(QAbstractItemModel *m);
     void initHeader();
     void saveHeader();
 

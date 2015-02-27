@@ -27,7 +27,6 @@
 #include "config.h"
 #include "basicitemdelegate.h"
 #include "support/utils.h"
-#include "widgets/ratingwidget.h"
 #include "mpd/song.h"
 #include <QMouseEvent>
 #include <QPaintEvent>
@@ -46,53 +45,6 @@
 #else
 #define SINGLE_CLICK style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
 #endif
-
-
-class TreeViewItemDelegate : public BasicItemDelegate
-{
-public:
-    TreeViewItemDelegate(QObject *p, int rc) : BasicItemDelegate(p), ratingCol(rc), ratingPainter(0) { }
-    virtual ~TreeViewItemDelegate() { delete ratingPainter; }
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        if (!index.isValid()) {
-            return;
-        }
-
-        QStyleOptionViewItemV4 v4((QStyleOptionViewItemV4 &)option);
-        if (QStyleOptionViewItemV4::Beginning==v4.viewItemPosition) {
-            v4.icon=index.data(Cantata::Role_Decoration).value<QIcon>();
-            if (!v4.icon.isNull()) {
-                v4.features |= QStyleOptionViewItemV2::HasDecoration;
-                v4.decorationSize=v4.icon.actualSize(option.decorationSize, QIcon::Normal, QIcon::Off);
-            }
-        }
-
-        BasicItemDelegate::paint(painter, v4, index);
-
-        if (index.column()==ratingCol) {
-            Song song=index.data(Cantata::Role_SongWithRating).value<Song>();
-            if (song.rating>0 && song.rating<=Song::Rating_Max) {
-                const QRect &r=option.rect;
-                if (!ratingPainter) {
-                    ratingPainter=new RatingPainter(r.height()-4);
-                    ratingPainter->setColor(option.palette.color(QPalette::Active, QPalette::Text));
-                }
-                painter->save();
-                painter->setOpacity(painter->opacity()*0.75);
-                painter->setClipRect(r);
-                const QSize &ratingSize=ratingPainter->size();
-                QRect ratingRect(r.x()+(r.width()-ratingSize.width())/2, r.y()+(r.height()-ratingSize.height())/2,
-                                 ratingSize.width(), ratingSize.height());
-                ratingPainter->paint(painter, ratingRect, song.rating);
-                painter->restore();
-            }
-        }
-    }
-
-    int ratingCol;
-    mutable RatingPainter *ratingPainter;
-};
 
 QImage TreeView::setOpacity(const QImage &orig, double opacity)
 {
@@ -394,14 +346,6 @@ void TreeView::setModel(QAbstractItemModel *m)
     QAbstractItemModel *old=model();
     QTreeView::setModel(m);
 
-    if (itemDelegate()) {
-        itemDelegate()->deleteLater();
-    }
-    bool ok=false;
-    int col=m ? m->data(QModelIndex(), Cantata::Role_RatingCol).toInt(&ok) : -1;
-    if (ok && col>=0) {
-        setItemDelegate(new TreeViewItemDelegate(this, col));
-    }
     if (forceSingleColumn && m) {
         int columnCount=m->columnCount();
         if (columnCount>1) {

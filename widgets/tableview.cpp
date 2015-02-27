@@ -23,12 +23,61 @@
 
 #include "tableview.h"
 #include "stretchheaderview.h"
+#include "basicitemdelegate.h"
+#include "ratingwidget.h"
 #include "gui/settings.h"
 #include "support/localize.h"
 #include "models/roles.h"
 #include <QMenu>
 #include <QAction>
 #include <QActionGroup>
+#include <QPainter>
+
+class TableViewItemDelegate : public BasicItemDelegate
+{
+public:
+    TableViewItemDelegate(QObject *p, int rc) : BasicItemDelegate(p), ratingCol(rc), ratingPainter(0) { }
+    virtual ~TableViewItemDelegate() { delete ratingPainter; }
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        if (!index.isValid()) {
+            return;
+        }
+
+        QStyleOptionViewItemV4 v4((QStyleOptionViewItemV4 &)option);
+        if (QStyleOptionViewItemV4::Beginning==v4.viewItemPosition) {
+            v4.icon=index.data(Cantata::Role_Decoration).value<QIcon>();
+            if (!v4.icon.isNull()) {
+                v4.features |= QStyleOptionViewItemV2::HasDecoration;
+                v4.decorationSize=v4.icon.actualSize(option.decorationSize, QIcon::Normal, QIcon::Off);
+            }
+        }
+
+        BasicItemDelegate::paint(painter, v4, index);
+
+        if (index.column()==ratingCol) {
+            Song song=index.data(Cantata::Role_SongWithRating).value<Song>();
+            if (song.rating>0 && song.rating<=Song::Rating_Max) {
+                const QRect &r=option.rect;
+                if (!ratingPainter) {
+                    ratingPainter=new RatingPainter(r.height()-4);
+                    ratingPainter->setColor(option.palette.color(QPalette::Active, QPalette::Text));
+                }
+                painter->save();
+                painter->setOpacity(painter->opacity()*0.75);
+                painter->setClipRect(r);
+                const QSize &ratingSize=ratingPainter->size();
+                QRect ratingRect(r.x()+(r.width()-ratingSize.width())/2, r.y()+(r.height()-ratingSize.height())/2,
+                                 ratingSize.width(), ratingSize.height());
+                ratingPainter->paint(painter, ratingRect, song.rating);
+                painter->restore();
+            }
+        }
+    }
+
+    int ratingCol;
+    mutable RatingPainter *ratingPainter;
+};
 
 TableView::TableView(const QString &cfgName, QWidget *parent, bool menuAlwaysAllowed)
     : TreeView(parent, menuAlwaysAllowed)
@@ -47,6 +96,19 @@ TableView::TableView(const QString &cfgName, QWidget *parent, bool menuAlwaysAll
     StretchHeaderView *hdr=new StretchHeaderView(Qt::Horizontal, this);
     setHeader(hdr);
     connect(hdr, SIGNAL(StretchEnabledChanged(bool)), SLOT(stretchToggled(bool)));
+}
+
+void TableView::setModel(QAbstractItemModel *m)
+{
+    if (itemDelegate()) {
+        itemDelegate()->deleteLater();
+    }
+    bool ok=false;
+    int col=m ? m->data(QModelIndex(), Cantata::Role_RatingCol).toInt(&ok) : -1;
+    if (ok && col>=0) {
+        setItemDelegate(new TableViewItemDelegate(this, col));
+    }
+    TreeView::setModel(m);
 }
 
 void TableView::initHeader()

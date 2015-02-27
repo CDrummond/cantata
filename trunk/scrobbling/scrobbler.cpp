@@ -305,7 +305,8 @@ void Scrobbler::love()
         return;
     }
 
-    if (currentSong.title.isEmpty() || currentSong.artist.isEmpty() || loveSent) {
+    const Track &song=isEnabled() ? currentSong : inactiveSong;
+    if (song.title.isEmpty() || song.artist.isEmpty() || loveSent) {
         return;
     }
 
@@ -322,11 +323,11 @@ void Scrobbler::love()
 
     QMap<QString, QString> params;
     params["method"] = "track.love";
-    params["track"] = currentSong.title;
-    params["artist"] = currentSong.artist;
+    params["track"] = song.title;
+    params["artist"] = song.artist;
     params["sk"] = sessionKey;
     sign(params);
-    DBUG << currentSong.title << currentSong.artist;
+    DBUG << song.title << song.artist;
     loveSent=true;
     if (!fakeScrobbling) {
         QNetworkReply *job=NetworkAccessManager::self()->postFormData(QUrl(scrobblerUrl()), format(params));

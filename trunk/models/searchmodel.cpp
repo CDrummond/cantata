@@ -28,6 +28,7 @@
 #include "playqueuemodel.h"
 #include "gui/covers.h"
 #include "gui/settings.h"
+#include "support/localize.h"
 #include <QString>
 #include <QVariant>
 #include <QMimeData>
@@ -44,6 +45,7 @@
 QString SearchModel::headerText(int col)
 {
     switch (col) {
+    case COL_TRACK:     return PlayQueueModel::headerText(PlayQueueModel::COL_TRACK);
     case COL_DISC:      return PlayQueueModel::headerText(PlayQueueModel::COL_DISC);
     case COL_TITLE:     return PlayQueueModel::headerText(PlayQueueModel::COL_TITLE);
     case COL_ARTIST:    return PlayQueueModel::headerText(PlayQueueModel::COL_ARTIST);
@@ -53,6 +55,7 @@ QString SearchModel::headerText(int col)
     case COL_GENRE:     return PlayQueueModel::headerText(PlayQueueModel::COL_GENRE);
     case COL_COMPOSER:  return PlayQueueModel::headerText(PlayQueueModel::COL_COMPOSER);
     case COL_PERFORMER: return PlayQueueModel::headerText(PlayQueueModel::COL_PERFORMER);
+    case COL_RATING:    return PlayQueueModel::headerText(PlayQueueModel::COL_RATING);
     default:            return QString();
     }
 }
@@ -63,12 +66,15 @@ SearchModel::SearchModel(QObject *parent)
     , multiCol(false)
     , currentId(0)
 {
+    connect(this, SIGNAL(getRating(QString)), MPDConnection::self(), SLOT(getRating(QString)));
     connect(this, SIGNAL(search(QString,QString,int)), MPDConnection::self(), SLOT(search(QString,QString,int)));
     connect(MPDConnection::self(), SIGNAL(searchResponse(int,QList<Song>)), this, SLOT(searchFinished(int,QList<Song>)));
+    connect(MPDConnection::self(), SIGNAL(rating(QString,quint8)), SLOT(ratingResult(QString,quint8)));
     #ifndef ENABLE_UBUNTU
     connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
     alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
-    alignments[COL_LENGTH]=alignments[COL_DISC]=alignments[COL_YEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
+    alignments[COL_TRACK]=alignments[COL_LENGTH]=alignments[COL_DISC]=alignments[COL_YEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
+    alignments[COL_RATING]=int(Qt::AlignVCenter|Qt::AlignHCenter);
     #endif
 }
 
@@ -97,25 +103,30 @@ QVariant SearchModel::headerData(int section, Qt::Orientation orientation, int r
 {
     if (Qt::Horizontal==orientation) {
         switch (role) {
-        case Qt::DisplayRole:
-        case Cantata::Role_ContextMenuText:
+        case Qt::DisplayRole:            
             return headerText(section);
+        case Cantata::Role_ContextMenuText:
+            return COL_TRACK==section ? i18n("# (Track Number)") : headerText(section);
         case Qt::TextAlignmentRole:
             return alignments[section];
         case Cantata::Role_InitiallyHidden:
+            return COL_YEAR==section || COL_DISC==section || COL_GENRE==section ||
+                   COL_COMPOSER==section || COL_PERFORMER==section || COL_RATING==section;
         case Cantata::Role_Hideable:
-            return COL_YEAR==section || COL_DISC==section || COL_GENRE==section || COL_COMPOSER==section || COL_PERFORMER==section;
+            return COL_TITLE!=section && COL_ARTIST!=section;
         case Cantata::Role_Width:
             switch (section) {
+            case COL_TRACK:     return 0.075;
             case COL_DISC:      return 0.03;
-            case COL_TITLE:     return 0.375;
+            case COL_TITLE:     return 0.3;
             case COL_ARTIST:    return 0.27;
             case COL_ALBUM:     return 0.27;
             case COL_LENGTH:    return 0.05;
             case COL_YEAR:      return 0.05;
-            case COL_GENRE:     return 0.115;
-            case COL_COMPOSER:  return 0.20;
-            case COL_PERFORMER: return 0.20;
+            case COL_GENRE:     return 0.1;
+            case COL_COMPOSER:  return 0.2;
+            case COL_PERFORMER: return 0.2;
+            case COL_RATING:    return 0.08;
             }
         default:
             break;
@@ -144,6 +155,10 @@ int SearchModel::rowCount(const QModelIndex &parent) const
 
 QVariant SearchModel::data(const QModelIndex &index, int role) const
 {
+    if (!index.isValid() && Cantata::Role_RatingCol==role) {
+        return COL_RATING;
+    }
+
     const Song *song = toSong(index);
 
     if (!song) {
@@ -168,7 +183,7 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         if (multiCol) {
             switch (index.column()) {
             case COL_TITLE:
-                return song->title.isEmpty() ? Utils::getFile(song->file) : song->trackAndTitleStr(false);
+                return song->title.isEmpty() ? Utils::getFile(song->file) : song->title;
             case COL_ARTIST:
                 return song->artist.isEmpty() ? Song::unknown() : song->artist;
             case COL_ALBUM:
@@ -179,6 +194,11 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
                     }
                 }
                 return song->album;
+            case COL_TRACK:
+                if (song->track <= 0) {
+                    return QVariant();
+                }
+                return song->track;
             case COL_LENGTH:
                 return Utils::formatTime(song->time);
             case COL_DISC:
@@ -218,6 +238,16 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         QVariant v;
         v.setValue<Song>(*song);
         return v;
+    }
+    case Cantata::Role_SongWithRating:
+    case Cantata::Role_Song: {
+        QVariant var;
+        if (Cantata::Role_SongWithRating==role && Song::Standard==song->type && Song::Rating_Null==song->rating) {
+            emit getRating(song->file);
+            song->rating=Song::Rating_Requested;
+        }
+        var.setValue<Song>(*song);
+        return var;
     }
     default:
         return ActionModel::data(index, role);
@@ -346,4 +376,18 @@ void SearchModel::coverLoaded(const Song &song, int s)
         }
     }
     #endif
+}
+
+void SearchModel::ratingResult(const QString &file, quint8 r)
+{
+    QList<Song>::iterator it=songList.begin();
+    QList<Song>::iterator end=songList.end();
+    int numCols=columnCount(QModelIndex())-1;
+
+    for (int row=0; it!=end; ++it, ++row) {
+        if (Song::Standard==(*it).type && r!=(*it).rating && (*it).file==file) {
+            (*it).rating=r;
+            emit dataChanged(index(row, 0), index(row, numCols));
+        }
+    }
 }

@@ -24,6 +24,8 @@
 14. Add 'setCollection' to Cantata's DBUS interface.
 15. Add 'Collections' and 'Outputs' menus to system tray menu (Linux and
     Windows builds only)
+16. Separate title and track number in search model table view.
+17. Show rating in search model table view.
 
 1.5.2
 -----

@@ -43,6 +43,7 @@
 30. Enable 'save' button when reading ratings from multiple files.
 31. Fix cantata-remote script (used for Unity launcher integration) when this
     uses qdbus.
+32. Fix display of rating in tag dialog when only 1 file is being edited.
 
 1.5.1
 -----

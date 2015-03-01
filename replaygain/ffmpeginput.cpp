@@ -339,14 +339,14 @@ static int decodeAudio(FfmpegInput::Handle *handle)
          return AVERROR(ENOMEM);
     }
 
-    for (int t=0; t<4 && !got_frame; ++t) {
-        #if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(55, 0, 0)
-        if (handle->codecContext->get_buffer != avcodec_default_get_buffer) {
-            handle->codecContext->get_buffer = avcodec_default_get_buffer;
-            handle->codecContext->release_buffer = avcodec_default_release_buffer;
-        }
-        #endif
+    #if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(55, 0, 0)
+    if (handle->codecContext->get_buffer != avcodec_default_get_buffer) {
+        handle->codecContext->get_buffer = avcodec_default_get_buffer;
+        handle->codecContext->release_buffer = avcodec_default_release_buffer;
+    }
+    #endif
 
+    for (int t=0; t<10 && !got_frame; ++t) {
         ret = avcodec_decode_audio4(handle->codecContext, handle->frame, &got_frame, &handle->packet);
 
         #if LIBAVCODEC_VERSION_MAJOR < 54

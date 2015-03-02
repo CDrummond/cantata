@@ -100,7 +100,7 @@ section "install"
     file "Qt4 README.txt"
     file "Qt License (LGPL V2).txt"
     file "TagLib README.txt"
-    file "zlib1.dll"
+    file "libz-1.dll"
     file "libgcc_s_dw2-1.dll"
     file "libtag.dll"
     file "mingwm10.dll"
@@ -736,6 +736,7 @@ section "uninstall"
     delete "$INSTDIR\translations\qt_zh_CN.qm"
     delete "$INSTDIR\translations\qt_zh_TW.qm"
     delete "$INSTDIR\zlib1.dll"
+    delete "$INSTDIR\libz-1.dll"
  
     rmDir $INSTDIR\config
     rmDir $INSTDIR\helpers

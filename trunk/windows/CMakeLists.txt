@@ -26,7 +26,7 @@ if (ENABLE_QT5)
         ${QT_BINARY_DIR}/Qt5Widgets.dll ${QT_BINARY_DIR}/Qt5WinExtras.dll
         ${CMAKE_CURRENT_SOURCE_DIR}/icu/icudt52.dll ${QT_BINARY_DIR}/icuin52.dll ${QT_BINARY_DIR}/icuuc52.dll
         ${QT_BINARY_DIR}/libgcc_s_dw2-1.dll ${QT_BINARY_DIR}/libstdc++-6.dll ${QT_BINARY_DIR}/libwinpthread-1.dll
-        ${ZLIB_INCLUDE_DIR}/../bin/zlib1.dll ${TAGLIB_INCLUDES}/../bin/libtag.dll)
+        ${ZLIB_INCLUDE_DIR}/../bin/libz-1.dll ${TAGLIB_INCLUDES}/../bin/libtag.dll)
 else (ENABLE_QT5)
     configure_file(cantata.nsi.cmake ${CMAKE_CURRENT_BINARY_DIR}/cantata.nsi)
     configure_file(cantata.iss.cmake ${CMAKE_CURRENT_BINARY_DIR}/cantata.iss)
@@ -41,7 +41,7 @@ else (ENABLE_QT5)
     # Qt, taglib, and zlib libraries...
     set(EXTRA_WIN_LIBS
         ${QT_BINARY_DIR}/QtCore4.dll ${QT_BINARY_DIR}/QtGui4.dll ${QT_BINARY_DIR}/QtNetwork4.dll ${QT_BINARY_DIR}/QtSvg4.dll ${QT_BINARY_DIR}/QtXml4.dll
-        ${ZLIB_INCLUDE_DIR}/../bin/zlib1.dll ${TAGLIB_INCLUDES}/../bin/libtag.dll ${CANTATA_MINGW_LIBS})
+        ${ZLIB_INCLUDE_DIR}/../bin/libz-1.dll ${TAGLIB_INCLUDES}/../bin/libtag.dll ${CANTATA_MINGW_LIBS})
 endif (ENABLE_QT5)
 
 # Qt translation files...

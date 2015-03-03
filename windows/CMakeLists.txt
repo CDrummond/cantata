@@ -2,6 +2,11 @@ set(WINDOWS_APP_NAME Cantata)
 set(WINDOWS_COMPANY_NAME Cantata)
 set(WINDOWS_URL "http://${PROJECT_URL}")
 
+if (CANTATA_SSL_LIBS)
+    set(EXTRA_WIN_LIBS ${EXTRA_WIN_LIBS} ${CANTATA_SSL_LIBS})
+    set(CANTATA_SSL_WIN_NSIS_INSTALL "file \"libeay32.dll\"\n    file \"ssleay32.dll\"")
+endif (CANTATA_SSL_LIBS)
+
 if (ENABLE_QT5)
     FILE(TO_CMAKE_PATH $ENV{QTDIR} QT_DIR)
     set(QT_BINARY_DIR ${QT_DIR}/bin)

@@ -101,6 +101,7 @@ section "install"
     file "Qt License (LGPL V2).txt"
     file "TagLib README.txt"
     file "libz-1.dll"
+    @CANTATA_SSL_WIN_NSIS_INSTALL@
     file "libgcc_s_dw2-1.dll"
     file "libtag.dll"
     file "mingwm10.dll"
@@ -737,6 +738,8 @@ section "uninstall"
     delete "$INSTDIR\translations\qt_zh_TW.qm"
     delete "$INSTDIR\zlib1.dll"
     delete "$INSTDIR\libz-1.dll"
+    delete "$INSTDIR\libeay32.dll"
+    delete "$INSTDIR\ssleay32.dll"
  
     rmDir $INSTDIR\config
     rmDir $INSTDIR\helpers

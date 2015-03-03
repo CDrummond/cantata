@@ -113,6 +113,7 @@ section "install"
     file "libtag.dll"
     file "libwinpthread-1.dll"
     file "libz-1.dll"
+    @CANTATA_SSL_WIN_NSIS_INSTALL@
     setOutPath $INSTDIR\config
     file "config\lyrics_providers.xml"
     file "config\podcast_directories.xml"
@@ -732,6 +733,8 @@ section "uninstall"
     delete "$INSTDIR\libwinpthread-1.dll"
     delete "$INSTDIR\zlib1.dll"
     delete "$INSTDIR\libz-1.dll"
+    delete "$INSTDIR\libeay32.dll"
+    delete "$INSTDIR\ssleay32.dll"
 
     delete "$INSTDIR\translations\cantata_cs.qm"
     delete "$INSTDIR\translations\cantata_de.qm"

@@ -26,7 +26,7 @@ if (ENABLE_QT5)
     install(FILES ${QT_PLUGINS_DIR}/platforms/qwindows.dll DESTINATION ${CMAKE_INSTALL_PREFIX}/platforms/)
 
     # Qt, taglib, and zlib libraries...
-    set(EXTRA_WIN_LIBS
+    set(EXTRA_WIN_LIBS ${EXTRA_WIN_LIBS}
         ${QT_BINARY_DIR}/Qt5Core.dll ${QT_BINARY_DIR}/Qt5Gui.dll ${QT_BINARY_DIR}/Qt5Network.dll ${QT_BINARY_DIR}/Qt5Svg.dll ${QT_BINARY_DIR}/Qt5Xml.dll
         ${QT_BINARY_DIR}/Qt5Widgets.dll ${QT_BINARY_DIR}/Qt5WinExtras.dll
         ${CMAKE_CURRENT_SOURCE_DIR}/icu/icudt52.dll ${QT_BINARY_DIR}/icuin52.dll ${QT_BINARY_DIR}/icuuc52.dll
@@ -44,7 +44,7 @@ else (ENABLE_QT5)
     install(FILES ${QT_PLUGINS_DIR}/iconengines/qsvgicon4.dll DESTINATION ${CMAKE_INSTALL_PREFIX}/iconengines/)
 
     # Qt, taglib, and zlib libraries...
-    set(EXTRA_WIN_LIBS
+    set(EXTRA_WIN_LIBS ${EXTRA_WIN_LIBS}
         ${QT_BINARY_DIR}/QtCore4.dll ${QT_BINARY_DIR}/QtGui4.dll ${QT_BINARY_DIR}/QtNetwork4.dll ${QT_BINARY_DIR}/QtSvg4.dll ${QT_BINARY_DIR}/QtXml4.dll
         ${ZLIB_INCLUDE_DIR}/../bin/libz-1.dll ${TAGLIB_INCLUDES}/../bin/libtag.dll ${CANTATA_MINGW_LIBS})
 endif (ENABLE_QT5)

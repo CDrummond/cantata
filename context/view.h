@@ -27,7 +27,7 @@
 #include <QWidget>
 #include <QSize>
 #include <QLabel>
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "widgets/selectorlabel.h"
 
 class QImage;

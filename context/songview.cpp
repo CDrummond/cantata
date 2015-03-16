@@ -42,7 +42,7 @@
 #include "network/networkaccessmanager.h"
 #include "widgets/textbrowser.h"
 #include "gui/stdactions.h"
-#include "mpd/mpdstatus.h"
+#include "mpd-interface/mpdstatus.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include <QFile>
 #include <QDir>

@@ -26,7 +26,7 @@
 
 #include "support/dialog.h"
 #include "support/lineedit.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 
 class LyricsDialog : public Dialog
 {

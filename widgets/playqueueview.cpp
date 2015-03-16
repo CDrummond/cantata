@@ -28,7 +28,7 @@
 #include "groupedview.h"
 #include "treeview.h"
 #include "gui/settings.h"
-#include "mpd/mpdstatus.h"
+#include "mpd-interface/mpdstatus.h"
 #include "support/localize.h"
 #include "support/spinner.h"
 #include "messageoverlay.h"

@@ -31,8 +31,8 @@
 #include <QAbstractItemModel>
 #include <QList>
 #include <QMap>
-#include "mpd/playlist.h"
-#include "mpd/song.h"
+#include "mpd-interface/playlist.h"
+#include "mpd-interface/song.h"
 #include "actionmodel.h"
 
 class QMenu;

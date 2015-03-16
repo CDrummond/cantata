@@ -22,8 +22,8 @@
  */
 
 #include "librarypage.h"
-#include "mpd/mpdconnection.h"
-#include "mpd/mpdstats.h"
+#include "mpd-interface/mpdconnection.h"
+#include "mpd-interface/mpdstats.h"
 #include "covers.h"
 #include "models/musiclibrarymodel.h"
 #include "models/musiclibraryitemartist.h"

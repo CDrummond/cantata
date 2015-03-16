@@ -22,7 +22,7 @@
  */
 
 #include "folderpage.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "models/musiclibrarymodel.h"
 #include "settings.h"
 #include "support/localize.h"

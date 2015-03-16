@@ -25,7 +25,7 @@
 #define _SYNC_DIALOG_H_
 
 #include "support/dialog.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 
 class Device;
 class SyncCollectionWidget;

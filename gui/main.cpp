@@ -39,12 +39,12 @@
 #include "settings.h"
 #include "initialsettingswizard.h"
 #include "mainwindow.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "support/thread.h"
 
 // To enable debug...
-#include "mpd/mpdconnection.h"
-#include "mpd/mpdparseutils.h"
+#include "mpd-interface/mpdconnection.h"
+#include "mpd-interface/mpdparseutils.h"
 #include "covers.h"
 #include "context/wikipediaengine.h"
 #include "context/lastfmengine.h"

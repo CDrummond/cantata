@@ -28,7 +28,7 @@
 #ifdef ENABLE_ONLINE_SERVICES
 #include "onlineview.h"
 #endif
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "support/utils.h"
 #include "gui/covers.h"
 #include "network/networkaccessmanager.h"

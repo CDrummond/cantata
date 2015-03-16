@@ -24,7 +24,7 @@
 #define DEVICES_MODEL_H
 
 #include <QSet>
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "config.h"
 #include "devices/remotefsdevice.h"
 #include "multimusicmodel.h"

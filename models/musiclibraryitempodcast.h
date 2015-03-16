@@ -30,7 +30,7 @@
 #include <QUrl>
 #include "musiclibraryitem.h"
 #include "musiclibraryitemsong.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 
 class QPixmap;
 class QNetworkReply;

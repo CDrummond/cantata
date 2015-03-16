@@ -25,7 +25,7 @@
 #define DEVICE_H
 
 #include "models/musiclibraryitemroot.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "gui/covers.h"
 #include "config.h"
 #ifdef ENABLE_DEVICES_SUPPORT

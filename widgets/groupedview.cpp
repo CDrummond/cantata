@@ -23,8 +23,8 @@
 
 #include "gui/covers.h"
 #include "groupedview.h"
-#include "mpd/mpdstatus.h"
-#include "mpd/song.h"
+#include "mpd-interface/mpdstatus.h"
+#include "mpd-interface/song.h"
 #include "actionitemdelegate.h"
 #include "basicitemdelegate.h"
 #include "itemview.h"

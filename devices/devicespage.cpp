@@ -46,7 +46,7 @@
 #include "tags/trackorganiser.h"
 #include "gui/preferencesdialog.h"
 #include "gui/coverdialog.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "audiocddevice.h"
 #include "albumdetailsdialog.h"

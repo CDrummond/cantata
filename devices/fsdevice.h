@@ -25,7 +25,7 @@
 #define FSDEVICE_H
 
 #include "device.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "support/utils.h"
 #include "freespaceinfo.h"
 #include "models/musiclibraryitemroot.h"

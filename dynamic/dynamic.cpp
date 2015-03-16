@@ -24,7 +24,7 @@
 #include "dynamic.h"
 #include "config.h"
 #include "support/utils.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "widgets/icons.h"
 #include "models/roles.h"
 #include "network/networkaccessmanager.h"

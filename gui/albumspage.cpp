@@ -22,7 +22,7 @@
  */
 
 #include "albumspage.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "covers.h"
 #include "models/musiclibrarymodel.h"
 #include "models/musiclibraryitemsong.h"

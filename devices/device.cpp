@@ -25,7 +25,7 @@
 #include "device.h"
 #include "gui/covers.h"
 #include "support/utils.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include <QBuffer>
 #include <QDir>
 #include <QTemporaryFile>
@@ -41,8 +41,8 @@
 #endif // defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "encoders.h"
 #include "tags/tags.h"
-#include "mpd/song.h"
-#include "mpd/mpdparseutils.h"
+#include "mpd-interface/song.h"
+#include "mpd-interface/mpdparseutils.h"
 #include "models/musiclibraryitemartist.h"
 #include "models/musiclibraryitemalbum.h"
 #include "models/musiclibraryitemsong.h"

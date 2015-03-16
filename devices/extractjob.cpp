@@ -26,7 +26,7 @@
 #include "tags/tags.h"
 #include "cdparanoia.h"
 #include "gui/covers.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "gui/settings.h"
 #include <QStringList>
 #include <QProcess>

@@ -25,7 +25,7 @@
 #define _SYNCCOLLECTIONWIDGET_H_
 
 #include "ui_synccollectionwidget.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "models/musiclibrarymodel.h"
 #include <QSet>
 

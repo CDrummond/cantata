@@ -26,7 +26,7 @@
 
 #include "config.h"
 #include "support/dialog.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "ui_coverdialog.h"
 #include "covers.h"
 #include <QSet>

@@ -29,9 +29,9 @@
 #include <QStandardPaths>
 #include <QDir>
 
-#include "mpd/mpdconnection.h"
-#include "mpd/song.h"
-#include "mpd/mpdparseutils.h"
+#include "mpd-interface/mpdconnection.h"
+#include "mpd-interface/song.h"
+#include "mpd-interface/mpdparseutils.h"
 #include "gui/settings.h"
 #include "support/thread.h"
 #include "ubuntu/backend/mpdbackend.h"

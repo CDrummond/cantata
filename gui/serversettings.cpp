@@ -28,7 +28,7 @@
 #include "support/messagebox.h"
 #include "widgets/icons.h"
 #include "models/musiclibrarymodel.h"
-#include "mpd/mpduser.h"
+#include "mpd-interface/mpduser.h"
 #include "support/utils.h"
 #include <QDir>
 #include <QComboBox>

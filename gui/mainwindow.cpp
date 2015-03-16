@@ -36,10 +36,10 @@
 #include "coverdialog.h"
 #include "currentcover.h"
 #include "preferencesdialog.h"
-#include "mpd/mpdconnection.h"
-#include "mpd/mpdstats.h"
-#include "mpd/mpdstatus.h"
-#include "mpd/mpdparseutils.h"
+#include "mpd-interface/mpdconnection.h"
+#include "mpd-interface/mpdstats.h"
+#include "mpd-interface/mpdstatus.h"
+#include "mpd-interface/mpdparseutils.h"
 #include "settings.h"
 #include "support/utils.h"
 #include "support/touchproxystyle.h"
@@ -112,7 +112,7 @@
 #include "support/actioncollection.h"
 #include "stdactions.h"
 #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-#include "mpd/httpstream.h"
+#include "mpd-interface/httpstream.h"
 #endif
 #include <QSet>
 #include <QString>

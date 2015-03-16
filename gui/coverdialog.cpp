@@ -27,7 +27,7 @@
 #include "widgets/listview.h"
 #include "network/networkaccessmanager.h"
 #include "settings.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "support/utils.h"
 #include "support/spinner.h"
 #include "widgets/messageoverlay.h"

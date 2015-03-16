@@ -26,7 +26,7 @@
 #include "models/musiclibrarymodel.h"
 #include "support/utils.h"
 #include "network/networkaccessmanager.h"
-#include "mpd/mpdparseutils.h"
+#include "mpd-interface/mpdparseutils.h"
 #include "gui/covers.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "support/thread.h"

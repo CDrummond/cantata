@@ -35,7 +35,7 @@
 #include "jobcontroller.h"
 #include "widgets/basicitemdelegate.h"
 #include "support/action.h"
-#include "mpd/cuefile.h"
+#include "mpd-interface/cuefile.h"
 #include <QComboBox>
 #include <QTreeWidget>
 #include <QLabel>

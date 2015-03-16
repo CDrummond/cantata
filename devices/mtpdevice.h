@@ -25,7 +25,7 @@
 #define MTPDEVICE_H
 
 #include "fsdevice.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "config.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/portablemediaplayer.h>

@@ -26,6 +26,8 @@
     Windows builds only)
 16. Separate title and track number in search model table view.
 17. Show rating in search model table view.
+18. Rename mpd source folder to mpd-interface to help build errors when
+    libmpdclient(?) is also installed.
 
 1.5.2
 -----

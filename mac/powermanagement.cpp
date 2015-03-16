@@ -23,7 +23,7 @@
 
 #include "powermanagement.h"
 #include "support/globalstatic.h"
-#include "mpd/mpdstatus.h"
+#include "mpd-interface/mpdstatus.h"
 #include <Carbon/Carbon.h>
 #include <IOKit/pwr_mgt/IOPMLib.h>
 #include <IOKit/IOMessage.h>

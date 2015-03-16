@@ -28,8 +28,8 @@
 #include "config.h"
 
 #ifdef ENABLE_STREAMS
-#include "mpd/stream.h"
-#include "mpd/playlist.h"
+#include "mpd-interface/stream.h"
+#include "mpd-interface/playlist.h"
 #include <QIcon>
 #include <QList>
 #include <QMap>

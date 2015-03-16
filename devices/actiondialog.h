@@ -25,7 +25,7 @@
 #define ACTION_DIALOG_H
 
 #include "support/dialog.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "device.h"
 #include "config.h"
 #include "ui_actiondialog.h"

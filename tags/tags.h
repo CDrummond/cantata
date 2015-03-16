@@ -24,7 +24,7 @@
 #ifndef TAGS_H
 #define TAGS_H
 
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "support/utils.h"
 #include "support/localize.h"
 #include "config.h"

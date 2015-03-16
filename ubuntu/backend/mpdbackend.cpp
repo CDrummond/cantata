@@ -23,7 +23,7 @@
  */
 
 #include "mpdbackend.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "gui/currentcover.h"
 #include "gui/covers.h"
 #include "support/localize.h"

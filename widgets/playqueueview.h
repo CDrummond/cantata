@@ -33,7 +33,7 @@
 #include "tableview.h"
 #include "listview.h"
 #include "groupedview.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "itemview.h"
 
 class QAbstractItemModel;

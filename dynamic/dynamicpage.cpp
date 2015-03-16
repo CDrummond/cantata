@@ -27,7 +27,7 @@
 #include "support/localize.h"
 #include "widgets/icons.h"
 #include "support/action.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "widgets/statuslabel.h"
 #include "support/messagebox.h"
 #include "gui/stdactions.h"

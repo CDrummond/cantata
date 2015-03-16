@@ -26,7 +26,7 @@
 
 #include <QSortFilterProxyModel>
 #include <QStringList>
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "config.h"
 
 class QMimeData;

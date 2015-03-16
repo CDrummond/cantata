@@ -23,7 +23,7 @@
 
 #include "singleapplication.h"
 #include "mainwindow.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 
 SingleApplication::SingleApplication(int &argc, char **argv)
     : QtSingleApplication(argc, argv)

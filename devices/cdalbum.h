@@ -26,7 +26,7 @@
 
 #include <QString>
 #include <QList>
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 
 struct CdAlbum {
     CdAlbum() : isDefault(false), year(0), disc(0)  { }

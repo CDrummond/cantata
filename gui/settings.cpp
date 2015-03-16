@@ -26,7 +26,7 @@
 #include "support/fancytabwidget.h"
 #include "models/albumsmodel.h"
 #include "widgets/itemview.h"
-#include "mpd/mpdparseutils.h"
+#include "mpd-interface/mpdparseutils.h"
 #include "support/utils.h"
 #include "support/globalstatic.h"
 #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET

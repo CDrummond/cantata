@@ -40,7 +40,7 @@
 #include "musiclibrarymodel.h"
 #include "roles.h"
 #include "gui/settings.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "support/icon.h"
 #include "widgets/icons.h"
 #include "config.h"

@@ -26,7 +26,7 @@
 #include "models/musiclibraryitemartist.h"
 #include "models/musiclibraryitemalbum.h"
 #include "models/musiclibraryitemsong.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "support/configuration.h"
 #include "support/localize.h"
 #include <QXmlStreamReader>

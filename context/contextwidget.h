@@ -29,7 +29,7 @@
 #include <QColor>
 #include <QPropertyAnimation>
 #include <QSplitter>
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 
 #ifndef SCALE_CONTEXT_BGND
 #define SCALE_CONTEXT_BGND

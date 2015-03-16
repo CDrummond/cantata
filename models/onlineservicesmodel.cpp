@@ -40,7 +40,7 @@
 #include "online/podcastservice.h"
 #include "playqueuemodel.h"
 #include "roles.h"
-#include "mpd/mpdparseutils.h"
+#include "mpd-interface/mpdparseutils.h"
 #include "support/localize.h"
 #include "gui/plurals.h"
 #include "widgets/icons.h"

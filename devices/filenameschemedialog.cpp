@@ -22,7 +22,7 @@
  */
 
 #include "filenameschemedialog.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
 

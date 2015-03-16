@@ -26,7 +26,7 @@
 #include "models/dirviewmodel.h"
 #include "support/utils.h"
 #include "network/networkaccessmanager.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include <QDir>
 
 void OnlineDevice::copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover)

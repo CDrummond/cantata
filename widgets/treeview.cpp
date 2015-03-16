@@ -27,7 +27,7 @@
 #include "config.h"
 #include "basicitemdelegate.h"
 #include "support/utils.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QPainter>

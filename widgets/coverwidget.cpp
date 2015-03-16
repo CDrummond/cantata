@@ -25,7 +25,7 @@
 #include "gui/currentcover.h"
 #include "gui/covers.h"
 #include "gui/settings.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "context/view.h"
 #include "support/localize.h"
 #include "support/gtkstyle.h"

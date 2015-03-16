@@ -23,7 +23,7 @@
 
 #include "dockmenu.h"
 #include "gui/stdactions.h"
-#include "mpd/mpdstatus.h"
+#include "mpd-interface/mpdstatus.h"
 #include "support/localize.h"
 
 DockMenu::DockMenu(QWidget *p)

@@ -28,8 +28,8 @@
 #include <QStringList>
 #include <QVariantMap>
 #include <QApplication>
-#include "mpd/song.h"
-#include "mpd/mpdstatus.h"
+#include "mpd-interface/song.h"
+#include "mpd-interface/mpdstatus.h"
 #include "gui/stdactions.h"
 
 class QDBusObjectPath;

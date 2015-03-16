@@ -26,7 +26,7 @@
 #include "gui/settings.h"
 #include "widgets/icons.h"
 #include "support/action.h"
-#include "mpd/mpdstatus.h"
+#include "mpd-interface/mpdstatus.h"
 #include <QWinThumbnailToolButton>
 
 ThumbnailToolBar::ThumbnailToolBar(QWidget *p)

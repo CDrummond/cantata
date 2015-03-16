@@ -25,7 +25,7 @@
 #include "settings.h"
 #include "support/localize.h"
 #include "support/utils.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "support/icon.h"
 #include "widgets/basicitemdelegate.h"
 #include "support/messagebox.h"

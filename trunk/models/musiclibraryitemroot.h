@@ -35,7 +35,7 @@
 #include <QModelIndex>
 #include <QImage>
 #include "musiclibraryitem.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "support/icon.h"
 
 class QDateTime;

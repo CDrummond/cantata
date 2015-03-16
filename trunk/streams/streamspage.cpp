@@ -23,7 +23,7 @@
 
 #include "streamspage.h"
 #include "streamdialog.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "support/messagebox.h"
 #include "support/localize.h"
 #include "widgets/icons.h"

@@ -30,7 +30,7 @@
 #include "config.h"
 #include "gui/covers.h"
 #include "network/networkaccessmanager.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "support/localize.h"
 #include "support/globalstatic.h"
 #include "support/utils.h"

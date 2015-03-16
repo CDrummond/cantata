@@ -35,7 +35,7 @@
 #include <QUrl>
 #include <QMap>
 #include <time.h>
-#include "mpd/mpdstatus.h"
+#include "mpd-interface/mpdstatus.h"
 
 class QTimer;
 class QNetworkReply;

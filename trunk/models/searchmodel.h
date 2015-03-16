@@ -24,7 +24,7 @@
 #ifndef SEARCH_MODEL_H
 #define SEARCH_MODEL_H
 
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "actionmodel.h"
 #include <QList>
 #include <QMap>

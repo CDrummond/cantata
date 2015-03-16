@@ -24,7 +24,7 @@
 #include "searchmodel.h"
 #include "widgets/icons.h"
 #include "roles.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "playqueuemodel.h"
 #include "gui/covers.h"
 #include "gui/settings.h"

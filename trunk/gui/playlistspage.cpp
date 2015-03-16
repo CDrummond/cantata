@@ -23,7 +23,7 @@
 
 #include "playlistspage.h"
 #include "models/playlistsmodel.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "support/messagebox.h"
 #include "support/inputdialog.h"
 #include "support/localize.h"

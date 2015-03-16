@@ -33,7 +33,7 @@
 #include "login1interface.h"
 #endif
 #include "support/localize.h"
-#include "mpd/mpdstatus.h"
+#include "mpd-interface/mpdstatus.h"
 
 GLOBAL_STATIC(PowerManagement, instance)
 

@@ -30,7 +30,7 @@
 #include "settings.h"
 #include "support/action.h"
 #include "widgets/icons.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "stdactions.h"
 #include "support/utils.h"
 #include "currentcover.h"

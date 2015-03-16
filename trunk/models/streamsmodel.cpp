@@ -22,8 +22,8 @@
  */
 
 #include "streamsmodel.h"
-#include "mpd/mpdconnection.h"
-#include "mpd/mpdparseutils.h"
+#include "mpd-interface/mpdconnection.h"
+#include "mpd-interface/mpdparseutils.h"
 #include <QUrl>
 
 #ifdef ENABLE_STREAMS

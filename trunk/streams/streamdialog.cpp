@@ -29,7 +29,7 @@
 #include "gui/settings.h"
 #include "models/streamsmodel.h"
 #include "widgets/icons.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "support/buddylabel.h"
 #include "support/localize.h"
 #include "support/utils.h"

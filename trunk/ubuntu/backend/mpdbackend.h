@@ -29,7 +29,7 @@
 #include <QString>
 #include <QTimer>
 
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "models/albumsmodel.h"
 #include "models/musiclibrarymodel.h"
 #include "models/playlistsmodel.h"

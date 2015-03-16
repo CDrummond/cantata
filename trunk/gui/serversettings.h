@@ -25,7 +25,7 @@
 #define SERVERSETTINGS_H
 
 #include "ui_serversettings.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "devices/deviceoptions.h"
 
 class ServerSettings : public QWidget, private Ui::ServerSettings

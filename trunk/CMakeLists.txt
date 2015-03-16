@@ -322,8 +322,8 @@ if (ENABLE_HTTP_STREAM_PLAYBACK)
         include_directories(${PHONON_INCLUDES})
         set(CANTATA_LIBS ${CANTATA_LIBS} ${PHONON_LIBS})
     endif (ENABLE_LIBVLC)
-    set(CANTATA_SRCS ${CANTATA_SRCS} mpd/httpstream.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} mpd/httpstream.h)
+    set(CANTATA_SRCS ${CANTATA_SRCS} mpd-interface/httpstream.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} mpd-interface/httpstream.h)
 endif (ENABLE_HTTP_STREAM_PLAYBACK)
 
 if (ENABLE_KDE)
@@ -401,7 +401,8 @@ set(CANTATA_CORE_SRCS ${CANTATA_CORE_SRCS}
     models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp
     models/musicmodel.cpp models/multimusicmodel.cpp models/searchmodel.cpp models/streamsmodel.cpp models/searchproxymodel.cpp
     models/musiclibraryitemsong.cpp
-    mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/cuefile.cpp
+    mpd-interface/mpdconnection.cpp mpd-interface/mpdparseutils.cpp mpd-interface/mpdstats.cpp mpd-interface/mpdstatus.cpp
+    mpd-interface/song.cpp mpd-interface/cuefile.cpp
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
     streams/streamfetcher.cpp
     http/httpserver.cpp)
@@ -410,7 +411,7 @@ set(CANTATA_CORE_MOC_HDRS ${ANTATA_CORE_MOC_HDRS}
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/actionmodel.h
     models/multimusicmodel.h models/searchmodel.h
-    mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
+    mpd-interface/mpdconnection.h mpd-interface/mpdstats.h mpd-interface/mpdstatus.h
     network/networkaccessmanager.h
     streams/streamfetcher.h
     widgets/notelabel.h)
@@ -419,7 +420,7 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS} ${CANTATA_SRCS}
     gui/settings.cpp gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
     gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp
     gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
-    mpd/mpduser.cpp
+    mpd-interface/mpduser.cpp
     devices/deviceoptions.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/nowplayingwidget.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
@@ -797,7 +798,7 @@ elseif (APPLE)
 elseif (NOT ENABLE_UBUNTU)
     install(FILES tags/tag_fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
             DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/config/)
-    install(FILES mpd/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/mpd)
+    install(FILES mpd-interface/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/mpd)
 endif (WIN32)
 
 if (NOT ENABLE_UBUNTU)

@@ -23,7 +23,7 @@
 
 #include "ratingwidget.h"
 #include "support/icon.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include <QMouseEvent>
 #include <QPainter>
 #include <QFontMetrics>

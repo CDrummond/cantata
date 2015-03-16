@@ -25,7 +25,7 @@
 #define SONG_DIALOG_H
 
 #include "support/dialog.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 
 class SongDialog : public Dialog
 {

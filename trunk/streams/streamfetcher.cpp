@@ -23,8 +23,8 @@
 
 #include "streamfetcher.h"
 #include "network/networkaccessmanager.h"
-#include "mpd/mpdconnection.h"
-#include "mpd/mpdparseutils.h"
+#include "mpd-interface/mpdconnection.h"
+#include "mpd-interface/mpdparseutils.h"
 #include "models/streamsmodel.h"
 #include "support/localize.h"
 #include <QRegExp>

@@ -22,7 +22,7 @@
  */
 
 #include "searchpage.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "support/localize.h"
 #include "settings.h"
 #include "stdactions.h"

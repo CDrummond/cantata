@@ -22,9 +22,9 @@
  */
 
 #include "covers.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "support/utils.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "network/networkaccessmanager.h"
 #include "settings.h"
 #include "config.h"

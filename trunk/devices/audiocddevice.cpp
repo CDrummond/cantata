@@ -35,7 +35,7 @@
 #include "models/dirviewmodel.h"
 #include "support/utils.h"
 #include "extractjob.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "gui/covers.h"
 #include "gui/settings.h"
 #include <QDir>

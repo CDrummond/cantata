@@ -40,7 +40,7 @@
 #include "context/contextsettings.h"
 #include "cachesettings.h"
 #include "support/localize.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #ifdef ENABLE_PROXY_CONFIG
 #include "network/proxysettings.h"
 #endif

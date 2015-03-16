@@ -25,7 +25,7 @@
 #define ONLINE_DEVICE_H
 
 #include "devices/device.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 
 class NetworkJob;
 class OnlineDevice : public Device

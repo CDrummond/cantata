@@ -23,8 +23,8 @@
 
 #include "volumeslider.h"
 #include "support/localize.h"
-#include "mpd/mpdconnection.h"
-#include "mpd/mpdstatus.h"
+#include "mpd-interface/mpdconnection.h"
+#include "mpd-interface/mpdstatus.h"
 #include "support/action.h"
 #include "support/actioncollection.h"
 #include "gui/stdactions.h"

@@ -27,7 +27,7 @@
 #include "support/utils.h"
 #include "support/icon.h"
 #include "widgets/icons.h"
-#include "mpd/mpduser.h"
+#include "mpd-interface/mpduser.h"
 #include <QDir>
 #if QT_VERSION > 0x050000
 #include <QStandardPaths>

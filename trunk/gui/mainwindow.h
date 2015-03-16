@@ -41,7 +41,7 @@ class KToggleAction;
 #include "ui_mainwindow.h"
 #include "models/playqueuemodel.h"
 #include "models/playqueueproxymodel.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 #include "config.h"
 
 class Action;

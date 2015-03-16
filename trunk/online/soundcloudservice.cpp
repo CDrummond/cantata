@@ -25,7 +25,7 @@
 #include "network/networkaccessmanager.h"
 #include "models/onlineservicesmodel.h"
 #include "models/musiclibraryitemsong.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "config.h"
 #include <QCoreApplication>
 #include <QUrl>

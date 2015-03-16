@@ -28,8 +28,8 @@
 #ifndef PLAYQUEUEMODEL_H
 #define PLAYQUEUEMODEL_H
 
-#include "mpd/song.h"
-#include "mpd/mpdstatus.h"
+#include "mpd-interface/song.h"
+#include "mpd-interface/mpdstatus.h"
 #include "config.h"
 #include <QStringList>
 #include <QAbstractItemModel>

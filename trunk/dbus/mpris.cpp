@@ -22,7 +22,7 @@
  */
 
 #include "mpris.h"
-#include "mpd/mpdconnection.h"
+#include "mpd-interface/mpdconnection.h"
 #include "playeradaptor.h"
 #include "rootadaptor.h"
 #include "config.h"

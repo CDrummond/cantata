@@ -31,7 +31,7 @@
 #include <QVariant>
 #include <QSet>
 #include "musiclibraryitem.h"
-#include "mpd/song.h"
+#include "mpd-interface/song.h"
 
 class QPixmap;
 class MusicLibraryItemArtist;

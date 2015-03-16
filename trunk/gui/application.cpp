@@ -24,8 +24,8 @@
 #include "application.h"
 #include "settings.h"
 #include "support/utils.h"
-#include "mpd/mpdstats.h"
-#include "mpd/mpdstatus.h"
+#include "mpd-interface/mpdstats.h"
+#include "mpd-interface/mpdstatus.h"
 #include "support/thread.h"
 #ifdef ENABLE_EXTERNAL_TAGS
 #include "tags/taghelperiface.h"

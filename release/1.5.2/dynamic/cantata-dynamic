@@ -1,0 +1,1504 @@
+#!/usr/bin/perl
+
+#  Cantata-Dynamic
+#
+#  Copyright (c) 2011-2014 Craig Drummond <craig.p.drummond@gmail.com>
+#
+#  ----
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; see the file COPYING.  If not, write to
+#  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+#  Boston, MA 02110-1301, USA.
+
+use IO::Socket::INET;
+use POSIX;
+use File::stat;
+use File::Basename;
+use Cwd 'abs_path';
+use Socket;
+use IO::Socket;
+use threads;
+use threads::shared;
+use URI::Escape;
+use Encode;
+use Socket qw(:all);
+
+my $isServerMode =0;
+my $dynamicIsActive =1;
+my $currentStatus ="IDLE";
+
+$testMode=0;
+$PLAY_QUEUE_DESIRED_LENGTH=10;
+$PLAY_QUEUE_CURRENT_POS=5;
+
+my $mpdHost : shared = "localhost";
+my $mpdPort : shared = "6600";
+my $mpdPasswd : shared ="";
+my $readChannel : shared = "cantata-dynamic-in";
+my $writeChannel = "cantata-dynamic-out";
+my $sock; # This is NOT shared between HTTP thread and standard thread...
+my $currentStatusTime = time;
+my $httpPort : shared = 0;
+
+# Read MPDs host, port, and password details from env - if set
+sub readConnectionDetails() {
+    my $hostEnv=$ENV{'MPD_HOST'};
+    my $portEnv=$ENV{'MPD_PORT'};
+    if (length($portEnv)>2) {
+        $mpdPort=$portEnv;
+    }
+
+    if (length($hostEnv)>2) {
+        my $sep = index($hostEnv, '@');
+
+        if ($sep>0) {
+            $mpdPasswd=substr($hostEnv, 0, $sep);
+            $mpdHost=substr($hostEnv, $sep+1, length($hostEnv)-$sep);
+        } else {
+            $mpdHost=$hostEnv;
+        }
+    }
+}
+
+sub readReply() {
+    local $data;
+    my $socketData;
+    while ($sock->connected()) {
+        $sock->recv($data, 1024);
+        if (! $data) {
+            return '';
+        }
+        $socketData="${socketData}${data}";
+        $data="";
+
+        if (($socketData=~ m/(OK)$/) || ($socketData=~ m/^(OK)/)) {
+            return $socketData;
+        } elsif ($socketData=~ m/^(ACK)/) {
+            return '';
+        }
+    }
+}
+
+# Connect to MPD
+sub connectToMpd() {
+    if ($testMode==1) { print "Connecting to MPD ${mpdHost}:${mpdPort}\n"; }
+    my $connDetails="";
+    if ($mpdHost=~ m/^(\/)/) {
+        $sock = new IO::Socket::UNIX(Peer => $mpdHost, Type => 0);
+        $connDetails=$mpdHost;
+    } else {
+        $sock = new IO::Socket::INET(PeerAddr => $mpdHost, PeerPort => $mpdPort, Proto => 'tcp');
+        $connDetails="${mpdHost}:${mpdPort}";
+    }
+    if ($sock && $sock->connected()) {
+        if (&readReply($sock)) {
+            if ($mpdPasswd) {
+                if ($testMode==1) { print "Send password\n"; }
+                $sock->send("password ${mpdPasswd} \n");
+                if (! &readReply($sock)) {
+                    print "ERROR: Invalid password\n";
+                    eval { close $sock; };undef $sock;
+                }
+            }
+            if ($isServerMode==1) {
+                $sock->send("subscribe ${readChannel}\n");
+                &readReply($sock)
+            }
+        } else {
+            print "ERROR: Failed to read connection reply fom MPD (${connDetails})\n";
+            close($sock);
+        }
+    } else {
+        print "ERROR: Failed to connect to MPD (${connDetails})\n";
+    }
+    return $sock;
+}
+
+sub sendCommand() {
+    my $cmd = shift;
+    if ($testMode==1) { print "Send command ${cmd}\n"; }
+    my $status = 0;
+    if (! ($sock && $sock->connected())) {
+        $sock=&connectToMpd();
+    }
+    my $sockData;
+    $cmd="${cmd}\n";
+    if ($sock && $sock->connected()) {
+        print $sock encode('utf-8' => $cmd);
+        $sockData=&readReply($sock);
+    }
+    my $dataLen=length($sockData);
+    if ($testMode==1) { print "Recieved ${dataLen} bytes\n"; }
+    if ($sockData ne '') {
+        return decode_utf8($sockData);
+    }
+    return $sockData;
+}
+
+sub waitForEvent() {
+    while (1) {
+        if (! ($sock && $sock->connected())) {
+           $sock=&connectToMpd();
+        }
+        if ($sock && $sock->connected()) {
+            if (0==$isServerMode) {
+                &sendCommand("idle player playlist");
+                return 1;
+            } else {
+                my $sockData=&sendCommand("idle player playlist message");
+                my @lines = split("\n", $sockData);
+                my $haveNonMsg=0;
+                foreach my $line (@lines) {                
+                    if ($line=~ m/^(changed\:\ message)/) {
+                        &handleClientMessage();
+                    } else {
+                        $haveNonMsg=1;
+                        if ($testMode==1) { printf "Idle message: $line\n"; }
+                    }
+                }
+                if ($haveNonMsg==1) {
+                    return 1;
+                }
+            }
+        } else {
+            return 0;
+        }
+    }
+}
+
+sub getEntries() {
+    my $command=shift;
+    my $key=shift;
+    my @entries = ();
+    my $data=&sendCommand($command);
+    if (defined($data)) {
+        my @lines=split('\n', $data);
+        foreach my $line (@lines) {
+            if ($line=~ m/^($key\:)/) {
+                my $sep = index($line, ':');
+                if ($sep>0) {
+                    my $entry=substr($line, $sep+2, length($line)-($sep+1));
+                    push (@entries, $entry);
+                }
+            }
+        }
+    }
+    return @entries;
+}
+
+sub baseDir() {
+    if ($^O eq "darwin") {
+        # MacOSX
+        return "$ENV{'HOME'}/Library/Caches/cantata/cantata/dynamic";
+    }
+
+    # Linux
+    my $cacheDir=$ENV{'XDG_CACHE_HOME'};
+    if (!$cacheDir) {
+        $cacheDir="$ENV{'HOME'}/.cache";
+    }
+    $cacheDir="${cacheDir}/cantata/dynamic";
+    return $cacheDir
+}
+
+sub lockFile() {
+    my $fileName=&baseDir();
+    $fileName="${fileName}/lock";
+    return $fileName;
+}
+
+$lastArtistSearch="";
+@artistSearchResults=();
+
+# Query LastFM for artists similar to supplied artist
+sub querySimilarArtists() {
+    my $artist=uri_escape(shift);
+    if ($artist ne $lastArtistSearch) {
+        @artistSearchResults=();
+#         my $text = get 'http://ws.audioscrobbler.com/1.0/artist/'.$artist.'/similar.txt';
+#         my $artistNum=0;
+#         open(my $fileHandle, '<', \$text);
+#         if (tell($fileHandle) != -1) {
+#             my @lines = <$fileHandle>; # Read into an array...
+            @lines=`wget \'http://ws.audioscrobbler.com/1.0/artist/${artist}/similar.txt\' -O -`;
+            foreach my $line (@lines) {
+                @parts = split(/,/, $line);
+                if (3==scalar(@parts)) {
+                    my $artist=$parts[2];
+                    $artist =~ s/&amp;/&/g;
+                    $artist =~ s/\n//g;
+                    $artistSearchResults[$artistNum]=$artist;
+                    $artistNum++;
+                }
+            }
+#         }
+#         close($fileHandle);
+    }
+}
+
+$mpdDbUpdated=0;
+$rulesChanged=1;
+$includeRules;
+$excludeRules;
+$lastIncludeRules;
+$lastExcludeRules;
+$initialRead=1;
+$rulesTimestamp=0;
+$numMpdSongs=0;
+
+$ratingFrom=0;
+$ratingTo=0;
+# If we have no include rules, then song list is taken from tracks with ratings
+# Therefore, there is no need to subsequently filter - and ratingFilter woudl be
+# set to 0
+$ratingFilter=1;
+$lastRatingFrom=0;
+$lastRatingTo=0;
+
+# Determine if rules file has been updated
+sub checkRulesChanged() {
+    if ($initialRead==1) { # Always changed on first run...
+        $rulesChanged=1;
+        $initialRead=0;
+    } elsif ($lastRatingFrom!=$ratingFrom || $lastRatingTo!=$ratingTo) {
+        $rulesChanged=1;
+    } elsif ( scalar(@lastIncludeRules)!=scalar(@includeRules) ||
+              scalar(@lastExcludeRules)!=scalar(@excludeRules)) { # Different number of rules
+        $rulesChanged=1;
+    } else { # Same number of rules, so need to check if the rules themselves have changed or not...
+        $rulesChanged=0;
+        for (my $i=0; $i<scalar(@includeRules) && $rulesChanged==0; $i++) {
+            if ($includeRules[$i] ne $lastIncludeRules[$i]) {
+                $rulesChanged=1;
+            }
+        }
+        for (my $i=0; $i<scalar(@excludeRules) && $rulesChanged==0; $i++) {
+            if ($excludeRules[$i] ne $lastExcludeRules[$i]) {
+                $rulesChanged=1;
+            }
+        }
+    }
+    @lastIncludeRules=@includeRules;
+    @lastExcludeRules=@excludeRules;
+}
+
+# Add a rule to the list of rules that will be used to query MPD
+sub saveRule() {
+    my $rule=$_[0];
+    my @dates=@{ $_[1] };
+    my @artistList=@{ $_[2] };
+    my @genreList=@{ $_[3] };
+    my $ruleMatch=$_[4];
+    my $isInclude=$_[5];
+    my @type=();
+
+    if ($isInclude == 1) {
+        @type=@includeRules;
+    } else {
+        @type=@excludeRules;
+    }
+
+    # We iterate through the list of artists - so if this is empty, add a blank artist.
+    # artistList will only be set if we have been told to find tracks by similar artists...
+    if (scalar(@artistList)==0) {
+        $artistList[0]="";
+    }
+    if (scalar(@genreList)==0) {
+        $genreList[0]="";
+    }
+    my $ruleNum=scalar(@type);
+    for my $genre (@genreList) {
+        for my $artist (@artistList) {
+            $line =~ s/\"//g;
+            if (scalar(@dates)>0) { # Create rule for each date (as MPDs search does not take ranges)
+                my $baseRule=$rule;
+                foreach my $date (@dates) {
+                    $type[$ruleNum]="${ruleMatch} ${baseRule} Date \"${date}\"";
+                    if ($artist ne "") {
+                        $type[$ruleNum]=$type[$ruleNum]." Artist \"${artist}\"";
+                    }
+                    if ($genre ne "") {
+                        $type[$ruleNum]=$type[$ruleNum]." Genre \"${genre}\"";
+                    }
+                    $ruleNum++;
+                }
+            } elsif ($artist ne "" || $genre ne "" || $rule ne "") {
+                $type[$ruleNum]="${ruleMatch} $rule";
+                if ($artist ne "") {
+                    $type[$ruleNum]=$type[$ruleNum]." Artist \"${artist}\"";
+                }
+                if ($genre ne "") {
+                    $type[$ruleNum]=$type[$ruleNum]." Genre \"${genre}\"";
+                }
+                $ruleNum++;
+            }
+        }
+    }
+    if ($isInclude == 1) {
+        @includeRules=@type;
+    } else {
+        @excludeRules=@type;
+    }
+}
+
+# Read rules from ~/.cache/cantata/dynamic/rules
+#  (or from ${filesDir}/rules in server mode)
+#
+# File format:
+#
+#   Rating:<Range>
+#   Rule
+#   <Tag>:<Value>
+#   <Tag>:<Value>
+#   Rule
+#
+# e.g.
+#
+#   Rating:1-5
+#   Rule
+#   AlbumArtist:Various Artists
+#   Genre:Dance
+#   Rule
+#   AlbumArtist:Wibble
+#   Date:1980-1989
+#   Exact:false
+#   Exclude:true
+#
+$activeFile="";
+$activeLinksTo="";
+sub readRules() {
+    if ($activeFile eq "") {
+        $activeFile=&baseDir();
+        $activeFile="${activeFile}/rules";
+    }
+
+    unless (-e $activeFile) {
+        $rulesChanged=0;
+        return;
+    }
+
+    # Check if rules (well, the file it points to), has changed since the last read...
+    my $currentActiveLink=abs_path($activeFile);
+    $fileTime = stat($currentActiveLink)->mtime;
+    if ($initialRead!=1 && $fileTime==$rulesTimestamp && $activeLinksTo eq $currentActiveLink) {
+        # No change, so no need to read it again!
+        $rulesChanged=0;
+        return;
+    }
+    $activeLinksTo=$currentActiveLink;
+    $rulesTimestamp=$fileTime;
+
+    for(my $i=0; $i<10; $i++) {
+        open(my $fileHandle, "<:encoding(utf8)", $activeFile);
+        if (tell($fileHandle) != -1) {
+            my @lines = <$fileHandle>; # Read into an array...
+            my $ruleMatch="find";
+            my @dates=();
+            my @similarArtists=();
+            my $isInclude=1;
+            my $currentRule="";
+            @includeRules=();
+            @excludeRules=();
+            $ratingFrom=0;
+            $ratingTo=0;
+            close($fileHandle);
+            foreach my $line (@lines) {
+                if (! ($line=~ m/^(#)/)) {
+                    $line =~ s/\n//g;
+                    my $sep = index($line, ':');
+
+                    if ($sep>0) {
+                        $key=substr($line, 0, $sep);
+                        $val=substr($line, $sep+1, length($line)-$sep);
+                    } else {
+                        $key=$line;
+                        $val="";
+                    }
+                    if ($key=~ m/^(Rule)/) { # New rule...
+                        if (length($currentRule)>1 || scalar(@similarArtists)>0 || scalar(@dates)>0 || scalar(@genres)>0) {
+                            &saveRule($currentRule, \@dates, \@similarArtists, \@genres, $ruleMatch, $isInclude);
+                        }
+                        $currentRule="";
+                        @dates=();
+                        @similarArtists=();
+                        @genres=();
+                    } elsif ($key=~ m/^(Rating)/) {
+                        my @vals = split("-", $val);
+                        if (scalar(@vals)==2) {
+                            $ratingFrom=int($vals[0]);
+                            $ratingTo=int($vals[1]);
+                            if ($ratingFrom > $ratingTo) {
+                                my $tmp=$ratingFrom;
+                                $ratingFrom=$ratingTo;
+                                $ratingTo=$tmp;
+                            }
+                        }
+                    } else {
+                        if ($key eq "Date") {
+                            my @dateVals = split("-", $val);
+                            if (scalar(@dateVals)==2) {
+                                my $fromDate=int($dateVals[0]);
+                                my $toDate=int($dateVals[1]);
+                                if ($fromDate > $toDate) { # Fix dates if from>to!!!
+                                    my $tmp=$fromDate;
+                                    $fromDate=$toDate;
+                                    $toDate=$tmp;
+                                }
+                                my $pos=0;
+                                for(my $d=$fromDate; $d<=$toDate; $d++) {
+                                    $dates[$pos]=$d;
+                                    $pos++;
+                                }
+                            } else {
+                                @dates=($val)
+                            }
+                        } elsif ($key eq "Genre" && $val =~ m{\*}) {
+                            # Wildcard genre - get list of genres from MPD, and find the ones that contain the genre string.
+                            $val =~ s/\*//g;
+                            my @mpdGenres = &getEntries("list genre", 'Genre');
+                            my $pos=0;
+                            foreach my $genre (@mpdGenres) {
+                                if ($genre ne "" && $genre =~/$val/i) {
+                                    $genres[$pos]=$genre;
+                                    $pos++;
+                                }
+                            }
+                        } elsif ($key eq "Artist" || $key eq "Album" || $key eq "AlbumArtist" || $key eq "Composer" || $key eq "Comment" || $key eq "Title" || $key eq "Genre") {
+                            $currentRule="${currentRule} ${key} \"${val}\"";
+                        } elsif ($key eq "SimilarArtists") {
+                            &querySimilarArtists($val); # Perform a last.fm query to find similar artists
+                            @artistSearchResults; # Save results of query
+                            @artistSearchResults=uniq(@artistSearchResults);        # Ensure we only have unique entries...
+                            if (scalar(@artistSearchResults)>1) {
+                                my @mpdArtists = ();
+                                my $pos=0;
+                                # Get MPD artists...
+                                my @mpdResponse=&getEntries("list artist", 'Artist');
+                                foreach my $artist (@mpdResponse) {
+                                    if ($artist ne "" && $artist ne $val) {
+                                        $mpdArtists[$pos]=$artist;
+                                        $pos++;
+                                    }
+                                }
+
+                                @mpdArtists=uniq(@mpdArtists); 
+
+                                # Now check which last.fm artists MPD actually has...
+                                my $pos=0;
+                                foreach my $artist (@artistSearchResults) {
+                                    my @match = grep(/^$artist/i, @mpdArtists);
+                                    if (scalar(@match)>0) {
+                                        $similarArtists[$pos]=$artist;
+                                        $pos++;
+                                    }
+                                }
+                            }
+                            $similarArtists[scalar(@similarArtists)]=$val; # Add ourselves!!!
+                        } elsif ($key eq "Exact" && $val eq "false") {
+                            $ruleMatch="search";
+                        } elsif ($key eq "Exclude" && $val eq "true") {
+                            $isInclude=0;
+                        }
+                    }
+                }
+            }
+
+            if (length($currentRule)>1 || scalar(@similarArtists)>0 || scalar(@dates)>0 || scalar(@genres)>0) {
+                &saveRule($currentRule, \@dates, \@similarArtists, \@genres, $ruleMatch, $isInclude);
+            }
+
+            if (1==$testMode) {
+                print "INCLUDE--------------\n";
+                foreach my $rule (@includeRules) {
+                    print "${rule}\n";
+                }
+                print "EXCLUDE--------------\n";
+                foreach my $rule (@excludeRules) {
+                    print "${rule}\n";
+                }
+                print "---------------------\n";
+                print "RATING: ${ratingFrom} -> ${ratingTo}\n";
+            }
+
+            &checkRulesChanged();
+            return 1;
+        }
+    }
+    &checkRulesChanged();
+    return 0;
+}
+
+# Remove duplicate entries from an array...
+sub uniq {
+    return keys %{{ map { $_ => 1 } @_ }};
+}
+
+# Send message to Cantata application...
+sub sendMessage() {
+    my $method=shift;
+    my $argument=shift;
+    if (0==$isServerMode) {
+        if ($^O eq "darwin") {
+            # MacOSX
+            # TODO: How to send a dbus (or other) message to Cantata application????
+        } else {
+            # Linux
+            system("qdbus com.googlecode.cantata /cantata ${method} ${argument}");
+            if ( $? == -1 ) {
+                # Maybe qdbus is not installed? Try dbus-send...
+                system("dbus-send --type=method_call --session --dest=com.googlecode.cantata /cantata com.googlecode.cantata.${method} string:${argument}");
+            }
+        }
+    } else {
+        my $clientId=shift;
+        if ($clientId eq "http") {
+            return;
+        }
+        if ($clientId ne '') {
+            &sendCommand("sendmessage ${writeChannel}-${clientId} \"${method}:${argument}\"");
+        } else {
+            &sendCommand("sendmessage ${writeChannel} \"${method}:${argument}\"");
+        }
+    }
+}
+
+# Parse sticker value, and check that its in range.
+sub songRatingInRange() {
+    my $stickerEntry=shift;
+    my @parts = split("=", $stickerEntry);
+     if (2==scalar(@parts)) {
+        my $rating=scalar($parts[1]);
+        if ($rating >= $ratingFrom && $rating <= $ratingTo) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+# Get all songs with a rating between ratingFrom & ratingTo
+sub getRatedSongs() {
+    my @entries = ();
+    my $data=&sendCommand("sticker find song / rating");
+    if (defined($data)) {
+        my @lines=split('\n', $data);
+        my $file="";
+        foreach my $line (@lines) {
+            if ($line=~ m/^(file\:)/) {
+                my $sep = index($line, ':');
+                if ($sep>0) {
+                    $file=substr($line, $sep+2, length($line)-($sep+1));
+                }
+            } elsif ($line=~ m/^(sticker\:)/) {
+                my $sep = index($line, ':');
+                if ($sep>0) {
+                    my $entry=substr($line, $sep+2, length($line)-($sep+1));
+                    if (1==&songRatingInRange($entry)) {
+                        push (@entries, $file);
+                    }
+                }
+            }  
+        }
+    }
+    return @entries;
+}
+
+# Is a file with rating from .. rating to?
+sub checkSongRatingInRange() {
+    if ($ratingFilter = 0) {
+        # Rating filter disabled - i,e. had no include rule, so song list is
+        # taken from those with a rating...
+        return 1;
+    }
+    if ($ratingFrom<=0 && $ratingTo<=0) { # No filter, so must be in range!
+        return 1;
+    }
+    if ($numMpdSongs<1) { # No songs!
+        return 0;
+    }
+    my $file=shift;
+    my @entries = &getEntries("sticker get song \"${file}\" rating", 'sticker');
+    foreach my $entry (@entries) {
+        if (1==&songRatingInRange($entry)) {
+            return 1;
+        }
+    }
+    # Song is not within range, so 'blank' its name out of list
+    my $pos=shift;
+    if (1==$testMode) {
+        print "$file is NOT in rating range - remove:${pos} total:${numMpdSongs}!\n";
+    }
+    splice @mpdSongs, $pos, 1;
+    $numMpdSongs--;
+    return 0;
+}
+
+# Use rules to obtain a list of songs from MPD...
+sub getSongs() {
+    # If we have no current songs, or rules have changed, or MPD has been updated - then we need to run the rules against MPD to get song list...
+    if (scalar(@mpdSongs)<1 || $rulesChanged==1 || $mpdDbUpdated==1) {
+        $numMpdSongs=0;
+        my @excludeSongs=();
+        if (scalar(@excludeRules)>0) {
+            # Get list of songs that should be removed from the song list...
+            my $mpdSong=0;
+            foreach my $rule (@excludeRules) {
+                my @songs = &getEntries($rule, 'file');
+                foreach my $song (@songs) {
+                    $excludeSongs[$mpdSong]=$song;
+                    $mpdSong++;
+                }
+                @excludeSongs=uniq(@excludeSongs);
+            }
+        }
+
+        my %excludeSongSet = map { $_ => 1 } @excludeSongs;
+
+        @mpdSongs=();
+        my $mpdSong=0;
+        if (scalar(@includeRules)>0) {
+            foreach my $rule (@includeRules) {
+                my @songs = &getEntries($rule, 'file');
+                foreach my $song (@songs) {
+                    if (! $excludeSongSet{$song}) {
+                        $mpdSongs[$mpdSong]=$song;
+                        $mpdSong++;
+                    }
+                }
+                @mpdSongs=uniq(@mpdSongs);
+            }
+        } elsif ($ratingTo>=1 && $ratingFrom>=0) {
+            if (1==$testMode) { print "No include rules, so get all songs in rating range ${ratingFrom}..${ratingTo}...\n"; }
+            my @songs = &getRatedSongs();
+            foreach my $song (@songs) {
+                if (! $excludeSongSet{$song}) {
+                    $mpdSongs[$mpdSong]=$song;
+                    $mpdSong++;
+                }
+            }
+        } else {
+            if (1==$testMode) { print "No include rules, so get all songs...\n"; }
+            # No 'include' rules => get all songs! Do this by getting all Artists, and then all songs by each...
+            my $tag='Artist';
+            my @entries = &getEntries("list ${tag}", $tag);
+            foreach my $entry (@entries) {
+                my @songs = &getEntries("find ${tag} \"${entry}\"", 'file');
+                foreach my $song (@songs) {
+                    if (! $excludeSongSet{$song}) {
+                        $mpdSongs[$mpdSong]=$song;
+                        $mpdSong++;
+                    }
+                }
+            }
+        }
+        if (scalar(@mpdSongs)<1) {
+            if (1==$isServerMode) {
+                $currentStatus="NO_SONGS";
+                $dynamicIsActive=0;                
+                &sendStatus();
+            } else {
+                &sendMessage("showError", "NO_SONGS");
+                exit(0);
+            }
+        } elsif (1==$isServerMode) {
+            &sendMessage("status", "HAVE_SONGS");
+        }
+
+        if (1==$testMode) {
+            print "SONGS--------------\n";
+            foreach my $song (@mpdSongs) {
+                print "${song}\n";
+            }
+            print "---------------------\n"
+        }
+        $numMpdSongs=scalar(@mpdSongs);
+    }
+}
+
+#
+# Following canAdd/storeSong are used to remember songs that have been added to the playqueue, so that
+# we don't re-add them too soon!
+#
+@playQueueHistory=();
+$playQueueHistoryLimit=0;
+$playQueueHistoryPos=0;
+sub canAdd() {
+    my $file=shift;
+    my $numSongs=shift;
+    my $pqLimit=0;
+
+    # Calculate a reasonable level for the history...
+    if (1==$numSongs) {
+        return 1;
+    } elsif ($numSongs<5) {
+        $pqLimit=int(($numSongs/2)+0.5);
+    } else {
+        $pqLimit=int(($numSongs*0.75)+0.5);
+        if ($pqLimit>200) {
+            $pqLimit=200;
+        }
+    }
+
+    # If the history level has changed, then so must have the rules/mpd/whatever, so add this song anyway...
+    if ($pqLimit != $playQueueHistoryLimit) {
+        $playQueueHistoryLimit=$pqLimit;
+        @playQueueHistory=();
+        return 1;
+    }
+
+    my $size=scalar(@playQueueHistory);
+    if ($size>$playQueueHistoryLimit) {
+        $size=$playQueueHistoryLimit;
+    }
+
+    for (my $i=0; $i<$size; ++$i) {
+        if ($playQueueHistory[$i] eq $file) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+sub storeSong() {
+    my $file=shift;
+    if ($playQueueHistoryLimit<=0) {
+        $playQueueHistoryLimit=5;
+    }
+
+    if ($playQueueHistoryPos>=$playQueueHistoryLimit) {
+        $playQueueHistoryPos=0;
+    }
+    $playQueueHistory[$playQueueHistoryPos]=$file;
+    $playQueueHistoryPos++;
+}
+
+#
+# This is the 'main' function of the dynamizer
+#
+sub populatePlayQueue() {
+    &readConnectionDetails();
+    my $lastMpdDbUpdate=-1;
+    while (1) {
+        my $socketData='';
+        if (1==$dynamicIsActive) {
+             # Use status to obtain the current song pos, and to check that MPD is running...
+            $socketData=&sendCommand("status");
+        } elsif (1==$isServerMode) {
+            while (0==$dynamicIsActive) {
+                &waitForEvent();
+            }
+        }
+        
+        if (defined($socketData)) {
+            my @lines = split('\n', $socketData);
+            my $playQueueLength=0;
+            my $playQueueCurrentTrackPos=0;
+            my $isPlaying=0;
+            foreach my $val (@lines) {
+                if ($val=~ m/^(song\:)/) {
+                    my @vals = split(": ", $val);
+                    if (scalar(@vals)==2) {
+                        $playQueueCurrentTrackPos=scalar($vals[1]);
+                    }
+                } elsif ($val=~ m/^(state\:)/) {
+                    my @vals = split(": ", $val);
+                    if (scalar(@vals)==2 && $vals[1]=~ m/^(play)/) {
+                        $isPlaying=1;
+                    }
+                }
+            }
+
+            # Call stats, so that we can obtain the last time MPD was updated.
+            # We use this to determine when we need to refresh the searched set of songs
+            $mpdDbUpdated=0;
+            $socketData=&sendCommand("stats");
+            if (defined($socketData)) {
+                my @lines = split('\n', $socketData);
+                foreach my $val (@lines) {
+                    if ($val=~ m/^(db_update\:)/) {
+                        my @vals = split(": ", $val);
+                        if (scalar(@vals)==2) {
+                            my $mpdDbUpdate=scalar($vals[1]);
+                            if ($mpdDbUpdate!=$lastMpdDbUpdate) {
+                                $lastMpdDbUpdate=$mpdDbUpdate;
+                                $mpdDbUpdated=1;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            # Get current playlist info
+            $socketData=&sendCommand("playlist");
+            if (defined($socketData)) {
+                my @lines = split('\n', $socketData);
+                my $playQueueLength=scalar(@lines);
+                if ($playQueueLength>0 && $lines[$playQueueLength-1]=~ m/^(OK)/) {
+                    $playQueueLength--;
+                }
+
+                # trim playlist start so that current becomes <=$PLAY_QUEUE_CURRENT_POS
+                for (my $i=0; $i < $playQueueCurrentTrackPos - ($PLAY_QUEUE_CURRENT_POS-1); $i++) {
+                    &sendCommand("delete 0");
+                    $playQueueLength--;
+                }
+                if ($playQueueLength<0) {
+                    $playQueueLength=0;
+                }
+
+                &readRules();
+                &getSongs();
+                if ($numMpdSongs>0) {
+                    # fill up playlist to 10 random tunes
+                    my $failues=0;
+                    my $added=0;
+                    while ($playQueueLength < $PLAY_QUEUE_DESIRED_LENGTH && $numMpdSongs>0) {
+                        my $pos=int(rand($numMpdSongs));
+                        my $origFile=${mpdSongs[$pos]};
+                        my $file=$origFile;
+                        $file =~ s/\\/\\\\/g;
+                        $file =~ s/\"/\\\"/g;
+
+                        if (&checkSongRatingInRange($file, $pos)) {
+                            if ($failues > 100 || &canAdd($origFile, $numMpdSongs)) {
+                                if (&sendCommand("add \"${file}\"") ne '') {
+                                    &storeSong($origFile);
+                                    $playQueueLength++;
+                                    $failues=0;
+                                    $added++;
+                                }
+                            } else { # Song is already in playqueue history...
+                                $failues++;
+                            }
+                        }
+                    }
+                    # If we are not currently playing and we filled playqueue - then play first!
+                    if ($numMpdSongs>0 && $isPlaying==0 && $added==$PLAY_QUEUE_DESIRED_LENGTH) {
+                        &sendCommand("play 0")
+                    }
+                }
+
+                if ($numMpdSongs>0) {
+                    &waitForEvent();
+                } else {
+                    if (1==$isServerMode) {
+                        $currentStatus="NO_SONGS";
+                        $dynamicIsActive=0;
+                        &sendStatus();
+                    } else {
+                        &sendMessage("showError", "NO_SONGS");
+                        exit(0);
+                    }
+                }
+            } elsif (0==$isServerMode) {
+                sleep 2;
+            }
+        } elsif (0==$isServerMode) {
+            sleep 2;
+        }
+    }
+}
+
+sub readPid() {
+    my $fileName=shift;
+
+    if (-e $fileName) {
+        open(my $fileHandle, $fileName);
+        my @lines = <$fileHandle>;
+        close($fileHandle);
+        if (scalar(@lines)>0) {
+            my $pid=$lines[0];
+            return scalar($pid);
+        }
+    }
+    return 0;
+}
+
+sub daemonize() {
+    my $fileName=shift;
+    # daemonize process...
+    chdir '/';
+    umask 0;
+    open STDIN,  '/dev/null'   or die "Can't read /dev/null: $!";
+    open STDOUT, '>>/dev/null' or die "Can't write to /dev/null: $!";
+    open STDERR, '>>/dev/null' or die "Can't write to /dev/null: $!";
+    defined( my $pid = fork ) or die "Can't fork: $!";
+    exit if $pid;
+
+    # dissociate this process from the controlling terminal that started it and stop being part
+    # of whatever process group this process was a part of.
+    POSIX::setsid() or die "Can't start a new session.";
+
+    # callback signal handler for signals.
+    $SIG{INT} = $SIG{TERM} = $SIG{HUP} = \&signalHandler;
+    $SIG{PIPE} = 'ignore';
+
+    # Write our PID the lock file, so that 'stop' knows which PID to kill...
+    open(my $fileHandle, ">${fileName}");
+    print $fileHandle $$;
+    close $fileHandle;
+}
+
+sub start() {
+    my $pidFile=&lockFile();
+    my $pid=&readPid($pidFile);
+    if ($pid>0) {
+        $exists = kill 0, $pid;
+        if ($exists) {
+            print "PROCESS $pid is running!\n";
+            return;
+        }
+    }
+
+    my $fileName=&lockFile();
+    &daemonize($fileName);
+    &sendMessage("dynamicStatus", "running");
+    &populatePlayQueue();
+}
+
+sub signalHandler {
+    if (0==$isServerMode) {
+        unlink(&lockFile());
+        &sendMessage("dynamicStatus", "stopped");
+    } else {
+        unlink($pidFile);
+    }
+    exit(0);
+}
+
+sub stop() {
+    my $pidFile=&lockFile();
+    my $pid=&readPid($pidFile);
+    if ($pid>0) {
+        system("kill", $pid);
+        system("pkill", "-P", $pid);
+    }
+}
+
+# #####################################
+# SERVER MODE
+# #####################################
+$filesDir="/var/lib/mpd/dynamic";
+$pidFile="/var/run/cantata-dynamic/pid";
+
+sub encodeString() {
+    my $str=shift;
+    $str =~ s/\"/\{q\}/g;
+    $str =~ s/\{/\{ob\}/g;
+    $str =~ s/\}/\{cb\}/g;
+    $str =~ s/\n/\{n\}/g;
+    $str =~ s/\:/\{c\}/g;
+    return $str;
+}
+
+sub decodeString() {
+    my $str=shift;
+    $str =~ s/\{c\}/\:/g;
+    $str =~ s/\{n\}/\n/g;
+    $str =~ s/\{cb\}/\}/g;
+    $str =~ s/\{ob\}/\{/g;
+    $str =~ s/\{q\}/\"/g;
+    return $str;
+}
+
+# Attempt to load a config file that will specify MPD connection settings and dynamic folder location
+sub loadConfig() {
+    my $config=shift;
+    if (!$config || ($config=~ m/^(default)/)) {
+        $config="/etc/cantata-dynamic.conf";
+    }
+    open(my $fileHandle, $config)  || die "ERROR: Failed to load config $config - $!\n";
+    $activeFile="/var/run/cantata-dynamic/rules";
+    if (tell($fileHandle) != -1) {
+        my @lines = <$fileHandle>; # Read into an array...
+        close($fileHandle);
+        foreach my $line (@lines) {
+            if (! ($line=~ m/^(#)/)) {
+                $line =~ s/\n//g;
+                my $sep = index($line, '=');
+
+                if ($sep>0) {
+                    $key=substr($line, 0, $sep);
+                    $val=substr($line, $sep+1, length($line)-$sep);
+                    if ($key=~ m/^(filesDir)/) {
+                        $filesDir=$val;
+                    } elsif ($key=~ m/^(activeFile)/) {
+                        $activeFile=$val;
+                    } elsif ($key=~ m/^(mpdHost)/) {
+                        $mpdHost=$val;
+                    } elsif ($key=~ m/^(mpdPort)/) {
+                        $mpdPort=$val;
+                    } elsif ($key=~ m/^(mpdPassword)/) {
+                        $mpdPasswd=$val;
+                    } elsif ($key=~ m/^(pidFile)/) {
+                        $pidFile=$val;
+                    } elsif ($key=~ m/^(httpPort)/) {
+                        $httpPort=$val;
+                    }
+                }
+            }
+        }
+    }
+
+    # Create folders, if these do not already exist...
+    my $pidDir=dirname($pidFile);
+    my $activeFileDir=dirname($activeFile);
+    unless (-d $pidDir) {
+        mkdir $pidDir or die;
+    }
+    unless (-d $activeFileDir) {
+        mkdir $activeFileDir or die;
+    }
+    unless (-d $filesDir) {
+        mkdir $filesDir or die;
+    }
+}
+
+sub readRulesFile() {
+    my @result=();
+    my $fileName=uri_unescape(shift);
+    open(my $fileHandle, $fileName);
+    if (tell($fileHandle) != -1) {
+        my @lines = <$fileHandle>; # Read into an array...
+        close($fileHandle);
+        foreach my $line (@lines) {
+            if ($line =~ /\n$/) {
+                push(@result, $line);
+            } else {
+                push(@result, $line."\n");
+            }
+        }
+    }
+    return @result;
+}
+
+sub listAllRules() {
+    my $req=shift;
+    my $clientId=shift;
+    my $showContents=shift;
+    my @result=();
+    opendir(D, "$filesDir");
+    while (my $f = readdir(D)) {
+        if ($f=~m/.rules$/) {
+            push(@result, "FILENAME:${f}\n");
+            if ($showContents eq "" || $showContents>0) {
+                push(@result, &readRulesFile($filesDir."/".$f));
+            }
+        }
+    }
+    closedir(D);
+    if ($req eq "http") {
+        return @result;
+    } else {
+        my $response=&encodeString(join('', @result));
+        &sendMessage($req, $response, $clientId);
+    }
+}
+
+sub determineActiveRules() {
+    local $fileName="";
+    if (-f $activeFile && -l $activeFile) {
+        $fileName=basename abs_path($activeFile);
+        $fileName =~ s/.rules//g;
+    }
+    return $fileName;
+}
+
+sub getRulesContents() {
+    my $req=shift;
+    my $clientId=shift;
+    my $origName=shift;
+    my $name=&decodeString($origName);
+    $name =~ s/\///g;
+    my $active=&determineActiveRules();
+    my $rulesName=$name;
+    $rulesName="${filesDir}/${rulesName}.rules";
+    my @result=&readRulesFile($rulesName);
+    my $response=&encodeString(join('', @result));
+    &sendMessage($req, $response, $clientId);
+}
+
+sub saveRulesToFile() {
+    my $req=shift;
+    my $clientId=shift;
+    my $origName=shift;
+    my $name=&decodeString($origName);
+    $name =~ s/\///g;
+    if (! $name) {
+        &sendMessage($req, "1", $clientId);
+        return;
+    }
+    if ($name =~ m/\.rules/ || $name =~ m/\//) {
+        &sendMessage($req, "2:${origName}", $clientId);
+        return;
+    }
+    my $content=&decodeString(shift);
+    # TODO: Parse content!!!
+    my $rulesName=$name;
+    $rulesName="${filesDir}/${rulesName}.rules";
+
+    open (my $fileHandle, '>'.$rulesName);
+    if (tell($fileHandle) != -1) {
+        print $fileHandle $content;
+        close($fileHandle);
+        $currentStatusTime = time;
+        &sendMessage($req, "0:${origName}", $clientId);
+        &sendStatus();
+    } else {
+        &sendMessage($req, "3:${origName}", $clientId);
+    }
+}
+
+sub deleteRules() {
+    my $req=shift;
+    my $clientId=shift;
+    my $origName=shift;
+    my $name=&decodeString($origName);
+    $name =~ s/\///g;
+    my $active=&determineActiveRules();
+    my $rulesName=$name;
+    $rulesName="${filesDir}/${rulesName}.rules";
+    if (!unlink($rulesName)) {
+        &sendMessage($req, "4:${origName}", $clientId);
+        return;
+    }
+    $currentStatusTime = time;
+    if ($name eq $active) {
+        &control("stop");
+    }
+    &sendMessage($req, "0:${origName}", $clientId);
+    &sendStatus();
+    return;
+}
+
+sub control() {
+    my $req=shift;
+    my $clientId=shift;
+    my $command=shift;
+    if ($command eq "start") {
+        $dynamicIsActive=1;
+        $currentStatus="STARTING";
+        &sendCommand("clear");
+        &sendMessage($req, "0:${command}", $clientId);
+    } elsif ($command eq "stop") {
+        my $doClear=shift;
+        $dynamicIsActive=0;
+        $currentStatus="IDLE";
+        if ($doClear eq "true" || $doClear eq "1" || $doClear eq "clear") {
+            &sendCommand("clear");
+        }
+        &sendMessage($req, "0:${command}", $clientId);
+        &sendStatus();
+    } else {
+        &sendMessage($req, "5:${command}", $clientId);
+    }
+}
+
+sub setActiveRules() {
+    my $req=shift;
+    my $clientId=shift;
+    my $origName=shift;
+    my $start=shift;
+    my $name=&decodeString($origName);
+    if ($name eq "") {
+        &sendMessage($req, "1", $clientId);
+        return;
+    }
+    my $rulesName=$name;
+    my $active=&determineActiveRules();
+    if ($rulesName eq $active) {
+        if (($start eq "start" || $start eq "1") && $currentStatus eq "IDLE") {
+            $dynamicIsActive=1;
+            $currentStatus="STARTING";
+            &sendCommand("clear");
+            &sendStatus();
+        }
+        &sendMessage($req, "0:${origName}", $clientId);
+        return;
+    }
+
+    $rulesName="${filesDir}/${rulesName}.rules";
+    if (-f $rulesName) {
+        if (-l $activeFile) {
+            if (!unlink($activeFile)) {
+                &sendMessage($req, "6", $clientId);
+                return;
+            }
+        } elsif (-f $activeFile) {
+            &sendMessage($req, "7:${origName}", $clientId);
+            return;
+        }
+        system("ln -s \"${rulesName}\" \"${activeFile}\"");
+        if (0!=$?) {
+            &sendMessage($req, "8:${origName}", $clientId);
+            return;
+        }
+        
+        if ($start eq "start" || $start eq "1") {
+            $dynamicIsActive=1;
+            $currentStatus="STARTING";
+            &sendCommand("clear");
+        }
+        &sendMessage($req, "0:${origName}", $clientId);
+        &sendStatus();
+    } else {
+        &sendMessage($req, "9:${origName}", $clientId);
+    }
+}
+
+sub statusResponse() {
+    my $req=shift;
+    my $clientId=shift;
+    local $activeRules=&determineActiveRules();
+    $activeRules=&encodeString($activeRules);
+    &sendMessage($req, "${currentStatus}:${currentStatusTime}:${activeRules}", $clientId);
+}
+
+sub sendStatus() {
+    &statusResponse("status")
+}
+
+sub handleClientMessage() {
+    $sock->send("readmessages\n");
+    my $sockData=&readReply($sock);
+    my @lines = split("\n", $sockData);
+    foreach my $line (@lines) {
+        if ($line=~ m/^(message\:)/) {
+            $line =~ s/message: //g;
+            my @parts = split(":", $line);
+            my $length=scalar(@parts);
+            if ($testMode==1) { printf "Message: $line ($parts[0], $length)\n"; }
+            if ($length>=2) {
+                if ($parts[0]=~ m/(status)$/) {
+                    &statusResponse($parts[0], $parts[1]);
+                } elsif ($parts[0]=~ m/(list)$/) {
+                    &listAllRules($parts[0], $parts[1], $parts[2]);
+                } elsif ($parts[0]=~ m/^(get)/) {
+                    &getRulesContents($parts[0], $parts[1], $parts[2])
+                } elsif ($parts[0]=~ m/^(save)/) {
+                    &saveRulesToFile($parts[0], $parts[1], $parts[2], $parts[3])
+                } elsif ($parts[0]=~ m/^(delete)/) {
+                    &deleteRules($parts[0], $parts[1], $parts[2])
+                } elsif ($parts[0]=~ m/^(setActive)/) {
+                    &setActiveRules($parts[0], $parts[1], $parts[2], $parts[3])
+                } elsif ($parts[0]=~ m/^(control)/) {
+                    &control($parts[0], $parts[1], $parts[2], $parts[3])
+                } else {
+                    &sendMessage($parts[0], "11", $parts[1]);
+                }
+            } else {
+                &sendMessage($parts[0], "10", $parts[1]);
+            }
+        }
+    }
+}
+
+#
+# HTTP interface...
+#
+
+sub sendCommandViaMpd() {
+    my $command = shift;
+    my $param = shift;
+    print "PAram:${param}\n";
+    $param = &encodeString($param);
+    print "Encoded:${param}\n";
+    &sendCommand("sendmessage ${readChannel} \"${command}:http:${param}:1\"");
+    sleep(1);
+}
+
+sub buildControlPage() {
+    my $body="<html><head><title>Dynamic Playlists</title></head><body><h2>Dynamic Playlists</h2>"
+             . "<p><i>Click on a playlist name to load</i></p>";
+
+    my @rules=&listAllRules("http", 0, 0);
+    my $active=&determineActiveRules("http");
+    $body = $body . "<p><ul>";
+    my $num=1;
+
+    foreach my $rule (@rules) {
+        $rule =~ s/FILENAME://;
+        $rule =~ s/.rules//;
+        $rule =~ s/\n//;
+        if ($rule=~ m/^(TIME:)/) {
+        } else {
+            $body = $body . "<li>";
+            if ($rule eq $active) {
+                $body = $body . "<b>";
+            }
+            $body = $body . "<form name=\"ruleForm". ${num} ."\" method=\"post\" action=\"/setActive?name=" . $rule . "&start=1\">"
+                            . "<a href=\"javascript: loadRule" .${num} ."()\">" .$rule ."</a></form>"
+                            . "<script type=\"text/javascript\">function loadRule" .${num} ."() {  document.ruleForm". ${num} .".submit(); }</script>";
+            if ($rule eq $active) {
+                $body = $body . "</b>";
+            }
+            $body = $body ."</li>";
+            $num=$num+1;
+        }
+    }
+    $body = $body . "</ul></p>";
+    $body = $body . "<br/><p><form method=post enctype=\"text/plain\" action=\"/stop\">"
+                  . "<input type=\"submit\" name=\"submit\" value=\"Stop Dynamizer\"></form></p>";
+    $body = $body . "</body></html>";
+    return $body;
+}
+
+sub writeToClient() {
+    my $client=shift;
+    my $message=shift;
+    my $addCrlf=shift;
+    if ($client->connected()) {
+        if (1==$addCrlf) {
+            print $client $message, Socket::CRLF;
+        } else {
+            print $client $message;
+        }
+    }
+}
+
+sub httpServer() {
+    my $server = new IO::Socket::INET(Proto => 'tcp', LocalPort => $httpPort, Listen => SOMAXCONN, Reuse => 1);
+    $server or die "ERROR: Unable to create HTTP socket (${httpPort}): $!";
+
+    print "Starting HTTP server on ${httpPort}\n";
+    while (my $client = $server->accept()) {
+        $client->autoflush(1);
+        my %request = ();
+        my %data;
+        local $/ = Socket::CRLF;
+        while (<$client>) {
+            chomp; # Main http request
+            if (/\s*(\w+)\s*([^\s]+)\s*HTTP\/(\d.\d)/) {
+                $request{METHOD} = uc $1;
+                $request{URL} = $2;
+                $request{HTTP_VERSION} = $3;
+            } # Standard headers
+            elsif (/:/) {
+                (my $type, my $val) = split /:/, $_, 2;
+                $type =~ s/^\s+//;
+                foreach ($type, $val) {
+                    s/^\s+//;
+                    s/\s+$//;
+                }
+                $request{lc $type} = $val;
+            } # POST data
+            elsif (/^$/) {
+                read($client, $request{CONTENT}, $request{'content-length'})
+                    if defined $request{'content-length'};
+                last;
+            }
+        }
+        local $response="";
+        local $responseType="text/plain";
+        $queryItems{statusTime}=0;
+
+        if ($request{URL} =~ /(.*)\?(.*)/) {
+            $request{URL} = $1;
+            $request{QUERY} = $2;
+            my @args=split("&", $request{QUERY});
+            for my $arg (@args) {
+                (my $type, my $val) = split /=/, $arg, 2;
+                $queryItems{$type}=$val;
+            }
+        }
+#             print "${request{METHOD}} URL:${request{URL}} QUERY:${request{QUERY}}\n";
+        if ($request{METHOD} eq 'GET') {
+            if ($request{URL} eq '/') {
+                $responseType="text/html";
+                $response = &buildControlPage();
+            } else {
+                $response="ERROR: Invalid URL";
+            }
+        } elsif ($request{METHOD} eq 'POST') {
+            if ($request{URL} eq '/setActive') {
+                my @args=split("&", $request{QUERY});
+                &sendCommandViaMpd("setActive", uri_unescape($queryItems{name}));
+                $response = &buildControlPage();
+            } elsif ($request{URL} eq '/stop') {
+                &sendCommandViaMpd("control", "stop");
+                $response = &buildControlPage();
+            }
+        } else {
+            $responseType="text/html";
+            $response = &buildControlPage();
+        }
+
+        if ($response eq "") {
+            &writeToClient($client, "HTTP/1.0 404 Not Found", 1);
+            &writeToClient($client, Socket::CRLF, 0);
+            &writeToClient($client, "<html><body>404 Not Found</body></html>", 0);
+        } elsif ($response =~ m/^ERROR/) {
+            &writeToClient($client, "HTTP/1.0 404 Not Found", 1);
+            &writeToClient($client, Socket::CRLF);
+            &writeToClient($client, "<html><body>${response}</body></html>", 0);
+        } elsif ($request{METHOD} eq 'POST') {
+            &writeToClient($client, "HTTP/1.0 201 Created", 1);
+            # Reload start page :-)
+            $response =  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">"
+                        . "<html><head><meta http-equiv=\"REFRESH\" content=\"0;url=http://" . $request{host} . "\"></head></body></html>";
+            &writeToClient($client, "Content-type: text/html", 1);
+            &writeToClient($client, Socket::CRLF);
+            &writeToClient($client, $response, 1);
+        } else {
+            &writeToClient($client, "HTTP/1.0 200 OK", 1);
+            &writeToClient($client, "Content-type: ${responseType}", 1);
+            &writeToClient($client, Socket::CRLF);
+            &writeToClient($client, $response);
+        }
+        close $client;
+    }
+}
+
+sub serverMode() {
+    &loadConfig(shift);
+    if ($testMode != 1) {
+        &daemonize($pidFile);
+    }
+    $isServerMode=1;
+    $dynamicIsActive=0;
+    if ($httpPort>0) {
+        threads->create(\&httpServer);
+    }   
+    &populatePlayQueue;
+}
+
+sub stopServer() {
+    &loadConfig(shift);
+    my $pid=&readPid($pidFile);
+    if ($pid>0) {
+        system("kill", $pid);
+        system("pkill", "-P", $pid);
+    }
+}
+
+if ($ARGV[0] eq "start") {
+    &start();
+} elsif ($ARGV[0] eq "stop") {
+    &stop();
+} elsif ($ARGV[0] eq "server") {
+    &serverMode($ARGV[1]);
+} elsif ($ARGV[0] eq "stopserver") {
+    &stopServer($ARGV[1]);
+} elsif ($ARGV[0] eq "test") {
+    $testMode=1;
+    &populatePlayQueue();
+} elsif ($ARGV[0] eq "testserver") {
+    $testMode=1;
+    &serverMode($ARGV[1]);
+} else {
+    print "Cantata MPD Dynamizer script\n";
+    print "\n";
+    print "Usage: $0 start|stop|server|stopserver\n";
+}
+

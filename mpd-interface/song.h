@@ -48,8 +48,8 @@ struct Song
 
     static const QLatin1Char constGenreSep;
 
-    static bool useComposer();
-    static void setUseComposer(bool u);
+    static const QSet<QString> & composerGenres();
+    static void setComposerGenres(const QSet<QString> &g);
 
     enum ExtraTags {
         Composer             = 0x0001,

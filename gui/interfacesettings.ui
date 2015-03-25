@@ -584,6 +584,63 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="groupingTab">
+      <attribute name="title">
+       <string>Grouping</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3x">
+       <item>
+        <layout class="QFormLayout" name="formLayout_4x">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::ExpandingFieldsGrow</enum>
+         </property>
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="groupSingle">
+           <property name="text">
+            <string>Place albums with only one track under 'Various Artists/Single Tracks'</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="BuddyLabel" name="composerGenresLabel">
+          <property name="toolTip">
+           <string>Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums.</string>
+          </property>
+          <property name="text">
+           <string>Group albums by composer for genres:</string>
+          </property>
+           <property name="buddy">
+            <cstring>composerGenres</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="LineEdit" name="composerGenres"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="NoteLabel" name="composerGenresNoteLabel">
+         <property name="text">
+          <string>Genres should be separated via a comma (e.g. 'Classical, Symphonic')</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2cx">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="toolbarTab">
       <attribute name="title">
        <string>Toolbar</string>
@@ -703,26 +760,6 @@
           <enum>QFormLayout::ExpandingFieldsGrow</enum>
          </property>
          <item row="0" column="0" colspan="2">
-          <widget class="QCheckBox" name="groupSingle">
-           <property name="toolTip">
-            <string>Place albums with only one track under 'Various Artists/Single Tracks'</string>
-           </property>
-           <property name="text">
-            <string>Group single track albums</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QCheckBox" name="useComposer">
-           <property name="toolTip">
-            <string>Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums.</string>
-           </property>
-           <property name="text">
-            <string>Group albums by composer</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" colspan="2">
           <widget class="QCheckBox" name="filteredOnly">
            <property name="toolTip">
             <string>&lt;p&gt;When adding artists, or albums to the playqueue, or editing tags, etc, then only use songs that pass the current Genre or string filter.&lt;/p&gt;&lt;p&gt;e.g. If you have an album with 10 songs, but only 5 have the genre set to 'Metal', then only these 5 would be added if the view's Genre filter was set to 'Metal'.</string>
@@ -732,28 +769,28 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
+         <item row="1" column="0" colspan="2">
           <widget class="QCheckBox" name="fetchCovers">
            <property name="text">
             <string>Fetch missing covers from Last.fm</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0" colspan="2">
+         <item row="2" column="0" colspan="2">
           <widget class="QCheckBox" name="showDeleteAction">
            <property name="text">
             <string>Show delete action in context menus</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="0" colspan="2">
+         <item row="3" column="0" colspan="2">
           <widget class="QCheckBox" name="forceSingleClick">
            <property name="text">
             <string>Enforce single-click activation of items</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="0" colspan="2">
+         <item row="4" column="0" colspan="2">
           <widget class="QCheckBox" name="touchFriendly">
            <property name="toolTip">
             <string>&lt;p&gt;This will change Cantata's interface as detailed:
@@ -764,21 +801,21 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="0" colspan="2">
+         <item row="5" column="0" colspan="2">
           <widget class="QCheckBox" name="infoTooltips">
            <property name="text">
             <string>Show song information tooltips</string>
            </property>
           </widget>
          </item>
-         <item row="8" column="0" colspan="2">
+         <item row="6" column="0" colspan="2">
           <widget class="QCheckBox" name="retinaSupport">
            <property name="text">
             <string>Support retina displays</string>
            </property>
           </widget>
          </item>
-         <item row="9" column="0">
+         <item row="7" column="0">
           <widget class="BuddyLabel" name="langLabel">
            <property name="text">
             <string>Language:</string>
@@ -788,7 +825,7 @@
            </property>
           </widget>
          </item>
-         <item row="9" column="1">
+         <item row="7" column="1">
           <widget class="QComboBox" name="lang"/>
          </item>
         </layout>
@@ -855,6 +892,12 @@
    <class>PathRequester</class>
    <extends>QLineEdit</extends>
    <header>support/pathrequester.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>support/lineedit.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

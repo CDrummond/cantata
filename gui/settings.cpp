@@ -404,9 +404,9 @@ bool Settings::groupSingle()
     return cfg.get("groupSingle", MPDParseUtils::groupSingle());
 }
 
-bool Settings::useComposer()
+QSet<QString> Settings::composerGenres()
 {
-    return cfg.get("useComposer", Song::useComposer());
+    return cfg.get("composerGenres", Song::composerGenres().toList()).toSet();
 }
 
 QStringList Settings::lyricProviders()
@@ -1043,9 +1043,9 @@ void Settings::saveGroupSingle(bool v)
     cfg.set("groupSingle", v);
 }
 
-void Settings::saveUseComposer(bool v)
+void Settings::saveComposerGenres(const QSet<QString> &v)
 {
-    cfg.set("useComposer", v);
+    cfg.set("composerGenres", v.toList());
 }
 
 void Settings::saveLyricProviders(const QStringList &v)

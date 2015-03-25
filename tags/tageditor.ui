@@ -207,7 +207,7 @@
    <item>
     <widget class="PlainNoteLabel" name="label_7x">
      <property name="text">
-      <string>Multiple genres should be separated via a semicolon (e.g. 'Rock;Hard Rock')</string>
+      <string>Multiple genres should be separated via a comma (e.g. 'Rock,Hard Rock')</string>
      </property>
     </widget>
    </item>

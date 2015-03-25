@@ -196,7 +196,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Need to set these values here, as used in library/device loading...
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
-    Song::setUseComposer(Settings::self()->useComposer());
+    Song::setComposerGenres(Settings::self()->composerGenres());
 
     int hSpace=Utils::layoutSpacing(this);
     int vSpace=fontMetrics().height()<14 ? hSpace/2 : 0;
@@ -1483,7 +1483,7 @@ void MainWindow::readSettings()
     StdActions::self()->deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
-    Song::setUseComposer(Settings::self()->useComposer());
+    Song::setComposerGenres(Settings::self()->composerGenres());
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
     MusicLibraryItemAlbum::setSortByDate(Settings::self()->libraryYear());
@@ -1542,7 +1542,7 @@ void MainWindow::updateSettings()
     bool diffAlbumSort=AlbumsModel::self()->albumSort()!=Settings::self()->albumSort();
     bool diffLibYear=MusicLibraryItemAlbum::sortByDate()!=Settings::self()->libraryYear();
     bool diffGrouping=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle() ||
-                      Song::useComposer()!=Settings::self()->useComposer();
+                      Song::composerGenres()!=Settings::self()->composerGenres();
 
     readSettings();
 

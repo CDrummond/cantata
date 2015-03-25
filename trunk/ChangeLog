@@ -28,6 +28,8 @@
 17. Show rating in search model table view.
 18. Rename mpd source folder to mpd-interface to help build errors when
     libmpdclient(?) is also installed.
+19. Add option to provide a list of genres which should use composer, and not
+    album-artist, to group albums.
 
 1.5.2
 -----

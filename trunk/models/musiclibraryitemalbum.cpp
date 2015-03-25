@@ -280,8 +280,8 @@ Song MusicLibraryItemAlbum::coverSong() const
     if (childCount()) {
         MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
         song.artist=firstSong->song().artist;
-        song.albumartist=Song::useComposer() && !firstSong->song().composer().isEmpty() ? firstSong->song().albumArtist() : parentItem()->data();
-        song.album=Song::useComposer() ? firstSong->song().album : m_itemData;
+        song.albumartist=/*Song::useComposer() && !firstSong->song().composer().isEmpty() ? */firstSong->song().albumArtist() /*: parentItem()->data()*/;
+        song.album=/*Song::useComposer() ? */firstSong->song().album /*: m_itemData*/;
         song.setMbAlbumId(firstSong->song().mbAlbumId());
         song.setComposer(firstSong->song().composer());
         song.year=m_year;

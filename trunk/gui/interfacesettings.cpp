@@ -280,7 +280,7 @@ void InterfaceSettings::load()
     selectEntry(onlineView, Settings::self()->onlineView());
     #endif
     groupSingle->setChecked(Settings::self()->groupSingle());
-    useComposer->setChecked(Settings::self()->useComposer());
+    composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(Song::constGenreSep)));
     filteredOnly->setChecked(Settings::self()->filteredOnly());
     #ifdef ENABLE_DEVICES_SUPPORT
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
@@ -371,7 +371,7 @@ void InterfaceSettings::save()
     Settings::self()->saveOnlineView(getValue(onlineView));
     #endif
     Settings::self()->saveGroupSingle(groupSingle->isChecked());
-    Settings::self()->saveUseComposer(useComposer->isChecked());
+    Settings::self()->saveComposerGenres(composerGenres->text().trimmed().split(Song::constGenreSep).toSet());
     Settings::self()->saveFilteredOnly(filteredOnly->isChecked());
     #ifdef ENABLE_DEVICES_SUPPORT
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());

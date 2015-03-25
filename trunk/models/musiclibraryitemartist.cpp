@@ -188,9 +188,9 @@ Song MusicLibraryItemArtist::coverSong() const
 
         if (firstSong) {
             song.file=firstSong->file();
-            if (Song::useComposer() && !firstSong->song().composer().isEmpty()) {
+            //if (Song::useComposer() && !firstSong->song().composer().isEmpty()) {
                 song.albumartist=firstSong->song().albumArtist();
-            }
+            //}
         }
     }
     song.setArtistImageRequest();

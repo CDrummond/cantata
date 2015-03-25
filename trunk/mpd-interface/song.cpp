@@ -131,16 +131,16 @@ QString Song::encodePath(const QString &file)
     return constMopidyLocal+QString(QUrl::toPercentEncoding(file, "/"));
 }
 
-static bool useComposerIfSet=false;
+static QSet<QString> compGenres;
 
-bool Song::useComposer()
+const QSet<QString> &Song::composerGenres()
 {
-    return useComposerIfSet;
+    return compGenres;
 }
 
-void Song::setUseComposer(bool u)
+void Song::setComposerGenres(const QSet<QString> &g)
 {
-    useComposerIfSet=u;
+    compGenres=g;
 }
 
 Song::Song()
@@ -409,7 +409,7 @@ void Song::clear()
     type = Standard;
 }
 
-const QLatin1Char Song::constGenreSep(';');
+const QLatin1Char Song::constGenreSep(',');
 
 void Song::addGenre(const QString &g)
 {
@@ -447,9 +447,9 @@ QString Song::entryName() const
 
 QString Song::artistOrComposer() const
 {
-    if (useComposerIfSet){
+    if (!compGenres.isEmpty()) {
         QString c=composer();
-        if (!c.isEmpty()) {
+        if (compGenres.contains(genre) && !c.isEmpty()) {
             return c;
         }
     }
@@ -459,9 +459,9 @@ QString Song::artistOrComposer() const
 
 QString Song::albumName() const
 {
-    if (useComposerIfSet) {
+    if (!compGenres.isEmpty()) {
         QString c=composer();
-        if (!c.isEmpty() && c!=albumArtist()) {
+        if (compGenres.contains(genre) && !c.isEmpty() && c!=albumArtist()) {
             return album+QLatin1String(" (")+albumArtist()+QLatin1Char(')');
         }
     }

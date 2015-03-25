@@ -270,7 +270,6 @@ static const QString constDateAttribute=QLatin1String("date");
 static const QString constDateUnreliableAttribute=QLatin1String("dateUnreliable");
 static const QString constVersionAttribute=QLatin1String("version");
 static const QString constGroupSingleAttribute=QLatin1String("groupSingle");
-static const QString constUseComposerAttribute=QLatin1String("useComposer");
 static const QString constSingleTracksAttribute=QLatin1String("singleTracks");
 static const QString constMultipleArtistsAttribute=QLatin1String("multipleArtists");
 static const QString constImageAttribute=QLatin1String("img");
@@ -302,9 +301,6 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     }
     if (MPDParseUtils::groupSingle()) {
         writer.writeAttribute(constGroupSingleAttribute, constTrueValue);
-    }
-    if (Song::useComposer()) {
-        writer.writeAttribute(constUseComposerAttribute, constTrueValue);
     }
     foreach (const MusicLibraryItem *a, childItems()) {
         foreach (const MusicLibraryItem *al, static_cast<const MusicLibraryItemArtist *>(a)->childItems()) {
@@ -476,8 +472,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 xmlDate = attributes.value(constDateAttribute).toString().toUInt();
                 gs = constTrueValue==attributes.value(constGroupSingleAttribute).toString();
                 gm = constTrueValue==attributes.value(constGroupSingleAttribute).toString();
-                bool uc = constTrueValue==attributes.value(constUseComposerAttribute).toString();
-                if ( version < constVersion || uc!=Song::useComposer() || (date.isValid() && xmlDate < date.toTime_t())) {
+                if ( version < constVersion || (date.isValid() && xmlDate < date.toTime_t())) {
                     return 0;
                 }
                 if (prog) {

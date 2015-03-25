@@ -352,7 +352,7 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
                     if (!genres.contains(genre)) {
                         genres.insert(genre);
                         if (!song->genre.isEmpty()) {
-                            song->genre+=QLatin1Char(';');
+                            song->genre+=Song::constGenreSep;
                         }
                         song->genre+=genre;
                     }

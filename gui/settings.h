@@ -85,7 +85,7 @@ public:
     int sidebar();
     bool libraryYear();
     bool groupSingle();
-    bool useComposer();
+    QSet<QString> composerGenres();
     QStringList lyricProviders();
     QStringList wikipediaLangs();
     bool wikipediaIntroOnly();
@@ -213,7 +213,7 @@ public:
     void saveSidebar(int v);
     void saveLibraryYear(bool v);
     void saveGroupSingle(bool v);
-    void saveUseComposer(bool v);
+    void saveComposerGenres(const QSet<QString> &v);
     void saveLyricProviders(const QStringList &v);
     void saveWikipediaLangs(const QStringList &v);
     void saveWikipediaIntroOnly(bool v);

@@ -74,7 +74,7 @@ public:
     // Return orignal album name. If we are grouping by composer, then album will appear as "Album (Artist)"
     const QString & originalName() const { return m_originalName; }
     const QString & id() const { return m_id; }
-    const QString & albumId() const { return m_id.isEmpty() ? m_itemData : m_id; }
+    const QString & albumId() const { return m_id.isEmpty() ? (m_originalName.isEmpty() ? m_itemData : m_originalName) : m_id; }
     const QString & sortString() const { return m_sortString.isEmpty() ? m_itemData : m_sortString; }
     bool hasSort() const { return !m_sortString.isEmpty(); }
     #ifdef ENABLE_UBUNTU

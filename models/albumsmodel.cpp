@@ -713,8 +713,8 @@ const Song & AlbumsModel::AlbumItem::coverSong()
     if (cSong.isEmpty() && songs.count()) {
         SongItem *firstSong=songs.first();
         cSong.artist=firstSong->artist;
-        cSong.albumartist=Song::useComposer() && !firstSong->composer().isEmpty()
-                ? firstSong->albumArtist() : artist;
+        cSong.albumartist=/*Song::useComposer() && !firstSong->composer().isEmpty()
+                ? */firstSong->albumArtist()/* : artist*/;
         cSong.album=album;
         cSong.year=year;
         cSong.file=firstSong->file;

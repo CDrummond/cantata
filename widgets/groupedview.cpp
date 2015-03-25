@@ -310,11 +310,11 @@ public:
                 } else {
                     title=song.artistOrComposer()+QLatin1String(" - ")+Song::displayAlbum(song.album, Song::albumYear(song));
                 }
-                if (Song::useComposer()) {
+//                if (Song::useComposer()) {
                     while (title.contains(") (")) {
                         title=title.replace(") (", ", ");
                     }
-                }
+//                }
                 track=song.trackAndTitleStr();
             }
         } else {

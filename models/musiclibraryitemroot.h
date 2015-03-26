@@ -72,7 +72,7 @@ public:
     virtual bool isOnlineService() const { return false; }
     virtual bool isDevice() const { return false; }
     MusicLibraryItemArtist * artist(const Song &s, bool create=true);
-    MusicLibraryItemArtist * createArtist(const Song &s);
+    MusicLibraryItemArtist * createArtist(const Song &s, bool forceComposer=false);
     void groupSingleTracks();
     void groupMultipleArtists();
     bool isFromSingleTracks(const Song &s) const;
@@ -102,10 +102,10 @@ public:
     bool updateSong(const Song &orig, const Song &edit);
     void addSongToList(const Song &s);
     void removeSongFromList(const Song &s);
-    static QString artistName(const Song &s);
+    static QString artistName(const Song &s, bool forceComposer=false);
 
 protected:
-    QString songArtist(const Song &s) const;
+    QString songArtist(const Song &s, bool isLoadingCache=false) const;
     MusicLibraryItemArtist * getArtist(const QString &key) const;
 
 protected:

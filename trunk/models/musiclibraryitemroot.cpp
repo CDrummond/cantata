@@ -49,9 +49,9 @@ MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create
     return artistItem ? artistItem : (create ? createArtist(s) : 0);
 }
 
-MusicLibraryItemArtist * MusicLibraryItemRoot::createArtist(const Song &s)
+MusicLibraryItemArtist * MusicLibraryItemRoot::createArtist(const Song &s, bool forceComposer)
 {
-    QString aa=songArtist(s);
+    QString aa=songArtist(s, forceComposer);
     MusicLibraryItemArtist *item=new MusicLibraryItemArtist(aa, Song::Standard==s.type ? s.albumArtist() : QString(), s.artistSortString(), this);
     m_indexes.insert(aa, m_childItems.count());
     m_childItems.append(item);
@@ -491,7 +491,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     song.setComposer(attributes.value(constNameAttribute).toString());
                 }
                 song.setAlbumArtistSort(attributes.value(constSortAttribute).toString());
-                artistItem = createArtist(song);
+                artistItem = createArtist(song, song.hasComposer());
             } else if (constAlbumElement==element) {
                 song.album=attributes.value(constNameAttribute).toString();
                 song.year=attributes.value(constYearAttribute).toString().toUInt();
@@ -926,21 +926,21 @@ void MusicLibraryItemRoot::removeSongFromList(const Song &s)
     }
 }
 
-QString MusicLibraryItemRoot::artistName(const Song &s)
+QString MusicLibraryItemRoot::artistName(const Song &s, bool forceComposer)
 {
     if (Song::Standard==s.type || Song::Cdda==s.type || Song::OnlineSvrTrack==s.type || (Song::Playlist==s.type && !s.albumArtist().isEmpty())) {
-        return s.artistOrComposer();
+        return forceComposer && s.hasComposer() ? s.composer() : s.artistOrComposer();
     }
     return Song::variousArtists();
 }
 
-QString MusicLibraryItemRoot::songArtist(const Song &s) const
+QString MusicLibraryItemRoot::songArtist(const Song &s, bool forceComposer) const
 {
     if (isFlat || !supportsAlbumArtist) {
         return s.artist;
     }
 
-    return artistName(s);
+    return artistName(s, forceComposer);
 }
 
 MusicLibraryItemArtist * MusicLibraryItemRoot::getArtist(const QString &key) const

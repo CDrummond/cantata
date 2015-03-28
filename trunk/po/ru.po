@@ -1,14 +1,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Julia Dronova <juliette.tux@gmail.com>, 2013.
+# Julia Dronova <juliette.tux@gmail.com>, 2013, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-30 17:51+0000\n"
-"PO-Revision-Date: 2014-07-06 19:55+0300\n"
-"Last-Translator: sema1011 <sema19689@gmail.com>\n"
+"PO-Revision-Date: 2015-03-27 01:56+0300\n"
+"Last-Translator: Julia Dronova <juliette.tux@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: context/albumview.cpp:63
 msgid "Refresh Album Information"
@@ -172,7 +172,7 @@ msgstr "Изображения (*.png *.jpg)"
 #: context/othersettings.cpp:47 gui/interfacesettings.cpp:207
 msgctxt "pixels"
 msgid "10px"
-msgstr ""
+msgstr "10пикс"
 
 #: context/othersettings.cpp:104 gui/interfacesettings.cpp:610
 msgctxt "value%"
@@ -183,7 +183,7 @@ msgstr "%1%"
 #, c-format
 msgctxt "pixels"
 msgid "%1px"
-msgstr ""
+msgstr "%1пикс"
 
 #: context/songview.cpp:124 gui/cachesettings.cpp:275
 msgid "Lyrics"
@@ -196,7 +196,7 @@ msgstr "Инфо"
 
 #: context/songview.cpp:124
 msgid "Metadata"
-msgstr ""
+msgstr "Метаданные"
 
 #: context/songview.cpp:136
 msgid "Scroll Lyrics"
@@ -236,6 +236,9 @@ msgid ""
 "\n"
 "Reload from disk, or delete disk copy and download?"
 msgstr ""
+"Загрузить слова песни повторно?\n"
+"\n"
+"Перезагрузить с диска или удалить копию с диска и загрузить заново?"
 
 #: context/songview.cpp:185 context/wikipediasettings.cpp:94
 #: models/streamsmodel.cpp:554 online/podcastsearchdialog.cpp:410
@@ -364,7 +367,7 @@ msgstr "Сортировать альбом"
 
 #: context/songview.cpp:518
 msgid "Encoded by"
-msgstr ""
+msgstr "Закодировано с помощью"
 
 #: context/songview.cpp:519 devices/devicepropertieswidget.cpp:226
 msgid "Encoder"
@@ -401,15 +404,15 @@ msgstr "Исполнитель (%1)"
 
 #: context/songview.cpp:561
 msgid "%1 kb/s"
-msgstr ""
+msgstr "%1 кбит/с"
 
 #: context/songview.cpp:564
 msgid "%1 Hz"
-msgstr ""
+msgstr "%1 Гц"
 
 #: context/songview.cpp:571
 msgid "Bits"
-msgstr ""
+msgstr "Бит"
 
 #: context/songview.cpp:579 models/playqueuemodel.cpp:177 mpd/song.cpp:521
 msgid "Performer"
@@ -424,7 +427,7 @@ msgstr "Год"
 
 #: context/songview.cpp:621 context/songview.cpp:624
 msgid "Filename"
-msgstr ""
+msgstr "Имя файла"
 
 #: context/songview.cpp:845
 msgid "Fetching lyrics via %1"
@@ -493,6 +496,12 @@ msgid ""
 "local music listing. Therefore, you will need to stop Cantata, manually "
 "refresh Mopidy's database, and restart Cantata for any changes to be active."
 msgstr ""
+"Cantata определила, что имеется подключение к серверу Mopidy.\n"
+"\n"
+"В настоящий момент Cantata не имеет возможности заставить Mopidy "
+"принудительно "
+"обновить локальный список композиций. Работу Cantata нужно завершить, вручную "
+"обновить базу данных Mopidy и перезапустить Cantata для активации изменений."
 
 #: devices/actiondialog.cpp:223 devices/synccollectionwidget.cpp:273
 msgid "Artists:%1, Albums:%2, Songs:%3"
@@ -520,6 +529,11 @@ msgid ""
 "The songs will need to be transcoded to a smaller filesize in order to be "
 "successfully copied."
 msgstr ""
+"На устройстве назначения недостаточно свободного места.\n"
+"\n"
+"Выбранные песни занимают %1, но доступно только %2.\n"
+"Для успешного копирования на устройство, композиции необходимо "
+"перекодировать с получением файлов меньшего размера."
 
 #: devices/actiondialog.cpp:330
 msgid ""
@@ -527,6 +541,9 @@ msgid ""
 "\n"
 "The selected songs consume %1, but there is only %2 left."
 msgstr ""
+"В месте назначения недостаточно места.\n"
+"\n"
+"Выбранные песни занимают %1, но доступно всего %2."
 
 #: devices/actiondialog.cpp:379
 msgid "Copy Songs"
@@ -544,6 +561,9 @@ msgid ""
 "\n"
 "Continue with the default settings?"
 msgstr ""
+"Устройство назначения не было настроено.\n"
+"\n"
+"Продолжать с настройками по умолчанию?"
 
 #: devices/actiondialog.cpp:417 devices/actiondialog.cpp:421
 msgid "Not Configured"
@@ -559,6 +579,9 @@ msgid ""
 "\n"
 "Continue with the default settings?"
 msgstr ""
+"Исходное устройство не было настроено.\n"
+"\n"
+"Продолжать с настройками по умолчанию?"
 
 #: devices/actiondialog.cpp:482
 msgid "Are you sure you wish to stop?"
@@ -653,6 +676,8 @@ msgid ""
 "Failed to create temporary file.<br/>(Required for transcoding to MTP "
 "devices.)"
 msgstr ""
+"Сбой создания временного файла.<br/>(Требуется для перекодирования устройств "
+"MTP.)"
 
 #: devices/actiondialog.cpp:705
 msgid "Failed to read source file."
@@ -787,10 +812,13 @@ msgid ""
 "This will set 'Album artist' and 'Artist' to \"Various Artists\", and set "
 "'Title' to \"TrackArtist - TrackTitle\""
 msgstr ""
+"Параметры «Исполнитель альбома» и «Исполнитель» будут установлены на значение "
+"«Несколько исполнителей», "
+"а «Название» — на \"TrackArtist - TrackTitle\""
 
 #: devices/albumdetailsdialog.cpp:253
 msgid "Revert \"Various Artists\" workaround?"
-msgstr ""
+msgstr "Откатить обходное решение «несколько исполнителей»?"
 
 #: devices/albumdetailsdialog.cpp:255
 msgid ""
@@ -800,6 +828,14 @@ msgid ""
 "If 'Title' is \"Wibble - Wobble\", then 'Artist' will be set to \"Wibble\" "
 "and 'Title' will be set to \"Wobble\""
 msgstr ""
+"Там, где значение «Исполнитель альбома» совпадает с «Исполнителем», а "
+"«Название» "
+"имеет формат \"TrackArtist - TrackTitle\", значение «Исполнитель» будет взято "
+"из «Названия», "
+"а само «Название» будет только названием. Например, \n"
+"если «Название» будет иметь значение \"Wibble - Wobble\", то «Исполнитель» "
+"будет указан как "
+"\"Wibble\", а «Название» — \"Wobble\""
 
 #: devices/albumdetailsdialog.cpp:261 tags/tageditor.cpp:576
 msgid "Revert"
@@ -810,6 +846,9 @@ msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
 "'Album'?"
 msgstr ""
+"Должна ли быть заглавной первая буква тегов «название», «исполнитель», "
+"«исполнитель альбома» "
+"и «альбом»?"
 
 #: devices/albumdetailsdialog.cpp:295 tags/tageditor.cpp:685
 msgid "Adjust track number by:"
@@ -931,11 +970,11 @@ msgid ""
 msgstr ""
 "<p>Во время копирования треков на устройство, и при значении «Исполнитель "
 "альбома»установленном как «Несколько исполнителей», Cantata установит "
-"значение тега «Исполнитель» для всех трековна значение «Несколько "
+"значение тега «Исполнитель» для всех треков на значение «Несколько "
 "исполнителей», а тег трека «Название» на 'TrackArtist - TrackTitle'.<hr/> Во "
 "время копирования треков с устройства Cantata проверит настройки "
 "«Исполнитель альбома» и«Исполнитель», которые должны иметь значение "
-"«Несколько исполнителей», и в этом случае попробуетполучить правильные "
+"«Несколько исполнителей», и в этом случае попробует получить правильные "
 "данные исполнителя из тега «Название» и удалить имя исполнителя из тега "
 "«Название»</p>"
 
@@ -1005,15 +1044,15 @@ msgstr "Через MusicBrainz"
 
 #: devices/devicespage.cpp:444
 msgid "Which type of refresh do you wish to perform?"
-msgstr ""
+msgstr "Какой способ обновления выполнить?"
 
 #: devices/devicespage.cpp:445
 msgid "Partial - Only new songs are scanned (quick)"
-msgstr ""
+msgstr "Частичное — сканируются только новые композиции (быстро)"
 
 #: devices/devicespage.cpp:446
 msgid "Full - All songs are rescanned (slow)"
-msgstr ""
+msgstr "Полное — повторное сканирование всех композиций (долго)"
 
 #: devices/devicespage.cpp:447
 msgid "Partial"
@@ -1030,14 +1069,17 @@ msgid ""
 "\n"
 "This cannot be undone."
 msgstr ""
+"Точно удалить выбранные песни?\n"
+"\n"
+"Это действие нельзя будет отменить."
 
 #: devices/devicespage.cpp:521
 msgid "Are you sure you wish to forget '%1'?"
-msgstr ""
+msgstr "Точно исключить «%1»?"
 
 #: devices/devicespage.cpp:540
 msgid "Are you sure you wish to eject Audio CD '%1 - %2'?"
-msgstr ""
+msgstr "Точно извлечь Аудио CD «%1 - %2»?"
 
 #: devices/devicespage.cpp:541
 msgid "Eject"
@@ -1045,7 +1087,7 @@ msgstr "Извлечь"
 
 #: devices/devicespage.cpp:542
 msgid "Are you sure you wish to disconnect '%1'?"
-msgstr ""
+msgstr "Точно отключить «%1»?"
 
 #: devices/devicespage.cpp:543
 msgid "Disconnect"
@@ -1429,6 +1471,8 @@ msgid ""
 "The following variables will be replaced with their corresponding meaning "
 "for each track name."
 msgstr ""
+"Следующие переменные будут заменены соответствующими значениями для "
+"каждого названия трека."
 
 #: devices/filenameschemedialog.cpp:127
 msgid ""
@@ -1509,6 +1553,9 @@ msgid ""
 "\n"
 "Please choose a different name."
 msgstr ""
+"Удалённое устройство с названием «%1» уже существует.\n"
+"\n"
+"Выберите другое название."
 
 #: devices/remotedevicepropertieswidget.cpp:52
 msgid "Samba Share"
@@ -1655,19 +1702,19 @@ msgstr "Недопустимая команда. (%1)"
 
 #: dynamic/dynamic.cpp:83
 msgid "Could not remove active rules link."
-msgstr ""
+msgstr "Не удалось удалить ссылку на активные правила."
 
 #: dynamic/dynamic.cpp:84
 msgid "Active rules is not a link."
-msgstr ""
+msgstr "Активные правила не являются ссылкой."
 
 #: dynamic/dynamic.cpp:85
 msgid "Could not create active rules link."
-msgstr ""
+msgstr "Не удалось создать ссылку на активные правила."
 
 #: dynamic/dynamic.cpp:86
 msgid "Rules file, %1, does not exist."
-msgstr ""
+msgstr "Файл правил %1 не существует."
 
 #: dynamic/dynamic.cpp:87
 msgid "Incorrect arguments supplied."
@@ -1692,7 +1739,7 @@ msgstr "Остановить динамический режим"
 
 #: dynamic/dynamic.cpp:222
 msgid " - Rating: %1..%2"
-msgstr ""
+msgstr " - Рейтинг: %1..%2"
 
 #: dynamic/dynamic.cpp:344
 msgid ""
@@ -1744,7 +1791,7 @@ msgstr "Сбой установки текущих динамических пр
 msgid ""
 "Communication with the remote dynamizer has been lost, reverting to local "
 "mode."
-msgstr ""
+msgstr "Связь с удалённым усилителем была потеряна, откат к локальному режиму."
 
 #: dynamic/dynamicpage.cpp:40
 msgid "Add Dynamic Rules"
@@ -1764,6 +1811,9 @@ msgid ""
 "\n"
 "This cannot be undone."
 msgstr ""
+"Точно удалить выбранные правила?\n"
+"\n"
+"Это действие нельзя отменить."
 
 #: dynamic/dynamicruledialog.cpp:40
 msgid "Dynamic Rule"
@@ -1813,7 +1863,7 @@ msgstr "Динамические правила"
 
 #: dynamic/dynamicrulesdialog.cpp:295
 msgid "About dynamic rules"
-msgstr ""
+msgstr "О динамических правилах"
 
 #: dynamic/dynamicrulesdialog.cpp:297
 msgid ""
@@ -1832,6 +1882,30 @@ msgid ""
 "with 10 entries. If a range of ratings has been specified, then only songs "
 "with a rating within this range will be used.</p>"
 msgstr ""
+"<p>Cantata произведёт опрос библиотеки с помощью всех перечисленных правил. "
+"Список правил <i>Включить</i> будет использован для построения списка "
+"подходящих "
+"композиций. Список правил <i>Исключить</i> будет использован для построения "
+"списка "
+"неподходящих композиций. В случае отсутствия правил <i>Включить</i>, Cantata "
+"будет "
+"считать, что подходящими являются все песни (кроме подходящих под правило "
+"<i>Исключить</i>).</p><p>Например: чтобы заставить Cantata искать "
+"«Рок-композиции "
+"в исполнении Wibble ИЛИ композиции нескольких исполнителей», понадобится "
+"следующее правило: "
+"<ul><li>Включить AlbumArtist=Wibble Genre=Рок</li><li>Включить "
+"AlbumArtist=несколько "
+"исполнителей</li></ul> Чтобы заставить Cantata искать «Песни в исполнении "
+"Wibble, но не из "
+"альбома Abc», понадобится следующее правило: <ul><li>Включить "
+"AlbumArtist=Wibble</li><li>Исключить "
+"AlbumArtist=Wibble Album=Abc</li></ul>После того, как будет создан список "
+"подходящих композиций, "
+"Cantata случайно выберет песни, чтобы заполнить очередь воспроизведения в 10 "
+"наименований. Если был "
+"указан диапазон рейтинга, будут подобраны только песни с рейтингом, "
+"вписывающимся в указанный диапазон.</p>"
 
 #: dynamic/dynamicrulesdialog.cpp:317
 msgid "Failed to save %1"
@@ -1843,6 +1917,9 @@ msgid ""
 "\n"
 "Overwrite?"
 msgstr ""
+"Набор правил с названием «%1» уже существует.\n"
+"\n"
+"Перезаписать?"
 
 #: dynamic/dynamicrulesdialog.cpp:336
 msgid "Overwrite Rules"
@@ -1880,6 +1957,15 @@ msgid ""
 "(because Cantata cannot access it, or you have configured Cantata to not "
 "save these items there). Below is a summary of Cantata's current cache usage."
 msgstr ""
+"Cantata кеширует локальную копию списка копозиций для ускорения загрузки "
+"библиотеки. "
+"Cantata также может кешировать обложки, слова песен или фото исполнителей, "
+"если они "
+"были загружены без возможности сохранения в папку с музыкой (по причине того, "
+"что у "
+"Cantata нет к ней доступа или в параметрах было указано не сохранять там эти "
+"элементы). "
+"Ниже приведено описание того, как Cantata использует кеш."
 
 #: gui/cachesettings.cpp:270
 msgid "Covers"
@@ -1923,7 +2009,7 @@ msgstr "Каталоги подкастов"
 
 #: gui/cachesettings.cpp:289
 msgid "Scrobble Tracks"
-msgstr ""
+msgstr "Скробблить треки"
 
 #: gui/cachesettings.cpp:296
 msgid "Delete All"
@@ -1939,7 +2025,7 @@ msgstr "Удалить элементы кеша"
 
 #: gui/cachesettings.cpp:347
 msgid "Delete items from all selected categories?"
-msgstr ""
+msgstr "Удалить элементы из всех выбранных категорий?"
 
 #: gui/coverdialog.cpp:127
 msgctxt ""
@@ -1960,6 +2046,8 @@ msgid ""
 "%1\n"
 "%2 x %3"
 msgstr ""
+"%1\n"
+"%2 x %3"
 
 #: gui/coverdialog.cpp:165
 msgid "Current Cover"
@@ -1999,7 +2087,7 @@ msgstr "'%1' Изображение исполнителя"
 #: gui/coverdialog.cpp:448
 msgctxt "'Artist - Album' Album Cover"
 msgid "'%1 - %2' Album Cover"
-msgstr ""
+msgstr "Обложка альбома «%1 - %2»"
 
 #: gui/coverdialog.cpp:576
 msgid ""
@@ -2007,6 +2095,9 @@ msgid ""
 "\n"
 "Could not download to temporary file!"
 msgstr ""
+"Сбой установки обложки.\n"
+"\n"
+"Загрузка во временный файл не удалась."
 
 #: gui/coverdialog.cpp:610
 msgid "Failed to download image!"
@@ -2047,6 +2138,9 @@ msgid ""
 "\n"
 "Could not make copy!"
 msgstr ""
+"Не удалось настроить обложку.\n"
+"\n"
+"Сбой создания копии."
 
 #: gui/coverdialog.cpp:1359
 msgid ""
@@ -2054,6 +2148,9 @@ msgid ""
 "\n"
 "Could not backup original!"
 msgstr ""
+"Не удалось настроить обложку.\n"
+"\n"
+"Сбой создания резервной копи оригинала."
 
 #: gui/coverdialog.cpp:1406
 msgid ""
@@ -2061,6 +2158,9 @@ msgid ""
 "\n"
 "Could not copy file to '%1'!"
 msgstr ""
+"Не удалось настроить обложку.\n"
+"\n"
+"Сбой копирования файла в «%1»."
 
 #: gui/coverdialog.cpp:1464 models/onlineservicesmodel.cpp:158
 msgid "Searching..."
@@ -2124,7 +2224,7 @@ msgstr "Список"
 
 #: gui/interfacesettings.cpp:75
 msgid "Grid"
-msgstr ""
+msgstr "Сетка"
 
 #: gui/interfacesettings.cpp:76
 msgid "Table"
@@ -2209,7 +2309,7 @@ msgstr "Снизу"
 
 #: gui/interfacesettings.cpp:232
 msgid "Notifications"
-msgstr ""
+msgstr "Уведомления"
 
 #: gui/interfacesettings.cpp:492
 msgid "System default"
@@ -2325,7 +2425,7 @@ msgstr "Обновить базу данных"
 
 #: gui/mainwindow.cpp:265
 msgid "Full Refresh"
-msgstr ""
+msgstr "Полное обновление"
 
 #. i18n: file: gui/initialsettingswizard.ui:484
 #. i18n: ectx: property (text), widget (QPushButton, connectButton)
@@ -2411,7 +2511,7 @@ msgstr ""
 
 #: gui/mainwindow.cpp:298
 msgid "Find in Play Queue"
-msgstr ""
+msgstr "Найти в очереди на воспроизведение"
 
 #: gui/mainwindow.cpp:301
 msgid "Set Priority"
@@ -2492,11 +2592,11 @@ msgstr "&Помощь"
 
 #: gui/mainwindow.cpp:756
 msgid "Set Rating"
-msgstr ""
+msgstr "Указать рейтинг"
 
 #: gui/mainwindow.cpp:761
 msgid "No Rating"
-msgstr ""
+msgstr "Без рейтинга"
 
 #: gui/mainwindow.cpp:1032
 msgid "Failed to locate any songs matching the dynamic playlist rules."
@@ -2567,18 +2667,21 @@ msgid ""
 "\n"
 "Quiting now will abort the download."
 msgstr ""
+"В настоящее время идёт загрузка подкаста.\n"
+"\n"
+"Выключение прекратит загрузку."
 
 #: gui/mainwindow.cpp:1227
 msgid "Abort download and quit"
-msgstr ""
+msgstr "Прервать загрузку и выключить"
 
 #: gui/mainwindow.cpp:1381 gui/mainwindow.cpp:1392
 msgid "Enabled: %1"
-msgstr ""
+msgstr "Включено: %1"
 
 #: gui/mainwindow.cpp:1385 gui/mainwindow.cpp:1393
 msgid "Disabled: %1"
-msgstr ""
+msgstr "Отключено: %1"
 
 #: gui/mainwindow.cpp:1605 gui/mainwindow.cpp:1628
 msgid "Server Information"
@@ -2647,6 +2750,7 @@ msgstr "Введите имя плейлиста:"
 #: gui/mainwindow.cpp:2049
 msgid "'%1' is used to store favorite streams, please choose another name."
 msgstr ""
+"«%1» используется для хранения «любимых» потоков, выберите другое название."
 
 #: gui/mainwindow.cpp:2053
 msgid ""
@@ -2654,6 +2758,9 @@ msgid ""
 "\n"
 "Add to that playlist?"
 msgstr ""
+"Список воспроизведения  с названием «%1» уже существует.\n"
+"\n"
+"Добавить к этому списку?"
 
 #: gui/mainwindow.cpp:2054
 msgid "Existing Playlist"
@@ -2732,6 +2839,22 @@ msgid ""
 "tags if random play is activated, otherwise the album's tags will be used.</"
 "li></ul>"
 msgstr ""
+"Replay Gain — это стандарт, предложенный в 2001 году, для нормализации "
+"воспринимаемой громкости "
+"компьютерных аудио-форматов, таких, как  MP3 и Ogg Vorbis. Он работает на "
+"базе трека/альбома, и "
+"на данный момент поддерживается всё большим количеством плееров.<br/><br/>"
+"Следующие параметры ReplayGain "
+"можно использовать:<ul><li><i>Нет</i>: ReplayGain не применяется.</li><li><i>"
+"Трек</i>: "
+"Громкость будет настроена с использованием тегов ReplayGain трека.</li><li><i>"
+"Альбом</"
+"i>: Громкость будет настроена с использованием тегов ReplayGain альбома.</"
+"li><li><i>Автоматически</i>: в случае, если включён режим случайного "
+"воспроизведения, "
+"громкость будет настроена с использованием тегов ReplayGain трека, в "
+"противном случае используются "
+"теги альбома.</li></ul>"
 
 #: gui/playlistspage.cpp:59 tags/tageditor.cpp:1185 tags/trackorganiser.cpp:75
 msgid "Rename"
@@ -2747,6 +2870,9 @@ msgid ""
 "\n"
 "This cannot be undone."
 msgstr ""
+"Точно удалить выбранный список воспроизведения?\n"
+"\n"
+"Это действие нельзя отменить."
 
 #: gui/playlistspage.cpp:225
 msgid "Remove Playlists"
@@ -2758,6 +2884,9 @@ msgid ""
 "\n"
 "Overwrite?"
 msgstr ""
+"Список воспроизведения с названием «%1» уже существует.\n"
+"\n"
+"Перезаписать?"
 
 #: gui/playlistspage.cpp:246 gui/playlistspage.cpp:273
 msgid "Overwrite Playlist"
@@ -2810,10 +2939,10 @@ msgstr[3] "%1 исполнитель"
 #: gui/plurals_kde.cpp:49
 msgid "1 Stream"
 msgid_plural "%1 Streams"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "1 поток"
+msgstr[1] "%1 потока"
+msgstr[2] "%1 потоков"
+msgstr[3] "%1 поток"
 
 #: gui/plurals_kde.cpp:54
 msgid "1 Entry"
@@ -2842,18 +2971,18 @@ msgstr[3] "%1 подкаст"
 #: gui/plurals_kde.cpp:69
 msgid "1 Episode"
 msgid_plural "%1 Episodes"
-msgstr[0] "%1 эпизод"
-msgstr[1] "%1 эпизода"
-msgstr[2] "%1 эпизодов"
+msgstr[0] "%1 серия"
+msgstr[1] "%1 серий"
+msgstr[2] "%1 серий"
 msgstr[3] "%1 эпизод"
 
 #: gui/plurals_kde.cpp:74
 msgid "1 Update available"
 msgid_plural "%1 Updates available"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Доступно 1 обновление"
+msgstr[1] "Доступно %1 обновления"
+msgstr[2] "Доступно %1 обновлений"
+msgstr[3] "Доступно %1 обновление"
 
 #: gui/preferencesdialog.cpp:84
 msgid "Collection Settings"
@@ -2950,7 +3079,7 @@ msgstr "Кешированные элементы"
 
 #: gui/preferencesdialog.cpp:131
 msgid "Cantata Preferences"
-msgstr ""
+msgstr "Настроить Cantata"
 
 #. i18n: file: devices/actiondialog.ui:67
 #. i18n: ectx: property (toolTip), widget (QToolButton, configureSourceButton)
@@ -3020,7 +3149,7 @@ msgstr "Дата:"
 
 #: gui/searchpage.cpp:242
 msgid "Modified:"
-msgstr ""
+msgstr "Изменено:"
 
 #: gui/searchpage.cpp:245
 msgid "Any:"
@@ -3057,19 +3186,23 @@ msgstr "Хост:"
 
 #: gui/serversettings.cpp:239
 msgid "Which type of collection do you wish to connect to?"
-msgstr ""
+msgstr "К какому типу коллекции необходимо подключиться?"
 
 #: gui/serversettings.cpp:240
 msgid ""
 "Standard - music collection may be shared, is on another machine, or is "
 "already setup"
 msgstr ""
+"Стандартный: музыкальную коллекцию можно сделать общей, она находится на "
+"другой машине или уже настроена"
 
 #: gui/serversettings.cpp:241
 msgid ""
 "Basic - music collection is not shared with others, and Cantata will "
 "configure and control the MPD instance"
 msgstr ""
+"Базовый: музыкальная коллекция не является общей, и Cantata должна настроить "
+"и управлять экземпляром MPD"
 
 #: gui/serversettings.cpp:242
 msgid "Add Collection"
@@ -3085,7 +3218,7 @@ msgstr "Базовый"
 
 #: gui/serversettings.cpp:283
 msgid "Delete '%1'?"
-msgstr ""
+msgstr "Удалить «%1»?"
 
 #: gui/serversettings.cpp:284
 msgid "Delete"
@@ -3174,7 +3307,7 @@ msgstr "Систематизировать файлы"
 
 #: gui/stdactions.cpp:64
 msgid "Edit Track Information"
-msgstr ""
+msgstr "Редактировать информацию о треке"
 
 #: gui/stdactions.cpp:70
 msgid "Copy Songs To Device"
@@ -3210,11 +3343,11 @@ msgstr "Первый активный интерфейс"
 
 #: mac/dockmenu.cpp:34 mac/dockmenu.cpp:44
 msgid "Play"
-msgstr ""
+msgstr "Играть"
 
 #: mac/dockmenu.cpp:44
 msgid "Pause"
-msgstr ""
+msgstr "Пауза"
 
 #: models/albumsmodel.cpp:212 models/musicmodel.cpp:230
 msgctxt "Album by Artist"
@@ -3329,7 +3462,7 @@ msgstr "(Идёт загрузка: %1%)"
 
 #: models/onlineservicesmodel.cpp:180
 msgid "(Download Queued)"
-msgstr ""
+msgstr "(Загрузка поставлена в очередь)"
 
 #: models/onlineservicesmodel.cpp:245
 msgctxt "podcast name (num unplayed episodes)"
@@ -3354,7 +3487,7 @@ msgstr "Диск"
 
 #: models/playqueuemodel.cpp:178
 msgid "Rating"
-msgstr ""
+msgstr "Рейтинг"
 
 #: models/playqueuemodel.cpp:241
 msgid "Undo"
@@ -3438,7 +3571,7 @@ msgstr "Сбой подключения к %1"
 
 #: mpd/mpdconnection.cpp:412
 msgid "Connection to %1 failed - please check your proxy settings"
-msgstr ""
+msgstr "Сбой подключения к %1 — проверьте параметры прокси."
 
 #: mpd/mpdconnection.cpp:413
 msgid "Connection to %1 failed - incorrect password"
@@ -3482,7 +3615,7 @@ msgstr "Нельзя добавлять плейлист к другому пл�
 
 #: mpd/mpdconnection.cpp:1727
 msgid "Failed to send '%1' to %2. Please check %2 is registered with MPD."
-msgstr ""
+msgstr "Не удалось послать «%1» на %2. Проверьте, зарегистрирован ли %2 в MPD."
 
 #: mpd/mpduser.cpp:50
 msgid "Personal"
@@ -3509,12 +3642,12 @@ msgstr ""
 #: mpd/song.cpp:683
 msgctxt "Song on Album"
 msgid "<b>%1</b> on <b>%2</b>"
-msgstr ""
+msgstr "<b>%1</b> на <b>%2</b>"
 
 #: mpd/song.cpp:684
 msgctxt "Song by Artist on Album"
 msgid "<b>%1</b> by <b>%2</b> on <b>%3</b>"
-msgstr ""
+msgstr "<b>%1</b> исполнителя <b>%2</b> на <b>%3</b>"
 
 #: network/proxysettings.cpp:33
 msgid "No proxy"
@@ -3654,23 +3787,23 @@ msgstr "Загрузить в библиотеку"
 
 #: online/onlineservicespage.cpp:59
 msgid "Download Podcast Episodes"
-msgstr "Загрузить эпизоды подкаста"
+msgstr "Загрузить серии подкаста"
 
 #: online/onlineservicespage.cpp:60
 msgid "Delete Downloaded Podcast Episodes"
-msgstr "Удалить загруженные эпизоды подкаста"
+msgstr "Удалить загруженные серии подкаста"
 
 #: online/onlineservicespage.cpp:61
 msgid "Cancel Podcast Episode Download"
-msgstr ""
+msgstr "Отменить загрузку серии подкаста"
 
 #: online/onlineservicespage.cpp:62
 msgid "Mark Podcast Episodes As New"
-msgstr ""
+msgstr "Отметить серии подкаста как новые"
 
 #: online/onlineservicespage.cpp:63
 msgid "Mark Podcast Episodes As Listened"
-msgstr ""
+msgstr "Отметить серии подкаста как прослушанные"
 
 #: online/onlineservicespage.cpp:105 streams/streamspage.cpp:99
 #: support/fancytabwidget.cpp:711
@@ -3692,7 +3825,7 @@ msgstr "Загрузить снова"
 
 #: online/onlineservicespage.cpp:553
 msgid "Unsubscribe from '%1'?"
-msgstr ""
+msgstr "Отменить подписку на «%1»?"
 
 #: online/onlineservicespage.cpp:574
 msgid "Refresh all podcast listings?"
@@ -3700,29 +3833,31 @@ msgstr "Обновить список всех подкастов?"
 
 #: online/onlineservicespage.cpp:595
 msgid "Refresh episode listing from '%1'?"
-msgstr ""
+msgstr "Обновить список серий от «%1»?"
 
 #: online/onlineservicespage.cpp:634
 msgid "Do you wish to download the selected podcast episodes?"
-msgstr "Загрузить выбранные эпизоды подкаста?"
+msgstr "Загрузить выбранные серии подкаста?"
 
 #: online/onlineservicespage.cpp:648
 msgid ""
 "Cancel podcast episode downloads (both current and any that are queued)?"
 msgstr ""
+"Отменить загрузку серий подкаста (как текущую, так и стоящие "
+"в очереди на загрузку)?"
 
 #: online/onlineservicespage.cpp:685
 msgid ""
 "Do you wish to the delete downloaded files of the selected podcast episodes?"
-msgstr "Удалить загруженные файлы выбранного эпизода подкаста?"
+msgstr "Удалить загруженные файлы выбранной серии подкаста?"
 
 #: online/onlineservicespage.cpp:728
 msgid "Do you wish to mark the selected podcast episodes as new?"
-msgstr ""
+msgstr "Отметить выбранные серии подкаста как новые?"
 
 #: online/onlineservicespage.cpp:771
 msgid "Do you wish to mark the selected podcast episodes as listened?"
-msgstr ""
+msgstr "Отметить выбранные серии подкаста как уже прослушанные?"
 
 #: online/podcastsearchdialog.cpp:256
 msgid "RSS:"
@@ -3770,11 +3905,11 @@ msgstr "Введите URL-адрес подкаста..."
 
 #: online/podcastsearchdialog.cpp:520
 msgid "Load"
-msgstr ""
+msgstr "Загрузить"
 
 #: online/podcastsearchdialog.cpp:527
 msgid "Enter podcast URL below, and press 'Load'"
-msgstr ""
+msgstr "Введи ниже адрес URL подкаста и нажмите «Загрузить»"
 
 #: online/podcastsearchdialog.cpp:554
 msgid "Invalid URL!"
@@ -3856,15 +3991,15 @@ msgstr "Не удалось загрузить %1"
 
 #: online/podcastsettingsdialog.cpp:59
 msgid "Check for new episodes:"
-msgstr "Проверить наличие новых эпизодов:"
+msgstr "Проверить наличие новых серий:"
 
 #: online/podcastsettingsdialog.cpp:60
 msgid "Download episodes to:"
-msgstr "Загрузить эпизоды в:"
+msgstr "Загрузить серии в:"
 
 #: online/podcastsettingsdialog.cpp:61
 msgid "Download automatically:"
-msgstr ""
+msgstr "Загружать автоматически:"
 
 #: online/podcastsettingsdialog.cpp:85
 msgid "Podcast Settings"
@@ -3908,21 +4043,21 @@ msgstr "Каждую неделю"
 
 #: online/podcastsettingsdialog.cpp:97
 msgid "Don't automatically download episodes"
-msgstr ""
+msgstr "Не загружать серии автоматически"
 
 #: online/podcastsettingsdialog.cpp:98
 msgid "Latest episode"
-msgstr ""
+msgstr "Самая последняя серия"
 
 #: online/podcastsettingsdialog.cpp:99 online/podcastsettingsdialog.cpp:100
 #: online/podcastsettingsdialog.cpp:101 online/podcastsettingsdialog.cpp:102
 #: online/podcastsettingsdialog.cpp:103 online/podcastsettingsdialog.cpp:104
 msgid "Latest %1 episodes"
-msgstr ""
+msgstr "Последние %1 серии"
 
 #: online/podcastsettingsdialog.cpp:105
 msgid "All episodes"
-msgstr ""
+msgstr "Все серии"
 
 #. i18n: file: context/othersettings.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -4007,13 +4142,13 @@ msgstr "40%"
 #. i18n: ectx: property (text), widget (BuddyLabel, contextSwitchTimeLabel)
 #: po/rc.cpp:28 rc.cpp:28
 msgid "Automatically switch to view after:"
-msgstr ""
+msgstr "Автоматически переключаться на окно после:"
 
 #. i18n: file: context/othersettings.ui:177
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, contextSwitchTime)
 #: po/rc.cpp:31 rc.cpp:31
 msgid "Do not auto-switch"
-msgstr ""
+msgstr "Без автоматического переключения"
 
 #. i18n: file: context/othersettings.ui:180
 #. i18n: ectx: property (suffix), widget (QSpinBox, contextSwitchTime)
@@ -4055,6 +4190,9 @@ msgid ""
 "Only show 'Artist', 'Album', or 'Track' even if sufficient width to show all "
 "three."
 msgstr ""
+"Показывать только теги «Исполнитель», «Альбом» или «Трек» даже при наличии "
+"места "
+"для показа всего дерева."
 
 #. i18n: file: context/othersettings.ui:213
 #. i18n: ectx: property (text), widget (QCheckBox, wikipediaIntroOnly)
@@ -4073,6 +4211,14 @@ msgid ""
 "article, then there may be parsing errors. You will also need to remove any "
 "currently cached articles (using the 'Cache' page)."
 msgstr ""
+"Cantata показывает только урезанные версии страниц wikipedia (без "
+"изображений, "
+"ссылок и т.д.). Это обрезание не всегда является корректным, поэтому Cantata "
+"по умолчанию "
+"показывает только введение. Если выбрать показ статьи целиком, могут "
+"возникнуть ошибки "
+"обработки. Также потребуется удалить текущий кеш статей (с помощью страницы "
+"«Кеш»)."
 
 #. i18n: file: context/togglelist.ui:17
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -4143,7 +4289,7 @@ msgstr "Копировать:"
 #: po/rc.cpp:89 po/rc.cpp:1035 po/rc.cpp:1062 rc.cpp:89 rc.cpp:1035
 #: rc.cpp:1062
 msgid "Connected to a Mopidy server (manual update required)."
-msgstr ""
+msgstr "Подключено к серверу Mopidy (требуется ручное обновление)"
 
 #. i18n: file: devices/albumdetails.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -4229,6 +4375,8 @@ msgstr "Никогда не пропускать при ошибке чтени�
 msgid ""
 "These settings are only valid, and editable, when the device is connected."
 msgstr ""
+"Эти параметры действуют и являются изменяемыми только при подключённом "
+"устройстве."
 
 #. i18n: file: devices/devicepropertieswidget.ui:32
 #. i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
@@ -4294,7 +4442,7 @@ msgstr "Громкость по умолчанию:"
 #. i18n: ectx: property (text), widget (QCheckBox, fixVariousArtists)
 #: po/rc.cpp:170 rc.cpp:170
 msgid "'Various Artists' workaround"
-msgstr ""
+msgstr "Обходное решение «несколько исполнителей»"
 
 #. i18n: file: devices/devicepropertieswidget.ui:109
 #. i18n: ectx: property (text), widget (QCheckBox, autoScan)
@@ -4378,7 +4526,7 @@ msgstr "Заменить пробелы на подчеркивания"
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
 #: po/rc.cpp:194 po/rc.cpp:1053 rc.cpp:194 rc.cpp:1053
 msgid "Append 'The' to artist names"
-msgstr ""
+msgstr "Добавлять артикль 'The' к именам исполнителей на английском."
 
 #. i18n: file: devices/devicepropertieswidget.ui:202
 #. i18n: ectx: property (title), widget (QGroupBox, transcoderFrame)
@@ -4412,6 +4560,9 @@ msgid ""
 "<i>Track Artist.</i> For compilations, this will often be <i>Various Artists."
 "</i>"
 msgstr ""
+"Исполнитель альбома. Для большинства альбомов он будет аналогичен <i>"
+"Исполнителю "
+"трека.</i> В сборниках часто встречается <i>Несколько исполнителей.</i>"
 
 #. i18n: file: devices/filenameschemedialog.ui:89
 #. i18n: ectx: property (toolTip), widget (QPushButton, albumTitle)
@@ -4447,7 +4598,7 @@ msgstr "Исполнитель трека"
 #. i18n: ectx: property (toolTip), widget (QPushButton, trackTitle)
 #: po/rc.cpp:233 rc.cpp:233
 msgid "The track title (without <i>Track Artist</i>)."
-msgstr ""
+msgstr "Название трека (без <i>Исполнителя трека</i>)."
 
 #. i18n: file: devices/filenameschemedialog.ui:122
 #. i18n: ectx: property (text), widget (QPushButton, trackTitle)
@@ -4462,6 +4613,8 @@ msgid ""
 "The track title (with <i>Track Artist</i>, if different to <i>Album Artist</"
 "i>)."
 msgstr ""
+"Название трека (с <i>Исполнителем трека</i>, если он отличается от <i>"
+"Исполнителя альбома</i>)."
 
 #. i18n: file: devices/filenameschemedialog.ui:144
 #. i18n: ectx: property (text), widget (QPushButton, trackArtistAndTitle)
@@ -4488,6 +4641,8 @@ msgid ""
 "The album number of a multi-album album. Often compilations consist of "
 "several albums."
 msgstr ""
+"Номер альбома, состоящего из нескольких альбомов. Часто сборники состоят "
+"из нескольких альбомов."
 
 #. i18n: file: devices/filenameschemedialog.ui:164
 #. i18n: ectx: property (text), widget (QPushButton, cdNo)
@@ -4511,7 +4666,7 @@ msgstr "Жанр альбома."
 #. i18n: ectx: property (text), widget (PlainNoteLabel, connectionNote)
 #: po/rc.cpp:269 rc.cpp:269
 msgid "These settings are only editable when the device is not connected."
-msgstr ""
+msgstr "Эти параметры можно изменять только при отключённом устройстве."
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:29
 #. i18n: ectx: property (text), widget (BuddyLabel, typeLabel)
@@ -4620,6 +4775,11 @@ msgid ""
 "Cantata's config file. To have Cantata prompt for the password before "
 "accessing the share, set the password to '-'"
 msgstr ""
+"Введённый здесь пароль будет храниться <b>незашифрованным</b> в "
+"конфигурационном "
+"файле Cantata. Чтобы заставить Cantata запрашивать пароль при каждой попытке "
+"доступа "
+"к общим ресурсам, укажите пароль «-»."
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:186
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel_2x)
@@ -4652,6 +4812,8 @@ msgid ""
 "Due to the way sshfs works, a suitable ssh-askpass application (ksshaskpass, "
 "ssh-askpass-gnome, etc.) will be required to enter the password."
 msgstr ""
+"В связи с особенностями работы sshfs, для ввода пароля требуется подходящее "
+"приложение ssh-askpass (ksshaskpass, ssh-askpass-gnome, и т.п.)."
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:410
 #. i18n: ectx: property (text), widget (PlainNoteLabel, infoLabel)
@@ -4661,6 +4823,10 @@ msgid ""
 "access locally mounted folders. For normal media players, attached via USB, "
 "Cantata will automatically display the device when it is attached."
 msgstr ""
+"Этот диалог используется только для добавления удалённых устройств (например, "
+"с помощью "
+"Samba) или для доступа к локально смонтированным папкам. Обычные устройства, "
+"подключенные через USB, Cantata показывает автоматически в момент подключения."
 
 #. i18n: file: dynamic/dynamicpage.ui:26
 #. i18n: ectx: property (text), widget (StatusLabel, remoteRunningLabel)
@@ -4684,13 +4850,13 @@ msgstr "Изменить"
 #. i18n: ectx: property (text), widget (QLabel, ratingRangeLabel)
 #: po/rc.cpp:359 rc.cpp:359
 msgid "Song with ratings between:"
-msgstr ""
+msgstr "Композиции с рейтингом в диапазоне:"
 
 #. i18n: file: dynamic/dynamicrules.ui:99
 #. i18n: ectx: property (text), widget (QLabel, ratingToLabel)
 #: po/rc.cpp:362 rc.cpp:362
 msgid " - "
-msgstr ""
+msgstr " - "
 
 #. i18n: file: dynamic/dynamicrules.ui:130
 #. i18n: ectx: property (text), widget (UrlLabel, aboutLabel)
@@ -4757,6 +4923,7 @@ msgstr "Точное совпадение"
 #: po/rc.cpp:416 rc.cpp:416
 msgid "Only enter values for the tags you wish to be search on."
 msgstr ""
+"Вводите значения только тех тегов, среди которых нужно производить поиск."
 
 #. i18n: file: dynamic/dynamicrule.ui:235
 #. i18n: ectx: property (text), widget (NoteLabel, label_7x)
@@ -4765,6 +4932,9 @@ msgid ""
 "For genre, end string with an asterisk to match various genres. e.g 'rock*' "
 "matches 'Hard Rock' and 'Rock and Roll'."
 msgstr ""
+"Для указания жанров заканчивайте каждую строку знаком звёздочки (*). "
+"Например, "
+"жанру «рок*» будет соответствовать и «хард-рок» и «рок-н-ролл»."
 
 #. i18n: file: gui/coverdialog.ui:30
 #. i18n: ectx: property (toolTip), widget (FlatToolButton, addFileButton)
@@ -4823,6 +4993,11 @@ msgid ""
 "music folder, and you do not have write access to this folder, then Cantata "
 "will revert to saving the files in your personal cache folder."
 msgstr ""
+"Если в параметрах Cantata указано хранить слова песен, обложки дисков или "
+"фоновое "
+"оформление внутри папки с музыкой, но у пользователя нет доступа на запись в "
+"эту папку, "
+"то Cantata будет сохранять эти файлы в папке кеша пользователя."
 
 #. i18n: file: gui/filesettings.ui:57
 #. i18n: ectx: property (text), widget (NoteLabel, persNote_2)
@@ -4831,6 +5006,9 @@ msgid ""
 "Cantata can only save backdrops and artist images within the music folder "
 "hierarchy if this is 2 levels deep. (i.e. 'Artist/Album/Tracks')"
 msgstr ""
+"Cantata может сохранять фоновые изображения и изображения исполнителей "
+"в папке с музыкой только если дерево каталогов имеет 2 уровня (например, "
+"«Исполнитель/Альбом/Треки»)"
 
 #. i18n: file: gui/initialsettingswizard.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWizard, InitialSettingsWizard)
@@ -4856,6 +5034,13 @@ msgid ""
 "org</span></a></p><p>This 'wizard' will guide you through the basic settings "
 "required for Cantata to function correctly.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Cantata — это дружественный к пользователю и богатый "
+"функционалом клиент для Music Player Daemon (MPD). MPD — это гибкое "
+"и мощное серверное приложение для проигрывания музыки.</p><p>Подробности "
+"об MPD можно найти на сайте MPD: <a href=\"http://www.musicpd.org\"><span "
+"style=\" text-decoration: underline; color:#0000ff;\">http://www.musicpd."
+"org</span></a></p><p>Данный мастер проведёт вас по базовым настройкам, "
+"которые необходимы для правильной работы Cantata.</p></body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:108
 #. i18n: ectx: property (text), widget (QLabel, label_7)
@@ -4874,6 +5059,11 @@ msgid ""
 "a per-user basis. Please select how you would like to have Cantata initially "
 "connect to (or startup) MPD:</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Cantata — это дружественный к пользователю и богатый "
+"функционалом клиент для Music Player Daemon (MPD). MPD — это гибкое "
+"и мощное серверное приложение для проигрывания музыки. MPD можно запускать "
+"как общесистемно, так и от одного конкретного пользователя. Выберите, каким "
+"способом нужно подключать Cantata к MPD (или запускать его):</p></body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:175
 #. i18n: ectx: property (text), widget (QRadioButton, advanced)
@@ -4966,6 +5156,10 @@ msgid ""
 "The 'Music folder' setting is used to lookup cover-art, lyrics, etc. If your "
 "MPD instance is on a remote host, you may set this to a HTTP URL."
 msgstr ""
+"Параметр «Папка с музыкой» используется для поиска обложек, слов песен и т.п. "
+"Если запущенный экземпляр MPD является удалённым хостом, то этот параметр "
+"можно "
+"указать в виде HTTP URL."
 
 #. i18n: file: gui/initialsettingswizard.ui:500
 #. i18n: ectx: property (text), widget (NoteLabel, socketNoteLabel)
@@ -4980,6 +5174,8 @@ msgid ""
 "When using a local socket the full absolute path to the socket needs to be "
 "set. (Port number is not required.)"
 msgstr ""
+"При использовании локального сокета необходимо указывать полный абсолютный "
+"путь до сокета. (Номер порта не требуется.)"
 
 #. i18n: file: gui/initialsettingswizard.ui:530
 #. i18n: ectx: property (text), widget (QLabel, label_13)
@@ -5008,6 +5204,11 @@ msgid ""
 "relevant files within the music folder, or within your personal cache/config "
 "folders.</p>"
 msgstr ""
+"<p>Cantata загружает отсутствующие обложки и слова песен из Интернета.</p><p>"
+"Для "
+"каждого загруженного элемента необходимо подтверждать, сохранять ли его в "
+"папке с музыкой или "
+"в папках с персональным кешем пользователя</p>"
 
 #. i18n: file: gui/initialsettingswizard.ui:722
 #. i18n: ectx: property (text), widget (NoteLabel, persNote_2)
@@ -5016,6 +5217,9 @@ msgid ""
 "Cantata can only save backdrops and artist images within the music folder "
 "hierarchy if this is 2 levels deep. i.e. 'Artist/Album/Tracks'."
 msgstr ""
+"Cantata может сохранять фоновые изображения и изображения исполнителей "
+"в папке с музыкой если дерево каталогов имеет 2 уровня. Например, "
+"«Исполнитель/Альбом/Треки»."
 
 #. i18n: file: gui/initialsettingswizard.ui:729
 #. i18n: ectx: property (text), widget (NoteLabel, httpNote)
@@ -5025,6 +5229,11 @@ msgid ""
 "upload files to external HTTP servers. Therefore, the above settings should "
 "be left un-checked."
 msgstr ""
+"Параметром для «Папки с музыкой» указан адрес HTTP, но в настоящий момент "
+"Cantata "
+"не может загружать файлы на внешние серверы HTTP. Поэтому параметры, "
+"указанные выше, "
+"нужно оставить без изменений."
 
 #. i18n: file: gui/initialsettingswizard.ui:759
 #. i18n: ectx: property (text), widget (QLabel, label_6)
@@ -5054,6 +5263,14 @@ msgid ""
 "grouping to function correctly. It is suggested to use 'Various Artists' in "
 "this scenario."
 msgstr ""
+"Cantata группирует треки в альбомы с помощью тега «AlbumArtist», если он "
+"указан. "
+"В противном случае будет использован тег «Исполнитель». При наличии альбома с "
+"несколькими исполнителями, тег «AlbumArtist» <b>должен</b> быть указан для "
+"корректной "
+"работы группировки треков. В этом сценарии рекомендуется использовать  тег "
+"«Несколько "
+"исполнителей»."
 
 #. i18n: file: gui/initialsettingswizard.ui:846
 #. i18n: ectx: property (text), widget (QLabel, groupWarningLabel)
@@ -5106,6 +5323,12 @@ msgid ""
 "the appropriate option above will cause the view to be merged into the "
 "sidebar as per other views."
 msgstr ""
+"По умолчанию, очередь воспроизведения располагается сбоку от других окон "
+"просмотра, "
+"а окно информации доступно по нажатию на его значок на главной панели. Если "
+"соответствующий "
+"параметр выше будет отмечен, то окно будет встроено в боковую панель, "
+"аналогично другим окнам."
 
 #. i18n: file: gui/interfacesettings.ui:82
 #. i18n: ectx: property (text), widget (BuddyLabel, sbStyleLabel)
@@ -5172,7 +5395,7 @@ msgstr "Показать изображения артиста"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
 #: po/rc.cpp:599 rc.cpp:599
 msgid "Sort:"
-msgstr ""
+msgstr "Сортировать:"
 
 #. i18n: file: gui/interfacesettings.ui:249
 #. i18n: ectx: property (text), widget (QCheckBox, playListsStartClosed)
@@ -5196,19 +5419,19 @@ msgstr "Другие типы просмотра"
 #. i18n: ectx: property (text), widget (BuddyLabel, folderViewLabel)
 #: po/rc.cpp:614 rc.cpp:614
 msgid "Folders:"
-msgstr ""
+msgstr "Папки:"
 
 #. i18n: file: gui/interfacesettings.ui:284
 #. i18n: ectx: property (text), widget (BuddyLabel, streamsViewLabel)
 #: po/rc.cpp:617 rc.cpp:617
 msgid "Streams:"
-msgstr ""
+msgstr "Потоки:"
 
 #. i18n: file: gui/interfacesettings.ui:297
 #. i18n: ectx: property (text), widget (BuddyLabel, onlineViewLabel)
 #: po/rc.cpp:620 rc.cpp:620
 msgid "Online:"
-msgstr ""
+msgstr "Онлайн:"
 
 #. i18n: file: gui/interfacesettings.ui:310
 #. i18n: ectx: property (text), widget (BuddyLabel, devicesViewLabel)
@@ -5251,6 +5474,7 @@ msgstr "Запрос перед удалением"
 #: po/rc.cpp:647 rc.cpp:647
 msgid "Separate action (and shortcut) for play queue search"
 msgstr ""
+"Отдельное действие (и сочетание клавиш) для поиска в очереди воспроизведения."
 
 #. i18n: file: gui/interfacesettings.ui:442
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_cover)
@@ -5262,25 +5486,25 @@ msgstr "Текущая обложка альбома"
 #. i18n: ectx: attribute (title), widget (QWidget, toolbarTab)
 #: po/rc.cpp:675 rc.cpp:675
 msgid "Toolbar"
-msgstr ""
+msgstr "Панель инструментов"
 
 #. i18n: file: gui/interfacesettings.ui:598
 #. i18n: ectx: property (text), widget (QCheckBox, showStopButton)
 #: po/rc.cpp:678 rc.cpp:678
 msgid "Show stop button"
-msgstr ""
+msgstr "Показывать кнопку «стоп»"
 
 #. i18n: file: gui/interfacesettings.ui:605
 #. i18n: ectx: property (text), widget (QCheckBox, showCoverWidget)
 #: po/rc.cpp:681 rc.cpp:681
 msgid "Show cover of current track"
-msgstr ""
+msgstr "Показывать обложку альбома текущего трека"
 
 #. i18n: file: gui/interfacesettings.ui:612
 #. i18n: ectx: property (text), widget (QCheckBox, showRatingWidget)
 #: po/rc.cpp:684 rc.cpp:684
 msgid "Show track rating"
-msgstr ""
+msgstr "Показывать рейтинг трека"
 
 #. i18n: file: gui/interfacesettings.ui:620
 #. i18n: ectx: attribute (title), widget (QWidget, tab_7)
@@ -5348,7 +5572,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, groupSingle)
 #: po/rc.cpp:717 rc.cpp:717
 msgid "Group single track albums"
-msgstr ""
+msgstr "Группировать альбомы с одним треком"
 
 #. i18n: file: gui/interfacesettings.ui:718
 #. i18n: ectx: property (toolTip), widget (QCheckBox, useComposer)
@@ -5356,12 +5580,14 @@ msgstr ""
 msgid ""
 "Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums."
 msgstr ""
+"Для группировки альбомов использовать тег «Автор музыки», а не «Исполнитель» "
+"или «Исполнитель альбома»"
 
 #. i18n: file: gui/interfacesettings.ui:721
 #. i18n: ectx: property (text), widget (QCheckBox, useComposer)
 #: po/rc.cpp:723 rc.cpp:723
 msgid "Group albums by composer"
-msgstr "Группировать альбомы по композитору"
+msgstr "Группировать альбомы по автору музыки"
 
 #. i18n: file: gui/interfacesettings.ui:728
 #. i18n: ectx: property (toolTip), widget (QCheckBox, filteredOnly)
@@ -5373,6 +5599,14 @@ msgid ""
 "'Metal', then only these 5 would be added if the view's Genre filter was set "
 "to 'Metal'."
 msgstr ""
+"<p>При добавлении исполнителей или альбомов в очередь воспроизведения, или "
+"при "
+"редактировании тегов, использовать только песни, соответствующие фильтру по "
+"текущему жанру или по строке.</p><p>Например, имеется альбом с 10 песнями, в "
+"котором "
+"только 5 песен отмечены жанром «Металл», и если фильтр жанра для этого окна "
+"был указан "
+"как «Металл», в очередь воспроизведения будут добавлены только эти 5 песен."
 
 #. i18n: file: gui/interfacesettings.ui:731
 #. i18n: ectx: property (text), widget (QCheckBox, filteredOnly)
@@ -5411,24 +5645,36 @@ msgid ""
 "mouse)</li><li>Spin buttons will have + and - buttons at the side of the "
 "text field</li></ul></p>"
 msgstr ""
+"<p>Это действие изменит интерфейс Cantata следующим образом:\n"
+"<ul><li>Кнопки проигрывания и управления станут на 33% шире</li><li>Окна "
+"будут «скользить» при прокрутке</li><li>Чтобы протащить элемент, нужно будет "
+"«прикоснуться» к верхнему левому углу</li><li>Панели прокрутки будут всего "
+"несколько "
+"пикселей в ширину</li><li>Действия, (например, «Добавить в очередь "
+"воспроизведения») "
+"всегда будут видимыми (а не только когда элемент находится точно под "
+"курсором)</li><li>Кнопки "
+"увеличения/уменьшения будут иметь дополнительные кнопочки «+» и «-» сбоку "
+"текстового "
+"поля</li></ul></p>"
 
 #. i18n: file: gui/interfacesettings.ui:763
 #. i18n: ectx: property (text), widget (QCheckBox, touchFriendly)
 #: po/rc.cpp:746 rc.cpp:746
 msgid "Make interface more touch friendly"
-msgstr "Сделать интерфейс более дружественным"
+msgstr "Более дружественный сенсорный интерфейс"
 
 #. i18n: file: gui/interfacesettings.ui:770
 #. i18n: ectx: property (text), widget (QCheckBox, infoTooltips)
 #: po/rc.cpp:749 rc.cpp:749
 msgid "Show song information tooltips"
-msgstr ""
+msgstr "Показывать подсказки с информацией о песне"
 
 #. i18n: file: gui/interfacesettings.ui:777
 #. i18n: ectx: property (text), widget (QCheckBox, retinaSupport)
 #: po/rc.cpp:752 rc.cpp:752
 msgid "Support retina displays"
-msgstr ""
+msgstr "Поддержка дисплеев Retina"
 
 #. i18n: file: gui/interfacesettings.ui:784
 #. i18n: ectx: property (text), widget (BuddyLabel, langLabel)
@@ -5443,12 +5689,13 @@ msgid ""
 "Changing the 'Enforce single-click activation of items' setting will require "
 "a re-start of Cantata."
 msgstr ""
+"Изменение параметра «Включать одним щелчком» требует перезапуска Cantata"
 
 #. i18n: file: gui/interfacesettings.ui:806
 #. i18n: ectx: property (text), widget (NoteLabel, langNoteLabel)
 #: po/rc.cpp:761 rc.cpp:761
 msgid "Changing the language setting will require a re-start of Cantata."
-msgstr ""
+msgstr "Изменение языкового параметра требует перезапуска Cantata"
 
 #. i18n: file: gui/interfacesettings.ui:813
 #. i18n: ectx: property (text), widget (NoteLabel, touchFriendlyNoteLabel)
@@ -5456,6 +5703,8 @@ msgstr ""
 msgid ""
 "Changing the 'touch friendly' setting will require a re-start of Cantata."
 msgstr ""
+"Изменение параметра «Более дружественный сенсорный интерфейс» требует "
+"перезапуска Cantata"
 
 #. i18n: file: gui/interfacesettings.ui:820
 #. i18n: ectx: property (text), widget (NoteLabel, retinaSupportNoteLabel)
@@ -5465,6 +5714,9 @@ msgid ""
 "retina display, but may produce less sharp icons on non-retina displays. "
 "Changing this setting will require a re-start of Cantata."
 msgstr ""
+"Включение поддержки для дисплеев Retina сделает иконки более чёткими "
+"на дисплеях Retina, и более расплывчатыми на других устройствах. Изменение "
+"этого параметра потребует перезапуска Cantata."
 
 #. i18n: file: gui/mainwindow.ui:181
 #. i18n: ectx: property (text), widget (QLabel, dynamicLabel)
@@ -5504,6 +5756,11 @@ msgid ""
 "you to choose whether to stop playback now, or after the current track. (The "
 "stop button can be enabled in the Interface/Toolbar section)"
 msgstr ""
+"При нажатии и удержании кнопки «Стоп» будет показано меню, предлагающее "
+"остановить "
+"воспроизведение немедленно или после окончание проигрываемого трека. (Показ "
+"кнопки "
+"«Стоп» можно включить в разделе «Интерфейс/Панель инструментов».)"
 
 #. i18n: file: gui/playbacksettings.ui:82
 #. i18n: ectx: property (title), widget (QGroupBox, outputBox)
@@ -5589,6 +5846,12 @@ msgid ""
 "also have write permissions to this folder (and it's sub-folders), then "
 "Cantata will save any downloaded covers into the respective album folder."
 msgstr ""
+"Параметр «Папка с музыкой» используется для поиска изображений обложек "
+"(параметр, "
+"указанный выше, или, если он не указан — <code>cover.jpg / cover.png</code>). "
+"При "
+"наличии прав на запись в эту папку (и под-папки), Cantata будет сохранять все "
+"загруженные обложки в папку соответствующего альбома."
 
 #. i18n: file: gui/serversettings.ui:188
 #. i18n: ectx: property (text), widget (NoteLabel, streamUrlNoteLabel)
@@ -5597,6 +5860,9 @@ msgid ""
 "'HTTP Stream URL' is only of use if you have MPD configured to output to a "
 "HTTP stream, and you wish Cantata to be able to play that stream."
 msgstr ""
+"«Адрес потока HTTP» используется только в том случае, если MPD настроен на "
+"вывод "
+"в поток HTTP, и Cantata должна иметь возможность проигрывать этот поток."
 
 #. i18n: file: gui/serversettings.ui:261
 #. i18n: ectx: property (text), widget (NoteLabel, basicMusicFolderNoteLabel)
@@ -5606,6 +5872,10 @@ msgid ""
 "update the music database. This can be performed by pressing the 'Refresh "
 "Database' button in the 'Artists' or 'Albums' views."
 msgstr ""
+"При изменении параметра «Папка с музыкой» необходимо вручную обновить "
+"базу данных композиций. Это можно сделать, нажав кнопку «Обновить базу "
+"данных» "
+"в окне «Исполнители» или «Альбомы»."
 
 #. i18n: file: gui/serversettings.ui:268
 #. i18n: ectx: property (text), widget (NoteLabel, musicFolderNoteLabel_2)
@@ -5614,6 +5884,8 @@ msgid ""
 "If no setting is specified for 'Cover filename, then Cantata will use a "
 "default of <code>cover</code>"
 msgstr ""
+"Если имя файла обложки не указано, Cantata использует значение по умолчанию: "
+"<code>cover</code>"
 
 #. i18n: file: http/httpserversettings.ui:25
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
@@ -5629,6 +5901,10 @@ msgid ""
 "contains a minimal HTTP server that can be used to serve other files to MPD. "
 "This, however, will only work whilst Cantata is running."
 msgstr ""
+"Обычно MPD проигрывает только композиции, хранящиеся в его папках. Cantata "
+"располагает минимальным сервером HTTP, который можно использовать для "
+"передачи файлов "
+"MPD. Эта возможность, тем не менее, доступна только во время работы Cantata."
 
 #. i18n: file: http/httpserversettings.ui:47
 #. i18n: ectx: property (text), widget (NoteLabel, label_4b)
@@ -5637,6 +5913,8 @@ msgid ""
 "If you choose 'Local loopback' for 'Network interface', then MPD <b>must</b> "
 "also be on this computer."
 msgstr ""
+"При выборе опции «Локальная петля» для параметра «Сетевой интерфейс», MPD "
+"<b>должен</b> находиться на этом же компьютере."
 
 #. i18n: file: network/proxysettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, modeLabel)
@@ -5703,7 +5981,7 @@ msgstr "Скробблить треки"
 #. i18n: ectx: property (text), widget (QCheckBox, showLove)
 #: po/rc.cpp:927 rc.cpp:927
 msgid "Show 'Love' button"
-msgstr "Показывать кнопку \"Love\""
+msgstr "Показывать кнопку «Любимый»"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -5744,6 +6022,8 @@ msgid ""
 "These settings apply to Digitally Imported, JazzRadio.com, RockRadio.com, "
 "and Sky.fm"
 msgstr ""
+"Эти параметры применимы для Digitally Imported, JazzRadio.com, RockRadio.com, "
+"и Sky.fm"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:164
 #. i18n: ectx: property (text), widget (NoteLabel, note2Label)
@@ -5752,12 +6032,15 @@ msgid ""
 "If you enter account details, then a 'DI' status item will appear under the "
 "list of streams. This will indicate if you are logged in or not."
 msgstr ""
+"Если открыть подробности учётной записи, то под списком потоков появится "
+"указатель "
+"статуса «DI». Он показывает, совершён ли вход в учётную запись, или нет."
 
 #. i18n: file: streams/streamssettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:960 rc.cpp:960
 msgid "Use the checkboxes below to configure the list of active providers."
-msgstr "Используйте флажки ниже для настройки списка активных поставщиков."
+msgstr "Используйте флажки ниже для настройки списка активных источников."
 
 #. i18n: file: streams/streamssettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
@@ -5775,7 +6058,7 @@ msgstr "Установить"
 #. i18n: ectx: property (text), widget (PlainNoteLabel, note)
 #: po/rc.cpp:972 rc.cpp:972
 msgid "Built-in categories are shown in italic, and these cannot be removed."
-msgstr ""
+msgstr "Встроенные категории показаны курсивом, и их нельзя удалить."
 
 #. i18n: file: support/shortcutssettingswidget.ui:65
 #. i18n: ectx: property (title), widget (QGroupBox, actionBox)
@@ -5817,13 +6100,13 @@ msgstr "Номер диска:"
 #. i18n: ectx: property (text), widget (StateLabel, ratingLabel)
 #: po/rc.cpp:1020 rc.cpp:1020
 msgid "Rating:"
-msgstr ""
+msgstr "Рейтинг:"
 
 #. i18n: file: tags/tageditor.ui:186
 #. i18n: ectx: property (text), widget (QLabel, ratingVarious)
 #: po/rc.cpp:1023 rc.cpp:1023
 msgid "<i>(Various)</i>"
-msgstr ""
+msgstr "<i>(Разные)</i>"
 
 #. i18n: file: tags/tageditor.ui:210
 #. i18n: ectx: property (text), widget (PlainNoteLabel, label_7x)
@@ -5831,6 +6114,8 @@ msgstr ""
 msgid ""
 "Multiple genres should be separated via a semicolon (e.g. 'Rock;Hard Rock')"
 msgstr ""
+"Несколько жанров должны отделяться друг от друга точкой с запятой "
+"(например, «Рок;Хард-рок»)"
 
 #. i18n: file: tags/tageditor.ui:217
 #. i18n: ectx: property (text), widget (PlainNoteLabel, label_7y)
@@ -5839,6 +6124,7 @@ msgid ""
 "Ratings are stored in an external database, and <b>not</b> in the song's "
 "file."
 msgstr ""
+"Рейтинги хранятся во внешней базе данных, а <b>не</b> в файле композиции."
 
 #. i18n: file: tags/trackorganiser.ui:115
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
@@ -5856,7 +6142,7 @@ msgstr "Новое название"
 #. i18n: ectx: property (text), widget (UrlNoteLabel, ratingsNote)
 #: po/rc.cpp:1065 rc.cpp:1065
 msgid "Ratings will be lost if a file is renamed."
-msgstr ""
+msgstr "При переименовании файла композиции, её рейтинг будет потерян."
 
 #: po/rc.cpp:1066 rc.cpp:1066
 msgctxt "NAME OF TRANSLATORS"
@@ -5927,6 +6213,8 @@ msgid ""
 "Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplayGain tags."
 "</i>"
 msgstr ""
+"Сканировать <b>все</b> треки?<br/><br/><i>У каждого трека есть "
+"существующий тег ReplayGain.</i>"
 
 #: replaygain/rgdialog.cpp:263
 msgid "Do you wish to scan all tracks, or only tracks without existing tags?"
@@ -6045,11 +6333,11 @@ msgstr "%1 ошибка: %2"
 
 #: scrobbling/scrobblinglove.cpp:59
 msgid "%1: Loved Current Track"
-msgstr ""
+msgstr "%1: текущий трек отмечен «любимым»"
 
 #: scrobbling/scrobblinglove.cpp:60
 msgid "%1: Love Current Track"
-msgstr ""
+msgstr "%1: отметить текущий трек как «любимый»"
 
 #: scrobbling/scrobblingsettings.cpp:59
 msgctxt "scrobbler name (via MPD)"
@@ -6062,6 +6350,10 @@ msgid ""
 "will need to have this already started and running. Cantata can only 'Love' "
 "tracks via this, and cannot enable/disable scrobbling."
 msgstr ""
+"При использовании скробблера, обозначенного «(через MPD)» (например, %1), его "
+"необходимо вначале запустить. Cantata может отметить «Любимые» треки только с "
+"его помощью, "
+"и не может самостоятельно  включать/отключать скробблинг."
 
 #: scrobbling/scrobblingsettings.cpp:115
 #: streams/digitallyimportedsettings.cpp:113
@@ -6081,7 +6373,7 @@ msgstr "Вход не выполнен"
 
 #: scrobbling/scrobblingstatus.cpp:44
 msgid "%1: Scrobble Tracks"
-msgstr ""
+msgstr "%1: скробблить треки"
 
 #: streams/digitallyimportedsettings.cpp:36
 msgid "Digitally Imported Settings"
@@ -6141,11 +6433,11 @@ msgstr "Доступно обновление"
 
 #: streams/streamproviderlistdialog.cpp:132
 msgid "Check the providers you wish to install/update."
-msgstr ""
+msgstr "Отметьте источники, которые нужно установить/обновить."
 
 #: streams/streamproviderlistdialog.cpp:145
 msgid "Install/Update Stream Providers"
-msgstr ""
+msgstr "Установить/обновить источники потоков"
 
 #: streams/streamproviderlistdialog.cpp:194
 msgid "Downloading list..."
@@ -6157,35 +6449,35 @@ msgstr "Digitally Imported"
 
 #: streams/streamproviderlistdialog.cpp:218
 msgid "Local and National Radio (ListenLive)"
-msgstr ""
+msgstr "Местное и национальное радио (ListenLive)"
 
 #: streams/streamproviderlistdialog.cpp:238
 msgid "Failed to download list of stream providers!"
-msgstr ""
+msgstr "Не удалось получить список источников потоков."
 
 #: streams/streamproviderlistdialog.cpp:250
 msgid "Installing/updating %1"
-msgstr ""
+msgstr "Идёт установка/обновление %1"
 
 #: streams/streamproviderlistdialog.cpp:257
 msgid "Failed to install '%1'"
-msgstr ""
+msgstr "Сбой установки «%1»"
 
 #: streams/streamproviderlistdialog.cpp:266
 msgid "Failed to download '%1'"
-msgstr ""
+msgstr "Сбой загрузки «%1»"
 
 #: streams/streamproviderlistdialog.cpp:356
 msgid "Install/update the selected stream providers?"
-msgstr ""
+msgstr "Установить/обновить выбранные источники потоков?"
 
 #: streams/streamproviderlistdialog.cpp:358
 msgid "Install the selected stream providers?"
-msgstr ""
+msgstr "Установить выбранные источники потоков?"
 
 #: streams/streamproviderlistdialog.cpp:360
 msgid "Update the selected stream providers?"
-msgstr ""
+msgstr "Обновить выбранные источники потоков?"
 
 #: streams/streamproviderlistdialog.cpp:363
 #: streams/streamproviderlistdialog.cpp:445
@@ -6198,11 +6490,11 @@ msgstr "Прервать установку/обновление?"
 
 #: streams/streamproviderlistdialog.cpp:428
 msgid "Downloading %1"
-msgstr ""
+msgstr "Идёт загрузка %1"
 
 #: streams/streamproviderlistdialog.cpp:447
 msgid "Update all updateable providers"
-msgstr "Обновление всех обновляемых поставщиков"
+msgstr "Обновить все обновляемые источники"
 
 #: streams/streamspage.cpp:58
 msgid "Import Streams Into Favorites"
@@ -6243,19 +6535,19 @@ msgstr "Экспортировать потоки"
 
 #: streams/streamspage.cpp:237
 msgid "XML Streams (*.xml.gz)"
-msgstr ""
+msgstr "Потоки XML (*.xml.gz)"
 
 #: streams/streamspage.cpp:249
 msgid "Failed to create '%1'!"
-msgstr ""
+msgstr "Сбой создания «%1»"
 
 #: streams/streamspage.cpp:266 streams/streamspage.cpp:447
 msgid "Stream '%1' already exists!"
-msgstr ""
+msgstr "Поток «%1» уже существует"
 
 #: streams/streamspage.cpp:268 streams/streamspage.cpp:449
 msgid "A stream named '%1' already exists!"
-msgstr ""
+msgstr "Поток с названием «%1» уже существует"
 
 #: streams/streamspage.cpp:287
 msgid "Bookmark added"
@@ -6271,15 +6563,15 @@ msgstr "Уже в Избранном"
 
 #: streams/streamspage.cpp:356
 msgid "Reload '%1' streams?"
-msgstr ""
+msgstr "Перезагрузить потоки «%1»?"
 
 #: streams/streamspage.cpp:374
 msgid "Are you sure you wish to remove bookmark to '%1'?"
-msgstr ""
+msgstr "Точно удалить закладку для «%1»?"
 
 #: streams/streamspage.cpp:380
 msgid "Are you sure you wish to remove all '%1' bookmarks?"
-msgstr ""
+msgstr "Точно удалить все закладки «%1»?"
 
 #: streams/streamspage.cpp:404
 msgid "Are you sure you wish to remove the %1 selected streams?"
@@ -6287,7 +6579,7 @@ msgstr "Точно удалить все %1 выбранных потоков?"
 
 #: streams/streamspage.cpp:408 streams/streamssettings.cpp:277
 msgid "Are you sure you wish to remove '%1'?"
-msgstr ""
+msgstr "Точно удалить «%1»?"
 
 #: streams/streamspage.cpp:520 streams/streamspage.cpp:536
 msgid "Search %1:"
@@ -6299,11 +6591,11 @@ msgstr "Добавлено '%1' в избранное"
 
 #: streams/streamssettings.cpp:74
 msgid "From File..."
-msgstr "Из файла..."
+msgstr "Из файла…"
 
 #: streams/streamssettings.cpp:75
 msgid "Download..."
-msgstr ""
+msgstr "Загрузка…"
 
 #: streams/streamssettings.cpp:134
 msgid "*.streams|Cantata Streams"
@@ -6323,10 +6615,13 @@ msgid ""
 "\n"
 "Overwrite?"
 msgstr ""
+"Категория с названием «%1» уже существует\n"
+"\n"
+"Перезаписать?"
 
 #: streams/streamssettings.cpp:182
 msgid "Failed top open package file."
-msgstr ""
+msgstr "Сбой открытия файла пакета"
 
 #: streams/streamssettings.cpp:202 streams/streamssettings.cpp:251
 msgid "Invalid file format!"
@@ -6418,7 +6713,7 @@ msgstr "Введите пароль:"
 
 #: support/kmessagewidget.cpp:113 support/osxstyle.cpp:76
 msgid "Close"
-msgstr ""
+msgstr "Закрыть"
 
 #: support/messagebox.cpp:94 support/messagebox.cpp:98
 #: support/messagebox.cpp:174
@@ -6432,15 +6727,15 @@ msgstr "Вопрос"
 
 #: support/osxstyle.cpp:75
 msgid "&Window"
-msgstr ""
+msgstr "&Окно"
 
 #: support/osxstyle.cpp:77
 msgid "Minimize"
-msgstr ""
+msgstr "Свернуть"
 
 #: support/osxstyle.cpp:78
 msgid "Zoom"
-msgstr ""
+msgstr "Масштаб"
 
 #: support/pathrequester.cpp:50
 msgid "Select Folder"
@@ -6496,11 +6791,11 @@ msgstr "Взять значение «Исполнитель альбома» и
 
 #: tags/tageditor.cpp:206
 msgid "Read Ratings from File"
-msgstr ""
+msgstr "Прочесть рейтинги из файла"
 
 #: tags/tageditor.cpp:207
 msgid "Write Ratings to File"
-msgstr ""
+msgstr "Записать рейтинги в файл"
 
 #: tags/tageditor.cpp:329 tags/tageditor.cpp:857
 msgid "All tracks"
@@ -6567,11 +6862,17 @@ msgid ""
 "Capitalize the first letter of text fields (e.g. 'Title', 'Artist', etc) of "
 "<b>all</b> tracks?"
 msgstr ""
+"Сделать начальную букву текстовых полей (напр.«Название», «Исполнитель» и "
+"т.д.) "
+"заглавной для <b>всех</b> треков?"
 
 #: tags/tageditor.cpp:654
 msgid ""
 "Capitalize the first letter of text fields (e.g. 'Title', 'Artist', etc)?"
 msgstr ""
+"Сделать начальную букву текстовых полей (напр.«Название», «Исполнитель» и "
+"т.д.) "
+"заглавной?"
 
 #: tags/tageditor.cpp:684
 msgid "Adjust the value of each track number by:"
@@ -6579,31 +6880,31 @@ msgstr "Настроить значение номера каждого трек
 
 #: tags/tageditor.cpp:715
 msgid "Read ratings for all tracks from the music files?"
-msgstr ""
+msgstr "Прочитать рейтинги всех треков из файлов композиций?"
 
 #: tags/tageditor.cpp:716
 msgid "Read rating from music file?"
-msgstr ""
+msgstr "Прочитать рейтинг из файла композиции?"
 
 #: tags/tageditor.cpp:717 tags/tageditor.cpp:782
 msgid "Ratings"
-msgstr ""
+msgstr "Рейтинги"
 
 #: tags/tageditor.cpp:718
 msgid "Read Ratings"
-msgstr ""
+msgstr "Прочитать рейтинги"
 
 #: tags/tageditor.cpp:718
 msgid "Read Rating"
-msgstr ""
+msgstr "Прочитать рейтинг"
 
 #: tags/tageditor.cpp:745
 msgid "Read, and updated, ratings from the following tracks:"
-msgstr ""
+msgstr "Считать и обновить рейтинги из следующих треков:"
 
 #: tags/tageditor.cpp:765
 msgid "Not all Song ratings have been read from MPD!"
-msgstr ""
+msgstr "Не все рейтинги композиций были прочитаны из MPD"
 
 #: tags/tageditor.cpp:766 tags/tageditor.cpp:774
 msgid ""
@@ -6611,34 +6912,39 @@ msgid ""
 "database. In order to save these into the actual file, Cantata must first "
 "read them from MPD."
 msgstr ""
+"Рейтинги песен хранятся не в файлах композиций, а в базе данных MPD "
+"'sticker'. "
+"Чтобы сохранить их в действительный файл, Cantata сначала должна считать их "
+"из "
+"MPD."
 
 #: tags/tageditor.cpp:773
 msgid "Song rating has not been read from MPD!"
-msgstr ""
+msgstr "Рейтинги композиций не были считаны из MPD"
 
 #: tags/tageditor.cpp:780
 msgid "Write ratings for all tracks to the music files?"
-msgstr ""
+msgstr "Записать рейтинги всех треков в файлы композиций?"
 
 #: tags/tageditor.cpp:781
 msgid "Write rating to music file?"
-msgstr ""
+msgstr "Записать рейтинг в файл композиции?"
 
 #: tags/tageditor.cpp:783
 msgid "Write Ratings"
-msgstr ""
+msgstr "Записать рейтинги"
 
 #: tags/tageditor.cpp:783
 msgid "Write Rating"
-msgstr ""
+msgstr "Записать рейтинг"
 
 #: tags/tageditor.cpp:807
 msgid "Failed to write ratings of the following tracks:"
-msgstr ""
+msgstr "Не удалось записать рейтинги для следующих треков:"
 
 #: tags/tageditor.cpp:814
 msgid "Failed to write rating to music file!"
-msgstr ""
+msgstr "Не удалось записать рейтинг в файл композиции"
 
 #: tags/tageditor.cpp:851
 msgid "All tracks [modified]"
@@ -6663,19 +6969,19 @@ msgstr "Прервать переименование файлов?"
 
 #: tags/trackorganiser.cpp:280
 msgid "Source file does not exist!"
-msgstr ""
+msgstr "Файл-источник не существует"
 
 #: tags/trackorganiser.cpp:299
 msgid "Destination file already exists!"
-msgstr ""
+msgstr "Целевой файл уже существует"
 
 #: tags/trackorganiser.cpp:321
 msgid "Failed to create destination folder!"
-msgstr ""
+msgstr "Не удалось создать папку назначения"
 
 #: tags/trackorganiser.cpp:342
 msgid "Failed to rename '%1' to '%2'"
-msgstr ""
+msgstr "Не удалось переименовать «%1» в «%2»"
 
 #: tags/trackorganiser.cpp:492
 msgid ""
@@ -6685,6 +6991,12 @@ msgid ""
 "If you rename a file (or the folder it is within), then the rating "
 "associated with the song will be lost."
 msgstr ""
+"Рейтинги песен хранятся не в файлах композиций, а в базе данных MPD "
+"'sticker'.\n"
+"\n"
+"При переименовании файла (или папки, в которой он хранится), рейтинг "
+"композиции "
+"будет потерян."
 
 #: ubuntu/backend/mpdbackend.cpp:409 widgets/nowplayingwidget.cpp:322
 msgid "(Stream)"
@@ -6696,7 +7008,7 @@ msgstr "<tr><td align=\"right\"><b>Автор музыки:</b></td><td>%1</td><
 
 #: widgets/coverwidget.cpp:78
 msgid "<tr><td align=\"right\"><b>Performer:</b></td><td>%1</td></tr>"
-msgstr ""
+msgstr "<tr><td align=\"right\"><b>Исполнитель:</b></td><td>%1</td></tr>"
 
 #: widgets/coverwidget.cpp:80
 msgid ""
@@ -6726,15 +7038,15 @@ msgstr "Меню"
 
 #: widgets/notelabel.cpp:67
 msgid "<i><b>NOTE:</b> %1</i>"
-msgstr ""
+msgstr "<i><b>Примечание:</b> %1</i>"
 
 #: widgets/playqueueview.cpp:141
 msgid "Remove From Play Queue"
-msgstr "Удалить из очереди"
+msgstr "Удалить из очереди воспроизведения"
 
 #: widgets/searchwidget.cpp:70
 msgid "Search..."
-msgstr "Поиск..."
+msgstr "Поиск…"
 
 #: widgets/searchwidget.cpp:72
 msgid "Close Search Bar"
@@ -6755,6 +7067,10 @@ msgid ""
 "Please check Cantata's \"Music folder\" setting, and MPD's \"music_directory"
 "\" setting."
 msgstr ""
+"Нет доступа к файлам композиций!\n"
+"\n"
+"Проверьте параметр «папка с музыкой» в Cantata и параметр \"music_directory\" "
+"в MPD."
 
 #: widgets/songdialog.cpp:52
 msgid ""
@@ -6762,6 +7078,9 @@ msgid ""
 "\n"
 "Please check that the device is still attached."
 msgstr ""
+"Нет доступа к файлам композиций.\n"
+"\n"
+"Проверьте, подключено ли устройство."
 
 #: widgets/tableview.cpp:92
 msgid "Stretch Columns To Fit Window"
@@ -6880,24 +7199,24 @@ msgstr "%1 подкастов"
 #: ../gui/plurals_qt.cpp:70
 msgctxt "Singular"
 msgid "1 Episode"
-msgstr "1 эпизод"
+msgstr "1 серия"
 
 #: ../gui/plurals_qt.cpp:70
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Episodes"
-msgstr "%1 эпизодов"
+msgstr "%1 серий"
 
 #: ../gui/plurals_qt.cpp:75
 msgctxt "Singular"
 msgid "1 Update available"
-msgstr ""
+msgstr "Доступно 1 обновление"
 
 #: ../gui/plurals_qt.cpp:75
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Updates available"
-msgstr ""
+msgstr "Доступно обновлений: %1"
 
 #~ msgid ""
 #~ "There is insufficient space left on the destination device.\n"

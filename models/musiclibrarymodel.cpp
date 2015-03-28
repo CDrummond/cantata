@@ -253,7 +253,8 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
 
     if (Cantata::Role_ListImage==role && artistImages) {
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
-        return MusicLibraryItem::Type_Album==item->itemType() || MusicLibraryItem::Type_Artist==item->itemType();
+        return MusicLibraryItem::Type_Album==item->itemType() ||
+                (MusicLibraryItem::Type_Artist==item->itemType() && !static_cast<MusicLibraryItemArtist *>(item)->isComposer());
     }
 
     return MusicModel::data(index, role);

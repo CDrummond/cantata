@@ -32,6 +32,8 @@
     album-artist, to group albums.
 20. Fix updating of composer tag.
 21. Fix build with proxy config and Qt5
+22. Use treble clef icon in artists list if composer tag is being used for an
+    artist.
 
 1.5.2
 -----

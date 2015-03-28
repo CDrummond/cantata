@@ -200,7 +200,7 @@ QList<QNetworkProxy> NetworkProxyFactory::queryProxy(const QNetworkProxyQuery& q
     }
 
     return QList<QNetworkProxy>() << ret;
-    #elif
+    #else
     return getSystemProxyForQuery(query);
     #endif
 }

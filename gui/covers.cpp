@@ -1181,12 +1181,14 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
     Q_UNUSED(origSize)
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
-    bool podcast=!song.isArtistImageRequest() && song.isFromOnlineService() && PodcastService::constName==song.onlineService();
+    bool podcast=!song.isArtistImageRequest() && !song.isComposerImageRequest() && song.isFromOnlineService() && PodcastService::constName==song.onlineService();
     QString key=song.isArtistImageRequest()
                 ? QLatin1String("artist-")
-                : podcast
-                    ? QLatin1String("podcast-")
-                    : QLatin1String("album-");
+                    : song.isComposerImageRequest()
+                        ? QLatin1String("composer-")
+                        : podcast
+                            ? QLatin1String("podcast-")
+                            : QLatin1String("album-");
     #else
     bool podcast=false;
     QString key=song.isArtistImageRequest() ? QLatin1String("artist-") : QLatin1String("album-");
@@ -1197,9 +1199,11 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
     if (!pix) {
         Icon &icn=song.isArtistImageRequest()
                 ? Icons::self()->artistIcon
-                : podcast
-                  ? Icons::self()->podcastIcon
-                  : Icons::self()->albumIcon;
+                : song.isComposerImageRequest()
+                    ? Icons::self()->composerIcon
+                    : podcast
+                        ? Icons::self()->podcastIcon
+                        : Icons::self()->albumIcon;
         pix=new QPixmap(icn.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
         #if QT_VERSION >= 0x050100
         if (size!=origSize) {
@@ -1242,6 +1246,8 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                 pix=new QPixmap(Icons::self()->albumIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             } else if (song.isStandardStream()) {
                 pix=new QPixmap(Icons::self()->streamIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+            } else if (song.isComposerImageRequest()) {
+                pix=new QPixmap(Icons::self()->composerIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             }
             #ifdef ENABLE_ONLINE_SERVICES
             else if (isOnlineServiceImage(song)) {
@@ -1260,6 +1266,9 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                 #endif
                 cache.insert(key, pix, 1);
                 cacheSizes.insert(size);
+                if (song.isComposerImageRequest()) {
+                    return pix;
+                }
             }
         }
         #endif

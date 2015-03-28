@@ -43,6 +43,7 @@ public:
     Icon shortcutsIcon;
     #endif
     Icon artistIcon;
+    Icon composerIcon;
     Icon albumIcon;
     Icon podcastIcon;
     Icon downloadedPodcastEpisodeIcon;

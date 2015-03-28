@@ -191,9 +191,14 @@ Song MusicLibraryItemArtist::coverSong() const
             //if (Song::useComposer() && !firstSong->song().composer().isEmpty()) {
                 song.albumartist=firstSong->song().albumArtist();
             //}
+            song.genre=firstSong->song().genre;
         }
     }
-    song.setArtistImageRequest();
+    if (!m_actualArtist.isEmpty() && Song::isComposerGenre(song.genre)) {
+        song.setComposerImageRequest();
+    } else {
+        song.setArtistImageRequest();
+    }
     return song;
 }
 

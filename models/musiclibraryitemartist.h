@@ -53,6 +53,7 @@ public:
     bool allSingleTrack() const;
     void addToSingleTracks(MusicLibraryItemArtist *other);
     bool isFromSingleTracks(const Song &s) const;
+    bool isComposer() const { return !m_actualArtist.isEmpty() && Song::isComposerGenre(coverSong().genre); }
     void remove(MusicLibraryItemAlbum *album);
     Type itemType() const { return Type_Artist; }
     #ifdef ENABLE_UBUNTU

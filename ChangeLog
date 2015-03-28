@@ -31,6 +31,7 @@
 19. Add option to provide a list of genres which should use composer, and not
     album-artist, to group albums.
 20. Fix updating of composer tag.
+21. Fix build with proxy config and Qt5
 
 1.5.2
 -----

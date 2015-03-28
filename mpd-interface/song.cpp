@@ -706,7 +706,7 @@ QDataStream & operator<<(QDataStream &stream, const Song &song)
 {
     stream << song.id << song.file << song.album << song.artist << song.albumartist << song.title
            << song.genre << song.disc << song.priority << song.time << song.track << (quint16)song.year
-           << (quint16)song.type << (bool)song.guessed << song.size << song.extra;
+           << (quint16)song.type << (bool)song.guessed << song.size << song.extra << song.extraFields;
     return stream;
 }
 
@@ -717,7 +717,7 @@ QDataStream & operator>>(QDataStream &stream, Song &song)
     bool guessed;
     stream >> song.id >> song.file >> song.album >> song.artist >> song.albumartist >> song.title
            >> song.genre >> song.disc >> song.priority >> song.time >> song.track >> year
-           >> type >> guessed >> song.size >> song.extra;
+           >> type >> guessed >> song.size >> song.extra >> song.extraFields;
     song.type=(Song::Type)type;
     song.year=year;
     song.guessed=guessed;

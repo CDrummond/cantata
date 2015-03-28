@@ -122,6 +122,15 @@ static QList<QNetworkProxy> systemProxyForQuery(const QNetworkProxyQuery &query)
 }
 #endif
 
+static QList<QNetworkProxy> getSystemProxyForQuery(const QNetworkProxyQuery &query)
+{
+    #if defined Q_OS_LINUX && QT_VERSION < 0x050000
+    return ::systemProxyForQuery(query);
+    #else
+    return QNetworkProxyFactory::systemProxyForQuery(query);
+    #endif
+}
+
 #ifdef ENABLE_PROXY_CONFIG
 NetworkProxyFactory::NetworkProxyFactory()
     : mode(Mode_System)
@@ -173,7 +182,7 @@ QList<QNetworkProxy> NetworkProxyFactory::queryProxy(const QNetworkProxyQuery& q
 
     switch (mode) {
     case Mode_System:
-        return ::systemProxyForQuery(query);
+        return getSystemProxyForQuery(query);
     case Mode_Direct:
         ret.setType(QNetworkProxy::NoProxy);
         break;
@@ -191,9 +200,7 @@ QList<QNetworkProxy> NetworkProxyFactory::queryProxy(const QNetworkProxyQuery& q
     }
 
     return QList<QNetworkProxy>() << ret;
-    #elif defined Q_OS_LINUX && QT_VERSION < 0x050000
-    return ::systemProxyForQuery(query);
-    #else
-    return QNetworkProxyFactory::systemProxyForQuery(query);
+    #elif
+    return getSystemProxyForQuery(query);
     #endif
 }

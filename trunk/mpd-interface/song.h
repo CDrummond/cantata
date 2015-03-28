@@ -118,6 +118,7 @@ struct Song
     static void clearKeyStore(int location);
     static QString displayAlbum(const QString &albumName, quint16 albumYear);
     static QString combineGenres(const QSet<QString> &genres);
+    static bool isComposerGenre(const QString &genre) { return composerGenres().contains(genre); }
 
     Song();
     Song(const Song &o) { *this=o; }
@@ -216,6 +217,13 @@ struct Song
         key=0xFFFF;
     }
     bool isArtistImageRequest() const { return 0xFF==disc && 0xFF==priority && 0xFFFF==key && album.isEmpty(); }
+
+    void setComposerImageRequest() {
+        album=QString();
+        disc=priority=0xFE;
+        key=0xFEFE;
+    }
+    bool isComposerImageRequest() const { return 0xFE==disc && 0xFE==priority && 0xFEFE==key && album.isEmpty(); }
 
     // In Covers, the following is used to indicate that a specfic size is requested...
     void setSpecificSizeRequest(int sz) {

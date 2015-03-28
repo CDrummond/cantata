@@ -106,7 +106,9 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         case MusicLibraryItem::Type_Root:
             return static_cast<MusicLibraryItemRoot *>(item)->icon();
         case MusicLibraryItem::Type_Artist:
-            return Icons::self()->artistIcon;
+            return static_cast<MusicLibraryItemArtist *>(item)->isComposer()
+                        ? Icons::self()->composerIcon
+                        : Icons::self()->artistIcon;
         #ifdef ENABLE_ONLINE_SERVICES
         case MusicLibraryItem::Type_Podcast:
             return Icons::self()->podcastIcon;

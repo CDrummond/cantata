@@ -237,9 +237,11 @@ void ServerSettings::add()
         static const QChar constBullet(0x2022);
 
         switch (MessageBox::questionYesNoCancel(this,
-                                   i18n("Which type of collection do you wish to connect to?")+QLatin1String("\n\n")+
-                                   constBullet+QLatin1Char(' ')+i18n("Standard - music collection may be shared, is on another machine, or is already setup")+QLatin1Char('\n')+
-                                   constBullet+QLatin1Char(' ')+i18n("Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance"),
+                                   QLatin1String("<p>")+
+                                   i18n("Which type of collection do you wish to connect to?")+QLatin1String("<br/><br/>")+
+                                   constBullet+QLatin1Char(' ')+i18n("Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)")+QLatin1String("<br/><br/>")+
+                                   constBullet+QLatin1Char(' ')+i18n("Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. "
+                                                                     "This setup will be exclusive to Cantata, and will <b>not</b> be accessible to other MPD clients.")+QLatin1String("</p>"),
                                    i18n("Add Collection"), GuiItem(i18n("Standard")), GuiItem(i18n("Basic")))) {
         case MessageBox::Yes: addStandard=true; break;
         case MessageBox::No: addStandard=false; break;

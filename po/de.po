@@ -875,7 +875,7 @@ msgstr "Disc Auswahl"
 
 #: devices/cddbselectiondialog.cpp:67
 msgctxt "artist - album Disc disc (year)"
-msgid "%1 -%2 Disc %3 (%4)"
+msgid "%1 - %2 Disc %3 (%4)"
 msgstr "%1 – %2 Disk %3 (%4)"
 
 #: devices/cddbselectiondialog.cpp:69

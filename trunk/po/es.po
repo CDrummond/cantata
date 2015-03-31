@@ -181,8 +181,8 @@ msgstr "%1%"
 #: context/othersettings.cpp:109 gui/interfacesettings.cpp:615
 #, c-format
 msgctxt "pixels"
-msgid "%1px"
-msgstr "%1px"
+msgid "%1 px"
+msgstr "%1 px"
 
 #: context/songview.cpp:124 gui/cachesettings.cpp:275
 msgid "Lyrics"

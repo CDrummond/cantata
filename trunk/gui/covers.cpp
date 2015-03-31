@@ -1488,7 +1488,7 @@ Covers::Image Covers::locateImage(const Song &song)
     #endif
 
     bool isArtistImage=song.isArtistImageRequest();
-    QString prevFileName=Covers::self()->getFilename(song, isArtistImage);
+    QString prevFileName=Covers::self()->getFilename(song);
     if (!prevFileName.isEmpty()) {
         if (constNoCover==prevFileName) {
             DBUG_CLASS("Covers") << "No cover";
@@ -1868,10 +1868,10 @@ void Covers::gotArtistImage(const Song &song, const QImage &img, const QString &
     }
 }
 
-QString Covers::getFilename(const Song &s, bool isArtist)
+QString Covers::getFilename(const Song &s)
 {
     mutex.lock();
-    QMap<QString, QString>::ConstIterator fileIt=filenames.find(isArtist ? artistKey(s) : albumKey(s));
+    QMap<QString, QString>::ConstIterator fileIt=filenames.find(s.isArtistImageRequest() ? artistKey(s) : albumKey(s));
     QString f=fileIt==filenames.end() ? QString() : fileIt.value();
     mutex.unlock();
     return f;

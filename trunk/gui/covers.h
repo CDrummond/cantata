@@ -267,7 +267,7 @@ private:
     bool updateCache(const Song &song, const QImage &img, bool dummyEntriesOnly);
     void gotAlbumCover(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
     void gotArtistImage(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
-    QString getFilename(const Song &s, bool isArtist);
+    QString getFilename(const Song &s);
 
 private:
     QSet<QString> currentImageRequests;

@@ -612,7 +612,7 @@ void InterfaceSettings::setPlayQueueBackgroundOpacityLabel()
 
 void InterfaceSettings::setPlayQueueBackgroundBlurLabel()
 {
-    playQueueBackgroundBlurLabel->setText(i18nc("pixels", "%1px", playQueueBackgroundBlur->value()));
+    playQueueBackgroundBlurLabel->setText(i18nc("pixels", "%1 px", playQueueBackgroundBlur->value()));
 }
 
 void InterfaceSettings::enablePlayQueueBackgroundOptions()

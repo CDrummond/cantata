@@ -106,7 +106,7 @@ void OtherSettings::setContextBackdropOpacityLabel()
 
 void OtherSettings::setContextBackdropBlurLabel()
 {
-    contextBackdropBlurLabel->setText(i18nc("pixels", "%1px", contextBackdropBlur->value()));
+    contextBackdropBlurLabel->setText(i18nc("pixels", "%1 px", contextBackdropBlur->value()));
 }
 
 void OtherSettings::enableContextBackdropOptions()

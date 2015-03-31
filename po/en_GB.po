@@ -173,7 +173,7 @@ msgstr ""
 #: context/othersettings.cpp:109 gui/interfacesettings.cpp:615
 #, c-format
 msgctxt "pixels"
-msgid "%1px"
+msgid "%1 px"
 msgstr ""
 
 #: context/songview.cpp:124 gui/cachesettings.cpp:275

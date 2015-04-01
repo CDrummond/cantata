@@ -239,9 +239,15 @@ void ServerSettings::add()
         switch (MessageBox::questionYesNoCancel(this,
                                    QLatin1String("<p>")+
                                    i18n("Which type of collection do you wish to connect to?")+QLatin1String("<br/><br/>")+
-                                   constBullet+QLatin1Char(' ')+i18n("Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)")+QLatin1String("<br/><br/>")+
-                                   constBullet+QLatin1Char(' ')+i18n("Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. "
-                                                                     "This setup will be exclusive to Cantata, and will <b>not</b> be accessible to other MPD clients.")+QLatin1String("</p>"),
+                                   constBullet+QLatin1Char(' ')+i18n("Standard - music collection may be shared, is on another machine, is "
+                                                                     "already setup, or you wish to enable access from other clients (e.g. "
+                                                                     "MPDroid)")+QLatin1String("<br/><br/>")+
+                                   constBullet+QLatin1Char(' ')+i18n("Basic - music collection is not shared with others, and Cantata will "
+                                                                     "configure and control the MPD instance. This setup will be exclusive "
+                                                                     "to Cantata, and will <b>not</b> be accessible to other MPD clients.")+
+                                                                     QLatin1String("<br/><br/>")+
+                                   i18n("<i><b>NOTE:</b> %1</i>", i18n("If you wish to have an advanced MPD setup (e.g. multiple audio "
+                                        "outputs, full DSD support, etc) then you <b>must</b> choose 'Standard'")),
                                    i18n("Add Collection"), GuiItem(i18n("Standard")), GuiItem(i18n("Basic")))) {
         case MessageBox::Yes: addStandard=true; break;
         case MessageBox::No: addStandard=false; break;

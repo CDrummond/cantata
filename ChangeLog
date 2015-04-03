@@ -38,6 +38,7 @@
     it) then add icon files manually.
 24. Hide cover, HTTP stream, and top-level folder options under a 'Show All
     Options' button.
+25. Allow local socket path to start with ~
 
 1.5.2
 -----

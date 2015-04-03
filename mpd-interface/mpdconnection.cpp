@@ -2164,7 +2164,7 @@ MpdSocket::~MpdSocket()
 void MpdSocket::connectToHost(const QString &hostName, quint16 port, QIODevice::OpenMode mode)
 {
 //     qWarning() << "connectToHost" << hostName << port;
-    if (hostName.startsWith('/')) {
+    if (hostName.startsWith('/') || hostName.startsWith('~')) {
         deleteTcp();
         if (!local) {
             local = new QLocalSocket(this);
@@ -2172,7 +2172,7 @@ void MpdSocket::connectToHost(const QString &hostName, quint16 port, QIODevice::
             connect(local, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
         }
 //         qWarning() << "Connecting to LOCAL socket";
-        local->connectToServer(hostName, mode);
+        local->connectToServer(Utils::tildaToHome(hostName), mode);
     } else {
         deleteLocal();
         if (!tcp) {

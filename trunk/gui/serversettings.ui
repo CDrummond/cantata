@@ -73,7 +73,7 @@
          <item row="1" column="0">
           <widget class="BuddyLabel" name="hostLabel">
            <property name="text">
-            <string>Host (or local socket):</string>
+            <string>Host:</string>
            </property>
            <property name="buddy">
             <cstring>host</cstring>
@@ -81,32 +81,29 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="LineEdit" name="host"/>
+          <layout class="QHBoxLayout" name="hostLayout">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="LineEdit" name="host"/>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="port">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>65535</number>
+             </property>
+             <property name="value">
+              <number>6600</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item row="2" column="0">
-          <widget class="BuddyLabel" name="portLabel">
-           <property name="text">
-            <string>Port:</string>
-           </property>
-           <property name="buddy">
-            <cstring>port</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QSpinBox" name="port">
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="maximum">
-            <number>65535</number>
-           </property>
-           <property name="value">
-            <number>6600</number>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
           <widget class="BuddyLabel" name="passwordLabel">
            <property name="text">
             <string>Password:</string>
@@ -116,14 +113,14 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="2" column="1">
           <widget class="LineEdit" name="password">
            <property name="echoMode">
             <enum>QLineEdit::Password</enum>
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item row="3" column="0">
           <widget class="BuddyLabel" name="dirLabel">
            <property name="text">
             <string>Music folder:</string>
@@ -133,10 +130,10 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="3" column="1">
           <widget class="PathRequester" name="dir"/>
          </item>
-         <item row="5" column="0">
+         <item row="4" column="0">
           <widget class="BuddyLabel" name="coverNameLabel">
            <property name="text">
             <string>Cover filename:</string>
@@ -146,14 +143,14 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
+         <item row="4" column="1">
           <widget class="LineEdit" name="coverName">
            <property name="toolTip">
             <string>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank 'cover' will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
+         <item row="5" column="0">
           <widget class="BuddyLabel" name="topLevelLabel">
            <property name="text">
             <string>Top-level music path:</string>
@@ -163,10 +160,10 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
+         <item row="5" column="1">
           <widget class="LineEdit" name="topLevel"/>
          </item>
-         <item row="7" column="0">
+         <item row="6" column="0">
           <widget class="BuddyLabel" name="streamUrlLabel">
            <property name="text">
             <string>HTTP stream URL:</string>
@@ -176,7 +173,7 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="1">
+         <item row="6" column="1">
           <widget class="LineEdit" name="streamUrl"/>
          </item>
         </layout>
@@ -231,7 +228,7 @@
        <item row="4" column="0" colspan="2">
         <widget class="NoteLabel" name="socketNoteLabel">
          <property name="text">
-          <string>When using a local socket the full absolute path to the socket needs to be set. (Port number is not required.)</string>
+          <string>When using a local socket the full absolute path to the socket needs to be set in the 'Host' field. (Port number is then ignored.)</string>
          </property>
         </widget>
        </item>

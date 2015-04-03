@@ -40,6 +40,13 @@ static void setupIconTheme()
         QIcon::setThemeName(cfgTheme);
     }
 
+    // Bug: 660 Add install path to Qt's icon search path
+    QLatin1String install(INSTALL_PREFIX"/share/icons");
+    QStringList paths=QIcon::themeSearchPaths();
+    if (!paths.contains(install)) {
+        QIcon::setThemeSearchPaths(paths << install);
+    }
+
     // BUG:130 Some non-DE environments (IceWM, etc) seem to set theme to HiColor, and this has missing
     // icons. So check for a themed icon, if the current theme does not have this - then see if oxygen
     // or gnome icon themes are installed, and set theme to one of those.

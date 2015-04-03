@@ -34,6 +34,8 @@
 21. Fix build with proxy config and Qt5
 22. Use treble clef icon in artists list if composer tag is being used for an
     artist.
+23. For Linux builds, add $install/share/icons to Qt's icon theme search path
+    if it does not already contain it.
 
 1.5.2
 -----

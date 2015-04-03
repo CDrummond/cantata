@@ -54,6 +54,7 @@ private Q_SLOTS:
     void nameChanged();
     void basicDirChanged();
     void topLevelChanged();
+    void toggleOptions();
 
 private:
     void setDetails(const MPDConnectionDetails &details);
@@ -62,9 +63,10 @@ private:
 
 private:
     QList<Collection> collections;
-    bool haveBasicCollection;
     Collection prevBasic;
+    bool haveBasicCollection;
     bool isCurrentConnection;
+    bool allOptions;
     int prevIndex;
 };
 

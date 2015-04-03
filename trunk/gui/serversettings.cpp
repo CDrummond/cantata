@@ -79,6 +79,8 @@ class CollectionNameValidator : public QValidator
 ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)
     , haveBasicCollection(false)
+    , isCurrentConnection(false)
+    , allOptions(true) // will be toggled
     , prevIndex(0)
 {
     setupUi(this);
@@ -116,6 +118,10 @@ ServerSettings::ServerSettings(QWidget *p)
     #ifdef Q_OS_MAC
     expandingSpacer->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
     #endif
+
+    toggleOptions();
+    connect(settingsLevelButton, SIGNAL(clicked()), SLOT(toggleOptions()));
+    connect(basicSettingsLevelButton, SIGNAL(clicked()), SLOT(toggleOptions()));
 }
 
 void ServerSettings::load()
@@ -320,6 +326,27 @@ void ServerSettings::basicDirChanged()
 void ServerSettings::topLevelChanged()
 {
     topLevelNoteLabel->setOn(0==stackedWidget->currentIndex() && !topLevel->text().trimmed().isEmpty());
+}
+
+void ServerSettings::toggleOptions()
+{
+    allOptions=!allOptions;
+    settingsLevelButton->setText(allOptions ? i18n("Show Basic Options <<") : i18n("Show All Options >>"));
+    basicSettingsLevelButton->setText(allOptions ? i18n("Show Basic Options <<") : i18n("Show All Options >>"));
+    coverName->setVisible(allOptions);
+    coverNameLabel->setVisible(allOptions);
+    coverNameNoteLabel->setVisible(allOptions);
+    topLevel->setVisible(allOptions);
+    topLevelLabel->setVisible(allOptions);
+    topLevelNoteLabel->setVisible(allOptions);
+    basicCoverName->setVisible(allOptions);
+    basicCoverNameLabel->setVisible(allOptions);
+    basicCoverNameNoteLabel->setVisible(allOptions);
+    if (streamUrlNoteLabel) {
+        streamUrl->setVisible(allOptions);
+        streamUrlLabel->setVisible(allOptions);
+        streamUrlNoteLabel->setVisible(allOptions);
+    }
 }
 
 QString ServerSettings::generateName(int ignore) const

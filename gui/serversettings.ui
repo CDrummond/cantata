@@ -214,7 +214,7 @@
        <item row="2" column="0" colspan="2">
         <widget class="NoteLabel" name="musicFolderNoteLabel">
          <property name="text">
-          <string>The 'Music folder' setting is used to lookup cover-art. If you also have write permissions to this folder (and it's sub-folders), then Cantata will save any downloaded covers into the respective album folder.</string>
+          <string>The 'Music folder' setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it's sub-folders), then Cantata will save any downloaded covers into the respective album folder.</string>
          </property>
         </widget>
        </item>

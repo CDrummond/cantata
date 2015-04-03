@@ -36,6 +36,8 @@
     artist.
 23. For Linux builds, if system tray icon is null (becasue QIcon cannot find
     it) then add icon files manually.
+24. Hide cover, HTTP stream, and top-level folder options under a 'Show All
+    Options' button.
 
 1.5.2
 -----

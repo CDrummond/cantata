@@ -44,7 +44,7 @@ public:
     bool haveUnSelectedItems() const;
     void startDrag(Qt::DropActions supportedActions) { TreeView::drag(supportedActions, this, selectedIndexes()); }
     void mouseReleaseEvent(QMouseEvent *event);
-    QModelIndexList selectedIndexes() const { return selectedIndexes(false); }
+    QModelIndexList selectedIndexes() const { return selectedIndexes(true); }
     QModelIndexList selectedIndexes(bool sorted) const;
     virtual void setModel(QAbstractItemModel *m);
     void addDefaultAction(QAction *act);

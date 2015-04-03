@@ -39,6 +39,7 @@
 24. Hide cover, HTTP stream, and top-level folder options under a 'Show All
     Options' button.
 25. Allow local socket path to start with ~
+26. Ensure consistent order when adding albums as per adding artists.
 
 1.5.2
 -----

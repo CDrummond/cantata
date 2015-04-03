@@ -22,6 +22,7 @@
  */
 
 #include "trayitem.h"
+#include "config.h"
 #ifdef QT_QTDBUS_FOUND
 #include "dbus/notify.h"
 #endif
@@ -184,7 +185,20 @@ void TrayItem::setup()
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->quitAction);
     trayItem->setContextMenu(trayItemMenu);
-    trayItem->setIcon(QIcon::fromTheme(QIcon::hasThemeIcon("cantata-panel") ? "cantata-panel" : "cantata"));
+    QIcon icon=QIcon::fromTheme(QIcon::hasThemeIcon("cantata-panel") ? "cantata-panel" : "cantata");
+    #if !defined Q_OS_MAC && !defined Q_OS_WIN
+    // Bug: 660 If installed to non-standard folder, QIcon::fromTheme does not seem to find icon. Therefore
+    // add icon files here...
+    if (icon.isNull()) {
+        QStringList sizes=QStringList() << "16" << "22" << "24" << "32" << "48" << "64";
+        foreach (const QString &s, sizes) {
+            icon.addFile(QLatin1String(ICON_INSTALL_PREFIX "/")+s+QLatin1Char('x')+s+QLatin1String("/apps/cantata.png"));
+        }
+
+        icon.addFile(QLatin1String(ICON_INSTALL_PREFIX "/scalable/apps/cantata.svg"));
+    }
+    #endif
+    trayItem->setIcon(icon);
     trayItem->setToolTip(i18n("Cantata"));
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));

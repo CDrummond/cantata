@@ -131,7 +131,7 @@
         <item>
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music. MPD may be started either system-wide, or on a per-user basis.&lt;br/&gt;&lt;br/&gt;Please select how you would like to have Cantata initially connect to (or startup) MPD:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music. MPD may be started either system-wide, or on a per-user basis.&lt;br/&gt;&lt;br/&gt;Please select how you would like to have Cantata initially connect to (or startup) MPD:&lt;/p&gt;</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -143,22 +143,6 @@
            <set>Qt::NoTextInteraction</set>
           </property>
          </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_15">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>16</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item>
          <widget class="QGroupBox" name="groupBox">

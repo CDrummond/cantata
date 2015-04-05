@@ -925,6 +925,12 @@ Cantata contains code/icons from:
 16. Windows
 ===========
 
+Icon created with:
+    convert cantata16.png cantata32.png cantata48.png cantata64.png cantata128.png cantata256.png cantata.ico
+
+cantata128.png and cantata256.png create from cantata.svg
+
+
 Qt4 Build
 ---------
 

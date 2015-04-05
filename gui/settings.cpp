@@ -824,10 +824,10 @@ int Settings::menu()
 
 bool Settings::touchFriendly()
 {
-    #ifdef Q_OS_MAC // No touch screen Macs?
-    return false;
-    #else
+    #ifdef ENABLE_TOUCH_SUPPORT
     return cfg.get("touchFriendly", false);
+    #else
+    return false;
     #endif
 }
 
@@ -1378,7 +1378,11 @@ void Settings::saveShowMenubar(bool v)
 
 void Settings::saveTouchFriendly(bool v)
 {
+    #ifdef ENABLE_TOUCH_SUPPORT
     cfg.set("touchFriendly", v);
+    #else
+    Q_UNUSED(v)
+    #endif
 }
 
 void Settings::saveFilteredOnly(bool v)

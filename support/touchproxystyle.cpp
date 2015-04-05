@@ -65,6 +65,7 @@ static void drawSpinButton(QPainter *painter, const QRect &r, const QColor &col,
     painter->restore();
 }
 
+#ifdef ENABLE_TOUCH_SUPPORT
 class ComboItemDelegate : public QStyledItemDelegate
 {
 public:
@@ -158,6 +159,7 @@ public:
     }
     QComboBox *combo;
 };
+#endif
 
 TouchProxyStyle::TouchProxyStyle(int modView, bool touchSpin, bool gtkOverlayStyleScrollbar)
     : touchStyleSpin(touchSpin)
@@ -489,6 +491,7 @@ void TouchProxyStyle::polish(QWidget *widget)
         }
     }
 
+    #ifdef ENABLE_TOUCH_SUPPORT
     if (Utils::touchFriendly()) {
         if (qobject_cast<QAbstractScrollArea *>(widget)) {
             FlickCharm::self()->activateOn(widget);
@@ -497,5 +500,6 @@ void TouchProxyStyle::polish(QWidget *widget)
             combo->setItemDelegate(new ComboItemDelegate(combo));
         }
     }
+    #endif
     ProxyStyle::polish(widget);
 }

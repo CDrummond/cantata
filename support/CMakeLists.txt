@@ -12,12 +12,17 @@ endif (ENABLE_QT5)
 add_library(support-core STATIC ${SUPPORT_CORE_MOC_SRCS} ${SUPPORT_CORE_SRCS})
     
 if (NOT ENABLE_UBUNTU)
-    set(SUPPORT_SRCS icon.cpp fancytabwidget.cpp messagewidget.cpp buddylabel.cpp action.cpp actioncollection.cpp flickcharm.cpp
-        configuration.cpp lineedit.cpp gtkstyle.cpp spinner.cpp messagebox.cpp inputdialog.cpp thread.cpp squeezedtextlabel.cpp
-        proxystyle.cpp touchproxystyle.cpp pagewidget.cpp combobox.cpp configdialog.cpp)
+    set (SUPPORT_SRCS icon.cpp fancytabwidget.cpp messagewidget.cpp buddylabel.cpp action.cpp actioncollection.cpp lineedit.cpp
+         configuration.cpp gtkstyle.cpp spinner.cpp messagebox.cpp inputdialog.cpp thread.cpp squeezedtextlabel.cpp proxystyle.cpp
+         touchproxystyle.cpp pagewidget.cpp combobox.cpp configdialog.cpp)
 
-    set(SUPPORT_MOC_HDRS fancytabwidget.h messagewidget.h inputdialog.h pagewidget.h  action.h actioncollection.h flickcharm.h
-        configdialog.h)
+    set(SUPPORT_MOC_HDRS fancytabwidget.h messagewidget.h inputdialog.h pagewidget.h action.h actioncollection.h configdialog.h)
+
+    if (ENABLE_TOUCH_SUPPORT)
+        set(SUPPORT_SRCS ${SUPPORT_SRCS} flickcharm.cpp)
+        set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} flickcharm.h)
+    endif (ENABLE_TOUCH_SUPPORT)
+
     if (ENABLE_QT5)
         set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} combobox.h)
     endif (ENABLE_QT5)

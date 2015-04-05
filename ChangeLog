@@ -40,7 +40,8 @@
     Options' button.
 25. Allow local socket path to start with ~
 26. Ensure consistent order when drag'n'drop from list views as per tree views.
-27. Remove touch friendly setting from OSX builds - no touch screen Macs?
+27. Remove touch friendly setting from builds unless -DENABLE_TOUCH_SUPPORT=ON
+    is passed to CMake.
 
 1.5.2
 -----

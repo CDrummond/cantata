@@ -178,11 +178,11 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playlistsViewChanged()));
     connect(playQueueView, SIGNAL(currentIndexChanged(int)), SLOT(playQueueViewChanged()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
-    #ifdef Q_OS_MAC // No touch screen Macs?
+    #ifdef ENABLE_TOUCH_SUPPORT
+    connect(touchFriendly, SIGNAL(toggled(bool)), SLOT(touchFriendlyChanged()));
+    #else
     REMOVE(touchFriendly)
     REMOVE(touchFriendlyNoteLabel)
-    #else
-    connect(touchFriendly, SIGNAL(toggled(bool)), SLOT(touchFriendlyChanged()));
     #endif
     connect(views, SIGNAL(itemChanged(QListWidgetItem*)), SLOT(viewItemChanged(QListWidgetItem*)));
 

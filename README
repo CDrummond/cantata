@@ -294,6 +294,41 @@ If configured to 'Cache scaled covers', then the resized cover (as displayed)
 will be saved as a PNG within covers-scaled.
 
 
+For composer images:
+
+...if configured to 'Cache scaled covers', Cantata will check its scaled-covers
+   cache folder (~/.cache/cantata/covers-scaled/SIZE) for:
+
+1. ${composer}.png
+
+...if MPD folder exists, is not specified as a http URL, and is readable, then
+   cantata will look for the following within the folder containing the song:
+
+2. composer.jpg
+3. composer.png
+
+...the above will be repeated for the parent folder
+
+...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
+
+4. ${composer}.jpg
+5. ${composer}.png
+
+...if the MPD folder was specified as a http URL
+
+6. ${url}/${dirFromFile}/composer.jpg
+7. ${url}/${dirFromFile}/composer.png
+
+...the above will be repeated for the parent folder
+
+Downloaded images will be saved as composer.jpg/png, within the artist folder
+if the folder hierarchy is 2 levels (artist/album/) and the user has write
+permissions. If not, then they will be saved in Cantata's cache folder.
+
+If configured to 'Cache scaled covers', then the resized cover (as displayed)
+will be saved as a PNG within covers-scaled.
+
+
 For context view backdrops:
 
 ...if MPD folder exists, is not specified as a http URL, and is readable, OR

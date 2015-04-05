@@ -475,7 +475,7 @@ void OnlineServicesModel::tooltipUpdated(QAction *act)
 void OnlineServicesModel::coverLoaded(const Song &song, int size)
 {
     Q_UNUSED(size)
-    if (song.isArtistImageRequest() || !song.isFromOnlineService()) {
+    if (song.isArtistImageRequest() || !song.isFromOnlineService() || song.isComposerImageRequest()) {
         return;
     }
 

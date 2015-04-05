@@ -758,7 +758,7 @@ void GroupedView::dropEvent(QDropEvent *event)
 
 void GroupedView::coverLoaded(const Song &song, int size)
 {
-    if (filterActive || !isVisible() || size!=constCoverSize || song.isArtistImageRequest()) {
+    if (filterActive || !isVisible() || size!=constCoverSize || song.isArtistImageRequest() || song.isComposerImageRequest()) {
         return;
     }
     quint32 count=model()->rowCount();

@@ -192,6 +192,7 @@ Song MusicLibraryItemArtist::coverSong() const
                 song.albumartist=firstSong->song().albumArtist();
             //}
             song.genre=firstSong->song().genre;
+            song.setComposer(firstSong->song().composer());
         }
     }
     if (!m_actualArtist.isEmpty() && Song::isComposerGenre(song.genre)) {

@@ -253,8 +253,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
 
     if (Cantata::Role_ListImage==role && artistImages) {
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
-        return MusicLibraryItem::Type_Album==item->itemType() ||
-                (MusicLibraryItem::Type_Artist==item->itemType() && !static_cast<MusicLibraryItemArtist *>(item)->isComposer());
+        return MusicLibraryItem::Type_Album==item->itemType() || MusicLibraryItem::Type_Artist==item->itemType();
     }
 
     return MusicModel::data(index, role);
@@ -741,7 +740,7 @@ void MusicLibraryModel::coverLoaded(const Song &song, int size)
     if (song.isCdda() || song.file.startsWith("http://") || song.name().startsWith("http://")) {
         return;
     }
-    if (song.isArtistImageRequest()) {
+    if (song.isArtistImageRequest() || song.isComposerImageRequest()) {
         MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
         if (artistItem) {
             QModelIndex idx=index(artistItem->row(), 0, QModelIndex());

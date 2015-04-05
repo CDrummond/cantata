@@ -824,7 +824,11 @@ int Settings::menu()
 
 bool Settings::touchFriendly()
 {
+    #ifdef Q_OS_MAC // No touch screen Macs?
+    return false;
+    #else
     return cfg.get("touchFriendly", false);
+    #endif
 }
 
 bool Settings::filteredOnly()

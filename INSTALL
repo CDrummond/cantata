@@ -94,6 +94,11 @@ The following options may be passed to CMake:
         Podcasts)
         Default: ON    
 
+    -DENABLE_TOUCH_SUPPORT=ON
+        Enable support for making Cantata more touch-friendly. Currently only
+        really works under Windows.
+        Default: Windows:ON, Others:OFF
+
 
     Specific to Qt-only builds::
 

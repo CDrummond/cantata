@@ -132,8 +132,13 @@ namespace Utils
         Other
     };
     extern Desktop currentDe();
+    #ifdef ENABLE_TOUCH_SUPPORT
     extern void setTouchFriendly(bool t);
     extern bool touchFriendly();
+    #else
+    inline void setTouchFriendly(bool) { }
+    inline bool touchFriendly() { return false; }
+    #endif
     extern QPainterPath buildPath(const QRectF &r, double radius);
 }
 

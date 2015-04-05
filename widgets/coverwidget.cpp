@@ -141,6 +141,11 @@ public:
             return;
         }
         int size=height();
+        #ifndef Q_OS_MAC
+        if (style()->pixelMetric(QStyle::PM_ToolBarFrameWidth)==0) {
+            size-=constBorder*2;
+        }
+        #endif
         int origSize=size;
         double pixRatio=1.0;
         #if QT_VERSION >= 0x050100

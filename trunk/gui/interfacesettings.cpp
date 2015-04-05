@@ -178,7 +178,12 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playlistsViewChanged()));
     connect(playQueueView, SIGNAL(currentIndexChanged(int)), SLOT(playQueueViewChanged()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
+    #ifdef Q_OS_MAC // No touch screen Macs?
+    REMOVE(touchFriendly)
+    REMOVE(touchFriendlyNoteLabel)
+    #else
     connect(touchFriendly, SIGNAL(toggled(bool)), SLOT(touchFriendlyChanged()));
+    #endif
     connect(views, SIGNAL(itemChanged(QListWidgetItem*)), SLOT(viewItemChanged(QListWidgetItem*)));
 
     #ifdef ENABLE_KDE_SUPPORT
@@ -310,7 +315,9 @@ void InterfaceSettings::load()
     if (retinaSupport) {
         retinaSupport->setChecked(Settings::self()->retinaSupport());
     }
-    touchFriendly->setChecked(Settings::self()->touchFriendly());
+    if (touchFriendly) {
+        touchFriendly->setChecked(Settings::self()->touchFriendly());
+    }
     showStopButton->setChecked(Settings::self()->showStopButton());
     showCoverWidget->setChecked(Settings::self()->showCoverWidget());
     showRatingWidget->setChecked(Settings::self()->showRatingWidget());
@@ -401,7 +408,9 @@ void InterfaceSettings::save()
     if (retinaSupport) {
         Settings::self()->saveRetinaSupport(retinaSupport->isChecked());
     }
-    Settings::self()->saveTouchFriendly(touchFriendly->isChecked());
+    if (touchFriendly) {
+        Settings::self()->saveTouchFriendly(touchFriendly->isChecked());
+    }
     Settings::self()->saveShowStopButton(showStopButton->isChecked());
     Settings::self()->saveShowCoverWidget(showCoverWidget->isChecked());
     Settings::self()->saveShowRatingWidget(showRatingWidget->isChecked());

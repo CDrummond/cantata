@@ -138,7 +138,8 @@ Song LibraryPage::coverRequest() const
         if (!songs.isEmpty()) {
             Song s=songs.at(0);
 
-            if (MusicLibraryItem::Type_Artist==static_cast<MusicLibraryItem *>(idx.internalPointer())->itemType()) {
+            if (MusicLibraryItem::Type_Artist==static_cast<MusicLibraryItem *>(idx.internalPointer())->itemType() &&
+                !static_cast<MusicLibraryItemArtist *>(idx.internalPointer())->isComposer()) {
                 s.setArtistImageRequest();
             }
             return s;
@@ -313,8 +314,10 @@ void LibraryPage::controlActions()
     #endif // TAGLIB_FOUND
 
     if (1==selected.count()) {
-        MusicLibraryItem::Type type=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer())->itemType();
-        StdActions::self()->setCoverAction->setEnabled(MusicLibraryItem::Type_Artist==type || MusicLibraryItem::Type_Album==type);
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
+        MusicLibraryItem::Type type=item->itemType();
+        StdActions::self()->setCoverAction->setEnabled((MusicLibraryItem::Type_Artist==type && !static_cast<MusicLibraryItemArtist *>(item)->isComposer()) ||
+                                                        MusicLibraryItem::Type_Album==type);
     } else {
         StdActions::self()->setCoverAction->setEnabled(false);
     }

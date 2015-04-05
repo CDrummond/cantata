@@ -469,7 +469,7 @@ void AlbumsModel::coverLoaded(const Song &song, int s)
     #ifdef ENABLE_UBUNTU
     Q_UNUSED(song)
     #else
-    if (!song.isArtistImageRequest()) {
+    if (!song.isArtistImageRequest() && !song.isComposerImageRequest()) {
         QList<AlbumItem *>::Iterator it=items.begin();
         QList<AlbumItem *>::Iterator end=items.end();
         const QString &albumArtist=song.albumArtist();

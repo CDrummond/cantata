@@ -58,12 +58,11 @@ public:
 
     struct Job
     {
-        Job(const Song &s, const QString &d, bool a=false)
-            : song(s), filePath(s.filePath()), dir(d), isArtist(a), type(JobLastFm), level(0) { }
+        Job(const Song &s, const QString &d)
+            : song(s), filePath(s.filePath()), dir(d), type(JobLastFm), level(0) { }
         Song song;
         QString filePath;
         QString dir;
-        bool isArtist;
         JobType type;
         int level;
     };
@@ -79,6 +78,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void cover(const Song &song, const QImage &img, const QString &file);
     void artistImage(const Song &song, const QImage &img, const QString &file);
+    void composerImage(const Song &song, const QImage &img, const QString &file);
 
 private:
     bool downloadViaHttp(Job &job, JobType type);
@@ -196,6 +196,7 @@ public:
     static const QLatin1String constFileName;
     static const QLatin1String constCddaCoverDir;
     static const QLatin1String constArtistImage;
+    static const QLatin1String constComposerImage;
     static const QString constCoverInTagPrefix;
 
     static Covers * self();
@@ -206,6 +207,7 @@ public:
     static QString encodeName(QString name);
     static QString albumFileName(const Song &song);
     static QString artistFileName(const Song &song);
+    static QString composerFileName(const Song &song);
     static QString fixArtist(const QString &artist);
     static bool isJpg(const QByteArray &data);
     static bool isPng(const QByteArray &data);
@@ -250,6 +252,7 @@ Q_SIGNALS:
     void cover(const Song &song, const QImage &img, const QString &file);
     void coverUpdated(const Song &song, const QImage &img, const QString &file);
     void artistImage(const Song &song, const QImage &img, const QString &file);
+    void composerImage(const Song &song, const QImage &img, const QString &file);
     void coverRetrieved(const Song &song);
 
 private Q_SLOTS:
@@ -257,6 +260,7 @@ private Q_SLOTS:
     void loaded(const QList<LoadedCover> &covers);
     void coverDownloaded(const Song &song, const QImage &img, const QString &file);
     void artistImageDownloaded(const Song &song, const QImage &img, const QString &file);
+    void composerImageDownloaded(const Song &song, const QImage &img, const QString &file);
 
 private:
     QPixmap * defaultPix(const Song &song, int size, int origSize);
@@ -267,6 +271,7 @@ private:
     bool updateCache(const Song &song, const QImage &img, bool dummyEntriesOnly);
     void gotAlbumCover(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
     void gotArtistImage(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
+    void gotComposerImage(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
     QString getFilename(const Song &s);
 
 private:

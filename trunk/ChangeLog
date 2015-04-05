@@ -42,6 +42,7 @@
 26. Ensure consistent order when drag'n'drop from list views as per tree views.
 27. Remove touch friendly setting from builds unless -DENABLE_TOUCH_SUPPORT=ON
     is passed to CMake.
+28. Show composer images - see README for details.
 
 1.5.2
 -----

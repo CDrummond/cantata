@@ -1566,7 +1566,7 @@ Covers::Image Covers::locateImage(const Song &song)
         QString artistFile=artistFileName(song);
         QString basicArtist=song.basicArtist();
         coverFileNames=QStringList() << basicArtist+".jpg" << basicArtist+".png" << artistFile+".jpg" << artistFile+".png";
-    } if (song.isComposerImageRequest()) {
+    } else if (song.isComposerImageRequest()) {
         QString composerFile=composerFileName(song);
         coverFileNames=QStringList() << composerFile+".jpg" << composerFile+".png";
     } else {

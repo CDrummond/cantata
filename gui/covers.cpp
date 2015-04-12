@@ -960,10 +960,20 @@ QHash<NetworkJob *, CoverDownloader::Job>::Iterator CoverDownloader::findJob(con
 {
     QHash<NetworkJob *, Job>::Iterator it(jobs.begin());
     QHash<NetworkJob *, Job>::Iterator end(jobs.end());
+    bool isComposer=job.song.isComposerImageRequest();
+    bool isArtist=job.song.isArtistImageRequest();
+    bool isCover=!isComposer && !isArtist;
 
     for (; it!=end; ++it) {
-        if ( ((*it).song.isComposerImageRequest()==job.song.isComposerImageRequest() && (*it).song.composer()==job.song.composer()) ||
-             ((*it).song.isArtistImageRequest()==job.song.isArtistImageRequest() && (*it).song.albumArtist()==job.song.albumArtist() && (*it).song.album==job.song.album) ) {
+        if ((*it).song.isComposerImageRequest()) {
+            if (isComposer && (*it).song.composer()==job.song.composer()) {
+                return it;
+            }
+        } else if ((*it).song.isArtistImageRequest()) {
+            if (isArtist && (*it).song.albumArtist()==job.song.albumArtist()) {
+                return it;
+            }
+        } else if (isCover && (*it).song.albumArtist()==job.song.albumArtist() && (*it).song.album==job.song.album) {
             return it;
         }
     }

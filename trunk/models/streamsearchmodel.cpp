@@ -48,7 +48,7 @@ StreamSearchModel::StreamSearchModel(QObject *parent)
     , unmatchedStrings(0)
     , radioTimeSearchUrl("http://opml.radiotime.com/Search.ashx")
     , shoutCastSearchUrl(QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist"))
-    , dirbleSearchUrl(QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v1/search/apikey/")+StreamsModel::constDirbleApiKey+QLatin1String("/search/"))
+    , dirbleSearchUrl(QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/search/"))
 {
 }
 
@@ -320,6 +320,7 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
     }
     case Dirble:
         searchUrl=QUrl(dirbleSearchUrl+searchTerm);
+        query.addQueryItem("token", StreamsModel::constDirbleApiKey);
         break;
     }
 

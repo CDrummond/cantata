@@ -43,6 +43,7 @@
 27. Remove touch friendly setting from builds unless -DENABLE_TOUCH_SUPPORT=ON
     is passed to CMake.
 28. Show composer images - see README for details.
+29. Dirble v2 API.
 
 1.5.2
 -----

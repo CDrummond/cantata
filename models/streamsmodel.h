@@ -145,7 +145,6 @@ public:
         DirbleCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
                               const QString &cn=QString(), const QString &bn=QString())
             : CategoryItem(u, n, p, i, cn, bn) { }
-        NetworkJob * fetchSecondardyUrl();
     };
 
     struct ListenLiveCategoryItem : public CategoryItem

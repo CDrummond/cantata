@@ -100,7 +100,7 @@ static const QString constDiChannelListUrl=QLatin1String("http://")+constDiChann
 static const QString constDiStdUrl=QLatin1String("http://%1/public3/%2.pls");
 
 static QString constShoutCastUrl=QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/genre/primary?f=xml&k=")+StreamsModel::constShoutCastApiKey;
-static QString constDirbleUrl=QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v1/primaryCategories/apikey/")+StreamsModel::constDirbleApiKey;
+static QString constDirbleUrl=QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/categories/primary?token=")+StreamsModel::constDirbleApiKey;
 
 static const QLatin1String constBookmarksDir=QLatin1String("bookmarks");
 
@@ -502,21 +502,6 @@ NetworkJob * StreamsModel::ShoutCastCategoryItem::fetchSecondardyUrl()
         url.setQuery(query);
         #endif
 
-        QNetworkRequest req(url);
-        addHeaders(req);
-        NetworkJob *job=NetworkAccessManager::self()->get(req);
-        job->setProperty(constOrigUrlProperty, url.toString());
-        return job;
-    }
-    return 0;
-}
-
-NetworkJob * StreamsModel::DirbleCategoryItem::fetchSecondardyUrl()
-{
-    if (url!=constDirbleUrl) {
-        // Get stations...
-        QString catId=url.split("/", QString::SkipEmptyParts).last();
-        QUrl url(QLatin1String("http://")+constDirbleHost+QLatin1String("/v1/stations/apikey/")+constDirbleApiKey+QLatin1String("/id/")+catId);
         QNetworkRequest req(url);
         addHeaders(req);
         NetworkJob *job=NetworkAccessManager::self()->get(req);
@@ -1684,7 +1669,7 @@ QList<StreamsModel::Item *> StreamsModel::parseShoutCastStations(QXmlStreamReade
 
 QList<StreamsModel::Item *> StreamsModel::parseDirbleResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl)
 {
-    if (origUrl.contains("/v1/stations/apikey/")) {
+    if (origUrl.contains("/v2/category/") && origUrl.contains("/stations")) {
         return parseDirbleStations(dev, cat);
     }
     QList<Item *> newItems;
@@ -1694,12 +1679,12 @@ QList<StreamsModel::Item *> StreamsModel::parseDirbleResponse(QIODevice *dev, Ca
     QVariantList data = QJson::Parser().parse(dev->readAll()).toList();
     #endif
 
-    // Get categories...
+    // Get categories...::f
     if (!data.isEmpty()) {
         foreach (const QVariant &d, data) {
             QVariantMap map = d.toMap();
-            newItems.append(new DirbleCategoryItem(QLatin1String("http://")+constDirbleHost+QLatin1String("/v1/childCategories/apikey/")+constDirbleApiKey+
-                                                   QLatin1String("/primaryid/")+map["id"].toString(), map["name"].toString(), cat));
+            newItems.append(new DirbleCategoryItem(QLatin1String("http://")+constDirbleHost+QLatin1String("/v2/category/")+map["id"].toString()+
+                                                   QLatin1String("/stations?token=")+StreamsModel::constDirbleApiKey, map["title"].toString(), cat));
         }
     }
     return newItems;
@@ -1714,12 +1699,28 @@ QList<StreamsModel::Item *> StreamsModel::parseDirbleStations(QIODevice *dev, Ca
     QVariantList data = QJson::Parser().parse(dev->readAll()).toList();
     #endif
 
+    QSet<QString> added;
     foreach (const QVariant &d, data) {
         QVariantMap map = d.toMap();
         QString name=map["name"].toString().trimmed().simplified();
-        QString url=map["streamurl"].toString().trimmed().simplified();
-        if (!name.isEmpty() && !url.isEmpty()) {
-            newItems.append(new Item(url, name, cat, map["bitrate"].toString()));
+        if (!name.isEmpty()) {
+            QVariantList streams=map["streams"].toList();
+            int bitrate=0;
+            QString url;
+            foreach (const QVariant &s, streams) {
+                QVariantMap streamMap=s.toMap();
+                int br=streamMap["bitrate"].toInt();
+                QString u=streamMap["stream"].toString().trimmed().simplified();
+                if (br>bitrate && !u.isEmpty()) {
+                    bitrate=br;
+                    url=u;
+                }
+            }
+
+            if (!url.isEmpty() && !added.contains(url)) {
+                added.insert(url);
+                newItems.append(new Item(url, name, cat, QString::number(bitrate)));
+            }
         }
     }
     return newItems;

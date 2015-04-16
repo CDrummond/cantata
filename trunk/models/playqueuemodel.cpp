@@ -1308,7 +1308,7 @@ void PlayQueueModel::removeDuplicates()
 {
     QMap<QString, QList<Song> > map;
     foreach (const Song &song, songs) {
-        map[song.artistSong()].append(song);
+        map[song.albumKey()+"-"+song.artistSong()].append(song);
     }
 
     QList<qint32> toRemove;

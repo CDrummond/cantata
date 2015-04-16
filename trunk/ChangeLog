@@ -44,6 +44,8 @@
     is passed to CMake.
 28. Show composer images - see README for details.
 29. Dirble v2 API.
+30. When removing duplicates, take album into account as well as artist and
+    title.
 
 1.5.2
 -----

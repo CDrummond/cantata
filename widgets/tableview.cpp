@@ -100,7 +100,7 @@ TableView::TableView(const QString &cfgName, QWidget *parent, bool menuAlwaysAll
 
 void TableView::setModel(QAbstractItemModel *m)
 {
-    if (itemDelegate()) {
+    if (dynamic_cast<TableViewItemDelegate *>(itemDelegate())) {
         itemDelegate()->deleteLater();
     }
     bool ok=false;

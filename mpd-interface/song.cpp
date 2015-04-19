@@ -410,6 +410,7 @@ void Song::clear()
 }
 
 const QLatin1Char Song::constGenreSep(',');
+const QLatin1Char Song::constFieldSep('\001');
 
 void Song::addGenre(const QString &g)
 {
@@ -442,7 +443,7 @@ QString Song::entryName() const
         return file;
     }
 
-    return i18nc("Song\nArtist\nAlbum", "%1\n%2\n%3", title, artist, album);
+    return title+constFieldSep+artist+constFieldSep+album;
 }
 
 QString Song::artistOrComposer() const

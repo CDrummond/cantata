@@ -426,7 +426,7 @@ public:
             return;
         }
 
-        QStringList text=index.data(Qt::DisplayRole).toString().split("\n");
+        QStringList text=index.data(Qt::DisplayRole).toString().split(Song::constFieldSep);
         bool gtk=GtkStyle::isActive();
         bool rtl = QApplication::isRightToLeft();
         bool selected=option.state&QStyle::State_Selected;

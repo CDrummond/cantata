@@ -75,7 +75,6 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     view->addAction(renamePlaylistAction);
     view->addAction(StdActions::self()->removeAction);
     view->addAction(removeDuplicatesAction);
-    view->setUniformRowHeights(true);
     view->setAcceptDrops(true);
     view->setDragDropOverwriteMode(false);
     view->setDragDropMode(QAbstractItemView::DragDrop);

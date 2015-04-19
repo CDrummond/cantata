@@ -409,10 +409,9 @@ public:
         if (index.data(Cantata::Role_ListImage).toBool()) {
             sz.setHeight(qMax(sz.height(), listCoverSize));
         }
-        if (Utils::touchFriendly()) {
-            sz.setHeight(qMax(sz.height(), option.fontMetrics.height()*2));
-        }
-        return QSize(sz.width(), sz.height()+(constBorder *2));
+        int textHeight = QApplication::fontMetrics().height()*(Utils::touchFriendly() ? 1.5 : 1.25);
+        sz.setHeight(qMax(sz.height(), textHeight)+(constBorder*2));
+        return sz;
     }
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const

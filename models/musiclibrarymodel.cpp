@@ -808,7 +808,7 @@ bool MusicLibraryModel::fromXML()
 
     convertCache(cacheFileName());
     MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
-    quint32 date=root->fromXML(cacheFileName(), MPDStats::self()->dbUpdate(), &databaseTimeUnreliable);
+    quint32 date=root->fromXML(cacheFileName(), MPDStats::self()->dbUpdate(), &databaseTimeUnreliable, QString(), 0, this);
     if (!date) {
         delete root;
         return false;

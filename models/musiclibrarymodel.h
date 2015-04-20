@@ -38,7 +38,7 @@
 class QMimeData;
 class MusicLibraryItemArtist;
 
-class MusicLibraryModel : public MusicModel
+class MusicLibraryModel : public MusicModel, public MusicLibraryErrorMonitor
 {
     Q_OBJECT
 
@@ -112,12 +112,14 @@ Q_SIGNALS:
 //     void updated(const MusicLibraryItemRoot *root);
     void updateGenres(const QSet<QString> &genres);
     void checkedSongs(const QSet<Song> &songs);
+    void error(const QString &msg);
 
     // Used in Touch variant only...
     void updated();
 
 private:
     void setParentState(const QModelIndex &parent);
+    void loadError(const QString &msg) { emit error(msg); }
 
 private:
     bool mpdModel;

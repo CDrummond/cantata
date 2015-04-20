@@ -46,6 +46,7 @@
 29. Dirble v2 API.
 30. When removing duplicates, take album into account as well as artist and
     title.
+31. Show error message if parsing cache file fails.
 
 1.5.2
 -----

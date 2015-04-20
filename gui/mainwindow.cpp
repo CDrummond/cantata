@@ -331,6 +331,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(clearNewStateAction, SIGNAL(triggered()), MusicLibraryModel::self(), SLOT(clearNewState()));
     connect(clearNewStateAction, SIGNAL(triggered()), AlbumsModel::self(), SLOT(clearNewState()));
     connect(MusicLibraryModel::self(), SIGNAL(haveNewItems(bool)), clearNewStateAction, SLOT(setEnabled(bool)));
+    connect(MusicLibraryModel::self(), SIGNAL(error(QString)), this, SLOT(showError(QString)));
     clearNewStateAction->setEnabled(false);
 
     StdActions::self()->playPauseTrackAction->setEnabled(false);
@@ -1053,8 +1054,10 @@ void MainWindow::showError(const QString &message, bool showActions)
 
 void MainWindow::showInformation(const QString &message)
 {
-    messageWidget->setInformation(message);
-    messageWidget->removeAllActions();
+    if (!messageWidget->showingError()) {
+        messageWidget->setInformation(message);
+        messageWidget->removeAllActions();
+    }
 }
 
 void MainWindow::mpdConnectionStateChanged(bool connected)
@@ -1063,7 +1066,9 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
     refreshDbAction->setEnabled(connected);
     addStreamToPlayQueueAction->setEnabled(connected);
     if (connected) {
-        messageWidget->hide();
+        if (!messageWidget->showingError()) {
+            messageWidget->hide();
+        }
         if (CS_Connected!=connectedState) {
             emit playListInfo();
             emit outputs();

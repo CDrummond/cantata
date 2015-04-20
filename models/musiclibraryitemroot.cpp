@@ -411,7 +411,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     writer.writeEndDocument();
 }
 
-quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog)
+quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog, MusicLibraryErrorMonitor *em)
 {
     if (isFlat) {
         return 0;
@@ -429,7 +429,7 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
         return 0;
     }
     QXmlStreamReader reader(&compressor);
-    quint32 rv=fromXML(reader, date, dateUnreliable, baseFolder, prog);
+    quint32 rv=fromXML(reader, date, dateUnreliable, baseFolder, prog, em);
     compressor.close();
     #ifdef TIME_XML_FILE_LOADING
     qWarning() << filename << timer.elapsed();
@@ -437,7 +437,7 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
     return rv;
 }
 
-quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog)
+quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog, MusicLibraryErrorMonitor *em)
 {
     if (isFlat) {
         return 0;
@@ -463,7 +463,11 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
     while (!reader.atEnd() && (!prog || !prog->wasStopped())) {
         reader.readNext();
 
-        if (!reader.error() && reader.isStartElement()) {
+        if (reader.error()) {
+            if (em) {
+                em->loadError(i18n("Parse error loading cache file, please check your songs tags."));
+            }
+        } else if (reader.isStartElement()) {
             QString element = reader.name().toString();
             QXmlStreamAttributes attributes=reader.attributes();
 

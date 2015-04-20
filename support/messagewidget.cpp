@@ -26,6 +26,7 @@
 MessageWidget::MessageWidget(QWidget *parent)
     : KMsgWidget(parent)
     , active(false)
+    , msgType(Positive)
 {
 }
 
@@ -42,6 +43,10 @@ MessageWidget::~MessageWidget()
 
 void MessageWidget::setMessage(const QString &msg, MessageType type, bool showCloseButton)
 {
+    if (isActive() && !msg.isEmpty()) {
+        setVisible(false);
+    }
+    msgType=type;
     if (msg.isEmpty() && isVisible()) {
         setVisible(false);
         return;

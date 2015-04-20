@@ -44,6 +44,12 @@ class QXmlStreamWriter;
 class MusicLibraryItemArtist;
 class MusicModel;
 
+class MusicLibraryErrorMonitor
+{
+public:
+    virtual void loadError(const QString &) = 0;
+};
+
 class MusicLibraryProgressMonitor
 {
 public:
@@ -83,8 +89,8 @@ public:
     void updateSongFile(const Song &from, const Song &to);
     void toXML(const QString &filename, const QDateTime &date=QDateTime(), bool dateUnreliable=false, MusicLibraryProgressMonitor *prog=0) const;
     void toXML(QXmlStreamWriter &writer, const QDateTime &date=QDateTime(), bool dateUnreliable=false, MusicLibraryProgressMonitor *prog=0) const;
-    quint32 fromXML(const QString &filename, const QDateTime &date=QDateTime(), bool *dateUnreliable=0, const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0);
-    quint32 fromXML(QXmlStreamReader &reader, const QDateTime &date=QDateTime(), bool *dateUnreliable=0, const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0);
+    quint32 fromXML(const QString &filename, const QDateTime &date=QDateTime(), bool *dateUnreliable=0, const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0, MusicLibraryErrorMonitor *em=0);
+    quint32 fromXML(QXmlStreamReader &reader, const QDateTime &date=QDateTime(), bool *dateUnreliable=0, const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0, MusicLibraryErrorMonitor *em=0);
     Type itemType() const { return Type_Root; }
     void add(const QSet<Song> &songs);
     bool supportsAlbumArtistTag() const { return supportsAlbumArtist; }

@@ -52,6 +52,7 @@ public:
     bool isActive() const { return active; }
     void removeAllActions();
     void setActions(const QList<QAction *> acts);
+    bool showingError() const { return Error==msgType; }
 
 Q_SIGNALS:
     void visible(bool);
@@ -61,6 +62,7 @@ private:
 
 private:
     bool active;
+    MessageType msgType;
 };
 
 #endif

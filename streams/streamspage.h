@@ -29,10 +29,11 @@
 #include "models/streamsearchmodel.h"
 #include "models/streamsmodel.h"
 #include "gui/page.h"
+#include <QSet>
 
 class Action;
 class QAction;
-class QNetworkReply;
+class NetworkReply;
 
 class StreamsPage : public QWidget, public Ui::StreamsPage, public Page
 {
@@ -76,6 +77,7 @@ private Q_SLOTS:
     void showPreferencesPage();
     void expandFavourites();
     void addedToFavourites(const QString &name);
+    void tuneInResolved();
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
@@ -91,6 +93,7 @@ private:
     StreamsProxyModel searchProxy;
     StreamsProxyModel *proxy;
     StreamSearchModel searchModel;
+    QSet<NetworkJob *> resolveJobs;
 };
 
 #endif

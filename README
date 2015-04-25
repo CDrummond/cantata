@@ -126,7 +126,7 @@ Before reporting bugs, please check that this is not an MPD related issue with
 your system - e.g. please try recreating the issue with another MPD client,
 such as MPDroid, GMPC, etc.
 
-To report bugs please visit http://code.google.com/p/cantata
+To report bugs please visit https://github.com/CDrummond/cantata
 
 When reporting a bug, please mention the Cantata version number, the Cantata
 build type (Linux/KDE, Linux/Qt, Windows), any cmake options you specified

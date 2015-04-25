@@ -67,7 +67,7 @@ The following options may be passed to CMake:
 
     -ENABLE_LIBVLC=ON
         Enable usage of libVLC for MPD HTTP stream playback. Bug report 493
-        (https://code.google.com/p/cantata/issues/detail?id=493) contains
+        (https://github.com/CDrummond/cantata/issues/493) contains
         more information.
         Default: OFF
 

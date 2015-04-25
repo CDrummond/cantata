@@ -269,7 +269,7 @@ int main(int argc, char *argv[])
                          KAboutData::License_GPL_V3,
                          ki18n("&copy; 2011-2014 Craig Drummond"),
                          KLocalizedString(),
-                         "http://"CANTATA_URL, "craig.p.drummond@gmail.com");
+                         "https://github.com/CDrummond/cantata", "craig.p.drummond@gmail.com");
 
     aboutData.addAuthor(ki18n("Craig Drummond"), ki18n("Maintainer"), "craig.p.drummond@gmail.com");
     aboutData.addAuthor(ki18n("Piotr Wicijowski"), ki18n("UI Improvements"), "piotr.wicijowski@gmail.com");

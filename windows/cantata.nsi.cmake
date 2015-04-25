@@ -6,7 +6,7 @@
 !define VERSIONBUILD @CPACK_PACKAGE_VERSION_PATCH@@CPACK_PACKAGE_VERSION_SPIN@
 #!define HELPURL "http://..." # "Support Information" link
 #!define UPDATEURL "http://..." # "Product Updates" link
-!define ABOUTURL "http://cantata.googlecode.com" # "Publisher" link
+!define ABOUTURL "https://github.com/CDrummond/cantata" # "Publisher" link
  
 RequestExecutionLevel admin
 

@@ -35,7 +35,7 @@ class QTemporaryFile;
 class Mounter : public QObject, protected QDBusContext
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "com.googlecode.cantata.mounter")
+    Q_CLASSINFO("D-Bus Interface", "mpd.cantata.mounter")
 
 public:
     Mounter(QObject *p=0);

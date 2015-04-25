@@ -4,7 +4,7 @@
 #define MyAppName "Cantata"
 #define MyAppVersion "@CANTATA_VERSION_FULL@"
 #define MyAppPublisher "CraigD"
-#define MyAppURL "cantata.googlecode.com"
+#define MyAppURL "https://github.com/CDrummond/cantata"
 #define MyAppExeName "cantata.exe"
 
 [Setup]

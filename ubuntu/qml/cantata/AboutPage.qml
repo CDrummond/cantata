@@ -141,7 +141,7 @@ Page {
                             height: units.gu(3)
                             Label {
                                 font.bold: true
-                                text: "<a href=\"https://cantata.googlecode.com\">https://cantata.googlecode.com</a>"
+                                text: "<a href=\"https://github.com/CDrummond/cantata\">https://github.com/CDrummond/cantata</a>"
                                 onLinkActivated: Qt.openUrlExternally(link)
                             }
                         }
@@ -228,7 +228,7 @@ Page {
                             anchors.horizontalCenter: parent.horizontalCenter
                             Label {
                                 font.bold: true
-                                text: "<a href=\"https://cantata.googlecode.com\">https://cantata.googlecode.com</a>"
+                                text: "<a href=\"https://github.com/CDrummond/cantata\">https://github.com/CDrummond/cantata</a>"
                                 onLinkActivated: Qt.openUrlExternally(link)
                             }
                         }
@@ -313,7 +313,7 @@ Page {
                     Layouts.item: "link"
                     Label {
                         font.bold: true
-                        text: "<a href=\"https://cantata.googlecode.com\">https://cantata.googlecode.com</a>"
+                        text: "<a href=\"https://github.com/CDrummond/cantata\">https://github.com/CDrummond/cantata</a>"
                         onLinkActivated: Qt.openUrlExternally(link)
                     }
                 }

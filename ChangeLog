@@ -47,6 +47,8 @@
 30. When removing duplicates, take album into account as well as artist and
     title.
 31. Show error message if parsing cache file fails.
+32. Resolve TuneIn radio URL's before adding to favourites (if added via TuneIn
+    search).
 
 1.5.2
 -----

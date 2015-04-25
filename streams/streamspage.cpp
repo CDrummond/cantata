@@ -48,6 +48,7 @@
 #endif
 
 static const int constMsgDisplayTime=1500;
+static const char *constNameProperty="name";
 
 StreamsPage::StreamsPage(QWidget *p)
     : QWidget(p)
@@ -128,6 +129,11 @@ StreamsPage::StreamsPage(QWidget *p)
 
 StreamsPage::~StreamsPage()
 {
+    foreach (NetworkJob *job, resolveJobs) {
+        disconnect(job, SIGNAL(finished()), this, SLOT(tuneInResolved()));
+        job->deleteLater();
+    }
+    resolveJobs.clear();
 }
 
 void StreamsPage::focusSearch()
@@ -290,6 +296,7 @@ void StreamsPage::addBookmark()
     }
 }
 
+#include <QDebug>
 void StreamsPage::addToFavourites()
 {
     QModelIndexList selected = itemView()->selectedIndexes();
@@ -322,12 +329,37 @@ void StreamsPage::addToFavourites()
         if (urlStr.endsWith('&')) {
             urlStr=urlStr.left(urlStr.length()-1);
         }
-        if (StreamsModel::self()->addToFavourites(urlStr, item->modifiedName())) {
+        if (urlStr.startsWith(QLatin1String("http://opml.radiotime.com/Tune.ashx"))) {
+            NetworkJob *job=NetworkAccessManager::self()->get(urlStr, 5000);
+            qWarning() << "GET" << urlStr << item->modifiedName();
+            job->setProperty(constNameProperty, item->modifiedName());
+            connect(job, SIGNAL(finished()), this, SLOT(tuneInResolved()));
+            resolveJobs.insert(job);
+            added++;
+        } else if (StreamsModel::self()->addToFavourites(urlStr, item->modifiedName())) {
             added++;
         }
     }
 
     if (!added) {
+        itemView()->showMessage(i18n("Already in favorites"), constMsgDisplayTime);
+    }
+}
+
+void StreamsPage::tuneInResolved()
+{
+    NetworkJob *job=qobject_cast<NetworkJob *>(sender());
+    if (!job) {
+        return;
+    }
+    job->deleteLater();
+    if (!resolveJobs.contains(job)) {
+        return;
+    }
+    resolveJobs.remove(job);
+    QString url=job->readAll().split('\n').first();
+    QString name=job->property(constNameProperty).toString();
+    if (!url.isEmpty() && !name.isEmpty() && !StreamsModel::self()->addToFavourites(url, name)) {
         itemView()->showMessage(i18n("Already in favorites"), constMsgDisplayTime);
     }
 }

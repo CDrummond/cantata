@@ -45,7 +45,7 @@ Mounter::Mounter(QObject *p)
 {
     new MounterAdaptor(this);
     QDBusConnection bus=QDBusConnection::systemBus();
-    if (!bus.registerService("com.googlecode.cantata.mounter") || !bus.registerObject("/Mounter", this)) {
+    if (!bus.registerService("mpd.cantata.mounter") || !bus.registerObject("/Mounter", this)) {
         QTimer::singleShot(0, qApp, SLOT(quit()));
     }
 }
@@ -70,7 +70,7 @@ static QString fixPath(const QString &dir)
 }
 
 // Control via:
-//     qdbus --system com.googlecode.cantata.mounter /Mounter com.googlecode.cantata.mounter.mount smb://workgroup\user:password@host:port/path?domain=domain mountPoint uid gid
+//     qdbus --system mpd.cantata.mounter /Mounter mpd.cantata.mounter.mount smb://workgroup\user:password@host:port/path?domain=domain mountPoint uid gid
 void Mounter::mount(const QString &url, const QString &mountPoint, int uid, int gid, int pid)
 {
     if (calledFromDBus()) {
@@ -150,7 +150,7 @@ void Mounter::mount(const QString &url, const QString &mountPoint, int uid, int 
 }
 
 // Control via:
-//     qdbus --system com.googlecode.cantata.mounter /Mounter com.googlecode.cantata.mounter.umount mountPoint
+//     qdbus --system mpd.cantata.mounter /Mounter mpd.cantata.mounter.umount mountPoint
 void Mounter::umount(const QString &mountPoint, int pid)
 {
     if (calledFromDBus()) {

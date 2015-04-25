@@ -2,7 +2,7 @@
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 
 <node>
-  <interface name="com.googlecode.cantata">
+  <interface name="mpd.cantata">
     <method name="showError">
         <arg type="s" name="error" direction="in"/>
     </method>

@@ -1,10 +1,9 @@
 PROJECT(cantata)
 
 #  NOTE: If PROJECT_URL, or PROJECT_REV_URL, are changed, then cantata-dynamic, and README will need updating.
-#        dbus/com.googlecode.cantata.xml and devices/mounter/com.googlecode.cantata.mounter.xml
-#        will also need renaming/updating.
-set(PROJECT_URL "cantata.googlecode.com")
-set(PROJECT_REV_URL "com.googlecode.cantata")
+#        dbus/mpd.cantata.xml and devices/mounter/mpd.cantata.mounter.xml will also need renaming/updating.
+set(PROJECT_URL "cantata.mpd")
+set(PROJECT_REV_URL "mpd.cantata")
 
 if (WIN32)
     # For some reason I chose mpd as the organization name for Windows builds. So, for config compatability, this is
@@ -26,7 +25,7 @@ set(DEBIAN_PACKAGE_SECTION "kde4")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
 set(CPACK_PACKAGE_VERSION_MAJOR "1")
 set(CPACK_PACKAGE_VERSION_MINOR "5")
-set(CPACK_PACKAGE_VERSION_PATCH "50")
+set(CPACK_PACKAGE_VERSION_PATCH "51")
 set(CPACK_PACKAGE_VERSION_SPIN "")  # Use ".$number" - e.g. ".1"
 set(CPACK_PACKAGE_CONTACT "Craig Drummond <craig.p.drummond@gmail.com>")
 set(CANTATA_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")

@@ -83,7 +83,7 @@ bool Application::start()
     }
     loadFiles();
     // ...and activate window!
-    QDBusConnection::sessionBus().send(QDBusMessage::createMethodCall("com.googlecode.cantata", "/org/mpris/MediaPlayer2", "", "Raise"));
+    QDBusConnection::sessionBus().send(QDBusMessage::createMethodCall("mpd.cantata", "/org/mpris/MediaPlayer2", "", "Raise"));
     return false;
 }
 
@@ -92,7 +92,7 @@ void Application::loadFiles()
     QStringList args(arguments());
     if (args.count()>1) {
         args.takeAt(0);
-        QDBusMessage m = QDBusMessage::createMethodCall("com.googlecode.cantata", "/cantata", "", "load");
+        QDBusMessage m = QDBusMessage::createMethodCall("mpd.cantata", "/cantata", "", "load");
         QList<QVariant> a;
         a.append(args);
         m.setArguments(a);

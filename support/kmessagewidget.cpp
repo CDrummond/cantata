@@ -328,9 +328,15 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         }
         // There is no "information" background role in KColorScheme, use the
         // colors of highlighted items instead
+        #ifdef ENABLE_KDE_SUPPORT
         bg1 = palette().highlight().color();
         fg = palette().highlightedText().color();
         border = bg1.darker(150);
+        #else
+        bg1=QColor(0x98, 0xBC, 0xE3);
+        fg=Qt::black;
+        border = Qt::blue;
+        #endif
         break;
     case Warning:
         if (useIcon) {

@@ -43,7 +43,7 @@ MessageWidget::~MessageWidget()
 
 void MessageWidget::setMessage(const QString &msg, MessageType type, bool showCloseButton)
 {
-    if (isActive() && !msg.isEmpty()) {
+    if (isActive() && !msg.isEmpty() && type!=msgType) {
         setVisible(false);
     }
     msgType=type;

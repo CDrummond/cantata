@@ -50,6 +50,7 @@
 32. Resolve TuneIn radio URL's before adding to favourites (if added via TuneIn
     search).
 33. Use mpd.cantata for DBus service names and not com.googlecode.cantata
+34. Fix OpenBSD build.
 
 1.5.2
 -----

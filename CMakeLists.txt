@@ -5,6 +5,10 @@ PROJECT(cantata)
 set(PROJECT_URL "cantata.mpd")
 set(PROJECT_REV_URL "mpd.cantata")
 
+if (CMAKE_SYSTEM_NAME MATCHES "kOpenBSD.*|OpenBSD.*")
+    set(OPENBSD TRUE)
+endif (CMAKE_SYSTEM_NAME MATCHES "kOpenBSD.*|OpenBSD.*")
+
 if (WIN32)
     # For some reason I chose mpd as the organization name for Windows builds. So, for config compatability, this is
     # left as mpd for now...
@@ -582,10 +586,10 @@ if (TAGLIB_FOUND)
     # Cantata still links to taglib, even if external tag reader/writer is used, because JamendoService uses taglib for ID3 genres.
     set(CANTATA_LIBS ${CANTATA_LIBS} ${TAGLIB_LIBRARIES})
     include_directories(${TAGLIB_INCLUDES})
-    if (APPLE)
-        # for some reason under osx we get full path ino include/taglib?
+    if (APPLE OR OPENBSD)
+        # for some reason under osx we get full path no include/taglib?
         include_directories(${TAGLIB_INCLUDES}/..)
-    endif (APPLE)
+    endif (APPLE OR OPENBSD)
     if (NOT ENABLE_EXTERNAL_TAGS AND TAGLIB-EXTRAS_FOUND)     
         set(CANTATA_LIBS ${CANTATA_LIBS} ${TAGLIB-EXTRAS_LIBRARIES})
         include_directories(${TAGLIB-EXTRAS_INCLUDES})

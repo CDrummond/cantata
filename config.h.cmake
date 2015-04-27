@@ -45,6 +45,7 @@
 #cmakedefine QT_MAC_EXTRAS_FOUND 1
 #cmakedefine UNITY_MENU_HACK 1
 #cmakedefine ENABLE_TOUCH_SUPPORT 1
+#cmakedefine ENABLE_SIMPLE_MPD_SUPPORT 1
 
 #ifdef ENABLE_UBUNTU
 #define CANTATA_REV_URL "com.ubuntu.developer.nikwen.cantata-touch-reboot" //Sadly, it requires the com.ubuntu.developer.nikwen prefix to be published to the click store

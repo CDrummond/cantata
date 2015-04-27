@@ -27,7 +27,9 @@
 #include "support/utils.h"
 #include "support/icon.h"
 #include "widgets/icons.h"
+#ifdef ENABLE_SIMPLE_MPD_SUPPORT
 #include "mpd-interface/mpduser.h"
+#endif
 #include <QDir>
 #if QT_VERSION > 0x050000
 #include <QStandardPaths>
@@ -44,7 +46,6 @@ enum Pages {
 
 InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     : QWizard(p)
-    , singleUserSupported(MPDUser::self()->isSupported())
 {
     setupUi(this);
     connect(this, SIGNAL(currentIdChanged(int)), SLOT(pageChanged(int)));
@@ -82,9 +83,15 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     filesPage->setBackground(Icons::self()->filesIcon);
     finishedPage->setBackground(Icon("dialog-ok"));
 
-    introStack->setCurrentIndex(singleUserSupported ? 1 : 0);
-    basic->setChecked(false); //singleUserSupported);
-    advanced->setChecked(true); // !singleUserSupported);
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
+    introStack->setCurrentIndex(MPDUser::self()->isSupported() ? 1 : 0);
+    basic->setChecked(false);
+    advanced->setChecked(true);
+    #else
+    introStack->setCurrentIndex(0);
+    basic->setChecked(true);
+    advanced->setChecked(false);
+    #endif
 
     #ifndef Q_OS_WIN
     QSize sz=size();
@@ -119,10 +126,12 @@ InitialSettingsWizard::~InitialSettingsWizard()
 
 MPDConnectionDetails InitialSettingsWizard::getDetails()
 {
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     if (basic->isChecked()) {
         MPDUser::self()->setMusicFolder(basicDir->text().trimmed());
         return MPDUser::self()->details(true);
     }
+    #endif
     MPDConnectionDetails det;
     det.hostname=host->text().trimmed();
     det.port=port->value();
@@ -215,11 +224,14 @@ void InitialSettingsWizard::accept()
     Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
     Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
 
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     if (basic->isChecked()) {
         Settings::self()->saveCurrentConnection(MPDUser::constName);
         Settings::self()->saveStopOnExit(true);
         emit setDetails(MPDUser::self()->details());
-    } else {
+    } else
+    #endif
+    {
         MPDUser::self()->cleanup();
     }
     Settings::self()->save();

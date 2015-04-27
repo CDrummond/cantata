@@ -28,7 +28,9 @@
 #include "support/messagebox.h"
 #include "widgets/icons.h"
 #include "models/musiclibrarymodel.h"
+#ifdef ENABLE_SIMPLE_MPD_SUPPORT
 #include "mpd-interface/mpduser.h"
+#endif
 #include "support/utils.h"
 #include <QDir>
 #include <QComboBox>
@@ -64,6 +66,7 @@ class CoverNameValidator : public QValidator
     }
 };
 
+#ifdef ENABLE_SIMPLE_MPD_SUPPORT
 class CollectionNameValidator : public QValidator
 {
     public:
@@ -75,6 +78,7 @@ class CollectionNameValidator : public QValidator
         return input.startsWith(MPDUser::constName) ? Invalid : Acceptable;
     }
 };
+#endif
 
 ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)
@@ -139,11 +143,13 @@ void ServerSettings::load()
             prevIndex=idx;
         }
         idx++;
+        #ifdef ENABLE_SIMPLE_MPD_SUPPORT
         if (d.name==MPDUser::constName) {
             d.dir=MPDUser::self()->details().dir;
             haveBasicCollection=true;
             prevBasic=d;
         }
+        #endif
         DeviceOptions opts;
         opts.load(MPDConnectionDetails::configGroupName(d.name), true);
         collections.append(Collection(d, opts));
@@ -186,9 +192,11 @@ void ServerSettings::save()
         if (!found) {
             toAdd.append(c);
         }
+        #ifdef ENABLE_SIMPLE_MPD_SUPPORT
         if (c.details.name==MPDUser::constName) {
             prevBasic=c;
         }
+        #endif
     }
 
     foreach (const MPDConnectionDetails &c, existingInConfig) {
@@ -200,6 +208,7 @@ void ServerSettings::save()
         c.namingOpts.save(MPDConnectionDetails::configGroupName(c.details.name), true);
     }
 
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     if (!haveBasicCollection && MPDUser::self()->isSupported()) {
         MPDUser::self()->cleanup();
     }
@@ -207,16 +216,19 @@ void ServerSettings::save()
     if (current.details.name==MPDUser::constName) {
         MPDUser::self()->setDetails(current.details);
     }
+    #endif
     Settings::self()->saveCurrentConnection(current.details.name);
     MusicLibraryModel::cleanCache();
 }
 
 void ServerSettings::cancel()
 {
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     // If we are canceling any changes, then we need to restore user settings...
     if (prevBasic.details.name==MPDUser::constName) {
         MPDUser::self()->setDetails(prevBasic.details);
     }
+    #endif
 }
 
 void ServerSettings::showDetails(int index)
@@ -237,6 +249,7 @@ void ServerSettings::showDetails(int index)
 
 void ServerSettings::add()
 {
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     bool addStandard=true;
 
     if (!haveBasicCollection && MPDUser::self()->isSupported()) {
@@ -260,14 +273,17 @@ void ServerSettings::add()
         default: return;
         }
     }
-
+    #endif
     MPDConnectionDetails details;
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     if (addStandard) {
+    #endif
         details.name=generateName();
         details.port=6600;
         details.hostname=QLatin1String("localhost");
         details.dir=QLatin1String("/var/lib/mpd/music/");
         combo->addItem(details.name);
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     } else {
         details=MPDUser::self()->details(true);
         #if QT_VERSION > 0x050000
@@ -284,6 +300,7 @@ void ServerSettings::add()
         MPDUser::self()->setMusicFolder(dir);
         combo->addItem(MPDUser::translatedName());
     }
+    #endif
     removeButton->setEnabled(combo->count()>1);
     collections.append(Collection(details));
     combo->setCurrentIndex(combo->count()-1);
@@ -294,7 +311,11 @@ void ServerSettings::add()
 void ServerSettings::remove()
 {
     int index=combo->currentIndex();
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     QString cName=1==stackedWidget->currentIndex() ? MPDUser::translatedName() : name->text();
+    #else
+    QString cName=name->text();
+    #endif
     if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete '%1'?", cName),
                                                                        i18n("Delete"), StdGuiItem::del(), StdGuiItem::cancel())) {
         bool isLast=index==(combo->count()-1);
@@ -371,11 +392,13 @@ QString ServerSettings::generateName(int ignore) const
 
 void ServerSettings::setDetails(const MPDConnectionDetails &details)
 {
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     if (details.name==MPDUser::constName) {
         basicDir->setText(Utils::convertPathForDisplay(details.dir));
         basicCoverName->setText(details.coverName);
         stackedWidget->setCurrentIndex(1);
     } else {
+    #endif
         name->setText(details.name.isEmpty() ? i18n("Default") : details.name);
         host->setText(details.hostname);
         port->setValue(details.port);
@@ -387,7 +410,9 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
         #endif
         topLevel->setText(details.topLevel);
         stackedWidget->setCurrentIndex(0);
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     }
+    #endif
 }
 
 MPDConnectionDetails ServerSettings::getDetails() const
@@ -395,9 +420,11 @@ MPDConnectionDetails ServerSettings::getDetails() const
     MPDConnectionDetails details;
     if (0==stackedWidget->currentIndex()) {
         details.name=name->text().trimmed();
+        #ifdef ENABLE_SIMPLE_MPD_SUPPORT
         if (details.name==MPDUser::constName) {
             details.name=QString();
         }
+        #endif
         details.hostname=host->text().trimmed();
         details.port=port->value();
         details.password=password->text();
@@ -407,12 +434,15 @@ MPDConnectionDetails ServerSettings::getDetails() const
         details.streamUrl=streamUrl->text().trimmed();
         #endif
         details.topLevel=topLevel->text().trimmed();
-    } else {
+    }
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
+    else {
         details=MPDUser::self()->details(true);
         details.dir=Utils::convertPathFromDisplay(basicDir->text());
         details.coverName=basicCoverName->text().trimmed();
         MPDUser::self()->setMusicFolder(details.dir);
     }
+    #endif
     details.setDirReadable();
     return details;
 }

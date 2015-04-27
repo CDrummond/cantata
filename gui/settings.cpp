@@ -787,10 +787,6 @@ int Settings::mpdPoll()
     return cfg.get("mpdPoll", 0, 0, 60);
 }
 
-int Settings::mpdListSize()
-{
-    return cfg.get("mpdListSize", 10000, 100, 65535);
-}
 
 #ifndef ENABLE_KDE_SUPPORT
 QString Settings::lang()
@@ -798,11 +794,6 @@ QString Settings::lang()
     return cfg.get("lang", QString());
 }
 #endif
-
-bool Settings::alwaysUseLsInfo()
-{
-    return cfg.get("alwaysUseLsInfo", true);
-}
 
 bool Settings::showMenubar()
 {
@@ -859,11 +850,6 @@ bool Settings::infoTooltips()
 bool Settings::retinaSupport()
 {
     return cfg.get("retinaSupport", false);
-}
-
-int Settings::seekStep()
-{
-    return cfg.get("seekStep", 5, 2, 60);
 }
 
 void Settings::removeConnectionDetails(const QString &v)

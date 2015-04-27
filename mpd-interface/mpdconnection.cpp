@@ -30,10 +30,12 @@
 #include "models/streamsmodel.h"
 #ifdef ENABLE_SIMPLE_MPD_SUPPORT
 #include "mpduser.h"
+#include "gui/settings.h"
 #endif
 #include "support/localize.h"
 #include "support/utils.h"
 #include "support/globalstatic.h"
+#include "support/configuration.h"
 #include <QApplication>
 #include <QStringList>
 #include <QTimer>
@@ -42,7 +44,6 @@
 #include <QDateTime>
 #include <QPropertyAnimation>
 #include "support/thread.h"
-#include "gui/settings.h"
 #include "cuefile.h"
 #if defined Q_OS_LINUX && defined QT_QTDBUS_FOUND
 #include "dbus/powermanagement.h"
@@ -263,9 +264,10 @@ MPDConnection::MPDConnection()
     connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
     #endif
     #ifndef ENABLE_UBUNTU
-    maxFilesPerAddCommand=Settings::self()->mpdListSize();
-    alwaysUseLsInfo=Settings::self()->alwaysUseLsInfo();
-    seekStep=Settings::self()->seekStep();
+    Configuration cfg;
+    maxFilesPerAddCommand=cfg.get("mpdListSize", 10000, 100, 65535);
+    alwaysUseLsInfo=cfg.get("alwaysUseLsInfo", true);
+    seekStep=cfg.get("seekStep", 5, 2, 60);
     #endif
     connTimer=new QTimer(this);
     connect(connTimer, SIGNAL(timeout()), SLOT(getStatus()));

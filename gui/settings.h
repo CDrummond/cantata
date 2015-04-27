@@ -167,11 +167,9 @@ public:
     bool cacheScaledCovers();
     bool fetchCovers();
     int mpdPoll();
-    int mpdListSize();
     #ifndef ENABLE_KDE_SUPPORT
     QString lang();
     #endif
-    bool alwaysUseLsInfo();
     bool showMenubar();
     int menu();
     bool touchFriendly();
@@ -181,7 +179,6 @@ public:
     bool showRatingWidget();
     bool infoTooltips();
     bool retinaSupport();
-    int seekStep();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

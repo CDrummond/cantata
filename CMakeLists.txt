@@ -58,6 +58,10 @@ option(ENABLE_HTTP_SERVER "Enable internal HTTP server to play non-MPD files" ON
 option(ENABLE_DYNAMIC "Enable support for dynamic playlists" ON)
 option(ENABLE_STREAMS "Enable support for streams tab (to save favourite streams, and search for others)" ON)
 option(ENABLE_ONLINE_SERVICES "Enable support for online services (Jamendo, Magnatune, SoundCloud, and Podcasts)" ON)
+if (NOT WIN32 AND NOT APPLE AND NOT ENABLE_UBUNTU)
+    option(ENABLE_SIMPLE_MPD_SUPPORT "Enable support for simple (Cantata controlled) MPD" ON)
+endif (NOT WIN32 AND NOT APPLE AND NOT ENABLE_UBUNTU)
+
 if (WIN32 OR APPLE)
     option(ENABLE_DEVICES_SUPPORT "Enable suport for external devices" OFF)
 else (WIN32 OR APPLE)
@@ -425,7 +429,6 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS} ${CANTATA_SRCS}
     gui/settings.cpp gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
     gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp
     gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
-    mpd-interface/mpduser.cpp
     devices/deviceoptions.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/nowplayingwidget.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
@@ -458,6 +461,10 @@ set(CANTATA_UIS ${CANTATA_UIS}
     gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui gui/searchpage.ui
     context/togglelist.ui context/othersettings.ui
     widgets/itemview.ui scrobbling/scrobblingsettings.ui)
+
+if (ENABLE_SIMPLE_MPD_SUPPORT)
+     set(CANTATA_SRCS ${CANTATA_CORE_SRCS} ${CANTATA_SRCS} mpd-interface/mpduser.cpp)
+endif (ENABLE_SIMPLE_MPD_SUPPORT)
 
 if (ENABLE_UBUNTU)
     set(UBUNTU_SRCS ${CANTATA_CORE_SRCS} ubuntu/main.cpp ubuntu/backend/mpdbackend.cpp gui/plurals_qt.cpp)

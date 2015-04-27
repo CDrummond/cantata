@@ -26,6 +26,7 @@
 
 #include "ui_initialsettingswizard.h"
 #include "mpd-interface/mpdconnection.h"
+#include "config.h"
 #include <QWizard>
 
 class InitialSettingsWizard : public QWizard, public Ui::InitialSettingsWizard
@@ -49,9 +50,6 @@ private Q_SLOTS:
     void accept();
     void reject();
     void controlNextButton();
-
-private:
-    bool singleUserSupported;
 };
 
 #endif

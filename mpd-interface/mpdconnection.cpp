@@ -28,7 +28,7 @@
 #include "mpdparseutils.h"
 #include "models/musiclibraryitemroot.h"
 #include "models/streamsmodel.h"
-#ifndef ENABLE_UBUNTU
+#ifdef ENABLE_SIMPLE_MPD_SUPPORT
 #include "mpduser.h"
 #endif
 #include "support/localize.h"
@@ -200,10 +200,10 @@ MPDConnectionDetails::MPDConnectionDetails()
 
 QString MPDConnectionDetails::getName() const
 {
-    #ifdef ENABLE_UBUNTU
-    return name.isEmpty() ? i18n("Default") : name;
-    #else
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     return name.isEmpty() ? i18n("Default") : (name==MPDUser::constName ? MPDUser::translatedName() : name);
+    #else
+    return name.isEmpty() ? i18n("Default") : name;
     #endif
 }
 
@@ -296,7 +296,7 @@ void MPDConnection::start()
 
 void MPDConnection::stop()
 {
-    #ifndef ENABLE_UBUNTU
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     if (details.name==MPDUser::constName && Settings::self()->stopOnExit()) {
         MPDUser::self()->stop();
     }
@@ -517,11 +517,11 @@ void MPDConnection::reconnect()
 
 void MPDConnection::setDetails(const MPDConnectionDetails &d)
 {
-    #ifdef ENABLE_UBUNTU
-    const MPDConnectionDetails &det=d;
-    #else
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     bool isUser=d.name==MPDUser::constName;
     const MPDConnectionDetails &det=isUser ? MPDUser::self()->details() : d;
+    #else
+    const MPDConnectionDetails &det=d;
     #endif
     bool changedDir=det.dir!=details.dir;
     bool diffName=det.name!=details.name;
@@ -542,7 +542,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
         unmuteVol=-1;
         toggleStopAfterCurrent(false);
         mopidy=false;
-        #ifndef ENABLE_UBUNTU
+        #ifdef ENABLE_SIMPLE_MPD_SUPPORT
         if (isUser) {
             MPDUser::self()->start();
         }

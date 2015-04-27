@@ -158,6 +158,9 @@ The following options may be passed to CMake:
         install into /usr/lib64/cantata instead of /usr/lib/cantata
         Default: <empty (which means /usr/lib will be used) >
 
+    -DENABLE_SIMPLE_MPD_SUPPORT=ON
+        Enable support for basic, Cantata controlled, MPD instance.
+        Default: ON
 
     Windows specific:
 

@@ -415,7 +415,7 @@ set(CANTATA_CORE_SRCS ${CANTATA_CORE_SRCS}
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
     streams/streamfetcher.cpp
     http/httpserver.cpp)
-set(CANTATA_CORE_MOC_HDRS ${ANTATA_CORE_MOC_HDRS}
+set(CANTATA_CORE_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
     gui/covers.h gui/currentcover.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/actionmodel.h

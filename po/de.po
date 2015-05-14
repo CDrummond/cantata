@@ -5932,7 +5932,7 @@ msgstr ""
 
 #: replaygain/rgdialog.cpp:511 replaygain/rgdialog.cpp:521
 msgid "Original: %1"
-msgstr ""
+msgstr "Original: %1"
 
 #: replaygain/rgdialog.cpp:628 tags/trackorganiser.cpp:467
 msgid "Remove the selected tracks from the list?"
@@ -5944,43 +5944,43 @@ msgstr "Stücke entfernen?"
 
 #: scrobbling/scrobbler.cpp:92
 msgid "Invalid service"
-msgstr ""
+msgstr "Ungültiger Dienst"
 
 #: scrobbling/scrobbler.cpp:93
 msgid "Invalid method"
-msgstr ""
+msgstr "Ungültige Methode"
 
 #: scrobbling/scrobbler.cpp:94
 msgid "Authentication failed"
-msgstr ""
+msgstr "Authentifizierung fehlgeschlagen"
 
 #: scrobbling/scrobbler.cpp:95
 msgid "Invalid format"
-msgstr ""
+msgstr "Ungültiges Format"
 
 #: scrobbling/scrobbler.cpp:96
 msgid "Invalid parameters"
-msgstr ""
+msgstr "Ungültige Parameter"
 
 #: scrobbling/scrobbler.cpp:97
 msgid "Invalid resource specified"
-msgstr ""
+msgstr "Ungültige Ressource angegeben"
 
 #: scrobbling/scrobbler.cpp:98
 msgid "Operation failed"
-msgstr ""
+msgstr "Operation fehlgeschlagen"
 
 #: scrobbling/scrobbler.cpp:99
 msgid "Invalid session key"
-msgstr ""
+msgstr "Ungültiger Sitzungsschlüssel"
 
 #: scrobbling/scrobbler.cpp:100
 msgid "Invalid API key"
-msgstr ""
+msgstr "Ungültiger API-Schlüssel"
 
 #: scrobbling/scrobbler.cpp:101
 msgid "Service offline"
-msgstr ""
+msgstr "Dienst offline"
 
 #: scrobbling/scrobbler.cpp:102
 msgid "Last.fm is currently busy, please try again in a few minutes"
@@ -5992,7 +5992,7 @@ msgstr ""
 
 #: scrobbling/scrobbler.cpp:539 scrobbling/scrobbler.cpp:654
 msgid "%1 error: %2"
-msgstr ""
+msgstr "%1 Fehler: %2"
 
 #: scrobbling/scrobblinglove.cpp:59
 msgid "%1: Loved Current Track"

@@ -82,7 +82,7 @@ void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool re
         MusicLibraryItemRoot *lib=new MusicLibraryItemRoot;
         MusicLibraryModel::convertCache(cacheFile);
         readProgress(0.0);
-        if (lib->fromXML(cacheFile, QDateTime(), 0, folder)) {
+        if (lib->fromXML(cacheFile, 0, 0, folder)) {
             lib->applyGrouping();
             if (!stopRequested) {
                 emit libraryUpdated(lib);
@@ -109,7 +109,7 @@ void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool re
         library->applyGrouping();
         if (!cacheFile.isEmpty()) {
             writeProgress(0.0);
-            library->toXML(cacheFile, QDateTime(), false, this);
+            library->toXML(cacheFile, 0, false, this);
         }
         emit libraryUpdated(library);
     } else {
@@ -120,7 +120,7 @@ void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool re
 void MusicScanner::saveCache(const QString &cache, MusicLibraryItemRoot *lib)
 {
     writeProgress(0.0);
-    lib->toXML(cache, QDateTime(), false, this);
+    lib->toXML(cache, 0, false, this);
     emit cacheSaved();
 }
 

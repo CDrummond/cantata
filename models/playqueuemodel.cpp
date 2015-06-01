@@ -934,7 +934,7 @@ void PlayQueueModel::update(const QList<Song> &songList, bool isComplete)
     }
 
     // If we have too many changes UI can hang, so it is sometimes better just to do a complete reset!
-    if (isComplete && songs.count()>MPDConnection::constMaxPqChaanges) {
+    if (isComplete && songs.count()>MPDConnection::constMaxPqChanges) {
         songs.clear();
     }
 

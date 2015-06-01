@@ -24,7 +24,9 @@
 #include "cuefile.h"
 #include "mpdconnection.h"
 #include "support/utils.h"
+#if !defined ENABLE_UBUNTU && !defined CANTATA_WEB
 #include "gui/settings.h"
+#endif
 #include <QBuffer>
 #include <QDateTime>
 #include <QFile>
@@ -203,7 +205,7 @@ static const QList<QTextCodec *> & codecList()
             codecs.append(codec);
         }
 
-        #ifndef ENABLE_UBUNTU
+        #if !defined ENABLE_UBUNTU && !defined CANTATA_WEB
         QStringList configCodecs=Settings::self()->cueFileCodecs();
         foreach (const QString &cfg, configCodecs) {
             codec=QTextCodec::codecForName(cfg.toLatin1());

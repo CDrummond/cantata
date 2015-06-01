@@ -71,7 +71,7 @@ AlbumsPage::AlbumsPage(QWidget *p)
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
-    connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(updating()));
+    connect(MPDConnection::self(), SIGNAL(updatingLibrary(time_t)), view, SLOT(updating()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(updated()));
     connect(MPDConnection::self(), SIGNAL(updatingDatabase()), view, SLOT(updating()));
     connect(MPDConnection::self(), SIGNAL(updatedDatabase()), view, SLOT(updated()));

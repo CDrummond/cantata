@@ -31,7 +31,6 @@
 #include <QLocalSocket>
 #include <QHostAddress>
 #include <QNetworkProxy>
-#include <QDateTime>
 #include <QStringList>
 #include <QSet>
 #include "mpdstats.h"
@@ -43,9 +42,11 @@
 #include "config.h"
 #include <time.h>
 
+#ifndef CANTATA_WEB
 class MusicLibraryItemArtist;
 class DirViewItemRoot;
 class MusicLibraryItemRoot;
+#endif
 class QTimer;
 class Thread;
 class QPropertyAnimation;
@@ -189,7 +190,9 @@ public:
     };
 
     static QString constModifiedSince;
-    static const int constMaxPqChaanges;
+    static const int constMaxPqChanges;
+    static const QString constStreamsPlayListName;
+
     static MPDConnection * self();
     static QByteArray quote(int val);
     static QByteArray encodeName(const QString &name);
@@ -284,7 +287,9 @@ public Q_SLOTS:
 
     // Database
     void loadLibrary();
+    #ifndef CANTATA_WEB
     void loadFolders();
+    #endif
 
     // Admin
     void update();
@@ -330,8 +335,12 @@ Q_SIGNALS:
     void statsUpdated(const MPDStatsValues &stats);
     void statusUpdated(const MPDStatusValues &status);
     void outputsUpdated(const QList<Output> &outputs);
-    void musicLibraryUpdated(MusicLibraryItemRoot *root, QDateTime dbUpdate);
-    void dirViewUpdated(DirViewItemRoot *root, QDateTime dbUpdate);
+    #ifdef CANTATA_WEB
+    void librarySongs(QList<Song> *songs);
+    #else
+    void musicLibraryUpdated(MusicLibraryItemRoot *root, time_t dbUpdate);
+    void dirViewUpdated(DirViewItemRoot *root, time_t dbUpdate);
+    #endif
     void playlistsRetrieved(const QList<Playlist> &data);
     void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
     void playlistRenamed(const QString &from, const QString &to);
@@ -342,7 +351,7 @@ Q_SIGNALS:
     void playlistLoaded(const QString &playlist);
     void added(const QStringList &files);
     void replayGain(const QString &);
-    void updatingLibrary();
+    void updatingLibrary(time_t dbUpdate);
     void updatedLibrary();
     void updatingFileList();
     void updatedFileList();
@@ -396,7 +405,11 @@ private:
     void parseIdleReturn(const QByteArray &data);
     bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
     void toggleStopAfterCurrent(bool afterCurrent);
+    #ifdef CANTATA_WEB
+    bool listDirInfo(const QString &dir);
+    #else
     bool listDirInfo(const QString &dir, MusicLibraryItemRoot *root);
+    #endif
     #ifdef ENABLE_DYNAMIC
     bool checkRemoteDynamicSupport();
     bool subscribe(const QByteArray &channel);
@@ -420,7 +433,7 @@ private:
     QSet<QString> tagTypes;
     bool canUseStickers;
     MPDConnectionDetails details;
-    QDateTime dbUpdate;
+    time_t dbUpdate;
     // Use 2 sockets, 1 for commands and 1 to receive MPD idle events.
     // Cant use 1, as we could write a command just as an idle event is ready to read
     MpdSocket sock;

@@ -28,7 +28,6 @@
 
 #include <QList>
 #include <QModelIndex>
-#include <QDateTime>
 #include "dirviewitemroot.h"
 #include "actionmodel.h"
 
@@ -66,7 +65,7 @@ public:
     bool fromXML();
 
 public Q_SLOTS:
-    void updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUpdate=QDateTime(), bool fromFile=false);
+    void updateDirView(DirViewItemRoot *newroot, time_t dbUpdate=0, bool fromFile=false);
     void updatingMpd();
 
 Q_SIGNALS:
@@ -74,14 +73,14 @@ Q_SIGNALS:
 
 private:
     void toXML(const DirViewItem *item, QXmlStreamWriter &writer);
-    quint32 fromXML(QIODevice *dev, const QDateTime &dt, DirViewItemRoot *root);
+    time_t fromXML(QIODevice *dev, time_t dt, DirViewItemRoot *root);
     void addFileToList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir, const QString &mopidyPath);
     void removeFileFromList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir);
     void getFiles(DirViewItem *item, QStringList &filenames, bool allowPlaylists) const;
 
 private:
     DirViewItemRoot *rootItem;
-    QDateTime databaseTime;
+    time_t databaseTime;
     bool databaseTimeUnreliable;
     bool enabled;
 };

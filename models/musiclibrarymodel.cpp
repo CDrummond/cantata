@@ -148,8 +148,8 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCh
                 this, SLOT(setArtistImage(const Song &, const QImage &, const QString &)));
         #endif
         connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(updatingMpd()));
-        connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)),
-                this, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
+        connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, time_t)),
+                this, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, time_t)));
     }
     rootItem->setModel(this);
     #if defined ENABLE_MODEL_TEST
@@ -367,7 +367,7 @@ void MusicLibraryModel::clear()
 {
     const MusicLibraryItemRoot *oldRoot = rootItem;
     beginResetModel();
-    databaseTime = QDateTime();
+    databaseTime = 0;
     rootItem = new MusicLibraryItemRoot;
     rootItem->setModel(this);
     delete oldRoot;
@@ -433,7 +433,7 @@ void MusicLibraryModel::removeCache()
         QFile::remove(oldCache);
     }
 
-    databaseTime = QDateTime();
+    databaseTime = 0;
 }
 
 QSet<QString> MusicLibraryModel::getAlbumArtists()
@@ -477,15 +477,15 @@ void MusicLibraryModel::clearNewState()
     emit haveNewItems(false);
 }
 
-void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime dbUpdate, bool fromFile)
+void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, time_t dbUpdate, bool fromFile)
 {
-    if (!mpdModel || (databaseTime.isValid() && databaseTime >= dbUpdate)) {
+    if (!mpdModel || (databaseTime>0 && databaseTime >= dbUpdate)) {
         delete newroot;
         return;
     }
 
     bool updatedSongs=false;
-    bool needToSave=!databaseTime.isValid() || (validCacheDate(dbUpdate) && dbUpdate>databaseTime);
+    bool needToSave=0==databaseTime || (validCacheDate(dbUpdate) && dbUpdate>databaseTime);
     bool incremental=rootItem->childCount() && newroot->childCount();
 
     if (incremental && !QFile::exists(cacheFileName())) {
@@ -519,7 +519,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         databaseTimeUnreliable=!validCacheDate(dbUpdate); // See note in updatingMpd()
     }
     if (!validCacheDate(databaseTime) && !validCacheDate(dbUpdate)) {
-        databaseTime=QDateTime::currentDateTime();
+        databaseTime=QDateTime::currentDateTime().toTime_t();
     }
 
     if (!fromFile && (needToSave || updatedSongs)) {
@@ -808,14 +808,12 @@ bool MusicLibraryModel::fromXML()
 
     convertCache(cacheFileName());
     MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
-    quint32 date=root->fromXML(cacheFileName(), MPDStats::self()->dbUpdate(), &databaseTimeUnreliable, QString(), 0, this);
+    time_t date=root->fromXML(cacheFileName(), MPDStats::self()->dbUpdate(), &databaseTimeUnreliable, QString(), 0, this);
     if (!date) {
         delete root;
         return false;
     }
-    QDateTime dt;
-    dt.setTime_t(date);
-    updateMusicLibrary(root, dt, true);
+    updateMusicLibrary(root, date, true);
     return true;
 }
 

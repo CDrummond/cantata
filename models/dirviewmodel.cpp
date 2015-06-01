@@ -31,6 +31,7 @@
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
+#include <QDateTime>
 #include "support/localize.h"
 #include "gui/plurals.h"
 #include "dirviewmodel.h"
@@ -90,12 +91,12 @@ void DirViewModel::setEnabled(bool e)
 
     if (enabled) {
         connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(updatingMpd()));
-        connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *, const QDateTime &)), this, SLOT(updateDirView(DirViewItemRoot *, const QDateTime &)));
+        connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *, time_t)), this, SLOT(updateDirView(DirViewItemRoot *, time_t)));
     } else {
         clear();
         removeCache();
         disconnect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(updatingMpd()));
-        disconnect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *, const QDateTime &)), this, SLOT(updateDirView(DirViewItemRoot *, const QDateTime &)));
+        disconnect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *, time_t)), this, SLOT(updateDirView(DirViewItemRoot *, time_t)));
     }
 }
 
@@ -236,7 +237,7 @@ void DirViewModel::clear()
     }
     const DirViewItemRoot *oldRoot = rootItem;
     beginResetModel();
-    databaseTime = QDateTime();
+    databaseTime = 0;
     rootItem = new DirViewItemRoot;
     delete oldRoot;
     endResetModel();
@@ -276,7 +277,7 @@ void DirViewModel::toXML()
     writer.writeStartDocument();
     writer.writeStartElement(constTopTag);
     writer.writeAttribute(constVersionAttribute, QString::number(constVersion));
-    writer.writeAttribute(constDateAttribute, QString::number(databaseTime.toTime_t()));
+    writer.writeAttribute(constDateAttribute, QString::number(databaseTime));
     if (databaseTimeUnreliable) {
         writer.writeAttribute(constDateUnreliableAttribute, constTrueValue);
     }
@@ -298,7 +299,7 @@ void DirViewModel::removeCache()
         QFile::remove(cacheFile);
     }
 
-    databaseTime = QDateTime();
+    databaseTime = 0;
 }
 
 void DirViewModel::toXML(const DirViewItem *item, QXmlStreamWriter &writer)
@@ -329,23 +330,21 @@ bool DirViewModel::fromXML()
     }
 
     DirViewItemRoot *root=new DirViewItemRoot;
-    quint32 date=fromXML(&compressor, MPDStats::self()->dbUpdate(), root);
+    time_t date=fromXML(&compressor, MPDStats::self()->dbUpdate(), root);
     compressor.close();
     if (!date) {
         delete root;
         return false;
     }
 
-    QDateTime dt;
-    dt.setTime_t(date);
-    updateDirView(root, dt, true);
+    updateDirView(root, date, true);
     return true;
 }
 
-quint32 DirViewModel::fromXML(QIODevice *dev, const QDateTime &dt, DirViewItemRoot *root)
+time_t DirViewModel::fromXML(QIODevice *dev, time_t dt, DirViewItemRoot *root)
 {
     QXmlStreamReader reader(dev);
-    quint32 xmlDate=0;
+    time_t xmlDate=0;
     DirViewItemDir *currentDir=root;
     QList<DirViewItemDir *> dirStack;
 
@@ -362,7 +361,7 @@ quint32 DirViewModel::fromXML(QIODevice *dev, const QDateTime &dt, DirViewItemRo
             if (constTopTag == element) {
                 quint32 version = attributes.value(constVersionAttribute).toString().toUInt();
                 xmlDate = attributes.value(constDateAttribute).toString().toUInt();
-                if ( version < constVersion || (dt.isValid() && xmlDate < dt.toTime_t())) {
+                if ( version < constVersion || (dt>0 && xmlDate < dt)) {
                     return 0;
                 }
                 databaseTimeUnreliable=constTrueValue==attributes.value(constDateUnreliableAttribute).toString();
@@ -387,16 +386,16 @@ quint32 DirViewModel::fromXML(QIODevice *dev, const QDateTime &dt, DirViewItemRo
     return xmlDate;
 }
 
-void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUpdate, bool fromFile)
+void DirViewModel::updateDirView(DirViewItemRoot *newroot, time_t dbUpdate, bool fromFile)
 {
-    if (databaseTime.isValid() && databaseTime >= dbUpdate) {
+    if (databaseTime>0 && databaseTime >= dbUpdate) {
         delete newroot;
         return;
     }
 
     bool incremental=enabled && rootItem->childCount() && newroot->childCount();
     bool updatedListing=false;
-    bool needToSave=!databaseTime.isValid() || (MusicLibraryModel::validCacheDate(dbUpdate) && dbUpdate>databaseTime);
+    bool needToSave=databaseTime==0 || (MusicLibraryModel::validCacheDate(dbUpdate) && dbUpdate>databaseTime);
 
     if (incremental && !QFile::exists(cacheFileName())) {
         incremental=false;
@@ -439,7 +438,7 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUp
         databaseTimeUnreliable=!MusicLibraryModel::validCacheDate(dbUpdate); // See note in updatingMpd()
     }
     if (!MusicLibraryModel::validCacheDate(databaseTime) && !MusicLibraryModel::validCacheDate(dbUpdate)) {
-        databaseTime=QDateTime::currentDateTime();
+        databaseTime=QDateTime::currentDateTime().toTime_t();
     }
 
     if (!fromFile && (needToSave || updatedListing)) {

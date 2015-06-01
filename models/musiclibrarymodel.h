@@ -27,7 +27,6 @@
 #ifndef MUSIC_LIBRARY_MODEL_H
 #define MUSIC_LIBRARY_MODEL_H
 
-#include <QDateTime>
 #include <QSet>
 #include <QMap>
 #include "musiclibraryitemroot.h"
@@ -51,7 +50,7 @@ public:
 
     static void convertCache(const QString &compressedName);
     static void cleanCache();
-    static bool validCacheDate(const QDateTime &dt) { return dt.isValid() && dt.date().year()>2000; }
+    static bool validCacheDate(time_t dt) { return dt>0; }
 
     MusicLibraryModel(QObject *parent=0, bool isMpdModel=true, bool isCheckable=false);
     ~MusicLibraryModel();
@@ -88,7 +87,7 @@ public:
     QSet<QString> getAlbumArtists();
     bool update(const QSet<Song> &songs);
 //    void uncheckAll();
-    const QDateTime & lastUpdate() { return databaseTime; }
+    time_t lastUpdate() { return databaseTime; }
     void setSupportsAlbumArtistTag(bool s) { rootItem->setSupportsAlbumArtistTag(s); }
     void toggleGrouping();
     const QSet<QString> & genres() const { return rootItem->genres(); }
@@ -100,7 +99,7 @@ public:
 
 public Q_SLOTS:
     void clearNewState();
-    void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);
+    void updateMusicLibrary(MusicLibraryItemRoot * root, time_t dbUpdate = 0, bool fromFile = false);
     void coverLoaded(const Song &song, int size);
     void updatingMpd();
     // Touch version...
@@ -126,7 +125,7 @@ private:
     bool checkable;
     bool artistImages;
     MusicLibraryItemRoot *rootItem;
-    QDateTime databaseTime;
+    time_t databaseTime;
     bool databaseTimeUnreliable;
 };
 

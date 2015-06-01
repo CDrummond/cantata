@@ -29,6 +29,7 @@
 #include <QStringList>
 #include <QUrl>
 #include <QFile>
+#ifndef CANTATA_WEB
 #include "models/dirviewitemroot.h"
 #include "models/dirviewitemdir.h"
 #include "models/dirviewitemfile.h"
@@ -36,13 +37,13 @@
 #include "models/musiclibraryitemalbum.h"
 #include "models/musiclibraryitemsong.h"
 #include "models/musiclibraryitemroot.h"
+#endif
 #include "mpdparseutils.h"
 #include "mpdstatus.h"
 #include "mpdstats.h"
 #include "playlist.h"
 #include "song.h"
 #include "output.h"
-#include "gui/covers.h"
 #ifdef ENABLE_HTTP_SERVER
 #include "http/httpserver.h"
 #endif
@@ -177,7 +178,7 @@ MPDStatsValues MPDParseUtils::parseStats(const QByteArray &data)
         } else if (line.startsWith(constStatsDbPlaytimeKey)) {
             v.dbPlaytime=line.mid(constStatsDbPlaytimeKey.length()).toUInt();
         } else if (line.startsWith(constStatsDbUpdateKey)) {
-            v.dbUpdate.setTime_t(line.mid(constStatsDbUpdateKey.length()).toUInt());
+            v.dbUpdate=line.mid(constStatsDbUpdateKey.length()).toUInt();
         }
     }
     return v;
@@ -539,6 +540,37 @@ void MPDParseUtils::setGroupSingle(bool g)
     groupSingleTracks=g;
 }
 
+#ifdef CANTATA_WEB
+void MPDParseUtils::parseLibraryItems(const QByteArray &data, QList<Song> &songs, bool parsePlaylists, QSet<QString> *childDirs)
+{
+    QList<QByteArray> currentItem;
+    QList<QByteArray> lines = data.split('\n');
+    int amountOfLines = lines.size();
+
+    for (int i = 0; i < amountOfLines; i++) {
+        const QByteArray &line=lines.at(i);
+        if (childDirs && line.startsWith(constDirectoryKey)) {
+            childDirs->insert(QString::fromUtf8(line.mid(constDirectoryKey.length())));
+        }
+        currentItem.append(line);
+        if (i == amountOfLines - 1 || lines.at(i + 1).startsWith(constFileKey) || lines.at(i + 1).startsWith(constPlaylistKey)) {
+            Song currentSong = parseSong(currentItem, Loc_Library);
+            currentItem.clear();
+            if (currentSong.file.isEmpty()) {
+                continue;
+            }
+
+            // lsinfo / will return all stored playlists - but this is deprecated.
+            if (Song::Playlist==currentSong.type&& !parsePlaylists) {
+                continue;
+            }
+
+            currentSong.fillEmptyFields();
+            songs.append(currentSong);
+        }
+    }
+}
+#else
 void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion,
                                       bool isMopidy, MusicLibraryItemRoot *rootItem, bool parsePlaylists,
                                       QSet<QString> *childDirs)
@@ -793,6 +825,7 @@ DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data, bool 
 
     return rootItem;
 }
+#endif
 
 QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)
 {

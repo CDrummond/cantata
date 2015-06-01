@@ -31,14 +31,12 @@
 #include <QVariant>
 #include <QHash>
 #include <QSet>
-#include <QDateTime>
 #include <QModelIndex>
 #include <QImage>
 #include "musiclibraryitem.h"
 #include "mpd-interface/song.h"
 #include "support/icon.h"
 
-class QDateTime;
 class QXmlStreamReader;
 class QXmlStreamWriter;
 class MusicLibraryItemArtist;
@@ -87,10 +85,10 @@ public:
     QSet<Song> allSongs(bool revertVa=false) const;
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
     void updateSongFile(const Song &from, const Song &to);
-    void toXML(const QString &filename, const QDateTime &date=QDateTime(), bool dateUnreliable=false, MusicLibraryProgressMonitor *prog=0) const;
-    void toXML(QXmlStreamWriter &writer, const QDateTime &date=QDateTime(), bool dateUnreliable=false, MusicLibraryProgressMonitor *prog=0) const;
-    quint32 fromXML(const QString &filename, const QDateTime &date=QDateTime(), bool *dateUnreliable=0, const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0, MusicLibraryErrorMonitor *em=0);
-    quint32 fromXML(QXmlStreamReader &reader, const QDateTime &date=QDateTime(), bool *dateUnreliable=0, const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0, MusicLibraryErrorMonitor *em=0);
+    void toXML(const QString &filename, time_t date=0, bool dateUnreliable=false, MusicLibraryProgressMonitor *prog=0) const;
+    void toXML(QXmlStreamWriter &writer, time_t date=0, bool dateUnreliable=false, MusicLibraryProgressMonitor *prog=0) const;
+    time_t fromXML(const QString &filename, time_t date=0, bool *dateUnreliable=0, const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0, MusicLibraryErrorMonitor *em=0);
+    time_t fromXML(QXmlStreamReader &reader, time_t date=0, bool *dateUnreliable=0, const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0, MusicLibraryErrorMonitor *em=0);
     Type itemType() const { return Type_Root; }
     void add(const QSet<Song> &songs);
     bool supportsAlbumArtistTag() const { return supportsAlbumArtist; }

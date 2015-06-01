@@ -27,7 +27,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
-#ifndef CANTATA_WEB
+    #ifndef CANTATA_WEB
 #include <QProcess>
 #include <QApplication>
 #include <QDateTime>

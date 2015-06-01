@@ -1,0 +1,38 @@
+Library
+- Artist images?
+- Album images
+  - not shown when set to group by albums
+- Navigation when go back, should place scroll at same position
+
+Playlists
+
+Streams
+- Add new
+- Search
+- Edit
+
+PlayQueue
+- Save
+- Show total track count and duration
+- Remove tracks
+- Click on track to play
+- Center on current track
+
+MiniPlayer
+- Buttons
+ - get 'no element found' logged in console window when use button
+- Song progress
+- Hide cover if not wide - done, but space is still there!!! div position?
+- Ellide text
+- Cover not shown
+
+Tablet:
+Navbar could be taller - skinny and control buttons close
++ |>  buttons quite close together
+
+General:
+- Cue files
+- Multiple genres
+- WebApp icon
+- Long press to bring up menu
+- Menu not working under android/chrome

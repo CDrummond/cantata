@@ -11,7 +11,7 @@ endif (ENABLE_QT5)
 
 add_library(support-core STATIC ${SUPPORT_CORE_MOC_SRCS} ${SUPPORT_CORE_SRCS})
     
-if (NOT ENABLE_UBUNTU)
+if (NOT ENABLE_UBUNTU AND NOT ENABLE_WEB)
     set (SUPPORT_SRCS icon.cpp fancytabwidget.cpp messagewidget.cpp buddylabel.cpp action.cpp actioncollection.cpp lineedit.cpp
          configuration.cpp gtkstyle.cpp spinner.cpp messagebox.cpp inputdialog.cpp thread.cpp squeezedtextlabel.cpp proxystyle.cpp
          touchproxystyle.cpp pagewidget.cpp combobox.cpp configdialog.cpp)
@@ -83,4 +83,4 @@ if (NOT ENABLE_UBUNTU)
     if (X11_FOUND)
         target_link_libraries(support ${X11_LIBRARIES})
     endif (X11_FOUND)
-endif (NOT ENABLE_UBUNTU)
+endif (NOT ENABLE_UBUNTU AND NOT ENABLE_WEB)

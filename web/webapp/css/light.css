@@ -1,0 +1,73 @@
+body {
+    background-color: #ddd;
+    color: #020202;
+}
+
+.nav {
+    background-color:#bababa;
+}
+
+.btn-nav {
+    color: #000;
+    background-color: #bababa;
+    valign: middle;
+}
+
+.btn-nav-selected,.btn-nav-selected:active,.btn-nav-selected:focus {
+    color: #000;
+    background-color: #a0a0a0;
+}
+
+.btn-header {
+    color: #020202;
+    background-color: #ddd;
+    border-color: #aaa;
+}
+
+.btn-header:hover {
+    color: #020202;
+    background-color: #bababa;
+    border-color: #aaa;
+}
+
+.active-section {
+    background-color: #bababa;
+}
+
+.current-song {
+    background-color: #BFD1E3;
+    /*
+    border: 1px solid #99c;
+    padding: 0px
+    margin-bottom: -2px;
+    */
+}
+
+.miniplayer {
+    background-color:#bababa;
+}
+
+.divider {
+    opacity: 0.3;
+    border-color: #aaa;
+}
+
+.playqueueline {
+    border-color: #aaa;
+}
+
+/* Bootbox */
+.modal-content, .modal-body, .bootbox-body, .bootbox-close-button {
+    color: #000;
+}
+/*
+.modal-content, .modal-body, .bootbox-body {
+    background: #aaa;
+    color: #020202;
+}
+
+.bootbox-close-button {
+    color: #020202;
+    opacity: 0.6;
+}
+*/

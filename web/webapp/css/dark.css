@@ -1,0 +1,58 @@
+body {
+    background-color: #222;
+    color: #e0e0e0;
+}
+
+.btn-nav {
+    color: #c0c0c0;
+    background-color: #222;
+    valign: middle;
+}
+
+.btn-nav:hover,.btn-nav:active,.btn-nav:focus {
+    color: #f2f2f2;
+}
+
+.btn-nav-selected {
+    color: #4444ff;
+}
+
+.btn-nav-selected,.btn-nav-selected:active,.btn-nav-selected:focus {
+    color: #7777ff;
+}
+
+.btn-header {
+    color: #e0e0e0;
+    background-color: #222;
+    border-color: #555;
+}
+
+.btn-header:hover {
+    color: #e0e0e0;
+    background-color: #323232;
+    border-color: #999;
+}
+
+.active-section {
+    background-color: #323232;
+}
+
+.miniplayer {
+    background-color:#333;
+}
+
+/* Bootbox */
+.modal-content, .modal-body, .bootbox-body, .bootbox-close-button {
+    color: #000;
+}
+/*
+.modal-content, .modal-body, .bootbox-body {
+    background: #555;
+    color: #e0e0e0;
+}
+
+.bootbox-close-button {
+    color: #e0e0e0;
+    opacity: 0.6;
+}
+*/

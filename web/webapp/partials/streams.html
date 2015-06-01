@@ -1,0 +1,13 @@
+<div class="page">
+    <div ng-repeat="stream in data.streams" class="libraryitem">
+        <div class="smallitembuttons">
+            <i class="fa fa-trash fa-fw itembutton trashbutton" ng-click="command('del', stream, $event)"/>
+            <i class="fa fa-play fa-fw itembutton" ng-click="command('play', stream, $event)"/>
+        </div>
+        <div>
+            <div class="ellide noselect" on-long-press="showMenu(stream)">{{stream.name}}</div>
+            <!-- <div class="subtext ellide">{{stream.url}}</div> -->
+        </div>
+        <hr class="divider"/>
+    </div>
+<div>

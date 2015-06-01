@@ -95,7 +95,7 @@ bool OnlineMusicLoader::readFromCache()
 {
     if (!cache.isEmpty() && QFile::exists(cache)) {
         emit status(i18n("Reading cache"), 0);
-        if (library->fromXML(cache, QDateTime(), 0, QString(), this)) {
+        if (library->fromXML(cache, 0, 0, QString(), this)) {
             if (!stopRequested) {
                 fixLibrary();
                 emit status(i18n("Updating display"), -100);
@@ -138,7 +138,7 @@ void OnlineMusicLoader::downloadFinished()
             if (parse(reader)) {
                 fixLibrary();
                 emit status(i18n("Saving cache"), 0);
-                library->toXML(cache, QDateTime(), false, this);
+                library->toXML(cache, 0, false, this);
                 emit loaded();
             } else {
                 emit error(i18n("Failed to parse"));

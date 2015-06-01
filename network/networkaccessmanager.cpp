@@ -23,12 +23,15 @@
 
 #include "networkaccessmanager.h"
 #include "networkproxyfactory.h"
+#if !defined ENABLE_UBUNTU && !defined CANTATA_WEB
 #include "gui/settings.h"
+#endif
 #include "config.h"
 #include "support/globalstatic.h"
 #include <QTimerEvent>
 #include <QTimer>
 #include <QSslSocket>
+#include <QCoreApplication>
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -175,7 +178,7 @@ GLOBAL_STATIC(NetworkAccessManager, instance)
 NetworkAccessManager::NetworkAccessManager(QObject *parent)
     : BASE_NETWORK_ACCESS_MANAGER(parent)
 {
-    #ifdef ENABLE_UBUNTU
+    #if defined ENABLE_UBUNTU || defined CANTATA_WEB
     enabled=true;
     #else
     enabled=Settings::self()->networkAccessEnabled();

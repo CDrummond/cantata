@@ -24,10 +24,11 @@
 #ifndef STREAMSMODEL_H
 #define STREAMSMODEL_H
 
-#include "actionmodel.h"
 #include "config.h"
+#include <QString>
 
 #ifdef ENABLE_STREAMS
+#include "actionmodel.h"
 #include "mpd-interface/stream.h"
 #include "mpd-interface/playlist.h"
 #include <QIcon>
@@ -119,7 +120,6 @@ public:
         QList<Item *> loadXml(QIODevice *dev);
         bool isFavourites() const { return true; }
         bool canReload() const { return false; }
-        QDateTime lastModified;
         bool importedOld;
     };
 
@@ -196,7 +196,6 @@ public:
     };
 
     static const QString constPrefix;
-    static const QString constPlayListName;
     static const QString constSubDir;
     static const QString constCacheExt;
 
@@ -304,11 +303,11 @@ private Q_SLOTS:
     void tooltipUpdated(QAction *act);
 
     // Responses from MPD...
-    void storedPlaylists(const QList<Playlist> &list);
     void savedFavouriteStream(const QString &url, const QString &name);
     void removedFavouriteStreams(const QList<quint32> &removed);
 //    void editedFavouriteStream(const QString &url, const QString &name, quint32 position);
     void favouriteStreams(const QList<Stream> &streams);
+    void mpdConnectionState(bool c);
 
 private:
     bool loadCache(CategoryItem *cat);

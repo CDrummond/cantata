@@ -221,14 +221,14 @@ void MusicLibraryItemRoot::updateSongFile(const Song &from, const Song &to)
 static quint32 constVersion=9;
 static QLatin1String constTopTag("CantataLibrary");
 
-void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date, bool dateUnreliable, MusicLibraryProgressMonitor *prog) const
+void MusicLibraryItemRoot::toXML(const QString &filename, time_t date, bool dateUnreliable, MusicLibraryProgressMonitor *prog) const
 {
     if (isFlat) {
         return;
     }
 
     // If saving device cache, and we have NO items, then remove cache file...
-    if (0==childCount() && date.date().year()<2000) {
+    if (0==childCount() && date<2000) {
         if (QFile::exists(filename)) {
             QFile::remove(filename);
         }
@@ -276,7 +276,7 @@ static const QString constImageAttribute=QLatin1String("img");
 static const QString constnumTracksAttribute=QLatin1String("numTracks");
 static const QString constTrueValue=QLatin1String("true");
 
-void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date, bool dateUnreliable, MusicLibraryProgressMonitor *prog) const
+void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, time_t date, bool dateUnreliable, MusicLibraryProgressMonitor *prog) const
 {
     if (isFlat) {
         return;
@@ -295,7 +295,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     //Start with the document
     writer.writeStartElement(constTopTag);
     writer.writeAttribute(constVersionAttribute, QString::number(constVersion));
-    writer.writeAttribute(constDateAttribute, QString::number(date.toTime_t()));
+    writer.writeAttribute(constDateAttribute, QString::number(date));
     if (dateUnreliable) {
         writer.writeAttribute(constDateUnreliableAttribute, constTrueValue);
     }
@@ -411,7 +411,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     writer.writeEndDocument();
 }
 
-quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog, MusicLibraryErrorMonitor *em)
+time_t MusicLibraryItemRoot::fromXML(const QString &filename, time_t date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog, MusicLibraryErrorMonitor *em)
 {
     if (isFlat) {
         return 0;
@@ -429,7 +429,7 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
         return 0;
     }
     QXmlStreamReader reader(&compressor);
-    quint32 rv=fromXML(reader, date, dateUnreliable, baseFolder, prog, em);
+    time_t rv=fromXML(reader, date, dateUnreliable, baseFolder, prog, em);
     compressor.close();
     #ifdef TIME_XML_FILE_LOADING
     qWarning() << filename << timer.elapsed();
@@ -437,7 +437,7 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
     return rv;
 }
 
-quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog, MusicLibraryErrorMonitor *em)
+time_t MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, time_t date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog, MusicLibraryErrorMonitor *em)
 {
     if (isFlat) {
         return 0;
@@ -476,7 +476,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 xmlDate = attributes.value(constDateAttribute).toString().toUInt();
                 gs = constTrueValue==attributes.value(constGroupSingleAttribute).toString();
                 gm = constTrueValue==attributes.value(constGroupSingleAttribute).toString();
-                if ( version < constVersion || (date.isValid() && xmlDate < date.toTime_t())) {
+                if ( version < constVersion || (date>0 && xmlDate < date)) {
                     return 0;
                 }
                 if (prog) {

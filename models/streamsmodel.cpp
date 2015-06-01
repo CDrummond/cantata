@@ -566,10 +566,10 @@ StreamsModel::StreamsModel(QObject *parent)
     new ModelTest(this, this);
     #endif
 
-    connect(MPDConnection::self(), SIGNAL(playlistsRetrieved(QList<Playlist>)), SLOT(storedPlaylists(QList<Playlist>)));
     connect(MPDConnection::self(), SIGNAL(savedStream(QString,QString)), SLOT(savedFavouriteStream(QString,QString)));
     connect(MPDConnection::self(), SIGNAL(removedStreams(QList<quint32>)), SLOT(removedFavouriteStreams(QList<quint32>)));
     connect(MPDConnection::self(), SIGNAL(streamList(QList<Stream>)), SLOT(favouriteStreams(QList<Stream>)));
+    connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionState(bool)));
     connect(this, SIGNAL(listFavouriteStreams()), MPDConnection::self(), SLOT(listStreams()));
     connect(this, SIGNAL(saveFavouriteStream(QString,QString)), MPDConnection::self(), SLOT(saveStream(QString,QString)));
     connect(this, SIGNAL(removeFavouriteStreams(QList<quint32>)), MPDConnection::self(), SLOT(removeStreams(QList<quint32>)));
@@ -1155,37 +1155,6 @@ void StreamsModel::tooltipUpdated(QAction *act)
     #endif
 }
 
-void StreamsModel::storedPlaylists(const QList<Playlist> &list)
-{
-    QDateTime favouritesDateTime;
-    foreach (const Playlist &p, list) {
-        if (p.name==constPlayListName) {
-            favouritesDateTime=p.lastModified;
-            break;
-        }
-    }
-
-    if (favouritesDateTime.isNull()) {
-        favourites->state=CategoryItem::Fetched;
-        if (!favourites->children.isEmpty()) {
-            beginRemoveRows(favouritesIndex(), 0, favourites->children.count()-1);
-            qDeleteAll(favourites->children);
-            favourites->children.clear();
-            endRemoveRows();
-        }
-        importOldFavourites();
-    } else if (favourites->lastModified.isNull() || favourites->lastModified<favouritesDateTime ||
-               // If station is edited externally (e.g. MPDroid) then we get 2 updates for the playlist - but times are
-               // the same. So, if favouritres update is less thn 3msecs ago then its probably due to this...
-               qAbs(QDateTime::currentDateTime().currentMSecsSinceEpoch()-favourites->lastModified.currentMSecsSinceEpoch())<3) {
-        if (favourites->lastModified.isNull()) {
-            favourites->state=CategoryItem::Fetching;
-        }
-        emit listFavouriteStreams();
-    }
-    favourites->lastModified=favouritesDateTime;
-}
-
 void StreamsModel::savedFavouriteStream(const QString &url, const QString &name)
 {
     if (favouritesNameForUrl(url).isEmpty()) {
@@ -1303,6 +1272,13 @@ void StreamsModel::favouriteStreams(const QList<Stream> &streams)
         favourites->state=CategoryItem::Fetched;
         emit dataChanged(idx, idx);
         emit favouritesLoaded();
+    }
+}
+
+void StreamsModel::mpdConnectionState(bool c)
+{
+    if (c) {
+        emit listFavouriteStreams();
     }
 }
 
@@ -1911,7 +1887,6 @@ QModelIndex StreamsModel::categoryIndex(const CategoryItem *cat) const
 #endif // ENABLE_STREAMS
 
 const QString StreamsModel::constPrefix=QLatin1String("cantata-stream-");
-const QString StreamsModel::constPlayListName=QLatin1String("[Radio Streams]");
 
 QString StreamsModel::modifyUrl(const QString &u, bool addPrefix, const QString &name)
 {

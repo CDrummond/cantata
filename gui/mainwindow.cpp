@@ -1617,6 +1617,8 @@ void MainWindow::showServerInfo()
     qSort(handlers);
     qSort(tags);
     long version=MPDConnection::self()->version();
+    QDateTime dbUpdate;
+    dbUpdate.setTime_t(MPDStats::self()->dbUpdate());
     MessageBox::information(this, 
                                   #ifdef Q_OS_MAC
                                   i18n("Server Information")+QLatin1String("<br/><br/>")+
@@ -1640,7 +1642,7 @@ void MainWindow::showServerInfo()
                                        "<tr><td align=\"right\">Duration:&nbsp;</td><td>%4</td></tr>"
                                        "<tr><td align=\"right\">Updated:&nbsp;</td><td>%5</td></tr>",
                                        MPDStats::self()->artists(), MPDStats::self()->albums(), MPDStats::self()->songs(),
-                                       Utils::formatDuration(MPDStats::self()->dbPlaytime()), MPDStats::self()->dbUpdate().toString(Qt::SystemLocaleShortDate))+
+                                       Utils::formatDuration(MPDStats::self()->dbPlaytime()), dbUpdate.toString(Qt::SystemLocaleShortDate))+
                                   QLatin1String("</table></p>"),
                             i18n("Server Information"));
 }
@@ -1841,8 +1843,8 @@ void MainWindow::scrollPlayQueue(bool wasEmpty)
 void MainWindow::updateStats()
 {
     // Check if remote db is more recent than local one
-    if (!MusicLibraryModel::self()->lastUpdate().isValid() || MPDStats::self()->dbUpdate() > MusicLibraryModel::self()->lastUpdate()) {
-        if (!MusicLibraryModel::self()->lastUpdate().isValid()) {
+    if (0==MusicLibraryModel::self()->lastUpdate() || MPDStats::self()->dbUpdate() > MusicLibraryModel::self()->lastUpdate()) {
+        if (0==MusicLibraryModel::self()->lastUpdate()) {
             libraryPage->clear();
             //albumsPage->clear();
             folderPage->clear();
@@ -2066,7 +2068,7 @@ void MainWindow::addToNewStoredPlaylist()
     for(;;) {
         QString name = InputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
 
-        if (name==StreamsModel::constPlayListName) {
+        if (name==MPDConnection::constStreamsPlayListName) {
             MessageBox::error(this, i18n("'%1' is used to store favorite streams, please choose another name.", name));
             continue;
         }

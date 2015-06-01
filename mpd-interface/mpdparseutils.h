@@ -30,14 +30,17 @@
 #include <QString>
 #include <QSet>
 #include "config.h"
-
+#ifdef CANTATA_WEB
+#include "song.h"
+#else
 struct Song;
+class DirViewItemRoot;
+class MusicLibraryItemRoot;
+#endif
 struct Playlist;
 struct Output;
 struct MPDStatsValues;
 struct MPDStatusValues;
-class DirViewItemRoot;
-class MusicLibraryItemRoot;
 
 namespace MPDParseUtils
 {
@@ -74,10 +77,14 @@ namespace MPDParseUtils
     #endif
     extern bool groupSingle();
     extern void setGroupSingle(bool g);
+    #ifdef CANTATA_WEB
+    extern void parseLibraryItems(const QByteArray &data, QList<Song> &songs, bool parsePlaylists=true, QSet<QString> *childDirs=0);
+    #else
     extern void parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion,
                                   bool isMopidy, MusicLibraryItemRoot *rootItem, bool parsePlaylists=true,
                                   QSet<QString> *childDirs=0);
     extern DirViewItemRoot * parseDirViewItems(const QByteArray &data, bool isMopidy);
+    #endif
     extern QList<Output> parseOuputs(const QByteArray &data);
     extern QByteArray parseSticker(const QByteArray &data, const QByteArray &sticker);
     extern QString addStreamName(const QString &url, const QString &name);

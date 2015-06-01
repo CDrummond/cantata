@@ -44,7 +44,6 @@
 #include "mpd-interface/mpdstats.h"
 #include "mpd-interface/mpdconnection.h"
 #include "playqueuemodel.h"
-#include "streamsmodel.h"
 #include "widgets/icons.h"
 #ifdef ENABLE_HTTP_SERVER
 #include "http/httpserver.h"
@@ -675,10 +674,9 @@ QStringList PlaylistsModel::mimeTypes() const
 
 void PlaylistsModel::getPlaylists()
 {
-// ALWAYS need to send listPlaylists() -> as it is now used for favourite streams!
-//    if (enabled) {
+    if (enabled) {
         emit listPlaylists();
-//    }
+    }
 }
 
 void PlaylistsModel::clear()
@@ -725,9 +723,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         }
         beginResetModel();
         foreach (const Playlist &p, playlists) {
-            if (p.name!=StreamsModel::constPlayListName) {
-                items.append(new PlaylistItem(p, allocateKey()));
-            }
+            items.append(new PlaylistItem(p, allocateKey()));
         }
         endResetModel();
         updateItemMenu();
@@ -751,9 +747,6 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         }
 
         foreach (const Playlist &p, playlists) {
-            if (p.name==StreamsModel::constPlayListName) {
-                continue;
-            }
             retreived.insert(p.name);
             PlaylistItem *pl=getPlaylist(p.name);
 

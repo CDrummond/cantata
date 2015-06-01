@@ -29,6 +29,7 @@
 
 #include <QDateTime>
 #include <QObject>
+#include <sys/time.h>
 
 struct MPDStatsValues
 {
@@ -46,7 +47,7 @@ struct MPDStatsValues
     quint32 uptime;
     quint32 playtime;
     quint32 dbPlaytime;
-    QDateTime dbUpdate;
+    time_t dbUpdate;
 };
 
 class MPDStats : public QObject
@@ -63,7 +64,7 @@ public:
     quint32 uptime() const { return values.uptime; }
     quint32 playtime() const { return values.playtime; }
     quint32 dbPlaytime() const { return values.dbPlaytime; }
-    const QDateTime & dbUpdate() const { return values.dbUpdate;  }
+    time_t dbUpdate() const { return values.dbUpdate;  }
 
 public Q_SLOTS:
     void update(const MPDStatsValues &v);

@@ -78,7 +78,7 @@ namespace MPDParseUtils
     extern bool groupSingle();
     extern void setGroupSingle(bool g);
     #ifdef CANTATA_WEB
-    extern void parseLibraryItems(const QByteArray &data, QList<Song> &songs, bool parsePlaylists=true, QSet<QString> *childDirs=0);
+    extern void parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, bool parsePlaylists=true, QSet<QString> *childDirs=0);
     #else
     extern void parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion,
                                   bool isMopidy, MusicLibraryItemRoot *rootItem, bool parsePlaylists=true,

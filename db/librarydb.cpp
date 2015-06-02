@@ -424,6 +424,7 @@ bool LibraryDb::init(QString &dbName)
                 "disc integer, "
                 "time integer, "
                 "year integer, "
+                "type integer, "
                 "primary key (version, file))");
     return true;
 }
@@ -432,8 +433,8 @@ void LibraryDb::insertSong(const Song &s)
 {
     if (!insertSongQuery) {
         insertSongQuery=new QSqlQuery(*db);
-        insertSongQuery->prepare("insert into songs(version, file, artist, artistId, albumArtist, artistSort, composer, album, albumId, albumSort, title, genre, track, disc, time, year) "
-                                 "values(:version, :file, :artist, :artistId, :albumArtist, :artistSort, :composer, :album, :albumId, :albumSort, :title, :genre, :track, :disc, :time, :year)");
+        insertSongQuery->prepare("insert into songs(version, file, artist, artistId, albumArtist, artistSort, composer, album, albumId, albumSort, title, genre, track, disc, time, year, type) "
+                                 "values(:version, :file, :artist, :artistId, :albumArtist, :artistSort, :composer, :album, :albumId, :albumSort, :title, :genre, :track, :disc, :time, :year, :type)");
     }
     insertSongQuery->bindValue(":version", (qulonglong)newVersion);
     insertSongQuery->bindValue(":file", s.file);
@@ -451,6 +452,7 @@ void LibraryDb::insertSong(const Song &s)
     insertSongQuery->bindValue(":disc", s.disc);
     insertSongQuery->bindValue(":time", s.time);
     insertSongQuery->bindValue(":year", s.year);
+    insertSongQuery->bindValue(":type", s.type);
     if (!insertSongQuery->exec()) {
         qWarning() << "insert failed" << insertSongQuery->lastError() << newVersion << s.file;
     }
@@ -734,6 +736,7 @@ Song LibraryDb::getSong(QSqlQuery *query)
     s.disc=query->value("disc").toUInt();
     s.time=query->value("time").toUInt();
     s.year=query->value("year").toUInt();
+    s.type=(Song::Type)query->value("type").toUInt();
     val=query->value("artistSort").toString();
     if (!val.isEmpty() && val!=s.albumArtist()) {
         s.setArtistSort(val);

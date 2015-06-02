@@ -541,12 +541,12 @@ void MPDParseUtils::setGroupSingle(bool g)
 }
 
 #ifdef CANTATA_WEB
-void MPDParseUtils::parseLibraryItems(const QByteArray &data, QList<Song> &songs, bool parsePlaylists, QSet<QString> *childDirs)
+void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, bool parsePlaylists, QSet<QString> *childDirs)
 {
     QList<QByteArray> currentItem;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
-
+    
     for (int i = 0; i < amountOfLines; i++) {
         const QByteArray &line=lines.at(i);
         if (childDirs && line.startsWith(constDirectoryKey)) {
@@ -559,12 +559,131 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, QList<Song> &songs
             if (currentSong.file.isEmpty()) {
                 continue;
             }
+            
+            if (Song::Playlist==currentSong.type && !songs.isEmpty()) {
 
-            // lsinfo / will return all stored playlists - but this is deprecated.
-            if (Song::Playlist==currentSong.type&& !parsePlaylists) {
+                // lsinfo / will return all stored playlists - but this is deprecated.
+                if (!parsePlaylists) {
+                    continue;
+                }
+
+                Song firstSong=songs.at(0);
+                QList<Song> cueSongs; // List of songs from cue file
+                QSet<QString> cueFiles; // List of source (flac, mp3, etc) files referenced in cue file
+
+                DBUG << "Got playlist item" << currentSong.file;
+
+                bool canSplitCue=mpdVersion>=CANTATA_MAKE_VERSION(0,17,0);
+                bool parseCue=canSplitCue && currentSong.isCueFile() && !mpdDir.startsWith(constHttpProtocol) && QFile::exists(mpdDir+currentSong.file);
+                bool cueParseStatus=false;
+                if (parseCue) {
+                    DBUG << "Parsing cue file:" << currentSong.file << "mpdDir:" << mpdDir;
+                    cueParseStatus=CueFile::parse(currentSong.file, mpdDir, cueSongs, cueFiles);
+                    if (!cueParseStatus) {
+                        DBUG << "Failed to parse cue file!";
+                        continue;
+                    } else DBUG << "Parsed cue file, songs:" << cueSongs.count() << "files:" << cueFiles;
+                }
+                if (cueParseStatus && cueSongs.count()>=songs.count() &&
+                        (cueFiles.count()<cueSongs.count() || (firstSong.albumArtist().isEmpty() && firstSong.album.isEmpty()))) {
+
+                    bool canUseThisCueFile=true;
+                    foreach (const Song &s, cueSongs) {
+                        if (!QFile::exists(mpdDir+s.name())) {
+                            DBUG << QString(mpdDir+s.name()) << "is referenced in cue file, but does not exist in MPD folder";
+                            canUseThisCueFile=false;
+                            break;
+                        }
+                    }
+
+                    if (!canUseThisCueFile) {
+                        continue;
+                    }
+
+                    bool canUseCueFileTracks=false;
+                    QList<Song> fixedCueSongs; // Songs taken from cueSongs that have been updated...
+
+                    if (songs.size()==cueFiles.size()) {
+                        quint32 albumTime=0;
+                        QMap<QString, Song> origFiles;
+                        foreach (const Song &s, songs) {
+                            origFiles.insert(s.file, s);
+                            albumTime+=s.time;
+                        }
+                        DBUG << "Original files:" << origFiles.keys();
+
+                        bool setTimeFromSource=origFiles.size()==cueSongs.size();
+                        quint32 usedAlbumTime=0;
+                        foreach (const Song &orig, cueSongs) {
+                            Song s=orig;
+                            Song albumSong=origFiles[s.name()];
+                            s.setName(QString()); // CueFile has placed source file name here!
+                            if (s.artist.isEmpty() && !albumSong.artist.isEmpty()) {
+                                s.artist=albumSong.artist;
+                                DBUG << "Get artist from album" << albumSong.artist;
+                            }
+                            if (s.composer().isEmpty() && !albumSong.composer().isEmpty()) {
+                                s.setComposer(albumSong.composer());
+                                DBUG << "Get composer from album" << albumSong.composer();
+                            }
+                            if (s.album.isEmpty() && !albumSong.album.isEmpty()) {
+                                s.album=albumSong.album;
+                                DBUG << "Get album from album" << albumSong.album;
+                            }
+                            if (s.albumartist.isEmpty() && !albumSong.albumartist.isEmpty()) {
+                                s.albumartist=albumSong.albumartist;
+                                DBUG << "Get albumartist from album" << albumSong.albumartist;
+                            }
+                            if (0==s.year && 0!=albumSong.year) {
+                                s.year=albumSong.year;
+                                DBUG << "Get year from album" << albumSong.year;
+                            }
+                            if (0==s.time && setTimeFromSource) {
+                                s.time=albumSong.time;
+                            } else if (0!=albumTime && 1==cueFiles.size()) {
+                                // Try to set duration of last track by subtracting previous track durations from album duration...
+                                if (0==s.time) {
+                                    s.time=albumTime-usedAlbumTime;
+                                } else {
+                                    usedAlbumTime+=s.time;
+                                }
+                            }
+                            fixedCueSongs.append(s);
+                        }
+                        canUseCueFileTracks=true;
+                    } else DBUG << "ERROR: file count mismatch" << songs.size() << cueFiles.size();
+
+                    if (!canUseCueFileTracks) {
+                        // Album had a different number of source files to the CUE file. If so, then we need to ensure
+                        // all tracks have meta data - otherwise just fallback to listing file + cue
+                        foreach (const Song &orig, cueSongs) {
+                            Song s=orig;
+                            s.setName(QString()); // CueFile has placed source file name here!
+                            if (s.artist.isEmpty() || s.album.isEmpty()) {
+                                break;
+                            }
+                            fixedCueSongs.append(s);
+                        }
+
+                        if (fixedCueSongs.count()==cueSongs.count()) {
+                            canUseCueFileTracks=true;
+                        } else DBUG << "ERROR: Not all cue tracks had meta data";
+                    }
+
+                    if (canUseCueFileTracks) {
+                        songs=cueSongs;
+                        continue;
+                    }
+                }
+
+                if (!firstSong.albumArtist().isEmpty() && !firstSong.album.isEmpty()) {
+                    currentSong.albumartist=firstSong.albumArtist();
+                    currentSong.album=firstSong.album;
+                    songs.append(currentSong);
+                }
                 continue;
             }
-
+            
             currentSong.fillEmptyFields();
             songs.append(currentSong);
         }

@@ -1896,7 +1896,7 @@ bool MPDConnection::listDirInfo(const QString &dir)
     if (response.ok) {
         QSet<QString> childDirs;
         QList<Song> *songs=new QList<Song>();
-        MPDParseUtils::parseLibraryItems(response.data, *songs, !topLevel, &childDirs);
+        MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, *songs, !topLevel, &childDirs);
         emit librarySongs(songs);
         foreach (const QString &child, childDirs) {
             if (!listDirInfo(child)) {

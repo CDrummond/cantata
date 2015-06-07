@@ -47,7 +47,7 @@
 #include <signal.h>
 #include <stdio.h>
 #if defined ENABLE_MODEL_TEST
-#include "modeltest.h"
+#include "models/modeltest.h"
 #endif
 
 #include <QDebug>

@@ -31,7 +31,6 @@
 #include <QList>
 #include <QPair>
 
-class ProxyModel;
 class Spinner;
 class QTimer;
 class GroupedView;
@@ -104,7 +103,7 @@ public:
     void setMode(Mode m);
     Mode viewMode() const { return mode; }
     QAbstractItemView * view() const;
-    void setModel(ProxyModel *m);
+    void setModel(QAbstractItemModel *m);
     void clearSelection() { view()->selectionModel()->clearSelection(); }
     void setCurrentIndex(const QModelIndex &idx) { view()->setCurrentIndex(idx); }
     void select(const QModelIndex &idx);
@@ -182,7 +181,7 @@ private:
 
 private:
     QTimer *searchTimer;
-    ProxyModel *itemModel;
+    QAbstractItemModel *itemModel;
     int currentLevel;
     Mode mode;
     QString currentText;

@@ -42,22 +42,15 @@ public:
     QModelIndex parent(const QModelIndex &index) const;
     int rowCount(const QModelIndex &parent=QModelIndex()) const;
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
-    void toggleGrouping();
     QList<Song> songs(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
     QStringList filenames(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
-    const QSet<QString> & genres() { return colGenres; }
     int row(void *i) const { return collections.indexOf(static_cast<MusicLibraryItemRoot *>(i)); }
-
-Q_SIGNALS:
-    void updateGenres(const QSet<QString> &genres);
 
 protected:    
     int indexOf(const QString &id);
-    void updateGenres();
 
 protected:
     QList<MusicLibraryItemRoot *> collections;
-    QSet<QString> colGenres;
 };
 
 #endif

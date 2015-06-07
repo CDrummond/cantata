@@ -37,7 +37,6 @@
 #include "remotedevicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #endif
-#include "syncdialog.h"
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
 #include "replaygain/rgdialog.h"
 #endif
@@ -60,8 +59,6 @@ DevicesPage::DevicesPage(QWidget *p)
     setupUi(this);
     copyAction = new Action(Icons::self()->importIcon, i18n("Copy To Library"), this);
     copyToLibraryButton->setDefaultAction(copyAction);
-    syncAction = new Action(Icon("folder-sync"), i18n("Sync"), this);
-    connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction=new Action(Icon("list-remove"), i18n("Forget Device"), this);
     connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
@@ -69,9 +66,7 @@ DevicesPage::DevicesPage(QWidget *p)
     connect(DevicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
     connect(DevicesModel::self()->disconnectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
     copyToLibraryButton->setEnabled(false);
-    syncAction->setEnabled(false);
     view->addAction(copyAction);
-    view->addAction(syncAction);
     view->addAction(StdActions::self()->organiseFilesAction);
     view->addAction(StdActions::self()->editTagsAction);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -85,13 +80,10 @@ DevicesPage::DevicesPage(QWidget *p)
     view->addAction(StdActions::self()->deleteSongsAction);
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
-    connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(DevicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(DevicesModel::self(), SIGNAL(updated(QModelIndex)), this, SLOT(updated(QModelIndex)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
-    connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copyToLibrary()));
     connect(DevicesModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureDevice()));
     connect(DevicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshDevice()));
@@ -264,7 +256,7 @@ void DevicesPage::itemDoubleClicked(const QModelIndex &)
 void DevicesPage::searchItems()
 {
     QString text=view->searchText().trimmed();
-    proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
+    proxy.update(text);
     if (proxy.enabled() && !proxy.filterText().isEmpty()) {
         view->expandAll();
     }
@@ -276,7 +268,7 @@ void DevicesPage::controlActions()
     bool haveTracks=false;
     bool onlyFs=true;
     bool singleUdi=true;
-    bool connected=false;
+//    bool connected=false;
     #ifdef ENABLE_REMOTE_DEVICES
     bool remoteDev=false;
     #endif
@@ -324,15 +316,13 @@ void DevicesPage::controlActions()
             if (!haveTracks) {
                 haveTracks=dev->childCount()>0;
             }
-            connected=dev->isConnected();
+//            connected=dev->isConnected();
         }
     }
 
     DevicesModel::self()->configureAct()->setEnabled(!busyDevice && 1==selected.count() && !audioCd);
     DevicesModel::self()->refreshAct()->setEnabled(!busyDevice && 1==selected.count());
     copyAction->setEnabled(!busyDevice && haveTracks && (!deviceSelected || audioCd));
-    syncAction->setEnabled(!audioCd && !busyDevice && deviceSelected && connected && 1==selected.count() && singleUdi &&
-                           MPDConnection::self()->getDetails().dirReadable);
     StdActions::self()->deleteSongsAction->setEnabled(!audioCd && !busyDevice && haveTracks && !deviceSelected);
     StdActions::self()->editTagsAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -544,58 +534,6 @@ void DevicesPage::toggleDevice()
         }
         static_cast<Device *>(item)->toggle();
     }
-}
-
-void DevicesPage::sync()
-{
-    if (0!=SyncDialog::instanceCount()) {
-        return;
-    }
-
-    if (0!=PreferencesDialog::instanceCount() || 0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()
-        || 0!=ActionDialog::instanceCount() || 0!=CoverDialog::instanceCount()
-        #ifdef ENABLE_REPLAYGAIN_SUPPORT
-        || 0!=RgDialog::instanceCount()
-        #endif
-        ) {
-        MessageBox::error(this, i18n("Please close other dialogs first."));
-        return;
-    }
-
-    const QModelIndexList selected = view->selectedIndexes();
-
-    if (1!=selected.size()) {
-        return;
-    }
-
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
-
-    if (MusicLibraryItem::Type_Root==item->itemType()) {
-        SyncDialog *dlg=new SyncDialog(this);
-        dlg->sync(static_cast<Device *>(item)->id());
-    }
-}
-
-void DevicesPage::updateGenres(const QModelIndex &idx)
-{
-    if (idx.isValid()) {
-        QModelIndex m=proxy.mapToSource(idx);
-        if (m.isValid()) {
-            MusicLibraryItem *item=static_cast<MusicLibraryItem *>(m.internalPointer());
-            MusicLibraryItem::Type itemType=item->itemType();
-            if (itemType==MusicLibraryItem::Type_Root) {
-                genreCombo->update(static_cast<MusicLibraryItemRoot *>(item)->genres());
-                return;
-            } else if (itemType==MusicLibraryItem::Type_Artist) {
-                genreCombo->update(static_cast<MusicLibraryItemArtist *>(item)->genres());
-                return;
-            } else if (itemType==MusicLibraryItem::Type_Album) {
-                genreCombo->update(static_cast<MusicLibraryItemAlbum *>(item)->genres());
-                return;
-            }
-        }
-    }
-    genreCombo->update(DevicesModel::self()->genres());
 }
 
 void DevicesPage::updated(const QModelIndex &idx)

@@ -691,6 +691,16 @@ QString Song::describe(bool withMarkup) const
     return descr;
 }
 
+bool Song::useComposer() const
+{
+    foreach (const QString &g, genres()) {
+        if (isComposerGenre(g)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 //QString Song::basicDescription() const
 //{
 //    return isStandardStream()

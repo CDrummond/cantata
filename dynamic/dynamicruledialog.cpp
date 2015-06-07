@@ -22,7 +22,6 @@
  */
 
 #include "dynamicruledialog.h"
-#include "models/musiclibrarymodel.h"
 #include "support/localize.h"
 
 static const int constMinDate=1800;
@@ -55,7 +54,7 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     QSet<QString> composers;
     QSet<QString> albums;
     QSet<QString> genres;
-    MusicLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
+    //MusicLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
 
     QStringList strings=artists.toList();
     strings.sort();

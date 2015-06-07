@@ -63,8 +63,6 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
 
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
-    connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(OnlineServicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(OnlineServicesModel::self(), SIGNAL(updated(QModelIndex)), this, SLOT(updated(QModelIndex)));
 //    connect(OnlineServicesModel::self(), SIGNAL(needToSort()), this, SLOT(sortList()));
     connect(OnlineServicesModel::self(), SIGNAL(busy(bool)), view, SLOT(showSpinner(bool)));
@@ -73,7 +71,6 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(searchIsActive(bool)), this, SLOT(controlSearch(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
-    connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(setSearchable(QModelIndex)));
     connect(OnlineServicesModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureService()));
     connect(OnlineServicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshService()));
@@ -308,22 +305,17 @@ void OnlineServicesPage::controlSearch(bool on)
 //    }
 
     if (on) {
-        genreCombo->setEnabled(true);
         OnlineService *srv=OnlineServicesModel::self()->service(searchService);
         if (searchService.isEmpty()) {
             view->setSearchVisible(false);
             view->setBackgroundImage(QIcon());
         } else {
-            if (onlineSearchRequest) {
-                genreCombo->setCurrentIndex(0);
-                genreCombo->setEnabled(false);
-            }
             view->setSearchLabelText(i18nc("Search ServiceName:", "Search %1:", searchService));
             view->setBackgroundImage(srv->icon());
         }
         QModelIndex filterIndex=srv ? OnlineServicesModel::self()->serviceIndex(srv) : QModelIndex();
         proxy.setFilterItem(srv);
-        proxy.update(QString(), QString());
+        proxy.update(QString());
         view->setSearchIndex(filterIndex.isValid() ? proxy.mapFromSource(filterIndex) : QModelIndex());
         view->setSearchResetLevel(filterIndex.isValid() ? 0 : 1);
         if (filterIndex.isValid()) {
@@ -334,10 +326,9 @@ void OnlineServicesPage::controlSearch(bool on)
         if (srv) {
             srv->cancelSearch();
         }
-        genreCombo->setEnabled(true);
         searchService=QString();
         proxy.setFilterItem(0);
-        proxy.update(QString(), QString());
+        proxy.update(QString());
         view->setBackgroundImage(QIcon());
         view->setSearchIndex(QModelIndex());
         view->setSearchResetLevel(1);
@@ -356,7 +347,7 @@ void OnlineServicesPage::searchItems()
         if (!view->isSearchActive()) {
             proxy.setFilterItem(0);
         }
-        proxy.update(view->isSearchActive() ? text : QString(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
+        proxy.update(view->isSearchActive() ? text : QString());
         if (proxy.enabled() && !proxy.filterText().isEmpty()) {
             view->expandAll(proxy.filterItem() && view->isSearchActive()
                                 ? proxy.mapFromSource(OnlineServicesModel::self()->serviceIndex(static_cast<const OnlineService *>(proxy.filterItem())))
@@ -470,28 +461,6 @@ void OnlineServicesPage::refreshService()
             srv->reload(0==srv->childCount());
         }
     }
-}
-
-void OnlineServicesPage::updateGenres(const QModelIndex &idx)
-{
-    if (idx.isValid()) {
-        QModelIndex m=proxy.mapToSource(idx);
-        if (m.isValid()) {
-            MusicLibraryItem *item=static_cast<MusicLibraryItem *>(m.internalPointer());
-            MusicLibraryItem::Type itemType=item->itemType();
-            if (itemType==MusicLibraryItem::Type_Root) {
-                genreCombo->update(static_cast<MusicLibraryItemRoot *>(item)->genres());
-                return;
-            } else if (itemType==MusicLibraryItem::Type_Artist) {
-                genreCombo->update(static_cast<MusicLibraryItemArtist *>(item)->genres());
-                return;
-            } else if (itemType==MusicLibraryItem::Type_Album) {
-                genreCombo->update(static_cast<MusicLibraryItemAlbum *>(item)->genres());
-                return;
-            }
-        }
-    }
-    genreCombo->update(OnlineServicesModel::self()->genres());
 }
 
 void OnlineServicesPage::setSearchable(const QModelIndex &idx)

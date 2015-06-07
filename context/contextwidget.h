@@ -38,7 +38,6 @@
 class ArtistView;
 class AlbumView;
 class SongView;
-class BackdropCreator;
 class NetworkJob;
 class QStackedWidget;
 class QComboBox;
@@ -120,14 +119,12 @@ Q_SIGNALS:
     void findArtist(const QString &artist);
     void findAlbum(const QString &artist, const QString &album);
     void playSong(const QString &file);
-    void createBackdrop(const QString &artist, const QList<Song> &songs);
 
 private Q_SLOTS:
     void musicbrainzResponse();
     void fanArtResponse();
     void discoGsResponse();
     void downloadResponse();
-    void backdropCreated(const QString &artist, const QImage &img);
 
 private:
     void setZoom();
@@ -179,13 +176,10 @@ private:
     #endif
     ThinSplitter *splitter;
     ViewSelector *viewSelector;
-    BackdropCreator *creator;
-    QSet<QString> backdropAlbums;
     #ifndef SCALE_CONTEXT_BGND
     QSize minBackdropSize;
     QSize maxBackdropSize;
     #endif
-    QList<QString> artistsCreatedBackdropsFor;
 };
 
 #endif

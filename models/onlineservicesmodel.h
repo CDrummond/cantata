@@ -93,9 +93,6 @@ public:
     QList<Provider> getProviders() const;
     void setHiddenProviders(const QSet<QString> &prov);
 
-public Q_SLOTS:
-    void stateChanged(const QString &name, bool state);
-
 private:
     OnlineService * addService(const QString &name, const QSet<QString> &hidden);
     void removeService(const QString &name);

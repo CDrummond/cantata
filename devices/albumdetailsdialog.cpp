@@ -24,7 +24,6 @@
 #include "albumdetailsdialog.h"
 #include "support/localize.h"
 #include "audiocddevice.h"
-#include "models/musiclibrarymodel.h"
 #include "models/musiclibraryitemsong.h"
 #include "support/messagebox.h"
 #include "support/inputdialog.h"
@@ -113,7 +112,7 @@ AlbumDetailsDialog::AlbumDetailsDialog(QWidget *parent)
     QSet<QString> composers;
     QSet<QString> albums;
     QSet<QString> genres;
-    MusicLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
+//    MusicLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
 
     QStringList strings=albumArtists.toList();
     strings.sort();

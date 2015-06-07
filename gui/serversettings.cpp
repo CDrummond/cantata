@@ -27,7 +27,7 @@
 #include "support/inputdialog.h"
 #include "support/messagebox.h"
 #include "widgets/icons.h"
-#include "models/musiclibrarymodel.h"
+#include "db/mpdlibrarydb.h"
 #ifdef ENABLE_SIMPLE_MPD_SUPPORT
 #include "mpd-interface/mpduser.h"
 #endif
@@ -218,7 +218,7 @@ void ServerSettings::save()
     }
     #endif
     Settings::self()->saveCurrentConnection(current.details.name);
-    MusicLibraryModel::cleanCache();
+    MpdLibraryDb::removeUnusedDbs();
 }
 
 void ServerSettings::cancel()

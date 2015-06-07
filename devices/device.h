@@ -157,7 +157,6 @@ public:
     virtual bool isDevice() const { return true; }
 
     #ifdef ENABLE_DEVICES_SUPPORT
-    void toggleGrouping();
     virtual void saveCache();
     const QString & id() const { return deviceId; }
     void applyUpdate();

@@ -77,9 +77,6 @@ public:
     virtual bool isDevice() const { return false; }
     MusicLibraryItemArtist * artist(const Song &s, bool create=true);
     MusicLibraryItemArtist * createArtist(const Song &s, bool forceComposer=false);
-    void groupSingleTracks();
-    void groupMultipleArtists();
-    bool isFromSingleTracks(const Song &s) const;
     void refreshIndexes();
     void remove(MusicLibraryItemArtist *artist);
     QSet<Song> allSongs(bool revertVa=false) const;
@@ -93,8 +90,6 @@ public:
     void add(const QSet<Song> &songs);
     bool supportsAlbumArtistTag() const { return supportsAlbumArtist; }
     void setSupportsAlbumArtistTag(bool s) { supportsAlbumArtist=s; }
-    virtual void toggleGrouping();
-    void applyGrouping();
     void clearItems();
     void setModel(MusicModel *m) { m_model=m; }
     bool flat() const { return isFlat; }

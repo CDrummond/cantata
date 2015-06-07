@@ -27,7 +27,6 @@
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
 #ifndef CANTATA_WEB
-#include "models/musiclibraryitemroot.h"
 #include "models/streamsmodel.h"
 #endif
 #ifdef ENABLE_SIMPLE_MPD_SUPPORT
@@ -539,6 +538,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
 
     details=det;
     if (diffDetails || State_Connected!=state) {
+        emit connectionChanged(details);
         DBUG << "setDetails" << details.hostname << details.port << (details.password.isEmpty() ? false : true);
         if (State_Connected==state && fadingVolume()) {
             sendCommand("stop");
@@ -1501,27 +1501,7 @@ void MPDConnection::update()
 void MPDConnection::loadLibrary()
 {
     emit updatingLibrary(dbUpdate);
-    #ifdef CANTATA_WEB
     listDirInfo(details.topLevel.isEmpty() ? "/" : details.topLevel);
-    #else
-    Response response=alwaysUseLsInfo || !details.topLevel.isEmpty() ? Response(false) : sendCommand("listallinfo", false);
-    MusicLibraryItemRoot *root=0;
-    if (response.ok) {
-        root = new MusicLibraryItemRoot;
-        MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, mopidy, root);
-    } else { // MPD >=0.18 can fail listallinfo for large DBs, so get info dir by dir...
-        root = new MusicLibraryItemRoot;
-        if (!listDirInfo(details.topLevel.isEmpty() ? "/" : details.topLevel, root)) {
-            delete root;
-            root=0;
-        }
-    }
-
-    if (root) {
-        root->applyGrouping();
-        emit musicLibraryUpdated(root, dbUpdate);
-    }
-    #endif
     emit updatedLibrary();
 }
 
@@ -1888,7 +1868,6 @@ void MPDConnection::toggleStopAfterCurrent(bool afterCurrent)
     }
 }
 
-#ifdef CANTATA_WEB
 bool MPDConnection::listDirInfo(const QString &dir)
 {
     bool topLevel="/"==dir;
@@ -1908,25 +1887,6 @@ bool MPDConnection::listDirInfo(const QString &dir)
         return false;
     }
 }
-#else
-bool MPDConnection::listDirInfo(const QString &dir, MusicLibraryItemRoot *root)
-{
-    bool topLevel="/"==dir;
-    Response response=sendCommand(topLevel ? "lsinfo" : ("lsinfo "+encodeName(dir)));
-    if (response.ok) {
-        QSet<QString> childDirs;
-        MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, mopidy, root, !topLevel, &childDirs);
-        foreach (const QString &child, childDirs) {
-            if (!listDirInfo(child, root)) {
-                return false;
-            }
-        }
-        return true;
-    } else {
-        return false;
-    }
-}
-#endif
 
 #ifdef ENABLE_DYNAMIC
 bool MPDConnection::checkRemoteDynamicSupport()

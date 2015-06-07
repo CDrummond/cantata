@@ -75,7 +75,6 @@ private Q_SLOTS:
 
 private:
     bool readFromCache();
-    void fixLibrary();
     void readProgress(double pc);
     void writeProgress(double pc);
     void progressReport(const QString &str, int pc);

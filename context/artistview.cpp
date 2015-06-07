@@ -25,13 +25,13 @@
 #include "support/localize.h"
 #include "gui/covers.h"
 #include "support/utils.h"
-#include "models/musiclibrarymodel.h"
 #include "network/networkaccessmanager.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "widgets/textbrowser.h"
 #include "contextengine.h"
 #include "support/actioncollection.h"
-#include "models/musiclibrarymodel.h"
+#include "support/action.h"
+#include "models/mpdlibrarymodel.h"
 #include <QApplication>
 #include <QTextStream>
 #include <QLayout>
@@ -58,7 +58,24 @@ static QString cacheFileName(const QString &artist, const QString &lang, bool si
             Covers::encodeName(artist)+(similar ? "-similar" : ("."+lang))+(similar ? ArtistView::constSimilarInfoExt : ArtistView::constInfoExt);
 }
 
-static QString buildUrl(const QString &artist, const QString &album=QString())
+static QString buildUrl(const LibraryDb::Album &al)
+{
+    QUrl url("cantata:///");
+    #if QT_VERSION < 0x050000
+    QUrl &query=url;
+    #else
+    QUrlQuery query;
+    #endif
+
+    query.addQueryItem("artist", al.artist);
+    query.addQueryItem("albumId", al.id);
+    #if QT_VERSION >= 0x050000
+    url.setQuery(query);
+    #endif
+    return url.toString();
+}
+
+static QString buildUrl(const QString &artist)
 {
     QUrl url("cantata:///");
     #if QT_VERSION < 0x050000
@@ -68,9 +85,6 @@ static QString buildUrl(const QString &artist, const QString &album=QString())
     #endif
 
     query.addQueryItem("artist", artist);
-    if (!album.isEmpty()) {
-        query.addQueryItem("album", album);
-    }
     #if QT_VERSION >= 0x050000
     url.setQuery(query);
     #endif
@@ -98,7 +112,7 @@ ArtistView::ArtistView(QWidget *parent)
 {
     engine=ContextEngine::create(this);
     refreshAction = ActionCollection::get()->createAction("refreshartist", i18n("Refresh Artist Information"), "view-refresh");
-    connect(refreshAction, SIGNAL(triggered()), SLOT(refresh()));
+    connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), SLOT(artistImage(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), SLOT(artistImageUpdated(Song,QImage,QString)));
@@ -159,7 +173,7 @@ void ArtistView::update(const Song &s, bool force)
     bool artistChanged=song.artist!=currentSong.artist;
 
     if (artistChanged) {
-        artistAlbumsFirstTracks.clear();
+        artistAlbums.clear();
         abort();
     }
     if (!isVisible()) {
@@ -195,12 +209,12 @@ void ArtistView::update(const Song &s, bool force)
     }
 }
 
-const QList<Song> & ArtistView::getArtistAlbumsFirstTracks()
+const QList<LibraryDb::Album> & ArtistView::getArtistAlbums()
 {
-    if (artistAlbumsFirstTracks.isEmpty() && !currentSong.isEmpty()) {
-        artistAlbumsFirstTracks=MusicLibraryModel::self()->getArtistAlbumsFirstTracks(currentSong);
+    if (artistAlbums.isEmpty() && !currentSong.isEmpty()) {
+        artistAlbums=MpdLibraryModel::self()->getArtistAlbums(currentSong.artist);
     }
-    return artistAlbumsFirstTracks;
+    return artistAlbums;
 }
 
 void ArtistView::artistImage(const Song &song, const QImage &i, const QString &f)
@@ -307,33 +321,10 @@ void ArtistView::setBio()
     }
 
     if (albums.isEmpty()) {
-        getArtistAlbumsFirstTracks();
-        QMap<QString, QStringList> a;
+        getArtistAlbums();
 
-        foreach (const Song &s, artistAlbumsFirstTracks) {
-            a[s.albumArtist()].append(s.album);
-        }
-
-        QMap<QString, QStringList>::ConstIterator it=a.begin();
-        QMap<QString, QStringList>::ConstIterator c=a.find(currentSong.artist);
-        QMap<QString, QStringList>::ConstIterator end=a.end();
-
-        if (c!=end) {
-            QStringList artistAlbums=c.value();
-            qSort(artistAlbums);
-            foreach (const QString &album, artistAlbums) {
-                albums+=QLatin1String("<li><a href=\"")+buildUrl(currentSong.artist, album)+"\">"+album+"</a></li>";
-            }
-        }
-        for (; it!=end; ++it) {
-            if (it==c) {
-                continue;
-            }
-            QStringList artistAlbums=it.value();
-            qSort(artistAlbums);
-            foreach (const QString &album, artistAlbums) {
-                albums+=QLatin1String("<li><a href=\"")+buildUrl(it.key(), album)+"\">"+it.key()+" - "+album+"</a></li>";
-            }
+        foreach (const LibraryDb::Album &al, artistAlbums) {
+                albums+=QLatin1String("<li><a href=\"")+buildUrl(al)+"\">"+al.name+"</a></li>";
         }
     }
 
@@ -446,7 +437,7 @@ QStringList ArtistView::parseSimilarResponse(const QByteArray &resp)
 
 void ArtistView::buildSimilar(const QStringList &artists)
 {
-    QSet<QString> mpdArtists=MusicLibraryModel::self()->getAlbumArtists();
+    QSet<QString> mpdArtists=MpdLibraryModel::self()->getArtists();
     QSet<QString> mpdLowerArtists;
     bool first=true;
     foreach (QString artist, artists) {
@@ -491,8 +482,8 @@ void ArtistView::show(const QUrl &url)
         #endif
 
         if (q.hasQueryItem("artist")) {
-            if (q.hasQueryItem("album")) {
-                emit findAlbum(q.queryItemValue("artist"), q.queryItemValue("album"));
+            if (q.hasQueryItem("albumId")) {
+                emit findAlbum(q.queryItemValue("artist"), q.queryItemValue("albumId"));
             } else {
                 emit findArtist(q.queryItemValue("artist"));
             }

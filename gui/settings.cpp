@@ -22,13 +22,13 @@
  */
 
 #include "settings.h"
-#include "models/musiclibraryitemalbum.h"
+#include "models/sqllibrarymodel.h"
 #include "support/fancytabwidget.h"
-#include "models/albumsmodel.h"
 #include "widgets/itemview.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "support/utils.h"
 #include "support/globalstatic.h"
+#include "db/librarydb.h"
 #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
 #include <kwallet.h>
 #endif
@@ -342,11 +342,6 @@ int Settings::libraryView()
     return ItemView::toMode(cfg.get("libraryView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
 }
 
-int Settings::albumsView()
-{
-    return ItemView::toMode(cfg.get("albumsView", ItemView::modeStr(ItemView::Mode_IconTop)));
-}
-
 int Settings::folderView()
 {
     return ItemView::toMode(cfg.get("folderView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
@@ -373,16 +368,9 @@ bool Settings::libraryArtistImage()
     return cfg.get("libraryArtistImage", false);
 }
 
-int Settings::albumSort()
+QString Settings::libraryAlbumSort()
 {
-    if (version()<CANTATA_MAKE_VERSION(1, 3, 52)) {
-        switch (cfg.get("albumSort", 0)) {
-        case 0: return AlbumsModel::Sort_AlbumArtist;
-        case 1: return AlbumsModel::Sort_ArtistAlbum;
-        case 2: return AlbumsModel::Sort_ArtistYear;
-        }
-    }
-    return AlbumsModel::toSort(cfg.get("albumSort", AlbumsModel::sortStr(AlbumsModel::Sort_AlbumArtist)));
+    return cfg.get("libraryAlbumSort", LibraryDb::constAlbumsSortAlArYr);
 }
 
 int Settings::sidebar()
@@ -394,14 +382,14 @@ int Settings::sidebar()
     }
 }
 
-bool Settings::libraryYear()
+QString Settings::librarySort()
 {
-    return cfg.get("libraryYear", true);
+    return cfg.get("librarySort", LibraryDb::constArtistAlbumsSortYear);
 }
 
-bool Settings::groupSingle()
+QString Settings::libraryGrouping()
 {
-    return cfg.get("groupSingle", MPDParseUtils::groupSingle());
+    return cfg.get("libraryGrouping", SqlLibraryModel::constGroupArtist);
 }
 
 QSet<QString> Settings::composerGenres()
@@ -982,11 +970,6 @@ void Settings::saveLibraryView(int v)
     cfg.set("libraryView", ItemView::modeStr((ItemView::Mode)v));
 }
 
-void Settings::saveAlbumsView(int v)
-{
-    cfg.set("albumsView", ItemView::modeStr((ItemView::Mode)v));
-}
-
 void Settings::saveFolderView(int v)
 {
     cfg.set("folderView", ItemView::modeStr((ItemView::Mode)v));
@@ -1013,9 +996,9 @@ void Settings::saveLibraryArtistImage(bool v)
     cfg.set("libraryArtistImage", v);
 }
 
-void Settings::saveAlbumSort(int v)
+void Settings::saveLibraryAlbumSort(const QString &v)
 {
-    cfg.set("albumSort", AlbumsModel::sortStr((AlbumsModel::Sort)v));
+    cfg.set("libraryAlbumSort", v);
 }
 
 void Settings::saveSidebar(int v)
@@ -1023,14 +1006,14 @@ void Settings::saveSidebar(int v)
     cfg.set("sidebar", v);
 }
 
-void Settings::saveLibraryYear(bool v)
+void Settings::saveLibrarySort(const QString &v)
 {
-    cfg.set("libraryYear", v);
+    cfg.set("librarySort", v);
 }
 
-void Settings::saveGroupSingle(bool v)
+void Settings::saveLibraryGrouping(const QString &v)
 {
-    cfg.set("groupSingle", v);
+    cfg.set("libraryGrouping", v);
 }
 
 void Settings::saveComposerGenres(const QSet<QString> &v)

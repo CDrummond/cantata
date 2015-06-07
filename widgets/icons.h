@@ -74,8 +74,7 @@ public:
     Icon importIcon;
 
     Icon playqueueIcon;
-    Icon artistsIcon;
-    Icon albumsIcon;
+    Icon libraryIcon;
     Icon foldersIcon;
     Icon playlistsIcon;
     #ifdef ENABLE_DYNAMIC

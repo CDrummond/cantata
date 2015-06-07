@@ -1,0 +1,431 @@
+/*
+ * Cantata
+ *
+ * Copyright (c) 2015 Craig Drummond <craig.p.drummond@gmail.com>
+ *
+ * ----
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
+ */
+
+#include "sqllibrarymodel.h"
+#include "playqueuemodel.h"
+#include "gui/plurals.h"
+#include "gui/settings.h"
+#include "widgets/icons.h"
+#include "support/localize.h"
+#include "roles.h"
+#include <QMimeData>
+#if defined ENABLE_MODEL_TEST
+#include "modeltest.h"
+#endif
+
+static QString parentData(const SqlLibraryModel::Item *i)
+{
+    QString data;
+    const SqlLibraryModel::Item *itm=i;
+
+    while (itm->getParent()) {
+        if (!itm->getParent()->getText().isEmpty()) {
+            if (SqlLibraryModel::T_Root==itm->getParent()->getType()) {
+                data="<b>"+itm->getParent()->getText()+"</b><br/>"+data;
+            } else {
+                data=itm->getParent()->getText()+"<br/>"+data;
+            }
+        }
+        itm=itm->getParent();
+    }
+    return data;
+}
+
+const QLatin1String SqlLibraryModel::constGroupGenre("genre");
+const QLatin1String SqlLibraryModel::constGroupArtist("artist");
+const QLatin1String SqlLibraryModel::constGroupAlbum("album");
+
+SqlLibraryModel::SqlLibraryModel(LibraryDb *d, QObject *p)
+    : ActionModel(p)
+    , tl(T_Artist)
+    , root(0)
+    , db(d)
+    , librarySort(LibraryDb::constArtistAlbumsSortYear)
+    , albumSort(LibraryDb::constAlbumsSortAlArYr)
+{
+    connect(db, SIGNAL(libraryUpdated()), SLOT(libraryUpdated()));
+    #if defined ENABLE_MODEL_TEST
+    new ModelTest(this, this);
+    #endif
+}
+
+void SqlLibraryModel::clear()
+{
+    db->clear();
+}
+
+void SqlLibraryModel::settings(const QString &top, const QString &lib, const QString &al)
+{
+    Type t=T_Artist;
+    if (top==constGroupGenre) {
+        t=T_Genre;
+    } else if (top==constGroupAlbum) {
+        t=T_Album;
+    }
+
+    bool changed= t!=tl || (T_Album!=t && lib!=librarySort) || (T_Album==t && al!=albumSort);
+    tl=t;
+    librarySort=lib;
+    albumSort=al;
+    if (changed) {
+        libraryUpdated();
+    }
+}
+
+void SqlLibraryModel::libraryUpdated()
+{
+    beginResetModel();
+    delete root;
+    root=new CollectionItem(T_Root, QString());
+    switch (tl) {
+    case T_Genre: {
+        QList<LibraryDb::Genre> genres=db->getGenres();
+        if (!genres.isEmpty())  {
+            foreach (const LibraryDb::Genre &genre, genres) {
+                root->add(new CollectionItem(T_Genre, genre.name, genre.name, Plurals::artists(genre.artistCount), root));
+            }
+        }
+        break;
+    }
+    case T_Artist: {
+        QList<LibraryDb::Artist> artists=db->getArtists();
+        if (!artists.isEmpty())  {
+            foreach (const LibraryDb::Artist &artist, artists) {
+                root->add(new CollectionItem(T_Artist, artist.name, artist.name, Plurals::albums(artist.albumCount), root));
+            }
+        }
+        break;
+    }
+    case T_Album: {
+        QList<LibraryDb::Album> albums=db->getAlbums();
+        if (!albums.isEmpty())  {
+            foreach (const LibraryDb::Album &album, albums) {
+                root->add(new AlbumItem(album.artist, album.id, Song::displayAlbum(album.name, album.year),
+                                        T_Album==tl
+                                            ? album.artist
+                                            : Plurals::tracksWithDuration(album.trackCount, Utils::formatTime(album.duration, true)), root));
+            }
+        }
+        break;
+    }
+    default:
+        break;
+    }
+
+    endResetModel();
+}
+
+void SqlLibraryModel::search(const QString &str)
+{
+    if (str!=db->getFilter()) {
+        db->setFilter(str);
+        libraryUpdated();
+    }
+}
+
+Qt::ItemFlags SqlLibraryModel::flags(const QModelIndex &index) const
+{
+    if (index.isValid()) {
+        return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
+    }
+    return Qt::ItemIsDropEnabled;
+}
+
+QModelIndex SqlLibraryModel::index(int row, int column, const QModelIndex &parent) const
+{
+    if (!hasIndex(row, column, parent)) {
+        return QModelIndex();
+    }
+    const CollectionItem * p = parent.isValid() ? static_cast<CollectionItem *>(parent.internalPointer()) : root;
+    const Item * c = row<p->getChildCount() ? p->getChildren().at(row) : 0;
+    return c ? createIndex(row, column, (void *)c) : QModelIndex();
+}
+
+QModelIndex SqlLibraryModel::parent(const QModelIndex &child) const
+{
+    if (!child.isValid()) {
+        return QModelIndex();
+    }
+
+    const Item * const item = static_cast<Item *>(child.internalPointer());
+    Item * const parentItem = item->getParent();
+    if (parentItem == root || 0==parentItem) {
+        return QModelIndex();
+    }
+
+    return createIndex(parentItem->getRow(), 0, parentItem);
+}
+
+int SqlLibraryModel::rowCount(const QModelIndex &parent) const
+{
+    if (parent.column() > 0) {
+        return 0;
+    }
+
+    const CollectionItem *parentItem=parent.isValid() ? static_cast<CollectionItem *>(parent.internalPointer()) : root;
+    return parentItem ? parentItem->getChildCount() : 0;
+}
+
+int SqlLibraryModel::columnCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent)
+    return 1;
+}
+
+bool SqlLibraryModel::hasChildren(const QModelIndex &index) const
+{
+    Item *item=toItem(index);
+    return item && T_Track!=item->getType();
+}
+
+bool SqlLibraryModel::canFetchMore(const QModelIndex &index) const
+{
+    if (index.isValid()) {
+        Item *item = toItem(index);
+        return item && T_Track!=item->getType() && 0==item->getChildCount();
+    } else {
+        return false;
+    }
+}
+
+void SqlLibraryModel::fetchMore(const QModelIndex &index)
+{
+    if (!index.isValid()) {
+        return;
+    }
+
+    CollectionItem *item = static_cast<CollectionItem *>(toItem(index));
+    switch (item->getType()) {
+    case T_Root:
+        break;
+    case T_Genre: {
+        QList<LibraryDb::Artist> artists=db->getArtists(item->getId());
+        if (!artists.isEmpty())  {
+            beginInsertRows(index, 0, artists.count()-1);
+            foreach (const LibraryDb::Artist &artist, artists) {
+                item->add(new CollectionItem(T_Artist, artist.name, artist.name, Plurals::albums(artist.albumCount), item));
+            }
+            endInsertRows();
+        }
+        break;
+    }
+    case T_Artist: {
+        QList<LibraryDb::Album> albums=db->getAlbums(item->getId(), T_Genre==tl ? item->getParent()->getId() : QString(), T_Album==topLevel() ? albumSort : librarySort);
+        if (!albums.isEmpty())  {
+            beginInsertRows(index, 0, albums.count()-1);
+            foreach (const LibraryDb::Album &album, albums) {
+                item->add(new CollectionItem(T_Album, album.id, Song::displayAlbum(album.name, album.year),
+                                             Plurals::tracksWithDuration(album.trackCount, Utils::formatTime(album.duration, true)), item));
+            }
+            endInsertRows();
+        }
+        break;
+    }
+    case T_Album: {
+        QList<Song> songs=T_Album==tl
+                            ? db->getTracks(static_cast<AlbumItem *>(item)->getArtistId(), item->getId())
+                            : db->getTracks(item->getParent()->getId(), item->getId(),
+                                            T_Genre==tl ? item->getParent()->getParent()->getId() : QString());
+
+        if (!songs.isEmpty())  {
+            beginInsertRows(index, 0, songs.count()-1);
+            foreach (const Song &song, songs) {
+                item->add(new TrackItem(song, item));
+            }
+            endInsertRows();
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+QVariant SqlLibraryModel::data(const QModelIndex &index, int role) const
+{
+    if (!index.isValid()) {
+        return QVariant();
+    }
+
+    Item *item = static_cast<Item *>(index.internalPointer());
+
+    switch (role) {
+    case Qt::DecorationRole:
+        switch (item->getType()) {
+        case T_Artist:
+            return /*item-> composer? ? Icons::self()->composerIcon :*/ Icons::self()->artistIcon;
+        case T_Album:
+            return Icons::self()->albumIcon;
+        case T_Track:
+            return Song::Playlist==item->getSong().type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
+        default:
+            return QVariant();
+        }
+    case Cantata::Role_BriefMainText:
+        if (T_Album==item->getType()) {
+            return item->getText();
+        }
+    case Cantata::Role_MainText:
+    case Qt::DisplayRole:
+        if (T_Track==item->getType()) {
+            TrackItem *track = static_cast<TrackItem *>(item);
+            if (Song::Playlist==track->getSong().type) {
+                return track->getSong().isCueFile() ? i18n("Cue Sheet") : i18n("Playlist");
+            }
+        }
+        return item->getText();
+    case Qt::ToolTipRole:
+        if (!Settings::self()->infoTooltips()) {
+            return QVariant();
+        }
+        if (T_Track==item->getType()) {
+            return static_cast<TrackItem *>(item)->getSong().toolTip();
+        }
+        return parentData(item)+
+                (0==item->getChildCount()
+                 ? item->getText()
+                 : (item->getText()+"<br/>"+data(index, Cantata::Role_SubText).toString()));
+    case Cantata::Role_SubText:
+        return item->getSubText();
+    case Cantata::Role_ListImage:
+        return T_Album==item->getType();
+    case Cantata::Role_TitleText:
+        return item->getText();
+    default:
+        break;
+    }
+    return ActionModel::data(index, role);
+}
+
+QMimeData * SqlLibraryModel::mimeData(const QModelIndexList &indexes) const
+{
+    QMimeData *mimeData = new QMimeData();
+    QStringList files=filenames(indexes, true);
+    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, files);
+    return mimeData;
+}
+
+QList<Song> SqlLibraryModel::songs(const QModelIndexList &list, bool allowPlaylists) const
+{
+    QList<Song> songList;
+    populate(list);
+    foreach (const QModelIndex &idx, list) {
+        songList+=songs(idx, allowPlaylists);
+    }
+
+    return songList;
+}
+
+QStringList SqlLibraryModel::filenames(const QModelIndexList &list, bool allowPlaylists) const
+{
+    QStringList files;
+    QList<Song> songList=songs(list, allowPlaylists);
+    foreach (const Song &s, songList) {
+        files.append(s.file);
+    }
+    return files;
+}
+
+QModelIndex SqlLibraryModel::findSongIndex(const Song &song)
+{
+    // TODO!!!
+    return QModelIndex();
+}
+
+QModelIndex SqlLibraryModel::findAlbumIndex(const QString &artist, const QString &album)
+{
+    // TODO!!!
+    return QModelIndex();
+}
+
+QModelIndex SqlLibraryModel::findArtistIndex(const QString &artist)
+{
+    // TODO!!!
+    return QModelIndex();
+}
+
+QSet<QString> SqlLibraryModel::getArtists() const
+{
+    // TODO!!!
+    return QSet<QString>();
+}
+
+QList<Song> SqlLibraryModel::getAlbumTracks(const Song &song) const
+{
+    // TODO!!!
+    return QList<Song>();
+}
+
+QList<LibraryDb::Album> SqlLibraryModel::getArtistAlbums(const QString &artist) const
+{
+    return db->getAlbumsWithArtist(artist);
+}
+
+void SqlLibraryModel::populate(const QModelIndexList &list) const
+{
+    foreach (const QModelIndex &idx, list) {
+        if (canFetchMore(idx)) {
+            const_cast<SqlLibraryModel *>(this)->fetchMore(idx);
+            populate(children(idx));
+        }
+    }
+}
+
+QModelIndexList SqlLibraryModel::children(const QModelIndex &parent) const
+{
+    QModelIndexList list;
+
+    for(int r=0; r<rowCount(parent); ++r) {
+        list.append(index(r, 0, parent));
+    }
+    return list;
+}
+
+QList<Song> SqlLibraryModel::songs(const QModelIndex &idx, bool allowPlaylists) const
+{
+    QList<Song> list;
+    if (hasChildren(idx)) {
+        foreach (const QModelIndex &c, children(idx)) {
+            list+=songs(c, allowPlaylists);
+        }
+    } else {
+        const Item *i=static_cast<const Item *>(idx.internalPointer());
+        if (i && T_Track==i->getType() && (allowPlaylists || Song::Playlist!=i->getSong().type)) {
+            list.append(i->getSong());
+        }
+    }
+    return list;
+}
+
+void SqlLibraryModel::CollectionItem::add(Item *i)
+{
+    children.append(i);
+    i->setRow(children.count()-1);
+    childMap.insert(i->getUniqueId(), i);
+}
+
+const SqlLibraryModel::Item *SqlLibraryModel::CollectionItem::getChild(const QString &id) const
+{
+    QMap<QString, Item *>::ConstIterator it=childMap.find(id);
+    return childMap.constEnd()==it ? 0 : it.value();
+}

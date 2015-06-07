@@ -26,6 +26,7 @@
 
 #include "view.h"
 #include "mpd-interface/song.h"
+#include "db/librarydb.h"
 #include <QMap>
 
 class ComboBox;
@@ -51,7 +52,7 @@ public:
     virtual ~ArtistView() { abort(); }
 
     void update(const Song &s, bool force=false);
-    const QList<Song> & getArtistAlbumsFirstTracks();
+    const QList<LibraryDb::Album> &getArtistAlbums();
 
 Q_SIGNALS:
     void findArtist(const QString &artist);
@@ -88,7 +89,7 @@ private:
     QString provider;
     QString webLinks;
     QString albums;
-    QList<Song> artistAlbumsFirstTracks;
+    QList<LibraryDb::Album> artistAlbums;
 };
 
 #endif

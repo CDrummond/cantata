@@ -103,12 +103,7 @@ void MagnatuneMusicLoader::parseSong(QXmlStreamReader &xml)
         s.fillEmptyFields();
         MusicLibraryItemArtist *artist = library->artist(s);
         MusicLibraryItemAlbum *album = artist->album(s);
-        MusicLibraryItemSong *song=new MusicLibraryItemSong(s, album);
-        QSet<QString> songGenres=song->allGenres();
-        album->append(song);
-        album->addGenres(songGenres);
-        artist->addGenres(songGenres);
-        library->addGenres(songGenres);
+        album->append(new MusicLibraryItemSong(s, album));
 //        if (!artistImg.isEmpty() && artist->imageUrl().isEmpty()) {
 //            artist->setImageUrl(artistImg);
 //        }

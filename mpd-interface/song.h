@@ -203,6 +203,7 @@ struct Song
     QString filePath() const { return decodePath(file); }
     QString displayAlbum() const { return displayAlbum(album, year); }
     QString describe(bool withMarkup=false) const;
+    bool useComposer() const;
 //    QString basicDescription() const;
 
     //

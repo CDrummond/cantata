@@ -24,7 +24,6 @@
 #include "tageditor.h"
 #include "tags.h"
 #include "widgets/tagspinbox.h"
-#include "models/musiclibrarymodel.h"
 #include "mpd-interface/mpdconnection.h"
 #include "gui/settings.h"
 #include "support/messagebox.h"
@@ -1172,10 +1171,10 @@ bool TagEditor::applyUpdates()
             } else
             #endif
             {
-                if (!MusicLibraryModel::self()->updateSong(orig, edit)) {
-                    MusicLibraryModel::self()->removeSongFromList(orig);
-                    MusicLibraryModel::self()->addSongToList(edit);
-                }
+//                if (!MusicLibraryModel::self()->updateSong(orig, edit)) {
+//                    MusicLibraryModel::self()->removeSongFromList(orig);
+//                    MusicLibraryModel::self()->addSongToList(edit);
+//                }
             }
             updatedSongs.append(edit);
             if (!renameFiles && file!=opts.createFilename(edit)) {

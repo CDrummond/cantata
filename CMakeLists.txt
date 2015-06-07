@@ -28,8 +28,8 @@ set(DEBIAN_PACKAGE_DESCRIPTION "Qt/KDE Client for MPD")
 set(DEBIAN_PACKAGE_SECTION "kde4")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
 set(CPACK_PACKAGE_VERSION_MAJOR "1")
-set(CPACK_PACKAGE_VERSION_MINOR "5")
-set(CPACK_PACKAGE_VERSION_PATCH "51")
+set(CPACK_PACKAGE_VERSION_MINOR "9")
+set(CPACK_PACKAGE_VERSION_PATCH "50")
 set(CPACK_PACKAGE_VERSION_SPIN "")  # Use ".$number" - e.g. ".1"
 set(CPACK_PACKAGE_CONTACT "Craig Drummond <craig.p.drummond@gmail.com>")
 set(CANTATA_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")
@@ -272,13 +272,15 @@ if (ENABLE_QT5)
     find_package(Qt5Network REQUIRED)
     find_package(Qt5Concurrent REQUIRED)
     find_package(Qt5Svg REQUIRED)
+    find_package(Qt5Sql REQUIRED)
+
     set(QTCORELIBS ${Qt5Core_LIBRARIES})
     set(QTNETWORKLIBS ${Qt5Network_LIBRARIES})
     set(QTGUILIBS ${Qt5Gui_LIBRARIES})
-    set(QTLIBS ${QTCORELIBS} ${Qt5Widgets_LIBRARIES} ${QTNETWORKLIBS} ${QTGUILIBS} ${Qt5Xml_LIBRARIES} ${Qt5Concurrent_LIBRARIES} ${Qt5Svg_LIBRARIES})
+    set(QTLIBS ${QTCORELIBS} ${Qt5Widgets_LIBRARIES} ${QTNETWORKLIBS} ${QTGUILIBS} ${Qt5Xml_LIBRARIES} ${Qt5Concurrent_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5Sql_LIBRARIES})
     set(QTINCLUDES ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS} ${Qt5Concurrent_INCLUDE_DIRS}
-                   ${Qt5Svg_INCLUDE_DIRS})
-    add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5Network_DEFINITIONS} ${Qt5Xml_DEFINITIONS} ${Qt5Concurrent_DEFINITIONS} ${Qt5Svg_DEFINITIONS})
+                   ${Qt5Svg_INCLUDE_DIRS} ${Qt5Sql_INCLUDE_DIRS})
+    add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5Network_DEFINITIONS} ${Qt5Xml_DEFINITIONS} ${Qt5Concurrent_DEFINITIONS} ${Qt5Svg_DEFINITIONS} ${Qt5Sql_DEFINITIONS})
     set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
     if (NOT ENABLE_UBUNTU AND NOT APPLE AND NOT WIN32)
         # Does Ubuntu/Touch version need DBus?
@@ -300,11 +302,11 @@ if (ENABLE_QT5)
         exec_program(${QT_QMAKE_EXECUTABLE} ARGS -query QT_INSTALL_TRANSLATIONS OUTPUT_VARIABLE QT_TRANSLATIONS_DIR)
     endif (APPLE OR WIN32)
 else (ENABLE_QT5)
-    find_package(Qt4 REQUIRED QtCore QtGui QtXml QtNetwork QtSvg)
+    find_package(Qt4 REQUIRED QtCore QtGui QtXml QtNetwork QtSvg QtSql)
     set(QTCORELIBS ${QT_QTCORE_LIBRARY})
     set(QTNETWORKLIBS ${QT_QTNETWORK_LIBRARY})
     set(QTGUILIBS ${QT_QTGUI_LIBRARY})
-    set(QTLIBS ${QT_QTXML_LIBRARY} ${QTCORELIBS} ${QTGUILIBS} ${QTNETWORKLIBS} ${QT_QTSVG_LIBRARY})
+    set(QTLIBS ${QT_QTXML_LIBRARY} ${QTCORELIBS} ${QTGUILIBS} ${QTNETWORKLIBS} ${QT_QTSVG_LIBRARY} ${QT_QTSQL_LIBRARY})
     if (QT_QTDBUS_FOUND)
         set(QTLIBS ${QTLIBS} ${QT_QTDBUS_LIBRARY})
     endif (QT_QTDBUS_FOUND)
@@ -404,35 +406,37 @@ include_directories(${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BIN
 
 set(CANTATA_CORE_SRCS ${CANTATA_CORE_SRCS}
     gui/covers.cpp gui/currentcover.cpp
-    models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
+    models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp
     models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp models/playlistsproxymodel.cpp models/playqueuemodel.cpp
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
-    models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp
+    models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp
     models/musicmodel.cpp models/multimusicmodel.cpp models/searchmodel.cpp models/streamsmodel.cpp models/searchproxymodel.cpp
-    models/musiclibraryitemsong.cpp
+    models/musiclibraryitemsong.cpp models/sqllibrarymodel.cpp models/mpdlibrarymodel.cpp
     mpd-interface/mpdconnection.cpp mpd-interface/mpdparseutils.cpp mpd-interface/mpdstats.cpp mpd-interface/mpdstatus.cpp
     mpd-interface/song.cpp mpd-interface/cuefile.cpp
+    db/librarydb.cpp db/mpdlibrarydb.cpp
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
     streams/streamfetcher.cpp
     http/httpserver.cpp)
 set(CANTATA_CORE_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
     gui/covers.h gui/currentcover.h
-    models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
-    models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/actionmodel.h
-    models/multimusicmodel.h models/searchmodel.h
+    models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
+    models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/actionmodel.h
+    models/multimusicmodel.h models/searchmodel.h models/sqllibrarymodel.h models/mpdlibrarymodel.h
     mpd-interface/mpdconnection.h mpd-interface/mpdstats.h mpd-interface/mpdstatus.h
+    db/librarydb.h db/mpdlibrarydb.h
     network/networkaccessmanager.h
     streams/streamfetcher.h
     widgets/notelabel.h)
 
 set(CANTATA_SRCS ${CANTATA_CORE_SRCS} ${CANTATA_SRCS}
     gui/settings.cpp gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
-    gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp
+    gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp
     gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
     devices/deviceoptions.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/nowplayingwidget.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
-    widgets/volumeslider.cpp widgets/genrecombo.cpp widgets/menubutton.cpp widgets/icons.cpp widgets/toolbutton.cpp widgets/wizardpage.cpp
+    widgets/volumeslider.cpp widgets/menubutton.cpp widgets/icons.cpp widgets/toolbutton.cpp widgets/wizardpage.cpp
     widgets/statuslabel.cpp widgets/searchwidget.cpp widgets/messageoverlay.cpp widgets/basicitemdelegate.cpp widgets/sizegrip.cpp
     widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp widgets/songdialog.cpp widgets/stretchheaderview.cpp
     widgets/tableview.cpp widgets/thinsplitterhandle.cpp widgets/coverwidget.cpp widgets/ratingwidget.cpp widgets/notelabel.cpp
@@ -440,24 +444,23 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS} ${CANTATA_SRCS}
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
     context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp context/togglelist.cpp
-    context/lastfmengine.cpp context/metaengine.cpp context/backdropcreator.cpp
+    context/lastfmengine.cpp context/metaengine.cpp
     scrobbling/scrobbler.cpp scrobbling/pausabletimer.cpp scrobbling/scrobblingsettings.cpp scrobbling/scrobblingstatus.cpp
     scrobbling/scrobblinglove.cpp)
 set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS} ${CANTATA_MOC_HDRS}
-    gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h gui/albumspage.h gui/playlistspage.h
+    gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h gui/playlistspage.h
     gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h
     gui/coverdialog.h gui/searchpage.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/nowplayingwidget.h widgets/actionlabel.h
-    widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h widgets/genrecombo.h
+    widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h
     widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h widgets/tableview.h
     widgets/coverwidget.h widgets/ratingwidget.h widgets/selectorlabel.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
-    context/backdropcreator.h
     scrobbling/scrobbler.h scrobbling/scrobblingsettings.h scrobbling/scrobblingstatus.h scrobbling/scrobblinglove.h)
 set(CANTATA_UIS ${CANTATA_UIS}
-    gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/albumspage.ui gui/playlistspage.ui
+    gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/playlistspage.ui
     gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui gui/searchpage.ui
     context/togglelist.ui context/othersettings.ui
     widgets/itemview.ui scrobbling/scrobblingsettings.ui)
@@ -662,15 +665,14 @@ if (TAGLIB_FOUND)
                 devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp devices/splitlabelwidget.cpp
                 models/devicesmodel.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
                 devices/devicepropertiesdialog.cpp devices/encoders.cpp devices/freespaceinfo.cpp
-                devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp
+                devices/transcodingjob.cpp devices/valueslider.cpp
                 online/onlinedevice.cpp)
         set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/devicespage.h devices/filejob.h
                 devices/fsdevice.h devices/umsdevice.h models/devicesmodel.h
                 devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
-                devices/transcodingjob.h devices/valueslider.h devices/syncdialog.h devices/synccollectionwidget.h
+                devices/transcodingjob.h devices/valueslider.h
                 online/onlinedevice.h)
-        set(CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertieswidget.ui
-                devices/synccollectionwidget.ui)
+        set(CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertieswidget.ui)
 
         if (ENABLE_REMOTE_DEVICES)
             set(CANTATA_SRCS ${CANTATA_SRCS} devices/remotefsdevice.cpp devices/remotedevicepropertiesdialog.cpp

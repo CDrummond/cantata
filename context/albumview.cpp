@@ -28,10 +28,11 @@
 #include "network/networkaccessmanager.h"
 #include "support/utils.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include "models/musiclibrarymodel.h"
 #include "contextengine.h"
 #include "widgets/textbrowser.h"
 #include "support/actioncollection.h"
+#include "support/action.h"
+#include "models/mpdlibrarymodel.h"
 #include <QScrollBar>
 #include <QFile>
 #include <QUrl>
@@ -61,7 +62,7 @@ AlbumView::AlbumView(QWidget *p)
 {
     engine=ContextEngine::create(this);
     refreshAction = ActionCollection::get()->createAction("refreshalbum", i18n("Refresh Album Information"), "view-refresh");
-    connect(refreshAction, SIGNAL(triggered()), SLOT(refresh()));
+    connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), SLOT(coverUpdated(Song,QImage,QString)));
@@ -168,7 +169,7 @@ void AlbumView::playSong(const QUrl &url)
 void AlbumView::getTrackListing()
 {
     if (songs.isEmpty()) {
-        songs=MusicLibraryModel::self()->getAlbumTracks(currentSong);
+        songs=MpdLibraryModel::self()->getAlbumTracks(currentSong);
     }
 
     if (!songs.isEmpty()) {

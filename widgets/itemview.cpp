@@ -779,7 +779,9 @@ void ItemView::setMode(Mode m)
         treeView->setHidden(false);
         static_cast<TreeDelegate *>(treeView->itemDelegate())->setSimple(Mode_SimpleTree==mode || Mode_BasicTree==mode);
         static_cast<TreeDelegate *>(treeView->itemDelegate())->setNoIcons(Mode_BasicTree==mode);
-        itemModel->setRootIndex(QModelIndex());
+        if (dynamic_cast<ProxyModel *>(itemModel)) {
+            static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
+        }
         treeView->reset();
     } else if (Mode_GroupedTree==mode) {
         treeView->setModel(0);
@@ -791,7 +793,9 @@ void ItemView::setMode(Mode m)
         groupedView->setHidden(false);
         treeView->setHidden(true);
         groupedView->setModel(itemModel);
-        itemModel->setRootIndex(QModelIndex());
+        if (dynamic_cast<ProxyModel *>(itemModel)) {
+            static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
+        }
         stackIndex=groupedView->property(constPageProp).toInt();
     } else if (Mode_Table==mode) {
         int w=view()->width();
@@ -804,7 +808,9 @@ void ItemView::setMode(Mode m)
         treeView->setHidden(true);
         tableView->setModel(itemModel);
         tableView->initHeader();
-        itemModel->setRootIndex(QModelIndex());
+        if (dynamic_cast<ProxyModel *>(itemModel)) {
+            static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
+        }
         tableView->resize(w, tableView->height());
         stackIndex=tableView->property(constPageProp).toInt();
     } else {
@@ -859,7 +865,9 @@ QModelIndexList ItemView::selectedIndexes(bool sorted) const
 void ItemView::goToTop()
 {
     setLevel(0);
-    itemModel->setRootIndex(QModelIndex());
+    if (dynamic_cast<ProxyModel *>(itemModel)) {
+        static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
+    }
     listView->setRootIndex(QModelIndex());
     emit rootIndexSet(QModelIndex());
 }
@@ -923,7 +931,7 @@ QAbstractItemView * ItemView::view() const
     }
 }
 
-void ItemView::setModel(ProxyModel *m)
+void ItemView::setModel(QAbstractItemModel *m)
 {
     bool needtToInit=!itemModel;
     itemModel=m;
@@ -1060,7 +1068,9 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
             }
             setLevel(0);
             listView->setRootIndex(QModelIndex());
-            itemModel->setRootIndex(QModelIndex());
+            if (dynamic_cast<ProxyModel *>(itemModel)) {
+                static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
+            }
             foreach (const QModelIndex &i, indexes) {
                 activateItem(i, false);
             }
@@ -1279,7 +1289,9 @@ void ItemView::backActivated()
         return;
     }
     setLevel(currentLevel-1);
-    itemModel->setRootIndex(listView->rootIndex().parent());
+    if (dynamic_cast<ProxyModel *>(itemModel)) {
+        static_cast<ProxyModel *>(itemModel)->setRootIndex(listView->rootIndex().parent());
+    }
     listView->setRootIndex(listView->rootIndex().parent());
     emit rootIndexSet(listView->rootIndex().parent());
 
@@ -1343,12 +1355,20 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         if (!index.parent().isValid()) {
             tableView->setExpanded(index, !tableView->TreeView::isExpanded(index));
         }
-    } else if (index.isValid() && index.child(0, 0).isValid() && index!=listView->rootIndex()) {
+    } else if (index.isValid() && (index.child(0, 0).isValid() || itemModel->canFetchMore(index)) && index!=listView->rootIndex()) {
+        if (itemModel->canFetchMore(index)) {
+            itemModel->fetchMore(index);
+        }
+        QModelIndex fistChild=index.child(0, 0);
+        if (!fistChild.isValid()) {
+            return;
+        }
+
         prevTopIndex=listView->indexAt(QPoint(8, 8));
         if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
             prevTopIndex=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(prevTopIndex);
         }
-        setLevel(currentLevel+1, index.child(0, 0).child(0, 0).isValid());
+        setLevel(currentLevel+1, itemModel->canFetchMore(fistChild) || fistChild.child(0, 0).isValid());
         QString text=index.data(Cantata::Role_TitleText).toString();
         if (text.isEmpty()) {
             text=index.data(Qt::DisplayRole).toString();
@@ -1356,7 +1376,9 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         currentText=text;
         backButton->setText(text);
         listView->setRootIndex(index);
-        itemModel->setRootIndex(index);
+        if (dynamic_cast<ProxyModel *>(itemModel)) {
+            static_cast<ProxyModel *>(itemModel)->setRootIndex(index);
+        }
         if (emitRootSet) {
             emit rootIndexSet(index);
         }

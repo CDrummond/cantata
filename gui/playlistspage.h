@@ -79,7 +79,6 @@ private Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &index);
     void searchItems();
     void updated(const QModelIndex &index);
-    void updateGenres(const QModelIndex &);
 
 private:
     Action *renamePlaylistAction;

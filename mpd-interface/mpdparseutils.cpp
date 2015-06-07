@@ -33,10 +33,6 @@
 #include "models/dirviewitemroot.h"
 #include "models/dirviewitemdir.h"
 #include "models/dirviewitemfile.h"
-#include "models/musiclibraryitemartist.h"
-#include "models/musiclibraryitemalbum.h"
-#include "models/musiclibraryitemsong.h"
-#include "models/musiclibraryitemroot.h"
 #endif
 #include "mpdparseutils.h"
 #include "mpdstatus.h"
@@ -528,25 +524,12 @@ MPDParseUtils::MessageMap MPDParseUtils::parseMessages(const QByteArray &data)
 }
 
 #endif
-static bool groupSingleTracks=false;
-
-bool MPDParseUtils::groupSingle()
-{
-    return groupSingleTracks;
-}
-
-void MPDParseUtils::setGroupSingle(bool g)
-{
-    groupSingleTracks=g;
-}
-
-#ifdef CANTATA_WEB
 void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, bool parsePlaylists, QSet<QString> *childDirs)
 {
     QList<QByteArray> currentItem;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
-    
+
     for (int i = 0; i < amountOfLines; i++) {
         const QByteArray &line=lines.at(i);
         if (childDirs && line.startsWith(constDirectoryKey)) {
@@ -559,14 +542,13 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
             if (currentSong.file.isEmpty()) {
                 continue;
             }
-            
+
+            // lsinfo / will return all stored playlists - but this is deprecated.
+            if (Song::Playlist==currentSong.type && !parsePlaylists) {
+                continue;
+            }
+
             if (Song::Playlist==currentSong.type && !songs.isEmpty()) {
-
-                // lsinfo / will return all stored playlists - but this is deprecated.
-                if (!parsePlaylists) {
-                    continue;
-                }
-
                 Song firstSong=songs.at(0);
                 QList<Song> cueSongs; // List of songs from cue file
                 QSet<QString> cueFiles; // List of source (flac, mp3, etc) files referenced in cue file
@@ -689,221 +671,8 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
         }
     }
 }
-#else
-void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion,
-                                      bool isMopidy, MusicLibraryItemRoot *rootItem, bool parsePlaylists,
-                                      QSet<QString> *childDirs)
-{
-    bool canSplitCue=mpdVersion>=CANTATA_MAKE_VERSION(0,17,0);
-    QList<QByteArray> currentItem;
-    QList<QByteArray> lines = data.split('\n');
-    int amountOfLines = lines.size();
-    MusicLibraryItemArtist *artistItem = 0;
-    MusicLibraryItemAlbum *albumItem = 0;
-    MusicLibraryItemSong *songItem = 0;
 
-    for (int i = 0; i < amountOfLines; i++) {
-        const QByteArray &line=lines.at(i);
-        if (childDirs && line.startsWith(constDirectoryKey)) {
-            childDirs->insert(QString::fromUtf8(line.mid(constDirectoryKey.length())));
-        }
-        currentItem.append(line);
-        if (i == amountOfLines - 1 || lines.at(i + 1).startsWith(constFileKey) || lines.at(i + 1).startsWith(constPlaylistKey)) {
-            Song currentSong = parseSong(currentItem, Loc_Library);
-            currentItem.clear();
-            if (currentSong.file.isEmpty() || (isMopidy && !currentSong.file.startsWith(Song::constMopidyLocal))) {
-                continue;
-            }
-
-            if (Song::Playlist==currentSong.type) {
-                // lsinfo / will return all stored playlists - but this is deprecated.
-                if (!parsePlaylists) {
-                    continue;
-                }
-
-                MusicLibraryItemAlbum *prevAlbum=albumItem;
-                QString prevSongFile=songItem ? songItem->file() : QString();
-                QList<Song> cueSongs; // List of songs from cue file
-                QSet<QString> cueFiles; // List of source (flac, mp3, etc) files referenced in cue file
-
-                DBUG << "Got playlist item" << currentSong.file << "prevFile:" << prevSongFile;
-
-                bool parseCue=canSplitCue && currentSong.isCueFile() && !mpdDir.startsWith(constHttpProtocol) && QFile::exists(mpdDir+currentSong.file);
-                bool cueParseStatus=false;
-                if (parseCue) {
-                    DBUG << "Parsing cue file:" << currentSong.file << "mpdDir:" << mpdDir;
-                    cueParseStatus=CueFile::parse(currentSong.file, mpdDir, cueSongs, cueFiles);
-                    if (!cueParseStatus) {
-                        DBUG << "Failed to parse cue file!";
-                        continue;
-                    } else DBUG << "Parsed cue file, songs:" << cueSongs.count() << "files:" << cueFiles;
-                }
-                if (cueParseStatus &&
-                    (cueFiles.count()<cueSongs.count() || (albumItem && albumItem->data()==Song::unknown() && albumItem->parentItem()->data()==Song::unknown()))) {
-
-                    bool canUseThisCueFile=true;
-                    foreach (const Song &s, cueSongs) {
-                        if (!QFile::exists(mpdDir+s.name())) {
-                            DBUG << QString(mpdDir+s.name()) << "is referenced in cue file, but does not exist in MPD folder";
-                            canUseThisCueFile=false;
-                            break;
-                        }
-                    }
-
-                    if (!canUseThisCueFile) {
-                        continue;
-                    }
-
-                    bool canUseCueFileTracks=false;
-                    QList<Song> fixedCueSongs; // Songs taken from cueSongs that have been updated...
-
-                    if (albumItem) {
-                        QMap<QString, Song> origFiles=albumItem->getSongs(cueFiles);
-                        DBUG << "Original files:" << origFiles.keys();
-                        if (origFiles.size()==cueFiles.size()) {
-                            // We have a previous album, if any of the details of the songs from the cue are empty,
-                            // use those from the album...
-                            bool setTimeFromSource=origFiles.size()==cueSongs.size();
-                            quint32 albumTime=1==cueFiles.size() ? albumItem->totalTime() : 0;
-                            quint32 usedAlbumTime=0;
-                            foreach (const Song &orig, cueSongs) {
-                                Song s=orig;
-                                Song albumSong=origFiles[s.name()];
-                                s.setName(QString()); // CueFile has placed source file name here!
-                                if (s.artist.isEmpty() && !albumSong.artist.isEmpty()) {
-                                    s.artist=albumSong.artist;
-                                    DBUG << "Get artist from album" << albumSong.artist;
-                                }
-                                if (s.composer().isEmpty() && !albumSong.composer().isEmpty()) {
-                                    s.setComposer(albumSong.composer());
-                                    DBUG << "Get composer from album" << albumSong.composer();
-                                }
-                                if (s.album.isEmpty() && !albumSong.album.isEmpty()) {
-                                    s.album=albumSong.album;
-                                    DBUG << "Get album from album" << albumSong.album;
-                                }
-                                if (s.albumartist.isEmpty() && !albumSong.albumartist.isEmpty()) {
-                                    s.albumartist=albumSong.albumartist;
-                                    DBUG << "Get albumartist from album" << albumSong.albumartist;
-                                }
-                                if (0==s.year && 0!=albumSong.year) {
-                                    s.year=albumSong.year;
-                                    DBUG << "Get year from album" << albumSong.year;
-                                }
-                                if (0==s.time && setTimeFromSource) {
-                                    s.time=albumSong.time;
-                                } else if (0!=albumTime) {
-                                    // Try to set duration of last track by subtracting previous track durations from album duration...
-                                    if (0==s.time) {
-                                        s.time=albumTime-usedAlbumTime;
-                                    } else {
-                                        usedAlbumTime+=s.time;
-                                    }
-                                }
-                                fixedCueSongs.append(s);
-                            }
-                            canUseCueFileTracks=true;
-                        } else DBUG << "ERROR: file count mismatch" << origFiles.size() << cueFiles.size();
-                    } else DBUG << "ERROR: No album???";
-
-                    if (!canUseCueFileTracks) {
-                        // No revious album, or album had a different number of source files to the CUE file. If so, then we need to ensure
-                        // all tracks have meta data - otherwise just fallback to listing file + cue
-                        foreach (const Song &orig, cueSongs) {
-                            Song s=orig;
-                            s.setName(QString()); // CueFile has placed source file name here!
-                            if (s.artist.isEmpty() || s.album.isEmpty()) {
-                                break;
-                            }
-                            fixedCueSongs.append(s);
-                        }
-
-                        if (fixedCueSongs.count()==cueSongs.count()) {
-                            canUseCueFileTracks=true;
-                        } else DBUG << "ERROR: Not all cue tracks had meta data";
-                    }
-
-                    if (canUseCueFileTracks) {
-                        QSet<MusicLibraryItemAlbum *> updatedAlbums;
-                        updatedAlbums.insert(albumItem);
-                        foreach (Song s, fixedCueSongs) {
-                            s.fillEmptyFields();
-                            if (!artistItem || s.albumArtist()!=artistItem->data()) {
-                                artistItem = rootItem->artist(s);
-                            }
-                            if (!albumItem || s.year!=albumItem->year() || albumItem->parentItem()!=artistItem || s.album!=albumItem->data()) {
-                                albumItem = artistItem->album(s);
-                            }
-                            DBUG << "Create new track from cue" << s.file << s.title << s.artist << s.albumartist << s.album;
-                            songItem=new MusicLibraryItemSong(s, albumItem);
-                            QSet<QString> songGenres=songItem->allGenres();
-                            albumItem->append(songItem);
-                            albumItem->addGenres(songGenres);
-                            artistItem->addGenres(songGenres);
-                            rootItem->addGenres(songGenres);
-                            updatedAlbums.insert(albumItem);
-                        }
-
-                        // For each album that was updated/created, remove any source files referenced in cue file...
-                        foreach (MusicLibraryItemAlbum *al, updatedAlbums) {
-                            if (al) {
-                                al->removeAll(cueFiles);
-                            }
-                        }
-                        if (prevAlbum && !updatedAlbums.contains(prevAlbum)) {
-                            DBUG << "Removing" << cueFiles.count() << " files from " << prevAlbum->data();
-                            prevAlbum->removeAll(cueFiles);
-                        }
-
-                        // Remove any artist/album that was created and is now empty.
-                        // This will happen if the source file (e.g. the flac file) does not have any metadata...
-                        if (prevAlbum && 0==prevAlbum->childCount()) {
-                            DBUG << "Removing empty previous album" << prevAlbum->data();
-                            MusicLibraryItemArtist *ar=static_cast<MusicLibraryItemArtist *>(prevAlbum->parentItem());
-                            ar->remove(prevAlbum);
-                            if (0==ar->childCount()) {
-                                rootItem->remove(ar);
-                            }
-                        }
-                    }
-                }
-
-                // Add playlist file (or cue file) to current album, if it has the same path!
-                // This assumes that MPD always send playlists as the last file...
-                if (!prevSongFile.isEmpty() && Utils::getDir(prevSongFile)==Utils::getDir(currentSong.file)) {
-                    currentSong.albumartist=currentSong.artist=artistItem->data();
-                    currentSong.album=albumItem->data();
-                    currentSong.time=albumItem->totalTime();
-                    DBUG << "Adding playlist file to" << albumItem->parentItem()->data() << albumItem->data() << (void *)albumItem;
-                    songItem = new MusicLibraryItemSong(currentSong, albumItem);
-                    albumItem->append(songItem);
-                }
-                continue;
-            }
-//            if (currentSong.isEmpty()) {
-//                continue;
-//            }
-
-            currentSong.fillEmptyFields();
-            if (!artistItem || currentSong.artistOrComposer()!=artistItem->data()) {
-                artistItem = rootItem->artist(currentSong);
-                DBUG << "New artist item for " << currentSong.file << artistItem->data() << (void *)artistItem;
-            }
-            if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.albumId()!=albumItem->albumId()) {
-                albumItem = artistItem->album(currentSong);
-                DBUG << "New album item for " << currentSong.file << artistItem->data() << albumItem->data() << (void *)albumItem;
-            }           
-            songItem=new MusicLibraryItemSong(currentSong, albumItem);
-            QSet<QString> songGenres=songItem->allGenres();
-            albumItem->append(songItem);
-            albumItem->addGenres(songGenres);
-            artistItem->addGenres(songGenres);
-            rootItem->addGenres(songGenres);
-        }/* else if (childDirs) {
-        }*/
-    }
-}
-
+#ifndef CANTATA_WEB
 DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data, bool isMopidy)
 {
     QList<QByteArray> lines = data.split('\n');

@@ -27,7 +27,6 @@
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitempodcast.h"
-#include "musiclibrarymodel.h"
 #include "dirviewmodel.h"
 #include "onlineservicesmodel.h"
 #include "online/onlineservice.h"
@@ -368,20 +367,8 @@ void OnlineServicesModel::removeService(const QString &name)
         beginRemoveRows(QModelIndex(), idx, idx);
         collections.takeAt(idx);
         endRemoveRows();
-        MultiMusicModel::updateGenres();
         // Destroy will stop service, and delete it (via deleteLater())
         srv->destroy();
-    }
-}
-
-void OnlineServicesModel::stateChanged(const QString &name, bool state)
-{
-    if (!state) {
-        int idx=indexOf(name);
-        if (idx<0) {
-            return;
-        }
-        MultiMusicModel::updateGenres();
     }
 }
 
@@ -554,7 +541,6 @@ void OnlineServicesModel::setHiddenProviders(const QSet<QString> &prov)
 //    if (added && collections.count()>1) {
 //        emit needToSort();
 //    }
-    updateGenres();
     if (changed) {
         emit providersChanged();
     }

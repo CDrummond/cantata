@@ -43,9 +43,7 @@
 #include <time.h>
 
 #ifndef CANTATA_WEB
-class MusicLibraryItemArtist;
 class DirViewItemRoot;
-class MusicLibraryItemRoot;
 #endif
 class QTimer;
 class Thread;
@@ -328,6 +326,7 @@ public Q_SLOTS:
     void reverse() { seek(false); }
 
 Q_SIGNALS:
+    void connectionChanged(const MPDConnectionDetails &details);
     void stateChanged(bool connected);
     void passwordError();
     void currentSongUpdated(const Song &song);
@@ -335,10 +334,8 @@ Q_SIGNALS:
     void statsUpdated(const MPDStatsValues &stats);
     void statusUpdated(const MPDStatusValues &status);
     void outputsUpdated(const QList<Output> &outputs);
-    #ifdef CANTATA_WEB
     void librarySongs(QList<Song> *songs);
-    #else
-    void musicLibraryUpdated(MusicLibraryItemRoot *root, time_t dbUpdate);
+    #ifndef CANTATA_WEB
     void dirViewUpdated(DirViewItemRoot *root, time_t dbUpdate);
     #endif
     void playlistsRetrieved(const QList<Playlist> &data);
@@ -405,11 +402,7 @@ private:
     void parseIdleReturn(const QByteArray &data);
     bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
     void toggleStopAfterCurrent(bool afterCurrent);
-    #ifdef CANTATA_WEB
     bool listDirInfo(const QString &dir);
-    #else
-    bool listDirInfo(const QString &dir, MusicLibraryItemRoot *root);
-    #endif
     #ifdef ENABLE_DYNAMIC
     bool checkRemoteDynamicSupport();
     bool subscribe(const QByteArray &channel);

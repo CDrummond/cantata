@@ -37,12 +37,12 @@ public:
     ProxyModel(QObject *parent) : QSortFilterProxyModel(parent), isSorted(false), filterEnabled(false), filter(0) { }
     virtual ~ProxyModel() { }
 
-    bool update(const QString &text, const QString &genre=QString());
+    bool update(const QString &text);
     const void * filterItem() const { return filter; }
     void setFilterItem(void *f) { filter=f; }
     void setRootIndex(const QModelIndex &idx) { rootIndex=idx.isValid() ? mapToSource(idx) : idx; }
     bool isChildOfRoot(const QModelIndex &idx) const;
-    bool isEmpty() const { return filterGenre.isEmpty() && filterStrings.isEmpty() && 0==filter; }
+    bool isEmpty() const { return filterStrings.isEmpty() && 0==filter; }
     bool enabled() const { return filterEnabled; }
     const QString & filterText() const { return origFilterText; }
     void resort();
@@ -66,7 +66,6 @@ private:
 protected:
     bool isSorted;
     bool filterEnabled;
-    QString filterGenre;
     QModelIndex rootIndex;
     QString origFilterText;
     QStringList filterStrings;

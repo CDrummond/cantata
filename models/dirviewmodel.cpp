@@ -38,7 +38,6 @@
 #include "dirviewitem.h"
 #include "dirviewitemfile.h"
 #include "playqueuemodel.h"
-#include "musiclibrarymodel.h"
 #include "roles.h"
 #include "gui/settings.h"
 #include "mpd-interface/mpdconnection.h"
@@ -51,18 +50,6 @@
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
 #endif
-
-const QLatin1String DirViewModel::constCacheName("-folder-listing");
-
-static QString cacheFileName()
-{
-    MPDConnectionDetails details=MPDConnection::self()->getDetails();
-    QString fileName=(!details.isLocal() ? details.hostname+'_'+QString::number(details.port) : details.hostname)
-                     +DirViewModel::constCacheName+MusicLibraryModel::constLibraryCompressedExt;
-    fileName.replace('/', '_');
-    fileName.replace('~', '_');
-    return Utils::cacheDir(MusicLibraryModel::constLibraryCache)+fileName;
-}
 
 GLOBAL_STATIC(DirViewModel, instance)
 
@@ -90,12 +77,9 @@ void DirViewModel::setEnabled(bool e)
     enabled=e;
 
     if (enabled) {
-        connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(updatingMpd()));
         connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *, time_t)), this, SLOT(updateDirView(DirViewItemRoot *, time_t)));
     } else {
         clear();
-        removeCache();
-        disconnect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(updatingMpd()));
         disconnect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *, time_t)), this, SLOT(updateDirView(DirViewItemRoot *, time_t)));
     }
 }
@@ -243,150 +227,7 @@ void DirViewModel::clear()
     endResetModel();
 }
 
-static QLatin1String constTopTag("CantataFolders");
-static const QString constVersionAttribute=QLatin1String("version");
-static const QString constDateAttribute=QLatin1String("date");
-static const QString constDateUnreliableAttribute=QLatin1String("dateUnreliable");
-static const QString constNameAttribute=QLatin1String("name");
-static const QString constPathAttribute=QLatin1String("path");
-static const QString constDirTag=QLatin1String("dir");
-static const QString constFileTag=QLatin1String("file");
-static const QString constTrueValue=QLatin1String("true");
-
-static quint32 constVersion=2;
-
-void DirViewModel::toXML()
-{
-    QString filename=cacheFileName();
-    if ((!rootItem || 0==rootItem->childCount()) && !MusicLibraryModel::validCacheDate(databaseTime)) {
-        if (QFile::exists(filename)) {
-            QFile::remove(filename);
-        }
-        return;
-    }
-
-    QFile file(filename);
-    QtIOCompressor compressor(&file);
-    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (!compressor.open(QIODevice::WriteOnly)) {
-        return;
-    }
-
-    QXmlStreamWriter writer(&compressor);
-
-    writer.writeStartDocument();
-    writer.writeStartElement(constTopTag);
-    writer.writeAttribute(constVersionAttribute, QString::number(constVersion));
-    writer.writeAttribute(constDateAttribute, QString::number(databaseTime));
-    if (databaseTimeUnreliable) {
-        writer.writeAttribute(constDateUnreliableAttribute, constTrueValue);
-    }
-
-    if (rootItem) {
-        foreach (const DirViewItem *i, rootItem->childItems()) {
-            toXML(i, writer);
-        }
-    }
-    writer.writeEndElement();
-    writer.writeEndDocument();
-    compressor.close();
-}
-
-void DirViewModel::removeCache()
-{
-    QString cacheFile(cacheFileName());
-    if (QFile::exists(cacheFile)) {
-        QFile::remove(cacheFile);
-    }
-
-    databaseTime = 0;
-}
-
-void DirViewModel::toXML(const DirViewItem *item, QXmlStreamWriter &writer)
-{
-    writer.writeStartElement(DirViewItem::Type_File==item->type() ? constFileTag : constDirTag);
-    writer.writeAttribute(constNameAttribute, item->name());
-    if (DirViewItem::Type_Dir==item->type()) {
-        foreach (const DirViewItem *i, static_cast<const DirViewItemDir *>(item)->childItems()) {
-            toXML(i, writer);
-        }
-    } else {
-         const DirViewItemFile *f=static_cast<const DirViewItemFile *>(item);
-         if (!f->filePath().isEmpty()) {
-             writer.writeAttribute(constPathAttribute, f->filePath());
-         }
-    }
-    writer.writeEndElement();
-}
-
-bool DirViewModel::fromXML()
-{
-    clear();
-    QFile file(cacheFileName());
-    QtIOCompressor compressor(&file);
-    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (!compressor.open(QIODevice::ReadOnly)) {
-        return false;
-    }
-
-    DirViewItemRoot *root=new DirViewItemRoot;
-    time_t date=fromXML(&compressor, MPDStats::self()->dbUpdate(), root);
-    compressor.close();
-    if (!date) {
-        delete root;
-        return false;
-    }
-
-    updateDirView(root, date, true);
-    return true;
-}
-
-time_t DirViewModel::fromXML(QIODevice *dev, time_t dt, DirViewItemRoot *root)
-{
-    QXmlStreamReader reader(dev);
-    time_t xmlDate=0;
-    DirViewItemDir *currentDir=root;
-    QList<DirViewItemDir *> dirStack;
-
-    while (!reader.atEnd()) {
-        reader.readNext();
-        if (reader.error()) {
-            delete root;
-            return 0;
-        }
-        if (reader.isStartElement()) {
-            QString element = reader.name().toString();
-            QXmlStreamAttributes attributes=reader.attributes();
-
-            if (constTopTag == element) {
-                quint32 version = attributes.value(constVersionAttribute).toString().toUInt();
-                xmlDate = attributes.value(constDateAttribute).toString().toUInt();
-                if ( version < constVersion || (dt>0 && xmlDate < dt)) {
-                    return 0;
-                }
-                databaseTimeUnreliable=constTrueValue==attributes.value(constDateUnreliableAttribute).toString();
-            } else if (constDirTag==element) {
-                DirViewItemDir *dir=new DirViewItemDir(attributes.value(constNameAttribute).toString(), currentDir);
-                currentDir->add(dir);
-                dirStack.append(currentDir);
-                currentDir=dir;
-            } else if (constFileTag==element) {
-                currentDir->add(new DirViewItemFile(attributes.value(constNameAttribute).toString(),
-                                                    attributes.value(constPathAttribute).toString(), currentDir));
-            } else {
-                return 0;
-            }
-        } else if (reader.isEndElement()) {
-            if (constDirTag==reader.name().toString()) {
-                currentDir=dirStack.takeLast();
-            }
-        }
-    }
-
-    return xmlDate;
-}
-
-void DirViewModel::updateDirView(DirViewItemRoot *newroot, time_t dbUpdate, bool fromFile)
+void DirViewModel::updateDirView(DirViewItemRoot *newroot, time_t dbUpdate)
 {
     if (databaseTime>0 && databaseTime >= dbUpdate) {
         delete newroot;
@@ -394,12 +235,6 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, time_t dbUpdate, bool
     }
 
     bool incremental=enabled && rootItem->childCount() && newroot->childCount();
-    bool updatedListing=false;
-    bool needToSave=databaseTime==0 || (MusicLibraryModel::validCacheDate(dbUpdate) && dbUpdate>databaseTime);
-
-    if (incremental && !QFile::exists(cacheFileName())) {
-        incremental=false;
-    }
 
     databaseTime=dbUpdate;
     if (incremental) {
@@ -418,48 +253,17 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, time_t dbUpdate, bool
         foreach (const QString &s, removed) {
             removeFileFromList(Song::decodePath(s));
         }
-        updatedListing=!added.isEmpty() || !removed.isEmpty();
     } else {
         const DirViewItemRoot *oldRoot = rootItem;
         beginResetModel();
         rootItem = newroot;
         delete oldRoot;
         endResetModel();
-        updatedListing=true;
-    }
-
-    // MPD proxy DB plugin (MPD < 0.18.5) does not provide a datetime for the DB. Also, Mopidy
-    // returns 0 for the database time (which equates to 1am Jan 1st 1970!). Therefore, in these
-    // cases we just use current datetime so that we dont keep requesting DB listing each time
-    // Cantata starts...
-    //
-    // Mopidy users, and users of the proxy DB plugin, will have to force Cantata to refresh :-(
-    if (!fromFile) {
-        databaseTimeUnreliable=!MusicLibraryModel::validCacheDate(dbUpdate); // See note in updatingMpd()
-    }
-    if (!MusicLibraryModel::validCacheDate(databaseTime) && !MusicLibraryModel::validCacheDate(dbUpdate)) {
-        databaseTime=QDateTime::currentDateTime().toTime_t();
-    }
-
-    if (!fromFile && (needToSave || updatedListing)) {
-        toXML();
     }
 
     #ifdef ENABLE_UBUNTU
     emit updated();
     #endif
-}
-
-void DirViewModel::updatingMpd()
-{
-    // MPD/Mopidy is being updated. If MPD's database-time is not reliable (as is the case for older proxy DBs, and Mopidy)
-    // then we set the databaseTime to NOW when updated. This means we will miss any updates. So, for these scenarios, when
-    // a user presses 'Refresh Database' in Cantata's main window, we need to reset our view of the databaseTime to null, so
-    // that we update. This does mean that we will ALWAYS fetch the whole listing - but we have no way of knowing if it changed
-    // or not :-(
-    if (databaseTimeUnreliable) {
-        removeCache();
-    }
 }
 
 void DirViewModel::addFileToList(const QString &file, const QString &mopidyPath)

@@ -22,7 +22,6 @@
  */
 
 #include "mtpdevice.h"
-#include "models/musiclibrarymodel.h"
 #include "models/musiclibraryitemsong.h"
 #include "models/musiclibraryitemalbum.h"
 #include "models/musiclibraryitemartist.h"
@@ -434,9 +433,6 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
         MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
         const QSet<QString> &songGenres=songItem->allGenres();
         albumItem->append(songItem);
-        albumItem->addGenres(songGenres);
-        artistItem->addGenres(songGenres);
-        library->addGenres(songGenres);
 
         #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
         // Store AlbumName->Artists/Songs mapping
@@ -508,8 +504,6 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
                     albumItem=artistItem->album(song);
                     MusicLibraryItemSong *songItem = new MusicLibraryItemSong(song, albumItem);
                     albumItem->append(songItem);
-                    albumItem->updateGenres();
-                    artistItem->updateGenres();
                     MusicLibraryItemAlbum *prevAlbum=(MusicLibraryItemAlbum *)s->parentItem();
                     prevAlbum->remove(s);
                     if (0==prevAlbum->childCount()) {
@@ -533,7 +527,6 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
     if (abortRequested) {
         return;
     }
-    library->applyGrouping();
     #ifdef TIME_MTP_OPERATIONS
     qWarning() << "Grouping:" << timer.elapsed();
     qWarning() << "TOTAL update:" <<totalTimer.elapsed();
@@ -1510,10 +1503,10 @@ void MtpDevice::copySongTo(const Song &s, const QString &musicPath, bool overwri
         if (needToFixVa) {
             Device::fixVariousArtists(QString(), check, false);
         }
-        if (MusicLibraryModel::self()->songExists(check)) {
-            emit actionStatus(SongExists);
-            return;
-        }
+//        if (MusicLibraryModel::self()->songExists(check)) {
+//            emit actionStatus(SongExists);
+//            return;
+//        }
     }
 
     if (!songExists(s)) {
@@ -1650,7 +1643,7 @@ void MtpDevice::getSongStatus(bool ok, bool copiedCover)
             currentSong.revertVariousArtists();
         }
         Utils::setFilePerms(currentDestFile);
-        MusicLibraryModel::self()->addSongToList(currentSong);
+//        MusicLibraryModel::self()->addSongToList(currentSong);
         DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
                                             origPath.isEmpty() ? QString() : currentSong.file);
         emit actionStatus(Ok, copiedCover);

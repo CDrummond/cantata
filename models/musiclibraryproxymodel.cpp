@@ -94,10 +94,6 @@ bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     const MusicLibraryItem *item = static_cast<const MusicLibraryItem *>(index.internalPointer());
 
-    if (!filterGenre.isEmpty() && !item->hasGenre(filterGenre)) {
-        return false;
-    }
-
     if (filter) {
         if (item==filter) { // Accept top-level item!
             return true;

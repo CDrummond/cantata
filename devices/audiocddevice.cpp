@@ -31,7 +31,6 @@
 #include "support/localize.h"
 #include "gui/plurals.h"
 #include "models/musiclibraryitemsong.h"
-#include "models/musiclibrarymodel.h"
 #include "models/dirviewmodel.h"
 #include "support/utils.h"
 #include "extractjob.h"
@@ -251,10 +250,10 @@ void AudioCdDevice::copySongTo(const Song &s, const QString &musicPath, bool ove
         if (needToFixVa) {
             Device::fixVariousArtists(QString(), check, false);
         }
-        if (MusicLibraryModel::self()->songExists(check)) {
-            emit actionStatus(SongExists);
-            return;
-        }
+//        if (MusicLibraryModel::self()->songExists(check)) {
+//            emit actionStatus(SongExists);
+//            return;
+//        }
     }
 
     DeviceOptions mpdOpts;
@@ -329,7 +328,7 @@ void AudioCdDevice::copySongToResult(int status)
             currentSong.revertVariousArtists();
         }
         Utils::setFilePerms(currentDestFile);
-        MusicLibraryModel::self()->addSongToList(currentSong);
+//        MusicLibraryModel::self()->addSongToList(currentSong);
         DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
                                             origPath.isEmpty() ? QString() : currentSong.file);
         emit actionStatus(Ok, job && job->coverCopied());

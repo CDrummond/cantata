@@ -25,7 +25,6 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemroot.h"
-#include "musiclibrarymodel.h"
 #include "devicesmodel.h"
 #include "playqueuemodel.h"
 #include "gui/settings.h"
@@ -341,7 +340,6 @@ void DevicesModel::deviceUpdating(const QString &udi, bool state)
             }
             QModelIndex modelIndex=createIndex(idx, 0, dev);
             emit dataChanged(modelIndex, modelIndex);
-            MultiMusicModel::updateGenres();
             emit updated(modelIndex);
         }
     }
@@ -461,7 +459,6 @@ void DevicesModel::deviceRemoved(const QString &udi)
         static_cast<Device *>(collections.takeAt(idx))->deleteLater();
         endRemoveRows();
         updateItemMenu();
-        MultiMusicModel::updateGenres();
     }
 }
 
@@ -493,8 +490,6 @@ void DevicesModel::addRemoteDevice(const DeviceOptions &opts, RemoteFsDevice::De
         connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
         if (Device::RemoteFs==dev->devType()) {
             connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged()), SLOT(remoteDeviceUdiChanged()));
-            connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(connectionStateHasChanged(QString, bool)),
-                    SLOT(removeDeviceConnectionStateChanged(QString, bool)));
         }
         updateItemMenu();
     }
@@ -520,7 +515,6 @@ void DevicesModel::removeRemoteDevice(const QString &udi, bool removeFromConfig)
         collections.takeAt(idx);
         endRemoveRows();
         updateItemMenu();
-        MultiMusicModel::updateGenres();
         RemoteFsDevice *rfs=qobject_cast<RemoteFsDevice *>(dev);
         if (rfs) {
             // Destroy will stop device, and delete it (via deleteLater())
@@ -537,22 +531,6 @@ void DevicesModel::remoteDeviceUdiChanged()
 {
     #ifdef ENABLE_REMOTE_DEVICES
     updateItemMenu();
-    #endif
-}
-
-void DevicesModel::removeDeviceConnectionStateChanged(const QString &udi, bool state)
-{
-    #ifdef ENABLE_REMOTE_DEVICES
-    if (!state) {
-        int idx=indexOf(udi);
-        if (idx<0) {
-            return;
-        }
-        MultiMusicModel::updateGenres();
-    }
-    #else
-    Q_UNUSED(udi)
-    Q_UNUSED(state)
     #endif
 }
 
@@ -662,8 +640,6 @@ void DevicesModel::loadRemote()
             connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
             if (Device::RemoteFs==dev->devType()) {
                 connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged()), SLOT(remoteDeviceUdiChanged()));
-                connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(connectionStateHasChanged(QString, bool)),
-                        SLOT(removeDeviceConnectionStateChanged(QString, bool)));
             }
         }
         endInsertRows();

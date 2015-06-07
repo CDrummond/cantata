@@ -25,15 +25,12 @@
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdstats.h"
 #include "covers.h"
-#include "models/musiclibrarymodel.h"
-#include "models/musiclibraryitemartist.h"
-#include "models/musiclibraryitemalbum.h"
-#include "models/musiclibraryitemsong.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
 #include "settings.h"
 #include "stdactions.h"
 #include "support/utils.h"
+#include "models/mpdlibrarymodel.h"
 
 LibraryPage::LibraryPage(QWidget *p)
     : QWidget(p)
@@ -64,19 +61,15 @@ LibraryPage::LibraryPage(QWidget *p)
 
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
-    connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary(time_t)), view, SLOT(updating()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(updated()));
     connect(MPDConnection::self(), SIGNAL(updatingDatabase()), view, SLOT(updating()));
     connect(MPDConnection::self(), SIGNAL(updatedDatabase()), view, SLOT(updated()));
-    connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(this, SIGNAL(loadLibrary()), MPDConnection::self(), SLOT(loadLibrary()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
-    connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
-    proxy.setSourceModel(MusicLibraryModel::self());
-    view->setModel(&proxy);
+    view->setModel(MpdLibraryModel::self());
     view->load(metaObject()->className());
 }
 
@@ -94,14 +87,11 @@ void LibraryPage::showEvent(QShowEvent *e)
 void LibraryPage::refresh()
 {
     view->goToTop();
-    if (!MusicLibraryModel::self()->fromXML()) {
-        emit loadLibrary();
-    }
+    // TODO: Is this used??
 }
 
 void LibraryPage::clear()
 {
-    MusicLibraryModel::self()->clear();
     view->goToTop();
 }
 
@@ -116,7 +106,8 @@ QStringList LibraryPage::selectedFiles(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QStringList();
     }
-    return MusicLibraryModel::self()->filenames(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()), allowPlaylists);
+    return MpdLibraryModel::self()->filenames(selected, allowPlaylists);
+    return QStringList();
 }
 
 QList<Song> LibraryPage::selectedSongs(bool allowPlaylists) const
@@ -125,7 +116,8 @@ QList<Song> LibraryPage::selectedSongs(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QList<Song>();
     }
-    return MusicLibraryModel::self()->songs(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()), allowPlaylists);
+    return MpdLibraryModel::self()->songs(selected, allowPlaylists);
+    return QList<Song>();
 }
 
 Song LibraryPage::coverRequest() const
@@ -133,13 +125,11 @@ Song LibraryPage::coverRequest() const
     QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1==selected.count()) {
-        QModelIndex idx=proxy.mapToSource(selected.at(0));
-        QList<Song> songs=MusicLibraryModel::self()->songs(QModelIndexList() << idx, false);
+        QList<Song> songs=MpdLibraryModel::self()->songs(QModelIndexList() << selected.first(), false);
         if (!songs.isEmpty()) {
             Song s=songs.at(0);
 
-            if (MusicLibraryItem::Type_Artist==static_cast<MusicLibraryItem *>(idx.internalPointer())->itemType() &&
-                !static_cast<MusicLibraryItemArtist *>(idx.internalPointer())->isComposer()) {
+            if (SqlLibraryModel::T_Artist==static_cast<SqlLibraryModel::Item *>(selected.first().internalPointer())->getType() && !s.useComposer()) {
                 s.setArtistImageRequest();
             }
             return s;
@@ -201,24 +191,20 @@ void LibraryPage::showSongs(const QList<Song> &songs)
         return;
     }
 
-    genreCombo->setCurrentIndex(0);
     view->clearSearchText();
 
     bool first=true;
     foreach (const Song &s, sngs) {
-        QModelIndex idx=MusicLibraryModel::self()->findSongIndex(s);
+        QModelIndex idx=MpdLibraryModel::self()->findSongIndex(s);
         if (idx.isValid()) {
-            QModelIndex p=proxy.mapFromSource(idx);
-            if (p.isValid()) {
-                if (ItemView::Mode_SimpleTree==view->viewMode() || ItemView::Mode_DetailedTree==view->viewMode() || first) {
-                    view->showIndex(p, first);
-                }
-                if (first) {
-                    first=false;
-                }
-                if (ItemView::Mode_SimpleTree!=view->viewMode() && ItemView::Mode_DetailedTree!=view->viewMode()) {
-                    return;
-                }
+            if (ItemView::Mode_SimpleTree==view->viewMode() || ItemView::Mode_DetailedTree==view->viewMode() || first) {
+                view->showIndex(idx, first);
+            }
+            if (first) {
+                first=false;
+            }
+            if (ItemView::Mode_SimpleTree!=view->viewMode() && ItemView::Mode_DetailedTree!=view->viewMode()) {
+                return;
             }
         }
     }
@@ -226,11 +212,9 @@ void LibraryPage::showSongs(const QList<Song> &songs)
 
 void LibraryPage::showArtist(const QString &artist)
 {
-    QModelIndex idx=MusicLibraryModel::self()->findArtistIndex(artist);
+    view->clearSearchText();
+    QModelIndex idx=MpdLibraryModel::self()->findArtistIndex(artist);
     if (idx.isValid()) {
-        idx=proxy.mapFromSource(idx);
-        genreCombo->setCurrentIndex(0);
-        view->clearSearchText();
         view->showIndex(idx, true);
         if (ItemView::Mode_SimpleTree==view->viewMode() || ItemView::Mode_DetailedTree==view->viewMode()) {
             view->setExpanded(idx);
@@ -240,11 +224,9 @@ void LibraryPage::showArtist(const QString &artist)
 
 void LibraryPage::showAlbum(const QString &artist, const QString &album)
 {
-    QModelIndex idx=MusicLibraryModel::self()->findAlbumIndex(artist, album);
+    view->clearSearchText();
+    QModelIndex idx=MpdLibraryModel::self()->findAlbumIndex(artist, album);
     if (idx.isValid()) {
-        idx=proxy.mapFromSource(idx);
-        genreCombo->setCurrentIndex(0);
-        view->clearSearchText();
         view->showIndex(idx, true);
         if (ItemView::Mode_SimpleTree==view->viewMode() || ItemView::Mode_DetailedTree==view->viewMode()) {
             view->setExpanded(idx.parent());
@@ -259,37 +241,15 @@ void LibraryPage::itemDoubleClicked(const QModelIndex &)
     if (1!=selected.size()) {
         return; //doubleclick should only have one selected item
     }
-    MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
-    if (MusicLibraryItem::Type_Song==item->itemType()) {
+    SqlLibraryModel::Item *item = static_cast<SqlLibraryModel::Item *>(selected.at(0).internalPointer());
+    if (SqlLibraryModel::T_Track==item->getType()) {
         addSelectionToPlaylist();
     }
 }
 
 void LibraryPage::searchItems()
 {
-    QString text=view->searchText().trimmed();
-    proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
-    if (proxy.enabled() && !text.isEmpty()) {
-        view->expandAll();
-    }
-}
-
-void LibraryPage::updateGenres(const QModelIndex &idx)
-{
-    if (idx.isValid()) {
-        QModelIndex m=proxy.mapToSource(idx);
-        if (m.isValid()) {
-            MusicLibraryItem::Type itemType=static_cast<MusicLibraryItem *>(m.internalPointer())->itemType();
-            if (itemType==MusicLibraryItem::Type_Artist) {
-                genreCombo->update(static_cast<MusicLibraryItemArtist *>(m.internalPointer())->genres());
-                return;
-            } else if (itemType==MusicLibraryItem::Type_Album) {
-                genreCombo->update(static_cast<MusicLibraryItemAlbum *>(m.internalPointer())->genres());
-                return;
-            }
-        }
-    }
-    genreCombo->update(MusicLibraryModel::self()->genres());
+    MpdLibraryModel::self()->search(view->searchText().trimmed());
 }
 
 void LibraryPage::controlActions()
@@ -314,10 +274,10 @@ void LibraryPage::controlActions()
     #endif // TAGLIB_FOUND
 
     if (1==selected.count()) {
-        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
-        MusicLibraryItem::Type type=item->itemType();
-        StdActions::self()->setCoverAction->setEnabled((MusicLibraryItem::Type_Artist==type && !static_cast<MusicLibraryItemArtist *>(item)->isComposer()) ||
-                                                        MusicLibraryItem::Type_Album==type);
+        SqlLibraryModel::Item *item=static_cast<SqlLibraryModel::Item *>(selected.at(0).internalPointer());
+        SqlLibraryModel::Type type=item->getType();
+        StdActions::self()->setCoverAction->setEnabled((SqlLibraryModel::T_Artist==type/* && !static_cast<MusicLibraryItemArtist *>(item)->isComposer()*/) ||
+                                                        SqlLibraryModel::T_Album==type);
     } else {
         StdActions::self()->setCoverAction->setEnabled(false);
     }
@@ -325,7 +285,7 @@ void LibraryPage::controlActions()
     bool allowRandomAlbum=!selected.isEmpty();
     if (allowRandomAlbum) {
         foreach (const QModelIndex &idx, selected) {
-            if (MusicLibraryItem::Type_Song==static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer())->itemType()) {
+            if (SqlLibraryModel::T_Track==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType()) {
                 allowRandomAlbum=false;
                 break;
             }

@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2011-2014 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2015 Craig Drummond <craig.p.drummond@gmail.com>
  *
  * ----
  *
@@ -21,39 +21,24 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef _SYNC_DIALOG_H_
-#define _SYNC_DIALOG_H_
+#ifndef MPD_LIBRARY_MODEL_H
+#define MPD_LIBRARY_MODEL_H
 
-#include "support/dialog.h"
-#include "mpd-interface/song.h"
+#include "sqllibrarymodel.h"
 
-class Device;
-class SyncCollectionWidget;
-
-class SyncDialog : public Dialog
+class MpdLibraryModel : public SqlLibraryModel
 {
     Q_OBJECT
-
 public:
-    static int instanceCount();
-
-    SyncDialog(QWidget *parent);
-    virtual ~SyncDialog();
-
-    void sync(const QString &udi);
+    static MpdLibraryModel * self();
+    MpdLibraryModel();
+    QVariant data(const QModelIndex &index, int role) const;
+    void readSettings();
 
 private Q_SLOTS:
-    void copy(const QList<Song> &songs);
-    bool updateSongs(bool firstRun=false);
-
-private:
-    Device * getDevice();
-
-private:
-    QString devUdi;
-    Device *currentDev;
-    SyncCollectionWidget *devWidget;
-    SyncCollectionWidget *libWidget;
+    void cover(const Song &song, const QImage &img, const QString &file);
+    void coverUpdated(const Song &song, const QImage &img, const QString &file);
+    void artistImage(const Song &song, const QImage &img, const QString &file);
 };
 
 #endif

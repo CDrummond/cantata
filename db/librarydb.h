@@ -1,5 +1,5 @@
 /*
- * Cantata Web
+ * Cantata
  *
  * Copyright (c) 2015 Craig Drummond <craig.p.drummond@gmail.com>
  *
@@ -43,6 +43,7 @@ public:
     static void enableDebug() { dbgEnabled=true; }
     static bool debugEnabled() { return dbgEnabled; }
 
+    static const QLatin1String constFileExt;
     static const QLatin1String constNullGenre;
     static const QLatin1String constArtistAlbumsSortYear;
     static const QLatin1String constArtistAlbumsSortName;
@@ -102,15 +103,25 @@ public:
         int duration;
     };
 
-    LibraryDb();
+    LibraryDb(QObject *p, const QString &name);
     ~LibraryDb();
 
-    bool init(QString &dbName);
+    void clear();
+    void erase();
+    bool init(const QString &dbFile);
     void insertSong(const Song &s);
     QList<Genre> getGenres();
     QList<Artist> getArtists(const QString &genre=QString());
-    QList<Album> getAlbums(const QString &artistId, const QString &genre=QString(), const QString &sort=QString());
+    QList<Album> getAlbums(const QString &artistId=QString(), const QString &genre=QString(), const QString &sort=QString());
     QList<Song> getTracks(const QString &artistId, const QString &albumId, const QString &genre=QString(), const QString &sort=QString());
+    QList<Album> getAlbumsWithArtist(const QString &artist);
+    #ifndef CANTATA_WEB
+    void setFilter(const QString &f);
+    const QString & getFilter() const { return filter; }
+    #endif
+
+Q_SIGNALS:
+    void libraryUpdated();
 
 protected Q_SLOTS:
     void updateStarted(time_t ver);
@@ -118,29 +129,23 @@ protected Q_SLOTS:
     void updateFinished();
 
 protected:
-    void createTable(const QString &q);
-    static Song getSong(QSqlQuery *query);
+    bool createTable(const QString &q);
+    static Song getSong(const QSqlQuery *query);
+
+protected:
+    virtual void reset();
 
 protected:
     static bool dbgEnabled;
 
+    QString dbName;
+    QString dbFileName;
     time_t currentVersion;
     time_t newVersion;
     QSqlDatabase *db;
     QSqlQuery *insertSongQuery;
-    QSqlQuery *genresQuery;
-    QSqlQuery *artistsQuery;
-    QSqlQuery *artistsGenreQuery;
-    QSqlQuery *albumsQuery;
-    QSqlQuery *albumsGenreQuery;
-    QSqlQuery *albumsNoArtistQuery;
-    QSqlQuery *albumsGenreNoArtistQuery;
-    QSqlQuery *albumsDetailsQuery;
-    QSqlQuery *albumsDetailsGenreQuery;
-    QSqlQuery *tracksQuery;
-    QSqlQuery *tracksGenreQuery;
-    QSqlQuery *tracksWildcardQuery;
     QElapsedTimer timer;
+    QString filter;
 };
 
 #endif

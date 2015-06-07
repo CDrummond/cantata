@@ -81,7 +81,6 @@ public Q_SLOTS:
     void addRemoteDevice(const DeviceOptions &opts, RemoteFsDevice::Details details);
     void removeRemoteDevice(const QString &udi, bool removeFromConfig=true);
     void remoteDeviceUdiChanged();
-    void removeDeviceConnectionStateChanged(const QString &udi, bool state);
     void mountsChanged();
 
 private:
@@ -91,7 +90,6 @@ private:
     #endif
 
 Q_SIGNALS:
-    void updateGenres(const QSet<QString> &genres);
     void addToDevice(const QString &udi);
     void error(const QString &text);
     void updated(const QModelIndex &idx);

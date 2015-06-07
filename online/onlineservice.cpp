@@ -23,7 +23,6 @@
 
 #include "onlineservice.h"
 #include "models/onlineservicesmodel.h"
-#include "models/musiclibrarymodel.h"
 #include "support/utils.h"
 #include "network/networkaccessmanager.h"
 #include "mpd-interface/mpdparseutils.h"
@@ -38,7 +37,7 @@
 
 static QString cacheFileName(OnlineService *srv, bool create=false)
 {
-    return Utils::cacheDir(srv->id().toLower(), create)+QLatin1String("library")+MusicLibraryModel::constLibraryCompressedExt;
+    return Utils::cacheDir(srv->id().toLower(), create)+QLatin1String("library")+".xml.gz";
 }
 
 OnlineMusicLoader::OnlineMusicLoader(const QUrl &src)
@@ -97,7 +96,6 @@ bool OnlineMusicLoader::readFromCache()
         emit status(i18n("Reading cache"), 0);
         if (library->fromXML(cache, 0, 0, QString(), this)) {
             if (!stopRequested) {
-                fixLibrary();
                 emit status(i18n("Updating display"), -100);
                 emit loaded();
             }
@@ -105,14 +103,6 @@ bool OnlineMusicLoader::readFromCache()
         }
     }
     return false;
-}
-
-void OnlineMusicLoader::fixLibrary()
-{
-    emit status(i18n("Grouping tracks"), -100);
-    if (MPDParseUtils::groupSingle()) {
-        library->groupSingleTracks();
-    }
 }
 
 void OnlineMusicLoader::downloadFinished()
@@ -136,7 +126,6 @@ void OnlineMusicLoader::downloadFinished()
             QXmlStreamReader reader;
             reader.setDevice(&comp);
             if (parse(reader)) {
-                fixLibrary();
                 emit status(i18n("Saving cache"), 0);
                 library->toXML(cache, 0, false, this);
                 emit loaded();
@@ -306,7 +295,6 @@ void OnlineService::clear()
     }
     lProgress=0.0;
     setStatusMessage(QString());
-    static_cast<OnlineServicesModel *>(m_model)->updateGenres();
 }
 
 void OnlineService::removeCache()
@@ -352,7 +340,6 @@ void OnlineService::applyUpdate()
         }
         delete update;
         update=0;
-        static_cast<OnlineServicesModel *>(m_model)->updateGenres();
         emitUpdated();
     }
     setBusy(false);

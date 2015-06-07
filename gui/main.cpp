@@ -41,6 +41,7 @@
 #include "mainwindow.h"
 #include "mpd-interface/song.h"
 #include "support/thread.h"
+#include "db/librarydb.h"
 
 // To enable debug...
 #include "mpd-interface/mpdconnection.h"
@@ -49,7 +50,6 @@
 #include "context/wikipediaengine.h"
 #include "context/lastfmengine.h"
 #include "context/metaengine.h"
-#include "context/backdropcreator.h"
 #ifdef ENABLE_DYNAMIC
 #include "dynamic/dynamic.h"
 #endif
@@ -153,7 +153,7 @@ enum Debug {
     Dbg_Context_LastFm    = 0x00000010,
     Dbg_Context_Meta      = 0x00000020,
     Dbg_Context_Widget    = 0x00000040,
-    Dbg_Context_Backdrop  = 0x00000080,
+//    Dbg_Context_Backdrop  = 0x00000080,
     Dbg_Dynamic           = 0x00000100,
     Dbg_StreamFetching    = 0x00000200,
     Dbg_HttpServer        = 0x00000400,
@@ -164,10 +164,11 @@ enum Debug {
     Dbg_Tags              = 0x00008000,
     Dbg_Scrobbling        = 0x00010000,
     Dbg_Devices           = 0x00020000,
-    DBG_Other             = 0x00040000,
+    Dbg_Sql               = 0x00040000,
+    DBG_Other             = 0x00080000,
 
     // NOTE: MUST UPDATE Dbg_All IF ADD NEW ITEMS!!!
-    Dbg_All               = 0x0007FFFF
+    Dbg_All               = 0x000FFFFF
 };
 
 static void installDebugMessageHandler()
@@ -205,9 +206,6 @@ static void installDebugMessageHandler()
         if (dbg&Dbg_Context_Widget) {
             ContextWidget::enableDebug();
         }
-        if (dbg&Dbg_Context_Backdrop) {
-            BackdropCreator::enableDebug();
-        }
         #ifdef ENABLE_DYNAMIC
         if (dbg&Dbg_Dynamic) {
             Dynamic::enableDebug();
@@ -244,6 +242,9 @@ static void installDebugMessageHandler()
             DevicesModel::enableDebug();
         }
         #endif
+        if (dbg&Dbg_Sql) {
+            LibraryDb::enableDebug();
+        }
         #ifndef ENABLE_KDE_SUPPORT
         if (dbg&DBG_Other) {
             MediaKeys::enableDebug();

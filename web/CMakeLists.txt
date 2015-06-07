@@ -39,10 +39,10 @@ set(ENABLE_QT5 ON)
 set(ENABLE_WEB ON)
 
 #find_package(Sqlite REQUIRED)
-add_definitions(${Qt5Network_DEFINITIONS} ${Qt5Concurrent_DEFINITIONS} ${Qt5Sql_DEFINITIONS} ${Qt5WebSockets_DEFINITIONS} ${SQLITE_DEFINITIONS} -DCANTATA_WEB)
+add_definitions(${Qt5Network_DEFINITIONS} ${Qt5Concurrent_DEFINITIONS} ${Qt5Sql_DEFINITIONS} ${Qt5WebSockets_DEFINITIONS} -DCANTATA_WEB)
 
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-                    ${QTINCLUDES} ${SQLITE_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/..)
+                    ${QTINCLUDES} ${CMAKE_SOURCE_DIR}/..)
 
 set(CANTATA_WEB_SRCS ${CANTATA_WEB_SRCS}
     app/main.cpp app/application.cpp app/httpserver.cpp app/apihandler.cpp app/libraryapi.cpp app/playlistsapi.cpp

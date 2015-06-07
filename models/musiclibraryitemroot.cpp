@@ -58,50 +58,6 @@ MusicLibraryItemArtist * MusicLibraryItemRoot::createArtist(const Song &s, bool 
     return item;
 }
 
-void MusicLibraryItemRoot::groupSingleTracks()
-{
-    if (!supportsAlbumArtist || isFlat) {
-        return;
-    }
-
-    QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
-    MusicLibraryItemArtist *various=0;
-    bool created=false;
-
-    for (; it!=m_childItems.end(); ) {
-        if (various!=(*it) && static_cast<MusicLibraryItemArtist *>(*it)->allSingleTrack()) {
-            if (!various) {
-                various=getArtist(Song::variousArtists());
-                if (!various) {
-                    various=new MusicLibraryItemArtist(Song::variousArtists(), QString(), QString(), this);
-                    created=true;
-                }
-            }
-            various->addToSingleTracks(static_cast<MusicLibraryItemArtist *>(*it));
-            delete (*it);
-            it=m_childItems.erase(it);
-        } else {
-            ++it;
-        }
-    }
-
-    if (various) {
-        if (created) {
-            m_childItems.append(various);
-        }
-        refreshIndexes();
-    }
-}
-
-bool MusicLibraryItemRoot::isFromSingleTracks(const Song &s) const
-{
-    if (!isFlat && (supportsAlbumArtist && !s.file.isEmpty())) {
-        MusicLibraryItemArtist *various=getArtist(Song::variousArtists());
-        return various && various->isFromSingleTracks(s);
-    }
-    return false;
-}
-
 void MusicLibraryItemRoot::refreshIndexes()
 {
     if (isFlat) {
@@ -178,9 +134,6 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
             albumArtists.insert(s.albumArtist());
             composers.insert(s.composer());
             albums.insert(s.album);
-            if (!s.genre.isEmpty()) {
-                genres.insert(s.genre);
-            }
         } else if (MusicLibraryItem::Type_Artist==child->itemType()) {
             foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(child)->childItems()) {
                 foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
@@ -189,9 +142,6 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
                     albumArtists.insert(s.albumArtist());
                     composers.insert(s.composer());
                     albums.insert(s.album);
-                    if (!s.genre.isEmpty()) {
-                        genres.insert(s.genre);
-                    }
                 }
             }
         }
@@ -269,8 +219,6 @@ static const QString constGuessedAttribute=QLatin1String("guessed");
 static const QString constDateAttribute=QLatin1String("date");
 static const QString constDateUnreliableAttribute=QLatin1String("dateUnreliable");
 static const QString constVersionAttribute=QLatin1String("version");
-static const QString constGroupSingleAttribute=QLatin1String("groupSingle");
-static const QString constSingleTracksAttribute=QLatin1String("singleTracks");
 static const QString constMultipleArtistsAttribute=QLatin1String("multipleArtists");
 static const QString constImageAttribute=QLatin1String("img");
 static const QString constnumTracksAttribute=QLatin1String("numTracks");
@@ -299,9 +247,6 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, time_t date, bool dat
     if (dateUnreliable) {
         writer.writeAttribute(constDateUnreliableAttribute, constTrueValue);
     }
-    if (MPDParseUtils::groupSingle()) {
-        writer.writeAttribute(constGroupSingleAttribute, constTrueValue);
-    }
     foreach (const MusicLibraryItem *a, childItems()) {
         foreach (const MusicLibraryItem *al, static_cast<const MusicLibraryItemArtist *>(a)->childItems()) {
             total+=al->childCount();
@@ -329,16 +274,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, time_t date, bool dat
                 return;
             }
             const MusicLibraryItemAlbum *album = static_cast<const MusicLibraryItemAlbum *>(al);
-            QString albumGenre=Song::combineGenres(album->genres());
             writer.writeStartElement(constAlbumElement);
             writer.writeAttribute(constNameAttribute, album->originalName().isEmpty() ? album->data() : album->originalName());
             writer.writeAttribute(constYearAttribute, QString::number(album->year()));
-            if (!albumGenre.isEmpty() && albumGenre!=Song::unknown()) {
-                writer.writeAttribute(constGenreAttribute, albumGenre);
-            }
-            if (album->isSingleTracks()) {
-                writer.writeAttribute(constSingleTracksAttribute, constTrueValue);
-            }
             if (!album->imageUrl().isEmpty()) {
                 writer.writeAttribute(constImageAttribute, album->imageUrl());
             }
@@ -377,7 +315,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, time_t date, bool dat
                     writer.writeAttribute(constComposerAttribute, track->song().composer());
                 }
                 QString trackGenre=track->multipleGenres() ? Song::combineGenres(track->allGenres()) : track->genre();
-                if (!trackGenre.isEmpty() && trackGenre!=albumGenre && trackGenre!=Song::unknown()) {
+                if (!trackGenre.isEmpty() && trackGenre!=Song::unknown()) {
                     writer.writeAttribute(constGenreAttribute, track->song().genre);
                 }
                 if (album->isSingleTracks()) {
@@ -449,8 +387,6 @@ time_t MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, time_t date, bool
     quint32 xmlDate=0;
     quint64 total=0;
     quint64 count=0;
-    bool gs=MPDParseUtils::groupSingle();
-    bool gm=false;
     int percent=0;
     bool online=isOnlineService();
     QElapsedTimer timer;
@@ -474,8 +410,6 @@ time_t MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, time_t date, bool
             if (constTopTag == element) {
                 quint32 version = attributes.value(constVersionAttribute).toString().toUInt();
                 xmlDate = attributes.value(constDateAttribute).toString().toUInt();
-                gs = constTrueValue==attributes.value(constGroupSingleAttribute).toString();
-                gm = constTrueValue==attributes.value(constGroupSingleAttribute).toString();
                 if ( version < constVersion || (date>0 && xmlDate < date)) {
                     return 0;
                 }
@@ -510,12 +444,7 @@ time_t MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, time_t date, bool
                 if (!img.isEmpty()) {
                     albumItem->setImageUrl(img);
                 }
-                if (constTrueValue==attributes.value(constSingleTracksAttribute).toString()) {
-                    albumItem->setIsSingleTracks();
-                    song.type=Song::SingleTracks;
-                } else {
-                    song.type=Song::Standard;
-                }
+                song.type=Song::Standard;
             } else if (constTrackElement==element) {
                 song.title=attributes.value(constNameAttribute).toString();
                 song.file=attributes.value(constFileAttribute).toString();
@@ -584,11 +513,6 @@ time_t MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, time_t date, bool
                     }
 
                     MusicLibraryItemSong *songItem=new MusicLibraryItemSong(song, albumItem);
-                    QSet<QString> songGenres=songItem->allGenres();
-                    albumItem->append(songItem);
-                    albumItem->addGenres(songGenres);
-                    artistItem->addGenres(songGenres);
-                    addGenres(songGenres);
 
                     if (prog && !prog->wasStopped() && total>0) {
                         count++;
@@ -604,13 +528,6 @@ time_t MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, time_t date, bool
                 song.setComposer(QString());
             }
         }
-    }
-
-    // Grouping has changed!
-    // As of 1.4.0, Cantata no-longer groups multiple-artist albums under 'Various Artists' - so if this setting
-    // has been used, we need to undo it!
-    if (gs!=MPDParseUtils::groupSingle() || gm) {
-        toggleGrouping();
     }
 
     return xmlDate;
@@ -636,57 +553,7 @@ void MusicLibraryItemRoot::add(const QSet<Song> &songs)
         if (!albumItem || albumItem->parentItem()!=artistItem || s.album!=albumItem->data()) {
             albumItem = artistItem->album(s);
         }
-
-        MusicLibraryItemSong *songItem=new MusicLibraryItemSong(s, albumItem);
-        QSet<QString> songGenres=songItem->allGenres();
-        albumItem->append(songItem);
-        albumItem->addGenres(songGenres);
-        artistItem->addGenres(songGenres);
-        addGenres(songGenres);
-    }
-}
-
-void MusicLibraryItemRoot::toggleGrouping()
-{
-    if (isFlat) {
-        return;
-    }
-
-    // Grouping has changed, so we need to recreate whole structure from list of songs.
-    QSet<Song> songs=allSongs();
-    clearItems();
-    MusicLibraryItemArtist *artistItem = 0;
-    MusicLibraryItemAlbum *albumItem = 0;
-
-    foreach (Song currentSong, songs) {
-        if (Song::Standard!=currentSong.type && Song::Playlist!=currentSong.type) {
-            currentSong.type=MPDConnection::isPlaylist(currentSong.file) ? Song::Playlist : Song::Standard;
-        }
-
-        if (!artistItem || currentSong.artistOrComposer()!=artistItem->data()) {
-            artistItem = artist(currentSong);
-        }
-        if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.albumName()!=albumItem->data()) {
-            albumItem = artistItem->album(currentSong);
-        }
-
-        MusicLibraryItemSong *song=new MusicLibraryItemSong(currentSong, albumItem);
-        QSet<QString> songGenres=song->allGenres();
-        albumItem->append(song);
-        albumItem->addGenres(songGenres);
-        artistItem->addGenres(songGenres);
-        addGenres(songGenres);
-    }
-
-    // Library rebuilt, now apply any grouping...
-    applyGrouping();
-}
-
-void MusicLibraryItemRoot::applyGrouping()
-{
-    if (MPDParseUtils::groupSingle()) {
-        groupSingleTracks();
-        updateGenres();
+        albumItem->append(new MusicLibraryItemSong(s, albumItem));
     }
 }
 
@@ -695,7 +562,6 @@ void MusicLibraryItemRoot::clearItems()
     qDeleteAll(m_childItems);
     m_childItems.clear();
     m_indexes.clear();
-    m_genres.clear();
 }
 
 bool MusicLibraryItemRoot::update(const QSet<Song> &songs)
@@ -712,9 +578,6 @@ bool MusicLibraryItemRoot::update(const QSet<Song> &songs)
     }
     foreach (const Song &s, added) {
         addSongToList(s);
-    }
-    if (updatedSongs) {
-        updateGenres();
     }
     return updatedSongs;
 }
@@ -754,16 +617,6 @@ bool MusicLibraryItemRoot::songExists(const Song &s) const
     if (!s.isVariousArtists()) {
         Song mod(s);
         mod.albumartist=Song::variousArtists();
-        if (MPDParseUtils::groupSingle()) {
-            mod.album=i18n("Single Tracks");
-            song=findSong(mod);
-            if (song) {
-                Song sng=static_cast<const MusicLibraryItemSong *>(song)->song();
-                if (sng.albumArtist()==s.albumArtist() && sng.album==s.album) {
-                    return true;
-                }
-            }
-        }
     }
 
     return false;
@@ -780,9 +633,6 @@ bool MusicLibraryItemRoot::updateSong(const Song &orig, const Song &edit)
         foreach (MusicLibraryItem *song, childItems()) {
             if (static_cast<MusicLibraryItemSong *>(song)->song().file==orig.file) {
                 static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
-                if (orig.genre!=edit.genre) {
-                    updateGenres();
-                }
                 QModelIndex idx=m_model->createIndex(songRow, 0, song);
                 emit m_model->dataChanged(idx, idx);
                 return true;
@@ -803,11 +653,6 @@ bool MusicLibraryItemRoot::updateSong(const Song &orig, const Song &edit)
             if (static_cast<MusicLibraryItemSong *>(song)->song().file==orig.file) {
                 static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
                 bool yearUpdated=orig.year!=edit.year && albumItem->updateYear();
-                if (orig.genre!=edit.genre) {
-                    albumItem->updateGenres();
-                    artistItem->updateGenres();
-                    updateGenres();
-                }
                 QModelIndex idx=m_model->createIndex(songRow, 0, song);
                 emit m_model->dataChanged(idx, idx);
                 if (yearUpdated) {

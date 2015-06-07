@@ -23,8 +23,7 @@
 
 #include "interfacesettings.h"
 #include "settings.h"
-#include "models/musiclibraryitemalbum.h"
-#include "models/albumsmodel.h"
+#include "models/sqllibrarymodel.h"
 #include "support/localize.h"
 #include "support/utils.h"
 #include "support/fancytabwidget.h"
@@ -32,6 +31,7 @@
 #include "widgets/basicitemdelegate.h"
 #include "widgets/playqueueview.h"
 #include "widgets/itemview.h"
+#include "db/librarydb.h"
 #include <QComboBox>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QDir>
@@ -53,14 +53,27 @@
     w->deleteLater(); \
     w=0;
 
-static void addAlbumSorts(QComboBox *box)
+static void addLibraryGrouping(QComboBox *box)
 {
-    box->addItem(i18n("Album, Artist, Year"), AlbumsModel::Sort_AlbumArtist);
-    box->addItem(i18n("Album, Year, Artist"), AlbumsModel::Sort_AlbumYear);
-    box->addItem(i18n("Artist, Album, Year"), AlbumsModel::Sort_ArtistAlbum);
-    box->addItem(i18n("Artist, Year, Album"), AlbumsModel::Sort_ArtistYear);
-    box->addItem(i18n("Year, Album, Artist"), AlbumsModel::Sort_YearAlbum);
-    box->addItem(i18n("Year, Artist, Album"), AlbumsModel::Sort_YearArtist);
+    box->addItem(i18n("Genre"), SqlLibraryModel::constGroupGenre);
+    box->addItem(i18n("Artist"), SqlLibraryModel::constGroupArtist);
+    box->addItem(i18n("Album"), SqlLibraryModel::constGroupAlbum);
+}
+
+static void addAlbumSorts(QComboBox *box, bool albumsOnly)
+{
+    box->clear();
+    if (albumsOnly) {
+        box->addItem(i18n("Album, Artist, Year"), LibraryDb::constAlbumsSortAlArYr);
+        box->addItem(i18n("Album, Year, Artist"), LibraryDb::constAlbumsSortAlYrAr);
+        box->addItem(i18n("Artist, Album, Year"), LibraryDb::constAlbumsSortArAlYr);
+        box->addItem(i18n("Artist, Year, Album"), LibraryDb::constAlbumsSortArYrAl);
+        box->addItem(i18n("Year, Album, Artist"), LibraryDb::constAlbumsSortYrAlAr);
+        box->addItem(i18n("Year, Artist, Album"), LibraryDb::constAlbumsSortYrArAl);
+    } else {
+        box->addItem(i18n("Name"), LibraryDb::constArtistAlbumsSortName);
+        box->addItem(i18n("Year"), LibraryDb::constArtistAlbumsSortYear);
+    }
 }
 
 static QString viewTypeString(ItemView::Mode mode)
@@ -94,9 +107,24 @@ static void selectEntry(QComboBox *box, int v)
     }
 }
 
+static void selectEntry(QComboBox *box, const QString &v)
+{
+    for (int i=1; i<box->count(); ++i) {
+        if (box->itemData(i).toString()==v) {
+            box->setCurrentIndex(i);
+            return;
+        }
+    }
+}
+
 static inline int getValue(QComboBox *box)
 {
     return box->itemData(box->currentIndex()).toInt();
+}
+
+static inline QString getStrValue(QComboBox *box)
+{
+    return box->itemData(box->currentIndex()).toString();
 }
 
 static const char * constValueProperty="value";
@@ -133,17 +161,15 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     QList<ItemView::Mode> standardViews=QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                                                                 << ItemView::Mode_DetailedTree << ItemView::Mode_List;
     addViewTypes(libraryView, QList<ItemView::Mode>() << standardViews << ItemView::Mode_IconTop);
-    addViewTypes(albumsView, QList<ItemView::Mode>() << standardViews << ItemView::Mode_IconTop);
     addViewTypes(folderView, standardViews);
     addViewTypes(playlistsView, QList<ItemView::Mode>() << standardViews << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
     addViewTypes(searchView, QList<ItemView::Mode>() << ItemView::Mode_List << ItemView::Mode_Table);
     addViewTypes(playQueueView, QList<ItemView::Mode>() << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
 
-    addAlbumSorts(albumSort);
+    addLibraryGrouping(libraryGrouping);
 
     addView(i18n("Play Queue"), QLatin1String("PlayQueuePage"));
-    addView(i18n("Artists"), QLatin1String("LibraryPage"));
-    addView(i18n("Albums"), QLatin1String("AlbumsPage"));
+    addView(i18n("Library"), QLatin1String("LibraryPage"));
     addView(i18n("Folders"), QLatin1String("FolderPage"));
     addView(i18n("Playlists"), QLatin1String("PlaylistsPage"));
     #ifdef ENABLE_DYNAMIC
@@ -266,15 +292,15 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         sbLayout->addLayout(sbOther);
         sbLayout->addItem(new QSpacerItem(0, 2, QSizePolicy::Expanding, QSizePolicy::Minimum));
     }
+    connect(libraryGrouping, SIGNAL(currentIndexChanged(int)), SLOT(libraryGroupingChanged()));
 }
 
 void InterfaceSettings::load()
 {
     libraryArtistImage->setChecked(Settings::self()->libraryArtistImage());
     selectEntry(libraryView, Settings::self()->libraryView());
-    libraryYear->setChecked(Settings::self()->libraryYear());
-    selectEntry(albumsView, Settings::self()->albumsView());
-    selectEntry(albumSort, Settings::self()->albumSort());
+    selectEntry(libraryGrouping, Settings::self()->libraryGrouping());
+    libraryGroupingChanged();
     selectEntry(folderView, Settings::self()->folderView());
     selectEntry(playlistsView, Settings::self()->playlistsView());
     playListsStartClosed->setChecked(Settings::self()->playListsStartClosed());
@@ -284,9 +310,7 @@ void InterfaceSettings::load()
     #ifdef ENABLE_ONLINE_SERVICES
     selectEntry(onlineView, Settings::self()->onlineView());
     #endif
-    groupSingle->setChecked(Settings::self()->groupSingle());
     composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(Song::constGenreSep)));
-    filteredOnly->setChecked(Settings::self()->filteredOnly());
     #ifdef ENABLE_DEVICES_SUPPORT
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
     selectEntry(devicesView, Settings::self()->devicesView());
@@ -365,9 +389,12 @@ void InterfaceSettings::save()
 {
     Settings::self()->saveLibraryArtistImage(libraryArtistImage->isChecked());
     Settings::self()->saveLibraryView(getValue(libraryView));
-    Settings::self()->saveLibraryYear(libraryYear->isChecked());
-    Settings::self()->saveAlbumsView(getValue(albumsView));
-    Settings::self()->saveAlbumSort(getValue(albumSort));
+    Settings::self()->saveLibraryGrouping(getStrValue(libraryGrouping));
+    if (SqlLibraryModel::constGroupAlbum==Settings::self()->libraryGrouping()) {
+        Settings::self()->saveLibraryAlbumSort(getStrValue(librarySort));
+    } else {
+        Settings::self()->saveLibrarySort(getStrValue(librarySort));
+    }
     Settings::self()->saveFolderView(getValue(folderView));
     Settings::self()->savePlaylistsView(getValue(playlistsView));
     Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());
@@ -377,9 +404,7 @@ void InterfaceSettings::save()
     #ifdef ENABLE_ONLINE_SERVICES
     Settings::self()->saveOnlineView(getValue(onlineView));
     #endif
-    Settings::self()->saveGroupSingle(groupSingle->isChecked());
     Settings::self()->saveComposerGenres(composerGenres->text().trimmed().split(Song::constGenreSep).toSet());
-    Settings::self()->saveFilteredOnly(filteredOnly->isChecked());
     #ifdef ENABLE_DEVICES_SUPPORT
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
     Settings::self()->saveDevicesView(getValue(devicesView));
@@ -531,6 +556,14 @@ void InterfaceSettings::addView(const QString &v, const QString &prop)
     QListWidgetItem *item=new QListWidgetItem(v, views);
     item->setCheckState(Qt::Unchecked);
     item->setData(Qt::UserRole, prop);
+}
+
+void InterfaceSettings::libraryGroupingChanged()
+{
+    addAlbumSorts(librarySort, SqlLibraryModel::constGroupAlbum==getStrValue(libraryGrouping));
+    selectEntry(librarySort, SqlLibraryModel::constGroupAlbum==Settings::self()->libraryGrouping()
+                    ? Settings::self()->libraryAlbumSort()
+                    : Settings::self()->librarySort());
 }
 
 void InterfaceSettings::libraryViewChanged()

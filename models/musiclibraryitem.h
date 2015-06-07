@@ -59,8 +59,6 @@ public:
     Qt::CheckState checkState() const { return m_checkState; }
     void setCheckState(Qt::CheckState s) { m_checkState=s; }
 
-    virtual bool hasGenre(const QString &genre) const=0;
-    virtual QSet<QString> allGenres() const=0;
     virtual Type itemType() const=0;
 
 protected:
@@ -84,11 +82,7 @@ public:
     void setData(const QString &d) { m_itemData=d; }
     int childCount() const { return m_childItems.count(); }
     const QList<MusicLibraryItem *> & childItems() const { return m_childItems; }
-    void addGenres(const QSet<QString> &genres) { m_genres+=genres; }
-    bool hasGenre(const QString &genre) const { return m_genres.contains(genre); }
-    const QSet<QString> & genres() const { return m_genres; }
-    QSet<QString> allGenres() const { return genres(); }
-    void updateGenres();
+
     void resetRows();
     void clear();
     int indexOf(MusicLibraryItem *c) const { return m_childItems.indexOf(c); }
@@ -99,7 +93,6 @@ protected:
     friend class MusicLibraryItem;
     QString m_itemData;
     QList<MusicLibraryItem *> m_childItems;
-    QSet<QString> m_genres;
     bool m_isNew:1;
     bool m_rowsSet:1;
 };

@@ -55,7 +55,6 @@ void MusicLibraryItem::setParent(MusicLibraryItemContainer *p)
     }
     m_parentItem=p;
     m_parentItem->m_childItems.append(this);
-    m_parentItem->m_genres+=allGenres();
 }
 
 MusicLibraryItem * MusicLibraryItemContainer::childItem(const QString &name) const
@@ -67,17 +66,6 @@ MusicLibraryItem * MusicLibraryItemContainer::childItem(const QString &name) con
     }
 
     return 0;
-}
-
-void MusicLibraryItemContainer::updateGenres()
-{
-    m_genres.clear();
-    foreach (MusicLibraryItem *i, m_childItems) {
-        if (MusicLibraryItem::Type_Song!=i->itemType()) {
-            static_cast<MusicLibraryItemContainer *>(i)->updateGenres();
-        }
-        m_genres+=i->allGenres();
-    }
 }
 
 void MusicLibraryItemContainer::resetRows()
@@ -94,6 +82,5 @@ void MusicLibraryItemContainer::clear()
 {
     qDeleteAll(m_childItems);
     m_childItems.clear();
-    m_genres.clear();
     m_rowsSet=false;
 }

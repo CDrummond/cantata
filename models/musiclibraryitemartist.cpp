@@ -28,7 +28,6 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
-#include "musiclibrarymodel.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "support/localize.h"
 #include "gui/covers.h"

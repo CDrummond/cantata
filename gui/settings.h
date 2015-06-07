@@ -74,17 +74,16 @@ public:
     bool storeBackdropsInMpdDir();
     #ifndef ENABLE_UBUNTU
     int libraryView();
-    int albumsView();
     int folderView();
     int playlistsView();
     int streamsView();
     int onlineView();
     #endif
     bool libraryArtistImage();
-    int albumSort();
+    QString libraryAlbumSort();
     int sidebar();
-    bool libraryYear();
-    bool groupSingle();
+    QString librarySort();
+    QString libraryGrouping();
     QSet<QString> composerGenres();
     QStringList lyricProviders();
     QStringList wikipediaLangs();
@@ -199,17 +198,16 @@ public:
     void saveStoreBackdropsInMpdDir(bool v);
     #ifndef ENABLE_UBUNTU
     void saveLibraryView(int v);
-    void saveAlbumsView(int v);
     void saveFolderView(int v);
     void savePlaylistsView(int v);
     void saveStreamsView(int v);
     void saveOnlineView(int v);
     #endif
     void saveLibraryArtistImage(bool v);
-    void saveAlbumSort(int v);
+    void saveLibraryAlbumSort(const QString &v);
     void saveSidebar(int v);
-    void saveLibraryYear(bool v);
-    void saveGroupSingle(bool v);
+    void saveLibrarySort(const QString &v);
+    void saveLibraryGrouping(const QString &v);
     void saveComposerGenres(const QSet<QString> &v);
     void saveLyricProviders(const QStringList &v);
     void saveWikipediaLangs(const QStringList &v);

@@ -58,7 +58,6 @@ public Q_SLOTS:
     void controlActions();
     void configureService();
     void refreshService();
-    void updateGenres(const QModelIndex &idx);
     void setSearchable(const QModelIndex &idx);
     void updated(const QModelIndex &idx);
 //    void sortList();
@@ -94,7 +93,6 @@ private:
     Action *deleteDownloadedPodcastAction;
     Action *markPodcastAsNewAction;
     Action *markPodcastAsListenedAction;
-    QSet<QString> genres;
     bool onlineSearchRequest;
     QString searchService;
     bool searchable;

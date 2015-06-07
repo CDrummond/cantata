@@ -38,8 +38,6 @@ class DirViewModel : public ActionModel
     Q_OBJECT
 
 public:
-    static const QLatin1String constCacheName;
-
     static DirViewModel * self();
 
     DirViewModel(QObject *parent = 0);
@@ -60,13 +58,9 @@ public:
     void removeFileFromList(const QString &file);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
-    void removeCache();
-    void toXML();
-    bool fromXML();
 
 public Q_SLOTS:
-    void updateDirView(DirViewItemRoot *newroot, time_t dbUpdate=0, bool fromFile=false);
-    void updatingMpd();
+    void updateDirView(DirViewItemRoot *newroot, time_t dbUpdate=0);
 
 Q_SIGNALS:
     void updated();

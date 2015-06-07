@@ -49,7 +49,6 @@ class ActionCollection;
 class MainWindow;
 class Page;
 class LibraryPage;
-class AlbumsPage;
 class FolderPage;
 class PlaylistsPage;
 #ifdef ENABLE_DYNAMIC
@@ -109,7 +108,6 @@ public:
     {
         PAGE_PLAYQUEUE,
         PAGE_LIBRARY,
-        PAGE_ALBUMS,
         PAGE_FOLDERS,
         PAGE_PLAYLISTS,
         #ifdef ENABLE_DYNAMIC
@@ -227,7 +225,6 @@ public Q_SLOTS:
     void tabToggled(int index);
     void showPlayQueue() { showTab(PAGE_PLAYQUEUE); }
     void showLibraryTab() { showTab(PAGE_LIBRARY); }
-    void showAlbumsTab() { showTab(PAGE_ALBUMS); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
     void showDynamicTab() {
@@ -353,7 +350,6 @@ private:
     Action *serverInfoAction;
     Action *clearPlayQueueAction;
     Action *cancelAction;
-    Action *clearNewStateAction;
     Action *ratingAction;
     Action *fwdAction;
     Action *revAction;
@@ -367,8 +363,6 @@ private:
     QWidget *playQueuePage;
     Action *libraryTabAction;
     LibraryPage *libraryPage;
-    Action *albumsTabAction;
-    AlbumsPage *albumsPage;
     Action *foldersTabAction;
     FolderPage *folderPage;
     Action *playlistsTabAction;

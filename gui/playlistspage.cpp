@@ -60,8 +60,6 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
-    connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
 
     view->allowGroupedView();
     view->allowTableView(new PlaylistTableView(view));
@@ -86,7 +84,6 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
-    connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     //connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
@@ -443,7 +440,7 @@ void PlaylistsPage::controlActions()
 void PlaylistsPage::searchItems()
 {
     QString text=view->searchText().trimmed();
-    bool updated=proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
+    bool updated=proxy.update(text);
     if (proxy.enabled() && !proxy.filterText().isEmpty()) {
         view->expandAll();
     }
@@ -455,16 +452,4 @@ void PlaylistsPage::searchItems()
 void PlaylistsPage::updated(const QModelIndex &index)
 {
     view->updateRows(proxy.mapFromSource(index));
-}
-
-void PlaylistsPage::updateGenres(const QModelIndex &idx)
-{
-    if (idx.isValid()) {
-        QModelIndex m=proxy.mapToSource(idx);
-        if (m.isValid() && static_cast<PlaylistsModel::Item *>(m.internalPointer())->isPlaylist()) {
-            genreCombo->update(static_cast<PlaylistsModel::PlaylistItem *>(m.internalPointer())->genres);
-            return;
-        }
-    }
-    genreCombo->update(PlaylistsModel::self()->genres());
 }

@@ -136,19 +136,19 @@
       </attribute>
       <layout class="QGridLayout" name="viewsLayout">
        <item row="0" column="0">
-        <widget class="QGroupBox" name="artistsViewGroupBox">
+        <widget class="QGroupBox" name="libraryViewGroupBox">
          <property name="title">
-          <string>Artists</string>
+          <string>Library</string>
          </property>
-         <layout class="QFormLayout" name="artistsViewLayout">
+         <layout class="QFormLayout" name="libraryViewLayout">
           <property name="fieldGrowthPolicy">
            <enum>QFormLayout::ExpandingFieldsGrow</enum>
           </property>
           <property name="formAlignment">
            <set>Qt::AlignJustify|Qt::AlignTop</set>
-          </property>
+          </property>         
           <item row="0" column="0">
-           <widget class="BuddyLabel" name="label">
+           <widget class="BuddyLabel" name="labelx2">
             <property name="text">
              <string>Style:</string>
             </property>
@@ -160,14 +160,37 @@
           <item row="0" column="1">
            <widget class="QComboBox" name="libraryView"/>
           </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="QCheckBox" name="libraryYear">
+          <item row="1" column="0">
+           <widget class="BuddyLabel" name="label">
             <property name="text">
-             <string>Sort albums by year</string>
+             <string>Group by:</string>
+            </property>
+            <property name="buddy">
+             <cstring>libraryGrouping</cstring>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" colspan="2">
+          <item row="1" column="1">
+           <widget class="QComboBox" name="libraryGrouping"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="BuddyLabel" name="labelx">
+            <property name="text">
+             <string>Sort albums by:</string>
+            </property>
+            <property name="buddy">
+             <cstring>librarySort</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="librarySort">
+            <property name="sizeAdjustPolicy">
+             <enum>QComboBox::AdjustToContents</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" colspan="2">
            <widget class="QCheckBox" name="libraryArtistImage">
             <property name="text">
              <string>Show artist images</string>
@@ -178,47 +201,6 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QGroupBox" name="albumsViewGroupBox">
-         <property name="title">
-          <string>Albums</string>
-         </property>
-         <layout class="QFormLayout" name="albumsViewLayout">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::ExpandingFieldsGrow</enum>
-          </property>
-          <property name="formAlignment">
-           <set>Qt::AlignJustify|Qt::AlignTop</set>
-          </property>
-          <item row="0" column="0">
-           <widget class="BuddyLabel" name="label_xx">
-            <property name="text">
-             <string>Style:</string>
-            </property>
-            <property name="buddy">
-             <cstring>albumsView</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="albumsView"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="BuddyLabel" name="label_5x">
-            <property name="text">
-             <string>Sort:</string>
-            </property>
-            <property name="buddy">
-             <cstring>albumSort</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QComboBox" name="albumSort"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="2" column="0">
         <widget class="QGroupBox" name="playlistsViewGroupBox">
          <property name="title">
           <string>Playlists</string>
@@ -253,7 +235,7 @@
          </layout>
         </widget>
        </item>removeWidget
-       <item row="3" column="0">
+       <item row="2" column="0">
         <widget class="QGroupBox" name="otherViewGroupBox">
          <property name="title">
           <string>Other Views</string>
@@ -584,65 +566,8 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="groupingTab">
-      <attribute name="title">
-       <string>Grouping</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3x">
-       <item>
-        <layout class="QFormLayout" name="formLayout_4x">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::ExpandingFieldsGrow</enum>
-         </property>
-         <item row="0" column="0" colspan="2">
-          <widget class="QCheckBox" name="groupSingle">
-           <property name="text">
-            <string>Place albums with only one track under 'Various Artists/Single Tracks'</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="BuddyLabel" name="composerGenresLabel">
-          <property name="toolTip">
-           <string>Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums.</string>
-          </property>
-          <property name="text">
-           <string>Group albums by composer for genres:</string>
-          </property>
-           <property name="buddy">
-            <cstring>composerGenres</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="LineEdit" name="composerGenres"/>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="NoteLabel" name="composerGenresNoteLabel">
-         <property name="text">
-          <string>Genres should be separated via a comma (e.g. 'Classical, Symphonic')</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2cx">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="toolbarTab">
-      <attribute name="title">
+      <attribute name="title">l
        <string>Toolbar</string>
       </attribute>
       <layout class="QFormLayout" name="toolbarTabLayout">
@@ -759,15 +684,21 @@
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::ExpandingFieldsGrow</enum>
          </property>
-         <item row="0" column="0" colspan="2">
-          <widget class="QCheckBox" name="filteredOnly">
-           <property name="toolTip">
-            <string>&lt;p&gt;When adding artists, or albums to the playqueue, or editing tags, etc, then only use songs that pass the current Genre or string filter.&lt;/p&gt;&lt;p&gt;e.g. If you have an album with 10 songs, but only 5 have the genre set to 'Metal', then only these 5 would be added if the view's Genre filter was set to 'Metal'.</string>
-           </property>
-           <property name="text">
-            <string>Only act on songs that pass filtering</string>
+         <item row="0" column="0">
+          <widget class="BuddyLabel" name="composerGenresLabel">
+          <property name="toolTip">
+           <string>Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums. (List should be comma spearated - e.g. 'Classical, Symphonic')</string>
+          </property>
+          <property name="text">
+           <string>Group albums by composer for genres:</string>
+          </property>
+           <property name="buddy">
+            <cstring>composerGenres</cstring>
            </property>
           </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="LineEdit" name="composerGenres"/>
          </item>
          <item row="1" column="0" colspan="2">
           <widget class="QCheckBox" name="fetchCovers">

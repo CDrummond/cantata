@@ -92,11 +92,11 @@ bool ProxyModel::matchesFilter(const QStringList &strings) const
     return false;
 }
 //#include <QDebug>
-bool ProxyModel::update(const QString &txt, const QString &genre)
+bool ProxyModel::update(const QString &txt)
 {
     QString text=txt.length()<2 ? QString() : txt;
-//    qWarning() << "UPDATE" << txt << genre << (void *)f;
-    if (text==origFilterText && genre==filterGenre) {
+//    qWarning() << "UPDATE" << txt << (void *)f;
+    if (text==origFilterText) {
 //        qWarning() <<"NO CHANGE";
         return false;
     }
@@ -110,9 +110,8 @@ bool ProxyModel::update(const QString &txt, const QString &genre)
     }
 
     origFilterText=text;
-    filterGenre=genre;
 
-    if (text.isEmpty() && genre.isEmpty()) {
+    if (text.isEmpty()) {
         if (filterEnabled) {
             filterEnabled=false;
             if (!wasEmpty) {

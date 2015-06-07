@@ -35,7 +35,6 @@
 #include "gui/settings.h"
 #include "wikipediaengine.h"
 #include "support/localize.h"
-#include "backdropcreator.h"
 #include "support/gtkstyle.h"
 #include "widgets/playqueueview.h"
 #include "widgets/treeview.h"
@@ -254,7 +253,6 @@ ContextWidget::ContextWidget(QWidget *parent)
     #endif
     , splitter(0)
     , viewSelector(0)
-    , creator(0)
 {
     QHBoxLayout *layout=new QHBoxLayout(this);
     mainStack=new QStackedWidget(this);
@@ -438,7 +436,6 @@ void ContextWidget::readConfig()
    case PlayQueueView::BI_Custom:
         if (origType!=backdropType || backdropOpacity!=origOpacity || backdropBlur!=origBlur || origCustomBackdropFile!=customBackdropFile) {            
             updateImage(QImage(customBackdropFile), false);
-            artistsCreatedBackdropsFor.clear();
         }
         break;
     }
@@ -565,9 +562,6 @@ void ContextWidget::updateImage(QImage img, bool created)
     oldIsAlbumCoverBackdrop=albumCoverBackdrop;
     currentBackdrop=QPixmap();
     animator.stop();
-    if (img.isNull()) {
-        backdropAlbums.clear();
-    }
     if (img.isNull() && oldBackdrop.isNull()) {
         return;
     }
@@ -693,7 +687,6 @@ void ContextWidget::updateBackdrop(bool force)
         return;
     }
     currentArtist=updateArtist;
-    backdropAlbums.clear();
     if (currentArtist.isEmpty()) {
         updateImage(QImage());
         QWidget::update();
@@ -774,9 +767,7 @@ static QString fixArtist(const QString &artist)
 void ContextWidget::getBackdrop()
 {
     cancel();
-    if (artistsCreatedBackdropsFor.contains(currentArtist)) {
-        createBackdrop();
-    } else if (useFanArt) {
+    if (useFanArt) {
         getFanArtBackdrop();
     } else {
         getDiscoGsImage();
@@ -1007,9 +998,7 @@ void ContextWidget::discoGsResponse()
         }
     }
 
-    if (url.isEmpty()) {
-        createBackdrop();
-    } else {
+    if (!url.isEmpty()) {
         job=NetworkAccessManager::self()->get(QUrl(url));
         DBUG << url;
         connect(job, SIGNAL(finished()), this, SLOT(downloadResponse()));
@@ -1033,9 +1022,7 @@ void ContextWidget::downloadResponse()
         img=QImage::fromData(data);
     }
 
-    if (img.isNull()) {
-        createBackdrop();
-    } else {
+    if (!img.isNull()) {
         updateImage(img);
         bool saved=false;
 
@@ -1077,27 +1064,6 @@ void ContextWidget::downloadResponse()
     }
 }
 
-void ContextWidget::createBackdrop()
-{
-    DBUG << currentArtist;
-    if (!creator) {
-        creator = new BackdropCreator();
-        connect(creator, SIGNAL(created(QString,QImage)), SLOT(backdropCreated(QString,QImage)));
-        connect(this, SIGNAL(createBackdrop(QString,QList<Song>)), creator, SLOT(create(QString,QList<Song>)));
-    }
-    QList<Song> artistAlbumsFirstTracks=artist->getArtistAlbumsFirstTracks();
-    QSet<QString> albumNames;
-
-    foreach (const Song &s, artistAlbumsFirstTracks) {
-        albumNames.insert(s.albumArtist()+" - "+s.album);
-    }
-
-    if (backdropAlbums!=albumNames) {
-        backdropAlbums=albumNames;
-        emit createBackdrop(currentArtist, artistAlbumsFirstTracks);
-    }
-}
-
 void ContextWidget::resizeBackdrop()
 {
     #ifdef SCALE_CONTEXT_BGND
@@ -1119,20 +1085,6 @@ void ContextWidget::resizeBackdrop()
         }
     }
     #endif
-}
-
-void ContextWidget::backdropCreated(const QString &artist, const QImage &img)
-{
-    DBUG << artist << img.isNull() << currentArtist;
-    if (artist==currentArtist) {
-        artistsCreatedBackdropsFor.removeAll(artist);
-        artistsCreatedBackdropsFor.append(artist);
-        if (artistsCreatedBackdropsFor.count()>20) {
-            artistsCreatedBackdropsFor.removeFirst();
-        }
-        updateImage(img, true);
-        QWidget::update();
-    }
 }
 
 NetworkJob * ContextWidget::getReply(QObject *obj)

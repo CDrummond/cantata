@@ -23,7 +23,6 @@
 
 #include "folderpage.h"
 #include "mpd-interface/mpdconnection.h"
-#include "models/musiclibrarymodel.h"
 #include "settings.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
@@ -103,7 +102,7 @@ void FolderPage::refresh()
     if (DirViewModel::self()->isEnabled()) {
         if (!isVisible()) {
             loaded=false; // Refresh called for, but we are not currently visible...
-        } else if (!DirViewModel::self()->fromXML()) {
+        }  else {
             emit loadFolders();
             loaded=true;
         }
@@ -121,9 +120,7 @@ void FolderPage::showEvent(QShowEvent *e)
     view->focusView();
     QWidget::showEvent(e);
     if (!loaded) {
-        if (!DirViewModel::self()->fromXML()) {
-            emit loadFolders();
-        }
+        emit loadFolders();
         loaded=true;
     }
 }
@@ -193,22 +190,24 @@ void FolderPage::openFileManager()
 
 QList<Song> FolderPage::selectedSongs(EmptySongMod esMod, bool allowPlaylists) const
 {
-    QList<Song> songs=MusicLibraryModel::self()->songs(selectedFiles(allowPlaylists), ES_None!=esMod);
+//    QList<Song> songs=MusicLibraryModel::self()->songs(selectedFiles(allowPlaylists), ES_None!=esMod);
 
-    if (ES_None!=esMod) {
-        QList<Song>::Iterator it(songs.begin());
-        QList<Song>::Iterator end(songs.end());
-        for (; it!=end; ++it) {
-            if ((*it).isEmpty()) {
-                if (ES_GuessTags==esMod) {
-                    (*it).guessTags();
-                }
-                (*it).fillEmptyFields();
-            }
-        }
-    }
+//    if (ES_None!=esMod) {
+//        QList<Song>::Iterator it(songs.begin());
+//        QList<Song>::Iterator end(songs.end());
+//        for (; it!=end; ++it) {
+//            if ((*it).isEmpty()) {
+//                if (ES_GuessTags==esMod) {
+//                    (*it).guessTags();
+//                }
+//                (*it).fillEmptyFields();
+//            }
+//        }
+//    }
 
-    return songs;
+//    return songs;
+    return QList<Song>();
+    // TODO!!!!
 }
 
 QStringList FolderPage::selectedFiles(bool allowPlaylists) const

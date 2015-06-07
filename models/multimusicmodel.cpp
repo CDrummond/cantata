@@ -83,27 +83,6 @@ int MultiMusicModel::rowCount(const QModelIndex &parent) const
     return parent.isValid() ? static_cast<MusicLibraryItem *>(parent.internalPointer())->childCount() : collections.count();
 }
 
-void MultiMusicModel::updateGenres()
-{
-    QSet<QString> newGenres;
-    foreach (MusicLibraryItemRoot *col, collections) {
-        newGenres+=col->genres();
-    }
-    if (newGenres!=colGenres) {
-        colGenres=newGenres;
-        emit updateGenres(colGenres);
-    }
-}
-
-void MultiMusicModel::toggleGrouping()
-{
-    beginResetModel();
-    foreach (MusicLibraryItemRoot *col, collections) {
-        col->toggleGrouping();
-    }
-    endResetModel();
-}
-
 void MultiMusicModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres)
 {
     foreach (MusicLibraryItemRoot *col, collections) {

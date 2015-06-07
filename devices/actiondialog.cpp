@@ -28,10 +28,8 @@
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "gui/settings.h"
-#include "models/musiclibrarymodel.h"
 #include "models/musiclibraryproxymodel.h"
 #include "models/dirviewmodel.h"
-#include "models/albumsmodel.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "mpd-interface/mpdconnection.h"
 #include "encoders.h"
@@ -75,29 +73,29 @@ enum Pages
     PAGE_PROGRESS
 };
 
-class SongListDialog : public Dialog
-{
-public:
-    SongListDialog(ActionDialog *p)
-        : Dialog(p) {
-        setCaption(i18n("Songs To Be Copied"));
-        setButtons(Close);
-        MusicLibraryModel *model=new MusicLibraryModel(this, false);
-        MusicLibraryProxyModel *proxy=new MusicLibraryProxyModel(this);
-        proxy->setSourceModel(model);
-        model->setSupportsAlbumArtistTag(true);
-        TreeView *view=new TreeView(this);
-        view->setPageDefaults();
-        view->setExpandOnClick();
-        view->setModel(proxy);
-        view->setUseSimpleDelegate();
-        model->update(p->songsToAction.toSet());
-        setMainWidget(view);
-        int size=fontMetrics().height();
-        int numArtists=model->rowCount();
-        resize(20*size, qMin(qMax(10, numArtists)+4, 25)*(size*1.25));
-    }
-};
+//class SongListDialog : public Dialog
+//{
+//public:
+//    SongListDialog(ActionDialog *p)
+//        : Dialog(p) {
+//        setCaption(i18n("Songs To Be Copied"));
+//        setButtons(Close);
+//        MusicLibraryModel *model=new MusicLibraryModel(this, false);
+//        MusicLibraryProxyModel *proxy=new MusicLibraryProxyModel(this);
+//        proxy->setSourceModel(model);
+//        model->setSupportsAlbumArtistTag(true);
+//        TreeView *view=new TreeView(this);
+//        view->setPageDefaults();
+//        view->setExpandOnClick();
+//        view->setModel(proxy);
+//        view->setUseSimpleDelegate();
+//        model->update(p->songsToAction.toSet());
+//        setMainWidget(view);
+//        int size=fontMetrics().height();
+//        int numArtists=model->rowCount();
+//        resize(20*size, qMin(qMax(10, numArtists)+4, 25)*(size*1.25));
+//    }
+//};
 
 ActionDialog::ActionDialog(QWidget *parent)
     : Dialog(parent)
@@ -119,7 +117,7 @@ ActionDialog::ActionDialog(QWidget *parent)
     connect(configureSourceButton, SIGNAL(clicked()), SLOT(configureSource()));
     connect(configureDestButton, SIGNAL(clicked()), SLOT(configureDest()));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
-    connect(songCount, SIGNAL(leftClickedUrl()), SLOT(showSongs()));
+//    connect(songCount, SIGNAL(leftClickedUrl()), SLOT(showSongs()));
     #ifdef QT_QTDBUS_FOUND
     unityMessage=QDBusMessage::createSignal("/Cantata", "com.canonical.Unity.LauncherEntry", "Update");
     #endif
@@ -184,13 +182,13 @@ void ActionDialog::deviceRenamed()
     }
 }
 
-void ActionDialog::showSongs()
-{
-    if (!songDialog) {
-        songDialog=new SongListDialog(this);
-    }
-    songDialog->show();
-}
+//void ActionDialog::showSongs()
+//{
+//    if (!songDialog) {
+//        songDialog=new SongListDialog(this);
+//    }
+//    songDialog->show();
+//}
 
 void ActionDialog::showMopidyMessage()
 {
@@ -201,14 +199,14 @@ void ActionDialog::showMopidyMessage()
                             QLatin1String("Mopidy"));
 }
 
-void ActionDialog::hideSongs()
-{
-    if (songDialog) {
-        songDialog->setVisible(false);
-        songDialog->deleteLater();
-        songDialog=0;
-    }
-}
+//void ActionDialog::hideSongs()
+//{
+//    if (songDialog) {
+//        songDialog->setVisible(false);
+//        songDialog->deleteLater();
+//        songDialog=0;
+//    }
+//}
 
 void ActionDialog::updateSongCountLabel()
 {
@@ -424,7 +422,7 @@ void ActionDialog::slotButtonClicked(int button)
             }
             Settings::self()->saveOverwriteSongs(overwrite->isChecked());
             setPage(PAGE_PROGRESS);
-            hideSongs();
+//            hideSongs();
             #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
             timer.start();
             #endif
@@ -851,8 +849,8 @@ bool ActionDialog::refreshLibrary()
     if (!actionedSongs.isEmpty()) {
         if ( (Copy==mode && !sourceUdi.isEmpty()) ||
              (Remove==mode && sourceUdi.isEmpty()) ) {
-            MusicLibraryModel::self()->checkForNewSongs();
-            AlbumsModel::self()->update(MusicLibraryModel::self()->root());
+//            MusicLibraryModel::self()->checkForNewSongs();
+//            AlbumsModel::self()->update(MusicLibraryModel::self()->root());
             emit update();
         } else if ( (Copy==mode && sourceUdi.isEmpty()) ||
                     (Remove==mode && !sourceUdi.isEmpty()) ) {
@@ -888,7 +886,7 @@ void ActionDialog::removeSongResult(int status)
     if (Device::Ok!=status) {
         actionStatus(status);
     } else {
-        MusicLibraryModel::self()->removeSongFromList(currentSong);
+//        MusicLibraryModel::self()->removeSongFromList(currentSong);
         DirViewModel::self()->removeFileFromList(currentSong.file);
         actionStatus(Device::Ok);
     }

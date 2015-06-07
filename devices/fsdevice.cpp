@@ -23,7 +23,6 @@
 
 #include "umsdevice.h"
 #include "tags/tags.h"
-#include "models/musiclibrarymodel.h"
 #include "models/musiclibraryitemsong.h"
 #include "models/musiclibraryitemalbum.h"
 #include "models/musiclibraryitemartist.h"
@@ -80,10 +79,8 @@ void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool re
 {
     if (!cacheFile.isEmpty() && readCache) {
         MusicLibraryItemRoot *lib=new MusicLibraryItemRoot;
-        MusicLibraryModel::convertCache(cacheFile);
         readProgress(0.0);
         if (lib->fromXML(cacheFile, 0, 0, folder)) {
-            lib->applyGrouping();
             if (!stopRequested) {
                 emit libraryUpdated(lib);
             } else {
@@ -106,7 +103,6 @@ void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool re
     scanFolder(library, topLevel, topLevel, existing, 0);
 
     if (!stopRequested) {
-        library->applyGrouping();
         if (!cacheFile.isEmpty()) {
             writeProgress(0.0);
             library->toXML(cacheFile, 0, false, this);
@@ -182,12 +178,7 @@ void MusicScanner::scanFolder(MusicLibraryItemRoot *library, const QString &topL
                 if (!albumItem || albumItem->parentItem()!=artistItem || song.albumName()!=albumItem->data()) {
                     albumItem = artistItem->album(song);
                 }
-                MusicLibraryItemSong *songItem = new MusicLibraryItemSong(song, albumItem);
-                const QSet<QString> &songGenres=songItem->allGenres();
-                albumItem->append(songItem);
-                albumItem->addGenres(songGenres);
-                artistItem->addGenres(songGenres);
-                library->addGenres(songGenres);
+                albumItem->append(new MusicLibraryItemSong(song, albumItem));
             }
         }
     }
@@ -446,10 +437,10 @@ void FsDevice::copySongTo(const Song &s, const QString &musicPath, bool overwrit
         if (needToFixVa) {
             Device::fixVariousArtists(QString(), check, false);
         }
-        if (MusicLibraryModel::self()->songExists(check)) {
-            emit actionStatus(SongExists);
-            return;
-        }
+//        if (MusicLibraryModel::self()->songExists(check)) {
+//            emit actionStatus(SongExists);
+//            return;
+//        }
     }
 
     QString source=audioFolder+s.file;
@@ -594,7 +585,7 @@ void FsDevice::copySongToResult(int status)
             currentSong.revertVariousArtists();
         }
         Utils::setFilePerms(currentDestFile);
-        MusicLibraryModel::self()->addSongToList(currentSong);
+//        MusicLibraryModel::self()->addSongToList(currentSong);
         DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
                                             origPath.isEmpty() ? QString() : currentSong.file);
         emit actionStatus(Ok, job && job->coverCopied());
@@ -706,7 +697,7 @@ QString FsDevice::cacheFileName() const
     if (audioFolder.isEmpty()) {
         setAudioFolder();
     }
-    return audioFolder+constCantataCacheFile+MusicLibraryModel::constLibraryCompressedExt;
+    return audioFolder+constCantataCacheFile+".xml.gz";
 }
 
 void FsDevice::saveCache()
@@ -731,13 +722,6 @@ void FsDevice::removeCache()
     QString cacheFile(cacheFileName());
     if (QFile::exists(cacheFile)) {
         QFile::remove(cacheFile);
-    }
-
-    // Remove old (non-compressed) cache file as well...
-    QString oldCache=cacheFile;
-    oldCache.replace(MusicLibraryModel::constLibraryCompressedExt, MusicLibraryModel::constLibraryExt);
-    if (oldCache!=cacheFile && QFile::exists(oldCache)) {
-        QFile::remove(oldCache);
     }
 }
 

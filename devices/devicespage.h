@@ -65,8 +65,6 @@ public Q_SLOTS:
     void addRemoteDevice();
     void forgetRemoteDevice();
     void toggleDevice();
-    void sync();
-    void updateGenres(const QModelIndex &);
     void updated(const QModelIndex &idx);
     void cdMatches(const QString &udi, const QList<CdAlbum> &albums);
     void editDetails();
@@ -88,8 +86,6 @@ private:
     #ifdef ENABLE_REMOTE_DEVICES
     Action *forgetDeviceAction;
     #endif
-    Action *syncAction;
-    QSet<QString> genres;
 };
 
 #endif

@@ -22,7 +22,6 @@
  */
 
 #include "onlinedevice.h"
-#include "models/musiclibrarymodel.h"
 #include "models/dirviewmodel.h"
 #include "support/utils.h"
 #include "network/networkaccessmanager.h"
@@ -36,7 +35,7 @@ void OnlineDevice::copySongTo(const Song &s, const QString &musicPath, bool over
     jobAbortRequested=false;
     QString baseDir=MPDConnection::self()->getDetails().dir;
     QString dest(baseDir+musicPath);
-    if (!overwrite && (MusicLibraryModel::self()->songExists(s) || QFile::exists(dest))) {
+    if (!overwrite && (/*MusicLibraryModel::self()->songExists(s) ||*/ QFile::exists(dest))) {
         emit actionStatus(SongExists);
         return;
     }
@@ -86,7 +85,7 @@ void OnlineDevice::downloadFinished()
                 currentSong.file=Song::encodePath(currentSong.file);
             }
             Utils::setFilePerms(currentDestFile);
-            MusicLibraryModel::self()->addSongToList(currentSong);
+//            MusicLibraryModel::self()->addSongToList(currentSong);
             DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
                                                 origPath.isEmpty() ? QString() : currentSong.file);
             emit actionStatus(Ok);

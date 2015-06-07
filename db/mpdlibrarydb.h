@@ -1,5 +1,5 @@
 /*
- * Cantata Web
+ * Cantata
  *
  * Copyright (c) 2015 Craig Drummond <craig.p.drummond@gmail.com>
  *
@@ -29,9 +29,11 @@
 #include <QMap>
 #include <QElapsedTimer>
 #include "librarydb.h"
+#include "config.h"
 #include <time.h>
 
 struct MPDStatsValues;
+struct MPDConnectionDetails;
 class QSqlDatabase;
 class QSqlQuery;
 class QSettings;
@@ -41,21 +43,30 @@ class MpdLibraryDb : public LibraryDb
     Q_OBJECT
 
 public:
+    #ifndef CANTATA_WEB
+    static void removeUnusedDbs();
+    #else
     static MpdLibraryDb * self();
+    #endif
 
-    MpdLibraryDb();
+    MpdLibraryDb(QObject *p=0);
     ~MpdLibraryDb();
 
-    Song getCoverSong(const QString &artistId, const QString &albumId);
+    Song getCoverSong(const QString &artistId, const QString &albumId=QString());
 
 Q_SIGNALS:
     void loadLibrary();
 
 private Q_SLOTS:
+    void connectionChanged(const MPDConnectionDetails &details);
     void statsUpdated(const MPDStatsValues &stats);
 
 private:
+    void reset();
+
+private:
     QSqlQuery *coverQuery;
+    QSqlQuery *artistImageQuery;
 };
 
 #endif

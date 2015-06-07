@@ -66,14 +66,10 @@ public:
     struct PlaylistItem;
     struct SongItem : public Item, public Song
     {
-        SongItem() : parent(0), genreSet(0) { }
-        SongItem(const Song &s, PlaylistItem *p=0);
-        virtual ~SongItem() { delete genreSet; }
+        SongItem() : parent(0) { }
+        SongItem(const Song &s, PlaylistItem *p=0) : Song(s), parent(p) { }
         bool isPlaylist() { return false; }
-        bool hasGenre(const QString &g) const { return genreSet ? genreSet->contains(g) : genre==g; }
-        QSet<QString> allGenres() const { return genreSet ? *genreSet : genres().toSet(); }
         PlaylistItem *parent;
-        QSet<QString> *genreSet; // Only store genres in a set if more than 1
     };
 
     struct PlaylistItem : public Item
@@ -82,7 +78,6 @@ public:
         PlaylistItem(const Playlist &pl, quint32 k);
         virtual ~PlaylistItem();
         bool isPlaylist() { return true; }
-        void updateGenres();
         SongItem * getSong(const Song &song, int offset);
         void clearSongs();
         quint32 totalTime();
@@ -92,7 +87,6 @@ public:
         bool loaded;
         bool isSmartPlaylist;
         QList<SongItem *> songs;
-        QSet<QString> genres;
         quint32 time;
         quint32 key;
         QDateTime lastModified;
@@ -133,7 +127,6 @@ public:
     #ifndef ENABLE_UBUNTU
     QMenu * menu();
     #endif
-    const QSet<QString> & genres() { return plGenres; }
     static QString strippedText(QString s);
     void setMultiColumn(bool m) { multiCol=m; }
 
@@ -147,7 +140,6 @@ Q_SIGNALS:
 
     void addToNew();
     void addToExisting(const QString &name);
-    void updateGenres(const QSet<QString> &genres);
     void updated(const QModelIndex &idx);
     void playlistRemoved(quint32 key);
 
@@ -165,7 +157,6 @@ private Q_SLOTS:
     void coverLoaded(const Song &song, int s);
 
 private:
-    void updateGenreList();
     void updateItemMenu(bool craete=false);
     PlaylistItem * getPlaylist(const QString &name);
     void clearPlaylists();
@@ -176,7 +167,6 @@ private:
     bool multiCol;
     QList<PlaylistItem *> items;
     QSet<quint32> usedKeys;
-    QSet<QString> plGenres;
     #ifndef ENABLE_UBUNTU
     QMenu *itemMenu;
     quint32 dropAdjust;

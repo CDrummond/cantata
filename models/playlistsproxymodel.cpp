@@ -51,10 +51,6 @@ bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
     if (item->isPlaylist()) {
         PlaylistsModel::PlaylistItem *pl = static_cast<PlaylistsModel::PlaylistItem *>(item);
 
-        if (!filterGenre.isEmpty() && !pl->genres.contains(filterGenre)) {
-            return false;
-        }
-
         if (matchesFilter(QStringList() << pl->name)) {
             return true;
         }
@@ -66,10 +62,6 @@ bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
         }
     } else {
         PlaylistsModel::SongItem *s = static_cast<PlaylistsModel::SongItem *>(item);
-
-        if (!filterGenre.isEmpty() && !s->hasGenre(filterGenre)) {
-            return false;
-        }
         return matchesFilter(*s);
     }
 

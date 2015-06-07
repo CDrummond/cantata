@@ -29,7 +29,6 @@
 #include "context/contextwidget.h"
 #include "context/wikipediasettings.h"
 #include "covers.h"
-#include "models/musiclibrarymodel.h"
 #include "support/utils.h"
 #include "support/messagebox.h"
 #include "config.h"
@@ -254,9 +253,7 @@ CacheSettings::CacheSettings(QWidget *parent)
     layout->setMargin(0);
     int row=0;
     int col=0;
-    QLabel *label=new QLabel(i18n("Cantata caches a local copy of the music listing to speed up loading of the library. Cantata might also have cached "
-                                  "covers, lyrics, or artist images, if these have been downloaded and could not be saved into the music folder (because "
-                                  "Cantata cannot access it, or you have configured Cantata to not save these items there). Below is a summary of Cantata's "
+    QLabel *label=new QLabel(i18n("Cantata caches various pieces of informat (covers, lyrics, etc). Below is a summary of Cantata's "
                                   "current cache usage."), this);
     label->setWordWrap(true);
     layout->addWidget(label, row++, col, 1, 2);
@@ -265,8 +262,6 @@ CacheSettings::CacheSettings(QWidget *parent)
     tree=new CacheTree(this);
     layout->addWidget(tree, row++, col, 1, 2);
 
-    new CacheItem(i18n("Music Library"), Utils::cacheDir(MusicLibraryModel::constLibraryCache, false),
-                  QStringList() << "*"+MusicLibraryModel::constLibraryExt << "*"+MusicLibraryModel::constLibraryCompressedExt, tree);
     new CacheItem(i18n("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", tree,
                   CacheItem::Type_Covers);
     new CacheItem(i18n("Scaled Covers"), Utils::cacheDir(Covers::constScaledCoverDir, false), QStringList() << "*.jpg" << "*.png", tree,
@@ -281,8 +276,6 @@ CacheSettings::CacheSettings(QWidget *parent)
     new CacheItem(i18n("Stream Listings"), Utils::cacheDir(StreamsModel::constSubDir, false), QStringList() << "*"+StreamsModel::constCacheExt, tree);
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
-    new CacheItem(i18n("Jamendo"), Utils::cacheDir("jamendo", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);
-    new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Podcast Directories"), Utils::cacheDir(PodcastSearchDialog::constCacheDir, false), QStringList() << "*"+PodcastSearchDialog::constExt, tree);
     #endif
     new CacheItem(i18n("Wikipedia Languages"), Utils::cacheDir(WikipediaSettings::constSubDir, false), QStringList() << "*.xml.gz", tree);

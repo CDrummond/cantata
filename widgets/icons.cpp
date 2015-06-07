@@ -493,8 +493,7 @@ void Icons::initSidebarIcons()
         QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
         #endif
         playqueueIcon=loadSidebarIcon(QLatin1String("playqueue"), textCol, highlightedTexCol);
-        artistsIcon=loadSidebarIcon(QLatin1String("artists"), textCol, highlightedTexCol);
-        albumsIcon=loadSidebarIcon(QLatin1String("albums"), textCol, highlightedTexCol);
+        libraryIcon=loadSidebarIcon(QLatin1String("library"), textCol, highlightedTexCol);
         foldersIcon=loadSidebarIcon(QLatin1String("folders"), textCol, highlightedTexCol);
         playlistsIcon=loadSidebarIcon(QLatin1String("playlists"), textCol, highlightedTexCol);
         #ifdef ENABLE_DYNAMIC
@@ -514,8 +513,7 @@ void Icons::initSidebarIcons()
     } else {
         monoSb=false;
         playqueueIcon=Icon("media-playback-start");
-        artistsIcon=artistIcon;
-        albumsIcon=albumIcon;
+        libraryIcon=audioFileIcon;
         foldersIcon=Icon("inode-directory");
         playlistsIcon=playlistIcon;
         #ifdef ENABLE_DYNAMIC

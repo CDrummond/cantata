@@ -670,13 +670,15 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
     return albums;
 }
 
-QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId, const QString &genre, const QString &sort)
+QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId, const QString &genre, const QString &sort, bool useFilter)
 {
     DBUG << artistId << albumId << genre << sort;
     QList<Song> songs;
     if (0!=currentVersion) {
         SqlQuery query("*", *db);
-        query.setFilter(filter);
+        if (useFilter) {
+            query.setFilter(filter);
+        }
         if (!artistId.isEmpty()) {
             query.addWhere("artistId", artistId);
         }

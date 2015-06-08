@@ -370,32 +370,84 @@ QStringList SqlLibraryModel::filenames(const QModelIndexList &list, bool allowPl
 
 QModelIndex SqlLibraryModel::findSongIndex(const Song &song)
 {
-    // TODO!!!
+    if (root) {
+        QModelIndex albumIndex=findAlbumIndex(song.artistOrComposer(), song.album);
+        if (albumIndex.isValid()) {
+            if (canFetchMore(albumIndex)) {
+                fetchMore(albumIndex);
+            }
+            CollectionItem *al=static_cast<CollectionItem *>(albumIndex.internalPointer());
+            foreach (Item *t, al->getChildren()) {
+                if (static_cast<TrackItem *>(t)->getSong().title==song.title) {
+                    return index(al->getRow(), 0, albumIndex);
+                }
+            }
+        }
+    }
     return QModelIndex();
 }
 
 QModelIndex SqlLibraryModel::findAlbumIndex(const QString &artist, const QString &album)
 {
-    // TODO!!!
+    if (root) {
+        if (T_Album==tl) {
+            foreach (Item *a, root->getChildren()) {
+                if (a->getId()==album && static_cast<AlbumItem *>(a)->getArtistId()==artist) {
+                    return index(a->getRow(), 0, QModelIndex());
+                }
+            }
+        } else {
+            QModelIndex artistIndex=findArtistIndex(artist);
+            if (artistIndex.isValid()) {
+                if (canFetchMore(artistIndex)) {
+                    fetchMore(artistIndex);
+                }
+                CollectionItem *ar=static_cast<CollectionItem *>(artistIndex.internalPointer());
+                foreach (Item *al, ar->getChildren()) {
+                    if (al->getId()==album) {
+                        return index(al->getRow(), 0, artistIndex);
+                    }
+                }
+            }
+        }
+    }
     return QModelIndex();
 }
 
 QModelIndex SqlLibraryModel::findArtistIndex(const QString &artist)
 {
-    // TODO!!!
+    if (root) {
+        if (T_Genre==tl) {
+            foreach (Item *g, root->getChildren()) {
+                QModelIndex gIndex=index(g->getRow(), 0, QModelIndex());
+                if (canFetchMore(gIndex)) {
+                    fetchMore(gIndex);
+                }
+                foreach (Item *a, static_cast<CollectionItem *>(g)->getChildren()) {
+                    if (a->getId()==artist) {
+                        return index(a->getRow(), 0, gIndex);
+                    }
+                }
+            }
+        } if (T_Artist==tl) {
+            foreach (Item *a, root->getChildren()) {
+                if (a->getId()==artist) {
+                    return index(a->getRow(), 0, QModelIndex());
+                }
+            }
+        }
+    }
     return QModelIndex();
 }
 
 QSet<QString> SqlLibraryModel::getArtists() const
 {
-    // TODO!!!
-    return QSet<QString>();
+    return db->get("albumArtist");
 }
 
 QList<Song> SqlLibraryModel::getAlbumTracks(const Song &song) const
 {
-    // TODO!!!
-    return QList<Song>();
+    return db->getTracks(song.artistOrComposer(), song.album, QString(), QString(), false);
 }
 
 QList<Song> SqlLibraryModel::songs(const QStringList &files, bool allowPlaylists) const

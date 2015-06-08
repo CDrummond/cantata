@@ -113,7 +113,7 @@ public:
     QList<Genre> getGenres();
     QList<Artist> getArtists(const QString &genre=QString());
     QList<Album> getAlbums(const QString &artistId=QString(), const QString &genre=QString(), const QString &sort=QString());
-    QList<Song> getTracks(const QString &artistId, const QString &albumId, const QString &genre=QString(), const QString &sort=QString());
+    QList<Song> getTracks(const QString &artistId, const QString &albumId, const QString &genre=QString(), const QString &sort=QString(), bool useFilter=true);
     #ifndef CANTATA_WEB
     QList<Song> songs(const QStringList &files, bool allowPlaylists=false) const;
     QList<Album> getAlbumsWithArtist(const QString &artist);

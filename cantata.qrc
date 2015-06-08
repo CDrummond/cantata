@@ -47,7 +47,6 @@
 <file alias="dirble">streams/icons/dirble.svg</file>
 
 <file alias="artist.svg">icons/view-media-artist.svg</file>
-<file alias="composer.svg">icons/view-media-composer.svg</file>
 <file alias="radio16.png">icons/view-radiostream16.png</file>
 <file alias="radio22.png">icons/view-radiostream22.png</file>
 <file alias="radio32.png">icons/view-radiostream32.png</file>

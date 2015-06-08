@@ -1243,13 +1243,11 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
     QPixmap *pix=cache.object(key);
     #ifndef ENABLE_UBUNTU
     if (!pix) {
-        Icon &icn=song.isArtistImageRequest()
+        Icon &icn=song.isArtistImageRequest() || song.isComposerImageRequest()
                 ? Icons::self()->artistIcon
-                : song.isComposerImageRequest()
-                    ? Icons::self()->composerIcon
-                    : podcast
-                        ? Icons::self()->podcastIcon
-                        : Icons::self()->albumIcon;
+                : podcast
+                    ? Icons::self()->podcastIcon
+                    : Icons::self()->albumIcon;
         pix=new QPixmap(icn.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
         #if QT_VERSION >= 0x050100
         if (size!=origSize) {

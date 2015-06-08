@@ -723,22 +723,28 @@ QList<LibraryDb::Album> LibraryDb::getAlbumsWithArtist(const QString &artist)
 }
 
 #ifndef CANTATA_WEB
-void LibraryDb::setFilter(const QString &f)
+bool LibraryDb::setFilter(const QString &f)
 {
-    if (f.isEmpty()) {
-        filter=QString();
-        return;
+    QString newFilter=f.trimmed().toLower();
+
+    if (!f.isEmpty()) {
+        QStringList strings(newFilter.split(QRegExp("\\s+")));
+        QStringList tokens;
+        foreach (QString str, strings) {
+            str.remove('(');
+            str.remove(')');
+            str.remove('"');
+            str.remove(':');
+            str.remove('*');
+            tokens.append(str+"* ");
+        }
+        newFilter=tokens.join(" OR ");
     }
-    QStringList strings(f.split(QRegExp("\\s+")));
-    QStringList tokens;
-    foreach (QString str, strings) {
-        str.remove('(');
-        str.remove(')');
-        str.remove('"');
-        str.remove(':');
-        tokens.append(str+"* ");
+    if (newFilter!=filter) {
+        filter=newFilter;
+        return true;
     }
-    filter=tokens.join(" OR ");
+    return false;
 }
 #endif
 

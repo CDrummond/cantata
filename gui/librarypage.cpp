@@ -249,7 +249,7 @@ void LibraryPage::itemDoubleClicked(const QModelIndex &)
 
 void LibraryPage::searchItems()
 {
-    MpdLibraryModel::self()->search(view->searchText().trimmed());
+    MpdLibraryModel::self()->search(view->searchText());
 }
 
 void LibraryPage::controlActions()

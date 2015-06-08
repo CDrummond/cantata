@@ -137,8 +137,7 @@ void SqlLibraryModel::libraryUpdated()
 
 void SqlLibraryModel::search(const QString &str)
 {
-    if (str!=db->getFilter()) {
-        db->setFilter(str);
+    if (db->setFilter(str)) {
         libraryUpdated();
     }
 }

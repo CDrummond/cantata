@@ -28,6 +28,7 @@
 #include "support/messagebox.h"
 #include "support/action.h"
 #include "support/utils.h"
+#include "models/mpdlibrarymodel.h"
 #include "stdactions.h"
 #include <QDesktopServices>
 #include <QUrl>
@@ -190,24 +191,22 @@ void FolderPage::openFileManager()
 
 QList<Song> FolderPage::selectedSongs(EmptySongMod esMod, bool allowPlaylists) const
 {
-//    QList<Song> songs=MusicLibraryModel::self()->songs(selectedFiles(allowPlaylists), ES_None!=esMod);
+    QList<Song> songs=MpdLibraryModel::self()->songs(selectedFiles(allowPlaylists), ES_None!=esMod);
 
-//    if (ES_None!=esMod) {
-//        QList<Song>::Iterator it(songs.begin());
-//        QList<Song>::Iterator end(songs.end());
-//        for (; it!=end; ++it) {
-//            if ((*it).isEmpty()) {
-//                if (ES_GuessTags==esMod) {
-//                    (*it).guessTags();
-//                }
-//                (*it).fillEmptyFields();
-//            }
-//        }
-//    }
+    if (ES_None!=esMod) {
+        QList<Song>::Iterator it(songs.begin());
+        QList<Song>::Iterator end(songs.end());
+        for (; it!=end; ++it) {
+            if ((*it).isEmpty()) {
+                if (ES_GuessTags==esMod) {
+                    (*it).guessTags();
+                }
+                (*it).fillEmptyFields();
+            }
+        }
+    }
 
-//    return songs;
-    return QList<Song>();
-    // TODO!!!!
+    return songs;
 }
 
 QStringList FolderPage::selectedFiles(bool allowPlaylists) const

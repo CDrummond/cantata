@@ -115,6 +115,7 @@ public:
     QList<Album> getAlbums(const QString &artistId=QString(), const QString &genre=QString(), const QString &sort=QString());
     QList<Song> getTracks(const QString &artistId, const QString &albumId, const QString &genre=QString(), const QString &sort=QString());
     #ifndef CANTATA_WEB
+    QList<Song> songs(const QStringList &files, bool allowPlaylists=false) const;
     QList<Album> getAlbumsWithArtist(const QString &artist);
     QSet<QString> get(const QString &type);
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
@@ -132,7 +133,7 @@ protected Q_SLOTS:
 
 protected:
     bool createTable(const QString &q);
-    static Song getSong(const QSqlQuery *query);
+    static Song getSong(const QSqlQuery &query);
 
 protected:
     virtual void reset();

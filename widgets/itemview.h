@@ -174,6 +174,7 @@ private Q_SLOTS:
     void doSearch();
     void searchActive(bool a);
     void activateItem(const QModelIndex &index, bool emitRootSet=true);
+    void modelReset();
 
 private:
     void collapseToLevel();

@@ -934,10 +934,16 @@ QAbstractItemView * ItemView::view() const
 void ItemView::setModel(QAbstractItemModel *m)
 {
     bool needtToInit=!itemModel;
+    if (itemModel) {
+        disconnect(itemModel, SIGNAL(modelReset()), this, SLOT(modelReset()));
+    }
     itemModel=m;
     if (needtToInit) {
         mode=Mode_List;
         setMode(Mode_SimpleTree);
+    }
+    if (m) {
+        connect(m, SIGNAL(modelReset()), this, SLOT(modelReset()));
     }
     view()->setModel(m);
 }
@@ -1383,6 +1389,13 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
             emit rootIndexSet(index);
         }
         listView->scrollToTop();
+    }
+}
+
+void ItemView::modelReset()
+{
+    if (Mode_List==mode || Mode_IconTop==mode) {
+        goToTop();
     }
 }
 

@@ -114,8 +114,10 @@ public:
     QList<Artist> getArtists(const QString &genre=QString());
     QList<Album> getAlbums(const QString &artistId=QString(), const QString &genre=QString(), const QString &sort=QString());
     QList<Song> getTracks(const QString &artistId, const QString &albumId, const QString &genre=QString(), const QString &sort=QString());
-    QList<Album> getAlbumsWithArtist(const QString &artist);
     #ifndef CANTATA_WEB
+    QList<Album> getAlbumsWithArtist(const QString &artist);
+    QSet<QString> get(const QString &type);
+    void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
     bool setFilter(const QString &f);
     const QString & getFilter() const { return filter; }
     #endif
@@ -146,6 +148,9 @@ protected:
     QSqlQuery *insertSongQuery;
     QElapsedTimer timer;
     QString filter;
+    #ifndef CANTATA_WEB
+    QMap<QString, QSet<QString> > detailsCache;
+    #endif
 };
 
 #endif

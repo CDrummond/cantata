@@ -156,6 +156,7 @@ public:
     QSet<QString> getArtists() const;
     QList<Song> getAlbumTracks(const Song &song) const;
     QList<LibraryDb::Album> getArtistAlbums(const QString &artist) const;
+    void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
 
 private Q_SLOTS:
     void libraryUpdated();

@@ -2390,7 +2390,7 @@ void MainWindow::editTags()
         }
     }
     #endif
-    //MusicLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
+    MpdLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
     TagEditor *dlg=new TagEditor(this, songs, artists, albumArtists, composers, albums, genres, udi);
     dlg->show();
     #endif

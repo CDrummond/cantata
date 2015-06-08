@@ -380,6 +380,11 @@ QList<LibraryDb::Album> SqlLibraryModel::getArtistAlbums(const QString &artist) 
     return db->getAlbumsWithArtist(artist);
 }
 
+void SqlLibraryModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres)
+{
+    db->getDetails(artists, albumArtists, composers, albums, genres);
+}
+
 void SqlLibraryModel::populate(const QModelIndexList &list) const
 {
     foreach (const QModelIndex &idx, list) {

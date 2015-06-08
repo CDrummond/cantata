@@ -23,6 +23,7 @@
 
 #include "dynamicruledialog.h"
 #include "support/localize.h"
+#include "models/mpdlibrarymodel.h"
 
 static const int constMinDate=1800;
 static const int constMaxDate=2100;
@@ -54,7 +55,7 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     QSet<QString> composers;
     QSet<QString> albums;
     QSet<QString> genres;
-    //MusicLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
+    MpdLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
 
     QStringList strings=artists.toList();
     strings.sort();

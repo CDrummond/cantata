@@ -704,6 +704,7 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
     return songs;
 }
 
+#ifndef CANTATA_WEB
 QList<LibraryDb::Album> LibraryDb::getAlbumsWithArtist(const QString &artist)
 {
     QList<LibraryDb::Album> albums;
@@ -722,7 +723,34 @@ QList<LibraryDb::Album> LibraryDb::getAlbumsWithArtist(const QString &artist)
     return albums;
 }
 
-#ifndef CANTATA_WEB
+QSet<QString> LibraryDb::get(const QString &type)
+{
+    if (detailsCache.contains(type)) {
+        return detailsCache[type];
+    }
+    QSet<QString> set;
+    SqlQuery query("distinct "+type, *db);
+    query.exec();
+    DBUG << query.executedQuery();
+    while (query.next()) {
+        QString val=query.value(0).toString();
+        if (!val.isEmpty()) {
+            set.insert(val);
+        }
+    }
+    detailsCache[type]=set;
+    return set;
+}
+
+void LibraryDb::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres)
+{
+    artists=get("artist");
+    albumArtists=get("albumArtist");
+    composers=get("composer");
+    albums=get("album");
+    genres=get("genre");
+}
+
 bool LibraryDb::setFilter(const QString &f)
 {
     QString newFilter=f.trimmed().toLower();
@@ -757,6 +785,7 @@ void LibraryDb::updateStarted(time_t ver)
         QSqlQuery(*db).exec("delete from songs");
         #ifndef CANTATA_WEB
         QSqlQuery(*db).exec("delete from songs_fts");
+        detailsCache.clear();
         #endif
     }
     DBUG;

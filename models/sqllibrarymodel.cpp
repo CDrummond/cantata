@@ -71,6 +71,14 @@ SqlLibraryModel::SqlLibraryModel(LibraryDb *d, QObject *p)
 
 void SqlLibraryModel::clear()
 {
+    beginResetModel();
+    delete root;
+    root=0;
+    endResetModel();
+}
+
+void SqlLibraryModel::clearDb()
+{
     db->clear();
 }
 

@@ -53,6 +53,7 @@ public:
     #ifndef ENABLE_UBUNTU
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     #endif
+    void load();
     void clear();
     void addFileToList(const QString &file, const QString &mopidyPath);
     void removeFileFromList(const QString &file);
@@ -61,9 +62,11 @@ public:
 
 public Q_SLOTS:
     void updateDirView(DirViewItemRoot *newroot, time_t dbUpdate=0);
+    void mpdStatsUpdated();
 
 Q_SIGNALS:
     void updated();
+    void loadFolers();
 
 private:
     void toXML(const DirViewItem *item, QXmlStreamWriter &writer);

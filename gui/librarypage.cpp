@@ -84,14 +84,9 @@ void LibraryPage::showEvent(QShowEvent *e)
     QWidget::showEvent(e);
 }
 
-void LibraryPage::refresh()
-{
-    view->goToTop();
-    // TODO: Is this used??
-}
-
 void LibraryPage::clear()
 {
+    MpdLibraryModel::self()->clear();
     view->goToTop();
 }
 

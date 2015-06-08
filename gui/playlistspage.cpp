@@ -139,12 +139,6 @@ void PlaylistsPage::updateRows()
     view->updateRows();
 }
 
-void PlaylistsPage::refresh()
-{
-    view->goToTop();
-    PlaylistsModel::self()->getPlaylists();
-}
-
 void PlaylistsPage::clear()
 {
     PlaylistsModel::self()->clear();

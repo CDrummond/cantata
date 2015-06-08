@@ -505,9 +505,9 @@ bool LibraryDb::init(const QString &dbFile)
                     "year integer, "
                     "type integer, "
                     "primary key (file))")) {
-#ifndef CANTATA_WEB
+        #ifndef CANTATA_WEB
         QSqlQuery(*db).exec("create virtual table songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_title, tokenize=unicode61)");
-#endif
+        #endif
     } else {
         return false;
     }
@@ -755,9 +755,9 @@ void LibraryDb::updateStarted(time_t ver)
     db->transaction();
     if (currentVersion>0) {
         QSqlQuery(*db).exec("delete from songs");
-#ifndef CANTATA_WEB
+        #ifndef CANTATA_WEB
         QSqlQuery(*db).exec("delete from songs_fts");
-#endif
+        #endif
     }
     DBUG;
 }
@@ -777,10 +777,10 @@ void LibraryDb::insertSongs(QList<Song> *songs)
 
 void LibraryDb::updateFinished()
 {
-#ifndef CANTATA_WEB
+    #ifndef CANTATA_WEB
     QSqlQuery(*db).exec("insert into songs_fts(fts_artist, fts_artistId, fts_album, fts_title) "
                         "select artist, artistId, album, title from songs");
-#endif
+    #endif
     QSqlQuery(*db).exec("update versions set collection ="+QString::number(newVersion));
     db->commit();
     currentVersion=newVersion;

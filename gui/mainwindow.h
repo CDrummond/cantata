@@ -199,7 +199,6 @@ public Q_SLOTS:
     void updatePlayQueue(const QList<Song> &songs, bool isComplete);
     void updateCurrentSong(Song song, bool wasEmpty=false);
     void scrollPlayQueue(bool wasEmpty=false);
-    void updateStats();
     void updateStatus();
     void playQueueItemActivated(const QModelIndex &);
     void promptClearPlayQueue();

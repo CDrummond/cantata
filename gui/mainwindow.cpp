@@ -821,7 +821,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&playQueueModel, SIGNAL(streamFetchStatus(QString)), playQueue, SLOT(streamFetchStatus(QString)));
     connect(playQueue, SIGNAL(cancelStreamFetch()), &playQueueModel, SLOT(cancelStreamFetch()));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
-    connect(MPDStats::self(), SIGNAL(updated()), this, SLOT(updateStats()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
     connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &, bool)), this, SLOT(updatePlayQueue(const QList<Song> &, bool)));
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(Song)), this, SLOT(updateCurrentSong(Song)));
@@ -931,7 +930,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     if (Settings::self()->firstRun() && MPDConnection::self()->isConnected()) {
         mpdConnectionStateChanged(true);
-        updateStats();
     }
     #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->start();
@@ -1180,7 +1178,7 @@ void MainWindow::refreshDbPromp()
 
 void MainWindow::fullDbRefresh()
 {
-    MpdLibraryModel::self()->clear();
+    MpdLibraryModel::self()->clearDb();
 }
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -1782,21 +1780,6 @@ void MainWindow::scrollPlayQueue(bool wasEmpty)
             playQueue->scrollTo(playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0)), QAbstractItemView::PositionAtCenter);
         }
     }
-}
-
-void MainWindow::updateStats()
-{
-    // Check if remote db is more recent than local one
-//    if (0==MusicLibraryModel::self()->lastUpdate() || MPDStats::self()->dbUpdate() > MusicLibraryModel::self()->lastUpdate()) {
-//        if (0==MusicLibraryModel::self()->lastUpdate()) {
-//            libraryPage->clear();
-//            folderPage->clear();
-//            playlistsPage->clear();
-//        }
-//        libraryPage->refresh();
-//        folderPage->refresh();
-//    }
-    // TODO????
 }
 
 void MainWindow::updateStatus()

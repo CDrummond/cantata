@@ -41,6 +41,7 @@
 #include "roles.h"
 #include "gui/settings.h"
 #include "mpd-interface/mpdconnection.h"
+#include "mpd-interface/mpdstats.h"
 #include "support/icon.h"
 #include "widgets/icons.h"
 #include "config.h"
@@ -62,6 +63,7 @@ DirViewModel::DirViewModel(QObject *parent)
     #if defined ENABLE_MODEL_TEST
     new ModelTest(this, this);
     #endif
+    connect(this, SIGNAL(loadFolers()), MPDConnection::self(), SLOT(loadFolders()));
 }
 
 DirViewModel::~DirViewModel()
@@ -78,9 +80,11 @@ void DirViewModel::setEnabled(bool e)
 
     if (enabled) {
         connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *, time_t)), this, SLOT(updateDirView(DirViewItemRoot *, time_t)));
+        connect(MPDStats::self(), SIGNAL(updated()), this, SLOT(mpdStatsUpdated()));
     } else {
         clear();
         disconnect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *, time_t)), this, SLOT(updateDirView(DirViewItemRoot *, time_t)));
+        disconnect(MPDStats::self(), SIGNAL(updated()), this, SLOT(mpdStatsUpdated()));
     }
 }
 
@@ -214,6 +218,13 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+void DirViewModel::load()
+{
+    if (enabled && (!rootItem || 0==rootItem->childCount())) {
+        emit loadFolers();
+    }
+}
+
 void DirViewModel::clear()
 {
     if (!rootItem || 0==rootItem->childCount()) {
@@ -264,6 +275,13 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, time_t dbUpdate)
     #ifdef ENABLE_UBUNTU
     emit updated();
     #endif
+}
+
+void DirViewModel::mpdStatsUpdated()
+{
+    if (0==databaseTime || MPDStats::self()->dbUpdate() > databaseTime) {
+        emit loadFolers();
+    }
 }
 
 void DirViewModel::addFileToList(const QString &file, const QString &mopidyPath)

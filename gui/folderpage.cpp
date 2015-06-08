@@ -90,30 +90,12 @@ void FolderPage::setEnabled(bool e)
     }
 
     DirViewModel::self()->setEnabled(e);
-    if (e) {
-        refresh();
+    if (isVisible()) {
+        emit loadFolders();
+        loaded=true;
     } else {
         loaded=false;
     }
-}
-
-void FolderPage::refresh()
-{
-    view->goToTop();
-    if (DirViewModel::self()->isEnabled()) {
-        if (!isVisible()) {
-            loaded=false; // Refresh called for, but we are not currently visible...
-        }  else {
-            emit loadFolders();
-            loaded=true;
-        }
-    }
-}
-
-void FolderPage::clear()
-{
-    DirViewModel::self()->clear();
-    loaded=false;
 }
 
 void FolderPage::showEvent(QShowEvent *e)

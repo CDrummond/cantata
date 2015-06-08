@@ -133,6 +133,7 @@ public:
     SqlLibraryModel(LibraryDb *d, QObject *p);
 
     void clear();
+    void clearDb();
     void settings(const QString &top, const QString &lib, const QString &al);
     Type topLevel() const { return tl; }
     void search(const QString &str);

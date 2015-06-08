@@ -37,7 +37,6 @@ public:
     LibraryPage(QWidget *p);
     virtual ~LibraryPage();
 
-    void refresh();
     void clear();
     QStringList selectedFiles(bool allowPlaylists=false) const;
     QList<Song> selectedSongs(bool allowPlaylists=false) const;

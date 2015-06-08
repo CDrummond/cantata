@@ -512,7 +512,7 @@ time_t MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, time_t date, bool
                         song.type=Song::OnlineSvrTrack;
                     }
 
-                    MusicLibraryItemSong *songItem=new MusicLibraryItemSong(song, albumItem);
+                    albumItem->append(new MusicLibraryItemSong(song, albumItem));
 
                     if (prog && !prog->wasStopped() && total>0) {
                         count++;

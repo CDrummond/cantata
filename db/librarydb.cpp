@@ -623,7 +623,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
             QString artist=artistId.isEmpty() ? query.value(3).toString() : QString();
             QString artistSort=artistId.isEmpty() ? query.value(4).toString() : QString();
             SqlQuery detailsQuery("avg(year), count(track), sum(time)", *db);
-            query.setFilter(filter);
+            detailsQuery.setFilter(filter);
 
             if (!genre.isEmpty()) {
                 detailsQuery.addWhere("genre", genre);

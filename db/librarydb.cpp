@@ -347,7 +347,7 @@ static QString albumSort(const Song &s)
 class SqlQuery
 {
 public:
-    SqlQuery(const QString &colSpec, QSqlDatabase database)
+    SqlQuery(const QString &colSpec, QSqlDatabase &database)
             : db(database)
             , fts(false)
             , columSpec(colSpec)
@@ -460,7 +460,7 @@ bool LibraryDb::init(const QString &dbFile)
     }
 
     DBUG << dbFile << dbName;
-    db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));
+    db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE", dbName.isEmpty() ? QLatin1String(QSqlDatabase::defaultConnection) : dbName));
     db->setDatabaseName(dbFile);
     if (!db->open()) {
         delete db;

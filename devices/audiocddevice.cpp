@@ -32,6 +32,7 @@
 #include "gui/plurals.h"
 #include "models/musiclibraryitemsong.h"
 #include "models/dirviewmodel.h"
+#include "models/mpdlibrarymodel.h"
 #include "support/utils.h"
 #include "extractjob.h"
 #include "mpd-interface/mpdconnection.h"
@@ -250,10 +251,10 @@ void AudioCdDevice::copySongTo(const Song &s, const QString &musicPath, bool ove
         if (needToFixVa) {
             Device::fixVariousArtists(QString(), check, false);
         }
-//        if (MusicLibraryModel::self()->songExists(check)) {
-//            emit actionStatus(SongExists);
-//            return;
-//        }
+        if (MpdLibraryModel::self()->songExists(check)) {
+            emit actionStatus(SongExists);
+            return;
+        }
     }
 
     DeviceOptions mpdOpts;

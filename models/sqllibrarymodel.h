@@ -159,6 +159,7 @@ public:
     QList<Song> songs(const QStringList &files, bool allowPlaylists=false) const;
     QList<LibraryDb::Album> getArtistAlbums(const QString &artist) const;
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
+    bool songExists(const Song &song);
 
 private Q_SLOTS:
     void libraryUpdated();

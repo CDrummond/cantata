@@ -770,6 +770,17 @@ void LibraryDb::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, 
     genres=get("genre");
 }
 
+bool LibraryDb::songExists(const Song &song)
+{
+    SqlQuery query("file", *db);
+    query.addWhere("artistId", song.artistOrComposer());
+    query.addWhere("albumId", song.albumId());
+    query.addWhere("title", song.title);
+    query.addWhere("track", song.track);
+    query.exec();
+    return query.next();
+}
+
 bool LibraryDb::setFilter(const QString &f)
 {
     QString newFilter=f.trimmed().toLower();

@@ -398,6 +398,11 @@ void SqlLibraryModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArt
     db->getDetails(artists, albumArtists, composers, albums, genres);
 }
 
+bool SqlLibraryModel::songExists(const Song &song)
+{
+    return db->songExists(song);
+}
+
 void SqlLibraryModel::populate(const QModelIndexList &list) const
 {
     foreach (const QModelIndex &idx, list) {

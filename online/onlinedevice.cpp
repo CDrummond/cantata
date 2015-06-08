@@ -26,6 +26,7 @@
 #include "support/utils.h"
 #include "network/networkaccessmanager.h"
 #include "mpd-interface/mpdconnection.h"
+#include "models/mpdlibrarymodel.h"
 #include <QDir>
 
 void OnlineDevice::copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover)
@@ -35,7 +36,7 @@ void OnlineDevice::copySongTo(const Song &s, const QString &musicPath, bool over
     jobAbortRequested=false;
     QString baseDir=MPDConnection::self()->getDetails().dir;
     QString dest(baseDir+musicPath);
-    if (!overwrite && (/*MusicLibraryModel::self()->songExists(s) ||*/ QFile::exists(dest))) {
+    if (!overwrite && (QFile::exists(dest) || MpdLibraryModel::self()->songExists(s))) {
         emit actionStatus(SongExists);
         return;
     }

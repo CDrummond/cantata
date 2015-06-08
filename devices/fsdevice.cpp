@@ -28,6 +28,7 @@
 #include "models/musiclibraryitemartist.h"
 #include "models/musiclibraryitemroot.h"
 #include "models/dirviewmodel.h"
+#include "models/mpdlibrarymodel.h"
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "support/utils.h"
@@ -437,10 +438,10 @@ void FsDevice::copySongTo(const Song &s, const QString &musicPath, bool overwrit
         if (needToFixVa) {
             Device::fixVariousArtists(QString(), check, false);
         }
-//        if (MusicLibraryModel::self()->songExists(check)) {
-//            emit actionStatus(SongExists);
-//            return;
-//        }
+        if (MpdLibraryModel::self()->songExists(check)) {
+            emit actionStatus(SongExists);
+            return;
+        }
     }
 
     QString source=audioFolder+s.file;

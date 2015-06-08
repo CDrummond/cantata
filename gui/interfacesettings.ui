@@ -674,20 +674,21 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_4">
+
+     <widget class="QWidget" name="tab_4z">
       <attribute name="title">
-       <string>General</string>
+       <string>Tweaks</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_3x">
        <item>
-        <layout class="QFormLayout" name="formLayout_4">
+        <layout class="QFormLayout" name="formLayout_4x">
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::ExpandingFieldsGrow</enum>
          </property>
          <item row="0" column="0">
           <widget class="BuddyLabel" name="composerGenresLabel">
           <property name="toolTip">
-           <string>Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums. (List should be comma spearated - e.g. 'Classical, Symphonic')</string>
+           <string>&lt;p&gt;Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums. (List should be comma spearated - e.g. 'Classical, Symphonic')&lt;/p&gt;</string>
           </property>
           <property name="text">
            <string>Group albums by composer for genres:</string>
@@ -700,28 +701,78 @@
          <item row="0" column="1">
           <widget class="LineEdit" name="composerGenres"/>
          </item>
-         <item row="1" column="0" colspan="2">
+         <item row="1" column="0">
+          <widget class="BuddyLabel" name="singleTracksFolderLabel">
+          <property name="toolTip">
+           <string>&lt;p&gt;If set, any tracks found within this folder will have their 'Album Artist' set to 'Various Artists' and album set to 'Single Tracks'&lt;/p&gt;</string>
+          </property>
+          <property name="text">
+           <string>Single track files folder:</string>
+          </property>
+           <property name="buddy">
+            <cstring>singleTracksFolder</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="LineEdit" name="singleTracksFolder"/>
+         </item>
+         <item>
+          <widget class="NoteLabel" name="tweaksLabel">
+           <property name="text">
+            <string>Changing any of the above will require a DB refresh in order to take affect.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2f">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>General</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QFormLayout" name="formLayout_4">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::ExpandingFieldsGrow</enum>
+         </property>
+         <item row="0" column="0" colspan="2">
           <widget class="QCheckBox" name="fetchCovers">
            <property name="text">
             <string>Fetch missing covers from Last.fm</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0" colspan="2">
+         <item row="1" column="0" colspan="2">
           <widget class="QCheckBox" name="showDeleteAction">
            <property name="text">
             <string>Show delete action in context menus</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
+         <item row="2" column="0" colspan="2">
           <widget class="QCheckBox" name="forceSingleClick">
            <property name="text">
             <string>Enforce single-click activation of items</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0" colspan="2">
+         <item row="3" column="0" colspan="2">
           <widget class="QCheckBox" name="touchFriendly">
            <property name="toolTip">
             <string>&lt;p&gt;This will change Cantata's interface as detailed:
@@ -732,21 +783,21 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="0" colspan="2">
+         <item row="4" column="0" colspan="2">
           <widget class="QCheckBox" name="infoTooltips">
            <property name="text">
             <string>Show song information tooltips</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="0" colspan="2">
+         <item row="5" column="0" colspan="2">
           <widget class="QCheckBox" name="retinaSupport">
            <property name="text">
             <string>Support retina displays</string>
            </property>
           </widget>
          </item>
-         <item row="7" column="0">
+         <item row="6" column="0">
           <widget class="BuddyLabel" name="langLabel">
            <property name="text">
             <string>Language:</string>

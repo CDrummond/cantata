@@ -44,6 +44,7 @@
 #include "http/httpserver.h"
 #endif
 #include "support/utils.h"
+#include "support/localize.h"
 #include "cuefile.h"
 #include "mpdconnection.h"
 #ifdef ENABLE_ONLINE_SERVICES
@@ -127,6 +128,13 @@ static const QString constProtocol=QLatin1String("://");
 static const QString constHttpProtocol=QLatin1String("http://");
 
 static inline bool toBool(const QByteArray &v) { return v==constSetValue; }
+
+static QString singleTracksFolder;
+
+void MPDParseUtils::setSingleTracksFolder(const QString &f)
+{
+    singleTracksFolder=f;
+}
 
 QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
 {
@@ -524,11 +532,13 @@ MPDParseUtils::MessageMap MPDParseUtils::parseMessages(const QByteArray &data)
 }
 
 #endif
-void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, bool parsePlaylists, QSet<QString> *childDirs)
+void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, const QString &dir, QSet<QString> *childDirs)
 {
     QList<QByteArray> currentItem;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
+    bool parsePlaylists="/"!=dir;
+    bool setSingleTracks=parsePlaylists && !singleTracksFolder.isEmpty() && dir==singleTracksFolder;
 
     for (int i = 0; i < amountOfLines; i++) {
         const QByteArray &line=lines.at(i);
@@ -665,7 +675,11 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                 }
                 continue;
             }
-            
+
+            if (Song::Playlist!=currentSong.type && setSingleTracks) {
+                currentSong.albumartist=Song::variousArtists();
+                currentSong.album=i18n("Single Tracks");
+            }
             currentSong.fillEmptyFields();
             songs.append(currentSong);
         }

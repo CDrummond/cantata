@@ -60,6 +60,7 @@ namespace MPDParseUtils
         Loc_Search
     };
 
+    extern void setSingleTracksFolder(const QString &f);
     extern QList<Playlist> parsePlaylists(const QByteArray &data);
     extern MPDStatsValues parseStats(const QByteArray &data);
     extern MPDStatusValues parseStatus(const QByteArray &data);
@@ -72,7 +73,7 @@ namespace MPDParseUtils
     typedef QMap<QByteArray, QStringList> MessageMap;
     extern MessageMap parseMessages(const QByteArray &data);
     #endif
-    extern void parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, bool parsePlaylists=true, QSet<QString> *childDirs=0);
+    extern void parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, const QString &dir=QString(), QSet<QString> *childDirs=0);
     #ifndef CANTATA_WEB
     extern DirViewItemRoot * parseDirViewItems(const QByteArray &data, bool isMopidy);
     #endif

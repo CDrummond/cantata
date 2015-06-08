@@ -293,6 +293,8 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         sbLayout->addItem(new QSpacerItem(0, 2, QSizePolicy::Expanding, QSizePolicy::Minimum));
     }
     connect(libraryGrouping, SIGNAL(currentIndexChanged(int)), SLOT(libraryGroupingChanged()));
+    composerGenres->setToolTip(composerGenresLabel->toolTip());
+    singleTracksFolder->setToolTip(singleTracksFolderLabel->toolTip());
 }
 
 void InterfaceSettings::load()
@@ -311,6 +313,7 @@ void InterfaceSettings::load()
     selectEntry(onlineView, Settings::self()->onlineView());
     #endif
     composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(Song::constGenreSep)));
+    singleTracksFolder->setText(Settings::self()->singleTracksFolder());
     #ifdef ENABLE_DEVICES_SUPPORT
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
     selectEntry(devicesView, Settings::self()->devicesView());
@@ -405,6 +408,7 @@ void InterfaceSettings::save()
     Settings::self()->saveOnlineView(getValue(onlineView));
     #endif
     Settings::self()->saveComposerGenres(composerGenres->text().trimmed().split(Song::constGenreSep).toSet());
+    Settings::self()->saveSingleTracksFolder(singleTracksFolder->text().trimmed());
     #ifdef ENABLE_DEVICES_SUPPORT
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
     Settings::self()->saveDevicesView(getValue(devicesView));

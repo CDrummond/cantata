@@ -326,10 +326,15 @@ static QString artistSort(const Song &s)
     if (!s.artistSortString().isEmpty()) {
         return s.artistSortString();
     }
-    if (s.albumArtist().startsWith("The")) {
-        return s.albumArtist().mid(4);
+    const QString &albumArtist=s.albumArtist();
+    QString sort;
+    if (albumArtist.startsWith("The")) {
+        sort=albumArtist.mid(4);
+    } else {
+        sort=albumArtist;
     }
-    return QString();
+    sort=sort.remove('.');
+    return sort==albumArtist ? QString() : sort;
 }
 
 static QString albumSort(const Song &s)
@@ -337,10 +342,14 @@ static QString albumSort(const Song &s)
     if (!s.albumSort().isEmpty()) {
         return s.albumSort();
     }
+    QString sort;
     if (s.album.startsWith("The")) {
-        return s.album.mid(4);
+        sort=s.album.mid(4);
+    } else {
+        sort=s.album;
     }
-    return QString();
+    sort=sort.remove('.');
+    return sort==s.album ? QString() : sort;
 }
 
 // Code taken from Clementine's LibraryQuery

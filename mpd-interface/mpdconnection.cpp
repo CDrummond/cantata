@@ -272,6 +272,7 @@ MPDConnection::MPDConnection()
     maxFilesPerAddCommand=cfg.get("mpdListSize", 10000, 100, 65535);
     alwaysUseLsInfo=cfg.get("alwaysUseLsInfo", true);
     seekStep=cfg.get("seekStep", 5, 2, 60);
+    MPDParseUtils::setSingleTracksFolder(cfg.get("singleTracksFolder", QString()));
     #endif
     connTimer=new QTimer(this);
     connect(connTimer, SIGNAL(timeout()), SLOT(getStatus()));
@@ -1875,7 +1876,7 @@ bool MPDConnection::listDirInfo(const QString &dir)
     if (response.ok) {
         QSet<QString> childDirs;
         QList<Song> *songs=new QList<Song>();
-        MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, *songs, !topLevel, &childDirs);
+        MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, *songs, dir, &childDirs);
         emit librarySongs(songs);
         foreach (const QString &child, childDirs) {
             if (!listDirInfo(child)) {

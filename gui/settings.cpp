@@ -397,6 +397,11 @@ QSet<QString> Settings::composerGenres()
     return cfg.get("composerGenres", Song::composerGenres().toList()).toSet();
 }
 
+QString Settings::singleTracksFolder()
+{
+    return cfg.get("singleTracksFolder", QString());
+}
+
 QStringList Settings::lyricProviders()
 {
     return cfg.get("lyricProviders", QStringList() << "lyrics.wikia.com" << "lyricstime.com" << "lyricsreg.com"
@@ -1019,6 +1024,11 @@ void Settings::saveLibraryGrouping(const QString &v)
 void Settings::saveComposerGenres(const QSet<QString> &v)
 {
     cfg.set("composerGenres", v.toList());
+}
+
+void Settings::saveSingleTracksFolder(const QString &v)
+{
+    cfg.set("singleTracksFolder", v);
 }
 
 void Settings::saveLyricProviders(const QStringList &v)

@@ -85,6 +85,7 @@ public:
     QString librarySort();
     QString libraryGrouping();
     QSet<QString> composerGenres();
+    QString singleTracksFolder();
     QStringList lyricProviders();
     QStringList wikipediaLangs();
     bool wikipediaIntroOnly();
@@ -209,6 +210,7 @@ public:
     void saveLibrarySort(const QString &v);
     void saveLibraryGrouping(const QString &v);
     void saveComposerGenres(const QSet<QString> &v);
+    void saveSingleTracksFolder(const QString &v);
     void saveLyricProviders(const QStringList &v);
     void saveWikipediaLangs(const QStringList &v);
     void saveWikipediaIntroOnly(bool v);

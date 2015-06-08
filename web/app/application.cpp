@@ -23,6 +23,7 @@
 
 #include "application.h"
 #include "mpd-interface/mpdconnection.h"
+#include "mpd-interface/mpdparseutils.h"
 #include "httpserver.h"
 #include "statusapi.h"
 #include "db/mpdlibrarydb.h"
@@ -57,6 +58,7 @@ Application::Application(int argc, char *argv[])
     mpd.port=cfg->value("mpd/port", "6600").toUInt();
     mpd.password=cfg->value("mpd/password", QString()).toString();
     mpd.dir=cfg->value("mpd/dir", "/var/lib/mpd/music").toString();
+    MPDParseUtils::setSingleTracksFolder(cfg->value("mpd/singleTracksFolder", QString()).toString());
     QString dbFile(cfg->value("db", QCoreApplication::applicationDirPath()+QDir::separator()+PACKAGE_NAME".sqlite").toString());
     if (!MpdLibraryDb::self()->init(dbFile)) {
         qWarning() << dbFile << "failed to initialize";

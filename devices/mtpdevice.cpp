@@ -27,6 +27,7 @@
 #include "models/musiclibraryitemartist.h"
 #include "models/musiclibraryitemroot.h"
 #include "models/dirviewmodel.h"
+#include "models/mpdlibrarymodel.h"
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "gui/covers.h"
@@ -1503,10 +1504,10 @@ void MtpDevice::copySongTo(const Song &s, const QString &musicPath, bool overwri
         if (needToFixVa) {
             Device::fixVariousArtists(QString(), check, false);
         }
-//        if (MusicLibraryModel::self()->songExists(check)) {
-//            emit actionStatus(SongExists);
-//            return;
-//        }
+        if (MpdLibraryModel::self()->songExists(check)) {
+            emit actionStatus(SongExists);
+            return;
+        }
     }
 
     if (!songExists(s)) {

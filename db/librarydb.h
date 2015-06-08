@@ -119,6 +119,7 @@ public:
     QList<Album> getAlbumsWithArtist(const QString &artist);
     QSet<QString> get(const QString &type);
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
+    bool songExists(const Song &song);
     bool setFilter(const QString &f);
     const QString & getFilter() const { return filter; }
     #endif

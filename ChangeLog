@@ -3,7 +3,8 @@
  1. Use SQLite database to cache MPD libtrary.
  2. Combine Artists and Albums tabs into a single Library tab. Provide option
     to group library by; Genre, Artist, or Album
-
+ 3. When sorting artists and albums, if there is no sort tag then remove any
+    periods from the main tag before using it to sort. e.g. A.S.A.P. -> ASAP
 .....
 
  1. If connected to MPD>=0.19 using address 127.0.0.1 or localhost, then pass

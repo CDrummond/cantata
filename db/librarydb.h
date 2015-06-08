@@ -116,7 +116,7 @@ public:
     QList<Song> getTracks(const QString &artistId, const QString &albumId, const QString &genre=QString(), const QString &sort=QString());
     QList<Album> getAlbumsWithArtist(const QString &artist);
     #ifndef CANTATA_WEB
-    void setFilter(const QString &f);
+    bool setFilter(const QString &f);
     const QString & getFilter() const { return filter; }
     #endif
 

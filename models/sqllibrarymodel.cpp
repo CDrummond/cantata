@@ -332,12 +332,27 @@ QMimeData * SqlLibraryModel::mimeData(const QModelIndexList &indexes) const
     return mimeData;
 }
 
+static bool containsParent(const QSet<QModelIndex> &set, const QModelIndex &idx)
+{
+    QModelIndex p=idx.parent();
+    while (p.isValid()) {
+        if (set.contains(p)) {
+            return true;
+        }
+        p=p.parent();
+    }
+    return false;
+}
+
 QList<Song> SqlLibraryModel::songs(const QModelIndexList &list, bool allowPlaylists) const
 {
     QList<Song> songList;
+    QSet<QModelIndex> set=list.toSet();
     populate(list);
     foreach (const QModelIndex &idx, list) {
-        songList+=songs(idx, allowPlaylists);
+        if (!containsParent(set, idx)) {
+            songList+=songs(idx, allowPlaylists);
+        }
     }
 
     return songList;

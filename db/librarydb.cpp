@@ -680,7 +680,7 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
         query.exec();
         DBUG << query.executedQuery();
         while (query.next()) {
-            songs.append(getSong(&(query.realQuery())));
+            songs.append(getSong(query.realQuery()));
         }
     }
 
@@ -705,6 +705,25 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
 }
 
 #ifndef CANTATA_WEB
+QList<Song> LibraryDb::songs(const QStringList &files, bool allowPlaylists) const
+{
+    QList<Song> songList;
+    foreach (const QString &f, files) {
+        SqlQuery query("*", *db);
+        query.addWhere("file", f);
+        query.exec();
+        DBUG << query.executedQuery();
+        if (query.next()) {
+            Song song=getSong(query.realQuery());
+            if (allowPlaylists || Song::Playlist!=song.type) {
+                songList.append(song);
+            }
+        }
+    }
+
+    return songList;
+}
+
 QList<LibraryDb::Album> LibraryDb::getAlbumsWithArtist(const QString &artist)
 {
     QList<LibraryDb::Album> albums;
@@ -827,30 +846,30 @@ bool LibraryDb::createTable(const QString &q)
     return true;
 }
 
-Song LibraryDb::getSong(const QSqlQuery *query)
+Song LibraryDb::getSong(const QSqlQuery &query)
 {
     Song s;
-    s.file=query->value(0).toString();
-    s.artist=query->value(1).toString();
-    s.albumartist=query->value(3).toString();
-    s.setComposer(query->value(5).toString());
-    s.album=query->value(6).toString();
-    QString val=query->value(7).toString();
+    s.file=query.value(0).toString();
+    s.artist=query.value(1).toString();
+    s.albumartist=query.value(3).toString();
+    s.setComposer(query.value(5).toString());
+    s.album=query.value(6).toString();
+    QString val=query.value(7).toString();
     if (!val.isEmpty() && val!=s.album) {
         s.setMbAlbumId(val);
     }
-    s.title=query->value(9).toString();
-    s.genre=query->value(10).toString();
-    s.track=query->value(11).toUInt();
-    s.disc=query->value(12).toUInt();
-    s.time=query->value(13).toUInt();
-    s.year=query->value(14).toUInt();
-    s.type=(Song::Type)query->value(15).toUInt();
-    val=query->value(4).toString();
+    s.title=query.value(9).toString();
+    s.genre=query.value(10).toString();
+    s.track=query.value(11).toUInt();
+    s.disc=query.value(12).toUInt();
+    s.time=query.value(13).toUInt();
+    s.year=query.value(14).toUInt();
+    s.type=(Song::Type)query.value(15).toUInt();
+    val=query.value(4).toString();
     if (!val.isEmpty() && val!=s.albumArtist()) {
         s.setArtistSort(val);
     }
-    val=query->value(8).toString();
+    val=query.value(8).toString();
     if (!val.isEmpty() && val!=s.album) {
         s.setAlbumSort(val);
     }

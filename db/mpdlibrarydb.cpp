@@ -114,7 +114,7 @@ Song MpdLibraryDb::getCoverSong(const QString &artistId, const QString &albumId)
         query->exec();
         DBUG << "coverquery" << query->executedQuery() << query->size();
         while (query->next()) {
-            return getSong(query);
+            return getSong(*query);
         }
     }
     return Song();

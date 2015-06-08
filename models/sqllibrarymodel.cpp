@@ -375,6 +375,11 @@ QList<Song> SqlLibraryModel::getAlbumTracks(const Song &song) const
     return QList<Song>();
 }
 
+QList<Song> SqlLibraryModel::songs(const QStringList &files, bool allowPlaylists) const
+{
+    return db->songs(files, allowPlaylists);
+}
+
 QList<LibraryDb::Album> SqlLibraryModel::getArtistAlbums(const QString &artist) const
 {
     return db->getAlbumsWithArtist(artist);

@@ -145,6 +145,32 @@ static void loadTranslation(const QString &prefix, const QString &path, const QS
 }
 #endif
 
+static void removeOldFiles(const QString &d, const QStringList &types)
+{
+    if (!d.isEmpty()) {
+        QDir dir(d);
+        if (dir.exists()) {
+            QFileInfoList files=dir.entryInfoList(types, QDir::Files|QDir::NoDotAndDotDot);
+            foreach (const QFileInfo &file, files) {
+                QFile::remove(file.absoluteFilePath());
+            }
+            QString dirName=dir.dirName();
+            if (!dirName.isEmpty()) {
+                dir.cdUp();
+                dir.rmdir(dirName);
+            }
+        }
+    }
+}
+
+static void removeOldFiles()
+{
+    // Remove Cantata 1.x XML cache files
+    removeOldFiles(Utils::cacheDir("library"), QStringList() << "*.xml" << "*.xml.gz");
+//    removeOldFiles(Utils::cacheDir("jamendo"), QStringList() << "*.xml.gz");
+//    removeOldFiles(Utils::cacheDir("magnatune"), QStringList() << "*.xml.gz");
+}
+
 enum Debug {
     Dbg_Mpd               = 0x00000001,
     Dbg_MpdParse          = 0x00000002,
@@ -294,6 +320,7 @@ int main(int argc, char *argv[])
 
     Application app;
     
+    removeOldFiles();
     installDebugMessageHandler();
 
     #else // ENABLE_KDE_SUPPORT
@@ -321,6 +348,7 @@ int main(int argc, char *argv[])
     QFile::setPermissions(s.fileName(), QFile::ReadOwner | QFile::WriteOwner);
     #endif
 
+    removeOldFiles();
     installDebugMessageHandler();
 
     // Translations

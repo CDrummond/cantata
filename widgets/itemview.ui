@@ -18,6 +18,9 @@
     <number>0</number>
    </property>
    <item>
+    <widget class="TitleWidget" name="title"/>
+   </item>
+   <item>
     <widget class="SearchWidget" name="searchWidget"/>
    </item>
    <item>
@@ -44,9 +47,6 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="FlatToolButton" name="backButton"/>
-       </item>
-       <item>
         <widget class="ListView" name="listView"/>
        </item>
       </layout>
@@ -57,9 +57,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>FlatToolButton</class>
-   <extends>QToolButton</extends>
-   <header>support/flattoolbutton.h</header>
+   <class>TitleWidget</class>
+   <extends>QWidget</extends>
+   <header>widgets/titlewidget.h</header>
   </customwidget>
   <customwidget>
    <class>PaddedSqueezedTextLabel</class>

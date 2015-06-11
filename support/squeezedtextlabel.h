@@ -45,7 +45,6 @@ public:
     const QString & fullText() const { return originalText; }
     void setTextElideMode(Qt::TextElideMode mode);
 
-protected:
     QSize minimumSizeHint() const {
         QSize sh = QLabel::minimumSizeHint();
         sh.setWidth(-1);

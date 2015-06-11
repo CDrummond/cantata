@@ -570,42 +570,8 @@ QString ItemView::modeStr(Mode m)
 static const char *constPageProp="page";
 static Action *backAction=0;
 
-// ALL this just becasue styles do not elide the text of toolbuttons!!!!! :-(
-class BackButtonProxyStyle : public QProxyStyle
-{
-public:
-    BackButtonProxyStyle()
-        : QProxyStyle()
-    {
-        setBaseStyle(qApp->style());
-    }
-    
-    void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
-    {
-        if (CC_ToolButton==control) {
-            if (const QStyleOptionToolButton *toolbutton = qstyleoption_cast<const QStyleOptionToolButton *>(option)) {
-                QStyleOptionToolButton copy=*toolbutton;
-                int iconWidth = copy.iconSize.isValid() ? copy.iconSize.width() : baseStyle()->pixelMetric(PM_ToolBarIconSize, option, widget);
-                int frameWidth=baseStyle()->pixelMetric(PM_DefaultFrameWidth, option, widget);
-                QFontMetrics fm(painter->fontMetrics());
-                copy.text=fm.elidedText(toolbutton->text, Qt::ElideRight, toolbutton->rect.width()-(iconWidth+8+(2*frameWidth)), QPalette::WindowText);
-                #ifdef Q_OS_MAC
-                if (!(option->state&State_Sunken || option->state&State_MouseOver)) {
-                    int fw=baseStyle()->pixelMetric(PM_DefaultFrameWidth,option, widget);
-                    copy.rect.adjust(fw, fw, -fw, -fw);
-                    baseStyle()->drawControl(CE_ToolButtonLabel, &copy, painter, widget);
-                } else
-                #endif
-                baseStyle()->drawComplexControl(control, &copy, painter, widget);
-                return;
-            }
-        }
-        baseStyle()->drawComplexControl(control, option, painter, widget);
-    }
-};
-
 const QLatin1String ItemView::constSearchActiveKey("searchActive");
-
+#include <QDebug>
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
     , searchTimer(0)
@@ -624,14 +590,8 @@ ItemView::ItemView(QWidget *p)
         backAction=ActionCollection::get()->createAction("itemview-goback", i18n("Go Back"), Icon("go-previous"));
         backAction->setShortcut(Qt::AltModifier+(Qt::LeftToRight==layoutDirection() ? Qt::Key_Left : Qt::Key_Right));
     }
-    backButton->setDefaultAction(backAction);
-    backButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    Icon::init(backButton);
-    backButton->setAutoRaise(true);
-    backButton->setFocusPolicy(Qt::NoFocus);
-    backButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    static BackButtonProxyStyle *backButtonStyle=new BackButtonProxyStyle();
-    backButton->setStyle(backButtonStyle);
+    title->addAction(backAction);
+    title->setVisible(false);
     Action::updateToolTip(backAction);
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
@@ -759,6 +719,7 @@ void ItemView::setMode(Mode m)
     }
 
     searchWidget->setText(QString());
+    title->setVisible(false);
     QIcon oldBgndIcon=bgndIcon;
     if (!bgndIcon.isNull()) {
         setBackgroundImage(QIcon());
@@ -869,12 +830,12 @@ void ItemView::goToTop()
         static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
     }
     listView->setRootIndex(QModelIndex());
+    setTitle();
     emit rootIndexSet(QModelIndex());
 }
 
 void ItemView::setLevel(int l, bool haveChildren)
 {
-    int prev=currentLevel;
     currentLevel=l;
     if (isVisible()) {
         backAction->setEnabled(0!=currentLevel);
@@ -906,16 +867,8 @@ void ItemView::setLevel(int l, bool haveChildren)
         view()->selectionModel()->clearSelection();
     }
 
-    backButton->setVisible(currentLevel>0);
-
-    if (currentLevel>0) {
-        if (prev>currentLevel) {
-            currentText=prevText[currentLevel];
-            backButton->setText(prevText[currentLevel]);
-        } else {
-            prevText.insert(prev, backButton->text());
-        }
-    }
+    title->setVisible(currentLevel>0);
+    setTitle();
 }
 
 QAbstractItemView * ItemView::view() const
@@ -1086,6 +1039,7 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
             if (scrollTo) {
                 listView->scrollTo(idx, QAbstractItemView::PositionAtTop);
             }
+            setTitle();
         }
     }
 
@@ -1244,10 +1198,6 @@ void ItemView::showEvent(QShowEvent *ev)
 {
     QWidget::showEvent(ev);
     backAction->setEnabled(0!=currentLevel);
-    if (0!=currentLevel) {
-        // For some reason this gets overridden with the action text!
-        backButton->setText(currentText);
-    }
 }
 
 void ItemView::showSpinner(bool v)
@@ -1300,6 +1250,7 @@ void ItemView::backActivated()
     }
     listView->setRootIndex(listView->rootIndex().parent());
     emit rootIndexSet(listView->rootIndex().parent());
+    setTitle();
 
     if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
         QModelIndex idx=static_cast<QSortFilterProxyModel *>(listView->model())->mapFromSource(prevTopIndex);
@@ -1375,13 +1326,9 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
             prevTopIndex=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(prevTopIndex);
         }
         setLevel(currentLevel+1, itemModel->canFetchMore(fistChild) || fistChild.child(0, 0).isValid());
-        QString text=index.data(Cantata::Role_TitleText).toString();
-        if (text.isEmpty()) {
-            text=index.data(Qt::DisplayRole).toString();
-        }
-        currentText=text;
-        backButton->setText(text);
         listView->setRootIndex(index);
+        setTitle();
+
         if (dynamic_cast<ProxyModel *>(itemModel)) {
             static_cast<ProxyModel *>(itemModel)->setRootIndex(index);
         }
@@ -1446,4 +1393,13 @@ void ItemView::collapseToLevel()
     if (usingTreeView() || Mode_GroupedTree==mode || Mode_Table==mode) {
         static_cast<TreeView *>(view())->collapseToLevel(searchResetLevel, searchIndex);
     }
+}
+
+void ItemView::setTitle()
+{
+    QModelIndex index=view()->rootIndex();
+    title->update(view()->model()->data(index, Cantata::Role_CoverSong).value<Song>(),
+                  view()->model()->data(index, Qt::DecorationRole).value<QIcon>(),
+                  view()->model()->data(index, Cantata::Role_TitleText).toString(),
+                  view()->model()->data(index, Cantata::Role_SubText).toString());
 }

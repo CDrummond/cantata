@@ -253,7 +253,6 @@ Q_SIGNALS:
     void coverUpdated(const Song &song, const QImage &img, const QString &file);
     void artistImage(const Song &song, const QImage &img, const QString &file);
     void composerImage(const Song &song, const QImage &img, const QString &file);
-    void coverRetrieved(const Song &song);
 
 private Q_SLOTS:
     void located(const QList<LocatedCover> &covers);

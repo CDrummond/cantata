@@ -179,14 +179,13 @@ private Q_SLOTS:
 private:
     void collapseToLevel();
     QAction * getAction(const QModelIndex &index);
+    void setTitle();
 
 private:
     QTimer *searchTimer;
     QAbstractItemModel *itemModel;
     int currentLevel;
     Mode mode;
-    QString currentText;
-    QMap<int, QString> prevText;
     QModelIndex prevTopIndex;
     QSize iconGridSize;
     QSize listGridSize;

@@ -74,7 +74,6 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
                     song.genre=item->getParent()->getId();
                 }
                 item->setSong(song);
-                qWarning() << item->getText() << "SET COVER SONG" << song.file << song.isArtistImageRequest() << song.isComposerImageRequest();
             }
             v.setValue<Song>(item->getSong());
             break;
@@ -94,7 +93,7 @@ void MpdLibraryModel::readSettings()
 
 void MpdLibraryModel::cover(const Song &song, const QImage &img, const QString &file)
 {
-    if (file.isEmpty() || img.isNull()) {
+    if (file.isEmpty() || img.isNull() || song.isFromOnlineService()) {
         return;
     }
     switch(topLevel()) {
@@ -146,8 +145,6 @@ void MpdLibraryModel::coverUpdated(const Song &song, const QImage &img, const QS
 
 void MpdLibraryModel::artistImage(const Song &song, const QImage &img, const QString &file)
 {
-    qWarning() << song.artistOrComposer() << file;
-
     if (file.isEmpty() || img.isNull() || T_Album==topLevel()) {
         return;
     }
@@ -165,10 +162,8 @@ void MpdLibraryModel::artistImage(const Song &song, const QImage &img, const QSt
     }
     case T_Artist: {
         const Item *artist=root ? root->getChild(song.artistOrComposer()) : 0;
-        qWarning() << "A" << (void *)artist;
         if (artist) {
             QModelIndex idx=index(artist->getRow(), 0, QModelIndex());
-            qWarning() << idx.isValid() << artist->getRow();
             emit dataChanged(idx, idx);
         }
         break;

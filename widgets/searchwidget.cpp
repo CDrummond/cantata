@@ -57,7 +57,8 @@ SearchWidget::SearchWidget(QWidget *p)
      , widgetIsActive(false)
 {
     QGridLayout *l=new QGridLayout(this);
-    l->setMargin(0);
+    int spacing=Utils::layoutSpacing(this);
+    l->setContentsMargins(0, spacing, 0, spacing);
     #ifdef Q_OS_MAC
     l->setSpacing(2);
     bool closeOnLeft=true;
@@ -116,6 +117,7 @@ void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categori
         cat=new SelectorLabel(this);
         QGridLayout *l=static_cast<QGridLayout *>(layout());
         l->addWidget(cat, 1, 0);
+        l->setSpacing(Utils::layoutSpacing(this));
         connect(cat, SIGNAL(activated(int)), SIGNAL(returnPressed()));
         setTabOrder(cat, edit);
         cat->setFixedHeight(edit->height());

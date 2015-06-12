@@ -72,7 +72,7 @@ TitleWidget::TitleWidget(QWidget *p)
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
-    layout->setMargin(1);
+    layout->setContentsMargins(1, spacing, 1, spacing);
     mainText->setAlignment(Qt::AlignBottom);
     subText->setAlignment(Qt::AlignTop);
     image->setAlignment(Qt::AlignCenter);

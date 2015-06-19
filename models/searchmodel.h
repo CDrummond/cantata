@@ -85,6 +85,7 @@ Q_SIGNALS:
     void statsUpdated(int songs, quint32 time);
 
 protected:
+    virtual Song & fixPath(Song &s) const { return s; }
     void results(const QList<Song> &songs);
     const Song * toSong(const QModelIndex &index) const { return index.isValid() ? static_cast<const Song *>(index.internalPointer()) : 0; }
 

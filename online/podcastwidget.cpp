@@ -22,7 +22,10 @@
  */
 
 #include "podcastwidget.h"
+#include "podcastsearchdialog.h"
+#include "podcastsettingsdialog.h"
 #include "widgets/itemview.h"
+#include "widgets/toolbutton.h"
 #include "support/action.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
@@ -33,9 +36,14 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     , srv(s)
 {
     view->setModel(s);
-    init();
+    subscribeAction = new Action(Icon("document-new"), i18n("Add Subscription"), this);
+
+    ToolButton *addSub=new ToolButton(this);
+    addSub->setDefaultAction(subscribeAction);
+    init(All, QList<ToolButton *>(), QList<ToolButton *>() <<addSub);
     view->alwaysShowHeader();
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
+    connect(subscribeAction, SIGNAL(triggered()), this, SLOT(subscribe()));
 }
 
 PodcastWidget::~PodcastWidget()
@@ -67,3 +75,51 @@ void PodcastWidget::headerClicked(int level)
     }
 }
 
+void PodcastWidget::subscribe()
+{
+    if (0==PodcastSearchDialog::instanceCount()) {
+        PodcastSearchDialog *dlg=new PodcastSearchDialog(srv, this);
+        dlg->show();
+    }
+
+}
+
+void PodcastWidget::doSearch()
+{
+
+}
+
+void PodcastWidget::refresh()
+{
+    QModelIndexList sel=view->selectedIndexes(false);
+    QModelIndexList selected;
+    foreach (const QModelIndex &i, sel) {
+        if (!i.parent().isValid()) {
+            selected+=i;
+        }
+    }
+
+    switch (selected.isEmpty() || selected.count()!=srv->podcastCount()
+                ? MessageBox::questionYesNoCancel(this, i18n("Refresh all subscriptions?"), i18n("Refresh"))
+                : MessageBox::questionYesNoCancel(this, i18n("Refresh all subscriptions, or only those selected?"), i18n("Refresh"), i18n("All"), i18n("Selected"))) {
+    case MessageBox::Yes:
+        srv->refreshAll();
+        break;
+    case MessageBox::No:
+        srv->refresh(selected);
+        break;
+    default:
+        break;
+    }
+}
+
+void PodcastWidget::configure()
+{
+    PodcastSettingsDialog dlg(this);
+    if (QDialog::Accepted==dlg.exec()) {
+        int changes=dlg.changes();
+        if (changes&PodcastSettingsDialog::RssUpdate) {
+            srv->startRssUpdateTimer();
+        }
+    }
+}

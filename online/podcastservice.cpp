@@ -759,6 +759,23 @@ void PodcastService::unSubscribe(Podcast *podcast)
     }
 }
 
+void PodcastService::refresh(const QModelIndexList &list)
+{
+    foreach (const QModelIndex &idx, list) {
+        Item *itm=static_cast<Item *>(idx.internalPointer());
+        if (itm->isPodcast()) {
+            refreshSubscription(static_cast<Podcast *>(itm));
+        }
+    }
+}
+
+void PodcastService::refreshAll()
+{
+    foreach (Podcast *pod, podcasts) {
+        refreshSubscription(pod);
+    }
+}
+
 void PodcastService::refreshSubscription(Podcast *item)
 {
     if (item) {

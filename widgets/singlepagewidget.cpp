@@ -59,30 +59,32 @@ void SinglePageWidget::init(int flags, const QList<ToolButton *> &leftXtra, cons
         return;
     }
     btnFlags=flags;
-    QList<ToolButton *> left=leftXtra;
-    QList<ToolButton *> right;
+    QList<ToolButton *> left;
+    QList<ToolButton *> right=rightXtra;
 
-    if (flags&AddToPlayQueue) {
-        ToolButton *replacePlayQueue=new ToolButton(this);
-        replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
-        right.prepend(replacePlayQueue);
-        view->addAction(StdActions::self()->replacePlayQueueAction);
+    if (!right.isEmpty()) {
+        right << 0;
     }
     if (flags&AddToPlayQueue) {
         ToolButton *addToPlayQueue=new ToolButton(this);
         addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
-        right.prepend(addToPlayQueue);
+        right.append(addToPlayQueue);
         view->addAction(StdActions::self()->addToPlayQueueAction);
     }
 
-    right+=rightXtra;
+    if (flags&ReplacePlayQueue) {
+        ToolButton *replacePlayQueue=new ToolButton(this);
+        replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
+        right.append(replacePlayQueue);
+        view->addAction(StdActions::self()->replacePlayQueueAction);
+    }
 
     if (flags&Configure) {
         ToolButton *configureButon=new ToolButton(this);
         configureAction=new Action(Icons::self()->configureIcon, i18n("Configure"), this);
         configureButon->setDefaultAction(configureAction);
         connect(configureAction, SIGNAL(triggered()), this, SLOT(configure()));
-        right.prepend(configureButon);
+        left.prepend(configureButon);
     }
 
     if (flags&Refresh) {
@@ -93,6 +95,8 @@ void SinglePageWidget::init(int flags, const QList<ToolButton *> &leftXtra, cons
         left.prepend(refreshButton);
     }
 
+    left << leftXtra;
+
     if (flags&AddToPlayQueue) {
         view->addAction(StdActions::self()->addWithPriorityAction);
     }
@@ -102,16 +106,21 @@ void SinglePageWidget::init(int flags, const QList<ToolButton *> &leftXtra, cons
     if (!left.isEmpty()) {
         QHBoxLayout *ll=new QHBoxLayout();
         foreach (ToolButton *b, left) {
-            ll->addWidget(b);
+            if (!b) {
+                ll->addWidget(new SpacerWidget(this));
+            } else {
+                ll->addWidget(b);
+            }
         }
         static_cast<QGridLayout *>(layout())->addItem(ll, 1, 0, 1, 1);
     }
     if (!right.isEmpty()) {
         QHBoxLayout *rl=new QHBoxLayout();
         foreach (ToolButton *b, right) {
-            rl->addWidget(b);
-            if (flags&Configure && right.size()>1 && b->defaultAction()==configureAction) {
+            if (!b) {
                 rl->addWidget(new SpacerWidget(this));
+            } else {
+                rl->addWidget(b);
             }
         }
         static_cast<QGridLayout *>(layout())->addItem(rl, 1, 4, 1, 1);

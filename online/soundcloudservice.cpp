@@ -55,7 +55,17 @@ QVariant SoundCloudService::data(const QModelIndex &index, int role) const
             return descr();
         case Qt::DecorationRole:
             return icon();
+        default:
+            break;
         }
+    }
+    switch (role) {
+    case Cantata::Role_ListImage:
+        return false;
+    case Cantata::Role_CoverSong:
+        return QVariant();
+    default:
+        break;
     }
     return SearchModel::data(index, role);
 }

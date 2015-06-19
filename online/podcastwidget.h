@@ -28,6 +28,8 @@
 #include "widgets/singlepagewidget.h"
 #include "podcastservice.h"
 
+class Action;
+
 class PodcastWidget : public SinglePageWidget
 {
     Q_OBJECT
@@ -39,9 +41,16 @@ public:
 
 private Q_SLOTS:
     void headerClicked(int level);
+    void subscribe();
+
+private:
+    void doSearch();
+    void refresh();
+    void configure();
 
 private:
     PodcastService *srv;
+    Action *subscribeAction;
 };
 
 #endif

@@ -109,10 +109,13 @@ public:
     QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const;
     QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists=false) const;
 
+    int podcastCount() const { return podcasts.count(); }
     void clear();
     void configure(QWidget *p);
     bool subscribedToUrl(const QUrl &url) { return 0!=getPodcast(url); }
     void unSubscribe(Podcast *podcast);
+    void refresh(const QModelIndexList &list);
+    void refreshAll();
     void refreshSubscription(Podcast *item);
     bool processingUrl(const QUrl &url) const;
     void addUrl(const QUrl &url, bool isNew=true);
@@ -129,15 +132,15 @@ public:
     void setPodcastsAsListened(Podcast *pod, const QList<Episode *> &episodes, bool listened);
     void cancelAllJobs() { cancelAll(); cancelAllDownloads(); }
     Podcast * getPodcast(const QUrl &url) const;
+    void cancelAll();
+    void startRssUpdateTimer();
+    void stopRssUpdateTimer();
 
 Q_SIGNALS:
     void error(const QString &msg);
     void newError(const QString &msg);
 
 private:
-    void cancelAll();
-    void startRssUpdateTimer();
-    void stopRssUpdateTimer();
     bool downloadingEpisode(const QUrl &url) const;
     void downloadEpisode(const Podcast *podcast, const QUrl &episode);
     void cancelDownloads(const QList<Episode *> episodes);

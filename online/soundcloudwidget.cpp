@@ -33,7 +33,7 @@ SoundCloudWidget::SoundCloudWidget(SoundCloudService *s, QWidget *p)
     , srv(s)
 {
     view->setModel(s);
-    init();
+    init(ReplacePlayQueue|AddToPlayQueue);
     view->alwaysShowHeader();
     view->setPermanentSearch();
     view->setMode(ItemView::Mode_List);

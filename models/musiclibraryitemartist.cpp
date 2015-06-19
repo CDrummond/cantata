@@ -36,10 +36,6 @@
 #include "devices/device.h"
 #include "support/utils.h"
 #endif
-#ifdef ENABLE_ONLINE_SERVICES
-#include "online/onlineservice.h"
-#include "onlineservicesmodel.h"
-#endif
 
 bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b)
 {

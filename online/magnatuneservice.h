@@ -24,26 +24,24 @@
 #ifndef MAGNATUNE_SERVICE_H
 #define MAGNATUNE_SERVICE_H
 
-#include "onlineservice.h"
-#include <QLatin1String>
+#include "models/sqllibrarymodel.h"
+#include "onlinedbservice.h"
+#include <QMap>
 
-class MagnatuneMusicLoader : public OnlineMusicLoader
+class MagnatuneXmlParser : public OnlineXmlParser
 {
 public:
-    MagnatuneMusicLoader(const QUrl &src);
-    bool parse(QXmlStreamReader &xml);
-
+    int parse(QXmlStreamReader &xml);
 private:
-    void parseSong(QXmlStreamReader &xml);
+    Song parseSong(QXmlStreamReader &xml);
+private:
+    QSet<QString> artists;
+    QSet<QString> albumUrls;
 };
 
-class MagnatuneService : public OnlineService
+class MagnatuneService : public OnlineDbService
 {
-    Q_OBJECT
-
 public:
-    static const QLatin1String constName;
-
     enum MemberShip {
         MB_None,
         MB_Streaming,
@@ -65,14 +63,17 @@ public:
     static QString membershipStr(MemberShip f, bool trans=false);
     static QString downloadTypeStr(DownloadType f, bool trans=false);
 
-    MagnatuneService(MusicModel *m) : OnlineService(m, constName), membership(MB_None), download(DL_Mp3) { }
-
-    Song fixPath(const Song &orig, bool) const;
-    void createLoader();
-    void loadConfig();
-    void saveConfig();
+    MagnatuneService(QObject *p);
+    QVariant data(const QModelIndex &index, int role) const;
+    QString name() const;
+    QString title() const;
+    QString descr() const;
+    OnlineXmlParser * createParser();
+    QUrl listingUrl() const;
     void configure(QWidget *p);
-    // bool canDownload() const { return MB_Download==membership; } // TODO: Magnatune downloads!
+    int averageSize() const { return 10; }
+private:
+    Song & fixPath(Song &s) const;
 
 private:
     MemberShip membership;

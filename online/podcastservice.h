@@ -25,7 +25,8 @@
 #define PODCAST_SERVICE_H
 
 #include "onlineservice.h"
-#include "network/networkaccessmanager.h"
+#include "models/actionmodel.h"
+#include "mpd-interface/song.h"
 #include <QLatin1String>
 #include <QList>
 #include <QDateTime>
@@ -33,33 +34,86 @@
 #include <QUrl>
 
 class QTimer;
-class MusicLibraryItemPodcast;
-class MusicLibraryItemPodcastEpisode;
+class NetworkJob;
 
-class PodcastService : public OnlineService
+class PodcastService : public ActionModel, public OnlineService
 {
     Q_OBJECT
 
 public:
-    static const QString constName;
+    struct Item
+    {
+        Item(const QString &n=QString(), const QUrl &u=QUrl()) : name(n), url(u) { }
+        virtual bool isPodcast() const { return false; }
+        QString name;
+        QUrl url;
+    };
 
-    PodcastService(MusicModel *m);
+    struct Podcast;
+    struct Episode : public Item
+    {
+        enum DownloadState {
+            NotDownloading = -1,
+            QueuedForDownload = -2
+        };
+
+        Episode(const QString &d=QString(), const QString &n=QString(), const QUrl &u=QUrl(), Podcast *p=0)
+            : Item(n, u), played(false), duration(0), date(d), parent(p), downloadProg(NotDownloading) { }
+        virtual ~Episode() { }
+        Song toSong() const;
+        bool played;
+        int duration;
+        QString date;
+        Podcast *parent;
+        QString localFile;
+        int downloadProg;
+    };
+
+    struct Podcast : public Item
+    {
+        Podcast(const QString &f=QString());
+        virtual ~Podcast() { qDeleteAll(episodes); }
+        virtual bool isPodcast() const { return true; }
+        bool load();
+        bool save() const;
+        void add(Episode *ep);
+        void add(QList<Episode *> &eps);
+        Episode * getEpisode(const QUrl &epUrl) const;
+        void setUnplayedCount();
+        void removeFiles();
+        const Song & coverSong();
+
+        QList<Episode *> episodes;
+        int unplayedCount;
+        QString fileName;
+        QString imageFile;
+        QUrl imageUrl;
+        Song song;
+    };
+
+    PodcastService(QObject *p);
     ~PodcastService() { cancelAll(); }
 
-    Song fixPath(const Song &orig, bool) const;
-    void loadConfig() { }
-    void saveConfig() { }
-    void createLoader() { }
-    bool canConfigure() const { return true; }
-    bool canSubscribe() const { return true; }
-    bool canLoad() const { return false; }
-    bool isPodcasts() const { return true; }
+    Song & fixPath(Song &song) const;
+    QString name() const;
+    QString title() const;
+    QString descr() const;
+    int rowCount(const QModelIndex &index = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return 1; }
+    bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex &index) const;
+    QModelIndex index(int row, int col, const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &, int) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QMimeData * mimeData(const QModelIndexList &indexes) const;
+    QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const;
+    QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists=false) const;
+
     void clear();
-    const QString & id() const { return constName; }
     void configure(QWidget *p);
     bool subscribedToUrl(const QUrl &url) { return 0!=getPodcast(url); }
-    void unSubscribe(MusicLibraryItem *item);
-    void refreshSubscription(MusicLibraryItem *item);
+    void unSubscribe(Podcast *podcast);
+    void refreshSubscription(Podcast *item);
     bool processingUrl(const QUrl &url) const;
     void addUrl(const QUrl &url, bool isNew=true);
     static bool isPodcastFile(const QString &file);
@@ -70,21 +124,23 @@ public:
 
     bool isDownloading() const { return 0!=downloadJob; }
     void cancelAllDownloads();
-    void downloadPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
-    void deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
-    void setPodcastsAsListened(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes, bool listened);
-
+    void downloadPodcasts(Podcast *pod, const QList<Episode *> &episodes);
+    void deleteDownloadedPodcasts(Podcast *pod, const QList<Episode *> &episodes);
+    void setPodcastsAsListened(Podcast *pod, const QList<Episode *> &episodes, bool listened);
     void cancelAllJobs() { cancelAll(); cancelAllDownloads(); }
-    MusicLibraryItemPodcast * getPodcast(const QUrl &url) const;
+    Podcast * getPodcast(const QUrl &url) const;
+
+Q_SIGNALS:
+    void error(const QString &msg);
+    void newError(const QString &msg);
 
 private:
     void cancelAll();
-    MusicLibraryItemPodcastEpisode * getEpisode(const MusicLibraryItemPodcast *podcast, const QUrl &episode);
     void startRssUpdateTimer();
     void stopRssUpdateTimer();
     bool downloadingEpisode(const QUrl &url) const;
-    void downloadEpisode(const MusicLibraryItemPodcast *podcast, const QUrl &episode);
-    void cancelDownloads(const QList<MusicLibraryItemPodcastEpisode *> episodes);
+    void downloadEpisode(const Podcast *podcast, const QUrl &episode);
+    void cancelDownloads(const QList<Episode *> episodes);
     void cancelDownload(const QUrl &url);
     void cancelDownload();
     void doNextDownload();
@@ -101,15 +157,17 @@ private Q_SLOTS:
     void downloadPercent(int pc);
 
 private:
-    struct DownloadEntry {
+    struct DownloadEntry
+    {
         DownloadEntry(const QUrl &u=QUrl(), const QUrl &r=QUrl(), const QString &d=QString()) : url(u), rssUrl(r), dest(d) { }
         bool operator==(const DownloadEntry &o) const { return o.url==url; }
         QUrl url;
         QUrl rssUrl;
         QString dest;
-        MusicLibraryItemPodcastEpisode *ep;
+        Episode *ep;
     };
 
+    QList<Podcast *> podcasts;
     QList<NetworkJob *> rssJobs;
     NetworkJob * downloadJob;
     QList<DownloadEntry> toDownload;

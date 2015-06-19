@@ -183,7 +183,7 @@ void CurrentCover::update(const Song &s)
         current=s;
         if ((!s.albumArtist().isEmpty() && !s.album.isEmpty() && !current.isStandardStream())
             #ifdef ENABLE_ONLINE_SERVICES
-            || OnlineService::showLogoAsCover(s)
+            || OnlineService::showLogoAsCover(s.onlineService())
             #endif
             ) {
             Covers::Image cImg=Covers::self()->requestImage(s, true);

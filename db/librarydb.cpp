@@ -858,6 +858,11 @@ void LibraryDb::updateFinished()
     emit libraryUpdated();
 }
 
+void LibraryDb::abortUpdate()
+{
+    db->rollback();
+}
+
 bool LibraryDb::createTable(const QString &q)
 {
     QSqlQuery query(*db);

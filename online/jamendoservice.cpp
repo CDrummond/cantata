@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2011-2014 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2015 Craig Drummond <craig.p.drummond@gmail.com>
  *
  * ----
  *
@@ -23,13 +23,13 @@
 
 #include "jamendoservice.h"
 #include "jamendosettingsdialog.h"
-#include "models/musiclibraryitemartist.h"
-#include "models/musiclibraryitemalbum.h"
-#include "models/musiclibraryitemsong.h"
-#include "mpd-interface/song.h"
+#include "db/onlinedb.h"
+#include "models/roles.h"
+#include "support/localize.h"
+#include "support/icon.h"
 #include "support/configuration.h"
-#include "config.h"
 #include <QXmlStreamReader>
+#include <QUrl>
 
 #ifdef TAGLIB_FOUND
 
@@ -191,46 +191,37 @@ static QString id3Genre(int id)
 }
 #endif
 
-JamendoMusicLoader::JamendoMusicLoader(const QUrl &src)
-    : OnlineMusicLoader(src)
-{
-}
+static const QLatin1String constStreamUrl("http://api.jamendo.com/get2/stream/track/redirect/?id=%1&streamencoding=");
+static const QLatin1String constListingUrl("http://imgjam.com/data/dbdump_artistalbumtrack.xml.gz");
+static const QLatin1String constName("jamendo");
 
-bool JamendoMusicLoader::parse(QXmlStreamReader &xml)
+int JamendoXmlParser::parse(QXmlStreamReader &xml)
 {
+    int artistCount=0;
     while (!xml.atEnd()) {
-        if (wasStopped()) {
-            delete library;
-            library=0;
-            return false;
-        }
         xml.readNext();
         if (QXmlStreamReader::StartElement==xml.tokenType() && QLatin1String("artist")==xml.name()) {
             parseArtist(xml);
+            artistCount++;
         }
     }
-    return true;
+    return artistCount;
 }
 
-void JamendoMusicLoader::parseArtist(QXmlStreamReader &xml)
+void JamendoXmlParser::parseArtist(QXmlStreamReader &xml)
 {
-    MusicLibraryItemArtist *artist=0;
+    Song song;
 
     while (!xml.atEnd()) {
-        if (wasStopped()) {
-            return;
-        }
         xml.readNext();
 
         if (QXmlStreamReader::StartElement==xml.tokenType()) {
             QStringRef name = xml.name();
 
             if (QLatin1String("name")==name) {
-                Song s;
-                s.artist=xml.readElementText().trimmed();
-                artist=library->artist(s, true);
-            } else if (artist && QLatin1String("album")==name) {
-                parseAlbum(artist, xml);
+                song.artist=xml.readElementText().trimmed();
+            } else if (QLatin1String("album")==name) {
+                parseAlbum(song, xml);
             } /*else if (artist && QLatin1String("image")==name) {
                 artist->setImageUrl(xml.readElementText().trimmed());
             }*/
@@ -240,108 +231,68 @@ void JamendoMusicLoader::parseArtist(QXmlStreamReader &xml)
     }
 }
 
-void JamendoMusicLoader::parseAlbum(MusicLibraryItemArtist *artist, QXmlStreamReader &xml)
+void JamendoXmlParser::parseAlbum(Song &song, QXmlStreamReader &xml)
 {
-    MusicLibraryItemAlbum *album=0;
     QString id;
-    int genre=0;
+    song.track=0;
+    song.album=QString();
+    QList<Song> *songList=new QList<Song>();
 
     while (!xml.atEnd()) {
-        if (wasStopped()) {
-            return;
-        }
         xml.readNext();
 
         if (QXmlStreamReader::StartElement==xml.tokenType()) {
             QStringRef name = xml.name();
 
             if (QLatin1String("name")==name) {
-                Song s;
-                s.artist=artist->data();
-                s.album=xml.readElementText().trimmed();
-                album=artist->album(s, true);
-            } else if (album && QLatin1String("track")==name) {
-                parseSong(artist, album, genre, xml);
+                song.album=xml.readElementText().trimmed();
+            } else if (QLatin1String("track")==name) {
+                song.track++;
+                parseSong(song, xml);
+                songList->append(song);
             } else if (QLatin1String("id")==name) {
                 id=xml.readElementText().trimmed();
-            } else if (QLatin1String("id3genre")==name) {
-                genre=xml.readElementText().toInt();
             }
         } else if (xml.isEndElement() && QLatin1String("album")==xml.name()) {
             break;
         }
     }
-    if (album && !id.isEmpty()) {
-        album->setImageUrl(id);
+
+    if (!id.isEmpty()) {
+        emit coverUrl(song.artistOrComposer(), song.album, id);
     }
+    emit songs(songList);
 }
 
-void JamendoMusicLoader::parseSong(MusicLibraryItemArtist *artist, MusicLibraryItemAlbum *album, int genre, QXmlStreamReader &xml)
+void JamendoXmlParser::parseSong(Song &song, QXmlStreamReader &xml)
 {
-    Song s;
-    s.artist=album->parentItem()->data();
-    s.album=album->data();
-
-    if (0!=genre) {
-        s.genre=id3Genre(genre);
-    }
+    song.time=0;
+    song.title=QString();
+    song.genre=QString();
 
     while (!xml.atEnd()) {
-        if (wasStopped()) {
-            return;
-        }
         xml.readNext();
 
         if (QXmlStreamReader::StartElement==xml.tokenType()) {
             QStringRef name = xml.name();
 
             if (QLatin1String("name")==name) {
-                s.title=xml.readElementText().trimmed();
+                song.title=xml.readElementText().trimmed();
             } else if (QLatin1String("duration")==name) {
-                s.time=xml.readElementText().toFloat();
+                song.time=xml.readElementText().toFloat();
             } else if (QLatin1String("id3genre")==name) {
                 int g=xml.readElementText().toInt();
-                if (0!=g && genre!=g) {
-                    s.addGenre(id3Genre(g));
+                if (0!=g) {
+                    song.genre=id3Genre(g);
                 }
             } else if (QLatin1String("id")==name) {
-                s.file=xml.readElementText().trimmed();
+                song.file=xml.readElementText().trimmed();
             }
         } else if (xml.isEndElement() && QLatin1String("track")==xml.name()) {
             break;
         }
     }
-
-    if (!s.title.isEmpty()) {
-        s.fillEmptyFields();
-        s.track=album->childItems().count()+1;
-        album->append(new MusicLibraryItemSong(s, album));
-    }
-}
-
-const QLatin1String JamendoService::constName("Jamendo");
-static const QLatin1String constStreamUrl("http://api.jamendo.com/get2/stream/track/redirect/?id=%1&streamencoding=");
-
-QString JamendoService::imageUrl(const QString &id)
-{
-    return QString("http://api.jamendo.com/get2/image/album/redirect/?id=%1&imagesize=300").arg(id);
-}
-
-void JamendoService::createLoader()
-{
-    loader=new JamendoMusicLoader(QUrl("http://imgjam.com/data/dbdump_artistalbumtrack.xml.gz"));
-}
-
-Song JamendoService::fixPath(const Song &orig, bool) const
-{
-    Song s(orig);
-    s.file=constStreamUrl;
-    s.file.replace("id=%1", "id="+orig.file);
-    s.file+=FMT_MP3==format ? QLatin1String("mp31") : QLatin1String("ogg2");
-    s.genre=FMT_MP3==format ? QLatin1String("mp3") : QLatin1String("ogg");
-    s.type=Song::OnlineSvrTrack;
-    s.setIsFromOnlineService(constName);
-    return encode(s);
+    song.fillEmptyFields();
 }
 
 static const QLatin1String constMp3Format("mp3");
@@ -357,16 +308,82 @@ static JamendoService::Format toFormat(const QString &f)
     return f=="ogg" ? JamendoService::FMT_Ogg : JamendoService::FMT_MP3;
 }
 
-void JamendoService::loadConfig()
+JamendoService::JamendoService(QObject *p)
+    : OnlineDbService(new OnlineDb(constName, p), p)
 {
+    tl=T_Genre;
+    icn.addFile(":"+constName);
+    useCovers(name());
     Configuration cfg(constName);
     format=toFormat(cfg.get("format", formatStr(format)));
 }
 
-void JamendoService::saveConfig()
+QVariant JamendoService::data(const QModelIndex &index, int role) const
 {
-    Configuration cfg(constName);
-    cfg.set("format", formatStr(format));
+    if (index.isValid()) {
+        switch (role) {
+        case Cantata::Role_CoverSong: {
+            QVariant v;
+            Item *item = static_cast<Item *>(index.internalPointer());
+            switch (item->getType()) {
+            case T_Album:
+                if (item->getSong().isEmpty()) {
+                    Song song;
+                    song.artist=item->getParent()->getId();
+                    song.album=item->getId();
+                    song.setIsFromOnlineService(constName);
+                    song.file=constName; // Just so that isEmpty() is false!
+                    QString id=static_cast<OnlineDb *>(db)->getCoverUrl(/*T_Album==topLevel() ? static_cast<AlbumItem *>(item)->getArtistId() : */item->getParent()->getId(), item->getId());
+                    song.setExtraField(Song::OnlineImageUrl, QString("http://api.jamendo.com/get2/image/album/redirect/?id=%1&imagesize=300").arg(id));
+                    item->setSong(song);
+                }
+                v.setValue<Song>(item->getSong());
+                break;
+            case T_Artist:
+                break;
+            default:
+                break;
+            }
+            return v;
+        }
+        }
+    }
+    return OnlineDbService::data(index, role);
+}
+
+QString JamendoService::name() const
+{
+    return constName;
+}
+
+QString JamendoService::title() const
+{
+    return QLatin1String("Jamendo");
+}
+
+QString JamendoService::descr() const
+{
+    return i18n("The world's largest digital service for free music");
+}
+
+OnlineXmlParser * JamendoService::createParser()
+{
+    return new JamendoXmlParser();
+}
+
+QUrl JamendoService::listingUrl() const
+{
+    return QUrl(constListingUrl);
+}
+
+Song & JamendoService::fixPath(Song &s) const
+{
+    s.file=QString(constStreamUrl).replace("id=%1", "id="+s.file);
+    s.file+=FMT_MP3==format ? QLatin1String("mp31") : QLatin1String("ogg2");
+    s.genre=FMT_MP3==format ? QLatin1String("mp3") : QLatin1String("ogg");
+    s.type=Song::OnlineSvrTrack;
+    s.setIsFromOnlineService(name());
+    return encode(s);
 }
 
 void JamendoService::configure(QWidget *p)
@@ -376,7 +393,8 @@ void JamendoService::configure(QWidget *p)
         Format f=0==dlg.format() ? FMT_MP3 : FMT_Ogg;
         if (f!=format) {
             format=f;
-            saveConfig();
+            Configuration cfg(constName);
+            cfg.set("format", formatStr(format));
         }
     }
 }

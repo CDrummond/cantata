@@ -65,7 +65,6 @@
 #endif
 #ifdef ENABLE_ONLINE_SERVICES
 #include "online/onlineservicespage.h"
-#include "models/onlineservicesmodel.h"
 #endif
 #include "http/httpserver.h"
 #ifdef TAGLIB_FOUND
@@ -423,9 +422,8 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->addTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
     onlinePage->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
     connect(onlineTabAction, SIGNAL(triggered()), this, SLOT(showOnlineTab()));
-    connect(onlinePage, SIGNAL(showPreferencesPage(QString)), this, SLOT(showPreferencesDialog(QString)));
     connect(onlinePage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    connect(OnlineServicesModel::self(), SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
+    connect(onlinePage, SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage = new DevicesPage(this);
@@ -969,9 +967,6 @@ MainWindow::~MainWindow()
     #endif
     searchPage->saveConfig();
     nowPlaying->saveConfig();
-    #ifdef ENABLE_ONLINE_SERVICES
-    OnlineServicesModel::self()->save();
-    #endif
     Settings::self()->saveForceSingleClick(TreeView::getForceSingleClick());
     Settings::StartupState startupState=Settings::self()->startupState();
     Settings::self()->saveStartHidden(trayItem->isActive() && Settings::self()->minimiseOnClose() &&
@@ -1211,12 +1206,12 @@ void MainWindow::showAboutDialog()
 bool MainWindow::canClose()
 {
     #ifdef ENABLE_ONLINE_SERVICES
-    if (OnlineServicesModel::self()->isDownloading() &&
+    if (onlinePage->isDownloading() &&
             MessageBox::No==MessageBox::warningYesNo(this, i18n("A Podcast is currently being downloaded\n\nQuiting now will abort the download."),
                                                      QString(), GuiItem(i18n("Abort download and quit")), GuiItem("Do not quit just yet"))) {
         return false;
     }
-    OnlineServicesModel::self()->cancelAll();
+    onlinePage->cancelAll();
     #endif
     return true;
 }
@@ -2199,7 +2194,7 @@ void MainWindow::tabToggled(int index)
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:
-        OnlineServicesModel::self()->setEnabled(!OnlineServicesModel::self()->isEnabled());
+        onlinePage->setEnabled(onlinePage->isEnabled());
         break;
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT

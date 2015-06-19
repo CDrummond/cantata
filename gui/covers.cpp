@@ -31,10 +31,7 @@
 #include "devices/deviceoptions.h"
 #include "support/thread.h"
 #ifdef ENABLE_ONLINE_SERVICES
-#include "online/soundcloudservice.h"
-#include "online/podcastservice.h"
-#include "online/jamendoservice.h"
-#include "models/onlineservicesmodel.h"
+#include "online/onlineservice.h"
 #endif
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devices/device.h"
@@ -185,7 +182,7 @@ static QImage loadImage(const QString &fileName)
 static inline bool isOnlineServiceImage(const Song &s)
 {
     #ifdef ENABLE_ONLINE_SERVICES
-    return OnlineService::showLogoAsCover(s);
+    return OnlineService::showLogoAsCover(s.onlineService());
     #else
     Q_UNUSED(s)
     return false;
@@ -196,11 +193,7 @@ static inline bool isOnlineServiceImage(const Song &s)
 static Covers::Image serviceImage(const Song &s)
 {
     Covers::Image img;
-    if (SoundCloudService::constName==s.onlineService()) {
-        img.fileName=SoundCloudService::iconPath();
-    } else if (PodcastService::constName==s.onlineService()) {
-        img.fileName=PodcastService::iconPath();
-    }
+    img.fileName=OnlineService::iconPath(s.onlineService());
     if (!img.fileName.isEmpty()) {
         img.img=loadImage(img.fileName);
         if (!img.img.isNull()) {
@@ -591,10 +584,6 @@ void CoverDownloader::download(const Song &song)
     if (song.isFromOnlineService()) {
         QString serviceName=song.onlineService();
         QString imageUrl=song.extraField(Song::OnlineImageUrl);
-        // Jamendo image URL is just the album ID!
-        if (!imageUrl.isEmpty() && !imageUrl.startsWith("http:/") && imageUrl.length()<15 && serviceName==JamendoService::constName) {
-            imageUrl=JamendoService::imageUrl(imageUrl);
-        }
 
         Job job(song, QString());
         job.type=JobHttpJpg;
@@ -1227,7 +1216,10 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
     Q_UNUSED(origSize)
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
-    bool podcast=!song.isArtistImageRequest() && !song.isComposerImageRequest() && song.isFromOnlineService() && PodcastService::constName==song.onlineService();
+    bool podcast=!song.isArtistImageRequest() && !song.isComposerImageRequest() && song.isFromOnlineService() && OnlineService::isPodcasts(song.onlineService());
+    #else
+    bool podcast=false;
+    #endif
     QString key=song.isArtistImageRequest()
                 ? QLatin1String("artist-")
                     : song.isComposerImageRequest()
@@ -1235,10 +1227,7 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
                         : podcast
                             ? QLatin1String("podcast-")
                             : QLatin1String("album-");
-    #else
-    bool podcast=false;
-    QString key=song.isArtistImageRequest() ? QLatin1String("artist-") : QLatin1String("album-");
-    #endif
+
     key+=QString::number(size);
     QPixmap *pix=cache.object(key);
     #ifndef ENABLE_UBUNTU

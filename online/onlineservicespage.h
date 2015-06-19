@@ -24,15 +24,10 @@
 #ifndef ONLINE_SERVICES_PAGE_H
 #define ONLINE_SERVICES_PAGE_H
 
-#include "ui_onlineservicespage.h"
 #include "onlineservice.h"
-#include "models/musiclibraryproxymodel.h"
-#include "gui/page.h"
+#include "widgets/multipagewidget.h"
 
-class Action;
-class QAction;
-
-class OnlineServicesPage : public QWidget, public Ui::OnlineServicesPage, public Page
+class OnlineServicesPage : public MultiPageWidget
 {
     Q_OBJECT
 
@@ -40,63 +35,13 @@ public:
     OnlineServicesPage(QWidget *p);
     virtual ~OnlineServicesPage();
 
-    void setEnabled(bool e);
-    void clear();
-    QStringList selectedFiles() const;
-    QList<Song> selectedSongs(bool allowPlaylists=false) const;
-    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
-    void setView(int v) { view->setMode((ItemView::Mode)v); }
-    void focusSearch();
-    void refresh();
-    void showEvent(QShowEvent *e);
-    void resort() { proxy.resort(); }
-
-public Q_SLOTS:
-    void itemDoubleClicked(const QModelIndex &);
-    void controlSearch(bool on);
-    void searchItems();
-    void controlActions();
-    void configureService();
-    void refreshService();
-    void setSearchable(const QModelIndex &idx);
-    void updated(const QModelIndex &idx);
-//    void sortList();
-    void download();
-    void subscribe();
-    void unSubscribe();
-    void refreshSubscription();
-    void downloadPodcast();
-    void cancelPodcastDownload();
-    void deleteDownloadedPodcast();
-    void markPodcastAsNew();
-    void markPodcastAsListened();
-    void showPreferencesPage();
-    void providersChanged();
+    bool isDownloading() { return false; }
+    void cancelAll() { }
+    bool isEanbeld() { return true; }
+    void setEnabled(bool) { }
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void add(const QStringList &files, bool replace, quint8 priorty);
-    void addSongsToPlaylist(const QString &name, const QStringList &files);
-
-    void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
-    void showPreferencesPage(const QString &page);
-
-private:
-    OnlineService * activeSrv() const;
-    void expandPodcasts();
-
-private:
-    MusicLibraryProxyModel proxy;
-    Action *downloadAction;
-    Action *downloadPodcastAction;
-    Action *cancelPodcastDownloadAction;
-    Action *deleteDownloadedPodcastAction;
-    Action *markPodcastAsNewAction;
-    Action *markPodcastAsListenedAction;
-    bool onlineSearchRequest;
-    QString searchService;
-    bool searchable;
-    bool expanded;
+    void error(const QString &msg);
 };
 
 #endif

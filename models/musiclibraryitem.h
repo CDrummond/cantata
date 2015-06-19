@@ -39,9 +39,7 @@ public:
         Type_Root,
         Type_Artist,
         Type_Album,
-        Type_Song,
-
-        Type_Podcast
+        Type_Song
     };
 
     MusicLibraryItem(MusicLibraryItemContainer *parent);

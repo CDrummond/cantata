@@ -34,10 +34,6 @@
 #include "devices/device.h"
 #include "support/utils.h"
 #endif
-#ifdef ENABLE_ONLINE_SERVICES
-#include "online/onlineservice.h"
-#include "onlineservicesmodel.h"
-#endif
 #include <QPixmap>
 #include <QApplication>
 #include <QFontMetrics>
@@ -287,16 +283,10 @@ Song MusicLibraryItemAlbum::coverSong() const
         song.year=m_year;
         song.file=firstSong->file();
         song.type=m_type;
-        #if defined ENABLE_ONLINE_SERVICES || defined ENABLE_DEVICES_SUPPORT
+        #if defined ENABLE_DEVICES_SUPPORT
         MusicLibraryItemRoot *root=parentItem() && parentItem()->parentItem() && MusicLibraryItem::Type_Root==parentItem()->parentItem()->itemType()
                                                 ? static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem()) : 0;
         if (root) {
-            #ifdef ENABLE_ONLINE_SERVICES
-            if (root->isOnlineService()) {
-                song.setIsFromOnlineService(static_cast<OnlineService *>(root)->id());
-                song.setExtraField(Song::OnlineImageUrl, m_imageUrl);
-            }
-            #endif
             #ifdef ENABLE_DEVICES_SUPPORT
             if (root->isDevice()) {
                 song.setIsFromDevice(static_cast<Device *>(root)->id());

@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2011-2014 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2015 Craig Drummond <craig.p.drummond@gmail.com>
  *
  * ----
  *
@@ -24,45 +24,38 @@
 #ifndef JAMENDO_SERVICE_H
 #define JAMENDO_SERVICE_H
 
-#include "onlineservice.h"
-#include <QLatin1String>
+#include "models/sqllibrarymodel.h"
+#include "onlinedbservice.h"
 
-class MusicLibraryItemArtist;
-class MusicLibraryItemAlbum;
-
-class JamendoMusicLoader : public OnlineMusicLoader
+class JamendoXmlParser : public OnlineXmlParser
 {
 public:
-    JamendoMusicLoader(const QUrl &src);
-    bool parse(QXmlStreamReader &xml);
-
+    int parse(QXmlStreamReader &xml);
 private:
     void parseArtist(QXmlStreamReader &xml);
-    void parseAlbum(MusicLibraryItemArtist *artist, QXmlStreamReader &xml);
-    void parseSong(MusicLibraryItemArtist *artist, MusicLibraryItemAlbum *album, int genre, QXmlStreamReader &xml);
+    void parseAlbum(Song &song, QXmlStreamReader &xml);
+    void parseSong(Song &song, QXmlStreamReader &xml);
 };
 
-class JamendoService : public OnlineService
+class JamendoService : public OnlineDbService
 {
-    Q_OBJECT
-
 public:
     enum Format {
         FMT_MP3,
         FMT_Ogg
     };
 
-    static const QLatin1String constName;
-    static QString imageUrl(const QString &id);
-
-    JamendoService(MusicModel *m) : OnlineService(m, constName), format(FMT_MP3) { }
-
-    Song fixPath(const Song &orig, bool) const;
-    void createLoader();
-    void loadConfig();
-    void saveConfig();
+    JamendoService(QObject *p);
+    QVariant data(const QModelIndex &index, int role) const;
+    QString name() const;
+    QString title() const;
+    QString descr() const;
+    OnlineXmlParser * createParser();
+    QUrl listingUrl() const;
     void configure(QWidget *p);
-    bool canDownload() const { return true; }
+    int averageSize() const { return 100; }
+private:
+    Song & fixPath(Song &s) const;
 
 private:
     Format format;

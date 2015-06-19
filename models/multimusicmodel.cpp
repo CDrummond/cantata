@@ -25,7 +25,6 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemroot.h"
-#include "musiclibraryitempodcast.h"
 #include "multimusicmodel.h"
 #include <QStringList>
 
@@ -141,33 +140,19 @@ QList<Song> MultiMusicModel::songs(const QModelIndexList &indexes, bool playable
                     break;
                 }
 
-                bool isPodcasts=MusicLibraryItem::Type_Podcast==(*artists.begin())->itemType();
-                if (isPodcasts) {
-                    qSort(artists.begin(), artists.end(), MusicLibraryItemPodcast::lessThan);
-                } else {
-                    qSort(artists.begin(), artists.end(), MusicLibraryItemArtist::lessThan);
-                }
+                qSort(artists.begin(), artists.end(), MusicLibraryItemArtist::lessThan);
+               
                 foreach (MusicLibraryItem *a, artists) {
-                    if (isPodcasts) {
-                        const MusicLibraryItemContainer *podcast=static_cast<const MusicLibraryItemContainer *>(a);
-                        foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(podcast)->childItems()) {
+                    const MusicLibraryItemContainer *artist=static_cast<const MusicLibraryItemContainer *>(a);
+                    // Now sort all albums as they would appear in UI...
+                    QList<MusicLibraryItem *> artistAlbums=artist->childItems();
+                    qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
+                    foreach (MusicLibraryItem *i, artistAlbums) {
+                        const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
+                        foreach (const MusicLibraryItem *song, album->childItems()) {
                             if (MusicLibraryItem::Type_Song==song->itemType() && !colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->file())) {
                                 colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), fullPath);
                                 colFiles[parent] << static_cast<const MusicLibraryItemSong*>(song)->file();
-                            }
-                        }
-                    } else {
-                        const MusicLibraryItemContainer *artist=static_cast<const MusicLibraryItemContainer *>(a);
-                        // Now sort all albums as they would appear in UI...
-                        QList<MusicLibraryItem *> artistAlbums=artist->childItems();
-                        qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
-                        foreach (MusicLibraryItem *i, artistAlbums) {
-                            const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
-                            foreach (const MusicLibraryItem *song, album->childItems()) {
-                                if (MusicLibraryItem::Type_Song==song->itemType() && !colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->file())) {
-                                    colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), fullPath);
-                                    colFiles[parent] << static_cast<const MusicLibraryItemSong*>(song)->file();
-                                }
                             }
                         }
                     }
@@ -203,14 +188,6 @@ QList<Song> MultiMusicModel::songs(const QModelIndexList &indexes, bool playable
             if (!colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(item)->file())) {
                 colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(item)->song(), fullPath);
                 colFiles[parent] << static_cast<const MusicLibraryItemSong*>(item)->file();
-            }
-            break;
-        case MusicLibraryItem::Type_Podcast:
-            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
-                if (MusicLibraryItem::Type_Song==song->itemType() && !colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->file())) {
-                    colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), fullPath);
-                    colFiles[parent] << static_cast<const MusicLibraryItemSong*>(song)->file();
-                }
             }
             break;
         default:

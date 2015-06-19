@@ -41,7 +41,7 @@
 #include "config.h"
 #include "tags/tags.h"
 #include "widgets/treeview.h"
-#ifdef ENABLE_ONLINE_SERVICES
+#ifdef ENABLE_ONLINE_SERVICES____TODO
 #include "models/onlineservicesmodel.h"
 #endif
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -509,7 +509,7 @@ void ActionDialog::slotButtonClicked(int button)
 
 Device * ActionDialog::getDevice(const QString &udi, bool logErrors)
 {
-    #ifdef ENABLE_ONLINE_SERVICES
+    #ifdef ENABLE_ONLINE_SERVICES____TODO
     if (udi.startsWith(OnlineServicesModel::constUdiPrefix)) {
         return OnlineServicesModel::self()->device(udi);
     }

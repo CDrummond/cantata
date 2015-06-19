@@ -75,8 +75,8 @@ public:
     #endif
 
     void refresh();
-    void clear();
-    void search(const QString &key, const QString &value);
+    virtual void clear();
+    virtual void search(const QString &key, const QString &value)=0;
     void setMultiColumn(bool m) { multiCol=m; }
 
 Q_SIGNALS:
@@ -84,22 +84,13 @@ Q_SIGNALS:
     void searched();
     void statsUpdated(int songs, quint32 time);
 
-    void search(const QString &field, const QString &value, int id);
-    void getRating(const QString &file) const;
-
-private Q_SLOTS:
-    void searchFinished(int id, const QList<Song> &result);
-    void coverLoaded(const Song &song, int s);
-    void ratingResult(const QString &file, quint8 r);
-
-private:
-    void clearItems();
+protected:
+    void results(const QList<Song> &songs);
     const Song * toSong(const QModelIndex &index) const { return index.isValid() ? static_cast<const Song *>(index.internalPointer()) : 0; }
 
-private:
+protected:
     bool multiCol;
     QList<Song> songList;
-    int currentId;
     QString currentKey;
     QString currentValue;
     #ifndef ENABLE_UBUNTU

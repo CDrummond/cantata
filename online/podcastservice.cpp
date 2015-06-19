@@ -23,31 +23,55 @@
 
 #include "podcastservice.h"
 #include "podcastsettingsdialog.h"
-#include "models/onlineservicesmodel.h"
-#include "models/musiclibraryitempodcast.h"
-#include "models/musiclibraryitemsong.h"
+#include "rssparser.h"
 #include "support/utils.h"
 #include "gui/settings.h"
+#include "gui/plurals.h"
+#include "widgets/icons.h"
 #include "mpd-interface/mpdconnection.h"
 #include "config.h"
 #include "http/httpserver.h"
+#include "qtiocompressor/qtiocompressor.h"
+#include "network/networkaccessmanager.h"
+#include "models/roles.h"
+#include "models/playqueuemodel.h"
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QSet>
 #include <QTimer>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
+#include <QCryptographicHash>
+#include <QMimeData>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
 #include <stdio.h>
 
-const QString PodcastService::constName=QLatin1String("Podcasts");
-QString PodcastService::iconFile;
-
+static const QLatin1String constName("podcasts");
+static const QLatin1String constExt(".xml.gz");
 static const char * constNewFeedProperty="new-feed";
 static const char * constRssUrlProperty="rss-url";
 static const char * constDestProperty="dest";
 static const QLatin1String constPartialExt(".partial");
+
+static QString generateFileName(const QUrl &url, bool creatingNew)
+{
+    QString hash=QCryptographicHash::hash(url.toString().toUtf8(), QCryptographicHash::Md5).toHex();
+    QString dir=Utils::dataDir(constName, true);
+    QString fileName=dir+hash+constExt;
+
+    if (creatingNew) {
+        int i=0;
+        while (QFile::exists(fileName) && i<100) {
+            fileName=dir+hash+QChar('_')+QString::number(i)+constExt;
+            i++;
+        }
+    }
+
+    return fileName;
+}
 
 bool PodcastService::isPodcastFile(const QString &file)
 {
@@ -100,32 +124,420 @@ QUrl PodcastService::fixUrl(const QUrl &orig)
     return u;
 }
 
-PodcastService::PodcastService(MusicModel *m)
-    : OnlineService(m, i18n("Podcasts"))
+Song PodcastService::Episode::toSong() const
+{
+    Song song;
+    song.title=name;
+    song.file=url.toString();
+    song.artist=parent->name;
+    song.time=duration;
+    if (!localFile.isEmpty()) {
+        song.setPodcastLocalPath(localFile);
+    }
+    return song;
+}
+
+PodcastService::Podcast::Podcast(const QString &f)
+    : unplayedCount(0)
+    , fileName(f)
+{
+    load();
+}
+
+static QLatin1String constTopTag("podcast");
+static QLatin1String constImageAttribute("img");
+static QLatin1String constRssAttribute("rss");
+static QLatin1String constEpisodeTag("episode");
+static QLatin1String constNameAttribute("name");
+static QLatin1String constDateAttribute("date");
+static QLatin1String constUrlAttribute("url");
+static QLatin1String constTimeAttribute("time");
+static QLatin1String constPlayedAttribute("played");
+static QLatin1String constLocalAttribute("local");
+static QLatin1String constTrue("true");
+
+bool PodcastService::Podcast::load()
+{
+    if (fileName.isEmpty()) {
+        return false;
+    }
+
+    QFile file(fileName);
+    QtIOCompressor compressor(&file);
+    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+    if (!compressor.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+
+    QXmlStreamReader reader(&compressor);
+    unplayedCount=0;
+    while (!reader.atEnd()) {
+        reader.readNext();
+        if (!reader.error() && reader.isStartElement()) {
+            QString element = reader.name().toString();
+            QXmlStreamAttributes attributes=reader.attributes();
+
+            if (constTopTag == element) {
+                imageUrl=attributes.value(constImageAttribute).toString();
+                url=attributes.value(constRssAttribute).toString();
+                name=attributes.value(constNameAttribute).toString();
+                if (url.isEmpty() || name.isEmpty()) {
+                    return false;
+                }
+            } else if (constEpisodeTag == element) {
+                QString epName=attributes.value(constNameAttribute).toString();
+                QString epUrl=attributes.value(constUrlAttribute).toString();
+                if (!epName.isEmpty() && !epUrl.isEmpty()) {
+                    Episode *ep=new Episode(attributes.value(constDateAttribute).toString(), epName, epUrl, this);
+                    QString localFile=attributes.value(constLocalAttribute).toString();
+                    QString time=attributes.value(constTimeAttribute).toString();
+
+                    ep->duration=time.isEmpty() ? 0 : time.toUInt();
+                    if (QFile::exists(localFile)) {
+                        ep->localFile=localFile;
+                    }
+
+                    episodes.append(ep);
+                    if (!ep->played) {
+                        unplayedCount++;
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+bool PodcastService::Podcast::save() const
+{
+    if (fileName.isEmpty()) {
+        return false;
+    }
+
+    QFile file(fileName);
+    QtIOCompressor compressor(&file);
+    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+    if (!compressor.open(QIODevice::WriteOnly)) {
+        return false;
+    }
+
+    QXmlStreamWriter writer(&compressor);
+    writer.writeStartElement(constTopTag);
+    writer.writeAttribute(constImageAttribute, imageUrl.toString()); // ??
+    writer.writeAttribute(constRssAttribute, url.toString()); // ??
+    writer.writeAttribute(constNameAttribute, name);
+    foreach (Episode *ep, episodes) {
+        writer.writeStartElement(constEpisodeTag);
+        writer.writeAttribute(constNameAttribute, ep->name);
+        writer.writeAttribute(constUrlAttribute, ep->url.toString()); // ??
+        if (ep->duration) {
+            writer.writeAttribute(constTimeAttribute, QString::number(ep->duration));
+        }
+        if (ep->played) {
+            writer.writeAttribute(constPlayedAttribute, constTrue);
+        }
+        if (!ep->date.isEmpty()) {
+            writer.writeAttribute(constDateAttribute, ep->date);
+        }
+        if (!ep->localFile.isEmpty()) {
+            writer.writeAttribute(constLocalAttribute, ep->localFile);
+        }
+        writer.writeEndElement();
+    }
+    writer.writeEndElement();
+    compressor.close();
+    return true;
+}
+
+void PodcastService::Podcast::add(Episode *ep)
+{
+    ep->parent=this;
+    episodes.append(ep);
+}
+
+void PodcastService::Podcast::add(QList<Episode *> &eps)
+{
+    foreach(Episode *ep, eps) {
+        add(ep);
+    }
+    setUnplayedCount();
+}
+
+PodcastService::Episode * PodcastService::Podcast::getEpisode(const QUrl &epUrl) const
+{
+    foreach (Episode *episode, episodes) {
+        if (episode->url==epUrl) {
+            return episode;
+        }
+    }
+    return 0;
+}
+
+void PodcastService::Podcast::setUnplayedCount()
+{
+    unplayedCount=episodes.count();
+    foreach (Episode *episode, episodes) {
+        if (!episode->played) {
+            unplayedCount--;
+        }
+    }
+}
+
+void PodcastService::Podcast::removeFiles()
+{
+    if (!fileName.isEmpty() && QFile::exists(fileName)) {
+        QFile::remove(fileName);
+    }
+    if (!imageFile.isEmpty() && QFile::exists(imageFile)) {
+        QFile::remove(imageFile);
+    }
+}
+
+const Song & PodcastService::Podcast::coverSong()
+{
+    if (song.isEmpty()) {
+        song.artist=constName;
+        song.album=name;
+        song.title=name;
+        song.type=Song::OnlineSvrTrack;
+        song.setIsFromOnlineService(constName);
+        song.setExtraField(Song::OnlineImageUrl, imageUrl.toString());
+        song.setExtraField(Song::OnlineImageCacheName, imageFile);
+        song.file=url.toString();
+    }
+    return song;
+}
+
+PodcastService::PodcastService(QObject *p)
+    : ActionModel(p)
     , downloadJob(0)
     , rssUpdateTimer(0)
 {
-    loaded=true;
     QMetaObject::invokeMethod(this, "loadAll", Qt::QueuedConnection);
-    connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(currentMpdSong(const Song &)));
-    if (iconFile.isEmpty()) {
-        iconFile=QString(CANTATA_SYS_ICONS_DIR+"podcasts.png");
-    }
-
+    icn.addFile(":"+constName);
     clearPartialDownloads();
 }
 
-Song PodcastService::fixPath(const Song &orig, bool) const
+QString PodcastService::name() const
 {
-    Song song=orig;
+    return constName;
+}
+
+QString PodcastService::title() const
+{
+    return QLatin1String("Podcasts");
+}
+
+QString PodcastService::descr() const
+{
+    return i18n("Subscribe to RSS feeds");
+}
+
+int PodcastService::rowCount(const QModelIndex &index) const
+{
+    if (index.column()>0) {
+        return 0;
+    }
+
+    if (!index.isValid()) {
+        return podcasts.size();
+    }
+
+    Item *item=static_cast<Item *>(index.internalPointer());
+    if (item->isPodcast()) {
+        return static_cast<Podcast *>(index.internalPointer())->episodes.count();
+    }
+    return 0;
+}
+
+bool PodcastService::hasChildren(const QModelIndex &parent) const
+{
+    return !parent.isValid() || static_cast<Item *>(parent.internalPointer())->isPodcast();
+}
+
+QModelIndex PodcastService::parent(const QModelIndex &index) const
+{
+    if (!index.isValid()) {
+        return QModelIndex();
+    }
+
+    Item *item=static_cast<Item *>(index.internalPointer());
+
+    if (item->isPodcast()) {
+        return QModelIndex();
+    } else {
+        Episode *episode=static_cast<Episode *>(item);
+
+        if (episode->parent) {
+            return createIndex(podcasts.indexOf(episode->parent), 0, episode->parent);
+        }
+    }
+
+    return QModelIndex();
+}
+
+QModelIndex PodcastService::index(int row, int col, const QModelIndex &parent) const
+{
+    if (!hasIndex(row, col, parent)) {
+        return QModelIndex();
+    }
+
+    if (parent.isValid()) {
+        Item *p=static_cast<Item *>(parent.internalPointer());
+
+        if (p->isPodcast()) {
+            Podcast *podcast=static_cast<Podcast *>(p);
+            return row<podcast->episodes.count() ? createIndex(row, col, podcast->episodes.at(row)) : QModelIndex();
+        }
+    }
+
+    return row<podcasts.count() ? createIndex(row, col, podcasts.at(row)) : QModelIndex();
+}
+
+QVariant PodcastService::data(const QModelIndex &index, int role) const
+{
+    if (!index.isValid()) {
+        switch (role) {
+        case Cantata::Role_TitleText:
+            return title();
+        case Cantata::Role_SubText:
+            return Plurals::podcasts(podcasts.count());
+        case Qt::DecorationRole:
+            return icon();
+        }
+        return QVariant();
+    }
+
+    Item *item=static_cast<Item *>(index.internalPointer());
+
+    if (item->isPodcast()) {
+        Podcast *podcast=static_cast<Podcast *>(item);
+
+        switch(role) {
+        case Cantata::Role_ListImage:
+            return true;
+        case Cantata::Role_CoverSong: {
+            QVariant v;
+            v.setValue<Song>(podcast->coverSong());
+            return v;
+        }
+        case Qt::DecorationRole:
+            return Icons::self()->podcastIcon;
+        case Cantata::Role_MainText:
+        case Qt::DisplayRole:
+            return i18nc("podcast name (num unplayed episodes)", "%1 (%2)", podcast->name, podcast->unplayedCount);
+        case Cantata::Role_SubText:
+            return Plurals::episodes(podcast->episodes.count());
+        case Qt::FontRole:
+            if (podcast->unplayedCount>0) {
+                QFont f;
+                f.setBold(true);
+                return f;
+            }
+        default:
+            break;
+        }
+    } else {
+        Episode *episode=static_cast<Episode *>(item);
+
+        switch (role) {
+        case Qt::DecorationRole:
+            if (!episode->localFile.isEmpty()) {
+                return Icons::self()->downloadedPodcastEpisodeIcon;
+            } else if (episode->downloadProg>=0) {
+                return Icon("go-down");
+            } else if (Episode::QueuedForDownload==episode->downloadProg) {
+                return Icon("clock");
+            }
+        case Cantata::Role_MainText:
+        case Qt::DisplayRole:
+            return episode->name;
+        case Cantata::Role_SubText:
+            return Utils::formatTime(episode->duration, true);
+        case Qt::FontRole:
+            if (!episode->played) {
+                QFont f;
+                f.setBold(true);
+                return f;
+            }
+        default:
+            break;
+        }
+    }
+
+    return ActionModel::data(index, role);
+}
+
+Qt::ItemFlags PodcastService::flags(const QModelIndex &index) const
+{
+    if (index.isValid()) {
+        return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled;
+    }
+    return Qt::NoItemFlags;
+}
+
+QMimeData * PodcastService::mimeData(const QModelIndexList &indexes) const
+{
+    QMimeData *mimeData=0;
+    QStringList paths=filenames(indexes);
+
+    if (!paths.isEmpty()) {
+        mimeData=new QMimeData();
+        PlayQueueModel::encode(*mimeData, PlayQueueModel::constUriMimeType, paths);
+    }
+    return mimeData;
+}
+
+QStringList PodcastService::filenames(const QModelIndexList &indexes, bool allowPlaylists) const
+{
+    Q_UNUSED(allowPlaylists)
+    QList<Song> songList=songs(indexes);
+    QStringList files;
+    foreach (const Song &song, songList) {
+        files.append(song.file);
+    }
+    return files;
+}
+
+QList<Song> PodcastService::songs(const QModelIndexList &indexes, bool allowPlaylists) const
+{
+    Q_UNUSED(allowPlaylists)
+    QList<Song> songs;
+    QSet<Item *> selectedPodcasts;
+
+    foreach (const QModelIndex &idx, indexes) {
+        Item *item=static_cast<Item *>(idx.internalPointer());
+        if (item->isPodcast()) {
+            Podcast *podcast=static_cast<Podcast *>(item);
+            foreach (const Episode *episode, podcast->episodes) {
+                selectedPodcasts.insert(item);
+                songs.append(episode->toSong());
+            }
+        }
+    }
+    foreach (const QModelIndex &idx, indexes) {
+        Item *item=static_cast<Item *>(idx.internalPointer());
+        if (!item->isPodcast()) {
+            Episode *episode=static_cast<Episode *>(item);
+            if (!selectedPodcasts.contains(episode->parent)) {
+                songs.append(episode->toSong());
+            }
+        }
+    }
+    return songs;
+}
+
+Song & PodcastService::fixPath(Song &song) const
+{
     song.setPodcastLocalPath(QString());
     song.setIsFromOnlineService(constName);
     song.artist=constName;
-    if (!orig.podcastLocalPath().isEmpty() && QFile::exists(orig.podcastLocalPath())) {
+    if (!song.podcastLocalPath().isEmpty() && QFile::exists(song.podcastLocalPath())) {
         if (!HttpServer::self()->forceUsage() && MPDConnection::self()->localFilePlaybackSupported()) {
-            song.file=QLatin1String("file://")+orig.podcastLocalPath();
+            song.file=QLatin1String("file://")+song.podcastLocalPath();
         } else if (HttpServer::self()->isAlive()) {
-            song.file=orig.podcastLocalPath();
+            song.file=song.podcastLocalPath();
             song.file=HttpServer::self()->encodeUrl(song);
         }
         return song;
@@ -136,38 +548,33 @@ Song PodcastService::fixPath(const Song &orig, bool) const
 void PodcastService::clear()
 {
     cancelAllJobs();
-    ::OnlineService::clear();
+    beginResetModel();
+    qDeleteAll(podcasts);
+    podcasts.clear();
+    endResetModel();
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 void PodcastService::loadAll()
 {
-    QString dir=Utils::dataDir(MusicLibraryItemPodcast::constDir);
+    beginResetModel();
+    QString dir=Utils::dataDir(constName);
 
     if (!dir.isEmpty()) {
         QDir d(dir);
-        QStringList entries=d.entryList(QStringList() << "*"+MusicLibraryItemPodcast::constExt, QDir::Files|QDir::Readable|QDir::NoDot|QDir::NoDotDot);
+        QStringList entries=d.entryList(QStringList() << "*"+constExt, QDir::Files|QDir::Readable|QDir::NoDot|QDir::NoDotDot);
         foreach (const QString &e, entries) {
-            if (!update) {
-                update=new OnlineServiceMusicRoot();
-            }
-
-            MusicLibraryItemPodcast *podcast=new MusicLibraryItemPodcast(dir+e, update);
+            Podcast *podcast=new Podcast(dir+e);
             if (podcast->load()) {
-                update->append(podcast);
+                podcasts.append(podcast);
             } else {
                 delete podcast;
             }
         }
-
-        if (update) {
-            if (update->childItems().isEmpty()) {
-                delete update;
-            } else {
-                applyUpdate();
-            }
-        }
         startRssUpdateTimer();
     }
+    endResetModel();
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 void PodcastService::cancelAll()
@@ -178,7 +585,6 @@ void PodcastService::cancelAll()
     }
     rssJobs.clear();
     cancelAllDownloads();
-    setBusy(!rssJobs.isEmpty() || 0!=downloadJob);
 }
 
 void PodcastService::rssJobFinished()
@@ -202,98 +608,112 @@ void PodcastService::rssJobFinished()
             }
         }
 
-        MusicLibraryItemPodcast *podcast=new MusicLibraryItemPodcast(QString(), this);
-        MusicLibraryItemPodcast::RssStatus loadStatus=podcast->loadRss(j->actualJob());
-        if (MusicLibraryItemPodcast::Loaded==loadStatus) {
-            int autoDownload=Settings::self()->podcastAutoDownloadLimit();
+        RssParser::Channel ch=RssParser::parse(j->actualJob());
 
+        if (!ch.isValid()) {
             if (isNew) {
-                podcast->save();
-                beginInsertRows(index(), childCount(), childCount());
-                m_childItems.append(podcast);
-                if (autoDownload) {
-                    int ep=0;
-                    foreach (MusicLibraryItem *i, podcast->childItems()) {
-                        MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
-                        downloadEpisode(podcast, QUrl(song->file()));
-                        if (autoDownload<1000 && ++ep>=autoDownload) {
-                            break;
-                        }
-                    }
-                }
-                endInsertRows();
-//                emitNeedToSort();
+                emit newError(i18n("Failed to parse %1", j->origUrl().toString()));
             } else {
-                MusicLibraryItemPodcast *orig = getPodcast(j->origUrl());
-                if (!orig) {
-                    delete podcast;
-                    return;
-                }
-                QSet<QString> origSongs;
-                QSet<QString> newSongs;
-                foreach (MusicLibraryItem *i, orig->childItems()) {
-                    MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(i);
-                    origSongs.insert(episode->file());
-                }
-                foreach (MusicLibraryItem *i, podcast->childItems()) {
-                    MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
-                    newSongs.insert(song->file());
-                }
+                emit error(i18n("Failed to parse %1", j->origUrl().toString()));
+            }
+            return;
+        }
 
-                QSet<QString> added=newSongs-origSongs;
-                QSet<QString> removed=origSongs-newSongs;
-                if (added.count() || removed.count()) {
-                    QModelIndex origIndex=createIndex(orig);
-                    if (removed.count()) {
-                        foreach (const QString &s, removed) {
-                            MusicLibraryItemPodcastEpisode *episode=orig->getEpisode(s);
-                            if (episode->localPath().isEmpty() || !QFile::exists(episode->localPath())) {
-                                int idx=orig->indexOf(episode);
-                                if (-1!=idx) {
-                                    beginRemoveRows(origIndex, idx, idx);
-                                    orig->remove(idx);
-                                    endRemoveRows();
-                                }
-                            }
-                        }
+        if (ch.video) {
+            if (isNew) {
+                emit newError(i18n("Cantata only supports audio podcasts! %1 contains only video podcasts.", j->origUrl().toString()));
+            } else {
+                emit error(i18n("Cantata only supports audio podcasts! %1 contains only video podcasts.", j->origUrl().toString()));
+            }
+            return;
+        }
+
+        int autoDownload=Settings::self()->podcastAutoDownloadLimit();
+
+        if (isNew) {
+            Podcast *podcast=new Podcast();
+            podcast->url=j->origUrl();
+            podcast->fileName=podcast->imageFile=generateFileName(podcast->url, true);
+            podcast->imageFile=podcast->imageFile.replace(constExt, ".jpg");
+            podcast->imageUrl=ch.image.toString();
+            podcast->name=ch.name;
+            podcast->unplayedCount=ch.episodes.count();
+            foreach (const RssParser::Episode &ep, ch.episodes) {
+                Episode *episode=new Episode(ep.publicationDate.toString(Qt::ISODate), ep.name, ep.url, podcast);
+                episode->duration=ep.duration;
+                podcast->add(episode);
+            }
+            podcast->save();
+            beginInsertRows(QModelIndex(), podcasts.count(), podcasts.count());
+            podcasts.append(podcast);
+            emit dataChanged(QModelIndex(), QModelIndex());
+            if (autoDownload) {
+                int ep=0;
+                foreach (Episode *episode, podcast->episodes) {
+                    downloadEpisode(podcast, QUrl(episode->url));
+                    if (autoDownload<1000 && ++ep>=autoDownload) {
+                        break;
                     }
-                    if (added.count()) {
-                        QList<MusicLibraryItemPodcastEpisode *> newSongs;
-                        foreach (const QString &s, added) {
-                            MusicLibraryItemPodcastEpisode *episode=podcast->getEpisode(s);
-                            if (episode) {
-                                newSongs.append(episode);
-                                if (autoDownload) {
-                                    downloadEpisode(orig, QUrl(episode->file()));
-                                }
-                            }
-                        }
-
-                        beginInsertRows(origIndex, orig->childCount(), (orig->childCount()+newSongs.count())-1);
-                        orig->addAll(newSongs);
-                        endInsertRows();
-                    }
-
-                    orig->setUnplayedCount();
-                    orig->save();
-//                    emitNeedToSort();
                 }
-
-                delete podcast;
+            }
+            endInsertRows();
+        } else {
+            Podcast *podcast = getPodcast(j->origUrl());
+            if (!podcast) {
+                return;
+            }
+            QSet<QUrl> newEpisodes;
+            QSet<QUrl> oldEpisodes;
+            foreach (Episode *episode, podcast->episodes) {
+                newEpisodes.insert(episode->url);
+            }
+            foreach (const RssParser::Episode &ep, ch.episodes) {
+                oldEpisodes.insert(ep.url);
             }
 
-        } else if (isNew) {
-            delete podcast;
-            if (MusicLibraryItemPodcast::VideoPodcast==loadStatus) {
-                emitError(i18n("Cantata only supports audio podcasts! %1 contains only video podcasts.", j->origUrl().toString()), isNew);
-            } else {
-                emitError(i18n("Failed to parse %1", j->origUrl().toString()), isNew);
+            QSet<QUrl> added=oldEpisodes-newEpisodes;
+            QSet<QUrl> removed=newEpisodes-oldEpisodes;
+            if (added.count() || removed.count()) {
+                QModelIndex podcastIndex=createIndex(podcasts.indexOf(podcast), 0, (void *)podcast);
+                if (removed.count()) {
+                    foreach (const QUrl &s, removed) {
+                        Episode *episode=podcast->getEpisode(s);
+                        if (episode->localFile.isEmpty() || !QFile::exists(episode->localFile)) {
+                            int idx=podcast->episodes.indexOf(episode);
+                            if (-1!=idx) {
+                                beginRemoveRows(podcastIndex, idx, idx);
+                                podcast->episodes.removeAt(idx);
+                                delete episode;
+                                endRemoveRows();
+                            }
+                        }
+                    }
+                }
+                if (added.count()) {
+                    beginInsertRows(podcastIndex, podcast->episodes.count(), (podcast->episodes.count()+added.count())-1);
+
+                    foreach (const RssParser::Episode &ep, ch.episodes) {
+                        QString epUrl=ep.url.toString();
+                        if (added.contains(epUrl)) {
+                            Episode *episode=new Episode(ep.publicationDate.toString(Qt::ISODate), ep.name, ep.url, podcast);
+                            episode->duration=ep.duration;
+                            podcast->add(episode);
+                        }
+                    }
+                    endInsertRows();
+                }
+
+                podcast->setUnplayedCount();
+                podcast->save();
             }
         }
     } else {
-        emitError(i18n("Failed to download %1", j->origUrl().toString()), isNew);
+        if (isNew) {
+            emit newError(i18n("Failed to download %1", j->origUrl().toString()));
+        } else {
+            emit error(i18n("Failed to download %1", j->origUrl().toString()));
+        }
     }
-    setBusy(!rssJobs.isEmpty() || 0!=downloadJob);
 }
 
 void PodcastService::configure(QWidget *p)
@@ -307,54 +727,40 @@ void PodcastService::configure(QWidget *p)
     }
 }
 
-MusicLibraryItemPodcast * PodcastService::getPodcast(const QUrl &url) const
+PodcastService::Podcast * PodcastService::getPodcast(const QUrl &url) const
 {
-    foreach (MusicLibraryItem *i, m_childItems) {
-        if (static_cast<MusicLibraryItemPodcast *>(i)->rssUrl()==url) {
-            return static_cast<MusicLibraryItemPodcast *>(i);
+    foreach (Podcast *podcast, podcasts) {
+        if (podcast->url==url) {
+            return podcast;
         }
     }
     return 0;
 }
 
-MusicLibraryItemPodcastEpisode * PodcastService::getEpisode(const MusicLibraryItemPodcast *podcast, const QUrl &episode)
+void PodcastService::unSubscribe(Podcast *podcast)
 {
-    if (podcast) {
-        foreach (MusicLibraryItem *i, podcast->childItems()) {
-            MusicLibraryItemPodcastEpisode *song=static_cast<MusicLibraryItemPodcastEpisode *>(i);
-            if (QUrl(song->file())==episode) {
-                return song;
-            }
-        }
-    }
-
-    return 0;
-}
-
-void PodcastService::unSubscribe(MusicLibraryItem *item)
-{
-    int row=m_childItems.indexOf(item);
+    int row=podcasts.indexOf(podcast);
     if (row>=0) {
-        QList<MusicLibraryItemPodcastEpisode *> episodes;
-        foreach (MusicLibraryItem *e, static_cast<MusicLibraryItemPodcast *>(item)->childItems()) {
-            episodes.append(static_cast<MusicLibraryItemPodcastEpisode *>(e));
+        QList<Episode *> episodes;
+        foreach (Episode *e, podcast->episodes) {
+            episodes.append(e);
         }
         cancelDownloads(episodes);
-        beginRemoveRows(index(), row, row);
-        static_cast<MusicLibraryItemPodcast *>(item)->removeFiles();
-        delete m_childItems.takeAt(row);
-        resetRows();
+        beginRemoveRows(QModelIndex(), row, row);
+        podcast->removeFiles();
+        delete podcasts.takeAt(row);
         endRemoveRows();
-        if (m_childItems.isEmpty()) {
+        emit dataChanged(QModelIndex(), QModelIndex());
+        if (podcasts.isEmpty()) {
             stopRssUpdateTimer();
         }
     }
 }
 
-void PodcastService::refreshSubscription(MusicLibraryItem *item)
+void PodcastService::refreshSubscription(Podcast *item)
 {
     if (item) {
-        QUrl url=static_cast<MusicLibraryItemPodcast *>(item)->rssUrl();
+        QUrl url=item->url;
         if (processingUrl(url)) {
             return;
         }
@@ -376,7 +782,6 @@ bool PodcastService::processingUrl(const QUrl &url) const
 
 void PodcastService::addUrl(const QUrl &url, bool isNew)
 {
-    setBusy(true);
     NetworkJob *job=NetworkAccessManager::self()->get(url);
     connect(job, SIGNAL(finished()), this, SLOT(rssJobFinished()));
     job->setProperty(constNewFeedProperty, isNew);
@@ -394,27 +799,26 @@ bool PodcastService::downloadingEpisode(const QUrl &url) const
 void PodcastService::cancelAllDownloads()
 {
     foreach (const DownloadEntry &e, toDownload) {
-        updateEpisode(e.rssUrl, e.url, MusicLibraryItemPodcastEpisode::NotDownloading);
+        updateEpisode(e.rssUrl, e.url, Episode::NotDownloading);
     }
 
     toDownload.clear();
     cancelDownload();
-    setBusy(!rssJobs.isEmpty() || 0!=downloadJob);
 }
 
-void PodcastService::downloadPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes)
+void PodcastService::downloadPodcasts(Podcast *pod, const QList<Episode *> &episodes)
 {
-    foreach (MusicLibraryItemPodcastEpisode *ep, episodes) {
-        downloadEpisode(pod, QUrl(ep->file()));
+    foreach (Episode *ep, episodes) {
+        downloadEpisode(pod, QUrl(ep->url));
     }
 }
 
-void PodcastService::deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes)
+void PodcastService::deleteDownloadedPodcasts(Podcast *pod, const QList<Episode *> &episodes)
 {
     cancelDownloads(episodes);
     bool modified=false;
-    foreach (MusicLibraryItemPodcastEpisode *ep, episodes) {
-        QString fileName=ep->localPath();
+    foreach (Episode *ep, episodes) {
+        QString fileName=ep->localFile;
         if (!fileName.isEmpty()) {
             if (QFile::exists(fileName)) {
                 QFile::remove(fileName);
@@ -426,31 +830,34 @@ void PodcastService::deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, cons
                     dir.rmdir(dirName);
                 }
             }
-            ep->setLocalPath(QString());
-            ep->setDownloadProgress(-1);
-            emitDataChanged(createIndex(ep));
+            ep->localFile=QString();
+            ep->downloadProg=Episode::NotDownloading;
+            QModelIndex idx=createIndex(pod->episodes.indexOf(ep), 0, (void *)ep);
+            emit dataChanged(idx, idx);
             modified=true;
         }
     }
     if (modified) {
-        emitDataChanged(createIndex(pod));
+        QModelIndex idx=createIndex(podcasts.indexOf(pod), 0, (void *)pod);
+        emit dataChanged(idx, idx);
         pod->save();
     }
 }
 
-void PodcastService::setPodcastsAsListened(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes, bool listened)
+void PodcastService::setPodcastsAsListened(Podcast *pod, const QList<Episode *> &episodes, bool listened)
 {
     bool modified=false;
-    foreach (MusicLibraryItemPodcastEpisode *ep, episodes) {
-        MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(ep);
-        if (listened!=song->song().hasBeenPlayed()) {
-            pod->setPlayed(song, listened);
-            emitDataChanged(createIndex(song));
+    foreach (Episode *ep, episodes) {
+        if (listened!=ep->played) {
+            ep->played=listened;
+            QModelIndex idx=createIndex(pod->episodes.indexOf(ep), 0, (void *)ep);
+            emit dataChanged(idx, idx);
             modified=true;
         }
     }
     if (modified) {
-        emitDataChanged(createIndex(pod));
+        QModelIndex idx=createIndex(podcasts.indexOf(pod), 0, (void *)pod);
+        emit dataChanged(idx, idx);
         pod->save();
     }
 }
@@ -464,7 +871,7 @@ static QString encodeName(const QString &name)
     return n;
 }
 
-void PodcastService::downloadEpisode(const MusicLibraryItemPodcast *podcast, const QUrl &episode)
+void PodcastService::downloadEpisode(const Podcast *podcast, const QUrl &episode)
 {
     QString dest=Settings::self()->podcastDownloadPath();
     if (dest.isEmpty()) {
@@ -473,21 +880,21 @@ void PodcastService::downloadEpisode(const MusicLibraryItemPodcast *podcast, con
     if (downloadingEpisode(episode)) {
         return;
     }
-    dest=Utils::fixPath(dest)+Utils::fixPath(encodeName(podcast->data()))+Utils::getFile(episode.toString());
-    toDownload.append(DownloadEntry(episode, podcast->rssUrl(), dest));
-    updateEpisode(podcast->rssUrl(), episode, MusicLibraryItemPodcastEpisode::QueuedForDownload);
+    dest=Utils::fixPath(dest)+Utils::fixPath(encodeName(podcast->name))+Utils::getFile(episode.toString());
+    toDownload.append(DownloadEntry(episode, podcast->url, dest));
+    updateEpisode(podcast->url, episode, Episode::QueuedForDownload);
     doNextDownload();
 }
 
-void PodcastService::cancelDownloads(const QList<MusicLibraryItemPodcastEpisode *> episodes)
+void PodcastService::cancelDownloads(const QList<Episode *> episodes)
 {
     bool cancelDl=false;
-    foreach (MusicLibraryItemPodcastEpisode *e, episodes) {
-        QUrl u(e->file());
-        toDownload.removeAll(u);
-        e->setDownloadProgress(MusicLibraryItemPodcastEpisode::NotDownloading);
-        emitDataChanged(createIndex(e));
-        if (!cancelDl && downloadJob && downloadJob->url()==u) {
+    foreach (Episode *e, episodes) {
+        toDownload.removeAll(e->url);
+        e->downloadProg=Episode::NotDownloading;
+        QModelIndex idx=createIndex(e->parent->episodes.indexOf(e), 0, (void *)e);
+        emit dataChanged(idx, idx);
+        if (!cancelDl && downloadJob && downloadJob->url()==e->url) {
             cancelDl=true;
         }
     }
@@ -517,10 +924,9 @@ void PodcastService::cancelDownload()
         if (!partial.isEmpty() && QFile::exists(partial)) {
             QFile::remove(partial);
         }
-        updateEpisode(downloadJob->property(constRssUrlProperty).toUrl(), downloadJob->origUrl(), MusicLibraryItemPodcastEpisode::NotDownloading);
+        updateEpisode(downloadJob->property(constRssUrlProperty).toUrl(), downloadJob->origUrl(), Episode::NotDownloading);
         downloadJob=0;
     }
-    setBusy(!rssJobs.isEmpty() || 0!=downloadJob);
 }
 
 void PodcastService::doNextDownload()
@@ -530,7 +936,6 @@ void PodcastService::doNextDownload()
     }
 
     if (toDownload.isEmpty()) {
-        setBusy(!rssJobs.isEmpty());
         return;
     }
 
@@ -551,12 +956,13 @@ void PodcastService::doNextDownload()
 
 void PodcastService::updateEpisode(const QUrl &rssUrl, const QUrl &url, int pc)
 {
-    MusicLibraryItemPodcast *pod=getPodcast(rssUrl);
+    Podcast *pod=getPodcast(rssUrl);
     if (pod) {
-        MusicLibraryItemPodcastEpisode *song=getEpisode(pod, url);
-        if (song && song->downloadProgress()!=pc) {
-            song->setDownloadProgress(pc);
-            emitDataChanged(createIndex(song));
+        Episode *episode=pod->getEpisode(url);
+        if (episode && episode->downloadProg!=pc) {
+            episode->downloadProg=pc;
+            QModelIndex idx=createIndex(pod->episodes.indexOf(episode), 0, (void *)episode);
+            emit dataChanged(idx, idx);
         }
     }
 }
@@ -601,13 +1007,14 @@ void PodcastService::downloadJobFinished()
                 QFile::remove(dest);
             }
             if (QFile::rename(partial, dest)) {
-                MusicLibraryItemPodcast *pod=getPodcast(job->property(constRssUrlProperty).toUrl());
+                Podcast *pod=getPodcast(job->property(constRssUrlProperty).toUrl());
                 if (pod) {
-                    MusicLibraryItemPodcastEpisode *song=getEpisode(pod, job->origUrl());
-                    if (song) {
-                        song->setLocalPath(dest);
+                    Episode *episode=pod->getEpisode(job->origUrl());
+                    if (episode) {
+                        episode->localFile=dest;
                         pod->save();
-                        emitDataChanged(createIndex(song));
+                        QModelIndex idx=createIndex(pod->episodes.indexOf(episode), 0, (void *)episode);
+                        emit dataChanged(idx, idx);
                     }
                 }
             }
@@ -615,7 +1022,7 @@ void PodcastService::downloadJobFinished()
     } else if (!partial.isEmpty() && QFile::exists(partial)) {
         QFile::remove(partial);
     }
-    updateEpisode(job->property(constRssUrlProperty).toUrl(), job->origUrl(), MusicLibraryItemPodcastEpisode::NotDownloading);
+    updateEpisode(job->property(constRssUrlProperty).toUrl(), job->origUrl(), Episode::NotDownloading);
     downloadJob=0;
     doNextDownload();
 }
@@ -663,7 +1070,7 @@ void PodcastService::downloadPercent(int pc)
 
 void PodcastService::startRssUpdateTimer()
 {
-    if (0==Settings::self()->rssUpdate() || m_childItems.isEmpty()) {
+    if (0==Settings::self()->rssUpdate() || podcasts.isEmpty()) {
         stopRssUpdateTimer();
         return;
     }
@@ -698,8 +1105,8 @@ void PodcastService::stopRssUpdateTimer()
 
 void PodcastService::updateRss()
 {
-    foreach (MusicLibraryItem *i, m_childItems) {
-        QUrl url=static_cast<MusicLibraryItemPodcast *>(i)->rssUrl();
+    foreach (Podcast *podcast, podcasts) {
+        const QUrl &url=podcast->url;
         updateUrls.insert(url);
         if (!processingUrl(url)) {
             addUrl(url, false);
@@ -709,20 +1116,20 @@ void PodcastService::updateRss()
 
 void PodcastService::currentMpdSong(const Song &s)
 {
-    if ((s.isFromOnlineService() && s.album==constName) || isPodcastFile(s.file)) {
+    if ((s.isFromOnlineService() && s.onlineService()==constName) || isPodcastFile(s.file)) {
         QString path=s.decodedPath();
         if (path.isEmpty()) {
             path=s.file;
         }
-        foreach (MusicLibraryItem *p, m_childItems) {
-            MusicLibraryItemPodcast *podcast=static_cast<MusicLibraryItemPodcast *>(p);
-            foreach (MusicLibraryItem *i, podcast->childItems()) {
-                MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
-                if (song->file()==path || song->song().podcastLocalPath()==path) {
-                    if (!song->song().hasBeenPlayed()) {
-                        podcast->setPlayed(song);
-                        emitDataChanged(createIndex(song));
-                        emitDataChanged(createIndex(podcast));
+        foreach (Podcast *podcast, podcasts) {
+            foreach (Episode *episode, podcast->episodes) {
+                if (episode->url==path || episode->localFile==path) {
+                    if (!episode->played) {
+                        episode->played=true;
+                        QModelIndex idx=createIndex(podcast->episodes.indexOf(episode), 0, (void *)episode);
+                        emit dataChanged(idx, idx);
+                        idx=createIndex(podcasts.indexOf(podcast), 0, (void *)podcast);
+                        emit dataChanged(idx, idx);
                         podcast->save();
                     }
                     return;

@@ -39,6 +39,7 @@ class QTreeWidgetItem;
 class TextBrowser;
 class MessageWidget;
 class PageWidget;
+class PodcastService;
 
 namespace OpmlParser
 {
@@ -165,7 +166,7 @@ public:
     static QString constCacheDir;
     static QString constExt;
 
-    PodcastSearchDialog(QWidget *parent);
+    PodcastSearchDialog(PodcastService *s, QWidget *parent);
     virtual ~PodcastSearchDialog();
 
 private Q_SLOTS:
@@ -184,6 +185,7 @@ private:
     PageWidget *pageWidget;
     MessageWidget *messageWidget;
     QWidget *spacer;
+    PodcastService *service;
 };
 
 #endif

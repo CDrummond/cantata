@@ -94,6 +94,7 @@ public:
     ItemView(QWidget *p=0);
     virtual ~ItemView();
 
+    void alwaysShowHeader();
     void load(const QString &group);
     void save(const QString &group);
     void allowGroupedView();
@@ -166,6 +167,7 @@ Q_SIGNALS:
     void itemsSelected(bool);
     void doubleClicked(const QModelIndex &);
     void rootIndexSet(const QModelIndex &);
+    void headerClicked(int level);
 
 private Q_SLOTS:
     void itemClicked(const QModelIndex &index);
@@ -175,6 +177,7 @@ private Q_SLOTS:
     void searchActive(bool a);
     void activateItem(const QModelIndex &index, bool emitRootSet=true);
     void modelReset();
+    void dataChanged(const QModelIndex &tl, const QModelIndex &br);
 
 private:
     void collapseToLevel();

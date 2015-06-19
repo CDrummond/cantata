@@ -29,13 +29,14 @@
 #include "widgets/icons.h"
 #include "support/spinner.h"
 #include "widgets/basicitemdelegate.h"
-#include "models/onlineservicesmodel.h"
 #include "podcastservice.h"
 #include "support/utils.h"
 #include "support/action.h"
 #include "widgets/textbrowser.h"
 #include "support/messagewidget.h"
+#include "gui/covers.h"
 #include "rssparser.h"
+#include "podcastservice.h"
 #include "config.h"
 #include <QLabel>
 #include <QPushButton>
@@ -581,8 +582,9 @@ int PodcastSearchDialog::instanceCount()
     return iCount;
 }
 
-PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
+PodcastSearchDialog::PodcastSearchDialog(PodcastService *s, QWidget *parent)
     : Dialog(parent, "PodcastSearchDialog", QSize(800, 600))
+    , service(s)
 {
     Utils::clearOldCache(constCacheDir, 2);
 
@@ -635,7 +637,7 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
     if (-1==maxImageSize) {
         maxImageSize=fontMetrics().height()*8;
     }
-    connect(OnlineServicesModel::self(), SIGNAL(podcastError(QString)), this, SLOT(showError(QString)));
+    connect(service, SIGNAL(newError(QString)), this, SLOT(showError(QString)));
     connect(messageWidget, SIGNAL(visible(bool)), SLOT(msgWidgetVisible(bool)));
     connect(pageWidget, SIGNAL(currentPageChanged()), this, SLOT(pageChanged()));
     messageWidget->hide();
@@ -643,7 +645,6 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
 
 PodcastSearchDialog::~PodcastSearchDialog()
 {
-    disconnect(OnlineServicesModel::self(), SIGNAL(podcastError(QString)), this, SLOT(showError(QString)));
     iCount--;
     imageCache.clear();
 }
@@ -716,10 +717,11 @@ void PodcastSearchDialog::slotButtonClicked(int button)
     switch (button) {
     case User1: {
         QUrl fixed=PodcastService::fixUrl(currentUrl);
-        if (OnlineServicesModel::self()->subscribePodcast(fixed)) {
-            showInfo(i18n("Subscription added"));
-        } else {
+        if (service->subscribedToUrl(fixed)) {
             showError(i18n("You are already subscribed to this podcast!"));
+        } else {
+            service->addUrl(fixed);
+            showInfo(i18n("Subscription added"));
         }
         break;
     }

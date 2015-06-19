@@ -26,7 +26,7 @@
 
 #include "ui_searchpage.h"
 #include "page.h"
-#include "models/searchmodel.h"
+#include "models/mpdsearchmodel.h"
 #include "models/searchproxymodel.h"
 
 class Action;
@@ -77,7 +77,7 @@ private:
     };
 
     int state;
-    SearchModel model;
+    MpdSearchModel model;
     SearchProxyModel proxy;
     Action *locateAction;
 };

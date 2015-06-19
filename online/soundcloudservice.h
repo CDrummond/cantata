@@ -25,45 +25,31 @@
 #define SOUNDCLOUD_SERVICE_H
 
 #include "onlineservice.h"
-#include <QLatin1String>
+#include "models/searchmodel.h"
 
 class NetworkJob;
-class SoundCloudService : public OnlineService
+
+class SoundCloudService : public SearchModel, public OnlineService
 {
     Q_OBJECT
 
 public:
-    static const QLatin1String constName;
+    SoundCloudService(QObject *p);
+    ~SoundCloudService() { }
 
-    SoundCloudService(MusicModel *m);
-    ~SoundCloudService() { cancelAll(); }
-
-    Song fixPath(const Song &orig, bool) const;
-    void loadConfig() { }
-    void saveConfig() { }
-    void createLoader() { }
-    bool canConfigure() const { return false; }
-    bool canLoad() const { return false; }
-    bool isSearchBased() const { return true; }
-    QString currentSearchString() const { return currentSearch; }
-    void setSearch(const QString &searchTerm);
-    void cancelSearch() { cancelAll(); }
-    void clear();
-    bool isSearching() const { return 0!=job; }
-    bool isFlat() const { return true; }
-    static const QString iconPath() { return iconFile; }
-
-private:
-    void cancelAll();
+    QVariant data(const QModelIndex &index, int role) const;
+    Song & fixPath(Song &s) const;
+    QString name() const;
+    QString title() const;
+    QString descr() const;
+    void search(const QString &key, const QString &value);
+    void cancel();
 
 private Q_SLOTS:
     void jobFinished();
 
 private:
     NetworkJob *job;
-    QString currentSearch;
-    static QString iconFile;
 };
 
 #endif
-

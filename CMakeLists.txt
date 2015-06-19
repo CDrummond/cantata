@@ -411,7 +411,7 @@ set(CANTATA_CORE_SRCS ${CANTATA_CORE_SRCS}
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
     models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp
     models/musicmodel.cpp models/multimusicmodel.cpp models/searchmodel.cpp models/streamsmodel.cpp models/searchproxymodel.cpp
-    models/musiclibraryitemsong.cpp models/sqllibrarymodel.cpp models/mpdlibrarymodel.cpp
+    models/musiclibraryitemsong.cpp models/sqllibrarymodel.cpp models/mpdlibrarymodel.cpp models/mpdsearchmodel.cpp
     mpd-interface/mpdconnection.cpp mpd-interface/mpdparseutils.cpp mpd-interface/mpdstats.cpp mpd-interface/mpdstatus.cpp
     mpd-interface/song.cpp mpd-interface/cuefile.cpp
     db/librarydb.cpp db/mpdlibrarydb.cpp
@@ -422,7 +422,7 @@ set(CANTATA_CORE_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
     gui/covers.h gui/currentcover.h
     models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/actionmodel.h
-    models/multimusicmodel.h models/searchmodel.h models/sqllibrarymodel.h models/mpdlibrarymodel.h
+    models/multimusicmodel.h models/searchmodel.h models/sqllibrarymodel.h models/mpdlibrarymodel.h models/mpdsearchmodel.h
     mpd-interface/mpdconnection.h mpd-interface/mpdstats.h mpd-interface/mpdstatus.h
     db/librarydb.h db/mpdlibrarydb.h
     network/networkaccessmanager.h
@@ -440,7 +440,7 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS} ${CANTATA_SRCS}
     widgets/statuslabel.cpp widgets/searchwidget.cpp widgets/messageoverlay.cpp widgets/basicitemdelegate.cpp widgets/sizegrip.cpp
     widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp widgets/songdialog.cpp widgets/stretchheaderview.cpp
     widgets/tableview.cpp widgets/thinsplitterhandle.cpp widgets/coverwidget.cpp widgets/ratingwidget.cpp widgets/notelabel.cpp
-    widgets/selectorlabel.cpp widgets/titlewidget.cpp
+    widgets/selectorlabel.cpp widgets/titlewidget.cpp widgets/multipagewidget.cpp widgets/singlepagewidget.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
     context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp context/togglelist.cpp
@@ -452,9 +452,9 @@ set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS} ${CANTATA_MOC_HDRS}
     gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h
     gui/coverdialog.h gui/searchpage.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/nowplayingwidget.h widgets/actionlabel.h
-    widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h
+    widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h widgets/singlepagewidget.h
     widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h widgets/tableview.h
-    widgets/coverwidget.h widgets/ratingwidget.h widgets/selectorlabel.h widgets/titlewidget.h
+    widgets/coverwidget.h widgets/ratingwidget.h widgets/selectorlabel.h widgets/titlewidget.h widgets/multipagewidget.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
@@ -505,16 +505,17 @@ if (ENABLE_STREAMS)
 endif (ENABLE_STREAMS)
 
 if (ENABLE_ONLINE_SERVICES)
-    set(CANTATA_SRCS ${CANTATA_SRCS} online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp
-        online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp
-        online/podcastservice.cpp online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp online/onlinesettings.cpp
-        online/podcastsettingsdialog.cpp models/onlineservicesmodel.cpp models/musiclibraryitempodcast.cpp
+    set(CANTATA_SRCS ${CANTATA_SRCS} online/onlineservicespage.cpp online/onlinedbservice.cpp online/jamendoservice.cpp
+        online/onlinedbwidget.cpp  online/onlineservice.cpp online/jamendosettingsdialog.cpp online/magnatuneservice.cpp
+        online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp online/soundcloudwidget.cpp
+        online/podcastservice.cpp online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp
+        online/podcastsettingsdialog.cpp online/podcastwidget.cpp
+        db/onlinedb.cpp
         context/onlineview.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h
-        online/magnatuneservice.h online/magnatunesettingsdialog.h online/magnatuneservice.h online/magnatunesettingsdialog.h
-        online/soundcloudservice.h online/podcastservice.h online/podcastsearchdialog.h online/podcastsettingsdialog.h
-        online/onlinesettings.h models/onlineservicesmodel.h)
-    set(CANTATA_UIS ${CANTATA_UIS} online/onlineservicespage.ui online/onlinesettings.ui)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} online/onlineservicespage.h online/onlinedbservice.h online/onlinedbwidget.h
+        db/onlinedb.h online/magnatunesettingsdialog.h online/soundcloudservice.h online/soundcloudwidget.h
+        online/podcastservice.h online/podcastsearchdialog.h online/podcastsettingsdialog.h online/podcastwidget.h
+        )
     add_subdirectory(online/icons)
 endif (ENABLE_ONLINE_SERVICES)
 

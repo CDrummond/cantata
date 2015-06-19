@@ -161,7 +161,7 @@ public:
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
     bool songExists(const Song &song);
 
-private Q_SLOTS:
+protected Q_SLOTS:
     void libraryUpdated();
 
 private:
@@ -169,6 +169,7 @@ private:
     QModelIndexList children(const QModelIndex &parent) const;
     QList<Song> songs(const QModelIndex &idx, bool allowPlaylists) const;
     Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<Item*>(index.internalPointer()) : root; }
+    virtual Song & fixPath(Song &s) const { return s; }
 
 protected:
     Type tl;

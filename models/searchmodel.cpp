@@ -24,9 +24,7 @@
 #include "searchmodel.h"
 #include "widgets/icons.h"
 #include "roles.h"
-#include "mpd-interface/mpdconnection.h"
 #include "playqueuemodel.h"
-#include "gui/covers.h"
 #include "gui/settings.h"
 #include "support/localize.h"
 #include <QString>
@@ -64,14 +62,8 @@ QString SearchModel::headerText(int col)
 SearchModel::SearchModel(QObject *parent)
     : ActionModel(parent)
     , multiCol(false)
-    , currentId(0)
 {
-    connect(this, SIGNAL(getRating(QString)), MPDConnection::self(), SLOT(getRating(QString)));
-    connect(this, SIGNAL(search(QString,QString,int)), MPDConnection::self(), SLOT(search(QString,QString,int)));
-    connect(MPDConnection::self(), SIGNAL(searchResponse(int,QList<Song>)), this, SLOT(searchFinished(int,QList<Song>)));
-    connect(MPDConnection::self(), SIGNAL(rating(QString,quint8)), SLOT(ratingResult(QString,quint8)));
     #ifndef ENABLE_UBUNTU
-    connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
     alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
     alignments[COL_TRACK]=alignments[COL_LENGTH]=alignments[COL_DISC]=alignments[COL_YEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
     alignments[COL_RATING]=int(Qt::AlignVCenter|Qt::AlignHCenter);
@@ -239,13 +231,8 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         v.setValue<Song>(*song);
         return v;
     }
-    case Cantata::Role_SongWithRating:
     case Cantata::Role_Song: {
         QVariant var;
-        if (Cantata::Role_SongWithRating==role && Song::Standard==song->type && Song::Rating_Null==song->rating) {
-            emit getRating(song->file);
-            song->rating=Song::Rating_Requested;
-        }
         var.setValue<Song>(*song);
         return var;
     }
@@ -323,32 +310,14 @@ void SearchModel::clear()
         endRemoveRows();
     }
     currentKey=currentValue=QString();
-    currentId++;
     emit statsUpdated(0, 0);
 }
 
-void SearchModel::search(const QString &key, const QString &value)
+void SearchModel::results(const QList<Song> &songs)
 {
-    if (key==currentKey && value==currentValue) {
-        return;
-    }
-    emit searching();
-    clear();
-    currentKey=key;
-    currentValue=value;
-    currentId++;
-    emit search(key, value, currentId);
-}
-
-void SearchModel::searchFinished(int id, const QList<Song> &result)
-{
-    if (id!=currentId) {
-        return;
-    }
-
     beginResetModel();
     songList.clear();
-    songList=result;
+    songList=songs;
     endResetModel();
     quint32 time=0;
     foreach (const Song &s, songList) {
@@ -357,37 +326,4 @@ void SearchModel::searchFinished(int id, const QList<Song> &result)
 
     emit statsUpdated(songList.size(), time);
     emit searched();
-}
-
-void SearchModel::coverLoaded(const Song &song, int s)
-{
-    Q_UNUSED(s)
-    #ifdef ENABLE_UBUNTU
-    Q_UNUSED(song)
-    #else
-    if (!song.isArtistImageRequest() && !song.isComposerImageRequest()) {
-        int row=0;
-        foreach (const Song &s, songList) {
-            if (s.albumArtist()==song.albumArtist() && s.album==song.album) {
-                QModelIndex idx=index(row, 0, QModelIndex());
-                emit dataChanged(idx, idx);
-            }
-            row++;
-        }
-    }
-    #endif
-}
-
-void SearchModel::ratingResult(const QString &file, quint8 r)
-{
-    QList<Song>::iterator it=songList.begin();
-    QList<Song>::iterator end=songList.end();
-    int numCols=columnCount(QModelIndex())-1;
-
-    for (int row=0; it!=end; ++it, ++row) {
-        if (Song::Standard==(*it).type && r!=(*it).rating && (*it).file==file) {
-            (*it).rating=r;
-            emit dataChanged(index(row, 0), index(row, numCols));
-        }
-    }
 }

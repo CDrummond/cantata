@@ -39,9 +39,6 @@ class InterfaceSettings;
 #ifdef ENABLE_STREAMS
 class StreamsSettings;
 #endif
-#ifdef ENABLE_ONLINE_SERVICES
-class OnlineSettings;
-#endif
 class ContextSettings;
 class HttpServerSettings;
 struct MPDConnectionDetails;
@@ -85,9 +82,6 @@ private:
     InterfaceSettings *interface;
     #ifdef ENABLE_STREAMS
     StreamsSettings *streams;
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    OnlineSettings *online;
     #endif
     ContextSettings *context;
     #ifdef ENABLE_HTTP_SERVER

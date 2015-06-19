@@ -102,7 +102,6 @@ QStringList LibraryPage::selectedFiles(bool allowPlaylists) const
         return QStringList();
     }
     return MpdLibraryModel::self()->filenames(selected, allowPlaylists);
-    return QStringList();
 }
 
 QList<Song> LibraryPage::selectedSongs(bool allowPlaylists) const
@@ -112,7 +111,6 @@ QList<Song> LibraryPage::selectedSongs(bool allowPlaylists) const
         return QList<Song>();
     }
     return MpdLibraryModel::self()->songs(selected, allowPlaylists);
-    return QList<Song>();
 }
 
 Song LibraryPage::coverRequest() const

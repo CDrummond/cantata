@@ -38,8 +38,8 @@
 #ifdef ENABLE_STREAMS
 #include "models/streamsmodel.h"
 #endif
-#ifdef ENABLE_ONLINE_SERVICES
-#include "online//podcastsearchdialog.h"
+#ifdef ENABLE_ONLINE_SERVICES____TODO
+#include "online/podcastsearchdialog.h"
 #endif
 #include "support/squeezedtextlabel.h"
 #include "scrobbling/scrobbler.h"
@@ -275,7 +275,7 @@ CacheSettings::CacheSettings(QWidget *parent)
     #ifdef ENABLE_STREAMS
     new CacheItem(i18n("Stream Listings"), Utils::cacheDir(StreamsModel::constSubDir, false), QStringList() << "*"+StreamsModel::constCacheExt, tree);
     #endif
-    #ifdef ENABLE_ONLINE_SERVICES
+    #ifdef ENABLE_ONLINE_SERVICES____TODO
     new CacheItem(i18n("Podcast Directories"), Utils::cacheDir(PodcastSearchDialog::constCacheDir, false), QStringList() << "*"+PodcastSearchDialog::constExt, tree);
     #endif
     new CacheItem(i18n("Wikipedia Languages"), Utils::cacheDir(WikipediaSettings::constSubDir, false), QStringList() << "*.xml.gz", tree);

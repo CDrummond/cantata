@@ -49,7 +49,7 @@
 #include "mpdconnection.h"
 #ifdef ENABLE_ONLINE_SERVICES
 #include "online/onlineservice.h"
-#include "online/podcastservice.h"
+//#include "online/podcastservice.h"
 #endif
 
 #include <QDebug>
@@ -413,7 +413,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         song.file=origFile;
         song.setKey(location);
 
-        #ifdef ENABLE_ONLINE_SERVICES
+        #ifdef ENABLE_ONLINE_SERVICES____TODO
         // Check for downloaded podcasts played via local file playback
         if (Song::OnlineSvrTrack!=song.type && PodcastService::isPodcastFile(song.file)) {
             song.setIsFromOnlineService(PodcastService::constName);

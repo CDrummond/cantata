@@ -26,10 +26,6 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemroot.h"
-#ifdef ENABLE_ONLINE_SERVICES
-#include "musiclibraryitempodcast.h"
-#include "online/onlineservice.h"
-#endif
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devices/device.h"
 #endif
@@ -57,7 +53,7 @@ const MusicLibraryItemRoot * MusicModel::root(const MusicLibraryItem *item) cons
         return static_cast<const MusicLibraryItemRoot *>(item);
     }
     
-    if (MusicLibraryItem::Type_Artist==item->itemType() || MusicLibraryItem::Type_Podcast==item->itemType()) {
+    if (MusicLibraryItem::Type_Artist==item->itemType()) {
         return static_cast<const MusicLibraryItemRoot *>(item->parentItem());
     }
     
@@ -107,10 +103,6 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             return static_cast<MusicLibraryItemRoot *>(item)->icon();
         case MusicLibraryItem::Type_Artist:
             return Icons::self()->artistIcon;
-        #ifdef ENABLE_ONLINE_SERVICES
-        case MusicLibraryItem::Type_Podcast:
-            return Icons::self()->podcastIcon;
-        #endif
         case MusicLibraryItem::Type_Album:
             return Icons::self()->albumIcon;
         case MusicLibraryItem::Type_Song:
@@ -136,11 +128,6 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
                 return song->song().artistSong();
             }
-            #ifdef ENABLE_ONLINE_SERVICES
-            if (MusicLibraryItem::Type_Podcast==song->parentItem()->itemType()) {
-                return item->data();
-            }
-            #endif
             return song->song().trackAndTitleStr();
         }
         return item->displayData();
@@ -149,13 +136,6 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
         if (MusicLibraryItem::Type_Song==item->itemType()) {
-            #ifdef ENABLE_ONLINE_SERVICES
-            if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
-                return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
-                       Utils::formatTime(static_cast<MusicLibraryItemSong *>(item)->time(), true)+
-                       QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemPodcastEpisode *>(item)->published()+QLatin1String("</i></small>");
-            }
-            #endif
             return static_cast<MusicLibraryItemSong *>(item)->song().toolTip();
         }
 
@@ -175,8 +155,6 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         }
         case MusicLibraryItem::Type_Artist:
             return Plurals::albums(item->childCount());
-        case MusicLibraryItem::Type_Podcast:
-            return Plurals::episodes(item->childCount());
         case MusicLibraryItem::Type_Song:
             return Utils::formatTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
         case MusicLibraryItem::Type_Album:
@@ -188,10 +166,6 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Album:
             return true;
-        #ifdef ENABLE_ONLINE_SERVICES
-        case MusicLibraryItem::Type_Podcast:
-            return true;
-        #endif
         default:
             return false;
         }
@@ -215,11 +189,6 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         case MusicLibraryItem::Type_Artist:
             v.setValue<Song>(static_cast<MusicLibraryItemArtist *>(item)->coverSong());
             break;
-        #ifdef ENABLE_ONLINE_SERVICES
-        case MusicLibraryItem::Type_Podcast:
-            v.setValue<Song>(static_cast<MusicLibraryItemPodcast *>(item)->coverSong());
-            break;
-        #endif
         default:
             break;
         }

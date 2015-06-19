@@ -28,9 +28,6 @@
 #ifdef ENABLE_STREAMS
 #include "streams/streamssettings.h"
 #endif
-#ifdef ENABLE_ONLINE_SERVICES
-#include "online/onlinesettings.h"
-#endif
 #include "serversettings.h"
 #include "playbacksettings.h"
 #include "filesettings.h"
@@ -89,11 +86,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     streams = new StreamsSettings(0);
     addPage(QLatin1String("streams"), streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings"));
     streams->load();
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    online = new OnlineSettings(0);
-    addPage(QLatin1String("online"), online, i18n("Online"), Icon("applications-internet"), i18n("Online Providers"));
-    online->load();
     #endif
     addPage(QLatin1String("context"), context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
     addPage(QLatin1String("scrobbling"), scrobbling, i18n("Scrobbling"), Icons::self()->lastFmIcon, i18n("Scrobbling Settings"));
@@ -165,9 +157,6 @@ void PreferencesDialog::writeSettings()
     interface->save();
     #ifdef ENABLE_STREAMS
     streams->save();
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    online->save();
     #endif
     #ifdef ENABLE_HTTP_SERVER
     if (http) {

@@ -23,45 +23,42 @@
 
 #include "magnatuneservice.h"
 #include "magnatunesettingsdialog.h"
-#include "models/musiclibraryitemartist.h"
-#include "models/musiclibraryitemalbum.h"
-#include "models/musiclibraryitemsong.h"
-#include "mpd-interface/song.h"
-#include "support/configuration.h"
+#include "db/onlinedb.h"
+#include "models/roles.h"
 #include "support/localize.h"
+#include "support/icon.h"
+#include "support/configuration.h"
 #include <QXmlStreamReader>
+#include <QUrl>
 
-MagnatuneMusicLoader::MagnatuneMusicLoader(const QUrl &src)
-    : OnlineMusicLoader(src)
+int MagnatuneXmlParser::parse(QXmlStreamReader &xml)
 {
-}
-
-bool MagnatuneMusicLoader::parse(QXmlStreamReader &xml)
-{
+    QList<Song> *songList=new QList<Song>();
     while (!xml.atEnd()) {
-        if (wasStopped()) {
-            delete library;
-            library=0;
-            return false;
-        }
         xml.readNext();
         if (QXmlStreamReader::StartElement==xml.tokenType() && QLatin1String("Track")==xml.name()) {
-            parseSong(xml);
+            songList->append(parseSong(xml));
+            if (songList->count()>50) {
+                emit songs(songList);
+                songList=new QList<Song>();
+            }
         }
     }
-    return true;
+    if (songList->isEmpty()) {
+        delete songList;
+    } else {
+        emit songs(songList);
+    }
+    return artists.count();
 }
 
-void MagnatuneMusicLoader::parseSong(QXmlStreamReader &xml)
+Song MagnatuneXmlParser::parseSong(QXmlStreamReader &xml)
 {
     Song s;
 //    QString artistImg;
     QString albumImg;
 
     while (!xml.atEnd()) {
-        if (wasStopped()) {
-            return;
-        }
         xml.readNext();
 
         if (QXmlStreamReader::StartElement==xml.tokenType()) {
@@ -80,9 +77,10 @@ void MagnatuneMusicLoader::parseSong(QXmlStreamReader &xml)
                 s.year=value.toInt();
             } else  if (QLatin1String("magnatunegenres")==name) {
                 QStringList genres=value.split(',', QString::SkipEmptyParts);
-                foreach (const QString &g, genres) {
-                    s.addGenre(g);
-                }
+//                foreach (const QString &g, genres) {
+//                    s.addGenre(g);
+//                }
+                s.genre=genres.first();
             } else if (QLatin1String("seconds")==name) {
                  s.time=value.toInt();
 //            } else if (QLatin1String("cover_small")==name) {
@@ -99,58 +97,21 @@ void MagnatuneMusicLoader::parseSong(QXmlStreamReader &xml)
         }
     }
 
-    if (!s.title.isEmpty()) {
-        s.fillEmptyFields();
-        MusicLibraryItemArtist *artist = library->artist(s);
-        MusicLibraryItemAlbum *album = artist->album(s);
-        album->append(new MusicLibraryItemSong(s, album));
-//        if (!artistImg.isEmpty() && artist->imageUrl().isEmpty()) {
-//            artist->setImageUrl(artistImg);
-//        }
-        if (!albumImg.isEmpty() && album->imageUrl().isEmpty()) {
-            album->setImageUrl(albumImg);
+    if (!albumImg.isEmpty()) {
+        QString key=s.artistOrComposer()+"-"+s.albumId();
+        if (!albumUrls.contains(key)) {
+            albumUrls.insert(key);
+            emit coverUrl(s.artistOrComposer(), s.album, albumImg);
         }
     }
+    artists.insert(s.artistOrComposer());
+    return s;
 }
 
-const QLatin1String MagnatuneService::constName("Magnatune");
+static const QLatin1String constListingUrl("http://magnatune.com/info/song_info_xml.gz");
+static const QLatin1String constName("magnatune");
 static const char * constStreamingHostname = "streaming.magnatune.com";
 static const char * constDownloadHostname = "download.magnatune.com";
-
-void MagnatuneService::createLoader()
-{
-    loader=new MagnatuneMusicLoader(QUrl("http://magnatune.com/info/song_info_xml.gz"));
-}
-
-Song MagnatuneService::fixPath(const Song &orig, bool) const
-{
-    Song s=orig;
-    s.type=Song::OnlineSvrTrack;
-    if (MB_None!=membership) {
-        QUrl url;
-        #if QT_VERSION < 0x050000
-        url.setEncodedUrl(orig.file.toLocal8Bit());
-        #else
-        url=QUrl(orig.file);
-        #endif
-        url.setScheme("http");
-        url.setHost(MB_Streaming==membership ? constStreamingHostname : constDownloadHostname);
-        url.setUserName(username);
-        url.setPassword(password);
-
-        // And remove the commercial
-        QString path = url.path();
-        path.insert(path.lastIndexOf('.'), "_nospeech");
-        url.setPath(path);
-        s.file=url.toString();
-    // TODO: Magnatune downloads!
-    //    if (MB_Download==membership) {
-    //        s.genre=downloadTypeStr(download);
-    //    }
-    }
-    s.setIsFromOnlineService(constName);
-    return encode(s);
-}
 
 QString MagnatuneService::membershipStr(MemberShip f, bool trans)
 {
@@ -194,24 +155,104 @@ static MagnatuneService::DownloadType toDownloadType(const QString &f)
     return MagnatuneService::DL_Mp3;
 }
 
-void MagnatuneService::loadConfig()
+MagnatuneService::MagnatuneService(QObject *p)
+    : OnlineDbService(new OnlineDb(constName, p), p)
 {
+    tl=T_Genre;
+    icn.addFile(":"+constName);
+    useCovers(name());
     Configuration cfg(constName);
-
     membership=toMembership(cfg.get("membership", membershipStr(membership)));
     download=toDownloadType(cfg.get("download", downloadTypeStr(download)));
     username=cfg.get("username", username);
     password=cfg.get("username", password);
 }
 
-void MagnatuneService::saveConfig()
+QVariant MagnatuneService::data(const QModelIndex &index, int role) const
 {
-    Configuration cfg(constName);
+    if (index.isValid()) {
+        switch (role) {
+        case Cantata::Role_CoverSong: {
+            QVariant v;
+            Item *item = static_cast<Item *>(index.internalPointer());
+            switch (item->getType()) {
+            case T_Album:
+                if (item->getSong().isEmpty()) {
+                    Song song;
+                    song.artist=item->getParent()->getId();
+                    song.album=item->getId();
+                    song.setIsFromOnlineService(constName);
+                    song.file=constName; // Just so that isEmpty() is false!
+                    QString url=static_cast<OnlineDb *>(db)->getCoverUrl(/*T_Album==topLevel() ? static_cast<AlbumItem *>(item)->getArtistId() : */item->getParent()->getId(), item->getId());
+                    song.setExtraField(Song::OnlineImageUrl, url);
+                    item->setSong(song);
+                }
+                v.setValue<Song>(item->getSong());
+                break;
+            case T_Artist:
+                break;
+            default:
+                break;
+            }
+            return v;
+        }
+        }
+    }
+    return OnlineDbService::data(index, role);
+}
 
-    cfg.set("membership",  membershipStr(membership));
-    cfg.set("download",  downloadTypeStr(download));
-    cfg.set("username", username);
-    cfg.set("password", password);
+QString MagnatuneService::name() const
+{
+    return constName;
+}
+
+QString MagnatuneService::title() const
+{
+    return QLatin1String("Magnatune");
+}
+
+QString MagnatuneService::descr() const
+{
+    return i18n("Online music from magnatune.com");
+}
+
+OnlineXmlParser * MagnatuneService::createParser()
+{
+    return new MagnatuneXmlParser();
+}
+
+QUrl MagnatuneService::listingUrl() const
+{
+    return QUrl(constListingUrl);
+}
+
+Song & MagnatuneService::fixPath(Song &s) const
+{
+    s.type=Song::OnlineSvrTrack;
+    if (MB_None!=membership) {
+        QUrl url;
+        #if QT_VERSION < 0x050000
+        url.setEncodedUrl(s.file.toLocal8Bit());
+        #else
+        url=QUrl(s.file);
+        #endif
+        url.setScheme("http");
+        url.setHost(MB_Streaming==membership ? constStreamingHostname : constDownloadHostname);
+        url.setUserName(username);
+        url.setPassword(password);
+
+        // And remove the commercial
+        QString path = url.path();
+        path.insert(path.lastIndexOf('.'), "_nospeech");
+        url.setPath(path);
+        s.file=url.toString();
+    // TODO: Magnatune downloads!
+    //    if (MB_Download==membership) {
+    //        s.genre=downloadTypeStr(download);
+    //    }
+    }
+    s.setIsFromOnlineService(name());
+    return encode(s);
 }
 
 void MagnatuneService::configure(QWidget *p)
@@ -223,6 +264,10 @@ void MagnatuneService::configure(QWidget *p)
         password=dlg.password();
         membership=(MemberShip)dlg.membership();
         download=(DownloadType)dlg.download();
-        saveConfig();
-    }
+        Configuration cfg(constName);
+
+        cfg.set("membership",  membershipStr(membership));
+        cfg.set("download",  downloadTypeStr(download));
+        cfg.set("username", username);
+        cfg.set("password", password);    }
 }

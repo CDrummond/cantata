@@ -22,12 +22,10 @@
  */
 
 #include "soundcloudservice.h"
+#include "support/localize.h"
 #include "network/networkaccessmanager.h"
-#include "models/onlineservicesmodel.h"
-#include "models/musiclibraryitemsong.h"
 #include "mpd-interface/mpdconnection.h"
-#include "config.h"
-#include <QCoreApplication>
+#include "models/roles.h"
 #include <QUrl>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -36,45 +34,68 @@
 #include "qjson/parser.h"
 #endif
 
-const QLatin1String SoundCloudService::constName("SoundCloud");
-QString SoundCloudService::iconFile;
-static const QString constApiKey=QLatin1String("0cb23dce473528973ce74815bd36a334");
-static const QString constUrl=QLatin1String("https://api.soundcloud.com/tracks");
+static const QLatin1String constName("soundcloud");
+static const QLatin1String constApiKey("0cb23dce473528973ce74815bd36a334");
+static const QLatin1String constUrl("https://api.soundcloud.com/tracks");
 
-SoundCloudService::SoundCloudService(MusicModel *m)
-    : OnlineService(m, constName)
+SoundCloudService::SoundCloudService(QObject *p)
+    : SearchModel(p)
     , job(0)
 {
-    if (iconFile.isEmpty()) {
-        iconFile=QString(CANTATA_SYS_ICONS_DIR+"soundcloud.png");
-    }
+    icn.addFile(":"+constName);
 }
 
-Song SoundCloudService::fixPath(const Song &orig, bool) const
+QVariant SoundCloudService::data(const QModelIndex &index, int role) const
 {
-    Song s(orig);
+    if (!index.isValid()) {
+        switch (role) {
+        case Cantata::Role_TitleText:
+            return title();
+        case Cantata::Role_SubText:
+            return descr();
+        case Qt::DecorationRole:
+            return icon();
+        }
+    }
+    return SearchModel::data(index, role);
+}
+
+Song & SoundCloudService::fixPath(Song &s) const
+{
     s.setIsFromOnlineService(constName);
     s.album=constName;
     return encode(s);
 }
 
-void SoundCloudService::clear()
+QString SoundCloudService::name() const
 {
-    cancelAll();
-    ::OnlineService::clear();
+    return constName;
 }
 
-void SoundCloudService::setSearch(const QString &searchTerm)
+QString SoundCloudService::title() const
 {
-    if (searchTerm==currentSearch) {
+    return QLatin1String("SoundCloud");
+}
+
+QString SoundCloudService::descr() const
+{
+    return i18n("Search for tracks from soundcloud.com");
+}
+
+void SoundCloudService::search(const QString &key, const QString &value)
+{
+    Q_UNUSED(key);
+
+    if (value==currentValue) {
         return;
     }
 
     clear();
+    cancel();
 
-    currentSearch=searchTerm;
+    currentValue=value;
 
-    if (currentSearch.isEmpty()) {
+    if (currentValue.isEmpty()) {
         return;
     }
 
@@ -85,7 +106,7 @@ void SoundCloudService::setSearch(const QString &searchTerm)
     QUrlQuery query;
     #endif
     query.addQueryItem("client_id", constApiKey);
-    query.addQueryItem("q", searchTerm);
+    query.addQueryItem("q", currentValue);
     #if QT_VERSION >= 0x050000
     searchUrl.setQuery(query);
     #endif
@@ -94,17 +115,15 @@ void SoundCloudService::setSearch(const QString &searchTerm)
     req.setRawHeader("Accept", "application/json");
     job=NetworkAccessManager::self()->get(req);
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
-    emitUpdated();
-    setBusy(true);
+    emit searching();
 }
 
-void SoundCloudService::cancelAll()
+void SoundCloudService::cancel()
 {
     if (job) {
         job->cancelAndDelete();
         job=0;
     }
-    setBusy(false);
 }
 
 void SoundCloudService::jobFinished()
@@ -115,6 +134,7 @@ void SoundCloudService::jobFinished()
     }
 
     j->deleteLater();
+    QList<Song> songs;
 
     if (j->ok()) {
         #if QT_VERSION >= 0x050000
@@ -151,16 +171,11 @@ void SoundCloudService::jobFinished()
                 song.genre=details["genre"].toString();
                 song.year=details["release_year"].toInt();
                 song.time=details["duration"].toUInt()/1000;
-                if (!update) {
-                    update=new OnlineServiceMusicRoot();
-                }
                 song.fillEmptyFields();
-                update->append(new MusicLibraryItemSong(song, update));
+                songs.append(song);
             }
         }
     }
-
-    loaded=true;
+    results(songs);
     job=0;
-    applyUpdate();
 }

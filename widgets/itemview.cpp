@@ -568,10 +568,11 @@ QString ItemView::modeStr(Mode m)
 }
 
 static const char *constPageProp="page";
+static const char *constAlwaysShowProp="always";
 static Action *backAction=0;
 
 const QLatin1String ItemView::constSearchActiveKey("searchActive");
-#include <QDebug>
+
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
     , searchTimer(0)
@@ -632,6 +633,13 @@ ItemView::ItemView(QWidget *p)
 
 ItemView::~ItemView()
 {
+}
+
+void ItemView::alwaysShowHeader()
+{
+    title->setVisible(true);
+    title->setProperty(constAlwaysShowProp, true);
+    setTitle();
 }
 
 void ItemView::load(const QString &group)
@@ -719,7 +727,9 @@ void ItemView::setMode(Mode m)
     }
 
     searchWidget->setText(QString());
-    title->setVisible(false);
+    if (!title->property(constAlwaysShowProp).toBool()) {
+        title->setVisible(false);
+    }
     QIcon oldBgndIcon=bgndIcon;
     if (!bgndIcon.isNull()) {
         setBackgroundImage(QIcon());
@@ -867,7 +877,9 @@ void ItemView::setLevel(int l, bool haveChildren)
         view()->selectionModel()->clearSelection();
     }
 
-    title->setVisible(currentLevel>0);
+    if (!title->property(constAlwaysShowProp).toBool()) {
+        title->setVisible(currentLevel>0);
+    }
     setTitle();
 }
 
@@ -889,6 +901,7 @@ void ItemView::setModel(QAbstractItemModel *m)
     bool needtToInit=!itemModel;
     if (itemModel) {
         disconnect(itemModel, SIGNAL(modelReset()), this, SLOT(modelReset()));
+        disconnect(m, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
     }
     itemModel=m;
     if (needtToInit) {
@@ -897,6 +910,7 @@ void ItemView::setModel(QAbstractItemModel *m)
     }
     if (m) {
         connect(m, SIGNAL(modelReset()), this, SLOT(modelReset()));
+        connect(m, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
     }
     view()->setModel(m);
 }
@@ -1241,7 +1255,13 @@ void ItemView::collectionRemoved(quint32 key)
 
 void ItemView::backActivated()
 {
-    if (!usingListView() || 0==currentLevel || !isVisible()) {
+    if (!isVisible()) {
+        return;
+    }
+
+    emit headerClicked(currentLevel);
+
+    if (!usingListView() || 0==currentLevel) {
         return;
     }
     setLevel(currentLevel-1);
@@ -1346,6 +1366,13 @@ void ItemView::modelReset()
     }
 }
 
+void ItemView::dataChanged(const QModelIndex &tl, const QModelIndex &br)
+{
+    if (!tl.isValid() && !br.isValid()) {
+        setTitle();
+    }
+}
+
 void ItemView::delaySearchItems()
 {
     if (searchWidget->text().isEmpty()) {
@@ -1398,8 +1425,12 @@ void ItemView::collapseToLevel()
 void ItemView::setTitle()
 {
     QModelIndex index=view()->rootIndex();
-    title->update(view()->model()->data(index, Cantata::Role_CoverSong).value<Song>(),
-                  view()->model()->data(index, Qt::DecorationRole).value<QIcon>(),
-                  view()->model()->data(index, Cantata::Role_TitleText).toString(),
-                  view()->model()->data(index, Cantata::Role_SubText).toString());
+    QAbstractItemModel *model=view()->model();
+    if (!model) {
+        return;
+    }
+    title->update(model->data(index, Cantata::Role_CoverSong).value<Song>(),
+                  model->data(index, Qt::DecorationRole).value<QIcon>(),
+                  model->data(index, Cantata::Role_TitleText).toString(),
+                  model->data(index, Cantata::Role_SubText).toString());
 }

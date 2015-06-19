@@ -62,7 +62,7 @@ public:
             const Song &current=CurrentCover::self()->song();
             if (current.isEmpty() || (current.isStream() && !current.isCantataStream() && !current.isCdda())
                 #ifdef ENABLE_ONLINE_SERVICES
-                || OnlineService::showLogoAsCover(current)
+                || OnlineService::showLogoAsCover(current.onlineService())
                 #endif
                 ) {
                 setToolTip(QString());

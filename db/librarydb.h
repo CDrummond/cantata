@@ -122,15 +122,17 @@ public:
     bool songExists(const Song &song);
     bool setFilter(const QString &f);
     const QString & getFilter() const { return filter; }
+    int getCurrentVersion() const { return currentVersion; }
     #endif
 
 Q_SIGNALS:
     void libraryUpdated();
 
-protected Q_SLOTS:
+public Q_SLOTS:
     void updateStarted(time_t ver);
     void insertSongs(QList<Song> *songs);
     void updateFinished();
+    void abortUpdate();
 
 protected:
     bool createTable(const QString &q);

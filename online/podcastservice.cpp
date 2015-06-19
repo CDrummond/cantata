@@ -512,7 +512,8 @@ QList<Song> PodcastService::songs(const QModelIndexList &indexes, bool allowPlay
             Podcast *podcast=static_cast<Podcast *>(item);
             foreach (const Episode *episode, podcast->episodes) {
                 selectedPodcasts.insert(item);
-                songs.append(episode->toSong());
+                Song s=episode->toSong();
+                songs.append(fixPath(s));
             }
         }
     }
@@ -521,7 +522,8 @@ QList<Song> PodcastService::songs(const QModelIndexList &indexes, bool allowPlay
         if (!item->isPodcast()) {
             Episode *episode=static_cast<Episode *>(item);
             if (!selectedPodcasts.contains(episode->parent)) {
-                songs.append(episode->toSong());
+                Song s=episode->toSong();
+                songs.append(fixPath(s));
             }
         }
     }

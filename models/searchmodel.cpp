@@ -271,8 +271,10 @@ QList<Song> SearchModel::songs(const QModelIndexList &indexes, bool allowPlaylis
         }
         Song *song=static_cast<Song *>(index.internalPointer());
         if ((allowPlaylists || Song::Playlist!=song->type) && !files.contains(song->file)) {
-            list << *song;
-            files << song->file;
+            Song s=*song;
+            fixPath(s);
+            list << s;
+            files << s.file;
         }
     }
     return list;

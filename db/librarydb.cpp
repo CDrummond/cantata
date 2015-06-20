@@ -915,6 +915,9 @@ void LibraryDb::reset()
 
 void LibraryDb::clearSongs(bool startTransaction)
 {
+    if (!db) {
+        return;
+    }
     if (startTransaction) {
         db->transaction();
     }

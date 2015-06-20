@@ -444,7 +444,8 @@ LibraryDb::~LibraryDb()
 void LibraryDb::clear()
 {
     if (db) {
-        QSqlQuery(*db).exec("delete from songs where version="+QString::number(currentVersion));
+        QSqlQuery(*db).exec("delete from songs");
+        QSqlQuery(*db).exec("delete from songs_fts");
         currentVersion=0;
         emit libraryUpdated();
     }
@@ -488,6 +489,7 @@ bool LibraryDb::init(const QString &dbFile)
     }
     if (schemaVersion>0 && schemaVersion!=constSchemaVersion) {
         QSqlQuery(*db).exec("delete from songs");
+        QSqlQuery(*db).exec("delete from songs_fts");
     }
     if (0==currentVersion || (schemaVersion>0 && schemaVersion!=constSchemaVersion)) {
         QSqlQuery(*db).exec("delete from versions");

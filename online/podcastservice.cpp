@@ -488,6 +488,8 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
         }
         case Qt::DecorationRole:
             return Icons::self()->podcastIcon;
+        case Cantata::Role_LoadCoverInUIThread:
+            return true;
         case Cantata::Role_MainText:
         case Qt::DisplayRole:
             return i18nc("podcast name (num unplayed episodes)", "%1 (%2)", podcast->name, podcast->unplayedCount);

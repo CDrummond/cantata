@@ -524,7 +524,7 @@ public:
     virtual bool getCoverInUiThread(const QModelIndex &idx) const
     {
         // Want album covers in artists view to load quickly...
-        return idx.isValid() && idx.parent().isValid() && !idx.parent().parent().isValid();
+        return idx.isValid() && idx.data(Cantata::Role_LoadCoverInUIThread).toBool();
     }
 
     virtual QWidget * itemView() const { return treeView; }

@@ -87,7 +87,11 @@ void PodcastWidget::subscribe()
 
 void PodcastWidget::doSearch()
 {
-
+    QString text=view->searchText().trimmed();
+    proxy->update(text);
+    if (proxy->enabled() && !text.isEmpty()) {
+        view->expandAll();
+    }
 }
 
 void PodcastWidget::refresh()

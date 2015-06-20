@@ -26,6 +26,7 @@
 
 #include "onlineservice.h"
 #include "models/actionmodel.h"
+#include "models/proxymodel.h"
 #include "mpd-interface/song.h"
 #include <QLatin1String>
 #include <QList>
@@ -89,6 +90,18 @@ public:
         QString imageFile;
         QUrl imageUrl;
         Song song;
+    };
+
+    class Proxy : public ProxyModel
+    {
+    public:
+        Proxy(QObject *parent);
+
+    private:
+        bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+        bool filterAcceptsPodcast(const Podcast *pod) const;
+        bool filterAcceptsEpisode(const Episode *item) const;
+        bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     };
 
     PodcastService(QObject *p);

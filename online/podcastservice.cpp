@@ -49,6 +49,69 @@
 #endif
 #include <stdio.h>
 
+PodcastService::Proxy::Proxy(QObject *parent)
+    : ProxyModel(parent)
+{
+    setDynamicSortFilter(true);
+    setFilterCaseSensitivity(Qt::CaseInsensitive);
+    setSortCaseSensitivity(Qt::CaseInsensitive);
+    setSortLocaleAware(true);
+}
+
+bool PodcastService::Proxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    if (left.row()<0 || right.row()<0) {
+        return left.row()<0;
+    }
+
+    if (!static_cast<Item *>(left.internalPointer())->isPodcast()) {
+        Episode *l=static_cast<Episode *>(left.internalPointer());
+        Episode *r=static_cast<Episode *>(right.internalPointer());
+
+        int compare=QString::compare(l->date, r->date);
+        if (0!=compare) {
+            return compare>0;
+        }
+    }
+
+    return QSortFilterProxyModel::lessThan(left, right);
+}
+
+bool PodcastService::Proxy::filterAcceptsPodcast(const Podcast *pod) const
+{
+    foreach (const Episode *ep, pod->episodes) {
+        if (filterAcceptsEpisode(ep)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool PodcastService::Proxy::filterAcceptsEpisode(const Episode *item) const
+{
+    return matchesFilter(QStringList() << item->name << item->parent->name);
+}
+
+bool PodcastService::Proxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+{
+    if (!filterEnabled) {
+        return true;
+    }
+
+    const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
+    const PodcastService::Item *item = static_cast<const PodcastService::Item *>(index.internalPointer());
+
+    if (filterStrings.isEmpty()) {
+        return true;
+    }
+
+    if (item->isPodcast()) {
+        return filterAcceptsPodcast(static_cast<const Podcast *>(item));
+    }
+    return filterAcceptsEpisode(static_cast<const Episode *>(item));
+}
+
 static const QLatin1String constName("podcasts");
 static const QLatin1String constExt(".xml.gz");
 static const char * constNewFeedProperty="new-feed";

@@ -29,6 +29,7 @@
 #include "podcastservice.h"
 
 class Action;
+class ProxyModel;
 
 class PodcastWidget : public SinglePageWidget
 {
@@ -50,6 +51,7 @@ private:
 
 private:
     PodcastService *srv;
+    ProxyModel *proxy;
     Action *subscribeAction;
 };
 

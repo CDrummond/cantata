@@ -50,7 +50,7 @@ public:
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
     QList<int> mapToSourceRows(const QModelIndexList &list) const;
     QModelIndex mapToSource(const QModelIndex &idx) const { return QSortFilterProxyModel::mapToSource(idx); }
-    QModelIndexList mapToSource(const QModelIndexList &list, bool leavesOnly) const;
+    QModelIndexList mapToSource(const QModelIndexList &list, bool leavesOnly=true) const;
     #ifndef ENABLE_UBUNTU
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     #endif

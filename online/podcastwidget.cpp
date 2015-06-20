@@ -35,7 +35,9 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     : SinglePageWidget(p)
     , srv(s)
 {
-    view->setModel(s);
+    proxy=new PodcastService::Proxy(this);
+    proxy->setSourceModel(srv);
+    view->setModel(proxy);
     subscribeAction = new Action(Icon("document-new"), i18n("Add Subscription"), this);
 
     ToolButton *addSub=new ToolButton(this);
@@ -56,7 +58,7 @@ QStringList PodcastWidget::selectedFiles(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QStringList();
     }
-    return srv->filenames(selected, allowPlaylists);
+    return srv->filenames(proxy->mapToSource(selected), allowPlaylists);
 }
 
 QList<Song> PodcastWidget::selectedSongs(bool allowPlaylists) const
@@ -65,7 +67,7 @@ QList<Song> PodcastWidget::selectedSongs(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QList<Song>();
     }
-    return srv->songs(selected, allowPlaylists);
+    return srv->songs(proxy->mapToSource(selected), allowPlaylists);
 }
 
 void PodcastWidget::headerClicked(int level)
@@ -81,7 +83,6 @@ void PodcastWidget::subscribe()
         PodcastSearchDialog *dlg=new PodcastSearchDialog(srv, this);
         dlg->show();
     }
-
 }
 
 void PodcastWidget::doSearch()

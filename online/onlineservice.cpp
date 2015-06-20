@@ -73,6 +73,7 @@ bool OnlineService::decode(Song &song)
 }
 
 static QSet<QString> servicesWithCovers;
+static QSet<QString> servicesWithCoversIfCached;
 
 QString OnlineService::iconPath(const QString &srv)
 {
@@ -88,12 +89,17 @@ bool OnlineService::isPodcasts(const QString &srv)
     return QLatin1String("podcasts")==srv;
 }
 
-bool OnlineService::showLogoAsCover(const QString &srv)
+bool OnlineService::showLogoAsCover(const Song &s)
 {
-    return !servicesWithCovers.contains(srv);
+    return s.isFromOnlineService() && !servicesWithCovers.contains(s.onlineService())
+           && (!servicesWithCoversIfCached.contains(s.onlineService()) || s.extraField(Song::OnlineImageCacheName).isEmpty());
 }
 
-void OnlineService::useCovers(const QString &name)
+void OnlineService::useCovers(const QString &name, bool onlyIfCache)
 {
-    servicesWithCovers.insert(name);
+    if (onlyIfCache) {
+        servicesWithCoversIfCached.insert(name);
+    } else {
+        servicesWithCovers.insert(name);
+    }
 }

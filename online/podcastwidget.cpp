@@ -26,6 +26,7 @@
 #include "podcastsettingsdialog.h"
 #include "widgets/itemview.h"
 #include "widgets/toolbutton.h"
+#include "widgets/icons.h"
 #include "support/action.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
@@ -34,18 +35,41 @@
 PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     : SinglePageWidget(p)
     , srv(s)
+    , proxy(this)
 {
-    proxy=new PodcastService::Proxy(this);
-    proxy->setSourceModel(srv);
-    view->setModel(proxy);
+    proxy.setSourceModel(srv);
+    view->setModel(&proxy);
     subscribeAction = new Action(Icon("document-new"), i18n("Add Subscription"), this);
+    unSubscribeAction = new Action(Icon("list-remove"), i18n("Remove Subscription"), this);
+    downloadAction = new Action(Icon("go-down"), i18n("Download Episodes"), this);
+    deleteAction = new Action(Icon("edit-delete"), i18n("Delete Downloaded Episodes"), this);
+    cancelDownloadAction = new Action(Icons::self()->cancelIcon, i18n("Cancel Download"), this);
+    markAsNewAction = new Action(Icon("document-new"), i18n("Mark Episodes As New"), this);
+    markAsListenedAction = new Action(i18n("Mark Episodes As Listened"), this);
 
     ToolButton *addSub=new ToolButton(this);
     addSub->setDefaultAction(subscribeAction);
     init(All, QList<ToolButton *>(), QList<ToolButton *>() <<addSub);
     view->alwaysShowHeader();
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
+
+    view->addAction(subscribeAction);
+    view->addAction(unSubscribeAction);
+    view->addSeparator();
+    view->addAction(downloadAction);
+    view->addAction(deleteAction);
+    view->addAction(cancelDownloadAction);
+    view->addSeparator();
+    view->addAction(markAsNewAction);
+    view->addAction(markAsListenedAction);
+
     connect(subscribeAction, SIGNAL(triggered()), this, SLOT(subscribe()));
+    connect(unSubscribeAction, SIGNAL(triggered()), this, SLOT(unSubscribe()));
+    connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
+    connect(deleteAction, SIGNAL(triggered()), this, SLOT(deleteDownload()));
+    connect(cancelDownloadAction, SIGNAL(triggered()), this, SLOT(cancelDownload()));
+    connect(markAsNewAction, SIGNAL(triggered()), this, SLOT(markAsNew()));
+    connect(markAsListenedAction, SIGNAL(triggered()), this, SLOT(markAsListened()));
 }
 
 PodcastWidget::~PodcastWidget()
@@ -58,7 +82,7 @@ QStringList PodcastWidget::selectedFiles(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QStringList();
     }
-    return srv->filenames(proxy->mapToSource(selected), allowPlaylists);
+    return srv->filenames(proxy.mapToSource(selected), allowPlaylists);
 }
 
 QList<Song> PodcastWidget::selectedSongs(bool allowPlaylists) const
@@ -67,7 +91,7 @@ QList<Song> PodcastWidget::selectedSongs(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QList<Song>();
     }
-    return srv->songs(proxy->mapToSource(selected), allowPlaylists);
+    return srv->songs(proxy.mapToSource(selected), allowPlaylists);
 }
 
 void PodcastWidget::headerClicked(int level)
@@ -85,11 +109,136 @@ void PodcastWidget::subscribe()
     }
 }
 
+void PodcastWidget::unSubscribe()
+{
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
+    if (1!=selected.size()) {
+        return;
+    }
+
+    PodcastService::Item *item=static_cast<PodcastService::Item *>(proxy.mapToSource(selected.first()).internalPointer());
+    if (!item->isPodcast()) {
+        return;
+    }
+
+    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Unsubscribe from '%1'?", item->name))) {
+        return;
+    }
+
+    srv->unSubscribe(static_cast<PodcastService::Podcast *>(item));
+}
+
+enum GetEp {
+    GetEp_Downloaded,
+    GetEp_NotDownloaded,
+    GetEp_Listened,
+    GetEp_NotListened
+};
+
+static QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > getEpisodes(PodcastService::Proxy &proxy, const QModelIndexList &selected, GetEp get)
+{
+    QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls;
+    foreach (const QModelIndex &idx, selected) {
+        PodcastService::Item *item=static_cast<PodcastService::Item *>(proxy.mapToSource(idx).internalPointer());
+        if (item->isPodcast()) {
+            foreach (PodcastService::Episode *episode, static_cast<PodcastService::Podcast *>(item)->episodes) {
+                if ((GetEp_Downloaded==get && !episode->localFile.isEmpty()) ||
+                    (GetEp_NotDownloaded==get && episode->localFile.isEmpty()) ||
+                    (GetEp_Listened==get && episode->played) ||
+                    (GetEp_NotListened==get && !episode->played)) {
+                    urls[static_cast<PodcastService::Podcast *>(item)].insert(episode);
+                }
+            }
+        } else {
+            PodcastService::Episode *episode=static_cast<PodcastService::Episode *>(item);
+            if ((GetEp_Downloaded==get && !episode->localFile.isEmpty()) ||
+                (GetEp_NotDownloaded==get && episode->localFile.isEmpty()) ||
+                (GetEp_Listened==get && episode->played) ||
+                (GetEp_NotListened==get && !episode->played)) {
+                urls[episode->parent].insert(episode);
+            }
+        }
+    }
+    return urls;
+}
+
+void PodcastWidget::download()
+{
+    QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls=getEpisodes(proxy, view->selectedIndexes(true), GetEp_NotDownloaded);
+
+    if (!urls.isEmpty()) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to download the selected podcast episodes?"))) {
+            return;
+        }
+        QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
+        QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator end(urls.constEnd());
+        for (; it!=end; ++it) {
+            srv->downloadPodcasts(it.key(), it.value().toList());
+        }
+    }
+}
+
+void PodcastWidget::cancelDownload()
+{
+    if (srv->isDownloading() &&
+        MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Cancel podcast episode downloads (both current and any that are queued)?"))) {
+        srv->cancelAll();
+    }
+}
+
+void PodcastWidget::deleteDownload()
+{
+    QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls=getEpisodes(proxy, view->selectedIndexes(false), GetEp_Downloaded);
+
+    if (!urls.isEmpty()) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to the delete downloaded files of the selected podcast episodes?"))) {
+            return;
+        }
+        QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
+        QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator end(urls.constEnd());
+        for (; it!=end; ++it) {
+            srv->deleteDownloadedPodcasts(it.key(), it.value().toList());
+        }
+    }
+}
+
+void PodcastWidget::markAsNew()
+{
+    QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls=getEpisodes(proxy, view->selectedIndexes(false), GetEp_Listened);
+
+    if (!urls.isEmpty()) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to mark the selected podcast episodes as new?"))) {
+            return;
+        }
+        QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
+        QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator end(urls.constEnd());
+        for (; it!=end; ++it) {
+            srv->setPodcastsAsListened(it.key(), it.value().toList(), false);
+        }
+    }
+}
+
+void PodcastWidget::markAsListened()
+{
+    QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls=getEpisodes(proxy, view->selectedIndexes(false), GetEp_NotListened);
+
+    if (!urls.isEmpty()) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to mark the selected podcast episodes as listened?"))) {
+            return;
+        }
+        QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
+        QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator end(urls.constEnd());
+        for (; it!=end; ++it) {
+            srv->setPodcastsAsListened(it.key(), it.value().toList(), true);
+        }
+    }
+}
+
 void PodcastWidget::doSearch()
 {
     QString text=view->searchText().trimmed();
-    proxy->update(text);
-    if (proxy->enabled() && !text.isEmpty()) {
+    proxy.update(text);
+    if (proxy.enabled() && !text.isEmpty()) {
         view->expandAll();
     }
 }
@@ -127,4 +276,17 @@ void PodcastWidget::configure()
             srv->startRssUpdateTimer();
         }
     }
+}
+
+void PodcastWidget::controlActions()
+{
+    SinglePageWidget::controlActions();
+
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
+    unSubscribeAction->setEnabled(1==selected.count() && static_cast<PodcastService::Item *>(proxy.mapToSource(selected.first()).internalPointer())->isPodcast());
+    downloadAction->setEnabled(!selected.isEmpty());
+    deleteAction->setEnabled(!selected.isEmpty());
+    cancelDownloadAction->setEnabled(!selected.isEmpty());
+    markAsNewAction->setEnabled(!selected.isEmpty());
+    markAsListenedAction->setEnabled(!selected.isEmpty());
 }

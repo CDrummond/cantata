@@ -444,8 +444,7 @@ LibraryDb::~LibraryDb()
 void LibraryDb::clear()
 {
     if (db) {
-        QSqlQuery(*db).exec("delete from songs");
-        QSqlQuery(*db).exec("delete from songs_fts");
+        clearSongs();
         currentVersion=0;
         emit libraryUpdated();
     }
@@ -488,8 +487,7 @@ bool LibraryDb::init(const QString &dbFile)
         schemaVersion=query.value(1).toUInt();
     }
     if (schemaVersion>0 && schemaVersion!=constSchemaVersion) {
-        QSqlQuery(*db).exec("delete from songs");
-        QSqlQuery(*db).exec("delete from songs_fts");
+        clearSongs();
     }
     if (0==currentVersion || (schemaVersion>0 && schemaVersion!=constSchemaVersion)) {
         QSqlQuery(*db).exec("delete from versions");
@@ -825,11 +823,7 @@ void LibraryDb::updateStarted(time_t ver)
     timer.start();
     db->transaction();
     if (currentVersion>0) {
-        QSqlQuery(*db).exec("delete from songs");
-        #ifndef CANTATA_WEB
-        QSqlQuery(*db).exec("delete from songs_fts");
-        detailsCache.clear();
-        #endif
+        clearSongs(false);
     }
     DBUG;
 }
@@ -916,5 +910,20 @@ void LibraryDb::reset()
     db=0;
     if (removeDb) {
         QSqlDatabase::removeDatabase(dbName);
+    }
+}
+
+void LibraryDb::clearSongs(bool startTransaction)
+{
+    if (startTransaction) {
+        db->transaction();
+    }
+    QSqlQuery(*db).exec("delete from songs");
+    #ifndef CANTATA_WEB
+    QSqlQuery(*db).exec("delete from songs_fts");
+    detailsCache.clear();
+    #endif
+    if (startTransaction) {
+        db->commit();
     }
 }

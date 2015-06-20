@@ -288,6 +288,8 @@ QVariant SqlLibraryModel::data(const QModelIndex &index, int role) const
         default:
             return QVariant();
         }
+    case Cantata::Role_LoadCoverInUIThread:
+        return T_Album==item->getType() && T_Album!=tl;
     case Cantata::Role_BriefMainText:
         if (T_Album==item->getType()) {
             return item->getText();

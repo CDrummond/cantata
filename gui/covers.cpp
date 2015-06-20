@@ -182,7 +182,7 @@ static QImage loadImage(const QString &fileName)
 static inline bool isOnlineServiceImage(const Song &s)
 {
     #ifdef ENABLE_ONLINE_SERVICES
-    return OnlineService::showLogoAsCover(s.onlineService());
+    return OnlineService::showLogoAsCover(s);
     #else
     Q_UNUSED(s)
     return false;

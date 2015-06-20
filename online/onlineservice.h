@@ -33,7 +33,7 @@ class OnlineService
 {
 public:
     static QString iconPath(const QString &srv);
-    static bool showLogoAsCover(const QString &srv);
+    static bool showLogoAsCover(const Song &s);
     static bool isPodcasts(const QString &srv);
     static Song & encode(Song &s);
     static bool decode(Song &song);
@@ -44,7 +44,7 @@ public:
     const Icon & icon() const { return icn; }
 
 protected:
-    static void useCovers(const QString &name);
+    static void useCovers(const QString &name, bool onlyIfCache=false);
 
 protected:
     Icon icn;

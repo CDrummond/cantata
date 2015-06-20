@@ -202,7 +202,9 @@ Song PodcastService::Episode::toSong() const
 PodcastService::Podcast::Podcast(const QString &f)
     : unplayedCount(0)
     , fileName(f)
+    , imageFile(f)
 {
+    imageFile=imageFile.replace(constExt, ".jpg");
 }
 
 static QLatin1String constTopTag("podcast");
@@ -377,6 +379,7 @@ PodcastService::PodcastService(QObject *p)
 {
     QMetaObject::invokeMethod(this, "loadAll", Qt::QueuedConnection);
     icn.addFile(":"+constName);
+    useCovers(name(), true);
     clearPartialDownloads();
 }
 

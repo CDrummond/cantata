@@ -68,9 +68,8 @@ bool PodcastService::Proxy::lessThan(const QModelIndex &left, const QModelIndex 
         Episode *l=static_cast<Episode *>(left.internalPointer());
         Episode *r=static_cast<Episode *>(right.internalPointer());
 
-        int compare=QString::compare(l->date, r->date);
-        if (0!=compare) {
-            return compare>0;
+        if (l->publishedDate!=r->publishedDate) {
+            return l->publishedDate>r->publishedDate;
         }
     }
 
@@ -250,7 +249,7 @@ bool PodcastService::Podcast::load()
                 QString epName=attributes.value(constNameAttribute).toString();
                 QString epUrl=attributes.value(constUrlAttribute).toString();
                 if (!epName.isEmpty() && !epUrl.isEmpty()) {
-                    Episode *ep=new Episode(attributes.value(constDateAttribute).toString(), epName, epUrl, this);
+                    Episode *ep=new Episode(QDateTime::fromString(attributes.value(constDateAttribute).toString(), Qt::ISODate), epName, epUrl, this);
                     QString localFile=attributes.value(constLocalAttribute).toString();
                     QString time=attributes.value(constTimeAttribute).toString();
 
@@ -299,8 +298,8 @@ bool PodcastService::Podcast::save() const
         if (ep->played) {
             writer.writeAttribute(constPlayedAttribute, constTrue);
         }
-        if (!ep->date.isEmpty()) {
-            writer.writeAttribute(constDateAttribute, ep->date);
+        if (ep->publishedDate.isValid()) {
+            writer.writeAttribute(constDateAttribute, ep->publishedDate.toString(Qt::ISODate));
         }
         if (!ep->localFile.isEmpty()) {
             writer.writeAttribute(constLocalAttribute, ep->localFile);
@@ -491,6 +490,11 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
             return i18nc("podcast name (num unplayed episodes)", "%1 (%2)", podcast->name, podcast->unplayedCount);
         case Cantata::Role_SubText:
             return Plurals::episodes(podcast->episodes.count());
+        case Qt::ToolTipRole:
+            if (Settings::self()->infoTooltips()) {
+                return podcast->name+QLatin1String("<br/>")+Plurals::episodes(podcast->episodes.count());
+            }
+            break;
         case Qt::FontRole:
             if (podcast->unplayedCount>0) {
                 QFont f;
@@ -517,6 +521,13 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
             return episode->name;
         case Cantata::Role_SubText:
             return Utils::formatTime(episode->duration, true);
+        case Qt::ToolTipRole:
+            if (Settings::self()->infoTooltips()) {
+                return QLatin1String("<b>")+episode->parent->name+QLatin1String("</b><br/>")+
+                        episode->name+QLatin1String("<br/>")+Utils::formatTime(episode->duration, true)+
+                        QLatin1String("<br/>")+episode->publishedDate.toString(Qt::LocalDate);
+            }
+            break;
         case Qt::FontRole:
             if (!episode->played) {
                 QFont f;
@@ -703,7 +714,7 @@ void PodcastService::rssJobFinished()
             podcast->name=ch.name;
             podcast->unplayedCount=ch.episodes.count();
             foreach (const RssParser::Episode &ep, ch.episodes) {
-                Episode *episode=new Episode(ep.publicationDate.toString(Qt::ISODate), ep.name, ep.url, podcast);
+                Episode *episode=new Episode(ep.publicationDate, ep.name, ep.url, podcast);
                 episode->duration=ep.duration;
                 podcast->add(episode);
             }
@@ -759,7 +770,7 @@ void PodcastService::rssJobFinished()
                     foreach (const RssParser::Episode &ep, ch.episodes) {
                         QString epUrl=ep.url.toString();
                         if (added.contains(epUrl)) {
-                            Episode *episode=new Episode(ep.publicationDate.toString(Qt::ISODate), ep.name, ep.url, podcast);
+                            Episode *episode=new Episode(ep.publicationDate, ep.name, ep.url, podcast);
                             episode->duration=ep.duration;
                             podcast->add(episode);
                         }

@@ -140,6 +140,7 @@ protected:
 
 protected:
     virtual void reset();
+    void clearSongs(bool startTransaction=true);
 
 protected:
     static bool dbgEnabled;

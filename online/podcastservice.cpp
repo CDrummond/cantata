@@ -522,6 +522,10 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:
             return episode->name;
         case Cantata::Role_SubText:
+            if (episode->downloadProg>=0) {
+                return Utils::formatTime(episode->duration, true)+QLatin1Char(' ')+
+                       i18n("(Downloading: %1%)", episode->downloadProg);
+            }
             return Utils::formatTime(episode->duration, true);
         case Qt::ToolTipRole:
             if (Settings::self()->infoTooltips()) {

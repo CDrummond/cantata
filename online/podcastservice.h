@@ -58,13 +58,13 @@ public:
             QueuedForDownload = -2
         };
 
-        Episode(const QString &d=QString(), const QString &n=QString(), const QUrl &u=QUrl(), Podcast *p=0)
-            : Item(n, u), played(false), duration(0), date(d), parent(p), downloadProg(NotDownloading) { }
+        Episode(const QDateTime &d=QDateTime(), const QString &n=QString(), const QUrl &u=QUrl(), Podcast *p=0)
+            : Item(n, u), played(false), duration(0), publishedDate(d), parent(p), downloadProg(NotDownloading) { }
         virtual ~Episode() { }
         Song toSong() const;
         bool played;
         int duration;
-        QString date;
+        QDateTime publishedDate;
         Podcast *parent;
         QString localFile;
         int downloadProg;

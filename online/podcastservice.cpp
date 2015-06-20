@@ -204,7 +204,6 @@ PodcastService::Podcast::Podcast(const QString &f)
     : unplayedCount(0)
     , fileName(f)
 {
-    load();
 }
 
 static QLatin1String constTopTag("podcast");

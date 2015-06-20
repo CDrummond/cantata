@@ -43,16 +43,29 @@ public:
 private Q_SLOTS:
     void headerClicked(int level);
     void subscribe();
+    void unSubscribe();
+    void download();
+    void cancelDownload();
+    void deleteDownload();
+    void markAsNew();
+    void markAsListened();
 
 private:
     void doSearch();
     void refresh();
     void configure();
+    void controlActions();
 
 private:
     PodcastService *srv;
-    ProxyModel *proxy;
+    PodcastService::Proxy proxy;
     Action *subscribeAction;
+    Action *unSubscribeAction;
+    Action *downloadAction;
+    Action *deleteAction;
+    Action *cancelDownloadAction;
+    Action *markAsNewAction;
+    Action *markAsListenedAction;
 };
 
 #endif

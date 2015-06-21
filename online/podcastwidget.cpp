@@ -249,13 +249,17 @@ void PodcastWidget::refresh()
     QModelIndexList selected;
     foreach (const QModelIndex &i, sel) {
         if (!i.parent().isValid()) {
-            selected+=i;
+            selected+=proxy.mapToSource(i);
         }
     }
 
-    switch (selected.isEmpty() || selected.count()!=srv->podcastCount()
-                ? MessageBox::questionYesNoCancel(this, i18n("Refresh all subscriptions?"), i18n("Refresh"))
-                : MessageBox::questionYesNoCancel(this, i18n("Refresh all subscriptions, or only those selected?"), i18n("Refresh"), i18n("All"), i18n("Selected"))) {
+    if (selected.isEmpty() || selected.count()==srv->podcastCount()) {
+        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Refresh all subscriptions?"), i18n("Refresh"), i18n("Refresh All"), StdGuiItem::cancel())) {
+            srv->refreshAll();
+        }
+        return;
+    }
+    switch (MessageBox::questionYesNoCancel(this, i18n("Refresh all subscriptions, or only those selected?"), i18n("Refresh"), i18n("Refresh All"), i18n("Refresh Selected"))) {
     case MessageBox::Yes:
         srv->refreshAll();
         break;

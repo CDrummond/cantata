@@ -901,7 +901,11 @@ void ItemView::setModel(QAbstractItemModel *m)
     bool needtToInit=!itemModel;
     if (itemModel) {
         disconnect(itemModel, SIGNAL(modelReset()), this, SLOT(modelReset()));
-        disconnect(m, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
+        if (qobject_cast<QAbstractProxyModel *>(itemModel)) {
+            disconnect(static_cast<QAbstractProxyModel *>(itemModel)->sourceModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
+        } else {
+            disconnect(itemModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
+        }
     }
     itemModel=m;
     if (needtToInit) {
@@ -910,7 +914,11 @@ void ItemView::setModel(QAbstractItemModel *m)
     }
     if (m) {
         connect(m, SIGNAL(modelReset()), this, SLOT(modelReset()));
-        connect(m, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
+        if (qobject_cast<QAbstractProxyModel *>(m)) {
+            connect(static_cast<QAbstractProxyModel *>(m)->sourceModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
+        } else {
+            connect(m, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
+        }
     }
     view()->setModel(m);
 }

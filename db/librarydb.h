@@ -54,6 +54,10 @@ public:
     static const QLatin1String constAlbumsSortYrAlAr;
     static const QLatin1String constAlbumsSortYrArAl;
 
+    enum Indexes {
+        Idx_Genre = 0x01
+    };
+
     struct Genre
     {
         Genre(const QString &n=QString(), int ac=0)
@@ -103,7 +107,7 @@ public:
         int duration;
     };
 
-    LibraryDb(QObject *p, const QString &name);
+    LibraryDb(QObject *p, const QString &name, int idx=0);
     ~LibraryDb();
 
     void clear();
@@ -142,9 +146,14 @@ protected:
     virtual void reset();
     void clearSongs(bool startTransaction=true);
 
+private:
+    void createIndexes();
+    void dropIndexes();
+
 protected:
     static bool dbgEnabled;
 
+    int indexes;
     QString dbName;
     QString dbFileName;
     time_t currentVersion;

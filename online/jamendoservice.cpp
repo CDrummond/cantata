@@ -309,7 +309,7 @@ static JamendoService::Format toFormat(const QString &f)
 }
 
 JamendoService::JamendoService(QObject *p)
-    : OnlineDbService(new OnlineDb(constName, p), p)
+    : OnlineDbService(new OnlineDb(constName, p, OnlineDb::Idx_Genre), p)
 {
     tl=T_Genre;
     icn.addFile(":"+constName);

@@ -425,8 +425,9 @@ private:
     QVariantList boundValues;
 };
 
-LibraryDb::LibraryDb(QObject *p, const QString &name)
+LibraryDb::LibraryDb(QObject *p, const QString &name, int idx)
     : QObject(p)
+    , indexes(0)
     , dbName(name)
     , currentVersion(0)
     , newVersion(0)
@@ -848,6 +849,7 @@ void LibraryDb::updateFinished()
                         "select artist, artistId, album, title from songs");
     #endif
     QSqlQuery(*db).exec("update versions set collection ="+QString::number(newVersion));
+    createIndexes();
     db->commit();
     currentVersion=newVersion;
     DBUG << timer.elapsed();
@@ -926,7 +928,22 @@ void LibraryDb::clearSongs(bool startTransaction)
     QSqlQuery(*db).exec("delete from songs_fts");
     detailsCache.clear();
     #endif
+    dropIndexes();
     if (startTransaction) {
         db->commit();
+    }
+}
+
+void LibraryDb::createIndexes()
+{
+    if (indexes&Idx_Genre) {
+        QSqlQuery(*db).exec("drop index songs_genre_idx");
+    }
+}
+
+void LibraryDb::dropIndexes()
+{
+    if (indexes&Idx_Genre) {
+        QSqlQuery(*db).exec("create index songs_genre_idx on songs (genre, artistId)");
     }
 }

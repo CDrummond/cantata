@@ -27,14 +27,15 @@
 
 static const QString subDir("online");
 
-OnlineDb::OnlineDb(const QString &serviceName, QObject *p)
-    : LibraryDb(p, serviceName)
+OnlineDb::OnlineDb(const QString &serviceName, QObject *p, int idx)
+    : LibraryDb(p, serviceName, idx)
     , insertCoverQuery(0)
     , getCoverQuery(0)
 {
     init(Utils::dataDir(subDir, true)+serviceName+".sql");
     createTable("covers(artistId, albumId, url)");
     createTable("stats(artists)");
+    QSqlQuery(*db).exec("create index genre_idx on songs(");
 }
 
 OnlineDb::~OnlineDb()
@@ -45,6 +46,7 @@ void OnlineDb::startUpdate()
 {
     updateStarted(currentVersion+1);
     QSqlQuery(*db).exec("delete from covers");
+    QSqlQuery(*db).exec("drop index genre_idx");
 }
 
 void OnlineDb::endUpdate()

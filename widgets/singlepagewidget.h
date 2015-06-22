@@ -29,7 +29,6 @@
 #include "gui/page.h"
 
 class ItemView;
-class ToolButton;
 class Action;
 
 class SinglePageWidget : public QWidget, public Page
@@ -47,7 +46,7 @@ public:
     SinglePageWidget(QWidget *p);
     virtual void setView(int v);
     void focusSearch();
-    void init(int flags=All, const QList<ToolButton *> &leftXtra=QList<ToolButton *>(), const QList<ToolButton *> &rightXtra=QList<ToolButton *>());
+    void init(int flags=All, const QList<QWidget *> &leftXtra=QList<QWidget *>(), const QList<QWidget *> &rightXtra=QList<QWidget *>());
     virtual QStringList selectedFiles(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists); return QStringList(); }
     virtual QList<Song> selectedSongs(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists); return QList<Song>(); }
     void addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty);

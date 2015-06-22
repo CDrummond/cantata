@@ -53,17 +53,17 @@ SinglePageWidget::SinglePageWidget(QWidget *p)
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
 }
 
-void SinglePageWidget::init(int flags, const QList<ToolButton *> &leftXtra, const QList<ToolButton *> &rightXtra)
+void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const QList<QWidget *> &rightXtra)
 {
     if (0!=btnFlags) {
         return;
     }
     btnFlags=flags;
-    QList<ToolButton *> left;
-    QList<ToolButton *> right=rightXtra;
+    QList<QWidget *> left;
+    QList<QWidget *> right=rightXtra;
 
     if (!right.isEmpty()) {
-        right << 0;
+        right << new SpacerWidget(this);
     }
     if (flags&AddToPlayQueue) {
         ToolButton *addToPlayQueue=new ToolButton(this);
@@ -105,23 +105,15 @@ void SinglePageWidget::init(int flags, const QList<ToolButton *> &leftXtra, cons
 
     if (!left.isEmpty()) {
         QHBoxLayout *ll=new QHBoxLayout();
-        foreach (ToolButton *b, left) {
-            if (!b) {
-                ll->addWidget(new SpacerWidget(this));
-            } else {
-                ll->addWidget(b);
-            }
+        foreach (QWidget *b, left) {
+            ll->addWidget(b);
         }
         static_cast<QGridLayout *>(layout())->addItem(ll, 1, 0, 1, 1);
     }
     if (!right.isEmpty()) {
         QHBoxLayout *rl=new QHBoxLayout();
-        foreach (ToolButton *b, right) {
-            if (!b) {
-                rl->addWidget(new SpacerWidget(this));
-            } else {
-                rl->addWidget(b);
-            }
+        foreach (QWidget *b, right) {
+            rl->addWidget(b);
         }
         static_cast<QGridLayout *>(layout())->addItem(rl, 1, 4, 1, 1);
     }

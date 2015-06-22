@@ -32,6 +32,7 @@
 #include <QToolButton>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QScrollArea>
 
 class SelectorButton : public QToolButton
 {
@@ -47,12 +48,14 @@ public:
         subText->setFont(Utils::smallFont(f));
         f.setBold(true);
         mainText->setFont(f);
-        int size=mainText->sizeHint().height()+subText->sizeHint().height()+Utils::layoutSpacing(this);
-        size+=12;
+        layout->setSpacing(2);
+        int size=mainText->sizeHint().height()+subText->sizeHint().height()+layout->spacing();
+        size+=6;
         icon->setFixedSize(size, size);
         layout->addWidget(icon, 0, 0, 2, 1);
-        layout->addWidget(mainText, 0, 1, 1, 1);
-        layout->addWidget(subText, 1, 1, 1, 1);
+        layout->addItem(new QSpacerItem(Utils::layoutSpacing(this), 2, QSizePolicy::Fixed, QSizePolicy::Fixed), 0, 1);
+        layout->addWidget(mainText, 0, 2, 1, 1);
+        layout->addWidget(subText, 1, 2, 1, 1);
         mainText->setAlignment(Qt::AlignBottom);
         subText->setAlignment(Qt::AlignTop);
         icon->setAlignment(Qt::AlignCenter);
@@ -62,12 +65,19 @@ public:
         setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
         mainText->setText(t);
         subText->setText(s);
-        setMinimumHeight(size+18);
+        setMinimumHeight(size+(layout->margin()*2));
+        updateToolTip();
     }
 
     void setSubText(const QString &str)
     {
         subText->setText(str);
+        updateToolTip();
+    }
+
+    void updateToolTip()
+    {
+        setToolTip("<b>"+mainText->fullText()+"</b><br/>"+subText->fullText());
     }
 
 private:
@@ -81,20 +91,26 @@ MultiPageWidget::MultiPageWidget(QWidget *p)
 {
     mainPage=new QWidget(this);
     QVBoxLayout *mainLayout=new QVBoxLayout(mainPage);
-    view=new ListView(mainPage);
     infoLabel=new QLabel(mainPage);
     sizer=new SizeWidget(mainPage);
-    QVBoxLayout *layout=new QVBoxLayout(view);
+    view = new QWidget;
+    QScrollArea *scroll = new QScrollArea;
+    QVBoxLayout *layout = new QVBoxLayout(view);
+    scroll->setWidget(view);
+    scroll->setWidgetResizable(true);
+    view->setBackgroundRole(QPalette::Base);
 
     layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Fixed, QSizePolicy::MinimumExpanding));
     view->setLayout(layout);
     mainPage->setLayout(mainLayout);
-    mainLayout->addWidget(view);
+    mainLayout->addWidget(scroll);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
     mainLayout->addWidget(infoLabel);
     infoLabel->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     mainLayout->addWidget(sizer);
+    layout->setSpacing(0);
+    layout->setSizeConstraint(QLayout::SetMinimumSize);
     addWidget(mainPage);
 }
 

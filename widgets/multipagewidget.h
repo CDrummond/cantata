@@ -30,7 +30,6 @@
 #include "gui/page.h"
 
 class Icon;
-class ListView;
 class SelectorButton;
 class SizeWidget;
 class QLabel;
@@ -71,7 +70,7 @@ private Q_SLOTS:
 
 private:
     QWidget *mainPage;
-    ListView *view;
+    QWidget *view;
     QLabel *infoLabel;
     SizeWidget *sizer;
     QMap<QString, Entry> entries;

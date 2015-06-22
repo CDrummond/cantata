@@ -49,7 +49,7 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
 
     ToolButton *addSub=new ToolButton(this);
     addSub->setDefaultAction(subscribeAction);
-    init(All, QList<ToolButton *>(), QList<ToolButton *>() <<addSub);
+    init(All, QList<QWidget *>(), QList<QWidget *>() << addSub);
     view->alwaysShowHeader();
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
 

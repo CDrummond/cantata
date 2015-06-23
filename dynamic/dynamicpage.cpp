@@ -33,13 +33,18 @@
 #include "gui/stdactions.h"
 
 DynamicPage::DynamicPage(QWidget *p)
-    : QWidget(p)
+    : SinglePageWidget(p)
 {
-    setupUi(this);
     addAction = new Action(Icon("document-new"), i18n("Add"), this);
     editAction = new Action(Icons::self()->editIcon, i18n("Edit"), this);
     removeAction = new Action(Icon("list-remove"), i18n("Remove"), this);
     toggleAction = new Action(this);
+
+    ToolButton *addBtn=new ToolButton(this);
+    ToolButton *editBtn=new ToolButton(this);
+    ToolButton *removeBtn=new ToolButton(this);
+    ToolButton *startBtn=new ToolButton(this);
+    ToolButton *stopBtn=new ToolButton(this);
 
     addBtn->setDefaultAction(addAction);
     editBtn->setDefaultAction(editAction);
@@ -53,7 +58,6 @@ DynamicPage::DynamicPage(QWidget *p)
 
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(toggle()));
-    connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(MPDConnection::self(), SIGNAL(dynamicSupport(bool)), this, SLOT(remoteDynamicSupport(bool)));
     connect(addAction, SIGNAL(triggered()), SLOT(add()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));
@@ -65,12 +69,13 @@ DynamicPage::DynamicPage(QWidget *p)
     connect(Dynamic::self(), SIGNAL(loadingList()), view, SLOT(showSpinner()));
     connect(Dynamic::self(), SIGNAL(loadedList()), view, SLOT(hideSpinner()));
 
-    #ifdef Q_OS_WIN
-    remoteRunningLabel->setType(StatusLabel::Error);
-    enableWidgets(false);
-    #else
-    remoteRunningLabel->setVisible(false);
-    #endif
+// TODO!!!
+//    #ifdef Q_OS_WIN
+//    remoteRunningLabel->setType(StatusLabel::Error);
+//    enableWidgets(false);
+//    #else
+//    remoteRunningLabel->setVisible(false);
+//    #endif
     Dynamic::self()->stopAct()->setEnabled(false);
     proxy.setSourceModel(Dynamic::self());
     view->setModel(&proxy);
@@ -78,6 +83,8 @@ DynamicPage::DynamicPage(QWidget *p)
     view->setMode(ItemView::Mode_List);
     controlActions();
     view->load(metaObject()->className());
+    controls=QList<QWidget *>() << addBtn << editBtn << removeBtn << startBtn << stopBtn;
+    init(0, QList<QWidget *>(), controls);
 }
 
 DynamicPage::~DynamicPage()
@@ -85,7 +92,7 @@ DynamicPage::~DynamicPage()
     view->save(metaObject()->className());
 }
 
-void DynamicPage::searchItems()
+void DynamicPage::doSearch()
 {
     QString text=view->searchText().trimmed();
     proxy.update(text);
@@ -183,7 +190,10 @@ void DynamicPage::running(bool status)
 
 void DynamicPage::enableWidgets(bool enable)
 {
-    controls->setEnabled(enable);
+    foreach (QWidget *c, controls) {
+        c->setEnabled(enable);
+    }
+
     view->setEnabled(enable);
 }
 
@@ -191,11 +201,11 @@ void DynamicPage::showEvent(QShowEvent *e)
 {
     view->focusView();
     Dynamic::self()->enableRemotePolling(true);
-    QWidget::showEvent(e);
+    SinglePageWidget::showEvent(e);
 }
 
 void DynamicPage::hideEvent(QHideEvent *e)
 {
     Dynamic::self()->enableRemotePolling(false);
-    QWidget::hideEvent(e);
+    SinglePageWidget::hideEvent(e);
 }

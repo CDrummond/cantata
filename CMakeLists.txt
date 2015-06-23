@@ -460,8 +460,8 @@ set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS} ${CANTATA_MOC_HDRS}
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
     scrobbling/scrobbler.h scrobbling/scrobblingsettings.h scrobbling/scrobblingstatus.h scrobbling/scrobblinglove.h)
 set(CANTATA_UIS ${CANTATA_UIS}
-    gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/playlistspage.ui
-    gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui gui/searchpage.ui
+    gui/initialsettingswizard.ui gui/mainwindow.ui
+    gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui
     context/togglelist.ui context/othersettings.ui
     widgets/itemview.ui scrobbling/scrobblingsettings.ui)
 
@@ -483,7 +483,7 @@ if (ENABLE_DYNAMIC)
         dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h
         dynamic/dynamicrulesdialog.h)
-    set(CANTATA_UIS ${CANTATA_UIS} dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui)
+    set(CANTATA_UIS ${CANTATA_UIS} dynamic/dynamicrule.ui dynamic/dynamicrules.ui)
 
     if (WIN32)
         # Not installed for windows - script uses sym-links...
@@ -500,7 +500,7 @@ if (ENABLE_STREAMS)
         streams/streamproviderlistdialog.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} streams/streamspage.h streams/digitallyimportedsettings.h streams/streamssettings.h
         streams/streamdialog.h models/streamsmodel.h models/digitallyimported.h models/streamsearchmodel.h streams/streamproviderlistdialog.h)
-    set(CANTATA_UIS ${CANTATA_UIS} streams/streamspage.ui streams/digitallyimportedsettings.ui streams/streamssettings.ui)
+    set(CANTATA_UIS ${CANTATA_UIS} streams/digitallyimportedsettings.ui streams/streamssettings.ui)
     add_subdirectory(streams/icons)
 endif (ENABLE_STREAMS)
 

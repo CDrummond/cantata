@@ -22,7 +22,6 @@
  */
 
 #include "singlepagewidget.h"
-#include "widgets/itemview.h"
 #include "widgets/sizewidget.h"
 #include "widgets/spacerwidget.h"
 #include "widgets/toolbutton.h"
@@ -62,7 +61,7 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
     QList<QWidget *> left;
     QList<QWidget *> right=rightXtra;
 
-    if (!right.isEmpty()) {
+    if (!right.isEmpty() && (flags&(AddToPlayQueue||ReplacePlayQueue))) {
         right << new SpacerWidget(this);
     }
     if (flags&AddToPlayQueue) {
@@ -136,6 +135,7 @@ void SinglePageWidget::showEvent(QShowEvent *e)
 {
     QWidget::showEvent(e);
     controlActions();
+    view->focusView();
 }
 
 void SinglePageWidget::setView(int v)

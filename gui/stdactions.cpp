@@ -72,7 +72,7 @@ StdActions::StdActions()
     deleteSongsAction = new Action(Icon("edit-delete"), i18n("Delete Songs"), 0);
     #endif
     setCoverAction = new Action(i18n("Set Image"), 0);
-    removeAction = new Action(HIDE_MENU_ICON(Icon("list-remove")), i18n("Remove"), 0);
+    removeAction = new Action(Icon("list-remove"), i18n("Remove"), 0);
     searchAction = ActionCollection::get()->createAction("search", i18n("Find"), HIDE_MENU_ICON_NAME("edit-find"));
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
 

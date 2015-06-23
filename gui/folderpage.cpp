@@ -34,12 +34,9 @@
 #include <QUrl>
 
 FolderPage::FolderPage(QWidget *p)
-    : QWidget(p)
+    : SinglePageWidget(p)
     , loaded(false)
 {
-    setupUi(this);
-    addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
-    replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
     browseAction = new Action(Icon("system-file-manager"), i18n("Open In File Manager"), this);
 
     view->addAction(StdActions::self()->addToPlayQueueAction);
@@ -65,9 +62,6 @@ FolderPage::FolderPage(QWidget *p)
     proxy.setSourceModel(DirViewModel::self());
     view->setModel(&proxy);
     connect(this, SIGNAL(loadFolders()), MPDConnection::self(), SLOT(loadFolders()));
-    connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
-    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
-    connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(browseAction, SIGNAL(triggered()), this, SLOT(openFileManager()));
@@ -76,6 +70,7 @@ FolderPage::FolderPage(QWidget *p)
     connect(MPDConnection::self(), SIGNAL(updatingDatabase()), view, SLOT(updating()));
     connect(MPDConnection::self(), SIGNAL(updatedDatabase()), view, SLOT(updated()));
     view->load(metaObject()->className());
+    init(ReplacePlayQueue|AddToPlayQueue);
 }
 
 FolderPage::~FolderPage()
@@ -101,14 +96,14 @@ void FolderPage::setEnabled(bool e)
 void FolderPage::showEvent(QShowEvent *e)
 {
     view->focusView();
-    QWidget::showEvent(e);
+    SinglePageWidget::showEvent(e);
     if (!loaded) {
         emit loadFolders();
         loaded=true;
     }
 }
 
-void FolderPage::searchItems()
+void FolderPage::doSearch()
 {
     QString text=view->searchText().trimmed();
     proxy.update(text);

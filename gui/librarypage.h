@@ -24,12 +24,11 @@
 #ifndef LIBRARYPAGE_H
 #define LIBRARYPAGE_H
 
-#include "ui_librarypage.h"
-#include "page.h"
+#include "widgets/singlepagewidget.h"
 
 class Action;
 
-class LibraryPage : public QWidget, public Ui::LibraryPage, public Page
+class LibraryPage : public SinglePageWidget
 {
     Q_OBJECT
 
@@ -46,29 +45,22 @@ public:
     void addSelectionToDevice(const QString &udi);
     void deleteSongs();
     #endif
-    void setView(int v) { view->setMode((ItemView::Mode)v); }
-    ItemView::Mode viewMode() const { return view->viewMode(); }
     void showSongs(const QList<Song> &songs);
     void showArtist(const QString &artist);
     void showAlbum(const QString &artist, const QString &album);
-    void focusSearch() { view->focusSearch(); }
-    void showEvent(QShowEvent *e);
 
 private:
     void setItemSize(int v);
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void add(const QStringList &files, bool replace, quint8 priorty);
-    void addSongsToPlaylist(const QString &name, const QStringList &files);
-    void loadLibrary();
-
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
     void deleteSongs(const QString &from, const QList<Song> &songs);
 
 public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);
-    void searchItems();
+
+private:
+    void doSearch();
     void controlActions();
 };
 

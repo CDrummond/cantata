@@ -24,14 +24,14 @@
 #ifndef SEARCHPAGE_H
 #define SEARCHPAGE_H
 
-#include "ui_searchpage.h"
-#include "page.h"
+#include "widgets/singlepagewidget.h"
 #include "models/mpdsearchmodel.h"
 #include "models/searchproxymodel.h"
 
 class Action;
+class SqueezedTextLabel;
 
-class SearchPage : public QWidget, public Ui::SearchPage, public Page
+class SearchPage : public SinglePageWidget
 {
     Q_OBJECT
 
@@ -49,23 +49,20 @@ public:
     #ifdef ENABLE_DEVICES_SUPPORT
     void addSelectionToDevice(const QString &udi);
     #endif
-    void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void add(const QStringList &files, bool replace, quint8 priorty);
-    void addSongsToPlaylist(const QString &name, const QStringList &files);
-
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
     void locate(const QList<Song> &songs);
 
-public Q_SLOTS:
-    void searchItems();
+public Q_SLOTS:   
     void itemDoubleClicked(const QModelIndex &);
-    void controlActions();
     void setSearchCategories();
     void statsUpdated(int songs, quint32 time);
     void locateSongs();
+
+private:
+    void doSearch();
+    void controlActions();
 
 private:
     enum State
@@ -80,6 +77,7 @@ private:
     MpdSearchModel model;
     SearchProxyModel proxy;
     Action *locateAction;
+    SqueezedTextLabel *statsLabel;
 };
 
 #endif

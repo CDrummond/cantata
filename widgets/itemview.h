@@ -38,6 +38,7 @@ class ActionItemDelegate;
 class MessageOverlay;
 class Icon;
 class TableView;
+class QMenu;
 
 class KeyEventHandler : public QObject
 {
@@ -90,6 +91,7 @@ public:
     static QString modeStr(Mode m);
     static void setup();
     static const QLatin1String constSearchActiveKey;
+    static QMenu *createViewMenu(QWidget *parent, QList<Mode> modes);
 
     ItemView(QWidget *p=0);
     virtual ~ItemView();

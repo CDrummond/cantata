@@ -24,25 +24,18 @@
 #ifndef DYNAMICPAGE_H
 #define DYNAMICPAGE_H
 
-#include "ui_dynamicpage.h"
+#include "widgets/singlepagewidget.h"
 #include "dynamicproxymodel.h"
-#include "gui/page.h"
 
 class Action;
 
-class DynamicPage : public QWidget, public Ui::DynamicPage, public Page
+class DynamicPage : public SinglePageWidget
 {
     Q_OBJECT
 
 public:
     DynamicPage(QWidget *p);
     virtual ~DynamicPage();
-
-    void focusSearch() { view->focusSearch(); }
-
-public Q_SLOTS:
-    void searchItems();
-    void controlActions();
 
 private Q_SLOTS:
     void remoteDynamicSupport(bool s);
@@ -55,6 +48,8 @@ private Q_SLOTS:
     void running(bool status);
 
 private:
+    void doSearch();
+    void controlActions();
     void enableWidgets(bool enable);
     void showEvent(QShowEvent *e);
     void hideEvent(QHideEvent *e);
@@ -65,6 +60,7 @@ private:
     Action *editAction;
     Action *removeAction;
     Action *toggleAction;
+    QList<QWidget *> controls;
 };
 
 #endif

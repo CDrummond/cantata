@@ -45,14 +45,12 @@ public:
 };
 
 SearchPage::SearchPage(QWidget *p)
-    : QWidget(p)
+    : SinglePageWidget(p)
     , state(-1)
     , model(this)
     , proxy(this)
 {
-    setupUi(this);
-    addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
-    replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
+    statsLabel=new SqueezedTextLabel(this);
     locateAction=new Action(Icon("edit-find"), i18n("Locate In Library"), this);
     view->allowTableView(new SearchTableView(view));
     view->addAction(StdActions::self()->addToPlayQueueAction);
@@ -66,14 +64,11 @@ SearchPage::SearchPage(QWidget *p)
     #endif // TAGLIB_FOUND
     view->addAction(locateAction);
 
-    connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
-    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(&model, SIGNAL(searching()), view, SLOT(showSpinner()));
     connect(&model, SIGNAL(searched()), view, SLOT(hideSpinner()));
     connect(&model, SIGNAL(statsUpdated(int, quint32)), this, SLOT(statsUpdated(int, quint32)));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
-    connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(setSearchCategories()));
     connect(locateAction, SIGNAL(triggered()), SLOT(locateSongs()));
     proxy.setSourceModel(&model);
@@ -83,16 +78,11 @@ SearchPage::SearchPage(QWidget *p)
     setSearchCategories();
     view->setSearchCategory(Settings::self()->searchCategory());
     statsUpdated(0, 0);
+    init(AddToPlayQueue|ReplacePlayQueue, QList<QWidget *>() << statsLabel);
 }
 
 SearchPage::~SearchPage()
 {
-}
-
-void SearchPage::showEvent(QShowEvent *e)
-{
-    view->focusSearch();
-    QWidget::showEvent(e);
 }
 
 void SearchPage::saveConfig()
@@ -176,7 +166,7 @@ void SearchPage::addSelectionToDevice(const QString &udi)
 }
 #endif
 
-void SearchPage::searchItems()
+void SearchPage::doSearch()
 {
     QString text=view->searchText().trimmed();
 

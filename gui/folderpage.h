@@ -24,14 +24,13 @@
 #ifndef FOLDERPAGE_H
 #define FOLDERPAGE_H
 
-#include "ui_folderpage.h"
+#include "widgets/singlepagewidget.h"
 #include "models/dirviewmodel.h"
 #include "models/dirviewproxymodel.h"
-#include "page.h"
 
 class Action;
 
-class FolderPage : public QWidget, public Ui::FolderPage, public Page
+class FolderPage : public SinglePageWidget
 {
     Q_OBJECT
 public:
@@ -57,26 +56,22 @@ public:
     void addSelectionToDevice(const QString &udi);
     void deleteSongs();
     #endif
-    void setView(int v) { view->setMode((ItemView::Mode)v); }
-    void focusSearch() { view->focusSearch(); }
     void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void add(const QStringList &files, bool replace, quint8 priorty);
-    void addSongsToPlaylist(const QString &name, const QStringList &files);
     void loadFolders();
 
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
     void deleteSongs(const QString &from, const QList<Song> &songs);
 
 public Q_SLOTS:
-    void searchItems();
-    void controlActions();
     void itemDoubleClicked(const QModelIndex &);
     void openFileManager();
 
 private:
+    void doSearch();
+    void controlActions();
     QStringList walk(QModelIndex rootItem);
 
 private:

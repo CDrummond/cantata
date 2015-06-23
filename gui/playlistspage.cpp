@@ -31,6 +31,7 @@
 #include "stdactions.h"
 #include "support/actioncollection.h"
 #include "widgets/tableview.h"
+#include "widgets/spacerwidget.h"
 #include "settings.h"
 #include <QMenu>
 #ifdef ENABLE_KDE_SUPPORT
@@ -53,13 +54,11 @@ public:
 };
 
 PlaylistsPage::PlaylistsPage(QWidget *p)
-    : QWidget(p)
+    : SinglePageWidget(p)
 {
-    setupUi(this);
     renamePlaylistAction = new Action(Icon("edit-rename"), i18n("Rename"), this);
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
-    replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
 
     view->allowGroupedView();
     view->allowTableView(new PlaylistTableView(view));
@@ -83,7 +82,6 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
 
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
-    connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     //connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
@@ -96,13 +94,8 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     connect(removeDuplicatesAction, SIGNAL(triggered()), this, SLOT(removeDuplicates()));
     connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
     connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
-    QMenu *menu=new QMenu(this);
-    menu->addAction(StdActions::self()->addToPlayQueueAction);
-    menu->addAction(StdActions::self()->addWithPriorityAction);
-    menu->addAction(StdActions::self()->removeAction);
-    menu->addAction(renamePlaylistAction);
-    menuButton->setMenu(menu);
     view->load(metaObject()->className());
+    init(ReplacePlayQueue|AddToPlayQueue);
 }
 
 PlaylistsPage::~PlaylistsPage()
@@ -116,12 +109,6 @@ void PlaylistsPage::saveConfig()
     if (tv) {
         tv->saveHeader();
     }
-}
-
-void PlaylistsPage::showEvent(QShowEvent *e)
-{
-    view->focusView();
-    QWidget::showEvent(e);
 }
 
 void PlaylistsPage::setStartClosed(bool sc)
@@ -428,10 +415,9 @@ void PlaylistsPage::controlActions()
     #ifdef ENABLE_DEVICES_SUPPORT
     StdActions::self()->copyToDeviceAction->setEnabled(enableActions && !allSmartPlaylists);
     #endif
-    menuButton->controlState();
 }
 
-void PlaylistsPage::searchItems()
+void PlaylistsPage::doSearch()
 {
     QString text=view->searchText().trimmed();
     bool updated=proxy.update(text);

@@ -33,12 +33,8 @@
 #include "models/mpdlibrarymodel.h"
 
 LibraryPage::LibraryPage(QWidget *p)
-    : QWidget(p)
+    : SinglePageWidget(p)
 {
-    setupUi(this);
-    addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
-    replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
-
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
@@ -59,29 +55,20 @@ LibraryPage::LibraryPage(QWidget *p)
     #endif
     #endif // TAGLIB_FOUND
 
-    connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
-    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary(time_t)), view, SLOT(updating()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(updated()));
     connect(MPDConnection::self(), SIGNAL(updatingDatabase()), view, SLOT(updating()));
     connect(MPDConnection::self(), SIGNAL(updatedDatabase()), view, SLOT(updated()));
-    connect(this, SIGNAL(loadLibrary()), MPDConnection::self(), SLOT(loadLibrary()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
-    connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     view->setModel(MpdLibraryModel::self());
     view->load(metaObject()->className());
+    init(ReplacePlayQueue|AddToPlayQueue);
 }
 
 LibraryPage::~LibraryPage()
 {
     view->save(metaObject()->className());
-}
-
-void LibraryPage::showEvent(QShowEvent *e)
-{
-    view->focusView();
-    QWidget::showEvent(e);
 }
 
 void LibraryPage::clear()
@@ -240,7 +227,7 @@ void LibraryPage::itemDoubleClicked(const QModelIndex &)
     }
 }
 
-void LibraryPage::searchItems()
+void LibraryPage::doSearch()
 {
     MpdLibraryModel::self()->search(view->searchText());
 }

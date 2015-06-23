@@ -24,7 +24,7 @@
 #ifndef STREAMSPAGE_H
 #define STREAMSPAGE_H
 
-#include "ui_streamspage.h"
+#include "widgets/singlepagewidget.h"
 #include "models/streamsproxymodel.h"
 #include "models/streamsearchmodel.h"
 #include "models/streamsmodel.h"
@@ -34,8 +34,9 @@
 class Action;
 class QAction;
 class NetworkReply;
+class ServiceStatusLabel;
 
-class StreamsPage : public QWidget, public Ui::StreamsPage, public Page
+class StreamsPage : public SinglePageWidget
 {
     Q_OBJECT
 
@@ -44,10 +45,6 @@ public:
     virtual ~StreamsPage();
 
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
-    void setView(int v) { view->setMode((ItemView::Mode)v); searchView->setMode((ItemView::Mode)v); }
-    void focusSearch();
-    void goBack() { itemView()->backActivated(); }
-    ItemView *itemView() { return searching ? searchView : view; }
     void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
@@ -70,29 +67,24 @@ private Q_SLOTS:
     void addToFavourites();
     void reload();
     void edit();
-    void searchItems();
-    void controlSearch(bool on);
     void itemDoubleClicked(const QModelIndex &index);
     void updateDiStatus();
-    void showPreferencesPage();
     void expandFavourites();
     void addedToFavourites(const QString &name);
     void tuneInResolved();
 
 private:
+    void doSearch();
+    void configure();
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
-    StreamsModel::CategoryItem *getSearchCategory();
 
 private:
-    bool searching;
+    ServiceStatusLabel *diStatusLabel;
     Action *importAction;
     Action *exportAction;
     Action *addAction;
     Action *editAction;
-    StreamsProxyModel streamsProxy;
-    StreamsProxyModel searchProxy;
-    StreamsProxyModel *proxy;
-    StreamSearchModel searchModel;
+    StreamsProxyModel proxy;
     QSet<NetworkJob *> resolveJobs;
 };
 

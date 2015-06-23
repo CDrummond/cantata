@@ -32,6 +32,9 @@
 #include "network/networkaccessmanager.h"
 #include "gui/settings.h"
 #include "widgets/statuslabel.h"
+#include "widgets/menubutton.h"
+#include "widgets/itemview.h"
+#include "widgets/servicestatuslabel.h"
 #include "models/digitallyimported.h"
 #include "digitallyimportedsettings.h"
 #include <QToolButton>
@@ -51,25 +54,15 @@ static const int constMsgDisplayTime=1500;
 static const char *constNameProperty="name";
 
 StreamsPage::StreamsPage(QWidget *p)
-    : QWidget(p)
-    , searching(false)
-    , proxy(&streamsProxy)
+    : SinglePageWidget(p)
 {
-    setupUi(this);
     importAction = new Action(Icon("document-import"), i18n("Import Streams Into Favorites"), this);
     exportAction = new Action(Icon("document-export"), i18n("Export Favorite Streams"), this);
     addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favorites"), Icons::self()->addRadioStreamIcon);
     editAction = new Action(Icons::self()->editIcon, i18n("Edit"), this);
-    replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
-    connect(view, SIGNAL(searchIsActive(bool)), this, SLOT(controlSearch(bool)));
-    connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
-    connect(searchView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
-    connect(searchView, SIGNAL(searchItems()), this, SLOT(searchItems()));
-    connect(searchView, SIGNAL(searchIsActive(bool)), this, SLOT(controlSearch(bool)));
-    connect(searchView, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(addAction, SIGNAL(triggered()), this, SLOT(add()));
     connect(StreamsModel::self()->addBookmarkAct(), SIGNAL(triggered()), this, SLOT(addBookmark()));
     connect(StreamsModel::self()->addToFavouritesAct(), SIGNAL(triggered()), this, SLOT(addToFavourites()));
@@ -84,8 +77,6 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(StreamsModel::self(), SIGNAL(categoriesChanged()), view, SLOT(closeSearch()));
     connect(StreamsModel::self(), SIGNAL(favouritesLoaded()), SLOT(expandFavourites()));
     connect(StreamsModel::self(), SIGNAL(addedToFavourites(QString)), SLOT(addedToFavourites(QString)));
-    connect(&searchModel, SIGNAL(loading()), searchView, SLOT(showSpinner()));
-    connect(&searchModel, SIGNAL(loaded()), searchView, SLOT(hideSpinner()));
     connect(DigitallyImported::self(), SIGNAL(loginStatus(bool,QString)), SLOT(updateDiStatus()));
     connect(DigitallyImported::self(), SIGNAL(updated()), SLOT(updateDiStatus()));
     QMenu *menu=new QMenu(this);
@@ -96,13 +87,8 @@ StreamsPage::StreamsPage(QWidget *p)
     menu->addSeparator();
     menu->addAction(importAction);
     menu->addAction(exportAction);
-    menu->addSeparator();
-    QAction *configAction=new QAction(Icons::self()->configureIcon, i18n("Configure..."), this);
-    menu->addAction(configAction);
-    connect(configAction, SIGNAL(triggered()), this, SLOT(showPreferencesPage()));
+    MenuButton *menuButton=new MenuButton(this);
     menuButton->setMenu(menu);
-    Icon::init(replacePlayQueue);
-
     view->setUniformRowHeights(true);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(editAction);
@@ -110,21 +96,16 @@ StreamsPage::StreamsPage(QWidget *p)
     view->addAction(StreamsModel::self()->addToFavouritesAct());
     view->addAction(StreamsModel::self()->addBookmarkAct());
     view->addAction(StreamsModel::self()->reloadAct());
-    streamsProxy.setSourceModel(StreamsModel::self());
-    view->setModel(&streamsProxy);
+    proxy.setSourceModel(StreamsModel::self());
+    view->setModel(&proxy);
     view->setDeleteAction(StdActions::self()->removeAction);
     view->setSearchResetLevel(1);
 
-    searchView->setUniformRowHeights(true);
-    searchView->addAction(StdActions::self()->replacePlayQueueAction);
-    searchView->addAction(StreamsModel::self()->addToFavouritesAct());
-    searchView->addAction(StreamsModel::self()->addBookmarkAct());
-    searchProxy.setSourceModel(&searchModel);
-    searchView->setModel(&searchProxy);
-
+    diStatusLabel=new ServiceStatusLabel(this);
     diStatusLabel->setText("DI", i18nc("Service name", "Digitally Imported"));
     connect(diStatusLabel, SIGNAL(clicked()), SLOT(diSettings()));
     updateDiStatus();  
+    init(ReplacePlayQueue|Configure, QList<QWidget *>() << menuButton << diStatusLabel);
 }
 
 StreamsPage::~StreamsPage()
@@ -136,20 +117,6 @@ StreamsPage::~StreamsPage()
     resolveJobs.clear();
 }
 
-void StreamsPage::focusSearch()
-{
-    if (view->searchVisible()) {
-        view->clearSearchText();
-        searchView->clearSearchText();
-        view->focusSearch();
-        searchView->focusSearch();
-        controlSearch(true);
-    } else {
-        view->focusSearch();
-        searchView->focusSearch();
-    }
-}
-
 void StreamsPage::showEvent(QShowEvent *e)
 {
     view->focusView();
@@ -159,7 +126,7 @@ void StreamsPage::showEvent(QShowEvent *e)
 void StreamsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
     Q_UNUSED(name)
-    addItemsToPlayQueue(itemView()->selectedIndexes(), replace, priorty);
+    addItemsToPlayQueue(view->selectedIndexes(), replace, priorty);
 }
 
 void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty)
@@ -169,20 +136,20 @@ void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool repla
     }
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, indexes) {
-        mapped.append(proxy->mapToSource(idx));
+        mapped.append(proxy.mapToSource(idx));
     }
 
-    QStringList files=searching ? searchModel.filenames(mapped, true) : StreamsModel::self()->filenames(mapped, true);
+    QStringList files=StreamsModel::self()->filenames(mapped, true);
 
     if (!files.isEmpty()) {
         emit add(files, replace, priorty);
-        itemView()->clearSelection();
+        view->clearSelection();
     }
 }
 
 void StreamsPage::itemDoubleClicked(const QModelIndex &index)
 {
-    if (!static_cast<StreamsModel::Item *>(proxy->mapToSource(index).internalPointer())->isCategory()) {
+    if (!static_cast<StreamsModel::Item *>(proxy.mapToSource(index).internalPointer())->isCategory()) {
         QModelIndexList indexes;
         indexes.append(index);
         addItemsToPlayQueue(indexes, false);
@@ -191,16 +158,12 @@ void StreamsPage::itemDoubleClicked(const QModelIndex &index)
 
 void StreamsPage::configureStreams()
 {
-    if (searching) {
-        return;
-    }
-
-    QModelIndexList selected = itemView()->selectedIndexes(false); // Dont need sorted selection here...
+    QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
     if (1!=selected.count()) {
         return;
     }
 
-    const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy->mapToSource(selected.first()).internalPointer());
+    const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer());
     if (item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canConfigure()) {
         // TODO: In future might need to confirm category type, at the moment only digitially imported can be configured...
         diSettings();
@@ -214,9 +177,6 @@ void StreamsPage::diSettings()
 
 void StreamsPage::importXml()
 {
-    if (searching) {
-        return;
-    }
     #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.xml *.xml.gz *.cantata|XML Streams"), this, i18n("Import Streams"));
     #else
@@ -232,10 +192,6 @@ void StreamsPage::importXml()
 
 void StreamsPage::exportXml()
 {
-    if (searching) {
-        return;
-    }
-
     QLatin1String ext(".xml.gz");
     #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getSaveFileName(QLatin1String("streams")+ext, i18n("*.xml|XML Streams"), this, i18n("Export Streams"));
@@ -258,9 +214,6 @@ void StreamsPage::exportXml()
 
 void StreamsPage::add()
 {
-    if (searching) {
-        return;
-    }
     StreamDialog dlg(this);
 
     if (QDialog::Accepted==dlg.exec()) {
@@ -280,31 +233,30 @@ void StreamsPage::add()
 
 void StreamsPage::addBookmark()
 {
-    QModelIndexList selected = itemView()->selectedIndexes(false); // Dont need sorted selection here...
+    QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1!=selected.count()) {
         return;
     }
 
-    const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy->mapToSource(selected.first()).internalPointer());
+    const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer());
 
     // TODO: In future, if other categories support bookmarking, then we will need to calculate parent here!!!
     if (StreamsModel::self()->addBookmark(item->url, item->name, 0)) {
-        itemView()->showMessage(i18n("Bookmark added"), constMsgDisplayTime);
+        view->showMessage(i18n("Bookmark added"), constMsgDisplayTime);
     } else {
-        itemView()->showMessage(i18n("Already bookmarked"), constMsgDisplayTime);
+        view->showMessage(i18n("Already bookmarked"), constMsgDisplayTime);
     }
 }
 
-#include <QDebug>
 void StreamsPage::addToFavourites()
 {
-    QModelIndexList selected = itemView()->selectedIndexes();
+    QModelIndexList selected = view->selectedIndexes();
 
     QList<const StreamsModel::Item *> items;
 
     foreach (const QModelIndex &i, selected) {
-        QModelIndex mapped=proxy->mapToSource(i);
+        QModelIndex mapped=proxy.mapToSource(i);
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
         if (!item->isCategory() && item->parent && !item->parent->isFavourites()) {
             items.append(item);
@@ -331,7 +283,6 @@ void StreamsPage::addToFavourites()
         }
         if (urlStr.startsWith(QLatin1String("http://opml.radiotime.com/Tune.ashx"))) {
             NetworkJob *job=NetworkAccessManager::self()->get(urlStr, 5000);
-            qWarning() << "GET" << urlStr << item->modifiedName();
             job->setProperty(constNameProperty, item->modifiedName());
             connect(job, SIGNAL(finished()), this, SLOT(tuneInResolved()));
             resolveJobs.insert(job);
@@ -342,7 +293,7 @@ void StreamsPage::addToFavourites()
     }
 
     if (!added) {
-        itemView()->showMessage(i18n("Already in favorites"), constMsgDisplayTime);
+        view->showMessage(i18n("Already in favorites"), constMsgDisplayTime);
     }
 }
 
@@ -360,22 +311,18 @@ void StreamsPage::tuneInResolved()
     QString url=job->readAll().split('\n').first();
     QString name=job->property(constNameProperty).toString();
     if (!url.isEmpty() && !name.isEmpty() && !StreamsModel::self()->addToFavourites(url, name)) {
-        itemView()->showMessage(i18n("Already in favorites"), constMsgDisplayTime);
+        view->showMessage(i18n("Already in favorites"), constMsgDisplayTime);
     }
 }
 
 void StreamsPage::reload()
 {
-    if (searching) {
-        return;
-    }
-
-    QModelIndexList selected = itemView()->selectedIndexes(false); // Dont need sorted selection here...
+    QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
     if (1!=selected.count()) {
         return;
     }
 
-    QModelIndex mapped=proxy->mapToSource(selected.first());
+    QModelIndex mapped=proxy.mapToSource(selected.first());
     const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
     if (!item->isCategory()) {
         return;
@@ -392,14 +339,10 @@ void StreamsPage::reload()
 
 void StreamsPage::removeItems()
 {
-    if (searching) {
-        return;
-    }
-
-    QModelIndexList selected = itemView()->selectedIndexes();
+    QModelIndexList selected = view->selectedIndexes();
     
     if (1==selected.count()) {
-        QModelIndex mapped=proxy->mapToSource(selected.first());
+        QModelIndex mapped=proxy.mapToSource(selected.first());
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
         if (item->isCategory() && item->parent) {
             if (item->parent->isBookmarks) {
@@ -421,7 +364,7 @@ void StreamsPage::removeItems()
     QModelIndexList useable;
 
     foreach (const QModelIndex &i, selected) {
-        QModelIndex mapped=proxy->mapToSource(i);
+        QModelIndex mapped=proxy.mapToSource(i);
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
         if (!item->isCategory() && item->parent && item->parent->isFavourites()) {
             useable.append(mapped);
@@ -448,17 +391,13 @@ void StreamsPage::removeItems()
 
 void StreamsPage::edit()
 {
-    if (searching) {
-        return;
-    }
-
-    QModelIndexList selected = itemView()->selectedIndexes(false); // Dont need sorted selection here...
+    QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1!=selected.size()) {
         return;
     }
 
-    QModelIndex index=proxy->mapToSource(selected.first());
+    QModelIndex index=proxy.mapToSource(selected.first());
     StreamsModel::Item *item=static_cast<StreamsModel::Item *>(index.internalPointer());
     if (item->isCategory() || !item->parent || !item->parent->isFavourites()) {
         return;
@@ -485,169 +424,68 @@ void StreamsPage::edit()
     }
 }
 
-void StreamsPage::searchItems()
+void StreamsPage::doSearch()
 {
-    if (!searching) {
-        return;
+    QString text=view->searchText().trimmed();
+    if (!view->isSearchActive()) {
+        proxy.setFilterItem(0);
     }
-    if (proxy==&searchProxy) {
-        searchModel.search(searchView->searchText().trimmed(), false);
-    } else {
-        QString text=view->searchText().trimmed();
-        if (!view->isSearchActive()) {
-            proxy->setFilterItem(0);
-        }
-        proxy->update(view->isSearchActive() ? text : QString());
-        if (proxy->enabled() && !text.isEmpty()) {
-            view->expandAll(proxy->filterItem()
-                            ? proxy->mapFromSource(StreamsModel::self()->categoryIndex(static_cast<const StreamsModel::CategoryItem *>(proxy->filterItem())))
-                            : QModelIndex());
-        }
-    }
-}
-
-StreamsModel::CategoryItem * StreamsPage::getSearchCategory()
-{
-    bool srch=searching;
-    searching=false;
-    QModelIndexList selected = itemView()->selectedIndexes(false); // Dont need sorted selection here...
-    searching=srch;
-
-    if (1!=selected.size()) {
-        return StreamsModel::self()->tuneInCat();
-    }
-
-    QModelIndex index=proxy->mapToSource(selected.first());
-    StreamsModel::Item *item=static_cast<StreamsModel::Item *>(index.internalPointer());
-    if (!item) {
-        return StreamsModel::self()->tuneInCat();
-    }
-    StreamsModel::CategoryItem *cat=item->getTopLevelCategory();
-    return 0==cat ? StreamsModel::self()->tuneInCat() : cat;
-}
-
-void StreamsPage::controlSearch(bool on)
-{
-    StreamsModel::CategoryItem *cat=0;
-    StreamSearchModel::Category searchCat=StreamSearchModel::TuneIn;
-
-    if (on) {
-        cat=getSearchCategory();
-        searchCat=StreamsModel::self()->isTuneIn(cat)
-            ? StreamSearchModel::TuneIn
-            : StreamsModel::self()->isShoutCast(cat)
-                ? StreamSearchModel::ShoutCast
-                    : StreamsModel::self()->isDirble(cat)
-                    ? StreamSearchModel::Dirble
-                    : StreamSearchModel::Filter;
-    }
-
-    if (on!=searching || StreamSearchModel::Filter==searchCat) {
-        searching=on;
-        if (searching) {
-            if (StreamSearchModel::Filter==searchCat) {
-                proxy=&streamsProxy;
-                searchModel.clear();
-                viewStack->setCurrentIndex(0);
-                view->setSearchLabelText(i18n("Search %1:", cat->name));
-                view->setBackgroundImage(cat->icon);
-                proxy->setFilterItem(cat);
-                proxy->update(QString());
-                QModelIndex filterIndex=cat ? StreamsModel::self()->categoryIndex(cat) : QModelIndex();
-                if (filterIndex.isValid()) {
-                    view->expand(proxy->mapFromSource(filterIndex), true);
-                }
-                // We need to call focusSearch via 'invokeMethod' as we need this to occur at the next event-loop iteration.
-                // This is due to the fact that we have 2 views - search (for TuneIn/ShoutCast) and standard. Our focusSearch()
-                // calls focusSearch on both - which triggers this controlSearch().
-                QMetaObject::invokeMethod(view, "focusSearch", Qt::QueuedConnection);
-            } else {
-                proxy=&searchProxy;
-                searchModel.setCat(searchCat);
-                viewStack->setCurrentIndex(1);
-                searchView->setSearchLabelText(i18n("Search %1:", cat->name));
-                searchView->setBackgroundImage(cat->icon);
-            }
-            view->clearSelection();
-        } else {
-            proxy->setFilterItem(0);
-            proxy->update(QString());
-            proxy=&streamsProxy;
-            searchModel.clear();
-            view->setSearchVisible(false);
-            viewStack->setCurrentIndex(0);
-            view->setBackgroundImage(QIcon());
-        }
-        controlActions();
+    proxy.update(view->isSearchActive() ? text : QString());
+    if (proxy.enabled() && !text.isEmpty()) {
+        view->expandAll(proxy.filterItem()
+                        ? proxy.mapFromSource(StreamsModel::self()->categoryIndex(static_cast<const StreamsModel::CategoryItem *>(proxy.filterItem())))
+                        : QModelIndex());
     }
 }
 
 void StreamsPage::controlActions()
 {
-    QModelIndexList selected=itemView()->selectedIndexes(false); // Dont need sorted selection here...
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool haveSelection=!selected.isEmpty();
     bool enableAddToFav=true;
     bool onlyStreamsSelected=true;
     StreamsModel::self()->addBookmarkAct()->setEnabled(false);
-    if (searching) {
-        foreach (const QModelIndex &idx, selected) {
-            const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy->mapToSource(idx).internalPointer());
-            if (item->isCategory()) {
-                enableAddToFav=false;
-                onlyStreamsSelected=false;
-                break;
-            }
-        }
-        StreamsModel::self()->reloadAct()->setEnabled(false);
-        StdActions::self()->removeAction->setEnabled(false);
-        StreamsModel::self()->addToFavouritesAct()->setEnabled(haveSelection && enableAddToFav);
-        StreamsModel::self()->configureAct()->setEnabled(false);
-        if (1==selected.size()) {
-            StreamsModel::self()->addBookmarkAct()->setEnabled(static_cast<const StreamsModel::Item *>(proxy->mapToSource(selected.first()).internalPointer())
-                                                                    ->isCategory());
-        }
-    } else {
-        editAction->setEnabled(false);
-        StreamsModel::self()->reloadAct()->setEnabled(false);
 
-        bool enableRemove=true;
-        foreach (const QModelIndex &idx, selected) {
-            const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy->mapToSource(idx).internalPointer());
-            if (item->isCategory() || (item->parent && !item->parent->isFavourites())) {
-                enableRemove=false;
-            }
-            if (item->isCategory() || (item->parent && item->parent->isFavourites())) {
-                enableAddToFav=false;
-            }
-            if (item->isCategory()) {
-                onlyStreamsSelected=false;
-            }
-            if (!enableRemove && !enableAddToFav && !onlyStreamsSelected) {
-                break;
-            }
+    editAction->setEnabled(false);
+    StreamsModel::self()->reloadAct()->setEnabled(false);
+
+    bool enableRemove=true;
+    foreach (const QModelIndex &idx, selected) {
+        const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(idx).internalPointer());
+        if (item->isCategory() || (item->parent && !item->parent->isFavourites())) {
+            enableRemove=false;
         }
-
-        StdActions::self()->removeAction->setEnabled(haveSelection && enableRemove);
-        StreamsModel::self()->addToFavouritesAct()->setEnabled(haveSelection && enableAddToFav);
-
-        if (1==selected.size()) {
-            const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy->mapToSource(selected.first()).internalPointer());
-            if (!item->isCategory() && item->parent && item->parent->isFavourites()) {
-                editAction->setEnabled(true);
-            }
-            StreamsModel::self()->reloadAct()->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canReload());
-            StreamsModel::self()->addBookmarkAct()->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canBookmark);
-            if (!StdActions::self()->removeAction->isEnabled()) {
-                StdActions::self()->removeAction->setEnabled(item->isCategory() && item->parent &&
-                                                            (item->parent->isBookmarks || (static_cast<const StreamsModel::CategoryItem *>(item)->isBookmarks)));
-            }
-            StreamsModel::self()->configureAct()->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canConfigure());
-        } else {
-            StreamsModel::self()->configureAct()->setEnabled(false);
+        if (item->isCategory() || (item->parent && item->parent->isFavourites())) {
+            enableAddToFav=false;
+        }
+        if (item->isCategory()) {
+            onlyStreamsSelected=false;
+        }
+        if (!enableRemove && !enableAddToFav && !onlyStreamsSelected) {
+            break;
         }
     }
+
+    StdActions::self()->removeAction->setEnabled(haveSelection && enableRemove);
+    StreamsModel::self()->addToFavouritesAct()->setEnabled(haveSelection && enableAddToFav);
+
+    if (1==selected.size()) {
+        const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer());
+        if (!item->isCategory() && item->parent && item->parent->isFavourites()) {
+            editAction->setEnabled(true);
+        }
+        StreamsModel::self()->reloadAct()->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canReload());
+        StreamsModel::self()->addBookmarkAct()->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canBookmark);
+        if (!StdActions::self()->removeAction->isEnabled()) {
+            StdActions::self()->removeAction->setEnabled(item->isCategory() && item->parent &&
+                                                         (item->parent->isBookmarks || (static_cast<const StreamsModel::CategoryItem *>(item)->isBookmarks)));
+        }
+        StreamsModel::self()->configureAct()->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canConfigure());
+    } else {
+        StreamsModel::self()->configureAct()->setEnabled(false);
+    }
+
     StdActions::self()->replacePlayQueueAction->setEnabled(haveSelection && onlyStreamsSelected);
-    menuButton->controlState();
 }
 
 void StreamsPage::updateDiStatus()
@@ -659,18 +497,17 @@ void StreamsPage::updateDiStatus()
     }
 }
 
-void StreamsPage::showPreferencesPage()
+void StreamsPage::configure()
 {
     emit showPreferencesPage(QLatin1String("streams"));
 }
 
 void StreamsPage::expandFavourites()
 {
-    view->expand(proxy->mapFromSource(StreamsModel::self()->favouritesIndex()), true);
+    view->expand(proxy.mapFromSource(StreamsModel::self()->favouritesIndex()), true);
 }
 
 void StreamsPage::addedToFavourites(const QString &name)
 {
-    itemView()->showMessage(i18n("Added '%1'' to favorites", name), constMsgDisplayTime);
+    view->showMessage(i18n("Added '%1'' to favorites", name), constMsgDisplayTime);
 }
-

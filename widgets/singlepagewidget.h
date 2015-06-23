@@ -27,8 +27,8 @@
 #include <QWidget>
 #include "mpd-interface/song.h"
 #include "gui/page.h"
+#include "widgets/itemview.h"
 
-class ItemView;
 class Action;
 
 class SinglePageWidget : public QWidget, public Page
@@ -45,6 +45,7 @@ public:
     };
     SinglePageWidget(QWidget *p);
     virtual void setView(int v);
+    ItemView::Mode viewMode() const { return view->viewMode(); }
     void focusSearch();
     void init(int flags=All, const QList<QWidget *> &leftXtra=QList<QWidget *>(), const QList<QWidget *> &rightXtra=QList<QWidget *>());
     virtual QStringList selectedFiles(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists); return QStringList(); }

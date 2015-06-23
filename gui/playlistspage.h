@@ -24,13 +24,12 @@
 #ifndef PLAYLISTSPAGE_H
 #define PLAYLISTSPAGE_H
 
-#include "ui_playlistspage.h"
+#include "widgets/singlepagewidget.h"
 #include "models/playlistsproxymodel.h"
-#include "page.h"
 
 class Action;
 
-class PlaylistsPage : public QWidget, public Ui::PlaylistsPage, public Page
+class PlaylistsPage : public SinglePageWidget
 {
     Q_OBJECT
 public:
@@ -45,12 +44,10 @@ public:
     //QStringList selectedFiles() const;
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
     void setView(int mode);
-    void focusSearch() { view->focusSearch(); }
     #ifdef ENABLE_DEVICES_SUPPORT
     QList<Song> selectedSongs(bool allowPlaylists=false) const;
     void addSelectionToDevice(const QString &udi);
     #endif
-    void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -60,8 +57,6 @@ Q_SIGNALS:
     void renamePlaylist(const QString &oldname, const QString &newname);
     void removeFromPlaylist(const QString &name, const QList<quint32> &positions);
 
-    void add(const QStringList &files, bool replace, quint8 priorty);
-    void addSongsToPlaylist(const QString &name, const QStringList &files);
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
 
 private:
@@ -69,15 +64,17 @@ private:
 
 public Q_SLOTS:
     void removeItems();
-    void controlActions();
 
 private Q_SLOTS:
     void savePlaylist();
     void renamePlaylist();
     void removeDuplicates();
     void itemDoubleClicked(const QModelIndex &index);
-    void searchItems();
     void updated(const QModelIndex &index);
+
+private:
+    void doSearch();
+    void controlActions();
 
 private:
     Action *renamePlaylistAction;

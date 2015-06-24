@@ -49,7 +49,6 @@
 #include "librarypage.h"
 #include "folderpage.h"
 #ifdef ENABLE_STREAMS
-#include "streams/streamspage.h"
 #include "streams/streamdialog.h"
 #endif
 #include "searchpage.h"
@@ -405,19 +404,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
     stopDynamicButton->setDefaultAction(Dynamic::self()->stopAct());
     #endif
-    #ifdef ENABLE_STREAMS
-    streamsPage = new StreamsPage(this);
-    addAction(streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::self()->streamsIcon));
-    streamsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
-    tabWidget->addTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
-    connect(streamsTabAction, SIGNAL(triggered()), this, SLOT(showStreamsTab()));
-    connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
-    connect(streamsPage, SIGNAL(error(QString)), this, SLOT(showError(QString)));
-    connect(streamsPage, SIGNAL(showPreferencesPage(QString)), this, SLOT(showPreferencesDialog(QString)));
-    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     onlinePage = new OnlineServicesPage(this);
-    addAction(onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), Icons::self()->onlineIcon));
+    addAction(onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Internet"), Icons::self()->onlineIcon));
     onlineTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
     onlinePage->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
@@ -1460,9 +1449,6 @@ void MainWindow::readSettings()
     Song::setComposerGenres(Settings::self()->composerGenres());
     libraryPage->setView(Settings::self()->libraryView());
     playlistsPage->setView(Settings::self()->playlistsView());
-    #ifdef ENABLE_STREAMS
-    streamsPage->setView(Settings::self()->streamsView());
-    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     onlinePage->setView(Settings::self()->onlineView());
     #endif
@@ -2131,9 +2117,6 @@ void MainWindow::currentTabChanged(int index)
     #ifdef ENABLE_DYNAMIC
     case PAGE_DYNAMIC:   currentPage=dynamicPage;   break;
     #endif
-    #ifdef ENABLE_STREAMS
-    case PAGE_STREAMS:   currentPage=streamsPage;   break;
-    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:    currentPage=onlinePage;    break;
     #endif
@@ -2188,10 +2171,6 @@ void MainWindow::tabToggled(int index)
     case PAGE_PLAYLISTS:
         setPlaylistsEnabled(tabWidget->isEnabled(index));
         break;
-    #ifdef ENABLE_STREAMS
-    case PAGE_STREAMS:
-        break;
-    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:
         onlinePage->setEnabled(onlinePage->isEnabled());
@@ -2233,10 +2212,6 @@ void MainWindow::toggleMonoIcons()
         #ifdef ENABLE_DYNAMIC
         dynamicTabAction->setIcon(Icons::self()->dynamicIcon);
         tabWidget->setIcon(PAGE_DYNAMIC, dynamicTabAction->icon());
-        #endif
-        #ifdef ENABLE_STREAMS
-        streamsTabAction->setIcon(Icons::self()->streamsIcon);
-        tabWidget->setIcon(PAGE_STREAMS, streamsTabAction->icon());
         #endif
         #ifdef ENABLE_ONLINE_SERVICES
         onlineTabAction->setIcon(Icons::self()->onlineIcon);
@@ -2533,9 +2508,6 @@ void MainWindow::updateActionToolTips()
     tabWidget->setToolTip(PAGE_PLAYLISTS, playlistsTabAction->toolTip());
     #ifdef ENABLE_DYNAMIC
     tabWidget->setToolTip(PAGE_DYNAMIC, dynamicTabAction->toolTip());
-    #endif
-    #ifdef ENABLE_STREAMS
-    tabWidget->setToolTip(PAGE_STREAMS, streamsTabAction->toolTip());
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
     tabWidget->setToolTip(PAGE_ONLINE, onlineTabAction->toolTip());

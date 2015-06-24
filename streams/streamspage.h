@@ -25,6 +25,7 @@
 #define STREAMSPAGE_H
 
 #include "widgets/singlepagewidget.h"
+#include "widgets/stackedpagewidget.h"
 #include "models/streamsproxymodel.h"
 #include "models/streamsearchmodel.h"
 #include "models/streamsmodel.h"
@@ -36,13 +37,13 @@ class QAction;
 class NetworkReply;
 class ServiceStatusLabel;
 
-class StreamsPage : public SinglePageWidget
+class StreamsBrowsePage : public SinglePageWidget
 {
     Q_OBJECT
 
 public:
-    StreamsPage(QWidget *p);
-    virtual ~StreamsPage();
+    StreamsBrowsePage(QWidget *p);
+    virtual ~StreamsBrowsePage();
 
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
     void showEvent(QShowEvent *e);
@@ -52,6 +53,7 @@ Q_SIGNALS:
 
     void error(const QString &str);
     void showPreferencesPage(const QString &page);
+    void searchForStreams();
 
 public Q_SLOTS:
     void removeItems();
@@ -72,6 +74,7 @@ private Q_SLOTS:
     void expandFavourites();
     void addedToFavourites(const QString &name);
     void tuneInResolved();
+    void headerClicked(int level);
 
 private:
     void doSearch();
@@ -84,8 +87,44 @@ private:
     Action *exportAction;
     Action *addAction;
     Action *editAction;
+    Action *searchAction;
     StreamsProxyModel proxy;
     QSet<NetworkJob *> resolveJobs;
+};
+
+class StreamSearchPage : public SinglePageWidget
+{
+    Q_OBJECT
+public:
+    StreamSearchPage(QWidget *p);
+    virtual ~StreamSearchPage();
+    void showEvent(QShowEvent *e);
+
+private Q_SLOTS:
+    void headerClicked(int level);
+
+private:
+    void doSearch();
+
+private:
+    StreamsProxyModel proxy;
+    StreamSearchModel model;
+};
+
+class StreamsPage : public StackedPageWidget
+{
+    Q_OBJECT
+public:
+    StreamsPage(QWidget *p);
+    virtual ~StreamsPage();
+
+private Q_SLOTS:
+    void searchForStreams();
+    void closeSearch();
+
+private:
+    StreamsBrowsePage *browse;
+    StreamSearchPage *search;
 };
 
 #endif

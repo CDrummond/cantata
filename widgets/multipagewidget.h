@@ -24,17 +24,17 @@
 #ifndef MULTI_PAGE_WIDGET_H
 #define MULTI_PAGE_WIDGET_H
 
-#include <QStackedWidget>
-#include <QMap>
+#include "stackedpagewidget.h"
 #include "mpd-interface/song.h"
 #include "gui/page.h"
+#include <QMap>
 
 class Icon;
 class SelectorButton;
 class SizeWidget;
 class QLabel;
 
-class MultiPageWidget : public QStackedWidget, public Page
+class MultiPageWidget : public StackedPageWidget
 {
     Q_OBJECT
 
@@ -49,11 +49,6 @@ public:
     MultiPageWidget(QWidget *p);
     virtual ~MultiPageWidget();
 
-    void setView(int v);
-    void focusSearch();
-    QStringList selectedFiles(bool allowPlaylists) const;
-    QList<Song> selectedSongs(bool allowPlaylists) const;
-    void addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty);
     void setInfoText(const QString &text);
     void addPage(const QString &name, const QString &icon, const QString &text, const QString &subText, QWidget *widget);
     void addPage(const QString &name, const Icon &icon, const QString &text, const QString &subText, QWidget *widget);

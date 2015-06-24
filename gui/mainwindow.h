@@ -54,9 +54,6 @@ class PlaylistsPage;
 #ifdef ENABLE_DYNAMIC
 class DynamicPage;
 #endif
-#ifdef ENABLE_STREAMS
-class StreamsPage;
-#endif
 #ifdef ENABLE_ONLINE_SERVICES
 class OnlineServicesPage;
 #endif
@@ -112,9 +109,6 @@ public:
         PAGE_PLAYLISTS,
         #ifdef ENABLE_DYNAMIC
         PAGE_DYNAMIC,
-        #endif
-        #ifdef ENABLE_STREAMS
-        PAGE_STREAMS,
         #endif
         #ifdef ENABLE_ONLINE_SERVICES
         PAGE_ONLINE,
@@ -229,11 +223,6 @@ public Q_SLOTS:
     void showDynamicTab() {
         #ifdef ENABLE_DYNAMIC
         showTab(PAGE_DYNAMIC);
-        #endif
-    }
-    void showStreamsTab() {
-        #ifdef ENABLE_STREAMS
-        showTab(PAGE_STREAMS);
         #endif
     }
     void showOnlineTab() {
@@ -369,10 +358,6 @@ private:
     #ifdef ENABLE_DYNAMIC
     Action *dynamicTabAction;
     DynamicPage *dynamicPage;
-    #endif
-    #ifdef ENABLE_STREAMS
-    Action *streamsTabAction;
-    StreamsPage *streamsPage;
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
     Action *onlineTabAction;

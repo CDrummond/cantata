@@ -498,9 +498,6 @@ void Icons::initSidebarIcons()
         #ifdef ENABLE_DYNAMIC
         dynamicIcon=loadSidebarIcon(QLatin1String("dynamic"), textCol, highlightedTexCol);
         #endif
-        #ifdef ENABLE_STREAMS
-        streamsIcon=loadSidebarIcon(QLatin1String("streams"), textCol, highlightedTexCol);
-        #endif
         #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=loadSidebarIcon(QLatin1String("online"), textCol, highlightedTexCol);
         #endif
@@ -517,9 +514,6 @@ void Icons::initSidebarIcons()
         playlistsIcon=playlistIcon;
         #ifdef ENABLE_DYNAMIC
         dynamicIcon=dynamicRuleIcon;
-        #endif
-        #ifdef ENABLE_STREAMS
-        streamsIcon=radioStreamIcon;
         #endif
         #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=Icon("applications-internet");

@@ -40,10 +40,11 @@ class StreamSearchModel : public ActionModel
 
 public:
     enum Category {
+        // DO NOT CHANGE ORDER!
         TuneIn,
         ShoutCast,
         Dirble,
-        Filter
+        NumCategories
     };
 
     StreamSearchModel(QObject *parent = 0);
@@ -66,9 +67,6 @@ public:
     void clear();
     void search(const QString &searchTerm, bool stationsOnly);
     void cancelAll();
-    Category cat() const { return category; }
-    void setCat(Category c);
-    void setFilterRoot(StreamsModel::CategoryItem *fr) { filterRoot=fr; }
  
 Q_SIGNALS:
     void loading();
@@ -79,7 +77,6 @@ private Q_SLOTS:
     void jobFinished();
 
 private:
-    bool matchesFilter(const QString &str) const;
     QList<StreamsModel::Item *> getStreams(StreamsModel::CategoryItem *cat);
     StreamsModel::Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<StreamsModel::Item*>(index.internalPointer()) : root; }
     QList<StreamsModel::Item *> parseRadioTimeResponse(QIODevice *dev, StreamsModel::CategoryItem *cat);
@@ -90,14 +87,6 @@ private:
     QMap<NetworkJob *, StreamsModel::CategoryItem *> jobs;
     StreamsModel::CategoryItem *root;
     QString currentSearch;
-
-    StreamsModel::CategoryItem *filterRoot;
-    QStringList filterStrings;
-    uint unmatchedStrings;
-
-    QString radioTimeSearchUrl;
-    QString shoutCastSearchUrl;
-    QString dirbleSearchUrl;
 };
 
 #endif

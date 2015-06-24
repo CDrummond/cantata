@@ -44,6 +44,12 @@ SoundCloudWidget::~SoundCloudWidget()
 {
 }
 
+void SoundCloudWidget::showEvent(QShowEvent *e)
+{
+    SinglePageWidget::showEvent(e);
+    view->focusSearch();
+}
+
 QStringList SoundCloudWidget::selectedFiles(bool allowPlaylists) const
 {
     QModelIndexList selected = view->selectedIndexes();

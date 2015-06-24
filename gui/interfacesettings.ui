@@ -263,7 +263,7 @@
           <item row="1" column="0">
            <widget class="BuddyLabel" name="streamsViewLabel">
             <property name="text">
-             <string>Streams:</string>
+             <string>Internet Streams:</string>
             </property>
             <property name="buddy">
              <cstring>streamsView</cstring>
@@ -276,7 +276,7 @@
           <item row="2" column="0">
            <widget class="BuddyLabel" name="onlineViewLabel">
             <property name="text">
-             <string>Online:</string>
+             <string>Internet Music Listings:</string>
             </property>
             <property name="buddy">
              <cstring>onlineView</cstring>

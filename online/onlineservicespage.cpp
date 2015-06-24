@@ -29,10 +29,14 @@
 #include "soundcloudwidget.h"
 #include "podcastservice.h"
 #include "podcastwidget.h"
+#include "streams/streamspage.h"
+#include "models/streamsmodel.h"
 
 OnlineServicesPage::OnlineServicesPage(QWidget *p)
     : MultiPageWidget(p)
 {
+    addPage(StreamsModel::self()->name(), StreamsModel::self()->icon(), StreamsModel::self()->title(), StreamsModel::self()->descr(), new StreamsPage(this));
+
     JamendoService *jamendo=new JamendoService(this);
     addPage(jamendo->name(), jamendo->icon(), jamendo->title(), jamendo->descr(), new OnlineDbWidget(jamendo, this));
     connect(jamendo, SIGNAL(error(QString)), this, SIGNAL(error(QString)));

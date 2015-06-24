@@ -21,32 +21,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef SOUNDCLOUD_WIDGET_H
-#define SOUNDCLOUD_WIDGET_H
+#ifndef STACKED_PAGE_WIDGET_H
+#define STACKED_PAGE_WIDGET_H
 
-#include <QWidget>
-#include "widgets/singlepagewidget.h"
-#include "soundcloudservice.h"
+#include <QStackedWidget>
+#include <QMap>
+#include "mpd-interface/song.h"
+#include "gui/page.h"
 
-class SoundCloudWidget : public SinglePageWidget
+class Icon;
+class SelectorButton;
+class SizeWidget;
+class QLabel;
+
+class StackedPageWidget : public QStackedWidget, public Page
 {
     Q_OBJECT
+
 public:
-    SoundCloudWidget(SoundCloudService *s, QWidget *p);
-    virtual ~SoundCloudWidget();
+    StackedPageWidget(QWidget *p);
+    virtual ~StackedPageWidget();
+
+    void setView(int v);
+    void focusSearch();
     QStringList selectedFiles(bool allowPlaylists) const;
     QList<Song> selectedSongs(bool allowPlaylists) const;
-    void setView(int) { }
-    void showEvent(QShowEvent *e);
+    void addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty);
 
-private Q_SLOTS:
-    void headerClicked(int level);
-
-private:
-    void doSearch();
-
-private:
-    SoundCloudService *srv;
+Q_SIGNALS:
+    void close();
 };
 
 #endif

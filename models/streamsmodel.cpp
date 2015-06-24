@@ -43,6 +43,7 @@
 #include "support/utils.h"
 #include "config.h"
 #include "support/globalstatic.h"
+#include "support/localize.h"
 #include <QModelIndex>
 #include <QString>
 #include <QSet>
@@ -104,25 +105,25 @@ static QString constDirbleUrl=QLatin1String("http://")+StreamsModel::constDirble
 
 static const QLatin1String constBookmarksDir=QLatin1String("bookmarks");
 
-static QIcon getIcon(const QString &name)
+static Icon getIcon(const QString &name)
 {
-    QIcon icon;
+    Icon icon;
     icon.addFile(":"+name);
     return icon.isNull() ? Icons::self()->streamCategoryIcon : icon;
 }
 
-static QIcon getExternalIcon(const QString &path, QStringList files=QStringList() << StreamsModel::constSvgIcon <<  StreamsModel::constPngIcon)
+static Icon getExternalIcon(const QString &path, QStringList files=QStringList() << StreamsModel::constSvgIcon <<  StreamsModel::constPngIcon)
 {
     foreach (const QString &file, files) {
         QString iconFile=path+Utils::constDirSep+file;
         if (QFile::exists(iconFile)) {
-            QIcon icon;
+            Icon icon;
             icon.addFile(iconFile);
             return icon;
         }
     }
 
-    return QIcon();
+    return Icon();
 }
 
 static QString categoryCacheName(const QString &name, bool createDir=false)
@@ -520,6 +521,7 @@ StreamsModel::StreamsModel(QObject *parent)
     : ActionModel(parent)
     , root(new CategoryItem(QString(), "root"))
 {
+    icn=Icons::self()->radioStreamIcon;
     tuneIn=new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), i18n("TuneIn"), root, getIcon("tunein"), QString(), "tunein");
     tuneIn->supportsBookmarks=true;
     root->children.append(tuneIn);
@@ -581,6 +583,21 @@ StreamsModel::~StreamsModel()
     delete root;
 }
 
+QString StreamsModel::name() const
+{
+    return QLatin1String("streams");
+}
+
+QString StreamsModel::title() const
+{
+    return i18n("Internet Streams");
+}
+
+QString StreamsModel::descr() const
+{
+    return i18n("Radio stations streams");
+}
+
 QModelIndex StreamsModel::index(int row, int column, const QModelIndex &parent) const
 {
     if (!hasIndex(row, column, parent)) {
@@ -630,6 +647,14 @@ int StreamsModel::columnCount(const QModelIndex &) const
 QVariant StreamsModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
+        switch (role) {
+        case Cantata::Role_TitleText:
+            return title();
+        case Cantata::Role_SubText:
+            return descr();
+        case Qt::DecorationRole:
+            return icon();
+        }
         return QVariant();
     }
 
@@ -1807,7 +1832,7 @@ void StreamsModel::loadInstalledProviders()
     }
 }
 
-StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &name, const QIcon &icon, const QString &streamsFileName, bool replace)
+StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &name, const Icon &icon, const QString &streamsFileName, bool replace)
 {
     CategoryItem *cat=0;
     if (streamsFileName.endsWith(constSettingsFile)) {

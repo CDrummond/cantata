@@ -177,14 +177,13 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #endif
     #ifdef ENABLE_STREAMS
     addViewTypes(streamsView, standardViews);
-    addView(i18n("Streams (e.g. Radio Stations)"), QLatin1String("StreamsPage"));
     #else
     REMOVE(streamsView)
     REMOVE(streamsViewLabel)
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
     addViewTypes(onlineView, standardViews);
-    addView(i18n("Online Services - Jamendo, Maganatune, SoundCloud, and Podcasts"), QLatin1String("OnlineServicesPage"));
+    addView(i18n("Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts"), QLatin1String("OnlineServicesPage"));
     #else
     REMOVE(onlineView)
     REMOVE(onlineViewLabel)

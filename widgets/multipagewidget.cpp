@@ -87,7 +87,7 @@ private:
 };
 
 MultiPageWidget::MultiPageWidget(QWidget *p)
-    : QStackedWidget(p)
+    : StackedPageWidget(p)
 {
     mainPage=new QWidget(this);
     QVBoxLayout *mainLayout=new QVBoxLayout(mainPage);
@@ -118,47 +118,6 @@ MultiPageWidget::~MultiPageWidget()
 {
 }
 
-void MultiPageWidget::setView(int v)
-{
-    for (int i=0; i<count(); ++i) {
-        if (dynamic_cast<SinglePageWidget *>(widget(i))) {
-            static_cast<SinglePageWidget *>(widget(i))->setView(v);
-        }
-    }
-}
-
-void MultiPageWidget::focusSearch()
-{
-    QWidget *w=currentWidget();
-    if (dynamic_cast<SinglePageWidget *>(w)) {
-        static_cast<SinglePageWidget *>(w)->focusSearch();
-    }
-}
-
-QStringList MultiPageWidget::selectedFiles(bool allowPlaylists) const
-{
-    if (onMainPage() || !dynamic_cast<SinglePageWidget *>(currentWidget())) {
-        return QStringList();
-    }
-    return static_cast<SinglePageWidget *>(currentWidget())->selectedFiles(allowPlaylists);
-}
-
-QList<Song> MultiPageWidget::selectedSongs(bool allowPlaylists) const
-{
-    if (onMainPage() || !dynamic_cast<SinglePageWidget *>(currentWidget())) {
-        return QList<Song>();
-    }
-    return static_cast<SinglePageWidget *>(currentWidget())->selectedSongs(allowPlaylists);
-}
-
-void MultiPageWidget::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
-{
-    if (onMainPage() || !dynamic_cast<SinglePageWidget *>(currentWidget())) {
-        return;
-    }
-    return static_cast<SinglePageWidget *>(currentWidget())->addSelectionToPlaylist(name, replace, priorty);
-}
-
 void MultiPageWidget::setInfoText(const QString &text)
 {
     infoLabel->setText(text);
@@ -182,8 +141,10 @@ void MultiPageWidget::addPage(const QString &name, const Icon &icon, const QStri
     entries.insert(name, e);
     connect(e.btn, SIGNAL(clicked()), SLOT(setPage()));
     infoLabel->setVisible(false);
-    if (dynamic_cast<SinglePageWidget *>(widget)) {
+    if (qobject_cast<SinglePageWidget *>(widget)) {
         connect(static_cast<SinglePageWidget *>(widget), SIGNAL(close()), this, SLOT(showMainView()));
+    } else if (qobject_cast<StackedPageWidget *>(widget)) {
+        connect(static_cast<StackedPageWidget *>(widget), SIGNAL(close()), this, SLOT(showMainView()));
     }
 }
 

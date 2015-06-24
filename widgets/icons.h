@@ -79,9 +79,6 @@ public:
     #ifdef ENABLE_DYNAMIC
     Icon dynamicIcon;
     #endif
-    #ifdef ENABLE_STREAMS
-    Icon streamsIcon;
-    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     Icon onlineIcon;
     #endif

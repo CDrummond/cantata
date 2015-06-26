@@ -48,9 +48,7 @@
 #include "models/mpdlibrarymodel.h"
 #include "librarypage.h"
 #include "folderpage.h"
-#ifdef ENABLE_STREAMS
 #include "streams/streamdialog.h"
-#endif
 #include "searchpage.h"
 #include "support/gtkstyle.h"
 #ifdef ENABLE_DEVICES_SUPPORT
@@ -62,9 +60,7 @@
 #include "devices/audiocddevice.h"
 #endif
 #endif
-#ifdef ENABLE_ONLINE_SERVICES
 #include "online/onlineservicespage.h"
-#endif
 #include "http/httpserver.h"
 #ifdef TAGLIB_FOUND
 #include "tags/trackorganiser.h"
@@ -95,9 +91,7 @@
 #include "mac/powermanagement.h"
 #endif
 #endif
-#ifdef ENABLE_DYNAMIC
 #include "dynamic/dynamic.h"
-#endif
 #include "support/messagewidget.h"
 #include "widgets/groupedview.h"
 #include "widgets/actionitemdelegate.h"
@@ -392,13 +386,10 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->addTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     connect(playlistsTabAction, SIGNAL(triggered()), this, SLOT(showPlaylistsTab()));
     setPlaylistsEnabled(!hiddenPages.contains(playlistsPage->metaObject()->className()));
-    #ifdef ENABLE_DYNAMIC
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
     connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
     stopDynamicButton->setDefaultAction(Dynamic::self()->stopAct());
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
     onlinePage = new OnlineServicesPage(this);
     addAction(onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Internet"), Icons::self()->onlineIcon));
     onlineTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
@@ -407,7 +398,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(onlineTabAction, SIGNAL(triggered()), this, SLOT(showOnlineTab()));
     connect(onlinePage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(onlinePage, SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage = new DevicesPage(this);
     addAction(devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), Icons::self()->devicesIcon));
@@ -945,9 +935,7 @@ MainWindow::~MainWindow()
     playQueue->saveConfig();
 //    playlistsPage->saveConfig();
     context->saveConfig();
-    #ifdef ENABLE_STREAMS
     StreamsModel::self()->save();
-    #endif
     searchPage->saveConfig();
     nowPlaying->saveConfig();
     Settings::self()->saveForceSingleClick(TreeView::getForceSingleClick());
@@ -956,11 +944,9 @@ MainWindow::~MainWindow()
                                       ((isHidden() && Settings::SS_ShowMainWindow!=startupState) || (Settings::SS_HideMainWindow==startupState)));
     Settings::self()->save();
     disconnect(MPDConnection::self(), 0, 0, 0);
-    #ifdef ENABLE_DYNAMIC
     if (Settings::self()->stopOnExit()) {
         Dynamic::self()->stop();
     }
-    #endif
     if (Settings::self()->stopOnExit()) {
         emit stop();
         Utils::sleep(); // Allow time for stop to be sent...
@@ -1111,11 +1097,9 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         PlaylistsModel::self()->clear();
         playQueueModel.clear();
         searchPage->clear();
-        #ifdef ENABLE_DYNAMIC
         if (!MPDConnection::self()->getDetails().isEmpty() && details!=MPDConnection::self()->getDetails()) {
             Dynamic::self()->stop();
         }
-        #endif
         showInformation(i18n("Connecting to %1", details.description()));
         outputsAction->setVisible(false);
         if (CS_Init!=connectedState) {
@@ -1188,14 +1172,12 @@ void MainWindow::showAboutDialog()
 
 bool MainWindow::canClose()
 {
-    #ifdef ENABLE_ONLINE_SERVICES
     if (onlinePage->isDownloading() &&
             MessageBox::No==MessageBox::warningYesNo(this, i18n("A Podcast is currently being downloaded\n\nQuiting now will abort the download."),
                                                      QString(), GuiItem(i18n("Abort download and quit")), GuiItem("Do not quit just yet"))) {
         return false;
     }
     onlinePage->cancelAll();
-    #endif
     return true;
 }
 
@@ -1414,10 +1396,8 @@ void MainWindow::controlConnectionsMenu(bool enable)
 
 void MainWindow::controlDynamicButton()
 {
-    #ifdef ENABLE_DYNAMIC
     stopDynamicButton->setVisible(Dynamic::self()->isRunning());
     playQueueModel.enableUndo(!Dynamic::self()->isRunning());
-    #endif
 }
 
 void MainWindow::setRating()
@@ -1443,9 +1423,7 @@ void MainWindow::readSettings()
     Song::setComposerGenres(Settings::self()->composerGenres());
     libraryPage->setView(Settings::self()->libraryView());
     playlistsPage->setView(Settings::self()->playlistsView());
-    #ifdef ENABLE_ONLINE_SERVICES
     onlinePage->setView(Settings::self()->onlineView());
-    #endif
     folderPage->setView(Settings::self()->folderView());
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage->setView(Settings::self()->devicesView());
@@ -1894,9 +1872,7 @@ void MainWindow::promptClearPlayQueue()
 void MainWindow::clearPlayQueue()
 {
     if (dynamicLabel->isVisible()) {
-        #ifdef ENABLE_DYNAMIC
         Dynamic::self()->stop(true);
-        #endif
     } else {
         playQueueModel.removeAll();
     }
@@ -2015,7 +1991,6 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
 
 void MainWindow::addStreamToPlayQueue()
 {
-    #ifdef ENABLE_STREAMS
     StreamDialog dlg(this, true);
 
     if (QDialog::Accepted==dlg.exec()) {
@@ -2026,16 +2001,6 @@ void MainWindow::addStreamToPlayQueue()
         }
         playQueueModel.addItems(QStringList() << StreamsModel::modifyUrl(url), false, 0);
     }
-    #else
-    QString url = InputDialog::getText(i18n("Stream URL"), i18n("Enter URL of stream:"), QString(), 0, this).trimmed();
-    if (!url.isEmpty()) {
-        if (!MPDConnection::self()->urlHandlers().contains(QUrl(url).scheme())) {
-            MessageBox::error(this, i18n("Invalid, or unsupported, URL!"));
-        } else {
-            playQueueModel.addItems(QStringList() << StreamsModel::modifyUrl(url), false, 0);
-        }
-    }
-    #endif
 }
 
 void MainWindow::removeItems()
@@ -2108,9 +2073,7 @@ void MainWindow::currentTabChanged(int index)
     case PAGE_LIBRARY:   currentPage=libraryPage;   break;
     case PAGE_FOLDERS:   folderPage->load();  currentPage=folderPage; break;
     case PAGE_PLAYLISTS: currentPage=playlistsPage; break;
-    #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:    currentPage=onlinePage;    break;
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     case PAGE_DEVICES:   currentPage=devicesPage;   break;
     #endif
@@ -2162,11 +2125,9 @@ void MainWindow::tabToggled(int index)
     case PAGE_PLAYLISTS:
         setPlaylistsEnabled(tabWidget->isEnabled(index));
         break;
-    #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:
         onlinePage->setEnabled(onlinePage->isEnabled());
         break;
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     case PAGE_DEVICES:
         DevicesModel::self()->setEnabled(!DevicesModel::self()->isEnabled());
@@ -2218,11 +2179,7 @@ void MainWindow::locateAlbum(const QString &artist, const QString &album)
 
 void MainWindow::dynamicStatus(const QString &message)
 {
-    #ifdef ENABLE_DYNAMIC
     Dynamic::self()->helperMessage(message);
-    #else
-    Q_UNUSED(message)
-    #endif
 }
 
 void MainWindow::setCollection(const QString &collection)
@@ -2466,9 +2423,7 @@ void MainWindow::updateActionToolTips()
     tabWidget->setToolTip(PAGE_LIBRARY, libraryTabAction->toolTip());
     tabWidget->setToolTip(PAGE_FOLDERS, foldersTabAction->toolTip());
     tabWidget->setToolTip(PAGE_PLAYLISTS, playlistsTabAction->toolTip());
-    #ifdef ENABLE_ONLINE_SERVICES
     tabWidget->setToolTip(PAGE_ONLINE, onlineTabAction->toolTip());
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     tabWidget->setToolTip(PAGE_DEVICES, devicesTabAction->toolTip());
     #endif

@@ -50,9 +50,7 @@
 #include "context/wikipediaengine.h"
 #include "context/lastfmengine.h"
 #include "context/metaengine.h"
-#ifdef ENABLE_DYNAMIC
 #include "dynamic/dynamic.h"
-#endif
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "models/devicesmodel.h"
 #endif
@@ -232,11 +230,9 @@ static void installDebugMessageHandler()
         if (dbg&Dbg_Context_Widget) {
             ContextWidget::enableDebug();
         }
-        #ifdef ENABLE_DYNAMIC
         if (dbg&Dbg_Dynamic) {
             Dynamic::enableDebug();
         }
-        #endif
         if (dbg&Dbg_StreamFetching) {
             StreamFetcher::enableDebug();
         }

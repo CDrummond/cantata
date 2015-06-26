@@ -403,7 +403,7 @@ private:
     bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
     void toggleStopAfterCurrent(bool afterCurrent);
     bool listDirInfo(const QString &dir);
-    #ifdef ENABLE_DYNAMIC
+    #ifndef CANTATA_WEB
     bool checkRemoteDynamicSupport();
     bool subscribe(const QByteArray &channel);
     void setupRemoteDynamic();
@@ -432,7 +432,7 @@ private:
     MpdSocket sock;
     MpdSocket idleSocket;
     QTimer *connTimer;
-    #ifdef ENABLE_DYNAMIC
+    #ifndef CANTATA_WEB
     QByteArray dynamicId;
     #endif
 

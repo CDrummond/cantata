@@ -26,7 +26,7 @@
 #include "mpd-interface/mpdparseutils.h"
 #include <QUrl>
 
-#ifdef ENABLE_STREAMS
+#ifndef CANTATA_WEB
 #include "widgets/icons.h"
 #include "network/networkaccessmanager.h"
 #include "support/localize.h"
@@ -1909,7 +1909,7 @@ QModelIndex StreamsModel::categoryIndex(const CategoryItem *cat) const
     return -1==row ? QModelIndex() : createIndex(row, 0, (void *)cat);
 }
 
-#endif // ENABLE_STREAMS
+#endif // ifndef CANTATA_WEB
 
 const QString StreamsModel::constPrefix=QLatin1String("cantata-stream-");
 

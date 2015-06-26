@@ -30,9 +30,7 @@
 #include "support/localize.h"
 #include "support/gtkstyle.h"
 #include "support/utils.h"
-#ifdef ENABLE_ONLINE_SERVICES
 #include "online/onlineservice.h"
-#endif
 #ifdef Q_OS_MAC
 #include "support/osxstyle.h"
 #endif
@@ -60,11 +58,7 @@ public:
         switch(event->type()) {
         case QEvent::ToolTip: {
             const Song &current=CurrentCover::self()->song();
-            if (current.isEmpty() || (current.isStream() && !current.isCantataStream() && !current.isCdda())
-                #ifdef ENABLE_ONLINE_SERVICES
-                || OnlineService::showLogoAsCover(current)
-                #endif
-                ) {
+            if (current.isEmpty() || (current.isStream() && !current.isCantataStream() && !current.isCdda()) || OnlineService::showLogoAsCover(current)) {
                 setToolTip(QString());
                 break;
             }

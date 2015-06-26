@@ -373,10 +373,7 @@ Icons::Icons()
     #else
     menuIcon=createMenuIcon(stdColor);
     #endif
-
-    #ifdef ENABLE_STREAMS
     streamCategoryIcon=Icon(QLatin1String("oxygen")==Icon::currentTheme().toLower() ? "inode-directory" : "folder-music");
-    #endif
 
     QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"stream.png");
     if (QFile::exists(iconFile)) {
@@ -441,11 +438,9 @@ Icons::Icons()
             speakerIcon=Icon("gnome-volume-control");
         }
     }
-    #ifdef ENABLE_DYNAMIC
     if (dynamicRuleIcon.isNull()) {
         dynamicRuleIcon=Icon("text-x-generic");
     }
-    #endif
     if (playlistIcon.isNull()) {
         playlistIcon=Icon("audio-x-mp3-playlist");
         if (playlistIcon.isNull()) {
@@ -467,11 +462,9 @@ Icons::Icons()
     #endif // Q_OS_WIN && Q_OS_MAC
     #endif // ENABLE_KDE_SUPPORT
 
-    #ifdef ENABLE_STREAMS
     if (streamCategoryIcon.isNull()) {
         streamCategoryIcon=folderIcon;
     }
-    #endif
 }
 
 void Icons::initSidebarIcons()
@@ -487,9 +480,7 @@ void Icons::initSidebarIcons()
     libraryIcon=loadSidebarIcon(QLatin1String("library"), textCol, highlightedTexCol);
     foldersIcon=loadSidebarIcon(QLatin1String("folders"), textCol, highlightedTexCol);
     playlistsIcon=loadSidebarIcon(QLatin1String("playlists"), textCol, highlightedTexCol);
-    #ifdef ENABLE_ONLINE_SERVICES
     onlineIcon=loadSidebarIcon(QLatin1String("online"), textCol, highlightedTexCol);
-    #endif
     infoSidebarIcon=loadSidebarIcon(QLatin1String("info"), textCol, highlightedTexCol);
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesIcon=loadSidebarIcon(QLatin1String("devices"), textCol, highlightedTexCol);

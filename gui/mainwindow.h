@@ -51,9 +51,7 @@ class Page;
 class LibraryPage;
 class FolderPage;
 class PlaylistsPage;
-#ifdef ENABLE_ONLINE_SERVICES
 class OnlineServicesPage;
-#endif
 #ifdef ENABLE_DEVICES_SUPPORT
 class DevicesPage;
 #endif
@@ -104,9 +102,7 @@ public:
         PAGE_LIBRARY,
         PAGE_FOLDERS,
         PAGE_PLAYLISTS,
-        #ifdef ENABLE_ONLINE_SERVICES
         PAGE_ONLINE,
-        #endif
         #ifdef ENABLE_DEVICES_SUPPORT
         PAGE_DEVICES,
         #endif
@@ -214,11 +210,7 @@ public Q_SLOTS:
     void showLibraryTab() { showTab(PAGE_LIBRARY); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
-    void showOnlineTab() {
-        #ifdef ENABLE_ONLINE_SERVICES
-        showTab(PAGE_ONLINE); 
-        #endif
-    }
+    void showOnlineTab() { showTab(PAGE_ONLINE); }
     void showContextTab() { showTab(PAGE_CONTEXT); }
     void showDevicesTab() {
         #ifdef ENABLE_DEVICES_SUPPORT
@@ -343,10 +335,8 @@ private:
     FolderPage *folderPage;
     Action *playlistsTabAction;
     PlaylistsPage *playlistsPage;
-    #ifdef ENABLE_ONLINE_SERVICES
     Action *onlineTabAction;
     OnlineServicesPage *onlinePage;
-    #endif
     QWidget *contextPage;
     #ifdef ENABLE_DEVICES_SUPPORT
     Action *devicesTabAction;

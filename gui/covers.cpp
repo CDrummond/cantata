@@ -30,9 +30,7 @@
 #include "config.h"
 #include "devices/deviceoptions.h"
 #include "support/thread.h"
-#ifdef ENABLE_ONLINE_SERVICES
 #include "online/onlineservice.h"
-#endif
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devices/device.h"
 #include "models/devicesmodel.h"
@@ -181,15 +179,9 @@ static QImage loadImage(const QString &fileName)
 
 static inline bool isOnlineServiceImage(const Song &s)
 {
-    #ifdef ENABLE_ONLINE_SERVICES
     return OnlineService::showLogoAsCover(s);
-    #else
-    Q_UNUSED(s)
-    return false;
-    #endif
 }
 
-#ifdef ENABLE_ONLINE_SERVICES
 static Covers::Image serviceImage(const Song &s)
 {
     Covers::Image img;
@@ -202,7 +194,6 @@ static Covers::Image serviceImage(const Song &s)
     }
     return img;
 }
-#endif
 
 static inline QString albumKey(const Song &s)
 {
@@ -212,11 +203,9 @@ static inline QString albumKey(const Song &s)
     if (s.isStandardStream()) {
         return QLatin1String("-stream-");
     }
-    #ifdef ENABLE_ONLINE_SERVICES
     if (isOnlineServiceImage(s)) {
         return s.onlineService();
     }
-    #endif
     return "{"+s.albumArtist()+"}{"+s.albumId()+"}";
 }
 
@@ -243,12 +232,9 @@ static inline QString cacheKey(const Song &song, int size)
         return QLatin1String("single")+QString::number(size);
     } else if (song.isStandardStream()) {
         return QLatin1String("str")+QString::number(size);
-    }
-    #ifdef ENABLE_ONLINE_SERVICES
-    else if (isOnlineServiceImage(song)) {
+    } else if (isOnlineServiceImage(song)) {
         return song.onlineService()+QString::number(size);
     }
-    #endif
 
     return songKey(song)+QString::number(size);
 }
@@ -580,7 +566,6 @@ void CoverDownloader::stop()
 void CoverDownloader::download(const Song &song)
 {
     DBUG << song.file << song.artist << song.albumartist << song.album;
-    #ifdef ENABLE_ONLINE_SERVICES
     if (song.isFromOnlineService()) {
         QString serviceName=song.onlineService();
         QString imageUrl=song.extraField(Song::OnlineImageUrl);
@@ -597,7 +582,6 @@ void CoverDownloader::download(const Song &song)
         }
         return;
     }
-    #endif
 
     if (jobs.end()!=findJob(Job(song, QString()))) {
         return;
@@ -818,7 +802,6 @@ void CoverDownloader::jobFinished()
 
 void CoverDownloader::onlineJobFinished()
 {
-    #ifdef ENABLE_ONLINE_SERVICES
     NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
 
     if (!reply) {
@@ -862,7 +845,6 @@ void CoverDownloader::onlineJobFinished()
         }
         emit cover(job.song, img, fileName);
     }
-    #endif
 }
 
 void CoverDownloader::failed(const Job &job)
@@ -1215,11 +1197,7 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
     #if QT_VERSION < 0x050100
     Q_UNUSED(origSize)
     #endif
-    #ifdef ENABLE_ONLINE_SERVICES
     bool podcast=!song.isArtistImageRequest() && !song.isComposerImageRequest() && song.isFromOnlineService() && OnlineService::isPodcasts(song.onlineService());
-    #else
-    bool podcast=false;
-    #endif
     QString key=song.isArtistImageRequest()
                 ? QLatin1String("artist-")
                     : song.isComposerImageRequest()
@@ -1279,15 +1257,12 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                 pix=new QPixmap(Icons::self()->albumIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             } else if (song.isStandardStream()) {
                 pix=new QPixmap(Icons::self()->streamIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-            }
-            #ifdef ENABLE_ONLINE_SERVICES
-            else if (isOnlineServiceImage(song)) {
+            } else if (isOnlineServiceImage(song)) {
                 Covers::Image img=serviceImage(song);
                 if (!img.img.isNull()) {
                     pix=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
                 }
             }
-            #endif
             if (pix) {
                 #if QT_VERSION >= 0x050100
                 if (size!=origSize) {
@@ -1477,7 +1452,6 @@ Covers::Image Covers::findImage(const Song &song, bool emitResult)
 Covers::Image Covers::locateImage(const Song &song)
 {
     DBUG_CLASS("Covers") << song.file << song.artist << song.albumartist << song.album << song.type;
-    #ifdef ENABLE_ONLINE_SERVICES
     if (song.isFromOnlineService()) {
         QString id=song.onlineService();
         Covers::Image img;
@@ -1507,7 +1481,6 @@ Covers::Image Covers::locateImage(const Song &song)
         DBUG_CLASS("Covers") << "Failed to locate online image for" << id;
         return Image();
     }
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     if (song.isFromDevice()) {
         Device *dev=DevicesModel::self()->device(song.deviceId());
@@ -1755,14 +1728,12 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
 {
     DBUG << song.file << song.artist << song.albumartist << song.album << song.composer() << song.isArtistImageRequest() << song.isComposerImageRequest();
 
-    #ifdef ENABLE_ONLINE_SERVICES
     if (urgent && song.isFromOnlineService()) {
         Covers::Image img=serviceImage(song);
         if (!img.img.isNull()) {
             return img;
         }
     }
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     if (song.isFromDevice()) {
         Device *dev=DevicesModel::self()->device(song.deviceId());

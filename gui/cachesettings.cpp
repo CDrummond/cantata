@@ -35,12 +35,8 @@
 #include "support/thread.h"
 #include "settings.h"
 #include "widgets/basicitemdelegate.h"
-#ifdef ENABLE_STREAMS
 #include "models/streamsmodel.h"
-#endif
-#ifdef ENABLE_ONLINE_SERVICES____TODO
 #include "online/podcastsearchdialog.h"
-#endif
 #include "support/squeezedtextlabel.h"
 #include "scrobbling/scrobbler.h"
 #include <QLabel>
@@ -272,12 +268,8 @@ CacheSettings::CacheSettings(QWidget *parent)
                   << "*"+ArtistView::constSimilarInfoExt << "*.json.gz" << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Album Information"), Utils::cacheDir(AlbumView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Track Information"), Utils::cacheDir(SongView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt, tree);
-    #ifdef ENABLE_STREAMS
     new CacheItem(i18n("Stream Listings"), Utils::cacheDir(StreamsModel::constSubDir, false), QStringList() << "*"+StreamsModel::constCacheExt, tree);
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES____TODO
     new CacheItem(i18n("Podcast Directories"), Utils::cacheDir(PodcastSearchDialog::constCacheDir, false), QStringList() << "*"+PodcastSearchDialog::constExt, tree);
-    #endif
     new CacheItem(i18n("Wikipedia Languages"), Utils::cacheDir(WikipediaSettings::constSubDir, false), QStringList() << "*.xml.gz", tree);
     new CacheItem(i18n("Scrobble Tracks"), Utils::cacheDir(Scrobbler::constCacheDir, false), QStringList() << "*.xml.gz", tree);
 

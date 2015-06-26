@@ -25,9 +25,7 @@
 #include "artistview.h"
 #include "albumview.h"
 #include "songview.h"
-#ifdef ENABLE_ONLINE_SERVICES
 #include "onlineview.h"
-#endif
 #include "mpd-interface/song.h"
 #include "support/utils.h"
 #include "gui/covers.h"
@@ -248,9 +246,7 @@ ContextWidget::ContextWidget(QWidget *parent)
     , fadeValue(1.0)
     , isWide(false)
     , stack(0)
-    #ifdef ENABLE_ONLINE_SERVICES
     , onlineContext(0)
-    #endif
     , splitter(0)
     , viewSelector(0)
 {
@@ -623,7 +619,6 @@ void ContextWidget::update(const Song &s)
         cancel();
     }
 
-    #ifdef ENABLE_ONLINE_SERVICES
     if (Song::OnlineSvrTrack==sng.type) {
         if (!onlineContext) {
             QWidget *onlinePage=new QWidget(mainStack);
@@ -644,7 +639,6 @@ void ContextWidget::update(const Song &s)
         return;
     }
     mainStack->setCurrentIndex(0);
-    #endif
     artist->update(sng);
     album->update(sng);
     song->update(sng);

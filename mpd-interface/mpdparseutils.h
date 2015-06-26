@@ -69,7 +69,7 @@ namespace MPDParseUtils
     extern QList<Song> parseSongs(const QByteArray &data, Location location);
     extern QList<IdPos> parseChanges(const QByteArray &data);
     extern QStringList parseList(const QByteArray &data, const QByteArray &key);
-    #ifdef ENABLE_DYNAMIC
+    #ifndef CANTATA_WEB
     typedef QMap<QByteArray, QStringList> MessageMap;
     extern MessageMap parseMessages(const QByteArray &data);
     #endif

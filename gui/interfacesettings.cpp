@@ -172,22 +172,10 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addView(i18n("Library"), QLatin1String("LibraryPage"));
     addView(i18n("Folders"), QLatin1String("FolderPage"));
     addView(i18n("Playlists"), QLatin1String("PlaylistsPage"));
-    #ifdef ENABLE_DYNAMIC
     addView(i18n("Dynamic Playlists"), QLatin1String("DynamicPage"));
-    #endif
-    #ifdef ENABLE_STREAMS
     addViewTypes(streamsView, standardViews);
-    #else
-    REMOVE(streamsView)
-    REMOVE(streamsViewLabel)
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
     addViewTypes(onlineView, standardViews);
     addView(i18n("Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts"), QLatin1String("OnlineServicesPage"));
-    #else
-    REMOVE(onlineView)
-    REMOVE(onlineViewLabel)
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     addViewTypes(devicesView, standardViews);
     addView(i18n("Devices - UMS, MTP (e.g. Android), and AudioCDs"), QLatin1String("DevicesPage"));
@@ -303,12 +291,8 @@ void InterfaceSettings::load()
     selectEntry(folderView, Settings::self()->folderView());
     selectEntry(playlistsView, Settings::self()->playlistsView());
     playListsStartClosed->setChecked(Settings::self()->playListsStartClosed());
-    #ifdef ENABLE_STREAMS
     selectEntry(streamsView, Settings::self()->streamsView());
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
     selectEntry(onlineView, Settings::self()->onlineView());
-    #endif
     composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(Song::constGenreSep)));
     singleTracksFolder->setText(Settings::self()->singleTracksFolder());
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -397,12 +381,8 @@ void InterfaceSettings::save()
     Settings::self()->saveFolderView(getValue(folderView));
     Settings::self()->savePlaylistsView(getValue(playlistsView));
     Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());
-    #ifdef ENABLE_STREAMS
     Settings::self()->saveStreamsView(getValue(streamsView));
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
     Settings::self()->saveOnlineView(getValue(onlineView));
-    #endif
     Settings::self()->saveComposerGenres(composerGenres->text().trimmed().split(Song::constGenreSep).toSet());
     Settings::self()->saveSingleTracksFolder(singleTracksFolder->text().trimmed());
     #ifdef ENABLE_DEVICES_SUPPORT

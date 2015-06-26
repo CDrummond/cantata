@@ -45,9 +45,7 @@ class QImage;
 class QToolButton;
 class QButtonGroup;
 class QWheelEvent;
-#ifdef ENABLE_ONLINE_SERVICES
 class OnlineView;
-#endif
 
 class ViewSelector : public QWidget
 {
@@ -171,9 +169,7 @@ private:
     QStackedWidget *mainStack;
     QStackedWidget *stack;
     QWidget *standardContext;
-    #ifdef ENABLE_ONLINE_SERVICES
     OnlineView *onlineContext;
-    #endif
     ThinSplitter *splitter;
     ViewSelector *viewSelector;
     #ifndef SCALE_CONTEXT_BGND

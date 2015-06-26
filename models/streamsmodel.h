@@ -27,7 +27,8 @@
 #include "config.h"
 #include <QString>
 
-#ifdef ENABLE_STREAMS
+
+#ifndef CANTATA_WEB
 #include "actionmodel.h"
 #include "mpd-interface/stream.h"
 #include "mpd-interface/playlist.h"
@@ -355,5 +356,5 @@ namespace StreamsModel
     extern bool validProtocol(const QString &file);
 }
 
-#endif // ENABLE_STREAMS
+#endif // ifndef CANTATA_WEB
 #endif

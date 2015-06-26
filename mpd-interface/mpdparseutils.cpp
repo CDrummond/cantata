@@ -33,6 +33,7 @@
 #include "models/dirviewitemroot.h"
 #include "models/dirviewitemdir.h"
 #include "models/dirviewitemfile.h"
+#include "online/onlineservice.h"
 #endif
 #include "mpdparseutils.h"
 #include "mpdstatus.h"
@@ -47,10 +48,6 @@
 #include "support/localize.h"
 #include "cuefile.h"
 #include "mpdconnection.h"
-#ifdef ENABLE_ONLINE_SERVICES
-#include "online/onlineservice.h"
-//#include "online/podcastservice.h"
-#endif
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -114,7 +111,7 @@ static const QByteArray constStatusBitrateKey("bitrate: ");
 static const QByteArray constStatusAudioKey("audio: ");
 static const QByteArray constStatusUpdatingDbKey("updating_db: ");
 static const QByteArray constStatusErrorKey("error: ");
-#ifdef ENABLE_DYNAMIC
+#ifndef CANTATA_WEB
 static const QByteArray constChannel("channel: ");
 static const QByteArray constMessage("message: ");
 #endif
@@ -384,7 +381,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
                         }
                     }
                 } else {
-                    #ifdef ENABLE_ONLINE_SERVICES
+                    #ifndef CANTATA_WEB
                     if (OnlineService::decode(song)) {
                         modifiedFile=true;
                     }
@@ -510,7 +507,7 @@ QStringList MPDParseUtils::parseList(const QByteArray &data, const QByteArray &k
     return items;
 }
 
-#ifdef ENABLE_DYNAMIC
+#ifndef CANTATA_WEB
 MPDParseUtils::MessageMap MPDParseUtils::parseMessages(const QByteArray &data)
 {
     MPDParseUtils::MessageMap messages;

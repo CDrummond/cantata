@@ -55,9 +55,6 @@ option(ENABLE_MPG123 "Enable mpg123 libraries (required for replaygain calculati
 option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" OFF)
 option(ENABLE_EXTERNAL_TAGS "Enable usage of external app for reading/writing tags" ON)
 option(ENABLE_HTTP_SERVER "Enable internal HTTP server to play non-MPD files" ON)
-option(ENABLE_DYNAMIC "Enable support for dynamic playlists" ON)
-option(ENABLE_STREAMS "Enable support for streams tab (to save favourite streams, and search for others)" ON)
-option(ENABLE_ONLINE_SERVICES "Enable support for online services (Jamendo, Magnatune, SoundCloud, and Podcasts)" ON)
 if (NOT WIN32 AND NOT APPLE AND NOT ENABLE_UBUNTU)
     option(ENABLE_SIMPLE_MPD_SUPPORT "Enable support for simple (Cantata controlled) MPD" ON)
 endif (NOT WIN32 AND NOT APPLE AND NOT ENABLE_UBUNTU)
@@ -110,9 +107,6 @@ endif (NOT APPLE AND NOT WIN32 AND NOT ENABLE_UBUNTU AND NOT ENABLE_KDE_SUPPORT)
 
 if (ENABLE_UBUNTU)
     set(ENABLE_QT5 ON)
-    set(ENABLE_DYNAMIC OFF)
-    set(ENABLE_STREAMS OFF)
-    set(ENABLE_ONLINE_SERVICES OFF)
     set(ENABLE_TAGLIB OFF)
     set(ENABLE_TAGLIB_EXTRAS OFF)
     set(ENABLE_FFMPEG OFF)
@@ -444,7 +438,16 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS} ${CANTATA_SRCS}
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
     context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp context/togglelist.cpp
-    context/lastfmengine.cpp context/metaengine.cpp
+    context/lastfmengine.cpp context/metaengine.cpp context/onlineview.cpp
+    streams/streamspage.cpp streams/digitallyimportedsettings.cpp streams/streamssettings.cpp streams/streamdialog.cpp streams/tar.cpp
+    streams/streamproviderlistdialog.cpp
+    models/streamsproxymodel.cpp models/streamsearchmodel.cpp models/digitallyimported.cpp
+    dynamic/dynamic.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicpage.cpp dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp
+    online/onlineservicespage.cpp online/onlinedbservice.cpp online/jamendoservice.cpp online/onlinedbwidget.cpp online/onlineservice.cpp
+    online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp
+    online/soundcloudwidget.cpp online/podcastservice.cpp online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp
+    online/podcastsettingsdialog.cpp online/podcastwidget.cpp
+    db/onlinedb.cpp
     scrobbling/scrobbler.cpp scrobbling/pausabletimer.cpp scrobbling/scrobblingsettings.cpp scrobbling/scrobblingstatus.cpp
     scrobbling/scrobblinglove.cpp)
 set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS} ${CANTATA_MOC_HDRS}
@@ -459,11 +462,21 @@ set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS} ${CANTATA_MOC_HDRS}
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
+    streams/streamspage.h streams/digitallyimportedsettings.h streams/streamssettings.h
+    streams/streamdialog.h models/streamsmodel.h streams/streamproviderlistdialog.h
+    models/digitallyimported.h models/streamsearchmodel.h
+    online/onlineservicespage.h online/onlinedbservice.h online/onlinedbwidget.h online/magnatunesettingsdialog.h
+    online/soundcloudservice.h online/soundcloudwidget.h online/podcastservice.h online/podcastsearchdialog.h
+    online/podcastsettingsdialog.h online/podcastwidget.h
+    db/onlinedb.h
+    dynamic/dynamic.h dynamic/dynamicruledialog.h dynamic/dynamicpage.h dynamic/dynamicrulesdialog.h
     scrobbling/scrobbler.h scrobbling/scrobblingsettings.h scrobbling/scrobblingstatus.h scrobbling/scrobblinglove.h)
 set(CANTATA_UIS ${CANTATA_UIS}
     gui/initialsettingswizard.ui gui/mainwindow.ui
     gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui
     context/togglelist.ui context/othersettings.ui
+    streams/digitallyimportedsettings.ui streams/streamssettings.ui
+    dynamic/dynamicrule.ui dynamic/dynamicrules.ui
     widgets/itemview.ui scrobbling/scrobblingsettings.ui)
 
 if (ENABLE_SIMPLE_MPD_SUPPORT)
@@ -479,47 +492,14 @@ else (ENABLE_UBUNTU)
     add_subdirectory(icons)
 endif (ENABLE_UBUNTU)
 
-if (ENABLE_DYNAMIC)
-    set(CANTATA_SRCS ${CANTATA_SRCS} dynamic/dynamic.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicpage.cpp
-        dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dynamic/dynamic.h dynamic/dynamicruledialog.h dynamic/dynamicpage.h
-        dynamic/dynamicrulesdialog.h)
-    set(CANTATA_UIS ${CANTATA_UIS} dynamic/dynamicrule.ui dynamic/dynamicrules.ui)
 
-    if (WIN32)
-        # Not installed for windows - script uses sym-links...
-    elseif (APPLE)
-        install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${MACOSX_BUNDLE_RESOURCES}/scripts/)
-    elseif (NOT ENABLE_UBUNTU)
-        install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
-    endif (WIN32)
-endif (ENABLE_DYNAMIC)
-
-if (ENABLE_STREAMS)
-    set(CANTATA_SRCS ${CANTATA_SRCS} streams/streamspage.cpp streams/digitallyimportedsettings.cpp streams/streamssettings.cpp
-        streams/streamdialog.cpp streams/tar.cpp models/streamsproxymodel.cpp models/streamsearchmodel.cpp models/digitallyimported.cpp
-        streams/streamproviderlistdialog.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} streams/streamspage.h streams/digitallyimportedsettings.h streams/streamssettings.h
-        streams/streamdialog.h models/streamsmodel.h models/digitallyimported.h models/streamsearchmodel.h
-        streams/streamproviderlistdialog.h)
-    set(CANTATA_UIS ${CANTATA_UIS} streams/digitallyimportedsettings.ui streams/streamssettings.ui)
-    add_subdirectory(streams/icons)
-endif (ENABLE_STREAMS)
-
-if (ENABLE_ONLINE_SERVICES)
-    set(CANTATA_SRCS ${CANTATA_SRCS} online/onlineservicespage.cpp online/onlinedbservice.cpp online/jamendoservice.cpp
-        online/onlinedbwidget.cpp  online/onlineservice.cpp online/jamendosettingsdialog.cpp online/magnatuneservice.cpp
-        online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp online/soundcloudwidget.cpp
-        online/podcastservice.cpp online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp
-        online/podcastsettingsdialog.cpp online/podcastwidget.cpp
-        db/onlinedb.cpp
-        context/onlineview.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} online/onlineservicespage.h online/onlinedbservice.h online/onlinedbwidget.h
-        db/onlinedb.h online/magnatunesettingsdialog.h online/soundcloudservice.h online/soundcloudwidget.h
-        online/podcastservice.h online/podcastsearchdialog.h online/podcastsettingsdialog.h online/podcastwidget.h
-        )
-    add_subdirectory(online/icons)
-endif (ENABLE_ONLINE_SERVICES)
+if (WIN32)
+    # Not installed for windows - script uses sym-links...
+elseif (APPLE)
+    install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${MACOSX_BUNDLE_RESOURCES}/scripts/)
+elseif (NOT ENABLE_UBUNTU)
+    install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
+endif (WIN32)
 
 if (ENABLE_HTTP_SERVER)
     set(CANTATA_SRCS ${CANTATA_SRCS} http/httpserversettings.cpp http/httpsocket.cpp)
@@ -824,6 +804,8 @@ endif (NOT ENABLE_UBUNTU)
 
 add_subdirectory(support)
 add_subdirectory(3rdparty/qtiocompressor)
+add_subdirectory(streams/icons)
+add_subdirectory(online/icons)
 target_link_libraries(cantata support-core qtiocompressor ${CANTATA_LIBS} ${QTLIBS} ${ZLIB_LIBRARIES})
 
 # enable warnings

@@ -80,20 +80,6 @@ The following options may be passed to CMake:
         Enable usage of internal HTTP server for non-MPD file playback.
         Default: ON
 
-    -DENABLE_DYNAMIC=ON
-        Enable support for dynamic playlists.
-        Default: ON
-
-    -DENABLE_STREAMS=ON
-        Enable support for streams tab (saving favourite streams, listing
-        streams from providers, etc)
-        Default: ON
-
-    -DENABLE_ONLINE_SERVICES=ON
-        Enable support for online services (Jamendo, Magnatune, SoundCloud, and
-        Podcasts)
-        Default: ON    
-
     -DENABLE_TOUCH_SUPPORT=ON
         Enable support for making Cantata more touch-friendly. Currently only
         really works under Windows.

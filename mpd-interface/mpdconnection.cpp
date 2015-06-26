@@ -85,7 +85,7 @@ static const QByteArray constIdleOutputValue("output");
 static const QByteArray constIdleStickerValue("sticker");
 static const QByteArray constIdleSubscriptionValue("subscription");
 static const QByteArray constIdleMessageValue("message");
-#ifdef ENABLE_DYNAMIC
+#ifndef CANTATA_WEB
 static const QByteArray constDynamicIn("cantata-dynamic-in");
 static const QByteArray constDynamicOut("cantata-dynamic-out");
 #endif
@@ -370,7 +370,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
             }
 
             if (enableIdle) {
-                #ifdef ENABLE_DYNAMIC
+                #ifndef CANTATA_WEB
                 dynamicId.clear();
                 setupRemoteDynamic();
                 #endif
@@ -1449,7 +1449,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
             } else if (constIdleStickerValue==value) {
                 emit stickerDbChanged();
             }
-            #ifdef ENABLE_DYNAMIC
+            #ifndef CANTATA_WEB
             else if (constIdleSubscriptionValue==value) {
                 //if (dynamicId.isEmpty()) {
                     setupRemoteDynamic();
@@ -1775,7 +1775,7 @@ void MPDConnection::sendClientMessage(const QString &channel, const QString &msg
 
 void MPDConnection::sendDynamicMessage(const QStringList &msg)
 {
-    #ifdef ENABLE_DYNAMIC
+    #ifndef CANTATA_WEB
     // Check whether cantata-dynamic is still alive, by seeing if its channel is still open...
     if (1==msg.count() && QLatin1String("ping")==msg.at(0)) {
         Response response=sendCommand("channels");
@@ -1889,7 +1889,7 @@ bool MPDConnection::listDirInfo(const QString &dir)
     }
 }
 
-#ifdef ENABLE_DYNAMIC
+#ifndef CANTATA_WEB
 bool MPDConnection::checkRemoteDynamicSupport()
 {
     if (ver>=CANTATA_MAKE_VERSION(0,17,0)) {

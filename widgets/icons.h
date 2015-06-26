@@ -53,9 +53,7 @@ public:
     Icon consumeIcon;
     Icon repeatIcon;
     Icon shuffleIcon;
-    #ifdef ENABLE_STREAMS
     Icon streamCategoryIcon;
-    #endif
     Icon radioStreamIcon;
     Icon addRadioStreamIcon;
     Icon streamIcon;
@@ -75,9 +73,7 @@ public:
     Icon libraryIcon;
     Icon foldersIcon;
     Icon playlistsIcon;
-    #ifdef ENABLE_ONLINE_SERVICES
     Icon onlineIcon;
-    #endif
     Icon contextIcon;
     Icon searchTabIcon;
     Icon infoIcon;

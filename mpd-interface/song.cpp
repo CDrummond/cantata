@@ -154,6 +154,7 @@ Song::Song()
     , id(-1)
     , size(0)
     , rating(Rating_Null)
+    , lastModified(0)
     , key(Null_Key)
 {
 }
@@ -180,6 +181,7 @@ Song & Song::operator=(const Song &s)
     guessed = s.guessed;
     extra = s.extra;
     extraFields = s.extraFields;
+    lastModified = s.lastModified;
     return *this;
 }
 

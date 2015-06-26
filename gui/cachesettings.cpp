@@ -249,7 +249,7 @@ CacheSettings::CacheSettings(QWidget *parent)
     layout->setMargin(0);
     int row=0;
     int col=0;
-    QLabel *label=new QLabel(i18n("Cantata caches various pieces of informat (covers, lyrics, etc). Below is a summary of Cantata's "
+    QLabel *label=new QLabel(i18n("Cantata caches various pieces of information (covers, lyrics, etc). Below is a summary of Cantata's "
                                   "current cache usage."), this);
     label->setWordWrap(true);
     layout->addWidget(label, row++, col, 1, 2);

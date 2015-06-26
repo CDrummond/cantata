@@ -427,7 +427,7 @@ private:
 
 LibraryDb::LibraryDb(QObject *p, const QString &name, int idx)
     : QObject(p)
-    , indexes(0)
+    , indexes(idx)
     , dbName(name)
     , currentVersion(0)
     , newVersion(0)

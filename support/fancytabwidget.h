@@ -138,6 +138,7 @@ public:
     bool showText() const { return withText; }
     int iconSize() const { return icnSize; }
     QSize tabSizeHint() const;
+    Pos position() const { return pos; }
 
 Q_SIGNALS:
     void currentChanged(int);

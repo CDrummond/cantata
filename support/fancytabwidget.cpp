@@ -358,28 +358,30 @@ QSize FancyTab::sizeHint() const
     int iconSize = tabbar->iconSize();
     bool withText = tabbar->showText();
     int spacing = sidebarSpacing(withText);
+    int padding = FancyTabBar::Side==tabbar->position() ? Utils::scaleForDpi(12) : 0;
     if (withText) {
         QFontMetrics fm(font());
         int textWidth = fm.width(text)*1.1;
         int width = qMax(iconSize, qMin(3*iconSize, textWidth)) + spacing;
-        return QSize(width, iconSize + spacing + fm.height());
+        return QSize(width, iconSize + spacing + fm.height() + padding);
     } else {
-        return QSize(iconSize + spacing, iconSize + spacing);
+        return QSize(iconSize + spacing + padding, iconSize + spacing);
     }
 }
 
 QSize FancyTabBar::tabSizeHint() const
 {
     int spacing = sidebarSpacing(withText);
+    int padding = Side==pos ? Utils::scaleForDpi(12) : 0;
     if (withText) {
         QFontMetrics fm(font());
         int maxTw=0;
         foreach (FancyTab *tab, tabs) {
             maxTw=qMax(maxTw, tab->sizeHint().width());
         }
-        return QSize(qMax(icnSize + spacing, maxTw), icnSize + spacing + fm.height());
+        return QSize(qMax(icnSize + spacing, maxTw), icnSize + spacing + fm.height() + padding);
     } else {
-        return QSize(icnSize + spacing, icnSize + spacing);
+        return QSize(icnSize + spacing, icnSize + spacing + padding);
     }
 }
 

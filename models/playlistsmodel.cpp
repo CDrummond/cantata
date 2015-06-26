@@ -81,6 +81,7 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     , dropAdjust(0)
     #endif
 {
+    icn=Icons::self()->playlistIcon;
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(MPDConnection::self(), SIGNAL(playlistsRetrieved(const QList<Playlist> &)), this, SLOT(setPlaylists(const QList<Playlist> &)));
     connect(MPDConnection::self(), SIGNAL(playlistInfoRetrieved(const QString &, const QList<Song> &)), this, SLOT(playlistInfoRetrieved(const QString &, const QList<Song> &)));
@@ -116,6 +117,21 @@ PlaylistsModel::~PlaylistsModel()
         itemMenu=0;
     }
     #endif
+}
+
+QString PlaylistsModel::name() const
+{
+    return QLatin1String("playlists");
+}
+
+QString PlaylistsModel::title() const
+{
+    return i18n("Stored Playlists");
+}
+
+QString PlaylistsModel::descr() const
+{
+    return i18n("Standard playlists");
 }
 
 int PlaylistsModel::rowCount(const QModelIndex &index) const
@@ -249,6 +265,14 @@ bool PlaylistsModel::setHeaderData(int section, Qt::Orientation orientation, con
 QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
+        switch (role) {
+        case Cantata::Role_TitleText:
+            return title();
+        case Cantata::Role_SubText:
+            return descr();
+        case Qt::DecorationRole:
+            return icon();
+        }
         return QVariant();
     }
 

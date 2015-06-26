@@ -32,6 +32,8 @@
 #include "support/actioncollection.h"
 #include "widgets/tableview.h"
 #include "widgets/spacerwidget.h"
+#include "dynamic/dynamic.h"
+#include "dynamic/dynamicpage.h"
 #include "settings.h"
 #include <QMenu>
 #ifdef ENABLE_KDE_SUPPORT
@@ -53,7 +55,7 @@ public:
     virtual ~PlaylistTableView() { }
 };
 
-PlaylistsPage::PlaylistsPage(QWidget *p)
+StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     : SinglePageWidget(p)
 {
     renamePlaylistAction = new Action(Icon("edit-rename"), i18n("Rename"), this);
@@ -79,10 +81,10 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     proxy.setSourceModel(PlaylistsModel::self());
     view->setModel(&proxy);
     view->setDeleteAction(StdActions::self()->removeAction);
-
+    view->alwaysShowHeader();
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
-    //connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
+    connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
@@ -98,12 +100,12 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     init(ReplacePlayQueue|AddToPlayQueue);
 }
 
-PlaylistsPage::~PlaylistsPage()
+StoredPlaylistsPage::~StoredPlaylistsPage()
 {
     view->save(metaObject()->className());
 }
 
-void PlaylistsPage::saveConfig()
+void StoredPlaylistsPage::saveConfig()
 {
     TableView *tv=qobject_cast<TableView *>(view->view());
     if (tv) {
@@ -111,27 +113,27 @@ void PlaylistsPage::saveConfig()
     }
 }
 
-void PlaylistsPage::setStartClosed(bool sc)
+void StoredPlaylistsPage::setStartClosed(bool sc)
 {
     view->setStartClosed(sc);
 }
 
-bool PlaylistsPage::isStartClosed()
+bool StoredPlaylistsPage::isStartClosed()
 {
     return view->isStartClosed();
 }
 
-void PlaylistsPage::updateRows()
+void StoredPlaylistsPage::updateRows()
 {
     view->updateRows();
 }
 
-void PlaylistsPage::clear()
+void StoredPlaylistsPage::clear()
 {
     PlaylistsModel::self()->clear();
 }
 
-//QStringList PlaylistsPage::selectedFiles() const
+//QStringList StoredPlaylistsPage::selectedFiles() const
 //{
 //    QModelIndexList indexes=view->selectedIndexes();
 //    if (indexes.isEmpty()) {
@@ -146,23 +148,18 @@ void PlaylistsPage::clear()
 //    return PlaylistsModel::self()->filenames(mapped, true);
 //}
 
-void PlaylistsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+void StoredPlaylistsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
     addItemsToPlayList(view->selectedIndexes(), name, replace, priorty);
 }
 
-void PlaylistsPage::setView(int mode)
+void StoredPlaylistsPage::setView(int mode)
 {
-    //bool diff=view->viewMode()!=mode;
     PlaylistsModel::self()->setMultiColumn(ItemView::Mode_Table==mode);
     view->setMode((ItemView::Mode)mode);
-    //if (diff) {
-    //    clear();
-    //    refresh();
-    //}
 }
 
-void PlaylistsPage::removeItems()
+void StoredPlaylistsPage::removeItems()
 {
     QSet<QString> remPlaylists;
     QMap<QString, QList<quint32> > remSongs;
@@ -213,7 +210,7 @@ void PlaylistsPage::removeItems()
     }
 }
 
-void PlaylistsPage::savePlaylist()
+void StoredPlaylistsPage::savePlaylist()
 {
     QString name = InputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
 
@@ -231,7 +228,7 @@ void PlaylistsPage::savePlaylist()
     }
 }
 
-void PlaylistsPage::renamePlaylist()
+void StoredPlaylistsPage::renamePlaylist()
 {
     const QModelIndexList items = view->selectedIndexes(false); // Dont need sorted selection here...
 
@@ -259,7 +256,7 @@ void PlaylistsPage::renamePlaylist()
     }
 }
 
-void PlaylistsPage::removeDuplicates()
+void StoredPlaylistsPage::removeDuplicates()
 {
     const QModelIndexList items = view->selectedIndexes(false); // Dont need sorted selection here...
 
@@ -294,7 +291,7 @@ void PlaylistsPage::removeDuplicates()
     }
 }
 
-void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
+void StoredPlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
     if (
         #ifdef ENABLE_KDE_SUPPORT
@@ -309,7 +306,7 @@ void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
     }
 }
 
-void PlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QString &name, bool replace, quint8 priorty)
+void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QString &name, bool replace, quint8 priorty)
 {
     if (indexes.isEmpty()) {
         return;
@@ -352,7 +349,7 @@ void PlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QSt
 }
 
 #ifdef ENABLE_DEVICES_SUPPORT
-QList<Song> PlaylistsPage::selectedSongs(bool allowPlaylists) const
+QList<Song> StoredPlaylistsPage::selectedSongs(bool allowPlaylists) const
 {
     Q_UNUSED(allowPlaylists)
     QModelIndexList selected = view->selectedIndexes();
@@ -362,7 +359,7 @@ QList<Song> PlaylistsPage::selectedSongs(bool allowPlaylists) const
     return PlaylistsModel::self()->songs(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()));
 }
 
-void PlaylistsPage::addSelectionToDevice(const QString &udi)
+void StoredPlaylistsPage::addSelectionToDevice(const QString &udi)
 {
     QList<Song> songs=selectedSongs();
     if (!songs.isEmpty()) {
@@ -372,7 +369,7 @@ void PlaylistsPage::addSelectionToDevice(const QString &udi)
 }
 #endif
 
-void PlaylistsPage::controlActions()
+void StoredPlaylistsPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enableActions=selected.count()>0;
@@ -417,7 +414,7 @@ void PlaylistsPage::controlActions()
     #endif
 }
 
-void PlaylistsPage::doSearch()
+void StoredPlaylistsPage::doSearch()
 {
     QString text=view->searchText().trimmed();
     bool updated=proxy.update(text);
@@ -429,7 +426,28 @@ void PlaylistsPage::doSearch()
     }
 }
 
-void PlaylistsPage::updated(const QModelIndex &index)
+void StoredPlaylistsPage::updated(const QModelIndex &index)
 {
     view->updateRows(proxy.mapFromSource(index));
+}
+
+void StoredPlaylistsPage::headerClicked(int level)
+{
+    if (0==level) {
+        emit close();
+    }
+}
+
+PlaylistsPage::PlaylistsPage(QWidget *p)
+    : MultiPageWidget(p)
+{
+    stored=new StoredPlaylistsPage(this);
+    addPage(PlaylistsModel::self()->name(), PlaylistsModel::self()->icon(), PlaylistsModel::self()->title(), PlaylistsModel::self()->descr(), stored);
+    dynamic=new DynamicPage(this);
+    addPage(Dynamic::self()->name(), Dynamic::self()->icon(), Dynamic::self()->title(), Dynamic::self()->descr(), dynamic);
+}
+
+PlaylistsPage::~PlaylistsPage()
+{
+
 }

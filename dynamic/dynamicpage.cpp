@@ -44,20 +44,21 @@ DynamicPage::DynamicPage(QWidget *p)
     ToolButton *editBtn=new ToolButton(this);
     ToolButton *removeBtn=new ToolButton(this);
     ToolButton *startBtn=new ToolButton(this);
-    ToolButton *stopBtn=new ToolButton(this);
 
     addBtn->setDefaultAction(addAction);
     editBtn->setDefaultAction(editAction);
     removeBtn->setDefaultAction(removeAction);
     startBtn->setDefaultAction(Dynamic::self()->startAct());
-    stopBtn->setDefaultAction(Dynamic::self()->stopAct());
 
     view->addAction(editAction);
     view->addAction(removeAction);
     view->addAction(Dynamic::self()->startAct());
+    view->alwaysShowHeader();
+    view->setMode(ItemView::Mode_List);
 
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(toggle()));
+    connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
     connect(MPDConnection::self(), SIGNAL(dynamicSupport(bool)), this, SLOT(remoteDynamicSupport(bool)));
     connect(addAction, SIGNAL(triggered()), SLOT(add()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));
@@ -83,7 +84,7 @@ DynamicPage::DynamicPage(QWidget *p)
     view->setMode(ItemView::Mode_List);
     controlActions();
     view->load(metaObject()->className());
-    controls=QList<QWidget *>() << addBtn << editBtn << removeBtn << startBtn << stopBtn;
+    controls=QList<QWidget *>() << addBtn << editBtn << removeBtn << startBtn;
     init(0, QList<QWidget *>(), controls);
 }
 
@@ -186,6 +187,13 @@ void DynamicPage::toggle()
 void DynamicPage::running(bool status)
 {
     Dynamic::self()->stopAct()->setEnabled(status);
+}
+
+void DynamicPage::headerClicked(int level)
+{
+    if (0==level) {
+        emit close();
+    }
 }
 
 void DynamicPage::enableWidgets(bool enable)

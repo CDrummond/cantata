@@ -14,7 +14,6 @@
 
 <file alias="sidebar-library-dark">icons/sidebar-library-dark.svg</file>
 <file alias="sidebar-devices-dark">icons/sidebar-devices-dark.svg</file>
-<file alias="sidebar-dynamic-dark">icons/sidebar-dynamic-dark.svg</file>
 <file alias="sidebar-folders-dark">icons/sidebar-folders-dark.svg</file>
 <file alias="sidebar-info-dark">icons/sidebar-info-dark.svg</file>
 <file alias="sidebar-online-dark">icons/sidebar-online-dark.svg</file>
@@ -23,7 +22,6 @@
 <file alias="sidebar-search-dark">icons/sidebar-search-dark.svg</file>
 <file alias="sidebar-library-light">icons/sidebar-library-light.svg</file>
 <file alias="sidebar-devices-light">icons/sidebar-devices-light.svg</file>
-<file alias="sidebar-dynamic-light">icons/sidebar-dynamic-light.svg</file>
 <file alias="sidebar-folders-light">icons/sidebar-folders-light.svg</file>
 <file alias="sidebar-info-light">icons/sidebar-info-light.svg</file>
 <file alias="sidebar-online-light">icons/sidebar-online-light.svg</file>

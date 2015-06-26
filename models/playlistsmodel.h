@@ -33,6 +33,7 @@
 #include <QMap>
 #include "mpd-interface/playlist.h"
 #include "mpd-interface/song.h"
+#include "support/icon.h"
 #include "actionmodel.h"
 
 class QMenu;
@@ -97,6 +98,10 @@ public:
 
     PlaylistsModel(QObject *parent = 0);
     ~PlaylistsModel();
+    QString name() const;
+    QString title() const;
+    QString descr() const;
+    const Icon & icon() const { return icn; }
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return COL_COUNT; }
     bool canFetchMore(const QModelIndex &index) const;
@@ -163,6 +168,7 @@ private:
     quint32 allocateKey();
 
 private:
+    Icon icn;
     bool enabled;
     bool multiCol;
     QList<PlaylistItem *> items;

@@ -51,9 +51,6 @@ class Page;
 class LibraryPage;
 class FolderPage;
 class PlaylistsPage;
-#ifdef ENABLE_DYNAMIC
-class DynamicPage;
-#endif
 #ifdef ENABLE_ONLINE_SERVICES
 class OnlineServicesPage;
 #endif
@@ -107,9 +104,6 @@ public:
         PAGE_LIBRARY,
         PAGE_FOLDERS,
         PAGE_PLAYLISTS,
-        #ifdef ENABLE_DYNAMIC
-        PAGE_DYNAMIC,
-        #endif
         #ifdef ENABLE_ONLINE_SERVICES
         PAGE_ONLINE,
         #endif
@@ -220,11 +214,6 @@ public Q_SLOTS:
     void showLibraryTab() { showTab(PAGE_LIBRARY); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
-    void showDynamicTab() {
-        #ifdef ENABLE_DYNAMIC
-        showTab(PAGE_DYNAMIC);
-        #endif
-    }
     void showOnlineTab() {
         #ifdef ENABLE_ONLINE_SERVICES
         showTab(PAGE_ONLINE); 
@@ -355,10 +344,6 @@ private:
     FolderPage *folderPage;
     Action *playlistsTabAction;
     PlaylistsPage *playlistsPage;
-    #ifdef ENABLE_DYNAMIC
-    Action *dynamicTabAction;
-    DynamicPage *dynamicPage;
-    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     Action *onlineTabAction;
     OnlineServicesPage *onlinePage;

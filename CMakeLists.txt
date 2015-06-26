@@ -480,9 +480,9 @@ else (ENABLE_UBUNTU)
 endif (ENABLE_UBUNTU)
 
 if (ENABLE_DYNAMIC)
-    set(CANTATA_SRCS ${CANTATA_SRCS} dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp
+    set(CANTATA_SRCS ${CANTATA_SRCS} dynamic/dynamic.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicpage.cpp
         dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dynamic/dynamic.h dynamic/dynamicruledialog.h dynamic/dynamicpage.h
         dynamic/dynamicrulesdialog.h)
     set(CANTATA_UIS ${CANTATA_UIS} dynamic/dynamicrule.ui dynamic/dynamicrules.ui)
 

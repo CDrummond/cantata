@@ -495,9 +495,6 @@ void Icons::initSidebarIcons()
         libraryIcon=loadSidebarIcon(QLatin1String("library"), textCol, highlightedTexCol);
         foldersIcon=loadSidebarIcon(QLatin1String("folders"), textCol, highlightedTexCol);
         playlistsIcon=loadSidebarIcon(QLatin1String("playlists"), textCol, highlightedTexCol);
-        #ifdef ENABLE_DYNAMIC
-        dynamicIcon=loadSidebarIcon(QLatin1String("dynamic"), textCol, highlightedTexCol);
-        #endif
         #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=loadSidebarIcon(QLatin1String("online"), textCol, highlightedTexCol);
         #endif
@@ -512,9 +509,6 @@ void Icons::initSidebarIcons()
         libraryIcon=audioFileIcon;
         foldersIcon=Icon("inode-directory");
         playlistsIcon=playlistIcon;
-        #ifdef ENABLE_DYNAMIC
-        dynamicIcon=dynamicRuleIcon;
-        #endif
         #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=Icon("applications-internet");
         #endif

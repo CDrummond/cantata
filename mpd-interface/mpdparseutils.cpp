@@ -330,6 +330,8 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
                 song.setArtistSort(QString::fromUtf8(line.mid(constArtistSortKey.length())));
             } else if (line.startsWith(constAlbumArtistSortKey)) {
                 song.setAlbumArtistSort(QString::fromUtf8(line.mid(constAlbumArtistSortKey.length())));
+            } else if (line.startsWith(constLastModifiedKey)) {
+                song.lastModified=QDateTime::fromString(QString::fromUtf8(line.mid(constLastModifiedKey.length())), Qt::ISODate).toTime_t();
             }
         }
     }

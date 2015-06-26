@@ -102,6 +102,7 @@ struct Song
     qint32 id;
     qint32 size;
     mutable quint8 rating;
+    uint lastModified;
 
     // Only used in PlayQueue/PlayLists...
     quint16 key;

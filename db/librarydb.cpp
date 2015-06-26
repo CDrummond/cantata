@@ -459,6 +459,26 @@ void LibraryDb::erase()
     }
 }
 
+enum SongFields {
+    SF_file,
+    SF_artist ,
+    SF_artistId,
+    SF_albumArtist,
+    SF_artistSort,
+    SF_composer,
+    SF_album,
+    SF_albumId,
+    SF_albumSort,
+    SF_title,
+    SF_genre,
+    SF_track,
+    SF_disc,
+    SF_time,
+    SF_year,
+    SF_type,
+    SF_lastModified
+};
+
 bool LibraryDb::init(const QString &dbFile)
 {
     if (dbFile!=dbFileName) {
@@ -496,7 +516,7 @@ bool LibraryDb::init(const QString &dbFile)
     }
     DBUG << "Current version" << currentVersion;
 
-    // NOTE: If this table is modified, update getSong()!
+    // NOTE: The order here MUST match SongFields enum above!!!
     if (createTable("songs ("
                     "file string, "
                     "artist string, "
@@ -514,6 +534,7 @@ bool LibraryDb::init(const QString &dbFile)
                     "time integer, "
                     "year integer, "
                     "type integer, "
+                    "lastModified integer, "
                     "primary key (file))")) {
         #ifndef CANTATA_WEB
         QSqlQuery(*db).exec("create virtual table songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_title, tokenize=unicode61)");
@@ -529,8 +550,8 @@ void LibraryDb::insertSong(const Song &s)
 {
     if (!insertSongQuery) {
         insertSongQuery=new QSqlQuery(*db);
-        insertSongQuery->prepare("insert into songs(file, artist, artistId, albumArtist, artistSort, composer, album, albumId, albumSort, title, genre, track, disc, time, year, type) "
-                                 "values(:file, :artist, :artistId, :albumArtist, :artistSort, :composer, :album, :albumId, :albumSort, :title, :genre, :track, :disc, :time, :year, :type)");
+        insertSongQuery->prepare("insert into songs(file, artist, artistId, albumArtist, artistSort, composer, album, albumId, albumSort, title, genre, track, disc, time, year, type, lastModified) "
+                                 "values(:file, :artist, :artistId, :albumArtist, :artistSort, :composer, :album, :albumId, :albumSort, :title, :genre, :track, :disc, :time, :year, :type, :lastModified)");
     }
     insertSongQuery->bindValue(":file", s.file);
     insertSongQuery->bindValue(":artist", s.artist);
@@ -548,6 +569,7 @@ void LibraryDb::insertSong(const Song &s)
     insertSongQuery->bindValue(":time", s.time);
     insertSongQuery->bindValue(":year", s.year);
     insertSongQuery->bindValue(":type", s.type);
+    insertSongQuery->bindValue(":lastModified", s.lastModified);
     if (!insertSongQuery->exec()) {
         qWarning() << "insert failed" << insertSongQuery->lastError().text() << newVersion << s.file;
     }
@@ -874,30 +896,31 @@ bool LibraryDb::createTable(const QString &q)
 Song LibraryDb::getSong(const QSqlQuery &query)
 {
     Song s;
-    s.file=query.value(0).toString();
-    s.artist=query.value(1).toString();
-    s.albumartist=query.value(3).toString();
-    s.setComposer(query.value(5).toString());
-    s.album=query.value(6).toString();
-    QString val=query.value(7).toString();
+    s.file=query.value(SF_file).toString();
+    s.artist=query.value(SF_artist).toString();
+    s.albumartist=query.value(SF_albumArtist).toString();
+    s.setComposer(query.value(SF_composer).toString());
+    s.album=query.value(SF_album).toString();
+    QString val=query.value(SF_albumId).toString();
     if (!val.isEmpty() && val!=s.album) {
         s.setMbAlbumId(val);
     }
-    s.title=query.value(9).toString();
-    s.genre=query.value(10).toString();
-    s.track=query.value(11).toUInt();
-    s.disc=query.value(12).toUInt();
-    s.time=query.value(13).toUInt();
-    s.year=query.value(14).toUInt();
-    s.type=(Song::Type)query.value(15).toUInt();
-    val=query.value(4).toString();
+    s.title=query.value(SF_title).toString();
+    s.genre=query.value(SF_genre).toString();
+    s.track=query.value(SF_track).toUInt();
+    s.disc=query.value(SF_disc).toUInt();
+    s.time=query.value(SF_time).toUInt();
+    s.year=query.value(SF_year).toUInt();
+    s.type=(Song::Type)query.value(SF_type).toUInt();
+    val=query.value(SF_artistSort).toString();
     if (!val.isEmpty() && val!=s.albumArtist()) {
         s.setArtistSort(val);
     }
-    val=query.value(8).toString();
+    val=query.value(SF_albumSort).toString();
     if (!val.isEmpty() && val!=s.album) {
         s.setAlbumSort(val);
     }
+    s.lastModified=query.value(SF_lastModified).toUInt();
 
     return s;
 }

@@ -1472,7 +1472,6 @@ void MainWindow::readSettings()
     searchPlayQueueAction->setVisible(Settings::self()->playQueueSearch());
     nowPlaying->readConfig();
     setCollapsedSize();
-    toggleMonoIcons();
     toggleSplitterAutoHide();
     if (contextSwitchTime!=Settings::self()->contextSwitchTime()) {
         contextSwitchTime=Settings::self()->contextSwitchTime();
@@ -2186,33 +2185,6 @@ void MainWindow::toggleSplitterAutoHide()
     if (splitter->isAutoHideEnabled()!=ah) {
         splitter->setAutoHideEnabled(ah);
         splitter->setAutohidable(0, ah);
-    }
-}
-
-void MainWindow::toggleMonoIcons()
-{
-    if (Settings::self()->monoSidebarIcons()!=Icons::self()->monoSidebarIcons()) {
-        Icons::self()->initSidebarIcons();
-        showPlayQueueAction->setIcon(Icons::self()->playqueueIcon);
-        tabWidget->setIcon(PAGE_PLAYQUEUE, showPlayQueueAction->icon());
-        libraryTabAction->setIcon(Icons::self()->libraryIcon);
-        tabWidget->setIcon(PAGE_LIBRARY, libraryTabAction->icon());
-        foldersTabAction->setIcon(Icons::self()->foldersIcon);
-        tabWidget->setIcon(PAGE_FOLDERS, foldersTabAction->icon());
-        playlistsTabAction->setIcon(Icons::self()->playlistsIcon);
-        tabWidget->setIcon(PAGE_PLAYLISTS, playlistsTabAction->icon());
-        #ifdef ENABLE_ONLINE_SERVICES
-        onlineTabAction->setIcon(Icons::self()->onlineIcon);
-        tabWidget->setIcon(PAGE_ONLINE, onlineTabAction->icon());
-        #endif
-        tabWidget->setIcon(PAGE_CONTEXT, Icons::self()->infoSidebarIcon);
-        #ifdef ENABLE_DEVICES_SUPPORT
-        devicesTabAction->setIcon(Icons::self()->devicesIcon);
-        tabWidget->setIcon(PAGE_DEVICES, devicesTabAction->icon());
-        #endif
-        searchTabAction->setIcon(Icons::self()->searchTabIcon);
-        tabWidget->setIcon(PAGE_SEARCH, searchTabAction->icon());
-        tabWidget->recreate();
     }
 }
 

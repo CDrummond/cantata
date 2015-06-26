@@ -671,15 +671,6 @@ bool Settings::startHidden()
     return cfg.get("startHidden", false);
 }
 
-bool Settings::monoSidebarIcons()
-{
-    #ifdef Q_OS_WIN
-    return cfg.get("monoSidebarIcons", false);
-    #else
-    return cfg.get("monoSidebarIcons", true);
-    #endif
-}
-
 bool Settings::showTimeRemaining()
 {
     return cfg.get("showTimeRemaining", false);
@@ -1276,11 +1267,6 @@ void Settings::saveForceSingleClick(bool v)
 void Settings::saveStartHidden(bool v)
 {
     cfg.set("startHidden", v);
-}
-
-void Settings::saveMonoSidebarIcons(bool v)
-{
-    cfg.set("monoSidebarIcons", v);
 }
 
 void Settings::saveShowTimeRemaining(bool v)

@@ -35,7 +35,6 @@ public:
     static Icons *self();
 
     Icons();
-    bool monoSidebarIcons();
     void initSidebarIcons();
     void initToolbarIcons(const QColor &toolbarText);
     #ifndef ENABLE_KDE_SUPPORT

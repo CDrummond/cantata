@@ -227,7 +227,6 @@ public Q_SLOTS:
     }
     void showSearchTab() { showTab(PAGE_SEARCH); }
     void toggleSplitterAutoHide();
-    void toggleMonoIcons();
     void locateTracks(const QList<Song> &songs);
     void locateTrack() { locateTracks(playQueue->selectedSongs()); }
     void locateArtist(const QString &artist);

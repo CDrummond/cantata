@@ -281,11 +281,9 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         viewsLayout->addWidget(otherViewGroupBox, 0, 1, 3, 1);
         viewsLayout->addItem(new QSpacerItem(0, 2, QSizePolicy::Expanding, QSizePolicy::Minimum), 0, 2, 1, 1);
         styleLayout->removeWidget(sbIconsOnly);
-        styleLayout->removeWidget(sbMonoIcons);
         styleLayout->removeWidget(sbAutoHide);
         QVBoxLayout *sbOther = new QVBoxLayout();
         sbOther->addWidget(sbIconsOnly);
-        sbOther->addWidget(sbMonoIcons);
         sbOther->addWidget(sbAutoHide);
         sbLayout->addItem(new QSpacerItem(Utils::layoutSpacing(this)*8, 2, QSizePolicy::Fixed, QSizePolicy::Fixed));
         sbLayout->addLayout(sbOther);
@@ -377,7 +375,6 @@ void InterfaceSettings::load()
     selectEntry(sbStyle, sidebar&FancyTabWidget::Style_Mask);
     selectEntry(sbPosition, sidebar&FancyTabWidget::Position_Mask);
     sbIconsOnly->setChecked(sidebar&FancyTabWidget::IconOnly);
-    sbMonoIcons->setChecked(Settings::self()->monoSidebarIcons());
     sbAutoHide->setChecked(Settings::self()->splitterAutoHide());
     sbAutoHideChanged();
     viewItemChanged(views->item(0));
@@ -472,7 +469,6 @@ void InterfaceSettings::save()
         sidebar|=FancyTabWidget::IconOnly;
     }
     Settings::self()->saveSidebar(sidebar);
-    Settings::self()->saveMonoSidebarIcons(sbMonoIcons->isChecked());
     Settings::self()->saveSplitterAutoHide(sbAutoHide->isChecked());
 }
 

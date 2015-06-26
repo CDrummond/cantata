@@ -158,6 +158,7 @@ Dynamic::Dynamic()
     , currentJob(0)
     , currentCommand(Unknown)
 {
+    icn=Icons::self()->dynamicRuleIcon;
     loadLocal();
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
     connect(MPDConnection::self(), SIGNAL(dynamicSupport(bool)), this, SLOT(remoteDynamicSupported(bool)));
@@ -169,6 +170,21 @@ Dynamic::Dynamic()
     #if defined ENABLE_MODEL_TEST
     new ModelTest(this, this);
     #endif
+}
+
+QString Dynamic::name() const
+{
+    return QLatin1String("dynamic");
+}
+
+QString Dynamic::title() const
+{
+    return i18n("Dynamic Playlists");
+}
+
+QString Dynamic::descr() const
+{
+    return i18n("Dynamically generated playlists");
 }
 
 QVariant Dynamic::headerData(int, Qt::Orientation, int) const
@@ -204,7 +220,19 @@ QModelIndex Dynamic::index(int row, int column, const QModelIndex &parent) const
 
 QVariant Dynamic::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid() || index.parent().isValid() || index.row()>=entryList.count()) {
+    if (!index.isValid()) {
+        switch (role) {
+        case Cantata::Role_TitleText:
+            return title();
+        case Cantata::Role_SubText:
+            return descr();
+        case Qt::DecorationRole:
+            return icon();
+        }
+        return QVariant();
+    }
+
+    if (index.parent().isValid() || index.row()>=entryList.count()) {
         return QVariant();
     }
 

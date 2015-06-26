@@ -36,6 +36,7 @@ class DynamicPage : public SinglePageWidget
 public:
     DynamicPage(QWidget *p);
     virtual ~DynamicPage();
+    void setView(int) { }
 
 private Q_SLOTS:
     void remoteDynamicSupport(bool s);
@@ -46,6 +47,7 @@ private Q_SLOTS:
     void stop();
     void toggle();
     void running(bool status);
+    void headerClicked(int level);
 
 private:
     void doSearch();

@@ -30,6 +30,7 @@
 #include <QString>
 #include <QStringList>
 #include "models/actionmodel.h"
+#include "support/icon.h"
 
 class QTimer;
 class NetworkJob;
@@ -85,6 +86,10 @@ public:
     Dynamic();
     virtual ~Dynamic() { }
 
+    QString name() const;
+    QString title() const;
+    QString descr() const;
+    const Icon & icon() const { return icn; }
     bool isRemote() const { return usingRemote; }
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -142,6 +147,7 @@ private:
     void updateEntry(const Entry &e);
 
 private:
+    Icon icn;
     QTimer *localTimer;
     QList<Entry> entryList;
     QString currentEntry;

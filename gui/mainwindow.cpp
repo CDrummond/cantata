@@ -96,7 +96,6 @@
 #endif
 #endif
 #ifdef ENABLE_DYNAMIC
-#include "dynamic/dynamicpage.h"
 #include "dynamic/dynamic.h"
 #endif
 #include "support/messagewidget.h"
@@ -394,11 +393,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsTabAction, SIGNAL(triggered()), this, SLOT(showPlaylistsTab()));
     setPlaylistsEnabled(!hiddenPages.contains(playlistsPage->metaObject()->className()));
     #ifdef ENABLE_DYNAMIC
-    dynamicPage = new DynamicPage(this);
-    addAction(dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::self()->dynamicIcon));
-    dynamicTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
-    tabWidget->addTab(dynamicPage, TAB_ACTION(dynamicTabAction), !hiddenPages.contains(dynamicPage->metaObject()->className()));
-    connect(dynamicTabAction, SIGNAL(triggered()), this, SLOT(showDynamicTab()));
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
     connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
@@ -766,7 +760,6 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(playQueueModel.undoAct());
     playQueue->addAction(playQueueModel.redoAct());
     playQueue->readConfig();
-    playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 
     #ifdef ENABLE_DEVICES_SUPPORT
     connect(DevicesModel::self(), SIGNAL(addToDevice(const QString &)), this, SLOT(addToDevice(const QString &)));
@@ -875,7 +868,8 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
-    connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
+// TODO: Why is this here???
+//    connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
@@ -949,7 +943,7 @@ MainWindow::~MainWindow()
     }
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     playQueue->saveConfig();
-    playlistsPage->saveConfig();
+//    playlistsPage->saveConfig();
     context->saveConfig();
     #ifdef ENABLE_STREAMS
     StreamsModel::self()->save();
@@ -1044,7 +1038,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
     } else {
         libraryPage->clear();
         folderPage->clear();
-        playlistsPage->clear();
+        PlaylistsModel::self()->clear();
         playQueueModel.clear();
         searchPage->clear();
         connectedState=CS_Disconnected;
@@ -1114,7 +1108,7 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
     if (!MPDConnection::self()->isConnected() || details!=MPDConnection::self()->getDetails()) {
         libraryPage->clear();
         folderPage->clear();
-        playlistsPage->clear();
+        PlaylistsModel::self()->clear();
         playQueueModel.clear();
         searchPage->clear();
         #ifdef ENABLE_DYNAMIC
@@ -1421,7 +1415,7 @@ void MainWindow::controlConnectionsMenu(bool enable)
 void MainWindow::controlDynamicButton()
 {
     #ifdef ENABLE_DYNAMIC
-    stopDynamicButton->setVisible(dynamicLabel->isVisible() && PAGE_DYNAMIC!=tabWidget->currentIndex());
+    stopDynamicButton->setVisible(Dynamic::self()->isRunning());
     playQueueModel.enableUndo(!Dynamic::self()->isRunning());
     #endif
 }
@@ -1508,11 +1502,12 @@ void MainWindow::updateSettings()
         playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && MPDState_Playing==MPDStatus::self()->state());
     }
 
-    wasStartClosed=playlistsPage->isStartClosed();
-    playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
-    if (ItemView::Mode_GroupedTree==Settings::self()->playlistsView() && wasStartClosed!=playlistsPage->isStartClosed()) {
-        playlistsPage->updateRows();
-    }
+// TODO
+//    wasStartClosed=playlistsPage->isStartClosed();
+//    playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
+//    if (ItemView::Mode_GroupedTree==Settings::self()->playlistsView() && wasStartClosed!=playlistsPage->isStartClosed()) {
+//        playlistsPage->updateRows();
+//    }
     updateActionToolTips();
 }
 
@@ -2114,9 +2109,6 @@ void MainWindow::currentTabChanged(int index)
     case PAGE_LIBRARY:   currentPage=libraryPage;   break;
     case PAGE_FOLDERS:   folderPage->load();  currentPage=folderPage; break;
     case PAGE_PLAYLISTS: currentPage=playlistsPage; break;
-    #ifdef ENABLE_DYNAMIC
-    case PAGE_DYNAMIC:   currentPage=dynamicPage;   break;
-    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:    currentPage=onlinePage;    break;
     #endif
@@ -2209,10 +2201,6 @@ void MainWindow::toggleMonoIcons()
         tabWidget->setIcon(PAGE_FOLDERS, foldersTabAction->icon());
         playlistsTabAction->setIcon(Icons::self()->playlistsIcon);
         tabWidget->setIcon(PAGE_PLAYLISTS, playlistsTabAction->icon());
-        #ifdef ENABLE_DYNAMIC
-        dynamicTabAction->setIcon(Icons::self()->dynamicIcon);
-        tabWidget->setIcon(PAGE_DYNAMIC, dynamicTabAction->icon());
-        #endif
         #ifdef ENABLE_ONLINE_SERVICES
         onlineTabAction->setIcon(Icons::self()->onlineIcon);
         tabWidget->setIcon(PAGE_ONLINE, onlineTabAction->icon());
@@ -2506,9 +2494,6 @@ void MainWindow::updateActionToolTips()
     tabWidget->setToolTip(PAGE_LIBRARY, libraryTabAction->toolTip());
     tabWidget->setToolTip(PAGE_FOLDERS, foldersTabAction->toolTip());
     tabWidget->setToolTip(PAGE_PLAYLISTS, playlistsTabAction->toolTip());
-    #ifdef ENABLE_DYNAMIC
-    tabWidget->setToolTip(PAGE_DYNAMIC, dynamicTabAction->toolTip());
-    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     tabWidget->setToolTip(PAGE_ONLINE, onlineTabAction->toolTip());
     #endif

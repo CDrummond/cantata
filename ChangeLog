@@ -8,6 +8,8 @@
  4. Use SQLite for Jamendo and Magnatune libraries.
  5. Rename Online view to Internet.
  6. Place Streams view within Internet.
+ 7. Place stored playlists and dynamic playlists within Playlists.
+ 8. Remove option for non-mono sidebar icons.
 .....
 
  1. If connected to MPD>=0.19 using address 127.0.0.1 or localhost, then pass

@@ -474,55 +474,27 @@ Icons::Icons()
     #endif
 }
 
-static bool monoSb=true;
-bool Icons::monoSidebarIcons()
-{
-    return monoSb;
-}
-
 void Icons::initSidebarIcons()
 {
-    if (Settings::self()->monoSidebarIcons()) {
-        monoSb=true;
-        #ifdef Q_OS_MAC
-        QColor textCol=OSXStyle::self()->monoIconColor();
-        QColor highlightedTexCol=OSXStyle::self()->viewPalette().highlightedText().color();
-        #else
-        QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
-        QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
-        #endif
-        playqueueIcon=loadSidebarIcon(QLatin1String("playqueue"), textCol, highlightedTexCol);
-        libraryIcon=loadSidebarIcon(QLatin1String("library"), textCol, highlightedTexCol);
-        foldersIcon=loadSidebarIcon(QLatin1String("folders"), textCol, highlightedTexCol);
-        playlistsIcon=loadSidebarIcon(QLatin1String("playlists"), textCol, highlightedTexCol);
-        #ifdef ENABLE_ONLINE_SERVICES
-        onlineIcon=loadSidebarIcon(QLatin1String("online"), textCol, highlightedTexCol);
-        #endif
-        infoSidebarIcon=loadSidebarIcon(QLatin1String("info"), textCol, highlightedTexCol);
-        #ifdef ENABLE_DEVICES_SUPPORT
-        devicesIcon=loadSidebarIcon(QLatin1String("devices"), textCol, highlightedTexCol);
-        #endif
-        searchTabIcon=loadSidebarIcon(QLatin1String("search"), textCol, highlightedTexCol);
-    } else {
-        monoSb=false;
-        playqueueIcon=Icon("media-playback-start");
-        libraryIcon=audioFileIcon;
-        foldersIcon=Icon("inode-directory");
-        playlistsIcon=playlistIcon;
-        #ifdef ENABLE_ONLINE_SERVICES
-        onlineIcon=Icon("applications-internet");
-        #endif
-        if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
-            QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
-            infoSidebarIcon=loadSidebarIcon("info", col, col);
-        } else {
-            infoSidebarIcon=Icon("dialog-information");
-        }
-        #ifdef ENABLE_DEVICES_SUPPORT
-        devicesIcon=Icon("multimedia-player");
-        #endif
-        searchTabIcon=searchIcon;
-    }
+    #ifdef Q_OS_MAC
+    QColor textCol=OSXStyle::self()->monoIconColor();
+    QColor highlightedTexCol=OSXStyle::self()->viewPalette().highlightedText().color();
+    #else
+    QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
+    QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
+    #endif
+    playqueueIcon=loadSidebarIcon(QLatin1String("playqueue"), textCol, highlightedTexCol);
+    libraryIcon=loadSidebarIcon(QLatin1String("library"), textCol, highlightedTexCol);
+    foldersIcon=loadSidebarIcon(QLatin1String("folders"), textCol, highlightedTexCol);
+    playlistsIcon=loadSidebarIcon(QLatin1String("playlists"), textCol, highlightedTexCol);
+    #ifdef ENABLE_ONLINE_SERVICES
+    onlineIcon=loadSidebarIcon(QLatin1String("online"), textCol, highlightedTexCol);
+    #endif
+    infoSidebarIcon=loadSidebarIcon(QLatin1String("info"), textCol, highlightedTexCol);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesIcon=loadSidebarIcon(QLatin1String("devices"), textCol, highlightedTexCol);
+    #endif
+    searchTabIcon=loadSidebarIcon(QLatin1String("search"), textCol, highlightedTexCol);
 }
 
 void Icons::initToolbarIcons(const QColor &toolbarText)

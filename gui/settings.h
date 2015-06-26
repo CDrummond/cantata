@@ -145,7 +145,6 @@ public:
     #endif
     bool forceSingleClick();
     bool startHidden();
-    bool monoSidebarIcons();
     bool showTimeRemaining();
     QStringList hiddenStreamCategories();
     QStringList hiddenOnlineProviders();
@@ -267,7 +266,6 @@ public:
     #endif
     void saveForceSingleClick(bool v);
     void saveStartHidden(bool v);
-    void saveMonoSidebarIcons(bool v);
     void saveShowTimeRemaining(bool v);
     void saveHiddenStreamCategories(const QStringList &v);
     void saveHiddenOnlineProviders(const QStringList &v);

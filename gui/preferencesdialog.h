@@ -36,7 +36,6 @@ class ServerSettings;
 class PlaybackSettings;
 class FileSettings;
 class InterfaceSettings;
-class StreamsSettings;
 class ContextSettings;
 class HttpServerSettings;
 struct MPDConnectionDetails;
@@ -78,7 +77,6 @@ private:
     PlaybackSettings *playback;
     FileSettings *files;
     InterfaceSettings *interface;
-    StreamsSettings *streams;
     ContextSettings *context;
     #ifdef ENABLE_HTTP_SERVER
     HttpServerSettings *http;

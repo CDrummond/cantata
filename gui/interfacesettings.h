@@ -48,9 +48,6 @@ private:
     void addView(const QString &v, const QString &prop);
 
 private Q_SLOTS:
-    void libraryGroupingChanged();
-    void libraryViewChanged();
-    void playlistsViewChanged();
     void playQueueViewChanged();
     void forceSingleClickChanged();
     void touchFriendlyChanged();

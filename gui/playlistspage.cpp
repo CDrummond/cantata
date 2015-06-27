@@ -32,6 +32,7 @@
 #include "support/actioncollection.h"
 #include "widgets/tableview.h"
 #include "widgets/spacerwidget.h"
+#include "widgets/menubutton.h"
 #include "dynamic/dynamic.h"
 #include "dynamic/dynamicpage.h"
 #include "settings.h"
@@ -96,31 +97,25 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     connect(removeDuplicatesAction, SIGNAL(triggered()), this, SLOT(removeDuplicates()));
     connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
     connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
-    view->load(metaObject()->className());
-    init(ReplacePlayQueue|AddToPlayQueue);
+    intitiallyCollapseAction=new Action(i18n("Initially Collapse Albums"), this);
+    intitiallyCollapseAction->setCheckable(true);
+    Configuration config(metaObject()->className());
+    view->setMode(ItemView::Mode_DetailedTree);
+    view->load(config);
+    intitiallyCollapseAction->setChecked(view->isStartClosed());
+    connect(intitiallyCollapseAction, SIGNAL(toggled(bool)), SLOT(setStartClosed(bool)));
+    MenuButton *menu=new MenuButton(this);
+    menu->addAction(createViewMenu(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
+                                                           << ItemView::Mode_DetailedTree << ItemView::Mode_List
+                                                           << ItemView::Mode_GroupedTree << ItemView::Mode_Table));
+    menu->addAction(intitiallyCollapseAction);
+    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu);
 }
 
 StoredPlaylistsPage::~StoredPlaylistsPage()
 {
-    view->save(metaObject()->className());
-}
-
-void StoredPlaylistsPage::saveConfig()
-{
-    TableView *tv=qobject_cast<TableView *>(view->view());
-    if (tv) {
-        tv->saveHeader();
-    }
-}
-
-void StoredPlaylistsPage::setStartClosed(bool sc)
-{
-    view->setStartClosed(sc);
-}
-
-bool StoredPlaylistsPage::isStartClosed()
-{
-    return view->isStartClosed();
+    Configuration config(metaObject()->className());
+    view->save(config);
 }
 
 void StoredPlaylistsPage::updateRows()
@@ -156,7 +151,8 @@ void StoredPlaylistsPage::addSelectionToPlaylist(const QString &name, bool repla
 void StoredPlaylistsPage::setView(int mode)
 {
     PlaylistsModel::self()->setMultiColumn(ItemView::Mode_Table==mode);
-    view->setMode((ItemView::Mode)mode);
+    SinglePageWidget::setView(mode);
+    intitiallyCollapseAction->setEnabled(ItemView::Mode_GroupedTree==mode);
 }
 
 void StoredPlaylistsPage::removeItems()
@@ -436,6 +432,11 @@ void StoredPlaylistsPage::headerClicked(int level)
     if (0==level) {
         emit close();
     }
+}
+
+void StoredPlaylistsPage::setStartClosed(bool sc)
+{
+    view->setStartClosed(sc);
 }
 
 PlaylistsPage::PlaylistsPage(QWidget *p)

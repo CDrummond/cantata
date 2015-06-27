@@ -30,6 +30,7 @@
 #include "gui/settings.h"
 #include "support/messagebox.h"
 #include "support/localize.h"
+#include "support/configuration.h"
 #include "widgets/icons.h"
 #include "support/action.h"
 #include "gui/stdactions.h"
@@ -113,12 +114,14 @@ DevicesPage::DevicesPage(QWidget *p)
     view->setModel(&proxy);
     view->setRootIsDecorated(false);
     view->setSearchResetLevel(1);
-    view->load(metaObject()->className());
+    Configuration config(metaObject()->className());
+    view->load(config);
 }
 
 DevicesPage::~DevicesPage()
 {
-    view->save(metaObject()->className());
+    Configuration config(metaObject()->className());
+    view->save(config);
 }
 
 void DevicesPage::showEvent(QShowEvent *e)

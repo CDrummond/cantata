@@ -30,6 +30,8 @@
 #include "db/librarydb.h"
 #include <QMap>
 
+class Configuration;
+
 class SqlLibraryModel : public ActionModel
 {
     Q_OBJECT
@@ -130,12 +132,20 @@ public:
         QString genreId;
     };
 
-    SqlLibraryModel(LibraryDb *d, QObject *p);
+    SqlLibraryModel(LibraryDb *d, QObject *p, Type top=T_Artist);
 
     void clear();
     void clearDb();
-    void settings(const QString &top, const QString &lib, const QString &al);
+    void settings(Type top, LibraryDb::AlbumSort lib, LibraryDb::AlbumSort al);
     Type topLevel() const { return tl; }
+    LibraryDb::AlbumSort libraryAlbumSort() const { return librarySort; }
+    LibraryDb::AlbumSort albumAlbumSort() const { return albumSort; }
+    void setTopLevel(Type t);
+    void setLibraryAlbumSort(LibraryDb::AlbumSort s);
+    void setAlbumAlbumSort(LibraryDb::AlbumSort s);
+    virtual void load(Configuration &config);
+    virtual void save(Configuration &config);
+
     void search(const QString &str);
 
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -175,8 +185,8 @@ protected:
     Type tl;
     CollectionItem *root;
     LibraryDb *db;
-    QString librarySort;
-    QString albumSort;
+    LibraryDb::AlbumSort librarySort;
+    LibraryDb::AlbumSort albumSort;
 };
 
 #endif

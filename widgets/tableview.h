@@ -31,7 +31,7 @@ class TableView : public TreeView
     Q_OBJECT
 
 public:
-    TableView(const QString &cfgName, QWidget *parent=0, bool menuAlwaysAllowed=false);
+    TableView(const QString &cfgGroup, QWidget *parent=0, bool menuAlwaysAllowed=false);
     virtual ~TableView() { }
     void setModel(QAbstractItemModel *m);
     void initHeader();
@@ -45,7 +45,7 @@ private Q_SLOTS:
 
 protected:
     QMenu *menu;
-    QString configName;
+    QString configGroup;
     int menuIsForCol;
     QAction *alignAction;
     QAction *alignLeftAction;

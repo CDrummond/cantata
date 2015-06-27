@@ -336,43 +336,6 @@ bool Settings::storeBackdropsInMpdDir()
     return cfg.get("storeBackdropsInMpdDir", false);
 }
 
-#ifndef ENABLE_UBUNTU
-int Settings::libraryView()
-{
-    return ItemView::toMode(cfg.get("libraryView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
-}
-
-int Settings::folderView()
-{
-    return ItemView::toMode(cfg.get("folderView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
-}
-
-int Settings::playlistsView()
-{
-    return ItemView::toMode(cfg.get("playlistsView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
-}
-
-int Settings::streamsView()
-{
-    return ItemView::toMode(cfg.get("streamsView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
-}
-
-int Settings::onlineView()
-{
-    return ItemView::toMode(cfg.get("onlineView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
-}
-#endif
-
-bool Settings::libraryArtistImage()
-{
-    return cfg.get("libraryArtistImage", false);
-}
-
-QString Settings::libraryAlbumSort()
-{
-    return cfg.get("libraryAlbumSort", LibraryDb::constAlbumsSortAlArYr);
-}
-
 int Settings::sidebar()
 {
     if (version()<CANTATA_MAKE_VERSION(1, 2, 52)) {
@@ -380,16 +343,6 @@ int Settings::sidebar()
     } else {
         return cfg.get("sidebar", (int)(FancyTabWidget::Side|FancyTabWidget::Large))&FancyTabWidget::All_Mask;
     }
-}
-
-QString Settings::librarySort()
-{
-    return cfg.get("librarySort", LibraryDb::constArtistAlbumsSortYear);
-}
-
-QString Settings::libraryGrouping()
-{
-    return cfg.get("libraryGrouping", SqlLibraryModel::constGroupArtist);
 }
 
 QSet<QString> Settings::composerGenres()
@@ -506,18 +459,6 @@ bool Settings::overwriteSongs()
 bool Settings::showDeleteAction()
 {
     return cfg.get("showDeleteAction", false);
-}
-
-int Settings::devicesView()
-{
-    return ItemView::toMode(cfg.get("devicesView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
-}
-#endif
-
-#ifndef ENABLE_UBUNTU
-int Settings::searchView()
-{
-    return ItemView::toMode(cfg.get("searchView", ItemView::modeStr(ItemView::Mode_List)));
 }
 #endif
 
@@ -960,56 +901,9 @@ void Settings::saveStoreBackdropsInMpdDir(bool v)
     cfg.set("storeBackdropsInMpdDir", v);
 }
 
-#ifndef ENABLE_UBUNTU
-void Settings::saveLibraryView(int v)
-{
-    cfg.set("libraryView", ItemView::modeStr((ItemView::Mode)v));
-}
-
-void Settings::saveFolderView(int v)
-{
-    cfg.set("folderView", ItemView::modeStr((ItemView::Mode)v));
-}
-
-void Settings::savePlaylistsView(int v)
-{
-    cfg.set("playlistsView", ItemView::modeStr((ItemView::Mode)v));
-}
-
-void Settings::saveStreamsView(int v)
-{
-    cfg.set("streamsView", ItemView::modeStr((ItemView::Mode)v));
-}
-
-void Settings::saveOnlineView(int v)
-{
-    cfg.set("onlineView", ItemView::modeStr((ItemView::Mode)v));
-}
-#endif
-
-void Settings::saveLibraryArtistImage(bool v)
-{
-    cfg.set("libraryArtistImage", v);
-}
-
-void Settings::saveLibraryAlbumSort(const QString &v)
-{
-    cfg.set("libraryAlbumSort", v);
-}
-
 void Settings::saveSidebar(int v)
 {
     cfg.set("sidebar", v);
-}
-
-void Settings::saveLibrarySort(const QString &v)
-{
-    cfg.set("librarySort", v);
-}
-
-void Settings::saveLibraryGrouping(const QString &v)
-{
-    cfg.set("libraryGrouping", v);
 }
 
 void Settings::saveComposerGenres(const QSet<QString> &v)
@@ -1121,18 +1015,6 @@ void Settings::saveOverwriteSongs(bool v)
 void Settings::saveShowDeleteAction(bool v)
 {
     cfg.set("showDeleteAction", v);
-}
-
-void Settings::saveDevicesView(int v)
-{
-    cfg.set("devicesView", ItemView::modeStr((ItemView::Mode)v));
-}
-#endif
-
-#ifndef ENABLE_UBUNTU
-void Settings::saveSearchView(int v)
-{
-    cfg.set("searchView", ItemView::modeStr((ItemView::Mode)v));
 }
 #endif
 

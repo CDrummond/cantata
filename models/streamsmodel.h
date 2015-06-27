@@ -78,7 +78,6 @@ public:
 
         virtual ~CategoryItem() { qDeleteAll(children); }
         virtual bool isCategory() const { return true; }
-        virtual bool canConfigure() const { return false; }
         virtual bool isFavourites() const { return false; }
         virtual bool isBuiltIn() const { return true; }
         virtual bool isDi() const { return false; }
@@ -160,7 +159,6 @@ public:
     {
         DiCategoryItem(const QString &u, const QString &n, CategoryItem *p, const Icon &i, const QString &cn)
             : CategoryItem(u, n, p, i, cn, QString(), true) { }
-        bool canConfigure() const { return true; }
         void addHeaders(QNetworkRequest &req);
         bool isDi() const { return true; }
         bool isBuiltIn() const { return false; }
@@ -262,7 +260,7 @@ public:
 
     Action *addBookmarkAct() { return addBookmarkAction; }
     Action *addToFavouritesAct() { return addToFavouritesAction; }
-    Action *configureAct() { return configureAction; }
+    Action *configureDiAct() { return configureDiAction; }
     Action *reloadAct() { return reloadAction; }
     Action *searchAct() { return searchAction; }
 
@@ -329,7 +327,7 @@ private:
     CategoryItem *dirble;
     Action *addBookmarkAction;
     Action *addToFavouritesAction;
-    Action *configureAction;
+    Action *configureDiAction;
     Action *reloadAction;
     Action *searchAction;
     QList<Item *> hiddenCategories;

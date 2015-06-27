@@ -39,7 +39,6 @@ public:
     SearchPage(QWidget *p);
     virtual ~SearchPage();
 
-    void saveConfig();
     void refresh();
     void clear();
     void setView(int mode);

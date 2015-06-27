@@ -25,7 +25,6 @@
 #include "settings.h"
 #include "widgets/icons.h"
 #include "interfacesettings.h"
-#include "streams/streamssettings.h"
 #include "serversettings.h"
 #include "playbacksettings.h"
 #include "filesettings.h"
@@ -80,9 +79,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     addPage(QLatin1String("playback"), playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
     addPage(QLatin1String("files"), files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
     addPage(QLatin1String("interface"), interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
-    streams = new StreamsSettings(0);
-    addPage(QLatin1String("streams"), streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings"));
-    streams->load();
     addPage(QLatin1String("context"), context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
     addPage(QLatin1String("scrobbling"), scrobbling, i18n("Scrobbling"), Icons::self()->lastFmIcon, i18n("Scrobbling Settings"));
     #ifdef ENABLE_HTTP_SERVER
@@ -151,7 +147,6 @@ void PreferencesDialog::writeSettings()
     playback->save();
     files->save();
     interface->save();
-    streams->save();
     #ifdef ENABLE_HTTP_SERVER
     if (http) {
         http->save();

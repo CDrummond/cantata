@@ -572,6 +572,9 @@ static const char *constAlwaysShowProp="always";
 static Action *backAction=0;
 
 const QLatin1String ItemView::constSearchActiveKey("searchActive");
+const QLatin1String ItemView::constViewModeKey("viewMode");
+const QLatin1String ItemView::constStartClosedKey("startClosed");
+const QLatin1String ItemView::constSearchCategoryKey("searchCategory");
 
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
@@ -642,16 +645,31 @@ void ItemView::alwaysShowHeader()
     setTitle();
 }
 
-void ItemView::load(const QString &group)
+void ItemView::load(Configuration &config)
 {
-    if (Configuration(group).get(ItemView::constSearchActiveKey, false)) {
+    if (config.get(constSearchActiveKey, false)) {
         focusSearch();
     }
+    setMode(toMode(config.get(constViewModeKey, modeStr(mode))));
+    setStartClosed(config.get(constStartClosedKey, isStartClosed()));
+    setSearchCategory(config.get(constSearchCategoryKey, searchCategory()));
 }
 
-void ItemView::save(const QString &group)
+void ItemView::save(Configuration &config)
 {
-    Configuration(group).set(ItemView::constSearchActiveKey, searchWidget->isActive());
+    config.set(constSearchActiveKey, searchWidget->isActive());
+    config.set(constViewModeKey, modeStr(mode));
+    if (groupedView) {
+        config.set(constStartClosedKey, isStartClosed());
+    }
+    TableView *tv=qobject_cast<TableView *>(view());
+    if (tv) {
+        tv->saveHeader();
+    }
+    QString cat=searchCategory();
+    if (!cat.isEmpty()) {
+        config.set(constSearchCategoryKey, cat);
+    }
 }
 
 void ItemView::allowGroupedView()

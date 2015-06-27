@@ -39,11 +39,18 @@ public:
         ReplacePlayQueue = 0x01,
         AddToPlayQueue   = 0x02,
         Refresh          = 0x04,
-        Configure        = 0x08,
 
-        All = AddToPlayQueue|ReplacePlayQueue|Refresh|Configure
+        All = AddToPlayQueue|ReplacePlayQueue|Refresh
     };
+
+    typedef QPair<QString, int> MenuItem;
+    static const char *constValProp;
+    static QList<QAction *> createActions(const QList<MenuItem> &values,int currentVal, QWidget *parent, const char *slot);
+    static Action * createMenuGroup(const QString &name, const QList<QAction *> actions, QWidget *parent);
+    static Action * createMenuGroup(const QString &name, const QList<MenuItem> &values, int currentVal, QWidget *parent, const char *slot);
+
     SinglePageWidget(QWidget *p);
+    virtual ~SinglePageWidget() { }
     virtual void setView(int v);
     ItemView::Mode viewMode() const { return view->viewMode(); }
     void focusSearch();
@@ -57,11 +64,12 @@ public:
     virtual void deleteSongs() { }
     #endif
     void showEvent(QShowEvent *e);
+    QList<QAction *> createViewActions(QList<ItemView::Mode> modes);
+    Action * createViewMenu(QList<ItemView::Mode> modes);
 
 public Q_SLOTS:
     virtual void doSearch() { }
     virtual void refresh() { }
-    virtual void configure() { }
     virtual void controlActions();
 
 Q_SIGNALS:
@@ -72,11 +80,13 @@ Q_SIGNALS:
     void add(const QStringList &files, bool replace, quint8 priorty);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
 
+private Q_SLOTS:
+    void viewModeSelected();
+
 protected:
     int btnFlags;
     ItemView *view;
     Action *refreshAction;
-    Action *configureAction;
 };
 
 #endif

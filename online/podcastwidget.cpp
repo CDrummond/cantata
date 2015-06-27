@@ -27,9 +27,11 @@
 #include "widgets/itemview.h"
 #include "widgets/toolbutton.h"
 #include "widgets/icons.h"
+#include "widgets/menubutton.h"
 #include "support/action.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
+#include "support/configuration.h"
 #include <QTimer>
 
 PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
@@ -47,9 +49,6 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     markAsNewAction = new Action(Icon("document-new"), i18n("Mark Episodes As New"), this);
     markAsListenedAction = new Action(i18n("Mark Episodes As Listened"), this);
 
-    ToolButton *addSub=new ToolButton(this);
-    addSub->setDefaultAction(subscribeAction);
-    init(All, QList<QWidget *>(), QList<QWidget *>() << addSub);
     view->alwaysShowHeader();
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
 
@@ -70,10 +69,22 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     connect(cancelDownloadAction, SIGNAL(triggered()), this, SLOT(cancelDownload()));
     connect(markAsNewAction, SIGNAL(triggered()), this, SLOT(markAsNew()));
     connect(markAsListenedAction, SIGNAL(triggered()), this, SLOT(markAsListened()));
+
+    view->setMode(ItemView::Mode_DetailedTree);
+    Configuration config(metaObject()->className());
+    view->load(config);
+    MenuButton *menu=new MenuButton(this);
+    ToolButton *addSub=new ToolButton(this);
+    addSub->setDefaultAction(subscribeAction);
+    menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
+                                                               << ItemView::Mode_DetailedTree << ItemView::Mode_List));
+    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu, QList<QWidget *>() << addSub);
 }
 
 PodcastWidget::~PodcastWidget()
 {
+    Configuration config(metaObject()->className());
+    view->save(config);
 }
 
 QStringList PodcastWidget::selectedFiles(bool allowPlaylists) const

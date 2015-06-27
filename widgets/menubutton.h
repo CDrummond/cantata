@@ -32,6 +32,7 @@ public:
     explicit MenuButton(QWidget *parent = 0);
     void controlState();
     void setAlignedMenu(QMenu *m);
+    void addSeparator();
 
 private:
     bool eventFilter(QObject *o, QEvent *e);

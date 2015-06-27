@@ -27,6 +27,7 @@
 #include "support/localize.h"
 #include "widgets/icons.h"
 #include "support/action.h"
+#include "support/configuration.h"
 #include "mpd-interface/mpdconnection.h"
 #include "widgets/statuslabel.h"
 #include "support/messagebox.h"
@@ -83,14 +84,16 @@ DynamicPage::DynamicPage(QWidget *p)
     view->setDeleteAction(removeAction);
     view->setMode(ItemView::Mode_List);
     controlActions();
-    view->load(metaObject()->className());
+    Configuration config(metaObject()->className());
+    view->load(config);
     controls=QList<QWidget *>() << addBtn << editBtn << removeBtn << startBtn;
     init(0, QList<QWidget *>(), controls);
 }
 
 DynamicPage::~DynamicPage()
 {
-    view->save(metaObject()->className());
+    Configuration config(metaObject()->className());
+    view->save(config);
 }
 
 void DynamicPage::doSearch()

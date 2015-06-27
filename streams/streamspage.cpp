@@ -23,6 +23,7 @@
 
 #include "streamspage.h"
 #include "streamdialog.h"
+#include "streamssettings.h"
 #include "mpd-interface/mpdconnection.h"
 #include "support/messagebox.h"
 #include "support/localize.h"
@@ -30,6 +31,7 @@
 #include "gui/stdactions.h"
 #include "support/actioncollection.h"
 #include "network/networkaccessmanager.h"
+#include "support/configuration.h"
 #include "gui/settings.h"
 #include "widgets/statuslabel.h"
 #include "widgets/menubutton.h"
@@ -81,6 +83,7 @@ void StreamsPage::closeSearch()
 
 StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     : SinglePageWidget(p)
+    , settings(0)
 {
     importAction = new Action(Icon("document-import"), i18n("Import Streams Into Favorites"), this);
     exportAction = new Action(Icon("document-export"), i18n("Export Favorite Streams"), this);
@@ -94,7 +97,7 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     connect(addAction, SIGNAL(triggered()), this, SLOT(add()));
     connect(StreamsModel::self()->addBookmarkAct(), SIGNAL(triggered()), this, SLOT(addBookmark()));
     connect(StreamsModel::self()->addToFavouritesAct(), SIGNAL(triggered()), this, SLOT(addToFavourites()));
-    connect(StreamsModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureStreams()));
+    connect(StreamsModel::self()->configureDiAct(), SIGNAL(triggered()), this, SLOT(configureDi()));
     connect(StreamsModel::self()->reloadAct(), SIGNAL(triggered()), this, SLOT(reload()));
     connect(editAction, SIGNAL(triggered()), this, SLOT(edit()));
     connect(importAction, SIGNAL(triggered()), this, SLOT(importXml()));
@@ -108,17 +111,8 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     connect(DigitallyImported::self(), SIGNAL(loginStatus(bool,QString)), SLOT(updateDiStatus()));
     connect(DigitallyImported::self(), SIGNAL(updated()), SLOT(updateDiStatus()));
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
-    QMenu *menu=new QMenu(this);
-    menu->addAction(addAction);
-    menu->addAction(StdActions::self()->removeAction);
-    menu->addAction(editAction);
-    menu->addAction(StreamsModel::self()->reloadAct());
-    menu->addSeparator();
-    menu->addAction(importAction);
-    menu->addAction(exportAction);
-    MenuButton *menuButton=new MenuButton(this);
-    menuButton->setMenu(menu);
-    view->setUniformRowHeights(true);
+    StreamsModel::self()->configureDiAct()->setEnabled(false);
+
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(editAction);
     view->addAction(StdActions::self()->removeAction);
@@ -130,7 +124,26 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     view->setDeleteAction(StdActions::self()->removeAction);
     view->setSearchResetLevel(1);
     view->alwaysShowHeader();
+
+    Configuration config(metaObject()->className());
     view->setMode(ItemView::Mode_DetailedTree);
+    view->load(config);
+
+    MenuButton *menuButton=new MenuButton(this);
+    Action *configureAction=new Action(Icons::self()->configureIcon, i18n("Configure"), this);
+    connect(configureAction, SIGNAL(triggered()), SLOT(configure()));
+    menuButton->addAction(createViewMenu(QList<ItemView::Mode>()  << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
+                                                                  << ItemView::Mode_DetailedTree << ItemView::Mode_List));
+    menuButton->addAction(configureAction);
+    menuButton->addAction(StreamsModel::self()->configureDiAct());
+    menuButton->addSeparator();
+    menuButton->addAction(addAction);
+    menuButton->addAction(StdActions::self()->removeAction);
+    menuButton->addAction(editAction);
+    menuButton->addAction(StreamsModel::self()->reloadAct());
+    menuButton->addSeparator();
+    menuButton->addAction(importAction);
+    menuButton->addAction(exportAction);
 
     diStatusLabel=new ServiceStatusLabel(this);
     diStatusLabel->setText("DI", i18nc("Service name", "Digitally Imported"));
@@ -138,7 +151,7 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     updateDiStatus();  
     ToolButton *searchButton=new ToolButton(this);
     searchButton->setDefaultAction(searchAction);
-    init(ReplacePlayQueue|Configure, QList<QWidget *>() << menuButton << diStatusLabel, QList<QWidget *>() << searchButton);
+    init(ReplacePlayQueue, QList<QWidget *>() << menuButton << diStatusLabel, QList<QWidget *>() << searchButton);
 }
 
 StreamsBrowsePage::~StreamsBrowsePage()
@@ -148,6 +161,8 @@ StreamsBrowsePage::~StreamsBrowsePage()
         job->deleteLater();
     }
     resolveJobs.clear();
+    Configuration config(metaObject()->className());
+    view->save(config);
 }
 
 void StreamsBrowsePage::showEvent(QShowEvent *e)
@@ -189,7 +204,19 @@ void StreamsBrowsePage::itemDoubleClicked(const QModelIndex &index)
     }
 }
 
-void StreamsBrowsePage::configureStreams()
+void StreamsBrowsePage::configure()
+{
+    if (!settings) {
+        settings=new StreamsSettings(this);
+    }
+    if (!settings->isVisible()) {
+        settings->load();
+    }
+    settings->show();
+    settings->raiseWindow();
+}
+
+void StreamsBrowsePage::configureDi()
 {
     QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
     if (1!=selected.count()) {
@@ -197,8 +224,7 @@ void StreamsBrowsePage::configureStreams()
     }
 
     const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer());
-    if (item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canConfigure()) {
-        // TODO: In future might need to confirm category type, at the moment only digitially imported can be configured...
+    if (item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->isDi()) {
         diSettings();
     }
 }
@@ -520,9 +546,9 @@ void StreamsBrowsePage::controlActions()
             StdActions::self()->removeAction->setEnabled(item->isCategory() && item->parent &&
                                                          (item->parent->isBookmarks || (static_cast<const StreamsModel::CategoryItem *>(item)->isBookmarks)));
         }
-        StreamsModel::self()->configureAct()->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canConfigure());
+        StreamsModel::self()->configureDiAct()->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->isDi());
     } else {
-        StreamsModel::self()->configureAct()->setEnabled(false);
+        StreamsModel::self()->configureDiAct()->setEnabled(false);
     }
 
     StdActions::self()->replacePlayQueueAction->setEnabled(haveSelection && onlyStreamsSelected);
@@ -535,11 +561,6 @@ void StreamsBrowsePage::updateDiStatus()
     } else {
         diStatusLabel->setStatus(DigitallyImported::self()->loggedIn());
     }
-}
-
-void StreamsBrowsePage::configure()
-{
-    emit showPreferencesPage(QLatin1String("streams"));
 }
 
 void StreamsBrowsePage::expandFavourites()

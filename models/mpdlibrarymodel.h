@@ -33,12 +33,18 @@ public:
     static MpdLibraryModel * self();
     MpdLibraryModel();
     QVariant data(const QModelIndex &index, int role) const;
-    void readSettings();
+    void setUseArtistImages(bool u);
+    bool useArtistImages() const { return showArtistImages; }
+    void load(Configuration &config);
+    void save(Configuration &config);
 
 private Q_SLOTS:
     void cover(const Song &song, const QImage &img, const QString &file);
     void coverUpdated(const Song &song, const QImage &img, const QString &file);
     void artistImage(const Song &song, const QImage &img, const QString &file);
+
+private:
+    bool showArtistImages;
 };
 
 #endif

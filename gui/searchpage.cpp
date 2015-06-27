@@ -30,6 +30,7 @@
 #include "support/icon.h"
 #include "plurals.h"
 #include "widgets/tableview.h"
+#include "widgets/menubutton.h"
 
 class SearchTableView : public TableView
 {
@@ -73,25 +74,22 @@ SearchPage::SearchPage(QWidget *p)
     connect(locateAction, SIGNAL(triggered()), SLOT(locateSongs()));
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
-    view->setMode(ItemView::Mode_List);
     view->setPermanentSearch();
     setSearchCategories();
     view->setSearchCategory(Settings::self()->searchCategory());
-    statsUpdated(0, 0);
-    init(AddToPlayQueue|ReplacePlayQueue, QList<QWidget *>() << statsLabel);
+    statsUpdated(0, 0);    
+    view->setMode(ItemView::Mode_List);
+    Configuration config(metaObject()->className());
+    view->load(config);
+    MenuButton *menu=new MenuButton(this);
+    menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_List << ItemView::Mode_Table));
+    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu << statsLabel);
 }
 
 SearchPage::~SearchPage()
 {
-}
-
-void SearchPage::saveConfig()
-{
-    Settings::self()->saveSearchCategory(view->searchCategory());
-    TableView *tv=qobject_cast<TableView *>(view->view());
-    if (tv) {
-        tv->saveHeader();
-    }
+    Configuration config(metaObject()->className());
+    view->save(config);
 }
 
 void SearchPage::refresh()

@@ -32,11 +32,25 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 
+
+static QString viewTypeString(ItemView::Mode mode)
+{
+    switch (mode) {
+    default:
+    case ItemView::Mode_BasicTree:    return i18n("Basic Tree (No Icons)");
+    case ItemView::Mode_SimpleTree:   return i18n("Simple Tree");
+    case ItemView::Mode_DetailedTree: return i18n("Detailed Tree");
+    case ItemView::Mode_GroupedTree:  return i18n("Grouped Albums");
+    case ItemView::Mode_List:         return i18n("List");
+    case ItemView::Mode_IconTop:      return i18n("Grid");
+    case ItemView::Mode_Table:        return i18n("Table");
+    }
+}
+
 SinglePageWidget::SinglePageWidget(QWidget *p)
     : QWidget(p)
     , btnFlags(0)
     , refreshAction(0)
-    , configureAction(0)
 {
     QGridLayout *layout=new QGridLayout(this);
     view=new ItemView(this);
@@ -58,7 +72,7 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
         return;
     }
     btnFlags=flags;
-    QList<QWidget *> left;
+    QList<QWidget *> left=leftXtra;
     QList<QWidget *> right=rightXtra;
 
     if (!right.isEmpty() && (flags&(AddToPlayQueue||ReplacePlayQueue))) {
@@ -78,23 +92,13 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
         view->addAction(StdActions::self()->replacePlayQueueAction);
     }
 
-    if (flags&Configure) {
-        ToolButton *configureButon=new ToolButton(this);
-        configureAction=new Action(Icons::self()->configureIcon, i18n("Configure"), this);
-        configureButon->setDefaultAction(configureAction);
-        connect(configureAction, SIGNAL(triggered()), this, SLOT(configure()));
-        left.prepend(configureButon);
-    }
-
     if (flags&Refresh) {
         ToolButton *refreshButton=new ToolButton(this);
         refreshAction=new Action(Icon("view-refresh"), i18n("Refresh"), this);
         refreshButton->setDefaultAction(refreshAction);
         connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
-        left.prepend(refreshButton);
+        left.append(refreshButton);
     }
-
-    left << leftXtra;
 
     if (flags&AddToPlayQueue) {
         view->addAction(StdActions::self()->addWithPriorityAction);
@@ -138,9 +142,63 @@ void SinglePageWidget::showEvent(QShowEvent *e)
     view->focusView();
 }
 
+const char * SinglePageWidget::constValProp="val";
+
+QList<QAction *> SinglePageWidget::createActions(const QList<SinglePageWidget::MenuItem> &values,int currentVal, QWidget *parent, const char *slot)
+{
+    QList<QAction *> actions;
+    QActionGroup *group=new QActionGroup(parent);
+    foreach (const MenuItem &v, values) {
+        QAction *act=new QAction(v.first, parent);
+        connect(act, SIGNAL(toggled(bool)), parent, slot);
+        act->setActionGroup(group);
+        act->setProperty(constValProp, v.second);
+        act->setCheckable(true);
+        act->setChecked(v.second==currentVal);
+        actions.append(act);
+    }
+    return actions;
+}
+
+Action * SinglePageWidget::createMenuGroup(const QString &name, const QList<QAction *> actions, QWidget *parent)
+{
+    Action *action=new Action(name, parent);
+    QMenu *menu=new QMenu(parent);
+    menu->addActions(actions);
+    action->setMenu(menu);
+    return action;
+}
+
+Action * SinglePageWidget::createMenuGroup(const QString &name, const QList<SinglePageWidget::MenuItem> &values,int currentVal, QWidget *parent, const char *slot)
+{
+    return createMenuGroup(name, createActions(values, currentVal, parent, slot), parent);
+}
+
+QList<QAction *> SinglePageWidget::createViewActions(QList<ItemView::Mode> modes)
+{
+    QList<QPair<QString, int> > vals;
+    foreach (ItemView::Mode m, modes) {
+        vals.append(MenuItem(viewTypeString(m), m));
+    }
+    return createActions(vals, view->viewMode(), this, SLOT(viewModeSelected()));
+}
+
+Action * SinglePageWidget::createViewMenu(QList<ItemView::Mode> modes)
+{
+    return createMenuGroup(i18n("View"), createViewActions(modes), this);
+}
+
 void SinglePageWidget::setView(int v)
 {
     view->setMode((ItemView::Mode)v);
+}
+
+void SinglePageWidget::viewModeSelected()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+    if (act) {
+        setView(act->property(constValProp).toInt());
+    }
 }
 
 void SinglePageWidget::focusSearch()

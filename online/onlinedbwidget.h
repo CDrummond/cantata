@@ -41,13 +41,14 @@ public:
 private Q_SLOTS:
     void firstTimePrompt();
     void headerClicked(int level);
+    void configure();
 
 private:
     void doSearch();
     void refresh();
-    void configure();
 
 private:
+    QString configGroup;
     OnlineDbService *srv;
 };
 

@@ -27,6 +27,7 @@
 #include "gui/settings.h"
 #include "widgets/icons.h"
 #include "support/localize.h"
+#include "support/configuration.h"
 #include "roles.h"
 #include <QMimeData>
 #if defined ENABLE_MODEL_TEST
@@ -55,13 +56,13 @@ const QLatin1String SqlLibraryModel::constGroupGenre("genre");
 const QLatin1String SqlLibraryModel::constGroupArtist("artist");
 const QLatin1String SqlLibraryModel::constGroupAlbum("album");
 
-SqlLibraryModel::SqlLibraryModel(LibraryDb *d, QObject *p)
+SqlLibraryModel::SqlLibraryModel(LibraryDb *d, QObject *p, Type top)
     : ActionModel(p)
-    , tl(T_Artist)
+    , tl(top)
     , root(0)
     , db(d)
-    , librarySort(LibraryDb::constArtistAlbumsSortYear)
-    , albumSort(LibraryDb::constAlbumsSortAlArYr)
+    , librarySort(LibraryDb::AS_Year)
+    , albumSort(LibraryDb::AS_Album)
 {
     connect(db, SIGNAL(libraryUpdated()), SLOT(libraryUpdated()));
     #if defined ENABLE_MODEL_TEST
@@ -82,22 +83,58 @@ void SqlLibraryModel::clearDb()
     db->clear();
 }
 
-void SqlLibraryModel::settings(const QString &top, const QString &lib, const QString &al)
+void SqlLibraryModel::settings(Type top, LibraryDb::AlbumSort lib, LibraryDb::AlbumSort al)
 {
-    Type t=T_Artist;
-    if (top==constGroupGenre) {
-        t=T_Genre;
-    } else if (top==constGroupAlbum) {
-        t=T_Album;
-    }
-
-    bool changed= t!=tl || (T_Album!=t && lib!=librarySort) || (T_Album==t && al!=albumSort);
-    tl=t;
+    bool changed=top!=tl || (T_Album!=top && lib!=librarySort) || (T_Album==top && al!=albumSort);
+    tl=top;
     librarySort=lib;
     albumSort=al;
     if (changed) {
         libraryUpdated();
     }
+}
+
+void SqlLibraryModel::setTopLevel(Type t)
+{
+    if (t!=tl) {
+        tl=t;
+        libraryUpdated();
+    }
+}
+
+void SqlLibraryModel::setLibraryAlbumSort(LibraryDb::AlbumSort s)
+{
+    if (s!=librarySort) {
+        librarySort=s;
+        if (T_Album!=tl) {
+            libraryUpdated();
+        }
+    }
+}
+
+void SqlLibraryModel::setAlbumAlbumSort(LibraryDb::AlbumSort s)
+{
+    if (s!=albumSort) {
+        albumSort=s;
+        if (T_Album==tl) {
+            libraryUpdated();
+        }
+    }
+}
+
+static QLatin1String constAlbumSortKey("albumSort");
+static QLatin1String constLibrarySortKey("librarySort");
+
+void SqlLibraryModel::load(Configuration &config)
+{
+    albumSort=LibraryDb::toAlbumSort(config.get(constAlbumSortKey, LibraryDb::albumSortStr(albumSort)));
+    librarySort=LibraryDb::toAlbumSort(config.get(constLibrarySortKey, LibraryDb::albumSortStr(librarySort)));
+}
+
+void SqlLibraryModel::save(Configuration &config)
+{
+    config.set(constAlbumSortKey, LibraryDb::albumSortStr(albumSort));
+    config.set(constLibrarySortKey, LibraryDb::albumSortStr(librarySort));
 }
 
 void SqlLibraryModel::libraryUpdated()
@@ -125,7 +162,7 @@ void SqlLibraryModel::libraryUpdated()
         break;
     }
     case T_Album: {
-        QList<LibraryDb::Album> albums=db->getAlbums();
+        QList<LibraryDb::Album> albums=db->getAlbums(QString(), QString(), albumSort);
         if (!albums.isEmpty())  {
             foreach (const LibraryDb::Album &album, albums) {
                 root->add(new AlbumItem(album.artist, album.id, Song::displayAlbum(album.name, album.year),
@@ -237,7 +274,7 @@ void SqlLibraryModel::fetchMore(const QModelIndex &index)
         break;
     }
     case T_Artist: {
-        QList<LibraryDb::Album> albums=db->getAlbums(item->getId(), T_Genre==tl ? item->getParent()->getId() : QString(), T_Album==topLevel() ? albumSort : librarySort);
+        QList<LibraryDb::Album> albums=db->getAlbums(item->getId(), T_Genre==tl ? item->getParent()->getId() : QString(), librarySort);
         if (!albums.isEmpty())  {
             beginInsertRows(index, 0, albums.count()-1);
             foreach (const LibraryDb::Album &album, albums) {
@@ -250,9 +287,9 @@ void SqlLibraryModel::fetchMore(const QModelIndex &index)
     }
     case T_Album: {
         QList<Song> songs=T_Album==tl
-                            ? db->getTracks(static_cast<AlbumItem *>(item)->getArtistId(), item->getId())
+                            ? db->getTracks(static_cast<AlbumItem *>(item)->getArtistId(), item->getId(), QString(), albumSort)
                             : db->getTracks(item->getParent()->getId(), item->getId(),
-                                            T_Genre==tl ? item->getParent()->getParent()->getId() : QString());
+                                            T_Genre==tl ? item->getParent()->getParent()->getId() : QString(), librarySort);
 
         if (!songs.isEmpty())  {
             beginInsertRows(index, 0, songs.count()-1);
@@ -449,7 +486,7 @@ QSet<QString> SqlLibraryModel::getArtists() const
 
 QList<Song> SqlLibraryModel::getAlbumTracks(const Song &song) const
 {
-    return db->getTracks(song.artistOrComposer(), song.album, QString(), QString(), false);
+    return db->getTracks(song.artistOrComposer(), song.album, QString(), LibraryDb::AS_Artist, false);
 }
 
 QList<Song> SqlLibraryModel::songs(const QStringList &files, bool allowPlaylists) const

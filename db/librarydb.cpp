@@ -59,23 +59,23 @@ QString LibraryDb::albumSortStr(AlbumSort m)
     }
 }
 
-//static bool albumsSortAlArYr(const LibraryDb::Album &a, const LibraryDb::Album &b)
-//{
-//    const QString &an=a.sort.isEmpty() ? a.name : a.sort;
-//    const QString &bn=b.sort.isEmpty() ? b.name : b.sort;
-//    int cmp=an.localeAwareCompare(bn);
-//    if (cmp!=0) {
-//        return cmp<0;
-//    }
+static bool albumsSortAlArYr(const LibraryDb::Album &a, const LibraryDb::Album &b)
+{
+    const QString &an=a.sort.isEmpty() ? a.name : a.sort;
+    const QString &bn=b.sort.isEmpty() ? b.name : b.sort;
+    int cmp=an.localeAwareCompare(bn);
+    if (cmp!=0) {
+        return cmp<0;
+    }
 
-//    const QString &aa=a.artistSort.isEmpty() ? a.artist : a.artistSort;
-//    const QString &ba=b.artistSort.isEmpty() ? b.artist : b.artistSort;
-//    cmp=aa.localeAwareCompare(ba);
-//    if (cmp!=0) {
-//        return cmp<0;
-//    }
-//    return a.year<b.year;
-//}
+    const QString &aa=a.artistSort.isEmpty() ? a.artist : a.artistSort;
+    const QString &ba=b.artistSort.isEmpty() ? b.artist : b.artistSort;
+    cmp=aa.localeAwareCompare(ba);
+    if (cmp!=0) {
+        return cmp<0;
+    }
+    return a.year<b.year;
+}
 
 static bool albumsSortArAlYr(const LibraryDb::Album &a, const LibraryDb::Album &b)
 {
@@ -96,23 +96,23 @@ static bool albumsSortArAlYr(const LibraryDb::Album &a, const LibraryDb::Album &
     return a.year<b.year;
 }
 
-static bool albumsSortAlYrAr(const LibraryDb::Album &a, const LibraryDb::Album &b)
-{
-    const QString &an=a.sort.isEmpty() ? a.name : a.sort;
-    const QString &bn=b.sort.isEmpty() ? b.name : b.sort;
-    int cmp=an.localeAwareCompare(bn);
-    if (cmp!=0) {
-        return cmp<0;
-    }
+//static bool albumsSortAlYrAr(const LibraryDb::Album &a, const LibraryDb::Album &b)
+//{
+//    const QString &an=a.sort.isEmpty() ? a.name : a.sort;
+//    const QString &bn=b.sort.isEmpty() ? b.name : b.sort;
+//    int cmp=an.localeAwareCompare(bn);
+//    if (cmp!=0) {
+//        return cmp<0;
+//    }
 
-    if (a.year!=b.year) {
-        return a.year<b.year;
-    }
+//    if (a.year!=b.year) {
+//        return a.year<b.year;
+//    }
 
-    const QString &aa=a.artistSort.isEmpty() ? a.artist : a.artistSort;
-    const QString &ba=b.artistSort.isEmpty() ? b.artist : b.artistSort;
-    return aa.localeAwareCompare(ba)<0;
-}
+//    const QString &aa=a.artistSort.isEmpty() ? a.artist : a.artistSort;
+//    const QString &ba=b.artistSort.isEmpty() ? b.artist : b.artistSort;
+//    return aa.localeAwareCompare(ba)<0;
+//}
 
 //static bool albumsSortArYrAl(const LibraryDb::Album &a, const LibraryDb::Album &b)
 //{
@@ -168,6 +168,14 @@ static bool albumsSortYrAlAr(const LibraryDb::Album &a, const LibraryDb::Album &
 //    return an.localeAwareCompare(bn)<0;
 //}
 
+static bool albumsSortModified(const LibraryDb::Album &a, const LibraryDb::Album &b)
+{
+    if (a.lastModified==b.lastModified) {
+        return albumsSortAlArYr(a, b);
+    }
+    return a.lastModified>b.lastModified;
+}
+
 static bool songSort(const Song &a, const Song &b)
 {
     if (a.disc!=b.disc) {
@@ -197,29 +205,29 @@ static bool songSort(const Song &a, const Song &b)
     return a.file.compare(b.file)<0;
 }
 
-//static bool songsSortAlArYr(const Song &a, const Song &b)
-//{
-//    const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
-//    const QString bn=b.hasAlbumSort() ? b.albumSort() : b.album;
-//    int cmp=an.localeAwareCompare(bn);
-//    if (cmp!=0) {
-//        return cmp<0;
-//    }
+static bool songsSortAlAr(const Song &a, const Song &b)
+{
+    const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
+    const QString bn=b.hasAlbumSort() ? b.albumSort() : b.album;
+    int cmp=an.localeAwareCompare(bn);
+    if (cmp!=0) {
+        return cmp<0;
+    }
 
-//    const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
-//    const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
-//    cmp=aa.localeAwareCompare(ba);
-//    if (cmp!=0) {
-//        return cmp<0;
-//    }
+    const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
+    const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
+    cmp=aa.localeAwareCompare(ba);
+    if (cmp!=0) {
+        return cmp<0;
+    }
 
 //    if (a.year!=b.year) {
 //        return a.year<b.year;
 //    }
-//    return songSort(a, b);
-//}
+    return songSort(a, b);
+}
 
-static bool songsSortArAlYr(const Song &a, const Song &b)
+static bool songsSortArAl(const Song &a, const Song &b)
 {
     const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
     const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
@@ -235,34 +243,34 @@ static bool songsSortArAlYr(const Song &a, const Song &b)
         return cmp<0;
     }
 
-    if (a.year!=b.year) {
-        return a.year<b.year;
-    }
+//    if (a.year!=b.year) {
+//        return a.year<b.year;
+//    }
     return songSort(a, b);
 }
 
-static bool songsSortAlYrAr(const Song &a, const Song &b)
-{
-    const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
-    const QString bn=b.hasAlbumSort() ? b.albumSort() : b.album;
-    int cmp=an.localeAwareCompare(bn);
-    if (cmp!=0) {
-        return cmp<0;
-    }
+//static bool songsSortAlYrAr(const Song &a, const Song &b)
+//{
+//    const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
+//    const QString bn=b.hasAlbumSort() ? b.albumSort() : b.album;
+//    int cmp=an.localeAwareCompare(bn);
+//    if (cmp!=0) {
+//        return cmp<0;
+//    }
 
-    if (a.year!=b.year) {
-        return a.year<b.year;
-    }
+//    if (a.year!=b.year) {
+//        return a.year<b.year;
+//    }
 
-    const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
-    const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
-    cmp=aa.localeAwareCompare(ba);
-    if (cmp!=0) {
-        return cmp<0;
-    }
+//    const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
+//    const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
+//    cmp=aa.localeAwareCompare(ba);
+//    if (cmp!=0) {
+//        return cmp<0;
+//    }
 
-    return songSort(a, b);
-}
+//    return songSort(a, b);
+//}
 
 //static bool songsSortArYrAl(const Song &a, const Song &b)
 //{
@@ -287,28 +295,28 @@ static bool songsSortAlYrAr(const Song &a, const Song &b)
 //    return songSort(a, b);
 //}
 
-static bool songsSortYrAlAr(const Song &a, const Song &b)
-{
-    if (a.year!=b.year) {
-        return a.year<b.year;
-    }
+//static bool songsSortYrAlAr(const Song &a, const Song &b)
+//{
+//    if (a.year!=b.year) {
+//        return a.year<b.year;
+//    }
 
-    const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
-    const QString bn=b.hasAlbumSort() ? b.albumSort() : b.album;
-    int cmp=an.localeAwareCompare(bn);
-    if (cmp!=0) {
-        return cmp<0;
-    }
+//    const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
+//    const QString bn=b.hasAlbumSort() ? b.albumSort() : b.album;
+//    int cmp=an.localeAwareCompare(bn);
+//    if (cmp!=0) {
+//        return cmp<0;
+//    }
 
-    const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
-    const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
-    cmp=aa.localeAwareCompare(ba);
-    if (cmp!=0) {
-        return cmp<0;
-    }
+//    const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
+//    const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
+//    cmp=aa.localeAwareCompare(ba);
+//    if (cmp!=0) {
+//        return cmp<0;
+//    }
 
-    return songSort(a, b);
-}
+//    return songSort(a, b);
+//}
 
 //static bool songsSortYrArAl(const Song &a, const Song &b)
 //{
@@ -331,6 +339,14 @@ static bool songsSortYrAlAr(const Song &a, const Song &b)
 //    }
 
 //    return songSort(a, b);
+//}
+
+//static bool songsSortModified(const Song &a, const Song &b)
+//{
+//    if (a.lastModified==b.lastModified) {
+//        return songsSortAlArYr(a, b);
+//    }
+//    return a.lastModified>b.lastModified;
 //}
 
 static QString artistSort(const Song &s)
@@ -666,7 +682,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
             QString albumSort=query.value(2).toString();
             QString artist=artistId.isEmpty() ? query.value(3).toString() : QString();
             QString artistSort=artistId.isEmpty() ? query.value(4).toString() : QString();
-            SqlQuery detailsQuery("avg(year), count(track), sum(time)", *db);
+            SqlQuery detailsQuery(AS_Modified==sort ? "avg(year), count(track), sum(time), max(lastModified)" : "avg(year), count(track), sum(time)", *db);
             detailsQuery.setFilter(filter);
 
             if (!genre.isEmpty()) {
@@ -678,7 +694,8 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
             detailsQuery.exec();
             DBUG << detailsQuery.executedQuery();
             if (detailsQuery.next()) {
-                albums.append(Album(album, albumId, albumSort, artist, artistSort, detailsQuery.value(0).toInt(), detailsQuery.value(1).toInt(), detailsQuery.value(2).toInt()));
+                albums.append(Album(album, albumId, albumSort, artist, artistSort, detailsQuery.value(0).toInt(), detailsQuery.value(1).toInt(),
+                                    detailsQuery.value(2).toInt(), AS_Modified==sort ? detailsQuery.value(3).toInt() : 0));
             }
         }
     }
@@ -686,7 +703,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
     DBUG << "After select" << timer.elapsed();
     switch(sort) {
     case AS_Album:
-        qSort(albums.begin(), albums.end(), albumsSortAlYrAr);
+        qSort(albums.begin(), albums.end(), albumsSortAlArYr);
         break;
     case AS_Artist:
         qSort(albums.begin(), albums.end(), albumsSortArAlYr);
@@ -695,7 +712,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
         qSort(albums.begin(), albums.end(), albumsSortYrAlAr);
         break;
     case AS_Modified:
-        qSort(albums.begin(), albums.end(), albumsSortYrAlAr); // TODO!!!
+        qSort(albums.begin(), albums.end(), albumsSortModified);
         break;
     default:
         break;
@@ -731,17 +748,17 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
 
     switch(sort) {
     case AS_Album:
-        qSort(songs.begin(), songs.end(), songsSortAlYrAr);
+        qSort(songs.begin(), songs.end(), songsSortAlAr);
         break;
     case AS_Artist:
-        qSort(songs.begin(), songs.end(), songsSortArAlYr);
+        qSort(songs.begin(), songs.end(), songsSortArAl);
         break;
-    case AS_Year:
-        qSort(songs.begin(), songs.end(), songsSortYrAlAr);
-        break;
-    case AS_Modified:
-        qSort(songs.begin(), songs.end(), songsSortYrAlAr); // TODO!!!
-        break;
+//    case AS_Year:
+//        qSort(songs.begin(), songs.end(), songsSortYrAlAr);
+//        break;
+//    case AS_Modified:
+//        qSort(songs.begin(), songs.end(), songsSortModified);
+//        break;
     default:
         break;
     }

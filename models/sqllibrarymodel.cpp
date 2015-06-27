@@ -52,9 +52,25 @@ static QString parentData(const SqlLibraryModel::Item *i)
     return data;
 }
 
-const QLatin1String SqlLibraryModel::constGroupGenre("genre");
-const QLatin1String SqlLibraryModel::constGroupArtist("artist");
-const QLatin1String SqlLibraryModel::constGroupAlbum("album");
+SqlLibraryModel::Type SqlLibraryModel::toGrouping(const QString &str)
+{
+    for (int i=T_Genre; i<T_Track; ++i) {
+        if (groupingStr((Type)i)==str) {
+            return (Type)i;
+        }
+    }
+    return T_Artist;
+}
+
+QString SqlLibraryModel::groupingStr(Type m)
+{
+    switch(m) {
+    default:
+    case T_Artist: return "artist";
+    case T_Album:  return "album";
+    case T_Genre:  return "genre";
+    }
+}
 
 SqlLibraryModel::SqlLibraryModel(LibraryDb *d, QObject *p, Type top)
     : ActionModel(p)
@@ -122,17 +138,20 @@ void SqlLibraryModel::setAlbumAlbumSort(LibraryDb::AlbumSort s)
     }
 }
 
+static QLatin1String constGroupingKey("grouping");
 static QLatin1String constAlbumSortKey("albumSort");
 static QLatin1String constLibrarySortKey("librarySort");
 
 void SqlLibraryModel::load(Configuration &config)
 {
+    tl=toGrouping(config.get(constGroupingKey, groupingStr(tl)));
     albumSort=LibraryDb::toAlbumSort(config.get(constAlbumSortKey, LibraryDb::albumSortStr(albumSort)));
     librarySort=LibraryDb::toAlbumSort(config.get(constLibrarySortKey, LibraryDb::albumSortStr(librarySort)));
 }
 
 void SqlLibraryModel::save(Configuration &config)
 {
+    config.set(constGroupingKey, groupingStr(tl));
     config.set(constAlbumSortKey, LibraryDb::albumSortStr(albumSort));
     config.set(constLibrarySortKey, LibraryDb::albumSortStr(librarySort));
 }

@@ -99,8 +99,8 @@ public:
     {
         Album(const QString &n=QString(), const QString &i=QString(), const QString &s=QString(),
               const QString &a=QString(), const QString &as=QString(),
-              int y=0, int tc=0, int d=0)
-            : name(n), id(i), sort(s), artist(a), artistSort(as), year(y), trackCount(tc), duration(d) { }
+              int y=0, int tc=0, int d=0, int lm=0)
+            : name(n), id(i), sort(s), artist(a), artistSort(as), year(y), trackCount(tc), duration(d), lastModified(lm) { }
         QString name;
         QString id;
         QString sort;
@@ -109,6 +109,7 @@ public:
         int year;
         int trackCount;
         int duration;
+        int lastModified;
     };
 
     LibraryDb(QObject *p, const QString &name, int idx=0);

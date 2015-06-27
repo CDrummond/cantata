@@ -45,14 +45,18 @@ public:
 
     static const QLatin1String constFileExt;
     static const QLatin1String constNullGenre;
-    static const QLatin1String constArtistAlbumsSortYear;
-    static const QLatin1String constArtistAlbumsSortName;
-    static const QLatin1String constAlbumsSortAlArYr;
-    static const QLatin1String constAlbumsSortAlYrAr;
-    static const QLatin1String constAlbumsSortArAlYr;
-    static const QLatin1String constAlbumsSortArYrAl;
-    static const QLatin1String constAlbumsSortYrAlAr;
-    static const QLatin1String constAlbumsSortYrArAl;
+
+    enum AlbumSort {
+        AS_Album,
+        AS_Artist,
+        AS_Year,
+        AS_Modified,
+
+        AS_Count
+    };
+
+    static AlbumSort toAlbumSort(const QString &str);
+    static QString albumSortStr(AlbumSort m);
 
     enum Indexes {
         Idx_Genre = 0x01
@@ -116,8 +120,8 @@ public:
     void insertSong(const Song &s);
     QList<Genre> getGenres();
     QList<Artist> getArtists(const QString &genre=QString());
-    QList<Album> getAlbums(const QString &artistId=QString(), const QString &genre=QString(), const QString &sort=QString());
-    QList<Song> getTracks(const QString &artistId, const QString &albumId, const QString &genre=QString(), const QString &sort=QString(), bool useFilter=true);
+    QList<Album> getAlbums(const QString &artistId=QString(), const QString &genre=QString(), AlbumSort sort=AS_Year);
+    QList<Song> getTracks(const QString &artistId, const QString &albumId, const QString &genre=QString(), AlbumSort sort=AS_Year, bool useFilter=true);
     #ifndef CANTATA_WEB
     QList<Song> songs(const QStringList &files, bool allowPlaylists=false) const;
     QList<Album> getAlbumsWithArtist(const QString &artist);

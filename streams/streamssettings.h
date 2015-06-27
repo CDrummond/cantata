@@ -25,11 +25,11 @@
 #define STREAMS_SETTINGS_H
 
 #include "ui_streamssettings.h"
-
+#include "support/dialog.h"
 class QListWidgetItem;
 class StreamProviderListDialog;
 
-class StreamsSettings : public QWidget, private Ui::StreamsSettings
+class StreamsSettings : public Dialog, private Ui::StreamsSettings
 {
     Q_OBJECT
 
@@ -40,15 +40,18 @@ public:
     void load();
     void save();
 
+public Q_SLOTS:
+    void raiseWindow();
+
 private Q_SLOTS:
     void currentCategoryChanged(int row);
     void installFromFile();
     void installFromWeb();
-    void remove();
-    void configure();
-    void raiseWindow();
 
 private:
+    void slotButtonClicked(int button);
+    void remove();
+    void configure();
     bool install(const QString &fileName, const QString &name, bool showErrors=true);
     QListWidgetItem * get(const QString &name);
 

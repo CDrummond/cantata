@@ -25,6 +25,7 @@
 #include "models/streamsmodel.h"
 #include "streamproviderlistdialog.h"
 #include "widgets/basicitemdelegate.h"
+#include "widgets/icons.h"
 #include "support/icon.h"
 #include "support/localize.h"
 #include "tar.h"
@@ -63,25 +64,31 @@ static bool removeDir(const QString &d, const QStringList &types)
 }
 
 StreamsSettings::StreamsSettings(QWidget *p)
-    : QWidget(p)
+    : Dialog(p, "StreamsDialog", QSize(400, 500))
     , providerDialog(0)
 {
-    setupUi(this);
+    setCaption(i18n("Configure Streams"));
+    QWidget *mw=new QWidget(this);
+    setupUi(mw);
+    setMainWidget(mw);
     categories->setItemDelegate(new BasicItemDelegate(categories));
     categories->setSortingEnabled(true);
     int iSize=Icon::stdSize(QApplication::fontMetrics().height()*1.25);
     QMenu *installMenu=new QMenu(this);
     QAction *installFromFileAct=installMenu->addAction(i18n("From File..."));
     QAction *installFromWebAct=installMenu->addAction(i18n("Download..."));
-    installButton->setMenu(installMenu);
     categories->setIconSize(QSize(iSize, iSize));
     connect(categories, SIGNAL(currentRowChanged(int)), SLOT(currentCategoryChanged(int)));
     connect(installFromFileAct, SIGNAL(triggered()), this, SLOT(installFromFile()));
     connect(installFromWebAct, SIGNAL(triggered()), this, SLOT(installFromWeb()));
-    connect(removeButton, SIGNAL(clicked()), this, SLOT(remove()));
-    connect(configureButton, SIGNAL(clicked()), this, SLOT(configure()));
-    removeButton->setEnabled(false);
-    configureButton->setEnabled(false);
+
+    setButtons(Close|User1|User2|User3);
+    setButtonGuiItem(User1, GuiItem(i18n("Configure Provider")));
+    setButtonGuiItem(User2, GuiItem(i18n("Install")));
+    setButtonGuiItem(User3, GuiItem(i18n("Remove")));
+    setButtonMenu(User2, installMenu, InstantPopup);
+    enableButton(User3, false);
+    enableButton(User1, false);
 }
 
 void StreamsSettings::load()
@@ -124,8 +131,8 @@ void StreamsSettings::currentCategoryChanged(int row)
         enableRemove=!item->data(BuiltInRole).toBool();
         enableConfigure=item->data(ConfigurableRole).toBool();
     }
-    removeButton->setEnabled(enableRemove);
-    configureButton->setEnabled(enableConfigure);
+    enableButton(User3, enableRemove);
+    enableButton(User1, enableConfigure);
 }
 
 void StreamsSettings::installFromFile()
@@ -261,7 +268,7 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
     item->setCheckState(Qt::Checked);
     item->setData(KeyRole, cat->configName);
     item->setData(BuiltInRole, false);
-    item->setData(ConfigurableRole, cat->canConfigure());
+    item->setData(ConfigurableRole, cat->isDi());
     item->setIcon(icn);
     return true;
 }
@@ -305,11 +312,28 @@ void StreamsSettings::configure()
     DigitallyImportedSettings(this).show();
 }
 
+void StreamsSettings::slotButtonClicked(int button)
+{
+    switch (button) {
+    case User1:
+        configure();
+        break;
+    case User3:
+        remove();
+        break;
+    case Close:
+        reject();
+        // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
+        Dialog::slotButtonClicked(button);
+        break;
+    default:
+        break;
+    }
+}
+
 void StreamsSettings::raiseWindow()
 {
-    #ifdef Q_OS_MAC
     Utils::raiseWindow(topLevelWidget());
-    #endif
 }
 
 QListWidgetItem *  StreamsSettings::get(const QString &name)

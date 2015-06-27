@@ -936,7 +936,6 @@ MainWindow::~MainWindow()
 //    playlistsPage->saveConfig();
     context->saveConfig();
     StreamsModel::self()->save();
-    searchPage->saveConfig();
     nowPlaying->saveConfig();
     Settings::self()->saveForceSingleClick(TreeView::getForceSingleClick());
     Settings::StartupState startupState=Settings::self()->startupState();
@@ -1414,21 +1413,12 @@ void MainWindow::readSettings()
     CurrentCover::self()->setEnabled(Settings::self()->showPopups() || 0!=Settings::self()->playQueueBackground() || Settings::self()->showCoverWidget());
     #endif
     checkMpdDir();
-    MpdLibraryModel::self()->readSettings();
     Covers::self()->readConfig();
     HttpServer::self()->readConfig();
     #ifdef ENABLE_DEVICES_SUPPORT
     StdActions::self()->deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
     Song::setComposerGenres(Settings::self()->composerGenres());
-    libraryPage->setView(Settings::self()->libraryView());
-    playlistsPage->setView(Settings::self()->playlistsView());
-    onlinePage->setView(Settings::self()->onlineView());
-    folderPage->setView(Settings::self()->folderView());
-    #ifdef ENABLE_DEVICES_SUPPORT
-    devicesPage->setView(Settings::self()->devicesView());
-    #endif
-    searchPage->setView(Settings::self()->searchView());
     trayItem->setup();
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
     updateWindowTitle();

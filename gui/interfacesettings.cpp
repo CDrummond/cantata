@@ -53,39 +53,11 @@
     w->deleteLater(); \
     w=0;
 
-static void addLibraryGrouping(QComboBox *box)
-{
-    box->addItem(i18n("Genre"), SqlLibraryModel::constGroupGenre);
-    box->addItem(i18n("Artist"), SqlLibraryModel::constGroupArtist);
-    box->addItem(i18n("Album"), SqlLibraryModel::constGroupAlbum);
-}
-
-static void addAlbumSorts(QComboBox *box, bool albumsOnly)
-{
-    box->clear();
-    if (albumsOnly) {
-        box->addItem(i18n("Album, Artist, Year"), LibraryDb::constAlbumsSortAlArYr);
-        box->addItem(i18n("Album, Year, Artist"), LibraryDb::constAlbumsSortAlYrAr);
-        box->addItem(i18n("Artist, Album, Year"), LibraryDb::constAlbumsSortArAlYr);
-        box->addItem(i18n("Artist, Year, Album"), LibraryDb::constAlbumsSortArYrAl);
-        box->addItem(i18n("Year, Album, Artist"), LibraryDb::constAlbumsSortYrAlAr);
-        box->addItem(i18n("Year, Artist, Album"), LibraryDb::constAlbumsSortYrArAl);
-    } else {
-        box->addItem(i18n("Name"), LibraryDb::constArtistAlbumsSortName);
-        box->addItem(i18n("Year"), LibraryDb::constArtistAlbumsSortYear);
-    }
-}
-
 static QString viewTypeString(ItemView::Mode mode)
 {
     switch (mode) {
     default:
-    case ItemView::Mode_BasicTree:    return i18n("Basic Tree (No Icons)");
-    case ItemView::Mode_SimpleTree:   return i18n("Simple Tree");
-    case ItemView::Mode_DetailedTree: return i18n("Detailed Tree");
     case ItemView::Mode_GroupedTree:  return i18n("Grouped Albums");
-    case ItemView::Mode_List:         return i18n("List");
-    case ItemView::Mode_IconTop:      return i18n("Grid");
     case ItemView::Mode_Table:        return i18n("Table");
     }
 }
@@ -101,16 +73,6 @@ static void selectEntry(QComboBox *box, int v)
 {
     for (int i=1; i<box->count(); ++i) {
         if (box->itemData(i).toInt()==v) {
-            box->setCurrentIndex(i);
-            return;
-        }
-    }
-}
-
-static void selectEntry(QComboBox *box, const QString &v)
-{
-    for (int i=1; i<box->count(); ++i) {
-        if (box->itemData(i).toString()==v) {
             box->setCurrentIndex(i);
             return;
         }
@@ -158,26 +120,15 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #endif // Q_MAC_OS
 
     setupUi(this);
-    QList<ItemView::Mode> standardViews=QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
-                                                                << ItemView::Mode_DetailedTree << ItemView::Mode_List;
-    addViewTypes(libraryView, QList<ItemView::Mode>() << standardViews << ItemView::Mode_IconTop);
-    addViewTypes(folderView, standardViews);
-    addViewTypes(playlistsView, QList<ItemView::Mode>() << standardViews << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
-    addViewTypes(searchView, QList<ItemView::Mode>() << ItemView::Mode_List << ItemView::Mode_Table);
     addViewTypes(playQueueView, QList<ItemView::Mode>() << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
-
-    addLibraryGrouping(libraryGrouping);
 
     addView(i18n("Play Queue"), QLatin1String("PlayQueuePage"));
     addView(i18n("Library"), QLatin1String("LibraryPage"));
     addView(i18n("Folders"), QLatin1String("FolderPage"));
     addView(i18n("Playlists"), QLatin1String("PlaylistsPage"));
     addView(i18n("Dynamic Playlists"), QLatin1String("DynamicPage"));
-    addViewTypes(streamsView, standardViews);
-    addViewTypes(onlineView, standardViews);
     addView(i18n("Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts"), QLatin1String("OnlineServicesPage"));
     #ifdef ENABLE_DEVICES_SUPPORT
-    addViewTypes(devicesView, standardViews);
     addView(i18n("Devices - UMS, MTP (e.g. Android), and AudioCDs"), QLatin1String("DevicesPage"));
     #else
     REMOVE(devicesView)
@@ -186,9 +137,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #endif
     addView(i18n("Search (via MPD)"), QLatin1String("SearchPage"));
     addView(i18n("Info - Current song information (artist, album, and lyrics)"), QLatin1String("ContextPage"));
-
-    connect(libraryView, SIGNAL(currentIndexChanged(int)), SLOT(libraryViewChanged()));
-    connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playlistsViewChanged()));
     connect(playQueueView, SIGNAL(currentIndexChanged(int)), SLOT(playQueueViewChanged()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
     #ifdef ENABLE_TOUCH_SUPPORT
@@ -261,45 +209,17 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     REMOVE(retinaSupport)
     REMOVE(retinaSupportNoteLabel)
     #endif
-
-    // If we are on a display less than 800 pixels tall (e.g. a netbook), then re-arrange
-    // the view settings to allow dialog to shrink more...
-    if (Utils::limitedHeight(this)) {
-        viewsLayout->removeWidget(otherViewGroupBox);
-        viewsLayout->addWidget(otherViewGroupBox, 0, 1, 3, 1);
-        viewsLayout->addItem(new QSpacerItem(0, 2, QSizePolicy::Expanding, QSizePolicy::Minimum), 0, 2, 1, 1);
-        styleLayout->removeWidget(sbIconsOnly);
-        styleLayout->removeWidget(sbAutoHide);
-        QVBoxLayout *sbOther = new QVBoxLayout();
-        sbOther->addWidget(sbIconsOnly);
-        sbOther->addWidget(sbAutoHide);
-        sbLayout->addItem(new QSpacerItem(Utils::layoutSpacing(this)*8, 2, QSizePolicy::Fixed, QSizePolicy::Fixed));
-        sbLayout->addLayout(sbOther);
-        sbLayout->addItem(new QSpacerItem(0, 2, QSizePolicy::Expanding, QSizePolicy::Minimum));
-    }
-    connect(libraryGrouping, SIGNAL(currentIndexChanged(int)), SLOT(libraryGroupingChanged()));
     composerGenres->setToolTip(composerGenresLabel->toolTip());
     singleTracksFolder->setToolTip(singleTracksFolderLabel->toolTip());
 }
 
 void InterfaceSettings::load()
 {
-    libraryArtistImage->setChecked(Settings::self()->libraryArtistImage());
-    selectEntry(libraryView, Settings::self()->libraryView());
-    selectEntry(libraryGrouping, Settings::self()->libraryGrouping());
-    libraryGroupingChanged();
-    selectEntry(folderView, Settings::self()->folderView());
-    selectEntry(playlistsView, Settings::self()->playlistsView());
-    playListsStartClosed->setChecked(Settings::self()->playListsStartClosed());
-    selectEntry(streamsView, Settings::self()->streamsView());
-    selectEntry(onlineView, Settings::self()->onlineView());
     composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(Song::constGenreSep)));
     singleTracksFolder->setText(Settings::self()->singleTracksFolder());
     #ifdef ENABLE_DEVICES_SUPPORT
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
-    selectEntry(devicesView, Settings::self()->devicesView());
     #endif
-    selectEntry(searchView, Settings::self()->searchView());
 
     selectEntry(playQueueView, Settings::self()->playQueueView());
     playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
@@ -316,7 +236,6 @@ void InterfaceSettings::load()
 
     playQueueConfirmClear->setChecked(Settings::self()->playQueueConfirmClear());
     playQueueSearch->setChecked(Settings::self()->playQueueSearch());
-    playlistsViewChanged();
     playQueueViewChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
     infoTooltips->setChecked(Settings::self()->infoTooltips());
@@ -365,31 +284,15 @@ void InterfaceSettings::load()
     setPlayQueueBackgroundOpacityLabel();
     setPlayQueueBackgroundBlurLabel();
     enablePlayQueueBackgroundOptions();
-    libraryViewChanged();
 }
 
 void InterfaceSettings::save()
 {
-    Settings::self()->saveLibraryArtistImage(libraryArtistImage->isChecked());
-    Settings::self()->saveLibraryView(getValue(libraryView));
-    Settings::self()->saveLibraryGrouping(getStrValue(libraryGrouping));
-    if (SqlLibraryModel::constGroupAlbum==Settings::self()->libraryGrouping()) {
-        Settings::self()->saveLibraryAlbumSort(getStrValue(librarySort));
-    } else {
-        Settings::self()->saveLibrarySort(getStrValue(librarySort));
-    }
-    Settings::self()->saveFolderView(getValue(folderView));
-    Settings::self()->savePlaylistsView(getValue(playlistsView));
-    Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());
-    Settings::self()->saveStreamsView(getValue(streamsView));
-    Settings::self()->saveOnlineView(getValue(onlineView));
     Settings::self()->saveComposerGenres(composerGenres->text().trimmed().split(Song::constGenreSep).toSet());
     Settings::self()->saveSingleTracksFolder(singleTracksFolder->text().trimmed());
     #ifdef ENABLE_DEVICES_SUPPORT
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
-    Settings::self()->saveDevicesView(getValue(devicesView));
     #endif
-    Settings::self()->saveSearchView(getValue(searchView));
     Settings::self()->savePlayQueueView(getValue(playQueueView));
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
     Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());
@@ -537,38 +440,11 @@ void InterfaceSettings::addView(const QString &v, const QString &prop)
     item->setData(Qt::UserRole, prop);
 }
 
-void InterfaceSettings::libraryGroupingChanged()
-{
-    addAlbumSorts(librarySort, SqlLibraryModel::constGroupAlbum==getStrValue(libraryGrouping));
-    selectEntry(librarySort, SqlLibraryModel::constGroupAlbum==Settings::self()->libraryGrouping()
-                    ? Settings::self()->libraryAlbumSort()
-                    : Settings::self()->librarySort());
-}
-
-void InterfaceSettings::libraryViewChanged()
-{
-    int vt=getValue(libraryView);
-    bool isIcon=ItemView::Mode_IconTop==vt;
-    bool isSimpleTree=ItemView::Mode_SimpleTree==vt || ItemView::Mode_BasicTree==vt;
-    libraryArtistImage->setEnabled(!isIcon && !isSimpleTree);
-    if (isIcon) {
-        libraryArtistImage->setChecked(true);
-    } else if (isSimpleTree) {
-        libraryArtistImage->setChecked(false);
-    }
-}
-
 void InterfaceSettings::playQueueViewChanged()
 {
     bool grouped=ItemView::Mode_GroupedTree==getValue(playQueueView);
     playQueueAutoExpand->setEnabled(grouped);
     playQueueStartClosed->setEnabled(grouped);
-}
-
-void InterfaceSettings::playlistsViewChanged()
-{
-    bool grouped=ItemView::Mode_GroupedTree==getValue(playlistsView);
-    playListsStartClosed->setEnabled(grouped);
 }
 
 void InterfaceSettings::forceSingleClickChanged()

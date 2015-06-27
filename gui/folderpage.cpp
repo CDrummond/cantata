@@ -29,6 +29,7 @@
 #include "support/action.h"
 #include "support/utils.h"
 #include "models/mpdlibrarymodel.h"
+#include "widgets/menubutton.h"
 #include "stdactions.h"
 #include <QDesktopServices>
 #include <QUrl>
@@ -69,13 +70,19 @@ FolderPage::FolderPage(QWidget *p)
     connect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(updated()));
     connect(MPDConnection::self(), SIGNAL(updatingDatabase()), view, SLOT(updating()));
     connect(MPDConnection::self(), SIGNAL(updatedDatabase()), view, SLOT(updated()));
-    view->load(metaObject()->className());
-    init(ReplacePlayQueue|AddToPlayQueue);
+    Configuration config(metaObject()->className());
+    view->setMode(ItemView::Mode_DetailedTree);
+    view->load(config);
+    MenuButton *menu=new MenuButton(this);
+    menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
+                                                               << ItemView::Mode_DetailedTree << ItemView::Mode_List));
+    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu);
 }
 
 FolderPage::~FolderPage()
 {
-    view->save(metaObject()->className());
+    Configuration config(metaObject()->className());
+    view->save(config);
 }
 
 void FolderPage::setEnabled(bool e)

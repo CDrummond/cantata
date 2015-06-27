@@ -59,9 +59,20 @@ Q_SIGNALS:
 public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);
 
+private Q_SLOTS:
+    void groupByChanged();
+    void libraryAlbumSortChanged();
+    void albumAlbumSortChanged();
+    void showArtistImagesChanged(bool u);
+
 private:
     void doSearch();
     void controlActions();
+
+private:
+    QAction *showArtistImagesAction;
+    QAction *libraryAlbumSortAction;
+    QAction *albumAlbumSortAction;
 };
 
 #endif

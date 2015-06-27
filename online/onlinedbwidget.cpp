@@ -23,23 +23,38 @@
 
 #include "onlinedbwidget.h"
 #include "widgets/itemview.h"
+#include "widgets/menubutton.h"
+#include "widgets/icons.h"
 #include "support/action.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
+#include "support/configuration.h"
 #include <QTimer>
 
 OnlineDbWidget::OnlineDbWidget(OnlineDbService *s, QWidget *p)
     : SinglePageWidget(p)
+    , configGroup(s->name())
     , srv(s)
 {
     view->setModel(s);
-    init();
     view->alwaysShowHeader();
+    Configuration config(configGroup);
+    view->setMode(ItemView::Mode_DetailedTree);
+    view->load(config);
+    MenuButton *menu=new MenuButton(this);
+    menu->addAction(createViewMenu(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
+                                                           << ItemView::Mode_DetailedTree << ItemView::Mode_List));
+    Action *configureAction=new Action(Icons::self()->configureIcon, i18n("Configure"), this);
+    connect(configureAction, SIGNAL(triggered()), SLOT(configure()));
+    menu->addAction(configureAction);
+    init(ReplacePlayQueue|AddToPlayQueue|Refresh, QList<QWidget *>() << menu);
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
 }
 
 OnlineDbWidget::~OnlineDbWidget()
 {
+    Configuration config(configGroup);
+    view->save(config);
 }
 
 QStringList OnlineDbWidget::selectedFiles(bool allowPlaylists) const

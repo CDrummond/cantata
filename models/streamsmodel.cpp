@@ -537,7 +537,7 @@ StreamsModel::StreamsModel(QObject *parent)
     loadInstalledProviders();
     addBookmarkAction = new Action(Icon("bookmark-new"), i18n("Bookmark Category"), this);
     addToFavouritesAction = new Action(favouritesIcon(), i18n("Add Stream To Favorites"), this);
-    configureAction = new Action(Icons::self()->configureIcon, i18n("Configure Streams"), this);
+    configureDiAction = new Action(Icons::self()->configureIcon, i18n("Configure Digitally Imported"), this);
     reloadAction = new Action(Icon("view-refresh"), i18n("Reload"), this);
 
     #ifdef UNITY_MENU_HACK
@@ -692,8 +692,8 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         QList<Action *> actions;
         if (item->isCategory()){
             const CategoryItem *cat=static_cast<const CategoryItem *>(item);
-            if (cat->canConfigure()) {
-                actions << configureAction;
+            if (cat->isDi()) {
+                actions << configureDiAction;
             }
             if (cat->canReload()) {
                 actions << reloadAction;
@@ -1007,12 +1007,12 @@ QList<StreamsModel::Category> StreamsModel::getCategories() const
     QList<StreamsModel::Category> categories;
     foreach (Item *i, hiddenCategories) {
         categories.append(Category(i->name, static_cast<CategoryItem *>(i)->icon, static_cast<CategoryItem *>(i)->configName,
-                                   static_cast<CategoryItem *>(i)->isBuiltIn(), true, static_cast<CategoryItem *>(i)->canConfigure()));
+                                   static_cast<CategoryItem *>(i)->isBuiltIn(), true, static_cast<CategoryItem *>(i)->isDi()));
     }
     foreach (Item *i, root->children) {
         if (i!=favourites) {
             categories.append(Category(i->name, static_cast<CategoryItem *>(i)->icon, static_cast<CategoryItem *>(i)->configName,
-                                       static_cast<CategoryItem *>(i)->isBuiltIn(), false, static_cast<CategoryItem *>(i)->canConfigure()));
+                                       static_cast<CategoryItem *>(i)->isBuiltIn(), false, static_cast<CategoryItem *>(i)->isDi()));
         }
     }
     return categories;

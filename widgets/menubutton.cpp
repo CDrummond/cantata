@@ -59,6 +59,13 @@ void MenuButton::setAlignedMenu(QMenu *m)
     m->installEventFilter(this);
 }
 
+void MenuButton::addSeparator()
+{
+    QAction *sep=new QAction(this);
+    sep->setSeparator(true);
+    addAction(sep);
+}
+
 bool MenuButton::eventFilter(QObject *o, QEvent *e)
 {
     if (QEvent::Show==e->type() && qobject_cast<QMenu *>(o)) {

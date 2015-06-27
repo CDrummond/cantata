@@ -38,9 +38,6 @@ public:
     StoredPlaylistsPage(QWidget *p);
     virtual ~StoredPlaylistsPage();
 
-    void saveConfig();
-    void setStartClosed(bool sc);
-    bool isStartClosed();
     void updateRows();
     void clear();
     //QStringList selectedFiles() const;
@@ -74,6 +71,7 @@ private Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &index);
     void updated(const QModelIndex &index);
     void headerClicked(int level);
+    void setStartClosed(bool sc);
 
 private:
     void doSearch();
@@ -82,6 +80,7 @@ private:
 private:
     Action *renamePlaylistAction;
     Action *removeDuplicatesAction;
+    Action *intitiallyCollapseAction;
     PlaylistsProxyModel proxy;
 };
 

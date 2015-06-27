@@ -25,9 +25,10 @@
 #include "stretchheaderview.h"
 #include "basicitemdelegate.h"
 #include "ratingwidget.h"
-#include "gui/settings.h"
 #include "support/localize.h"
+#include "support/configuration.h"
 #include "models/roles.h"
+#include "mpd-interface/song.h"
 #include <QMenu>
 #include <QAction>
 #include <QActionGroup>
@@ -79,10 +80,10 @@ public:
     mutable RatingPainter *ratingPainter;
 };
 
-TableView::TableView(const QString &cfgName, QWidget *parent, bool menuAlwaysAllowed)
+TableView::TableView(const QString &cfgGroup, QWidget *parent, bool menuAlwaysAllowed)
     : TreeView(parent, menuAlwaysAllowed)
     , menu(0)
-    , configName(cfgName)
+    , configGroup(cfgGroup)
     , menuIsForCol(-1)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -110,6 +111,8 @@ void TableView::setModel(QAbstractItemModel *m)
     }
     TreeView::setModel(m);
 }
+
+static const QLatin1String constHeaderKey("tableHeader");
 
 void TableView::initHeader()
 {
@@ -142,7 +145,8 @@ void TableView::initHeader()
     }
 
     //Restore state
-    QByteArray state=Settings::self()->headerState(configName);
+    Configuration config(configGroup);
+    QByteArray state=config.get(constHeaderKey, QByteArray());
     if (state.isEmpty()) {
         foreach (int i, initiallyHidden) {
             hdr->HideSection(i);
@@ -189,7 +193,7 @@ void TableView::initHeader()
 void TableView::saveHeader()
 {
     if (menu && model()) {
-        Settings::self()->saveHeaderState(configName, qobject_cast<StretchHeaderView *>(header())->SaveState());
+        Configuration(configGroup).set(constHeaderKey, qobject_cast<StretchHeaderView *>(header())->SaveState());
     }
 }
 

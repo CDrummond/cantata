@@ -73,7 +73,7 @@ void OnlineXmlParser::doParsing(NetworkJob *job)
 }
 
 OnlineDbService::OnlineDbService(LibraryDb *d, QObject *p)
-    : SqlLibraryModel(d, p)
+    : SqlLibraryModel(d, p, T_Genre)
     , lastPc(-1)
     , job(0)
 {

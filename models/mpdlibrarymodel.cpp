@@ -23,6 +23,7 @@
 
 #include "mpdlibrarymodel.h"
 #include "support/globalstatic.h"
+#include "support/configuration.h"
 #include "db/mpdlibrarydb.h"
 #include "gui/settings.h"
 #include "gui/covers.h"
@@ -33,8 +34,8 @@ GLOBAL_STATIC(MpdLibraryModel, instance)
 
 MpdLibraryModel::MpdLibraryModel()
     : SqlLibraryModel(new MpdLibraryDb(0), 0)
+    , showArtistImages(false)
 {
-    readSettings();
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), this, SLOT(cover(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), this, SLOT(coverUpdated(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(artistImage(Song,QImage,QString)));
@@ -63,6 +64,9 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
             v.setValue<Song>(item->getSong());
             break;
         case T_Artist:
+            if (!showArtistImages) {
+                return QVariant();
+            }
             if (item->getSong().isEmpty()) {
                 Song song=static_cast<MpdLibraryDb *>(db)->getCoverSong(item->getId());
                 if (song.useComposer()) {
@@ -86,9 +90,44 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
     return SqlLibraryModel::data(index, role);
 }
 
-void MpdLibraryModel::readSettings()
+void MpdLibraryModel::setUseArtistImages(bool u)
 {
-    settings(Settings::self()->libraryGrouping(), Settings::self()->librarySort(), Settings::self()->libraryAlbumSort());
+    if (u!=showArtistImages) {
+        showArtistImages=u;
+        switch(topLevel()) {
+        case T_Genre: {
+            foreach (const Item *g, root->getChildren()) {
+                const CollectionItem *genre=static_cast<const CollectionItem *>(g);
+                if (genre->getChildCount()) {
+                    QModelIndex idx=index(genre->getRow(), 0, QModelIndex());
+                    emit dataChanged(index(0, 0, idx), index(genre->getChildCount()-1, 0, idx));
+                }
+            }
+            break;
+        }
+        case T_Artist:
+            if (root->getChildCount()) {
+                emit dataChanged(index(0, 0, QModelIndex()), index(root->getChildCount()-1, 0, QModelIndex()));
+            }
+            break;
+        default:
+            break;
+        }
+    }
+}
+
+static QLatin1String constUseArtistImagesKey("artistImages");
+
+void MpdLibraryModel::load(Configuration &config)
+{
+    showArtistImages=config.get(constUseArtistImagesKey, showArtistImages);
+    SqlLibraryModel::load(config);
+}
+
+void MpdLibraryModel::save(Configuration &config)
+{
+    config.set(constUseArtistImagesKey, showArtistImages);
+    SqlLibraryModel::save(config);
 }
 
 void MpdLibraryModel::cover(const Song &song, const QImage &img, const QString &file)
@@ -145,7 +184,7 @@ void MpdLibraryModel::coverUpdated(const Song &song, const QImage &img, const QS
 
 void MpdLibraryModel::artistImage(const Song &song, const QImage &img, const QString &file)
 {
-    if (file.isEmpty() || img.isNull() || T_Album==topLevel()) {
+    if (!showArtistImages || file.isEmpty() || img.isNull() || T_Album==topLevel()) {
         return;
     }
     switch(topLevel()) {

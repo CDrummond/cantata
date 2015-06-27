@@ -36,6 +36,7 @@ class Action;
 class QAction;
 class NetworkReply;
 class ServiceStatusLabel;
+class StreamsSettings;
 
 class StreamsBrowsePage : public SinglePageWidget
 {
@@ -60,7 +61,8 @@ public Q_SLOTS:
     void controlActions();
 
 private Q_SLOTS:
-    void configureStreams();
+    void configure();
+    void configureDi();
     void diSettings();
     void importXml();
     void exportXml();
@@ -78,7 +80,6 @@ private Q_SLOTS:
 
 private:
     void doSearch();
-    void configure();
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
 
 private:
@@ -90,6 +91,7 @@ private:
     Action *searchAction;
     StreamsProxyModel proxy;
     QSet<NetworkJob *> resolveJobs;
+    StreamsSettings *settings;
 };
 
 class StreamSearchPage : public SinglePageWidget

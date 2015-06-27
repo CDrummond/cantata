@@ -31,6 +31,7 @@
 #include "stdactions.h"
 #include "support/utils.h"
 #include "models/mpdlibrarymodel.h"
+#include "widgets/menubutton.h"
 
 LibraryPage::LibraryPage(QWidget *p)
     : SinglePageWidget(p)
@@ -62,13 +63,48 @@ LibraryPage::LibraryPage(QWidget *p)
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     view->setModel(MpdLibraryModel::self());
-    view->load(metaObject()->className());
-    init(ReplacePlayQueue|AddToPlayQueue);
+
+    // Settings...
+    Configuration config(metaObject()->className());
+    view->setMode(ItemView::Mode_DetailedTree);
+    view->load(config);
+    MpdLibraryModel::self()->load(config);
+
+    libraryAlbumSortAction=createMenuGroup(i18n("Sort Albums"), QList<MenuItem>() << MenuItem(i18n("Name"), LibraryDb::AS_Album)
+                                                                                  << MenuItem(i18n("Year"), LibraryDb::AS_Year),
+                                           MpdLibraryModel::self()->libraryAlbumSort(), this, SLOT(libraryAlbumSortChanged()));
+    albumAlbumSortAction=createMenuGroup(i18n("Sort Albums"), QList<MenuItem>() << MenuItem(i18n("Name"), LibraryDb::AS_Album)
+                                                                                << MenuItem(i18n("Artist"), LibraryDb::AS_Artist)
+                                                                                << MenuItem(i18n("Year"), LibraryDb::AS_Year)
+                                                                                << MenuItem(i18n("Modified Date"), LibraryDb::AS_Modified),
+                                         MpdLibraryModel::self()->albumAlbumSort(), this, SLOT(albumAlbumSortChanged()));
+
+    MenuButton *menu=new MenuButton(this);
+    menu->addAction(createViewMenu(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
+                                                           << ItemView::Mode_DetailedTree << ItemView::Mode_List
+                                                           << ItemView::Mode_IconTop));
+    menu->addAction(createMenuGroup(i18n("Group By"), QList<MenuItem>() << MenuItem(i18n("Genre"), SqlLibraryModel::T_Genre)
+                                                                        << MenuItem(i18n("Artist"), SqlLibraryModel::T_Artist)
+                                                                        << MenuItem(i18n("Album"), SqlLibraryModel::T_Album),
+                                    MpdLibraryModel::self()->topLevel(), this, SLOT(groupByChanged())));
+
+    menu->addAction(libraryAlbumSortAction);
+    menu->addAction(albumAlbumSortAction);
+    showArtistImagesAction=new QAction(i18n("Show Artist Images"), this);
+    showArtistImagesAction->setCheckable(true);
+    showArtistImagesAction->setChecked(MpdLibraryModel::self()->useArtistImages());
+    menu->addAction(showArtistImagesAction);
+    connect(showArtistImagesAction, SIGNAL(toggled(bool)), this, SLOT(showArtistImagesChanged(bool)));
+    albumAlbumSortAction->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
+    libraryAlbumSortAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
+    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu);
 }
 
 LibraryPage::~LibraryPage()
 {
-    view->save(metaObject()->className());
+    Configuration config(metaObject()->className());
+    view->save(config);
+    MpdLibraryModel::self()->save(config);
 }
 
 void LibraryPage::clear()
@@ -225,6 +261,37 @@ void LibraryPage::itemDoubleClicked(const QModelIndex &)
     if (SqlLibraryModel::T_Track==item->getType()) {
         addSelectionToPlaylist();
     }
+}
+
+void LibraryPage::groupByChanged()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+    if (act) {
+        MpdLibraryModel::self()->setTopLevel((SqlLibraryModel::Type)act->property(constValProp).toInt());
+        albumAlbumSortAction->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
+        libraryAlbumSortAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
+    }
+}
+
+void LibraryPage::libraryAlbumSortChanged()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+    if (act) {
+        MpdLibraryModel::self()->setLibraryAlbumSort((LibraryDb::AlbumSort)act->property(constValProp).toInt());
+    }
+}
+
+void LibraryPage::albumAlbumSortChanged()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+    if (act) {
+        MpdLibraryModel::self()->setAlbumAlbumSort((LibraryDb::AlbumSort)act->property(constValProp).toInt());
+    }
+}
+
+void LibraryPage::showArtistImagesChanged(bool u)
+{
+    MpdLibraryModel::self()->setUseArtistImages(u);
 }
 
 void LibraryPage::doSearch()

@@ -72,18 +72,7 @@ public:
     bool storeLyricsInMpdDir();
     bool storeStreamsInMpdDir();
     bool storeBackdropsInMpdDir();
-    #ifndef ENABLE_UBUNTU
-    int libraryView();
-    int folderView();
-    int playlistsView();
-    int streamsView();
-    int onlineView();
-    #endif
-    bool libraryArtistImage();
-    QString libraryAlbumSort();
     int sidebar();
-    QString librarySort();
-    QString libraryGrouping();
     QSet<QString> composerGenres();
     QString singleTracksFolder();
     QStringList lyricProviders();
@@ -106,10 +95,6 @@ public:
     #ifdef ENABLE_DEVICES_SUPPORT
     bool overwriteSongs();
     bool showDeleteAction();
-    int devicesView();
-    #endif
-    #ifndef ENABLE_UBUNTU
-    int searchView();
     #endif
     int version();
     int stopFadeDuration();
@@ -196,18 +181,8 @@ public:
     void saveStoreCoversInMpdDir(bool v);
     void saveStoreLyricsInMpdDir(bool v);
     void saveStoreBackdropsInMpdDir(bool v);
-    #ifndef ENABLE_UBUNTU
-    void saveLibraryView(int v);
-    void saveFolderView(int v);
-    void savePlaylistsView(int v);
-    void saveStreamsView(int v);
-    void saveOnlineView(int v);
-    #endif
     void saveLibraryArtistImage(bool v);
-    void saveLibraryAlbumSort(const QString &v);
     void saveSidebar(int v);
-    void saveLibrarySort(const QString &v);
-    void saveLibraryGrouping(const QString &v);
     void saveComposerGenres(const QSet<QString> &v);
     void saveSingleTracksFolder(const QString &v);
     void saveLyricProviders(const QStringList &v);
@@ -230,10 +205,6 @@ public:
     #ifdef ENABLE_DEVICES_SUPPORT
     void saveOverwriteSongs(bool v);
     void saveShowDeleteAction(bool v);
-    void saveDevicesView(int v);
-    #endif
-    #ifndef ENABLE_UBUNTU
-    void saveSearchView(int v);
     #endif
     void saveStopFadeDuration(int v);
     void saveHttpAllocatedPort(int v);

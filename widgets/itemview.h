@@ -39,6 +39,7 @@ class MessageOverlay;
 class Icon;
 class TableView;
 class QMenu;
+class Configuration;
 
 class KeyEventHandler : public QObject
 {
@@ -91,14 +92,16 @@ public:
     static QString modeStr(Mode m);
     static void setup();
     static const QLatin1String constSearchActiveKey;
-    static QMenu *createViewMenu(QWidget *parent, QList<Mode> modes);
+    static const QLatin1String constViewModeKey;
+    static const QLatin1String constStartClosedKey;
+    static const QLatin1String constSearchCategoryKey;
 
     ItemView(QWidget *p=0);
     virtual ~ItemView();
 
     void alwaysShowHeader();
-    void load(const QString &group);
-    void save(const QString &group);
+    void load(Configuration &config);
+    void save(Configuration &config);
     void allowGroupedView();
     void allowTableView(TableView *v);
     void addAction(QAction *act);

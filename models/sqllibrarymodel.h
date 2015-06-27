@@ -37,11 +37,6 @@ class SqlLibraryModel : public ActionModel
     Q_OBJECT
 
 public:
-
-    static const QLatin1String constGroupGenre;
-    static const QLatin1String constGroupArtist;
-    static const QLatin1String constGroupAlbum;
-
     enum Type {
         T_Root,
         T_Genre,
@@ -49,6 +44,9 @@ public:
         T_Album,
         T_Track
     };
+
+    static Type toGrouping(const QString &str);
+    static QString groupingStr(Type m);
 
     class CollectionItem;
     class Item

@@ -108,6 +108,12 @@ void SearchPage::setView(int mode)
     model.setMultiColumn(ItemView::Mode_Table==mode);
 }
 
+void SearchPage::showEvent(QShowEvent *e)
+{
+    SinglePageWidget::showEvent(e);
+    view->focusSearch();
+}
+
 QStringList SearchPage::selectedFiles(bool allowPlaylists) const
 {
     QModelIndexList selected = view->selectedIndexes();

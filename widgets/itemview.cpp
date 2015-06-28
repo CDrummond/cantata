@@ -224,7 +224,8 @@ public:
             }
         }
         if (!pix) {
-            pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(detailedViewDecorationSize, detailedViewDecorationSize);
+            int size=iconMode ? gridCoverSize : detailedViewDecorationSize;
+            pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(size, size);
         }
 
         bool oneLine = childText.isEmpty();

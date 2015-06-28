@@ -28,6 +28,8 @@
 #include "widgets/singlepagewidget.h"
 #include "soundcloudservice.h"
 
+class SqueezedTextLabel;
+
 class SoundCloudWidget : public SinglePageWidget
 {
     Q_OBJECT
@@ -41,12 +43,14 @@ public:
 
 private Q_SLOTS:
     void headerClicked(int level);
+    void statsUpdated(int songs, quint32 time);
 
 private:
     void doSearch();
 
 private:
     SoundCloudService *srv;
+    SqueezedTextLabel *statsLabel;
 };
 
 #endif

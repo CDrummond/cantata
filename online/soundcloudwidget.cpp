@@ -26,18 +26,22 @@
 #include "support/action.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
+#include "gui/plurals.h"
 #include <QTimer>
 
 SoundCloudWidget::SoundCloudWidget(SoundCloudService *s, QWidget *p)
     : SinglePageWidget(p)
     , srv(s)
 {
+    statsLabel=new SqueezedTextLabel(this);
     view->setModel(s);
-    init(ReplacePlayQueue|AddToPlayQueue);
+    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << statsLabel);
     view->alwaysShowHeader();
     view->setPermanentSearch();
     view->setMode(ItemView::Mode_List);
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
+    connect(srv, SIGNAL(statsUpdated(int, quint32)), this, SLOT(statsUpdated(int, quint32)));
+    statsUpdated(0, 0);
 }
 
 SoundCloudWidget::~SoundCloudWidget()
@@ -73,6 +77,11 @@ void SoundCloudWidget::headerClicked(int level)
     if (0==level) {
         emit close();
     }
+}
+
+void SoundCloudWidget::statsUpdated(int songs, quint32 time)
+{
+    statsLabel->setText(0==songs ? i18n("No tracks found.") : Plurals::tracksWithDuration(songs, Utils::formatDuration(time)));
 }
 
 void SoundCloudWidget::doSearch()

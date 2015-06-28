@@ -223,7 +223,7 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
     case Cantata::Role_MainText:
         return song->title.isEmpty() ? song->file : song->trackAndTitleStr();
     case Cantata::Role_SubText:
-        return song->artist+QLatin1String(" - ")+song->displayAlbum();
+        return song->artist+QLatin1String(" - ")+song->displayAlbum()+QLatin1String(" - ")+Utils::formatTime(song->time);
     case Cantata::Role_ListImage:
         return true;
     case Cantata::Role_CoverSong: {

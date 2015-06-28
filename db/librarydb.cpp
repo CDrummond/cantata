@@ -986,14 +986,24 @@ void LibraryDb::clearSongs(bool startTransaction)
 
 void LibraryDb::createIndexes()
 {
+    QElapsedTimer idxTimer;
+    idxTimer.start();
     if (indexes&Idx_Genre) {
-        QSqlQuery(*db).exec("drop index songs_genre_idx");
+        QSqlQuery(*db).exec("create index songs_genre_idx on songs (genre, artistId)");
+        DBUG << "time to create genre idx" << idxTimer.elapsed();
+    }
+    if (indexes&Idx_AlbumDetails) {
+        QSqlQuery(*db).exec("create index songs_album_details_idx on songs (artistId, albumId)");
+        DBUG << "time to create album details idx" << idxTimer.elapsed();
     }
 }
 
 void LibraryDb::dropIndexes()
 {
     if (indexes&Idx_Genre) {
-        QSqlQuery(*db).exec("create index songs_genre_idx on songs (genre, artistId)");
+        QSqlQuery(*db).exec("drop index songs_genre_idx");
+    }
+    if (indexes&Idx_AlbumDetails) {
+        QSqlQuery(*db).exec("drop index songs_album_details_idx");
     }
 }

@@ -189,6 +189,9 @@ void SearchWidget::activate(const QString &text)
 
 void SearchWidget::close()
 {
+    if (!closeButton) {
+        return;
+    }
     bool wasActive=widgetIsActive;
     widgetIsActive=false;
     setVisible(false);

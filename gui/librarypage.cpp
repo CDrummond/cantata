@@ -25,11 +25,12 @@
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdstats.h"
 #include "covers.h"
-#include "support/localize.h"
-#include "support/messagebox.h"
 #include "settings.h"
 #include "stdactions.h"
 #include "support/utils.h"
+#include "support/localize.h"
+#include "support/messagebox.h"
+//#include "support/combobox.h"
 #include "models/mpdlibrarymodel.h"
 #include "widgets/menubutton.h"
 
@@ -64,12 +65,27 @@ LibraryPage::LibraryPage(QWidget *p)
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     view->setModel(MpdLibraryModel::self());
 
+//    groupCombo=new ComboBox(this);
+//    groupCombo->addItem(i18n("Genre"), SqlLibraryModel::T_Genre);
+//    groupCombo->addItem(i18n("Atists"), SqlLibraryModel::T_Artist);
+//    groupCombo->addItem(i18n("Albums"), SqlLibraryModel::T_Album);
+
     // Settings...
     Configuration config(metaObject()->className());
     view->setMode(ItemView::Mode_DetailedTree);
-    view->load(config);
     MpdLibraryModel::self()->load(config);
+//    for (int i=0; i<groupCombo->count(); ++i) {
+//        if (groupCombo->itemData(i).toInt()==MpdLibraryModel::self()->topLevel()) {
+//            groupCombo->setCurrentIndex(i);
+//            break;
+//        }
+//    }
 
+    config.beginGroup(SqlLibraryModel::groupingStr(MpdLibraryModel::self()->topLevel()));
+    view->load(config);
+
+    showArtistImagesAction=new QAction(i18n("Show Artist Images"), this);
+    showArtistImagesAction->setCheckable(true);
     libraryAlbumSortAction=createMenuGroup(i18n("Sort Albums"), QList<MenuItem>() << MenuItem(i18n("Name"), LibraryDb::AS_Album)
                                                                                   << MenuItem(i18n("Year"), LibraryDb::AS_Year),
                                            MpdLibraryModel::self()->libraryAlbumSort(), this, SLOT(libraryAlbumSortChanged()));
@@ -83,6 +99,7 @@ LibraryPage::LibraryPage(QWidget *p)
     menu->addAction(createViewMenu(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                                                            << ItemView::Mode_DetailedTree << ItemView::Mode_List
                                                            << ItemView::Mode_IconTop));
+
     menu->addAction(createMenuGroup(i18n("Group By"), QList<MenuItem>() << MenuItem(i18n("Genre"), SqlLibraryModel::T_Genre)
                                                                         << MenuItem(i18n("Artist"), SqlLibraryModel::T_Artist)
                                                                         << MenuItem(i18n("Album"), SqlLibraryModel::T_Album),
@@ -90,21 +107,22 @@ LibraryPage::LibraryPage(QWidget *p)
 
     menu->addAction(libraryAlbumSortAction);
     menu->addAction(albumAlbumSortAction);
-    showArtistImagesAction=new QAction(i18n("Show Artist Images"), this);
-    showArtistImagesAction->setCheckable(true);
     showArtistImagesAction->setChecked(MpdLibraryModel::self()->useArtistImages());
     menu->addAction(showArtistImagesAction);
     connect(showArtistImagesAction, SIGNAL(toggled(bool)), this, SLOT(showArtistImagesChanged(bool)));
     albumAlbumSortAction->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
     libraryAlbumSortAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
-    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu);
+    showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
+    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu/* << groupCombo*/);
+//    connect(groupCombo, SIGNAL(activated(int)), SLOT(groupByChanged()));
 }
 
 LibraryPage::~LibraryPage()
 {
     Configuration config(metaObject()->className());
-    view->save(config);
     MpdLibraryModel::self()->save(config);
+    config.beginGroup(SqlLibraryModel::groupingStr(MpdLibraryModel::self()->topLevel()));
+    view->save(config);
 }
 
 void LibraryPage::clear()
@@ -266,11 +284,27 @@ void LibraryPage::itemDoubleClicked(const QModelIndex &)
 void LibraryPage::groupByChanged()
 {
     QAction *act=qobject_cast<QAction *>(sender());
-    if (act) {
-        MpdLibraryModel::self()->setTopLevel((SqlLibraryModel::Type)act->property(constValProp).toInt());
-        albumAlbumSortAction->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
-        libraryAlbumSortAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
+    if (!act) {
+        return;
     }
+    int mode=act->property(constValProp).toInt();
+//    int mode=groupCombo->itemData(groupCombo->currentIndex()).toInt();
+
+    Configuration config(metaObject()->className());
+    config.beginGroup(SqlLibraryModel::groupingStr(MpdLibraryModel::self()->topLevel()));
+    view->save(config);
+
+    MpdLibraryModel::self()->setTopLevel((SqlLibraryModel::Type)mode);
+    albumAlbumSortAction->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
+    libraryAlbumSortAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
+    showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
+
+    config.endGroup();
+    config.beginGroup(SqlLibraryModel::groupingStr(MpdLibraryModel::self()->topLevel()));
+    if (!config.hasEntry(ItemView::constViewModeKey)) {
+        view->setMode(SqlLibraryModel::T_Album==mode ? ItemView::Mode_IconTop : ItemView::Mode_DetailedTree);
+    }
+    view->load(config);
 }
 
 void LibraryPage::libraryAlbumSortChanged()

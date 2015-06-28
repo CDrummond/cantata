@@ -27,6 +27,7 @@
 #include "widgets/singlepagewidget.h"
 
 class Action;
+//class ComboBox;
 
 class LibraryPage : public SinglePageWidget
 {
@@ -70,6 +71,7 @@ private:
     void controlActions();
 
 private:
+//    ComboBox *groupCombo;
     QAction *showArtistImagesAction;
     QAction *libraryAlbumSortAction;
     QAction *albumAlbumSortAction;

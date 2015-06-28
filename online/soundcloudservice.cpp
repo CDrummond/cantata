@@ -52,7 +52,7 @@ QVariant SoundCloudService::data(const QModelIndex &index, int role) const
         case Cantata::Role_TitleText:
             return title();
         case Cantata::Role_SubText:
-            return descr();
+            return job ? i18n("Searching...") : descr();
         case Qt::DecorationRole:
             return icon();
         default:
@@ -126,6 +126,7 @@ void SoundCloudService::search(const QString &key, const QString &value)
     job=NetworkAccessManager::self()->get(req);
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
     emit searching();
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 void SoundCloudService::cancel()
@@ -188,4 +189,5 @@ void SoundCloudService::jobFinished()
     }
     results(songs);
     job=0;
+    emit dataChanged(QModelIndex(), QModelIndex());
 }

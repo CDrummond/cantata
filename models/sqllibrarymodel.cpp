@@ -335,8 +335,10 @@ QVariant SqlLibraryModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case Qt::DecorationRole:
         switch (item->getType()) {
+        case T_Genre:
+            return Icons::self()->genreIcon;
         case T_Artist:
-            return /*item-> composer? ? Icons::self()->composerIcon :*/ Icons::self()->artistIcon;
+            return Icons::self()->artistIcon;
         case T_Album:
             return Icons::self()->albumIcon;
         case T_Track:

@@ -41,6 +41,7 @@ public:
     Icon appIcon;
     Icon shortcutsIcon;
     #endif
+    Icon genreIcon;
     Icon artistIcon;
     Icon albumIcon;
     Icon podcastIcon;

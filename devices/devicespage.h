@@ -24,9 +24,8 @@
 #ifndef DEVICESPAGE_H
 #define DEVICESPAGE_H
 
-#include "ui_devicespage.h"
 #include "device.h"
-#include "gui/page.h"
+#include "widgets/singlepagewidget.h"
 #ifdef ENABLE_REMOTE_DEVICES
 #include "remotefsdevice.h"
 #endif
@@ -35,7 +34,7 @@
 
 class Action;
 
-class DevicesPage : public QWidget, public Ui::DevicesPage, public Page
+class DevicesPage : public SinglePageWidget
 {
     Q_OBJECT
 
@@ -48,10 +47,8 @@ public:
     QStringList playableUrls() const;
     QList<Song> selectedSongs(bool allowPlaylists=false) const;
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
-    void setView(int v) { view->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); }
     void refresh();
-    void showEvent(QShowEvent *e);
     void resort() { proxy.sort(); }
 
 public Q_SLOTS:

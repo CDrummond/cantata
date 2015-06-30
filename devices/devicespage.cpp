@@ -32,6 +32,7 @@
 #include "support/localize.h"
 #include "support/configuration.h"
 #include "widgets/icons.h"
+#include "widgets/menubutton.h"
 #include "support/action.h"
 #include "gui/stdactions.h"
 #ifdef ENABLE_REMOTE_DEVICES
@@ -55,10 +56,10 @@
 #include <QMenu>
 
 DevicesPage::DevicesPage(QWidget *p)
-    : QWidget(p)
+    : SinglePageWidget(p)
 {
-    setupUi(this);
     copyAction = new Action(Icons::self()->importIcon, i18n("Copy To Library"), this);
+    ToolButton *copyToLibraryButton=new ToolButton(this);
     copyToLibraryButton->setDefaultAction(copyAction);
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction=new Action(Icon("list-remove"), i18n("Forget Device"), this);
@@ -66,7 +67,6 @@ DevicesPage::DevicesPage(QWidget *p)
     #endif
     connect(DevicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
     connect(DevicesModel::self()->disconnectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
-    copyToLibraryButton->setEnabled(false);
     view->addAction(copyAction);
     view->addAction(StdActions::self()->organiseFilesAction);
     view->addAction(StdActions::self()->editTagsAction);
@@ -93,41 +93,32 @@ DevicesPage::DevicesPage(QWidget *p)
     connect(DevicesModel::self(), SIGNAL(matches(const QString &, const QList<CdAlbum> &)),
             SLOT(cdMatches(const QString &, const QList<CdAlbum> &)));
     #endif
-    QMenu *menu=new QMenu(this);
-    #ifdef ENABLE_REMOTE_DEVICES
-    Action *addRemote=new Action(Icon("network-server"), i18n("Add Device"), this);
-    connect(addRemote, SIGNAL(triggered()), this, SLOT(addRemoteDevice()));
-    menu->addAction(addRemote);
-    menu->addAction(forgetDeviceAction);
-    menu->addSeparator();
-    #endif
-    menu->addAction(DevicesModel::self()->configureAct());
-    menu->addAction(DevicesModel::self()->refreshAct());
-    menu->addSeparator();
-    menu->addAction(StdActions::self()->organiseFilesAction);
-    menu->addAction(StdActions::self()->editTagsAction);
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    menu->addAction(StdActions::self()->replaygainAction);
-    #endif
-    menuButton->setMenu(menu);
     proxy.setSourceModel(DevicesModel::self());
     view->setModel(&proxy);
     view->setRootIsDecorated(false);
     view->setSearchResetLevel(1);
     Configuration config(metaObject()->className());
     view->load(config);
+    MenuButton *menu=new MenuButton(this);
+    menu->addAction(createViewMenu(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
+                                                           << ItemView::Mode_DetailedTree << ItemView::Mode_List));
+    menu->addSeparator();
+    menu->addAction(DevicesModel::self()->configureAct());
+    menu->addAction(DevicesModel::self()->refreshAct());
+    #ifdef ENABLE_REMOTE_DEVICES
+    menu->addSeparator();
+    Action *addRemote=new Action(Icon("network-server"), i18n("Add Device"), this);
+    connect(addRemote, SIGNAL(triggered()), this, SLOT(addRemoteDevice()));
+    menu->addAction(addRemote);
+    menu->addAction(forgetDeviceAction);
+    #endif
+    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu, QList<QWidget *>() << copyToLibraryButton);
 }
 
 DevicesPage::~DevicesPage()
 {
     Configuration config(metaObject()->className());
     view->save(config);
-}
-
-void DevicesPage::showEvent(QShowEvent *e)
-{
-    view->focusView();
-    QWidget::showEvent(e);
 }
 
 void DevicesPage::clear()
@@ -341,7 +332,6 @@ void DevicesPage::controlActions()
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     DevicesModel::self()->editAct()->setEnabled(!AlbumDetailsDialog::instanceCount() && !busyDevice && 1==selected.count() && audioCd && haveTracks && deviceSelected);
     #endif
-    menuButton->controlState();
 }
 
 void DevicesPage::copyToLibrary()

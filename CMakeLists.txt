@@ -655,7 +655,7 @@ if (TAGLIB_FOUND)
                 devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
                 devices/transcodingjob.h devices/valueslider.h
                 online/onlinedevice.h)
-        set(CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertieswidget.ui)
+        set(CANTATA_UIS ${CANTATA_UIS} devices/actiondialog.ui devices/devicepropertieswidget.ui)
 
         if (ENABLE_REMOTE_DEVICES)
             set(CANTATA_SRCS ${CANTATA_SRCS} devices/remotefsdevice.cpp devices/remotedevicepropertiesdialog.cpp

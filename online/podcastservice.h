@@ -104,6 +104,8 @@ public:
         bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     };
 
+    static const QLatin1String constName;
+
     PodcastService(QObject *p);
     ~PodcastService() { cancelAll(); }
 

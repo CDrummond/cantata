@@ -34,6 +34,7 @@
 #include "models/dirviewitemdir.h"
 #include "models/dirviewitemfile.h"
 #include "online/onlineservice.h"
+#include "online/podcastservice.h"
 #endif
 #include "mpdparseutils.h"
 #include "mpdstatus.h"
@@ -412,7 +413,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         song.file=origFile;
         song.setKey(location);
 
-        #ifdef ENABLE_ONLINE_SERVICES____TODO
+        #ifndef CANTATA_WEB
         // Check for downloaded podcasts played via local file playback
         if (Song::OnlineSvrTrack!=song.type && PodcastService::isPodcastFile(song.file)) {
             song.setIsFromOnlineService(PodcastService::constName);

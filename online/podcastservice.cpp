@@ -111,7 +111,7 @@ bool PodcastService::Proxy::filterAcceptsRow(int sourceRow, const QModelIndex &s
     return filterAcceptsEpisode(static_cast<const Episode *>(item));
 }
 
-static const QLatin1String constName("podcasts");
+const QLatin1String PodcastService::constName("podcasts");
 static const QLatin1String constExt(".xml.gz");
 static const char * constNewFeedProperty="new-feed";
 static const char * constRssUrlProperty="rss-url";
@@ -121,7 +121,7 @@ static const QLatin1String constPartialExt(".partial");
 static QString generateFileName(const QUrl &url, bool creatingNew)
 {
     QString hash=QCryptographicHash::hash(url.toString().toUtf8(), QCryptographicHash::Md5).toHex();
-    QString dir=Utils::dataDir(constName, true);
+    QString dir=Utils::dataDir(PodcastService::constName, true);
     QString fileName=dir+hash+constExt;
 
     if (creatingNew) {

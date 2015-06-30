@@ -71,13 +71,10 @@ DynamicPage::DynamicPage(QWidget *p)
     connect(Dynamic::self(), SIGNAL(loadingList()), view, SLOT(showSpinner()));
     connect(Dynamic::self(), SIGNAL(loadedList()), view, SLOT(hideSpinner()));
 
-// TODO!!!
-//    #ifdef Q_OS_WIN
-//    remoteRunningLabel->setType(StatusLabel::Error);
-//    enableWidgets(false);
-//    #else
-//    remoteRunningLabel->setVisible(false);
-//    #endif
+    #ifdef Q_OS_WIN
+    remoteRunningLabel=new StatusLabel(this);
+    remoteRunningLabel->setType(StatusLabel::Error);
+    #endif
     Dynamic::self()->stopAct()->setEnabled(false);
     proxy.setSourceModel(Dynamic::self());
     view->setModel(&proxy);
@@ -88,6 +85,10 @@ DynamicPage::DynamicPage(QWidget *p)
     view->load(config);
     controls=QList<QWidget *>() << addBtn << editBtn << removeBtn << startBtn;
     init(0, QList<QWidget *>(), controls);
+    #ifdef Q_OS_WIN
+    addWidget(remoteRunningLabel);
+    enableWidgets(false);
+    #endif
 }
 
 DynamicPage::~DynamicPage()

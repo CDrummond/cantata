@@ -51,6 +51,7 @@ public:
 
     SinglePageWidget(QWidget *p);
     virtual ~SinglePageWidget() { }
+    void addWidget(QWidget *w);
     virtual void setView(int v);
     ItemView::Mode viewMode() const { return view->viewMode(); }
     void focusSearch();

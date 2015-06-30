@@ -28,6 +28,7 @@
 #include "dynamicproxymodel.h"
 
 class Action;
+class StatusLabel;
 
 class DynamicPage : public SinglePageWidget
 {
@@ -63,6 +64,9 @@ private:
     Action *removeAction;
     Action *toggleAction;
     QList<QWidget *> controls;
+    #ifdef Q_OS_WIN
+    StatusLabel *remoteRunningLabel;
+    #endif
 };
 
 #endif

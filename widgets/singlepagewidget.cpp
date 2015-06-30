@@ -54,16 +54,21 @@ SinglePageWidget::SinglePageWidget(QWidget *p)
 {
     QGridLayout *layout=new QGridLayout(this);
     view=new ItemView(this);
-    layout->addWidget(view, 0, 0, 1, 5);
-    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Preferred), 1, 1, 1, 1);
-    layout->addWidget(new SizeWidget(this), 1, 2, 1, 1);
-    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Preferred), 1, 3, 1, 1);
+    layout->addWidget(view, 1, 0, 1, 5);
+    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Preferred), 2, 1, 1, 1);
+    layout->addWidget(new SizeWidget(this), 2, 2, 1, 1);
+    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Preferred), 2, 3, 1, 1);
     layout->setMargin(0);
     layout->setSpacing(0);
     connect(view, SIGNAL(searchItems()), this, SIGNAL(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
+}
+
+void SinglePageWidget::addWidget(QWidget *w)
+{
+    static_cast<QGridLayout *>(layout())->addWidget(w, 0, 0, 1, 5);
 }
 
 void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const QList<QWidget *> &rightXtra)
@@ -111,14 +116,14 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
         foreach (QWidget *b, left) {
             ll->addWidget(b);
         }
-        static_cast<QGridLayout *>(layout())->addItem(ll, 1, 0, 1, 1);
+        static_cast<QGridLayout *>(layout())->addItem(ll, 2, 0, 1, 1);
     }
     if (!right.isEmpty()) {
         QHBoxLayout *rl=new QHBoxLayout();
         foreach (QWidget *b, right) {
             rl->addWidget(b);
         }
-        static_cast<QGridLayout *>(layout())->addItem(rl, 1, 4, 1, 1);
+        static_cast<QGridLayout *>(layout())->addItem(rl, 2, 4, 1, 1);
     }
 }
 

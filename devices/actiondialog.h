@@ -80,11 +80,9 @@ private Q_SLOTS:
     void cacheSaved();
     void controlInfoLabel();
     void deviceRenamed();
-//    void showSongs();
     void showMopidyMessage();
 
 private:
-//    void hideSongs();
     void updateSongCountLabel();
     void controlInfoLabel(Device *dev);
     Device * getDevice(const QString &udi, bool logErrors=true);

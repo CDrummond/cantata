@@ -209,8 +209,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     REMOVE(retinaSupport)
     REMOVE(retinaSupportNoteLabel)
     #endif
-    composerGenres->setToolTip(composerGenresLabel->toolTip());
-    singleTracksFolder->setToolTip(singleTracksFolderLabel->toolTip());
 }
 
 void InterfaceSettings::load()

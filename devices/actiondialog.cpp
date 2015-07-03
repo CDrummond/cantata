@@ -48,6 +48,7 @@
 #include "replaygain/rgdialog.h"
 #endif
 #include <QFile>
+#include <QTimer>
 #include <QDebug>
 #ifdef QT_QTDBUS_FOUND
 #include <QDBusConnection>
@@ -67,6 +68,8 @@ int ActionDialog::instanceCount()
 
 enum Pages
 {
+    PAGE_SIZE_CALC,
+    PAGE_INSUFFICIENT_SIZE,
     PAGE_START,
     PAGE_ERROR,
     PAGE_SKIP,
@@ -99,6 +102,7 @@ enum Pages
 
 ActionDialog::ActionDialog(QWidget *parent)
     : Dialog(parent)
+    , spaceRequired(0)
     , mpdConfigured(false)
     , currentDev(0)
     , songDialog(0)
@@ -226,34 +230,33 @@ void ActionDialog::controlInfoLabel()
     controlInfoLabel(getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi));
 }
 
-void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs)
+void ActionDialog::calcFileSize()
 {
-    init(srcUdi, dstUdi, songs, Copy);
-    Device *dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi);
+    Device *dev=0;
+    int toCalc=qMin(50, songsToCalcSize.size());
 
-    if (!dev) {
-        deleteLater();
-        return;
-    }
-
-    sourceIsAudioCd=Device::AudioCd==dev->devType();
-    controlInfoLabel(dev);
-
-    // check space...
-    haveVariousArtists=false;
-    qint64 spaceRequired=0;
-    #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
-    totalTime=0;
-    #endif
-    foreach (const Song &s, songsToAction) {
+    for (int i=0; i<toCalc; ++i) {
+        Song s=songsToCalcSize.takeAt(0);
+        songsToAction.append(s);
         quint32 size=s.size;
         if (sourceIsAudioCd) {
             size/=18; // Just guess at a compression ratio... ~18x ~=80kbps MP3
         } else if (0==size) {
-            if (srcUdi.isEmpty()) {
+            if (sourceUdi.isEmpty()) {
                 size=QFileInfo(MPDConnection::self()->getDetails().dir+s.file).size();
-            } else if (QFile::exists(dev->path()+s.file)) { // FS device...
-                size=QFileInfo(dev->path()+s.file).size();
+            } else {
+                if (!dev) {
+                    dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi);
+                }
+
+                if (!dev) {
+                    deleteLater();
+                    return;
+                }
+
+                if (QFile::exists(dev->path()+s.file)) { // FS device...
+                    size=QFileInfo(dev->path()+s.file).size();
+                }
             }
         }
         if (size>0) {
@@ -266,71 +269,112 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         totalTime+=s.time;
         #endif
     }
-
-    qint64 spaceAvailable=0;
-    double usedCapacity=0.0;
-    QString capacityString;
-    //bool isFromOnline=sourceUdi.startsWith(OnlineServicesModel::constUdiPrefix);
-
-    if (sourceUdi.isEmpty()) { // If source UDI is empty, then we are copying from MPD->device, so need device free space.
-        spaceAvailable=dev->freeSpace();
-        capacityString=dev->capacityString();
-        usedCapacity=dev->usedCapacity();
+    fileSizeProgress->setValue(fileSizeProgress->value()+toCalc);
+    if (!songsToCalcSize.isEmpty()) {
+        QTimer::singleShot(0, this, SLOT(calcFileSize()));
     } else {
-        FreeSpaceInfo inf=FreeSpaceInfo(MPDConnection::self()->getDetails().dir);
-        spaceAvailable=inf.size()-inf.used();
-        usedCapacity=(inf.used()*1.0)/(inf.size()*1.0);
-        capacityString=i18n("%1 free", Utils::formatByteSize(inf.size()-inf.used()));
-    }
+        fileSizeActionLabel->stopAnimation();
+        qint64 spaceAvailable=0;
+        double usedCapacity=0.0;
+        QString capacityString;
+        //bool isFromOnline=sourceUdi.startsWith(OnlineServicesModel::constUdiPrefix);
 
-    bool enoughSpace=spaceAvailable>spaceRequired;
-    #ifdef ENABLE_REMOTE_DEVICES
-    if (!enoughSpace && sourceUdi.isEmpty() && 0==spaceAvailable && usedCapacity<0.0 && Device::RemoteFs==dev->devType()) {
-        enoughSpace=true;
-    }
-    #endif
-    if (enoughSpace || (sourceUdi.isEmpty() && Encoders::getAvailable().count())) {
-        QString mpdCfgName=MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name);
-        overwrite->setChecked(Settings::self()->overwriteSongs());
-        sourceLabel->setText(QLatin1String("<b>")+(sourceUdi.isEmpty()
-                                ? i18n("Local Music Library")
-                                : sourceIsAudioCd
-                                    ? i18n("Audio CD")
-                                    : dev->data())+QLatin1String("</b>"));
-        destinationLabel->setText(QLatin1String("<b>")+(destUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
-        namingOptions.load(mpdCfgName, true);
-        setPage(PAGE_START);
-        mode=Copy;
-
-        capacity->update(capacityString, (usedCapacity*100)+0.5);
-
-        bool destIsDev=sourceUdi.isEmpty();
-        mpdConfigured=DeviceOptions::isConfigured(mpdCfgName, true);
-        configureDestLabel->setVisible((destIsDev && !dev->isConfigured()) || (!destIsDev && !mpdConfigured));
-        //configureSourceButton->setVisible(!isFromOnline);
-        //configureSourceLabel->setVisible(!isFromOnline && ((!destIsDev && !dev->isConfigured()) || (destIsDev && !mpdConfigured)));
-        configureSourceButton->setVisible(false);
-        configureSourceLabel->setVisible(false);
-        songCount->setVisible(!sourceIsAudioCd);
-        songCountLabel->setVisible(!sourceIsAudioCd);
-        if (!sourceIsAudioCd) {
-            updateSongCountLabel();
+        if (!dev) {
+            dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi);
         }
-        show();
-        if (!enoughSpace) {
-            MessageBox::information(this, i18n("There is insufficient space left on the destination device.\n\n"
-                                               "The selected songs consume %1, but there is only %2 left.\n"
-                                               "The songs will need to be transcoded to a smaller filesize in order to be successfully copied.",
-                                               Utils::formatByteSize(spaceRequired),
-                                               Utils::formatByteSize(spaceAvailable)));
+
+        if (!dev) {
+            deleteLater();
+            return;
         }
-    } else {
-        MessageBox::error(parentWidget(), i18n("There is insufficient space left on the destination.\n\n"
-                                               "The selected songs consume %1, but there is only %2 left.",
-                                               Utils::formatByteSize(spaceRequired),
-                                               Utils::formatByteSize(spaceAvailable)));
+
+        if (sourceUdi.isEmpty()) { // If source UDI is empty, then we are copying from MPD->device, so need device free space.
+            spaceAvailable=dev->freeSpace();
+            capacityString=dev->capacityString();
+            usedCapacity=dev->usedCapacity();
+        } else {
+            FreeSpaceInfo inf=FreeSpaceInfo(MPDConnection::self()->getDetails().dir);
+            spaceAvailable=inf.size()-inf.used();
+            usedCapacity=(inf.used()*1.0)/(inf.size()*1.0);
+            capacityString=i18n("%1 free", Utils::formatByteSize(inf.size()-inf.used()));
+        }
+
+        bool enoughSpace=spaceAvailable>spaceRequired;
+        #ifdef ENABLE_REMOTE_DEVICES
+        if (!enoughSpace && sourceUdi.isEmpty() && 0==spaceAvailable && usedCapacity<0.0 && Device::RemoteFs==dev->devType()) {
+            enoughSpace=true;
+        }
+        #endif
+        if (enoughSpace || (sourceUdi.isEmpty() && Encoders::getAvailable().count())) {
+            QString mpdCfgName=MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name);
+            overwrite->setChecked(Settings::self()->overwriteSongs());
+            sourceLabel->setText(QLatin1String("<b>")+(sourceUdi.isEmpty()
+                                    ? i18n("Local Music Library")
+                                    : sourceIsAudioCd
+                                        ? i18n("Audio CD")
+                                        : dev->data())+QLatin1String("</b>"));
+            destinationLabel->setText(QLatin1String("<b>")+(destUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
+            namingOptions.load(mpdCfgName, true);
+            setPage(PAGE_START);
+            mode=Copy;
+
+            capacity->update(capacityString, (usedCapacity*100)+0.5);
+
+            bool destIsDev=sourceUdi.isEmpty();
+            mpdConfigured=DeviceOptions::isConfigured(mpdCfgName, true);
+            configureDestLabel->setVisible((destIsDev && !dev->isConfigured()) || (!destIsDev && !mpdConfigured));
+            //configureSourceButton->setVisible(!isFromOnline);
+            //configureSourceLabel->setVisible(!isFromOnline && ((!destIsDev && !dev->isConfigured()) || (destIsDev && !mpdConfigured)));
+            configureSourceButton->setVisible(false);
+            configureSourceLabel->setVisible(false);
+            songCount->setVisible(!sourceIsAudioCd);
+            songCountLabel->setVisible(!sourceIsAudioCd);
+            if (!sourceIsAudioCd) {
+                updateSongCountLabel();
+            }
+            enableButtonOk(true);
+            if (enoughSpace) {
+                setPage(PAGE_START);
+            } else {
+                setPage(PAGE_INSUFFICIENT_SIZE);
+                sizeInfoIcon->setPixmap(*(skipIcon->pixmap()));
+                sizeInfoText->setText(i18n("There is insufficient space left on the destination device.\n\n"
+                                           "The selected songs consume %1, but there is only %2 left.\n"
+                                           "The songs will need to be transcoded to a smaller filesize in order to be successfully copied.",
+                                           Utils::formatByteSize(spaceRequired),
+                                           Utils::formatByteSize(spaceAvailable)));
+            }
+        } else {
+            setPage(PAGE_INSUFFICIENT_SIZE);
+            sizeInfoIcon->setPixmap(*(errorIcon->pixmap()));
+            sizeInfoText->setText(i18n("There is insufficient space left on the destination.\n\n"
+                                       "The selected songs consume %1, but there is only %2 left.",
+                                       Utils::formatByteSize(spaceRequired),
+                                       Utils::formatByteSize(spaceAvailable)));
+        }
+    }
+}
+
+void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs)
+{
+    init(srcUdi, dstUdi, songs, Copy);
+    Device *dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi);
+
+    if (!dev) {
         deleteLater();
+        return;
     }
+
+    sourceIsAudioCd=Device::AudioCd==dev->devType();
+    controlInfoLabel(dev);
+    fileSizeProgress->setMinimum(0);
+    fileSizeProgress->setMaximum(songs.size());
+    fileSizeActionLabel->startAnimation();
+    songsToCalcSize=songs;
+    calcFileSize();
+    enableButtonOk(false);
+    show();
+    setPage(PAGE_SIZE_CALC);
 }
 
 void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
@@ -406,6 +450,16 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
 void ActionDialog::slotButtonClicked(int button)
 {
     switch(stack->currentIndex()) {
+    case PAGE_SIZE_CALC:
+        Dialog::slotButtonClicked(button);
+        break;
+    case PAGE_INSUFFICIENT_SIZE:
+        if (Ok==button) {
+            setPage(PAGE_START);
+        } else {
+            Dialog::slotButtonClicked(button);
+        }
+        break;
     case PAGE_START:
         switch (button) {
         case Ok:

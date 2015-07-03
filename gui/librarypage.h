@@ -72,6 +72,7 @@ private:
 
 private:
 //    ComboBox *groupCombo;
+    QAction *viewAction;
     QAction *showArtistImagesAction;
     QAction *libraryAlbumSortAction;
     QAction *albumAlbumSortAction;

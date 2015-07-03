@@ -96,9 +96,10 @@ LibraryPage::LibraryPage(QWidget *p)
                                          MpdLibraryModel::self()->albumAlbumSort(), this, SLOT(albumAlbumSortChanged()));
 
     MenuButton *menu=new MenuButton(this);
-    menu->addAction(createViewMenu(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
-                                                           << ItemView::Mode_DetailedTree << ItemView::Mode_List
-                                                           << ItemView::Mode_IconTop));
+    viewAction=createViewMenu(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
+                              << ItemView::Mode_DetailedTree << ItemView::Mode_List
+                              << ItemView::Mode_IconTop);
+    menu->addAction(viewAction);
 
     menu->addAction(createMenuGroup(i18n("Group By"), QList<MenuItem>() << MenuItem(i18n("Genre"), SqlLibraryModel::T_Genre)
                                                                         << MenuItem(i18n("Artist"), SqlLibraryModel::T_Artist)
@@ -305,6 +306,12 @@ void LibraryPage::groupByChanged()
         view->setMode(SqlLibraryModel::T_Album==mode ? ItemView::Mode_IconTop : ItemView::Mode_DetailedTree);
     }
     view->load(config);
+    foreach (QAction *act, viewAction->menu()->actions()) {
+        if (act->property(constValProp).toInt()==view->viewMode()) {
+            act->setChecked(true);
+            break;
+        }
+    }
 }
 
 void LibraryPage::libraryAlbumSortChanged()

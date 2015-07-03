@@ -48,11 +48,21 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     SoundCloudService *soundcloud=new SoundCloudService(this);
     addPage(soundcloud->name(), soundcloud->icon(), soundcloud->title(), soundcloud->descr(), new SoundCloudWidget(soundcloud, this));
 
-    PodcastService *podcast=new PodcastService(this);
+    podcast=new PodcastService(this);
     addPage(podcast->name(), podcast->icon(), podcast->title(), podcast->descr(), new PodcastWidget(podcast, this));
     connect(podcast, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
 }
 
 OnlineServicesPage::~OnlineServicesPage()
 {
+}
+
+bool OnlineServicesPage::isDownloading()
+{
+    return podcast->isDownloading();
+}
+
+void OnlineServicesPage::cancelAll()
+{
+    podcast->cancelAll();
 }

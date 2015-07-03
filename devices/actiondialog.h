@@ -67,6 +67,7 @@ Q_SIGNALS:
     void completed();
 
 private Q_SLOTS:
+    void calcFileSize();
     void configureSource();
     void configureDest();
     void saveProperties(const QString &path, const DeviceOptions &opts);
@@ -100,9 +101,11 @@ private:
 
 private:
     Mode mode;
+    qint64 spaceRequired;
     bool sourceIsAudioCd;
     QString sourceUdi;
     QString destUdi;
+    QList<Song> songsToCalcSize;
     QList<Song> songsToAction;
     QList<Song> skippedSongs;
     QList<Song> actionedSongs;

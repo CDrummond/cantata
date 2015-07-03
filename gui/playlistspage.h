@@ -91,6 +91,13 @@ public:
     PlaylistsPage(QWidget *p);
     virtual ~PlaylistsPage();
 
+    #ifdef ENABLE_DEVICES_SUPPORT
+    void addSelectionToDevice(const QString &udi);
+    #endif
+
+Q_SIGNALS:
+    void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
+
 private:
     StoredPlaylistsPage *stored;
     DynamicPage *dynamic;

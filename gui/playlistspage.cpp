@@ -446,9 +446,19 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     addPage(PlaylistsModel::self()->name(), PlaylistsModel::self()->icon(), PlaylistsModel::self()->title(), PlaylistsModel::self()->descr(), stored);
     dynamic=new DynamicPage(this);
     addPage(Dynamic::self()->name(), Dynamic::self()->icon(), Dynamic::self()->title(), Dynamic::self()->descr(), dynamic);
+
+    connect(stored, SIGNAL(addToDevice(QString,QString,QList<Song>)), SIGNAL(addToDevice(QString,QString,QList<Song>)));
 }
 
 PlaylistsPage::~PlaylistsPage()
 {
-
 }
+
+#ifdef ENABLE_DEVICES_SUPPORT
+void PlaylistsPage::addSelectionToDevice(const QString &udi)
+{
+    if (stored==currentWidget()) {
+        stored->addSelectionToDevice(udi);
+    }
+}
+#endif

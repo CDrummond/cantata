@@ -76,30 +76,6 @@ enum Pages
     PAGE_PROGRESS
 };
 
-//class SongListDialog : public Dialog
-//{
-//public:
-//    SongListDialog(ActionDialog *p)
-//        : Dialog(p) {
-//        setCaption(i18n("Songs To Be Copied"));
-//        setButtons(Close);
-//        MusicLibraryModel *model=new MusicLibraryModel(this, false);
-//        MusicLibraryProxyModel *proxy=new MusicLibraryProxyModel(this);
-//        proxy->setSourceModel(model);
-//        model->setSupportsAlbumArtistTag(true);
-//        TreeView *view=new TreeView(this);
-//        view->setPageDefaults();
-//        view->setExpandOnClick();
-//        view->setModel(proxy);
-//        view->setUseSimpleDelegate();
-//        model->update(p->songsToAction.toSet());
-//        setMainWidget(view);
-//        int size=fontMetrics().height();
-//        int numArtists=model->rowCount();
-//        resize(20*size, qMin(qMax(10, numArtists)+4, 25)*(size*1.25));
-//    }
-//};
-
 ActionDialog::ActionDialog(QWidget *parent)
     : Dialog(parent)
     , spaceRequired(0)
@@ -186,14 +162,6 @@ void ActionDialog::deviceRenamed()
     }
 }
 
-//void ActionDialog::showSongs()
-//{
-//    if (!songDialog) {
-//        songDialog=new SongListDialog(this);
-//    }
-//    songDialog->show();
-//}
-
 void ActionDialog::showMopidyMessage()
 {
     MessageBox::information(this, i18n("Cantata has detected that you are connected to a Mopidy server.\n\n"
@@ -202,15 +170,6 @@ void ActionDialog::showMopidyMessage()
                                        "Mopidy's database, and restart Cantata for any changes to be active."),
                             QLatin1String("Mopidy"));
 }
-
-//void ActionDialog::hideSongs()
-//{
-//    if (songDialog) {
-//        songDialog->setVisible(false);
-//        songDialog->deleteLater();
-//        songDialog=0;
-//    }
-//}
 
 void ActionDialog::updateSongCountLabel()
 {

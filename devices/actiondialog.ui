@@ -319,7 +319,7 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="UrlLabel" name="songCount">
+        <widget class="QLabel" name="songCount">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -529,11 +529,6 @@
    <class>ActionLabel</class>
    <extends>QLabel</extends>
    <header>widgets/actionlabel.h</header>
-  </customwidget>
-  <customwidget>
-   <class>UrlLabel</class>
-   <extends>QLabel</extends>
-   <header>support/urllabel.h</header>
   </customwidget>
   <customwidget>
    <class>UrlNoteLabel</class>

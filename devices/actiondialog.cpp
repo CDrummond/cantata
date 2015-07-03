@@ -49,7 +49,6 @@
 #endif
 #include <QFile>
 #include <QTimer>
-#include <QDebug>
 #ifdef QT_QTDBUS_FOUND
 #include <QDBusConnection>
 #endif
@@ -193,10 +192,8 @@ void ActionDialog::calcFileSize()
 {
     Device *dev=0;
     int toCalc=qMin(50, songsToCalcSize.size());
-
     for (int i=0; i<toCalc; ++i) {
         Song s=songsToCalcSize.takeAt(0);
-        songsToAction.append(s);
         quint32 size=s.size;
         if (sourceIsAudioCd) {
             size/=18; // Just guess at a compression ratio... ~18x ~=80kbps MP3
@@ -232,7 +229,6 @@ void ActionDialog::calcFileSize()
     if (!songsToCalcSize.isEmpty()) {
         QTimer::singleShot(0, this, SLOT(calcFileSize()));
     } else {
-        fileSizeActionLabel->stopAnimation();
         qint64 spaceAvailable=0;
         double usedCapacity=0.0;
         QString capacityString;
@@ -274,7 +270,6 @@ void ActionDialog::calcFileSize()
                                         : dev->data())+QLatin1String("</b>"));
             destinationLabel->setText(QLatin1String("<b>")+(destUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
             namingOptions.load(mpdCfgName, true);
-            setPage(PAGE_START);
             mode=Copy;
 
             capacity->update(capacityString, (usedCapacity*100)+0.5);
@@ -291,7 +286,6 @@ void ActionDialog::calcFileSize()
             if (!sourceIsAudioCd) {
                 updateSongCountLabel();
             }
-            enableButtonOk(true);
             if (enoughSpace) {
                 setPage(PAGE_START);
             } else {
@@ -305,6 +299,7 @@ void ActionDialog::calcFileSize()
             }
         } else {
             setPage(PAGE_INSUFFICIENT_SIZE);
+            setButtons(Cancel);
             sizeInfoIcon->setPixmap(*(errorIcon->pixmap()));
             sizeInfoText->setText(i18n("There is insufficient space left on the destination.\n\n"
                                        "The selected songs consume %1, but there is only %2 left.",
@@ -328,12 +323,10 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     controlInfoLabel(dev);
     fileSizeProgress->setMinimum(0);
     fileSizeProgress->setMaximum(songs.size());
-    fileSizeActionLabel->startAnimation();
     songsToCalcSize=songs;
-    calcFileSize();
-    enableButtonOk(false);
-    show();
     setPage(PAGE_SIZE_CALC);
+    show();
+    calcFileSize();
 }
 
 void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
@@ -788,35 +781,43 @@ void ActionDialog::setPage(int page, const StringPairList &msg, const QString &h
 {
     stack->setCurrentIndex(page);
 
-    switch(page)
-    {
-        case PAGE_START:
-            setButtons(Ok|Cancel);
-            break;
-        case PAGE_PROGRESS:
-            actionLabel->startAnimation();
-            setButtons(Cancel);
-            break;
-        case PAGE_SKIP:
-            actionLabel->stopAnimation();
-            skipText->setText(msg, QLatin1String("<b>")+i18n("Error")+QLatin1String("</b><br/>")+header+
-                              (header.isEmpty() ? QString() : QLatin1String("<br/><br/>")));
-            if (songsToAction.count()) {
-                setButtons(Cancel|User1|User2|User3);
-                setButtonText(User1, i18n("Skip"));
-                setButtonText(User2, i18n("Auto Skip"));
-            } else {
-                setButtons(Cancel|User3);
-            }
-            setButtonText(User3, i18n("Retry"));
-            break;
-        case PAGE_ERROR:
-            actionLabel->stopAnimation();
-            stack->setCurrentIndex(PAGE_ERROR);
-            errorText->setText(msg, QLatin1String("<b>")+i18n("Error")+QLatin1String("</b><br/>")+header+
-                               (header.isEmpty() ? QString() : QLatin1String("<br/><br/>")));
-            setButtons(Cancel);
-            break;
+    switch(page) {
+    case PAGE_SIZE_CALC:
+        fileSizeActionLabel->startAnimation();
+        setButtons(Cancel);
+        break;
+    case PAGE_INSUFFICIENT_SIZE:
+        fileSizeActionLabel->stopAnimation();
+        setButtons(Ok|Cancel);
+        break;
+    case PAGE_START:
+        fileSizeActionLabel->stopAnimation();
+        setButtons(Ok|Cancel);
+        break;
+    case PAGE_PROGRESS:
+        actionLabel->startAnimation();
+        setButtons(Cancel);
+        break;
+    case PAGE_SKIP:
+        actionLabel->stopAnimation();
+        skipText->setText(msg, QLatin1String("<b>")+i18n("Error")+QLatin1String("</b><br/>")+header+
+                          (header.isEmpty() ? QString() : QLatin1String("<br/><br/>")));
+        if (songsToAction.count()) {
+            setButtons(Cancel|User1|User2|User3);
+            setButtonText(User1, i18n("Skip"));
+            setButtonText(User2, i18n("Auto Skip"));
+        } else {
+            setButtons(Cancel|User3);
+        }
+        setButtonText(User3, i18n("Retry"));
+        break;
+    case PAGE_ERROR:
+        actionLabel->stopAnimation();
+        stack->setCurrentIndex(PAGE_ERROR);
+        errorText->setText(msg, QLatin1String("<b>")+i18n("Error")+QLatin1String("</b><br/>")+header+
+                           (header.isEmpty() ? QString() : QLatin1String("<br/><br/>")));
+        setButtons(Cancel);
+        break;
     }
 }
 

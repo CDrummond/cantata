@@ -66,7 +66,6 @@ void MPDConnection::enableDebug()
 static const int constSocketCommsTimeout=2000;
 static const int constMaxReadAttempts=4;
 static int maxFilesPerAddCommand=10000;
-static bool alwaysUseLsInfo=true;
 static int seekStep=5;
 
 static const QByteArray constOkValue("OK");
@@ -270,7 +269,6 @@ MPDConnection::MPDConnection()
     #if !defined ENABLE_UBUNTU && !defined CANTATA_WEB
     Configuration cfg;
     maxFilesPerAddCommand=cfg.get("mpdListSize", 10000, 100, 65535);
-    alwaysUseLsInfo=cfg.get("alwaysUseLsInfo", true);
     seekStep=cfg.get("seekStep", 5, 2, 60);
     MPDParseUtils::setSingleTracksFolder(cfg.get("singleTracksFolder", QString()));
     #endif

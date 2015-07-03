@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>734</width>
+    <width>1719</width>
     <height>542</height>
    </rect>
   </property>
@@ -76,23 +76,23 @@
             <property name="fieldGrowthPolicy">
              <enum>QFormLayout::ExpandingFieldsGrow</enum>
             </property>
-             <item row="0" column="0">
+            <item row="0" column="0">
              <widget class="BuddyLabel" name="sbStyleLabel">
               <property name="text">
-               <string>Style:</string>
+               <string>St&amp;yle:</string>
               </property>
               <property name="buddy">
                <cstring>sbStyle</cstring>
               </property>
              </widget>
-             </item>
-             <item row="0" column="1">
+            </item>
+            <item row="0" column="1">
              <widget class="QComboBox" name="sbStyle"/>
             </item>
             <item row="1" column="0">
              <widget class="BuddyLabel" name="sbPositionLabel">
               <property name="text">
-               <string>Position:</string>
+               <string>Positio&amp;n:</string>
               </property>
               <property name="buddy">
                <cstring>sbPosition</cstring>
@@ -134,7 +134,7 @@
        <item row="0" column="0">
         <widget class="BuddyLabel" name="playQueueViewLabel">
          <property name="text">
-          <string>Style:</string>
+          <string>St&amp;yle:</string>
          </property>
          <property name="buddy">
           <cstring>playQueueView</cstring>
@@ -210,21 +210,21 @@
           <item row="0" column="0" colspan="3">
            <widget class="QRadioButton" name="playQueueBackground_none">
             <property name="text">
-             <string>None</string>
+             <string>&amp;None</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0" colspan="3">
            <widget class="QRadioButton" name="playQueueBackground_cover">
             <property name="text">
-             <string>Current album cover</string>
+             <string>C&amp;urrent album cover</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0" colspan="2">
            <widget class="QRadioButton" name="playQueueBackground_custom">
             <property name="text">
-             <string>Custom image:</string>
+             <string>Custo&amp;m image:</string>
             </property>
            </widget>
           </item>
@@ -363,7 +363,7 @@
       </layout>
      </widget>
      <widget class="QWidget" name="toolbarTab">
-      <attribute name="title">l
+      <attribute name="title">
        <string>Toolbar</string>
       </attribute>
       <layout class="QFormLayout" name="toolbarTabLayout">
@@ -434,21 +434,21 @@
           <item>
            <widget class="QRadioButton" name="startupStateShow">
             <property name="text">
-             <string>Show main window</string>
+             <string>Show &amp;main window</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QRadioButton" name="startupStateHide">
             <property name="text">
-             <string>Hide main window</string>
+             <string>Hi&amp;de main window</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QRadioButton" name="startupStateRestore">
             <property name="text">
-             <string>Restore previous state</string>
+             <string>Restore previo&amp;us state</string>
             </property>
            </widget>
           </item>
@@ -474,65 +474,94 @@
       <attribute name="title">
        <string>Tweaks</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3x">
+      <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
-        <layout class="QFormLayout" name="formLayout_4x">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::ExpandingFieldsGrow</enum>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Composer Support</string>
          </property>
-         <item row="0" column="0">
-          <widget class="BuddyLabel" name="composerGenresLabel">
-          <property name="toolTip">
-           <string>&lt;p&gt;Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums. (List should be comma spearated - e.g. 'Classical, Symphonic')&lt;/p&gt;</string>
-          </property>
-          <property name="text">
-           <string>Group albums by composer for genres:</string>
-          </property>
-           <property name="buddy">
-            <cstring>composerGenres</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="LineEdit" name="composerGenres"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="BuddyLabel" name="singleTracksFolderLabel">
-          <property name="toolTip">
-           <string>&lt;p&gt;If set, any tracks found within this folder will have their 'Album Artist' set to 'Various Artists' and album set to 'Single Tracks'&lt;/p&gt;</string>
-          </property>
-          <property name="text">
-           <string>Single track files folder:</string>
-          </property>
-           <property name="buddy">
-            <cstring>singleTracksFolder</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="LineEdit" name="singleTracksFolder"/>
-         </item>
-         <item row="2" column="1" colspan="2">
-          <widget class="NoteLabel" name="tweaksLabel">
-           <property name="text">
-            <string>Changing any of the above will require a DB refresh in order to take affect.</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1" colspan="2">
-          <spacer name="verticalSpacer_2f">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>By default, Cantata uses the 'Album Artist' tag (or 'Artist' tag if a song has no 'Album Artist') to group songs and albums. For certain genres, e.g 'Classical', it may be preferable to use the 'Composer' tag (if set) to perform this grouping. Please enter a (comma separated) list of the genres with which you would like Cantata to use the 'Composer' tag.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="LineEdit" name="composerGenres">
+            <property name="placeholderText">
+             <string>Enter comma seaprated list of genres...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>Single Tracks</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_8">
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>If you have a lot of artists in your collection that only contain a single track, then it can be combersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named 'Single tracks' with an album artist of 'Various Artists'</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="LineEdit" name="singleTracksFolder">
+            <property name="placeholderText">
+             <string>Folder that contains single track files...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>16</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="NoteLabel" name="tweaksLabel">
+         <property name="text">
+          <string>Changing any of the above will require a DB refresh in order to take affect.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2f">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>16</width>
+           <height>264</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -595,7 +624,7 @@
          <item row="6" column="0">
           <widget class="BuddyLabel" name="langLabel">
            <property name="text">
-            <string>Language:</string>
+            <string>&amp;Language:</string>
            </property>
            <property name="buddy">
             <cstring>lang</cstring>

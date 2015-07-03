@@ -27,6 +27,8 @@
 #include "onlineservice.h"
 #include "widgets/multipagewidget.h"
 
+class PodcastService;
+
 class OnlineServicesPage : public MultiPageWidget
 {
     Q_OBJECT
@@ -35,13 +37,16 @@ public:
     OnlineServicesPage(QWidget *p);
     virtual ~OnlineServicesPage();
 
-    bool isDownloading() { return false; }
-    void cancelAll() { }
+    bool isDownloading();
+    void cancelAll();
     bool isEanbeld() { return true; }
     void setEnabled(bool) { }
 
 Q_SIGNALS:
     void error(const QString &msg);
+
+private:
+    PodcastService *podcast;
 };
 
 #endif

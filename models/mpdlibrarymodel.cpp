@@ -185,7 +185,7 @@ void MpdLibraryModel::coverUpdated(const Song &song, const QImage &img, const QS
 
 void MpdLibraryModel::artistImage(const Song &song, const QImage &img, const QString &file)
 {
-    if (!showArtistImages || file.isEmpty() || img.isNull() || T_Album==topLevel()) {
+    if (file.isEmpty() || img.isNull() || T_Album==topLevel()) {
         return;
     }
     switch(topLevel()) {

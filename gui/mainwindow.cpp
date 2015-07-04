@@ -396,7 +396,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->addTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
     onlinePage->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
     connect(onlineTabAction, SIGNAL(triggered()), this, SLOT(showOnlineTab()));
-    connect(onlinePage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+//    connect(onlinePage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(onlinePage, SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage = new DevicesPage(this);

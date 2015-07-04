@@ -1456,7 +1456,7 @@ void ItemView::setTitle()
     if (!model) {
         return;
     }
-    title->update(model->data(index, Cantata::Role_CoverSong).value<Song>(),
+    title->update(model->data(index, Mode_IconTop==mode ? Cantata::Role_GridCoverSong : Cantata::Role_CoverSong).value<Song>(),
                   model->data(index, Qt::DecorationRole).value<QIcon>(),
                   model->data(index, Cantata::Role_TitleText).toString(),
                   model->data(index, Cantata::Role_SubText).toString());

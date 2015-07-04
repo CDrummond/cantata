@@ -229,11 +229,10 @@ void InitialSettingsWizard::accept()
         Settings::self()->saveCurrentConnection(MPDUser::constName);
         Settings::self()->saveStopOnExit(true);
         emit setDetails(MPDUser::self()->details());
-    } else
-    #endif
-    {
+    } else {
         MPDUser::self()->cleanup();
     }
+    #endif
     Settings::self()->save();
     QDialog::accept();
 }

@@ -112,7 +112,9 @@ ServerSettings::ServerSettings(QWidget *p)
     coverNameLabel->setToolTip(coverName->toolTip());
     coverName->setValidator(new CoverNameValidator(this));
     basicCoverName->setValidator(new CoverNameValidator(this));
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     name->setValidator(new CollectionNameValidator(this));
+    #endif
     #ifndef ENABLE_HTTP_STREAM_PLAYBACK
     REMOVE(streamUrlLabel)
     REMOVE(streamUrl)
@@ -239,7 +241,10 @@ void ServerSettings::showDetails(int index)
             details.name=generateName(prevIndex);
         }
         collections.replace(prevIndex, details);
-        if (details.name!=MPDUser::constName) {
+        #ifdef ENABLE_SIMPLE_MPD_SUPPORT
+        if (details.name!=MPDUser::constName)
+        #endif
+        {
             combo->setItemText(prevIndex, details.name);
         }
     }

@@ -242,7 +242,7 @@ MainWindow::MainWindow(QWidget *parent)
     aboutAction->setMenuRole(QAction::AboutRole);
     #endif
     #endif // ENABLE_KDE_SUPPORT
-    restoreAction = ActionCollection::get()->createAction("showwindow", i18n("Show Window"));
+    restoreAction = new Action(i18n("Show Window"), this);
     connect(restoreAction, SIGNAL(triggered()), this, SLOT(restoreWindow()));
 
     serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), HIDE_MENU_ICON_NAME("network-server"));

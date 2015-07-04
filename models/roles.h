@@ -39,6 +39,7 @@ namespace Cantata {
         #endif
         Role_ListImage, // Should image been shown in list/tree view?
         Role_CoverSong,
+        Role_GridCoverSong,
         Role_Capacity,
         Role_CapacityText,
         Role_Actions,

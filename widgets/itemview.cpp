@@ -215,7 +215,7 @@ public:
 
         QPixmap pix;
         if (iconMode || index.data(Cantata::Role_ListImage).toBool()) {
-            Song cSong=index.data(Cantata::Role_CoverSong).value<Song>();
+            Song cSong=index.data(iconMode ? Cantata::Role_GridCoverSong : Cantata::Role_CoverSong).value<Song>();
             if (!cSong.isEmpty()) {
                 QPixmap *cp=Covers::self()->get(cSong, iconMode ? gridCoverSize : listCoverSize, getCoverInUiThread(index));
                 if (cp) {

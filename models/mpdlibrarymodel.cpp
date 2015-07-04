@@ -49,6 +49,7 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
     }
 
     switch (role) {
+    case Cantata::Role_GridCoverSong:
     case Cantata::Role_CoverSong: {
         QVariant v;
         Item *item = static_cast<Item *>(index.internalPointer());
@@ -64,7 +65,7 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
             v.setValue<Song>(item->getSong());
             break;
         case T_Artist:
-            if (!showArtistImages) {
+            if (!showArtistImages && Cantata::Role_CoverSong==role) {
                 return QVariant();
             }
             if (item->getSong().isEmpty()) {

@@ -113,12 +113,6 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
     StreamsModel::self()->configureDiAct()->setEnabled(false);
 
-    view->addAction(StdActions::self()->replacePlayQueueAction);
-    view->addAction(editAction);
-    view->addAction(StdActions::self()->removeAction);
-    view->addAction(StreamsModel::self()->addToFavouritesAct());
-    view->addAction(StreamsModel::self()->addBookmarkAct());
-    view->addAction(StreamsModel::self()->reloadAct());
     proxy.setSourceModel(StreamsModel::self());
     view->setModel(&proxy);
     view->setDeleteAction(StdActions::self()->removeAction);
@@ -152,6 +146,12 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     ToolButton *searchButton=new ToolButton(this);
     searchButton->setDefaultAction(searchAction);
     init(ReplacePlayQueue, QList<QWidget *>() << menuButton << diStatusLabel, QList<QWidget *>() << searchButton);
+
+    view->addAction(editAction);
+    view->addAction(StdActions::self()->removeAction);
+    view->addAction(StreamsModel::self()->addToFavouritesAct());
+    view->addAction(StreamsModel::self()->addBookmarkAct());
+    view->addAction(StreamsModel::self()->reloadAct());
 }
 
 StreamsBrowsePage::~StreamsBrowsePage()

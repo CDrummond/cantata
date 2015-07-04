@@ -37,26 +37,6 @@
 LibraryPage::LibraryPage(QWidget *p)
     : SinglePageWidget(p)
 {
-    view->addAction(StdActions::self()->addToPlayQueueAction);
-    view->addAction(StdActions::self()->replacePlayQueueAction);
-    view->addAction(StdActions::self()->addWithPriorityAction);
-    view->addAction(StdActions::self()->addToStoredPlaylistAction);
-    #ifdef TAGLIB_FOUND
-    #ifdef ENABLE_DEVICES_SUPPORT
-    view->addAction(StdActions::self()->copyToDeviceAction);
-    #endif
-    view->addAction(StdActions::self()->organiseFilesAction);
-    view->addAction(StdActions::self()->editTagsAction);
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    view->addAction(StdActions::self()->replaygainAction);
-    #endif
-    view->addAction(StdActions::self()->setCoverAction);
-    #ifdef ENABLE_DEVICES_SUPPORT
-    view->addSeparator();
-    view->addAction(StdActions::self()->deleteSongsAction);
-    #endif
-    #endif // TAGLIB_FOUND
-
     connect(MPDConnection::self(), SIGNAL(updatingLibrary(time_t)), view, SLOT(updating()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(updated()));
     connect(MPDConnection::self(), SIGNAL(updatingDatabase()), view, SLOT(updating()));
@@ -116,6 +96,22 @@ LibraryPage::LibraryPage(QWidget *p)
     showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
     init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu/* << groupCombo*/);
 //    connect(groupCombo, SIGNAL(activated(int)), SLOT(groupByChanged()));
+    view->addAction(StdActions::self()->addToStoredPlaylistAction);
+    #ifdef TAGLIB_FOUND
+    #ifdef ENABLE_DEVICES_SUPPORT
+    view->addAction(StdActions::self()->copyToDeviceAction);
+    #endif
+    view->addAction(StdActions::self()->organiseFilesAction);
+    view->addAction(StdActions::self()->editTagsAction);
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    view->addAction(StdActions::self()->replaygainAction);
+    #endif
+    view->addAction(StdActions::self()->setCoverAction);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    view->addSeparator();
+    view->addAction(StdActions::self()->deleteSongsAction);
+    #endif
+    #endif // TAGLIB_FOUND
 }
 
 LibraryPage::~LibraryPage()

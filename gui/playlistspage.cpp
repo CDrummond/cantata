@@ -65,16 +65,6 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
 
     view->allowGroupedView();
     view->allowTableView(new PlaylistTableView(view));
-    view->addAction(StdActions::self()->addToPlayQueueAction);
-    view->addAction(StdActions::self()->replacePlayQueueAction);
-    view->addAction(StdActions::self()->addWithPriorityAction);
-    view->addAction(StdActions::self()->addToStoredPlaylistAction);
-    #ifdef ENABLE_DEVICES_SUPPORT
-    view->addAction(StdActions::self()->copyToDeviceAction);
-    #endif
-    view->addAction(renamePlaylistAction);
-    view->addAction(StdActions::self()->removeAction);
-    view->addAction(removeDuplicatesAction);
     view->setAcceptDrops(true);
     view->setDragDropOverwriteMode(false);
     view->setDragDropMode(QAbstractItemView::DragDrop);
@@ -110,6 +100,14 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
                                                            << ItemView::Mode_GroupedTree << ItemView::Mode_Table));
     menu->addAction(intitiallyCollapseAction);
     init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu);
+
+    view->addAction(StdActions::self()->addToStoredPlaylistAction);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    view->addAction(StdActions::self()->copyToDeviceAction);
+    #endif
+    view->addAction(renamePlaylistAction);
+    view->addAction(StdActions::self()->removeAction);
+    view->addAction(removeDuplicatesAction);
 }
 
 StoredPlaylistsPage::~StoredPlaylistsPage()

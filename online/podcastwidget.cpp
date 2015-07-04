@@ -52,16 +52,6 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     view->alwaysShowHeader();
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
 
-    view->addAction(subscribeAction);
-    view->addAction(unSubscribeAction);
-    view->addSeparator();
-    view->addAction(downloadAction);
-    view->addAction(deleteAction);
-    view->addAction(cancelDownloadAction);
-    view->addSeparator();
-    view->addAction(markAsNewAction);
-    view->addAction(markAsListenedAction);
-
     connect(subscribeAction, SIGNAL(triggered()), this, SLOT(subscribe()));
     connect(unSubscribeAction, SIGNAL(triggered()), this, SLOT(unSubscribe()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
@@ -79,6 +69,16 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                                                                << ItemView::Mode_DetailedTree << ItemView::Mode_List));
     init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu, QList<QWidget *>() << addSub);
+
+    view->addAction(subscribeAction);
+    view->addAction(unSubscribeAction);
+    view->addSeparator();
+    view->addAction(downloadAction);
+    view->addAction(deleteAction);
+    view->addAction(cancelDownloadAction);
+    view->addSeparator();
+    view->addAction(markAsNewAction);
+    view->addAction(markAsListenedAction);
 }
 
 PodcastWidget::~PodcastWidget()

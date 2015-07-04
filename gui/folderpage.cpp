@@ -39,10 +39,22 @@ FolderPage::FolderPage(QWidget *p)
     , loaded(false)
 {
     browseAction = new Action(Icon("system-file-manager"), i18n("Open In File Manager"), this);
+    connect(this, SIGNAL(loadFolders()), MPDConnection::self(), SLOT(loadFolders()));
+    connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
+    connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
+    connect(browseAction, SIGNAL(triggered()), this, SLOT(openFileManager()));
+    connect(MPDConnection::self(), SIGNAL(updatingFileList()), view, SLOT(updating()));
+    connect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(updated()));
+    connect(MPDConnection::self(), SIGNAL(updatingDatabase()), view, SLOT(updating()));
+    connect(MPDConnection::self(), SIGNAL(updatedDatabase()), view, SLOT(updated()));
+    Configuration config(metaObject()->className());
+    view->setMode(ItemView::Mode_DetailedTree);
+    view->load(config);
+    MenuButton *menu=new MenuButton(this);
+    menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
+                                                               << ItemView::Mode_DetailedTree << ItemView::Mode_List));
+    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu);
 
-    view->addAction(StdActions::self()->addToPlayQueueAction);
-    view->addAction(StdActions::self()->replacePlayQueueAction);
-    view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
     #ifdef TAGLIB_FOUND
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -59,24 +71,8 @@ FolderPage::FolderPage(QWidget *p)
     view->addSeparator();
     view->addAction(StdActions::self()->deleteSongsAction);
     #endif
-
     proxy.setSourceModel(DirViewModel::self());
     view->setModel(&proxy);
-    connect(this, SIGNAL(loadFolders()), MPDConnection::self(), SLOT(loadFolders()));
-    connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
-    connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
-    connect(browseAction, SIGNAL(triggered()), this, SLOT(openFileManager()));
-    connect(MPDConnection::self(), SIGNAL(updatingFileList()), view, SLOT(updating()));
-    connect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(updated()));
-    connect(MPDConnection::self(), SIGNAL(updatingDatabase()), view, SLOT(updating()));
-    connect(MPDConnection::self(), SIGNAL(updatedDatabase()), view, SLOT(updated()));
-    Configuration config(metaObject()->className());
-    view->setMode(ItemView::Mode_DetailedTree);
-    view->load(config);
-    MenuButton *menu=new MenuButton(this);
-    menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
-                                                               << ItemView::Mode_DetailedTree << ItemView::Mode_List));
-    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu);
 }
 
 FolderPage::~FolderPage()

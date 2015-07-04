@@ -39,7 +39,6 @@
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
-#include <QDebug>
 
 static Icon getIcon(const QString &name)
 {
@@ -56,7 +55,6 @@ StreamSearchModel::StreamSearchModel(QObject *parent)
     root->children.append(new StreamsModel::CategoryItem("http://opml.radiotime.com/Search.ashx", i18n("TuneIn"), root, getIcon("tunein")));
     root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist"), i18n("ShoutCast"), root, getIcon("shoutcast")));
     root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/search/"), i18n("Dirble"), root, getIcon("dirble")));
-    qWarning() << "TI" << (void *)root->children.at(0);
 }
 
 StreamSearchModel::~StreamSearchModel()

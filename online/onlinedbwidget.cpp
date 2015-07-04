@@ -78,11 +78,13 @@ QList<Song> OnlineDbWidget::selectedSongs(bool allowPlaylists) const
 void OnlineDbWidget::showEvent(QShowEvent *e)
 {
     SinglePageWidget::showEvent(e);
+    if (srv->isDownloading()) {
+        return;
+    }
     if (srv->previouslyDownloaded()) {
         srv->load();
-    } else if (!srv->isDownloading()) {
-        QTimer::singleShot(0, this, SLOT(firstTimePrompt()));
     }
+    QTimer::singleShot(0, this, SLOT(firstTimePrompt()));
 }
 
 void OnlineDbWidget::firstTimePrompt()

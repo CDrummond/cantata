@@ -185,7 +185,6 @@ public Q_SLOTS:
     void scrollPlayQueue(bool wasEmpty=false);
     void updateStatus();
     void playQueueItemActivated(const QModelIndex &);
-    void promptClearPlayQueue();
     void clearPlayQueue();
     void centerPlayQueue();
     void removeFromPlayQueue() { playQueueModel.remove(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes())); }
@@ -289,7 +288,7 @@ private:
     QActionGroup *connectionsGroup;
     Action *stopAfterTrackAction;
     Action *addPlayQueueToStoredPlaylistAction;
-    Action *promptClearPlayQueueAction;
+    Action *clearPlayQueueAction;
     Action *centerPlayQueueAction;
     Action *expandInterfaceAction;
     Action *cropPlayQueueAction;
@@ -316,7 +315,6 @@ private:
     Action *expandAllAction;
     Action *collapseAllAction;
     Action *serverInfoAction;
-    Action *clearPlayQueueAction;
     Action *cancelAction;
     Action *ratingAction;
     Action *fwdAction;

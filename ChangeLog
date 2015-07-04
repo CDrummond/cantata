@@ -11,57 +11,52 @@
  7. Place stored playlists and dynamic playlists within Playlists.
  8. Remove option for non-mono sidebar icons.
  9. Always build with Dynamic, Online, and Streams support.
-.....
-
- 1. If connected to MPD>=0.19 using address 127.0.0.1 or localhost, then pass
+10. If connected to MPD>=0.19 using address 127.0.0.1 or localhost, then pass
     local files as 'file://' URLS.
- 2. Ignore "The" when sorting albums.
- 3. In Artists view, place "Various Artists" in alphabetical position - this is
+11. Ignore "The" when sorting albums.
+12. In Artists view, place "Various Artists" in alphabetical position - this is
     consistent with albums view.
- 4. Use regular artist icon for "Various Artists"
- 5. If MPD does not support 'sticker' command, then inform user that ratings
+13. Use regular artist icon for "Various Artists"
+14. If MPD does not support 'sticker' command, then inform user that ratings
     cannot be stored.
- 6. Add option to set MPD top-level path. Only tracks that are under this path
+15. Add option to set MPD top-level path. Only tracks that are under this path
     will be used to populate artist and album listings. This is mainly of use
     when MPD is configured to use a UPnP backend.
- 7. Use lsinfo, and not listallinfo, to populate artists and albums by default.
-    Set alwaysUseLsInfo=false in Cantata's config file to disable this.
- 8. Add 'Copy To Device' to playqueue.
- 9. Do not reset current song when shuffling albums, or sorting playqueue.
-10. MPD 0.19.2 can handle m3u8, so pass stream URLs of this type straight to
+16. Always use use lsinfo, and not listallinfo, to populate library.
+17. Add 'Copy To Device' to playqueue.
+18. Do not reset current song when shuffling albums, or sorting playqueue.
+19. MPD 0.19.2 can handle m3u8, so pass stream URLs of this type straight to
     MPD.
-11. Re-add hack to force scrollbars in large combo popups and to restrict their
+20. Re-add hack to force scrollbars in large combo popups and to restrict their
     height. This should apply to all Linux Gtk-like styles, not just QGtkStyle.
-12. Use '#' for track number column title in table view.
-13. Allow setting of column alignments in table views.
-14. Add 'setCollection' to Cantata's DBUS interface.
-15. Add 'Collections' and 'Outputs' menus to system tray menu (Linux and
+21. Use '#' for track number column title in table view.
+22. Allow setting of column alignments in table views.
+23. Add 'setCollection' to Cantata's DBUS interface.
+24. Add 'Collections' and 'Outputs' menus to system tray menu (Linux and
     Windows builds only)
-16. Separate title and track number in search model table view.
-17. Show rating in search model table view.
-18. Rename mpd source folder to mpd-interface to help build errors when
+25. Separate title and track number in search model table view.
+26. Show rating in search model table view.
+27. Rename mpd source folder to mpd-interface to help build errors when
     libmpdclient(?) is also installed.
-19. Add option to provide a list of genres which should use composer, and not
+28. Add option to provide a list of genres which should use composer, and not
     album-artist, to group albums.
-20. Fix updating of composer tag.
-21. Fix build with proxy config and Qt5
-23. For Linux builds, if system tray icon is null (becasue QIcon cannot find
+29. Fix updating of composer tag.
+30. Fix build with proxy config and Qt5
+31. For Linux builds, if system tray icon is null (becasue QIcon cannot find
     it) then add icon files manually.
-24. Hide cover, HTTP stream, and top-level folder options under a 'Show All
+32. Hide cover, HTTP stream, and top-level folder options under a 'Show All
     Options' button.
-25. Allow local socket path to start with ~
-26. Ensure consistent order when drag'n'drop from list views as per tree views.
-27. Remove touch friendly setting from builds unless -DENABLE_TOUCH_SUPPORT=ON
+33. Allow local socket path to start with ~
+34. Ensure consistent order when drag'n'drop from list views as per tree views.
+35. Remove touch friendly setting from builds unless -DENABLE_TOUCH_SUPPORT=ON
     is passed to CMake.
-28. Show composer images - see README for details.
-29. Dirble v2 API.
-30. When removing duplicates, take album into account as well as artist and
+36. Dirble v2 API.
+37. When removing duplicates, take album into account as well as artist and
     title.
-31. Show error message if parsing cache file fails.
-32. Resolve TuneIn radio URL's before adding to favourites (if added via TuneIn
+38. Resolve TuneIn radio URL's before adding to favourites (if added via TuneIn
     search).
-33. Use mpd.cantata for DBus service names and not com.googlecode.cantata
-34. Fix OpenBSD build.
+39. Use mpd.cantata for DBus service names and not com.googlecode.cantata
+40. Fix OpenBSD build.
 
 1.5.2
 -----

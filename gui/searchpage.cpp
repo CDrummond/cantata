@@ -54,16 +54,6 @@ SearchPage::SearchPage(QWidget *p)
     statsLabel=new SqueezedTextLabel(this);
     locateAction=new Action(Icon("edit-find"), i18n("Locate In Library"), this);
     view->allowTableView(new SearchTableView(view));
-    view->addAction(StdActions::self()->addToPlayQueueAction);
-    view->addAction(StdActions::self()->replacePlayQueueAction);
-    view->addAction(StdActions::self()->addWithPriorityAction);
-    view->addAction(StdActions::self()->addToStoredPlaylistAction);
-    #ifdef TAGLIB_FOUND
-    #ifdef ENABLE_DEVICES_SUPPORT
-    view->addAction(StdActions::self()->copyToDeviceAction);
-    #endif
-    #endif // TAGLIB_FOUND
-    view->addAction(locateAction);
 
     connect(&model, SIGNAL(searching()), view, SLOT(showSpinner()));
     connect(&model, SIGNAL(searched()), view, SLOT(hideSpinner()));
@@ -84,6 +74,14 @@ SearchPage::SearchPage(QWidget *p)
     MenuButton *menu=new MenuButton(this);
     menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_List << ItemView::Mode_Table));
     init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu << statsLabel);
+
+    view->addAction(StdActions::self()->addToStoredPlaylistAction);
+    #ifdef TAGLIB_FOUND
+    #ifdef ENABLE_DEVICES_SUPPORT
+    view->addAction(StdActions::self()->copyToDeviceAction);
+    #endif
+    #endif // TAGLIB_FOUND
+    view->addAction(locateAction);
 }
 
 SearchPage::~SearchPage()

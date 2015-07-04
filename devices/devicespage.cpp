@@ -67,18 +67,6 @@ DevicesPage::DevicesPage(QWidget *p)
     #endif
     connect(DevicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
     connect(DevicesModel::self()->disconnectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
-    view->addAction(copyAction);
-    view->addAction(StdActions::self()->organiseFilesAction);
-    view->addAction(StdActions::self()->editTagsAction);
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    view->addAction(StdActions::self()->replaygainAction);
-    #endif
-    #ifdef ENABLE_REMOTE_DEVICES
-    view->addSeparator();
-    view->addAction(forgetDeviceAction);
-    #endif
-    view->addSeparator();
-    view->addAction(StdActions::self()->deleteSongsAction);
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(DevicesModel::self(), SIGNAL(updated(QModelIndex)), this, SLOT(updated(QModelIndex)));
@@ -113,6 +101,19 @@ DevicesPage::DevicesPage(QWidget *p)
     menu->addAction(forgetDeviceAction);
     #endif
     init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu, QList<QWidget *>() << copyToLibraryButton);
+
+    view->addAction(copyAction);
+    view->addAction(StdActions::self()->organiseFilesAction);
+    view->addAction(StdActions::self()->editTagsAction);
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    view->addAction(StdActions::self()->replaygainAction);
+    #endif
+    #ifdef ENABLE_REMOTE_DEVICES
+    view->addSeparator();
+    view->addAction(forgetDeviceAction);
+    #endif
+    view->addSeparator();
+    view->addAction(StdActions::self()->deleteSongsAction);
 }
 
 DevicesPage::~DevicesPage()

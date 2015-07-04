@@ -105,6 +105,16 @@ void TrayItem::showMessage(const QString &title, const QString &text, const QIma
     #endif
 }
 
+static Action * copyAction(Action *orig)
+{
+    Action *newAction=new Action(orig->parent());
+    newAction->setText(Utils::strippedText(orig->text()));
+    newAction->setIcon(orig->icon());
+    QObject::connect(newAction, SIGNAL(triggered()), orig, SIGNAL(triggered()));
+    QObject::connect(newAction, SIGNAL(triggered(bool)), orig, SIGNAL(triggered(bool)));
+    return newAction;
+}
+
 void TrayItem::setup()
 {
     #ifndef Q_OS_MAC
@@ -156,7 +166,7 @@ void TrayItem::setup()
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->restoreAction);
     trayItemMenu->addSeparator();
-    trayItemMenu->addAction(mw->quitAction);
+    trayItemMenu->addAction(copyAction(mw->quitAction));
 
     connect(trayItem, SIGNAL(scrollRequested(int, Qt::Orientation)), this, SLOT(trayItemScrollRequested(int, Qt::Orientation)));
     connect(trayItem, SIGNAL(secondaryActivateRequested(const QPoint &)), mw, SLOT(playPauseTrack()));
@@ -183,7 +193,7 @@ void TrayItem::setup()
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->restoreAction);
     trayItemMenu->addSeparator();
-    trayItemMenu->addAction(mw->quitAction);
+    trayItemMenu->addAction(copyAction(mw->quitAction));
     trayItem->setContextMenu(trayItemMenu);
     QIcon icon=QIcon::fromTheme(QIcon::hasThemeIcon("cantata-panel") ? "cantata-panel" : "cantata");
     #if !defined Q_OS_MAC && !defined Q_OS_WIN

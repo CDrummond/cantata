@@ -546,7 +546,7 @@ QString Settings::playQueueBackgroundFile()
 
 bool Settings::playQueueConfirmClear()
 {
-    return cfg.get("playQueueConfirmClear", true);
+    return cfg.get("playQueueConfirmClear", false);
 }
 
 bool Settings::playQueueSearch()

@@ -272,7 +272,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop Others"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), HIDE_MENU_ICON(Icons::self()->addRadioStreamIcon));
-    promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), HIDE_MENU_ICON(Icons::self()->clearListIcon));
+    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), HIDE_MENU_ICON(Icons::self()->clearListIcon));
     centerPlayQueueAction = ActionCollection::get()->createAction("centerplaylist", i18n("Center On Current Track"), isRightToLeft() ? "go-previous" : "go-next");
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), HIDE_MENU_ICON_NAME("view-media-playlist"));
     expandInterfaceAction->setCheckable(true);
@@ -308,13 +308,9 @@ MainWindow::MainWindow(QWidget *parent)
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
     addAction(collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All")));
     collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
-    clearPlayQueueAction = ActionCollection::get()->createAction("confimclearplaylist", i18n("Remove All Songs"), HIDE_MENU_ICON(Icons::self()->clearListIcon));
-    clearPlayQueueAction->setShortcut(Qt::AltModifier+Qt::Key_Return);
     cancelAction = ActionCollection::get()->createAction("cancel", i18n("Cancel"), Icons::self()->cancelIcon);
     cancelAction->setShortcut(Qt::AltModifier+Qt::Key_Escape);
     connect(cancelAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
-    connect(clearPlayQueueAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
-    connect(clearPlayQueueAction, SIGNAL(triggered()), this, SLOT(clearPlayQueue()));
 
     StdActions::self()->playPauseTrackAction->setEnabled(false);
     StdActions::self()->nextTrackAction->setEnabled(false);
@@ -340,11 +336,11 @@ MainWindow::MainWindow(QWidget *parent)
     stopTrackButton->setMenu(stopMenu);
     stopTrackButton->setPopupMode(QToolButton::DelayedPopup);
 
-    promptClearPlayQueueAction->setEnabled(false);
+    clearPlayQueueAction->setEnabled(false);
     centerPlayQueueAction->setEnabled(false);
     StdActions::self()->savePlayQueueAction->setEnabled(false);
     addStreamToPlayQueueAction->setEnabled(false);
-    clearPlayQueueButton->setDefaultAction(promptClearPlayQueueAction);
+    clearPlayQueueButton->setDefaultAction(clearPlayQueueAction);
     savePlayQueueButton->setDefaultAction(StdActions::self()->savePlayQueueAction);
     centerPlayQueueButton->setDefaultAction(centerPlayQueueAction);
     randomButton->setDefaultAction(randomPlayQueueAction);
@@ -654,7 +650,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
         #endif
         menu=new QMenu(i18n("&Queue"), this);
-        addMenuAction(menu, promptClearPlayQueueAction);
+        addMenuAction(menu, clearPlayQueueAction);
         addMenuAction(menu, StdActions::self()->savePlayQueueAction);
         addMenuAction(menu, addStreamToPlayQueueAction);
         menu->addSeparator();
@@ -737,7 +733,7 @@ MainWindow::MainWindow(QWidget *parent)
     sep->setSeparator(true);
     playQueue->addAction(sep);
     playQueue->addAction(playQueueModel.removeDuplicatesAct());
-    playQueue->addAction(promptClearPlayQueueAction);
+    playQueue->addAction(clearPlayQueueAction);
     playQueue->addAction(cropPlayQueueAction);
     playQueue->addAction(StdActions::self()->savePlayQueueAction);
     playQueue->addAction(addStreamToPlayQueueAction);
@@ -830,8 +826,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->addToPlayQueueAction, SIGNAL(triggered()), this, SLOT(addToPlayQueue()));
     connect(StdActions::self()->replacePlayQueueAction, SIGNAL(triggered()), this, SLOT(replacePlayQueue()));
     connect(playQueue->removeFromAct(), SIGNAL(triggered()), this, SLOT(removeFromPlayQueue()));
-    connect(promptClearPlayQueueAction, SIGNAL(triggered()), playQueueSearchWidget, SLOT(clear()));
-    connect(promptClearPlayQueueAction, SIGNAL(triggered()), this, SLOT(promptClearPlayQueue()));
+    connect(clearPlayQueueAction, SIGNAL(triggered()), playQueueSearchWidget, SLOT(clear()));
+    connect(clearPlayQueueAction, SIGNAL(triggered()), this, SLOT(clearPlayQueue()));
     connect(centerPlayQueueAction, SIGNAL(triggered()), this, SLOT(centerPlayQueue()));
     connect(cropPlayQueueAction, SIGNAL(triggered()), this, SLOT(cropPlayQueue()));
     connect(songInfoAction, SIGNAL(triggered()), this, SLOT(showSongInfo()));
@@ -1636,7 +1632,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs, bool isComplete)
     StdActions::self()->nextTrackAction->setEnabled(StdActions::self()->stopPlaybackAction->isEnabled() && songs.count()>1);
     StdActions::self()->prevTrackAction->setEnabled(StdActions::self()->stopPlaybackAction->isEnabled() && songs.count()>1);
     StdActions::self()->savePlayQueueAction->setEnabled(!songs.isEmpty());
-    promptClearPlayQueueAction->setEnabled(!songs.isEmpty());
+    clearPlayQueueAction->setEnabled(!songs.isEmpty());
 
     int topRow=-1;
     QModelIndex topIndex=playQueueModel.lastCommandWasUnodOrRedo() ? playQueue->indexAt(QPoint(0, 0)) : QModelIndex();
@@ -1843,28 +1839,15 @@ void MainWindow::playQueueItemActivated(const QModelIndex &index)
     emit startPlayingSongId(playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(index).row()));
 }
 
-void MainWindow::promptClearPlayQueue()
-{
-    if (Settings::self()->playQueueConfirmClear()) {
-        int btnLayout=style()->styleHint(QStyle::SH_DialogButtonLayout);
-        if (QDialogButtonBox::GnomeLayout==btnLayout || QDialogButtonBox::MacLayout==btnLayout) {
-            messageWidget->setActions(QList<QAction*>() << cancelAction << clearPlayQueueAction);
-        } else {
-            messageWidget->setActions(QList<QAction*>() << clearPlayQueueAction << cancelAction);
-        }
-        messageWidget->setWarning(i18n("Remove all songs from play queue?"), false);
-        expand();
-    } else {
-        clearPlayQueue();
-    }
-}
-
 void MainWindow::clearPlayQueue()
 {
-    if (dynamicLabel->isVisible()) {
-        Dynamic::self()->stop(true);
-    } else {
-        playQueueModel.removeAll();
+    if (!Settings::self()->playQueueConfirmClear() ||
+        MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Remove all songs from play queue?"))) {
+        if (dynamicLabel->isVisible()) {
+            Dynamic::self()->stop(true);
+        } else {
+            playQueueModel.removeAll();
+        }
     }
 }
 

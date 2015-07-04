@@ -67,6 +67,7 @@ private Q_SLOTS:
     void showArtistImagesChanged(bool u);
 
 private:
+    void setView(int v);
     void doSearch();
     void controlActions();
 

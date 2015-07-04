@@ -282,6 +282,12 @@ void LibraryPage::itemDoubleClicked(const QModelIndex &)
     }
 }
 
+void LibraryPage::setView(int v)
+{
+    SinglePageWidget::setView(v);
+    showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel() && ItemView::Mode_IconTop!=view->viewMode());
+}
+
 void LibraryPage::groupByChanged()
 {
     QAction *act=qobject_cast<QAction *>(sender());
@@ -298,7 +304,7 @@ void LibraryPage::groupByChanged()
     MpdLibraryModel::self()->setTopLevel((SqlLibraryModel::Type)mode);
     albumAlbumSortAction->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
     libraryAlbumSortAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
-    showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
+    showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel() && ItemView::Mode_IconTop!=view->viewMode());
 
     config.endGroup();
     config.beginGroup(SqlLibraryModel::groupingStr(MpdLibraryModel::self()->topLevel()));

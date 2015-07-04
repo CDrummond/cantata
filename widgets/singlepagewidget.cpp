@@ -88,6 +88,7 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
         addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
         right.append(addToPlayQueue);
         view->addAction(StdActions::self()->addToPlayQueueAction);
+        view->addAction(StdActions::self()->addWithPriorityAction);
     }
 
     if (flags&ReplacePlayQueue) {
@@ -103,10 +104,6 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
         refreshButton->setDefaultAction(refreshAction);
         connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
         left.append(refreshButton);
-    }
-
-    if (flags&AddToPlayQueue) {
-        view->addAction(StdActions::self()->addWithPriorityAction);
     }
 
     connect(this, SIGNAL(searchItems()), this, SLOT(doSearch()));

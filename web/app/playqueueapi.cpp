@@ -183,7 +183,7 @@ HttpRequestHandler::HandleStatus PlayQueueApi::handle(HttpRequest *request, Http
             QString albumId=request->parameter("albumId");
             QString sort=request->parameter("sort");
             DBUG << "other params" << artistId << albumId << genre << sort;
-            QList<Song> songs=MpdLibraryDb::self()->getTracks(artistId, albumId, genre, sort);
+            QList<Song> songs=MpdLibraryDb::self()->getTracks(artistId, albumId, genre, LibraryDb::toAlbumSort(sort));
             foreach (const Song &s, songs) {
                 files.append(s.file);
             }

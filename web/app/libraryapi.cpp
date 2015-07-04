@@ -138,7 +138,7 @@ HttpRequestHandler::HandleStatus LibraryApi::handle(HttpRequest *request, HttpRe
             QString artistId=request->parameter("artistId");
             QString sort=request->parameter("sort");
             DBUG << "params" << artistId << genre << sort;
-            response->write(QJsonDocument::fromVariant(toVariant(MpdLibraryDb::self()->getAlbums(artistId, genre, sort))).toJson());
+            response->write(QJsonDocument::fromVariant(toVariant(MpdLibraryDb::self()->getAlbums(artistId, genre, LibraryDb::toAlbumSort(sort)))).toJson());
         } else if (path=="/api/v1/library/tracks") {
             jsonHeaders(response);
             QString genre=request->parameter("genre");
@@ -146,7 +146,7 @@ HttpRequestHandler::HandleStatus LibraryApi::handle(HttpRequest *request, HttpRe
             QString albumId=request->parameter("albumId");
             QString sort=request->parameter("sort");
             DBUG << "params" << artistId << albumId << genre << sort;
-            response->write(QJsonDocument::fromVariant(toVariant(MpdLibraryDb::self()->getTracks(artistId, albumId, genre, sort))).toJson());
+            response->write(QJsonDocument::fromVariant(toVariant(MpdLibraryDb::self()->getTracks(artistId, albumId, genre, LibraryDb::toAlbumSort(sort)))).toJson());
         } else {
             return Status_BadRequest;
         }

@@ -15,13 +15,9 @@ app.controller('NavbarController', ['$scope', '$rootScope', '$location', '$http'
         $scope.libraryGroupingOptions = [{name: 'Genres', value: 'genres'}, {name: 'Artists', value: 'artists'}, {name: 'Albums', value: 'albums'}];
         locker.bind($rootScope, 'artistAlbumSort', 'year');
         $scope.artistAlbumSortOptions = [{name: 'Year', value: 'year'}, {name: 'Name', value: 'name'}];
-        locker.bind($rootScope, 'albumSort', 'al-ar-yr');
-        $scope.albumSortOptions = [{name: 'Album, Artist, Year', value: 'al-ar-yr'},
-                                   {name: 'Album, Year, Artist', value: 'al-yr-ar'},
-                                   {name: 'Artist, Album, Year', value: 'ar-al-yr'},
-                                   {name: 'Artist, Year, Album', value: 'ar-yr-al'},
-                                   {name: 'Year, Album, Artist', value: 'yr-al-ar'},
-                                   {name: 'Year, Artist, Album', value: 'yr-ar-al'}];
+        locker.bind($rootScope, 'albumSort', 'name');
+        $scope.albumSortOptions = [{name: 'Name', value: 'name'}, {name: 'Artist', value: 'artist'},
+                                   {name: 'Year', value: 'year'}, {name: 'Modified Date', value: 'modified'}];
 
         $scope.configure = function() {
             var temp = '<form novalidate="novalidate"" style="margin:1em">' +

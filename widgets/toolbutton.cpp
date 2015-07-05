@@ -98,7 +98,8 @@ void ToolButton::paintEvent(QPaintEvent *e)
 
 QSize ToolButton::sizeHint() const
 {
-    if (!hideMenuIndicator) {
+    if (!sh.isValid()) {
+        ensurePolished();
         QSize sz;
         #ifdef UNITY_MENU_HACK
         if (!icon.isNull()) {
@@ -111,30 +112,20 @@ QSize ToolButton::sizeHint() const
         } else
         #endif
             sz = QToolButton::sizeHint();
-        return Utils::touchFriendly() ? QSize(sz.width()*TouchProxyStyle::constScaleFactor, sz.height()) : sz;
-    }
+        sh=Utils::touchFriendly() ? QSize(sz.width()*TouchProxyStyle::constScaleFactor, sz.height()) : sz;
 
-    if (sh.isValid()) {
-        return sh;
-    }
+        if (hideMenuIndicator && sh.width()>sh.height()) {
+            sh.setWidth(sh.height());
+        }
 
-    ensurePolished();
-
-    if (menu()) {
-        QStyleOptionToolButton opt;
-        initStyleOption(&opt);
-        opt.features=QStyleOptionToolButton::None;
-        sh = style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.iconSize, this).expandedTo(QApplication::globalStrut());
-    } else {
-        sh=QToolButton::sizeHint();
+        bool touchFriendly=Utils::touchFriendly();
+        sh=QSize(qMax(sh.width(), sh.height())*(touchFriendly ? TouchProxyStyle::constScaleFactor : 1.0), touchFriendly ? sh.height() : qMax(sh.width(), sh.height()));
+        #ifdef Q_OS_MAC
+        if (!touchFriendly) {
+            sh=QSize(qMax(sh.width(), 22), qMax(sh.height(), 20));
+        }
+        #endif
     }
-    bool touchFriendly=Utils::touchFriendly();
-    sh=QSize(qMax(sh.width(), sh.height())*(touchFriendly ? TouchProxyStyle::constScaleFactor : 1.0), touchFriendly ? sh.height() : qMax(sh.width(), sh.height()));
-    #ifdef Q_OS_MAC
-    if (!touchFriendly) {
-        sh=QSize(qMax(sh.width(), 22), qMax(sh.height(), 20));
-    }
-    #endif
     return sh;
 }
 

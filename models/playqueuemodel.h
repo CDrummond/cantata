@@ -84,6 +84,8 @@ public:
     static QString headerText(int col);
     #endif
 
+    static PlayQueueModel * self();
+
     PlayQueueModel(QObject *parent = 0);
     ~PlayQueueModel();
     QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const;

@@ -39,9 +39,10 @@ class KToggleAction;
 #include <QToolButton>
 #include <QStringList>
 #include "ui_mainwindow.h"
-#include "models/playqueuemodel.h"
 #include "models/playqueueproxymodel.h"
+#include "models/playqueuemodel.h"
 #include "mpd-interface/song.h"
+#include "mpd-interface/mpdstatus.h"
 #include "config.h"
 
 class Action;
@@ -151,7 +152,7 @@ public Q_SLOTS:
     void setCollection(const QString &collection);
     void hideWindow();
     void restoreWindow();
-    void load(const QStringList &urls) { playQueueModel.load(urls); }
+    void load(const QStringList &urls) { PlayQueueModel::self()->load(urls); }
     #ifdef ENABLE_KDE_SUPPORT
     void configureShortcuts();
     void saveShortcuts();
@@ -187,7 +188,7 @@ public Q_SLOTS:
     void playQueueItemActivated(const QModelIndex &);
     void clearPlayQueue();
     void centerPlayQueue();
-    void removeFromPlayQueue() { playQueueModel.remove(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes())); }
+    void removeFromPlayQueue() { PlayQueueModel::self()->remove(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes())); }
     void replacePlayQueue() { addToPlayQueue(true); }
     void addToPlayQueue() { addToPlayQueue(false); }
     void addWithPriority();
@@ -197,7 +198,7 @@ public Q_SLOTS:
     void addStreamToPlayQueue();
     void removeItems();
     void checkMpdAccessibility();
-    void cropPlayQueue() { playQueueModel.crop(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes())); }
+    void cropPlayQueue() { PlayQueueModel::self()->crop(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes())); }
     void updatePlayQueueStats(int songs, quint32 time);
     void expandOrCollapse(bool saveCurrentSize=true);
     void showSongInfo();
@@ -249,7 +250,7 @@ private:
     void updateStatus(MPDStatus * const status);
     void readSettings();
     void addToPlayQueue(bool replace, quint8 priority=0);
-    bool currentIsStream() const { return playQueueModel.rowCount() && -1!=current.id && current.isStream(); }
+    bool currentIsStream() const { return PlayQueueModel::self()->rowCount() && -1!=current.id && current.isStream(); }
     void updateWindowTitle();
     void showTab(int page) { tabWidget->setCurrentIndex(page); }
     void updateNextTrack(int nextTrackId);
@@ -269,7 +270,6 @@ private:
     int prevPage;
     MPDState lastState;
     qint32 lastSongId;
-    PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
     #ifdef ENABLE_KDE_SUPPORT

@@ -38,6 +38,7 @@
 #include "widgets/itemview.h"
 #include "widgets/servicestatuslabel.h"
 #include "models/digitallyimported.h"
+#include "models/playqueuemodel.h"
 #include "digitallyimportedsettings.h"
 #include <QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
@@ -58,6 +59,9 @@ static const char *constNameProperty="name";
 StreamsPage::StreamsPage(QWidget *p)
     : StackedPageWidget(p)
 {
+    qRegisterMetaType<StreamItem>("StreamItem");
+    qRegisterMetaType<QList<StreamItem> >("QList<StreamItem>");
+
     browse=new StreamsBrowsePage(this);
     addWidget(browse);
     connect(browse, SIGNAL(close()), this, SIGNAL(close()));
@@ -65,6 +69,13 @@ StreamsPage::StreamsPage(QWidget *p)
     search=new StreamSearchPage(this);
     addWidget(search);
     connect(search, SIGNAL(close()), this, SLOT(closeSearch()));
+
+    disconnect(browse, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
+    disconnect(search, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
+    connect(browse, SIGNAL(add(const QStringList &, bool, quint8)), PlayQueueModel::self(), SLOT(addItems(const QStringList &, bool, quint8)));
+    connect(search, SIGNAL(add(const QStringList &, bool, quint8)), PlayQueueModel::self(), SLOT(addItems(const QStringList &, bool, quint8)));
+    connect(StreamsModel::self()->addToFavouritesAct(), SIGNAL(triggered()), this, SLOT(addToFavourites()));
+    connect(search, SIGNAL(addToFavourites(QList<StreamItem>)), browse, SLOT(addToFavourites(QList<StreamItem>)));
 }
 
 StreamsPage:: ~StreamsPage()
@@ -79,6 +90,16 @@ void StreamsPage::searchForStreams()
 void StreamsPage::closeSearch()
 {
     setCurrentWidget(browse);
+}
+
+void StreamsPage::addToFavourites()
+{
+    QWidget *w=currentWidget();
+    if (browse==w) {
+        browse->addToFavourites();
+    } else if (search==w) {
+        search->addToFavourites();
+    }
 }
 
 StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
@@ -96,7 +117,6 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(addAction, SIGNAL(triggered()), this, SLOT(add()));
     connect(StreamsModel::self()->addBookmarkAct(), SIGNAL(triggered()), this, SLOT(addBookmark()));
-    connect(StreamsModel::self()->addToFavouritesAct(), SIGNAL(triggered()), this, SLOT(addToFavourites()));
     connect(StreamsModel::self()->configureDiAct(), SIGNAL(triggered()), this, SLOT(configureDi()));
     connect(StreamsModel::self()->reloadAct(), SIGNAL(triggered()), this, SLOT(reload()));
     connect(editAction, SIGNAL(triggered()), this, SLOT(edit()));
@@ -321,10 +341,18 @@ void StreamsBrowsePage::addToFavourites()
             items.append(item);
         }
     }
-
-    int added=0;
+    QList<StreamItem> itemsToAdd;
     foreach (const StreamsModel::Item *item, items) {
-        QUrl url(item->url);
+        itemsToAdd.append(StreamItem(item->url, item->modifiedName()));
+    }
+    addToFavourites(itemsToAdd);
+}
+
+void StreamsBrowsePage::addToFavourites(const QList<StreamItem> &items)
+{
+    int added=0;
+    foreach (const StreamItem item, items) {
+        QUrl url(item.url);
         #if QT_VERSION < 0x050000
         QUrl &query=url;
         #else
@@ -342,11 +370,11 @@ void StreamsBrowsePage::addToFavourites()
         }
         if (urlStr.startsWith(QLatin1String("http://opml.radiotime.com/Tune.ashx"))) {
             NetworkJob *job=NetworkAccessManager::self()->get(urlStr, 5000);
-            job->setProperty(constNameProperty, item->modifiedName());
+            job->setProperty(constNameProperty, item.modifiedName);
             connect(job, SIGNAL(finished()), this, SLOT(tuneInResolved()));
             resolveJobs.insert(job);
             added++;
-        } else if (StreamsModel::self()->addToFavourites(urlStr, item->modifiedName())) {
+        } else if (StreamsModel::self()->addToFavourites(urlStr, item.modifiedName)) {
             added++;
         }
     }
@@ -583,13 +611,13 @@ StreamSearchPage::StreamSearchPage(QWidget *p)
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
     view->setMode(ItemView::Mode_DetailedTree);
     init(ReplacePlayQueue);
+    connect(StreamsModel::self(), SIGNAL(addedToFavourites(QString)), SLOT(addedToFavourites(QString)));
 }
 
 StreamSearchPage::~StreamSearchPage()
 {
 
 }
-
 
 void StreamSearchPage::showEvent(QShowEvent *e)
 {
@@ -607,4 +635,49 @@ void StreamSearchPage::headerClicked(int level)
 void StreamSearchPage::doSearch()
 {
     model.search(view->searchText().trimmed(), false);
+}
+
+void StreamSearchPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+{
+    Q_UNUSED(name)
+    QModelIndexList indexes=view->selectedIndexes();
+    if (indexes.isEmpty()) {
+        return;
+    }
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, indexes) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    QStringList files=StreamsModel::self()->filenames(mapped, true);
+
+    if (!files.isEmpty()) {
+        emit add(files, replace, priorty);
+        view->clearSelection();
+    }
+}
+
+void StreamSearchPage::addToFavourites()
+{
+    QModelIndexList selected = view->selectedIndexes();
+
+    QList<const StreamsModel::Item *> items;
+
+    foreach (const QModelIndex &i, selected) {
+        QModelIndex mapped=proxy.mapToSource(i);
+        const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
+        if (!item->isCategory() && item->parent && !item->parent->isFavourites()) {
+            items.append(item);
+        }
+    }
+    QList<StreamItem> itemsToAdd;
+    foreach (const StreamsModel::Item *item, items) {
+        itemsToAdd.append(StreamItem(item->url, item->modifiedName()));
+    }
+    emit addToFavourites(itemsToAdd);
+}
+
+void StreamSearchPage::addedToFavourites(const QString &name)
+{
+    view->showMessage(i18n("Added '%1'' to favorites", name), constMsgDisplayTime);
 }

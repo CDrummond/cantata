@@ -47,6 +47,7 @@ public:
     QStringList selectedFiles(bool allowPlaylists) const;
     QList<Song> selectedSongs(bool allowPlaylists) const;
     void addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty);
+    void removeItems();
 
 Q_SIGNALS:
     void close();

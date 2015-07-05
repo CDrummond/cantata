@@ -38,6 +38,13 @@ class NetworkReply;
 class ServiceStatusLabel;
 class StreamsSettings;
 
+struct StreamItem
+{
+    StreamItem(const QString &u=QString(), const QString &mn=QString()) : url(u), modifiedName(mn)  { }
+    QString url;
+    QString modifiedName;
+};
+
 class StreamsBrowsePage : public SinglePageWidget
 {
     Q_OBJECT
@@ -59,6 +66,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     void removeItems();
     void controlActions();
+    void addToFavourites(const QList<StreamItem> &items);
 
 private Q_SLOTS:
     void configure();
@@ -68,7 +76,6 @@ private Q_SLOTS:
     void exportXml();
     void add();
     void addBookmark();
-    void addToFavourites();
     void reload();
     void edit();
     void itemDoubleClicked(const QModelIndex &index);
@@ -81,6 +88,7 @@ private Q_SLOTS:
 private:
     void doSearch();
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
+    void addToFavourites();
 
 private:
     ServiceStatusLabel *diStatusLabel;
@@ -92,6 +100,7 @@ private:
     StreamsProxyModel proxy;
     QSet<NetworkJob *> resolveJobs;
     StreamsSettings *settings;
+    friend class StreamsPage;
 };
 
 class StreamSearchPage : public SinglePageWidget
@@ -102,15 +111,22 @@ public:
     virtual ~StreamSearchPage();
     void showEvent(QShowEvent *e);
 
+Q_SIGNALS:
+    void addToFavourites(const QList<StreamItem> &items);
+
 private Q_SLOTS:
     void headerClicked(int level);
+    void addedToFavourites(const QString &name);
 
 private:
     void doSearch();
+    void addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty);
+    void addToFavourites();
 
 private:
     StreamsProxyModel proxy;
     StreamSearchModel model;
+    friend class StreamsPage;
 };
 
 class StreamsPage : public StackedPageWidget
@@ -123,6 +139,7 @@ public:
 private Q_SLOTS:
     void searchForStreams();
     void closeSearch();
+    void addToFavourites();
 
 private:
     StreamsBrowsePage *browse;

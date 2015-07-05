@@ -119,6 +119,8 @@ section "install"
     file "config\weblinks.xml"
     setOutPath $INSTDIR\iconengines
     file "iconengines\qsvgicon4.dll"
+    setOutPath $INSTDIR\sqldrivers
+    file "sqldrivers\qsqlite4.dll"
     setOutPath $INSTDIR\icons
     file "icons\bbc.svg"
     file "icons\cbc.svg"
@@ -465,6 +467,7 @@ section "uninstall"
     delete "$INSTDIR\config\weblinks.xml"
     delete "$INSTDIR\helpers\cantata-tags.exe"
     delete "$INSTDIR\iconengines\qsvgicon4.dll"
+    delete "$INSTDIR\sqldrivers\qsqlite4.dll"
     delete "$INSTDIR\icons\bbc.svg"
     delete "$INSTDIR\icons\cbc.svg"
     delete "$INSTDIR\icons\npr.svg"
@@ -744,6 +747,7 @@ section "uninstall"
     rmDir $INSTDIR\config
     rmDir $INSTDIR\helpers
     rmDir $INSTDIR\iconengines
+    rmDir $INSTDIR\sqldrivers
     rmDir $INSTDIR\icons\oxygen\128x128\categories
     rmDir $INSTDIR\icons\oxygen\128x128\devices
     rmDir $INSTDIR\icons\oxygen\128x128

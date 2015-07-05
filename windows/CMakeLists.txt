@@ -25,6 +25,9 @@ if (ENABLE_QT5)
     # Qt windows platform plugin...
     install(FILES ${QT_PLUGINS_DIR}/platforms/qwindows.dll DESTINATION ${CMAKE_INSTALL_PREFIX}/platforms/)
 
+    # Qt SQL driver...
+    install(FILES ${QT_PLUGINS_DIR}/sqldrivers/qsqlite.dll DESTINATION ${CMAKE_INSTALL_PREFIX}/sqldrivers/)
+
     # Qt, taglib, and zlib libraries...
     set(EXTRA_WIN_LIBS ${EXTRA_WIN_LIBS}
         ${QT_BINARY_DIR}/Qt5Core.dll ${QT_BINARY_DIR}/Qt5Gui.dll ${QT_BINARY_DIR}/Qt5Network.dll ${QT_BINARY_DIR}/Qt5Svg.dll ${QT_BINARY_DIR}/Qt5Xml.dll
@@ -42,6 +45,9 @@ else (ENABLE_QT5)
 
     # Qt iconengines...
     install(FILES ${QT_PLUGINS_DIR}/iconengines/qsvgicon4.dll DESTINATION ${CMAKE_INSTALL_PREFIX}/iconengines/)
+
+    # Qt SQL driver...
+    install(FILES ${QT_PLUGINS_DIR}/sqldrivers/qsqlite4.dll DESTINATION ${CMAKE_INSTALL_PREFIX}/sqldrivers/)
 
     # Qt, taglib, and zlib libraries...
     set(EXTRA_WIN_LIBS ${EXTRA_WIN_LIBS}

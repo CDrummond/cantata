@@ -140,6 +140,14 @@ void ShortcutsSettingsWidget::toggledCustomOrDefault() {
     _shortcutsModel->setData(index, QKeySequence());
   }
   setWidgetStates();
+
+  // If custom is selected, and the action has no short-cut, setWidgetStates() re-checks
+  // the default radio. This is a bit counter-intuitive, so ensure whichever radio caused
+  // the toggle, that it is checked.
+  QRadioButton *btn=qobject_cast<QRadioButton *>(sender());
+  if (btn) {
+      btn->setChecked(true);
+  }
 }
 
 void ShortcutsSettingsWidget::save() {

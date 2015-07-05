@@ -131,8 +131,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #ifdef ENABLE_DEVICES_SUPPORT
     addView(i18n("Devices - UMS, MTP (e.g. Android), and AudioCDs"), QLatin1String("DevicesPage"));
     #else
-    REMOVE(devicesView)
-    REMOVE(devicesViewLabel)
     REMOVE(showDeleteAction)
     #endif
     addView(i18n("Search (via MPD)"), QLatin1String("SearchPage"));

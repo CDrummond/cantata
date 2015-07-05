@@ -26,6 +26,9 @@
 #include "support/localize.h"
 #include "support/utils.h"
 #include "support/icon.h"
+#ifdef Q_OS_MAC
+#include "support/osxstyle.h"
+#endif
 #include "gui/covers.h"
 #include <QAction>
 #include <QImage>

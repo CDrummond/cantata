@@ -48,6 +48,8 @@ void StackedPageWidget::setView(int v)
     for (int i=0; i<count(); ++i) {
         if (dynamic_cast<SinglePageWidget *>(widget(i))) {
             static_cast<SinglePageWidget *>(widget(i))->setView(v);
+        } else if (dynamic_cast<StackedPageWidget *>(widget(i))) {
+            static_cast<StackedPageWidget *>(widget(i))->setView(v);
         }
     }
 }
@@ -57,29 +59,52 @@ void StackedPageWidget::focusSearch()
     QWidget *w=currentWidget();
     if (dynamic_cast<SinglePageWidget *>(w)) {
         static_cast<SinglePageWidget *>(w)->focusSearch();
+    } else if (dynamic_cast<StackedPageWidget *>(w)) {
+        static_cast<StackedPageWidget *>(w)->focusSearch();
     }
 }
 
 QStringList StackedPageWidget::selectedFiles(bool allowPlaylists) const
 {
-    if (!dynamic_cast<SinglePageWidget *>(currentWidget())) {
-        return QStringList();
+    QWidget *w=currentWidget();
+    if (dynamic_cast<SinglePageWidget *>(w)) {
+        return static_cast<SinglePageWidget *>(w)->selectedFiles(allowPlaylists);
     }
-    return static_cast<SinglePageWidget *>(currentWidget())->selectedFiles(allowPlaylists);
+    if (dynamic_cast<StackedPageWidget *>(w)) {
+        return static_cast<StackedPageWidget *>(w)->selectedFiles(allowPlaylists);
+    }
+    return QStringList();
 }
 
 QList<Song> StackedPageWidget::selectedSongs(bool allowPlaylists) const
 {
-    if (!dynamic_cast<SinglePageWidget *>(currentWidget())) {
-        return QList<Song>();
+    QWidget *w=currentWidget();
+    if (dynamic_cast<SinglePageWidget *>(w)) {
+        return static_cast<SinglePageWidget *>(w)->selectedSongs(allowPlaylists);
     }
-    return static_cast<SinglePageWidget *>(currentWidget())->selectedSongs(allowPlaylists);
+    if (dynamic_cast<StackedPageWidget *>(w)) {
+        return static_cast<StackedPageWidget *>(w)->selectedSongs(allowPlaylists);
+    }
+    return QList<Song>();
 }
 
 void StackedPageWidget::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
-    if (!dynamic_cast<SinglePageWidget *>(currentWidget())) {
-        return;
+    QWidget *w=currentWidget();
+    if (dynamic_cast<SinglePageWidget *>(w)) {
+        return static_cast<SinglePageWidget *>(w)->addSelectionToPlaylist(name, replace, priorty);
     }
-    return static_cast<SinglePageWidget *>(currentWidget())->addSelectionToPlaylist(name, replace, priorty);
+    if (dynamic_cast<StackedPageWidget *>(w)) {
+        return static_cast<StackedPageWidget *>(w)->addSelectionToPlaylist(name, replace, priorty);
+    }
+}
+
+void StackedPageWidget::removeItems()
+{
+    QWidget *w=currentWidget();
+    if (dynamic_cast<SinglePageWidget *>(w)) {
+        static_cast<SinglePageWidget *>(w)->removeItems();
+    } else if (dynamic_cast<StackedPageWidget *>(w)) {
+        static_cast<StackedPageWidget *>(w)->removeItems();
+    }
 }

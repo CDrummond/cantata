@@ -40,6 +40,7 @@
 #include "config.h"
 #include "support/action.h"
 #include "support/actioncollection.h"
+#include "support/globalstatic.h"
 #include "gui/covers.h"
 #include "widgets/groupedview.h"
 #include "roles.h"
@@ -63,6 +64,8 @@
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
 #endif
+
+GLOBAL_STATIC(PlayQueueModel, instance)
 
 #ifndef ENABLE_UBUNTU
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");

@@ -175,7 +175,7 @@ TouchProxyStyle::TouchProxyStyle(int modView, bool touchSpin, bool gtkOverlaySty
     } else {
         sbarType=SB_Standard;
     }
-    setModViewFrame(modView && (SB_Gtk==sbarType || !qApp->style()->styleHint(SH_ScrollView_FrameOnlyAroundContents, 0, 0, 0)) ? modView : 0);
+    setModifyViewFrame(modView && (SB_Gtk==sbarType || !qApp->style()->styleHint(SH_ScrollView_FrameOnlyAroundContents, 0, 0, 0)) ? modView : 0);
 }
 
 TouchProxyStyle::~TouchProxyStyle()

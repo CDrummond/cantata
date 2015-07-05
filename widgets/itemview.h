@@ -188,6 +188,7 @@ private:
     void collapseToLevel();
     QAction * getAction(const QModelIndex &index);
     void setTitle();
+    void controlViewFrame();
 
 private:
     QTimer *searchTimer;

@@ -48,9 +48,13 @@ public:
     QList<Song> selectedSongs(bool allowPlaylists) const;
     void addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty);
     void removeItems();
+    void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
     void close();
+
+private:
+    bool shown;
 };
 
 #endif

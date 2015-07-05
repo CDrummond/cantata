@@ -38,8 +38,9 @@ public:
     };
 
     ProxyStyle(int modView=VF_None) : modViewFrame(modView) { }
-
-    void setModViewFrame(int modView) { modViewFrame=modView; }
+    virtual ~ProxyStyle() { }
+    void setModifyViewFrame(int modView) { modViewFrame=modView; }
+    int modifyViewFrame() const { return modViewFrame; }
     void polish(QPalette &pal) { QProxyStyle::polish(pal); }
     void polish(QApplication *app) { QProxyStyle::polish(app); }
     void polish(QWidget *widget);

@@ -644,6 +644,7 @@ void ItemView::alwaysShowHeader()
     title->setVisible(true);
     title->setProperty(constAlwaysShowProp, true);
     setTitle();
+    controlViewFrame();
 }
 
 void ItemView::load(Configuration &config)
@@ -748,6 +749,7 @@ void ItemView::setMode(Mode m)
     searchWidget->setText(QString());
     if (!title->property(constAlwaysShowProp).toBool()) {
         title->setVisible(false);
+        controlViewFrame();
     }
     QIcon oldBgndIcon=bgndIcon;
     if (!bgndIcon.isNull()) {
@@ -898,6 +900,7 @@ void ItemView::setLevel(int l, bool haveChildren)
 
     if (!title->property(constAlwaysShowProp).toBool()) {
         title->setVisible(currentLevel>0);
+        controlViewFrame();
     }
     setTitle();
 }
@@ -1437,9 +1440,7 @@ void ItemView::searchActive(bool a)
     if (!a && view()->isVisible()) {
         view()->setFocus();
     }
-    view()->setProperty(ProxyStyle::constModifyFrameProp, Utils::touchFriendly()
-                                ? (a ? 0 : ProxyStyle::VF_Top)
-                                : (a ? ProxyStyle::VF_Side : (ProxyStyle::VF_Side|ProxyStyle::VF_Top)));
+    controlViewFrame();
 }
 
 void ItemView::collapseToLevel()
@@ -1460,4 +1461,14 @@ void ItemView::setTitle()
                   model->data(index, Qt::DecorationRole).value<QIcon>(),
                   model->data(index, Cantata::Role_TitleText).toString(),
                   model->data(index, Cantata::Role_SubText).toString());
+}
+
+void ItemView::controlViewFrame()
+{
+    view()->setProperty(ProxyStyle::constModifyFrameProp,
+                            title->isVisible() || title->property(constAlwaysShowProp).toBool()
+                                ? 0
+                                : Utils::touchFriendly()
+                                    ? (searchWidget->isActive() ? 0 : ProxyStyle::VF_Top)
+                                    : (searchWidget->isActive() ? ProxyStyle::VF_Side : (ProxyStyle::VF_Side|ProxyStyle::VF_Top)));
 }

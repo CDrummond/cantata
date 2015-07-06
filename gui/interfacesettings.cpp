@@ -191,9 +191,9 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     }
 
     if (!enableNotifications && !enableTrayItem) {
-        tabWidget->removeTab(4);
+        tabWidget->removeTab(3);
     } else if (!enableTrayItem && enableNotifications) {
-        tabWidget->setTabText(4, i18n("Notifications"));
+        tabWidget->setTabText(3, i18n("Notifications"));
     }
     #if defined Q_OS_WIN || defined Q_OS_MAC || !defined QT_QTDBUS_FOUND
     if (systemTrayPopup && systemTrayCheckBox) {

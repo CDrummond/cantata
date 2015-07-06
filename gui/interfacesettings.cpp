@@ -429,6 +429,16 @@ void InterfaceSettings::showPage(const QString &page)
     }
 }
 
+QSize InterfaceSettings::sizeHint() const
+{
+    QSize sz=QWidget::sizeHint();
+    #ifdef Q_OS_MAC
+    sz.setWidth(sz.width()+32);
+    sz.setHeight(qMin(sz.height(), 500));
+    #endif
+    return sz;
+}
+
 void InterfaceSettings::addView(const QString &v, const QString &prop)
 {
     QListWidgetItem *item=new QListWidgetItem(v, views);

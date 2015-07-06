@@ -43,6 +43,7 @@ public:
     void showEvent(QShowEvent *e);
     #endif
     void showPage(const QString &page);
+    QSize sizeHint() const;
 
 private:
     void addView(const QString &v, const QString &prop);

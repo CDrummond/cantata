@@ -416,6 +416,9 @@ void ConfigDialog::showEvent(QShowEvent *e)
     }
     OSXStyle::self()->addWindow(this);
     QMainWindow::showEvent(e);
+    if (parentWidget()) {
+        move(pos().x(), parentWidget()->pos().y()+16);
+    }
 }
 #endif
 

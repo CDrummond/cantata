@@ -62,6 +62,7 @@ TitleWidget::TitleWidget(QWidget *p)
     image->setFixedSize(size, size);
     setToolTip(i18n("Click to go back"));
     int spacing=layout->spacing()-1;
+    spacing=qMin(4, spacing);
     layout->addItem(new QSpacerItem(spacing, spacing), 0, 0, 2, 1);
     layout->addWidget(chevron, 0, 1, 2, 1);
     layout->addWidget(image, 0, 2, 2, 1);
@@ -79,7 +80,7 @@ TitleWidget::TitleWidget(QWidget *p)
     mainText->setAlignment(Qt::AlignBottom);
     subText->setAlignment(Qt::AlignTop);
     image->setAlignment(Qt::AlignCenter);
-    chevron->setAlignment(Qt::AlignCenter);
+    chevron->setAlignment(Qt::AlignTop);
 }
 
 void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text, const QString &sub)

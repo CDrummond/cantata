@@ -25,20 +25,21 @@
 #include "support/icon.h"
 #include "support/utils.h"
 #include "support/squeezedtextlabel.h"
+#include "support/proxystyle.h"
 #include "listview.h"
 #include "sizewidget.h"
 #include "singlepagewidget.h"
+#include "toolbutton.h"
 #include <QGridLayout>
-#include <QToolButton>
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QScrollArea>
 
-class SelectorButton : public QToolButton
+class SelectorButton : public ToolButton
 {
 public:
     SelectorButton(const QString &t, const QString &s, const Icon &icn, QWidget *p)
-        : QToolButton(p)
+        : ToolButton(p)
     {
         QGridLayout *layout=new QGridLayout(this);
         icon=new QLabel(this);
@@ -102,6 +103,7 @@ MultiPageWidget::MultiPageWidget(QWidget *p)
 
     layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Fixed, QSizePolicy::MinimumExpanding));
     view->setLayout(layout);
+    scroll->setProperty(ProxyStyle::constModifyFrameProp, Utils::touchFriendly() ? ProxyStyle::VF_Top : (ProxyStyle::VF_Side|ProxyStyle::VF_Top));
     mainPage->setLayout(mainLayout);
     mainLayout->addWidget(scroll);
     mainLayout->setMargin(0);

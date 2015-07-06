@@ -57,13 +57,14 @@ SearchWidget::SearchWidget(QWidget *p)
      , widgetIsActive(false)
 {
     QGridLayout *l=new QGridLayout(this);
-    int spacing=Utils::layoutSpacing(this);
-    l->setContentsMargins(0, spacing, 0, spacing);
+    int spacing=qMin(2, Utils::layoutSpacing(this));
     #ifdef Q_OS_MAC
     l->setSpacing(2);
+    l->setContentsMargins(0, spacing, spacing, spacing);
     bool closeOnLeft=true;
     #else
     l->setSpacing(0);
+    l->setContentsMargins(0, spacing, 0, spacing);
     bool closeOnLeft=Utils::Unity==Utils::currentDe();
     #endif
     label=new SqueezedTextLabel(this);

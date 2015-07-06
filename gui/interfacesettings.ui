@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1719</width>
-    <height>542</height>
+    <height>435</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -494,7 +494,7 @@
           <item>
            <widget class="LineEdit" name="composerGenres">
             <property name="placeholderText">
-             <string>Enter comma seaprated list of genres...</string>
+             <string>Enter comma separated list of genres...</string>
             </property>
            </widget>
           </item>

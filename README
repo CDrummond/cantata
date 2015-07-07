@@ -133,9 +133,6 @@ build type (Linux/KDE, Linux/Qt, Windows), any cmake options you specified
 (other than the defaults listed at the top of the INSTALL file), and the
 version of MPD you are using.
 
-Please DO NOT attach images to the bug page - as the attachment quota is almost
-full. Instead, please provide links to any relevant screenshots.
-
 
 5. Translations
 ===============

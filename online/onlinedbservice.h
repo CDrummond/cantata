@@ -63,10 +63,12 @@ class OnlineDbService : public SqlLibraryModel, public OnlineService
     Q_OBJECT
 public:
     OnlineDbService(LibraryDb *d, QObject *p);
+    virtual ~OnlineDbService() { }
+
     QVariant data(const QModelIndex &index, int role) const;
     bool previouslyDownloaded() const;
     bool isDownloading() { return 0!=job; }
-    void load();
+    void open();
     void download(bool redownload);
     virtual OnlineXmlParser * createParser() = 0;
     virtual QUrl listingUrl() const = 0;

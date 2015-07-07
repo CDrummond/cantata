@@ -106,7 +106,7 @@ bool OnlineDbService::previouslyDownloaded() const
     return 0!=db->getCurrentVersion();
 }
 
-void OnlineDbService::load()
+void OnlineDbService::open()
 {
     if (0==rowCount(QModelIndex())) {
         libraryUpdated();

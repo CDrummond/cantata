@@ -82,7 +82,7 @@ void OnlineDbWidget::showEvent(QShowEvent *e)
         return;
     }
     if (srv->previouslyDownloaded()) {
-        srv->load();
+        srv->open();
     } else {
         QTimer::singleShot(0, this, SLOT(firstTimePrompt()));
     }
@@ -93,7 +93,7 @@ void OnlineDbWidget::firstTimePrompt()
     if (MessageBox::No==MessageBox::questionYesNo(this, srv->averageSize()
                                                         ? i18n("The music listing needs to be downloaded, this can consume over %1Mb of disk space", srv->averageSize())
                                                         : i18n("Dowload music listing?"),
-                                                   QString(), i18n("Download"), StdGuiItem::cancel())) {
+                                                   QString(), GuiItem(i18n("Download")), StdGuiItem::cancel())) {
         emit close();
     } else {
         srv->download(false);
@@ -115,7 +115,7 @@ void OnlineDbWidget::doSearch()
 // TODO: Cancel download?
 void OnlineDbWidget::refresh()
 {
-    if (!srv->isDownloading() && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Re-download music listing?"), QString(), i18n("Download"), StdGuiItem::cancel())) {
+    if (!srv->isDownloading() && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Re-download music listing?"), QString(), GuiItem(i18n("Download")), StdGuiItem::cancel())) {
         srv->download(true);
     }
 }

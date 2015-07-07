@@ -57,7 +57,7 @@ public:
 Q_SIGNALS:
     void loadLibrary();
 
-private Q_SLOTS:
+public Q_SLOTS:
     void connectionChanged(const MPDConnectionDetails &details);
     void statsUpdated(const MPDStatsValues &stats);
 

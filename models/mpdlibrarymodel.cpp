@@ -40,6 +40,9 @@ MpdLibraryModel::MpdLibraryModel()
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), this, SLOT(coverUpdated(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(artistImage(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(composerImage(Song,QImage,QString)), this, SLOT(artistImage(Song,QImage,QString)));
+    if (MPDConnection::self()->isConnected()) {
+        static_cast<MpdLibraryDb *>(db)->connectionChanged(MPDConnection::self()->getDetails());
+    }
 }
 
 QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const

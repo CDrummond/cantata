@@ -33,7 +33,7 @@
 static const int constSchemaVersion=1;
 
 bool LibraryDb::dbgEnabled=false;
-#define DBUG if (dbgEnabled) qWarning() << metaObject()->className() << __FUNCTION__
+#define DBUG if (dbgEnabled) qWarning() << metaObject()->className() << __FUNCTION__ << (void *)this
 
 const QLatin1String LibraryDb::constFileExt(".sql");
 const QLatin1String LibraryDb::constNullGenre("-");
@@ -520,13 +520,16 @@ bool LibraryDb::init(const QString &dbFile)
     DBUG << dbFile << dbName;
     db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE", dbName.isEmpty() ? QLatin1String(QSqlDatabase::defaultConnection) : dbName));
     db->setDatabaseName(dbFile);
+    DBUG << (void *)db;
     if (!db->open()) {
         delete db;
         db=0;
+        DBUG << "Failed to open";
         return false;
     }
 
     if (!createTable("versions(collection integer, schema integer)")) {
+        DBUG << "Failed to create versions table";
         return false;
     }
     QSqlQuery query("select collection, schema from versions", *db);
@@ -568,9 +571,11 @@ bool LibraryDb::init(const QString &dbFile)
         QSqlQuery(*db).exec("create virtual table songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_title, tokenize=unicode61)");
         #endif
     } else {
+        DBUG << "Failed to create songs table";
         return false;
     }
     emit libraryUpdated();
+    DBUG << "Created";
     return true;
 }
 
@@ -869,13 +874,13 @@ bool LibraryDb::setFilter(const QString &f)
 
 void LibraryDb::updateStarted(time_t ver)
 {
+    DBUG << (void *)db;
     newVersion=ver;
     timer.start();
     db->transaction();
     if (currentVersion>0) {
         clearSongs(false);
     }
-    DBUG;
 }
 
 void LibraryDb::insertSongs(QList<Song> *songs)

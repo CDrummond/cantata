@@ -32,6 +32,8 @@ struct Song;
 class OnlineService
 {
 public:
+    virtual ~OnlineService() { }
+
     static QString iconPath(const QString &srv);
     static bool showLogoAsCover(const Song &s);
     static bool isPodcasts(const QString &srv);

@@ -45,6 +45,7 @@ public:
     struct Item
     {
         Item(const QString &n=QString(), const QUrl &u=QUrl()) : name(n), url(u) { }
+        virtual ~Item() { }
         virtual bool isPodcast() const { return false; }
         QString name;
         QUrl url;
@@ -107,7 +108,7 @@ public:
     static const QLatin1String constName;
 
     PodcastService(QObject *p);
-    ~PodcastService() { cancelAll(); }
+    virtual ~PodcastService() { cancelAll(); }
 
     Song & fixPath(Song &song) const;
     QString name() const;

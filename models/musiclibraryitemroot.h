@@ -45,6 +45,7 @@ class MusicModel;
 class MusicLibraryErrorMonitor
 {
 public:
+    virtual ~MusicLibraryErrorMonitor() { }
     virtual void loadError(const QString &) = 0;
 };
 

@@ -265,12 +265,12 @@ void PodcastWidget::refresh()
     }
 
     if (selected.isEmpty() || selected.count()==srv->podcastCount()) {
-        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Refresh all subscriptions?"), i18n("Refresh"), i18n("Refresh All"), StdGuiItem::cancel())) {
+        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Refresh all subscriptions?"), i18n("Refresh"), GuiItem(i18n("Refresh All")), StdGuiItem::cancel())) {
             srv->refreshAll();
         }
         return;
     }
-    switch (MessageBox::questionYesNoCancel(this, i18n("Refresh all subscriptions, or only those selected?"), i18n("Refresh"), i18n("Refresh All"), i18n("Refresh Selected"))) {
+    switch (MessageBox::questionYesNoCancel(this, i18n("Refresh all subscriptions, or only those selected?"), i18n("Refresh"), GuiItem(i18n("Refresh All")), GuiItem(i18n("Refresh Selected")))) {
     case MessageBox::Yes:
         srv->refreshAll();
         break;

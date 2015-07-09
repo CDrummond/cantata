@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2010 by the Quassel Project                             *
+ *   Copyright (C) 2005-2015 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This class has been inspired by KDE's KKeySequenceWidget and uses     *
@@ -22,7 +22,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef KEYSEQUENCEWIDGET_H
@@ -31,6 +31,8 @@
 #include <QKeySequence>
 #include <QPushButton>
 #include <QSet>
+#include <QWidget>
+
 #include "shortcutsmodel.h"
 
 class Action;
@@ -38,7 +40,8 @@ class ActionCollection;
 class KeySequenceButton;
 class QToolButton;
 
-class KeySequenceWidget : public QWidget {
+class KeySequenceWidget : public QWidget
+{
     Q_OBJECT
 public:
     KeySequenceWidget(QWidget *parent = 0);
@@ -50,11 +53,11 @@ public slots:
 
 signals:
     /**
-   * This signal is emitted when the current key sequence has changed by user input
-   * \param seq         The key sequence the user has chosen
-   * \param conflicting The index of an action that needs to have its shortcut removed. The user has already been
-   *                    asked to agree (if he declines, this signal won't be emitted at all).
-   */
+     * This signal is emitted when the current key sequence has changed by user input
+     * \param seq         The key sequence the user has chosen
+     * \param conflicting The index of an action that needs to have its shortcut removed. The user has already been
+     *                    asked to agree (if he declines, this signal won't be emitted at all).
+     */
     void keySequenceChanged(const QKeySequence &seq, const QModelIndex &conflicting = QModelIndex());
 
     void clicked();
@@ -88,7 +91,8 @@ private:
 
 /*****************************************************************************/
 
-class KeySequenceButton : public QPushButton {
+class KeySequenceButton : public QPushButton
+{
     Q_OBJECT
 public:
     explicit KeySequenceButton(KeySequenceWidget *d, QWidget *parent = 0);
@@ -101,5 +105,6 @@ protected:
 private:
     KeySequenceWidget *d;
 };
+
 
 #endif // KEYSEQUENCEWIDGET_H

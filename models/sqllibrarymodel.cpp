@@ -535,6 +535,8 @@ void SqlLibraryModel::populate(const QModelIndexList &list) const
     foreach (const QModelIndex &idx, list) {
         if (canFetchMore(idx)) {
             const_cast<SqlLibraryModel *>(this)->fetchMore(idx);
+        }
+        if (T_Track!=static_cast<Item *>(idx.internalPointer())->getType()) {
             populate(children(idx));
         }
     }

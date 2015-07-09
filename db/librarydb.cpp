@@ -571,7 +571,7 @@ bool LibraryDb::init(const QString &dbFile)
         QSqlQuery fts(*db);
         if (!fts.exec("create virtual table songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_title, tokenize=unicode61)")) {
             DBUG << "Failed to create FTS table" << fts.lastError().text() << "trying again with simple tokenizer";
-            if (!!fts.exec("create virtual table songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_title, tokenize=simple)")) {
+            if (!fts.exec("create virtual table songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_title, tokenize=simple)")) {
                 DBUG << "Failed to create FTS table" << fts.lastError().text();
             }
         }

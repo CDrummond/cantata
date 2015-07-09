@@ -51,6 +51,10 @@ StdActions::StdActions()
     savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), HIDE_MENU_ICON_NAME("document-save-as"));
     addToPlayQueueAction = ActionCollection::get()->createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
     replacePlayQueueAction = ActionCollection::get()->createAction("replaceplaylist", i18n("Replace Play Queue"), "media-playback-start");
+    savePlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_S);
+    addToPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_P);
+    replacePlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_R);
+
     addWithPriorityAction = new Action(Icon("favorites"), i18n("Add With Priority"), 0);
     addPrioHighestAction = new Action(i18n("Highest Priority (255)"), 0);
     addPrioHighAction = new Action(i18n("High Priority (200)"), 0);

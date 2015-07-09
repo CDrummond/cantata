@@ -568,7 +568,10 @@ bool LibraryDb::init(const QString &dbFile)
                     "lastModified integer, "
                     "primary key (file))")) {
         #ifndef CANTATA_WEB
-        QSqlQuery(*db).exec("create virtual table songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_title, tokenize=unicode61)");
+        QSqlQuery fts(*db);
+        if (!fts.exec("create virtual table songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_title, tokenize=unicode61)")) {
+            DBUG << "Failed to create FTS table" << fts.lastError().text();
+        }
         #endif
     } else {
         DBUG << "Failed to create songs table";

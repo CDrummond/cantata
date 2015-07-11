@@ -1707,7 +1707,7 @@ void MPDConnection::search(const QString &field, const QString &value, int id)
 
 void MPDConnection::listStreams()
 {
-    Response response=sendCommand("listplaylistinfo "+encodeName(constStreamsPlayListName));
+    Response response=sendCommand("listplaylistinfo "+encodeName(constStreamsPlayListName), false);
     QList<Stream> streams;
     if (response.ok) {
         QList<Song> songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Streams);
@@ -1715,6 +1715,7 @@ void MPDConnection::listStreams()
             streams.append(Stream(song.file, song.name()));
         }    
     }
+    clearError();
     emit streamList(streams);
 }
 

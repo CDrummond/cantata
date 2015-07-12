@@ -118,7 +118,7 @@ void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categori
         cat=new SelectorLabel(this);
         QGridLayout *l=static_cast<QGridLayout *>(layout());
         l->addWidget(cat, 1, 0);
-        l->setSpacing(Utils::layoutSpacing(this));
+        l->setSpacing(qMin(4, Utils::layoutSpacing(this)));
         connect(cat, SIGNAL(activated(int)), SIGNAL(returnPressed()));
         setTabOrder(cat, edit);
         cat->setFixedHeight(edit->height());

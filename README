@@ -85,8 +85,9 @@ Cantata requires the following Qt libraries:
 2. QtGui
 3. QtNetwork
 4. QtXml
-5. QtDBus (Only for Linux builds)
-6. QtWidgets (Qt5 builds - where widgets are now separated from QtGui)
+5. QtSql
+6. QtDBus (Only for Linux builds)
+7. QtWidgets (Qt5 builds - where widgets are now separated from QtGui)
 
 Cantata may also use the following optional libraries:
 

@@ -28,7 +28,7 @@
 #include "config.h"
 #include <QUrl>
 
-class ComGooglecodeCantataMounterInterface;
+class MpdCantataMounterInterface;
 class QProcess;
 class RemoteFsDevice : public FsDevice
 {
@@ -111,7 +111,7 @@ protected:
 
 private:
     bool isOldSshfs();
-    ComGooglecodeCantataMounterInterface * mounter();
+    MpdCantataMounterInterface * mounter();
     QString settingsFileName() const;
 
 protected Q_SLOTS:
@@ -127,7 +127,7 @@ protected:
     Details details;
     QProcess *proc;
 //     QString audioFolderSetting;
-    ComGooglecodeCantataMounterInterface *mounterIface;
+    MpdCantataMounterInterface *mounterIface;
     bool messageSent;
     QString sub;
     friend class DevicesModel;

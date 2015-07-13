@@ -94,8 +94,8 @@ MultiPageWidget::MultiPageWidget(QWidget *p)
     QVBoxLayout *mainLayout=new QVBoxLayout(mainPage);
     infoLabel=new QLabel(mainPage);
     sizer=new SizeWidget(mainPage);
-    view = new QWidget;
-    QScrollArea *scroll = new QScrollArea;
+    QScrollArea *scroll = new QScrollArea(this);
+    view = new QWidget(scroll);
     QVBoxLayout *layout = new QVBoxLayout(view);
     scroll->setWidget(view);
     scroll->setWidgetResizable(true);
@@ -113,6 +113,10 @@ MultiPageWidget::MultiPageWidget(QWidget *p)
     mainLayout->addWidget(sizer);
     layout->setSpacing(0);
     layout->setSizeConstraint(QLayout::SetMinimumSize);
+    #ifdef Q_OS_MAC
+    // TODO: This feels a bt of a hack...
+    mainPage->setContentsMargins(-3, 0, -3, 0);
+    #endif
     addWidget(mainPage);
 }
 

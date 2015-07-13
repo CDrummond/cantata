@@ -37,23 +37,11 @@
 
 StackedPageWidget::StackedPageWidget(QWidget *p)
     : QStackedWidget(p)
-    , shown(false)
 {
 }
 
 StackedPageWidget::~StackedPageWidget()
 {
-}
-
-void StackedPageWidget::showEvent(QShowEvent *e)
-{
-    if (!shown) {
-        shown=true;
-        if (dynamic_cast<ProxyStyle *>(style()) && static_cast<ProxyStyle *>(style())->modifyViewFrame()) {
-            setContentsMargins(0, 0, -1, 0);
-        }
-    }
-    QStackedWidget::showEvent(e);
 }
 
 void StackedPageWidget::setView(int v)

@@ -840,6 +840,7 @@ void ItemView::setMode(Mode m)
     if (!oldBgndIcon.isNull()) {
         setBackgroundImage(oldBgndIcon);
     }
+    controlViewFrame();
 }
 
 QModelIndexList ItemView::selectedIndexes(bool sorted) const
@@ -1467,7 +1468,7 @@ void ItemView::controlViewFrame()
 {
     view()->setProperty(ProxyStyle::constModifyFrameProp,
                             title->isVisible() || title->property(constAlwaysShowProp).toBool()
-                                ? 0
+                                ? Utils::touchFriendly() ? 0 : ProxyStyle::VF_Side
                                 : Utils::touchFriendly()
                                     ? (searchWidget->isActive() ? 0 : ProxyStyle::VF_Top)
                                     : (searchWidget->isActive() ? ProxyStyle::VF_Side : (ProxyStyle::VF_Side|ProxyStyle::VF_Top)));

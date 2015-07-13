@@ -109,6 +109,7 @@ void SearchWidget::setPermanent()
     closeButton->setVisible(false);
     closeButton->deleteLater();
     closeButton=0;
+    layout()->setSpacing(0);
 }
 
 void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categories)

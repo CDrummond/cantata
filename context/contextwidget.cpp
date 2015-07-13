@@ -37,6 +37,9 @@
 #include "widgets/playqueueview.h"
 #include "widgets/treeview.h"
 #include "widgets/thinsplitterhandle.h"
+#ifdef Q_OS_MAC
+#include "support/osxstyle.h"
+#endif
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QSpacerItem>
@@ -93,6 +96,7 @@ public:
         Q_UNUSED(ev)
         QPainter painter(this);
         QString txt=text();
+        bool mo=underMouse();
 
         txt.replace("&", "");
         QFont f(font());
@@ -105,7 +109,20 @@ public:
         }
 
         painter.setFont(f);
-        painter.setPen(palette().color(!isChecked() && underMouse() ? QPalette::Highlight : QPalette::Text));
+        if (isChecked() || mo) {
+            int lh=3;
+            #ifdef Q_OS_MAC
+            QColor col=OSXStyle::self()->viewPalette().highlight().color();
+            #else
+            QColor col=palette().color(QPalette::Highlight);
+            #endif
+            if (mo) {
+                col.setAlphaF(isChecked() ? 0.75 : 0.5);
+            }
+            QRect r=rect();
+            painter.fillRect(r.x(), r.y()+r.height()-(lh+1), r.width(), lh, col);
+        }
+        painter.setPen(palette().color(QPalette::Text));
         painter.drawText(rect(), Qt::AlignCenter, txt);
     }
 };

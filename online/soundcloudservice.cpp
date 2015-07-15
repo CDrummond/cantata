@@ -73,7 +73,7 @@ QVariant SoundCloudService::data(const QModelIndex &index, int role) const
 Song & SoundCloudService::fixPath(Song &s) const
 {
     s.setIsFromOnlineService(constName);
-    s.album=constName;
+    s.album=title();
     return encode(s);
 }
 

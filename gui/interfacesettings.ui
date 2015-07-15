@@ -45,7 +45,7 @@
           <item>
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Use the checkboxes below to configure the list of active views.</string>
+             <string>Use the checkboxes below to configure which views will appear in the sidebar.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -58,7 +58,7 @@
           <item>
            <widget class="NoteLabel" name="sbPlayQueueLabel">
             <property name="text">
-             <string>By default, the play queue appears to the side of the other views, and the Info view is accessible by pressing its icon in the main toolbar. Checking the appropriate option above will cause the view to be merged into the sidebar as per other views.</string>
+             <string>If 'Play Queue' is not checked above, then it will appear to the side of the other views. If 'Info' is not checked above, then a button will be added to the toolbar allowing you to access song information.</string>
             </property>
            </widget>
           </item>

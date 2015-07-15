@@ -377,7 +377,7 @@ bool Settings::wikipediaIntroOnly()
 
 int Settings::contextBackdrop()
 {
-    return getBoolAsInt("contextBackdrop", 1);
+    return getBoolAsInt("contextBackdrop", 0);
 }
 
 int Settings::contextBackdropOpacity()
@@ -397,7 +397,7 @@ QString Settings::contextBackdropFile()
 
 bool Settings::contextDarkBackground()
 {
-    return cfg.get("contextDarkBackground", true);
+    return cfg.get("contextDarkBackground", false);
 }
 
 int Settings::contextZoom()

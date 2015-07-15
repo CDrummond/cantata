@@ -161,15 +161,6 @@ void ActionDialog::deviceRenamed()
     }
 }
 
-void ActionDialog::showMopidyMessage()
-{
-    MessageBox::information(this, i18n("Cantata has detected that you are connected to a Mopidy server.\n\n"
-                                       "Currently it is not possible for Cantata to force Mopidy to refresh its local "
-                                       "music listing. Therefore, you will need to stop Cantata, manually refresh "
-                                       "Mopidy's database, and restart Cantata for any changes to be active."),
-                            QLatin1String("Mopidy"));
-}
-
 void ActionDialog::updateSongCountLabel()
 {
     QSet<QString> artists;
@@ -391,12 +382,6 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     albumsWithoutRgTags.clear();
     #endif
     updateUnity(false);
-
-    if (((Remove==m && srcUdi.isEmpty()) || (Copy==m && !srcUdi.isEmpty())) && MPDConnection::self()->isMopdidy()) {
-        connect(mopidyNote, SIGNAL(leftClickedUrl()), SLOT(showMopidyMessage()));
-    } else {
-        REMOVE(mopidyNote);
-    }
 }
 
 void ActionDialog::slotButtonClicked(int button)

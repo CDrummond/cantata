@@ -59,7 +59,6 @@ private Q_SLOTS:
     void renameFile();
     void controlRemoveAct();
     void removeItems();
-    void showMopidyMessage();
     void showRatingsMessage();
     void setFilenameScheme(const QString &text);
 

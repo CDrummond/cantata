@@ -110,12 +110,10 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi, bool for
     }
 
     QString musicFolder;
-    bool isMopidy=false;
     #ifdef ENABLE_DEVICES_SUPPORT
     if (udi.isEmpty()) {
         musicFolder=MPDConnection::self()->getDetails().dir;
         opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
-        isMopidy=MPDConnection::self()->isMopdidy();
     } else {
         deviceUdi=udi;
         Device *dev=getDevice(parentWidget());
@@ -131,7 +129,6 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi, bool for
     #else
     opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
     musicFolder=MPDConnection::self()->getDetails().dir;
-    isMopidy=MPDConnection::self()->isMopdidy();
     #endif
     qSort(origSongs);
 
@@ -150,11 +147,6 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi, bool for
 
     if (!songsOk(origSongs, musicFolder, udi.isEmpty())) {
         return;
-    }
-    if (isMopidy) {
-        connect(mopidyNote, SIGNAL(leftClickedUrl()), SLOT(showMopidyMessage()));
-    } else {
-        REMOVE(mopidyNote);
     }
     connect(ratingsNote, SIGNAL(leftClickedUrl()), SLOT(showRatingsMessage()));
     Dialog::show();
@@ -475,15 +467,6 @@ void TrackOrganiser::removeItems()
             }
         }
     }
-}
-
-void TrackOrganiser::showMopidyMessage()
-{
-    MessageBox::information(this, i18n("Cantata has detected that you are connected to a Mopidy server.\n\n"
-                                       "Currently it is not possible for Cantata to force Mopidy to refresh its local "
-                                       "music listing. Therefore, you will need to stop Cantata, manually refresh "
-                                       "Mopidy's database, and restart Cantata for any changes to be active."),
-                            QLatin1String("Mopidy"));
 }
 
 void TrackOrganiser::showRatingsMessage()

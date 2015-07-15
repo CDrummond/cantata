@@ -118,14 +118,12 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     , writeRatingsAct(0)
 {
     iCount++;
-    bool isMopidy=false;
     bool ratingsSupport=false;
     #ifdef ENABLE_DEVICES_SUPPORT
     if (deviceUdi.isEmpty()) {
         baseDir=MPDConnection::self()->getDetails().dir;
         composerSupport=MPDConnection::self()->composerTagSupported();
         commentSupport=MPDConnection::self()->commentTagSupported();
-        isMopidy=MPDConnection::self()->isMopdidy();
         ratingsSupport=MPDConnection::self()->stickersSupported();
     } else {
         Device *dev=getDevice(udi, parentWidget());
@@ -141,7 +139,6 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     baseDir=MPDConnection::self()->getDetails().dir;
     composerSupport=MPDConnection::self()->composerTagSupported();
     commentSupport=MPDConnection::self()->commentTagSupported();
-    isMopidy=MPDConnection::self()->isMopdidy();
     ratingsSupport=MPDConnection::self()->stickersSupported();
     #endif
 
@@ -169,20 +166,12 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
 
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
-    if (isMopidy) {
-        connect(mopidyNote, SIGNAL(leftClickedUrl()), SLOT(showMopidyMessage()));
-        REMOVE(ratingWidget);
-        REMOVE(ratingLabel);
-        REMOVE(ratingVarious);
-        REMOVE(ratingNoteLabel);
-    } else if (!ratingsSupport) {
-        REMOVE(mopidyNote);
+    if (!ratingsSupport) {
         REMOVE(ratingWidget);
         REMOVE(ratingLabel);
         REMOVE(ratingVarious);
         REMOVE(ratingNoteLabel);
     } else {
-        REMOVE(mopidyNote);
         connect(this, SIGNAL(getRating(QString)), MPDConnection::self(), SLOT(getRating(QString)));
         connect(this, SIGNAL(setRating(QString,quint8)), MPDConnection::self(), SLOT(setRating(QString,quint8)));
         connect(MPDConnection::self(), SIGNAL(rating(QString,quint8)), this, SLOT(rating(QString,quint8)));
@@ -211,7 +200,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     toolsMenu->addAction(i18n("Set 'Album Artist' from 'Artist'"), this, SLOT(setAlbumArtistFromArtist()));
     toolsMenu->addAction(i18n("Capitalize"), this, SLOT(capitalise()));
     toolsMenu->addAction(i18n("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
-    if (ratingsSupport && !isMopidy) {
+    if (ratingsSupport) {
         readRatingsAct=toolsMenu->addAction(i18n("Read Ratings from File"), this, SLOT(readRatings()));
         writeRatingsAct=toolsMenu->addAction(i18n("Write Ratings to File"), this, SLOT(writeRatings()));
         readRatingsAct->setEnabled(false);
@@ -339,7 +328,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
             first=false;
         } else {
             trackName->insertItem(trackName->count(), s.filePath());
-            if (!isMopidy && ratingsSupport) {
+            if (ratingsSupport) {
                 emit getRating(s.file);
             }
         }
@@ -1000,15 +989,6 @@ void TagEditor::setIndex(int idx)
     trackName->setCurrentIndex(idx);
     setLabelStates();
     updating=false;
-}
-
-void TagEditor::showMopidyMessage()
-{
-    MessageBox::information(this, i18n("Cantata has detected that you are connected to a Mopidy server.\n\n"
-                                       "Currently it is not possible for Cantata to force Mopidy to refresh its local "
-                                       "music listing. Therefore, you will need to stop Cantata, manually refresh "
-                                       "Mopidy's database, and restart Cantata for any changes to be active."),
-                            QLatin1String("Mopidy"));
 }
 
 void TagEditor::rating(const QString &f, quint8 r)

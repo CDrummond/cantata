@@ -125,13 +125,6 @@
     </layout>
    </item>
    <item>
-    <widget class="UrlNoteLabel" name="mopidyNote">
-     <property name="text" stdset="0">
-      <string>Connected to a Mopidy server (manual update required).</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="UrlNoteLabel" name="ratingsNote">
      <property name="text" stdset="0">
       <string>Ratings will be lost if a file is renamed.</string>

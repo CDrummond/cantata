@@ -219,13 +219,6 @@
     </widget>
    </item>
    <item>
-    <widget class="PlainUrlNoteLabel" name="mopidyNote">
-     <property name="text">
-      <string>Connected to a Mopidy server (manual update required).</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QProgressBar" name="progress"/>
    </item>
    <item>

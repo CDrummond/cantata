@@ -80,7 +80,6 @@ private Q_SLOTS:
     void cacheSaved();
     void controlInfoLabel();
     void deviceRenamed();
-    void showMopidyMessage();
 
 private:
     void updateSongCountLabel();

@@ -79,7 +79,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     addPage(QLatin1String("playback"), playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
     addPage(QLatin1String("files"), files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
     addPage(QLatin1String("interface"), interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
-    addPage(QLatin1String("context"), context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
+    addPage(QLatin1String("info"), context, i18n("Info"), Icons::self()->contextIcon, i18n("Info View Settings"));
     addPage(QLatin1String("scrobbling"), scrobbling, i18n("Scrobbling"), Icons::self()->lastFmIcon, i18n("Scrobbling Settings"));
     #ifdef ENABLE_HTTP_SERVER
     http = new HttpServerSettings(0);

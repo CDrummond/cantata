@@ -356,7 +356,7 @@ static QString artistSort(const Song &s)
     }
     const QString &albumArtist=s.albumArtist();
     QString sort;
-    if (albumArtist.startsWith("The")) {
+    if (albumArtist.startsWith("The ")) {
         sort=albumArtist.mid(4);
     } else {
         sort=albumArtist;
@@ -371,7 +371,7 @@ static QString albumSort(const Song &s)
         return s.albumSort();
     }
     QString sort;
-    if (s.album.startsWith("The")) {
+    if (s.album.startsWith("The ")) {
         sort=s.album.mid(4);
     } else {
         sort=s.album;

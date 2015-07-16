@@ -39,6 +39,7 @@ public:
     void showEvent(QShowEvent *e);
 
 private Q_SLOTS:
+    void groupByChanged();
     void firstTimePrompt();
     void headerClicked(int level);
     void configure();

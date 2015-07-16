@@ -36,14 +36,19 @@ OnlineDbWidget::OnlineDbWidget(OnlineDbService *s, QWidget *p)
     , configGroup(s->name())
     , srv(s)
 {
+    srv->setParent(this);
     view->setModel(s);
     view->alwaysShowHeader();
     Configuration config(configGroup);
     view->setMode(ItemView::Mode_DetailedTree);
     view->load(config);
+    srv->load(config);
     MenuButton *menu=new MenuButton(this);
     menu->addAction(createViewMenu(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                                                            << ItemView::Mode_DetailedTree << ItemView::Mode_List));
+    menu->addAction(createMenuGroup(i18n("Group By"), QList<MenuItem>() << MenuItem(i18n("Genre"), SqlLibraryModel::T_Genre)
+                                                                        << MenuItem(i18n("Artist"), SqlLibraryModel::T_Artist),
+                                    srv->topLevel(), this, SLOT(groupByChanged())));
     Action *configureAction=new Action(Icons::self()->configureIcon, i18n("Configure"), this);
     connect(configureAction, SIGNAL(triggered()), SLOT(configure()));
     menu->addAction(configureAction);
@@ -55,6 +60,17 @@ OnlineDbWidget::~OnlineDbWidget()
 {
     Configuration config(configGroup);
     view->save(config);
+    srv->save(config);
+}
+
+void OnlineDbWidget::groupByChanged()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+    if (!act) {
+        return;
+    }
+    int mode=act->property(constValProp).toInt();
+    srv->setTopLevel((SqlLibraryModel::Type)mode);
 }
 
 QStringList OnlineDbWidget::selectedFiles(bool allowPlaylists) const

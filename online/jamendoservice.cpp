@@ -309,7 +309,7 @@ static JamendoService::Format toFormat(const QString &f)
 }
 
 JamendoService::JamendoService(QObject *p)
-    : OnlineDbService(new OnlineDb(constName, p, OnlineDb::Idx_Genre), p)
+    : OnlineDbService(new OnlineDb(constName, p, OnlineDb::Idx_Genre|OnlineDb::Idx_Artist), p)
 {
     icn.addFile(":"+constName);
     useCovers(name());

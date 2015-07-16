@@ -59,8 +59,9 @@ public:
     static QString albumSortStr(AlbumSort m);
 
     enum Indexes {
-        Idx_Genre = 0x01,
-        Idx_AlbumDetails = 0x02
+        Idx_Genre        = 0x01,
+        Idx_Artist       = 0x02,
+        Idx_AlbumDetails = 0x04
     };
 
     struct Genre

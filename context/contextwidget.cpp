@@ -578,7 +578,9 @@ void ContextWidget::updateImage(QImage img, bool created)
     if (img.isNull() && oldBackdrop.isNull()) {
         return;
     }
-    if (!img.isNull()) {
+    if (img.isNull()) {
+        currentImage=img;
+    } else {
         if (backdropOpacity<100) {
             img=TreeView::setOpacity(img, (backdropOpacity*1.0)/100.0);
         }

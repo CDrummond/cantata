@@ -1798,6 +1798,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
             current=Song();
             nowPlaying->update(current);
             CurrentCover::self()->update(current);
+            context->update(current);
         }
         current.id=0;
         trayItem->setToolTip("cantata", i18n("Cantata"), QLatin1String("<i>")+i18n("Playback stopped")+QLatin1String("</i>"));

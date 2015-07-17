@@ -1466,12 +1466,6 @@ void MainWindow::updateSettings()
         playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && MPDState_Playing==MPDStatus::self()->state());
     }
 
-// TODO
-//    wasStartClosed=playlistsPage->isStartClosed();
-//    playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
-//    if (ItemView::Mode_GroupedTree==Settings::self()->playlistsView() && wasStartClosed!=playlistsPage->isStartClosed()) {
-//        playlistsPage->updateRows();
-//    }
     updateActionToolTips();
 }
 

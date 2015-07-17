@@ -868,7 +868,7 @@ bool LibraryDb::setFilter(const QString &f)
             str.remove('*');
             tokens.append(str+"* ");
         }
-        newFilter=tokens.join(" OR ");
+        newFilter=tokens.join(" ");
     }
     if (newFilter!=filter) {
         filter=newFilter;

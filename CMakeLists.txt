@@ -768,6 +768,17 @@ else (ENABLE_KDE)
         configure_file(mac/Info.plist.cmake ${CMAKE_CURRENT_BINARY_DIR}/mac/Info.plist)
         configure_file(mac/dmg/create-dmg.sh.in ${CMAKE_CURRENT_BINARY_DIR}/mac/create-dmg.sh)
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mac/Info.plist DESTINATION ${CANTATA_APP_CONTENTS_DIR})
+        if (TAGLIB_FOUND)
+            # *NEED* to install cantata-replagain/cantata-tags *before* install_qt5_executable fix'es the bundle
+            # If we install from their own CMakeLists.txt then they are installed *after* the fix-up, and so link
+            #  to the build libs not the packaged ones!
+            if (FFMPEG_FOUND OR MPG123_FOUND)
+                install(PROGRAMS ${CMAKE_BINARY_DIR}/replaygain/cantata-replaygain DESTINATION ${MACOSX_BUNDLE_APP_DIR})
+            endif (FFMPEG_FOUND OR MPG123_FOUND)
+            if (ENABLE_EXTERNAL_TAGS)
+                install(PROGRAMS ${CMAKE_BINARY_DIR}/tags/cantata-tags DESTINATION ${MACOSX_BUNDLE_APP_DIR})
+            endif (ENABLE_EXTERNAL_TAGS)
+        endif (TAGLIB_FOUND)
         install_qt5_executable(cantata.app "qjpeg;qsvg;qsvgicon;qcocoa;qsqlite")
     elseif (NOT ENABLE_UBUNTU)
         ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})

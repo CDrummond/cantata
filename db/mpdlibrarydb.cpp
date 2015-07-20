@@ -72,7 +72,7 @@ void MpdLibraryDb::removeUnusedDbs()
 #endif
 
 MpdLibraryDb::MpdLibraryDb(QObject *p)
-    : LibraryDb(p, "MPD", Idx_AlbumDetails)
+    : LibraryDb(p, "MPD", Idx_Album|Idx_AlbumDetails)
     , coverQuery(0)
     , artistImageQuery(0)
 {

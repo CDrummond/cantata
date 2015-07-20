@@ -1007,6 +1007,10 @@ void LibraryDb::createIndexes()
         QSqlQuery(*db).exec("create index songs_artist_idx on songs (artistId, albumId, artistSort)");
         DBUG << "time to create artist idx" << idxTimer.elapsed();
     }
+    if (indexes&Idx_Album) {
+        QSqlQuery(*db).exec("create index songs_album_idx on songs (album, albumId, albumSort, artistId, artistSort)");
+        DBUG << "time to create album idx" << idxTimer.elapsed();
+    }
     if (indexes&Idx_AlbumDetails) {
         QSqlQuery(*db).exec("create index songs_album_details_idx on songs (artistId, albumId)");
         DBUG << "time to create album details idx" << idxTimer.elapsed();
@@ -1020,6 +1024,9 @@ void LibraryDb::dropIndexes()
     }
     if (indexes&Idx_Artist) {
         QSqlQuery(*db).exec("drop index songs_artist_idx");
+    }
+    if (indexes&Idx_Album) {
+        QSqlQuery(*db).exec("drop index songs_album_idx");
     }
     if (indexes&Idx_AlbumDetails) {
         QSqlQuery(*db).exec("drop index songs_album_details_idx");

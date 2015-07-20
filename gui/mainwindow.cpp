@@ -530,6 +530,8 @@ MainWindow::MainWindow(QWidget *parent)
         QSize sz=Settings::self()->mainWindowSize();
         if (!sz.isEmpty() && sz.width()>0) {
             resize(sz);
+        } else {
+            resize(playPauseTrackButton->width()*25, playPauseTrackButton->height()*18);
         }
 
         if (expandInterfaceAction->isChecked()) {
@@ -546,7 +548,10 @@ MainWindow::MainWindow(QWidget *parent)
 
         if (!playQueueInSidebar) {
             QByteArray state=Settings::self()->splitterState();
-            if (!state.isEmpty()) {
+            if (state.isEmpty()) {
+                int width=playPauseTrackButton->width()*25;
+                splitter->setSizes(QList<int>() << width*0.4 << width*0.6);
+            } else {
                 splitter->restoreState(Settings::self()->splitterState());
             }
         }

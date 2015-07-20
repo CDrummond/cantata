@@ -43,6 +43,7 @@ private Q_SLOTS:
     void firstTimePrompt();
     void headerClicked(int level);
     void configure();
+    void updateToPlayQueue(const QModelIndex &idx, bool replace);
 
 private:
     void doSearch();

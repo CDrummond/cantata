@@ -112,6 +112,7 @@ LibraryPage::LibraryPage(QWidget *p)
     view->addAction(StdActions::self()->deleteSongsAction);
     #endif
     #endif // TAGLIB_FOUND
+    connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
 }
 
 LibraryPage::~LibraryPage()
@@ -321,6 +322,14 @@ void LibraryPage::albumAlbumSortChanged()
 void LibraryPage::showArtistImagesChanged(bool u)
 {
     MpdLibraryModel::self()->setUseArtistImages(u);
+}
+
+void LibraryPage::updateToPlayQueue(const QModelIndex &idx, bool replace)
+{
+    QStringList files=MpdLibraryModel::self()->filenames(QModelIndexList() << idx, true);
+    if (!files.isEmpty()) {
+        emit add(files, replace, 0);
+    }
 }
 
 void LibraryPage::doSearch()

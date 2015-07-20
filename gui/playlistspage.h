@@ -72,6 +72,7 @@ private Q_SLOTS:
     void updated(const QModelIndex &index);
     void headerClicked(int level);
     void setStartClosed(bool sc);
+    void updateToPlayQueue(const QModelIndex &idx, bool replace);
 
 private:
     void doSearch();

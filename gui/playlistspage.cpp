@@ -109,6 +109,7 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     view->addAction(renamePlaylistAction);
     view->addAction(StdActions::self()->removeAction);
     view->addAction(removeDuplicatesAction);
+    connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
 }
 
 StoredPlaylistsPage::~StoredPlaylistsPage()
@@ -436,6 +437,14 @@ void StoredPlaylistsPage::headerClicked(int level)
 void StoredPlaylistsPage::setStartClosed(bool sc)
 {
     view->setStartClosed(sc);
+}
+
+void StoredPlaylistsPage::updateToPlayQueue(const QModelIndex &idx, bool replace)
+{
+    QStringList files=PlaylistsModel::self()->filenames(proxy.mapToSource(QModelIndexList() << idx, false));
+    if (!files.isEmpty()) {
+        emit add(files, replace, 0);
+    }
 }
 
 PlaylistsPage::PlaylistsPage(QWidget *p)

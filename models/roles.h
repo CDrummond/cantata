@@ -34,6 +34,7 @@ namespace Cantata {
         Role_BriefMainText,
         Role_SubText,
         Role_TitleText,
+        Role_TitleActions,
         #ifdef ENABLE_UBUNTU
         Role_Image,
         #endif

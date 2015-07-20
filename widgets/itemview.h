@@ -173,6 +173,7 @@ Q_SIGNALS:
     void doubleClicked(const QModelIndex &);
     void rootIndexSet(const QModelIndex &);
     void headerClicked(int level);
+    void updateToPlayQueue(const QModelIndex &idx, bool replace);
 
 private Q_SLOTS:
     void itemClicked(const QModelIndex &index);
@@ -183,6 +184,8 @@ private Q_SLOTS:
     void activateItem(const QModelIndex &index, bool emitRootSet=true);
     void modelReset();
     void dataChanged(const QModelIndex &tl, const QModelIndex &br);
+    void addTitleButtonClicked();
+    void replaceTitleButtonClicked();
 
 private:
     void collapseToLevel();

@@ -372,6 +372,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 return i18n("Smart Playlist");
             }
             return Plurals::tracksWithDuration(pl->songs.count(), Utils::formatTime(pl->totalTime()));
+        case Cantata::Role_TitleActions:
+            return true;
         default:
             return ActionModel::data(index, role);
         }

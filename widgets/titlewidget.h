@@ -38,11 +38,13 @@ class TitleWidget : public QWidget
 public:
     TitleWidget(QWidget *p);
     virtual ~TitleWidget() { }
-    void update(const Song &sng, const QIcon &icon, const QString &text, const QString &sub);
+    void update(const Song &sng, const QIcon &icon, const QString &text, const QString &sub, bool showControls=false);
     bool eventFilter(QObject *obj, QEvent *event);
 
 Q_SIGNALS:
     void clicked();
+    void addToPlayQueue();
+    void replacePlayQueue();
 
 private Q_SLOTS:
     void coverRetrieved(const Song &s, const QImage &img, const QString &file);
@@ -52,6 +54,7 @@ private:
     bool pressed;
     QLabel *back;
     QLabel *image;
+    QWidget *controls;
     SqueezedTextLabel *mainText;
     SqueezedTextLabel *subText;
 };

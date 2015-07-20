@@ -54,6 +54,7 @@ OnlineDbWidget::OnlineDbWidget(OnlineDbService *s, QWidget *p)
     menu->addAction(configureAction);
     init(ReplacePlayQueue|AddToPlayQueue|Refresh, QList<QWidget *>() << menu);
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
+    connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
 }
 
 OnlineDbWidget::~OnlineDbWidget()
@@ -139,4 +140,12 @@ void OnlineDbWidget::refresh()
 void OnlineDbWidget::configure()
 {
     srv->configure(this);
+}
+
+void OnlineDbWidget::updateToPlayQueue(const QModelIndex &idx, bool replace)
+{
+    QStringList files=srv->filenames(QModelIndexList() << idx, true);
+    if (!files.isEmpty()) {
+        emit add(files, replace, 0);
+    }
 }

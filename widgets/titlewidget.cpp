@@ -26,6 +26,8 @@
 #include "support/localize.h"
 #include "support/utils.h"
 #include "support/icon.h"
+#include "gui/stdactions.h"
+#include "toolbutton.h"
 #ifdef Q_OS_MAC
 #include "support/osxstyle.h"
 #endif
@@ -40,6 +42,7 @@
 
 TitleWidget::TitleWidget(QWidget *p)
     : QWidget(p)
+    , controls(0)
 {
     QGridLayout *layout=new QGridLayout(this);
     image=new QLabel(this);
@@ -87,12 +90,34 @@ TitleWidget::TitleWidget(QWidget *p)
     chevron->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 }
 
-void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text, const QString &sub)
+void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text, const QString &sub, bool showControls)
 {
     song=sng;
     image->setVisible(true);
     mainText->setText(text);
     subText->setText(sub);
+    if (!showControls) {
+        if (controls) {
+            controls->setVisible(false);
+        }
+    } else {
+        if (!controls) {
+            controls=new QWidget(this);
+            QVBoxLayout *l=new QVBoxLayout(controls);
+            l->setMargin(0);
+            l->setSpacing(0);
+            ToolButton *add=new ToolButton(this);
+            ToolButton *replace=new ToolButton(this);
+            add->QAbstractButton::setIcon(StdActions::self()->addToPlayQueueAction->icon());
+            replace->QAbstractButton::setIcon(StdActions::self()->replacePlayQueueAction->icon());
+            l->addWidget(replace);
+            l->addWidget(add);
+            connect(add, SIGNAL(clicked()), this, SIGNAL(addToPlayQueue()));
+            connect(replace, SIGNAL(clicked()), this, SIGNAL(replacePlayQueue()));
+            static_cast<QGridLayout *>(layout())->addWidget(controls, 0, 4, 2, 1);
+        }
+        controls->setVisible(true);
+    }
     if (!sng.isEmpty()) {
         Covers::Image cImg=Covers::self()->requestImage(sng, true);
         if (!cImg.img.isNull()) {

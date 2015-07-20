@@ -628,6 +628,8 @@ ItemView::ItemView(QWidget *p)
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered()), this, SLOT(backActivated()));
     connect(listViewEventHandler, SIGNAL(backspacePressed()), this, SLOT(backActivated()));
+    connect(title, SIGNAL(addToPlayQueue()), this, SLOT(addTitleButtonClicked()));
+    connect(title, SIGNAL(replacePlayQueue()), this, SLOT(replaceTitleButtonClicked()));
     searchWidget->setVisible(false);
     #ifdef Q_OS_MAC
     treeView->setAttribute(Qt::WA_MacShowFocusRect, 0);
@@ -1404,6 +1406,20 @@ void ItemView::dataChanged(const QModelIndex &tl, const QModelIndex &br)
     }
 }
 
+void ItemView::addTitleButtonClicked()
+{
+    if ((Mode_List==mode || Mode_IconTop==mode) && view()->rootIndex().isValid()) {
+        emit updateToPlayQueue(view()->rootIndex(), false);
+    }
+}
+
+void ItemView::replaceTitleButtonClicked()
+{
+    if ((Mode_List==mode || Mode_IconTop==mode) && view()->rootIndex().isValid()) {
+        emit updateToPlayQueue(view()->rootIndex(), true);
+    }
+}
+
 void ItemView::delaySearchItems()
 {
     if (searchWidget->text().isEmpty()) {
@@ -1461,7 +1477,8 @@ void ItemView::setTitle()
     title->update(model->data(index, Mode_IconTop==mode ? Cantata::Role_GridCoverSong : Cantata::Role_CoverSong).value<Song>(),
                   model->data(index, Qt::DecorationRole).value<QIcon>(),
                   model->data(index, Cantata::Role_TitleText).toString(),
-                  model->data(index, Cantata::Role_SubText).toString());
+                  model->data(index, Cantata::Role_SubText).toString(),
+                  model->data(index, Cantata::Role_TitleActions).toBool());
 }
 
 void ItemView::controlViewFrame()

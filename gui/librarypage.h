@@ -64,6 +64,7 @@ private Q_SLOTS:
     void libraryAlbumSortChanged();
     void albumAlbumSortChanged();
     void showArtistImagesChanged(bool u);
+    void updateToPlayQueue(const QModelIndex &idx, bool replace);
 
 private:
     void setView(int v);

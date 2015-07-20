@@ -378,6 +378,14 @@ QVariant SqlLibraryModel::data(const QModelIndex &index, int role) const
         return T_Album==item->getType();
     case Cantata::Role_TitleText:
         return item->getText();
+    case Cantata::Role_TitleActions:
+        switch (item->getType()) {
+        case T_Artist:
+        case T_Album:
+            return true;
+        default:
+            return false;
+        }
     default:
         break;
     }

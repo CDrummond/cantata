@@ -198,20 +198,6 @@ QStringList FolderPage::selectedFiles(bool allowPlaylists) const
     return DirViewModel::self()->filenames(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()), allowPlaylists);
 }
 
-void FolderPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
-{
-    QStringList files=selectedFiles(name.isEmpty());
-
-    if (!files.isEmpty()) {
-        if (name.isEmpty()) {
-            emit add(files, replace, priorty);
-        } else {
-            emit addSongsToPlaylist(name, files);
-        }
-        view->clearSelection();
-    }
-}
-
 #ifdef ENABLE_DEVICES_SUPPORT
 void FolderPage::addSelectionToDevice(const QString &udi)
 {

@@ -169,20 +169,6 @@ Song LibraryPage::coverRequest() const
     return Song();
 }
 
-void LibraryPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
-{
-    QStringList files=selectedFiles(name.isEmpty());
-
-    if (!files.isEmpty()) {
-        if (name.isEmpty()) {
-            emit add(files, replace, priorty);
-        } else {
-            emit addSongsToPlaylist(name, files);
-        }
-        view->clearSelection();
-    }
-}
-
 #ifdef ENABLE_DEVICES_SUPPORT
 void LibraryPage::addSelectionToDevice(const QString &udi)
 {

@@ -61,7 +61,8 @@ public:
     enum Indexes {
         Idx_Genre        = 0x01,
         Idx_Artist       = 0x02,
-        Idx_AlbumDetails = 0x04
+        Idx_Album        = 0x04,
+        Idx_AlbumDetails = 0x08
     };
 
     struct Genre

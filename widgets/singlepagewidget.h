@@ -58,7 +58,7 @@ public:
     void init(int flags=All, const QList<QWidget *> &leftXtra=QList<QWidget *>(), const QList<QWidget *> &rightXtra=QList<QWidget *>());
     virtual QStringList selectedFiles(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists); return QStringList(); }
     virtual QList<Song> selectedSongs(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists); return QList<Song>(); }
-    void addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty);
+    virtual void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
     virtual Song coverRequest() const { return Song(); }
     #ifdef ENABLE_DEVICES_SUPPORT
     virtual void addSelectionToDevice(const QString &udi) { Q_UNUSED(udi); }

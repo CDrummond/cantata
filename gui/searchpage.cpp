@@ -142,20 +142,6 @@ QList<Song> SearchPage::selectedSongs(bool allowPlaylists) const
     return model.songs(mapped, allowPlaylists);
 }
 
-void SearchPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
-{
-    QStringList files=selectedFiles(true);
-
-    if (!files.isEmpty()) {
-        if (name.isEmpty()) {
-            emit add(files, replace, priorty);
-        } else {
-            emit addSongsToPlaylist(name, files);
-        }
-        view->clearSelection();
-    }
-}
-
 #ifdef ENABLE_DEVICES_SUPPORT
 void SearchPage::addSelectionToDevice(const QString &udi)
 {

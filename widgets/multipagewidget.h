@@ -33,6 +33,7 @@ class Icon;
 class SelectorButton;
 class SizeWidget;
 class QLabel;
+class Configuration;
 
 class MultiPageWidget : public StackedPageWidget
 {
@@ -49,6 +50,8 @@ public:
     MultiPageWidget(QWidget *p);
     virtual ~MultiPageWidget();
 
+    void load(Configuration &config);
+    void save(Configuration &config) const;
     void setInfoText(const QString &text);
     void addPage(const QString &name, const QString &icon, const QString &text, const QString &subText, QWidget *widget);
     void addPage(const QString &name, const Icon &icon, const QString &text, const QString &subText, QWidget *widget);

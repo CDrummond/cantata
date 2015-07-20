@@ -26,6 +26,7 @@
 #include "support/utils.h"
 #include "support/squeezedtextlabel.h"
 #include "support/proxystyle.h"
+#include "support/configuration.h"
 #include "listview.h"
 #include "sizewidget.h"
 #include "singlepagewidget.h"
@@ -124,6 +125,36 @@ MultiPageWidget::~MultiPageWidget()
 {
 }
 
+static const char *constCurrentPageKey="currentPage";
+
+void MultiPageWidget::load(Configuration &config)
+{
+    QString p=config.get(constCurrentPageKey, QString());
+
+    if (!p.isEmpty()) {
+        QMap<QString, Entry>::ConstIterator it=entries.find(p);
+        if (it!=entries.constEnd()) {
+            setCurrentWidget(it.value().page);
+        }
+    }
+}
+
+void MultiPageWidget::save(Configuration &config) const
+{
+    QString p;
+    QWidget *cw=currentWidget();
+
+    QMap<QString, Entry>::ConstIterator it=entries.constBegin();
+    QMap<QString, Entry>::ConstIterator end=entries.constEnd();
+
+    for (; it!=end; ++it) {
+        if (it.value().page==cw) {
+            p=it.key();
+            break;
+        }
+    }
+    config.set(constCurrentPageKey, p);
+}
 void MultiPageWidget::setInfoText(const QString &text)
 {
     infoLabel->setText(text);

@@ -30,6 +30,7 @@
 #include "widgets/icons.h"
 #include "stdactions.h"
 #include "support/actioncollection.h"
+#include "support/configuration.h"
 #include "widgets/tableview.h"
 #include "widgets/spacerwidget.h"
 #include "widgets/menubutton.h"
@@ -446,10 +447,14 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     addPage(Dynamic::self()->name(), Dynamic::self()->icon(), Dynamic::self()->title(), Dynamic::self()->descr(), dynamic);
 
     connect(stored, SIGNAL(addToDevice(QString,QString,QList<Song>)), SIGNAL(addToDevice(QString,QString,QList<Song>)));
+    Configuration config(metaObject()->className());
+    load(config);
 }
 
 PlaylistsPage::~PlaylistsPage()
 {
+    Configuration config(metaObject()->className());
+    save(config);
 }
 
 #ifdef ENABLE_DEVICES_SUPPORT

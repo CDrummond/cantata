@@ -31,6 +31,7 @@
 #include "podcastwidget.h"
 #include "streams/streamspage.h"
 #include "models/streamsmodel.h"
+#include "support/configuration.h"
 
 OnlineServicesPage::OnlineServicesPage(QWidget *p)
     : MultiPageWidget(p)
@@ -51,10 +52,15 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     podcast=new PodcastService(this);
     addPage(podcast->name(), podcast->icon(), podcast->title(), podcast->descr(), new PodcastWidget(podcast, this));
     connect(podcast, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
+
+    Configuration config(metaObject()->className());
+    load(config);
 }
 
 OnlineServicesPage::~OnlineServicesPage()
 {
+    Configuration config(metaObject()->className());
+    save(config);
 }
 
 bool OnlineServicesPage::isDownloading()

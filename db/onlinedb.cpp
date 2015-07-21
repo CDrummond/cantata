@@ -27,8 +27,8 @@
 
 static const QString subDir("online");
 
-OnlineDb::OnlineDb(const QString &serviceName, QObject *p, int idx)
-    : LibraryDb(p, serviceName, idx)
+OnlineDb::OnlineDb(const QString &serviceName, QObject *p)
+    : LibraryDb(p, serviceName)
     , insertCoverQuery(0)
     , getCoverQuery(0)
 {

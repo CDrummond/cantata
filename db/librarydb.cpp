@@ -432,6 +432,7 @@ public:
             sql += " WHERE " + whereClauses.join(" AND ");
         }
         query=QSqlQuery(sql, db);
+
         foreach (const QVariant &value, boundValues) {
             query.addBindValue(value);
         }
@@ -453,9 +454,8 @@ private:
     QVariantList boundValues;
 };
 
-LibraryDb::LibraryDb(QObject *p, const QString &name, int idx)
+LibraryDb::LibraryDb(QObject *p, const QString &name)
     : QObject(p)
-    , indexes(idx)
     , dbName(name)
     , currentVersion(0)
     , newVersion(0)
@@ -592,14 +592,15 @@ void LibraryDb::insertSong(const Song &s)
         insertSongQuery->prepare("insert into songs(file, artist, artistId, albumArtist, artistSort, composer, album, albumId, albumSort, title, genre, track, disc, time, year, type, lastModified) "
                                  "values(:file, :artist, :artistId, :albumArtist, :artistSort, :composer, :album, :albumId, :albumSort, :title, :genre, :track, :disc, :time, :year, :type, :lastModified)");
     }
+    QString albumId=s.albumId();
     insertSongQuery->bindValue(":file", s.file);
     insertSongQuery->bindValue(":artist", s.artist);
     insertSongQuery->bindValue(":artistId", s.artistOrComposer());
     insertSongQuery->bindValue(":albumArtist", s.albumartist);
     insertSongQuery->bindValue(":artistSort", artistSort(s));
     insertSongQuery->bindValue(":composer", s.composer());
-    insertSongQuery->bindValue(":album", s.album);
-    insertSongQuery->bindValue(":albumId", s.albumId());
+    insertSongQuery->bindValue(":album", s.album==albumId ? QString() : s.album);
+    insertSongQuery->bindValue(":albumId", albumId);
     insertSongQuery->bindValue(":albumSort", albumSort(s));
     insertSongQuery->bindValue(":title", s.displayTitle());
     insertSongQuery->bindValue(":genre", s.genre.isEmpty() ? constNullGenre : s.genre);
@@ -664,7 +665,7 @@ QList<LibraryDb::Artist> LibraryDb::getArtists(const QString &genre)
     QMap<QString, int>::ConstIterator it=albumMap.constBegin();
     QMap<QString, int>::ConstIterator end=albumMap.constEnd();
     for (; it!=end; ++it) {
-        DBUG << it.key();
+//        DBUG << it.key();
         artists.append(Artist(it.key(), sortMap[it.key()], it.value()));
     }
     qSort(artists);
@@ -675,9 +676,12 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
 {
     timer.start();
     DBUG << artistId << genre;
-    QList<LibraryDb::Album> albums;
+    QList<Album> albums;
     if (0!=currentVersion) {
-        SqlQuery query("distinct album, albumId, albumSort, artistId, artistSort", *db);
+        bool wantModified=AS_Modified==sort;
+        bool wantArtist=artistId.isEmpty();
+        int artistCol=wantModified ? 6 : 5;
+        SqlQuery query(QLatin1String("album, albumId, albumSort, year, time")+(wantModified ? ", lastModified" : "")+(wantArtist ? ", artistId, artistSort" : ""), *db);
         query.setFilter(filter);
         if (!artistId.isEmpty()) {
             query.addWhere("artistId", artistId);
@@ -686,29 +690,36 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
             query.addWhere("genre", genre);
         }
         query.exec();
-        DBUG << query.executedQuery();
+        DBUG << query.executedQuery() << timer.elapsed();
+        int count=0;
+        QMap<QString, Album> entries;
         while (query.next()) {
+            count++;
             QString album=query.value(0).toString();
             QString albumId=query.value(1).toString();
             QString albumSort=query.value(2).toString();
-            QString artist=artistId.isEmpty() ? query.value(3).toString() : QString();
-            QString artistSort=artistId.isEmpty() ? query.value(4).toString() : QString();
-            SqlQuery detailsQuery(AS_Modified==sort ? "avg(year), count(track), sum(time), max(lastModified)" : "avg(year), count(track), sum(time)", *db);
-            detailsQuery.setFilter(filter);
+            int year=query.value(3).toInt();
+            int time=query.value(4).toInt();
+            int lastModified=wantModified ? query.value(5).toInt() : 0;
+            QString artist=wantArtist ? query.value(artistCol).toString() : QString();
+            QString artistSort=wantArtist ? query.value(artistCol+1).toString() : QString();
 
-            if (!genre.isEmpty()) {
-                detailsQuery.addWhere("genre", genre);
-            }
-
-            detailsQuery.addWhere("artistId", artistId.isEmpty() ? artist : artistId);
-            detailsQuery.addWhere("albumId", albumId);
-            detailsQuery.exec();
-            DBUG << detailsQuery.executedQuery();
-            if (detailsQuery.next()) {
-                albums.append(Album(album, albumId, albumSort, artist, artistSort, detailsQuery.value(0).toInt(), detailsQuery.value(1).toInt(),
-                                    detailsQuery.value(2).toInt(), AS_Modified==sort ? detailsQuery.value(3).toInt() : 0));
+            QString key='{'+albumId+"}{"+artistId+'}';
+            QMap<QString, Album>::iterator it=entries.find(key);
+            if (it==entries.end()) {
+                entries.insert(key, Album(album.isEmpty() ? albumId : album, albumId, albumSort, artist, artistSort, year, 1, time, lastModified));
+            } else {
+                Album &al=it.value();
+                if (wantModified) {
+                    al.lastModified=qMax(al.lastModified, lastModified);
+                }
+                al.year=qMax(al.year, year);
+                al.duration+=time;
+                al.trackCount++;
             }
         }
+        albums=entries.values();
+        DBUG << count << albums.count();
     }
 
     DBUG << "After select" << timer.elapsed();
@@ -866,7 +877,9 @@ bool LibraryDb::setFilter(const QString &f)
             str.remove('"');
             str.remove(':');
             str.remove('*');
-            tokens.append(str+"* ");
+            if (str.length()>1) {
+                tokens.append(str+"* ");
+            }
         }
         newFilter=tokens.join(" ");
     }
@@ -909,7 +922,6 @@ void LibraryDb::updateFinished()
                         "select artist, artistId, album, title from songs");
     #endif
     QSqlQuery(*db).exec("update versions set collection ="+QString::number(newVersion));
-    createIndexes();
     db->commit();
     currentVersion=newVersion;
     DBUG << timer.elapsed();
@@ -940,6 +952,10 @@ Song LibraryDb::getSong(const QSqlQuery &query)
     s.setComposer(query.value(SF_composer).toString());
     s.album=query.value(SF_album).toString();
     QString val=query.value(SF_albumId).toString();
+    if (s.album.isEmpty()) {
+        s.album=val;
+        val=QString();
+    }
     if (!val.isEmpty() && val!=s.album) {
         s.setMbAlbumId(val);
     }
@@ -989,46 +1005,7 @@ void LibraryDb::clearSongs(bool startTransaction)
     QSqlQuery(*db).exec("delete from songs_fts");
     detailsCache.clear();
     #endif
-    dropIndexes();
     if (startTransaction) {
         db->commit();
-    }
-}
-
-void LibraryDb::createIndexes()
-{
-    QElapsedTimer idxTimer;
-    idxTimer.start();
-    if (indexes&Idx_Genre) {
-        QSqlQuery(*db).exec("create index songs_genre_idx on songs (genre, artistId)");
-        DBUG << "time to create genre idx" << idxTimer.elapsed();
-    }
-    if (indexes&Idx_Artist) {
-        QSqlQuery(*db).exec("create index songs_artist_idx on songs (artistId, albumId, artistSort)");
-        DBUG << "time to create artist idx" << idxTimer.elapsed();
-    }
-    if (indexes&Idx_Album) {
-        QSqlQuery(*db).exec("create index songs_album_idx on songs (album, albumId, albumSort, artistId, artistSort)");
-        DBUG << "time to create album idx" << idxTimer.elapsed();
-    }
-    if (indexes&Idx_AlbumDetails) {
-        QSqlQuery(*db).exec("create index songs_album_details_idx on songs (artistId, albumId)");
-        DBUG << "time to create album details idx" << idxTimer.elapsed();
-    }
-}
-
-void LibraryDb::dropIndexes()
-{
-    if (indexes&Idx_Genre) {
-        QSqlQuery(*db).exec("drop index songs_genre_idx");
-    }
-    if (indexes&Idx_Artist) {
-        QSqlQuery(*db).exec("drop index songs_artist_idx");
-    }
-    if (indexes&Idx_Album) {
-        QSqlQuery(*db).exec("drop index songs_album_idx");
-    }
-    if (indexes&Idx_AlbumDetails) {
-        QSqlQuery(*db).exec("drop index songs_album_details_idx");
     }
 }

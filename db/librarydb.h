@@ -58,13 +58,6 @@ public:
     static AlbumSort toAlbumSort(const QString &str);
     static QString albumSortStr(AlbumSort m);
 
-    enum Indexes {
-        Idx_Genre        = 0x01,
-        Idx_Artist       = 0x02,
-        Idx_Album        = 0x04,
-        Idx_AlbumDetails = 0x08
-    };
-
     struct Genre
     {
         Genre(const QString &n=QString(), int ac=0)
@@ -115,7 +108,7 @@ public:
         int lastModified;
     };
 
-    LibraryDb(QObject *p, const QString &name, int idx=0);
+    LibraryDb(QObject *p, const QString &name);
     ~LibraryDb();
 
     void clear();
@@ -154,14 +147,9 @@ protected:
     virtual void reset();
     void clearSongs(bool startTransaction=true);
 
-private:
-    void createIndexes();
-    void dropIndexes();
-
 protected:
     static bool dbgEnabled;
 
-    int indexes;
     QString dbName;
     QString dbFileName;
     time_t currentVersion;

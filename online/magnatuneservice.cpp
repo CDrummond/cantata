@@ -156,7 +156,7 @@ static MagnatuneService::DownloadType toDownloadType(const QString &f)
 }
 
 MagnatuneService::MagnatuneService(QObject *p)
-    : OnlineDbService(new OnlineDb(constName, p, OnlineDb::Idx_Genre), p)
+    : OnlineDbService(new OnlineDb(constName, p), p)
 {
     icn.addFile(":"+constName);
     useCovers(name());

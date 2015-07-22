@@ -1437,7 +1437,8 @@ void ItemView::delaySearchItems()
             searchTimer->setSingleShot(true);
             connect(searchTimer, SIGNAL(timeout()), this, SLOT(doSearch()));
         }
-        searchTimer->start(500);
+        int len=searchWidget->text().trimmed().length();
+        searchTimer->start(len<2 ? 1000 : len<4 ? 750 : 500);
     }
 }
 

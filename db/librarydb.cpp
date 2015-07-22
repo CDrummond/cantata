@@ -877,7 +877,7 @@ bool LibraryDb::setFilter(const QString &f)
             str.remove('"');
             str.remove(':');
             str.remove('*');
-            if (str.length()>1) {
+            if (str.length()>0) {
                 tokens.append(str+"* ");
             }
         }

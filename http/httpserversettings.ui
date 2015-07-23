@@ -6,49 +6,54 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>416</width>
-    <height>345</height>
+    <width>1406</width>
+    <height>274</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="margin">
+  <layout class="QFormLayout" name="formLayout">
+   <property name="fieldGrowthPolicy">
+    <enum>QFormLayout::ExpandingFieldsGrow</enum>
+   </property>
+   <property name="leftMargin">
     <number>0</number>
    </property>
-   <item>
-    <layout class="QFormLayout" name="formLayout">
-     <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="BuddyLabel" name="label_5">
+     <property name="text">
+      <string>Network &amp;interface:</string>
      </property>
-     <item row="1" column="0">
-      <widget class="BuddyLabel" name="label_5">
-       <property name="text">
-        <string>Network interface:</string>
-       </property>
-       <property name="buddy">
-        <cstring>httpInterface</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="httpInterface"/>
-     </item>
-    </layout>
+     <property name="buddy">
+      <cstring>httpInterface</cstring>
+     </property>
+    </widget>
    </item>
-   <item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="httpInterface"/>
+   </item>
+   <item row="1" column="0" colspan="2">
     <widget class="NoteLabel" name="label_4">
      <property name="text">
       <string>MPD usually only plays songs that are stored within its folders. Cantata contains a minimal HTTP server that can be used to serve other files to MPD. This, however, will only work whilst Cantata is running.</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0" colspan="2">
     <widget class="NoteLabel" name="label_4b">
      <property name="text">
       <string>If you choose 'Local loopback' for 'Network interface', then MPD &lt;b&gt;must&lt;/b&gt; also be on this computer.</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="3" column="0" colspan="2">
     <spacer name="expandingSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -75,7 +80,6 @@
    <header>widgets/notelabel.h</header>
   </customwidget>
  </customwidgets>
- <tabstops/>
  <resources/>
  <connections/>
 </ui>

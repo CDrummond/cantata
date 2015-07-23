@@ -55,6 +55,7 @@
 #endif
 
 #ifdef __APPLE__
+//#define ANIMATE_RESIZE
 static void drawFadedLine(QPainter *p, const QRect &r, const QColor &col, bool horiz, double fadeSize)
 {
     QPointF start(r.x()+0.5, r.y()+0.5);
@@ -237,6 +238,7 @@ bool ConfigDialog::setCurrentPage(const QString &id)
         setCaption(it.value().item->text());
         it.value().item->setChecked(true);
     }
+    #ifdef ANIMATE_RESIZE
     if (isVisible()) {
         it.value().widget->ensurePolished();
         ensurePolished();
@@ -260,6 +262,7 @@ bool ConfigDialog::setCurrentPage(const QString &id)
         resize(width(), newH);
         setMaximumHeight(QWIDGETSIZE_MAX);
     }
+    #endif
     #else
     pageWidget->setCurrentPage(pages[id]);
     #endif
@@ -269,7 +272,7 @@ bool ConfigDialog::setCurrentPage(const QString &id)
 #ifdef __APPLE__
 void ConfigDialog::setH(int h)
 {
-    if (h==resizeAnim->endValue().toInt()) {
+    if (resizeAnim && h==resizeAnim->endValue().toInt()) {
         setMaximumHeight(QWIDGETSIZE_MAX);
         resize(width(), h);
     } else {

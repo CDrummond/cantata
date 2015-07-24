@@ -630,6 +630,7 @@ ItemView::ItemView(QWidget *p)
     connect(listViewEventHandler, SIGNAL(backspacePressed()), this, SLOT(backActivated()));
     connect(title, SIGNAL(addToPlayQueue()), this, SLOT(addTitleButtonClicked()));
     connect(title, SIGNAL(replacePlayQueue()), this, SLOT(replaceTitleButtonClicked()));
+    connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
     searchWidget->setVisible(false);
     #ifdef Q_OS_MAC
     treeView->setAttribute(Qt::WA_MacShowFocusRect, 0);
@@ -1418,6 +1419,15 @@ void ItemView::replaceTitleButtonClicked()
     if ((Mode_List==mode || Mode_IconTop==mode) && view()->rootIndex().isValid()) {
         emit updateToPlayQueue(view()->rootIndex(), true);
     }
+}
+
+void ItemView::coverLoaded(const Song &song, int size)
+{
+    Q_UNUSED(song)
+    if (Mode_BasicTree==mode || Mode_GroupedTree==mode || !isVisible() || (Mode_IconTop==mode && size!=gridCoverSize) || (Mode_IconTop!=mode && size!=listCoverSize)) {
+        return;
+    }
+    view()->viewport()->update();
 }
 
 void ItemView::delaySearchItems()

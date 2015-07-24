@@ -186,6 +186,7 @@ private Q_SLOTS:
     void dataChanged(const QModelIndex &tl, const QModelIndex &br);
     void addTitleButtonClicked();
     void replaceTitleButtonClicked();
+    void coverLoaded(const Song &song, int size);
 
 private:
     void collapseToLevel();

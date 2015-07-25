@@ -57,6 +57,7 @@
     search).
 39. Use mpd.cantata for DBus service names and not com.googlecode.cantata
 40. Fix OpenBSD build.
+41. Add option to set which prefixes to ignore when sorting.
 
 1.5.2
 -----

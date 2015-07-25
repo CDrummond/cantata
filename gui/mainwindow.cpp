@@ -1409,12 +1409,10 @@ void MainWindow::readSettings()
     #ifdef QT_QTDBUS_FOUND
     if (Settings::self()->mpris()) {
         if (!mpris) {
-            qWarning() << "START MPRIS";
             mpris=new Mpris(this);
             connect(mpris, SIGNAL(showMainWindow()), this, SLOT(restoreWindow()));
         }
     } else if (mpris) {
-        qWarning() << "STOP MPRIS";
         disconnect(mpris, SIGNAL(showMainWindow()), this, SLOT(restoreWindow()));
         mpris->deleteLater();
         mpris=0;

@@ -52,6 +52,10 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
     }
 
     switch (role) {
+    case Cantata::Role_ListImage: {
+        Item *item = static_cast<Item *>(index.internalPointer());
+        return T_Album==item->getType() || (T_Artist==item->getType() && useArtistImages());
+    }
     case Cantata::Role_GridCoverSong:
     case Cantata::Role_CoverSong: {
         QVariant v;

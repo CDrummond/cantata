@@ -132,7 +132,7 @@ The following options may be passed to CMake:
 
     -DENABLE_UDISKS2=ON
         Build UDisks2 backend for solid-lite. (Non-KDE builds only)
-        Default: OFF
+        Default: ON
 
     -DINSTALL_UBUNTU_ICONS=<ON if Ubuntu, OFF otherwise>
         Install monochrome system tray icons for Ubuntu.

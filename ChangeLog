@@ -59,6 +59,7 @@
 40. Fix OpenBSD build.
 41. Add option to set which prefixes to ignore when sorting.
 42. Add option to disable MPRIS interface.
+43. Default to UDisks2
 
 1.5.2
 -----

@@ -79,7 +79,7 @@
             <item row="0" column="0">
              <widget class="BuddyLabel" name="sbStyleLabel">
               <property name="text">
-               <string>St&amp;yle:</string>
+               <string>Style:</string>
               </property>
               <property name="buddy">
                <cstring>sbStyle</cstring>
@@ -92,7 +92,7 @@
             <item row="1" column="0">
              <widget class="BuddyLabel" name="sbPositionLabel">
               <property name="text">
-               <string>Positio&amp;n:</string>
+               <string>Position:</string>
               </property>
               <property name="buddy">
                <cstring>sbPosition</cstring>
@@ -134,7 +134,7 @@
        <item row="0" column="0">
         <widget class="BuddyLabel" name="playQueueViewLabel">
          <property name="text">
-          <string>St&amp;yle:</string>
+          <string>Style:</string>
          </property>
          <property name="buddy">
           <cstring>playQueueView</cstring>
@@ -210,21 +210,21 @@
           <item row="0" column="0" colspan="3">
            <widget class="QRadioButton" name="playQueueBackground_none">
             <property name="text">
-             <string>&amp;None</string>
+             <string>None</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0" colspan="3">
            <widget class="QRadioButton" name="playQueueBackground_cover">
             <property name="text">
-             <string>C&amp;urrent album cover</string>
+             <string>Current album cover</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0" colspan="2">
            <widget class="QRadioButton" name="playQueueBackground_custom">
             <property name="text">
-             <string>Custo&amp;m image:</string>
+             <string>Custom image:</string>
             </property>
            </widget>
           </item>
@@ -434,21 +434,21 @@
           <item>
            <widget class="QRadioButton" name="startupStateShow">
             <property name="text">
-             <string>Show &amp;main window</string>
+             <string>Show main window</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QRadioButton" name="startupStateHide">
             <property name="text">
-             <string>Hi&amp;de main window</string>
+             <string>Hide main window</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QRadioButton" name="startupStateRestore">
             <property name="text">
-             <string>Restore previo&amp;us state</string>
+             <string>Restore previous state</string>
             </property>
            </widget>
           </item>
@@ -650,7 +650,7 @@
          <item row="6" column="0">
           <widget class="BuddyLabel" name="langLabel">
            <property name="text">
-            <string>&amp;Language:</string>
+            <string>Language:</string>
            </property>
            <property name="buddy">
             <cstring>lang</cstring>

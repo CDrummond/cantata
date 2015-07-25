@@ -163,6 +163,7 @@ public:
     bool showRatingWidget();
     bool infoTooltips();
     bool retinaSupport();
+    QStringList ignorePrefixes();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -261,6 +262,7 @@ public:
     void saveShowRatingWidget(bool v);
     void saveInfoTooltips(bool v);
     void saveRetinaSupport(bool v);
+    void saveIgnorePrefixes(const QStringList &v);
     void save();
     void clearVersion();
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET

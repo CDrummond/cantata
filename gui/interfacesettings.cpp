@@ -211,6 +211,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
 void InterfaceSettings::load()
 {
+    ignorePrefixes->setText(Settings::self()->ignorePrefixes().join(QString(Song::constGenreSep)));
     composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(Song::constGenreSep)));
     singleTracksFolder->setText(Settings::self()->singleTracksFolder());
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -284,6 +285,7 @@ void InterfaceSettings::load()
 
 void InterfaceSettings::save()
 {
+    Settings::self()->saveIgnorePrefixes(ignorePrefixes->text().trimmed().split(Song::constGenreSep));
     Settings::self()->saveComposerGenres(composerGenres->text().trimmed().split(Song::constGenreSep).toSet());
     Settings::self()->saveSingleTracksFolder(singleTracksFolder->text().trimmed());
     #ifdef ENABLE_DEVICES_SUPPORT

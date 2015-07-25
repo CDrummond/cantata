@@ -1415,6 +1415,7 @@ void MainWindow::readSettings()
     CurrentCover::self()->setEnabled(Settings::self()->showPopups() || 0!=Settings::self()->playQueueBackground() || Settings::self()->showCoverWidget());
     #endif
     checkMpdDir();
+    LibraryDb::setIgnorePrefixes(Settings::self()->ignorePrefixes());
     Covers::self()->readConfig();
     HttpServer::self()->readConfig();
     #ifdef ENABLE_DEVICES_SUPPORT

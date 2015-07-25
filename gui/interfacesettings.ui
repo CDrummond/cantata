@@ -476,6 +476,32 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
+        <widget class="QGroupBox" name="groupBox_2p">
+         <property name="title">
+          <string>Artist &amp;&amp; Album Sorting</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2p">
+          <item>
+           <widget class="QLabel" name="labelp">
+            <property name="text">
+             <string>Enter a (comma separated) list of prefixes to ignore when sorting artist and albums. e.g. if set to 'The' then 'The Beatles' would be sorted by 'Beatles'</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="LineEdit" name="ignorePrefixes">
+            <property name="placeholderText">
+             <string>Enter comma separated list of prefixes...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
           <string>Composer Support</string>

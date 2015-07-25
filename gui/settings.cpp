@@ -777,6 +777,11 @@ bool Settings::retinaSupport()
     return cfg.get("retinaSupport", false);
 }
 
+QStringList Settings::ignorePrefixes()
+{
+    return cfg.get("ignorePrefixes", LibraryDb::ignorePrefixes());
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1260,6 +1265,11 @@ void Settings::saveInfoTooltips(bool v)
 void Settings::saveRetinaSupport(bool v)
 {
     cfg.set("retinaSupport", v);
+}
+
+void Settings::saveIgnorePrefixes(const QStringList &v)
+{
+    cfg.set("ignorePrefixes", v);
 }
 
 void Settings::save()

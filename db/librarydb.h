@@ -33,7 +33,6 @@
 
 class QSqlDatabase;
 class QSqlQuery;
-class QSettings;
 
 class LibraryDb : public QObject
 {
@@ -107,6 +106,9 @@ public:
         int duration;
         int lastModified;
     };
+
+    static QStringList ignorePrefixes();
+    static void setIgnorePrefixes(const QStringList &prefixes);
 
     LibraryDb(QObject *p, const QString &name);
     ~LibraryDb();

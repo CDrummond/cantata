@@ -195,6 +195,9 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     } else if (!enableTrayItem && enableNotifications) {
         tabWidget->setTabText(3, i18n("Notifications"));
     }
+    #if !defined QT_QTDBUS_FOUND
+    REMOVE(enableMpris)
+    #endif
     #if defined Q_OS_WIN || defined Q_OS_MAC || !defined QT_QTDBUS_FOUND
     if (systemTrayPopup && systemTrayCheckBox) {
         connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(systemTrayCheckBoxToggled()));
@@ -281,6 +284,9 @@ void InterfaceSettings::load()
     setPlayQueueBackgroundOpacityLabel();
     setPlayQueueBackgroundBlurLabel();
     enablePlayQueueBackgroundOptions();
+    if (enableMpris) {
+        enableMpris->setChecked(Settings::self()->mpris());
+    }
 }
 
 void InterfaceSettings::save()
@@ -351,6 +357,9 @@ void InterfaceSettings::save()
     }
     Settings::self()->saveSidebar(sidebar);
     Settings::self()->saveSplitterAutoHide(sbAutoHide->isChecked());
+    if (enableMpris) {
+        Settings::self()->saveMpris(enableMpris->isChecked());
+    }
 }
 
 #ifndef ENABLE_KDE_SUPPORT

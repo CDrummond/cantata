@@ -398,6 +398,13 @@
        <string>External</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <widget class="QCheckBox" name="enableMpris">
+        <property name="text">
+         <string>Enable MPRIS D-BUS interface</string>
+        </property>
+       </widget>
+      </item>
        <item>
         <widget class="QCheckBox" name="systemTrayPopup">
          <property name="text">

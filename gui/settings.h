@@ -164,6 +164,7 @@ public:
     bool infoTooltips();
     bool retinaSupport();
     QStringList ignorePrefixes();
+    bool mpris();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -263,6 +264,7 @@ public:
     void saveInfoTooltips(bool v);
     void saveRetinaSupport(bool v);
     void saveIgnorePrefixes(const QStringList &v);
+    void saveMpris(bool v);
     void save();
     void clearVersion();
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET

@@ -60,6 +60,11 @@ Mpris::Mpris(QObject *p)
     connect(CurrentCover::self(), SIGNAL(coverFile(const QString &)), this, SLOT(updateCurrentCover(const QString &)));
 }
 
+Mpris::~Mpris()
+{
+    QDBusConnection::sessionBus().unregisterService("org.mpris.MediaPlayer2.cantata");
+}
+
 qlonglong Mpris::Position() const
 {
     // Cant use MPDStatus, as we dont poll for track position, but use a timer instead!

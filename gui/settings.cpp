@@ -782,6 +782,11 @@ QStringList Settings::ignorePrefixes()
     return cfg.get("ignorePrefixes", LibraryDb::ignorePrefixes());
 }
 
+bool Settings::mpris()
+{
+    return cfg.get("mpris", true);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1270,6 +1275,11 @@ void Settings::saveRetinaSupport(bool v)
 void Settings::saveIgnorePrefixes(const QStringList &v)
 {
     cfg.set("ignorePrefixes", v);
+}
+
+void Settings::saveMpris(bool v)
+{
+    cfg.set("mpris", v);
 }
 
 void Settings::save()

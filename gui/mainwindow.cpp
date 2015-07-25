@@ -885,11 +885,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabWidget, SIGNAL(styleChanged(int)), this, SLOT(sidebarModeChanged()));
     connect(tabWidget, SIGNAL(configRequested()), this, SLOT(showSidebarPreferencesPage()));
 
-    #ifdef QT_QTDBUS_FOUND
-    mpris=new Mpris(this);
-    connect(mpris, SIGNAL(showMainWindow()), this, SLOT(restoreWindow()));
-    CurrentCover::self()->setEnabled(true);
-    #endif
     readSettings();
     updateConnectionsMenu();
     ActionCollection::get()->readSettings();
@@ -1410,10 +1405,25 @@ void MainWindow::setRating()
 }
 
 void MainWindow::readSettings()
-{
-    #ifndef QT_QTDBUS_FOUND
+{    
+    #ifdef QT_QTDBUS_FOUND
+    if (Settings::self()->mpris()) {
+        if (!mpris) {
+            qWarning() << "START MPRIS";
+            mpris=new Mpris(this);
+            connect(mpris, SIGNAL(showMainWindow()), this, SLOT(restoreWindow()));
+        }
+    } else if (mpris) {
+        qWarning() << "STOP MPRIS";
+        disconnect(mpris, SIGNAL(showMainWindow()), this, SLOT(restoreWindow()));
+        mpris->deleteLater();
+        mpris=0;
+    }
+    CurrentCover::self()->setEnabled(mpris || Settings::self()->showPopups() || 0!=Settings::self()->playQueueBackground() || Settings::self()->showCoverWidget());
+    #else
     CurrentCover::self()->setEnabled(Settings::self()->showPopups() || 0!=Settings::self()->playQueueBackground() || Settings::self()->showCoverWidget());
     #endif
+
     checkMpdDir();
     LibraryDb::setIgnorePrefixes(Settings::self()->ignorePrefixes());
     Covers::self()->readConfig();
@@ -1693,7 +1703,9 @@ void MainWindow::updateCurrentSong(Song song, bool wasEmpty)
 
     CurrentCover::self()->update(current);
     #ifdef QT_QTDBUS_FOUND
-    mpris->updateCurrentSong(current);
+    if (mpris) {
+        mpris->updateCurrentSong(current);
+    }
     #endif
     if (current.time<5 && MPDStatus::self()->songId()==current.id && MPDStatus::self()->timeTotal()>5) {
         current.time=MPDStatus::self()->timeTotal();

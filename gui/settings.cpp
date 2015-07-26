@@ -747,11 +747,6 @@ bool Settings::touchFriendly()
     #endif
 }
 
-bool Settings::filteredOnly()
-{
-    return cfg.get("filteredOnly", false);
-}
-
 bool Settings::showCoverWidget()
 {
     return cfg.get("showCoverWidget", true);
@@ -1240,11 +1235,6 @@ void Settings::saveTouchFriendly(bool v)
     #else
     Q_UNUSED(v)
     #endif
-}
-
-void Settings::saveFilteredOnly(bool v)
-{
-    cfg.set("filteredOnly", v);
 }
 
 void Settings::saveShowCoverWidget(bool v)

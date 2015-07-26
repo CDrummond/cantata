@@ -157,7 +157,6 @@ public:
     bool showMenubar();
     int menu();
     bool touchFriendly();
-    bool filteredOnly();
     bool showCoverWidget();
     bool showStopButton();
     bool showRatingWidget();
@@ -257,7 +256,6 @@ public:
     #endif
     void saveShowMenubar(bool v);
     void saveTouchFriendly(bool v);
-    void saveFilteredOnly(bool v);
     void saveShowCoverWidget(bool v);
     void saveShowStopButton(bool v);
     void saveShowRatingWidget(bool v);

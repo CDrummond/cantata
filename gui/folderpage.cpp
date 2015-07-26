@@ -195,7 +195,7 @@ QStringList FolderPage::selectedFiles(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QStringList();
     }
-    return DirViewModel::self()->filenames(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()), allowPlaylists);
+    return DirViewModel::self()->filenames(proxy.mapToSource(selected), allowPlaylists);
 }
 
 #ifdef ENABLE_DEVICES_SUPPORT

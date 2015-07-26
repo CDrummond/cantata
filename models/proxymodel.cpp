@@ -190,7 +190,7 @@ QModelIndexList ProxyModel::mapToSource(const QModelIndexList &list, bool leaves
 #ifndef ENABLE_UBUNTU
 QMimeData * ProxyModel::mimeData(const QModelIndexList &indexes) const
 {
-    QModelIndexList nodes=Settings::self()->filteredOnly() ? leaves(indexes) : indexes;
+    QModelIndexList nodes=leaves(indexes);
     QModelIndexList sourceIndexes;
     foreach (const QModelIndex &idx, nodes) {
         sourceIndexes << mapToSource(idx);

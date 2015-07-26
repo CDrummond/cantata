@@ -553,12 +553,22 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                 continue;
             }
 
-            // lsinfo / will return all stored playlists - but this is deprecated.
-            if (Song::Playlist==currentSong.type && !parsePlaylists) {
-                continue;
-            }
+            if (Song::Playlist==currentSong.type) {
+                // lsinfo will return all stored playlists - but this is deprecated.
+                if (!parsePlaylists) {
+                    continue;
+                }
 
-            if (Song::Playlist==currentSong.type && !songs.isEmpty()) {
+                // Only add CUE files to library listing...
+                if (!currentSong.isCueFile()) {
+                    continue;
+                }
+
+                // No source files for CUE file..
+                if (songs.isEmpty()) {
+                    continue;
+                }
+
                 Song firstSong=songs.at(0);
                 QList<Song> cueSongs; // List of songs from cue file
                 QSet<QString> cueFiles; // List of source (flac, mp3, etc) files referenced in cue file
@@ -664,8 +674,8 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
 
                     if (canUseCueFileTracks) {
                         songs=cueSongs;
-                        continue;
                     }
+                    continue;
                 }
 
                 if (!firstSong.albumArtist().isEmpty() && !firstSong.album.isEmpty()) {
@@ -673,15 +683,14 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                     currentSong.album=firstSong.album;
                     songs.append(currentSong);
                 }
-                continue;
+            } else {
+                if (setSingleTracks) {
+                    currentSong.albumartist=Song::variousArtists();
+                    currentSong.album=i18n("Single Tracks");
+                }
+                currentSong.fillEmptyFields();
+                songs.append(currentSong);
             }
-
-            if (Song::Playlist!=currentSong.type && setSingleTracks) {
-                currentSong.albumartist=Song::variousArtists();
-                currentSong.album=i18n("Single Tracks");
-            }
-            currentSong.fillEmptyFields();
-            songs.append(currentSong);
         }
     }
 }

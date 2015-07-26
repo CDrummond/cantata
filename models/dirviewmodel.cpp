@@ -359,14 +359,79 @@ Qt::ItemFlags DirViewModel::flags(const QModelIndex &index) const
     }
 }
 
+static inline void addFile(DirViewItemFile *item, QList<DirViewItemFile *> &insertInto, QList<DirViewItemFile *> &checkAgainst, bool allowPlaylists)
+{
+    if ((allowPlaylists || DirViewItemFile::Audio==item->fileType()) && !checkAgainst.contains(item)) {
+        insertInto << item;
+    }
+}
+
+static bool lessThan(const DirViewItemFile *left, const DirViewItemFile *right)
+{
+    return left->fullName().compare(right->fullName(), Qt::CaseInsensitive) < 0;
+}
+
+static void getFiles(DirViewItem *item, QList<DirViewItemFile *> &files, bool allowPlaylists)
+{
+    if (!item) {
+        return;
+    }
+
+    switch (item->type()) {
+        case DirViewItem::Type_File:
+            addFile(static_cast<DirViewItemFile *>(item), files, files, allowPlaylists);
+        break;
+        case DirViewItem::Type_Dir: {
+            QList<DirViewItemFile *> dirFiles;
+            for (int c=0; c<item->childCount(); c++) {
+                DirViewItem *child=item->child(c);
+                if (DirViewItem::Type_Dir==child->type()) {
+                    getFiles(child, files, allowPlaylists);
+                } else if (DirViewItem::Type_File==child->type()) {
+                    addFile(static_cast<DirViewItemFile *>(child), dirFiles, files, allowPlaylists);
+                }
+            }
+
+            qSort(dirFiles.begin(), dirFiles.end(), lessThan);
+            files+=dirFiles;
+        }
+        default:
+        break;
+    }
+}
+
 QStringList DirViewModel::filenames(const QModelIndexList &indexes, bool allowPlaylists) const
 {
-    QStringList fnames;
+    QList<DirViewItemFile *> files;
+    QStringList names;
 
     foreach(QModelIndex index, indexes) {
-        getFiles(static_cast<DirViewItem *>(index.internalPointer()), fnames, allowPlaylists);
+        getFiles(static_cast<DirViewItem *>(index.internalPointer()), files, allowPlaylists);
     }
-    return fnames;
+
+    if (allowPlaylists) {
+        QSet<DirViewItem *> cueFolders;
+
+        foreach (const DirViewItemFile *f, files) {
+            if (DirViewItemFile::Audio!=f->fileType()) {
+                cueFolders.insert(f->parent());
+            }
+        }
+
+        if (!cueFolders.isEmpty()) {
+            foreach (const DirViewItemFile *f, files) {
+                if (DirViewItemFile::Audio!=f->fileType() || !cueFolders.contains(f->parent())) {
+                    names.append(f->fullName());
+                }
+            }
+            return names;
+        }
+    }
+
+    foreach (const DirViewItemFile *f, files) {
+        names.append(f->fullName());
+    }
+    return names;
 }
 
 #ifndef ENABLE_UBUNTU
@@ -385,46 +450,3 @@ QMimeData *DirViewModel::mimeData(const QModelIndexList &indexes) const
     return mimeData;
 }
 #endif
-
-static inline void addFile(DirViewItem *item, QStringList &insertInto, QStringList &checkAgainst, bool allowPlaylists)
-{
-    QString path=item->fullName();
-    if ((allowPlaylists || !MPDConnection::isPlaylist(path)) && !checkAgainst.contains(path)) {
-        insertInto << path;
-    }
-}
-
-
-static bool lessThan(const QString &left, const QString &right)
-{
-    return left.compare(right, Qt::CaseInsensitive) < 0;
-}
-
-void DirViewModel::getFiles(DirViewItem *item, QStringList &filenames, bool allowPlaylists) const
-{
-    if (!item) {
-        return;
-    }
-
-    switch (item->type()) {
-        case DirViewItem::Type_File:
-            addFile(item, filenames, filenames, allowPlaylists);
-        break;
-        case DirViewItem::Type_Dir: {
-            QStringList dirFiles;
-            for (int c=0; c<item->childCount(); c++) {
-                DirViewItem *child=item->child(c);
-                if (DirViewItem::Type_Dir==child->type()) {
-                    getFiles(child, filenames, allowPlaylists);
-                } else if (DirViewItem::Type_File==child->type()) {
-                    addFile(child, dirFiles, filenames, allowPlaylists);
-                }
-            }
-
-            qSort(dirFiles.begin(), dirFiles.end(), lessThan);
-            filenames+=dirFiles;
-        }
-        default:
-        break;
-    }
-}

@@ -73,7 +73,6 @@ private:
     time_t fromXML(QIODevice *dev, time_t dt, DirViewItemRoot *root);
     void addFileToList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir, const QString &mopidyPath);
     void removeFileFromList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir);
-    void getFiles(DirViewItem *item, QStringList &filenames, bool allowPlaylists) const;
 
 private:
     DirViewItemRoot *rootItem;

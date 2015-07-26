@@ -308,10 +308,9 @@ void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, con
         return;
     }
 
-    bool filteredOnly=proxy.enabled() && Settings::self()->filteredOnly();
     // If we only have 1 item selected, see if it is a playlist. If so, we might be able to
     // just ask MPD to load it...
-    if (name.isEmpty() && 1==indexes.count() && 0==priorty && !filteredOnly) {
+    if (name.isEmpty() && 1==indexes.count() && 0==priorty && !proxy.enabled()) {
         QModelIndex idx=proxy.mapToSource(*(indexes.begin()));
         PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
 
@@ -333,7 +332,7 @@ void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, con
         }
     }
 
-    QStringList files=PlaylistsModel::self()->filenames(proxy.mapToSource(indexes, filteredOnly));
+    QStringList files=PlaylistsModel::self()->filenames(proxy.mapToSource(indexes));
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
             emit add(files, replace, priorty);
@@ -352,7 +351,7 @@ QList<Song> StoredPlaylistsPage::selectedSongs(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QList<Song>();
     }
-    return PlaylistsModel::self()->songs(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()));
+    return PlaylistsModel::self()->songs(proxy.mapToSource(selected));
 }
 
 void StoredPlaylistsPage::addSelectionToDevice(const QString &udi)

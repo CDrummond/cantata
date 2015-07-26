@@ -341,7 +341,7 @@ void PodcastService::Podcast::setUnplayedCount()
 {
     unplayedCount=episodes.count();
     foreach (Episode *episode, episodes) {
-        if (!episode->played) {
+        if (episode->played) {
             unplayedCount--;
         }
     }

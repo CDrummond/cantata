@@ -250,7 +250,6 @@ MainWindow::MainWindow(QWidget *parent)
     serverInfoAction->setEnabled(Settings::self()->firstRun());
     refreshDbAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), HIDE_MENU_ICON_NAME("view-refresh"));
     doDbRefreshAction = new Action(refreshDbAction->icon(), i18n("Refresh"), this);
-    dbFullRefreshAction= new Action(refreshDbAction->icon(), i18n("Full Refresh"), this);
     refreshDbAction->setEnabled(false);
     connectAction = new Action(Icons::self()->connectIcon, i18n("Connect"), this);
     connectionsAction = new Action(HIDE_MENU_ICON(Icon("network-server")), i18n("Collection"), this);
@@ -803,10 +802,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(refreshDbAction, SIGNAL(triggered()), this, SLOT(refreshDbPromp()));
     connect(doDbRefreshAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(update()));
     connect(doDbRefreshAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
-    connect(dbFullRefreshAction, SIGNAL(triggered()), this, SLOT(fullDbRefresh()));
-    connect(dbFullRefreshAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(update()));
-    connect(dbFullRefreshAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
-    connect(connectAction, SIGNAL(triggered()), this, SLOT(connectToMpd()));
     connect(StdActions::self()->prevTrackAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(goToPrevious()));
     connect(StdActions::self()->nextTrackAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(goToNext()));
     connect(StdActions::self()->playPauseTrackAction, SIGNAL(triggered()), this, SLOT(playPauseTrack()));
@@ -1126,17 +1121,12 @@ void MainWindow::refreshDbPromp()
 {
     int btnLayout=style()->styleHint(QStyle::SH_DialogButtonLayout);
     if (QDialogButtonBox::GnomeLayout==btnLayout || QDialogButtonBox::MacLayout==btnLayout) {
-        messageWidget->setActions(QList<QAction*>() << cancelAction << doDbRefreshAction << dbFullRefreshAction);
+        messageWidget->setActions(QList<QAction*>() << cancelAction << doDbRefreshAction);
     } else {
-        messageWidget->setActions(QList<QAction*>() << doDbRefreshAction  << dbFullRefreshAction << cancelAction);
+        messageWidget->setActions(QList<QAction*>() << doDbRefreshAction << cancelAction);
     }
     messageWidget->setWarning(i18n("Refresh MPD Database?"), false);
     expand();
-}
-
-void MainWindow::fullDbRefresh()
-{
-    MpdLibraryModel::self()->clearDb();
 }
 
 #ifdef ENABLE_KDE_SUPPORT

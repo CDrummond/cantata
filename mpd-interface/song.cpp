@@ -120,8 +120,11 @@ void Song::sortViaType(QList<Song> &songs)
     qSort(songs.begin(), songs.end(), songTypeSort);
 }
 
-QString Song::decodePath(const QString &file)
+QString Song::decodePath(const QString &file, bool cdda)
 {
+    if (cdda) {
+        return QString(file).replace("/", "_").replace(":", "_");
+    }
     return file.startsWith(constMopidyLocal) ? QUrl::fromPercentEncoding(file.mid(constMopidyLocal.length()).toLatin1()) : file;
 }
 

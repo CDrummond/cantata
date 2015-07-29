@@ -115,7 +115,7 @@ struct Song
     static void storeAlbumYear(const Song &s);
     static int albumYear(const Song &s);
     static void sortViaType(QList<Song> &songs);
-    static QString decodePath(const QString &file);
+    static QString decodePath(const QString &file, bool cdda=false);
     static QString encodePath(const QString &file);
     static void clearKeyStore(int location);
     static QString displayAlbum(const QString &albumName, quint16 albumYear);
@@ -201,7 +201,7 @@ struct Song
     QString albumKey() const;
     bool isCueFile() const { return Playlist==type && file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive); }
     QString basicArtist() const;
-    QString filePath() const { return decodePath(file); }
+    QString filePath() const { return decodePath(file, isCdda()); }
     QString displayAlbum() const { return displayAlbum(album, year); }
     QString describe(bool withMarkup=false) const;
     bool useComposer() const;

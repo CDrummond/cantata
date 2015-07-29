@@ -123,7 +123,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
                 return song->song().isCueFile() ? i18n("Cue Sheet") : i18n("Playlist");
             }
             if (MusicLibraryItem::Type_Root==song->parentItem()->itemType()) {
-                return song->song().artistSong();
+                return song->song().trackAndTitleStr();
             }
             if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
                 return song->song().artistSong();

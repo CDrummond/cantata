@@ -134,6 +134,7 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
             albumArtists.insert(s.albumArtist());
             composers.insert(s.composer());
             albums.insert(s.album);
+            genres+=s.genres().toSet();
         } else if (MusicLibraryItem::Type_Artist==child->itemType()) {
             foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(child)->childItems()) {
                 foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
@@ -142,6 +143,7 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
                     albumArtists.insert(s.albumArtist());
                     composers.insert(s.composer());
                     albums.insert(s.album);
+                    genres+=s.genres().toSet();
                 }
             }
         }

@@ -136,6 +136,16 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             }
         }
         break;
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+    case Cantata::Role_Image:
+        if (MusicLibraryItem::Type_Root==item->itemType()) {
+            Device *dev=static_cast<Device *>(item);
+            if (Device::AudioCd==dev->devType()) {
+                return static_cast<AudioCdDevice *>(dev)->cover().img;
+            }
+        }
+        break;
+    #endif
     case Cantata::Role_SubText:
         if (MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);

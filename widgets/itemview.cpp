@@ -214,7 +214,16 @@ public:
         QString childText = index.data(Cantata::Role_SubText).toString();
 
         QPixmap pix;
-        if (iconMode || index.data(Cantata::Role_ListImage).toBool()) {
+        #ifdef SHOW_CD_COVER_IN_VIEW
+        if (showCapacity) {
+            QImage img=index.data(Cantata::Role_Image).value<QImage>();
+            if (!img.isNull()) {
+                int sz=iconMode ? gridCoverSize : listCoverSize;
+                pix=QPixmap::fromImage(img.scaled(sz, sz, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            }
+        }
+        #endif
+        if (pix.isNull() && (iconMode || index.data(Cantata::Role_ListImage).toBool())) {
             Song cSong=index.data(iconMode ? Cantata::Role_GridCoverSong : Cantata::Role_CoverSong).value<Song>();
             if (!cSong.isEmpty()) {
                 QPixmap *cp=Covers::self()->get(cSong, iconMode ? gridCoverSize : listCoverSize, getCoverInUiThread(index));
@@ -223,7 +232,7 @@ public:
                 }
             }
         }
-        if (!pix) {
+        if (pix.isNull()) {
             int size=iconMode ? gridCoverSize : detailedViewDecorationSize;
             pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(size, size);
         }

@@ -1854,7 +1854,7 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
         if (!img.isNull()) {
             updatedCover=updateCache(song, img, true);
         }
-        if (updatedCover/* || !song.isSpecificSizeRequest()*/) {
+        if (updatedCover || song.isCdda()/* || !song.isSpecificSizeRequest()*/) {
             DBUG << "emit cover" << song.file << song.artist << song.albumartist << song.album << song.mbAlbumId() << img.width() << img.height() << fileName;
             emit cover(song, img, fileName.startsWith(constCoverInTagPrefix) ? QString() : fileName);
         }

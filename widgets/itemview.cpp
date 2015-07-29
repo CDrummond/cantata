@@ -214,15 +214,10 @@ public:
         QString childText = index.data(Cantata::Role_SubText).toString();
 
         QPixmap pix;
-        #ifdef SHOW_CD_COVER_IN_VIEW
         if (showCapacity) {
-            QImage img=index.data(Cantata::Role_Image).value<QImage>();
-            if (!img.isNull()) {
-                int sz=iconMode ? gridCoverSize : listCoverSize;
-                pix=QPixmap::fromImage(img.scaled(sz, sz, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-            }
+            const_cast<QAbstractItemModel *>(index.model())->setData(index, iconMode ? gridCoverSize : listCoverSize, Cantata::Role_Image);
+            pix=index.data(Cantata::Role_Image).value<QPixmap>();
         }
-        #endif
         if (pix.isNull() && (iconMode || index.data(Cantata::Role_ListImage).toBool())) {
             Song cSong=index.data(iconMode ? Cantata::Role_GridCoverSong : Cantata::Role_CoverSong).value<Song>();
             if (!cSong.isEmpty()) {

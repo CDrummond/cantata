@@ -119,6 +119,28 @@ DevicesModel::~DevicesModel()
 {
 }
 
+bool DevicesModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (!index.isValid()) {
+        return false;
+    }
+
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+    if (Cantata::Role_Image==role) {
+        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+
+        if (MusicLibraryItem::Type_Root==item->itemType()) {
+            Device *dev=static_cast<Device *>(item);
+            if (Device::AudioCd==dev->devType()) {
+                static_cast<AudioCdDevice *>(dev)->scaleCoverPix(value.toInt());
+                return true;
+            }
+        }
+    }
+    #endif
+   return  MultiMusicModel::setData(index, value, role);
+}
+
 QVariant DevicesModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
@@ -141,7 +163,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         if (MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);
             if (Device::AudioCd==dev->devType()) {
-                return static_cast<AudioCdDevice *>(dev)->cover().img;
+                return static_cast<AudioCdDevice *>(dev)->coverPix();
             }
         }
         break;

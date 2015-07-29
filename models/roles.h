@@ -35,9 +35,7 @@ namespace Cantata {
         Role_SubText,
         Role_TitleText,
         Role_TitleActions,
-        #ifdef ENABLE_UBUNTU
         Role_Image,
-        #endif
         Role_ListImage, // Should image been shown in list/tree view?
         Role_CoverSong,
         Role_GridCoverSong,

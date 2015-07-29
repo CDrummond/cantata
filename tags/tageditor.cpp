@@ -488,6 +488,8 @@ void TagEditor::readComments()
 {
     bool haveMultiple=original.count()>1;
     bool updated=false;
+    bool multipleComments=false;
+    QString allComment;
 
     for (int i=0; i<original.count(); ++i) {
         if (0!=i || !haveMultiple) {
@@ -507,10 +509,24 @@ void TagEditor::readComments()
             original.replace(i, song);
             haveComments=true;
             updated=true;
+            if (haveMultiple) {
+                if (allComment.isEmpty()) {
+                    allComment=comment;
+                } else if (comment!=allComment) {
+                    multipleComments=true;
+                }
+            }
         }
     }
     if (updated) {
         edited=original;
+        if (haveMultiple && !allComment.isEmpty() && !multipleComments) {
+            edited[0].setComment(allComment);
+            original[0].setComment(allComment);
+            if (0==currentSongIndex) {
+                comment->setText(allComment);
+            }
+        }
     }
     controlInitialActionsState();
     if (haveMultiple) {

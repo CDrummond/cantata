@@ -47,6 +47,7 @@ public:
 
     DevicesModel(QObject *parent = 0);
     ~DevicesModel();
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList playableUrls(const QModelIndexList &indexes) const;

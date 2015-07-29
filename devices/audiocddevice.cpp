@@ -397,6 +397,15 @@ void AudioCdDevice::setCover(const Covers::Image &img)
     updateStatus();
 }
 
+void AudioCdDevice::scaleCoverPix(int size) const
+{
+    if (!coverImage.img.isNull()) {
+        if (scaledCover.width()!=size && scaledCover.height()!=size) {
+            scaledCover=QPixmap::fromImage(coverImage.img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        }
+    }
+}
+
 void AudioCdDevice::setCover(const Song &song, const QImage &img, const QString &file)
 {
     if (song.isCdda() && song.albumartist==artist && song.album==album) {

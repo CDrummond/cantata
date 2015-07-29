@@ -86,6 +86,8 @@ public:
     int albumYear() const { return year; }
     const Covers::Image & cover() const { return coverImage; }
     void setCover(const Covers::Image &img);
+    const QPixmap & coverPix() const { return scaledCover; }
+    void scaleCoverPix(int size) const;
     void autoplay();
 
 Q_SIGNALS:
@@ -125,6 +127,7 @@ private:
     quint32 time;
     bool lookupInProcess;
     Covers::Image coverImage;
+    mutable QPixmap scaledCover;
     bool autoPlay;
 };
 

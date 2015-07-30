@@ -113,6 +113,7 @@ LibraryPage::LibraryPage(QWidget *p)
     #endif
     #endif // TAGLIB_FOUND
     connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
+    view->setOpenAfterSearch(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
 }
 
 LibraryPage::~LibraryPage()
@@ -301,6 +302,7 @@ void LibraryPage::groupByChanged()
             break;
         }
     }
+    view->setOpenAfterSearch(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
 }
 
 void LibraryPage::libraryAlbumSortChanged()

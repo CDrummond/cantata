@@ -55,6 +55,7 @@ OnlineDbWidget::OnlineDbWidget(OnlineDbService *s, QWidget *p)
     init(ReplacePlayQueue|AddToPlayQueue|Refresh, QList<QWidget *>() << menu);
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
     connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
+    view->setOpenAfterSearch(SqlLibraryModel::T_Album!=srv->topLevel());
 }
 
 OnlineDbWidget::~OnlineDbWidget()
@@ -72,6 +73,7 @@ void OnlineDbWidget::groupByChanged()
     }
     int mode=act->property(constValProp).toInt();
     srv->setTopLevel((SqlLibraryModel::Type)mode);
+    view->setOpenAfterSearch(SqlLibraryModel::T_Album!=srv->topLevel());
 }
 
 QStringList OnlineDbWidget::selectedFiles(bool allowPlaylists) const

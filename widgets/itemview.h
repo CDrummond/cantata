@@ -145,6 +145,7 @@ public:
     void setSearchResetLevel(int l) { searchResetLevel=l; }
     void showEvent(QShowEvent *ev);
     void goToTop();
+    void setOpenAfterSearch(bool o) { openFirstLevelAfterSearch=o; }
 
 private:
     void setLevel(int level, bool haveChildren=true);
@@ -207,6 +208,7 @@ private:
     QIcon bgndIcon;
     bool performedSearch;
     int searchResetLevel;
+    bool openFirstLevelAfterSearch;
 };
 
 #endif

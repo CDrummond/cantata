@@ -593,6 +593,7 @@ ItemView::ItemView(QWidget *p)
     , msgOverlay(0)
     , performedSearch(false)
     , searchResetLevel(0)
+    , openFirstLevelAfterSearch(false)
 {
     setupUi(this);
     if (!backAction) {
@@ -1401,6 +1402,10 @@ void ItemView::modelReset()
 {
     if (Mode_List==mode || Mode_IconTop==mode) {
         goToTop();
+    } else if (usingTreeView() && !searchText().isEmpty()) {
+        for (int r=0; r<itemModel->rowCount(); ++r) {
+            treeView->expand(itemModel->index(r, 0, QModelIndex()));
+        }
     }
 }
 

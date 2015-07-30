@@ -30,7 +30,7 @@
 #include <QRegExp>
 #include <QDebug>
 
-static const int constSchemaVersion=1;
+static const int constSchemaVersion=2;
 
 bool LibraryDb::dbgEnabled=false;
 #define DBUG if (dbgEnabled) qWarning() << metaObject()->className() << __FUNCTION__ << (void *)this
@@ -587,9 +587,9 @@ bool LibraryDb::init(const QString &dbFile)
                     "primary key (file))")) {
         #ifndef CANTATA_WEB
         QSqlQuery fts(*db);
-        if (!fts.exec("create virtual table if not exists songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_title, tokenize=unicode61)")) {
+        if (!fts.exec("create virtual table if not exists songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_albumId, fts_title, tokenize=unicode61)")) {
             DBUG << "Failed to create FTS table" << fts.lastError().text() << "trying again with simple tokenizer";
-            if (!fts.exec("create virtual table if not exists songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_title, tokenize=simple)")) {
+            if (!fts.exec("create virtual table if not exists songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_albumId, fts_title, tokenize=simple)")) {
                 DBUG << "Failed to create FTS table" << fts.lastError().text();
             }
         }
@@ -936,8 +936,8 @@ void LibraryDb::insertSongs(QList<Song> *songs)
 void LibraryDb::updateFinished()
 {
     #ifndef CANTATA_WEB
-    QSqlQuery(*db).exec("insert into songs_fts(fts_artist, fts_artistId, fts_album, fts_title) "
-                        "select artist, artistId, album, title from songs");
+    QSqlQuery(*db).exec("insert into songs_fts(fts_artist, fts_artistId, fts_album, fts_albumId, fts_title) "
+                        "select artist, artistId, album, albumId, title from songs");
     #endif
     QSqlQuery(*db).exec("update versions set collection ="+QString::number(newVersion));
     db->commit();

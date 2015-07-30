@@ -558,8 +558,9 @@ bool LibraryDb::init(const QString &dbFile)
     }
     if (schemaVersion>0 && schemaVersion!=constSchemaVersion) {
         DBUG << "Scheme version changed";
-        clearSongs();
         currentVersion=0;
+        erase();
+        return init(dbFile);
     }
     if (0==currentVersion || (schemaVersion>0 && schemaVersion!=constSchemaVersion)) {
         QSqlQuery(*db).exec("delete from versions");

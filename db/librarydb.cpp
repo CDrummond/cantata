@@ -899,7 +899,7 @@ bool LibraryDb::setFilter(const QString &f)
             str.remove(':');
             str.remove('*');
             if (str.length()>0) {
-                tokens.append(str+"* ");
+                tokens.append(QLatin1Char('"')+str+"\"* ");
             }
         }
         newFilter=tokens.join(" ");

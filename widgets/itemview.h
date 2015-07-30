@@ -143,7 +143,6 @@ public:
     void setSearchCategories(const QList<QPair<QString, QString> > &categories);
     void setSearchCategory(const QString &id);
     void setSearchResetLevel(int l) { searchResetLevel=l; }
-    void setSearchIndex(const QModelIndex &idx) { searchIndex=idx; }
     void showEvent(QShowEvent *ev);
     void goToTop();
 
@@ -189,7 +188,6 @@ private Q_SLOTS:
     void coverLoaded(const Song &song, int size);
 
 private:
-    void collapseToLevel();
     QAction * getAction(const QModelIndex &index);
     void setTitle();
     void controlViewFrame();
@@ -209,7 +207,6 @@ private:
     QIcon bgndIcon;
     bool performedSearch;
     int searchResetLevel;
-    QModelIndex searchIndex;
 };
 
 #endif

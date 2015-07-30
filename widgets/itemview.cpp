@@ -1441,7 +1441,6 @@ void ItemView::delaySearchItems()
             searchTimer->stop();
         }
         if (performedSearch) {
-            collapseToLevel();
             performedSearch=false;
         }
         emit searchItems();
@@ -1466,20 +1465,12 @@ void ItemView::searchActive(bool a)
 {
     emit searchIsActive(a);
     if (!a && performedSearch) {
-        collapseToLevel();
         performedSearch=false;
     }
     if (!a && view()->isVisible()) {
         view()->setFocus();
     }
     controlViewFrame();
-}
-
-void ItemView::collapseToLevel()
-{
-    if (usingTreeView() || Mode_GroupedTree==mode || Mode_Table==mode) {
-        static_cast<TreeView *>(view())->collapseToLevel(searchResetLevel, searchIndex);
-    }
 }
 
 void ItemView::setTitle()

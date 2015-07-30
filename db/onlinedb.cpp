@@ -60,6 +60,15 @@ void OnlineDb::insertStats(int numArtists)
     QSqlQuery(*db).exec("insert into stats(artists) values("+QString::number(numArtists)+")");
 }
 
+void OnlineDb::reset()
+{
+    delete insertCoverQuery;
+    delete getCoverQuery;
+    insertCoverQuery=0;
+    getCoverQuery=0;
+    LibraryDb::reset();
+}
+
 void OnlineDb::storeCoverUrl(const QString &artistId, const QString &albumId, const QString &url)
 {
     if (!insertCoverQuery) {

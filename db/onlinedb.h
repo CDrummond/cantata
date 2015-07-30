@@ -44,6 +44,9 @@ public Q_SLOTS:
     void insertStats(int numArtists);
 
 private:
+    void reset();
+
+private:
     QSqlQuery *insertCoverQuery;
     QSqlQuery *getCoverQuery;
 };

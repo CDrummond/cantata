@@ -531,7 +531,10 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
                 return Utils::formatTime(episode->duration, true)+QLatin1Char(' ')+
                        i18n("(Downloading: %1%)", episode->downloadProg);
             }
-            return Utils::formatTime(episode->duration, true);
+            return episode->publishedDate.toString(Qt::LocalDate)+
+                        (0==episode->duration
+                            ? QString()
+                            : (QLatin1String(" (")+Utils::formatTime(episode->duration, true)+QLatin1Char(')')));
         case Qt::ToolTipRole:
             if (Settings::self()->infoTooltips()) {
                 return QLatin1String("<b>")+episode->parent->name+QLatin1String("</b><br/>")+

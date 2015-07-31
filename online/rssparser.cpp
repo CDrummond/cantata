@@ -54,7 +54,17 @@ static void consumeCurrentElement(QXmlStreamReader &reader)
     }
 }
 
-static QDateTime parseRfc822DateTime(const QString& text)
+static QString capitaliseWord(QString str)
+{
+    if (str.isEmpty() || !str[0].isLetter()) {
+        return str;
+    }
+    str=str.toLower();
+    str[0]=str[0].toUpper();
+    return str;
+}
+
+static QDateTime parseRfc822DateTime(const QString &text)
 {
     // This sucks but we need it because some podcasts don't quite follow the
     // spec properly - they might have 1-digit hour numbers for example.
@@ -64,7 +74,13 @@ static QDateTime parseRfc822DateTime(const QString& text)
         return QDateTime();
     }
 
-    return QDateTime(QDate::fromString(QString("%1 %2 %3 %4").arg(re.cap(1), re.cap(3), re.cap(2), re.cap(4)), Qt::TextDate),
+    QDateTime dt(QDate::fromString(QString("%1 %2 %3 %4").arg(re.cap(1), re.cap(3), re.cap(2), re.cap(4)), Qt::TextDate),
+                 QTime(re.cap(5).toInt(), re.cap(6).toInt(), re.cap(7).toInt()));
+
+    if (dt.isValid()) {
+        return dt;
+    }
+    return QDateTime(QDate::fromString(QString("%1 %2 %3 %4").arg(capitaliseWord(re.cap(1)), capitaliseWord(re.cap(3)), re.cap(2), re.cap(4)), Qt::TextDate),
                      QTime(re.cap(5).toInt(), re.cap(6).toInt(), re.cap(7).toInt()));
 }
 

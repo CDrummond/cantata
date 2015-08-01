@@ -914,11 +914,7 @@ Cantata contains code/icons from:
 16. Windows
 ===========
 
-Icon created with:
-    convert cantata16.png cantata32.png cantata48.png cantata64.png cantata128.png cantata256.png cantata.ico
-
-cantata128.png and cantata256.png create from cantata.svg
-
+Icon created under Linux using the createicon.sh in the windows folder.
 
 Qt4 Build
 ---------
@@ -1038,6 +1034,8 @@ following passed to cmake:
 
 17. Mac OSX
 ===========
+
+Icon created under OSX using the createicon.sh in the mac folder.
 
 The following steps are used to compile Cantata, and create the OS X application
 bundle.

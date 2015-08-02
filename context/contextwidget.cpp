@@ -848,6 +848,8 @@ void ContextWidget::musicbrainzResponse()
     DBUG << "status" << reply->error() << reply->errorString();
 
     QString id;
+    QString currentId;
+    QString artist=reply->property(constArtistProp).toString();
 
     if (reply->ok()) {
         bool inSection=false;
@@ -859,18 +861,27 @@ void ContextWidget::musicbrainzResponse()
             if (doc.isStartElement()) {
                 if (!inSection && QLatin1String("artist-list")==doc.name()) {
                     inSection=true;
-                } if (inSection && QLatin1String("artist")==doc.name()) {
-                    id=doc.attributes().value("id").toString();
-                    break;
+                } else if (inSection && QLatin1String("artist")==doc.name()) {
+                    // Store this artist ID as the current ID
+                    currentId=doc.attributes().value("id").toString();
+                    if (id.isEmpty()) {
+                        // If we have no ID set, then use the first one - for now
+                        id=currentId;
+                    }
+                } else if (inSection && QLatin1String("name")==doc.name()) {
+                    if (doc.readElementText()==artist) {
+                        // Found an arist in the artist-list whose name matches what we are looking for, so use this.
+                        id=currentId;
+                        break;
+                    }
                 }
-            } else if (doc.isEndElement() && inSection && QLatin1String("artist")==doc.name()) {
+            } else if (doc.isEndDocument() && inSection && QLatin1String("artist-list")==doc.name()) {
                 break;
             }
         }
     }
 
     if (id.isEmpty()) {
-        QString artist=reply->property(constArtistProp).toString();
         // MusicBrainz does not seem to like AC/DC, but AC DC works - so if we fail with an artist
         // containing /, then try with space...
         if (!artist.isEmpty() && artist.contains("/")) {

@@ -327,23 +327,9 @@ void UltimateLyricsProvider::wikiMediaSearchResponse()
 
     if (url.isValid()) {
         QString path=url.path();
-        #if QT_VERSION < 0x050000
-        QUrl &query=url;
-        #else
-        QUrlQuery query;
-        #endif
-        // ?action=query&prop=revisions&rvprop=content&format=xml&titles="
-        url.setPath(QLatin1String("/api.php"));
-        query.addQueryItem(QLatin1String("action"), QLatin1String("query"));
-        query.addQueryItem(QLatin1String("prop"), QLatin1String("revisions"));
-        query.addQueryItem(QLatin1String("rvprop"), QLatin1String("content"));
-        query.addQueryItem(QLatin1String("format"), QLatin1String("xml"));
-        query.addEncodedQueryItem("titles", urlEncode(path.startsWith(QLatin1Char('/')) ? path.mid(1) : path).toLatin1());
-        #if QT_VERSION >= 0x050000
-        url.setQuery(query);
-        #endif
-
-        NetworkJob *reply = NetworkAccessManager::self()->get(url);
+        QByteArray u=url.scheme().toLatin1()+"://"+url.host().toLatin1()+"/api.php?action=query&prop=revisions&rvprop=content&format=xml&titles=";
+        QByteArray titles=QUrl::toPercentEncoding(path.startsWith(QLatin1Char('/')) ? path.mid(1) : path).replace('+', "%2b");
+        NetworkJob *reply = NetworkAccessManager::self()->get(QUrl::fromEncoded(u+titles));
         requests[reply] = id;
         connect(reply, SIGNAL(finished()), this, SLOT(wikiMediaLyricsFetched()));
     } else {

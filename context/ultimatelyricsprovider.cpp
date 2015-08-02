@@ -183,6 +183,14 @@ static void applyExcludeRule(const UltimateLyricsProvider::Rule &rule, QString &
     }
 }
 
+static QString urlEncode(QString str)
+{
+    str.replace(QLatin1Char('&'), QLatin1String("%26"));
+    str.replace(QLatin1Char('?'), QLatin1String("%3f"));
+    str.replace(QLatin1Char('+'), QLatin1String("%2b"));
+    return str;
+}
+
 UltimateLyricsProvider::UltimateLyricsProvider()
     : enabled(true)
     , relevance(0)
@@ -330,7 +338,7 @@ void UltimateLyricsProvider::wikiMediaSearchResponse()
         query.addQueryItem(QLatin1String("prop"), QLatin1String("revisions"));
         query.addQueryItem(QLatin1String("rvprop"), QLatin1String("content"));
         query.addQueryItem(QLatin1String("format"), QLatin1String("xml"));
-        query.addQueryItem(QLatin1String("titles"), path.startsWith(QLatin1Char('/')) ? path.mid(1) : path);
+        query.addEncodedQueryItem("titles", urlEncode(path.startsWith(QLatin1Char('/')) ? path.mid(1) : path).toLatin1());
         #if QT_VERSION >= 0x050000
         url.setQuery(query);
         #endif
@@ -444,8 +452,5 @@ void UltimateLyricsProvider::doUrlReplace(const QString &tag, const QString &val
         QRegExp re("[" + QRegExp::escape(format.first) + "]");
         valueCopy.replace(re, format.second);
     }
-    // ? and & should ony be used in URL queries...
-    valueCopy.replace(QLatin1Char('&'), QLatin1String("%26"));
-    valueCopy.replace(QLatin1Char('?'), QLatin1String("%3f"));
-    u.replace(tag, valueCopy, Qt::CaseInsensitive);
+    u.replace(tag, urlEncode(valueCopy), Qt::CaseInsensitive);
 }

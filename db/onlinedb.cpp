@@ -33,9 +33,8 @@ OnlineDb::OnlineDb(const QString &serviceName, QObject *p)
     , getCoverQuery(0)
 {
     init(Utils::dataDir(subDir, true)+serviceName+".sql");
-    createTable("covers(artistId, albumId, url)");
-    createTable("stats(artists)");
-    QSqlQuery(*db).exec("create index genre_idx on songs(");
+    createTable("covers(artistId text, albumId text, url text)");
+    createTable("stats(artists integer)");
 }
 
 OnlineDb::~OnlineDb()

@@ -30,7 +30,7 @@
 #include <QRegExp>
 #include <QDebug>
 
-static const int constSchemaVersion=2;
+static const int constSchemaVersion=3;
 
 bool LibraryDb::dbgEnabled=false;
 #define DBUG if (dbgEnabled) qWarning() << metaObject()->className() << __FUNCTION__ << (void *)this
@@ -570,17 +570,17 @@ bool LibraryDb::init(const QString &dbFile)
 
     // NOTE: The order here MUST match SongFields enum above!!!
     if (createTable("songs ("
-                    "file string, "
-                    "artist string, "
-                    "artistId string, "
-                    "albumArtist string, "
-                    "artistSort string, "
-                    "composer string, "
-                    "album string, "
-                    "albumId string, "
-                    "albumSort string, "
-                    "title string, "
-                    "genre string, "
+                    "file text, "
+                    "artist text, "
+                    "artistId text, "
+                    "albumArtist text, "
+                    "artistSort text, "
+                    "composer text, "
+                    "album text, "
+                    "albumId text, "
+                    "albumSort text, "
+                    "title text, "
+                    "genre text, "
                     "track integer, "
                     "disc integer, "
                     "time integer, "

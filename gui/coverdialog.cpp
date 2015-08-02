@@ -451,6 +451,24 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
         existing=new ExistingCover(isArtist ? Covers::Image(cropImage(img.img, true), img.fileName) : img, list);
         list->addItem(existing);
     }
+    /*
+    Add other images in the source folder? #716
+    if (!isArtist) {
+        QString dirName=MPDConnection::self()->getDetails().dir+Utils::getDir(s.file);
+        QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
+        qWarning() << files;
+        foreach (const QString &f, files) {
+            QString fileName=dirName+f;
+            if (fileName!=img.fileName) {
+                QImage i(fileName);
+                if (!i.isNull()) {
+                    currentLocalCovers.insert(fileName);
+                    insertItem(new LocalCover(fileName, i, list));
+                }
+            }
+        }
+    }
+    */
     query->setText(isArtist ? song.albumArtist() : QString(song.albumArtist()+QLatin1String(" ")+song.album));
     Dialog::show();
     sendQuery();

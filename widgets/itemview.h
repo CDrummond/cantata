@@ -209,6 +209,7 @@ private:
     bool performedSearch;
     int searchResetLevel;
     bool openFirstLevelAfterSearch;
+    bool initialised;
 };
 
 #endif

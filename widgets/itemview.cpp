@@ -594,6 +594,7 @@ ItemView::ItemView(QWidget *p)
     , performedSearch(false)
     , searchResetLevel(0)
     , openFirstLevelAfterSearch(false)
+    , initialised(false)
 {
     setupUi(this);
     if (!backAction) {
@@ -746,6 +747,7 @@ void ItemView::addSeparator()
 
 void ItemView::setMode(Mode m)
 {
+    initialised=true;
     if (m<0 || m>=Mode_Count || (Mode_GroupedTree==m && !groupedView) || (Mode_Table==m && !tableView)) {
         m=Mode_SimpleTree;
     }
@@ -929,7 +931,6 @@ QAbstractItemView * ItemView::view() const
 
 void ItemView::setModel(QAbstractItemModel *m)
 {
-    bool needtToInit=!itemModel;
     if (itemModel) {
         disconnect(itemModel, SIGNAL(modelReset()), this, SLOT(modelReset()));
         if (qobject_cast<QAbstractProxyModel *>(itemModel)) {
@@ -939,7 +940,7 @@ void ItemView::setModel(QAbstractItemModel *m)
         }
     }
     itemModel=m;
-    if (needtToInit) {
+    if (!initialised) {
         mode=Mode_List;
         setMode(Mode_SimpleTree);
     }

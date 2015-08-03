@@ -179,8 +179,8 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
         break;
     }
     #endif
-    #ifdef ENABLE_UBUNTU
     case Cantata::Role_TitleText:
+        #ifdef ENABLE_UBUNTU
         switch (item->type()) {
         case DirViewItem::Type_Dir:
             return static_cast<DirViewItemDir *>(item)->fullName();
@@ -188,7 +188,7 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
         case DirViewItem::Type_File:
             return item->data();
         }
-    #endif
+        #endif
     case Cantata::Role_MainText:
     case Qt::DisplayRole:
         return item->data();

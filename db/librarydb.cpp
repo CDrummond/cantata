@@ -491,9 +491,10 @@ LibraryDb::~LibraryDb()
 void LibraryDb::clear()
 {
     if (db) {
-        clearSongs();
+        DBUG;
+        erase();
         currentVersion=0;
-        emit libraryUpdated();
+        init(dbFileName);
     }
 }
 

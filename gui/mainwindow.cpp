@@ -800,6 +800,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(info(const QString &)), SLOT(showInformation(const QString &)));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
     connect(refreshDbAction, SIGNAL(triggered()), this, SLOT(refreshDbPromp()));
+    connect(doDbRefreshAction, SIGNAL(triggered()), MpdLibraryModel::self(), SLOT(clearDb()));
     connect(doDbRefreshAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(update()));
     connect(doDbRefreshAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
     connect(StdActions::self()->prevTrackAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(goToPrevious()));

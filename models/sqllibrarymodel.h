@@ -133,7 +133,6 @@ public:
     SqlLibraryModel(LibraryDb *d, QObject *p, Type top=T_Artist);
 
     void clear();
-    void clearDb();
     void settings(Type top, LibraryDb::AlbumSort lib, LibraryDb::AlbumSort al);
     Type topLevel() const { return tl; }
     LibraryDb::AlbumSort libraryAlbumSort() const { return librarySort; }
@@ -168,6 +167,9 @@ public:
     QList<LibraryDb::Album> getArtistAlbums(const QString &artist) const;
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
     bool songExists(const Song &song);
+
+public Q_SLOTS:
+    void clearDb();
 
 protected Q_SLOTS:
     void libraryUpdated();

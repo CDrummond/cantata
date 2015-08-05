@@ -1452,6 +1452,7 @@ void MainWindow::readSettings()
         }
     }
     MPDConnection::self()->setVolumeFadeDuration(Settings::self()->stopFadeDuration());
+    MPDParseUtils::setSingleTracksFolder(Settings::self()->singleTracksFolder());
 }
 
 void MainWindow::updateSettings()

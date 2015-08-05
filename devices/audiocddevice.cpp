@@ -33,6 +33,7 @@
 #include "models/musiclibraryitemsong.h"
 #include "models/dirviewmodel.h"
 #include "models/mpdlibrarymodel.h"
+#include "models/playqueuemodel.h"
 #include "support/utils.h"
 #include "extractjob.h"
 #include "mpd-interface/mpdconnection.h"
@@ -228,6 +229,7 @@ void AudioCdDevice::toggle()
     if (drive) {
         stop();
         drive->eject();
+        PlayQueueModel::self()->removeCantataStreams(true);
     }
 }
 

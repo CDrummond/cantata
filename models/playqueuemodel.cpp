@@ -1063,11 +1063,11 @@ void PlayQueueModel::setStopAfterTrack(qint32 track)
     }
 }
 
-bool PlayQueueModel::removeCantataStreams()
+bool PlayQueueModel::removeCantataStreams(bool cdOnly)
 {
     QList<qint32> ids;
     foreach (const Song &s, songs) {
-        if (s.isCantataStream() || s.isCdda()) {
+        if (s.isCdda() || (!cdOnly && s.isCantataStream())) {
             ids.append(s.id);
         }
     }

@@ -623,7 +623,7 @@ void LibraryDb::insertSong(const Song &s)
     insertSongQuery->bindValue(":album", s.album==albumId ? QString() : s.album);
     insertSongQuery->bindValue(":albumId", albumId);
     insertSongQuery->bindValue(":albumSort", albumSort(s));
-    insertSongQuery->bindValue(":title", s.displayTitle());
+    insertSongQuery->bindValue(":title", s.title);
     insertSongQuery->bindValue(":genre", s.genre.isEmpty() ? constNullGenre : s.genre);
     insertSongQuery->bindValue(":track", s.track);
     insertSongQuery->bindValue(":disc", s.disc);

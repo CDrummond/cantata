@@ -61,6 +61,7 @@
 42. Add option to disable MPRIS interface.
 43. Default to UDisks2
 44. Show podcast published date on sub-text, and duration in brackets.
+45. Remove AudioCD tracks from plqyqueue when eject CD.
 
 1.5.2
 -----

@@ -55,7 +55,6 @@ DynamicPage::DynamicPage(QWidget *p)
     view->addAction(removeAction);
     view->addAction(Dynamic::self()->startAct());
     view->alwaysShowHeader();
-    view->setMode(ItemView::Mode_List);
 
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(toggle()));

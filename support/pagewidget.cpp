@@ -295,7 +295,7 @@ protected:
     QListWidget *view;
 };
 
-PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const Icon &icon, QWidget *cfg, bool showHeader)
+PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const QIcon &icon, QWidget *cfg, bool showHeader)
     : QWidget(p)
     , wid(cfg)
 {
@@ -356,7 +356,7 @@ PageWidget::PageWidget(QWidget *p, bool listView, bool headers)
     list->installEventFilter(new PageWidgetViewEventHandler(delegate, list));
 }
 
-PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header)
+PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const QIcon &icon, const QString &header)
 {
     PageWidgetItem *page=new PageWidgetItem(stack, header, icon, widget, showHeaders);
     QListWidgetItem *listItem=new QListWidgetItem(name, list);

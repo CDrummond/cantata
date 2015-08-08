@@ -191,7 +191,7 @@ ConfigDialog::~ConfigDialog()
     #endif
 }
 
-void ConfigDialog::addPage(const QString &id, QWidget *widget, const QString &name, const Icon &icon, const QString &header)
+void ConfigDialog::addPage(const QString &id, QWidget *widget, const QString &name, const QIcon &icon, const QString &header)
 {
     #ifdef __APPLE__
 

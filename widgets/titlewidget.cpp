@@ -54,9 +54,9 @@ TitleWidget::TitleWidget(QWidget *p)
     f.setBold(true);
     mainText->setFont(f);
     if (f.pixelSize()>0) {
-        f.setPixelSize(f.pixelSize()*2.25);
+        f.setPixelSize(f.pixelSize()*2);
     } else {
-        f.setPointSizeF(f.pointSizeF()*2.25);
+        f.setPointSizeF(f.pointSizeF()*2);
     }
     f.setBold(false);
     chevron->setFont(f);
@@ -64,7 +64,7 @@ TitleWidget::TitleWidget(QWidget *p)
     mainText->ensurePolished();
     subText->ensurePolished();
     int size=mainText->sizeHint().height()+subText->sizeHint().height()+spacing;
-    size+=12;
+    size=qMax(size, 48);
     image->setFixedSize(size, size);
     setToolTip(i18n("Click to go back"));
     spacing=qMin(4, spacing-1);
@@ -81,7 +81,7 @@ TitleWidget::TitleWidget(QWidget *p)
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
-    layout->setContentsMargins(1, spacing, 1, spacing);
+    layout->setContentsMargins(1, 4, 1, 4);
     layout->setSpacing(spacing);
     mainText->setAlignment(Qt::AlignBottom);
     subText->setAlignment(Qt::AlignTop);

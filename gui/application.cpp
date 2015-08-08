@@ -23,6 +23,7 @@
 
 #include "application.h"
 #include "settings.h"
+#include "models/mpdlibrarymodel.h"
 #include "support/utils.h"
 #include "mpd-interface/mpdstats.h"
 #include "mpd-interface/mpdstatus.h"
@@ -46,6 +47,7 @@ void Application::initObjects()
     TagHelperIface::self();
     #endif
     Scrobbler::self();
+    MpdLibraryModel::self();
 
     Utils::initRand();
     Song::initTranslations();

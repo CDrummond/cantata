@@ -60,7 +60,7 @@ class QStackedWidget;
 class PageWidgetItem : public QWidget
 {
 public:
-    PageWidgetItem(QWidget *p, const QString &header, const Icon &icon, QWidget *cfg, bool showHeader);
+    PageWidgetItem(QWidget *p, const QString &header, const QIcon &icon, QWidget *cfg, bool showHeader);
     virtual ~PageWidgetItem() { }
     QWidget * widget() const { return wid; }
 
@@ -75,7 +75,7 @@ class PageWidget : public QWidget
 public:
     PageWidget(QWidget *p, bool listView=false, bool headers=true);
     virtual ~PageWidget() { }
-    PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
+    PageWidgetItem * addPage(QWidget *widget, const QString &name, const QIcon &icon, const QString &header);
     int count();
     PageWidgetItem * currentPage() const;
     void setCurrentPage(PageWidgetItem *item);

@@ -38,14 +38,14 @@ public:
     void paintEvent(QPaintEvent *e);
     void setHideMenuIndicator(bool h) { hideMenuIndicator=h; }
     #ifdef UNITY_MENU_HACK
-    void setIcon(const Icon &i) { icon=i; }
+    void setIcon(const QIcon &i) { icon=i; }
     #endif
 
 private:
     bool hideMenuIndicator;
     mutable QSize sh;
     #ifdef UNITY_MENU_HACK
-    Icon icon;
+    QIcon icon;
     #endif
 };
 

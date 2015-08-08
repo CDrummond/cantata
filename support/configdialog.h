@@ -41,7 +41,7 @@ class QAction;
 class PageWidget;
 class PageWidgetItem;
 #endif
-class Icon;
+class QIcon;
 class QAbstractButton;
 
 class ConfigDialog : public
@@ -60,7 +60,7 @@ public:
     ConfigDialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize(), bool instantApply=false);
     virtual ~ConfigDialog();
 
-    void addPage(const QString &id, QWidget *widget, const QString &name, const Icon &icon, const QString &header);
+    void addPage(const QString &id, QWidget *widget, const QString &name, const QIcon &icon, const QString &header);
     bool setCurrentPage(const QString &id);
     QWidget *getPage(const QString &id) const;
 

@@ -77,7 +77,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     scrobbling->load();
     addPage(QLatin1String("collection"), server, i18n("Collection"), Icons::self()->audioFileIcon, i18n("Collection Settings"));
     addPage(QLatin1String("playback"), playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
-    addPage(QLatin1String("files"), files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
+    addPage(QLatin1String("files"), files, i18n("Downloaded Files"), Icon("go-down"), i18n("Downloaded Files Settings"));
     addPage(QLatin1String("interface"), interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
     addPage(QLatin1String("info"), context, i18n("Info"), Icons::self()->contextIcon, i18n("Info View Settings"));
     addPage(QLatin1String("scrobbling"), scrobbling, i18n("Scrobbling"), Icons::self()->lastFmIcon, i18n("Scrobbling Settings"));

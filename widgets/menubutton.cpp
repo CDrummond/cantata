@@ -37,6 +37,7 @@ MenuButton::MenuButton(QWidget *parent)
     setPopupMode(QToolButton::InstantPopup);
     setIcon(Icons::self()->menuIcon);
     setToolTip(i18n("Menu"));
+    setHideMenuIndicator(true);
 }
 
 void MenuButton::controlState()

@@ -641,7 +641,7 @@ QList<LibraryDb::Genre> LibraryDb::getGenres()
 {
     DBUG;
     QMap<QString, int> map;
-    if (0!=currentVersion) {
+    if (0!=currentVersion && db) {
         SqlQuery query("distinct genre, artistId", *db);
         query.setFilter(filter);
 
@@ -668,7 +668,7 @@ QList<LibraryDb::Artist> LibraryDb::getArtists(const QString &genre)
     DBUG << genre;
     QMap<QString, QString> sortMap;
     QMap<QString, int> albumMap;
-    if (0!=currentVersion) {
+    if (0!=currentVersion && db) {
         SqlQuery query("distinct artistId, albumId, artistSort", *db);
         query.setFilter(filter);
         if (!genre.isEmpty()) {
@@ -699,7 +699,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
     timer.start();
     DBUG << artistId << genre;
     QList<Album> albums;
-    if (0!=currentVersion) {
+    if (0!=currentVersion && db) {
         bool wantModified=AS_Modified==sort;
         bool wantArtist=artistId.isEmpty();
         int artistCol=wantModified ? 6 : 5;
@@ -769,7 +769,7 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
 {
     DBUG << artistId << albumId << genre << sort;
     QList<Song> songs;
-    if (0!=currentVersion) {
+    if (0!=currentVersion && db) {
         SqlQuery query("*", *db);
         if (useFilter) {
             query.setFilter(filter);
@@ -832,7 +832,7 @@ QList<Song> LibraryDb::songs(const QStringList &files, bool allowPlaylists) cons
 QList<LibraryDb::Album> LibraryDb::getAlbumsWithArtist(const QString &artist)
 {
     QList<LibraryDb::Album> albums;
-    if (0!=currentVersion) {
+    if (0!=currentVersion && db) {
         SqlQuery query("distinct album, albumId, albumSort", *db);
         query.addWhere("artist", artist);
         query.exec();
@@ -916,6 +916,9 @@ bool LibraryDb::setFilter(const QString &f)
 void LibraryDb::updateStarted(time_t ver)
 {
     DBUG << (void *)db;
+    if (!db) {
+        return;
+    }
     newVersion=ver;
     timer.start();
     db->transaction();
@@ -939,6 +942,9 @@ void LibraryDb::insertSongs(QList<Song> *songs)
 
 void LibraryDb::updateFinished()
 {
+    if (!db) {
+        return;
+    }
     #ifndef CANTATA_WEB
     QSqlQuery(*db).exec("insert into songs_fts(fts_artist, fts_artistId, fts_album, fts_albumId, fts_title) "
                         "select artist, artistId, album, albumId, title from songs");

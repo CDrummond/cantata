@@ -62,6 +62,7 @@
 43. Default to UDisks2
 44. Show podcast published date on sub-text, and duration in brackets.
 45. Remove AudioCD tracks from plqyqueue when eject CD.
+46. Add option to control cue file handling.
 
 1.5.2
 -----

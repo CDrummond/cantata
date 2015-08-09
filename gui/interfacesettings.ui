@@ -561,9 +561,31 @@
         </widget>
        </item>
        <item>
+        <widget class="QGroupBox" name="groupBox_3xx">
+         <property name="title">
+          <string>CUE Files</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_8x">
+          <item>
+           <widget class="QLabel" name="label_3x">
+            <property name="text">
+             <string>A cue file is a metadata file which describes how the tracks of a CD are laid out.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="cueSupport"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <widget class="NoteLabel" name="tweaksLabel">
          <property name="text">
-          <string>Changing any of the above will require a DB refresh in order to take affect.</string>
+          <string>Changing any of the above will require a DB refresh (and possibly restarting Cantata) in order to take affect.</string>
          </property>
         </widget>
        </item>

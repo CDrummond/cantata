@@ -1453,6 +1453,7 @@ void MainWindow::readSettings()
     }
     MPDConnection::self()->setVolumeFadeDuration(Settings::self()->stopFadeDuration());
     MPDParseUtils::setSingleTracksFolder(Settings::self()->singleTracksFolder());
+    MPDParseUtils::setCueFileSupport(Settings::self()->cueSupport());
 }
 
 void MainWindow::updateSettings()

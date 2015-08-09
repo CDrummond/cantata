@@ -41,9 +41,9 @@ public:
     const QList<DirViewItem *> & childItems() const { return m_childItems; }
     DirViewItemDir * getDirectory(const QString &dirName, bool create);
     DirViewItemDir * createDirectory(const QString &dirName);
-    DirViewItem * insertFile(const QString &fileName, const QString &fullPath);
+    DirViewItem * insertFile(const QString &fileName, const QString &fullPath, bool ignoreIfCue);
     void add(DirViewItem *i);
-    void insertFile(const QStringList &path, const QString &fullPath);
+    void insertFile(const QStringList &path, const QString &fullPath, bool ignoreIfCue);
     void remove(DirViewItem *dir);
     bool hasChild(const QString &name) { return m_indexes.contains(name); }
     QSet<QString> allFiles() const;

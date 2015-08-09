@@ -355,6 +355,11 @@ QString Settings::singleTracksFolder()
     return cfg.get("singleTracksFolder", QString());
 }
 
+MPDParseUtils::CueSupport Settings::cueSupport()
+{
+    return MPDParseUtils::toCueSupport(cfg.get("cueSupport", MPDParseUtils::toStr(MPDParseUtils::Cue_Parse)));
+}
+
 QStringList Settings::lyricProviders()
 {
     return cfg.get("lyricProviders", QStringList() << "lyrics.wikia.com" << "lyricstime.com" << "lyricsreg.com"
@@ -919,6 +924,11 @@ void Settings::saveComposerGenres(const QSet<QString> &v)
 void Settings::saveSingleTracksFolder(const QString &v)
 {
     cfg.set("singleTracksFolder", v);
+}
+
+void Settings::saveCueSupport(MPDParseUtils::CueSupport v)
+{
+    cfg.set("cueSupport", MPDParseUtils::toStr(v));
 }
 
 void Settings::saveLyricProviders(const QStringList &v)

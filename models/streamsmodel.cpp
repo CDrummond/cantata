@@ -590,12 +590,12 @@ QString StreamsModel::name() const
 
 QString StreamsModel::title() const
 {
-    return i18n("Internet Streams");
+    return i18n("Streams");
 }
 
 QString StreamsModel::descr() const
 {
-    return i18n("Radio stations streams");
+    return i18n("Radio stations");
 }
 
 QModelIndex StreamsModel::index(int row, int column, const QModelIndex &parent) const

@@ -60,6 +60,18 @@ namespace MPDParseUtils
         Loc_Search
     };
 
+    enum CueSupport {
+        Cue_Parse,
+        Cue_ListButDontParse,
+        Cue_Ignore,
+
+        Cue_Count
+    };
+
+    extern QString toStr(CueSupport cs);
+    extern CueSupport toCueSupport(const QString &cs);
+    extern void setCueFileSupport(CueSupport cs);
+    extern CueSupport cueFileSupport();
     extern void setSingleTracksFolder(const QString &f);
     extern QList<Playlist> parsePlaylists(const QByteArray &data);
     extern MPDStatsValues parseStats(const QByteArray &data);

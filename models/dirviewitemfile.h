@@ -38,13 +38,12 @@ public:
         CueSheet
     };
 
-    DirViewItemFile(const QString &name, const QString &p, DirViewItem *parent) : DirViewItem(name, parent), path(p) {
-        fType=MPDConnection::isPlaylist(name)
-                ? name.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive)
-                    ? CueSheet
-                    : Playlist
-                : Audio;
-    }
+    static FileType type(const QString &fileName) { return MPDConnection::isPlaylist(fileName)
+                                                        ? fileName.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive)
+                                                            ? CueSheet
+                                                            : Playlist
+                                                        : Audio; }
+    DirViewItemFile(FileType t, const QString &name, const QString &p, DirViewItem *parent) : DirViewItem(name, parent), fType(t), path(p) { }
     virtual ~DirViewItemFile() { }
     Type type() const { return Type_File;  }
     FileType fileType() const { return fType; }

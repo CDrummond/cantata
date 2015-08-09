@@ -315,7 +315,7 @@ void DirViewModel::addFileToList(const QStringList &parts, const QModelIndex &pa
         }
     } else {
         beginInsertRows(parent, dir->childCount(), dir->childCount());
-        dir->insertFile(parts, mopidyPath);
+        dir->insertFile(parts, mopidyPath, MPDParseUtils::Cue_Ignore==MPDParseUtils::cueFileSupport());
         endInsertRows();
     }
 }

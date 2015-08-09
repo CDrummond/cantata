@@ -27,6 +27,7 @@
 #include "support/configuration.h"
 #include "config.h"
 #include "mpd-interface/mpdconnection.h"
+#include "mpd-interface/mpdparseutils.h"
 #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
 namespace KWallet {
 class Wallet;
@@ -75,6 +76,7 @@ public:
     int sidebar();
     QSet<QString> composerGenres();
     QString singleTracksFolder();
+    MPDParseUtils::CueSupport cueSupport();
     QStringList lyricProviders();
     QStringList wikipediaLangs();
     bool wikipediaIntroOnly();
@@ -186,6 +188,7 @@ public:
     void saveSidebar(int v);
     void saveComposerGenres(const QSet<QString> &v);
     void saveSingleTracksFolder(const QString &v);
+    void saveCueSupport(MPDParseUtils::CueSupport v);
     void saveLyricProviders(const QStringList &v);
     void saveWikipediaLangs(const QStringList &v);
     void saveWikipediaIntroOnly(bool v);

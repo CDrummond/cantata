@@ -45,20 +45,25 @@ DirViewItemDir * DirViewItemDir::createDirectory(const QString &dirName)
     return dir;
 }
 
-DirViewItem * DirViewItemDir::insertFile(const QString &fileName, const QString &fullPath)
+DirViewItem * DirViewItemDir::insertFile(const QString &fileName, const QString &fullPath, bool ignoreIfCue)
 {
-    DirViewItemFile *file = new DirViewItemFile(fileName, fullPath, this);
+    DirViewItemFile::FileType type=DirViewItemFile::type(fileName);
+    if (ignoreIfCue && DirViewItemFile::CueSheet==type) {
+        return 0;
+    }
+
+    DirViewItemFile *file = new DirViewItemFile(type, fileName, fullPath, this);
     m_indexes.insert(fileName, m_childItems.count());
     m_childItems.append(file);
     return file;
 }
 
-void DirViewItemDir::insertFile(const QStringList &path, const QString &fullPath)
+void DirViewItemDir::insertFile(const QStringList &path, const QString &fullPath, bool ignoreIfCue)
 {
     if (1==path.count()) {
-        insertFile(path[0], fullPath);
+        insertFile(path[0], fullPath, ignoreIfCue);
     } else {
-        static_cast<DirViewItemDir *>(createDirectory(path[0]))->insertFile(path.mid(1), fullPath);
+        static_cast<DirViewItemDir *>(createDirectory(path[0]))->insertFile(path.mid(1), fullPath, ignoreIfCue);
     }
 }
 

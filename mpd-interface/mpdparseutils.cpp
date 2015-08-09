@@ -128,6 +128,37 @@ static const QString constHttpProtocol=QLatin1String("http://");
 static inline bool toBool(const QByteArray &v) { return v==constSetValue; }
 
 static QString singleTracksFolder;
+static MPDParseUtils::CueSupport cueSupport=MPDParseUtils::Cue_Parse;
+
+MPDParseUtils::CueSupport MPDParseUtils::toCueSupport(const QString &str)
+{
+    for (int i=0; i<Cue_Count; ++i) {
+        if (toStr((MPDParseUtils::CueSupport)i)==str) {
+            return (MPDParseUtils::CueSupport)i;
+        }
+    }
+    return MPDParseUtils::Cue_Parse;
+}
+
+QString MPDParseUtils::toStr(MPDParseUtils::CueSupport cs)
+{
+    switch (cs) {
+    default:
+    case MPDParseUtils::Cue_Parse:            return QLatin1String("parse");
+    case MPDParseUtils::Cue_ListButDontParse: return QLatin1String("list");
+    case MPDParseUtils::Cue_Ignore:           return QLatin1String("ignore");
+    }
+}
+
+void MPDParseUtils::setCueFileSupport(CueSupport cs)
+{
+    cueSupport=cs;
+}
+
+MPDParseUtils::CueSupport MPDParseUtils::cueFileSupport()
+{
+    return cueSupport;
+}
 
 void MPDParseUtils::setSingleTracksFolder(const QString &f)
 {
@@ -564,6 +595,10 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                     continue;
                 }
 
+                if (Cue_Parse!=cueSupport) {
+                    continue;
+                }
+
                 // No source files for CUE file..
                 if (songs.isEmpty()) {
                     continue;
@@ -730,7 +765,7 @@ DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data, bool 
                     }
                 }
             }
-            dir->insertFile(parts.last(), mopidyPath);
+            dir->insertFile(parts.last(), mopidyPath, Cue_Ignore==cueSupport);
         }
     }
 

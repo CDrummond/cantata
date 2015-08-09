@@ -69,6 +69,23 @@ static void addViewTypes(QComboBox *box, QList<ItemView::Mode> modes)
     }
 }
 
+static QString cueSupportString(MPDParseUtils::CueSupport cs)
+{
+    switch (cs) {
+    default:
+    case MPDParseUtils::Cue_Parse:            return i18n("Parse in Library view, and show in Folders view");
+    case MPDParseUtils::Cue_ListButDontParse: return i18n("Only show in Folders view");
+    case MPDParseUtils::Cue_Ignore:           return i18n("Do not list");
+    }
+}
+
+static void addCueSupportTypes(QComboBox *box)
+{
+    for (int i=0; i<MPDParseUtils::Cue_Count; ++i) {
+        box->addItem(cueSupportString((MPDParseUtils::CueSupport)i), i);
+    }
+}
+
 static void selectEntry(QComboBox *box, int v)
 {
     for (int i=1; i<box->count(); ++i) {
@@ -120,6 +137,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #endif // Q_MAC_OS
 
     setupUi(this);
+    addCueSupportTypes(cueSupport);
     addViewTypes(playQueueView, QList<ItemView::Mode>() << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
 
     addView(i18n("Play Queue"), QLatin1String("PlayQueuePage"));
@@ -217,6 +235,7 @@ void InterfaceSettings::load()
     ignorePrefixes->setText(Settings::self()->ignorePrefixes().join(QString(Song::constGenreSep)));
     composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(Song::constGenreSep)));
     singleTracksFolder->setText(Settings::self()->singleTracksFolder());
+    selectEntry(cueSupport, Settings::self()->cueSupport());
     #ifdef ENABLE_DEVICES_SUPPORT
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
     #endif
@@ -294,6 +313,7 @@ void InterfaceSettings::save()
     Settings::self()->saveIgnorePrefixes(ignorePrefixes->text().trimmed().split(Song::constGenreSep));
     Settings::self()->saveComposerGenres(composerGenres->text().trimmed().split(Song::constGenreSep).toSet());
     Settings::self()->saveSingleTracksFolder(singleTracksFolder->text().trimmed());
+    Settings::self()->saveCueSupport((MPDParseUtils::CueSupport)(cueSupport->itemData(cueSupport->currentIndex()).toInt()));
     #ifdef ENABLE_DEVICES_SUPPORT
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
     #endif

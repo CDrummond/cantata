@@ -94,7 +94,7 @@ LibraryPage::LibraryPage(QWidget *p)
     albumAlbumSortAction->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
     libraryAlbumSortAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
     showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
-    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu/* << groupCombo*/);
+    init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu/* << groupCombo*/);
 //    connect(groupCombo, SIGNAL(activated(int)), SLOT(groupByChanged()));
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
     #ifdef TAGLIB_FOUND
@@ -330,7 +330,7 @@ void LibraryPage::updateToPlayQueue(const QModelIndex &idx, bool replace)
 {
     QStringList files=MpdLibraryModel::self()->filenames(QModelIndexList() << idx, true);
     if (!files.isEmpty()) {
-        emit add(files, replace, 0);
+        emit add(files, replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0);
     }
 }
 
@@ -344,9 +344,7 @@ void LibraryPage::controlActions()
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enable=selected.count()>0;
 
-    StdActions::self()->addToPlayQueueAction->setEnabled(enable);
-    StdActions::self()->addWithPriorityAction->setEnabled(enable);
-    StdActions::self()->replacePlayQueueAction->setEnabled(enable);
+    StdActions::self()->enableAddToPlayQueue(enable);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
     #ifdef TAGLIB_FOUND
     StdActions::self()->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);

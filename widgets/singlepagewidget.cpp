@@ -62,7 +62,7 @@ SinglePageWidget::SinglePageWidget(QWidget *p)
     layout->setSpacing(0);
     connect(view, SIGNAL(searchItems()), this, SIGNAL(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
-    connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
+    connect(this, SIGNAL(add(const QStringList &, int, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
 }
 
@@ -80,22 +80,25 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
     QList<QWidget *> left=leftXtra;
     QList<QWidget *> right=rightXtra;
 
-    if (!right.isEmpty() && (flags&(AddToPlayQueue||ReplacePlayQueue))) {
+    if (!right.isEmpty() && (flags&(AppendToPlayQueue||ReplacePlayQueue))) {
         right << new SpacerWidget(this);
     }
-    if (flags&AddToPlayQueue) {
+
+    if (flags&ReplacePlayQueue) {
+        view->addAction(StdActions::self()->replacePlayQueueAction);
+    }
+
+    if (flags&AppendToPlayQueue) {
         ToolButton *addToPlayQueue=new ToolButton(this);
-        addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
+        addToPlayQueue->setDefaultAction(StdActions::self()->appendToPlayQueueAction);
         right.append(addToPlayQueue);
-        view->addAction(StdActions::self()->addToPlayQueueAction);
-        view->addAction(StdActions::self()->addWithPriorityAction);
+        view->addAction(StdActions::self()->addToPlayQueueMenuAction);
     }
 
     if (flags&ReplacePlayQueue) {
         ToolButton *replacePlayQueue=new ToolButton(this);
         replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
         right.append(replacePlayQueue);
-        view->addAction(StdActions::self()->replacePlayQueueAction);
     }
 
     if (flags&Refresh) {
@@ -124,12 +127,12 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
     }
 }
 
-void SinglePageWidget::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+void SinglePageWidget::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
 {
     QStringList files=selectedFiles(name.isEmpty());
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files, replace, priorty);
+            emit add(files, action, priorty);
         } else {
             emit addSongsToPlaylist(name, files);
         }
@@ -214,7 +217,7 @@ void SinglePageWidget::controlActions()
     if (btnFlags&ReplacePlayQueue) {
         StdActions::self()->replacePlayQueueAction->setEnabled(!selected.isEmpty());
     }
-    if (btnFlags&AddToPlayQueue) {
-        StdActions::self()->addToPlayQueueAction->setEnabled(!selected.isEmpty());
+    if (btnFlags&AppendToPlayQueue) {
+        StdActions::self()->appendToPlayQueueAction->setEnabled(!selected.isEmpty());
     }
 }

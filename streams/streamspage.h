@@ -53,12 +53,10 @@ public:
     StreamsBrowsePage(QWidget *p);
     virtual ~StreamsBrowsePage();
 
-    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0);
     void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
-    void add(const QStringList &streams, bool replace, quint8 priorty);
-
     void error(const QString &str);
     void showPreferencesPage(const QString &page);
     void searchForStreams();
@@ -74,7 +72,7 @@ private Q_SLOTS:
     void diSettings();
     void importXml();
     void exportXml();
-    void add();
+    void addStream();
     void addBookmark();
     void reload();
     void edit();
@@ -87,7 +85,7 @@ private Q_SLOTS:
 
 private:
     void doSearch();
-    void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
+    void addItemsToPlayQueue(const QModelIndexList &indexes, int action, quint8 priorty=0);
     void addToFavourites();
 
 private:

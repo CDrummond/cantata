@@ -46,7 +46,7 @@ public:
     QString activeFsDeviceUdi() const;
     QStringList playableUrls() const;
     QList<Song> selectedSongs(bool allowPlaylists=false) const;
-    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0);
     void focusSearch() { view->focusSearch(); }
     void refresh();
     void resort() { proxy.sort(); }
@@ -70,10 +70,6 @@ private:
     Device * activeFsDevice() const;
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void add(const QStringList &files, bool replace, quint8 priorty);
-    void addSongsToPlaylist(const QString &name, const QStringList &files);
-
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
     void deleteSongs(const QString &from, const QList<Song> &songs);
 

@@ -25,6 +25,7 @@
 #define PAGE_H
 
 #include "mpd-interface/song.h"
+#include "mpd-interface/mpdconnection.h"
 
 class Page
 {
@@ -33,8 +34,8 @@ public:
     virtual ~Page() { }
     virtual Song coverRequest() const { return Song(); }
     virtual QList<Song> selectedSongs(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists) return QList<Song>(); }
-    virtual void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0) {
-        Q_UNUSED(name) Q_UNUSED(replace) Q_UNUSED(priorty)
+    virtual void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0) {
+        Q_UNUSED(name) Q_UNUSED(action) Q_UNUSED(priorty)
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     virtual void addSelectionToDevice(const QString &udi) { Q_UNUSED(udi) }

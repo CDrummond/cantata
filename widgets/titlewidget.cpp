@@ -108,7 +108,7 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
             l->setSpacing(0);
             ToolButton *add=new ToolButton(this);
             ToolButton *replace=new ToolButton(this);
-            add->QAbstractButton::setIcon(StdActions::self()->addToPlayQueueAction->icon());
+            add->QAbstractButton::setIcon(StdActions::self()->appendToPlayQueueAction->icon());
             replace->QAbstractButton::setIcon(StdActions::self()->replacePlayQueueAction->icon());
             add->setToolTip(i18n("Add All To Play Queue"));
             replace->setToolTip(i18n("Add All And Replace Play Queue"));

@@ -68,7 +68,7 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     addSub->setDefaultAction(subscribeAction);
     menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                                                                << ItemView::Mode_DetailedTree << ItemView::Mode_List));
-    init(ReplacePlayQueue|AddToPlayQueue|Refresh, QList<QWidget *>() << menu, QList<QWidget *>() << addSub);
+    init(ReplacePlayQueue|AppendToPlayQueue|Refresh, QList<QWidget *>() << menu, QList<QWidget *>() << addSub);
 
     view->addAction(subscribeAction);
     view->addAction(unSubscribeAction);

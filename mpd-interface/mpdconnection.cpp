@@ -703,9 +703,9 @@ bool MPDConnection::isPlaylist(const QString &file)
            file.endsWith(QLatin1String(".xspf"), Qt::CaseInsensitive);
 }
 
-void MPDConnection::add(const QStringList &files, bool replace, quint8 priority)
+void MPDConnection::add(const QStringList &files, int action, quint8 priority)
 {
-    add(files, 0, 0, replace ? AddReplaceAndPlay : AddToEnd, priority);
+    add(files, 0, 0, action, priority);
 }
 
 void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int action, quint8 priority)
@@ -719,8 +719,24 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int
 
 void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, int action, const QList<quint8> &priority)
 {
+    quint32 playPos=0;
+    if (0==pos && 0==size && (AddAfterCurrent==action || AppendAndPlay==action || AddAndPlay==action)) {
+        Response response=sendCommand("status");
+        if (response.ok) {
+            MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
+            if (AppendAndPlay==action) {
+                playPos=sv.playlistLength;
+            } else if (AddAndPlay==action) {
+                pos=0;
+                size=sv.playlistLength;
+            } else {
+                pos=sv.song+1;
+                size=sv.playlistLength;
+            }
+        }
+    }
     toggleStopAfterCurrent(false);
-    if (AddToEnd!=action) {
+    if (Replace==action || ReplaceAndplay==action) {
         clear();
         getStatus();
     }
@@ -744,7 +760,7 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
     QStringList cStreamFiles;
     bool sentOk=false;
 
-    if (usePrio && AddToEnd==action && 0==curPos) {
+    if (usePrio && Append==action && 0==curPos) {
         curPos=playQueueIds.size();
     }
 
@@ -792,9 +808,13 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
             emit cantataStreams(cStreamFiles);
         }
 
-        if (AddReplaceAndPlay==action /*&& addedFile */&& !origList.isEmpty()) {
-            // Dont emit error if fail plays, might be that playlist was not loaded...
+        if ((ReplaceAndplay==action || AddAndPlay==action) /*&& addedFile */&& !origList.isEmpty()) {
+            // Dont emit error if play fails, might be that playlist was not loaded...
             playFirstTrack(false);
+        }
+
+        if (AppendAndPlay==action) {
+            startPlayingSong(playPos);
         }
         emit added(origList);
     }
@@ -802,7 +822,7 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
 
 void MPDConnection::populate(const QStringList &files, const QList<quint8> &priority)
 {
-    add(files, 0, 0, AddAndReplace, priority);
+    add(files, 0, 0, Replace, priority);
 }
 
 void MPDConnection::addAndPlay(const QString &file)
@@ -1179,11 +1199,11 @@ void MPDConnection::seek(bool fwd)
     }
 }
 
-//void MPDConnection::startPlayingSong(quint32 song)
-//{
-//    toggleStopAfterCurrent(false);
-//    sendCommand("play "+quote(song));
-//}
+void MPDConnection::startPlayingSong(quint32 song)
+{
+    toggleStopAfterCurrent(false);
+    sendCommand("play "+quote(song));
+}
 
 void MPDConnection::startPlayingSongId(qint32 songId)
 {

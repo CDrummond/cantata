@@ -175,9 +175,12 @@ class MPDConnection : public QObject
 public:
     enum AddAction
     {
-        AddToEnd=0,
-        AddAndReplace=1,
-        AddReplaceAndPlay=2
+        Append,
+        Replace,
+        ReplaceAndplay,
+        AppendAndPlay,
+        AddAndPlay,
+        AddAfterCurrent
     };
 
     enum VolumeFade
@@ -236,7 +239,7 @@ public Q_SLOTS:
     void setDetails(const MPDConnectionDetails &d);
 //    void disconnectMpd();
     // Current Playlist
-    void add(const QStringList &files, bool replace, quint8 priority);
+    void add(const QStringList &files, int action, quint8 priority);
     void add(const QStringList &files, quint32 pos, quint32 size, int action, quint8 priority);
     void add(const QStringList &files, quint32 pos, quint32 size, int action, const QList<quint8> &priority);
     void populate(const QStringList &files, const QList<quint8> &priority);
@@ -259,7 +262,7 @@ public Q_SLOTS:
     void goToNext();
     void setPause(bool toggle);
     void play();
-//    void startPlayingSong(quint32 song = 0);
+    void startPlayingSong(quint32 song = 0);
     void startPlayingSongId(qint32 songId = 0);
     void goToPrevious();
     void setConsume(bool toggle);

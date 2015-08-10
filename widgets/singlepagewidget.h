@@ -28,6 +28,7 @@
 #include "mpd-interface/song.h"
 #include "gui/page.h"
 #include "widgets/itemview.h"
+#include "mpd-interface/mpdconnection.h"
 
 class Action;
 
@@ -36,11 +37,11 @@ class SinglePageWidget : public QWidget, public Page
     Q_OBJECT
 public:
     enum {
-        ReplacePlayQueue = 0x01,
-        AddToPlayQueue   = 0x02,
-        Refresh          = 0x04,
+        ReplacePlayQueue  = 0x01,
+        AppendToPlayQueue = 0x02,
+        Refresh           = 0x04,
 
-        All = AddToPlayQueue|ReplacePlayQueue|Refresh
+        All = AppendToPlayQueue|ReplacePlayQueue|Refresh
     };
 
     typedef QPair<QString, int> MenuItem;
@@ -58,7 +59,7 @@ public:
     void init(int flags=All, const QList<QWidget *> &leftXtra=QList<QWidget *>(), const QList<QWidget *> &rightXtra=QList<QWidget *>());
     virtual QStringList selectedFiles(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists); return QStringList(); }
     virtual QList<Song> selectedSongs(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists); return QList<Song>(); }
-    virtual void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
+    virtual void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0);
     virtual Song coverRequest() const { return Song(); }
     #ifdef ENABLE_DEVICES_SUPPORT
     virtual void addSelectionToDevice(const QString &udi) { Q_UNUSED(udi); }
@@ -78,7 +79,7 @@ Q_SIGNALS:
     void searchItems();
 
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void add(const QStringList &files, bool replace, quint8 priorty);
+    void add(const QStringList &files, int action, quint8 priorty);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
 
 private Q_SLOTS:

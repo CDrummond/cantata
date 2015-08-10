@@ -70,10 +70,10 @@ StreamsPage::StreamsPage(QWidget *p)
     addWidget(search);
     connect(search, SIGNAL(close()), this, SLOT(closeSearch()));
 
-    disconnect(browse, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
-    disconnect(search, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
-    connect(browse, SIGNAL(add(const QStringList &, bool, quint8)), PlayQueueModel::self(), SLOT(addItems(const QStringList &, bool, quint8)));
-    connect(search, SIGNAL(add(const QStringList &, bool, quint8)), PlayQueueModel::self(), SLOT(addItems(const QStringList &, bool, quint8)));
+    disconnect(browse, SIGNAL(add(const QStringList &, int, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8)));
+    disconnect(search, SIGNAL(add(const QStringList &, int, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8)));
+    connect(browse, SIGNAL(add(const QStringList &, int, quint8)), PlayQueueModel::self(), SLOT(addItems(const QStringList &, int, quint8)));
+    connect(search, SIGNAL(add(const QStringList &, int, quint8)), PlayQueueModel::self(), SLOT(addItems(const QStringList &, int, quint8)));
     connect(StreamsModel::self()->addToFavouritesAct(), SIGNAL(triggered()), this, SLOT(addToFavourites()));
     connect(search, SIGNAL(addToFavourites(QList<StreamItem>)), browse, SLOT(addToFavourites(QList<StreamItem>)));
 }
@@ -115,7 +115,7 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
-    connect(addAction, SIGNAL(triggered()), this, SLOT(add()));
+    connect(addAction, SIGNAL(triggered()), this, SLOT(addStream()));
     connect(StreamsModel::self()->addBookmarkAct(), SIGNAL(triggered()), this, SLOT(addBookmark()));
     connect(StreamsModel::self()->configureDiAct(), SIGNAL(triggered()), this, SLOT(configureDi()));
     connect(StreamsModel::self()->reloadAct(), SIGNAL(triggered()), this, SLOT(reload()));
@@ -191,13 +191,13 @@ void StreamsBrowsePage::showEvent(QShowEvent *e)
     QWidget::showEvent(e);
 }
 
-void StreamsBrowsePage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+void StreamsBrowsePage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
 {
     Q_UNUSED(name)
-    addItemsToPlayQueue(view->selectedIndexes(), replace, priorty);
+    addItemsToPlayQueue(view->selectedIndexes(), action, priorty);
 }
 
-void StreamsBrowsePage::addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty)
+void StreamsBrowsePage::addItemsToPlayQueue(const QModelIndexList &indexes, int action, quint8 priorty)
 {
     if (indexes.isEmpty()) {
         return;
@@ -210,7 +210,7 @@ void StreamsBrowsePage::addItemsToPlayQueue(const QModelIndexList &indexes, bool
     QStringList files=StreamsModel::self()->filenames(mapped, true);
 
     if (!files.isEmpty()) {
-        emit add(files, replace, priorty);
+        emit add(files, action, priorty);
         view->clearSelection();
     }
 }
@@ -291,7 +291,7 @@ void StreamsBrowsePage::exportXml()
     }
 }
 
-void StreamsBrowsePage::add()
+void StreamsBrowsePage::addStream()
 {
     StreamDialog dlg(this);
 

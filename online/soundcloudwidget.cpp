@@ -35,7 +35,7 @@ SoundCloudWidget::SoundCloudWidget(SoundCloudService *s, QWidget *p)
 {
     statsLabel=new SqueezedTextLabel(this);
     view->setModel(s);
-    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << statsLabel);
+    init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << statsLabel);
     view->alwaysShowHeader();
     view->setPermanentSearch();
     view->setMode(ItemView::Mode_List);

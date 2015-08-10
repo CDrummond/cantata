@@ -164,7 +164,7 @@ StreamFetcher::StreamFetcher(QObject *p)
     : QObject(p)
     , job(0)
     , row(0)
-    , replacePlayQueue(true)
+    , playQueueAction(true)
     , prio(0)
     , redirects(0)
 {
@@ -174,7 +174,7 @@ StreamFetcher::~StreamFetcher()
 {
 }
 
-void StreamFetcher::get(const QStringList &items, int insertRow, bool replace, quint8 priority)
+void StreamFetcher::get(const QStringList &items, int insertRow, int action, quint8 priority)
 {
     if (items.isEmpty()) {
         return;
@@ -185,7 +185,7 @@ void StreamFetcher::get(const QStringList &items, int insertRow, bool replace, q
     todo=items;
     done.clear();
     row=insertRow;
-    replacePlayQueue=replace;
+    playQueueAction=action;
     prio=priority;
     current=QString();
     currentName=QString();
@@ -230,7 +230,7 @@ void StreamFetcher::doNext()
 
     if (todo.isEmpty() && !done.isEmpty()) {
         job=0;
-        emit result(done, row, replacePlayQueue, prio);
+        emit result(done, row, playQueueAction, prio);
         emit status(QString());
     }
 }

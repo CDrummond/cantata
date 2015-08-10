@@ -53,7 +53,7 @@ FolderPage::FolderPage(QWidget *p)
     MenuButton *menu=new MenuButton(this);
     menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                                                                << ItemView::Mode_DetailedTree << ItemView::Mode_List));
-    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu);
+    init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu);
 
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
     #ifdef TAGLIB_FOUND
@@ -120,9 +120,7 @@ void FolderPage::controlActions()
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enable=selected.count()>0;
 
-    StdActions::self()->addToPlayQueueAction->setEnabled(enable);
-    StdActions::self()->addWithPriorityAction->setEnabled(enable);
-    StdActions::self()->replacePlayQueueAction->setEnabled(enable);
+    StdActions::self()->enableAddToPlayQueue(enable);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
     #ifdef TAGLIB_FOUND
     StdActions::self()->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);

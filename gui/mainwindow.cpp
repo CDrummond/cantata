@@ -36,9 +36,7 @@
 #include "coverdialog.h"
 #include "currentcover.h"
 #include "preferencesdialog.h"
-#include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdstats.h"
-#include "mpd-interface/mpdstatus.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "settings.h"
 #include "support/utils.h"
@@ -771,6 +769,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->addPrioLowAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
     connect(StdActions::self()->addPrioDefaultAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
     connect(StdActions::self()->addPrioCustomAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->appendToPlayQueueAndPlayAction, SIGNAL(triggered()), this, SLOT(appendToPlayQueueAndPlay()));
+    connect(StdActions::self()->addToPlayQueueAndPlayAction, SIGNAL(triggered()), this, SLOT(addToPlayQueueAndPlay()));
+    connect(StdActions::self()->insertAfterCurrentAction, SIGNAL(triggered()), this, SLOT(insertIntoPlayQueue()));
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
     connect(this, SIGNAL(enableOutput(int, bool)), MPDConnection::self(), SLOT(enableOutput(int, bool)));
     connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
@@ -825,7 +826,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playQueueSearchWidget, SIGNAL(active(bool)), this, SLOT(playQueueSearchActivated(bool)));
     connect(playQueue, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playQueueItemActivated(const QModelIndex &)));
     connect(StdActions::self()->removeAction, SIGNAL(triggered()), this, SLOT(removeItems()));
-    connect(StdActions::self()->addToPlayQueueAction, SIGNAL(triggered()), this, SLOT(addToPlayQueue()));
+    connect(StdActions::self()->appendToPlayQueueAction, SIGNAL(triggered()), this, SLOT(appendToPlayQueue()));
     connect(StdActions::self()->replacePlayQueueAction, SIGNAL(triggered()), this, SLOT(replacePlayQueue()));
     connect(playQueue->removeFromAct(), SIGNAL(triggered()), this, SLOT(removeFromPlayQueue()));
     connect(clearPlayQueueAction, SIGNAL(triggered()), playQueueSearchWidget, SLOT(clear()));
@@ -1869,11 +1870,11 @@ void MainWindow::centerPlayQueue()
     }
 }
 
-void MainWindow::addToPlayQueue(bool replace, quint8 priority)
+void MainWindow::appendToPlayQueue(int action, quint8 priority)
 {
     playQueueSearchWidget->clear();
     if (currentPage) {
-        currentPage->addSelectionToPlaylist(QString(), replace, priority);
+        currentPage->addSelectionToPlaylist(QString(), action, priority);
     }
 }
 
@@ -1912,7 +1913,7 @@ void MainWindow::addWithPriority()
             }
             emit setPriority(ids, prio);
         } else {
-            addToPlayQueue(false, prio);
+            appendToPlayQueue(false, prio);
         }
     }
 }

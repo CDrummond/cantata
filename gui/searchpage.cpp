@@ -73,7 +73,7 @@ SearchPage::SearchPage(QWidget *p)
     view->load(config);
     MenuButton *menu=new MenuButton(this);
     menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_List << ItemView::Mode_Table));
-    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu << statsLabel);
+    init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu << statsLabel);
 
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
     #ifdef TAGLIB_FOUND
@@ -179,7 +179,7 @@ void SearchPage::controlActions()
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enable=selected.count()>0;
 
-    StdActions::self()->addToPlayQueueAction->setEnabled(enable);
+    StdActions::self()->appendToPlayQueueAction->setEnabled(enable);
     StdActions::self()->addWithPriorityAction->setEnabled(enable);
     StdActions::self()->replacePlayQueueAction->setEnabled(enable);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);

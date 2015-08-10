@@ -63,6 +63,8 @@
 44. Show podcast published date on sub-text, and duration in brackets.
 45. Remove AudioCD tracks from plqyqueue when eject CD.
 46. Add option to control cue file handling.
+47. New options to add songs to play queue - 'add and play', 'append and play',
+    and 'insert after current'
 
 1.5.2
 -----

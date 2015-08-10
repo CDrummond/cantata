@@ -23,6 +23,7 @@
 #include "action.h"
 #include "config.h"
 #include "gtkstyle.h"
+#include "utils.h"
 #include <QApplication>
 #include <QKeySequence>
 
@@ -101,6 +102,22 @@ void Action::updateToolTip(QAction *act)
                         .arg(tt)
                         .arg(sc.toString(QKeySequence::NativeText)));
     }
+}
+
+const char * Action::constTtForSettings="tt-for-settings";
+
+QString Action::settingsText(QAction *act)
+{
+    if (act->property(constTtForSettings).toBool()) {
+        QString tt=Utils::stripAcceleratorMarkers(act->property(constPlainToolTipProperty).toString());
+        if (tt.isEmpty()) {
+            tt=Utils::stripAcceleratorMarkers(act->toolTip());
+        }
+        if (!tt.isEmpty()) {
+            return tt;
+        }
+    }
+    return Utils::stripAcceleratorMarkers(act->text());
 }
 
 #ifndef ENABLE_KDE_SUPPORT

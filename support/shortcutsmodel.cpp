@@ -141,8 +141,9 @@ QVariant ShortcutsModel::data(const QModelIndex &index, int role) const {
   switch(role) {
   case Qt::DisplayRole:
     switch(index.column()) {
-    case 0:
-      return Utils::stripAcceleratorMarkers(action->text());
+    case 0: {
+      return Action::settingsText(action);
+    }
     case 1:
       return item->shortcut.toString(QKeySequence::NativeText);
     default:

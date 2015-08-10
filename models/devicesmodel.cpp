@@ -109,7 +109,7 @@ DevicesModel::DevicesModel(QObject *parent)
     editAction = new Action(Icons::self()->editIcon, i18n("Edit CD Details"), this);
     #endif
     updateItemMenu();
-    connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
+    connect(this, SIGNAL(add(const QStringList &, int, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8)));
     #if defined ENABLE_MODEL_TEST
     new ModelTest(this, this);
     #endif
@@ -213,7 +213,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             #endif
             v.setValue<QList<Action *> >(actions);
         } else if (root(item)->canPlaySongs() && HttpServer::self()->isAlive()) {
-            v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
+            v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->appendToPlayQueueAction);
         }
         return v;
     }
@@ -766,7 +766,7 @@ void DevicesModel::play(const QList<Song> &songs)
         }
 
         if (!paths.isEmpty()) {
-            emit add(paths, true, 0);
+            emit add(paths, MPDConnection::ReplaceAndplay, 0);
         }
     }
 }

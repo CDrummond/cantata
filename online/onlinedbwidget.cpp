@@ -52,7 +52,7 @@ OnlineDbWidget::OnlineDbWidget(OnlineDbService *s, QWidget *p)
     Action *configureAction=new Action(Icons::self()->configureIcon, i18n("Configure"), this);
     connect(configureAction, SIGNAL(triggered()), SLOT(configure()));
     menu->addAction(configureAction);
-    init(ReplacePlayQueue|AddToPlayQueue|Refresh, QList<QWidget *>() << menu);
+    init(ReplacePlayQueue|AppendToPlayQueue|Refresh, QList<QWidget *>() << menu);
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
     connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
     view->setOpenAfterSearch(SqlLibraryModel::T_Album!=srv->topLevel());
@@ -148,6 +148,6 @@ void OnlineDbWidget::updateToPlayQueue(const QModelIndex &idx, bool replace)
 {
     QStringList files=srv->filenames(QModelIndexList() << idx, true);
     if (!files.isEmpty()) {
-        emit add(files, replace, 0);
+        emit add(files, replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0);
     }
 }

@@ -43,6 +43,7 @@ class KToggleAction;
 #include "models/playqueuemodel.h"
 #include "mpd-interface/song.h"
 #include "mpd-interface/mpdstatus.h"
+#include "mpd-interface/mpdconnection.h"
 #include "config.h"
 
 class Action;
@@ -188,8 +189,11 @@ public Q_SLOTS:
     void clearPlayQueue();
     void centerPlayQueue();
     void removeFromPlayQueue() { PlayQueueModel::self()->remove(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes())); }
-    void replacePlayQueue() { addToPlayQueue(true); }
-    void addToPlayQueue() { addToPlayQueue(false); }
+    void replacePlayQueue() { appendToPlayQueue(MPDConnection::ReplaceAndplay); }
+    void appendToPlayQueue() { appendToPlayQueue(MPDConnection::Append); }
+    void appendToPlayQueueAndPlay() { appendToPlayQueue(MPDConnection::AppendAndPlay); }
+    void addToPlayQueueAndPlay() { appendToPlayQueue(MPDConnection::AddAndPlay); }
+    void insertIntoPlayQueue() { appendToPlayQueue(MPDConnection::AddAfterCurrent); }
     void addWithPriority();
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name) { addToExistingStoredPlaylist(name, playQueue->hasFocus()); }
@@ -248,7 +252,7 @@ private:
     void enableStopActions(bool enable);
     void updateStatus(MPDStatus * const status);
     void readSettings();
-    void addToPlayQueue(bool replace, quint8 priority=0);
+    void appendToPlayQueue(int action, quint8 priority=0);
     bool currentIsStream() const { return PlayQueueModel::self()->rowCount() && -1!=current.id && current.isStream(); }
     void updateWindowTitle();
     void showTab(int page) { tabWidget->setCurrentIndex(page); }

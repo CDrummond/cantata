@@ -67,8 +67,6 @@ DevicesPage::DevicesPage(QWidget *p)
     #endif
     connect(DevicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
     connect(DevicesModel::self()->disconnectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
-    connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
-    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(DevicesModel::self(), SIGNAL(updated(QModelIndex)), this, SLOT(updated(QModelIndex)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
@@ -100,7 +98,7 @@ DevicesPage::DevicesPage(QWidget *p)
     menu->addAction(addRemote);
     menu->addAction(forgetDeviceAction);
     #endif
-    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu, QList<QWidget *>() << copyToLibraryButton);
+    init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu, QList<QWidget *>() << copyToLibraryButton);
 
     view->addAction(copyAction);
     view->addAction(StdActions::self()->organiseFilesAction);
@@ -212,12 +210,12 @@ QList<Song> DevicesPage::selectedSongs(bool allowPlaylists) const
     return DevicesModel::self()->songs(proxy.mapToSource(selected));
 }
 
-void DevicesPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+void DevicesPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
 {
     QStringList files=playableUrls();
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files, replace, priorty);
+            emit add(files, action, priorty);
         } else {
             emit addSongsToPlaylist(name, files);
         }
@@ -324,9 +322,7 @@ void DevicesPage::controlActions()
     StdActions::self()->replaygainAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #endif
     StdActions::self()->organiseFilesAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
-    StdActions::self()->addToPlayQueueAction->setEnabled(canPlay && !selected.isEmpty() && singleUdi && !busyDevice && haveTracks && (audioCd || !deviceSelected));
-    StdActions::self()->addWithPriorityAction->setEnabled(StdActions::self()->addToPlayQueueAction->isEnabled());
-    StdActions::self()->replacePlayQueueAction->setEnabled(StdActions::self()->addToPlayQueueAction->isEnabled());
+    StdActions::self()->enableAddToPlayQueue(canPlay && !selected.isEmpty() && singleUdi && !busyDevice && haveTracks && (audioCd || !deviceSelected));
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction->setEnabled(singleUdi && remoteDev);
     #endif

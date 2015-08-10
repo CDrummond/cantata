@@ -43,7 +43,10 @@ public:
     Action *increaseVolumeAction;
     Action *decreaseVolumeAction;
     Action *savePlayQueueAction;
-    Action *addToPlayQueueAction;
+    Action *appendToPlayQueueAction;
+    Action *appendToPlayQueueAndPlayAction;
+    Action *addToPlayQueueAndPlayAction;
+    Action *insertAfterCurrentAction;
     Action *replacePlayQueueAction;
     Action *addWithPriorityAction;
     Action *addToStoredPlaylistAction;
@@ -53,6 +56,7 @@ public:
     Action *addPrioLowAction;      // 50
     Action *addPrioDefaultAction;  // 0
     Action *addPrioCustomAction;
+    Action *addToPlayQueueMenuAction;
     #ifdef TAGLIB_FOUND
     Action *editTagsAction;
     Action *organiseFilesAction;
@@ -67,6 +71,8 @@ public:
     Action *setCoverAction;
     Action *removeAction;
     Action *searchAction;
+
+    void enableAddToPlayQueue(bool en);
 
 private:
     StdActions(const StdActions &o);

@@ -205,8 +205,8 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
 {
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
-    connect(fetcher, SIGNAL(result(const QStringList &, int, bool, quint8)), SLOT(addFiles(const QStringList &, int, bool, quint8)));
-    connect(fetcher, SIGNAL(result(const QStringList &, int, bool, quint8)), SIGNAL(streamsFetched()));
+    connect(fetcher, SIGNAL(result(const QStringList &, int, int, quint8)), SLOT(addFiles(const QStringList &, int, int, quint8)));
+    connect(fetcher, SIGNAL(result(const QStringList &, int, int, quint8)), SIGNAL(streamsFetched()));
     connect(fetcher, SIGNAL(status(QString)), SIGNAL(streamFetchStatus(QString)));
     connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, int, quint8)),
             MPDConnection::self(), SLOT(add(const QStringList, quint32, quint32, int, quint8)));
@@ -739,7 +739,7 @@ void PlayQueueModel::load(const QStringList &urls)
     #endif
 }
 
-void PlayQueueModel::addItems(const QStringList &items, int row, bool replace, quint8 priority)
+void PlayQueueModel::addItems(const QStringList &items, int row, int action, quint8 priority)
 {
     bool haveRadioStream=false;
 
@@ -754,22 +754,22 @@ void PlayQueueModel::addItems(const QStringList &items, int row, bool replace, q
 
     if (haveRadioStream) {
         emit fetchingStreams();
-        fetcher->get(items, row, replace, priority);
+        fetcher->get(items, row, action, priority);
     } else {
-        addFiles(items, row, replace, priority);
+        addFiles(items, row, action, priority);
     }
 }
 
-void PlayQueueModel::addFiles(const QStringList &filenames, int row, bool replace, quint8 priority)
+void PlayQueueModel::addFiles(const QStringList &filenames, int row, int action, quint8 priority)
 {
-    if (replace) {
-        emit filesAdded(filenames, 0, 0, MPDConnection::AddReplaceAndPlay, priority);
+    if (MPDConnection::ReplaceAndplay==action) {
+        emit filesAdded(filenames, 0, 0, MPDConnection::ReplaceAndplay, priority);
     } else if (songs.isEmpty()) {
-         emit filesAdded(filenames, 0, 0, MPDConnection::AddToEnd, priority);
+         emit filesAdded(filenames, 0, 0, MPDConnection::Append, priority);
     } else if (row < 0) {
-        emit filesAdded(filenames, songs.size(), songs.size(), MPDConnection::AddToEnd, priority);
+        emit filesAdded(filenames, songs.size(), songs.size(), action, priority);
     } else {
-        emit filesAdded(filenames, row, songs.size(), MPDConnection::AddToEnd, priority);
+        emit filesAdded(filenames, row, songs.size(), action, priority);
     }
 }
 

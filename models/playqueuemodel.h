@@ -148,9 +148,9 @@ private:
 
 public Q_SLOTS:
     void load(const QStringList &urls);
-    void addItems(const QStringList &items, int row, bool replace, quint8 priority);
-    void addItems(const QStringList &items, bool replace, quint8 priority) { addItems(items, -1, replace, priority); }
-    void addFiles(const QStringList &filenames, int row, bool replace, quint8 priority);
+    void addItems(const QStringList &items, int row, int action, quint8 priority);
+    void addItems(const QStringList &items, int action, quint8 priority) { addItems(items, -1, action, priority); }
+    void addFiles(const QStringList &filenames, int row, int action, quint8 priority);
     void prioritySet(const QList<qint32> &ids, quint8 priority);
     void stats();
     void cancelStreamFetch();

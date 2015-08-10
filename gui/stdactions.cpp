@@ -37,6 +37,12 @@
 
 GLOBAL_STATIC(StdActions, instance)
 
+static void setToolTip(Action *act, const QString &tt)
+{
+    act->setToolTip(tt);
+    act->setProperty(Action::constTtForSettings, true);
+}
+
 StdActions::StdActions()
 {
     UNITY_MENU_ICON_CHECK
@@ -48,11 +54,16 @@ StdActions::StdActions()
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
-    savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), HIDE_MENU_ICON_NAME("document-save-as"));
-    addToPlayQueueAction = ActionCollection::get()->createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
-    replacePlayQueueAction = ActionCollection::get()->createAction("replaceplaylist", i18n("Replace Play Queue"), "media-playback-start");
+    savePlayQueueAction = ActionCollection::get()->createAction("saveplayqueue", i18n("Save As"), HIDE_MENU_ICON_NAME("document-save-as"));
+    appendToPlayQueueAction = ActionCollection::get()->createAction("appendtoplayqueue", i18n("Append"), "list-add");
+    setToolTip(appendToPlayQueueAction, i18n("Append To Play Queue"));
+    appendToPlayQueueAndPlayAction = ActionCollection::get()->createAction("appendtoplayqueueandplay", i18n("Append And Play"));
+    addToPlayQueueAndPlayAction = ActionCollection::get()->createAction("addtoplayqueueandplay", i18n("Add And Play"));
+    setToolTip(appendToPlayQueueAndPlayAction, i18n("Append To Play Queue And Play"));
+    insertAfterCurrentAction = ActionCollection::get()->createAction("insertintoplayqueue", i18n("Insert After Current"));
+    replacePlayQueueAction = ActionCollection::get()->createAction("replaceplayqueue", i18n("Play Now (And Replace Play Queue)"), "media-playback-start");
     savePlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_S);
-    addToPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_P);
+    appendToPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_P);
     replacePlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_R);
 
     addWithPriorityAction = new Action(Icon("favorites"), i18n("Add With Priority"), 0);
@@ -96,4 +107,31 @@ StdActions::StdActions()
     prioMenu->addAction(addPrioDefaultAction);
     prioMenu->addAction(addPrioCustomAction);
     addWithPriorityAction->setMenu(prioMenu);
+
+    QMenu *addMenu=new QMenu();
+    addToPlayQueueMenuAction = new Action(i18n("Add To Play Queue"), 0);
+    addMenu->addAction(appendToPlayQueueAction);
+    addMenu->addAction(appendToPlayQueueAndPlayAction);
+    addMenu->addAction(addToPlayQueueAndPlayAction);
+    addMenu->addAction(addWithPriorityAction);
+    addMenu->addAction(insertAfterCurrentAction);
+    addToPlayQueueMenuAction->setMenu(addMenu);
+}
+
+void StdActions::enableAddToPlayQueue(bool en)
+{
+    appendToPlayQueueAction->setEnabled(en);
+    appendToPlayQueueAndPlayAction->setEnabled(en);
+    addToPlayQueueAndPlayAction->setEnabled(en);
+    insertAfterCurrentAction->setEnabled(en);
+    replacePlayQueueAction->setEnabled(en);
+    addWithPriorityAction->setEnabled(en);
+    addToStoredPlaylistAction->setEnabled(en);
+    addPrioHighestAction->setEnabled(en);
+    addPrioHighAction->setEnabled(en);
+    addPrioMediumAction->setEnabled(en);
+    addPrioLowAction->setEnabled(en);
+    addPrioDefaultAction->setEnabled(en);
+    addPrioCustomAction->setEnabled(en);
+    addToPlayQueueMenuAction->setEnabled(en);
 }

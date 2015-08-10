@@ -41,7 +41,7 @@ public:
     void updateRows();
     void clear();
     //QStringList selectedFiles() const;
-    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0);
     void setView(int mode);
     #ifdef ENABLE_DEVICES_SUPPORT
     QList<Song> selectedSongs(bool allowPlaylists=false) const;

@@ -97,7 +97,7 @@ Q_SIGNALS:
     void matches(const QString &udi, const QList<CdAlbum> &albums);
     void invalid(const QList<Song> &songs);
     void updatedDetails(const QList<Song> &songs);
-    void add(const QStringList &files, bool replace, quint8 priorty); // add songs to MPD playqueue
+    void add(const QStringList &files, int action, quint8 priorty); // add songs to MPD playqueue
 
 private Q_SLOTS:
     void play(const QList<Song> &songs);

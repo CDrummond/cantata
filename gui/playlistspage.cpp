@@ -77,7 +77,6 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
-    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
@@ -100,7 +99,7 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
                                                            << ItemView::Mode_DetailedTree << ItemView::Mode_List
                                                            << ItemView::Mode_GroupedTree << ItemView::Mode_Table));
     menu->addAction(intitiallyCollapseAction);
-    init(ReplacePlayQueue|AddToPlayQueue, QList<QWidget *>() << menu);
+    init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu);
 
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -143,9 +142,9 @@ void StoredPlaylistsPage::clear()
 //    return PlaylistsModel::self()->filenames(mapped, true);
 //}
 
-void StoredPlaylistsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+void StoredPlaylistsPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
 {
-    addItemsToPlayList(view->selectedIndexes(), name, replace, priorty);
+    addItemsToPlayList(view->selectedIndexes(), name, action, priorty);
 }
 
 void StoredPlaylistsPage::setView(int mode)
@@ -335,7 +334,7 @@ void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, con
     QStringList files=PlaylistsModel::self()->filenames(proxy.mapToSource(indexes));
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files, replace, priorty);
+            emit add(files, replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, priorty);
         } else {
             emit addSongsToPlaylist(name, files);
         }
@@ -400,9 +399,7 @@ void StoredPlaylistsPage::controlActions()
     renamePlaylistAction->setEnabled(canRename);
     removeDuplicatesAction->setEnabled(enableActions && !allSmartPlaylists);
     StdActions::self()->removeAction->setEnabled(enableActions && !allSmartPlaylists);
-    StdActions::self()->replacePlayQueueAction->setEnabled(enableActions);
-    StdActions::self()->addToPlayQueueAction->setEnabled(enableActions);
-    StdActions::self()->addWithPriorityAction->setEnabled(enableActions);
+    StdActions::self()->enableAddToPlayQueue(enableActions);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(enableActions);
     #ifdef ENABLE_DEVICES_SUPPORT
     StdActions::self()->copyToDeviceAction->setEnabled(enableActions && !allSmartPlaylists);
@@ -442,7 +439,7 @@ void StoredPlaylistsPage::updateToPlayQueue(const QModelIndex &idx, bool replace
 {
     QStringList files=PlaylistsModel::self()->filenames(proxy.mapToSource(QModelIndexList() << idx, false));
     if (!files.isEmpty()) {
-        emit add(files, replace, 0);
+        emit add(files, replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0);
     }
 }
 

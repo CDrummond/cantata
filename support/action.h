@@ -31,6 +31,8 @@ class Action : public KAction {
 public:
     static void initIcon(QAction *act);
     static void updateToolTip(QAction *act);
+    static QString settingsText(QAction *act);
+    static const char * constTtForSettings;
 
     explicit Action(QObject *parent);
     Action(const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
@@ -60,6 +62,8 @@ public:
 
     static void initIcon(QAction *act);
     static void updateToolTip(QAction *act);
+    static QString settingsText(QAction *act);
+    static const char * constTtForSettings;
 
     explicit Action(QObject *parent);
     Action(const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);

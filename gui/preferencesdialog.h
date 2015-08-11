@@ -48,6 +48,7 @@ class QStringList;
 class ProxySettings;
 #endif
 class ScrobblingSettings;
+class CustomActionsSettings;
 
 class PreferencesDialog : public ConfigDialog
 {
@@ -92,6 +93,7 @@ private:
     AudioCdSettings *audiocd;
     #endif
     ScrobblingSettings *scrobbling;
+    CustomActionsSettings *custom;
 };
 
 #endif

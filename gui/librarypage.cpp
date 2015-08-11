@@ -27,6 +27,7 @@
 #include "covers.h"
 #include "settings.h"
 #include "stdactions.h"
+#include "customactions.h"
 #include "support/utils.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
@@ -97,6 +98,7 @@ LibraryPage::LibraryPage(QWidget *p)
     init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu/* << groupCombo*/);
 //    connect(groupCombo, SIGNAL(activated(int)), SLOT(groupByChanged()));
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
+    view->addAction(CustomActions::self());
     #ifdef TAGLIB_FOUND
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(StdActions::self()->copyToDeviceAction);

@@ -48,6 +48,7 @@
 #include "folderpage.h"
 #include "streams/streamdialog.h"
 #include "searchpage.h"
+#include "customactions.h"
 #include "support/gtkstyle.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devices/filejob.h"
@@ -903,6 +904,7 @@ MainWindow::MainWindow(QWidget *parent)
     dockMenu=new DockMenu(this);
     #endif
     updateActionToolTips();
+    CustomActions::self()->setMainWindow(this);
 }
 
 MainWindow::~MainWindow()
@@ -960,6 +962,11 @@ MainWindow::~MainWindow()
     #endif
     ThreadCleaner::self()->stopAll();
     Configuration(playQueuePage->metaObject()->className()).set(ItemView::constSearchActiveKey, playQueueSearchWidget->isActive());
+}
+
+QList<Song> MainWindow::selectedSongs() const
+{
+    return currentPage ? currentPage->selectedSongs() : QList<Song>();
 }
 
 void MainWindow::addMenuAction(QMenu *menu, QAction *action)

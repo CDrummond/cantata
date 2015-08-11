@@ -29,6 +29,7 @@
 #include "support/localize.h"
 #include "widgets/icons.h"
 #include "stdactions.h"
+#include "customactions.h"
 #include "support/actioncollection.h"
 #include "support/configuration.h"
 #include "widgets/tableview.h"
@@ -102,6 +103,7 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu);
 
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
+    view->addAction(CustomActions::self());
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(StdActions::self()->copyToDeviceAction);
     #endif

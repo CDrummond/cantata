@@ -7,6 +7,7 @@ set(OXYGEN_ICONS
 32x32/actions/document-open.png
 32x32/actions/document-new.png
 32x32/actions/folder-sync.png
+32x32/actions/fork.png
 32x32/actions/view-refresh.png
 32x32/actions/document-edit.png
 32x32/actions/list-remove.png
@@ -69,6 +70,7 @@ set(OXYGEN_ICONS
 22x22/actions/document-open.png
 22x22/actions/document-new.png
 22x22/actions/folder-sync.png
+22x22/actions/fork.png
 22x22/actions/view-refresh.png
 22x22/actions/document-edit.png
 22x22/actions/list-remove.png
@@ -122,6 +124,7 @@ set(OXYGEN_ICONS
 16x16/actions/document-open.png
 16x16/actions/document-new.png
 16x16/actions/folder-sync.png
+16x16/actions/fork.png
 16x16/actions/view-refresh.png
 16x16/actions/document-edit.png
 16x16/actions/list-remove.png
@@ -168,6 +171,7 @@ set(OXYGEN_ICONS
 16x16/apps/system-file-manager.png
 16x16/apps/preferences-desktop-keyboard.png
 48x48/actions/view-fullscreen.png
+48x48/actions/fork.png
 48x48/status/media-playlist-shuffle.png
 48x48/status/dialog-error.png
 48x48/status/dialog-warning.png

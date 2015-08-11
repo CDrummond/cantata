@@ -31,6 +31,7 @@
 #include "models/mpdlibrarymodel.h"
 #include "widgets/menubutton.h"
 #include "stdactions.h"
+#include "customactions.h"
 #include <QDesktopServices>
 #include <QUrl>
 
@@ -56,6 +57,7 @@ FolderPage::FolderPage(QWidget *p)
     init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu);
 
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
+    view->addAction(CustomActions::self());
     #ifdef TAGLIB_FOUND
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(StdActions::self()->copyToDeviceAction);

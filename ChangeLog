@@ -1,6 +1,6 @@
 2.0.0
 -----
- 1. Use SQLite database to cache MPD libtrary.
+ 1. Use SQLite database to cache MPD library.
  2. Combine Artists and Albums tabs into a single Library tab. Provide option
     to group library by; Genre, Artist, or Album
  3. When sorting artists and albums, if there is no sort tag then remove any
@@ -65,6 +65,7 @@
 46. Add option to control cue file handling.
 47. New options to add songs to play queue - 'add and play', 'append and play',
     and 'insert after current'
+48. Custom actions.
 
 1.5.2
 -----

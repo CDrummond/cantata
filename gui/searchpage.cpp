@@ -26,6 +26,7 @@
 #include "support/localize.h"
 #include "settings.h"
 #include "stdactions.h"
+#include "customactions.h"
 #include "support/utils.h"
 #include "support/icon.h"
 #include "plurals.h"
@@ -76,6 +77,7 @@ SearchPage::SearchPage(QWidget *p)
     init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu << statsLabel);
 
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
+    view->addAction(CustomActions::self());
     #ifdef TAGLIB_FOUND
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(StdActions::self()->copyToDeviceAction);

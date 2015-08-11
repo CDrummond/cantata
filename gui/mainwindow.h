@@ -116,6 +116,7 @@ public:
     ~MainWindow();
 
     int mpdVolume() const { return volumeSlider->value(); }
+    QList<Song> selectedSongs() const;
 
 protected:
     void keyPressEvent(QKeyEvent *event);

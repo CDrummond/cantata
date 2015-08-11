@@ -33,6 +33,7 @@
 #endif
 #include "context/contextsettings.h"
 #include "cachesettings.h"
+#include "customactionssettings.h"
 #include "support/localize.h"
 #include "mpd-interface/mpdconnection.h"
 #ifdef ENABLE_PROXY_CONFIG
@@ -62,19 +63,21 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     : ConfigDialog(parent, "PreferencesDialog")
 {
     iCount++;
-    server = new ServerSettings(0);
-    playback = new PlaybackSettings(0);
-    files = new FileSettings(0);
-    interface = new InterfaceSettings(0);
-    context = new ContextSettings(0);
-    cache = new CacheSettings(0);
-    scrobbling = new ScrobblingSettings(0);
+    server = new ServerSettings(this);
+    playback = new PlaybackSettings(this);
+    files = new FileSettings(this);
+    interface = new InterfaceSettings(this);
+    context = new ContextSettings(this);
+    cache = new CacheSettings(this);
+    scrobbling = new ScrobblingSettings(this);
+    custom = new CustomActionsSettings(this);
     server->load();
     playback->load();
     files->load();
     interface->load();
     context->load();
     scrobbling->load();
+    custom->load();
     addPage(QLatin1String("collection"), server, i18n("Collection"), Icons::self()->audioFileIcon, i18n("Collection Settings"));
     addPage(QLatin1String("playback"), playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
     addPage(QLatin1String("files"), files, i18n("Downloaded Files"), Icon("go-down"), i18n("Downloaded Files Settings"));
@@ -111,6 +114,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     shortcuts->load();
     #endif
     addPage(QLatin1String("cache"), cache, i18n("Cache"), Icons::self()->folderIcon, i18n("Cached Items"));
+    Icon customIcon("fork");
+    if (customIcon.isNull()) {
+        customIcon=Icon("gtk-execute");
+    }
+    addPage(QLatin1String("custom"), custom, i18n("Custom Actions"), customIcon, i18n("Custom Actions"));
     #ifdef Q_OS_MAC
     setCaption(i18n("Cantata Preferences"));
     #else
@@ -163,6 +171,7 @@ void PreferencesDialog::writeSettings()
     #endif
     context->save();
     scrobbling->save();
+    custom->save();
     Settings::self()->save();
     emit settingsSaved();
 }

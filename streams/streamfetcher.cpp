@@ -206,7 +206,7 @@ void StreamFetcher::doNext()
                 report=report.mid(StreamsModel::constPrefix.length());
             }
         }
-        emit status(i18n("Fetching %1", report));
+        emit status(i18n("Loading %1", report));
         if (!currentName.isEmpty()) {
             current=current.left(current.length()-(currentName.length()+1));
         }

@@ -151,7 +151,7 @@ PlayQueueApi::PlayQueueApi(QObject *p)
     : ApiHandler(p)
     , fetcher(0)
 {
-    connect(this, SIGNAL(add(QStringList,bool,quint8)), MPDConnection::self(), SLOT(add(QStringList,bool,quint8)));
+    connect(this, SIGNAL(add(QStringList,int,quint8)), MPDConnection::self(), SLOT(add(QStringList,int,quint8)));
     connect(this, SIGNAL(loadPlaylist(QString,bool)), MPDConnection::self(), SLOT(loadPlaylist(QString,bool)));
     connect(this, SIGNAL(playListInfo()), MPDConnection::self(), SLOT(playListInfo()));
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
@@ -208,7 +208,7 @@ HttpRequestHandler::HandleStatus PlayQueueApi::handle(HttpRequest *request, Http
             setResponse(response, !files.isEmpty());
         } else {
             if (!files.isEmpty()) {
-                emit add(files, play, 0);
+                emit add(files, play ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0);
             }
             setResponse(response, !files.isEmpty());
         }

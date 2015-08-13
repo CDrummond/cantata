@@ -40,7 +40,7 @@ public:
     HandleStatus handle(HttpRequest *request, HttpResponse *response);
 
 Q_SIGNALS:
-    void add(const QStringList &files, bool replace, quint8 priority);
+    void add(const QStringList &files, int action, quint8 priority);
     void loadPlaylist(const QString &playlist, bool replace);
     void playListInfo();
     void clear();

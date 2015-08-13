@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2011-2014 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2011-2015 Craig Drummond <craig.p.drummond@gmail.com>
  *
  * This file contains code from QMPDClient:
  * Copyright (C) 2005-2008 Håvard Tautra Knutsen <havtknut@tihlde.org>

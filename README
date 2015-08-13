@@ -69,12 +69,6 @@ views and tooltips, and also to help with copying songs to/from devices.
 This cache is updated only when MPD indicates that its version of the collection
 is different to Cantata's.
 
-By default, Cantata will use the "listallinfo" command to retrieve the music
-collection. However, it has been noted that MPD 0.18 requires more memory for
-the collection details (due to MPD now reading more information), this may
-cause the "listallinfo" command to fail. If it does, Cantata (as of v1.3.0)
-will fallback to recursively calling "lsinfo" for each MPD folder.
-
 
 2. Dependencies
 ===============
@@ -498,7 +492,6 @@ volumeStep=2
 undoSteps=20
 mpdPoll=true
 mpdListSize=5000
-alwaysUseLsInfo=false
 menu=3
 stopHttpStreamOnPause=true
 cacheScaledCovers=true

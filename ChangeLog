@@ -14,58 +14,55 @@
 10. If connected to MPD>=0.19 using address 127.0.0.1 or localhost, then pass
     local files as 'file://' URLS.
 11. Ignore "The" when sorting albums.
-12. In Artists view, place "Various Artists" in alphabetical position - this is
-    consistent with albums view.
-13. Use regular artist icon for "Various Artists"
-14. If MPD does not support 'sticker' command, then inform user that ratings
+12. Use regular artist icon for "Various Artists"
+13. If MPD does not support 'sticker' command, then inform user that ratings
     cannot be stored.
-15. Add option to set MPD top-level path. Only tracks that are under this path
+14. Add option to set MPD top-level path. Only tracks that are under this path
     will be used to populate artist and album listings. This is mainly of use
     when MPD is configured to use a UPnP backend.
-16. Always use use lsinfo, and not listallinfo, to populate library.
-17. Add 'Copy To Device' to playqueue.
-18. Do not reset current song when shuffling albums, or sorting playqueue.
-19. MPD 0.19.2 can handle m3u8, so pass stream URLs of this type straight to
+15. Add 'Copy To Device' to playqueue.
+16. Do not reset current song when shuffling albums, or sorting playqueue.
+17. MPD 0.19.2 can handle m3u8, so pass stream URLs of this type straight to
     MPD.
-20. Re-add hack to force scrollbars in large combo popups and to restrict their
+18. Re-add hack to force scrollbars in large combo popups and to restrict their
     height. This should apply to all Linux Gtk-like styles, not just QGtkStyle.
-21. Use '#' for track number column title in table view.
-22. Allow setting of column alignments in table views.
-23. Add 'setCollection' to Cantata's DBUS interface.
-24. Add 'Collections' and 'Outputs' menus to system tray menu (Linux and
+19. Use '#' for track number column title in table view.
+20. Allow setting of column alignments in table views.
+21. Add 'setCollection' to Cantata's DBUS interface.
+22. Add 'Collections' and 'Outputs' menus to system tray menu (Linux and
     Windows builds only)
-25. Separate title and track number in search model table view.
-26. Show rating in search model table view.
-27. Rename mpd source folder to mpd-interface to help build errors when
+23. Separate title and track number in search model table view.
+24. Show rating in search model table view.
+25. Rename mpd source folder to mpd-interface to help build errors when
     libmpdclient(?) is also installed.
-28. Add option to provide a list of genres which should use composer, and not
+26. Add option to provide a list of genres which should use composer, and not
     album-artist, to group albums.
-29. Fix updating of composer tag.
-30. Fix build with proxy config and Qt5
-31. For Linux builds, if system tray icon is null (becasue QIcon cannot find
+27. Fix updating of composer tag.
+28. Fix build with proxy config and Qt5
+29. For Linux builds, if system tray icon is null (becasue QIcon cannot find
     it) then add icon files manually.
-32. Hide cover, HTTP stream, and top-level folder options under a 'Show All
+30. Hide cover, HTTP stream, and top-level folder options under a 'Show All
     Options' button.
-33. Allow local socket path to start with ~
-34. Ensure consistent order when drag'n'drop from list views as per tree views.
-35. Remove touch friendly setting from builds unless -DENABLE_TOUCH_SUPPORT=ON
+31. Allow local socket path to start with ~
+32. Ensure consistent order when drag'n'drop from list views as per tree views.
+33. Remove touch friendly setting from builds unless -DENABLE_TOUCH_SUPPORT=ON
     is passed to CMake.
-36. Dirble v2 API.
-37. When removing duplicates, take album into account as well as artist and
+34. Dirble v2 API.
+35. When removing duplicates, take album into account as well as artist and
     title.
-38. Resolve TuneIn radio URL's before adding to favourites (if added via TuneIn
+36. Resolve TuneIn radio URL's before adding to favourites (if added via TuneIn
     search).
-39. Use mpd.cantata for DBus service names and not com.googlecode.cantata
-40. Fix OpenBSD build.
-41. Add option to set which prefixes to ignore when sorting.
-42. Add option to disable MPRIS interface.
-43. Default to UDisks2
-44. Show podcast published date on sub-text, and duration in brackets.
-45. Remove AudioCD tracks from plqyqueue when eject CD.
-46. Add option to control cue file handling.
-47. New options to add songs to play queue - 'add and play', 'append and play',
+37. Use mpd.cantata for DBus service names and not com.googlecode.cantata
+38. Fix OpenBSD build.
+39. Add option to set which prefixes to ignore when sorting.
+40. Add option to disable MPRIS interface.
+41. Default to UDisks2
+42. Show podcast published date on sub-text, and duration in brackets.
+43. Remove AudioCD tracks from plqyqueue when eject CD.
+44. Add option to control cue file handling.
+45. New options to add songs to play queue - 'add and play', 'append and play',
     and 'insert after current'
-48. Custom actions.
+46. Custom actions.
 
 1.5.2
 -----

@@ -53,7 +53,7 @@ CustomActionDialog::CustomActionDialog(QWidget *p)
     layout->setMargin(0);
     setButtons(Dialog::Ok|Dialog::Cancel);
     setMainWidget(widget);
-    setMinimumWidth(600);
+    setMinimumWidth(400);
     ensurePolished();
     adjustSize();
 }

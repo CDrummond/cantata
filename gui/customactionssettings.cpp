@@ -42,11 +42,14 @@ CustomActionDialog::CustomActionDialog(QWidget *p)
     QFormLayout *layout=new QFormLayout(widget);
     nameEntry=new LineEdit(widget);
     commandEntry=new LineEdit(widget);
+    nameEntry->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+    commandEntry->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
     layout->addRow(new QLabel(i18n("Name:"), widget), nameEntry);
     layout->addRow(new QLabel(i18n("Command:"), widget), commandEntry);
+    layout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     NoteLabel *note=new NoteLabel(widget);
     note->setText(i18n("In the command line above, %f will be replaced with the file list and %d with the folder list. If neither are supplied, the the list of files will be appended to the command."));
-    layout->addWidget(note);
+    layout->setWidget(2, QFormLayout::SpanningRole, note);
     layout->setMargin(0);
     setButtons(Dialog::Ok|Dialog::Cancel);
     setMainWidget(widget);

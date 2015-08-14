@@ -83,6 +83,7 @@ private Q_SLOTS:
     void cantataStreams(const QStringList &files);
     void cantataStreams(const QList<Song> &songs, bool isUpdate);
     void removedIds(const QSet<qint32> &ids);
+    void ifaceIp(const QString &ip);
 
 Q_SIGNALS:
     void terminateSocket();
@@ -94,6 +95,9 @@ private:
 
     QSet<qint32> streamIds; // Currently playing MPD stream IDs
     QTimer *closeTimer;
+
+    QString currentIfaceIp;
+    QSet<QString> ipAddresses;
     #endif
 };
 

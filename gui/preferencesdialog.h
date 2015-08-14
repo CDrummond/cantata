@@ -37,7 +37,6 @@ class PlaybackSettings;
 class FileSettings;
 class InterfaceSettings;
 class ContextSettings;
-class HttpServerSettings;
 struct MPDConnectionDetails;
 class CacheSettings;
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
@@ -79,9 +78,6 @@ private:
     FileSettings *files;
     InterfaceSettings *interface;
     ContextSettings *context;
-    #ifdef ENABLE_HTTP_SERVER
-    HttpServerSettings *http;
-    #endif
     #ifdef ENABLE_PROXY_CONFIG
     ProxySettings *proxy;
     #endif

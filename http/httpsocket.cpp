@@ -30,7 +30,6 @@
 #include "devices/extractjob.h"
 #endif
 #include <QTcpSocket>
-#include <QNetworkInterface>
 #include <QStringList>
 #include <QTextStream>
 #include <QFile>
@@ -141,18 +140,6 @@ static void writeMimeType(const QString &mimeType, QTcpSocket *socket, qint32 fr
     }
 }
 
-static QHostAddress getAddress(const QNetworkInterface &iface)
-{
-    QList<QNetworkAddressEntry> addresses=iface.addressEntries();
-    foreach (const QNetworkAddressEntry &addr, addresses) {
-        QHostAddress hostAddress=addr.ip();
-        if (QAbstractSocket::IPv4Protocol==hostAddress.protocol()) {
-            return hostAddress;
-        }
-    }
-    return QHostAddress();
-}
-
 static int getSep(const QByteArray &a, int pos)
 {
     for (int i=pos+1; i<a.length(); ++i) {
@@ -219,48 +206,11 @@ HttpSocket::HttpSocket(const QString &iface, quint16 port)
     , cfgInterface(iface)
     , terminated(false)
 {
-    // Get network address...
-    QHostAddress a;
-    if (!iface.isEmpty()) {
-        // Try rquested interface...
-        QNetworkInterface netIface=QNetworkInterface::interfaceFromName(iface);
-        if (netIface.isValid()) {
-            a=getAddress(netIface);
-        }
+    if (!openPort(port)) {
+        openPort(0);
     }
 
-    if (a.isNull()) {
-        // Hmm... try first active interface...
-        QNetworkInterface loIface;
-        QList<QNetworkInterface> ifaces=QNetworkInterface::allInterfaces();
-        foreach (const QNetworkInterface &iface, ifaces) {
-            if (iface.flags()&QNetworkInterface::IsUp) {
-                if (QLatin1String("lo")==iface.name()) {
-                    loIface=iface;
-                } else {
-                    a=getAddress(iface);
-                    if (!a.isNull()) {
-                        break;
-                    }
-                }
-            }
-        }
-        if (a.isNull() && !loIface.isValid()) {
-            // Get address of 'loopback' interface...
-            a=getAddress(loIface);
-        }
-    }
-
-    if (!openPort(a, port)) {
-        openPort(a, 0);
-    }
-
-    if (isListening() && ifaceAddress.isEmpty()) {
-        ifaceAddress=QLatin1String("127.0.0.1");
-    }
-    setUrlAddress();
-
-    DBUG << isListening() << urlAddr;
+    DBUG << isListening();
 
     connect(MPDConnection::self(), SIGNAL(socketAddress(QString)), this, SLOT(mpdAddress(QString)));
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QList<Song>,bool)), this, SLOT(cantataStreams(QList<Song>,bool)));
@@ -269,26 +219,13 @@ HttpSocket::HttpSocket(const QString &iface, quint16 port)
     connect(this, SIGNAL(newConnection()), SLOT(handleNewConnection()));
 }
 
-bool HttpSocket::openPort(const QHostAddress &a, quint16 p)
+bool HttpSocket::openPort(quint16 p)
 {
-    if (!a.isNull() && listen(a, p)) {
-        ifaceAddress=a.toString();
-        return true;
-    }
-    // Listen probably failed due to proxy, so unset and try again!
     setProxy(QNetworkProxy::NoProxy);
-    if (!a.isNull() && listen(a, p)) {
-        ifaceAddress=a.toString();
-        return true;
-    }
-
     if (listen(QHostAddress::Any, p)) {
-        ifaceAddress=serverAddress().toString();
         return true;
     }
-
     if (listen(QHostAddress::LocalHost, p)) {
-        ifaceAddress=QLatin1String("127.0.0.1");
         return true;
     }
 
@@ -337,6 +274,7 @@ void HttpSocket::readClient()
             }
 
             QString peer=socket->peerAddress().toString();
+            QString ifaceAddress=serverAddress().toString();
             bool hostOk=peer==ifaceAddress || peer==mpdAddr || peer==QLatin1String("127.0.0.1");
 
             DBUG << "peer:" << peer << "mpd:" << mpdAddr << "iface:" << ifaceAddress << "ok:" << hostOk;
@@ -568,17 +506,4 @@ bool HttpSocket::write(QTcpSocket *socket, char *buffer, qint32 bytesRead, bool 
         return false;
     }
     return true;
-}
-
-void HttpSocket::setUrlAddress()
-{
-    if (ifaceAddress.isEmpty()) {
-        ifaceAddress=QString();
-    } else {
-        QUrl url;
-        url.setScheme("http");
-        url.setHost(ifaceAddress);
-        url.setPort(serverPort());
-        urlAddr=url.toString();
-    }
 }

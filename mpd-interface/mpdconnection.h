@@ -382,6 +382,8 @@ Q_SIGNALS:
     void rating(const QString &file, quint8 val);
     void stickerDbChanged();
 
+    void ifaceIp(const QString &addr);
+
 private Q_SLOTS:
     void idleDataReady();
     void onSocketStateChanged(QAbstractSocket::SocketState socketState);
@@ -421,6 +423,7 @@ private:
     void getStickerSupport();
     void playFirstTrack(bool emitErrors);
     void seek(bool fwd);
+    void determineIfaceIp();
 
 private:
     Thread *thread;

@@ -504,9 +504,8 @@ elseif (NOT ENABLE_UBUNTU)
 endif (WIN32)
 
 if (ENABLE_HTTP_SERVER)
-    set(CANTATA_SRCS ${CANTATA_SRCS} http/httpserversettings.cpp http/httpsocket.cpp)
+    set(CANTATA_SRCS ${CANTATA_SRCS} http/httpsocket.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} http/httpserver.h http/httpsocket.h)
-    set(CANTATA_UIS ${CANTATA_UIS} http/httpserversettings.ui)
 endif (ENABLE_HTTP_SERVER)
 
 if (ENABLE_MODEL_TEST AND NOT ENABLE_KDE AND NOT ENABLE_QT5)

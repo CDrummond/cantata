@@ -29,6 +29,7 @@
 #include "gui/settings.h"
 #include "support/thread.h"
 #include "support/globalstatic.h"
+#include "mpd-interface/mpdconnection.h"
 #include <QFile>
 #include <QUrl>
 #include <QTimer>
@@ -70,6 +71,7 @@ HttpServer::HttpServer()
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QList<Song>,bool)), this, SLOT(cantataStreams(QList<Song>,bool)));
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QStringList)), this, SLOT(cantataStreams(QStringList)));
     connect(MPDConnection::self(), SIGNAL(removedIds(QSet<qint32>)), this, SLOT(removedIds(QSet<qint32>)));
+    connect(MPDConnection::self(), SIGNAL(ifaceIp(QString)), this, SLOT(ifaceIp(QString)));
 }
 
 bool HttpServer::start()
@@ -128,14 +130,29 @@ void HttpServer::readConfig()
     }
 }
 
+static inline QString serverUrl(const QString &ip, quint16 port)
+{
+    return QLatin1String("http://")+ip+QLatin1Char(':')+QString::number(port);
+}
+
 QString HttpServer::address() const
 {
-    return socket ? socket->urlAddress() : QLatin1String("http://127.0.0.1:*");
+    return socket ? serverUrl(currentIfaceIp, socket->serverPort()) : QLatin1String("http://127.0.0.1:*");
 }
 
 bool HttpServer::isOurs(const QString &url) const
 {
-    return 0!=socket ? url.startsWith(address()+"/") : false;
+    if (0==socket || !url.startsWith(QLatin1String("http://"))) {
+        return false;
+    }
+
+    foreach (const QString &ip, ipAddresses) {
+        if (url.startsWith(serverUrl(ip, socket->serverPort()))) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 QByteArray HttpServer::encodeUrl(const Song &s)
@@ -152,7 +169,7 @@ QByteArray HttpServer::encodeUrl(const Song &s)
     QUrlQuery query;
     #endif
     url.setScheme("http");
-    url.setHost(socket->address());
+    url.setHost(currentIfaceIp);
     url.setPort(socket->serverPort());
     url.setPath(s.file);
     if (!s.album.isEmpty()) {
@@ -346,6 +363,15 @@ void HttpServer::removedIds(const QSet<qint32> &ids)
     if (streamIds.isEmpty()) {
         startCloseTimer();
     }
+}
+
+void HttpServer::ifaceIp(const QString &ip)
+{
+    if (ip.isEmpty()) {
+        return;
+    }
+    currentIfaceIp=ip;
+    ipAddresses.insert(ip);
 }
 
 #endif

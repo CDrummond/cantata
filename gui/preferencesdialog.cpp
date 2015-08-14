@@ -28,9 +28,6 @@
 #include "serversettings.h"
 #include "playbacksettings.h"
 #include "filesettings.h"
-#ifdef ENABLE_HTTP_SERVER
-#include "http/httpserversettings.h"
-#endif
 #include "context/contextsettings.h"
 #include "cachesettings.h"
 #include "customactionssettings.h"
@@ -84,20 +81,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     addPage(QLatin1String("interface"), interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
     addPage(QLatin1String("info"), context, i18n("Info"), Icons::self()->contextIcon, i18n("Info View Settings"));
     addPage(QLatin1String("scrobbling"), scrobbling, i18n("Scrobbling"), Icons::self()->lastFmIcon, i18n("Scrobbling Settings"));
-    #ifdef ENABLE_HTTP_SERVER
-    http = new HttpServerSettings(0);
-    if (http->haveMultipleInterfaces()) {
-        http->load();
-        Icon icon("network-server");
-        if (icon.isNull()) {
-            icon=Icons::self()->streamIcon;
-        }
-        addPage(QLatin1String("http"), http, i18n("HTTP Server"), icon, i18n("HTTP Server Settings"));
-    } else {
-        http->deleteLater();
-        http=0;
-    }
-    #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd = new AudioCdSettings(0);
     audiocd->load();
@@ -155,11 +138,6 @@ void PreferencesDialog::writeSettings()
     playback->save();
     files->save();
     interface->save();
-    #ifdef ENABLE_HTTP_SERVER
-    if (http) {
-        http->save();
-    }
-    #endif
     #ifndef ENABLE_KDE_SUPPORT
     #ifdef ENABLE_PROXY_CONFIG
     proxy->save();

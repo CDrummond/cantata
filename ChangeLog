@@ -63,6 +63,8 @@
 45. New options to add songs to play queue - 'add and play', 'append and play',
     and 'insert after current'
 46. Custom actions.
+47. Set HTTP server to listen on all addresses, but use IP address of socket
+    connected to MPD for HTTP URLs.
 
 1.5.2
 -----

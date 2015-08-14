@@ -41,16 +41,15 @@ public:
     HttpSocket(const QString &iface, quint16 port);
     virtual ~HttpSocket() { }
 
-    QString address() const { return ifaceAddress; }
     QString configuredInterface() { return cfgInterface; }
-    QString urlAddress() const { return urlAddr; }
+    quint16 boundPort();
 
 public Q_SLOTS:
     void terminate();
     void mpdAddress(const QString &a);
 
 private:
-    bool openPort(const QHostAddress &a, quint16 p);
+    bool openPort(quint16 p);
     bool isCantataStream(const QString &file) const;
     void sendErrorResponse(QTcpSocket *socket, int code);
 
@@ -70,8 +69,6 @@ private:
     QSet<QString> newlyAddedFiles; // Holds cantata strema filenames as added to MPD via "add"
     QMap<qint32, QString> streamIds; // Maps MPD playqueue song ID to fileName
     QString cfgInterface;
-    QString ifaceAddress;
-    QString urlAddr;
     QString mpdAddr;
     bool terminated;
 };

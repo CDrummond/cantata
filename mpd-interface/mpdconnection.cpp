@@ -45,6 +45,7 @@
 #include <QDateTime>
 #include <QPropertyAnimation>
 #include <QCoreApplication>
+#include <QUdpSocket>
 #include "support/thread.h"
 #include "cuefile.h"
 #if defined Q_OS_LINUX && defined QT_QTDBUS_FOUND
@@ -565,6 +566,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
             getUrlHandlers();
             getTagTypes();
             getStickerSupport();
+            determineIfaceIp();
             emit stateChanged(true);
             break;
         default:
@@ -2167,6 +2169,24 @@ void MPDConnection::clearError()
         }
     }
     #endif
+}
+
+void MPDConnection::determineIfaceIp()
+{
+    static const QLatin1String ip4Local("127.0.0.1");
+    if (!details.isLocal() && !details.hostname.isEmpty() && ip4Local!=details.hostname && QLatin1String("localhost")!=details.hostname) {
+        QUdpSocket testSocket(this);
+        testSocket.connectToHost(details.hostname, 1, QIODevice::ReadOnly);
+        QString addr=testSocket.localAddress().toString();
+        testSocket.close();
+        if (!addr.isEmpty()) {
+            DBUG << addr;
+            emit ifaceIp(addr);
+            return;
+        }
+    }
+    DBUG << ip4Local;
+    emit ifaceIp(ip4Local);
 }
 
 MpdSocket::MpdSocket(QObject *parent)

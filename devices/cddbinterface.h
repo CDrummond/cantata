@@ -52,6 +52,7 @@ Q_SIGNALS:
 
 private:
     void readDisc();
+    bool checkConnection();
 
 private:
     Thread *thread;

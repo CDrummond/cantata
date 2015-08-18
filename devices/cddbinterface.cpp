@@ -28,6 +28,7 @@
 #include "support/thread.h"
 #include <QNetworkProxy>
 #include <QSet>
+#include <QUdpSocket>
 #include <cddb/cddb.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -278,6 +279,11 @@ void CddbInterface::lookup(bool full)
         return;
     }
 
+    if (!checkConnection()) {
+        emit error(i18n("Failed to contact CDDB server, please check CDDB and network settings"));
+        return;
+    }
+
     if (cddb.query()<1) {
         if (!isInitial) {
             emit error(i18n("No matches found in CDDB"));
@@ -314,4 +320,13 @@ void CddbInterface::lookup(bool full)
     } else {
         emit matches(m);
     }
+}
+
+bool CddbInterface::checkConnection()
+{
+    QUdpSocket socket(this);
+    socket.connectToHost(Settings::self()->cddbHost(), Settings::self()->cddbPort(), QIODevice::ReadOnly);
+    bool ok=socket.waitForConnected(2000);
+    socket.close();
+    return ok;
 }

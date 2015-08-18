@@ -227,7 +227,6 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(MPDConnection::self(), SIGNAL(rating(QString,quint8)), SLOT(ratingResult(QString,quint8)));
     connect(MPDConnection::self(), SIGNAL(stickerDbChanged()), SLOT(stickerDbChanged()));
     #ifdef ENABLE_DEVICES_SUPPORT //TODO: Problems here with devices support!!!
-    connect(DevicesModel::self(), SIGNAL(invalid(QList<Song>)), SLOT(remove(QList<Song>)));
     connect(DevicesModel::self(), SIGNAL(updatedDetails(QList<Song>)), SLOT(updateDetails(QList<Song>)));
     #endif
     #if defined ENABLE_MODEL_TEST

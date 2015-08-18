@@ -140,6 +140,7 @@ public:
     void enableUndo(bool e);
     bool lastCommandWasUnodOrRedo() const { return Cmd_Other!=lastCommand; }
     qint32 totalTime() const { return time; }
+    void remove(const QList<Song> &rem);
 
 private:
     void saveHistory(const QList<Song> &prevList);
@@ -160,7 +161,6 @@ public Q_SLOTS:
 private Q_SLOTS:
     void sortBy();
     void stopAfterCurrentChanged(bool afterCurrent);
-    void remove(const QList<Song> &rem);
     void updateDetails(const QList<Song> &updated);
     void undo();
     void redo();

@@ -149,7 +149,7 @@ AudioCdDevice::~AudioCdDevice()
     }
 
     if (!tracks.isEmpty()) {
-        emit invalid(tracks);
+        PlayQueueModel::self()->remove(tracks);
     }
 
     #ifdef CDDB_FOUND

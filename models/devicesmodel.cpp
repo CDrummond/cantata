@@ -455,7 +455,6 @@ void DevicesModel::addLocalDevice(const QString &udi)
         connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
         connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
         connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
-        connect(dev, SIGNAL(invalid(QList<Song>)), SIGNAL(invalid(QList<Song>)));
         connect(dev, SIGNAL(updatedDetails(QList<Song>)), SIGNAL(updatedDetails(QList<Song>)));
         connect(dev, SIGNAL(play(QList<Song>)), SLOT(play(QList<Song>)));
         connect(dev, SIGNAL(renamed()), this, SLOT(updateItemMenu()));

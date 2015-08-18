@@ -29,6 +29,7 @@
 #include "mpd-interface/song.h"
 
 class QPixmap;
+class QTimer;
 
 class CurrentCover : public QObject
 {
@@ -52,6 +53,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void coverRetrieved(const Song &s, const QImage &img, const QString &file);
+    void setDefault();
 
 private:
     const QImage & stdImage(bool stream);
@@ -70,6 +72,7 @@ private:
     QImage noCover;
     QString noStreamCoverFileName;
     QString noCoverFileName;
+    QTimer *timer;
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     QStringList iconThemes;
     #endif

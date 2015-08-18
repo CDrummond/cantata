@@ -29,6 +29,7 @@
 #include "support/globalstatic.h"
 #include "online/onlineservice.h"
 #include <QFile>
+#include <QTimer>
 
 #if !defined Q_OS_WIN && !defined Q_OS_MAC
 static void themes(const QString &theme, QStringList &iconThemes)
@@ -118,6 +119,7 @@ CurrentCover::CurrentCover()
     : QObject(0)
     , enabled(false)
     , valid(false)
+    , timer(0)
 {
 }
 
@@ -179,7 +181,10 @@ void CurrentCover::update(const Song &s)
     if (s.albumArtist()!=current.albumArtist() || s.album!=current.album || s.isStream()!=current.isStream() ||
         s.onlineService()!=current.onlineService()) {
         current=s;
-        if ((!s.albumArtist().isEmpty() && !s.album.isEmpty() && !current.isStandardStream()) || OnlineService::showLogoAsCover(s)) {
+        if (timer) {
+            timer->stop();
+        }
+        if (!s.isUnknown() && ((!s.albumArtist().isEmpty() && !s.album.isEmpty() && !current.isStandardStream()) || OnlineService::showLogoAsCover(s))) {
             Covers::Image cImg=Covers::self()->requestImage(s, true);
             valid=!cImg.img.isNull();
             if (valid) {
@@ -199,6 +204,12 @@ void CurrentCover::update(const Song &s)
                 // We need to set the image here, so that TrayItem gets the correct 'noCover' image
                 // ...but if Covers does eventually download a cover, we dont want valid->noCover->valid
                 img=stdImage(false);
+                // Start a timer - in case cover retrieval fails...
+                if (!timer) {
+                    timer=new QTimer(this);
+                    connect(timer, SIGNAL(timeout()), this, SLOT(setDefault()));
+                }
+                timer->start(750);
             }
         } else {
             valid=true;
@@ -213,6 +224,9 @@ void CurrentCover::update(const Song &s)
 void CurrentCover::coverRetrieved(const Song &s, const QImage &newImage, const QString &file)
 {
     if (!s.isArtistImageRequest() && s.albumArtist()==current.albumArtist() && s.album==current.album) {
+        if (timer) {
+            timer->stop();
+        }
         valid=!newImage.isNull();
         if (valid) {
             coverFileName=file;
@@ -225,4 +239,11 @@ void CurrentCover::coverRetrieved(const Song &s, const QImage &newImage, const Q
             emit coverImage(QImage());
         }
     }
+}
+
+void CurrentCover::setDefault()
+{
+    coverFileName=current.isStandardStream() ? noStreamCoverFileName : noCoverFileName;
+    emit coverFile(coverFileName);
+    emit coverImage(QImage());
 }

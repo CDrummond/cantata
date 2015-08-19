@@ -187,7 +187,7 @@ struct Song
     static bool isVariousArtists(const QString &str);
     bool isVariousArtists() const { return isVariousArtists(albumArtist()); }
     bool diffArtist() const;
-    bool isUnknown() const;
+    bool isUnknownAlbum() const;
     bool fixVariousArtists();
     bool revertVariousArtists();
     bool setAlbumArtist();

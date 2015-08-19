@@ -391,9 +391,9 @@ quint16 Song::setKey(int location)
     return key;
 }
 
-bool Song::isUnknown() const
+bool Song::isUnknownAlbum() const
 {
-    return (artist.isEmpty() || artist==unknownStr) && (album.isEmpty() || album==unknownStr) && (title.isEmpty() || title==unknownStr);
+    return (album.isEmpty() || album==unknownStr) && (albumArtist().isEmpty() || albumArtist()==unknownStr);
 }
 
 void Song::clear()

@@ -1681,7 +1681,7 @@ void MainWindow::updateCurrentSong(Song song, bool wasEmpty)
 {
     if (song.isCdda()) {
         emit getStatus();
-        if (song.isUnknown()) {
+        if (song.isUnknownAlbum()) {
             Song pqSong=PlayQueueModel::self()->getSongById(current.id);
             if (!pqSong.isEmpty()) {
                 song=pqSong;

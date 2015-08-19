@@ -184,7 +184,7 @@ void CurrentCover::update(const Song &s)
         if (timer) {
             timer->stop();
         }
-        if (!s.isUnknown() && ((!s.albumArtist().isEmpty() && !s.album.isEmpty() && !current.isStandardStream()) || OnlineService::showLogoAsCover(s))) {
+        if (!s.isUnknownAlbum() && ((!s.albumArtist().isEmpty() && !s.album.isEmpty() && !current.isStandardStream()) || OnlineService::showLogoAsCover(s))) {
             Covers::Image cImg=Covers::self()->requestImage(s, true);
             valid=!cImg.img.isNull();
             if (valid) {

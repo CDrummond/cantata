@@ -1152,7 +1152,7 @@ void Covers::clearScaleCache()
 
 QPixmap * Covers::getScaledCover(const Song &song, int size)
 {
-    if (size<4 || song.isUnknown()) {
+    if (size<4 || song.isUnknownAlbum()) {
         return 0;
     }
 //    DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId << size;
@@ -1244,7 +1244,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
         size*=devicePixelRatio;
     }
     #endif
-    if (!song.isUnknown() || song.isStandardStream()) {
+    if (!song.isUnknownAlbum() || song.isStandardStream()) {
         key=cacheKey(song, size);
         pix=cache.object(key);
 
@@ -1726,7 +1726,7 @@ bool Covers::Image::validFileName() const
 
 Covers::Image Covers::requestImage(const Song &song, bool urgent)
 {
-    if (song.isUnknown()) {
+    if (song.isUnknownAlbum()) {
         return Image();
     }
 

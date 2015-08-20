@@ -96,6 +96,17 @@ static double devicePixelRatio=1.0;
 static const int constRetinaScaleMaxSize=300;
 #endif
 
+#ifdef USE_JPEG_FOR_SCALED_CACHE
+static const QLatin1String constScaledExtension(".jpg");
+static const QLatin1String constScaledPrevExtension(".png");
+static const char * constScaledFormat="JPG";
+#else
+static const QLatin1String constScaledExtension(".png");
+static const QLatin1String constScaledPrevExtension(".jpg");
+static const char * constScaledFormat="PNG";
+#endif
+static bool cacheScaledCovers=true;
+
 static QImage scale(const Song &song, const QImage &img, int size)
 {
     if (song.isArtistImageRequest() || song.isComposerImageRequest()) {
@@ -239,23 +250,20 @@ static inline QString cacheKey(const Song &song, int size)
     return songKey(song)+QString::number(size);
 }
 
-static const QLatin1String constScaledFormat(".jpg");
-static bool cacheScaledCovers=true;
-
 static QString getScaledCoverName(const Song &song, int size, bool createDir)
 {
     if (song.isArtistImageRequest()) {
         QString dir=Utils::cacheDir(Covers::constScaledCoverDir+QString::number(size)+QLatin1Char('/'), createDir);
-        return dir.isEmpty() ? QString() : (dir+Covers::encodeName(song.albumArtist())+constScaledFormat);
+        return dir.isEmpty() ? QString() : (dir+Covers::encodeName(song.albumArtist())+constScaledExtension);
     }
 
     if (song.isComposerImageRequest()) {
         QString dir=Utils::cacheDir(Covers::constScaledCoverDir+QString::number(size)+QLatin1Char('/'), createDir);
-        return dir.isEmpty() ? QString() : (dir+Covers::encodeName(song.composer())+constScaledFormat);
+        return dir.isEmpty() ? QString() : (dir+Covers::encodeName(song.composer())+constScaledExtension);
     }
 
     QString dir=Utils::cacheDir(Covers::constScaledCoverDir+QString::number(size)+QLatin1Char('/')+Covers::encodeName(song.albumArtist()), createDir);
-    return dir.isEmpty() ? QString() : (dir+Covers::encodeName(song.albumId())+constScaledFormat);
+    return dir.isEmpty() ? QString() : (dir+Covers::encodeName(song.albumId())+constScaledExtension);
 }
 
 static void clearScaledCache(const Song &song)
@@ -304,13 +312,13 @@ static QImage loadScaledCover(const Song &song, int size)
     QString fileName=getScaledCoverName(song, size, false);
     if (!fileName.isEmpty()) {
         if (QFile::exists(fileName)) {
-            QImage img(fileName, "JPG");
+            QImage img(fileName, constScaledFormat);
             if (!img.isNull() && (img.width()==size || img.height()==size)) {
                 DBUG_CLASS("Covers") << song.albumArtist() << song.albumId() << size << "scaled cover found" << fileName;
                 return img;
             }
-        } else { // Remove any previous PNG scaled cover...
-            fileName=Utils::changeExtension(fileName, ".png");
+        } else { // Remove any previous PNG/JPEG scaled cover...
+            fileName=Utils::changeExtension(fileName, constScaledPrevExtension);
             if (QFile::exists(fileName)) {
                 QFile::remove(fileName);
             }
@@ -1183,7 +1191,7 @@ QPixmap * Covers::saveScaledCover(const QImage &img, const Song &song, int size)
 
     if (cacheScaledCovers && !isOnlineServiceImage(song)) {
         QString fileName=getScaledCoverName(song, size, true);
-        bool status=img.save(fileName, "JPG");
+        bool status=img.save(fileName, constScaledFormat);
         DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << size << fileName << status;
     }
     QPixmap *pix=new QPixmap(QPixmap::fromImage(img));

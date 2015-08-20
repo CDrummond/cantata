@@ -67,6 +67,7 @@
     connected to MPD for HTTP URLs.
 48. libCDDB can crash if it cannot talk to server, so before querying check
     whether we can connect.
+49. Save scaled covers as PNG, as the quality is much better.
 
 1.5.2
 -----

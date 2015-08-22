@@ -102,7 +102,7 @@ DevicesModel::DevicesModel(QObject *parent)
     , inhibitMenuUpdate(false)
 {
     configureAction = new Action(Icons::self()->configureIcon, i18n("Configure Device"), this);
-    refreshAction = new Action(Icon("view-refresh"), i18n("Refresh Device"), this);
+    refreshAction = new Action(Icons::self()->reloadIcon, i18n("Refresh Device"), this);
     connectAction = new Action(Icons::self()->connectIcon, i18n("Connect Device"), this);
     disconnectAction = new Action(Icons::self()->disconnectIcon, i18n("Disconnect Device"), this);
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND

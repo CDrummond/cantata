@@ -20,13 +20,14 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
-
+#include <QDebug>
 #include "icons.h"
 #include "treeview.h"
 #include "config.h"
 #include "gui/settings.h"
 #include "support/globalstatic.h"
 #include "support/utils.cpp"
+#include "QtAwesome/QtAwesome.h"
 #include <QApplication>
 #include <QPixmap>
 #include <QFont>
@@ -363,6 +364,15 @@ static Icon loadMediaIcon(const QString &name, const QColor &normal, const QColo
 }
 #endif
 
+static QIcon loadAwesomeIcon(int ch, const QColor &std, const QColor &highlight)
+{
+    QVariantMap options;
+    options.insert("color", std);
+    options.insert("color-active", std);
+    options.insert("color-selected", highlight);
+    return QtAwesome::self()->icon(ch, options);
+}
+
 Icons::Icons()
 {
     QColor stdColor=calcIconColor();
@@ -373,7 +383,14 @@ Icons::Icons()
     #else
     menuIcon=createMenuIcon(stdColor);
     #endif
-    streamCategoryIcon=Icon(QLatin1String("oxygen")==Icon::currentTheme().toLower() ? "inode-directory" : "folder-music");
+
+    QString iconTheme=Icon::currentTheme().toLower();
+    #ifdef Q_OS_MAC
+    bool useAwesomeIcons=true;
+    #else
+    bool useAwesomeIcons=GtkStyle::useSymbolicIcons() || QLatin1String("breeze")==iconTheme;
+    #endif
+    streamCategoryIcon=Icon(QLatin1String("oxygen")==iconTheme ? "inode-directory" : "folder-music");
 
     QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"stream.png");
     if (QFile::exists(iconFile)) {
@@ -389,24 +406,11 @@ Icons::Icons()
     playlistIcon=Icon("view-media-playlist");
     folderIcon=Icon("inode-directory");
     dynamicRuleIcon=Icon("media-playlist-shuffle");
-    configureIcon=Icon("configure");
-    connectIcon=Icon("dialog-ok");
-    disconnectIcon=Icon("media-eject");
     speakerIcon=Icon("speaker");
-    editIcon=Icon("document-edit");
-    searchIcon=Icon("edit-find");
-    clearListIcon=Icon("edit-clear-list");
     repeatIcon=createRecolourableIcon("repeat", stdColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor);
     filesIcon=Icon("document-multiple");
     cancelIcon=Icon("dialog-cancel");
-    importIcon=Icon("document-import");
-    if (editIcon.isNull()) {
-        editIcon=Icon("text-editor");
-    }
-    if (importIcon.isNull()) {
-        importIcon=Icon("down");
-    }
     radioStreamIcon=Icon::create("radio", constStdSizes);
     addRadioStreamIcon=Icon::create("addradio", constStdSizes);
     artistIcon.addFile(":artist.svg");
@@ -424,15 +428,6 @@ Icons::Icons()
     if (albumIcon.isNull()) {
         albumIcon=Icon("media-optical-audio");
     }
-    if (configureIcon.isNull()) {
-        configureIcon=Icon("gtk-preferences");
-    }
-    if (connectIcon.isNull()) {
-        connectIcon=Icon("gtk-stock-ok");
-        if (connectIcon.isNull()) {
-            connectIcon=Icon("go-bottom");
-        }
-    }
     if (speakerIcon.isNull()) {
         speakerIcon=Icon("audio-speakers");
         if (speakerIcon.isNull()) {
@@ -448,12 +443,6 @@ Icons::Icons()
             playlistIcon=audioFileIcon;
         }
     }
-    if (editIcon.isNull()) {
-        editIcon=Icon("gtk-edit");
-    }
-    if (clearListIcon.isNull()) {
-        clearListIcon=Icon("gtk-delete");
-    }
     if (filesIcon.isNull()) {
         filesIcon=Icon("empty");
     }
@@ -465,6 +454,63 @@ Icons::Icons()
 
     if (streamCategoryIcon.isNull()) {
         streamCategoryIcon=folderIcon;
+    }
+
+    if (useAwesomeIcons) {
+        replacePlayQueueIcon=loadAwesomeIcon(fa::play, stdColor, stdColor);
+        appendToPlayQueueIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
+
+        centrePlayQueueOnTrackIcon=loadAwesomeIcon(Qt::RightToLeft==QApplication::layoutDirection() ? fa::chevronleft : fa::chevronright, stdColor, stdColor);
+        savePlayQueueIcon=loadAwesomeIcon(fa::save, stdColor, stdColor);
+        clearListIcon=loadAwesomeIcon(fa::remove, stdColor, stdColor);
+        addDynamicIcon=loadAwesomeIcon(fa::plussquare, stdColor, stdColor);
+        editIcon=loadAwesomeIcon(fa::edit, stdColor, stdColor);
+        removeDynamicIcon=loadAwesomeIcon(fa::minussquare, stdColor, stdColor);
+        stopDynamicIcon=loadAwesomeIcon(fa::stop, QColor(220, 0, 0), QColor(220, 0, 0));
+        searchIcon=loadAwesomeIcon(fa::search, stdColor, stdColor);
+        addToFavouritesIcon=loadAwesomeIcon(fa::heart, stdColor, stdColor);
+        reloadIcon=loadAwesomeIcon(fa::refresh, stdColor, stdColor);
+        configureIcon=loadAwesomeIcon(fa::cog, stdColor, stdColor);
+        connectIcon=loadAwesomeIcon(fa::chevrondown, stdColor, stdColor);
+        disconnectIcon=loadAwesomeIcon(fa::eject, stdColor, stdColor);
+        importIcon=loadAwesomeIcon(fa::music, stdColor, stdColor);
+    } else {
+        replacePlayQueueIcon=Icon("media-playback-start");
+        appendToPlayQueueIcon=Icon("list-add");
+        centrePlayQueueOnTrackIcon=Icon(Qt::RightToLeft==QApplication::layoutDirection() ? "go-previous" : "go-next");
+        savePlayQueueIcon=Icon("document-save-as");
+        clearListIcon=Icon("edit-clear-list");
+        if (clearListIcon.isNull()) {
+            clearListIcon=Icon("gtk-delete");
+        }
+        addDynamicIcon=Icon("document-new");
+        editIcon=Icon("document-edit");
+        if (editIcon.isNull()) {
+            editIcon=Icon("text-editor");
+        }
+        if (editIcon.isNull()) {
+            editIcon=Icon("gtk-edit");
+        }        removeDynamicIcon=Icon("list-remove");
+        stopDynamicIcon=Icon("process-stop");
+        searchIcon=Icon("edit-find");
+        //addToFavouritesIcon; SET IN streamsmodel.cpp
+        reloadIcon=Icon("view-refresh");
+        configureIcon=Icon("configure");
+        connectIcon=Icon("dialog-ok");
+        disconnectIcon=Icon("media-eject");
+        if (configureIcon.isNull()) {
+            configureIcon=Icon("gtk-preferences");
+        }
+        if (connectIcon.isNull()) {
+            connectIcon=Icon("gtk-stock-ok");
+            if (connectIcon.isNull()) {
+                connectIcon=Icon("go-bottom");
+            }
+        }
+        importIcon=Icon("document-import");
+        if (importIcon.isNull()) {
+            importIcon=Icon("down");
+        }
     }
 }
 
@@ -494,10 +540,11 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     #ifdef USE_SYSTEM_MENU_ICON
     Q_UNUSED(toolbarText)
     #endif
+    QString iconTheme=Icon::currentTheme().toLower();
     QColor stdColor=calcIconColor();
     #if !defined Q_OS_WIN && !defined ENABLE_UBUNTU
     #ifndef Q_OS_MAC
-    if (GtkStyle::useSymbolicIcons()) {
+    if (GtkStyle::useSymbolicIcons() || QLatin1String("breeze")==iconTheme) {
     #endif
         bool rtl=QApplication::isRightToLeft();
         #ifdef Q_OS_MAC
@@ -535,7 +582,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
             toolbarMenuIcon=createMenuIcon(toolbarText);
         }
         #endif
-        if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
+        if (QLatin1String("gnome")==iconTheme) {
             QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
             infoIcon=loadSidebarIcon("info", col, col);
         }
@@ -546,7 +593,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     }
 
     #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
-    if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
+    if (QLatin1String("gnome")==iconTheme) {
         QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
         contextIcon=loadSidebarIcon("info", col, col);
     } else

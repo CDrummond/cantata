@@ -54,14 +54,14 @@ StdActions::StdActions()
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
-    savePlayQueueAction = ActionCollection::get()->createAction("saveplayqueue", i18n("Save As"), HIDE_MENU_ICON_NAME("document-save-as"));
-    appendToPlayQueueAction = ActionCollection::get()->createAction("appendtoplayqueue", i18n("Append"), "list-add");
+    savePlayQueueAction = ActionCollection::get()->createAction("saveplayqueue", i18n("Save As"), HIDE_MENU_ICON(Icons::self()->savePlayQueueIcon));
+    appendToPlayQueueAction = ActionCollection::get()->createAction("appendtoplayqueue", i18n("Append"), Icons::self()->appendToPlayQueueIcon);
     setToolTip(appendToPlayQueueAction, i18n("Append To Play Queue"));
     appendToPlayQueueAndPlayAction = ActionCollection::get()->createAction("appendtoplayqueueandplay", i18n("Append And Play"));
     addToPlayQueueAndPlayAction = ActionCollection::get()->createAction("addtoplayqueueandplay", i18n("Add And Play"));
     setToolTip(appendToPlayQueueAndPlayAction, i18n("Append To Play Queue And Play"));
     insertAfterCurrentAction = ActionCollection::get()->createAction("insertintoplayqueue", i18n("Insert After Current"));
-    replacePlayQueueAction = ActionCollection::get()->createAction("replaceplayqueue", i18n("Play Now (And Replace Play Queue)"), "media-playback-start");
+    replacePlayQueueAction = ActionCollection::get()->createAction("replaceplayqueue", i18n("Play Now (And Replace Play Queue)"), Icons::self()->replacePlayQueueIcon);
     savePlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_S);
     appendToPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_P);
     replacePlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_R);

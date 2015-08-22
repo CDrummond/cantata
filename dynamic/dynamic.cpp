@@ -165,8 +165,8 @@ Dynamic::Dynamic()
     connect(this, SIGNAL(remoteMessage(QStringList)), MPDConnection::self(), SLOT(sendDynamicMessage(QStringList)));
     connect(MPDConnection::self(), SIGNAL(dynamicResponse(QStringList)), this, SLOT(remoteResponse(QStringList)));
     QTimer::singleShot(500, this, SLOT(checkHelper()));
-    startAction = ActionCollection::get()->createAction("startdynamic", i18n("Start Dynamic Playlist"), "media-playback-start");
-    stopAction = ActionCollection::get()->createAction("stopdynamic", i18n("Stop Dynamic Mode"), "process-stop");
+    startAction = ActionCollection::get()->createAction("startdynamic", i18n("Start Dynamic Playlist"), Icons::self()->replacePlayQueueIcon);
+    stopAction = ActionCollection::get()->createAction("stopdynamic", i18n("Stop Dynamic Mode"), Icons::self()->stopDynamicIcon);
     #if defined ENABLE_MODEL_TEST
     new ModelTest(this, this);
     #endif

@@ -58,17 +58,10 @@ public:
     Icon radioStreamIcon;
     Icon addRadioStreamIcon;
     Icon streamIcon;
-    Icon configureIcon;
-    Icon connectIcon;
-    Icon disconnectIcon;
     Icon speakerIcon;
-    Icon editIcon;
-    Icon searchIcon;
-    Icon clearListIcon;
     Icon menuIcon;
     Icon filesIcon;
     Icon cancelIcon;
-    Icon importIcon;
 
     Icon playqueueIcon;
     Icon libraryIcon;
@@ -90,6 +83,24 @@ public:
     Icon toolbarPauseIcon;
     Icon toolbarNextIcon;
     Icon toolbarStopIcon;
+
+    QIcon replacePlayQueueIcon;
+    QIcon appendToPlayQueueIcon;
+    QIcon centrePlayQueueOnTrackIcon;
+    QIcon savePlayQueueIcon;
+    QIcon clearListIcon;
+    QIcon addDynamicIcon;
+    QIcon editIcon;
+    QIcon removeDynamicIcon;
+    QIcon stopDynamicIcon;
+    QIcon searchIcon;
+    QIcon addToFavouritesIcon;
+    QIcon reloadIcon;
+    QIcon configureIcon;
+    QIcon connectIcon;
+    QIcon disconnectIcon;
+    QIcon importIcon;
+
 };
 
 #endif

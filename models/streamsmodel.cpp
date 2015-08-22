@@ -532,27 +532,13 @@ StreamsModel::StreamsModel(QObject *parent)
     dirble=new DirbleCategoryItem(constDirbleUrl, i18n("Dirble"), root, getIcon("dirble"));
     dirble->configName="dirble";
     root->children.append(dirble);
-    favourites=new FavouritesCategoryItem(constFavouritesUrl, i18n("Favorites"), root, getIcon("favourites"));
+    favourites=new FavouritesCategoryItem(constFavouritesUrl, i18n("Favorites"), root, Icons::self()->addToFavouritesIcon.isNull() ? getIcon("favourites") : Icons::self()->addToFavouritesIcon);
     root->children.append(favourites);
     loadInstalledProviders();
     addBookmarkAction = new Action(Icon("bookmark-new"), i18n("Bookmark Category"), this);
     addToFavouritesAction = new Action(favouritesIcon(), i18n("Add Stream To Favorites"), this);
     configureDiAction = new Action(Icons::self()->configureIcon, i18n("Configure Digitally Imported"), this);
-    reloadAction = new Action(Icon("view-refresh"), i18n("Reload"), this);
-
-    #ifdef UNITY_MENU_HACK
-    // For Unity we try to hide icons from menubar menus. However, search is used in the menubar AND in the streams view. We
-    // need the icon on the streams view. Therefore, if the StdAction has no icon -  we create a new one and forward all signals...
-    if (StdActions::self()->searchAction->icon().isNull()) {
-        searchAction = new Action(Icon("edit-find"), StdActions::self()->searchAction->text(), this);
-        searchAction->setToolTip(StdActions::self()->searchAction->toolTip());
-        connect(searchAction, SIGNAL(triggered()), StdActions::self()->searchAction, SIGNAL(triggered()));
-        connect(ActionCollection::get(), SIGNAL(tooltipUpdated(QAction *)), SLOT(tooltipUpdated(QAction *)));
-    } else
-    #endif
-    {
-        searchAction = StdActions::self()->searchAction;
-    }
+    reloadAction = new Action(Icons::self()->reloadIcon, i18n("Reload"), this);
 
     QSet<QString> hidden=Settings::self()->hiddenStreamCategories().toSet();
     foreach (Item *c, root->children) {
@@ -697,9 +683,6 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             }
             if (cat->canReload()) {
                 actions << reloadAction;
-            }
-            if (tuneIn==item || shoutCast==item || dirble==item || (cat->isTopLevel() && !cat->children.isEmpty())) {
-                actions << searchAction;
             }
             if (cat->canBookmark) {
                 actions << addBookmarkAction;
@@ -1166,18 +1149,6 @@ void StreamsModel::jobFinished()
             emit loaded();
         }
     }
-}
-
-// Required due to icon missing for StdActions::searchAction for Mac/Unity... See note in constructor above.
-void StreamsModel::tooltipUpdated(QAction *act)
-{
-    #ifdef UNITY_MENU_HACK
-    if (act!=searchAction && act==StdActions::self()->searchAction) {
-        searchAction->setToolTip(StdActions::self()->searchAction->toolTip());
-    }
-    #else
-    Q_UNUSED(act)
-    #endif
 }
 
 void StreamsModel::savedFavouriteStream(const QString &url, const QString &name)

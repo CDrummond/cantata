@@ -70,7 +70,7 @@ public:
             Fetched
         };
 
-        CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const Icon &i=Icon(),
+        CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
                      const QString &cn=QString(), const QString &bn=QString(), bool modName=false)
             : Item(u, n, p), state(Initial), isAll(false), isBookmarks(false), supportsBookmarks(false),
               canBookmark(false), addCatToModifiedName(modName), icon(i), cacheName(cn),
@@ -107,7 +107,7 @@ public:
         bool canBookmark : 1; // Can this category be bookmark'ed in top-level parent? can have the cache
         bool addCatToModifiedName : 1; // When adding to playqueue/favourites, should name contian category?
         QList<Item *> children;
-        Icon icon;
+        QIcon icon;
         QString cacheName;
         QString bookmarksName;
         QString configName;
@@ -115,7 +115,7 @@ public:
 
     struct FavouritesCategoryItem : public CategoryItem
     {
-        FavouritesCategoryItem(const QString &u, const QString &n, CategoryItem *p, const Icon &i)
+        FavouritesCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i)
             : CategoryItem(u, n, p, i), importedOld(false) { }
         QList<Item *> loadXml(QIODevice *dev);
         bool isFavourites() const { return true; }
@@ -125,7 +125,7 @@ public:
 
     struct IceCastCategoryItem : public CategoryItem
     {
-        IceCastCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const Icon &i=Icon(),
+        IceCastCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
                             const QString &cn=QString(), const QString &bn=QString())
             : CategoryItem(u, n, p, i, cn, bn) { }
         void addHeaders(QNetworkRequest &req);
@@ -133,7 +133,7 @@ public:
 
     struct ShoutCastCategoryItem : public CategoryItem
     {
-        ShoutCastCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const Icon &i=Icon(),
+        ShoutCastCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
                               const QString &cn=QString(), const QString &bn=QString())
             : CategoryItem(u, n, p, i, cn, bn) { }
         void addHeaders(QNetworkRequest &req);
@@ -142,14 +142,14 @@ public:
 
     struct DirbleCategoryItem : public CategoryItem
     {
-        DirbleCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const Icon &i=Icon(),
+        DirbleCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
                               const QString &cn=QString(), const QString &bn=QString())
             : CategoryItem(u, n, p, i, cn, bn) { }
     };
 
     struct ListenLiveCategoryItem : public CategoryItem
     {
-        ListenLiveCategoryItem(const QString &u, const QString &n, CategoryItem *p, const Icon &i, const QString &cn)
+        ListenLiveCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
             : CategoryItem(u, n, p, i, cn) { }
         bool isListenLive() const { return true; }
         bool isBuiltIn() const { return false; }
@@ -157,7 +157,7 @@ public:
 
     struct DiCategoryItem : public CategoryItem
     {
-        DiCategoryItem(const QString &u, const QString &n, CategoryItem *p, const Icon &i, const QString &cn)
+        DiCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
             : CategoryItem(u, n, p, i, cn, QString(), true) { }
         void addHeaders(QNetworkRequest &req);
         bool isDi() const { return true; }
@@ -166,7 +166,7 @@ public:
 
     struct SomaCategoryItem : public CategoryItem
     {
-        SomaCategoryItem(const QString &u, const QString &n, CategoryItem *p, const Icon &i, const QString &cn, bool mod)
+        SomaCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn, bool mod)
             : CategoryItem(u, n, p, i, cn, QString(), mod) { }
         bool isSoma() const { return true; }
         bool isBuiltIn() const { return false; }
@@ -174,7 +174,7 @@ public:
 
     struct XmlCategoryItem : public CategoryItem
     {
-        XmlCategoryItem(const QString &n, CategoryItem *p, const Icon &i, const QString &cn)
+        XmlCategoryItem(const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
             : CategoryItem(QLatin1String("-"), n, p, i, cn, QString(), true) { }
         QList<Item *> loadCache();
         bool canReload() const { return false; }
@@ -184,10 +184,10 @@ public:
 
     struct Category
     {
-        Category(const QString &n, const Icon &i, const QString &k, bool b, bool h, bool c)
+        Category(const QString &n, const QIcon &i, const QString &k, bool b, bool h, bool c)
             : name(n), icon(i), key(k), builtin(b), hidden(h), configurable(c) { }
         QString name;
-        Icon icon;
+        QIcon icon;
         QString key;
         bool builtin;
         bool hidden;
@@ -248,7 +248,7 @@ public:
     void removeAllBookmarks(const QModelIndex &index);
     
     QModelIndex favouritesIndex() const;
-    const Icon & favouritesIcon() const { return favourites->icon; }
+    const QIcon & favouritesIcon() const { return favourites->icon; }
     bool isTuneIn(const CategoryItem *cat) const { return tuneIn==cat; }
     bool isShoutCast(const CategoryItem *cat) const { return shoutCast==cat; }
     bool isDirble(const CategoryItem *cat) const { return dirble==cat; }
@@ -262,7 +262,6 @@ public:
     Action *addToFavouritesAct() { return addToFavouritesAction; }
     Action *configureDiAct() { return configureDiAction; }
     Action *reloadAct() { return reloadAction; }
-    Action *searchAct() { return searchAction; }
 
     void save();
     QList<Category> getCategories() const;
@@ -303,7 +302,6 @@ public:
 
 private Q_SLOTS:
     void jobFinished();
-    void tooltipUpdated(QAction *act);
 
     // Responses from MPD...
     void savedFavouriteStream(const QString &url, const QString &name);
@@ -329,7 +327,6 @@ private:
     Action *addToFavouritesAction;
     Action *configureDiAction;
     Action *reloadAction;
-    Action *searchAction;
     QList<Item *> hiddenCategories;
     Icon icn;
 };

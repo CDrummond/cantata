@@ -36,9 +36,9 @@
 DynamicPage::DynamicPage(QWidget *p)
     : SinglePageWidget(p)
 {
-    addAction = new Action(Icon("document-new"), i18n("Add"), this);
+    addAction = new Action(Icons::self()->addDynamicIcon, i18n("Add"), this);
     editAction = new Action(Icons::self()->editIcon, i18n("Edit"), this);
-    removeAction = new Action(Icon("list-remove"), i18n("Remove"), this);
+    removeAction = new Action(Icons::self()->removeDynamicIcon, i18n("Remove"), this);
     toggleAction = new Action(this);
 
     ToolButton *addBtn=new ToolButton(this);

@@ -80,7 +80,7 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
     QList<QWidget *> left=leftXtra;
     QList<QWidget *> right=rightXtra;
 
-    if (!right.isEmpty() && (flags&(AppendToPlayQueue||ReplacePlayQueue))) {
+    if (!right.isEmpty() && (flags&(AppendToPlayQueue|ReplacePlayQueue))) {
         right << new SpacerWidget(this);
     }
 

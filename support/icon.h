@@ -65,7 +65,8 @@ public:
         Close,
         Clear
     };
-    static Icon std(Std i);
+    static QIcon std(Std i);
+    static void setStd(Std i, const QIcon &icon);
 };
 
 #endif

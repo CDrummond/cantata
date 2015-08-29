@@ -127,25 +127,43 @@ Icon Icon::std(Std i)
     return icon;
 }
 #else
-Icon Icon::std(Std i)
+static QIcon closeIcon;
+static QIcon clearIcon;
+
+QIcon Icon::std(Std i)
 {
-    Icon icon;
     switch (i) {
     case Close:
-        icon=Icon("dialog-close");
-        if (icon.isNull()) {
-            icon=Icon("window-close");
+        if (closeIcon.isNull()) {
+            closeIcon=Icon("dialog-close");
+            if (closeIcon.isNull()) {
+                closeIcon=Icon("window-close");
+            }
         }
-    break;
+        return closeIcon;
     case Clear:
-        icon=Icon(qApp->isRightToLeft() ? "edit-clear-locationbar-ltr" : "edit-clear-locationbar-rtl");
-        if (icon.isNull()) {
-            icon=Icon("edit-clear");
+        if (clearIcon.isNull()) {
+            clearIcon=Icon(qApp->isRightToLeft() ? "edit-clear-locationbar-ltr" : "edit-clear-locationbar-rtl");
+            if (clearIcon.isNull()) {
+                clearIcon=Icon("edit-clear");
+            }
         }
-        break;
+        return clearIcon;
     default: break;
     }
-    return icon;
+    return QIcon();
+}
+
+void Icon::setStd(Std i, const QIcon &icon)
+{
+    switch (i) {
+    case Close:
+        closeIcon=icon;
+        break;
+    case Clear:
+        clearIcon=icon;
+    default: break;
+    }
 }
 
 #endif

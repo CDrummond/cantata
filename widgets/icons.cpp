@@ -476,6 +476,9 @@ Icons::Icons()
         connectIcon=loadAwesomeIcon(fa::chevrondown, stdColor, stdColor);
         disconnectIcon=loadAwesomeIcon(fa::eject, stdColor, stdColor);
         importIcon=loadAwesomeIcon(fa::music, stdColor, stdColor);
+        removeIcon=loadAwesomeIcon(fa::remove, red, red);
+        addIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
+        Icon::setStd(Icon::Close, loadAwesomeIcon(fa::close, red, red));
     } else {
         replacePlayQueueIcon=Icon("media-playback-start");
         appendToPlayQueueIcon=Icon("list-add");
@@ -513,6 +516,8 @@ Icons::Icons()
         if (importIcon.isNull()) {
             importIcon=Icon("down");
         }
+        removeIcon=Icon("list-remove");
+        addIcon=Icon("list-add");
     }
 }
 

@@ -900,10 +900,11 @@ bool LibraryDb::setFilter(const QString &f)
             str.remove(':');
             str.remove('*');
             if (str.length()>0) {
-                tokens.append(QLatin1Char('"')+str+"\"* ");
+                tokens.append(str+QLatin1String("* "));
             }
         }
         newFilter=tokens.join(" ");
+        DBUG << newFilter;
     }
     if (newFilter!=filter) {
         filter=newFilter;

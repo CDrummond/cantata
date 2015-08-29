@@ -106,9 +106,9 @@ CustomActionsSettings::CustomActionsSettings(QWidget *parent)
     add->setText(i18n("Add"));
     edit->setText(i18n("Edit"));
     del->setText(i18n("Remove"));
-    add->setIcon(QIcon::fromTheme("list-add"));
+    add->setIcon(Icons::self()->addIcon);
     edit->setIcon(Icons::self()->editIcon);
-    del->setIcon(QIcon::fromTheme("list-remove"));
+    del->setIcon(Icons::self()->removeIcon);
     edit->setEnabled(false);
     del->setEnabled(false);
 

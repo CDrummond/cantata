@@ -100,7 +100,8 @@ public:
     QIcon connectIcon;
     QIcon disconnectIcon;
     QIcon importIcon;
-
+    QIcon removeIcon;
+    QIcon addIcon;
 };
 
 #endif

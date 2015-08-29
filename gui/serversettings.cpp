@@ -98,8 +98,8 @@ ServerSettings::ServerSettings(QWidget *p)
     connect(name, SIGNAL(textChanged(QString)), SLOT(nameChanged()));
     connect(basicDir, SIGNAL(textChanged(QString)), SLOT(basicDirChanged()));
     connect(topLevel, SIGNAL(textChanged(QString)), SLOT(topLevelChanged()));
-    addButton->setIcon(Icon("list-add"));
-    removeButton->setIcon(Icon("list-remove"));
+    addButton->setIcon(Icons::self()->addIcon);
+    removeButton->setIcon(Icons::self()->removeIcon);
     addButton->setAutoRaise(true);
     removeButton->setAutoRaise(true);
 

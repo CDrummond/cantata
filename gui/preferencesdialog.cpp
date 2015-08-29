@@ -56,6 +56,18 @@ int PreferencesDialog::instanceCount()
     return iCount;
 }
 
+static Icon getIcon(const QStringList &list)
+{
+    foreach (const QString &i, list) {
+        Icon icn(i);
+        if (!icn.isNull()) {
+            return icn;
+        }
+    }
+
+    return Icon("unknown");
+}
+
 PreferencesDialog::PreferencesDialog(QWidget *parent)
     : ConfigDialog(parent, "PreferencesDialog")
 {
@@ -76,8 +88,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     scrobbling->load();
     custom->load();
     addPage(QLatin1String("collection"), server, i18n("Collection"), Icons::self()->audioFileIcon, i18n("Collection Settings"));
-    addPage(QLatin1String("playback"), playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
-    addPage(QLatin1String("files"), files, i18n("Downloaded Files"), Icon("go-down"), i18n("Downloaded Files Settings"));
+    addPage(QLatin1String("playback"), playback, i18n("Playback"), Icons::self()->speakerIcon, i18n("Playback Settings"));
+    addPage(QLatin1String("files"), files, i18n("Downloaded Files"), getIcon(QStringList() << "folder-downloads" << "folder-download" << "folder" << "go-down"), i18n("Downloaded Files Settings"));
     addPage(QLatin1String("interface"), interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
     addPage(QLatin1String("info"), context, i18n("Info"), Icons::self()->contextIcon, i18n("Info View Settings"));
     addPage(QLatin1String("scrobbling"), scrobbling, i18n("Scrobbling"), Icons::self()->lastFmIcon, i18n("Scrobbling Settings"));
@@ -96,12 +108,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     addPage(QLatin1String("shortcuts"), shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::self()->shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
     shortcuts->load();
     #endif
-    addPage(QLatin1String("cache"), cache, i18n("Cache"), Icons::self()->folderIcon, i18n("Cached Items"));
-    Icon customIcon("fork");
-    if (customIcon.isNull()) {
-        customIcon=Icon("gtk-execute");
-    }
-    addPage(QLatin1String("custom"), custom, i18n("Custom Actions"), customIcon, i18n("Custom Actions"));
+    addPage(QLatin1String("cache"), cache, i18n("Cache"), getIcon(QStringList() << "folder-temp" << "folder"), i18n("Cached Items"));
+    addPage(QLatin1String("custom"), custom, i18n("Custom Actions"), getIcon(QStringList() << "fork" << "gtk-execute"), i18n("Custom Actions"));
     #ifdef Q_OS_MAC
     setCaption(i18n("Cantata Preferences"));
     #else

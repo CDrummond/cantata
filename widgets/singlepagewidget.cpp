@@ -103,7 +103,7 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
 
     if (flags&Refresh) {
         ToolButton *refreshButton=new ToolButton(this);
-        refreshAction=new Action(Icon("view-refresh"), i18n("Refresh"), this);
+        refreshAction=new Action(Icons::self()->reloadIcon, i18n("Refresh"), this);
         refreshButton->setDefaultAction(refreshAction);
         connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
         left.append(refreshButton);

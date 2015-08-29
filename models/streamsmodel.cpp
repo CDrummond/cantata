@@ -532,7 +532,7 @@ StreamsModel::StreamsModel(QObject *parent)
     dirble=new DirbleCategoryItem(constDirbleUrl, i18n("Dirble"), root, getIcon("dirble"));
     dirble->configName="dirble";
     root->children.append(dirble);
-    favourites=new FavouritesCategoryItem(constFavouritesUrl, i18n("Favorites"), root, Icons::self()->addToFavouritesIcon.isNull() ? getIcon("favourites") : Icons::self()->addToFavouritesIcon);
+    favourites=new FavouritesCategoryItem(constFavouritesUrl, i18n("Favorites"), root, getIcon("favourites"));
     root->children.append(favourites);
     loadInstalledProviders();
     addBookmarkAction = new Action(Icon("bookmark-new"), i18n("Bookmark Category"), this);

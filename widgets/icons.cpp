@@ -457,16 +457,18 @@ Icons::Icons()
     }
 
     if (useAwesomeIcons) {
+        QColor red(220, 0, 0);
+
         replacePlayQueueIcon=loadAwesomeIcon(fa::play, stdColor, stdColor);
         appendToPlayQueueIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
 
         centrePlayQueueOnTrackIcon=loadAwesomeIcon(Qt::RightToLeft==QApplication::layoutDirection() ? fa::chevronleft : fa::chevronright, stdColor, stdColor);
         savePlayQueueIcon=loadAwesomeIcon(fa::save, stdColor, stdColor);
-        clearListIcon=loadAwesomeIcon(fa::remove, stdColor, stdColor);
+        clearListIcon=loadAwesomeIcon(fa::remove, red, red);
         addDynamicIcon=loadAwesomeIcon(fa::plussquare, stdColor, stdColor);
         editIcon=loadAwesomeIcon(fa::edit, stdColor, stdColor);
         removeDynamicIcon=loadAwesomeIcon(fa::minussquare, stdColor, stdColor);
-        stopDynamicIcon=loadAwesomeIcon(fa::stop, QColor(220, 0, 0), QColor(220, 0, 0));
+        stopDynamicIcon=loadAwesomeIcon(fa::stop, red, red);
         searchIcon=loadAwesomeIcon(fa::search, stdColor, stdColor);
         addToFavouritesIcon=loadAwesomeIcon(fa::heart, stdColor, stdColor);
         reloadIcon=loadAwesomeIcon(fa::repeat, stdColor, stdColor);

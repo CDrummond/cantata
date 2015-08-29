@@ -447,7 +447,7 @@ QString Settings::page()
 
 QStringList Settings::hiddenPages()
 {
-    QStringList config=cfg.get("hiddenPages", QStringList() << "PlayQueuePage" << "FolderPage"); //  << "SearchPage" << "ContextPage");
+    QStringList config=cfg.get("hiddenPages", QStringList() << "PlayQueuePage" << "FolderPage" << "ContextPage"); //  << "SearchPage");
     // If splitter auto-hide is enabled, then playqueue cannot be in sidebar!
     if (splitterAutoHide() && !config.contains("PlayQueuePage")) {
         config << "PlayQueuePage";

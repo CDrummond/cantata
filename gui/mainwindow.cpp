@@ -509,7 +509,7 @@ MainWindow::MainWindow(QWidget *parent)
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         streamPlayButton->setIcon(Icons::self()->radioStreamIcon);
         #endif
-        savePlayQueueButton->setIcon(Icon("document-save-as"));
+        savePlayQueueButton->setIcon(Icons::self()->savePlayQueueIcon);
         clearPlayQueueButton->setIcon(Icons::self()->clearListIcon);
     }
     #endif

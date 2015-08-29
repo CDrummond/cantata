@@ -469,7 +469,7 @@ Icons::Icons()
         stopDynamicIcon=loadAwesomeIcon(fa::stop, QColor(220, 0, 0), QColor(220, 0, 0));
         searchIcon=loadAwesomeIcon(fa::search, stdColor, stdColor);
         addToFavouritesIcon=loadAwesomeIcon(fa::heart, stdColor, stdColor);
-        reloadIcon=loadAwesomeIcon(fa::refresh, stdColor, stdColor);
+        reloadIcon=loadAwesomeIcon(fa::repeat, stdColor, stdColor);
         configureIcon=loadAwesomeIcon(fa::cog, stdColor, stdColor);
         connectIcon=loadAwesomeIcon(fa::chevrondown, stdColor, stdColor);
         disconnectIcon=loadAwesomeIcon(fa::eject, stdColor, stdColor);

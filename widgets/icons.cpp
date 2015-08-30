@@ -388,7 +388,7 @@ Icons::Icons()
     #ifdef Q_OS_MAC
     bool useAwesomeIcons=true;
     #else
-    bool useAwesomeIcons=GtkStyle::useSymbolicIcons() || QLatin1String("breeze")==iconTheme;
+    bool useAwesomeIcons=GtkStyle::isActive() || QLatin1String("breeze")==iconTheme;
     #endif
     streamCategoryIcon=Icon(QLatin1String("oxygen")==iconTheme ? "inode-directory" : "folder-music");
 

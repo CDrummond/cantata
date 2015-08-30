@@ -218,6 +218,16 @@ set(ICON_FILES
 64x64/mimetypes/audio-x-generic.png
 48x48/places/document-multiple.png
 64x64/places/document-multiple.png
+64x64/places/folder-temp.png
+32x32/places/folder-temp.png
+16x16/places/folder-temp.png
+48x48/places/folder-temp.png
+22x22/places/folder-temp.png
+64x64/places/folder-downloads.png
+32x32/places/folder-downloads.png
+16x16/places/folder-downloads.png
+48x48/places/folder-downloads.png
+22x22/places/folder-downloads.png
 )
 
 foreach(ICON ${ICON_FILES})

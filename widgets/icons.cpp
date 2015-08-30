@@ -390,7 +390,7 @@ Icons::Icons()
     #else
     bool useAwesomeIcons=GtkStyle::isActive() || QLatin1String("breeze")==iconTheme;
     #endif
-    streamCategoryIcon=Icon(QLatin1String("oxygen")==iconTheme ? "inode-directory" : "folder-music");
+    streamCategoryIcon=Icon(QStringList() << "folder-music" << "inode-directory");
 
     QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"stream.png");
     if (QFile::exists(iconFile)) {
@@ -399,18 +399,18 @@ Icons::Icons()
     if (streamIcon.isNull()) {
         streamIcon=Icon("applications-internet");
     }
-    albumIcon=Icon("media-optical");
+    albumIcon=Icon(QStringList() << "media-optical" << "media-optical-audio");
     podcastIcon=Icon("inode-directory");
     downloadedPodcastEpisodeIcon=Icon("document-save-as");
     audioFileIcon=Icon("audio-x-generic");
-    playlistIcon=Icon("view-media-playlist");
+    playlistIcon=Icon(QStringList() << "view-media-playlist" << "audio-x-mp3-playlist" << "audio-x-generic");
     folderIcon=Icon("inode-directory");
-    dynamicRuleIcon=Icon("media-playlist-shuffle");
-    speakerIcon=Icon("speaker");
+    dynamicRuleIcon=Icon(QStringList() << "media-playlist-shuffle" << "text-x-generic");
+    speakerIcon=Icon(QStringList() << "speaker" << "audio-speakers" << "gnome-volume-control");
     repeatIcon=createRecolourableIcon("repeat", stdColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor);
-    filesIcon=Icon("document-multiple");
-    cancelIcon=Icon("dialog-cancel");
+    filesIcon=Icon(QStringList() << "folder-downloads" << "folder-download" << "folder" << "go-down");
+    cancelIcon=Icon(QStringList() << "dialog-cancel" << "gtk-cancel");
     radioStreamIcon=Icon::create("radio", constStdSizes);
     addRadioStreamIcon=Icon::create("addradio", constStdSizes);
     artistIcon.addFile(":artist.svg");
@@ -420,41 +420,8 @@ Icons::Icons()
     #ifndef ENABLE_UBUNTU
     appIcon=Icon("cantata");
     #endif // ENABLE_UBUNTU
-    shortcutsIcon=Icon("preferences-desktop-keyboard");
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
-    if (shortcutsIcon.isNull()) {
-        shortcutsIcon=Icon("keyboard");
-    }
-    if (albumIcon.isNull()) {
-        albumIcon=Icon("media-optical-audio");
-    }
-    if (speakerIcon.isNull()) {
-        speakerIcon=Icon("audio-speakers");
-        if (speakerIcon.isNull()) {
-            speakerIcon=Icon("gnome-volume-control");
-        }
-    }
-    if (dynamicRuleIcon.isNull()) {
-        dynamicRuleIcon=Icon("text-x-generic");
-    }
-    if (playlistIcon.isNull()) {
-        playlistIcon=Icon("audio-x-mp3-playlist");
-        if (playlistIcon.isNull()) {
-            playlistIcon=audioFileIcon;
-        }
-    }
-    if (filesIcon.isNull()) {
-        filesIcon=Icon("empty");
-    }
-    if (cancelIcon.isNull()) {
-        cancelIcon=Icon("gtk-cancel");
-    }
-    #endif // Q_OS_WIN && Q_OS_MAC
+    shortcutsIcon=Icon(QStringList() << "preferences-desktop-keyboard" << "keyboard");
     #endif // ENABLE_KDE_SUPPORT
-
-    if (streamCategoryIcon.isNull()) {
-        streamCategoryIcon=folderIcon;
-    }
 
     if (useAwesomeIcons) {
         QColor red(220, 0, 0);
@@ -484,38 +451,18 @@ Icons::Icons()
         appendToPlayQueueIcon=Icon("list-add");
         centrePlayQueueOnTrackIcon=Icon(Qt::RightToLeft==QApplication::layoutDirection() ? "go-previous" : "go-next");
         savePlayQueueIcon=Icon("document-save-as");
-        clearListIcon=Icon("edit-clear-list");
-        if (clearListIcon.isNull()) {
-            clearListIcon=Icon("gtk-delete");
-        }
+        clearListIcon=Icon(QStringList() << "edit-clear-list" << "gtk-delete");
         addDynamicIcon=Icon("document-new");
-        editIcon=Icon("document-edit");
-        if (editIcon.isNull()) {
-            editIcon=Icon("text-editor");
-        }
-        if (editIcon.isNull()) {
-            editIcon=Icon("gtk-edit");
-        }        removeDynamicIcon=Icon("list-remove");
+        editIcon=Icon(QStringList() << "document-edit" << "text-editor" << "gtk-edit");
+        removeDynamicIcon=Icon("list-remove");
         stopDynamicIcon=Icon("process-stop");
         searchIcon=Icon("edit-find");
         //addToFavouritesIcon; SET IN streamsmodel.cpp
         reloadIcon=Icon("view-refresh");
-        configureIcon=Icon("configure");
-        connectIcon=Icon("dialog-ok");
+        configureIcon=Icon(QStringList() << "configure" << "gtk-preferences");
+        connectIcon=Icon(QStringList() << "dialog-ok" << "gtk-stock-ok" << "go-bottom");
         disconnectIcon=Icon("media-eject");
-        if (configureIcon.isNull()) {
-            configureIcon=Icon("gtk-preferences");
-        }
-        if (connectIcon.isNull()) {
-            connectIcon=Icon("gtk-stock-ok");
-            if (connectIcon.isNull()) {
-                connectIcon=Icon("go-bottom");
-            }
-        }
-        importIcon=Icon("document-import");
-        if (importIcon.isNull()) {
-            importIcon=Icon("down");
-        }
+        importIcon=Icon(QStringList() << "document-import" << "down");
         removeIcon=Icon("list-remove");
         addIcon=Icon("list-add");
     }

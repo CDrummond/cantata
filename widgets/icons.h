@@ -75,7 +75,7 @@ public:
     #ifdef ENABLE_DEVICES_SUPPORT
     Icon devicesIcon;
     #endif
-    Icon lastFmIcon;
+    QIcon lastFmIcon;
 
     Icon toolbarMenuIcon;
     Icon toolbarPrevIcon;
@@ -103,7 +103,6 @@ public:
     QIcon removeIcon;
     QIcon addIcon;
     QIcon addBookmarkIcon;
-    QIcon lastFmStatusIcon;
 };
 
 #endif

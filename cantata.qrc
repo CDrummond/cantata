@@ -1,6 +1,5 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-<file alias="lastfm.svg">scrobbling/lastfm.svg</file>
 <file alias="stars.svg">icons/stars.svg</file>
 
 <file alias="sidebar-library-dark">icons/sidebar-library-dark.svg</file>

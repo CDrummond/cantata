@@ -111,14 +111,14 @@ Icon Icon::create(const QString &name, const QList<int> &sizes, bool andSvg)
 }
 
 #ifdef Q_OS_MAC
-Icon Icon::std(Std i)
+QIcon Icon::std(Std i)
 {
     static bool initResource=true;
     if (initResource) {
         Q_INIT_RESOURCE(support_mac_icons);
         initResource=false;
     }
-    Icon icon;
+    QIcon icon;
     switch (i) {
     case Close: icon.addFile(":support-mac-close"); break;
     case Clear: icon.addFile(":support-mac-clear"); break;
@@ -165,7 +165,6 @@ void Icon::setStd(Std i, const QIcon &icon)
     default: break;
     }
 }
-
 #endif
 
 Icon::Icon(const QStringList &names)

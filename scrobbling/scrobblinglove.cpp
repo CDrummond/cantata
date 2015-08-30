@@ -23,15 +23,13 @@
 
 #include "scrobblinglove.h"
 #include "scrobbler.h"
-#include "support/icon.h"
+#include "widgets/icons.h"
 #include "support/localize.h"
 
 ScrobblingLove::ScrobblingLove(QWidget *p)
     : ToolButton(p)
 {
-    Icon icon;
-    icon.addFile(":favourites");
-    setIcon(icon);
+    setIcon(Icons::self()->addToFavouritesIcon);
     connect(Scrobbler::self(), SIGNAL(loveEnabled(bool)), SLOT(setVisible(bool)));
     connect(Scrobbler::self(), SIGNAL(songChanged(bool)), SLOT(songChanged(bool)));
     connect(Scrobbler::self(), SIGNAL(scrobblerChanged()), SLOT(scrobblerChanged()));

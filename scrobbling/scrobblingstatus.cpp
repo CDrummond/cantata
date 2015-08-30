@@ -30,7 +30,7 @@ ScrobblingStatus::ScrobblingStatus(QWidget *p)
     : ToolButton(p)
 {
     setCheckable(true);
-    setIcon(Icons::self()->lastFmIcon);
+    setIcon(Icons::self()->lastFmStatusIcon);
     connect(Scrobbler::self(), SIGNAL(authenticated(bool)), SLOT(setVisible(bool)));
     connect(Scrobbler::self(), SIGNAL(enabled(bool)), SLOT(setChecked(bool)));
     connect(this, SIGNAL(toggled(bool)), Scrobbler::self(), SLOT(setEnabled(bool)));

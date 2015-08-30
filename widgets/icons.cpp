@@ -332,7 +332,7 @@ static Icon loadSidebarIcon(const QString &name, const QColor &normal, const QCo
     return loadMonoSvgIcon(QLatin1String("sidebar"), name, normal, selected);
 }
 
-#if !defined Q_OS_WIN && !defined ENABLE_UBUNTU
+#ifndef ENABLE_UBUNTU
 static void setDisabledOpacity(Icon &icon)
 {
     static const double constDisabledOpacity=0.5;
@@ -373,6 +373,10 @@ static QIcon loadAwesomeIcon(int ch, const QColor &std, const QColor &highlight)
     return QtAwesome::self()->icon(ch, options);
 }
 
+#if defined Q_OS_MAC || defined Q_OS_WIN
+#define ALWAYS_USE_MONO_ICONS
+#endif
+
 Icons::Icons()
 {
     QColor stdColor=calcIconColor();
@@ -385,9 +389,7 @@ Icons::Icons()
     #endif
 
     QString iconTheme=Icon::currentTheme().toLower();
-    #ifdef Q_OS_MAC
-    bool useAwesomeIcons=true;
-    #else
+    #ifndef ALWAYS_USE_MONO_ICONS
     bool useAwesomeIcons=GtkStyle::isActive() || QLatin1String("breeze")==iconTheme;
     #endif
     streamCategoryIcon=Icon(QStringList() << "folder-music" << "inode-directory");
@@ -423,7 +425,9 @@ Icons::Icons()
     shortcutsIcon=Icon(QStringList() << "preferences-desktop-keyboard" << "keyboard");
     #endif // ENABLE_KDE_SUPPORT
 
+    #ifndef ALWAYS_USE_MONO_ICONS
     if (useAwesomeIcons) {
+    #endif
         QColor red(220, 0, 0);
 
         replacePlayQueueIcon=loadAwesomeIcon(fa::play, stdColor, stdColor);
@@ -445,7 +449,10 @@ Icons::Icons()
         removeIcon=loadAwesomeIcon(fa::minus, red, red);
         addIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
         addBookmarkIcon=loadAwesomeIcon(fa::bookmark, stdColor, stdColor);
+        #ifndef Q_OS_MAC
         Icon::setStd(Icon::Close, loadAwesomeIcon(fa::close, red, red));
+        #endif
+    #ifndef ALWAYS_USE_MONO_ICONS
     } else {
         replacePlayQueueIcon=Icon("media-playback-start");
         appendToPlayQueueIcon=Icon("list-add");
@@ -467,6 +474,7 @@ Icons::Icons()
         addIcon=Icon("list-add");
         addBookmarkIcon=Icon("bookmark-new");
     }
+    #endif
 }
 
 void Icons::initSidebarIcons()
@@ -497,8 +505,8 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     #endif
     QString iconTheme=Icon::currentTheme().toLower();
     QColor stdColor=calcIconColor();
-    #if !defined Q_OS_WIN && !defined ENABLE_UBUNTU
-    #ifndef Q_OS_MAC
+    #if !defined ENABLE_UBUNTU
+    #ifndef ALWAYS_USE_MONO_ICONS
     if (GtkStyle::useSymbolicIcons() || QLatin1String("breeze")==iconTheme) {
     #endif
         bool rtl=QApplication::isRightToLeft();
@@ -523,7 +531,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
             toolbarMenuIcon=createMenuIcon(col);
         }
         #endif
-    #ifndef Q_OS_MAC
+    #ifndef ALWAYS_USE_MONO_ICONS
     } else
     #endif
     #endif
@@ -555,6 +563,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     #endif
         contextIcon=Icon("dialog-information");
 
+    #ifndef ALWAYS_USE_MONO_ICONS
     if (toolbarPrevIcon.isNull()) {
         toolbarPrevIcon=Icon::getMediaIcon("media-skip-backward");
     }
@@ -570,4 +579,5 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     if (toolbarNextIcon.isNull()) {
         toolbarNextIcon=Icon::getMediaIcon("media-skip-forward");
     }
+    #endif
 }

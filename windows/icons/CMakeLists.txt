@@ -1,4 +1,4 @@
-set(OXYGEN_ICONS
+set(ICON_FILES
 32x32/places/server-database.png
 32x32/places/favorites.png
 32x32/places/network-server.png
@@ -220,10 +220,10 @@ set(OXYGEN_ICONS
 64x64/places/document-multiple.png
 )
 
-foreach(ICON ${OXYGEN_ICONS})
+foreach(ICON ${ICON_FILES})
     get_filename_component(ICON_PATH ${ICON} PATH)
-    install(FILES ${CANTATA_OXYGEN_DIR}/${ICON} DESTINATION ${CANTATA_ICON_INSTALL_PREFIX}/${ICON_PATH})
-endforeach(ICON ${OXYGEN_ICONS})
+    install(FILES ${CANTATA_ICONS_DIR}/${ICON} DESTINATION ${CANTATA_ICON_INSTALL_PREFIX}/${ICON_PATH})
+endforeach(ICON ${ICON_FILES})
 install(FILES index.theme DESTINATION ${CANTATA_ICON_INSTALL_PREFIX})
 install(FILES "LICENSE.Creative Common Attribution-ShareAlike 3.0 License.html" DESTINATION ${CANTATA_ICON_INSTALL_PREFIX} RENAME "Oxygen License (Creative Common Attribution-ShareAlike 3.0).html")
 install(FILES LICENSE.LGPL_V3 DESTINATION ${CANTATA_ICON_INSTALL_PREFIX} RENAME "Oxygen License (LGPL V3).txt")

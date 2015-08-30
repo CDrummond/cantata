@@ -428,7 +428,6 @@ Icons::Icons()
 
         replacePlayQueueIcon=loadAwesomeIcon(fa::play, stdColor, stdColor);
         appendToPlayQueueIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
-
         centrePlayQueueOnTrackIcon=loadAwesomeIcon(Qt::RightToLeft==QApplication::layoutDirection() ? fa::chevronleft : fa::chevronright, stdColor, stdColor);
         savePlayQueueIcon=loadAwesomeIcon(fa::save, stdColor, stdColor);
         clearListIcon=loadAwesomeIcon(fa::remove, red, red);
@@ -445,6 +444,7 @@ Icons::Icons()
         importIcon=loadAwesomeIcon(fa::music, stdColor, stdColor);
         removeIcon=loadAwesomeIcon(fa::minus, red, red);
         addIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
+        addBookmarkIcon=loadAwesomeIcon(fa::bookmark, stdColor, stdColor);
         Icon::setStd(Icon::Close, loadAwesomeIcon(fa::close, red, red));
     } else {
         replacePlayQueueIcon=Icon("media-playback-start");
@@ -465,6 +465,7 @@ Icons::Icons()
         importIcon=Icon(QStringList() << "document-import" << "down");
         removeIcon=Icon("list-remove");
         addIcon=Icon("list-add");
+        addBookmarkIcon=Icon("bookmark-new");
     }
 }
 

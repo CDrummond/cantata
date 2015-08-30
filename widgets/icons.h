@@ -102,6 +102,7 @@ public:
     QIcon importIcon;
     QIcon removeIcon;
     QIcon addIcon;
+    QIcon addBookmarkIcon;
 };
 
 #endif

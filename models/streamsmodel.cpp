@@ -535,7 +535,7 @@ StreamsModel::StreamsModel(QObject *parent)
     favourites=new FavouritesCategoryItem(constFavouritesUrl, i18n("Favorites"), root, getIcon("favourites"));
     root->children.append(favourites);
     loadInstalledProviders();
-    addBookmarkAction = new Action(Icon("bookmark-new"), i18n("Bookmark Category"), this);
+    addBookmarkAction = new Action(Icons::self()->addBookmarkIcon, i18n("Bookmark Category"), this);
     addToFavouritesAction = new Action(favouritesIcon(), i18n("Add Stream To Favorites"), this);
     configureDiAction = new Action(Icons::self()->configureIcon, i18n("Configure Digitally Imported"), this);
     reloadAction = new Action(Icons::self()->reloadIcon, i18n("Reload"), this);

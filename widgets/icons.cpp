@@ -353,6 +353,8 @@ static QIcon loadAwesomeIcon(int ch, const QColor &std, const QColor &highlight,
 Icons::Icons()
 {
     QColor stdColor=calcIconColor();
+    QColor red(220, 0, 0);
+
     singleIcon=createSingleIcon(stdColor);
     consumeIcon=createConsumeIcon(stdColor);
     #ifdef USE_SYSTEM_MENU_ICON
@@ -390,7 +392,6 @@ Icons::Icons()
     addRadioStreamIcon=Icon::create("addradio", constStdSizes);
     artistIcon.addFile(":artist.svg");
     genreIcon.addFile(":genre.svg");
-    lastFmIcon.addFile(":lastfm.svg");
     #ifndef ENABLE_KDE_SUPPORT
     #ifndef ENABLE_UBUNTU
     appIcon=Icon("cantata");
@@ -398,11 +399,11 @@ Icons::Icons()
     shortcutsIcon=Icon(QStringList() << "preferences-desktop-keyboard" << "keyboard");
     #endif // ENABLE_KDE_SUPPORT
 
+    lastFmIcon=loadAwesomeIcon(fa::lastfmsquare, red, red);
+
     #ifndef ALWAYS_USE_MONO_ICONS
     if (useAwesomeIcons) {
     #endif
-        QColor red(220, 0, 0);
-
         replacePlayQueueIcon=loadAwesomeIcon(fa::play, stdColor, stdColor);
         appendToPlayQueueIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
         centrePlayQueueOnTrackIcon=loadAwesomeIcon(Qt::RightToLeft==QApplication::layoutDirection() ? fa::chevronleft : fa::chevronright, stdColor, stdColor);
@@ -422,7 +423,6 @@ Icons::Icons()
         removeIcon=loadAwesomeIcon(fa::minus, red, red);
         addIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
         addBookmarkIcon=loadAwesomeIcon(fa::bookmark, stdColor, stdColor);
-        lastFmStatusIcon=loadAwesomeIcon(fa::lastfmsquare, stdColor, stdColor);
         #ifndef Q_OS_MAC
         Icon::setStd(Icon::Close, loadAwesomeIcon(fa::close, red, red));
         #endif
@@ -447,7 +447,6 @@ Icons::Icons()
         removeIcon=Icon("list-remove");
         addIcon=Icon("list-add");
         addBookmarkIcon=Icon("bookmark-new");
-        lastFmStatusIcon=lastFmIcon;
     }
     #endif
 }

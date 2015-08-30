@@ -2,7 +2,6 @@ set(ICON_FILES
 32x32/places/server-database.png
 32x32/places/favorites.png
 32x32/places/network-server.png
-32x32/places/document-multiple.png
 32x32/actions/media-playback-pause.png
 32x32/actions/document-open.png
 32x32/actions/document-new.png
@@ -65,7 +64,6 @@ set(ICON_FILES
 22x22/places/server-database.png
 22x22/places/favorites.png
 22x22/places/network-server.png
-22x22/places/document-multiple.png
 22x22/actions/media-playback-pause.png
 22x22/actions/document-open.png
 22x22/actions/document-new.png
@@ -119,7 +117,6 @@ set(ICON_FILES
 16x16/places/server-database.png
 16x16/places/favorites.png
 16x16/places/network-server.png
-16x16/places/document-multiple.png
 16x16/actions/media-playback-pause.png
 16x16/actions/document-open.png
 16x16/actions/document-new.png
@@ -216,8 +213,6 @@ set(ICON_FILES
 64x64/mimetypes/inode-directory.png
 48x48/mimetypes/audio-x-generic.png
 64x64/mimetypes/audio-x-generic.png
-48x48/places/document-multiple.png
-64x64/places/document-multiple.png
 64x64/places/folder-temp.png
 32x32/places/folder-temp.png
 16x16/places/folder-temp.png

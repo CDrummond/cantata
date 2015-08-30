@@ -163,8 +163,11 @@ The following options may be passed to CMake:
         SSL libraries
         Default: <empty>
 
-    -DCANTATA_OXYGEN_DIR=<path>
-        Path to Oxygen icons, required for install stage.
+
+    Windows/Mac specific:
+
+    -DCANTATA_ICONS_DIR=<path>
+        Path to icons, required for install stage.
         Default: <empty>
 
 

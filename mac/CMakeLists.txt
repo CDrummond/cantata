@@ -9,7 +9,7 @@ foreach(qm ${qt_trans})
 endforeach(qm ${qt_trans})
 install(FILES ${qt_translations} DESTINATION ${MACOSX_BUNDLE_RESOURCES}/translations/)
 
-if (CANTATA_OXYGEN_DIR)
+if (CANTATA_ICONS_DIR)
     add_subdirectory(icons)
-endif (CANTATA_OXYGEN_DIR)
+endif (CANTATA_ICONS_DIR)
 

@@ -167,3 +167,15 @@ void Icon::setStd(Std i, const QIcon &icon)
 }
 
 #endif
+
+Icon::Icon(const QStringList &names)
+{
+    foreach (const QString &name, names) {
+        Icon icn(name);
+        if (!icn.isNull()) {
+            *this=icn;
+            return;
+        }
+    }
+    *this=Icon("unknown");
+}

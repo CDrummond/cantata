@@ -47,6 +47,7 @@ public:
     #else
     explicit Icon(const QString &icon) : QIcon(QIcon::fromTheme(icon)) { }
     #endif
+    Icon(const QStringList &names);
     Icon() { }
 
     static int stdSize(int s);

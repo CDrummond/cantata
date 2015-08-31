@@ -25,7 +25,7 @@ KDE4
 4. make
 5. sudo make install
 
-Ubuntu
+Ubuntu  **NOTE: No longer actively maintained**
 ------
 1. mkdir build
 2. cd build

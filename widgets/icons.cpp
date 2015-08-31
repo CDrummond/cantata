@@ -104,17 +104,19 @@ static QPixmap createConsumeIconPixmap(int size, const QColor &col, double opaci
     QPixmap pix(size, size);
     pix.fill(Qt::transparent);
     QPainter p(&pix);
-    double border=2.5;
+    int border=2;
     if (22==size) {
-        border=3.5;
+        border=3;
     } else if (32==size) {
+        border=4;
+    } else if (48==size) {
         border=5;
     } else if (48==size) {
         border=7;
     } /*else if (64==size) {
         border=6;
     }*/
-    p.setPen(QPen(col, size/10.0));
+    p.setPen(QPen(col, size/8.0));
     p.setOpacity(opacity);
     p.setRenderHint(QPainter::Antialiasing, true);
     QRectF rect(border+0.5, border+0.5, size-(2*border), size-(2*border));
@@ -125,7 +127,7 @@ static QPixmap createConsumeIconPixmap(int size, const QColor &col, double opaci
     p.drawArc(rect, 40*16, 290*16);
     p.drawLine(midX, midY, midX+distanceX, midY-distanceY);
     p.drawLine(midX, midY, midX+distanceX, midY+distanceY);
-    p.drawPoint(midX, rect.y()+rect.height()/4.0);
+    p.drawPoint(midX, rect.y()+rect.height()/4);
     p.end();
     return pix;
 }
@@ -251,6 +253,36 @@ static void recolourPix(QImage &img, const QColor &col, double opacity=1.0)
         }
         offset+=stride;
     }
+}
+
+static QPixmap recolour(const QImage &img, const QColor &col, double opacity=1.0)
+{
+    QImage i=img;
+    if (i.depth()!=32) {
+        i=i.convertToFormat(QImage::Format_ARGB32);
+    }
+
+    recolourPix(i, col, opacity);
+    return QPixmap::fromImage(i);
+}
+
+static Icon createRecolourableIcon(const QString &name, const QColor &stdColor, int extraSize=24)
+{
+    if (QColor(Qt::black)==stdColor) {
+        // Text colour is black, so is icon, therefore no need to recolour!!!
+        return Icon::create(name, constStdSizes);
+    }
+
+    Icon icon;
+
+    QList<int> sizes=QList<int>() << constStdSizes << extraSize;
+    foreach (int s, sizes) {
+        QImage img(QChar(':')+name+QString::number(s));
+        if (!img.isNull()) {
+            icon.addPixmap(recolour(img, stdColor));
+        }
+    }
+    return icon;
 }
 
 static void updateMonoSvgIcon(Icon &i, const QString &type, const QString &name, const QColor &color, QIcon::Mode mode)
@@ -384,8 +416,8 @@ Icons::Icons()
     folderIcon=Icon("inode-directory");
     dynamicRuleIcon=Icon(QStringList() << "media-playlist-shuffle" << "text-x-generic");
     speakerIcon=Icon(QStringList() << "speaker" << "audio-speakers" << "gnome-volume-control");
-    repeatIcon=loadAwesomeIcon(fa::retweet, stdColor, stdColor);
-    shuffleIcon=loadAwesomeIcon(fa::random, stdColor, stdColor);
+    repeatIcon=createRecolourableIcon("repeat", stdColor);
+    shuffleIcon=createRecolourableIcon("shuffle", stdColor);
     filesIcon=Icon(QStringList() << "folder-downloads" << "folder-download" << "folder" << "go-down");
     cancelIcon=Icon(QStringList() << "dialog-cancel" << "gtk-cancel");
     radioStreamIcon=Icon::create("radio", constStdSizes);

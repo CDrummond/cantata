@@ -51,9 +51,9 @@ public:
     Icon playlistIcon;
     Icon dynamicRuleIcon; // Alsu used for Mopidy smart playlists...
     Icon singleIcon;
-    QIcon consumeIcon;
-    QIcon repeatIcon;
-    QIcon shuffleIcon;
+    Icon consumeIcon;
+    Icon repeatIcon;
+    Icon shuffleIcon;
     Icon streamCategoryIcon;
     Icon radioStreamIcon;
     Icon addRadioStreamIcon;

@@ -116,7 +116,7 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
         case Cantata::Role_SubText:
             return i18n("Search for radio streams");
         case Qt::DecorationRole:
-            return Icons::self()->searchIcon;
+            return Icon("edit-find");
         }
         return QVariant();
     }

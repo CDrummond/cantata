@@ -446,7 +446,7 @@ Icons::Icons()
         removeDynamicIcon=loadAwesomeIcon(fa::minussquare, stdColor, stdColor);
         stopDynamicIcon=loadAwesomeIcon(fa::stop, red, red);
         searchIcon=loadAwesomeIcon(fa::search, stdColor, stdColor);
-        addToFavouritesIcon=loadAwesomeIcon(fa::heart, stdColor, stdColor);
+        addToFavouritesIcon=loadAwesomeIcon(fa::heart, red, red);
         reloadIcon=loadAwesomeIcon(fa::repeat, stdColor, stdColor);
         configureIcon=loadAwesomeIcon(fa::cog, stdColor, stdColor);
         connectIcon=loadAwesomeIcon(fa::chevrondown, stdColor, stdColor);

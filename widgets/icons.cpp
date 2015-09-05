@@ -431,7 +431,7 @@ Icons::Icons()
     shortcutsIcon=Icon(QStringList() << "preferences-desktop-keyboard" << "keyboard");
     #endif // ENABLE_KDE_SUPPORT
 
-    lastFmIcon=loadAwesomeIcon(fa::lastfmsquare, red, red);
+    lastFmIcon=loadAwesomeIcon(fa::lastfmsquare, red, red, 1.1);
 
     #ifndef ALWAYS_USE_MONO_ICONS
     if (useAwesomeIcons) {

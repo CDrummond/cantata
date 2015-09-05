@@ -48,7 +48,7 @@ public:
     Icon downloadedPodcastEpisodeIcon;
     Icon folderIcon;
     Icon audioFileIcon;
-    Icon playlistIcon;
+    Icon playlistFileIcon;
     Icon dynamicRuleIcon; // Alsu used for Mopidy smart playlists...
     Icon singleIcon;
     Icon consumeIcon;
@@ -103,6 +103,8 @@ public:
     QIcon removeIcon;
     QIcon addIcon;
     QIcon addBookmarkIcon;
+    QIcon audioListIcon;
+    QIcon playlistListIcon;
 };
 
 #endif

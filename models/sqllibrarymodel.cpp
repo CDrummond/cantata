@@ -342,7 +342,7 @@ QVariant SqlLibraryModel::data(const QModelIndex &index, int role) const
         case T_Album:
             return Icons::self()->albumIcon;
         case T_Track:
-            return Song::Playlist==item->getSong().type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
+            return Song::Playlist==item->getSong().type ? Icons::self()->playlistListIcon : Icons::self()->audioListIcon;
         default:
             return QVariant();
         }

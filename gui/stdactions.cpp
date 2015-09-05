@@ -73,7 +73,7 @@ StdActions::StdActions()
     addPrioLowAction = new Action(i18n("Low Priority (50)"), 0);
     addPrioDefaultAction = new Action(i18n("Default Priority (0)"), 0);
     addPrioCustomAction = new Action(i18n("Custom Priority..."), 0);
-    addToStoredPlaylistAction = new Action(Icons::self()->playlistIcon, i18n("Add To Playlist"), 0);
+    addToStoredPlaylistAction = new Action(Icons::self()->playlistFileIcon, i18n("Add To Playlist"), 0);
     #ifdef TAGLIB_FOUND
     organiseFilesAction = new Action(HIDE_MENU_ICON(Icon("inode-directory")), i18n("Organize Files"), 0);
     editTagsAction = new Action(i18n("Edit Track Information"), 0);

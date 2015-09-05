@@ -10,6 +10,6 @@ endforeach(qm ${qt_trans})
 install(FILES ${qt_translations} DESTINATION ${MACOSX_BUNDLE_RESOURCES}/translations/)
 
 if (CANTATA_ICONS_DIR)
-    add_subdirectory(icons)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/windows/icons ${CMAKE_CURRENT_BINARY_DIR}/icons)
 endif (CANTATA_ICONS_DIR)
 

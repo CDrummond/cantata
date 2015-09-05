@@ -81,7 +81,7 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     , dropAdjust(0)
     #endif
 {
-    icn=Icons::self()->playlistIcon;
+    icn=Icons::self()->playlistFileIcon;
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(MPDConnection::self(), SIGNAL(playlistsRetrieved(const QList<Playlist> &)), this, SLOT(setPlaylists(const QList<Playlist> &)));
     connect(MPDConnection::self(), SIGNAL(playlistInfoRetrieved(const QString &, const QList<Song> &)), this, SLOT(playlistInfoRetrieved(const QString &, const QList<Song> &)));
@@ -361,7 +361,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 : pl->visibleName()+"\n"+Plurals::tracksWithDuration(pl->songs.count(), Utils::formatTime(pl->totalTime()));
         #ifndef ENABLE_UBUNTU
         case Qt::DecorationRole:
-            return multiCol ? QVariant() : (pl->isSmartPlaylist ? Icons::self()->dynamicRuleIcon : Icons::self()->playlistIcon);
+            return multiCol ? QVariant() : (pl->isSmartPlaylist ? Icons::self()->dynamicRuleIcon : Icons::self()->playlistListIcon);
         #endif
         case Cantata::Role_SubText:
             if (!pl->loaded) {
@@ -483,7 +483,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return s->toolTip();
         #ifndef ENABLE_UBUNTU
         case Qt::DecorationRole:
-            return multiCol ? QVariant() : (s->title.isEmpty() ? Icons::self()->streamIcon : Icons::self()->audioFileIcon);
+            return multiCol ? QVariant() : (s->title.isEmpty() ? Icons::self()->streamIcon : Icons::self()->audioListIcon);
         #endif
         case Cantata::Role_MainText:
             return s->title.isEmpty() ? s->file : s->title;

@@ -263,7 +263,7 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(fwdAction);
     addAction(revAction);
 
-    addPlayQueueToStoredPlaylistAction = new Action(HIDE_MENU_ICON(Icons::self()->playlistIcon), i18n("Add To Stored Playlist"), this);
+    addPlayQueueToStoredPlaylistAction = new Action(HIDE_MENU_ICON(Icons::self()->playlistFileIcon), i18n("Add To Stored Playlist"), this);
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction = new Action(HIDE_MENU_ICON(StdActions::self()->copyToDeviceAction->icon()), Utils::strippedText(StdActions::self()->copyToDeviceAction->text()), this);
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());

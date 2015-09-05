@@ -164,10 +164,10 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
         return Song::Playlist==song->type
-                ? Icons::self()->playlistIcon
+                ? Icons::self()->playlistListIcon
                 : song->isStream()
                   ? Icons::self()->streamIcon
-                  : Icons::self()->audioFileIcon;
+                  : Icons::self()->audioListIcon;
     case Qt::TextAlignmentRole:
         return alignments[index.column()];
     #endif

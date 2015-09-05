@@ -412,7 +412,7 @@ Icons::Icons()
     podcastIcon=Icon("inode-directory");
     downloadedPodcastEpisodeIcon=Icon("document-save-as");
     audioFileIcon=Icon("audio-x-generic");
-    playlistIcon=Icon(QStringList() << "view-media-playlist" << "audio-x-mp3-playlist" << "audio-x-generic");
+    playlistFileIcon=Icon(QStringList() << "view-media-playlist" << "audio-x-mp3-playlist" << "audio-x-generic");
     folderIcon=Icon("inode-directory");
     dynamicRuleIcon=Icon(QStringList() << "media-playlist-shuffle" << "text-x-generic");
     speakerIcon=Icon(QStringList() << "speaker" << "audio-speakers" << "gnome-volume-control");
@@ -455,6 +455,8 @@ Icons::Icons()
         removeIcon=loadAwesomeIcon(fa::minus, red, red);
         addIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
         addBookmarkIcon=loadAwesomeIcon(fa::bookmark, stdColor, stdColor);
+        audioListIcon=loadAwesomeIcon(fa::music, stdColor, stdColor);
+        playlistListIcon=loadAwesomeIcon(fa::list, stdColor, stdColor, 1.05);
         #ifndef Q_OS_MAC
         Icon::setStd(Icon::Close, loadAwesomeIcon(fa::close, red, red));
         #endif
@@ -479,6 +481,8 @@ Icons::Icons()
         removeIcon=Icon("list-remove");
         addIcon=Icon("list-add");
         addBookmarkIcon=Icon("bookmark-new");
+        playlistListIcon=playlistFileIcon;
+        audioListIcon=audioFileIcon;
     }
     #endif
 }

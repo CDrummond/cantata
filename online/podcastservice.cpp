@@ -521,7 +521,7 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
             } else if (Episode::QueuedForDownload==episode->downloadProg) {
                 return Icon("clock");
             } else {
-                return Icons::self()->audioFileIcon;
+                return Icons::self()->audioListIcon;
             }
         case Cantata::Role_MainText:
         case Qt::DisplayRole:

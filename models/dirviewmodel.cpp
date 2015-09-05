@@ -174,7 +174,7 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
         if (DirViewItem::Type_Dir==item->type()) {
             return Icons::self()->folderIcon;
         } else if (DirViewItem::Type_File==item->type()) {
-            return DirViewItemFile::Audio!=static_cast<DirViewItemFile *>(item)->fileType() ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
+            return DirViewItemFile::Audio!=static_cast<DirViewItemFile *>(item)->fileType() ? Icons::self()->playlistListIcon : Icons::self()->audioListIcon;
         }
         break;
     }

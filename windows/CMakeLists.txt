@@ -13,7 +13,7 @@ if (ENABLE_QT5)
     set(QT_PLUGINS_DIR ${QT_DIR}/plugins)
     set(QT_TRANSLATIONS_DIR ${QT_DIR}/translations)
 
-    configure_file(cantata-qt5.nsi.cmake ${CMAKE_CURRENT_BINARY_DIR}/cantata.nsi)
+    configure_file(cantata-qt5-${CANTATA_ICON_THEME}.nsi.cmake ${CMAKE_CURRENT_BINARY_DIR}/cantata.nsi)
 
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cantata.nsi cantata.ico LICENSE.txt "Cantata README.txt" "Qt License (LGPL V2).txt" "TagLib README.txt" DESTINATION ${CMAKE_INSTALL_PREFIX})
 
@@ -37,7 +37,7 @@ if (ENABLE_QT5)
         ${QT_BINARY_DIR}/libgcc_s_dw2-1.dll ${QT_BINARY_DIR}/libstdc++-6.dll ${QT_BINARY_DIR}/libwinpthread-1.dll
         ${ZLIB_INCLUDE_DIR}/../bin/libz-1.dll ${TAGLIB_INCLUDES}/../bin/libtag.dll)
 else (ENABLE_QT5)
-    configure_file(cantata.nsi.cmake ${CMAKE_CURRENT_BINARY_DIR}/cantata.nsi)
+    configure_file(cantata-${CANTATA_ICON_THEME}.nsi.cmake ${CMAKE_CURRENT_BINARY_DIR}/cantata.nsi)
     configure_file(cantata.iss.cmake ${CMAKE_CURRENT_BINARY_DIR}/cantata.iss)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cantata.nsi cantata.ico LICENSE.txt "Cantata README.txt" "Qt4 README.txt" "Qt License (LGPL V2).txt" "TagLib README.txt" DESTINATION ${CMAKE_INSTALL_PREFIX})
 
@@ -69,5 +69,5 @@ install(FILES ${EXTRA_WIN_LIBS} DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES LICENSE.txt DESTINATION ${CMAKE_INSTALL_PREFIX} RENAME "Cantata License (GPL V3).txt")
 
 if (CANTATA_ICONS_DIR)
-    add_subdirectory(icons)
+    add_subdirectory(icons-${CANTATA_ICON_THEME})
 endif (CANTATA_ICONS_DIR)

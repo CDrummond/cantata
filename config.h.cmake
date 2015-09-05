@@ -69,4 +69,6 @@
 
 #define LINUX_LIB_DIR "@LINUX_LIB_DIR@"
 
+#define CANTATA_ICON_THEME "@CANTATA_ICON_THEME@"
+
 #endif

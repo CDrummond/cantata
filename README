@@ -920,7 +920,7 @@ This assumes the following folder structure:
     z:\cantata\src          [ Checkout of Cantata's source code ]
     z:\cantata\build        
     z:\cantata\install      [ make install will place target files here ]
-    z:\cantata\icons        [ Oxygen icons folder ]
+    z:\cantata\icons        [ Humanity/Oxygen icons folder ]
     z:\dev\MingGW
     z:\dev\Qt\4.8.4
     z:\dev\taglib
@@ -935,7 +935,12 @@ This assumes the following folder structure:
     QTDIR=z:\dev\Qt\4.8.4
     PATH=z:\dev\Qt\4.8.4\bin;z:\dev\MinGW\bin;z:\dev\taglib\bin;z:\dev\cmake\bin
 
-3. Download oxygen icons required for Cantata from the following link
+3a. Download Humanity/gnome required for Cantata from the following link
+    https://drive.google.com/file/d/0Bzghs6gQWi60QUxuakFQNWF0VU0/view?usp=sharing
+
+    - OR - 
+
+3b. Download oxygen icons required for Cantata from the following link
     https://drive.google.com/file/d/0Bzghs6gQWi60cXlvUURjeEVRUms/edit?usp=sharing
 
 4. Unzip this *within* icons/
@@ -943,8 +948,11 @@ This assumes the following folder structure:
 5. Call cmake (e.g. from build folder):
      cmake ../src -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DTAGLIB_CAN_SAVE_ID3VER=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/lib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DCANTATA_MINGW_LIBS=z:/dev/MinGW/bin/mingwm10.dll;z:/dev/MinGW/bin/libgcc_s_dw2-1.dll -DCANTATA_SSL_LIBS=z:/dev/ssl/libeay32.dll;z:/dev/ssl/ssleay32.dll -DCANTATA_ICONS_DIR=z:/cantata/icons
 
-   (Note: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the
-          TagLib settings have been manually set)
+   Notes: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the
+          TagLib settings have been manually set,
+
+          If using oxygen icons (i.e. you used step 3b not 3a), then also pass
+           -DCANTATA_ICON_THEME=oxygen
 
 6. make
 
@@ -966,7 +974,7 @@ This assumes the following folder structure:
     z:\cantata\src          [ Checkout of Cantata's source code ]
     z:\cantata\build
     z:\cantata\install      [ make install will place target files here ]
-    z:\cantata\icons        [ Oxygen icons folder ]
+    z:\cantata\icons        [ Humanity/Oxygen icons folder ]
     z:\dev\Qt
     z:\dev\taglib
     z:\dev\zlib
@@ -980,7 +988,12 @@ s
     QTDIR=z:\dev\Qt\5.3\mingw482_32
     PATH=z:\dev\Qt\5.3\mingw482_32\bin;z:\dev\Qt\Tools\mingw482_32\bin;z:\dev\taglib\bin;z:\dev\cmake\bin
 
-3. Download oxygen icons required for Cantata from the following link
+3a. Download Humanity/gnome required for Cantata from the following link
+    https://drive.google.com/file/d/0Bzghs6gQWi60QUxuakFQNWF0VU0/view?usp=sharing
+
+    - OR -
+
+3b. Download oxygen icons required for Cantata from the following link
     https://drive.google.com/file/d/0Bzghs6gQWi60cXlvUURjeEVRUms/edit?usp=sharing
 
 4. Unzip this *within* icons/
@@ -988,8 +1001,11 @@ s
 5. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
      ../src -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DTAGLIB_CAN_SAVE_ID3VER=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/lib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DENABLE_QT5=ON -DCANTATA_SSL_LIBS=z:/dev/ssl/libeay32.dll;z:/dev/ssl/ssleay32.dll -DCANTATA_ICONS_DIR=z:/cantata/icons
 
-   (Note: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the
-          TagLib settings have been manually set)
+   Notes: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the
+          TagLib settings have been manually set,
+
+          If using oxygen icons (i.e. you used step 3b not 3a), then also pass
+           -DCANTATA_ICON_THEME=oxygen
 
 6. Build via QtCreator
 
@@ -1046,13 +1062,20 @@ These steps assume the following structure:
 
 3. brew install cmake taglib ffmpeg speex
 
-4. Download oxygen icons required for Cantata from the following link
+4a. Download Humanity/gnome required for Cantata from the following link
+    https://drive.google.com/file/d/0Bzghs6gQWi60QUxuakFQNWF0VU0/view?usp=sharing
+
+    - OR -
+
+4b. Download oxygen icons required for Cantata from the following link
     https://drive.google.com/file/d/0Bzghs6gQWi60cXlvUURjeEVRUms/edit?usp=sharing
 
 5. Unzip this *within* icons/
 
 6. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
      ../src -DCMAKE_PREFIX_PATH=/Users/$USER/Qt/5.3/clang_64/ -DCMAKE_BUILD_TYPE=Release -DCANTATA_ICONS_DIR=`pwd`/../icons -DCMAKE_INSTALL_PREFIX=`pwd`/../install
+
+   If using oxygen icons (i.e. you used step 4b not 4a), then also pass -DCANTATA_ICON_THEME=oxygen
 
 7. Build via QtCreator
 

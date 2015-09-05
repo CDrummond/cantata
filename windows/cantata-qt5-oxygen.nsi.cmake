@@ -97,21 +97,24 @@ section "install"
     file "cantata-tags.exe"
     file "Cantata License (GPL V3).txt"
     file "Cantata README.txt"
-    file "Qt4 README.txt"
     file "Qt License (LGPL V2).txt"
     file "TagLib README.txt"
+    file "Qt5Core.dll"
+    file "Qt5Gui.dll"
+    file "Qt5Network.dll"
+    file "Qt5Svg.dll"
+    file "Qt5Widgets.dll"
+    file "Qt5WinExtras.dll"
+    file "Qt5Sql.dll"
+    file "icudt52.dll"
+    file "icuin52.dll"
+    file "icuuc52.dll"
+    file "libgcc_s_dw2-1.dll"
+    file "libstdc++-6.dll"
+    file "libtag.dll"
+    file "libwinpthread-1.dll"
     file "libz-1.dll"
     @CANTATA_SSL_WIN_NSIS_INSTALL@
-    file "libgcc_s_dw2-1.dll"
-    file "libtag.dll"
-    file "mingwm10.dll"
-    file "QtCore4.dll"
-    file "QtGui4.dll"
-    file "QtNetwork4.dll"
-    file "QtSvg4.dll"
-    file "QtXml4.dll"
-    file "QtSql4.dll"
-    file "libtag.dll"
     setOutPath $INSTDIR\config
     file "config\lyrics_providers.xml"
     file "config\podcast_directories.xml"
@@ -119,9 +122,11 @@ section "install"
     file "config\tag_fixes.xml"
     file "config\weblinks.xml"
     setOutPath $INSTDIR\iconengines
-    file "iconengines\qsvgicon4.dll"
+    file "iconengines\qsvgicon.dll"
     setOutPath $INSTDIR\sqldrivers
-    file "sqldrivers\qsqlite4.dll"
+    file "sqldrivers\qsqlite.dll"
+    setOutPath $INSTDIR\platforms
+    file "platforms\qwindows.dll"
     setOutPath $INSTDIR\icons
     file "icons\bbc.svg"
     file "icons\cbc.svg"
@@ -403,8 +408,8 @@ section "install"
     setOutPath $INSTDIR\icons\oxygen\scalable\apps
     file "icons\oxygen\scalable\apps\cantata.svg"
     setOutPath $INSTDIR\imageformats
-    file "imageformats\qjpeg4.dll"
-    file "imageformats\qsvg4.dll"
+    file "imageformats\qjpeg.dll"
+    file "imageformats\qsvg.dll"
     setOutPath $INSTDIR\translations
     file "translations\cantata_cs.qm"
     file "translations\cantata_de.qm"
@@ -416,16 +421,19 @@ section "install"
     file "translations\cantata_pl.qm"
     file "translations\cantata_ru.qm"
     file "translations\cantata_zh_CN.qm"
+
     file "translations\qt_ar.qm"
     file "translations\qt_cs.qm"
     file "translations\qt_da.qm"
     file "translations\qt_de.qm"
     file "translations\qt_es.qm"
     file "translations\qt_fa.qm"
+    file "translations\qt_fi.qm"
     file "translations\qt_fr.qm"
     file "translations\qt_gl.qm"
     file "translations\qt_he.qm"
     file "translations\qt_hu.qm"
+    file "translations\qt_it.qm"
     file "translations\qt_ja.qm"
     file "translations\qt_ko.qm"
     file "translations\qt_lt.qm"
@@ -481,7 +489,9 @@ section "uninstall"
     delete "$INSTDIR\config\weblinks.xml"
     delete "$INSTDIR\helpers\cantata-tags.exe"
     delete "$INSTDIR\iconengines\qsvgicon4.dll"
+    delete "$INSTDIR\iconengines\qsvgicon.dll"
     delete "$INSTDIR\sqldrivers\qsqlite4.dll"
+    delete "$INSTDIR\sqldrivers\qsqlite.dll"
     delete "$INSTDIR\icons\bbc.svg"
     delete "$INSTDIR\icons\cbc.svg"
     delete "$INSTDIR\icons\npr.svg"
@@ -726,11 +736,178 @@ section "uninstall"
     delete "$INSTDIR\icons\oxygen\64x64\status\dialog-information.png"
     delete "$INSTDIR\icons\oxygen\64x64\status\dialog-warning.png"
     delete "$INSTDIR\icons\oxygen\scalable\apps\cantata.svg"
+    delete "$INSTDIR\icons\humanity\gnome.copyright"
+    delete "$INSTDIR\icons\humanity\Humanity.copyright"
+    delete "$INSTDIR\icons\humanity\index.theme"
+    delete "$INSTDIR\icons\humanity\README"
+    delete "$INSTDIR\icons\humanity\status\16\dialog-information.svg"
+    delete "$INSTDIR\icons\humanity\status\48\media-playlist-shuffle.svg"
+    delete "$INSTDIR\icons\humanity\status\48\dialog-information.svg"
+    delete "$INSTDIR\icons\humanity\status\128\dialog-information.svg"
+    delete "$INSTDIR\icons\humanity\status\24\media-playlist-shuffle.svg"
+    delete "$INSTDIR\icons\humanity\status\24\dialog-information.svg"
+    delete "$INSTDIR\icons\humanity\status\32\dialog-information.svg"
+    delete "$INSTDIR\icons\humanity\status\64\dialog-information.svg"
+    delete "$INSTDIR\icons\humanity\status\22\dialog-information.svg"
+    delete "$INSTDIR\icons\humanity\devices\16\drive-harddisk.svg"
+    delete "$INSTDIR\icons\humanity\devices\16\media-optical.svg"
+    delete "$INSTDIR\icons\humanity\devices\16\media-optical-cd.svg"
+    delete "$INSTDIR\icons\humanity\devices\16\audio-speakers.png"
+    delete "$INSTDIR\icons\humanity\devices\48\drive-harddisk.svg"
+    delete "$INSTDIR\icons\humanity\devices\48\media-optical.svg"
+    delete "$INSTDIR\icons\humanity\devices\48\media-optical-cd.svg"
+    delete "$INSTDIR\icons\humanity\devices\48\audio-speakers.png"
+    delete "$INSTDIR\icons\humanity\devices\128\drive-harddisk.svg"
+    delete "$INSTDIR\icons\humanity\devices\128\media-optical.svg"
+    delete "$INSTDIR\icons\humanity\devices\128\media-optical-cd.svg"
+    delete "$INSTDIR\icons\humanity\devices\24\drive-harddisk.svg"
+    delete "$INSTDIR\icons\humanity\devices\24\media-optical.svg"
+    delete "$INSTDIR\icons\humanity\devices\24\media-optical-cd.svg"
+    delete "$INSTDIR\icons\humanity\devices\24\audio-speakers.png"
+    delete "$INSTDIR\icons\humanity\devices\32\drive-harddisk.svg"
+    delete "$INSTDIR\icons\humanity\devices\32\media-optical.svg"
+    delete "$INSTDIR\icons\humanity\devices\32\media-optical-cd.svg"
+    delete "$INSTDIR\icons\humanity\devices\32\audio-speakers.png"
+    delete "$INSTDIR\icons\humanity\devices\64\drive-harddisk.svg"
+    delete "$INSTDIR\icons\humanity\devices\64\media-optical.svg"
+    delete "$INSTDIR\icons\humanity\devices\64\media-optical-cd.svg"
+    delete "$INSTDIR\icons\humanity\devices\22\drive-harddisk.svg"
+    delete "$INSTDIR\icons\humanity\devices\22\media-optical.svg"
+    delete "$INSTDIR\icons\humanity\devices\22\media-optical-cd.svg"
+    delete "$INSTDIR\icons\humanity\devices\22\audio-speakers.png"
+    delete "$INSTDIR\icons\humanity\places\16\folder-documents.svg"
+    delete "$INSTDIR\icons\humanity\places\16\folder-templates.svg"
+    delete "$INSTDIR\icons\humanity\places\16\folder-publicshare.svg"
+    delete "$INSTDIR\icons\humanity\places\16\inode-directory.svg"
+    delete "$INSTDIR\icons\humanity\places\16\folder-download.svg"
+    delete "$INSTDIR\icons\humanity\places\16\folder.svg"
+    delete "$INSTDIR\icons\humanity\places\16\user-desktop.svg"
+    delete "$INSTDIR\icons\humanity\places\16\folder-downloads.svg"
+    delete "$INSTDIR\icons\humanity\places\16\folder-music.svg"
+    delete "$INSTDIR\icons\humanity\places\48\folder-documents.svg"
+    delete "$INSTDIR\icons\humanity\places\48\folder-templates.svg"
+    delete "$INSTDIR\icons\humanity\places\48\folder-publicshare.svg"
+    delete "$INSTDIR\icons\humanity\places\48\inode-directory.svg"
+    delete "$INSTDIR\icons\humanity\places\48\folder-download.svg"
+    delete "$INSTDIR\icons\humanity\places\48\folder.svg"
+    delete "$INSTDIR\icons\humanity\places\48\user-desktop.svg"
+    delete "$INSTDIR\icons\humanity\places\48\folder-downloads.svg"
+    delete "$INSTDIR\icons\humanity\places\48\folder-music.svg"
+    delete "$INSTDIR\icons\humanity\places\128\user-desktop.svg"
+    delete "$INSTDIR\icons\humanity\places\24\folder-documents.svg"
+    delete "$INSTDIR\icons\humanity\places\24\folder-templates.svg"
+    delete "$INSTDIR\icons\humanity\places\24\folder-publicshare.svg"
+    delete "$INSTDIR\icons\humanity\places\24\inode-directory.svg"
+    delete "$INSTDIR\icons\humanity\places\24\folder-download.svg"
+    delete "$INSTDIR\icons\humanity\places\24\folder.svg"
+    delete "$INSTDIR\icons\humanity\places\24\user-desktop.svg"
+    delete "$INSTDIR\icons\humanity\places\24\folder-downloads.svg"
+    delete "$INSTDIR\icons\humanity\places\24\folder-music.svg"
+    delete "$INSTDIR\icons\humanity\places\32\folder-documents.svg"
+    delete "$INSTDIR\icons\humanity\places\32\folder-templates.svg"
+    delete "$INSTDIR\icons\humanity\places\32\folder-publicshare.svg"
+    delete "$INSTDIR\icons\humanity\places\32\inode-directory.svg"
+    delete "$INSTDIR\icons\humanity\places\32\folder-download.svg"
+    delete "$INSTDIR\icons\humanity\places\32\folder.svg"
+    delete "$INSTDIR\icons\humanity\places\32\user-desktop.svg"
+    delete "$INSTDIR\icons\humanity\places\32\folder-downloads.svg"
+    delete "$INSTDIR\icons\humanity\places\32\folder-music.svg"
+    delete "$INSTDIR\icons\humanity\places\64\folder-documents.svg"
+    delete "$INSTDIR\icons\humanity\places\64\folder-templates.svg"
+    delete "$INSTDIR\icons\humanity\places\64\folder-publicshare.svg"
+    delete "$INSTDIR\icons\humanity\places\64\inode-directory.svg"
+    delete "$INSTDIR\icons\humanity\places\64\folder-download.svg"
+    delete "$INSTDIR\icons\humanity\places\64\folder.svg"
+    delete "$INSTDIR\icons\humanity\places\64\user-desktop.svg"
+    delete "$INSTDIR\icons\humanity\places\64\folder-downloads.svg"
+    delete "$INSTDIR\icons\humanity\places\64\folder-music.svg"
+    delete "$INSTDIR\icons\humanity\places\22\folder-documents.svg"
+    delete "$INSTDIR\icons\humanity\places\22\folder-templates.svg"
+    delete "$INSTDIR\icons\humanity\places\22\folder-publicshare.svg"
+    delete "$INSTDIR\icons\humanity\places\22\inode-directory.svg"
+    delete "$INSTDIR\icons\humanity\places\22\folder-download.svg"
+    delete "$INSTDIR\icons\humanity\places\22\folder.svg"
+    delete "$INSTDIR\icons\humanity\places\22\user-desktop.svg"
+    delete "$INSTDIR\icons\humanity\places\22\folder-downloads.svg"
+    delete "$INSTDIR\icons\humanity\places\22\folder-music.svg"
+    delete "$INSTDIR\icons\humanity\actions\16\go-down.svg"
+    delete "$INSTDIR\icons\humanity\actions\16\gtk-edit.svg"
+    delete "$INSTDIR\icons\humanity\actions\16\edit-clear.svg"
+    delete "$INSTDIR\icons\humanity\actions\16\go-previous.svg"
+    delete "$INSTDIR\icons\humanity\actions\16\go-up.svg"
+    delete "$INSTDIR\icons\humanity\actions\16\document-open.svg"
+    delete "$INSTDIR\icons\humanity\actions\16\edit-find.png"
+    delete "$INSTDIR\icons\humanity\actions\16\document-new.svg"
+    delete "$INSTDIR\icons\humanity\actions\16\go-next.svg"
+    delete "$INSTDIR\icons\humanity\actions\48\go-down.svg"
+    delete "$INSTDIR\icons\humanity\actions\48\gtk-edit.svg"
+    delete "$INSTDIR\icons\humanity\actions\48\edit-clear.svg"
+    delete "$INSTDIR\icons\humanity\actions\48\gtk-execute.svg"
+    delete "$INSTDIR\icons\humanity\actions\48\document-open-recent.svg"
+    delete "$INSTDIR\icons\humanity\actions\48\go-previous.svg"
+    delete "$INSTDIR\icons\humanity\actions\48\go-up.svg"
+    delete "$INSTDIR\icons\humanity\actions\48\document-open.svg"
+    delete "$INSTDIR\icons\humanity\actions\48\edit-find.png"
+    delete "$INSTDIR\icons\humanity\actions\48\document-new.svg"
+    delete "$INSTDIR\icons\humanity\actions\48\go-next.svg"
+    delete "$INSTDIR\icons\humanity\actions\128\document-new.svg"
+    delete "$INSTDIR\icons\humanity\actions\24\go-down.svg"
+    delete "$INSTDIR\icons\humanity\actions\24\gtk-edit.svg"
+    delete "$INSTDIR\icons\humanity\actions\24\edit-clear.svg"
+    delete "$INSTDIR\icons\humanity\actions\24\gtk-execute.svg"
+    delete "$INSTDIR\icons\humanity\actions\24\document-open-recent.svg"
+    delete "$INSTDIR\icons\humanity\actions\24\go-previous.svg"
+    delete "$INSTDIR\icons\humanity\actions\24\go-up.svg"
+    delete "$INSTDIR\icons\humanity\actions\24\document-open.svg"
+    delete "$INSTDIR\icons\humanity\actions\24\edit-find.png"
+    delete "$INSTDIR\icons\humanity\actions\24\document-new.svg"
+    delete "$INSTDIR\icons\humanity\actions\24\go-next.svg"
+    delete "$INSTDIR\icons\humanity\actions\32\edit-find.png"
+    delete "$INSTDIR\icons\humanity\actions\32\document-new.svg"
+    delete "$INSTDIR\icons\humanity\actions\64\document-new.svg"
+    delete "$INSTDIR\icons\humanity\actions\22\go-down.svg"
+    delete "$INSTDIR\icons\humanity\actions\22\gtk-edit.svg"
+    delete "$INSTDIR\icons\humanity\actions\22\document-open-recent.svg"
+    delete "$INSTDIR\icons\humanity\actions\22\go-previous.svg"
+    delete "$INSTDIR\icons\humanity\actions\22\go-up.svg"
+    delete "$INSTDIR\icons\humanity\actions\22\edit-find.png"
+    delete "$INSTDIR\icons\humanity\actions\22\document-new.svg"
+    delete "$INSTDIR\icons\humanity\actions\22\go-next.svg"
+    delete "$INSTDIR\icons\humanity\categories\48\preferences-other.svg"
+    delete "$INSTDIR\icons\humanity\categories\24\preferences-other.svg"
+    delete "$INSTDIR\icons\humanity\categories\64\preferences-other.svg"
+    delete "$INSTDIR\icons\humanity\mimes\16\image-png.svg"
+    delete "$INSTDIR\icons\humanity\mimes\16\audio-x-mp3-playlist.svg"
+    delete "$INSTDIR\icons\humanity\mimes\16\audio-x-generic.svg"
+    delete "$INSTDIR\icons\humanity\mimes\48\image-png.svg"
+    delete "$INSTDIR\icons\humanity\mimes\48\audio-x-mp3-playlist.svg"
+    delete "$INSTDIR\icons\humanity\mimes\48\audio-x-generic.svg"
+    delete "$INSTDIR\icons\humanity\mimes\24\image-png.svg"
+    delete "$INSTDIR\icons\humanity\mimes\24\audio-x-mp3-playlist.svg"
+    delete "$INSTDIR\icons\humanity\mimes\24\audio-x-generic.svg"
+    delete "$INSTDIR\icons\humanity\mimes\22\image-png.svg"
+    delete "$INSTDIR\icons\humanity\mimes\22\audio-x-mp3-playlist.svg"
+    delete "$INSTDIR\icons\humanity\mimes\22\audio-x-generic.svg"
+    delete "$INSTDIR\icons\humanity\apps\16\preferences-desktop-keyboard.svg"
+    delete "$INSTDIR\icons\humanity\apps\48\preferences-desktop-keyboard.svg"
+    delete "$INSTDIR\icons\humanity\apps\24\preferences-desktop-keyboard.svg"
+    delete "$INSTDIR\icons\humanity\apps\16\cantata.png"
+    delete "$INSTDIR\icons\humanity\apps\22\cantata.png"
+    delete "$INSTDIR\icons\humanity\apps\24\cantata.png"
+    delete "$INSTDIR\icons\humanity\apps\32\cantata.png"
+    delete "$INSTDIR\icons\humanity\apps\48\cantata.png"
+    delete "$INSTDIR\icons\humanity\apps\64\cantata.png"
+    delete "$INSTDIR\icons\humanity\apps\scalable\cantata.svg"
     delete "$INSTDIR\imageformats\qjpeg4.dll"
     delete "$INSTDIR\imageformats\qsvg4.dll"
+    delete "$INSTDIR\imageformats\qjpeg.dll"
+    delete "$INSTDIR\imageformats\qsvg.dll"
+    delete "$INSTDIR\platforms\qwindows.dll"
     delete "$INSTDIR\Qt4 README.txt"
     delete "$INSTDIR\Qt License (LGPL V2).txt"
+    delete "$INSTDIR\QtNetwork4.dll"
     delete "$INSTDIR\TagLib README.txt"
+
     delete "$INSTDIR\QtNetwork4.dll"
     delete "$INSTDIR\QtSvg4.dll"
     delete "$INSTDIR\QtXml4.dll"
@@ -740,6 +917,26 @@ section "uninstall"
     delete "$INSTDIR\libgcc_s_dw2-1.dll"
     delete "$INSTDIR\libtag.dll"
     delete "$INSTDIR\mingwm10.dll"
+
+    delete "$INSTDIR\Qt5Core.dll"
+    delete "$INSTDIR\Qt5Gui.dll"
+    delete "$INSTDIR\Qt5Network.dll"
+    delete "$INSTDIR\Qt5Svg.dll"
+    delete "$INSTDIR\Qt5Widgets.dll"
+    delete "$INSTDIR\Qt5WinExtras.dll"
+    delete "$INSTDIR\Qt5Sql.dll"
+
+    delete "$INSTDIR\icudt52.dll"
+    delete "$INSTDIR\icuin52.dll"
+    delete "$INSTDIR\icuuc52.dll"
+    delete "$INSTDIR\libgcc_s_dw2-1.dll"
+    delete "$INSTDIR\libstdc++-6.dll"
+    delete "$INSTDIR\libwinpthread-1.dll"
+    delete "$INSTDIR\zlib1.dll"
+    delete "$INSTDIR\libz-1.dll"
+    delete "$INSTDIR\libeay32.dll"
+    delete "$INSTDIR\ssleay32.dll"
+
     delete "$INSTDIR\translations\cantata_cs.qm"
     delete "$INSTDIR\translations\cantata_de.qm"
     delete "$INSTDIR\translations\cantata_en_GB.qm"
@@ -756,10 +953,12 @@ section "uninstall"
     delete "$INSTDIR\translations\qt_de.qm"
     delete "$INSTDIR\translations\qt_es.qm"
     delete "$INSTDIR\translations\qt_fa.qm"
+    delete "$INSTDIR\translations\qt_fi.qm"
     delete "$INSTDIR\translations\qt_fr.qm"
     delete "$INSTDIR\translations\qt_gl.qm"
     delete "$INSTDIR\translations\qt_he.qm"
     delete "$INSTDIR\translations\qt_hu.qm"
+    delete "$INSTDIR\translations\qt_it.qm"
     delete "$INSTDIR\translations\qt_ja.qm"
     delete "$INSTDIR\translations\qt_ko.qm"
     delete "$INSTDIR\translations\qt_lt.qm"
@@ -772,11 +971,7 @@ section "uninstall"
     delete "$INSTDIR\translations\qt_uk.qm"
     delete "$INSTDIR\translations\qt_zh_CN.qm"
     delete "$INSTDIR\translations\qt_zh_TW.qm"
-    delete "$INSTDIR\zlib1.dll"
-    delete "$INSTDIR\libz-1.dll"
-    delete "$INSTDIR\libeay32.dll"
-    delete "$INSTDIR\ssleay32.dll"
- 
+
     rmDir $INSTDIR\config
     rmDir $INSTDIR\helpers
     rmDir $INSTDIR\iconengines
@@ -829,8 +1024,59 @@ section "uninstall"
     rmDir $INSTDIR\icons\oxygen\scalable\apps
     rmDir $INSTDIR\icons\oxygen\scalable
     rmDir $INSTDIR\icons\oxygen
+    rmDir $INSTDIR\icons\humanity\status\16
+    rmDir $INSTDIR\icons\humanity\status\48
+    rmDir $INSTDIR\icons\humanity\status\128
+    rmDir $INSTDIR\icons\humanity\status\24
+    rmDir $INSTDIR\icons\humanity\status\32
+    rmDir $INSTDIR\icons\humanity\status\64
+    rmDir $INSTDIR\icons\humanity\status\22
+    rmDir $INSTDIR\icons\humanity\devices\16
+    rmDir $INSTDIR\icons\humanity\devices\48
+    rmDir $INSTDIR\icons\humanity\devices\128
+    rmDir $INSTDIR\icons\humanity\devices\24
+    rmDir $INSTDIR\icons\humanity\devices\32
+    rmDir $INSTDIR\icons\humanity\devices\64
+    rmDir $INSTDIR\icons\humanity\devices\22
+    rmDir $INSTDIR\icons\humanity\places\16
+    rmDir $INSTDIR\icons\humanity\places\48
+    rmDir $INSTDIR\icons\humanity\places\128
+    rmDir $INSTDIR\icons\humanity\places\24
+    rmDir $INSTDIR\icons\humanity\places\32
+    rmDir $INSTDIR\icons\humanity\places\64
+    rmDir $INSTDIR\icons\humanity\places\22
+    rmDir $INSTDIR\icons\humanity\actions\16
+    rmDir $INSTDIR\icons\humanity\actions\48
+    rmDir $INSTDIR\icons\humanity\actions\128
+    rmDir $INSTDIR\icons\humanity\actions\24
+    rmDir $INSTDIR\icons\humanity\actions\32
+    rmDir $INSTDIR\icons\humanity\actions\64
+    rmDir $INSTDIR\icons\humanity\actions\22
+    rmDir $INSTDIR\icons\humanity\categories\48
+    rmDir $INSTDIR\icons\humanity\categories\24
+    rmDir $INSTDIR\icons\humanity\categories\64
+    rmDir $INSTDIR\icons\humanity\mimes\16
+    rmDir $INSTDIR\icons\humanity\mimes\48
+    rmDir $INSTDIR\icons\humanity\mimes\24
+    rmDir $INSTDIR\icons\humanity\mimes\22
+    rmDir $INSTDIR\icons\humanity\apps\16
+    rmDir $INSTDIR\icons\humanity\apps\48
+    rmDir $INSTDIR\icons\humanity\apps\24
+    rmDir $INSTDIR\icons\humanity\apps\22
+    rmDir $INSTDIR\icons\humanity\apps\32
+    rmDir $INSTDIR\icons\humanity\apps\64
+    rmDir $INSTDIR\icons\humanity\apps\scalable
+    rmDir $INSTDIR\icons\humanity\status
+    rmDir $INSTDIR\icons\humanity\devices
+    rmDir $INSTDIR\icons\humanity\places
+    rmDir $INSTDIR\icons\humanity\actions
+    rmDir $INSTDIR\icons\humanity\categories
+    rmDir $INSTDIR\icons\humanity\mimes
+    rmDir $INSTDIR\icons\humanity\apps
+    rmDir $INSTDIR\icons\humanity
     rmDir $INSTDIR\icons
     rmDir $INSTDIR\imageformats
+    rmDir $INSTDIR\platforms
     rmDir $INSTDIR\translations
 
     # Always delete uninstaller as the last action

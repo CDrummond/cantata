@@ -24,6 +24,7 @@
 #include "application_mac.h"
 #include "settings.h"
 #include "support/utils.h"
+#include "config.h"
 #include <QIcon>
 
 Application::Application(int &argc, char **argv)
@@ -43,5 +44,5 @@ Application::Application(int &argc, char **argv)
         QIcon::setThemeSearchPaths(QStringList() << path << paths);
     }
 
-    QIcon::setThemeName(QLatin1String("oxygen"));
+    QIcon::setThemeName(QLatin1String(CANTATA_ICON_THEME));
 }

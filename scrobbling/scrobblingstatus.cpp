@@ -24,22 +24,31 @@
 #include "scrobblingstatus.h"
 #include "scrobbler.h"
 #include "widgets/icons.h"
+#include "widgets/spacerwidget.h"
 #include "support/localize.h"
+#include <QHBoxLayout>
 
 ScrobblingStatus::ScrobblingStatus(QWidget *p)
-    : ToolButton(p)
+    : QWidget(p)
 {
-    setCheckable(true);
-    setIcon(Icons::self()->lastFmIcon);
+    btn = new ToolButton(this);
+    btn->setCheckable(true);
+    btn->setIcon(Icons::self()->lastFmIcon);
     connect(Scrobbler::self(), SIGNAL(authenticated(bool)), SLOT(setVisible(bool)));
-    connect(Scrobbler::self(), SIGNAL(enabled(bool)), SLOT(setChecked(bool)));
-    connect(this, SIGNAL(toggled(bool)), Scrobbler::self(), SLOT(setEnabled(bool)));
+    connect(Scrobbler::self(), SIGNAL(enabled(bool)), btn, SLOT(setChecked(bool)));
+    connect(btn, SIGNAL(toggled(bool)), Scrobbler::self(), SLOT(setEnabled(bool)));
     setVisible(Scrobbler::self()->isAuthenticated());
-    setChecked(Scrobbler::self()->isEnabled());
+    btn->setChecked(Scrobbler::self()->isEnabled());
     scrobblerChanged();
+
+    QHBoxLayout *l=new QHBoxLayout(this);
+    l->setMargin(0);
+    l->setSpacing(0);
+    l->addWidget(btn);
+    l->addWidget(new SpacerWidget(this));
 }
 
 void ScrobblingStatus::scrobblerChanged()
 {
-    setToolTip(i18n("%1: Scrobble Tracks", Scrobbler::self()->activeScrobbler()));
+    btn->setToolTip(i18n("%1: Scrobble Tracks", Scrobbler::self()->activeScrobbler()));
 }

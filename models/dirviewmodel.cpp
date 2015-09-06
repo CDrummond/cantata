@@ -172,7 +172,7 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
     #else
     case Qt::DecorationRole: {
         if (DirViewItem::Type_Dir==item->type()) {
-            return Icons::self()->folderIcon;
+            return Icons::self()->folderListIcon;
         } else if (DirViewItem::Type_File==item->type()) {
             return DirViewItemFile::Audio!=static_cast<DirViewItemFile *>(item)->fileType() ? Icons::self()->playlistListIcon : Icons::self()->audioListIcon;
         }

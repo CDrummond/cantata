@@ -105,9 +105,9 @@ static QString constDirbleUrl=QLatin1String("http://")+StreamsModel::constDirble
 
 static const QLatin1String constBookmarksDir=QLatin1String("bookmarks");
 
-static Icon getIcon(const QString &name)
+static QIcon getIcon(const QString &name)
 {
-    Icon icon;
+    QIcon icon;
     icon.addFile(":"+name);
     return icon.isNull() ? Icons::self()->streamCategoryIcon : icon;
 }
@@ -652,7 +652,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             const CategoryItem *cat=static_cast<const CategoryItem *>(item);
             return cat->icon.isNull() ? Icons::self()->streamCategoryIcon : cat->icon;
         } else {
-            return Icons::self()->radioStreamIcon;
+            return Icons::self()->streamListIcon;
         }
     case Qt::DisplayRole:
         return item->name;

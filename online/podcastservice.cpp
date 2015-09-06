@@ -515,13 +515,13 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
         switch (role) {
         case Qt::DecorationRole:
             if (!episode->localFile.isEmpty()) {
-                return Icons::self()->downloadedPodcastEpisodeIcon;
+                return Icons::self()->savedRssListIcon;
             } else if (episode->downloadProg>=0) {
-                return Icon("go-down");
+                return Icons::self()->downloadIcon;
             } else if (Episode::QueuedForDownload==episode->downloadProg) {
-                return Icon("clock");
+                return Icons::self()->clockIcon;
             } else {
-                return Icons::self()->audioListIcon;
+                return Icons::self()->rssListIcon;
             }
         case Cantata::Role_MainText:
         case Qt::DisplayRole:

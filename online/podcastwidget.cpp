@@ -41,7 +41,7 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
 {
     proxy.setSourceModel(srv);
     view->setModel(&proxy);
-    subscribeAction = new Action(Icon("document-new"), i18n("Add Subscription"), this);
+    subscribeAction = new Action(Icons::self()->addNewItemIcon, i18n("Add Subscription"), this);
     unSubscribeAction = new Action(Icon("list-remove"), i18n("Remove Subscription"), this);
     downloadAction = new Action(Icon("go-down"), i18n("Download Episodes"), this);
     deleteAction = new Action(Icon("edit-delete"), i18n("Delete Downloaded Episodes"), this);

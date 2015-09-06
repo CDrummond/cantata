@@ -58,7 +58,7 @@
 DevicesPage::DevicesPage(QWidget *p)
     : SinglePageWidget(p)
 {
-    copyAction = new Action(Icons::self()->importIcon, i18n("Copy To Library"), this);
+    copyAction = new Action(Icons::self()->downloadIcon, i18n("Copy To Library"), this);
     ToolButton *copyToLibraryButton=new ToolButton(this);
     copyToLibraryButton->setDefaultAction(copyAction);
     #ifdef ENABLE_REMOTE_DEVICES

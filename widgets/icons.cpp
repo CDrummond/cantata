@@ -410,7 +410,6 @@ Icons::Icons()
     }
     albumIcon=Icon(QStringList() << "media-optical" << "media-optical-audio");
     podcastIcon=Icon("inode-directory");
-    downloadedPodcastEpisodeIcon=Icon("document-save-as");
     audioFileIcon=Icon("audio-x-generic");
     playlistFileIcon=Icon(QStringList() << "view-media-playlist" << "audio-x-mp3-playlist" << "audio-x-generic");
     folderIcon=Icon("inode-directory");
@@ -441,7 +440,7 @@ Icons::Icons()
         centrePlayQueueOnTrackIcon=loadAwesomeIcon(Qt::RightToLeft==QApplication::layoutDirection() ? fa::chevronleft : fa::chevronright, stdColor, stdColor);
         savePlayQueueIcon=loadAwesomeIcon(fa::save, stdColor, stdColor);
         clearListIcon=loadAwesomeIcon(fa::remove, red, red);
-        addDynamicIcon=loadAwesomeIcon(fa::plussquare, stdColor, stdColor);
+        addNewItemIcon=loadAwesomeIcon(fa::plussquare, stdColor, stdColor);
         editIcon=loadAwesomeIcon(fa::edit, stdColor, stdColor);
         removeDynamicIcon=loadAwesomeIcon(fa::minussquare, stdColor, stdColor);
         stopDynamicIcon=loadAwesomeIcon(fa::stop, red, red);
@@ -451,12 +450,18 @@ Icons::Icons()
         configureIcon=loadAwesomeIcon(fa::cog, stdColor, stdColor);
         connectIcon=loadAwesomeIcon(fa::chevrondown, stdColor, stdColor);
         disconnectIcon=loadAwesomeIcon(fa::eject, stdColor, stdColor);
-        importIcon=loadAwesomeIcon(fa::download, stdColor, stdColor);
+        downloadIcon=loadAwesomeIcon(fa::download, stdColor, stdColor);
         removeIcon=loadAwesomeIcon(fa::minus, red, red);
         addIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
         addBookmarkIcon=loadAwesomeIcon(fa::bookmark, stdColor, stdColor);
         audioListIcon=loadAwesomeIcon(fa::music, stdColor, stdColor);
         playlistListIcon=loadAwesomeIcon(fa::list, stdColor, stdColor, 1.05);
+        rssListIcon=loadAwesomeIcon(fa::rss, stdColor, stdColor);
+        savedRssListIcon=loadAwesomeIcon(fa::rsssquare, stdColor, stdColor);
+        clockIcon=loadAwesomeIcon(fa::clocko, stdColor, stdColor);
+        folderListIcon=loadAwesomeIcon(fa::foldero, stdColor, stdColor);
+        streamListIcon=audioListIcon;
+        streamCategoryIcon=folderListIcon;
         #ifndef Q_OS_MAC
         Icon::setStd(Icon::Close, loadAwesomeIcon(fa::close, red, red));
         #endif
@@ -467,7 +472,7 @@ Icons::Icons()
         centrePlayQueueOnTrackIcon=Icon(Qt::RightToLeft==QApplication::layoutDirection() ? "go-previous" : "go-next");
         savePlayQueueIcon=Icon("document-save-as");
         clearListIcon=Icon(QStringList() << "edit-clear-list" << "gtk-delete");
-        addDynamicIcon=Icon("document-new");
+        addNewItemIcon=Icon("document-new");
         editIcon=Icon(QStringList() << "document-edit" << "text-editor" << "gtk-edit");
         removeDynamicIcon=Icon("list-remove");
         stopDynamicIcon=Icon("process-stop");
@@ -477,12 +482,16 @@ Icons::Icons()
         configureIcon=Icon(QStringList() << "configure" << "gtk-preferences");
         connectIcon=Icon(QStringList() << "dialog-ok" << "gtk-stock-ok" << "go-bottom");
         disconnectIcon=Icon("media-eject");
-        importIcon=Icon(QStringList() << "document-import" << "down");
+        downloadIcon=Icon(QStringList() << "document-import" << "down");
         removeIcon=Icon("list-remove");
         addIcon=Icon("list-add");
         addBookmarkIcon=Icon("bookmark-new");
         playlistListIcon=playlistFileIcon;
-        audioListIcon=audioFileIcon;
+        audioListIcon=rssListIcon=audioFileIcon;
+        savedRssListIcon=Icon("document-save-as");
+        clockIcon=Icon("clock");
+        folderListIcon=folderIcon;
+        streamListIcon=radioStreamIcon;
     }
     #endif
 }

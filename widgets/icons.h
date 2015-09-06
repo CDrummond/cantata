@@ -45,7 +45,6 @@ public:
     Icon artistIcon;
     Icon albumIcon;
     Icon podcastIcon;
-    Icon downloadedPodcastEpisodeIcon;
     Icon folderIcon;
     Icon audioFileIcon;
     Icon playlistFileIcon;
@@ -54,7 +53,6 @@ public:
     Icon consumeIcon;
     Icon repeatIcon;
     Icon shuffleIcon;
-    Icon streamCategoryIcon;
     Icon radioStreamIcon;
     Icon addRadioStreamIcon;
     Icon streamIcon;
@@ -89,7 +87,7 @@ public:
     QIcon centrePlayQueueOnTrackIcon;
     QIcon savePlayQueueIcon;
     QIcon clearListIcon;
-    QIcon addDynamicIcon;
+    QIcon addNewItemIcon;
     QIcon editIcon;
     QIcon removeDynamicIcon;
     QIcon stopDynamicIcon;
@@ -99,12 +97,18 @@ public:
     QIcon configureIcon;
     QIcon connectIcon;
     QIcon disconnectIcon;
-    QIcon importIcon;
+    QIcon downloadIcon;
     QIcon removeIcon;
     QIcon addIcon;
     QIcon addBookmarkIcon;
     QIcon audioListIcon;
     QIcon playlistListIcon;
+    QIcon rssListIcon;
+    QIcon savedRssListIcon;
+    QIcon clockIcon;
+    QIcon folderListIcon;
+    QIcon streamListIcon;
+    QIcon streamCategoryIcon;
 };
 
 #endif

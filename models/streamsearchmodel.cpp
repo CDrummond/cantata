@@ -40,9 +40,9 @@
 #include <QUrlQuery>
 #endif
 
-static Icon getIcon(const QString &name)
+static QIcon getIcon(const QString &name)
 {
-    Icon icon;
+    QIcon icon;
     icon.addFile(":"+name);
     return icon.isNull() ? Icons::self()->streamCategoryIcon : icon;
 }

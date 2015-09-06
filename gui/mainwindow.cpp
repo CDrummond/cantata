@@ -291,7 +291,7 @@ MainWindow::MainWindow(QWidget *parent)
     searchPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_F);
     setPriorityAction = new Action(Icon("favorites"), i18n("Set Priority"), this);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), HIDE_MENU_ICON(Icons::self()->radioStreamIcon));
+    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), HIDE_MENU_ICON(Icons::self()->httpStreamIcon));
     streamPlayAction->setCheckable(true);
     streamPlayAction->setChecked(false);
     streamPlayAction->setVisible(false);

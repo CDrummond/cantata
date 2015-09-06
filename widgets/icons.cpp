@@ -462,6 +462,9 @@ Icons::Icons()
         folderListIcon=loadAwesomeIcon(fa::foldero, stdColor, stdColor);
         streamListIcon=audioListIcon;
         streamCategoryIcon=folderListIcon;
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        httpStreamIcon=loadAwesomeIcon(fa::headphones, stdColor, stdColor);
+        #endif
         #ifndef Q_OS_MAC
         Icon::setStd(Icon::Close, loadAwesomeIcon(fa::close, red, red));
         #endif
@@ -492,6 +495,9 @@ Icons::Icons()
         clockIcon=Icon("clock");
         folderListIcon=folderIcon;
         streamListIcon=radioStreamIcon;
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        httpStreamIcon=speakerIcon;
+        #endif
     }
     #endif
 }

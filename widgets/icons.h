@@ -109,6 +109,9 @@ public:
     QIcon folderListIcon;
     QIcon streamListIcon;
     QIcon streamCategoryIcon;
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    QIcon httpStreamIcon;
+    #endif
 };
 
 #endif

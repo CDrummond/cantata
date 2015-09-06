@@ -447,7 +447,7 @@ Icons::Icons()
         searchIcon=loadAwesomeIcon(fa::search, stdColor, stdColor);
         addToFavouritesIcon=loadAwesomeIcon(fa::heart, red, red);
         reloadIcon=loadAwesomeIcon(fa::repeat, stdColor, stdColor);
-        configureIcon=loadAwesomeIcon(fa::cog, stdColor, stdColor);
+        configureIcon=loadAwesomeIcon(fa::cogs, stdColor, stdColor);
         connectIcon=loadAwesomeIcon(fa::chevrondown, stdColor, stdColor);
         disconnectIcon=loadAwesomeIcon(fa::eject, stdColor, stdColor);
         downloadIcon=loadAwesomeIcon(fa::download, stdColor, stdColor);

@@ -456,6 +456,7 @@ Icons::Icons()
         addBookmarkIcon=loadAwesomeIcon(fa::bookmark, stdColor, stdColor);
         audioListIcon=loadAwesomeIcon(fa::music, stdColor, stdColor);
         playlistListIcon=loadAwesomeIcon(fa::list, stdColor, stdColor, 1.05);
+        dynamicListIcon=loadAwesomeIcon(fa::cube, stdColor, stdColor);
         rssListIcon=loadAwesomeIcon(fa::rss, stdColor, stdColor);
         savedRssListIcon=loadAwesomeIcon(fa::rsssquare, stdColor, stdColor);
         clockIcon=loadAwesomeIcon(fa::clocko, stdColor, stdColor);
@@ -490,6 +491,7 @@ Icons::Icons()
         addIcon=Icon("list-add");
         addBookmarkIcon=Icon("bookmark-new");
         playlistListIcon=playlistFileIcon;
+        dynamicListIcon=dynamicRuleIcon;
         audioListIcon=rssListIcon=audioFileIcon;
         savedRssListIcon=Icon("document-save-as");
         clockIcon=Icon("clock");

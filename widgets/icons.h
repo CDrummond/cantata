@@ -103,6 +103,7 @@ public:
     QIcon addBookmarkIcon;
     QIcon audioListIcon;
     QIcon playlistListIcon;
+    QIcon dynamicListIcon;
     QIcon rssListIcon;
     QIcon savedRssListIcon;
     QIcon clockIcon;

@@ -26,15 +26,20 @@
 
 #include "widgets/toolbutton.h"
 
-class ScrobblingStatus : public ToolButton
+class ScrobblingStatus : public QWidget
 {
     Q_OBJECT
 public:
     ScrobblingStatus(QWidget *p);
     virtual ~ScrobblingStatus() { }
 
+    bool isChecked() const { return btn->isChecked(); }
+public Q_SLOTS:
+    void setChecked(bool c) { btn->setChecked(c); }
 private Q_SLOTS:
     void scrobblerChanged();
+private:
+    ToolButton *btn;
 };
 
 #endif

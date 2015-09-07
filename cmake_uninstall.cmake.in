@@ -1,0 +1,39 @@
+if(NOT EXISTS "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt")
+  message(FATAL_ERROR "Cannot find install manifest: @CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt")
+endif(NOT EXISTS "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt")
+
+function(rm_dir dir)
+  if(EXISTS "${dir}" AND IS_DIRECTORY "${dir}")
+     list(LENGTH ${dir} RES_LEN)
+     if(RES_LEN EQUAL 0)
+       exec_program(rmdir ARGS "${dir}" OUTPUT_VARIABLE OUT)
+     endif()
+  endif (EXISTS "${dir}" AND IS_DIRECTORY "${dir}")
+endfunction()
+
+file(READ "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt" files)
+string(REGEX REPLACE "\n" ";" files "${files}")
+foreach(file ${files})
+  message(STATUS "Uninstalling $ENV{DESTDIR}${file}")
+  if(IS_SYMLINK "$ENV{DESTDIR}${file}" OR EXISTS "$ENV{DESTDIR}${file}")
+    exec_program(
+      "@CMAKE_COMMAND@" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
+      OUTPUT_VARIABLE rm_out
+      RETURN_VALUE rm_retval
+      )
+    if(NOT "${rm_retval}" STREQUAL 0)
+      message(FATAL_ERROR "Problem when removing $ENV{DESTDIR}${file}")
+    endif(NOT "${rm_retval}" STREQUAL 0)
+  else(IS_SYMLINK "$ENV{DESTDIR}${file}" OR EXISTS "$ENV{DESTDIR}${file}")
+    message(STATUS "File $ENV{DESTDIR}${file} does not exist.")
+  endif(IS_SYMLINK "$ENV{DESTDIR}${file}" OR EXISTS "$ENV{DESTDIR}${file}")
+  #get_filename_component(dir $ENV{DESTDIR}${file} DIRECTORY)
+  #rm_dir(${dir})
+endforeach(file)
+
+file(READ "@CMAKE_CURRENT_BINARY_DIR@/install_dirs" dirs)
+string(REGEX REPLACE "\n" ";" dirs "${dirs}")
+foreach(dir ${dirs})
+  rm_dir("${dir}")
+endforeach(dir)
+

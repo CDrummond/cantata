@@ -37,6 +37,14 @@ code (and user interface) is now *very* different to that of QtMPC, and both
 KDE and Qt (Linux) builds have the same feature set. Also, as of 1.4.0, by
 default Cantata is built as a Qt-only application (with no KDE dependencies)
 
+For more detailed information, please refer to the main [README](https://raw.githubusercontent.com/CDrummond/cantata/master/README)
+
+Screeshots
+==========
+
 Some (outdated) screenshots can be found at the [kde-apps](http://kde-apps.org/content/show.php/Cantata?content=147733) page.
 
-For more detailed information, please refer to the main [README](https://raw.githubusercontent.com/CDrummond/cantata/master/README)
+Downloads
+=========
+
+Previous (1.x) versions may be dowloaded from [Cantata' github wiki](https://github.com/CDrummond/cantata/wiki/Previous-%28Google-Code%29-Downloads)

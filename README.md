@@ -47,4 +47,4 @@ Some (outdated) screenshots can be found at the [kde-apps](http://kde-apps.org/c
 Downloads
 =========
 
-Previous (1.x) versions may be dowloaded from [Cantata' github wiki](https://github.com/CDrummond/cantata/wiki/Previous-%28Google-Code%29-Downloads)
+Previous (1.x) versions may be found on [Cantata's github wiki](https://github.com/CDrummond/cantata/wiki/Previous-%28Google-Code%29-Downloads)

@@ -70,6 +70,7 @@
 49. Save scaled covers as PNG, as the quality is much better.
 50. Use Humanity/gnome icons for Windows and Mac builds.
 51. Add a uninstall target for Linux builds.
+52. Add 'Append Random Album' option to library, jamendo, and magnatune pages.
 
 1.5.2
 -----

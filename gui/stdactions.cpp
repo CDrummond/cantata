@@ -61,6 +61,7 @@ StdActions::StdActions()
     addToPlayQueueAndPlayAction = ActionCollection::get()->createAction("addtoplayqueueandplay", i18n("Add And Play"));
     setToolTip(appendToPlayQueueAndPlayAction, i18n("Append To Play Queue And Play"));
     insertAfterCurrentAction = ActionCollection::get()->createAction("insertintoplayqueue", i18n("Insert After Current"));
+    addRandomAlbumToPlayQueueAction = ActionCollection::get()->createAction("addrandomalbumtoplayqueue", i18n("Append Random Album"));
     replacePlayQueueAction = ActionCollection::get()->createAction("replaceplayqueue", i18n("Play Now (And Replace Play Queue)"), Icons::self()->replacePlayQueueIcon);
     savePlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_S);
     appendToPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_P);
@@ -115,7 +116,9 @@ StdActions::StdActions()
     addMenu->addAction(addToPlayQueueAndPlayAction);
     addMenu->addAction(addWithPriorityAction);
     addMenu->addAction(insertAfterCurrentAction);
+    addMenu->addAction(addRandomAlbumToPlayQueueAction);
     addToPlayQueueMenuAction->setMenu(addMenu);
+    addRandomAlbumToPlayQueueAction->setVisible(false);
 }
 
 void StdActions::enableAddToPlayQueue(bool en)

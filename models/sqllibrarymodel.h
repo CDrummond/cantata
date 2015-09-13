@@ -162,11 +162,13 @@ public:
     QModelIndex findAlbumIndex(const QString &artist, const QString &album);
     QModelIndex findArtistIndex(const QString &artist);
     QSet<QString> getArtists() const;
-    QList<Song> getAlbumTracks(const Song &song) const;
+    QList<Song> getAlbumTracks(const QString &artistId, const QString &albumId) const;
+    QList<Song> getAlbumTracks(const Song &song) const { return getAlbumTracks(song.artistOrComposer(), song.albumId()); }
     QList<Song> songs(const QStringList &files, bool allowPlaylists=false) const;
     QList<LibraryDb::Album> getArtistAlbums(const QString &artist) const;
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
     bool songExists(const Song &song);
+    LibraryDb::Album getRandomAlbum(const QStringList &genres, const QStringList &artists) const { return db->getRandomAlbum(genres, artists); }
 
 public Q_SLOTS:
     void clearDb();

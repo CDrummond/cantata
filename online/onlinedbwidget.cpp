@@ -22,6 +22,7 @@
  */
 
 #include "onlinedbwidget.h"
+#include "gui/stdactions.h"
 #include "widgets/itemview.h"
 #include "widgets/menubutton.h"
 #include "widgets/icons.h"
@@ -56,6 +57,7 @@ OnlineDbWidget::OnlineDbWidget(OnlineDbService *s, QWidget *p)
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
     connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
     view->setOpenAfterSearch(SqlLibraryModel::T_Album!=srv->topLevel());
+    connect(StdActions::self()->addRandomAlbumToPlayQueueAction, SIGNAL(triggered()), SLOT(addRandomAlbum()));
 }
 
 OnlineDbWidget::~OnlineDbWidget()
@@ -126,6 +128,40 @@ void OnlineDbWidget::headerClicked(int level)
     }
 }
 
+void OnlineDbWidget::addRandomAlbum()
+{
+    if (!isVisible()) {
+        return;
+    }
+    QStringList genres;
+    QStringList artists;
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
+    foreach (const QModelIndex &idx, selected) {
+        SqlLibraryModel::Item *item=static_cast<SqlLibraryModel::Item *>(idx.internalPointer());
+        switch (item->getType()) {
+        case SqlLibraryModel::T_Genre:
+            genres.append(item->getId());
+            break;
+        case SqlLibraryModel::T_Artist:
+            artists.append(item->getId());
+        default:
+            break;
+        }
+    }
+    LibraryDb::Album album=srv->getRandomAlbum(genres, artists);
+    if (album.artist.isEmpty() || album.id.isEmpty()) {
+        return;
+    }
+    QList<Song> songs=srv->getAlbumTracks(album.artist, album.id);
+    if (!songs.isEmpty()) {
+        QStringList files;
+        foreach (const Song &s, songs) {
+            files.append(s.file);
+        }
+        emit add(files, /*replace ? MPDConnection::ReplaceAndplay : */MPDConnection::Append, 0);
+    }
+}
+
 void OnlineDbWidget::doSearch()
 {
     srv->search(view->searchText());
@@ -137,6 +173,22 @@ void OnlineDbWidget::refresh()
     if (!srv->isDownloading() && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Re-download music listing?"), QString(), GuiItem(i18n("Download")), StdGuiItem::cancel())) {
         srv->download(true);
     }
+}
+
+void OnlineDbWidget::controlActions()
+{
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
+    bool allowRandomAlbum=isVisible() && !selected.isEmpty();
+    if (allowRandomAlbum) {
+        foreach (const QModelIndex &idx, selected) {
+            if (SqlLibraryModel::T_Track==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType() ||
+                SqlLibraryModel::T_Album==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType()) {
+                allowRandomAlbum=false;
+                break;
+            }
+        }
+    }
+    StdActions::self()->addRandomAlbumToPlayQueueAction->setVisible(allowRandomAlbum);
 }
 
 void OnlineDbWidget::configure()

@@ -57,6 +57,7 @@ public:
     Action *addPrioDefaultAction;  // 0
     Action *addPrioCustomAction;
     Action *addToPlayQueueMenuAction;
+    Action *addRandomAlbumToPlayQueueAction;
     #ifdef TAGLIB_FOUND
     Action *editTagsAction;
     Action *organiseFilesAction;

@@ -31,6 +31,7 @@
 #include "support/utils.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
+#include "support/actioncollection.h"
 //#include "support/combobox.h"
 #include "models/mpdlibrarymodel.h"
 #include "widgets/menubutton.h"
@@ -38,6 +39,7 @@
 LibraryPage::LibraryPage(QWidget *p)
     : SinglePageWidget(p)
 {
+    connect(StdActions::self()->addRandomAlbumToPlayQueueAction, SIGNAL(triggered()), SLOT(addRandomAlbum()));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary(time_t)), view, SLOT(updating()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(updated()));
     connect(MPDConnection::self(), SIGNAL(updatingDatabase()), view, SLOT(updating()));
@@ -336,6 +338,40 @@ void LibraryPage::updateToPlayQueue(const QModelIndex &idx, bool replace)
     }
 }
 
+void LibraryPage::addRandomAlbum()
+{
+    if (!isVisible()) {
+        return;
+    }
+    QStringList genres;
+    QStringList artists;
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
+    foreach (const QModelIndex &idx, selected) {
+        SqlLibraryModel::Item *item=static_cast<SqlLibraryModel::Item *>(idx.internalPointer());
+        switch (item->getType()) {
+        case SqlLibraryModel::T_Genre:
+            genres.append(item->getId());
+            break;
+        case SqlLibraryModel::T_Artist:
+            artists.append(item->getId());
+        default:
+            break;
+        }
+    }
+    LibraryDb::Album album=MpdLibraryModel::self()->getRandomAlbum(genres, artists);
+    if (album.artist.isEmpty() || album.id.isEmpty()) {
+        return;
+    }
+    QList<Song> songs=MpdLibraryModel::self()->getAlbumTracks(album.artist, album.id);
+    if (!songs.isEmpty()) {
+        QStringList files;
+        foreach (const Song &s, songs) {
+            files.append(s.file);
+        }
+        emit add(files, /*replace ? MPDConnection::ReplaceAndplay : */MPDConnection::Append, 0);
+    }
+}
+
 void LibraryPage::doSearch()
 {
     MpdLibraryModel::self()->search(view->searchText());
@@ -369,13 +405,15 @@ void LibraryPage::controlActions()
         StdActions::self()->setCoverAction->setEnabled(false);
     }
 
-    bool allowRandomAlbum=!selected.isEmpty();
+    bool allowRandomAlbum=isVisible() && !selected.isEmpty();
     if (allowRandomAlbum) {
         foreach (const QModelIndex &idx, selected) {
-            if (SqlLibraryModel::T_Track==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType()) {
+            if (SqlLibraryModel::T_Track==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType() ||
+                SqlLibraryModel::T_Album==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType()) {
                 allowRandomAlbum=false;
                 break;
             }
         }
     }
+    StdActions::self()->addRandomAlbumToPlayQueueAction->setVisible(allowRandomAlbum);
 }

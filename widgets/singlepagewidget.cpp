@@ -147,6 +147,12 @@ void SinglePageWidget::showEvent(QShowEvent *e)
     view->focusView();
 }
 
+void SinglePageWidget::hideEvent(QHideEvent *e)
+{
+    QWidget::hideEvent(e);
+    controlActions();
+}
+
 const char * SinglePageWidget::constValProp="val";
 
 QList<QAction *> SinglePageWidget::createActions(const QList<SinglePageWidget::MenuItem> &values,int currentVal, QWidget *parent, const char *slot)
@@ -220,4 +226,5 @@ void SinglePageWidget::controlActions()
     if (btnFlags&AppendToPlayQueue) {
         StdActions::self()->appendToPlayQueueAction->setEnabled(!selected.isEmpty());
     }
+    StdActions::self()->addRandomAlbumToPlayQueueAction->setVisible(false);
 }

@@ -44,10 +44,12 @@ private Q_SLOTS:
     void headerClicked(int level);
     void configure();
     void updateToPlayQueue(const QModelIndex &idx, bool replace);
+    void addRandomAlbum();
 
 private:
     void doSearch();
     void refresh();
+    void controlActions();
 
 private:
     QString configGroup;

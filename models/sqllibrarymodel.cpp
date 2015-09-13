@@ -513,9 +513,9 @@ QSet<QString> SqlLibraryModel::getArtists() const
     return db->get("albumArtist");
 }
 
-QList<Song> SqlLibraryModel::getAlbumTracks(const Song &song) const
+QList<Song> SqlLibraryModel::getAlbumTracks(const QString &artistId, const QString &albumId) const
 {
-    return db->getTracks(song.artistOrComposer(), song.album, QString(), LibraryDb::AS_Artist, false);
+    return db->getTracks(artistId, albumId, QString(), LibraryDb::AS_Artist, false);
 }
 
 QList<Song> SqlLibraryModel::songs(const QStringList &files, bool allowPlaylists) const

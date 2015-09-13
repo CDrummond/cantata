@@ -65,6 +65,7 @@ private Q_SLOTS:
     void albumAlbumSortChanged();
     void showArtistImagesChanged(bool u);
     void updateToPlayQueue(const QModelIndex &idx, bool replace);
+    void addRandomAlbum();
 
 private:
     void setView(int v);

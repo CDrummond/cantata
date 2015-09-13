@@ -66,6 +66,7 @@ public:
     virtual void deleteSongs() { }
     #endif
     void showEvent(QShowEvent *e);
+    void hideEvent(QHideEvent *e);
     QList<QAction *> createViewActions(QList<ItemView::Mode> modes);
     Action * createViewMenu(QList<ItemView::Mode> modes);
 

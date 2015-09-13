@@ -124,6 +124,8 @@ public:
     #ifndef CANTATA_WEB
     QList<Song> songs(const QStringList &files, bool allowPlaylists=false) const;
     QList<Album> getAlbumsWithArtist(const QString &artist);
+    Album getRandomAlbum(const QString &genre, const QString &artist);
+    Album getRandomAlbum(const QStringList &genres, const QStringList &artists);
     QSet<QString> get(const QString &type);
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
     bool songExists(const Song &song);

@@ -406,6 +406,7 @@ public:
             : db(database)
             , fts(false)
             , columSpec(colSpec)
+            , limit(0)
     {
     }
 
@@ -440,6 +441,16 @@ public:
         }
     }
 
+    void setOrder(const QString &o)
+    {
+        order=o;
+    }
+
+    void setLimit(int l)
+    {
+        limit=l;
+    }
+
     bool exec()
     {
         QString sql=fts
@@ -447,7 +458,13 @@ public:
                 : QString("SELECT %1 FROM songs").arg(columSpec);
 
         if (!whereClauses.isEmpty()) {
-            sql += " WHERE " + whereClauses.join(" AND ");
+            sql+=" WHERE " + whereClauses.join(" AND ");
+        }
+        if (!order.isEmpty()) {
+            sql+=" ORDER by "+order;
+        }
+        if (limit>0) {
+            sql+=" LIMIT "+QString::number(limit);
         }
         query=QSqlQuery(sql, db);
 
@@ -470,6 +487,8 @@ private:
     QString columSpec;
     QStringList whereClauses;
     QVariantList boundValues;
+    QString order;
+    int limit;
 };
 
 LibraryDb::LibraryDb(QObject *p, const QString &name)
@@ -845,6 +864,52 @@ QList<LibraryDb::Album> LibraryDb::getAlbumsWithArtist(const QString &artist)
     qSort(albums.begin(), albums.end(), albumsSortArAlYr);
 
     return albums;
+}
+
+LibraryDb::Album LibraryDb::getRandomAlbum(const QString &genre, const QString &artist)
+{
+    Album al;
+    if (0!=currentVersion && db) {
+        SqlQuery query("artistId, albumId", *db);
+        query.setOrder("random()");
+        query.setLimit(1);
+        if (!artist.isEmpty()) {
+            query.addWhere("artistId", artist);
+        }
+        if (!genre.isEmpty()) {
+            query.addWhere("genre", genre);
+        }
+        query.exec();
+        DBUG << query.executedQuery();
+        if (query.next()) {
+            al.artist=query.value(0).toString();
+            al.id=query.value(1).toString();
+        }
+    }
+    return al;
+}
+
+LibraryDb::Album LibraryDb::getRandomAlbum(const QStringList &genres, const QStringList &artists)
+{
+    if (genres.isEmpty() && artists.isEmpty()) {
+        return getRandomAlbum(QString(), QString());
+    }
+
+    QList<Album> albums;
+
+    foreach (const QString &genre, genres) {
+        albums.append(getRandomAlbum(genre, QString()));
+    }
+
+    foreach (const QString &artist, artists) {
+        albums.append(getRandomAlbum(QString(), artist));
+    }
+
+    if (albums.isEmpty()) {
+        return Album();
+    }
+
+    return albums.at(Utils::random(albums.count()));
 }
 
 QSet<QString> LibraryDb::get(const QString &type)

@@ -358,6 +358,15 @@ void LibraryPage::addRandomAlbum()
             break;
         }
     }
+
+    // If all items selected, then just choose random of all albums
+    if (SqlLibraryModel::T_Genre==MpdLibraryModel::self()->topLevel() && genres.size()==MpdLibraryModel::self()->rowCount(QModelIndex())) {
+        genres=QStringList();
+    }
+    if (SqlLibraryModel::T_Artist==MpdLibraryModel::self()->topLevel() && artists.size()==MpdLibraryModel::self()->rowCount(QModelIndex())) {
+        artists=QStringList();
+    }
+
     LibraryDb::Album album=MpdLibraryModel::self()->getRandomAlbum(genres, artists);
     if (album.artist.isEmpty() || album.id.isEmpty()) {
         return;

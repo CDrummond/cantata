@@ -148,6 +148,15 @@ void OnlineDbWidget::addRandomAlbum()
             break;
         }
     }
+
+    // If all items selected, then just choose random of all albums
+    if (SqlLibraryModel::T_Genre==srv->topLevel() && genres.size()==srv->rowCount(QModelIndex())) {
+        genres=QStringList();
+    }
+    if (SqlLibraryModel::T_Artist==srv->topLevel() && artists.size()==srv->rowCount(QModelIndex())) {
+        artists=QStringList();
+    }
+
     LibraryDb::Album album=srv->getRandomAlbum(genres, artists);
     if (album.artist.isEmpty() || album.id.isEmpty()) {
         return;

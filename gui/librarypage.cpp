@@ -343,8 +343,10 @@ void LibraryPage::addRandomAlbum()
     if (!isVisible()) {
         return;
     }
+
     QStringList genres;
     QStringList artists;
+    QList<SqlLibraryModel::AlbumItem *> albums;
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     foreach (const QModelIndex &idx, selected) {
         SqlLibraryModel::Item *item=static_cast<SqlLibraryModel::Item *>(idx.internalPointer());
@@ -354,20 +356,45 @@ void LibraryPage::addRandomAlbum()
             break;
         case SqlLibraryModel::T_Artist:
             artists.append(item->getId());
+            break;
+        case SqlLibraryModel::T_Album:
+            // Can only have albums selected if set to group by albums
+            // ...controlActions ensures this!
+            albums.append(static_cast<SqlLibraryModel::AlbumItem *>(item));
+            break;
         default:
             break;
         }
     }
 
-    // If all items selected, then just choose random of all albums
-    if (SqlLibraryModel::T_Genre==MpdLibraryModel::self()->topLevel() && genres.size()==MpdLibraryModel::self()->rowCount(QModelIndex())) {
-        genres=QStringList();
-    }
-    if (SqlLibraryModel::T_Artist==MpdLibraryModel::self()->topLevel() && artists.size()==MpdLibraryModel::self()->rowCount(QModelIndex())) {
-        artists=QStringList();
+    LibraryDb::Album album;
+    if (!albums.isEmpty()) {
+        // We have albums selected, so choose a random one of these...
+        SqlLibraryModel::AlbumItem *al=albums.at(Utils::random(albums.size()));
+        album.artist=al->getArtistId();
+        album.id=al->getId();
+    } else {
+        // If all items selected, then just choose random of all albums
+        switch(MpdLibraryModel::self()->topLevel()) {
+        case SqlLibraryModel::T_Genre:
+            if (genres.size()==MpdLibraryModel::self()->rowCount(QModelIndex())) {
+                genres=QStringList();
+            }
+            break;
+        case SqlLibraryModel::T_Artist:
+            if (artists.size()==MpdLibraryModel::self()->rowCount(QModelIndex())) {
+                artists=QStringList();
+            }
+            break;
+        case SqlLibraryModel::T_Album:
+            genres=artists=QStringList();
+            break;
+        default:
+            break;
+        }
+        album=MpdLibraryModel::self()->getRandomAlbum(genres, artists);
     }
 
-    LibraryDb::Album album=MpdLibraryModel::self()->getRandomAlbum(genres, artists);
     if (album.artist.isEmpty() || album.id.isEmpty()) {
         return;
     }
@@ -416,9 +443,10 @@ void LibraryPage::controlActions()
 
     bool allowRandomAlbum=isVisible() && !selected.isEmpty();
     if (allowRandomAlbum) {
+        bool groupingAlbums=SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel();
         foreach (const QModelIndex &idx, selected) {
             if (SqlLibraryModel::T_Track==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType() ||
-                SqlLibraryModel::T_Album==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType()) {
+                (!groupingAlbums && SqlLibraryModel::T_Album==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType())) {
                 allowRandomAlbum=false;
                 break;
             }

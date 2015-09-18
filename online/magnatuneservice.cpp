@@ -38,7 +38,7 @@ int MagnatuneXmlParser::parse(QXmlStreamReader &xml)
         xml.readNext();
         if (QXmlStreamReader::StartElement==xml.tokenType() && QLatin1String("Track")==xml.name()) {
             songList->append(parseSong(xml));
-            if (songList->count()>50) {
+            if (songList->count()>100) {
                 emit songs(songList);
                 songList=new QList<Song>();
             }

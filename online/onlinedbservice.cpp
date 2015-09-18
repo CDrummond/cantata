@@ -42,7 +42,6 @@ OnlineXmlParser::OnlineXmlParser()
 
 OnlineXmlParser::~OnlineXmlParser()
 {
-    qWarning() << "DES";
 }
 
 void OnlineXmlParser::start(NetworkJob *job)
@@ -194,6 +193,7 @@ void OnlineDbService::downloadFinished()
         connect(parser, SIGNAL(complete()), job, SLOT(deleteLater()));
         connect(parser, SIGNAL(complete()), this, SLOT(updateStats()));
         connect(parser, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
+        connect(parser, SIGNAL(complete()), parser, SLOT(deleteLater()));
         parser->start(reply);
     } else {
         reply->deleteLater();

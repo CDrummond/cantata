@@ -33,7 +33,7 @@ public:
     int parse(QXmlStreamReader &xml);
 private:
     void parseArtist(QXmlStreamReader &xml);
-    void parseAlbum(Song &song, QXmlStreamReader &xml);
+    void parseAlbum(Song &song, QList<Song> *songList, QXmlStreamReader &xml);
     void parseSong(Song &song, const QString &albumGenre, QXmlStreamReader &xml);
 };
 

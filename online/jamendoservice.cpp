@@ -211,6 +211,7 @@ int JamendoXmlParser::parse(QXmlStreamReader &xml)
 void JamendoXmlParser::parseArtist(QXmlStreamReader &xml)
 {
     Song song;
+    QList<Song> *songList=new QList<Song>();
 
     while (!xml.atEnd()) {
         xml.readNext();
@@ -221,7 +222,7 @@ void JamendoXmlParser::parseArtist(QXmlStreamReader &xml)
             if (QLatin1String("name")==name) {
                 song.artist=xml.readElementText().trimmed();
             } else if (QLatin1String("album")==name) {
-                parseAlbum(song, xml);
+                parseAlbum(song, songList, xml);
             } /*else if (artist && QLatin1String("image")==name) {
                 artist->setImageUrl(xml.readElementText().trimmed());
             }*/
@@ -229,15 +230,15 @@ void JamendoXmlParser::parseArtist(QXmlStreamReader &xml)
             break;
         }
     }
+    emit songs(songList);
 }
 
-void JamendoXmlParser::parseAlbum(Song &song, QXmlStreamReader &xml)
+void JamendoXmlParser::parseAlbum(Song &song, QList<Song> *songList, QXmlStreamReader &xml)
 {
     QString id;
     QString genre;
     song.track=0;
     song.album=QString();
-    QList<Song> *songList=new QList<Song>();
 
     while (!xml.atEnd()) {
         xml.readNext();
@@ -267,7 +268,6 @@ void JamendoXmlParser::parseAlbum(Song &song, QXmlStreamReader &xml)
     if (!id.isEmpty()) {
         emit coverUrl(song.artistOrComposer(), song.album, id);
     }
-    emit songs(songList);
 }
 
 void JamendoXmlParser::parseSong(Song &song, const QString &albumGenre, QXmlStreamReader &xml)

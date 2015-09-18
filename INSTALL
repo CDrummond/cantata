@@ -102,13 +102,6 @@ The following options may be passed to CMake:
         Default: OFF
 
 
-    KDE specific:
-
-    -DENABLE_KWALLET=ON
-        Use KWallet to store MPD passwords.
-        Default: ON
-
-
     Linux specific:
 
     -DUSE_SYSTEM_MENU_ICON=ON

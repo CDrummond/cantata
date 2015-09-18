@@ -28,11 +28,6 @@
 #include "config.h"
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdparseutils.h"
-#if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
-namespace KWallet {
-class Wallet;
-}
-#endif
 
 class Settings
 {
@@ -268,9 +263,7 @@ public:
     void saveMpris(bool v);
     void save();
     void clearVersion();
-    #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
-    bool openWallet();
-    #else
+    #ifndef ENABLE_KDE_SUPPORT
     QString iconTheme();
     #endif
 
@@ -288,9 +281,6 @@ private:
 
     AppState state;
     int ver;
-    #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
-    KWallet::Wallet *wallet;
-    #endif
     Configuration cfg;
 };
 

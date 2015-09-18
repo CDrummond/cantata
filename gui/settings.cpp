@@ -29,9 +29,6 @@
 #include "support/utils.h"
 #include "support/globalstatic.h"
 #include "db/librarydb.h"
-#if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
-#include <kwallet.h>
-#endif
 #include <QFile>
 #include <QDir>
 #include <qglobal.h>
@@ -135,9 +132,6 @@ static Settings::StartupState getStartupState(const QString &str)
 Settings::Settings()
     : state(AP_Configured)
     , ver(-1)
-    #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
-    , wallet(0)
-    #endif
 {
     // Call 'version' so that it initialises 'ver' and 'state'
     version();
@@ -150,9 +144,6 @@ Settings::Settings()
 Settings::~Settings()
 {
     save();
-    #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
-    delete wallet;
-    #endif
 }
 
 QString Settings::currentConnection()
@@ -175,18 +166,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         details.port=grp.get("port", name.isEmpty() ? mpdDefaults.port : 6600);
         details.dir=grp.getDirPath("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music");
         details.topLevel=grp.get("topLevel", QString());
-        #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
-        if (KWallet::Wallet::isEnabled()) {
-            if (grp.get("passwd", false)) {
-                if (openWallet()) {
-                    wallet->readPassword(name.isEmpty() ? "mpd" : name, details.password);
-                }
-            } else if (name.isEmpty()) {
-                details.password=mpdDefaults.passwd;
-            }
-        } else
-        #endif // ENABLE_KWALLET
-            details.password=grp.get("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
+        details.password=grp.get("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
         details.coverName=grp.get("coverName", QString());
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         details.streamUrl=grp.get("streamUrl", QString());
@@ -225,26 +205,6 @@ QList<MPDConnectionDetails> Settings::allConnections()
     }
     return connections;
 }
-
-#if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
-bool Settings::openWallet()
-{
-    if (wallet) {
-        return true;
-    }
-
-    wallet=KWallet::Wallet::openWallet(KWallet::Wallet::LocalWallet(), QApplication::activeWindow() ? QApplication::activeWindow()->winId() : 0);
-    if (wallet) {
-        if (!wallet->hasFolder(PACKAGE_NAME)) {
-            wallet->createFolder(PACKAGE_NAME);
-        }
-        wallet->setFolder(PACKAGE_NAME);
-        return true;
-    }
-
-    return false;
-}
-#endif
 
 #ifndef ENABLE_KDE_SUPPORT
 QString Settings::iconTheme()
@@ -811,20 +771,6 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     grp.set("port", (int)v.port);
     grp.setDirPath("dir", v.dir);
     grp.set("topLevel", v.topLevel);
-    #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
-    if (KWallet::Wallet::isEnabled()) {
-        grp.set("passwd", !v.password.isEmpty());
-        QString walletEntry=v.name.isEmpty() ? "mpd" : v.name;
-        if (v.password.isEmpty()) {
-            if (wallet) {
-                wallet->removeEntry(walletEntry);
-            }
-        }
-        else if (openWallet()) {
-            wallet->writePassword(walletEntry, v.password);
-        }
-    } else
-    #endif // ENABLE_KWALLET
     grp.set("passwd", v.password);
     grp.set("coverName", v.coverName);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK

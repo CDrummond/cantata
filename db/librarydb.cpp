@@ -957,13 +957,13 @@ bool LibraryDb::setFilter(const QString &f)
 
     if (!f.isEmpty()) {
         QStringList strings(newFilter.split(QRegExp("\\s+")));
+        static QList<QLatin1Char> replaceChars=QList<QLatin1Char>() << QLatin1Char('(') << QLatin1Char(')') << QLatin1Char('"')
+                                                                    << QLatin1Char(':') << QLatin1Char('-');
         QStringList tokens;
         foreach (QString str, strings) {
-            str.remove('(');
-            str.remove(')');
-            str.remove('"');
-            str.remove(':');
-            str.remove('*');
+            foreach (const QLatin1Char ch, replaceChars) {
+                str.replace(ch, '?');
+            }
             if (str.length()>0) {
                 tokens.append(str+QLatin1String("* "));
             }

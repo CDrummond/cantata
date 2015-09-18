@@ -46,7 +46,6 @@ option(ENABLE_TAGLIB_EXTRAS "Enable TagLib-Extras library (used by tag editing, 
 option(ENABLE_HTTP_STREAM_PLAYBACK "Enable playback of MPD HTTP streams (Phonon required for Qt4, QtMultimedia for Qt5)" OFF)
 option(ENABLE_LIBVLC "Use libVLC for MPD HTTP stream playback (if ENABLE_HTTP_STREAM_PLAYBACK=ON)" OFF)
 option(ENABLE_KDE "Enable KDE libraries" OFF)
-option(ENABLE_KWALLET "Use KWallet in KDE builds" ON)
 option(ENABLE_QT5 "Build against Qt5" OFF)
 option(ENABLE_UBUNTU "Build for the Ubuntu SDK" OFF)
 option(ENABLE_UBUNTU_COMMAND_LINE "Build for the Ubuntu SDK from the command line" OFF)
@@ -130,10 +129,6 @@ endif (ENABLE_UBUNTU)
 if (ENABLE_QT5)
     set(ENABLE_KDE OFF)
 endif (ENABLE_QT5)
-
-if (NOT ENABLE_KDE)
-   set(ENABLE_KWALLET OFF)
-endif (NOT ENABLE_KDE)
 
 if (NOT WIN32 AND NOT APPLE AND ENABLE_DEVICES_SUPPORT AND ENABLE_UDISKS2)
     set(WITH_SOLID_UDISKS2 ON)

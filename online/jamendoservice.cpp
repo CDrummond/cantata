@@ -234,6 +234,7 @@ void JamendoXmlParser::parseArtist(QXmlStreamReader &xml)
 void JamendoXmlParser::parseAlbum(Song &song, QXmlStreamReader &xml)
 {
     QString id;
+    QString genre;
     song.track=0;
     song.album=QString();
     QList<Song> *songList=new QList<Song>();
@@ -248,10 +249,15 @@ void JamendoXmlParser::parseAlbum(Song &song, QXmlStreamReader &xml)
                 song.album=xml.readElementText().trimmed();
             } else if (QLatin1String("track")==name) {
                 song.track++;
-                parseSong(song, xml);
+                parseSong(song, genre, xml);
                 songList->append(song);
             } else if (QLatin1String("id")==name) {
                 id=xml.readElementText().trimmed();
+            } else if (QLatin1String("id3genre")==name) {
+                int g=xml.readElementText().toInt();
+                if (0!=g) {
+                    genre=id3Genre(g);
+                }
             }
         } else if (xml.isEndElement() && QLatin1String("album")==xml.name()) {
             break;
@@ -264,11 +270,11 @@ void JamendoXmlParser::parseAlbum(Song &song, QXmlStreamReader &xml)
     emit songs(songList);
 }
 
-void JamendoXmlParser::parseSong(Song &song, QXmlStreamReader &xml)
+void JamendoXmlParser::parseSong(Song &song, const QString &albumGenre, QXmlStreamReader &xml)
 {
     song.time=0;
     song.title=QString();
-    song.genre=QString();
+    song.genre=albumGenre;
 
     while (!xml.atEnd()) {
         xml.readNext();
@@ -280,7 +286,7 @@ void JamendoXmlParser::parseSong(Song &song, QXmlStreamReader &xml)
                 song.title=xml.readElementText().trimmed();
             } else if (QLatin1String("duration")==name) {
                 song.time=xml.readElementText().toFloat();
-            } else if (QLatin1String("id3genre")==name) {
+            } else if (QLatin1String("id3genre")==name && albumGenre.isEmpty()) {
                 int g=xml.readElementText().toInt();
                 if (0!=g) {
                     song.genre=id3Genre(g);

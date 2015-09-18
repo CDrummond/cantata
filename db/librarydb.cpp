@@ -995,7 +995,7 @@ void LibraryDb::updateStarted(time_t ver)
 
 void LibraryDb::insertSongs(QList<Song> *songs)
 {
-    //    DBUG << (void *)songs;
+//    DBUG << (int)(songs ? songs->size() : -1);
     if (!songs) {
         return;
     }
@@ -1011,14 +1011,17 @@ void LibraryDb::updateFinished()
     if (!db) {
         return;
     }
+    DBUG << timer.elapsed();
     #ifndef CANTATA_WEB
+    DBUG << "update fts" << timer.elapsed();
     QSqlQuery(*db).exec("insert into songs_fts(fts_artist, fts_artistId, fts_album, fts_albumId, fts_title) "
                         "select artist, artistId, album, albumId, title from songs");
     #endif
     QSqlQuery(*db).exec("update versions set collection ="+QString::number(newVersion));
+    DBUG << "commit" << timer.elapsed();
     db->commit();
     currentVersion=newVersion;
-    DBUG << timer.elapsed();
+    DBUG << "complete" << timer.elapsed();
     emit libraryUpdated();
 }
 

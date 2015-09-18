@@ -34,7 +34,7 @@ public:
 private:
     void parseArtist(QXmlStreamReader &xml);
     void parseAlbum(Song &song, QXmlStreamReader &xml);
-    void parseSong(Song &song, QXmlStreamReader &xml);
+    void parseSong(Song &song, const QString &albumGenre, QXmlStreamReader &xml);
 };
 
 class JamendoService : public OnlineDbService

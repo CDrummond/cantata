@@ -995,7 +995,7 @@ void LibraryDb::updateStarted(time_t ver)
 
 void LibraryDb::insertSongs(QList<Song> *songs)
 {
-//    DBUG << (int)(songs ? songs->size() : -1);
+    DBUG << (int)(songs ? songs->size() : -1);
     if (!songs) {
         return;
     }

@@ -139,19 +139,6 @@ AudioCdDevice::AudioCdDevice(MusicModel *m, Solid::Device &dev)
 
 AudioCdDevice::~AudioCdDevice()
 {
-    QList<Song> tracks;
-    foreach (const MusicLibraryItem *item, childItems()) {
-        if (MusicLibraryItem::Type_Song==item->itemType()) {
-            Song song=static_cast<const MusicLibraryItemSong *>(item)->song();
-            song.file=path()+song.file;
-            tracks.append(song);
-        }
-    }
-
-    if (!tracks.isEmpty()) {
-        PlayQueueModel::self()->remove(tracks);
-    }
-
     #ifdef CDDB_FOUND
     if (cddb) {
         cddb->deleteLater();
@@ -164,6 +151,22 @@ AudioCdDevice::~AudioCdDevice()
         mb=0;
     }
     #endif
+}
+
+void AudioCdDevice::dequeue()
+{
+    QList<Song> tracks;
+    foreach (const MusicLibraryItem *item, childItems()) {
+        if (MusicLibraryItem::Type_Song==item->itemType()) {
+            Song song=static_cast<const MusicLibraryItemSong *>(item)->song();
+            song.file=path()+song.file;
+            tracks.append(song);
+        }
+    }
+
+    if (!tracks.isEmpty()) {
+        PlayQueueModel::self()->remove(tracks);
+    }
 }
 
 bool AudioCdDevice::isAudioDevice(const QString &dev) const

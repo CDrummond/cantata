@@ -487,7 +487,13 @@ void DevicesModel::deviceRemoved(const QString &udi)
         }
 
         beginRemoveRows(QModelIndex(), idx, idx);
-        static_cast<Device *>(collections.takeAt(idx))->deleteLater();
+        Device *dev=static_cast<Device *>(collections.takeAt(idx));
+        dev->deleteLater();
+        #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+        if (Device::AudioCd==dev->devType()) {
+            static_cast<AudioCdDevice *>(dev)->dequeue();
+        }
+        #endif
         endRemoveRows();
         updateItemMenu();
     }

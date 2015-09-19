@@ -57,6 +57,7 @@ public:
     AudioCdDevice(MusicModel *m, Solid::Device &dev);
     virtual ~AudioCdDevice();
 
+    void dequeue();
     QImage image() const { return cover().img; }
     bool isAudioDevice(const QString &dev) const;
     bool supportsDisconnect() const { return 0!=drive; }

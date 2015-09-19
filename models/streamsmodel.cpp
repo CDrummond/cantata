@@ -703,7 +703,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
     default:
         break;
     }
-    return QVariant();
+    return ActionModel::data(index, role);
 }
 
 Qt::ItemFlags StreamsModel::flags(const QModelIndex &index) const

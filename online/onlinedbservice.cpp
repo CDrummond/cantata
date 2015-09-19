@@ -30,7 +30,6 @@
 #include "db/onlinedb.h"
 #include "support/localize.h"
 #include <QXmlStreamReader>
-#include <QDebug>
 
 OnlineXmlParser::OnlineXmlParser()
 {
@@ -184,6 +183,7 @@ void OnlineDbService::downloadFinished()
     if (reply->ok()) {
         updateStatus(i18n("Parsing music list...."));
         OnlineXmlParser *parser=createParser();
+        db->clear();
         connect(parser, SIGNAL(startUpdate()), static_cast<OnlineDb *>(db), SLOT(startUpdate()));
         connect(parser, SIGNAL(endUpdate()), static_cast<OnlineDb *>(db), SLOT(endUpdate()));
         connect(parser, SIGNAL(abortUpdate()), static_cast<OnlineDb *>(db), SLOT(abortUpdate()));

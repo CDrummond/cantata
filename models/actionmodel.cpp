@@ -44,6 +44,8 @@ QVariant ActionModel::data(const QModelIndex &index, int role) const
         break;
     case Cantata::Role_RatingCol:
         return -1;
+    case Cantata::Role_TitleText:
+        return data(index, Qt::DisplayRole);
     default:
         break;
     }

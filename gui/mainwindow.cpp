@@ -1689,13 +1689,13 @@ void MainWindow::updateCurrentSong(Song song, bool wasEmpty)
         }
     }
 
-    if (song.isCantataStream()) {
-        Song mod=HttpServer::self()->decodeUrl(song.file);
-        if (!mod.title.isEmpty()) {
-            song=mod;
-            song.id=song.id;
-        }
-    }
+//    if (song.isCantataStream()) {
+//        Song mod=HttpServer::self()->decodeUrl(song.file);
+//        if (!mod.title.isEmpty()) {
+//            mod.id=song.id;
+//            song=mod;
+//        }
+//    }
 
     bool diffSong=song.isDifferent(current);
     current=song;

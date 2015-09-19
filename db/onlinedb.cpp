@@ -44,6 +44,9 @@ OnlineDb::~OnlineDb()
 void OnlineDb::startUpdate()
 {
     updateStarted(currentVersion+1);
+    if (!db) {
+        return;
+    }
     QSqlQuery(*db).exec("delete from covers");
     QSqlQuery(*db).exec("drop index genre_idx");
 }

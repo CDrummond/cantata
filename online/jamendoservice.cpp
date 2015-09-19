@@ -198,20 +198,29 @@ static const QLatin1String constName("jamendo");
 int JamendoXmlParser::parse(QXmlStreamReader &xml)
 {
     int artistCount=0;
+    QList<Song> *songList=new QList<Song>();
     while (!xml.atEnd()) {
         xml.readNext();
         if (QXmlStreamReader::StartElement==xml.tokenType() && QLatin1String("artist")==xml.name()) {
-            parseArtist(xml);
+            parseArtist(songList, xml);
             artistCount++;
+            if (songList->count()>500) {
+                emit songs(songList);
+                songList=new QList<Song>();
+            }
         }
+    }
+    if (songList->isEmpty()) {
+        delete songList;
+    } else {
+        emit songs(songList);
     }
     return artistCount;
 }
 
-void JamendoXmlParser::parseArtist(QXmlStreamReader &xml)
+void JamendoXmlParser::parseArtist(QList<Song> *songList, QXmlStreamReader &xml)
 {
     Song song;
-    QList<Song> *songList=new QList<Song>();
 
     while (!xml.atEnd()) {
         xml.readNext();
@@ -230,7 +239,6 @@ void JamendoXmlParser::parseArtist(QXmlStreamReader &xml)
             break;
         }
     }
-    emit songs(songList);
 }
 
 void JamendoXmlParser::parseAlbum(Song &song, QList<Song> *songList, QXmlStreamReader &xml)

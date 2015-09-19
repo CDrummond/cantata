@@ -32,7 +32,7 @@ class JamendoXmlParser : public OnlineXmlParser
 public:
     int parse(QXmlStreamReader &xml);
 private:
-    void parseArtist(QXmlStreamReader &xml);
+    void parseArtist(QList<Song> *songList, QXmlStreamReader &xml);
     void parseAlbum(Song &song, QList<Song> *songList, QXmlStreamReader &xml);
     void parseSong(Song &song, const QString &albumGenre, QXmlStreamReader &xml);
 };

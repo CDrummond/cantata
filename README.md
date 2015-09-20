@@ -39,12 +39,14 @@ default Cantata is built as a Qt-only application (with no KDE dependencies)
 
 For more detailed information, please refer to the main [README](https://raw.githubusercontent.com/CDrummond/cantata/master/README)
 
-Screeshots
-==========
+Screenshots
+===========
 
-Some (outdated) screenshots can be found at the [kde-apps](http://kde-apps.org/content/show.php/Cantata?content=147733) page.
+Some (outdated, 1.x) screenshots can be found at the [kde-apps](http://kde-apps.org/content/show.php/Cantata?content=147733) page.
 
 Downloads
 =========
 
-Previous (1.x) versions may be found on [Cantata's github wiki](https://github.com/CDrummond/cantata/wiki/Previous-%28Google-Code%29-Downloads)
+Curently I'm developing v2.0, and as such the older 1.x is no longer actively
+maintained (the code base is *very* different). However, these older versions
+may still be downloaded from [Cantata's github wiki](https://github.com/CDrummond/cantata/wiki/Previous-%28Google-Code%29-Downloads)

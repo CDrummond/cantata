@@ -48,8 +48,8 @@
 33. Remove touch friendly setting from builds unless -DENABLE_TOUCH_SUPPORT=ON
     is passed to CMake.
 34. Dirble v2 API.
-35. When removing duplicates, take album into account as well as artist and
-    title.
+35. When removing duplicates, take track number and album into account as well
+    as artist and title.
 36. Resolve TuneIn radio URL's before adding to favourites (if added via TuneIn
     search).
 37. Use mpd.cantata for DBus service names and not com.googlecode.cantata

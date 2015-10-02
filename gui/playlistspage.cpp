@@ -269,7 +269,7 @@ void StoredPlaylistsPage::removeDuplicates()
         for (int i=0; i<pl->songs.count(); ++i) {
             Song song=*(pl->songs.at(i));
             song.id=i;
-            map[song.albumKey()+"-"+song.artistSong()].append(song);
+            map[song.albumKey()+"-"+song.artistSong()+"-"+song.track].append(song);
         }
 
         QList<quint32> toRemove;

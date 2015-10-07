@@ -169,6 +169,7 @@ QString LastFmEngine::parseResponse(const QByteArray &data, const QString &first
 {
     DBUG << __FUNCTION__ << data;
     QXmlStreamReader xml(data);
+    xml.setNamespaceProcessing(false);
     while (xml.readNextStartElement()) {
         if (firstTag==xml.name()) {
             while (xml.readNextStartElement()) {

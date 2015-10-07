@@ -73,6 +73,7 @@
 52. Add 'Append Random Album' option to library, jamendo, and magnatune pages.
 53. Don't use KWallet for MPD password - it's overkill, as MPD password is sent
     in plain text!
+54. Fix Lastfm response parsing.
 
 1.5.2
 -----

@@ -702,6 +702,7 @@ void CoverDownloader::lastFmCallFinished()
             bool inSection=false;
             bool isArtistImage=job.song.isArtistImageRequest();
 
+            doc.setNamespaceProcessing(false);
             while (!doc.atEnd()) {
                 doc.readNext();
 

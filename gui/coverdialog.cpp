@@ -741,7 +741,7 @@ void CoverDialog::sendLastFmQuery(const QString &fixedQuery, int page)
     url.setPath("/2.0/");
     query.addQueryItem("api_key", Covers::constLastFmApiKey);
     query.addQueryItem("limit", QString::number(20));
-    query.addQueryItem("page", QString::number(page));
+    query.addQueryItem("page", QString::number(page+1));
     query.addQueryItem(isArtist ? "artist" : "album", fixedQuery);
     query.addQueryItem("method", isArtist ? "artist.search" : "album.search");
     #if QT_VERSION >= 0x050000
@@ -1053,6 +1053,7 @@ void CoverDialog::parseLastFmQueryResponse(const QByteArray &resp)
     QList<SizeMap> entries;
     QStringList musibBrainzIds;
 
+    doc.setNamespaceProcessing(false);
     while (!doc.atEnd()) {
         doc.readNext();
 

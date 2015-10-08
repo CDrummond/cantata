@@ -53,7 +53,6 @@ private Q_SLOTS:
     void remove();
     void nameChanged();
     void basicDirChanged();
-    void topLevelChanged();
     void toggleOptions();
 
 private:

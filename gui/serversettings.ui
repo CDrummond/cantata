@@ -151,19 +151,6 @@
           </widget>
          </item>
          <item row="5" column="0">
-          <widget class="BuddyLabel" name="topLevelLabel">
-           <property name="text">
-            <string>Top-level music path:</string>
-           </property>
-           <property name="buddy">
-            <cstring>topLevel</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="LineEdit" name="topLevel"/>
-         </item>
-         <item row="6" column="0">
           <widget class="BuddyLabel" name="streamUrlLabel">
            <property name="text">
             <string>HTTP stream URL:</string>
@@ -173,8 +160,15 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
+         <item row="5" column="1">
           <widget class="LineEdit" name="streamUrl"/>
+         </item>
+         <item row="6" column="0" colspan="2">
+          <widget class="QCheckBox" name="useLibrary">
+           <property name="text">
+            <string>Populate Cantata's Library page</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -226,16 +220,16 @@
         </widget>
        </item>
        <item row="4" column="0" colspan="2">
-        <widget class="NoteLabel" name="topLevelNoteLabel">
+        <widget class="NoteLabel" name="streamUrlNoteLabel">
          <property name="text">
-          <string>If your MPD is configured to use a UPnP/DLNA backend, then 'Top-level music path' should be set to the 'All Music' path (e.g. servername\Music\All Music\) to prevent duplicate tracks. If this setting is used, then Cantata will only list tracks that are under this MPD path. For most MPD setups, this setting should be left blank. Changes to this setting will require a full refresh of the database.</string>
+          <string>'HTTP Stream URL' is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</string>
          </property>
         </widget>
        </item>
        <item row="5" column="0" colspan="2">
-        <widget class="NoteLabel" name="streamUrlNoteLabel">
+        <widget class="NoteLabel" name="useLibraryNoteLabel">
          <property name="text">
-          <string>'HTTP Stream URL' is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</string>
+          <string>Cantata's Library page is populated by retrieving and parsing the metadata (Title, Artist, etc) of each song. If your MPD is configured to use a UPnP/DLNA backend, then this could be very slow, and will probably produce duplicate tracks. Therefore, if this MPD instance is using a UPnP/DLNA backend, then it is recommended that you disable the Library page for it. (If this setting is toggled, then you will need to instruct Cantata to refresh the DB in order to notice any changes)</string>
          </property>
         </widget>
        </item>

@@ -97,7 +97,6 @@ ServerSettings::ServerSettings(QWidget *p)
     connect(addButton, SIGNAL(clicked(bool)), SLOT(add()));
     connect(name, SIGNAL(textChanged(QString)), SLOT(nameChanged()));
     connect(basicDir, SIGNAL(textChanged(QString)), SLOT(basicDirChanged()));
-    connect(topLevel, SIGNAL(textChanged(QString)), SLOT(topLevelChanged()));
     addButton->setIcon(Icons::self()->addIcon);
     removeButton->setIcon(Icons::self()->removeIcon);
     addButton->setAutoRaise(true);
@@ -182,7 +181,7 @@ void ServerSettings::save()
                 existingInConfig.removeAt(i);
                 found=true;
                 if (c.details.hostname!=e.hostname || c.details.port!=e.port || c.details.password!=e.password ||
-                    c.details.dir!=e.dir || c.details.coverName!=e.coverName || c.details.topLevel!=e.topLevel
+                    c.details.dir!=e.dir || c.details.coverName!=e.coverName || c.details.useLibrary!=e.useLibrary
                     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
                     || c.details.streamUrl!=e.streamUrl
                     #endif
@@ -349,11 +348,6 @@ void ServerSettings::basicDirChanged()
     }
 }
 
-void ServerSettings::topLevelChanged()
-{
-    topLevelNoteLabel->setOn(0==stackedWidget->currentIndex() && !topLevel->text().trimmed().isEmpty());
-}
-
 void ServerSettings::toggleOptions()
 {
     allOptions=!allOptions;
@@ -362,9 +356,8 @@ void ServerSettings::toggleOptions()
     coverName->setVisible(allOptions);
     coverNameLabel->setVisible(allOptions);
     coverNameNoteLabel->setVisible(allOptions);
-    topLevel->setVisible(allOptions);
-    topLevelLabel->setVisible(allOptions);
-    topLevelNoteLabel->setVisible(allOptions);
+    useLibrary->setVisible(allOptions);
+    useLibraryNoteLabel->setVisible(allOptions);
     basicCoverName->setVisible(allOptions);
     basicCoverNameLabel->setVisible(allOptions);
     basicCoverNameNoteLabel->setVisible(allOptions);
@@ -413,7 +406,7 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         streamUrl->setText(details.streamUrl);
         #endif
-        topLevel->setText(details.topLevel);
+        useLibrary->setChecked(details.useLibrary);
         stackedWidget->setCurrentIndex(0);
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     }
@@ -438,7 +431,7 @@ MPDConnectionDetails ServerSettings::getDetails() const
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         details.streamUrl=streamUrl->text().trimmed();
         #endif
-        details.topLevel=topLevel->text().trimmed();
+        details.useLibrary=useLibrary->isChecked();
     }
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     else {

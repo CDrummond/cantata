@@ -589,7 +589,7 @@ sub songRatingInRange() {
 # Get all songs with a rating between ratingFrom & ratingTo
 sub getRatedSongs() {
     my @entries = ();
-    my $data=&sendCommand("sticker find song / rating");
+    my $data=&sendCommand("sticker find song \"\" rating");
     if (defined($data)) {
         my @lines=split('\n', $data);
         my $file="";

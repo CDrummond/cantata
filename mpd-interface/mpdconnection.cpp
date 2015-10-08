@@ -1522,21 +1522,21 @@ void MPDConnection::update()
 void MPDConnection::loadLibrary()
 {
     emit updatingLibrary(dbUpdate);
-    listDirInfo(details.topLevel.isEmpty() ? "/" : details.topLevel);
+    recursivelyListDir(details.topLevel.isEmpty() ? "/" : details.topLevel);
     emit updatedLibrary();
 }
 
-#ifndef CANTATA_WEB
-void MPDConnection::loadFolders()
+void MPDConnection::listFolder(const QString &folder)
 {
-    emit updatingFileList();
-    Response response=sendCommand("listall");
+    bool topLevel="/"==folder;
+    Response response=sendCommand(topLevel ? "lsinfo" : ("lsinfo "+encodeName(folder)));
+    QStringList subFolders;
+    QList<Song> songs;
     if (response.ok) {
-        emit dirViewUpdated(MPDParseUtils::parseDirViewItems(response.data, mopidy), dbUpdate);
+        MPDParseUtils::parseDirItems(response.data, QString(), ver, songs, folder, subFolders);
     }
-    emit updatedFileList();
+    emit folderContents(folder, subFolders, songs);
 }
-#endif
 
 /*
  * Playlists commands
@@ -1890,17 +1890,21 @@ void MPDConnection::toggleStopAfterCurrent(bool afterCurrent)
     }
 }
 
-bool MPDConnection::listDirInfo(const QString &dir)
+bool MPDConnection::recursivelyListDir(const QString &dir)
 {
     bool topLevel="/"==dir;
     Response response=sendCommand(topLevel ? "lsinfo" : ("lsinfo "+encodeName(dir)));
     if (response.ok) {
-        QSet<QString> childDirs;
+        QStringList subDirs;
         QList<Song> *songs=new QList<Song>();
-        MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, *songs, dir, &childDirs);
-        emit librarySongs(songs);
-        foreach (const QString &child, childDirs) {
-            if (!listDirInfo(child)) {
+        MPDParseUtils::parseDirItems(response.data, details.dir, ver, *songs, dir, subDirs);
+        if (songs->isEmpty()) {
+            delete songs;
+        } else {
+            emit librarySongs(songs);
+        }
+        foreach (const QString &sub, subDirs) {
+            if (!recursivelyListDir(sub)) {
                 return false;
             }
         }

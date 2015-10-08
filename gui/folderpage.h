@@ -25,8 +25,7 @@
 #define FOLDERPAGE_H
 
 #include "widgets/singlepagewidget.h"
-#include "models/dirviewmodel.h"
-#include "models/dirviewproxymodel.h"
+#include "models/browsemodel.h"
 
 class Action;
 
@@ -34,33 +33,23 @@ class FolderPage : public SinglePageWidget
 {
     Q_OBJECT
 public:
-
-    enum EmptySongMod {
-        ES_None,
-        ES_FillEmpty,
-        ES_GuessTags
-    };
-
     FolderPage(QWidget *p);
     virtual ~FolderPage();
 
-    void setEnabled(bool e);
-    bool isEnabled() const { return DirViewModel::self()->isEnabled(); }
-    void load() { DirViewModel::self()->load(); }
-    void clear() { DirViewModel::self()->clear(); }
+    void setEnabled(bool e) { model.setEnabled(e); }
+    bool isEnabled() const { return model.isEnabled(); }
+    void load() { model.load(); }
+    void clear() { model.clear(); }
     QStringList selectedFiles(bool allowPlaylists=false) const;
-    QList<Song> selectedSongs(EmptySongMod esMod, bool allowPlaylists=false) const;
-    QList<Song> selectedSongs(bool allowPlaylists=false) const { return selectedSongs(ES_None, allowPlaylists); }
+    QList<Song> selectedSongs(bool allowPlaylists=false) const;
     #ifdef ENABLE_DEVICES_SUPPORT
     void addSelectionToDevice(const QString &udi);
     void deleteSongs();
     #endif
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0);
     void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void loadFolders();
-
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
     void deleteSongs(const QString &from, const QList<Song> &songs);
 
@@ -69,14 +58,12 @@ public Q_SLOTS:
     void openFileManager();
 
 private:
-    void doSearch();
+    void doSearch() { }
     void controlActions();
-    QStringList walk(QModelIndex rootItem);
 
 private:
-    bool loaded;
     Action *browseAction;
-    DirViewProxyModel proxy;
+    BrowseModel model;
 };
 
 #endif

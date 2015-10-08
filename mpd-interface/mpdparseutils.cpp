@@ -30,9 +30,6 @@
 #include <QUrl>
 #include <QFile>
 #ifndef CANTATA_WEB
-#include "models/dirviewitemroot.h"
-#include "models/dirviewitemdir.h"
-#include "models/dirviewitemfile.h"
 #include "online/onlineservice.h"
 #include "online/podcastservice.h"
 #endif
@@ -561,9 +558,9 @@ MPDParseUtils::MessageMap MPDParseUtils::parseMessages(const QByteArray &data)
     }
     return messages;
 }
-
 #endif
-void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, const QString &dir, QSet<QString> *childDirs)
+
+void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, const QString &dir, QStringList &subDirs)
 {
     QList<QByteArray> currentItem;
     QList<QByteArray> lines = data.split('\n');
@@ -573,8 +570,8 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
 
     for (int i = 0; i < amountOfLines; i++) {
         const QByteArray &line=lines.at(i);
-        if (childDirs && line.startsWith(constDirectoryKey)) {
-            childDirs->insert(QString::fromUtf8(line.mid(constDirectoryKey.length())));
+        if (line.startsWith(constDirectoryKey)) {
+            subDirs.append(QString::fromUtf8(line.mid(constDirectoryKey.length())));
         }
         currentItem.append(line);
         if (i == amountOfLines - 1 || lines.at(i + 1).startsWith(constFileKey) || lines.at(i + 1).startsWith(constPlaylistKey)) {
@@ -729,49 +726,6 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
         }
     }
 }
-
-#ifndef CANTATA_WEB
-DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data, bool isMopidy)
-{
-    QList<QByteArray> lines = data.split('\n');
-    DirViewItemRoot *rootItem = new DirViewItemRoot;
-    DirViewItemDir *dir=rootItem;
-    QString currentDirPath;
-
-    foreach (const QByteArray &line, lines) {
-        QString path;
-
-        if (line.startsWith(constFileKey)) {
-            path=QString::fromUtf8(line.mid(constFileKey.length()));
-        } else if (line.startsWith(constPlaylistKey)) {
-            path=QString::fromUtf8(line.mid(constPlaylistKey.length()));
-        }
-        if (!path.isEmpty() && (!isMopidy || path.startsWith(Song::constMopidyLocal))) {
-            QString mopidyPath;
-            if (isMopidy) {
-                mopidyPath=path;
-                path=Song::decodePath(path);
-            }
-            int last=path.lastIndexOf(Utils::constDirSep);
-            QString dirPath=-1==last ? QString() : path.left(last);
-            QStringList parts=path.split("/");
-
-            if (dirPath!=currentDirPath) {
-                currentDirPath=dirPath;
-                dir=rootItem;
-                if (parts.length()>1) {
-                    for (int i=0; i<parts.length()-1; ++i) {
-                        dir=dir->getDirectory(parts.at(i), true);
-                    }
-                }
-            }
-            dir->insertFile(parts.last(), mopidyPath, Cue_Ignore==cueSupport);
-        }
-    }
-
-    return rootItem;
-}
-#endif
 
 QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)
 {

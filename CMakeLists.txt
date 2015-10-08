@@ -402,10 +402,10 @@ set(CANTATA_CORE_SRCS ${CANTATA_CORE_SRCS}
     gui/covers.cpp gui/currentcover.cpp
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp
     models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp models/playlistsproxymodel.cpp models/playqueuemodel.cpp
-    models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
-    models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp
+    models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp models/browsemodel.cpp
     models/musicmodel.cpp models/multimusicmodel.cpp models/searchmodel.cpp models/streamsmodel.cpp models/searchproxymodel.cpp
     models/musiclibraryitemsong.cpp models/sqllibrarymodel.cpp models/mpdlibrarymodel.cpp models/mpdsearchmodel.cpp
+    models/playqueueproxymodel.cpp
     mpd-interface/mpdconnection.cpp mpd-interface/mpdparseutils.cpp mpd-interface/mpdstats.cpp mpd-interface/mpdstatus.cpp
     mpd-interface/song.cpp mpd-interface/cuefile.cpp
     db/librarydb.cpp db/mpdlibrarydb.cpp
@@ -415,7 +415,7 @@ set(CANTATA_CORE_SRCS ${CANTATA_CORE_SRCS}
 set(CANTATA_CORE_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
     gui/covers.h gui/currentcover.h
     models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
-    models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/actionmodel.h
+    models/playqueueproxymodel.h models/actionmodel.h models/browsemodel.h
     models/multimusicmodel.h models/searchmodel.h models/sqllibrarymodel.h models/mpdlibrarymodel.h models/mpdsearchmodel.h
     mpd-interface/mpdconnection.h mpd-interface/mpdstats.h mpd-interface/mpdstatus.h
     db/librarydb.h db/mpdlibrarydb.h

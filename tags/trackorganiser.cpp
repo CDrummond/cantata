@@ -27,7 +27,6 @@
 #include "models/devicesmodel.h"
 #endif
 #include "devices/device.h"
-#include "models/dirviewmodel.h"
 #include "gui/settings.h"
 #include "mpd-interface/mpdconnection.h"
 #include "support/utils.h"
@@ -422,9 +421,9 @@ void TrackOrganiser::renameFile()
 
             if (deviceUdi.isEmpty()) {
 //                MusicLibraryModel::self()->updateSongFile(s, to);
-                DirViewModel::self()->removeFileFromList(s.file);
-                DirViewModel::self()->addFileToList(origPath.isEmpty() ? to.file : origPath,
-                                                    origPath.isEmpty() ? QString() : to.file);
+//                DirViewModel::self()->removeFileFromList(s.file);
+//                DirViewModel::self()->addFileToList(origPath.isEmpty() ? to.file : origPath,
+//                                                    origPath.isEmpty() ? QString() : to.file);
             }
             #ifdef ENABLE_DEVICES_SUPPORT
             else {

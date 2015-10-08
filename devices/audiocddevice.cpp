@@ -31,7 +31,6 @@
 #include "support/localize.h"
 #include "gui/plurals.h"
 #include "models/musiclibraryitemsong.h"
-#include "models/dirviewmodel.h"
 #include "models/mpdlibrarymodel.h"
 #include "models/playqueuemodel.h"
 #include "support/utils.h"
@@ -335,8 +334,8 @@ void AudioCdDevice::copySongToResult(int status)
         }
         Utils::setFilePerms(currentDestFile);
 //        MusicLibraryModel::self()->addSongToList(currentSong);
-        DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
-                                            origPath.isEmpty() ? QString() : currentSong.file);
+//        DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
+//                                            origPath.isEmpty() ? QString() : currentSong.file);
         emit actionStatus(Ok, job && job->coverCopied());
     }
 }

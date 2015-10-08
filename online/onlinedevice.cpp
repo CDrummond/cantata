@@ -22,7 +22,6 @@
  */
 
 #include "onlinedevice.h"
-#include "models/dirviewmodel.h"
 #include "support/utils.h"
 #include "network/networkaccessmanager.h"
 #include "mpd-interface/mpdconnection.h"
@@ -87,8 +86,8 @@ void OnlineDevice::downloadFinished()
             }
             Utils::setFilePerms(currentDestFile);
 //            MusicLibraryModel::self()->addSongToList(currentSong);
-            DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
-                                                origPath.isEmpty() ? QString() : currentSong.file);
+//            DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
+//                                                origPath.isEmpty() ? QString() : currentSong.file);
             emit actionStatus(Ok);
         } else {
             emit actionStatus(WriteFailed);

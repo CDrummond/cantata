@@ -74,6 +74,7 @@
 53. Don't use KWallet for MPD password - it's overkill, as MPD password is sent
     in plain text!
 54. Fix Lastfm response parsing.
+55. Dynamically load folder view.
 
 1.5.2
 -----

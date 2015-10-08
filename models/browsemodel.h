@@ -68,7 +68,7 @@ public:
         virtual ~TrackItem() { }
 
         virtual QString getText() const { return song.trackAndTitleStr(); }
-        virtual QString getSubText() const { return Utils::formatTime(song.time, true); }
+        virtual QString getSubText() const { return Song::Playlist==song.type ? QString() : Utils::formatTime(song.time, true); }
         const Song & getSong() const { return song; }
 
     private:

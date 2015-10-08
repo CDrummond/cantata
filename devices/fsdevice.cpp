@@ -27,7 +27,6 @@
 #include "models/musiclibraryitemalbum.h"
 #include "models/musiclibraryitemartist.h"
 #include "models/musiclibraryitemroot.h"
-#include "models/dirviewmodel.h"
 #include "models/mpdlibrarymodel.h"
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
@@ -587,8 +586,8 @@ void FsDevice::copySongToResult(int status)
         }
         Utils::setFilePerms(currentDestFile);
 //        MusicLibraryModel::self()->addSongToList(currentSong);
-        DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
-                                            origPath.isEmpty() ? QString() : currentSong.file);
+//        DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
+//                                            origPath.isEmpty() ? QString() : currentSong.file);
         emit actionStatus(Ok, job && job->coverCopied());
     }
 }

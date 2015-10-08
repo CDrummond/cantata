@@ -37,10 +37,9 @@
 
 FolderPage::FolderPage(QWidget *p)
     : SinglePageWidget(p)
-    , loaded(false)
+    , model(this)
 {
     browseAction = new Action(Icon("system-file-manager"), i18n("Open In File Manager"), this);
-    connect(this, SIGNAL(loadFolders()), MPDConnection::self(), SLOT(loadFolders()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(browseAction, SIGNAL(triggered()), this, SLOT(openFileManager()));
@@ -73,8 +72,7 @@ FolderPage::FolderPage(QWidget *p)
     view->addSeparator();
     view->addAction(StdActions::self()->deleteSongsAction);
     #endif
-    proxy.setSourceModel(DirViewModel::self());
-    view->setModel(&proxy);
+    view->setModel(&model);
 }
 
 FolderPage::~FolderPage()
@@ -83,49 +81,36 @@ FolderPage::~FolderPage()
     view->save(config);
 }
 
-void FolderPage::setEnabled(bool e)
-{
-    if (e==DirViewModel::self()->isEnabled()) {
-        return;
-    }
-
-    DirViewModel::self()->setEnabled(e);
-    if (isVisible()) {
-        emit loadFolders();
-        loaded=true;
-    } else {
-        loaded=false;
-    }
-}
-
 void FolderPage::showEvent(QShowEvent *e)
 {
     view->focusView();
     SinglePageWidget::showEvent(e);
-    if (!loaded) {
-        emit loadFolders();
-        loaded=true;
-    }
-}
-
-void FolderPage::doSearch()
-{
-    QString text=view->searchText().trimmed();
-    proxy.update(text);
-    if (proxy.enabled() && !proxy.filterText().isEmpty()) {
-        view->expandAll();
-    }
+    model.load();
 }
 
 void FolderPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enable=selected.count()>0;
+    bool trackSelected=false;
+    bool folderSelected=false;
+
+    foreach (const QModelIndex &idx, selected) {
+        if (static_cast<BrowseModel::Item *>(idx.internalPointer())->isFolder()) {
+            folderSelected=true;
+        } else {
+            trackSelected=true;
+        }
+        if (folderSelected && trackSelected) {
+            enable=false;
+            break;
+        }
+    }
 
     StdActions::self()->enableAddToPlayQueue(enable);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
     #ifdef TAGLIB_FOUND
-    StdActions::self()->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);
+    StdActions::self()->organiseFilesAction->setEnabled(enable && trackSelected && MPDConnection::self()->getDetails().dirReadable);
     StdActions::self()->editTagsAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     StdActions::self()->replaygainAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
@@ -136,11 +121,7 @@ void FolderPage::controlActions()
     #endif
     #endif // TAGLIB_FOUND
 
-    browseAction->setEnabled(false);
-    if (1==selected.count() && MPDConnection::self()->getDetails().dirReadable) {
-        DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
-        browseAction->setEnabled(DirViewItem::Type_Dir==item->type());
-    }
+    browseAction->setEnabled(enable && 1==selected.count() && folderSelected);
 }
 
 void FolderPage::itemDoubleClicked(const QModelIndex &)
@@ -150,8 +131,7 @@ void FolderPage::itemDoubleClicked(const QModelIndex &)
         return; //doubleclick should only have one selected item
     }
 
-    DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
-    if (DirViewItem::Type_File==item->type()) {
+    if (!static_cast<BrowseModel::Item *>(selected.at(0).internalPointer())->isFolder()) {
         addSelectionToPlaylist();
     }
 }
@@ -163,45 +143,62 @@ void FolderPage::openFileManager()
         return;
     }
 
-    DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
-    if (DirViewItem::Type_Dir==item->type()) {
-        QDesktopServices::openUrl(QUrl::fromLocalFile(MPDConnection::self()->getDetails().dir+item->fullName()));
+    BrowseModel::Item *item = static_cast<BrowseModel::Item *>(selected.at(0).internalPointer());
+    if (item->isFolder()) {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(MPDConnection::self()->getDetails().dir+static_cast<BrowseModel::FolderItem *>(item)->getPath()));
     }
 }
 
-QList<Song> FolderPage::selectedSongs(EmptySongMod esMod, bool allowPlaylists) const
+QList<Song> FolderPage::selectedSongs(bool allowPlaylists) const
 {
-    QList<Song> songs=MpdLibraryModel::self()->songs(selectedFiles(allowPlaylists), ES_None!=esMod);
-
-    if (ES_None!=esMod) {
-        QList<Song>::Iterator it(songs.begin());
-        QList<Song>::Iterator end(songs.end());
-        for (; it!=end; ++it) {
-            if ((*it).isEmpty()) {
-                if (ES_GuessTags==esMod) {
-                    (*it).guessTags();
-                }
-                (*it).fillEmptyFields();
-            }
-        }
-    }
-
-    return songs;
+    return model.songs(view->selectedIndexes(), allowPlaylists);
 }
 
 QStringList FolderPage::selectedFiles(bool allowPlaylists) const
 {
-    QModelIndexList selected = view->selectedIndexes();
-    if (selected.isEmpty()) {
-        return QStringList();
+    QList<Song> songs=selectedSongs(allowPlaylists);
+    QStringList files;
+    foreach (const Song &s, songs) {
+        files.append(s.file);
     }
-    return DirViewModel::self()->filenames(proxy.mapToSource(selected), allowPlaylists);
+    return files;
+}
+
+
+void FolderPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
+{
+    QModelIndexList selected=view->selectedIndexes();
+    QStringList dirs;
+    QStringList files;
+
+    foreach (const QModelIndex &idx, selected) {
+        if (static_cast<BrowseModel::Item *>(idx.internalPointer())->isFolder()) {
+            dirs.append(static_cast<BrowseModel::FolderItem *>(idx.internalPointer())->getPath());
+        } else {
+            files.append(static_cast<BrowseModel::TrackItem *>(idx.internalPointer())->getSong().file);
+        }
+    }
+
+    if (!files.isEmpty()) {
+        if (name.isEmpty()) {
+            emit add(files, action, priorty);
+        } else {
+            emit addSongsToPlaylist(name, files);
+        }
+        view->clearSelection();
+    } else if (!dirs.isEmpty()) {
+        if (name.isEmpty()) {
+            emit add(dirs, action, priorty);
+        } else {
+            emit addSongsToPlaylist(name, dirs);
+        }
+    }
 }
 
 #ifdef ENABLE_DEVICES_SUPPORT
 void FolderPage::addSelectionToDevice(const QString &udi)
 {
-    QList<Song> songs=selectedSongs(ES_GuessTags);
+    QList<Song> songs=selectedSongs();
 
     if (!songs.isEmpty()) {
         emit addToDevice(QString(), udi, songs);
@@ -211,7 +208,7 @@ void FolderPage::addSelectionToDevice(const QString &udi)
 
 void FolderPage::deleteSongs()
 {
-    QList<Song> songs=selectedSongs(ES_GuessTags);
+    QList<Song> songs=selectedSongs();
 
     if (!songs.isEmpty()) {
         if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to delete the selected songs?\n\nThis cannot be undone."),
@@ -222,26 +219,3 @@ void FolderPage::deleteSongs()
     }
 }
 #endif
-
-QStringList FolderPage::walk(QModelIndex rootItem)
-{
-    QStringList files;
-    DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(rootItem).internalPointer());
-
-    if (DirViewItem::Type_File==item->type()) {
-        return QStringList(item->fullName());
-    }
-
-    for (int i = 0; ; i++) {
-        QModelIndex current = rootItem.child(i, 0);
-        if (!current.isValid())
-            return files;
-
-        QStringList tmp = walk(current);
-        for (int j = 0; j < tmp.size(); j++) {
-            if (!files.contains(tmp.at(j)))
-                files << tmp.at(j);
-        }
-    }
-    return files;
-}

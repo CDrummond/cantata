@@ -42,9 +42,6 @@
 #include "config.h"
 #include <time.h>
 
-#ifndef CANTATA_WEB
-class DirViewItemRoot;
-#endif
 class QTimer;
 class Thread;
 class QPropertyAnimation;
@@ -288,9 +285,7 @@ public Q_SLOTS:
 
     // Database
     void loadLibrary();
-    #ifndef CANTATA_WEB
-    void loadFolders();
-    #endif
+    void listFolder(const QString &folder);
 
     // Admin
     void update();
@@ -338,9 +333,7 @@ Q_SIGNALS:
     void statusUpdated(const MPDStatusValues &status);
     void outputsUpdated(const QList<Output> &outputs);
     void librarySongs(QList<Song> *songs);
-    #ifndef CANTATA_WEB
-    void dirViewUpdated(DirViewItemRoot *root, time_t dbUpdate);
-    #endif
+    void folderContents(const QString &folder, const QStringList &subFolders, const QList<Song> &songs);
     void playlistsRetrieved(const QList<Playlist> &data);
     void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
     void playlistRenamed(const QString &from, const QString &to);
@@ -407,7 +400,7 @@ private:
     void parseIdleReturn(const QByteArray &data);
     bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
     void toggleStopAfterCurrent(bool afterCurrent);
-    bool listDirInfo(const QString &dir);
+    bool recursivelyListDir(const QString &dir);
     #ifndef CANTATA_WEB
     bool checkRemoteDynamicSupport();
     bool subscribe(const QByteArray &channel);

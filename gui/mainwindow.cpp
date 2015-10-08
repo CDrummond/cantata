@@ -2227,8 +2227,6 @@ void MainWindow::editTags()
     bool isPlayQueue=playQueue->hasFocus();
     if (isPlayQueue) {
         songs=playQueue->selectedSongs();
-    } else if (currentPage==folderPage) {
-        songs=folderPage->selectedSongs(FolderPage::ES_FillEmpty);
     } else if (currentPage) {
         songs=currentPage->selectedSongs();
     }
@@ -2340,9 +2338,7 @@ void MainWindow::replayGain()
     }
 
     QList<Song> songs;
-    if (currentPage==folderPage) {
-        songs=folderPage->selectedSongs(FolderPage::ES_GuessTags);
-    } else if (currentPage) {
+    if (currentPage) {
         songs=currentPage->selectedSongs();
     }
 

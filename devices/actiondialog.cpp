@@ -29,7 +29,6 @@
 #include "devicepropertieswidget.h"
 #include "gui/settings.h"
 #include "models/musiclibraryproxymodel.h"
-#include "models/dirviewmodel.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "mpd-interface/mpdconnection.h"
 #include "encoders.h"
@@ -886,7 +885,7 @@ void ActionDialog::removeSongResult(int status)
         actionStatus(status);
     } else {
 //        MusicLibraryModel::self()->removeSongFromList(currentSong);
-        DirViewModel::self()->removeFileFromList(currentSong.file);
+//        DirViewModel::self()->removeFileFromList(currentSong.file);
         actionStatus(Device::Ok);
     }
 }

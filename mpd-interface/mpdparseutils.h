@@ -31,9 +31,7 @@
 #include <QSet>
 #include "config.h"
 #include "song.h"
-#ifndef CANTATA_WEB
-class DirViewItemRoot;
-#endif
+
 struct Playlist;
 struct Output;
 struct MPDStatsValues;
@@ -85,10 +83,7 @@ namespace MPDParseUtils
     typedef QMap<QByteArray, QStringList> MessageMap;
     extern MessageMap parseMessages(const QByteArray &data);
     #endif
-    extern void parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, const QString &dir=QString(), QSet<QString> *childDirs=0);
-    #ifndef CANTATA_WEB
-    extern DirViewItemRoot * parseDirViewItems(const QByteArray &data, bool isMopidy);
-    #endif
+    extern void parseDirItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, const QString &dir, QStringList &subDirs);
     extern QList<Output> parseOuputs(const QByteArray &data);
     extern QByteArray parseSticker(const QByteArray &data, const QByteArray &sticker);
     extern QString addStreamName(const QString &url, const QString &name);

@@ -566,7 +566,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
     bool parsePlaylists="/"!=dir && ""!=dir;
-    bool setSingleTracks=parsePlaylists && !singleTracksFolder.isEmpty() && dir==singleTracksFolder;
+    bool setSingleTracks=parsePlaylists && !singleTracksFolder.isEmpty() && dir==singleTracksFolder && Loc_Browse!=loc;
 
     for (int i = 0; i < amountOfLines; i++) {
         const QByteArray &line=lines.at(i);

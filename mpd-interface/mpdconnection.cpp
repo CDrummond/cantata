@@ -198,6 +198,7 @@ QString MPDConnection::Response::getError(const QByteArray &command)
 
 MPDConnectionDetails::MPDConnectionDetails()
     : port(6600)
+    , useLibrary(true)
     , dirReadable(false)
 {
 }
@@ -1522,7 +1523,9 @@ void MPDConnection::update()
 void MPDConnection::loadLibrary()
 {
     emit updatingLibrary(dbUpdate);
-    recursivelyListDir(details.topLevel.isEmpty() ? "/" : details.topLevel);
+    if (details.useLibrary) {
+        recursivelyListDir("/");
+    }
     emit updatedLibrary();
 }
 

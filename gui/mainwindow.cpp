@@ -2195,7 +2195,11 @@ void MainWindow::showSearch()
     } else if (context->isVisible()) {
         context->search();
     } else if (currentPage && splitter->sizes().at(0)>0) {
-        currentPage->focusSearch();
+        if (currentPage==folderPage) {
+            showTab(PAGE_SEARCH);
+        } else {
+            currentPage->focusSearch();
+        }
     } else if (!searchPlayQueueAction->isEnabled() && (playQueuePage->isVisible() || playQueue->isVisible())) {
         playQueueSearchWidget->activate();
     }

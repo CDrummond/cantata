@@ -560,12 +560,12 @@ MPDParseUtils::MessageMap MPDParseUtils::parseMessages(const QByteArray &data)
 }
 #endif
 
-void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, const QString &dir, QStringList &subDirs)
+void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, const QString &dir, QStringList &subDirs, Location loc)
 {
     QList<QByteArray> currentItem;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
-    bool parsePlaylists="/"!=dir;
+    bool parsePlaylists="/"!=dir && ""!=dir;
     bool setSingleTracks=parsePlaylists && !singleTracksFolder.isEmpty() && dir==singleTracksFolder;
 
     for (int i = 0; i < amountOfLines; i++) {
@@ -587,8 +587,12 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                     continue;
                 }
 
-                // Only add CUE files to library listing...
                 if (!currentSong.isCueFile()) {
+                    // In Folders/Browse, we can list all playlists
+                    if (Loc_Browse==loc) {
+                        songs.append(currentSong);
+                    }
+                    // Only add CUE files to library listing...
                     continue;
                 }
 

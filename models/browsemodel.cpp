@@ -181,7 +181,13 @@ QVariant BrowseModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case Qt::DecorationRole:
-        return item->isFolder() ? Icons::self()->folderListIcon : Icons::self()->audioListIcon;
+        if (item->isFolder()) {
+            return Icons::self()->folderListIcon;
+        } else {
+            TrackItem *track = static_cast<TrackItem *>(item);
+            return Song::Playlist==track->getSong().type ? Icons::self()->playlistListIcon : Icons::self()->audioListIcon;
+        }
+        break;
     case Cantata::Role_BriefMainText:
     case Cantata::Role_MainText:
     case Qt::DisplayRole:
@@ -196,7 +202,7 @@ QVariant BrowseModel::data(const QModelIndex &index, int role) const
         if (!Settings::self()->infoTooltips()) {
             return QVariant();
         }
-        if (item->isFolder()) {
+        if (item->isFolder() || Song::Playlist==static_cast<TrackItem *>(item)->getSong().type) {
             return static_cast<FolderItem *>(item)->getPath();
         }
         return static_cast<TrackItem *>(item)->getSong().toolTip();

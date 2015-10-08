@@ -1531,12 +1531,12 @@ void MPDConnection::loadLibrary()
 
 void MPDConnection::listFolder(const QString &folder)
 {
-    bool topLevel="/"==folder;
+    bool topLevel="/"==folder || ""==folder;
     Response response=sendCommand(topLevel ? "lsinfo" : ("lsinfo "+encodeName(folder)));
     QStringList subFolders;
     QList<Song> songs;
     if (response.ok) {
-        MPDParseUtils::parseDirItems(response.data, QString(), ver, songs, folder, subFolders);
+        MPDParseUtils::parseDirItems(response.data, QString(), ver, songs, folder, subFolders, MPDParseUtils::Loc_Browse);
     }
     emit folderContents(folder, subFolders, songs);
 }
@@ -1895,12 +1895,12 @@ void MPDConnection::toggleStopAfterCurrent(bool afterCurrent)
 
 bool MPDConnection::recursivelyListDir(const QString &dir)
 {
-    bool topLevel="/"==dir;
+    bool topLevel="/"==dir || ""==dir;
     Response response=sendCommand(topLevel ? "lsinfo" : ("lsinfo "+encodeName(dir)));
     if (response.ok) {
         QStringList subDirs;
         QList<Song> *songs=new QList<Song>();
-        MPDParseUtils::parseDirItems(response.data, details.dir, ver, *songs, dir, subDirs);
+        MPDParseUtils::parseDirItems(response.data, details.dir, ver, *songs, dir, subDirs, MPDParseUtils::Loc_Library);
         if (songs->isEmpty()) {
             delete songs;
         } else {

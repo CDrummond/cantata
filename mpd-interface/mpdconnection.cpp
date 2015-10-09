@@ -108,9 +108,10 @@ static QByteArray log(const QByteArray &data)
 
 GLOBAL_STATIC(MPDConnection, instance)
 
-QString MPDConnection::constModifiedSince=QLatin1String("modified-since");
+const QString MPDConnection::constModifiedSince=QLatin1String("modified-since");
 const int MPDConnection::constMaxPqChanges=1000;
 const QString MPDConnection::constStreamsPlayListName=QLatin1String("[Radio Streams]");
+const QString MPDConnection::constDirPrefix=QLatin1String("dir:");
 
 QByteArray MPDConnection::quote(int val)
 {
@@ -744,21 +745,30 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
         getStatus();
     }
 
+    QStringList files;
+    foreach (const QString &file, origList) {
+        if (file.startsWith(constDirPrefix)) {
+            files+=getAllFiles(file.mid(constDirPrefix.length()));
+        } else {
+            files.append(file);
+        }
+    }
+
     QList<QStringList> fileLists;
-    if (priority.count()<=1 && origList.count()>maxFilesPerAddCommand) {
-        int numChunks=(origList.count()/maxFilesPerAddCommand)+(origList.count()%maxFilesPerAddCommand ? 1 : 0);
+    if (priority.count()<=1 && files.count()>maxFilesPerAddCommand) {
+        int numChunks=(files.count()/maxFilesPerAddCommand)+(files.count()%maxFilesPerAddCommand ? 1 : 0);
         for (int i=0; i<numChunks; ++i) {
-            fileLists.append(origList.mid(i*maxFilesPerAddCommand, maxFilesPerAddCommand));
+            fileLists.append(files.mid(i*maxFilesPerAddCommand, maxFilesPerAddCommand));
         }
     } else {
-        fileLists.append(origList);
+        fileLists.append(files);
     }
 
     int curSize = size;
     int curPos = pos;
     //    bool addedFile=false;
     bool havePlaylist=false;
-    bool usePrio=!priority.isEmpty() && canUsePriority() && (1==priority.count() || priority.count()==origList.count());
+    bool usePrio=!priority.isEmpty() && canUsePriority() && (1==priority.count() || priority.count()==files.count());
     quint8 singlePrio=usePrio && 1==priority.count() ? priority.at(0) : 0;
     QStringList cStreamFiles;
     bool sentOk=false;
@@ -811,7 +821,7 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
             emit cantataStreams(cStreamFiles);
         }
 
-        if ((ReplaceAndplay==action || AddAndPlay==action) /*&& addedFile */&& !origList.isEmpty()) {
+        if ((ReplaceAndplay==action || AddAndPlay==action) /*&& addedFile */&& !files.isEmpty()) {
             // Dont emit error if play fails, might be that playlist was not loaded...
             playFirstTrack(false);
         }
@@ -819,7 +829,7 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
         if (AppendAndPlay==action) {
             startPlayingSong(playPos);
         }
-        emit added(origList);
+        emit added(files);
     }
 }
 
@@ -1915,6 +1925,25 @@ bool MPDConnection::recursivelyListDir(const QString &dir)
     } else {
         return false;
     }
+}
+
+QStringList MPDConnection::getAllFiles(const QString &dir)
+{
+    QStringList files;
+    Response response=sendCommand("lsinfo "+encodeName(dir));
+    if (response.ok) {
+        QStringList subDirs;
+        QList<Song> songs;
+        MPDParseUtils::parseDirItems(response.data, details.dir, ver, songs, dir, subDirs, MPDParseUtils::Loc_Browse);
+        foreach (const Song &song, songs) {
+            files.append(song.file);
+        }
+        foreach (const QString &sub, subDirs) {
+            files+=getAllFiles(sub);
+        }
+    }
+
+    return files;
 }
 
 #ifndef CANTATA_WEB

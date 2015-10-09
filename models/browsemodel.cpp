@@ -40,6 +40,23 @@ void BrowseModel::FolderItem::add(Item *i)
     children.append(i);
 }
 
+QStringList BrowseModel::FolderItem::allEntries() const
+{
+    QStringList entries;
+    if (children.isEmpty()) {
+        entries << MPDConnection::constDirPrefix+path;
+    } else {
+        foreach (Item *i, children) {
+            if (i->isFolder()) {
+                entries+=static_cast<FolderItem *>(i)->allEntries();
+            } else {
+                entries+=static_cast<TrackItem *>(i)->getSong().file;
+            }
+        }
+    }
+    return entries;
+}
+
 BrowseModel::BrowseModel(QObject *p)
     : ActionModel(p)
     , root(new FolderItem("/", 0))
@@ -93,9 +110,6 @@ void BrowseModel::setEnabled(bool e)
 Qt::ItemFlags BrowseModel::flags(const QModelIndex &index) const
 {
     if (index.isValid()) {
-        if (static_cast<Item *>(index.internalPointer())->isFolder()) {
-            return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-        }
         return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
     }
     return Qt::ItemIsDropEnabled;
@@ -230,8 +244,12 @@ QMimeData * BrowseModel::mimeData(const QModelIndexList &indexes) const
     QStringList files;
     foreach (const QModelIndex &idx, indexes) {
         Item *item=toItem(idx);
-        if (item && !item->isFolder()) {
-            files.append(static_cast<TrackItem *>(item)->getSong().file);
+        if (item) {
+            if (item->isFolder()) {
+                files+=static_cast<FolderItem *>(item)->allEntries();
+            } else {
+                files.append(static_cast<TrackItem *>(item)->getSong().file);
+            }
         }
     }
 

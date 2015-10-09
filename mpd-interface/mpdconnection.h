@@ -187,9 +187,10 @@ public:
         DefaultFade = MinFade // disable volume fade by default. prev:2000
     };
 
-    static QString constModifiedSince;
+    static const QString constModifiedSince;
     static const int constMaxPqChanges;
     static const QString constStreamsPlayListName;
+    static const QString constDirPrefix;
 
     static MPDConnection * self();
     static QByteArray quote(int val);
@@ -401,6 +402,7 @@ private:
     bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
     void toggleStopAfterCurrent(bool afterCurrent);
     bool recursivelyListDir(const QString &dir);
+    QStringList getAllFiles(const QString &dir);
     #ifndef CANTATA_WEB
     bool checkRemoteDynamicSupport();
     bool subscribe(const QByteArray &channel);

@@ -194,7 +194,7 @@ QVariant BrowseModel::data(const QModelIndex &index, int role) const
         if (!item->isFolder()) {
             TrackItem *track = static_cast<TrackItem *>(item);
             if (Song::Playlist==track->getSong().type) {
-                return track->getSong().isCueFile() ? i18n("Cue Sheet") : i18n("Playlist");
+                return Utils::getFile(track->getSong().file);
             }
         }
         return item->getText();
@@ -207,6 +207,12 @@ QVariant BrowseModel::data(const QModelIndex &index, int role) const
         }
         return static_cast<TrackItem *>(item)->getSong().toolTip();
     case Cantata::Role_SubText:
+        if (!item->isFolder()) {
+            TrackItem *track = static_cast<TrackItem *>(item);
+            if (Song::Playlist==track->getSong().type) {
+                return track->getSong().isCueFile() ? i18n("Cue Sheet") : i18n("Playlist");
+            }
+        }
         return item->getSubText();
     case Cantata::Role_TitleText:
         return item->getText();

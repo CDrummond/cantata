@@ -45,6 +45,7 @@ TitleWidget::TitleWidget(QWidget *p)
     , controls(0)
 {
     QGridLayout *layout=new QGridLayout(this);
+    QVBoxLayout *textLayout=new QVBoxLayout(0);
     image=new QLabel(this);
     mainText=new SqueezedTextLabel(this);
     subText=new SqueezedTextLabel(this);
@@ -71,8 +72,9 @@ TitleWidget::TitleWidget(QWidget *p)
     layout->addItem(new QSpacerItem(spacing, spacing), 0, 0, 2, 1);
     layout->addWidget(chevron, 0, 1, 2, 1);
     layout->addWidget(image, 0, 2, 2, 1);
-    layout->addWidget(mainText, 0, 3, 1, 1);
-    layout->addWidget(subText, 1, 3, 1, 1);
+    textLayout->addWidget(mainText);
+    textLayout->addWidget(subText);
+    layout->addItem(textLayout, 0, 3, 2, 1);
     mainText->installEventFilter(this);
     subText->installEventFilter(this);
     image->installEventFilter(this);
@@ -83,6 +85,8 @@ TitleWidget::TitleWidget(QWidget *p)
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     layout->setContentsMargins(1, 4, 1, 4);
     layout->setSpacing(spacing);
+    textLayout->setMargin(0);
+    textLayout->setSpacing(spacing);
     mainText->setAlignment(Qt::AlignBottom);
     subText->setAlignment(Qt::AlignTop);
     image->setAlignment(Qt::AlignCenter);
@@ -132,6 +136,8 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
     } else {
         image->setPixmap(icon.pixmap(64, 64).scaled(image->width()-2, image->height()-2, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
+    subText->setVisible(!sub.isEmpty());
+    mainText->setAlignment(sub.isEmpty() ? Qt::AlignVCenter : Qt::AlignBottom);
 }
 
 bool TitleWidget::eventFilter(QObject *o, QEvent *event)

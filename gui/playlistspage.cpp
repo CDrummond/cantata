@@ -299,11 +299,11 @@ void StoredPlaylistsPage::itemDoubleClicked(const QModelIndex &index)
         || !static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist()) {
         QModelIndexList indexes;
         indexes.append(index);
-        addItemsToPlayList(indexes, QString(), false);
+        addItemsToPlayList(indexes, QString(), MPDConnection::Append);
     }
 }
 
-void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QString &name, bool replace, quint8 priorty)
+void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QString &name, int action, quint8 priorty)
 {
     if (indexes.isEmpty()) {
         return;
@@ -311,12 +311,12 @@ void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, con
 
     // If we only have 1 item selected, see if it is a playlist. If so, we might be able to
     // just ask MPD to load it...
-    if (name.isEmpty() && 1==indexes.count() && 0==priorty && !proxy.enabled()) {
+    if (name.isEmpty() && 1==indexes.count() && 0==priorty && !proxy.enabled() && MPDConnection::Append==action) {
         QModelIndex idx=proxy.mapToSource(*(indexes.begin()));
         PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
 
         if (item->isPlaylist()) {
-            emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(item)->name, replace);
+            emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(item)->name, false);
             return;
         }
     }
@@ -336,7 +336,7 @@ void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, con
     QStringList files=PlaylistsModel::self()->filenames(proxy.mapToSource(indexes));
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files, replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, priorty);
+            emit add(files, action, priorty);
         } else {
             emit addSongsToPlaylist(name, files);
         }

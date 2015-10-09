@@ -59,7 +59,7 @@ Q_SIGNALS:
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
 
 private:
-    void addItemsToPlayList(const QModelIndexList &indexes, const QString &name, bool replace, quint8 priorty=0);
+    void addItemsToPlayList(const QModelIndexList &indexes, const QString &name, int action, quint8 priorty=0);
 
 public Q_SLOTS:
     void removeItems();

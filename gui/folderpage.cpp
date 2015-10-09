@@ -164,7 +164,6 @@ QStringList FolderPage::selectedFiles(bool allowPlaylists) const
     return files;
 }
 
-
 void FolderPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
 {
     QModelIndexList selected=view->selectedIndexes();
@@ -173,7 +172,7 @@ void FolderPage::addSelectionToPlaylist(const QString &name, int action, quint8 
 
     foreach (const QModelIndex &idx, selected) {
         if (static_cast<BrowseModel::Item *>(idx.internalPointer())->isFolder()) {
-            dirs.append(static_cast<BrowseModel::FolderItem *>(idx.internalPointer())->getPath());
+            files+=static_cast<BrowseModel::FolderItem *>(idx.internalPointer())->allEntries();
         } else {
             files.append(static_cast<BrowseModel::TrackItem *>(idx.internalPointer())->getSong().file);
         }
@@ -186,12 +185,6 @@ void FolderPage::addSelectionToPlaylist(const QString &name, int action, quint8 
             emit addSongsToPlaylist(name, files);
         }
         view->clearSelection();
-    } else if (!dirs.isEmpty()) {
-        if (name.isEmpty()) {
-            emit add(dirs, action, priorty);
-        } else {
-            emit addSongsToPlaylist(name, dirs);
-        }
     }
 }
 

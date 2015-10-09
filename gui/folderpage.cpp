@@ -73,6 +73,7 @@ FolderPage::FolderPage(QWidget *p)
     view->addAction(StdActions::self()->deleteSongsAction);
     #endif
     view->setModel(&model);
+    connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
 }
 
 FolderPage::~FolderPage()
@@ -146,6 +147,15 @@ void FolderPage::openFileManager()
     BrowseModel::Item *item = static_cast<BrowseModel::Item *>(selected.at(0).internalPointer());
     if (item->isFolder()) {
         QDesktopServices::openUrl(QUrl::fromLocalFile(MPDConnection::self()->getDetails().dir+static_cast<BrowseModel::FolderItem *>(item)->getPath()));
+    }
+}
+
+void FolderPage::updateToPlayQueue(const QModelIndex &idx, bool replace)
+{
+    BrowseModel::Item *item = static_cast<BrowseModel::Item *>(idx.internalPointer());
+    if (item->isFolder()) {
+        emit add(QStringList() << MPDConnection::constDirPrefix+static_cast<BrowseModel::FolderItem *>(item)->getPath(),
+                 replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0);
     }
 }
 

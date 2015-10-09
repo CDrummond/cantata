@@ -57,6 +57,9 @@ public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);
     void openFileManager();
 
+private Q_SLOTS:
+    void updateToPlayQueue(const QModelIndex &idx, bool replace);
+
 private:
     void doSearch() { }
     void controlActions();

@@ -165,39 +165,6 @@
          </item>
         </layout>
        </item>
-       <item row="1" column="0" colspan="2">
-        <layout class="QHBoxLayout" name="settingsLevelLayout">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="margin">
-          <number>0</number>
-         </property>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>2</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="settingsLevelButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item row="2" column="0" colspan="2">
         <widget class="NoteLabel" name="musicFolderNoteLabel">
          <property name="text">
@@ -285,54 +252,21 @@
          </item>
         </layout>
        </item>
-       <item row="2" column="0" colspan="4">
-        <layout class="QHBoxLayout" name="basicSettingsLevelLayout">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="margin">
-          <number>0</number>
-         </property>
-         <item>
-          <spacer name="basicHorizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>2</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="basicSettingsLevelButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="3" column="0" colspan="4">
+       <item row="1" column="0" colspan="4">
         <widget class="NoteLabel" name="basicMusicFolderNoteLabel">
          <property name="text">
           <string>If you change the 'Music folder' setting, then you will need to manually update the music database. This can be performed by pressing the 'Refresh Database' button in the 'Artists' or 'Albums' views.</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2">
+       <item row="2" column="0" colspan="4">
         <widget class="NoteLabel" name="basicCoverNameNoteLabel">
          <property name="text">
           <string>If no setting is specified for 'Cover filename', then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="2">
+       <item row="3" column="2">
         <spacer name="expandingSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

@@ -163,13 +163,6 @@
          <item row="5" column="1">
           <widget class="LineEdit" name="streamUrl"/>
          </item>
-         <item row="6" column="0" colspan="2">
-          <widget class="QCheckBox" name="useLibrary">
-           <property name="text">
-            <string>Populate Cantata's Library page</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
        <item row="1" column="0" colspan="2">
@@ -226,14 +219,7 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2">
-        <widget class="NoteLabel" name="useLibraryNoteLabel">
-         <property name="text">
-          <string>Cantata's Library page is populated by retrieving and parsing the metadata (Title, Artist, etc) of each song. If your MPD is configured to use a UPnP/DLNA backend, then this could be very slow, and will probably produce duplicate tracks. Therefore, if this MPD instance is using a UPnP/DLNA backend, then it is recommended that you disable the Library page for it. (If this setting is toggled, then you will need to instruct Cantata to refresh the DB in order to notice any changes)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
+       <item row="5" column="0">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

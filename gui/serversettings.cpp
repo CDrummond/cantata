@@ -181,7 +181,7 @@ void ServerSettings::save()
                 existingInConfig.removeAt(i);
                 found=true;
                 if (c.details.hostname!=e.hostname || c.details.port!=e.port || c.details.password!=e.password ||
-                    c.details.dir!=e.dir || c.details.coverName!=e.coverName || c.details.useLibrary!=e.useLibrary
+                    c.details.dir!=e.dir || c.details.coverName!=e.coverName
                     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
                     || c.details.streamUrl!=e.streamUrl
                     #endif
@@ -356,8 +356,6 @@ void ServerSettings::toggleOptions()
     coverName->setVisible(allOptions);
     coverNameLabel->setVisible(allOptions);
     coverNameNoteLabel->setVisible(allOptions);
-    useLibrary->setVisible(allOptions);
-    useLibraryNoteLabel->setVisible(allOptions);
     basicCoverName->setVisible(allOptions);
     basicCoverNameLabel->setVisible(allOptions);
     basicCoverNameNoteLabel->setVisible(allOptions);
@@ -406,7 +404,6 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         streamUrl->setText(details.streamUrl);
         #endif
-        useLibrary->setChecked(details.useLibrary);
         stackedWidget->setCurrentIndex(0);
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     }
@@ -431,7 +428,6 @@ MPDConnectionDetails ServerSettings::getDetails() const
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         details.streamUrl=streamUrl->text().trimmed();
         #endif
-        details.useLibrary=useLibrary->isChecked();
     }
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     else {

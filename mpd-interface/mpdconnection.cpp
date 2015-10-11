@@ -199,7 +199,6 @@ QString MPDConnection::Response::getError(const QByteArray &command)
 
 MPDConnectionDetails::MPDConnectionDetails()
     : port(6600)
-    , useLibrary(true)
     , dirReadable(false)
 {
 }
@@ -1533,9 +1532,7 @@ void MPDConnection::update()
 void MPDConnection::loadLibrary()
 {
     emit updatingLibrary(dbUpdate);
-    if (details.useLibrary) {
-        recursivelyListDir("/");
-    }
+    recursivelyListDir("/");
     emit updatedLibrary();
 }
 
@@ -1906,6 +1903,19 @@ void MPDConnection::toggleStopAfterCurrent(bool afterCurrent)
 bool MPDConnection::recursivelyListDir(const QString &dir)
 {
     bool topLevel="/"==dir || ""==dir;
+
+    // UPnP database backend does not list separate metadata items, so if "list genre" returns
+    // empty response assume this is a UPnP backend and dont attempt to get rest of data...
+    // Although we dont use "list XXX", lsinfo will return duplciate items (due to the way most
+    // UPnP servers returing directories of classifications - Genre/Album/Tracks, Artist/Album/Tracks,
+    // etc...
+    if (topLevel) {
+        Response response=sendCommand("list genre");
+        if (!response.ok || response.data.split('\n').length()<3) { // 2 lines - OK and blank
+            return false;
+        }
+    }
+
     Response response=sendCommand(topLevel ? "lsinfo" : ("lsinfo "+encodeName(dir)));
     if (response.ok) {
         QStringList subDirs;

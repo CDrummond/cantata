@@ -16,8 +16,10 @@
 11. Use regular artist icon for "Various Artists"
 12. If MPD does not support 'sticker' command, then inform user that ratings
     cannot be stored.
-13. Add option to not use Library view. This is mainly of use when MPD is
-    configured to use a UPnP backend.
+13. When populating library, check genre list. If this is empty, then do dot
+    attempt to populate library. The UPnP database backend will not populate
+    MPD's metadata listings (genre, artists, etc), and calling "lsinfo" on
+    all UPnP folders is very slow and will lead to duplicate tracks.
 14. Add 'Copy To Device' to playqueue.
 15. Do not reset current song when shuffling albums, or sorting playqueue.
 16. MPD 0.19.2 can handle m3u8, so pass stream URLs of this type straight to
@@ -39,8 +41,7 @@
 27. Fix build with proxy config and Qt5
 28. For Linux builds, if system tray icon is null (becasue QIcon cannot find
     it) then add icon files manually.
-29. Hide cover, HTTP stream, and populate library, options under a 'Show All
-    Options' button.
+29. Hide cover and HTTP stream options under a 'Show All Options' button.
 33. Allow local socket path to start with ~
 31. Ensure consistent order when drag'n'drop from list views as per tree views.
 32. Remove touch friendly setting from builds unless -DENABLE_TOUCH_SUPPORT=ON

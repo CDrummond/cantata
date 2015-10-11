@@ -123,10 +123,6 @@ ServerSettings::ServerSettings(QWidget *p)
     #ifdef Q_OS_MAC
     expandingSpacer->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
     #endif
-
-    toggleOptions();
-    connect(settingsLevelButton, SIGNAL(clicked()), SLOT(toggleOptions()));
-    connect(basicSettingsLevelButton, SIGNAL(clicked()), SLOT(toggleOptions()));
 }
 
 void ServerSettings::load()
@@ -345,24 +341,6 @@ void ServerSettings::basicDirChanged()
     if (!prevBasic.details.dir.isEmpty()) {
         QString d=Utils::fixPath(basicDir->text().trimmed());
         basicMusicFolderNoteLabel->setOn(d.isEmpty() || d!=prevBasic.details.dir);
-    }
-}
-
-void ServerSettings::toggleOptions()
-{
-    allOptions=!allOptions;
-    settingsLevelButton->setText(allOptions ? i18n("Show Basic Options <<") : i18n("Show All Options >>"));
-    basicSettingsLevelButton->setText(allOptions ? i18n("Show Basic Options <<") : i18n("Show All Options >>"));
-    coverName->setVisible(allOptions);
-    coverNameLabel->setVisible(allOptions);
-    coverNameNoteLabel->setVisible(allOptions);
-    basicCoverName->setVisible(allOptions);
-    basicCoverNameLabel->setVisible(allOptions);
-    basicCoverNameNoteLabel->setVisible(allOptions);
-    if (streamUrlNoteLabel) {
-        streamUrl->setVisible(allOptions);
-        streamUrlLabel->setVisible(allOptions);
-        streamUrlNoteLabel->setVisible(allOptions);
     }
 }
 

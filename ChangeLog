@@ -41,38 +41,37 @@
 27. Fix build with proxy config and Qt5
 28. For Linux builds, if system tray icon is null (becasue QIcon cannot find
     it) then add icon files manually.
-29. Hide cover and HTTP stream options under a 'Show All Options' button.
-33. Allow local socket path to start with ~
-31. Ensure consistent order when drag'n'drop from list views as per tree views.
-32. Remove touch friendly setting from builds unless -DENABLE_TOUCH_SUPPORT=ON
+29. Allow local socket path to start with ~
+30. Ensure consistent order when drag'n'drop from list views as per tree views.
+31. Remove touch friendly setting from builds unless -DENABLE_TOUCH_SUPPORT=ON
     is passed to CMake.
-33. Dirble v2 API.
-34. When removing duplicates, take track number and album into account as well
+32. Dirble v2 API.
+33. When removing duplicates, take track number and album into account as well
     as artist and title.
-35. Resolve TuneIn radio URL's before adding to favourites (if added via TuneIn
+34. Resolve TuneIn radio URL's before adding to favourites (if added via TuneIn
     search).
-36. Use mpd.cantata for DBus service names and not com.googlecode.cantata
-37. Fix OpenBSD build.
-38. Add option to set which prefixes to ignore when sorting.
-39. Add option to disable MPRIS interface.
-40. Default to UDisks2
-41. Show podcast published date on sub-text, and duration in brackets.
-42. Add option to control cue file handling.
-43. New options to add songs to play queue - 'add and play', 'append and play',
+35. Use mpd.cantata for DBus service names and not com.googlecode.cantata
+36. Fix OpenBSD build.
+37. Add option to set which prefixes to ignore when sorting.
+38. Add option to disable MPRIS interface.
+39. Default to UDisks2
+40. Show podcast published date on sub-text, and duration in brackets.
+41. Add option to control cue file handling.
+42. New options to add songs to play queue - 'add and play', 'append and play',
     and 'insert after current'
-44. Custom actions.
-45. Set HTTP server to listen on all addresses, but use IP address of socket
+43. Custom actions.
+44. Set HTTP server to listen on all addresses, but use IP address of socket
     connected to MPD for HTTP URLs.
-46. libCDDB can crash if it cannot talk to server, so before querying check
+45. libCDDB can crash if it cannot talk to server, so before querying check
     whether we can connect.
-47. Save scaled covers as PNG, as the quality is much better.
-48. Use Humanity/gnome icons for Windows and Mac builds.
-49. Add an uninstall target for Linux builds.
-50. Add 'Append Random Album' option to library, jamendo, and magnatune pages.
-51. Don't use KWallet for MPD password - it's overkill, as MPD password is sent
+46. Save scaled covers as PNG, as the quality is much better.
+47. Use Humanity/gnome icons for Windows and Mac builds.
+48. Add an uninstall target for Linux builds.
+49. Add 'Append Random Album' option to library, jamendo, and magnatune pages.
+50. Don't use KWallet for MPD password - it's overkill, as MPD password is sent
     in plain text!
-52. Fix Lastfm response parsing.
-53. Dynamically load folder view.
+51. Fix Lastfm response parsing.
+52. Dynamically load folder view.
 
 1.5.2
 -----

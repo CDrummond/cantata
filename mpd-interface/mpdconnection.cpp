@@ -1910,9 +1910,13 @@ bool MPDConnection::recursivelyListDir(const QString &dir)
     // UPnP servers returing directories of classifications - Genre/Album/Tracks, Artist/Album/Tracks,
     // etc...
     if (topLevel) {
-        Response response=sendCommand("list genre");
+        Response response=sendCommand("list genre", false, false);
         if (!response.ok || response.data.split('\n').length()<3) { // 2 lines - OK and blank
-            return false;
+            // ..just to be 100% sure, check no artists either...
+            response=sendCommand("list artist", false, false);
+            if (!response.ok || response.data.split('\n').length()<3) { // 2 lines - OK and blank
+                return false;
+            }
         }
     }
 

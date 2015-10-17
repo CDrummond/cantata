@@ -400,7 +400,6 @@ Icons::Icons()
     #ifndef ALWAYS_USE_MONO_ICONS
     bool useAwesomeIcons=GtkStyle::isActive() || QLatin1String("breeze")==iconTheme;
     #endif
-    streamCategoryIcon=Icon(QStringList() << "folder-music" << "inode-directory");
 
     QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"stream.png");
     if (QFile::exists(iconFile)) {
@@ -424,11 +423,8 @@ Icons::Icons()
     addRadioStreamIcon=Icon::create("addradio", constStdSizes);
     artistIcon.addFile(":artist.svg");
     genreIcon.addFile(":genre.svg");
-    #ifndef ENABLE_KDE_SUPPORT
-    #ifndef ENABLE_UBUNTU
+    #if !defind ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
     appIcon=Icon("cantata");
-    #endif // ENABLE_UBUNTU
-    shortcutsIcon=Icon(QStringList() << "preferences-desktop-keyboard" << "keyboard");
     #endif // ENABLE_KDE_SUPPORT
 
     lastFmIcon=loadAwesomeIcon(fa::lastfmsquare, red, red, 1.1);
@@ -504,6 +500,7 @@ Icons::Icons()
         savedRssListIcon=Icon("document-save-as");
         clockIcon=Icon("clock");
         folderListIcon=folderIcon;
+        streamCategoryIcon=Icon(QStringList() << "folder-music" << "inode-directory");
         streamListIcon=radioStreamIcon;
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         httpStreamIcon=speakerIcon;

@@ -423,9 +423,9 @@ Icons::Icons()
     addRadioStreamIcon=Icon::create("addradio", constStdSizes);
     artistIcon.addFile(":artist.svg");
     genreIcon.addFile(":genre.svg");
-    #if !defind ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
+    #if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
     appIcon=Icon("cantata");
-    #endif // ENABLE_KDE_SUPPORT
+    #endif
 
     lastFmIcon=loadAwesomeIcon(fa::lastfmsquare, red, red, 1.1);
 

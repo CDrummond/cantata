@@ -28,6 +28,13 @@
 #include <QFileDialog>
 #include <QHBoxLayout>
 
+static QIcon icon;
+
+void PathRequester::setIcon(const QIcon &icn)
+{
+    icon=icn;
+}
+
 PathRequester::PathRequester(QWidget *parent)
     : QWidget(parent)
     , dirMode(true)
@@ -39,7 +46,7 @@ PathRequester::PathRequester(QWidget *parent)
     layout->addWidget(edit);
     layout->addWidget(btn);
     btn->setAutoRaise(true);
-    btn->setIcon(Icon("document-open"));
+    btn->setIcon(icon.isNull() ? Icon("document-open") : icon);
     connect(btn, SIGNAL(clicked(bool)), SLOT(choose()));
     connect(edit, SIGNAL(textChanged(const QString &)), SIGNAL(textChanged(const QString &)));
 }

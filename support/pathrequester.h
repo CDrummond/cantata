@@ -49,6 +49,7 @@ class PathRequester : public QWidget
 {
     Q_OBJECT
 public:
+    static void setIcon(const QIcon &icn);
     PathRequester(QWidget *parent);
     virtual ~PathRequester() { }
 

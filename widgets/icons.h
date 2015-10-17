@@ -113,6 +113,10 @@ public:
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     QIcon httpStreamIcon;
     #endif
+    QIcon leftIcon;
+    QIcon rightIcon;
+    QIcon upIcon;
+    QIcon downIcon;
 };
 
 #endif

@@ -909,63 +909,6 @@ Cantata contains code/icons from:
 
 Icon created under Linux using the createicon.sh in the windows folder.
 
-Qt4 Build
----------
-
-The following steps are used to compile Cantata, and create the windows
-installer.
-
-This assumes the following folder structure:
-
-    z:\cantata\src          [ Checkout of Cantata's source code ]
-    z:\cantata\build        
-    z:\cantata\install      [ make install will place target files here ]
-    z:\cantata\icons        [ Humanity/Oxygen icons folder ]
-    z:\dev\MingGW
-    z:\dev\Qt\4.8.4
-    z:\dev\taglib
-    z:\dev\zlib
-    z:\dev\ssl              [ libeay32.dll and ssleay32.dll ]
-
-
-1. Install Qt, MinGW, cmake, TagLib and zlib. TagLib and zlib will probably
-   need compiling.
-
-2. Set (or amend) the following environemnt variables:
-    QTDIR=z:\dev\Qt\4.8.4
-    PATH=z:\dev\Qt\4.8.4\bin;z:\dev\MinGW\bin;z:\dev\taglib\bin;z:\dev\cmake\bin
-
-3a. Download Humanity/gnome required for Cantata from the following link
-    https://drive.google.com/file/d/0Bzghs6gQWi60QUxuakFQNWF0VU0/view?usp=sharing
-
-    - OR - 
-
-3b. Download oxygen icons required for Cantata from the following link
-    https://drive.google.com/file/d/0Bzghs6gQWi60cXlvUURjeEVRUms/edit?usp=sharing
-
-4. Unzip this *within* icons/
-
-5. Call cmake (e.g. from build folder):
-     cmake ../src -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DTAGLIB_CAN_SAVE_ID3VER=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/lib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DCANTATA_MINGW_LIBS=z:/dev/MinGW/bin/mingwm10.dll;z:/dev/MinGW/bin/libgcc_s_dw2-1.dll -DCANTATA_SSL_LIBS=z:/dev/ssl/libeay32.dll;z:/dev/ssl/ssleay32.dll -DCANTATA_ICONS_DIR=z:/cantata/icons
-
-   Notes: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the
-          TagLib settings have been manually set,
-
-          If using oxygen icons (i.e. you used step 3b not 3a), then also pass
-           -DCANTATA_ICON_THEME=oxygen
-
-6. make
-
-7. make install
-
-
-This build is as per Qt-only, but does not have support for dbus, local dynamic
-playlists, device support, or replaygain calculation.
-
-
-Qt5 Build
----------
-
 The following steps are used to compile Cantata, and create the windows
 installer.
 

@@ -82,6 +82,7 @@ option(ENABLE_MTP "Enable MTP library (required to support MTP devices)" ON)
 option(ENABLE_UNCACHED_MTP "Open MTP devices in un-cached mode (faster)" ON)
 
 if (WIN32)
+    set(ENABLE_QT5 ON)
     set(CANTATA_ICON_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/icons/${CANTATA_ICON_THEME})
 elseif (APPLE)
     set(ENABLE_QT5 ON)

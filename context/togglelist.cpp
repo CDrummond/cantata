@@ -23,9 +23,9 @@
 
 #include "togglelist.h"
 #include "support/localize.h"
-#include "support/icon.h"
 #include "gui/settings.h"
 #include "widgets/basicitemdelegate.h"
+#include "widgets/icons.h"
 #include "support/utils.h"
 
 ToggleList::ToggleList(QWidget *p)
@@ -38,11 +38,11 @@ ToggleList::ToggleList(QWidget *p)
     connect(removeButton, SIGNAL(clicked()), SLOT(remove()));
     connect(available, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), SLOT(availableChanged(QListWidgetItem*)));
     connect(selected, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), SLOT(selectedChanged(QListWidgetItem*)));
-    upButton->setIcon(Icon("go-up"));
-    downButton->setIcon(Icon("go-down"));
+    upButton->setIcon(Icons::self()->upIcon);
+    downButton->setIcon(Icons::self()->downIcon);
     bool rtl=isRightToLeft();
-    addButton->setIcon(Icon(rtl ? "go-previous" : "go-next"));
-    removeButton->setIcon(Icon(rtl ? "go-next" : "go-previous"));
+    addButton->setIcon(rtl ? Icons::self()->leftIcon : Icons::self()->rightIcon);
+    removeButton->setIcon(rtl ? Icons::self()->rightIcon : Icons::self()->leftIcon);
 
     upButton->setEnabled(false);
     downButton->setEnabled(false);

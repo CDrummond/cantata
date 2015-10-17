@@ -27,6 +27,7 @@
 #include "gui/settings.h"
 #include "support/globalstatic.h"
 #include "support/utils.cpp"
+#include "support/pathrequester.h"
 #include "QtAwesome/QtAwesome.h"
 #include <QApplication>
 #include <QPixmap>
@@ -469,6 +470,13 @@ Icons::Icons()
         #ifndef Q_OS_MAC
         Icon::setStd(Icon::Close, loadAwesomeIcon(fa::close, red, red));
         #endif
+        leftIcon=loadAwesomeIcon(fa::arrowleft, stdColor, stdColor);
+        rightIcon=loadAwesomeIcon(fa::arrowright, stdColor, stdColor);
+        upIcon=loadAwesomeIcon(fa::arrowup, stdColor, stdColor);
+        downIcon=loadAwesomeIcon(fa::arrowdown, stdColor, stdColor);
+        #ifndef ENABLE_KDE_SUPPORT
+        PathRequester::setIcon(folderListIcon);
+        #endif
     #ifndef ALWAYS_USE_MONO_ICONS
     } else {
         replacePlayQueueIcon=Icon("media-playback-start");
@@ -500,6 +508,10 @@ Icons::Icons()
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         httpStreamIcon=speakerIcon;
         #endif
+        leftIcon=Icon("go-previous");
+        rightIcon=Icon("go-next");
+        upIcon=Icon("go-up");
+        downIcon=Icon("go-down");
     }
     #endif
 }

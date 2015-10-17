@@ -418,7 +418,6 @@ Icons::Icons()
     repeatIcon=createRecolourableIcon("repeat", stdColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor);
     filesIcon=Icon(QStringList() << "folder-downloads" << "folder-download" << "folder" << "go-down");
-    cancelIcon=Icon(QStringList() << "dialog-cancel" << "gtk-cancel");
     radioStreamIcon=Icon::create("radio", constStdSizes);
     addRadioStreamIcon=Icon::create("addradio", constStdSizes);
     artistIcon.addFile(":artist.svg");
@@ -473,6 +472,7 @@ Icons::Icons()
         #ifndef ENABLE_KDE_SUPPORT
         PathRequester::setIcon(folderListIcon);
         #endif
+        cancelIcon=loadAwesomeIcon(fa::close, red, red);
     #ifndef ALWAYS_USE_MONO_ICONS
     } else {
         replacePlayQueueIcon=Icon("media-playback-start");
@@ -509,6 +509,7 @@ Icons::Icons()
         rightIcon=Icon("go-next");
         upIcon=Icon("go-up");
         downIcon=Icon("go-down");
+        cancelIcon=Icon(QStringList() << "dialog-cancel" << "gtk-cancel");
     }
     #endif
 }

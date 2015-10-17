@@ -58,7 +58,6 @@ public:
     Icon speakerIcon;
     Icon menuIcon;
     Icon filesIcon;
-    Icon cancelIcon;
 
     Icon playqueueIcon;
     Icon libraryIcon;
@@ -116,6 +115,7 @@ public:
     QIcon rightIcon;
     QIcon upIcon;
     QIcon downIcon;
+    QIcon cancelIcon;
 };
 
 #endif

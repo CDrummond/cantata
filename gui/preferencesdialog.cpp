@@ -105,7 +105,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     #endif
     #ifndef ENABLE_KDE_SUPPORT
     shortcuts = new ShortcutsSettingsPage(0);
-    addPage(QLatin1String("shortcuts"), shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::self()->shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
+    addPage(QLatin1String("shortcuts"), shortcuts, i18nc("Qt-only", "Shortcuts"), Icon(QStringList() << "preferences-desktop-keyboard" << "keyboard"),
+            i18nc("Qt-only", "Keyboard Shortcut Settings"));
     shortcuts->load();
     #endif
     addPage(QLatin1String("cache"), cache, i18n("Cache"), Icon(QStringList() << "folder-temp" << "folder"), i18n("Cached Items"));

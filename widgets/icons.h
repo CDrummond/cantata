@@ -39,7 +39,6 @@ public:
     void initToolbarIcons(const QColor &toolbarText);
     #ifndef ENABLE_KDE_SUPPORT
     Icon appIcon;
-    Icon shortcutsIcon;
     #endif
     Icon genreIcon;
     Icon artistIcon;

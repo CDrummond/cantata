@@ -470,10 +470,10 @@ Icons::Icons()
         #ifndef Q_OS_MAC
         Icon::setStd(Icon::Close, loadAwesomeIcon(fa::close, red, red));
         #endif
-        leftIcon=loadAwesomeIcon(fa::arrowleft, stdColor, stdColor);
-        rightIcon=loadAwesomeIcon(fa::arrowright, stdColor, stdColor);
-        upIcon=loadAwesomeIcon(fa::arrowup, stdColor, stdColor);
-        downIcon=loadAwesomeIcon(fa::arrowdown, stdColor, stdColor);
+        leftIcon=loadAwesomeIcon(fa::chevronleft, stdColor, stdColor);
+        rightIcon=loadAwesomeIcon(fa::chevronright, stdColor, stdColor);
+        upIcon=loadAwesomeIcon(fa::chevronup, stdColor, stdColor);
+        downIcon=loadAwesomeIcon(fa::chevrondown, stdColor, stdColor);
         #ifndef ENABLE_KDE_SUPPORT
         PathRequester::setIcon(folderListIcon);
         #endif

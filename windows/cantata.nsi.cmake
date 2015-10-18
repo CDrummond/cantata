@@ -134,279 +134,41 @@ section "install"
     file "icons\podcasts.png"
     file "icons\soundcloud.png"
     file "icons\stream.png"
-    setOutPath $INSTDIR\icons\oxygen
-    file "icons\oxygen\index.theme"
-    file "icons\oxygen\Oxygen License (Creative Common Attribution-ShareAlike 3.0).html"
-    file "icons\oxygen\Oxygen README.txt"
-    setOutPath $INSTDIR\icons\oxygen\128x128\categories
-    file "icons\oxygen\128x128\categories\applications-internet.png"
-    setOutPath $INSTDIR\icons\oxygen\128x128\devices
-    file "icons\oxygen\128x128\devices\media-optical.png"
-    setOutPath $INSTDIR\icons\oxygen\16x16\actions
-    file "icons\oxygen\16x16\actions\application-exit.png"
-    file "icons\oxygen\16x16\actions\bookmark-new.png"
-    file "icons\oxygen\16x16\actions\configure.png"
-    file "icons\oxygen\16x16\actions\dialog-cancel.png"
-    file "icons\oxygen\16x16\actions\dialog-close.png"
-    file "icons\oxygen\16x16\actions\dialog-ok.png"
-    file "icons\oxygen\16x16\actions\document-edit.png"
-    file "icons\oxygen\16x16\actions\document-export.png"
-    file "icons\oxygen\16x16\actions\document-import.png"
-    file "icons\oxygen\16x16\actions\document-new.png"
-    file "icons\oxygen\16x16\actions\document-open.png"
-    file "icons\oxygen\16x16\actions\document-save-as.png"
-    file "icons\oxygen\16x16\actions\document-save.png"
-    file "icons\oxygen\16x16\actions\edit-clear-list.png"
-    file "icons\oxygen\16x16\actions\edit-clear-locationbar-ltr.png"
-    file "icons\oxygen\16x16\actions\edit-clear-locationbar-rtl.png"
-    file "icons\oxygen\16x16\actions\edit-delete.png"
-    file "icons\oxygen\16x16\actions\edit-find.png"
-    file "icons\oxygen\16x16\actions\edit-rename.png"
-    file "icons\oxygen\16x16\actions\folder-sync.png"
-    file "icons\oxygen\16x16\actions\go-down.png"
-    file "icons\oxygen\16x16\actions\go-next.png"
-    file "icons\oxygen\16x16\actions\go-previous.png"
-    file "icons\oxygen\16x16\actions\go-up.png"
-    file "icons\oxygen\16x16\actions\list-add.png"
-    file "icons\oxygen\16x16\actions\list-remove.png"
-    file "icons\oxygen\16x16\actions\media-playback-pause.png"
-    file "icons\oxygen\16x16\actions\media-playback-start.png"
-    file "icons\oxygen\16x16\actions\media-playback-stop.png"
-    file "icons\oxygen\16x16\actions\media-skip-backward.png"
-    file "icons\oxygen\16x16\actions\media-skip-forward.png"
-    file "icons\oxygen\16x16\actions\process-stop.png"
-    file "icons\oxygen\16x16\actions\speaker.png"
-    file "icons\oxygen\16x16\actions\tools-wizard.png"
-    file "icons\oxygen\16x16\actions\fork.png"
-    file "icons\oxygen\16x16\actions\view-fullscreen.png"
-    file "icons\oxygen\16x16\actions\view-media-artist.png"
-    file "icons\oxygen\16x16\actions\view-media-playlist.png"
-    file "icons\oxygen\16x16\actions\view-refresh.png"
-    setOutPath $INSTDIR\icons\oxygen\16x16\apps
-    file "icons\oxygen\16x16\apps\cantata.png"
-    file "icons\oxygen\16x16\apps\clock.png"
-    file "icons\oxygen\16x16\apps\preferences-desktop-keyboard.png"
-    file "icons\oxygen\16x16\apps\system-file-manager.png"
-    setOutPath $INSTDIR\icons\oxygen\16x16\categories
-    file "icons\oxygen\16x16\categories\applications-internet.png"
-    file "icons\oxygen\16x16\categories\preferences-other.png"
-    file "icons\oxygen\16x16\categories\preferences-system-network.png"
-    setOutPath $INSTDIR\icons\oxygen\16x16\devices
-    file "icons\oxygen\16x16\devices\media-optical.png"
-    file "icons\oxygen\16x16\devices\multimedia-player.png"
-    setOutPath $INSTDIR\icons\oxygen\16x16\mimetypes
-    file "icons\oxygen\16x16\mimetypes\audio-x-generic.png"
-    file "icons\oxygen\16x16\mimetypes\inode-directory.png"
-    setOutPath $INSTDIR\icons\oxygen\16x16\places
-    file "icons\oxygen\16x16\places\bookmarks.png"
-    file "icons\oxygen\16x16\places\favorites.png"
-    file "icons\oxygen\16x16\places\network-server.png"
-    file "icons\oxygen\16x16\places\server-database.png"
-    file "icons\oxygen\16x16\places\folder-temp.png"
-    file "icons\oxygen\16x16\places\folder-downloads.png"
-    setOutPath $INSTDIR\icons\oxygen\16x16\status
-    file "icons\oxygen\16x16\status\dialog-error.png"
-    file "icons\oxygen\16x16\status\dialog-information.png"
-    file "icons\oxygen\16x16\status\dialog-warning.png"
-    file "icons\oxygen\16x16\status\media-playlist-shuffle.png"
-    file "icons\oxygen\16x16\status\object-locked.png"
-    setOutPath $INSTDIR\icons\oxygen\22x22\actions
-    file "icons\oxygen\22x22\actions\application-exit.png"
-    file "icons\oxygen\22x22\actions\bookmark-new.png"
-    file "icons\oxygen\22x22\actions\bookmarks.png"
-    file "icons\oxygen\22x22\actions\configure.png"
-    file "icons\oxygen\22x22\actions\dialog-cancel.png"
-    file "icons\oxygen\22x22\actions\dialog-close.png"
-    file "icons\oxygen\22x22\actions\dialog-ok.png"
-    file "icons\oxygen\22x22\actions\document-edit.png"
-    file "icons\oxygen\22x22\actions\document-export.png"
-    file "icons\oxygen\22x22\actions\document-import.png"
-    file "icons\oxygen\22x22\actions\document-new.png"
-    file "icons\oxygen\22x22\actions\document-open.png"
-    file "icons\oxygen\22x22\actions\document-save-as.png"
-    file "icons\oxygen\22x22\actions\document-save.png"
-    file "icons\oxygen\22x22\actions\edit-clear-list.png"
-    file "icons\oxygen\22x22\actions\edit-clear-locationbar-ltr.png"
-    file "icons\oxygen\22x22\actions\edit-clear-locationbar-rtl.png"
-    file "icons\oxygen\22x22\actions\edit-delete.png"
-    file "icons\oxygen\22x22\actions\edit-find.png"
-    file "icons\oxygen\22x22\actions\edit-rename.png"
-    file "icons\oxygen\22x22\actions\folder-sync.png"
-    file "icons\oxygen\22x22\actions\go-down.png"
-    file "icons\oxygen\22x22\actions\go-next.png"
-    file "icons\oxygen\22x22\actions\go-previous.png"
-    file "icons\oxygen\22x22\actions\go-up.png"
-    file "icons\oxygen\22x22\actions\list-add.png"
-    file "icons\oxygen\22x22\actions\list-remove.png"
-    file "icons\oxygen\22x22\actions\media-playback-pause.png"
-    file "icons\oxygen\22x22\actions\media-playback-start.png"
-    file "icons\oxygen\22x22\actions\media-playback-stop.png"
-    file "icons\oxygen\22x22\actions\media-skip-backward.png"
-    file "icons\oxygen\22x22\actions\media-skip-forward.png"
-    file "icons\oxygen\22x22\actions\process-stop.png"
-    file "icons\oxygen\22x22\actions\speaker.png"
-    file "icons\oxygen\22x22\actions\tools-wizard.png"
-    file "icons\oxygen\22x22\actions\fork.png"
-    file "icons\oxygen\22x22\actions\view-fullscreen.png"
-    file "icons\oxygen\22x22\actions\view-media-artist.png"
-    file "icons\oxygen\22x22\actions\view-media-playlist.png"
-    file "icons\oxygen\22x22\actions\view-refresh.png"
-    setOutPath $INSTDIR\icons\oxygen\22x22\apps
-    file "icons\oxygen\22x22\apps\cantata.png"
-    file "icons\oxygen\22x22\apps\clock.png"
-    file "icons\oxygen\22x22\apps\preferences-desktop-keyboard.png"
-    file "icons\oxygen\22x22\apps\system-file-manager.png"
-    setOutPath $INSTDIR\icons\oxygen\22x22\categories
-    file "icons\oxygen\22x22\categories\applications-internet.png"
-    file "icons\oxygen\22x22\categories\preferences-other.png"
-    file "icons\oxygen\22x22\categories\preferences-system-network.png"
-    setOutPath $INSTDIR\icons\oxygen\22x22\devices
-    file "icons\oxygen\22x22\devices\media-optical.png"
-    file "icons\oxygen\22x22\devices\multimedia-player.png"
-    setOutPath $INSTDIR\icons\oxygen\22x22\mimetypes
-    file "icons\oxygen\22x22\mimetypes\audio-x-generic.png"
-    file "icons\oxygen\22x22\mimetypes\inode-directory.png"
-    setOutPath $INSTDIR\icons\oxygen\22x22\places
-    file "icons\oxygen\22x22\places\bookmarks.png"
-    file "icons\oxygen\22x22\places\favorites.png"
-    file "icons\oxygen\22x22\places\network-server.png"
-    file "icons\oxygen\22x22\places\server-database.png"
-    file "icons\oxygen\22x22\places\folder-temp.png"
-    file "icons\oxygen\22x22\places\folder-downloads.png"
-    setOutPath $INSTDIR\icons\oxygen\22x22\status
-    file "icons\oxygen\22x22\status\dialog-error.png"
-    file "icons\oxygen\22x22\status\dialog-information.png"
-    file "icons\oxygen\22x22\status\dialog-warning.png"
-    file "icons\oxygen\22x22\status\media-playlist-shuffle.png"
-    file "icons\oxygen\22x22\status\object-locked.png"
-    setOutPath $INSTDIR\icons\oxygen\22x22\apps
-    file "icons\oxygen\24x24\apps\cantata.png"
-    setOutPath $INSTDIR\icons\oxygen\256x256\categories
-    file "icons\oxygen\256x256\categories\applications-internet.png"
-    setOutPath $INSTDIR\icons\oxygen\256x256\devices
-    file "icons\oxygen\256x256\devices\media-optical.png"
-    setOutPath $INSTDIR\icons\oxygen\32x32\actions
-    file "icons\oxygen\32x32\actions\application-exit.png"
-    file "icons\oxygen\32x32\actions\bookmark-new.png"
-    file "icons\oxygen\32x32\actions\configure.png"
-    file "icons\oxygen\32x32\actions\dialog-cancel.png"
-    file "icons\oxygen\32x32\actions\dialog-close.png"
-    file "icons\oxygen\32x32\actions\dialog-ok.png"
-    file "icons\oxygen\32x32\actions\document-edit.png"
-    file "icons\oxygen\32x32\actions\document-export.png"
-    file "icons\oxygen\32x32\actions\document-import.png"
-    file "icons\oxygen\32x32\actions\document-new.png"
-    file "icons\oxygen\32x32\actions\document-open.png"
-    file "icons\oxygen\32x32\actions\document-save-as.png"
-    file "icons\oxygen\32x32\actions\document-save.png"
-    file "icons\oxygen\32x32\actions\edit-clear-list.png"
-    file "icons\oxygen\32x32\actions\edit-clear-locationbar-ltr.png"
-    file "icons\oxygen\32x32\actions\edit-clear-locationbar-rtl.png"
-    file "icons\oxygen\32x32\actions\edit-delete.png"
-    file "icons\oxygen\32x32\actions\edit-find.png"
-    file "icons\oxygen\32x32\actions\edit-rename.png"
-    file "icons\oxygen\32x32\actions\folder-sync.png"
-    file "icons\oxygen\32x32\actions\go-down.png"
-    file "icons\oxygen\32x32\actions\go-next.png"
-    file "icons\oxygen\32x32\actions\go-previous.png"
-    file "icons\oxygen\32x32\actions\go-up.png"
-    file "icons\oxygen\32x32\actions\list-add.png"
-    file "icons\oxygen\32x32\actions\list-remove.png"
-    file "icons\oxygen\32x32\actions\media-playback-pause.png"
-    file "icons\oxygen\32x32\actions\media-playback-start.png"
-    file "icons\oxygen\32x32\actions\media-playback-stop.png"
-    file "icons\oxygen\32x32\actions\media-skip-backward.png"
-    file "icons\oxygen\32x32\actions\media-skip-forward.png"
-    file "icons\oxygen\32x32\actions\process-stop.png"
-    file "icons\oxygen\32x32\actions\speaker.png"
-    file "icons\oxygen\32x32\actions\tools-wizard.png"
-    file "icons\oxygen\32x32\actions\fork.png"
-    file "icons\oxygen\32x32\actions\view-fullscreen.png"
-    file "icons\oxygen\32x32\actions\view-media-artist.png"
-    file "icons\oxygen\32x32\actions\view-media-playlist.png"
-    file "icons\oxygen\32x32\actions\view-refresh.png"
-    setOutPath $INSTDIR\icons\oxygen\32x32\apps
-    file "icons\oxygen\32x32\apps\cantata.png"
-    file "icons\oxygen\32x32\apps\clock.png"
-    file "icons\oxygen\32x32\apps\preferences-desktop-keyboard.png"
-    file "icons\oxygen\32x32\apps\system-file-manager.png"
-    setOutPath $INSTDIR\icons\oxygen\32x32\categories
-    file "icons\oxygen\32x32\categories\applications-internet.png"
-    file "icons\oxygen\32x32\categories\preferences-other.png"
-    file "icons\oxygen\32x32\categories\preferences-system-network.png"
-    setOutPath $INSTDIR\icons\oxygen\32x32\devices
-    file "icons\oxygen\32x32\devices\media-optical.png"
-    file "icons\oxygen\32x32\devices\multimedia-player.png"
-    setOutPath $INSTDIR\icons\oxygen\32x32\mimetypes
-    file "icons\oxygen\32x32\mimetypes\audio-x-generic.png"
-    file "icons\oxygen\32x32\mimetypes\inode-directory.png"
-    setOutPath $INSTDIR\icons\oxygen\32x32\places
-    file "icons\oxygen\32x32\places\bookmarks.png"
-    file "icons\oxygen\32x32\places\favorites.png"
-    file "icons\oxygen\32x32\places\network-server.png"
-    file "icons\oxygen\32x32\places\server-database.png"
-    file "icons\oxygen\32x32\places\folder-temp.png"
-    file "icons\oxygen\32x32\places\folder-downloads.png"
-    setOutPath $INSTDIR\icons\oxygen\32x32\status
-    file "icons\oxygen\32x32\status\dialog-error.png"
-    file "icons\oxygen\32x32\status\dialog-information.png"
-    file "icons\oxygen\32x32\status\dialog-warning.png"
-    file "icons\oxygen\32x32\status\media-playlist-shuffle.png"
-    file "icons\oxygen\32x32\status\object-locked.png"
-    setOutPath $INSTDIR\icons\oxygen\48x48\actions
-    file "icons\oxygen\48x48\actions\bookmark-new.png"
-    file "icons\oxygen\48x48\actions\edit-find.png"
-    file "icons\oxygen\48x48\actions\go-down.png"
-    file "icons\oxygen\48x48\actions\fork.png"
-    file "icons\oxygen\48x48\actions\view-fullscreen.png"
-    file "icons\oxygen\48x48\actions\view-media-playlist.png"
-    setOutPath $INSTDIR\icons\oxygen\48x48\apps
-    file "icons\oxygen\48x48\apps\cantata.png"
-    file "icons\oxygen\48x48\apps\clock.png"
-    file "icons\oxygen\48x48\apps\preferences-desktop-keyboard.png"
-    setOutPath $INSTDIR\icons\oxygen\48x48\categories
-    file "icons\oxygen\48x48\categories\applications-internet.png"
-    file "icons\oxygen\48x48\categories\preferences-other.png"
-    file "icons\oxygen\48x48\categories\preferences-system-network.png"
-    setOutPath $INSTDIR\icons\oxygen\48x48\devices
-    file "icons\oxygen\48x48\devices\media-optical.png"
-    file "icons\oxygen\48x48\devices\multimedia-player.png"
-    setOutPath $INSTDIR\icons\oxygen\48x48\places
-    file "icons\oxygen\48x48\places\bookmarks.png"
-    file "icons\oxygen\48x48\places\folder-temp.png"
-    file "icons\oxygen\48x48\places\folder-downloads.png"
-    setOutPath $INSTDIR\icons\oxygen\48x48\status
-    file "icons\oxygen\48x48\status\dialog-error.png"
-    file "icons\oxygen\48x48\status\dialog-information.png"
-    file "icons\oxygen\48x48\status\dialog-warning.png"
-    file "icons\oxygen\48x48\status\media-playlist-shuffle.png"
-    file "icons\oxygen\48x48\status\object-locked.png"
-    setOutPath $INSTDIR\icons\oxygen\64x64\actions
-    file "icons\oxygen\64x64\actions\bookmark-new.png"
-    file "icons\oxygen\64x64\actions\edit-find.png"
-    file "icons\oxygen\64x64\actions\go-down.png"
-    file "icons\oxygen\64x64\actions\view-media-playlist.png"
-    setOutPath $INSTDIR\icons\oxygen\64x64\apps
-    file "icons\oxygen\64x64\apps\cantata.png"
-    file "icons\oxygen\64x64\apps\clock.png"
-    file "icons\oxygen\64x64\apps\preferences-desktop-keyboard.png"
-    setOutPath $INSTDIR\icons\oxygen\64x64\categories
-    file "icons\oxygen\64x64\categories\applications-internet.png"
-    file "icons\oxygen\64x64\categories\preferences-other.png"
-    file "icons\oxygen\64x64\categories\preferences-system-network.png"
-    setOutPath $INSTDIR\icons\oxygen\64x64\devices
-    file "icons\oxygen\64x64\devices\media-optical.png"
-    file "icons\oxygen\64x64\devices\multimedia-player.png"
-    setOutPath $INSTDIR\icons\oxygen\64x64\places
-    file "icons\oxygen\64x64\places\bookmarks.png"
-    file "icons\oxygen\64x64\places\folder-temp.png"
-    file "icons\oxygen\64x64\places\folder-downloads.png"
-    setOutPath $INSTDIR\icons\oxygen\64x64\status
-    file "icons\oxygen\64x64\status\dialog-error.png"
-    file "icons\oxygen\64x64\status\dialog-information.png"
-    file "icons\oxygen\64x64\status\dialog-warning.png"
-    setOutPath $INSTDIR\icons\oxygen\scalable\apps
-    file "icons\oxygen\scalable\apps\cantata.svg"
+    setOutPath $INSTDIR\icons\cantata
+    file "icons\cantata\index.theme"
+    file "icons\cantata\LICENSE"
+    file "icons\cantata\AUTHORS"
+    setOutPath $INSTDIR\icons\cantata\128
+    file "icons\cantata\128\media-optical.png"
+    setOutPath $INSTDIR\icons\cantata\64
+    file "icons\cantata\64\media-optical.png"
+    file "icons\cantata\64\cantata.png"
+    setOutPath $INSTDIR\icons\cantata\48
+    file "icons\cantata\48\media-optical.png"
+    file "icons\cantata\48\cantata.png"
+    setOutPath $INSTDIR\icons\cantata\32
+    file "icons\cantata\32\media-optical.png"
+    file "icons\cantata\32\cantata.png"
+    setOutPath $INSTDIR\icons\cantata\22
+    file "icons\cantata\22\media-optical.png"
+    file "icons\cantata\22\cantata.png"
+    setOutPath $INSTDIR\icons\cantata\16
+    file "icons\cantata\16\media-optical.png"
+    file "icons\cantata\16\cantata.png"
+    setOutPath $INSTDIR\icons\cantata\svg
+    file "icons\cantata\svg\audio-x-generic.svg"
+    file "icons\cantata\svg\dialog-information.svg"
+    file "icons\cantata\svg\dynamic-playlist.svg"
+    file "icons\cantata\svg\folder-downloads.svg"
+    file "icons\cantata\svg\folder-temp.svg"
+    file "icons\cantata\svg\fork.svg"
+    file "icons\cantata\svg\inode-directory.svg"
+    file "icons\cantata\svg\media-optical.svg"
+    file "icons\cantata\svg\playlist.svg"
+    file "icons\cantata\svg\preferences-desktop-keyboard.svg"
+    file "icons\cantata\svg\preferences-other.svg"
+    file "icons\cantata\svg\speaker.svg"
+    file "icons\cantata\svg\cantata.svg"
     setOutPath $INSTDIR\imageformats
     file "imageformats\qjpeg.dll"
     file "imageformats\qsvg.dll"
@@ -498,6 +260,36 @@ section "uninstall"
     delete "$INSTDIR\icons\podcasts.png"
     delete "$INSTDIR\icons\soundcloud.png"
     delete "$INSTDIR\icons\stream.png"
+
+    delete "$INSTDIR\icons\cantata\index.theme"
+    delete "$INSTDIR\icons\cantata\LICENSE"
+    delete "$INSTDIR\icons\cantata\AUTHORS"
+    delete "$INSTDIR\icons\cantata\128\media-optical.png"
+    delete "$INSTDIR\icons\cantata\64\media-optical.png"
+    delete "$INSTDIR\icons\cantata\64\cantata.png"
+    delete "$INSTDIR\icons\cantata\48\media-optical.png"
+    delete "$INSTDIR\icons\cantata\48\cantata.png"
+    delete "$INSTDIR\icons\cantata\32\media-optical.png"
+    delete "$INSTDIR\icons\cantata\32\cantata.png"
+    delete "$INSTDIR\icons\cantata\22\media-optical.png"
+    delete "$INSTDIR\icons\cantata\22\cantata.png"
+    delete "$INSTDIR\icons\cantata\16\media-optical.png"
+    delete "$INSTDIR\icons\cantata\16\cantata.png"
+    delete "$INSTDIR\icons\cantata\svg\audio-x-generic.svg"
+    delete "$INSTDIR\icons\cantata\svg\dialog-information.svg"
+    delete "$INSTDIR\icons\cantata\svg\dynamic-playlist.svg"
+    delete "$INSTDIR\icons\cantata\svg\folder-downloads.svg"
+    delete "$INSTDIR\icons\cantata\svg\folder-temp.svg"
+    delete "$INSTDIR\icons\cantata\svg\fork.svg"
+    delete "$INSTDIR\icons\cantata\svg\inode-directory.svg"
+    delete "$INSTDIR\icons\cantata\svg\media-optical.svg"
+    delete "$INSTDIR\icons\cantata\svg\playlist.svg"
+    delete "$INSTDIR\icons\cantata\svg\preferences-desktop-keyboard.svg"
+    delete "$INSTDIR\icons\cantata\svg\preferences-other.svg"
+    delete "$INSTDIR\icons\cantata\svg\speaker.svg"
+    delete "$INSTDIR\icons\cantata\svg\cantata.svg"
+
+    # Remove Cantata 1.x oxygen icons...
     delete "$INSTDIR\icons\oxygen\index.theme"
     delete "$INSTDIR\icons\oxygen\Oxygen License (Creative Common Attribution-ShareAlike 3.0).html"
     delete "$INSTDIR\icons\oxygen\Oxygen README.txt"
@@ -736,6 +528,7 @@ section "uninstall"
     delete "$INSTDIR\icons\oxygen\64x64\status\dialog-information.png"
     delete "$INSTDIR\icons\oxygen\64x64\status\dialog-warning.png"
     delete "$INSTDIR\icons\oxygen\scalable\apps\cantata.svg"
+
     delete "$INSTDIR\imageformats\qjpeg4.dll"
     delete "$INSTDIR\imageformats\qsvg4.dll"
     delete "$INSTDIR\imageformats\qjpeg.dll"
@@ -814,6 +607,17 @@ section "uninstall"
     rmDir $INSTDIR\helpers
     rmDir $INSTDIR\iconengines
     rmDir $INSTDIR\sqldrivers
+
+    rmDir $INSTDIR\icons\cantata\128
+    rmDir $INSTDIR\icons\cantata\64
+    rmDir $INSTDIR\icons\cantata\48
+    rmDir $INSTDIR\icons\cantata\32
+    rmDir $INSTDIR\icons\cantata\22
+    rmDir $INSTDIR\icons\cantata\16
+    rmDir $INSTDIR\icons\cantata\svg
+    rmDir $INSTDIR\icons\cantata
+
+    # Remove Cantata 1.x oxygen icon folders...
     rmDir $INSTDIR\icons\oxygen\128x128\categories
     rmDir $INSTDIR\icons\oxygen\128x128\devices
     rmDir $INSTDIR\icons\oxygen\128x128
@@ -862,6 +666,7 @@ section "uninstall"
     rmDir $INSTDIR\icons\oxygen\scalable\apps
     rmDir $INSTDIR\icons\oxygen\scalable
     rmDir $INSTDIR\icons\oxygen
+
     rmDir $INSTDIR\icons
     rmDir $INSTDIR\imageformats
     rmDir $INSTDIR\platforms

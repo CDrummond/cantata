@@ -33,6 +33,7 @@
 #include "context/songview.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
+#include "support/action.h"
 #include "widgets/icons.h"
 #include "widgets/basicitemdelegate.h"
 #include "mpd-interface/cuefile.h"

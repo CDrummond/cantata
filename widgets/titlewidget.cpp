@@ -136,7 +136,7 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
     if (icon.isNull()) {
         image->setVisible(false);
     } else {
-        image->setPixmap(icon.pixmap(96, 96).scaled(image->width()-2, image->height()-2, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        image->setPixmap(Icon::getScaledPixmap(icon, image->width()-2, image->height()-2, 96));
     }
 }
 

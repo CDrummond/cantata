@@ -178,3 +178,15 @@ Icon::Icon(const QStringList &names)
     }
     *this=Icon("unknown");
 }
+
+QPixmap Icon::getScaledPixmap(const QIcon &icon, int w, int h, int base)
+{
+    QList<QSize> sizes=icon.availableSizes();
+    foreach (const QSize &s, sizes) {
+        if (s.width()==w && s.height()==h) {
+            return icon.pixmap(s);
+        }
+    }
+
+    return icon.pixmap(base, base).scaled(w, h, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+}

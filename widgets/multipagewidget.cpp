@@ -61,7 +61,7 @@ public:
         mainText->setAlignment(Qt::AlignBottom);
         subText->setAlignment(Qt::AlignTop);
         icon->setAlignment(Qt::AlignCenter);
-        icon->setPixmap(icn.pixmap(64, 64).scaled(icon->width()-2, icon->height()-2, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        icon->setPixmap(icn.pixmap(96, 96).scaled(icon->width()-2, icon->height()-2, Qt::KeepAspectRatio, Qt::SmoothTransformation));
         setAutoRaise(true);
         setLayout(layout);
         setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);

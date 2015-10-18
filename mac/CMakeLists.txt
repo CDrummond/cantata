@@ -9,7 +9,5 @@ foreach(qm ${qt_trans})
 endforeach(qm ${qt_trans})
 install(FILES ${qt_translations} DESTINATION ${MACOSX_BUNDLE_RESOURCES}/translations/)
 
-if (CANTATA_ICONS_DIR)
-    add_subdirectory(${CMAKE_SOURCE_DIR}/windows/icons-${CANTATA_ICON_THEME} ${CMAKE_CURRENT_BINARY_DIR}/icons)
-endif (CANTATA_ICONS_DIR)
+add_subdirectory(${CMAKE_SOURCE_DIR}/windows/icons ${CMAKE_CURRENT_BINARY_DIR}/icons)
 

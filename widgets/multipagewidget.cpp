@@ -53,6 +53,10 @@ public:
         layout->setSpacing(2);
         int size=mainText->sizeHint().height()+subText->sizeHint().height()+layout->spacing();
         size+=6;
+        if (size<72) {
+            size=Icon::stdSize(size);
+        }
+        size=Utils::scaleForDpi(size);
         icon->setFixedSize(size, size);
         layout->addWidget(icon, 0, 0, 2, 1);
         layout->addItem(new QSpacerItem(Utils::layoutSpacing(this), 2, QSizePolicy::Fixed, QSizePolicy::Fixed), 0, 1);
@@ -61,7 +65,7 @@ public:
         mainText->setAlignment(Qt::AlignBottom);
         subText->setAlignment(Qt::AlignTop);
         icon->setAlignment(Qt::AlignCenter);
-        icon->setPixmap(icn.getScaledPixmap(icon->width()-2, icon->height()-2, 96));
+        icon->setPixmap(icn.getScaledPixmap(icon->width(), icon->height(), 96));
         setAutoRaise(true);
         setLayout(layout);
         setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);

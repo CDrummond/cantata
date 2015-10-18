@@ -65,7 +65,10 @@ TitleWidget::TitleWidget(QWidget *p)
     mainText->ensurePolished();
     subText->ensurePolished();
     int size=mainText->sizeHint().height()+subText->sizeHint().height()+spacing;
-    size=Utils::scaleForDpi(qMax(Icon::stdSize(size), 48));
+    if (size<72) {
+        size=Icon::stdSize(size);
+    }
+    size=Utils::scaleForDpi(qMax(size, 48));
     image->setFixedSize(size, size);
     setToolTip(i18n("Click to go back"));
     spacing=qMin(4, spacing-1);
@@ -136,7 +139,7 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
     if (icon.isNull()) {
         image->setVisible(false);
     } else {
-        image->setPixmap(Icon::getScaledPixmap(icon, image->width()-2, image->height()-2, 96));
+        image->setPixmap(Icon::getScaledPixmap(icon, image->width(), image->height(), 96));
     }
 }
 

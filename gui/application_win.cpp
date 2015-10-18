@@ -33,10 +33,8 @@ Application::Application(int &argc, char **argv)
     #if QT_VERSION >= 0x050000
     installNativeEventFilter(this);
     #endif
-    QIcon::setThemeName(QLatin1String(CANTATA_ICON_THEME));
-    if (CANTATA_ICON_THEME!=QLatin1String("oxygen")) {
-        setAttribute(Qt::AA_DontShowIconsInMenus, true);
-    }
+    QIcon::setThemeName(QLatin1String("cantata"));
+    setAttribute(Qt::AA_DontShowIconsInMenus, true);
     #if QT_VERSION >= 0x050400
     if (Settings::self()->retinaSupport()) {
         setAttribute(Qt::AA_UseHighDpiPixmaps);

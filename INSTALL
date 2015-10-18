@@ -157,20 +157,6 @@ The following options may be passed to CMake:
         Default: <empty>
 
 
-    Windows/Mac specific:
-
-    -DCANTATA_ICON_THEME=<name>
-        Name of icon theme to package. Currently only humanity and oxygen are
-        supported. Also, humanity requires 2 icons from gnome - for this reason
-        please use the copy from Cantata's googledrive (refer to README for the
-        location)
-        Default: humanity
-
-    -DCANTATA_ICONS_DIR=<path>
-        Path to icons, required for install stage.
-        Default: <empty>
-
-
     Ubuntu specific:
 
     -DENABLE_UBUNTU=ON

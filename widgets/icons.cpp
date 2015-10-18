@@ -411,9 +411,9 @@ Icons::Icons()
     albumIcon=Icon(QStringList() << "media-optical" << "media-optical-audio");
     podcastIcon=Icon("inode-directory");
     audioFileIcon=Icon("audio-x-generic");
-    playlistFileIcon=Icon(QStringList() << "view-media-playlist" << "audio-x-mp3-playlist" << "audio-x-generic");
+    playlistFileIcon=Icon(QStringList() << "view-media-playlist" << "audio-x-mp3-playlist" << "playlist" << "audio-x-generic");
     folderIcon=Icon("inode-directory");
-    dynamicRuleIcon=Icon(QStringList() << "media-playlist-shuffle" << "text-x-generic");
+    dynamicRuleIcon=Icon(QStringList() << "media-playlist-shuffle" << "dynamic-playlist" << "text-x-generic");
     speakerIcon=Icon(QStringList() << "speaker" << "audio-speakers" << "gnome-volume-control");
     repeatIcon=createRecolourableIcon("repeat", stdColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor);

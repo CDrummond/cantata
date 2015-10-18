@@ -44,5 +44,5 @@ Application::Application(int &argc, char **argv)
         QIcon::setThemeSearchPaths(QStringList() << path << paths);
     }
 
-    QIcon::setThemeName(QLatin1String(CANTATA_ICON_THEME));
+    QIcon::setThemeName(QLatin1String("cantata"));
 }

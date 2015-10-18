@@ -65,7 +65,7 @@ TitleWidget::TitleWidget(QWidget *p)
     mainText->ensurePolished();
     subText->ensurePolished();
     int size=mainText->sizeHint().height()+subText->sizeHint().height()+spacing;
-    size=qMax(size, 48);
+    size=Utils::scaleForDpi(qMax(Icon::stdSize(size), 48));
     image->setFixedSize(size, size);
     setToolTip(i18n("Click to go back"));
     spacing=qMin(4, spacing-1);
@@ -124,6 +124,8 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
         }
         controls->setVisible(true);
     }
+    subText->setVisible(!sub.isEmpty());
+    mainText->setAlignment(sub.isEmpty() ? Qt::AlignVCenter : Qt::AlignBottom);
     if (!sng.isEmpty()) {
         Covers::Image cImg=Covers::self()->requestImage(sng, true);
         if (!cImg.img.isNull()) {
@@ -134,10 +136,8 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
     if (icon.isNull()) {
         image->setVisible(false);
     } else {
-        image->setPixmap(icon.pixmap(64, 64).scaled(image->width()-2, image->height()-2, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        image->setPixmap(icon.pixmap(96, 96).scaled(image->width()-2, image->height()-2, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
-    subText->setVisible(!sub.isEmpty());
-    mainText->setAlignment(sub.isEmpty() ? Qt::AlignVCenter : Qt::AlignBottom);
 }
 
 bool TitleWidget::eventFilter(QObject *o, QEvent *event)

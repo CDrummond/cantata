@@ -50,6 +50,7 @@
 #include <QDesktopWidget>
 #include "icon.h"
 #include "osxstyle.h"
+#include "windowmanager.h"
 #else
 #include "pagewidget.h"
 #endif
@@ -170,7 +171,9 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &de
 
     group->setExclusive(true);
     setCentralWidget(mw);
-
+    WindowManager *wm=new WindowManager(toolBar);
+    wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
+    wm->registerWidgetAndChildren(toolBar);
     #else
 
     bool limitedHeight=Utils::limitedHeight(this);

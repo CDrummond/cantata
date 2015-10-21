@@ -637,7 +637,7 @@ void StreamSearchPage::doSearch()
     model.search(view->searchText().trimmed(), false);
 }
 
-void StreamSearchPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+void StreamSearchPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
 {
     Q_UNUSED(name)
     QModelIndexList indexes=view->selectedIndexes();
@@ -652,7 +652,7 @@ void StreamSearchPage::addSelectionToPlaylist(const QString &name, bool replace,
     QStringList files=StreamsModel::self()->filenames(mapped, true);
 
     if (!files.isEmpty()) {
-        emit add(files, replace, priorty);
+        emit add(files, action, priorty);
         view->clearSelection();
     }
 }

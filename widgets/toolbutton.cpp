@@ -44,6 +44,7 @@ ToolButton::ToolButton(QWidget *parent)
     Icon::init(this);
     #ifdef Q_OS_MAC
     setStyleSheet("QToolButton {border: 0}");
+    allowMouseOver=parent && parent->objectName()!=QLatin1String("toolbar");
     #endif
     setFocusPolicy(Qt::NoFocus);
 }
@@ -51,7 +52,15 @@ ToolButton::ToolButton(QWidget *parent)
 void ToolButton::paintEvent(QPaintEvent *e)
 {
     #ifdef Q_OS_MAC
-    if (isDown() || isChecked()) {
+    bool down=isDown() || isChecked();
+    bool mo=false;
+
+    if (allowMouseOver && !down && isEnabled()) {
+        QStyleOptionToolButton opt;
+        initStyleOption(&opt);
+        mo=opt.state&QStyle::State_MouseOver && this==QApplication::widgetAt(QCursor::pos());
+    }
+    if (down || mo) {
         QPainter p(this);
         QColor col(palette().color(QPalette::WindowText));
         QRect r(rect());
@@ -60,8 +69,10 @@ void ToolButton::paintEvent(QPaintEvent *e)
         col.setAlphaF(0.4);
         p.setPen(col);
         p.drawPath(path);
-        col.setAlphaF(0.1);
-        p.fillPath(path, col);
+        if (down) {
+            col.setAlphaF(0.1);
+            p.fillPath(path, col);
+        }
     }
     #endif
     #if QT_VERSION > 0x050000 || defined UNITY_MENU_HACK

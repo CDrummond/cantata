@@ -47,6 +47,9 @@ private:
     #ifdef UNITY_MENU_HACK
     QIcon icon;
     #endif
+    #ifdef Q_OS_MAC
+    bool allowMouseOver;
+    #endif
 };
 
 #endif // MENUBUTTON_H

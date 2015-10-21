@@ -226,8 +226,8 @@ if (TAGLIB_FOUND)
     endif (ENABLE_TAGLIB_EXTRAS)
     set(TAGLIB_EXTRAS_FOUND ${TAGLIB-EXTRAS_FOUND}) # we need a c-compatible name for the include file
 
-    include(CheckTagLibFileName)
-    check_taglib_filename(COMPLEX_TAGLIB_FILENAME)
+    #include(CheckTagLibFileName)
+    #check_taglib_filename(COMPLEX_TAGLIB_FILENAME)
 
     add_definitions(${TAGLIB_CFLAGS})
     if (TAGLIB-EXTRAS_FOUND)

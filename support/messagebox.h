@@ -64,7 +64,7 @@ namespace MessageBox {
     extern void information(QWidget *parent, const QString &message, const QString &title=QString());
     #else
     inline void error(QWidget *parent, const QString &message, const QString &title=QString()) {
-        QMessageBox::warning(parent, title.isEmpty() ? i18n("Error") : title, message);
+        QMessageBox::critical(parent, title.isEmpty() ? i18n("Error") : title, message);
     }
     inline void information(QWidget *parent, const QString &message, const QString &title=QString()) {
         QMessageBox::information(parent, title.isEmpty() ? i18n("Information") : title, message);

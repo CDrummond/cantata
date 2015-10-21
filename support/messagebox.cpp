@@ -66,7 +66,7 @@ void MessageBox::error(QWidget *parent, const QString &message, const QString &t
     QString msg;
     QString sub;
     splitMessage(message, msg, sub);
-    QMessageBox box(QMessageBox::Warning, title.isEmpty() ? i18n("Error") : title, msg, QMessageBox::Ok, parent, Qt::Sheet);
+    QMessageBox box(QMessageBox::Critical, title.isEmpty() ? i18n("Error") : title, msg, QMessageBox::Ok, parent, Qt::Sheet);
     box.setInformativeText(sub);
     //AcceleratorManager::manage(&box);
     box.exec();
@@ -151,36 +151,40 @@ MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const Q
     QWidget *wid=new QWidget(dlg);
     QGridLayout *lay=new QGridLayout(wid);
     QLabel *iconLabel=new QLabel(wid);
-    int iconSize=Icon::dlgIconSize();
-    iconLabel->setMinimumSize(iconSize, iconSize);
-    iconLabel->setMaximumSize(iconSize, iconSize);
     #ifdef ENABLE_KDE_SUPPORT
     dlg->setCaption(title.isEmpty() ? i18n("Error") : title);
     dlg->setButtons(Dialog::Ok);
+    int iconSize=Icon::dlgIconSize();
+    iconLabel->setFixedSize(iconSize, iconSize);
     iconLabel->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
     #else
+    QMessageBox msgBox;
     switch(type) {
     case Error:
         dlg->setCaption(title.isEmpty() ? i18n("Error") : title);
         dlg->setButtons(Dialog::Ok);
-        iconLabel->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
+        msgBox.setIcon(QMessageBox::Critical);
         break;
     case Question:
         dlg->setCaption(title.isEmpty() ? i18n("Question") : title);
         dlg->setButtons(Dialog::Yes|Dialog::No);
-        iconLabel->setPixmap(Icon("dialog-information").pixmap(iconSize, iconSize));
+        msgBox.setIcon(QMessageBox::Question);
         break;
     case Warning:
         dlg->setCaption(title.isEmpty() ? i18n("Warning") : title);
         dlg->setButtons(Dialog::Yes|Dialog::No);
-        iconLabel->setPixmap(Icon("dialog-warning").pixmap(iconSize, iconSize));
+        msgBox.setIcon(QMessageBox::Warning);
         break;
     case Information:
         dlg->setCaption(title.isEmpty() ? i18n("Information") : title);
         dlg->setButtons(Dialog::Ok);
-        iconLabel->setPixmap(Icon("dialog-information").pixmap(iconSize, iconSize));
+        msgBox.setIcon(QMessageBox::Information);
         break;
     }
+    QPixmap pix=msgBox.iconPixmap();
+    iconLabel->setFixedSize(pix.size());
+    iconLabel->setPixmap(pix);
+    msgBox.setVisible(false);
     #endif
     lay->addWidget(iconLabel, 0, 0, 1, 1);
     QLabel *msgLabel=new QLabel(message, wid);

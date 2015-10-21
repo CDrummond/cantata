@@ -71,6 +71,7 @@ public:
         setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
         mainText->setText(t);
         subText->setText(s);
+        layout->setMargin(qMin(layout->margin(), 8));
         setMinimumHeight(size+(layout->margin()*2));
         updateToolTip();
     }
@@ -118,6 +119,7 @@ MultiPageWidget::MultiPageWidget(QWidget *p)
     mainLayout->addWidget(sizer);
     layout->setSpacing(0);
     layout->setSizeConstraint(QLayout::SetMinimumSize);
+    layout->setMargin(qMin(layout->margin(), 8));
     #ifdef Q_OS_MAC
     // TODO: This feels a bt of a hack...
     mainPage->setContentsMargins(-3, 0, -3, 0);

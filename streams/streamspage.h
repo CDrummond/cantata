@@ -118,7 +118,7 @@ private Q_SLOTS:
 
 private:
     void doSearch();
-    void addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty);
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0);
     void addToFavourites();
 
 private:

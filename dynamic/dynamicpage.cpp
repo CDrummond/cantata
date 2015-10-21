@@ -73,6 +73,7 @@ DynamicPage::DynamicPage(QWidget *p)
     #ifdef Q_OS_WIN
     remoteRunningLabel=new StatusLabel(this);
     remoteRunningLabel->setType(StatusLabel::Error);
+    remoteRunningLabel->setText(i18n("Remote dynamizer is not running."));
     #endif
     Dynamic::self()->stopAct()->setEnabled(false);
     proxy.setSourceModel(Dynamic::self());

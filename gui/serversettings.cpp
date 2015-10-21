@@ -104,7 +104,6 @@ ServerSettings::ServerSettings(QWidget *p)
 
     #if defined Q_OS_WIN
     hostLabel->setText(i18n("Host:"));
-    socketNoteLabel->setVisible(false);
     #endif
     basicCoverName->setToolTip(coverName->toolTip());
     basicCoverNameLabel->setToolTip(coverName->toolTip());

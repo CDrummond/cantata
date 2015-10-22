@@ -876,6 +876,22 @@ void ItemView::goToTop()
     emit rootIndexSet(QModelIndex());
 }
 
+void ItemView::setEnabled(bool en)
+{
+    if (treeView) {
+        treeView->setEnabled(en);
+    }
+    if (groupedView) {
+        groupedView->setEnabled(en);
+    }
+    if (tableView) {
+        tableView->setEnabled(en);
+    }
+    if (listView) {
+        listView->setEnabled(en);
+    }
+}
+
 void ItemView::setLevel(int l, bool haveChildren)
 {
     currentLevel=l;

@@ -525,20 +525,18 @@ MainWindow::MainWindow(QWidget *parent)
         resize(playPauseTrackButton->width()*25, playPauseTrackButton->height()*18);
         splitter->setSizes(QList<int>() << width*0.4 << width*0.6);
     } else {
-        QSize sz=Settings::self()->mainWindowSize();
-        if (!sz.isEmpty() && sz.width()>0) {
-            resize(sz);
-        } else {
-            resize(playPauseTrackButton->width()*25, playPauseTrackButton->height()*18);
-        }
-
         if (expandInterfaceAction->isChecked()) {
-            if (!expandedSize.isEmpty() && expandedSize.width()>0) {
-                resize(expandedSize);
-                expandOrCollapse(false);
+            if (!expandedSize.isEmpty()) {
+                if (expandedSize.width()>1) {
+                    resize(expandedSize);
+                    expandOrCollapse(false);
+                } else {
+                    showMaximized();
+                    expandedSize=size();
+                }
             }
         } else {
-            if (!collapsedSize.isEmpty() && collapsedSize.width()>0) {
+            if (!collapsedSize.isEmpty() && collapsedSize.width()>1) {
                 resize(collapsedSize);
                 expandOrCollapse(false);
             }
@@ -915,7 +913,11 @@ MainWindow::~MainWindow()
     bool hadCantataStreams=PlayQueueModel::self()->removeCantataStreams();
     Settings::self()->saveShowFullScreen(fullScreenAction->isChecked());
     if (!fullScreenAction->isChecked()) {
-        Settings::self()->saveMainWindowSize(expandInterfaceAction->isChecked() ? size() : expandedSize);
+        if (expandInterfaceAction->isChecked()) {
+            Settings::self()->saveMainWindowSize(isMaximized() ? QSize(1, 1) : size());
+        } else {
+            Settings::self()->saveMainWindowSize(expandedSize);
+        }
         Settings::self()->saveMainWindowCollapsedSize(expandInterfaceAction->isChecked() ? collapsedSize : size());
         Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     }

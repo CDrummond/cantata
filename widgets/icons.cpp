@@ -547,8 +547,10 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     if (GtkStyle::useSymbolicIcons() || QLatin1String("breeze")==iconTheme) {
     #endif
         bool rtl=QApplication::isRightToLeft();
-        #ifdef Q_OS_MAC
+        #if defined Q_OS_MAC
         QColor col=OSXStyle::self()->monoIconColor();
+        #elif defined Q_OS_WIN
+        QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
         #else
         QColor col=GtkStyle::symbolicColor();
         #endif

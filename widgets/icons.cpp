@@ -589,7 +589,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     }
 
     if (infoIcon.isNull()) {
-        infoIcon=Icon("dialog-information");
+        infoIcon=Icon(QStringList() << "dialog-information" << "information");
     }
 
     #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
@@ -598,7 +598,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
         contextIcon=loadSidebarIcon("info", col, col);
     } else
     #endif
-        contextIcon=Icon("dialog-information");
+        contextIcon=Icon(QStringList() << "dialog-information" << "information");
 
     #ifndef ALWAYS_USE_MONO_ICONS
     if (toolbarPrevIcon.isNull()) {

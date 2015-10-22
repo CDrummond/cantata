@@ -23,7 +23,7 @@
 
 #include <QFormLayout>
 #include <QLabel>
-#include "support/icon.h"
+#include "support/messagebox.h"
 #include "lyricsdialog.h"
 #include "support/localize.h"
 
@@ -45,10 +45,10 @@ LyricsDialog::LyricsDialog(const Song &s, QWidget *parent)
     lbl->setWordWrap(true);
     QLabel *icn=new QLabel(mw);
     icn->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
-    int iconSize=48;
-    icn->setMinimumSize(iconSize, iconSize);
-    icn->setMaximumSize(iconSize, iconSize);
-    icn->setPixmap(Icon("dialog-information").pixmap(iconSize, iconSize));
+
+    QPixmap pix=MessageBox::pixmap(MessageBox::Information);
+    icn->setFixedSize(pix.size());
+    icn->setPixmap(pix);
     mainLayout->setMargin(0);
     layout->setMargin(0);
     mainLayout->addWidget(icn, 0, 0, 1, 1);

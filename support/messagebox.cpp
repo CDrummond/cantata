@@ -158,33 +158,27 @@ MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const Q
     iconLabel->setFixedSize(iconSize, iconSize);
     iconLabel->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
     #else
-    QMessageBox msgBox;
     switch(type) {
     case Error:
         dlg->setCaption(title.isEmpty() ? i18n("Error") : title);
         dlg->setButtons(Dialog::Ok);
-        msgBox.setIcon(QMessageBox::Critical);
         break;
     case Question:
         dlg->setCaption(title.isEmpty() ? i18n("Question") : title);
         dlg->setButtons(Dialog::Yes|Dialog::No);
-        msgBox.setIcon(QMessageBox::Question);
         break;
     case Warning:
         dlg->setCaption(title.isEmpty() ? i18n("Warning") : title);
         dlg->setButtons(Dialog::Yes|Dialog::No);
-        msgBox.setIcon(QMessageBox::Warning);
         break;
     case Information:
         dlg->setCaption(title.isEmpty() ? i18n("Information") : title);
         dlg->setButtons(Dialog::Ok);
-        msgBox.setIcon(QMessageBox::Information);
         break;
     }
-    QPixmap pix=msgBox.iconPixmap();
+    QPixmap pix=pixmap(type);
     iconLabel->setFixedSize(pix.size());
     iconLabel->setPixmap(pix);
-    msgBox.setVisible(false);
     #endif
     lay->addWidget(iconLabel, 0, 0, 1, 1);
     QLabel *msgLabel=new QLabel(message, wid);
@@ -204,4 +198,17 @@ MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const Q
     #else
     return QDialog::Accepted==dlg->exec() ? Yes : No;
     #endif
+}
+
+static QMessageBox *msgIcon=0;
+QPixmap MessageBox::pixmap(MessageBox::Type type)
+{
+    if (!msgIcon) {
+        msgIcon=new QMessageBox();
+        msgIcon->setVisible(false);
+        msgIcon->ensurePolished();
+        QObject::connect(qApp, SIGNAL(aboutToQuit()), msgIcon, SLOT(deleteLater()));
+    }
+    msgIcon->setIcon((QMessageBox::Icon)type);
+    return msgIcon->iconPixmap();
 }

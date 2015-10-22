@@ -394,7 +394,7 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         .arg(fg.name())
         );
 
-    if (useIcon) {
+    if (useIcon && !icon.isNull()) {
         // Icon
         #ifdef ENABLE_KDE_SUPPORT
         const int size = KIconLoader::global()->currentSize(KIconLoader::MainToolbar);

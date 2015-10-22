@@ -33,7 +33,6 @@
 #include "network/networkaccessmanager.h"
 #include "support/configuration.h"
 #include "gui/settings.h"
-#include "widgets/statuslabel.h"
 #include "widgets/menubutton.h"
 #include "widgets/itemview.h"
 #include "widgets/servicestatuslabel.h"

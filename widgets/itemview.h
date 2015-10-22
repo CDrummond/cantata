@@ -146,6 +146,7 @@ public:
     void showEvent(QShowEvent *ev);
     void goToTop();
     void setOpenAfterSearch(bool o) { openFirstLevelAfterSearch=o; }
+    void setEnabled(bool en);
 
 private:
     void setLevel(int level, bool haveChildren=true);

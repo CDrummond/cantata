@@ -71,13 +71,14 @@ DynamicPage::DynamicPage(QWidget *p)
 
     #ifdef Q_OS_WIN
     remoteRunningLabel=new QLabel(this);
-    remoteRunningLabel->setStyleSheet(QString(".QFrame {"
-                          "background-color: rgba(235, 187, 187, 127);"
+    remoteRunningLabel->setStyleSheet(QString(".QLabel {"
+                          "background-color: rgba(235, 187, 187, 196);"
                           "border-radius: 3px;"
                           "border: 1px solid red;"
-                          "margin: 2px;"
-                          "}"
-                          ".QLabel { color: black; }"));
+                          "padding: 4px;"
+                          "margin: 1px;"
+                          "color: black; }"));
+    remoteRunningLabel->setText(i18n("Remote dynamizer is not running."));
     #endif
     Dynamic::self()->stopAct()->setEnabled(false);
     proxy.setSourceModel(Dynamic::self());

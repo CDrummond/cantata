@@ -72,6 +72,7 @@
     in plain text!
 51. Fix Lastfm response parsing.
 52. Dynamically load folder view.
+53. Fix starting Cantata maximised.
 
 1.5.2
 -----

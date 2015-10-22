@@ -429,7 +429,7 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS} ${CANTATA_SRCS}
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/nowplayingwidget.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
     widgets/volumeslider.cpp widgets/menubutton.cpp widgets/icons.cpp widgets/toolbutton.cpp widgets/wizardpage.cpp
-    widgets/statuslabel.cpp widgets/searchwidget.cpp widgets/messageoverlay.cpp widgets/basicitemdelegate.cpp widgets/sizegrip.cpp
+    widgets/searchwidget.cpp widgets/messageoverlay.cpp widgets/basicitemdelegate.cpp widgets/sizegrip.cpp
     widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp widgets/songdialog.cpp widgets/stretchheaderview.cpp
     widgets/tableview.cpp widgets/thinsplitterhandle.cpp widgets/coverwidget.cpp widgets/ratingwidget.cpp widgets/notelabel.cpp
     widgets/selectorlabel.cpp widgets/titlewidget.cpp widgets/multipagewidget.cpp widgets/singlepagewidget.cpp widgets/stackedpagewidget.cpp

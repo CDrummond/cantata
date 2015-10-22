@@ -57,9 +57,7 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
     connect(this, SIGNAL(getReplayGain()), MPDConnection::self(), SLOT(getReplayGain()));
     connect(aboutReplayGain, SIGNAL(leftClickedUrl()), SLOT(showAboutReplayGain()));
-    int iconSize=Utils::limitedHeight(this) ? 32 : Icon::dlgIconSize();
-    messageIcon->setMinimumSize(iconSize, iconSize);
-    messageIcon->setMaximumSize(iconSize, iconSize);
+    messageIcon->setFixedSize(MessageBox::pixmap(MessageBox::Information).size());
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());
     #if defined Q_OS_WIN || (defined Q_OS_MAC && !defined IOKIT_FOUND)
     REMOVE(inhibitSuspend)
@@ -159,7 +157,7 @@ void PlaybackSettings::mpdConnectionStateChanged(bool c)
     crossfadingLabel->setEnabled(c);
     replayGainLabel->setEnabled(rgSupported);
     replayGain->setEnabled(rgSupported);
-    messageIcon->setPixmap(Icon(c ? "dialog-information" : "dialog-warning").pixmap(messageIcon->minimumSize()));
+    messageIcon->setPixmap(MessageBox::pixmap(c ? MessageBox::Information : MessageBox::Warning));
     if (c) {
         messageLabel->setText(i18n("<i>Connected to %1<br/>The entries below apply to the currently connected MPD collection.</i>",
                                    MPDConnection::self()->getDetails().description()));

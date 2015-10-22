@@ -29,7 +29,6 @@
 #include "support/action.h"
 #include "support/configuration.h"
 #include "mpd-interface/mpdconnection.h"
-#include "widgets/statuslabel.h"
 #include "support/messagebox.h"
 #include "gui/stdactions.h"
 
@@ -71,8 +70,14 @@ DynamicPage::DynamicPage(QWidget *p)
     connect(Dynamic::self(), SIGNAL(loadedList()), view, SLOT(hideSpinner()));
 
     #ifdef Q_OS_WIN
-    remoteRunningLabel=new StatusLabel(this);
-    remoteRunningLabel->setType(StatusLabel::Error);
+    remoteRunningLabel=new QLabel(this);
+    remoteRunningLabel->setStyleSheet(QString(".QFrame {"
+                          "background-color: rgba(235, 187, 187, 127);"
+                          "border-radius: 3px;"
+                          "border: 1px solid red;"
+                          "margin: 2px;"
+                          "}"
+                          ".QLabel { color: black; }"));
     #endif
     Dynamic::self()->stopAct()->setEnabled(false);
     proxy.setSourceModel(Dynamic::self());

@@ -29,6 +29,7 @@
 #include <KDE/KMessageBox>
 struct MessageBox: public KMessageBox {
     static void errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString());
+    static QPixmap pixmap(Type type);
 };
 #else
 #include <QMessageBox>
@@ -41,10 +42,10 @@ namespace MessageBox {
         Cancel=QMessageBox::Cancel
     };
     enum Type {
-        Error,
-        Question,
-        Warning,
-        Information
+        Error = QMessageBox::Critical,
+        Question = QMessageBox::Question,
+        Warning = QMessageBox::Warning,
+        Information = QMessageBox::Information
     };
 
     extern ButtonCode questionYesNoCancel(QWidget *parent, const QString &message, const QString &title=QString(),
@@ -86,6 +87,7 @@ namespace MessageBox {
     inline void informationList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString()) {
         msgListEx(parent, Information, message, strlist, title);
     }
+    extern QPixmap pixmap(Type type);
 }
 #endif
 

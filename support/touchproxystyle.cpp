@@ -24,7 +24,10 @@
 #include "touchproxystyle.h"
 #include "utils.h"
 #include "gtkstyle.h"
+#include "config.h"
+#ifdef ENABLE_TOUCH_SUPPORT
 #include "flickcharm.h"
+#endif
 #ifdef Q_OS_MAC
 #include "osxstyle.h"
 #endif

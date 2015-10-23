@@ -9,5 +9,5 @@ foreach(qm ${qt_trans})
 endforeach(qm ${qt_trans})
 install(FILES ${qt_translations} DESTINATION ${MACOSX_BUNDLE_RESOURCES}/translations/)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/windows/icons ${CMAKE_CURRENT_BINARY_DIR}/icons)
+add_subdirectory(icons)
 

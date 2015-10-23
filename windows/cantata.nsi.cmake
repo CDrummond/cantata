@@ -169,6 +169,12 @@ section "install"
     file "icons\cantata\svg\preferences-other.svg"
     file "icons\cantata\svg\speaker.svg"
     file "icons\cantata\svg\cantata.svg"
+    setOutPath $INSTDIR\icons\cantata\svg64
+    file "icons\cantata\svg64\dialog-error.svg"
+    file "icons\cantata\svg64\dialog-information.svg"
+    file "icons\cantata\svg64\dialog-question.svg"
+    file "icons\cantata\svg64\dialog-warning.svg"
+
     setOutPath $INSTDIR\imageformats
     file "imageformats\qjpeg.dll"
     file "imageformats\qsvg.dll"
@@ -289,6 +295,10 @@ section "uninstall"
     delete "$INSTDIR\icons\cantata\svg\preferences-other.svg"
     delete "$INSTDIR\icons\cantata\svg\speaker.svg"
     delete "$INSTDIR\icons\cantata\svg\cantata.svg"
+    delete "$INSTDIR\icons\cantata\svg64\dialog-error.svg"
+    delete "$INSTDIR\icons\cantata\svg64\dialog-information.svg"
+    delete "$INSTDIR\icons\cantata\svg64\dialog-question.svg"
+    delete "$INSTDIR\icons\cantata\svg64\dialog-warning.svg"
 
     # Remove Cantata 1.x oxygen icons...
     delete "$INSTDIR\icons\oxygen\index.theme"
@@ -616,6 +626,7 @@ section "uninstall"
     rmDir $INSTDIR\icons\cantata\22
     rmDir $INSTDIR\icons\cantata\16
     rmDir $INSTDIR\icons\cantata\svg
+    rmDir $INSTDIR\icons\cantata\svg64
     rmDir $INSTDIR\icons\cantata
 
     # Remove Cantata 1.x oxygen icon folders...

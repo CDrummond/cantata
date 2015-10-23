@@ -17,14 +17,10 @@ svg/speaker.svg
 64/media-optical.png
 128/media-optical.png
 256/media-optical.png
-svg64/dialog-error.svg
-svg64/dialog-information.svg
-svg64/dialog-question.svg
-svg64/dialog-warning.svg
 )
 
 foreach(ICON ${ICON_FILES})
     get_filename_component(ICON_PATH ${ICON} PATH)
-    install(FILES ${ICON} DESTINATION ${CANTATA_ICON_INSTALL_PREFIX}/${ICON_PATH})
+    install(FILES ../../windows/icons/${ICON} DESTINATION ${CANTATA_ICON_INSTALL_PREFIX}/${ICON_PATH})
 endforeach(ICON ${ICON_FILES})
-install(FILES AUTHORS index.theme LICENSE DESTINATION ${CANTATA_ICON_INSTALL_PREFIX})
+install(FILES AUTHORS index.theme ../../windows/icons/LICENSE DESTINATION ${CANTATA_ICON_INSTALL_PREFIX})

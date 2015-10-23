@@ -1,7 +1,6 @@
 set(ICON_FILES
 svg/audio-x-generic.svg
 svg/information.svg
-svg/warning.svg
 svg/dynamic-playlist.svg
 svg/folder-downloads.svg
 svg/folder-temp.svg

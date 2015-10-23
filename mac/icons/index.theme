@@ -2,22 +2,10 @@
 Name=Cantata
 Comment=Icons taken from Papirus theme.
 
-Directories=svg,svg64,svg128,16,22,32,48,64,128,256
+Directories=svg,16,22,32,48,64,128,256
 
 [svg]
 Size=48
-MinSize=8
-MaxSize=512
-Type=Scalable
-
-[svg64]
-Size=64
-MinSize=8
-MaxSize=512
-Type=Scalable
-
-[svg128]
-Size=128
 MinSize=8
 MaxSize=512
 Type=Scalable

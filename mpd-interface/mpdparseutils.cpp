@@ -596,8 +596,25 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                     continue;
                 }
 
-                if (Cue_Parse!=cueSupport) {
+                switch (cueSupport) {
+                case Cue_Ignore:
                     continue;
+                    break;
+                case Cue_Parse:
+                    if (Loc_Browse==loc) {
+                        songs.append(currentSong);
+                    }
+                    if (Loc_Library!=loc) {
+                        continue;
+                    }
+                    break;
+                case Cue_ListButDontParse:
+                    if (Loc_Browse==loc) {
+                        songs.append(currentSong);
+                    }
+                default:
+                    continue;
+                    break;
                 }
 
                 // No source files for CUE file..

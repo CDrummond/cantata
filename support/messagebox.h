@@ -29,7 +29,6 @@
 #include <KDE/KMessageBox>
 struct MessageBox: public KMessageBox {
     static void errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString());
-    static QPixmap pixmap(Type type);
 };
 #else
 #include <QMessageBox>
@@ -87,7 +86,6 @@ namespace MessageBox {
     inline void informationList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString()) {
         msgListEx(parent, Information, message, strlist, title);
     }
-    extern QPixmap pixmap(Type type);
 }
 #endif
 

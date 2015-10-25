@@ -151,34 +151,35 @@ MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const Q
     QWidget *wid=new QWidget(dlg);
     QGridLayout *lay=new QGridLayout(wid);
     QLabel *iconLabel=new QLabel(wid);
+    int iconSize=Icon::dlgIconSize();
+    iconLabel->setFixedSize(iconSize, iconSize);
     #ifdef ENABLE_KDE_SUPPORT
     dlg->setCaption(title.isEmpty() ? i18n("Error") : title);
     dlg->setButtons(Dialog::Ok);
-    int iconSize=Icon::dlgIconSize();
-    iconLabel->setFixedSize(iconSize, iconSize);
     iconLabel->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
     #else
     switch(type) {
     case Error:
         dlg->setCaption(title.isEmpty() ? i18n("Error") : title);
         dlg->setButtons(Dialog::Ok);
+        iconLabel->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
         break;
     case Question:
         dlg->setCaption(title.isEmpty() ? i18n("Question") : title);
         dlg->setButtons(Dialog::Yes|Dialog::No);
+        iconLabel->setPixmap(Icon("dialog-question").pixmap(iconSize, iconSize));
         break;
     case Warning:
         dlg->setCaption(title.isEmpty() ? i18n("Warning") : title);
         dlg->setButtons(Dialog::Yes|Dialog::No);
+        iconLabel->setPixmap(Icon("dialog-warning").pixmap(iconSize, iconSize));
         break;
     case Information:
         dlg->setCaption(title.isEmpty() ? i18n("Information") : title);
         dlg->setButtons(Dialog::Ok);
+        iconLabel->setPixmap(Icon("dialog-information").pixmap(iconSize, iconSize));
         break;
     }
-    QPixmap pix=pixmap(type);
-    iconLabel->setFixedSize(pix.size());
-    iconLabel->setPixmap(pix);
     #endif
     lay->addWidget(iconLabel, 0, 0, 1, 1);
     QLabel *msgLabel=new QLabel(message, wid);
@@ -198,17 +199,4 @@ MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const Q
     #else
     return QDialog::Accepted==dlg->exec() ? Yes : No;
     #endif
-}
-
-static QMessageBox *msgIcon=0;
-QPixmap MessageBox::pixmap(MessageBox::Type type)
-{
-    if (!msgIcon) {
-        msgIcon=new QMessageBox();
-        msgIcon->setVisible(false);
-        msgIcon->ensurePolished();
-        QObject::connect(qApp, SIGNAL(aboutToQuit()), msgIcon, SLOT(deleteLater()));
-    }
-    msgIcon->setIcon((QMessageBox::Icon)type);
-    return msgIcon->iconPixmap();
 }

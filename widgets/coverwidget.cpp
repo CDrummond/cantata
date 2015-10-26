@@ -124,7 +124,7 @@ public:
             #else
             p.setPen(QPen(palette().color(QPalette::Highlight), 2));
             #endif
-            p.drawPath(Utils::buildPath(QRectF(r.x()+0.5, r.y()+0.5, r.width()-1, r.height()-1), layoutSize.width()>128 ? 4.5 : 3.5));
+            p.drawRect(r.adjusted(1, 1, -1, -1));
         }
     }
 
@@ -140,9 +140,8 @@ public:
             size-=constBorder*2;
         }
         #endif
-        int origSize=size;
-        double pixRatio=1.0;
         #if QT_VERSION >= 0x050100
+        double pixRatio=1.0;
         if (Settings::self()->retinaSupport()) {
             pixRatio=qApp->devicePixelRatio();
             size*=pixRatio;
@@ -160,8 +159,6 @@ public:
         }
         pix.fill(Qt::transparent);
         QPainter painter(&pix);
-        painter.setRenderHint(QPainter::Antialiasing);
-        painter.setClipPath(Utils::buildPath(QRectF(0, 0, img.width()/pixRatio, img.height()/pixRatio), origSize>128 ? 4.5 : 3.5));
         painter.drawImage(0, 0, img);
         repaint();
     }

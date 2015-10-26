@@ -118,12 +118,13 @@ public:
         QRect r((width()-layoutSize.width())/2, (height()-layoutSize.height())/2, layoutSize.width(), layoutSize.height());
         p.drawPixmap(r, pix);
         if (underMouse()) {
-            p.setRenderHint(QPainter::Antialiasing);
             #ifdef Q_OS_MAC
-            p.setPen(QPen(OSXStyle::self()->viewPalette().color(QPalette::Highlight), 2));
+            QPen pen(OSXStyle::self()->viewPalette().color(QPalette::Highlight), 2);
             #else
-            p.setPen(QPen(palette().color(QPalette::Highlight), 2));
+            QPen pen(palette().color(QPalette::Highlight), 2);
             #endif
+            pen.setJoinStyle(Qt::MiterJoin);
+            p.setPen(pen);
             p.drawRect(r.adjusted(1, 1, -1, -1));
         }
     }

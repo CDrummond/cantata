@@ -23,6 +23,7 @@
 
 #include "icon.h"
 #include "utils.h"
+#include <QMessageBox>
 #include <QApplication>
 #include <QToolButton>
 
@@ -55,7 +56,17 @@ int Icon::dlgIconSize()
     static int size=-1;
 
     if (-1==size) {
-        size=stdSize(QApplication::fontMetrics().height()*3.5);
+        QMessageBox *box=new QMessageBox(0);
+        box->setVisible(false);
+        box->setIcon(QMessageBox::Information);
+        box->ensurePolished();
+        QPixmap pix=box->iconPixmap();
+        if (pix.isNull() || pix.width()<16) {
+            size=stdSize(QApplication::fontMetrics().height()*3.5);
+        } else {
+            size=pix.width();
+        }
+        box->deleteLater();
     }
     return size;
 }

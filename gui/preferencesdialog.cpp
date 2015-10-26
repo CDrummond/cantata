@@ -56,18 +56,6 @@ int PreferencesDialog::instanceCount()
     return iCount;
 }
 
-static Icon getIcon(const QStringList &list)
-{
-    foreach (const QString &i, list) {
-        Icon icn(i);
-        if (!icn.isNull()) {
-            return icn;
-        }
-    }
-
-    return Icon("unknown");
-}
-
 PreferencesDialog::PreferencesDialog(QWidget *parent)
     : ConfigDialog(parent, "PreferencesDialog")
 {

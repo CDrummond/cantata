@@ -447,7 +447,7 @@ QModelIndex SqlLibraryModel::findSongIndex(const Song &song)
             CollectionItem *al=static_cast<CollectionItem *>(albumIndex.internalPointer());
             foreach (Item *t, al->getChildren()) {
                 if (static_cast<TrackItem *>(t)->getSong().title==song.title) {
-                    return index(al->getRow(), 0, albumIndex);
+                    return index(t->getRow(), 0, albumIndex);
                 }
             }
         }

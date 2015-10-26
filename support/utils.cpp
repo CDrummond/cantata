@@ -880,7 +880,7 @@ double Utils::screenDpiScale()
         if (!dw) {
             return 1.0;
         }
-        scaleFactor=qMin(qMax(dw->logicalDpiX()/96.0, 1.0), 4.0);
+        scaleFactor=dw->logicalDpiX()>120 ? qMin(qMax(dw->logicalDpiX()/96.0, 1.0), 4.0) : 1.0;
     }
     return scaleFactor;
 }

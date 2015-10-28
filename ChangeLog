@@ -73,6 +73,7 @@
 51. Fix Lastfm response parsing.
 52. Dynamically load folder view.
 53. Fix starting Cantata maximised.
+54. Ignore 'The' (if configured) when sorting play queue.
 
 1.5.2
 -----

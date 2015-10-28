@@ -107,9 +107,6 @@ public:
         int lastModified;
     };
 
-    static QStringList ignorePrefixes();
-    static void setIgnorePrefixes(const QStringList &prefixes);
-
     LibraryDb(QObject *p, const QString &name);
     ~LibraryDb();
 

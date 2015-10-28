@@ -1247,19 +1247,25 @@ void PlayQueueModel::addSortAction(const QString &name, const QString &key)
 
 static bool artistSort(const Song *s1, const Song *s2)
 {
-    int c=s1->artist.localeAwareCompare(s2->artist);
+    const QString v1=s1->hasArtistSort() ? s1->artistSort() : s1->artist;
+    const QString v2=s2->hasArtistSort() ? s2->artistSort() : s2->artist;
+    int c=v1.localeAwareCompare(v2);
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
 static bool albumArtistSort(const Song *s1, const Song *s2)
 {
-    int c=s1->albumArtist().localeAwareCompare(s2->albumArtist());
+    const QString v1=s1->hasAlbumArtistSort() ? s1->albumArtistSort() : s1->albumArtist();
+    const QString v2=s2->hasAlbumArtistSort() ? s2->albumArtistSort() : s2->albumArtist();
+    int c=v1.localeAwareCompare(v2);
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
 static bool albumSort(const Song *s1, const Song *s2)
 {
-    int c=s1->albumId().localeAwareCompare(s2->albumId());
+    const QString v1=s1->hasAlbumSort() ? s1->albumSort() : s1->album;
+    const QString v2=s2->hasAlbumSort() ? s2->albumSort() : s2->album;
+    int c=v1.localeAwareCompare(v2);
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
@@ -1283,6 +1289,7 @@ void PlayQueueModel::sortBy()
         QString key=act->property(constSortByKey).toString();
         QList<const Song *> copy;
         foreach (const Song &s, songs) {
+            ((Song &)s).populateSorts();
             copy.append(&s);
         }
 

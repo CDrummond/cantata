@@ -121,6 +121,9 @@ struct Song
     static QString displayAlbum(const QString &albumName, quint16 albumYear);
     static QString combineGenres(const QSet<QString> &genres);
     static bool isComposerGenre(const QString &genre) { return composerGenres().contains(genre); }
+    static QStringList ignorePrefixes();
+    static void setIgnorePrefixes(const QStringList &prefixes);
+    static QString sortString(const QString &str);
 
     Song();
     Song(const Song &o) { *this=o; }
@@ -205,6 +208,7 @@ struct Song
     QString displayAlbum() const { return displayAlbum(album, year); }
     QString describe(bool withMarkup=false) const;
     bool useComposer() const;
+    void populateSorts();
 //    QString basicDescription() const;
 
     //

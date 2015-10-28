@@ -349,45 +349,12 @@ static bool songsSortArAl(const Song &a, const Song &b)
 //    return a.lastModified>b.lastModified;
 //}
 
-static QStringList prefixesToIngore=QStringList() << QLatin1String("The");
-
-QStringList LibraryDb::ignorePrefixes()
-{
-    return prefixesToIngore;
-}
-
-void LibraryDb::setIgnorePrefixes(const QStringList &prefixes)
-{
-    prefixesToIngore=prefixes;
-}
-
-static QString ignorePrefix(const QString &str)
-{
-    foreach (const QString &p, prefixesToIngore) {
-        if (str.startsWith(p+QLatin1Char(' '))) {
-            return str.mid(p.length()+1);
-        }
-    }
-    return QString();
-}
-
-static QString sortString(const QString &str)
-{
-    QString sort=ignorePrefix(str);
-
-    if (sort.isEmpty()) {
-        sort=str;
-    }
-    sort=sort.remove('.');
-    return sort==str ? QString() : sort;
-}
-
 static QString artistSort(const Song &s)
 {
     if (!s.artistSortString().isEmpty()) {
         return s.artistSortString();
     }
-    return sortString(s.albumArtist());
+    return Song::sortString(s.albumArtist());
 }
 
 static QString albumSort(const Song &s)
@@ -395,7 +362,7 @@ static QString albumSort(const Song &s)
     if (!s.albumSort().isEmpty()) {
         return s.albumSort();
     }
-    return sortString(s.album);
+    return Song::sortString(s.album);
 }
 
 // Code taken from Clementine's LibraryQuery

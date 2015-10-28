@@ -1424,7 +1424,7 @@ void MainWindow::readSettings()
     #endif
 
     checkMpdDir();
-    LibraryDb::setIgnorePrefixes(Settings::self()->ignorePrefixes());
+    Song::setIgnorePrefixes(Settings::self()->ignorePrefixes());
     Covers::self()->readConfig();
     HttpServer::self()->readConfig();
     #ifdef ENABLE_DEVICES_SUPPORT

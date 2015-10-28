@@ -738,7 +738,7 @@ bool Settings::retinaSupport()
 
 QStringList Settings::ignorePrefixes()
 {
-    return cfg.get("ignorePrefixes", LibraryDb::ignorePrefixes());
+    return cfg.get("ignorePrefixes", Song::ignorePrefixes());
 }
 
 bool Settings::mpris()

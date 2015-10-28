@@ -371,6 +371,39 @@ QString Song::combineGenres(const QSet<QString> &genres)
     return g;
 }
 
+static QStringList prefixesToIngore=QStringList() << QLatin1String("The");
+
+QStringList Song::ignorePrefixes()
+{
+    return prefixesToIngore;
+}
+
+void Song::setIgnorePrefixes(const QStringList &prefixes)
+{
+    prefixesToIngore=prefixes;
+}
+
+static QString ignorePrefix(const QString &str)
+{
+    foreach (const QString &p, prefixesToIngore) {
+        if (str.startsWith(p+QLatin1Char(' '))) {
+            return str.mid(p.length()+1);
+        }
+    }
+    return QString();
+}
+
+QString Song::sortString(const QString &str)
+{
+    QString sort=ignorePrefix(str);
+
+    if (sort.isEmpty()) {
+        sort=str;
+    }
+    sort=sort.remove('.');
+    return sort==str ? QString() : sort;
+}
+
 quint16 Song::setKey(int location)
 {
     if (isStandardStream()) {
@@ -704,6 +737,28 @@ bool Song::useComposer() const
         }
     }
     return false;
+}
+
+void Song::populateSorts()
+{
+    if (!hasArtistSort()) {
+        QString val=sortString(artist);
+        if (val!=artist) {
+            setArtistSort(val);
+        }
+    }
+    if (!albumartist.isEmpty() && !hasAlbumArtistSort()) {
+        QString val=sortString(albumartist);
+        if (val!=albumartist) {
+            setAlbumArtistSort(val);
+        }
+    }
+    if (!hasAlbumSort()) {
+        QString val=sortString(album);
+        if (val!=album) {
+            setAlbumSort(val);
+        }
+    }
 }
 
 //QString Song::basicDescription() const

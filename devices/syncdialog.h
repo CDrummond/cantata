@@ -56,8 +56,6 @@ private Q_SLOTS:
     void selectionChanged();
     void configure();
     void saveProperties(const QString &path, const DeviceOptions &opts);
-    void copyComplete();
-    void copyAborted();
 
 private:
     void updateSongs();

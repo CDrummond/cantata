@@ -233,6 +233,7 @@ void SyncDialog::saveProperties(const QString &path, const DeviceOptions &opts)
 
 void SyncDialog::copyComplete()
 {
+    ActionDialog *old=qobject_cast<ActionDialog *>(sender());
     // Copied to device, now copy to library...
     if (State_CopyToDevice==state) {
         QString devId;
@@ -244,6 +245,10 @@ void SyncDialog::copyComplete()
                 state=State_CopyToLib;
                 ActionDialog *dlg=new ActionDialog(parentWidget());
                 dlg->sync(devId, QString(), songs, libWidget->numCheckedSongs(), 0, i18n("Copy Songs To Library"));
+                if (old) {
+                    old->setVisible(false);
+                    dlg->move(old->pos());
+                }
             } else {
                 Dialog::slotButtonClicked(Cancel);
             }

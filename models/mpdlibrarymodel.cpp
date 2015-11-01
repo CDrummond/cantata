@@ -28,6 +28,7 @@
 #include "gui/settings.h"
 #include "gui/covers.h"
 #include "roles.h"
+#include <QTimer>
 #include <QDebug>
 
 GLOBAL_STATIC(MpdLibraryModel, instance)
@@ -136,6 +137,42 @@ void MpdLibraryModel::save(Configuration &config)
 {
     config.set(constUseArtistImagesKey, showArtistImages);
     SqlLibraryModel::save(config);
+}
+
+void MpdLibraryModel::listSongs()
+{
+    listingTotal=db->trackCount();
+    listingCurrent=0;
+    if (listingTotal>0) {
+        QTimer::singleShot(0, this, SLOT(listNextChunk()));
+    } else {
+        emit songListing(QList<Song>(), 100.0);
+    }
+}
+
+void MpdLibraryModel::cancelListing()
+{
+    listingTotal=0;
+}
+
+static const int constMaxSongsInList=1000;
+
+void MpdLibraryModel::listNextChunk()
+{
+    if (listingTotal<=0) {
+        return;
+    }
+
+    QList<Song> songs=db->getTracks(listingCurrent, constMaxSongsInList);
+    listingCurrent+=songs.count();
+    emit songListing(songs, (listingCurrent*100.0)/(listingTotal*1.0));
+    if (songs.count()>0) {
+        if (listingCurrent==listingTotal) {
+            emit songListing(QList<Song>(), 100.0);
+        } else {
+            QTimer::singleShot(0, this, SLOT(listNextChunk()));
+        }
+    }
 }
 
 void MpdLibraryModel::cover(const Song &song, const QImage &img, const QString &file)

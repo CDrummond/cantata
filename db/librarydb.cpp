@@ -795,6 +795,30 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
     return songs;
 }
 
+QList<Song> LibraryDb::getTracks(int rowFrom, int count)
+{
+    QList<Song> songList;
+    SqlQuery query("*", *db);
+    query.addWhere("rowid", rowFrom, ">");
+    query.addWhere("rowid", rowFrom+count, "<=");
+    query.addWhere("type", 0);
+    query.exec();
+    DBUG << query.executedQuery();
+    while (query.next()) {
+        songList.append(getSong(query.realQuery()));
+    }
+    return songList;
+}
+
+int LibraryDb::trackCount()
+{
+    SqlQuery query("(count())", *db);
+    query.addWhere("type", 0);
+    query.exec();
+    DBUG << query.executedQuery();
+    return query.next() ? query.value(0).toInt() : 0;
+}
+
 #ifndef CANTATA_WEB
 QList<Song> LibraryDb::songs(const QStringList &files, bool allowPlaylists) const
 {

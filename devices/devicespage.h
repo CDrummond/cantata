@@ -61,6 +61,7 @@ public Q_SLOTS:
     void deleteSongs();
     void addRemoteDevice();
     void forgetRemoteDevice();
+    void sync();
     void toggleDevice();
     void updated(const QModelIndex &idx);
     void cdMatches(const QString &udi, const QList<CdAlbum> &albums);
@@ -76,6 +77,7 @@ Q_SIGNALS:
 private:
     MusicLibraryProxyModel proxy;
     Action *copyAction;
+    Action *syncAction;
     #ifdef ENABLE_REMOTE_DEVICES
     Action *forgetDeviceAction;
     #endif

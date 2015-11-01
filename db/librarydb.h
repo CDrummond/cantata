@@ -118,6 +118,8 @@ public:
     QList<Artist> getArtists(const QString &genre=QString());
     QList<Album> getAlbums(const QString &artistId=QString(), const QString &genre=QString(), AlbumSort sort=AS_Year);
     QList<Song> getTracks(const QString &artistId, const QString &albumId, const QString &genre=QString(), AlbumSort sort=AS_Year, bool useFilter=true);
+    QList<Song> getTracks(int rowFrom, int count);
+    int trackCount();
     #ifndef CANTATA_WEB
     QList<Song> songs(const QStringList &files, bool allowPlaylists=false) const;
     QList<Album> getAlbumsWithArtist(const QString &artist);

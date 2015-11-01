@@ -45,7 +45,8 @@ class ActionDialog : public Dialog, Ui::ActionDialog
     enum Mode
     {
         Copy,
-        Remove
+        Remove,
+        Sync
     };
 
     typedef QPair<QString, QString> StringPair;
@@ -57,6 +58,7 @@ public:
     ActionDialog(QWidget *parent);
     virtual ~ActionDialog();
 
+    void sync(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, int songsAlreadyCopied, int extraSongsToCopy, const QString &title);
     void copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs);
     void remove(const QString &udi, const QList<Song> &songs);
 

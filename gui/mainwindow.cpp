@@ -55,6 +55,7 @@
 #include "devices/devicespage.h"
 #include "models/devicesmodel.h"
 #include "devices/actiondialog.h"
+#include "devices/syncdialog.h"
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "devices/audiocddevice.h"
 #endif
@@ -1193,10 +1194,10 @@ bool MainWindow::canShowDialog()
         || TagEditor::instanceCount() || TrackOrganiser::instanceCount()
         #endif
         #ifdef ENABLE_DEVICES_SUPPORT
-         || ActionDialog::instanceCount()
+        || ActionDialog::instanceCount() || SyncDialog::instanceCount()
         #endif
         #ifdef ENABLE_REPLAYGAIN_SUPPORT
-         || RgDialog::instanceCount()
+        || RgDialog::instanceCount()
         #endif
         ) {
         MessageBox::error(this, i18n("Please close other dialogs first."));
@@ -1240,7 +1241,7 @@ void MainWindow::quit()
     }
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (ActionDialog::instanceCount()) {
+    if (ActionDialog::instanceCount() || SyncDialog::instanceCount()) {
         return;
     }
     #endif

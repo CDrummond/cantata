@@ -642,14 +642,15 @@ if (TAGLIB_FOUND)
                 devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp devices/splitlabelwidget.cpp
                 models/devicesmodel.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
                 devices/devicepropertiesdialog.cpp devices/encoders.cpp devices/freespaceinfo.cpp
-                devices/transcodingjob.cpp devices/valueslider.cpp
-                online/onlinedevice.cpp)
+                devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp
+                devices/synccollectionwidget.cpp online/onlinedevice.cpp models/musiclibrarymodel.cpp)
         set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/devicespage.h devices/filejob.h
                 devices/fsdevice.h devices/umsdevice.h models/devicesmodel.h
                 devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
-                devices/transcodingjob.h devices/valueslider.h
-                online/onlinedevice.h)
-        set(CANTATA_UIS ${CANTATA_UIS} devices/actiondialog.ui devices/devicepropertieswidget.ui)
+                devices/transcodingjob.h devices/valueslider.h devices/syncdialog.h
+                devices/synccollectionwidget.h online/onlinedevice.h)
+        set(CANTATA_UIS ${CANTATA_UIS} devices/actiondialog.ui devices/devicepropertieswidget.ui
+                devices/synccollectionwidget.ui)
 
         if (ENABLE_REMOTE_DEVICES)
             set(CANTATA_SRCS ${CANTATA_SRCS} devices/remotefsdevice.cpp devices/remotedevicepropertiesdialog.cpp

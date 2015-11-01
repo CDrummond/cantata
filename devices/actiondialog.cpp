@@ -260,7 +260,6 @@ void ActionDialog::calcFileSize()
                                         : dev->data())+QLatin1String("</b>"));
             destinationLabel->setText(QLatin1String("<b>")+(destUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
             namingOptions.load(mpdCfgName, true);
-            mode=Copy;
 
             capacity->update(capacityString, (usedCapacity*100)+0.5);
 
@@ -297,6 +296,34 @@ void ActionDialog::calcFileSize()
                                        Utils::formatByteSize(spaceAvailable)));
         }
     }
+}
+
+void ActionDialog::sync(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, int songsAlreadyCopied, int extraSongsToCopy, const QString &title)
+{
+    init(srcUdi, dstUdi, songs, Sync);
+    Device *dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi);
+
+    if (!dev) {
+        deleteLater();
+        return;
+    }
+
+    // Taken into account songs that were copied before, or songs that will be copied after...
+    count=songsAlreadyCopied;
+    progressBar->setValue(songsAlreadyCopied*100);
+    progressBar->setRange(0, (songsToAction.count()+songsAlreadyCopied+extraSongsToCopy)*100);
+
+    sourceIsAudioCd=false;
+    controlInfoLabel(dev);
+    fileSizeProgress->setMinimum(0);
+    fileSizeProgress->setMaximum(songs.size());
+    songsToCalcSize=songs;
+    if (!title.isEmpty()) {
+        setCaption(title);
+    }
+    setPage(PAGE_SIZE_CALC);
+    show();
+    calcFileSize();
 }
 
 void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs)
@@ -360,11 +387,11 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     sourceIsAudioCd=false;
     songsToAction=songs;
     mode=m;
-    setCaption(Copy==mode ? i18n("Copy Songs") : i18n("Delete Songs"));
+    setCaption(Copy==mode || Sync==mode ? i18n("Copy Songs") : i18n("Delete Songs"));
     qSort(songsToAction);
     progressLabel->setText(QString());
     progressBar->setValue(0);
-    progressBar->setRange(0, (Copy==mode ? songsToAction.count() : (songsToAction.count()+1))*100);
+    progressBar->setRange(0, (Copy==mode || Sync==mode ? songsToAction.count() : (songsToAction.count()+1))*100);
     autoSkip=false;
     performingAction=false;
     paused=false;
@@ -470,7 +497,7 @@ void ActionDialog::slotButtonClicked(int button)
         if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Are you sure you wish to stop?"), i18n("Stop"),
                                                        StdGuiItem::stop(), StdGuiItem::cont())) {
             Device *dev=0;
-            if(Copy==mode) {
+            if(Copy==mode || Sync==mode) {
                 dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi, false);
             } else if (!sourceUdi.isEmpty()) { // Must be a delete...
                 dev=getDevice(sourceUdi, false);
@@ -539,7 +566,7 @@ void ActionDialog::doNext()
     currentPercent=0;
     if (songsToAction.count()) {
         currentSong=origCurrentSong=songsToAction.takeFirst();
-        if(Copy==mode) {
+        if(Copy==mode || Sync==mode) {
             bool copyToDev=sourceUdi.isEmpty();
             Device *dev=getDevice(copyToDev ? destUdi : sourceUdi);
 
@@ -675,7 +702,7 @@ void ActionDialog::actionStatus(int status, bool copiedCover)
         setPage(PAGE_SKIP, formatSong(currentSong, true), i18n("Source file no longer exists?"));
         break;
     case Device::Failed:
-        setPage(PAGE_SKIP, formatSong(currentSong), Copy==mode ? i18n("Failed to copy.") : i18n("Failed to delete."));
+        setPage(PAGE_SKIP, formatSong(currentSong), Copy==mode || Sync==mode ? i18n("Failed to copy.") : i18n("Failed to delete."));
         break;
     case Device::NotConnected:
         setPage(PAGE_ERROR, formatSong(currentSong), i18n("Not connected to device."));
@@ -764,7 +791,6 @@ void ActionDialog::saveProperties()
 void ActionDialog::setPage(int page, const StringPairList &msg, const QString &header)
 {
     stack->setCurrentIndex(page);
-
     switch(page) {
     case PAGE_SIZE_CALC:
         fileSizeActionLabel->startAnimation();
@@ -777,6 +803,9 @@ void ActionDialog::setPage(int page, const StringPairList &msg, const QString &h
     case PAGE_START:
         fileSizeActionLabel->stopAnimation();
         setButtons(Ok|Cancel);
+        if (Sync==mode) {
+            slotButtonClicked(Ok);
+        }
         break;
     case PAGE_PROGRESS:
         actionLabel->startAnimation();
@@ -813,7 +842,7 @@ ActionDialog::StringPairList ActionDialog::formatSong(const Song &s, bool showFi
     str.append(StringPair(i18n("Track:"), s.trackAndTitleStr()));
 
     if (showFiles) {
-        if (Copy==mode) {
+        if (Copy==mode || Sync==mode) {
             str.append(StringPair(i18n("Source file:"), DevicesModel::fixDevicePath(s.filePath())));
             str.append(StringPair(i18n("Destination file:"), DevicesModel::fixDevicePath(destFile)));
         } else {
@@ -845,12 +874,12 @@ bool ActionDialog::refreshLibrary()
 {
     actionLabel->stopAnimation();
     if (!actionedSongs.isEmpty()) {
-        if ( (Copy==mode && !sourceUdi.isEmpty()) ||
+        if ( ((Copy==mode || Sync==mode) && !sourceUdi.isEmpty()) ||
              (Remove==mode && sourceUdi.isEmpty()) ) {
 //            MusicLibraryModel::self()->checkForNewSongs();
 //            AlbumsModel::self()->update(MusicLibraryModel::self()->root());
             emit update();
-        } else if ( (Copy==mode && sourceUdi.isEmpty()) ||
+        } else if ( ((Copy==mode || Sync==mode) && sourceUdi.isEmpty()) ||
                     (Remove==mode && !sourceUdi.isEmpty()) ) {
             Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);
 

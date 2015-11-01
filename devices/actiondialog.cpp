@@ -298,29 +298,33 @@ void ActionDialog::calcFileSize()
     }
 }
 
-void ActionDialog::sync(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, int songsAlreadyCopied, int extraSongsToCopy, const QString &title)
+void ActionDialog::sync(const QString &devId, const QList<Song> &libSongs, const QList<Song> &devSongs)
 {
-    init(srcUdi, dstUdi, songs, Sync);
-    Device *dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi);
+    // If only copying one way, then just use standard copying...
+    bool toLib=libSongs.isEmpty();
+    if (toLib || devSongs.isEmpty()) {
+        copy(toLib ? devId : QString(), toLib ? QString() : devId, toLib ? devSongs : libSongs);
+        setCaption(toLib ? i18n("Copy Songs To Library") : i18n("Copy Songs To Device"));
+        return;
+    }
+
+    init(toLib ? devId : QString(), toLib ? QString() : devId, toLib ? devSongs : libSongs, Sync);
+    Device *dev=getDevice(devId);
 
     if (!dev) {
         deleteLater();
         return;
     }
 
-    // Taken into account songs that were copied before, or songs that will be copied after...
-    count=songsAlreadyCopied;
-    progressBar->setValue(songsAlreadyCopied*100);
-    progressBar->setRange(0, (songsToAction.count()+songsAlreadyCopied+extraSongsToCopy)*100);
+    progressBar->setRange(0, (libSongs.count()+devSongs.count())*100);
 
     sourceIsAudioCd=false;
     controlInfoLabel(dev);
     fileSizeProgress->setMinimum(0);
-    fileSizeProgress->setMaximum(songs.size());
-    songsToCalcSize=songs;
-    if (!title.isEmpty()) {
-        setCaption(title);
-    }
+    fileSizeProgress->setMaximum(songsToAction.size());
+    songsToCalcSize=songsToAction;
+    syncSongs=devSongs;
+    setCaption(toLib ? i18n("Copy Songs To Library") : i18n("Copy Songs To Device"));
     setPage(PAGE_SIZE_CALC);
     show();
     calcFileSize();
@@ -564,6 +568,14 @@ Device * ActionDialog::getDevice(const QString &udi, bool logErrors)
 void ActionDialog::doNext()
 {
     currentPercent=0;
+    if (songsToAction.isEmpty() && Sync==mode && !syncSongs.isEmpty()) {
+        songsToAction=syncSongs;
+        syncSongs.clear();
+        sourceUdi=destUdi;
+        destUdi=QString();
+        setCaption(i18n("Copy Songs To Library"));
+    }
+
     if (songsToAction.count()) {
         currentSong=origCurrentSong=songsToAction.takeFirst();
         if(Copy==mode || Sync==mode) {
@@ -874,7 +886,18 @@ bool ActionDialog::refreshLibrary()
 {
     actionLabel->stopAnimation();
     if (!actionedSongs.isEmpty()) {
-        if ( ((Copy==mode || Sync==mode) && !sourceUdi.isEmpty()) ||
+        if (Sync==mode) {
+            emit update();
+            Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);
+
+            if (dev) {
+                connect(dev, SIGNAL(cacheSaved()), this, SLOT(cacheSaved()));
+                dev->saveCache();
+                progressLabel->setText(i18n("Saving cache"));
+                setButtons(Close);
+                return true;
+            }
+        } else if ( (Copy==mode && !sourceUdi.isEmpty()) ||
              (Remove==mode && sourceUdi.isEmpty()) ) {
 //            MusicLibraryModel::self()->checkForNewSongs();
 //            AlbumsModel::self()->update(MusicLibraryModel::self()->root());

@@ -231,36 +231,6 @@ void SyncDialog::saveProperties(const QString &path, const DeviceOptions &opts)
     libOptions.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true, false);
 }
 
-void SyncDialog::copyComplete()
-{
-    ActionDialog *old=qobject_cast<ActionDialog *>(sender());
-    // Copied to device, now copy to library...
-    if (State_CopyToDevice==state) {
-        QString devId;
-        Device *dev=getDevice();
-        if (dev) {
-            devId=dev->id();
-            QList<Song> songs=devWidget->checkedSongs();
-            if (!songs.isEmpty()) {
-                state=State_CopyToLib;
-                ActionDialog *dlg=new ActionDialog(parentWidget());
-                dlg->sync(devId, QString(), songs, libWidget->numCheckedSongs(), 0, i18n("Copy Songs To Library"));
-                if (old) {
-                    old->setVisible(false);
-                    dlg->move(old->pos());
-                }
-            } else {
-                Dialog::slotButtonClicked(Cancel);
-            }
-        }
-    }
-}
-
-void SyncDialog::copyAborted()
-{
-    Dialog::slotButtonClicked(Cancel);
-}
-
 void SyncDialog::slotButtonClicked(int button)
 {
     switch(button) {
@@ -272,25 +242,8 @@ void SyncDialog::slotButtonClicked(int button)
             QList<Song> songs=libWidget->checkedSongs();
             QString devId;
             devId=dev->id();
-            // Copy songs to device first, if we have any selected...
-            if (!songs.isEmpty()) {
-                state=State_CopyToDevice;
-                dlg->sync(QString(), devId, songs, 0, devWidget->numCheckedSongs(), i18n("Copy Songs To Device"));
-            } else {
-                // No lib songs selected, so copy to device...
-                songs=devWidget->checkedSongs();
-                if (!songs.isEmpty()) {
-                    state=State_CopyToLib;
-                    dlg->sync(devId, QString(), songs, libWidget->numCheckedSongs(), 0, i18n("Copy Songs To Library"));
-                }
-            }
-            if (State_Lists==state) {
-                dlg->deleteLater();
-                Dialog::slotButtonClicked(Cancel);
-            } else {
-                connect(dlg, SIGNAL(completed()), SLOT(copyComplete()));
-                connect(dlg, SIGNAL(rejected()), SLOT(copyAborted()));
-            }
+            dlg->sync(devId, libWidget->checkedSongs(), devWidget->checkedSongs());
+            Dialog::slotButtonClicked(button);
         }
         break;
     }

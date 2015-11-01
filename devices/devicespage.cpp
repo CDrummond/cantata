@@ -35,6 +35,7 @@
 #include "widgets/menubutton.h"
 #include "support/action.h"
 #include "gui/stdactions.h"
+#include "syncdialog.h"
 #ifdef ENABLE_REMOTE_DEVICES
 #include "remotedevicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
@@ -61,6 +62,9 @@ DevicesPage::DevicesPage(QWidget *p)
     copyAction = new Action(Icons::self()->downloadIcon, i18n("Copy To Library"), this);
     ToolButton *copyToLibraryButton=new ToolButton(this);
     copyToLibraryButton->setDefaultAction(copyAction);
+    syncAction = new Action(Icon("folder-sync"), i18n("Synchronise"), this);
+    syncAction->setEnabled(false);
+    connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction=new Action(Icon("list-remove"), i18n("Forget Device"), this);
     connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
@@ -101,6 +105,7 @@ DevicesPage::DevicesPage(QWidget *p)
     init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu, QList<QWidget *>() << copyToLibraryButton);
 
     view->addAction(copyAction);
+    view->addAction(syncAction);
     view->addAction(StdActions::self()->organiseFilesAction);
     view->addAction(StdActions::self()->editTagsAction);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -261,7 +266,7 @@ void DevicesPage::controlActions()
     bool haveTracks=false;
     bool onlyFs=true;
     bool singleUdi=true;
-//    bool connected=false;
+    bool connected=false;
     #ifdef ENABLE_REMOTE_DEVICES
     bool remoteDev=false;
     #endif
@@ -309,13 +314,15 @@ void DevicesPage::controlActions()
             if (!haveTracks) {
                 haveTracks=dev->childCount()>0;
             }
-//            connected=dev->isConnected();
+            connected=dev->isConnected();
         }
     }
 
     DevicesModel::self()->configureAct()->setEnabled(!busyDevice && 1==selected.count() && !audioCd);
     DevicesModel::self()->refreshAct()->setEnabled(!busyDevice && 1==selected.count());
     copyAction->setEnabled(!busyDevice && haveTracks && (!deviceSelected || audioCd));
+    syncAction->setEnabled(!audioCd && !busyDevice && deviceSelected && connected && 1==selected.count() && singleUdi &&
+                           MPDConnection::self()->getDetails().dirReadable);
     StdActions::self()->deleteSongsAction->setEnabled(!audioCd && !busyDevice && haveTracks && !deviceSelected);
     StdActions::self()->editTagsAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -523,6 +530,36 @@ void DevicesPage::toggleDevice()
             return;
         }
         static_cast<Device *>(item)->toggle();
+    }
+}
+
+void DevicesPage::sync()
+{
+    if (0!=SyncDialog::instanceCount()) {
+        return;
+    }
+
+    if (0!=PreferencesDialog::instanceCount() || 0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()
+        || 0!=ActionDialog::instanceCount() || 0!=CoverDialog::instanceCount()
+        #ifdef ENABLE_REPLAYGAIN_SUPPORT
+        || 0!=RgDialog::instanceCount()
+        #endif
+        ) {
+        MessageBox::error(this, i18n("Please close other dialogs first."));
+        return;
+    }
+
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (1!=selected.size()) {
+        return;
+    }
+
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+
+    if (MusicLibraryItem::Type_Root==item->itemType()) {
+        SyncDialog *dlg=new SyncDialog(this);
+        dlg->sync(static_cast<Device *>(item)->id());
     }
 }
 

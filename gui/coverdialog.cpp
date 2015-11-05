@@ -100,13 +100,12 @@ bool canUse(int w, int h)
 enum Providers {
     Prov_LastFm   = 0x0001,
     Prov_Google   = 0x0002,
-    Prov_DiscoGs  = 0x0004,
-    Prov_CoverArt = 0x0008,
-    Prov_Deezer   = 0x0010,
-    Prov_Spotify  = 0x0020,
-    Prov_ITunes   = 0x0040,
+    Prov_CoverArt = 0x0004,
+    Prov_Deezer   = 0x0008,
+    Prov_Spotify  = 0x0010,
+    Prov_ITunes   = 0x0020,
 
-    Prov_All      = 0x007F
+    Prov_All      = 0x003F
 };
 
 class CoverItem : public QListWidgetItem
@@ -198,13 +197,6 @@ class GoogleCover : public CoverItem
 public:
     GoogleCover(const QString &u, const QString &tu, const QImage &img, int w, int h, int size, QListWidget *parent)
         : CoverItem(u, tu, img, QLatin1String("Google"), parent, w, h, size*1024) { }
-};
-
-class DiscogsCover : public CoverItem
-{
-public:
-    DiscogsCover(const QString &u, const QString &tu, const QImage &img, int w, int h, QListWidget *parent)
-        : CoverItem(u, tu, img, QLatin1String("Discogs"), parent, w, h) { }
 };
 
 class CoverArtArchiveCover : public CoverItem
@@ -408,7 +400,6 @@ CoverDialog::CoverDialog(QWidget *parent)
     addProvider(configMenu, QLatin1String("Last.fm"), Prov_LastFm, enabledProviders);
     addProvider(configMenu, i18n("CoverArt Archive"), Prov_CoverArt, enabledProviders);
     addProvider(configMenu, QLatin1String("Google"), Prov_Google, enabledProviders);
-    addProvider(configMenu, QLatin1String("Discogs"), Prov_DiscoGs, enabledProviders);
     addProvider(configMenu, QLatin1String("Deezer"), Prov_Deezer, enabledProviders);
     addProvider(configMenu, QLatin1String("Spotify"), Prov_Spotify, enabledProviders);
     addProvider(configMenu, QLatin1String("iTunes"), Prov_ITunes, enabledProviders);
@@ -483,7 +474,6 @@ static const char * constSizeProperty="sz";
 static const char * constTypeProperty="type";
 static const char * constLastFmHost="ws.audioscrobbler.com";
 static const char * constGoogleHost="images.google.com";
-static const char * constDiscogsHost="api.discogs.com";
 static const char * constCoverArtArchiveHost="coverartarchive.org";
 static const char * constSpotifyHost="ws.spotify.com";
 static const char * constITunesHost="itunes.apple.com";
@@ -509,8 +499,6 @@ void CoverDialog::queryJobFinished()
             parseLastFmQueryResponse(resp);
         } else if (constGoogleHost==host) {
             parseGoogleQueryResponse(resp);
-        } else if (constDiscogsHost==host) {
-            parseDiscogsQueryResponse(resp);
         } else if (constCoverArtArchiveHost==host) {
             parseCoverArtArchiveQueryResponse(resp);
         } else if (constSpotifyHost==host) {
@@ -604,9 +592,6 @@ void CoverDialog::downloadJobFinished()
                 } else if (constGoogleHost==host) {
                     item=new GoogleCover(reply->property(constLargeProperty).toString(), url, img, reply->property(constWidthProperty).toInt(),
                                          reply->property(constHeightProperty).toInt(), reply->property(constSizeProperty).toInt(), list);
-                } else if (constDiscogsHost==host) {
-                    item=new DiscogsCover(reply->property(constLargeProperty).toString(), url, img, reply->property(constWidthProperty).toInt(),
-                                          reply->property(constHeightProperty).toInt(), list);
                 } else if (constCoverArtArchiveHost==host) {
                     item=new CoverArtArchiveCover(reply->property(constLargeProperty).toString(), url, img, list);
                 } else if (constSpotifyHost==host) {
@@ -710,9 +695,6 @@ void CoverDialog::sendQuery()
     if (enabledProviders&Prov_Google) {
         sendGoogleQuery(fixedQuery, page);
     }
-    if (enabledProviders&Prov_DiscoGs) {
-        sendDiscoGsQuery(fixedQuery, page);
-    }
     if (page==0) {
         if (enabledProviders&Prov_Spotify) {
             sendSpotifyQuery(fixedQuery);
@@ -765,28 +747,6 @@ void CoverDialog::sendGoogleQuery(const QString &fixedQuery, int page)
     query.addQueryItem("gbv", QChar('1'));
     query.addQueryItem("filter", QChar('1'));
     query.addQueryItem("start", QString::number(20 * page));
-    #if QT_VERSION >= 0x050000
-    url.setQuery(query);
-    #endif
-    sendQueryRequest(url);
-}
-
-void CoverDialog::sendDiscoGsQuery(const QString &fixedQuery, int page)
-{
-    QUrl url;
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
-    QUrlQuery query;
-    #endif
-    url.setScheme("http");
-    url.setHost(constDiscogsHost);
-    url.setPath("/search");
-    query.addQueryItem("page", QString::number(page + 1));
-    query.addQueryItem("per_page", QString::number(20));
-    query.addQueryItem("type", isArtist ? "artist" : "release");
-    query.addQueryItem("q", fixedQuery);
-    query.addQueryItem("f", "json");
     #if QT_VERSION >= 0x050000
     url.setQuery(query);
     #endif
@@ -1140,71 +1100,6 @@ void CoverDialog::parseGoogleQueryResponse(const QByteArray &resp)
             downloadThumbnail(rx.cap(2), url.queryItemValue("imgurl"), constGoogleHost, width, height, url.queryItemValue("sz").toInt());
         }
         pos += rx.matchedLength();
-    }
-}
-
-void CoverDialog::parseDiscogsQueryResponse(const QByteArray &resp)
-{
-    #if QT_VERSION >= 0x050000
-    QJsonParseError jsonParseError;
-    QVariantMap parsed=QJsonDocument::fromJson(resp, &jsonParseError).toVariant().toMap();
-    bool ok=QJsonParseError::NoError==jsonParseError.error;
-    #else
-    bool ok=false;
-    QVariantMap parsed=QJson::Parser().parse(resp, &ok).toMap();
-    #endif
-
-    if (ok && parsed.contains("resp")) {
-        QVariantMap response=parsed["resp"].toMap();
-        if (response.contains("search")) {
-            QVariantMap search=response["search"].toMap();
-            if (search.contains("searchresults")) {
-                QVariantMap searchresults=search["searchresults"].toMap();
-                if (searchresults.contains("results")) {
-                    QVariantList results=searchresults["results"].toList();
-                    foreach (const QVariant &r, results) {
-                        QVariantMap rm=r.toMap();
-                        if (!isArtist && rm.contains("uri")) {
-                            QStringList parts=rm["uri"].toString().split("/", QString::SkipEmptyParts);
-                            if (!parts.isEmpty()) {
-                                QUrl discogsUrl;
-                                #if QT_VERSION < 0x050000
-                                QUrl &discogsQuery=discogsUrl;
-                                #else
-                                QUrlQuery discogsQuery;
-                                #endif
-                                discogsUrl.setScheme("http");
-                                discogsUrl.setHost(constDiscogsHost);
-                                discogsUrl.setPath("/release/"+parts.last());
-                                discogsQuery.addQueryItem("f", "json");
-                                #if QT_VERSION >= 0x050000
-                                discogsUrl.setQuery(discogsQuery);
-                                #endif
-                                sendQueryRequest(discogsUrl);
-                            }
-                        } else if (isArtist && rm.contains("thumb")) {
-                            QString thumbUrl=rm["thumb"].toString();
-                            if (thumbUrl.contains("/image/A-150-")) {
-                                downloadThumbnail(thumbUrl, QString(thumbUrl).replace("image/A-150-", "/image/A-"), constDiscogsHost);
-                            }
-                        }
-                    }
-                }
-            }
-        } else if (response.contains("release")) {
-            QVariantMap release=response["release"].toMap();
-            if (release.contains("images")) {
-                QVariantList images=release["images"].toList();
-                foreach (const QVariant &i, images) {
-                    QVariantMap im=i.toMap();
-                    if (im.contains("uri") && im.contains("uri150") && im.contains("width") && im.contains("height") &&
-                        canUse(im["width"].toString().toInt(), im["height"].toString().toInt())) {
-                        downloadThumbnail(im["uri150"].toString(), im["uri"].toString(), constDiscogsHost,
-                                          im["width"].toString().toInt(), im["height"].toString().toInt());
-                    }
-                }
-            }
-        }
     }
 }
 

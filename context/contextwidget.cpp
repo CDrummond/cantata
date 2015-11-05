@@ -780,11 +780,7 @@ static QString fixArtist(const QString &artist)
 void ContextWidget::getBackdrop()
 {
     cancel();
-    if (useFanArt) {
-        getFanArtBackdrop();
-    } else {
-        getDiscoGsImage();
-    }
+    getFanArtBackdrop();
 }
 
 void ContextWidget::getFanArtBackdrop()
@@ -812,30 +808,6 @@ void ContextWidget::getMusicbrainzId(const QString &artist)
     DBUG << url.toString();
     job->setProperty(constArtistProp, artist);
     connect(job, SIGNAL(finished()), this, SLOT(musicbrainzResponse()));
-}
-
-void ContextWidget::getDiscoGsImage()
-{
-    cancel();
-    QUrl url;
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
-    QUrlQuery query;
-    #endif
-    url.setScheme("http");
-    url.setHost("api.discogs.com");
-    url.setPath("/search");
-    query.addQueryItem("per_page", QString::number(5));
-    query.addQueryItem("type", "artist");
-    query.addQueryItem("q", fixArtist(currentArtist));
-    query.addQueryItem("f", "json");
-    #if QT_VERSION >= 0x050000
-    url.setQuery(query);
-    #endif
-    job=NetworkAccessManager::self()->get(url, 5000);
-    DBUG << url.toString();
-    connect(job, SIGNAL(finished()), this, SLOT(discoGsResponse()));
 }
 
 void ContextWidget::musicbrainzResponse()
@@ -887,8 +859,6 @@ void ContextWidget::musicbrainzResponse()
         if (!artist.isEmpty() && artist.contains("/")) {
             artist=artist.replace("/", " ");
             getMusicbrainzId(artist);
-        } else {
-            getDiscoGsImage();
         }
     } else {
         QUrl url("http://api.fanart.tv/webservice/artist/"+constFanArtApiKey+"/"+id+"/json/artistbackground/1");
@@ -926,96 +896,6 @@ void ContextWidget::fanArtResponse()
                     QVariantMap artistbackground=artistbackgrounds.first().toMap();
                     if (artistbackground.contains("url")) {
                         url=artistbackground["url"].toString();
-                    }
-                }
-            }
-        }
-    }
-
-    if (url.isEmpty()) {
-        getDiscoGsImage();
-    } else {
-        job=NetworkAccessManager::self()->get(QUrl(url));
-        DBUG << url;
-        connect(job, SIGNAL(finished()), this, SLOT(downloadResponse()));
-    }
-}
-
-static bool matchesArtist(const QString &titleOrig, const QString &artistOrig)
-{
-    QString title=titleOrig.toLower();
-    QString artist=artistOrig.toLower();
-
-    if (title==artist) {
-        return true;
-    }
-
-    if (artist.startsWith(QLatin1String("the ")) && title.endsWith(QLatin1String(", the"))) {
-        QString theArtist=artist.mid(4)+QLatin1String(", the");
-        if (title==theArtist) {
-            return true;
-        }
-    }
-
-    typedef QPair<QChar, QChar> ChPair;
-    QList<ChPair> replacements = QList<ChPair>() << ChPair('-', '/') << ChPair('.', 0)
-                                                 << ChPair(QChar(0x00ff /* ÿ */), 'y');
-
-    foreach (const ChPair &r, replacements) {
-        QString a=artist;
-        QString t=title;
-
-        if (r.second.isNull()) {
-            a=a.replace(QString()+r.first, "");
-            t=t.replace(QString()+r.first, "");
-        } else {
-            a=a.replace(r.first, r.second);
-            t=t.replace(r.first, r.second);
-        }
-        if (t==a) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-void ContextWidget::discoGsResponse()
-{
-    NetworkJob *reply = getReply(sender());
-    if (!reply) {
-        return;
-    }
-
-    DBUG << "status" << reply->error() << reply->errorString();
-    QString url;
-
-    if (reply->ok()) {
-        #if QT_VERSION >= 0x050000
-        QJsonParseError jsonParseError;
-        QVariantMap parsed=QJsonDocument::fromJson(reply->readAll(), &jsonParseError).toVariant().toMap();
-        bool ok=QJsonParseError::NoError==jsonParseError.error;
-        #else
-        bool ok=false;
-        QVariantMap parsed = QJson::Parser().parse(reply->readAll(), &ok).toMap();
-        #endif
-
-        if (ok && parsed.contains("resp")) {
-            QVariantMap response=parsed["resp"].toMap();
-            if (response.contains("search")) {
-                QVariantMap search=response["search"].toMap();
-                if (search.contains("exactresults")) {
-                    QVariantList results=search["exactresults"].toList();
-                    foreach (const QVariant &r, results) {
-                        QVariantMap rm=r.toMap();
-                        if (rm.contains("thumb") && rm.contains("title")) {
-                            QString thumbUrl=rm["thumb"].toString();
-                            QString title=rm["title"].toString();
-                            if (thumbUrl.contains("/image/A-150-") && matchesArtist(title, currentArtist)) {
-                                url=thumbUrl.replace("image/A-150-", "/image/A-");
-                                break;
-                            }
-                        }
                     }
                 }
             }

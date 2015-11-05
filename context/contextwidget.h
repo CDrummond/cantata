@@ -121,7 +121,6 @@ Q_SIGNALS:
 private Q_SLOTS:
     void musicbrainzResponse();
     void fanArtResponse();
-    void discoGsResponse();
     void downloadResponse();
 
 private:
@@ -134,7 +133,6 @@ private:
     void getBackdrop();
     void getFanArtBackdrop();
     void getMusicbrainzId(const QString &artist);
-    void getDiscoGsImage();
     void createBackdrop();
     void resizeBackdrop();
     NetworkJob * getReply(QObject *obj);

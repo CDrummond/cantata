@@ -74,6 +74,7 @@
 52. Dynamically load folder view.
 53. Fix starting Cantata maximised.
 54. Ignore 'The' (if configured) when sorting play queue.
+55. No longer using discogs - API has changed.
 
 1.5.2
 -----

@@ -861,7 +861,18 @@ void ContextWidget::musicbrainzResponse()
             getMusicbrainzId(artist);
         }
     } else {
-        QUrl url("http://api.fanart.tv/webservice/artist/"+constFanArtApiKey+"/"+id+"/json/artistbackground/1");
+        QUrl url("http://webservice.fanart.tv/v3/music/"+id);
+        #if QT_VERSION < 0x050000
+        QUrl &query=url;
+        #else
+        QUrlQuery query;
+        #endif
+
+        query.addQueryItem("api_key", constFanArtApiKey);
+        #if QT_VERSION >= 0x050000
+        url.setQuery(query);
+        #endif
+
         job=NetworkAccessManager::self()->get(url);
         DBUG << url.toString();
         connect(job, SIGNAL(finished()), this, SLOT(fanArtResponse()));
@@ -889,14 +900,21 @@ void ContextWidget::fanArtResponse()
         #endif
 
         if (ok && !parsed.isEmpty()) {
-            QVariantMap artist=parsed[parsed.keys().first()].toMap();
-            if (artist.contains("artistbackground")) {
-                QVariantList artistbackgrounds=artist["artistbackground"].toList();
-                if (!artistbackgrounds.isEmpty()) {
-                    QVariantMap artistbackground=artistbackgrounds.first().toMap();
-                    if (artistbackground.contains("url")) {
-                        url=artistbackground["url"].toString();
-                    }
+            QVariantList artistbackgrounds;
+
+            if (parsed.contains("artistbackground")) {
+                artistbackgrounds=parsed["artistbackground"].toList();
+            } else {
+                QVariantMap artist=parsed[parsed.keys().first()].toMap();
+
+                if (artist.contains("artistbackground")) {
+                    artistbackgrounds=artist["artistbackground"].toList();
+                }
+            }
+            if (!artistbackgrounds.isEmpty()) {
+                QVariantMap artistbackground=artistbackgrounds.first().toMap();
+                if (artistbackground.contains("url")) {
+                    url=artistbackground["url"].toString();
                 }
             }
         }

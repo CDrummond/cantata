@@ -75,7 +75,7 @@
 53. Fix starting Cantata maximised.
 54. Ignore 'The' (if configured) when sorting play queue.
 55. No longer using discogs - API has changed.
-
+56. Fix context widget backdrop retrieval from fan-art
 1.5.2
 -----
  1. Fix Ubuntu Touch builds.

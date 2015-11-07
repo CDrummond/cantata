@@ -848,7 +848,9 @@ QList<LibraryDb::Album> LibraryDb::getAlbumsWithArtist(const QString &artist)
         query.exec();
         DBUG << query.executedQuery();
         while (query.next()) {
-            albums.append(Album(query.value(0).toString(), query.value(1).toString(), query.value(2).toString(), artist));
+            QString album=query.value(0).toString();
+            QString albumId=query.value(1).toString();
+            albums.append(Album(album.isEmpty() ? albumId : album, albumId, query.value(2).toString(), artist));
         }
     }
 

@@ -257,9 +257,6 @@ ContextWidget::ContextWidget(QWidget *parent)
     , alwaysCollapsed(false)
     , backdropType(PlayQueueView::BI_Cover)
     , darkBackground(false)
-    , useFanArt(0!=constFanArtApiKey.latin1())
-    , albumCoverBackdrop(false)
-    , oldIsAlbumCoverBackdrop(false)
     , fadeValue(1.0)
     , isWide(false)
     , stack(0)
@@ -448,7 +445,7 @@ void ContextWidget::readConfig()
         break;
    case PlayQueueView::BI_Custom:
         if (origType!=backdropType || backdropOpacity!=origOpacity || backdropBlur!=origBlur || origCustomBackdropFile!=customBackdropFile) {            
-            updateImage(QImage(customBackdropFile), false);
+            updateImage(QImage(customBackdropFile));
         }
         break;
     }
@@ -535,7 +532,7 @@ void ContextWidget::paintEvent(QPaintEvent *e)
                 p.setOpacity(1.0-fadeValue);
             }
             #ifdef SCALE_CONTEXT_BGND
-            if (!oldIsAlbumCoverBackdrop && oldBackdrop.height()<height()) {
+            if (oldBackdrop.height()<height()) {
                 p.drawPixmap(0, (height()-oldBackdrop.height())/2, oldBackdrop);
             } else
             #endif
@@ -544,7 +541,7 @@ void ContextWidget::paintEvent(QPaintEvent *e)
         if (!currentBackdrop.isNull()) {
             p.setOpacity(fadeValue);
             #ifdef SCALE_CONTEXT_BGND
-            if (!albumCoverBackdrop && currentBackdrop.height()<height()) {
+            if (currentBackdrop.height()<height()) {
                 p.drawPixmap(0, (height()-currentBackdrop.height())/2, currentBackdrop);
             } else
             #endif
@@ -562,17 +559,15 @@ void ContextWidget::setFade(float value)
         fadeValue = value;
         if (qFuzzyCompare(fadeValue, qreal(1.0))) {
             oldBackdrop=QPixmap();
-            oldIsAlbumCoverBackdrop=false;
         }
         QWidget::update();
     }
 }
 
-void ContextWidget::updateImage(QImage img, bool created)
+void ContextWidget::updateImage(QImage img)
 {
     DBUG << img.isNull() << currentBackdrop.isNull();
     oldBackdrop=currentBackdrop;
-    oldIsAlbumCoverBackdrop=albumCoverBackdrop;
     currentBackdrop=QPixmap();
     animator.stop();
     if (img.isNull() && oldBackdrop.isNull()) {
@@ -598,7 +593,6 @@ void ContextWidget::updateImage(QImage img, bool created)
         currentBackdrop=QPixmap::fromImage(img);
         #endif
     }
-    albumCoverBackdrop=created;
     resizeBackdrop();
 
     animator.stop();
@@ -610,6 +604,7 @@ void ContextWidget::updateImage(QImage img, bool created)
         animator.setEndValue(1.0);
         animator.start();
     }
+    QWidget::update();
 }
 
 void ContextWidget::search()
@@ -859,6 +854,8 @@ void ContextWidget::musicbrainzResponse()
         if (!artist.isEmpty() && artist.contains("/")) {
             artist=artist.replace("/", " ");
             getMusicbrainzId(artist);
+        } else {
+            updateImage(QImage());
         }
     } else {
         QUrl url("http://webservice.fanart.tv/v3/music/"+id);
@@ -920,7 +917,9 @@ void ContextWidget::fanArtResponse()
         }
     }
 
-    if (!url.isEmpty()) {
+    if (url.isEmpty()) {
+        updateImage(QImage());
+    } else {
         job=NetworkAccessManager::self()->get(QUrl(url));
         DBUG << url;
         connect(job, SIGNAL(finished()), this, SLOT(downloadResponse()));
@@ -945,7 +944,6 @@ void ContextWidget::downloadResponse()
     }
 
     if (!img.isNull()) {
-        updateImage(img);
         bool saved=false;
 
         if (Settings::self()->storeBackdropsInMpdDir() && !currentSong.isVariousArtists() &&
@@ -982,14 +980,14 @@ void ContextWidget::downloadResponse()
                 f.close();
             }
         }
-        QWidget::update();
     }
+    updateImage(img);
 }
 
 void ContextWidget::resizeBackdrop()
 {
     #ifdef SCALE_CONTEXT_BGND
-    if (!albumCoverBackdrop && !currentImage.isNull() &&( currentBackdrop.isNull() || (!currentBackdrop.isNull() && currentBackdrop.width()!=width()))) {
+    if (!currentImage.isNull() &&( currentBackdrop.isNull() || (!currentBackdrop.isNull() && currentBackdrop.width()!=width()))) {
         QSize sz(width(), width()*currentImage.height()/currentImage.width());
         currentBackdrop = QPixmap::fromImage(currentImage.scaled(sz, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
     }

@@ -110,7 +110,7 @@ public:
     void paintEvent(QPaintEvent *e);
     float fade() { return fadeValue; }
     void setFade(float value);
-    void updateImage(QImage img, bool created=false);
+    void updateImage(QImage img);
     void search();
 
 Q_SIGNALS:
@@ -145,9 +145,6 @@ private:
     int backdropBlur;
     QString customBackdropFile;
     bool darkBackground;
-    bool useFanArt;
-    bool albumCoverBackdrop;
-    bool oldIsAlbumCoverBackdrop;
     Song currentSong;
     #ifdef SCALE_CONTEXT_BGND
     QImage currentImage;

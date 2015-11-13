@@ -76,6 +76,8 @@
 54. Ignore 'The' (if configured) when sorting play queue.
 55. No longer using discogs - API has changed.
 56. Fix context widget backdrop retrieval from fan-art
+57. Fix/work-around Qt 5.5 issues with QMenu being used in 2 actions.
+
 1.5.2
 -----
  1. Fix Ubuntu Touch builds.

@@ -35,6 +35,7 @@
 #include "http/httpserver.h"
 #include "support/localize.h"
 #include "widgets/icons.h"
+#include "widgets/mirrormenu.h"
 #include "devices/mountpoints.h"
 #include "gui/stdactions.h"
 #include "support/action.h"
@@ -43,7 +44,6 @@
 #include "devices/audiocddevice.h"
 #endif
 #include "support/globalstatic.h"
-#include <QMenu>
 #include <QStringList>
 #include <QMimeData>
 #include <QTimer>
@@ -722,7 +722,7 @@ void DevicesModel::updateItemMenu()
     }
 
     if (!itemMenu) {
-        itemMenu = new QMenu(0);
+        itemMenu = new MirrorMenu(0);
     }
 
     itemMenu->clear();

@@ -173,14 +173,14 @@ void MusicLibraryItemRoot::updateSongFile(const Song &from, const Song &to)
 static quint32 constVersion=9;
 static QLatin1String constTopTag("CantataLibrary");
 
-void MusicLibraryItemRoot::toXML(const QString &filename, time_t date, bool dateUnreliable, MusicLibraryProgressMonitor *prog) const
+void MusicLibraryItemRoot::toXML(const QString &filename, MusicLibraryProgressMonitor *prog) const
 {
     if (isFlat) {
         return;
     }
 
     // If saving device cache, and we have NO items, then remove cache file...
-    if (0==childCount() && date<2000) {
+    if (0==childCount()) {
         if (QFile::exists(filename)) {
             QFile::remove(filename);
         }
@@ -195,7 +195,7 @@ void MusicLibraryItemRoot::toXML(const QString &filename, time_t date, bool date
     }
 
     QXmlStreamWriter writer(&compressor);
-    toXML(writer, date, dateUnreliable, prog);
+    toXML(writer, prog);
     compressor.close();
 }
 
@@ -218,15 +218,13 @@ static const QString constMbIdAttribute=QLatin1String("mbid");
 static const QString constFileAttribute=QLatin1String("file");
 static const QString constPlaylistAttribute=QLatin1String("playlist");
 static const QString constGuessedAttribute=QLatin1String("guessed");
-static const QString constDateAttribute=QLatin1String("date");
-static const QString constDateUnreliableAttribute=QLatin1String("dateUnreliable");
 static const QString constVersionAttribute=QLatin1String("version");
 static const QString constMultipleArtistsAttribute=QLatin1String("multipleArtists");
 static const QString constImageAttribute=QLatin1String("img");
 static const QString constnumTracksAttribute=QLatin1String("numTracks");
 static const QString constTrueValue=QLatin1String("true");
 
-void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, time_t date, bool dateUnreliable, MusicLibraryProgressMonitor *prog) const
+void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, MusicLibraryProgressMonitor *prog) const
 {
     if (isFlat) {
         return;
@@ -245,10 +243,6 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, time_t date, bool dat
     //Start with the document
     writer.writeStartElement(constTopTag);
     writer.writeAttribute(constVersionAttribute, QString::number(constVersion));
-    writer.writeAttribute(constDateAttribute, QString::number(date));
-    if (dateUnreliable) {
-        writer.writeAttribute(constDateUnreliableAttribute, constTrueValue);
-    }
     foreach (const MusicLibraryItem *a, childItems()) {
         foreach (const MusicLibraryItem *al, static_cast<const MusicLibraryItemArtist *>(a)->childItems()) {
             total+=al->childCount();
@@ -351,10 +345,10 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, time_t date, bool dat
     writer.writeEndDocument();
 }
 
-time_t MusicLibraryItemRoot::fromXML(const QString &filename, time_t date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog, MusicLibraryErrorMonitor *em)
+bool MusicLibraryItemRoot::fromXML(const QString &filename, const QString &baseFolder, MusicLibraryProgressMonitor *prog, MusicLibraryErrorMonitor *em)
 {
     if (isFlat) {
-        return 0;
+        return false;
     }
 
     #ifdef TIME_XML_FILE_LOADING
@@ -366,10 +360,10 @@ time_t MusicLibraryItemRoot::fromXML(const QString &filename, time_t date, bool 
     QtIOCompressor compressor(&file);
     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
     if (!compressor.open(QIODevice::ReadOnly)) {
-        return 0;
+        return false;
     }
     QXmlStreamReader reader(&compressor);
-    time_t rv=fromXML(reader, date, dateUnreliable, baseFolder, prog, em);
+    bool rv=fromXML(reader, baseFolder, prog, em);
     compressor.close();
     #ifdef TIME_XML_FILE_LOADING
     qWarning() << filename << timer.elapsed();
@@ -377,7 +371,7 @@ time_t MusicLibraryItemRoot::fromXML(const QString &filename, time_t date, bool 
     return rv;
 }
 
-time_t MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, time_t date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog, MusicLibraryErrorMonitor *em)
+bool MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QString &baseFolder, MusicLibraryProgressMonitor *prog, MusicLibraryErrorMonitor *em)
 {
     if (isFlat) {
         return 0;
@@ -386,7 +380,6 @@ time_t MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, time_t date, bool
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
     Song song;
-    quint32 xmlDate=0;
     quint64 total=0;
     quint64 count=0;
     int percent=0;
@@ -411,15 +404,11 @@ time_t MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, time_t date, bool
 
             if (constTopTag == element) {
                 quint32 version = attributes.value(constVersionAttribute).toString().toUInt();
-                xmlDate = attributes.value(constDateAttribute).toString().toUInt();
-                if ( version < constVersion || (date>0 && xmlDate < date)) {
-                    return 0;
+                if (version < constVersion) {
+                    return false;
                 }
                 if (prog) {
                     total=attributes.value(constnumTracksAttribute).toString().toUInt();
-                }
-                if (dateUnreliable) {
-                    *dateUnreliable=constTrueValue==attributes.value(constDateUnreliableAttribute).toString();
                 }
             } else if (constArtistElement==element) {
                 QString actual=attributes.value(constActualAttribute).toString();
@@ -532,7 +521,7 @@ time_t MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, time_t date, bool
         }
     }
 
-    return xmlDate;
+    return true;
 }
 
 void MusicLibraryItemRoot::add(const QSet<Song> &songs)

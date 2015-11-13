@@ -33,7 +33,7 @@
 
 class QMimeData;
 class Device;
-class QMenu;
+class MirrorMenu;
 
 class DevicesModel : public MultiMusicModel
 {
@@ -52,7 +52,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList playableUrls(const QModelIndexList &indexes) const;
     void clear(bool clearConfig=true);
-    QMenu * menu() { return itemMenu; }
+    MirrorMenu * menu() { return itemMenu; }
     Device * device(const QString &udi);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
@@ -106,7 +106,7 @@ private Q_SLOTS:
 
 private:
     QSet<QString> volumes;
-    QMenu *itemMenu;
+    MirrorMenu *itemMenu;
     bool enabled;
     bool inhibitMenuUpdate;
     Action *configureAction;

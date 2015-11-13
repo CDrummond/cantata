@@ -36,7 +36,7 @@
 #include "support/icon.h"
 #include "actionmodel.h"
 
-class QMenu;
+class MirrorMenu;
 class QAction;
 
 class PlaylistsModel : public ActionModel
@@ -130,7 +130,7 @@ public:
     void setEnabled(bool e);
     bool exists(const QString &n) { return 0!=getPlaylist(n); }
     #ifndef ENABLE_UBUNTU
-    QMenu * menu();
+    MirrorMenu * menu();
     #endif
     static QString strippedText(QString s);
     void setMultiColumn(bool m) { multiCol=m; }
@@ -174,7 +174,7 @@ private:
     QList<PlaylistItem *> items;
     QSet<quint32> usedKeys;
     #ifndef ENABLE_UBUNTU
-    QMenu *itemMenu;
+    MirrorMenu *itemMenu;
     quint32 dropAdjust;
     QAction *newAction;
     QMap<int, int> alignments;

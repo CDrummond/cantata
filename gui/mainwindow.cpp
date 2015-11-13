@@ -50,6 +50,7 @@
 #include "searchpage.h"
 #include "customactions.h"
 #include "support/gtkstyle.h"
+#include "widgets/mirrormenu.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devices/filejob.h"
 #include "devices/devicespage.h"
@@ -267,7 +268,7 @@ MainWindow::MainWindow(QWidget *parent)
     addPlayQueueToStoredPlaylistAction = new Action(HIDE_MENU_ICON(Icons::self()->playlistFileIcon), i18n("Add To Stored Playlist"), this);
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction = new Action(HIDE_MENU_ICON(StdActions::self()->copyToDeviceAction->icon()), Utils::strippedText(StdActions::self()->copyToDeviceAction->text()), this);
-    copyToDeviceAction->setMenu(DevicesModel::self()->menu());
+    copyToDeviceAction->setMenu(DevicesModel::self()->menu()->duplicate(0));
     #endif
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop Others"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), HIDE_MENU_ICON(Icons::self()->addRadioStreamIcon));
@@ -323,7 +324,7 @@ MainWindow::MainWindow(QWidget *parent)
     connectionsGroup=new QActionGroup(connectionsAction->menu());
     outputsAction->setMenu(new QMenu(this));
     outputsAction->setVisible(false);
-    addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
+    addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu()->duplicate(0));
 
     playPauseTrackButton->setDefaultAction(StdActions::self()->playPauseTrackAction);
     stopTrackButton->setDefaultAction(StdActions::self()->stopPlaybackAction);

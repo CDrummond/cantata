@@ -31,8 +31,8 @@
 #endif
 #include "support/icon.h"
 #include "widgets/icons.h"
+#include "widgets/mirrormenu.h"
 #include "support/globalstatic.h"
-#include <QMenu>
 #include <QCoreApplication>
 
 GLOBAL_STATIC(StdActions, instance)

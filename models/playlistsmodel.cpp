@@ -26,7 +26,6 @@
 
 #include <QModelIndex>
 #include <QMimeData>
-#include <QMenu>
 #include <QFont>
 #include "config.h"
 #include "playlistsmodel.h"
@@ -45,6 +44,7 @@
 #include "mpd-interface/mpdconnection.h"
 #include "playqueuemodel.h"
 #include "widgets/icons.h"
+#include "widgets/mirrormenu.h"
 #ifdef ENABLE_HTTP_SERVER
 #include "http/httpserver.h"
 #endif
@@ -728,7 +728,7 @@ void PlaylistsModel::setEnabled(bool e)
 }
 
 #ifndef ENABLE_UBUNTU
-QMenu * PlaylistsModel::menu()
+MirrorMenu * PlaylistsModel::menu()
 {
     if (!itemMenu) {
         updateItemMenu(true);
@@ -1005,7 +1005,7 @@ void PlaylistsModel::updateItemMenu(bool create)
         if (!create) {
             return;
         }
-        itemMenu = new QMenu(0);
+        itemMenu = new MirrorMenu(0);
     }
 
     itemMenu->clear();

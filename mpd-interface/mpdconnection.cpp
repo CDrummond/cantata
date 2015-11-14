@@ -1630,9 +1630,18 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
         }
     }
 
+    QStringList files;
+    foreach (const QString &file, songs) {
+        if (file.startsWith(constDirPrefix)) {
+            files+=getAllFiles(file.mid(constDirPrefix.length()));
+        } else {
+            files.append(file);
+        }
+    }
+
     QByteArray encodedName=encodeName(name);
     QByteArray send = "command_list_begin\n";
-    foreach (const QString &s, songs) {
+    foreach (const QString &s, files) {
         send += "playlistadd "+encodedName+" "+encodeName(s)+'\n';
     }
     send += "command_list_end";

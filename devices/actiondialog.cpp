@@ -898,11 +898,11 @@ bool ActionDialog::refreshLibrary()
                 return true;
             }
         } else if ( (Copy==mode && !sourceUdi.isEmpty()) ||
-             (Remove==mode && sourceUdi.isEmpty()) ) {
+                    (Remove==mode && sourceUdi.isEmpty()) ) {
 //            MusicLibraryModel::self()->checkForNewSongs();
 //            AlbumsModel::self()->update(MusicLibraryModel::self()->root());
             emit update();
-        } else if ( ((Copy==mode || Sync==mode) && sourceUdi.isEmpty()) ||
+        } else if ( (Copy==mode && sourceUdi.isEmpty()) ||
                     (Remove==mode && !sourceUdi.isEmpty()) ) {
             Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);
 

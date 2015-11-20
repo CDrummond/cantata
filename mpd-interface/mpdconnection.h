@@ -325,6 +325,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void connectionChanged(const MPDConnectionDetails &details);
+    void connectionNotChanged(const QString &name);
     void stateChanged(bool connected);
     void passwordError();
     void currentSongUpdated(const Song &song);
@@ -400,7 +401,7 @@ private:
     void parseIdleReturn(const QByteArray &data);
     bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
     void toggleStopAfterCurrent(bool afterCurrent);
-    bool recursivelyListDir(const QString &dir);
+    bool recursivelyListDir(const QString &dir, QList<Song> &songs);
     QStringList getAllFiles(const QString &dir);
     #ifndef CANTATA_WEB
     bool checkRemoteDynamicSupport();
@@ -449,6 +450,7 @@ private:
         State_Disconnected
     };
     State state;
+    bool isListingMusic;
     QTimer *reconnectTimer;
     time_t reconnectStart;
 

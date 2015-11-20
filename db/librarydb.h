@@ -139,7 +139,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     void updateStarted(time_t ver);
     void insertSongs(QList<Song> *songs);
-    void updateFinished();
+    virtual void updateFinished();
     void abortUpdate();
 
 protected:

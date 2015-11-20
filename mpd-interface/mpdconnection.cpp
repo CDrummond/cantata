@@ -235,6 +235,7 @@ MPDConnection::MPDConnection()
     , lastStatusPlayQueueVersion(0)
     , lastUpdatePlayQueueVersion(0)
     , state(State_Blank)
+    , isListingMusic(false)
     , reconnectTimer(0)
     , reconnectStart(0)
     , stopAfterCurrent(false)
@@ -524,6 +525,12 @@ void MPDConnection::reconnect()
 
 void MPDConnection::setDetails(const MPDConnectionDetails &d)
 {
+    // Can't change connection whilst listing music collection...
+    if (isListingMusic) {
+        emit connectionNotChanged(details.name);
+        return;
+    }
+
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     bool isUser=d.name==MPDUser::constName;
     const MPDConnectionDetails &det=isUser ? MPDUser::self()->details() : d;
@@ -1531,9 +1538,13 @@ void MPDConnection::update()
  */
 void MPDConnection::loadLibrary()
 {
+    DBUG << "loadLibrary";
+    isListingMusic=true;
     emit updatingLibrary(dbUpdate);
-    recursivelyListDir("/");
+    QList<Song> songs;
+    recursivelyListDir("/", songs);
     emit updatedLibrary();
+    isListingMusic=false;
 }
 
 void MPDConnection::listFolder(const QString &folder)
@@ -1909,7 +1920,7 @@ void MPDConnection::toggleStopAfterCurrent(bool afterCurrent)
     }
 }
 
-bool MPDConnection::recursivelyListDir(const QString &dir)
+bool MPDConnection::recursivelyListDir(const QString &dir, QList<Song> &songs)
 {
     bool topLevel="/"==dir || ""==dir;
 
@@ -1932,17 +1943,24 @@ bool MPDConnection::recursivelyListDir(const QString &dir)
     Response response=sendCommand(topLevel ? "lsinfo" : ("lsinfo "+encodeName(dir)));
     if (response.ok) {
         QStringList subDirs;
-        QList<Song> *songs=new QList<Song>();
-        MPDParseUtils::parseDirItems(response.data, details.dir, ver, *songs, dir, subDirs, MPDParseUtils::Loc_Library);
-        if (songs->isEmpty()) {
-            delete songs;
-        } else {
-            emit librarySongs(songs);
+        MPDParseUtils::parseDirItems(response.data, details.dir, ver, songs, dir, subDirs, MPDParseUtils::Loc_Library);
+        if (songs.count()>=200){
+            QCoreApplication::processEvents();
+            QList<Song> *copy=new QList<Song>();
+            *copy << songs;
+            emit librarySongs(copy);
+            songs.clear();
         }
         foreach (const QString &sub, subDirs) {
-            if (!recursivelyListDir(sub)) {
+            if (!recursivelyListDir(sub, songs)) {
                 return false;
             }
+        }
+
+        if (topLevel && !songs.isEmpty()) {
+            QList<Song> *copy=new QList<Song>();
+            *copy << songs;
+            emit librarySongs(copy);
         }
         return true;
     } else {

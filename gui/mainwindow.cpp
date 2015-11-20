@@ -801,6 +801,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
     connect(MPDConnection::self(), SIGNAL(info(const QString &)), SLOT(showInformation(const QString &)));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
+    connect(MPDConnection::self(), SIGNAL(connectionNotChanged(QString)), SLOT(mpdConnectionName(QString)));
     connect(refreshDbAction, SIGNAL(triggered()), this, SLOT(refreshDbPromp()));
     connect(doDbRefreshAction, SIGNAL(triggered()), MpdLibraryModel::self(), SLOT(clearDb()));
     connect(doDbRefreshAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(update()));
@@ -2181,6 +2182,18 @@ void MainWindow::setCollection(const QString &collection)
         if (Utils::strippedText(act->text())==collection) {
             if (!act->isChecked()) {
                 act->trigger();
+            }
+            break;
+        }
+    }
+}
+
+void MainWindow::mpdConnectionName(const QString &name)
+{
+    foreach (QAction *act, connectionsAction->menu()->actions()) {
+        if (Utils::strippedText(act->text())==name) {
+            if (!act->isChecked()) {
+                act->setChecked(true);
             }
             break;
         }

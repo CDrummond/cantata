@@ -73,6 +73,7 @@ void MpdLibraryDb::removeUnusedDbs()
 
 MpdLibraryDb::MpdLibraryDb(QObject *p)
     : LibraryDb(p, "MPD")
+    , loading(false)
     , coverQuery(0)
     , artistImageQuery(0)
 {
@@ -138,9 +139,17 @@ void MpdLibraryDb::reset()
     LibraryDb::reset();
 }
 
+void MpdLibraryDb::updateFinished()
+{
+    loading=false;
+    LibraryDb::updateFinished();
+}
+
 void MpdLibraryDb::statsUpdated(const MPDStatsValues &stats)
 {
-    if (stats.dbUpdate>currentVersion) {
+    if (!loading && stats.dbUpdate>currentVersion) {
+        DBUG << stats.dbUpdate << currentVersion;
+        loading=true;
         emit loadLibrary();
     }
 }

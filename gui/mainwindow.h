@@ -152,6 +152,7 @@ public Q_SLOTS:
     void showInformation(const QString &message);
     void dynamicStatus(const QString &message);
     void setCollection(const QString &collection);
+    void mpdConnectionName(const QString &name);
     void hideWindow();
     void restoreWindow();
     void load(const QStringList &urls) { PlayQueueModel::self()->load(urls); }

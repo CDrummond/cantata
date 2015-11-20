@@ -63,8 +63,10 @@ public Q_SLOTS:
 
 private:
     void reset();
+    void updateFinished();
 
 private:
+    bool loading;
     QSqlQuery *coverQuery;
     QSqlQuery *artistImageQuery;
 };

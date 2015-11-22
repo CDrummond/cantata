@@ -179,14 +179,6 @@
     </extract>
     <invalidIndicator value="Sorry, we have no"/>
   </provider>
-  <provider name="lyricsplugin.com" charset="utf-8" url="http://www.lyricsplugin.com/winamp03/plugin/?title={title}&amp;artist={artist}">
-    <urlFormat replace="_@;&amp;\/&quot;" with="-"/>
-    <urlFormat replace="'" with=""/>
-    <urlFormat replace=" " with="%20"/>
-    <extract>
-      <item tag="&lt;div id=&quot;lyrics&quot;&gt;"/>
-    </extract>
-  </provider>
   <provider name="lyricsreg.com" charset="iso-8859-1" url="http://www.lyricsreg.com/lyrics/{artist}/{title}/">
     <urlFormat replace=" _@,;&amp;\/&quot;" with="+"/>
     <urlFormat replace="'." with=""/>

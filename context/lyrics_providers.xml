@@ -126,6 +126,7 @@
       <item tag="&lt;div id=&quot;lyrics&quot; class=&quot;SCREENONLY&quot;&gt;"/>
     </extract>
     <invalidIndicator value="we do not have the lyric for this song"/>
+    <invalidIndicator value="Your name will be printed as part of the credit when your lyric is approved"/>
   </provider>
   <provider name="lyrics.wikia.com" charset="utf-8" url="http://lyrics.wikia.com/api.php">
     <!-- These are not used, as mediawiki API is used instead...

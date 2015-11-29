@@ -201,28 +201,31 @@ void SearchPage::setSearchCategories()
     }
 
     state=newState;
-    QList<QPair<QString, QString> > categories;
+    QList<SearchWidget::Category> categories;
 
-    categories << QPair<QString, QString>(i18n("Artist:"), QLatin1String("artist"));
+    categories << SearchWidget::Category(i18n("Artist:"), QLatin1String("artist"));
 
     if (state&State_ComposerSupported) {
-        categories << QPair<QString, QString>(i18n("Composer:"), QLatin1String("composer"));
+        categories << SearchWidget::Category(i18n("Composer:"), QLatin1String("composer"));
     }
     if (state&State_PerformerSupported) {
-        categories << QPair<QString, QString>(i18n("Performer:"), QLatin1String("performer"));
+        categories << SearchWidget::Category(i18n("Performer:"), QLatin1String("performer"));
     }
-    categories << QPair<QString, QString>(i18n("Album:"), QLatin1String("album"))
-               << QPair<QString, QString>(i18n("Title:"), QLatin1String("title"))
-               << QPair<QString, QString>(i18n("Genre:"), QLatin1String("genre"));
+    categories << SearchWidget::Category(i18n("Album:"), QLatin1String("album"))
+               << SearchWidget::Category(i18n("Title:"), QLatin1String("title"))
+               << SearchWidget::Category(i18n("Genre:"), QLatin1String("genre"));
     if (state&State_CommmentSupported) {
-        categories << QPair<QString, QString>(i18n("Comment:"), QLatin1String("comment"));
+        categories << SearchWidget::Category(i18n("Comment:"), QLatin1String("comment"));
     }
-    categories << QPair<QString, QString>(i18n("Date:"), QLatin1String("date"));
+    categories << SearchWidget::Category(i18n("Date:"), QLatin1String("date"),
+                                         i18n("Find songs be searching the 'Date' tag.<br/><br/>Usually just entering the year should suffice."));
     if (state&State_ModifiedSupported) {
-        categories << QPair<QString, QString>(i18n("Modified:"), MPDConnection::constModifiedSince);
+        categories << SearchWidget::Category(i18n("Modified:"), MPDConnection::constModifiedSince,
+                                             i18n("Enter date (YYYY/MM/DD - e.g. 2015/01/31) to search for files modified since that date.<br/><br>"
+                                                  "Or enter a number of days to find files that were modified in the previous number of days."));
     }
-    categories << QPair<QString, QString>(i18n("File:"), QLatin1String("file"))
-               << QPair<QString, QString>(i18n("Any:"), QLatin1String("any"));
+    categories << SearchWidget::Category(i18n("File:"), QLatin1String("file"))
+               << SearchWidget::Category(i18n("Any:"), QLatin1String("any"));
     view->setSearchCategories(categories);
 }
 

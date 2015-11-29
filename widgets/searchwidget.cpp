@@ -112,7 +112,7 @@ void SearchWidget::setPermanent()
     layout()->setSpacing(0);
 }
 
-void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categories)
+void SearchWidget::setCategories(const QList<Category> &categories)
 {
     QString currentCat;
     if (!cat) {
@@ -121,6 +121,7 @@ void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categori
         l->addWidget(cat, 1, 0);
         l->setSpacing(qMin(4, Utils::layoutSpacing(this)));
         connect(cat, SIGNAL(activated(int)), SIGNAL(returnPressed()));
+        connect(cat, SIGNAL(activated(int)), this, SLOT(categoryActivated(int)));
         setTabOrder(cat, edit);
         cat->setFixedHeight(edit->height());
     } else {
@@ -132,10 +133,8 @@ void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categori
 
     cat->clear();
 
-    QList<QPair<QString, QString> >::ConstIterator it=categories.constBegin();
-    QList<QPair<QString, QString> >::ConstIterator end=categories.constEnd();
-    for (; it!=end; ++it) {
-        cat->addItem((*it).first, (*it).second);
+    foreach (const Category &c, categories) {
+        cat->addItem(c.text, c.field, c.toolTip);
     }
 
     if (!currentCat.isEmpty()) {
@@ -143,6 +142,7 @@ void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categori
             if (cat->itemData(i)==currentCat) {
                 cat->setCurrentIndex(i);
                 cat->blockSignals(false);
+                setToolTip(cat->action(i)->toolTip());
                 return;
             }
         }
@@ -159,6 +159,7 @@ void SearchWidget::setCategory(const QString &id)
     for (int i=0; i<cat->count(); ++i) {
         if (cat->itemData(i)==id) {
             cat->setCurrentIndex(i);
+            setToolTip(cat->action(i)->toolTip());
             return;
         }
     }
@@ -200,5 +201,13 @@ void SearchWidget::close()
     edit->setText(QString());
     if (wasActive!=widgetIsActive) {
         emit active(widgetIsActive);
+    }
+}
+
+void SearchWidget::categoryActivated(int c)
+{
+    QAction *a=cat->action(c);
+    if (a) {
+        setToolTip(a->toolTip());
     }
 }

@@ -1254,7 +1254,7 @@ void ItemView::setPermanentSearch()
     searchWidget->setPermanent();
 }
 
-void ItemView::setSearchCategories(const QList<QPair<QString, QString> > &categories)
+void ItemView::setSearchCategories(const QList<SearchWidget::Category> &categories)
 {
     searchWidget->setCategories(categories);
 }

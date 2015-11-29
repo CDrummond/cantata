@@ -1722,26 +1722,18 @@ void MPDConnection::search(const QString &field, const QString &value, int id)
     QList<Song> songs;
     QByteArray cmd;
 
-    if (constModifiedSince==field) {
-        QString dateVal;
-        if (value.length()>7 && (value.contains(QLatin1Char('/')) || value.contains(QLatin1Char('-')))) {
-            QDateTime dt=QDateTime::fromString(value, Qt::SystemLocaleShortDate);
-            if (!dt.isValid()) {
-                dt=QDateTime::fromString(value, Qt::DefaultLocaleShortDate);
-            }
-            if (!dt.isValid()) {
-                dt=QDateTime::fromString(value, Qt::ISODate);
-            }
+    if (field==constModifiedSince) {
+        time_t v=0;
+        if (QRegExp("\\d*").exactMatch(value)) {
+            v=QDateTime(QDateTime::currentDateTime().date()).toTime_t()-(value.toInt()*24*60*60);
+        } else if (QRegExp("^((19|20)\\d\\d)[-/](0[1-9]|1[012])[-/](0[1-9]|[12][0-9]|3[01])$").exactMatch(value)) {
+            QDateTime dt=QDateTime::fromString(QString(value).replace("/", "-"), Qt::ISODate);
             if (dt.isValid()) {
-                cmd="find "+field.toLatin1()+" "+encodeName(dt.toString(Qt::ISODate));
+                v=dt.toTime_t();
             }
         }
-        if (dateVal.isEmpty() && !value.contains(QLatin1Char('/')) && !value.contains(QLatin1Char('-'))) {
-            bool ok=false;
-            int numDays=value.simplified().trimmed().toInt(&ok);
-            if (ok && numDays<0xFFFF) {
-                cmd="find "+field.toLatin1()+" "+quote(QDateTime::currentDateTime().toTime_t()-(numDays*24*60*60));
-            }
+        if (v>0) {
+            cmd="find "+field.toLatin1()+" "+quote(v);
         }
     } else {
         cmd="search "+field.toLatin1()+" "+encodeName(value);

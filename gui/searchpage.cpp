@@ -188,6 +188,11 @@ void SearchPage::controlActions()
     locateAction->setEnabled(enable);
 }
 
+void SearchPage::setSearchCategory(const QString &cat)
+{
+    view->setSearchCategory(cat);
+}
+
 void SearchPage::setSearchCategories()
 {
     int newState=(MPDConnection::self()->composerTagSupported() ? State_ComposerSupported : 0)|

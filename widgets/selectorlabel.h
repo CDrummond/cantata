@@ -36,11 +36,12 @@ public:
     SelectorLabel(QWidget *p);
     void setUseArrow(bool a) { useArrow=a; }
     void clear() { if (menu) menu->clear(); }
-    void addItem(const QString &text, const QString &data);
+    void addItem(const QString &text, const QString &data, const QString &tt=QString());
     bool event(QEvent *e);
     int currentIndex() const { return current; }
     void setCurrentIndex(int v);
     QString itemData(int index) const;
+    QAction * action(int index) const;
     int count() const { return menu ? menu->actions().count() : 0; }
 
 Q_SIGNALS:

@@ -50,9 +50,13 @@ static QString addMarkup(const QString &s, bool arrow)
     return QLatin1String("<b>")+s+(arrow ? QLatin1String("&nbsp;")+QChar(0x25BE) : QString())+QLatin1String("</b>");
 }
 
-void SelectorLabel::addItem(const QString &text, const QString &data)
+void SelectorLabel::addItem(const QString &text, const QString &data, const QString &tt)
 {
-    menu->addAction(text, this, SLOT(itemSelected()))->setData(data);
+    QAction *act=menu->addAction(text, this, SLOT(itemSelected()));
+    act->setData(data);
+    if (!tt.isEmpty()) {
+        act->setToolTip(tt);
+    }
     setText(addMarkup(text, useArrow));
     current=menu->actions().count();
 }
@@ -125,14 +129,20 @@ void SelectorLabel::setCurrentIndex(int v)
 
 QString SelectorLabel::itemData(int index) const
 {
+    QAction *act=action(index);
+    return act ? act->data().toString() : QString();
+}
+
+QAction * SelectorLabel::action(int index) const
+{
     if (!menu) {
-        return QString();
+        return 0;
     }
 
     QList<QAction *> actions=menu->actions();
 
     if (index>=actions.count()) {
-        return QString();
+        return 0;
     }
-    return actions.at(index)->data().toString();
+    return actions.at(index);
 }

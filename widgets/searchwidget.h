@@ -38,6 +38,18 @@ class SearchWidget : public QWidget
 {
     Q_OBJECT
 public:
+    struct Category
+    {
+        Category(const QString &txt=QString(), const QString &f=QString(), const QString &tt=QString())
+            : text(txt), field(f), toolTip(tt) {
+
+        }
+
+        QString text;
+        QString field;
+        QString toolTip;
+    };
+
     SearchWidget(QWidget *p);
     virtual ~SearchWidget() { }
 
@@ -49,7 +61,7 @@ public:
     bool hasFocus() const { return edit->hasFocus() || (closeButton && closeButton->hasFocus()); }
     bool isActive() const { return widgetIsActive; }
     void setPermanent();
-    void setCategories(const QList<QPair<QString, QString> > &categories);
+    void setCategories(const QList<Category> &categories);
     void setCategory(const QString &id);
 
 Q_SIGNALS:
@@ -63,6 +75,9 @@ public Q_SLOTS:
     void activate(const QString &text=QString());
     void show() { setVisible(true); }
     void close();
+
+private Q_SLOTS:
+    void categoryActivated(int c);
 
 private:
     SqueezedTextLabel *label;

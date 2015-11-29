@@ -2214,6 +2214,9 @@ void MainWindow::showSearch()
     } else if (currentPage && splitter->sizes().at(0)>0) {
         if (currentPage==folderPage) {
             showTab(PAGE_SEARCH);
+            if (PAGE_SEARCH==tabWidget->currentIndex()) {
+                searchPage->setSearchCategory("file");
+            }
         } else {
             currentPage->focusSearch();
         }

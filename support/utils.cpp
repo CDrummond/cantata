@@ -762,7 +762,7 @@ QString Utils::systemDir(const QString &sub)
     #elif defined Q_OS_MAC
     return fixPath(QCoreApplication::applicationDirPath())+QLatin1String("../Resources/")+(sub.isEmpty() ? QString() : (sub+constDirSep));
     #else
-    return fixPath(QString(INSTALL_PREFIX "/share/")+QCoreApplication::applicationName()+constDirSep+(sub.isEmpty() ? QString() : sub));
+    return fixPath(QString(SHARE_INSTALL_PREFIX"/")+QCoreApplication::applicationName()+constDirSep+(sub.isEmpty() ? QString() : sub));
     #endif
 }
 

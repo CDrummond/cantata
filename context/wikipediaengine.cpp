@@ -44,6 +44,37 @@ void WikipediaEngine::enableDebug()
 static const char * constModeProperty="mode";
 static const char * constQueryProperty="query";
 
+static QString wikipediaSpecialExport(const QString &lang)
+{
+    static QMap<QString, QString> links;
+
+    if (links.isEmpty()) {
+        links.insert(QLatin1String("de"), QString("Spezial:Exportieren"));
+        links.insert(QLatin1String("ru"), QString("Служебная:Экспорт"));
+    }
+
+    QMap<QString, QString>::ConstIterator it=links.find(lang);
+    return "/"+(it==links.constEnd() ? QLatin1String("Special:Export") : it.value())+"/";
+}
+
+static QString fixWikiLink(const QUrl &url)
+{
+    QString lang=url.host().split(".").first();
+    QString path=url.path();
+    QString fixed(path);
+    fixed=fixed.replace("/wiki"+wikipediaSpecialExport(lang), "/wiki/");
+    if (path==fixed) {
+        QStringList parts=fixed.split("/", QString::SkipEmptyParts);
+        if (parts.length()>1) {
+            parts.removeAt(1);
+            fixed=parts.join("/");
+        }
+    }
+    QUrl u(url);
+    u.setPath(fixed);
+    return u.toString();
+}
+
 static QString strip(const QString &string, QString open, QString close, QString inner=QString())
 {
     QString result;
@@ -154,8 +185,7 @@ static QString stripLastEmptySection(QString answer)
 
 static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
 {
-    QString u=url.toString();
-    u.replace("/wiki/Special:Export/", "/wiki/");
+    QString u=fixWikiLink(url);
     int start = answer.indexOf('>', answer.indexOf("<text"))+1;
     int end = answer.lastIndexOf(QRegExp("\\n[^\\n]*\\n\\{\\{reflist", Qt::CaseInsensitive));
     if (end < start) {
@@ -523,7 +553,7 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     QUrl url;
     url.setScheme(QLatin1String("https"));
     url.setHost(lang+".wikipedia.org");
-    url.setPath("/wiki/Special:Export/"+title);
+    url.setPath("/wiki"+wikipediaSpecialExport(lang)+title);
     job=NetworkAccessManager::self()->get(url);
     job->setProperty(constModeProperty, (int)mode);
     job->setProperty(constQueryProperty, query);

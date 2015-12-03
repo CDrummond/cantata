@@ -1458,6 +1458,44 @@ Covers::Image Covers::findImage(const Song &song, bool emitResult)
     return i;
 }
 
+static Covers::Image findCoverInDir(const QString &dirName, const QStringList &coverFileNames, const QString &songFileName=QString())
+{
+    foreach (const QString &fileName, coverFileNames) {
+        DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
+        if (QFile::exists(dirName+fileName)) {
+            QImage img=loadImage(dirName+fileName);
+            if (!img.isNull()) {
+                DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
+                return Covers::Image(img, dirName+fileName);
+            }
+        }
+    }
+
+    if (!songFileName.isEmpty()) {
+        #ifdef TAGLIB_FOUND
+        DBUG_CLASS("Covers") << "Checking file" << songFileName;
+        if (QFile::exists(songFileName)) {
+            QImage img(Tags::readImage(songFileName));
+            if (!img.isNull()) {
+                DBUG_CLASS("Covers") << "Got cover image from tag" << songFileName;
+                return Covers::Image(img, Covers::constCoverInTagPrefix+songFileName);
+            }
+        }
+        #endif
+    }
+
+    QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
+    foreach (const QString &fileName, files) {
+        DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
+        QImage img=loadImage(dirName+fileName);
+        if (!img.isNull()) {
+            DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
+            return Covers::Image(img, dirName+fileName);
+        }
+    }
+    return Covers::Image();
+}
+
 Covers::Image Covers::locateImage(const Song &song)
 {
     DBUG_CLASS("Covers") << song.file << song.artist << song.albumartist << song.album << song.type;
@@ -1611,41 +1649,20 @@ Covers::Image Covers::locateImage(const Song &song)
                 }
             }
         } else {
-            foreach (const QString &fileName, coverFileNames) {
-                DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
-                if (QFile::exists(dirName+fileName)) {
-                    QImage img=loadImage(dirName+fileName);
-                    if (!img.isNull()) {
-                        DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
-                        return Image(img, dirName+fileName);
-                    }
-                }
+            Covers::Image img=findCoverInDir(dirName, coverFileNames, haveAbsPath ? songFile : (MPDConnection::self()->getDetails().dir+songFile));
+            if (!img.img.isNull()) {
+                return img;
             }
 
-            #ifdef TAGLIB_FOUND
-            QString fileName=haveAbsPath ? songFile : (MPDConnection::self()->getDetails().dir+songFile);
-            DBUG_CLASS("Covers") << "Checking file" << fileName;
-            if (QFile::exists(fileName)) {
-                QImage img(Tags::readImage(fileName));
-                if (!img.isNull()) {
-                    DBUG_CLASS("Covers") << "Got cover image from tag" << fileName;
-                    return Image(img, constCoverInTagPrefix+fileName);
-                }
-            }
-            #endif
-
-            QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
-            foreach (const QString &fileName, files) {
-                DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
-                QImage img=loadImage(dirName+fileName);
-                if (!img.isNull()) {
-                    DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
-                    return Image(img, dirName+fileName);
+            QStringList dirs=QDir(dirName).entryList(QDir::Dirs|QDir::Readable|QDir::NoDotAndDotDot);
+            foreach (const QString &dir, dirs) {
+                img=findCoverInDir(dirName+dir+Utils::constDirSep, coverFileNames);
+                if (!img.img.isNull()) {
+                    return img;
                 }
             }
         }
     }
-
 
     if (song.isArtistImageRequest() || song.isComposerImageRequest()) {
         QString artistOrComposer=encodeName(song.isComposerImageRequest() ? song.composer() : song.albumArtist());

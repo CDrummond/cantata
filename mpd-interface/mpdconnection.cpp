@@ -2043,7 +2043,7 @@ void MPDConnection::readRemoteDynamicMessages()
                     if (messages.contains(channel)) {
                         foreach (const QString &m, messages[channel]) {
                             if (!m.isEmpty()) {
-                                DBUG << "Recieved message " << m;
+                                DBUG << "Received message " << m;
                                 QStringList parts=m.split(':', QString::SkipEmptyParts);
                                 QStringList message;
                                 foreach (QString part, parts) {

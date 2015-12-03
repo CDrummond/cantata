@@ -139,7 +139,7 @@ sub sendCommand() {
         $sockData=&readReply($sock);
     }
     my $dataLen=length($sockData);
-    if ($testMode==1) { print "Recieved ${dataLen} bytes\n"; }
+    if ($testMode==1) { print "Received ${dataLen} bytes\n"; }
     if ($sockData ne '') {
         return decode_utf8($sockData);
     }

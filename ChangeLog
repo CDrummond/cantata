@@ -78,6 +78,8 @@
 56. Fix context widget backdrop retrieval from fan-art
 57. Fix/work-around Qt 5.5 issues with QMenu being used in 2 actions.
 58. When looking for covers, also check sub-folders and return first image.
+59. When saving covers in the conver dialog, if dest folder does not exisy then
+    save in the cache folder.
 
 1.5.2
 -----

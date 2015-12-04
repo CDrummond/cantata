@@ -1287,6 +1287,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
             dirName=filePath.endsWith('/') ? (haveAbsPath ? QString() : mpdDir)+filePath
                                             : Utils::getDir((haveAbsPath ? QString() : mpdDir)+filePath);
         }
+        saveInMpd=QDir(dirName).exists();
     }
 
     if (isArtist) {

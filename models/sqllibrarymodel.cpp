@@ -439,7 +439,7 @@ QStringList SqlLibraryModel::filenames(const QModelIndexList &list, bool allowPl
 QModelIndex SqlLibraryModel::findSongIndex(const Song &song)
 {
     if (root) {
-        QModelIndex albumIndex=findAlbumIndex(song.artistOrComposer(), song.album);
+        QModelIndex albumIndex=findAlbumIndex(song.artistOrComposer(), song.albumId());
         if (albumIndex.isValid()) {
             if (canFetchMore(albumIndex)) {
                 fetchMore(albumIndex);

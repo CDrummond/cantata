@@ -172,10 +172,12 @@ void TrayItem::setup()
     connect(trayItem, SIGNAL(secondaryActivateRequested(const QPoint &)), mw, SLOT(playPauseTrack()));
     connect(trayItem, SIGNAL(activateRequested(bool, const QPoint &)), this, SLOT(clicked()));
     #else
-    if (!QSystemTrayIcon::isSystemTrayAvailable()) {
-        trayItem = NULL;
-        return;
-    }
+    // What systems DONT have a system tray? Also, isSytemTrayAvailable is checked in config dialog, so
+    // useSystemTray should not be set if there is none.
+    // Checking here seems to cause the icon not to appear if Cantata is autostarted in Plasma5 - #759
+    //if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+    //    return;
+    //}
 
     trayItem = new QSystemTrayIcon(this);
     trayItem->installEventFilter(new VolumeSliderEventHandler(this));

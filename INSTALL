@@ -5,7 +5,7 @@ Qt4
 ---
 1. mkdir build
 2. cd build
-3. cmake ..
+3. cmake .. -DENABLE_QT5=OFF
 4. make
 5. sudo make install
 
@@ -13,7 +13,7 @@ Qt5
 ---
 1. mkdir build
 2. cd build
-3. cmake .. -DENABLE_QT5=ON
+3. cmake
 4. make
 5. sudo make install
 
@@ -33,6 +33,10 @@ Ubuntu  **NOTE: No longer actively maintained**
 4. make
 5. make install
 6. click build click
+
+Mac/Windows
+-----------
+See README
 
 
 CMake Options
@@ -94,7 +98,7 @@ The following options may be passed to CMake:
 
     -DENABLE_QT5=ON
         Build against Qt5, not Qt4
-        Default: OFF
+        Default: ON
 
     -DENABLE_PROXY_CONFIG=ON
         Enable support for proxy settings in config dialog. If disabled,

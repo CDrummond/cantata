@@ -82,6 +82,7 @@
     save in the cache folder.
 60. Build with HTTP stream playback enabled by default.
 61. Use LibVLC by default for MPD HTTP stream playback on Linux.
+62. Default to Qt5 builds.
 
 1.5.2
 -----

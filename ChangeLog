@@ -80,6 +80,8 @@
 58. When looking for covers, also check sub-folders and return first image.
 59. When saving covers in the conver dialog, if dest folder does not exist then
     save in the cache folder.
+60. Build with HTTP stream playback enabled by default.
+61. Use LibVLC by default for MPD HTTP stream playback on Linux.
 
 1.5.2
 -----

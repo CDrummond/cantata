@@ -28,6 +28,9 @@ install(FILES ${QT_PLUGINS_DIR}/platforms/qwindows.dll DESTINATION ${CMAKE_INSTA
 # Qt SQL driver...
 install(FILES ${QT_PLUGINS_DIR}/sqldrivers/qsqlite.dll DESTINATION ${CMAKE_INSTALL_PREFIX}/sqldrivers/)
 
+# Qt MultiMedia
+install(FILES ${QT_PLUGINS_DIR}/mediaservice/dsengine.dll DESTINATION ${CMAKE_INSTALL_PREFIX}/mediaservice/)
+
 # Qt, taglib, and zlib libraries...
 set(EXTRA_WIN_LIBS ${EXTRA_WIN_LIBS}
     ${QT_BINARY_DIR}/Qt5Core.dll ${QT_BINARY_DIR}/Qt5Gui.dll ${QT_BINARY_DIR}/Qt5Network.dll ${QT_BINARY_DIR}/Qt5Svg.dll ${QT_BINARY_DIR}/Qt5Xml.dll

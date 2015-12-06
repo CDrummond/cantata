@@ -63,13 +63,13 @@ The following options may be passed to CMake:
     -DENABLE_HTTP_STREAM_PLAYBACK=ON
         Enable support for playing back MPD HTTP streams via Phonon (Qt4),
         QtMultiMedia (Qt5), or lib VLC (see below)
-        Default: OFF
+        Default: ON
 
     -DENABLE_LIBVLC=ON
         Enable usage of libVLC for MPD HTTP stream playback. Bug report 493
         (https://github.com/CDrummond/cantata/issues/493) contains
         more information.
-        Default: OFF
+        Default: ON (Linux) OFF (Windows/Mac)
 
     -DENABLE_EXTERNAL_TAGS=ON
         Enable usage of external app for reading/writing tags. Helps to

@@ -222,6 +222,9 @@
           </widget>
           </item>
           <item>
+           <widget class="SpacerWidget" name="leftSpacer" native="true"/>
+          </item>
+          <item>
            <widget class="ToolButton" name="repeatButton">
             <property name="checkable">
              <bool>true</bool>

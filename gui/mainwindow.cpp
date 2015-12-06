@@ -509,7 +509,7 @@ MainWindow::MainWindow(QWidget *parent)
         // Under unity we dont want any icons in menus - so the actions themselves have no icons.
         // But the toolbuttuns need icons!
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-        streamPlayButton->setIcon(Icons::self()->radioStreamIcon);
+        streamPlayButton->setIcon(Icons::self()->httpStreamIcon);
         #endif
         savePlayQueueButton->setIcon(Icons::self()->savePlayQueueIcon);
         clearPlayQueueButton->setIcon(Icons::self()->clearListIcon);

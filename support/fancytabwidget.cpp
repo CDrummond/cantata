@@ -535,6 +535,9 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
         }
     }
 
+    selected = selected && (palette().currentColorGroup()==QPalette::Active ||
+                           (palette().highlightedText().color()==palette().brush(QPalette::Active, QPalette::HighlightedText).color()));
+
     if (withText) {
         QString tabText(painter->fontMetrics().elidedText(this->tabText(tabIndex), elideMode(), width()));
         QRect tabTextRect(tabRect(tabIndex));
@@ -545,22 +548,16 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
         #ifdef Q_OS_MAC
         painter->setPen(selected ? OSXStyle::self()->viewPalette().highlightedText().color() : OSXStyle::self()->viewPalette().foreground().color());
         #else
-//        painter->setPen(selected ? QApplication::palette().highlightedText().color() : palette().foreground().color());
-        painter->setPen(selected && styleOpt.state&QStyle::State_Active
-                           ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
+        painter->setPen(selected ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
         #endif
         int textFlags = Qt::AlignCenter | Qt::AlignBottom;
         painter->drawText(tabTextRect, textFlags, tabText);
 
         const int textHeight = painter->fontMetrics().height();
         tabIconRect.adjust(0, 4, 0, -textHeight);
-        drawIcon(tabIcon(tabIndex), tabIconRect, painter, QSize(icnSize, icnSize),
-                 selected && (palette().currentColorGroup()==QPalette::Active ||
-                              (palette().highlightedText().color()==palette().brush(QPalette::Active, QPalette::HighlightedText).color())));
+        drawIcon(tabIcon(tabIndex), tabIconRect, painter, QSize(icnSize, icnSize), selected);
     } else {
-        drawIcon(tabIcon(tabIndex), rect, painter, QSize(icnSize, icnSize),
-                 selected && (palette().currentColorGroup()==QPalette::Active ||
-                              (palette().highlightedText().color()==palette().brush(QPalette::Active, QPalette::HighlightedText).color())));
+        drawIcon(tabIcon(tabIndex), rect, painter, QSize(icnSize, icnSize), selected);
     }
 
     painter->restore();

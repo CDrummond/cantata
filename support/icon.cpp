@@ -77,8 +77,8 @@ void Icon::init(QToolButton *btn, bool setFlat)
 
     if (-1==size) {
         size=QApplication::fontMetrics().height();
-        if (size>18) {
-            size=stdSize(size*1.25);
+        if (size>22) {
+            size=stdSize(size*1.1);
         } else {
             size=16;
         }

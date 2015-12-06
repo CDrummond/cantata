@@ -65,7 +65,6 @@ void HttpStream::setEnabled(bool e)
 void HttpStream::streamUrl(const QString &url)
 {
     MPDStatus * const status = MPDStatus::self();
-    static const char *constUrlProperty="url";
     #ifdef LIBVLC_FOUND
     if (player) {
         libvlc_media_player_stop(player);
@@ -74,6 +73,7 @@ void HttpStream::streamUrl(const QString &url)
         player=0;
     }
     #else
+    static const char *constUrlProperty="url";
     if (player && player->property(constUrlProperty).toString()!=url) {
         player->stop();
         player->deleteLater();

@@ -1126,6 +1126,7 @@ void MainWindow::streamUrl(const QString &u)
     streamPlayAction->setChecked(streamPlayAction->isVisible() && Settings::self()->playStream());
     streamPlayButton->setVisible(!u.isEmpty());
     httpStream->setEnabled(streamPlayAction->isChecked());
+    leftSpacer->setVisible(loveTrack->isVisible() || scrobblingStatus->isVisible() || streamPlayButton->isVisible());
     #else
     Q_UNUSED(u)
     #endif

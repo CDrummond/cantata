@@ -408,7 +408,6 @@ Icons::Icons()
     if (streamIcon.isNull()) {
         streamIcon=Icon("applications-internet");
     }
-    albumIcon=Icon(QStringList() << "media-optical" << "media-optical-audio");
     podcastIcon=Icon("inode-directory");
     audioFileIcon=Icon("audio-x-generic");
     playlistFileIcon=Icon(QStringList() << "view-media-playlist" << "audio-x-mp3-playlist" << "playlist" << "audio-x-generic");
@@ -420,6 +419,8 @@ Icons::Icons()
     filesIcon=Icon(QStringList() << "folder-downloads" << "folder-download" << "folder" << "go-down");
     radioStreamIcon=Icon::create("radio", constStdSizes);
     addRadioStreamIcon=Icon::create("addradio", constStdSizes);
+    albumIconSmall.addFile(":album32.svg");
+    albumIconLarge.addFile(":album.svg");
     artistIcon.addFile(":artist.svg");
     genreIcon.addFile(":genre.svg");
     #if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU

@@ -42,7 +42,9 @@ public:
     #endif
     Icon genreIcon;
     Icon artistIcon;
-    Icon albumIcon;
+    Icon & albumIcon(int size) { return size<48 ? albumIconSmall : albumIconLarge; }
+    Icon albumIconLarge;
+    Icon albumIconSmall;
     Icon podcastIcon;
     Icon folderIcon;
     Icon audioFileIcon;

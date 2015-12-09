@@ -40,11 +40,10 @@ SizeGrip::SizeGrip(QWidget *parent)
     ToolButton tb;
     tb.move(65535, 65535);
     tb.setToolButtonStyle(Qt::ToolButtonIconOnly);
-    tb.setIcon(Icons::self()->albumIcon);
+    tb.setIcon(Icons::self()->artistIcon);
     tb.ensurePolished();
     tb.setAttribute(Qt::WA_DontShowOnScreen);
     tb.setVisible(true);
     setMinimumWidth(qMax(grip->sizeHint().width(), tb.sizeHint().width()));
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 }
-

@@ -41,6 +41,8 @@
 <file alias="tunein">streams/icons/tunein.svg</file>
 <file alias="dirble">streams/icons/dirble.svg</file>
 
+<file alias="album.svg">icons/media-optical.svg</file>
+<file alias="album32.svg">icons/media-optical32.svg</file>
 <file alias="artist.svg">icons/view-media-artist.svg</file>
 <file alias="genre.svg">icons/view-media-genre.svg</file>
 <file alias="radio16.png">icons/view-radiostream16.png</file>

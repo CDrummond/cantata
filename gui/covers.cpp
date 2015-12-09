@@ -1223,7 +1223,7 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
                 ? Icons::self()->artistIcon
                 : podcast
                     ? Icons::self()->podcastIcon
-                    : Icons::self()->albumIcon;
+                    : Icons::self()->albumIcon(size);
         pix=new QPixmap(icn.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
         #if QT_VERSION >= 0x050100
         if (size!=origSize) {
@@ -1263,7 +1263,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                 // Load artist image...
                 pix=new QPixmap(Icons::self()->artistIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             } else if (Song::SingleTracks==song.type) {
-                pix=new QPixmap(Icons::self()->albumIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+                pix=new QPixmap(Icons::self()->albumIcon(size).pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             } else if (song.isStandardStream()) {
                 pix=new QPixmap(Icons::self()->streamIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             } else if (isOnlineServiceImage(song)) {

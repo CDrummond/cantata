@@ -1,7 +1,7 @@
 #!/bin/sh
 
-PATH=/usr/lib/kubuntu-l10n/libexec/:$PATH
-for app in extractrc xgettext msgmerge lupdate lconvert msguniq sed grep ; do
+PATH=.:$PATH
+for app in xgettext msgmerge lupdate lconvert msguniq sed grep ; do
     which $app > /dev/null 2>&1
     if [ $? -ne 0 ] ; then
         echo "ERROR: Could not find $app"
@@ -17,7 +17,7 @@ echo "Preparing rc files"
 cd ${BASEDIR}
 # we use simple sorting to make sure the lines do not jump around too much from system to system
 find . -name '*.rc' -o -name '*.ui' -o -name '*.kcfg' | sort > ${WDIR}/rcfiles.list
-xargs --arg-file=${WDIR}/rcfiles.list extractrc > ${WDIR}/rc.cpp
+xargs --arg-file=${WDIR}/rcfiles.list ${WDIR}/extractrc > ${WDIR}/rc.cpp
 # additional string for KAboutData
 echo 'i18nc("NAME OF TRANSLATORS","Your names");' >> ${WDIR}/rc.cpp
 echo 'i18nc("EMAIL OF TRANSLATORS","Your emails");' >> ${WDIR}/rc.cpp

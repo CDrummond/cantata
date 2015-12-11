@@ -48,8 +48,8 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
         margin=6;
     }
     devProp->layout()->setContentsMargins(margin, margin, margin, margin);
-    tab->addTab(remoteProp, QIcon::fromTheme("network-server"), i18n("Connection"));
-    tab->addTab(devProp, Icon("cantata-view-media-library"), i18n("Music Library"));
+    tab->addTab(remoteProp, i18n("Connection"));
+    tab->addTab(devProp, i18n("Music Library"));
     setMainWidget(tab);
 }
 

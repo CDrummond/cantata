@@ -69,6 +69,7 @@ private Q_SLOTS:
     void checkSaveable();
     void transcoderChanged();
     void albumCoversChanged();
+    void setSize();
 
 private:
     FilenameSchemeDialog *schemeDlg;

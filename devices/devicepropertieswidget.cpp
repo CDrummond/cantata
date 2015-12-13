@@ -29,6 +29,7 @@
 #include "support/utils.h"
 #include <QValidator>
 #include <QTabWidget>
+#include <QTimer>
 
 class CoverNameValidator : public QValidator
 {
@@ -295,6 +296,7 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
     if (albumCovers) {
         albumCoversChanged();
     }
+    QTimer::singleShot(0, this, SLOT(setSize()));
 }
 
 void DevicePropertiesWidget::transcoderChanged()
@@ -414,4 +416,9 @@ QString DevicePropertiesWidget::cover() const
             : coverName==embedCoverText
                 ? Device::constEmbedCover
                 : coverName;
+}
+
+void DevicePropertiesWidget::setSize()
+{
+    Utils::resizeWindow(this, true, false);
 }

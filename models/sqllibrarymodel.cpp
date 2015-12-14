@@ -452,6 +452,16 @@ QModelIndex SqlLibraryModel::findSongIndex(const Song &song)
             }
         }
     }
+
+    // Hmm... Find song details in db via file path - fixes SingleTracks songs
+    if (!song.file.isEmpty()) {
+        QList<Song> dbSongs=db->songs(QStringList() << song.file);
+        if (!dbSongs.isEmpty() && dbSongs.first().albumId()!=song.albumId()) {
+            Song dbSong=dbSongs.first();
+            dbSong.file=QString(); // Prevent recursion!
+            return findSongIndex(dbSong);
+        }
+    }
     return QModelIndex();
 }
 

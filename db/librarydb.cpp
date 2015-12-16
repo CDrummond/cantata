@@ -711,9 +711,9 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
             int lastModified=wantModified ? query.value(5).toInt() : 0;
             QString artist=wantArtist ? query.value(artistCol).toString() : QString();
             QString artistSort=wantArtist ? query.value(artistCol+1).toString() : QString();
-
-            QString key='{'+albumId+"}{"+artistId+'}';
+            QString key='{'+albumId+"}{"+(wantArtist ? artist : artistId)+'}';
             QMap<QString, Album>::iterator it=entries.find(key);
+
             if (it==entries.end()) {
                 entries.insert(key, Album(album.isEmpty() ? albumId : album, albumId, albumSort, artist, artistSort, year, 1, time, lastModified));
             } else {

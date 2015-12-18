@@ -169,7 +169,6 @@ void CopyJob::run()
     qint64 readPos = 0;
     qint64 bytesRead = 0;
     qint64 adjustTotal = Device::constNoCover!=deviceOpts.coverName ? 16384 : 0;
-
     do {
         if (stopRequested) {
             emit result(Device::Cancelled);
@@ -205,7 +204,7 @@ void CopyJob::run()
         if (src.atEnd()) {
             break;
         }
-    } while ((readPos+bytesRead)<totalBytes);
+    } while (readPos<totalBytes);
 
     updateTagsDest();
     copyCover(origSrcFile);

@@ -61,6 +61,10 @@ UmsDevice::UmsDevice(MusicModel *m, Solid::Device &dev)
     defaultName=data()+details;
     setData(defaultName);
     setup();
+    if (icn.isNull()) {
+        icn=Icon(QStringList() << "drive-removable-media-usb-pendrive" << "drive-removable-media-usb"
+                               << "multimedia-player");
+    }
 }
 
 UmsDevice::~UmsDevice()

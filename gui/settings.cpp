@@ -309,9 +309,9 @@ QSet<QString> Settings::composerGenres()
     return cfg.get("composerGenres", Song::composerGenres().toList()).toSet();
 }
 
-QString Settings::singleTracksFolder()
+QSet<QString> Settings::singleTracksFolders()
 {
-    return cfg.get("singleTracksFolder", QString());
+    return cfg.get("singleTracksFolders", QStringList()).toSet();
 }
 
 MPDParseUtils::CueSupport Settings::cueSupport()
@@ -736,9 +736,9 @@ bool Settings::retinaSupport()
     return cfg.get("retinaSupport", false);
 }
 
-QStringList Settings::ignorePrefixes()
+QSet<QString> Settings::ignorePrefixes()
 {
-    return cfg.get("ignorePrefixes", Song::ignorePrefixes());
+    return cfg.get("ignorePrefixes", Song::ignorePrefixes().toList()).toSet();
 }
 
 bool Settings::mpris()
@@ -863,9 +863,9 @@ void Settings::saveComposerGenres(const QSet<QString> &v)
     cfg.set("composerGenres", v.toList());
 }
 
-void Settings::saveSingleTracksFolder(const QString &v)
+void Settings::saveSingleTracksFolders(const QSet<QString> &v)
 {
-    cfg.set("singleTracksFolder", v);
+    cfg.set("singleTracksFolders", v.toList());
 }
 
 void Settings::saveCueSupport(MPDParseUtils::CueSupport v)
@@ -1214,9 +1214,9 @@ void Settings::saveRetinaSupport(bool v)
     cfg.set("retinaSupport", v);
 }
 
-void Settings::saveIgnorePrefixes(const QStringList &v)
+void Settings::saveIgnorePrefixes(const QSet<QString> &v)
 {
-    cfg.set("ignorePrefixes", v);
+    cfg.set("ignorePrefixes", v.toList());
 }
 
 void Settings::saveMpris(bool v)

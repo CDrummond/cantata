@@ -232,9 +232,9 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
 void InterfaceSettings::load()
 {
-    ignorePrefixes->setText(Settings::self()->ignorePrefixes().join(QString(Song::constGenreSep)));
+    ignorePrefixes->setText(QStringList(Settings::self()->ignorePrefixes().toList()).join(QString(Song::constGenreSep)));
     composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(Song::constGenreSep)));
-    singleTracksFolder->setText(Settings::self()->singleTracksFolder());
+    singleTracksFolders->setText(QStringList(Settings::self()->singleTracksFolders().toList()).join(QString(Song::constGenreSep)));
     selectEntry(cueSupport, Settings::self()->cueSupport());
     #ifdef ENABLE_DEVICES_SUPPORT
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
@@ -308,11 +308,21 @@ void InterfaceSettings::load()
     }
 }
 
+static QSet<QString> toSet(const QString &str)
+{
+    QStringList parts=str.split(Song::constGenreSep, QString::SkipEmptyParts);
+    QSet<QString> set;
+    foreach (QString s, parts) {
+        set.insert(s.trimmed());
+    }
+    return set;
+}
+
 void InterfaceSettings::save()
 {
-    Settings::self()->saveIgnorePrefixes(ignorePrefixes->text().trimmed().split(Song::constGenreSep));
-    Settings::self()->saveComposerGenres(composerGenres->text().trimmed().split(Song::constGenreSep).toSet());
-    Settings::self()->saveSingleTracksFolder(singleTracksFolder->text().trimmed());
+    Settings::self()->saveIgnorePrefixes(toSet(ignorePrefixes->text()));
+    Settings::self()->saveComposerGenres(toSet(composerGenres->text()));
+    Settings::self()->saveSingleTracksFolders(toSet(singleTracksFolders->text()));
     Settings::self()->saveCueSupport((MPDParseUtils::CueSupport)(cueSupport->itemData(cueSupport->currentIndex()).toInt()));
     #ifdef ENABLE_DEVICES_SUPPORT
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());

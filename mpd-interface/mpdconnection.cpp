@@ -273,7 +273,7 @@ MPDConnection::MPDConnection()
     Configuration cfg;
     maxFilesPerAddCommand=cfg.get("mpdListSize", 10000, 100, 65535);
     seekStep=cfg.get("seekStep", 5, 2, 60);
-    MPDParseUtils::setSingleTracksFolder(cfg.get("singleTracksFolder", QString()));
+    MPDParseUtils::setSingleTracksFolders(cfg.get("singleTracksFolders", QStringList()).toSet());
     #endif
     connTimer=new QTimer(this);
     connect(connTimer, SIGNAL(timeout()), SLOT(getStatus()));

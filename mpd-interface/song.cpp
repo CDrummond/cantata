@@ -371,14 +371,14 @@ QString Song::combineGenres(const QSet<QString> &genres)
     return g;
 }
 
-static QStringList prefixesToIngore=QStringList() << QLatin1String("The");
+static QSet<QString> prefixesToIngore=QSet<QString>() << QLatin1String("The");
 
-QStringList Song::ignorePrefixes()
+QSet<QString> Song::ignorePrefixes()
 {
     return prefixesToIngore;
 }
 
-void Song::setIgnorePrefixes(const QStringList &prefixes)
+void Song::setIgnorePrefixes(const QSet<QString> &prefixes)
 {
     prefixesToIngore=prefixes;
 }

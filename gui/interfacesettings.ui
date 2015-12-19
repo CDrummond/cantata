@@ -551,7 +551,7 @@
            </widget>
           </item>
           <item>
-           <widget class="LineEdit" name="singleTracksFolder">
+           <widget class="LineEdit" name="singleTracksFolders">
             <property name="placeholderText">
              <string>Folder that contains single track files...</string>
             </property>

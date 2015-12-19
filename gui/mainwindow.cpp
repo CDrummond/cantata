@@ -1466,7 +1466,7 @@ void MainWindow::readSettings()
         }
     }
     MPDConnection::self()->setVolumeFadeDuration(Settings::self()->stopFadeDuration());
-    MPDParseUtils::setSingleTracksFolder(Settings::self()->singleTracksFolder());
+    MPDParseUtils::setSingleTracksFolders(Settings::self()->singleTracksFolders());
     MPDParseUtils::setCueFileSupport(Settings::self()->cueSupport());
     leftSpacer->setVisible(loveTrack->isVisible() || scrobblingStatus->isVisible() || streamPlayButton->isVisible());
 }

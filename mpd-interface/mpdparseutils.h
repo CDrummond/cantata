@@ -71,7 +71,7 @@ namespace MPDParseUtils
     extern CueSupport toCueSupport(const QString &cs);
     extern void setCueFileSupport(CueSupport cs);
     extern CueSupport cueFileSupport();
-    extern void setSingleTracksFolder(const QString &f);
+    extern void setSingleTracksFolders(const QSet<QString> &folders);
     extern QList<Playlist> parsePlaylists(const QByteArray &data);
     extern MPDStatsValues parseStats(const QByteArray &data);
     extern MPDStatusValues parseStatus(const QByteArray &data);

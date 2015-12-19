@@ -70,7 +70,7 @@ public:
     bool storeBackdropsInMpdDir();
     int sidebar();
     QSet<QString> composerGenres();
-    QString singleTracksFolder();
+    QSet<QString> singleTracksFolders();
     MPDParseUtils::CueSupport cueSupport();
     QStringList lyricProviders();
     QStringList wikipediaLangs();
@@ -159,7 +159,7 @@ public:
     bool showRatingWidget();
     bool infoTooltips();
     bool retinaSupport();
-    QStringList ignorePrefixes();
+    QSet<QString> ignorePrefixes();
     bool mpris();
 
     void removeConnectionDetails(const QString &v);
@@ -182,7 +182,7 @@ public:
     void saveLibraryArtistImage(bool v);
     void saveSidebar(int v);
     void saveComposerGenres(const QSet<QString> &v);
-    void saveSingleTracksFolder(const QString &v);
+    void saveSingleTracksFolders(const QSet<QString> &v);
     void saveCueSupport(MPDParseUtils::CueSupport v);
     void saveLyricProviders(const QStringList &v);
     void saveWikipediaLangs(const QStringList &v);
@@ -259,7 +259,7 @@ public:
     void saveShowRatingWidget(bool v);
     void saveInfoTooltips(bool v);
     void saveRetinaSupport(bool v);
-    void saveIgnorePrefixes(const QStringList &v);
+    void saveIgnorePrefixes(const QSet<QString> &v);
     void saveMpris(bool v);
     void save();
     void clearVersion();

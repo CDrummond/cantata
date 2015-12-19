@@ -124,7 +124,7 @@ static const QString constHttpProtocol=QLatin1String("http://");
 
 static inline bool toBool(const QByteArray &v) { return v==constSetValue; }
 
-static QString singleTracksFolder;
+static QSet<QString> singleTracksFolders;
 static MPDParseUtils::CueSupport cueSupport=MPDParseUtils::Cue_Parse;
 
 MPDParseUtils::CueSupport MPDParseUtils::toCueSupport(const QString &str)
@@ -157,9 +157,9 @@ MPDParseUtils::CueSupport MPDParseUtils::cueFileSupport()
     return cueSupport;
 }
 
-void MPDParseUtils::setSingleTracksFolder(const QString &f)
+void MPDParseUtils::setSingleTracksFolders(const QSet<QString> &folders)
 {
-    singleTracksFolder=f;
+    singleTracksFolders=folders;
 }
 
 QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
@@ -566,7 +566,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
     bool parsePlaylists="/"!=dir && ""!=dir;
-    bool setSingleTracks=parsePlaylists && !singleTracksFolder.isEmpty() && dir==singleTracksFolder && Loc_Browse!=loc;
+    bool setSingleTracks=parsePlaylists && singleTracksFolders.contains(dir) && Loc_Browse!=loc;
 
     for (int i = 0; i < amountOfLines; i++) {
         const QByteArray &line=lines.at(i);

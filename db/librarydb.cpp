@@ -523,6 +523,7 @@ bool LibraryDb::init(const QString &dbFile)
     }
 
     DBUG << dbFile << dbName;
+    currentVersion=0;
     db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE", dbName.isEmpty() ? QLatin1String(QSqlDatabase::defaultConnection) : dbName));
     db->setDatabaseName(dbFile);
     DBUG << (void *)db;

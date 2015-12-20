@@ -52,11 +52,13 @@
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
 #include <solid/opticaldisc.h>
+#include <solid/genericinterface.h>
 #else // ENABLE_KDE_SUPPORT
 #include "solid-lite/portablemediaplayer.h"
 #include "solid-lite/storageaccess.h"
 #include "solid-lite/storagedrive.h"
 #include "solid-lite/opticaldisc.h"
+#include "solid-lite/genericinterface.h"
 #endif // ENABLE_KDE_SUPPORT
 #endif // ENABLE_DEVICES_SUPPORT
 
@@ -173,7 +175,18 @@ Device * Device::create(MusicModel *m, const QString &udi)
         Solid::PortableMediaPlayer *pmp = device.as<Solid::PortableMediaPlayer>();
 
         if (pmp->supportedProtocols().contains(QLatin1String("mtp"))) {
-            return new MtpDevice(m, device);
+
+            Solid::GenericInterface *iface = device.as<Solid::GenericInterface>();
+
+            if (iface) {
+                QMap<QString, QVariant> properties = iface->allProperties();
+                QMap<QString, QVariant>::ConstIterator bus = properties.find(QLatin1String("BUSNUM"));
+                QMap<QString, QVariant>::ConstIterator dev = properties.find(QLatin1String("DEVNUM"));
+
+                return properties.constEnd()==bus || properties.end()==dev
+                        ? 0
+                        : new MtpDevice(m, device, bus.value().toUInt(), dev.value().toUInt());
+            }
         }
         #endif
     } else if (device.is<Solid::StorageAccess>()) {

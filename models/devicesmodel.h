@@ -43,6 +43,7 @@ public:
     static DevicesModel * self();
 
     static void enableDebug();
+    static bool debugEnabled();
     static QString fixDevicePath(const QString &path);
 
     DevicesModel(QObject *parent = 0);

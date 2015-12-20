@@ -27,6 +27,7 @@
 #include "models/musiclibraryitemartist.h"
 #include "models/musiclibraryitemroot.h"
 #include "models/mpdlibrarymodel.h"
+#include "models/devicesmodel.h"
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "gui/covers.h"
@@ -45,9 +46,6 @@
 #include <QTemporaryFile>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMimeType>
-#include <solid/genericinterface.h>
-#else
-#include "solid-lite/genericinterface.h"
 #endif
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -58,7 +56,9 @@
 #endif
 #include <QDebug>
 
-#define DBUG(CLASS) if (Covers::debugEnabled()) qWarning() << CLASS << __FUNCTION__
+#define COVER_DBUG if (Covers::debugEnabled()) qWarning() << metaObject()->className() << __FUNCTION__
+#define DBUG_CLASS(CLASS) if (DevicesModel::debugEnabled()) qWarning() << CLASS << QThread::currentThread()->objectName() << __FUNCTION__
+#define DBUG DBUG_CLASS(metaObject()->className())
 
 // Enable the following #define to have Cantata attempt to ascertain the AlbumArtist tag by
 // looking at the file path
@@ -1203,14 +1203,14 @@ void MtpConnection::getCover(const Song &song)
 {
     File c=getCoverDetils(song);
 
-    DBUG("MtpConnection") << c.name << c.id;
+    COVER_DBUG << c.name << c.id;
 
     if (0!=c.id) {
         QByteArray data;
         if (0==LIBMTP_Get_File_To_Handler(device, c.id, fileReceiver, &data, 0, 0)) {
             QImage img;
             if (img.loadFromData(data)) {
-                DBUG("MtpConnection") << "loaded cover";
+                COVER_DBUG << "loaded cover";
                 emit cover(song, img);
             }
         }
@@ -1290,7 +1290,7 @@ QString cfgKey(Solid::Device &dev, const QString &serial)
     return key;
 }
 
-MtpDevice::MtpDevice(MusicModel *m, Solid::Device &dev)
+MtpDevice::MtpDevice(MusicModel *m, Solid::Device &dev, unsigned int busNum, unsigned int devNum)
     : Device(m, dev,
              #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
              true
@@ -1307,15 +1307,6 @@ MtpDevice::MtpDevice(MusicModel *m, Solid::Device &dev)
         qRegisterMetaType<QSet<QString> >("QSet<QString>");
         qRegisterMetaType<DeviceOptions >("DeviceOptions");
         registeredTypes=true;
-    }
-
-    Solid::GenericInterface *iface = dev.as<Solid::GenericInterface>();
-    unsigned int busNum(0);
-    unsigned int devNum(0);
-    if (iface) {
-        QMap<QString, QVariant> properties = iface->allProperties();
-        busNum = properties.value(QLatin1String("BUSNUM")).toInt();
-        devNum = properties.value(QLatin1String("DEVNUM")).toInt();
     }
 
     connection=new MtpConnection(busNum, devNum, supportsAlbumArtistTag());
@@ -1340,6 +1331,7 @@ MtpDevice::MtpDevice(MusicModel *m, Solid::Device &dev)
     QTimer::singleShot(0, this, SLOT(rescan(bool)));
     defaultName=data();
     if (!opts.name.isEmpty()) {
+        DBUG << "setName" << opts.name;
         setData(opts.name);
     }
 }
@@ -1351,12 +1343,14 @@ MtpDevice::~MtpDevice()
 
 void MtpDevice::deviceDetails(const QString &s)
 {
+    DBUG << s;
     if ((s!=serial || serial.isEmpty()) && solidDev.isValid()) {
         serial=s;
         QString configKey=cfgKey(solidDev, serial);
         opts.load(configKey);
         configured=Configuration().hasGroup(configKey);
         if (!opts.name.isEmpty() && opts.name!=defaultName) {
+            DBUG << "setName" << opts.name;
             setData(opts.name);
             emit renamed();
         }
@@ -1555,10 +1549,10 @@ void MtpDevice::cleanDirs(const QSet<QString> &dirs)
 
 Covers::Image MtpDevice::requestCover(const Song &song)
 {
-    DBUG("MtpDevice") << song.file;
+    COVER_DBUG << song.file;
     requestAbort(false);
     if (isConnected()) {
-        DBUG("MtpDevice") << "Get cover from connection";
+        COVER_DBUG << "Get cover from connection";
         emit getCover(song);
     }
     return Covers::Image();
@@ -1716,6 +1710,7 @@ void MtpDevice::saveProperties(const QString &, const DeviceOptions &newOpts)
     bool diffName=opts.name!=newName;
     opts=newOpts;
     if (diffName) {
+        DBUG << "setName" << newName;
         setData(newName);
     }
     saveProperties();

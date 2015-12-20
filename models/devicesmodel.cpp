@@ -79,6 +79,11 @@ void DevicesModel::enableDebug()
     debugIsEnabled=true;
 }
 
+bool DevicesModel::debugEnabled()
+{
+    return debugIsEnabled;
+}
+
 QString DevicesModel::fixDevicePath(const QString &path)
 {
     // Remove MTP IDs, and display storage...

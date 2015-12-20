@@ -105,29 +105,8 @@ public:
         Q_UNUSED(id)
     }
     #else
-    Device(MusicModel *m, Solid::Device &dev, bool albumArtistSupport=true, bool flat=false)
-        : MusicLibraryItemRoot(dev.product().startsWith(dev.vendor()) ? dev.product() : (dev.vendor()+QChar(' ')+dev.product()), albumArtistSupport, flat)
-        , configured(false)
-        , solidDev(dev)
-        , deviceId(dev.udi())
-        , update(0)
-        , needToFixVa(false)
-        , jobAbortRequested(false)
-        , transcoding(false) {
-        m_model=m;
-        icn=Icon(solidDev.isValid() ? solidDev.icon() : QLatin1String("inode-directory"));
-    }
-    Device(MusicModel *m, const QString &name, const QString &id)
-        : MusicLibraryItemRoot(name)
-        , configured(false)
-        , deviceId(id)
-        , update(0)
-        , needToFixVa(false)
-        , jobAbortRequested(false)
-        , transcoding(false) {
-        m_model=m;
-        icn=Icon(solidDev.isValid() ? solidDev.icon() : QLatin1String("inode-directory"));
-    }
+    Device(MusicModel *m, Solid::Device &dev, bool albumArtistSupport=true, bool flat=false);
+    Device(MusicModel *m, const QString &name, const QString &id);
     #endif
 
     virtual ~Device() { }

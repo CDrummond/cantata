@@ -294,6 +294,34 @@ QTemporaryFile * Device::copySongToTemp(Song &song)
     return temp;
 }
 
+Device::Device(MusicModel *m, Solid::Device &dev, bool albumArtistSupport, bool flat)
+    : MusicLibraryItemRoot(dev.product().startsWith(dev.vendor()) ? dev.product() : (dev.vendor()+QChar(' ')+dev.product()), albumArtistSupport, flat)
+    , configured(false)
+    , solidDev(dev)
+    , deviceId(dev.udi())
+    , update(0)
+    , needToFixVa(false)
+    , jobAbortRequested(false)
+    , transcoding(false)
+{
+    m_model=m;
+    icn=Icon(solidDev.isValid() ? solidDev.icon() : QLatin1String("inode-directory"));
+    m_itemData[0]=m_itemData[0].toUpper();
+}
+
+Device::Device(MusicModel *m, const QString &name, const QString &id)
+    : MusicLibraryItemRoot(name)
+    , configured(false)
+    , deviceId(id)
+    , update(0)
+    , needToFixVa(false)
+    , jobAbortRequested(false)
+    , transcoding(false)
+{
+    m_model=m;
+    icn=Icon(solidDev.isValid() ? solidDev.icon() : QLatin1String("inode-directory"));
+}
+
 void Device::saveCache()
 {
     QTimer::singleShot(0, this, SIGNAL(cacheSaved()));

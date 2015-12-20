@@ -85,6 +85,7 @@
 62. Default to Qt5 builds.
 63. Fix copying songs to devices - incorrect number of bytes were transferred.
 64. Only use MTP device with BUSNUM and DEVNUM properties.
+65. Capitalise first letter of device name.
 
 1.5.2
 -----

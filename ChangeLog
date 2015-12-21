@@ -86,6 +86,7 @@
 63. Fix copying songs to devices - incorrect number of bytes were transferred.
 64. Only use MTP device with BUSNUM and DEVNUM properties.
 65. Capitalise first letter of device name.
+66. Use flat XML to store device music listing cache.
 
 1.5.2
 -----

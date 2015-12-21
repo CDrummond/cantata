@@ -196,7 +196,7 @@ void MusicLibraryItemRoot::toXML(const QString &filename, MusicLibraryProgressMo
     compressor.close();
 }
 
-static quint32 constVersion=1;
+static const quint32 constVersion=1;
 static const QString constTopTag=QLatin1String("tagcache");
 static const QString constTrackElement=QLatin1String("track");
 static const QString constTitleAttribute=QLatin1String("title");

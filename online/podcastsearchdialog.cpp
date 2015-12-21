@@ -425,6 +425,7 @@ void OpmlBrowsePage::showEvent(QShowEvent *e)
                 parseResonse(&f);
                 if (tree->topLevelItemCount()>0) {
                     Utils::touchFile(cacheFile);
+                    loaded=true;
                     return;
                 }
             }

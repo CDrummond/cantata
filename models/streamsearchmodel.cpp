@@ -128,7 +128,7 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
         if (item->parent==root && item->isCategory()) {
             return static_cast<const StreamsModel::CategoryItem *>(item) ->icon;
         }
-        return item->isCategory() ? Icons::self()->streamCategoryIcon : Icons::self()->radioStreamIcon;
+        return item->isCategory() ? Icons::self()->streamCategoryIcon : Icons::self()->streamListIcon;
     case Qt::DisplayRole:
         return item->name;
     case Qt::ToolTipRole:

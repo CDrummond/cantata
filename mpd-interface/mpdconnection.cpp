@@ -275,9 +275,6 @@ MPDConnection::MPDConnection()
     seekStep=cfg.get("seekStep", 5, 2, 60);
     MPDParseUtils::setSingleTracksFolders(cfg.get("singleTracksFolders", QStringList()).toSet());
     #endif
-    connTimer=new QTimer(this);
-    connect(connTimer, SIGNAL(timeout()), SLOT(getStatus()));
-    connTimer->setSingleShot(false);
 }
 
 MPDConnection::~MPDConnection()
@@ -297,7 +294,10 @@ void MPDConnection::start()
 {
     if (!thread) {
         thread=new Thread(metaObject()->className());
+        connTimer=thread->createTimer(this);
+        connTimer->setSingleShot(false);
         moveToThread(thread);
+        connect(thread, SIGNAL(finished()), connTimer, SLOT(stop()));
         thread->start();
     }
 }
@@ -311,6 +311,8 @@ void MPDConnection::stop()
     #endif
 
     if (thread) {
+        thread->deleteTimer(connTimer);
+        connTimer=0;
         thread->stop();
         thread=0;
     }

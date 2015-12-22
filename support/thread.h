@@ -26,6 +26,7 @@
 
 #include <QThread>
 
+class QTimer;
 // ThreadCleaner *needs* to reside in the GUI thread. When a 'Thread' is created it will connect
 // its finished signal to threadFinished(), this then calls deleteLater() to ensure that the
 // thread is finished before it is deleted - and is deleted in the gui thread.
@@ -64,6 +65,10 @@ public:
     using QThread::msleep;
 
     virtual void run();
+
+    QTimer * createTimer(QObject *parent=0);
+    void deleteTimer(QTimer *timer);
+
 public Q_SLOTS:
     void stop() { quit(); }
 };

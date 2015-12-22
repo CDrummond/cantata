@@ -26,6 +26,7 @@
 #include "utils.h"
 #include <QCoreApplication>
 #include <QtGlobal>
+#include <QTimer>
 #include <QDebug>
 #include <signal.h>
 #include <unistd.h>
@@ -107,4 +108,19 @@ void Thread::run()
 {
     Utils::initRand();
     QThread::run();
+}
+
+QTimer * Thread::createTimer(QObject *parent)
+{
+    QTimer *timer=new QTimer(parent ? parent : this);
+    connect(this, SIGNAL(finished()), timer, SLOT(stop()));
+    return timer;
+}
+
+void Thread::deleteTimer(QTimer *timer)
+{
+    if (timer) {
+        disconnect(this, SIGNAL(finished()), timer, SLOT(stop()));
+        timer->deleteLater();
+    }
 }

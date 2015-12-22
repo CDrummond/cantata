@@ -985,7 +985,7 @@ void CoverLocator::stop()
 void CoverLocator::startTimer(int interval)
 {
     if (!timer) {
-        timer=new QTimer(this);
+        timer=thread->createTimer(this);
         timer->setSingleShot(true);
         connect(timer, SIGNAL(timeout()), this, SLOT(locate()), Qt::QueuedConnection);
     }
@@ -1044,7 +1044,7 @@ void CoverLoader::stop()
 void CoverLoader::startTimer(int interval)
 {
     if (!timer) {
-        timer=new QTimer(this);
+        timer=thread->createTimer(this);
         timer->setSingleShot(true);
         connect(timer, SIGNAL(timeout()), this, SLOT(load()), Qt::QueuedConnection);
     }

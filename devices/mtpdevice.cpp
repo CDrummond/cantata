@@ -394,6 +394,7 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
         s.time=(track->duration/1000.0)+0.5;
         s.size=track->filesize;
         s.fillEmptyFields();
+        s.populateSorts();
         #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
         if (getAlbumArtistFromPath) {
             QStringList folderParts=(*folder).path.split('/', QString::SkipEmptyParts);

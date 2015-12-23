@@ -45,7 +45,7 @@ public:
 
     static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
 
-    MusicLibraryItemAlbum(const QString &data, const QString &original, const QString &mbId, quint32 year, const QString &sort, MusicLibraryItemContainer *parent);
+    MusicLibraryItemAlbum(const Song &song, MusicLibraryItemContainer *parent);
     virtual ~MusicLibraryItemAlbum();
 
     QString displayData(bool full=false) const;
@@ -59,10 +59,8 @@ public:
     QMap<QString, Song> getSongs(const QSet<QString> &fileNames) const;
     Type itemType() const { return Type_Album; }
     bool updateYear();
-    // Return orignal album name. If we are grouping by composer, then album will appear as "Album (Artist)"
-    const QString & originalName() const { return m_originalName; }
     const QString & id() const { return m_id; }
-    const QString & albumId() const { return m_id.isEmpty() ? (m_originalName.isEmpty() ? m_itemData : m_originalName) : m_id; }
+    const QString & albumId() const { return m_id.isEmpty() ? m_itemData : m_id; }
     const QString & sortString() const { return m_sortString.isEmpty() ? m_itemData : m_sortString; }
     bool hasSort() const { return !m_sortString.isEmpty(); }
     Song coverSong() const;
@@ -72,12 +70,11 @@ private:
     void updateStats();
 
 private:
-    quint32 m_year;
+    quint16 m_year;
     quint16 m_yearOfTrack;
     quint16 m_yearOfDisc;
+    quint16 m_numTracks;
     quint32 m_totalTime;
-    quint32 m_numTracks;
-    QString m_originalName;
     QString m_sortString;
     QString m_id;
     mutable Song m_coverSong;

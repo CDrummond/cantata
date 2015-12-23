@@ -52,7 +52,7 @@ MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create
 MusicLibraryItemArtist * MusicLibraryItemRoot::createArtist(const Song &s, bool forceComposer)
 {
     QString aa=songArtist(s, forceComposer);
-    MusicLibraryItemArtist *item=new MusicLibraryItemArtist(aa, Song::Standard==s.type ? s.albumArtist() : QString(), s.artistSortString(), this);
+    MusicLibraryItemArtist *item=new MusicLibraryItemArtist(s, this);
     m_indexes.insert(aa, m_childItems.count());
     m_childItems.append(item);
     return item;
@@ -452,6 +452,7 @@ bool MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QString &base
                     song.guessed=true;
                 }
 
+                song.populateSorts();
                 MusicLibraryItemAlbum *albumItem=artist(song)->album(song);
                 albumItem->append(new MusicLibraryItemSong(song, albumItem));
                 if (prog && !prog->wasStopped() && total>0) {

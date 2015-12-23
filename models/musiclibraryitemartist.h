@@ -33,7 +33,6 @@
 #include "musiclibraryitem.h"
 #include "mpd-interface/song.h"
 
-class QPixmap;
 class MusicLibraryItemRoot;
 class MusicLibraryItemAlbum;
 
@@ -50,31 +49,17 @@ public:
     const QString & sortString() const { return m_sortString.isEmpty() ? m_itemData : m_sortString; }
     bool hasSort() const { return m_haveSort && !m_sortString.isEmpty(); }
     bool isVarious() const { return m_various; }
-    bool allSingleTrack() const;
-    void addToSingleTracks(MusicLibraryItemArtist *other);
-    bool isFromSingleTracks(const Song &s) const;
     bool isComposer() const { return !m_actualArtist.isEmpty() && Song::isComposerGenre(coverSong().genre); }
     void remove(MusicLibraryItemAlbum *album);
     Type itemType() const { return Type_Artist; }
-    #ifdef ENABLE_UBUNTU
-    const QString & cover() const;
-    #endif
     // 'data' could be 'Composer' if we are set to use that, but need to save real artist...
     const QString & actualArtist() const { return m_actualArtist; }
-    #ifdef ENABLE_UBUNTU
-    void setCover(const QString &c);
-    const QString & coverName() { return m_coverName; }
-    #endif
     Song coverSong() const;
 
 private:
     MusicLibraryItemAlbum * getAlbum(const QString &key) const;
 
 private:
-    #ifdef ENABLE_UBUNTU
-    mutable QString m_coverName;
-    mutable bool m_coverRequested;
-    #endif
     bool m_various;
     bool m_haveSort;
     QString m_sortString; // Do we have an actual artist-sort, or is m_sortString just "Artist, The" ??? - needed for cache saving

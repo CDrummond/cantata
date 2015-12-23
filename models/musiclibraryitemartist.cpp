@@ -30,7 +30,6 @@
 #include "musiclibraryitemsong.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "support/localize.h"
-#include "gui/covers.h"
 #include "widgets/icons.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devices/device.h"
@@ -48,18 +47,10 @@ bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibr
     return aa->sortString().localeAwareCompare(ab->sortString())<0;
 }
 
-#ifdef ENABLE_UBUNTU
-static const QString constDefaultCover=QLatin1String("qrc:/artist.svg");
-static const QString constDefaultVariousCover=QLatin1String("qrc:/variousartists.svg");
-#endif
-
 static const QLatin1String constThe("The ");
 
 MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, const QString &artistName, const QString &artistSort, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(data, parent)
-    #ifdef ENABLE_UBUNTU
-    , m_coverRequested(false)
-    #endif
     , m_various(false)
     , m_haveSort(false)
     , m_actualArtist(artistName==data ? QString() : artistName)
@@ -75,33 +66,6 @@ MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, const QStrin
         m_various=true;
     }
 }
-
-#ifdef ENABLE_UBUNTU
-const QString & MusicLibraryItemArtist::cover() const
-{
-    if (m_various) {
-        return constDefaultVariousCover;
-    }
-    
-    if (m_coverName.isEmpty() && !m_coverRequested && childCount()) {
-        m_coverRequested=true;
-        m_coverName=Covers::self()->requestImage(coverSong()).fileName;
-        if (!m_coverName.isEmpty()) {
-            m_coverRequested=false;
-        }
-    }
-
-    return m_coverName.isEmpty() ? constDefaultCover : m_coverName;
-}
-
-void MusicLibraryItemArtist::setCover(const QString &c)
-{
-    if (!c.isEmpty()) {
-        m_coverName="file://"+c;
-    }
-    m_coverRequested=false;
-}
-#endif
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)
 {
@@ -119,36 +83,6 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::createAlbum(const Song &s)
     m_indexes.insert(albumId, m_childItems.count());
     m_childItems.append(item);
     return item;
-}
-
-bool MusicLibraryItemArtist::allSingleTrack() const
-{
-    foreach (MusicLibraryItem *a, m_childItems) {
-        if (a->childCount()>1) {
-            return false;
-        }
-    }
-    return true;
-}
-
-void MusicLibraryItemArtist::addToSingleTracks(MusicLibraryItemArtist *other)
-{
-    Song s;
-    s.album=i18n("Single Tracks");
-    MusicLibraryItemAlbum *single=album(s);
-    foreach (MusicLibraryItem *album, other->childItems()) {
-        single->addTracks(static_cast<MusicLibraryItemAlbum *>(album));
-    }
-}
-
-bool MusicLibraryItemArtist::isFromSingleTracks(const Song &s) const
-{
-    if (Song::SingleTracks==s.type) {
-        return true;
-    }
-
-    MusicLibraryItemAlbum *st=getAlbum(i18n("Single Tracks"));
-    return st && st->isSingleTrackFile(s);
 }
 
 void MusicLibraryItemArtist::remove(MusicLibraryItemAlbum *album)

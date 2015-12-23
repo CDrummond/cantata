@@ -49,38 +49,22 @@ public:
     virtual ~MusicLibraryItemAlbum();
 
     QString displayData(bool full=false) const;
-    #ifdef ENABLE_UBUNTU
-    const QString & cover() const;
-    #endif
     quint32 year() const { return m_year; }
     quint32 totalTime();
     quint32 trackCount();
-    void addTracks(MusicLibraryItemAlbum *other);
-    bool isSingleTracks() const { return Song::SingleTracks==m_type; }
-    void setIsSingleTracks();
-    bool isSingleTrackFile(const Song &s) const { return m_singleTrackFiles.contains(s.file); }
     void append(MusicLibraryItem *i);
     void remove(int row);
     void remove(MusicLibraryItemSong *i);
     void removeAll(const QSet<QString> &fileNames);
     QMap<QString, Song> getSongs(const QSet<QString> &fileNames) const;
-    Song::Type songType() const { return m_type; }
     Type itemType() const { return Type_Album; }
-    const MusicLibraryItemSong * getCueFile() const;
-    const QString & imageUrl() const { return m_imageUrl; }
-    void setImageUrl(const QString &u) { m_imageUrl=u; }
     bool updateYear();
-    bool containsArtist(const QString &a);
     // Return orignal album name. If we are grouping by composer, then album will appear as "Album (Artist)"
     const QString & originalName() const { return m_originalName; }
     const QString & id() const { return m_id; }
     const QString & albumId() const { return m_id.isEmpty() ? (m_originalName.isEmpty() ? m_itemData : m_originalName) : m_id; }
     const QString & sortString() const { return m_sortString.isEmpty() ? m_itemData : m_sortString; }
     bool hasSort() const { return !m_sortString.isEmpty(); }
-    #ifdef ENABLE_UBUNTU
-    void setCover(const QString &c) { m_coverName="file://"+c; m_coverRequested=false; }
-    const QString & coverName() { return m_coverName; }
-    #endif
     Song coverSong() const;
 
 private:
@@ -97,17 +81,6 @@ private:
     QString m_sortString;
     QString m_id;
     mutable Song m_coverSong;
-    #ifdef ENABLE_UBUNTU
-    mutable bool m_coverRequested;
-    mutable QString m_coverName;
-    #endif
-    Song::Type m_type;
-    QSet<QString> m_singleTrackFiles;
-    QString m_imageUrl;
-    // m_artists is used to cache the list of artists in a various artists album
-    // this is built when containsArtist() is called, and is mainly used by the
-    // context view
-    QSet<QString> m_artists;
 };
 
 #endif

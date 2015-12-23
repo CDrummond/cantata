@@ -28,19 +28,12 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
-#include "gui/covers.h"
 #include "widgets/icons.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devices/device.h"
 #include "support/utils.h"
 #endif
-#include <QPixmap>
-#include <QApplication>
-#include <QFontMetrics>
 
-#ifdef ENABLE_UBUNTU
-static const QString constDefaultCover=QLatin1String("qrc:/album.svg");
-#endif
 static bool dateSort=false;
 
 void MusicLibraryItemAlbum::setSortByDate(bool sd)
@@ -57,10 +50,6 @@ bool MusicLibraryItemAlbum::lessThan(const MusicLibraryItem *a, const MusicLibra
 {
     const MusicLibraryItemAlbum *aa=static_cast<const MusicLibraryItemAlbum *>(a);
     const MusicLibraryItemAlbum *ab=static_cast<const MusicLibraryItemAlbum *>(b);
-
-    if (aa->isSingleTracks() != ab->isSingleTracks()) {
-        return aa->isSingleTracks() > ab->isSingleTracks();
-    }
 
     if (!MusicLibraryItemAlbum::sortByDate() || aa->year()==ab->year()) {
         int compare=aa->sortString().localeAwareCompare(ab->sortString());
@@ -80,10 +69,6 @@ MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString 
     , m_numTracks(0)
     , m_originalName(original!=data ? original : QString())
     , m_id(mbId)
-    #ifdef ENABLE_UBUNTU
-    , m_coverRequested(false)
-    #endif
-    , m_type(Song::Standard)
 {
     if (!sort.isEmpty()) {
         m_sortString=sort;
@@ -100,19 +85,6 @@ QString MusicLibraryItemAlbum::displayData(bool full) const
 {
     return dateSort || full ? Song::displayAlbum(m_itemData, m_year) : m_itemData;
 }
-
-#ifdef ENABLE_UBUNTU
-const QString & MusicLibraryItemAlbum::cover() const
-{
-    if (Song::SingleTracks!=m_type && m_coverName.isEmpty() && !m_coverRequested && childCount()) {
-        m_coverName=Covers::self()->requestImage(coverSong()).fileName;
-        if (!m_coverName.isEmpty()) {
-            m_coverRequested=false;
-        }
-    }
-    return m_coverName.isEmpty() ? constDefaultCover : m_coverName;
-}
-#endif
 
 quint32 MusicLibraryItemAlbum::totalTime()
 {
@@ -140,36 +112,12 @@ void MusicLibraryItemAlbum::updateStats()
     }
 }
 
-void MusicLibraryItemAlbum::addTracks(MusicLibraryItemAlbum *other)
-{
-    m_type=Song::SingleTracks;
-    foreach (MusicLibraryItem *track, other->m_childItems) {
-        static_cast<MusicLibraryItemSong*>(track)->song().type=Song::SingleTracks;
-        m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(track)->song().file);
-        track->setParent(this);
-    }
-}
-
-void MusicLibraryItemAlbum::setIsSingleTracks()
-{
-    foreach (MusicLibraryItem *track, m_childItems) {
-        static_cast<MusicLibraryItemSong*>(track)->song().type=Song::SingleTracks;
-        m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(track)->song().file);
-    }
-    m_type=Song::SingleTracks;
-}
-
 void MusicLibraryItemAlbum::append(MusicLibraryItem *i)
 {
     MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
     setYear(song);
     MusicLibraryItemContainer::append(i);
-    if (Song::SingleTracks==m_type) {
-        song->song().type=Song::SingleTracks;
-        m_singleTrackFiles.insert(song->song().file);
-    }
     m_totalTime=0;
-    m_artists.clear();
 }
 
 void MusicLibraryItemAlbum::remove(int row)
@@ -184,7 +132,6 @@ void MusicLibraryItemAlbum::remove(int row)
     }
     delete i;
     m_totalTime=0;
-    m_artists.clear();
     resetRows();
 }
 
@@ -206,7 +153,6 @@ void MusicLibraryItemAlbum::removeAll(const QSet<QString> &fileNames)
             fn.remove(song->file());
             delete m_childItems.takeAt(i);
             m_totalTime=0;
-            m_artists.clear();
         } else {
             ++i;
         }
@@ -230,17 +176,6 @@ QMap<QString, Song> MusicLibraryItemAlbum::getSongs(const QSet<QString> &fileNam
     return map;
 }
 
-const MusicLibraryItemSong * MusicLibraryItemAlbum::getCueFile() const
-{
-    foreach (const MusicLibraryItem *s, m_childItems) {
-        if (static_cast<const MusicLibraryItemSong *>(s)->song().isCueFile()) {
-            return static_cast<const MusicLibraryItemSong *>(s);
-        }
-    }
-
-    return 0;
-}
-
 bool MusicLibraryItemAlbum::updateYear()
 {
     quint32 currentYear=m_year;
@@ -259,17 +194,6 @@ bool MusicLibraryItemAlbum::updateYear()
     return true;
 }
 
-bool MusicLibraryItemAlbum::containsArtist(const QString &a)
-{
-    if (m_artists.isEmpty()) {
-        foreach (MusicLibraryItem *itm, m_childItems) {
-            m_artists.insert(static_cast<MusicLibraryItemSong *>(itm)->song().basicArtist());
-        }
-    }
-
-    return m_artists.contains(a);
-}
-
 Song MusicLibraryItemAlbum::coverSong() const
 {
     Song song;
@@ -282,7 +206,6 @@ Song MusicLibraryItemAlbum::coverSong() const
         song.setComposer(firstSong->song().composer());
         song.year=m_year;
         song.file=firstSong->file();
-        song.type=m_type;
         #if defined ENABLE_DEVICES_SUPPORT
         MusicLibraryItemRoot *root=parentItem() && parentItem()->parentItem() && MusicLibraryItem::Type_Root==parentItem()->parentItem()->itemType()
                                                 ? static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem()) : 0;

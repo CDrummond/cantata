@@ -47,24 +47,11 @@ bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibr
     return aa->sortString().localeAwareCompare(ab->sortString())<0;
 }
 
-static const QLatin1String constThe("The ");
-
-MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, const QString &artistName, const QString &artistSort, MusicLibraryItemContainer *parent)
-    : MusicLibraryItemContainer(data, parent)
-    , m_various(false)
-    , m_haveSort(false)
-    , m_actualArtist(artistName==data ? QString() : artistName)
+MusicLibraryItemArtist::MusicLibraryItemArtist(const Song &song, MusicLibraryItemContainer *parent)
+    : MusicLibraryItemContainer(song.artistOrComposer(), parent)
+    , m_sortString(song.hasAlbumArtistSort() ? song.albumArtistSort() : QString())
+    , m_actualArtist(song.hasComposer() && song.isComposerGenre(song.genre) ? song.albumArtist() : QString())
 {
-    if (!artistSort.isEmpty()) {
-        m_sortString=artistSort;
-        m_haveSort=true;
-    } else if (m_itemData.startsWith(constThe)) {
-        m_sortString=m_itemData.mid(4);
-    }
-
-    if (Song::isVariousArtists(m_itemData)) {
-        m_various=true;
-    }
 }
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)
@@ -79,7 +66,7 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::createAlbum(const Song &s)
     // So, when creating an album entry we need to use the "Album (Artist)" value for display/sort, and still store just
     // "Album" (for saving to cache, tag editing, etc.)
     QString albumId=s.albumId();
-    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.albumName(), s.album, s.mbAlbumId(), s.year, s.albumSort(), this);
+    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s, this);
     m_indexes.insert(albumId, m_childItems.count());
     m_childItems.append(item);
     return item;

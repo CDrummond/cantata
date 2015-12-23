@@ -40,7 +40,7 @@
 class QXmlStreamReader;
 class QXmlStreamWriter;
 class MusicLibraryItemArtist;
-class MusicModel;
+class MusicLibraryModel;
 
 class MusicLibraryErrorMonitor
 {
@@ -92,7 +92,7 @@ public:
     bool supportsAlbumArtistTag() const { return supportsAlbumArtist; }
     void setSupportsAlbumArtistTag(bool s) { supportsAlbumArtist=s; }
     void clearItems();
-    void setModel(MusicModel *m) { m_model=m; }
+    void setModel(MusicLibraryModel *m) { m_model=m; }
     bool flat() const { return isFlat; }
 
     virtual QModelIndex index() const { return QModelIndex(); }
@@ -112,7 +112,7 @@ protected:
     bool supportsAlbumArtist; // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
     bool isFlat;
     mutable QHash<QString, int> m_indexes;
-    MusicModel *m_model;
+    MusicLibraryModel *m_model;
 };
 
 #endif

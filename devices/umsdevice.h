@@ -36,7 +36,7 @@ class UmsDevice : public FsDevice
     Q_OBJECT
 
 public:
-    UmsDevice(MusicModel *m, Solid::Device &dev);
+    UmsDevice(MusicLibraryModel *m, Solid::Device &dev);
     virtual ~UmsDevice();
 
     void connectionStateChanged();

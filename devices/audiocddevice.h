@@ -54,7 +54,7 @@ public:
     static QString coverUrl(QString id);
     static QString getDevice(const QUrl &url);
 
-    AudioCdDevice(MusicModel *m, Solid::Device &dev);
+    AudioCdDevice(MusicLibraryModel *m, Solid::Device &dev);
     virtual ~AudioCdDevice();
 
     void dequeue();

@@ -38,6 +38,7 @@
 #include "widgets/mirrormenu.h"
 #include "devices/mountpoints.h"
 #include "gui/stdactions.h"
+#include "gui/plurals.h"
 #include "support/action.h"
 #include "config.h"
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
@@ -101,7 +102,7 @@ QString DevicesModel::fixDevicePath(const QString &path)
 GLOBAL_STATIC(DevicesModel, instance)
 
 DevicesModel::DevicesModel(QObject *parent)
-    : MultiMusicModel(parent)
+    : MusicLibraryModel(parent)
     , itemMenu(0)
     , enabled(false)
     , inhibitMenuUpdate(false)
@@ -122,6 +123,185 @@ DevicesModel::DevicesModel(QObject *parent)
 
 DevicesModel::~DevicesModel()
 {
+    qDeleteAll(collections);
+}
+
+QModelIndex DevicesModel::index(int row, int column, const QModelIndex &parent) const
+{
+    if (!hasIndex(row, column, parent)) {
+        return QModelIndex();
+    }
+
+    if (parent.isValid()) {
+        MusicLibraryItem *p=static_cast<MusicLibraryItem *>(parent.internalPointer());
+
+        if (p) {
+            return row<p->childCount() ? createIndex(row, column, p->childItem(row)) : QModelIndex();
+        }
+    } else {
+        return row<collections.count() ? createIndex(row, column, collections.at(row)) : QModelIndex();
+    }
+
+    return QModelIndex();
+}
+
+QModelIndex DevicesModel::parent(const QModelIndex &index) const
+{
+    if (!index.isValid()) {
+        return QModelIndex();
+    }
+
+    MusicLibraryItem *childItem = static_cast<MusicLibraryItem *>(index.internalPointer());
+    MusicLibraryItem *parentItem = childItem->parentItem();
+
+    if (parentItem) {
+        return createIndex(parentItem->parentItem() ? parentItem->row() : row(parentItem), 0, parentItem);
+    } else {
+        return QModelIndex();
+    }
+}
+
+int DevicesModel::rowCount(const QModelIndex &parent) const
+{
+    if (parent.column() > 0) {
+        return 0;
+    }
+
+    return parent.isValid() ? static_cast<MusicLibraryItem *>(parent.internalPointer())->childCount() : collections.count();
+}
+
+void DevicesModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres)
+{
+    foreach (MusicLibraryItemRoot *col, collections) {
+        col->getDetails(artists, albumArtists, composers, albums, genres);
+    }
+}
+
+int DevicesModel::indexOf(const QString &id)
+{
+    int i=0;
+    foreach (MusicLibraryItemRoot *col, collections) {
+        if (col->id()==id) {
+            return i;
+        }
+        i++;
+    }
+    return -1;
+}
+
+QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnly, bool fullPath) const
+{
+    QMap<MusicLibraryItem *, QList<Song> > colSongs;
+    QMap<MusicLibraryItem *, QSet<QString> > colFiles;
+
+    foreach(QModelIndex index, indexes) {
+        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+        MusicLibraryItem *p=item;
+
+        while (p->parentItem()) {
+            p=p->parentItem();
+        }
+
+        if (!p) {
+            continue;
+        }
+
+        MusicLibraryItemRoot *parent=static_cast<MusicLibraryItemRoot *>(p);
+
+        if (playableOnly && !parent->canPlaySongs()) {
+            continue;
+        }
+
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Root: {
+            if (static_cast<MusicLibraryItemRoot *>(parent)->flat()) {
+                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
+                    if (MusicLibraryItem::Type_Song==song->itemType() && !colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->file())) {
+                        colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), fullPath);
+                        colFiles[parent] << static_cast<const MusicLibraryItemSong*>(song)->file();
+                    }
+                }
+            } else {
+                // First, sort all artists as they would appear in UI...
+                QList<MusicLibraryItem *> artists=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
+                if (artists.isEmpty()) {
+                    break;
+                }
+
+                qSort(artists.begin(), artists.end(), MusicLibraryItemArtist::lessThan);
+
+                foreach (MusicLibraryItem *a, artists) {
+                    const MusicLibraryItemContainer *artist=static_cast<const MusicLibraryItemContainer *>(a);
+                    // Now sort all albums as they would appear in UI...
+                    QList<MusicLibraryItem *> artistAlbums=artist->childItems();
+                    qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
+                    foreach (MusicLibraryItem *i, artistAlbums) {
+                        const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
+                        foreach (const MusicLibraryItem *song, album->childItems()) {
+                            if (MusicLibraryItem::Type_Song==song->itemType() && !colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->file())) {
+                                colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), fullPath);
+                                colFiles[parent] << static_cast<const MusicLibraryItemSong*>(song)->file();
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        case MusicLibraryItem::Type_Artist: {
+            // First, sort all albums as they would appear in UI...
+            QList<MusicLibraryItem *> artistAlbums=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
+            qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
+
+            foreach (MusicLibraryItem *i, artistAlbums) {
+                const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
+                foreach (const MusicLibraryItem *song, album->childItems()) {
+                    if (MusicLibraryItem::Type_Song==song->itemType() && !colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->file())) {
+                        colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), fullPath);
+                        colFiles[parent] << static_cast<const MusicLibraryItemSong*>(song)->file();
+                    }
+                }
+            }
+            break;
+        }
+        case MusicLibraryItem::Type_Album:
+            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
+                if (MusicLibraryItem::Type_Song==song->itemType() && !colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->file())) {
+                    colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), fullPath);
+                    colFiles[parent] << static_cast<const MusicLibraryItemSong*>(song)->file();
+                }
+            }
+            break;
+        case MusicLibraryItem::Type_Song:
+            if (!colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(item)->file())) {
+                colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(item)->song(), fullPath);
+                colFiles[parent] << static_cast<const MusicLibraryItemSong*>(item)->file();
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    QList<Song> songs;
+    QMap<MusicLibraryItem *, QList<Song> >::Iterator it(colSongs.begin());
+    QMap<MusicLibraryItem *, QList<Song> >::Iterator end(colSongs.end());
+
+    for (; it!=end; ++it) {
+        songs.append(it.value());
+    }
+
+    return songs;
+}
+
+QStringList DevicesModel::filenames(const QModelIndexList &indexes, bool playableOnly, bool fullPath) const
+{
+    QList<Song> songList=songs(indexes, playableOnly, fullPath);
+    QStringList fnames;
+    foreach (const Song &s, songList) {
+        fnames.append(s.file);
+    }
+    return fnames;
 }
 
 bool DevicesModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -143,7 +323,7 @@ bool DevicesModel::setData(const QModelIndex &index, const QVariant &value, int 
         }
     }
     #endif
-   return  MultiMusicModel::setData(index, value, role);
+   return MusicLibraryModel::setData(index, value, role);
 }
 
 QVariant DevicesModel::data(const QModelIndex &index, int role) const
@@ -227,7 +407,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
     default:
         break;
     }
-    return MultiMusicModel::data(index, role);
+    return MusicLibraryModel::data(index, role);
 }
 
 void DevicesModel::clear(bool clearConfig)

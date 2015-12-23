@@ -110,8 +110,8 @@ public:
     static bool readOpts(const QString &fileName, DeviceOptions &opts, bool readAll);
     static void writeOpts(const QString &fileName, const DeviceOptions &opts, bool writeAll);
 
-    FsDevice(MusicModel *m, Solid::Device &dev);
-    FsDevice(MusicModel *m, const QString &name, const QString &id);
+    FsDevice(MusicLibraryModel *m, Solid::Device &dev);
+    FsDevice(MusicLibraryModel *m, const QString &name, const QString &id);
     virtual ~FsDevice();
 
     void rescan(bool full=true);

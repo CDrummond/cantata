@@ -27,7 +27,7 @@
 #include "mpd-interface/song.h"
 #include "config.h"
 #include "devices/remotefsdevice.h"
-#include "multimusicmodel.h"
+#include "musiclibrarymodel.h"
 #include "devices/cdalbum.h"
 #include "musiclibraryproxymodel.h"
 
@@ -35,7 +35,7 @@ class QMimeData;
 class Device;
 class MirrorMenu;
 
-class DevicesModel : public MultiMusicModel
+class DevicesModel : public MusicLibraryModel
 {
     Q_OBJECT
 
@@ -48,6 +48,15 @@ public:
 
     DevicesModel(QObject *parent = 0);
     ~DevicesModel();
+    QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const;
+    QModelIndex parent(const QModelIndex &index) const;
+    QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const { return QVariant(); }
+    int columnCount(const QModelIndex & = QModelIndex()) const { return 1; }
+    int rowCount(const QModelIndex &parent=QModelIndex()) const;
+    void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
+    QList<Song> songs(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
+    QStringList filenames(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
+    int row(void *i) const { return collections.indexOf(static_cast<MusicLibraryItemRoot *>(i)); }
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -71,6 +80,9 @@ public:
     Action * editAct() const { return editAction; }
     void playCd(const QString &dev);
     #endif
+
+private:
+    int indexOf(const QString &id);
 
 public Q_SLOTS:
     void setCover(const Song &song, const QImage &img, const QString &file);
@@ -106,6 +118,7 @@ private Q_SLOTS:
     void updateItemMenu();
 
 private:
+    QList<MusicLibraryItemRoot *> collections;
     QSet<QString> volumes;
     MirrorMenu *itemMenu;
     bool enabled;

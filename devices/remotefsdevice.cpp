@@ -104,7 +104,7 @@ static inline bool isMountable(const RemoteFsDevice::Details &d)
            RemoteFsDevice::constSambaProtocol==d.url.scheme() || RemoteFsDevice::constSambaAvahiProtocol==d.url.scheme();
 }
 
-QList<Device *> RemoteFsDevice::loadAll(MusicModel *m)
+QList<Device *> RemoteFsDevice::loadAll(MusicLibraryModel *m)
 {
     QList<Device *> devices;
     Configuration cfg;
@@ -121,7 +121,7 @@ QList<Device *> RemoteFsDevice::loadAll(MusicModel *m)
     return devices;
 }
 
-Device * RemoteFsDevice::create(MusicModel *m, const DeviceOptions &options, const Details &d)
+Device * RemoteFsDevice::create(MusicLibraryModel *m, const DeviceOptions &options, const Details &d)
 {
     if (d.isEmpty()) {
         return 0;
@@ -202,7 +202,7 @@ void RemoteFsDevice::renamed(const QString &oldName, const QString &newName)
     cfg.set(constCfgKey, names);
 }
 
-RemoteFsDevice::RemoteFsDevice(MusicModel *m, const DeviceOptions &options, const Details &d)
+RemoteFsDevice::RemoteFsDevice(MusicLibraryModel *m, const DeviceOptions &options, const Details &d)
     : FsDevice(m, d.name, createUdi(d.name))
     , mountToken(0)
     , currentMountStatus(false)
@@ -218,7 +218,7 @@ RemoteFsDevice::RemoteFsDevice(MusicModel *m, const DeviceOptions &options, cons
     icn=Icon(details.isLocalFile() ? "inode-directory" : (constSshfsProtocol==details.url.scheme() ? "utilities-terminal" : "network-server"));
 }
 
-RemoteFsDevice::RemoteFsDevice(MusicModel *m, const Details &d)
+RemoteFsDevice::RemoteFsDevice(MusicLibraryModel *m, const Details &d)
     : FsDevice(m, d.name, createUdi(d.name))
     , mountToken(0)
     , currentMountStatus(false)

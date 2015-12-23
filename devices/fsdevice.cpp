@@ -308,7 +308,7 @@ void FsDevice::writeOpts(const QString &fileName, const DeviceOptions &opts, boo
     }
 }
 
-FsDevice::FsDevice(MusicModel *m, Solid::Device &dev)
+FsDevice::FsDevice(MusicLibraryModel *m, Solid::Device &dev)
     : Device(m, dev)
     , state(Idle)
     , scanned(false)
@@ -317,7 +317,7 @@ FsDevice::FsDevice(MusicModel *m, Solid::Device &dev)
 {
 }
 
-FsDevice::FsDevice(MusicModel *m, const QString &name, const QString &id)
+FsDevice::FsDevice(MusicLibraryModel *m, const QString &name, const QString &id)
     : Device(m, name, id)
     , state(Idle)
     , scanned(false)

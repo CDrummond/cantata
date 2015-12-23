@@ -46,6 +46,7 @@
 #include "models/musiclibraryitemartist.h"
 #include "models/musiclibraryitemalbum.h"
 #include "models/musiclibraryitemsong.h"
+#include "models/musiclibrarymodel.h"
 #include "support/localize.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/portablemediaplayer.h>
@@ -162,7 +163,7 @@ Song Device::fixPath(const Song &orig, bool fullPath) const
 const QLatin1String Device::constNoCover("-");
 const QLatin1String Device::constEmbedCover("+");
 
-Device * Device::create(MusicModel *m, const QString &udi)
+Device * Device::create(MusicLibraryModel *m, const QString &udi)
 {
     Solid::Device device=Solid::Device(udi);
 
@@ -294,7 +295,7 @@ QTemporaryFile * Device::copySongToTemp(Song &song)
     return temp;
 }
 
-Device::Device(MusicModel *m, Solid::Device &dev, bool albumArtistSupport, bool flat)
+Device::Device(MusicLibraryModel *m, Solid::Device &dev, bool albumArtistSupport, bool flat)
     : MusicLibraryItemRoot(dev.product().startsWith(dev.vendor()) ? dev.product() : (dev.vendor()+QChar(' ')+dev.product()), albumArtistSupport, flat)
     , configured(false)
     , solidDev(dev)
@@ -309,7 +310,7 @@ Device::Device(MusicModel *m, Solid::Device &dev, bool albumArtistSupport, bool 
     m_itemData[0]=m_itemData[0].toUpper();
 }
 
-Device::Device(MusicModel *m, const QString &name, const QString &id)
+Device::Device(MusicLibraryModel *m, const QString &name, const QString &id)
     : MusicLibraryItemRoot(name)
     , configured(false)
     , deviceId(id)

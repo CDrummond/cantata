@@ -40,7 +40,7 @@
 class QWidget;
 class QImage;
 class QTemporaryFile;
-class MusicModel;
+class MusicLibraryModel;
 
 // MOC requires the QObject class to be first. But due to models storing void pointers, and
 // needing to cast these - the model prefers MusicLibraryItemRoot to be first!
@@ -56,7 +56,7 @@ public:
     #ifdef ENABLE_DEVICES_SUPPORT
     static const QLatin1String constNoCover;
     static const QLatin1String constEmbedCover;
-    static Device * create(MusicModel *m, const QString &id);
+    static Device * create(MusicLibraryModel *m, const QString &id);
     static bool fixVariousArtists(const QString &file, Song &song, bool applyFix);
     static void embedCover(const QString &file, Song &song, unsigned int coverMaxSize);
     static QTemporaryFile * copySongToTemp(Song &song);
@@ -95,7 +95,7 @@ public:
     };
 
     #ifndef ENABLE_DEVICES_SUPPORT
-    Device(MusicModel *m, const QString &name, const QString &id)
+    Device(MusicLibraryModel *m, const QString &name, const QString &id)
         : MusicLibraryItemRoot(name)
         , update(0)
         , needToFixVa(false)
@@ -105,8 +105,8 @@ public:
         Q_UNUSED(id)
     }
     #else
-    Device(MusicModel *m, Solid::Device &dev, bool albumArtistSupport=true, bool flat=false);
-    Device(MusicModel *m, const QString &name, const QString &id);
+    Device(MusicLibraryModel *m, Solid::Device &dev, bool albumArtistSupport=true, bool flat=false);
+    Device(MusicLibraryModel *m, const QString &name, const QString &id);
     #endif
 
     virtual ~Device() { }

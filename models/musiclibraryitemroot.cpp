@@ -28,11 +28,11 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
+#include "musiclibrarymodel.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "mpd-interface/mpdconnection.h"
 #include "support/localize.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include "musicmodel.h"
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QFile>

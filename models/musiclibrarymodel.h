@@ -32,12 +32,12 @@
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitemalbum.h"
 #include "mpd-interface/song.h"
-#include "musicmodel.h"
+#include "actionmodel.h"
 
 class QMimeData;
 class MusicLibraryItemArtist;
 
-class MusicLibraryModel : public MusicModel
+class MusicLibraryModel : public ActionModel
 {
 public:
     MusicLibraryModel(QObject *parent=0);
@@ -45,20 +45,27 @@ public:
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &i=QModelIndex()) const { Q_UNUSED(i) return 1; }
     QVariant data(const QModelIndex &, int) const;
     bool setData(const QModelIndex &idx, const QVariant &value, int role = Qt::EditRole);
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    const MusicLibraryItemRoot * root() const { return rootItem; }
-    const MusicLibraryItemRoot * root(const MusicLibraryItem *) const { return root(); }
     void clear();
     void setSongs(const QSet<Song> &songs);
     void setSupportsAlbumArtistTag(bool s) { rootItem->setSupportsAlbumArtistTag(s); }
+    virtual int row(void *i) const { return rootItem->indexOf(static_cast<MusicLibraryItem *>(i)); }
+
+protected:
+    const MusicLibraryItemRoot * root(const MusicLibraryItem *item) const;
 
 private:
     void setParentState(const QModelIndex &parent);
 
 private:
     MusicLibraryItemRoot *rootItem;
+
+    friend class MusicLibraryItemRoot;
+    friend class DevicesModel;
+    friend class Device;
 };
 
 #endif

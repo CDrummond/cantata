@@ -1290,7 +1290,7 @@ QString cfgKey(Solid::Device &dev, const QString &serial)
     return key;
 }
 
-MtpDevice::MtpDevice(MusicModel *m, Solid::Device &dev, unsigned int busNum, unsigned int devNum)
+MtpDevice::MtpDevice(MusicLibraryModel *m, Solid::Device &dev, unsigned int busNum, unsigned int devNum)
     : Device(m, dev,
              #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
              true

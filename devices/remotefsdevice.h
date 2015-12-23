@@ -71,13 +71,13 @@ public:
     static const QLatin1String constServiceNameQuery;
     static const QLatin1String constSambaAvahiProtocol;
 
-    static QList<Device *> loadAll(MusicModel *m);
-    static Device *create(MusicModel *m, const DeviceOptions &options, const Details &d);
+    static QList<Device *> loadAll(MusicLibraryModel *m);
+    static Device *create(MusicLibraryModel *m, const DeviceOptions &options, const Details &d);
     static void renamed(const QString &oldName, const QString &newName);
     static QString createUdi(const QString &n);
 
-    RemoteFsDevice(MusicModel *m, const DeviceOptions &options, const Details &d);
-    RemoteFsDevice(MusicModel *m, const Details &d);
+    RemoteFsDevice(MusicLibraryModel *m, const DeviceOptions &options, const Details &d);
+    RemoteFsDevice(MusicLibraryModel *m, const Details &d);
     virtual ~RemoteFsDevice();
 
     void toggle();

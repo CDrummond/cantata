@@ -41,7 +41,7 @@ static const QLatin1String constSettingsFile("/.is_audio_player");
 static const QLatin1String constMusicFolderKey("audio_folder");
 static const QLatin1String constCollectionNameKey("collection_name");
 
-UmsDevice::UmsDevice(MusicModel *m, Solid::Device &dev)
+UmsDevice::UmsDevice(MusicLibraryModel *m, Solid::Device &dev)
     : FsDevice(m, dev)
     , access(dev.as<Solid::StorageAccess>())
 {

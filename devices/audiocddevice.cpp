@@ -86,7 +86,7 @@ QString AudioCdDevice::getDevice(const QUrl &url)
     return QString();
 }
 
-AudioCdDevice::AudioCdDevice(MusicModel *m, Solid::Device &dev)
+AudioCdDevice::AudioCdDevice(MusicLibraryModel *m, Solid::Device &dev)
     : Device(m, dev, false, true)
     #ifdef CDDB_FOUND
     , cddb(0)

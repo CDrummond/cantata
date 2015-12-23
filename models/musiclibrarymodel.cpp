@@ -33,6 +33,8 @@
 #include "support/localize.h"
 #include "support/utils.h"
 #include "widgets/icons.h"
+#include "gui/settings.h"
+#include "gui/plurals.h"
 #include <QFile>
 #include <QTimer>
 #include <QStringRef>
@@ -45,7 +47,7 @@
 #endif
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent)
-    : MusicModel(parent)
+    : ActionModel(parent)
     , rootItem(new MusicLibraryItemRoot)
 {
     rootItem->setModel(this);
@@ -114,6 +116,46 @@ int MusicLibraryModel::rowCount(const QModelIndex &parent) const
     return parentItem->childCount();
 }
 
+const MusicLibraryItemRoot * MusicLibraryModel::root(const MusicLibraryItem *item) const
+{
+    if (MusicLibraryItem::Type_Root==item->itemType()) {
+        return static_cast<const MusicLibraryItemRoot *>(item);
+    }
+
+    if (MusicLibraryItem::Type_Artist==item->itemType()) {
+        return static_cast<const MusicLibraryItemRoot *>(item->parentItem());
+    }
+
+    if (MusicLibraryItem::Type_Album==item->itemType()) {
+        return static_cast<const MusicLibraryItemRoot *>(item->parentItem()->parentItem());
+    }
+
+    if (MusicLibraryItem::Type_Song==item->itemType()) {
+        return root(item->parentItem());
+    }
+
+    return 0;
+}
+
+static QString parentData(const MusicLibraryItem *i)
+{
+    QString data;
+    const MusicLibraryItem *itm=i;
+
+    while (itm->parentItem()) {
+        if (!itm->parentItem()->data().isEmpty()) {
+            if (MusicLibraryItem::Type_Root==itm->parentItem()->itemType()) {
+                data="<b>"+itm->parentItem()->data()+"</b><br/>"+data;
+            } else {
+                data=itm->parentItem()->data()+"<br/>"+data;
+            }
+        }
+        itm=itm->parentItem();
+    }
+
+    return data;
+}
+
 QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
@@ -124,7 +166,116 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         return static_cast<MusicLibraryItem *>(index.internalPointer())->checkState();
     }
 
-    return MusicModel::data(index, role);
+    MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+
+    switch (role) {
+    #ifndef ENABLE_UBUNTU
+    case Qt::DecorationRole:
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Root:
+            return static_cast<MusicLibraryItemRoot *>(item)->icon();
+        case MusicLibraryItem::Type_Artist:
+            return Icons::self()->artistIcon;
+        case MusicLibraryItem::Type_Album:
+            return Icons::self()->albumIcon(32);
+        case MusicLibraryItem::Type_Song:
+            return Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? Icons::self()->playlistListIcon : Icons::self()->audioListIcon;
+        default:
+            return QVariant();
+        }
+    #endif
+    case Cantata::Role_BriefMainText:
+        if (MusicLibraryItem::Type_Album==item->itemType()) {
+            return item->data();
+        }
+    case Cantata::Role_MainText:
+    case Qt::DisplayRole:
+        if (MusicLibraryItem::Type_Song==item->itemType()) {
+            MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
+            if (Song::Playlist==song->song().type) {
+                return song->song().isCueFile() ? i18n("Cue Sheet") : i18n("Playlist");
+            }
+            if (MusicLibraryItem::Type_Root==song->parentItem()->itemType()) {
+                return song->song().trackAndTitleStr();
+            }
+            if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
+                return song->song().artistSong();
+            }
+            return song->song().trackAndTitleStr();
+        }
+        return item->displayData();
+    case Qt::ToolTipRole:
+        if (!Settings::self()->infoTooltips()) {
+            return QVariant();
+        }
+        if (MusicLibraryItem::Type_Song==item->itemType()) {
+            return static_cast<MusicLibraryItemSong *>(item)->song().toolTip();
+        }
+
+        return parentData(item)+
+                (0==item->childCount()
+                    ? item->displayData(true)
+                    : (item->displayData(true)+"<br/>"+data(index, Cantata::Role_SubText).toString()));
+    case Cantata::Role_SubText:
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Root: {
+            MusicLibraryItemRoot *collection=static_cast<MusicLibraryItemRoot *>(item);
+
+            if (collection->flat()) {
+                return Plurals::tracks(item->childCount());
+            }
+            return Plurals::artists(item->childCount());
+        }
+        case MusicLibraryItem::Type_Artist:
+            return Plurals::albums(item->childCount());
+        case MusicLibraryItem::Type_Song:
+            return Utils::formatTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
+        case MusicLibraryItem::Type_Album:
+            return Plurals::tracksWithDuration(static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
+                                               Utils::formatTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
+        default: return QVariant();
+        }
+    case Cantata::Role_ListImage:
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Album:
+            return true;
+        default:
+            return false;
+        }
+    #ifdef ENABLE_UBUNTU
+    case Cantata::Role_Image:
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Album:
+            return static_cast<MusicLibraryItemAlbum *>(item)->cover();
+        case MusicLibraryItem::Type_Artist:
+            return static_cast<MusicLibraryItemArtist *>(item)->cover();
+        default:
+            return QString();
+        }
+    #endif
+    case Cantata::Role_CoverSong: {
+        QVariant v;
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Album:
+            v.setValue<Song>(static_cast<MusicLibraryItemAlbum *>(item)->coverSong());
+            break;
+        case MusicLibraryItem::Type_Artist:
+            v.setValue<Song>(static_cast<MusicLibraryItemArtist *>(item)->coverSong());
+            break;
+        default:
+            break;
+        }
+        return v;
+    }
+    case Cantata::Role_TitleText:
+        if (MusicLibraryItem::Type_Album==item->itemType()) {
+            return i18nc("Album by Artist", "%1 by %2", item->data(), item->parentItem()->data());
+        }
+        return item->data();
+    default:
+        break;
+    }
+    return ActionModel::data(index, role);
 }
 
 bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, int role)

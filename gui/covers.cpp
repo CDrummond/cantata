@@ -1219,7 +1219,7 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
     QPixmap *pix=cache.object(key);
     #ifndef ENABLE_UBUNTU
     if (!pix) {
-        Icon &icn=song.isArtistImageRequest() || song.isComposerImageRequest()
+        const Icon &icn=song.isArtistImageRequest() || song.isComposerImageRequest()
                 ? Icons::self()->artistIcon
                 : podcast
                     ? Icons::self()->podcastIcon

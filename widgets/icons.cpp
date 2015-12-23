@@ -432,6 +432,7 @@ Icons::Icons()
     #ifndef ALWAYS_USE_MONO_ICONS
     if (useAwesomeIcons) {
     #endif
+        albumMonoIcon=loadAwesomeIcon(fa::dotcircleo, stdColor, stdColor);
         replacePlayQueueIcon=loadAwesomeIcon(fa::play, stdColor, stdColor);
         appendToPlayQueueIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
         centrePlayQueueOnTrackIcon=loadAwesomeIcon(Qt::RightToLeft==QApplication::layoutDirection() ? fa::chevronleft : fa::chevronright, stdColor, stdColor);
@@ -620,4 +621,11 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
         toolbarNextIcon=Icon::getMediaIcon("media-skip-forward");
     }
     #endif
+}
+
+const Icon &Icons::albumIcon(int size, bool mono) const
+{
+    return !mono || albumMonoIcon.isNull()
+                ? size<48 ? albumIconSmall : albumIconLarge
+                : albumMonoIcon;
 }

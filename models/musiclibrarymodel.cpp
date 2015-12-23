@@ -177,7 +177,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         case MusicLibraryItem::Type_Artist:
             return Icons::self()->artistIcon;
         case MusicLibraryItem::Type_Album:
-            return Icons::self()->albumIcon(32);
+            return Icons::self()->albumIcon(32, true);
         case MusicLibraryItem::Type_Song:
             return Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? Icons::self()->playlistListIcon : Icons::self()->audioListIcon;
         default:

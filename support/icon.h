@@ -44,8 +44,10 @@ class Icon : public
 public:
     #ifdef ENABLE_KDE_SUPPORT
     explicit Icon(const QString &icon) : KIcon(icon) { }
+    Icon(const QIcon &i) : KIcon(i) { }
     #else
     explicit Icon(const QString &icon) : QIcon(QIcon::fromTheme(icon)) { }
+    Icon(const QIcon &i) : QIcon(i) { }
     #endif
     Icon(const QStringList &names);
     Icon() { }

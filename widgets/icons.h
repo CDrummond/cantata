@@ -42,14 +42,15 @@ public:
     #endif
     Icon genreIcon;
     Icon artistIcon;
-    Icon & albumIcon(int size) { return size<48 ? albumIconSmall : albumIconLarge; }
+    const Icon &albumIcon(int size, bool mono=false) const;
     Icon albumIconLarge;
     Icon albumIconSmall;
+    Icon albumMonoIcon;
     Icon podcastIcon;
     Icon folderIcon;
     Icon audioFileIcon;
     Icon playlistFileIcon;
-    Icon dynamicRuleIcon; // Alsu used for Mopidy smart playlists...
+    Icon dynamicRuleIcon; // Also used for Mopidy smart playlists...
     Icon singleIcon;
     Icon consumeIcon;
     Icon repeatIcon;

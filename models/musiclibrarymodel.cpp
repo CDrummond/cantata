@@ -198,9 +198,6 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             if (MusicLibraryItem::Type_Root==song->parentItem()->itemType()) {
                 return song->song().trackAndTitleStr();
             }
-            if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
-                return song->song().artistSong();
-            }
             return song->song().trackAndTitleStr();
         }
         return item->displayData();

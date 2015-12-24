@@ -387,7 +387,7 @@ static QString ignorePrefix(const QString &str)
 {
     foreach (const QString &p, prefixesToIngore) {
         if (str.startsWith(p+QLatin1Char(' '))) {
-            return str.mid(p.length()+1);
+            return str.mid(p.length()+1)+QLatin1String(", ")+p;
         }
     }
     return QString();

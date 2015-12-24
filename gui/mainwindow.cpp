@@ -213,6 +213,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     toolbar->ensurePolished();
     toolbar->adjustSize();
+    toolbar->setFixedHeight(toolbar->height());
     coverWidget->setSize(toolbar->height());
     Icons::self()->initToolbarIcons(toolbar->palette().color(QPalette::Foreground));
     Icons::self()->initSidebarIcons();

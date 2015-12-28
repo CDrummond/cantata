@@ -599,7 +599,7 @@ bool Song::isVariousArtists(const QString &str)
 
 bool Song::diffArtist() const
 {
-    return isVariousArtists() || (!albumartist.isEmpty() && !artist.isEmpty() && albumartist!=artist);
+    return /*isVariousArtists() || */(!albumartist.isEmpty() && !artist.isEmpty() && albumartist!=artist);
 }
 
 bool Song::fixVariousArtists()

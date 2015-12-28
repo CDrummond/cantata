@@ -1026,7 +1026,6 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             StdActions::self()->addWithPriorityAction->setVisible(MPDConnection::self()->canUsePriority());
             setPriorityAction->setVisible(StdActions::self()->addWithPriorityAction->isVisible());
         }
-        updateWindowTitle();
     } else {
         libraryPage->clear();
         folderPage->clear();
@@ -1038,6 +1037,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         MPDStatus dummyStatus;
         updateStatus(&dummyStatus);
     }
+    updateWindowTitle();
     controlPlaylistActions();
 }
 
@@ -1438,7 +1438,6 @@ void MainWindow::readSettings()
     Song::setComposerGenres(Settings::self()->composerGenres());
     trayItem->setup();
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
-    updateWindowTitle();
     TreeView::setForceSingleClick(Settings::self()->forceSingleClick());
     #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     PowerManagement::self()->setInhibitSuspend(Settings::self()->inhibitSuspend());

@@ -1255,8 +1255,8 @@ static bool artistSort(const Song *s1, const Song *s2)
 
 static bool albumArtistSort(const Song *s1, const Song *s2)
 {
-    const QString v1=s1->hasAlbumArtistSort() ? s1->albumArtistSort() : s1->albumArtist();
-    const QString v2=s2->hasAlbumArtistSort() ? s2->albumArtistSort() : s2->albumArtist();
+    const QString v1=s1->hasAlbumArtistSort() ? s1->albumArtistSort() : s1->artistOrComposer();
+    const QString v2=s2->hasAlbumArtistSort() ? s2->albumArtistSort() : s2->artistOrComposer();
     int c=v1.localeAwareCompare(v2);
     return c<0 || (c==0 && (*s1)<(*s2));
 }

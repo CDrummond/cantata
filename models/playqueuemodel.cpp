@@ -78,6 +78,8 @@ static const QLatin1String constSortByAlbumArtistKey("albumartist");
 static const QLatin1String constSortByAlbumKey("album");
 static const QLatin1String constSortByGenreKey("genre");
 static const QLatin1String constSortByYearKey("year");
+static const QLatin1String constSortByComposerKey("composer");
+static const QLatin1String constSortByPerformerKey("performer");
 
 static bool checkExtension(const QString &file)
 {
@@ -265,6 +267,8 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     addSortAction(i18n("Album"), constSortByAlbumKey);
     addSortAction(i18n("Genre"), constSortByGenreKey);
     addSortAction(i18n("Year"), constSortByYearKey);
+    addSortAction(i18n("Composer"), constSortByComposerKey);
+    addSortAction(i18n("Performer"), constSortByPerformerKey);
     controlActions();
     shuffleAction->setEnabled(false);
     sortAction->setEnabled(false);
@@ -1245,6 +1249,22 @@ void PlayQueueModel::addSortAction(const QString &name, const QString &key)
     connect(action, SIGNAL(triggered()), SLOT(sortBy()));
 }
 
+static bool composerSort(const Song *s1, const Song *s2)
+{
+    const QString v1=s1->hasComposer() ? s1->composer() : QString();
+    const QString v2=s2->hasComposer() ? s2->composer() : QString();
+    int c=v1.localeAwareCompare(v2);
+    return c<0 || (c==0 && (*s1)<(*s2));
+}
+
+static bool performerSort(const Song *s1, const Song *s2)
+{
+    const QString v1=s1->hasPerformer() ? s1->performer() : QString();
+    const QString v2=s2->hasPerformer() ? s2->performer() : QString();
+    int c=v1.localeAwareCompare(v2);
+    return c<0 || (c==0 && (*s1)<(*s2));
+}
+
 static bool artistSort(const Song *s1, const Song *s2)
 {
     const QString v1=s1->hasArtistSort() ? s1->artistSort() : s1->artist;
@@ -1303,6 +1323,10 @@ void PlayQueueModel::sortBy()
             qSort(copy.begin(), copy.end(), genreSort);
         } else if (constSortByYearKey==key) {
             qSort(copy.begin(), copy.end(), yearSort);
+        } else if (constSortByComposerKey==key) {
+            qSort(copy.begin(), copy.end(), composerSort);
+        } else if (constSortByPerformerKey==key) {
+            qSort(copy.begin(), copy.end(), performerSort);
         }
         QList<quint32> positions;
         foreach (const Song *s, copy) {

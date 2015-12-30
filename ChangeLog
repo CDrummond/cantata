@@ -87,6 +87,7 @@
 64. Only use MTP device with BUSNUM and DEVNUM properties.
 65. Capitalise first letter of device name.
 66. Use flat XML to store device music listing cache.
+67. Add Composer and Performer to play queue sorts.
 
 1.5.2
 -----

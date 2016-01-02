@@ -1551,6 +1551,7 @@ void MPDConnection::loadLibrary()
 
 void MPDConnection::listFolder(const QString &folder)
 {
+    DBUG << "listFolder" << folder;
     bool topLevel="/"==folder || ""==folder;
     Response response=sendCommand(topLevel ? "lsinfo" : ("lsinfo "+encodeName(folder)));
     QStringList subFolders;

@@ -74,7 +74,6 @@ GLOBAL_STATIC(PlaylistsModel, instance)
 
 PlaylistsModel::PlaylistsModel(QObject *parent)
     : ActionModel(parent)
-    , enabled(true)
     , multiCol(false)
     #ifndef ENABLE_UBUNTU
     , itemMenu(0)
@@ -700,9 +699,7 @@ QStringList PlaylistsModel::mimeTypes() const
 
 void PlaylistsModel::getPlaylists()
 {
-    if (enabled) {
-        emit listPlaylists();
-    }
+    emit listPlaylists();
 }
 
 void PlaylistsModel::clear()
@@ -711,20 +708,6 @@ void PlaylistsModel::clear()
     clearPlaylists();
     updateItemMenu();
     endResetModel();
-}
-
-void PlaylistsModel::setEnabled(bool e)
-{
-    if (e==enabled) {
-        return;
-    }
-
-    enabled=e;
-    if (enabled) {
-        getPlaylists();
-    } else {
-        clear();
-    }
 }
 
 #ifndef ENABLE_UBUNTU
@@ -739,10 +722,6 @@ MirrorMenu * PlaylistsModel::menu()
 
 void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 {
-    if (!enabled) {
-        return;
-    }
-
     if (items.isEmpty()) {
         if (playlists.isEmpty()) {
             return;

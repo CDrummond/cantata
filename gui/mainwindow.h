@@ -260,8 +260,6 @@ private:
     void showTab(int page) { tabWidget->setCurrentIndex(page); }
     void updateNextTrack(int nextTrackId);
     void updateActionToolTips();
-    void setPlaylistsEnabled(bool e);
-    void controlPlaylistActions();
     void startContextTimer();
     int calcMinHeight();
     int calcCollapsedSize();

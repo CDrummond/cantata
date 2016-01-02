@@ -383,7 +383,6 @@ MainWindow::MainWindow(QWidget *parent)
     playlistsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     connect(playlistsTabAction, SIGNAL(triggered()), this, SLOT(showPlaylistsTab()));
-    setPlaylistsEnabled(!hiddenPages.contains(playlistsPage->metaObject()->className()));
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
     connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
@@ -1038,7 +1037,6 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         updateStatus(&dummyStatus);
     }
     updateWindowTitle();
-    controlPlaylistActions();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -2116,7 +2114,6 @@ void MainWindow::tabToggled(int index)
         folderPage->setEnabled(!folderPage->isEnabled());
         break;
     case PAGE_PLAYLISTS:
-        setPlaylistsEnabled(tabWidget->isEnabled(index));
         break;
     case PAGE_ONLINE:
         onlinePage->setEnabled(onlinePage->isEnabled());
@@ -2437,21 +2434,6 @@ void MainWindow::updateActionToolTips()
     #endif
     tabWidget->setToolTip(PAGE_SEARCH, searchTabAction->toolTip());
     tabWidget->setToolTip(PAGE_CONTEXT, songInfoAction->toolTip());
-}
-
-void MainWindow::setPlaylistsEnabled(bool e)
-{
-    PlaylistsModel::self()->setEnabled(e);
-    controlPlaylistActions();
-}
-
-void MainWindow::controlPlaylistActions()
-{
-    bool enable=!MPDConnection::self()->isMopdidy() && PlaylistsModel::self()->isEnabled();
-    StdActions::self()->addToStoredPlaylistAction->setVisible(enable);
-    StdActions::self()->savePlayQueueAction->setVisible(enable);
-    savePlayQueueButton->setVisible(enable);
-    addPlayQueueToStoredPlaylistAction->setVisible(enable);
 }
 
 void MainWindow::startContextTimer()

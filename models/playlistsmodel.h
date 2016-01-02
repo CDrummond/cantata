@@ -126,8 +126,6 @@ public:
     #endif
     void getPlaylists();
     void clear();
-    bool isEnabled() const { return enabled; }
-    void setEnabled(bool e);
     bool exists(const QString &n) { return 0!=getPlaylist(n); }
     #ifndef ENABLE_UBUNTU
     MirrorMenu * menu();
@@ -169,7 +167,6 @@ private:
 
 private:
     Icon icn;
-    bool enabled;
     bool multiCol;
     QList<PlaylistItem *> items;
     QSet<quint32> usedKeys;

@@ -88,6 +88,7 @@
 65. Capitalise first letter of device name.
 66. Use flat XML to store device music listing cache.
 67. Add Composer and Performer to play queue sorts.
+68. Always enable save to playlist actions, even if view is hidden.
 
 1.5.2
 -----

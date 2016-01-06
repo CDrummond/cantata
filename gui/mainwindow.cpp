@@ -806,6 +806,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(doDbRefreshAction, SIGNAL(triggered()), MpdLibraryModel::self(), SLOT(clearDb()));
     connect(doDbRefreshAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(update()));
     connect(doDbRefreshAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
+    connect(connectAction, SIGNAL(triggered()), this, SLOT(connectToMpd()));
     connect(StdActions::self()->prevTrackAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(goToPrevious()));
     connect(StdActions::self()->nextTrackAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(goToNext()));
     connect(StdActions::self()->playPauseTrackAction, SIGNAL(triggered()), this, SLOT(playPauseTrack()));
@@ -1115,6 +1116,7 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
 
 void MainWindow::connectToMpd()
 {
+    messageWidget->hide();
     connectToMpd(Settings::self()->connectionDetails());
 }
 

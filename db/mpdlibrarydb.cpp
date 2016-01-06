@@ -126,7 +126,12 @@ void MpdLibraryDb::connectionChanged(const MPDConnectionDetails &details)
     #ifdef CANTATA_WEB
     Q_UNUSED(details)
     #else
-    init(databaseName(details));
+    QString dbFile=databaseName(details);
+    if (dbFile!=dbFileName) {
+        init(dbFile);
+    } else {
+        emit libraryUpdated();
+    }
     #endif
 }
 

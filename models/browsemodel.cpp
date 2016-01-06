@@ -272,7 +272,7 @@ QList<Song> BrowseModel::songs(const QModelIndexList &indexes, bool allowPlaylis
 void BrowseModel::connectionChanged()
 {
     clear();
-    if (!root->isFetching()) {
+    if (!root->isFetching() && MPDConnection::self()->isConnected()) {
         dbVersion=0;
         root->setFetching(true);
         emit listFolder(root->getPath());

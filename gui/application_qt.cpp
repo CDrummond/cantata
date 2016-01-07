@@ -47,7 +47,9 @@ static void setupIconTheme(Application *app)
         if (!okThemes.contains(QIcon::themeName().toLower())) {
             QIcon::setThemeSearchPaths(QStringList() << CANTATA_SYS_ICONS_DIR << QIcon::themeSearchPaths());
             QIcon::setThemeName(QLatin1String("cantata"));
-            app->setAttribute(Qt::AA_DontShowIconsInMenus, true);
+            if (Utils::KDE!=Utils::currentDe()) {
+                app->setAttribute(Qt::AA_DontShowIconsInMenus, true);
+            }
         }
     }
 }

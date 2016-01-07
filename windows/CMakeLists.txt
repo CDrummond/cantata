@@ -50,5 +50,3 @@ install(FILES ${qt_translations} DESTINATION ${CMAKE_INSTALL_PREFIX}/translation
 
 install(FILES ${EXTRA_WIN_LIBS} DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES LICENSE.txt DESTINATION ${CMAKE_INSTALL_PREFIX} RENAME "Cantata License (GPL V3).txt")
-
-add_subdirectory(icons)

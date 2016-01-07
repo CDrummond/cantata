@@ -30,37 +30,24 @@
 #include <QDir>
 #include <QIcon>
 
-static void setupIconTheme()
+static void setupIconTheme(Application *app)
 {
-    QString cfgTheme=Settings::self()->iconTheme();
-    if (cfgTheme.isEmpty() && GtkStyle::isActive()) {
-        cfgTheme=GtkStyle::iconTheme();
-    }
-    if (!cfgTheme.isEmpty()) {
-        QIcon::setThemeName(cfgTheme);
+    QString gtkIconTheme=GtkStyle::isActive() ? GtkStyle::iconTheme() : QString();
+    if (gtkIconTheme.isEmpty()) {
+        QIcon::setThemeName(gtkIconTheme);
     }
 
-    // BUG:130 Some non-DE environments (IceWM, etc) seem to set theme to HiColor, and this has missing
-    // icons. So check for a themed icon, if the current theme does not have this - then see if oxygen
-    // or gnome icon themes are installed, and set theme to one of those.
-    if (!QIcon::hasThemeIcon("document-save-as")) {
-        QStringList themes=QStringList() << QLatin1String("oxygen") << QLatin1String("gnome");
-        QStringList prefixes=QStringList() << QLatin1String("/usr") << QLatin1String("/usr/local");
-        if (!prefixes.contains(QLatin1String(INSTALL_PREFIX))) {
-            prefixes+=QLatin1String(INSTALL_PREFIX);
-        }
-        foreach (const QString &theme, themes) {
-            foreach (const QString &prefix, prefixes) {
-                QString dir(prefix+QLatin1String("/share/icons/")+theme);
-                if (QDir(dir).exists()) {
-                    QIcon::setThemeName(theme);
-                    // Add to theme search paths, if it is not there already...
-                    if (!QIcon::themeSearchPaths().contains(prefix+QLatin1String("/share/icons"))) {
-                        QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QString(prefix+QLatin1String("/share/icons")));
-                    }
-                    return;
-                }
-            }
+    if (Utils::KDE!=Utils::currentDe() || QLatin1String("breeze")==QIcon::themeName()) {
+        QSet<QString> okThemes=QSet<QString>() << QLatin1String("oxygen")
+                                               << QLatin1String("gnome")
+                                               << QLatin1String("humanity")
+                                               << QLatin1String("ubuntu-mono-dark")
+                                               << QLatin1String("ubuntu-mono-light");
+
+        if (!okThemes.contains(QIcon::themeName().toLower())) {
+            QIcon::setThemeSearchPaths(QStringList() << CANTATA_SYS_ICONS_DIR << QIcon::themeSearchPaths());
+            QIcon::setThemeName(QLatin1String("cantata"));
+            app->setAttribute(Qt::AA_DontShowIconsInMenus, true);
         }
     }
 }
@@ -78,7 +65,7 @@ Application::Application(int &argc, char **argv)
 bool Application::start()
 {
     if (QDBusConnection::sessionBus().registerService(CANTATA_REV_URL)) {
-        setupIconTheme();
+        setupIconTheme(this);
         return true;
     }
     loadFiles();

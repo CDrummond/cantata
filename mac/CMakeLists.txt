@@ -8,5 +8,3 @@ foreach(qm ${qt_trans})
     endif (NOT ${qm} MATCHES "(${QT_TRANSLATIONS_DIR}/qt_help*)")
 endforeach(qm ${qt_trans})
 install(FILES ${qt_translations} DESTINATION ${MACOSX_BUNDLE_RESOURCES}/translations/)
-
-add_subdirectory(${CMAKE_SOURCE_DIR}/windows/icons ${CMAKE_CURRENT_BINARY_DIR}/icons)

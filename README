@@ -378,11 +378,6 @@ Under Linux, the Cantata config file will be:
 
 The following config items should be added to the "[General]" section.
 
-iconTheme=<Icon theme name>
-    For Qt-only Linux builds, this allows you to force cantata to use the
-    configured icon theme. This config is empty by default, and Cantata uses
-    the system configured icon theme.
-
 maxCoverUpdatePerIteration=<Integer>
     Non cached covers, and cached covers in albums view, are not located and
     loaded in the UI thread - as this causes lag when scrolling. A separate
@@ -483,7 +478,6 @@ seekStep=<Integer>
 
 e.g.
 [General]
-iconTheme=oxygen
 maxCoverUpdatePerIteration=10
 coverCacheSize=10
 cueFileCodecs=GBK, big5-0

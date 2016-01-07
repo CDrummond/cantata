@@ -398,7 +398,7 @@ Icons::Icons()
 
     QString iconTheme=Icon::currentTheme().toLower();
     #ifndef ALWAYS_USE_MONO_ICONS
-    bool useAwesomeIcons=GtkStyle::isActive() || QLatin1String("breeze")==iconTheme;
+    bool useAwesomeIcons=GtkStyle::isActive() || QLatin1String("cantata")==iconTheme || QLatin1String("breeze")==iconTheme;
     #endif
 
     QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"stream.png");
@@ -546,7 +546,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     QColor stdColor=calcIconColor();
     #if !defined ENABLE_UBUNTU
     #ifndef ALWAYS_USE_MONO_ICONS
-    if (GtkStyle::useSymbolicIcons() || QLatin1String("breeze")==iconTheme) {
+    if (GtkStyle::useSymbolicIcons() || QLatin1String("cantata")==iconTheme || QLatin1String("breeze")==iconTheme) {
     #endif
         bool rtl=QApplication::isRightToLeft();
         #if defined Q_OS_MAC

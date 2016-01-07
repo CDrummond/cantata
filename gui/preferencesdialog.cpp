@@ -84,7 +84,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd = new AudioCdSettings(0);
     audiocd->load();
-    addPage(QLatin1String("cd"), audiocd, i18n("Audio CD"), Icon("media-optical"), i18n("Audio CD Settings"));
+    addPage(QLatin1String("cd"), audiocd, i18n("Audio CD"), Icons::self()->albumIcon(32), i18n("Audio CD Settings"));
     #endif
     #ifdef ENABLE_PROXY_CONFIG
     proxy = new ProxySettings(0);

@@ -263,9 +263,6 @@ public:
     void saveMpris(bool v);
     void save();
     void clearVersion();
-    #ifndef ENABLE_KDE_SUPPORT
-    QString iconTheme();
-    #endif
 
     bool firstRun() const { return AP_Configured!=state; }
 

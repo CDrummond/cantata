@@ -205,13 +205,6 @@ QList<MPDConnectionDetails> Settings::allConnections()
     return connections;
 }
 
-#ifndef ENABLE_KDE_SUPPORT
-QString Settings::iconTheme()
-{
-    return cfg.get("iconTheme", QString());
-}
-#endif
-
 bool Settings::showPlaylist()
 {
     return cfg.get("showPlaylist", true);

@@ -152,6 +152,7 @@ const QString constFilename=QLatin1String("FILENAME:");
 
 Dynamic::Dynamic()
     : localTimer(0)
+    , usingRemote(false)
     , remoteTimer(0)
     , remotePollingEnabled(false)
     , statusTime(0)

@@ -89,8 +89,8 @@
 66. Use flat XML to store device music listing cache.
 67. Add Composer and Performer to play queue sorts.
 68. Always enable save to playlist actions, even if view is hidden.
-69. Use own icons for non-KDE desktops, if not using oxygen, gnome, or humanity
-    icons.
+69. For Qt-only builds - use own icons for non-KDE desktops, or if using breeze
+    icons with KDE.
 
 1.5.2
 -----

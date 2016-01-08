@@ -158,7 +158,6 @@ QString GtkStyle::readDconfSetting(const QString &setting, const QString &scheme
 }
 
 #ifndef NO_GTK_SUPPORT
-static QString iconThemeSetting;
 static QString themeNameSetting;
 #endif
 
@@ -224,41 +223,12 @@ QString GtkStyle::themeName()
     #endif
 }
 
-QString GtkStyle::iconTheme()
-{
-    #ifdef NO_GTK_SUPPORT
-    return QString();
-    #else
-    if (iconThemeSetting.isEmpty()) {
-        static bool read=false;
-
-        if (!read) {
-            read=true;
-            iconThemeSetting=readDconfSetting(QLatin1String("icon-theme"));
-            if (iconThemeSetting.isEmpty() && Utils::Unity==Utils::currentDe()) {
-                iconThemeSetting=QLatin1String("ubuntu-mono-dark");
-            }
-        }
-    }
-    return iconThemeSetting;
-    #endif
-}
-
 extern void GtkStyle::setThemeName(const QString &n)
 {
     #ifdef NO_GTK_SUPPORT
     Q_UNUSED(n)
     #else
     themeNameSetting=n;
-    #endif
-}
-
-extern void GtkStyle::setIconTheme(const QString &n)
-{
-    #ifdef NO_GTK_SUPPORT
-    Q_UNUSED(n)
-    #else
-    iconThemeSetting=n;
     #endif
 }
 

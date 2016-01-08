@@ -788,6 +788,9 @@ void CoverDownloader::jobFinished()
                     img.img=img.img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                 }
                 img.fileName=saveImg(job, img.img, data);
+                if (!img.fileName.isEmpty()) {
+                    clearScaledCache(job.song);
+                }
             }
 
             if (job.song.isArtistImageRequest()) {

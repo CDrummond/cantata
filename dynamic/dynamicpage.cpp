@@ -126,7 +126,7 @@ void DynamicPage::remoteDynamicSupport(bool s)
     remoteRunningLabel->setVisible(!s);
     enableWidgets(s);
     #endif
-    view->setBackgroundImage(s ? Icon("applications-internet") : Icon());
+    view->setBackgroundImage(s ? Icon(QStringList() << "network-server-database.svg" << "applications-internet") : Icon());
 }
 
 void DynamicPage::add()

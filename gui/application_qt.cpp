@@ -23,7 +23,6 @@
 
 #include "application_qt.h"
 #include "settings.h"
-#include "support/gtkstyle.h"
 #include "config.h"
 #include <QDBusConnection>
 #include <QDBusMessage>
@@ -32,24 +31,11 @@
 
 static void setupIconTheme(Application *app)
 {
-    QString gtkIconTheme=GtkStyle::isActive() ? GtkStyle::iconTheme() : QString();
-    if (gtkIconTheme.isEmpty()) {
-        QIcon::setThemeName(gtkIconTheme);
-    }
-
     if (Utils::KDE!=Utils::currentDe() || QLatin1String("breeze")==QIcon::themeName()) {
-        QSet<QString> okThemes=QSet<QString>() << QLatin1String("oxygen")
-                                               << QLatin1String("gnome")
-                                               << QLatin1String("humanity")
-                                               << QLatin1String("ubuntu-mono-dark")
-                                               << QLatin1String("ubuntu-mono-light");
-
-        if (!okThemes.contains(QIcon::themeName().toLower())) {
-            QIcon::setThemeSearchPaths(QStringList() << CANTATA_SYS_ICONS_DIR << QIcon::themeSearchPaths());
-            QIcon::setThemeName(QLatin1String("cantata"));
-            if (Utils::KDE!=Utils::currentDe()) {
-                app->setAttribute(Qt::AA_DontShowIconsInMenus, true);
-            }
+        QIcon::setThemeSearchPaths(QStringList() << CANTATA_SYS_ICONS_DIR << QIcon::themeSearchPaths());
+        QIcon::setThemeName(QLatin1String("cantata"));
+        if (Utils::KDE!=Utils::currentDe()) {
+            app->setAttribute(Qt::AA_DontShowIconsInMenus, true);
         }
     }
 }

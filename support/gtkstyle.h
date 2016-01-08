@@ -25,10 +25,10 @@
 #define GTKSTYLE_H
 
 #include <QStyleOption>
+#include <QString>
+
 class QPainter;
 class QWidget;
-
-#include <QString>
 
 namespace GtkStyle
 {
@@ -36,9 +36,7 @@ namespace GtkStyle
     extern bool isActive();
     extern void drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity);
     extern QString themeName();
-    extern QString iconTheme();
     extern void setThemeName(const QString &n);
-    extern void setIconTheme(const QString &n);
     extern bool thinScrollbars();
     extern void applyTheme(QWidget *widget);
     extern void registerWidget(QWidget *widget);

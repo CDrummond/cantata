@@ -379,7 +379,7 @@ static QIcon loadAwesomeIcon(int ch, const QColor &std, const QColor &highlight,
     return QtAwesome::self()->icon(ch, options);
 }
 
-#if defined Q_OS_MAC || defined Q_OS_WIN
+#if !defined ENABLE_KDE_SUPPORT || defined Q_OS_MAC || defined Q_OS_WIN
 #define ALWAYS_USE_MONO_ICONS
 #endif
 
@@ -396,8 +396,8 @@ Icons::Icons()
     menuIcon=createMenuIcon(stdColor);
     #endif
 
-    QString iconTheme=Icon::currentTheme().toLower();
     #ifndef ALWAYS_USE_MONO_ICONS
+    QString iconTheme=Icon::currentTheme().toLower();
     bool useAwesomeIcons=GtkStyle::isActive() || QLatin1String("cantata")==iconTheme || QLatin1String("breeze")==iconTheme;
     #endif
 

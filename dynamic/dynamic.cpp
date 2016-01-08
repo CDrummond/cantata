@@ -930,8 +930,8 @@ void Dynamic::remoteDynamicSupported(bool s)
             remoteTimer->stop();
         }
         loadLocal();
-        #ifndef Q_OS_WIN
-        emit error(i18n("Communication with the remote dynamizer has been lost, reverting to local mode."));
-        #endif
+//        #ifndef Q_OS_WIN
+//        emit error(i18n("Communication with the remote dynamizer has been lost, reverting to local mode."));
+//        #endif
     }
 }

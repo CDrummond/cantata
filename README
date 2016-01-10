@@ -643,9 +643,7 @@ Linux Qt4 and Windows builds, as of 1.2, now also support basic media-keys
 shortcuts.
 
 Linux Qt4 and Qt5 builds can also use the GNOME settings daemon's MediaKeys
-interface. This interface is normally started automatically under GNOME/Unity
-- and you will also need to enable the setting in the shortcuts page of
-Cantata's configuration dialog (as of v1.1 this option is enabled by default)
+interface. This interface is normally started automatically under GNOME/Unity.
 
 
 11. Dynamic Helper Script - Local Mode

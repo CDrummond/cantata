@@ -396,11 +396,6 @@ Icons::Icons()
     menuIcon=createMenuIcon(stdColor);
     #endif
 
-    #ifndef ALWAYS_USE_MONO_ICONS
-    QString iconTheme=Icon::currentTheme().toLower();
-    bool useAwesomeIcons=GtkStyle::isActive() || QLatin1String("cantata")==iconTheme || QLatin1String("breeze")==iconTheme;
-    #endif
-
     QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"stream.png");
     if (QFile::exists(iconFile)) {
         streamIcon.addFile(iconFile);
@@ -429,91 +424,57 @@ Icons::Icons()
 
     lastFmIcon=loadAwesomeIcon(fa::lastfmsquare, red, red, 1.1);
 
-    #ifndef ALWAYS_USE_MONO_ICONS
-    if (useAwesomeIcons) {
+    albumMonoIcon=loadAwesomeIcon(fa::dotcircleo, stdColor, stdColor);
+    replacePlayQueueIcon=loadAwesomeIcon(fa::play, stdColor, stdColor);
+    appendToPlayQueueIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
+    centrePlayQueueOnTrackIcon=loadAwesomeIcon(Qt::RightToLeft==QApplication::layoutDirection() ? fa::chevronleft : fa::chevronright, stdColor, stdColor);
+    savePlayQueueIcon=loadAwesomeIcon(fa::save, stdColor, stdColor);
+    clearListIcon=loadAwesomeIcon(fa::remove, red, red);
+    addNewItemIcon=loadAwesomeIcon(fa::plussquare, stdColor, stdColor);
+    editIcon=loadAwesomeIcon(fa::edit, stdColor, stdColor);
+    removeDynamicIcon=loadAwesomeIcon(fa::minussquare, stdColor, stdColor);
+    stopDynamicIcon=loadAwesomeIcon(fa::stop, red, red);
+    searchIcon=loadAwesomeIcon(fa::search, stdColor, stdColor);
+    addToFavouritesIcon=loadAwesomeIcon(fa::heart, red, red);
+    reloadIcon=loadAwesomeIcon(fa::repeat, stdColor, stdColor);
+    configureIcon=loadAwesomeIcon(fa::cogs, stdColor, stdColor);
+    connectIcon=loadAwesomeIcon(fa::chevrondown, stdColor, stdColor);
+    disconnectIcon=loadAwesomeIcon(fa::eject, stdColor, stdColor);
+    downloadIcon=loadAwesomeIcon(fa::download, stdColor, stdColor);
+    removeIcon=loadAwesomeIcon(fa::minus, red, red);
+    addIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
+    addBookmarkIcon=loadAwesomeIcon(fa::bookmark, stdColor, stdColor);
+    audioListIcon=loadAwesomeIcon(fa::music, stdColor, stdColor);
+    playlistListIcon=loadAwesomeIcon(fa::list, stdColor, stdColor, 1.05);
+    dynamicListIcon=loadAwesomeIcon(fa::cube, stdColor, stdColor);
+    rssListIcon=loadAwesomeIcon(fa::rss, stdColor, stdColor);
+    savedRssListIcon=loadAwesomeIcon(fa::rsssquare, stdColor, stdColor);
+    clockIcon=loadAwesomeIcon(fa::clocko, stdColor, stdColor);
+    folderListIcon=loadAwesomeIcon(fa::foldero, stdColor, stdColor);
+    streamListIcon=audioListIcon;
+    streamCategoryIcon=folderListIcon;
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    httpStreamIcon=loadAwesomeIcon(fa::headphones, stdColor, stdColor);
     #endif
-        albumMonoIcon=loadAwesomeIcon(fa::dotcircleo, stdColor, stdColor);
-        replacePlayQueueIcon=loadAwesomeIcon(fa::play, stdColor, stdColor);
-        appendToPlayQueueIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
-        centrePlayQueueOnTrackIcon=loadAwesomeIcon(Qt::RightToLeft==QApplication::layoutDirection() ? fa::chevronleft : fa::chevronright, stdColor, stdColor);
-        savePlayQueueIcon=loadAwesomeIcon(fa::save, stdColor, stdColor);
-        clearListIcon=loadAwesomeIcon(fa::remove, red, red);
-        addNewItemIcon=loadAwesomeIcon(fa::plussquare, stdColor, stdColor);
-        editIcon=loadAwesomeIcon(fa::edit, stdColor, stdColor);
-        removeDynamicIcon=loadAwesomeIcon(fa::minussquare, stdColor, stdColor);
-        stopDynamicIcon=loadAwesomeIcon(fa::stop, red, red);
-        searchIcon=loadAwesomeIcon(fa::search, stdColor, stdColor);
-        addToFavouritesIcon=loadAwesomeIcon(fa::heart, red, red);
-        reloadIcon=loadAwesomeIcon(fa::repeat, stdColor, stdColor);
-        configureIcon=loadAwesomeIcon(fa::cogs, stdColor, stdColor);
-        connectIcon=loadAwesomeIcon(fa::chevrondown, stdColor, stdColor);
-        disconnectIcon=loadAwesomeIcon(fa::eject, stdColor, stdColor);
-        downloadIcon=loadAwesomeIcon(fa::download, stdColor, stdColor);
-        removeIcon=loadAwesomeIcon(fa::minus, red, red);
-        addIcon=loadAwesomeIcon(fa::plus, stdColor, stdColor);
-        addBookmarkIcon=loadAwesomeIcon(fa::bookmark, stdColor, stdColor);
-        audioListIcon=loadAwesomeIcon(fa::music, stdColor, stdColor);
-        playlistListIcon=loadAwesomeIcon(fa::list, stdColor, stdColor, 1.05);
-        dynamicListIcon=loadAwesomeIcon(fa::cube, stdColor, stdColor);
-        rssListIcon=loadAwesomeIcon(fa::rss, stdColor, stdColor);
-        savedRssListIcon=loadAwesomeIcon(fa::rsssquare, stdColor, stdColor);
-        clockIcon=loadAwesomeIcon(fa::clocko, stdColor, stdColor);
-        folderListIcon=loadAwesomeIcon(fa::foldero, stdColor, stdColor);
-        streamListIcon=audioListIcon;
-        streamCategoryIcon=folderListIcon;
-        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-        httpStreamIcon=loadAwesomeIcon(fa::headphones, stdColor, stdColor);
-        #endif
-        #ifndef Q_OS_MAC
-        Icon::setStd(Icon::Close, loadAwesomeIcon(fa::close, red, red));
-        #endif
-        leftIcon=loadAwesomeIcon(fa::chevronleft, stdColor, stdColor);
-        rightIcon=loadAwesomeIcon(fa::chevronright, stdColor, stdColor);
-        upIcon=loadAwesomeIcon(fa::chevronup, stdColor, stdColor);
-        downIcon=loadAwesomeIcon(fa::chevrondown, stdColor, stdColor);
-        #ifndef ENABLE_KDE_SUPPORT
-        PathRequester::setIcon(folderListIcon);
-        #endif
-        cancelIcon=loadAwesomeIcon(fa::close, red, red);
-    #ifndef ALWAYS_USE_MONO_ICONS
-    } else {
-        replacePlayQueueIcon=Icon("media-playback-start");
-        appendToPlayQueueIcon=Icon("list-add");
-        centrePlayQueueOnTrackIcon=Icon(Qt::RightToLeft==QApplication::layoutDirection() ? "go-previous" : "go-next");
-        savePlayQueueIcon=Icon("document-save-as");
-        clearListIcon=Icon(QStringList() << "edit-clear-list" << "gtk-delete");
-        addNewItemIcon=Icon("document-new");
-        editIcon=Icon(QStringList() << "document-edit" << "text-editor" << "gtk-edit");
-        removeDynamicIcon=Icon("list-remove");
-        stopDynamicIcon=Icon("process-stop");
-        searchIcon=Icon("edit-find");
-        //addToFavouritesIcon; SET IN streamsmodel.cpp
-        reloadIcon=Icon("view-refresh");
-        configureIcon=Icon(QStringList() << "configure" << "gtk-preferences");
-        connectIcon=Icon(QStringList() << "dialog-ok" << "gtk-stock-ok" << "go-bottom");
-        disconnectIcon=Icon("media-eject");
-        downloadIcon=Icon(QStringList() << "document-import" << "down");
-        removeIcon=Icon("list-remove");
-        addIcon=Icon("list-add");
-        addBookmarkIcon=Icon("bookmark-new");
-        playlistListIcon=playlistFileIcon;
-        dynamicListIcon=dynamicRuleIcon;
-        audioListIcon=rssListIcon=audioFileIcon;
-        savedRssListIcon=Icon("document-save-as");
-        clockIcon=Icon("clock");
-        folderListIcon=folderIcon;
-        streamCategoryIcon=Icon(QStringList() << "folder-music" << "inode-directory");
-        streamListIcon=radioStreamIcon;
-        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-        httpStreamIcon=speakerIcon;
-        #endif
-        leftIcon=Icon("go-previous");
-        rightIcon=Icon("go-next");
-        upIcon=Icon("go-up");
-        downIcon=Icon("go-down");
-        cancelIcon=Icon(QStringList() << "dialog-cancel" << "gtk-cancel");
-    }
+    #ifndef Q_OS_MAC
+    Icon::setStd(Icon::Close, loadAwesomeIcon(fa::close, red, red));
     #endif
+    leftIcon=loadAwesomeIcon(fa::chevronleft, stdColor, stdColor);
+    rightIcon=loadAwesomeIcon(fa::chevronright, stdColor, stdColor);
+    upIcon=loadAwesomeIcon(fa::chevronup, stdColor, stdColor);
+    downIcon=loadAwesomeIcon(fa::chevrondown, stdColor, stdColor);
+    #ifndef ENABLE_KDE_SUPPORT
+    PathRequester::setIcon(folderListIcon);
+    #endif
+    cancelIcon=loadAwesomeIcon(fa::close, red, red);
+
+    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    if (QLatin1String("gnome")==QIcon::themeName()) {
+        QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
+        contextIcon=loadSidebarIcon("info", col, col);
+    } else
+    #endif
+        contextIcon=Icon(QStringList() << "dialog-information" << "information");
 }
 
 void Icons::initSidebarIcons()
@@ -539,86 +500,29 @@ void Icons::initSidebarIcons()
 
 void Icons::initToolbarIcons(const QColor &toolbarText)
 {
-    #ifdef USE_SYSTEM_MENU_ICON
-    Q_UNUSED(toolbarText)
-    #endif
-    QString iconTheme=Icon::currentTheme().toLower();
     QColor stdColor=calcIconColor();
-    #if !defined ENABLE_UBUNTU
-    #ifndef ALWAYS_USE_MONO_ICONS
-    if (GtkStyle::useSymbolicIcons() || QLatin1String("cantata")==iconTheme || QLatin1String("breeze")==iconTheme) {
+    bool rtl=QApplication::isRightToLeft();
+    #if defined Q_OS_MAC
+    QColor col=OSXStyle::self()->monoIconColor();
+    #elif defined Q_OS_WIN
+    QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
+    #else
+    QColor col=toolbarText;
     #endif
-        bool rtl=QApplication::isRightToLeft();
-        #if defined Q_OS_MAC
-        QColor col=OSXStyle::self()->monoIconColor();
-        #elif defined Q_OS_WIN
-        QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
-        #else
-        QColor col=GtkStyle::symbolicColor();
-        #endif
-        toolbarPrevIcon=loadMediaIcon(QLatin1String(rtl ? "next" : "prev"), col, col);
-        toolbarPlayIcon=loadMediaIcon(QLatin1String(rtl ? "play-rtl" : "play"), col, col);
-        toolbarPauseIcon=loadMediaIcon(QLatin1String("pause"), col, col);
-        toolbarStopIcon=loadMediaIcon(QLatin1String("stop"), col, col);
-        toolbarNextIcon=loadMediaIcon(QLatin1String(rtl ? "prev" : "next"), col, col);
-        infoIcon=loadSidebarIcon("info", col, col);
-        #ifdef USE_SYSTEM_MENU_ICON
-        toolbarMenuIcon=loadMonoSvgIcon(QLatin1String("menu"), QLatin1String("icon"), col, col);
-        menuIcon=loadMonoSvgIcon(QLatin1String("menu"), QLatin1String("icon"), stdColor, stdColor);
-        #else
-        if (col==stdColor) {
-            toolbarMenuIcon=menuIcon;
-        } else {
-            toolbarMenuIcon=createMenuIcon(col);
-        }
-        #endif
-    #ifndef ALWAYS_USE_MONO_ICONS
-    } else
-    #endif
-    #endif
-    {
-        #ifdef USE_SYSTEM_MENU_ICON
+    toolbarPrevIcon=loadMediaIcon(QLatin1String(rtl ? "next" : "prev"), col, col);
+    toolbarPlayIcon=loadMediaIcon(QLatin1String(rtl ? "play-rtl" : "play"), col, col);
+    toolbarPauseIcon=loadMediaIcon(QLatin1String("pause"), col, col);
+    toolbarStopIcon=loadMediaIcon(QLatin1String("stop"), col, col);
+    toolbarNextIcon=loadMediaIcon(QLatin1String(rtl ? "prev" : "next"), col, col);
+    infoIcon=loadSidebarIcon("info", col, col);
+    #ifdef USE_SYSTEM_MENU_ICON
+    toolbarMenuIcon=loadMonoSvgIcon(QLatin1String("menu"), QLatin1String("icon"), col, col);
+    menuIcon=loadMonoSvgIcon(QLatin1String("menu"), QLatin1String("icon"), stdColor, stdColor);
+    #else
+    if (col==stdColor) {
         toolbarMenuIcon=menuIcon;
-        #else
-        if (toolbarText==stdColor) {
-            toolbarMenuIcon=menuIcon;
-        } else {
-            toolbarMenuIcon=createMenuIcon(toolbarText);
-        }
-        #endif
-        if (QLatin1String("gnome")==iconTheme) {
-            QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
-            infoIcon=loadSidebarIcon("info", col, col);
-        }
-    }
-
-    if (infoIcon.isNull()) {
-        infoIcon=Icon(QStringList() << "dialog-information" << "information");
-    }
-
-    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
-    if (QLatin1String("gnome")==iconTheme) {
-        QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
-        contextIcon=loadSidebarIcon("info", col, col);
-    } else
-    #endif
-        contextIcon=Icon(QStringList() << "dialog-information" << "information");
-
-    #ifndef ALWAYS_USE_MONO_ICONS
-    if (toolbarPrevIcon.isNull()) {
-        toolbarPrevIcon=Icon::getMediaIcon("media-skip-backward");
-    }
-    if (toolbarPlayIcon.isNull()) {
-        toolbarPlayIcon=Icon::getMediaIcon("media-playback-start");
-    }
-    if (toolbarPauseIcon.isNull()) {
-        toolbarPauseIcon=Icon::getMediaIcon("media-playback-pause");
-    }
-    if (toolbarStopIcon.isNull()) {
-        toolbarStopIcon=Icon::getMediaIcon("media-playback-stop");
-    }
-    if (toolbarNextIcon.isNull()) {
-        toolbarNextIcon=Icon::getMediaIcon("media-skip-forward");
+    } else {
+        toolbarMenuIcon=createMenuIcon(col);
     }
     #endif
 }

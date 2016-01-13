@@ -459,15 +459,11 @@ MainWindow::MainWindow(QWidget *parent)
         controlIconSize=playbackIconSize=32;
         controlButtonSize=36;
         playPauseIconSize=48;
-    } else if (QLatin1String("oxygen")!=Icon::currentTheme().toLower() || (GtkStyle::isActive() && GtkStyle::useSymbolicIcons())) {
-        // Oxygen does not have 24x24 icons, and media players seem to use scaled 28x28 icons...
-        // But, if the theme does have media icons at 24x24 use these - as they will be sharper...
+    } else {
         playbackIconSize=24==Icons::self()->toolbarPlayIcon.actualSize(QSize(24, 24)).width() ? 24 : 28;
     }
     #ifdef USE_SYSTEM_MENU_ICON
-    if (GtkStyle::isActive() && GtkStyle::useSymbolicIcons()) {
-        controlIconSize=22==controlIconSize ? 16 : 32==controlIconSize ? 22 : 32;
-    }
+    controlIconSize=22==controlIconSize ? 16 : 32==controlIconSize ? 22 : 32;
     #endif
     stopTrackButton->setHideMenuIndicator(true);
     int playbackButtonSize=28==playbackIconSize ? 34 : controlButtonSize;

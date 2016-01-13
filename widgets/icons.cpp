@@ -507,7 +507,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     #elif defined Q_OS_WIN
     QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
     #else
-    QColor col=toolbarText;
+    QColor col=GtkStyle::isActive() ? GtkStyle::symbolicColor() : toolbarText;
     #endif
     toolbarPrevIcon=loadMediaIcon(QLatin1String(rtl ? "next" : "prev"), col, col);
     toolbarPlayIcon=loadMediaIcon(QLatin1String(rtl ? "play-rtl" : "play"), col, col);

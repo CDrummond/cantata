@@ -32,7 +32,7 @@
     </widget>
    </item>
    <item row="0" column="3">
-    <widget class="FlatToolButton" name="configureButton">
+    <widget class="MenuButton" name="configureButton">
      <property name="toolTip">
       <string>Configure</string>
      </property>
@@ -54,7 +54,12 @@
    <extends>QLineEdit</extends>
    <header>support/lineedit.h</header>
   </customwidget>
-  </customwidgets>
+  <customwidget>
+   <class>MenuButton</class>
+   <extends>QToolButton</extends>
+   <header>widgets/menubutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

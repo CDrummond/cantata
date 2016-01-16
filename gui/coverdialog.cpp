@@ -390,7 +390,7 @@ CoverDialog::CoverDialog(QWidget *parent)
     list->setMinimumSize((list->gridSize().width()*3)+style()->pixelMetric(QStyle::PM_ScrollBarExtent)+spacing, list->gridSize().height()*2);
     list->setSortingEnabled(false);
 
-    addFileButton->setIcon(Icon("document-open"));
+    addFileButton->setIcon(Icons::self()->folderListIcon);
     addFileButton->setAutoRaise(true);
 
     configureButton->setIcon(Icons::self()->configureIcon);

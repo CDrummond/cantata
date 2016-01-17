@@ -820,10 +820,9 @@ endif (NOT ENABLE_UBUNTU)
 
 add_subdirectory(support)
 add_subdirectory(3rdparty/qtiocompressor)
-add_subdirectory(3rdparty/QtAwesome)
 add_subdirectory(streams/icons)
 add_subdirectory(online/icons)
-target_link_libraries(cantata support-core qtiocompressor qtawesome ${CANTATA_LIBS} ${QTLIBS} ${ZLIB_LIBRARIES})
+target_link_libraries(cantata support-core qtiocompressor ${CANTATA_LIBS} ${QTLIBS} ${ZLIB_LIBRARIES})
 
 # enable warnings
 add_definitions(-DQT_NO_DEBUG_OUTPUT)

@@ -1,25 +1,40 @@
+/*
+ * Cantata
+ *
+ * Copyright (c) 2011-2016 Craig Drummond <craig.p.drummond@gmail.com>
+ *
+ * ----
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
+ */
+
+#ifndef MONO_ICON_H
+#define MONO_ICON_H
+
+#include <QIcon>
+
 /**
- * QtAwesome - use font-awesome (or other font icons) in your c++ / Qt Application
+ * This enum is taken from QtAwesome:
  *
  * MIT Licensed
  *
  * Copyright 2013-2015 - Reliable Bits Software by Blommers IT. All Rights Reserved.
  * Author Rick Blommers
  */
-
-#ifndef QTAWESOME_H
-#define QTAWESOME_H
-
-#include <QIcon>
-#include <QIconEngine>
-#include <QPainter>
-#include <QRect>
-#include <QVariantMap>
-
-
-/// A list of all icon-names with the codepoint (unicode-value) on the right
-/// You can use the names on the page  http://fortawesome.github.io/Font-Awesome/design.html
-namespace fa {
+namespace FontAwesome {
   enum icon {
     adjust                  =           0xf042,
     adn                     =           0xf170,
@@ -617,30 +632,10 @@ namespace fa {
   };
 }
 
-
-
-//---------------------------------------------------------------------------------------
-
-class QtAwesomeIconPainter;
-
-class QtAwesome
+namespace MonoIcon
 {
-    QtAwesome();
-    virtual ~QtAwesome();
-
-public:
-    static QtAwesome * self();
-
-    void setDefaultOption( const QString& name, const QVariant& value  );
-    QVariant defaultOption( const QString& name );
-
-    QIcon icon( int character, const QVariantMap& options = QVariantMap() );
-    QFont font( int size );
-
-private:
-    QString fontName_;                                     ///< The font name used for this map
-    QVariantMap defaultOptions_;                           ///< The default icon options
-    QtAwesomeIconPainter* fontIconPainter_;                ///< A special painter fo painting codepoints
+    QIcon icon(const QString &fileName, const QColor &col, const QColor &sel);
+    QIcon icon(const FontAwesome::icon icon, const QColor &col, const QColor &sel);
 };
 
-#endif // QTAWESOME_H
+#endif // MonoIcon_H

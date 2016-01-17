@@ -14,9 +14,10 @@ add_library(support-core STATIC ${SUPPORT_CORE_MOC_SRCS} ${SUPPORT_CORE_SRCS})
 if (NOT ENABLE_UBUNTU AND NOT ENABLE_WEB)
     set (SUPPORT_SRCS icon.cpp fancytabwidget.cpp messagewidget.cpp buddylabel.cpp action.cpp actioncollection.cpp lineedit.cpp
          configuration.cpp gtkstyle.cpp spinner.cpp messagebox.cpp inputdialog.cpp thread.cpp squeezedtextlabel.cpp proxystyle.cpp
-         touchproxystyle.cpp pagewidget.cpp combobox.cpp configdialog.cpp)
+         touchproxystyle.cpp pagewidget.cpp combobox.cpp configdialog.cpp monoicon.cpp)
 
     set(SUPPORT_MOC_HDRS fancytabwidget.h messagewidget.h inputdialog.h pagewidget.h action.h actioncollection.h configdialog.h)
+    set(SUPPORT_RCS fontawesome.qrc)
 
     if (ENABLE_TOUCH_SUPPORT)
         set(SUPPORT_SRCS ${SUPPORT_SRCS} flickcharm.cpp)
@@ -74,8 +75,10 @@ if (NOT ENABLE_UBUNTU AND NOT ENABLE_WEB)
 
     if (ENABLE_QT5)
         qt5_wrap_cpp(SUPPORT_MOC_SRCS ${SUPPORT_MOC_HDRS})
+        qt5_add_resources(SUPPORT_RC_SRCS ${SUPPORT_RCS})
     else (ENABLE_QT5)
         qt4_wrap_cpp(SUPPORT_MOC_SRCS ${SUPPORT_MOC_HDRS})
+        qt4_add_resources(SUPPORT_RC_SRCS ${SUPPORT_RCS})
     endif (ENABLE_QT5)
 
     add_library(support STATIC ${SUPPORT_MOC_SRCS} ${SUPPORT_SRCS} ${SUPPORT_UI_HDRS} ${SUPPORT_RC_SRCS})

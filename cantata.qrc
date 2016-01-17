@@ -11,22 +11,14 @@
 <file alias="shuffle24.png">icons/view-media-shuffle24.png</file>
 <file alias="shuffle32.png">icons/view-media-shuffle32.png</file>
 
-<file alias="sidebar-library-dark">icons/sidebar-library-dark.svg</file>
-<file alias="sidebar-devices-dark">icons/sidebar-devices-dark.svg</file>
-<file alias="sidebar-folders-dark">icons/sidebar-folders-dark.svg</file>
-<file alias="sidebar-info-dark">icons/sidebar-info-dark.svg</file>
-<file alias="sidebar-online-dark">icons/sidebar-online-dark.svg</file>
-<file alias="sidebar-playlists-dark">icons/sidebar-playlists-dark.svg</file>
-<file alias="sidebar-playqueue-dark">icons/sidebar-playqueue-dark.svg</file>
-<file alias="sidebar-search-dark">icons/sidebar-search-dark.svg</file>
-<file alias="sidebar-library-light">icons/sidebar-library-light.svg</file>
-<file alias="sidebar-devices-light">icons/sidebar-devices-light.svg</file>
-<file alias="sidebar-folders-light">icons/sidebar-folders-light.svg</file>
-<file alias="sidebar-info-light">icons/sidebar-info-light.svg</file>
-<file alias="sidebar-online-light">icons/sidebar-online-light.svg</file>
-<file alias="sidebar-playlists-light">icons/sidebar-playlists-light.svg</file>
-<file alias="sidebar-playqueue-light">icons/sidebar-playqueue-light.svg</file>
-<file alias="sidebar-search-light">icons/sidebar-search-light.svg</file>
+<file alias="sidebar-library">icons/sidebar-library.svg</file>
+<file alias="sidebar-devices">icons/sidebar-devices.svg</file>
+<file alias="sidebar-folders">icons/sidebar-folders.svg</file>
+<file alias="sidebar-info">icons/sidebar-info.svg</file>
+<file alias="sidebar-online">icons/sidebar-online.svg</file>
+<file alias="sidebar-playlists">icons/sidebar-playlists.svg</file>
+<file alias="sidebar-playqueue">icons/sidebar-playqueue.svg</file>
+<file alias="sidebar-search">icons/sidebar-search.svg</file>
 
 <file alias="soundcloud">online/icons/soundcloud.svg</file>
 <file alias="jamendo">online/icons/jamendo.svg</file>
@@ -43,6 +35,7 @@
 
 <file alias="album.svg">icons/media-optical.svg</file>
 <file alias="album32.svg">icons/media-optical32.svg</file>
+<file alias="mono-album.svg">icons/view-media-album.svg</file>
 <file alias="artist.svg">icons/view-media-artist.svg</file>
 <file alias="genre.svg">icons/view-media-genre.svg</file>
 <file alias="radio16.png">icons/view-radiostream16.png</file>

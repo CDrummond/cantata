@@ -119,7 +119,7 @@ public:
         }
         if (QIcon::Disabled==mode) {
             painter->save();
-            painter->setOpacity(painter->opacity()*0.4);
+            painter->setOpacity(painter->opacity()*0.35);
         }
         painter->drawPixmap(rect.topLeft(), pix);
         if (QIcon::Disabled==mode) {

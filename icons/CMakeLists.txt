@@ -55,7 +55,9 @@ if (NOT WIN32 AND NOT APPLE)
 
 endif (NOT WIN32 AND NOT APPLE)
 
-add_subdirectory(theme)
+if (NOT ENABLE_KDE_SUPPORT)
+    add_subdirectory(theme)
+endif (NOT ENABLE_KDE_SUPPORT)
 
 #if (APPLE)
 #    install(FILES trayicon-mono-dark.svg DESTINATION ${CANTATA_ICON_INSTALL_PREFIX}/scalable/apps RENAME cantata-panel.svg)

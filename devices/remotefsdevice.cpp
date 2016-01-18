@@ -215,7 +215,11 @@ RemoteFsDevice::RemoteFsDevice(MusicLibraryModel *m, const DeviceOptions &option
 //    details.path=Utils::fixPath(details.path);
     load();
     mount();
-    icn=Icon(details.isLocalFile() ? "inode-directory" : (constSshfsProtocol==details.url.scheme() ? "utilities-terminal" : "network-server"));
+    icn=details.isLocalFile()
+            ? Icon("inode-directory")
+            : constSshfsProtocol==details.url.scheme()
+                ? Icon(QStringList() << "folder-network" << "utilities-terminal")
+                : Icon(QStringList() << "folder-samba" << "network-server");
 }
 
 RemoteFsDevice::RemoteFsDevice(MusicLibraryModel *m, const Details &d)

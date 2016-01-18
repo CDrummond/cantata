@@ -1335,6 +1335,7 @@ MtpDevice::MtpDevice(MusicLibraryModel *m, Solid::Device &dev, unsigned int busN
         DBUG << "setName" << opts.name;
         setData(opts.name);
     }
+    icn=Icon("multimedia-player");
 }
 
 MtpDevice::~MtpDevice()

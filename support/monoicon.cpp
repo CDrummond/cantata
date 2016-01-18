@@ -88,6 +88,11 @@ public:
                     if (!Utils::isHighDpi()) {
                         scale=1.05;
                     }
+                    break;
+                case FontAwesome::folder:
+                case FontAwesome::foldero:
+                    scale=0.9;
+                    break;
                 default:
                     break;
                 }

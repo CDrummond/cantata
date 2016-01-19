@@ -115,6 +115,7 @@ public:
                 #endif
                 font.setPixelSize(pixelSize);
                 font.setStyleStrategy(QFont::PreferAntialias);
+                font.setHintingPreference(QFont::PreferFullHinting);
                 p.setFont(font);
                 p.setPen(col);
                 p.setRenderHint(QPainter::Antialiasing, true);

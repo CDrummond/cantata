@@ -100,13 +100,24 @@ public:
                 }
 
                 QFont font(fontName);
-                font.setPixelSize(qRound(rect.height()*scale));
+                int pixelSize=qRound(rect.height()*scale);
                 if (FontAwesome::ex_one==fontAwesomeIcon) {
                     font.setBold(true);
                 }
+                #ifdef Q_OS_WIN
+                else {
+                    if (pixelSize>=12 && pixelSize<=16) {
+                        pixelSize=14;
+                    } else if (pixelSize>=24 && pixelSize<=32) {
+                        pixelSize=28;
+                    }
+                }
+                #endif
+                font.setPixelSize(pixelSize);
+                font.setStyleStrategy(QFont::PreferAntialias);
                 p.setFont(font);
                 p.setPen(col);
-                p.setRenderHint(QPainter::HighQualityAntialiasing, true);
+                p.setRenderHint(QPainter::Antialiasing, true);
                 if (FontAwesome::ex_one==fontAwesomeIcon) {
                     QString str=QString::number(fontAwesomeIcon);
                     p.drawText(QRect(0, 0, rect.width(), rect.height()), str, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));

@@ -131,7 +131,7 @@ Icons::Icons()
     addToFavouritesIcon=MonoIcon::icon(FontAwesome::heart, red, red);
     reloadIcon=MonoIcon::icon(FontAwesome::repeat, stdColor, stdColor);
     configureIcon=MonoIcon::icon(FontAwesome::cogs, stdColor, stdColor);
-    connectIcon=MonoIcon::icon(FontAwesome::chevrondown, stdColor, stdColor);
+    connectIcon=MonoIcon::icon(FontAwesome::plug, stdColor, stdColor);
     disconnectIcon=MonoIcon::icon(FontAwesome::eject, stdColor, stdColor);
     downloadIcon=MonoIcon::icon(FontAwesome::download, stdColor, stdColor);
     removeIcon=MonoIcon::icon(FontAwesome::minus, red, red);

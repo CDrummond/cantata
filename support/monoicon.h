@@ -36,6 +36,8 @@
  */
 namespace FontAwesome {
   enum icon {
+    ex_one                  =           0x0001,
+
     adjust                  =           0xf042,
     adn                     =           0xf170,
     aligncenter             =           0xf037,

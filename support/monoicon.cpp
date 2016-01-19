@@ -64,40 +64,59 @@ public:
             QPainter p(&pix);
 
             if (fileName.isEmpty()) {
-                // Load fontawesome, if it is not already loaded
-                if (fontAwesomeFontName.isEmpty()) {
-                    Q_INIT_RESOURCE(fontawesome);
-                    QFile res(":fontawesome-4.3.0.ttf");
-                    res.open(QIODevice::ReadOnly);
-                    QByteArray fontData( res.readAll() );
-                    res.close();
+                QString fontName;
+                double scale=0.9;
+                if (FontAwesome::ex_one==fontAwesomeIcon) {
+                    fontName="serif";
+                } else {
+                    // Load fontawesome, if it is not already loaded
+                    if (fontAwesomeFontName.isEmpty()) {
+                        Q_INIT_RESOURCE(fontawesome);
+                        QFile res(":fontawesome-4.3.0.ttf");
+                        res.open(QIODevice::ReadOnly);
+                        QByteArray fontData( res.readAll() );
+                        res.close();
 
-                    QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFontFromData(fontData));
-                    if (!loadedFontFamilies.empty()) {
-                        fontAwesomeFontName= loadedFontFamilies.at(0);
+                        QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFontFromData(fontData));
+                        if (!loadedFontFamilies.empty()) {
+                            fontAwesomeFontName= loadedFontFamilies.at(0);
+                        }
                     }
-                }
-                double scale=1.0;
 
-                switch (fontAwesomeIcon) {
-                case FontAwesome::lastfmsquare:
-                case FontAwesome::lastfm:
-                    scale=1.1;
-                    break;
-                case FontAwesome::list:
-                    if (!Utils::isHighDpi()) {
-                        scale=1.05;
+                    switch (fontAwesomeIcon) {
+                    case FontAwesome::lastfmsquare:
+                    case FontAwesome::lastfm:
+                        scale=1.1;
+                        break;
+                    case FontAwesome::list:
+                        if (!Utils::isHighDpi()) {
+                            scale=1.05;
+                        }
+                        break;
+                    default:
+                        break;
                     }
-                default:
-                    scale=0.9;
-                    break;
+                    fontName=fontAwesomeFontName;
                 }
 
-                QFont font(fontAwesomeFontName);
+                QFont font(fontName);
                 font.setPixelSize(qRound(rect.height()*scale));
+                if (FontAwesome::ex_one==fontAwesomeIcon) {
+                    font.setBold(true);
+                }
                 p.setFont(font);
                 p.setPen(col);
-                p.drawText(QRect(0, 0, rect.width(), rect.height()), QString(QChar(static_cast<int>(fontAwesomeIcon))), QTextOption(Qt::AlignCenter|Qt::AlignVCenter));
+                p.setRenderHint(QPainter::HighQualityAntialiasing, true);
+                if (FontAwesome::ex_one==fontAwesomeIcon) {
+                    QString str=QString::number(fontAwesomeIcon);
+                    p.drawText(QRect(0, 0, rect.width(), rect.height()), str, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+                    p.drawText(QRect(1, 0, rect.width(), rect.height()), str, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+                    #ifndef Q_OS_MAC
+                    p.drawText(QRect(-1, 0, rect.width(), rect.height()), str, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+                    #endif
+                } else {
+                    p.drawText(QRect(0, 0, rect.width(), rect.height()), QString(QChar(static_cast<int>(fontAwesomeIcon))), QTextOption(Qt::AlignCenter|Qt::AlignVCenter));
+                }
             } else {
                 QSvgRenderer renderer;
                 QFile f(fileName);

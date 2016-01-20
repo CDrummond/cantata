@@ -97,16 +97,14 @@ public:
                 int pixelSize=qRound(rect.height()*scale);
                 if (FontAwesome::ex_one==fontAwesomeIcon) {
                     font.setBold(true);
-                }
-                #ifdef Q_OS_WIN
-                else {
-                    if (pixelSize>=12 && pixelSize<=16) {
+                } else if (!Utils::isHighDpi()) {
+                    if (pixelSize>=12 && pixelSize<=16 && rect.height()>14) {
                         pixelSize=14;
-                    } else if (pixelSize>=24 && pixelSize<=32) {
+                    } else if (pixelSize>=24 && pixelSize<=32 && rect.height()>28) {
                         pixelSize=28;
                     }
                 }
-                #endif
+
                 font.setPixelSize(pixelSize);
                 font.setStyleStrategy(QFont::PreferAntialias);
                 font.setHintingPreference(QFont::PreferFullHinting);

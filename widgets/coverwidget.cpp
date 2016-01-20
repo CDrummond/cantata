@@ -125,7 +125,11 @@ public:
             #endif
             pen.setJoinStyle(Qt::MiterJoin);
             p.setPen(pen);
+            #ifdef Q_OS_MAC
+            p.drawRect(r.adjusted(1, 1, -1, -2));
+            #else
             p.drawRect(r.adjusted(1, 1, -1, -1));
+            #endif
         }
     }
 

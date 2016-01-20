@@ -685,7 +685,7 @@ bool Settings::showMenubar()
 int Settings::menu()
 {
     #if defined Q_OS_WIN
-    int def=MC_Button;
+    int def=MC_Button|MC_Bar;
     #elif defined Q_OS_MAC
     int def=MC_Bar;
     #else

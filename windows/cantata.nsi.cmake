@@ -127,6 +127,8 @@ section "install"
     file "sqldrivers\qsqlite.dll"
     setOutPath $INSTDIR\platforms
     file "platforms\qwindows.dll"
+    setOutPath $INSTDIR\fonts
+    file "fonts\fontawesome-4.3.0.ttf"
     setOutPath $INSTDIR\icons
     file "icons\bbc.svg"
     file "icons\cbc.svg"
@@ -253,6 +255,7 @@ section "uninstall"
     delete "$INSTDIR\iconengines\qsvgicon.dll"
     delete "$INSTDIR\sqldrivers\qsqlite4.dll"
     delete "$INSTDIR\sqldrivers\qsqlite.dll"
+    delete "$INSTDIR\fonts\fontawesome-4.3.0.ttf"
     delete "$INSTDIR\icons\bbc.svg"
     delete "$INSTDIR\icons\cbc.svg"
     delete "$INSTDIR\icons\npr.svg"
@@ -610,6 +613,7 @@ section "uninstall"
     rmDir $INSTDIR\helpers
     rmDir $INSTDIR\iconengines
     rmDir $INSTDIR\sqldrivers
+    rmDir $INSTDIR\fonts
 
     rmDir $INSTDIR\icons\cantata\128
     rmDir $INSTDIR\icons\cantata\64

@@ -125,11 +125,7 @@ public:
             #endif
             pen.setJoinStyle(Qt::MiterJoin);
             p.setPen(pen);
-            #ifdef Q_OS_MAC
-            p.drawRect(r.adjusted(1, 1, -1, -2));
-            #else
             p.drawRect(r.adjusted(1, 1, -1, -1));
-            #endif
         }
     }
 
@@ -140,11 +136,9 @@ public:
             return;
         }
         int size=height();
-        #ifndef Q_OS_MAC
         if (style()->pixelMetric(QStyle::PM_ToolBarFrameWidth)==0) {
             size-=constBorder*2;
         }
-        #endif
         #if QT_VERSION >= 0x050100
         double pixRatio=1.0;
         if (Settings::self()->retinaSupport()) {
@@ -199,9 +193,6 @@ CoverWidget::~CoverWidget()
 
 void CoverWidget::setSize(int min)
 {
-    #ifdef Q_OS_MAC
-    min*=0.9;
-    #endif
     label->setFixedSize(min, min);
 }
 

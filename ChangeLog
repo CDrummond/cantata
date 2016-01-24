@@ -1,3 +1,6 @@
+2.1.0
+-----
+
 2.0.0
 -----
  1. Use SQLite database to cache MPD library.

@@ -138,22 +138,15 @@ section "install"
     file "icons\cantata\index.theme"
     file "icons\cantata\LICENSE"
     file "icons\cantata\AUTHORS"
-    setOutPath $INSTDIR\icons\cantata\128
-    file "icons\cantata\128\media-optical.png"
     setOutPath $INSTDIR\icons\cantata\64
-    file "icons\cantata\64\media-optical.png"
     file "icons\cantata\64\cantata.png"
     setOutPath $INSTDIR\icons\cantata\48
-    file "icons\cantata\48\media-optical.png"
     file "icons\cantata\48\cantata.png"
     setOutPath $INSTDIR\icons\cantata\32
-    file "icons\cantata\32\media-optical.png"
     file "icons\cantata\32\cantata.png"
     setOutPath $INSTDIR\icons\cantata\22
-    file "icons\cantata\22\media-optical.png"
     file "icons\cantata\22\cantata.png"
     setOutPath $INSTDIR\icons\cantata\16
-    file "icons\cantata\16\media-optical.png"
     file "icons\cantata\16\cantata.png"
     setOutPath $INSTDIR\icons\cantata\svg
     file "icons\cantata\svg\audio-x-generic.svg"

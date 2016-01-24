@@ -87,6 +87,11 @@ public:
                             scale=1.05;
                         }
                         break;
+                    case FontAwesome::bars:
+                        if (rect.height()>18 && !Utils::isHighDpi()) {
+                            scale=0.95;
+                        }
+                        break;
                     default:
                         break;
                     }
@@ -115,7 +120,7 @@ public:
                     QString str=QString::number(fontAwesomeIcon);
                     p.drawText(QRect(0, 0, rect.width(), rect.height()), str, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
                     p.drawText(QRect(1, 0, rect.width(), rect.height()), str, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
-                    #ifndef Q_OS_MAC
+                    #if !defined Q_OS_MAC && !defined Q_OS_WIN
                     p.drawText(QRect(-1, 0, rect.width(), rect.height()), str, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
                     #endif
                 } else {

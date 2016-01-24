@@ -120,9 +120,6 @@ public:
                     QString str=QString::number(fontAwesomeIcon);
                     p.drawText(QRect(0, 0, rect.width(), rect.height()), str, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
                     p.drawText(QRect(1, 0, rect.width(), rect.height()), str, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
-                    #if !defined Q_OS_MAC && !defined Q_OS_WIN
-                    p.drawText(QRect(-1, 0, rect.width(), rect.height()), str, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
-                    #endif
                 } else {
                     p.drawText(QRect(0, 0, rect.width(), rect.height()), QString(QChar(static_cast<int>(fontAwesomeIcon))), QTextOption(Qt::AlignCenter|Qt::AlignVCenter));
                 }

@@ -214,7 +214,9 @@ MainWindow::MainWindow(QWidget *parent)
     toolbar->ensurePolished();
     toolbar->adjustSize();
     coverWidget->setSize(toolbar->height());
-    toolbar->setFixedHeight(toolbar->height()+2);
+    nowPlaying->ensurePolished();
+    nowPlaying->adjustSize();
+    nowPlaying->setFixedHeight(nowPlaying->height());
     Icons::self()->initToolbarIcons(toolbar->palette().color(QPalette::Foreground));
     Icons::self()->initSidebarIcons();
 

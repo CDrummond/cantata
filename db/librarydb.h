@@ -46,9 +46,12 @@ public:
     static const QLatin1String constNullGenre;
 
     enum AlbumSort {
-        AS_Album,
-        AS_Artist,
-        AS_Year,
+        AS_AlArYr,
+        AS_AlYrAr,
+        AS_ArAlYr,
+        AS_ArYrAl,
+        AS_YrAlAr,
+        AS_YrArAl,
         AS_Modified,
 
         AS_Count
@@ -116,8 +119,8 @@ public:
     void insertSong(const Song &s);
     QList<Genre> getGenres();
     QList<Artist> getArtists(const QString &genre=QString());
-    QList<Album> getAlbums(const QString &artistId=QString(), const QString &genre=QString(), AlbumSort sort=AS_Year);
-    QList<Song> getTracks(const QString &artistId, const QString &albumId, const QString &genre=QString(), AlbumSort sort=AS_Year, bool useFilter=true);
+    QList<Album> getAlbums(const QString &artistId=QString(), const QString &genre=QString(), AlbumSort sort=AS_YrAlAr);
+    QList<Song> getTracks(const QString &artistId, const QString &albumId, const QString &genre=QString(), AlbumSort sort=AS_YrAlAr, bool useFilter=true);
     QList<Song> getTracks(int rowFrom, int count);
     int trackCount();
     #ifndef CANTATA_WEB

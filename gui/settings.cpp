@@ -739,6 +739,13 @@ bool Settings::mpris()
     return cfg.get("mpris", true);
 }
 
+#ifdef Q_OS_LINUX
+bool Settings::useStandardIcons()
+{
+    return cfg.get("useStandardIcons", false);
+}
+#endif
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

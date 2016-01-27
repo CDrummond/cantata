@@ -3,6 +3,9 @@
 1. Re-add all album sorts from Cantata 1.x
 2. Try to detect DLNA streams (e.g. when using upmpdcli), and show as regular
    albums in grouped view.
+3. Add option to use user's configured icon theme, and not Cantata's supplied
+   theme. Option needs to be manually set in config file. See README for
+   details.
 
 2.0.0
 -----

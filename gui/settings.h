@@ -161,6 +161,9 @@ public:
     bool retinaSupport();
     QSet<QString> ignorePrefixes();
     bool mpris();
+    #ifdef Q_OS_LINUX
+    bool useStandardIcons();
+    #endif
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

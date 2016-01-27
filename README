@@ -476,6 +476,11 @@ seekStep=<Integer>
     Configure seek time when Ctrl+Arrow keys is used.
     Default is 5. (Values 2..60 are acceptable)
 
+useStandardIcons=<Boolean>
+    If set to true, then Cantata will use icons from the user's configured icon
+    theme, and not its own icons.
+    Default is false.
+
 e.g.
 [General]
 maxCoverUpdatePerIteration=10
@@ -490,7 +495,7 @@ menu=3
 stopHttpStreamOnPause=true
 cacheScaledCovers=true
 seekStep=5
-
+useStandardIcons=true
 
 8. CUE Files
 ============

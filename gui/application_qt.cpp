@@ -32,8 +32,10 @@
 static void setupIconTheme(Application *app)
 {
     if (Utils::KDE!=Utils::currentDe() || QLatin1String("breeze")==QIcon::themeName()) {
-        QIcon::setThemeSearchPaths(QStringList() << CANTATA_SYS_ICONS_DIR << QIcon::themeSearchPaths());
-        QIcon::setThemeName(QLatin1String("cantata"));
+        if (!Settings::self()->useStandardIcons()) {
+            QIcon::setThemeSearchPaths(QStringList() << CANTATA_SYS_ICONS_DIR << QIcon::themeSearchPaths());
+            QIcon::setThemeName(QLatin1String("cantata"));
+        }
         if (Utils::KDE!=Utils::currentDe()) {
             app->setAttribute(Qt::AA_DontShowIconsInMenus, true);
         }

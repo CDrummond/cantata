@@ -317,7 +317,7 @@ void NowPlayingWidget::update(const Song &song)
     if (song.isEmpty()) {
         track->setText(" ");
         artist->setText(" ");
-    } else if (song.isStream() && !song.isCantataStream() && !song.isCdda()) {
+    } else if (song.isStream() && !song.isCantataStream() && !song.isCdda() && !song.isDlnaStream()) {
         track->setText(name.isEmpty() ? Song::unknown() : name);
         if (song.artist.isEmpty() && song.title.isEmpty() && !name.isEmpty()) {
             artist->setText(i18n("(Stream)"));

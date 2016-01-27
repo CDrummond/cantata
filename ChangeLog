@@ -1,6 +1,8 @@
 2.1.0
 -----
 1. Re-add all album sorts from Cantata 1.x
+2. Try to detect DLNA streams (e.g. when using upmpdcli), and show as regular
+   albums in grouped view.
 
 2.0.0
 -----

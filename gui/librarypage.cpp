@@ -69,12 +69,15 @@ LibraryPage::LibraryPage(QWidget *p)
 
     showArtistImagesAction=new QAction(i18n("Show Artist Images"), this);
     showArtistImagesAction->setCheckable(true);
-    libraryAlbumSortAction=createMenuGroup(i18n("Sort Albums"), QList<MenuItem>() << MenuItem(i18n("Name"), LibraryDb::AS_Album)
-                                                                                  << MenuItem(i18n("Year"), LibraryDb::AS_Year),
+    libraryAlbumSortAction=createMenuGroup(i18n("Sort Albums"), QList<MenuItem>() << MenuItem(i18n("Name"), LibraryDb::AS_AlArYr)
+                                                                                  << MenuItem(i18n("Year"), LibraryDb::AS_YrAlAr),
                                            MpdLibraryModel::self()->libraryAlbumSort(), this, SLOT(libraryAlbumSortChanged()));
-    albumAlbumSortAction=createMenuGroup(i18n("Sort Albums"), QList<MenuItem>() << MenuItem(i18n("Name"), LibraryDb::AS_Album)
-                                                                                << MenuItem(i18n("Artist"), LibraryDb::AS_Artist)
-                                                                                << MenuItem(i18n("Year"), LibraryDb::AS_Year)
+    albumAlbumSortAction=createMenuGroup(i18n("Sort Albums"), QList<MenuItem>() << MenuItem(i18n("Album, Artist, Year"), LibraryDb::AS_AlArYr)
+                                                                                << MenuItem(i18n("Album, Year, Artist"), LibraryDb::AS_AlYrAr)
+                                                                                << MenuItem(i18n("Artist, Album, Year"), LibraryDb::AS_ArAlYr)
+                                                                                << MenuItem(i18n("Artist, Year, Album"), LibraryDb::AS_ArYrAl)
+                                                                                << MenuItem(i18n("Year, Album, Artist"), LibraryDb::AS_YrAlAr)
+                                                                                << MenuItem(i18n("Year, Artist, Album"), LibraryDb::AS_YrArAl)
                                                                                 << MenuItem(i18n("Modified Date"), LibraryDb::AS_Modified),
                                          MpdLibraryModel::self()->albumAlbumSort(), this, SLOT(albumAlbumSortChanged()));
 

@@ -77,8 +77,8 @@ SqlLibraryModel::SqlLibraryModel(LibraryDb *d, QObject *p, Type top)
     , tl(top)
     , root(0)
     , db(d)
-    , librarySort(LibraryDb::AS_Year)
-    , albumSort(LibraryDb::AS_Album)
+    , librarySort(LibraryDb::AS_YrAlAr)
+    , albumSort(LibraryDb::AS_AlArYr)
 {
     connect(db, SIGNAL(libraryUpdated()), SLOT(libraryUpdated()));
     #if defined ENABLE_MODEL_TEST
@@ -525,7 +525,7 @@ QSet<QString> SqlLibraryModel::getArtists() const
 
 QList<Song> SqlLibraryModel::getAlbumTracks(const QString &artistId, const QString &albumId) const
 {
-    return db->getTracks(artistId, albumId, QString(), LibraryDb::AS_Artist, false);
+    return db->getTracks(artistId, albumId, QString(), LibraryDb::AS_ArAlYr, false);
 }
 
 QList<Song> SqlLibraryModel::songs(const QStringList &files, bool allowPlaylists) const

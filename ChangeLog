@@ -7,6 +7,10 @@
    theme. Option needs to be manually set in config file. See README for
    details.
 
+2.0.1
+-----
+1. Delay creation of Jamendo and Magnatune DBs until required.
+
 2.0.0
 -----
  1. Use SQLite database to cache MPD library.

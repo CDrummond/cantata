@@ -34,6 +34,7 @@ public:
     OnlineDb(const QString &serviceName, QObject *p=0);
     ~OnlineDb();
 
+    void create();
     QString getCoverUrl(const QString &artistId, const QString &albumId);
     int getStats();
 

@@ -32,13 +32,19 @@ OnlineDb::OnlineDb(const QString &serviceName, QObject *p)
     , insertCoverQuery(0)
     , getCoverQuery(0)
 {
-    init(Utils::dataDir(subDir, true)+serviceName+".sql");
-    createTable("covers(artistId text, albumId text, url text)");
-    createTable("stats(artists integer)");
 }
 
 OnlineDb::~OnlineDb()
 {
+}
+
+void OnlineDb::create()
+{
+    if (!db) {
+        init(Utils::dataDir(subDir, true)+dbName+".sql");
+        createTable("covers(artistId text, albumId text, url text)");
+        createTable("stats(artists integer)");
+    }
 }
 
 void OnlineDb::startUpdate()

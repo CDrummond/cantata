@@ -101,12 +101,16 @@ QVariant OnlineDbService::data(const QModelIndex &index, int role) const
 
 bool OnlineDbService::previouslyDownloaded() const
 {
+    // Create DB, if it does not already exist
+    static_cast<OnlineDb *>(db)->create();
     return 0!=db->getCurrentVersion();
 }
 
 void OnlineDbService::open()
 {
     if (0==rowCount(QModelIndex())) {
+        // Create DB, if it does not already exist
+        static_cast<OnlineDb *>(db)->create();
         libraryUpdated();
         updateStats();
     }
@@ -181,6 +185,8 @@ void OnlineDbService::downloadFinished()
     }
 
     if (reply->ok()) {
+        // Ensure DB is created
+        static_cast<OnlineDb *>(db)->create();
         updateStatus(i18n("Parsing music list...."));
         OnlineXmlParser *parser=createParser();
         db->clear();

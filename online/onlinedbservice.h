@@ -65,6 +65,7 @@ public:
     OnlineDbService(LibraryDb *d, QObject *p);
     virtual ~OnlineDbService() { }
 
+    void createDb();
     QVariant data(const QModelIndex &index, int role) const;
     bool previouslyDownloaded() const;
     bool isDownloading() { return 0!=job; }

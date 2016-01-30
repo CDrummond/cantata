@@ -22,6 +22,7 @@
  */
 
 #include "icons.h"
+#include "gui/settings.h"
 #include "support/globalstatic.h"
 #include "support/utils.h"
 #include "support/pathrequester.h"
@@ -195,6 +196,21 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
 {
     QColor stdColor=calcIconColor();
     bool rtl=QApplication::isRightToLeft();
+
+    #ifdef Q_OS_LINUX
+    if (Settings::self()->useStandardIcons()) {
+        toolbarPrevIcon=Icon::getMediaIcon("media-skip-backward");
+        toolbarPlayIcon=Icon::getMediaIcon("media-playback-start");
+        toolbarPauseIcon=Icon::getMediaIcon("media-playback-pause");
+        toolbarStopIcon=Icon::getMediaIcon("media-playback-stop");
+        toolbarNextIcon=Icon::getMediaIcon("media-skip-forward");
+        infoIcon=Icon("dialog-information");
+        toolbarMenuIcon=Icon("applications-system");
+        menuIcon=MonoIcon::icon(QLatin1String(":menu-icon"), stdColor, stdColor);
+        return;
+    }
+    #endif
+
     #if defined Q_OS_MAC
     QColor col=OSXStyle::self()->monoIconColor();
     #elif defined Q_OS_WIN

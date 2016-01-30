@@ -197,6 +197,22 @@ void TableView::saveHeader()
     }
 }
 
+void TableView::scrollTo(const QModelIndex &index, ScrollHint hint)
+{
+    QHeaderView *hdr=header();
+
+    // scrollTo does not work if column hidden, so find first one that is not.
+    if (hdr && hdr->isSectionHidden(index.column())) {
+        for (int i=0; i<model()->columnCount(); ++i) {
+            if (!hdr->isSectionHidden(i)) {
+                TreeView::scrollTo(model()->index(index.row(), i, index.parent()), hint);
+                return;
+            }
+        }
+    }
+    TreeView::scrollTo(index, hint);
+}
+
 void TableView::showMenu(const QPoint &pos)
 {
     menuIsForCol=header()->logicalIndexAt(pos);

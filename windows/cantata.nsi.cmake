@@ -162,6 +162,9 @@ section "install"
     file "icons\cantata\svg\playlist.svg"
     file "icons\cantata\svg\preferences-desktop-keyboard.svg"
     file "icons\cantata\svg\preferences-other.svg"
+    @CANTATA_PROXY_ICON_INSTALL@
+    @CANTATA_DEVICES_ICON_INSTALL@
+    @CANTATA_REMOTE_DEVICES_ICON_INSTALL@
     file "icons\cantata\svg\speaker.svg"
     file "icons\cantata\svg\cantata.svg"
     setOutPath $INSTDIR\icons\cantata\svg64
@@ -290,6 +293,16 @@ section "uninstall"
     delete "$INSTDIR\icons\cantata\svg\preferences-other.svg"
     delete "$INSTDIR\icons\cantata\svg\speaker.svg"
     delete "$INSTDIR\icons\cantata\svg\cantata.svg"
+
+    # Proxy icon
+    delete "$INSTDIR\icons\cantata\svg\preferences-system-network.svg"
+    # Device icons
+    delete "$INSTDIR\icons\cantata\svg\drive-removable-media-usb-pendrive.svg"
+    delete "$INSTDIR\icons\cantata\svg\multimedia-player.svg"
+    # Remote device icons
+    delete "$INSTDIR\icons\cantata\svg\folder-network.svg"
+    delete "$INSTDIR\icons\cantata\svg\folder-samba.svg"
+
     delete "$INSTDIR\icons\cantata\svg64\dialog-error.svg"
     delete "$INSTDIR\icons\cantata\svg64\dialog-information.svg"
     delete "$INSTDIR\icons\cantata\svg64\dialog-question.svg"

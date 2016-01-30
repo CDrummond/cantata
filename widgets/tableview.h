@@ -36,6 +36,7 @@ public:
     void setModel(QAbstractItemModel *m);
     void initHeader();
     void saveHeader();
+    virtual void scrollTo(const QModelIndex &index, ScrollHint hint);
 
 private Q_SLOTS:
     void showMenu(const QPoint &pos);

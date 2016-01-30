@@ -17,6 +17,10 @@ svg64/dialog-question.svg
 svg64/dialog-warning.svg
 )
 
+if (ENABLE_PROXY_CONFIG)
+    set(ICON_FILES svg/preferences-system-network.svg ${ICON_FILES})
+endif (ENABLE_PROXY_CONFIG)
+
 if (ENABLE_DEVICES_SUPPORT)
     set(ICON_FILES svg/drive-removable-media-usb-pendrive.svg svg/multimedia-player.svg ${ICON_FILES})
     if (ENABLE_REMOTE_DEVICES)

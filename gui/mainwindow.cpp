@@ -173,7 +173,6 @@ MainWindow::MainWindow(QWidget *parent)
     QPoint p=pos();
     ActionCollection::setMainWidget(this);
     trayItem=new TrayItem(this);
-    UNITY_MENU_ICON_CHECK
     #ifdef QT_QTDBUS_FOUND
     new CantataAdaptor(this);
     QDBusConnection::sessionBus().registerObject("/cantata", this);
@@ -210,6 +209,8 @@ MainWindow::MainWindow(QWidget *parent)
     GtkStyle::applyTheme(topToolBar); // Despite its name, it *might* also apply touch style to spinboxes...
     toolbar=topToolBar;
     #endif // Q_OS_WIN
+
+    UNITY_MENU_ICON_CHECK
 
     toolbar->ensurePolished();
     toolbar->adjustSize();

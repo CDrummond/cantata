@@ -4,6 +4,7 @@
 2. Fix 'Scroll to current track' in table style play queue if track number
    column is hidden.
 3. Add icon for proxy config - if proxy settings enabled.
+4. Fix possibly missing save play queue icon.
 
 2.0.0
 -----

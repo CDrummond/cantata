@@ -1,6 +1,8 @@
 2.0.1
 -----
 1. Delay creation of Jamendo and Magnatune DBs until required.
+2. Fix 'Scroll to current track' in table style play queue if track number
+   column is hidden.
 
 2.0.0
 -----

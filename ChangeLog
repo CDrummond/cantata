@@ -5,6 +5,7 @@
    column is hidden.
 3. Add icon for proxy config - if proxy settings enabled.
 4. Fix possibly missing save play queue icon.
+5. Install pre-rendered PNG icons for Linux builds.
 
 2.0.0
 -----

@@ -566,7 +566,7 @@ bool Settings::forceSingleClick()
 
 bool Settings::startHidden()
 {
-    return cfg.get("startHidden", false);
+    return useSystemTray() ? cfg.get("startHidden", false) : false;
 }
 
 bool Settings::showTimeRemaining()

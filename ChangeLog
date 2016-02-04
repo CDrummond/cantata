@@ -8,6 +8,7 @@
 5. Install pre-rendered PNG icons for Linux builds.
 6. Use last.fm 2.0 API for finding similar artists in dynamic playlists.
 7. Fix listing of CUE files.
+8. Only honour 'startHidden' setting if also configured to use system tray.
 
 2.0.0
 -----

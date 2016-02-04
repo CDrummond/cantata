@@ -221,29 +221,22 @@ sub lockFile() {
 $lastArtistSearch="";
 @artistSearchResults=();
 
+$api_key="5a854b839b10f8d46e630e8287c2299b";
+
 # Query LastFM for artists similar to supplied artist
 sub querySimilarArtists() {
     my $artist=uri_escape(shift);
     if ($artist ne $lastArtistSearch) {
         @artistSearchResults=();
-#         my $text = get 'http://ws.audioscrobbler.com/1.0/artist/'.$artist.'/similar.txt';
-#         my $artistNum=0;
-#         open(my $fileHandle, '<', \$text);
-#         if (tell($fileHandle) != -1) {
-#             my @lines = <$fileHandle>; # Read into an array...
-            @lines=`wget \'http://ws.audioscrobbler.com/1.0/artist/${artist}/similar.txt\' -O -`;
-            foreach my $line (@lines) {
-                @parts = split(/,/, $line);
-                if (3==scalar(@parts)) {
-                    my $artist=$parts[2];
-                    $artist =~ s/&amp;/&/g;
-                    $artist =~ s/\n//g;
-                    $artistSearchResults[$artistNum]=$artist;
-                    $artistNum++;
-                }
-            }
-#         }
-#         close($fileHandle);
+        @artists=`wget "https://ws.audioscrobbler.com/2.0/?method=artist.getSimilar&api_key=${api_key}&artist=${artist}&format=xml&limit=50" -O - | grep "<artist><name>" | grep -v "similarartists artist"`;
+        foreach my $artist (@artists) {
+            $artist =~ s/<artist><name>//g;
+            $artist =~ s/<\/name>//g;
+            $artist =~ s/&amp;/&/g;
+            $artist =~ s/\n//g;
+            $artistSearchResults[$artistNum]=$artist;
+            $artistNum++;
+        }
     }
 }
 

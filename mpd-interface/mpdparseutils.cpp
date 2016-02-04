@@ -560,13 +560,14 @@ MPDParseUtils::MessageMap MPDParseUtils::parseMessages(const QByteArray &data)
 }
 #endif
 
-void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, const QString &dir, QStringList &subDirs, Location loc)
+void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songList, const QString &dir, QStringList &subDirs, Location loc)
 {
     QList<QByteArray> currentItem;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
     bool parsePlaylists="/"!=dir && ""!=dir;
     bool setSingleTracks=parsePlaylists && singleTracksFolders.contains(dir) && Loc_Browse!=loc;
+    QList<Song> songs;
 
     for (int i = 0; i < amountOfLines; i++) {
         const QByteArray &line=lines.at(i);
@@ -746,6 +747,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
             }
         }
     }
+    songList+=songs;
 }
 
 QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)

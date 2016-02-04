@@ -6,6 +6,7 @@
 3. Add icon for proxy config - if proxy settings enabled.
 4. Fix possibly missing save play queue icon.
 5. Install pre-rendered PNG icons for Linux builds.
+6. Use last.fm 2.0 API for finding similar artists in dynamic playlists.
 
 2.0.0
 -----

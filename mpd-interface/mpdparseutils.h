@@ -84,7 +84,7 @@ namespace MPDParseUtils
     typedef QMap<QByteArray, QStringList> MessageMap;
     extern MessageMap parseMessages(const QByteArray &data);
     #endif
-    extern void parseDirItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songs, const QString &dir, QStringList &subDirs, Location loc);
+    extern void parseDirItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songList, const QString &dir, QStringList &subDirs, Location loc);
     extern QList<Output> parseOuputs(const QByteArray &data);
     extern QByteArray parseSticker(const QByteArray &data, const QByteArray &sticker);
     extern QString addStreamName(const QString &url, const QString &name);

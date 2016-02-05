@@ -73,6 +73,7 @@ FolderPage::FolderPage(QWidget *p)
     view->addAction(StdActions::self()->deleteSongsAction);
     #endif
     view->setModel(&model);
+    view->closeSearch();
     connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
 }
 

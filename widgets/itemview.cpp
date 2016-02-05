@@ -1254,6 +1254,13 @@ void ItemView::setPermanentSearch()
     searchWidget->setPermanent();
 }
 
+void ItemView::hideSearch()
+{
+    if (searchVisible()) {
+        searchWidget->close();
+    }
+}
+
 void ItemView::setSearchCategories(const QList<SearchWidget::Category> &categories)
 {
     searchWidget->setCategories(categories);

@@ -9,6 +9,8 @@
 6. Use last.fm 2.0 API for finding similar artists in dynamic playlists.
 7. Fix listing of CUE files.
 8. Only honour 'startHidden' setting if also configured to use system tray.
+9. Folder page nolonger has a search field - so if upgrading from a 1.x
+   config with folder search visible, then hide it.
 
 2.0.0
 -----

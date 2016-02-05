@@ -140,6 +140,7 @@ public:
     bool isAnimated() const;
     void setAnimated(bool a);
     void setPermanentSearch();
+    void hideSearch();
     void setSearchCategories(const QList<SearchWidget::Category> &categories);
     void setSearchCategory(const QString &id);
     void setSearchResetLevel(int l) { searchResetLevel=l; }

@@ -279,7 +279,7 @@ if (ENABLE_QT5)
     set(QTINCLUDES ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS} ${Qt5Concurrent_INCLUDE_DIRS}
                    ${Qt5Svg_INCLUDE_DIRS} ${Qt5Sql_INCLUDE_DIRS})
     add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5Network_DEFINITIONS} ${Qt5Xml_DEFINITIONS} ${Qt5Concurrent_DEFINITIONS} ${Qt5Svg_DEFINITIONS} ${Qt5Sql_DEFINITIONS})
-    set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
     if (NOT ENABLE_UBUNTU AND NOT APPLE AND NOT WIN32)
         # Does Ubuntu/Touch version need DBus?
         find_package(Qt5DBus)

@@ -34,6 +34,7 @@
 #include <QMetaType>
 #include "config.h"
 #include "support/utils.h"
+#include "cuefile.h"
 
 struct Song
 {
@@ -204,6 +205,7 @@ struct Song
     bool isCdda() const { return Cdda==type; }
     QString albumKey() const;
     bool isCueFile() const { return Playlist==type && file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive); }
+    bool isFromCue() const { return CueFile::isCue(file); }
     QString basicArtist() const;
     QString filePath() const { return decodePath(file, isCdda()); }
     QString displayAlbum() const { return displayAlbum(album, year); }

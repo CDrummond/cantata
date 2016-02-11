@@ -579,7 +579,7 @@ QList<Song> SqlLibraryModel::songs(const QModelIndex &idx, bool allowPlaylists) 
         }
     } else {
         const Item *i=static_cast<const Item *>(idx.internalPointer());
-        if (i && T_Track==i->getType() && (allowPlaylists || Song::Playlist!=i->getSong().type)) {
+        if (i && T_Track==i->getType() && (allowPlaylists || (Song::Playlist!=i->getSong().type && !i->getSong().isFromCue()))) {
             Song s(i->getSong());
             list.append(fixPath(s));
         }

@@ -1,16 +1,17 @@
 2.0.1
 -----
-1. Delay creation of Jamendo and Magnatune DBs until required.
-2. Fix 'Scroll to current track' in table style play queue if track number
-   column is hidden.
-3. Add icon for proxy config - if proxy settings enabled.
-4. Fix possibly missing save play queue icon.
-5. Install pre-rendered PNG icons for Linux builds.
-6. Use last.fm 2.0 API for finding similar artists in dynamic playlists.
-7. Fix listing of CUE files.
-8. Only honour 'startHidden' setting if also configured to use system tray.
-9. Folder page nolonger has a search field - so if upgrading from a 1.x
-   config with folder search visible, then hide it.
+ 1. Delay creation of Jamendo and Magnatune DBs until required.
+ 2. Fix 'Scroll to current track' in table style play queue if track number
+    column is hidden.
+ 3. Add icon for proxy config - if proxy settings enabled.
+ 4. Fix possibly missing save play queue icon.
+ 5. Install pre-rendered PNG icons for Linux builds.
+ 6. Use last.fm 2.0 API for finding similar artists in dynamic playlists.
+ 7. Fix listing of CUE files.
+ 8. Only honour 'startHidden' setting if also configured to use system tray.
+ 9. Folder page nolonger has a search field - so if upgrading from a 1.x
+    config with folder search visible, then hide it.
+10. Don't allow copying of cue file tracks do devices.
 
 2.0.0
 -----

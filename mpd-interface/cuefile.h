@@ -26,8 +26,8 @@
 
 #include <QList>
 #include <QSet>
-#include "song.h"
 
+struct Song;
 // This parser will try to detect the real encoding of a .cue file but there's
 // a great chance it will fail so it's probably best to assume that the parser
 // is UTF compatible only.

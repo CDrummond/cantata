@@ -86,7 +86,7 @@
        <item>
         <widget class="QLabel" name="ratingRangeLabel">
          <property name="text">
-          <string>Song with ratings between:</string>
+          <string>Songs with ratings between:</string>
          </property>
         </widget>
        </item>

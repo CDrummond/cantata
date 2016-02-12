@@ -80,6 +80,8 @@ static QString translateStr(const QString &key)
         return i18n("Genre");
     } else if (Dynamic::constDateKey==key) {
         return i18n("Date");
+    } else if (Dynamic::constFileKey==key) {
+        return i18n("File");
     } else {
         return key;
     }

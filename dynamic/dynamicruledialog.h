@@ -49,6 +49,7 @@ public:
     QString album() const { return albumText->text().trimmed(); }
     QString title() const { return titleText->text().trimmed(); }
     QString genre() const { return genreText->text().trimmed(); }
+    QString filename() const { return filenameText->text().trimmed(); }
 
 Q_SIGNALS:
     void addRule(const Dynamic::Rule &r);

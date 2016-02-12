@@ -6,6 +6,7 @@
 3. Add option to use user's configured icon theme, and not Cantata's supplied
    theme. Option needs to be manually set in config file. See README for
    details.
+4. Add filename / path to list of dynamic rule properties.
 
 2.0.1
 -----

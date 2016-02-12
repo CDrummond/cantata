@@ -142,6 +142,7 @@ const QString Dynamic::constTitleKey=QLatin1String("Title");
 const QString Dynamic::constGenreKey=QLatin1String("Genre");
 const QString Dynamic::constDateKey=QLatin1String("Date");
 const QString Dynamic::constRatingKey=QLatin1String("Rating");
+const QString Dynamic::constFileKey=QLatin1String("File");
 const QString Dynamic::constExactKey=QLatin1String("Exact");
 const QString Dynamic::constExcludeKey=QLatin1String("Exclude");
 const QChar Dynamic::constRangeSep=QLatin1Char('-');
@@ -569,7 +570,7 @@ void Dynamic::loadLocal()
             QFile f(dirName+rf);
             if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
                 QStringList keys=QStringList() << constArtistKey << constSimilarArtistsKey << constAlbumArtistKey << constDateKey
-                                               << constExactKey << constAlbumKey << constTitleKey << constGenreKey << constExcludeKey;
+                                               << constExactKey << constAlbumKey << constTitleKey << constGenreKey << constFileKey << constExcludeKey;
 
                 Entry e;
                 e.name=rf.left(rf.length()-constExtension.length());
@@ -621,7 +622,7 @@ void Dynamic::parseRemote(const QStringList &response)
     entryList.clear();
     currentEntry=QString();
     QStringList keys=QStringList() << constArtistKey << constSimilarArtistsKey << constAlbumArtistKey << constDateKey
-                                   << constExactKey << constAlbumKey << constTitleKey << constGenreKey << constExcludeKey;
+                                   << constExactKey << constAlbumKey << constTitleKey << constGenreKey << constFileKey << constExcludeKey;
     Entry e;
     Rule r;
 

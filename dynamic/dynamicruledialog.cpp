@@ -47,8 +47,10 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     connect(albumText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(titleText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(genreText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
+    connect(filenameText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(dateFromSpin, SIGNAL(valueChanged(int)), SLOT(enableOkButton()));
     connect(dateToSpin, SIGNAL(valueChanged(int)), SLOT(enableOkButton()));
+    connect(exactCheck, SIGNAL(toggled(bool)), SLOT(enableOkButton()));
 
     QSet<QString> artists;
     QSet<QString> albumArtists;
@@ -119,6 +121,7 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
     albumText->setText(rule[Dynamic::constAlbumKey]);
     titleText->setText(rule[Dynamic::constTitleKey]);
     genreText->setText(rule[Dynamic::constGenreKey]);
+    filenameText->setText(rule[Dynamic::constFileKey]);
 
     QString date=rule[Dynamic::constDateKey];
     int dateFrom=0;
@@ -177,6 +180,9 @@ Dynamic::Rule DynamicRuleDialog::rule() const
     if (!genre().isEmpty()) {
         r.insert(Dynamic::constGenreKey, genre());
     }
+    if (!filename().isEmpty()) {
+        r.insert(Dynamic::constFileKey, filename());
+    }
     int dateFrom=dateFromSpin->value();
     int dateTo=dateToSpin->value();
     bool haveFrom=dateFrom>=constMinDate && dateFrom<=constMaxDate;
@@ -209,15 +215,25 @@ void DynamicRuleDialog::enableOkButton()
     bool haveTo=dateTo>=constMinDate && dateTo<=constMaxDate && dateTo!=dateFrom;
     bool enable=(!haveFrom || !haveTo || (dateTo>=dateFrom && (dateTo-dateFrom)<=constMaxDateRange)) &&
                 (haveFrom || haveTo || !artist().isEmpty() || !similarArtists().isEmpty() || !albumArtist().isEmpty() ||
-                 !composer().isEmpty() || !comment().isEmpty() || !album().isEmpty() || !title().isEmpty() || !genre().isEmpty());
+                 !composer().isEmpty() || !comment().isEmpty() || !album().isEmpty() || !title().isEmpty() || !genre().isEmpty() || !filename().isEmpty());
+
+    if (enable && exactCheck->isChecked() && !filename().isEmpty()) {
+        enable=false;
+    }
 
     errorLabel->setVisible(false);
-    if (!enable && haveFrom && haveTo) {
-        if (dateTo<dateFrom) {
-            errorLabel->setText(i18n("<i><b>ERROR</b>: 'From Year' should be less than 'To Year'</i>"));
-            errorLabel->setVisible(true);
-        } else if (dateTo-dateFrom>constMaxDateRange) {
-            errorLabel->setText(i18n("<i><b>ERROR:</b> Date range is too large (can only be a maximum of %1 years)</i>", constMaxDateRange));
+    if (!enable) {
+        if (haveFrom && haveTo) {
+            if (dateTo<dateFrom) {
+                errorLabel->setText(i18n("<i><b>ERROR</b>: 'From Year' should be less than 'To Year'</i>"));
+                errorLabel->setVisible(true);
+            } else if (dateTo-dateFrom>constMaxDateRange) {
+                errorLabel->setText(i18n("<i><b>ERROR:</b> Date range is too large (can only be a maximum of %1 years)</i>", constMaxDateRange));
+                errorLabel->setVisible(true);
+            }
+        }
+        if (!filename().isEmpty() && exactCheck->isChecked() && !errorLabel->isVisible()) {
+            errorLabel->setText(i18n("<i><b>ERROR:</b> You can only match on filename / path if 'Exact match' is <b>not</b> checked</i>"));
             errorLabel->setVisible(true);
         }
     }

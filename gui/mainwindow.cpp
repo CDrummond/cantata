@@ -2453,15 +2453,13 @@ void MainWindow::startContextTimer()
 int MainWindow::calcMinHeight()
 {
     return tabWidget->style()&FancyTabWidget::Side && tabWidget->style()&FancyTabWidget::Large
-            ? toolbar->height()+(tabWidget->visibleCount()*tabWidget->tabSize().height())
+            ? calcCollapsedSize()+(tabWidget->visibleCount()*tabWidget->tabSize().height())
             : Utils::scaleForDpi(256);
 }
 
 int MainWindow::calcCollapsedSize()
 {
-    return showMenuAction && menuButton && showMenuAction->isChecked()
-            ? toolbar->height()+menuBar()->height()
-            : toolbar->height();
+    return toolbar->height()+(menuBar() && menuBar()->isVisible() ? menuBar()->height() : 0);
 }
 
 void MainWindow::setCollapsedSize()

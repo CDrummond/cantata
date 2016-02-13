@@ -22,6 +22,8 @@
  9. Folder page nolonger has a search field - so if upgrading from a 1.x
     config with folder search visible, then hide it.
 10. Don't allow copying of cue file tracks do devices.
+11. When calculating collapsed windoe height, take into account size of
+    menubar, if it is visible.
 
 2.0.0
 -----

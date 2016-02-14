@@ -38,6 +38,9 @@ MenuButton::MenuButton(QWidget *parent)
     setIcon(Icons::self()->menuIcon);
     setToolTip(i18n("Menu"));
     setHideMenuIndicator(true);
+    if (!Utils::touchFriendly()) {
+        installEventFilter(this);
+    }
 }
 
 void MenuButton::controlState()
@@ -69,26 +72,31 @@ void MenuButton::addSeparator()
 
 bool MenuButton::eventFilter(QObject *o, QEvent *e)
 {
-    if (QEvent::Show==e->type() && qobject_cast<QMenu *>(o)) {
-        QMenu *mnu=static_cast<QMenu *>(o);
-        QPoint p=parentWidget()->mapToGlobal(pos());
-        int newPos=isRightToLeft()
+    if (QEvent::Show==e->type()) {
+        if (qobject_cast<QMenu *>(o)) {
+            QMenu *mnu=static_cast<QMenu *>(o);
+            QPoint p=parentWidget()->mapToGlobal(pos());
+            int newPos=isRightToLeft()
                     ? p.x()
                     : ((p.x()+width())-mnu->width());
 
-        if (newPos<0) {
-            newPos=0;
-        } else {
-            QDesktopWidget *dw=QApplication::desktop();
-            if (dw) {
-                QRect geo=dw->availableGeometry(this);
-                int maxWidth=geo.x()+geo.width();
-                if (maxWidth>0 && (newPos+mnu->width())>maxWidth) {
-                    newPos=maxWidth-mnu->width();
+            if (newPos<0) {
+                newPos=0;
+            } else {
+                QDesktopWidget *dw=QApplication::desktop();
+                if (dw) {
+                    QRect geo=dw->availableGeometry(this);
+                    int maxWidth=geo.x()+geo.width();
+                    if (maxWidth>0 && (newPos+mnu->width())>maxWidth) {
+                        newPos=maxWidth-mnu->width();
+                    }
                 }
             }
+            mnu->move(newPos, mnu->y());
+        } else if (o==this) {
+            setMinimumWidth(height());
+            removeEventFilter(this);
         }
-        mnu->move(newPos, mnu->y());
     }
 
     return ToolButton::eventFilter(o, e);

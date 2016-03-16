@@ -25,6 +25,7 @@
 11. When calculating collapsed windoe height, take into account size of
     menubar, if it is visible.
 12. Try to ensure menu button width is at least equal to height.
+13. Fix compilation on some systems.
 
 2.0.0
 -----

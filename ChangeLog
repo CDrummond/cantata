@@ -26,6 +26,8 @@
     menubar, if it is visible.
 12. Try to ensure menu button width is at least equal to height.
 13. Fix compilation on some systems.
+14. Remove usage of libavutil/audioconvert.h - its no longer in ffmpeg since
+    1.3, and Cantata does not need it anyway.
 
 2.0.0
 -----

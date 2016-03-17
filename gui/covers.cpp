@@ -1609,7 +1609,7 @@ Covers::Image Covers::locateImage(const Song &song)
         }
     }
 
-    if (!songFile.isEmpty() && !songFile.startsWith(("http:/")) &&
+    if (!songFile.isEmpty() && !songFile.startsWith("http:/") && !song.isCdda() &&
         (haveAbsPath || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://")) ) ) ) {
         dirName=songFile.endsWith(Utils::constDirSep) ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
                                        : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile);

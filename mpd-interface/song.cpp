@@ -40,7 +40,7 @@
 
 //static const quint8 constOnlineDiscId=0xEE;
 
-const QString Song::constCddaProtocol=QLatin1String("cantata-cdda:/");
+const QString Song::constCddaProtocol=QLatin1String("/[cantata-cdda]/");
 const QString Song::constMopidyLocal=QLatin1String("local:track:");
 
 static QString unknownStr;

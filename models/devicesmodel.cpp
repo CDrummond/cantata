@@ -575,7 +575,10 @@ QStringList DevicesModel::playableUrls(const QModelIndexList &indexes) const
     QList<Song> songList=songs(indexes, true, true);
     QStringList urls;
     foreach (const Song &s, songList) {
-        urls.append(HttpServer::self()->encodeUrl(s));
+        QByteArray encoded=HttpServer::self()->encodeUrl(s);
+        if (!encoded.isEmpty()) {
+            urls.append(encoded);
+        }
     }
     return urls;
 }

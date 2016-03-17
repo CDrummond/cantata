@@ -210,7 +210,7 @@ HttpSocket::HttpSocket(const QString &iface, quint16 port)
         openPort(0);
     }
 
-    DBUG << isListening();
+    DBUG << isListening() << serverPort();
 
     connect(MPDConnection::self(), SIGNAL(socketAddress(QString)), this, SLOT(mpdAddress(QString)));
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QList<Song>,bool)), this, SLOT(cantataStreams(QList<Song>,bool)));
@@ -406,7 +406,7 @@ void HttpSocket::readClient()
                             } while (readPos<totalBytes && !stop && !terminated);
                         }
                     } else {
-                        DBUG << "Filed to open" << song.file;
+                        DBUG << "Failed to open" << song.file;
                     }
                 }
             }

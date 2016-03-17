@@ -305,8 +305,7 @@ Song HttpServer::decodeUrl(const QUrl &url) const
         s.file=fixWindowsPath(s.file);
         #endif
         #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-        if (s.file.startsWith(QChar('/')+Song::constCddaProtocol)) {
-            s.file=s.file.mid(1);
+        if (s.file.startsWith(Song::constCddaProtocol)) {
             s.type=Song::Cdda;
         }
         #endif
@@ -367,6 +366,7 @@ void HttpServer::removedIds(const QSet<qint32> &ids)
 
 void HttpServer::ifaceIp(const QString &ip)
 {
+    DBUG << "MPD interface ip" << ip;
     if (ip.isEmpty()) {
         return;
     }

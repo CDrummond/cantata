@@ -28,6 +28,7 @@
 13. Fix compilation on some systems.
 14. Remove usage of libavutil/audioconvert.h - its no longer in ffmpeg since
     1.3, and Cantata does not need it anyway.
+15. Fix playback of AudioCDs
 
 2.0.0
 -----

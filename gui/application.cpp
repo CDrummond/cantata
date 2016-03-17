@@ -36,6 +36,7 @@
 #include "widgets/itemview.h"
 #include "widgets/groupedview.h"
 #include "widgets/actionitemdelegate.h"
+#include "http/httpserver.h"
 
 void Application::initObjects()
 {
@@ -48,6 +49,9 @@ void Application::initObjects()
     #endif
     Scrobbler::self();
     MpdLibraryModel::self();
+
+    // Ensure this is started before any MPD connection
+    HttpServer::self();
 
     Utils::initRand();
     Song::initTranslations();

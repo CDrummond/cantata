@@ -20,6 +20,7 @@
     1.3, and Cantata does not need it anyway.
 15. Fix playback of AudioCDs
 16. Fix incorrect AudioCD cover
+17. Fix Qt5 gcc5 compilation.
 
 2.0.0
 -----

@@ -861,7 +861,7 @@ void PlayQueueModel::updateCurrentSong(quint32 id)
     }
 
     currentSongRowNum=getRowById(currentSongId);
-    if (currentSongRowNum>0 && currentSongRowNum<=songs.count()) {
+    if (currentSongRowNum>=0 && currentSongRowNum<=songs.count()) {
         const Song &song=songs.at(currentSongRowNum);
         if (Song::Rating_Null==song.rating) {
             song.rating=Song::Rating_Requested;

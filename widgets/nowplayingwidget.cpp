@@ -27,6 +27,7 @@
 #include "mpd-interface/song.h"
 #include "gui/settings.h"
 #include "mpd-interface/mpdconnection.h"
+#include "models/playqueuemodel.h"
 #include "support/squeezedtextlabel.h"
 #include "support/utils.h"
 #include "support/localize.h"
@@ -304,6 +305,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     update(Song());
     connect(ratingWidget, SIGNAL(valueChanged(int)), SLOT(setRating(int)));
     connect(this, SIGNAL(setRating(QString,quint8)), MPDConnection::self(), SLOT(setRating(QString,quint8)));
+    connect(PlayQueueModel::self(), SIGNAL(currentSongRating(QString,quint8)), this, SLOT(rating(QString,quint8)));
 }
 
 void NowPlayingWidget::update(const Song &song)
@@ -311,9 +313,7 @@ void NowPlayingWidget::update(const Song &song)
     QString name=song.name();
     currentSongFile=song.file;
     ratingWidget->setEnabled(!song.isEmpty() && Song::Standard==song.type);
-    if (!ratingWidget->isEnabled()) {
-        ratingWidget->setValue(0);
-    }
+    ratingWidget->setValue(0);
     if (song.isEmpty()) {
         track->setText(" ");
         artist->setText(" ");

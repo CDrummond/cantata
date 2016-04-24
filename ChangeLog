@@ -32,6 +32,7 @@
 16. Fix incorrect AudioCD cover
 17. Fix Qt5 gcc5 compilation.
 18. Fix wrong/missing ratings in toolbar.
+19. Fix compilation with Qt5.7
 
 2.0.0
 -----

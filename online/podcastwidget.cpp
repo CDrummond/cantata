@@ -39,8 +39,6 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     , srv(s)
     , proxy(this)
 {
-    proxy.setSourceModel(srv);
-    view->setModel(&proxy);
     subscribeAction = new Action(Icons::self()->addNewItemIcon, i18n("Add Subscription"), this);
     unSubscribeAction = new Action(Icon("list-remove"), i18n("Remove Subscription"), this);
     downloadAction = new Action(Icon("go-down"), i18n("Download Episodes"), this);
@@ -48,6 +46,9 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     cancelDownloadAction = new Action(Icons::self()->cancelIcon, i18n("Cancel Download"), this);
     markAsNewAction = new Action(Icon("document-new"), i18n("Mark Episodes As New"), this);
     markAsListenedAction = new Action(i18n("Mark Episodes As Listened"), this);
+
+    proxy.setSourceModel(srv);
+    view->setModel(&proxy);
 
     view->alwaysShowHeader();
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
@@ -298,6 +299,7 @@ void PodcastWidget::controlActions()
     SinglePageWidget::controlActions();
 
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
+    downloadAction->setEnabled(!selected.isEmpty());
     unSubscribeAction->setEnabled(1==selected.count() && static_cast<PodcastService::Item *>(proxy.mapToSource(selected.first()).internalPointer())->isPodcast());
     downloadAction->setEnabled(!selected.isEmpty());
     deleteAction->setEnabled(!selected.isEmpty());

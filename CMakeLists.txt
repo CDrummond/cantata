@@ -272,6 +272,10 @@ if (ENABLE_QT5)
     find_package(Qt5Svg REQUIRED)
     find_package(Qt5Sql REQUIRED)
 
+    if (${Qt5Widgets_VERSION} VERSION_GREATER "5.6.99")
+        set(CMAKE_CXX_STANDARD "11")
+    endif (${Qt5Widgets_VERSION} VERSION_GREATER "5.6.99")
+
     set(QTCORELIBS ${Qt5Core_LIBRARIES})
     set(QTNETWORKLIBS ${Qt5Network_LIBRARIES})
     set(QTGUILIBS ${Qt5Gui_LIBRARIES})

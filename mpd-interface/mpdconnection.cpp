@@ -111,6 +111,7 @@ GLOBAL_STATIC(MPDConnection, instance)
 const QString MPDConnection::constModifiedSince=QLatin1String("modified-since");
 const int MPDConnection::constMaxPqChanges=1000;
 const QString MPDConnection::constStreamsPlayListName=QLatin1String("[Radio Streams]");
+const QString MPDConnection::constPlaylistPrefix=QLatin1String("playlist:");
 const QString MPDConnection::constDirPrefix=QLatin1String("dir:");
 
 QByteArray MPDConnection::quote(int val)
@@ -757,6 +758,8 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
     foreach (const QString &file, origList) {
         if (file.startsWith(constDirPrefix)) {
             files+=getAllFiles(file.mid(constDirPrefix.length()));
+        } else if (file.startsWith(constPlaylistPrefix)) {
+            files+=getPlaylistFiles(file.mid(constPlaylistPrefix.length()));
         } else {
             files.append(file);
         }
@@ -1648,6 +1651,8 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
     foreach (const QString &file, songs) {
         if (file.startsWith(constDirPrefix)) {
             files+=getAllFiles(file.mid(constDirPrefix.length()));
+        } else if (file.startsWith(constPlaylistPrefix)) {
+            files+=getPlaylistFiles(file.mid(constPlaylistPrefix.length()));
         } else {
             files.append(file);
         }
@@ -1961,6 +1966,20 @@ bool MPDConnection::recursivelyListDir(const QString &dir, QList<Song> &songs)
     } else {
         return false;
     }
+}
+
+QStringList MPDConnection::getPlaylistFiles(const QString &name)
+{
+    QStringList files;
+    Response response=sendCommand("listplaylistinfo "+encodeName(name));
+    if (response.ok) {
+        QList<Song> songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Playlists);
+        emit playlistInfoRetrieved(name, songs);
+        foreach (const Song &s, songs) {
+            files.append(s.file);
+        }    
+    }
+    return files;
 }
 
 QStringList MPDConnection::getAllFiles(const QString &dir)

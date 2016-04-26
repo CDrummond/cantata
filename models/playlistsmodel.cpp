@@ -592,12 +592,19 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
         Item *item=static_cast<Item *>(index.internalPointer());
 
         if (item->isPlaylist()) {
+            PlaylistItem *playlist=static_cast<PlaylistItem*>(item);
             int pos=0;
             selectedPlaylists.insert(item);
-            foreach (const SongItem *s, static_cast<PlaylistItem*>(item)->songs) {
-                filenames << s->file;
-                playlists << static_cast<PlaylistItem*>(item)->name;
+            if (playlist->songs.isEmpty()) {
+                filenames << MPDConnection::constPlaylistPrefix+playlist->name;
+                playlists << playlist->name;
                 positions << pos++;
+            } else {
+                foreach (const SongItem *s, playlist->songs) {
+                    filenames << s->file;
+                    playlists << playlist->name;
+                    positions << pos++;
+               }
             }
             mimeData->setProperty(constPlaylistProp, true);
         } else if (!selectedPlaylists.contains(static_cast<SongItem*>(item)->parent)) {

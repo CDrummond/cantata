@@ -189,6 +189,7 @@ public:
     static const QString constModifiedSince;
     static const int constMaxPqChanges;
     static const QString constStreamsPlayListName;
+    static const QString constPlaylistPrefix;
     static const QString constDirPrefix;
 
     static MPDConnection * self();
@@ -402,6 +403,7 @@ private:
     bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
     void toggleStopAfterCurrent(bool afterCurrent);
     bool recursivelyListDir(const QString &dir, QList<Song> &songs);
+    QStringList getPlaylistFiles(const QString &name);
     QStringList getAllFiles(const QString &dir);
     #ifndef CANTATA_WEB
     bool checkRemoteDynamicSupport();

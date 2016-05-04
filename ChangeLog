@@ -24,6 +24,7 @@
 18. Fix wrong/missing ratings in toolbar.
 19. Fix compilation with Qt5.7
 20. Fix drag'n'drop of non-loaded playlists.
+21. Use a single-shot timer to timeout obtaining current cover.
 
 2.0.0
 -----

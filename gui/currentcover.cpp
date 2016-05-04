@@ -178,6 +178,7 @@ void CurrentCover::update(const Song &s)
     if (!enabled) {
         return;
     }
+
     if (s.albumArtist()!=current.albumArtist() || s.album!=current.album || s.isStream()!=current.isStream() ||
         s.onlineService()!=current.onlineService()) {
         current=s;
@@ -207,6 +208,7 @@ void CurrentCover::update(const Song &s)
                 // Start a timer - in case cover retrieval fails...
                 if (!timer) {
                     timer=new QTimer(this);
+                    timer->setSingleShot(true);
                     connect(timer, SIGNAL(timeout()), this, SLOT(setDefault()));
                 }
                 timer->start(750);

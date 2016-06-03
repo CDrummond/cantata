@@ -11,8 +11,8 @@
  8. Only honour 'startHidden' setting if also configured to use system tray.
  9. Folder page nolonger has a search field - so if upgrading from a 1.x
     config with folder search visible, then hide it.
-10. Don't allow copying of cue file tracks do devices.
-11. When calculating collapsed windoe height, take into account size of
+10. Don't allow copying of cue file tracks to devices.
+11. When calculating collapsed window height, take into account size of
     menubar, if it is visible.
 12. Try to ensure menu button width is at least equal to height.
 13. Fix compilation on some systems.

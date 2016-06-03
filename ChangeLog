@@ -7,6 +7,7 @@
    theme. Option needs to be manually set in config file. See README for
    details.
 4. Add filename / path to list of dynamic rule properties.
+5. Flat current track highlight.
 
 2.0.1
 -----

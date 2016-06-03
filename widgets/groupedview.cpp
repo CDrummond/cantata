@@ -344,23 +344,22 @@ public:
             if (!title.isEmpty()) {
                 border.adjust(0, (border.height()/2)+1, 0, 0);
             }
-            QLinearGradient g(border.topLeft(), border.bottomLeft());
             #ifdef Q_OS_MAC
             QColor gradCol(OSXStyle::self()->viewPalette().color(QPalette::Highlight));
-            QColor borderCol(OSXStyle::self()->viewPalette().color(QPalette::HighlightedText));
+            QColor borderCol(OSXStyle::self()->viewPalette().color(selected ? QPalette::HighlightedText : QPalette::Highlight));
             #else
             QColor gradCol(QApplication::palette().color(QPalette::Highlight));
-            QColor borderCol(QApplication::palette().color(QPalette::HighlightedText));
+            QColor borderCol(QApplication::palette().color(selected ? QPalette::HighlightedText : QPalette::Highlight));
             #endif
-            gradCol.setAlphaF(option.state&QStyle::State_Selected ? 0.6 : 0.45);
-            g.setColorAt(0, gradCol.dark(165));
-            g.setColorAt(1, gradCol.light(165));
+            if (!selected) {
+                borderCol.setAlphaF(0.5);
+            }
+            gradCol.setAlphaF(selected ? 0.4 : 0.25);
             painter->setRenderHint(QPainter::Antialiasing, true);
-            painter->fillPath(Utils::buildPath(border, 3), g);
-            painter->setPen(QPen(gradCol, 1));
-            painter->drawPath(Utils::buildPath(border.adjusted(-1, -1, 1, 1), 3.5));
+            int radius=Utils::scaleForDpi(3);
+            painter->fillPath(Utils::buildPath(border, radius), gradCol);
             painter->setPen(QPen(borderCol, 1));
-            painter->drawPath(Utils::buildPath(border, 3));
+            painter->drawPath(Utils::buildPath(border, radius));
             painter->setRenderHint(QPainter::Antialiasing, false);
         }
 

@@ -275,7 +275,7 @@ void HttpSocket::readClient()
 
             QString peer=socket->peerAddress().toString();
             QString ifaceAddress=serverAddress().toString();
-            bool hostOk=peer==ifaceAddress || peer==mpdAddr || peer==QLatin1String("127.0.0.1");
+            bool hostOk=peer==ifaceAddress || peer==mpdAddr || peer==QLatin1String("127.0.0.1") || peer==QLatin1String("::ffff:127.0.0.1");
 
             DBUG << "peer:" << peer << "mpd:" << mpdAddr << "iface:" << ifaceAddress << "ok:" << hostOk;
             if (!hostOk) {

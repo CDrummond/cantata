@@ -36,6 +36,8 @@
 20. Fix drag'n'drop of non-loaded playlists.
 21. Use a single-shot timer to timeout obtaining current cover.
 22. Fix AudioCD playback when MPD's curl is using IPv6
+23. Fix current track display when chaging from one track with no meta-data to
+    another with no meta-data.
 
 2.0.0
 -----

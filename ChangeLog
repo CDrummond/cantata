@@ -8,6 +8,8 @@
    details.
 4. Add filename / path to list of dynamic rule properties.
 5. Flat current track highlight.
+6. When adding tracks from folders view, only add playlists if these have been
+   explicitly selected.
 
 2.0.1
 -----

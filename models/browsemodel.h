@@ -92,7 +92,7 @@ public:
         const QString & getPath() const { return path; }
         bool isFetching() const { return fetching; }
         void setFetching(bool f) { fetching=f; }
-        QStringList allEntries() const;
+        QStringList allEntries(bool allowPlaylists) const;
 
     private:
         QString name;

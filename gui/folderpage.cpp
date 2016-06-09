@@ -183,7 +183,7 @@ void FolderPage::addSelectionToPlaylist(const QString &name, int action, quint8 
 
     foreach (const QModelIndex &idx, selected) {
         if (static_cast<BrowseModel::Item *>(idx.internalPointer())->isFolder()) {
-            files+=static_cast<BrowseModel::FolderItem *>(idx.internalPointer())->allEntries();
+            files+=static_cast<BrowseModel::FolderItem *>(idx.internalPointer())->allEntries(false);
         } else {
             files.append(static_cast<BrowseModel::TrackItem *>(idx.internalPointer())->getSong().file);
         }

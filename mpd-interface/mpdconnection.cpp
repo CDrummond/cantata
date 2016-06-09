@@ -1991,7 +1991,9 @@ QStringList MPDConnection::getAllFiles(const QString &dir)
         QList<Song> songs;
         MPDParseUtils::parseDirItems(response.data, details.dir, ver, songs, dir, subDirs, MPDParseUtils::Loc_Browse);
         foreach (const Song &song, songs) {
-            files.append(song.file);
+            if (Song::Playlist!=song.type) {
+                files.append(song.file);
+            }
         }
         foreach (const QString &sub, subDirs) {
             files+=getAllFiles(sub);

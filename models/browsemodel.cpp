@@ -40,7 +40,7 @@ void BrowseModel::FolderItem::add(Item *i)
     children.append(i);
 }
 
-QStringList BrowseModel::FolderItem::allEntries() const
+QStringList BrowseModel::FolderItem::allEntries(bool allowPlaylists) const
 {
     QStringList entries;
     if (children.isEmpty()) {
@@ -48,8 +48,8 @@ QStringList BrowseModel::FolderItem::allEntries() const
     } else {
         foreach (Item *i, children) {
             if (i->isFolder()) {
-                entries+=static_cast<FolderItem *>(i)->allEntries();
-            } else {
+                entries+=static_cast<FolderItem *>(i)->allEntries(allowPlaylists);
+            } else if (allowPlaylists || Song::Playlist!=static_cast<TrackItem *>(i)->getSong().type) {
                 entries+=static_cast<TrackItem *>(i)->getSong().file;
             }
         }
@@ -246,7 +246,7 @@ QMimeData * BrowseModel::mimeData(const QModelIndexList &indexes) const
         Item *item=toItem(idx);
         if (item) {
             if (item->isFolder()) {
-                files+=static_cast<FolderItem *>(item)->allEntries();
+                files+=static_cast<FolderItem *>(item)->allEntries(false);
             } else {
                 files.append(static_cast<TrackItem *>(item)->getSong().file);
             }

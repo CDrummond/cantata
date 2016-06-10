@@ -27,7 +27,7 @@
 #include "widgets/singlepagewidget.h"
 
 class Action;
-//class ComboBox;
+class GenreCombo;
 
 class LibraryPage : public SinglePageWidget
 {
@@ -60,6 +60,7 @@ public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);
 
 private Q_SLOTS:
+    void modelReset();
     void groupByChanged();
     void libraryAlbumSortChanged();
     void albumAlbumSortChanged();
@@ -73,7 +74,7 @@ private:
     void controlActions();
 
 private:
-//    ComboBox *groupCombo;
+    GenreCombo *genreCombo;
     QAction *viewAction;
     QAction *showArtistImagesAction;
     QAction *libraryAlbumSortAction;

@@ -32,13 +32,14 @@
 #include "support/localize.h"
 #include "support/messagebox.h"
 #include "support/actioncollection.h"
-//#include "support/combobox.h"
 #include "models/mpdlibrarymodel.h"
 #include "widgets/menubutton.h"
+#include "widgets/genrecombo.h"
 
 LibraryPage::LibraryPage(QWidget *p)
     : SinglePageWidget(p)
 {
+    genreCombo=new GenreCombo(this);
     connect(StdActions::self()->addRandomAlbumToPlayQueueAction, SIGNAL(triggered()), SLOT(addRandomAlbum()));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary(time_t)), view, SLOT(updating()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(updated()));
@@ -47,22 +48,12 @@ LibraryPage::LibraryPage(QWidget *p)
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     view->setModel(MpdLibraryModel::self());
-
-//    groupCombo=new ComboBox(this);
-//    groupCombo->addItem(i18n("Genre"), SqlLibraryModel::T_Genre);
-//    groupCombo->addItem(i18n("Atists"), SqlLibraryModel::T_Artist);
-//    groupCombo->addItem(i18n("Albums"), SqlLibraryModel::T_Album);
+    connect(MpdLibraryModel::self(), SIGNAL(modelReset()), this, SLOT(modelReset()));
 
     // Settings...
     Configuration config(metaObject()->className());
     view->setMode(ItemView::Mode_DetailedTree);
     MpdLibraryModel::self()->load(config);
-//    for (int i=0; i<groupCombo->count(); ++i) {
-//        if (groupCombo->itemData(i).toInt()==MpdLibraryModel::self()->topLevel()) {
-//            groupCombo->setCurrentIndex(i);
-//            break;
-//        }
-//    }
 
     config.beginGroup(SqlLibraryModel::groupingStr(MpdLibraryModel::self()->topLevel()));
     view->load(config);
@@ -91,6 +82,7 @@ LibraryPage::LibraryPage(QWidget *p)
                                                                         << MenuItem(i18n("Artist"), SqlLibraryModel::T_Artist)
                                                                         << MenuItem(i18n("Album"), SqlLibraryModel::T_Album),
                                     MpdLibraryModel::self()->topLevel(), this, SLOT(groupByChanged())));
+    genreCombo->setVisible(SqlLibraryModel::T_Genre!=MpdLibraryModel::self()->topLevel());
 
     menu->addAction(libraryAlbumSortAction);
     menu->addAction(albumAlbumSortAction);
@@ -100,8 +92,9 @@ LibraryPage::LibraryPage(QWidget *p)
     albumAlbumSortAction->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
     libraryAlbumSortAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
     showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
-    init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu/* << groupCombo*/);
-//    connect(groupCombo, SIGNAL(activated(int)), SLOT(groupByChanged()));
+    genreCombo->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+    init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu << genreCombo);
+    connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(doSearch()));
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
     view->addAction(CustomActions::self());
     #ifdef TAGLIB_FOUND
@@ -279,6 +272,11 @@ void LibraryPage::setView(int v)
     showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel() && ItemView::Mode_IconTop!=view->viewMode());
 }
 
+void LibraryPage::modelReset()
+{
+    genreCombo->update(MpdLibraryModel::self()->getGenres());
+}
+
 void LibraryPage::groupByChanged()
 {
     QAction *act=qobject_cast<QAction *>(sender());
@@ -286,7 +284,6 @@ void LibraryPage::groupByChanged()
         return;
     }
     int mode=act->property(constValProp).toInt();
-//    int mode=groupCombo->itemData(groupCombo->currentIndex()).toInt();
 
     Configuration config(metaObject()->className());
     config.beginGroup(SqlLibraryModel::groupingStr(MpdLibraryModel::self()->topLevel()));
@@ -296,6 +293,7 @@ void LibraryPage::groupByChanged()
     albumAlbumSortAction->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
     libraryAlbumSortAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
     showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel() && ItemView::Mode_IconTop!=view->viewMode());
+    genreCombo->setVisible(SqlLibraryModel::T_Genre!=MpdLibraryModel::self()->topLevel());
 
     config.endGroup();
     config.beginGroup(SqlLibraryModel::groupingStr(MpdLibraryModel::self()->topLevel()));
@@ -413,7 +411,8 @@ void LibraryPage::addRandomAlbum()
 
 void LibraryPage::doSearch()
 {
-    MpdLibraryModel::self()->search(view->searchText());
+    MpdLibraryModel::self()->search(view->searchText(),
+                                    genreCombo->isHidden() || genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
 }
 
 void LibraryPage::controlActions()

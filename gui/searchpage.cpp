@@ -74,6 +74,7 @@ SearchPage::SearchPage(QWidget *p)
     view->load(config);
     MenuButton *menu=new MenuButton(this);
     menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_List << ItemView::Mode_Table));
+    statsLabel->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
     init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu << statsLabel);
 
     view->addAction(StdActions::self()->addToStoredPlaylistAction);

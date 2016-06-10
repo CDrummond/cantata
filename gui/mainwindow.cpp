@@ -720,8 +720,9 @@ MainWindow::MainWindow(QWidget *parent)
                 text+=QChar(0x2605);
             }
         }
-        Action *action=new Action(text, ratingAction);
+        Action *action=ActionCollection::get()->createAction(QLatin1String("rating")+QString::number(i), text);
         action->setProperty(constRatingKey, i*Song::Rating_Step);
+        action->setShortcut(Qt::AltModifier+Qt::Key_0+i);
         ratingAction->menu()->addAction(action);
         connect(action, SIGNAL(triggered()), SLOT(setRating()));
     }

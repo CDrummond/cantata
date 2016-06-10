@@ -199,9 +199,9 @@ void SqlLibraryModel::libraryUpdated()
     endResetModel();
 }
 
-void SqlLibraryModel::search(const QString &str)
+void SqlLibraryModel::search(const QString &str, const QString &genre)
 {
-    if (db->setFilter(str)) {
+    if (db->setFilter(str, genre)) {
         libraryUpdated();
     }
 }
@@ -516,6 +516,11 @@ QModelIndex SqlLibraryModel::findArtistIndex(const QString &artist)
         }
     }
     return QModelIndex();
+}
+
+QSet<QString> SqlLibraryModel::getGenres() const
+{
+    return db->get("genre");
 }
 
 QSet<QString> SqlLibraryModel::getArtists() const

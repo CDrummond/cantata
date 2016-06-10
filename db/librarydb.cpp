@@ -665,6 +665,8 @@ QList<LibraryDb::Artist> LibraryDb::getArtists(const QString &genre)
         query.setFilter(filter);
         if (!genre.isEmpty()) {
             query.addWhere("genre", genre);
+        } else if (!genreFilter.isEmpty()) {
+            query.addWhere("genre", genreFilter);
         }
         query.exec();
         DBUG << query.executedQuery();
@@ -702,6 +704,8 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
         }
         if (!genre.isEmpty()) {
             query.addWhere("genre", genre);
+        } else if (!genreFilter.isEmpty()) {
+            query.addWhere("genre", genreFilter);
         }
         query.exec();
         DBUG << query.executedQuery() << timer.elapsed();
@@ -783,6 +787,8 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
         }
         if (!genre.isEmpty()) {
             query.addWhere("genre", genre);
+        } else if (!genreFilter.isEmpty()) {
+            query.addWhere("genre", genreFilter);
         }
         query.exec();
         DBUG << query.executedQuery();
@@ -886,6 +892,8 @@ LibraryDb::Album LibraryDb::getRandomAlbum(const QString &genre, const QString &
         }
         if (!genre.isEmpty()) {
             query.addWhere("genre", genre);
+        } else if (!genreFilter.isEmpty()) {
+            query.addWhere("genre", genreFilter);
         }
         query.exec();
         DBUG << query.executedQuery();
@@ -926,6 +934,9 @@ QSet<QString> LibraryDb::get(const QString &type)
         return detailsCache[type];
     }
     QSet<QString> set;
+    if (!db) {
+        return set;
+    }
     SqlQuery query("distinct "+type, *db);
     query.exec();
     DBUG << query.executedQuery();
@@ -959,7 +970,7 @@ bool LibraryDb::songExists(const Song &song)
     return query.next();
 }
 
-bool LibraryDb::setFilter(const QString &f)
+bool LibraryDb::setFilter(const QString &f, const QString &genre)
 {
     QString newFilter=f.trimmed().toLower();
 
@@ -979,11 +990,10 @@ bool LibraryDb::setFilter(const QString &f)
         newFilter=tokens.join(" ");
         DBUG << newFilter;
     }
-    if (newFilter!=filter) {
-        filter=newFilter;
-        return true;
-    }
-    return false;
+    bool modified=newFilter!=filter || genre!=genreFilter;
+    filter=newFilter;
+    genreFilter=genre;
+    return modified;
 }
 #endif
 

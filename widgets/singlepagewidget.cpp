@@ -55,9 +55,9 @@ SinglePageWidget::SinglePageWidget(QWidget *p)
     QGridLayout *layout=new QGridLayout(this);
     view=new ItemView(this);
     layout->addWidget(view, 1, 0, 1, 5);
-    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Preferred), 2, 1, 1, 1);
+//    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Preferred), 2, 1, 1, 1);
     layout->addWidget(new SizeWidget(this), 2, 2, 1, 1);
-    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Preferred), 2, 3, 1, 1);
+//    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Preferred), 2, 3, 1, 1);
     layout->setMargin(0);
     layout->setSpacing(0);
     connect(view, SIGNAL(searchItems()), this, SIGNAL(searchItems()));

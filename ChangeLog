@@ -12,6 +12,8 @@
    explicitly selected.
 7. Allow to set keyboard shortcuts for ratings actions. Default to Alt+0 (No
    rating), Alt+1 (1 star), etc.
+8. Re-add genre combo to library view. Only visible if grouping by artist or
+   album.
 
 2.0.1
 -----

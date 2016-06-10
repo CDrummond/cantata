@@ -131,7 +131,7 @@ public:
     QSet<QString> get(const QString &type);
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
     bool songExists(const Song &song);
-    bool setFilter(const QString &f);
+    bool setFilter(const QString &f, const QString &genre=QString());
     const QString & getFilter() const { return filter; }
     int getCurrentVersion() const { return currentVersion; }
     #endif
@@ -164,6 +164,7 @@ protected:
     QSqlQuery *insertSongQuery;
     QElapsedTimer timer;
     QString filter;
+    QString genreFilter;
     #ifndef CANTATA_WEB
     QMap<QString, QSet<QString> > detailsCache;
     #endif

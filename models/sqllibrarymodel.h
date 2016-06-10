@@ -143,7 +143,7 @@ public:
     virtual void load(Configuration &config);
     virtual void save(Configuration &config);
 
-    void search(const QString &str);
+    void search(const QString &str, const QString &genre=QString());
 
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QModelIndex index(int row, int column, const QModelIndex &parent) const;
@@ -161,6 +161,7 @@ public:
     QModelIndex findSongIndex(const Song &song);
     QModelIndex findAlbumIndex(const QString &artist, const QString &album);
     QModelIndex findArtistIndex(const QString &artist);
+    QSet<QString> getGenres() const;
     QSet<QString> getArtists() const;
     QList<Song> getAlbumTracks(const QString &artistId, const QString &albumId) const;
     QList<Song> getAlbumTracks(const Song &song) const { return getAlbumTracks(song.artistOrComposer(), song.albumId()); }

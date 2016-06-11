@@ -96,6 +96,7 @@ void StreamsSettings::load()
     QList<StreamsModel::Category> cats=StreamsModel::self()->getCategories();
     QFont f(font());
     f.setItalic(true);
+    categories->clear();
     foreach (const StreamsModel::Category &cat, cats) {
         QListWidgetItem *item=new QListWidgetItem(cat.name, categories);
         item->setCheckState(cat.hidden ? Qt::Unchecked : Qt::Checked);

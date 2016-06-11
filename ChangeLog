@@ -1,21 +1,22 @@
 2.1.0
 -----
-1. Re-add all album sorts from Cantata 1.x
-2. Try to detect DLNA streams (e.g. when using upmpdcli), and show as regular
-   albums in grouped view.
-3. Add option to use user's configured icon theme, and not Cantata's supplied
-   theme. Option needs to be manually set in config file. See README for
-   details.
-4. Add filename / path to list of dynamic rule properties.
-5. Flat current track highlight.
-6. When adding tracks from folders view, only add playlists if these have been
-   explicitly selected.
-7. Allow to set keyboard shortcuts for ratings actions. Default to Alt+0 (No
-   rating), Alt+1 (1 star), etc.
-8. Re-add genre combo to library view. Only visible if grouping by artist or
-   album.
-9. When adding a podcast (or other track from an internet service), remove
-   any new-lines from metadata.
+ 1. Re-add all album sorts from Cantata 1.x
+ 2. Try to detect DLNA streams (e.g. when using upmpdcli), and show as regular
+    albums in grouped view.
+ 3. Add option to use user's configured icon theme, and not Cantata's supplied
+    theme. Option needs to be manually set in config file. See README for
+    details.
+ 4. Add filename / path to list of dynamic rule properties.
+ 5. Flat current track highlight.
+ 6. When adding tracks from folders view, only add playlists if these have been
+    explicitly selected.
+ 7. Allow to set keyboard shortcuts for ratings actions. Default to Alt+0 (No
+    rating), Alt+1 (1 star), etc.
+ 8. Re-add genre combo to library view. Only visible if grouping by artist or
+    album.
+ 9. When adding a podcast (or other track from an internet service), remove
+    any new-lines from metadata.
+10. When configuring streams, clear list of providers before re-populating.
 
 2.0.1
 -----

@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "soundcloudwidget.h"
+#include "onlinesearchwidget.h"
 #include "widgets/itemview.h"
 #include "support/action.h"
 #include "support/localize.h"
@@ -29,7 +29,7 @@
 #include "gui/plurals.h"
 #include <QTimer>
 
-SoundCloudWidget::SoundCloudWidget(SoundCloudService *s, QWidget *p)
+OnlineSearchWidget::OnlineSearchWidget(OnlineSearchService *s, QWidget *p)
     : SinglePageWidget(p)
     , srv(s)
 {
@@ -45,17 +45,17 @@ SoundCloudWidget::SoundCloudWidget(SoundCloudService *s, QWidget *p)
     statsUpdated(0, 0);
 }
 
-SoundCloudWidget::~SoundCloudWidget()
+OnlineSearchWidget::~OnlineSearchWidget()
 {
 }
 
-void SoundCloudWidget::showEvent(QShowEvent *e)
+void OnlineSearchWidget::showEvent(QShowEvent *e)
 {
     SinglePageWidget::showEvent(e);
     view->focusSearch();
 }
 
-QStringList SoundCloudWidget::selectedFiles(bool allowPlaylists) const
+QStringList OnlineSearchWidget::selectedFiles(bool allowPlaylists) const
 {
     QModelIndexList selected = view->selectedIndexes();
     if (selected.isEmpty()) {
@@ -64,7 +64,7 @@ QStringList SoundCloudWidget::selectedFiles(bool allowPlaylists) const
     return srv->filenames(selected, allowPlaylists);
 }
 
-QList<Song> SoundCloudWidget::selectedSongs(bool allowPlaylists) const
+QList<Song> OnlineSearchWidget::selectedSongs(bool allowPlaylists) const
 {
     QModelIndexList selected = view->selectedIndexes();
     if (selected.isEmpty()) {
@@ -73,19 +73,19 @@ QList<Song> SoundCloudWidget::selectedSongs(bool allowPlaylists) const
     return srv->songs(selected, allowPlaylists);
 }
 
-void SoundCloudWidget::headerClicked(int level)
+void OnlineSearchWidget::headerClicked(int level)
 {
     if (0==level) {
         emit close();
     }
 }
 
-void SoundCloudWidget::statsUpdated(int songs, quint32 time)
+void OnlineSearchWidget::statsUpdated(int songs, quint32 time)
 {
     statsLabel->setText(0==songs ? i18n("No tracks found.") : Plurals::tracksWithDuration(songs, Utils::formatDuration(time)));
 }
 
-void SoundCloudWidget::doSearch()
+void OnlineSearchWidget::doSearch()
 {
     srv->search(QString(), view->searchText());
 }

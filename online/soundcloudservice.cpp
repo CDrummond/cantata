@@ -25,7 +25,6 @@
 #include "support/localize.h"
 #include "network/networkaccessmanager.h"
 #include "mpd-interface/mpdconnection.h"
-#include "models/roles.h"
 #include <QUrl>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -39,42 +38,9 @@ static const QLatin1String constApiKey("0cb23dce473528973ce74815bd36a334");
 static const QLatin1String constUrl("https://api.soundcloud.com/tracks");
 
 SoundCloudService::SoundCloudService(QObject *p)
-    : SearchModel(p)
-    , job(0)
+    : OnlineSearchService(p)
 {
     icn.addFile(":"+constName);
-}
-
-QVariant SoundCloudService::data(const QModelIndex &index, int role) const
-{
-    if (!index.isValid()) {
-        switch (role) {
-        case Cantata::Role_TitleText:
-            return title();
-        case Cantata::Role_SubText:
-            return job ? i18n("Searching...") : descr();
-        case Qt::DecorationRole:
-            return icon();
-        default:
-            break;
-        }
-    }
-    switch (role) {
-    case Cantata::Role_ListImage:
-        return false;
-    case Cantata::Role_CoverSong:
-        return QVariant();
-    default:
-        break;
-    }
-    return SearchModel::data(index, role);
-}
-
-Song & SoundCloudService::fixPath(Song &s) const
-{
-    s.setIsFromOnlineService(constName);
-    s.album=title();
-    return encode(s);
 }
 
 QString SoundCloudService::name() const
@@ -127,14 +93,6 @@ void SoundCloudService::search(const QString &key, const QString &value)
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
     emit searching();
     emit dataChanged(QModelIndex(), QModelIndex());
-}
-
-void SoundCloudService::cancel()
-{
-    if (job) {
-        job->cancelAndDelete();
-        job=0;
-    }
 }
 
 void SoundCloudService::jobFinished()

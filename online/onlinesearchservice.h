@@ -21,36 +21,27 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef SOUNDCLOUD_WIDGET_H
-#define SOUNDCLOUD_WIDGET_H
+#ifndef ONLINESEARCH_SERVICE_H
+#define ONLINESEARCH_SERVICE_H
 
-#include <QWidget>
-#include "widgets/singlepagewidget.h"
-#include "soundcloudservice.h"
+#include "onlineservice.h"
+#include "models/searchmodel.h"
 
-class SqueezedTextLabel;
+class NetworkJob;
 
-class SoundCloudWidget : public SinglePageWidget
+class OnlineSearchService : public SearchModel, public OnlineService
 {
-    Q_OBJECT
 public:
-    SoundCloudWidget(SoundCloudService *s, QWidget *p);
-    virtual ~SoundCloudWidget();
-    QStringList selectedFiles(bool allowPlaylists) const;
-    QList<Song> selectedSongs(bool allowPlaylists) const;
-    void setView(int) { }
-    void showEvent(QShowEvent *e);
+    OnlineSearchService(QObject *p);
+    virtual ~OnlineSearchService() { cancel(); }
 
-private Q_SLOTS:
-    void headerClicked(int level);
-    void statsUpdated(int songs, quint32 time);
+    QVariant data(const QModelIndex &index, int role) const;
+    Song & fixPath(Song &s) const;
+    virtual void search(const QString &key, const QString &value) =0;
+    virtual void cancel();
 
-private:
-    void doSearch();
-
-private:
-    SoundCloudService *srv;
-    SqueezedTextLabel *statsLabel;
+protected:
+    NetworkJob *job;
 };
 
 #endif

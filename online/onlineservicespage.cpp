@@ -26,7 +26,7 @@
 #include "jamendoservice.h"
 #include "magnatuneservice.h"
 #include "soundcloudservice.h"
-#include "soundcloudwidget.h"
+#include "onlinesearchwidget.h"
 #include "podcastservice.h"
 #include "podcastwidget.h"
 #include "streams/streamspage.h"
@@ -47,7 +47,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(magnatune, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
 
     SoundCloudService *soundcloud=new SoundCloudService(this);
-    addPage(soundcloud->name(), soundcloud->icon(), soundcloud->title(), soundcloud->descr(), new SoundCloudWidget(soundcloud, this));
+    addPage(soundcloud->name(), soundcloud->icon(), soundcloud->title(), soundcloud->descr(), new OnlineSearchWidget(soundcloud, this));
 
     podcast=new PodcastService(this);
     addPage(podcast->name(), podcast->icon(), podcast->title(), podcast->descr(), new PodcastWidget(podcast, this));

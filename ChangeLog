@@ -14,6 +14,8 @@
    rating), Alt+1 (1 star), etc.
 8. Re-add genre combo to library view. Only visible if grouping by artist or
    album.
+9. When adding a podcast (or other track from an internet service), remove
+   any new-lines from metadata.
 
 2.0.1
 -----

@@ -27,14 +27,19 @@
 static const QString constUrlGuard=QLatin1String("#{SONG_DETAILS}");
 static const QString constDeliminator=QLatin1String("<@>");
 
+static inline QString fixString(QString str)
+{
+    return str.replace(constDeliminator, " ").replace("\n", "");
+}
+
 Song & OnlineService::encode(Song &song)
 {
     song.file=song.file+constUrlGuard+
-              song.artist.replace(constDeliminator, " ")+constDeliminator+
-              song.albumartist.replace(constDeliminator, " ")+constDeliminator+
-              song.album.replace(constDeliminator, " ")+constDeliminator+
-              song.title.replace(constDeliminator, " ")+constDeliminator+
-              song.genre.replace(constDeliminator, " ")+constDeliminator+
+              fixString(song.artist)+constDeliminator+
+              fixString(song.albumartist)+constDeliminator+
+              fixString(song.album)+constDeliminator+
+              fixString(song.title)+constDeliminator+
+              fixString(song.genre)+constDeliminator+
               QString::number(song.time)+constDeliminator+
               QString::number(song.year)+constDeliminator+
               QString::number(song.track)+constDeliminator+

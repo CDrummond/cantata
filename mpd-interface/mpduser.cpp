@@ -362,5 +362,8 @@ bool MPDUser::controlMpd(bool stop)
             }
         }
     }
+    if (stop && !pidFileName.isEmpty() && QFile::exists(pidFileName)) {
+        QFile::remove(pidFileName);
+    }
     return started;
 }

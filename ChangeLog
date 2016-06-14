@@ -17,6 +17,8 @@
  9. When adding a podcast (or other track from an internet service), remove
     any new-lines from metadata.
 10. When configuring streams, clear list of providers before re-populating.
+11. If a 'Basic' mode connection fails, re-start spawned MPD instance (and
+    remove any previous pid file).
 
 2.0.1
 -----

@@ -434,13 +434,26 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
         DBUG << "Something has gone wrong with sockets, so disconnect";
         disconnectFromMPD();
     }
+    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
+    int maxConnAttempts=MPDUser::constName==details.name ? 2 : 1;
+    #else
+    int connAttempts=1;
+    #endif
     ConnectionReturn status=Failed;
-    if (Success==(status=connectToMPD(sock)) && Success==(status=connectToMPD(idleSocket, true))) {
-        state=State_Connected;
-        emit socketAddress(sock.address());
-    } else {
-        disconnectFromMPD();
-        state=State_Disconnected;
+    for (int connAttempt=0; connAttempt<maxConnAttempts; ++connAttempt) {
+        if (Success==(status=connectToMPD(sock)) && Success==(status=connectToMPD(idleSocket, true))) {
+            state=State_Connected;
+            emit socketAddress(sock.address());
+        } else {
+            disconnectFromMPD();
+            state=State_Disconnected;
+            #ifdef ENABLE_SIMPLE_MPD_SUPPORT
+            if (0==connAttempt && MPDUser::constName==details.name) {
+                MPDUser::self()->stop();
+                MPDUser::self()->start();
+            }
+            #endif
+        }
     }
     connTimer->start(30000);
     return status;

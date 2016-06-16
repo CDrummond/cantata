@@ -433,6 +433,7 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
         deleteLater();
         return;
     }
+    note->setVisible(!isArtist);
     if (isArtist) {
         setCaption(i18n("'%1' Artist Image", song.albumartist));
     } else {

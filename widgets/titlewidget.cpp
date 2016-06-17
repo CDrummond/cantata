@@ -40,6 +40,8 @@
 #include <QMouseEvent>
 #include <QApplication>
 
+static int twHeight=-1;
+
 TitleWidget::TitleWidget(QWidget *p)
     : QWidget(p)
     , controls(0)
@@ -68,7 +70,9 @@ TitleWidget::TitleWidget(QWidget *p)
     if (size<72) {
         size=Icon::stdSize(size);
     }
-    size=Utils::scaleForDpi(qMax(size, 48));
+    int margin=Utils::scaleForDpi(2);
+    int pad=Utils::scaleForDpi(8);
+    size=qMax(qMax(size, QFontMetrics(mainText->font()).height()+QFontMetrics(subText->font()).height()+spacing), Utils::scaleForDpi(40))+pad;
     image->setFixedSize(size, size);
     setToolTip(i18n("Click to go back"));
     spacing=qMin(4, spacing-1);
@@ -86,7 +90,7 @@ TitleWidget::TitleWidget(QWidget *p)
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
-    layout->setContentsMargins(1, 4, 1, 4);
+    layout->setMargin(margin);
     layout->setSpacing(spacing);
     textLayout->setMargin(0);
     textLayout->setSpacing(spacing);
@@ -95,6 +99,11 @@ TitleWidget::TitleWidget(QWidget *p)
     image->setAlignment(Qt::AlignCenter);
     chevron->setAlignment(Qt::AlignCenter);
     chevron->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    if (-1==twHeight) {
+        ToolButton tb;
+        twHeight=qMax((tb.iconSize().height()*2)+pad, size)+(2*margin);
+    }
+    setFixedHeight(twHeight);
 }
 
 void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text, const QString &sub, bool showControls)
@@ -117,6 +126,8 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
             ToolButton *replace=new ToolButton(this);
             add->QAbstractButton::setIcon(StdActions::self()->appendToPlayQueueAction->icon());
             replace->QAbstractButton::setIcon(StdActions::self()->replacePlayQueueAction->icon());
+            add->setFixedSize(add->iconSize()+QSize(8, 8));
+            replace->setFixedSize(add->size());
             add->setToolTip(i18n("Add All To Play Queue"));
             replace->setToolTip(i18n("Add All And Replace Play Queue"));
             l->addWidget(replace);
@@ -139,7 +150,8 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
     if (icon.isNull()) {
         image->setVisible(false);
     } else {
-        image->setPixmap(Icon::getScaledPixmap(icon, image->width(), image->height(), 96));
+        int iconPad=Utils::scaleForDpi(8);
+        image->setPixmap(Icon::getScaledPixmap(icon, image->width()-iconPad, image->height()-iconPad, 96));
     }
 }
 

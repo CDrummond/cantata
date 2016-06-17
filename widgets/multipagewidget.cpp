@@ -51,12 +51,12 @@ public:
         f.setBold(true);
         mainText->setFont(f);
         layout->setSpacing(2);
-        int size=mainText->sizeHint().height()+subText->sizeHint().height()+layout->spacing();
-        size+=6;
+        int textSize=mainText->sizeHint().height()+subText->sizeHint().height()+layout->spacing();
+        textSize+=6;
+        int size=textSize;
         if (size<72) {
-            size=qMax(32, Icon::stdSize(size));
+            size=Utils::scaleForDpi(32);
         }
-        size=Utils::scaleForDpi(size);
         icon->setFixedSize(size, size);
         layout->addWidget(icon, 0, 0, 2, 1);
         layout->addItem(new QSpacerItem(Utils::layoutSpacing(this), 2, QSizePolicy::Fixed, QSizePolicy::Fixed), 0, 1);
@@ -72,7 +72,7 @@ public:
         mainText->setText(t);
         subText->setText(s);
         layout->setMargin(qMin(layout->margin(), 8));
-        setMinimumHeight(size+(layout->margin()*2));
+        setMinimumHeight(qMax(textSize, size)+(layout->margin()*2));
         updateToolTip();
     }
 

@@ -54,7 +54,7 @@ public:
         int size=mainText->sizeHint().height()+subText->sizeHint().height()+layout->spacing();
         size+=6;
         if (size<72) {
-            size=qMax(48, Icon::stdSize(size));
+            size=qMax(32, Icon::stdSize(size));
         }
         size=Utils::scaleForDpi(size);
         icon->setFixedSize(size, size);

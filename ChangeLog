@@ -19,6 +19,7 @@
 10. When configuring streams, clear list of providers before re-populating.
 11. If a 'Basic' mode connection fails, re-start spawned MPD instance (and
     remove any previous pid file).
+12. Fix Jamendo and Magnatune covers.
 
 2.0.1
 -----

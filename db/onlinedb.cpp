@@ -38,12 +38,16 @@ OnlineDb::~OnlineDb()
 {
 }
 
+bool OnlineDb::init(const QString &dbFile) {
+    LibraryDb::init(dbFile);
+    createTable("covers(artistId text, albumId text, url text)");
+    createTable("stats(artists integer)");
+}
+
 void OnlineDb::create()
 {
     if (!db) {
         init(Utils::dataDir(subDir, true)+dbName+".sql");
-        createTable("covers(artistId text, albumId text, url text)");
-        createTable("stats(artists integer)");
     }
 }
 
@@ -103,7 +107,6 @@ int OnlineDb::getStats()
 QString OnlineDb::getCoverUrl(const QString &artistId, const QString &albumId)
 {
     if (0!=currentVersion) {
-
         if (!getCoverQuery) {
             getCoverQuery=new QSqlQuery(*db);
             getCoverQuery->prepare("select url from covers where artistId=:artistId and albumId=:albumId limit 1;");

@@ -115,7 +115,7 @@ public:
 
     void clear();
     void erase();
-    bool init(const QString &dbFile);
+    virtual bool init(const QString &dbFile);
     void insertSong(const Song &s);
     QList<Genre> getGenres();
     QList<Artist> getArtists(const QString &genre=QString());

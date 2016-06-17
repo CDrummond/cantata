@@ -151,7 +151,11 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
         image->setVisible(false);
     } else {
         int iconPad=Utils::scaleForDpi(8);
-        image->setPixmap(Icon::getScaledPixmap(icon, image->width()-iconPad, image->height()-iconPad, 96));
+        int iconSize=image->width()-iconPad;
+        if (iconSize<44 && iconSize>=32) {
+            iconSize=32;
+        }
+        image->setPixmap(Icon::getScaledPixmap(icon, iconSize, iconSize, 96));
     }
 }
 

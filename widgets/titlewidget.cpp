@@ -54,14 +54,17 @@ TitleWidget::TitleWidget(QWidget *p)
     QLabel *chevron=new QLabel(QChar(Qt::RightToLeft==layoutDirection() ? 0x203A : 0x2039), this);
     QFont f=mainText->font();
     subText->setFont(Utils::smallFont(f));
-    f.setBold(true);
     mainText->setFont(f);
     if (f.pixelSize()>0) {
         f.setPixelSize(f.pixelSize()*2);
     } else {
         f.setPointSizeF(f.pointSizeF()*2);
     }
-    f.setBold(false);
+    QPalette pal=mainText->palette();
+    QColor col(mainText->palette().windowText().color());
+    col.setAlphaF(0.5);
+    pal.setColor(QPalette::WindowText, col);
+    subText->setPalette(pal);
     chevron->setFont(f);
     int spacing=Utils::layoutSpacing(this);
     mainText->ensurePolished();

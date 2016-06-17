@@ -46,10 +46,7 @@ public:
         icon=new QLabel(this);
         mainText=new SqueezedTextLabel(this);
         subText=new SqueezedTextLabel(this);
-        QFont f=mainText->font();
-        subText->setFont(Utils::smallFont(f));
-        f.setBold(true);
-        mainText->setFont(f);
+        subText->setFont(Utils::smallFont(mainText->font()));
         layout->setSpacing(2);
         int textSize=mainText->sizeHint().height()+subText->sizeHint().height()+layout->spacing();
         textSize+=6;
@@ -57,6 +54,12 @@ public:
         if (size<72) {
             size=Utils::scaleForDpi(32);
         }
+        QPalette pal=mainText->palette();
+        QColor col(mainText->palette().windowText().color());
+        col.setAlphaF(0.5);
+        pal.setColor(QPalette::ButtonText, col);
+        subText->setPalette(pal);
+
         icon->setFixedSize(size, size);
         layout->addWidget(icon, 0, 0, 2, 1);
         layout->addItem(new QSpacerItem(Utils::layoutSpacing(this), 2, QSizePolicy::Fixed, QSizePolicy::Fixed), 0, 1);

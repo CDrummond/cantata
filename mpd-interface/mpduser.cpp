@@ -97,16 +97,11 @@ bool MPDUser::isRunning()
     #endif
 }
 
-static QString readValue(const QString &line, const QString &key)
+static QString readValue(const QString &line)
 {
-    if (line.startsWith(key)) {
-        int start=line.indexOf("\"");
-        int end=-1==start ? -1 : line.indexOf("\"", start+1);
-        if (-1!=end) {
-            return line.mid(start+1, (end-start)-1);
-        }
-    }
-    return QString();
+    int start=line.indexOf("\"");
+    int end=-1==start ? -1 : line.indexOf("\"", start+1);
+    return -1==end ? QString() : line.mid(start+1, (end-start)-1);
 }
 
 void MPDUser::start()
@@ -208,7 +203,7 @@ void MPDUser::cleanup()
             QString line = QString::fromUtf8(cfgFile.readLine());
             foreach (const QString &key, fileKeys) {
                 if (line.startsWith(key)) {
-                    QString file=readValue(line, key);
+                    QString file=readValue(line);
                     if (!file.isEmpty()) {
                         QString dir=Utils::getDir(file);
                         if (!dir.isEmpty()) {
@@ -220,7 +215,7 @@ void MPDUser::cleanup()
                 }
             }
             if (playlistDir.isEmpty() && line.startsWith(constPlaylistsKey)) {
-                playlistDir=readValue(line, constPlaylistsKey);
+                playlistDir=readValue(line);
             }
         }
         files.insert(cfgFileName);
@@ -259,7 +254,6 @@ void MPDUser::init(bool create)
         QString cfgDir=Utils::dataDir(constDir, create);
         QString cfgName(cfgDir+constConfigFile);
         QString playlists;
-
         if (create && !QFile::exists(cfgName)) {
             // Conf file does not exist, so we need to create one...
             QFile cfgTemplate(CANTATA_SYS_MPD_DIR+constConfigFile+".template");
@@ -280,18 +274,18 @@ void MPDUser::init(bool create)
                         line=line.replace("//", "/");
                         out << line;
 
-                        if (det.dir.isEmpty()) {
-                            det.dir=Utils::fixPath(readValue(line, constMusicFolderKey));
+                        if (det.dir.isEmpty() && line.startsWith(constMusicFolderKey)) {
+                            det.dir=Utils::fixPath(readValue(line));
                         }
-                        if (det.hostname.isEmpty()) {
-                            det.hostname=readValue(line, constSocketKey);
+                        if (det.hostname.isEmpty() && line.startsWith(constSocketKey)) {
+                            det.hostname=readValue(line);
                         }
-                        if (pidFileName.isEmpty()) {
-                            pidFileName=readValue(line, constPidKey);
+                        if (pidFileName.isEmpty() && line.startsWith(constPidKey)) {
+                            pidFileName=readValue(line);
                         }
                         // Create playlists dir...
-                        if (playlists.isEmpty()) {
-                            playlists=readValue(line, constPlaylistsKey);
+                        if (playlists.isEmpty() && line.startsWith(constPlaylistsKey)) {
+                            playlists=readValue(line);
                             if (!playlists.isEmpty()) {
                                 Utils::createWorldReadableDir(playlists, QString());
                             }
@@ -306,14 +300,14 @@ void MPDUser::init(bool create)
             if (cfgFile.open(QIODevice::ReadOnly|QIODevice::Text)) {
                 while (!cfgFile.atEnd() && (det.dir.isEmpty() || det.hostname.isEmpty() || pidFileName.isEmpty())) {
                     QString line = QString::fromUtf8(cfgFile.readLine());
-                    if (det.dir.isEmpty()) {
-                        det.dir=Utils::fixPath(readValue(line, constMusicFolderKey));
+                    if (det.dir.isEmpty() && line.startsWith(constMusicFolderKey)) {
+                        det.dir=Utils::fixPath(readValue(line));
                     }
-                    if (det.hostname.isEmpty()) {
-                        det.hostname=readValue(line, constSocketKey);
+                    if (det.hostname.isEmpty() && line.startsWith(constSocketKey)) {
+                        det.hostname=readValue(line);
                     }
-                    if (pidFileName.isEmpty()) {
-                        pidFileName=readValue(line, constPidKey);
+                    if (pidFileName.isEmpty() && line.startsWith(constPidKey)) {
+                        pidFileName=readValue(line);
                     }
                 }
             }
@@ -348,16 +342,19 @@ bool MPDUser::controlMpd(bool stop)
     QStringList args=QStringList() << confFile;
     if (stop) {
         args+="--kill";
+    } else {
+        // Ensure cache dir exists before starting MPD
+        Utils::cacheDir(constDir, true);
+        if (!pidFileName.isEmpty() && QFile::exists(pidFileName)) {
+            QFile::remove(pidFileName);
+        }
     }
 
-    qint64 appPid=0;
-    bool started=QProcess::startDetached(mpdExe, args, QString(), &appPid);
-    if (started && !stop && 0!=appPid) {
+    bool started=QProcess::startDetached(mpdExe, args);
+    if (started && !stop) {
         for (int i=0; i<8; ++i) {
-            if (getPid()!=appPid) {
-                Utils::msleep(250);
-            } else {
-                Utils::msleep(250);
+            Utils::msleep(250);
+            if (0!=getPid()) {
                 return true;
             }
         }

@@ -215,7 +215,9 @@ QString MPDConnectionDetails::getName() const
 
 QString MPDConnectionDetails::description() const
 {
-    if (hostname.startsWith('/')) {
+    if (hostname.isEmpty()) {
+        return getName();
+    } else if (hostname.startsWith('/')) {
         return i18nc("name (host)", "\"%1\"", getName());
     } else {
         return i18nc("name (host:port)", "\"%1\" (%2:%3)", getName(), hostname, QString::number(port)); // Use QString::number to prevent KDE's i18n converting 6600 to 6,600!
@@ -449,6 +451,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
             state=State_Disconnected;
             #ifdef ENABLE_SIMPLE_MPD_SUPPORT
             if (0==connAttempt && MPDUser::constName==details.name) {
+                DBUG << "Restart personal mpd";
                 MPDUser::self()->stop();
                 MPDUser::self()->start();
             }
@@ -549,7 +552,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
 
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     bool isUser=d.name==MPDUser::constName;
-    const MPDConnectionDetails &det=isUser ? MPDUser::self()->details() : d;
+    const MPDConnectionDetails &det=isUser ? MPDUser::self()->details(true) : d;
     #else
     const MPDConnectionDetails &det=d;
     #endif
@@ -561,6 +564,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
     #endif
 
     details=det;
+
     if (diffDetails || State_Connected!=state) {
         emit connectionChanged(details);
         DBUG << "setDetails" << details.hostname << details.port << (details.password.isEmpty() ? false : true);

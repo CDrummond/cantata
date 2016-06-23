@@ -256,6 +256,7 @@ bool PodcastService::Podcast::load()
                     QString time=attributes.value(constTimeAttribute).toString();
 
                     ep->duration=time.isEmpty() ? 0 : time.toUInt();
+                    ep->played=constTrue==attributes.value(constPlayedAttribute).toString();
                     if (QFile::exists(localFile)) {
                         ep->localFile=localFile;
                     }
@@ -381,6 +382,7 @@ PodcastService::PodcastService(QObject *p)
     icn.addFile(":"+constName);
     useCovers(name(), true);
     clearPartialDownloads();
+    connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(currentMpdSong(const Song &)));
 }
 
 QString PodcastService::name() const

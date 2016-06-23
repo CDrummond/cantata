@@ -21,6 +21,7 @@
     remove any previous pid file).
 12. Fix Jamendo and Magnatune covers.
 13. Fix various issues with 'Personal' MPD instance.
+14. Fix saving, and restoring, of podcast 'played' status.
 
 2.0.1
 -----

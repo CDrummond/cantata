@@ -961,6 +961,11 @@ void PodcastService::setPodcastsAsListened(Podcast *pod, const QList<Episode *> 
             QModelIndex idx=createIndex(pod->episodes.indexOf(ep), 0, (void *)ep);
             emit dataChanged(idx, idx);
             modified=true;
+            if (listened) {
+                pod->unplayedCount--;
+            } else {
+                pod->unplayedCount++;
+            }
         }
     }
     if (modified) {
@@ -1236,9 +1241,10 @@ void PodcastService::currentMpdSong(const Song &s)
                         episode->played=true;
                         QModelIndex idx=createIndex(podcast->episodes.indexOf(episode), 0, (void *)episode);
                         emit dataChanged(idx, idx);
+                        podcast->unplayedCount--;
+                        podcast->save();
                         idx=createIndex(podcasts.indexOf(podcast), 0, (void *)podcast);
                         emit dataChanged(idx, idx);
-                        podcast->save();
                     }
                     return;
                 }

@@ -45,10 +45,10 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
 
     layout->setMargin(0);
     urlEntry = new LineEdit(wid);
+    nameEntry = new LineEdit(wid);
     if (addToPlayQueue) {
         saveCombo=new QComboBox(wid);
     }
-    nameEntry = new LineEdit(wid);
     statusText = new QLabel(this);
 
     urlEntry->setMinimumWidth(300);
@@ -58,16 +58,15 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     int row=0;
     layout->setWidget(row, QFormLayout::LabelRole, urlLabel);
     layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
+    layout->setWidget(row, QFormLayout::LabelRole, nameLabel);
+    layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
     if (addToPlayQueue) {
         saveCombo->addItem(i18n("Just add to play queue, do not save"));
         saveCombo->addItem(i18n("Add to play queue, and save to favorites"));
         saveCombo->setCurrentIndex(0);
         layout->setWidget(row++, QFormLayout::FieldRole, saveCombo);
-        connect(saveCombo, SIGNAL(activated(int)), SLOT(saveComboChanged()));
-        setWidgetVisiblity();
+        connect(saveCombo, SIGNAL(activated(int)), SLOT(changed()));
     }
-    layout->setWidget(row, QFormLayout::LabelRole, nameLabel);
-    layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
     layout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
     layout->setWidget(row++, QFormLayout::SpanningRole, statusText);
@@ -89,20 +88,6 @@ void StreamDialog::setEdit(const QString &editName, const QString &editUrl)
     prevUrl=editUrl;
     nameEntry->setText(editName);
     urlEntry->setText(editUrl);
-}
-
-void StreamDialog::saveComboChanged()
-{
-    setWidgetVisiblity();
-    changed();
-}
-
-void StreamDialog::setWidgetVisiblity()
-{
-    bool s=save();
-    nameEntry->setVisible(s);
-    nameLabel->setVisible(s);
-    Utils::resizeWindow(this, true, false);
 }
 
 void StreamDialog::changed()

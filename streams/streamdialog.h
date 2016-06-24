@@ -25,7 +25,7 @@
 #define STREAMDIALOG_H
 
 #include <QSet>
-#include "support/combobox.h"
+#include <QCheckBox>
 #include "support/dialog.h"
 #include "support/lineedit.h"
 
@@ -42,7 +42,7 @@ public:
     void setEdit(const QString &editName, const QString &editUrl);
     QString name() const { return nameEntry->text().trimmed(); }
     QString url() const { return urlEntry->text().trimmed(); }
-    bool save() const { return !saveCombo || 1==saveCombo->currentIndex(); }
+    bool save() const { return !saveCheckbox || saveCheckbox->isChecked(); }
 
 private Q_SLOTS:
     void changed();
@@ -50,7 +50,7 @@ private Q_SLOTS:
 private:
     QString prevName;
     QString prevUrl;
-    QComboBox *saveCombo;
+    QCheckBox *saveCheckbox;
     LineEdit *nameEntry;
     LineEdit *urlEntry;
     BuddyLabel *nameLabel;

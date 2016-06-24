@@ -37,7 +37,7 @@
 
 StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     : Dialog(parent)
-    , saveCombo(0)
+    , saveCheckbox(0)
     , urlHandlers(MPDConnection::self()->urlHandlers())
 {
     QWidget *wid = new QWidget(this);
@@ -47,7 +47,7 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     urlEntry = new LineEdit(wid);
     nameEntry = new LineEdit(wid);
     if (addToPlayQueue) {
-        saveCombo=new QComboBox(wid);
+        saveCheckbox=new QCheckBox(i18n("Add stream to favourites"), wid);
     }
     statusText = new QLabel(this);
 
@@ -61,11 +61,9 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     layout->setWidget(row, QFormLayout::LabelRole, nameLabel);
     layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
     if (addToPlayQueue) {
-        saveCombo->addItem(i18n("Just add to play queue, do not save"));
-        saveCombo->addItem(i18n("Add to play queue, and save to favorites"));
-        saveCombo->setCurrentIndex(0);
-        layout->setWidget(row++, QFormLayout::FieldRole, saveCombo);
-        connect(saveCombo, SIGNAL(activated(int)), SLOT(changed()));
+        saveCheckbox->setChecked(false);
+        layout->setWidget(row++, QFormLayout::FieldRole, saveCheckbox);
+        connect(saveCheckbox, SIGNAL(toggled(bool)), SLOT(changed()));
     }
     layout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 

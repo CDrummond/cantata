@@ -45,11 +45,7 @@ public:
     bool save() const { return !saveCombo || 1==saveCombo->currentIndex(); }
 
 private Q_SLOTS:
-    void saveComboChanged();
     void changed();
-
-private:
-    void setWidgetVisiblity();
 
 private:
     QString prevName;

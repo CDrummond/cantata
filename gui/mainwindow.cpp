@@ -1992,7 +1992,7 @@ void MainWindow::addStreamToPlayQueue()
         if (dlg.save()) {
             StreamsModel::self()->addToFavourites(url, dlg.name());
         }
-        PlayQueueModel::self()->addItems(QStringList() << StreamsModel::modifyUrl(url), false, 0);
+        PlayQueueModel::self()->addItems(QStringList() << StreamsModel::modifyUrl(url, true, dlg.name()), false, 0);
     }
 }
 

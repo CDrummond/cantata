@@ -22,6 +22,8 @@
 12. Fix Jamendo and Magnatune covers.
 13. Fix various issues with 'Personal' MPD instance.
 14. Fix saving, and restoring, of podcast 'played' status.
+15. When adding streams to play queue via add dialog, always allow setting of
+    name.
 
 2.0.1
 -----

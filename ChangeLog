@@ -24,6 +24,7 @@
 14. Fix saving, and restoring, of podcast 'played' status.
 15. When adding streams to play queue via add dialog, always allow setting of
     name.
+16. Use Pulse Audio for 'Personal' MPD instance.
 
 2.0.1
 -----

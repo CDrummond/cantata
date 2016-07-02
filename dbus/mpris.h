@@ -71,37 +71,15 @@ public:
     // org.mpris.MediaPlayer2.Player
     void Next() { StdActions::self()->nextTrackAction->trigger(); }
     void Previous() { StdActions::self()->prevTrackAction->trigger(); }
-    void Pause() {
-        if (MPDState_Playing==MPDStatus::self()->state()) {
-            StdActions::self()->playPauseTrackAction->trigger();
-        }
-    }
-
+    void Pause();
     void PlayPause() { StdActions::self()->playPauseTrackAction->trigger(); }
     void Stop() { StdActions::self()->stopPlaybackAction->trigger(); }
     void StopAfterCurrent() { StdActions::self()->stopAfterCurrentTrackAction->trigger(); }
-
-    void Play() {
-        MPDStatus * const status = MPDStatus::self();
-
-        if (status->playlistLength() && MPDState_Playing!=status->state()) {
-           StdActions::self()->playPauseTrackAction->trigger();
-        }
-    }
-
+    void Play();
     void Seek(qlonglong pos) { emit setSeekId(-1, pos/1000000); }
     void SetPosition(const QDBusObjectPath &, qlonglong pos) {emit setSeekId(-1, pos/1000000); }
     void OpenUri(const QString &) { }
-
-    QString PlaybackStatus() {
-        switch(MPDStatus::self()->state()) {
-        case MPDState_Playing: return QLatin1String("Playing");
-        case MPDState_Paused: return QLatin1String("Paused");
-        default:
-        case MPDState_Stopped: return QLatin1String("Stopped");
-        }
-    }
-
+    QString PlaybackStatus() const;
     QString LoopStatus() { return MPDStatus::self()->repeat() ? QLatin1String("Playlist") : QLatin1String("None"); }
     void SetLoopStatus(const QString &s) { emit setRepeat(QLatin1String("None")!=s); }
     QVariantMap Metadata() const;
@@ -115,11 +93,11 @@ public:
     double MinimumRate() const { return 1.0; }
     double MaximumRate() const { return 1.0; }
     bool CanControl() const { return true; }
-    bool CanPlay() const { return MPDState_Playing!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>0; }
-    bool CanPause() const { return MPDState_Playing==MPDStatus::self()->state(); }
-    bool CanSeek() const { return -1!=MPDStatus::self()->songId(); }
-    bool CanGoNext() const { return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1; }
-    bool CanGoPrevious() const { return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1; }
+    bool CanPlay() const { return true; }
+    bool CanPause() const { return true; }
+    bool CanSeek() const { return true; }
+    bool CanGoNext() const { return true; }
+    bool CanGoPrevious() const { return true; }
 
     // org.mpris.MediaPlayer2
     bool CanQuit() const { return true; }

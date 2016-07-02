@@ -25,6 +25,7 @@
 15. When adding streams to play queue via add dialog, always allow setting of
     name.
 16. Use Pulse Audio for 'Personal' MPD instance.
+17. Always return true for MPRIS CanPlay, CanPause, etc.
 
 2.0.1
 -----

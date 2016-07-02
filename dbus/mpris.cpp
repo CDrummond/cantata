@@ -65,6 +65,31 @@ Mpris::~Mpris()
     QDBusConnection::sessionBus().unregisterService("org.mpris.MediaPlayer2.cantata");
 }
 
+void Mpris::Pause()
+{
+    if (MPDState_Playing==MPDStatus::self()->state()) {
+        StdActions::self()->playPauseTrackAction->trigger();
+    }
+}
+
+void Mpris::Play()
+{
+    MPDStatus * const status = MPDStatus::self();
+    if (status->playlistLength() && MPDState_Playing!=status->state()) {
+        StdActions::self()->playPauseTrackAction->trigger();
+    }
+}
+
+QString Mpris::PlaybackStatus() const
+{
+    switch(MPDStatus::self()->state()) {
+    case MPDState_Playing: return QLatin1String("Playing");
+    case MPDState_Paused: return QLatin1String("Paused");
+    default:
+    case MPDState_Stopped: return QLatin1String("Stopped");
+    }
+}
+
 qlonglong Mpris::Position() const
 {
     // Cant use MPDStatus, as we dont poll for track position, but use a timer instead!

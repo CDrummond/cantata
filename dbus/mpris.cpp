@@ -110,15 +110,15 @@ void Mpris::updateStatus()
     if (MPDStatus::self()->volume()!=status.volume) {
         map.insert("Volume", Volume());
     }
-    if (MPDStatus::self()->playlistLength()!=status.playlistLength) {
-        map.insert("CanGoNext", CanGoNext());
-        map.insert("CanGoPrevious", CanGoPrevious());
-    }
+    //if (MPDStatus::self()->playlistLength()!=status.playlistLength) {
+    //    map.insert("CanGoNext", CanGoNext());
+    //    map.insert("CanGoPrevious", CanGoPrevious());
+    //}
     if (MPDStatus::self()->state()!=status.state) {
         map.insert("PlaybackStatus", PlaybackStatus());
-        map.insert("CanPlay", CanPlay());
-        map.insert("CanPause", CanPause());
-        map.insert("CanSeek", CanSeek());
+        //map.insert("CanPlay", CanPlay());
+        //map.insert("CanPause", CanPause());
+        //map.insert("CanSeek", CanSeek());
     }
     if (MPDStatus::self()->timeElapsed()!=status.timeElapsed) {
         map.insert("Position", convertTime(MPDStatus::self()->timeElapsed()));

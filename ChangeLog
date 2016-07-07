@@ -26,6 +26,7 @@
     name.
 16. Use Pulse Audio for 'Personal' MPD instance.
 17. Always return true for MPRIS CanPlay, CanPause, etc.
+18. Work-around KDE 5.7 MPRIS issues.
 
 2.0.1
 -----

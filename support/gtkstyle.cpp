@@ -25,7 +25,6 @@
 #include "config.h"
 #include "utils.h"
 #include <QPainter>
-#include <QStyleOptionViewItemV4>
 #include <QApplication>
 #include <QCache>
 #include <QProcess>
@@ -63,7 +62,7 @@ bool GtkStyle::isActive()
     return usingGtkStyle;
 }
 
-void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity)
+void GtkStyle::drawSelection(const StyleOptionViewItem &opt, QPainter *painter, double opacity)
 {
     static const int constMaxDimension=32;
     static QCache<QString, QPixmap> cache(30000);
@@ -78,13 +77,13 @@ void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painte
 
     if (!pix) {
         pix=new QPixmap(width, opt.rect.height());
-        QStyleOptionViewItemV4 styleOpt(opt);
+        StyleOptionViewItem styleOpt(opt);
         pix->fill(Qt::transparent);
         QPainter p(pix);
         styleOpt.state=opt.state;
         styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
         styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled|QStyle::State_Active;
-        styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
+        styleOpt.viewItemPosition = StyleOptionViewItem::OnlyOne;
         styleOpt.rect=QRect(0, 0, opt.rect.width(), opt.rect.height());
         QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, &p, 0);
         p.end();

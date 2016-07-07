@@ -42,12 +42,12 @@
 #ifdef Q_OS_MAC
 #include "osxstyle.h"
 #endif
+#include "styleoption.h"
 #include <QHBoxLayout>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QSplitter>
 #include <QStackedWidget>
-#include <QStyleOption>
 #include <QToolButton>
 #include <QToolTip>
 #include <QVBoxLayout>
@@ -150,7 +150,7 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
     textRect.setRight(draw_rect.width());
     iconRect.translate(0, (draw_rect.height() - iconRect.height()) / 2);
 
-    QStyleOptionViewItemV4 styleOpt;
+    StyleOptionViewItem styleOpt;
     styleOpt.palette=option->palette;
     styleOpt.rect=draw_rect;
     if (QStyleOptionTab::Beginning==v3Opt->position) {
@@ -159,7 +159,7 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
     styleOpt.state=option->state;
     styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
     styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;
-    styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
+    styleOpt.viewItemPosition = StyleOptionViewItem::OnlyOne;
     styleOpt.showDecorationSelected=true;
     bool drawBgnd=true;
     int fader = 1;
@@ -499,12 +499,12 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
     QRect rect = tabRect(tabIndex);
     bool selected = (tabIndex == currentIdx);
 
-    QStyleOptionViewItemV4 styleOpt;
+    StyleOptionViewItem styleOpt;
     styleOpt.initFrom(this);
     styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
     styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;
     styleOpt.rect=rect;
-    styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
+    styleOpt.viewItemPosition = StyleOptionViewItem::OnlyOne;
     styleOpt.showDecorationSelected=true;
     bool drawBgnd=true;
 

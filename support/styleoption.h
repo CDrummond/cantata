@@ -21,27 +21,15 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef GTKSTYLE_H
-#define GTKSTYLE_H
+#ifndef STYLEOPTION_H
+#define STYLEOPTION_H
 
-#include "styleoption.h"
-#include <QString>
+#include <QStyleOption>
 
-class QPainter;
-class QWidget;
-
-namespace GtkStyle
-{
-    QString readDconfSetting(const QString &setting, const QString &scheme=QString());
-    extern bool isActive();
-    extern void drawSelection(const StyleOptionViewItem &opt, QPainter *painter, double opacity);
-    extern QString themeName();
-    extern void setThemeName(const QString &n);
-    extern bool thinScrollbars();
-    extern void applyTheme(QWidget *widget);
-    extern void registerWidget(QWidget *widget);
-    extern bool useSymbolicIcons();
-    extern QColor symbolicColor();
-}
+#if QT_VERSION >= 0x050100
+#define StyleOptionViewItem QStyleOptionViewItem
+#else
+#define StyleOptionViewItem QStyleOptionViewItemV4
+#endif
 
 #endif

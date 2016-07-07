@@ -24,6 +24,7 @@
 #include "basicitemdelegate.h"
 #include "support/gtkstyle.h"
 #include "support/utils.h"
+#include "support/styleoption.h"
 #include <QPainter>
 #include <QStyle>
 #include <QStyledItemDelegate>
@@ -94,7 +95,7 @@ void BasicItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
     bool active=option.state&QStyle::State_Active;
     if (GtkStyle::isActive()) {
         bool mouseOver=option.state&QStyle::State_MouseOver;
-        QStyleOptionViewItemV4 opt = option;
+        StyleOptionViewItem opt = option;
         initStyleOption(&opt, index);
 
         if (trackMouse && !underMouse) {
@@ -120,18 +121,18 @@ void BasicItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
     QColor col(option.palette.color(active ? QPalette::Active : QPalette::Inactive,
                                     selected ? QPalette::HighlightedText : QPalette::Text));
 
-    switch (((QStyleOptionViewItemV4 &)option).viewItemPosition) {
-    case QStyleOptionViewItemV4::Beginning:
+    switch (((StyleOptionViewItem &)option).viewItemPosition) {
+    case StyleOptionViewItem::Beginning:
         drawLine(painter, option.rect, col, true, false);
         break;
-    case QStyleOptionViewItemV4::Middle:
+    case StyleOptionViewItem::Middle:
         drawLine(painter, option.rect, col, false, false);
         break;
-    case QStyleOptionViewItemV4::End:
+    case StyleOptionViewItem::End:
         drawLine(painter, option.rect, col, false, true);
         break;
-    case QStyleOptionViewItemV4::Invalid:
-    case QStyleOptionViewItemV4::OnlyOne:
+    case StyleOptionViewItem::Invalid:
+    case StyleOptionViewItem::OnlyOne:
         drawLine(painter, option.rect, col, true, true);
     }
 }

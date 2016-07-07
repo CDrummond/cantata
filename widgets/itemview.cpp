@@ -41,8 +41,8 @@
 #include "support/actioncollection.h"
 #include "support/configuration.h"
 #include "support/flattoolbutton.h"
+#include "support/styleoption.h"
 #include <QStyle>
-#include <QStyleOptionViewItem>
 #include <QPainter>
 #include <QAction>
 #include <QTimer>
@@ -182,7 +182,7 @@ public:
         bool active=option.state&QStyle::State_Active;
         bool drawBgnd=true;
         bool iconMode = view && QListView::IconMode==view->viewMode();
-        QStyleOptionViewItemV4 opt(option);
+        StyleOptionViewItem opt(option);
         opt.showDecorationSelected=true;
 
         if (!underMouse) {

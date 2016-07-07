@@ -27,6 +27,7 @@
 #include "ratingwidget.h"
 #include "support/localize.h"
 #include "support/configuration.h"
+#include "support/styleoption.h"
 #include "models/roles.h"
 #include "mpd-interface/song.h"
 #include <QMenu>
@@ -45,8 +46,8 @@ public:
             return;
         }
 
-        QStyleOptionViewItemV4 v4((QStyleOptionViewItemV4 &)option);
-        if (QStyleOptionViewItemV4::Beginning==v4.viewItemPosition) {
+        StyleOptionViewItem v4((StyleOptionViewItem &)option);
+        if (StyleOptionViewItem::Beginning==v4.viewItemPosition) {
             v4.icon=index.data(Cantata::Role_Decoration).value<QIcon>();
             if (!v4.icon.isNull()) {
                 v4.features |= QStyleOptionViewItemV2::HasDecoration;

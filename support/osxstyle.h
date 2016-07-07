@@ -24,7 +24,7 @@
 #ifndef OSXSTYLE_H
 #define OSXSTYLE_H
 
-#include <QStyleOptionViewItemV4>
+#include "styleoption.h"
 #include <QMap>
 #include <QObject>
 
@@ -48,7 +48,7 @@ public:
 
     OSXStyle();
     const QPalette & viewPalette();
-    void drawSelection(QStyleOptionViewItemV4 opt, QPainter *painter, double opacity);
+    void drawSelection(const StyleOptionViewItem &opt, QPainter *painter, double opacity);
     QColor monoIconColor();
 
     void initWindowMenu(QMainWindow *mw);

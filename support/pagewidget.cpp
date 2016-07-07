@@ -54,6 +54,7 @@
 #include "icon.h"
 #include "gtkstyle.h"
 #include "dialog.h"
+#include "styleoption.h"
 #include <QListWidget>
 #include <QStackedWidget>
 #include <QBoxLayout>
@@ -109,7 +110,7 @@ public:
         if (standard) {
             if (GtkStyle::isActive()) {
                 bool mouseOver=option.state&QStyle::State_MouseOver;
-                QStyleOptionViewItemV4 opt = option;
+                StyleOptionViewItem opt = option;
                 initStyleOption(&opt, index);
 
                 if (!underMouse) {
@@ -168,7 +169,7 @@ public:
             cg = QPalette::Inactive;
         }
 
-        QStyleOptionViewItemV4 opt(option);
+        StyleOptionViewItem opt(option);
         opt.showDecorationSelected = true;
         QStyle *style = opt.widget ? opt.widget->style() : QApplication::style();
 

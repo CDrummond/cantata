@@ -23,7 +23,6 @@
 
 #include "librarydb.h"
 #include "support/localize.h"
-#include "support/messagebox.h"
 #include <QCoreApplication>
 #include <QSqlDatabase>
 #include <QSqlError>
@@ -533,10 +532,7 @@ bool LibraryDb::init(const QString &dbFile)
     currentVersion=0;
     db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE", dbName.isEmpty() ? QLatin1String(QSqlDatabase::defaultConnection) : dbName));
     if (!db || !db->isValid()) {
-        MessageBox::error(qApp->activeWindow(), i18n("Failed to load SQLite database!\n\n"
-                                                     "Please check you have the Qt SQLite database driver instaled.\n\n"
-                                                     "Cantata will now terminate."));
-        qApp->exit();
+        emit error(i18n("Database error - please check Qt SQLite driver is installed"));
         return false;
     }
     db->setDatabaseName(dbFile);

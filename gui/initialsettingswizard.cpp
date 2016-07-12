@@ -27,6 +27,7 @@
 #include "support/utils.h"
 #include "support/icon.h"
 #include "widgets/icons.h"
+#include "models/mpdlibrarymodel.h"
 #ifdef ENABLE_SIMPLE_MPD_SUPPORT
 #include "mpd-interface/mpduser.h"
 #endif
@@ -36,6 +37,7 @@
 #else
 #include <QDesktopServices>
 #endif
+#include <QTimer>
 
 enum Pages {
     PAGE_INTRO,
@@ -49,9 +51,10 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
 {
     setupUi(this);
     connect(this, SIGNAL(currentIdChanged(int)), SLOT(pageChanged(int)));
-    connect(this, SIGNAL(setDetails(const MPDConnectionDetails &)), MPDConnection::self(), SLOT(setDetails(const MPDConnectionDetails &)));
+    connect(this, SIGNAL(setDetails(MPDConnectionDetails)), MPDConnection::self(), SLOT(setDetails(MPDConnectionDetails)));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
-    connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
+    connect(MPDConnection::self(), SIGNAL(error(QString, bool)), SLOT(showError(QString)));
+    connect(MpdLibraryModel::self(), SIGNAL(error(QString)), SLOT(dbError(QString)));
     connect(connectButton, SIGNAL(clicked(bool)), SLOT(connectToMpd()));
     connect(basicDir, SIGNAL(textChanged(QString)), SLOT(controlNextButton()));
     MPDConnection::self()->start();
@@ -154,10 +157,15 @@ void InitialSettingsWizard::mpdConnectionStateChanged(bool c)
     }
 }
 
-void InitialSettingsWizard::showError(const QString &message, bool showActions)
+void InitialSettingsWizard::showError(const QString &message)
 {
-    Q_UNUSED(showActions)
     MessageBox::error(this, message);
+}
+
+void InitialSettingsWizard::dbError(const QString &message)
+{
+    MessageBox::error(this, message+QLatin1String("<br/><br/>")+i18n("Cantata will now terminate"));
+    reject();
 }
 
 void InitialSettingsWizard::pageChanged(int p)
@@ -241,5 +249,7 @@ void InitialSettingsWizard::reject()
 {
     // Clear version number - so that wizard is shown next time Cantata is started.
     Settings::self()->clearVersion();
+    ThreadCleaner::self()->stopAll();
+    QTimer::singleShot(0, qApp, SLOT(quit()));
     QDialog::reject();
 }

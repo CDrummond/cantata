@@ -171,6 +171,9 @@ public:
     bool songExists(const Song &song);
     LibraryDb::Album getRandomAlbum(const QStringList &genres, const QStringList &artists) const { return db->getRandomAlbum(genres, artists); }
 
+Q_SIGNALS:
+    void error(const QString &str);
+
 public Q_SLOTS:
     void clearDb();
 

@@ -81,6 +81,7 @@ SqlLibraryModel::SqlLibraryModel(LibraryDb *d, QObject *p, Type top)
     , albumSort(LibraryDb::AS_AlArYr)
 {
     connect(db, SIGNAL(libraryUpdated()), SLOT(libraryUpdated()));
+    connect(db, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
     #if defined ENABLE_MODEL_TEST
     new ModelTest(this, this);
     #endif

@@ -45,7 +45,8 @@ Q_SIGNALS:
 private Q_SLOTS:
     void connectToMpd();
     void mpdConnectionStateChanged(bool c);
-    void showError(const QString &message, bool showActions);
+    void showError(const QString &message);
+    void dbError(const QString &message);
     void pageChanged(int p);
     void accept();
     void reject();

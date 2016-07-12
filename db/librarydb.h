@@ -138,6 +138,7 @@ public:
 
 Q_SIGNALS:
     void libraryUpdated();
+    void error(const QString &str);
 
 public Q_SLOTS:
     void updateStarted(time_t ver);

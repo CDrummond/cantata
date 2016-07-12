@@ -68,6 +68,9 @@ void OnlineDb::endUpdate()
 
 void OnlineDb::insertStats(int numArtists)
 {
+    if (!db) {
+        return;
+    }
     QSqlQuery(*db).exec("delete from stats");
     QSqlQuery(*db).exec("insert into stats(artists) values("+QString::number(numArtists)+")");
 }
@@ -83,6 +86,9 @@ void OnlineDb::reset()
 
 void OnlineDb::storeCoverUrl(const QString &artistId, const QString &albumId, const QString &url)
 {
+    if (!db) {
+        return;
+    }
     if (!insertCoverQuery) {
         insertCoverQuery=new QSqlQuery(*db);
         insertCoverQuery->prepare("insert into covers(artistId, albumId, url) "
@@ -96,6 +102,9 @@ void OnlineDb::storeCoverUrl(const QString &artistId, const QString &albumId, co
 
 int OnlineDb::getStats()
 {
+    if (!db) {
+        return -1;
+    }
     QSqlQuery q(*db);
     q.exec("select artists from stats");
     if (q.next()) {
@@ -106,7 +115,7 @@ int OnlineDb::getStats()
 
 QString OnlineDb::getCoverUrl(const QString &artistId, const QString &albumId)
 {
-    if (0!=currentVersion) {
+    if (0!=currentVersion && db) {
         if (!getCoverQuery) {
             getCoverQuery=new QSqlQuery(*db);
             getCoverQuery->prepare("select url from covers where artistId=:artistId and albumId=:albumId limit 1;");

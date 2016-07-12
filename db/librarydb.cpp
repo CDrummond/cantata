@@ -22,6 +22,8 @@
  */
 
 #include "librarydb.h"
+#include "support/localize.h"
+#include "support/messagebox.h"
 #include <QCoreApplication>
 #include <QSqlDatabase>
 #include <QSqlError>
@@ -530,6 +532,13 @@ bool LibraryDb::init(const QString &dbFile)
     DBUG << dbFile << dbName;
     currentVersion=0;
     db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE", dbName.isEmpty() ? QLatin1String(QSqlDatabase::defaultConnection) : dbName));
+    if (!db) {
+        MessageBox::error(qApp->activeWindow(), i18n("Failed to load SQLite database!\n\n"
+                                                     "Please check you have the Qt SQLite database driver instaled.\n\n"
+                                                     "Cantata will now terminate."));
+        qApp->exit();
+        return false;
+    }
     db->setDatabaseName(dbFile);
     DBUG << (void *)db;
     if (!db->open()) {
@@ -819,20 +828,25 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
 QList<Song> LibraryDb::getTracks(int rowFrom, int count)
 {
     QList<Song> songList;
-    SqlQuery query("*", *db);
-    query.addWhere("rowid", rowFrom, ">");
-    query.addWhere("rowid", rowFrom+count, "<=");
-    query.addWhere("type", 0);
-    query.exec();
-    DBUG << query.executedQuery();
-    while (query.next()) {
-        songList.append(getSong(query.realQuery()));
+    if (db) {
+        SqlQuery query("*", *db);
+        query.addWhere("rowid", rowFrom, ">");
+        query.addWhere("rowid", rowFrom+count, "<=");
+        query.addWhere("type", 0);
+        query.exec();
+        DBUG << query.executedQuery();
+        while (query.next()) {
+            songList.append(getSong(query.realQuery()));
+        }
     }
     return songList;
 }
 
 int LibraryDb::trackCount()
 {
+    if (!db) {
+        return 0;
+    }
     SqlQuery query("(count())", *db);
     query.addWhere("type", 0);
     query.exec();
@@ -844,15 +858,17 @@ int LibraryDb::trackCount()
 QList<Song> LibraryDb::songs(const QStringList &files, bool allowPlaylists) const
 {
     QList<Song> songList;
-    foreach (const QString &f, files) {
-        SqlQuery query("*", *db);
-        query.addWhere("file", f);
-        query.exec();
-        DBUG << query.executedQuery();
-        if (query.next()) {
-            Song song=getSong(query.realQuery());
-            if (allowPlaylists || Song::Playlist!=song.type) {
-                songList.append(song);
+    if (0!=currentVersion && db) {
+        foreach (const QString &f, files) {
+            SqlQuery query("*", *db);
+            query.addWhere("file", f);
+            query.exec();
+            DBUG << query.executedQuery();
+            if (query.next()) {
+                Song song=getSong(query.realQuery());
+                if (allowPlaylists || Song::Playlist!=song.type) {
+                    songList.append(song);
+                }
             }
         }
     }
@@ -961,6 +977,9 @@ void LibraryDb::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, 
 
 bool LibraryDb::songExists(const Song &song)
 {
+    if (!db) {
+        return false;
+    }
     SqlQuery query("file", *db);
     query.addWhere("artistId", song.artistOrComposer());
     query.addWhere("albumId", song.albumId());
@@ -1045,11 +1064,16 @@ void LibraryDb::updateFinished()
 
 void LibraryDb::abortUpdate()
 {
-    db->rollback();
+    if (db) {
+        db->rollback();
+    }
 }
 
 bool LibraryDb::createTable(const QString &q)
 {
+    if (!db) {
+        return false;
+    }
     QSqlQuery query(*db);
     if (!query.exec("create table if not exists "+q)) {
         qWarning() << "Failed to create table" << query.lastError().text();

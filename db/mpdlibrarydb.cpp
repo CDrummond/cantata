@@ -95,7 +95,7 @@ MpdLibraryDb::~MpdLibraryDb()
 Song MpdLibraryDb::getCoverSong(const QString &artistId, const QString &albumId)
 {
     DBUG << artistId << albumId;
-    if (0!=currentVersion) {
+    if (0!=currentVersion && db) {
         QSqlQuery *query=0;
         if (albumId.isEmpty()) {
             if (!artistImageQuery) {

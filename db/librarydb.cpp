@@ -532,7 +532,7 @@ bool LibraryDb::init(const QString &dbFile)
     DBUG << dbFile << dbName;
     currentVersion=0;
     db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE", dbName.isEmpty() ? QLatin1String(QSqlDatabase::defaultConnection) : dbName));
-    if (!db) {
+    if (!db || !db->isValid()) {
         MessageBox::error(qApp->activeWindow(), i18n("Failed to load SQLite database!\n\n"
                                                      "Please check you have the Qt SQLite database driver instaled.\n\n"
                                                      "Cantata will now terminate."));

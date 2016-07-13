@@ -915,9 +915,7 @@ void DevicesModel::updateItemMenu()
 
     itemMenu->clear();
 
-    if (collections.isEmpty()) {
-        itemMenu->addAction(i18n("No Devices Attached"))->setEnabled(false);
-    } else {
+    if (!collections.isEmpty()) {
         QMap<QString, const MusicLibraryItemRoot *> items;
 
         foreach (const MusicLibraryItemRoot *d, collections) {
@@ -935,6 +933,10 @@ void DevicesModel::updateItemMenu()
             act->setData(d->id());
             Action::initIcon(act);
         }
+    }
+
+    if (itemMenu->isEmpty()) {
+        itemMenu->addAction(i18n("No Devices Attached"))->setEnabled(false);
     }
 }
 

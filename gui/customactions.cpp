@@ -61,6 +61,7 @@ CustomActions::CustomActions()
             connect(cmd.act, SIGNAL(triggered()), this, SLOT(doAction()));
         }
     }
+    setVisible(!commands.isEmpty());
 }
 
 void CustomActions::set(QList<Command> cmds)
@@ -106,7 +107,7 @@ void CustomActions::set(QList<Command> cmds)
 
     setVisible(!commands.isEmpty());
 }
-#include <QDebug>
+
 void CustomActions::doAction()
 {
     if (!mainWindow) {

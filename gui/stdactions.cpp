@@ -128,13 +128,6 @@ void StdActions::enableAddToPlayQueue(bool en)
     addToPlayQueueAndPlayAction->setEnabled(en);
     insertAfterCurrentAction->setEnabled(en);
     replacePlayQueueAction->setEnabled(en);
-    addWithPriorityAction->setEnabled(en);
     addToStoredPlaylistAction->setEnabled(en);
-    addPrioHighestAction->setEnabled(en);
-    addPrioHighAction->setEnabled(en);
-    addPrioMediumAction->setEnabled(en);
-    addPrioLowAction->setEnabled(en);
-    addPrioDefaultAction->setEnabled(en);
-    addPrioCustomAction->setEnabled(en);
     addToPlayQueueMenuAction->setEnabled(en);
 }

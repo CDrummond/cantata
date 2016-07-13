@@ -295,7 +295,6 @@ MainWindow::MainWindow(QWidget *parent)
     searchPlayQueueAction = ActionCollection::get()->createAction("searchplaylist", i18n("Find in Play Queue"), HIDE_MENU_ICON(Icons::self()->searchIcon));
     addAction(searchPlayQueueAction);
     searchPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_F);
-    setPriorityAction = new Action(Icon("favorites"), i18n("Set Priority"), this);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), HIDE_MENU_ICON(Icons::self()->httpStreamIcon));
     streamPlayAction->setCheckable(true);
@@ -703,8 +702,7 @@ MainWindow::MainWindow(QWidget *parent)
     dynamicLabel->setVisible(false);
     stopDynamicButton->setVisible(false);
     StdActions::self()->addWithPriorityAction->setVisible(false);
-    setPriorityAction->setVisible(false);
-    setPriorityAction->setMenu(StdActions::self()->addWithPriorityAction->menu());
+    StdActions::self()->setPriorityAction->setVisible(false);
 
     playQueueProxyModel.setSourceModel(PlayQueueModel::self());
     playQueue->setModel(&playQueueProxyModel);
@@ -727,7 +725,7 @@ MainWindow::MainWindow(QWidget *parent)
         connect(action, SIGNAL(triggered()), SLOT(setRating()));
     }
     playQueue->addAction(ratingAction);
-    playQueue->addAction(setPriorityAction);
+    playQueue->addAction(StdActions::self()->setPriorityAction);
     playQueue->addAction(stopAfterTrackAction);
     playQueue->addAction(locateTrackAction);
     #ifdef TAGLIB_FOUND
@@ -764,12 +762,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     #endif
-    connect(StdActions::self()->addPrioHighestAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->addPrioHighAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->addPrioMediumAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->addPrioLowAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->addPrioDefaultAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->addPrioCustomAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->prioHighAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->prioMediumAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->prioLowAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->prioDefaultAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->prioCustomAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
     connect(StdActions::self()->appendToPlayQueueAndPlayAction, SIGNAL(triggered()), this, SLOT(appendToPlayQueueAndPlay()));
     connect(StdActions::self()->addToPlayQueueAndPlayAction, SIGNAL(triggered()), this, SLOT(addToPlayQueueAndPlay()));
     connect(StdActions::self()->insertAfterCurrentAction, SIGNAL(triggered()), this, SLOT(insertIntoPlayQueue()));
@@ -1025,7 +1022,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             }
             connectedState=CS_Connected;
             StdActions::self()->addWithPriorityAction->setVisible(MPDConnection::self()->canUsePriority());
-            setPriorityAction->setVisible(StdActions::self()->addWithPriorityAction->isVisible());
+            StdActions::self()->setPriorityAction->setVisible(MPDConnection::self()->canUsePriority());
         }
     } else {
         libraryPage->clear();
@@ -1081,7 +1078,7 @@ void MainWindow::playQueueItemsSelected(bool s)
     bool haveItems=rc>0;
     bool singleSelection=1==playQueue->selectedIndexes(false).count(); // Dont need sorted selection here...
     playQueue->removeFromAct()->setEnabled(s && haveItems);
-    setPriorityAction->setEnabled(s && haveItems);
+    StdActions::self()->setPriorityAction->setEnabled(s && haveItems);
     locateTrackAction->setEnabled(singleSelection);
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);
     #ifdef TAGLIB_FOUND
@@ -1907,7 +1904,7 @@ void MainWindow::addWithPriority()
 {
     QAction *act=qobject_cast<QAction *>(sender());
 
-    if (!act || !MPDConnection::self()->canUsePriority() || !StdActions::self()->addWithPriorityAction->isVisible()) {
+    if (!act || !MPDConnection::self()->canUsePriority()) {
         return;
     }
 

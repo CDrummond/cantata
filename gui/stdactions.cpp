@@ -68,12 +68,13 @@ StdActions::StdActions()
     replacePlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_R);
 
     addWithPriorityAction = new Action(Icon("favorites"), i18n("Add With Priority"), 0);
-    addPrioHighestAction = new Action(i18n("Highest Priority (255)"), 0);
-    addPrioHighAction = new Action(i18n("High Priority (200)"), 0);
-    addPrioMediumAction = new Action(i18n("Medium Priority (125)"), 0);
-    addPrioLowAction = new Action(i18n("Low Priority (50)"), 0);
-    addPrioDefaultAction = new Action(i18n("Default Priority (0)"), 0);
-    addPrioCustomAction = new Action(i18n("Custom Priority..."), 0);
+    setPriorityAction = new Action(Icon("favorites"), i18n("Set Priority"), 0);
+    prioHighestAction = new Action(i18n("Highest Priority (255)"), 0);
+    prioHighAction = new Action(i18n("High Priority (200)"), 0);
+    prioMediumAction = new Action(i18n("Medium Priority (125)"), 0);
+    prioLowAction = new Action(i18n("Low Priority (50)"), 0);
+    prioDefaultAction = new Action(i18n("Default Priority (0)"), 0);
+    prioCustomAction = new Action(i18n("Custom Priority..."), 0);
     addToStoredPlaylistAction = new Action(Icons::self()->playlistFileIcon, i18n("Add To Playlist"), 0);
     #ifdef TAGLIB_FOUND
     organiseFilesAction = new Action(HIDE_MENU_ICON(Icon("inode-directory")), i18n("Organize Files"), 0);
@@ -93,20 +94,28 @@ StdActions::StdActions()
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
 
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
-    addPrioHighestAction->setData(255);
-    addPrioHighAction->setData(200);
-    addPrioMediumAction->setData(125);
-    addPrioLowAction->setData(50);
-    addPrioDefaultAction->setData(0);
-    addPrioCustomAction->setData(-1);
+    prioHighestAction->setData(255);
+    prioHighAction->setData(200);
+    prioMediumAction->setData(125);
+    prioLowAction->setData(50);
+    prioDefaultAction->setData(0);
+    prioCustomAction->setData(-1);
 
     QMenu *prioMenu=new QMenu();
-    prioMenu->addAction(addPrioHighestAction);
-    prioMenu->addAction(addPrioHighAction);
-    prioMenu->addAction(addPrioMediumAction);
-    prioMenu->addAction(addPrioLowAction);
-    prioMenu->addAction(addPrioDefaultAction);
-    prioMenu->addAction(addPrioCustomAction);
+    prioMenu->addAction(prioHighestAction);
+    prioMenu->addAction(prioHighAction);
+    prioMenu->addAction(prioMediumAction);
+    prioMenu->addAction(prioLowAction);
+    prioMenu->addAction(prioDefaultAction);
+    prioMenu->addAction(prioCustomAction);
+    setPriorityAction->setMenu(prioMenu);
+    prioMenu=new QMenu();
+    prioMenu->addAction(prioHighestAction);
+    prioMenu->addAction(prioHighAction);
+    prioMenu->addAction(prioMediumAction);
+    prioMenu->addAction(prioLowAction);
+    prioMenu->addAction(prioDefaultAction);
+    prioMenu->addAction(prioCustomAction);
     addWithPriorityAction->setMenu(prioMenu);
 
     QMenu *addMenu=new QMenu();

@@ -301,7 +301,6 @@ private:
     Action *singlePlayQueueAction;
     Action *consumePlayQueueAction;
     Action *searchPlayQueueAction;
-    Action *setPriorityAction;
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     HttpStream *httpStream;
     Action *streamPlayAction;

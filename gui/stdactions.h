@@ -50,12 +50,13 @@ public:
     Action *replacePlayQueueAction;
     Action *addWithPriorityAction;
     Action *addToStoredPlaylistAction;
-    Action *addPrioHighestAction;  // 255
-    Action *addPrioHighAction;     // 200
-    Action *addPrioMediumAction;   // 125
-    Action *addPrioLowAction;      // 50
-    Action *addPrioDefaultAction;  // 0
-    Action *addPrioCustomAction;
+    Action *prioHighestAction;  // 255
+    Action *prioHighAction;     // 200
+    Action *prioMediumAction;   // 125
+    Action *prioLowAction;      // 50
+    Action *prioDefaultAction;  // 0
+    Action *prioCustomAction;
+    Action *setPriorityAction;
     Action *addToPlayQueueMenuAction;
     Action *addRandomAlbumToPlayQueueAction;
     #ifdef TAGLIB_FOUND

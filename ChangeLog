@@ -28,6 +28,7 @@
 17. Always return true for MPRIS CanPlay, CanPause, etc.
 18. Work-around KDE 5.7 MPRIS issues.
 19. If can't load SQLite db, then show error.
+20. Don't show custom actions menu entry if there are no actions.
 
 2.0.1
 -----

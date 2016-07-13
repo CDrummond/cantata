@@ -73,8 +73,7 @@ TitleWidget::TitleWidget(QWidget *p)
     if (size<72) {
         size=Icon::stdSize(size);
     }
-    int margin=Utils::scaleForDpi(2);
-    int pad=Utils::scaleForDpi(8);
+    int pad=Utils::scaleForDpi(6);
     size=qMax(qMax(size, QFontMetrics(mainText->font()).height()+QFontMetrics(subText->font()).height()+spacing), Utils::scaleForDpi(40))+pad;
     image->setFixedSize(size, size);
     setToolTip(i18n("Click to go back"));
@@ -93,7 +92,7 @@ TitleWidget::TitleWidget(QWidget *p)
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
-    layout->setMargin(margin);
+    layout->setMargin(0);
     layout->setSpacing(spacing);
     textLayout->setMargin(0);
     textLayout->setSpacing(spacing);
@@ -104,7 +103,7 @@ TitleWidget::TitleWidget(QWidget *p)
     chevron->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
     if (-1==twHeight) {
         ToolButton tb;
-        twHeight=qMax((tb.iconSize().height()*2)+pad, size)+(2*margin);
+        twHeight=qMax((tb.iconSize().height()*2), size);
     }
     setFixedHeight(twHeight);
 }
@@ -129,7 +128,11 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
             ToolButton *replace=new ToolButton(this);
             add->QAbstractButton::setIcon(StdActions::self()->appendToPlayQueueAction->icon());
             replace->QAbstractButton::setIcon(StdActions::self()->replacePlayQueueAction->icon());
-            add->setFixedSize(add->iconSize()+QSize(8, 8));
+            int size=qMax(add->iconSize().height()+6, (height()/2)-1);
+            if (size>(height()-1)) {
+                size--;
+            }
+            add->setFixedSize(QSize(size, size));
             replace->setFixedSize(add->size());
             add->setToolTip(i18n("Add All To Play Queue"));
             replace->setToolTip(i18n("Add All And Replace Play Queue"));

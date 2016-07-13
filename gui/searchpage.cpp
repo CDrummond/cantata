@@ -182,10 +182,7 @@ void SearchPage::controlActions()
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enable=selected.count()>0;
 
-    StdActions::self()->appendToPlayQueueAction->setEnabled(enable);
-    StdActions::self()->addWithPriorityAction->setEnabled(enable);
-    StdActions::self()->replacePlayQueueAction->setEnabled(enable);
-    StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
+    StdActions::self()->enableAddToPlayQueue(enable);
     locateAction->setEnabled(enable);
 }
 

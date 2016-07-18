@@ -332,7 +332,7 @@ public:
         painter->save();
         painter->setFont(f);
         #ifdef Q_OS_WIN
-        QColor col(option.palette.color(QPalette::Text));
+        QColor textColor(option.palette.color(QPalette::Text));
         #else
         QColor textColor(option.palette.color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
         #endif

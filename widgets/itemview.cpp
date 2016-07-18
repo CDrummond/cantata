@@ -209,6 +209,11 @@ public:
         if (text.isEmpty()) {
             text=index.data(Qt::DisplayRole).toString();
         }
+        #ifdef Q_OS_WIN
+        QColor textColor(option.palette.color(active ? QPalette::Active : QPalette::Inactive, QPalette::Text));
+        #else
+        QColor textColor(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
+        #endif
         QRect r(option.rect);
         QRect r2(r);
         QString childText = index.data(Cantata::Role_SubText).toString();
@@ -229,7 +234,9 @@ public:
         }
         if (pix.isNull()) {
             int size=iconMode ? gridCoverSize : detailedViewDecorationSize;
-            pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(size, size);
+            pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(size, size, selected &&
+                                                                     textColor==qApp->palette().color(QPalette::HighlightedText)
+                                                                        ? QIcon::Selected : QIcon::Normal);
         }
 
         bool oneLine = childText.isEmpty();
@@ -308,18 +315,13 @@ public:
         }
 
         QRect textRect;
-        #ifdef Q_OS_WIN
-        QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, QPalette::Text));
-        #else
-        QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
-        #endif
         QTextOption textOpt(AP_VTop==actionPos ? Qt::AlignHCenter|Qt::AlignVCenter : Qt::AlignVCenter);
 
         textOpt.setWrapMode(QTextOption::NoWrap);
         if (oneLine) {
             textRect=QRect(r.x(), r.y()+((r.height()-textHeight)/2), r.width(), textHeight);
             text = textMetrics.elidedText(text, Qt::ElideRight, textRect.width(), QPalette::WindowText);
-            painter->setPen(color);
+            painter->setPen(textColor);
             painter->setFont(textFont);
             painter->drawText(textRect, text, textOpt);
         } else {
@@ -334,14 +336,14 @@ public:
                             (iconMode ? childHeight-(2*constBorder) : childHeight));
 
             text = textMetrics.elidedText(text, Qt::ElideRight, textRect.width(), QPalette::WindowText);
-            painter->setPen(color);
+            painter->setPen(textColor);
             painter->setFont(textFont);
             painter->drawText(textRect, text, textOpt);
 
             if (!childText.isEmpty()) {
                 childText = childMetrics.elidedText(childText, Qt::ElideRight, childRect.width(), QPalette::WindowText);
-                color.setAlphaF(subTextAlpha(selected));
-                painter->setPen(color);
+                textColor.setAlphaF(subTextAlpha(selected));
+                painter->setPen(textColor);
                 painter->setFont(childFont);
                 painter->drawText(childRect, childText, textOpt);
             }
@@ -374,7 +376,7 @@ public:
             drawIcons(painter, AP_VTop==actionPos ? option.rect : r, mouseOver || (selected && Utils::touchFriendly()), rtl, actionPos, index);
         }
         if (!iconMode) {
-            BasicItemDelegate::drawLine(painter, option.rect, color);
+            BasicItemDelegate::drawLine(painter, option.rect, textColor);
         }
         painter->restore();
     }
@@ -436,7 +438,11 @@ public:
         bool selected=option.state&QStyle::State_Selected;
         bool active=option.state&QStyle::State_Active;
         bool mouseOver=underMouse && option.state&QStyle::State_MouseOver;
-
+        #ifdef Q_OS_WIN
+        QColor textColor(option.palette.color(active ? QPalette::Active : QPalette::Inactive, QPalette::Text));
+        #else
+        QColor textColor(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
+        #endif
         if (mouseOver && gtk) {
             GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
         } else {
@@ -458,7 +464,10 @@ public:
             }
 
             if (pix.isNull()) {
-                pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(simpleViewDecorationSize, simpleViewDecorationSize);
+                pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(simpleViewDecorationSize, simpleViewDecorationSize,
+                                                                         selected &&
+                                                                         textColor==qApp->palette().color(QPalette::HighlightedText)
+                                                                            ? QIcon::Selected : QIcon::Normal);
             }
 
             if (!pix.isNull()) {
@@ -482,17 +491,12 @@ public:
             QFont textFont(QApplication::font());
             QFontMetrics textMetrics(textFont);
             int textHeight=textMetrics.height();
-            #ifdef Q_OS_WIN
-            QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, QPalette::Text));
-            #else
-            QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
-            #endif
             QTextOption textOpt(Qt::AlignVCenter);
             QRect textRect(r.x(), r.y()+((r.height()-textHeight)/2), r.width(), textHeight);
             QString str=textMetrics.elidedText(text.at(0), Qt::ElideRight, textRect.width(), QPalette::WindowText);
 
             painter->save();
-            painter->setPen(color);
+            painter->setPen(textColor);
             painter->setFont(textFont);
             painter->drawText(textRect, str, textOpt);
 
@@ -503,8 +507,8 @@ public:
                 textRect=QRect(r.x()+(mainWidth+8), r.y()+((r.height()-textHeight)/2), r.width()-(mainWidth+8), textHeight);
                 if (textRect.width()>4) {
                     str = textMetrics.elidedText(str, Qt::ElideRight, textRect.width(), QPalette::WindowText);
-                    color.setAlphaF(subTextAlpha(selected));
-                    painter->setPen(color);
+                    textColor.setAlphaF(subTextAlpha(selected));
+                    painter->setPen(textColor);
                     painter->drawText(textRect, str, textOpt/*QTextOption(Qt::AlignVCenter|Qt::AlignRight)*/);
                 }
             }

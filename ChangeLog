@@ -30,6 +30,7 @@
 19. If can't load SQLite db, then show error.
 20. Don't show custom actions menu entry if there are no actions.
 21. Fix add/set priority menus.
+22. Match view mono icons to text colour.
 
 2.0.1
 -----

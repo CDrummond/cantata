@@ -334,7 +334,7 @@ public:
         #ifdef Q_OS_WIN
         QColor col(option.palette.color(QPalette::Text));
         #else
-        QColor col(option.palette.color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
+        QColor textColor(option.palette.color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
         #endif
         QTextOption textOpt(Qt::AlignVCenter);
         QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));
@@ -363,14 +363,16 @@ public:
             painter->setRenderHint(QPainter::Antialiasing, false);
         }
 
-        painter->setPen(col);
+        painter->setPen(textColor);
         bool showTrackDuration=!duration.isEmpty();
 
         if (isCollection || AlbumHeader==type) {
             QPixmap pix;
             // Draw cover...
             if (isCollection) {
-                pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constCoverSize, constCoverSize);
+                pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constCoverSize, constCoverSize,
+                                                                         selected && textColor==qApp->palette().color(QPalette::HighlightedText)
+                                                                            ? QIcon::Selected : QIcon::Normal);
             } else {
                 QPixmap *cover=/*stream ? 0 : */Covers::self()->get(song, constCoverSize);
                 pix=cover ? *cover : (stream && !song.isCdda() ? Icons::self()->streamIcon : Icons::self()->albumIcon(constCoverSize)).pixmap(constCoverSize, constCoverSize);
@@ -413,7 +415,7 @@ public:
             if (!totalDuration.isEmpty()) {
                 painter->drawText(duratioRect, totalDuration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
             }
-            BasicItemDelegate::drawLine(painter, r.adjusted(0, 0, 0, -r.height()/2), col, rtl, !rtl, 0.45);
+            BasicItemDelegate::drawLine(painter, r.adjusted(0, 0, 0, -r.height()/2), textColor, rtl, !rtl, 0.45);
             r.adjust(0, textHeight+constBorder, 0, 0);
             r=QRect(r.x(), r.y()+r.height()-(textHeight+1), r.width(), textHeight);
             painter->setFont(f);
@@ -432,7 +434,7 @@ public:
         }
 
         GroupedView::drawPlayState(painter, option, r, state);
-        painter->setPen(col);
+        painter->setPen(textColor);
 
         int ratingsStart=rtl ? 0 : drawRatings(painter, song, r, fm, option.palette.color(QPalette::Active, QPalette::Text)); // TODO!!!
 
@@ -451,7 +453,7 @@ public:
         if (mouseOver || Utils::touchFriendly()) {
             drawIcons(painter, option.rect, mouseOver || (selected && Utils::touchFriendly()), rtl, AlbumHeader==type || isCollection ? AP_HBottom : AP_HMiddle, index);
         }
-        BasicItemDelegate::drawLine(painter, option.rect, col);
+        BasicItemDelegate::drawLine(painter, option.rect, textColor);
         painter->restore();
     }
 

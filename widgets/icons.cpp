@@ -81,14 +81,15 @@ static QColor calcIconColor()
 Icons::Icons()
 {
     QColor stdColor=calcIconColor();
+    QColor selColor=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
     QColor red(220, 0, 0);
 
-    singleIcon=MonoIcon::icon(FontAwesome::ex_one, stdColor, stdColor);
-    consumeIcon=MonoIcon::icon(":consume.svg", stdColor, stdColor);
+    singleIcon=MonoIcon::icon(FontAwesome::ex_one, stdColor, selColor);
+    consumeIcon=MonoIcon::icon(":consume.svg", stdColor, selColor);
     #ifdef USE_SYSTEM_MENU_ICON
     menuIcon=Icon("applications-system");
     #else
-    menuIcon=MonoIcon::icon(FontAwesome::bars, stdColor, stdColor);
+    menuIcon=MonoIcon::icon(FontAwesome::bars, stdColor, selColor);
     #endif
 
     QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"stream.png");
@@ -104,59 +105,59 @@ Icons::Icons()
     folderIcon=Icon("inode-directory");
     dynamicRuleIcon=Icon(QStringList() << "dynamic-playlist" << "media-playlist-shuffle" << "text-x-generic");
     speakerIcon=Icon(QStringList() << "speaker" << "audio-speakers" << "gnome-volume-control");
-    repeatIcon=MonoIcon::icon(FontAwesome::refresh, stdColor, stdColor);
-    shuffleIcon=MonoIcon::icon(FontAwesome::random, stdColor, stdColor);
+    repeatIcon=MonoIcon::icon(FontAwesome::refresh, stdColor, selColor);
+    shuffleIcon=MonoIcon::icon(FontAwesome::random, stdColor, selColor);
     filesIcon=Icon(QStringList() << "folder-downloads" << "folder-download" << "folder" << "go-down");
     radioStreamIcon=Icon::create("radio", constStdSizes);
     addRadioStreamIcon=Icon::create("addradio", constStdSizes);
     albumIconSmall.addFile(":album32.svg");
     albumIconLarge.addFile(":album.svg");
-    albumMonoIcon=MonoIcon::icon(":mono-album.svg", stdColor, stdColor);
-    artistIcon=MonoIcon::icon(":artist.svg", stdColor, stdColor);
-    genreIcon=MonoIcon::icon(":genre.svg", stdColor, stdColor);
+    albumMonoIcon=MonoIcon::icon(":mono-album.svg", stdColor, selColor);
+    artistIcon=MonoIcon::icon(":artist.svg", stdColor, selColor);
+    genreIcon=MonoIcon::icon(":genre.svg", stdColor, selColor);
     #if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
     appIcon=Icon("cantata");
     #endif
 
     lastFmIcon=MonoIcon::icon(FontAwesome::lastfmsquare, red, red);
-    replacePlayQueueIcon=MonoIcon::icon(FontAwesome::play, stdColor, stdColor);
-    appendToPlayQueueIcon=MonoIcon::icon(FontAwesome::plus, stdColor, stdColor);
-    centrePlayQueueOnTrackIcon=MonoIcon::icon(Qt::RightToLeft==QApplication::layoutDirection() ? FontAwesome::chevronleft : FontAwesome::chevronright, stdColor, stdColor);
-    savePlayQueueIcon=MonoIcon::icon(FontAwesome::save, stdColor, stdColor);
+    replacePlayQueueIcon=MonoIcon::icon(FontAwesome::play, stdColor, selColor);
+    appendToPlayQueueIcon=MonoIcon::icon(FontAwesome::plus, stdColor, selColor);
+    centrePlayQueueOnTrackIcon=MonoIcon::icon(Qt::RightToLeft==QApplication::layoutDirection() ? FontAwesome::chevronleft : FontAwesome::chevronright, stdColor, selColor);
+    savePlayQueueIcon=MonoIcon::icon(FontAwesome::save, stdColor, selColor);
     clearListIcon=MonoIcon::icon(FontAwesome::remove, red, red);
-    addNewItemIcon=MonoIcon::icon(FontAwesome::plussquare, stdColor, stdColor);
-    editIcon=MonoIcon::icon(FontAwesome::edit, stdColor, stdColor);
-    removeDynamicIcon=MonoIcon::icon(FontAwesome::minussquare, stdColor, stdColor);
+    addNewItemIcon=MonoIcon::icon(FontAwesome::plussquare, stdColor, selColor);
+    editIcon=MonoIcon::icon(FontAwesome::edit, stdColor, selColor);
+    removeDynamicIcon=MonoIcon::icon(FontAwesome::minussquare, stdColor, selColor);
     stopDynamicIcon=MonoIcon::icon(FontAwesome::stop, red, red);
-    searchIcon=MonoIcon::icon(FontAwesome::search, stdColor, stdColor);
+    searchIcon=MonoIcon::icon(FontAwesome::search, stdColor, selColor);
     addToFavouritesIcon=MonoIcon::icon(FontAwesome::heart, red, red);
-    reloadIcon=MonoIcon::icon(FontAwesome::repeat, stdColor, stdColor);
-    configureIcon=MonoIcon::icon(FontAwesome::cogs, stdColor, stdColor);
-    connectIcon=MonoIcon::icon(FontAwesome::plug, stdColor, stdColor);
-    disconnectIcon=MonoIcon::icon(FontAwesome::eject, stdColor, stdColor);
-    downloadIcon=MonoIcon::icon(FontAwesome::download, stdColor, stdColor);
+    reloadIcon=MonoIcon::icon(FontAwesome::repeat, stdColor, selColor);
+    configureIcon=MonoIcon::icon(FontAwesome::cogs, stdColor, selColor);
+    connectIcon=MonoIcon::icon(FontAwesome::plug, stdColor, selColor);
+    disconnectIcon=MonoIcon::icon(FontAwesome::eject, stdColor, selColor);
+    downloadIcon=MonoIcon::icon(FontAwesome::download, stdColor, selColor);
     removeIcon=MonoIcon::icon(FontAwesome::minus, red, red);
-    addIcon=MonoIcon::icon(FontAwesome::plus, stdColor, stdColor);
-    addBookmarkIcon=MonoIcon::icon(FontAwesome::bookmark, stdColor, stdColor);
-    audioListIcon=MonoIcon::icon(FontAwesome::music, stdColor, stdColor);
-    playlistListIcon=MonoIcon::icon(FontAwesome::list, stdColor, stdColor);
-    dynamicListIcon=MonoIcon::icon(FontAwesome::cube, stdColor, stdColor);
-    rssListIcon=MonoIcon::icon(FontAwesome::rss, stdColor, stdColor);
-    savedRssListIcon=MonoIcon::icon(FontAwesome::rsssquare, stdColor, stdColor);
-    clockIcon=MonoIcon::icon(FontAwesome::clocko, stdColor, stdColor);
-    folderListIcon=MonoIcon::icon(FontAwesome::foldero, stdColor, stdColor);
+    addIcon=MonoIcon::icon(FontAwesome::plus, stdColor, selColor);
+    addBookmarkIcon=MonoIcon::icon(FontAwesome::bookmark, stdColor, selColor);
+    audioListIcon=MonoIcon::icon(FontAwesome::music, stdColor, selColor);
+    playlistListIcon=MonoIcon::icon(FontAwesome::list, stdColor, selColor);
+    dynamicListIcon=MonoIcon::icon(FontAwesome::cube, stdColor, selColor);
+    rssListIcon=MonoIcon::icon(FontAwesome::rss, stdColor, selColor);
+    savedRssListIcon=MonoIcon::icon(FontAwesome::rsssquare, stdColor, selColor);
+    clockIcon=MonoIcon::icon(FontAwesome::clocko, stdColor, selColor);
+    folderListIcon=MonoIcon::icon(FontAwesome::foldero, stdColor, selColor);
     streamListIcon=audioListIcon;
     streamCategoryIcon=folderListIcon;
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    httpStreamIcon=MonoIcon::icon(FontAwesome::headphones, stdColor, stdColor);
+    httpStreamIcon=MonoIcon::icon(FontAwesome::headphones, stdColor, selColor);
     #endif
     #ifndef Q_OS_MAC
     Icon::setStd(Icon::Close, MonoIcon::icon(FontAwesome::close, red, red));
     #endif
-    leftIcon=MonoIcon::icon(FontAwesome::chevronleft, stdColor, stdColor);
-    rightIcon=MonoIcon::icon(FontAwesome::chevronright, stdColor, stdColor);
-    upIcon=MonoIcon::icon(FontAwesome::chevronup, stdColor, stdColor);
-    downIcon=MonoIcon::icon(FontAwesome::chevrondown, stdColor, stdColor);
+    leftIcon=MonoIcon::icon(FontAwesome::chevronleft, stdColor, selColor);
+    rightIcon=MonoIcon::icon(FontAwesome::chevronright, stdColor, selColor);
+    upIcon=MonoIcon::icon(FontAwesome::chevronup, stdColor, selColor);
+    downIcon=MonoIcon::icon(FontAwesome::chevrondown, stdColor, selColor);
     #ifndef ENABLE_KDE_SUPPORT
     PathRequester::setIcon(folderListIcon);
     #endif

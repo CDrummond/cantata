@@ -66,7 +66,7 @@ DevicesPage::DevicesPage(QWidget *p)
     syncAction->setEnabled(false);
     connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
     #ifdef ENABLE_REMOTE_DEVICES
-    forgetDeviceAction=new Action(Icon("list-remove"), i18n("Forget Device"), this);
+    forgetDeviceAction=new Action(i18n("Forget Device"), this);
     connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
     #endif
     connect(DevicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
@@ -97,7 +97,7 @@ DevicesPage::DevicesPage(QWidget *p)
     menu->addAction(DevicesModel::self()->refreshAct());
     #ifdef ENABLE_REMOTE_DEVICES
     menu->addSeparator();
-    Action *addRemote=new Action(Icon("network-server"), i18n("Add Device"), this);
+    Action *addRemote=new Action(i18n("Add Device"), this);
     connect(addRemote, SIGNAL(triggered()), this, SLOT(addRemoteDevice()));
     menu->addAction(addRemote);
     menu->addAction(forgetDeviceAction);

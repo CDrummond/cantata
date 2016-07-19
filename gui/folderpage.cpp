@@ -28,8 +28,10 @@
 #include "support/messagebox.h"
 #include "support/action.h"
 #include "support/utils.h"
+#include "support/monoicon.h"
 #include "models/mpdlibrarymodel.h"
 #include "widgets/menubutton.h"
+#include "widgets/icons.h"
 #include "stdactions.h"
 #include "customactions.h"
 #include <QDesktopServices>
@@ -39,7 +41,8 @@ FolderPage::FolderPage(QWidget *p)
     : SinglePageWidget(p)
     , model(this)
 {
-    browseAction = new Action(Icon("system-file-manager"), i18n("Open In File Manager"), this);
+    QColor col=Icons::calcIconColor();
+    browseAction = new Action(MonoIcon::icon(FontAwesome::folderopen, col), i18n("Open In File Manager"), this);
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(browseAction, SIGNAL(triggered()), this, SLOT(openFileManager()));

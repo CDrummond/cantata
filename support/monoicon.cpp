@@ -77,7 +77,6 @@ public:
 
             if (fileName.isEmpty()) {
                 QString fontName;
-                double scale=0.9;
                 if (FontAwesome::ex_one==fontAwesomeIcon) {
                     fontName="serif";
                 } else {
@@ -88,38 +87,24 @@ public:
                             fontAwesomeFontName= loadedFontFamilies.at(0);
                         }
                     }
-
-                    switch (fontAwesomeIcon) {
-                    case FontAwesome::lastfmsquare:
-                    case FontAwesome::lastfm:
-                        scale=1.1;
-                        break;
-                    case FontAwesome::list:
-                        if (!Utils::isHighDpi()) {
-                            scale=1.05;
-                        }
-                        break;
-                    case FontAwesome::bars:
-                        if (rect.height()>18 && !Utils::isHighDpi()) {
-                            scale=0.95;
-                        }
-                        break;
-                    default:
-                        break;
-                    }
                     fontName=fontAwesomeFontName;
                 }
 
                 QFont font(fontName);
-                int pixelSize=qRound(rect.height()*scale);
+                int pixelSize=rect.height();
                 if (FontAwesome::ex_one==fontAwesomeIcon) {
                     font.setBold(true);
-                } else if (!Utils::isHighDpi()) {
-                    if (pixelSize>=12 && pixelSize<=16 && rect.height()>14) {
-                        pixelSize=14;
-                    } else if (pixelSize>=24 && pixelSize<=32 && rect.height()>28) {
-                        pixelSize=28;
+                } else if (pixelSize>10) {
+                    static const int constScale=14;
+                    static const int constHalfScale=constScale/2;
+                    pixelSize=((pixelSize/constScale)*constScale)+((pixelSize%constScale)>=constHalfScale ? constScale : 0);
+                    pixelSize=qMin(pixelSize, rect.height());
+                    if (FontAwesome::bars==fontAwesomeIcon && pixelSize%constHalfScale) {
+                        pixelSize-=1;
+                    } else if (FontAwesome::list==fontAwesomeIcon && pixelSize%constHalfScale) {
+                        pixelSize+=1;
                     }
+
                 }
 
                 font.setPixelSize(pixelSize);

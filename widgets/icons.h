@@ -34,6 +34,8 @@ class Icons
 public:
     static Icons *self();
 
+    static QColor calcIconColor();
+
     Icons();
     void initSidebarIcons();
     void initToolbarIcons(const QColor &toolbarText);
@@ -49,14 +51,12 @@ public:
     Icon podcastIcon;
     Icon folderIcon;
     Icon audioFileIcon;
-    Icon playlistFileIcon;
     Icon dynamicRuleIcon; // Also used for Mopidy smart playlists...
     Icon singleIcon;
     Icon consumeIcon;
     Icon repeatIcon;
     Icon shuffleIcon;
     Icon radioStreamIcon;
-    Icon addRadioStreamIcon;
     Icon streamIcon;
     Icon speakerIcon;
     Icon menuIcon;
@@ -87,10 +87,9 @@ public:
     QIcon appendToPlayQueueIcon;
     QIcon centrePlayQueueOnTrackIcon;
     QIcon savePlayQueueIcon;
-    QIcon clearListIcon;
+    QIcon cutIcon;
     QIcon addNewItemIcon;
     QIcon editIcon;
-    QIcon removeDynamicIcon;
     QIcon stopDynamicIcon;
     QIcon searchIcon;
     QIcon addToFavouritesIcon;
@@ -119,6 +118,7 @@ public:
     QIcon upIcon;
     QIcon downIcon;
     QIcon cancelIcon;
+    QIcon refreshIcon;
 };
 
 #endif

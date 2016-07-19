@@ -32,6 +32,7 @@
 #include "support/utils.h"
 #include "support/messagebox.h"
 #include "support/localize.h"
+#include "support/monoicon.h"
 #ifdef TAGLIB_FOUND
 #include "tags/tags.h"
 #endif
@@ -133,10 +134,11 @@ SongView::SongView(QWidget *p)
     , infoNeedsUpdating(true)
     , metadataNeedsUpdating(true)
 {
-    scrollAction = ActionCollection::get()->createAction("scrolllyrics", i18n("Scroll Lyrics"), "go-down");
-    refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), "view-refresh");
+    QColor iconCol=Icons::calcIconColor();
+    scrollAction = ActionCollection::get()->createAction("scrolllyrics", i18n("Scroll Lyrics"), MonoIcon::icon(FontAwesome::chevrondown, iconCol));
+    refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), Icons::self()->refreshIcon);
     editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::self()->editIcon);
-    delAction = ActionCollection::get()->createAction("dellyrics", i18n("Delete Lyrics File"), "edit-delete");
+    delAction = ActionCollection::get()->createAction("dellyrics", i18n("Delete Lyrics File"), Icons::self()->removeIcon);
 
     scrollAction->setCheckable(true);
     scrollAction->setChecked(Settings::self()->contextAutoScroll());
@@ -147,7 +149,7 @@ SongView::SongView(QWidget *p)
     connect(UltimateLyrics::self(), SIGNAL(lyricsReady(int, QString)), SLOT(lyricsReady(int, QString)));
 
     engine=ContextEngine::create(this);
-    refreshInfoAction = ActionCollection::get()->createAction("refreshtrack", i18n("Refresh Track Information"), "view-refresh");
+    refreshInfoAction = ActionCollection::get()->createAction("refreshtrack", i18n("Refresh Track Information"), Icons::self()->refreshIcon);
     cancelInfoJobAction=new Action(Icons::self()->cancelIcon, i18n("Cancel"), this);
     cancelInfoJobAction->setEnabled(false);
     connect(refreshInfoAction, SIGNAL(triggered()), SLOT(refreshInfo()));

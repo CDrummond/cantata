@@ -75,7 +75,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     context->load();
     scrobbling->load();
     custom->load();
-    addPage(QLatin1String("collection"), server, i18n("Collection"), Icons::self()->audioFileIcon, i18n("Collection Settings"));
+    addPage(QLatin1String("collection"), server, i18n("Collection"), Icon("audio-x-generic"), i18n("Collection Settings"));
     addPage(QLatin1String("playback"), playback, i18n("Playback"), Icons::self()->speakerIcon, i18n("Playback Settings"));
     addPage(QLatin1String("files"), files, i18n("Downloaded Files"), Icons::self()->filesIcon, i18n("Downloaded Files Settings"));
     addPage(QLatin1String("interface"), interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));

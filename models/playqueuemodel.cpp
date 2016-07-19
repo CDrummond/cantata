@@ -36,6 +36,7 @@
 #include "http/httpserver.h"
 #include "gui/settings.h"
 #include "support/icon.h"
+#include "support/monoicon.h"
 #include "support/utils.h"
 #include "config.h"
 #include "support/action.h"
@@ -43,6 +44,7 @@
 #include "support/globalstatic.h"
 #include "gui/covers.h"
 #include "widgets/groupedview.h"
+#include "widgets/icons.h"
 #include "roles.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
@@ -243,9 +245,10 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     UNITY_MENU_ICON_CHECK
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
-    undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), HIDE_MENU_ICON_NAME("edit-undo"));
+    QColor col=Icons::calcIconColor();
+    undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::undo, col)));
     undoAction->setShortcut(Qt::ControlModifier+Qt::Key_Z);
-    redoAction=ActionCollection::get()->createAction("playqueue-redo", i18n("Redo"), HIDE_MENU_ICON_NAME("edit-redo"));
+    redoAction=ActionCollection::get()->createAction("playqueue-redo", i18n("Redo"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::repeat, col)));
     redoAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Z);
     connect(undoAction, SIGNAL(triggered()), this, SLOT(undo()));
     connect(redoAction, SIGNAL(triggered()), this, SLOT(redo()));

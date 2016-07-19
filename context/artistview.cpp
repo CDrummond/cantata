@@ -28,6 +28,7 @@
 #include "network/networkaccessmanager.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "widgets/textbrowser.h"
+#include "widgets/icons.h"
 #include "contextengine.h"
 #include "support/actioncollection.h"
 #include "support/action.h"
@@ -111,7 +112,7 @@ ArtistView::ArtistView(QWidget *parent)
     , currentSimilarJob(0)
 {
     engine=ContextEngine::create(this);
-    refreshAction = ActionCollection::get()->createAction("refreshartist", i18n("Refresh Artist Information"), "view-refresh");
+    refreshAction = ActionCollection::get()->createAction("refreshartist", i18n("Refresh Artist Information"), Icons::self()->refreshIcon);
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), SLOT(artistImage(Song,QImage,QString)));

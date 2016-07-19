@@ -31,6 +31,7 @@
 20. Don't show custom actions menu entry if there are no actions.
 21. Fix add/set priority menus.
 22. Match view mono icons to text colour.
+23. Use FontAwesome icons for all action icons.
 
 2.0.1
 -----

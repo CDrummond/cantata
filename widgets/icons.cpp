@@ -209,27 +209,20 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     }
     #endif
 
-    #if defined Q_OS_MAC
-    QColor col=OSXStyle::self()->monoIconColor();
-    #elif defined Q_OS_WIN
-    QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
-    #else
-    QColor col=GtkStyle::isActive() ? GtkStyle::symbolicColor() : toolbarText;
-    #endif
-    toolbarPrevIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-next" : ":media-prev"), col);
-    toolbarPlayIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-play-rtl" : ":media-play"), col);
-    toolbarPauseIcon=MonoIcon::icon(QLatin1String(":media-pause"), col);
-    toolbarStopIcon=MonoIcon::icon(QLatin1String(":media-stop"), col);
-    toolbarNextIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-prev" : ":media-next"), col);
-    infoIcon=MonoIcon::icon(QLatin1String(":sidebar-info"), col);
+    toolbarPrevIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-next" : ":media-prev"), toolbarText);
+    toolbarPlayIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-play-rtl" : ":media-play"), toolbarText);
+    toolbarPauseIcon=MonoIcon::icon(QLatin1String(":media-pause"), toolbarText);
+    toolbarStopIcon=MonoIcon::icon(QLatin1String(":media-stop"), toolbarText);
+    toolbarNextIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-prev" : ":media-next"), toolbarText);
+    infoIcon=MonoIcon::icon(QLatin1String(":sidebar-info"), toolbarText);
     #ifdef USE_SYSTEM_MENU_ICON
-    toolbarMenuIcon=MonoIcon::icon(QLatin1String(":menu-icon"), col);
+    toolbarMenuIcon=MonoIcon::icon(QLatin1String(":menu-icon"), toolbarText);
     menuIcon=MonoIcon::icon(QLatin1String(":menu-icon"), stdColor);
     #else
-    if (col==stdColor) {
+    if (toolbarText==stdColor) {
         toolbarMenuIcon=menuIcon;
     } else {
-        toolbarMenuIcon=MonoIcon::icon(FontAwesome::bars, col);
+        toolbarMenuIcon=MonoIcon::icon(FontAwesome::bars, toolbarText);
     }
     #endif
 }

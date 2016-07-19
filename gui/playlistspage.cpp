@@ -61,7 +61,7 @@ public:
 StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     : SinglePageWidget(p)
 {
-    renamePlaylistAction = new Action(Icon("edit-rename"), i18n("Rename"), this);
+    renamePlaylistAction = new Action(Icons::self()->editIcon, i18n("Rename"), this);
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
 

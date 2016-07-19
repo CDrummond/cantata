@@ -32,6 +32,7 @@
 #include "support/actioncollection.h"
 #include "network/networkaccessmanager.h"
 #include "support/configuration.h"
+#include "support/monoicon.h"
 #include "gui/settings.h"
 #include "widgets/menubutton.h"
 #include "widgets/itemview.h"
@@ -105,9 +106,10 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     : SinglePageWidget(p)
     , settings(0)
 {
-    importAction = new Action(Icon("document-import"), i18n("Import Streams Into Favorites"), this);
-    exportAction = new Action(Icon("document-export"), i18n("Export Favorite Streams"), this);
-    addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favorites"), Icons::self()->addRadioStreamIcon);
+    QColor iconCol=Icons::calcIconColor();
+    importAction = new Action(MonoIcon::icon(FontAwesome::arrowright, iconCol), i18n("Import Streams Into Favorites"), this);
+    exportAction = new Action(MonoIcon::icon(FontAwesome::arrowleft, iconCol), i18n("Export Favorite Streams"), this);
+    addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favorites"));
     editAction = new Action(Icons::self()->editIcon, i18n("Edit"), this);
     searchAction = new Action(Icons::self()->searchIcon, i18n("Seatch For Streams"), this);
     connect(searchAction, SIGNAL(triggered()), this, SIGNAL(searchForStreams()));

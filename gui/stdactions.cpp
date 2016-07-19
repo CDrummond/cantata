@@ -22,9 +22,11 @@
  */
 
 #include "stdactions.h"
+#include "widgets/icons.h"
 #include "support/localize.h"
 #include "support/action.h"
 #include "support/actioncollection.h"
+#include "support/monoicon.h"
 #include "models/playlistsmodel.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "models/devicesmodel.h"
@@ -46,6 +48,7 @@ static void setToolTip(Action *act, const QString &tt)
 StdActions::StdActions()
 {
     UNITY_MENU_ICON_CHECK
+    QColor col=Icons::calcIconColor();
     prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::self()->toolbarPrevIcon);
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::self()->toolbarNextIcon);
     playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::self()->toolbarPlayIcon);
@@ -67,29 +70,29 @@ StdActions::StdActions()
     appendToPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_P);
     replacePlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_R);
 
-    addWithPriorityAction = new Action(Icon("favorites"), i18n("Add With Priority"), 0);
-    setPriorityAction = new Action(Icon("favorites"), i18n("Set Priority"), 0);
+    addWithPriorityAction = new Action(i18n("Add With Priority"), 0);
+    setPriorityAction = new Action(i18n("Set Priority"), 0);
     prioHighestAction = new Action(i18n("Highest Priority (255)"), 0);
     prioHighAction = new Action(i18n("High Priority (200)"), 0);
     prioMediumAction = new Action(i18n("Medium Priority (125)"), 0);
     prioLowAction = new Action(i18n("Low Priority (50)"), 0);
     prioDefaultAction = new Action(i18n("Default Priority (0)"), 0);
     prioCustomAction = new Action(i18n("Custom Priority..."), 0);
-    addToStoredPlaylistAction = new Action(Icons::self()->playlistFileIcon, i18n("Add To Playlist"), 0);
+    addToStoredPlaylistAction = new Action(Icons::self()->playlistListIcon, i18n("Add To Playlist"), 0);
     #ifdef TAGLIB_FOUND
-    organiseFilesAction = new Action(HIDE_MENU_ICON(Icon("inode-directory")), i18n("Organize Files"), 0);
+    organiseFilesAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::folderopeno, col)), i18n("Organize Files"), 0);
     editTagsAction = new Action(i18n("Edit Track Information"), 0);
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction = new Action(HIDE_MENU_ICON(Icons::self()->audioFileIcon), i18n("ReplayGain"), 0);
+    replaygainAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::barchart, col)), i18n("ReplayGain"), 0);
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction = new Action(HIDE_MENU_ICON(Icon("multimedia-player")), i18n("Copy Songs To Device"), 0);
+    copyToDeviceAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::mobile, col)), i18n("Copy Songs To Device"), 0);
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
-    deleteSongsAction = new Action(Icon("edit-delete"), i18n("Delete Songs"), 0);
+    deleteSongsAction = new Action(MonoIcon::icon(FontAwesome::trash, MonoIcon::constRed), i18n("Delete Songs"), 0);
     #endif
     setCoverAction = new Action(i18n("Set Image"), 0);
-    removeAction = new Action(Icon("list-remove"), i18n("Remove"), 0);
+    removeAction = new Action(Icons::self()->removeIcon, i18n("Remove"), 0);
     searchAction = ActionCollection::get()->createAction("search", i18n("Find"), HIDE_MENU_ICON(Icons::self()->searchIcon));
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
 

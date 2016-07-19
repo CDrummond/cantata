@@ -67,7 +67,7 @@ static QColor clampColor(const QColor &color, int darkLimit=constDarkLimit, int 
                 : color;
 }
 
-static QColor calcIconColor()
+QColor Icons::calcIconColor()
 {
     QColor bgnd=QApplication::palette().color(QPalette::Active, QPalette::Background);
     QColor text=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
@@ -99,7 +99,6 @@ Icons::Icons()
     }
     podcastIcon=Icon("inode-directory");
     audioFileIcon=Icon("audio-x-generic");
-    playlistFileIcon=Icon(QStringList() << "playlist" << "view-media-playlist" << "audio-x-mp3-playlist" << "audio-x-generic");
     folderIcon=Icon("inode-directory");
     dynamicRuleIcon=Icon(QStringList() << "dynamic-playlist" << "media-playlist-shuffle" << "text-x-generic");
     speakerIcon=Icon(QStringList() << "speaker" << "audio-speakers" << "gnome-volume-control");
@@ -107,7 +106,6 @@ Icons::Icons()
     shuffleIcon=MonoIcon::icon(FontAwesome::random, stdColor);
     filesIcon=Icon(QStringList() << "folder-downloads" << "folder-download" << "folder" << "go-down");
     radioStreamIcon=Icon::create("radio", constStdSizes);
-    addRadioStreamIcon=Icon::create("addradio", constStdSizes);
     albumIconSmall.addFile(":album32.svg");
     albumIconLarge.addFile(":album.svg");
     albumMonoIcon=MonoIcon::icon(":mono-album.svg", stdColor);
@@ -122,10 +120,9 @@ Icons::Icons()
     appendToPlayQueueIcon=MonoIcon::icon(FontAwesome::plus, stdColor);
     centrePlayQueueOnTrackIcon=MonoIcon::icon(Qt::RightToLeft==QApplication::layoutDirection() ? FontAwesome::chevronleft : FontAwesome::chevronright, stdColor);
     savePlayQueueIcon=MonoIcon::icon(FontAwesome::save, stdColor);
-    clearListIcon=MonoIcon::icon(FontAwesome::remove, MonoIcon::constRed, MonoIcon::constRed);
+    cutIcon=MonoIcon::icon(FontAwesome::remove, MonoIcon::constRed, MonoIcon::constRed);
     addNewItemIcon=MonoIcon::icon(FontAwesome::plussquare, stdColor);
     editIcon=MonoIcon::icon(FontAwesome::edit, stdColor);
-    removeDynamicIcon=MonoIcon::icon(FontAwesome::minussquare, stdColor);
     stopDynamicIcon=MonoIcon::icon(FontAwesome::stop, MonoIcon::constRed, MonoIcon::constRed);
     searchIcon=MonoIcon::icon(FontAwesome::search, stdColor);
     addToFavouritesIcon=MonoIcon::icon(FontAwesome::heart, MonoIcon::constRed, MonoIcon::constRed);
@@ -134,7 +131,7 @@ Icons::Icons()
     connectIcon=MonoIcon::icon(FontAwesome::plug, stdColor);
     disconnectIcon=MonoIcon::icon(FontAwesome::eject, stdColor);
     downloadIcon=MonoIcon::icon(FontAwesome::download, stdColor);
-    removeIcon=MonoIcon::icon(FontAwesome::minus, MonoIcon::constRed, MonoIcon::constRed);
+    removeIcon=MonoIcon::icon(FontAwesome::trash, MonoIcon::constRed, MonoIcon::constRed);
     addIcon=MonoIcon::icon(FontAwesome::plus, stdColor);
     addBookmarkIcon=MonoIcon::icon(FontAwesome::bookmark, stdColor);
     audioListIcon=MonoIcon::icon(FontAwesome::music, stdColor);
@@ -144,6 +141,7 @@ Icons::Icons()
     savedRssListIcon=MonoIcon::icon(FontAwesome::rsssquare, stdColor);
     clockIcon=MonoIcon::icon(FontAwesome::clocko, stdColor);
     folderListIcon=MonoIcon::icon(FontAwesome::foldero, stdColor);
+    refreshIcon=MonoIcon::icon(FontAwesome::refresh, stdColor);
     streamListIcon=audioListIcon;
     streamCategoryIcon=folderListIcon;
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK

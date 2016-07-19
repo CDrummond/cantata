@@ -32,6 +32,7 @@
 #include "plurals.h"
 #include "widgets/tableview.h"
 #include "widgets/menubutton.h"
+#include "widgets/icons.h"
 
 class SearchTableView : public TableView
 {
@@ -53,7 +54,7 @@ SearchPage::SearchPage(QWidget *p)
     , proxy(this)
 {
     statsLabel=new SqueezedTextLabel(this);
-    locateAction=new Action(Icon("edit-find"), i18n("Locate In Library"), this);
+    locateAction=new Action(Icons::self()->searchIcon, i18n("Locate In Library"), this);
     view->allowTableView(new SearchTableView(view));
 
     connect(&model, SIGNAL(searching()), view, SLOT(showSpinner()));

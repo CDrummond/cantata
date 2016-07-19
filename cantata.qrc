@@ -34,10 +34,6 @@
 <file alias="radio22.png">icons/view-radiostream22.png</file>
 <file alias="radio32.png">icons/view-radiostream32.png</file>
 <file alias="radio48.png">icons/view-radiostream48.png</file>
-<file alias="addradio16.png">icons/radiostream-add16.png</file>
-<file alias="addradio22.png">icons/radiostream-add22.png</file>
-<file alias="addradio32.png">icons/radiostream-add32.png</file>
-<file alias="addradio48.png">icons/radiostream-add48.png</file>
 
 </qresource>
 </RCC>

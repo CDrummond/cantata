@@ -74,6 +74,7 @@
 #include "models/streamsmodel.h"
 #include "playlistspage.h"
 #include "support/fancytabwidget.h"
+#include "support/monoicon.h"
 #ifdef QT_QTDBUS_FOUND
 #include "dbus/mpris.h"
 #include "cantataadaptor.h"
@@ -232,11 +233,12 @@ MainWindow::MainWindow(QWidget *parent)
     StdActions::self()->stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
     #else
     setWindowIcon(Icons::self()->appIcon);
+    QColor iconCol=Icons::calcIconColor();
 
     prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? i18n("Configure Cantata...") : i18n("Preferences"),
                                                      HIDE_MENU_ICON(Icons::self()->configureIcon));
     connect(prefAction, SIGNAL(triggered()),this, SLOT(showPreferencesDialog()));
-    quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), HIDE_MENU_ICON_NAME("application-exit"));
+    quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::poweroff, MonoIcon::constRed, MonoIcon::constRed)));
     connect(quitAction, SIGNAL(triggered()), this, SLOT(quit()));
     quitAction->setShortcut(QKeySequence::Quit);
     Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), HIDE_MENU_ICON(Icons::self()->appIcon));
@@ -250,15 +252,15 @@ MainWindow::MainWindow(QWidget *parent)
     restoreAction = new Action(i18n("Show Window"), this);
     connect(restoreAction, SIGNAL(triggered()), this, SLOT(restoreWindow()));
 
-    serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), HIDE_MENU_ICON_NAME("network-server"));
+    serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::server, iconCol)));
     connect(serverInfoAction, SIGNAL(triggered()),this, SLOT(showServerInfo()));
     serverInfoAction->setEnabled(Settings::self()->firstRun());
-    refreshDbAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), HIDE_MENU_ICON_NAME("view-refresh"));
+    refreshDbAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), HIDE_MENU_ICON(Icons::self()->refreshIcon));
     doDbRefreshAction = new Action(refreshDbAction->icon(), i18n("Refresh"), this);
     refreshDbAction->setEnabled(false);
     connectAction = new Action(Icons::self()->connectIcon, i18n("Connect"), this);
-    connectionsAction = new Action(HIDE_MENU_ICON(Icon("network-server")), i18n("Collection"), this);
-    outputsAction = new Action(HIDE_MENU_ICON(Icons::self()->speakerIcon), i18n("Outputs"), this);
+    connectionsAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::server, iconCol)), i18n("Collection"), this);
+    outputsAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::volumeup, iconCol)), i18n("Outputs"), this);
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
     fwdAction = new Action(this);
     revAction = new Action(this);
@@ -269,22 +271,22 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(fwdAction);
     addAction(revAction);
 
-    addPlayQueueToStoredPlaylistAction = new Action(HIDE_MENU_ICON(Icons::self()->playlistFileIcon), i18n("Add To Stored Playlist"), this);
+    addPlayQueueToStoredPlaylistAction = new Action(HIDE_MENU_ICON(Icons::self()->playlistListIcon), i18n("Add To Stored Playlist"), this);
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction = new Action(HIDE_MENU_ICON(StdActions::self()->copyToDeviceAction->icon()), Utils::strippedText(StdActions::self()->copyToDeviceAction->text()), this);
     copyToDeviceAction->setMenu(DevicesModel::self()->menu()->duplicate(0));
     #endif
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop Others"));
-    addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), HIDE_MENU_ICON(Icons::self()->addRadioStreamIcon));
-    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), HIDE_MENU_ICON(Icons::self()->clearListIcon));
+    addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"));
+    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), HIDE_MENU_ICON(Icons::self()->removeIcon));
     clearPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_K);
     centerPlayQueueAction = ActionCollection::get()->createAction("centerplaylist", i18n("Center On Current Track"), Icons::self()->centrePlayQueueOnTrackIcon);
-    expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), HIDE_MENU_ICON_NAME("view-media-playlist"));
+    expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::expand, iconCol)));
     expandInterfaceAction->setCheckable(true);
     songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::self()->infoIcon);
     songInfoAction->setShortcut(Qt::Key_F12);
     songInfoAction->setCheckable(true);
-    fullScreenAction = ActionCollection::get()->createAction("fullScreen", i18n("Full Screen"), HIDE_MENU_ICON_NAME("view-fullscreen"));
+    fullScreenAction = ActionCollection::get()->createAction("fullScreen", i18n("Full Screen"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::arrowsalt, iconCol)));
     #ifndef Q_OS_MAC
     fullScreenAction->setShortcut(Qt::Key_F11);
     #endif
@@ -304,7 +306,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     streamPlayButton->setVisible(false);
 
-    locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
+    locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), Icons::self()->searchIcon);
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", Utils::strippedText(StdActions::self()->editTagsAction->text()), StdActions::self()->editTagsAction->icon());
     #endif
@@ -510,7 +512,7 @@ MainWindow::MainWindow(QWidget *parent)
         streamPlayButton->setIcon(Icons::self()->httpStreamIcon);
         #endif
         savePlayQueueButton->setIcon(Icons::self()->savePlayQueueIcon);
-        clearPlayQueueButton->setIcon(Icons::self()->clearListIcon);
+        clearPlayQueueButton->setIcon(Icons::self()->removeIcon);
     }
     #endif
     expandedSize=Settings::self()->mainWindowSize();

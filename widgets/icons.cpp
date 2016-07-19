@@ -81,7 +81,6 @@ static QColor calcIconColor()
 Icons::Icons()
 {
     QColor stdColor=calcIconColor();
-    QColor red(220, 0, 0);
 
     singleIcon=MonoIcon::icon(FontAwesome::ex_one, stdColor);
     consumeIcon=MonoIcon::icon(":consume.svg", stdColor);
@@ -118,24 +117,24 @@ Icons::Icons()
     appIcon=Icon("cantata");
     #endif
 
-    lastFmIcon=MonoIcon::icon(FontAwesome::lastfmsquare, red, red);
+    lastFmIcon=MonoIcon::icon(FontAwesome::lastfmsquare, MonoIcon::constRed, MonoIcon::constRed);
     replacePlayQueueIcon=MonoIcon::icon(FontAwesome::play, stdColor);
     appendToPlayQueueIcon=MonoIcon::icon(FontAwesome::plus, stdColor);
     centrePlayQueueOnTrackIcon=MonoIcon::icon(Qt::RightToLeft==QApplication::layoutDirection() ? FontAwesome::chevronleft : FontAwesome::chevronright, stdColor);
     savePlayQueueIcon=MonoIcon::icon(FontAwesome::save, stdColor);
-    clearListIcon=MonoIcon::icon(FontAwesome::remove, red, red);
+    clearListIcon=MonoIcon::icon(FontAwesome::remove, MonoIcon::constRed, MonoIcon::constRed);
     addNewItemIcon=MonoIcon::icon(FontAwesome::plussquare, stdColor);
     editIcon=MonoIcon::icon(FontAwesome::edit, stdColor);
     removeDynamicIcon=MonoIcon::icon(FontAwesome::minussquare, stdColor);
-    stopDynamicIcon=MonoIcon::icon(FontAwesome::stop, red, red);
+    stopDynamicIcon=MonoIcon::icon(FontAwesome::stop, MonoIcon::constRed, MonoIcon::constRed);
     searchIcon=MonoIcon::icon(FontAwesome::search, stdColor);
-    addToFavouritesIcon=MonoIcon::icon(FontAwesome::heart, red, red);
+    addToFavouritesIcon=MonoIcon::icon(FontAwesome::heart, MonoIcon::constRed, MonoIcon::constRed);
     reloadIcon=MonoIcon::icon(FontAwesome::repeat, stdColor);
     configureIcon=MonoIcon::icon(FontAwesome::cogs, stdColor);
     connectIcon=MonoIcon::icon(FontAwesome::plug, stdColor);
     disconnectIcon=MonoIcon::icon(FontAwesome::eject, stdColor);
     downloadIcon=MonoIcon::icon(FontAwesome::download, stdColor);
-    removeIcon=MonoIcon::icon(FontAwesome::minus, red, red);
+    removeIcon=MonoIcon::icon(FontAwesome::minus, MonoIcon::constRed, MonoIcon::constRed);
     addIcon=MonoIcon::icon(FontAwesome::plus, stdColor);
     addBookmarkIcon=MonoIcon::icon(FontAwesome::bookmark, stdColor);
     audioListIcon=MonoIcon::icon(FontAwesome::music, stdColor);
@@ -151,7 +150,7 @@ Icons::Icons()
     httpStreamIcon=MonoIcon::icon(FontAwesome::headphones, stdColor);
     #endif
     #ifndef Q_OS_MAC
-    Icon::setStd(Icon::Close, MonoIcon::icon(FontAwesome::close, red, red));
+    Icon::setStd(Icon::Close, MonoIcon::icon(FontAwesome::close, MonoIcon::constRed, MonoIcon::constRed));
     #endif
     leftIcon=MonoIcon::icon(FontAwesome::chevronleft, stdColor);
     rightIcon=MonoIcon::icon(FontAwesome::chevronright, stdColor);
@@ -160,7 +159,7 @@ Icons::Icons()
     #ifndef ENABLE_KDE_SUPPORT
     PathRequester::setIcon(folderListIcon);
     #endif
-    cancelIcon=MonoIcon::icon(FontAwesome::close, red, red);
+    cancelIcon=MonoIcon::icon(FontAwesome::close, MonoIcon::constRed, MonoIcon::constRed);
 
     #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
     if (QLatin1String("gnome")==QIcon::themeName()) {

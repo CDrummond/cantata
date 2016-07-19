@@ -296,7 +296,7 @@ void View::abort()
 
 void View::initStyle()
 {
-    if (GtkStyle::isActive() && GtkStyle::thinScrollbars()) {
+    if (GtkStyle::isActive()) {
         // Already have thin style scrollbars...
         return;
     }

@@ -27,10 +27,10 @@
 #include <QWidget>
 #include <QTime>
 #include <QSlider>
+#include "support/squeezedtextlabel.h"
 
 class QTimer;
 class QLabel;
-class SqueezedTextLabel;
 class TimeLabel;
 class RatingWidget;
 struct Song;
@@ -68,6 +68,7 @@ public:
     void saveConfig();
     void setEnabled(bool e) { slider->setEnabled(e); }
     bool isEnabled() const { return slider->isEnabled(); }
+    QColor textColor() const { return track->palette().windowText().color(); }
 
 Q_SIGNALS:
     void sliderReleased();

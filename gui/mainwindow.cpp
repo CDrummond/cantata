@@ -218,7 +218,7 @@ MainWindow::MainWindow(QWidget *parent)
     nowPlaying->ensurePolished();
     nowPlaying->adjustSize();
     nowPlaying->setFixedHeight(nowPlaying->height());
-    Icons::self()->initToolbarIcons(toolbar->palette().color(QPalette::Foreground));
+    Icons::self()->initToolbarIcons(nowPlaying->textColor());
     Icons::self()->initSidebarIcons();
 
     #ifdef ENABLE_KDE_SUPPORT

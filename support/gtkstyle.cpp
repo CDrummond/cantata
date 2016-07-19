@@ -235,14 +235,6 @@ extern void GtkStyle::setThemeName(const QString &n)
 static WindowManager *wm=0;
 #endif
 static QProxyStyle *proxyStyle=0;
-static bool symbolicIcons=false;
-static QColor symbolicIconColor(0, 0, 0);
-static bool thinSbar=false;
-
-bool GtkStyle::thinScrollbars()
-{
-    return thinSbar;
-}
 
 void GtkStyle::applyTheme(QWidget *widget)
 {
@@ -251,13 +243,11 @@ void GtkStyle::applyTheme(QWidget *widget)
     #else
     if (widget && isActive()) {
         QString theme=GtkStyle::themeName().toLower();
-        bool touchStyleSpin=false;
         int modViewFrame=0;
         QMap<QString, QString> css;
         if (!theme.isEmpty()) {
             QFile cssFile(Utils::systemDir(QLatin1String("themes"))+theme+QLatin1String(".css"));
             if (cssFile.open(QFile::ReadOnly|QFile::Text)) {
-                const QString symKey=QLatin1String("symbolic-icons:#");
 
                 while (!cssFile.atEnd()) {
                     QString line = cssFile.readLine().trimmed();
@@ -270,20 +260,11 @@ void GtkStyle::applyTheme(QWidget *widget)
                             wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
                             wm->registerWidgetAndChildren(widget);
                         }
-                        if (line.contains("scrollbar:overlay") || line.contains("scrollbar:thin")) {
-                            thinSbar=true;
-                        }
-                        touchStyleSpin=line.contains("spinbox:touch");
                         modViewFrame=line.contains("modview:ts")
                                         ? ProxyStyle::VF_Side|ProxyStyle::VF_Top
                                         : line.contains("modview:true")
                                             ? ProxyStyle::VF_Side
                                             : 0;
-                        int pos=line.indexOf(symKey);
-                        if (pos>0 && pos+6<line.length()) {
-                            symbolicIcons=true;
-                            symbolicIconColor=QColor(line.mid(pos+symKey.length()-1, 7));
-                        }
                     } else {
                         int space=line.indexOf(' ');
                         if (space>2) {
@@ -294,7 +275,7 @@ void GtkStyle::applyTheme(QWidget *widget)
             }
         }
         if (!proxyStyle) {
-            proxyStyle=new GtkProxyStyle(modViewFrame, thinSbar, touchStyleSpin || Utils::touchFriendly(), css);
+            proxyStyle=new GtkProxyStyle(modViewFrame, true, true, css);
         }
     }
     #endif
@@ -329,14 +310,4 @@ void GtkStyle::registerWidget(QWidget *widget)
         wm->registerWidgetAndChildren(widget);
     }
     #endif
-}
-
-bool GtkStyle::useSymbolicIcons()
-{
-    return symbolicIcons;
-}
-
-QColor GtkStyle::symbolicColor()
-{
-    return symbolicIconColor;
 }

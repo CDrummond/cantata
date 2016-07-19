@@ -28,7 +28,6 @@
 #include "gui/settings.h"
 #include "mpd-interface/mpdconnection.h"
 #include "models/playqueuemodel.h"
-#include "support/squeezedtextlabel.h"
 #include "support/utils.h"
 #include "support/localize.h"
 #ifdef Q_OS_MAC

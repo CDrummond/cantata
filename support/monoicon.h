@@ -636,8 +636,8 @@ namespace FontAwesome {
 
 namespace MonoIcon
 {
-    QIcon icon(const QString &fileName, const QColor &col, const QColor &sel);
-    QIcon icon(const FontAwesome::icon icon, const QColor &col, const QColor &sel);
+    QIcon icon(const QString &fileName, const QColor &col, const QColor &sel=QColor(QColor::Invalid));
+    QIcon icon(const FontAwesome::icon icon, const QColor &col, const QColor &sel=QColor(QColor::Invalid));
 };
 
 #endif // MonoIcon_H

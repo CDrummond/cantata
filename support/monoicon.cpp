@@ -23,6 +23,9 @@
 
 #include "monoicon.h"
 #include "utils.h"
+#ifdef Q_OS_MAC
+#include "osxstyle.h"
+#endif
 #include <QFile>
 #include <QIconEngine>
 #include <QSvgRenderer>
@@ -30,6 +33,8 @@
 #include <QPixmapCache>
 #include <QRect>
 #include <QFontDatabase>
+#include <QApplication>
+#include <QPalette>
 
 class MonoIconEngine : public QIconEngine
 {
@@ -54,6 +59,13 @@ public:
         Q_UNUSED(state)
 
         QColor col=QIcon::Selected==mode ? selectedColor : color;
+        if (QIcon::Selected==mode && !col.isValid()) {
+            #ifdef Q_OS_MAC
+            col=OSXStyle::self()->viewPalette().highlightedText().color();
+            #else
+            col=QApplication::palette().highlightedText().color();
+            #endif
+        }
         QString key=(fileName.isEmpty() ? QString::number(fontAwesomeIcon) : fileName)+
                     QLatin1Char('-')+QString::number(rect.width())+QLatin1Char('-')+QString::number(rect.height())+QLatin1Char('-')+col.name();
         QPixmap pix;

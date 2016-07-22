@@ -32,6 +32,7 @@
 #include "trackorganiser.h"
 #include "mpd-interface/cuefile.h"
 #include "support/utils.h"
+#include "support/monoicon.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "models/devicesmodel.h"
 #include "devices/device.h"
@@ -193,7 +194,13 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         enableButton(User2, false);
     }
     setButtonGuiItem(Ok, StdGuiItem::save());
-    setButtonGuiItem(User3, GuiItem(i18n("Tools"), "tools-wizard"));
+    setButtonGuiItem(User3, GuiItem(i18n("Tools"),
+                                    #ifdef ENABLE_KDE_SUPPORT
+                                    "tools-wizard"
+                                    #else
+                                    FontAwesome::magic
+                                    #endif
+                                    ));
     QMenu *toolsMenu=new QMenu(this);
     toolsMenu->addAction(i18n("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
     toolsMenu->addAction(i18n("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));

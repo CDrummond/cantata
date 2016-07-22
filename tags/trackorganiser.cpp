@@ -71,7 +71,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     setupUi(mainWidet);
     setMainWidget(mainWidet);
     configFilename->setIcon(Icons::self()->configureIcon);
-    setButtonGuiItem(Ok, GuiItem(i18n("Rename"), "edit-rename"));
+    setButtonGuiItem(Ok, GuiItem(i18n("Rename")));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
     progress->setVisible(false);
     files->setItemDelegate(new BasicItemDelegate(files));

@@ -32,6 +32,8 @@
 21. Fix add/set priority menus.
 22. Match view mono icons to text colour.
 23. Use FontAwesome icons for all action icons.
+24. Send a message at least once every 5 seconds to MPD, to ensure connection
+    is still valid.
 
 2.0.1
 -----

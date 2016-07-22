@@ -42,45 +42,13 @@ GLOBAL_STATIC(Icons, instance)
 
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48; // << 64;
 
-static const int constDarkLimit=80;
-static const int constDarkValue=64;
-static const int constLightLimit=240;
-static const int constLightValue=240;
-
-static bool inline isVeryLight(const QColor &col, int limit=constLightValue)
-{
-    return col.red()>=limit && col.blue()>=limit && col.green()>=limit;
-}
-
-static bool inline isVeryDark(const QColor &col, int limit=constDarkValue)
-{
-    return col.red()<limit && col.blue()<limit && col.green()<limit;
-}
-
-static QColor clampColor(const QColor &color, int darkLimit=constDarkLimit, int darkValue=constDarkValue,
-                         int lightLimit=constLightLimit, int lightValue=constLightValue)
-{
-    return isVeryLight(color, lightLimit)
-            ? QColor(lightValue, lightValue, lightValue)
-            : isVeryDark(color, darkLimit)
-                ? QColor(darkValue, darkValue, darkValue)
-                : color;
-}
-
-QColor Icons::calcIconColor()
-{
-    QColor bgnd=QApplication::palette().color(QPalette::Active, QPalette::Background);
-    QColor text=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
-    return clampColor(text, constDarkLimit, bgnd.value()<224 ? 32 : 48);
-}
-
 #if !defined ENABLE_KDE_SUPPORT || defined Q_OS_MAC || defined Q_OS_WIN
 #define ALWAYS_USE_MONO_ICONS
 #endif
 
 Icons::Icons()
 {
-    QColor stdColor=calcIconColor();
+    QColor stdColor=Utils::monoIconColor();
 
     singleIcon=MonoIcon::icon(FontAwesome::ex_one, stdColor);
     consumeIcon=MonoIcon::icon(":consume.svg", stdColor);
@@ -171,25 +139,25 @@ Icons::Icons()
 void Icons::initSidebarIcons()
 {
     #ifdef Q_OS_MAC
-    QColor textCol=OSXStyle::self()->monoIconColor();
+    QColor iconCol=OSXStyle::self()->monoIconColor();
     #else
-    QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
+    QColor iconCol=Utils::monoIconColor();
     #endif
-    playqueueIcon=MonoIcon::icon(QLatin1String(":sidebar-playqueue"), textCol);
-    libraryIcon=MonoIcon::icon(QLatin1String(":sidebar-library"), textCol);
-    foldersIcon=MonoIcon::icon(QLatin1String(":sidebar-folders"), textCol);
-    playlistsIcon=MonoIcon::icon(QLatin1String(":sidebar-playlists"), textCol);
-    onlineIcon=MonoIcon::icon(QLatin1String(":sidebar-online"), textCol);
-    infoSidebarIcon=MonoIcon::icon(QLatin1String(":sidebar-info"), textCol);
+    playqueueIcon=MonoIcon::icon(QLatin1String(":sidebar-playqueue"), iconCol);
+    libraryIcon=MonoIcon::icon(QLatin1String(":sidebar-library"), iconCol);
+    foldersIcon=MonoIcon::icon(QLatin1String(":sidebar-folders"), iconCol);
+    playlistsIcon=MonoIcon::icon(QLatin1String(":sidebar-playlists"), iconCol);
+    onlineIcon=MonoIcon::icon(QLatin1String(":sidebar-online"), iconCol);
+    infoSidebarIcon=MonoIcon::icon(QLatin1String(":sidebar-info"), iconCol);
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesIcon=MonoIcon::icon(QLatin1String(":sidebar-devices"), textCol);
+    devicesIcon=MonoIcon::icon(QLatin1String(":sidebar-devices"), iconCol);
     #endif
-    searchTabIcon=MonoIcon::icon(QLatin1String(":sidebar-search"), textCol);
+    searchTabIcon=MonoIcon::icon(QLatin1String(":sidebar-search"), iconCol);
 }
 
-void Icons::initToolbarIcons(const QColor &toolbarText)
+void Icons::initToolbarIcons(QColor toolbarText)
 {
-    QColor stdColor=calcIconColor();
+    QColor stdColor=Utils::monoIconColor();
     bool rtl=QApplication::isRightToLeft();
 
     #ifdef Q_OS_LINUX
@@ -206,6 +174,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     }
     #endif
 
+    toolbarText=Utils::clampColor(toolbarText);
     toolbarPrevIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-next" : ":media-prev"), toolbarText);
     toolbarPlayIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-play-rtl" : ":media-play"), toolbarText);
     toolbarPauseIcon=MonoIcon::icon(QLatin1String(":media-pause"), toolbarText);

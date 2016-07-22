@@ -233,7 +233,7 @@ MainWindow::MainWindow(QWidget *parent)
     StdActions::self()->stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
     #else
     setWindowIcon(Icons::self()->appIcon);
-    QColor iconCol=Icons::calcIconColor();
+    QColor iconCol=Utils::monoIconColor();
 
     prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? i18n("Configure Cantata...") : i18n("Preferences"),
                                                      HIDE_MENU_ICON(Icons::self()->configureIcon));

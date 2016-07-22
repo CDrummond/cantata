@@ -64,10 +64,12 @@ void MPDConnection::enableDebug()
 // Uncomment the following to report error strings in MPDStatus to the UI
 // ...disabled, as stickers (for ratings) can cause lots of errors to be reported - and these all need clearing, etc.
 // #define REPORT_MPD_ERRORS
-static const int constSocketCommsTimeout=2000;
+static const int constSocketCommsTimeout=250
+        ;
 static const int constMaxReadAttempts=4;
-static int maxFilesPerAddCommand=10000;
+static int maxFilesPerAddCommand=1000;
 static int seekStep=5;
+static int constConnTimer=5000;
 
 static const QByteArray constOkValue("OK");
 static const QByteArray constOkMpdValue("OK MPD");
@@ -93,7 +95,7 @@ static const QByteArray constRatingSticker("rating");
 
 static inline int socketTimeout(int dataSize)
 {
-    static const int constDataBlock=100000;
+    static const int constDataBlock=512;
     return ((dataSize/constDataBlock)+((dataSize%constDataBlock) ? 1 : 0))*constSocketCommsTimeout;
 }
 
@@ -124,14 +126,14 @@ QByteArray MPDConnection::encodeName(const QString &name)
     return '\"'+name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"")+'\"';
 }
 
-static QByteArray readFromSocket(MpdSocket &socket)
+static QByteArray readFromSocket(MpdSocket &socket, int timeout=constSocketCommsTimeout)
 {
     QByteArray data;
+    int attempt=0;
     while (QAbstractSocket::ConnectedState==socket.state()) {
-        int attempt=0;
         while (0==socket.bytesAvailable() && QAbstractSocket::ConnectedState==socket.state()) {
             DBUG << (void *)(&socket) << "Waiting for read data, attempt" << attempt;
-            if (socket.waitForReadyRead()) {
+            if (socket.waitForReadyRead(timeout)) {
                 break;
             }
             DBUG << (void *)(&socket) << "Wait for read failed - " << socket.errorString();
@@ -153,9 +155,9 @@ static QByteArray readFromSocket(MpdSocket &socket)
     return data;
 }
 
-static MPDConnection::Response readReply(MpdSocket &socket)
+static MPDConnection::Response readReply(MpdSocket &socket, int timeout=constSocketCommsTimeout)
 {
-    QByteArray data = readFromSocket(socket);
+    QByteArray data = readFromSocket(socket, timeout);
     return MPDConnection::Response(data.endsWith(constOkNlValue), data);
 }
 
@@ -301,6 +303,7 @@ void MPDConnection::start()
         connTimer->setSingleShot(false);
         moveToThread(thread);
         connect(thread, SIGNAL(finished()), connTimer, SLOT(stop()));
+        connect(connTimer, SIGNAL(timeout()), SLOT(getStatus()));
         thread->start();
     }
 }
@@ -458,7 +461,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
             #endif
         }
     }
-    connTimer->start(30000);
+    connTimer->start(constConnTimer);
     return status;
 }
 
@@ -640,9 +643,8 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
     if (QAbstractSocket::ConnectedState!=sock.state() && !reconnected) {
         DBUG << (void *)(&sock) << "Socket (state:" << sock.state() << ") need to reconnect";
         sock.close();
-        ConnectionReturn status=connectToMPD(sock);
+        ConnectionReturn status=connectToMPD();
         if (Success!=status) {
-            // Failed to connect, so close *both* sockets!
             disconnectFromMPD();
             emit stateChanged(false);
             emit error(errorString(status), true);
@@ -667,7 +669,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         DBUG << "Timeout (ms):" << timeout;
         sock.waitForBytesWritten(timeout);
         DBUG << "Socket state after write:" << (int)sock.state();
-        response=readReply(sock);
+        response=readReply(sock, timeout);
     }
 
     if (!response.ok) {
@@ -716,7 +718,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
     }
     DBUG << (void *)(&sock) << "sendCommand - sent";
     if (QAbstractSocket::ConnectedState==sock.state()) {
-        connTimer->start(30000);
+        connTimer->start(constConnTimer);
     } else {
         connTimer->stop();
     }
@@ -1365,7 +1367,7 @@ void MPDConnection::getStats()
 
 void MPDConnection::getStatus()
 {
-    Response response=sendCommand("status");
+   Response response=sendCommand("status");
     if (response.ok) {
         MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
         lastStatusPlayQueueVersion=sv.playlist;

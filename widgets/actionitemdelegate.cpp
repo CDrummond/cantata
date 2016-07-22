@@ -135,7 +135,7 @@ ActionItemDelegate::ActionItemDelegate(QObject *p)
 void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, ActionPos actionPos, const QModelIndex &index) const
 {
     QColor textCol=QApplication::palette().color(QPalette::Normal, QPalette::WindowText);
-    bool lightBgnd=textCol.red()<=100 && textCol.green()<=100 && textCol.blue()<=100;
+    bool lightBgnd=textCol.red()<=128 && textCol.green()<=128 && textCol.blue()<=128;
     int iconSize=largeIcons ? constLargeActionIconSize : constActionIconSize;
     double opacity=painter->opacity();
     bool touch=Utils::touchFriendly();

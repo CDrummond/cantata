@@ -33,6 +33,7 @@
 #endif
 #include "support/icon.h"
 #include "widgets/icons.h"
+#include "support/utils.h"
 #include "widgets/mirrormenu.h"
 #include "support/globalstatic.h"
 #include <QCoreApplication>
@@ -48,7 +49,7 @@ static void setToolTip(Action *act, const QString &tt)
 StdActions::StdActions()
 {
     UNITY_MENU_ICON_CHECK
-    QColor col=Icons::calcIconColor();
+    QColor col=Utils::monoIconColor();
     prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::self()->toolbarPrevIcon);
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::self()->toolbarNextIcon);
     playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::self()->toolbarPlayIcon);

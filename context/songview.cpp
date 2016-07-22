@@ -134,7 +134,7 @@ SongView::SongView(QWidget *p)
     , infoNeedsUpdating(true)
     , metadataNeedsUpdating(true)
 {
-    QColor iconCol=Icons::calcIconColor();
+    QColor iconCol=Utils::monoIconColor();
     scrollAction = ActionCollection::get()->createAction("scrolllyrics", i18n("Scroll Lyrics"), MonoIcon::icon(FontAwesome::chevrondown, iconCol));
     refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), Icons::self()->refreshIcon);
     editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::self()->editIcon);

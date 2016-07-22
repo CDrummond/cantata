@@ -27,18 +27,14 @@
 #include "support/icon.h"
 #include "config.h"
 
-class QColor;
-
 class Icons
 {
 public:
     static Icons *self();
 
-    static QColor calcIconColor();
-
     Icons();
     void initSidebarIcons();
-    void initToolbarIcons(const QColor &toolbarText);
+    void initToolbarIcons(QColor toolbarText);
     #ifndef ENABLE_KDE_SUPPORT
     Icon appIcon;
     #endif

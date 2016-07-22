@@ -142,6 +142,9 @@ namespace Utils
     extern void setTouchFriendly(bool t);
     extern bool touchFriendly();
     extern QPainterPath buildPath(const QRectF &r, double radius);
+    extern QColor clampColor(const QColor &col);
+    extern QColor monoIconColor();
+
     #endif
 }
 

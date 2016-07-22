@@ -245,7 +245,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     UNITY_MENU_ICON_CHECK
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
-    QColor col=Icons::calcIconColor();
+    QColor col=Utils::monoIconColor();
     undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::undo, col)));
     undoAction->setShortcut(Qt::ControlModifier+Qt::Key_Z);
     redoAction=ActionCollection::get()->createAction("playqueue-redo", i18n("Redo"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::repeat, col)));

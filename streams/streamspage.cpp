@@ -106,7 +106,7 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     : SinglePageWidget(p)
     , settings(0)
 {
-    QColor iconCol=Icons::calcIconColor();
+    QColor iconCol=Utils::monoIconColor();
     importAction = new Action(MonoIcon::icon(FontAwesome::arrowright, iconCol), i18n("Import Streams Into Favorites"), this);
     exportAction = new Action(MonoIcon::icon(FontAwesome::arrowleft, iconCol), i18n("Export Favorite Streams"), this);
     addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favorites"));

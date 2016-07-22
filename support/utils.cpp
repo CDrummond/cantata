@@ -970,6 +970,24 @@ QPainterPath Utils::buildPath(const QRectF &r, double radius)
     return path;
 }
 
+QColor Utils::clampColor(const QColor &col)
+{
+    static const int constMin=64;
+    static const int constMax=240;
+
+    if (col.value()<constMin) {
+        return QColor(constMin, constMin, constMin);
+    } else if (col.value()>constMax) {
+        return QColor(constMax, constMax, constMax);
+    }
+    return col;
+}
+
+QColor Utils::monoIconColor()
+{
+    return clampColor(QApplication::palette().color(QPalette::Active, QPalette::WindowText));
+}
+
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KWindowSystem>
 #endif

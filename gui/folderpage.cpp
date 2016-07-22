@@ -41,7 +41,7 @@ FolderPage::FolderPage(QWidget *p)
     : SinglePageWidget(p)
     , model(this)
 {
-    QColor col=Icons::calcIconColor();
+    QColor col=Utils::monoIconColor();
     browseAction = new Action(MonoIcon::icon(FontAwesome::folderopen, col), i18n("Open In File Manager"), this);
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));

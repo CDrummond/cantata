@@ -61,9 +61,9 @@ private:
     void setState(bool downloading);
 
 private:
-    Icon def;
-    Icon installed;
-    Icon updateable;
+    QIcon def;
+    QIcon installed;
+    QIcon updateable;
     StreamsSettings *p;
     NetworkJob *job;
     Spinner *spinner;

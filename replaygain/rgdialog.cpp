@@ -32,6 +32,7 @@
 #include "support/utils.h"
 #include "support/localize.h"
 #include "support/messagebox.h"
+#include "support/monoicon.h"
 #include "jobcontroller.h"
 #include "widgets/basicitemdelegate.h"
 #include "support/action.h"
@@ -130,7 +131,14 @@ RgDialog::RgDialog(QWidget *parent)
     setMainWidget(mainWidget);
     setButtonGuiItem(Ok, StdGuiItem::save());
     setButtonGuiItem(Cancel, StdGuiItem::close());
-    setButtonGuiItem(User1, GuiItem(i18n("Scan"), "edit-find"));
+    setButtonGuiItem(User1, GuiItem(i18n("Scan"),
+                                    #ifdef ENABLE_KDE_SUPPORT
+                                    "edit-find"
+                                    #else
+                                    FontAwesome::search
+                                    #endif
+                                    ));
+
     enableButton(Ok, false);
     enableButton(User1, false);
     qRegisterMetaType<Tags::ReplayGain>("Tags::ReplayGain");

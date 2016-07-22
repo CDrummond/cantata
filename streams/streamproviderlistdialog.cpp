@@ -28,7 +28,7 @@
 #include "support/messagebox.h"
 #include "support/squeezedtextlabel.h"
 #include "support/spinner.h"
-#include "support/icon.h"
+#include "support/monoicon.h"
 #include "widgets/actionitemdelegate.h"
 #include "widgets/messageoverlay.h"
 #include "models/streamsmodel.h"
@@ -79,7 +79,7 @@ static QString getMd5(const QString &p)
 class IconLabel : public QToolButton
 {
 public:
-    IconLabel(const Icon &icon, const QString &text, QWidget *p)
+    IconLabel(const QIcon &icon, const QString &text, QWidget *p)
         : QToolButton(p)
     {
         setIcon(icon);
@@ -106,8 +106,8 @@ public:
 
 StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     : Dialog(parent, "StreamProviderListDialog")
-    , installed("dialog-ok")
-    , updateable("go-down")
+    , installed(MonoIcon::icon(FontAwesome::check, QColor(0, 220, 0)))
+    , updateable(MonoIcon::icon(FontAwesome::angledoubledown, QColor(0, 0, 220)))
     , p(parent)
     , job(0)
     , spinner(0)

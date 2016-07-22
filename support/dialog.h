@@ -77,10 +77,15 @@ namespace StdGuiItem {
 
 struct GuiItem {
     GuiItem(const QString &t=QString(), const QString &i=QString())
-        : text(t), icon(i) {
+        : text(t), icon(i), monoIcon(0), red(false) {
+    }
+    GuiItem(const QString &t, int i, bool r=false)
+        : text(t), monoIcon(i), red(r) {
     }
     QString text;
     QString icon;
+    int monoIcon;
+    bool red;
 };
 
 namespace StdGuiItem {

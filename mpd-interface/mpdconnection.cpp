@@ -481,6 +481,14 @@ void MPDConnection::disconnectFromMPD()
     idleSocket.close();
     state=State_Disconnected;
     ver=0;
+    playQueueIds.clear();
+    streamIds.clear();
+    lastStatusPlayQueueVersion=0;
+    lastUpdatePlayQueueVersion=0;
+    currentSongId=0;
+    songPos=0;
+    mopidy=false;
+    isUpdatingDb=false;
     emit socketAddress(QString());
 }
 

@@ -34,6 +34,8 @@
 23. Use FontAwesome icons for all action icons.
 24. Send a message at least once every 5 seconds to MPD, to ensure connection
     is still valid.
+25. Fix updating of playlists if these contain duplicates and are modified by
+    another client.
 
 2.0.1
 -----

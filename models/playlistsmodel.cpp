@@ -812,51 +812,25 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
 
     if (pl) {
         QModelIndex idx=createIndex(items.indexOf(pl), 0, pl);
-        if (pl->songs.isEmpty()) {
-            if (songs.isEmpty()) {
-                return;
-            }
+
+        // If Cantata moves songs, then movedInPlaylist() is called. Likwise if
+        // Cantata deltes songs, removedFromPlaylist() is called. Therefore, no
+        // need to do partial updates here. If another client does a move whilst
+        // a playlist has duplicate songs, then it can fail. #873
+        if (!pl->songs.isEmpty()) {
+            beginRemoveRows(idx, 0, pl->songs.count()-1);
+            pl->clearSongs();
+            endRemoveRows();
+        }
+
+        if (!songs.isEmpty()) {
             beginInsertRows(idx, 0, songs.count()-1);
             foreach (const Song &s, songs) {
                 pl->songs.append(new SongItem(s, pl));
             }
             endInsertRows();
-        } else if (songs.isEmpty()) {
-            beginRemoveRows(idx, 0, pl->songs.count()-1);
-            pl->clearSongs();
-            endRemoveRows();
-        } else {
-            for (qint32 i=0; i<songs.count(); ++i) {
-                Song s=songs.at(i);
-                SongItem *si=i<pl->songs.count() ? pl->songs.at(i) : 0;
-                if (i>=pl->songs.count() || !(s==*static_cast<Song *>(si))) {
-                    si=i<pl->songs.count() ? pl->getSong(s, i) : 0;
-                    if (!si) {
-                        beginInsertRows(idx, i, i);
-                        pl->songs.insert(i, new SongItem(s, pl));
-                        endInsertRows();
-                    } else {
-                        int existing=pl->songs.indexOf(si);
-                        beginMoveRows(idx, existing, existing, idx, i>existing ? i+1 : i);
-                        SongItem *si=pl->songs.takeAt(existing);
-                        si->key=s.key;
-                        pl->songs.insert(i, si);
-                        endMoveRows();
-                    }
-                } else if (si) {
-                    si->key=s.key;
-                }
-            }
-
-            if (pl->songs.count()>songs.count()) {
-                int toRemove=pl->songs.count()-songs.count();
-                beginRemoveRows(idx, pl->songs.count()-toRemove, pl->songs.count()-1);
-                for (int i=0; i<toRemove; ++i) {
-                    delete pl->songs.takeLast();
-                }
-                endRemoveRows();
-            }
         }
+
         emit updated(idx);
         emit dataChanged(idx, idx);
     } else {

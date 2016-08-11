@@ -31,7 +31,8 @@
 #include <QRegExp>
 #include <QDebug>
 
-static const int constSchemaVersion=3;
+static const int constSchemaVersion=4;
+static const int constNumGenres=4;
 
 bool LibraryDb::dbgEnabled=false;
 #define DBUG if (dbgEnabled) qWarning() << metaObject()->className() << __FUNCTION__ << (void *)this
@@ -398,6 +399,17 @@ public:
             // to bound parameters
             if (QVariant::Int==value.type()) {
                 whereClauses << QString("%1 %2 %3").arg(column, op, value.toString());
+            } else if ("genre"==column) {
+                QString clause("(");
+                for (int i=0; i<constNumGenres; ++i) {
+                    clause+=QString("%1 %2 ?").arg(column+QString::number(i+1), op);
+                    if (i<(constNumGenres-1)) {
+                        clause+=" OR ";
+                    }
+                    boundValues << value;
+                }
+                clause+=")";
+                whereClauses << clause;
             } else {
                 whereClauses << QString("%1 %2 ?").arg(column, op);
                 boundValues << value;
@@ -509,7 +521,10 @@ enum SongFields {
     SF_albumId,
     SF_albumSort,
     SF_title,
-    SF_genre,
+    SF_genre1,
+    SF_genre2,
+    SF_genre3,
+    SF_genre4,
     SF_track,
     SF_disc,
     SF_time,
@@ -578,7 +593,10 @@ bool LibraryDb::init(const QString &dbFile)
                     "albumId text, "
                     "albumSort text, "
                     "title text, "
-                    "genre text, "
+                    "genre1 text, "
+                    "genre2 text, "
+                    "genre3 text, "
+                    "genre4 text, "
                     "track integer, "
                     "disc integer, "
                     "time integer, "
@@ -608,8 +626,8 @@ void LibraryDb::insertSong(const Song &s)
 {
     if (!insertSongQuery) {
         insertSongQuery=new QSqlQuery(*db);
-        insertSongQuery->prepare("insert into songs(file, artist, artistId, albumArtist, artistSort, composer, album, albumId, albumSort, title, genre, track, disc, time, year, type, lastModified) "
-                                 "values(:file, :artist, :artistId, :albumArtist, :artistSort, :composer, :album, :albumId, :albumSort, :title, :genre, :track, :disc, :time, :year, :type, :lastModified)");
+        insertSongQuery->prepare("insert into songs(file, artist, artistId, albumArtist, artistSort, composer, album, albumId, albumSort, title, genre1, genre2, genre3, genre4, track, disc, time, year, type, lastModified) "
+                                 "values(:file, :artist, :artistId, :albumArtist, :artistSort, :composer, :album, :albumId, :albumSort, :title, :genre1, :genre2, :genre3, :genre4, :track, :disc, :time, :year, :type, :lastModified)");
     }
     QString albumId=s.albumId();
     insertSongQuery->bindValue(":file", s.file);
@@ -622,7 +640,11 @@ void LibraryDb::insertSong(const Song &s)
     insertSongQuery->bindValue(":albumId", albumId);
     insertSongQuery->bindValue(":albumSort", albumSort(s));
     insertSongQuery->bindValue(":title", s.title);
-    insertSongQuery->bindValue(":genre", s.genre.isEmpty() ? constNullGenre : s.genre);
+    QStringList genres=s.genre.split(Song::constGenreSep);
+    for (int i=0; i<constNumGenres; ++i) {
+        QString genre=i<genres.length() ? genres.at(i) : QString();
+        insertSongQuery->bindValue(":genre"+QString::number(i+1), genre.isEmpty() ? constNullGenre : genre);
+    }
     insertSongQuery->bindValue(":track", s.track);
     insertSongQuery->bindValue(":disc", s.disc);
     insertSongQuery->bindValue(":time", s.time);
@@ -637,24 +659,29 @@ void LibraryDb::insertSong(const Song &s)
 QList<LibraryDb::Genre> LibraryDb::getGenres()
 {
     DBUG;
-    QMap<QString, int> map;
+    QMap<QString, QSet<QString> > map;
     if (0!=currentVersion && db) {
-        SqlQuery query("distinct genre, artistId", *db);
+        SqlQuery query("distinct genre1, genre2, genre3, genre4, artistId", *db);
         query.setFilter(filter);
 
         query.exec();
         DBUG << query.executedQuery();
         while (query.next()) {
-            map[query.value(0).toString()]++;
+            for (int i=0; i<constNumGenres; ++i) {
+                QString genre=query.value(i).toString();
+                if (!genre.isEmpty() && genre!=constNullGenre) {
+                    map[genre].insert(query.value(constNumGenres).toString());
+                }
+            }
         }
     }
 
     QList<LibraryDb::Genre> genres;
-    QMap<QString, int>::ConstIterator it=map.constBegin();
-    QMap<QString, int>::ConstIterator end=map.constEnd();
+    QMap<QString, QSet<QString> >::ConstIterator it=map.constBegin();
+    QMap<QString, QSet<QString> >::ConstIterator end=map.constEnd();
     for (; it!=end; ++it) {
         DBUG << it.key();
-        genres.append(Genre(it.key(), it.value()));
+        genres.append(Genre(it.key(), it.value().size()));
     }
     qSort(genres);
     return genres;
@@ -949,13 +976,27 @@ QSet<QString> LibraryDb::get(const QString &type)
     if (!db) {
         return set;
     }
-    SqlQuery query("distinct "+type, *db);
-    query.exec();
-    DBUG << query.executedQuery();
-    while (query.next()) {
-        QString val=query.value(0).toString();
-        if (!val.isEmpty()) {
-            set.insert(val);
+
+    QStringList columns;
+    bool isGenre="genre"==type;
+
+    if (isGenre) {
+        for (int i=0; i<constNumGenres; ++i) {
+            columns << type+QString::number(i+1);
+        }
+    } else {
+        columns << type;
+    }
+
+    foreach (const QString &col, columns) {
+        SqlQuery query("distinct "+col, *db);
+        query.exec();
+        DBUG << query.executedQuery();
+        while (query.next()) {
+            QString val=query.value(0).toString();
+            if (!val.isEmpty() && (!isGenre || constNullGenre!=val)) {
+                set.insert(val);
+            }
         }
     }
     detailsCache[type]=set;
@@ -1095,7 +1136,12 @@ Song LibraryDb::getSong(const QSqlQuery &query)
         s.setMbAlbumId(val);
     }
     s.title=query.value(SF_title).toString();
-    s.genre=query.value(SF_genre).toString();
+    for (int i=SF_genre1; i<=SF_genre1+constNumGenres; ++i) {
+        QString genre=query.value(i).toString();
+        if (genre!=constNullGenre) {
+            s.addGenre(genre);
+        }
+    }
     s.track=query.value(SF_track).toUInt();
     s.disc=query.value(SF_disc).toUInt();
     s.time=query.value(SF_time).toUInt();

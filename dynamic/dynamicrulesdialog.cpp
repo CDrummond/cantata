@@ -148,7 +148,7 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
 
     addBtn->setIcon(Icons::self()->addIcon);
     editBtn->setIcon(Icons::self()->editIcon);
-    removeBtn->setIcon(Icons::self()->removeIcon);
+    removeBtn->setIcon(Icons::self()->minusIcon);
 
     connect(rulesList, SIGNAL(itemsSelected(bool)), SLOT(controlButtons()));
     connect(nameText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));

@@ -95,6 +95,7 @@ public:
     QIcon disconnectIcon;
     QIcon downloadIcon;
     QIcon removeIcon;
+    QIcon minusIcon;
     QIcon addIcon;
     QIcon addBookmarkIcon;
     QIcon audioListIcon;

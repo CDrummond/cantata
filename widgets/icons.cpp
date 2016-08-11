@@ -100,6 +100,7 @@ Icons::Icons()
     disconnectIcon=MonoIcon::icon(FontAwesome::eject, stdColor);
     downloadIcon=MonoIcon::icon(FontAwesome::download, stdColor);
     removeIcon=MonoIcon::icon(FontAwesome::trash, MonoIcon::constRed, MonoIcon::constRed);
+    minusIcon=MonoIcon::icon(FontAwesome::minus, MonoIcon::constRed, MonoIcon::constRed);
     addIcon=MonoIcon::icon(FontAwesome::plus, stdColor);
     addBookmarkIcon=MonoIcon::icon(FontAwesome::bookmark, stdColor);
     audioListIcon=MonoIcon::icon(FontAwesome::music, stdColor);

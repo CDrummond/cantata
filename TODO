@@ -1,21 +1,10 @@
-- Qt5 port
-  - After KDE Frameworks 5 is released, add CMake option to use system Solid
-    libraries.
-
 - Windows port
   - CMake scripts not working
-  - Build QtNetwork with SSL support? libeay32.dll and libssl32.dll will also
-    need to be supplied with installer.
 
 - Streams
   - If radio stream is a playlist, Cantata currently only uses the 1st entry.
     Perhaps Cantata should loop over all entries until we find one that plays?
   - last.fm streams?
-
-- Online services
-  - GPodder support?
-  - DAAP servers?
-  - Subsonic servers? Mopidy can be used to access SubSonic.
 
 - Devices
   - libMTP does not support album artist tag. Cantata contains some
@@ -54,7 +43,6 @@
     - Does MPD need to be restarted to change settings?
 
 - Bugs
-  - Jamendo search sometimes causes crash (not seen for a while)
   - Handle font (High DPI detection) and palette changes in custom widgets
     (Volume control, time slider, etc)
 

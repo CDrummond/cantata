@@ -74,7 +74,7 @@ bool ListView::haveSelectedItems() const
 bool ListView::haveUnSelectedItems() const
 {
     // Dont need the sorted type of 'selectedIndexes' here...
-    return selectionModel() && selectionModel()->selectedIndexes().count()!=model()->rowCount();
+    return selectionModel() && model() && selectionModel()->selectedIndexes().count()!=model()->rowCount();
 }
 
 void ListView::mouseReleaseEvent(QMouseEvent *event)

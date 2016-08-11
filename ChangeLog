@@ -37,6 +37,7 @@
 25. Fix updating of playlists if these contain duplicates and are modified by
     another client.
 26. Cache up to 4 genres in SQL db.
+27. Fix crash when changinh playqueue view type.
 
 2.0.1
 -----

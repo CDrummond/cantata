@@ -98,7 +98,7 @@ ServerSettings::ServerSettings(QWidget *p)
     connect(name, SIGNAL(textChanged(QString)), SLOT(nameChanged()));
     connect(basicDir, SIGNAL(textChanged(QString)), SLOT(basicDirChanged()));
     addButton->setIcon(Icons::self()->addIcon);
-    removeButton->setIcon(Icons::self()->removeIcon);
+    removeButton->setIcon(Icons::self()->minusIcon);
     addButton->setAutoRaise(true);
     removeButton->setAutoRaise(true);
 

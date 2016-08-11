@@ -108,7 +108,7 @@ CustomActionsSettings::CustomActionsSettings(QWidget *parent)
     del->setText(i18n("Remove"));
     add->setIcon(Icons::self()->addIcon);
     edit->setIcon(Icons::self()->editIcon);
-    del->setIcon(Icons::self()->removeIcon);
+    del->setIcon(Icons::self()->minusIcon);
     edit->setEnabled(false);
     del->setEnabled(false);
 

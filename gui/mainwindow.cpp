@@ -1076,7 +1076,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::playQueueItemsSelected(bool s)
 {
-    int rc=playQueue->model()->rowCount();
+    int rc=playQueue->model() ? playQueue->model()->rowCount() : 0;
     bool haveItems=rc>0;
     bool singleSelection=1==playQueue->selectedIndexes(false).count(); // Dont need sorted selection here...
     playQueue->removeFromAct()->setEnabled(s && haveItems);

@@ -151,7 +151,7 @@ bool TreeView::haveSelectedItems() const
 bool TreeView::haveUnSelectedItems() const
 {
     // Dont need the sorted type of 'selectedIndexes' here...
-    return selectionModel() && selectionModel()->selectedIndexes().count()!=model()->rowCount();
+    return selectionModel() && model() && selectionModel()->selectedIndexes().count()!=model()->rowCount();
 }
 
 void TreeView::drag(Qt::DropActions supportedActions, QAbstractItemView *view, const QModelIndexList &items)

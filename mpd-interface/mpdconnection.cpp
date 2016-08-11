@@ -1398,6 +1398,11 @@ void MPDConnection::getStatus()
             emit updatedDatabase();
         }
         emitStatusUpdated(sv);
+
+        // If playlist length does not match number of IDs, then refresh
+        if (sv.playlistLength!=playQueueIds.length()) {
+            playListInfo();
+        }
     }
 }
 

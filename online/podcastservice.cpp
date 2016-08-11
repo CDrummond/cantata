@@ -796,6 +796,7 @@ void PodcastService::rssJobFinished()
 
                 podcast->setUnplayedCount();
                 podcast->save();
+                emit dataChanged(podcastIndex, podcastIndex);
             }
         }
     } else {

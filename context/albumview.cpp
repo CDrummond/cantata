@@ -176,7 +176,7 @@ void AlbumView::getTrackListing()
     if (!songs.isEmpty()) {
         trackList=View::subHeader(i18n("Tracks"))+QLatin1String("<p><table>");
         foreach (const Song &s, songs) {
-            trackList+=QLatin1String("<tr><td>")+QString::number(s.track)+
+            trackList+=QLatin1String("<tr><td align='right'>")+QString::number(s.track)+
                        QLatin1String("</td><td><a href=\"cantata:///")+s.file+"\">"+
                        (s.file==currentSong.file ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+QLatin1String("</a></td></tr>");
         }

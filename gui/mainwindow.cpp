@@ -190,26 +190,34 @@ MainWindow::MainWindow(QWidget *parent)
     int hSpace=Utils::layoutSpacing(this);
     int vSpace=fontMetrics().height()<14 ? hSpace/2 : 0;
     toolbarLayout->setContentsMargins(hSpace, vSpace, hSpace, vSpace);
-    #ifdef Q_OS_WIN
-    GtkStyle::applyTheme(this); // Despite its name, it *might* also apply touch style to spinboxes...
     toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    #else
+    #ifdef Q_OS_MAC
+    #elif defined Q_OS_MAC
     setUnifiedTitleAndToolBarOnMac(true);
     QToolBar *topToolBar = addToolBar("ToolBar");
-    #ifdef Q_OS_MAC
     WindowManager *wm=new WindowManager(topToolBar);
     wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
     wm->registerWidgetAndChildren(topToolBar);
-    #endif
-    toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     topToolBar->setObjectName("MainToolBar");
     topToolBar->addWidget(toolbar);
     topToolBar->setMovable(false);
     topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
     topToolBar->ensurePolished();
-    GtkStyle::applyTheme(topToolBar); // Despite its name, it *might* also apply touch style to spinboxes...
     toolbar=topToolBar;
-    #endif // Q_OS_WIN
+    #elif !defined Q_OS_WIN
+    if (GtkStyle::isActive()) {
+        // Create a real toolbar so that window can be moved by this - if set in CSS
+        QToolBar *topToolBar = addToolBar("ToolBar");
+        topToolBar->setObjectName("MainToolBar");
+        topToolBar->addWidget(toolbar);
+        topToolBar->setMovable(false);
+        topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
+        topToolBar->ensurePolished();
+        toolbar=topToolBar;
+    }
+    #endif
+
+    GtkStyle::applyTheme(this);
 
     UNITY_MENU_ICON_CHECK
 

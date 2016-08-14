@@ -39,6 +39,7 @@
 #include <QEvent>
 #include <QMouseEvent>
 #include <QApplication>
+#include <QPainter>
 
 static int twHeight=-1;
 
@@ -197,6 +198,19 @@ bool TitleWidget::eventFilter(QObject *o, QEvent *event)
         break;
     }
     return QWidget::eventFilter(o, event);
+}
+
+static bool isDark(const QColor &col) {
+    return col.red()<64 && col.green()<64 && col.blue()<64;
+}
+
+void TitleWidget::paintEvent(QPaintEvent *ev)
+{
+    QPainter p(this);
+    QColor col(isDark(palette().color(QPalette::Window)) ? Qt::white : Qt::black);
+    col.setAlphaF(0.06);
+    p.fillRect(rect(), col);
+    QWidget::paintEvent(ev);
 }
 
 void TitleWidget::coverRetrieved(const Song &s, const QImage &img, const QString &file)

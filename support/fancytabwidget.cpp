@@ -199,10 +199,6 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
 
         if (fader<1) {
             drawBgnd=false;
-        } else {
-            QColor col(styleOpt.palette.highlight().color());
-            col.setAlpha(fader);
-            styleOpt.palette.setColor(styleOpt.palette.currentColorGroup(), QPalette::Highlight, col);
         }
     }
 
@@ -218,7 +214,13 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
                 styleOpt.palette.setColor(QPalette::Highlight, styleOpt.palette.color(QPalette::Window).darker(110));
             }
             #endif
+            if (!selected) {
+                p->setOpacity((fader*1.0)/150.0);
+            }
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, p, 0);
+            if (!selected) {
+                p->setOpacity(1.0);
+            }
             #endif
         }
     }
@@ -512,10 +514,6 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
         int fader=int(tabs[tabIndex]->fader());
         if (fader<1) {
             drawBgnd=false;
-        } else  {
-            QColor col(styleOpt.palette.highlight().color());
-            col.setAlpha(fader);
-            styleOpt.palette.setColor(styleOpt.palette.currentColorGroup(), QPalette::Highlight, col);
         }
     }
     if (drawBgnd) {
@@ -530,7 +528,13 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
                 styleOpt.palette.setColor(QPalette::Highlight, styleOpt.palette.color(QPalette::Window).darker(110));
             }
             #endif
+            if (!selected) {
+                painter->setOpacity(tabs[tabIndex]->fader()/150.0);
+            }
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, painter, 0);
+            if (!selected) {
+                painter->setOpacity(1.0);
+            }
             #endif
         }
     }

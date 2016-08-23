@@ -227,7 +227,7 @@ MainWindow::MainWindow(QWidget *parent)
     nowPlaying->ensurePolished();
     nowPlaying->adjustSize();
     nowPlaying->setFixedHeight(nowPlaying->height());
-    volumeSlider->setColor(Utils::clampColor(nowPlaying->textColor()));
+    volumeSlider->setColor(nowPlaying->textColor());
     Icons::self()->initToolbarIcons(nowPlaying->textColor());
     Icons::self()->initSidebarIcons();
 

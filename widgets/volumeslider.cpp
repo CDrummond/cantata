@@ -128,8 +128,9 @@ void VolumeSlider::initActions()
     addAction(StdActions::self()->decreaseVolumeAction);
 }
 
-void VolumeSlider::setColor(const QColor &col)
+void VolumeSlider::setColor(QColor col)
 {
+    col=Utils::clampColor(col);
     if (col!=textCol) {
         textCol=col;
         generatePixmaps();

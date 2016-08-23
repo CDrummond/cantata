@@ -44,7 +44,7 @@ public:
 
     void initActions();
     void setFadingStop(bool f) { fadingStop=f; }
-    void setColor(const QColor &col);
+    void setColor(QColor col);
     void paintEvent(QPaintEvent *ev);
     void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *ev);

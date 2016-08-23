@@ -82,7 +82,6 @@ QColor VolumeSlider::clampColor(const QColor &col)
 VolumeSlider::VolumeSlider(QWidget *p)
     : QSlider(p)
     , lineWidth(0)
-    , shown(false)
     , down(false)
     , fadingStop(false)
     , muteAction(0)
@@ -129,20 +128,12 @@ void VolumeSlider::initActions()
     addAction(StdActions::self()->decreaseVolumeAction);
 }
 
-void VolumeSlider::showEvent(QShowEvent *ev)
+void VolumeSlider::setColor(const QColor &col)
 {
-    if (!shown) {
-        shown=true;
-        QLabel lbl(parentWidget());
-        lbl.ensurePolished();
-        QColor col=clampColor(lbl.palette().text().color());
-
-        if (col!=textCol) {
-            textCol=col;
-            generatePixmaps();
-        }
+    if (col!=textCol) {
+        textCol=col;
+        generatePixmaps();
     }
-    QSlider::showEvent(ev);
 }
 
 void VolumeSlider::paintEvent(QPaintEvent *)

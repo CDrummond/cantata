@@ -205,7 +205,7 @@ MainWindow::MainWindow(QWidget *parent)
     topToolBar->ensurePolished();
     toolbar=topToolBar;
     #elif !defined Q_OS_WIN
-    if (GtkStyle::isActive()) {
+    if (GtkStyle::isActive() || style()->inherits("Kvantum::Style")) {
         // Create a real toolbar so that window can be moved by this - if set in CSS
         QToolBar *topToolBar = addToolBar("ToolBar");
         topToolBar->setObjectName("MainToolBar");
@@ -227,6 +227,7 @@ MainWindow::MainWindow(QWidget *parent)
     nowPlaying->ensurePolished();
     nowPlaying->adjustSize();
     nowPlaying->setFixedHeight(nowPlaying->height());
+    volumeSlider->setColor(Utils::clampColor(nowPlaying->textColor()));
     Icons::self()->initToolbarIcons(nowPlaying->textColor());
     Icons::self()->initSidebarIcons();
 

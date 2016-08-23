@@ -39,6 +39,7 @@
 26. Cache up to 4 genres in SQL db.
 27. Fix crash when changinh playqueue view type.
 28. Use same sidebar inactive tab mouse-over for all styles.
+29. Fix colouring issues with some Kvantum styles.
 
 2.0.1
 -----

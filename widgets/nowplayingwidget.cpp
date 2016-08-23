@@ -131,7 +131,7 @@ public:
             break;
         case QEvent::HoverLeave:
             if (isEnabled()) {
-                setStyleSheet(QString());
+                setStyleSheet(QString("QLabel{color:%1;}").arg(((NowPlayingWidget *)parentWidget())->textColor().name()));
             }
         default:
             break;

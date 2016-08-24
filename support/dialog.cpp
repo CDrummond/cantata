@@ -155,7 +155,8 @@ static QIcon monoIcon(const GuiItem &i)
     if (!i.red && !col.isValid()) {
         col=Utils::monoIconColor();
     }
-    return MonoIcon::icon((FontAwesome::icon)i.monoIcon, i.red ? MonoIcon::constRed : col);
+    return MonoIcon::icon((FontAwesome::icon)i.monoIcon, i.red ? MonoIcon::constRed : col,
+                           i.red ? MonoIcon::constRed : QColor(QColor::Invalid));
 }
 
 namespace StdGuiItem {

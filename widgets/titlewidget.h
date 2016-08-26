@@ -40,7 +40,6 @@ public:
     virtual ~TitleWidget() { }
     void update(const Song &sng, const QIcon &icon, const QString &text, const QString &sub, bool showControls=false);
     bool eventFilter(QObject *obj, QEvent *event);
-    void paintEvent(QPaintEvent *ev);
 
 Q_SIGNALS:
     void clicked();

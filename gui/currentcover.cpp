@@ -118,7 +118,7 @@ GLOBAL_STATIC(CurrentCover, instance)
 CurrentCover::CurrentCover()
     : QObject(0)
     , enabled(false)
-    , valid(true)
+    , valid(false)
     , timer(0)
 {
     img=stdImage(false);

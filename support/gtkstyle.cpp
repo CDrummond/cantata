@@ -292,7 +292,7 @@ void GtkStyle::applyTheme(QWidget *widget)
         proxyStyle=new TouchProxyStyle(modViewFrame);
     }
     #ifndef ENABLE_KDE_SUPPORT
-    if (!proxyStyle) {
+    if (!proxyStyle && modViewFrame) {
         proxyStyle=new ProxyStyle(modViewFrame);
     }
     #endif

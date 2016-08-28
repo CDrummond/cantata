@@ -646,10 +646,12 @@ QString Song::capitalize(const QString &s)
     for (int i = 0; i < words.count(); i++) {
         QString word = words[i]; //.toLower();
         int j = 0;
-        while ( ('('==word[j] || '['==word[j] || '{'==word[j]) && j < word.length()) {
+        while ( j < word.length() && ('('==word[j] || '['==word[j] || '{'==word[j]) ) {
             j++;
         }
-        word[j] = word[j].toUpper();
+        if (j < word.length()) {
+            word[j] = word[j].toUpper();
+        }
         words[i] = word;
     }
     return words.join(" ");

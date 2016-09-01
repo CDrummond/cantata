@@ -192,7 +192,6 @@ MainWindow::MainWindow(QWidget *parent)
     toolbarLayout->setContentsMargins(hSpace, vSpace, hSpace, vSpace);
     toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     #ifdef Q_OS_MAC
-    #elif defined Q_OS_MAC
     setUnifiedTitleAndToolBarOnMac(true);
     QToolBar *topToolBar = addToolBar("ToolBar");
     WindowManager *wm=new WindowManager(topToolBar);

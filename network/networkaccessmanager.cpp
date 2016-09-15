@@ -101,8 +101,8 @@ void NetworkJob::cancelJob()
         disconnect(job, SIGNAL(uploadProgress(qint64, qint64)), this, SIGNAL(uploadProgress(qint64, qint64)));
         disconnect(job, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProg(qint64, qint64)));
         disconnect(job, SIGNAL(destroyed(QObject *)), this, SLOT(jobDestroyed(QObject *)));
-        job->close();
         job->abort();
+        job->close();
         job->deleteLater();
         job=0;
     }

@@ -40,6 +40,7 @@
 27. Fix crash when changinh playqueue view type.
 28. Use same sidebar inactive tab mouse-over for all styles.
 29. Fix colouring issues with some Kvantum styles.
+30. Abort network connections before closing.
 
 2.0.1
 -----

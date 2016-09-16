@@ -442,7 +442,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     int maxConnAttempts=MPDUser::constName==details.name ? 2 : 1;
     #else
-    int connAttempts=1;
+    int maxConnAttempts=1;
     #endif
     ConnectionReturn status=Failed;
     for (int connAttempt=0; connAttempt<maxConnAttempts; ++connAttempt) {

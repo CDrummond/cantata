@@ -435,7 +435,7 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
     }
     note->setVisible(!isArtist);
     if (isArtist) {
-        setCaption(i18n("'%1' Artist Image", song.albumartist));
+        setCaption(i18n("'%1' Artist Image", song.albumArtist()));
     } else {
         setCaption(i18nc("'Artist - Album' Album Cover", "'%1 - %2' Album Cover", song.albumArtist(), song.album));
     }
@@ -1297,7 +1297,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
             d.cdUp();
             destName=d.absolutePath()+'/'+Covers::artistFileName(song)+src.mid(src.length()-4);
         } else {
-            destName=Utils::cacheDir(Covers::constCoverDir, true)+Covers::encodeName(song.albumartist)+src.mid(src.length()-4);
+            destName=Utils::cacheDir(Covers::constCoverDir, true)+Covers::encodeName(song.albumArtist())+src.mid(src.length()-4);
         }
     } else {
         if (saveInMpd) {

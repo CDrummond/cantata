@@ -80,7 +80,7 @@ Song MagnatuneXmlParser::parseSong(QXmlStreamReader &xml)
 //                foreach (const QString &g, genres) {
 //                    s.addGenre(g);
 //                }
-                s.genre=genres.first();
+                s.genres[0]=genres.first();
             } else if (QLatin1String("seconds")==name) {
                  s.time=value.toInt();
 //            } else if (QLatin1String("cover_small")==name) {

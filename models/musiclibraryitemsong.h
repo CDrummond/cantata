@@ -38,32 +38,25 @@ class MusicLibraryItemSong : public MusicLibraryItem
 {
 public:
     MusicLibraryItemSong(const Song &s, MusicLibraryItemContainer *parent)
-        : MusicLibraryItem(parent), m_song(s), m_genres(0) { }
+        : MusicLibraryItem(parent), m_song(s) { }
 
-    virtual ~MusicLibraryItemSong();
+    virtual ~MusicLibraryItemSong() { }
 
     QString data() const { return m_song.displayTitle(); }
     const QString & file() const { return m_song.file; }
-    void setSong(const Song &s);
+    void setSong(const Song &s) { m_song=s; }
     void setFile(const QString &f) { m_song.file=f; }
     quint16 track() const { return m_song.track; }
     void setTrack(quint16 t) { m_song.track=t; }
     void setPlayed(bool p) { m_song.setPlayed(p); }
     quint16 disc() const { return m_song.disc; }
     quint32 time() const { return m_song.time; }
-    const QString & genre() const { return m_song.genre; }
+    QString genre() const { return m_song.firstGenre(); }
     const Song & song() const { return m_song; }
     Type itemType() const { return Type_Song; }
-    bool hasGenre(const QString &genre) const;
-    QSet<QString> allGenres() const;
-    bool multipleGenres() const { initGenres(); return m_genres>(void *)1; }
-
-private:
-    void initGenres() const;
 
 protected:
     Song m_song;
-    mutable QSet<QString> *m_genres;
 };
 
 #endif

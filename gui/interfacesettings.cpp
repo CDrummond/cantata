@@ -107,6 +107,7 @@ static inline QString getStrValue(QComboBox *box)
 }
 
 static const char * constValueProperty="value";
+static const char * constSep=",";
 
 InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
@@ -232,9 +233,9 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
 void InterfaceSettings::load()
 {
-    ignorePrefixes->setText(QStringList(Settings::self()->ignorePrefixes().toList()).join(QString(Song::constGenreSep)));
-    composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(Song::constGenreSep)));
-    singleTracksFolders->setText(QStringList(Settings::self()->singleTracksFolders().toList()).join(QString(Song::constGenreSep)));
+    ignorePrefixes->setText(QStringList(Settings::self()->ignorePrefixes().toList()).join(QString(constSep)));
+    composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(constSep)));
+    singleTracksFolders->setText(QStringList(Settings::self()->singleTracksFolders().toList()).join(QString(constSep)));
     selectEntry(cueSupport, Settings::self()->cueSupport());
     #ifdef ENABLE_DEVICES_SUPPORT
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
@@ -310,7 +311,7 @@ void InterfaceSettings::load()
 
 static QSet<QString> toSet(const QString &str)
 {
-    QStringList parts=str.split(Song::constGenreSep, QString::SkipEmptyParts);
+    QStringList parts=str.split(constSep, QString::SkipEmptyParts);
     QSet<QString> set;
     foreach (QString s, parts) {
         set.insert(s.trimmed());

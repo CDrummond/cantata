@@ -137,7 +137,7 @@ void SoundCloudService::jobFinished()
                 // We don't have a real artist name, but username is the most similar thing we have
                 song.artist=details["user"].toMap()["username"].toString();
                 song.title=details["title"].toString();
-                song.genre=details["genre"].toString();
+                song.genres[0]=details["genre"].toString();
                 song.year=details["release_year"].toInt();
                 song.time=details["duration"].toUInt()/1000;
                 song.fillEmptyFields();

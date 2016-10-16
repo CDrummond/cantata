@@ -145,7 +145,7 @@ void OnlineDbService::cover(const Song &song, const QImage &img, const QString &
         return;
     }
 
-    const Item *genre=root ? root->getChild(song.genre) : 0;
+    const Item *genre=root ? root->getChild(song.genres[0]) : 0;
     if (genre) {
         const Item *artist=static_cast<const CollectionItem *>(genre)->getChild(song.artistOrComposer());
         if (artist) {

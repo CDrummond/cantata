@@ -389,7 +389,7 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
         }
         s.year=QString::fromUtf8(track->date).mid(0, 4).toUInt();
         s.title=QString::fromUtf8(track->title);
-        s.genre=QString::fromUtf8(track->genre);
+        s.genres[0]=QString::fromUtf8(track->genre);
         s.track=track->tracknumber;
         s.time=(track->duration/1000.0)+0.5;
         s.size=track->filesize;
@@ -432,7 +432,6 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
             albumItem = artistItem->album(s);
         }
         MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
-        const QSet<QString> &songGenres=songItem->allGenres();
         albumItem->append(songItem);
 
         #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
@@ -962,7 +961,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
             meta->title=createString(song.title);
             meta->artist=createString(song.artist);
             meta->composer=createString(song.composer());
-            meta->genre=createString(song.genre);
+            meta->genre=createString(song.genres[0]);
             meta->album=createString(song.album);
             meta->date=createString(QString().sprintf("%4d0101T0000.0", song.year));
             meta->filename=createString(destName);

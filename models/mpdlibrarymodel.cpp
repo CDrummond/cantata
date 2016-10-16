@@ -67,7 +67,7 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
                 Song song=static_cast<MpdLibraryDb *>(db)->getCoverSong(T_Album==topLevel() ? static_cast<AlbumItem *>(item)->getArtistId() : item->getParent()->getId(), item->getId());
                 item->setSong(song);
                 if (T_Genre==topLevel()) {
-                    song.genre=item->getParent()->getParent()->getId();
+                    song.addGenre(item->getParent()->getParent()->getId());
                 }
             }
             v.setValue<Song>(item->getSong());
@@ -84,7 +84,7 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
                     song.setArtistImageRequest();
                 }
                 if (T_Genre==topLevel()) {
-                    song.genre=item->getParent()->getId();
+                    song.addGenre(item->getParent()->getId());
                 }
                 item->setSong(song);
             }
@@ -182,7 +182,7 @@ void MpdLibraryModel::cover(const Song &song, const QImage &img, const QString &
     }
     switch(topLevel()) {
     case T_Genre: {
-        const Item *genre=root ? root->getChild(song.genre) : 0;
+        const Item *genre=root ? root->getChild(song.genres[0]) : 0;
         if (genre) {
             const Item *artist=static_cast<const CollectionItem *>(genre)->getChild(song.artistOrComposer());
             if (artist) {
@@ -234,7 +234,7 @@ void MpdLibraryModel::artistImage(const Song &song, const QImage &img, const QSt
     }
     switch(topLevel()) {
     case T_Genre: {
-        const Item *genre=root ? root->getChild(song.genre) : 0;
+        const Item *genre=root ? root->getChild(song.genres[0]) : 0;
         if (genre) {
             const Item *artist=static_cast<const CollectionItem *>(genre)->getChild(song.artistOrComposer());
             if (artist) {

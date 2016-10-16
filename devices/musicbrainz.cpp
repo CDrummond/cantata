@@ -337,7 +337,7 @@ void MusicBrainz::lookup(bool full)
 
                                     song.albumartist=album.artist;
                                     song.album=album.name;
-                                    song.genre=album.genre;
+                                    song.genres[0]=album.genre;
                                     song.id=song.track=track->Position();
                                     song.time=track->Length()/1000;
                                     song.disc=album.disc;

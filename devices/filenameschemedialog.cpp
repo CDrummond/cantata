@@ -64,7 +64,7 @@ FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
     exampleSong.setComposer(i18nc("Example composer", "Vivaldi"));
     exampleSong.album=i18nc("Example album", "Now 5001");
     exampleSong.title=i18nc("Example song name", "Wobble");
-    exampleSong.genre=i18nc("Example genre", "Dance");
+    exampleSong.genres[0]=i18nc("Example genre", "Dance");
     exampleSong.track=1;
     exampleSong.disc=2;
     exampleSong.year=2001;

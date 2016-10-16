@@ -134,7 +134,9 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
             albumArtists.insert(s.albumArtist());
             composers.insert(s.composer());
             albums.insert(s.album);
-            genres+=s.genres().toSet();
+            for (int i=0; i<Song::constNumGenres && !s.genres[i].isEmpty(); ++i) {
+                genres+=s.genres[i];
+            }
         } else if (MusicLibraryItem::Type_Artist==child->itemType()) {
             foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(child)->childItems()) {
                 foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
@@ -143,7 +145,9 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
                     albumArtists.insert(s.albumArtist());
                     composers.insert(s.composer());
                     albums.insert(s.album);
-                    genres+=s.genres().toSet();
+                    for (int i=0; i<Song::constNumGenres && !s.genres[i].isEmpty(); ++i) {
+                        genres+=s.genres[i];
+                    }
                 }
             }
         }
@@ -300,9 +304,12 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, MusicLibraryProgressM
                 if (song.hasAlbumArtistSort()) {
                     writer.writeAttribute(constAlbumArtistSortAttribute, song.albumArtistSort());
                 }
-                QString trackGenre=track->multipleGenres() ? Song::combineGenres(track->allGenres()) : track->genre();
+                QString trackGenre=track->song().genres[0];
+                for (int i=1; i<Song::constNumGenres && !track->song().genres[i].isEmpty(); ++i) {
+                    trackGenre+=","+track->song().genres[i];
+                }
                 if (!trackGenre.isEmpty() && trackGenre!=Song::unknown()) {
-                    writer.writeAttribute(constGenreAttribute, song.genre);
+                    writer.writeAttribute(constGenreAttribute, trackGenre);
                 }
                 if (Song::Playlist==song.type) {
                     writer.writeAttribute(constPlaylistAttribute, constTrueValue);
@@ -437,9 +444,9 @@ bool MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QString &base
                     song.setAlbumArtistSort(attributes.value(constAlbumArtistSortAttribute).toString());
                 }
                 if (attributes.hasAttribute(constGenreAttribute)) {
-                    QStringList genres=attributes.value(constGenreAttribute).toString().split(Song::constGenreSep, QString::SkipEmptyParts);
-                    foreach (const QString &genre, genres) {
-                        song.addGenre(genre);
+                    QStringList genres=attributes.value(constGenreAttribute).toString().split(",", QString::SkipEmptyParts);
+                    for (int i=0; i<Song::constNumGenres && i<genres.count(); ++i) {
+                        song.addGenre(genres[i]);
                     }
                 }
                 if (attributes.hasAttribute(constPlaylistAttribute) && constTrueValue==attributes.value(constPlaylistAttribute).toString()) {

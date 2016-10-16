@@ -587,7 +587,7 @@ void SongView::loadMetadata()
         tags.insert(pos++, createRow(i18n("Album"), currentSong.album));
         tags.insert(pos++, createRow(i18n("Track number"), 0==currentSong.track ? QString() : QString::number(currentSong.track)));
         tags.insert(pos++, createRow(i18n("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc)));
-        tags.insert(pos++, createRow(i18n("Genre"), currentSong.genres().join(", ")));
+        tags.insert(pos++, createRow(i18n("Genre"), currentSong.displayGenre()));
         tags.insert(pos++, createRow(i18n("Year"), 0==currentSong.track ? QString() : QString::number(currentSong.year)));
         tags.insert(pos++, createRow(i18n("Comment"), fixNewLine(currentSong.comment())));
     }

@@ -1461,7 +1461,7 @@ Covers::Image Covers::findImage(const Song &song, bool emitResult)
     return i;
 }
 
-static Covers::Image findCoverInDir(const QString &dirName, const QStringList &coverFileNames, const QString &songFileName=QString())
+static Covers::Image findCoverInDir(const Song &song, const QString &dirName, const QStringList &coverFileNames, const QString &songFileName=QString())
 {
     foreach (const QString &fileName, coverFileNames) {
         DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
@@ -1481,6 +1481,18 @@ static Covers::Image findCoverInDir(const QString &dirName, const QStringList &c
             QImage img(Tags::readImage(songFileName));
             if (!img.isNull()) {
                 DBUG_CLASS("Covers") << "Got cover image from tag" << songFileName;
+
+                // Save image to cache folder - required for MPRIS
+                if (!song.isCdda() && !song.isArtistImageRequest()) {
+                    QString dir = Utils::cacheDir(Covers::constCoverDir+Covers::encodeName(song.albumArtist()), true);
+                    if (!dir.isEmpty()) {
+                        QString fileName=dir+Covers::encodeName(song.album)+".jpg";
+                        if (img.save(fileName)) {
+                            return Covers::Image(img, fileName);
+                        }
+                    }
+                }
+
                 return Covers::Image(img, Covers::constCoverInTagPrefix+songFileName);
             }
         }
@@ -1652,14 +1664,14 @@ Covers::Image Covers::locateImage(const Song &song)
                 }
             }
         } else {
-            Covers::Image img=findCoverInDir(dirName, coverFileNames, haveAbsPath ? songFile : (MPDConnection::self()->getDetails().dir+songFile));
+            Covers::Image img=findCoverInDir(song, dirName, coverFileNames, haveAbsPath ? songFile : (MPDConnection::self()->getDetails().dir+songFile));
             if (!img.img.isNull()) {
                 return img;
             }
 
             QStringList dirs=QDir(dirName).entryList(QDir::Dirs|QDir::Readable|QDir::NoDotAndDotDot);
             foreach (const QString &dir, dirs) {
-                img=findCoverInDir(dirName+dir+Utils::constDirSep, coverFileNames);
+                img=findCoverInDir(song, dirName+dir+Utils::constDirSep, coverFileNames);
                 if (!img.img.isNull()) {
                     return img;
                 }

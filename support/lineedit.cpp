@@ -41,7 +41,7 @@ void LineEdit::setReadOnly(bool e)
     }
 }
 
-#if !defined ENABLE_KDE_SUPPORT // && QT_VERSION < 0x050200
+#if !defined ENABLE_KDE_SUPPORT && QT_VERSION < 0x050200
 
 /****************************************************************************
 **

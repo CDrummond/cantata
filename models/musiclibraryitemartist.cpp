@@ -50,7 +50,7 @@ bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibr
 MusicLibraryItemArtist::MusicLibraryItemArtist(const Song &song, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(song.artistOrComposer(), parent)
     , m_sortString(song.hasAlbumArtistSort() ? song.albumArtistSort() : QString())
-    , m_actualArtist(song.hasComposer() && song.isComposerGenre(song.genre) ? song.albumArtist() : QString())
+    , m_actualArtist(song.useComposer() ? song.albumArtist() : QString())
 {
 }
 
@@ -107,11 +107,11 @@ Song MusicLibraryItemArtist::coverSong() const
             //if (Song::useComposer() && !firstSong->song().composer().isEmpty()) {
                 song.albumartist=firstSong->song().albumArtist();
             //}
-            song.genre=firstSong->song().genre;
+            song.addGenre(firstSong->song().firstGenre());
             song.setComposer(firstSong->song().composer());
         }
     }
-    if (!m_actualArtist.isEmpty() && Song::isComposerGenre(song.genre)) {
+    if (!m_actualArtist.isEmpty() && song.useComposer()) {
         song.setComposerImageRequest();
     } else {
         song.setArtistImageRequest();

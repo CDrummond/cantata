@@ -176,7 +176,9 @@ Song & Song::operator=(const Song &s)
     disc = s.disc;
     priority = s.priority;
     year = s.year;
-    genre = s.genre;
+    for (int i=0; i<constNumGenres; ++i) {
+        genres[i]=s.genres[i];
+    }
     size = s.size;
     rating = s.rating;
     key = s.key;
@@ -246,7 +248,7 @@ int Song::compareTo(const Song &o) const
         if (0!=compare) {
             return compare;
         }
-        compare=genre.compare(o.genre);
+        compare=compareGenres(o);
         if (0!=compare) {
             return compare;
         }
@@ -329,8 +331,8 @@ void Song::fillEmptyFields()
     if (title.isEmpty()) {
         title = unknownStr;
     }
-    if (genre.isEmpty()) {
-        genre = unknownStr;
+    if (genres[0].isEmpty()) {
+        genres[0]=unknownStr;
     }
 }
 
@@ -351,24 +353,6 @@ void Song::clearKeyStore(int location)
 QString Song::displayAlbum(const QString &albumName, quint16 albumYear)
 {
     return albumYear>0 ? albumName+QLatin1String(" (")+QString::number(albumYear)+QLatin1Char(')') : albumName;
-}
-
-QString Song::combineGenres(const QSet<QString> &genres)
-{
-    if (1==genres.size()) {
-        return *(genres.begin());
-    }
-
-    QStringList list=genres.toList();
-    qSort(list);
-    QString g;
-    foreach (const QString &e, list) {
-        if (!g.isEmpty()) {
-            g+=constGenreSep;
-        }
-        g+=e;
-    }
-    return g;
 }
 
 static QSet<QString> prefixesToIngore=QSet<QString>() << QLatin1String("The");
@@ -441,37 +425,23 @@ void Song::clear()
 //     pos = 0;
     disc = 0;
     year = 0;
-    genre.clear();
+    for (int i=0; i<constNumGenres; ++i) {
+        genres[i]=QString();
+    }
     size = 0;
     extra.clear();
     type = Standard;
 }
 
-const QLatin1Char Song::constGenreSep(',');
 const QLatin1Char Song::constFieldSep('\001');
 
 void Song::addGenre(const QString &g)
 {
-    if (g.isEmpty()) {
-        return;
-    }
-    if (!genre.isEmpty()) {
-        genre+=constGenreSep;
-    }
-    genre+=g.trimmed();
-}
-
-QStringList Song::genres() const
-{
-    return genre.split(constGenreSep, QString::SkipEmptyParts);
-}
-
-void Song::orderGenres()
-{
-    QStringList g=genres();
-    if (g.count()>1) {
-        qSort(g);
-        genre=g.join(QString()+constGenreSep);
+    for (int i=0; i<constNumGenres; ++i) {
+        if (genres[i].isEmpty()) {
+            genres[i]=g;
+            break;
+        }
     }
 }
 
@@ -486,21 +456,20 @@ QString Song::entryName() const
 
 QString Song::artistOrComposer() const
 {
-    if (!compGenres.isEmpty()) {
+    if (useComposer()) {
         QString c=composer();
-        if (compGenres.contains(genre) && !c.isEmpty()) {
+        if (!c.isEmpty()) {
             return c;
         }
     }
-
     return albumArtist();
 }
 
 QString Song::albumName() const
 {
-    if (!compGenres.isEmpty()) {
+    if (useComposer()) {
         QString c=composer();
-        if (compGenres.contains(genre) && !c.isEmpty() && c!=albumArtist()) {
+        if (!c.isEmpty() && c!=albumArtist()) {
             return album+QLatin1String(" (")+albumArtist()+QLatin1Char(')');
         }
     }
@@ -579,6 +548,26 @@ QString Song::toolTip() const
     }
     return toolTip+QLatin1String("<br/><br/><small><i>")+filePath()+QLatin1String("</i></small>");
     #endif
+}
+
+QString Song::displayGenre() const
+{
+    QString g=genres[0];
+    for (int i=1; i<constNumGenres&& !genres[i].isEmpty(); ++i) {
+        g+=QLatin1String(", ")+genres[i];
+    }
+    return g;
+}
+
+int Song::compareGenres(const Song &o) const
+{
+    for (int i=0; i<constNumGenres; ++i) {
+        int compare=genres[i].compare(o.genres[i]);
+        if (0!=compare) {
+            return compare;
+        }
+    }
+    return 0;
 }
 
 void Song::setExtraField(quint16 f, const QString &v)
@@ -733,8 +722,12 @@ QString Song::describe(bool withMarkup) const
 
 bool Song::useComposer() const
 {
-    foreach (const QString &g, genres()) {
-        if (isComposerGenre(g)) {
+    if (compGenres.isEmpty()) {
+        return false;
+    }
+
+    for (int i=0; i<constNumGenres && !genres[i].isEmpty(); ++i) {
+        if (compGenres.contains(genres[i])) {
             return true;
         }
     }
@@ -778,8 +771,11 @@ void Song::populateSorts()
 QDataStream & operator<<(QDataStream &stream, const Song &song)
 {
     stream << song.id << song.file << song.album << song.artist << song.albumartist << song.title
-           << song.genre << song.disc << song.priority << song.time << song.track << (quint16)song.year
+           << song.disc << song.priority << song.time << song.track << (quint16)song.year
            << (quint16)song.type << (bool)song.guessed << song.size << song.extra << song.extraFields;
+    for (int i=0; i<Song::constNumGenres; ++i) {
+        stream << song.genres[i];
+    }
     return stream;
 }
 
@@ -789,11 +785,15 @@ QDataStream & operator>>(QDataStream &stream, Song &song)
     quint16 year;
     bool guessed;
     stream >> song.id >> song.file >> song.album >> song.artist >> song.albumartist >> song.title
-           >> song.genre >> song.disc >> song.priority >> song.time >> song.track >> year
+           >> song.disc >> song.priority >> song.time >> song.track >> year
            >> type >> guessed >> song.size >> song.extra >> song.extraFields;
     song.type=(Song::Type)type;
     song.year=year;
     song.guessed=guessed;
+    for (int i=0; i<Song::constNumGenres; ++i) {
+        stream >> song.genres[i];
+    }
+
     return stream;
 }
 #endif

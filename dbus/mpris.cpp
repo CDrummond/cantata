@@ -171,8 +171,8 @@ QVariantMap Mpris::Metadata() const {
         }
         metadataMap.insert("xesam:artist", QStringList() << currentSong.artist);
         metadataMap.insert("xesam:title", currentSong.title);
-        if (!currentSong.genre.isEmpty()) {
-            metadataMap.insert("xesam:genre", QStringList() << currentSong.genre);
+        if (!currentSong.genres[0].isEmpty()) {
+            metadataMap.insert("xesam:genre", QStringList() << currentSong.genres[0]);
         }
         if (currentSong.track>0) {
             metadataMap.insert("xesam:trackNumber", currentSong.track);

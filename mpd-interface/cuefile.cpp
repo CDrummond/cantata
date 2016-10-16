@@ -154,7 +154,7 @@ static bool updateSong(const CueEntry &entry, const QString &nextIndex, Song &so
     song.artist=entry.artist;
     song.album=entry.album;
     song.albumartist=entry.albumArtist;
-    song.genre=entry.genre;
+    song.addGenre(entry.genre);
     song.year=entry.date.toInt();
     song.time=(end-beginning)/constMsecPerSec;
     if (!entry.composer.isEmpty()) {
@@ -180,7 +180,7 @@ static bool updateLastSong(const CueEntry &entry, Song &song)
     song.artist=entry.artist;
     song.album=entry.album;
     song.albumartist=entry.albumArtist;
-    song.genre=entry.genre;
+    song.addGenre(entry.genre);
     song.year=entry.date.toInt();
     if (!entry.composer.isEmpty()) {
         song.setComposer(entry.composer);

@@ -187,8 +187,8 @@ QByteArray HttpServer::encodeUrl(const Song &s)
     if (!s.title.isEmpty()) {
         query.addQueryItem("title", s.title);
     }
-    if (!s.genre.isEmpty()) {
-        query.addQueryItem("genre", s.genre);
+    if (!s.genres[0].isEmpty()) {
+        query.addQueryItem("genre", s.firstGenre());
     }
     if (s.disc) {
         query.addQueryItem("disc", QString::number(s.disc));
@@ -279,7 +279,7 @@ Song HttpServer::decodeUrl(const QUrl &url) const
             s.title=q.queryItemValue("title");
         }
         if (q.hasQueryItem("genre")) {
-            s.genre=q.queryItemValue("genre");
+            s.addGenre(q.queryItemValue("genre"));
         }
         if (q.hasQueryItem("disc")) {
             s.disc=q.queryItemValue("disc").toInt();

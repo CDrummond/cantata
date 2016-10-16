@@ -339,7 +339,10 @@ Song DeviceOptions::clean(const Song &s) const
     copy.artist=clean(copy.artist);
     copy.album=clean(copy.album);
     copy.title=clean(copy.title);
-    copy.genre=clean(copy.genre);
+    for (int i=0; i<Song::constNumGenres && !s.genres[i].isEmpty(); ++i) {
+        copy.addGenre(clean(s.genres[i]));
+    }
+
     return copy;
 }
 
@@ -377,14 +380,14 @@ QString DeviceOptions::createFilename(const Song &s) const
     }
     path.replace(constTrackNumber, track);
     path.replace(constCdNumber, copy.disc<1 ? QLatin1String("") : QString::number(copy.disc));
-    path.replace(constGenre, copy.genre.isEmpty() ? Song::unknown() : copy.genre);
+    path.replace(constGenre, copy.genres[0].isEmpty() ? Song::unknown() : copy.genres[0]);
     path.replace(constYear, copy.year<1 ? QLatin1String("") : QString::number(copy.year));
 
     // For songs about to be downloaded from streams, we hide the filetype in genre...
     if (s.file.startsWith("http:/")) {
-        if (s.genre==QLatin1String("mp3") || s.genre==QLatin1String("ogg") || s.genre==QLatin1String("flac") || s.genre==QLatin1String("wav")) {
-            path+='.'+s.genre;
-        } else if (s.genre==QLatin1String("vbr")) {
+        if (s.genres[0]==QLatin1String("mp3") || s.genres[0]==QLatin1String("ogg") || s.genres[0]==QLatin1String("flac") || s.genres[0]==QLatin1String("wav")) {
+            path+='.'+s.genres[0];
+        } else if (s.genres[0]==QLatin1String("vbr")) {
             path+=QLatin1String(".mp3");
         } else {
             QString f=QUrl(s.file).path();

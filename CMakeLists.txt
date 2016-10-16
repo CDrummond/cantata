@@ -417,7 +417,7 @@ set(CANTATA_CORE_SRCS ${CANTATA_CORE_SRCS}
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp
     models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp models/playlistsproxymodel.cpp models/playqueuemodel.cpp
     models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp models/browsemodel.cpp
-    models/searchmodel.cpp models/streamsmodel.cpp models/searchproxymodel.cpp models/musiclibraryitemsong.cpp
+    models/searchmodel.cpp models/streamsmodel.cpp models/searchproxymodel.cpp
     models/sqllibrarymodel.cpp models/mpdlibrarymodel.cpp models/mpdsearchmodel.cpp models/playqueueproxymodel.cpp
     mpd-interface/mpdconnection.cpp mpd-interface/mpdparseutils.cpp mpd-interface/mpdstats.cpp mpd-interface/mpdstatus.cpp
     mpd-interface/song.cpp mpd-interface/cuefile.cpp

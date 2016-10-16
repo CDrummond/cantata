@@ -1294,7 +1294,7 @@ static bool albumSort(const Song *s1, const Song *s2)
 
 static bool genreSort(const Song *s1, const Song *s2)
 {
-    int c=s1->genre.localeAwareCompare(s2->genre);
+    int c=s1->compareGenres(*s2);
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 

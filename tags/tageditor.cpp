@@ -56,7 +56,7 @@
 static bool equalTags(const Song &a, const Song &b, bool compareCommon, bool composerSupport, bool commentSupport)
 {
     return (compareCommon || a.track==b.track) && a.year==b.year && a.disc==b.disc &&
-           a.artist==b.artist && a.genre==b.genre && a.album==b.album &&
+           a.artist==b.artist && a.genres[0]==b.genres[0] && a.album==b.album &&
            a.albumartist==b.albumartist && (!composerSupport || a.composer()==b.composer()) &&
            (!commentSupport || a.comment()==b.comment()) && (compareCommon || a.title==b.title);
 }
@@ -75,6 +75,14 @@ static QString trim(QString str) {
     str=str.replace(QLatin1String(" ;"), QLatin1String(";"));
     str=str.replace(QLatin1String("; "), QLatin1String(";"));
     return str;
+}
+
+// Split genres back out
+static void splitGenres(Song &song) {
+    QStringList genres=song.genres[0].split(",", QString::SkipEmptyParts);
+    for (int i=0; i<Song::constNumGenres; ++i) {
+        song.genres[i]=i<genres.count() ? genres.at(i).trimmed() : QString();
+    }
 }
 
 static int iCount=0;
@@ -152,6 +160,9 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         if (s.guessed) {
             song.revertGuessedTags();
         }
+        // Store all Genres's in 1st genre
+        song.genres[0]=song.displayGenre();
+        song.genres[1]=QString();
         original.append(song);
     }
 
@@ -275,7 +286,9 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
             songArtists.insert(s.artist);
             songAlbumArtists.insert(s.albumartist);
             songAlbums.insert(s.album);
-            songGenres.insert(s.genre);
+            for (int i=0; i<Song::constNumGenres && !s.genres[i].isEmpty(); ++i) {
+                songGenres.insert(s.genres[i]);
+            }
             if (composerSupport) {
                 songComposers.insert(s.composer());
             }
@@ -301,7 +314,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         all.setComment(1==songComments.count() ? *(songComments.begin()) : QString());
         all.albumartist=1==songAlbumArtists.count() ? *(songAlbumArtists.begin()) : QString();
         all.album=1==songAlbums.count() ? *(songAlbums.begin()) : QString();
-        all.genre=1==songGenres.count() ? *(songGenres.begin()) : QString();
+        all.genres[0]=1==songGenres.count() ? *(songGenres.begin()) : QString();
         all.year=1==songYears.count() ? *(songYears.begin()) : 0;
         all.disc=1==songDiscs.count() ? *(songDiscs.begin()) : 0;
         all.rating=Song::Rating_Null;
@@ -409,7 +422,7 @@ void TagEditor::fillSong(Song &s, bool isAll, bool skipEmpty) const
     if (!isAll || 0!=disc->value()) {
         s.disc=disc->value();
     }
-    setString(s.genre, trim(genre->text()), skipEmpty && (!haveAll || all.genre.isEmpty()));
+    setString(s.genres[0], trim(genre->text()), skipEmpty && (!haveAll || all.genres[0].isEmpty()));
     if (!isAll || 0!=year->value()) {
         s.year=year->value();
     }
@@ -431,7 +444,7 @@ void TagEditor::setVariousHint()
         if (commentSupport) {
             comment->setPlaceholderText(all.comment().isEmpty() && haveComments ? TagSpinBox::variousStr() : QString());
         }
-        genre->setPlaceholderText(all.genre.isEmpty() && haveGenres ? TagSpinBox::variousStr() : QString());
+        genre->setPlaceholderText(all.genres[0].isEmpty() && haveGenres ? TagSpinBox::variousStr() : QString());
         disc->setVarious(0==all.disc && haveDiscs);
         year->setVarious(0==all.year && haveYears);
         if (ratingVarious) {
@@ -482,7 +495,7 @@ void TagEditor::setLabelStates()
     albumLabel->setOn(o.album!=e.album);
     trackLabel->setOn(!isAll && o.track!=e.track);
     discLabel->setOn(o.disc!=e.disc);
-    genreLabel->setOn(o.genre!=e.genre);
+    genreLabel->setOn(o.genres[0]!=e.genres[0]);
     yearLabel->setOn(o.year!=e.year);
     if (ratingLabel) {
         ratingLabel->setOn(o.rating<=Song::Rating_Max &&
@@ -932,8 +945,8 @@ void TagEditor::updateEdited(bool isFromAll)
         if (all.album.isEmpty() && s.album.isEmpty() && !o.album.isEmpty()) {
             s.album=o.album;
         }
-        if (all.genre.isEmpty() && s.genre.isEmpty() && !o.genre.isEmpty()) {
-            s.genre=o.genre;
+        if (all.genres[0].isEmpty() && s.genres[0].isEmpty() && !o.genres[0].isEmpty()) {
+            s.genres[0]=o.genres[0];
         }
     }
 
@@ -967,7 +980,7 @@ void TagEditor::setSong(const Song &s)
     album->setText(s.album);
     track->setValue(s.track);
     disc->setValue(s.disc);
-    genre->setText(s.genre);
+    genre->setText(s.genres[0]);
     year->setValue(s.year);
     if (ratingWidget) {
         ratingWidget->setValue(s.rating);
@@ -1162,6 +1175,8 @@ bool TagEditor::applyUpdates()
         }
 
         QString file=orig.filePath();
+        splitGenres(orig);
+        splitGenres(edit);
         switch(Tags::update(baseDir+file, orig, edit, -1, commentSupport)) {
         case Tags::Update_Modified:
             edit.setComment(QString());

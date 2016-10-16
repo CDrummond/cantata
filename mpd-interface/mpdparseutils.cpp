@@ -365,14 +365,13 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         }
     }
 
-    if (Song::Playlist!=song.type && song.genre.isEmpty()) {
-        song.genre = Song::unknown();
+    if (Song::Playlist!=song.type && song.genres[0].isEmpty()) {
+        song.addGenre(Song::unknown());
     }
 
     if (Loc_Library==location) {
         song.guessTags();
         song.fillEmptyFields();
-        song.orderGenres();
     } else if (Loc_Streams==location) {
         song.setName(getAndRemoveStreamName(song.file));
     } else {

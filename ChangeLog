@@ -41,6 +41,8 @@
 28. Use same sidebar inactive tab mouse-over for all styles.
 29. Fix colouring issues with some Kvantum styles.
 30. Abort network connections before closing.
+31. When listing albums where composer is used for artist grouping, place
+    album artist name after album name if different from composer.
 
 2.0.1
 -----

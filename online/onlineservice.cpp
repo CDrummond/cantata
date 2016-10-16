@@ -39,7 +39,7 @@ Song & OnlineService::encode(Song &song)
               fixString(song.albumartist)+constDeliminator+
               fixString(song.album)+constDeliminator+
               fixString(song.title)+constDeliminator+
-              fixString(song.genre)+constDeliminator+
+              fixString(song.genres[0])+constDeliminator+
               QString::number(song.time)+constDeliminator+
               QString::number(song.year)+constDeliminator+
               QString::number(song.track)+constDeliminator+
@@ -63,7 +63,7 @@ bool OnlineService::decode(Song &song)
             song.albumartist=parts.at(1);
             song.album=parts.at(2);
             song.title=parts.at(3);
-            song.genre=parts.at(4);
+            song.genres[0]=parts.at(4);
             song.time=parts.at(5).toUInt();
             song.year=parts.at(6).toUInt();
             song.track=parts.at(7).toUInt();

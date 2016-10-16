@@ -47,7 +47,7 @@ struct Song
         Rating_Null = 0xFF
     };
 
-    static const QLatin1Char constGenreSep;
+    static const int constNumGenres = 4;
     static const QLatin1Char constFieldSep;
 
     static const QSet<QString> & composerGenres();
@@ -90,7 +90,7 @@ struct Song
     QString artist;
     QString albumartist;
     QString title;
-    QString genre;
+    QString genres[constNumGenres];
     QHash<quint16, QString> extra;
     quint16 extraFields;
     quint8 disc;
@@ -120,7 +120,6 @@ struct Song
     static QString encodePath(const QString &file);
     static void clearKeyStore(int location);
     static QString displayAlbum(const QString &albumName, quint16 albumYear);
-    static QString combineGenres(const QSet<QString> &genres);
     static bool isComposerGenre(const QString &genre) { return composerGenres().contains(genre); }
     static QSet<QString> ignorePrefixes();
     static void setIgnorePrefixes(const QSet<QString> &prefixes);
@@ -142,8 +141,6 @@ struct Song
     quint16 setKey(int location);
     virtual void clear();
     void addGenre(const QString &g);
-    QStringList genres() const;
-    void orderGenres();
     QString entryName() const;
     QString artistOrComposer() const;
     QString albumName() const;
@@ -153,7 +150,9 @@ struct Song
     QString displayTitle() const { return !albumartist.isEmpty() && albumartist!=artist ? artistSong() : title; }
     QString trackAndTitleStr(bool showArtistIfDifferent=true) const;
     QString toolTip() const;
-    QString displayGenre() const { return QString(genre).replace(constGenreSep, QLatin1String(", ")); }
+    QString displayGenre() const;
+    const QString & firstGenre() const { return genres[0]; }
+    int compareGenres(const Song &o) const;
 
     QString extraField(quint16 f) const { return hasExtraField(f) ? extra[f] : QString(); }
     bool hasExtraField(quint16 f) const { return extraFields&f; }

@@ -318,7 +318,7 @@ Song AlbumDetailsDialog::toSong(QTreeWidgetItem *i, const CdAlbum &album)
     Song s;
     s.albumartist=album.artist;
     s.album=album.name;
-    s.genre=album.genre;
+    s.genres[0]=album.genre;
     s.year=album.year;
     s.disc=album.disc;
     s.artist=singleArtist->isChecked() ? s.albumartist : i->text(COL_ARTIST);

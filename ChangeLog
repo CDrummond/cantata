@@ -43,6 +43,8 @@
 30. Abort network connections before closing.
 31. When listing albums where composer is used for artist grouping, place
     album artist name after album name if different from composer.
+32. If file has embedded cover, save this to the cache folder - so that this
+    file path can be used with MPRIS.
 
 2.0.1
 -----

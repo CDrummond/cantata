@@ -35,6 +35,15 @@
 
 #include <QLineEdit>
 
+#if QT_VERSION >= 0x050200
+class LineEdit : public QLineEdit
+{
+public:
+    LineEdit(QWidget *parent = 0) : QLineEdit(parent) { setClearButtonEnabled(true); }
+    void setReadOnly(bool e);
+};
+
+#else
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLineEdit>
 class LineEdit : public KLineEdit
@@ -77,6 +86,7 @@ private:
     QToolButton *clearButton;
 };
 
+#endif
 #endif
 
 #endif // LIENEDIT_H

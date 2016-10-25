@@ -45,6 +45,7 @@
     album artist name after album name if different from composer.
 32. If file has embedded cover, save this to the cache folder - so that this
     file path can be used with MPRIS.
+33. Fix scrobbling when Album is empty.
 
 2.0.1
 -----

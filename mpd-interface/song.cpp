@@ -147,8 +147,9 @@ void Song::setComposerGenres(const QSet<QString> &g)
 
 Song::Song()
     : extraFields(0)
-    , disc(0)
     , priority(0)
+    , disc(0)
+    , blank(0)
     , time(0)
     , track(0)
     , year(0)
@@ -174,6 +175,7 @@ Song & Song::operator=(const Song &s)
     track = s.track;
 //     pos = s.pos;
     disc = s.disc;
+    blank = s.blank;
     priority = s.priority;
     year = s.year;
     for (int i=0; i<constNumGenres; ++i) {
@@ -324,12 +326,15 @@ void Song::fillEmptyFields()
 {
     if (artist.isEmpty()) {
         artist = unknownStr;
+        blank |= BlankArtist;
     }
     if (album.isEmpty()) {
         album = unknownStr;
+        blank |= BlankAlbum;
     }
     if (title.isEmpty()) {
         title = unknownStr;
+        blank |= BlankTitle;
     }
     if (genres[0].isEmpty()) {
         genres[0]=unknownStr;
@@ -783,13 +788,15 @@ QDataStream & operator>>(QDataStream &stream, Song &song)
 {
     quint16 type;
     quint16 year;
+    quint8 disc;
     bool guessed;
     stream >> song.id >> song.file >> song.album >> song.artist >> song.albumartist >> song.title
-           >> song.disc >> song.priority >> song.time >> song.track >> year
+           >> disc >> song.priority >> song.time >> song.track >> year
            >> type >> guessed >> song.size >> song.extra >> song.extraFields;
     song.type=(Song::Type)type;
     song.year=year;
     song.guessed=guessed;
+    song.disc=disc;
     for (int i=0; i<Song::constNumGenres; ++i) {
         stream >> song.genres[i];
     }

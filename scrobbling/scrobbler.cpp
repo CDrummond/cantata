@@ -147,9 +147,15 @@ static QString cacheName(bool createDir)
 
 Scrobbler::Track::Track(const Song &s)
 {
-    title=s.title;
-    artist=s.artist;
-    album=s.album;
+    if (!s.blank&Song::BlankTitle) {
+        title=s.title;
+    }
+    if (!s.blank&Song::BlankArtist) {
+        artist=s.artist;
+    }
+    if (!s.blank&Song::BlankAlbum) {
+        album=s.album;
+    }
     albumartist=s.albumartist;
     track=s.track;
     length=s.time;
@@ -385,14 +391,14 @@ void Scrobbler::setSong(const Song &s)
         if (inactiveSong.artist != s.artist || inactiveSong.title!=s.title || inactiveSong.album!=s.album) {
             emit songChanged(!s.isStandardStream() && !s.isEmpty());
         }
-        inactiveSong=s;
+        inactiveSong=Track(s);
         return;
     }
 
     inactiveSong.clear();
     if (currentSong.artist != s.artist || currentSong.title!=s.title || currentSong.album!=s.album) {
         nowPlayingSent=scrobbledCurrent=loveSent=lovePending=nowPlayingIsPending=false;
-        currentSong=s;
+        currentSong=Track(s);
         lastNowPlaying=0;
         emit songChanged(!s.isStandardStream() && !s.isEmpty());
         if (scrobbleViaMpd || !isEnabled() || s.isStandardStream() || s.time<30) {

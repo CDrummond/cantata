@@ -85,6 +85,12 @@ struct Song
         OnlineSvrTrack  = 6
     };
 
+    enum Blank {
+        BlankTitle  = 0x01,
+        BlankArtist = 0x02,
+        BlankAlbum  = 0x04
+    };
+
     QString file;
     QString album;
     QString artist;
@@ -93,8 +99,9 @@ struct Song
     QString genres[constNumGenres];
     QHash<quint16, QString> extra;
     quint16 extraFields;
-    quint8 disc;
     mutable quint8 priority;
+    quint8 disc:5;
+    quint8 blank:3; // Which field were blank, and Cantata set to Unknown
     quint16 time;
     quint16 track;
     quint16 year : 12;

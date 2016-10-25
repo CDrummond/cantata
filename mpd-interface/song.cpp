@@ -429,6 +429,7 @@ void Song::clear()
     track = 0;
 //     pos = 0;
     disc = 0;
+    blank = 0;
     year = 0;
     for (int i=0; i<constNumGenres; ++i) {
         genres[i]=QString();

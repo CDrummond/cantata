@@ -147,13 +147,13 @@ static QString cacheName(bool createDir)
 
 Scrobbler::Track::Track(const Song &s)
 {
-    if (!s.blank&Song::BlankTitle) {
+    if (!(s.blank&Song::BlankTitle)) {
         title=s.title;
     }
-    if (!s.blank&Song::BlankArtist) {
+    if (!(s.blank&Song::BlankArtist)) {
         artist=s.artist;
     }
-    if (!s.blank&Song::BlankAlbum) {
+    if (!(s.blank&Song::BlankAlbum)) {
         album=s.album;
     }
     albumartist=s.albumartist;
@@ -335,7 +335,9 @@ void Scrobbler::love()
     sign(params);
     DBUG << song.title << song.artist;
     loveSent=true;
-    if (!fakeScrobbling) {
+    if (fakeScrobbling) {
+        DBUG << "MSG" << params;
+    } else {
         QNetworkReply *job=NetworkAccessManager::self()->postFormData(QUrl(scrobblerUrl()), format(params));
         connect(job, SIGNAL(finished()), this, SLOT(handleResp()));
     }
@@ -386,7 +388,7 @@ void Scrobbler::calcScrobbleIntervals()
 
 void Scrobbler::setSong(const Song &s)
 {
-    DBUG << isEnabled() << s.isStandardStream() << s.time << s.file << s.title << s.artist << s.album << s.albumartist;
+    DBUG << isEnabled() << s.isStandardStream() << s.time << s.file << s.title << s.artist << s.album << s.albumartist << s.blank;
     if (!scrobbleViaMpd && !isEnabled()) {
         if (inactiveSong.artist != s.artist || inactiveSong.title!=s.title || inactiveSong.album!=s.album) {
             emit songChanged(!s.isStandardStream() && !s.isEmpty());
@@ -443,7 +445,9 @@ void Scrobbler::scrobbleNowPlaying()
     DBUG << currentSong.title << currentSong.artist << currentSong.albumartist << currentSong.album << currentSong.track << currentSong.length;
     nowPlayingSent=true;
     lastNowPlaying=time(NULL);
-    if (!fakeScrobbling) {
+    if (fakeScrobbling) {
+        DBUG << "MSG" << params;
+    } else {
         QNetworkReply *job=NetworkAccessManager::self()->postFormData(QUrl(scrobblerUrl()), format(params));
         connect(job, SIGNAL(finished()), this, SLOT(handleResp()));
     }
@@ -510,6 +514,7 @@ void Scrobbler::scrobbleQueued()
         params["sk"] = sessionKey;
         sign(params);
         if (fakeScrobbling) {
+            DBUG << "MSG" << params;
             lastScrobbledSongs.clear();
         } else {
             scrobbleJob=NetworkAccessManager::self()->postFormData(scrobblerUrl(), format(params));

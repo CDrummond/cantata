@@ -64,7 +64,7 @@ SearchWidget::SearchWidget(QWidget *p)
     bool closeOnLeft=true;
     #else
     l->setSpacing(0);
-    l->setContentsMargins(0, spacing, 0, spacing);
+    l->setContentsMargins(10, 0, spacing, spacing);
     bool closeOnLeft=Utils::Unity==Utils::currentDe();
     #endif
     label=new SqueezedTextLabel(this);

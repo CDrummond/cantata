@@ -67,13 +67,11 @@ SearchWidget::SearchWidget(QWidget *p)
     l->setContentsMargins(10, 0, spacing, spacing);
     bool closeOnLeft=Utils::Unity==Utils::currentDe();
     #endif
-    label=new SqueezedTextLabel(this);
     edit=new LineEdit(this);
     edit->setPlaceholderText(i18n("Search..."));
     closeButton=new ToolButton(this);
     closeButton->setToolTip(i18n("Close Search Bar")+QLatin1String(" (")+QKeySequence(Qt::Key_Escape).toString()+QLatin1Char(')'));
 
-    l->addWidget(label, 0, 0, 1, 3);
     if (closeOnLeft) {
         l->addWidget(closeButton, 1, 1);
         l->addWidget(edit, 1, 2);
@@ -88,18 +86,9 @@ SearchWidget::SearchWidget(QWidget *p)
     connect(edit, SIGNAL(textChanged(QString)), SIGNAL(textChanged(QString)));
     connect(edit, SIGNAL(returnPressed()), SIGNAL(returnPressed()));
     installEventFilter(new EscKeyEventHandler(this));
-    label->setVisible(false);
-    label->setAlignment(Qt::AlignTop);
     QFont f(font());
     f.setBold(true);
-    label->setFont(f);
     setTabOrder(edit, closeButton);
-}
-
-void SearchWidget::setLabel(const QString &s)
-{
-    label->setText(s);
-    label->setVisible(!s.isEmpty());
 }
 
 void SearchWidget::setPermanent()

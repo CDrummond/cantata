@@ -668,6 +668,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                         DBUG << "Original files:" << origFiles.keys();
 
                         bool setTimeFromSource=origFiles.size()==cueSongs.size();
+                        DBUG << "setTimeFromSource" << setTimeFromSource << "at" << albumTime << "#c" << cueFiles.size();
                         quint32 usedAlbumTime=0;
                         foreach (const Song &orig, cueSongs) {
                             Song s=orig;
@@ -696,6 +697,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                             if (0==s.time && setTimeFromSource) {
                                 s.time=albumSong.time;
                             } else if (0!=albumTime && 1==cueFiles.size()) {
+                                DBUG << s.title << s.time << albumTime << usedAlbumTime;
                                 // Try to set duration of last track by subtracting previous track durations from album duration...
                                 if (0==s.time) {
                                     s.time=albumTime-usedAlbumTime;
@@ -703,6 +705,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                                     usedAlbumTime+=s.time;
                                 }
                             }
+                            DBUG << s.title << s.time;
                             fixedCueSongs.append(s);
                         }
                         canUseCueFileTracks=true;
@@ -726,7 +729,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                     }
 
                     if (canUseCueFileTracks) {
-                        songs=cueSongs;
+                        songs = fixedCueSongs;
                     }
                     continue;
                 }

@@ -25,7 +25,7 @@
 #include "support/icon.h"
 #include "toolbutton.h"
 #include "support/localize.h"
-#include <QGridLayout>
+#include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QKeySequence>
 #include <QSpacerItem>
@@ -56,7 +56,7 @@ SearchWidget::SearchWidget(QWidget *p)
      , cat(0)
      , widgetIsActive(false)
 {
-    QGridLayout *l=new QGridLayout(this);
+    QHBoxLayout *l=new QHBoxLayout(this);
     int spacing=qMin(2, Utils::layoutSpacing(this));
     #ifdef Q_OS_MAC
     l->setSpacing(2);
@@ -67,19 +67,17 @@ SearchWidget::SearchWidget(QWidget *p)
     l->setContentsMargins(0, spacing, 0, spacing);
     bool closeOnLeft=Utils::Unity==Utils::currentDe();
     #endif
-    label=new SqueezedTextLabel(this);
     edit=new LineEdit(this);
     edit->setPlaceholderText(i18n("Search..."));
     closeButton=new ToolButton(this);
     closeButton->setToolTip(i18n("Close Search Bar")+QLatin1String(" (")+QKeySequence(Qt::Key_Escape).toString()+QLatin1Char(')'));
 
-    l->addWidget(label, 0, 0, 1, 3);
     if (closeOnLeft) {
-        l->addWidget(closeButton, 1, 1);
-        l->addWidget(edit, 1, 2);
+        l->addWidget(closeButton);
+        l->addWidget(edit);
     } else {
-        l->addWidget(edit, 1, 1);
-        l->addWidget(closeButton, 1, 2);
+        l->addWidget(edit);
+        l->addWidget(closeButton);
     }
 
     closeButton->setIcon(Icon::std(Icon::Close));
@@ -87,19 +85,8 @@ SearchWidget::SearchWidget(QWidget *p)
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(edit, SIGNAL(textChanged(QString)), SIGNAL(textChanged(QString)));
     connect(edit, SIGNAL(returnPressed()), SIGNAL(returnPressed()));
-    installEventFilter(new EscKeyEventHandler(this));
-    label->setVisible(false);
-    label->setAlignment(Qt::AlignTop);
-    QFont f(font());
-    f.setBold(true);
-    label->setFont(f);
+    installEventFilter(new EscKeyEventHandler(this));;
     setTabOrder(edit, closeButton);
-}
-
-void SearchWidget::setLabel(const QString &s)
-{
-    label->setText(s);
-    label->setVisible(!s.isEmpty());
 }
 
 void SearchWidget::setPermanent()
@@ -117,8 +104,8 @@ void SearchWidget::setCategories(const QList<Category> &categories)
     QString currentCat;
     if (!cat) {
         cat=new SelectorLabel(this);
-        QGridLayout *l=static_cast<QGridLayout *>(layout());
-        l->addWidget(cat, 1, 0);
+        QHBoxLayout *l=static_cast<QHBoxLayout *>(layout());
+        l->insertWidget(0, cat);
         l->setSpacing(qMin(4, Utils::layoutSpacing(this)));
         connect(cat, SIGNAL(activated(int)), SIGNAL(returnPressed()));
         connect(cat, SIGNAL(activated(int)), this, SLOT(categoryActivated(int)));

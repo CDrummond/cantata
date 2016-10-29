@@ -53,7 +53,6 @@ public:
     SearchWidget(QWidget *p);
     virtual ~SearchWidget() { }
 
-    void setLabel(const QString &s);
     void setText(const QString &t) { edit->setText(t); }
     QString text() const { return edit->text(); }
     QString category() const { return cat ? cat->itemData(cat->currentIndex()) : QString(); }
@@ -80,7 +79,6 @@ private Q_SLOTS:
     void categoryActivated(int c);
 
 private:
-    SqueezedTextLabel *label;
     SelectorLabel *cat;
     LineEdit *edit;
     ToolButton *closeButton;

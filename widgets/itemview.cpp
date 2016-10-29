@@ -1135,11 +1135,6 @@ void ItemView::focusView()
     view()->setFocus();
 }
 
-void ItemView::setSearchLabelText(const QString &text)
-{
-    searchWidget->setLabel(text);
-}
-
 void ItemView::setSearchVisible(bool v)
 {
     searchWidget->setVisible(v);

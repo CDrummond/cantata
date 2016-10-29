@@ -42,6 +42,12 @@ static QMutex mutex;
 
 #define BUFFER_SIZE ((((AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2) * sizeof(int16_t)) + FF_INPUT_BUFFER_PADDING_SIZE)
 
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 24, 0)
+#define AV_FREE(PKT) av_packet_unref(PKT)
+#else
+#define AV_FREE(PKT) av_free_packet(PKT)
+#endif
+
 struct FfmpegInput::Handle {
     Handle()
         : formatContext(0)
@@ -375,7 +381,7 @@ start:
             goto start;
         }
         if (handle->packet.stream_index != handle->audioStream) {
-            av_free_packet(&handle->packet);
+            AV_FREE(&handle->packet);
             continue;
         } else {
             break;
@@ -395,7 +401,7 @@ packetLeft:
         handle->packetLeft = true;
     } else {
 free_packet:
-        av_free_packet(&handle->origPacket);
+        AV_FREE(&handle->origPacket);
         handle->packetLeft = false;
     }
 
@@ -549,7 +555,7 @@ size_t FfmpegInput::readOnePacket()
         if (handle->packet.stream_index == handle->audioStream) {
             break;
         }
-        av_free_packet(&handle->packet);
+        AV_FREE(&handle->packet);
     }
 
     size_t numberRead=0;
@@ -568,7 +574,7 @@ size_t FfmpegInput::readOnePacket()
 
     /* No data used, (happens with metadata frames for example) */
     if (len <= 0) {
-        av_free_packet(&handle->packet);
+        AV_FREE(&handle->packet);
         goto next_frame;
     }
     switch (handle->codecContext->sample_fmt) {
@@ -613,7 +619,7 @@ size_t FfmpegInput::readOnePacket()
     }
 
     out:
-    av_free_packet(&handle->packet);
+    AV_FREE(&handle->packet);
     return numberRead;
 }
 #endif

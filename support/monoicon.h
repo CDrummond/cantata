@@ -630,7 +630,9 @@ namespace FontAwesome {
     yen                     =           0xf157,
     youtube                 =           0xf167,
     youtubeplay             =           0xf16a,
-    youtubesquare           =           0xf166
+    youtubesquare           =           0xf166,
+
+    podcast                 =           0xf2ce
   };
 }
 

@@ -46,6 +46,7 @@
 32. If file has embedded cover, save this to the cache folder - so that this
     file path can be used with MPRIS.
 33. Fix scrobbling when Album is empty.
+34. Fix duration of last track for split CUE files.
 
 2.0.1
 -----

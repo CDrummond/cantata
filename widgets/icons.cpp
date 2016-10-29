@@ -65,7 +65,7 @@ Icons::Icons()
     if (streamIcon.isNull()) {
         streamIcon=Icon("applications-internet");
     }
-    podcastIcon=Icon("inode-directory");
+    podcastIcon=MonoIcon::icon(FontAwesome::podcast, stdColor);
     audioFileIcon=Icon("audio-x-generic");
     folderIcon=Icon("inode-directory");
     dynamicRuleIcon=Icon(QStringList() << "dynamic-playlist" << "media-playlist-shuffle" << "text-x-generic");

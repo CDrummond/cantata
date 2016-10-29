@@ -82,7 +82,7 @@ public:
                 } else {
                     // Load fontawesome, if it is not already loaded
                     if (fontAwesomeFontName.isEmpty()) {
-                        QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(Utils::systemDir(QLatin1String("fonts"))+QLatin1String("fontawesome-4.3.0.ttf")));
+                        QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(Utils::systemDir(QLatin1String("fonts"))+QLatin1String("fontawesome-webfont.ttf")));
                         if (!loadedFontFamilies.empty()) {
                             fontAwesomeFontName= loadedFontFamilies.at(0);
                         }

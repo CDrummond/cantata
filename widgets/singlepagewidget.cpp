@@ -129,7 +129,8 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
 
 void SinglePageWidget::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
 {
-    QStringList files=selectedFiles(name.isEmpty());
+    // Always get tracks and playlists - this way error message can be shown. #902
+    QStringList files=selectedFiles(true);
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
             emit add(files, action, priorty);

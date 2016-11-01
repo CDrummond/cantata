@@ -49,7 +49,7 @@
 
 //#define TEST_PROVIDERS
 
-static const QLatin1String constProverListUrl("https://googledrive.com/host/0Bzghs6gQWi60dHBPajNjbjExZzQ");
+static const QLatin1String constProviderBaseUrl("https://raw.githubusercontent.com/CDrummond/cantata-extra/master/streams/2.1/");
 
 static QString fileMd5(const QString &fileName)
 {
@@ -188,7 +188,7 @@ void StreamProviderListDialog::getProviderList()
         readProviders(&f);
     }
     #else
-    job=NetworkAccessManager::self()->get(QUrl(constProverListUrl));
+    job=NetworkAccessManager::self()->get(QUrl(constProviderBaseUrl+"list.xml"));
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
     spinner->start();
     msgOverlay->setText(i18n("Downloading list..."), -1, false);
@@ -293,8 +293,11 @@ void StreamProviderListDialog::readProviders(QIODevice *dev)
                 currentCat=doc.attributes().value("type").toString().toInt();
             } else if (QLatin1String("provider")==doc.name()) {
                 QString name=doc.attributes().value("name").toString();
-                QString url=doc.attributes().value("url").toString();
-                if (!name.isEmpty() && !url.isEmpty() && currentCat>=0 && currentCat<Cat_Total) {
+                if (!name.isEmpty() && currentCat>=0 && currentCat<Cat_Total) {
+                    QString url=doc.attributes().value("url").toString();
+                    if (url.isEmpty()) {
+                        url=constProviderBaseUrl+name+".streams.gz";
+                    }
                     QTreeWidgetItem *cat=0;
                     if (!categories.contains(currentCat)) {
                         cat=new QTreeWidgetItem(tree, QStringList() << catName(currentCat));

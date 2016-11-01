@@ -47,6 +47,7 @@
     file path can be used with MPRIS.
 33. Fix scrobbling when Album is empty.
 34. Fix duration of last track for split CUE files.
+35. Move stream listings to github.
 
 2.0.1
 -----

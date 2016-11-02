@@ -273,9 +273,12 @@ void HttpSocket::readClient()
                 return;
             }
 
+            static const QLatin1String constIpV6Prefix("::ffff:");
+
             QString peer=socket->peerAddress().toString();
             QString ifaceAddress=serverAddress().toString();
-            bool hostOk=peer==ifaceAddress || peer==mpdAddr || peer==QLatin1String("127.0.0.1") || peer==QLatin1String("::ffff:127.0.0.1");
+            bool hostOk=peer==ifaceAddress || peer==mpdAddr || peer==(constIpV6Prefix+mpdAddr) ||
+                        peer==QLatin1String("127.0.0.1") || peer==(constIpV6Prefix+QLatin1String("127.0.0.1"));
 
             DBUG << "peer:" << peer << "mpd:" << mpdAddr << "iface:" << ifaceAddress << "ok:" << hostOk;
             if (!hostOk) {

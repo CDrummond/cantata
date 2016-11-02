@@ -48,6 +48,7 @@
 33. Fix scrobbling when Album is empty.
 34. Fix duration of last track for split CUE files.
 35. Move stream listings to github.
+36. Fix local file playback on remote MPD when MPD's curl is using IPv6.
 
 2.0.1
 -----

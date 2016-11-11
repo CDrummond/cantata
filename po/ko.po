@@ -2581,7 +2581,7 @@ msgid ""
 "Context view metadata courtesy of <a href=\"http://www.wikipedia.org"
 "\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a>"
 msgstr ""
-"찾아보기 자료 도움은 <a href=\"http://www.wikipedia.org\">위키피디아</a> 와 "
+"찾아보기 자료 도움은 <a href=\"http://www.wikipedia.org\">위키피디아</a>와 "
 "<a href=\"http://www.last.fm\">Last.fm</a>"
 
 #: gui/mainwindow.cpp:1169
@@ -2604,7 +2604,7 @@ msgstr ""
 
 #: gui/mainwindow.cpp:1178
 msgid "Abort download and quit"
-msgstr "내려받기를 그만두고 취고"
+msgstr "내려받기를 그만두고 취소"
 
 #: gui/mainwindow.cpp:1331 gui/mainwindow.cpp:1342
 msgid "Enabled: %1"
@@ -3691,7 +3691,7 @@ msgid ""
 "The music listing needs to be downloaded, this can consume over %1Mb of disk "
 "space"
 msgstr ""
-"음악 항목을 내려받아야 하는데, %1Mb 디스크 용량이 필요합니다"
+"음악 항목을 내려받는 데에 %1Mb 디스크 용량이 필요합니다"
 
 #: online/onlinedbwidget.cpp:116
 msgid "Dowload music listing?"

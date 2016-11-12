@@ -229,17 +229,19 @@ struct Song
     // then we blank certain fields to indicate this!
     void setArtistImageRequest() {
         album=QString();
-        disc=priority=0xFF;
+        priority=0xFF;
+        disc=0x1F;
         key=0xFFFF;
     }
-    bool isArtistImageRequest() const { return 0xFF==disc && 0xFF==priority && 0xFFFF==key && album.isEmpty(); }
+    bool isArtistImageRequest() const { return 0x1F==disc && 0xFF==priority && 0xFFFF==key && album.isEmpty(); }
 
     void setComposerImageRequest() {
         album=QString();
-        disc=priority=0xFE;
+        priority=0xFE;
+        disc=0x1E;
         key=0xFEFE;
     }
-    bool isComposerImageRequest() const { return 0xFE==disc && 0xFE==priority && 0xFEFE==key && album.isEmpty(); }
+    bool isComposerImageRequest() const { return 0x1E==disc && 0xFE==priority && 0xFEFE==key && album.isEmpty(); }
 
     // In Covers, the following is used to indicate that a specfic size is requested...
     void setSpecificSizeRequest(int sz) {

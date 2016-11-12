@@ -248,7 +248,7 @@ void MusicBrainz::lookup(bool full)
     }
     DBUG << "Should lookup " << discId;
 
-    MusicBrainz5::CQuery Query("cantata-"PACKAGE_VERSION_STRING);
+    MusicBrainz5::CQuery Query("cantata-" PACKAGE_VERSION_STRING);
     QList<CdAlbum> m;
     QList<QNetworkProxy> proxies=NetworkProxyFactory::self()->queryProxy(QNetworkProxyQuery(QUrl("http://musicbrainz.org")));
     foreach (const QNetworkProxy &p, proxies) {

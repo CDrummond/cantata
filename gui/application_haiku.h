@@ -21,22 +21,19 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#ifndef APPLICATION_QT_H
+#define APPLICATION_QT_H
 
-#include "config.h"
-#include <qglobal.h>
+#include <QApplication>
+class Application : public QApplication
+{
+public:
+    static void initObjects();
+    Application(int &argc, char **argv);
+    virtual ~Application() { }
 
-#ifdef ENABLE_KDE_SUPPORT
-    #include "application_kde.h"
-#elif defined Q_OS_WIN
-    #include "application_win.h"
-#elif defined Q_OS_MAC
-    #include "application_mac.h"
-#elif defined Q_OS_HAIKU
-    #include "application_haiku.h"
-#else
-    #include "application_qt.h"
-#endif
+    bool start();
+    void loadFiles();
+};
 
 #endif

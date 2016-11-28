@@ -1675,13 +1675,9 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs, bool isComplete)
         topRow=playQueueProxyModel.mapToSource(topIndex).row();
     }
     bool wasEmpty=0==PlayQueueModel::self()->rowCount();
+    bool songChanged=false;
+
     PlayQueueModel::self()->update(songs, isComplete);
-    QModelIndex idx=playQueueProxyModel.mapFromSource(PlayQueueModel::self()->index(PlayQueueModel::self()->currentSongRow(), 0));
-    bool scroll=autoScrollPlayQueue && playQueueProxyModel.isEmpty() && (wasEmpty || MPDState_Playing==MPDStatus::self()->state());
-    playQueue->updateRows(idx.row(), current.key, scroll, wasEmpty);
-    if (!scroll && topRow>0 && topRow<PlayQueueModel::self()->rowCount()) {
-        playQueue->scrollTo(playQueueProxyModel.mapFromSource(PlayQueueModel::self()->index(topRow, PlayQueueModel::COL_TITLE)), QAbstractItemView::PositionAtTop);
-    }
 
     if (songs.isEmpty()) {
         updateCurrentSong(Song(), wasEmpty);
@@ -1690,8 +1686,17 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs, bool isComplete)
         Song pqSong=PlayQueueModel::self()->getSongByRow(PlayQueueModel::self()->currentSongRow());
         if (wasEmpty || pqSong.isDifferent(current) ) {
             updateCurrentSong(pqSong, wasEmpty);
+            songChanged=true;
         }
     }
+
+    QModelIndex idx=playQueueProxyModel.mapFromSource(PlayQueueModel::self()->index(PlayQueueModel::self()->currentSongRow(), 0));
+    bool scroll=songChanged && autoScrollPlayQueue && playQueueProxyModel.isEmpty() && (wasEmpty || MPDState_Playing==MPDStatus::self()->state());
+    playQueue->updateRows(idx.row(), current.key, scroll, wasEmpty);
+    if (!scroll && topRow>0 && topRow<PlayQueueModel::self()->rowCount()) {
+        playQueue->scrollTo(playQueueProxyModel.mapFromSource(PlayQueueModel::self()->index(topRow, PlayQueueModel::COL_TITLE)), QAbstractItemView::PositionAtTop);
+    }
+
     playQueueItemsSelected(playQueue->haveSelectedItems());
 }
 

@@ -52,6 +52,7 @@
 37. Install symbolic icon for GNOME shell.
 38. Add sort by track title to playqueue.
 39. Read lyrics from MP4 files.
+40. Only scroll playqueue if current song changed.
 
 2.0.1
 -----

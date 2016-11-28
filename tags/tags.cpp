@@ -870,7 +870,7 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
 }
 
 #ifdef TAGLIB_MP4_FOUND
-static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImage *img, int *rating)
+static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics, int *rating)
 {
     TagLib::MP4::ItemListMap &map = tag->itemListMap();
 
@@ -915,6 +915,11 @@ static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImag
                 TagLib::MP4::CoverArt coverArt = coverArtList.front();
                 img->loadFromData((const uchar *) coverArt.data().data(), coverArt.data().size());
             }
+        }
+    }
+    if (lyrics) {
+        if (map.contains("\251lyr") && !map["\251lyr"].toStringList().isEmpty()) {
+            *lyrics=tString2QString(map["\251lyr"].toStringList().front());
         }
     }
     if (rating) {
@@ -995,7 +1000,7 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
 
     if (rating>-1) {
         int old=-1;
-        readMP4Tags(tag, 0, 0, 0, &old);
+        readMP4Tags(tag, 0, 0, 0, 0, &old);
         if (old!=rating) {
             TagLib::MP4::ItemListMap &map = tag->itemListMap();
             map["----:com.apple.iTunes:FMPS_Rating"] = TagLib::MP4::Item(TagLib::StringList(convertFromCantataRating(rating)));
@@ -1152,7 +1157,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
     } else if (TagLib::MP4::File *file = dynamic_cast< TagLib::MP4::File * >(fileref.file())) {
         TagLib::MP4::Tag *tag = dynamic_cast< TagLib::MP4::Tag * >(file->tag());
         if (tag) {
-            readMP4Tags(tag, song, rg, img, rating);
+            readMP4Tags(tag, song, rg, img, lyrics, rating);
         }
     #endif
     } else if (TagLib::MPC::File *file = dynamic_cast< TagLib::MPC::File * >(fileref.file())) {

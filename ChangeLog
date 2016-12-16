@@ -53,6 +53,7 @@
 38. Add sort by track title to playqueue.
 39. Read lyrics from MP4 files.
 40. Only scroll playqueue if current song changed.
+41. Support disc number in CUE files.
 
 2.0.1
 -----

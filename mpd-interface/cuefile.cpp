@@ -49,6 +49,7 @@ static const QString constTitle = QLatin1String("title");
 static const QString constSongWriter = QLatin1String("songwriter");
 static const QString constFile = QLatin1String("file");
 static const QString constTrack = QLatin1String("track");
+static const QString constDisc = QLatin1String("discnumber");
 static const QString constIndex = QLatin1String("index");
 static const QString constAudioTrackType = QLatin1String("audio");
 static const QString constRem = QLatin1String("rem");
@@ -87,6 +88,7 @@ struct CueEntry {
     QString file;
     QString index;
     int trackNo;
+    int discNo;
     QString title;
     QString artist;
     QString albumArtist;
@@ -96,11 +98,12 @@ struct CueEntry {
     QString genre;
     QString date;
 
-    CueEntry(QString &file, QString &index, int trackNo, QString &title, QString &artist, QString &albumArtist,
+    CueEntry(QString &file, QString &index, int trackNo, int discNo, QString &title, QString &artist, QString &albumArtist,
              QString &album, QString &composer, QString &albumComposer, QString &genre, QString &date) {
         this->file = file;
         this->index = index;
         this->trackNo = trackNo;
+        this->discNo = discNo;
         this->title = title;
         this->artist = artist;
         this->albumArtist = albumArtist;
@@ -263,6 +266,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
         QString fileType;
         QString genre;
         QString date;
+        int disc = 0;
 
         // -- FILE section
         do {
@@ -296,6 +300,8 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                     genre = splitted[2];
                 } else if (lineValue.toLower() == constDate) {
                     date = splitted[2];
+                } else if (lineValue.toLower() == constDisc) {
+                    disc = splitted[2].toInt();
                 }
                 // end of the header -> go into the track mode
             } else if (lineName == constTrack) {
@@ -336,7 +342,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 // for later (if it's valid of course)
                 // please note that the same code is repeated just after this 'do-while' loop
                 if (validFile && !index.isEmpty() && (trackType.isEmpty() || trackType == constAudioTrackType)) {
-                    entries.append(CueEntry(file, index, trackNo, title, artist, albumArtist, album, composer, albumComposer, genre, date));
+                    entries.append(CueEntry(file, index, trackNo, disc, title, artist, albumArtist, album, composer, albumComposer, genre, date));
                 }
 
                 // clear the state
@@ -371,7 +377,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
 
         // we didn't add the last song yet...
         if (validFile && !index.isEmpty() && (trackType.isEmpty() || trackType == constAudioTrackType)) {
-            entries.append(CueEntry(file, index, trackNo, title, artist, albumArtist, album, composer, albumComposer, genre, date));
+            entries.append(CueEntry(file, index, trackNo, disc, title, artist, albumArtist, album, composer, albumComposer, genre, date));
         }
     }
 
@@ -382,6 +388,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
         Song song;
         song.file=constCueProtocol+fileName+"?pos="+QString::number(i);
         song.track=entry.trackNo;
+        song.disc=entry.discNo;
         QString songFile=fileDir+entry.file;
         song.setName(songFile); // HACK!!!
         if (!files.contains(songFile)) {

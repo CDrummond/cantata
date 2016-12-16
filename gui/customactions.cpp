@@ -163,7 +163,6 @@ void CustomActions::doAction()
                 if (!added) {
                     args+=items;
                 }
-                qWarning() << cmd << args;
                 QProcess::startDetached(cmd, args);
             }
             return;

@@ -36,7 +36,6 @@
 #include "fancytabwidget.h"
 #include "localize.h"
 #include "icon.h"
-#include "gtkstyle.h"
 #include "action.h"
 #include "utils.h"
 #ifdef Q_OS_MAC
@@ -138,9 +137,9 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
 
     const QRect draw_rect(QPoint(0, 0), m.mapRect(rect).size());
 
-    if (!selected && GtkStyle::isActive()) {
-        p->fillRect(option->rect, option->palette.background());
-    }
+    //if (!selected && GtkStyle::isActive()) {
+    //    p->fillRect(option->rect, option->palette.background());
+    //}
 
     p->save();
     p->setTransform(m);
@@ -203,26 +202,22 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
     }
 
     if (drawBgnd) {
-        if (!selected && GtkStyle::isActive()) {
-            GtkStyle::drawSelection(styleOpt, p, (fader*1.0)/150.0);
-        } else {
-            #ifdef Q_OS_MAC
-            OSXStyle::self()->drawSelection(styleOpt, p, selected ? 1.0 : (fader*1.0)/150.0);
-            #else
-            #ifdef Q_OS_WIN
-            if (QPalette::Active!=styleOpt.palette.currentColorGroup()) {
-                styleOpt.palette.setColor(QPalette::Highlight, styleOpt.palette.color(QPalette::Window).darker(110));
-            }
-            #endif
-            if (!selected) {
-                p->setOpacity((fader*1.0)/150.0);
-            }
-            QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, p, 0);
-            if (!selected) {
-                p->setOpacity(1.0);
-            }
-            #endif
+        #ifdef Q_OS_MAC
+        OSXStyle::self()->drawSelection(styleOpt, p, selected ? 1.0 : (fader*1.0)/150.0);
+        #else
+        #ifdef Q_OS_WIN
+        if (QPalette::Active!=styleOpt.palette.currentColorGroup()) {
+            styleOpt.palette.setColor(QPalette::Highlight, styleOpt.palette.color(QPalette::Window).darker(110));
         }
+        #endif
+        if (!selected) {
+            p->setOpacity((fader*1.0)/150.0);
+        }
+        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, p, 0);
+        if (!selected) {
+            p->setOpacity(1.0);
+        }
+        #endif
     }
 
     int textFlags = Qt::AlignTop | Qt::AlignVCenter;
@@ -391,17 +386,16 @@ void FancyTabBar::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
     QPainter p(this);
-    bool gtkStyle=GtkStyle::isActive();
 
     for (int i = 0; i < count(); ++i) {
         if (i != currentIndex()) {
-            paintTab(&p, i, gtkStyle);
+            paintTab(&p, i);
         }
     }
 
     // paint active tab last, since it overlaps the neighbors
     if (currentIndex() != -1) {
-        paintTab(&p, currentIndex(), gtkStyle);
+        paintTab(&p, currentIndex());
     }
 }
 
@@ -490,7 +484,7 @@ void FancyTabBar::addSpacer(int size)
                                                            new QSpacerItem(0, size, QSizePolicy::Fixed, QSizePolicy::Maximum));
 }
 
-void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
+void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
 {
     if (!validIndex(tabIndex)) {
         qWarning("invalid index");
@@ -517,26 +511,22 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
         }
     }
     if (drawBgnd) {
-        if (!selected && gtkStyle) {
-            GtkStyle::drawSelection(styleOpt, painter, tabs[tabIndex]->fader()/150.0);
-        } else {
-            #ifdef Q_OS_MAC
-            OSXStyle::self()->drawSelection(styleOpt, painter, selected ? 1.0 : tabs[tabIndex]->fader()/150.0);
-            #else
-            #ifdef Q_OS_WIN
-            if (QPalette::Active!=styleOpt.palette.currentColorGroup()) {
-                styleOpt.palette.setColor(QPalette::Highlight, styleOpt.palette.color(QPalette::Window).darker(110));
-            }
-            #endif
-            if (!selected) {
-                painter->setOpacity(tabs[tabIndex]->fader()/150.0);
-            }
-            QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, painter, 0);
-            if (!selected) {
-                painter->setOpacity(1.0);
-            }
-            #endif
+        #ifdef Q_OS_MAC
+        OSXStyle::self()->drawSelection(styleOpt, painter, selected ? 1.0 : tabs[tabIndex]->fader()/150.0);
+        #else
+        #ifdef Q_OS_WIN
+        if (QPalette::Active!=styleOpt.palette.currentColorGroup()) {
+            styleOpt.palette.setColor(QPalette::Highlight, styleOpt.palette.color(QPalette::Window).darker(110));
         }
+        #endif
+        if (!selected) {
+            painter->setOpacity(tabs[tabIndex]->fader()/150.0);
+        }
+        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, painter, 0);
+        if (!selected) {
+            painter->setOpacity(1.0);
+        }
+        #endif
     }
 
     selected = selected && (palette().currentColorGroup()==QPalette::Active ||

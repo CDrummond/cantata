@@ -1162,7 +1162,7 @@ Song LibraryDb::getSong(const QSqlQuery &query)
         s.setMbAlbumId(val);
     }
     s.title=query.value(SF_title).toString();
-    for (int i=SF_genre1; i<=SF_genre1+Song::constNumGenres; ++i) {
+    for (int i=SF_genre1; i<SF_genre1+Song::constNumGenres; ++i) {
         QString genre=query.value(i).toString();
         if (genre!=constNullGenre) {
             s.addGenre(genre);

@@ -1,3 +1,0 @@
-/* drag:toolbar modview:ts*/
-
-QToolBar#MainToolBar { background-color: #e7e8eb; border: 0px;} QToolButton,QToolBar#MainToolBar QLabel { color: #70788d;}

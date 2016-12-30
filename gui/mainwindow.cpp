@@ -204,7 +204,7 @@ MainWindow::MainWindow(QWidget *parent)
     topToolBar->ensurePolished();
     toolbar=topToolBar;
     #elif !defined Q_OS_WIN
-    if (GtkStyle::isActive() || style()->inherits("Kvantum::Style")) {
+    if (style()->inherits("Kvantum::Style")) {
         // Create a real toolbar so that window can be moved by this - if set in CSS
         QToolBar *topToolBar = addToolBar("ToolBar");
         topToolBar->setObjectName("MainToolBar");
@@ -213,6 +213,8 @@ MainWindow::MainWindow(QWidget *parent)
         topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
         topToolBar->ensurePolished();
         toolbar=topToolBar;
+    } else {
+        toolbar->setMinimumHeight(fontMetrics().height()*4.5);
     }
     #endif
 
@@ -701,7 +703,6 @@ MainWindow::MainWindow(QWidget *parent)
         addMenuAction(menu, aboutAction);
         #endif
         menuBar()->addMenu(menu);
-        GtkStyle::registerWidget(menuBar());
     }
 
     if (showMenuAction) {

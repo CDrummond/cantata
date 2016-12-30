@@ -45,22 +45,8 @@ static inline void addEventFilter(QObject *object, QObject *filter)
     object->installEventFilter(filter);
 }
 
-static bool useOverlayStyleScrollbars(bool use)
-{
-    if (use) {
-        QByteArray env=qgetenv("LIBOVERLAY_SCROLLBAR");
-        if (!env.isEmpty() && env!="1") {
-            return false;
-        }
-        QString mode=GtkStyle::readDconfSetting(QLatin1String("scrollbar-mode"), QLatin1String("/com/canonical/desktop/interface/"));
-        return mode!=QLatin1String("normal");
-    }
-    return use;
-}
-
-GtkProxyStyle::GtkProxyStyle(int modView, bool thinSb, bool styleSpin, const QMap<QString, QString> &c)
-    : TouchProxyStyle(modView, styleSpin, useOverlayStyleScrollbars(thinSb))
-    , css(c)
+GtkProxyStyle::GtkProxyStyle(int modView)
+    : TouchProxyStyle(modView, true, true)
 {
     shortcutHander=new ShortcutHandler(this);
     setBaseStyle(qApp->style());
@@ -92,20 +78,6 @@ void GtkProxyStyle::polish(QWidget *widget)
         widget->setProperty(constAccelProp, true);
     }
     #endif
-
-    // Apply CSS only to particular widgets. With Qt5.2 if we apply CSS to whole application, then QStyleSheetStyle does
-    // NOT call sizeFromContents for spinboxes :-(
-    if (widget->styleSheet().isEmpty()) {
-        QMap<QString, QString>::ConstIterator it=css.end();
-        if (qobject_cast<QToolBar *>(widget)) {
-            it=css.find(QLatin1String(widget->metaObject()->className())+QLatin1Char('#')+widget->objectName());
-        } else if (qobject_cast<QMenu *>(widget)) {
-            it=css.find(QLatin1String(widget->metaObject()->className()));
-        }
-        if (css.end()!=it) {
-            widget->setStyleSheet(it.value());
-        }
-    }
     TouchProxyStyle::polish(widget);
 }
 

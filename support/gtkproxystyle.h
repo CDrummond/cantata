@@ -24,7 +24,6 @@
 #ifndef GTKPROXYSTYLE_H
 #define GTKPROXYSTYLE_H
 
-#include <QMap>
 #include "config.h"
 #include "touchproxystyle.h"
 
@@ -33,7 +32,7 @@ class ShortcutHandler;
 class GtkProxyStyle : public TouchProxyStyle
 {
 public:
-    GtkProxyStyle(int modView, bool thinSb, bool styleSpin, const QMap<QString, QString> &c);
+    GtkProxyStyle(int modView);
     ~GtkProxyStyle();
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
 
@@ -45,7 +44,6 @@ public:
 
 private:
     ShortcutHandler *shortcutHander;
-    QMap<QString, QString> css;
 };
 
 #endif

@@ -54,6 +54,8 @@
 39. Read lyrics from MP4 files.
 40. Only scroll playqueue if current song changed.
 41. Support disc number in CUE files.
+42. Remove Gtk themeing hacks. Qt styles such as Kvantum should be used to
+    mimic better Gtk support.
 
 2.0.1
 -----

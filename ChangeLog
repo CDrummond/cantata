@@ -56,6 +56,7 @@
 41. Support disc number in CUE files.
 42. Remove Gtk themeing hacks. Qt styles such as Kvantum should be used to
     mimic better Gtk support.
+43. Japanese translation.
 
 2.0.1
 -----

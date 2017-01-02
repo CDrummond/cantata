@@ -171,6 +171,28 @@ MainWindow::MainWindow(QWidget *parent)
     , thumbnailTooolbar(0)
     #endif
 {
+    #if defined Q_OS_MAC || defined Q_OS_WIN || QT_VERSION<0x050000
+    init();
+    #else
+    // Work-aroud Qt5Ct colour scheme issues. Qt5Ct applies its palette after Cantata's main window
+    // is shown. Issue 944
+    // TODO: The real fix would be for Cantata to properly repect colour scheme changes
+    show();
+    resize(0, 0);
+    QTimer::singleShot(5, this, SLOT(init()));
+    #endif
+}
+
+void MainWindow::init()
+{
+    #if !defined Q_OS_MAC && !defined Q_OS_WIN && QT_VERSION>=0x050000
+    // Work-aroud Qt5Ct incorrectly setting icon theme
+    if (!Settings::self()->useStandardIcons()) {
+        QIcon::setThemeSearchPaths(QStringList() << CANTATA_SYS_ICONS_DIR << QIcon::themeSearchPaths());
+        QIcon::setThemeName(QLatin1String("cantata"));
+    }
+    #endif
+
     QPoint p=pos();
     ActionCollection::setMainWidget(this);
     trayItem=new TrayItem(this);
@@ -532,7 +554,7 @@ MainWindow::MainWindow(QWidget *parent)
     setupGUI(KXmlGuiWindow::Keys);
     #endif
 
-    if (Settings::self()->firstRun()) {
+    if (Settings::self()->firstRun() || (expandInterfaceAction->isChecked() && expandedSize.isEmpty())) {
         int width=playPauseTrackButton->width()*25;
         resize(playPauseTrackButton->width()*25, playPauseTrackButton->height()*18);
         splitter->setSizes(QList<int>() << width*0.4 << width*0.6);
@@ -916,6 +938,12 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     updateActionToolTips();
     CustomActions::self()->setMainWindow(this);
+
+    if (Settings::self()->startHidden()) {
+        hide();
+    } else {
+        show();
+    }
 }
 
 MainWindow::~MainWindow()

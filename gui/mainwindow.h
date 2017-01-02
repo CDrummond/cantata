@@ -266,6 +266,7 @@ private:
     void setCollapsedSize();
 
 private Q_SLOTS:
+    void init();
     void toggleContext();
     void toggleMenubar();
     void initMpris();

@@ -369,9 +369,6 @@ int main(int argc, char *argv[])
     app.setActivationWindow(&mw);
     #endif // !defined Q_OS_MAC
     app.loadFiles();
-    if (!Settings::self()->startHidden()) {
-        mw.show();
-    }
     #endif // ENABLE_KDE_SUPPORT
 
     return app.exec();

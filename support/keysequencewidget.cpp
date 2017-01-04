@@ -203,12 +203,12 @@ void KeySequenceWidget::setModel(ShortcutsModel *model)
 bool KeySequenceWidget::isOkWhenModifierless(int keyQt) const
 {
     //this whole function is a hack, but especially the first line of code
-    if (QKeySequence(keyQt).toString().length() == 1)
-        return false;
+//    if (QKeySequence(keyQt).toString().length() == 1)
+//        return false;
 
     switch (keyQt) {
     case Qt::Key_Return:
-    case Qt::Key_Space:
+//    case Qt::Key_Space:
     case Qt::Key_Tab:
     case Qt::Key_Backtab: //does this ever happen?
     case Qt::Key_Backspace:

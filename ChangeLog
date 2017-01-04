@@ -57,6 +57,7 @@
 42. Remove Gtk themeing hacks. Qt styles such as Kvantum should be used to
     mimic better Gtk support.
 43. Japanese translation.
+44. Allow single-key shortcuts.
 
 2.0.1
 -----

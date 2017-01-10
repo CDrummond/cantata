@@ -84,7 +84,7 @@ void BrowseModel::load()
     if (!enabled || (root && (root->getChildCount() || root->isFetching()))) {
         return;
     }
-    root->setFetching(true);
+    root->setState(FolderItem::State_Fetching);
     emit listFolder(root->getPath());
 }
 
@@ -166,7 +166,7 @@ bool BrowseModel::canFetchMore(const QModelIndex &index) const
 {
     if (index.isValid()) {
         Item *item = toItem(index);
-        return item && item->isFolder() && 0==item->getChildCount();
+        return item && item->isFolder() && static_cast<FolderItem *>(item)->canFetchMore();
     } else {
         return false;
     }
@@ -180,7 +180,7 @@ void BrowseModel::fetchMore(const QModelIndex &index)
 
     FolderItem *item = static_cast<FolderItem *>(toItem(index));
     if (!item->isFetching()) {
-        item->setFetching(true);
+        item->setState(FolderItem::State_Fetching);
         emit listFolder(item->getPath());
     }
 }
@@ -274,7 +274,7 @@ void BrowseModel::connectionChanged()
     clear();
     if (!root->isFetching() && MPDConnection::self()->isConnected()) {
         dbVersion=0;
-        root->setFetching(true);
+        root->setState(FolderItem::State_Fetching);
         emit listFolder(root->getPath());
     }
 }
@@ -307,6 +307,6 @@ void BrowseModel::folderContents(const QString &path, const QStringList &folders
     foreach (const Song &song, songs) {
         it.value()->add(new TrackItem(song, it.value()));
     }
-    it.value()->setFetching(false);
+    it.value()->setState(FolderItem::State_Fetched);
     endInsertRows();
 }

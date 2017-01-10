@@ -78,11 +78,17 @@ public:
     class FolderItem : public Item
     {
     public:
+        enum State {
+            State_Initial,
+            State_Fetching,
+            State_Fetched
+        };
+
         FolderItem(const QString &n, const QString &pth, FolderItem *p=0)
-            : Item(p), name(n), path(pth), fetching(false) { }
+            : Item(p), name(n), path(pth), state(State_Initial) { }
         virtual ~FolderItem() { }
 
-        void clear() { qDeleteAll(children); children.clear(); }
+        void clear() { qDeleteAll(children); children.clear(); state=State_Initial; }
         const QList<Item *> getChildren() const { return children; }
         virtual int getChildCount() const { return children.count();}
         virtual bool isFolder() const { return true; }
@@ -90,15 +96,16 @@ public:
         virtual QString getText() const { return name; }
         virtual QString getSubText() const { return QString(); }
         const QString & getPath() const { return path; }
-        bool isFetching() const { return fetching; }
-        void setFetching(bool f) { fetching=f; }
+        bool canFetchMore() const { return State_Initial==state; }
+        bool isFetching() const { return State_Fetching==state; }
+        void setState(State s) { state=s; }
         QStringList allEntries(bool allowPlaylists) const;
 
     private:
         QString name;
         QString path;
         QList<Item *> children;
-        bool fetching;
+        State state;
     };
 
     BrowseModel(QObject *p);

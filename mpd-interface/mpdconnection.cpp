@@ -1369,6 +1369,10 @@ void MPDConnection::getStats()
         dbUpdate=stats.dbUpdate;
         mopidy=0==stats.artists && 0==stats.albums && 0==stats.songs &&
                0==stats.uptime && 0==stats.playtime && 0==stats.dbPlaytime && 0==dbUpdate;
+        if (mopidy) {
+            // Set version to 1 so that SQL cache is updated - it uses 0 as intial value
+            dbUpdate=stats.dbUpdate=1;
+        }
         emit statsUpdated(stats);
     }
 }
@@ -1560,13 +1564,12 @@ void MPDConnection::enableOutput(int id, bool enable)
  */
 void MPDConnection::update()
 {
-    if (sendCommand("update").ok) {
-        if (isMopdidy()) {
-            // Mopidy does not support MPD's update command. So, when user presses update DB, what we
-            // do instead is clear library/dir caches, then when response to getStats is received,
-            // library/dir should get refreshed...
-            getStats();
-        }
+    if (mopidy) {
+        // Mopidy does not support MPD's update command. So, when user presses update DB, what we
+        // just reload the library.
+        loadLibrary();
+    } else {
+        sendCommand("update");
     }
 }
 
@@ -1956,12 +1959,12 @@ bool MPDConnection::recursivelyListDir(const QString &dir, QList<Song> &songs)
 {
     bool topLevel="/"==dir || ""==dir;
 
-    // UPnP database backend does not list separate metadata items, so if "list genre" returns
-    // empty response assume this is a UPnP backend and dont attempt to get rest of data...
-    // Although we dont use "list XXX", lsinfo will return duplciate items (due to the way most
-    // UPnP servers returing directories of classifications - Genre/Album/Tracks, Artist/Album/Tracks,
-    // etc...
-    if (topLevel) {
+    if (topLevel && !mopidy) {
+        // UPnP database backend does not list separate metadata items, so if "list genre" returns
+        // empty response assume this is a UPnP backend and dont attempt to get rest of data...
+        // Although we dont use "list XXX", lsinfo will return duplciate items (due to the way most
+        // UPnP servers returing directories of classifications - Genre/Album/Tracks, Artist/Album/Tracks,
+        // etc...
         Response response=sendCommand("list genre", false, false);
         if (!response.ok || response.data.split('\n').length()<3) { // 2 lines - OK and blank
             // ..just to be 100% sure, check no artists either...
@@ -1972,7 +1975,9 @@ bool MPDConnection::recursivelyListDir(const QString &dir, QList<Song> &songs)
         }
     }
 
-    Response response=sendCommand(topLevel ? "lsinfo" : ("lsinfo "+encodeName(dir)));
+    Response response=sendCommand(topLevel
+                                    ? QByteArray(mopidy ? "lsinfo \"Local media\"" : "lsinfo")
+                                    : ("lsinfo "+encodeName(dir)));
     if (response.ok) {
         QStringList subDirs;
         MPDParseUtils::parseDirItems(response.data, details.dir, ver, songs, dir, subDirs, MPDParseUtils::Loc_Library);

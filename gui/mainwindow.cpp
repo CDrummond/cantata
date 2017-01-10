@@ -1051,7 +1051,7 @@ void MainWindow::showInformation(const QString &message)
 
 void MainWindow::mpdConnectionStateChanged(bool connected)
 {
-    serverInfoAction->setEnabled(connected && !MPDConnection::self()->isMopdidy());
+    serverInfoAction->setEnabled(connected && !MPDConnection::self()->isMopidy());
     refreshDbAction->setEnabled(connected);
     addStreamToPlayQueueAction->setEnabled(connected);
     if (connected) {

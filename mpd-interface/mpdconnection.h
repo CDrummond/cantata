@@ -228,7 +228,7 @@ public:
     static bool isPlaylist(const QString &file);
     int unmuteVolume() { return unmuteVol; }
     bool isMuted() { return -1!=unmuteVol; }
-    bool isMopdidy() const { return mopidy; }
+    bool isMopidy() const { return mopidy; }
     void setVolumeFadeDuration(int f) { fadeDuration=f; }
     QString ipAddress() const { return details.isLocal() ? QString() : sock.address(); }
 

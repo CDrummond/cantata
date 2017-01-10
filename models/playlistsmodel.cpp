@@ -1023,7 +1023,7 @@ PlaylistsModel::PlaylistItem::PlaylistItem(const Playlist &pl, quint32 k)
     , key(k)
     , lastModified(pl.lastModified)
 {
-    loaded=isSmartPlaylist=MPDConnection::self()->isMopdidy() && name.startsWith("Smart Playlist:");
+    loaded=isSmartPlaylist=MPDConnection::self()->isMopidy() && name.startsWith("Smart Playlist:");
     if (isSmartPlaylist) {
         shortName=name.mid(16);
     }

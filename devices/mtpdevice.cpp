@@ -1630,7 +1630,7 @@ void MtpDevice::getSongStatus(bool ok, bool copiedCover)
     } else {
         currentSong.file=currentDestFile.mid(MPDConnection::self()->getDetails().dir.length());
         QString origPath;
-        if (MPDConnection::self()->isMopdidy()) {
+        if (MPDConnection::self()->isMopidy()) {
             origPath=currentSong.file;
             currentSong.file=Song::encodePath(currentSong.file);
         }

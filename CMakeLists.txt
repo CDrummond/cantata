@@ -224,6 +224,12 @@ if (TAGLIB_FOUND)
         message("TagLib does not have MP4 support compiled in.")
     endif (NOT TAGLIB_MP4_FOUND)
 
+    check_cxx_source_compiles("#include <opusfile.h>
+                            int main() { TagLib::Ogg::Opus::File *f=0; return 0;}" TAGLIB_OPUS_FOUND)
+    if (NOT TAGLIB_OPUS_FOUND)
+        message("TagLib does not have OPUS support compiled in.")
+    endif (NOT TAGLIB_OPUS_FOUND)
+
     set(CMAKE_REQUIRED_INCLUDES)
     set(CMAKE_REQUIRED_LIBRARIES)
 

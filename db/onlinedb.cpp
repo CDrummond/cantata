@@ -38,10 +38,12 @@ OnlineDb::~OnlineDb()
 {
 }
 
-bool OnlineDb::init(const QString &dbFile) {
+bool OnlineDb::init(const QString &dbFile)
+{
     LibraryDb::init(dbFile);
     createTable("covers(artistId text, albumId text, url text)");
     createTable("stats(artists integer)");
+    return true;
 }
 
 void OnlineDb::create()

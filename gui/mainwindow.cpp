@@ -344,6 +344,7 @@ void MainWindow::init()
     streamPlayButton->setVisible(false);
 
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), Icons::self()->searchIcon);
+    playNextAction = ActionCollection::get()->createAction("playnext", i18n("Play next"));
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", Utils::strippedText(StdActions::self()->editTagsAction->text()), StdActions::self()->editTagsAction->icon());
     #endif
@@ -769,6 +770,7 @@ void MainWindow::init()
     #ifdef TAGLIB_FOUND
     playQueue->addAction(editPlayQueueTagsAction);
     #endif
+    playQueue->addAction(playNextAction);
     Action *sep=new Action(this);
     sep->setSeparator(true);
     playQueue->addAction(sep);
@@ -884,6 +886,9 @@ void MainWindow::init()
     connect(context, SIGNAL(findAlbum(QString,QString)), this, SLOT(locateAlbum(QString,QString)));
     connect(context, SIGNAL(playSong(QString)), PlayQueueModel::self(), SLOT(playSong(QString)));
     connect(locateTrackAction, SIGNAL(triggered()), this, SLOT(locateTrack()));
+    connect(this, SIGNAL(playNext(QList<quint32>,quint32,quint32)), MPDConnection::self(), SLOT(move(QList<quint32>,quint32,quint32)));
+    connect(playNextAction, SIGNAL(triggered()), this, SLOT(moveSelectionAfterCurrentSong()));
+
     connect(StdActions::self()->searchAction, SIGNAL(triggered()), SLOT(showSearch()));
     connect(searchPlayQueueAction, SIGNAL(triggered()), this, SLOT(showPlayQueueSearch()));
     connect(playQueue, SIGNAL(focusSearch(QString)), playQueueSearchWidget, SLOT(activate(QString)));
@@ -2203,6 +2208,22 @@ void MainWindow::locateTracks(const QList<Song> &songs)
     if (!songs.isEmpty() && tabWidget->isEnabled(PAGE_LIBRARY)) {
         showLibraryTab();
         libraryPage->showSongs(songs);
+    }
+}
+
+void MainWindow::moveSelectionAfterCurrentSong()
+{
+    QList<int> selectedIdexes = playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes());
+
+    if( !selectedIdexes.empty() ){
+        QList<quint32> selectedSongIds;
+        foreach (int row, selectedIdexes){
+            selectedSongIds.append( (quint32) row);
+        }
+
+        int currentSongIdx = PlayQueueModel::self()->currentSongRow();
+
+        emit playNext(selectedSongIds, currentSongIdx+1, PlayQueueModel::self()->rowCount());
     }
 }
 

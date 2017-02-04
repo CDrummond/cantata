@@ -146,6 +146,7 @@ Q_SIGNALS:
     void setPriority(const QList<qint32> &ids, quint8 priority);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
     void showPreferencesPage(const QString &page);
+    void playNext(const QList<quint32> &items, quint32 pos, quint32 size);
 
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
@@ -226,6 +227,7 @@ public Q_SLOTS:
     void toggleSplitterAutoHide();
     void locateTracks(const QList<Song> &songs);
     void locateTrack() { locateTracks(playQueue->selectedSongs()); }
+    void moveSelectionAfterCurrentSong();
     void locateArtist(const QString &artist);
     void locateAlbum(const QString &artist, const QString &album);
     void editTags();
@@ -311,6 +313,7 @@ private:
     Action *quitAction;
     Action *restoreAction;
     Action *locateTrackAction;
+    Action *playNextAction;
     #ifdef TAGLIB_FOUND
     Action *editPlayQueueTagsAction;
     #endif

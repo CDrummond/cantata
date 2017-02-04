@@ -38,21 +38,3 @@ SpacerWidget::SpacerWidget(QWidget *parent)
     }
     setFixedWidth(fixedWidth);
 }
-
-void SpacerWidget::paintEvent(QPaintEvent *e)
-{
-    QWidget::paintEvent(e);
-    QPainter p(this);
-    QColor col(palette().text().color());
-    col.setAlphaF(0.333);
-    QPoint start(width()/2, 0);
-    QPoint end(width()/2, height()-1);
-    QLinearGradient grad(start, end);
-    grad.setColorAt(0.4, col);
-    grad.setColorAt(0.6, col);
-    col.setAlphaF(0);
-    grad.setColorAt(0.1, col);
-    grad.setColorAt(0.9, col);
-    p.setPen(QPen(QBrush(grad), 1));
-    p.drawLine(start, end);
-}

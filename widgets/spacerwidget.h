@@ -31,8 +31,6 @@ class SpacerWidget : public QWidget
 public:
     SpacerWidget(QWidget *parent = 0);
     virtual ~SpacerWidget() { }
-
-    void paintEvent(QPaintEvent *e);
 };
 
-#endif // TOOLBAR_H
+#endif // SPACER_WIDGET_H

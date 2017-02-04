@@ -21,6 +21,7 @@
 #cmakedefine TAGLIB_EXTRAS_FOUND 1
 #cmakedefine TAGLIB_ASF_FOUND
 #cmakedefine TAGLIB_MP4_FOUND 1
+#cmakedefine TAGLIB_OPUS_FOUND 1
 #cmakedefine MTP_FOUND 1
 #cmakedefine ENABLE_HTTP_STREAM_PLAYBACK 1
 #cmakedefine ENABLE_KWALLET 1

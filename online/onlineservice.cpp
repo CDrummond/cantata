@@ -23,6 +23,7 @@
 
 #include "onlineservice.h"
 #include "mpd-interface/song.h"
+#include <QUrl>
 
 static const QString constUrlGuard=QLatin1String("#{SONG_DETAILS}");
 static const QString constDeliminator=QLatin1String("<@>");
@@ -34,7 +35,7 @@ static inline QString fixString(QString str)
 
 Song & OnlineService::encode(Song &song)
 {
-    song.file=song.file+constUrlGuard+
+    song.file=QUrl(song.file).toEncoded()+constUrlGuard+
               fixString(song.artist)+constDeliminator+
               fixString(song.albumartist)+constDeliminator+
               fixString(song.album)+constDeliminator+

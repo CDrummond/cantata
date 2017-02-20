@@ -90,7 +90,10 @@ ServerSettings::ServerSettings(QWidget *p)
     setupUi(this);
     #if defined ENABLE_DEVICES_SUPPORT
     musicFolderNoteLabel->appendText(QLatin1String("<i> ")+i18n("This folder will also be used to locate music files "
-                                     "for transferring to (and from) devices.")+QLatin1String("</i>"));
+                                     "for tag-editing, replay gain, and transferring to (and from) devices.")+QLatin1String("</i>"));
+    #else
+    musicFolderNoteLabel->appendText(QLatin1String("<i> ")+i18n("This folder will also be used to locate music files "
+                                     "for tag-editing, replay gain, etc.")+QLatin1String("</i>"));
     #endif
     connect(combo, SIGNAL(activated(int)), SLOT(showDetails(int)));
     connect(removeButton, SIGNAL(clicked(bool)), SLOT(remove()));

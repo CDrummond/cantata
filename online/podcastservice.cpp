@@ -212,6 +212,7 @@ static QLatin1String constImageAttribute("img");
 static QLatin1String constRssAttribute("rss");
 static QLatin1String constEpisodeTag("episode");
 static QLatin1String constNameAttribute("name");
+static QLatin1String constDescrAttribute("descr");
 static QLatin1String constDateAttribute("date");
 static QLatin1String constUrlAttribute("url");
 static QLatin1String constTimeAttribute("time");
@@ -244,6 +245,7 @@ bool PodcastService::Podcast::load()
                 imageUrl=attributes.value(constImageAttribute).toString();
                 url=attributes.value(constRssAttribute).toString();
                 name=attributes.value(constNameAttribute).toString();
+                descr=attributes.value(constDescrAttribute).toString();
                 if (url.isEmpty() || name.isEmpty()) {
                     return false;
                 }
@@ -257,6 +259,7 @@ bool PodcastService::Podcast::load()
 
                     ep->duration=time.isEmpty() ? 0 : time.toUInt();
                     ep->played=constTrue==attributes.value(constPlayedAttribute).toString();
+                    ep->descr=attributes.value(constDescrAttribute).toString();
                     if (QFile::exists(localFile)) {
                         ep->localFile=localFile;
                     }
@@ -291,9 +294,11 @@ bool PodcastService::Podcast::save() const
     writer.writeAttribute(constImageAttribute, imageUrl.toString()); // ??
     writer.writeAttribute(constRssAttribute, url.toString()); // ??
     writer.writeAttribute(constNameAttribute, name);
+    writer.writeAttribute(constDateAttribute, descr);
     foreach (Episode *ep, episodes) {
         writer.writeStartElement(constEpisodeTag);
         writer.writeAttribute(constNameAttribute, ep->name);
+        writer.writeAttribute(constDescrAttribute, ep->descr);
         writer.writeAttribute(constUrlAttribute, ep->url.toString()); // ??
         if (ep->duration) {
             writer.writeAttribute(constTimeAttribute, QString::number(ep->duration));
@@ -461,6 +466,18 @@ QModelIndex PodcastService::index(int row, int col, const QModelIndex &parent) c
     return row<podcasts.count() ? createIndex(row, col, podcasts.at(row)) : QModelIndex();
 }
 
+static QString trimDescr(QString descr)
+{
+    if (!descr.isEmpty()) {
+        static const int constMaxDescrLen=300;
+        if (descr.length()>constMaxDescrLen) {
+            descr=descr.left(constMaxDescrLen)+QLatin1String("...");
+        }
+        descr+=QLatin1String("<br/><br/>");
+    }
+    return descr;
+}
+
 QVariant PodcastService::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
@@ -499,7 +516,9 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
             return Plurals::episodes(podcast->episodes.count());
         case Qt::ToolTipRole:
             if (Settings::self()->infoTooltips()) {
-                return podcast->name+QLatin1String("<br/>")+Plurals::episodes(podcast->episodes.count());
+                return podcast->name+QLatin1String("<br/>")+
+                       trimDescr(podcast->descr)+
+                       Plurals::episodes(podcast->episodes.count());
             }
             break;
         case Qt::FontRole:
@@ -540,8 +559,10 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
         case Qt::ToolTipRole:
             if (Settings::self()->infoTooltips()) {
                 return QLatin1String("<b>")+episode->parent->name+QLatin1String("</b><br/>")+
-                        episode->name+QLatin1String("<br/>")+Utils::formatTime(episode->duration, true)+
-                        QLatin1String("<br/>")+episode->publishedDate.toString(Qt::LocalDate);
+                        episode->name+QLatin1String("<br/>")+
+                        trimDescr(episode->descr)+
+                        Utils::formatTime(episode->duration, true)+QLatin1String("<br/>")+
+                        episode->publishedDate.toString(Qt::LocalDate);
             }
             break;
         case Qt::FontRole:
@@ -728,10 +749,12 @@ void PodcastService::rssJobFinished()
             podcast->imageFile=podcast->imageFile.replace(constExt, ".jpg");
             podcast->imageUrl=ch.image.toString();
             podcast->name=ch.name;
+            podcast->descr=ch.description;
             podcast->unplayedCount=ch.episodes.count();
             foreach (const RssParser::Episode &ep, ch.episodes) {
                 Episode *episode=new Episode(ep.publicationDate, ep.name, ep.url, podcast);
                 episode->duration=ep.duration;
+                episode->descr=ep.description;
                 podcast->add(episode);
             }
             podcast->save();
@@ -788,6 +811,7 @@ void PodcastService::rssJobFinished()
                         if (added.contains(epUrl)) {
                             Episode *episode=new Episode(ep.publicationDate, ep.name, ep.url, podcast);
                             episode->duration=ep.duration;
+                            episode->descr=ep.description;
                             podcast->add(episode);
                         }
                     }

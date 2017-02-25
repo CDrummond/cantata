@@ -48,6 +48,7 @@ public:
         virtual ~Item() { }
         virtual bool isPodcast() const { return false; }
         QString name;
+        QString descr;
         QUrl url;
     };
 

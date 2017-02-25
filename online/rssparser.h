@@ -39,6 +39,7 @@ struct Episode
 {
     Episode() : duration(0), video(false) { }
     QString name;
+    QString description;
     QDateTime publicationDate;
     unsigned int duration;
     QUrl url;

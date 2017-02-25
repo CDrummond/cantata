@@ -61,6 +61,7 @@
 45. Improve Mopidy support.
 46. Enable support for Opus tags if enabled in TagLib.
 47. URL encode online stream URLs before passing to MPD.
+48. Show podcast descriptions in tooltips.
 
 2.0.1
 -----

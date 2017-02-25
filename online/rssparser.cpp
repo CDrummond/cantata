@@ -153,6 +153,8 @@ static Episode parseEpisode(QXmlStreamReader &reader)
                 guidUrl=QUrl(reader.readElementText());
             } else if (QLatin1String("pubDate")==name) {
                  ep.publicationDate=parseRfc822DateTime(reader.readElementText());
+            } else if (QLatin1String("description")==name) {
+                ep.description=reader.readElementText();
             } else {
                 consumeCurrentElement(reader);
             }

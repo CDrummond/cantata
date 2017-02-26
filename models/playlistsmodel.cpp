@@ -485,7 +485,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return multiCol ? QVariant() : (s->title.isEmpty() ? Icons::self()->streamIcon : Icons::self()->audioListIcon);
         #endif
         case Cantata::Role_MainText:
-            return s->title.isEmpty() ? s->file : s->title;
+            return s->title.isEmpty() ? s->name().isEmpty() ? s->file : s->name() : s->title;
         case Cantata::Role_SubText:
             return (s->artist.isEmpty() ? QString() : (s->artist+QLatin1String(" - ")))+
                    (s->displayAlbum().isEmpty() ? QString() : (s->displayAlbum()+QLatin1String(" - ")))+
@@ -523,6 +523,14 @@ Qt::DropActions PlaylistsModel::supportedDropActions() const
     return Qt::CopyAction | Qt::MoveAction;
 }
 
+static QString songFileName(const Song &song)
+{
+    if (song.isStream() && song.title.isEmpty()) {
+        return MPDParseUtils::addStreamName(song.file, song.name());
+    }
+    return song.file;
+}
+
 QStringList PlaylistsModel::filenames(const QModelIndexList &indexes, bool filesOnly) const
 {
     QStringList fnames;
@@ -539,7 +547,7 @@ QStringList PlaylistsModel::filenames(const QModelIndexList &indexes, bool files
             }
         } else if (!selectedPlaylists.contains(static_cast<SongItem*>(item)->parent)) {
             if (!filesOnly || !static_cast<SongItem*>(item)->file.contains(':')) {
-                fnames << static_cast<SongItem*>(item)->file;
+                fnames << songFileName(* static_cast<SongItem*>(item));
             }
         }
     }

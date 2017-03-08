@@ -258,6 +258,7 @@ void MainWindow::init()
     volumeSlider->setColor(nowPlaying->textColor());
     Icons::self()->initToolbarIcons(nowPlaying->textColor());
     Icons::self()->initSidebarIcons();
+    QColor iconCol=Utils::monoIconColor();
 
     #ifdef ENABLE_KDE_SUPPORT
     prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));
@@ -270,7 +271,6 @@ void MainWindow::init()
     StdActions::self()->stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
     #else
     setWindowIcon(Icons::self()->appIcon);
-    QColor iconCol=Utils::monoIconColor();
 
     prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? i18n("Configure Cantata...") : i18n("Preferences"),
                                                      HIDE_MENU_ICON(Icons::self()->configureIcon));

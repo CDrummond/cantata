@@ -214,7 +214,7 @@ struct Song
     bool isFromCue() const { return CueFile::isCue(file); }
     QString basicArtist() const;
     QString filePath() const { return decodePath(file, isCdda()); }
-    QString displayAlbum() const { return displayAlbum(album, year); }
+    QString displayAlbum(bool useComp=true) const { return displayAlbum(useComp ? albumName() : album, year); }
     QString describe(bool withMarkup=false) const;
     bool useComposer() const;
     void populateSorts();

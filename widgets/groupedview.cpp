@@ -306,15 +306,10 @@ public:
                 track=song.trackAndTitleStr();
             } else {
                 if (song.isFromOnlineService()) {
-                    title=Song::displayAlbum(song.album, Song::albumYear(song));
+                    title=Song::displayAlbum(song.albumName(), Song::albumYear(song));
                 } else {
-                    title=song.artistOrComposer()+QLatin1String(" - ")+Song::displayAlbum(song.album, Song::albumYear(song));
+                    title=song.artistOrComposer()+QLatin1String(" - ")+Song::displayAlbum(song.albumName(), Song::albumYear(song));
                 }
-//                if (Song::useComposer()) {
-                    while (title.contains(") (")) {
-                        title=title.replace(") (", ", ");
-                    }
-//                }
                 track=song.trackAndTitleStr();
             }
         } else {

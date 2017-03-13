@@ -768,12 +768,12 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
             s.setComposer(query.value(col++).toString());
             s.album=album.isEmpty() ? albumId : album, albumId;
             for (int i=0; i<Song::constNumGenres; ++i) {
-                QString genre=query.value(i+(col++)).toString();
+                QString genre=query.value(col++).toString();
                 if (genre!=constNullGenre) {
                     s.addGenre(genre);
                 }
             }
-            album=s.albumName();
+            album=s.displayAlbum();
             int year=query.value(col++).toInt();
             int time=query.value(col++).toInt();
             int lastModified=wantModified ? query.value(col++).toInt() : 0;

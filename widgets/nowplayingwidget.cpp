@@ -334,7 +334,8 @@ void NowPlayingWidget::update(const Song &song)
         } else if (song.album.isEmpty()) {
             artist->setText(song.artist);
         } else {
-            artist->setText(song.artist+QLatin1String(" - ")+song.displayAlbum());
+            // Artist here is always artist, and not album artist or composer
+            artist->setText(song.artist+QLatin1String(" - ")+song.displayAlbum(false));
         }
     }
 }

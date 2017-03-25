@@ -53,7 +53,7 @@ const QPalette & OSXStyle::viewPalette()
     return viewWidget()->palette();
 }
 
-void OSXStyle::drawSelection(StyleOptionViewItem opt, QPainter *painter, double opacity)
+void OSXStyle::drawSelection(StyleOptionViewItem &opt, QPainter *painter, double opacity)
 {
     opt.palette=viewPalette();
     if (opacity<0.999) {

@@ -48,7 +48,7 @@ public:
 
     OSXStyle();
     const QPalette & viewPalette();
-    void drawSelection(const StyleOptionViewItem &opt, QPainter *painter, double opacity);
+    void drawSelection(StyleOptionViewItem &opt, QPainter *painter, double opacity);
     QColor monoIconColor();
 
     void initWindowMenu(QMainWindow *mw);

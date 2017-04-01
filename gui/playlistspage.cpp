@@ -39,11 +39,7 @@
 #include "dynamic/dynamicpage.h"
 #include "settings.h"
 #include <QMenu>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobalSettings>
-#else
 #include <QStyle>
-#endif
 
 class PlaylistTableView : public TableView
 {
@@ -290,12 +286,7 @@ void StoredPlaylistsPage::removeDuplicates()
 
 void StoredPlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
-    if (
-        #ifdef ENABLE_KDE_SUPPORT
-        KGlobalSettings::singleClick()
-        #else
-        style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
-        #endif
+    if (style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
         || !static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist()) {
         QModelIndexList indexes;
         indexes.append(index);

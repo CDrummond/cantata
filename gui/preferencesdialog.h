@@ -27,11 +27,8 @@
 #include "config.h"
 #include "support/configdialog.h"
 
-#ifndef ENABLE_KDE_SUPPORT
 class ProxySettings;
 class ShortcutsSettingsPage;
-#endif
-
 class ServerSettings;
 class PlaybackSettings;
 class FileSettings;
@@ -81,9 +78,7 @@ private:
     #ifdef ENABLE_PROXY_CONFIG
     ProxySettings *proxy;
     #endif
-    #ifndef ENABLE_KDE_SUPPORT
     ShortcutsSettingsPage *shortcuts;
-    #endif
     CacheSettings *cache;
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     AudioCdSettings *audiocd;

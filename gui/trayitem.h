@@ -25,14 +25,9 @@
 #define TRAYITEM_H
 
 #include <QObject>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KStatusNotifierItem>
-class KMenu;
-#else
 #include <QSystemTrayIcon>
 #include "support/icon.h"
 class QMenu;
-#endif
 #include "config.h"
 
 #ifdef QT_QTDBUS_FOUND
@@ -58,13 +53,6 @@ public:
     void setToolTip(const QString &, const QString &, const QString &) { }
     #else
     bool isActive() const { return 0!=trayItem; }
-    #ifdef ENABLE_KDE_SUPPORT
-    void setIconByName(const QString &name) {
-        if (trayItem) {
-            trayItem->setIconByName(name);
-        }
-    }
-    #else
     void setIcon(const QIcon &icon) {
         if (trayItem) {
             trayItem->setIcon(icon);
@@ -73,39 +61,24 @@ public:
     #endif
     void setToolTip(const QString &iconName, const QString &title, const QString &subTitle) {
         if (trayItem) {
-            #ifdef ENABLE_KDE_SUPPORT
-            trayItem->setToolTip(iconName, title, subTitle);
-            #else
             Q_UNUSED(iconName)
             Q_UNUSED(subTitle)
             trayItem->setToolTip(title);
-            #endif
         }
     }
-    #endif
     void songChanged(const Song &song, bool isPlaying);
     void updateConnections();
     void updateOutputs();
 
 private Q_SLOTS:
-    #ifdef ENABLE_KDE_SUPPORT
-    void clicked();
-    void trayItemScrollRequested(int delta, Qt::Orientation orientation);
-    #else
     void trayItemClicked(QSystemTrayIcon::ActivationReason reason);
-    #endif
 
 private:
     #ifndef Q_OS_MAC
 
     MainWindow *mw;
-    #ifdef ENABLE_KDE_SUPPORT
-    KStatusNotifierItem *trayItem;
-    KMenu *trayItemMenu;
-    #else
     QSystemTrayIcon *trayItem;
     QMenu *trayItemMenu;
-    #endif
     #ifdef QT_QTDBUS_FOUND
     Notify *notification;
     #endif

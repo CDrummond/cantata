@@ -48,19 +48,11 @@
 #include "models/musiclibraryitemsong.h"
 #include "models/musiclibrarymodel.h"
 #include "support/localize.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <solid/portablemediaplayer.h>
-#include <solid/storageaccess.h>
-#include <solid/storagedrive.h>
-#include <solid/opticaldisc.h>
-#include <solid/genericinterface.h>
-#else // ENABLE_KDE_SUPPORT
 #include "solid-lite/portablemediaplayer.h"
 #include "solid-lite/storageaccess.h"
 #include "solid-lite/storagedrive.h"
 #include "solid-lite/opticaldisc.h"
 #include "solid-lite/genericinterface.h"
-#endif // ENABLE_KDE_SUPPORT
 #endif // ENABLE_DEVICES_SUPPORT
 
 void Device::moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile)

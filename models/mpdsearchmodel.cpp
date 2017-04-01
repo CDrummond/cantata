@@ -34,9 +34,7 @@ MpdSearchModel::MpdSearchModel(QObject *parent)
     connect(this, SIGNAL(search(QString,QString,int)), MPDConnection::self(), SLOT(search(QString,QString,int)));
     connect(MPDConnection::self(), SIGNAL(searchResponse(int,QList<Song>)), this, SLOT(searchFinished(int,QList<Song>)));
     connect(MPDConnection::self(), SIGNAL(rating(QString,quint8)), SLOT(ratingResult(QString,quint8)));
-    #ifndef ENABLE_UBUNTU
     connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
-    #endif
 }
 
 MpdSearchModel::~MpdSearchModel()
@@ -102,9 +100,6 @@ void MpdSearchModel::searchFinished(int id, const QList<Song> &result)
 void MpdSearchModel::coverLoaded(const Song &song, int s)
 {
     Q_UNUSED(s)
-    #ifdef ENABLE_UBUNTU
-    Q_UNUSED(song)
-    #else
     if (!song.isArtistImageRequest() && !song.isComposerImageRequest()) {
         int row=0;
         foreach (const Song &s, songList) {
@@ -115,7 +110,6 @@ void MpdSearchModel::coverLoaded(const Song &song, int s)
             row++;
         }
     }
-    #endif
 }
 
 void MpdSearchModel::ratingResult(const QString &file, quint8 r)

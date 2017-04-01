@@ -28,7 +28,7 @@
 #include "config.h"
 #include "song.h"
 #include "support/localize.h"
-#if !defined CANTATA_NO_UI_FUNCTIONS && !defined CANTATA_WEB
+#if !defined CANTATA_NO_UI_FUNCTIONS
 #include "online/onlineservice.h"
 #endif
 #include <QStringList>
@@ -500,7 +500,7 @@ QString Song::artistSong() const
 
 QString Song::trackAndTitleStr(bool showArtistIfDifferent) const
 {
-    #if !defined CANTATA_NO_UI_FUNCTIONS && !defined CANTATA_WEB
+    #if !defined CANTATA_NO_UI_FUNCTIONS
     if ((OnlineSvrTrack==type || Song::CantataStream) && OnlineService::showLogoAsCover(*this)) {
         return artistSong();
     }
@@ -684,7 +684,7 @@ bool Song::capitalise()
 
 QString Song::albumKey() const
 {
-    #if !defined CANTATA_NO_UI_FUNCTIONS && !defined CANTATA_WEB
+    #if !defined CANTATA_NO_UI_FUNCTIONS
     if ((OnlineSvrTrack==type || Song::CantataStream) && OnlineService::showLogoAsCover(*this)) {
         return onlineService();
     }

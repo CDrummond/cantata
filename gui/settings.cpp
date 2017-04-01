@@ -186,11 +186,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
 
 QList<MPDConnectionDetails> Settings::allConnections()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    QStringList groups=KGlobal::config()->groupList();
-    #else
     QStringList groups=cfg.childGroups();
-    #endif
     QList<MPDConnectionDetails> connections;
     foreach (const QString &grp, groups) {
         if (cfg.hasGroup(grp) && grp.startsWith("Connection")) {
@@ -670,12 +666,10 @@ int Settings::mpdPoll()
 }
 
 
-#ifndef ENABLE_KDE_SUPPORT
 QString Settings::lang()
 {
     return cfg.get("lang", QString());
 }
-#endif
 
 bool Settings::showMenubar()
 {
@@ -890,11 +884,6 @@ void Settings::saveWikipediaIntroOnly(bool v)
 
 void Settings::saveContextBackdrop(int v)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    if (cfg.get("contextBackdrop", QString()).length()>1) {
-        cfg.removeEntry("contextBackdrop");
-    }
-    #endif
     cfg.set("contextBackdrop", v);
 }
 
@@ -1012,11 +1001,6 @@ void Settings::savePlayQueueScroll(bool v)
 
 void Settings::savePlayQueueBackground(int v)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    if (cfg.get("playQueueBackground", QString()).length()>1) {
-        cfg.removeEntry("playQueueBackground");
-    }
-    #endif
     cfg.set("playQueueBackground", v);
 }
 
@@ -1168,12 +1152,10 @@ void Settings::saveFetchCovers(bool v)
     cfg.set("fetchCovers", v);
 }
 
-#ifndef ENABLE_KDE_SUPPORT
 void Settings::saveLang(const QString &v)
 {
     cfg.set("lang", v);
 }
-#endif
 
 void Settings::saveShowMenubar(bool v)
 {

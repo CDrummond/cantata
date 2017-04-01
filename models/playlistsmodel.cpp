@@ -53,7 +53,6 @@
 #include "modeltest.h"
 #endif
 
-#ifndef ENABLE_UBUNTU
 QString PlaylistsModel::headerText(int col)
 {
     switch (col) {
@@ -68,17 +67,14 @@ QString PlaylistsModel::headerText(int col)
     default:            return QString();
     }
 }
-#endif
 
 GLOBAL_STATIC(PlaylistsModel, instance)
 
 PlaylistsModel::PlaylistsModel(QObject *parent)
     : ActionModel(parent)
     , multiCol(false)
-    #ifndef ENABLE_UBUNTU
     , itemMenu(0)
     , dropAdjust(0)
-    #endif
 {
     icn=Icon(QStringList() << "playlist" << "view-media-playlist" << "audio-x-mp3-playlist" << "audio-x-generic");
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
@@ -95,14 +91,12 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     connect(this, SIGNAL(addToPlaylist(const QString &, const QStringList, quint32, quint32)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList, quint32, quint32)));
     connect(this, SIGNAL(moveInPlaylist(const QString &, const QList<quint32> &, quint32, quint32)), MPDConnection::self(), SLOT(moveInPlaylist(const QString &, const
     QList<quint32> &, quint32, quint32)));
-    #ifndef ENABLE_UBUNTU
     connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
     newAction=new QAction(Icon("document-new"), i18n("New Playlist..."), this);
     connect(newAction, SIGNAL(triggered()), this, SIGNAL(addToNew()));
     Action::initIcon(newAction);
     alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
     alignments[COL_LENGTH]=alignments[COL_YEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
-    #endif
     #if defined ENABLE_MODEL_TEST
     new ModelTest(this, this);
     #endif
@@ -110,12 +104,10 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
 
 PlaylistsModel::~PlaylistsModel()
 {
-    #ifndef ENABLE_UBUNTU
     if (itemMenu) {
         itemMenu->deleteLater();
         itemMenu=0;
     }
-    #endif
 }
 
 QString PlaylistsModel::name() const
@@ -216,7 +208,6 @@ QModelIndex PlaylistsModel::index(int row, int col, const QModelIndex &parent) c
     return row<items.count() ? createIndex(row, col, items.at(row)) : QModelIndex();
 }
 
-#ifndef ENABLE_UBUNTU
 QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (Qt::Horizontal==orientation) {
@@ -259,7 +250,6 @@ bool PlaylistsModel::setHeaderData(int section, Qt::Orientation orientation, con
     }
     return false;
 }
-#endif
 
 QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
 {
@@ -275,11 +265,9 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    #ifndef ENABLE_UBUNTU
     if (Qt::TextAlignmentRole==role) {
         return alignments[index.column()];
     }
-    #endif
 
     Item *item=static_cast<Item *>(index.internalPointer());
 
@@ -287,10 +275,6 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         PlaylistItem *pl=static_cast<PlaylistItem *>(item);
 
         switch(role) {
-        #ifdef ENABLE_UBUNTU
-        case Cantata::Role_Image:
-            return QString();
-        #endif
         case Cantata::Role_ListImage:
             return false;
         case Cantata::Role_IsCollection:
@@ -358,10 +342,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return 0==pl->songs.count()
                 ? pl->visibleName()
                 : pl->visibleName()+"\n"+Plurals::tracksWithDuration(pl->songs.count(), Utils::formatTime(pl->totalTime()));
-        #ifndef ENABLE_UBUNTU
         case Qt::DecorationRole:
             return multiCol ? QVariant() : (pl->isSmartPlaylist ? Icons::self()->dynamicRuleIcon : Icons::self()->playlistListIcon);
-        #endif
         case Cantata::Role_SubText:
             if (!pl->loaded) {
                 pl->loaded=true;
@@ -380,10 +362,6 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         SongItem *s=static_cast<SongItem *>(item);
 
         switch (role) {
-        #ifdef ENABLE_UBUNTU
-        case Cantata::Role_Image:
-            return QString();
-        #endif
         case Cantata::Role_ListImage:
             return true;
         case Cantata::Role_IsCollection:
@@ -480,10 +458,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 return QVariant();
             }
             return s->toolTip();
-        #ifndef ENABLE_UBUNTU
         case Qt::DecorationRole:
             return multiCol ? QVariant() : (s->title.isEmpty() ? Icons::self()->streamIcon : Icons::self()->audioListIcon);
-        #endif
         case Cantata::Role_MainText:
             return s->title.isEmpty() ? s->name().isEmpty() ? s->file : s->name() : s->title;
         case Cantata::Role_SubText:
@@ -498,7 +474,6 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-#ifndef ENABLE_UBUNTU
 bool PlaylistsModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (Cantata::Role_DropAdjust==role) {
@@ -508,7 +483,6 @@ bool PlaylistsModel::setData(const QModelIndex &index, const QVariant &value, in
         return QAbstractItemModel::setData(index, value, role);
     }
 }
-#endif
 
 Qt::ItemFlags PlaylistsModel::flags(const QModelIndex &index) const
 {
@@ -582,7 +556,6 @@ QList<Song> PlaylistsModel::songs(const QModelIndexList &indexes) const
     return songs;
 }
 
-#ifndef ENABLE_UBUNTU
 static const QLatin1String constPlaylistNameMimeType("cantata/playlistnames");
 static const QLatin1String constPositionsMimeType("cantata/positions");
 static const char *constPlaylistProp="hasPlaylist";
@@ -712,7 +685,6 @@ QStringList PlaylistsModel::mimeTypes() const
     types << PlayQueueModel::constFileNameMimeType;
     return types;
 }
-#endif
 
 void PlaylistsModel::getPlaylists()
 {
@@ -727,7 +699,6 @@ void PlaylistsModel::clear()
     endResetModel();
 }
 
-#ifndef ENABLE_UBUNTU
 MirrorMenu * PlaylistsModel::menu()
 {
     if (!itemMenu) {
@@ -735,7 +706,6 @@ MirrorMenu * PlaylistsModel::menu()
     }
     return itemMenu;
 }
-#endif
 
 void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 {
@@ -749,14 +719,8 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         }
         endResetModel();
         updateItemMenu();
-        #ifdef ENABLE_UBUNTU
-        emit updated();
-        #endif
     } else if (playlists.isEmpty()) {
         clear();
-        #ifdef ENABLE_UBUNTU
-        emit updated();
-        #endif
     } else {
         QModelIndex parent=QModelIndex();
         QSet<QString> existing;
@@ -809,9 +773,6 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 
         if (added.count() || removed.count()) {
             updateItemMenu();
-            #ifdef ENABLE_UBUNTU
-            emit updated();
-            #endif
         }
     }
 }
@@ -944,9 +905,6 @@ void PlaylistsModel::mpdConnectionStateChanged(bool connected)
 void PlaylistsModel::coverLoaded(const Song &song, int s)
 {
     Q_UNUSED(s)
-    #ifdef ENABLE_UBUNTU
-    Q_UNUSED(song)
-    #else
     if (!song.isArtistImageRequest() && !song.isComposerImageRequest()) {
         int plRow=0;
         foreach (const PlaylistItem *pl, items) {
@@ -965,12 +923,10 @@ void PlaylistsModel::coverLoaded(const Song &song, int s)
             plRow++;
         }
     }
-    #endif
 }
 
 void PlaylistsModel::updateItemMenu(bool create)
 {
-    #ifndef ENABLE_UBUNTU
     if (!itemMenu) {
         if (!create) {
             return;
@@ -990,7 +946,6 @@ void PlaylistsModel::updateItemMenu(bool create)
     foreach (const QString &n, names) {
         itemMenu->addAction(n, this, SLOT(emitAddToExisting()));
     }
-    #endif
 }
 
 PlaylistsModel::PlaylistItem * PlaylistsModel::getPlaylist(const QString &name)

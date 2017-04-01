@@ -25,14 +25,8 @@
 #define MESSAGEBOX_H
 
 #include "dialog.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KMessageBox>
-struct MessageBox: public KMessageBox {
-    static void errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString());
-};
-#else
-#include <QMessageBox>
 #include "localize.h"
+#include <QMessageBox>
 
 namespace MessageBox {
     enum ButtonCode {
@@ -87,6 +81,5 @@ namespace MessageBox {
         msgListEx(parent, Information, message, strlist, title);
     }
 }
-#endif
 
 #endif

@@ -39,10 +39,6 @@ public:
     
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     virtual void resetModel() { beginResetModel(); endResetModel(); }
-    #ifdef ENABLE_UBUNTU
-    QHash<int, QByteArray> roleNames() const;
-    virtual QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const { Q_UNUSED(indexes) Q_UNUSED(allowPlaylists) return QStringList(); }
-    #endif
 };
 
 Q_DECLARE_METATYPE(QList<Action *>)

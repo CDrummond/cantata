@@ -23,9 +23,7 @@
 
 #include "freespaceinfo.h"
 #include "support/utils.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KDiskFreeSpaceInfo>
-#elif defined(Q_OS_UNIX)
+#if defined(Q_OS_UNIX)
 #include <sys/statvfs.h>
 #elif defined Q_OS_WIN
 #include "windows.h"
@@ -65,11 +63,7 @@ qulonglong FreeSpaceInfo::used()
 
 void FreeSpaceInfo::update()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(location);
-    totalSize=inf.size();
-    usedSpace=inf.used();
-    #elif defined(Q_OS_UNIX)
+    #if defined(Q_OS_UNIX)
     struct statvfs fs_info;
     if (0==statvfs(location.toLocal8Bit().constData(), &fs_info)) {
         totalSize=quint64(fs_info.f_blocks) * quint64(fs_info.f_bsize);

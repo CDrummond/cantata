@@ -24,44 +24,23 @@
 #ifndef ICON_H
 #define ICON_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KIcon>
-#include <KDE/KIconLoader>
-#include <KDE/KIconTheme>
-#else
 #include <QIcon>
-#endif
 
 class QToolButton;
 
-class Icon : public
-    #ifdef ENABLE_KDE_SUPPORT
-    KIcon
-    #else
-    QIcon
-    #endif
+class Icon : public QIcon
 {
 public:
-    #ifdef ENABLE_KDE_SUPPORT
-    explicit Icon(const QString &icon) : KIcon(icon) { }
-    Icon(const QIcon &i) : KIcon(i) { }
-    #else
     explicit Icon(const QString &icon) : QIcon(QIcon::fromTheme(icon)) { }
     Icon(const QIcon &i) : QIcon(i) { }
-    #endif
     Icon(const QStringList &names);
     Icon() { }
 
     static int stdSize(int s);
     static int dlgIconSize();
     static void init(QToolButton *btn, bool setFlat=true);
-    #ifdef ENABLE_KDE_SUPPORT
-    static Icon getMediaIcon(const QString &name) { return Icon(name); }
-    static QString currentTheme() { return KIconLoader::global()->theme()->name(); }
-    #else
     static Icon getMediaIcon(const QString &name);
     static QString currentTheme() { return QIcon::themeName(); }
-    #endif
     static Icon create(const QString &name, const QList<int> &sizes, bool andSvg=false);
 
     enum Std {

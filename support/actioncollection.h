@@ -23,38 +23,15 @@
 #ifndef ACTIONCOLLECTION_H_
 #define ACTIONCOLLECTION_H_
 
-class Action;
-class QIcon;
-
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KActionCollection>
-
-class ActionCollection : public KActionCollection {
-    Q_OBJECT
-
-public:
-    explicit ActionCollection(QObject *parent) : KActionCollection(parent) {};
-
-    static void setMainWidget(QWidget *w);
-    static ActionCollection * get();
-    Action * createAction(const QString &name, const QString &text, const char *icon=0, const QString &whatsThis=QString());
-    Action * createAction(const QString &name, const QString &text, const QIcon &icon, const QString &whatsThis=QString());
-
-    void updateToolTips();
-
-Q_SIGNALS:
-    void tooltipUpdated(QAction *);
-};
-
-#else
-
 #include <QList>
 #include <QMap>
 #include <QObject>
 #include <QString>
 
-class QWidget;
+class Action;
 class QAction;
+class QWidget;
+class QIcon;
 
 class ActionCollection : public QObject {
     Q_OBJECT
@@ -145,7 +122,5 @@ private:
     bool _connectHovered;
     bool _connectTriggered;
 };
-
-#endif
 
 #endif

@@ -24,10 +24,6 @@
 #ifndef URLLABEL_H
 #define URLLABEL_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KUrlLabel>
-typedef KUrlLabel UrlLabel;
-#else
 #include <QLabel>
 #include <QCursor>
 
@@ -52,6 +48,5 @@ protected:
 private:
     bool pressed;
 };
-#endif
 
 #endif // URLLABEL_H

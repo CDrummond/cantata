@@ -22,18 +22,12 @@
  */
 
 #include "application.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KUniqueApplication>
-#include <KDE/KAboutData>
-#include <KDE/KCmdLineArgs>
-#else
 #include <QTranslator>
 #include <QTextCodec>
 #include <QLibraryInfo>
 #include <QDir>
 #include <QFile>
 #include <QSettings>
-#endif
 #include "support/utils.h"
 #include "config.h"
 #include "settings.h"
@@ -64,9 +58,7 @@
 #endif
 #include "context/contextwidget.h"
 #include "scrobbling/scrobbler.h"
-#ifndef ENABLE_KDE_SUPPORT
 #include "gui/mediakeys.h"
-#endif
 
 #include <QMutex>
 #include <QMutexLocker>
@@ -92,7 +84,6 @@ static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QSt
     }
 }
 
-#ifndef ENABLE_KDE_SUPPORT
 // Taken from Clementine!
 //
 // We convert from .po files to .qm files, which loses context information.
@@ -141,7 +132,6 @@ static void loadTranslation(const QString &prefix, const QString &path, const QS
     QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
     #endif
 }
-#endif
 
 static void removeOldFiles(const QString &d, const QStringList &types)
 {
@@ -267,11 +257,9 @@ static void installDebugMessageHandler()
         if (dbg&Dbg_Sql) {
             LibraryDb::enableDebug();
         }
-        #ifndef ENABLE_KDE_SUPPORT
         if (dbg&DBG_Other) {
             MediaKeys::enableDebug();
         }
-        #endif
         if (dbg&Dbg_All && logToFile) {
             #if QT_VERSION < 0x050000
             qInstallMsgHandler(cantataQtMsgHandler);
@@ -285,41 +273,6 @@ static void installDebugMessageHandler()
 int main(int argc, char *argv[])
 {
     QThread::currentThread()->setObjectName("GUI");
-    #ifdef ENABLE_KDE_SUPPORT
-    KAboutData aboutData(PACKAGE_NAME, 0,
-                         ki18n("Cantata"), PACKAGE_VERSION_STRING,
-                         ki18n("A KDE client for MPD"),
-                         KAboutData::License_GPL_V3,
-                         ki18n("&copy; 2011-2016 Craig Drummond"),
-                         KLocalizedString(),
-                         "https://github.com/CDrummond/cantata", "craig.p.drummond@gmail.com");
-
-    aboutData.addAuthor(ki18n("Craig Drummond"), ki18n("Maintainer"), "craig.p.drummond@gmail.com");
-    aboutData.addAuthor(ki18n("Piotr Wicijowski"), ki18n("UI Improvements"), "piotr.wicijowski@gmail.com");
-    aboutData.addAuthor(ki18n("Sander Knopper"), ki18n("QtMPC author"), QByteArray(), "http://lowblog.nl");
-    aboutData.addAuthor(ki18n("Roeland Douma"), ki18n("QtMPC author"), QByteArray(), "http://lowblog.nl");
-    aboutData.addAuthor(ki18n("Daniel Selinger"), ki18n("QtMPC author"), QByteArray(), "http://lowblog.nl");
-    aboutData.addAuthor(ki18n("Armin Walland"), ki18n("QtMPC author"), QByteArray(), "http://lowblog.nl");
-    aboutData.addCredit(ki18n("FanArt.tv"), ki18n("Context view backdrops (please consider uploading your own music fan-art to fanart.tv)"), QByteArray(), "www.fanart.tv");
-    aboutData.addCredit(ki18n("Wikipedia"), ki18n("Context view metadata"), QByteArray(), "www.wikipedia.org");
-    aboutData.addCredit(ki18n("Last.fm"), ki18n("Context view metadata"), QByteArray(), "www.last.fm");
-    KCmdLineArgs::init(argc, argv, &aboutData);
-    #ifdef TAGLIB_FOUND
-    KCmdLineOptions options;
-    options.add("+[URL]", ki18n("URL to open"));
-    KCmdLineArgs::addCmdLineOptions(options);
-    KUniqueApplication::addCmdLineOptions();
-    #endif
-    if (!KUniqueApplication::start()) {
-        exit(0);
-    }
-
-    Application app;
-    
-    removeOldFiles();
-    installDebugMessageHandler();
-
-    #else // ENABLE_KDE_SUPPORT
     QCoreApplication::setApplicationName(PACKAGE_NAME);
     QCoreApplication::setOrganizationName(ORGANIZATION_NAME);
 
@@ -369,7 +322,6 @@ int main(int argc, char *argv[])
     app.setActivationWindow(&mw);
     #endif // !defined Q_OS_MAC
     app.loadFiles();
-    #endif // ENABLE_KDE_SUPPORT
 
     return app.exec();
 }

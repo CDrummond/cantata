@@ -89,7 +89,6 @@ void Icon::init(QToolButton *btn, bool setFlat)
     }
 }
 
-#ifndef ENABLE_KDE_SUPPORT
 Icon Icon::getMediaIcon(const QString &name)
 {
     static QList<QIcon::Mode> modes=QList<QIcon::Mode>() << QIcon::Normal << QIcon::Disabled << QIcon::Active << QIcon::Selected;
@@ -107,7 +106,6 @@ Icon Icon::getMediaIcon(const QString &name)
 
     return icn;
 }
-#endif
 
 Icon Icon::create(const QString &name, const QList<int> &sizes, bool andSvg)
 {

@@ -40,9 +40,6 @@ class Thread;
 class NetworkJob;
 class QMutex;
 class QTimer;
-#ifdef ENABLE_KDE_SUPPORT
-class KUrl;
-#endif
 class NetworkAccessManager;
 
 class CoverDownloader : public QObject
@@ -214,11 +211,7 @@ public:
     static const char * imageFormat(const QByteArray &data);
 
     Covers();
-    #ifdef ENABLE_UBUNTU
-    void setFetchCovers(bool f);
-    #else
     void readConfig();
-    #endif
     void stop();
 
     void clearNameCache();

@@ -169,7 +169,6 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
     switch (role) {
-    #ifndef ENABLE_UBUNTU
     case Qt::DecorationRole:
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root:
@@ -183,7 +182,6 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         default:
             return QVariant();
         }
-    #endif
     case Cantata::Role_BriefMainText:
         if (MusicLibraryItem::Type_Album==item->itemType()) {
             return item->data();
@@ -239,17 +237,6 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         default:
             return false;
         }
-    #ifdef ENABLE_UBUNTU
-    case Cantata::Role_Image:
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Album:
-            return static_cast<MusicLibraryItemAlbum *>(item)->cover();
-        case MusicLibraryItem::Type_Artist:
-            return static_cast<MusicLibraryItemArtist *>(item)->cover();
-        default:
-            return QString();
-        }
-    #endif
     case Cantata::Role_CoverSong: {
         QVariant v;
         switch (item->itemType()) {

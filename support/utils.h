@@ -31,18 +31,11 @@
 #include <QString>
 #include <QLatin1Char>
 #include <QDir>
-#ifndef CANTATA_WEB
 #include <QFont>
 #include <QPainterPath>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-#include <KDE/KLocale>
-#include <KDE/KStandardDirs>
-#endif
 #include <stdlib.h>
 #ifdef Q_OS_WIN
 #include <time.h>
-#endif
 #endif
 #include <sys/time.h>
 
@@ -81,7 +74,6 @@ namespace Utils
     inline void msleep(int msecs) { Thread::msleep(msecs); }
     inline void sleep() { msleep(100); }
 
-    #ifndef CANTATA_WEB
     extern QString strippedText(QString s);
     extern QString stripAcceleratorMarkers(QString label);
 
@@ -93,22 +85,12 @@ namespace Utils
     extern gid_t getGroupId(const char *groupName="users"); // Return 0 if user is not in group, otherwise returns group ID
     #endif
     extern void setFilePerms(const QString &file, const char *groupName="users");
-    #ifdef ENABLE_KDE_SUPPORT
-    inline bool makeDir(const QString &dir, int mode) { return KStandardDirs::makeDir(dir, mode); }
-    #else
     extern bool makeDir(const QString &dir, int mode);
-    #endif
     extern bool createWorldReadableDir(const QString &dir, const QString &base, const char *groupName="users");
 
-    #ifdef ENABLE_KDE_SUPPORT
-    inline QString findExe(const QString &appname, const QString &pathstr=QString()) { return KStandardDirs::findExe(appname, pathstr); }
-    inline QString formatByteSize(double size) { return KGlobal::locale()->formatByteSize(size, 1); }
-    inline QString formatNumber(double number, int precision) { return KGlobal::locale()->formatNumber(number, precision); }
-    #else
     extern QString findExe(const QString &appname, const QString &pathstr=QString());
     extern QString formatByteSize(double size);
     inline QString formatNumber(double number, int precision) { return QString::number(number, 'f', precision); }
-    #endif
     extern QString formatDuration(const quint32 totalseconds);
     extern QString formatTime(const quint32 seconds, bool zeroIsUnknown=false);
 
@@ -144,8 +126,6 @@ namespace Utils
     extern QPainterPath buildPath(const QRectF &r, double radius);
     extern QColor clampColor(const QColor &col);
     extern QColor monoIconColor();
-
-    #endif
 }
 
 #endif

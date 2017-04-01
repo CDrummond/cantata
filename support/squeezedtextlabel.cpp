@@ -23,17 +23,6 @@
 
 #include "squeezedtextlabel.h"
 
-#ifdef ENABLE_KDE_SUPPORT
-
-SqueezedTextLabel::SqueezedTextLabel(QWidget *p)
-        : KSqueezedTextLabel(p)
-{
-    setTextElideMode(isRightToLeft() ? Qt::ElideLeft : Qt::ElideRight);
-    setAlignment((isRightToLeft() ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
-}
-
-#else
-
 SqueezedTextLabel::SqueezedTextLabel(QWidget *p)
     : QLabel(p)
 {
@@ -61,5 +50,3 @@ void SqueezedTextLabel::elideText()
         setToolTip(QString());
     }
 }
-
-#endif

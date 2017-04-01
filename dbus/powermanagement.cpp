@@ -23,15 +23,10 @@
 
 #include "powermanagement.h"
 #include "support/globalstatic.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/Solid/PowerManagement>
-#include <kdeversion.h>
-#else
 #include "inhibitinterface.h"
 #include "policyagentinterface.h"
 #include "upowerinterface.h"
 #include "login1interface.h"
-#endif
 #include "support/localize.h"
 #include "mpd-interface/mpdstatus.h"
 
@@ -41,11 +36,6 @@ PowerManagement::PowerManagement()
     : inhibitSuspendWhilstPlaying(false)
     , cookie(-1)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    #if KDE_IS_VERSION(4, 7, 0)
-    connect(Solid::PowerManagement::notifier(), SIGNAL(resumingFromSuspend()), this, SIGNAL(resuming()));
-    #endif
-    #else
     policy = new OrgKdeSolidPowerManagementPolicyAgentInterface(OrgKdeSolidPowerManagementPolicyAgentInterface::staticInterfaceName(),
                                                                 QLatin1String("/org/kde/Solid/PowerManagement/PolicyAgent"),
                                                                 QDBusConnection::sessionBus(), this);
@@ -58,7 +48,6 @@ PowerManagement::PowerManagement()
                                                       QLatin1String("/org/freedesktop/login1"), QDBusConnection::systemBus(), this);
     connect(upower, SIGNAL(Resuming()), this, SIGNAL(resuming()));
     connect(login1, SIGNAL(PrepareForSleep(bool)), this, SLOT(prepareForSleep(bool)));
-    #endif
 }
 
 void PowerManagement::setInhibitSuspend(bool i)
@@ -85,9 +74,6 @@ void PowerManagement::beginSuppressingSleep()
         return;
     }
     QString reason=i18n("Cantata is playing a track");
-    #ifdef ENABLE_KDE_SUPPORT
-    cookie=Solid::PowerManagement::beginSuppressingSleep(reason);
-    #else
     QDBusReply<uint> reply;
     if (policy->isValid()) {
         reply = policy->AddInhibition((uint)1, QCoreApplication::applicationName(), reason);
@@ -96,7 +82,6 @@ void PowerManagement::beginSuppressingSleep()
         reply = inhibit->Inhibit(QCoreApplication::applicationName(), reason);
     }
     cookie=reply.isValid() ? reply : -1;
-    #endif
 }
 
 void PowerManagement::stopSuppressingSleep()
@@ -105,16 +90,12 @@ void PowerManagement::stopSuppressingSleep()
         return;
     }
 
-    #ifdef ENABLE_KDE_SUPPORT
-    Solid::PowerManagement::stopSuppressingSleep(cookie);
-    #else
     if (policy->isValid()) {
         policy->ReleaseInhibition(cookie);
     } else {
         // Fallback to the fd.o Inhibit interface
         inhibit->UnInhibit(cookie);
     }
-    #endif
     cookie=-1;
 }
 
@@ -131,11 +112,7 @@ void PowerManagement::mpdStatusUpdated()
 
 void PowerManagement::prepareForSleep(bool s)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    Q_UNUSED(s)
-    #else
     if (!s) {
         emit resuming();
     }
-    #endif
 }

@@ -39,11 +39,7 @@ OtherSettings::OtherSettings(QWidget *p)
     contextBackdrop_artist->setProperty(constValueProperty, PlayQueueView::BI_Cover);
     contextBackdrop_custom->setProperty(constValueProperty, PlayQueueView::BI_Custom);
     contextBackdropFile->setDirMode(false);
-    #ifdef ENABLE_KDE_SUPPORT
-    contextBackdropFile->setFilter("image/jpeg image/png");
-    #else
     contextBackdropFile->setFilter(i18n("Images (*.png *.jpg)"));
-    #endif
     int labelWidth=qMax(fontMetrics().width(QLatin1String("100%")), fontMetrics().width(i18nc("pixels", "10px")));
     contextBackdropOpacityLabel->setFixedWidth(labelWidth);
     contextBackdropBlurLabel->setFixedWidth(labelWidth);

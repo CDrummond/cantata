@@ -33,19 +33,15 @@
 #include "widgets/itemview.h"
 #include "db/librarydb.h"
 #include <QComboBox>
-#ifndef ENABLE_KDE_SUPPORT
 #include <QDir>
 #include <QMap>
 #include <QRegExp>
 #include <QSet>
-#endif
 #ifdef QT_QTDBUS_FOUND
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #endif
-#ifndef ENABLE_KDE_SUPPORT
 #include <QSystemTrayIcon>
-#endif
 #include <QSysInfo>
 
 #define REMOVE(w) \
@@ -111,9 +107,7 @@ static const char * constSep=",";
 
 InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
-    #ifndef ENABLE_KDE_SUPPORT
     , loadedLangs(false)
-    #endif
 {
     #ifdef Q_OS_MAC
     // OSX always displays an entry in the taskbar - and the tray seems to confuse things.
@@ -127,14 +121,12 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     bool enableNotifications=true;
     #endif // QT_QTDBUS_FOUND
     bool enableTrayItem=true;
-    #ifndef ENABLE_KDE_SUPPORT
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
         enableTrayItem=false;
         #ifndef QT_QTDBUS_FOUND
         enableNotifications=false;
         #endif
     }
-    #endif // !ENABLE_KDE_SUPPORT
     #endif // Q_MAC_OS
 
     setupUi(this);
@@ -164,12 +156,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #endif
     connect(views, SIGNAL(itemChanged(QListWidgetItem*)), SLOT(viewItemChanged(QListWidgetItem*)));
 
-    #ifdef ENABLE_KDE_SUPPORT
-    REMOVE(lang)
-    REMOVE(langLabel)
-    REMOVE(langNoteLabel)
-    #endif
-
     sbStyle->addItem(i18n("Large"), FancyTabWidget::Large);
     sbStyle->addItem(i18n("Small"), FancyTabWidget::Small);
     sbStyle->addItem(i18n("Tab-bar"), FancyTabWidget::Tab);
@@ -182,11 +168,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     playQueueBackground_cover->setProperty(constValueProperty, PlayQueueView::BI_Cover);
     playQueueBackground_custom->setProperty(constValueProperty, PlayQueueView::BI_Custom);
     playQueueBackgroundFile->setDirMode(false);
-    #ifdef ENABLE_KDE_SUPPORT
-    playQueueBackgroundFile->setFilter("image/jpeg image/png");
-    #else
     playQueueBackgroundFile->setFilter(i18n("Images (*.png *.jpg)"));
-    #endif
     int labelWidth=qMax(fontMetrics().width(QLatin1String("100%")), fontMetrics().width(i18nc("pixels", "10px")));
     playQueueBackgroundOpacityLabel->setFixedWidth(labelWidth);
     playQueueBackgroundBlurLabel->setFixedWidth(labelWidth);
@@ -368,11 +350,9 @@ void InterfaceSettings::save()
         Settings::self()->saveStartupState(Settings::SS_Previous);
     }
     Settings::self()->saveFetchCovers(fetchCovers->isChecked());
-    #ifndef ENABLE_KDE_SUPPORT
     if (loadedLangs && lang) {
         Settings::self()->saveLang(lang->itemData(lang->currentIndex()).toString());
     }
-    #endif
 
     QStringList hiddenPages;
     for (int i=0; i<views->count(); ++i) {
@@ -393,7 +373,6 @@ void InterfaceSettings::save()
     }
 }
 
-#ifndef ENABLE_KDE_SUPPORT
 static bool localeAwareCompare(const QString &a, const QString &b)
 {
     return a.localeAwareCompare(b) < 0;
@@ -462,7 +441,6 @@ void InterfaceSettings::showEvent(QShowEvent *e)
     }
     QWidget::showEvent(e);
 }
-#endif
 
 void InterfaceSettings::showPage(const QString &page)
 {
@@ -519,9 +497,7 @@ void InterfaceSettings::enableStartupState()
 
 void InterfaceSettings::langChanged()
 {
-    #ifndef ENABLE_KDE_SUPPORT
     langNoteLabel->setOn(lang->itemData(lang->currentIndex()).toString()!=Settings::self()->lang());
-    #endif
 }
 
 void InterfaceSettings::viewItemChanged(QListWidgetItem *changedItem)

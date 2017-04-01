@@ -23,22 +23,6 @@
 #ifndef ACTION_H_
 #define ACTION_H_
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KAction>
-class Action : public KAction {
-    Q_OBJECT
-
-public:
-    static void initIcon(QAction *act);
-    static void updateToolTip(QAction *act);
-    static QString settingsText(QAction *act);
-    static const char * constTtForSettings;
-
-    explicit Action(QObject *parent);
-    Action(const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
-    Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
-};
-#else
 #include <QShortcut>
 #include <QAction>
 
@@ -87,6 +71,5 @@ private slots:
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Action::ShortcutTypes)
-#endif
 
 #endif

@@ -26,7 +26,6 @@
 
 #include "proxymodel.h"
 
-
 class StreamsProxyModel : public ProxyModel
 {
 public:

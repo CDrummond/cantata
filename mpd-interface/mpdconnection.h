@@ -405,12 +405,10 @@ private:
     bool recursivelyListDir(const QString &dir, QList<Song> &songs);
     QStringList getPlaylistFiles(const QString &name);
     QStringList getAllFiles(const QString &dir);
-    #ifndef CANTATA_WEB
     bool checkRemoteDynamicSupport();
     bool subscribe(const QByteArray &channel);
     void setupRemoteDynamic();
     void readRemoteDynamicMessages();
-    #endif
     bool fadingVolume();
     bool startVolumeFade();
     void stopVolumeFade();
@@ -435,9 +433,7 @@ private:
     MpdSocket sock;
     MpdSocket idleSocket;
     QTimer *connTimer;
-    #ifndef CANTATA_WEB
     QByteArray dynamicId;
-    #endif
 
     // The three items are used so that we can do quick playqueue updates...
     QList<qint32> playQueueIds;

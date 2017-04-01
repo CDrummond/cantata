@@ -26,18 +26,14 @@
 
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
-#ifndef CANTATA_WEB
 #include "models/streamsmodel.h"
-#endif
 #ifdef ENABLE_SIMPLE_MPD_SUPPORT
 #include "mpduser.h"
 #include "gui/settings.h"
 #endif
 #include "support/localize.h"
 #include "support/globalstatic.h"
-#if !defined ENABLE_UBUNTU && !defined CANTATA_WEB
 #include "support/configuration.h"
-#endif
 #include <QStringList>
 #include <QTimer>
 #include <QDir>
@@ -87,10 +83,8 @@ static const QByteArray constIdleOutputValue("output");
 static const QByteArray constIdleStickerValue("sticker");
 static const QByteArray constIdleSubscriptionValue("subscription");
 static const QByteArray constIdleMessageValue("message");
-#ifndef CANTATA_WEB
 static const QByteArray constDynamicIn("cantata-dynamic-in");
 static const QByteArray constDynamicOut("cantata-dynamic-out");
-#endif
 static const QByteArray constRatingSticker("rating");
 
 static inline int socketTimeout(int dataSize)
@@ -274,12 +268,10 @@ MPDConnection::MPDConnection()
     #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
     #endif
-    #if !defined ENABLE_UBUNTU && !defined CANTATA_WEB
     Configuration cfg;
     maxFilesPerAddCommand=cfg.get("mpdListSize", 10000, 100, 65535);
     seekStep=cfg.get("seekStep", 5, 2, 60);
     MPDParseUtils::setSingleTracksFolders(cfg.get("singleTracksFolders", QStringList()).toSet());
-    #endif
 }
 
 MPDConnection::~MPDConnection()
@@ -379,10 +371,8 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
             }
 
             if (enableIdle) {
-                #ifndef CANTATA_WEB
                 dynamicId.clear();
                 setupRemoteDynamic();
-                #endif
                 connect(&socket, SIGNAL(readyRead()), this, SLOT(idleDataReady()), Qt::QueuedConnection);
                 connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)), Qt::QueuedConnection);
                 DBUG << (void *)(&socket) << "Enabling idle";
@@ -609,12 +599,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
             emit stateChanged(true);
             break;
         default:
-            #ifdef CANTATA_WEB
-            qWarning() << "Could not connect to MPD" << details.hostname << details.port;
-            ::exit(-1);
-            #else
             emit error(errorString(status), true);
-            #endif
         }
     } else if (diffName) {
          emit stateChanged(true);
@@ -1525,16 +1510,13 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
                 outputs();
             } else if (constIdleStickerValue==value) {
                 emit stickerDbChanged();
-            }
-            #ifndef CANTATA_WEB
-            else if (constIdleSubscriptionValue==value) {
+            } else if (constIdleSubscriptionValue==value) {
                 //if (dynamicId.isEmpty()) {
                     setupRemoteDynamic();
                 //}
             } else if (constIdleMessageValue==value) {
                 readRemoteDynamicMessages();
             }
-            #endif
         }
     }
 
@@ -1860,7 +1842,6 @@ void MPDConnection::sendClientMessage(const QString &channel, const QString &msg
 
 void MPDConnection::sendDynamicMessage(const QStringList &msg)
 {
-    #ifndef CANTATA_WEB
     // Check whether cantata-dynamic is still alive, by seeing if its channel is still open...
     if (1==msg.count() && QLatin1String("ping")==msg.at(0)) {
         Response response=sendCommand("channels");
@@ -1888,9 +1869,6 @@ void MPDConnection::sendDynamicMessage(const QStringList &msg)
     if (!sendCommand("sendmessage "+constDynamicIn+" "+data).ok) {
         emit dynamicSupport(false);
     }
-    #else
-    Q_UNUSED(msg)
-    #endif
 }
 
 void MPDConnection::moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)
@@ -2039,7 +2017,6 @@ QStringList MPDConnection::getAllFiles(const QString &dir)
     return files;
 }
 
-#ifndef CANTATA_WEB
 bool MPDConnection::checkRemoteDynamicSupport()
 {
     if (ver>=CANTATA_MAKE_VERSION(0,17,0)) {
@@ -2123,8 +2100,6 @@ void MPDConnection::readRemoteDynamicMessages()
         }
     }
 }
-
-#endif
 
 int MPDConnection::getVolume()
 {

@@ -38,10 +38,8 @@ public:
     PlayQueueProxyModel(QObject *parent = 0);
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
-    #ifndef ENABLE_UBUNTU
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
-    #endif
 };
 
 #endif

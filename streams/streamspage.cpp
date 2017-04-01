@@ -41,12 +41,8 @@
 #include "models/playqueuemodel.h"
 #include "digitallyimportedsettings.h"
 #include <QToolButton>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KFileDialog>
-#else
 #include <QFileDialog>
 #include <QDir>
-#endif
 #include <QMenu>
 #include <QFileInfo>
 #if QT_VERSION >= 0x050000
@@ -257,12 +253,8 @@ void StreamsBrowsePage::diSettings()
 
 void StreamsBrowsePage::importXml()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.xml *.xml.gz *.cantata|XML Streams"), this, i18n("Import Streams"));
-    #else
     QString fileName=QFileDialog::getOpenFileName(this, i18n("Import Streams"), QDir::homePath(),
                                                   i18n("XML Streams (*.xml *.xml.gz *.cantata)"));
-    #endif
 
     if (fileName.isEmpty()) {
         return;
@@ -273,11 +265,7 @@ void StreamsBrowsePage::importXml()
 void StreamsBrowsePage::exportXml()
 {
     QLatin1String ext(".xml.gz");
-    #ifdef ENABLE_KDE_SUPPORT
-    QString fileName=KFileDialog::getSaveFileName(QLatin1String("streams")+ext, i18n("*.xml|XML Streams"), this, i18n("Export Streams"));
-    #else
     QString fileName=QFileDialog::getSaveFileName(this, i18n("Export Streams"), QDir::homePath()+QLatin1String("/streams")+ext, i18n("XML Streams (*.xml.gz)"));
-    #endif
 
     if (fileName.isEmpty()) {
         return;

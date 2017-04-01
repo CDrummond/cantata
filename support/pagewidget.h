@@ -25,31 +25,6 @@
 #define PAGEWIDGET_H
 
 #include "icon.h"
-
-//#ifdef ENABLE_KDE_SUPPORT
-//#include <KDE/KPageWidget>
-//#include <QTreeView>
-//typedef KPageWidgetItem PageWidgetItem;
-
-//class PageWidget : public KPageWidget
-//{
-//    Q_OBJECT
-//public:
-//    PageWidget(QWidget *p, bool listView=false, bool headers=true);
-//    virtual ~PageWidget() { }
-
-//    PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
-//    QAbstractItemView * createView();
-//    bool showPageHeader() const { return showHeaders; }
-
-//Q_SIGNALS:
-//    void currentPageChanged();
-
-//private:
-//    bool showHeaders;
-//};
-
-//#else
 #include <QWidget>
 #include <QMap>
 
@@ -92,7 +67,5 @@ private:
     QStackedWidget *stack;
     QMap<QListWidgetItem *, PageWidgetItem*> pages;
 };
-
-//#endif
 
 #endif

@@ -58,10 +58,8 @@ public:
     ~SearchModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &) const;
-    #ifndef ENABLE_UBUNTU
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole);
-    #endif
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &) const { return COL_COUNT; }
     QVariant data(const QModelIndex &, int) const;
@@ -69,10 +67,8 @@ public:
 
     QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const;
     QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists=false) const;
-    #ifndef ENABLE_UBUNTU
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     QStringList mimeTypes() const;
-    #endif
 
     void refresh();
     virtual void clear();
@@ -94,9 +90,7 @@ protected:
     QList<Song> songList;
     QString currentKey;
     QString currentValue;
-    #ifndef ENABLE_UBUNTU
     QMap<int, int> alignments;
-    #endif
 };
 
 #endif

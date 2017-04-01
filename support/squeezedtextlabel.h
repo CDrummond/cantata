@@ -24,14 +24,6 @@
 #ifndef SQUEEZEDTEXTLABEL_H
 #define SQUEEZEDTEXTLABEL_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KSqueezedTextLabel>
-class SqueezedTextLabel : public KSqueezedTextLabel
-{
-public:
-    SqueezedTextLabel(QWidget *p);
-};
-#else
 #include <QLabel>
 #include <QFontMetrics>
 class QResizeEvent;
@@ -61,6 +53,5 @@ private:
     QString originalText;
     Qt::TextElideMode elideMode;
 };
-#endif
 
 #endif // SQUEEZEDTEXTLABEL_H

@@ -24,9 +24,7 @@
 #include "gtkproxystyle.h"
 #include "gtkstyle.h"
 #include "shortcuthandler.h"
-#ifndef ENABLE_KDE_SUPPORT
 #include "acceleratormanager.h"
-#endif
 #include <QSpinBox>
 #include <QAbstractScrollArea>
 #include <QAbstractItemView>
@@ -35,9 +33,7 @@
 #include <QApplication>
 #include <QPainter>
 
-#ifndef ENABLE_KDE_SUPPORT
 static const char * constAccelProp="catata-accel";
-#endif
 
 static inline void addEventFilter(QObject *object, QObject *filter)
 {
@@ -72,12 +68,10 @@ int GtkProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const Q
 
 void GtkProxyStyle::polish(QWidget *widget)
 {
-    #ifndef ENABLE_KDE_SUPPORT
     if (widget && qobject_cast<QMenu *>(widget) && !widget->property(constAccelProp).isValid()) {
         AcceleratorManager::manage(widget);
         widget->setProperty(constAccelProp, true);
     }
-    #endif
     TouchProxyStyle::polish(widget);
 }
 

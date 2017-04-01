@@ -27,12 +27,10 @@
 #include <QObject>
 #include <QString>
 
-#ifndef ENABLE_KDE_SUPPORT
 class OrgKdeSolidPowerManagementPolicyAgentInterface;
 class OrgFreedesktopPowerManagementInhibitInterface;
 class OrgFreedesktopUPowerInterface;
 class OrgFreedesktopLogin1ManagerInterface;
-#endif
     
 class PowerManagement : public QObject
 {
@@ -56,12 +54,10 @@ private Q_SLOTS:
 private:
     bool inhibitSuspendWhilstPlaying;
     int cookie;
-    #ifndef ENABLE_KDE_SUPPORT
     OrgKdeSolidPowerManagementPolicyAgentInterface *policy;
     OrgFreedesktopPowerManagementInhibitInterface *inhibit;
     OrgFreedesktopUPowerInterface *upower;
     OrgFreedesktopLogin1ManagerInterface *login1;
-    #endif
 };
 
 #endif

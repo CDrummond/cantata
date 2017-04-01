@@ -69,7 +69,6 @@
 
 GLOBAL_STATIC(PlayQueueModel, instance)
 
-#ifndef ENABLE_UBUNTU
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
 const QLatin1String PlayQueueModel::constUriMimeType("text/uri-list");
@@ -187,7 +186,6 @@ QString PlayQueueModel::headerText(int col)
     default:            return QString();
     }
 }
-#endif
 
 PlayQueueModel::PlayQueueModel(QObject *parent)
     : QAbstractItemModel(parent)
@@ -197,16 +195,10 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     , mpdState(MPDState_Inactive)
     , stopAfterCurrent(false)
     , stopAfterTrackId(-1)
-    #ifdef ENABLE_UBUNTU
-    , undoLimit(0)
-    #else
     , undoLimit(Settings::self()->undoSteps())
-    #endif
     , undoEnabled(undoLimit>0)
     , lastCommand(Cmd_Other)
-    #ifndef ENABLE_UBUNTU
     , dropAdjust(0)
-    #endif
 {
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
@@ -237,11 +229,6 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     #if defined ENABLE_MODEL_TEST
     new ModelTest(this, this);
     #endif
-
-    #ifdef ENABLE_UBUNTU
-    connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), this, 
-            SLOT(setCover(const Song &, const QImage &, const QString &)));
-    #else
 
     UNITY_MENU_ICON_CHECK
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
@@ -280,7 +267,6 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
     alignments[COL_TRACK]=alignments[COL_LENGTH]=alignments[COL_DISC]=alignments[COL_YEAR]=alignments[COL_PRIO]=int(Qt::AlignVCenter|Qt::AlignRight);
     alignments[COL_RATING]=int(Qt::AlignVCenter|Qt::AlignHCenter);
-    #endif
 }
 
 PlayQueueModel::~PlayQueueModel()
@@ -298,7 +284,6 @@ QModelIndex PlayQueueModel::parent(const QModelIndex &idx) const
     return QModelIndex();
 }
 
-#ifndef ENABLE_UBUNTU
 QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (Qt::Horizontal==orientation) {
@@ -348,7 +333,6 @@ bool PlayQueueModel::setHeaderData(int section, Qt::Orientation orientation, con
     }
     return false;
 }
-#endif
 
 int PlayQueueModel::rowCount(const QModelIndex &idx) const
 {
@@ -369,21 +353,6 @@ static QString basicPath(const Song &song)
     int marker=path.indexOf(QLatin1Char('#'));
     return -1==marker ? path : path.left(marker);
 }
-
-#ifdef ENABLE_UBUNTU
-static const QString constDefaultCover=QLatin1String("qrc:/album.svg");
-
-//Expose role names, so that they can be accessed via QML
-QHash<int, QByteArray> PlayQueueModel::roleNames() const
-{
-    QHash<int, QByteArray> roles;
-    roles[Cantata::Role_MainText] = "mainText";
-    roles[Cantata::Role_SubText] = "subText";
-    roles[Cantata::Role_Image] = "image";
-    roles[Cantata::Role_Time] = "time";
-    return roles;
-}
-#endif
 
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 {
@@ -408,22 +377,6 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         const Song &s=songs.at(index.row());
         return s.time>0 ? Utils::formatTime(s.time) : QLatin1String("");
     }
-    #ifdef ENABLE_UBUNTU
-    case Cantata::Role_Image: {
-        Song s=songs.at(index.row());
-        QMap<quint16, QString>::ConstIterator it=covers.find(s.key);
-        if (it!=covers.constEnd()) {
-            return it.value().isEmpty() ? constDefaultCover : it.value();
-        }
-        QString fileName=Covers::self()->requestImage(s).fileName;
-        covers.insert(s.key, fileName);
-        if (fileName.isEmpty()) {
-            coverRequests.insert(s.key, s);
-            return constDefaultCover;
-        }
-        return fileName;
-    }
-    #endif
     case Cantata::Role_IsCollection:
         return false;
     case Cantata::Role_CollectionId:
@@ -611,7 +564,6 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return s.toolTip();
         }
     }
-    #ifndef ENABLE_UBUNTU
     case Qt::TextAlignmentRole:
         return alignments[index.column()];
     case Cantata::Role_Decoration: {
@@ -628,7 +580,6 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         }
         break;
     }
-    #endif
     default:
         break;
     }
@@ -636,7 +587,6 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-#ifndef ENABLE_UBUNTU
 bool PlayQueueModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (Cantata::Role_DropAdjust==role) {
@@ -646,7 +596,6 @@ bool PlayQueueModel::setData(const QModelIndex &index, const QVariant &value, in
         return QAbstractItemModel::setData(index, value, role);
     }
 }
-#endif
 
 Qt::DropActions PlayQueueModel::supportedDropActions() const
 {
@@ -661,7 +610,6 @@ Qt::ItemFlags PlayQueueModel::flags(const QModelIndex &index) const
     return Qt::ItemIsDropEnabled;
 }
 
-#ifndef ENABLE_UBUNTU
 /**
  * @return A QStringList with the mimetypes we support
  */
@@ -733,18 +681,13 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
     }
     return false;
 }
-#endif
 
 void PlayQueueModel::load(const QStringList &urls)
 {
-    #ifdef ENABLE_UBUNTU
-    Q_UNUSED(urls)
-    #else
     QStringList useable=parseUrls(urls, false);
     if (useable.count()) {
         addItems(useable, songs.count(), songs.isEmpty(), 0);
     }
-    #endif
 }
 
 void PlayQueueModel::addItems(const QStringList &items, int row, int action, quint8 priority)
@@ -922,24 +865,15 @@ void PlayQueueModel::update(const QList<Song> &songList, bool isComplete)
     currentSongRowNum=-1;
     if (songList.isEmpty()) {
         Song::clearKeyStore(MPDParseUtils::Loc_PlayQueue);
-        #ifdef ENABLE_UBUNTU
-        covers.clear();
-        coverRequests.clear();
-        #endif
     }
 
-    #ifndef ENABLE_UBUNTU
     removeDuplicatesAction->setEnabled(songList.count()>1);
-    #endif
     QList<Song> prev;
     if (undoEnabled) {
         prev=songs;
     }
 
     QSet<qint32> newIds;
-    #ifdef ENABLE_UBUNTU
-    QSet<quint16> currentKeys;
-    #endif
     foreach (const Song &s, songList) {
         newIds.insert(s.id);
     }
@@ -957,12 +891,6 @@ void PlayQueueModel::update(const QList<Song> &songList, bool isComplete)
         if (songList.isEmpty()) {
             stopAfterTrackId=-1;
         }
-        
-        #ifdef ENABLE_UBUNTU
-        foreach (const Song &s, songs) {
-            currentKeys.insert(s.key);
-        }
-        #endif
     } else {
         time = 0;
 
@@ -986,9 +914,6 @@ void PlayQueueModel::update(const QList<Song> &songList, bool isComplete)
                 if (-1==existingPos) {
                     beginInsertRows(QModelIndex(), i, i);
                     songs.insert(i, s);
-                    #ifdef ENABLE_UBUNTU
-                    currentKeys.insert(s.key);
-                    #endif
                     endInsertRows();
                 } else {
                     beginMoveRows(QModelIndex(), existingPos, existingPos, QModelIndex(), i>existingPos ? i+1 : i);
@@ -996,22 +921,13 @@ void PlayQueueModel::update(const QList<Song> &songList, bool isComplete)
 //                     old.pos=s.pos;
                     s.rating=old.rating;
                     songs.insert(i, isEmpty ? old : s);
-                    #ifdef ENABLE_UBUNTU
-                    currentKeys.insert(isEmpty ? old.key : s.key);
-                    #endif
                     endMoveRows();
                 }
             } else if (isEmpty) {
                 s=currentSongAtPos;
-                #ifdef ENABLE_UBUNTU
-                currentKeys.insert(s.key);
-                #endif
             } else {
                 s.key=currentSongAtPos.key;
                 s.rating=currentSongAtPos.rating;
-                #ifdef ENABLE_UBUNTU
-                currentKeys.insert(s.key);
-                #endif
                 songs.replace(i, s);
                 if (s.title!=currentSongAtPos.title || s.artist!=currentSongAtPos.artist || s.name()!=currentSongAtPos.name()) {
                     emit dataChanged(index(i, 0), index(i, columnCount(QModelIndex())-1));
@@ -1041,18 +957,8 @@ void PlayQueueModel::update(const QList<Song> &songList, bool isComplete)
     }
 
     saveHistory(prev);
-    #ifdef ENABLE_UBUNTU
-    QSet<quint16> removedKeys=covers.keys().toSet()-currentKeys;
-    if (!removedKeys.isEmpty()) {
-        foreach (quint16 k, removedKeys) {
-            covers.remove(k);
-            coverRequests.remove(k);
-        }
-    }
-    #else
     shuffleAction->setEnabled(songs.count()>1);
     sortAction->setEnabled(songs.count()>1);
-    #endif
 }
 
 void PlayQueueModel::setStopAfterTrack(qint32 track)
@@ -1150,9 +1056,7 @@ void PlayQueueModel::enableUndo(bool e)
         undoStack.clear();
         redoStack.clear();
     }
-    #ifndef ENABLE_UBUNTU
     controlActions();
-    #endif
 }
 
 static PlayQueueModel::UndoItem getState(const QList<Song> &songs)
@@ -1231,13 +1135,10 @@ void PlayQueueModel::saveHistory(const QList<Song> &prevList)
         }
     }
 
-    #ifndef ENABLE_UBUNTU
     controlActions();
-    #endif
     lastCommand=Cmd_Other;
 }
 
-#ifndef ENABLE_UBUNTU
 void PlayQueueModel::controlActions()
 {
     undoAction->setEnabled(!undoStack.isEmpty());
@@ -1310,11 +1211,9 @@ static bool titleSort(const Song *s1, const Song *s2)
     int c=s1->title.localeAwareCompare(s2->title);
     return c<0 || (c==0 && (*s1)<(*s2));
 }
-#endif
 
 void PlayQueueModel::sortBy()
 {
-    #ifndef ENABLE_UBUNTU
     Action *act=qobject_cast<Action *>(sender());
     if (act) {
         QString key=act->property(constSortByKey).toString();
@@ -1347,7 +1246,6 @@ void PlayQueueModel::sortBy()
         }
         emit setOrder(positions);
     }
-    #endif
 }
 
 void PlayQueueModel::removeDuplicates()
@@ -1399,60 +1297,6 @@ void PlayQueueModel::stickerDbChanged()
             requests.insert(song.file);
         }
     }
-}
-
-void PlayQueueModel::setCover(const Song &song, const QImage &img, const QString &file)
-{
-    Q_UNUSED(img)
-    #ifdef ENABLE_UBUNTU
-    if (file.isEmpty() || coverRequests.isEmpty()) {
-        return;
-    }
-    
-    // In case of multi-disc albums we will have multiple 'keys' mapped to a single artist+album combo.
-    // Therefore, we need to find all keys that have this mapping.
-    //
-    // Also, library and albums models might have requested the cover at the same time as playqueue, in which
-    // case the incomming song would have no key set
-    QList<quint16> keys;
-    QMap<quint16, Song>::ConstIterator it=coverRequests.constBegin();
-    QMap<quint16, Song>::ConstIterator end=coverRequests.constEnd();
-    for (; it!=end; ++it) {
-        if (song.albumArtist()==it.value().albumArtist() && song.album==it.value().album) {
-            keys.append(it.key());
-        }
-    }
-
-    foreach (quint16 key, keys) {
-        coverRequests.remove(key);
-        QMap<quint16, QString>::ConstIterator it=covers.find(key);
-        if (it!=covers.end() && it.value().isEmpty()) {
-            coverRequests.remove(it.key());
-            covers[key]="file://"+file;
-            int start=-1;
-            int end=-1;
-            for (int i=0; i<songs.size(); ++i) {
-                if (songs.at(i).key==key) {
-                    if (-1==start) {
-                        start=end=i;
-                    } else {
-                        end++;
-                    }
-                } else if (-1!=end) {
-                    emit dataChanged(index(start, 0), index(end, columnCount(QModelIndex())-1));
-                    start=end=-1;
-                }
-            }
-            if (-1!=end) {
-                emit dataChanged(index(start, 0), index(end, columnCount(QModelIndex())-1));
-                start=end=-1;
-            }
-        }
-    }
-    #else
-    Q_UNUSED(song)
-    Q_UNUSED(file)
-    #endif
 }
 
 void PlayQueueModel::undo()

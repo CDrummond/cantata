@@ -36,15 +36,11 @@
 #ifdef ENABLE_PROXY_CONFIG
 #include "network/proxysettings.h"
 #endif
-#ifndef ENABLE_KDE_SUPPORT
 #include "shortcutssettingspage.h"
-#endif
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "devices/audiocdsettings.h"
 #endif
-#ifndef ENABLE_KDE_SUPPORT
 #include "shortcutssettingspage.h"
-#endif
 #include "scrobbling/scrobblingsettings.h"
 #include <QDesktopWidget>
 #include <QTimer>
@@ -91,12 +87,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     proxy->load();
     addPage(QLatin1String("proxy"), proxy, i18n("Proxy"), Icon("preferences-system-network"), i18nc("Qt-only", "Proxy Settings"));
     #endif
-    #ifndef ENABLE_KDE_SUPPORT
     shortcuts = new ShortcutsSettingsPage(0);
     addPage(QLatin1String("shortcuts"), shortcuts, i18nc("Qt-only", "Shortcuts"), Icon(QStringList() << "preferences-desktop-keyboard" << "keyboard"),
             i18nc("Qt-only", "Keyboard Shortcut Settings"));
     shortcuts->load();
-    #endif
     addPage(QLatin1String("cache"), cache, i18n("Cache"), Icon(QStringList() << "folder-temp" << "folder"), i18n("Cached Items"));
     addPage(QLatin1String("custom"), custom, i18n("Custom Actions"), Icon(QStringList() << "fork" << "gtk-execute"), i18n("Custom Actions"));
     #ifdef Q_OS_MAC
@@ -135,12 +129,10 @@ void PreferencesDialog::writeSettings()
     playback->save();
     files->save();
     interface->save();
-    #ifndef ENABLE_KDE_SUPPORT
     #ifdef ENABLE_PROXY_CONFIG
     proxy->save();
     #endif
     shortcuts->save();
-    #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd->save();
     #endif

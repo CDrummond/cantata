@@ -17,22 +17,6 @@ Qt5
 4. make
 5. sudo make install
 
-KDE4
-----
-1. mkdir build
-2. cd build
-3. cmake .. -DENABLE_KDE=ON
-4. make
-5. sudo make install
-
-Ubuntu  **NOTE: No longer actively maintained**
-------
-1. mkdir build
-2. cd build
-3. cmake .. -DENABLE_UBUNTU_COMMAND_LINE=ON
-4. make
-5. make install
-6. click build click
 
 Mac/Windows
 -----------
@@ -89,13 +73,6 @@ The following options may be passed to CMake:
         really works under Windows.
         Default: Windows:ON, Others:OFF
 
-
-    Specific to Qt-only builds::
-
-    -DENABLE_KDE=OFF
-        Link against KDE libraries, use KDE dialogs, etc.
-        Default: OFF
-
     -DENABLE_QT5=ON
         Build against Qt5, not Qt4
         Default: ON
@@ -128,14 +105,14 @@ The following options may be passed to CMake:
         Default: OFF
 
     -DENABLE_UDISKS2=ON
-        Build UDisks2 backend for solid-lite. (Non-KDE builds only)
+        Build UDisks2 backend for solid-lite.
         Default: ON
 
     -DINSTALL_UBUNTU_ICONS=<ON if Ubuntu, OFF otherwise>
         Install monochrome system tray icons for Ubuntu.
 
     -DCANTATA_HELPERS_LIB_DIR=<subdir>
-        For non-KDE 64 bit builds, this may be used to control the lib sub-dir
+        For 64 bit builds, this may be used to control the lib sub-dir
         where Cantata helper apps will be placed. e.g. setting this to lib64
         will cause the helper apps (cantata-tags, cantata-replaygain) to be
         install into /usr/lib64/cantata instead of /usr/lib/cantata
@@ -159,17 +136,6 @@ The following options may be passed to CMake:
     -DCANTATA_SSL_LIBS=<path>/libeay32.dll;<path>/ssleay32.dll
         SSL libraries
         Default: <empty>
-
-
-    Ubuntu specific:
-
-    -DENABLE_UBUNTU=ON
-        Build for Ubuntu Touch.
-        Default: OFF
-
-    -DENABLE_UBUNTU_COMMAND_LINE=ON
-        Build for the Ubuntu SDK from the command line.
-        Default: OFF
 
 
     Testing ONLY options:

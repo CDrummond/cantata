@@ -22,46 +22,13 @@
  */
 
 #include "spinner.h"
+#include "utils.h"
 #include <QApplication>
 #include <QAbstractItemView>
-
-#ifdef ENABLE_KDE_SUPPORT
-
-Spinner::Spinner(QObject *p, bool inMiddle)
-    : KPixmapSequenceOverlayPainter(p)
-    , active(false)
-{
-    setSequence(KPixmapSequence("process-working", KIconLoader::SizeSmallMedium));
-    setAlignment(inMiddle ? Qt::AlignCenter : (Qt::AlignTop | (QApplication::isRightToLeft() ? Qt::AlignLeft : Qt::AlignRight)));
-}
-
-void Spinner::start()
-{
-     active=true;
-     KPixmapSequenceOverlayPainter::start();
-}
-
-void Spinner::stop()
-{
-     active=false;
-     KPixmapSequenceOverlayPainter::stop();
-}
-
-void Spinner::setWidget(QWidget *widget)
-{
-    if (qobject_cast<QAbstractItemView *>(widget)) {
-        KPixmapSequenceOverlayPainter::setWidget(static_cast<QAbstractItemView *>(widget)->viewport());
-    } else {
-        KPixmapSequenceOverlayPainter::setWidget(widget);
-    }
-}
-
-#else
 #include <QPainter>
 #include <QPaintEvent>
 #include <QTimer>
 #include <QScrollBar>
-#include "utils.h"
 
 Spinner::Spinner(QObject *p, bool inMiddle)
     : QWidget(0)
@@ -156,4 +123,3 @@ void Spinner::setPosition()
         move(desired);
     }
 }
-#endif

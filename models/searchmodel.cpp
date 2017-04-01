@@ -39,7 +39,6 @@
 #include "modeltest.h"
 #endif
 
-#ifndef ENABLE_UBUNTU
 QString SearchModel::headerText(int col)
 {
     switch (col) {
@@ -57,17 +56,14 @@ QString SearchModel::headerText(int col)
     default:            return QString();
     }
 }
-#endif
 
 SearchModel::SearchModel(QObject *parent)
     : ActionModel(parent)
     , multiCol(false)
 {
-    #ifndef ENABLE_UBUNTU
     alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
     alignments[COL_TRACK]=alignments[COL_LENGTH]=alignments[COL_DISC]=alignments[COL_YEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
     alignments[COL_RATING]=int(Qt::AlignVCenter|Qt::AlignHCenter);
-    #endif
 }
 
 SearchModel::~SearchModel()
@@ -90,7 +86,6 @@ QModelIndex SearchModel::parent(const QModelIndex &index) const
     return QModelIndex();
 }
 
-#ifndef ENABLE_UBUNTU
 QVariant SearchModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (Qt::Horizontal==orientation) {
@@ -138,7 +133,6 @@ bool SearchModel::setHeaderData(int section, Qt::Orientation orientation, const 
     }
     return false;
 }
-#endif
 
 int SearchModel::rowCount(const QModelIndex &parent) const
 {
@@ -158,7 +152,6 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
     }
     
     switch (role) {
-    #ifndef ENABLE_UBUNTU
     case Qt::DecorationRole:
         if (multiCol) {
             return QVariant();
@@ -170,7 +163,6 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
                   : Icons::self()->audioListIcon;
     case Qt::TextAlignmentRole:
         return alignments[index.column()];
-    #endif
     case Qt::DisplayRole:
         if (multiCol) {
             switch (index.column()) {
@@ -295,7 +287,6 @@ QList<Song> SearchModel::songs(const QModelIndexList &indexes, bool allowPlaylis
     return list;
 }
 
-#ifndef ENABLE_UBUNTU
 QMimeData * SearchModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
@@ -309,7 +300,6 @@ QStringList SearchModel::mimeTypes() const
     types << PlayQueueModel::constFileNameMimeType;
     return types;
 }
-#endif
 
 void SearchModel::refresh()
 {

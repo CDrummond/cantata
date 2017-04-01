@@ -150,13 +150,7 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
 
     setButtons(isAdd ? User1|Ok|Close : Ok|Cancel);
     setButtonText(User1, i18n("Add"));
-    setButtonGuiItem(User1, GuiItem(i18n("Add"),
-                                    #ifdef ENABLE_KDE_SUPPORT
-                                    "list-add"
-                                    #else
-                                    FontAwesome::plus
-                                    #endif
-                                    ));
+    setButtonGuiItem(User1, GuiItem(i18n("Add"), FontAwesome::plus));
     enableOkButton();
     return QDialog::Accepted==exec();
 }

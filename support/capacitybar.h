@@ -24,25 +24,8 @@
 #ifndef CAPACITY_BAR_H
 #define CAPACITY_BAR_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <kcapacitybar.h>
-
-class CapacityBar : public KCapacityBar
-{
-public:
-    CapacityBar(QWidget *p)
-        : KCapacityBar(KCapacityBar::DrawTextInline, p) {
-    }
-
-    void update(const QString &text, double value) {
-        setText(text);
-        setValue(value);
-        setDrawTextMode(KCapacityBar::DrawTextInline);
-    }
-};
-
-#else
 #include <QProgressBar>
+
 class CapacityBar : public QProgressBar
 {
 public:
@@ -56,6 +39,5 @@ public:
         setValue(value*100);
     }
 };
-#endif
 
 #endif

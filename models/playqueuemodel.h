@@ -72,7 +72,6 @@ public:
         QList<quint8> priority;
     };
 
-    #ifndef ENABLE_UBUNTU
     static const QLatin1String constMoveMimeType;
     static const QLatin1String constFileNameMimeType;
     static const QLatin1String constUriMimeType;
@@ -82,7 +81,6 @@ public:
     static QStringList decode(const QMimeData &mimeData, const QString &mime);
     static QList<quint32> decodeInts(const QMimeData &mimeData, const QString &mime);
     static QString headerText(int col);
-    #endif
 
     static PlayQueueModel * self();
 
@@ -90,19 +88,12 @@ public:
     ~PlayQueueModel();
     QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const;
     QModelIndex parent(const QModelIndex &idx) const;
-    #ifndef ENABLE_UBUNTU
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole);
-    #endif
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &) const { return COL_COUNT; }
-    #ifdef ENABLE_UBUNTU
-    QHash<int, QByteArray> roleNames() const;
-    #endif
     QVariant data(const QModelIndex &, int) const;
-    #ifndef ENABLE_UBUNTU
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-    #endif
     void updateCurrentSong(quint32 id);
     qint32 getIdByRow(qint32 row) const;
     qint32 getSongId(const QString &file) const;
@@ -112,11 +103,9 @@ public:
     Song getSongById(qint32 id) const;
     Qt::DropActions supportedDropActions() const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    #ifndef ENABLE_UBUNTU
     QStringList mimeTypes() const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
-    #endif
     QStringList filenames();
     void clear();
     qint32 currentSong() const { return currentSongId; }
@@ -130,13 +119,11 @@ public:
     void remove(const QList<int> &rowsToRemove);
     void crop(const QList<int> &rowsToKeep);
     void setRating(const QList<int> &rows, quint8 rating) const;
-    #ifndef ENABLE_UBUNTU
     Action * shuffleAct() { return shuffleAction; }
     Action * removeDuplicatesAct() { return removeDuplicatesAction; }
     Action * sortAct() { return sortAction; }
     Action * undoAct() { return undoAction; }
     Action * redoAct() { return redoAction; }
-    #endif
     void enableUndo(bool e);
     bool lastCommandWasUnodOrRedo() const { return Cmd_Other!=lastCommand; }
     qint32 totalTime() const { return time; }
@@ -167,8 +154,6 @@ private Q_SLOTS:
     void removeDuplicates();
     void ratingResult(const QString &file, quint8 r);
     void stickerDbChanged();
-    // Touch version...
-    void setCover(const Song &song, const QImage &img, const QString &file);
 
 Q_SIGNALS:
     void stop(bool afterCurrent);
@@ -213,10 +198,6 @@ private:
     Command lastCommand;
     QStack<UndoItem> undoStack;
     QStack<UndoItem> redoStack;
-    #ifdef ENABLE_UBUNTU
-    mutable QMap<quint16, QString> covers;
-    mutable QMap<quint16, Song> coverRequests;
-    #else
     quint32 dropAdjust;
     Action *removeDuplicatesAction;
     Action *undoAction;
@@ -224,7 +205,6 @@ private:
     Action *shuffleAction;
     Action *sortAction;
     QMap<int, int> alignments;
-    #endif
 };
 
 #endif

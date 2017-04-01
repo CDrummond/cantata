@@ -38,9 +38,6 @@
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KMimeType>
-#endif
 #include <QFileInfo>
 #if defined TAGLIB_FOUND && !defined ENABLE_EXTERNAL_TAGS
 #include "tags/tags.h"
@@ -50,12 +47,6 @@
 
 static QString detectMimeType(const QString &file)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    QString km=KMimeType::findByPath(file)->name();
-    if (!km.isEmpty() && (km.startsWith("audio/") || km.startsWith("application/"))) {
-        return QLatin1String("audio/x-ape")==km ? QLatin1String("audio/x-monkeys-audio") : km;
-    }
-    #endif
     QString suffix = QFileInfo(file).suffix().toLower();
     if (suffix == QLatin1String("mp3")) {
         return QLatin1String("audio/mpeg");

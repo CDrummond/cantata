@@ -24,9 +24,6 @@
 #include "streamsmodel.h"
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdparseutils.h"
-#include <QUrl>
-
-#ifndef CANTATA_WEB
 #include "widgets/icons.h"
 #include "network/networkaccessmanager.h"
 #include "support/localize.h"
@@ -56,6 +53,7 @@
 #include <QTimer>
 #include <QLocale>
 #include <QFileSystemWatcher>
+#include <QUrl>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #include <QJsonDocument>
@@ -1879,8 +1877,6 @@ QModelIndex StreamsModel::categoryIndex(const CategoryItem *cat) const
     int row=root->children.indexOf(const_cast<CategoryItem *>(cat));
     return -1==row ? QModelIndex() : createIndex(row, 0, (void *)cat);
 }
-
-#endif // ifndef CANTATA_WEB
 
 const QString StreamsModel::constPrefix=QLatin1String("cantata-stream-");
 

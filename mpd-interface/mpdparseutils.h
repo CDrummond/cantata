@@ -80,10 +80,8 @@ namespace MPDParseUtils
     extern QList<Song> parseSongs(const QByteArray &data, Location location);
     extern QList<IdPos> parseChanges(const QByteArray &data);
     extern QStringList parseList(const QByteArray &data, const QByteArray &key);
-    #ifndef CANTATA_WEB
     typedef QMap<QByteArray, QStringList> MessageMap;
     extern MessageMap parseMessages(const QByteArray &data);
-    #endif
     extern void parseDirItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songList, const QString &dir, QStringList &subDirs, Location loc);
     extern QList<Output> parseOuputs(const QByteArray &data);
     extern QByteArray parseSticker(const QByteArray &data, const QByteArray &sticker);

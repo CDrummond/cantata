@@ -24,6 +24,7 @@
 #include "action.h"
 #include "icon.h"
 #include <QCoreApplication>
+#include <QSettings>
 
 static const char *constProp="Category";
 static ActionCollection *coll=0;
@@ -50,12 +51,11 @@ Action * ActionCollection::createAction(const QString &name, const QString &text
     Action *act = static_cast<Action *>(addAction(name));
     act->setText(text);
     if (0!=icon) {
-        #ifndef ENABLE_KDE_SUPPORT
         if ('m'==icon[0] && 'e'==icon[1] && 'd'==icon[2] && 'i'==icon[3] && 'a'==icon[4] && '-'==icon[5]) {
             act->setIcon(Icon::getMediaIcon(icon));
-        } else
-        #endif
-        act->setIcon(Icon(icon));
+        } else {
+            act->setIcon(Icon(icon));
+        }
     }
     if (!whatsThis.isEmpty()) {
         act->setWhatsThis(whatsThis);
@@ -88,10 +88,6 @@ void ActionCollection::updateToolTips()
         }
     }
 }
-
-#ifndef ENABLE_KDE_SUPPORT
-
-#include <QSettings>
 
 ActionCollection::ActionCollection(QObject *parent) : QObject(parent) {
   _connectTriggered = _connectHovered = false;
@@ -350,5 +346,3 @@ bool ActionCollection::unlistAction(QAction *action) {
 
   return true;
 }
-
-#endif /* HAVE_KDE */

@@ -48,16 +48,6 @@
 #include <QStringList>
 #include <QMimeData>
 #include <QTimer>
-#ifdef ENABLE_KDE_SUPPORT
-#include <solid/device.h>
-#include <solid/deviceinterface.h>
-#include <solid/devicenotifier.h>
-#include <solid/portablemediaplayer.h>
-#include <solid/storageaccess.h>
-#include <solid/storagedrive.h>
-#include <solid/storagevolume.h>
-#include <solid/opticaldisc.h>
-#else
 #include "solid-lite/device.h"
 #include "solid-lite/deviceinterface.h"
 #include "solid-lite/devicenotifier.h"
@@ -66,7 +56,6 @@
 #include "solid-lite/storagedrive.h"
 #include "solid-lite/storagevolume.h"
 #include "solid-lite/opticaldisc.h"
-#endif
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
 #endif

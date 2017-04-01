@@ -34,13 +34,6 @@ MessageWidget::~MessageWidget()
 {
 }
 
-//#if defined ENABLE_KDE_SUPPORT
-//#if KDE_IS_VERSION(4, 9, 4) && !KDE_IS_VERSION(4, 9, 5)
-//// BUG:142
-//#define NO_ANIMATED_SHOW
-//#endif
-//#endif
-
 void MessageWidget::setMessage(const QString &msg, MessageType type, bool showCloseButton)
 {
     if (isActive() && !msg.isEmpty() && type!=msgType) {

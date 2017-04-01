@@ -50,11 +50,7 @@
 #include <QScrollBar>
 #include <QMenu>
 #include <QAction>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KFileDialog>
-#else
 #include <QFileDialog>
-#endif
 #include <QFileInfo>
 #include <QUrl>
 #if QT_VERSION >= 0x050000
@@ -837,11 +833,7 @@ void CoverDialog::cancelQuery()
 
 void CoverDialog::addLocalFile()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    QString fileName=KFileDialog::getOpenFileName(KUrl(), "image/jpeg image/png", this, i18n("Load Local Cover"));
-    #else
     QString fileName=QFileDialog::getOpenFileName(this, i18n("Load Local Cover"), QDir::homePath(), i18n("Images (*.png *.jpg)"));
-    #endif
 
     if (!fileName.isEmpty()) {
         if (currentLocalCovers.contains(fileName)) {

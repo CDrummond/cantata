@@ -25,11 +25,7 @@
 
 void LineEdit::setReadOnly(bool e)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KLineEdit::setReadOnly(e);
-    #else
     QLineEdit::setReadOnly(e);
-    #endif
     if (e) {
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Base, p.color(QPalette::Active, QPalette::Window));
@@ -41,7 +37,7 @@ void LineEdit::setReadOnly(bool e)
     }
 }
 
-#if !defined ENABLE_KDE_SUPPORT && QT_VERSION < 0x050200
+#if QT_VERSION < 0x050200
 
 /****************************************************************************
 **

@@ -25,9 +25,6 @@
 
 #include <QFile>
 #include <QFileInfo>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KMimeType>
-#endif
 #ifdef TAGLIB_EXTRAS_FOUND
 #include <taglib-extras/audiblefile.h>
 #include <taglib-extras/realmediafile.h>
@@ -59,56 +56,6 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
     QString fn = QFile::decodeName(fileName);
     QString suffix = QFileInfo(fn).suffix();
 
-    #ifdef ENABLE_KDE_SUPPORT
-    KMimeType::Ptr mimetype = KMimeType::findByPath(fn);
-
-    // -- check by mime type
-    if (mimetype->is(QLatin1String("audio/mpeg")) || mimetype->is(QLatin1String("audio/x-mpegurl"))
-            || mimetype->is(QLatin1String("audio/mpeg"))) {
-        result = new TagLib::MPEG::File(fileName, readProperties, propertiesStyle);
-    } else if (mimetype->is(QLatin1String("audio/mp4")) || mimetype->is(QLatin1String("video/mp4"))) {
-        result = new TagLib::MP4::File(fileName, readProperties, propertiesStyle);
-    } else if (mimetype->is(QLatin1String("audio/x-ms-wma")) /*|| mimetype->is(QLatin1String("video/x-ms-asf"))
-            || mimetype->is(QLatin1String("video/x-msvideo")) || mimetype->is(QLatin1String("video/x-ms-wmv"))*/) {
-        result = new TagLib::ASF::File(fileName, readProperties, propertiesStyle);
-    }
-    #ifdef TAGLIB_EXTRAS_FOUND
-    else if (mimetype->is(QLatin1String("audio/vnd.rn-realaudio")) || mimetype->is(QLatin1String("audio/x-pn-realaudioplugin"))
-            /*|| mimetype->is(QLatin1String("audio/vnd.rn-realvideo"))*/) {
-        result = new TagLibExtras::RealMedia::File(fileName, readProperties, propertiesStyle);
-    }
-    #endif
-    #ifdef TAGLIB_OPUS_FOUND
-    else if (mimetype->is(QLatin1String("audio/opus")) || mimetype->is(QLatin1String("audio/x-opus+ogg"))) {
-        result = new TagLib::Ogg::Opus::File(fileName, readProperties, propertiesStyle);
-    }
-    #endif
-    else if (mimetype->is(QLatin1String("audio/x-vorbis+ogg"))) {
-        result = new TagLib::Ogg::Vorbis::File(fileName, readProperties, propertiesStyle);
-    } else if (mimetype->is(QLatin1String("audio/x-flac+ogg"))) {
-        result = new TagLib::Ogg::FLAC::File(fileName, readProperties, propertiesStyle);
-    } else if (mimetype->is(QLatin1String("audio/x-aiff"))) {
-        result = new TagLib::RIFF::AIFF::File(fileName, readProperties, propertiesStyle);
-    } else if (mimetype->is(QLatin1String("audio/x-flac"))) {
-        result = new TagLib::FLAC::File(fileName, readProperties, propertiesStyle);
-    } else if (mimetype->is(QLatin1String("audio/x-musepack"))) {
-        result = new TagLib::MPC::File(fileName, readProperties, propertiesStyle);
-    } else if (mimetype->is(QLatin1String("audio/x-wav"))) {
-        result = new TagLib::RIFF::WAV::File(fileName, readProperties, propertiesStyle);
-    } else if (mimetype->is(QLatin1String("audio/x-wavpack"))) {
-        result = new TagLib::WavPack::File(fileName, readProperties, propertiesStyle);
-    } else if (mimetype->is(QLatin1String("audio/x-tta"))) {
-        result = new TagLib::TrueAudio::File(fileName, readProperties, propertiesStyle);
-    } else if (mimetype->is(QLatin1String("audio/x-speex")) || mimetype->is(QLatin1String("audio/x-speex+ogg"))) {
-        result = new TagLib::TrueAudio::File(fileName, readProperties, propertiesStyle);
-    } else if (mimetype->is(QLatin1String("audio/x-speex")) || mimetype->is(QLatin1String("audio/x-speex+ogg"))) {
-        result = new TagLib::TrueAudio::File(fileName, readProperties, propertiesStyle);
-    } else if (mimetype->is(QLatin1String("audio/x-ape"))) {
-        result = new TagLib::APE::File(fileName, readProperties, propertiesStyle);
-    }
-
-    // -- check by extension
-    #else // ENABLE_KDE_SUPPORT
     if (suffix == QLatin1String("mp3")) {
         result = new TagLib::MPEG::File(fileName, readProperties, propertiesStyle);
     } else if (suffix == QLatin1String("flac")) {
@@ -129,9 +76,7 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
             result = new TagLib::Ogg::Opus::File(fileName, readProperties, propertiesStyle);
         }
         #endif
-    }
-    #endif //
-    else if (suffix == QLatin1String("m4a") || suffix == QLatin1String("m4b")
+    } else if (suffix == QLatin1String("m4a") || suffix == QLatin1String("m4b")
         || suffix == QLatin1String("m4p") || suffix == QLatin1String("mp4")
         /*|| suffix == QLatin1String("m4v") || suffix == QLatin1String("mp4v") */) {
         result = new TagLib::MP4::File(fileName, readProperties, propertiesStyle);

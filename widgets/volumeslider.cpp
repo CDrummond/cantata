@@ -39,9 +39,6 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <QMenu>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KShortcut>
-#endif
 
 class VolumeSliderProxyStyle : public QProxyStyle
 {
@@ -114,11 +111,6 @@ void VolumeSlider::initActions()
     }
     muteAction = ActionCollection::get()->createAction("mute", i18n("Mute"));
     addAction(muteAction);
-    #ifdef ENABLE_KDE_SUPPORT
-    muteAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeMute));
-    StdActions::self()->increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeUp));
-    StdActions::self()->decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeDown));
-    #endif
     connect(muteAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(toggleMute()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateMpdStatus()));
     connect(StdActions::self()->increaseVolumeAction, SIGNAL(triggered()), this, SLOT(increaseVolume()));

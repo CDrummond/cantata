@@ -43,11 +43,7 @@
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
-#ifdef ENABLE_KDE_SUPPORT
-#include <solid/block.h>
-#else
 #include "solid-lite/block.h"
-#endif
 
 const QLatin1String AudioCdDevice::constAnyDev("-");
 

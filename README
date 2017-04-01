@@ -188,6 +188,14 @@ translatable strings and update current translations.
 
 When displaying covers, Cantata will load album covers in the following order:
 
+${configuredName} is either:
+a. cover - if not configured in Cantata's config dialog
+b. Setting from cantata with the following replacements:
+    %albumartist% => Album Artist
+    %artist% => Track Artist
+    %album% => Album Name
+    Any other % removed
+
 ...if configured to 'Cache scaled covers', Cantata will check its scaled-covers
    cache folder (~/.cache/cantata/covers-scaled/SIZE) for:
 
@@ -238,6 +246,14 @@ will be saved as a PNG within covers-scaled.
 
 For artist images:
 
+${configuredName} is either:
+a. artist - if configured Album cover ${configuredName} is empty, or does not
+   contain %
+b. ${albumArtist} - if configured Album cover ${configuredName} contains % and
+   ${albumArtist} is not 'Various Artists'
+c. ${basicArtist} if configured Album cover ${configuredName} contains % and
+   ${albumArtist} is 'Various Artists'
+
 ...if configured to 'Cache scaled covers', Cantata will check its scaled-covers
    cache folder (~/.cache/cantata/covers-scaled/SIZE) for:
 
@@ -248,8 +264,8 @@ For artist images:
 
  2. ${basicArtist}.jpg
  3. ${basicArtist}.png
- 4. artist.jpg
- 5. artist.png
+ 4. ${configuredName}.jpg
+ 5. ${configuredName}.png
 
 ...the above will be repeated for the parent folder
 
@@ -258,8 +274,8 @@ For artist images:
 
  6. ${basicArtist}/${basicArtist}.jpg
  7. ${basicArtist}/${basicArtist}.png
- 8. ${basicArtist}/artist.jpg
- 9. ${basicArtist}/artist.png
+ 8. ${basicArtist}/${configuredName}.jpg
+ 9. ${basicArtist}/${configuredName}.png
 
 ...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
 
@@ -268,8 +284,8 @@ For artist images:
 
 ...if the MPD folder was specified as a http URL
 
-12. ${url}/${dirFromFile}/artist.jpg
-13. ${url}/${dirFromFile}/artist.png
+12. ${url}/${dirFromFile}/${configuredName}.jpg
+13. ${url}/${dirFromFile}/${configuredName}.png
  
 ...the above will be repeated for the parent folder
 

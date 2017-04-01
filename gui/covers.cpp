@@ -397,7 +397,7 @@ QString Covers::artistFileName(const Song &song)
 {
     QString coverName=MPDConnection::self()->getDetails().coverName;
     if (coverName.contains(QLatin1Char('%'))) {
-        return encodeName(song.albumArtist());
+        return encodeName(song.isVariousArtists() ? song.basicArtist() : song.albumArtist());
     }
     return constArtistImage;
 }

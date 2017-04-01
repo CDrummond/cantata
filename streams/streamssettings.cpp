@@ -35,11 +35,7 @@
 #include <QListWidget>
 #include <QMenu>
 #include <QFileInfo>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KFileDialog>
-#else
 #include <QFileDialog>
-#endif
 #include <QTimer>
 
 enum Roles {
@@ -138,11 +134,7 @@ void StreamsSettings::currentCategoryChanged(int row)
 
 void StreamsSettings::installFromFile()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.streams|Cantata Streams"), this, i18n("Install Streams"));
-    #else
     QString fileName=QFileDialog::getOpenFileName(this, i18n("Install Streams"), QDir::homePath(), i18n("Cantata Streams (*.streams)"));
-    #endif
     if (fileName.isEmpty()) {
         return;
     }

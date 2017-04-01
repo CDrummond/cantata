@@ -20,17 +20,6 @@
 #include "kmessagewidget.h"
 #include "localize.h"
 #include "utils.h"
-
-#ifdef ENABLE_KDE_SUPPORT
-#include <kaction.h>
-#include <kcolorscheme.h>
-#include <kdebug.h>
-#include <kglobalsettings.h>
-#include <kicon.h>
-#include <kiconloader.h>
-#include <kstandardaction.h>
-#endif
-
 #include "icon.h"
 #include "squeezedtextlabel.h"
 #include "flattoolbutton.h"
@@ -105,14 +94,10 @@ void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
     textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     textLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
-    #ifdef ENABLE_KDE_SUPPORT
-    KAction* closeAction = KStandardAction::close(q, SLOT(animatedHide()), q);
-    #else
     QAction* closeAction = new QAction(q);
     closeAction->setIcon(Icon::std(Icon::Close));
     closeAction->setToolTip(i18n("Close"));
     QObject::connect(closeAction, SIGNAL(triggered()), q, SLOT(animatedHide()));
-    #endif
 
     closeButton = new FlatToolButton(content);
     closeButton->setDefaultAction(closeAction);
@@ -243,19 +228,6 @@ int KMsgWidgetPrivate::bestContentHeight() const
     return height;
 }
 
-#ifdef ENABLE_KDE_SUPPORT
-void KMsgWidgetPrivate::updateAnimationDuration()
-{
-    if (!(KGlobalSettings::graphicEffectsLevel() & KGlobalSettings::SimpleAnimationEffects)) {
-        if (1!=timeLine->duration()) {
-            timeLine->setDuration(1);
-        }
-    } else if (500!=timeLine->duration()) {
-        timeLine->setDuration(500);
-    }
-}
-#endif
-
 //---------------------------------------------------------------------
 // KMsgWidget
 //---------------------------------------------------------------------
@@ -295,14 +267,6 @@ KMsgWidget::MessageType KMsgWidget::messageType() const
     return d->messageType;
 }
 
-#ifdef ENABLE_KDE_SUPPORT
-static void getColorsFromColorScheme(KColorScheme::BackgroundRole bgRole, QColor* bg, QColor* fg)
-{
-    KColorScheme scheme(QPalette::Active, KColorScheme::Window);
-    *bg = scheme.background(bgRole).color();
-    *fg = scheme.foreground().color();
-}
-#endif
 void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
 {
     d->messageType = type;
@@ -314,13 +278,9 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         if (useIcon) {
             icon = QIcon::fromTheme("dialog-ok");
         }
-        #ifdef ENABLE_KDE_SUPPORT
-        getColorsFromColorScheme(KColorScheme::PositiveBackground, &bg1, &fg);
-        #else
         bg1=QColor(0xAB, 0xC7, 0xED);
         fg=Qt::black;
         border = Qt::blue;
-        #endif
         break;
     case Information:
         if (useIcon) {
@@ -328,48 +288,31 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         }
         // There is no "information" background role in KColorScheme, use the
         // colors of highlighted items instead
-        #ifdef ENABLE_KDE_SUPPORT
-        bg1 = palette().highlight().color();
-        fg = palette().highlightedText().color();
-        border = bg1.darker(150);
-        #else
         bg1=QColor(0x98, 0xBC, 0xE3);
         fg=Qt::black;
         border = Qt::blue;
-        #endif
         break;
     case Warning:
         if (useIcon) {
             icon = QIcon::fromTheme("dialog-warning");
         }
-        #ifdef ENABLE_KDE_SUPPORT
-        getColorsFromColorScheme(KColorScheme::NeutralBackground, &bg1, &fg);
-        #else
         bg1=QColor(0xED, 0xC6, 0x62);
         fg=Qt::black;
         border = Qt::red;
-        #endif
         break;
     case Error:
         if (useIcon) {
             icon = QIcon::fromTheme("dialog-error");
         }
-        #ifdef ENABLE_KDE_SUPPORT
-        getColorsFromColorScheme(KColorScheme::NegativeBackground, &bg1, &fg);
-        #else
         bg1=QColor(0xeb, 0xbb, 0xbb);
         fg=Qt::black;
         border = Qt::red;
-        #endif
         break;
     }
 
     // Colors
     bg0 = bg1.lighter(110);
     bg2 = bg1.darker(110);
-    #ifdef ENABLE_KDE_SUPPORT
-    border = KColorScheme::shade(bg1, KColorScheme::DarkShade);
-    #endif
 
     d->content->setStyleSheet(
         QString(".QFrame {"
@@ -377,9 +320,6 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
             "    stop: 0 %1,"
             "    stop: 0.1 %2,"
             "    stop: 1.0 %3);"
-            #ifdef ENABLE_KDE_SUPPORT
-            "border-radius: 5px;"
-            #endif
             "border: 1px solid %4;"
             "margin: %5px;"
             "}"
@@ -396,11 +336,7 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
 
     if (useIcon && !icon.isNull()) {
         // Icon
-        #ifdef ENABLE_KDE_SUPPORT
-        const int size = KIconLoader::global()->currentSize(KIconLoader::MainToolbar);
-        #else
         const int size = Icon::stdSize(fontMetrics().height()*1.5);
-        #endif
         d->iconLabel->setPixmap(icon.pixmap(size));
     }
 }
@@ -493,14 +429,6 @@ void KMsgWidget::removeAction(QAction* action)
 
 void KMsgWidget::animatedShow()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    //if (!(KGlobalSettings::graphicEffectsLevel() & KGlobalSettings::SimpleAnimationEffects)) {
-    //    show();
-    //    return;
-    //}
-    d->updateAnimationDuration();
-    #endif
-
     if (isVisible()) {
         return;
     }
@@ -520,14 +448,6 @@ void KMsgWidget::animatedShow()
 
 void KMsgWidget::animatedHide()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    //if (!(KGlobalSettings::graphicEffectsLevel() & KGlobalSettings::SimpleAnimationEffects)) {
-    //    hide();
-    //    return;
-    //}
-    d->updateAnimationDuration();
-    #endif
-
     if (!isVisible()) {
         return;
     }

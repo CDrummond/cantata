@@ -31,11 +31,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
-#ifdef ENABLE_KDE_SUPPORT
-#include <solid/storagedrive.h>
-#else
 #include "solid-lite/storagedrive.h"
-#endif
 
 static const QLatin1String constSettingsFile("/.is_audio_player");
 static const QLatin1String constMusicFolderKey("audio_folder");

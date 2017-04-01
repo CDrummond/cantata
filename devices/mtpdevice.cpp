@@ -44,9 +44,6 @@
 #include <QTimer>
 #include <QDir>
 #include <QTemporaryFile>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KMimeType>
-#endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -810,37 +807,6 @@ static char * createString(const QString &str)
 
 static LIBMTP_filetype_t mtpFileType(const QString &f)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KMimeType::Ptr mime=KMimeType::findByPath(f);
-
-    if (mime->is("audio/mpeg")) {
-        return LIBMTP_FILETYPE_MP3;
-    }
-    if (mime->is("audio/ogg")) {
-        return LIBMTP_FILETYPE_OGG;
-    }
-    if (mime->is("audio/x-ms-wma")) {
-        return LIBMTP_FILETYPE_WMA;
-    }
-    if (mime->is("audio/mp4")) {
-        return LIBMTP_FILETYPE_M4A; // LIBMTP_FILETYPE_MP4
-    }
-    if (mime->is("audio/aac")) {
-        return LIBMTP_FILETYPE_AAC;
-    }
-    if (mime->is("audio/flac")) {
-        return LIBMTP_FILETYPE_FLAC;
-    }
-    if (mime->is("audio/x-wav")) {
-        return LIBMTP_FILETYPE_WAV;
-    }
-    if (mime->is("image/jpeg")) {
-        return LIBMTP_FILETYPE_JPEG;
-    }
-    if (mime->is("image/png")) {
-        return LIBMTP_FILETYPE_PNG;
-    }
-    #else
     if (f.endsWith(".mp3", Qt::CaseInsensitive)) {
         return LIBMTP_FILETYPE_MP3;
     }
@@ -868,7 +834,6 @@ static LIBMTP_filetype_t mtpFileType(const QString &f)
     if (f.endsWith(".png", Qt::CaseInsensitive)) {
         return LIBMTP_FILETYPE_PNG;
     }
-    #endif
     return LIBMTP_FILETYPE_UNDEF_AUDIO;
 }
 

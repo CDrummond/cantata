@@ -603,7 +603,6 @@ bool LibraryDb::init(const QString &dbFile)
                     "type integer, "
                     "lastModified integer, "
                     "primary key (file))")) {
-        #ifndef CANTATA_WEB
         QSqlQuery fts(*db);
         if (!fts.exec("create virtual table if not exists songs_fts using fts4(fts_artist, fts_artistId, fts_album, fts_albumId, fts_title, tokenize=unicode61)")) {
             DBUG << "Failed to create FTS table" << fts.lastError().text() << "trying again with simple tokenizer";
@@ -611,7 +610,6 @@ bool LibraryDb::init(const QString &dbFile)
                 DBUG << "Failed to create FTS table" << fts.lastError().text();
             }
         }
-        #endif
     } else {
         DBUG << "Failed to create songs table";
         return false;
@@ -903,7 +901,6 @@ int LibraryDb::trackCount()
     return query.next() ? query.value(0).toInt() : 0;
 }
 
-#ifndef CANTATA_WEB
 QList<Song> LibraryDb::songs(const QStringList &files, bool allowPlaylists) const
 {
     QList<Song> songList;
@@ -1077,7 +1074,6 @@ bool LibraryDb::setFilter(const QString &f, const QString &genre)
     genreFilter=genre;
     return modified;
 }
-#endif
 
 void LibraryDb::updateStarted(time_t ver)
 {
@@ -1112,11 +1108,9 @@ void LibraryDb::updateFinished()
         return;
     }
     DBUG << timer.elapsed();
-    #ifndef CANTATA_WEB
     DBUG << "update fts" << timer.elapsed();
     QSqlQuery(*db).exec("insert into songs_fts(fts_artist, fts_artistId, fts_album, fts_albumId, fts_title) "
                         "select artist, artistId, album, albumId, title from songs");
-    #endif
     QSqlQuery(*db).exec("update versions set collection ="+QString::number(newVersion));
     DBUG << "commit" << timer.elapsed();
     db->commit();
@@ -1208,10 +1202,8 @@ void LibraryDb::clearSongs(bool startTransaction)
         db->transaction();
     }
     QSqlQuery(*db).exec("delete from songs");
-    #ifndef CANTATA_WEB
     QSqlQuery(*db).exec("delete from songs_fts");
     detailsCache.clear();
-    #endif
     if (startTransaction) {
         db->commit();
     }

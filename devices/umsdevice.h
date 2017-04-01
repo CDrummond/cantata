@@ -25,11 +25,7 @@
 #define UMSDEVICE_H
 
 #include "fsdevice.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <solid/storageaccess.h>
-#else
 #include "solid-lite/storageaccess.h"
-#endif
 
 class UmsDevice : public FsDevice
 {

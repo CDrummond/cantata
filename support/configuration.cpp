@@ -26,24 +26,14 @@
 QLatin1String Configuration::constMainGroup("General");
 
 Configuration::Configuration(const QString &group)
-    #ifdef ENABLE_KDE_SUPPORT
-    : topCfg(KGlobal::config(), group)
-    #endif
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    cfg=&topCfg;
-    #else
     if (group!=constMainGroup) {
         beginGroup(group);
     }
-    #endif
 }
 
 Configuration::~Configuration()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    endGroup();
-    #endif
 }
 
 int Configuration::get(const QString &key, int def, int min, int max)
@@ -69,24 +59,4 @@ QString Configuration::getDirPath(const QString &key, const QString &def)
     return Utils::tildaToHome(Utils::fixPath(get(key, def)));
     #endif
 }
-
-#ifdef ENABLE_KDE_SUPPORT
-void Configuration::beginGroup(const QString &group)
-{
-    if (group==constMainGroup) {
-        cfg=&topCfg;
-    } else {
-        cfg=new KConfigGroup(KGlobal::config(), group);
-    }
-}
-
-void Configuration::endGroup()
-{
-    if (cfg!=&topCfg) {
-        cfg->sync();
-        delete cfg;
-    }
-    cfg=&topCfg;
-}
-#endif
 

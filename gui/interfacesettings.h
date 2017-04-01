@@ -39,9 +39,7 @@ public:
     void load();
     void save();
 
-    #ifndef ENABLE_KDE_SUPPORT
     void showEvent(QShowEvent *e);
-    #endif
     void showPage(const QString &page);
     QSize sizeHint() const;
 
@@ -64,9 +62,7 @@ private Q_SLOTS:
     void systemTrayPopupToggled();
 
 private:
-    #ifndef ENABLE_KDE_SUPPORT
     bool loadedLangs;
-    #endif
 };
 
 #endif

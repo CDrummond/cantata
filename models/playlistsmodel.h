@@ -110,26 +110,20 @@ public:
     QModelIndex parent(const QModelIndex &index) const;
     QModelIndex index(int row, int col, const QModelIndex &parent) const;
     QVariant data(const QModelIndex &, int) const;
-    #ifndef ENABLE_UBUNTU
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole);
     bool setData(const QModelIndex &index, const QVariant &value, int role);
-    #endif
     Qt::ItemFlags flags(const QModelIndex &index) const;
     Qt::DropActions supportedDropActions() const;
     QStringList filenames(const QModelIndexList &indexes, bool filesOnly=false) const;
     QList<Song> songs(const QModelIndexList &indexes) const;
-    #ifndef ENABLE_UBUNTU
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int /*col*/, const QModelIndex &parent);
     QStringList mimeTypes() const;
-    #endif
     void getPlaylists();
     void clear();
     bool exists(const QString &n) { return 0!=getPlaylist(n); }
-    #ifndef ENABLE_UBUNTU
     MirrorMenu * menu();
-    #endif
     static QString strippedText(QString s);
     void setMultiColumn(bool m) { multiCol=m; }
 
@@ -170,12 +164,10 @@ private:
     bool multiCol;
     QList<PlaylistItem *> items;
     QSet<quint32> usedKeys;
-    #ifndef ENABLE_UBUNTU
     MirrorMenu *itemMenu;
     quint32 dropAdjust;
     QAction *newAction;
     QMap<int, int> alignments;
-    #endif
 };
 
 #endif

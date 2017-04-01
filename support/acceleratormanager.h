@@ -21,14 +21,6 @@
 #ifndef K_ACCELERATORMANAGER_H
 #define K_ACCELERATORMANAGER_H
 
-#ifdef ENABLE_KDE_SUPPORT
-namespace AcceleratorManager
-{
-    inline void manage(QWidget *) { }
-};
-
-#else
-
 class QWidget;
 class QString;
 
@@ -77,6 +69,5 @@ public:
      */
     static void setNoAccel( QWidget *widget );
 };
-#endif
 
 #endif // K_ACCELERATORMANAGER_H

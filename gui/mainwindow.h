@@ -28,14 +28,7 @@
 #define MAIN_WINDOW_H
 
 #include <qglobal.h>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KXmlGuiWindow>
-#define MAIN_WINDOW_BASE_CLASS KXmlGuiWindow
-class KToggleAction;
-#else
 #include <QMainWindow>
-#define MAIN_WINDOW_BASE_CLASS QMainWindow
-#endif
 #include <QToolButton>
 #include <QStringList>
 #include "ui_mainwindow.h"
@@ -93,7 +86,7 @@ public:
     ContextPage(QWidget *p) : QWidget(p) { }
 };
 
-class MainWindow : public MAIN_WINDOW_BASE_CLASS, private Ui::MainWindow
+class MainWindow : public QMainWindow, private Ui::MainWindow
 {
     Q_OBJECT
 
@@ -157,12 +150,7 @@ public Q_SLOTS:
     void hideWindow();
     void restoreWindow();
     void load(const QStringList &urls) { PlayQueueModel::self()->load(urls); }
-    #ifdef ENABLE_KDE_SUPPORT
-    void configureShortcuts();
-    void saveShortcuts();
-    #else
     void showAboutDialog();
-    #endif
     void mpdConnectionStateChanged(bool connected);
     void playQueueItemsSelected(bool s);
     void showSidebarPreferencesPage() { showPreferencesDialog("interface:sidebar"); }
@@ -279,12 +267,7 @@ private:
     qint32 lastSongId;
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
-    #ifdef ENABLE_KDE_SUPPORT
-    KToggleAction *showMenuAction;
-    Action *shortcutsAction;
-    #else
     Action *showMenuAction;
-    #endif
     Action *prefAction;
     Action *refreshDbAction;
     Action *doDbRefreshAction;

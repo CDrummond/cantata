@@ -118,17 +118,8 @@
 #include <QDialogButtonBox>
 #include <QKeyEvent>
 #include <QSpacerItem>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KApplication>
-#include <KDE/KStandardAction>
-#include <KDE/KMenuBar>
-#include <KDE/KMenu>
-#include <KDE/KShortcutsDialog>
-#include <KDE/KToggleAction>
-#else
 #include <QMenuBar>
 #include "mediakeys.h"
-#endif
 #include <cstdlib>
 
 static int nextKey(int &key)
@@ -145,7 +136,7 @@ static int nextKey(int &key)
 static const char *constRatingKey="rating";
 
 MainWindow::MainWindow(QWidget *parent)
-    : MAIN_WINDOW_BASE_CLASS(parent)
+    : QMainWindow(parent)
     , prevPage(-1)
     , lastState(MPDState_Inactive)
     , lastSongId(-1)
@@ -260,16 +251,6 @@ void MainWindow::init()
     Icons::self()->initSidebarIcons();
     QColor iconCol=Utils::monoIconColor();
 
-    #ifdef ENABLE_KDE_SUPPORT
-    prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));
-    quitAction=static_cast<Action *>(KStandardAction::quit(this, SLOT(quit()), ActionCollection::get()));
-    shortcutsAction=static_cast<Action *>(KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get()));
-    StdActions::self()->prevTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPrevious));
-    StdActions::self()->nextTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaNext));
-    StdActions::self()->playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPlay));
-    StdActions::self()->stopPlaybackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaStop));
-    StdActions::self()->stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
-    #else
     setWindowIcon(Icons::self()->appIcon);
 
     prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? i18n("Configure Cantata...") : i18n("Preferences"),
@@ -285,7 +266,6 @@ void MainWindow::init()
     quitAction->setMenuRole(QAction::QuitRole);
     aboutAction->setMenuRole(QAction::AboutRole);
     #endif
-    #endif // ENABLE_KDE_SUPPORT
     restoreAction = new Action(i18n("Show Window"), this);
     connect(restoreAction, SIGNAL(triggered()), this, SLOT(restoreWindow()));
 
@@ -556,10 +536,6 @@ void MainWindow::init()
     expandedSize=Settings::self()->mainWindowSize();
     collapsedSize=Settings::self()->mainWindowCollapsedSize();
 
-    #ifdef ENABLE_KDE_SUPPORT
-    setupGUI(KXmlGuiWindow::Keys);
-    #endif
-
     if (Settings::self()->firstRun() || (expandInterfaceAction->isChecked() && expandedSize.isEmpty())) {
         int width=playPauseTrackButton->width()*25;
         resize(playPauseTrackButton->width()*25, playPauseTrackButton->height()*18);
@@ -599,14 +575,10 @@ void MainWindow::init()
     int menuCfg=Settings::self()->menu();
     #ifndef Q_OS_MAC
     if (Utils::Unity!=Utils::currentDe() && menuCfg&Settings::MC_Bar && menuCfg&Settings::MC_Button) {
-        #ifdef ENABLE_KDE_SUPPORT
-        showMenuAction=KStandardAction::showMenubar(this, SLOT(toggleMenubar()), ActionCollection::get());
-        #else
         showMenuAction=ActionCollection::get()->createAction("showmenubar", i18n("Show Menubar"));
         showMenuAction->setShortcut(Qt::ControlModifier+Qt::Key_M);
         showMenuAction->setCheckable(true);
         connect(showMenuAction, SIGNAL(toggled(bool)), this, SLOT(toggleMenubar()));
-        #endif
     }
     #endif
 
@@ -623,17 +595,6 @@ void MainWindow::init()
         if (showMenuAction) {
             mainMenu->addAction(showMenuAction);
         }
-        #ifdef ENABLE_KDE_SUPPORT
-        mainMenu->addAction(prefAction);
-        mainMenu->addAction(refreshDbAction);
-        mainMenu->addAction(shortcutsAction);
-        mainMenu->addSeparator();
-        mainMenu->addAction(StdActions::self()->searchAction);
-        mainMenu->addAction(searchPlayQueueAction);
-        mainMenu->addSeparator();
-        mainMenu->addAction(serverInfoAction);
-        mainMenu->addMenu(helpMenu());
-        #else
         mainMenu->addAction(prefAction);
         mainMenu->addAction(refreshDbAction);
         mainMenu->addSeparator();
@@ -642,7 +603,6 @@ void MainWindow::init()
         mainMenu->addSeparator();
         mainMenu->addAction(serverInfoAction);
         mainMenu->addAction(aboutAction);
-        #endif
         mainMenu->addSeparator();
         mainMenu->addAction(quitAction);
         menuButton->setIcon(Icons::self()->toolbarMenuIcon);
@@ -670,14 +630,11 @@ void MainWindow::init()
         menu->addSeparator();
         addMenuAction(menu, StdActions::self()->searchAction);
         addMenuAction(menu, searchPlayQueueAction);
-        #ifndef ENABLE_KDE_SUPPORT
         if (Utils::KDE!=Utils::currentDe()) {
             menu->addSeparator();
             addMenuAction(menu, prefAction);
         }
-        #endif
         menuBar()->addMenu(menu);
-        #ifndef ENABLE_KDE_SUPPORT
         if (Utils::KDE!=Utils::currentDe()) {
             menu=new QMenu(i18n("&View"), this);
             if (showMenuAction) {
@@ -690,7 +647,6 @@ void MainWindow::init()
             addMenuAction(menu, fullScreenAction);
             menuBar()->addMenu(menu);
         }
-        #endif
         menu=new QMenu(i18n("&Queue"), this);
         addMenuAction(menu, clearPlayQueueAction);
         addMenuAction(menu, StdActions::self()->savePlayQueueAction);
@@ -699,10 +655,7 @@ void MainWindow::init()
         addMenuAction(menu, PlayQueueModel::self()->shuffleAct());
         addMenuAction(menu, PlayQueueModel::self()->sortAct());
         menuBar()->addMenu(menu);
-        #ifndef ENABLE_KDE_SUPPORT
-        if (Utils::KDE==Utils::currentDe())
-        #endif
-        {
+        if (Utils::KDE==Utils::currentDe()) {
             menu=new QMenu(i18n("&Settings"), this);
             if (showMenuAction) {
                 addMenuAction(menu, showMenuAction);
@@ -711,9 +664,6 @@ void MainWindow::init()
             addMenuAction(menu, fullScreenAction);
             addMenuAction(menu, songInfoAction);
             menu->addSeparator();
-            #ifdef ENABLE_KDE_SUPPORT
-            addMenuAction(menu, shortcutsAction);
-            #endif
             addMenuAction(menu, prefAction);
             menuBar()->addMenu(menu);
         }
@@ -722,14 +672,7 @@ void MainWindow::init()
         #endif
         menu=new QMenu(i18n("&Help"), this);
         addMenuAction(menu, serverInfoAction);
-        #ifdef ENABLE_KDE_SUPPORT
-        menu->addSeparator();
-        foreach (QAction *act, helpMenu()->actions()) {
-            addMenuAction(menu, act);
-        }
-        #else
         addMenuAction(menu, aboutAction);
-        #endif
         menuBar()->addMenu(menu);
     }
 
@@ -940,9 +883,7 @@ void MainWindow::init()
     if (Settings::self()->firstRun() && MPDConnection::self()->isConnected()) {
         mpdConnectionStateChanged(true);
     }
-    #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->start();
-    #endif
     #ifdef Q_OS_MAC
     dockMenu=new DockMenu(this);
     #endif
@@ -1007,9 +948,7 @@ MainWindow::~MainWindow()
     Covers::self()->cleanCdda();
     #endif
     #endif
-    #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->stop();
-    #endif
     #ifdef TAGLIB_FOUND
     Tags::stop();
     #endif
@@ -1104,7 +1043,7 @@ void MainWindow::showEvent(QShowEvent *event)
     if (!thumbnailTooolbar) {
         thumbnailTooolbar=new ThumbnailToolBar(this);
     }
-    MAIN_WINDOW_BASE_CLASS::showEvent(event);
+    QMainWindow::showEvent(event);
 }
 #endif
 
@@ -1117,7 +1056,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
             event->ignore();
         }
     } else if (canClose()) {
-        MAIN_WINDOW_BASE_CLASS::closeEvent(event);
+        QMainWindow::closeEvent(event);
     }
 }
 
@@ -1192,20 +1131,6 @@ void MainWindow::refreshDbPromp()
     expand();
 }
 
-#ifdef ENABLE_KDE_SUPPORT
-void MainWindow::configureShortcuts()
-{
-    KShortcutsDialog dlg(KShortcutsEditor::AllActions, KShortcutsEditor::LetterShortcutsDisallowed, this);
-    dlg.addCollection(ActionCollection::get());
-    connect(&dlg, SIGNAL(okClicked()), this, SLOT(saveShortcuts()));
-    dlg.exec();
-}
-
-void MainWindow::saveShortcuts()
-{
-    ActionCollection::get()->writeSettings();
-}
-#else
 void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this, i18nc("Qt-only", "About Cantata"),
@@ -1217,7 +1142,6 @@ void MainWindow::showAboutDialog()
                        QLatin1String("<br/><br/>")+i18n("Please consider uploading your own music fan-art to <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+
                        QLatin1String("</small></i>"));
 }
-#endif
 
 bool MainWindow::canClose()
 {
@@ -1296,11 +1220,7 @@ void MainWindow::quit()
         return;
     }
     #endif
-    #ifdef ENABLE_KDE_SUPPORT
-    kapp->quit();
-    #else
     qApp->quit();
-    #endif
 }
 
 void MainWindow::checkMpdDir()

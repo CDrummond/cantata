@@ -43,11 +43,7 @@ class MpdLibraryDb : public LibraryDb
     Q_OBJECT
 
 public:
-    #ifndef CANTATA_WEB
     static void removeUnusedDbs();
-    #else
-    static MpdLibraryDb * self();
-    #endif
 
     MpdLibraryDb(QObject *p=0);
     ~MpdLibraryDb();

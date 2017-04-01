@@ -28,21 +28,20 @@
 #ifdef Q_OS_MAC
 #include "osxstyle.h"
 #endif
-
-#ifdef ENABLE_KDE_SUPPORT
-#define DLG_BASE KDialog
-#else
-#define DLG_BASE QDialog
-#endif
+#include "icon.h"
+#include "acceleratormanager.h"
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QBoxLayout>
+#include <QSettings>
+#include <QStyle>
 
 Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
-    : DLG_BASE(parent)
-    #ifndef ENABLE_KDE_SUPPORT
+    : QDialog(parent)
     , defButton(0)
     , buttonTypes(0)
     , mw(0)
     , buttonBox(0)
-    #endif
     , shown(false)
 {
     if (!name.isEmpty()) {
@@ -50,9 +49,9 @@ Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
         Configuration cfg(name);
         cfgSize=cfg.get("size", QSize());
         if (!cfgSize.isEmpty()) {
-            DLG_BASE::resize(cfgSize);
+            QDialog::resize(cfgSize);
         } else if (!defSize.isEmpty()) {
-            DLG_BASE::resize(defSize);
+            QDialog::resize(defSize);
         }
     }
     #ifdef Q_OS_MAC
@@ -74,53 +73,10 @@ Dialog::~Dialog()
 void Dialog::resize(const QSize &sz)
 {
     if (cfgSize.isEmpty()) {
-        DLG_BASE::resize(sz);
+        QDialog::resize(sz);
         cfgSize=sz;
     }
 }
-
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KPushButton>
-#include <QLayout>
-
-void Dialog::showEvent(QShowEvent *e)
-{
-    if (!shown) {
-        shown=true;
-        QSize mwSize=mainWidget()->minimumSize();
-
-        if (mwSize.width()<16 || mwSize.height()<16) {
-            mwSize=mainWidget()->minimumSizeHint();
-        }
-
-        if (mwSize.width()>15 && mwSize.height()>15) {
-            QSize btnSize(24, 32);
-            for (int i=0; i<15; ++i) {
-                int code=1<<i;
-                KPushButton *btn=KDialog::button((KDialog::ButtonCode)code);
-                if (btn) {
-                    btnSize=btn->sizeHint();
-                    break;
-                }
-            }
-            QLayout *lay=layout();
-            int sp=lay ? layout()->spacing() : KDialog::spacingHint();
-            int mar=lay ? layout()->margin() : KDialog::marginHint();
-            setMinimumHeight(qMax(minimumHeight(), btnSize.height()+sp+mwSize.height()+(2*mar)));
-            setMinimumWidth(qMax(minimumWidth(), mwSize.width()+(2*mar)));
-        }
-    }
-    KDialog::showEvent(e);
-}
-#else
-
-#include "icon.h"
-#include "acceleratormanager.h"
-#include <QDialogButtonBox>
-#include <QPushButton>
-#include <QBoxLayout>
-#include <QSettings>
-#include <QStyle>
 
 #ifdef Q_OS_MAC
 Dialog::ButtonProxyStyle::ButtonProxyStyle()
@@ -480,6 +436,4 @@ void Dialog::closeEvent(QCloseEvent *e)
     OSXStyle::self()->removeWindow(this);
     QDialog::closeEvent(e);
 }
-#endif
-
 #endif

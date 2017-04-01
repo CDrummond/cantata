@@ -27,11 +27,7 @@
 #include "device.h"
 #include "gui/covers.h"
 #include "http/httpserver.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <solid/opticaldrive.h>
-#else
 #include "solid-lite/opticaldrive.h"
-#endif
 #include <QImage>
 
 class CddbInterface;

@@ -23,9 +23,7 @@
 
 #include "mpdlibrarydb.h"
 #include "support/globalstatic.h"
-#ifndef CANTATA_WEB
 #include "support/utils.h"
-#endif
 #include "mpd-interface/mpdconnection.h"
 #include "gui/settings.h"
 #include <QCoreApplication>
@@ -36,9 +34,6 @@
 
 #define DBUG if (LibraryDb::debugEnabled()) qWarning() << metaObject()->className() << __FUNCTION__
 
-#ifdef CANTATA_WEB
-GLOBAL_STATIC(MpdLibraryDb, instance)
-#else
 static const QLatin1String constDirName("library");
 static QString databaseName(const MPDConnectionDetails &details)
 {
@@ -69,8 +64,6 @@ void MpdLibraryDb::removeUnusedDbs()
     }
 }
 
-#endif
-
 MpdLibraryDb::MpdLibraryDb(QObject *p)
     : LibraryDb(p, "MPD")
     , loading(false)
@@ -82,9 +75,7 @@ MpdLibraryDb::MpdLibraryDb(QObject *p)
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), this, SLOT(updateFinished()));
     connect(MPDConnection::self(), SIGNAL(statsUpdated(MPDStatsValues)), this, SLOT(statsUpdated(MPDStatsValues)));
     connect(this, SIGNAL(loadLibrary()), MPDConnection::self(), SLOT(loadLibrary()));
-    #ifndef CANTATA_WEB
     connect(MPDConnection::self(), SIGNAL(connectionChanged(MPDConnectionDetails)), this, SLOT(connectionChanged(MPDConnectionDetails)));
-    #endif
     DBUG;
 }
 
@@ -123,16 +114,12 @@ Song MpdLibraryDb::getCoverSong(const QString &artistId, const QString &albumId)
 
 void MpdLibraryDb::connectionChanged(const MPDConnectionDetails &details)
 {
-    #ifdef CANTATA_WEB
-    Q_UNUSED(details)
-    #else
     QString dbFile=databaseName(details);
     if (dbFile!=dbFileName) {
         init(dbFile);
     } else {
         emit libraryUpdated();
     }
-    #endif
 }
 
 void MpdLibraryDb::reset()

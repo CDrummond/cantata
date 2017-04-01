@@ -24,9 +24,6 @@
 #ifndef LOCALIZE_H
 #define LOCALIZE_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocalizedString>
-#else
 #include <QObject>
 
 inline QString i18n(const char *text)
@@ -146,7 +143,5 @@ inline QString i18nc(const char *ctxt, const char *text, const A1 &a1, const A2 
 {
     return QObject::tr(text, ctxt).arg(a1).arg(a2).arg(a3).arg(a4).arg(a5).arg(a6).arg(a7).arg(a8).arg(a9);
 }
-
-#endif
 
 #endif

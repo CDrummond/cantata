@@ -131,14 +131,7 @@ RgDialog::RgDialog(QWidget *parent)
     setMainWidget(mainWidget);
     setButtonGuiItem(Ok, StdGuiItem::save());
     setButtonGuiItem(Cancel, StdGuiItem::close());
-    setButtonGuiItem(User1, GuiItem(i18n("Scan"),
-                                    #ifdef ENABLE_KDE_SUPPORT
-                                    "edit-find"
-                                    #else
-                                    FontAwesome::search
-                                    #endif
-                                    ));
-
+    setButtonGuiItem(User1, GuiItem(i18n("Scan"), FontAwesome::search));
     enableButton(Ok, false);
     enableButton(User1, false);
     qRegisterMetaType<Tags::ReplayGain>("Tags::ReplayGain");

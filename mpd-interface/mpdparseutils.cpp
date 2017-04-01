@@ -29,10 +29,8 @@
 #include <QStringList>
 #include <QUrl>
 #include <QFile>
-#ifndef CANTATA_WEB
 #include "online/onlineservice.h"
 #include "online/podcastservice.h"
-#endif
 #include "mpdparseutils.h"
 #include "mpdstatus.h"
 #include "mpdstats.h"
@@ -109,10 +107,8 @@ static const QByteArray constStatusBitrateKey("bitrate: ");
 static const QByteArray constStatusAudioKey("audio: ");
 static const QByteArray constStatusUpdatingDbKey("updating_db: ");
 static const QByteArray constStatusErrorKey("error: ");
-#ifndef CANTATA_WEB
 static const QByteArray constChannel("channel: ");
 static const QByteArray constMessage("message: ");
-#endif
 
 static const QByteArray constOkValue("OK");
 static const QByteArray constSetValue("1");
@@ -411,13 +407,9 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
                         }
                     }
                 } else {
-                    #ifndef CANTATA_WEB
                     if (OnlineService::decode(song)) {
                         modifiedFile=true;
-                    }
-                    else
-                    #endif
-                    {
+                    } else {
                         QString name=getAndRemoveStreamName(song.file);
                         if (!name.isEmpty()) {
                             song.setName(name);
@@ -440,13 +432,11 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         song.file=origFile;
         song.setKey(location);
 
-        #ifndef CANTATA_WEB
         // Check for downloaded podcasts played via local file playback
         if (Song::OnlineSvrTrack!=song.type && PodcastService::isPodcastFile(song.file)) {
             song.setIsFromOnlineService(PodcastService::constName);
             song.albumartist=song.artist=PodcastService::constName;
         }
-        #endif
     }
     return song;
 }
@@ -537,7 +527,6 @@ QStringList MPDParseUtils::parseList(const QByteArray &data, const QByteArray &k
     return items;
 }
 
-#ifndef CANTATA_WEB
 MPDParseUtils::MessageMap MPDParseUtils::parseMessages(const QByteArray &data)
 {
     MPDParseUtils::MessageMap messages;
@@ -557,7 +546,6 @@ MPDParseUtils::MessageMap MPDParseUtils::parseMessages(const QByteArray &data)
     }
     return messages;
 }
-#endif
 
 void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songList, const QString &dir, QStringList &subDirs, Location loc)
 {

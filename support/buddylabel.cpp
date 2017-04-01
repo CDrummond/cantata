@@ -22,9 +22,7 @@
  */
 
 #include "buddylabel.h"
-#ifndef ENABLE_KDE_SUPPORT
 #include "pathrequester.h"
-#endif
 #include <QCheckBox>
 #include <QComboBox>
 #include <QRadioButton>
@@ -60,13 +58,11 @@ bool BuddyLabel::event(QEvent *e)
 void BuddyLabel::mouseReleaseEvent(QMouseEvent *)
 {
     if (buddy() && buddy()->isEnabled()) {
-        #ifndef ENABLE_KDE_SUPPORT
         PathRequester *pr=qobject_cast<PathRequester*>(buddy());
         if (pr) {
             pr->setFocus();
             return;
         }
-        #endif
 
         buddy()->setFocus();
 

@@ -27,9 +27,7 @@
 #include "config.h"
 #include <qglobal.h>
 
-#ifdef ENABLE_KDE_SUPPORT
-    #include "application_kde.h"
-#elif defined Q_OS_WIN
+#if defined Q_OS_WIN
     #include "application_win.h"
 #elif defined Q_OS_MAC
     #include "application_mac.h"

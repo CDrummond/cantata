@@ -23,9 +23,7 @@
 
 #include "networkaccessmanager.h"
 #include "networkproxyfactory.h"
-#if !defined ENABLE_UBUNTU && !defined CANTATA_WEB
 #include "gui/settings.h"
-#endif
 #include "config.h"
 #include "support/globalstatic.h"
 #include <QTimerEvent>
@@ -130,7 +128,7 @@ void NetworkJob::jobFinished()
 
     QVariant redirect = j->header(QNetworkRequest::LocationHeader);
     if (redirect.isValid() && ++numRedirects<constMaxRedirects) {
-        QNetworkReply *newJob=static_cast<BASE_NETWORK_ACCESS_MANAGER *>(j->manager())->get(QNetworkRequest(redirect.toUrl()));
+        QNetworkReply *newJob=static_cast<QNetworkAccessManager *>(j->manager())->get(QNetworkRequest(redirect.toUrl()));
         DBUG << j->url().toString() << "redirected to" << newJob->url().toString();
         cancelJob();
         job=newJob;
@@ -176,20 +174,12 @@ void NetworkJob::handleReadyRead()
 GLOBAL_STATIC(NetworkAccessManager, instance)
 
 NetworkAccessManager::NetworkAccessManager(QObject *parent)
-    : BASE_NETWORK_ACCESS_MANAGER(parent)
+    : QNetworkAccessManager(parent)
 {
-    #if defined ENABLE_UBUNTU || defined CANTATA_WEB
-    enabled=true;
-    #else
     enabled=Settings::self()->networkAccessEnabled();
-    #endif
-    //#ifdef ENABLE_KDE_SUPPORT
-    // TODO: Not sure if NetworkProxyFactory is required if building KDE support
-    // with KIO::Integration::AccessManager. But, as we dont use that anyway...
     if (enabled) {
         NetworkProxyFactory::self();
     }
-    //#endif
 }
 
 NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
@@ -214,10 +204,10 @@ NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
         httpUrl.setScheme(QLatin1String("http"));
         request.setUrl(httpUrl);
         DBUG << "no ssl, use" << httpUrl.toString();
-        reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(request));
+        reply = new NetworkJob(QNetworkAccessManager::get(request));
         reply->setOrigUrl(req.url());
     } else {
-        reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(request));
+        reply = new NetworkJob(QNetworkAccessManager::get(request));
     }
 
     if (0!=timeout) {
@@ -247,7 +237,7 @@ QNetworkReply * NetworkAccessManager::postFormData(QNetworkRequest req, const QB
         if (!data.isEmpty()) {
             req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
         }
-        return BASE_NETWORK_ACCESS_MANAGER::post(req, data);
+        return QNetworkAccessManager::post(req, data);
     } else {
         return new FakeNetworkReply();
     }

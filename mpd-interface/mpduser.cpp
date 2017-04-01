@@ -52,7 +52,7 @@ QString MPDUser::translatedName()
 
 GLOBAL_STATIC(MPDUser, instance)
 
-#if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
 static void moveConfig()
 {
     QString oldName=QDir::homePath()+"/.config/cantata/"+constDir+"/"+constConfigFile;
@@ -70,7 +70,7 @@ static void moveConfig()
 
 MPDUser::MPDUser()
 {
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     moveConfig();
     #endif
     // For now, per-user MPD support is disabled for windows builds

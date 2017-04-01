@@ -26,21 +26,6 @@
 
 #include <qglobal.h>
 
-#ifdef ENABLE_KDE_SUPPORT
-
-#include <KDE/KGlobal>
-#define GLOBAL_STATIC(CLASS, VAR) \
-    K_GLOBAL_STATIC(CLASS, VAR) \
-    CLASS * CLASS::self() { return VAR; }
-
-#elif QT_VERSION >= 0x050100 || (QT_VERSION < 0x050000 && QT_VERSION >= 0x040800)
-
-#define GLOBAL_STATIC(CLASS, VAR) \
-    Q_GLOBAL_STATIC(CLASS, VAR) \
-    CLASS * CLASS::self() { return VAR(); }
-
-#else
-
 #define GLOBAL_STATIC(CLASS, VAR) \
     CLASS * CLASS::self() \
     { \
@@ -50,7 +35,5 @@
         } \
         return VAR; \
     }
-
-#endif
 
 #endif

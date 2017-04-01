@@ -24,23 +24,6 @@
 #ifndef PATH_REQUESER_H
 #define PATH_REQUESER_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KUrlRequester>
-#include <KDE/KLineEdit>
-#include <KDE/KPushButton>
-class PathRequester : public KUrlRequester
-{
-public:
-    PathRequester(QWidget *parent) : KUrlRequester(parent) {
-        setMode(KFile::Directory|KFile::ExistingOnly|KFile::LocalOnly);
-        button()->setFlat(true);
-    }
-
-    void setButtonVisible(bool v) { button()->setVisible(v); }
-    void setDirMode(bool m) { setMode((m ? KFile::Directory : KFile::File)|KFile::ExistingOnly|KFile::LocalOnly); }
-};
-
-#else
 #include "lineedit.h"
 #include "flattoolbutton.h"
 #include <QDir>
@@ -77,6 +60,5 @@ private:
     bool dirMode;
     QString filter;
 };
-#endif
 
 #endif

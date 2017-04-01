@@ -133,9 +133,6 @@ const QImage & CurrentCover::stdImage(bool stream)
 {
     QImage &img=stream ? noStreamCover : noCover;
 
-    #ifdef ENABLE_UBUNTU
-    // TODO: Just return qrc file Touch...
-    #else
     if (img.isNull()) {
         int iconSize=Icon::stdSize(Utils::scaleForDpi(128));
         img = (stream ? Icons::self()->streamIcon : Icons::self()->albumIcon(iconSize)).pixmap(iconSize, iconSize).toImage();
@@ -153,7 +150,6 @@ const QImage & CurrentCover::stdImage(bool stream)
         }
         #endif
     }
-    #endif
     return img;
 }
 

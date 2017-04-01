@@ -205,13 +205,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         enableButton(User2, false);
     }
     setButtonGuiItem(Ok, StdGuiItem::save());
-    setButtonGuiItem(User3, GuiItem(i18n("Tools"),
-                                    #ifdef ENABLE_KDE_SUPPORT
-                                    "tools-wizard"
-                                    #else
-                                    FontAwesome::magic
-                                    #endif
-                                    ));
+    setButtonGuiItem(User3, GuiItem(i18n("Tools"), FontAwesome::magic));
     QMenu *toolsMenu=new QMenu(this);
     toolsMenu->addAction(i18n("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
     toolsMenu->addAction(i18n("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));

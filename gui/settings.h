@@ -148,9 +148,7 @@ public:
     bool cacheScaledCovers();
     bool fetchCovers();
     int mpdPoll();
-    #ifndef ENABLE_KDE_SUPPORT
     QString lang();
-    #endif
     bool showMenubar();
     int menu();
     bool touchFriendly();
@@ -252,9 +250,7 @@ public:
     void saveStartupState(int v);
     void saveSearchCategory(const QString &v);
     void saveFetchCovers(bool v);
-    #ifndef ENABLE_KDE_SUPPORT
     void saveLang(const QString &v);
-    #endif
     void saveShowMenubar(bool v);
     void saveTouchFriendly(bool v);
     void saveShowCoverWidget(bool v);

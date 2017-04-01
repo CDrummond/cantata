@@ -35,10 +35,6 @@
 #include "stdactions.h"
 #include "support/utils.h"
 #include "currentcover.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KMenu>
-#include <QPixmap>
-#endif
 #include <QWheelEvent>
 #include <QMenu>
 #ifdef Q_OS_MAC
@@ -120,9 +116,7 @@ void TrayItem::setup()
     #ifndef Q_OS_MAC
     if (!Settings::self()->useSystemTray()) {
         if (trayItem) {
-            #ifndef ENABLE_KDE_SUPPORT
             trayItem->setVisible(false);
-            #endif
             trayItem->deleteLater();
             trayItem=0;
             trayItemMenu->deleteLater();
@@ -144,34 +138,6 @@ void TrayItem::setup()
     updateOutputs();
     #endif
 
-    #ifdef ENABLE_KDE_SUPPORT
-    trayItem = new KStatusNotifierItem(this);
-    trayItem->setCategory(KStatusNotifierItem::ApplicationStatus);
-    trayItem->setTitle(i18n("Cantata"));
-    trayItem->setIconByName(QIcon::hasThemeIcon("cantata-panel") ? QLatin1String("cantata-panel") : QLatin1String("cantata"));
-    trayItem->setToolTip("cantata", i18n("Cantata"), QString());
-    trayItem->setStandardActionsEnabled(false);
-
-    trayItemMenu = new KMenu(0);
-    trayItemMenu->addAction(StdActions::self()->prevTrackAction);
-    trayItemMenu->addAction(StdActions::self()->playPauseTrackAction);
-    trayItemMenu->addAction(StdActions::self()->stopPlaybackAction);
-    trayItemMenu->addAction(StdActions::self()->stopAfterCurrentTrackAction);
-    trayItemMenu->addAction(StdActions::self()->nextTrackAction);
-    trayItem->setContextMenu(trayItemMenu);
-    trayItem->setStatus(KStatusNotifierItem::Active);
-    trayItemMenu->addSeparator();
-    trayItemMenu->addAction(connectionsAction);
-    trayItemMenu->addAction(outputsAction);
-    trayItemMenu->addSeparator();
-    trayItemMenu->addAction(mw->restoreAction);
-    trayItemMenu->addSeparator();
-    trayItemMenu->addAction(copyAction(mw->quitAction));
-
-    connect(trayItem, SIGNAL(scrollRequested(int, Qt::Orientation)), this, SLOT(trayItemScrollRequested(int, Qt::Orientation)));
-    connect(trayItem, SIGNAL(secondaryActivateRequested(const QPoint &)), mw, SLOT(playPauseTrack()));
-    connect(trayItem, SIGNAL(activateRequested(bool, const QPoint &)), this, SLOT(clicked()));
-    #else
     // What systems DONT have a system tray? Also, isSytemTrayAvailable is checked in config dialog, so
     // useSystemTray should not be set if there is none.
     // Checking here seems to cause the icon not to appear if Cantata is autostarted in Plasma5 - #759
@@ -215,30 +181,8 @@ void TrayItem::setup()
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));
     #endif
-    #endif
 }
 
-#ifdef ENABLE_KDE_SUPPORT
-void TrayItem::clicked()
-{
-    if (mw->isHidden()) {
-        mw->restoreWindow();
-    } else {
-        mw->hideWindow();
-    }
-}
-
-void TrayItem::trayItemScrollRequested(int delta, Qt::Orientation orientation)
-{
-    if (Qt::Vertical==orientation) {
-        if (delta>0) {
-            StdActions::self()->increaseVolumeAction->trigger();
-        } else if(delta<0) {
-            StdActions::self()->decreaseVolumeAction->trigger();
-        }
-    }
-}
-#else
 void TrayItem::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
 {
     #ifdef Q_OS_MAC
@@ -260,7 +204,6 @@ void TrayItem::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
     }
     #endif
 }
-#endif
 
 void TrayItem::songChanged(const Song &song, bool isPlaying)
 {
@@ -289,14 +232,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
             }
 
             if (trayItem) {
-                #ifdef ENABLE_KDE_SUPPORT
-                trayItem->setToolTip("cantata", i18n("Cantata"), text);
-
-                // Use the cover as icon pixmap.
-                if (CurrentCover::self()->isValid() && !CurrentCover::self()->image().isNull()) {
-                    trayItem->setToolTipIconByPixmap(QPixmap::fromImage(CurrentCover::self()->image()));
-                }
-                #elif defined Q_OS_WIN || defined Q_OS_MAC || !defined QT_QTDBUS_FOUND
+                #if defined Q_OS_WIN || defined Q_OS_MAC || !defined QT_QTDBUS_FOUND
                 trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
                 // The pure Qt implementation needs both the tray icon and the setting checked.
                 if (Settings::self()->showPopups() && isPlaying) {
@@ -304,7 +240,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                 }
                 #else
                 trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
-                #endif // ENABLE_KDE_SUPPORT
+                #endif
             }
             #ifdef QT_QTDBUS_FOUND
             if (Settings::self()->showPopups() && isPlaying) {
@@ -315,11 +251,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
             }
             #endif
         } else if (trayItem) {
-            #ifdef ENABLE_KDE_SUPPORT
-            trayItem->setToolTip("cantata", i18n("Cantata"), QString());
-            #else
             trayItem->setToolTip(i18n("Cantata"));
-            #endif
         }
     }
     #endif

@@ -22,9 +22,7 @@
  */
 
 #include "proxymodel.h"
-#ifndef ENABLE_UBUNTU
 #include "gui/settings.h"
-#endif
 #include <QMap>
 #include <QString>
 #include <QLatin1String>
@@ -187,7 +185,6 @@ QModelIndexList ProxyModel::mapToSource(const QModelIndexList &list, bool leaves
     return mapped;
 }
 
-#ifndef ENABLE_UBUNTU
 QMimeData * ProxyModel::mimeData(const QModelIndexList &indexes) const
 {
     QModelIndexList nodes=leaves(indexes);
@@ -197,7 +194,6 @@ QMimeData * ProxyModel::mimeData(const QModelIndexList &indexes) const
     }
     return sourceModel()->mimeData(sourceIndexes);
 }
-#endif
 
 QModelIndexList ProxyModel::leaves(const QModelIndexList &list) const
 {

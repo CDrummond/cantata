@@ -24,15 +24,7 @@
 #ifndef NETWORK_ACCESS_MANAGER_H
 #define NETWORK_ACCESS_MANAGER_H
 
-// KIO is not thread safe, and we get segfaults if it is used in non-gui thread.
-// Therefore, we dont use KIO::Integration::AccessManager :-(
-//#ifdef ENABLE_KDE_SUPPORT
-//#include <KDE/KIO/AccessManager>
-//#define BASE_NETWORK_ACCESS_MANAGER KIO::Integration::AccessManager
-//#else
 #include <QNetworkAccessManager>
-#define BASE_NETWORK_ACCESS_MANAGER QNetworkAccessManager
-//#endif
 #include <QNetworkReply>
 #include <QMap>
 
@@ -93,7 +85,7 @@ private:
     friend class NetworkAccessManager;
 };
 
-class NetworkAccessManager : public BASE_NETWORK_ACCESS_MANAGER
+class NetworkAccessManager : public QNetworkAccessManager
 {
     Q_OBJECT
 

@@ -28,27 +28,15 @@
 #include <QKeySequence>
 
 Action::Action(QObject *parent)
-#ifdef ENABLE_KDE_SUPPORT
-: KAction(parent)
-#else
-: QAction(parent)
-#endif
+    : QAction(parent)
 {
-  #ifndef ENABLE_KDE_SUPPORT
   init();
-  #endif
 }
 
 Action::Action(const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
-#ifdef ENABLE_KDE_SUPPORT
-: KAction(parent)
-#else
-: QAction(parent)
-#endif
+    : QAction(parent)
 {
-  #ifndef ENABLE_KDE_SUPPORT
   init();
-  #endif
   setText(text);
   setShortcut(shortcut);
   if(receiver && slot)
@@ -56,15 +44,9 @@ Action::Action(const QString &text, QObject *parent, const QObject *receiver, co
 }
 
 Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
-#ifdef ENABLE_KDE_SUPPORT
-: KAction(parent)
-#else
-: QAction(parent)
-#endif
+    : QAction(parent)
 {
-  #ifndef ENABLE_KDE_SUPPORT
   init();
-  #endif
   setIcon(icon);
   setText(text);
   setShortcut(shortcut);
@@ -74,11 +56,9 @@ Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QO
 
 void Action::initIcon(QAction *act)
 {
-    #ifndef ENABLE_UBUNTU
     if (GtkStyle::isActive() && act) {
         act->setIconVisibleInMenu(false);
     }
-    #endif
 }
 
 static const char *constPlainToolTipProperty="plain-tt";
@@ -120,7 +100,6 @@ QString Action::settingsText(QAction *act)
     return Utils::stripAcceleratorMarkers(act->text());
 }
 
-#ifndef ENABLE_KDE_SUPPORT
 void Action::init() {
   connect(this, SIGNAL(triggered(bool)), this, SLOT(slotTriggered()));
 
@@ -161,5 +140,3 @@ void Action::setShortcut(const QKeySequence &key, ShortcutTypes type) {
   if(type & ActiveShortcut)
     QAction::setShortcut(key);
 }
-
-#endif // !ENABLE_KDE_SUPPORT

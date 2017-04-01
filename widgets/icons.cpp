@@ -27,7 +27,7 @@
 #include "support/utils.h"
 #include "support/pathrequester.h"
 #include "support/monoicon.h"
-#if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
 #include "support/gtkstyle.h"
 #endif
 #ifdef Q_OS_MAC
@@ -42,7 +42,7 @@ GLOBAL_STATIC(Icons, instance)
 
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48; // << 64;
 
-#if !defined ENABLE_KDE_SUPPORT || defined Q_OS_MAC || defined Q_OS_WIN
+#if defined Q_OS_MAC || defined Q_OS_WIN
 #define ALWAYS_USE_MONO_ICONS
 #endif
 
@@ -79,9 +79,7 @@ Icons::Icons()
     albumMonoIcon=MonoIcon::icon(":mono-album.svg", stdColor);
     artistIcon=MonoIcon::icon(":artist.svg", stdColor);
     genreIcon=MonoIcon::icon(":genre.svg", stdColor);
-    #if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
     appIcon=Icon("cantata");
-    #endif
 
     lastFmIcon=MonoIcon::icon(FontAwesome::lastfmsquare, MonoIcon::constRed, MonoIcon::constRed);
     replacePlayQueueIcon=MonoIcon::icon(FontAwesome::play, stdColor);
@@ -123,12 +121,10 @@ Icons::Icons()
     rightIcon=MonoIcon::icon(FontAwesome::chevronright, stdColor);
     upIcon=MonoIcon::icon(FontAwesome::chevronup, stdColor);
     downIcon=MonoIcon::icon(FontAwesome::chevrondown, stdColor);
-    #ifndef ENABLE_KDE_SUPPORT
     PathRequester::setIcon(folderListIcon);
-    #endif
     cancelIcon=MonoIcon::icon(FontAwesome::close, MonoIcon::constRed, MonoIcon::constRed);
 
-    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    #if !defined Q_OS_WIN
     if (QLatin1String("gnome")==QIcon::themeName()) {
         QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
         contextIcon=MonoIcon::icon(QLatin1String(":sidebar-info"), col);

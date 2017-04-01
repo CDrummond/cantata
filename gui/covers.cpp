@@ -56,9 +56,6 @@
 #include <QXmlStreamReader>
 #include <QTimer>
 #include <QApplication>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KStandardDirs>
-#endif
 
 GLOBAL_STATIC(Covers, instance)
 
@@ -170,7 +167,6 @@ static QString save(const QString &mimeType, const QString &extension, const QSt
 static QImage loadImage(const QString &fileName)
 {
     QImage img(fileName);
-    #ifndef ENABLE_UBUNTU
     if (img.isNull()) {
         // Failed to load, perhaps extension is wrong? If so try PNG for .jpg, and vice versa...
         QFile f(fileName);
@@ -183,7 +179,6 @@ static QImage loadImage(const QString &fileName)
             }
         }
     }
-    #endif
     return img;
 }
 
@@ -363,12 +358,6 @@ QString Covers::encodeName(QString name)
         name=name.left(255);
     }
     #else // Linux
-    #ifdef ENABLE_UBUNTU
-    // qrc:/ does not seem to like ?
-    name.replace(QLatin1Char('?'), QLatin1Char('_'));
-    name.replace(QLatin1Char(':'), QLatin1Char('_'));
-    name.replace(QLatin1Char('%'), QLatin1Char('_'));
-    #endif // ENABLE_UBUNTU
     if (name.startsWith(QLatin1Char('.'))) {
         name[0]=QLatin1Char('_');
     }
@@ -382,14 +371,12 @@ QString Covers::albumFileName(const Song &song)
     if (coverName.isEmpty()) {
         coverName=Covers::constFileName;
     }
-    #ifndef ENABLE_UBUNTU
     else if (coverName.contains(QLatin1Char('%'))) {
         coverName.replace(DeviceOptions::constAlbumArtist, encodeName(song.albumArtist()));
         coverName.replace(DeviceOptions::constTrackArtist, encodeName(song.albumArtist()));
         coverName.replace(DeviceOptions::constAlbumTitle, encodeName(song.album));
         coverName.replace(QLatin1String("%"), QLatin1String(""));
     }
-    #endif
     return coverName;
 }
 
@@ -397,7 +384,10 @@ QString Covers::artistFileName(const Song &song)
 {
     QString coverName=MPDConnection::self()->getDetails().coverName;
     if (coverName.contains(QLatin1Char('%'))) {
-        return encodeName(song.isVariousArtists() ? song.basicArtist() : song.albumArtist());
+        QString rv=encodeName(song.isVariousArtists() ? song.basicArtist() : song.albumArtist());
+        if (!rv.isEmpty()) {
+            return rv;
+        }
     }
     return constArtistImage;
 }
@@ -406,7 +396,10 @@ QString Covers::composerFileName(const Song &song)
 {
     QString coverName=MPDConnection::self()->getDetails().coverName;
     if (coverName.contains(QLatin1Char('%'))) {
-        return encodeName(song.composer());
+        QString rv=encodeName(song.composer());
+        if (!rv.isEmpty()) {
+            return rv;
+        }
     }
     return constComposerImage;
 }
@@ -1100,29 +1093,16 @@ Covers::Covers()
         devicePixelRatio=qApp->devicePixelRatio();
     }
     #endif
-    #ifdef ENABLE_UBUNTU
-    cache.setMaxCost(20*1024*1024); // Not used?
-    cacheScaledCovers=false;
-    saveInMpdDir=false;
-    #else
     maxCoverUpdatePerIteration=Settings::self()->maxCoverUpdatePerIteration();
     cache.setMaxCost(Settings::self()->coverCacheSize()*1024*1024);
-    #endif
 }
 
-#ifdef ENABLE_UBUNTU
-void Covers::setFetchCovers(bool f)
-{
-    fetchCovers=f;
-}
-#else
 void Covers::readConfig()
 {
     saveInMpdDir=Settings::self()->storeCoversInMpdDir();
     cacheScaledCovers=Settings::self()->cacheScaledCovers();
     fetchCovers=Settings::self()->fetchCovers();
 }
-#endif
 
 void Covers::stop()
 {
@@ -1220,7 +1200,6 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
 
     key+=QString::number(size);
     QPixmap *pix=cache.object(key);
-    #ifndef ENABLE_UBUNTU
     if (!pix) {
         const Icon &icn=song.isArtistImageRequest() || song.isComposerImageRequest()
                 ? Icons::self()->artistIcon
@@ -1237,7 +1216,6 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
         cache.insert(key, pix, 1);
         cacheSizes.insert(size);
     }
-    #endif
     return pix;
 }
 
@@ -1260,7 +1238,6 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
         key=cacheKey(song, size);
         pix=cache.object(key);
 
-        #ifndef ENABLE_UBUNTU
         if (!pix) {
             if (song.isArtistImageRequest() && song.isVariousArtists()) {
                 // Load artist image...
@@ -1286,7 +1263,6 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                 cacheSizes.insert(size);
             }
         }
-        #endif
         if (!pix) {
             if (urgent) {
                 QImage cached=loadScaledCover(song, size);

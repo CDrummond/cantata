@@ -21,23 +21,9 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KPixmapSequence>
-#include <KDE/KPixmapSequenceOverlayPainter>
+#ifndef SPINNER_H
+#define SPINNER_H
 
-class Spinner : public KPixmapSequenceOverlayPainter
-{
-public:
-    Spinner(QObject *p, bool inMiddle=false);
-    bool isActive() const { return active; }
-    void start();
-    void stop();
-    void setWidget(QWidget *widget);
-
-private:
-    bool active;
-};
-#else
 #include <QWidget>
 class QTimer;
 class Spinner : public QWidget
@@ -68,4 +54,5 @@ private:
     bool central;
     bool onView;
 };
+
 #endif

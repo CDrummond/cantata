@@ -33,11 +33,7 @@
 static int maxPopupItemCount=-1;
 
 ComboBox::ComboBox(QWidget *p)
-    #ifdef ENABLE_KDE_SUPPORT
-    : KComboBox(p)
-    #else
     : QComboBox(p)
-    #endif
     , toggleState(false)
 {
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
@@ -107,14 +103,12 @@ void ComboBox::showPopup()
         }
         view()->parentWidget()->setGeometry(geo);
 
-        #ifndef ENABLE_KDE_SUPPORT
         // Hide scrollers - these look ugly...
         foreach (QObject *c, view()->parentWidget()->children()) {
             if (0==qstrcmp("QComboBoxPrivateScroller", c->metaObject()->className())) {
                 static_cast<QWidget *>(c)->setMaximumHeight(0);
             }
         }
-        #endif
     }
 }
 

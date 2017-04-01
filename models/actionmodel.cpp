@@ -25,18 +25,9 @@
 #include "gui/stdactions.h"
 #include "roles.h"
 
-#ifdef ENABLE_UBUNTU
-static const int Role_HasChildren = Qt::UserRole+500;
-#endif
-
 QVariant ActionModel::data(const QModelIndex &index, int role) const
 {
     QVariant v;
-    #ifdef ENABLE_UBUNTU
-    if (Role_HasChildren==role) {
-        return rowCount(index)>0;
-    }
-    #else
     Q_UNUSED(index)
     switch(role) {
     case Cantata::Role_Actions:
@@ -49,20 +40,6 @@ QVariant ActionModel::data(const QModelIndex &index, int role) const
     default:
         break;
     }
-    #endif
     return v;
 }
 
-#ifdef ENABLE_UBUNTU
-//Expose role names, so that they can be accessed via QML
-QHash<int, QByteArray> ActionModel::roleNames() const
-{
-    QHash<int, QByteArray> roles;
-    roles[Cantata::Role_MainText] = "mainText";
-    roles[Cantata::Role_SubText] = "subText";
-    roles[Cantata::Role_TitleText] = "titleText";
-    roles[Cantata::Role_Image] = "image";
-    roles[Role_HasChildren] = "hasChildren";
-    return roles;
-}
-#endif

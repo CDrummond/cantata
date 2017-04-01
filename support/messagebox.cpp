@@ -31,7 +31,6 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QListWidget>
-#ifndef ENABLE_KDE_SUPPORT
 #include <QAbstractButton>
 #include <QStyle>
 
@@ -114,11 +113,7 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
     AcceleratorManager::manage(&box);
     return -1==box.exec() ? Cancel : map(box.standardButton(box.clickedButton()));
 }
-#endif
 
-#ifdef ENABLE_KDE_SUPPORT
-void MessageBox::errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title)
-#else
 namespace MessageBox
 {
 class YesNoListDialog : public Dialog
@@ -140,24 +135,14 @@ public:
 }
 
 MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const QString &message, const QStringList &strlist, const QString &title)
-#endif
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    Dialog *dlg=new Dialog(parent);
-    #else
     MessageBox::YesNoListDialog *dlg=new MessageBox::YesNoListDialog(parent);
-    #endif
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     QWidget *wid=new QWidget(dlg);
     QGridLayout *lay=new QGridLayout(wid);
     QLabel *iconLabel=new QLabel(wid);
     int iconSize=Icon::dlgIconSize();
     iconLabel->setFixedSize(iconSize, iconSize);
-    #ifdef ENABLE_KDE_SUPPORT
-    dlg->setCaption(title.isEmpty() ? i18n("Error") : title);
-    dlg->setButtons(Dialog::Ok);
-    iconLabel->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
-    #else
     switch(type) {
     case Error:
         dlg->setCaption(title.isEmpty() ? i18n("Error") : title);
@@ -180,7 +165,6 @@ MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const Q
         iconLabel->setPixmap(Icon("dialog-information").pixmap(iconSize, iconSize));
         break;
     }
-    #endif
     lay->addWidget(iconLabel, 0, 0, 1, 1);
     QLabel *msgLabel=new QLabel(message, wid);
     msgLabel->setWordWrap(true);
@@ -194,9 +178,5 @@ MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const Q
     #ifdef Q_OS_MAC
     dlg->setWindowFlags((dlg->windowFlags()&(~Qt::WindowType_Mask))|Qt::Sheet);
     #endif
-    #ifdef ENABLE_KDE_SUPPORT
-    dlg->exec();
-    #else
     return QDialog::Accepted==dlg->exec() ? Yes : No;
-    #endif
 }

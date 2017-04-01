@@ -30,11 +30,7 @@
 #include "config.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "deviceoptions.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <solid/device.h>
-#else
 #include "solid-lite/device.h"
-#endif
 #endif
 
 class QWidget;

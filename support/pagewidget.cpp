@@ -22,35 +22,6 @@
  */
 
 #include "pagewidget.h"
-
-//#ifdef ENABLE_KDE_SUPPORT
-//PageWidget::PageWidget(QWidget *p, bool listView, bool headers)
-//    : KPageWidget(p)
-//    , showHeaders(headers)
-//{
-//    setFaceType(listView ? Tree : List);
-//    connect(this, SIGNAL(currentPageChanged(KPageWidgetItem *, KPageWidgetItem *)), this, SIGNAL(currentPageChanged()));
-//}
-
-//PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header)
-//{
-//    widget->adjustSize();
-//    PageWidgetItem *item=KPageWidget::addPage(widget, name);
-//    item->setIcon(icon);
-//    item->setHeader(header);
-//    return item;
-//}
-
-//QAbstractItemView * PageWidget::createView()
-//{
-//    QAbstractItemView *v=KPageWidget::createView();
-//    if (Tree==faceType()) {
-//        static_cast<QTreeView *>(v)->setIndentation(0);
-//    }
-//    return v;
-//}
-//#else
-
 #include "icon.h"
 #include "gtkstyle.h"
 #include "dialog.h"
@@ -341,11 +312,6 @@ PageWidget::PageWidget(QWidget *p, bool listView, bool headers)
     layout->addWidget(list);
     layout->addWidget(stack);
     layout->setMargin(0);
-    #ifdef ENABLE_KDE_SUPPORT
-    QFont f=list->font();
-    f.setBold(true);
-    list->setFont(f);
-    #endif
     list->setViewMode(QListView::ListMode);
     list->setVerticalScrollMode(QListView::ScrollPerPixel);
     list->setMovement(QListView::Static);
@@ -423,4 +389,3 @@ void PageWidget::setFocus()
     list->setFocus();
 }
 
-//#endif // ENABLE_KDE_SUPPORT

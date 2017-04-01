@@ -26,15 +26,7 @@
 
 #include <QComboBox>
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KComboBox>
-#endif
-class ComboBox
-    #ifdef ENABLE_KDE_SUPPORT
-    : public KComboBox
-    #else
-    : public QComboBox
-    #endif
+class ComboBox : public QComboBox
 {
     #if QT_VERSION >= 0x050000
     Q_OBJECT

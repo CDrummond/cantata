@@ -77,11 +77,7 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
     storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
     storeBackdropsInMpdDir->setChecked(Settings::self()->storeBackdropsInMpdDir());
-    #ifdef ENABLE_KDE_SUPPORT
-    introPage->setBackground(Icon("cantata"));
-    #else
     introPage->setBackground(Icons::self()->appIcon);
-    #endif
     connectionPage->setBackground(Icons::self()->audioFileIcon);
     filesPage->setBackground(Icons::self()->filesIcon);
     finishedPage->setBackground(Icon("dialog-ok"));

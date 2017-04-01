@@ -27,7 +27,6 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
-#ifndef CANTATA_WEB
 #include <QProcess>
 #include <QApplication>
 #include <QDateTime>
@@ -41,9 +40,6 @@
 #else
 #include <QDesktopServices>
 #endif
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KStandardDirs>
-#endif
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -53,7 +49,6 @@
 #endif
 #include <sys/types.h>
 #include <utime.h>
-#endif
 
 const QLatin1Char Utils::constDirSep('/');
 const QLatin1String Utils::constDirSepStr("/");
@@ -176,7 +171,6 @@ bool Utils::isDirReadable(const QString &dir)
     #endif
 }
 
-#ifndef CANTATA_WEB
 QString Utils::strippedText(QString s)
 {
     s.remove(QString::fromLatin1("..."));
@@ -343,7 +337,6 @@ bool Utils::createWorldReadableDir(const QString &dir, const QString &base, cons
     #endif
 }
 
-#ifndef ENABLE_KDE_SUPPORT
 // Copied from KDE... START
 #include <QLocale>
 #include <fcntl.h>
@@ -629,8 +622,6 @@ QString Utils::findExe(const QString &appname, const QString &pstr)
 }
 // Copied from KDE... END
 
-#endif
-
 QString Utils::formatDuration(const quint32 totalseconds)
 {
     //Get the days,hours,minutes and seconds out of the total seconds
@@ -644,15 +635,9 @@ QString Utils::formatDuration(const quint32 totalseconds)
     //Convert hour,minutes and seconds to a QTime for easier parsing
     QTime time(hours, minutes, seconds);
 
-    #ifdef ENABLE_KDE_SUPPORT
-    return 0==days
-            ? time.toString("h:mm:ss")
-            : i18np("1 day %2", "%1 days %2", days, time.toString("h:mm:ss"));
-    #else
     return 0==days
             ? time.toString("h:mm:ss")
             : QString("%1:%2").arg(days).arg(time.toString("hh:mm:ss"));
-    #endif
 }
 
 QString Utils::formatTime(const quint32 seconds, bool zeroIsUnknown)
@@ -695,7 +680,7 @@ static QString userDir(const QString &mainDir, const QString &sub, bool create)
 
 QString Utils::dataDir(const QString &sub, bool create)
 {
-    #if defined Q_OS_WIN || defined Q_OS_MAC || defined ENABLE_UBUNTU
+    #if defined Q_OS_WIN || defined Q_OS_MAC
 
     #if QT_VERSION >= 0x050000
     return userDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+constDirSep, sub, create);
@@ -728,7 +713,7 @@ QString Utils::dataDir(const QString &sub, bool create)
 
 QString Utils::cacheDir(const QString &sub, bool create)
 {
-    #if defined Q_OS_WIN || defined Q_OS_MAC || defined ENABLE_UBUNTU
+    #if defined Q_OS_WIN || defined Q_OS_MAC
 
     #if QT_VERSION >= 0x050000
     return userDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+constDirSep, sub, create);
@@ -988,9 +973,6 @@ QColor Utils::monoIconColor()
     return clampColor(QApplication::palette().color(QPalette::Active, QPalette::WindowText));
 }
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KWindowSystem>
-#endif
 #ifdef Q_OS_WIN
 // This is down here, because windows.h includes ALL windows stuff - and we get conflicts with MessageBox :-(
 #include <windows.h>
@@ -1043,10 +1025,6 @@ void Utils::raiseWindow(QWidget *w)
         QProcess::execute(wmctrl, QStringList() << QLatin1String("-i") << QLatin1String("-a") << QString::number(w->effectiveWinId()));
     }
     #endif // QT_VERSION < 0x050000
-    #ifdef ENABLE_KDE_SUPPORT
-    KWindowSystem::forceActiveWindow(w->effectiveWinId());
-    #endif
     #endif
 }
 
-#endif // CANTATA_WEB

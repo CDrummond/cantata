@@ -27,11 +27,7 @@
 #include "fsdevice.h"
 #include "mpd-interface/song.h"
 #include "config.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <solid/portablemediaplayer.h>
-#else
 #include "solid-lite/portablemediaplayer.h"
-#endif
 #include <libmtp.h>
 
 class MusicLibraryItemRoot;

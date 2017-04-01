@@ -56,15 +56,10 @@
 #include <QToolButton>
 #include <QTreeView>
 #include <QProgressBar>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobalSettings>
-#endif
 
 #if defined Q_WS_X11 && QT_VERSION < 0x050000
 #include <QX11Info>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/NETRootInfo>
-#elif QT_VERSION < 0x050000
+#if QT_VERSION < 0x050000
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #endif
@@ -116,11 +111,7 @@ WindowManager::WindowManager(QObject *parent)
     , _useWMMoveResize(false)
     #endif
     , _dragMode(WM_DRAG_NONE)
-    #ifdef ENABLE_KDE_SUPPORT
-    , _dragDistance(KGlobalSettings::dndEventDelay())
-    #else
     , _dragDistance(QApplication::startDragDistance())
-    #endif
     , _dragDelay(QApplication::startDragTime())
     , _dragAboutToStart(false)
     , _dragInProgress(false)
@@ -137,9 +128,6 @@ WindowManager::WindowManager(QObject *parent)
 void WindowManager::initialize(int windowDrag)
 {
     setDragMode(windowDrag);
-    #ifdef ENABLE_KDE_SUPPORT
-    setDragDistance(KGlobalSettings::dndEventDelay());
-    #endif
     setDragDelay(QApplication::startDragTime());
 }
 
@@ -576,7 +564,6 @@ void WindowManager::startDrag(QWidget *widget, const QPoint& position)
     // ungrab pointer
     if (useWMMoveResize()) {
         #if defined Q_WS_X11 && QT_VERSION < 0x050000
-        #ifndef ENABLE_KDE_SUPPORT
         static const Atom constNetMoveResize = XInternAtom(QX11Info::display(), "_NET_WM_MOVERESIZE", False);
         //...Taken from bespin...
         // stolen... errr "adapted!" from QSizeGrip
@@ -595,11 +582,6 @@ void WindowManager::startDrag(QWidget *widget, const QPoint& position)
         XUngrabPointer(QX11Info::display(), QX11Info::appTime());
         XSendEvent(QX11Info::display(), QX11Info::appRootWindow(info.screen()), False,
                    SubstructureRedirectMask | SubstructureNotifyMask, &xev);
-        #else
-        XUngrabPointer(QX11Info::display(), QX11Info::appTime());
-        NETRootInfo rootInfo(QX11Info::display(), NET::WMMoveResize);
-        rootInfo.moveResizeRequest(widget->window()->winId(), position.x(), position.y(), NET::Move);
-        #endif // !ENABLE_KDE_SUPPORT
         #else
         Q_UNUSED(position)
         #endif

@@ -35,9 +35,7 @@ public:
     Icons();
     void initSidebarIcons();
     void initToolbarIcons(QColor toolbarText);
-    #ifndef ENABLE_KDE_SUPPORT
     Icon appIcon;
-    #endif
     Icon genreIcon;
     Icon artistIcon;
     const Icon &albumIcon(int size, bool mono=false) const;

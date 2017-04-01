@@ -74,8 +74,8 @@ struct MPDStatusValues {
     qint32 nextSongId;
     qint32 timeElapsed;
     qint32 timeTotal;
-    quint16 bitrate;
-    quint16 samplerate;
+    quint32 bitrate;
+    quint32 samplerate;
     quint8 bits;
     quint8 channels;
     qint32 updatingDb;
@@ -108,8 +108,8 @@ public:
     qint32 nextSongId() const { return values.nextSongId; }
     qint32 timeElapsed() const { return values.timeElapsed; }
     qint32 timeTotal() const { return values.timeTotal; }
-    quint16 bitrate() const { return values.bitrate; }
-    quint16 samplerate() const { return values.samplerate; }
+    quint32 bitrate() const { return values.bitrate; }
+    quint32 samplerate() const { return values.samplerate; }
     quint8 bits() const { return values.bits; }
     quint8 channels() const { return values.channels; }
     qint32 updatingDb() const { return values.updatingDb; }

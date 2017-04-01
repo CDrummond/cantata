@@ -63,6 +63,7 @@
 47. URL encode online stream URLs before passing to MPD.
 48. Show podcast descriptions in tooltips.
 49. Parse name field in playlists.
+50. Use 32-bit int for bitrate and samplerate staus values.
 
 2.0.1
 -----

@@ -251,6 +251,7 @@ static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
         answer.replace("==", "¬").replace(QRegExp("¬([^¬]*)¬"), "<h2>\\1</h2>");
     }
     answer.replace("&amp;nbsp;", " ");
+    answer.replace("&ndash;", "-");
     answer.replace("<br><h", "<h");
     if (introOnly) {
         end=answer.indexOf("==", 3);

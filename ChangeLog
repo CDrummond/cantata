@@ -64,7 +64,7 @@
 48. Show podcast descriptions in tooltips.
 49. Parse name field in playlists.
 50. Use 32-bit int for bitrate and samplerate staus values.
-51. Remove KDE4 and Ubuntu touch support.
+51. Remove Qt4, KDE4, and Ubuntu touch support.
 
 2.0.1
 -----

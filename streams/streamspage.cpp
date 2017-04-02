@@ -45,9 +45,7 @@
 #include <QDir>
 #include <QMenu>
 #include <QFileInfo>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 
 static const int constMsgDisplayTime=1500;
 static const char *constNameProperty="name";
@@ -342,17 +340,11 @@ void StreamsBrowsePage::addToFavourites(const QList<StreamItem> &items)
     int added=0;
     foreach (const StreamItem item, items) {
         QUrl url(item.url);
-        #if QT_VERSION < 0x050000
-        QUrl &query=url;
-        #else
         QUrlQuery query(url);
-        #endif
         query.removeQueryItem(QLatin1String("locale"));
-        #if QT_VERSION >= 0x050000
         if (!query.isEmpty()) {
             url.setQuery(query);
         }
-        #endif
         QString urlStr=url.toString();
         if (urlStr.endsWith('&')) {
             urlStr=urlStr.left(urlStr.length()-1);

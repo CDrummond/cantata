@@ -40,9 +40,7 @@ RatingPainter::RatingPainter(int s)
     , pixmapSize((starSz*constNumStars)+(constBorder*(constNumStars-1)), starSz)
     , col(QApplication::palette().text().color())
 {
-    #if QT_VERSION >= 0x050100
     pixelRatio=Icon("dialog-ok").pixmap(16, 16).devicePixelRatio();
-    #endif
 }
 
 void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
@@ -51,11 +49,9 @@ void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
         return;
     }
 
-    #if QT_VERSION >= 0x050100
     if (!isNull() && !Utils::equal(pixelRatio, pixmaps[0].devicePixelRatio())) {
         pixmaps[0]=QPixmap();
     }
-    #endif
 
     if (isNull()) {
         QSvgRenderer renderer;
@@ -66,19 +62,13 @@ void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
         }
         if (!bytes.isEmpty()) {
             bytes.replace("#000", col.name().toLatin1());
-            #if QT_VERSION >= 0x050100
             if (pixelRatio>1.25) {
                 bytes.replace("stroke-width=\"3\"", "stroke-width=\"6\"");
             }
-            #endif
         }
         renderer.load(bytes);
 
-        #if QT_VERSION >= 0x050100
         int pixSize=starSz*pixelRatio;
-        #else
-        int pixSize=starSz;
-        #endif
 
         for (int p=0; p<2; ++p) {
             pixmaps[p]=QPixmap(pixSize, pixSize);
@@ -92,21 +82,15 @@ void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
         int halfSz=(pixSize/2.0)+0.5;
         painter.drawPixmap(0, 0, pixmaps[1], 0, 0, halfSz, pixSize);
         painter.drawPixmap(halfSz, 0, pixmaps[0], halfSz, 0, pixSize-halfSz, pixSize);
-        #if QT_VERSION >= 0x050100
         painter.end();
         for (int p=0; p<3; ++p) {
             pixmaps[p].setDevicePixelRatio(pixelRatio);
         }
-        #endif
     }
 
     int fullStars=rating/Song::Rating_Step;
     bool half=allowHalfStars && rating%Song::Rating_Step;
-    #if QT_VERSION >= 0x050100
     QSize layoutSize = pixmaps[0].size() / pixmaps[0].devicePixelRatio();
-    #else
-    QSize layoutSize = pixmaps[0].size();
-    #endif
     QRect pr(r.x(), r.y()+(r.height()-layoutSize.width())/2, layoutSize.width(), layoutSize.height());
 
     for (int i=0; i<constNumStars; ++i) {

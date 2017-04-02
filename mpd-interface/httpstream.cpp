@@ -25,9 +25,6 @@
 #include "mpdconnection.h"
 #include "mpdstatus.h"
 #include "gui/settings.h"
-#if QT_VERSION < 0x050000
-#include <phonon/audiooutput.h>
-#endif
 
 HttpStream::HttpStream(QObject *p)
     : QObject(p)
@@ -87,11 +84,6 @@ void HttpStream::streamUrl(const QString &url)
         media = libvlc_media_new_location(instance, byteArrayUrl.constData());
         player = libvlc_media_player_new_from_media(media);
         libvlc_media_release(media);
-        #elif QT_VERSION < 0x050000
-        player=new Phonon::MediaObject(this);
-        Phonon::createPath(player, new Phonon::AudioOutput(Phonon::MusicCategory, this));
-        player->setCurrentSource(QUrl(url));
-        player->setProperty(constUrlProperty, url);
         #else
         player=new QMediaPlayer(this);
         player->setMedia(QUrl(url));
@@ -106,10 +98,6 @@ void HttpStream::streamUrl(const QString &url)
             #ifdef LIBVLC_FOUND
             if(libvlc_media_player_get_state(player)!=libvlc_Playing){
                 libvlc_media_player_play(player);
-            }
-            #elif QT_VERSION < 0x050000
-            if (Phonon::PlayingState!=player->state()) {
-                player->play();
             }
             #else
             if (QMediaPlayer::PlayingState!=player->state()) {
@@ -158,10 +146,6 @@ void HttpStream::updateStatus()
         #ifdef LIBVLC_FOUND
         if (libvlc_Playing!=libvlc_media_player_get_state(player)) {
             libvlc_media_player_play(player);
-        }
-        #elif QT_VERSION < 0x050000
-        if (Phonon::PlayingState!=player->state()) {
-            player->play();
         }
         #else
         if (QMediaPlayer::PlayingState!=player->state()) {

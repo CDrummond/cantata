@@ -56,9 +56,6 @@
 #include "solid-lite/storagedrive.h"
 #include "solid-lite/storagevolume.h"
 #include "solid-lite/opticaldisc.h"
-#if defined ENABLE_MODEL_TEST
-#include "modeltest.h"
-#endif
 
 
 #include <QDebug>
@@ -105,9 +102,6 @@ DevicesModel::DevicesModel(QObject *parent)
     #endif
     updateItemMenu();
     connect(this, SIGNAL(add(const QStringList &, int, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8)));
-    #if defined ENABLE_MODEL_TEST
-    new ModelTest(this, this);
-    #endif
 }
 
 DevicesModel::~DevicesModel()

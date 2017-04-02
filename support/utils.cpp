@@ -35,11 +35,7 @@
 #include <QStyle>
 #include <QDesktopWidget>
 #include <QEventLoop>
-#if QT_VERSION >= 0x050000
 #include <QStandardPaths>
-#else
-#include <QDesktopServices>
-#endif
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -682,29 +678,17 @@ QString Utils::dataDir(const QString &sub, bool create)
 {
     #if defined Q_OS_WIN || defined Q_OS_MAC
 
-    #if QT_VERSION >= 0x050000
     return userDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+constDirSep, sub, create);
-    #else
-    return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+constDirSep, sub, create);
-    #endif
 
     #else
 
     static QString location;
     if (location.isEmpty()) {
-        #if QT_VERSION >= 0x050000
         location=QStandardPaths::writableLocation(QStandardPaths::DataLocation);
         if (QCoreApplication::organizationName()==QCoreApplication::applicationName()) {
             location=location.replace(QCoreApplication::organizationName()+Utils::constDirSep+QCoreApplication::applicationName(),
                                       QCoreApplication::applicationName());
         }
-        #else
-        location=QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-        if (QCoreApplication::organizationName()==QCoreApplication::applicationName()) {
-            location=location.replace(QLatin1String("data")+Utils::constDirSep+QCoreApplication::applicationName()+Utils::constDirSep+QCoreApplication::applicationName(),
-                                      QCoreApplication::applicationName());
-        }
-        #endif
     }
     return userDir(location+constDirSep, sub, create);
 
@@ -715,21 +699,13 @@ QString Utils::cacheDir(const QString &sub, bool create)
 {
     #if defined Q_OS_WIN || defined Q_OS_MAC
 
-    #if QT_VERSION >= 0x050000
     return userDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+constDirSep, sub, create);
-    #else
-    return userDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+constDirSep, sub, create);
-    #endif
 
     #else
 
     static QString location;
     if (location.isEmpty()) {
-        #if QT_VERSION >= 0x050000
         location=QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-        #else
-        location=QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-        #endif
         if (QCoreApplication::organizationName()==QCoreApplication::applicationName()) {
             location=location.replace(QCoreApplication::organizationName()+Utils::constDirSep+QCoreApplication::applicationName(),
                                       QCoreApplication::applicationName());
@@ -976,9 +952,6 @@ QColor Utils::monoIconColor()
 #ifdef Q_OS_WIN
 // This is down here, because windows.h includes ALL windows stuff - and we get conflicts with MessageBox :-(
 #include <windows.h>
-#elif !defined Q_OS_MAC && QT_VERSION < 0x050000
-#include <QX11Info>
-#include <X11/Xlib.h>
 #endif
 
 void Utils::raiseWindow(QWidget *w)
@@ -990,7 +963,7 @@ void Utils::raiseWindow(QWidget *w)
     #ifdef Q_OS_WIN
     ::SetWindowPos(reinterpret_cast<HWND>(w->effectiveWinId()), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
     ::SetWindowPos(reinterpret_cast<HWND>(w->effectiveWinId()), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
-    #elif !defined Q_OS_WIN && QT_VERSION>=0x050000
+    #elif !defined Q_OS_WIN
     bool wasHidden=w->isHidden();
     #endif
 
@@ -1002,21 +975,6 @@ void Utils::raiseWindow(QWidget *w)
     #endif
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     // This section seems to be required for compiz, so that MPRIS.Raise actually shows the window, and not just highlight launcher.
-    #if QT_VERSION < 0x050000
-    static const Atom constNetActive=XInternAtom(QX11Info::display(), "_NET_ACTIVE_WINDOW", False);
-    QX11Info info;
-    XEvent xev;
-    xev.xclient.type = ClientMessage;
-    xev.xclient.serial = 0;
-    xev.xclient.send_event = True;
-    xev.xclient.message_type = constNetActive;
-    xev.xclient.display = QX11Info::display();
-    xev.xclient.window = w->effectiveWinId();
-    xev.xclient.format = 32;
-    xev.xclient.data.l[0] = 2;
-    xev.xclient.data.l[1] = xev.xclient.data.l[2] = xev.xclient.data.l[3] = xev.xclient.data.l[4] = 0;
-    XSendEvent(QX11Info::display(), QX11Info::appRootWindow(info.screen()), False, SubstructureRedirectMask|SubstructureNotifyMask, &xev);
-    #else // QT_VERSION < 0x050000
     QString wmctrl=Utils::findExe(QLatin1String("wmctrl"));
     if (!wmctrl.isEmpty()) {
         if (wasHidden) {
@@ -1024,7 +982,6 @@ void Utils::raiseWindow(QWidget *w)
         }
         QProcess::execute(wmctrl, QStringList() << QLatin1String("-i") << QLatin1String("-a") << QString::number(w->effectiveWinId()));
     }
-    #endif // QT_VERSION < 0x050000
     #endif
 }
 

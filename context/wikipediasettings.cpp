@@ -32,9 +32,7 @@
 #include "support/utils.h"
 #include "support/action.h"
 #include "support/thread.h"
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 #include <QXmlStreamReader>
 #include <QFile>
 
@@ -167,11 +165,7 @@ void WikipediaSettings::getLangs()
     reload->setEnabled(false);
     cancel();
     QUrl url("http://en.wikipedia.org/w/api.php");
-    #if QT_VERSION < 0x050000
-    QUrl &q=url;
-    #else
     QUrlQuery q;
-    #endif
 
     q.addQueryItem(QLatin1String("action"), QLatin1String("query"));
     q.addQueryItem(QLatin1String("meta"), QLatin1String("siteinfo"));
@@ -179,9 +173,7 @@ void WikipediaSettings::getLangs()
     q.addQueryItem(QLatin1String("sifilteriw"), QLatin1String("local"));
     q.addQueryItem(QLatin1String("format"), QLatin1String("xml"));
 
-    #if QT_VERSION >= 0x050000
     url.setQuery(q);
-    #endif
 
     job=NetworkAccessManager::self()->get(url);
     connect(job, SIGNAL(finished()), this, SLOT(parseLangs()));

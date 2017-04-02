@@ -208,7 +208,6 @@ QSize TouchProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *o
                 #if QT_VERSION < 0x050200
                 sz += QSize(0, 1);
                 #endif
-                #if QT_VERSION >= 0x050000
                 // Qt5 does not seem to be taking special value, or suffix, into account when calculatng width...
                 if (widget && qobject_cast<const QSpinBox *>(widget)) {
                     const QSpinBox *spin=static_cast<const QSpinBox *>(widget);
@@ -230,9 +229,7 @@ QSize TouchProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *o
                             sz.setWidth(minWidth);
                         }
                     }
-                } else
-                #endif
-                if (!GtkStyle::isActive()) {
+                } else if (!GtkStyle::isActive()) {
                     sz.setWidth(sz.width()+6);
                 }
             }

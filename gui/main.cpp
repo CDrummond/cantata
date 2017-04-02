@@ -66,11 +66,7 @@
 #include <QDateTime>
 static QMutex msgMutex;
 static bool firstMsg=true;
-#if QT_VERSION < 0x050000
-static void cantataQtMsgHandler(QtMsgType, const char *msg)
-#else
 static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QString &msg)
-#endif
 {
     QMutexLocker locker(&msgMutex);
     QFile f(Utils::cacheDir(QString(), true)+"cantata.log");
@@ -93,33 +89,15 @@ static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QSt
 class PoTranslator : public QTranslator
 {
 public:
-    #if QT_VERSION < 0x050000
-    QString translate(const char *context, const char *sourceText, const char *disambiguation = 0) const
-    {
-        QString ret = QTranslator::translate(context, sourceText, disambiguation);
-        return !ret.isEmpty() ? ret : QTranslator::translate(NULL, sourceText, disambiguation);
-    }
-    #else
     QString translate(const char *context, const char *sourceText, const char *disambiguation = 0, int n=-1) const
     {
         QString ret = QTranslator::translate(context, sourceText, disambiguation, n);
         return !ret.isEmpty() ? ret : QTranslator::translate(NULL, sourceText, disambiguation, n);
     }
-    #endif
 };
 
 static void loadTranslation(const QString &prefix, const QString &path, const QString &overrideLanguage = QString())
 {
-    #if QT_VERSION < 0x040700
-    // QTranslator::load will try to open and read "cantata" if it exists,
-    // without checking if it's a file first.
-    // This was fixed in Qt 4.7
-    QFileInfo maybeCantataDirectory(path + "/cantata");
-    if (maybeCantataDirectory.exists() && !maybeCantataDirectory.isFile()) {
-        return;
-    }
-    #endif
-
     QString language = overrideLanguage.isEmpty() ? QLocale::system().name() : overrideLanguage;
     QTranslator *t = new PoTranslator;
     if (t->load(prefix+"_"+language, path)) {
@@ -127,10 +105,6 @@ static void loadTranslation(const QString &prefix, const QString &path, const QS
     } else {
         delete t;
     }
-
-    #if QT_VERSION < 0x050000
-    QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
-    #endif
 }
 
 static void removeOldFiles(const QString &d, const QStringList &types)
@@ -261,11 +235,7 @@ static void installDebugMessageHandler()
             MediaKeys::enableDebug();
         }
         if (dbg&Dbg_All && logToFile) {
-            #if QT_VERSION < 0x050000
-            qInstallMsgHandler(cantataQtMsgHandler);
-            #else
             qInstallMessageHandler(cantataQtMsgHandler);
-            #endif
         }
     }
 }

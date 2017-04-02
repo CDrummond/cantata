@@ -25,23 +25,15 @@
 #define APPLICATION_WIN_H
 
 #include "singleapplication.h"
-
-#if QT_VERSION >= 0x050000
 #include <QAbstractNativeEventFilter>
+
 class Application : public SingleApplication, public QAbstractNativeEventFilter
-#else
-class Application : public SingleApplication
-#endif
 {
 public:
     static void initObjects();
     Application(int &argc, char **argv);
     virtual ~Application() { }
-    #if QT_VERSION >= 0x050000
     bool nativeEventFilter(const QByteArray &, void *message, long *result);
-    #else
-    bool winEventFilter(MSG *msg, long *result);
-    #endif
 };
 
 #endif

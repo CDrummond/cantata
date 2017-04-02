@@ -27,9 +27,7 @@
 #include "support/localize.h"
 #include <QTabWidget>
 #include <QIcon>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 #include "support/lineedit.h"
 #include "config.h"
 
@@ -101,38 +99,18 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
         smbHost->setText(d.url.host());
         smbUser->setText(d.url.userName());
         smbPassword->setText(d.url.password());
-        #if QT_VERSION < 0x050000
-        if (d.url.hasQueryItem(RemoteFsDevice::constDomainQuery)) {
-            smbDomain->setText(d.url.queryItemValue(RemoteFsDevice::constDomainQuery));
-        } else {
-            smbDomain->setText(QString());
-        }
-        #else
         QUrlQuery q(d.url);
         if (q.hasQueryItem(RemoteFsDevice::constDomainQuery)) {
             smbDomain->setText(q.queryItemValue(RemoteFsDevice::constDomainQuery));
         } else {
             smbDomain->setText(QString());
         }
-        #endif
         break;
     }
     case Type_SambaAvahi: {
         smbAvahiShare->setText(d.url.path());
         smbAvahiUser->setText(d.url.userName());
         smbAvahiPassword->setText(d.url.password());
-        #if QT_VERSION < 0x050000
-        if (d.url.hasQueryItem(RemoteFsDevice::constDomainQuery)) {
-            smbAvahiDomain->setText(d.url.queryItemValue(RemoteFsDevice::constDomainQuery));
-        } else {
-            smbAvahiDomain->setText(QString());
-        }
-        if (d.url.hasQueryItem(RemoteFsDevice::constServiceNameQuery)) {
-            smbAvahiName->setText(d.url.queryItemValue(RemoteFsDevice::constServiceNameQuery));
-        } else {
-            smbAvahiName->setText(QString());
-        }
-        #else
         QUrlQuery q(d.url);
         if (q.hasQueryItem(RemoteFsDevice::constDomainQuery)) {
             smbAvahiDomain->setText(q.queryItemValue(RemoteFsDevice::constDomainQuery));
@@ -144,7 +122,6 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
         } else {
             smbAvahiName->setText(QString());
         }
-        #endif
         break;
     }
     }
@@ -236,13 +213,9 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
         det.url.setScheme(RemoteFsDevice::constSambaProtocol);
         det.url.setPassword(smbPassword->text().trimmed());
         if (!smbDomain->text().trimmed().isEmpty()) {
-            #if QT_VERSION < 0x050000
-            det.url.addQueryItem(RemoteFsDevice::constDomainQuery, smbDomain->text().trimmed());
-            #else
             QUrlQuery q;
             q.addQueryItem(RemoteFsDevice::constDomainQuery, smbDomain->text().trimmed());
             det.url.setQuery(q);
-            #endif
         }
         break;
     case Type_SambaAvahi:
@@ -251,14 +224,6 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
         det.url.setPort(0);
         det.url.setScheme(RemoteFsDevice::constSambaAvahiProtocol);
         det.url.setPassword(smbAvahiPassword->text().trimmed());
-        #if QT_VERSION < 0x050000
-        if (!smbDomain->text().trimmed().isEmpty()) {
-            det.url.addQueryItem(RemoteFsDevice::constDomainQuery, smbDomain->text().trimmed());
-        }
-        if (!smbAvahiName->text().trimmed().isEmpty()) {
-            det.url.addQueryItem(RemoteFsDevice::constServiceNameQuery, smbAvahiName->text().trimmed());
-        }
-        #else
         if (!smbDomain->text().trimmed().isEmpty() || !smbAvahiName->text().trimmed().isEmpty()) {
             QUrlQuery q;
             if (!smbDomain->text().trimmed().isEmpty()) {
@@ -270,7 +235,6 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
             }
             det.url.setQuery(q);
         }
-        #endif
         break;
     }
     return det;

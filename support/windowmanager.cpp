@@ -57,14 +57,6 @@
 #include <QTreeView>
 #include <QProgressBar>
 
-#if defined Q_WS_X11 && QT_VERSION < 0x050000
-#include <QX11Info>
-#if QT_VERSION < 0x050000
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-#endif
-#endif
-
 static inline bool isToolBar(QWidget *w)
 {
     return qobject_cast<QToolBar*>(w) || 0==strcmp(w->metaObject()->className(), "ToolBar");
@@ -76,40 +68,9 @@ static inline void addEventFilter(QObject *object, QObject *filter)
     object->installEventFilter(filter);
 }
 
-#if QT_VERSION < 0x040600
-Pointer & Pointer::operator=(QWidget *w)
-{
-    widget_=w;
-    if (widget_) {
-        addEventFilter(widget_, this);
-    }
-    return *this;
-}
-
-void Pointer::clear()
-{
-    if (widget_) {
-        widget_->removeEventFilter(this);
-    }
-    widget_=0L;
-}
-
-bool Pointer::eventFilter(QObject *o, QEvent *e)
-{
-    if (o==widget_ && QEvent::Destroy==e->type()) {
-        widget_=0L;
-    }
-    return false;
-}
-#endif
-
 WindowManager::WindowManager(QObject *parent)
     : QObject(parent)
-    #if defined Q_WS_X11 && QT_VERSION < 0x050000
-    , _useWMMoveResize(true)
-    #else
     , _useWMMoveResize(false)
-    #endif
     , _dragMode(WM_DRAG_NONE)
     , _dragDistance(QApplication::startDragDistance())
     , _dragDelay(QApplication::startDragTime())
@@ -563,28 +524,7 @@ void WindowManager::startDrag(QWidget *widget, const QPoint& position)
 
     // ungrab pointer
     if (useWMMoveResize()) {
-        #if defined Q_WS_X11 && QT_VERSION < 0x050000
-        static const Atom constNetMoveResize = XInternAtom(QX11Info::display(), "_NET_WM_MOVERESIZE", False);
-        //...Taken from bespin...
-        // stolen... errr "adapted!" from QSizeGrip
-        QX11Info info;
-        XEvent xev;
-        xev.xclient.type = ClientMessage;
-        xev.xclient.message_type = constNetMoveResize;
-        xev.xclient.display = QX11Info::display();
-        xev.xclient.window = widget->window()->winId();
-        xev.xclient.format = 32;
-        xev.xclient.data.l[0] = position.x();
-        xev.xclient.data.l[1] = position.y();
-        xev.xclient.data.l[2] = 8; // NET::Move
-        xev.xclient.data.l[3] = Button1;
-        xev.xclient.data.l[4] = 0;
-        XUngrabPointer(QX11Info::display(), QX11Info::appTime());
-        XSendEvent(QX11Info::display(), QX11Info::appRootWindow(info.screen()), False,
-                   SubstructureRedirectMask | SubstructureNotifyMask, &xev);
-        #else
         Q_UNUSED(position)
-        #endif
     }
 
     #ifndef Q_OS_MAC
@@ -600,9 +540,6 @@ void WindowManager::startDrag(QWidget *widget, const QPoint& position)
 
 bool WindowManager::supportWMMoveResize(void) const
 {
-    #if defined Q_WS_X11 && QT_VERSION < 0x050000
-    return true;
-    #endif
     return false;
 }
 

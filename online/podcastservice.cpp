@@ -44,9 +44,6 @@
 #include <QXmlStreamWriter>
 #include <QCryptographicHash>
 #include <QMimeData>
-#if QT_VERSION >= 0x050000
-#include <QUrlQuery>
-#endif
 #include <stdio.h>
 
 PodcastService::Proxy::Proxy(QObject *parent)

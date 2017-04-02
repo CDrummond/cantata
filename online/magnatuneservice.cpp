@@ -229,12 +229,7 @@ Song & MagnatuneService::fixPath(Song &s) const
 {
     s.type=Song::OnlineSvrTrack;
     if (MB_None!=membership) {
-        QUrl url;
-        #if QT_VERSION < 0x050000
-        url.setEncodedUrl(s.file.toLocal8Bit());
-        #else
-        url=QUrl(s.file);
-        #endif
+        QUrl url(s.file);
         url.setScheme("http");
         url.setHost(MB_Streaming==membership ? constStreamingHostname : constDownloadHostname);
         url.setUserName(username);

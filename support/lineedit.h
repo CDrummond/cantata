@@ -21,50 +21,16 @@
  * Boston, MA 02110-1301, USA.
  */
 
-/****************************************************************************
-**
-** Copyright (c) 2007 Trolltech ASA <info@trolltech.com>
-**
-** Use, modification and distribution is allowed without limitation,
-** warranty, liability or support of any kind.
-**
-****************************************************************************/
-
 #ifndef LINEEDIT_H
 #define LINEEDIT_H
 
 #include <QLineEdit>
 
-#if QT_VERSION >= 0x050200
 class LineEdit : public QLineEdit
 {
 public:
     LineEdit(QWidget *parent = 0) : QLineEdit(parent) { setClearButtonEnabled(true); }
     void setReadOnly(bool e);
 };
-
-#else
-
-class QToolButton;
-class LineEdit : public QLineEdit
-{
-    Q_OBJECT
-
-public:
-    LineEdit(QWidget *parent = 0);
-    virtual ~LineEdit() { }
-    void setReadOnly(bool e);
-
-protected:
-    void resizeEvent(QResizeEvent *e);
-
-private Q_SLOTS:
-    void updateCloseButton(const QString &text);
-
-private:
-    QToolButton *clearButton;
-};
-
-#endif
 
 #endif // LIENEDIT_H

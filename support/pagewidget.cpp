@@ -25,7 +25,7 @@
 #include "icon.h"
 #include "gtkstyle.h"
 #include "dialog.h"
-#include "styleoption.h"
+#include <QStyleOption>
 #include <QListWidget>
 #include <QStackedWidget>
 #include <QBoxLayout>
@@ -81,7 +81,7 @@ public:
         if (standard) {
             if (GtkStyle::isActive()) {
                 bool mouseOver=option.state&QStyle::State_MouseOver;
-                StyleOptionViewItem opt = option;
+                QStyleOptionViewItem opt = option;
                 initStyleOption(&opt, index);
 
                 if (!underMouse) {
@@ -121,11 +121,7 @@ public:
         const QPixmap pixmap = icon.pixmap(iconSize, iconSize);
 
         QFontMetrics fm = painter->fontMetrics();
-        #if QT_VERSION >= 0x050100
         QSize layoutSize = pixmap.size() / pixmap.devicePixelRatio();
-        #else
-        QSize layoutSize = pixmap.size();
-        #endif
 
         QTextLayout iconTextLayout(text, option.font);
         QTextOption textOption(Qt::AlignHCenter);
@@ -140,7 +136,7 @@ public:
             cg = QPalette::Inactive;
         }
 
-        StyleOptionViewItem opt(option);
+        QStyleOptionViewItem opt(option);
         opt.showDecorationSelected = true;
         QStyle *style = opt.widget ? opt.widget->style() : QApplication::style();
 
@@ -184,11 +180,7 @@ public:
 
         QFontMetrics fm = option.fontMetrics;
         int gap = fm.height();
-        #if QT_VERSION >= 0x050100
         QSize layoutSize = pixmap.size() / pixmap.devicePixelRatio();
-        #else
-        QSize layoutSize = pixmap.size();
-        #endif
 
         if (layoutSize.height() == 0) {
             /**

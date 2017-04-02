@@ -27,9 +27,7 @@
 #include <QTextCodec>
 #include <QXmlStreamReader>
 #include <QUrl>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 #include <QDebug>
 static bool debugEnabled=false;
 #define DBUG if (debugEnabled) qWarning() << "Lyrics" << __FUNCTION__
@@ -212,11 +210,7 @@ QString UltimateLyricsProvider::displayName() const
 
 void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
 {
-    #if QT_VERSION < 0x050000
-    const QTextCodec *codec = QTextCodec::codecForName(charset.toAscii().constData());
-    #else
     const QTextCodec *codec = QTextCodec::codecForName(charset.toLatin1().constData());
-    #endif
     if (!codec) {
         emit lyricsReady(id, QString());
         return;
@@ -227,19 +221,13 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
 
     if (QLatin1String("lyrics.wikia.com")==name) {
         QUrl url(urlText);
-        #if QT_VERSION < 0x050000
-        QUrl &query=url;
-        #else
         QUrlQuery query;
-        #endif
 
         query.addQueryItem(QLatin1String("artist"), artistFixed);
         query.addQueryItem(QLatin1String("song"), metadata.title);
         query.addQueryItem(QLatin1String("func"), QLatin1String("getSong"));
         query.addQueryItem(QLatin1String("fmt"), QLatin1String("xml"));
-        #if QT_VERSION >= 0x050000
         url.setQuery(query);
-        #endif
 
         NetworkJob *reply = NetworkAccessManager::self()->get(url);
         requests[reply] = id;
@@ -352,11 +340,7 @@ void UltimateLyricsProvider::wikiMediaLyricsFetched()
         return;
     }
 
-    #if QT_VERSION < 0x050000
-    const QTextCodec *codec = QTextCodec::codecForName(charset.toAscii().constData());
-    #else
     const QTextCodec *codec = QTextCodec::codecForName(charset.toLatin1().constData());
-    #endif
     QString contents = codec->toUnicode(reply->readAll()).replace("<br />", "<br/>");
     DBUG << name << "response" << contents;
     emit lyricsReady(id, extract(contents, QLatin1String("&lt;lyrics&gt;"), QLatin1String("&lt;/lyrics&gt;")));
@@ -379,11 +363,7 @@ void UltimateLyricsProvider::lyricsFetched()
         return;
     }
 
-    #if QT_VERSION < 0x050000
-    const QTextCodec *codec = QTextCodec::codecForName(charset.toAscii().constData());
-    #else
     const QTextCodec *codec = QTextCodec::codecForName(charset.toLatin1().constData());
-    #endif
     const QString originalContent = codec->toUnicode(reply->readAll()).replace("<br />", "<br/>");
 
     DBUG << name << "response" << originalContent;

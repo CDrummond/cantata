@@ -53,9 +53,7 @@
 #include <QTimer>
 #include <QScrollBar>
 #include <QDesktopServices>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 
 const QLatin1String SongView::constLyricsDir("lyrics/");
 const QLatin1String SongView::constExtension(".lyrics");
@@ -110,12 +108,8 @@ static QString actualFile(const Song &song)
     QString songFile=song.filePath();
 
     if (song.isCantataStream()) {
-        #if QT_VERSION < 0x050000
-        QUrl u(songFile);
-        #else
         QUrl qu(songFile);
         QUrlQuery u(qu);
-        #endif
         songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
     }
     return songFile;

@@ -41,7 +41,7 @@
 #include "support/actioncollection.h"
 #include "support/configuration.h"
 #include "support/flattoolbutton.h"
-#include "support/styleoption.h"
+#include <QStyleOption>
 #include <QStyle>
 #include <QPainter>
 #include <QAction>
@@ -182,7 +182,7 @@ public:
         bool active=option.state&QStyle::State_Active;
         bool drawBgnd=true;
         bool iconMode = view && QListView::IconMode==view->viewMode();
-        StyleOptionViewItem opt(option);
+        QStyleOptionViewItem opt(option);
         opt.showDecorationSelected=true;
 
         if (!underMouse) {
@@ -265,11 +265,7 @@ public:
             r.adjust(constBorder, 0, -constBorder, 0);
         }
         if (!pix.isNull()) {
-            #if QT_VERSION >= 0x050100
             QSize layoutSize = pix.size() / pix.devicePixelRatio();
-            #else
-            QSize layoutSize = pix.size();
-            #endif
             int adjust=qMax(layoutSize.width(), layoutSize.height());
             if (AP_VTop==actionPos) {
                 int xpos=r.x()+((r.width()-layoutSize.width())/2);
@@ -471,11 +467,7 @@ public:
             }
 
             if (!pix.isNull()) {
-                #if QT_VERSION >= 0x050100
                 QSize layoutSize = pix.size() / pix.devicePixelRatio();
-                #else
-                QSize layoutSize = pix.size();
-                #endif
                 int adjust=qMax(layoutSize.width(), layoutSize.height());
                 if (rtl) {
                     painter->drawPixmap(r.x()+r.width()-layoutSize.width(), r.y()+((r.height()-layoutSize.height())/2), layoutSize.width(), layoutSize.height(), pix);

@@ -27,9 +27,7 @@
 #include "gui/settings.h"
 #include "gui/covers.h"
 #include "config.h"
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 #include <QXmlStreamReader>
 #include <QRegExp>
 
@@ -349,11 +347,7 @@ void WikipediaEngine::requestTitles(const QStringList &query, Mode mode, const Q
 {
     cancel();
     QUrl url("https://"+lang+".wikipedia.org/w/api.php");
-    #if QT_VERSION < 0x050000
-    QUrl &q=url;
-    #else
     QUrlQuery q;
-    #endif
 
     q.addQueryItem(QLatin1String("action"), QLatin1String("query"));
     q.addQueryItem(QLatin1String("list"), QLatin1String("search"));
@@ -362,9 +356,7 @@ void WikipediaEngine::requestTitles(const QStringList &query, Mode mode, const Q
     q.addQueryItem(QLatin1String("srredirects"), QString::number(1));
     q.addQueryItem(QLatin1String("srlimit"), QString::number(20));
     q.addQueryItem(QLatin1String("format"), QLatin1String("xml"));
-    #if QT_VERSION >= 0x050000
     url.setQuery(q);
-    #endif
 
     job=NetworkAccessManager::self()->get(url);
     job->setProperty(constModeProperty, (int)mode);

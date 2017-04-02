@@ -49,10 +49,6 @@
 #include "http/httpserver.h"
 #endif
 
-#if defined ENABLE_MODEL_TEST
-#include "modeltest.h"
-#endif
-
 QString PlaylistsModel::headerText(int col)
 {
     switch (col) {
@@ -97,9 +93,6 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     Action::initIcon(newAction);
     alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
     alignments[COL_LENGTH]=alignments[COL_YEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
-    #if defined ENABLE_MODEL_TEST
-    new ModelTest(this, this);
-    #endif
 }
 
 PlaylistsModel::~PlaylistsModel()

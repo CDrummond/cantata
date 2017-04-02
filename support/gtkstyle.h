@@ -24,7 +24,7 @@
 #ifndef GTKSTYLE_H
 #define GTKSTYLE_H
 
-#include "styleoption.h"
+#include <QStyleOption>
 #include <QString>
 
 class QPainter;
@@ -33,7 +33,7 @@ class QWidget;
 namespace GtkStyle
 {
     extern bool isActive();
-    extern void drawSelection(const StyleOptionViewItem &opt, QPainter *painter, double opacity);
+    extern void drawSelection(const QStyleOptionViewItem &opt, QPainter *painter, double opacity);
     extern void applyTheme(QWidget *widget);
 }
 

@@ -3,7 +3,7 @@ Introduction
 
 Cantata is a graphical client for MPD, supporting the following features:
 
- 1. Support for Qt4, Qt5, MacOSX, and Windows.
+ 1. Support for Linux, MacOSX, and Windows.
  2. Multiple MPD collections.
  3. Highly customisable layout.
  4. Songs grouped by album in play queue.

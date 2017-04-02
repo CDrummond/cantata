@@ -43,11 +43,9 @@ static void setupIconTheme(Application *app)
 Application::Application(int &argc, char **argv)
     : QApplication(argc, argv)
 {
-    #if QT_VERSION >= 0x050400
     if (Settings::self()->retinaSupport()) {
         setAttribute(Qt::AA_UseHighDpiPixmaps);
     }
-    #endif
 }
 
 bool Application::start()

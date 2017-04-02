@@ -41,7 +41,7 @@
 #ifdef Q_OS_MAC
 #include "osxstyle.h"
 #endif
-#include "styleoption.h"
+#include <QStyleOption>
 #include <QHBoxLayout>
 #include <QMouseEvent>
 #include <QPainter>
@@ -86,11 +86,7 @@ int FancyTabWidget::iconSize(bool large)
 static void drawIcon(const QIcon &icon, const QRect &r, QPainter *p, const QSize &iconSize, bool selected)
 {
     QPixmap px = icon.pixmap(iconSize, selected ? QIcon::Selected : QIcon::Normal);
-    #if QT_VERSION >= 0x050100
     QSize layoutSize = px.size() / px.devicePixelRatio();
-    #else
-    QSize layoutSize = px.size();
-    #endif
     p->drawPixmap(r.x()+(r.width()-layoutSize.width())/2.0, r.y()+(r.height()-layoutSize.height())/2.0, layoutSize.width(), layoutSize.height(), px);
 }
 
@@ -149,7 +145,7 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
     textRect.setRight(draw_rect.width());
     iconRect.translate(0, (draw_rect.height() - iconRect.height()) / 2);
 
-    StyleOptionViewItem styleOpt;
+    QStyleOptionViewItem styleOpt;
     styleOpt.palette=option->palette;
     styleOpt.rect=draw_rect;
     if (QStyleOptionTab::Beginning==v3Opt->position) {
@@ -158,7 +154,7 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
     styleOpt.state=option->state;
     styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
     styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;
-    styleOpt.viewItemPosition = StyleOptionViewItem::OnlyOne;
+    styleOpt.viewItemPosition = QStyleOptionViewItem::OnlyOne;
     styleOpt.showDecorationSelected=true;
     bool drawBgnd=true;
     int fader = 1;
@@ -495,12 +491,12 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
     QRect rect = tabRect(tabIndex);
     bool selected = (tabIndex == currentIdx);
 
-    StyleOptionViewItem styleOpt;
+    QStyleOptionViewItem styleOpt;
     styleOpt.initFrom(this);
     styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
     styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;
     styleOpt.rect=rect;
-    styleOpt.viewItemPosition = StyleOptionViewItem::OnlyOne;
+    styleOpt.viewItemPosition = QStyleOptionViewItem::OnlyOne;
     styleOpt.showDecorationSelected=true;
     bool drawBgnd=true;
 

@@ -44,12 +44,8 @@
 #include <QGridLayout>
 #include <QSpacerItem>
 #include <QStylePainter>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #include <QJsonDocument>
-#else
-#include "qjson/parser.h"
-#endif
 #include <QXmlStreamReader>
 #include <QFile>
 #include <QWheelEvent>
@@ -788,16 +784,10 @@ static const char * constArtistProp="artist-name";
 void ContextWidget::getMusicbrainzId(const QString &artist)
 {
     QUrl url("http://www.musicbrainz.org/ws/2/artist/");
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
     QUrlQuery query;
-    #endif
 
     query.addQueryItem("query", "artist:"+artist);
-    #if QT_VERSION >= 0x050000
     url.setQuery(query);
-    #endif
 
     job = NetworkAccessManager::self()->get(url);
     DBUG << url.toString();
@@ -859,16 +849,10 @@ void ContextWidget::musicbrainzResponse()
         }
     } else {
         QUrl url("http://webservice.fanart.tv/v3/music/"+id);
-        #if QT_VERSION < 0x050000
-        QUrl &query=url;
-        #else
         QUrlQuery query;
-        #endif
 
         query.addQueryItem("api_key", constFanArtApiKey);
-        #if QT_VERSION >= 0x050000
         url.setQuery(query);
-        #endif
 
         job=NetworkAccessManager::self()->get(url);
         DBUG << url.toString();
@@ -887,14 +871,9 @@ void ContextWidget::fanArtResponse()
     QString url;
 
     if (reply->ok()) {
-        #if QT_VERSION >= 0x050000
         QJsonParseError jsonParseError;
         QVariantMap parsed=QJsonDocument::fromJson(reply->readAll(), &jsonParseError).toVariant().toMap();
         bool ok=QJsonParseError::NoError==jsonParseError.error;
-        #else
-        bool ok=false;
-        QVariantMap parsed = QJson::Parser().parse(reply->readAll(), &ok).toMap();
-        #endif
 
         if (ok && !parsed.isEmpty()) {
             QVariantList artistbackgrounds;

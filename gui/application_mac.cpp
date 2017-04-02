@@ -31,11 +31,9 @@ Application::Application(int &argc, char **argv)
     : SingleApplication(argc, argv)
 {
     setAttribute(Qt::AA_DontShowIconsInMenus, true);
-    #if QT_VERSION >= 0x050100
     if (Settings::self()->retinaSupport()) {
         setAttribute(Qt::AA_UseHighDpiPixmaps);
     }
-    #endif
 
     // Setup icon path...
     QStringList paths=QIcon::themeSearchPaths();

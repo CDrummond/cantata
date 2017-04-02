@@ -39,9 +39,6 @@
 
 #ifndef NO_GTK_SUPPORT
 #include "gtkproxystyle.h"
-#if QT_VERSION < 0x050000
-#include <QGtkStyle>
-#endif
 #endif
 
 static bool usingGtkStyle=false;
@@ -61,7 +58,7 @@ bool GtkStyle::isActive()
     return usingGtkStyle;
 }
 
-void GtkStyle::drawSelection(const StyleOptionViewItem &opt, QPainter *painter, double opacity)
+void GtkStyle::drawSelection(const QStyleOptionViewItem &opt, QPainter *painter, double opacity)
 {
     static const int constMaxDimension=32;
     static QCache<QString, QPixmap> cache(30000);
@@ -76,13 +73,13 @@ void GtkStyle::drawSelection(const StyleOptionViewItem &opt, QPainter *painter, 
 
     if (!pix) {
         pix=new QPixmap(width, opt.rect.height());
-        StyleOptionViewItem styleOpt(opt);
+        QStyleOptionViewItem styleOpt(opt);
         pix->fill(Qt::transparent);
         QPainter p(pix);
         styleOpt.state=opt.state;
         styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
         styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled|QStyle::State_Active;
-        styleOpt.viewItemPosition = StyleOptionViewItem::OnlyOne;
+        styleOpt.viewItemPosition = QStyleOptionViewItem::OnlyOne;
         styleOpt.rect=QRect(0, 0, opt.rect.width(), opt.rect.height());
         QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, &p, 0);
         p.end();

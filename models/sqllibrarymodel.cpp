@@ -30,9 +30,6 @@
 #include "support/configuration.h"
 #include "roles.h"
 #include <QMimeData>
-#if defined ENABLE_MODEL_TEST
-#include "modeltest.h"
-#endif
 
 static QString parentData(const SqlLibraryModel::Item *i)
 {
@@ -82,9 +79,6 @@ SqlLibraryModel::SqlLibraryModel(LibraryDb *d, QObject *p, Type top)
 {
     connect(db, SIGNAL(libraryUpdated()), SLOT(libraryUpdated()));
     connect(db, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
-    #if defined ENABLE_MODEL_TEST
-    new ModelTest(this, this);
-    #endif
 }
 
 void SqlLibraryModel::clear()

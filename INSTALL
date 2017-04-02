@@ -1,16 +1,6 @@
 Build & Installation
 ====================
 
-Qt4
----
-1. mkdir build
-2. cd build
-3. cmake .. -DENABLE_QT5=OFF
-4. make
-5. sudo make install
-
-Qt5
----
 1. mkdir build
 2. cd build
 3. cmake ..
@@ -41,16 +31,9 @@ The following options may be passed to CMake:
         separated with a semicolon (";") e.g. -DCANTATA_TRANSLATIONS="es;pl"
         Default: all
 
-    -DUSE_OLD_DBUS_TYPEDEF=ON
-        Some Qt4 builds still use com.trolltech.QtDBus.QtTypeName, whereas
-        newer ones use org.qtproject.QtDBus.QtTypeName. If you get build
-        failures such as "fatal error: playeradaptor.h: No such file or
-        directory" then try calling CMake with this option set to ON.
-        Default: OFF
-
     -DENABLE_HTTP_STREAM_PLAYBACK=ON
-        Enable support for playing back MPD HTTP streams via Phonon (Qt4),
-        QtMultiMedia (Qt5), or lib VLC (see below)
+        Enable support for playing back MPD HTTP streams via QtMultiMedia or
+        lib VLC (see below)
         Default: ON
 
     -DENABLE_LIBVLC=ON
@@ -72,10 +55,6 @@ The following options may be passed to CMake:
         Enable support for making Cantata more touch-friendly. Currently only
         really works under Windows.
         Default: Windows:ON, Others:OFF
-
-    -DENABLE_QT5=ON
-        Build against Qt5, not Qt4
-        Default: ON
 
     -DENABLE_PROXY_CONFIG=ON
         Enable support for proxy settings in config dialog. If disabled,
@@ -128,22 +107,6 @@ The following options may be passed to CMake:
         Path where Inno Setpup Compiler should place the catata setup exe.
         Default: z:\
         
-    -DCANTATA_MINGW_LIBS=<path>/mingwm10.dll;<path>/libgcc_s_dw2-1.dll
-        Extra MinGW libraries required for install stage.
-        Qt4 builds only - not required for Qt5.
-        Default: <empty>
-
     -DCANTATA_SSL_LIBS=<path>/libeay32.dll;<path>/ssleay32.dll
         SSL libraries
         Default: <empty>
-
-
-    Testing ONLY options:
-
-    -DENABLE_MODEL_TEST=ON
-        Enable testing of Cantata's QAbstractItemModels. Builds with this set
-        are ONLY intended to be run under a debugger! If enabled, then 
-        CMAKE_BUILD_TYPE will automatically be set to Debug. 
-        Currently this option ONLY affects pure Qt4 builds.
-        Default: OFF
-

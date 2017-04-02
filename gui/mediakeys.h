@@ -31,7 +31,7 @@ class GnomeMediaKeys;
 class QxtMediaKeys;
 class MultiMediaKeysInterface;
 
-#if defined Q_OS_WIN || (!defined Q_OS_MAC && QT_VERSION < 0x050000)
+#if defined Q_OS_WIN
 #define CANTATA_USE_QXT_MEDIAKEYS
 #endif
 

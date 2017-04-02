@@ -184,11 +184,7 @@ void CacheItem::calculate()
 
 static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeMode mode)
 {
-    #if QT_VERSION < 0x050000
-    hdr->setResizeMode(idx, mode);
-    #else
     hdr->setSectionResizeMode(idx, mode);
-    #endif
 }
 
 CacheTree::CacheTree(QWidget *parent)

@@ -42,18 +42,12 @@
 #include <QDir>
 #include <QMimeData>
 #include <QStringList>
-#if defined ENABLE_MODEL_TEST
-#include "modeltest.h"
-#endif
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent)
     : ActionModel(parent)
     , rootItem(new MusicLibraryItemRoot)
 {
     rootItem->setModel(this);
-    #if defined ENABLE_MODEL_TEST
-    new ModelTest(this, this);
-    #endif
 }
 
 MusicLibraryModel::~MusicLibraryModel()

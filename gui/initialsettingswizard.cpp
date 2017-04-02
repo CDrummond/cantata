@@ -32,11 +32,7 @@
 #include "mpd-interface/mpduser.h"
 #endif
 #include <QDir>
-#if QT_VERSION > 0x050000
 #include <QStandardPaths>
-#else
-#include <QDesktopServices>
-#endif
 #include <QTimer>
 
 enum Pages {
@@ -169,11 +165,7 @@ void InitialSettingsWizard::pageChanged(int p)
     if (PAGE_CONNECTION==p) {
         connectionStack->setCurrentIndex(basic->isChecked() ? 1 : 0);
         if (basic->isChecked() && basicDir->text().isEmpty()) {
-            #if QT_VERSION > 0x050000
             QString dir=QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
-            #else
-            QString dir=QDesktopServices::storageLocation(QDesktopServices::MusicLocation);
-            #endif
             if (dir.isEmpty()) {
                 QString dir=QDir::homePath()+"/Music";
                 dir=dir.replace("//", "/");

@@ -33,9 +33,7 @@
 #include <QFile>
 #include <QUrl>
 #include <QTimer>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 
 #include <QDebug>
 static bool debugIsEnabled=false;
@@ -161,13 +159,8 @@ QByteArray HttpServer::encodeUrl(const Song &s)
     if (!start()) {
         return QByteArray();
     }
-    #if QT_VERSION < 0x050000
-    QUrl url;
-    QUrl &query=url;
-    #else
     QUrl url;
     QUrlQuery query;
-    #endif
     url.setScheme("http");
     url.setHost(currentIfaceIp);
     url.setPort(socket->serverPort());
@@ -207,9 +200,7 @@ QByteArray HttpServer::encodeUrl(const Song &s)
     }
     query.addQueryItem("id", QString::number(s.id));
     query.addQueryItem("cantata", "song");
-    #if QT_VERSION >= 0x050000
     url.setQuery(query);
-    #endif
     DBUG << "encoded as" << url.toString();
     return url.toEncoded();
 }
@@ -244,23 +235,13 @@ QByteArray HttpServer::encodeUrl(const QString &file)
 
 Song HttpServer::decodeUrl(const QString &url) const
 {
-    #if QT_VERSION >= 0x050000
     return decodeUrl(QUrl(url));
-    #else
-    QUrl u;
-    u.setEncodedUrl(url.toUtf8());
-    return decodeUrl(u);
-    #endif
 }
 
 Song HttpServer::decodeUrl(const QUrl &url) const
 {
     Song s;
-    #if QT_VERSION < 0x050000
-    const QUrl &q=url;
-    #else
     QUrlQuery q(url);
-    #endif
 
     if (q.hasQueryItem("cantata") && q.queryItemValue("cantata")=="song") {
         if (q.hasQueryItem("album")) {

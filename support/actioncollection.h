@@ -98,13 +98,10 @@ Q_SIGNALS:
     void tooltipUpdated(QAction *);
 
 protected Q_SLOTS:
-    virtual void connectNotify(const char *signal);
     virtual void slotActionTriggered();
 
-#if QT_VERSION >= 0x050000
 protected:
     virtual void connectNotify(const QMetaMethod &signal);
-#endif
 
 private Q_SLOTS:
     void slotActionHovered();

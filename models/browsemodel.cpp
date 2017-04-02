@@ -30,9 +30,6 @@
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdstats.h"
 #include <QMimeData>
-#if defined ENABLE_MODEL_TEST
-#include "modeltest.h"
-#endif
 
 void BrowseModel::FolderItem::add(Item *i)
 {
@@ -63,9 +60,6 @@ BrowseModel::BrowseModel(QObject *p)
     , enabled(false)
     , dbVersion(0)
 {
-    #if defined ENABLE_MODEL_TEST
-    new ModelTest(this, this);
-    #endif
     connect(this, SIGNAL(listFolder(QString)), MPDConnection::self(), SLOT(listFolder(QString)));
     folderIndex.insert(root->getPath(), root);
 }

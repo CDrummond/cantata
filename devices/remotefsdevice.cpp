@@ -558,16 +558,10 @@ void RemoteFsDevice::load()
     if (RemoteFsDevice::constSambaAvahiProtocol==details.url.scheme()) {
         // Start Avahi listener...
         Avahi::self();
-        #if QT_VERSION < 0x050000
-        if (details.url.hasQueryItem(constServiceNameQuery)) {
-            details.serviceName=details.url.queryItemValue(constServiceNameQuery);
-        }
-        #else // QT_VERSION
         QUrlQuery q(details.url);
         if (q.hasQueryItem(constServiceNameQuery)) {
             details.serviceName=q.queryItemValue(constServiceNameQuery);
         }
-        #endif // QT_VERSION
 
         if (!details.serviceName.isEmpty()) {
             AvahiService *srv=Avahi::self()->getService(details.serviceName);

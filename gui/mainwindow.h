@@ -65,7 +65,7 @@ class HttpStream;
 class MPDStatus;
 struct MPDConnectionDetails;
 struct Output;
-#if defined Q_OS_WIN && QT_VERSION>=0x050000
+#if defined Q_OS_WIN
 class ThumbnailToolBar;
 #endif
 #ifdef Q_OS_MAC
@@ -113,7 +113,7 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event);
-    #if defined Q_OS_WIN && QT_VERSION >= 0x050000
+    #if defined Q_OS_WIN
     void showEvent(QShowEvent *event);
     #endif
     void closeEvent(QCloseEvent *event);
@@ -343,7 +343,7 @@ private:
     int contextSwitchTime;
     enum { CS_Init, CS_Connected, CS_Disconnected } connectedState;
     bool stopAfterCurrent;
-    #if defined Q_OS_WIN && QT_VERSION>=0x050000
+    #if defined Q_OS_WIN
     ThumbnailToolBar *thumbnailTooolbar;
     #endif
     #ifdef Q_OS_MAC

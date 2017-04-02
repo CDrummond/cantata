@@ -27,13 +27,13 @@
 #include "ratingwidget.h"
 #include "support/localize.h"
 #include "support/configuration.h"
-#include "support/styleoption.h"
 #include "models/roles.h"
 #include "mpd-interface/song.h"
 #include <QMenu>
 #include <QAction>
 #include <QActionGroup>
 #include <QPainter>
+#include <QStyleOption>
 
 class TableViewItemDelegate : public BasicItemDelegate
 {
@@ -46,8 +46,8 @@ public:
             return;
         }
 
-        StyleOptionViewItem v4((StyleOptionViewItem &)option);
-        if (StyleOptionViewItem::Beginning==v4.viewItemPosition) {
+        QStyleOptionViewItem v4((QStyleOptionViewItem &)option);
+        if (QStyleOptionViewItem::Beginning==v4.viewItemPosition) {
             v4.icon=index.data(Cantata::Role_Decoration).value<QIcon>();
             if (!v4.icon.isNull()) {
                 v4.features |= QStyleOptionViewItemV2::HasDecoration;
@@ -137,11 +137,7 @@ void TableView::initHeader()
                 initiallyHidden.append(i);
             }
         }
-        #if QT_VERSION >= 0x050000
         hdr->setSectionsMovable(true);
-        #else
-        hdr->setMovable(true);
-        #endif
         connect(hdr, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu(QPoint)));
     }
 

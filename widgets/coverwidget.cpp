@@ -110,11 +110,7 @@ public:
             return;
         }
         QPainter p(this);
-        #if QT_VERSION >= 0x050100
         QSize layoutSize = pix.size() / pix.devicePixelRatio();
-        #else
-        QSize layoutSize = pix.size();
-        #endif
         QRect r((width()-layoutSize.width())/2, (height()-layoutSize.height())/2, layoutSize.width(), layoutSize.height());
         p.drawPixmap(r, pix);
         if (underMouse()) {
@@ -139,22 +135,16 @@ public:
         if (style()->pixelMetric(QStyle::PM_ToolBarFrameWidth)==0) {
             size-=constBorder*2;
         }
-        #if QT_VERSION >= 0x050100
         double pixRatio=1.0;
         if (Settings::self()->retinaSupport()) {
             pixRatio=qApp->devicePixelRatio();
             size*=pixRatio;
         }
-        #endif
         img=img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        #if QT_VERSION >= 0x050100
         img.setDevicePixelRatio(pixRatio);
-        #endif
         if (pix.isNull() || pix.size()!=img.size()) {
             pix=QPixmap(img.size());
-            #if QT_VERSION >= 0x050100
             pix.setDevicePixelRatio(pixRatio);
-            #endif
         }
         pix.fill(Qt::transparent);
         QPainter painter(&pix);

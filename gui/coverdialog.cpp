@@ -53,13 +53,9 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QUrl>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #include <QMimeData>
 #include <QJsonDocument>
-#else
-#include "qjson/parser.h"
-#endif
 #include <QTemporaryFile>
 #include <QDir>
 #include <QXmlStreamReader>
@@ -710,11 +706,7 @@ void CoverDialog::sendQuery()
 void CoverDialog::sendLastFmQuery(const QString &fixedQuery, int page)
 {
     QUrl url;
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
     QUrlQuery query;
-    #endif
     url.setScheme("https");
     url.setHost(constLastFmHost);
     url.setPath("/2.0/");
@@ -723,20 +715,14 @@ void CoverDialog::sendLastFmQuery(const QString &fixedQuery, int page)
     query.addQueryItem("page", QString::number(page+1));
     query.addQueryItem(isArtist ? "artist" : "album", fixedQuery);
     query.addQueryItem("method", isArtist ? "artist.search" : "album.search");
-    #if QT_VERSION >= 0x050000
     url.setQuery(query);
-    #endif
     sendQueryRequest(url);
 }
 
 void CoverDialog::sendGoogleQuery(const QString &fixedQuery, int page)
 {
     QUrl url;
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
     QUrlQuery query;
-    #endif
     url.setScheme("http");
     url.setHost(constGoogleHost);
     url.setPath("/images");
@@ -744,9 +730,7 @@ void CoverDialog::sendGoogleQuery(const QString &fixedQuery, int page)
     query.addQueryItem("gbv", QChar('1'));
     query.addQueryItem("filter", QChar('1'));
     query.addQueryItem("start", QString::number(20 * page));
-    #if QT_VERSION >= 0x050000
     url.setQuery(query);
-    #endif
     sendQueryRequest(url);
 }
 
@@ -756,18 +740,12 @@ void CoverDialog::sendSpotifyQuery(const QString &fixedQuery)
         return;
     }
     QUrl url;
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
     QUrlQuery query;
-    #endif
     url.setScheme("http");
     url.setHost(constSpotifyHost);
     url.setPath(isArtist ? "/search/1/artist.json" : "/search/1/album.json");
     query.addQueryItem("q", fixedQuery);
-    #if QT_VERSION >= 0x050000
     url.setQuery(query);
-    #endif
     sendQueryRequest(url);
 }
 
@@ -778,11 +756,7 @@ void CoverDialog::sendITunesQuery(const QString &fixedQuery)
     }
 
     QUrl url;
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
     QUrlQuery query;
-    #endif
     url.setScheme("http");
     url.setHost(constITunesHost);
     url.setPath("/search");
@@ -790,29 +764,21 @@ void CoverDialog::sendITunesQuery(const QString &fixedQuery)
     query.addQueryItem("limit", QString::number(10));
     query.addQueryItem("media", "music");
     query.addQueryItem("entity", "album");
-    #if QT_VERSION >= 0x050000
     url.setQuery(query);
-    #endif
     sendQueryRequest(url);
 }
 
 void CoverDialog::sendDeezerQuery(const QString &fixedQuery)
 {
     QUrl url;
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
     QUrlQuery query;
-    #endif
     url.setScheme("http");
     url.setHost(constDeezerHost);
     url.setPath(isArtist ? "/search/artist" : "/search/album");
     query.addQueryItem("q", fixedQuery);
     query.addQueryItem("nb_items", QString::number(10));
     query.addQueryItem("output", "json");
-    #if QT_VERSION >= 0x050000
     url.setQuery(query);
-    #endif
     sendQueryRequest(url);
 }
 
@@ -1081,12 +1047,8 @@ void CoverDialog::parseGoogleQueryResponse(const QByteArray &resp)
     QString html = xml.replace(QLatin1String("&amp;"), QLatin1String("&"));
 
     while (-1!=(pos=rx.indexIn(html, pos))) {
-        #if QT_VERSION < 0x050000
-        QUrl url("http://www.google.com"+rx.cap(1));
-        #else
         QUrl u("http://www.google.com"+rx.cap(1));
         QUrlQuery url(u);
-        #endif
         int width=url.queryItemValue("w").toInt();
         int height=url.queryItemValue("h").toInt();
         if (canUse(width, height)) {
@@ -1098,14 +1060,9 @@ void CoverDialog::parseGoogleQueryResponse(const QByteArray &resp)
 
 void CoverDialog::parseCoverArtArchiveQueryResponse(const QByteArray &resp)
 {
-    #if QT_VERSION >= 0x050000
     QJsonParseError jsonParseError;
     QVariantMap parsed=QJsonDocument::fromJson(resp, &jsonParseError).toVariant().toMap();
     bool ok=QJsonParseError::NoError==jsonParseError.error;
-    #else
-    bool ok=false;
-    QVariantMap parsed=QJson::Parser().parse(resp, &ok).toMap();
-    #endif
 
     if (ok && parsed.contains("images")) {
         QVariantList images=parsed["images"].toList();
@@ -1128,14 +1085,9 @@ void CoverDialog::parseCoverArtArchiveQueryResponse(const QByteArray &resp)
 
 void CoverDialog::parseSpotifyQueryResponse(const QByteArray &resp)
 {
-    #if QT_VERSION >= 0x050000
     QJsonParseError jsonParseError;
     QVariantMap parsed=QJsonDocument::fromJson(resp, &jsonParseError).toVariant().toMap();
     bool ok=QJsonParseError::NoError==jsonParseError.error;
-    #else
-    bool ok=false;
-    QVariantMap parsed=QJson::Parser().parse(resp, &ok).toMap();
-    #endif
 
     if (ok) {
         if (parsed.contains("info")) { // Initial query response...
@@ -1164,14 +1116,9 @@ void CoverDialog::parseSpotifyQueryResponse(const QByteArray &resp)
 
 void CoverDialog::parseITunesQueryResponse(const QByteArray &resp)
 {
-    #if QT_VERSION >= 0x050000
     QJsonParseError jsonParseError;
     QVariantMap parsed=QJsonDocument::fromJson(resp, &jsonParseError).toVariant().toMap();
     bool ok=QJsonParseError::NoError==jsonParseError.error;
-    #else
-    bool ok=false;
-    QVariantMap parsed=QJson::Parser().parse(resp, &ok).toMap();
-    #endif
 
     if (ok && parsed.contains("results")) {
         QVariantList results=parsed["results"].toList();
@@ -1188,14 +1135,9 @@ void CoverDialog::parseITunesQueryResponse(const QByteArray &resp)
 void CoverDialog::parseDeezerQueryResponse(const QByteArray &resp)
 {
     const QString key=QLatin1String(isArtist ? "picture" : "cover");
-    #if QT_VERSION >= 0x050000
     QJsonParseError jsonParseError;
     QVariantMap parsed=QJsonDocument::fromJson(resp, &jsonParseError).toVariant().toMap();
     bool ok=QJsonParseError::NoError==jsonParseError.error;
-    #else
-    bool ok=false;
-    QVariantMap parsed=QJson::Parser().parse(resp, &ok).toMap();
-    #endif
 
     if (ok && parsed.contains("data")) {
         QVariantList results=parsed["data"].toList();
@@ -1318,11 +1260,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
 
 static bool hasMimeType(QDropEvent *event)
 {
-    #if QT_VERSION < 0x050000
-    return event->provides("text/uri-list");
-    #else
     return event->mimeData()->formats().contains(QLatin1String("text/uri-list"));
-    #endif
 }
 
 void CoverDialog::dragEnterEvent(QDragEnterEvent *event)

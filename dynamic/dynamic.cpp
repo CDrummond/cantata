@@ -41,14 +41,8 @@
 #include <QIcon>
 #include <QUrl>
 #include <QNetworkProxy>
-#if QT_VERSION >= 0x050000
-#include <QUrlQuery>
-#endif
 #include <signal.h>
 #include <stdio.h>
-#if defined ENABLE_MODEL_TEST
-#include "models/modeltest.h"
-#endif
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -169,9 +163,6 @@ Dynamic::Dynamic()
     QTimer::singleShot(500, this, SLOT(checkHelper()));
     startAction = ActionCollection::get()->createAction("startdynamic", i18n("Start Dynamic Playlist"), Icons::self()->replacePlayQueueIcon);
     stopAction = ActionCollection::get()->createAction("stopdynamic", i18n("Stop Dynamic Mode"), Icons::self()->stopDynamicIcon);
-    #if defined ENABLE_MODEL_TEST
-    new ModelTest(this, this);
-    #endif
 }
 
 QString Dynamic::name() const

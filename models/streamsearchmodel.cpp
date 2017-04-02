@@ -36,9 +36,7 @@
 #include <QMimeData>
 #include <QLocale>
 #include <QUrl>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 
 static QIcon getIcon(const QString &name)
 {
@@ -291,11 +289,7 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
 
     foreach (StreamsModel::Item *item, root->children) {
         QUrl searchUrl;
-        #if QT_VERSION < 0x050000
-        QUrl &query=searchUrl;
-        #else
         QUrlQuery query;
-        #endif
         switch (root->children.indexOf(item)) {
         case TuneIn: {
             searchUrl=QUrl(item->url);
@@ -331,9 +325,7 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
             break;
         }
 
-        #if QT_VERSION >= 0x050000
         searchUrl.setQuery(query);
-        #endif
         NetworkJob *job=NetworkAccessManager::self()->get(searchUrl);
         if (jobs.isEmpty()) {
             emit loading();

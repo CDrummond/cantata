@@ -45,9 +45,7 @@ ComboBox::ComboBox(QWidget *p)
         }
     }
     #endif
-    #if QT_VERSION >= 0x050000
     connect(this, SIGNAL(editTextChanged(QString)), this, SIGNAL(textChanged(QString)));
-    #endif
 }
 
 void ComboBox::setEditable(bool editable)

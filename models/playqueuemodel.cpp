@@ -63,10 +63,6 @@
 #include <QApplication>
 #include <QMenu>
 
-#if defined ENABLE_MODEL_TEST
-#include "modeltest.h"
-#endif
-
 GLOBAL_STATIC(PlayQueueModel, instance)
 
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
@@ -225,9 +221,6 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(MPDConnection::self(), SIGNAL(stickerDbChanged()), SLOT(stickerDbChanged()));
     #ifdef ENABLE_DEVICES_SUPPORT //TODO: Problems here with devices support!!!
     connect(DevicesModel::self(), SIGNAL(updatedDetails(QList<Song>)), SLOT(updateDetails(QList<Song>)));
-    #endif
-    #if defined ENABLE_MODEL_TEST
-    new ModelTest(this, this);
     #endif
 
     UNITY_MENU_ICON_CHECK

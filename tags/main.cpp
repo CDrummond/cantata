@@ -40,11 +40,7 @@ static long __stdcall exceptionHandler(EXCEPTION_POINTERS *p)
 
 static QString logFileName;
 static bool firstMsg=true;
-#if QT_VERSION < 0x050000
-static void cantataQtMsgHandler(QtMsgType, const char *msg)
-#else
 static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QString &msg)
-#endif
 {
     QFile f(logFileName);
     if (f.open(QIODevice::WriteOnly|QIODevice::Append|QIODevice::Text)) {
@@ -68,11 +64,7 @@ int main(int argc, char *argv[])
         if (4==app.arguments().length()) {
             logFileName=app.arguments().at(3);
             if (!logFileName.isEmpty()) {
-                #if QT_VERSION < 0x050000
-                qInstallMsgHandler(cantataQtMsgHandler);
-                #else
                 qInstallMessageHandler(cantataQtMsgHandler);
-                #endif
                 TagHelper::enableDebug();
                 Tags::enableDebug();
             }

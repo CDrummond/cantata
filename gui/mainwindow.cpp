@@ -109,11 +109,9 @@
 #include <QString>
 #include <QTimer>
 #include <QToolBar>
-#if QT_VERSION >= 0x050000
 #include <QProcess>
 #ifdef Q_OS_WIN
 #include "windows/thumbnailtoolbar.h"
-#endif
 #endif
 #include <QDialogButtonBox>
 #include <QKeyEvent>
@@ -158,11 +156,11 @@ MainWindow::MainWindow(QWidget *parent)
     , contextSwitchTime(0)
     , connectedState(CS_Init)
     , stopAfterCurrent(false)
-    #if defined Q_OS_WIN && QT_VERSION >= 0x050000
+    #if defined Q_OS_WIN
     , thumbnailTooolbar(0)
     #endif
 {
-    #if defined Q_OS_MAC || defined Q_OS_WIN || QT_VERSION<0x050000
+    #if defined Q_OS_MAC || defined Q_OS_WIN
     init();
     #else
     if ("qt5ct"==qgetenv("QT_QPA_PLATFORMTHEME")) {
@@ -181,7 +179,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::init()
 {
-    #if !defined Q_OS_MAC && !defined Q_OS_WIN && QT_VERSION>=0x050000
+    #if !defined Q_OS_MAC && !defined Q_OS_WIN
     // Work-aroud Qt5Ct incorrectly setting icon theme
     if (!Settings::self()->useStandardIcons()) {
         QIcon::setThemeSearchPaths(QStringList() << CANTATA_SYS_ICONS_DIR << QIcon::themeSearchPaths());
@@ -1037,7 +1035,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
-#if defined Q_OS_WIN && QT_VERSION >= 0x050000
+#if defined Q_OS_WIN
 void MainWindow::showEvent(QShowEvent *event)
 {
     if (!thumbnailTooolbar) {
@@ -1424,7 +1422,7 @@ void MainWindow::readSettings()
     tabWidget->setStyle(Settings::self()->sidebar());
     coverWidget->setEnabled(Settings::self()->showCoverWidget());
     stopTrackButton->setVisible(Settings::self()->showStopButton());
-    #if defined Q_OS_WIN && QT_VERSION >= 0x050000
+    #if defined Q_OS_WIN
     if (thumbnailTooolbar) {
         thumbnailTooolbar->readSettings();
     }
@@ -1826,7 +1824,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
     // Update status info
     lastState = status->state();
     lastSongId = status->songId();
-    #if defined Q_OS_WIN && QT_VERSION>=0x050000
+    #if defined Q_OS_WIN
     if (thumbnailTooolbar) {
         thumbnailTooolbar->update(status);
     }

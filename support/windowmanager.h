@@ -44,34 +44,12 @@
 #include <QObject>
 #include <QSet>
 #include <QString>
-#if QT_VERSION < 0x050000
-#include <QWeakPointer>
-#define WmPointer QWeakPointer
-#else
 #include <QPointer>
-#define WmPointer QPointer
-#endif
 #include <QWidget>
 
 class WindowManager: public QObject
 {
     Q_OBJECT
-
-    #if QT_VERSION < 0x040600
-    class WmPointer : public QObject
-    {
-    public:
-        Pointer(QWidget *w=0L) : widget_(w) {}
-        Pointer & operator=(QWidget *w);
-        operator bool() const { return 0L!=widget_; }
-        void clear();
-        bool eventFilter(QObject *, QEvent *);
-        QWidget *data() { return widget_; }
-
-    private:
-        QWidget *widget_;
-    };
-    #endif
 
 public:
     enum DragMode
@@ -159,11 +137,7 @@ private:
 
     //! target being dragged
     /*! QWeakPointer is used in case the target gets deleted while drag is in progress */
-    #if QT_VERSION < 0x040600
-    WmPointer _target;
-    #else
-    WmPointer<QWidget> _target;
-    #endif
+    QPointer<QWidget> _target;
 
     //! true if drag is about to start
     bool _dragAboutToStart;

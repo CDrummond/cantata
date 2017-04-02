@@ -373,21 +373,13 @@ public:
                 pix=cover ? *cover : (stream && !song.isCdda() ? Icons::self()->streamIcon : Icons::self()->albumIcon(constCoverSize)).pixmap(constCoverSize, constCoverSize);
             }
 
-            #if QT_VERSION >= 0x050100
             int maxSize=constCoverSize*pix.devicePixelRatio();
-            #else
-            int maxSize=constCoverSize;
-            #endif
 
             if (pix.width()>maxSize) {
                 pix=pix.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             }
 
-            #if QT_VERSION >= 0x050100
             QSize pixSize = pix.isNull() ? QSize(0, 0) : (pix.size() / pix.devicePixelRatio());
-            #else
-            QSize pixSize = pix.size();
-            #endif
 
             if (rtl) {
                 painter->drawPixmap(r.x()+r.width()-(pixSize.width()-constBorder), r.y()+((r.height()-pixSize.height())/2), pixSize.width(), pixSize.height(), pix);

@@ -28,9 +28,7 @@
 
 class ComboBox : public QComboBox
 {
-    #if QT_VERSION >= 0x050000
     Q_OBJECT
-    #endif
 
 public:
     ComboBox(QWidget *p);
@@ -42,10 +40,8 @@ public:
     void hidePopup();
     #endif
 
-#if QT_VERSION >= 0x050000
 Q_SIGNALS:
     void textChanged(const QString &t);
-#endif
 
 private:
     bool toggleState;

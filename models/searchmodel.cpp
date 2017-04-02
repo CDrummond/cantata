@@ -32,12 +32,6 @@
 #include <QMimeData>
 #include <QLocale>
 #include <QUrl>
-#if QT_VERSION >= 0x050000
-#include <QUrlQuery>
-#endif
-#if defined ENABLE_MODEL_TEST
-#include "modeltest.h"
-#endif
 
 QString SearchModel::headerText(int col)
 {

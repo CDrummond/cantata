@@ -54,12 +54,8 @@
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QNetworkRequest>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #include <QJsonDocument>
-#else
-#include "qjson/parser.h"
-#endif
 
 static int iCount=0;
 
@@ -364,20 +360,14 @@ void PodcastSearchPage::doSearch()
 
     currentSearch=text;
     QUrl url=queryUrl;
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
     QUrlQuery query;
-    #endif
     query.addQueryItem(queryKey, text);
     if (otherArgs.size()>1) {
         for (int i=0; i<otherArgs.size()-1; i+=2) {
             query.addQueryItem(otherArgs.at(i), otherArgs.at(i+1));
         }
     }
-    #if QT_VERSION >= 0x050000
     url.setQuery(query);
-    #endif
     fetch(url);
 }
 
@@ -387,11 +377,7 @@ void PodcastSearchPage::parseResonse(QIODevice *dev)
         emit error(i18n("Failed to fetch podcasts from %1", name()));
         return;
     }
-    #if QT_VERSION >= 0x050000
     QVariant data=QJsonDocument::fromJson(dev->readAll()).toVariant();
-    #else
-    QVariant data = QJson::Parser().parse(dev->readAll());
-    #endif
     if (data.isNull()) {
         emit error(i18n("There was a problem parsing the response from %1", name()));
         return;

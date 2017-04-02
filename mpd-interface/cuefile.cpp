@@ -36,9 +36,7 @@
 #include <QTextStream>
 #include <QStringList>
 #include <QUrl>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 
 static const QString constFileLineRegExp = QLatin1String("(\\S+)\\s+(?:\"([^\"]+)\"|(\\S+))\\s*(?:\"([^\"]+)\"|(\\S+))?");
 static const QString constIndexRegExp = QLatin1String("(\\d{2,3}):(\\d{2}):(\\d{2})");
@@ -63,11 +61,7 @@ bool CueFile::isCue(const QString &str)
 QByteArray CueFile::getLoadLine(const QString &str)
 {
     QUrl u(str);
-    #if QT_VERSION < 0x050000
-    const QUrl &q=u;
-    #else
     QUrlQuery q(u);
-    #endif
 
     if (q.hasQueryItem("pos")) {
         QString pos=q.queryItemValue("pos");

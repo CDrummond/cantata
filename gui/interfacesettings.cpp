@@ -408,12 +408,10 @@ void InterfaceSettings::showEvent(QShowEvent *e)
 
         foreach (const QString &code, transCodes) {
             QString langName = QLocale::languageToString(QLocale(code).language());
-            #if QT_VERSION >= 0x040800
             QString nativeName = QLocale(code).nativeLanguageName();
             if (!nativeName.isEmpty()) {
                 langName = nativeName;
             }
-            #endif
             langMap[QString("%1 (%2)").arg(langName, code)] = code;
         }
 

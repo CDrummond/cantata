@@ -72,11 +72,7 @@
 
 static inline QString esc(const QString &orig)
 {
-    #if QT_VERSION < 0x050000
-    return Qt::escape(orig);
-    #else
     return orig.toHtmlEscaped();
-    #endif
 }
 
 class AcceleratorManagerPrivate

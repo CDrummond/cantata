@@ -26,12 +26,8 @@
 #include "network/networkaccessmanager.h"
 #include "mpd-interface/mpdconnection.h"
 #include <QUrl>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #include <QJsonDocument>
-#else
-#include "qjson/parser.h"
-#endif
 
 static const QLatin1String constName("soundcloud");
 static const QLatin1String constApiKey("0cb23dce473528973ce74815bd36a334");
@@ -76,16 +72,10 @@ void SoundCloudService::search(const QString &key, const QString &value)
     }
 
     QUrl searchUrl(constUrl);
-    #if QT_VERSION < 0x050000
-    QUrl &query=searchUrl;
-    #else
     QUrlQuery query;
-    #endif
     query.addQueryItem("client_id", constApiKey);
     query.addQueryItem("q", currentValue);
-    #if QT_VERSION >= 0x050000
     searchUrl.setQuery(query);
-    #endif
 
     QNetworkRequest req(searchUrl);
     req.setRawHeader("Accept", "application/json");
@@ -106,11 +96,7 @@ void SoundCloudService::jobFinished()
     QList<Song> songs;
 
     if (j->ok()) {
-        #if QT_VERSION >= 0x050000
         QVariant result=QJsonDocument::fromJson(j->readAll()).toVariant();
-        #else
-        QVariant result = QJson::Parser().parse(j->readAll());
-        #endif
         if (result.isValid()) {
             QVariantList list = result.toList();
             foreach(const QVariant &item, list) {
@@ -120,15 +106,9 @@ void SoundCloudService::jobFinished()
                 }
                 Song song;
                 QUrl url = details["stream_url"].toUrl();
-                #if QT_VERSION < 0x050000
-                QUrl &query=url;
-                #else
                 QUrlQuery query;
-                #endif
                 query.addQueryItem("client_id", constApiKey);
-                #if QT_VERSION >= 0x050000
                 url.setQuery(query);
-                #endif
                 // MPD does not seem to support https :-(
                 if (QLatin1String("https")==url.scheme() && !MPDConnection::self()->urlHandlers().contains(QLatin1String("https"))) {
                     url.setScheme(QLatin1String("http"));

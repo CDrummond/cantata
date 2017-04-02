@@ -27,11 +27,7 @@
 #include "support/localize.h"
 #include "support/globalstatic.h"
 #include <QNetworkRequest>
-#if QT_VERSION >= 0x050000
 #include <QJsonDocument>
-#else
-#include "qjson/parser.h"
-#endif
 #include <QTime>
 #include <QTimer>
 
@@ -81,11 +77,7 @@ void DigitallyImported::logout()
 
 void DigitallyImported::addAuthHeader(QNetworkRequest &req) const
 {
-    #if QT_VERSION < 0x050000
-    req.setRawHeader("Authorization", "Basic "+QString("%1:%2").arg(constApiUserName, constApiPassword).toAscii().toBase64());
-    #else
     req.setRawHeader("Authorization", "Basic "+QString("%1:%2").arg(constApiUserName, constApiPassword).toLatin1().toBase64());
-    #endif
 }
 
 void DigitallyImported::load()
@@ -177,11 +169,7 @@ void DigitallyImported::loginResponse()
         return;
     }
 
-    #if QT_VERSION >= 0x050000
     QVariantMap data=QJsonDocument::fromJson(reply->readAll()).toVariant().toMap();
-    #else
-    QVariantMap data = QJson::Parser().parse(reply->readAll()).toMap();
-    #endif
 
     if (!data.contains("subscriptions")) {
         status=i18n("No subscriptions");

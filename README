@@ -26,7 +26,7 @@ Table of Contents
 
 Cantata is a graphical client for MPD. It contains the following features:
 
- 1. Support for Qt4, Qt5, MacOSX, and Windows.
+ 1. Support for Linux, MacOSX, and Windows.
  2. Multiple MPD collections.
  3. Highly customisable layout.
  4. Songs grouped by album in play queue.
@@ -78,19 +78,17 @@ Cantata requires the following Qt libraries:
 
 Cantata may also use the following optional libraries:
 
- 1. TagLib - Tag edit dialog, replaygain, track organizer, and UMS device
-             support.
- 2. LibMTP - MTP devices.
- 3. FFMPEG (libavcodec) - ReplayGain detection code.
- 4. SpeexDSP - ReplayGain detection code.
- 5. MPG123 - ReplayGain detection code.
- 6. CDParanoia - Read/rip Audio CDs.
- 7. CDDB - either this or MusicBrainz5 required for Audio CDs
- 8. MusicBrainz5 - either this or CDDB required for Audio CDs
- 9. LibQJson - only for Qt4, builds. If this is not found on the
-    system then Cantata will use its own bundled copy.
-10. LibEbur128 - ReplayGain detection code. If this is not found on the
-    system then Cantata will use its own bundled copy.
+1. TagLib - Tag edit dialog, replaygain, track organizer, and UMS device
+            support.
+2. LibMTP - MTP devices.
+3. FFMPEG (libavcodec) - ReplayGain detection code.
+4. SpeexDSP - ReplayGain detection code.
+5. MPG123 - ReplayGain detection code.
+6. CDParanoia - Read/rip Audio CDs.
+7. CDDB - either this or MusicBrainz5 required for Audio CDs
+8. MusicBrainz5 - either this or CDDB required for Audio CDs
+9. LibEbur128 - ReplayGain detection code. If this is not found on the
+   system then Cantata will use its own bundled copy.
 
 
 3. Building
@@ -99,11 +97,6 @@ Cantata may also use the following optional libraries:
 Please refer to the INSTALL file for general build instructions. Details on how
 Cantata is build for Windows can be found in section 16, and Mac OSX in section
 17.
-
-Some Qt4 builds still use com.trolltech.QtDBus.QtTypeName, whereas newer ones
-use org.qtproject.QtDBus.QtTypeName. If you get build failures such as "fatal
-error: playeradaptor.h: No such file or directory" then set
--DUSE_OLD_DBUS_TYPEDEF=ON when calling CMake.
 
 
 4. Bugs
@@ -647,11 +640,11 @@ file.
 10. MultiMedia Keys
 ===================
 
-Linux Qt4 and Windows builds, as of 1.2, now also support basic media-keys
+Linux and Windows builds, as of 1.2, now also support basic media-keys
 shortcuts.
 
-Linux Qt4 and Qt5 builds can also use the GNOME settings daemon's MediaKeys
-interface. This interface is normally started automatically under GNOME/Unity.
+Linux use the GNOME settings daemon's MediaKeys interface. This interface is
+normally started automatically under GNOME/Unity.
 
 
 11. Dynamic Helper Script - Local Mode

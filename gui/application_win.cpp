@@ -30,19 +30,14 @@
 Application::Application(int &argc, char **argv)
     : SingleApplication(argc, argv)
 {
-    #if QT_VERSION >= 0x050000
     installNativeEventFilter(this);
-    #endif
     QIcon::setThemeName(QLatin1String("cantata"));
     setAttribute(Qt::AA_DontShowIconsInMenus, true);
-    #if QT_VERSION >= 0x050400
     if (Settings::self()->retinaSupport()) {
         setAttribute(Qt::AA_UseHighDpiPixmaps);
     }
-    #endif
 }
 
-#if QT_VERSION >= 0x050000
 bool Application::nativeEventFilter(const QByteArray &, void *message, long *result)
 {
     MSG *msg = static_cast<MSG *>(message);
@@ -51,13 +46,4 @@ bool Application::nativeEventFilter(const QByteArray &, void *message, long *res
     }
     return false;
 }
-#else
-bool Application::winEventFilter(MSG *msg, long *result)
-{
-    if (msg && WM_POWERBROADCAST==msg->message && PBT_APMRESUMEAUTOMATIC==msg->wParam) {
-        emit reconnect();
-    }
-    return QCoreApplication::winEventFilter(msg, result);
-}
-#endif
 

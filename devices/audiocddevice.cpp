@@ -40,9 +40,7 @@
 #include "gui/settings.h"
 #include <QDir>
 #include <QUrl>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 #include "solid-lite/block.h"
 
 const QLatin1String AudioCdDevice::constAnyDev("-");
@@ -60,11 +58,7 @@ QString AudioCdDevice::coverUrl(QString udi)
 QString AudioCdDevice::getDevice(const QUrl &url)
 {
     if (QLatin1String("cdda")==url.scheme()) {
-        #if QT_VERSION < 0x050000
-        const QUrl &q=url;
-        #else
         QUrlQuery q(url);
-        #endif
         if (q.hasQueryItem("dev")) {
             return q.queryItemValue("dev");
         }

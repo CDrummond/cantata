@@ -26,9 +26,7 @@
 #include "support/localize.h"
 #include "gui/covers.h"
 #include "config.h"
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 #include <QXmlStreamReader>
 #include <QRegExp>
 
@@ -68,11 +66,7 @@ void LastFmEngine::search(const QStringList &query, Mode mode)
 {
     QStringList fixedQuery=fixQuery(query);
     QUrl url("https://ws.audioscrobbler.com/2.0/");
-    #if QT_VERSION < 0x050000
-    QUrl &urlQuery=url;
-    #else
     QUrlQuery urlQuery;
-    #endif
 
     switch (mode) {
     case Artist:
@@ -92,9 +86,7 @@ void LastFmEngine::search(const QStringList &query, Mode mode)
     urlQuery.addQueryItem("autocorrect", "1");
     urlQuery.addQueryItem("artist", Covers::fixArtist(fixedQuery.at(0)));
 
-    #if QT_VERSION >= 0x050000
     url.setQuery(urlQuery);
-    #endif
 
     job=NetworkAccessManager::self()->get(url);
     job->setProperty(constModeProperty, (int)mode);

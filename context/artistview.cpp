@@ -36,9 +36,7 @@
 #include <QApplication>
 #include <QTextStream>
 #include <QLayout>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 #include <QXmlStreamReader>
 #include <QPixmap>
 #include <QFile>
@@ -62,33 +60,21 @@ static QString cacheFileName(const QString &artist, const QString &lang, bool si
 static QString buildUrl(const LibraryDb::Album &al)
 {
     QUrl url("cantata:///");
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
     QUrlQuery query;
-    #endif
 
     query.addQueryItem("artist", al.artist);
     query.addQueryItem("albumId", al.id);
-    #if QT_VERSION >= 0x050000
     url.setQuery(query);
-    #endif
     return url.toString();
 }
 
 static QString buildUrl(const QString &artist)
 {
     QUrl url("cantata:///");
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
     QUrlQuery query;
-    #endif
 
     query.addQueryItem("artist", artist);
-    #if QT_VERSION >= 0x050000
     url.setQuery(query);
-    #endif
     return url.toString();
 }
 
@@ -366,19 +352,13 @@ void ArtistView::requestSimilar()
 {
     abort();
     QUrl url("http://ws.audioscrobbler.com/2.0/");
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
     QUrlQuery query;
-    #endif
 
     query.addQueryItem("method", "artist.getSimilar");
     query.addQueryItem("api_key", Covers::constLastFmApiKey);
     query.addQueryItem("autocorrect", "1");
     query.addQueryItem("artist", Covers::fixArtist(currentSong.artist));
-    #if QT_VERSION >= 0x050000
     url.setQuery(query);
-    #endif
 
     currentSimilarJob=NetworkAccessManager::self()->get(url);
     currentSimilarJob->setProperty(constNameKey, currentSong.artist);
@@ -476,11 +456,7 @@ void ArtistView::buildSimilar(const QStringList &artists)
 void ArtistView::show(const QUrl &url)
 {
     if (QLatin1String("cantata")==url.scheme()) {
-        #if QT_VERSION < 0x050000
-        const QUrl &q=url;
-        #else
         QUrlQuery q(url);
-        #endif
 
         if (q.hasQueryItem("artist")) {
             if (q.hasQueryItem("albumId")) {

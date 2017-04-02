@@ -43,9 +43,7 @@
 #include <QFile>
 #include <QDir>
 #include <QUrl>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 #include <QTextStream>
 #include <qglobal.h>
 #include <QIcon>
@@ -87,11 +85,9 @@ static bool saveInMpdDir=true;
 static bool fetchCovers=true;
 static QString constNoCover=QLatin1String("{nocover}");
 
-#if QT_VERSION >= 0x050100
 static double devicePixelRatio=1.0;
 // Only scale images to device pixel ratio if un-scaled size is less then 300pixels.
 static const int constRetinaScaleMaxSize=300;
-#endif
 
 #ifdef USE_JPEG_FOR_SCALED_CACHE
 static const QLatin1String constScaledExtension(".jpg");
@@ -631,11 +627,7 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
         }
         job.level++;
     }
-    #if QT_VERSION < 0x050000
-    u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(dir, Utils::constDirSepCharStr)+coverName.toLatin1());
-    #else
     u=QUrl(MPDConnection::self()->getDetails().dir+dir+coverName.toLatin1());
-    #endif
 
     job.type=type;
     NetworkJob *j=network()->get(u);
@@ -648,11 +640,7 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
 void CoverDownloader::downloadViaLastFm(Job &job)
 {
     QUrl url("https://ws.audioscrobbler.com/2.0/");
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
     QUrlQuery query;
-    #endif
 
     query.addQueryItem("method", job.song.isArtistImageRequest() || job.song.isComposerImageRequest() ? "artist.getInfo" : "album.getInfo");
     query.addQueryItem("api_key", Covers::constLastFmApiKey);
@@ -661,9 +649,7 @@ void CoverDownloader::downloadViaLastFm(Job &job)
     if (!job.song.isArtistImageRequest()) {
         query.addQueryItem("album", job.song.album);
     }
-    #if QT_VERSION >= 0x050000
     url.setQuery(query);
-    #endif
 
     NetworkJob *j = network()->get(url);
     connect(j, SIGNAL(finished()), this, SLOT(lastFmCallFinished()));
@@ -724,15 +710,9 @@ void CoverDownloader::lastFmCallFinished()
         }
 
         if (!url.isEmpty()) {
-            QUrl u;
-            #if QT_VERSION < 0x050000
-            u.setEncodedUrl(url.toLatin1());
-            #else
-            u=QUrl(url);
-            #endif
-            NetworkJob *j=network()->get(QNetworkRequest(u));
+            NetworkJob *j=network()->get(QNetworkRequest(QUrl(url)));
             connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
-            DBUG << "download" << u.toString();
+            DBUG << "download" << url;
             jobs.insert(j, job);
         } else {
             failed(job);
@@ -1066,11 +1046,9 @@ void CoverLoader::load()
     foreach (const LoadedCover &s, toDo) {
         DBUG << s.song.artist << s.song.albumId() << s.song.size;
         int size=s.song.size;
-        #if QT_VERSION >= 0x050100
         if (size<constRetinaScaleMaxSize) {
             size*=devicePixelRatio;
         }
-        #endif
         covers.append(LoadedCover(s.song, loadScaledCover(s.song, size)));
     }
     if (!covers.isEmpty()) {
@@ -1088,11 +1066,9 @@ Covers::Covers()
     , locator(0)
     , loader(0)
 {
-    #if QT_VERSION >= 0x050100
     if (Settings::self()->retinaSupport()) {
         devicePixelRatio=qApp->devicePixelRatio();
     }
-    #endif
     maxCoverUpdatePerIteration=Settings::self()->maxCoverUpdatePerIteration();
     cache.setMaxCost(Settings::self()->coverCacheSize()*1024*1024);
 }
@@ -1186,9 +1162,6 @@ QPixmap * Covers::saveScaledCover(const QImage &img, const Song &song, int size)
 
 QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
 {
-    #if QT_VERSION < 0x050100
-    Q_UNUSED(origSize)
-    #endif
     bool podcast=!song.isArtistImageRequest() && !song.isComposerImageRequest() && song.isFromOnlineService() && OnlineService::isPodcasts(song.onlineService());
     QString key=song.isArtistImageRequest()
                 ? QLatin1String("artist-")
@@ -1207,12 +1180,10 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
                     ? Icons::self()->podcastIcon
                     : Icons::self()->albumIcon(size);
         pix=new QPixmap(icn.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        #if QT_VERSION >= 0x050100
         if (size!=origSize) {
             pix->setDevicePixelRatio(devicePixelRatio);
             DBUG << "Set pixel ratio of dummy pixmap" << devicePixelRatio;
         }
-        #endif
         cache.insert(key, pix, 1);
         cacheSizes.insert(size);
     }
@@ -1229,11 +1200,9 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
     }
 
     int origSize=size;
-    #if QT_VERSION >= 0x050100
     if (size<constRetinaScaleMaxSize) {
         size*=devicePixelRatio;
     }
-    #endif
     if (!song.isUnknownAlbum() || song.isStandardStream()) {
         key=cacheKey(song, size);
         pix=cache.object(key);
@@ -1253,12 +1222,10 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                 }
             }
             if (pix) {
-                #if QT_VERSION >= 0x050100
                 if (size!=origSize) {
                     pix->setDevicePixelRatio(devicePixelRatio);
                     DBUG << "Set pixel ratio of cover" << devicePixelRatio;
                 }
-                #endif
                 cache.insert(key, pix, 1);
                 cacheSizes.insert(size);
             }
@@ -1270,24 +1237,20 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                     Image img=findImage(song, false);
                     if (!img.img.isNull()) {
                         pix=saveScaledCover(scale(song, img.img, size), song, size);
-                        #if QT_VERSION >= 0x050100
                         if (size!=origSize) {
                             pix->setDevicePixelRatio(devicePixelRatio);
                             DBUG << "Set pixel ratio of saved scaled cover" << devicePixelRatio;
                         }
-                        #endif
                         return pix;
                     } else if (constNoCover==img.fileName) {
                         return defaultPix(song, size, origSize);
                     }
                 } else {
                     pix=new QPixmap(QPixmap::fromImage(cached));
-                    #if QT_VERSION >= 0x050100
                     if (size!=origSize) {
                         pix->setDevicePixelRatio(devicePixelRatio);
                         DBUG << "Set pixel ratio of loaded scaled cover" << devicePixelRatio;
                     }
-                    #endif
                     cache.insert(key, pix);
                     cacheSizes.insert(size);
                     return pix;
@@ -1301,12 +1264,10 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
 
             // Create a dummy image so that we dont keep on locating/loading/downloading files that do not exist!
             pix=new QPixmap(1, 1);
-            #if QT_VERSION >= 0x050100
             if (size!=origSize) {
                 pix->setDevicePixelRatio(devicePixelRatio);
                 DBUG << "Set pixel ratio of dummy cover" << devicePixelRatio;
             }
-            #endif
             cache.insert(key, pix, 1);
             cacheSizes.insert(size);
         }
@@ -1353,25 +1314,19 @@ bool Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesO
         QPixmap *pix(cache.object(key));
 
         if (pix && (!dummyEntriesOnly || pix->width()<2)) {
-            #if QT_VERSION >= 0x050100
             double pixRatio=pix->devicePixelRatio();
-            #endif
             cache.remove(key);
             if (!img.isNull()) {
                 DBUG_CLASS("Covers");
                 QPixmap *p=saveScaledCover(scale(song, img, s), song, s);
-                #if QT_VERSION >= 0x050100
                 if (p) {
                     p->setDevicePixelRatio(pixRatio);
                     DBUG << "Set pixel ratio of updated cached pixmap" << devicePixelRatio;
                 }
-                #endif
                 if (p && emitLoaded) {
-                    #if QT_VERSION >= 0x050100
                     if (pixRatio>1.00001) {
                         s/=pixRatio;
                     }
-                    #endif
                     emit loaded(song, s);
                     updated=true;
                 }
@@ -1560,12 +1515,8 @@ Covers::Image Covers::locateImage(const Song &song)
     bool haveAbsPath=songFile.startsWith(Utils::constDirSep);
 
     if (song.isCantataStream()) {
-        #if QT_VERSION < 0x050000
-        QUrl u(songFile);
-        #else
         QUrl url(songFile);
         QUrlQuery u(url);
-        #endif
         songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
     }
 
@@ -1808,19 +1759,15 @@ void Covers::loaded(const QList<LoadedCover> &covers)
     foreach (const LoadedCover &cvr, covers) {
         if (!cvr.img.isNull()) {
             int size=cvr.song.size;
-            #if QT_VERSION >= 0x050100
             int origSize=size;
             if (size<constRetinaScaleMaxSize) {
                 size*=devicePixelRatio;
             }
-            #endif
             QPixmap *pix=new QPixmap(QPixmap::fromImage(cvr.img));
-            #if QT_VERSION >= 0x050100
             if (size!=origSize) {
                 pix->setDevicePixelRatio(devicePixelRatio);
                 DBUG << "Set pixel ratio of loaded pixmap" << devicePixelRatio;
             }
-            #endif
             cache.insert(cacheKey(cvr.song, size), pix);
             cacheSizes.insert(size);
             emit loaded(cvr.song, cvr.song.size);

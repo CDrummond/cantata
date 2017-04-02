@@ -54,20 +54,13 @@
 #include <QLocale>
 #include <QFileSystemWatcher>
 #include <QUrl>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #include <QJsonDocument>
-#else
-#include "qjson/parser.h"
-#endif
 #if defined Q_OS_WIN
 #include <QCoreApplication>
 #endif
 #include <stdio.h>
 #include <time.h>
-#if defined ENABLE_MODEL_TEST
-#include "modeltest.h"
-#endif
 
 #include <QDebug>
 GLOBAL_STATIC(StreamsModel, instance)
@@ -490,16 +483,10 @@ NetworkJob * StreamsModel::ShoutCastCategoryItem::fetchSecondardyUrl()
     if (url!=constShoutCastUrl) {
         // Get stations...
         QUrl url(QLatin1String("http://")+constShoutCastHost+QLatin1String("/legacy/genresearch"));
-        #if QT_VERSION < 0x050000
-        QUrl &query=url;
-        #else
         QUrlQuery query;
-        #endif
         query.addQueryItem("k", constShoutCastApiKey);
         query.addQueryItem("genre", name);
-        #if QT_VERSION >= 0x050000
         url.setQuery(query);
-        #endif
 
         QNetworkRequest req(url);
         addHeaders(req);
@@ -548,9 +535,6 @@ StreamsModel::StreamsModel(QObject *parent)
             }
         }
     }
-    #if defined ENABLE_MODEL_TEST
-    new ModelTest(this, this);
-    #endif
 
     connect(MPDConnection::self(), SIGNAL(savedStream(QString,QString)), SLOT(savedFavouriteStream(QString,QString)));
     connect(MPDConnection::self(), SIGNAL(removedStreams(QList<quint32>)), SLOT(removedFavouriteStreams(QList<quint32>)));
@@ -1405,11 +1389,7 @@ QList<StreamsModel::Item *> StreamsModel::parseSomaFmResponse(QIODevice *dev, Ca
 QList<StreamsModel::Item *> StreamsModel::parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat)
 {
     QList<Item *> newItems;
-    #if QT_VERSION >= 0x050000
     QVariantMap data=QJsonDocument::fromJson(dev->readAll()).toVariant().toMap();
-    #else
-    QVariantMap data = QJson::Parser().parse(dev->readAll()).toMap();
-    #endif
     QString listenHost=QLatin1String("listen.")+QUrl(cat->url).host().remove("www.");
 
     if (data.contains("channel_filters")) {
@@ -1643,11 +1623,7 @@ QList<StreamsModel::Item *> StreamsModel::parseDirbleResponse(QIODevice *dev, Ca
         return parseDirbleStations(dev, cat);
     }
     QList<Item *> newItems;
-    #if QT_VERSION >= 0x050000
     QVariantList data=QJsonDocument::fromJson(dev->readAll()).toVariant().toList();
-    #else
-    QVariantList data = QJson::Parser().parse(dev->readAll()).toList();
-    #endif
 
     // Get categories...::f
     if (!data.isEmpty()) {
@@ -1663,11 +1639,7 @@ QList<StreamsModel::Item *> StreamsModel::parseDirbleResponse(QIODevice *dev, Ca
 QList<StreamsModel::Item *> StreamsModel::parseDirbleStations(QIODevice *dev, CategoryItem *cat)
 {
     QList<Item *> newItems;
-    #if QT_VERSION >= 0x050000
     QVariantList data=QJsonDocument::fromJson(dev->readAll()).toVariant().toList();
-    #else
-    QVariantList data = QJson::Parser().parse(dev->readAll()).toList();
-    #endif
 
     QSet<QString> added;
     foreach (const QVariant &d, data) {
@@ -1807,11 +1779,7 @@ StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &n
     if (streamsFileName.endsWith(constSettingsFile)) {
         QFile file(streamsFileName);
         if (file.open(QIODevice::ReadOnly)) {
-            #if QT_VERSION >= 0x050000
             QVariantMap map=QJsonDocument::fromJson(file.readAll()).toVariant().toMap();
-            #else
-            QVariantMap map = QJson::Parser().parse(file.readAll()).toMap();
-            #endif
             QString type=map["type"].toString();
             QString url=map["url"].toString();
 

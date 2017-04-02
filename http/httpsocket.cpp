@@ -35,9 +35,7 @@
 #include <QFile>
 #include <QUrl>
 #include <QNetworkProxy>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 #include <QFileInfo>
 #if defined TAGLIB_FOUND && !defined ENABLE_EXTERNAL_TAGS
 #include "tags/tags.h"
@@ -280,11 +278,7 @@ void HttpSocket::readClient()
             }
 
             QUrl url(QUrl::fromEncoded(tokens[1]));
-            #if QT_VERSION < 0x050000
-            QUrl &q=url;
-            #else
             QUrlQuery q(url);
-            #endif
             bool ok=false;
             qint32 readBytesFrom=0;
             qint32 readBytesTo=0;

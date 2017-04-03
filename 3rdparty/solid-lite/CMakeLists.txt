@@ -284,11 +284,7 @@ if(APPLE)
    set(solidlite_OPTIONAL_LIBS ${IOKIT_LIBRARY})
 endif(APPLE)
 
-if (ENABLE_QT5)
-    QT5_WRAP_CPP(solidlite_LIB_MOC_SRCS ${solidlite_LIB_MOC_HDRS} )
-else (ENABLE_QT5)
-    QT4_WRAP_CPP(solidlite_LIB_MOC_SRCS ${solidlite_LIB_MOC_HDRS} )
-endif (ENABLE_QT5)
+QT5_WRAP_CPP(solidlite_LIB_MOC_SRCS ${solidlite_LIB_MOC_HDRS} )
 add_library(solidlite ${solidlite_LIB_SRCS} ${solidlite_LIB_MOC_SRCS})
 # set_target_properties(solidlite PROPERTIES AUTOMOC TRUE)
 

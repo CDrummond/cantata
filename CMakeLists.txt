@@ -42,7 +42,7 @@ include(MacroLogFeature)
 
 option(ENABLE_TAGLIB "Enable TagLib library (required for tag editing, replaygain calculation, device support, etc)" ON)
 option(ENABLE_TAGLIB_EXTRAS "Enable TagLib-Extras library (used by tag editing, replaygain calculation, device support, etc)" ON)
-option(ENABLE_HTTP_STREAM_PLAYBACK "Enable playback of MPD HTTP streams (LibVLC or, Phonon for Qt4, QtMultimedia for Qt5)" ON)
+option(ENABLE_HTTP_STREAM_PLAYBACK "Enable playback of MPD HTTP streams (LibVLC or QtMultimedia)" ON)
 if (WIN32 OR APPLE)
     option(ENABLE_LIBVLC "Use libVLC for MPD HTTP stream playback (if ENABLE_HTTP_STREAM_PLAYBACK=ON)" OFF)
 else (WIN32 OR APPLE)

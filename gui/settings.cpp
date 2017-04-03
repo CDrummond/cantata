@@ -1042,7 +1042,7 @@ void Settings::savePlayStream(bool v)
 
 bool Settings::stopHttpStreamOnPause()
 {
-    return cfg.get("stopHttpStreamOnPause", true);
+    return cfg.get("stopHttpStreamOnPause", false);
 }
 #endif
 

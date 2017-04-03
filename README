@@ -464,7 +464,7 @@ stopHttpStreamOnPause=<Boolean>
     Cantata will disconnect from MPD's HTTP stream. (NOTE: This will mean that
     there will be a delay when un-pausing). If set to false, Cantata will
     continue to play the 'silence' (NOTE: This will use more bandwidth).
-    Default is true.
+    Default is false.
 
 cacheScaledCovers=<Boolean>
     Controls whether Cantata should save scaled covers into a disk based cache.

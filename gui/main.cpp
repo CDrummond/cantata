@@ -59,6 +59,9 @@
 #include "context/contextwidget.h"
 #include "scrobbling/scrobbler.h"
 #include "gui/mediakeys.h"
+#ifdef ENABLE_HTTP_STREAM_PLAYBACK
+#include "mpd-interface/httpstream.h"
+#endif
 
 #include <QMutex>
 #include <QMutexLocker>
@@ -153,7 +156,8 @@ enum Debug {
     Dbg_Scrobbling        = 0x00010000,
     Dbg_Devices           = 0x00020000,
     Dbg_Sql               = 0x00040000,
-    DBG_Other             = 0x00080000,
+    Dbg_HttpStream        = 0x00080000,
+    DBG_Other             = 0x00100000,
 
     // NOTE: MUST UPDATE Dbg_All IF ADD NEW ITEMS!!!
     Dbg_All               = 0x000FFFFF
@@ -231,6 +235,11 @@ static void installDebugMessageHandler()
         if (dbg&Dbg_Sql) {
             LibraryDb::enableDebug();
         }
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        if (dbg&Dbg_HttpStream) {
+            HttpStream::enableDebug();
+        }
+        #endif
         if (dbg&DBG_Other) {
             MediaKeys::enableDebug();
         }

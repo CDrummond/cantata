@@ -25,11 +25,26 @@
 #include "mpdconnection.h"
 #include "mpdstatus.h"
 #include "gui/settings.h"
+#include <QtMultimedia/QMediaPlayer>
+#include <QTimer>
+
+static const int constPlayerCheckPeriod=250;
+static const int constMaxPlayStateChecks=2000/constPlayerCheckPeriod;
+
+#include <QDebug>
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
+void HttpStream::enableDebug()
+{
+    debugEnabled=true;
+}
 
 HttpStream::HttpStream(QObject *p)
     : QObject(p)
     , enabled(false)
     , state(MPDState_Inactive)
+    , playStateChecks(0)
+    , playStateCheckTimer(0)
     , player(0)
 {
     stopOnPause=Settings::self()->stopHttpStreamOnPause();
@@ -62,6 +77,7 @@ void HttpStream::setEnabled(bool e)
 void HttpStream::streamUrl(const QString &url)
 {
     MPDStatus * const status = MPDStatus::self();
+    DBUG << url;
     #ifdef LIBVLC_FOUND
     if (player) {
         libvlc_media_player_stop(player);
@@ -92,38 +108,8 @@ void HttpStream::streamUrl(const QString &url)
     }
 
     if (player) {
-        state=status->state();
-        switch (status->state()) {
-        case MPDState_Playing:
-            #ifdef LIBVLC_FOUND
-            if(libvlc_media_player_get_state(player)!=libvlc_Playing){
-                libvlc_media_player_play(player);
-            }
-            #else
-            if (QMediaPlayer::PlayingState!=player->state()) {
-                player->play();
-            }
-            #endif
-            break;
-        case MPDState_Inactive:
-        case MPDState_Stopped:
-            #ifdef LIBVLC_FOUND
-            libvlc_media_player_stop(player);
-            #else
-            player->stop();
-            #endif
-            break;
-        case MPDState_Paused:
-            if (stopOnPause) {
-                #ifdef LIBVLC_FOUND
-                libvlc_media_player_stop(player);
-                #else
-                player->stop();
-                #endif
-            }
-        default:
-            break;
-        }
+        state=0xFFFF; // Force an update...
+        updateStatus();
     } else {
         state=MPDState_Inactive;
     }
@@ -136,6 +122,7 @@ void HttpStream::updateStatus()
     }
 
     MPDStatus * const status = MPDStatus::self();
+    DBUG << status->state() << state;
     if (status->state()==state) {
         return;
     }
@@ -144,14 +131,11 @@ void HttpStream::updateStatus()
     switch (status->state()) {
     case MPDState_Playing:
         #ifdef LIBVLC_FOUND
-        if (libvlc_Playing!=libvlc_media_player_get_state(player)) {
-            libvlc_media_player_play(player);
-        }
+        libvlc_media_player_play(player);
         #else
-        if (QMediaPlayer::PlayingState!=player->state()) {
-            player->play();
-        }
+        player->play();
         #endif
+        startTimer();
         break;
     case MPDState_Inactive:
     case MPDState_Stopped:
@@ -160,6 +144,7 @@ void HttpStream::updateStatus()
         #else
         player->stop();
         #endif
+        stopTimer();
         break;
     case MPDState_Paused:
         if (stopOnPause) {
@@ -169,8 +154,57 @@ void HttpStream::updateStatus()
             player->stop();
             #endif
         }
+        stopTimer();
+        break;
     default:
+        stopTimer();
         break;
     }
 }
 
+void HttpStream::checkPlayer()
+{
+    if (0==--playStateChecks) {
+        stopTimer();
+        DBUG << "Max checks reached";
+    }
+    #ifdef LIBVLC_FOUND
+    if (libvlc_Playing==libvlc_media_player_get_state(player)) {
+        DBUG << "Playing";
+        stopTimer();
+    } else {
+        DBUG << "Try again";
+        libvlc_media_player_play(player);
+    }
+    #else
+    if (QMediaPlayer::PlayingState==player->state()) {
+        DBUG << "Playing";
+        stopTimer();
+    } else {
+        DBUG << "Try again";
+        player->play();
+    }
+    #endif
+}
+
+void HttpStream::startTimer()
+{
+    if (!playStateCheckTimer) {
+        playStateCheckTimer=new QTimer(this);
+        playStateCheckTimer->setSingleShot(false);
+        playStateCheckTimer->setInterval(constPlayerCheckPeriod);
+        connect(playStateCheckTimer, SIGNAL(timeout()), SLOT(checkPlayer()));
+    }
+    playStateChecks = constMaxPlayStateChecks;
+    DBUG << playStateChecks;
+    playStateCheckTimer->start();
+}
+
+void HttpStream::stopTimer()
+{
+    if (playStateCheckTimer) {
+        DBUG;
+        playStateCheckTimer->stop();
+    }
+    playStateChecks=0;
+}

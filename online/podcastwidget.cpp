@@ -46,6 +46,8 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     cancelDownloadAction = new Action(Icons::self()->cancelIcon, i18n("Cancel Download"), this);
     markAsNewAction = new Action(Icon("document-new"), i18n("Mark Episodes As New"), this);
     markAsListenedAction = new Action(i18n("Mark Episodes As Listened"), this);
+    unplayedOnlyAction = new Action(Icons::self()->clockIcon, i18n("Show Unplayed Only"), this);
+    unplayedOnlyAction->setCheckable(true);
 
     proxy.setSourceModel(srv);
     view->setModel(&proxy);
@@ -60,16 +62,19 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     connect(cancelDownloadAction, SIGNAL(triggered()), this, SLOT(cancelDownload()));
     connect(markAsNewAction, SIGNAL(triggered()), this, SLOT(markAsNew()));
     connect(markAsListenedAction, SIGNAL(triggered()), this, SLOT(markAsListened()));
+    connect(unplayedOnlyAction, SIGNAL(toggled(bool)), this, SLOT(showUnplayedOnly(bool)));
 
     view->setMode(ItemView::Mode_DetailedTree);
     Configuration config(metaObject()->className());
     view->load(config);
     MenuButton *menu=new MenuButton(this);
     ToolButton *addSub=new ToolButton(this);
+    ToolButton *unplayedOnlyBtn=new ToolButton(this);
     addSub->setDefaultAction(subscribeAction);
+    unplayedOnlyBtn->setDefaultAction(unplayedOnlyAction);
     menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                                                                << ItemView::Mode_DetailedTree << ItemView::Mode_List));
-    init(ReplacePlayQueue|AppendToPlayQueue|Refresh, QList<QWidget *>() << menu, QList<QWidget *>() << addSub);
+    init(ReplacePlayQueue|AppendToPlayQueue|Refresh, QList<QWidget *>() << menu << unplayedOnlyBtn, QList<QWidget *>() << addSub);
 
     view->addAction(subscribeAction);
     view->addAction(unSubscribeAction);
@@ -244,6 +249,11 @@ void PodcastWidget::markAsListened()
             srv->setPodcastsAsListened(it.key(), it.value().toList(), true);
         }
     }
+}
+
+void PodcastWidget::showUnplayedOnly(bool on)
+{
+    proxy.showUnplayedOnly(on);
 }
 
 void PodcastWidget::doSearch()

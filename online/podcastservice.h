@@ -99,11 +99,16 @@ public:
     public:
         Proxy(QObject *parent);
 
+        void showUnplayedOnly(bool on);
+
     private:
         bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
         bool filterAcceptsPodcast(const Podcast *pod) const;
         bool filterAcceptsEpisode(const Episode *item) const;
         bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+
+    private:
+        bool unplayedOnly;
     };
 
     static const QLatin1String constName;

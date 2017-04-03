@@ -68,6 +68,7 @@
 52. When playing MPD's HTTP output stream, check periodically (for up to 2
     seconds) to confirm backend is playing.
 53. When playing MPD's HTTP output stream, don't stop playback on pause.
+54. Add button on podcasts page to show only unplayed podcasts.
 
 2.0.1
 -----

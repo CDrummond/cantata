@@ -49,6 +49,7 @@ private Q_SLOTS:
     void deleteDownload();
     void markAsNew();
     void markAsListened();
+    void showUnplayedOnly(bool on);
 
 private:
     void doSearch();
@@ -66,6 +67,7 @@ private:
     Action *cancelDownloadAction;
     Action *markAsNewAction;
     Action *markAsListenedAction;
+    Action *unplayedOnlyAction;
 };
 
 #endif

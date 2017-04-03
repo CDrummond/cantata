@@ -48,11 +48,20 @@
 
 PodcastService::Proxy::Proxy(QObject *parent)
     : ProxyModel(parent)
+    , unplayedOnly(false)
 {
     setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     setSortCaseSensitivity(Qt::CaseInsensitive);
     setSortLocaleAware(true);
+}
+
+void PodcastService::Proxy::showUnplayedOnly(bool on)
+{
+    if (on!=unplayedOnly) {
+        unplayedOnly=on;
+        invalidateFilter();
+    }
 }
 
 bool PodcastService::Proxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
@@ -86,19 +95,20 @@ bool PodcastService::Proxy::filterAcceptsPodcast(const Podcast *pod) const
 
 bool PodcastService::Proxy::filterAcceptsEpisode(const Episode *item) const
 {
-    return matchesFilter(QStringList() << item->name << item->parent->name);
+    return (!unplayedOnly || (unplayedOnly && !item->played)) &&
+           matchesFilter(QStringList() << item->name << item->parent->name);
 }
 
 bool PodcastService::Proxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (!filterEnabled) {
+    if (!filterEnabled && !unplayedOnly) {
         return true;
     }
 
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     const PodcastService::Item *item = static_cast<const PodcastService::Item *>(index.internalPointer());
 
-    if (filterStrings.isEmpty()) {
+    if (filterStrings.isEmpty() && !unplayedOnly) {
         return true;
     }
 

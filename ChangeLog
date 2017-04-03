@@ -67,6 +67,7 @@
 51. Remove Qt4, KDE4, and Ubuntu touch support.
 52. When playing MPD's HTTP output stream, check periodically (for up to 2
     seconds) to confirm backend is playing.
+53. When playing MPD's HTTP output stream, don't stop playback on pause.
 
 2.0.1
 -----

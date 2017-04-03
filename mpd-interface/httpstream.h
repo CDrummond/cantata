@@ -32,11 +32,15 @@
 #include <QtMultimedia/QMediaPlayer>
 #endif
 
+class QTimer;
+
 class HttpStream : public QObject
 {
     Q_OBJECT
     
 public:
+    static void enableDebug();
+
     HttpStream(QObject *p);
     virtual ~HttpStream() { }
     
@@ -46,11 +50,18 @@ public Q_SLOTS:
 private Q_SLOTS:
     void updateStatus();
     void streamUrl(const QString &url);
-    
+    void checkPlayer();
+
+private:
+    void startTimer();
+    void stopTimer();
+
 private:
     bool enabled;
     bool stopOnPause;
     int state;
+    int playStateChecks;
+    QTimer *playStateCheckTimer;
 
     #ifdef LIBVLC_FOUND
     libvlc_instance_t *instance;

@@ -65,6 +65,8 @@
 49. Parse name field in playlists.
 50. Use 32-bit int for bitrate and samplerate staus values.
 51. Remove Qt4, KDE4, and Ubuntu touch support.
+52. When playing MPD's HTTP output stream, check periodically (for up to 2
+    seconds) to confirm backend is playing.
 
 2.0.1
 -----

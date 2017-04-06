@@ -118,6 +118,7 @@ View::View(QWidget *parent, const QStringList &views)
 
     header->setWordWrap(true);
     header->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    header->setTextInteractionFlags(Qt::TextSelectableByMouse|Qt::TextSelectableByKeyboard);
 
     layout->setMargin(2);
     layout->addWidget(header);

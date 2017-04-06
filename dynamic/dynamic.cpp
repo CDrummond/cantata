@@ -136,6 +136,7 @@ const QString Dynamic::constTitleKey=QLatin1String("Title");
 const QString Dynamic::constGenreKey=QLatin1String("Genre");
 const QString Dynamic::constDateKey=QLatin1String("Date");
 const QString Dynamic::constRatingKey=QLatin1String("Rating");
+const QString Dynamic::constDurationKey=QLatin1String("Duration");
 const QString Dynamic::constFileKey=QLatin1String("File");
 const QString Dynamic::constExactKey=QLatin1String("Exact");
 const QString Dynamic::constExcludeKey=QLatin1String("Exclude");
@@ -283,6 +284,9 @@ bool Dynamic::save(const Entry &e)
     if (e.ratingFrom!=0 || e.ratingTo!=0) {
         str << constRatingKey << constKeyValSep << e.ratingFrom << constRangeSep << e.ratingTo<< '\n';
     }
+    if (e.minDuration!=0 || e.maxDuration!=0) {
+        str << constDurationKey << constKeyValSep << e.minDuration << constRangeSep << e.maxDuration<< '\n';
+    }
     foreach (const Rule &rule, e.rules) {
         if (!rule.isEmpty()) {
             str << constRuleKey << '\n';
@@ -301,7 +305,7 @@ bool Dynamic::save(const Entry &e)
         }
         return false;
     }
-
+qWarning() << string;
     QFile f(Utils::dataDir(constDir, true)+e.name+constExtension);
     if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
         QTextStream out(&f);
@@ -587,6 +591,12 @@ void Dynamic::loadLocal()
                             e.ratingFrom=vals.at(0).toUInt();
                             e.ratingTo=vals.at(1).toUInt();
                         }
+                    } else if (str.startsWith(constDurationKey+constKeyValSep)) {
+                        QStringList vals=str.mid(constDurationKey.length()+1).split(constRangeSep);
+                        if (2==vals.count()) {
+                            e.minDuration=vals.at(0).toUInt();
+                            e.maxDuration=vals.at(1).toUInt();
+                        }
                     } else {
                         foreach (const QString &k, keys) {
                             if (str.startsWith(k+constKeyValSep)) {
@@ -645,6 +655,12 @@ void Dynamic::parseRemote(const QStringList &response)
                 if (2==vals.count()) {
                     e.ratingFrom=vals.at(0).toUInt();
                     e.ratingTo=vals.at(1).toUInt();
+                }
+            } else if (str.startsWith(constDurationKey+constKeyValSep)) {
+                QStringList vals=str.mid(constDurationKey.length()+1).split(constRangeSep);
+                if (2==vals.count()) {
+                    e.minDuration=vals.at(0).toUInt();
+                    e.maxDuration=vals.at(1).toUInt();
                 }
             } else {
                 foreach (const QString &k, keys) {

@@ -253,11 +253,16 @@ $numMpdSongs=0;
 $ratingFrom=0;
 $ratingTo=0;
 # If we have no include rules, then song list is taken from tracks with ratings
-# Therefore, there is no need to subsequently filter - and ratingFilter woudl be
+# Therefore, there is no need to subsequently filter - and ratingFilter would be
 # set to 0
 $ratingFilter=1;
 $lastRatingFrom=0;
 $lastRatingTo=0;
+
+$minDuration=0;
+$maxDuration=0;
+$lastMinDuration=0;
+$lastMaxDuration=0;
 
 # Determine if rules file has been updated
 sub checkRulesChanged() {
@@ -266,7 +271,9 @@ sub checkRulesChanged() {
         $initialRead=0;
     } elsif ($lastRatingFrom!=$ratingFrom || $lastRatingTo!=$ratingTo) {
         $rulesChanged=1;
-    } elsif ( scalar(@lastIncludeRules)!=scalar(@includeRules) ||
+    } elsif ($lastMinDuration!=$minDuration || $lastMaxDuration!=$maxDuration) {
+        $rulesChanged=1;
+}   elsif ( scalar(@lastIncludeRules)!=scalar(@includeRules) ||
               scalar(@lastExcludeRules)!=scalar(@excludeRules)) { # Different number of rules
         $rulesChanged=1;
     } else { # Same number of rules, so need to check if the rules themselves have changed or not...
@@ -351,6 +358,7 @@ sub saveRule() {
 # File format:
 #
 #   Rating:<Range>
+#   Duration:<Range>
 #   Rule
 #   <Tag>:<Value>
 #   <Tag>:<Value>
@@ -359,6 +367,7 @@ sub saveRule() {
 # e.g.
 #
 #   Rating:1-5
+#   Duration:30-900
 #   Rule
 #   AlbumArtist:Various Artists
 #   Genre:Dance
@@ -405,6 +414,8 @@ sub readRules() {
             @excludeRules=();
             $ratingFrom=0;
             $ratingTo=0;
+            $minDuration=0;
+            $maxDuration=0;
             close($fileHandle);
             foreach my $line (@lines) {
                 if (! ($line=~ m/^(#)/)) {
@@ -435,6 +446,17 @@ sub readRules() {
                                 my $tmp=$ratingFrom;
                                 $ratingFrom=$ratingTo;
                                 $ratingTo=$tmp;
+                            }
+                        }
+                    } elsif ($key=~ m/^(Duration)/) {
+                        my @vals = split("-", $val);
+                        if (scalar(@vals)==2) {
+                            $minDuration=int($vals[0]);
+                            $maxDuration=int($vals[1]);
+                            if ($minDuration > $maxDuration) {
+                                my $tmp=$minDuration;
+                                $minDuration=$maxDuration;
+                                $maxDuration=$tmp;
                             }
                         }
                     } else {
@@ -522,6 +544,7 @@ sub readRules() {
                 }
                 print "---------------------\n";
                 print "RATING: ${ratingFrom} -> ${ratingTo}\n";
+                print "DURATION: ${minDuration} -> ${maxDuration}\n";
             }
 
             &checkRulesChanged();
@@ -630,6 +653,33 @@ sub checkSongRatingInRange() {
     my $pos=shift;
     if (1==$testMode) {
         print "$file is NOT in rating range - remove:${pos} total:${numMpdSongs}!\n";
+    }
+    splice @mpdSongs, $pos, 1;
+    $numMpdSongs--;
+    return 0;
+}
+
+# Check song duration is in range
+sub checkSongDurationInRange() {
+    if ($minDuration<=0 && $maxDuration<=0) {
+        return 1;
+    }
+    if ($numMpdSongs<1) { # No songs!
+        return 0;
+    }
+    my $file=shift;
+    my @entries = &getEntries("lsinfo \"${file}\"", 'Time');
+    if (scalar(@entries)==1) {
+        my $val=int(@entries[0]);
+        if ( (0==$minDuration || $val>=$minDuration) && (0==$maxDuration || $val<=$maxDuration) ) {
+            return 1;
+        }
+    }
+
+    # Song is not within range, so 'blank' its name out of list
+    my $pos=shift;
+    if (1==$testMode) {
+        print "$file is NOT in duration range - remove:${pos} total:${numMpdSongs}!\n";
     }
     splice @mpdSongs, $pos, 1;
     $numMpdSongs--;
@@ -863,7 +913,7 @@ sub populatePlayQueue() {
                         $file =~ s/\\/\\\\/g;
                         $file =~ s/\"/\\\"/g;
 
-                        if (&checkSongRatingInRange($file, $pos)) {
+                        if (&checkSongDurationInRange($file, $pos) && &checkSongRatingInRange($file, $pos)) {
                             if ($failues > 100 || &canAdd($origFile, $numMpdSongs)) {
                                 if (&sendCommand("add \"${file}\"") ne '') {
                                     &storeSong($origFile);

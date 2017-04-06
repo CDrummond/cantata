@@ -32,6 +32,7 @@
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QSortFilterProxyModel>
+#include <QSpinBox>
 
 class RulesSort : public QSortFilterProxyModel
 {
@@ -163,6 +164,9 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
     rulesList->setItemDelegate(new BasicItemDelegate(rulesList));
     rulesList->setAlternatingRowColors(false);
 
+    minDuration->setSpecialValueText(i18n("None"));
+    maxDuration->setSpecialValueText(i18n("None"));
+
     controlButtons();
     resize(500, 240);
 
@@ -192,6 +196,8 @@ void DynamicRulesDialog::edit(const QString &name)
     origName=name;
     ratingFrom->setValue(e.ratingFrom);
     ratingTo->setValue(e.ratingTo);
+    minDuration->setValue(e.minDuration);
+    maxDuration->setValue(e.maxDuration);
     show();
 }
 
@@ -306,7 +312,7 @@ void DynamicRulesDialog::showAbout()
                               "<ul><li>Include AlbumArtist=Wibble</li><li>Exclude AlbumArtist=Wibble Album=Abc</li></ul>"
                               "After the set of usable songs has been created, Cantata will randomly select songs to "
                               "keep the play queue filled with 10 entries. If a range of ratings has been specified, then "
-                              "only songs with a rating within this range will be used.</p>")
+                              "only songs with a rating within this range will be used. Likewise, if a duration has been set.</p>")
                         );
 
 }
@@ -345,6 +351,10 @@ bool DynamicRulesDialog::save()
     int to=ratingTo->value();
     entry.ratingFrom=qMin(from, to);
     entry.ratingTo=qMax(from, to);
+    from=minDuration->value();
+    to=maxDuration->value();
+    entry.minDuration=qMin(from, to);
+    entry.maxDuration=qMax(from, to);
 
     for (int i=0; i<model->rowCount(); ++i) {
         QStandardItem *itm=model->item(i);

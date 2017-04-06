@@ -305,7 +305,7 @@ bool Dynamic::save(const Entry &e)
         }
         return false;
     }
-qWarning() << string;
+
     QFile f(Utils::dataDir(constDir, true)+e.name+constExtension);
     if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
         QTextStream out(&f);

@@ -2,7 +2,6 @@
  * Cantata
  *
  * Copyright (c) 2011-2017 Craig Drummond <craig.p.drummond@gmail.com>
- * Copyright (c) 2014 Niklas Wenzel <nikwen.developer@gmail.com>
  *
  */
 /*

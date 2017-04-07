@@ -46,7 +46,7 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     cancelDownloadAction = new Action(Icons::self()->cancelIcon, i18n("Cancel Download"), this);
     markAsNewAction = new Action(Icon("document-new"), i18n("Mark Episodes As New"), this);
     markAsListenedAction = new Action(i18n("Mark Episodes As Listened"), this);
-    unplayedOnlyAction = new Action(Icons::self()->clockIcon, i18n("Show Unplayed Only"), this);
+    unplayedOnlyAction = new Action(Icons::self()->rssListIcon, i18n("Show Unplayed Only"), this);
     unplayedOnlyAction->setCheckable(true);
 
     proxy.setSourceModel(srv);

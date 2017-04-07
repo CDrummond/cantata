@@ -153,7 +153,7 @@
              <string> seconds</string>
             </property>
             <property name="maximum">
-             <number>300</number>
+             <number>1800</number>
             </property>
             <property name="singleStep">
              <number>10</number>
@@ -173,7 +173,7 @@
              <string> seconds</string>
             </property>
             <property name="maximum">
-             <number>1200</number>
+             <number>1800</number>
             </property>
             <property name="singleStep">
              <number>10</number>

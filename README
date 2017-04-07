@@ -786,13 +786,9 @@ The Cantata source folder contains the following structure:
     support    - Generic classes that /may/ be useful to other projects.
                  Mainly used for Qt and Gtk support.
     tags       - Tag reading, editing, etc.
-    ubuntu     - Convergent Ubuntu version (requires the Ubuntu SDK); 
-                 cmake option: -DENABLE_UBUNTU=ON
     widgets    - Widgets that are probably Cantata specific.
     windows    - Files specfic to Windows builds..
     mac        - Files specfic to MacOSX builds.
-    freecns/   - Repeat and Shuffle icons
-    cumulus      https://www.iconfinder.com/iconsets/freecns-cumulus
 
 Cantata's SVG icons have been 'cleaned' using:
   scour --strip-xml-prolog --indent=none -i in.svg -o out.svg
@@ -878,24 +874,14 @@ Cantata contains code/icons from:
     Quassel            - quassel-irc.org (Qt-only keyboard short-cut config
                          support)
     Solid              - solid.kde.org (Device detection for Qt-only builds)
-    Musique            - Copied code for Gtk theme detection
     Asunder            - CDDB code
     libkcddb           - MusicBrainz code
     libebur128         - https://github.com/jiixyj/libebur128 (Replay gain
                          calculation)
-    QJson              - JSON parser, taken from https://github.com/flavio/qjson
     IcoMoon            - http://icomoon.io/#icons (Monochrome sidebar icons)
     Qxt                - Multi-media key support
     QtSolutions        - QtIOCompressor, and QtSingleApplication
-    Trojita            - http://quickgit.kde.org/?p=trojita.git (Template for
-                         the Ubuntu CMake configuration)
-    sudoku-app         - https://code.launchpad.net/~sudoku-touch-dev/sudoku-app/trunk
-                         (Ubuntu about page)
-    ubuntu-ui-extras   - https://github.com/iBeliever/ubuntu-ui-extras (Ubuntu 
-                         notification code)
     QMPDClient         - Last.fm scrobbling
-    address-book-app   - http://bazaar.launchpad.net/~phablet-team/address-book-app/trunk/files
-                         (PageWithBottomEdge)
 
 
 16. Windows

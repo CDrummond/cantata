@@ -277,10 +277,8 @@ struct Song
 
 Q_DECLARE_METATYPE(Song)
 
-#ifdef ENABLE_EXTERNAL_TAGS
 QDataStream & operator<<(QDataStream &stream, const Song &song);
 QDataStream & operator>>(QDataStream &stream, Song &song);
-#endif
 
 inline uint qHash(const Song &key)
 {

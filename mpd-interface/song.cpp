@@ -776,7 +776,6 @@ void Song::populateSorts()
 //                    : trc("track - artist", "%1 - %2", title, artist);
 //}
 
-#ifdef ENABLE_EXTERNAL_TAGS
 QDataStream & operator<<(QDataStream &stream, const Song &song)
 {
     stream << song.id << song.file << song.album << song.artist << song.albumartist << song.title
@@ -807,4 +806,3 @@ QDataStream & operator>>(QDataStream &stream, Song &song)
 
     return stream;
 }
-#endif

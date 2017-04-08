@@ -36,11 +36,6 @@ The following options may be passed to CMake:
         more information.
         Default: ON (Linux) OFF (Windows/Mac)
 
-    -DENABLE_EXTERNAL_TAGS=ON
-        Enable usage of external app for reading/writing tags. Helps to
-        isolate Cantata from TagLib crashes.
-        Default: ON
-
     -DENABLE_HTTP_SERVER=ON
         Enable usage of internal HTTP server for non-MPD file playback.
         Default: ON

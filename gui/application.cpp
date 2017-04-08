@@ -28,9 +28,7 @@
 #include "mpd-interface/mpdstats.h"
 #include "mpd-interface/mpdstatus.h"
 #include "support/thread.h"
-#ifdef ENABLE_EXTERNAL_TAGS
 #include "tags/taghelperiface.h"
-#endif
 #include "scrobbling/scrobbler.h"
 #include "support/fancytabwidget.h"
 #include "widgets/itemview.h"
@@ -44,9 +42,7 @@ void Application::initObjects()
     ThreadCleaner::self();
     MPDStatus::self();
     MPDStats::self();
-    #ifdef ENABLE_EXTERNAL_TAGS
     TagHelperIface::self();
-    #endif
     Scrobbler::self();
     MpdLibraryModel::self();
 

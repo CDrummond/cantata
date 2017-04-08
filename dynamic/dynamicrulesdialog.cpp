@@ -163,8 +163,8 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
     rulesList->setItemDelegate(new BasicItemDelegate(rulesList));
     rulesList->setAlternatingRowColors(false);
 
-    minDuration->setSpecialValueText(tr("None"));
-    maxDuration->setSpecialValueText(tr("None"));
+    minDuration->setSpecialValueText(tr("No Limit"));
+    maxDuration->setSpecialValueText(tr("No Limit"));
 
     controlButtons();
     resize(500, 240);

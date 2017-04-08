@@ -42,6 +42,8 @@
 #include <QToolTip>
 #include <QSpacerItem>
 
+static const int constPollMpd = 2; // Poll every 2 seconds when playing
+
 class PosSliderProxyStyle : public QProxyStyle
 {
 public:
@@ -254,7 +256,6 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     , timer(0)
     , lastVal(0)
     , pollCount(0)
-    , pollMpd(Settings::self()->mpdPoll())
 {
     track=new SqueezedTextLabel(this);
     artist=new SqueezedTextLabel(this);
@@ -295,9 +296,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
     connect(slider, SIGNAL(positionSet()), this, SIGNAL(sliderReleased()));
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateTimes()));
-    if (pollMpd>0) {
-        connect(this, SIGNAL(mpdPoll()), MPDConnection::self(), SLOT(getStatus()));
-    }
+    connect(this, SIGNAL(mpdPoll()), MPDConnection::self(), SLOT(getStatus()));
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     clearTimes();
     update(Song());
@@ -418,11 +417,9 @@ void NowPlayingWidget::updatePos()
     int elapsed=(startTime.elapsed()/1000.0)+0.5;
     slider->setValue(lastVal+elapsed);
     MPDStatus::self()->setGuessedElapsed(lastVal+elapsed);
-    if (pollMpd>0) {
-        if (++pollCount>=pollMpd) {
-            pollCount=0;
-            emit mpdPoll();
-        }
+    if (++pollCount>=constPollMpd) {
+        pollCount=0;
+        emit mpdPoll();
     }
 }
 

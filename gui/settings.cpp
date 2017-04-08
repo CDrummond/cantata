@@ -445,15 +445,6 @@ QString Settings::httpInterface()
     return cfg.get("httpInterface", QString());
 }
 
-bool Settings::alwaysUseHttp()
-{
-    #ifdef ENABLE_HTTP_SERVER
-    return cfg.get("alwaysUseHttp", false);
-    #else
-    return false;
-    #endif
-}
-
 int Settings::playQueueView()
 {
     if (version()<CANTATA_MAKE_VERSION(1, 3, 53)) {
@@ -610,21 +601,6 @@ int Settings::podcastAutoDownloadLimit()
     return cfg.get("podcastAutoDownloadLimit", 0, 0, 1000);
 }
 
-int Settings::maxCoverUpdatePerIteration()
-{
-    return cfg.get("maxCoverUpdatePerIteration", 10, 1, 50);
-}
-
-int Settings::coverCacheSize()
-{
-    return cfg.get("coverCacheSize", 10, 1, 512);
-}
-
-QStringList Settings::cueFileCodecs()
-{
-    return cfg.get("cueFileCodecs", QStringList());
-}
-
 bool Settings::networkAccessEnabled()
 {
     return cfg.get("networkAccessEnabled", true);
@@ -640,31 +616,15 @@ Settings::StartupState Settings::startupState()
     return getStartupState(cfg.get("startupState", getStartupStateStr(SS_Previous)));
 }
 
-int Settings::undoSteps()
-{
-    return cfg.get("undoSteps", 10, 0, 20);
-}
-
 QString Settings::searchCategory()
 {
     return cfg.get("searchCategory", QString());
-}
-
-bool Settings::cacheScaledCovers()
-{
-    return cfg.get("cacheScaledCovers", true);
 }
 
 bool Settings::fetchCovers()
 {
     return cfg.get("fetchCovers", true);
 }
-
-int Settings::mpdPoll()
-{
-    return cfg.get("mpdPoll", 0, 0, 60);
-}
-
 
 QString Settings::lang()
 {
@@ -674,19 +634,6 @@ QString Settings::lang()
 bool Settings::showMenubar()
 {
     return cfg.get("showMenubar", false);
-}
-
-int Settings::menu()
-{
-    #if defined Q_OS_WIN
-    int def=MC_Button|MC_Bar;
-    #elif defined Q_OS_MAC
-    int def=MC_Bar;
-    #else
-    int def=Utils::Gnome==Utils::currentDe() ? MC_Button : Utils::Unity==Utils::currentDe() ? MC_Bar : (MC_Bar|MC_Button);
-    #endif
-    int v=cfg.get("menu", def)&(MC_Bar|MC_Button);
-    return 0==v ? MC_Bar : v;
 }
 
 bool Settings::touchFriendly()
@@ -732,13 +679,6 @@ bool Settings::mpris()
 {
     return cfg.get("mpris", true);
 }
-
-#ifdef Q_OS_LINUX
-bool Settings::useStandardIcons()
-{
-    return cfg.get("useStandardIcons", false);
-}
-#endif
 
 void Settings::removeConnectionDetails(const QString &v)
 {
@@ -1038,11 +978,6 @@ void Settings::savePlayListsStartClosed(bool v)
 void Settings::savePlayStream(bool v)
 {
     cfg.set("playStream", v);
-}
-
-bool Settings::stopHttpStreamOnPause()
-{
-    return cfg.get("stopHttpStreamOnPause", false);
 }
 #endif
 

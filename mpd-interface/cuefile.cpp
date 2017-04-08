@@ -24,7 +24,6 @@
 #include "cuefile.h"
 #include "mpdconnection.h"
 #include "support/utils.h"
-#include "gui/settings.h"
 #include <QBuffer>
 #include <QDateTime>
 #include <QFile>
@@ -198,14 +197,6 @@ static const QList<QTextCodec *> & codecList()
         codec=QTextCodec::codecForName("System");
         if (codec && !codecs.contains(codec)) {
             codecs.append(codec);
-        }
-
-        QStringList configCodecs=Settings::self()->cueFileCodecs();
-        foreach (const QString &cfg, configCodecs) {
-            codec=QTextCodec::codecForName(cfg.toLatin1());
-            if (codec && !codecs.contains(codec)) {
-                codecs.append(codec);
-            }
         }
     }
     return codecs;

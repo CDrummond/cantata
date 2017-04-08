@@ -58,7 +58,6 @@ private:
 
 private:
     bool enabled;
-    bool stopOnPause;
     int state;
     int playStateChecks;
     QTimer *playStateCheckTimer;

@@ -25,7 +25,6 @@
 #include "devicepropertieswidget.h"
 #include "remotedevicepropertieswidget.h"
 #include "models/devicesmodel.h"
-#include "support/localize.h"
 #include "support/messagebox.h"
 #include "support/icon.h"
 #include <QTabWidget>
@@ -37,7 +36,7 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     , isCreate(false)
 {
     setButtons(Ok|Cancel);
-    setCaption(i18n("Device Properties"));
+    setCaption(tr("Device Properties"));
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowModality(Qt::WindowModal);
     tab=new QTabWidget(this);
@@ -48,8 +47,8 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
         margin=6;
     }
     devProp->layout()->setContentsMargins(margin, margin, margin, margin);
-    tab->addTab(remoteProp, i18n("Connection"));
-    tab->addTab(devProp, i18n("Music Library"));
+    tab->addTab(remoteProp, tr("Connection"));
+    tab->addTab(devProp, tr("Music Library"));
     setMainWidget(tab);
 }
 
@@ -57,7 +56,7 @@ void RemoteDevicePropertiesDialog::show(const DeviceOptions &opts, const RemoteF
 {
     isCreate=create;
     if (isCreate) {
-        setCaption(i18n("Add Device"));
+        setCaption(tr("Add Device"));
     }
 
     if (create) {
@@ -88,7 +87,7 @@ void RemoteDevicePropertiesDialog::slotButtonClicked(int button)
     case Ok: {
         RemoteFsDevice::Details d=remoteProp->details();
         if (d.name!=remoteProp->origDetails().name && DevicesModel::self()->device(RemoteFsDevice::createUdi(d.name))) {
-            MessageBox::error(this, i18n("A remote device named '%1' already exists!\n\nPlease choose a different name.", d.name));
+            MessageBox::error(this, tr("A remote device named '%1' already exists!\n\nPlease choose a different name.", d.name));
         } else {
             emit updatedSettings(devProp->settings(), remoteProp->details());
             accept();

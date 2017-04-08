@@ -23,7 +23,6 @@
 
 #include "albumview.h"
 #include "artistview.h"
-#include "support/localize.h"
 #include "gui/covers.h"
 #include "network/networkaccessmanager.h"
 #include "support/utils.h"
@@ -62,7 +61,7 @@ AlbumView::AlbumView(QWidget *p)
     , detailsReceived(0)
 {
     engine=ContextEngine::create(this);
-    refreshAction = ActionCollection::get()->createAction("refreshalbum", i18n("Refresh Album Information"), Icons::self()->refreshIcon);
+    refreshAction = ActionCollection::get()->createAction("refreshalbum", tr("Refresh Album Information"), Icons::self()->refreshIcon);
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), SLOT(coverRetrieved(Song,QImage,QString)));
@@ -70,7 +69,7 @@ AlbumView::AlbumView(QWidget *p)
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(playSong(QUrl)));
     text->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
-    setStandardHeader(i18n("Album"));
+    setStandardHeader(tr("Album"));
     int imageSize=fontMetrics().height()*18;
     setPicSize(QSize(imageSize, imageSize));
     clear();
@@ -174,7 +173,7 @@ void AlbumView::getTrackListing()
     }
 
     if (!songs.isEmpty()) {
-        trackList=View::subHeader(i18n("Tracks"))+QLatin1String("<p><table>");
+        trackList=View::subHeader(tr("Tracks"))+QLatin1String("<p><table>");
         foreach (const Song &s, songs) {
             trackList+=QLatin1String("<tr><td align='right'>")+QString::number(s.track)+
                        QLatin1String("</td><td><a href=\"cantata:///")+s.file+"\">"+

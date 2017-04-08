@@ -26,7 +26,6 @@
 #include "mpd-interface/mpdconnection.h"
 #include "support/messagebox.h"
 #include "support/inputdialog.h"
-#include "support/localize.h"
 #include "widgets/icons.h"
 #include "stdactions.h"
 #include "customactions.h"
@@ -57,8 +56,8 @@ public:
 StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     : SinglePageWidget(p)
 {
-    renamePlaylistAction = new Action(Icons::self()->editIcon, i18n("Rename"), this);
-    removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
+    renamePlaylistAction = new Action(Icons::self()->editIcon, tr("Rename"), this);
+    removeDuplicatesAction=new Action(tr("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
 
     view->allowGroupedView();
@@ -84,7 +83,7 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     connect(removeDuplicatesAction, SIGNAL(triggered()), this, SLOT(removeDuplicates()));
     connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
     connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
-    intitiallyCollapseAction=new Action(i18n("Initially Collapse Albums"), this);
+    intitiallyCollapseAction=new Action(tr("Initially Collapse Albums"), this);
     intitiallyCollapseAction->setCheckable(true);
     Configuration config(metaObject()->className());
     view->setMode(ItemView::Mode_DetailedTree);
@@ -188,8 +187,8 @@ void StoredPlaylistsPage::removeItems()
     }
 
     if (remPlaylists.count() &&
-        MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected playlists?\n\nThis cannot be undone."),
-                                                 i18n("Remove Playlists"), StdGuiItem::remove(), StdGuiItem::cancel())) {
+        MessageBox::No==MessageBox::warningYesNo(this, tr("Are you sure you wish to remove the selected playlists?\n\nThis cannot be undone."),
+                                                 tr("Remove Playlists"), StdGuiItem::remove(), StdGuiItem::cancel())) {
             return;
     }
 
@@ -205,12 +204,12 @@ void StoredPlaylistsPage::removeItems()
 
 void StoredPlaylistsPage::savePlaylist()
 {
-    QString name = InputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
+    QString name = InputDialog::getText(tr("Playlist Name"), tr("Enter a name for the playlist:"), QString(), 0, this);
 
     if (!name.isEmpty()) {
         if (PlaylistsModel::self()->exists(name)) {
-            if (MessageBox::No==MessageBox::warningYesNo(this, i18n("A playlist named '%1' already exists!\n\nOverwrite?", name),
-                                                         i18n("Overwrite Playlist"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
+            if (MessageBox::No==MessageBox::warningYesNo(this, tr("A playlist named '%1' already exists!\n\nOverwrite?").arg(name),
+                                                         tr("Overwrite Playlist"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
                 return;
             }
             else {
@@ -232,12 +231,12 @@ void StoredPlaylistsPage::renamePlaylist()
             return;
         }
         QString name = static_cast<PlaylistsModel::PlaylistItem *>(item)->name;
-        QString newName = InputDialog::getText(i18n("Rename Playlist"), i18n("Enter new name for playlist:"), name, 0, this);
+        QString newName = InputDialog::getText(tr("Rename Playlist"), tr("Enter new name for playlist:"), name, 0, this);
 
         if (!newName.isEmpty() && name!=newName) {
             if (PlaylistsModel::self()->exists(newName)) {
-                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("A playlist named '%1' already exists!\n\nOverwrite?", newName),
-                                                             i18n("Overwrite Playlist"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
+                if (MessageBox::No==MessageBox::warningYesNo(this, tr("A playlist named '%1' already exists!\n\nOverwrite?").arg(newName),
+                                                             tr("Overwrite Playlist"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
                     return;
                 }
                 else {
@@ -318,7 +317,7 @@ void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, con
             PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(m.internalPointer());
             if ( (item->isPlaylist() && static_cast<PlaylistsModel::PlaylistItem *>(item)->name==name) ||
                  (!item->isPlaylist() && static_cast<PlaylistsModel::SongItem *>(item)->parent->name==name) ) {
-                MessageBox::error(this, i18n("Cannot add songs from '%1' to '%2'", name, name));
+                MessageBox::error(this, tr("Cannot add songs from '%1' to '%2'").arg(name).arg(name));
                 return;
             }
         }

@@ -25,7 +25,6 @@
 #include "magnatunesettingsdialog.h"
 #include "db/onlinedb.h"
 #include "models/roles.h"
-#include "support/localize.h"
 #include "support/icon.h"
 #include "support/configuration.h"
 #include <QXmlStreamReader>
@@ -117,9 +116,9 @@ QString MagnatuneService::membershipStr(MemberShip f, bool trans)
 {
     switch (f) {
     default:
-    case MB_None :      return trans ? i18n("None") : QLatin1String("none");
-    case MB_Streaming : return trans ? i18n("Streaming") : QLatin1String("streaming");
-//    case MB_Download :  return trans ? i18n("Download") : QLatin1String("download"); // TODO: Magnatune downloads!
+    case MB_None :      return trans ? tr("None") : QLatin1String("none");
+    case MB_Streaming : return trans ? tr("Streaming") : QLatin1String("streaming");
+//    case MB_Download :  return trans ? tr("Download") : QLatin1String("download"); // TODO: Magnatune downloads!
     }
 }
 
@@ -137,11 +136,11 @@ QString MagnatuneService::downloadTypeStr(DownloadType f, bool trans)
 {
     switch (f) {
     default:
-    case DL_Mp3 :    return trans ? i18n("MP3 128k") : QLatin1String("mp3");
-    case DL_Mp3Vbr : return trans ? i18n("MP3 VBR") : QLatin1String("vbr");
-    case DL_Ogg :    return trans ? i18n("Ogg Vorbis") : QLatin1String("ogg");
-    case DL_Flac :   return trans ? i18n("FLAC"): QLatin1String("flac");
-    case DL_Wav :    return trans ? i18n("WAV") : QLatin1String("wav");
+    case DL_Mp3 :    return trans ? tr("MP3 128k") : QLatin1String("mp3");
+    case DL_Mp3Vbr : return trans ? tr("MP3 VBR") : QLatin1String("vbr");
+    case DL_Ogg :    return trans ? tr("Ogg Vorbis") : QLatin1String("ogg");
+    case DL_Flac :   return trans ? tr("FLAC"): QLatin1String("flac");
+    case DL_Wav :    return trans ? tr("WAV") : QLatin1String("wav");
     }
 }
 
@@ -212,7 +211,7 @@ QString MagnatuneService::title() const
 
 QString MagnatuneService::descr() const
 {
-    return i18n("Online music from magnatune.com");
+    return tr("Online music from magnatune.com");
 }
 
 OnlineXmlParser * MagnatuneService::createParser()

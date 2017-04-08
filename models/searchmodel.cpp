@@ -26,7 +26,6 @@
 #include "roles.h"
 #include "playqueuemodel.h"
 #include "gui/settings.h"
-#include "support/localize.h"
 #include <QString>
 #include <QVariant>
 #include <QMimeData>
@@ -87,7 +86,7 @@ QVariant SearchModel::headerData(int section, Qt::Orientation orientation, int r
         case Qt::DisplayRole:            
             return headerText(section);
         case Cantata::Role_ContextMenuText:
-            return COL_TRACK==section ? i18n("# (Track Number)") : headerText(section);
+            return COL_TRACK==section ? tr("# (Track Number)") : headerText(section);
         case Qt::TextAlignmentRole:
             return alignments[section];
         case Cantata::Role_InitiallyHidden:

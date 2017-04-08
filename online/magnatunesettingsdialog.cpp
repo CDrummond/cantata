@@ -23,7 +23,6 @@
 
 #include "magnatunesettingsdialog.h"
 #include "magnatuneservice.h"
-#include "support/localize.h"
 #include "support/buddylabel.h"
 #include <QFormLayout>
 
@@ -31,7 +30,7 @@ MagnatuneSettingsDialog::MagnatuneSettingsDialog(QWidget *parent)
     : Dialog(parent)
 {
     setButtons(Ok|Cancel);
-    setCaption(i18n("Magnatune Settings"));
+    setCaption(tr("Magnatune Settings"));
     QWidget *mw=new QWidget(this);
     QFormLayout *layout=new QFormLayout(mw);
     member=new QComboBox(mw);
@@ -40,8 +39,8 @@ MagnatuneSettingsDialog::MagnatuneSettingsDialog(QWidget *parent)
     }
     user=new LineEdit(mw);
     pass=new LineEdit(mw);
-    userLabel=new BuddyLabel(i18n("Username:"), mw, user);
-    passLabel=new BuddyLabel(i18n("Password:"), mw, pass);
+    userLabel=new BuddyLabel(tr("Username:"), mw, user);
+    passLabel=new BuddyLabel(tr("Password:"), mw, pass);
     pass->setEchoMode(QLineEdit::Password);
     dl=new QComboBox(mw);
     for (int i=0; i<=MagnatuneService::DL_Count; ++i) {
@@ -49,13 +48,13 @@ MagnatuneSettingsDialog::MagnatuneSettingsDialog(QWidget *parent)
     }
 
     layout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
-    layout->setWidget(0, QFormLayout::LabelRole, new BuddyLabel(i18n("Membership:"), mw, member));
+    layout->setWidget(0, QFormLayout::LabelRole, new BuddyLabel(tr("Membership:"), mw, member));
     layout->setWidget(0, QFormLayout::FieldRole, member);
     layout->setWidget(1, QFormLayout::LabelRole, userLabel);
     layout->setWidget(1, QFormLayout::FieldRole, user);
     layout->setWidget(2, QFormLayout::LabelRole, passLabel);
     layout->setWidget(2, QFormLayout::FieldRole, pass);
-    BuddyLabel *dlLabel=new BuddyLabel(i18n("Downloads:"), mw, dl);
+    BuddyLabel *dlLabel=new BuddyLabel(tr("Downloads:"), mw, dl);
     layout->setWidget(3, QFormLayout::LabelRole, dlLabel);
     layout->setWidget(3, QFormLayout::FieldRole, dl);
     layout->setMargin(0);

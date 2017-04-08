@@ -23,7 +23,6 @@
 
 #include "filenameschemedialog.h"
 #include "mpd-interface/song.h"
-#include "support/localize.h"
 #include "support/messagebox.h"
 
 static const char * constVariableProperty="cantata-var";
@@ -31,7 +30,7 @@ FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
     : Dialog(parent)
 {
     setButtons(Ok|Cancel);
-    setCaption(i18n("Filename Scheme"));
+    setCaption(tr("Filename Scheme"));
     setWindowModality(Qt::WindowModal);
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
@@ -59,12 +58,12 @@ FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
     cdNo->setProperty(constVariableProperty, DeviceOptions::constCdNumber);
     year->setProperty(constVariableProperty, DeviceOptions::constYear);
     genre->setProperty(constVariableProperty, DeviceOptions::constGenre);
-    exampleSong.albumartist=i18nc("Example album artist", "Various Artists");
-    exampleSong.artist=i18nc("Example artist", "Wibble");
-    exampleSong.setComposer(i18nc("Example composer", "Vivaldi"));
-    exampleSong.album=i18nc("Example album", "Now 5001");
-    exampleSong.title=i18nc("Example song name", "Wobble");
-    exampleSong.genres[0]=i18nc("Example genre", "Dance");
+    exampleSong.albumartist=tr("Various Artists", "Example album artist");
+    exampleSong.artist=tr("Wibble", "Example artist");
+    exampleSong.setComposer(tr("Vivaldi", "Example composer"));
+    exampleSong.album=tr("Now 5001", "Example album");
+    exampleSong.title=tr("Wobble", "Example song name");
+    exampleSong.genres[0]=tr("Dance", "Example genre");
     exampleSong.track=1;
     exampleSong.disc=2;
     exampleSong.year=2001;
@@ -118,13 +117,13 @@ static QString tableEntry(const QAbstractButton *widget)
 void FilenameSchemeDialog::showHelp()
 {
     MessageBox::information(this,
-                           i18n("The following variables will be replaced with their corresponding meaning for each track name.")+
+                           tr("The following variables will be replaced with their corresponding meaning for each track name.")+
                            QLatin1String("<br/><br/>")+
                            #ifdef Q_OS_MAC
                            QLatin1String("<small>")+
                            #endif
                            QLatin1String("<table border=\"1\">")+
-                           i18n("<tr><th><em>Variable</em></th><th><em>Button</em></th><th><em>Description</em></th></tr>")+
+                           tr("<tr><th><em>Variable</em></th><th><em>Button</em></th><th><em>Description</em></th></tr>")+
                            tableEntry(albumArtist)+tableEntry(albumTitle)+tableEntry(composer)+tableEntry(trackArtist)+
                            tableEntry(trackTitle)+tableEntry(trackArtistAndTitle)+tableEntry(trackNo)+tableEntry(cdNo)+
                            tableEntry(year)+tableEntry(genre)+

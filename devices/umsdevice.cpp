@@ -26,7 +26,6 @@
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "actiondialog.h"
-#include "support/localize.h"
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -73,7 +72,7 @@ void UmsDevice::connectionStateChanged()
         if (opts.autoScan || scanned){ // Only scan if we are set to auto scan, or we have already scanned before...
             rescan(false); // Read from cache if we have it!
         } else {
-            setStatusMessage(i18n("Not Scanned"));
+            setStatusMessage(tr("Not Scanned"));
         }
     } else {
         clear();
@@ -115,10 +114,10 @@ QString UmsDevice::capacityString()
         return statusMessage();
     }
     if (!isConnected()) {
-        return i18n("Not Connected");
+        return tr("Not Connected");
     }
 
-    return i18n("%1 free", Utils::formatByteSize(spaceInfo.size()-spaceInfo.used()));
+    return tr("%1 free").arg(Utils::formatByteSize(spaceInfo.size()-spaceInfo.used()));
 }
 
 qint64 UmsDevice::freeSpace()
@@ -205,7 +204,7 @@ void UmsDevice::setup()
     if (opts.autoScan || scanned){ // Only scan if we are set to auto scan, or we have already scanned before...
         rescan(false); // Read from cache if we have it!
     } else {
-        setStatusMessage(i18n("Not Scanned"));
+        setStatusMessage(tr("Not Scanned"));
     }
     if (!opts.name.isEmpty() && opts.name!=n) {
         setData(opts.name);

@@ -25,7 +25,6 @@
 #define MESSAGEBOX_H
 
 #include "dialog.h"
-#include "localize.h"
 #include <QMessageBox>
 
 namespace MessageBox {
@@ -58,10 +57,10 @@ namespace MessageBox {
     extern void information(QWidget *parent, const QString &message, const QString &title=QString());
     #else
     inline void error(QWidget *parent, const QString &message, const QString &title=QString()) {
-        QMessageBox::critical(parent, title.isEmpty() ? i18n("Error") : title, message);
+        QMessageBox::critical(parent, title.isEmpty() ? QObject::tr("Error") : title, message);
     }
     inline void information(QWidget *parent, const QString &message, const QString &title=QString()) {
-        QMessageBox::information(parent, title.isEmpty() ? i18n("Information") : title, message);
+        QMessageBox::information(parent, title.isEmpty() ? QObject::tr("Information") : title, message);
     }
     #endif
     extern ButtonCode msgListEx(QWidget *parent, Type type, const QString &message, const QStringList &strlist, const QString &title=QString());

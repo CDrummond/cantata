@@ -70,6 +70,7 @@
 53. When playing MPD's HTTP output stream, don't stop playback on pause.
 54. Add button on podcasts page to show only unplayed podcasts.
 55. Add min/max duration to dynamic playlist rules.
+56. Use Qt5's translation framework - ts files, not po files.
 
 2.0.1
 -----

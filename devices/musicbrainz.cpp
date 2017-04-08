@@ -44,7 +44,6 @@
 #include <QRegExp>
 #include "config.h"
 #include "support/thread.h"
-#include "support/localize.h"
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
@@ -151,7 +150,7 @@ void MusicBrainz::readDisc()
 {
     int fd=open(dev.toLocal8Bit(), O_RDONLY | O_NONBLOCK);
     if (fd < 0) {
-        emit error(i18n("Failed to open CD device"));
+        emit error(tr("Failed to open CD device"));
         return;
     }
     QList<Track> tracks;
@@ -213,7 +212,7 @@ void MusicBrainz::readDisc()
             const Track &next=tracks.at(i+1);
             Song s;
             s.track=i+1;
-            s.title=i18n("Track %1", s.track).toUtf8();
+            s.title=tr("Track %1").arg(s.track).toUtf8();
             s.artist=Song::unknown();
             s.albumartist=initial.artist;
             s.album=initial.name;
@@ -298,7 +297,7 @@ void MusicBrainz::lookup(bool full)
                             album.name=QString::fromUtf8(fullRelease->Title().c_str());
 
                             if (fullRelease->MediumList()->NumItems() > 1) {
-                                album.name = i18n("%1 (Disc %2)", album.name, medium->Position());
+                                album.name = tr("%1 (Disc %2)").arg(album.name).arg(medium->Position());
                                 album.disc=medium->Position();
                             }
                             album.artist=artistFromCreditList(fullRelease->ArtistCredit());
@@ -380,7 +379,7 @@ void MusicBrainz::lookup(bool full)
 
     if (m.isEmpty()) {
         if (!isInitial) {
-            emit error(i18n("No matches found in MusicBrainz"));
+            emit error(tr("No matches found in MusicBrainz"));
         }
     } else if (isInitial) {
         emit initialDetails(m.first());

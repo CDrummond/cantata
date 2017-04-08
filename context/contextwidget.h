@@ -31,10 +31,6 @@
 #include <QSplitter>
 #include "mpd-interface/song.h"
 
-#ifndef SCALE_CONTEXT_BGND
-#define SCALE_CONTEXT_BGND
-#endif
-
 class ArtistView;
 class AlbumView;
 class SongView;
@@ -146,9 +142,7 @@ private:
     QString customBackdropFile;
     bool darkBackground;
     Song currentSong;
-    #ifdef SCALE_CONTEXT_BGND
     QImage currentImage;
-    #endif
     QPixmap oldBackdrop;
     QPixmap currentBackdrop;
     QString currentArtist;
@@ -167,10 +161,6 @@ private:
     OnlineView *onlineContext;
     ThinSplitter *splitter;
     ViewSelector *viewSelector;
-    #ifndef SCALE_CONTEXT_BGND
-    QSize minBackdropSize;
-    QSize maxBackdropSize;
-    #endif
 };
 
 #endif

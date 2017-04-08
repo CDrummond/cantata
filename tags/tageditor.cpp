@@ -28,7 +28,6 @@
 #include "gui/settings.h"
 #include "support/messagebox.h"
 #include "support/inputdialog.h"
-#include "support/localize.h"
 #include "trackorganiser.h"
 #include "mpd-interface/cuefile.h"
 #include "support/utils.h"
@@ -197,7 +196,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         buttons|=User2|User1;
     }
     setButtons(buttons);
-    setCaption(i18n("Tags"));
+    setCaption(tr("Tags"));
     if (songs.count()>1) {
         setButtonGuiItem(User2, StdGuiItem::back(true));
         setButtonGuiItem(User1,StdGuiItem::forward(true));
@@ -205,16 +204,16 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         enableButton(User2, false);
     }
     setButtonGuiItem(Ok, StdGuiItem::save());
-    setButtonGuiItem(User3, GuiItem(i18n("Tools"), FontAwesome::magic));
+    setButtonGuiItem(User3, GuiItem(tr("Tools"), FontAwesome::magic));
     QMenu *toolsMenu=new QMenu(this);
-    toolsMenu->addAction(i18n("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
-    toolsMenu->addAction(i18n("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));
-    toolsMenu->addAction(i18n("Set 'Album Artist' from 'Artist'"), this, SLOT(setAlbumArtistFromArtist()));
-    toolsMenu->addAction(i18n("Capitalize"), this, SLOT(capitalise()));
-    toolsMenu->addAction(i18n("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
+    toolsMenu->addAction(tr("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
+    toolsMenu->addAction(tr("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));
+    toolsMenu->addAction(tr("Set 'Album Artist' from 'Artist'"), this, SLOT(setAlbumArtistFromArtist()));
+    toolsMenu->addAction(tr("Capitalize"), this, SLOT(capitalise()));
+    toolsMenu->addAction(tr("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
     if (ratingsSupport) {
-        readRatingsAct=toolsMenu->addAction(i18n("Read Ratings from File"), this, SLOT(readRatings()));
-        writeRatingsAct=toolsMenu->addAction(i18n("Write Ratings to File"), this, SLOT(writeRatings()));
+        readRatingsAct=toolsMenu->addAction(tr("Read Ratings from File"), this, SLOT(readRatings()));
+        writeRatingsAct=toolsMenu->addAction(tr("Write Ratings to File"), this, SLOT(writeRatings()));
         readRatingsAct->setEnabled(false);
         writeRatingsAct->setEnabled(false);
     }
@@ -338,7 +337,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     bool first=original.count()>1;
     foreach (const Song &s, original) {
         if (first) {
-            trackName->insertItem(trackName->count(), i18n("All tracks"));
+            trackName->insertItem(trackName->count(), tr("All tracks"));
             first=false;
         } else {
             trackName->insertItem(trackName->count(), s.filePath());
@@ -554,12 +553,12 @@ void TagEditor::applyVa()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
 
-    if (MessageBox::No==MessageBox::questionYesNo(this, (isAll ? i18n("Apply \"Various Artists\" workaround to <b>all</b> tracks?")
-                                                               : i18n("Apply \"Various Artists\" workaround?"))+
+    if (MessageBox::No==MessageBox::questionYesNo(this, (isAll ? tr("Apply \"Various Artists\" workaround to <b>all</b> tracks?")
+                                                               : tr("Apply \"Various Artists\" workaround?"))+
                                                            QLatin1String("<br/><br/>")+
-                                                           i18n("<i>This will set 'Album artist' and 'Artist' to "
+                                                           tr("<i>This will set 'Album artist' and 'Artist' to "
                                                                 "\"Various Artists\", and set 'Title' to "
-                                                                "\"TrackArtist - TrackTitle\"</i>"), i18n("Apply \"Various Artists\" Workaround"),
+                                                                "\"TrackArtist - TrackTitle\"</i>"), tr("Apply \"Various Artists\" Workaround"),
                                                   StdGuiItem::apply(), StdGuiItem::cancel())) {
         return;
     }
@@ -596,16 +595,16 @@ void TagEditor::revertVa()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
 
-    if (MessageBox::No==MessageBox::questionYesNo(this, (isAll ? i18n("Revert \"Various Artists\" workaround on <b>all</b> tracks?")
-                                                               : i18n("Revert \"Various Artists\" workaround"))+
+    if (MessageBox::No==MessageBox::questionYesNo(this, (isAll ? tr("Revert \"Various Artists\" workaround on <b>all</b> tracks?")
+                                                               : tr("Revert \"Various Artists\" workaround"))+
                                                            QLatin1String("<br/><br/>")+
-                                                           i18n("<i>Where the 'Album artist' is the same as 'Artist' "
+                                                           tr("<i>Where the 'Album artist' is the same as 'Artist' "
                                                                 "and the 'Title' is of the format \"TrackArtist - TrackTitle\", "
                                                                 "'Artist' will be taken from 'Title' and 'Title' itself will be "
                                                                 "set to just the title. e.g. <br/><br/>"
                                                                 "If 'Title' is \"Wibble - Wobble\", then 'Artist' will be set to "
-                                                                "\"Wibble\" and 'Title' will be set to \"Wobble\"</i>"), i18n("Revert \"Various Artists\" Workaround"),
-                                                  GuiItem(i18n("Revert")), StdGuiItem::cancel())) {
+                                                                "\"Wibble\" and 'Title' will be set to \"Wobble\"</i>"), tr("Revert \"Various Artists\" Workaround"),
+                                                  GuiItem(tr("Revert")), StdGuiItem::cancel())) {
         return;
     }
 
@@ -646,9 +645,9 @@ void TagEditor::setAlbumArtistFromArtist()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
 
-    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty) for <b>all</b> tracks?")
-                                                              : i18n("Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty)?"),
-                                                  i18n("Album Artist from Artist"), StdGuiItem::apply(), StdGuiItem::cancel())) {
+    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? tr("Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty) for <b>all</b> tracks?")
+                                                              : tr("Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty)?"),
+                                                  tr("Album Artist from Artist"), StdGuiItem::apply(), StdGuiItem::cancel())) {
         return;
     }
 
@@ -681,10 +680,10 @@ void TagEditor::capitalise()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
 
-    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Capitalize the first letter of text fields (e.g. 'Title', 'Artist', etc) "
+    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? tr("Capitalize the first letter of text fields (e.g. 'Title', 'Artist', etc) "
                                                                      "of <b>all</b> tracks?")
-                                                              : i18n("Capitalize the first letter of text fields (e.g. 'Title', 'Artist', etc)?"),
-                                                  i18n("Capitalize"), GuiItem(i18n("Capitalize")), StdGuiItem::cancel())) {
+                                                              : tr("Capitalize the first letter of text fields (e.g. 'Title', 'Artist', etc)?"),
+                                                  tr("Capitalize"), GuiItem(tr("Capitalize")), StdGuiItem::cancel())) {
         return;
     }
 
@@ -713,8 +712,8 @@ void TagEditor::adjustTrackNumbers()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
     bool ok=false;
-    int adj=InputDialog::getInteger(i18n("Adjust Track Numbers"), isAll ? i18n("Adjust the value of each track number by:")
-                                                                        : i18n("Adjust track number by:"),
+    int adj=InputDialog::getInteger(tr("Adjust Track Numbers"), isAll ? tr("Adjust the value of each track number by:")
+                                                                        : tr("Adjust track number by:"),
                                     0, -500, 500, 1, 10, &ok, this);
 
     if (!ok || 0==adj) {
@@ -744,10 +743,10 @@ void TagEditor::readRatings()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
 
-    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Read ratings for all tracks from the music files?")
-                                                              : i18n("Read rating from music file?"),
-                                                  i18n("Ratings"),
-                                                  isAll ? GuiItem(i18n("Read Ratings")) : GuiItem(i18n("Read Rating")),
+    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? tr("Read ratings for all tracks from the music files?")
+                                                              : tr("Read rating from music file?"),
+                                                  tr("Ratings"),
+                                                  isAll ? GuiItem(tr("Read Ratings")) : GuiItem(tr("Read Rating")),
                                                   StdGuiItem::cancel())) {
         return;
     }
@@ -776,7 +775,7 @@ void TagEditor::readRatings()
         }
         progress->setVisible(false);
         if (!updated.isEmpty()) {
-            MessageBox::informationList(this, i18n("Read, and updated, ratings from the following tracks:"), updated);
+            MessageBox::informationList(this, tr("Read, and updated, ratings from the following tracks:"), updated);
         }
     } else {
         Song s=edited.at(currentSongIndex);
@@ -797,25 +796,25 @@ void TagEditor::writeRatings()
     if (isAll) {
         for (int i=1; i<original.count(); ++i) {
             if (nullRating(original.at(i))) {
-                MessageBox::error(this, i18n("Not all Song ratings have been read from MPD!")+QLatin1String("\n\n")+
-                                  i18n("Song ratings are not stored in the song files, but within MPD's 'sticker' database. "
+                MessageBox::error(this, tr("Not all Song ratings have been read from MPD!")+QLatin1String("\n\n")+
+                                  tr("Song ratings are not stored in the song files, but within MPD's 'sticker' database. "
                                        "In order to save these into the actual file, Cantata must first read them from MPD."));
                 return;
             }
         }
     } else {
         if (nullRating(original.at(currentSongIndex))) {
-            MessageBox::error(this, i18n("Song rating has not been read from MPD!")+QLatin1String("\n\n")+
-                              i18n("Song ratings are not stored in the song files, but within MPD's 'sticker' database. "
+            MessageBox::error(this, tr("Song rating has not been read from MPD!")+QLatin1String("\n\n")+
+                              tr("Song ratings are not stored in the song files, but within MPD's 'sticker' database. "
                                    "In order to save these into the actual file, Cantata must first read them from MPD."));
             return;
         }
     }
 
-    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Write ratings for all tracks to the music files?")
-                                                              : i18n("Write rating to music file?"),
-                                                  i18n("Ratings"),
-                                                  isAll ? GuiItem(i18n("Write Ratings")) : GuiItem(i18n("Write Rating")),
+    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? tr("Write ratings for all tracks to the music files?")
+                                                              : tr("Write rating to music file?"),
+                                                  tr("Ratings"),
+                                                  isAll ? GuiItem(tr("Write Ratings")) : GuiItem(tr("Write Rating")),
                                                   StdGuiItem::cancel())) {
         return;
     }
@@ -839,14 +838,14 @@ void TagEditor::writeRatings()
         }
         progress->setVisible(false);
         if (!failed.isEmpty()) {
-            MessageBox::errorList(this, i18n("Failed to write ratings of the following tracks:"), failed);
+            MessageBox::errorList(this, tr("Failed to write ratings of the following tracks:"), failed);
         }
     } else {
         Song s=edited.at(currentSongIndex);
         if (s.rating<=Song::Rating_Max) {
             Tags::Update status=Tags::updateRating(baseDir+s.file, s.rating);
             if (Tags::Update_Failed==status || Tags::Update_BadFile==status){
-                MessageBox::error(this, i18n("Failed to write rating to music file!"));
+                MessageBox::error(this, tr("Failed to write rating to music file!"));
             }
         }
     }
@@ -883,13 +882,13 @@ void TagEditor::updateTrackName(int index, bool edited)
 
     if (edited) {
         if (isAll) {
-            trackName->setItemText(index, i18n("All tracks [modified]"));
+            trackName->setItemText(index, tr("All tracks [modified]"));
         } else {
-            trackName->setItemText(index, i18n("%1 [modified]", original.at(index).filePath()));
+            trackName->setItemText(index, tr("%1 [modified]").arg(original.at(index).filePath()));
         }
     } else {
         if (isAll) {
-            trackName->setItemText(index, i18n("All tracks"));
+            trackName->setItemText(index, tr("All tracks"));
         } else {
             trackName->setItemText(index, original.at(index).filePath());
         }
@@ -1197,7 +1196,7 @@ bool TagEditor::applyUpdates()
             failed.append(file);
             break;
         case Tags::Update_BadFile:
-            failed.append(i18nc("filename (Corrupt tags?)", "%1 (Corrupt tags?)", file));
+            failed.append(tr("%1 (Corrupt tags?)", "filename (Corrupt tags?)").arg(file));
             break;
         default:
             break;
@@ -1206,14 +1205,14 @@ bool TagEditor::applyUpdates()
     saving=false;
 
     if (failed.count()) {
-        MessageBox::errorListEx(this, i18n("Failed to update the tags of the following tracks:"), failed);
+        MessageBox::errorListEx(this, tr("Failed to update the tags of the following tracks:"), failed);
     }
 
     if (updatedSongs.count()) {
         // If we call tag-editor, no need to do MPD update - as this will be done from that dialog...
         if (renameFiles &&
-            MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Would you also like to rename your song files, so as to match your tags?"),
-                                                       i18n("Rename Files"), GuiItem(i18n("Rename")), StdGuiItem::cancel())) {
+            MessageBox::Yes==MessageBox::questionYesNo(this, tr("Would you also like to rename your song files, so as to match your tags?"),
+                                                       tr("Rename Files"), GuiItem(tr("Rename")), StdGuiItem::cancel())) {
             TrackOrganiser *dlg=new TrackOrganiser(parentWidget());
             dlg->show(updatedSongs, udi, true);
         } else {
@@ -1277,17 +1276,17 @@ Device * TagEditor::getDevice(const QString &udi, QWidget *p)
 {
     Device *dev=DevicesModel::self()->device(udi);
     if (!dev) {
-        MessageBox::error(p ? p : this, i18n("Device has been removed!"));
+        MessageBox::error(p ? p : this, tr("Device has been removed!"));
         reject();
         return 0;
     }
     if (!dev->isConnected()) {
-        MessageBox::error(p ? p : this, i18n("Device is not connected."));
+        MessageBox::error(p ? p : this, tr("Device is not connected."));
         reject();
         return 0;
     }
     if (!dev->isIdle()) {
-        MessageBox::error(p ? p : this, i18n("Device is busy?"));
+        MessageBox::error(p ? p : this, tr("Device is busy?"));
         reject();
         return 0;
     }

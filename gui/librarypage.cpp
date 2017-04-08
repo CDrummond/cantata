@@ -29,7 +29,6 @@
 #include "stdactions.h"
 #include "customactions.h"
 #include "support/utils.h"
-#include "support/localize.h"
 #include "support/messagebox.h"
 #include "support/actioncollection.h"
 #include "models/mpdlibrarymodel.h"
@@ -58,18 +57,18 @@ LibraryPage::LibraryPage(QWidget *p)
     config.beginGroup(SqlLibraryModel::groupingStr(MpdLibraryModel::self()->topLevel()));
     view->load(config);
 
-    showArtistImagesAction=new QAction(i18n("Show Artist Images"), this);
+    showArtistImagesAction=new QAction(tr("Show Artist Images"), this);
     showArtistImagesAction->setCheckable(true);
-    libraryAlbumSortAction=createMenuGroup(i18n("Sort Albums"), QList<MenuItem>() << MenuItem(i18n("Name"), LibraryDb::AS_AlArYr)
-                                                                                  << MenuItem(i18n("Year"), LibraryDb::AS_YrAlAr),
+    libraryAlbumSortAction=createMenuGroup(tr("Sort Albums"), QList<MenuItem>() << MenuItem(tr("Name"), LibraryDb::AS_AlArYr)
+                                                                                  << MenuItem(tr("Year"), LibraryDb::AS_YrAlAr),
                                            MpdLibraryModel::self()->libraryAlbumSort(), this, SLOT(libraryAlbumSortChanged()));
-    albumAlbumSortAction=createMenuGroup(i18n("Sort Albums"), QList<MenuItem>() << MenuItem(i18n("Album, Artist, Year"), LibraryDb::AS_AlArYr)
-                                                                                << MenuItem(i18n("Album, Year, Artist"), LibraryDb::AS_AlYrAr)
-                                                                                << MenuItem(i18n("Artist, Album, Year"), LibraryDb::AS_ArAlYr)
-                                                                                << MenuItem(i18n("Artist, Year, Album"), LibraryDb::AS_ArYrAl)
-                                                                                << MenuItem(i18n("Year, Album, Artist"), LibraryDb::AS_YrAlAr)
-                                                                                << MenuItem(i18n("Year, Artist, Album"), LibraryDb::AS_YrArAl)
-                                                                                << MenuItem(i18n("Modified Date"), LibraryDb::AS_Modified),
+    albumAlbumSortAction=createMenuGroup(tr("Sort Albums"), QList<MenuItem>() << MenuItem(tr("Album, Artist, Year"), LibraryDb::AS_AlArYr)
+                                                                                << MenuItem(tr("Album, Year, Artist"), LibraryDb::AS_AlYrAr)
+                                                                                << MenuItem(tr("Artist, Album, Year"), LibraryDb::AS_ArAlYr)
+                                                                                << MenuItem(tr("Artist, Year, Album"), LibraryDb::AS_ArYrAl)
+                                                                                << MenuItem(tr("Year, Album, Artist"), LibraryDb::AS_YrAlAr)
+                                                                                << MenuItem(tr("Year, Artist, Album"), LibraryDb::AS_YrArAl)
+                                                                                << MenuItem(tr("Modified Date"), LibraryDb::AS_Modified),
                                          MpdLibraryModel::self()->albumAlbumSort(), this, SLOT(albumAlbumSortChanged()));
 
     MenuButton *menu=new MenuButton(this);
@@ -78,9 +77,9 @@ LibraryPage::LibraryPage(QWidget *p)
                               << ItemView::Mode_IconTop);
     menu->addAction(viewAction);
 
-    menu->addAction(createMenuGroup(i18n("Group By"), QList<MenuItem>() << MenuItem(i18n("Genre"), SqlLibraryModel::T_Genre)
-                                                                        << MenuItem(i18n("Artist"), SqlLibraryModel::T_Artist)
-                                                                        << MenuItem(i18n("Album"), SqlLibraryModel::T_Album),
+    menu->addAction(createMenuGroup(tr("Group By"), QList<MenuItem>() << MenuItem(tr("Genre"), SqlLibraryModel::T_Genre)
+                                                                        << MenuItem(tr("Artist"), SqlLibraryModel::T_Artist)
+                                                                        << MenuItem(tr("Album"), SqlLibraryModel::T_Album),
                                     MpdLibraryModel::self()->topLevel(), this, SLOT(groupByChanged())));
     genreCombo->setVisible(SqlLibraryModel::T_Genre!=MpdLibraryModel::self()->topLevel());
 
@@ -187,8 +186,8 @@ void LibraryPage::deleteSongs()
     QList<Song> songs=selectedSongs();
 
     if (!songs.isEmpty()) {
-        if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to delete the selected songs?\n\nThis cannot be undone."),
-                                                      i18n("Delete Songs"), StdGuiItem::del(), StdGuiItem::cancel())) {
+        if (MessageBox::Yes==MessageBox::warningYesNo(this, tr("Are you sure you wish to delete the selected songs?\n\nThis cannot be undone."),
+                                                      tr("Delete Songs"), StdGuiItem::del(), StdGuiItem::cancel())) {
             emit deleteSongs(QString(), songs);
         }
         view->clearSelection();

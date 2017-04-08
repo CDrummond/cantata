@@ -36,7 +36,6 @@
 #include "encoders.h"
 #include "transcodingjob.h"
 #include "actiondialog.h"
-#include "support/localize.h"
 #include "gui/covers.h"
 #include "support/thread.h"
 #include <QDir>
@@ -652,7 +651,7 @@ void FsDevice::startScanner(bool fullScan)
     }
     state=Updating;
     emit scan(audioFolder, opts.useCache ? cacheFileName() : QString(), !scanned, existingSongs);
-    setStatusMessage(i18n("Updating..."));
+    setStatusMessage(tr("Updating..."));
     emit updating(id(), true);
 }
 
@@ -728,18 +727,18 @@ void FsDevice::removeCache()
 
 void FsDevice::readingCache(int pc)
 {
-    cacheStatus(i18n("Reading cache"), pc);
+    cacheStatus(tr("Reading cache"), pc);
 }
 
 void FsDevice::savingCache(int pc)
 {
-    cacheStatus(i18n("Saving cache"), pc);
+    cacheStatus(tr("Saving cache"), pc);
 }
 
 void FsDevice::cacheStatus(const QString &msg, int prog)
 {
     if (prog!=cacheProgress) {
         cacheProgress=prog;
-        setStatusMessage(i18nc("Message percent", "%1 %2%", msg, cacheProgress));
+        setStatusMessage(tr("%1 %2%","Message percent").arg(msg).arg(cacheProgress));
     }
 }

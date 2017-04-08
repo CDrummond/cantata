@@ -39,6 +39,7 @@ class MusicLibraryItemArtist;
 
 class MusicLibraryModel : public ActionModel
 {
+    Q_OBJECT
 public:
     MusicLibraryModel(QObject *parent=0);
     ~MusicLibraryModel();

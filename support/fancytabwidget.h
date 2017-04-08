@@ -163,7 +163,7 @@ public:
     static void setup();
     static int iconSize(bool large=true);
 
-    FancyTabWidget(QWidget *parent, bool allowContextMenu=true);
+    FancyTabWidget(QWidget *parent);
 
     enum Style {
         Side     = 0x0001,
@@ -225,13 +225,11 @@ Q_SIGNALS:
     void currentChanged(int index);
     void styleChanged(int styleSetting);
     void tabToggled(int index);
-    void configRequested();
 
 private Q_SLOTS:
     void showWidget(int index);
 
 private:
-    void contextMenuEvent(QContextMenuEvent *e);
     void makeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy);
     int tabToIndex(int tab) const;
     int IndexToTab(int index) const { return index>=0 && index<items.count() ? items[index].index : 0; }
@@ -246,7 +244,6 @@ private:
     QVBoxLayout *topLayout;
     QMenu *menu;
     QScopedPointer<FancyTabProxyStyle> proxyStyle;
-    bool allowContext;
 };
 
 Q_DECLARE_METATYPE(QPropertyAnimation*);

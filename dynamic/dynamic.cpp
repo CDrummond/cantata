@@ -29,8 +29,6 @@
 #include "models/roles.h"
 #include "network/networkaccessmanager.h"
 #include "gui/settings.h"
-#include "support/localize.h"
-#include "gui/plurals.h"
 #include "support/actioncollection.h"
 #include "support/globalstatic.h"
 #include <QDir>
@@ -69,20 +67,20 @@ static QString remoteError(const QStringList &status)
 {
     if (!status.isEmpty()) {
         switch (status.at(0).toInt()) {
-        case 1:  return i18n("Empty filename.");
-        case 2:  return i18n("Invalid filename. (%1)", status.length()<2 ? QString() : status.at(2));
-        case 3:  return i18n("Failed to save %1.", status.length()<2 ? QString() : status.at(2));
-        case 4:  return i18n("Failed to delete rules file. (%1)", status.length()<2 ? QString() : status.at(2));
-        case 5:  return i18n("Invalid command. (%1)", status.length()<2 ? QString() : status.at(2));
-        case 6:  return i18n("Could not remove active rules link.");
-        case 7:  return i18n("Active rules is not a link.");
-        case 8:  return i18n("Could not create active rules link.");
-        case 9:  return i18n("Rules file, %1, does not exist.", status.length()<2 ? QString() : status.at(2));
-        case 10: return i18n("Incorrect arguments supplied.");
-        case 11: return i18n("Unknown method called.");
+        case 1:  return QObject::tr("Empty filename.");
+        case 2:  return QObject::tr("Invalid filename. (%1)").arg(status.length()<2 ? QString() : status.at(2));
+        case 3:  return QObject::tr("Failed to save %1.").arg(status.length()<2 ? QString() : status.at(2));
+        case 4:  return QObject::tr("Failed to delete rules file. (%1)").arg(status.length()<2 ? QString() : status.at(2));
+        case 5:  return QObject::tr("Invalid command. (%1)").arg(status.length()<2 ? QString() : status.at(2));
+        case 6:  return QObject::tr("Could not remove active rules link.");
+        case 7:  return QObject::tr("Active rules is not a link.");
+        case 8:  return QObject::tr("Could not create active rules link.");
+        case 9:  return QObject::tr("Rules file, %1, does not exist.").arg(status.length()<2 ? QString() : status.at(2));
+        case 10: return QObject::tr("Incorrect arguments supplied.");
+        case 11: return QObject::tr("Unknown method called.");
         }
     }
-    return i18n("Unknown error");
+    return QObject::tr("Unknown error");
 }
 
 Dynamic::Command Dynamic::toCommand(const QString &cmd)
@@ -162,8 +160,8 @@ Dynamic::Dynamic()
     connect(this, SIGNAL(remoteMessage(QStringList)), MPDConnection::self(), SLOT(sendDynamicMessage(QStringList)));
     connect(MPDConnection::self(), SIGNAL(dynamicResponse(QStringList)), this, SLOT(remoteResponse(QStringList)));
     QTimer::singleShot(500, this, SLOT(checkHelper()));
-    startAction = ActionCollection::get()->createAction("startdynamic", i18n("Start Dynamic Playlist"), Icons::self()->replacePlayQueueIcon);
-    stopAction = ActionCollection::get()->createAction("stopdynamic", i18n("Stop Dynamic Mode"), Icons::self()->stopDynamicIcon);
+    startAction = ActionCollection::get()->createAction("startdynamic", tr("Start Dynamic Playlist"), Icons::self()->replacePlayQueueIcon);
+    stopAction = ActionCollection::get()->createAction("stopdynamic", tr("Stop Dynamic Mode"), Icons::self()->stopDynamicIcon);
 }
 
 QString Dynamic::name() const
@@ -173,12 +171,12 @@ QString Dynamic::name() const
 
 QString Dynamic::title() const
 {
-    return i18n("Dynamic Playlists");
+    return tr("Dynamic Playlists");
 }
 
 QString Dynamic::descr() const
 {
-    return i18n("Dynamically generated playlists");
+    return tr("Dynamically generated playlists");
 }
 
 QVariant Dynamic::headerData(int, Qt::Orientation, int) const
@@ -241,7 +239,8 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
         return IS_ACTIVE(entryList.at(index.row()).name) ? Icons::self()->replacePlayQueueIcon : Icons::self()->dynamicListIcon;
     case Cantata::Role_SubText: {
         const Entry &e=entryList.at(index.row());
-        return Plurals::rules(e.rules.count())+(e.haveRating() ? i18n(" - Rating: %1..%2", (double)e.ratingFrom/Song::Rating_Step, (double)e.ratingTo/Song::Rating_Step) : QString());
+        return tr("%n Rule(s)", "", e.rules.count())+(e.haveRating() ? tr(" - Rating: %1..%2")
+                              .arg((double)e.ratingFrom/Song::Rating_Step).arg((double)e.ratingTo/Song::Rating_Step) : QString());
     }
     case Cantata::Role_Actions: {
         QVariant v;
@@ -366,14 +365,14 @@ void Dynamic::start(const QString &name)
     }
 
     if (Utils::findExe("perl").isEmpty()) {
-        emit error(i18n("You need to install \"perl\" on your system in order for Cantata's dynamic mode to function."));
+        emit error(tr("You need to install \"perl\" on your system in order for Cantata's dynamic mode to function."));
         return;
     }
 
     QString fName(Utils::dataDir(constDir, false)+name+constExtension);
 
     if (!QFile::exists(fName)) {
-        emit error(i18n("Failed to locate rules file - %1", fName));
+        emit error(tr("Failed to locate rules file - %1").arg(fName));
         return;
     }
 
@@ -381,12 +380,12 @@ void Dynamic::start(const QString &name)
 
     QFile::remove(rules);
     if (QFile::exists(rules)) {
-        emit error(i18n("Failed to remove previous rules file - %1", rules));
+        emit error(tr("Failed to remove previous rules file - %1").arg(rules));
         return;
     }
 
     if (!QFile::link(fName, rules)) {
-        emit error(i18n("Failed to install rules file - %1 -> %2", fName, rules));
+        emit error(tr("Failed to install rules file - %1 -> %2").arg(fName).arg(rules));
         return;
     }
 
@@ -720,7 +719,7 @@ void Dynamic::parseStatus(QStringList response)
             terminated=true;
             currentEntry.clear();
             emit running(false);
-            emit error(i18n("Dynamizer has been terminated."));
+            emit error(tr("Dynamizer has been terminated."));
             pollRemoteHelper();
             currentEntry=QString();
         }
@@ -766,7 +765,7 @@ bool Dynamic::sendCommand(Command cmd, const QStringList &args)
         currentCommand=Unknown;
     }
     if (Status!=cmd && (Save==currentCommand || Del==currentCommand)) {
-        emit error(i18n("Awaiting response for previous command. (%1)", Save==cmd ? i18n("Saving rule") : i18n("Deleting rule")));
+        emit error(tr("Awaiting response for previous command. (%1)").arg(Save==cmd ? tr("Saving rule") : tr("Deleting rule")));
         return false;
     }
     currentCommand=cmd;
@@ -873,7 +872,7 @@ void Dynamic::remoteResponse(QStringList msg)
             updateEntry(currentSave);
             emit saved(true);
         } else {
-            emit error(i18n("Failed to save %1. (%2)", currentSave.name, remoteError(msg)));
+            emit error(tr("Failed to save %1. (%2)").arg(currentSave.name).arg(remoteError(msg)));
             emit saved(false);
         }
         currentSave.name=QString();
@@ -887,24 +886,24 @@ void Dynamic::remoteResponse(QStringList msg)
                 entryList.erase(it);
                 endRemoveRows();
             } else {
-                emit error(i18n("Failed to delete rules file. (%1)", remoteError(msg)));
+                emit error(tr("Failed to delete rules file. (%1)").arg(remoteError(msg)));
             }
         } else {
-            emit error(i18n("Failed to delete rules file. (%1)", remoteError(msg)));
+            emit error(tr("Failed to delete rules file. (%1)").arg(remoteError(msg)));
             emit saved(false);
         }
         currentDelete.clear();
         break;
     case Control:
         if (msg.isEmpty() || msg.at(0)!=constOk) {
-            emit error(i18n("Failed to control dynamizer state. (%1)", remoteError(msg)));
+            emit error(tr("Failed to control dynamizer state. (%1)").arg(remoteError(msg)));
         }
         break;
     case SetActive:
         if (!msg.isEmpty() && msg.at(0)==constOk) {
             QTimer::singleShot(1000, this, SLOT(updateRemoteStatus()));
         } else {
-            emit error(i18n("Failed to set the current dynamic rules. (%1)", remoteError(msg)));
+            emit error(tr("Failed to set the current dynamic rules. (%1)").arg(remoteError(msg)));
         }
         break;
     default:
@@ -939,7 +938,7 @@ void Dynamic::remoteDynamicSupported(bool s)
         }
         loadLocal();
 //        #ifndef Q_OS_WIN
-//        emit error(i18n("Communication with the remote dynamizer has been lost, reverting to local mode."));
+//        emit error(tr("Communication with the remote dynamizer has been lost, reverting to local mode."));
 //        #endif
     }
 }

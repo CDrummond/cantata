@@ -26,8 +26,28 @@
 
 #include <QSet>
 #include "treeview.h"
+#include "actionitemdelegate.h"
 
 struct Song;
+class RatingPainter;
+class GroupedView;
+
+class GroupedViewDelegate : public ActionItemDelegate
+{
+    Q_OBJECT
+public:
+    GroupedViewDelegate(GroupedView *p);
+    virtual ~GroupedViewDelegate();
+
+    QSize sizeHint(int type, bool isCollection) const;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    int drawRatings(QPainter *painter, const Song &song, const QRect &r, const QFontMetrics &fm, const QColor &col) const;
+
+private:
+    GroupedView *view;
+    mutable RatingPainter *ratingPainter;
+};
 
 class GroupedView : public TreeView
 {

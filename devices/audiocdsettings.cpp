@@ -23,7 +23,6 @@
 
 #include "audiocdsettings.h"
 #include "gui/settings.h"
-#include "support/localize.h"
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -35,8 +34,8 @@ AudioCdSettings::AudioCdSettings(QWidget *p)
 {
     setupUi(this);
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
-    cdLookup->addItem(i18n("CDDB"), true);
-    cdLookup->addItem(i18n("MusicBrainz"), false);
+    cdLookup->addItem(tr("CDDB"), true);
+    cdLookup->addItem(tr("MusicBrainz"), false);
     #else
     REMOVE(cdLookup)
     REMOVE(cdLookupLabel)

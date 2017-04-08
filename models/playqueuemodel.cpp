@@ -24,7 +24,6 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "support/localize.h"
 #include "playqueuemodel.h"
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdparseutils.h"
@@ -166,18 +165,18 @@ QList<quint32> PlayQueueModel::decodeInts(const QMimeData &mimeData, const QStri
 QString PlayQueueModel::headerText(int col)
 {
     switch (col) {
-    case COL_TITLE:     return i18n("Title");
-    case COL_ARTIST:    return i18n("Artist");
-    case COL_ALBUM:     return i18n("Album");
-    case COL_TRACK:     return i18nc("Track number", "#");
-    case COL_LENGTH:    return i18n("Length");
-    case COL_DISC:      return i18n("Disc");
-    case COL_YEAR:      return i18n("Year");
-    case COL_GENRE:     return i18n("Genre");
-    case COL_PRIO:      return i18n("Priority");
-    case COL_COMPOSER:  return i18n("Composer");
-    case COL_PERFORMER: return i18n("Performer");
-    case COL_RATING:    return i18n("Rating");
+    case COL_TITLE:     return tr("Title");
+    case COL_ARTIST:    return tr("Artist");
+    case COL_ALBUM:     return tr("Album");
+    case COL_TRACK:     return tr("#", "Track number");
+    case COL_LENGTH:    return tr("Length");
+    case COL_DISC:      return tr("Disc");
+    case COL_YEAR:      return tr("Year");
+    case COL_GENRE:     return tr("Genre");
+    case COL_PRIO:      return tr("Priority");
+    case COL_COMPOSER:  return tr("Composer");
+    case COL_PERFORMER: return tr("Performer");
+    case COL_RATING:    return tr("Rating");
     default:            return QString();
     }
 }
@@ -223,36 +222,36 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     #endif
 
     UNITY_MENU_ICON_CHECK
-    removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
+    removeDuplicatesAction=new Action(tr("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
     QColor col=Utils::monoIconColor();
-    undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::undo, col)));
+    undoAction=ActionCollection::get()->createAction("playqueue-undo", tr("Undo"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::undo, col)));
     undoAction->setShortcut(Qt::ControlModifier+Qt::Key_Z);
-    redoAction=ActionCollection::get()->createAction("playqueue-redo", i18n("Redo"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::repeat, col)));
+    redoAction=ActionCollection::get()->createAction("playqueue-redo", tr("Redo"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::repeat, col)));
     redoAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Z);
     connect(undoAction, SIGNAL(triggered()), this, SLOT(undo()));
     connect(redoAction, SIGNAL(triggered()), this, SLOT(redo()));
     connect(removeDuplicatesAction, SIGNAL(triggered()), this, SLOT(removeDuplicates()));
 
-    shuffleAction=new Action(i18n("Shuffle"), this);
+    shuffleAction=new Action(tr("Shuffle"), this);
     shuffleAction->setMenu(new QMenu(0));
-    Action *shuffleTracksAction = new Action(i18n("Tracks"), shuffleAction);
-    Action *shuffleAlbumsAction = new Action(i18n("Albums"), shuffleAction);
+    Action *shuffleTracksAction = new Action(tr("Tracks"), shuffleAction);
+    Action *shuffleAlbumsAction = new Action(tr("Albums"), shuffleAction);
     connect(shuffleTracksAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(shuffle()));
     connect(shuffleAlbumsAction, SIGNAL(triggered()), this, SLOT(shuffleAlbums()));
     shuffleAction->menu()->addAction(shuffleTracksAction);
     shuffleAction->menu()->addAction(shuffleAlbumsAction);
 
-    sortAction=new Action(i18n("Sort By"), this);
+    sortAction=new Action(tr("Sort By"), this);
     sortAction->setMenu(new QMenu(0));
-    addSortAction(i18n("Artist"), constSortByArtistKey);
-    addSortAction(i18n("Album Artist"), constSortByAlbumArtistKey);
-    addSortAction(i18n("Album"), constSortByAlbumKey);
-    addSortAction(i18n("Track Title"), constSortByTitleKey);
-    addSortAction(i18n("Genre"), constSortByGenreKey);
-    addSortAction(i18n("Year"), constSortByYearKey);
-    addSortAction(i18n("Composer"), constSortByComposerKey);
-    addSortAction(i18n("Performer"), constSortByPerformerKey);
+    addSortAction(tr("Artist"), constSortByArtistKey);
+    addSortAction(tr("Album Artist"), constSortByAlbumArtistKey);
+    addSortAction(tr("Album"), constSortByAlbumKey);
+    addSortAction(tr("Track Title"), constSortByTitleKey);
+    addSortAction(tr("Genre"), constSortByGenreKey);
+    addSortAction(tr("Year"), constSortByYearKey);
+    addSortAction(tr("Composer"), constSortByComposerKey);
+    addSortAction(tr("Performer"), constSortByPerformerKey);
     controlActions();
     shuffleAction->setEnabled(false);
     sortAction->setEnabled(false);
@@ -305,7 +304,7 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             case COL_RATING:    return 0.08;
             }
         case Cantata::Role_ContextMenuText:
-            return COL_TRACK==section ? i18n("# (Track Number)") : headerText(section);
+            return COL_TRACK==section ? tr("# (Track Number)") : headerText(section);
         default:
             break;
         }

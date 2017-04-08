@@ -29,7 +29,6 @@
 #include "models/musiclibraryitemalbum.h"
 #include "models/musiclibraryitemsong.h"
 #include "support/icon.h"
-#include "support/localize.h"
 #include "support/actioncollection.h"
 #include <QTimer>
 #include <QAction>
@@ -49,14 +48,14 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
     tree->setPageDefaults();
     tree->setUseSimpleDelegate();
     search->setText(QString());
-    search->setPlaceholderText(i18n("Search"));
+    search->setPlaceholderText(tr("Search"));
     connect(&proxy, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
     connect(search, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(search, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
 
-    checkAction=new Action(i18n("Check Items"), this);
+    checkAction=new Action(tr("Check Items"), this);
     connect(checkAction, SIGNAL(triggered()), SLOT(checkItems()));
-    unCheckAction=new Action(i18n("Uncheck Items"), this);
+    unCheckAction=new Action(tr("Uncheck Items"), this);
     connect(unCheckAction, SIGNAL(triggered()), SLOT(unCheckItems()));
     tree->addAction(checkAction);
     tree->addAction(unCheckAction);

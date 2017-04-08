@@ -23,7 +23,6 @@
 
 #include "titlewidget.h"
 #include "support/squeezedtextlabel.h"
-#include "support/localize.h"
 #include "support/utils.h"
 #include "support/icon.h"
 #include "gui/stdactions.h"
@@ -77,7 +76,7 @@ TitleWidget::TitleWidget(QWidget *p)
     int pad=Utils::scaleForDpi(6);
     size=qMax(qMax(size, QFontMetrics(mainText->font()).height()+QFontMetrics(subText->font()).height()+spacing), Utils::scaleForDpi(40))+pad;
     image->setFixedSize(size, size);
-    setToolTip(i18n("Click to go back"));
+    setToolTip(tr("Click to go back"));
     spacing=qMin(4, spacing-1);
     layout->addItem(new QSpacerItem(spacing, spacing), 0, 0, 2, 1);
     layout->addWidget(chevron, 0, 1, 2, 1);
@@ -135,8 +134,8 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
             }
             add->setFixedSize(QSize(size, size));
             replace->setFixedSize(add->size());
-            add->setToolTip(i18n("Add All To Play Queue"));
-            replace->setToolTip(i18n("Add All And Replace Play Queue"));
+            add->setToolTip(tr("Add All To Play Queue"));
+            replace->setToolTip(tr("Add All And Replace Play Queue"));
             l->addWidget(replace);
             l->addWidget(add);
             connect(add, SIGNAL(clicked()), this, SIGNAL(addToPlayQueue()));

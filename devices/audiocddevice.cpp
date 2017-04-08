@@ -28,8 +28,6 @@
 #ifdef MUSICBRAINZ5_FOUND
 #include "musicbrainz.h"
 #endif
-#include "support/localize.h"
-#include "gui/plurals.h"
 #include "models/musiclibraryitemsong.h"
 #include "models/mpdlibrarymodel.h"
 #include "models/playqueuemodel.h"
@@ -117,7 +115,7 @@ AudioCdDevice::AudioCdDevice(MusicLibraryModel *m, Solid::Device &dev)
         #else
         connectService(true);
         #endif
-        detailsString=i18n("Reading disc");
+        detailsString=tr("Reading disc");
         setStatusMessage(detailsString);
         lookupInProcess=true;
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
@@ -351,7 +349,7 @@ void AudioCdDevice::setDetails(const CdAlbum &a)
         update->append(new MusicLibraryItemSong(s, update));
     }
     setStatusMessage(QString());
-    detailsString=Plurals::tracksWithDuration(a.tracks.count(), Utils::formatTime(totalDuration));
+    detailsString=tr("%n Tracks (%1)", "", a.tracks.count()).arg(Utils::formatTime(totalDuration));
     emit updating(id(), false);
     if (differentAlbum && !a.isDefault) {
         Song s;

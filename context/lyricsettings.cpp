@@ -24,7 +24,6 @@
 #include "lyricsettings.h"
 #include "ultimatelyricsprovider.h"
 #include "ultimatelyrics.h"
-#include "support/localize.h"
 #include "config.h"
 #include "gui/settings.h"
 
@@ -32,7 +31,7 @@ LyricSettings::LyricSettings(QWidget *p)
     : ToggleList(p)
     , loadedXml(false)
 {
-    label->setText(i18n("Choose the websites you want to use when searching for lyrics."));
+    label->setText(tr("Choose the websites you want to use when searching for lyrics."));
 }
 
 void LyricSettings::load()

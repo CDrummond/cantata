@@ -25,7 +25,6 @@
 #include "scrobbler.h"
 #include "widgets/icons.h"
 #include "widgets/spacerwidget.h"
-#include "support/localize.h"
 #include <QHBoxLayout>
 
 ScrobblingStatus::ScrobblingStatus(QWidget *p)
@@ -50,5 +49,5 @@ ScrobblingStatus::ScrobblingStatus(QWidget *p)
 
 void ScrobblingStatus::scrobblerChanged()
 {
-    btn->setToolTip(i18n("%1: Scrobble Tracks", Scrobbler::self()->activeScrobbler()));
+    btn->setToolTip(tr("%1: Scrobble Tracks").arg(Scrobbler::self()->activeScrobbler()));
 }

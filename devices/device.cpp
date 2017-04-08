@@ -47,7 +47,6 @@
 #include "models/musiclibraryitemalbum.h"
 #include "models/musiclibraryitemsong.h"
 #include "models/musiclibrarymodel.h"
-#include "support/localize.h"
 #include "solid-lite/portablemediaplayer.h"
 #include "solid-lite/storageaccess.h"
 #include "solid-lite/storagedrive.h"
@@ -380,12 +379,12 @@ void Device::updateStatus()
 
 void Device::songCount(int c)
 {
-    setStatusMessage(i18n("Updating (%1)...", c));
+    setStatusMessage(tr("Updating (%1)...").arg(c));
 }
 
 void Device::updatePercentage(int pc)
 {
-    setStatusMessage(i18n("Updating (%1%)...", pc));
+    setStatusMessage(tr("Updating (%1%)...").arg(pc));
 }
 
 #endif // ENABLE_DEVICES_SUPPORT

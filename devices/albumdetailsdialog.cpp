@@ -22,7 +22,6 @@
  */
 
 #include "albumdetailsdialog.h"
-#include "support/localize.h"
 #include "audiocddevice.h"
 #include "models/musiclibraryitemsong.h"
 #include "support/messagebox.h"
@@ -101,7 +100,7 @@ AlbumDetailsDialog::AlbumDetailsDialog(QWidget *parent)
 {
     iCount++;
     setButtons(User1|Ok|Cancel);
-    setCaption(i18n("Audio CD"));
+    setCaption(tr("Audio CD"));
     setAttribute(Qt::WA_DeleteOnClose);
 
     QWidget *mainWidet = new QWidget(this);
@@ -136,12 +135,12 @@ AlbumDetailsDialog::AlbumDetailsDialog(QWidget *parent)
     genre->insertItems(0, strings);
 
     QMenu *toolsMenu=new QMenu(this);
-    toolsMenu->addAction(i18n("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
-    toolsMenu->addAction(i18n("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));
-    toolsMenu->addAction(i18n("Capitalize"), this, SLOT(capitalise()));
-    toolsMenu->addAction(i18n("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
+    toolsMenu->addAction(tr("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
+    toolsMenu->addAction(tr("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));
+    toolsMenu->addAction(tr("Capitalize"), this, SLOT(capitalise()));
+    toolsMenu->addAction(tr("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
     setButtonMenu(User1, toolsMenu, InstantPopup);
-    setButtonGuiItem(User1, GuiItem(i18n("Tools"), "tools-wizard"));
+    setButtonGuiItem(User1, GuiItem(tr("Tools"), "tools-wizard"));
     connect(singleArtist, SIGNAL(toggled(bool)), SLOT(hideArtistColumn(bool)));
     resize(600, 600);
 
@@ -229,11 +228,11 @@ void AlbumDetailsDialog::hideArtistColumn(bool hide)
 
 void AlbumDetailsDialog::applyVa()
 {
-    if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Apply \"Various Artists\" workaround?")+
+    if (MessageBox::No==MessageBox::questionYesNo(this, tr("Apply \"Various Artists\" workaround?")+
                                                         QLatin1String("\n\n")+
-                                                        i18n("This will set 'Album artist' and 'Artist' to "
+                                                        tr("This will set 'Album artist' and 'Artist' to "
                                                              "\"Various Artists\", and set 'Title' to "
-                                                             "\"TrackArtist - TrackTitle\""), i18n("Apply \"Various Artists\" Workaround"),
+                                                             "\"TrackArtist - TrackTitle\""), tr("Apply \"Various Artists\" Workaround"),
                                                   StdGuiItem::apply(), StdGuiItem::cancel())) {
         return;
     }
@@ -250,15 +249,15 @@ void AlbumDetailsDialog::applyVa()
 
 void AlbumDetailsDialog::revertVa()
 {
-    if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Revert \"Various Artists\" workaround?")+
+    if (MessageBox::No==MessageBox::questionYesNo(this, tr("Revert \"Various Artists\" workaround?")+
                                                         QLatin1String("\n\n")+
-                                                        i18n("Where the 'Album artist' is the same as 'Artist' "
+                                                        tr("Where the 'Album artist' is the same as 'Artist' "
                                                              "and the 'Title' is of the format \"TrackArtist - TrackTitle\", "
                                                              "'Artist' will be taken from 'Title' and 'Title' itself will be "
                                                              "set to just the title. e.g. \n"
                                                              "If 'Title' is \"Wibble - Wobble\", then 'Artist' will be set to "
-                                                             "\"Wibble\" and 'Title' will be set to \"Wobble\""), i18n("Revert \"Various Artists\" Workaround"),
-                                                  GuiItem(i18n("Revert")), StdGuiItem::cancel())) {
+                                                             "\"Wibble\" and 'Title' will be set to \"Wobble\""), tr("Revert \"Various Artists\" Workaround"),
+                                                  GuiItem(tr("Revert")), StdGuiItem::cancel())) {
         return;
     }
 
@@ -274,8 +273,8 @@ void AlbumDetailsDialog::revertVa()
 
 void AlbumDetailsDialog::capitalise()
 {
-    if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'?"),
-                                                  i18n("Capitalize"), GuiItem(i18n("Capitalize")), StdGuiItem::cancel())) {
+    if (MessageBox::No==MessageBox::questionYesNo(this, tr("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'?"),
+                                                  tr("Capitalize"), GuiItem(tr("Capitalize")), StdGuiItem::cancel())) {
         return;
     }
 
@@ -292,7 +291,7 @@ void AlbumDetailsDialog::capitalise()
 void AlbumDetailsDialog::adjustTrackNumbers()
 {
     bool ok=false;
-    int adj=InputDialog::getInteger(i18n("Adjust Track Numbers"), i18n("Adjust track number by:"), 0, -500, 500, 1, 10, &ok, this);
+    int adj=InputDialog::getInteger(tr("Adjust Track Numbers"), tr("Adjust track number by:"), 0, -500, 500, 1, 10, &ok, this);
 
     if (!ok || 0==adj) {
         return;

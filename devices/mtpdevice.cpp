@@ -37,7 +37,6 @@
 #include "support/utils.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "mpd-interface/mpdconnection.h"
-#include "support/localize.h"
 #include "filejob.h"
 #include "support/configuration.h"
 #include "support/thread.h"
@@ -151,9 +150,9 @@ void MtpConnection::connectToDevice()
     defaultMusicFolder=0;
     LIBMTP_raw_device_t *rawDevices=0;
     int numDev=-1;
-    emit statusMessage(i18n("Connecting to device..."));
+    emit statusMessage(tr("Connecting to device..."));
     if (LIBMTP_ERROR_NONE!=LIBMTP_Detect_Raw_Devices(&rawDevices, &numDev) || numDev<=0) {
-        emit statusMessage(i18n("No devices found"));
+        emit statusMessage(tr("No devices found"));
         return;
     }
     #ifdef TIME_MTP_OPERATIONS
@@ -200,7 +199,7 @@ void MtpConnection::connectToDevice()
 
     free(rawDevices);
     if (!device) {
-        emit statusMessage(i18n("No devices found"));
+        emit statusMessage(tr("No devices found"));
         #ifdef TIME_MTP_OPERATIONS
         qWarning() << "TOTAL connect:" <<totalTimer.elapsed();
         #endif
@@ -215,7 +214,7 @@ void MtpConnection::connectToDevice()
     }
 
     defaultMusicFolder=device->default_music_folder;
-    emit statusMessage(i18n("Connected to device"));
+    emit statusMessage(tr("Connected to device"));
     #ifdef TIME_MTP_OPERATIONS
     qWarning() << "TOTAL connect:" <<totalTimer.elapsed();
     #endif
@@ -228,7 +227,7 @@ void MtpConnection::disconnectFromDevice(bool showStatus)
         LIBMTP_Release_Device(device);
         device=0;
         if (showStatus) {
-            emit statusMessage(i18n("Disconnected from device"));
+            emit statusMessage(tr("Disconnected from device"));
         }
     }
 }
@@ -301,7 +300,7 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
     #endif
 
     library = new MusicLibraryItemRoot;
-    emit statusMessage(i18n("Updating folders..."));
+    emit statusMessage(tr("Updating folders..."));
     #ifdef ENABLE_UNCACHED_MTP
     updateFilesAndFolders();
     if (abortRequested) {
@@ -320,7 +319,7 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
         return;
     }
     #ifndef ENABLE_UNCACHED_MTP
-    emit statusMessage(i18n("Updating files..."));
+    emit statusMessage(tr("Updating files..."));
     updateFiles();
     #ifdef TIME_MTP_OPERATIONS
     qWarning() << "Files update:" << timer.elapsed();
@@ -334,7 +333,7 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
     timer.restart();
     #endif
     #endif
-    emit statusMessage(i18n("Updating tracks..."));
+    emit statusMessage(tr("Updating tracks..."));
     lastListPercent=-1;
     LIBMTP_track_t *tracks=LIBMTP_Get_Tracklisting_With_Callback(device, &trackListMonitor, this);
     QMap<uint32_t, Folder>::ConstIterator folderEnd=folderMap.constEnd();
@@ -1640,10 +1639,10 @@ double MtpDevice::usedCapacity()
 QString MtpDevice::capacityString()
 {
     if (!isConnected()) {
-        return i18n("Not Connected");
+        return tr("Not Connected");
     }
 
-    return i18n("%1 free", Utils::formatByteSize(connection->capacity()-connection->usedSpace()));
+    return tr("%1 free").arg(Utils::formatByteSize(connection->capacity()-connection->usedSpace()));
 }
 
 qint64 MtpDevice::freeSpace()

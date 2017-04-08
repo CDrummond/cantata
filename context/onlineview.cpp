@@ -23,12 +23,11 @@
 
 #include "onlineview.h"
 #include "gui/covers.h"
-#include "support/localize.h"
 
 OnlineView::OnlineView(QWidget *p)
     : View(p)
 {
-    setStandardHeader(i18n("Song Information"));
+    setStandardHeader(tr("Song Information"));
     int imageSize=fontMetrics().height()*18;
     setPicSize(QSize(imageSize, imageSize));
 }

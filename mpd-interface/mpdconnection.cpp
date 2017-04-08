@@ -31,7 +31,6 @@
 #include "mpduser.h"
 #include "gui/settings.h"
 #endif
-#include "support/localize.h"
 #include "support/globalstatic.h"
 #include "support/configuration.h"
 #include <QStringList>
@@ -170,7 +169,7 @@ QString MPDConnection::Response::getError(const QByteArray &command)
     if (!ok && data.size()>0) {
         int cmdEnd=data.indexOf("} ");
         if (-1==cmdEnd) {
-            return i18n("Unknown")+QLatin1String(" (")+command+QLatin1Char(')');
+            return tr("Unknown")+QLatin1String(" (")+command+QLatin1Char(')');
         } else {
             cmdEnd+=2;
             QString rv=data.mid(cmdEnd, data.length()-(data.endsWith('\n') ? cmdEnd+1 : cmdEnd));
@@ -203,9 +202,9 @@ MPDConnectionDetails::MPDConnectionDetails()
 QString MPDConnectionDetails::getName() const
 {
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
-    return name.isEmpty() ? i18n("Default") : (name==MPDUser::constName ? MPDUser::translatedName() : name);
+    return name.isEmpty() ? QObject::tr("Default") : (name==MPDUser::constName ? MPDUser::translatedName() : name);
     #else
-    return name.isEmpty() ? i18n("Default") : name;
+    return name.isEmpty() ? QObject::tr("Default") : name;
     #endif
 }
 
@@ -213,10 +212,10 @@ QString MPDConnectionDetails::description() const
 {
     if (hostname.isEmpty()) {
         return getName();
-    } else if (hostname.startsWith('/')) {
-        return i18nc("name (host)", "\"%1\"", getName());
+    } else if (hostname.startsWith('/') || hostname.startsWith('~')) {
+        return getName();
     } else {
-        return i18nc("name (host:port)", "\"%1\" (%2:%3)", getName(), hostname, QString::number(port)); // Use QString::number to prevent KDE's i18n converting 6600 to 6,600!
+        return QObject::tr("\"%1\" (%2:%3)", "name (host:port)").arg(getName()).arg(hostname).arg(QString::number(port));
     }
 }
 
@@ -416,9 +415,9 @@ QString MPDConnection::errorString(ConnectionReturn status) const
     switch (status) {
     default:
     case Success:           return QString();
-    case Failed:            return i18n("Connection to %1 failed", details.description());
-    case ProxyError:        return i18n("Connection to %1 failed - please check your proxy settings", details.description());
-    case IncorrectPassword: return i18n("Connection to %1 failed - incorrect password", details.description());
+    case Failed:            return tr("Connection to %1 failed").arg(details.description());
+    case ProxyError:        return tr("Connection to %1 failed - please check your proxy settings").arg(details.description());
+    case IncorrectPassword: return tr("Connection to %1 failed - incorrect password").arg(details.description());
     }
 }
 
@@ -526,7 +525,7 @@ void MPDConnection::reconnect()
                 connect(reconnectTimer, SIGNAL(timeout()), this, SLOT(reconnect()), Qt::QueuedConnection);
             }
             if (abs(now-reconnectStart)>1) {
-                emit info(i18n("Connecting to %1", details.description()));
+                emit info(tr("Connecting to %1").arg(details.description()));
             }
             reconnectTimer->start(500);
         } else {
@@ -629,7 +628,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
     DBUG << (void *)(&sock) << "sendCommand:" << log(command) << emitErrors << retry;
 
     if (!isConnected()) {
-        emit error(i18n("Failed to send command to %1 - not connected", details.description()), true);
+        emit error(tr("Failed to send command to %1 - not connected").arg(details.description()), true);
         return Response(false);
     }
 
@@ -684,26 +683,26 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             if (emitError) {
                 if ((command.startsWith("add ") || command.startsWith("command_list_begin\nadd ")) && -1!=command.indexOf("\"file:///")) {
                     if (details.isLocal() && -1!=response.data.indexOf("Permission denied")) {
-                        emit error(i18n("Failed to load. Please check user \"mpd\" has read permission."));
+                        emit error(tr("Failed to load. Please check user \"mpd\" has read permission."));
                     } else if (!details.isLocal() && -1!=response.data.indexOf("Access denied")) {
-                        emit error(i18n("Failed to load. MPD can only play local files if connected via a local socket."));
+                        emit error(tr("Failed to load. MPD can only play local files if connected via a local socket."));
                     } else if (!response.getError(command).isEmpty()) {
-                        emit error(i18n("MPD reported the following error: %1", response.getError(command)));
+                        emit error(tr("MPD reported the following error: %1").arg(response.getError(command)));
                     } else {
                         disconnectFromMPD();
                         emit stateChanged(false);
-                        emit error(i18n("Failed to send command. Disconnected from %1", details.description()), true);
+                        emit error(tr("Failed to send command. Disconnected from %1").arg(details.description()), true);
                     }
                 } else if (!response.getError(command).isEmpty()) {
-                    emit error(i18n("MPD reported the following error: %1", response.getError(command)));
+                    emit error(tr("MPD reported the following error: %1").arg(response.getError(command)));
                 } /*else if ("listallinfo"==command && ver>=CANTATA_MAKE_VERSION(0,18,0)) {
                     disconnectFromMPD();
                     emit stateChanged(false);
-                    emit error(i18n("Failed to load library. Please increase \"max_output_buffer_size\" in MPD's config file."));
+                    emit error(tr("Failed to load library. Please increase \"max_output_buffer_size\" in MPD's config file."));
                 } */ else {
                     disconnectFromMPD();
                     emit stateChanged(false);
-                    emit error(i18n("Failed to send command. Disconnected from %1", details.description()), true);
+                    emit error(tr("Failed to send command. Disconnected from %1").arg(details.description()), true);
                 }
             }
         }
@@ -942,7 +941,7 @@ void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
 
 void MPDConnection::setOrder(const QList<quint32> &items)
 {
-    QByteArray cmd = /*name.isEmpty() ? */"move " /*: ("playlistmove "+encodeName(name)+" ")*/;
+    QByteArray cmd("move ");
     QByteArray send;
     QList<qint32> positions;
     quint32 numChanges=0;
@@ -1629,7 +1628,7 @@ void MPDConnection::renamePlaylist(const QString oldName, const QString newName)
     if (sendCommand("rename "+encodeName(oldName)+' '+encodeName(newName), false).ok) {
         emit playlistRenamed(oldName, newName);
     } else {
-        emit error(i18n("Failed to rename <b>%1</b> to <b>%2</b>", oldName, newName));
+        emit error(tr("Failed to rename <b>%1</b> to <b>%2</b>").arg(oldName).arg(newName));
     }
 }
 
@@ -1641,7 +1640,7 @@ void MPDConnection::removePlaylist(const QString &name)
 void MPDConnection::savePlaylist(const QString &name)
 {
     if (!sendCommand("save "+encodeName(name), false).ok) {
-        emit error(i18n("Failed to save <b>%1</b>", name));
+        emit error(tr("Failed to save <b>%1</b>").arg(name));
     }
 }
 
@@ -1654,10 +1653,10 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
     if (!name.isEmpty()) {
         foreach (const QString &song, songs) {
             if (CueFile::isCue(song)) {
-                emit error(i18n("You cannot add parts of a cue sheet to a playlist!")+QLatin1String(" (")+song+QLatin1Char(')'));
+                emit error(tr("You cannot add parts of a cue sheet to a playlist!")+QLatin1String(" (")+song+QLatin1Char(')'));
                 return;
             } else if (isPlaylist(song)) {
-                emit error(i18n("You cannot add a playlist to another playlist!")+QLatin1String(" (")+song+QLatin1Char(')'));
+                emit error(tr("You cannot add a playlist to another playlist!")+QLatin1String(" (")+song+QLatin1Char(')'));
                 return;
             }
         }
@@ -1835,7 +1834,7 @@ void MPDConnection::editStream(const QString &url, const QString &name, quint32 
 void MPDConnection::sendClientMessage(const QString &channel, const QString &msg, const QString &clientName)
 {
     if (!sendCommand("sendmessage "+channel.toUtf8()+" "+msg.toUtf8(), false).ok) {
-        emit error(i18n("Failed to send '%1' to %2. Please check %2 is registered with MPD.", msg, clientName.isEmpty() ? channel : clientName));
+        emit error(tr("Failed to send '%1' to %2. Please check %2 is registered with MPD.").arg(msg).arg(clientName.isEmpty() ? channel : clientName));
         emit clientMessageFailed(channel, msg);
     }
 }
@@ -2118,7 +2117,7 @@ void MPDConnection::setRating(const QString &file, quint8 val)
     }
 
     if (!canUseStickers) {
-        emit error(i18n("Cannot store ratings, as the 'sticker' MPD command is not supported."));
+        emit error(tr("Cannot store ratings, as the 'sticker' MPD command is not supported."));
         return;
     }
 
@@ -2145,7 +2144,7 @@ void MPDConnection::setRating(const QStringList &files, quint8 val)
     }
 
     if (!canUseStickers) {
-        emit error(i18n("Cannot store ratings, as the 'sticker' MPD command is not supported."));
+        emit error(tr("Cannot store ratings, as the 'sticker' MPD command is not supported."));
         return;
     }
 

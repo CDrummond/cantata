@@ -23,7 +23,6 @@
 
 #include "serversettings.h"
 #include "settings.h"
-#include "support/localize.h"
 #include "support/inputdialog.h"
 #include "support/messagebox.h"
 #include "widgets/icons.h"
@@ -85,10 +84,10 @@ ServerSettings::ServerSettings(QWidget *p)
 {
     setupUi(this);
     #if defined ENABLE_DEVICES_SUPPORT
-    musicFolderNoteLabel->appendText(QLatin1String("<i> ")+i18n("This folder will also be used to locate music files "
+    musicFolderNoteLabel->appendText(QLatin1String("<i> ")+tr("This folder will also be used to locate music files "
                                      "for tag-editing, replay gain, and transferring to (and from) devices.")+QLatin1String("</i>"));
     #else
-    musicFolderNoteLabel->appendText(QLatin1String("<i> ")+i18n("This folder will also be used to locate music files "
+    musicFolderNoteLabel->appendText(QLatin1String("<i> ")+tr("This folder will also be used to locate music files "
                                      "for tag-editing, replay gain, etc.")+QLatin1String("</i>"));
     #endif
     connect(combo, SIGNAL(activated(int)), SLOT(showDetails(int)));
@@ -102,7 +101,7 @@ ServerSettings::ServerSettings(QWidget *p)
     removeButton->setAutoRaise(true);
 
     #if defined Q_OS_WIN
-    hostLabel->setText(i18n("Host:"));
+    hostLabel->setText(tr("Host:"));
     #endif
     basicCoverName->setToolTip(coverName->toolTip());
     basicCoverNameLabel->setToolTip(coverName->toolTip());
@@ -255,17 +254,17 @@ void ServerSettings::add()
 
         switch (MessageBox::questionYesNoCancel(this,
                                    QLatin1String("<p>")+
-                                   i18n("Which type of collection do you wish to connect to?")+QLatin1String("<br/><br/>")+
-                                   constBullet+QLatin1Char(' ')+i18n("Standard - music collection may be shared, is on another machine, is "
+                                   tr("Which type of collection do you wish to connect to?")+QLatin1String("<br/><br/>")+
+                                   constBullet+QLatin1Char(' ')+tr("Standard - music collection may be shared, is on another machine, is "
                                                                      "already setup, or you wish to enable access from other clients (e.g. "
                                                                      "MPDroid)")+QLatin1String("<br/><br/>")+
-                                   constBullet+QLatin1Char(' ')+i18n("Basic - music collection is not shared with others, and Cantata will "
+                                   constBullet+QLatin1Char(' ')+tr("Basic - music collection is not shared with others, and Cantata will "
                                                                      "configure and control the MPD instance. This setup will be exclusive "
                                                                      "to Cantata, and will <b>not</b> be accessible to other MPD clients.")+
                                                                      QLatin1String("<br/><br/>")+
-                                   i18n("<i><b>NOTE:</b> %1</i>", i18n("If you wish to have an advanced MPD setup (e.g. multiple audio "
+                                   tr("<i><b>NOTE:</b> %1</i>").arg(tr("If you wish to have an advanced MPD setup (e.g. multiple audio "
                                         "outputs, full DSD support, etc) then you <b>must</b> choose 'Standard'")),
-                                   i18n("Add Collection"), GuiItem(i18n("Standard")), GuiItem(i18n("Basic")))) {
+                                   tr("Add Collection"), GuiItem(tr("Standard")), GuiItem(tr("Basic")))) {
         case MessageBox::Yes: addStandard=true; break;
         case MessageBox::No: addStandard=false; break;
         default: return;
@@ -310,8 +309,8 @@ void ServerSettings::remove()
     #else
     QString cName=name->text();
     #endif
-    if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete '%1'?", cName),
-                                                                       i18n("Delete"), StdGuiItem::del(), StdGuiItem::cancel())) {
+    if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, tr("Delete '%1'?").arg(cName),
+                                                                       tr("Delete"), StdGuiItem::del(), StdGuiItem::cancel())) {
         bool isLast=index==(combo->count()-1);
         combo->removeItem(index);
         combo->setCurrentIndex(isLast ? index-1 : index);
@@ -349,7 +348,7 @@ QString ServerSettings::generateName(int ignore) const
     }
 
     for (int i=1; i<512; ++i) {
-        n=i18n("New Collection %1", i);
+        n=tr("New Collection %1").arg(i);
         if (!collectionNames.contains(n)) {
             break;
         }
@@ -367,7 +366,7 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
         stackedWidget->setCurrentIndex(1);
     } else {
     #endif
-        name->setText(details.name.isEmpty() ? i18n("Default") : details.name);
+        name->setText(details.name.isEmpty() ? tr("Default") : details.name);
         host->setText(details.hostname);
         port->setValue(details.port);
         password->setText(details.password);

@@ -24,7 +24,6 @@
 #include "messageoverlay.h"
 #include "toolbutton.h"
 #include "icons.h"
-#include "support/localize.h"
 #include "support/utils.h"
 #include <QPainter>
 #include <QPaintEvent>
@@ -47,7 +46,7 @@ MessageOverlay::MessageOverlay(QObject *p)
     setMaximumHeight(spacing*2);
     cancelButton=new ToolButton(this);
     Icon::init(cancelButton);
-    cancelButton->setToolTip(i18n("Cancel"));
+    cancelButton->setToolTip(tr("Cancel"));
     cancelButton->setIcon(Icon::std(Icon::Close));
     cancelButton->adjustSize();
     connect(cancelButton, SIGNAL(clicked()), SIGNAL(cancel()));

@@ -21,7 +21,6 @@
  ****************************************************************************************/
 
 #include "valueslider.h"
-#include "support/localize.h"
 #include <QGridLayout>
 
 ValueSlider::ValueSlider(QWidget *parent)
@@ -96,7 +95,7 @@ void ValueSlider::onSliderChanged(int value)
     QString text=value<settings.count() ? settings.at(value).descr : QString();
 
     if (value==defaultSetting) {
-        text += i18n(" (recommended)");
+        text += tr(" (recommended)");
     }
 
     midLabel->setText(text);

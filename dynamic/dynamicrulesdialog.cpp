@@ -25,7 +25,6 @@
 #include "dynamicruledialog.h"
 #include "dynamic.h"
 #include "support/messagebox.h"
-#include "support/localize.h"
 #include "widgets/icons.h"
 #include "widgets/basicitemdelegate.h"
 #include <QIcon>
@@ -64,25 +63,25 @@ public:
 static QString translateStr(const QString &key)
 {
     if (Dynamic::constArtistKey==key) {
-        return i18n("Artist");
+        return QObject::tr("Artist");
     } else if (Dynamic::constSimilarArtistsKey==key) {
-        return i18n("SimilarArtists");
+        return QObject::tr("SimilarArtists");
     } else if (Dynamic::constAlbumArtistKey==key) {
-        return i18n("AlbumArtist");
+        return QObject::tr("AlbumArtist");
     } else if (Dynamic::constComposerKey==key) {
-        return i18n("Composer");
+        return QObject::tr("Composer");
     } else if (Dynamic::constCommentKey==key) {
-        return i18n("Comment");
+        return QObject::tr("Comment");
     } else if (Dynamic::constAlbumKey==key) {
-        return i18n("Album");
+        return QObject::tr("Album");
     } else if (Dynamic::constTitleKey==key) {
-        return i18n("Title");
+        return QObject::tr("Title");
     } else if (Dynamic::constGenreKey==key) {
-        return i18n("Genre");
+        return QObject::tr("Genre");
     } else if (Dynamic::constDateKey==key) {
-        return i18n("Date");
+        return QObject::tr("Date");
     } else if (Dynamic::constFileKey==key) {
-        return i18n("File");
+        return QObject::tr("File");
     } else {
         return key;
     }
@@ -94,14 +93,14 @@ static void update(QStandardItem *i, const Dynamic::Rule &rule)
     Dynamic::Rule::ConstIterator end(rule.constEnd());
     QMap<QString, QVariant> v;
     QString str;
-    QString type=i18n("Include");
+    QString type=QObject::tr("Include");
     bool exact=true;
     bool include=true;
 
     for (int count=0; it!=end; ++it, ++count) {
         if (Dynamic::constExcludeKey==it.key()) {
             if (QLatin1String("true")==it.value()) {
-                type=i18n("Exclude");
+                type=QObject::tr("Exclude");
                 include=false;
             }
         } else if (Dynamic::constExactKey==it.key()) {
@@ -124,7 +123,7 @@ static void update(QStandardItem *i, const Dynamic::Rule &rule)
     }
 
     if (exact) {
-        str+=i18n(" (Exact)");
+        str+=QObject::tr(" (Exact)");
     }
     i->setText(str);
     i->setData(v);
@@ -141,7 +140,7 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
     setMainWidget(mainWidet);
     setButtons(Ok|Cancel);
     enableButton(Ok, false);
-    setCaption(i18n("Dynamic Rules"));
+    setCaption(tr("Dynamic Rules"));
     setAttribute(Qt::WA_DeleteOnClose);
     connect(addBtn, SIGNAL(clicked()), SLOT(add()));
     connect(editBtn, SIGNAL(clicked()), SLOT(edit()));
@@ -164,8 +163,8 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
     rulesList->setItemDelegate(new BasicItemDelegate(rulesList));
     rulesList->setAlternatingRowColors(false);
 
-    minDuration->setSpecialValueText(i18n("None"));
-    maxDuration->setSpecialValueText(i18n("None"));
+    minDuration->setSpecialValueText(tr("None"));
+    maxDuration->setSpecialValueText(tr("None"));
 
     controlButtons();
     resize(500, 240);
@@ -300,9 +299,9 @@ void DynamicRulesDialog::showAbout()
 {
     MessageBox::information(this,
                          #ifdef Q_OS_MAC
-                         i18n("About dynamic rules")+QLatin1String("<br/><br/>")+
+                         tr("About dynamic rules")+QLatin1String("<br/><br/>")+
                          #endif
-                         i18n("<p>Cantata will query your library using all of the rules listed. "
+                         tr("<p>Cantata will query your library using all of the rules listed. "
                               "The list of <i>Include</i> rules will be used to build a set of songs that can be used. "
                               "The list of <i>Exclude</i> rules will be used to build a set of songs that cannot be used. "
                               "If there are no <i>Include</i> rules, Cantata will assume that all songs (bar those from <i>Exclude</i>) can be used.</p>"
@@ -322,7 +321,7 @@ void DynamicRulesDialog::saved(bool s)
     if (s) {
         accept();
     } else {
-        messageWidget->setError(i18n("Failed to save %1", nameText->text().trimmed()));
+        messageWidget->setError(tr("Failed to save %1").arg(nameText->text().trimmed()));
         controls->setEnabled(true);
     }
 }
@@ -340,8 +339,8 @@ bool DynamicRulesDialog::save()
     }
 
     if (name!=origName && Dynamic::self()->exists(name) &&
-        MessageBox::No==MessageBox::warningYesNo(this, i18n("A set of rules named '%1' already exists!\n\nOverwrite?", name),
-                                                  i18n("Overwrite Rules"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
+        MessageBox::No==MessageBox::warningYesNo(this, tr("A set of rules named '%1' already exists!\n\nOverwrite?").arg(name),
+                                                  tr("Overwrite Rules"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
         return false;
     }
 
@@ -374,7 +373,7 @@ bool DynamicRulesDialog::save()
 
     if (Dynamic::self()->isRemote()) {
         if (saved) {
-            messageWidget->setInformation(i18n("Saving %1", name));
+            messageWidget->setInformation(tr("Saving %1").arg(name));
             controls->setEnabled(false);
             enableButton(Ok, false);
         }

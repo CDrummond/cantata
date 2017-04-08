@@ -26,7 +26,6 @@
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "models/streamsmodel.h"
-#include "support/localize.h"
 #include <QRegExp>
 #include <QUrl>
 #include <QXmlStreamReader>
@@ -206,7 +205,7 @@ void StreamFetcher::doNext()
                 report=report.mid(StreamsModel::constPrefix.length());
             }
         }
-        emit status(i18n("Loading %1", report));
+        emit status(tr("Loading %1").arg(report));
         if (!currentName.isEmpty()) {
             current=current.left(current.length()-(currentName.length()+1));
         }

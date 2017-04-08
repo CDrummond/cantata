@@ -24,7 +24,6 @@
 #include "cddbinterface.h"
 #include "gui/settings.h"
 #include "network/networkproxyfactory.h"
-#include "support/localize.h"
 #include "support/thread.h"
 #include <QNetworkProxy>
 #include <QSet>
@@ -47,7 +46,7 @@ static struct CddbInterfaceCleanup
 
 QString CddbInterface::dataTrack()
 {
-    return i18n("Data Track");
+    return tr("Data Track");
 }
 
 CddbInterface::CddbInterface(const QString &device)
@@ -134,7 +133,7 @@ void CddbInterface::readDisc()
 
     int fd=open(dev.toLocal8Bit(), O_RDONLY | O_NONBLOCK);
     if (fd < 0) {
-        emit error(i18n("Failed to open CD device"));
+        emit error(tr("Failed to open CD device"));
         return;
     }
     QByteArray unknown=Song::unknown().toUtf8();
@@ -159,7 +158,7 @@ void CddbInterface::readDisc()
                     cddb_track_t *track = cddb_track_new();
                     if (track) {
                         cddb_track_set_frame_offset(track, te.entry.addr.lba + SECONDS_TO_FRAMES(2));
-                        cddb_track_set_title(track, te.entry.control&0x04 ? dataTrack().toUtf8().constData() : i18n("Track %1", i).toUtf8().constData());
+                        cddb_track_set_title(track, te.entry.control&0x04 ? dataTrack().toUtf8().constData() : tr("Track %1", i).toUtf8().constData());
                         cddb_track_set_artist(track, unknown.constData());
                         cddb_disc_add_track(disc, track);
                     }
@@ -185,7 +184,7 @@ void CddbInterface::readDisc()
                     cddb_track_t *track = cddb_track_new();
                     if (track) {
                         cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
-                        cddb_track_set_title(track, te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack().toUtf8().constData() : i18n("Track %1", i).toUtf8().constData());
+                        cddb_track_set_title(track, te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack().toUtf8().constData() : tr("Track %1").arg(i).toUtf8().constData());
                         cddb_track_set_artist(track, unknown.constData());
                         cddb_disc_add_track(disc, track);
                     }
@@ -275,18 +274,18 @@ void CddbInterface::lookup(bool full)
 
     CddbConnection cddb(disc);
     if (!cddb) {
-        emit error(i18n("Failed to create CDDB connection"));
+        emit error(tr("Failed to create CDDB connection"));
         return;
     }
 
     if (!checkConnection()) {
-        emit error(i18n("Failed to contact CDDB server, please check CDDB and network settings"));
+        emit error(tr("Failed to contact CDDB server, please check CDDB and network settings"));
         return;
     }
 
     if (cddb.query()<1) {
         if (!isInitial) {
-            emit error(i18n("No matches found in CDDB"));
+            emit error(tr("No matches found in CDDB"));
         }
         return;
     }
@@ -294,7 +293,7 @@ void CddbInterface::lookup(bool full)
     QList<CdAlbum> m;
     for (;;) {
         if (!cddb.read()) {
-            emit error(i18n("CDDB error: %1", cddb.error()));
+            emit error(tr("CDDB error: %1", cddb.error()));
             return;
         }
         int numTracks=cddb.trackCount();
@@ -313,7 +312,7 @@ void CddbInterface::lookup(bool full)
 
     if (m.isEmpty()) {
         if (!isInitial) {
-            emit error(i18n("No matches found in CDDB"));
+            emit error(tr("No matches found in CDDB"));
         }
     } else if (isInitial) {
         emit initialDetails(m.first());

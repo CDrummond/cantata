@@ -24,7 +24,6 @@
 #include "remotedevicepropertieswidget.h"
 #include "filenameschemedialog.h"
 #include "gui/covers.h"
-#include "support/localize.h"
 #include <QTabWidget>
 #include <QIcon>
 #include <QUrlQuery>
@@ -47,10 +46,10 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     if (qobject_cast<QTabWidget *>(parent)) {
         verticalLayout->setMargin(4);
     }
-    type->addItem(i18n("Samba Share"), (int)Type_Samba);
-    type->addItem(i18n("Samba Share (Auto-discover host and port)"), (int)Type_SambaAvahi);
-    type->addItem(i18n("Secure Shell (sshfs)"), (int)Type_SshFs);
-    type->addItem(i18n("Locally Mounted Folder"), (int)Type_File);
+    type->addItem(tr("Samba Share"), (int)Type_Samba);
+    type->addItem(tr("Samba Share (Auto-discover host and port)"), (int)Type_SambaAvahi);
+    type->addItem(tr("Secure Shell (sshfs)"), (int)Type_SshFs);
+    type->addItem(tr("Locally Mounted Folder"), (int)Type_File);
 }
 
 void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool create, bool isConnected)

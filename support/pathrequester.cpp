@@ -23,7 +23,6 @@
 
 #include "pathrequester.h"
 #include "icon.h"
-#include "localize.h"
 #include "utils.h"
 #include <QFileDialog>
 #include <QHBoxLayout>
@@ -54,8 +53,8 @@ PathRequester::PathRequester(QWidget *parent)
 void PathRequester::choose()
 {
     QString item=dirMode
-                    ? QFileDialog::getExistingDirectory(this, i18n("Select Folder"), text())
-                    : QFileDialog::getOpenFileName(this, i18n("Select File"), Utils::getDir(text()), filter);
+                    ? QFileDialog::getExistingDirectory(this, tr("Select Folder"), text())
+                    : QFileDialog::getOpenFileName(this, tr("Select File"), Utils::getDir(text()), filter);
     if (!item.isEmpty()) {
         setText(item);
     }

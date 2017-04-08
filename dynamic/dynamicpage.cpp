@@ -24,7 +24,6 @@
 #include "dynamicpage.h"
 #include "dynamic.h"
 #include "dynamicrulesdialog.h"
-#include "support/localize.h"
 #include "widgets/icons.h"
 #include "support/action.h"
 #include "support/configuration.h"
@@ -35,9 +34,9 @@
 DynamicPage::DynamicPage(QWidget *p)
     : SinglePageWidget(p)
 {
-    addAction = new Action(Icons::self()->addNewItemIcon, i18n("Add"), this);
-    editAction = new Action(Icons::self()->editIcon, i18n("Edit"), this);
-    removeAction = new Action(Icons::self()->removeIcon, i18n("Remove"), this);
+    addAction = new Action(Icons::self()->addNewItemIcon, tr("Add"), this);
+    editAction = new Action(Icons::self()->editIcon, tr("Edit"), this);
+    removeAction = new Action(Icons::self()->removeIcon, tr("Remove"), this);
     toggleAction = new Action(this);
 
     ToolButton *addBtn=new ToolButton(this);
@@ -78,7 +77,7 @@ DynamicPage::DynamicPage(QWidget *p)
                           "padding: 4px;"
                           "margin: 1px;"
                           "color: black; }"));
-    remoteRunningLabel->setText(i18n("Remote dynamizer is not running."));
+    remoteRunningLabel->setText(tr("Remote dynamizer is not running."));
     #endif
     Dynamic::self()->stopAct()->setEnabled(false);
     proxy.setSourceModel(Dynamic::self());
@@ -152,8 +151,8 @@ void DynamicPage::remove()
     QModelIndexList selected=view->selectedIndexes();
 
     if (selected.isEmpty() ||
-        MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected rules?\n\nThis cannot be undone."),
-                                                 i18n("Remove Dynamic Rules"), StdGuiItem::remove(), StdGuiItem::cancel())) {
+        MessageBox::No==MessageBox::warningYesNo(this, tr("Are you sure you wish to remove the selected rules?\n\nThis cannot be undone."),
+                                                 tr("Remove Dynamic Rules"), StdGuiItem::remove(), StdGuiItem::cancel())) {
         return;
     }
 

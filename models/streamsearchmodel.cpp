@@ -24,12 +24,10 @@
 #include "streamsearchmodel.h"
 #include "widgets/icons.h"
 #include "roles.h"
-#include "support/localize.h"
 #include "playqueuemodel.h"
 #include "network/networkaccessmanager.h"
 #include "gui/stdactions.h"
 #include "gui/settings.h"
-#include "gui/plurals.h"
 #include <QString>
 #include <QVariant>
 #include <QXmlStreamReader>
@@ -50,9 +48,9 @@ StreamSearchModel::StreamSearchModel(QObject *parent)
     , root(new StreamsModel::CategoryItem(QString(), "root"))
 {
     // ORDER *MUST* MATCH Category ENUM!!!!!
-    root->children.append(new StreamsModel::CategoryItem("http://opml.radiotime.com/Search.ashx", i18n("TuneIn"), root, getIcon("tunein")));
-    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist"), i18n("ShoutCast"), root, getIcon("shoutcast")));
-    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/search/"), i18n("Dirble"), root, getIcon("dirble")));
+    root->children.append(new StreamsModel::CategoryItem("http://opml.radiotime.com/Search.ashx", tr("TuneIn"), root, getIcon("tunein")));
+    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist"), tr("ShoutCast"), root, getIcon("shoutcast")));
+    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/search/"), tr("Dirble"), root, getIcon("dirble")));
 }
 
 StreamSearchModel::~StreamSearchModel()
@@ -110,9 +108,9 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
     if (!index.isValid()) {
         switch (role) {
         case Cantata::Role_TitleText:
-            return i18n("Stream Search");
+            return tr("Stream Search");
         case Cantata::Role_SubText:
-            return i18n("Search for radio streams");
+            return tr("Search for radio streams");
         case Qt::DecorationRole:
             return Icon("edit-find");
         }
@@ -139,11 +137,11 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
             const StreamsModel::CategoryItem *cat=static_cast<const StreamsModel::CategoryItem *>(item);
             switch (cat->state) {
             case StreamsModel::CategoryItem::Initial:
-                return root==item->parent ? i18n("Enter string to search") : i18n("Not Loaded");
+                return root==item->parent ? tr("Enter string to search") : tr("Not Loaded");
             case StreamsModel::CategoryItem::Fetching:
-                return i18n("Loading...");
+                return tr("Loading...");
             default:
-                return Plurals::entries(cat->children.count());
+                return tr("%n Entry(s)", "", cat->children.count());
             }
         } else {
             return item->subText.isEmpty() ? QLatin1String("-") : item->subText;

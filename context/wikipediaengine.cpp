@@ -23,7 +23,6 @@
 
 #include "wikipediaengine.h"
 #include "network/networkaccessmanager.h"
-#include "support/localize.h"
 #include "gui/settings.h"
 #include "gui/covers.h"
 #include "config.h"
@@ -275,7 +274,7 @@ static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
         answer.replace("<br><br><br>", "<br><br>");
 
         // Remove track listings - we take these from MPD...
-        QString listingText="<h2>"+i18n("Track listing")+"</h2>";
+        QString listingText="<h2>"+QObject::tr("Track listing")+"</h2>";
         start=answer.indexOf(listingText, 0, Qt::CaseInsensitive);
         if (-1!=start) {
             int end=answer.indexOf("<h2>", start+listingText.length(), Qt::CaseInsensitive);
@@ -328,8 +327,8 @@ void WikipediaEngine::setPreferedLangs(const QStringList &l)
 
 QString WikipediaEngine::translateLinks(QString text) const
 {
-    text=text.replace(constReadMorePlaceholder, i18n("Read more on wikipedia"));
-    text=text.replace(constOpenInBrowserPlaceholder, i18n("Open in browser"));
+    text=text.replace(constReadMorePlaceholder, QObject::tr("Read more on wikipedia"));
+    text=text.replace(constOpenInBrowserPlaceholder, QObject::tr("Open in browser"));
     return text;
 }
 
@@ -468,15 +467,15 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     switch (mode) {
     default:
     case Artist:
-        patterns=i18nc("Search pattern for an artist or band, separated by |", "artist|band|singer|vocalist|musician").split("|", QString::SkipEmptyParts);
+        patterns=tr("artist|band|singer|vocalist|musician", "Search pattern for an artist or band, separated by |").split("|", QString::SkipEmptyParts);
         englishPatterns=QString(QLatin1String("artist|band|singer|vocalist|musician")).split("|");
         break;
     case Album:
-        patterns=i18nc("Search pattern for an album, separated by |", "album|score|soundtrack").split("|", QString::SkipEmptyParts);
+        patterns=tr("album|score|soundtrack", "Search pattern for an album, separated by |").split("|", QString::SkipEmptyParts);
         englishPatterns=QString(QLatin1String("album|score|soundtrack")).split("|");
         break;
     case Track:
-//        patterns=i18nc("Search pattern for a song, separated by |", "song|track").split("|", QString::SkipEmptyParts);
+//        patterns=trc("Search pattern for a song, separated by |", "song|track").split("|", QString::SkipEmptyParts);
 //        englishPatterns=QString(QLatin1String("song|track")).split("|");
         break;
     }
@@ -576,7 +575,7 @@ void WikipediaEngine::parsePage()
 
     QStringList query=reply->property(constQueryProperty).toStringList();
     Mode mode=(Mode)reply->property(constModeProperty).toInt();
-    if (answer.contains(QLatin1String("{{disambiguation}}")) || answer.contains(QLatin1String("{{disambig}}"))) { // i18n???
+    if (answer.contains(QLatin1String("{{disambiguation}}")) || answer.contains(QLatin1String("{{disambig}}"))) { // tr???
         getPage(query, mode, hostLang);
         return;
     }

@@ -22,7 +22,6 @@
  */
 
 #include "librarydb.h"
-#include "support/localize.h"
 #include <QCoreApplication>
 #include <QSqlDatabase>
 #include <QSqlError>
@@ -546,7 +545,7 @@ bool LibraryDb::init(const QString &dbFile)
     currentVersion=0;
     db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE", dbName.isEmpty() ? QLatin1String(QSqlDatabase::defaultConnection) : dbName));
     if (!db || !db->isValid()) {
-        emit error(i18n("Database error - please check Qt SQLite driver is installed"));
+        emit error(tr("Database error - please check Qt SQLite driver is installed"));
         return false;
     }
     db->setDatabaseName(dbFile);

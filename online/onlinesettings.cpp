@@ -26,7 +26,6 @@
 #include "onlineservice.h"
 #include "widgets/basicitemdelegate.h"
 #include "support/icon.h"
-#include "support/localize.h"
 #include <QListWidget>
 
 enum Roles {

@@ -23,13 +23,11 @@
 
 #include "searchpage.h"
 #include "mpd-interface/mpdconnection.h"
-#include "support/localize.h"
 #include "settings.h"
 #include "stdactions.h"
 #include "customactions.h"
 #include "support/utils.h"
 #include "support/icon.h"
-#include "plurals.h"
 #include "widgets/tableview.h"
 #include "widgets/menubutton.h"
 #include "widgets/icons.h"
@@ -54,7 +52,7 @@ SearchPage::SearchPage(QWidget *p)
     , proxy(this)
 {
     statsLabel=new SqueezedTextLabel(this);
-    locateAction=new Action(Icons::self()->searchIcon, i18n("Locate In Library"), this);
+    locateAction=new Action(Icons::self()->searchIcon, tr("Locate In Library"), this);
     view->allowTableView(new SearchTableView(view));
 
     connect(&model, SIGNAL(searching()), view, SLOT(showSpinner()));
@@ -207,35 +205,35 @@ void SearchPage::setSearchCategories()
     state=newState;
     QList<SearchWidget::Category> categories;
 
-    categories << SearchWidget::Category(i18n("Artist:"), QLatin1String("artist"));
+    categories << SearchWidget::Category(tr("Artist:"), QLatin1String("artist"));
 
     if (state&State_ComposerSupported) {
-        categories << SearchWidget::Category(i18n("Composer:"), QLatin1String("composer"));
+        categories << SearchWidget::Category(tr("Composer:"), QLatin1String("composer"));
     }
     if (state&State_PerformerSupported) {
-        categories << SearchWidget::Category(i18n("Performer:"), QLatin1String("performer"));
+        categories << SearchWidget::Category(tr("Performer:"), QLatin1String("performer"));
     }
-    categories << SearchWidget::Category(i18n("Album:"), QLatin1String("album"))
-               << SearchWidget::Category(i18n("Title:"), QLatin1String("title"))
-               << SearchWidget::Category(i18n("Genre:"), QLatin1String("genre"));
+    categories << SearchWidget::Category(tr("Album:"), QLatin1String("album"))
+               << SearchWidget::Category(tr("Title:"), QLatin1String("title"))
+               << SearchWidget::Category(tr("Genre:"), QLatin1String("genre"));
     if (state&State_CommmentSupported) {
-        categories << SearchWidget::Category(i18n("Comment:"), QLatin1String("comment"));
+        categories << SearchWidget::Category(tr("Comment:"), QLatin1String("comment"));
     }
-    categories << SearchWidget::Category(i18n("Date:"), QLatin1String("date"),
-                                         i18n("Find songs be searching the 'Date' tag.<br/><br/>Usually just entering the year should suffice."));
+    categories << SearchWidget::Category(tr("Date:"), QLatin1String("date"),
+                                         tr("Find songs be searching the 'Date' tag.<br/><br/>Usually just entering the year should suffice."));
     if (state&State_ModifiedSupported) {
-        categories << SearchWidget::Category(i18n("Modified:"), MPDConnection::constModifiedSince,
-                                             i18n("Enter date (YYYY/MM/DD - e.g. 2015/01/31) to search for files modified since that date.<br/><br>"
+        categories << SearchWidget::Category(tr("Modified:"), MPDConnection::constModifiedSince,
+                                             tr("Enter date (YYYY/MM/DD - e.g. 2015/01/31) to search for files modified since that date.<br/><br>"
                                                   "Or enter a number of days to find files that were modified in the previous number of days."));
     }
-    categories << SearchWidget::Category(i18n("File:"), QLatin1String("file"))
-               << SearchWidget::Category(i18n("Any:"), QLatin1String("any"));
+    categories << SearchWidget::Category(tr("File:"), QLatin1String("file"))
+               << SearchWidget::Category(tr("Any:"), QLatin1String("any"));
     view->setSearchCategories(categories);
 }
 
 void SearchPage::statsUpdated(int songs, quint32 time)
 {
-    statsLabel->setText(0==songs ? i18n("No tracks found.") : Plurals::tracksWithDuration(songs, Utils::formatDuration(time)));
+    statsLabel->setText(0==songs ? tr("No tracks found.") : tr("%n Tracks (%1)", "", songs).arg(Utils::formatDuration(time)));
 }
 
 void SearchPage::locateSongs()

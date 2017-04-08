@@ -22,7 +22,6 @@
  */
 
 #include "volumeslider.h"
-#include "support/localize.h"
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdstatus.h"
 #include "support/action.h"
@@ -109,7 +108,7 @@ void VolumeSlider::initActions()
     if (muteAction) {
         return;
     }
-    muteAction = ActionCollection::get()->createAction("mute", i18n("Mute"));
+    muteAction = ActionCollection::get()->createAction("mute", tr("Mute"));
     addAction(muteAction);
     connect(muteAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(toggleMute()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateMpdStatus()));
@@ -212,14 +211,14 @@ void VolumeSlider::contextMenuEvent(QContextMenuEvent *ev)
     static const char *constValProp="val";
     if (!menu) {
         menu=new QMenu(this);
-        muteMenuAction=menu->addAction(i18n("Mute"));
+        muteMenuAction=menu->addAction(tr("Mute"));
         muteMenuAction->setProperty(constValProp, -1);
         for (int i=0; i<11; ++i) {
             menu->addAction(QString("%1%").arg(i*10))->setProperty(constValProp, i*10);
         }
     }
 
-    muteMenuAction->setText(MPDConnection::self()->isMuted() ? i18n("Unmute") : i18n("Mute"));
+    muteMenuAction->setText(MPDConnection::self()->isMuted() ? tr("Unmute") : tr("Mute"));
     QAction *ret = menu->exec(mapToGlobal(ev->pos()));
     if (ret) {
         int val=ret->property(constValProp).toInt();
@@ -266,7 +265,7 @@ void VolumeSlider::updateMpdStatus()
             }
         }
         setEnabled(true);
-        setToolTip(unmuteVolume>0 ? i18n("Volume %1% (Muted)", volume) : i18n("Volume %1%", volume));
+        setToolTip(unmuteVolume>0 ? tr("Volume %1% (Muted)").arg(volume) : tr("Volume %1%").arg(volume));
         setValue(volume);
     }
     setEnabled(volume>=0);

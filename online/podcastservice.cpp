@@ -26,7 +26,6 @@
 #include "rssparser.h"
 #include "support/utils.h"
 #include "gui/settings.h"
-#include "gui/plurals.h"
 #include "widgets/icons.h"
 #include "mpd-interface/mpdconnection.h"
 #include "config.h"
@@ -409,7 +408,7 @@ QString PodcastService::title() const
 
 QString PodcastService::descr() const
 {
-    return i18n("Subscribe to RSS feeds");
+    return tr("Subscribe to RSS feeds");
 }
 
 int PodcastService::rowCount(const QModelIndex &index) const
@@ -492,7 +491,7 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
         case Cantata::Role_TitleText:
             return title();
         case Cantata::Role_SubText:
-            return Plurals::podcasts(podcasts.count());
+            return tr("%n Podcast(s)", "", podcasts.count());
         case Qt::DecorationRole:
             return icon();
         }
@@ -518,14 +517,14 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
             return true;
         case Cantata::Role_MainText:
         case Qt::DisplayRole:
-            return i18nc("podcast name (num unplayed episodes)", "%1 (%2)", podcast->name, podcast->unplayedCount);
+            return tr("%1 (%2)", "podcast name (num unplayed episodes)").arg(podcast->name).arg(podcast->unplayedCount);
         case Cantata::Role_SubText:
-            return Plurals::episodes(podcast->episodes.count());
+            return tr("%n Episode(s)", "", podcast->episodes.count());
         case Qt::ToolTipRole:
             if (Settings::self()->infoTooltips()) {
                 return podcast->name+QLatin1String("<br/>")+
                        trimDescr(podcast->descr)+
-                       Plurals::episodes(podcast->episodes.count());
+                       tr("%n Episode(s)", "", podcast->episodes.count());
             }
             break;
         case Qt::FontRole:
@@ -557,7 +556,7 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
         case Cantata::Role_SubText:
             if (episode->downloadProg>=0) {
                 return Utils::formatTime(episode->duration, true)+QLatin1Char(' ')+
-                       i18n("(Downloading: %1%)", episode->downloadProg);
+                       tr("(Downloading: %1%)").arg(episode->downloadProg);
             }
             return episode->publishedDate.toString(Qt::LocalDate)+
                         (0==episode->duration
@@ -731,18 +730,18 @@ void PodcastService::rssJobFinished()
 
         if (!ch.isValid()) {
             if (isNew) {
-                emit newError(i18n("Failed to parse %1", j->origUrl().toString()));
+                emit newError(tr("Failed to parse %1").arg(j->origUrl().toString()));
             } else {
-                emit error(i18n("Failed to parse %1", j->origUrl().toString()));
+                emit error(tr("Failed to parse %1").arg(j->origUrl().toString()));
             }
             return;
         }
 
         if (ch.video) {
             if (isNew) {
-                emit newError(i18n("Cantata only supports audio podcasts! %1 contains only video podcasts.", j->origUrl().toString()));
+                emit newError(tr("Cantata only supports audio podcasts! %1 contains only video podcasts.").arg(j->origUrl().toString()));
             } else {
-                emit error(i18n("Cantata only supports audio podcasts! %1 contains only video podcasts.", j->origUrl().toString()));
+                emit error(tr("Cantata only supports audio podcasts! %1 contains only video podcasts.").arg(j->origUrl().toString()));
             }
             return;
         }
@@ -832,9 +831,9 @@ void PodcastService::rssJobFinished()
         }
     } else {
         if (isNew) {
-            emit newError(i18n("Failed to download %1", j->origUrl().toString()));
+            emit newError(tr("Failed to download %1").arg(j->origUrl().toString()));
         } else {
-            emit error(i18n("Failed to download %1", j->origUrl().toString()));
+            emit error(tr("Failed to download %1").arg(j->origUrl().toString()));
         }
     }
 }

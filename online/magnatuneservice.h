@@ -41,6 +41,7 @@ private:
 
 class MagnatuneService : public OnlineDbService
 {
+    Q_OBJECT
 public:
     enum MemberShip {
         MB_None,

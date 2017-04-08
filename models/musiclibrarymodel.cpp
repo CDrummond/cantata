@@ -30,11 +30,9 @@
 #include "musiclibraryitemroot.h"
 #include "musiclibrarymodel.h"
 #include "roles.h"
-#include "support/localize.h"
 #include "support/utils.h"
 #include "widgets/icons.h"
 #include "gui/settings.h"
-#include "gui/plurals.h"
 #include <QFile>
 #include <QTimer>
 #include <QStringRef>
@@ -185,7 +183,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
             if (Song::Playlist==song->song().type) {
-                return song->song().isCueFile() ? i18n("Cue Sheet") : i18n("Playlist");
+                return song->song().isCueFile() ? tr("Cue Sheet") : tr("Playlist");
             }
             if (MusicLibraryItem::Type_Root==song->parentItem()->itemType()) {
                 return song->song().trackAndTitleStr();
@@ -211,17 +209,17 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             MusicLibraryItemRoot *collection=static_cast<MusicLibraryItemRoot *>(item);
 
             if (collection->flat()) {
-                return Plurals::tracks(item->childCount());
+                return tr("%n Track(s)", "", item->childCount());
             }
-            return Plurals::artists(item->childCount());
+            return tr("%n Artist(s)", "", item->childCount());
         }
         case MusicLibraryItem::Type_Artist:
-            return Plurals::albums(item->childCount());
+            return tr("%n Album(s)", "", item->childCount());
         case MusicLibraryItem::Type_Song:
             return Utils::formatTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
         case MusicLibraryItem::Type_Album:
-            return Plurals::tracksWithDuration(static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
-                                               Utils::formatTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
+            return tr("%n Tracks (%1)", "", static_cast<MusicLibraryItemAlbum *>(item)->trackCount())
+                   .arg(Utils::formatTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
         default: return QVariant();
         }
     case Cantata::Role_ListImage:
@@ -247,7 +245,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
     }
     case Cantata::Role_TitleText:
         if (MusicLibraryItem::Type_Album==item->itemType()) {
-            return i18nc("Album by Artist", "%1 by %2", item->data(), item->parentItem()->data());
+            return tr("%1 by %2", "Album by Artist").arg(item->data()).arg(item->parentItem()->data());
         }
         return item->data();
     default:

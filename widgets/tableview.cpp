@@ -25,7 +25,6 @@
 #include "stretchheaderview.h"
 #include "basicitemdelegate.h"
 #include "ratingwidget.h"
-#include "support/localize.h"
 #include "support/configuration.h"
 #include "models/roles.h"
 #include "mpd-interface/song.h"
@@ -154,7 +153,7 @@ void TableView::initHeader()
 
     if (!menu) {
         menu = new QMenu(this);
-        QAction *stretch=new QAction(i18n("Stretch Columns To Fit Window"), this);
+        QAction *stretch=new QAction(tr("Stretch Columns To Fit Window"), this);
         stretch->setCheckable(true);
         stretch->setChecked(hdr->is_stretch_enabled());
         connect(stretch, SIGNAL(toggled(bool)), hdr, SLOT(SetStretchEnabled(bool)));
@@ -162,16 +161,16 @@ void TableView::initHeader()
 
         QMenu *alignmentMenu = new QMenu(menu);
         QActionGroup *alignGroup = new QActionGroup(alignmentMenu);
-        alignLeftAction = new QAction(i18n("Left"), alignGroup);
-        alignCenterAction = new QAction(i18n("Center"), alignGroup);
-        alignRightAction = new QAction(i18n("Right"), alignGroup);
+        alignLeftAction = new QAction(tr("Left"), alignGroup);
+        alignCenterAction = new QAction(tr("Center"), alignGroup);
+        alignRightAction = new QAction(tr("Right"), alignGroup);
 
         alignLeftAction->setCheckable(true);
         alignCenterAction->setCheckable(true);
         alignRightAction->setCheckable(true);
         alignmentMenu->addActions(alignGroup->actions());
         connect(alignGroup, SIGNAL(triggered(QAction*)), SLOT(alignmentChanged()));
-        alignAction=new QAction(i18n("Alignment"), menu);
+        alignAction=new QAction(tr("Alignment"), menu);
         alignAction->setMenu(alignmentMenu);
         menu->addAction(alignAction);
 

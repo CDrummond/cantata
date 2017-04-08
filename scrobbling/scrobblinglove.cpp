@@ -24,7 +24,6 @@
 #include "scrobblinglove.h"
 #include "scrobbler.h"
 #include "widgets/icons.h"
-#include "support/localize.h"
 
 ScrobblingLove::ScrobblingLove(QWidget *p)
     : ToolButton(p)
@@ -54,6 +53,6 @@ void ScrobblingLove::songChanged(bool valid)
 void ScrobblingLove::scrobblerChanged()
 {
     setToolTip(Scrobbler::self()->lovedTrack()
-                ? i18n("%1: Loved Current Track", Scrobbler::self()->activeScrobbler())
-                : i18n("%1: Love Current Track", Scrobbler::self()->activeScrobbler()));
+                ? tr("%1: Loved Current Track").arg(Scrobbler::self()->activeScrobbler())
+                : tr("%1: Love Current Track").arg(Scrobbler::self()->activeScrobbler()));
 }

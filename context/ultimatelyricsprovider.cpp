@@ -23,7 +23,6 @@
 
 #include "ultimatelyricsprovider.h"
 #include "network/networkaccessmanager.h"
-#include "support/localize.h"
 #include <QTextCodec>
 #include <QXmlStreamReader>
 #include <QUrl>
@@ -203,8 +202,8 @@ UltimateLyricsProvider::~UltimateLyricsProvider()
 QString UltimateLyricsProvider::displayName() const
 {
     QString n(name);
-    n.replace("(POLISH)", i18n("(Polish Translations)"));
-    n.replace("(PORTUGUESE)", i18n("(Portuguese Translations)"));
+    n.replace("(POLISH)", tr("(Polish Translations)"));
+    n.replace("(PORTUGUESE)", tr("(Portuguese Translations)"));
     return n;
 }
 

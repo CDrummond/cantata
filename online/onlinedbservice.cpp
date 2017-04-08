@@ -23,12 +23,10 @@
 
 #include "onlinedbservice.h"
 #include "gui/covers.h"
-#include "gui/plurals.h"
 #include "models/roles.h"
 #include "network/networkaccessmanager.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "db/onlinedb.h"
-#include "support/localize.h"
 #include <QXmlStreamReader>
 
 OnlineXmlParser::OnlineXmlParser()
@@ -61,11 +59,11 @@ void OnlineXmlParser::doParsing(NetworkJob *job)
             emit endUpdate();
             emit stats(artistCount);
         } else {
-            emit error(i18n("Failed to parse"));
+            emit error(tr("Failed to parse"));
             emit abortUpdate();
         }
     } else {
-        emit error(i18n("Failed to parse"));
+        emit error(tr("Failed to parse"));
     }
     emit complete();
 }
@@ -168,7 +166,7 @@ void OnlineDbService::downloadPercent(int pc)
 {
     if (lastPc!=pc) {
         lastPc=pc;
-        updateStatus(i18n("Downloading...%1%", pc));
+        updateStatus(tr("Downloading...%1%").arg(pc));
     }
 }
 
@@ -187,7 +185,7 @@ void OnlineDbService::downloadFinished()
     if (reply->ok()) {
         // Ensure DB is created
         static_cast<OnlineDb *>(db)->create();
-        updateStatus(i18n("Parsing music list...."));
+        updateStatus(tr("Parsing music list...."));
         OnlineXmlParser *parser=createParser();
         db->clear();
         connect(parser, SIGNAL(startUpdate()), static_cast<OnlineDb *>(db), SLOT(startUpdate()));
@@ -204,7 +202,7 @@ void OnlineDbService::downloadFinished()
     } else {
         reply->deleteLater();
         updateStatus(QString());
-        emit error(i18n("Failed to download"));
+        emit error(tr("Failed to download"));
     }
     job=0;
 }
@@ -213,7 +211,7 @@ void OnlineDbService::updateStats()
 {
     int numArtists=static_cast<OnlineDb *>(db)->getStats();
     if (numArtists>0) {
-        stats=Plurals::artists(numArtists);
+        stats=tr("%n Artist(s)", "", numArtists);
     } else {
         stats=QString();
     }

@@ -23,7 +23,6 @@
 
 #include "playbacksettings.h"
 #include "settings.h"
-#include "support/localize.h"
 #include "support/utils.h"
 #include "mpd-interface/mpdconnection.h"
 #include "support/icon.h"
@@ -44,10 +43,10 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     stopFadeDuration->setSingleStep(100);
 
     outputsView->setItemDelegate(new BasicItemDelegate(outputsView));
-    replayGain->addItem(i18n("None"), QVariant("off"));
-    replayGain->addItem(i18n("Track"), QVariant("track"));
-    replayGain->addItem(i18n("Album"), QVariant("album"));
-    replayGain->addItem(i18n("Auto"), QVariant("auto"));
+    replayGain->addItem(tr("None"), QVariant("off"));
+    replayGain->addItem(tr("Track"), QVariant("track"));
+    replayGain->addItem(tr("Album"), QVariant("album"));
+    replayGain->addItem(tr("Auto"), QVariant("auto"));
     connect(MPDConnection::self(), SIGNAL(replayGain(const QString &)), this, SLOT(replayGainSetting(const QString &)));
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(updateOutputs(const QList<Output> &)));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(mpdConnectionStateChanged(bool)));
@@ -160,17 +159,17 @@ void PlaybackSettings::mpdConnectionStateChanged(bool c)
     replayGain->setEnabled(rgSupported);
     messageIcon->setPixmap(Icon(c ? "dialog-information" : "dialog-warning").pixmap(messageIcon->minimumSize()));
     if (c) {
-        messageLabel->setText(i18n("<i>Connected to %1<br/>The entries below apply to the currently connected MPD collection.</i>",
-                                   MPDConnection::self()->getDetails().description()));
+        messageLabel->setText(tr("<i>Connected to %1<br/>The entries below apply to the currently connected MPD collection.</i>")
+                                 .arg(MPDConnection::self()->getDetails().description()));
     } else {
-        messageLabel->setText(i18n("<i>Not Connected!<br/>The entries below cannot be modified, as Cantata is not connected to MPD.</i>"));
+        messageLabel->setText(tr("<i>Not Connected!<br/>The entries below cannot be modified, as Cantata is not connected to MPD.</i>"));
         outputsView->clear();
     }
 }
 
 void PlaybackSettings::showAboutReplayGain()
 {
-    MessageBox::information(this, i18n("Replay Gain is a proposed standard published in 2001 to normalize the perceived loudness of computer "
+    MessageBox::information(this, tr("Replay Gain is a proposed standard published in 2001 to normalize the perceived loudness of computer "
                                        "audio formats such as MP3 and Ogg Vorbis. It works on a track/album basis, and is now supported in a "
                                        "growing number of players."
                                        "<br/><br/>The following ReplayGain settings may be used:<ul>"

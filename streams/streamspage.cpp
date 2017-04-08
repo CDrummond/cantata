@@ -26,7 +26,6 @@
 #include "streamssettings.h"
 #include "mpd-interface/mpdconnection.h"
 #include "support/messagebox.h"
-#include "support/localize.h"
 #include "widgets/icons.h"
 #include "gui/stdactions.h"
 #include "support/actioncollection.h"
@@ -101,11 +100,11 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     , settings(0)
 {
     QColor iconCol=Utils::monoIconColor();
-    importAction = new Action(MonoIcon::icon(FontAwesome::arrowright, iconCol), i18n("Import Streams Into Favorites"), this);
-    exportAction = new Action(MonoIcon::icon(FontAwesome::arrowleft, iconCol), i18n("Export Favorite Streams"), this);
-    addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favorites"));
-    editAction = new Action(Icons::self()->editIcon, i18n("Edit"), this);
-    searchAction = new Action(Icons::self()->searchIcon, i18n("Seatch For Streams"), this);
+    importAction = new Action(MonoIcon::icon(FontAwesome::arrowright, iconCol), tr("Import Streams Into Favorites"), this);
+    exportAction = new Action(MonoIcon::icon(FontAwesome::arrowleft, iconCol), tr("Export Favorite Streams"), this);
+    addAction = ActionCollection::get()->createAction("addstream", tr("Add New Stream To Favorites"));
+    editAction = new Action(Icons::self()->editIcon, tr("Edit"), this);
+    searchAction = new Action(Icons::self()->searchIcon, tr("Seatch For Streams"), this);
     connect(searchAction, SIGNAL(triggered()), this, SIGNAL(searchForStreams()));
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
@@ -139,7 +138,7 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     view->load(config);
 
     MenuButton *menuButton=new MenuButton(this);
-    Action *configureAction=new Action(Icons::self()->configureIcon, i18n("Configure"), this);
+    Action *configureAction=new Action(Icons::self()->configureIcon, tr("Configure"), this);
     connect(configureAction, SIGNAL(triggered()), SLOT(configure()));
     menuButton->addAction(createViewMenu(QList<ItemView::Mode>()  << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                                                                   << ItemView::Mode_DetailedTree << ItemView::Mode_List));
@@ -155,7 +154,7 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     menuButton->addAction(exportAction);
 
     diStatusLabel=new ServiceStatusLabel(this);
-    diStatusLabel->setText("DI", i18nc("Service name", "Digitally Imported"));
+    diStatusLabel->setText("DI", tr("Digitally Imported", "Service name"));
     connect(diStatusLabel, SIGNAL(clicked()), SLOT(diSettings()));
     updateDiStatus();  
     ToolButton *searchButton=new ToolButton(this);
@@ -251,8 +250,8 @@ void StreamsBrowsePage::diSettings()
 
 void StreamsBrowsePage::importXml()
 {
-    QString fileName=QFileDialog::getOpenFileName(this, i18n("Import Streams"), QDir::homePath(),
-                                                  i18n("XML Streams (*.xml *.xml.gz *.cantata)"));
+    QString fileName=QFileDialog::getOpenFileName(this, tr("Import Streams"), QDir::homePath(),
+                                                  tr("XML Streams (*.xml *.xml.gz *.cantata)"));
 
     if (fileName.isEmpty()) {
         return;
@@ -263,7 +262,7 @@ void StreamsBrowsePage::importXml()
 void StreamsBrowsePage::exportXml()
 {
     QLatin1String ext(".xml.gz");
-    QString fileName=QFileDialog::getSaveFileName(this, i18n("Export Streams"), QDir::homePath()+QLatin1String("/streams")+ext, i18n("XML Streams (*.xml.gz)"));
+    QString fileName=QFileDialog::getSaveFileName(this, tr("Export Streams"), QDir::homePath()+QLatin1String("/streams")+ext, tr("XML Streams (*.xml.gz)"));
 
     if (fileName.isEmpty()) {
         return;
@@ -274,7 +273,7 @@ void StreamsBrowsePage::exportXml()
     }
 
     if (!StreamsModel::self()->exportFavourites(fileName)) {
-        MessageBox::error(this, i18n("Failed to create '%1'!", fileName));
+        MessageBox::error(this, tr("Failed to create '%1'!").arg(fileName));
     }
 }
 
@@ -288,9 +287,9 @@ void StreamsBrowsePage::addStream()
         QString existingNameForUrl=StreamsModel::self()->favouritesNameForUrl(url);
 
         if (!existingNameForUrl.isEmpty()) {
-            MessageBox::error(this, i18n("Stream '%1' already exists!", existingNameForUrl));
+            MessageBox::error(this, tr("Stream '%1' already exists!").arg(existingNameForUrl));
         } else if (StreamsModel::self()->nameExistsInFavourites(name)) {
-            MessageBox::error(this, i18n("A stream named '%1' already exists!", name));
+            MessageBox::error(this, tr("A stream named '%1' already exists!").arg(name));
         } else {
             StreamsModel::self()->addToFavourites(url, name);
         }
@@ -309,9 +308,9 @@ void StreamsBrowsePage::addBookmark()
 
     // TODO: In future, if other categories support bookmarking, then we will need to calculate parent here!!!
     if (StreamsModel::self()->addBookmark(item->url, item->name, 0)) {
-        view->showMessage(i18n("Bookmark added"), constMsgDisplayTime);
+        view->showMessage(tr("Bookmark added"), constMsgDisplayTime);
     } else {
-        view->showMessage(i18n("Already bookmarked"), constMsgDisplayTime);
+        view->showMessage(tr("Already bookmarked"), constMsgDisplayTime);
     }
 }
 
@@ -361,7 +360,7 @@ void StreamsBrowsePage::addToFavourites(const QList<StreamItem> &items)
     }
 
     if (!added) {
-        view->showMessage(i18n("Already in favorites"), constMsgDisplayTime);
+        view->showMessage(tr("Already in favorites"), constMsgDisplayTime);
     }
 }
 
@@ -379,7 +378,7 @@ void StreamsBrowsePage::tuneInResolved()
     QString url=job->readAll().split('\n').first();
     QString name=job->property(constNameProperty).toString();
     if (!url.isEmpty() && !name.isEmpty() && !StreamsModel::self()->addToFavourites(url, name)) {
-        view->showMessage(i18n("Already in favorites"), constMsgDisplayTime);
+        view->showMessage(tr("Already in favorites"), constMsgDisplayTime);
     }
 }
 
@@ -407,7 +406,7 @@ void StreamsBrowsePage::reload()
         return;
     }
 
-    if (cat->children.isEmpty() || cat->cacheName.isEmpty() || MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Reload '%1' streams?", cat->name))) {
+    if (cat->children.isEmpty() || cat->cacheName.isEmpty() || MessageBox::Yes==MessageBox::questionYesNo(this, tr("Reload '%1' streams?").arg(cat->name))) {
         StreamsModel::self()->reload(mapped);
     }
 }
@@ -421,13 +420,13 @@ void StreamsBrowsePage::removeItems()
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
         if (item->isCategory() && item->parent) {
             if (item->parent->isBookmarks) {
-                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove bookmark to '%1'?", item->name))) {
+                if (MessageBox::No==MessageBox::warningYesNo(this, tr("Are you sure you wish to remove bookmark to '%1'?").arg(item->name))) {
                     return;
                 }
                 StreamsModel::self()->removeBookmark(mapped);
                 return;
             } else if (static_cast<const StreamsModel::CategoryItem *>(item)->isBookmarks) {
-                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove all '%1' bookmarks?", item->parent->name))) {
+                if (MessageBox::No==MessageBox::warningYesNo(this, tr("Are you sure you wish to remove all '%1' bookmarks?").arg(item->parent->name))) {
                     return;
                 }
                 StreamsModel::self()->removeAllBookmarks(mapped);
@@ -451,11 +450,11 @@ void StreamsBrowsePage::removeItems()
     }
 
     if (useable.size()>1) {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the %1 selected streams?", useable.size()))) {
+        if (MessageBox::No==MessageBox::warningYesNo(this, tr("Are you sure you wish to remove the %1 selected streams?").arg(useable.size()))) {
             return;
         }
     } else {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove '%1'?",
+        if (MessageBox::No==MessageBox::warningYesNo(this, tr("Are you sure you wish to remove '%1'?").arg(
                                                      StreamsModel::self()->data(useable.first(), Qt::DisplayRole).toString()))) {
             return;
         }
@@ -490,9 +489,9 @@ void StreamsBrowsePage::edit()
         QString existingNameForUrl=newUrl!=url ? StreamsModel::self()->favouritesNameForUrl(newUrl) : QString();
 
         if (!existingNameForUrl.isEmpty()) {
-            MessageBox::error(this, i18n("Stream '%1' already exists!", existingNameForUrl));
+            MessageBox::error(this, tr("Stream '%1' already exists!").arg(existingNameForUrl));
         } else if (newName!=name && StreamsModel::self()->nameExistsInFavourites(newName)) {
-            MessageBox::error(this, i18n("A stream named '%1' already exists!", newName));
+            MessageBox::error(this, tr("A stream named '%1' already exists!").arg(newName));
         } else {
             StreamsModel::self()->updateFavouriteStream(newUrl, newName, index);
         }
@@ -579,7 +578,7 @@ void StreamsBrowsePage::expandFavourites()
 
 void StreamsBrowsePage::addedToFavourites(const QString &name)
 {
-    view->showMessage(i18n("Added '%1'' to favorites", name), constMsgDisplayTime);
+    view->showMessage(tr("Added '%1'' to favorites").arg(name), constMsgDisplayTime);
 }
 
 StreamSearchPage::StreamSearchPage(QWidget *p)
@@ -660,5 +659,5 @@ void StreamSearchPage::addToFavourites()
 
 void StreamSearchPage::addedToFavourites(const QString &name)
 {
-    view->showMessage(i18n("Added '%1'' to favorites", name), constMsgDisplayTime);
+    view->showMessage(tr("Added '%1'' to favorites").arg(name), constMsgDisplayTime);
 }

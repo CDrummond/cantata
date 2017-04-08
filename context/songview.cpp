@@ -31,7 +31,6 @@
 #include "support/squeezedtextlabel.h"
 #include "support/utils.h"
 #include "support/messagebox.h"
-#include "support/localize.h"
 #include "support/monoicon.h"
 #ifdef TAGLIB_FOUND
 #include "tags/tags.h"
@@ -116,7 +115,7 @@ static QString actualFile(const Song &song)
 }
 
 SongView::SongView(QWidget *p)
-    : View(p, QStringList() << i18n("Lyrics") << i18n("Information") << i18n("Metadata"))
+    : View(p, QStringList() << tr("Lyrics") << tr("Information") << tr("Metadata"))
     , scrollTimer(0)
     , songPos(0)
     , currentProvider(-1)
@@ -129,10 +128,10 @@ SongView::SongView(QWidget *p)
     , metadataNeedsUpdating(true)
 {
     QColor iconCol=Utils::monoIconColor();
-    scrollAction = ActionCollection::get()->createAction("scrolllyrics", i18n("Scroll Lyrics"), MonoIcon::icon(FontAwesome::chevrondown, iconCol));
-    refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), Icons::self()->refreshIcon);
-    editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::self()->editIcon);
-    delAction = ActionCollection::get()->createAction("dellyrics", i18n("Delete Lyrics File"), Icons::self()->removeIcon);
+    scrollAction = ActionCollection::get()->createAction("scrolllyrics", tr("Scroll Lyrics"), MonoIcon::icon(FontAwesome::chevrondown, iconCol));
+    refreshAction = ActionCollection::get()->createAction("refreshlyrics", tr("Refresh Lyrics"), Icons::self()->refreshIcon);
+    editAction = ActionCollection::get()->createAction("editlyrics", tr("Edit Lyrics"), Icons::self()->editIcon);
+    delAction = ActionCollection::get()->createAction("dellyrics", tr("Delete Lyrics File"), Icons::self()->removeIcon);
 
     scrollAction->setCheckable(true);
     scrollAction->setChecked(Settings::self()->contextAutoScroll());
@@ -143,8 +142,8 @@ SongView::SongView(QWidget *p)
     connect(UltimateLyrics::self(), SIGNAL(lyricsReady(int, QString)), SLOT(lyricsReady(int, QString)));
 
     engine=ContextEngine::create(this);
-    refreshInfoAction = ActionCollection::get()->createAction("refreshtrack", i18n("Refresh Track Information"), Icons::self()->refreshIcon);
-    cancelInfoJobAction=new Action(Icons::self()->cancelIcon, i18n("Cancel"), this);
+    refreshInfoAction = ActionCollection::get()->createAction("refreshtrack", tr("Refresh Track Information"), Icons::self()->refreshIcon);
+    cancelInfoJobAction=new Action(Icons::self()->cancelIcon, tr("Cancel"), this);
     cancelInfoJobAction->setEnabled(false);
     connect(refreshInfoAction, SIGNAL(triggered()), SLOT(refreshInfo()));
     connect(cancelInfoJobAction, SIGNAL(triggered()), SLOT(abortInfoSearch()));
@@ -159,7 +158,7 @@ SongView::SongView(QWidget *p)
     connect(texts.at(Page_Information), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showInfoContextMenu(QPoint)));
     connect(this, SIGNAL(viewChanged()), this, SLOT(curentViewChanged()));
     setMode(Mode_Blank);
-    setStandardHeader(i18n("Track"));
+    setStandardHeader(tr("Track"));
     clear();
     toggleScroll();
     setCurrentView(Settings::self()->contextTrackView());
@@ -178,8 +177,8 @@ void SongView::update()
     bool cacheExists=!cacheName.isEmpty() && QFile::exists(cacheName);
 
     if (mpdExists || cacheExists) {
-        switch (MessageBox::warningYesNoCancel(this, i18n("Reload lyrics?\n\nReload from disk, or delete disk copy and download?"), i18n("Reload"),
-                                               GuiItem(i18n("Reload From Disk")), GuiItem(i18n("Download")))) {
+        switch (MessageBox::warningYesNoCancel(this, tr("Reload lyrics?\n\nReload from disk, or delete disk copy and download?"), tr("Reload"),
+                                               GuiItem(tr("Reload From Disk")), GuiItem(tr("Download")))) {
         case MessageBox::Yes:
             break;
         case MessageBox::No:
@@ -211,8 +210,8 @@ void SongView::search()
     LyricsDialog dlg(currentSong, this);
     if (QDialog::Accepted==dlg.exec()) {
         if ((song.artist!=currentSong.artist || song.title!=currentSong.title) &&
-                MessageBox::No==MessageBox::warningYesNo(this, i18n("Current playing song has changed, still perform search?"), i18n("Song Changed"),
-                                                         GuiItem(i18n("Perform Search")), StdGuiItem::cancel())) {
+                MessageBox::No==MessageBox::warningYesNo(this, tr("Current playing song has changed, still perform search?"), tr("Song Changed"),
+                                                         GuiItem(tr("Perform Search")), StdGuiItem::cancel())) {
             return;
         }
         QString mpdName=mpdFileName();
@@ -234,7 +233,7 @@ void SongView::edit()
 
 void SongView::del()
 {
-    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete lyrics file?"), i18n("Delete File"),
+    if (MessageBox::No==MessageBox::warningYesNo(this, tr("Delete lyrics file?"), tr("Delete File"),
                                                  StdGuiItem::del(), StdGuiItem::cancel())) {
         return;
     }
@@ -494,37 +493,37 @@ void SongView::loadMetadata()
 
             if (tagMap.isEmpty()) {
                 int pos=0;
-                tagMap.insert(QLatin1String("ARTIST"), MapEntry(pos++, i18n("Artist")));
-                tagMap.insert(QLatin1String("ALBUMARTIST"), MapEntry(pos++, i18n("Album artist")));
-                tagMap.insert(QLatin1String("COMPOSER"), MapEntry(pos++, i18n("Composer")));
+                tagMap.insert(QLatin1String("ARTIST"), MapEntry(pos++, tr("Artist")));
+                tagMap.insert(QLatin1String("ALBUMARTIST"), MapEntry(pos++, tr("Album artist")));
+                tagMap.insert(QLatin1String("COMPOSER"), MapEntry(pos++, tr("Composer")));
                 pos++;// For performer...
-                tagMap.insert(QLatin1String("LYRICIST"), MapEntry(pos++, i18n("Lyricist")));
-                tagMap.insert(QLatin1String("CONDUCTOR"), MapEntry(pos++, i18n("Conductor")));
-                tagMap.insert(QLatin1String("REMIXER"), MapEntry(pos++, i18n("Remixer")));
-                tagMap.insert(QLatin1String("ALBUM"), MapEntry(pos++, i18n("Album")));
-                tagMap.insert(QLatin1String("SUBTITLE"), MapEntry(pos++, i18n("Subtitle")));
-                tagMap.insert(QLatin1String("TRACKNUMBER"), MapEntry(pos++, i18n("Track number")));
-                tagMap.insert(QLatin1String("DISCNUMBER"), MapEntry(pos++, i18n("Disc number")));
-                tagMap.insert(QLatin1String("GENRE"), MapEntry(pos++, i18n("Genre")));
-                tagMap.insert(QLatin1String("DATE"), MapEntry(pos++, i18n("Date")));
-                tagMap.insert(QLatin1String("ORIGINALDATE"), MapEntry(pos++, i18n("Original date")));
-                tagMap.insert(QLatin1String("COMMENT"), MapEntry(pos++, i18n("Comment")));
-                tagMap.insert(QLatin1String("COPYRIGHT"), MapEntry(pos++, i18n("Copyright")));
-                tagMap.insert(QLatin1String("LABEL"), MapEntry(pos++, i18n("Label")));
-                tagMap.insert(QLatin1String("CATALOGNUMBER"), MapEntry(pos++, i18n("Catalogue number")));
-                tagMap.insert(QLatin1String("TITLESORT"), MapEntry(pos++, i18n("Title sort")));
-                tagMap.insert(QLatin1String("ARTISTSORT"), MapEntry(pos++, i18n("Artist sort")));
-                tagMap.insert(QLatin1String("ALBUMARTISTSORT"), MapEntry(pos++, i18n("Album artist sort")));
-                tagMap.insert(QLatin1String("ALBUMSORT"), MapEntry(pos++, i18n("Album sort")));
-                tagMap.insert(QLatin1String("ENCODEDBY"), MapEntry(pos++, i18n("Encoded by")));
-                tagMap.insert(QLatin1String("ENCODING"), MapEntry(pos++, i18n("Encoder")));
-                tagMap.insert(QLatin1String("MOOD"), MapEntry(pos++, i18n("Mood")));
-                tagMap.insert(QLatin1String("MEDIA"), MapEntry(pos++, i18n("Media")));
-                tagMap.insert(constAudio+QLatin1String("BITRATE"), MapEntry(pos++, i18n("Bitrate")));
-                tagMap.insert(constAudio+QLatin1String("SAMPLERATE"), MapEntry(pos++, i18n("Sample rate")));
-                tagMap.insert(constAudio+QLatin1String("CHANNELS"), MapEntry(pos++, i18n("Channels")));
+                tagMap.insert(QLatin1String("LYRICIST"), MapEntry(pos++, tr("Lyricist")));
+                tagMap.insert(QLatin1String("CONDUCTOR"), MapEntry(pos++, tr("Conductor")));
+                tagMap.insert(QLatin1String("REMIXER"), MapEntry(pos++, tr("Remixer")));
+                tagMap.insert(QLatin1String("ALBUM"), MapEntry(pos++, tr("Album")));
+                tagMap.insert(QLatin1String("SUBTITLE"), MapEntry(pos++, tr("Subtitle")));
+                tagMap.insert(QLatin1String("TRACKNUMBER"), MapEntry(pos++, tr("Track number")));
+                tagMap.insert(QLatin1String("DISCNUMBER"), MapEntry(pos++, tr("Disc number")));
+                tagMap.insert(QLatin1String("GENRE"), MapEntry(pos++, tr("Genre")));
+                tagMap.insert(QLatin1String("DATE"), MapEntry(pos++, tr("Date")));
+                tagMap.insert(QLatin1String("ORIGINALDATE"), MapEntry(pos++, tr("Original date")));
+                tagMap.insert(QLatin1String("COMMENT"), MapEntry(pos++, tr("Comment")));
+                tagMap.insert(QLatin1String("COPYRIGHT"), MapEntry(pos++, tr("Copyright")));
+                tagMap.insert(QLatin1String("LABEL"), MapEntry(pos++, tr("Label")));
+                tagMap.insert(QLatin1String("CATALOGNUMBER"), MapEntry(pos++, tr("Catalogue number")));
+                tagMap.insert(QLatin1String("TITLESORT"), MapEntry(pos++, tr("Title sort")));
+                tagMap.insert(QLatin1String("ARTISTSORT"), MapEntry(pos++, tr("Artist sort")));
+                tagMap.insert(QLatin1String("ALBUMARTISTSORT"), MapEntry(pos++, tr("Album artist sort")));
+                tagMap.insert(QLatin1String("ALBUMSORT"), MapEntry(pos++, tr("Album sort")));
+                tagMap.insert(QLatin1String("ENCODEDBY"), MapEntry(pos++, tr("Encoded by")));
+                tagMap.insert(QLatin1String("ENCODING"), MapEntry(pos++, tr("Encoder")));
+                tagMap.insert(QLatin1String("MOOD"), MapEntry(pos++, tr("Mood")));
+                tagMap.insert(QLatin1String("MEDIA"), MapEntry(pos++, tr("Media")));
+                tagMap.insert(constAudio+QLatin1String("BITRATE"), MapEntry(pos++, tr("Bitrate")));
+                tagMap.insert(constAudio+QLatin1String("SAMPLERATE"), MapEntry(pos++, tr("Sample rate")));
+                tagMap.insert(constAudio+QLatin1String("CHANNELS"), MapEntry(pos++, tr("Channels")));
 
-                tagTimeMap.insert(QLatin1String("TAGGING TIME"), MapEntry(pos++, i18n("Tagging time")));
+                tagTimeMap.insert(QLatin1String("TAGGING TIME"), MapEntry(pos++, tr("Tagging time")));
             }
 
             QMap<QString, QString> allTags=Tags::readAll(MPDConnection::self()->getDetails().dir+actualFile(currentSong));
@@ -546,7 +545,7 @@ void SongView::loadMetadata()
                     } else if (tagTimeMap.contains(it.key())) {
                         tags.insert(tagTimeMap[it.key()].val, createRow(tagTimeMap[it.key()].str, QString(it.value()).replace("T", " ")));
                     } else if (it.key().startsWith(constPerformer)) {
-                        tags.insert(3, createRow(i18n("Performer (%1)", clean(it.key().mid(constPerformer.length()))), it.value()));
+                        tags.insert(3, createRow(tr("Performer (%1)").arg(clean(it.key().mid(constPerformer.length()))), it.value()));
                     } else {
                         tags.insert(tagMap.count()+tagTimeMap.count(), createRow(clean(it.key()), it.value()));
                     }
@@ -559,31 +558,31 @@ void SongView::loadMetadata()
     int audioPos=1024;
     if (audioProperties.isEmpty()) {
         if (MPDStatus::self()->bitrate()>0) {
-            audioProperties.insert(audioPos++, createRow(i18n("Bitrate"), i18n("%1 kb/s", MPDStatus::self()->bitrate())));
+            audioProperties.insert(audioPos++, createRow(tr("Bitrate"), tr("%1 kb/s").arg(MPDStatus::self()->bitrate())));
         }
         if (MPDStatus::self()->samplerate()>0) {
-            audioProperties.insert(audioPos++, createRow(i18n("Sample rate"), i18n("%1 Hz", MPDStatus::self()->samplerate())));
+            audioProperties.insert(audioPos++, createRow(tr("Sample rate"), tr("%1 Hz").arg(MPDStatus::self()->samplerate())));
         }
         if (MPDStatus::self()->channels()>0) {
-            audioProperties.insert(audioPos++, createRow(i18n("Channels"), QString::number(MPDStatus::self()->channels())));
+            audioProperties.insert(audioPos++, createRow(tr("Channels"), QString::number(MPDStatus::self()->channels())));
         }
     }
     if (MPDStatus::self()->bits()>0) {
-        audioProperties.insert(audioPos++, createRow(i18n("Bits"), QString::number(MPDStatus::self()->bits())));
+        audioProperties.insert(audioPos++, createRow(tr("Bits"), QString::number(MPDStatus::self()->bits())));
     }
 
     if (tags.isEmpty()) {
         int pos=0;
-        tags.insert(pos++, createRow(i18n("Artist"), currentSong.artist));
-        tags.insert(pos++, createRow(i18n("Album artist"), currentSong.albumartist));
-        tags.insert(pos++, createRow(i18n("Composer"), currentSong.composer()));
-        tags.insert(pos++, createRow(i18n("Performer"), currentSong.performer()));
-        tags.insert(pos++, createRow(i18n("Album"), currentSong.album));
-        tags.insert(pos++, createRow(i18n("Track number"), 0==currentSong.track ? QString() : QString::number(currentSong.track)));
-        tags.insert(pos++, createRow(i18n("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc)));
-        tags.insert(pos++, createRow(i18n("Genre"), currentSong.displayGenre()));
-        tags.insert(pos++, createRow(i18n("Year"), 0==currentSong.track ? QString() : QString::number(currentSong.year)));
-        tags.insert(pos++, createRow(i18n("Comment"), fixNewLine(currentSong.comment())));
+        tags.insert(pos++, createRow(tr("Artist"), currentSong.artist));
+        tags.insert(pos++, createRow(tr("Album artist"), currentSong.albumartist));
+        tags.insert(pos++, createRow(tr("Composer"), currentSong.composer()));
+        tags.insert(pos++, createRow(tr("Performer"), currentSong.performer()));
+        tags.insert(pos++, createRow(tr("Album"), currentSong.album));
+        tags.insert(pos++, createRow(tr("Track number"), 0==currentSong.track ? QString() : QString::number(currentSong.track)));
+        tags.insert(pos++, createRow(tr("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc)));
+        tags.insert(pos++, createRow(tr("Genre"), currentSong.displayGenre()));
+        tags.insert(pos++, createRow(tr("Year"), 0==currentSong.track ? QString() : QString::number(currentSong.year)));
+        tags.insert(pos++, createRow(tr("Comment"), fixNewLine(currentSong.comment())));
     }
 
     QString tagInfo;
@@ -619,10 +618,10 @@ void SongView::loadMetadata()
     }
     if (MPDConnection::self()->getDetails().dirReadable) {
         QString path=Utils::getDir(MPDConnection::self()->getDetails().dir+currentSong.filePath());
-        tagInfo+=createRow(i18n("Filename"), QLatin1String("<a href=\"file://")+path+QLatin1String("\">")+
+        tagInfo+=createRow(tr("Filename"), QLatin1String("<a href=\"file://")+path+QLatin1String("\">")+
                                              currentSong.filePath()+QLatin1String("</a>"));
     } else {
-        tagInfo+=createRow(i18n("Filename"), currentSong.filePath());
+        tagInfo+=createRow(tr("Filename"), currentSong.filePath());
     }
     tagInfo+=QLatin1String("</table>");
 
@@ -843,7 +842,7 @@ void SongView::getLyrics()
 {
     currentProv=UltimateLyrics::self()->getNext(currentProvider);
     if (currentProv) {
-        text->setText(i18n("Fetching lyrics via %1", currentProv->displayName()));
+        text->setText(tr("Fetching lyrics via %1").arg(currentProv->displayName()));
         currentProv->fetchInfo(currentRequest, currentSong);
         showSpinner();
     } else {

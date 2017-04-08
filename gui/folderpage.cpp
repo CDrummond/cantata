@@ -24,7 +24,6 @@
 #include "folderpage.h"
 #include "mpd-interface/mpdconnection.h"
 #include "settings.h"
-#include "support/localize.h"
 #include "support/messagebox.h"
 #include "support/action.h"
 #include "support/utils.h"
@@ -42,7 +41,7 @@ FolderPage::FolderPage(QWidget *p)
     , model(this)
 {
     QColor col=Utils::monoIconColor();
-    browseAction = new Action(MonoIcon::icon(FontAwesome::folderopen, col), i18n("Open In File Manager"), this);
+    browseAction = new Action(MonoIcon::icon(FontAwesome::folderopen, col), tr("Open In File Manager"), this);
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(browseAction, SIGNAL(triggered()), this, SLOT(openFileManager()));
@@ -218,8 +217,8 @@ void FolderPage::deleteSongs()
     QList<Song> songs=selectedSongs();
 
     if (!songs.isEmpty()) {
-        if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to delete the selected songs?\n\nThis cannot be undone."),
-                                                      i18n("Delete Songs"), StdGuiItem::del(), StdGuiItem::cancel())) {
+        if (MessageBox::Yes==MessageBox::warningYesNo(this, tr("Are you sure you wish to delete the selected songs?\n\nThis cannot be undone."),
+                                                      tr("Delete Songs"), StdGuiItem::del(), StdGuiItem::cancel())) {
             emit deleteSongs(QString(), songs);
         }
         view->clearSelection();

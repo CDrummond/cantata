@@ -31,6 +31,7 @@ class NetworkJob;
 
 class OnlineSearchService : public SearchModel, public OnlineService
 {
+    Q_OBJECT
 public:
     OnlineSearchService(QObject *p);
     virtual ~OnlineSearchService() { cancel(); }

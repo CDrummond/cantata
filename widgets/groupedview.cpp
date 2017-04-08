@@ -25,12 +25,9 @@
 #include "groupedview.h"
 #include "mpd-interface/mpdstatus.h"
 #include "mpd-interface/song.h"
-#include "actionitemdelegate.h"
 #include "basicitemdelegate.h"
 #include "itemview.h"
 #include "config.h"
-#include "support/localize.h"
-#include "gui/plurals.h"
 #include "widgets/icons.h"
 #include "widgets/ratingwidget.h"
 #include "support/gtkstyle.h"
@@ -188,289 +185,281 @@ static QString streamText(const Song &song, const QString &trackTitle, bool useN
     }
 }
 
-class GroupedViewDelegate : public ActionItemDelegate
+GroupedViewDelegate::GroupedViewDelegate(GroupedView *p)
+    : ActionItemDelegate(p)
+    , view(p)
+    , ratingPainter(0)
 {
-public:
-    GroupedViewDelegate(GroupedView *p)
-        : ActionItemDelegate(p)
-        , view(p)
-        , ratingPainter(0)
-    {
+}
+
+GroupedViewDelegate::~GroupedViewDelegate()
+{
+    delete ratingPainter;
+}
+
+QSize GroupedViewDelegate::sizeHint(int type, bool isCollection) const
+{
+    int textHeight = QApplication::fontMetrics().height()*sizeAdjust;
+
+    if (isCollection || AlbumHeader==type) {
+        return QSize(64, qMax(constCoverSize, (qMax(constIconSize, textHeight)*2)+constBorder)+(2*constBorder));
+    }
+    return QSize(64, qMax(constIconSize, textHeight)+(2*constBorder));
+}
+
+QSize GroupedViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    if (0==index.column()) {
+        return sizeHint(getType(index), index.data(Cantata::Role_IsCollection).toBool());
+    }
+    return QStyledItemDelegate::sizeHint(option, index);
+}
+
+void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    if (!index.isValid()) {
+        return;
     }
 
-    virtual ~GroupedViewDelegate()
-    {
-        delete ratingPainter;
-    }
+    Type type=getType(index);
+    bool isCollection=index.data(Cantata::Role_IsCollection).toBool();
+    Song song=index.data(Cantata::Role_SongWithRating).value<Song>();
+    int state=index.data(Cantata::Role_Status).toInt();
+    quint32 collection=index.data(Cantata::Role_CollectionId).toUInt();
+    bool selected=option.state&QStyle::State_Selected;
+    bool mouseOver=underMouse && option.state&QStyle::State_MouseOver;
+    bool gtk=mouseOver && GtkStyle::isActive();
+    bool rtl=QApplication::isRightToLeft();
 
-    QSize sizeHint(Type type, bool isCollection) const
-    {
-        int textHeight = QApplication::fontMetrics().height()*sizeAdjust;
-
-        if (isCollection || AlbumHeader==type) {
-            return QSize(64, qMax(constCoverSize, (qMax(constIconSize, textHeight)*2)+constBorder)+(2*constBorder));
-        }
-        return QSize(64, qMax(constIconSize, textHeight)+(2*constBorder));
-    }
-
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        if (0==index.column()) {
-            return sizeHint(getType(index), index.data(Cantata::Role_IsCollection).toBool());
-        }
-        return QStyledItemDelegate::sizeHint(option, index);
-    }
-
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        if (!index.isValid()) {
-            return;
-        }
-
-        Type type=getType(index);
-        bool isCollection=index.data(Cantata::Role_IsCollection).toBool();
-        Song song=index.data(Cantata::Role_SongWithRating).value<Song>();
-        int state=index.data(Cantata::Role_Status).toInt();
-        quint32 collection=index.data(Cantata::Role_CollectionId).toUInt();
-        bool selected=option.state&QStyle::State_Selected;
-        bool mouseOver=underMouse && option.state&QStyle::State_MouseOver;
-        bool gtk=mouseOver && GtkStyle::isActive();
-        bool rtl=QApplication::isRightToLeft();
-
-        if (!isCollection && AlbumHeader==type) {
-            if (mouseOver && gtk) {
-                GtkStyle::drawSelection(option, painter, (selected ? 0.75 : 0.25)*0.75);
-            } else {
-                painter->save();
-                painter->setOpacity(0.75);
-                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, view);
-                painter->restore();
-            }
+    if (!isCollection && AlbumHeader==type) {
+        if (mouseOver && gtk) {
+            GtkStyle::drawSelection(option, painter, (selected ? 0.75 : 0.25)*0.75);
+        } else {
             painter->save();
-            painter->setClipRect(option.rect.adjusted(0, option.rect.height()/2, 0, 0), Qt::IntersectClip);
-            if (mouseOver && gtk) {
-                GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
-            } else {
-                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, view);
-            }
+            painter->setOpacity(0.75);
+            QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, view);
             painter->restore();
-            if (!state && !view->isExpanded(song.key, collection) && view->isCurrentAlbum(song.key)) {
-                QVariant cs=index.data(Cantata::Role_CurrentStatus);
-                if (cs.isValid()) {
-                    state=cs.toInt();
-                }
-            }
-        } else {
-            if (mouseOver && gtk) {
-                GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
-            } else {
-                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, view);
-            }
         }
-        QString title;
-        QString track;
-        QString duration=song.time>0 ? Utils::formatTime(song.time) : QString();
-        bool stream=!isCollection && song.isStandardStream();
-        bool isEmpty=song.title.isEmpty() && song.artist.isEmpty() && !song.file.isEmpty();
-        QString trackTitle=isEmpty
-                        ? song.file
-                        : song.diffArtist()
-                            ? song.artistSong()
-                            : song.title;
-        QFont f(QApplication::font());
-        if (stream) {
-            f.setItalic(true);
-        }
-        QFontMetrics fm(f);
-        int textHeight=fm.height()*sizeAdjust;
-
-
-        if (isCollection) {
-            title=index.data(Qt::DisplayRole).toString();
-        } else if (AlbumHeader==type) {
-            if (stream) {
-                QModelIndex next=index.sibling(index.row()+1, 0);
-                quint16 nextKey=next.isValid() ? next.data(Cantata::Role_Key).toUInt() : (quint16)Song::Null_Key;
-                if (nextKey!=song.key && !song.name().isEmpty()) {
-                    title=song.name();
-                    track=streamText(song, trackTitle, false);
-                } else {
-                    title=song.isCdda() ? i18n("Audio CD") : i18n("Streams");
-                    track=streamText(song, trackTitle);
-                }
-            } else if (isEmpty) {
-                title=Song::unknown();
-                track=trackTitle;
-            } else if (song.album.isEmpty()) {
-                title=song.artistOrComposer();
-                track=song.trackAndTitleStr();
-            } else {
-                if (song.isFromOnlineService()) {
-                    title=Song::displayAlbum(song.albumName(), Song::albumYear(song));
-                } else {
-                    title=song.artistOrComposer()+QLatin1String(" - ")+Song::displayAlbum(song.albumName(), Song::albumYear(song));
-                }
-                track=song.trackAndTitleStr();
-            }
-        } else {
-            if (stream) {
-                track=streamText(song, trackTitle);
-            } else {
-                track=song.trackAndTitleStr();
-            }
-        }
-
-        if (song.priority>0) {
-            track=track+QLatin1String(" [")+QString::number(song.priority)+QChar(']');
-        }
-
         painter->save();
-        painter->setFont(f);
-        #ifdef Q_OS_WIN
-        QColor textColor(option.palette.color(QPalette::Text));
-        #else
-        QColor textColor(option.palette.color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
-        #endif
-        QTextOption textOpt(Qt::AlignVCenter);
-        QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));
+        painter->setClipRect(option.rect.adjusted(0, option.rect.height()/2, 0, 0), Qt::IntersectClip);
+        if (mouseOver && gtk) {
+            GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
+        } else {
+            QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, view);
+        }
+        painter->restore();
+        if (!state && !view->isExpanded(song.key, collection) && view->isCurrentAlbum(song.key)) {
+            QVariant cs=index.data(Cantata::Role_CurrentStatus);
+            if (cs.isValid()) {
+                state=cs.toInt();
+            }
+        }
+    } else {
+        if (mouseOver && gtk) {
+            GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
+        } else {
+            QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, view);
+        }
+    }
+    QString title;
+    QString track;
+    QString duration=song.time>0 ? Utils::formatTime(song.time) : QString();
+    bool stream=!isCollection && song.isStandardStream();
+    bool isEmpty=song.title.isEmpty() && song.artist.isEmpty() && !song.file.isEmpty();
+    QString trackTitle=isEmpty
+            ? song.file
+            : song.diffArtist()
+              ? song.artistSong()
+              : song.title;
+    QFont f(QApplication::font());
+    if (stream) {
+        f.setItalic(true);
+    }
+    QFontMetrics fm(f);
+    int textHeight=fm.height()*sizeAdjust;
 
-        if (state && GroupedView::State_StopAfterTrack!=state) {
-            QRectF border(option.rect.x()+1.5, option.rect.y()+1.5, option.rect.width()-3, option.rect.height()-3);
-            if (!title.isEmpty()) {
-                border.adjust(0, (border.height()/2)+1, 0, 0);
+
+    if (isCollection) {
+        title=index.data(Qt::DisplayRole).toString();
+    } else if (AlbumHeader==type) {
+        if (stream) {
+            QModelIndex next=index.sibling(index.row()+1, 0);
+            quint16 nextKey=next.isValid() ? next.data(Cantata::Role_Key).toUInt() : (quint16)Song::Null_Key;
+            if (nextKey!=song.key && !song.name().isEmpty()) {
+                title=song.name();
+                track=streamText(song, trackTitle, false);
+            } else {
+                title=song.isCdda() ? tr("Audio CD") : tr("Streams");
+                track=streamText(song, trackTitle);
             }
-            #ifdef Q_OS_MAC
-            QColor gradCol(OSXStyle::self()->viewPalette().color(QPalette::Highlight));
-            QColor borderCol(OSXStyle::self()->viewPalette().color(selected ? QPalette::HighlightedText : QPalette::Highlight));
-            #else
-            QColor gradCol(QApplication::palette().color(QPalette::Highlight));
-            QColor borderCol(QApplication::palette().color(selected ? QPalette::HighlightedText : QPalette::Highlight));
-            #endif
-            if (!selected) {
-                borderCol.setAlphaF(0.5);
+        } else if (isEmpty) {
+            title=Song::unknown();
+            track=trackTitle;
+        } else if (song.album.isEmpty()) {
+            title=song.artistOrComposer();
+            track=song.trackAndTitleStr();
+        } else {
+            if (song.isFromOnlineService()) {
+                title=Song::displayAlbum(song.albumName(), Song::albumYear(song));
+            } else {
+                title=song.artistOrComposer()+QLatin1String(" - ")+Song::displayAlbum(song.albumName(), Song::albumYear(song));
             }
-            gradCol.setAlphaF(selected ? 0.4 : 0.25);
-            painter->setRenderHint(QPainter::Antialiasing, true);
-            int radius=Utils::scaleForDpi(3);
-            painter->fillPath(Utils::buildPath(border, radius), gradCol);
-            painter->setPen(QPen(borderCol, 1));
-            painter->drawPath(Utils::buildPath(border, radius));
-            painter->setRenderHint(QPainter::Antialiasing, false);
+            track=song.trackAndTitleStr();
+        }
+    } else {
+        if (stream) {
+            track=streamText(song, trackTitle);
+        } else {
+            track=song.trackAndTitleStr();
+        }
+    }
+
+    if (song.priority>0) {
+        track=track+QLatin1String(" [")+QString::number(song.priority)+QChar(']');
+    }
+
+    painter->save();
+    painter->setFont(f);
+    #ifdef Q_OS_WIN
+    QColor textColor(option.palette.color(QPalette::Text));
+    #else
+    QColor textColor(option.palette.color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
+    #endif
+    QTextOption textOpt(Qt::AlignVCenter);
+    QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));
+
+    if (state && GroupedView::State_StopAfterTrack!=state) {
+        QRectF border(option.rect.x()+1.5, option.rect.y()+1.5, option.rect.width()-3, option.rect.height()-3);
+        if (!title.isEmpty()) {
+            border.adjust(0, (border.height()/2)+1, 0, 0);
+        }
+        #ifdef Q_OS_MAC
+        QColor gradCol(OSXStyle::self()->viewPalette().color(QPalette::Highlight));
+        QColor borderCol(OSXStyle::self()->viewPalette().color(selected ? QPalette::HighlightedText : QPalette::Highlight));
+        #else
+        QColor gradCol(QApplication::palette().color(QPalette::Highlight));
+        QColor borderCol(QApplication::palette().color(selected ? QPalette::HighlightedText : QPalette::Highlight));
+        #endif
+        if (!selected) {
+            borderCol.setAlphaF(0.5);
+        }
+        gradCol.setAlphaF(selected ? 0.4 : 0.25);
+        painter->setRenderHint(QPainter::Antialiasing, true);
+        int radius=Utils::scaleForDpi(3);
+        painter->fillPath(Utils::buildPath(border, radius), gradCol);
+        painter->setPen(QPen(borderCol, 1));
+        painter->drawPath(Utils::buildPath(border, radius));
+        painter->setRenderHint(QPainter::Antialiasing, false);
+    }
+
+    painter->setPen(textColor);
+    bool showTrackDuration=!duration.isEmpty();
+
+    if (isCollection || AlbumHeader==type) {
+        QPixmap pix;
+        // Draw cover...
+        if (isCollection) {
+            pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constCoverSize, constCoverSize,
+                                                                     selected && textColor==qApp->palette().color(QPalette::HighlightedText)
+                                                                     ? QIcon::Selected : QIcon::Normal);
+        } else {
+            QPixmap *cover=/*stream ? 0 : */Covers::self()->get(song, constCoverSize);
+            pix=cover ? *cover : (stream && !song.isCdda() ? Icons::self()->streamIcon : Icons::self()->albumIcon(constCoverSize)).pixmap(constCoverSize, constCoverSize);
         }
 
-        painter->setPen(textColor);
-        bool showTrackDuration=!duration.isEmpty();
+        int maxSize=constCoverSize*pix.devicePixelRatio();
 
-        if (isCollection || AlbumHeader==type) {
-            QPixmap pix;
-            // Draw cover...
-            if (isCollection) {
-                pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constCoverSize, constCoverSize,
-                                                                         selected && textColor==qApp->palette().color(QPalette::HighlightedText)
-                                                                            ? QIcon::Selected : QIcon::Normal);
-            } else {
-                QPixmap *cover=/*stream ? 0 : */Covers::self()->get(song, constCoverSize);
-                pix=cover ? *cover : (stream && !song.isCdda() ? Icons::self()->streamIcon : Icons::self()->albumIcon(constCoverSize)).pixmap(constCoverSize, constCoverSize);
-            }
+        if (pix.width()>maxSize) {
+            pix=pix.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        }
 
-            int maxSize=constCoverSize*pix.devicePixelRatio();
+        QSize pixSize = pix.isNull() ? QSize(0, 0) : (pix.size() / pix.devicePixelRatio());
 
-            if (pix.width()>maxSize) {
-                pix=pix.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            }
-
-            QSize pixSize = pix.isNull() ? QSize(0, 0) : (pix.size() / pix.devicePixelRatio());
-
-            if (rtl) {
-                painter->drawPixmap(r.x()+r.width()-(pixSize.width()-constBorder), r.y()+((r.height()-pixSize.height())/2), pixSize.width(), pixSize.height(), pix);
-                r.adjust(0, 0, -(constCoverSize+constBorder), 0);
-            } else {
-                painter->drawPixmap(r.x()-2, r.y()+((r.height()-pixSize.height())/2), pixSize.width(), pixSize.height(), pix);
-                r.adjust(constCoverSize+constBorder, 0, 0, 0);
-            }
-
-            int td=index.data(Cantata::Role_AlbumDuration).toUInt();
-            QString totalDuration=td>0 ? Utils::formatTime(td) : QString();
-            QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
-            int totalDurationWidth=fm.width(totalDuration)+8;
-            QRect textRect(r.x(), r.y(), r.width()-(rtl ? (4*constBorder) : totalDurationWidth), textHeight);
-            QFont tf(f);
-            tf.setBold(true);
-            title = QFontMetrics(tf).elidedText(title, Qt::ElideRight, textRect.width(), QPalette::WindowText);
-            painter->setFont(tf);
-            painter->drawText(textRect, title, textOpt);
-            if (!totalDuration.isEmpty()) {
-                painter->drawText(duratioRect, totalDuration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
-            }
-            BasicItemDelegate::drawLine(painter, r.adjusted(0, 0, 0, -r.height()/2), textColor, rtl, !rtl, 0.45);
-            r.adjust(0, textHeight+constBorder, 0, 0);
-            r=QRect(r.x(), r.y()+r.height()-(textHeight+1), r.width(), textHeight);
-            painter->setFont(f);
-            if (rtl) {
-                r.adjust(0, 0, (constCoverSize-(constBorder*3)), 0);
-            }
-
-            if (isCollection || !view->isExpanded(song.key, collection)) {
-                showTrackDuration=false;
-                track=Plurals::tracks(index.data(Cantata::Role_SongCount).toUInt());
-            }
-        } else if (rtl) {
-            r.adjust(0, 0, -(constBorder*4), 0);
+        if (rtl) {
+            painter->drawPixmap(r.x()+r.width()-(pixSize.width()-constBorder), r.y()+((r.height()-pixSize.height())/2), pixSize.width(), pixSize.height(), pix);
+            r.adjust(0, 0, -(constCoverSize+constBorder), 0);
         } else {
+            painter->drawPixmap(r.x()-2, r.y()+((r.height()-pixSize.height())/2), pixSize.width(), pixSize.height(), pix);
             r.adjust(constCoverSize+constBorder, 0, 0, 0);
         }
 
-        GroupedView::drawPlayState(painter, option, r, state);
-        painter->setPen(textColor);
-
-        int ratingsStart=rtl ? 0 : drawRatings(painter, song, r, fm, option.palette.color(QPalette::Active, QPalette::Text)); // TODO!!!
-
-        int durationWidth=showTrackDuration ? fm.width(duration)+8 : 0;
+        int td=index.data(Cantata::Role_AlbumDuration).toUInt();
+        QString totalDuration=td>0 ? Utils::formatTime(td) : QString();
         QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
-        QRect textRect(r.x(), r.y(), r.width()-durationWidth, textHeight);
-        if (ratingsStart>0) {
-            textRect.setWidth(ratingsStart-r.x());
+        int totalDurationWidth=fm.width(totalDuration)+8;
+        QRect textRect(r.x(), r.y(), r.width()-(rtl ? (4*constBorder) : totalDurationWidth), textHeight);
+        QFont tf(f);
+        tf.setBold(true);
+        title = QFontMetrics(tf).elidedText(title, Qt::ElideRight, textRect.width(), QPalette::WindowText);
+        painter->setFont(tf);
+        painter->drawText(textRect, title, textOpt);
+        if (!totalDuration.isEmpty()) {
+            painter->drawText(duratioRect, totalDuration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
         }
-        track = fm.elidedText(track, Qt::ElideRight, textRect.width(), QPalette::WindowText);
-        painter->drawText(textRect, track, textOpt);
-        if (showTrackDuration) {
-            painter->drawText(duratioRect, duration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
+        BasicItemDelegate::drawLine(painter, r.adjusted(0, 0, 0, -r.height()/2), textColor, rtl, !rtl, 0.45);
+        r.adjust(0, textHeight+constBorder, 0, 0);
+        r=QRect(r.x(), r.y()+r.height()-(textHeight+1), r.width(), textHeight);
+        painter->setFont(f);
+        if (rtl) {
+            r.adjust(0, 0, (constCoverSize-(constBorder*3)), 0);
         }
 
-        if (mouseOver || Utils::touchFriendly()) {
-            drawIcons(painter, option.rect, mouseOver || (selected && Utils::touchFriendly()), rtl, AlbumHeader==type || isCollection ? AP_HBottom : AP_HMiddle, index);
+        if (isCollection || !view->isExpanded(song.key, collection)) {
+            showTrackDuration=false;
+            track=tr("%n Track(s)", "", index.data(Cantata::Role_SongCount).toUInt());
         }
-        BasicItemDelegate::drawLine(painter, option.rect, textColor);
+    } else if (rtl) {
+        r.adjust(0, 0, -(constBorder*4), 0);
+    } else {
+        r.adjust(constCoverSize+constBorder, 0, 0, 0);
+    }
+
+    GroupedView::drawPlayState(painter, option, r, state);
+    painter->setPen(textColor);
+
+    int ratingsStart=rtl ? 0 : drawRatings(painter, song, r, fm, option.palette.color(QPalette::Active, QPalette::Text)); // TODO!!!
+
+    int durationWidth=showTrackDuration ? fm.width(duration)+8 : 0;
+    QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
+    QRect textRect(r.x(), r.y(), r.width()-durationWidth, textHeight);
+    if (ratingsStart>0) {
+        textRect.setWidth(ratingsStart-r.x());
+    }
+    track = fm.elidedText(track, Qt::ElideRight, textRect.width(), QPalette::WindowText);
+    painter->drawText(textRect, track, textOpt);
+    if (showTrackDuration) {
+        painter->drawText(duratioRect, duration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
+    }
+
+    if (mouseOver || Utils::touchFriendly()) {
+        drawIcons(painter, option.rect, mouseOver || (selected && Utils::touchFriendly()), rtl, AlbumHeader==type || isCollection ? AP_HBottom : AP_HMiddle, index);
+    }
+    BasicItemDelegate::drawLine(painter, option.rect, textColor);
+    painter->restore();
+}
+
+int GroupedViewDelegate::drawRatings(QPainter *painter, const Song &song, const QRect &r, const QFontMetrics &fm, const QColor &col) const
+{
+    if (song.rating>0 && song.rating<=Song::Rating_Max) {
+        if (!ratingPainter) {
+            ratingPainter=new RatingPainter(r.height()-(constBorder*8));
+            ratingPainter->setColor(col);
+        }
+
+        painter->save();
+        painter->setOpacity(painter->opacity()*0.75);
+        const QSize &ratingSize=ratingPainter->size();
+        int spacing=constBorder*2;
+        int durationWidth=fm.width("0:00:00")+spacing;
+        QRect ratingRect(r.x()+r.width()-(durationWidth+ratingSize.width()+spacing),
+                         r.y()+(r.height()-ratingSize.height())/2,
+                         ratingSize.width(), ratingSize.height());
+        ratingPainter->paint(painter, ratingRect, song.rating);
         painter->restore();
+        return ratingRect.x()-spacing;
     }
-
-    int drawRatings(QPainter *painter, const Song &song, const QRect &r, const QFontMetrics &fm, const QColor &col) const
-    {
-        if (song.rating>0 && song.rating<=Song::Rating_Max) {
-            if (!ratingPainter) {
-                ratingPainter=new RatingPainter(r.height()-(constBorder*8));
-                ratingPainter->setColor(col);
-            }
-
-            painter->save();
-            painter->setOpacity(painter->opacity()*0.75);
-            const QSize &ratingSize=ratingPainter->size();
-            int spacing=constBorder*2;
-            int durationWidth=fm.width("0:00:00")+spacing;
-            QRect ratingRect(r.x()+r.width()-(durationWidth+ratingSize.width()+spacing),
-                             r.y()+(r.height()-ratingSize.height())/2,
-                             ratingSize.width(), ratingSize.height());
-            ratingPainter->paint(painter, ratingRect, song.rating);
-            painter->restore();
-            return ratingRect.x()-spacing;
-        }
-        return 0;
-    }
-
-private:
-    GroupedView *view;
-    mutable RatingPainter *ratingPainter;
-};
+    return 0;
+}
 
 GroupedView::GroupedView(QWidget *parent, bool isPlayQueue)
     : TreeView(parent, isPlayQueue)

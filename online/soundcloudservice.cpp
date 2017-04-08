@@ -22,7 +22,6 @@
  */
 
 #include "soundcloudservice.h"
-#include "support/localize.h"
 #include "network/networkaccessmanager.h"
 #include "mpd-interface/mpdconnection.h"
 #include <QUrl>
@@ -51,7 +50,7 @@ QString SoundCloudService::title() const
 
 QString SoundCloudService::descr() const
 {
-    return i18n("Search for tracks from soundcloud.com");
+    return tr("Search for tracks from soundcloud.com");
 }
 
 void SoundCloudService::search(const QString &key, const QString &value)

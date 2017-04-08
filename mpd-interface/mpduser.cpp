@@ -24,7 +24,6 @@
 #include "mpduser.h"
 #include "config.h"
 #include "support/utils.h"
-#include "support/localize.h"
 #include "gui/settings.h"
 #include "support/globalstatic.h"
 #include <QTextStream>
@@ -47,7 +46,7 @@ static const QString constPidKey=QLatin1String("pid_file");
 
 QString MPDUser::translatedName()
 {
-    return i18n("Personal");
+    return QObject::tr("Personal");
 }
 
 GLOBAL_STATIC(MPDUser, instance)

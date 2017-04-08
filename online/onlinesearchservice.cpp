@@ -21,16 +21,14 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "online/onlinesearchservice.h"
+#include "onlinesearchservice.h"
 #include "models/roles.h"
-#include "support/localize.h"
 #include "network/networkaccessmanager.h"
 
 OnlineSearchService::OnlineSearchService(QObject *p)
     : SearchModel(p)
     , job(0)
 {
-
 }
 
 QVariant OnlineSearchService::data(const QModelIndex &index, int role) const
@@ -40,7 +38,7 @@ QVariant OnlineSearchService::data(const QModelIndex &index, int role) const
         case Cantata::Role_TitleText:
             return title();
         case Cantata::Role_SubText:
-            return job ? i18n("Searching...") : descr();
+            return job ? tr("Searching...") : descr();
         case Qt::DecorationRole:
             return icon();
         default:

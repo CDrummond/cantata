@@ -31,7 +31,6 @@
 #include "gui/covers.h"
 #include "network/networkaccessmanager.h"
 #include "mpd-interface/mpdconnection.h"
-#include "support/localize.h"
 #include "support/globalstatic.h"
 #include "support/utils.h"
 #include "support/configuration.h"
@@ -89,20 +88,20 @@ enum LastFmErrors
 static QString errorString(int code, const QString &msg)
 {
     switch (code) {
-    case InvalidService: return i18n("Invalid service");
-    case InvalidMethod: return i18n("Invalid method");
-    case AuthenticationFailed: return i18n("Authentication failed");
-    case InvalidFormat: return i18n("Invalid format");
-    case InvalidParameters: return i18n("Invalid parameters");
-    case InvalidResourceSpecified: return i18n("Invalid resource specified");
-    case OperationFailed: return i18n("Operation failed");
-    case InvalidSessionKey: return i18n("Invalid session key");
-    case InvalidApiKey: return i18n("Invalid API key");
-    case ServiceOffline: return i18n("Service offline");
-    case TryAgainLater: return i18n("Last.fm is currently busy, please try again in a few minutes");
-    case RateLimitExceeded: return i18n("Rate-limit exceeded");
+    case InvalidService: return QObject::tr("Invalid service");
+    case InvalidMethod: return QObject::tr("Invalid method");
+    case AuthenticationFailed: return QObject::tr("Authentication failed");
+    case InvalidFormat: return QObject::tr("Invalid format");
+    case InvalidParameters: return QObject::tr("Invalid parameters");
+    case InvalidResourceSpecified: return QObject::tr("Invalid resource specified");
+    case OperationFailed: return QObject::tr("Operation failed");
+    case InvalidSessionKey: return QObject::tr("Invalid session key");
+    case InvalidApiKey: return QObject::tr("Invalid API key");
+    case ServiceOffline: return QObject::tr("Service offline");
+    case TryAgainLater: return QObject::tr("Last.fm is currently busy, please try again in a few minutes");
+    case RateLimitExceeded: return QObject::tr("Rate-limit exceeded");
     default:
-        return msg.isEmpty() ? i18n("Unknown error") : msg.trimmed();
+        return msg.isEmpty() ? QObject::tr("Unknown error") : msg.trimmed();
     }
 }
 
@@ -551,7 +550,7 @@ void Scrobbler::scrobbleFinished()
                                 if (QLatin1String("error")==reader.name().toString()) {
                                     errorCode=reader.attributes().value(QLatin1String("code")).toString().toInt();
                                     QString errorStr=errorString(errorCode, reader.readElementText());
-                                    emit error(i18n("%1 error: %2", scrobbler, errorStr));
+                                    emit error(tr("%1 error: %2").arg(scrobbler).arg(errorStr));
                                     DBUG << errorStr;
                                     break;
                                 }
@@ -666,7 +665,7 @@ void Scrobbler::authResp()
                 break;
             } else if (QLatin1String("error")==element) {
                 int code=reader.attributes().value(QLatin1String("code")).toString().toInt();
-                emit error(i18n("%1 error: %2", scrobbler, errorString(code, reader.readElementText())));
+                emit error(tr("%1 error: %2").arg(scrobbler).arg(errorString(code, reader.readElementText())));
                 break;
             }
         }

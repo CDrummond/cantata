@@ -30,7 +30,6 @@
 #include "mpd-interface/mpdconnection.h"
 #include "models/mpdlibrarymodel.h"
 #include "models/devicesmodel.h"
-#include "support/localize.h"
 #include "support/messagebox.h"
 #include "support/squeezedtextlabel.h"
 #include "widgets/icons.h"
@@ -107,13 +106,13 @@ SyncDialog::SyncDialog(QWidget *parent)
     QWidget *mw=new QWidget(this);
     QVBoxLayout *l=new QVBoxLayout(mw);
     QSplitter *splitter=new QSplitter(mw);
-    libWidget=new SyncCollectionWidget(splitter, i18n("Library:"));
-    devWidget=new SyncCollectionWidget(splitter, i18n("Device:"));
+    libWidget=new SyncCollectionWidget(splitter, tr("Library:"));
+    devWidget=new SyncCollectionWidget(splitter, tr("Device:"));
     statusLabel=new SqueezedTextLabel(this);
-    statusLabel->setText(i18n("Loading all songs from library, please wait..."));
+    statusLabel->setText(tr("Loading all songs from library, please wait..."));
     splitter->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     NoteLabel *noteLabel=new NoteLabel(this);
-    noteLabel->setText(i18n("<code>Library</code> lists only songs that are in your library, but not on the device. Likewise <code>Device</code> lists "
+    noteLabel->setText(tr("<code>Library</code> lists only songs that are in your library, but not on the device. Likewise <code>Device</code> lists "
                             "songs that are only on the device.<br/>"
                             "Select songs from <code>Library</code> that you would like to copy to <code>Device</code>, "
                             "and select songs from <code>Device</code> that you would like to copy to <code>Library</code>. "
@@ -125,10 +124,10 @@ SyncDialog::SyncDialog(QWidget *parent)
     devWidget->setEnabled(false);
     setMainWidget(mw);
     setButtons(Cancel|Ok);
-    setButtonText(Ok, i18n("Synchronize"));
+    setButtonText(Ok, tr("Synchronize"));
     enableButtonOk(false);
     setAttribute(Qt::WA_DeleteOnClose);
-    setCaption(i18n("Synchronize"));
+    setCaption(tr("Synchronize"));
     connect(libWidget, SIGNAL(selectionChanged()), SLOT(selectionChanged()));
     connect(devWidget, SIGNAL(selectionChanged()), SLOT(selectionChanged()));
     connect(libWidget, SIGNAL(configure()), SLOT(configure()));
@@ -179,7 +178,7 @@ void SyncDialog::updateSongs()
     getDiffs(devSongs, libSongs, inDev, inLib);
 
     if (0==inDev.count() && 0==inLib.count()) {
-        MessageBox::information(isVisible() ? this : parentWidget(), i18n("Device and library are in sync."));
+        MessageBox::information(isVisible() ? this : parentWidget(), tr("Device and library are in sync."));
         deleteLater();
         hide();
         return;
@@ -200,7 +199,7 @@ void SyncDialog::librarySongs(const QList<Song> &songs, double pc)
         updateSongs();
     } else {
         libSongs+=songs.toSet();
-        statusLabel->setText(i18n("Loading all songs from library, please wait...%1%...").arg(pc));
+        statusLabel->setText(tr("Loading all songs from library, please wait...%1%...").arg(pc));
     }
 }
 
@@ -214,7 +213,7 @@ void SyncDialog::configure()
     if (libWidget==sender()) {
         DevicePropertiesDialog *dlg=new DevicePropertiesDialog(this);
         connect(dlg, SIGNAL(updatedSettings(const QString &, const DeviceOptions &)), SLOT(saveProperties(const QString &, const DeviceOptions &)));
-        dlg->setCaption(i18n("Local Music Library Properties"));
+        dlg->setCaption(tr("Local Music Library Properties"));
         dlg->show(MPDConnection::self()->getDetails().dir, libOptions, DevicePropertiesWidget::Prop_Basic|DevicePropertiesWidget::Prop_FileName);
     } else {
         Device *dev=getDevice();
@@ -260,12 +259,12 @@ Device * SyncDialog::getDevice()
 {
     Device *dev=DevicesModel::self()->device(devUdi);
     if (!dev) {
-        MessageBox::error(isVisible() ? this : parentWidget(), i18n("Device has been removed!"));
+        MessageBox::error(isVisible() ? this : parentWidget(), tr("Device has been removed!"));
         return 0;
     }
 
     if (currentDev && dev!=currentDev) {
-        MessageBox::error(isVisible() ? this : parentWidget(), i18n("Device has been changed?"));
+        MessageBox::error(isVisible() ? this : parentWidget(), tr("Device has been changed?"));
         return 0;
     }
 
@@ -273,6 +272,6 @@ Device * SyncDialog::getDevice()
         return dev;
     }
 
-    MessageBox::error(isVisible() ? this : parentWidget(), i18n("Device is busy?"));
+    MessageBox::error(isVisible() ? this : parentWidget(), tr("Device is busy?"));
     return 0;
 }

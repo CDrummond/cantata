@@ -23,7 +23,6 @@
 
 #include "lastfmengine.h"
 #include "network/networkaccessmanager.h"
-#include "support/localize.h"
 #include "gui/covers.h"
 #include "config.h"
 #include <QUrlQuery>
@@ -58,7 +57,7 @@ QStringList LastFmEngine::getLangs() const
 
 QString LastFmEngine::translateLinks(QString text) const
 {
-    text=text.replace(constLinkPlaceholder, i18n("Read more on last.fm"));
+    text=text.replace(constLinkPlaceholder, tr("Read more on last.fm"));
     return text;
 }
 

@@ -24,9 +24,7 @@
 #include "onlinesearchwidget.h"
 #include "widgets/itemview.h"
 #include "support/action.h"
-#include "support/localize.h"
 #include "support/messagebox.h"
-#include "gui/plurals.h"
 #include <QTimer>
 
 OnlineSearchWidget::OnlineSearchWidget(OnlineSearchService *s, QWidget *p)
@@ -82,7 +80,7 @@ void OnlineSearchWidget::headerClicked(int level)
 
 void OnlineSearchWidget::statsUpdated(int songs, quint32 time)
 {
-    statsLabel->setText(0==songs ? i18n("No tracks found.") : Plurals::tracksWithDuration(songs, Utils::formatDuration(time)));
+    statsLabel->setText(0==songs ? tr("No tracks found.") : tr("%n Tracks (%1)", "", songs).arg(Utils::formatDuration(time)));
 }
 
 void OnlineSearchWidget::doSearch()

@@ -29,6 +29,7 @@
 
 class JamendoSettingsDialog : public Dialog
 {
+    Q_OBJECT
 public:
     JamendoSettingsDialog(QWidget *parent);
 

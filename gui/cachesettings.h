@@ -28,10 +28,21 @@
 #include <QString>
 #include <QStringList>
 #include <QTreeWidget>
+#include "support/squeezedtextlabel.h"
 
 class QPushButton;
-class SpaceLabel;
 class Thread;
+
+class SpaceLabel : public SqueezedTextLabel
+{
+    Q_OBJECT
+
+public:
+    SpaceLabel(QWidget *p);
+
+    void update(int space);
+    void update(const QString &text);
+};
 
 class CacheItemCounter : public QObject
 {
@@ -95,6 +106,8 @@ private:
 
 class CacheTree : public QTreeWidget
 {
+    Q_OBJECT
+
 public:
     CacheTree(QWidget *parent);
     ~CacheTree();

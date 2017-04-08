@@ -22,7 +22,6 @@
  */
 
 #include "togglelist.h"
-#include "support/localize.h"
 #include "gui/settings.h"
 #include "widgets/basicitemdelegate.h"
 #include "widgets/icons.h"

@@ -27,7 +27,6 @@
 #include "gui/settings.h"
 #include "mpd-interface/song.h"
 #include "context/view.h"
-#include "support/localize.h"
 #include "support/gtkstyle.h"
 #include "support/utils.h"
 #include "online/onlineservice.h"
@@ -44,125 +43,117 @@
 
 static const int constBorder=1;
 
-class CoverLabel : public QLabel
+CoverLabel::CoverLabel(QWidget *p)
+    : QLabel(p)
+    , pressed(false)
 {
-public:
-    CoverLabel(QWidget *p)
-        : QLabel(p)
-        , pressed(false)
-    {
-    }
+}
 
-    bool event(QEvent *event)
-    {
-        switch(event->type()) {
-        case QEvent::ToolTip: {
-            const Song &current=CurrentCover::self()->song();
-            if (current.isEmpty() || (current.isStream() && !current.isCantataStream() && !current.isCdda()) || OnlineService::showLogoAsCover(current)) {
-                setToolTip(QString());
-                break;
-            }
-            QString toolTip=QLatin1String("<table>");
-            const QImage &img=CurrentCover::self()->image();
-
-            if (!current.composer().isEmpty()) {
-                toolTip+=i18n("<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>", current.composer());
-            }
-            if (!current.performer().isEmpty() && current.performer()!=current.albumArtist()) {
-                toolTip+=i18n("<tr><td align=\"right\"><b>Performer:</b></td><td>%1</td></tr>", current.performer());
-            }
-            toolTip+=i18n("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
-                          "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
-                          "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>", current.albumArtist(), current.album, QString::number(current.year));
-            toolTip+="</table>";
-            if (!img.isNull()) {
-                if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height()) {
-                    toolTip+=QString("<br/>%1").arg(View::encode(img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-                } else if (CurrentCover::self()->fileName().isEmpty() || !QFile::exists(CurrentCover::self()->fileName())) {
-                    toolTip+=QString("<br/>%1").arg(View::encode(img));
-                } else {
-                    toolTip+=QString("<br/><img src=\"%1\"/>").arg(CurrentCover::self()->fileName());
-                }
-            }
-            setToolTip(toolTip);
+bool CoverLabel::event(QEvent *event)
+{
+    switch(event->type()) {
+    case QEvent::ToolTip: {
+        const Song &current=CurrentCover::self()->song();
+        if (current.isEmpty() || (current.isStream() && !current.isCantataStream() && !current.isCdda()) || OnlineService::showLogoAsCover(current)) {
+            setToolTip(QString());
             break;
         }
-        case QEvent::MouseButtonPress:
-            if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && Qt::NoModifier==static_cast<QMouseEvent *>(event)->modifiers()) {
-                pressed=true;
+        QString toolTip=QLatin1String("<table>");
+        const QImage &img=CurrentCover::self()->image();
+
+        if (!current.composer().isEmpty()) {
+            toolTip+=tr("<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>").arg(current.composer());
+        }
+        if (!current.performer().isEmpty() && current.performer()!=current.albumArtist()) {
+            toolTip+=tr("<tr><td align=\"right\"><b>Performer:</b></td><td>%1</td></tr>").arg(current.performer());
+        }
+        toolTip+=tr("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
+                    "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
+                    "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.albumArtist()).arg(current.album).arg(QString::number(current.year));
+        toolTip+="</table>";
+        if (!img.isNull()) {
+            if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height()) {
+                toolTip+=QString("<br/>%1").arg(View::encode(img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+            } else if (CurrentCover::self()->fileName().isEmpty() || !QFile::exists(CurrentCover::self()->fileName())) {
+                toolTip+=QString("<br/>%1").arg(View::encode(img));
+            } else {
+                toolTip+=QString("<br/><img src=\"%1\"/>").arg(CurrentCover::self()->fileName());
             }
-            break;
-        case QEvent::MouseButtonRelease:
-            if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && !QApplication::overrideCursor()) {
-                static_cast<CoverWidget*>(parentWidget())->emitClicked();
-            }
-            pressed=false;
-            break;
-        default:
-            break;
         }
-        return QLabel::event(event);
+        setToolTip(toolTip);
+        break;
     }
-
-    void paintEvent(QPaintEvent *)
-    {
-        if (pix.isNull()) {
-            return;
+    case QEvent::MouseButtonPress:
+        if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && Qt::NoModifier==static_cast<QMouseEvent *>(event)->modifiers()) {
+            pressed=true;
         }
-        QPainter p(this);
-        QSize layoutSize = pix.size() / pix.devicePixelRatio();
-        QRect r((width()-layoutSize.width())/2, (height()-layoutSize.height())/2, layoutSize.width(), layoutSize.height());
-        p.drawPixmap(r, pix);
-        if (underMouse()) {
-            #ifdef Q_OS_MAC
-            QPen pen(OSXStyle::self()->viewPalette().color(QPalette::Highlight), 2);
-            #else
-            QPen pen(palette().color(QPalette::Highlight), 2);
-            #endif
-            pen.setJoinStyle(Qt::MiterJoin);
-            p.setPen(pen);
-            p.drawRect(r.adjusted(1, 1, -1, -1));
+        break;
+    case QEvent::MouseButtonRelease:
+        if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && !QApplication::overrideCursor()) {
+            static_cast<CoverWidget*>(parentWidget())->emitClicked();
         }
+        pressed=false;
+        break;
+    default:
+        break;
     }
+    return QLabel::event(event);
+}
 
-    void updatePix()
-    {
-        QImage img=CurrentCover::self()->image();
-        if (img.isNull()) {
-            return;
-        }
-        int size=height();
-        if (style()->pixelMetric(QStyle::PM_ToolBarFrameWidth)==0) {
-            size-=constBorder*2;
-        }
-        double pixRatio=1.0;
-        if (Settings::self()->retinaSupport()) {
-            pixRatio=qApp->devicePixelRatio();
-            size*=pixRatio;
-        }
-        img=img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        img.setDevicePixelRatio(pixRatio);
-        if (pix.isNull() || pix.size()!=img.size()) {
-            pix=QPixmap(img.size());
-            pix.setDevicePixelRatio(pixRatio);
-        }
-        pix.fill(Qt::transparent);
-        QPainter painter(&pix);
-        painter.drawImage(0, 0, img);
-        repaint();
+void CoverLabel::paintEvent(QPaintEvent *)
+{
+    if (pix.isNull()) {
+        return;
     }
-
-    void deletePix()
-    {
-        if (!pix.isNull()) {
-            pix=QPixmap();
-        }
+    QPainter p(this);
+    QSize layoutSize = pix.size() / pix.devicePixelRatio();
+    QRect r((width()-layoutSize.width())/2, (height()-layoutSize.height())/2, layoutSize.width(), layoutSize.height());
+    p.drawPixmap(r, pix);
+    if (underMouse()) {
+#ifdef Q_OS_MAC
+        QPen pen(OSXStyle::self()->viewPalette().color(QPalette::Highlight), 2);
+#else
+        QPen pen(palette().color(QPalette::Highlight), 2);
+#endif
+        pen.setJoinStyle(Qt::MiterJoin);
+        p.setPen(pen);
+        p.drawRect(r.adjusted(1, 1, -1, -1));
     }
+}
 
-private:
-    bool pressed;
-    QPixmap pix;
-};
+void CoverLabel::updatePix()
+{
+    QImage img=CurrentCover::self()->image();
+    if (img.isNull()) {
+        return;
+    }
+    int size=height();
+    if (style()->pixelMetric(QStyle::PM_ToolBarFrameWidth)==0) {
+        size-=constBorder*2;
+    }
+    double pixRatio=1.0;
+    if (Settings::self()->retinaSupport()) {
+        pixRatio=qApp->devicePixelRatio();
+        size*=pixRatio;
+    }
+    img=img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    img.setDevicePixelRatio(pixRatio);
+    if (pix.isNull() || pix.size()!=img.size()) {
+        pix=QPixmap(img.size());
+        pix.setDevicePixelRatio(pixRatio);
+    }
+    pix.fill(Qt::transparent);
+    QPainter painter(&pix);
+    painter.drawImage(0, 0, img);
+    repaint();
+}
+
+void CoverLabel::deletePix()
+{
+    if (!pix.isNull()) {
+        pix=QPixmap();
+    }
+}
 
 CoverWidget::CoverWidget(QWidget *parent)
     : QWidget(parent)

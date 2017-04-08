@@ -31,7 +31,6 @@
 #include "widgets/icons.h"
 #include "mpd-interface/mpdconnection.h"
 #include "support/buddylabel.h"
-#include "support/localize.h"
 #include "support/utils.h"
 #include "config.h"
 
@@ -47,13 +46,13 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     urlEntry = new LineEdit(wid);
     nameEntry = new LineEdit(wid);
     if (addToPlayQueue) {
-        saveCheckbox=new QCheckBox(i18n("Add stream to favourites"), wid);
+        saveCheckbox=new QCheckBox(tr("Add stream to favourites"), wid);
     }
     statusText = new QLabel(this);
 
     urlEntry->setMinimumWidth(300);
-    nameLabel=new BuddyLabel(i18n("Name:"), wid, nameEntry);
-    BuddyLabel *urlLabel=new BuddyLabel(i18n("URL:"), wid, urlEntry);
+    nameLabel=new BuddyLabel(tr("Name:"), wid, nameEntry);
+    BuddyLabel *urlLabel=new BuddyLabel(tr("URL:"), wid, urlEntry);
 
     int row=0;
     layout->setWidget(row, QFormLayout::LabelRole, urlLabel);
@@ -68,7 +67,7 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     layout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
     layout->setWidget(row++, QFormLayout::SpanningRole, statusText);
-    setCaption(i18n("Add Stream"));
+    setCaption(tr("Add Stream"));
     setMainWidget(wid);
     setButtons(Ok|Cancel);
     enableButton(Ok, false);
@@ -80,7 +79,7 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
 
 void StreamDialog::setEdit(const QString &editName, const QString &editUrl)
 {
-    setCaption(i18n("Edit Stream"));
+    setCaption(tr("Edit Stream"));
     enableButton(Ok, false);
     prevName=editName;
     prevUrl=editUrl;
@@ -101,7 +100,7 @@ void StreamDialog::changed()
         QString n=name();
         enableOk=!n.isEmpty() && urlOk && (n!=prevName || u!=prevUrl);
     }
-    statusText->setText(validProtocol || !urlOk ? QString() : i18n("<i><b>ERROR:</b> Invalid protocol</i>"));
+    statusText->setText(validProtocol || !urlOk ? QString() : tr("<i><b>ERROR:</b> Invalid protocol</i>"));
     enableOk=enableOk && validProtocol;
     enableButton(Ok, enableOk);
 }

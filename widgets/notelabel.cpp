@@ -23,7 +23,6 @@
 
 #include "notelabel.h"
 #include "support/utils.h"
-#include "support/localize.h"
 #include <QVBoxLayout>
 #include <QFont>
 
@@ -64,7 +63,7 @@ static QLabel * init(QWidget *p, bool url)
 
 void NoteLabel::setText(QLabel *l, const QString &text)
 {
-    l->setText(i18n("<i><b>NOTE:</b> %1</i>", text));
+    l->setText(tr("<i><b>NOTE:</b> %1</i>").arg(text));
 }
 
 NoteLabel::NoteLabel(QWidget *parent)

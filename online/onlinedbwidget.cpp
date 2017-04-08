@@ -27,7 +27,6 @@
 #include "widgets/menubutton.h"
 #include "widgets/icons.h"
 #include "support/action.h"
-#include "support/localize.h"
 #include "support/messagebox.h"
 #include "support/configuration.h"
 #include <QTimer>
@@ -47,10 +46,10 @@ OnlineDbWidget::OnlineDbWidget(OnlineDbService *s, QWidget *p)
     MenuButton *menu=new MenuButton(this);
     menu->addAction(createViewMenu(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                                                            << ItemView::Mode_DetailedTree << ItemView::Mode_List));
-    menu->addAction(createMenuGroup(i18n("Group By"), QList<MenuItem>() << MenuItem(i18n("Genre"), SqlLibraryModel::T_Genre)
-                                                                        << MenuItem(i18n("Artist"), SqlLibraryModel::T_Artist),
+    menu->addAction(createMenuGroup(tr("Group By"), QList<MenuItem>() << MenuItem(tr("Genre"), SqlLibraryModel::T_Genre)
+                                                                        << MenuItem(tr("Artist"), SqlLibraryModel::T_Artist),
                                     srv->topLevel(), this, SLOT(groupByChanged())));
-    Action *configureAction=new Action(Icons::self()->configureIcon, i18n("Configure"), this);
+    Action *configureAction=new Action(Icons::self()->configureIcon, tr("Configure"), this);
     connect(configureAction, SIGNAL(triggered()), SLOT(configure()));
     menu->addAction(configureAction);
     init(ReplacePlayQueue|AppendToPlayQueue|Refresh, QList<QWidget *>() << menu);
@@ -112,9 +111,9 @@ void OnlineDbWidget::showEvent(QShowEvent *e)
 void OnlineDbWidget::firstTimePrompt()
 {
     if (MessageBox::No==MessageBox::questionYesNo(this, srv->averageSize()
-                                                        ? i18n("The music listing needs to be downloaded, this can consume over %1Mb of disk space", srv->averageSize())
-                                                        : i18n("Dowload music listing?"),
-                                                   QString(), GuiItem(i18n("Download")), StdGuiItem::cancel())) {
+                                                        ? tr("The music listing needs to be downloaded, this can consume over %1Mb of disk space").arg(srv->averageSize())
+                                                        : tr("Dowload music listing?"),
+                                                   QString(), GuiItem(tr("Download")), StdGuiItem::cancel())) {
         emit close();
     } else {
         srv->download(false);
@@ -179,7 +178,7 @@ void OnlineDbWidget::doSearch()
 // TODO: Cancel download?
 void OnlineDbWidget::refresh()
 {
-    if (!srv->isDownloading() && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Re-download music listing?"), QString(), GuiItem(i18n("Download")), StdGuiItem::cancel())) {
+    if (!srv->isDownloading() && MessageBox::Yes==MessageBox::questionYesNo(this, tr("Re-download music listing?"), QString(), GuiItem(tr("Download")), StdGuiItem::cancel())) {
         srv->download(true);
     }
 }

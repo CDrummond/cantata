@@ -29,6 +29,7 @@
 
 class SongDialog : public Dialog
 {
+    Q_OBJECT
 public:
     static void enableDebug();
 

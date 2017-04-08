@@ -26,7 +26,6 @@
 
 #include "mpd-interface/song.h"
 #include "support/utils.h"
-#include "support/localize.h"
 #include "config.h"
 #include <QMap>
 #include <QImage>

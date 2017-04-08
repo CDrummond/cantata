@@ -23,7 +23,6 @@
 
 #include "deviceoptions.h"
 #include "mpd-interface/song.h"
-#include "support/localize.h"
 #include "support/configuration.h"
 #include <QDir>
 #include <QUrl>

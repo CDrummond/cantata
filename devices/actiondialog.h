@@ -91,7 +91,7 @@ private:
     void init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m);
     void slotButtonClicked(int button);
     void setPage(int page, const StringPairList &msg=StringPairList(), const QString &header=QString());
-    StringPairList formatSong(const Song &s, bool showFiles=false, bool showTime=false);
+    StringPairList formatSong(const Song &s, bool showFiles=false);
     bool refreshLibrary();
     void removeSong(const Song &s);
     void cleanDirs();
@@ -112,12 +112,6 @@ private:
     QSet<QString> dirsToClean;
     QSet<QString> copiedCovers;
     unsigned long count;
-    #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
-    double totalTime; // Time of all songs
-    double actionedTime; // Time of songs that have currently been actioned
-    quint64 timeTaken; // Amount of time spent copying/deleting
-    QElapsedTimer timer;
-    #endif
     int currentPercent; // Percentage of current song
     Song origCurrentSong;
     Song currentSong;

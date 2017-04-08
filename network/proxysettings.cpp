@@ -23,16 +23,15 @@
 
 #include "proxysettings.h"
 #include "networkproxyfactory.h"
-#include "support/localize.h"
 #include <QSettings>
 
 ProxySettings::ProxySettings(QWidget *parent)
     : QWidget(parent)
 {
     setupUi(this);
-    proxyMode->addItem(i18n("No proxy"), (int)NetworkProxyFactory::Mode_Direct);
-    proxyMode->addItem(i18n("Use the system proxy settings"), (int)NetworkProxyFactory::Mode_System);
-    proxyMode->addItem(i18n("Manual proxy configuration"), (int)NetworkProxyFactory::Mode_Manual);
+    proxyMode->addItem(tr("No proxy"), (int)NetworkProxyFactory::Mode_Direct);
+    proxyMode->addItem(tr("Use the system proxy settings"), (int)NetworkProxyFactory::Mode_System);
+    proxyMode->addItem(tr("Manual proxy configuration"), (int)NetworkProxyFactory::Mode_Manual);
     connect(proxyMode, SIGNAL(currentIndexChanged(int)), SLOT(toggleMode()));
 }
 

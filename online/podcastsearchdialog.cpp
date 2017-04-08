@@ -250,16 +250,16 @@ void PodcastPage::updateText()
             if (!descr.isEmpty()) {
                 str+="<p>"+descr+"</p><br/>";
             }
-            str+="<table><tr><td><b>"+i18n("RSS:")+"</b></td><td><a href=\""+url.toString()+"\">"+url.toString()+"</a></td></tr>";
+            str+="<table><tr><td><b>"+tr("RSS:")+"</b></td><td><a href=\""+url.toString()+"\">"+url.toString()+"</a></td></tr>";
             if (!web.isEmpty()) {
-                str+="<tr><td><b>"+i18n("Website:")+"</b></td><td><a href=\""+web+"\">"+web+"</a></td></tr>";
+                str+="<tr><td><b>"+tr("Website:")+"</b></td><td><a href=\""+web+"\">"+web+"</a></td></tr>";
             }
             str+="</table>";
             text->setHtml(str);
             return;
         }
     }
-    text->setHtml("<b>"+i18n("Podcast details")+"</b><p><i>"+i18n("Select a podcast to display its details")+"</i></p>");
+    text->setHtml("<b>"+tr("Podcast details")+"</b><p><i>"+tr("Select a podcast to display its details")+"</i></p>");
 }
 
 void PodcastPage::selectionChanged()
@@ -330,8 +330,8 @@ PodcastSearchPage::PodcastSearchPage(QWidget *p, const QString &n, const QString
     viewLayout->setMargin(0);
     mainLayout->setMargin(0);
     search=new LineEdit(p);
-    search->setPlaceholderText(i18n("Enter search term..."));
-    searchButton=new QPushButton(i18n("Search"), p);
+    search->setPlaceholderText(tr("Enter search term..."));
+    searchButton=new QPushButton(tr("Search"), p);
     QWidget::setTabOrder(search, searchButton);
     QWidget::setTabOrder(searchButton, tree);
     searchLayout->addWidget(search);
@@ -374,12 +374,12 @@ void PodcastSearchPage::doSearch()
 void PodcastSearchPage::parseResonse(QIODevice *dev)
 {
     if (!dev) {
-        emit error(i18n("Failed to fetch podcasts from %1", name()));
+        emit error(tr("Failed to fetch podcasts from %1").arg(name()));
         return;
     }
     QVariant data=QJsonDocument::fromJson(dev->readAll()).toVariant();
     if (data.isNull()) {
-        emit error(i18n("There was a problem parsing the response from %1", name()));
+        emit error(tr("There was a problem parsing the response from %1").arg(name()));
         return;
     }
     parse(data);
@@ -394,7 +394,7 @@ OpmlBrowsePage::OpmlBrowsePage(QWidget *p, const QString &n, const QString &i, c
     mainLayout->setMargin(0);
     mainLayout->addWidget(tree, 1);
     mainLayout->addWidget(text, 0);
-    Action *act=new Action(i18n("Reload"), this);
+    Action *act=new Action(tr("Reload"), this);
     tree->addAction(act);
     connect(act, SIGNAL(triggered()), this, SLOT(reload()));
     tree->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -437,7 +437,7 @@ void OpmlBrowsePage::parseResonse(QIODevice *dev)
 
     if (!dev) {
         if (!isLoadingFromCache) {
-            emit error(i18n("Failed to download directory listing"));
+            emit error(tr("Failed to download directory listing"));
         }
         return;
     }
@@ -445,7 +445,7 @@ void OpmlBrowsePage::parseResonse(QIODevice *dev)
     OpmlParser::Category parsed=OpmlParser::parse(data);
     if (parsed.categories.isEmpty() && parsed.podcasts.isEmpty()) {
         if (!isLoadingFromCache) {
-            emit error(i18n("Failed to parse directory listing"));
+            emit error(tr("Failed to parse directory listing"));
         }
         return;
     }
@@ -495,7 +495,7 @@ void OpmlBrowsePage::addPodcast(const OpmlParser::Podcast &pod, QTreeWidgetItem 
 }
 
 PodcastUrlPage::PodcastUrlPage(QWidget *p)
-    : PodcastPage(p, i18n("URL"))
+    : PodcastPage(p, tr("URL"))
 {
     QBoxLayout *searchLayout=new QBoxLayout(QBoxLayout::LeftToRight);
     QBoxLayout *viewLayout=new QBoxLayout(QBoxLayout::LeftToRight);
@@ -504,15 +504,15 @@ PodcastUrlPage::PodcastUrlPage(QWidget *p)
     viewLayout->setMargin(0);
     mainLayout->setMargin(0);
     urlEntry=new LineEdit(p);
-    urlEntry->setPlaceholderText(i18n("Enter podcast URL..."));
-    loadButton=new QPushButton(i18n("Load"), p);
+    urlEntry->setPlaceholderText(tr("Enter podcast URL..."));
+    loadButton=new QPushButton(tr("Load"), p);
     QWidget::setTabOrder(urlEntry, loadButton);
     QWidget::setTabOrder(loadButton, tree);
     searchLayout->addWidget(urlEntry);
     searchLayout->addWidget(loadButton);
     viewLayout->addWidget(tree, 1);
     viewLayout->addWidget(text, 0);
-    mainLayout->addWidget(new QLabel(i18n("Enter podcast URL below, and press 'Load'"), this));
+    mainLayout->addWidget(new QLabel(tr("Enter podcast URL below, and press 'Load'"), this));
     mainLayout->addLayout(searchLayout);
     mainLayout->addLayout(viewLayout);
     connect(urlEntry, SIGNAL(returnPressed()), SLOT(loadUrl()));
@@ -539,7 +539,7 @@ void PodcastUrlPage::loadUrl()
     }
 
     if (!PodcastService::isUrlOk(url)) {
-        emit error(i18n("Invalid URL!"));
+        emit error(tr("Invalid URL!"));
     } else {
         currentUrl=url;
         fetch(url);
@@ -549,16 +549,16 @@ void PodcastUrlPage::loadUrl()
 void PodcastUrlPage::parseResonse(QIODevice *dev)
 {
     if (!dev) {
-        emit error(i18n("Failed to fetch podcast!"));
+        emit error(tr("Failed to fetch podcast!"));
         return;
     }
     RssParser::Channel ch=RssParser::parse(dev, false, true);
     if (!ch.isValid()) {
-        emit error(i18n("Failed to parse podcast."));
+        emit error(tr("Failed to parse podcast."));
         return;
     }
     if (!ch.isValid()) {
-        emit error(i18n("Cantata only supports audio podcasts! The URL entered contains only video podcasts."));
+        emit error(tr("Cantata only supports audio podcasts! The URL entered contains only video podcasts."));
         return;
     }
     addPodcast(ch.name, currentUrl, ch.image, ch.description, QString(), 0);
@@ -577,7 +577,7 @@ PodcastSearchDialog::PodcastSearchDialog(PodcastService *s, QWidget *parent)
 
     iCount++;
     setButtons(User1|Close);
-    setButtonText(User1, i18n("Subscribe"));
+    setButtonText(User1, tr("Subscribe"));
 
     QWidget *mainWidget = new QWidget(this);
     messageWidget = new MessageWidget(mainWidget);
@@ -595,15 +595,15 @@ PodcastSearchDialog::PodcastSearchDialog(PodcastService *s, QWidget *parent)
     layout->addWidget(pageWidget);
 
     PodcastUrlPage *urlPage=new PodcastUrlPage(pageWidget);
-    pageWidget->addPage(urlPage, i18n("Enter URL"), urlPage->icon(), i18n("Manual podcast URL"));
+    pageWidget->addPage(urlPage, tr("Enter URL"), urlPage->icon(), tr("Manual podcast URL"));
     pages << urlPage;
 
     ITunesSearchPage *itunes=new ITunesSearchPage(pageWidget);
-    pageWidget->addPage(itunes, i18n("Search %1", itunes->name()), itunes->icon(), i18n("Search for podcasts on %1", itunes->name()));
+    pageWidget->addPage(itunes, tr("Search %1").arg(itunes->name()), itunes->icon(), tr("Search for podcasts on %1").arg(itunes->name()));
     pages << itunes;
 
     GPodderSearchPage *gpodder=new GPodderSearchPage(pageWidget);
-    pageWidget->addPage(gpodder, i18n("Search %1", gpodder->name()), gpodder->icon(), i18n("Search for podcasts on %1", gpodder->name()));
+    pageWidget->addPage(gpodder, tr("Search %1").arg(gpodder->name()), gpodder->icon(), tr("Search for podcasts on %1").arg(gpodder->name()));
     pages << gpodder;
 
     QSet<QString> loaded;
@@ -615,7 +615,7 @@ PodcastSearchDialog::PodcastSearchDialog(PodcastService *s, QWidget *parent)
         connect(p, SIGNAL(error(QString)), SLOT(showError(QString)));
     }
 
-    setCaption(i18n("Add Podcast Subscription"));
+    setCaption(tr("Add Podcast Subscription"));
     setMainWidget(mainWidget);
     setAttribute(Qt::WA_DeleteOnClose);
     enableButton(User1, false);
@@ -689,7 +689,7 @@ QList<PodcastPage *> PodcastSearchDialog::loadDirectories(const QString &dir, bo
                                                             reader.attributes().value(QLatin1String("name")).toString(),
                                                             icon,
                                                             QUrl(url));
-                    pageWidget->addPage(page, i18n("Browse %1", page->name()), page->icon(), i18n("Browse %1 podcasts", page->name()));
+                    pageWidget->addPage(page, tr("Browse %1").arg(page->name()), page->icon(), tr("Browse %1 podcasts").arg(page->name()));
                     pages << page;
                     loaded.insert(url);
                 }
@@ -705,10 +705,10 @@ void PodcastSearchDialog::slotButtonClicked(int button)
     case User1: {
         QUrl fixed=PodcastService::fixUrl(currentUrl);
         if (service->subscribedToUrl(fixed)) {
-            showError(i18n("You are already subscribed to this podcast!"));
+            showError(tr("You are already subscribed to this podcast!"));
         } else {
             service->addUrl(fixed);
-            showInfo(i18n("Subscription added"));
+            showInfo(tr("Subscription added"));
         }
         break;
     }

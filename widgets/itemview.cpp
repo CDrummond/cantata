@@ -31,7 +31,6 @@
 #include "actionitemdelegate.h"
 #include "basicitemdelegate.h"
 #include "models/actionmodel.h"
-#include "support/localize.h"
 #include "support/icon.h"
 #include "config.h"
 #include "support/gtkstyle.h"
@@ -594,7 +593,7 @@ ItemView::ItemView(QWidget *p)
 {
     setupUi(this);
     if (!backAction) {
-        backAction=ActionCollection::get()->createAction("itemview-goback", i18n("Go Back"));
+        backAction=ActionCollection::get()->createAction("itemview-goback", tr("Go Back"));
         backAction->setShortcut(Qt::AltModifier+(Qt::LeftToRight==layoutDirection() ? Qt::Key_Left : Qt::Key_Right));
     }
     title->addAction(backAction);
@@ -1291,7 +1290,7 @@ void ItemView::hideSpinner()
 void ItemView::updating()
 {
     showSpinner();
-    showMessage(i18n("Updating..."), -1);
+    showMessage(tr("Updating..."), -1);
 }
 
 void ItemView::updated()

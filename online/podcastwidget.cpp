@@ -29,7 +29,6 @@
 #include "widgets/icons.h"
 #include "widgets/menubutton.h"
 #include "support/action.h"
-#include "support/localize.h"
 #include "support/messagebox.h"
 #include "support/configuration.h"
 #include <QTimer>
@@ -39,14 +38,14 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     , srv(s)
     , proxy(this)
 {
-    subscribeAction = new Action(Icons::self()->addNewItemIcon, i18n("Add Subscription"), this);
-    unSubscribeAction = new Action(Icon("list-remove"), i18n("Remove Subscription"), this);
-    downloadAction = new Action(Icon("go-down"), i18n("Download Episodes"), this);
-    deleteAction = new Action(Icon("edit-delete"), i18n("Delete Downloaded Episodes"), this);
-    cancelDownloadAction = new Action(Icons::self()->cancelIcon, i18n("Cancel Download"), this);
-    markAsNewAction = new Action(Icon("document-new"), i18n("Mark Episodes As New"), this);
-    markAsListenedAction = new Action(i18n("Mark Episodes As Listened"), this);
-    unplayedOnlyAction = new Action(Icons::self()->rssListIcon, i18n("Show Unplayed Only"), this);
+    subscribeAction = new Action(Icons::self()->addNewItemIcon, tr("Add Subscription"), this);
+    unSubscribeAction = new Action(Icon("list-remove"), tr("Remove Subscription"), this);
+    downloadAction = new Action(Icon("go-down"), tr("Download Episodes"), this);
+    deleteAction = new Action(Icon("edit-delete"), tr("Delete Downloaded Episodes"), this);
+    cancelDownloadAction = new Action(Icons::self()->cancelIcon, tr("Cancel Download"), this);
+    markAsNewAction = new Action(Icon("document-new"), tr("Mark Episodes As New"), this);
+    markAsListenedAction = new Action(tr("Mark Episodes As Listened"), this);
+    unplayedOnlyAction = new Action(Icons::self()->rssListIcon, tr("Show Unplayed Only"), this);
     unplayedOnlyAction->setCheckable(true);
 
     proxy.setSourceModel(srv);
@@ -138,7 +137,7 @@ void PodcastWidget::unSubscribe()
         return;
     }
 
-    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Unsubscribe from '%1'?", item->name))) {
+    if (MessageBox::No==MessageBox::warningYesNo(this, tr("Unsubscribe from '%1'?").arg(item->name))) {
         return;
     }
 
@@ -184,7 +183,7 @@ void PodcastWidget::download()
     QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls=getEpisodes(proxy, view->selectedIndexes(true), GetEp_NotDownloaded);
 
     if (!urls.isEmpty()) {
-        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to download the selected podcast episodes?"))) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, tr("Do you wish to download the selected podcast episodes?"))) {
             return;
         }
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
@@ -198,7 +197,7 @@ void PodcastWidget::download()
 void PodcastWidget::cancelDownload()
 {
     if (srv->isDownloading() &&
-        MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Cancel podcast episode downloads (both current and any that are queued)?"))) {
+        MessageBox::Yes==MessageBox::questionYesNo(this, tr("Cancel podcast episode downloads (both current and any that are queued)?"))) {
         srv->cancelAll();
     }
 }
@@ -208,7 +207,7 @@ void PodcastWidget::deleteDownload()
     QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls=getEpisodes(proxy, view->selectedIndexes(false), GetEp_Downloaded);
 
     if (!urls.isEmpty()) {
-        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to the delete downloaded files of the selected podcast episodes?"))) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, tr("Do you wish to the delete downloaded files of the selected podcast episodes?"))) {
             return;
         }
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
@@ -224,7 +223,7 @@ void PodcastWidget::markAsNew()
     QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls=getEpisodes(proxy, view->selectedIndexes(false), GetEp_Listened);
 
     if (!urls.isEmpty()) {
-        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to mark the selected podcast episodes as new?"))) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, tr("Do you wish to mark the selected podcast episodes as new?"))) {
             return;
         }
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
@@ -240,7 +239,7 @@ void PodcastWidget::markAsListened()
     QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls=getEpisodes(proxy, view->selectedIndexes(false), GetEp_NotListened);
 
     if (!urls.isEmpty()) {
-        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to mark the selected podcast episodes as listened?"))) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, tr("Do you wish to mark the selected podcast episodes as listened?"))) {
             return;
         }
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
@@ -276,12 +275,12 @@ void PodcastWidget::refresh()
     }
 
     if (selected.isEmpty() || selected.count()==srv->podcastCount()) {
-        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Refresh all subscriptions?"), i18n("Refresh"), GuiItem(i18n("Refresh All")), StdGuiItem::cancel())) {
+        if (MessageBox::Yes==MessageBox::questionYesNo(this, tr("Refresh all subscriptions?"), tr("Refresh"), GuiItem(tr("Refresh All")), StdGuiItem::cancel())) {
             srv->refreshAll();
         }
         return;
     }
-    switch (MessageBox::questionYesNoCancel(this, i18n("Refresh all subscriptions, or only those selected?"), i18n("Refresh"), GuiItem(i18n("Refresh All")), GuiItem(i18n("Refresh Selected")))) {
+    switch (MessageBox::questionYesNoCancel(this, tr("Refresh all subscriptions, or only those selected?"), tr("Refresh"), GuiItem(tr("Refresh All")), GuiItem(tr("Refresh Selected")))) {
     case MessageBox::Yes:
         srv->refreshAll();
         break;

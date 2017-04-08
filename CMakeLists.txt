@@ -280,6 +280,7 @@ find_package(ZLIB REQUIRED)
 
 if (APPLE)
     set(CANTATA_SRCS ${CANTATA_SRCS} mac/dockmenu.cpp mac/macnotify.mm)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} mac/dockmenu.h)
     find_package(IOKit)
     if (IOKIT_FOUND)
         set(CANTATA_LIBS ${CANTATA_LIBS} ${IOKIT_LIBRARY})
@@ -335,7 +336,7 @@ set(CANTATA_CORE_SRCS ${CANTATA_CORE_SRCS}
 set(CANTATA_CORE_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
     gui/covers.h gui/currentcover.h
     models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
-    models/playqueueproxymodel.h models/actionmodel.h models/browsemodel.h
+    models/playqueueproxymodel.h models/actionmodel.h models/browsemodel.h models/musiclibrarymodel.h
     models/searchmodel.h models/sqllibrarymodel.h models/mpdlibrarymodel.h models/mpdsearchmodel.h
     mpd-interface/mpdconnection.h mpd-interface/mpdstats.h mpd-interface/mpdstatus.h
     db/librarydb.h db/mpdlibrarydb.h
@@ -347,6 +348,7 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS} ${CANTATA_SRCS}
     gui/settings.cpp gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp gui/customactionssettings.cpp
     gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/customactions.cpp
     gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
+    gui/main.cpp
     devices/deviceoptions.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/nowplayingwidget.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
@@ -379,16 +381,18 @@ set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS} ${CANTATA_MOC_HDRS}
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h widgets/singlepagewidget.h
     widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h widgets/tableview.h
     widgets/coverwidget.h widgets/ratingwidget.h widgets/selectorlabel.h widgets/titlewidget.h widgets/multipagewidget.h
-    widgets/stackedpagewidget.h widgets/mirrormenu.h widgets/genrecombo.h
-    context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
+    widgets/stackedpagewidget.h widgets/mirrormenu.h widgets/genrecombo.h widgets/tagspinbox.h widgets/menubutton.h widgets/songdialog.h
+    context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h context/contextsettings.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
+    context/lyricsettings.h context/onlineview.h
     streams/streamspage.h streams/digitallyimportedsettings.h streams/streamssettings.h
     streams/streamdialog.h models/streamsmodel.h streams/streamproviderlistdialog.h
     models/digitallyimported.h models/streamsearchmodel.h
     online/onlineservicespage.h online/onlinedbservice.h online/onlinedbwidget.h online/magnatunesettingsdialog.h
     online/soundcloudservice.h online/onlinesearchwidget.h online/podcastservice.h online/podcastsearchdialog.h
-    online/podcastsettingsdialog.h online/podcastwidget.h
+    online/podcastsettingsdialog.h online/podcastwidget.h  online/jamendoservice.h online/jamendosettingsdialog.h online/magnatuneservice.h
+    online/onlinesearchservice.h
     db/onlinedb.h
     dynamic/dynamic.h dynamic/dynamicruledialog.h dynamic/dynamicpage.h dynamic/dynamicrulesdialog.h
     scrobbling/scrobbler.h scrobbling/scrobblingsettings.h scrobbling/scrobblingstatus.h scrobbling/scrobblinglove.h)
@@ -404,15 +408,7 @@ if (ENABLE_SIMPLE_MPD_SUPPORT)
      set(CANTATA_SRCS ${CANTATA_CORE_SRCS} ${CANTATA_SRCS} mpd-interface/mpduser.cpp)
 endif (ENABLE_SIMPLE_MPD_SUPPORT)
 
-if (ENABLE_UBUNTU)
-    set(UBUNTU_SRCS ${CANTATA_CORE_SRCS} ubuntu/main.cpp ubuntu/backend/mpdbackend.cpp gui/plurals_qt.cpp)
-    set(UBUNTU_MOC_HDRS ${CANTATA_CORE_MOC_HDRS} ubuntu/backend/mpdbackend.h)
-else (ENABLE_UBUNTU)
-    set(CANTATA_SRCS ${CANTATA_SRCS} gui/main.cpp)
-    set(CANTATA_LIBS ${CANTATA_LIBS} support)
-    add_subdirectory(icons)
-endif (ENABLE_UBUNTU)
-
+set(CANTATA_LIBS ${CANTATA_LIBS} support)
 
 if (WIN32)
     # Not installed for windows - script uses sym-links...
@@ -519,7 +515,7 @@ if (TAGLIB_FOUND)
             set(CANTATA_SRCS ${CANTATA_SRCS} devices/audiocddevice.cpp devices/cddbselectiondialog.cpp
                  devices/cdparanoia.cpp devices/audiocdsettings.cpp devices/extractjob.cpp devices/albumdetailsdialog.cpp)
             set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/audiocddevice.h devices/extractjob.h
-                 devices/albumdetailsdialog.h devices/cddbselectiondialog.h)
+                 devices/albumdetailsdialog.h devices/cddbselectiondialog.h devices/audiocdsettings.h)
             set(CANTATA_UIS ${CANTATA_UIS} devices/albumdetails.ui devices/audiocdsettings.ui)
             # If CDDB/MusicBrainz5 found - then CDParanoia must have been!
             set(CANTATA_LIBS ${CANTATA_LIBS} ${CDPARANOIA_LIBRARIES})
@@ -564,7 +560,6 @@ if (ENABLE_PROXY_CONFIG)
     set(CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui)
 endif (ENABLE_PROXY_CONFIG)
 
-set(CANTATA_SRCS ${CANTATA_SRCS} gui/plurals_qt.cpp)
 if (WIN32 OR APPLE)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/singleapplication.h)
     set(CANTATA_SRCS ${CANTATA_SRCS} gui/singleapplication.cpp)
@@ -660,7 +655,7 @@ elseif ()
         install(FILES mpd-interface/mpd.conf.template DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/mpd)
 endif (WIN32)
 
-add_subdirectory(po)
+add_subdirectory(translations)
 add_subdirectory(support)
 add_subdirectory(3rdparty/qtiocompressor)
 add_subdirectory(streams/icons)
@@ -704,7 +699,7 @@ if ((NOT ENABLE_DEVICES_SUPPORT AND NOT WIN32 AND NOT APPLE) OR (NOT ENABLE_HTTP
     message("")
 endif ((NOT ENABLE_DEVICES_SUPPORT AND NOT WIN32 AND NOT APPLE) OR (NOT ENABLE_HTTP_STREAM_PLAYBACK))
 
-if ((ENABLE_DEVICES_SUPPORT AND ENABLE_REMOTE_DEVICES) OR (NOT ENABLE_KDE AND ENABLE_PROXY_CONFIG))
+if ((ENABLE_DEVICES_SUPPORT AND ENABLE_REMOTE_DEVICES) OR ENABLE_PROXY_CONFIG)
     message("-----------------------------------------------------------------------------")
     message("-- The following NON STANDARD options have been ENABLED.")
     message("-----------------------------------------------------------------------------")
@@ -715,4 +710,4 @@ if ((ENABLE_DEVICES_SUPPORT AND ENABLE_REMOTE_DEVICES) OR (NOT ENABLE_KDE AND EN
         message("    * Remote Devices - Access sshfs, Samba, and local folders as devices. (EXPERIMENTAL)")
     endif (ENABLE_REMOTE_DEVICES)
     message("")
-endif ((ENABLE_DEVICES_SUPPORT AND ENABLE_REMOTE_DEVICES) OR (ENABLE_PROXY_CONFIG))
+endif ((ENABLE_DEVICES_SUPPORT AND ENABLE_REMOTE_DEVICES) OR ENABLE_PROXY_CONFIG)

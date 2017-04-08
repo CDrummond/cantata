@@ -22,7 +22,6 @@
  */
 
 #include "artistview.h"
-#include "support/localize.h"
 #include "gui/covers.h"
 #include "support/utils.h"
 #include "network/networkaccessmanager.h"
@@ -98,7 +97,7 @@ ArtistView::ArtistView(QWidget *parent)
     , currentSimilarJob(0)
 {
     engine=ContextEngine::create(this);
-    refreshAction = ActionCollection::get()->createAction("refreshartist", i18n("Refresh Artist Information"), Icons::self()->refreshIcon);
+    refreshAction = ActionCollection::get()->createAction("refreshartist", tr("Refresh Artist Information"), Icons::self()->refreshIcon);
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), SLOT(artistImage(Song,QImage,QString)));
@@ -106,7 +105,7 @@ ArtistView::ArtistView(QWidget *parent)
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(show(QUrl)));
     text->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
-    setStandardHeader(i18n("Artist"));
+    setStandardHeader(tr("Artist"));
    
     int imageHeight=fontMetrics().height()*14;
     int imageWidth=imageHeight*1.5;
@@ -316,7 +315,7 @@ void ArtistView::setBio()
     }
 
     if (!albums.isEmpty()) {
-        html+=View::subHeader(i18n("Albums"))+QLatin1String("<ul>")+albums+QLatin1String("</ul>");
+        html+=View::subHeader(tr("Albums"))+QLatin1String("<ul>")+albums+QLatin1String("</ul>");
     }
 
     if (webLinks.isEmpty()) {
@@ -342,7 +341,7 @@ void ArtistView::setBio()
         QString artist=currentSong.artist;
         artist.replace(QLatin1Char('&'), QLatin1String("%26"));
         artist.replace(QLatin1Char('?'), QLatin1String("%3f"));
-        html+=View::subHeader(i18n("Web Links"))+QLatin1String("<ul>")+QString(webLinks).replace("${artist}", artist)+QLatin1String("</ul>");
+        html+=View::subHeader(tr("Web Links"))+QLatin1String("<ul>")+QString(webLinks).replace("${artist}", artist)+QLatin1String("</ul>");
     }
 
     setHtml(html);
@@ -423,7 +422,7 @@ void ArtistView::buildSimilar(const QStringList &artists)
     bool first=true;
     foreach (QString artist, artists) {
         if (similarArtists.isEmpty()) {
-            similarArtists=QLatin1String("<br/>")+View::subHeader(i18n("Similar Artists"));
+            similarArtists=QLatin1String("<br/>")+View::subHeader(tr("Similar Artists"));
         }
         // Check if we have artist in collection...
         QString artistLink=checkHaveArtist(mpdArtists, artist);

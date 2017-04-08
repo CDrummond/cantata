@@ -33,12 +33,10 @@
 #include "mpd-interface/mpdconnection.h"
 #include "devices/umsdevice.h"
 #include "http/httpserver.h"
-#include "support/localize.h"
 #include "widgets/icons.h"
 #include "widgets/mirrormenu.h"
 #include "devices/mountpoints.h"
 #include "gui/stdactions.h"
-#include "gui/plurals.h"
 #include "support/action.h"
 #include "config.h"
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
@@ -93,12 +91,12 @@ DevicesModel::DevicesModel(QObject *parent)
     , enabled(false)
     , inhibitMenuUpdate(false)
 {
-    configureAction = new Action(Icons::self()->configureIcon, i18n("Configure Device"), this);
-    refreshAction = new Action(Icons::self()->reloadIcon, i18n("Refresh Device"), this);
-    connectAction = new Action(Icons::self()->connectIcon, i18n("Connect Device"), this);
-    disconnectAction = new Action(Icons::self()->disconnectIcon, i18n("Disconnect Device"), this);
+    configureAction = new Action(Icons::self()->configureIcon, tr("Configure Device"), this);
+    refreshAction = new Action(Icons::self()->reloadIcon, tr("Refresh Device"), this);
+    connectAction = new Action(Icons::self()->connectIcon, tr("Connect Device"), this);
+    disconnectAction = new Action(Icons::self()->disconnectIcon, tr("Disconnect Device"), this);
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-    editAction = new Action(Icons::self()->editIcon, i18n("Edit CD Details"), this);
+    editAction = new Action(Icons::self()->editIcon, tr("Edit CD Details"), this);
     #endif
     updateItemMenu();
     connect(this, SIGNAL(add(const QStringList &, int, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8)));
@@ -344,7 +342,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             }
             if (!dev->isConnected()) {
                 QString sub=dev->subText();
-                return i18n("Not Connected")+(sub.isEmpty() ? QString() : (QString(" - ")+sub));
+                return tr("Not Connected")+(sub.isEmpty() ? QString() : (QString(" - ")+sub));
             }
             if (Device::AudioCd==dev->devType()) {
                 return dev->subText();
@@ -919,7 +917,7 @@ void DevicesModel::updateItemMenu()
     }
 
     if (itemMenu->isEmpty()) {
-        itemMenu->addAction(i18n("No Devices Attached"))->setEnabled(false);
+        itemMenu->addAction(tr("No Devices Attached"))->setEnabled(false);
     }
 }
 

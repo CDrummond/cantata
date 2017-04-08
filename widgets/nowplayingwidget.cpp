@@ -29,7 +29,6 @@
 #include "mpd-interface/mpdconnection.h"
 #include "models/playqueuemodel.h"
 #include "support/utils.h"
-#include "support/localize.h"
 #ifdef Q_OS_MAC
 #include "support/osxstyle.h"
 #endif
@@ -319,7 +318,7 @@ void NowPlayingWidget::update(const Song &song)
     } else if (song.isStream() && !song.isCantataStream() && !song.isCdda() && !song.isDlnaStream()) {
         track->setText(name.isEmpty() ? Song::unknown() : name);
         if (song.artist.isEmpty() && song.title.isEmpty() && !name.isEmpty()) {
-            artist->setText(i18n("(Stream)"));
+            artist->setText(tr("(Stream)"));
         } else {
             artist->setText(song.artist.isEmpty() ? song.title : song.artistSong());
         }

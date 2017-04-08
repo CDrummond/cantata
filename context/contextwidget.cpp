@@ -32,7 +32,6 @@
 #include "network/networkaccessmanager.h"
 #include "gui/settings.h"
 #include "wikipediaengine.h"
-#include "support/localize.h"
 #include "support/gtkstyle.h"
 #include "widgets/playqueueview.h"
 #include "widgets/treeview.h"
@@ -50,9 +49,6 @@
 #include <QFile>
 #include <QWheelEvent>
 #include <QApplication>
-#ifndef SCALE_CONTEXT_BGND
-#include <QDesktopWidget>
-#endif
 #include <QStackedWidget>
 #include <QAction>
 #include <QPair>
@@ -218,7 +214,7 @@ ThinSplitter::ThinSplitter(QWidget *parent)
 {
     setChildrenCollapsible(true);
     setOrientation(Qt::Horizontal);
-    resetAct=new QAction(i18n("Reset Spacing"), this);
+    resetAct=new QAction(tr("Reset Spacing"), this);
     connect(resetAct, SIGNAL(triggered()), this, SLOT(reset()));
     setHandleWidth(0);
 }
@@ -285,20 +281,6 @@ ContextWidget::ContextWidget(QWidget *parent)
     readConfig();
     setZoom();
     setWide(true);
-
-    #ifndef SCALE_CONTEXT_BGND
-    QDesktopWidget *dw=QApplication::desktop();
-    if (dw) {
-        QSize geo=dw->availableGeometry(this).size()-QSize(32, 64);
-        minBackdropSize=geo;
-        minBackdropSize.setWidth(((int)(minBackdropSize.width()/32))*32);
-        minBackdropSize.setHeight(((int)(minBackdropSize.height()/32))*32);
-        maxBackdropSize=QSize(geo.width()*1.25, geo.height()*1.25);
-    } else {
-        minBackdropSize=QSize(Utils::scaleForDpi(1024*3), Utils::scaleForDpi(768*3);
-        maxBackdropSize=QSize(minBackdropSize.width()*2, minBackdropSize.height()*2);
-    }
-    #endif
 }
 
 void ContextWidget::setZoom()
@@ -370,9 +352,9 @@ void ContextWidget::setWide(bool w)
         }
         if (!viewSelector) {
             viewSelector=new ViewSelector(standardContext);
-            viewSelector->addItem(i18n("&Artist"), "artist");
-            viewSelector->addItem(i18n("Al&bum"), "album");
-            viewSelector->addItem(i18n("&Track"), "song");
+            viewSelector->addItem(tr("&Artist"), "artist");
+            viewSelector->addItem(tr("Al&bum"), "album");
+            viewSelector->addItem(tr("&Track"), "song");
             viewSelector->setPalette(palette());
             connect(viewSelector, SIGNAL(activated(int)), stack, SLOT(setCurrentIndex(int)));
         }
@@ -408,9 +390,7 @@ void ContextWidget::resizeEvent(QResizeEvent *e)
     if (isVisible()) {
         setWide(width()>minWidth && !alwaysCollapsed);
     }
-    #ifdef SCALE_CONTEXT_BGND
     resizeBackdrop();
-    #endif
     QWidget::resizeEvent(e);
 }
 
@@ -527,21 +507,19 @@ void ContextWidget::paintEvent(QPaintEvent *e)
             if (!qFuzzyCompare(fadeValue, qreal(0.0))) {
                 p.setOpacity(1.0-fadeValue);
             }
-            #ifdef SCALE_CONTEXT_BGND
             if (oldBackdrop.height()<height()) {
                 p.drawPixmap(0, (height()-oldBackdrop.height())/2, oldBackdrop);
-            } else
-            #endif
-            p.fillRect(r, QBrush(oldBackdrop));
+            } else {
+                p.fillRect(r, QBrush(oldBackdrop));
+            }
         }
         if (!currentBackdrop.isNull()) {
             p.setOpacity(fadeValue);
-            #ifdef SCALE_CONTEXT_BGND
             if (currentBackdrop.height()<height()) {
                 p.drawPixmap(0, (height()-currentBackdrop.height())/2, currentBackdrop);
-            } else
-            #endif
-            p.fillRect(r, QBrush(currentBackdrop));
+            } else {
+                p.fillRect(r, QBrush(currentBackdrop));
+            }
         }
     }
     if (!darkBackground) {
@@ -583,11 +561,7 @@ void ContextWidget::updateImage(QImage img)
             painter.end();
             img = blurred;
         }
-        #ifdef SCALE_CONTEXT_BGND
         currentImage=img;
-        #else
-        currentBackdrop=QPixmap::fromImage(img);
-        #endif
     }
     resizeBackdrop();
 
@@ -965,25 +939,10 @@ void ContextWidget::downloadResponse()
 
 void ContextWidget::resizeBackdrop()
 {
-    #ifdef SCALE_CONTEXT_BGND
     if (!currentImage.isNull() &&( currentBackdrop.isNull() || (!currentBackdrop.isNull() && currentBackdrop.width()!=width()))) {
         QSize sz(width(), width()*currentImage.height()/currentImage.width());
         currentBackdrop = QPixmap::fromImage(currentImage.scaled(sz, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
     }
-    #else
-    if (!currentBackdrop.isNull() && !albumCoverBackdrop) {
-        if (currentBackdrop.width()<minBackdropSize.width() && currentBackdrop.height()<minBackdropSize.height()) {
-            QSize size(minBackdropSize);
-            if (currentBackdrop.width()<minBackdropSize.width()/4 && currentBackdrop.height()<minBackdropSize.height()/4) {
-                size=QSize(minBackdropSize.width()/2, minBackdropSize.height()/2);
-            }
-            currentBackdrop=currentBackdrop.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        } else if (maxBackdropSize.width()>1024 && maxBackdropSize.height()>768 &&
-                   (currentBackdrop.width()>maxBackdropSize.width() || currentBackdrop.height()>maxBackdropSize.height())) {
-            currentBackdrop=currentBackdrop.scaled(maxBackdropSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        }
-    }
-    #endif
 }
 
 NetworkJob * ContextWidget::getReply(QObject *obj)

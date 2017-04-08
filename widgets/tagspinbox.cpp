@@ -22,7 +22,6 @@
  */
 
 #include "tagspinbox.h"
-#include "support/localize.h"
 #include <QPainter>
 #include <QLineEdit>
 
@@ -35,7 +34,7 @@ TagSpinBox::TagSpinBox(QWidget *parent)
     , isVarious(false)
 {
     if (variousText.isEmpty()) {
-        variousText=i18n("(Various)");
+        variousText=tr("(Various)");
     }
 }
 

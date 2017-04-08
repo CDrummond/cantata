@@ -24,7 +24,6 @@
 #include "wikipediasettings.h"
 #include "wikipediaengine.h"
 #include "network/networkaccessmanager.h"
-#include "support/localize.h"
 #include "support/icon.h"
 #include "support/spinner.h"
 #include "gui/settings.h"
@@ -88,8 +87,8 @@ WikipediaSettings::WikipediaSettings(QWidget *p)
     , spinner(0)
     , loader(0)
 {
-    label->setText(i18n("Choose the wikipedia languages you want to use when searching for artist and album information."));
-    reload=new Action(i18n("Reload"), this);
+    label->setText(tr("Choose the wikipedia languages you want to use when searching for artist and album information."));
+    reload=new Action(tr("Reload"), this);
     connect(reload, SIGNAL(triggered()), this, SLOT(getLangs()));
     available->addAction(reload);
     available->setContextMenuPolicy(Qt::ActionsContextMenu);

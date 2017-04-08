@@ -23,7 +23,6 @@
 
 #include "osxstyle.h"
 #include "globalstatic.h"
-#include "localize.h"
 #include "actioncollection.h"
 #include "action.h"
 #include "utils.h"
@@ -72,10 +71,10 @@ QColor OSXStyle::monoIconColor()
 void OSXStyle::initWindowMenu(QMainWindow *mw)
 {
     if (!windowMenu && mw) {
-        windowMenu=new QMenu(i18n("&Window"), mw);
-        closeAct=ActionCollection::get()->createAction("close-window", i18n("Close"));
-        minAct=ActionCollection::get()->createAction("minimize-window", i18n("Minimize"));
-        zoomAct=ActionCollection::get()->createAction("zoom-window", i18n("Zoom"));
+        windowMenu=new QMenu(tr("&Window"), mw);
+        closeAct=ActionCollection::get()->createAction("close-window", tr("Close"));
+        minAct=ActionCollection::get()->createAction("minimize-window", tr("Minimize"));
+        zoomAct=ActionCollection::get()->createAction("zoom-window", tr("Zoom"));
         windowMenu->addAction(closeAct);
         windowMenu->addAction(minAct);
         windowMenu->addAction(zoomAct);

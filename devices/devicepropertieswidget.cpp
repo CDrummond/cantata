@@ -24,7 +24,6 @@
 #include "devicepropertieswidget.h"
 #include "filenameschemedialog.h"
 #include "gui/covers.h"
-#include "support/localize.h"
 #include "widgets/icons.h"
 #include "support/utils.h"
 #include <QValidator>
@@ -81,22 +80,22 @@ class CoverNameValidator : public QValidator
 DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     : QWidget(parent)
     , schemeDlg(0)
-    , noCoverText(i18n("Don't copy covers"))
-    , embedCoverText(i18n("Embed cover within each file"))
+    , noCoverText(tr("Don't copy covers"))
+    , embedCoverText(tr("Embed cover within each file"))
     , modified(false)
     , saveable(false)
 {
     setupUi(this);
     configFilename->setIcon(Icons::self()->configureIcon);
-    coverMaxSize->insertItems(0, QStringList() << i18n("No maximum size") << i18n("400 pixels") << i18n("300 pixels") << i18n("200 pixels") << i18n("100 pixels"));
-    fixVariousArtists->setToolTip(i18n("<p>When copying tracks to a device, and the 'Album Artist' is set to 'Various Artists', "
+    coverMaxSize->insertItems(0, QStringList() << tr("No maximum size") << tr("400 pixels") << tr("300 pixels") << tr("200 pixels") << tr("100 pixels"));
+    fixVariousArtists->setToolTip(tr("<p>When copying tracks to a device, and the 'Album Artist' is set to 'Various Artists', "
                                        "then Cantata will set the 'Artist' tag of all tracks to 'Various Artists' and the "
                                        "track 'Title' tag to 'TrackArtist - TrackTitle'.<hr/> When copying from a device, Cantata "
                                        "will check if 'Album Artist' and 'Artist' are both set to 'Various Artists'. If so, it "
                                        "will attempt to extract the real artist from the 'Title' tag, and remove the artist name "
                                        "from the 'Title' tag.</p>"));
 
-    useCache->setToolTip(i18n("<p>If you enable this, then Cantata will create a cache of the device's music library. "
+    useCache->setToolTip(tr("<p>If you enable this, then Cantata will create a cache of the device's music library. "
                               "This will help to speed up subsequent library scans (as the cache file will be used instead of "
                               "having to read the tags of each file.)<hr/><b>NOTE:</b> If you use another application to update "
                               "the device's library, then this cache will become out-of-date. To rectify this, simply "
@@ -217,14 +216,14 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         bool transcode=props&Prop_Transcoder;
         transcoderName->clear();
         if (transcode) {
-            transcoderName->addItem(i18n("Do not transcode"), QString());
+            transcoderName->addItem(tr("Do not transcode"), QString());
             transcoderName->setCurrentIndex(0);
             transcoderValue->setVisible(false);
             transcoderWhenDifferent->setVisible(false);
             transcoderWhenDifferent->setChecked(opts.transcoderWhenDifferent);
             connect(transcoderWhenDifferent, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
         } else {
-            transcoderFrame->setTitle(i18n("Encoder"));
+            transcoderFrame->setTitle(tr("Encoder"));
             REMOVE(transcoderWhenDifferent);
         }
 
@@ -239,7 +238,7 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
                     if (transcode && name.endsWith(QLatin1String(" (ffmpeg)"))) {
                         name=name.left(name.length()-9);
                     }
-                    transcoderName->addItem(transcode ? i18n("Transcode to %1", name) : name, e.codec);
+                    transcoderName->addItem(transcode ? tr("Transcode to %1").arg(name) : name, e.codec);
                 }
             }
 
@@ -270,8 +269,8 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         REMOVE(defaultVolumeLabel);
     } else {
         foreach (const DeviceStorage &ds, storage) {
-            defaultVolume->addItem(i18nc("name (size free)", "%1 (%2 free)",
-                                   ds.description, Utils::formatByteSize(ds.size-ds.used)), ds.volumeIdentifier);
+            defaultVolume->addItem(tr("%1 (%2 free)", "name (size free)")
+                                   .arg(ds.description).arg(Utils::formatByteSize(ds.size-ds.used)), ds.volumeIdentifier);
         }
 
         for (int i=0; i<defaultVolume->count(); ++i) {

@@ -25,7 +25,6 @@
 #include "support/buddylabel.h"
 #include "support/pathrequester.h"
 #include "gui/settings.h"
-#include "support/localize.h"
 #include "support/utils.h"
 #include <QComboBox>
 #include <QCheckBox>
@@ -56,9 +55,9 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
 {
     QWidget *mw=new QWidget(this);
     QFormLayout * lay=new QFormLayout(mw);
-    BuddyLabel * updateLabel=new BuddyLabel(i18n("Check for new episodes:"), mw);
-    BuddyLabel * downloadLabel=new BuddyLabel(i18n("Download episodes to:"), mw);
-    BuddyLabel * autoDownloadLabel=new BuddyLabel(i18n("Download automatically:"), mw);
+    BuddyLabel * updateLabel=new BuddyLabel(tr("Check for new episodes:"), mw);
+    BuddyLabel * downloadLabel=new BuddyLabel(tr("Download episodes to:"), mw);
+    BuddyLabel * autoDownloadLabel=new BuddyLabel(tr("Download automatically:"), mw);
 
     updateCombo = new QComboBox(this);
     updateLabel->setBuddy(updateCombo);
@@ -82,27 +81,27 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
 
     setButtons(Ok|Cancel);
     setMainWidget(mw);
-    setCaption(i18n("Podcast Settings"));
+    setCaption(tr("Podcast Settings"));
 
-    updateCombo->addItem(i18n("Manually"), 0);
-    updateCombo->addItem(i18n("Every 15 minutes"), 15);
-    updateCombo->addItem(i18n("Every 30 minutes"), 30);
-    updateCombo->addItem(i18n("Every hour"), 60);
-    updateCombo->addItem(i18n("Every 2 hours"), 2*60);
-    updateCombo->addItem(i18n("Every 6 hours"), 6*60);
-    updateCombo->addItem(i18n("Every 12 hours"), 12*60);
-    updateCombo->addItem(i18n("Every day"), 24*60);
-    updateCombo->addItem(i18n("Every week"), 7*24*60);
+    updateCombo->addItem(tr("Manually"), 0);
+    updateCombo->addItem(tr("Every 15 minutes"), 15);
+    updateCombo->addItem(tr("Every 30 minutes"), 30);
+    updateCombo->addItem(tr("Every hour"), 60);
+    updateCombo->addItem(tr("Every 2 hours"), 2*60);
+    updateCombo->addItem(tr("Every 6 hours"), 6*60);
+    updateCombo->addItem(tr("Every 12 hours"), 12*60);
+    updateCombo->addItem(tr("Every day"), 24*60);
+    updateCombo->addItem(tr("Every week"), 7*24*60);
 
-    autoDownloadCombo->addItem(i18n("Don't automatically download episodes"), 0);
-    autoDownloadCombo->addItem(i18n("Latest episode", 1), 1);
-    autoDownloadCombo->addItem(i18n("Latest %1 episodes", 2), 2);
-    autoDownloadCombo->addItem(i18n("Latest %1 episodes", 5), 5);
-    autoDownloadCombo->addItem(i18n("Latest %1 episodes", 10), 10);
-    autoDownloadCombo->addItem(i18n("Latest %1 episodes", 15), 15);
-    autoDownloadCombo->addItem(i18n("Latest %1 episodes", 20), 20);
-    autoDownloadCombo->addItem(i18n("Latest %1 episodes", 50), 50);
-    autoDownloadCombo->addItem(i18n("All episodes"), 1000);
+    autoDownloadCombo->addItem(tr("Don't automatically download episodes"), 0);
+    autoDownloadCombo->addItem(tr("Latest episode").arg(1), 1);
+    autoDownloadCombo->addItem(tr("Latest %1 episodes").arg(2), 2);
+    autoDownloadCombo->addItem(tr("Latest %1 episodes").arg(5), 5);
+    autoDownloadCombo->addItem(tr("Latest %1 episodes").arg(10), 10);
+    autoDownloadCombo->addItem(tr("Latest %1 episodes").arg(15), 15);
+    autoDownloadCombo->addItem(tr("Latest %1 episodes").arg(20), 20);
+    autoDownloadCombo->addItem(tr("Latest %1 episodes").arg(50), 50);
+    autoDownloadCombo->addItem(tr("All episodes"), 1000);
 
     origRssUpdate=Settings::self()->rssUpdate();
     setIndex(updateCombo, origRssUpdate);

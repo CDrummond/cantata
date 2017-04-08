@@ -32,7 +32,6 @@
 #include "widgets/actionitemdelegate.h"
 #include "widgets/messageoverlay.h"
 #include "models/streamsmodel.h"
-#include "gui/plurals.h"
 #include <QLabel>
 #include <QXmlStreamReader>
 #include <QTreeWidget>
@@ -125,11 +124,11 @@ StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
     statusText=new SqueezedTextLabel(wid);
     progress=new QProgressBar(wid);
-    legendsLayout->addWidget(new IconLabel(installed, i18n("Installed"), legends));
+    legendsLayout->addWidget(new IconLabel(installed, tr("Installed"), legends));
     legendsLayout->addItem(new QSpacerItem(l->spacing(), 0, QSizePolicy::Fixed, QSizePolicy::Fixed));
-    legendsLayout->addWidget(new IconLabel(updateable, i18n("Update available"), legends));
+    legendsLayout->addWidget(new IconLabel(updateable, tr("Update available"), legends));
     legendsLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));
-    l->addWidget(new QLabel(i18n("Check the providers you wish to install/update."), wid));
+    l->addWidget(new QLabel(tr("Check the providers you wish to install/update."), wid));
     l->addWidget(tree);
     l->addWidget(legends);
     l->addItem(new QSpacerItem(0, l->spacing(), QSizePolicy::Fixed, QSizePolicy::Fixed));
@@ -142,7 +141,7 @@ StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     enableButton(User1, false);
     enableButton(User2, false);
     setDefaultButton(Close);
-    setCaption(i18n("Install/Update Stream Providers"));
+    setCaption(tr("Install/Update Stream Providers"));
 }
 
 StreamProviderListDialog::~StreamProviderListDialog()
@@ -191,7 +190,7 @@ void StreamProviderListDialog::getProviderList()
     job=NetworkAccessManager::self()->get(QUrl(constProviderBaseUrl+"list.xml"));
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
     spinner->start();
-    msgOverlay->setText(i18n("Downloading list..."), -1, false);
+    msgOverlay->setText(tr("Downloading list..."), -1, false);
     #endif
 }
 
@@ -213,9 +212,9 @@ enum Roles {
 static QString catName(int cat) {
     switch (cat) {
     default:
-    case Cat_General:           return i18n("General");
-    case Cat_DigitallyImported: return i18n("Digitally Imported");
-    case Cat_ListenLive:        return i18n("Local and National Radio (ListenLive)");
+    case Cat_General:           return QObject::tr("General");
+    case Cat_DigitallyImported: return QObject::tr("Digitally Imported");
+    case Cat_ListenLive:        return QObject::tr("Local and National Radio (ListenLive)");
     }
 }
 
@@ -235,7 +234,7 @@ void StreamProviderListDialog::jobFinished()
         if (j->ok()) {
             readProviders(j->actualJob());
         } else {
-            MessageBox::error(this, i18n("Failed to download list of stream providers!"));
+            MessageBox::error(this, tr("Failed to download list of stream providers!"));
             slotButtonClicked(Close);
         }
         if (spinner) {
@@ -247,14 +246,14 @@ void StreamProviderListDialog::jobFinished()
     } else {
         QTreeWidgetItem *item=*(processItems.begin());
         if (j->ok()) {
-            statusText->setText(i18n("Installing/updating %1", item->text(0)));
+            statusText->setText(tr("Installing/updating %1").arg(item->text(0)));
             QTemporaryFile temp(QDir::tempPath()+"/cantata_XXXXXX.streams");
             temp.setAutoRemove(true);
             temp.open();
             temp.write(j->readAll());
             temp.close();
             if (!p->install(temp.fileName(), item->text(0), false)) {
-                MessageBox::error(this, i18n("Failed to install '%1'", item->text(0)));
+                MessageBox::error(this, tr("Failed to install '%1'").arg(item->text(0)));
                 setState(false);
             } else {
                 item->setCheckState(0, Qt::Unchecked);
@@ -263,7 +262,7 @@ void StreamProviderListDialog::jobFinished()
                 doNext();
             }
         } else {
-            MessageBox::error(this, i18n("Failed to download '%1'", item->text(0)));
+            MessageBox::error(this, tr("Failed to download '%1'").arg(item->text(0)));
             setState(false);
         }
     }
@@ -356,21 +355,21 @@ void StreamProviderListDialog::slotButtonClicked(int button)
         }
         QString message;
         if (install && update) {
-            message=i18n("Install/update the selected stream providers?");
+            message=tr("Install/update the selected stream providers?");
         } else if (install) {
-            message=i18n("Install the selected stream providers?");
+            message=tr("Install the selected stream providers?");
         } else if (update) {
-            message=i18n("Update the selected stream providers?");
+            message=tr("Update the selected stream providers?");
         }
 
-        if (!message.isEmpty() && MessageBox::Yes==MessageBox::questionYesNo(this, message, i18n("Install/Update"))) {
+        if (!message.isEmpty() && MessageBox::Yes==MessageBox::questionYesNo(this, message, tr("Install/Update"))) {
             setState(true);
             doNext();
         }
         break;
     }
     case Cancel:
-        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Abort installation/update?"), i18n("Abort"))) {
+        if (MessageBox::Yes==MessageBox::questionYesNo(this, tr("Abort installation/update?"), tr("Abort"))) {
             if (job) {
                 disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                 job->cancelAndDelete();
@@ -418,7 +417,7 @@ void StreamProviderListDialog::updateView(bool unCheck)
         }
     }
 
-    updateText=0==numUpdates ? QString() : Plurals::updates(numUpdates);
+    updateText=0==numUpdates ? QString() : tr("%n Update(s) available", "", numUpdates);
     setState(false);
 }
 
@@ -428,7 +427,7 @@ void StreamProviderListDialog::doNext()
         accept();
     } else {
         QTreeWidgetItem *item=*(processItems.begin());
-        statusText->setText(i18n("Downloading %1", item->text(0)));
+        statusText->setText(tr("Downloading %1").arg(item->text(0)));
         job=NetworkAccessManager::self()->get(QUrl(item->data(0, Role_Url).toString()));
         connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
     }
@@ -445,9 +444,9 @@ void StreamProviderListDialog::setState(bool downloading)
         progress->setValue(0);
     } else {
         setButtons(User1|User2|Close);
-        setButtonText(User1, i18n("Install/Update"));
+        setButtonText(User1, tr("Install/Update"));
         enableButton(User1, !checkedItems.isEmpty());
-        setButtonText(User2, i18n("Update all updateable providers"));
+        setButtonText(User2, tr("Update all updateable providers"));
         enableButton(User2, !updateText.isEmpty());
         setDefaultButton(Close);
         statusText->setText(updateText);

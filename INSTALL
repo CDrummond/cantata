@@ -25,12 +25,6 @@ The following options may be passed to CMake:
         Specify which type of build. Debug builds will be *much* larger, as
         they will contain extra debugging information.
 
-    -DCANTATA_TRANSLATIONS=<list of translations to install>
-        Builds and installs the selected translations. Supported values are
-        cs, de, en_GB, es, fr, hu, pl, ru, ko, zh_CN, and all. Entries should be
-        separated with a semicolon (";") e.g. -DCANTATA_TRANSLATIONS="es;pl"
-        Default: all
-
     -DENABLE_HTTP_STREAM_PLAYBACK=ON
         Enable support for playing back MPD HTTP streams via QtMultiMedia or
         lib VLC (see below)

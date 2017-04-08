@@ -25,7 +25,6 @@
 #include "roles.h"
 #include "playqueuemodel.h"
 #include "widgets/icons.h"
-#include "support/localize.h"
 #include "gui/settings.h"
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdstats.h"
@@ -218,7 +217,7 @@ QVariant BrowseModel::data(const QModelIndex &index, int role) const
         if (!item->isFolder()) {
             TrackItem *track = static_cast<TrackItem *>(item);
             if (Song::Playlist==track->getSong().type) {
-                return track->getSong().isCueFile() ? i18n("Cue Sheet") : i18n("Playlist");
+                return track->getSong().isCueFile() ? tr("Cue Sheet") : tr("Playlist");
             }
         }
         return item->getSubText();

@@ -26,7 +26,6 @@
 #ifdef QT_QTDBUS_FOUND
 #include "dbus/notify.h"
 #endif
-#include "support/localize.h"
 #include "mainwindow.h"
 #include "settings.h"
 #include "support/action.h"
@@ -177,7 +176,7 @@ void TrayItem::setup()
     }
     #endif
     trayItem->setIcon(icon);
-    trayItem->setToolTip(i18n("Cantata"));
+    trayItem->setToolTip(tr("Cantata"));
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));
     #endif
@@ -217,7 +216,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
             if (song.time>0) {
                 text+=QLatin1String(" - ")+Utils::formatTime(song.time);
             }
-            MacNotify::showMessage(i18n("Now playing"), text, CurrentCover::self()->image());
+            MacNotify::showMessage(tr("Now playing"), text, CurrentCover::self()->image());
         }
     }
     #else
@@ -233,13 +232,13 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
 
             if (trayItem) {
                 #if defined Q_OS_WIN || defined Q_OS_MAC || !defined QT_QTDBUS_FOUND
-                trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
+                trayItem->setToolTip(tr("Cantata")+"\n\n"+text);
                 // The pure Qt implementation needs both the tray icon and the setting checked.
                 if (Settings::self()->showPopups() && isPlaying) {
-                    trayItem->showMessage(i18n("Now playing"), text, QSystemTrayIcon::Information, 5000);
+                    trayItem->showMessage(tr("Now playing"), text, QSystemTrayIcon::Information, 5000);
                 }
                 #else
-                trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
+                trayItem->setToolTip(tr("Cantata")+"\n\n"+text);
                 #endif
             }
             #ifdef QT_QTDBUS_FOUND
@@ -247,11 +246,11 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                 if (!notification) {
                     notification=new Notify(this);
                 }
-                notification->show(i18n("Now playing"), text, CurrentCover::self()->image());
+                notification->show(tr("Now playing"), text, CurrentCover::self()->image());
             }
             #endif
         } else if (trayItem) {
-            trayItem->setToolTip(i18n("Cantata"));
+            trayItem->setToolTip(tr("Cantata"));
         }
     }
     #endif

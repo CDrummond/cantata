@@ -116,23 +116,23 @@ static QIcon monoIcon(const GuiItem &i)
 }
 
 namespace StdGuiItem {
-GuiItem ok() { return GuiItem(i18n("&OK"), FontAwesome::check); }
-GuiItem cancel() { return GuiItem(i18n("&Cancel"), FontAwesome::ban, true); }
-GuiItem yes() { return GuiItem(i18n("&Yes"), FontAwesome::check); }
-GuiItem no() { return GuiItem(i18n("&No"), FontAwesome::times, true); }
-GuiItem discard() { return GuiItem(i18n("&Discard"), FontAwesome::eraser, true); }
-GuiItem save() { return GuiItem(i18n("&Save"), FontAwesome::save); }
-GuiItem apply() { return GuiItem(i18n("&Apply"), FontAwesome::check); }
-GuiItem close() { return GuiItem(i18n("&Close"), FontAwesome::close, true); }
-GuiItem help() { return GuiItem(i18n("&Help"), FontAwesome::lifering); }
-GuiItem overwrite() { return GuiItem(i18n("&Overwrite")); }
-GuiItem reset() { return GuiItem(i18n("&Reset"), FontAwesome::undo); }
-GuiItem cont() { return GuiItem(i18n("&Continue"), FontAwesome::arrowright); }
-GuiItem del() { return GuiItem(i18n("&Delete"), FontAwesome::trash, true); }
-GuiItem stop() { return GuiItem(i18n("&Stop"), FontAwesome::times); }
-GuiItem remove() { return   GuiItem(i18n("&Remove"), FontAwesome::remove); }
-GuiItem back(bool useRtl) { return GuiItem(i18n("&Previous"), useRtl && QApplication::isRightToLeft() ? FontAwesome::chevronright : FontAwesome::chevronleft); }
-GuiItem forward(bool useRtl) { return GuiItem(i18n("&Next"), useRtl && QApplication::isRightToLeft() ? FontAwesome::chevronleft : FontAwesome::chevronright); }
+GuiItem ok() { return GuiItem(QObject::tr("&OK"), FontAwesome::check); }
+GuiItem cancel() { return GuiItem(QObject::tr("&Cancel"), FontAwesome::ban, true); }
+GuiItem yes() { return GuiItem(QObject::tr("&Yes"), FontAwesome::check); }
+GuiItem no() { return GuiItem(QObject::tr("&No"), FontAwesome::times, true); }
+GuiItem discard() { return GuiItem(QObject::tr("&Discard"), FontAwesome::eraser, true); }
+GuiItem save() { return GuiItem(QObject::tr("&Save"), FontAwesome::save); }
+GuiItem apply() { return GuiItem(QObject::tr("&Apply"), FontAwesome::check); }
+GuiItem close() { return GuiItem(QObject::tr("&Close"), FontAwesome::close, true); }
+GuiItem help() { return GuiItem(QObject::tr("&Help"), FontAwesome::lifering); }
+GuiItem overwrite() { return GuiItem(QObject::tr("&Overwrite")); }
+GuiItem reset() { return GuiItem(QObject::tr("&Reset"), FontAwesome::undo); }
+GuiItem cont() { return GuiItem(QObject::tr("&Continue"), FontAwesome::arrowright); }
+GuiItem del() { return GuiItem(QObject::tr("&Delete"), FontAwesome::trash, true); }
+GuiItem stop() { return GuiItem(QObject::tr("&Stop"), FontAwesome::times); }
+GuiItem remove() { return   GuiItem(QObject::tr("&Remove"), FontAwesome::remove); }
+GuiItem back(bool useRtl) { return GuiItem(QObject::tr("&Previous"), useRtl && QApplication::isRightToLeft() ? FontAwesome::chevronright : FontAwesome::chevronleft); }
+GuiItem forward(bool useRtl) { return GuiItem(QObject::tr("&Next"), useRtl && QApplication::isRightToLeft() ? FontAwesome::chevronleft : FontAwesome::chevronright); }
 
 QSet<QString> standardNames()
 {

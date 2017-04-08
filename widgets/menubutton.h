@@ -28,6 +28,7 @@
 
 class MenuButton : public ToolButton
 {
+    Q_OBJECT
 public:
     explicit MenuButton(QWidget *parent = 0);
     void controlState();

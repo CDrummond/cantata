@@ -24,7 +24,6 @@
 #include "digitallyimported.h"
 #include "support/configuration.h"
 #include "network/networkaccessmanager.h"
-#include "support/localize.h"
 #include "support/globalstatic.h"
 #include <QNetworkRequest>
 #include <QJsonDocument>
@@ -90,7 +89,7 @@ void DigitallyImported::load()
     streamType=cfg.get("streamType", streamType);
     QString ex=cfg.get("expires", QString());
 
-    status=i18n("Not logged in");
+    status=tr("Not logged in");
     if (ex.isEmpty()) {
         listenHash=QString();
     } else {
@@ -99,7 +98,7 @@ void DigitallyImported::load()
         if (QDateTime::currentDateTime().secsTo(expires)<(5*60)) {
             listenHash=QString();
         } else if (!listenHash.isEmpty()) {
-            status=i18n("Logged in");
+            status=tr("Logged in");
         }
     }
     controlTimer();
@@ -164,7 +163,7 @@ void DigitallyImported::loginResponse()
         emit loginStatus(false, status);
         return;
     } else if (200!=httpStatus) {
-        status=i18n("Unknown error");
+        status=tr("Unknown error");
         emit loginStatus(false, status);
         return;
     }
@@ -172,20 +171,20 @@ void DigitallyImported::loginResponse()
     QVariantMap data=QJsonDocument::fromJson(reply->readAll()).toVariant().toMap();
 
     if (!data.contains("subscriptions")) {
-        status=i18n("No subscriptions");
+        status=tr("No subscriptions");
         emit loginStatus(false, status);
         return;
     }
 
     QVariantList subscriptions = data.value("subscriptions", QVariantList()).toList();
     if (subscriptions.isEmpty() || QLatin1String("active")!=subscriptions[0].toMap().value("status").toString()) {
-        status=i18n("You do not have an active subscription");
+        status=tr("You do not have an active subscription");
         emit loginStatus(false, status);
         return;
     }
 
     if (!subscriptions[0].toMap().contains("expires_on") || !data.contains("listen_key")) {
-        status=i18n("Unknown error");
+        status=tr("Unknown error");
         emit loginStatus(false, status);
         return;
     }
@@ -198,7 +197,7 @@ void DigitallyImported::loginResponse()
         listenHash=lh;
         save();
     }
-    status=i18n("Logged in (expiry:%1)", expires.toString(Qt::ISODate));
+    status=tr("Logged in (expiry:%1)").arg(expires.toString(Qt::ISODate));
     controlTimer();
     emit loginStatus(true, status);
 }
@@ -206,7 +205,7 @@ void DigitallyImported::loginResponse()
 void DigitallyImported::timeout()
 {
     listenHash=QString();
-    emit loginStatus(false, i18n("Session expired"));
+    emit loginStatus(false, tr("Session expired"));
 }
 
 void DigitallyImported::controlTimer()

@@ -22,7 +22,6 @@
  */
 
 #include "cachesettings.h"
-#include "support/localize.h"
 #include "context/artistview.h"
 #include "context/albumview.h"
 #include "context/songview.h"
@@ -167,7 +166,7 @@ void CacheItem::setStatus(const QString &str)
 
 void CacheItem::clean()
 {
-    setStatus(i18n("Deleting..."));
+    setStatus(tr("Deleting..."));
     emit deleteAll();
     switch (type) {
     case Type_Covers:       Covers::self()->clearNameCache(); break;
@@ -178,7 +177,7 @@ void CacheItem::clean()
 
 void CacheItem::calculate()
 {
-    setStatus(i18n("Calculating..."));
+    setStatus(tr("Calculating..."));
     emit getCount();
 }
 
@@ -191,7 +190,7 @@ CacheTree::CacheTree(QWidget *parent)
     : QTreeWidget(parent)
     , calculated(false)
 {
-    setHeaderLabels(QStringList() << i18n("Name") << i18n("Item Count") << i18n("Space Used"));
+    setHeaderLabels(QStringList() << tr("Name") << tr("Item Count") << tr("Space Used"));
     setAllColumnsShowFocus(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setRootIsDecorated(false);
@@ -221,21 +220,25 @@ void CacheTree::showEvent(QShowEvent *e)
     QTreeWidget::showEvent(e);
 }
 
-class SpaceLabel : public SqueezedTextLabel
-{
-public:
-    SpaceLabel(QWidget *p)
-        : SqueezedTextLabel(p)
-    {
-        QFont f=font();
-        f.setItalic(true);
-        setFont(f);
-        update(i18n("Calculating..."));
-    }
 
-    void update(int space) { update(Utils::formatByteSize(space)); }
-    void update(const QString &text) { setText(i18n("Total space used: %1", text)); }
-};
+SpaceLabel::SpaceLabel(QWidget *p)
+    : SqueezedTextLabel(p)
+{
+    QFont f=font();
+    f.setItalic(true);
+    setFont(f);
+    update(tr("Calculating..."));
+}
+
+void SpaceLabel::update(int space)
+{
+    update(Utils::formatByteSize(space));
+}
+
+void SpaceLabel::update(const QString &text)
+{
+    setText(tr("Total space used: %1").arg(text));
+}
 
 CacheSettings::CacheSettings(QWidget *parent)
     : QWidget(parent)
@@ -245,7 +248,7 @@ CacheSettings::CacheSettings(QWidget *parent)
     layout->setMargin(0);
     int row=0;
     int col=0;
-    QLabel *label=new QLabel(i18n("Cantata caches various pieces of information (covers, lyrics, etc). Below is a summary of Cantata's "
+    QLabel *label=new QLabel(tr("Cantata caches various pieces of information (covers, lyrics, etc). Below is a summary of Cantata's "
                                   "current cache usage."), this);
     label->setWordWrap(true);
     layout->addWidget(label, row++, col, 1, 2);
@@ -254,27 +257,27 @@ CacheSettings::CacheSettings(QWidget *parent)
     tree=new CacheTree(this);
     layout->addWidget(tree, row++, col, 1, 2);
 
-    new CacheItem(i18n("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", tree,
+    new CacheItem(tr("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", tree,
                   CacheItem::Type_Covers);
-    new CacheItem(i18n("Scaled Covers"), Utils::cacheDir(Covers::constScaledCoverDir, false), QStringList() << "*.jpg" << "*.png", tree,
+    new CacheItem(tr("Scaled Covers"), Utils::cacheDir(Covers::constScaledCoverDir, false), QStringList() << "*.jpg" << "*.png", tree,
                   CacheItem::Type_ScaledCovers);
-    new CacheItem(i18n("Backdrops"), Utils::cacheDir(ContextWidget::constCacheDir, false), QStringList() << "*.jpg" << "*.png", tree);
-    new CacheItem(i18n("Lyrics"), Utils::cacheDir(SongView::constLyricsDir, false), QStringList() << "*"+SongView::constExtension, tree);
-    new CacheItem(i18n("Artist Information"), Utils::cacheDir(ArtistView::constCacheDir, false), QStringList() << "*"+ArtistView::constInfoExt
+    new CacheItem(tr("Backdrops"), Utils::cacheDir(ContextWidget::constCacheDir, false), QStringList() << "*.jpg" << "*.png", tree);
+    new CacheItem(tr("Lyrics"), Utils::cacheDir(SongView::constLyricsDir, false), QStringList() << "*"+SongView::constExtension, tree);
+    new CacheItem(tr("Artist Information"), Utils::cacheDir(ArtistView::constCacheDir, false), QStringList() << "*"+ArtistView::constInfoExt
                   << "*"+ArtistView::constSimilarInfoExt << "*.json.gz" << "*.jpg" << "*.png", tree);
-    new CacheItem(i18n("Album Information"), Utils::cacheDir(AlbumView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt << "*.jpg" << "*.png", tree);
-    new CacheItem(i18n("Track Information"), Utils::cacheDir(SongView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt, tree);
-    new CacheItem(i18n("Stream Listings"), Utils::cacheDir(StreamsModel::constSubDir, false), QStringList() << "*"+StreamsModel::constCacheExt, tree);
-    new CacheItem(i18n("Podcast Directories"), Utils::cacheDir(PodcastSearchDialog::constCacheDir, false), QStringList() << "*"+PodcastSearchDialog::constExt, tree);
-    new CacheItem(i18n("Wikipedia Languages"), Utils::cacheDir(WikipediaSettings::constSubDir, false), QStringList() << "*.xml.gz", tree);
-    new CacheItem(i18n("Scrobble Tracks"), Utils::cacheDir(Scrobbler::constCacheDir, false), QStringList() << "*.xml.gz", tree);
+    new CacheItem(tr("Album Information"), Utils::cacheDir(AlbumView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt << "*.jpg" << "*.png", tree);
+    new CacheItem(tr("Track Information"), Utils::cacheDir(SongView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt, tree);
+    new CacheItem(tr("Stream Listings"), Utils::cacheDir(StreamsModel::constSubDir, false), QStringList() << "*"+StreamsModel::constCacheExt, tree);
+    new CacheItem(tr("Podcast Directories"), Utils::cacheDir(PodcastSearchDialog::constCacheDir, false), QStringList() << "*"+PodcastSearchDialog::constExt, tree);
+    new CacheItem(tr("Wikipedia Languages"), Utils::cacheDir(WikipediaSettings::constSubDir, false), QStringList() << "*.xml.gz", tree);
+    new CacheItem(tr("Scrobble Tracks"), Utils::cacheDir(Scrobbler::constCacheDir, false), QStringList() << "*.xml.gz", tree);
 
     for (int i=0; i<tree->topLevelItemCount(); ++i) {
         connect(static_cast<CacheItem *>(tree->topLevelItem(i)), SIGNAL(updated()), this, SLOT(updateSpace()));
     }
 
     spaceLabel=new SpaceLabel(this);
-    button=new QPushButton(i18n("Delete All"), this);
+    button=new QPushButton(tr("Delete All"), this);
     layout->addWidget(spaceLabel, row, 0, 1, 1);
     layout->addWidget(button, row++, 1, 1, 1);
     button->setEnabled(false);
@@ -313,8 +316,8 @@ void CacheSettings::deleteAll()
 
     if (!toDelete.isEmpty()) {
         if (1==toDelete.count()) {
-            if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Delete all '%1' items?", toDelete.at(0)->name()),
-                                                          i18n("Delete Cache Items"), StdGuiItem::del(), StdGuiItem::cancel())) {
+            if (MessageBox::Yes==MessageBox::warningYesNo(this, tr("Delete all '%1' items?").arg(toDelete.at(0)->name()),
+                                                          tr("Delete Cache Items"), StdGuiItem::del(), StdGuiItem::cancel())) {
                 toDelete.first()->clean();
             }
         } else if (toDelete.count()>1) {
@@ -325,8 +328,8 @@ void CacheSettings::deleteAll()
                 items+=constBullet+QLatin1Char(' ')+i->name()+QLatin1Char('\n');
             }
 
-            if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete items from all selected categories?")+QLatin1String("\n\n")+items,
-                                                         i18n("Delete Cache Items"), StdGuiItem::del(), StdGuiItem::cancel())) {
+            if (MessageBox::No==MessageBox::warningYesNo(this, tr("Delete items from all selected categories?")+QLatin1String("\n\n")+items,
+                                                         tr("Delete Cache Items"), StdGuiItem::del(), StdGuiItem::cancel())) {
                 return;
             }
 

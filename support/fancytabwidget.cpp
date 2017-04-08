@@ -34,7 +34,6 @@
 **************************************************************************/
 
 #include "fancytabwidget.h"
-#include "localize.h"
 #include "icon.h"
 #include "action.h"
 #include "utils.h"
@@ -560,7 +559,7 @@ void FancyTabBar::setCurrentIndex(int index)
     emit currentChanged(currentIdx);
 }
 
-FancyTabWidget::FancyTabWidget(QWidget *parent, bool allowContextMenu)
+FancyTabWidget::FancyTabWidget(QWidget *parent)
     : QWidget(parent)
     , styleSetting(0)
     , tabBar(NULL)
@@ -570,7 +569,6 @@ FancyTabWidget::FancyTabWidget(QWidget *parent, bool allowContextMenu)
     , topLayout(new QVBoxLayout)
     , menu(0)
     , proxyStyle(new FancyTabProxyStyle)
-    , allowContext(allowContextMenu)
 {
     sideLayout->setSpacing(0);
     sideLayout->setMargin(0);
@@ -658,50 +656,6 @@ void FancyTabWidget::showWidget(int index)
     int idx=tabToIndex(index);
     stack_->setCurrentIndex(idx);
     emit currentChanged(idx);
-}
-
-void FancyTabWidget::contextMenuEvent(QContextMenuEvent *e)
-{
-    if (!allowContext) {
-        return;
-    }
-
-    // Check we are over tab space...
-    if (Tab==(styleSetting&Style_Mask)) {
-        if (QApplication::widgetAt(e->globalPos())!=tabBar) {
-            return;
-        }
-    }
-    else {
-        switch (styleSetting&Position_Mask) {
-        case Bot:
-            if (e->pos().y()<=(sideWidget->pos().y()+(sideWidget->height()-tabBar->height()))) {
-                return;
-            }
-            break;
-        case Top:
-            if (e->pos().y()>(sideWidget->pos().y()+tabBar->height())) {
-                return;
-            }
-            break;
-        default:
-            if (QApplication::isRightToLeft()) {
-                if (e->pos().x()<=sideWidget->pos().x()) {
-                    return;
-                }
-            } else if (e->pos().x()>=sideWidget->rect().right()) {
-                return;
-            }
-        }
-    }
-
-    if (!menu) {
-        menu = new QMenu(this);
-        QAction *act=new QAction(i18n("Configure..."), this);
-        connect(act, SIGNAL(triggered()), SIGNAL(configRequested()));
-        menu->addAction(act);
-    }
-    menu->popup(e->globalPos());
 }
 
 void FancyTabWidget::setStyle(int s)

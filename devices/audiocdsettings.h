@@ -28,6 +28,7 @@
 
 class AudioCdSettings : public QWidget, private Ui::AudioCdSettings
 {
+    Q_OBJECT
 public:
     AudioCdSettings(QWidget *p);
     virtual ~AudioCdSettings() { }

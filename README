@@ -117,55 +117,18 @@ version of MPD you are using.
 5. Translations
 ===============
 
-Because Cantata started out as a KDE4 application, the translation files are
-based upon KDE's i18n framework - these are located within the 'po' folder.
+As of version 2.1.0, Cantata uses Qt5's translation framework.
 
-Translations for Qt-only builds are created from the KDE translations using
-'lconvert'. To work-around issues with plural translations, Qt builds will
-contain extra strings to handle plural forms.
+To generate a new translation for Cantata:
 
-e.g.
-
-    KDE will have:
-        msgid "1 Track"
-        msgid_plural "%1 Tracks"
-        msgstr[0] ""
-        msgstr[1] ""
-
-    Qt will have:
-        msgid "1 Track"
-        msgstr ""
-
-        msgid "%1 Tracks"
-        msgstr ""
-
-In the code, cantata will use "%1 Tracks" for any count other than 1. If the
-language you are translating into has more plural forms (i.e. the above two
-strings are not sufficient), then please translate both into the form
-"Tracks: N" - e.g.
-
-    Qt would now have:
-        msgid "1 Track"
-        msgstr "Tracks: 1"
-
-        msgid "%1 Tracks"
-        msgstr "Tracks: %1"
-
-
-Creating a new translation
---------------------------
-
-To generate a new translation for Cantata, please just copy cantata.pot (in the
-po folder) to whatever letter code your language uses (e.g. es.po for Spanish).
-Then edit this new file to add the translations.
-
-Please DO NOT use any tools to manually generate the translations from
-Cantata's source code, as this will probably not work. This is due to Cantata
-using the KDE framework for translations, and then generating the Qt-only ones
-from this.
-
-In the po folder there is a script named generate.sh, this is used to extract
-translatable strings and update current translations.
+1. Copy translations/blank.ts to cantata_LANG_CODE.ts
+   (Replace LANG_CODE with the language code for the desired language, e.g. 
+   'fr' for French - so this would be cantata_fr.ts)
+2. Open your new ts file with Qt Linguist.
+3. In Qt Linguist set the target language and country.
+4. Update the translations.
+5. Either email me the new translation (address is in the AUTHORS file), or
+   create a pull request on github.
 
 
 6. Covers

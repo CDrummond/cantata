@@ -31,7 +31,6 @@
 #include "musiclibrarymodel.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "mpd-interface/mpdconnection.h"
-#include "support/localize.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
@@ -386,7 +385,7 @@ bool MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QString &base
 
         if (reader.error()) {
             if (em) {
-                em->loadError(i18n("Parse error loading cache file, please check your songs tags."));
+                em->loadError(QObject::tr("Parse error loading cache file, please check your songs tags."));
             }
         } else if (reader.isStartElement()) {
             QString element = reader.name().toString();

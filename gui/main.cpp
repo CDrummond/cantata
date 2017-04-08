@@ -83,26 +83,10 @@ static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QSt
     }
 }
 
-// Taken from Clementine!
-//
-// We convert from .po files to .qm files, which loses context information.
-// This translator tries loading strings with an empty context if it can't
-// find any others.
-
-class PoTranslator : public QTranslator
-{
-public:
-    QString translate(const char *context, const char *sourceText, const char *disambiguation = 0, int n=-1) const
-    {
-        QString ret = QTranslator::translate(context, sourceText, disambiguation, n);
-        return !ret.isEmpty() ? ret : QTranslator::translate(NULL, sourceText, disambiguation, n);
-    }
-};
-
 static void loadTranslation(const QString &prefix, const QString &path, const QString &overrideLanguage = QString())
 {
     QString language = overrideLanguage.isEmpty() ? QLocale::system().name() : overrideLanguage;
-    QTranslator *t = new PoTranslator;
+    QTranslator *t = new QTranslator;
     if (t->load(prefix+"_"+language, path)) {
         QCoreApplication::installTranslator(t);
     } else {

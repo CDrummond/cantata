@@ -24,7 +24,6 @@
 #include "menubutton.h"
 #include "support/icon.h"
 #include "icons.h"
-#include "support/localize.h"
 #include <QAction>
 #include <QMenu>
 #include <QEvent>
@@ -36,7 +35,7 @@ MenuButton::MenuButton(QWidget *parent)
 {
     setPopupMode(QToolButton::InstantPopup);
     setIcon(Icons::self()->menuIcon);
-    setToolTip(i18n("Menu"));
+    setToolTip(tr("Menu"));
     setHideMenuIndicator(true);
     if (!Utils::touchFriendly()) {
         installEventFilter(this);

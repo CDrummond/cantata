@@ -23,7 +23,6 @@
 
 #include "customactionssettings.h"
 #include "customactions.h"
-#include "support/localize.h"
 #include "support/messagebox.h"
 #include "widgets/basicitemdelegate.h"
 #include "widgets/icons.h"
@@ -44,11 +43,11 @@ CustomActionDialog::CustomActionDialog(QWidget *p)
     commandEntry=new LineEdit(widget);
     nameEntry->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
     commandEntry->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-    layout->addRow(new QLabel(i18n("Name:"), widget), nameEntry);
-    layout->addRow(new QLabel(i18n("Command:"), widget), commandEntry);
+    layout->addRow(new QLabel(tr("Name:"), widget), nameEntry);
+    layout->addRow(new QLabel(tr("Command:"), widget), commandEntry);
     layout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     NoteLabel *note=new NoteLabel(widget);
-    note->setText(i18n("In the command line above, %f will be replaced with the file list and %d with the folder list. If neither are supplied, the the list of files will be appended to the command."));
+    note->setText(tr("In the command line above, %f will be replaced with the file list and %d with the folder list. If neither are supplied, the the list of files will be appended to the command."));
     layout->setWidget(2, QFormLayout::SpanningRole, note);
     layout->setMargin(0);
     setButtons(Dialog::Ok|Dialog::Cancel);
@@ -60,7 +59,7 @@ CustomActionDialog::CustomActionDialog(QWidget *p)
 
 bool CustomActionDialog::create()
 {
-    setCaption(i18n("Add New Command"));
+    setCaption(tr("Add New Command"));
     nameEntry->setText(QString());
     commandEntry->setText(QString());
     return QDialog::Accepted==exec();
@@ -68,7 +67,7 @@ bool CustomActionDialog::create()
 
 bool CustomActionDialog::edit(const QString &name, const QString &cmd)
 {
-    setCaption(i18n("Edit Command"));
+    setCaption(tr("Edit Command"));
     nameEntry->setText(name);
     commandEntry->setText(cmd);
     return QDialog::Accepted==exec();
@@ -85,7 +84,7 @@ CustomActionsSettings::CustomActionsSettings(QWidget *parent)
 {
     QGridLayout *layout=new QGridLayout(this);
     layout->setMargin(0);
-    QLabel *label=new QLabel(i18n("To have Cantata call external commands (e.g. to edit tags with another application), add an entry for the command below. When at least one command "
+    QLabel *label=new QLabel(tr("To have Cantata call external commands (e.g. to edit tags with another application), add an entry for the command below. When at least one command "
                                   "command is defined, a 'Custom Actions' entry will be added to the context menus in the Library, Folders, and Playlists views."), this);
     label->setWordWrap(true);
     layout->addWidget(label, 0, 0, 1, 2);
@@ -99,16 +98,16 @@ CustomActionsSettings::CustomActionsSettings(QWidget *parent)
     layout->addWidget(del, 3, 1, 1, 1);
     layout->addItem(new QSpacerItem(1, 1, QSizePolicy::Fixed, QSizePolicy::MinimumExpanding), 4, 1);
 
-    add->setText(i18n("Add"));
-    edit->setText(i18n("Edit"));
-    del->setText(i18n("Remove"));
+    add->setText(tr("Add"));
+    edit->setText(tr("Edit"));
+    del->setText(tr("Remove"));
     add->setIcon(Icons::self()->addIcon);
     edit->setIcon(Icons::self()->editIcon);
     del->setIcon(Icons::self()->minusIcon);
     edit->setEnabled(false);
     del->setEnabled(false);
 
-    tree->setHeaderLabels(QStringList() << i18n("Name") << i18n("Command"));
+    tree->setHeaderLabels(QStringList() << tr("Name") << tr("Command"));
     tree->setAllColumnsShowFocus(true);
     tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
     tree->setRootIsDecorated(false);
@@ -180,7 +179,7 @@ void CustomActionsSettings::editCommand()
 
 void CustomActionsSettings::delCommand()
 {
-    if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Remove the selected commands?"), QString(), GuiItem(i18n("Remove")), StdGuiItem::cancel())) {
+    if (MessageBox::Yes==MessageBox::warningYesNo(this, tr("Remove the selected commands?"), QString(), GuiItem(tr("Remove")), StdGuiItem::cancel())) {
         foreach (QTreeWidgetItem *i, tree->selectedItems()) {
             delete i;
         }

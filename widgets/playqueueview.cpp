@@ -29,7 +29,6 @@
 #include "treeview.h"
 #include "gui/settings.h"
 #include "mpd-interface/mpdstatus.h"
-#include "support/localize.h"
 #include "support/spinner.h"
 #include "messageoverlay.h"
 #include "icons.h"
@@ -90,7 +89,7 @@ PlayQueueView::PlayQueueView(QWidget *parent)
     , backgroundOpacity(15)
     , backgroundBlur(0)
 {
-    removeFromAction = new Action(Icons::self()->removeIcon, i18n("Remove"), this);
+    removeFromAction = new Action(Icons::self()->removeIcon, tr("Remove"), this);
     setMode(ItemView::Mode_GroupedTree);
     animator.setPropertyName("fade");
     animator.setTargetObject(this);

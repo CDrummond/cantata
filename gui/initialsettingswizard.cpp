@@ -54,7 +54,7 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     connect(connectButton, SIGNAL(clicked(bool)), SLOT(connectToMpd()));
     connect(basicDir, SIGNAL(textChanged(QString)), SLOT(controlNextButton()));
     MPDConnection::self()->start();
-    statusLabel->setText(i18n("Not Connected"));
+    statusLabel->setText(tr("Not Connected"));
 
     MPDConnectionDetails det=Settings::self()->connectionDetails();
     host->setText(det.hostname);
@@ -143,7 +143,7 @@ void InitialSettingsWizard::connectToMpd()
 
 void InitialSettingsWizard::mpdConnectionStateChanged(bool c)
 {
-    statusLabel->setText(c ? i18n("Connection Established") : i18n("Connection Failed"));
+    statusLabel->setText(c ? tr("Connection Established") : tr("Connection Failed"));
     if (PAGE_CONNECTION==currentId()) {
         controlNextButton();
     }
@@ -156,7 +156,7 @@ void InitialSettingsWizard::showError(const QString &message)
 
 void InitialSettingsWizard::dbError(const QString &message)
 {
-    MessageBox::error(this, message+QLatin1String("<br/><br/>")+i18n("Cantata will now terminate"));
+    MessageBox::error(this, message+QLatin1String("<br/><br/>")+tr("Cantata will now terminate"));
     reject();
 }
 

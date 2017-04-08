@@ -24,7 +24,6 @@
 #include "interfacesettings.h"
 #include "settings.h"
 #include "models/sqllibrarymodel.h"
-#include "support/localize.h"
 #include "support/utils.h"
 #include "support/fancytabwidget.h"
 #include "support/pathrequester.h"
@@ -53,8 +52,8 @@ static QString viewTypeString(ItemView::Mode mode)
 {
     switch (mode) {
     default:
-    case ItemView::Mode_GroupedTree:  return i18n("Grouped Albums");
-    case ItemView::Mode_Table:        return i18n("Table");
+    case ItemView::Mode_GroupedTree:  return QObject::tr("Grouped Albums");
+    case ItemView::Mode_Table:        return QObject::tr("Table");
     }
 }
 
@@ -69,9 +68,9 @@ static QString cueSupportString(MPDParseUtils::CueSupport cs)
 {
     switch (cs) {
     default:
-    case MPDParseUtils::Cue_Parse:            return i18n("Parse in Library view, and show in Folders view");
-    case MPDParseUtils::Cue_ListButDontParse: return i18n("Only show in Folders view");
-    case MPDParseUtils::Cue_Ignore:           return i18n("Do not list");
+    case MPDParseUtils::Cue_Parse:            return QObject::tr("Parse in Library view, and show in Folders view");
+    case MPDParseUtils::Cue_ListButDontParse: return QObject::tr("Only show in Folders view");
+    case MPDParseUtils::Cue_Ignore:           return QObject::tr("Do not list");
     }
 }
 
@@ -133,19 +132,18 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addCueSupportTypes(cueSupport);
     addViewTypes(playQueueView, QList<ItemView::Mode>() << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
 
-    addView(i18n("Play Queue"), QLatin1String("PlayQueuePage"));
-    addView(i18n("Library"), QLatin1String("LibraryPage"));
-    addView(i18n("Folders"), QLatin1String("FolderPage"));
-    addView(i18n("Playlists"), QLatin1String("PlaylistsPage"));
-    addView(i18n("Dynamic Playlists"), QLatin1String("DynamicPage"));
-    addView(i18n("Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts"), QLatin1String("OnlineServicesPage"));
+    addView(tr("Play Queue"), QLatin1String("PlayQueuePage"));
+    addView(tr("Library"), QLatin1String("LibraryPage"));
+    addView(tr("Folders"), QLatin1String("FolderPage"));
+    addView(tr("Playlists"), QLatin1String("PlaylistsPage"));
+    addView(tr("Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts"), QLatin1String("OnlineServicesPage"));
     #ifdef ENABLE_DEVICES_SUPPORT
-    addView(i18n("Devices - UMS, MTP (e.g. Android), and AudioCDs"), QLatin1String("DevicesPage"));
+    addView(tr("Devices - UMS, MTP (e.g. Android), and AudioCDs"), QLatin1String("DevicesPage"));
     #else
     REMOVE(showDeleteAction)
     #endif
-    addView(i18n("Search (via MPD)"), QLatin1String("SearchPage"));
-    addView(i18n("Info - Current song information (artist, album, and lyrics)"), QLatin1String("ContextPage"));
+    addView(tr("Search (via MPD)"), QLatin1String("SearchPage"));
+    addView(tr("Info - Current song information (artist, album, and lyrics)"), QLatin1String("ContextPage"));
     connect(playQueueView, SIGNAL(currentIndexChanged(int)), SLOT(playQueueViewChanged()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
     #ifdef ENABLE_TOUCH_SUPPORT
@@ -156,20 +154,20 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #endif
     connect(views, SIGNAL(itemChanged(QListWidgetItem*)), SLOT(viewItemChanged(QListWidgetItem*)));
 
-    sbStyle->addItem(i18n("Large"), FancyTabWidget::Large);
-    sbStyle->addItem(i18n("Small"), FancyTabWidget::Small);
-    sbStyle->addItem(i18n("Tab-bar"), FancyTabWidget::Tab);
-    sbPosition->addItem(Qt::LeftToRight==layoutDirection() ? i18n("Left") : i18n("Right"), FancyTabWidget::Side);
-    sbPosition->addItem(i18n("Top"), FancyTabWidget::Top);
-    sbPosition->addItem(i18n("Bottom"), FancyTabWidget::Bot);
+    sbStyle->addItem(tr("Large"), FancyTabWidget::Large);
+    sbStyle->addItem(tr("Small"), FancyTabWidget::Small);
+    sbStyle->addItem(tr("Tab-bar"), FancyTabWidget::Tab);
+    sbPosition->addItem(Qt::LeftToRight==layoutDirection() ? tr("Left") : tr("Right"), FancyTabWidget::Side);
+    sbPosition->addItem(tr("Top"), FancyTabWidget::Top);
+    sbPosition->addItem(tr("Bottom"), FancyTabWidget::Bot);
     connect(sbAutoHide, SIGNAL(toggled(bool)), SLOT(sbAutoHideChanged()));
     views->setItemDelegate(new BasicItemDelegate(views));
     playQueueBackground_none->setProperty(constValueProperty, PlayQueueView::BI_None);
     playQueueBackground_cover->setProperty(constValueProperty, PlayQueueView::BI_Cover);
     playQueueBackground_custom->setProperty(constValueProperty, PlayQueueView::BI_Custom);
     playQueueBackgroundFile->setDirMode(false);
-    playQueueBackgroundFile->setFilter(i18n("Images (*.png *.jpg)"));
-    int labelWidth=qMax(fontMetrics().width(QLatin1String("100%")), fontMetrics().width(i18nc("pixels", "10px")));
+    playQueueBackgroundFile->setFilter(tr("Images (*.png *.jpg)"));
+    int labelWidth=qMax(fontMetrics().width(QLatin1String("100%")), fontMetrics().width(tr("10px", "pixels")));
     playQueueBackgroundOpacityLabel->setFixedWidth(labelWidth);
     playQueueBackgroundBlurLabel->setFixedWidth(labelWidth);
     connect(playQueueBackgroundOpacity, SIGNAL(valueChanged(int)), SLOT(setPlayQueueBackgroundOpacityLabel()));
@@ -194,7 +192,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     if (!enableNotifications && !enableTrayItem) {
         tabWidget->removeTab(3);
     } else if (!enableTrayItem && enableNotifications) {
-        tabWidget->setTabText(3, i18n("Notifications"));
+        tabWidget->setTabText(3, tr("Notifications"));
     }
     #if !defined QT_QTDBUS_FOUND
     REMOVE(enableMpris)
@@ -415,12 +413,12 @@ void InterfaceSettings::showEvent(QShowEvent *e)
             langMap[QString("%1 (%2)").arg(langName, code)] = code;
         }
 
-        langMap["English (en)"] = "en";
+        langMap[tr("English (en)")] = "en";
 
         QString current = Settings::self()->lang();
         QStringList names = langMap.keys();
         qStableSort(names.begin(), names.end(), localeAwareCompare);
-        lang->addItem(i18n("System default"), QString());
+        lang->addItem(tr("System default"), QString());
         lang->setCurrentIndex(0);
         foreach (const QString &name, names) {
             lang->addItem(name, langMap[name]);
@@ -526,12 +524,12 @@ void InterfaceSettings::sbAutoHideChanged()
 
 void InterfaceSettings::setPlayQueueBackgroundOpacityLabel()
 {
-    playQueueBackgroundOpacityLabel->setText(i18nc("value%", "%1%", playQueueBackgroundOpacity->value()));
+    playQueueBackgroundOpacityLabel->setText(tr("%1%", "value%").arg(playQueueBackgroundOpacity->value()));
 }
 
 void InterfaceSettings::setPlayQueueBackgroundBlurLabel()
 {
-    playQueueBackgroundBlurLabel->setText(i18nc("pixels", "%1 px", playQueueBackgroundBlur->value()));
+    playQueueBackgroundBlurLabel->setText(tr("%1 px", "pixels").arg(playQueueBackgroundBlur->value()));
 }
 
 void InterfaceSettings::enablePlayQueueBackgroundOptions()

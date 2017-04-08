@@ -31,7 +31,6 @@
 #include "mpd-interface/mpdconnection.h"
 #include "support/utils.h"
 #include "context/songview.h"
-#include "support/localize.h"
 #include "support/messagebox.h"
 #include "support/action.h"
 #include "widgets/icons.h"
@@ -65,20 +64,20 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
 {
     iCount++;
     setButtons(Ok|Cancel);
-    setCaption(i18n("Organize Files"));
+    setCaption(tr("Organize Files"));
     setAttribute(Qt::WA_DeleteOnClose);
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
     setMainWidget(mainWidet);
     configFilename->setIcon(Icons::self()->configureIcon);
-    setButtonGuiItem(Ok, GuiItem(i18n("Rename")));
+    setButtonGuiItem(Ok, GuiItem(tr("Rename")));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
     progress->setVisible(false);
     files->setItemDelegate(new BasicItemDelegate(files));
     files->setAlternatingRowColors(false);
     files->setContextMenuPolicy(Qt::ActionsContextMenu);
     files->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    removeAct=new Action(i18n("Remove From List"), files);
+    removeAct=new Action(tr("Remove From List"), files);
     removeAct->setEnabled(false);
     files->addAction(removeAct);
     connect(files, SIGNAL(itemSelectionChanged()), SLOT(controlRemoveAct()));
@@ -163,7 +162,7 @@ void TrackOrganiser::slotButtonClicked(int button)
     case Cancel:
         if (!optionsBox->isEnabled()) {
             paused=true;
-            if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Abort renaming of files?"), i18n("Abort"), GuiItem(i18n("Abort")), StdGuiItem::cancel())) {
+            if (MessageBox::No==MessageBox::questionYesNo(this, tr("Abort renaming of files?"), tr("Abort"), GuiItem(tr("Abort")), StdGuiItem::cancel())) {
                 paused=false;
                 QTimer::singleShot(0, this, SLOT(renameFile()));
                 return;
@@ -268,8 +267,8 @@ void TrackOrganiser::renameFile()
             if (autoSkip) {
                 skip=true;
             } else {
-                switch(MessageBox::questionYesNoCancel(this, i18n("Source file does not exist!")+QLatin1String("\n\n")+dest,
-                                                       QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
+                switch(MessageBox::questionYesNoCancel(this, tr("Source file does not exist!")+QLatin1String("\n\n")+dest,
+                                                       QString(), GuiItem(tr("Skip")), GuiItem(tr("Auto Skip")))) {
                 case MessageBox::Yes:
                     skip=true;
                     break;
@@ -287,8 +286,8 @@ void TrackOrganiser::renameFile()
             if (autoSkip) {
                 skip=true;
             } else {
-                switch(MessageBox::questionYesNoCancel(this, i18n("Destination file already exists!")+QLatin1String("\n\n")+dest,
-                                                       QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
+                switch(MessageBox::questionYesNoCancel(this, tr("Destination file already exists!")+QLatin1String("\n\n")+dest,
+                                                       QString(), GuiItem(tr("Skip")), GuiItem(tr("Auto Skip")))) {
                 case MessageBox::Yes:
                     skip=true;
                     break;
@@ -309,8 +308,8 @@ void TrackOrganiser::renameFile()
                 if (autoSkip) {
                     skip=true;
                 } else {
-                    switch(MessageBox::questionYesNoCancel(this, i18n("Failed to create destination folder!")+QLatin1String("\n\n")+dir.absolutePath(),
-                                                           QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
+                    switch(MessageBox::questionYesNoCancel(this, tr("Failed to create destination folder!")+QLatin1String("\n\n")+dir.absolutePath(),
+                                                           QString(), GuiItem(tr("Skip")), GuiItem(tr("Auto Skip")))) {
                     case MessageBox::Yes:
                         skip=true;
                         break;
@@ -330,8 +329,8 @@ void TrackOrganiser::renameFile()
             if (autoSkip) {
                 skip=true;
             } else {
-                switch(MessageBox::questionYesNoCancel(this, i18n("Failed to rename '%1' to '%2'", source, dest),
-                                                       QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
+                switch(MessageBox::questionYesNoCancel(this, tr("Failed to rename '%1' to '%2'").arg(source, dest),
+                                                       QString(), GuiItem(tr("Skip")), GuiItem(tr("Auto Skip")))) {
                 case MessageBox::Yes:
                     skip=true;
                     break;
@@ -455,8 +454,8 @@ void TrackOrganiser::removeItems()
         return;
     }
 
-    if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Remove the selected tracks from the list?"),
-                                                   i18n("Remove Tracks"), StdGuiItem::remove(), StdGuiItem::cancel())) {
+    if (MessageBox::Yes==MessageBox::questionYesNo(this, tr("Remove the selected tracks from the list?"),
+                                                   tr("Remove Tracks"), StdGuiItem::remove(), StdGuiItem::cancel())) {
 
         QList<QTreeWidgetItem *> selection=files->selectedItems();
         foreach (QTreeWidgetItem *item, selection) {
@@ -471,7 +470,7 @@ void TrackOrganiser::removeItems()
 
 void TrackOrganiser::showRatingsMessage()
 {
-    MessageBox::information(this, i18n("Song ratings are not stored in the song files, but within MPD's 'sticker' database.\n\n"
+    MessageBox::information(this, tr("Song ratings are not stored in the song files, but within MPD's 'sticker' database.\n\n"
                                        "If you rename a file (or the folder it is within), then the rating associated with the song will be lost."),
                             QLatin1String("Ratings"));
 }
@@ -531,17 +530,17 @@ Device * TrackOrganiser::getDevice(QWidget *p)
 {
     Device *dev=DevicesModel::self()->device(deviceUdi);
     if (!dev) {
-        MessageBox::error(p ? p : this, i18n("Device has been removed!"));
+        MessageBox::error(p ? p : this, tr("Device has been removed!"));
         reject();
         return 0;
     }
     if (!dev->isConnected()) {
-        MessageBox::error(p ? p : this, i18n("Device is not connected."));
+        MessageBox::error(p ? p : this, tr("Device is not connected."));
         reject();
         return 0;
     }
     if (!dev->isIdle()) {
-        MessageBox::error(p ? p : this, i18n("Device is busy?"));
+        MessageBox::error(p ? p : this, tr("Device is busy?"));
         reject();
         return 0;
     }

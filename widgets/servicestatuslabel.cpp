@@ -22,7 +22,6 @@
  */
 
 #include "servicestatuslabel.h"
-#include "support/localize.h"
 #include <QPalette>
 #include <QStyle>
 #include <QApplication>
@@ -40,8 +39,8 @@ ServiceStatusLabel::ServiceStatusLabel(QWidget *p)
 void ServiceStatusLabel::setText(const QString &txt, const QString &name)
 {
     QLabel::setText(txt);
-    onTooltip=i18n("Logged into %1", name);
-    offTooltip=i18n("<b>NOT</b> logged into %1", name);
+    onTooltip=tr("Logged into %1").arg(name);
+    offTooltip=tr("<b>NOT</b> logged into %1").arg(name);
 }
 
 void ServiceStatusLabel::setStatus(bool on)

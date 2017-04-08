@@ -41,7 +41,6 @@
 #include "http/httpserver.h"
 #endif
 #include "support/utils.h"
-#include "support/localize.h"
 #include "cuefile.h"
 #include "mpdconnection.h"
 
@@ -730,7 +729,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
             } else {
                 if (setSingleTracks) {
                     currentSong.albumartist=Song::variousArtists();
-                    currentSong.album=i18n("Single Tracks");
+                    currentSong.album=QObject::tr("Single Tracks");
                 }
                 currentSong.fillEmptyFields();
                 songs.append(currentSong);

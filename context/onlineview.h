@@ -28,6 +28,7 @@
 
 class OnlineView : public View
 {
+    Q_OBJECT
 public:
     OnlineView(QWidget *p);
 

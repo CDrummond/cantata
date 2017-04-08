@@ -25,7 +25,6 @@
 #include "jamendosettingsdialog.h"
 #include "db/onlinedb.h"
 #include "models/roles.h"
-#include "support/localize.h"
 #include "support/icon.h"
 #include "support/configuration.h"
 #include <QXmlStreamReader>
@@ -376,7 +375,7 @@ QString JamendoService::title() const
 
 QString JamendoService::descr() const
 {
-    return i18n("The world's largest digital service for free music");
+    return tr("The world's largest digital service for free music");
 }
 
 OnlineXmlParser * JamendoService::createParser()

@@ -26,8 +26,6 @@
 #include "mpd-interface/mpdparseutils.h"
 #include "widgets/icons.h"
 #include "network/networkaccessmanager.h"
-#include "support/localize.h"
-#include "gui/plurals.h"
 #include "support/utils.h"
 #include "gui/settings.h"
 #include "playqueuemodel.h"
@@ -40,7 +38,6 @@
 #include "support/utils.h"
 #include "config.h"
 #include "support/globalstatic.h"
-#include "support/localize.h"
 #include <QModelIndex>
 #include <QString>
 #include <QSet>
@@ -243,7 +240,7 @@ StreamsModel::CategoryItem * StreamsModel::CategoryItem::createBookmarksCategory
     if (icon.isNull()) {
         icon=Icon("user-bookmarks");
     }
-    CategoryItem *bookmarkCat = new CategoryItem(QString(), i18n("Bookmarks"), this, icon);
+    CategoryItem *bookmarkCat = new CategoryItem(QString(), tr("Bookmarks"), this, icon);
     bookmarkCat->state=CategoryItem::Fetched;
     bookmarkCat->isBookmarks=true;
     return bookmarkCat;
@@ -507,23 +504,23 @@ StreamsModel::StreamsModel(QObject *parent)
     , root(new CategoryItem(QString(), "root"))
 {
     icn=Icons::self()->radioStreamIcon;
-    tuneIn=new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), i18n("TuneIn"), root, getIcon("tunein"), QString(), "tunein");
+    tuneIn=new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), tr("TuneIn"), root, getIcon("tunein"), QString(), "tunein");
     tuneIn->supportsBookmarks=true;
     root->children.append(tuneIn);
-    root->children.append(new IceCastCategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast"), "icecast"));
-    shoutCast=new ShoutCastCategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast"));
+    root->children.append(new IceCastCategoryItem(constIceCastUrl, tr("IceCast"), root, getIcon("icecast"), "icecast"));
+    shoutCast=new ShoutCastCategoryItem(constShoutCastUrl, tr("ShoutCast"), root, getIcon("shoutcast"));
     shoutCast->configName="shoutcast";
     root->children.append(shoutCast);
-    dirble=new DirbleCategoryItem(constDirbleUrl, i18n("Dirble"), root, getIcon("dirble"));
+    dirble=new DirbleCategoryItem(constDirbleUrl, tr("Dirble"), root, getIcon("dirble"));
     dirble->configName="dirble";
     root->children.append(dirble);
-    favourites=new FavouritesCategoryItem(constFavouritesUrl, i18n("Favorites"), root, getIcon("favourites"));
+    favourites=new FavouritesCategoryItem(constFavouritesUrl, tr("Favorites"), root, getIcon("favourites"));
     root->children.append(favourites);
     loadInstalledProviders();
-    addBookmarkAction = new Action(Icons::self()->addBookmarkIcon, i18n("Bookmark Category"), this);
-    addToFavouritesAction = new Action(favouritesIcon(), i18n("Add Stream To Favorites"), this);
-    configureDiAction = new Action(Icons::self()->configureIcon, i18n("Configure Digitally Imported"), this);
-    reloadAction = new Action(Icons::self()->reloadIcon, i18n("Reload"), this);
+    addBookmarkAction = new Action(Icons::self()->addBookmarkIcon, tr("Bookmark Category"), this);
+    addToFavouritesAction = new Action(favouritesIcon(), tr("Add Stream To Favorites"), this);
+    configureDiAction = new Action(Icons::self()->configureIcon, tr("Configure Digitally Imported"), this);
+    reloadAction = new Action(Icons::self()->reloadIcon, tr("Reload"), this);
 
     QSet<QString> hidden=Settings::self()->hiddenStreamCategories().toSet();
     foreach (Item *c, root->children) {
@@ -558,12 +555,12 @@ QString StreamsModel::name() const
 
 QString StreamsModel::title() const
 {
-    return i18n("Streams");
+    return tr("Streams");
 }
 
 QString StreamsModel::descr() const
 {
-    return i18n("Radio stations");
+    return tr("Radio stations");
 }
 
 QModelIndex StreamsModel::index(int row, int column, const QModelIndex &parent) const
@@ -648,11 +645,11 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             const CategoryItem *cat=static_cast<const CategoryItem *>(item);
             switch (cat->state) {
             case CategoryItem::Initial:
-                return i18n("Not Loaded");
+                return tr("Not Loaded");
             case CategoryItem::Fetching:
-                return i18n("Loading...");
+                return tr("Loading...");
             default:
-                return Plurals::entries(cat->children.count());
+                return tr("%n Entry(s)", "", cat->children.count());
             }
         }
         break;
@@ -1295,14 +1292,14 @@ static QStringList fixGenres(const QString &genre)
         }
     }
     if (fixed.isEmpty()) {
-        fixed << i18n("Other");
+        fixed << QObject::tr("Other");
     }
     return fixed;
 }
 
 static void trimGenres(QMap<QString, QList<StreamsModel::Item *> > &genres)
 {
-    QString other=i18n("Other");
+    QString other=QObject::tr("Other");
     QSet<QString> genreSet = genres.keys().toSet();
     foreach (const QString &genre, genreSet) {
         if (other!=genre && genres[genre].count() < 2) {

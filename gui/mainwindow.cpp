@@ -25,8 +25,6 @@
  */
 
 #include "mainwindow.h"
-#include "support/localize.h"
-#include "plurals.h"
 #include "support/thread.h"
 #include "trayitem.h"
 #include "support/messagebox.h"
@@ -251,32 +249,32 @@ void MainWindow::init()
 
     setWindowIcon(Icons::self()->appIcon);
 
-    prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? i18n("Configure Cantata...") : i18n("Preferences"),
+    prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? tr("Configure Cantata...") : tr("Preferences"),
                                                      HIDE_MENU_ICON(Icons::self()->configureIcon));
     connect(prefAction, SIGNAL(triggered()),this, SLOT(showPreferencesDialog()));
-    quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::poweroff, MonoIcon::constRed, MonoIcon::constRed)));
+    quitAction = ActionCollection::get()->createAction("quit", tr("Quit"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::poweroff, MonoIcon::constRed, MonoIcon::constRed)));
     connect(quitAction, SIGNAL(triggered()), this, SLOT(quit()));
     quitAction->setShortcut(QKeySequence::Quit);
-    Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), HIDE_MENU_ICON(Icons::self()->appIcon));
+    Action *aboutAction=ActionCollection::get()->createAction("about", tr("About Cantata..."), HIDE_MENU_ICON(Icons::self()->appIcon));
     connect(aboutAction, SIGNAL(triggered()),this, SLOT(showAboutDialog()));
     #ifdef Q_OS_MAC
     prefAction->setMenuRole(QAction::PreferencesRole);
     quitAction->setMenuRole(QAction::QuitRole);
     aboutAction->setMenuRole(QAction::AboutRole);
     #endif
-    restoreAction = new Action(i18n("Show Window"), this);
+    restoreAction = new Action(tr("Show Window"), this);
     connect(restoreAction, SIGNAL(triggered()), this, SLOT(restoreWindow()));
 
-    serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::server, iconCol)));
+    serverInfoAction=ActionCollection::get()->createAction("mpdinfo", tr("Server information..."), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::server, iconCol)));
     connect(serverInfoAction, SIGNAL(triggered()),this, SLOT(showServerInfo()));
     serverInfoAction->setEnabled(Settings::self()->firstRun());
-    refreshDbAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), HIDE_MENU_ICON(Icons::self()->refreshIcon));
-    doDbRefreshAction = new Action(refreshDbAction->icon(), i18n("Refresh"), this);
+    refreshDbAction = ActionCollection::get()->createAction("refresh", tr("Refresh Database"), HIDE_MENU_ICON(Icons::self()->refreshIcon));
+    doDbRefreshAction = new Action(refreshDbAction->icon(), tr("Refresh"), this);
     refreshDbAction->setEnabled(false);
-    connectAction = new Action(Icons::self()->connectIcon, i18n("Connect"), this);
-    connectionsAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::server, iconCol)), i18n("Collection"), this);
-    outputsAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::volumeup, iconCol)), i18n("Outputs"), this);
-    stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
+    connectAction = new Action(Icons::self()->connectIcon, tr("Connect"), this);
+    connectionsAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::server, iconCol)), tr("Collection"), this);
+    outputsAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::volumeup, iconCol)), tr("Outputs"), this);
+    stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", tr("Stop After Track"), Icons::self()->toolbarStopIcon);
     fwdAction = new Action(this);
     revAction = new Action(this);
     fwdAction->setShortcut((Qt::RightToLeft==layoutDirection() ? Qt::Key_Left : Qt::Key_Right)+Qt::ControlModifier);
@@ -286,34 +284,34 @@ void MainWindow::init()
     addAction(fwdAction);
     addAction(revAction);
 
-    addPlayQueueToStoredPlaylistAction = new Action(HIDE_MENU_ICON(Icons::self()->playlistListIcon), i18n("Add To Stored Playlist"), this);
+    addPlayQueueToStoredPlaylistAction = new Action(HIDE_MENU_ICON(Icons::self()->playlistListIcon), tr("Add To Stored Playlist"), this);
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction = new Action(HIDE_MENU_ICON(StdActions::self()->copyToDeviceAction->icon()), Utils::strippedText(StdActions::self()->copyToDeviceAction->text()), this);
     copyToDeviceAction->setMenu(DevicesModel::self()->menu()->duplicate(0));
     #endif
-    cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop Others"));
-    addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"));
-    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), HIDE_MENU_ICON(Icons::self()->removeIcon));
+    cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", tr("Crop Others"));
+    addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", tr("Add Stream URL"));
+    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", tr("Clear"), HIDE_MENU_ICON(Icons::self()->removeIcon));
     clearPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_K);
-    centerPlayQueueAction = ActionCollection::get()->createAction("centerplaylist", i18n("Center On Current Track"), Icons::self()->centrePlayQueueOnTrackIcon);
-    expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::expand, iconCol)));
+    centerPlayQueueAction = ActionCollection::get()->createAction("centerplaylist", tr("Center On Current Track"), Icons::self()->centrePlayQueueOnTrackIcon);
+    expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", tr("Expanded Interface"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::expand, iconCol)));
     expandInterfaceAction->setCheckable(true);
-    songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::self()->infoIcon);
+    songInfoAction = ActionCollection::get()->createAction("showsonginfo", tr("Show Current Song Information"), Icons::self()->infoIcon);
     songInfoAction->setShortcut(Qt::Key_F12);
     songInfoAction->setCheckable(true);
-    fullScreenAction = ActionCollection::get()->createAction("fullScreen", i18n("Full Screen"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::arrowsalt, iconCol)));
+    fullScreenAction = ActionCollection::get()->createAction("fullScreen", tr("Full Screen"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::arrowsalt, iconCol)));
     #ifndef Q_OS_MAC
     fullScreenAction->setShortcut(Qt::Key_F11);
     #endif
-    randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"), Icons::self()->shuffleIcon);
-    repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"), Icons::self()->repeatIcon);
-    singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), Icons::self()->singleIcon, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
-    consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", i18n("Consume"), Icons::self()->consumeIcon, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
-    searchPlayQueueAction = ActionCollection::get()->createAction("searchplaylist", i18n("Find in Play Queue"), HIDE_MENU_ICON(Icons::self()->searchIcon));
+    randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", tr("Random"), Icons::self()->shuffleIcon);
+    repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", tr("Repeat"), Icons::self()->repeatIcon);
+    singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", tr("Single"), Icons::self()->singleIcon, tr("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
+    consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", tr("Consume"), Icons::self()->consumeIcon, tr("When consume is activated, a song is removed from the play queue after it has been played."));
+    searchPlayQueueAction = ActionCollection::get()->createAction("searchplaylist", tr("Find in Play Queue"), HIDE_MENU_ICON(Icons::self()->searchIcon));
     addAction(searchPlayQueueAction);
     searchPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_F);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), HIDE_MENU_ICON(Icons::self()->httpStreamIcon));
+    streamPlayAction = ActionCollection::get()->createAction("streamplay", tr("Play Stream"), HIDE_MENU_ICON(Icons::self()->httpStreamIcon));
     streamPlayAction->setCheckable(true);
     streamPlayAction->setChecked(false);
     streamPlayAction->setVisible(false);
@@ -321,16 +319,16 @@ void MainWindow::init()
     #endif
     streamPlayButton->setVisible(false);
 
-    locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), Icons::self()->searchIcon);
-    playNextAction = ActionCollection::get()->createAction("playnext", i18n("Play next"));
+    locateTrackAction = ActionCollection::get()->createAction("locatetrack", tr("Locate In Library"), Icons::self()->searchIcon);
+    playNextAction = ActionCollection::get()->createAction("playnext", tr("Play next"));
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", Utils::strippedText(StdActions::self()->editTagsAction->text()), StdActions::self()->editTagsAction->icon());
     #endif
-    addAction(expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All")));
+    addAction(expandAllAction = ActionCollection::get()->createAction("expandall", tr("Expand All")));
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
-    addAction(collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All")));
+    addAction(collapseAllAction = ActionCollection::get()->createAction("collapseall", tr("Collapse All")));
     collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
-    cancelAction = ActionCollection::get()->createAction("cancel", i18n("Cancel"), Icons::self()->cancelIcon);
+    cancelAction = ActionCollection::get()->createAction("cancel", tr("Cancel"), Icons::self()->cancelIcon);
     cancelAction->setShortcut(Qt::AltModifier+Qt::Key_Escape);
     connect(cancelAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
 
@@ -383,23 +381,23 @@ void MainWindow::init()
     // Build sidebar...
     #define TAB_ACTION(A) A->icon(), A->text(), A->text()
     int sidebarPageShortcutKey=Qt::Key_1;
-    addAction(showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", i18n("Play Queue"), Icons::self()->playqueueIcon));
+    addAction(showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", tr("Play Queue"), Icons::self()->playqueueIcon));
     showPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Q);
     tabWidget->addTab(playQueuePage, TAB_ACTION(showPlayQueueAction), playQueueInSidebar);
     connect(showPlayQueueAction, SIGNAL(triggered()), this, SLOT(showPlayQueue()));
     libraryPage = new LibraryPage(this);
-    addAction(libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Library"), Icons::self()->libraryIcon));
+    addAction(libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", tr("Library"), Icons::self()->libraryIcon));
     libraryTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(libraryPage, TAB_ACTION(libraryTabAction), !hiddenPages.contains(libraryPage->metaObject()->className()));
     connect(libraryTabAction, SIGNAL(triggered()), this, SLOT(showLibraryTab()));
     folderPage = new FolderPage(this);
-    addAction(foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), Icons::self()->foldersIcon));
+    addAction(foldersTabAction = ActionCollection::get()->createAction("showfolderstab", tr("Folders"), Icons::self()->foldersIcon));
     foldersTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(folderPage, TAB_ACTION(foldersTabAction), !hiddenPages.contains(folderPage->metaObject()->className()));
     connect(foldersTabAction, SIGNAL(triggered()), this, SLOT(showFoldersTab()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     playlistsPage = new PlaylistsPage(this);
-    addAction(playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::self()->playlistsIcon));
+    addAction(playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", tr("Playlists"), Icons::self()->playlistsIcon));
     playlistsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     connect(playlistsTabAction, SIGNAL(triggered()), this, SLOT(showPlaylistsTab()));
@@ -408,7 +406,7 @@ void MainWindow::init()
     connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
     stopDynamicButton->setDefaultAction(Dynamic::self()->stopAct());
     onlinePage = new OnlineServicesPage(this);
-    addAction(onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Internet"), Icons::self()->onlineIcon));
+    addAction(onlineTabAction = ActionCollection::get()->createAction("showonlinetab", tr("Internet"), Icons::self()->onlineIcon));
     onlineTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
     onlinePage->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
@@ -417,19 +415,19 @@ void MainWindow::init()
     connect(onlinePage, SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage = new DevicesPage(this);
-    addAction(devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), Icons::self()->devicesIcon));
+    addAction(devicesTabAction = ActionCollection::get()->createAction("showdevicestab", tr("Devices"), Icons::self()->devicesIcon));
     devicesTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
     connect(devicesTabAction, SIGNAL(triggered()), this, SLOT(showDevicesTab()));
     #endif
     searchPage = new SearchPage(this);
-    addAction(searchTabAction = ActionCollection::get()->createAction("showsearchtab", i18n("Search"), Icons::self()->searchTabIcon));
+    addAction(searchTabAction = ActionCollection::get()->createAction("showsearchtab", tr("Search"), Icons::self()->searchTabIcon));
     searchTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     connect(searchTabAction, SIGNAL(triggered()), this, SLOT(showSearchTab()));
     connect(searchPage, SIGNAL(locate(QList<Song>)), this, SLOT(locateTracks(QList<Song>)));
     tabWidget->addTab(searchPage, TAB_ACTION(searchTabAction), !hiddenPages.contains(searchPage->metaObject()->className()));
-    tabWidget->addTab(contextPage, Icons::self()->infoSidebarIcon, i18n("Info"), songInfoAction->text(),
+    tabWidget->addTab(contextPage, Icons::self()->infoSidebarIcon, tr("Info"), songInfoAction->text(),
                       !hiddenPages.contains(contextPage->metaObject()->className()));
     tabWidget->setStyle(Settings::self()->sidebar());
 
@@ -573,7 +571,7 @@ void MainWindow::init()
     int menuCfg=Settings::self()->menu();
     #ifndef Q_OS_MAC
     if (Utils::Unity!=Utils::currentDe() && menuCfg&Settings::MC_Bar && menuCfg&Settings::MC_Button) {
-        showMenuAction=ActionCollection::get()->createAction("showmenubar", i18n("Show Menubar"));
+        showMenuAction=ActionCollection::get()->createAction("showmenubar", tr("Show Menubar"));
         showMenuAction->setShortcut(Qt::ControlModifier+Qt::Key_M);
         showMenuAction->setCheckable(true);
         connect(showMenuAction, SIGNAL(toggled(bool)), this, SLOT(toggleMenubar()));
@@ -611,7 +609,7 @@ void MainWindow::init()
     }
 
     if (menuCfg&Settings::MC_Bar) {
-        QMenu *menu=new QMenu(i18n("&Music"), this);
+        QMenu *menu=new QMenu(tr("&Music"), this);
         addMenuAction(menu, refreshDbAction);
         menu->addSeparator();
         addMenuAction(menu, connectionsAction);
@@ -622,7 +620,7 @@ void MainWindow::init()
         menu->addSeparator();
         addMenuAction(menu, quitAction);
         menuBar()->addMenu(menu);
-        menu=new QMenu(i18n("&Edit"), this);
+        menu=new QMenu(tr("&Edit"), this);
         addMenuAction(menu, PlayQueueModel::self()->undoAct());
         addMenuAction(menu, PlayQueueModel::self()->redoAct());
         menu->addSeparator();
@@ -634,7 +632,7 @@ void MainWindow::init()
         }
         menuBar()->addMenu(menu);
         if (Utils::KDE!=Utils::currentDe()) {
-            menu=new QMenu(i18n("&View"), this);
+            menu=new QMenu(tr("&View"), this);
             if (showMenuAction) {
                 addMenuAction(menu, showMenuAction);
                 menu->addSeparator();
@@ -645,7 +643,7 @@ void MainWindow::init()
             addMenuAction(menu, fullScreenAction);
             menuBar()->addMenu(menu);
         }
-        menu=new QMenu(i18n("&Queue"), this);
+        menu=new QMenu(tr("&Queue"), this);
         addMenuAction(menu, clearPlayQueueAction);
         addMenuAction(menu, StdActions::self()->savePlayQueueAction);
         addMenuAction(menu, addStreamToPlayQueueAction);
@@ -654,7 +652,7 @@ void MainWindow::init()
         addMenuAction(menu, PlayQueueModel::self()->sortAct());
         menuBar()->addMenu(menu);
         if (Utils::KDE==Utils::currentDe()) {
-            menu=new QMenu(i18n("&Settings"), this);
+            menu=new QMenu(tr("&Settings"), this);
             if (showMenuAction) {
                 addMenuAction(menu, showMenuAction);
             }
@@ -668,7 +666,7 @@ void MainWindow::init()
         #ifdef Q_OS_MAC
         OSXStyle::self()->initWindowMenu(this);
         #endif
-        menu=new QMenu(i18n("&Help"), this);
+        menu=new QMenu(tr("&Help"), this);
         addMenuAction(menu, serverInfoAction);
         addMenuAction(menu, aboutAction);
         menuBar()->addMenu(menu);
@@ -687,12 +685,12 @@ void MainWindow::init()
     playQueueProxyModel.setSourceModel(PlayQueueModel::self());
     playQueue->setModel(&playQueueProxyModel);
     playQueue->addAction(playQueue->removeFromAct());
-    ratingAction=new Action(i18n("Set Rating"), this);
+    ratingAction=new Action(tr("Set Rating"), this);
     ratingAction->setMenu(new QMenu(0));
     for (int i=0; i<((Song::Rating_Max/Song::Rating_Step)+1); ++i) {
         QString text;
         if (0==i) {
-            text=i18n("No Rating");
+            text=tr("No Rating");
         } else {
             for (int s=0; s<i; ++s) {
                 text+=QChar(0x2605);
@@ -865,7 +863,6 @@ void MainWindow::init()
     connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(tabToggled(int)), this, SLOT(tabToggled(int)));
     connect(tabWidget, SIGNAL(styleChanged(int)), this, SLOT(sidebarModeChanged()));
-    connect(tabWidget, SIGNAL(configRequested()), this, SLOT(showSidebarPreferencesPage()));
 
     readSettings();
     updateConnectionsMenu();
@@ -968,7 +965,7 @@ void MainWindow::addMenuAction(QMenu *menu, QAction *action)
 void MainWindow::showError(const QString &message, bool showActions)
 {
     if (QLatin1String("NO_SONGS")==message) {
-        messageWidget->setError(i18n("Failed to locate any songs matching the dynamic playlist rules."));
+        messageWidget->setError(tr("Failed to locate any songs matching the dynamic playlist rules."));
     } else {
         messageWidget->setError(message);
     }
@@ -1089,7 +1086,7 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         if (!MPDConnection::self()->getDetails().isEmpty() && details!=MPDConnection::self()->getDetails()) {
             Dynamic::self()->stop();
         }
-        showInformation(i18n("Connecting to %1", details.description()));
+        showInformation(tr("Connecting to %1").arg(details.description()));
         outputsAction->setVisible(false);
         if (CS_Init!=connectedState) {
             connectedState=CS_Disconnected;
@@ -1125,27 +1122,27 @@ void MainWindow::refreshDbPromp()
     } else {
         messageWidget->setActions(QList<QAction*>() << doDbRefreshAction << cancelAction);
     }
-    messageWidget->setWarning(i18n("Refresh MPD Database?"), false);
+    messageWidget->setWarning(tr("Refresh MPD Database?"), false);
     expand();
 }
 
 void MainWindow::showAboutDialog()
 {
-    QMessageBox::about(this, i18nc("Qt-only", "About Cantata"),
-                       i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>"
-                             "&copy; 2011-2017 Craig Drummond<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>", PACKAGE_VERSION_STRING)+
-                       QLatin1String("<br/><br/><i><small>")+i18n("Based upon <a href=\"http://lowblog.nl\">QtMPC</a> - &copy; 2007-2010 The QtMPC Authors<br/>")+
-                       i18nc("Qt-only", "Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+QLatin1String("<br/>")+
-                       i18nc("Qt-only", "Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a>")+
-                       QLatin1String("<br/><br/>")+i18n("Please consider uploading your own music fan-art to <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+
+    QMessageBox::about(this, tr("About Cantata"),
+                       tr("<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>"
+                           "&copy; 2011-2017 Craig Drummond<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>").arg(PACKAGE_VERSION_STRING)+
+                       QLatin1String("<br/><br/><i><small>")+tr("Based upon <a href=\"http://lowblog.nl\">QtMPC</a> - &copy; 2007-2010 The QtMPC Authors<br/>")+
+                       tr("Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+QLatin1String("<br/>")+
+                       tr("Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a>")+
+                       QLatin1String("<br/><br/>")+tr("Please consider uploading your own music fan-art to <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+
                        QLatin1String("</small></i>"));
 }
 
 bool MainWindow::canClose()
 {
     if (onlinePage->isDownloading() &&
-            MessageBox::No==MessageBox::warningYesNo(this, i18n("A Podcast is currently being downloaded\n\nQuiting now will abort the download."),
-                                                     QString(), GuiItem(i18n("Abort download and quit")), GuiItem("Do not quit just yet"))) {
+            MessageBox::No==MessageBox::warningYesNo(this, tr("A Podcast is currently being downloaded\n\nQuiting now will abort the download."),
+                                                     QString(), GuiItem(tr("Abort download and quit")), GuiItem("Do not quit just yet"))) {
         return false;
     }
     onlinePage->cancelAll();
@@ -1173,7 +1170,7 @@ bool MainWindow::canShowDialog()
         || RgDialog::instanceCount()
         #endif
         ) {
-        MessageBox::error(this, i18n("Please close other dialogs first."));
+        MessageBox::error(this, tr("Please close other dialogs first."));
         return false;
     }
     return true;
@@ -1294,19 +1291,19 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         if (!switchedOn.isEmpty() && switchedOff.isEmpty()) {
             QStringList names=switchedOn.toList();
             qSort(names);
-            trayItem->showMessage(i18n("Outputs"), i18n("Enabled: %1", names.join(QLatin1String(", "))), Icons::self()->speakerIcon.pixmap(64, 64).toImage());
+            trayItem->showMessage(tr("Outputs"), tr("Enabled: %1").arg(names.join(QLatin1String(", "))), Icons::self()->speakerIcon.pixmap(64, 64).toImage());
         } else if (!switchedOff.isEmpty() && switchedOn.isEmpty()) {
             QStringList names=switchedOff.toList();
             qSort(names);
-            trayItem->showMessage(i18n("Outputs"), i18n("Disabled: %1", names.join(QLatin1String(", "))), Icons::self()->speakerIcon.pixmap(64, 64).toImage());
+            trayItem->showMessage(tr("Outputs"), tr("Disabled: %1").arg(names.join(QLatin1String(", "))), Icons::self()->speakerIcon.pixmap(64, 64).toImage());
         } else if (!switchedOn.isEmpty() && !switchedOff.isEmpty()) {
             QStringList on=switchedOn.toList();
             qSort(on);
             QStringList off=switchedOff.toList();
             qSort(off);
-            trayItem->showMessage(i18n("Outputs"),
-                                  i18n("Enabled: %1", on.join(QLatin1String(", ")))+QLatin1Char('\n')+
-                                  i18n("Disabled: %1", off.join(QLatin1String(", "))), Icons::self()->speakerIcon.pixmap(64, 64).toImage());
+            trayItem->showMessage(tr("Outputs"),
+                                  tr("Enabled: %1").arg(on.join(QLatin1String(", ")))+QLatin1Char('\n')+
+                                  tr("Disabled: %1").arg(off.join(QLatin1String(", "))), Icons::self()->speakerIcon.pixmap(64, 64).toImage());
         }
     }
     setProperty(constMpdEnabledOuptuts, QStringList() << enabledMpd.toList());
@@ -1494,30 +1491,30 @@ void MainWindow::showServerInfo()
     dbUpdate.setTime_t(MPDStats::self()->dbUpdate());
     MessageBox::information(this, 
                                   #ifdef Q_OS_MAC
-                                  i18n("Server Information")+QLatin1String("<br/><br/>")+
+                                  tr("Server Information")+QLatin1String("<br/><br/>")+
                                   #endif
                                   QLatin1String("<p><table>")+
-                                  i18n("<tr><td colspan=\"2\"><b>Server</b></td></tr>"
+                                  tr("<tr><td colspan=\"2\"><b>Server</b></td></tr>"
                                        "<tr><td align=\"right\">Protocol:&nbsp;</td><td>%1.%2.%3</td></tr>"
                                        "<tr><td align=\"right\">Uptime:&nbsp;</td><td>%4</td></tr>"
                                        "<tr><td align=\"right\">Playing:&nbsp;</td><td>%5</td></tr>"
                                        "<tr><td align=\"right\">Handlers:&nbsp;</td><td>%6</td></tr>"
-                                       "<tr><td align=\"right\">Tags:&nbsp;</td><td>%7</td></tr>",
-                                       (version>>16)&0xFF, (version>>8)&0xFF, version&0xFF,
-                                       Utils::formatDuration(MPDStats::self()->uptime()),
-                                       Utils::formatDuration(MPDStats::self()->playtime()),
-                                       handlers.join(", "), tags.join(", "))+
+                                       "<tr><td align=\"right\">Tags:&nbsp;</td><td>%7</td></tr>")
+                                       .arg((version>>16)&0xFF).arg((version>>8)&0xFF).arg(version&0xFF)
+                                       .arg(Utils::formatDuration(MPDStats::self()->uptime()))
+                                       .arg(Utils::formatDuration(MPDStats::self()->playtime()))
+                                       .arg(handlers.join(", ")).arg(tags.join(", "))+
                                   QLatin1String("<tr/>")+
-                                  i18n("<tr><td colspan=\"2\"><b>Database</b></td></tr>"
+                                  tr("<tr><td colspan=\"2\"><b>Database</b></td></tr>"
                                        "<tr><td align=\"right\">Artists:&nbsp;</td><td>%1</td></tr>"
                                        "<tr><td align=\"right\">Albums:&nbsp;</td><td>%2</td></tr>"
                                        "<tr><td align=\"right\">Songs:&nbsp;</td><td>%3</td></tr>"
                                        "<tr><td align=\"right\">Duration:&nbsp;</td><td>%4</td></tr>"
-                                       "<tr><td align=\"right\">Updated:&nbsp;</td><td>%5</td></tr>",
-                                       MPDStats::self()->artists(), MPDStats::self()->albums(), MPDStats::self()->songs(),
-                                       Utils::formatDuration(MPDStats::self()->dbPlaytime()), dbUpdate.toString(Qt::SystemLocaleShortDate))+
+                                       "<tr><td align=\"right\">Updated:&nbsp;</td><td>%5</td></tr>")
+                                       .arg(MPDStats::self()->artists()).arg(MPDStats::self()->albums()).arg(MPDStats::self()->songs())
+                                       .arg(Utils::formatDuration(MPDStats::self()->dbPlaytime())).arg(dbUpdate.toString(Qt::SystemLocaleShortDate))+
                                   QLatin1String("</table></p>"),
-                            i18n("Server Information"));
+                            tr("Server Information"));
 }
 
 void MainWindow::enableStopActions(bool enable)
@@ -1661,7 +1658,7 @@ void MainWindow::updateWindowTitle()
 {
     bool multipleConnections=connectionsAction->isVisible();
     QString connection=MPDConnection::self()->getDetails().getName();
-    setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
+    setWindowTitle(multipleConnections ? tr("Cantata (%1)").arg(connection) : "Cantata");
 }
 
 void MainWindow::updateCurrentSong(Song song, bool wasEmpty)
@@ -1728,7 +1725,7 @@ void MainWindow::updateStatus()
 void MainWindow::updateStatus(MPDStatus * const status)
 {
     if (!status->error().isEmpty()) {
-        showError(i18n("MPD reported the following error: %1", status->error()));
+        showError(tr("MPD reported the following error: %1").arg(status->error()));
     }
 
     if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state()) {
@@ -1799,7 +1796,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
             context->update(current);
         }
         current.id=0;
-        trayItem->setToolTip("cantata", i18n("Cantata"), QLatin1String("<i>")+i18n("Playback stopped")+QLatin1String("</i>"));
+        trayItem->setToolTip("cantata", tr("Cantata"), QLatin1String("<i>")+tr("Playback stopped")+QLatin1String("</i>"));
         nowPlaying->stopTimer();
         break;
     case MPDState_Paused:
@@ -1842,7 +1839,7 @@ void MainWindow::playQueueItemActivated(const QModelIndex &index)
 void MainWindow::clearPlayQueue()
 {
     if (!Settings::self()->playQueueConfirmClear() ||
-        MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Remove all songs from play queue?"))) {
+        MessageBox::Yes==MessageBox::questionYesNo(this, tr("Remove all songs from play queue?"))) {
         if (dynamicLabel->isVisible()) {
             Dynamic::self()->stop(true);
         } else {
@@ -1893,7 +1890,7 @@ void MainWindow::addWithPriority()
 
     if (-1==prio) {
         bool ok=false;
-        prio=InputDialog::getInteger(i18n("Priority"), i18n("Enter priority (0..255):"), 150, 0, 255, 5, 10, &ok, this);
+        prio=InputDialog::getInteger(tr("Priority"), tr("Enter priority (0..255):"), 150, 0, 255, 5, 10, &ok, this);
         if (!ok) {
             return;
         }
@@ -1916,15 +1913,15 @@ void MainWindow::addToNewStoredPlaylist()
 {
     bool pq=playQueue->hasFocus();
     for(;;) {
-        QString name = InputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
+        QString name = InputDialog::getText(tr("Playlist Name"), tr("Enter a name for the playlist:"), QString(), 0, this);
 
         if (name==MPDConnection::constStreamsPlayListName) {
-            MessageBox::error(this, i18n("'%1' is used to store favorite streams, please choose another name.", name));
+            MessageBox::error(this, tr("'%1' is used to store favorite streams, please choose another name.").arg(name));
             continue;
         }
         if (PlaylistsModel::self()->exists(name)) {
-            switch(MessageBox::warningYesNoCancel(this, i18n("A playlist named '%1' already exists!\n\nAdd to that playlist?", name),
-                                                  i18n("Existing Playlist"))) {
+            switch(MessageBox::warningYesNoCancel(this, tr("A playlist named '%1' already exists!\n\nAdd to that playlist?").arg(name),
+                                                  tr("Existing Playlist"))) {
             case MessageBox::Cancel:  return;
             case MessageBox::Yes:     break;
             case MessageBox::No:
@@ -1999,9 +1996,9 @@ void MainWindow::updatePlayQueueStats(int songs, quint32 time)
     if (0==songs) {
         playQueueStatsLabel->setText(QString());
     } else if (0==time) {
-        playQueueStatsLabel->setText(Plurals::tracks(songs));
+        playQueueStatsLabel->setText(tr("%n Track(s)", "", songs));
     } else {
-        playQueueStatsLabel->setText(Plurals::tracksWithDuration(songs, Utils::formatDuration(time)));
+        playQueueStatsLabel->setText(tr("%n Tracks (%1)", "", songs).arg(Utils::formatDuration(time)));
     }
 }
 

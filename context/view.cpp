@@ -30,7 +30,6 @@
 #include "support/actioncollection.h"
 #include "support/action.h"
 #include "widgets/icons.h"
-#include "support/localize.h"
 #include "support/touchproxystyle.h"
 #include <QLabel>
 #include <QScrollBar>
@@ -134,7 +133,7 @@ View::View(QWidget *parent, const QStringList &views)
         initHeaderTags();
     }
 
-    cancelJobAction=new Action(Icons::self()->cancelIcon, i18n("Cancel"), this);
+    cancelJobAction=new Action(Icons::self()->cancelIcon, tr("Cancel"), this);
     cancelJobAction->setEnabled(false);
     connect(cancelJobAction, SIGNAL(triggered()), SLOT(abort()));
     text=texts.at(0);

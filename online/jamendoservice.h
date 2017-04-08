@@ -39,6 +39,7 @@ private:
 
 class JamendoService : public OnlineDbService
 {
+    Q_OBJECT
 public:
     enum Format {
         FMT_MP3,

@@ -29,7 +29,6 @@
 #include "models/devicesmodel.h"
 #include "gui/settings.h"
 #include "support/messagebox.h"
-#include "support/localize.h"
 #include "support/configuration.h"
 #include "widgets/icons.h"
 #include "widgets/menubutton.h"
@@ -59,14 +58,14 @@
 DevicesPage::DevicesPage(QWidget *p)
     : SinglePageWidget(p)
 {
-    copyAction = new Action(Icons::self()->downloadIcon, i18n("Copy To Library"), this);
+    copyAction = new Action(Icons::self()->downloadIcon, tr("Copy To Library"), this);
     ToolButton *copyToLibraryButton=new ToolButton(this);
     copyToLibraryButton->setDefaultAction(copyAction);
-    syncAction = new Action(Icon("folder-sync"), i18n("Synchronise"), this);
+    syncAction = new Action(Icon("folder-sync"), tr("Synchronise"), this);
     syncAction->setEnabled(false);
     connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
     #ifdef ENABLE_REMOTE_DEVICES
-    forgetDeviceAction=new Action(i18n("Forget Device"), this);
+    forgetDeviceAction=new Action(tr("Forget Device"), this);
     connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
     #endif
     connect(DevicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
@@ -97,7 +96,7 @@ DevicesPage::DevicesPage(QWidget *p)
     menu->addAction(DevicesModel::self()->refreshAct());
     #ifdef ENABLE_REMOTE_DEVICES
     menu->addSeparator();
-    Action *addRemote=new Action(i18n("Add Device"), this);
+    Action *addRemote=new Action(tr("Add Device"), this);
     connect(addRemote, SIGNAL(triggered()), this, SLOT(addRemoteDevice()));
     menu->addAction(addRemote);
     menu->addAction(forgetDeviceAction);
@@ -405,8 +404,8 @@ void DevicesPage::refreshDevice()
         if (Device::AudioCd==dev->devType()) {
             // Bit hacky - we use 'full' to determine CDDB/MusicBrainz!
             #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
-            switch (MessageBox::questionYesNoCancel(this, i18n("Lookup album and track details?"),
-                                                    i18n("Refresh"), GuiItem(i18n("Via CDDB")), GuiItem(i18n("Via MusicBrainz")))) {
+            switch (MessageBox::questionYesNoCancel(this, tr("Lookup album and track details?"),
+                                                    tr("Refresh"), GuiItem(tr("Via CDDB")), GuiItem(tr("Via MusicBrainz")))) {
             case MessageBox::Yes:
                 full=true; // full==true => CDDB
                 break;
@@ -417,8 +416,8 @@ void DevicesPage::refreshDevice()
                 return;
             }
             #else
-            if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Lookup album and track details?"),
-                                                          i18n("Refresh"), GuiItem(i18n("Refresh")), StdGuiItem::cancel())) {
+            if (MessageBox::No==MessageBox::questionYesNo(this, tr("Lookup album and track details?"),
+                                                          tr("Refresh"), GuiItem(tr("Refresh")), StdGuiItem::cancel())) {
                 return;
             }
             #endif
@@ -427,10 +426,10 @@ void DevicesPage::refreshDevice()
             if (dev->childCount() && Device::Mtp!=dev->devType()) {
                 static const QChar constBullet(0x2022);
 
-                switch (MessageBox::questionYesNoCancel(this, i18n("Which type of refresh do you wish to perform?")+QLatin1String("\n\n")+
-                                                              constBullet+QLatin1Char(' ')+i18n("Partial - Only new songs are scanned (quick)")+QLatin1Char('\n')+
-                                                              constBullet+QLatin1Char(' ')+i18n("Full - All songs are rescanned (slow)"),
-                                                        i18n("Refresh"), GuiItem(i18n("Partial")), GuiItem(i18n("Full")))) {
+                switch (MessageBox::questionYesNoCancel(this, tr("Which type of refresh do you wish to perform?")+QLatin1String("\n\n")+
+                                                              constBullet+QLatin1Char(' ')+tr("Partial - Only new songs are scanned (quick)")+QLatin1Char('\n')+
+                                                              constBullet+QLatin1Char(' ')+tr("Full - All songs are rescanned (slow)"),
+                                                        tr("Refresh"), GuiItem(tr("Partial")), GuiItem(tr("Full")))) {
                 case MessageBox::Yes:
                     full=false;
                 case MessageBox::No:
@@ -477,8 +476,8 @@ void DevicesPage::deleteSongs()
     QList<Song> songs=DevicesModel::self()->songs(mapped);
 
     if (!songs.isEmpty()) {
-        if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to delete the selected songs?\n\nThis cannot be undone."),
-                                                      i18n("Delete Songs"), StdGuiItem::del(), StdGuiItem::cancel())) {
+        if (MessageBox::Yes==MessageBox::warningYesNo(this, tr("Are you sure you wish to delete the selected songs?\n\nThis cannot be undone."),
+                                                      tr("Delete Songs"), StdGuiItem::del(), StdGuiItem::cancel())) {
             emit deleteSongs(udi, songs);
         }
         view->clearSelection();
@@ -504,7 +503,7 @@ void DevicesPage::forgetRemoteDevice()
     }
     QString udi=dev->id();
     QString devName=dev->data();
-    if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to forget '%1'?", devName))) {
+    if (MessageBox::Yes==MessageBox::warningYesNo(this, tr("Are you sure you wish to forget '%1'?", devName))) {
         DevicesModel::self()->removeRemoteDevice(udi);
     }
     #endif
@@ -523,10 +522,10 @@ void DevicesPage::toggleDevice()
         Device *dev=static_cast<Device *>(item);
         if (dev->isConnected() &&
             (Device::AudioCd==dev->devType()
-                ? MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to eject Audio CD '%1 - %2'?", dev->data(), dev->subText()),
-                                                           i18n("Eject"), GuiItem(i18n("Eject")), StdGuiItem::cancel())
-                : MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to disconnect '%1'?", dev->data()),
-                                                           i18n("Disconnect"), GuiItem(i18n("Disconnect")), StdGuiItem::cancel()))) {
+                ? MessageBox::No==MessageBox::warningYesNo(this, tr("Are you sure you wish to eject Audio CD '%1 - %2'?").arg(dev->data()).arg(dev->subText()),
+                                                           tr("Eject"), GuiItem(tr("Eject")), StdGuiItem::cancel())
+                : MessageBox::No==MessageBox::warningYesNo(this, tr("Are you sure you wish to disconnect '%1'?").arg(dev->data()),
+                                                           tr("Disconnect"), GuiItem(tr("Disconnect")), StdGuiItem::cancel()))) {
             return;
         }
         static_cast<Device *>(item)->toggle();
@@ -545,7 +544,7 @@ void DevicesPage::sync()
         || 0!=RgDialog::instanceCount()
         #endif
         ) {
-        MessageBox::error(this, i18n("Please close other dialogs first."));
+        MessageBox::error(this, tr("Please close other dialogs first."));
         return;
     }
 

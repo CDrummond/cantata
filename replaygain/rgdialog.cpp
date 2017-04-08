@@ -30,7 +30,6 @@
 #include "tags/tags.h"
 #include "tagreader.h"
 #include "support/utils.h"
-#include "support/localize.h"
 #include "support/messagebox.h"
 #include "support/monoicon.h"
 #include "jobcontroller.h"
@@ -79,7 +78,7 @@ RgDialog::RgDialog(QWidget *parent)
 {
     iCount++;
     setButtons(User1|Ok|Cancel);
-    setCaption(i18n("ReplayGain"));
+    setCaption(tr("ReplayGain"));
     setAttribute(Qt::WA_DeleteOnClose);
     QWidget *mainWidget = new QWidget(this);
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, mainWidget);
@@ -89,25 +88,25 @@ RgDialog::RgDialog(QWidget *parent)
     statusLabel->setVisible(false);
     progress = new QProgressBar(this);
     progress->setVisible(false);
-    combo->addItem(i18n("Show All Tracks"), true);
-    combo->addItem(i18n("Show Untagged Tracks"), false);
+    combo->addItem(tr("Show All Tracks"), true);
+    combo->addItem(tr("Show Untagged Tracks"), false);
     view->setRootIsDecorated(false);
     view->setAllColumnsShowFocus(true);
     view->setItemDelegate(new BasicItemDelegate(view));
     view->setAlternatingRowColors(false);
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
     view->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    removeAct=new Action(i18n("Remove From List"), view);
+    removeAct=new Action(tr("Remove From List"), view);
     removeAct->setEnabled(false);
     view->addAction(removeAct);
     QTreeWidgetItem *hdr = view->headerItem();
-    hdr->setText(COL_ARTIST, i18n("Artist"));
-    hdr->setText(COL_ALBUM, i18n("Album"));
-    hdr->setText(COL_TITLE, i18n("Title"));
-    hdr->setText(COL_ALBUMGAIN, i18n("Album Gain"));
-    hdr->setText(COL_TRACKGAIN, i18n("Track Gain"));
-    hdr->setText(COL_ALBUMPEAK, i18n("Album Peak"));
-    hdr->setText(COL_TRACKPEAK, i18n("Track Peak"));
+    hdr->setText(COL_ARTIST, tr("Artist"));
+    hdr->setText(COL_ALBUM, tr("Album"));
+    hdr->setText(COL_TITLE, tr("Title"));
+    hdr->setText(COL_ALBUMGAIN, tr("Album Gain"));
+    hdr->setText(COL_TRACKGAIN, tr("Track Gain"));
+    hdr->setText(COL_ALBUMPEAK, tr("Album Peak"));
+    hdr->setText(COL_TRACKPEAK, tr("Track Peak"));
 
     QHeaderView *hv=view->header();
     setResizeMode(hv, COL_ARTIST, QHeaderView::ResizeToContents);
@@ -127,7 +126,7 @@ RgDialog::RgDialog(QWidget *parent)
     setMainWidget(mainWidget);
     setButtonGuiItem(Ok, StdGuiItem::save());
     setButtonGuiItem(Cancel, StdGuiItem::close());
-    setButtonGuiItem(User1, GuiItem(i18n("Scan"), FontAwesome::search));
+    setButtonGuiItem(User1, GuiItem(tr("Scan"), FontAwesome::search));
     enableButton(Ok, false);
     enableButton(User1, false);
     qRegisterMetaType<Tags::ReplayGain>("Tags::ReplayGain");
@@ -206,8 +205,8 @@ void RgDialog::slotButtonClicked(int button)
 
     switch (button) {
     case Ok:
-        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Update ReplayGain tags in tracks?"), i18n("Update Tags"),
-                                                       GuiItem(i18n("Update Tags")), StdGuiItem::cancel())) {
+        if (MessageBox::Yes==MessageBox::questionYesNo(this, tr("Update ReplayGain tags in tracks?"), tr("Update Tags"),
+                                                       GuiItem(tr("Update Tags")), StdGuiItem::cancel())) {
             if (saveTags()) {
                 stopScanning();
                 accept();
@@ -220,8 +219,8 @@ void RgDialog::slotButtonClicked(int button)
     case Cancel:
         switch (state) {
         case State_ScanningFiles:
-            if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Abort scanning of tracks?"), i18n("Abort"),
-                                                           GuiItem(i18n("Abort")), StdGuiItem::no())) {
+            if (MessageBox::Yes==MessageBox::questionYesNo(this, tr("Abort scanning of tracks?"), tr("Abort"),
+                                                           GuiItem(tr("Abort")), StdGuiItem::no())) {
                 stopScanning();
                 // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
                 Dialog::slotButtonClicked(button);
@@ -229,8 +228,8 @@ void RgDialog::slotButtonClicked(int button)
             }
             break;
         case State_ScanningTags:
-            if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Abort reading of existing tags?"), i18n("Abort"),
-                                                           GuiItem(i18n("Abort")), StdGuiItem::no())) {
+            if (MessageBox::Yes==MessageBox::questionYesNo(this, tr("Abort reading of existing tags?"), tr("Abort"),
+                                                           GuiItem(tr("Abort")), StdGuiItem::no())) {
                 stopReadingTags();
                 // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
                 Dialog::slotButtonClicked(button);
@@ -255,10 +254,10 @@ void RgDialog::startScanning()
 {
     bool all=origTags.isEmpty() ||
              (origTags.count()==origSongs.count()
-                ? MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplayGain tags.</i>"), QString(),
-                                                             GuiItem(i18n("Scan")), StdGuiItem::cancel())
-                : MessageBox::No==MessageBox::questionYesNo(this, i18n("Do you wish to scan all tracks, or only tracks without existing tags?"), QString(),
-                                                            GuiItem(i18n("Untagged Tracks")), GuiItem(i18n("All Tracks"))));
+                ? MessageBox::Yes==MessageBox::questionYesNo(this, tr("Scan <b>all</b> tracks?<br/><br/><i>All tracks have existing ReplayGain tags.</i>"), QString(),
+                                                             GuiItem(tr("Scan")), StdGuiItem::cancel())
+                : MessageBox::No==MessageBox::questionYesNo(this, tr("Do you wish to scan all tracks, or only tracks without existing tags?"), QString(),
+                                                            GuiItem(tr("Untagged Tracks")), GuiItem(tr("All Tracks"))));
     if (!all && origTags.count()==origSongs.count()) {
         return;
     }
@@ -268,7 +267,7 @@ void RgDialog::startScanning()
     enableButton(User1, false);
     progress->setValue(0);
     progress->setVisible(true);
-    statusLabel->setText(i18n("Scanning tracks..."));
+    statusLabel->setText(tr("Scanning tracks..."));
     statusLabel->setVisible(true);
     clearScanners();
     totalToScan=0;
@@ -335,7 +334,7 @@ void RgDialog::startReadingTags()
     enableButton(User1, false);
     progress->setRange(0, origSongs.count());
     progress->setVisible(true);
-    statusLabel->setText(i18n("Reading existing tags..."));
+    statusLabel->setText(tr("Reading existing tags..."));
     statusLabel->setVisible(true);
     tagReader=new TagReader();
     tagReader->setDetails(origSongs, base);
@@ -386,7 +385,7 @@ bool RgDialog::saveTags()
             failed.append(filePath);
             break;
         case Tags::Update_BadFile:
-            failed.append(i18nc("filename (Corrupt tags?)", "%1 (Corrupt tags?)", filePath));
+            failed.append(tr("%1 (Corrupt tags?)", "filename (Corrupt tags?)").arg(filePath));
             break;
         default:
             break;
@@ -399,7 +398,7 @@ bool RgDialog::saveTags()
     }
 
     if (failed.count()) {
-        MessageBox::errorListEx(this, i18n("Failed to update the tags of the following tracks:"), failed);
+        MessageBox::errorListEx(this, tr("Failed to update the tags of the following tracks:"), failed);
     }
 
     return !someTimedout;
@@ -435,17 +434,17 @@ Device * RgDialog::getDevice(const QString &udi, QWidget *p)
 {
     Device *dev=DevicesModel::self()->device(udi);
     if (!dev) {
-        MessageBox::error(p ? p : this, i18n("Device has been removed!"));
+        MessageBox::error(p ? p : this, tr("Device has been removed!"));
         reject();
         return 0;
     }
     if (!dev->isConnected()) {
-        MessageBox::error(p ? p : this, i18n("Device is not connected."));
+        MessageBox::error(p ? p : this, tr("Device is not connected."));
         reject();
         return 0;
     }
     if (!dev->isIdle()) {
-        MessageBox::error(p ? p : this, i18n("Device is busy?"));
+        MessageBox::error(p ? p : this, tr("Device is busy?"));
         reject();
         return 0;
     }
@@ -480,18 +479,18 @@ void RgDialog::scannerDone()
             Tags::ReplayGain updatedTags(it.value().gain, s->albumValues().gain, it.value().peak, s->albumValues().peak);
             QTreeWidgetItem *item=view->topLevelItem(it.key());
             if (it.value().ok) {
-                item->setText(COL_TRACKGAIN, i18n("%1 dB", Utils::formatNumber(updatedTags.trackGain, 2)));
+                item->setText(COL_TRACKGAIN, tr("%1 dB").arg(Utils::formatNumber(updatedTags.trackGain, 2)));
                 item->setText(COL_TRACKPEAK, Utils::formatNumber(updatedTags.trackPeak, 6));
             } else {
-                item->setText(COL_TRACKGAIN, i18n("Failed"));
-                item->setText(COL_TRACKPEAK, i18n("Failed"));
+                item->setText(COL_TRACKGAIN, tr("Failed"));
+                item->setText(COL_TRACKPEAK, tr("Failed"));
             }
             if (s->albumValues().ok) {
-                item->setText(COL_ALBUMGAIN, i18n("%1 dB", Utils::formatNumber(updatedTags.albumGain, 2)));
+                item->setText(COL_ALBUMGAIN, tr("%1 dB").arg(Utils::formatNumber(updatedTags.albumGain, 2)));
                 item->setText(COL_ALBUMPEAK, Utils::formatNumber(updatedTags.albumPeak, 6));
             } else {
-                item->setText(COL_ALBUMGAIN, i18n("Failed"));
-                item->setText(COL_ALBUMPEAK, i18n("Failed"));
+                item->setText(COL_ALBUMGAIN, tr("Failed"));
+                item->setText(COL_ALBUMPEAK, tr("Failed"));
             }
 
             if (it.value().ok && origTags.contains(it.key())) {
@@ -500,22 +499,22 @@ void RgDialog::scannerDone()
                 bool diffAlbum=false;
                 if (!Utils::equal(t.trackGain, updatedTags.trackGain, 0.01)) {
                     item->setFont(COL_TRACKGAIN, italic);
-                    item->setToolTip(COL_TRACKGAIN, i18n("Original: %1 dB", Utils::formatNumber(t.trackGain, 2)));
+                    item->setToolTip(COL_TRACKGAIN, tr("Original: %1 dB").arg(Utils::formatNumber(t.trackGain, 2)));
                     diff=true;
                 }
                 if (!Utils::equal(t.trackPeak, updatedTags.trackPeak, 0.000001)) {
                     item->setFont(COL_TRACKPEAK, italic);
-                    item->setToolTip(COL_TRACKPEAK, i18n("Original: %1", Utils::formatNumber(t.trackPeak, 6)));
+                    item->setToolTip(COL_TRACKPEAK, tr("Original: %1").arg(Utils::formatNumber(t.trackPeak, 6)));
                     diff=true;
                 }
                 if (!Utils::equal(t.albumGain, updatedTags.albumGain, 0.01)) {
                     item->setFont(COL_ALBUMGAIN, italic);
-                    item->setToolTip(COL_ALBUMGAIN, i18n("Original: %1 dB", Utils::formatNumber(t.albumGain, 2)));
+                    item->setToolTip(COL_ALBUMGAIN, tr("Original: %1 dB").arg(Utils::formatNumber(t.albumGain, 2)));
                     diffAlbum=true;
                 }
                 if (!Utils::equal(t.albumPeak, updatedTags.albumPeak, 0.000001)) {
                     item->setFont(COL_ALBUMPEAK, italic);
-                    item->setToolTip(COL_ALBUMPEAK, i18n("Original: %1", Utils::formatNumber(t.albumPeak, 6)));
+                    item->setToolTip(COL_ALBUMPEAK, tr("Original: %1").arg(Utils::formatNumber(t.albumPeak, 6)));
                     diffAlbum=true;
                 }
                 if (diff || diffAlbum) {
@@ -546,10 +545,10 @@ void RgDialog::scannerDone()
     } else {
         for(; it!=end; ++it) {
             QTreeWidgetItem *item=view->topLevelItem(it.key());
-            item->setText(COL_TRACKGAIN, i18n("Failed"));
-            item->setText(COL_TRACKPEAK, i18n("Failed"));
-            item->setText(COL_ALBUMGAIN, i18n("Failed"));
-            item->setText(COL_ALBUMPEAK, i18n("Failed"));
+            item->setText(COL_TRACKGAIN, tr("Failed"));
+            item->setText(COL_TRACKPEAK, tr("Failed"));
+            item->setText(COL_ALBUMGAIN, tr("Failed"));
+            item->setText(COL_ALBUMPEAK, tr("Failed"));
             tagsToSave.remove(it.key());
         }
     }
@@ -570,9 +569,9 @@ void RgDialog::songTags(int index, Tags::ReplayGain tags)
             if (!item) {
                 return;
             }
-            item->setText(COL_TRACKGAIN, i18n("%1 dB", Utils::formatNumber(tags.trackGain, 2)));
+            item->setText(COL_TRACKGAIN, tr("%1 dB").arg(Utils::formatNumber(tags.trackGain, 2)));
             item->setText(COL_TRACKPEAK, Utils::formatNumber(tags.trackPeak, 6));
-            item->setText(COL_ALBUMGAIN, i18n("%1 dB", Utils::formatNumber(tags.albumGain, 2)));
+            item->setText(COL_ALBUMGAIN, tr("%1 dB").arg(Utils::formatNumber(tags.albumGain, 2)));
             item->setText(COL_ALBUMPEAK, Utils::formatNumber(tags.albumPeak, 6));
         }
     }
@@ -622,8 +621,8 @@ void RgDialog::removeItems()
         return;
     }
 
-    if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Remove the selected tracks from the list?"),
-                                                   i18n("Remove Tracks"), StdGuiItem::remove(), StdGuiItem::cancel())) {
+    if (MessageBox::Yes==MessageBox::questionYesNo(this, tr("Remove the selected tracks from the list?"),
+                                                   tr("Remove Tracks"), StdGuiItem::remove(), StdGuiItem::cancel())) {
         QList<QTreeWidgetItem *> selection=view->selectedItems();
         foreach (QTreeWidgetItem *item, selection) {
             int index=view->indexOfTopLevelItem(item);

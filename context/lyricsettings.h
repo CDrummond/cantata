@@ -34,6 +34,7 @@ class UltimateLyricsProvider;
 
 class LyricSettings : public ToggleList
 {
+    Q_OBJECT
 public:
     LyricSettings(QWidget *p);
     virtual ~LyricSettings() { }

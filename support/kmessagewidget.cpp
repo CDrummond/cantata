@@ -18,7 +18,6 @@
  * 02110-1301  USA
  */
 #include "kmessagewidget.h"
-#include "localize.h"
 #include "utils.h"
 #include "icon.h"
 #include "squeezedtextlabel.h"
@@ -96,7 +95,7 @@ void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
 
     QAction* closeAction = new QAction(q);
     closeAction->setIcon(Icon::std(Icon::Close));
-    closeAction->setToolTip(i18n("Close"));
+    closeAction->setToolTip(QObject::tr("Close"));
     QObject::connect(closeAction, SIGNAL(triggered()), q, SLOT(animatedHide()));
 
     closeButton = new FlatToolButton(content);

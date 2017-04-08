@@ -23,10 +23,8 @@
 
 #include "sqllibrarymodel.h"
 #include "playqueuemodel.h"
-#include "gui/plurals.h"
 #include "gui/settings.h"
 #include "widgets/icons.h"
-#include "support/localize.h"
 #include "support/configuration.h"
 #include "roles.h"
 #include <QMimeData>
@@ -161,7 +159,7 @@ void SqlLibraryModel::libraryUpdated()
         QList<LibraryDb::Genre> genres=db->getGenres();
         if (!genres.isEmpty())  {
             foreach (const LibraryDb::Genre &genre, genres) {
-                root->add(new CollectionItem(T_Genre, genre.name, genre.name, Plurals::artists(genre.artistCount), root));
+                root->add(new CollectionItem(T_Genre, genre.name, genre.name, tr("%n Artist(s)", "", genre.artistCount), root));
             }
         }
         break;
@@ -170,7 +168,7 @@ void SqlLibraryModel::libraryUpdated()
         QList<LibraryDb::Artist> artists=db->getArtists();
         if (!artists.isEmpty())  {
             foreach (const LibraryDb::Artist &artist, artists) {
-                root->add(new CollectionItem(T_Artist, artist.name, artist.name, Plurals::albums(artist.albumCount), root));
+                root->add(new CollectionItem(T_Artist, artist.name, artist.name, tr("%n Album(s)", "", artist.albumCount), root));
             }
         }
         break;
@@ -182,7 +180,7 @@ void SqlLibraryModel::libraryUpdated()
                 root->add(new AlbumItem(album.artist, album.id, Song::displayAlbum(album.name, album.year),
                                         T_Album==tl
                                             ? album.artist
-                                            : Plurals::tracksWithDuration(album.trackCount, Utils::formatTime(album.duration, true)), root));
+                                            : tr("%n Tracks (%1)", "", album.trackCount).arg(Utils::formatTime(album.duration, true)), root));
             }
         }
         break;
@@ -281,7 +279,7 @@ void SqlLibraryModel::fetchMore(const QModelIndex &index)
         if (!artists.isEmpty())  {
             beginInsertRows(index, 0, artists.count()-1);
             foreach (const LibraryDb::Artist &artist, artists) {
-                item->add(new CollectionItem(T_Artist, artist.name, artist.name, Plurals::albums(artist.albumCount), item));
+                item->add(new CollectionItem(T_Artist, artist.name, artist.name, tr("%n Album(s)", "", artist.albumCount), item));
             }
             endInsertRows();
         }
@@ -293,7 +291,7 @@ void SqlLibraryModel::fetchMore(const QModelIndex &index)
             beginInsertRows(index, 0, albums.count()-1);
             foreach (const LibraryDb::Album &album, albums) {
                 item->add(new CollectionItem(T_Album, album.id, Song::displayAlbum(album.name, album.year),
-                                             Plurals::tracksWithDuration(album.trackCount, Utils::formatTime(album.duration, true)), item));
+                                             tr("%n Tracks (%1)", "", album.trackCount).arg(Utils::formatTime(album.duration, true)), item));
             }
             endInsertRows();
         }
@@ -352,7 +350,7 @@ QVariant SqlLibraryModel::data(const QModelIndex &index, int role) const
         if (T_Track==item->getType()) {
             TrackItem *track = static_cast<TrackItem *>(item);
             if (Song::Playlist==track->getSong().type) {
-                return track->getSong().isCueFile() ? i18n("Cue Sheet") : i18n("Playlist");
+                return track->getSong().isCueFile() ? tr("Cue Sheet") : tr("Playlist");
             }
         }
         return item->getText();

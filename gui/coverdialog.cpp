@@ -23,7 +23,6 @@
 
 #include "coverdialog.h"
 #include "support/messagebox.h"
-#include "support/localize.h"
 #include "widgets/listview.h"
 #include "network/networkaccessmanager.h"
 #include "settings.h"
@@ -115,9 +114,9 @@ public:
             setImage(img);
         }
         if (sz>0) {
-            setText(i18nc("name\nwidth x height (file size)", "%1\n%2 x %3 (%4)", text, w, h, Utils::formatByteSize(sz)));
+            setText(QObject::tr("%1\n%2 x %3 (%4)", "name\nwidth x height (file size)").arg(text).arg(w).arg(h).arg(Utils::formatByteSize(sz)));
         } else if (w>0 && h>0) {
-            setText(i18nc("name\nwidth x height", "%1\n%2 x %3", text, w, h));
+            setText(QObject::tr("%1\n%2 x %3", "name\nwidth x height").arg(text).arg(w).arg(h));
         } else {
             setText(text);
         }
@@ -153,7 +152,7 @@ class ExistingCover : public CoverItem
 {
 public:
     ExistingCover(const Covers::Image &i, QListWidget *parent)
-        : CoverItem(i.fileName, QString(), i.img, i18n("Current Cover"), parent, i.img.width(), i.img.height(), QFileInfo(i.fileName).size())
+        : CoverItem(i.fileName, QString(), i.img, QObject::tr("Current Cover"), parent, i.img.width(), i.img.height(), QFileInfo(i.fileName).size())
         , img(i.img) {
         QFont f(font());
         f.setBold((true));
@@ -195,7 +194,7 @@ class CoverArtArchiveCover : public CoverItem
 {
 public:
     CoverArtArchiveCover(const QString &u, const QString &tu, const QImage &img, QListWidget *parent)
-        : CoverItem(u, tu, img, i18n("CoverArt Archive"), parent)  { }
+        : CoverItem(u, tu, img, QObject::tr("CoverArt Archive"), parent)  { }
 };
 
 class DeezerCover : public CoverItem
@@ -226,10 +225,10 @@ CoverPreview::CoverPreview(QWidget *p)
       imgH(0)
 {
     setButtons(Close);
-    setWindowTitle(i18n("Image"));
+    setWindowTitle(tr("Image"));
     QWidget *mw=new QWidget(this);
     QVBoxLayout *layout=new QVBoxLayout(mw);
-    loadingLabel=new QLabel(i18n("Downloading..."), mw);
+    loadingLabel=new QLabel(tr("Downloading..."), mw);
     pbar=new QProgressBar(mw);
     imageLabel=new QLabel;
     pbar->setRange(0, 100);
@@ -274,7 +273,7 @@ void CoverPreview::showImage(const QImage &img, const QString &u)
         imgW=img.width();
         imgH=img.height();
         resize(lrPad+qMax(100, qMin(maxWidth, imgW+fw)), tbPad+qMax(100, qMin(maxHeight, imgH+fw)));
-        setWindowTitle(i18nc("Image (width x height zoom%)", "Image (%1 x %2 %3%)", imgW, imgH, zoom*100));
+        setWindowTitle(tr("Image (%1 x %2 %3%)", "Image (width x height zoom%)").arg(imgW).arg(imgH).arg(zoom*100));
         show();
     }
 }
@@ -309,7 +308,7 @@ void CoverPreview::scaleImage(int adjust)
     }
     zoom=newZoom;
     imageLabel->resize(zoom * imageLabel->pixmap()->size());
-    setWindowTitle(i18nc("Image (width x height zoom%)", "Image (%1 x %2 %3%)", imgW, imgH, zoom*100));
+    setWindowTitle(tr("Image (%1 x %2 %3%)", "Image (width x height zoom%)").arg(imgW).arg(imgH).arg(zoom*100));
 }
 
 void CoverPreview::wheelEvent(QWheelEvent *event)
@@ -390,7 +389,7 @@ CoverDialog::CoverDialog(QWidget *parent)
 
     QMenu *configMenu=new QMenu(configureButton);
     addProvider(configMenu, QLatin1String("Last.fm"), Prov_LastFm, enabledProviders);
-    addProvider(configMenu, i18n("CoverArt Archive"), Prov_CoverArt, enabledProviders);
+    addProvider(configMenu, tr("CoverArt Archive"), Prov_CoverArt, enabledProviders);
     addProvider(configMenu, QLatin1String("Google"), Prov_Google, enabledProviders);
     addProvider(configMenu, QLatin1String("Deezer"), Prov_Deezer, enabledProviders);
     addProvider(configMenu, QLatin1String("Spotify"), Prov_Spotify, enabledProviders);
@@ -419,17 +418,17 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
     if (img.validFileName() && !QFileInfo(img.fileName).isWritable()) {
         MessageBox::error(parentWidget(),
                           (isArtist
-                            ? i18n("An image already exists for this artist, and the file is not writeable.")
-                            : i18n("A cover already exists for this album, and the file is not writeable."))+
+                            ? tr("An image already exists for this artist, and the file is not writeable.")
+                            : tr("A cover already exists for this album, and the file is not writeable."))+
                           QString("<br/><br/><a href=\"%1\">%1</a>").arg(img.fileName));
         deleteLater();
         return;
     }
     note->setVisible(!isArtist);
     if (isArtist) {
-        setCaption(i18n("'%1' Artist Image", song.albumArtist()));
+        setCaption(tr("'%1' Artist Image").arg(song.albumArtist()));
     } else {
-        setCaption(i18nc("'Artist - Album' Album Cover", "'%1 - %2' Album Cover", song.albumArtist(), song.album));
+        setCaption(tr("'%1 - %2' Album Cover", "'Artist - Album' Album Cover").arg(song.albumArtist()).arg(song.album));
     }
     if (!img.img.isNull()) {
         existing=new ExistingCover(isArtist ? Covers::Image(cropImage(img.img, true), img.fileName) : img, list);
@@ -572,7 +571,7 @@ void CoverDialog::downloadJobFinished()
                     previewDialog()->showImage(cropImage(img, isArtist), reply->property(constLargeProperty).toString());
                 } else if (DL_LargeSave==dlType) {
                     if (!temp) {
-                        MessageBox::error(this, i18n("Failed to set cover!\n\nCould not download to temporary file!"));
+                        MessageBox::error(this, tr("Failed to set cover!\n\nCould not download to temporary file!"));
                     } else if (saveCover(temp->fileName(), img)) {
                         accept();
                     }
@@ -603,7 +602,7 @@ void CoverDialog::downloadJobFinished()
         if (preview && preview->aboutToShow(reply->property(constLargeProperty).toString())) {
             preview->hide();
         }
-        MessageBox::error(this, i18n("Failed to download image!"));
+        MessageBox::error(this, tr("Failed to download image!"));
     }
     if (currentQuery.isEmpty()) {
         setSearching(false);
@@ -799,15 +798,15 @@ void CoverDialog::cancelQuery()
 
 void CoverDialog::addLocalFile()
 {
-    QString fileName=QFileDialog::getOpenFileName(this, i18n("Load Local Cover"), QDir::homePath(), i18n("Images (*.png *.jpg)"));
+    QString fileName=QFileDialog::getOpenFileName(this, tr("Load Local Cover"), QDir::homePath(), tr("Images (*.png *.jpg)"));
 
     if (!fileName.isEmpty()) {
         if (currentLocalCovers.contains(fileName)) {
-            MessageBox::error(this, i18n("File is already in list!"));
+            MessageBox::error(this, tr("File is already in list!"));
         } else {
             QImage img(fileName);
             if (img.isNull()) {
-                MessageBox::error(this, i18n("Failed to read image!"));
+                MessageBox::error(this, tr("Failed to read image!"));
             } else {
                 currentLocalCovers.insert(fileName);
                 insertItem(new LocalCover(fileName, img, list));
@@ -820,8 +819,8 @@ void CoverDialog::menuRequested(const QPoint &pos)
 {
     if (!menu) {
         menu=new QMenu(list);
-        showAction=menu->addAction(Icon("zoom-original"), i18n("Display"));
-        removeAction=menu->addAction(Icon("list-remove"), i18n("Remove"));
+        showAction=menu->addAction(Icon("zoom-original"), tr("Display"));
+        removeAction=menu->addAction(Icon("list-remove"), tr("Remove"));
         connect(showAction, SIGNAL(triggered()), SLOT(showImage()));
         connect(removeAction, SIGNAL(triggered()), SLOT(removeImages()));
     }
@@ -1196,7 +1195,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
                 return true;
             }
         }
-        MessageBox::error(this, i18n("Failed to set cover!\n\nCould not make copy!"));
+        MessageBox::error(this, tr("Failed to set cover!\n\nCould not make copy!"));
         return false;
     }
     QString existingBackup;
@@ -1205,7 +1204,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
         static const QLatin1String constBakExt(".bak");
         existingBackup=existing->url()+constBakExt;
         if (!QFile::rename(existing->url(), existingBackup)) {
-            MessageBox::error(this, i18n("Failed to set cover!\n\nCould not backup original!"));
+            MessageBox::error(this, tr("Failed to set cover!\n\nCould not backup original!"));
             return false;
         }
     }
@@ -1253,7 +1252,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
         if (existing && !existingBackup.isEmpty()) {
             QFile::rename(existingBackup, existing->url());
         }
-        MessageBox::error(this, i18n("Failed to set cover!\n\nCould not copy file to '%1'!", destName));
+        MessageBox::error(this, tr("Failed to set cover!\n\nCould not copy file to '%1'!").arg(destName));
         return false;
     }
 }
@@ -1307,7 +1306,7 @@ void CoverDialog::setSearching(bool s)
     }
     if (s) {
         spinner->start();
-        msgOverlay->setText(i18n("Searching..."));
+        msgOverlay->setText(tr("Searching..."));
     } else {
         spinner->stop();
         msgOverlay->setText(QString());

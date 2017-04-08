@@ -30,6 +30,7 @@
 
 class NoteLabel : public QWidget
 {
+    Q_OBJECT
 public:
     static void setText(QLabel *l, const QString &text);
     NoteLabel(QWidget *parent=0);

@@ -31,7 +31,6 @@
 #include "context/contextsettings.h"
 #include "cachesettings.h"
 #include "customactionssettings.h"
-#include "support/localize.h"
 #include "mpd-interface/mpdconnection.h"
 #ifdef ENABLE_PROXY_CONFIG
 #include "network/proxysettings.h"
@@ -71,32 +70,32 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     context->load();
     scrobbling->load();
     custom->load();
-    addPage(QLatin1String("collection"), server, i18n("Collection"), Icon("audio-x-generic"), i18n("Collection Settings"));
-    addPage(QLatin1String("playback"), playback, i18n("Playback"), Icons::self()->speakerIcon, i18n("Playback Settings"));
-    addPage(QLatin1String("files"), files, i18n("Downloaded Files"), Icons::self()->filesIcon, i18n("Downloaded Files Settings"));
-    addPage(QLatin1String("interface"), interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
-    addPage(QLatin1String("info"), context, i18n("Info"), Icons::self()->contextIcon, i18n("Info View Settings"));
-    addPage(QLatin1String("scrobbling"), scrobbling, i18n("Scrobbling"), Icons::self()->lastFmIcon, i18n("Scrobbling Settings"));
+    addPage(QLatin1String("collection"), server, tr("Collection"), Icon("audio-x-generic"), tr("Collection Settings"));
+    addPage(QLatin1String("playback"), playback, tr("Playback"), Icons::self()->speakerIcon, tr("Playback Settings"));
+    addPage(QLatin1String("files"), files, tr("Downloaded Files"), Icons::self()->filesIcon, tr("Downloaded Files Settings"));
+    addPage(QLatin1String("interface"), interface, tr("Interface"), Icon("preferences-other"), tr("Interface Settings"));
+    addPage(QLatin1String("info"), context, tr("Info"), Icons::self()->contextIcon, tr("Info View Settings"));
+    addPage(QLatin1String("scrobbling"), scrobbling, tr("Scrobbling"), Icons::self()->lastFmIcon, tr("Scrobbling Settings"));
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd = new AudioCdSettings(0);
     audiocd->load();
-    addPage(QLatin1String("cd"), audiocd, i18n("Audio CD"), Icons::self()->albumIcon(32), i18n("Audio CD Settings"));
+    addPage(QLatin1String("cd"), audiocd, tr("Audio CD"), Icons::self()->albumIcon(32), tr("Audio CD Settings"));
     #endif
     #ifdef ENABLE_PROXY_CONFIG
     proxy = new ProxySettings(0);
     proxy->load();
-    addPage(QLatin1String("proxy"), proxy, i18n("Proxy"), Icon("preferences-system-network"), i18nc("Qt-only", "Proxy Settings"));
+    addPage(QLatin1String("proxy"), proxy, tr("Proxy"), Icon("preferences-system-network"), tr("Proxy Settings"));
     #endif
     shortcuts = new ShortcutsSettingsPage(0);
-    addPage(QLatin1String("shortcuts"), shortcuts, i18nc("Qt-only", "Shortcuts"), Icon(QStringList() << "preferences-desktop-keyboard" << "keyboard"),
-            i18nc("Qt-only", "Keyboard Shortcut Settings"));
+    addPage(QLatin1String("shortcuts"), shortcuts, tr("Shortcuts"), Icon(QStringList() << "preferences-desktop-keyboard" << "keyboard"),
+            tr("Keyboard Shortcut Settings"));
     shortcuts->load();
-    addPage(QLatin1String("cache"), cache, i18n("Cache"), Icon(QStringList() << "folder-temp" << "folder"), i18n("Cached Items"));
-    addPage(QLatin1String("custom"), custom, i18n("Custom Actions"), Icon(QStringList() << "fork" << "gtk-execute"), i18n("Custom Actions"));
+    addPage(QLatin1String("cache"), cache, tr("Cache"), Icon(QStringList() << "folder-temp" << "folder"), tr("Cached Items"));
+    addPage(QLatin1String("custom"), custom, tr("Custom Actions"), Icon(QStringList() << "fork" << "gtk-execute"), tr("Custom Actions"));
     #ifdef Q_OS_MAC
-    setCaption(i18n("Cantata Preferences"));
+    setCaption(tr("Cantata Preferences"));
     #else
-    setCaption(i18n("Configure"));
+    setCaption(tr("Configure"));
     #endif
     setAttribute(Qt::WA_DeleteOnClose);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);

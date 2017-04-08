@@ -23,7 +23,6 @@
 
 #include "songdialog.h"
 #include "support/messagebox.h"
-#include "support/localize.h"
 #include <QFile>
 
 #include <QDebug>
@@ -46,10 +45,10 @@ bool SongDialog::songsOk(const QList<Song> &songs, const QString &base, bool isM
         if (!QFile::exists(base+file)) {
             DBUG << QString(base+file) << "does not exist";
             if (isMpd) {
-                MessageBox::error(wid, i18n("Cannot access song files!\n\n"
+                MessageBox::error(wid, tr("Cannot access song files!\n\n"
                                             "Please check Cantata's \"Music folder\" setting, and MPD's \"music_directory\" setting."));
             } else {
-                MessageBox::error(wid, i18n("Cannot access song files!\n\n"
+                MessageBox::error(wid, tr("Cannot access song files!\n\n"
                                             "Please check that the device is still attached."));
             }
             deleteLater();

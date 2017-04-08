@@ -33,10 +33,8 @@
 #include "playqueuemodel.h"
 #include "widgets/groupedview.h"
 #include "roles.h"
-#include "gui/plurals.h"
 #include "gui/covers.h"
 #include "gui/settings.h"
-#include "support/localize.h"
 #include "support/utils.h"
 #include "support/globalstatic.h"
 #include "mpd-interface/mpdparseutils.h"
@@ -88,7 +86,7 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     connect(this, SIGNAL(moveInPlaylist(const QString &, const QList<quint32> &, quint32, quint32)), MPDConnection::self(), SLOT(moveInPlaylist(const QString &, const
     QList<quint32> &, quint32, quint32)));
     connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
-    newAction=new QAction(Icon("document-new"), i18n("New Playlist..."), this);
+    newAction=new QAction(Icon("document-new"), tr("New Playlist..."), this);
     connect(newAction, SIGNAL(triggered()), this, SIGNAL(addToNew()));
     Action::initIcon(newAction);
     alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
@@ -110,12 +108,12 @@ QString PlaylistsModel::name() const
 
 QString PlaylistsModel::title() const
 {
-    return i18n("Stored Playlists");
+    return tr("Stored Playlists");
 }
 
 QString PlaylistsModel::descr() const
 {
-    return i18n("Standard playlists");
+    return tr("Standard playlists");
 }
 
 int PlaylistsModel::rowCount(const QModelIndex &index) const
@@ -334,7 +332,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             }
             return 0==pl->songs.count()
                 ? pl->visibleName()
-                : pl->visibleName()+"\n"+Plurals::tracksWithDuration(pl->songs.count(), Utils::formatTime(pl->totalTime()));
+                : pl->visibleName()+"\n"+tr("%n Tracks (%1)", "", pl->songs.count()).arg(Utils::formatTime(pl->totalTime()));
         case Qt::DecorationRole:
             return multiCol ? QVariant() : (pl->isSmartPlaylist ? Icons::self()->dynamicRuleIcon : Icons::self()->playlistListIcon);
         case Cantata::Role_SubText:
@@ -343,9 +341,9 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 emit playlistInfo(pl->name);
             }
             if (pl->isSmartPlaylist) {
-                return i18n("Smart Playlist");
+                return tr("Smart Playlist");
             }
-            return Plurals::tracksWithDuration(pl->songs.count(), Utils::formatTime(pl->totalTime()));
+            return tr("%n Tracks (%1)", "", pl->songs.count()).arg(Utils::formatTime(pl->totalTime()));
         case Cantata::Role_TitleActions:
             return true;
         default:

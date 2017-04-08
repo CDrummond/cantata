@@ -25,7 +25,6 @@
 #include <QLabel>
 #include "support/icon.h"
 #include "lyricsdialog.h"
-#include "support/localize.h"
 
 LyricsDialog::LyricsDialog(const Song &s, QWidget *parent)
     : Dialog(parent)
@@ -36,7 +35,7 @@ LyricsDialog::LyricsDialog(const Song &s, QWidget *parent)
     QWidget *wid = new QWidget(mw);
     QFormLayout *layout = new QFormLayout(wid);
     int row=0;
-    QLabel *lbl=new QLabel(i18n("If Cantata has failed to find lyrics, or has found the wrong ones, "
+    QLabel *lbl=new QLabel(tr("If Cantata has failed to find lyrics, or has found the wrong ones, "
                                 "use this dialog to enter new search details. For example, the current "
                                 "song may actually be a cover-version - if so, then searching for "
                                 "lyrics by the original artist might help.\n\nIf this search does find "
@@ -57,11 +56,11 @@ LyricsDialog::LyricsDialog(const Song &s, QWidget *parent)
     titleEntry = new LineEdit(wid);
     artistEntry = new LineEdit(wid);
 
-    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Title:"), wid));
+    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(tr("Title:"), wid));
     layout->setWidget(row++, QFormLayout::FieldRole, titleEntry);
-    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Artist:"), wid));
+    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(tr("Artist:"), wid));
     layout->setWidget(row++, QFormLayout::FieldRole, artistEntry);
-    setCaption(i18n("Search For Lyrics"));
+    setCaption(tr("Search For Lyrics"));
     setMainWidget(mw);
     setButtons(Ok|Cancel);
     enableButton(Ok, false);

@@ -28,6 +28,7 @@
 
 class TagSpinBox : public EmptySpinBox
 {
+    Q_OBJECT
 public:
     static QString variousStr();
 

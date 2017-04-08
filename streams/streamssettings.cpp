@@ -27,7 +27,6 @@
 #include "widgets/basicitemdelegate.h"
 #include "widgets/icons.h"
 #include "support/icon.h"
-#include "support/localize.h"
 #include "tar.h"
 #include "support/messagebox.h"
 #include "support/utils.h"
@@ -63,7 +62,7 @@ StreamsSettings::StreamsSettings(QWidget *p)
     : Dialog(p, "StreamsDialog", QSize(400, 500))
     , providerDialog(0)
 {
-    setCaption(i18n("Configure Streams"));
+    setCaption(tr("Configure Streams"));
     QWidget *mw=new QWidget(this);
     setupUi(mw);
     setMainWidget(mw);
@@ -71,17 +70,17 @@ StreamsSettings::StreamsSettings(QWidget *p)
     categories->setSortingEnabled(true);
     int iSize=Icon::stdSize(QApplication::fontMetrics().height()*1.25);
     QMenu *installMenu=new QMenu(this);
-    QAction *installFromFileAct=installMenu->addAction(i18n("From File..."));
-    QAction *installFromWebAct=installMenu->addAction(i18n("Download..."));
+    QAction *installFromFileAct=installMenu->addAction(tr("From File..."));
+    QAction *installFromWebAct=installMenu->addAction(tr("Download..."));
     categories->setIconSize(QSize(iSize, iSize));
     connect(categories, SIGNAL(currentRowChanged(int)), SLOT(currentCategoryChanged(int)));
     connect(installFromFileAct, SIGNAL(triggered()), this, SLOT(installFromFile()));
     connect(installFromWebAct, SIGNAL(triggered()), this, SLOT(installFromWeb()));
 
     setButtons(Close|User1|User2|User3);
-    setButtonGuiItem(User1, GuiItem(i18n("Configure Provider")));
-    setButtonGuiItem(User2, GuiItem(i18n("Install")));
-    setButtonGuiItem(User3, GuiItem(i18n("Remove")));
+    setButtonGuiItem(User1, GuiItem(tr("Configure Provider")));
+    setButtonGuiItem(User2, GuiItem(tr("Install")));
+    setButtonGuiItem(User3, GuiItem(tr("Remove")));
     setButtonMenu(User2, installMenu, InstantPopup);
     enableButton(User3, false);
     enableButton(User1, false);
@@ -134,7 +133,7 @@ void StreamsSettings::currentCategoryChanged(int row)
 
 void StreamsSettings::installFromFile()
 {
-    QString fileName=QFileDialog::getOpenFileName(this, i18n("Install Streams"), QDir::homePath(), i18n("Cantata Streams (*.streams)"));
+    QString fileName=QFileDialog::getOpenFileName(this, tr("Install Streams"), QDir::homePath(), tr("Cantata Streams (*.streams)"));
     if (fileName.isEmpty()) {
         return;
     }
@@ -148,7 +147,7 @@ void StreamsSettings::installFromFile()
     name=name.replace("\\", "_");
     #endif
 
-    if (get(name) && MessageBox::No==MessageBox::warningYesNo(this, i18n("A category named '%1' already exists!\n\nOverwrite?", name))) {
+    if (get(name) && MessageBox::No==MessageBox::warningYesNo(this, tr("A category named '%1' already exists!\n\nOverwrite?").arg(name))) {
         return;
     }
     install(fileName, name);
@@ -179,7 +178,7 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
     Tar tar(fileName);
     if (!tar.open()) {
         if (showErrors) {
-            MessageBox::error(this, i18n("Failed top open package file."));
+            MessageBox::error(this, tr("Failed top open package file."));
         }
         return false;
     }
@@ -199,7 +198,7 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
 
     if (streamFile.isEmpty()) {
         if (showErrors) {
-            MessageBox::error(this, i18n("Invalid file format!"));
+            MessageBox::error(this, tr("Invalid file format!"));
         }
         return false;
     }
@@ -208,7 +207,7 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
     QString dir=streamsDir+name;
     if (!QDir(dir).exists() && !QDir(dir).mkpath(dir)) {
         if (showErrors) {
-            MessageBox::error(this, i18n("Failed to create stream category folder!"));
+            MessageBox::error(this, tr("Failed to create stream category folder!"));
         }
         return false;
     }
@@ -216,7 +215,7 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
     QFile streamsFile(dir+Utils::constDirSep+streamsName);
     if (!streamsFile.open(QIODevice::WriteOnly)) {
         if (showErrors) {
-            MessageBox::error(this, i18n("Failed to save stream list!"));
+            MessageBox::error(this, tr("Failed to save stream list!"));
         }
         return false;
     }
@@ -248,7 +247,7 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
     StreamsModel::CategoryItem *cat=StreamsModel::self()->addInstalledProvider(name, icn, dir+Utils::constDirSep+streamsName, true);
     if (!cat) {
         if (showErrors) {
-            MessageBox::error(this, i18n("Invalid file format!"));
+            MessageBox::error(this, tr("Invalid file format!"));
         }
         return false;
     }
@@ -274,14 +273,14 @@ void StreamsSettings::remove()
     }
 
     QListWidgetItem *item=categories->item(row);
-    if (!item->data(BuiltInRole).toBool() && MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove '%1'?", item->text()))) {
+    if (!item->data(BuiltInRole).toBool() && MessageBox::No==MessageBox::warningYesNo(this, tr("Are you sure you wish to remove '%1'?").arg(item->text()))) {
         return;
     }
 
     QString dir=Utils::dataDir(StreamsModel::constSubDir);
     if (!dir.isEmpty() && !removeDir(dir+item->text(), QStringList() << StreamsModel::constXmlFile << StreamsModel::constCompressedXmlFile
                                                                      << StreamsModel::constSettingsFile << "*.png" << "*.svg")) {
-        MessageBox::error(this, i18n("Failed to remove streams folder!"));
+        MessageBox::error(this, tr("Failed to remove streams folder!"));
         return;
     }
 

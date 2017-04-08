@@ -24,7 +24,6 @@
 
 #include "encoders.h"
 #include "support/utils.h"
-#include "support/localize.h"
 #include <QRegExp>
 #include <QProcess>
 
@@ -73,14 +72,12 @@ static void init()
         QByteArray quality = "%1 (~%2kb/s VBR)";
 
         Encoder aac(QLatin1String("AAC"),
-                    i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
-                          "it exists.",
-                          "<a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding>Advanced Audio "
+                    QObject::tr("<a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding>Advanced Audio "
                           "Coding</a> (AAC) is a patented lossy codec for digital audio.<br>AAC "
                           "generally achieves better sound quality than MP3 at similar bit rates. "
                           "It is a reasonable choice for the iPod and some other portable music "
                           "players."),
-                    i18n("The bitrate is a measure of the quantity of data used to represent a second "
+                    QObject::tr("The bitrate is a measure of the quantity of data used to represent a second "
                          "of the audio track.<br>The <b>AAC</b> encoder used by Cantata supports a <a href="
                          "http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR"
                          ">variable bitrate (VBR)</a> setting, which means that the bitrate value "
@@ -98,30 +95,28 @@ static void init()
                     command,
                     QLatin1String("libfaac"),
                     QLatin1String("-aq"),
-                    i18n("Expected average bitrate for variable bitrate encoding"),
-                    QList<Setting>() << Setting(i18n(vbr, 25), 30)
-                                     << Setting(i18n(vbr, 50), 55)
-                                     << Setting(i18n(vbr, 70), 80)
-                                     << Setting(i18n(vbr, 90), 105)
-                                     << Setting(i18n(vbr, 120), 125)
-                                     << Setting(i18n(vbr, 150), 155)
-                                     << Setting(i18n(vbr, 170), 180)
-                                     << Setting(i18n(vbr, 180), 205)
-                                     << Setting(i18n(vbr, 190), 230)
-                                     << Setting(i18n(vbr, 200), 255)
-                                     << Setting(i18n(vbr, 210), 280),
-                    i18n("Smaller file"),
-                    i18n("Better sound quality"),
+                    QObject::tr("Expected average bitrate for variable bitrate encoding"),
+                    QList<Setting>() << Setting(QObject::tr(vbr).arg(25), 30)
+                                     << Setting(QObject::tr(vbr).arg(50), 55)
+                                     << Setting(QObject::tr(vbr).arg(70), 80)
+                                     << Setting(QObject::tr(vbr).arg(90), 105)
+                                     << Setting(QObject::tr(vbr).arg(120), 125)
+                                     << Setting(QObject::tr(vbr).arg(150), 155)
+                                     << Setting(QObject::tr(vbr).arg(170), 180)
+                                     << Setting(QObject::tr(vbr).arg(180), 205)
+                                     << Setting(QObject::tr(vbr).arg(190), 230)
+                                     << Setting(QObject::tr(vbr).arg(200), 255)
+                                     << Setting(QObject::tr(vbr).arg(210), 280),
+                    QObject::tr("Smaller file"),
+                    QObject::tr("Better sound quality"),
                     5);
 
         Encoder lame(QLatin1String("MP3"),
-                    i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
-                          "it exists.",
-                          "<a href=http://en.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) is "
+                    QObject::tr("<a href=http://en.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) is "
                           "a patented digital audio codec using a form of lossy data compression."
                           "<br>In spite of its shortcomings, it is a common format for consumer "
                           "audio storage, and is widely supported on portable music players."),
-                    i18n("The bitrate is a measure of the quantity of data used to represent a "
+                    QObject::tr("The bitrate is a measure of the quantity of data used to represent a "
                          "second of the audio track.<br>The <b>MP3</b> encoder used by Cantata supports "
                          "a <a href=http://en.wikipedia.org/wiki/MP3#VBR>variable bitrate (VBR)</a> "
                          "setting, which means that the bitrate value fluctuates along the track "
@@ -138,30 +133,28 @@ static void init()
                     command,
                     QLatin1String("libmp3lame"),
                     QLatin1String("-aq"),
-                    i18n("Expected average bitrate for variable bitrate encoding"),
-                    QList<Setting>() << Setting(i18n(vbr, 80), 9)
-                                     << Setting(i18n(vbr, 100), 8)
-                                     << Setting(i18n(vbr, 120), 7)
-                                     << Setting(i18n(vbr, 140), 6)
-                                     << Setting(i18n(vbr, 160), 5)
-                                     << Setting(i18n(vbr, 175), 4)
-                                     << Setting(i18n(vbr, 190), 3)
-                                     << Setting(i18n(vbr, 205), 2)
-                                     << Setting(i18n(vbr, 220), 1)
-                                     << Setting(i18n(vbr, 240), 0),
-                    i18n("Smaller file"),
-                    i18n("Better sound quality"),
+                    QObject::tr("Expected average bitrate for variable bitrate encoding"),
+                    QList<Setting>() << Setting(QObject::tr(vbr).arg(80), 9)
+                                     << Setting(QObject::tr(vbr).arg(100), 8)
+                                     << Setting(QObject::tr(vbr).arg(120), 7)
+                                     << Setting(QObject::tr(vbr).arg(140), 6)
+                                     << Setting(QObject::tr(vbr).arg(160), 5)
+                                     << Setting(QObject::tr(vbr).arg(175), 4)
+                                     << Setting(QObject::tr(vbr).arg(190), 3)
+                                     << Setting(QObject::tr(vbr).arg(205), 2)
+                                     << Setting(QObject::tr(vbr).arg(220), 1)
+                                     << Setting(QObject::tr(vbr).arg(240), 0),
+                    QObject::tr("Smaller file"),
+                    QObject::tr("Better sound quality"),
                     4);
 
-    Encoder ogg(i18n("Ogg Vorbis"),
-                   i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
-                         "it exists.",
-                         "<a href=http://en.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a> is an open "
+    Encoder ogg(QObject::tr("Ogg Vorbis"),
+                   QObject::tr("<a href=http://en.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a> is an open "
                          "and royalty-free audio codec for lossy audio compression.<br>It produces "
                          "smaller files than MP3 at equivalent or higher quality. Ogg Vorbis is an "
                          "all-around excellent choice, especially for portable music players that "
                          "support it."),
-                   i18n("The bitrate is a measure of the quantity of data used to represent a "
+                   QObject::tr("The bitrate is a measure of the quantity of data used to represent a "
                         "second of the audio track.<br>The <b>Vorbis</b> encoder used by Cantata supports "
                         "a <a href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder>variable bitrate "
                         "(VBR)</a> setting, which means that the bitrate value fluctuates along the track "
@@ -181,29 +174,27 @@ static void init()
                    command,
                    QLatin1String("libvorbis"),
                    QLatin1String("-aq"),
-                   i18n("Quality rating"),
-                   QList<Setting>() << Setting(i18n(quality, -1, 45), -1)
-                                    << Setting(i18n(quality, 0, 64), 0)
-                                    << Setting(i18n(quality, 1, 80), 1)
-                                    << Setting(i18n(quality, 2, 96), 2)
-                                    << Setting(i18n(quality, 3, 112), 3)
-                                    << Setting(i18n(quality, 4, 128), 4)
-                                    << Setting(i18n(quality, 5, 160), 5)
-                                    << Setting(i18n(quality, 6, 192), 6)
-                                    << Setting(i18n(quality, 7, 224), 7)
-                                    << Setting(i18n(quality, 8, 256), 8)
-                                    << Setting(i18n(quality, 9, 320), 9)
-                                    << Setting(i18n(quality, 10, 500), 10),
-                   i18n("Smaller file"),
-                   i18n("Better sound quality"),
+                   QObject::tr("Quality rating"),
+                   QList<Setting>() << Setting(QObject::tr(quality).arg(-1).arg(45), -1)
+                                    << Setting(QObject::tr(quality).arg(0).arg(64), 0)
+                                    << Setting(QObject::tr(quality).arg(1).arg(80), 1)
+                                    << Setting(QObject::tr(quality).arg(2).arg(96), 2)
+                                    << Setting(QObject::tr(quality).arg(3).arg(112), 3)
+                                    << Setting(QObject::tr(quality).arg(4).arg(128), 4)
+                                    << Setting(QObject::tr(quality).arg(5).arg(160), 5)
+                                    << Setting(QObject::tr(quality).arg(6).arg(192), 6)
+                                    << Setting(QObject::tr(quality).arg(7).arg(224), 7)
+                                    << Setting(QObject::tr(quality).arg(8).arg(256), 8)
+                                    << Setting(QObject::tr(quality).arg(9).arg(320), 9)
+                                    << Setting(QObject::tr(quality).arg(10).arg(500), 10),
+                   QObject::tr("Smaller file"),
+                   QObject::tr("Better sound quality"),
                    6);
 
-    Encoder opus(i18n("Opus"),
-                   i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
-                         "it exists.",
-                         "<a href=http://en.wikipedia.org/wiki/Opus_(audio_format)>Opus</a> is "
+    Encoder opus(QObject::tr("Opus"),
+                   QObject::tr("<a href=http://en.wikipedia.org/wiki/Opus_(audio_format)>Opus</a> is "
                          "a patent-free digital audio codec using a form of lossy data compression."),
-                   i18n("The bitrate is a measure of the quantity of data used to represent a "
+                   QObject::tr("The bitrate is a measure of the quantity of data used to represent a "
                         "second of the audio track.<br>The <b>Opus</b> encoder used by Cantata supports "
                         "a <a href=http://en.wikipedia.org/wiki/Variable_bitrate>variable bitrate (VBR)</a> "
                         "setting, which means that the bitrate value fluctuates along the track "
@@ -220,18 +211,18 @@ static void init()
                    command,
                    QLatin1String("libopus"),
                    QLatin1String("-ab"),
-                   i18n("Bitrate"),
-                   QList<Setting>() << Setting(i18n(vbr, 32), 32)
-                                    << Setting(i18n(vbr, 64), 64)
-                                    << Setting(i18n(vbr, 96), 96)
-                                    << Setting(i18n(vbr, 128), 128)
-                                    << Setting(i18n(vbr, 160), 160)
-                                    << Setting(i18n(vbr, 192), 192)
-                                    << Setting(i18n(vbr, 256), 256)
-                                    << Setting(i18n(vbr, 320), 320)
-                                    << Setting(i18n(vbr, 360), 360),
-                   i18n("Smaller file"),
-                   i18n("Better sound quality"),
+                   QObject::tr("Bitrate"),
+                   QList<Setting>() << Setting(QObject::tr(vbr).arg(32), 32)
+                                    << Setting(QObject::tr(vbr).arg(64), 64)
+                                    << Setting(QObject::tr(vbr).arg(96), 96)
+                                    << Setting(QObject::tr(vbr).arg(128), 128)
+                                    << Setting(QObject::tr(vbr).arg(160), 160)
+                                    << Setting(QObject::tr(vbr).arg(192), 192)
+                                    << Setting(QObject::tr(vbr).arg(256), 256)
+                                    << Setting(QObject::tr(vbr).arg(320), 320)
+                                    << Setting(QObject::tr(vbr).arg(360), 360),
+                   QObject::tr("Smaller file"),
+                   QObject::tr("Better sound quality"),
                    4,
                    1000);
 
@@ -239,10 +230,8 @@ static void init()
             QList<Encoder> initial;
             initial.append(aac);
             initial.append(
-                        Encoder(i18n("Apple Lossless"),
-                                i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
-                                      "it exists.",
-                                      "<a href=http://en.wikipedia.org/wiki/Apple_Lossless>Apple Lossless</a> "
+                        Encoder(QObject::tr("Apple Lossless"),
+                                QObject::tr("<a href=http://en.wikipedia.org/wiki/Apple_Lossless>Apple Lossless</a> "
                                       "(ALAC) is an audio codec for lossless compression of digital music.<br>"
                                       "Recommended only for Apple music players and players that do not support "
                                       "FLAC."),
@@ -257,14 +246,12 @@ static void init()
                                 QString(),
                                 0));
             initial.append(
-                        Encoder(i18n("FLAC"),
-                                i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
-                                      "it exists.",
-                                      "<a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec>Free "
+                        Encoder(QObject::tr("FLAC"),
+                                QObject::tr("<a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec>Free "
                                       "Lossless Audio Codec</a> (FLAC) is an open and royalty-free codec for "
                                       "lossless compression of digital music.<br>If you wish to store your music "
                                       "without compromising on audio quality, FLAC is an excellent choice."),
-                                i18n("The <a href=http://flac.sourceforge.net/documentation_tools_flac.html>"
+                                QObject::tr("The <a href=http://flac.sourceforge.net/documentation_tools_flac.html>"
                                      "compression level</a> is an integer value between 0 and 8 that represents "
                                      "the tradeoff between file size and compression speed while encoding with <b>FLAC</b>.<br/> "
                                      "Setting the compression level to <b>0</b> yields the shortest compression time but "
@@ -279,7 +266,7 @@ static void init()
                                 command,
                                 QLatin1String("flac"),
                                 QLatin1String("-compression_level"),
-                                i18n("Compression level"),
+                                QObject::tr("Compression level"),
                                 QList<Setting>() << Setting(QString::number(0), 0)
                                                  << Setting(QString::number(1), 1)
                                                  << Setting(QString::number(2), 2)
@@ -289,21 +276,19 @@ static void init()
                                                  << Setting(QString::number(6), 6)
                                                  << Setting(QString::number(7), 7)
                                                  << Setting(QString::number(8), 8),
-                                i18n("Faster compression"),
-                                i18n("Smaller file"),
+                                QObject::tr("Faster compression"),
+                                QObject::tr("Smaller file"),
                                 5));
             initial.append(lame);
             initial.append(ogg);
             initial.append(opus);
             initial.append(
-                        Encoder(i18n("Windows Media Audio"),
-                                i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
-                                      "it exists.",
-                                      "<a href=http://en.wikipedia.org/wiki/Windows_Media_Audio>Windows Media "
+                        Encoder(QObject::tr("Windows Media Audio"),
+                                QObject::tr("<a href=http://en.wikipedia.org/wiki/Windows_Media_Audio>Windows Media "
                                       "Audio</a> (WMA) is a proprietary codec developed by Microsoft for lossy "
                                       "audio compression.<br>Recommended only for portable music players that "
                                       "do not support Ogg Vorbis."),
-                                i18n("The bitrate is a measure of the quantity of data used to represent a "
+                                QObject::tr("The bitrate is a measure of the quantity of data used to represent a "
                                      "second of the audio track.<br>Due to the limitations of the proprietary <b>WMA</b> "
                                      "format and the difficulty of reverse-engineering a proprietary encoder, the "
                                      "WMA encoder used by Cantata sets a <a href=http://en.wikipedia.org/wiki/"
@@ -317,17 +302,17 @@ static void init()
                                 command,
                                 QLatin1String("wmav2"),
                                 QLatin1String("-ab"),
-                                i18n("Bitrate"),
-                                QList<Setting>() << Setting(i18n(cbr, 64), 65)
-                                                 << Setting(i18n(cbr, 80), 75)
-                                                 << Setting(i18n(cbr, 96), 88)
-                                                 << Setting(i18n(cbr, 112), 106)
-                                                 << Setting(i18n(cbr, 136), 133)
-                                                 << Setting(i18n(cbr, 182), 180)
-                                                 << Setting(i18n(cbr, 275), 271)
-                                                 << Setting(i18n(cbr, 550), 545),
-                                i18n("Smaller file"),
-                                i18n("Better sound quality"),
+                                QObject::tr("Bitrate"),
+                                QList<Setting>() << Setting(QObject::tr(cbr).arg(64), 65)
+                                                 << Setting(QObject::tr(cbr).arg(80), 75)
+                                                 << Setting(QObject::tr(cbr).arg(96), 88)
+                                                 << Setting(QObject::tr(cbr).arg(112), 106)
+                                                 << Setting(QObject::tr(cbr).arg(136), 133)
+                                                 << Setting(QObject::tr(cbr).arg(182), 180)
+                                                 << Setting(QObject::tr(cbr).arg(275), 271)
+                                                 << Setting(QObject::tr(cbr).arg(550), 545),
+                                QObject::tr("Smaller file"),
+                                QObject::tr("Better sound quality"),
                                 4,
                                 1000));
 

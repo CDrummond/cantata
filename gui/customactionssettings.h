@@ -33,6 +33,7 @@ class QPushButton;
 
 class CustomActionDialog : public Dialog
 {
+    Q_OBJECT
 public:
     CustomActionDialog(QWidget *p);
     bool create();

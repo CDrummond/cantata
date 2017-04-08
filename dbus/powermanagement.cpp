@@ -27,7 +27,6 @@
 #include "policyagentinterface.h"
 #include "upowerinterface.h"
 #include "login1interface.h"
-#include "support/localize.h"
 #include "mpd-interface/mpdstatus.h"
 
 GLOBAL_STATIC(PowerManagement, instance)
@@ -73,7 +72,7 @@ void PowerManagement::beginSuppressingSleep()
     if (-1!=cookie) {
         return;
     }
-    QString reason=i18n("Cantata is playing a track");
+    QString reason=tr("Cantata is playing a track");
     QDBusReply<uint> reply;
     if (policy->isValid()) {
         reply = policy->AddInhibition((uint)1, QCoreApplication::applicationName(), reason);

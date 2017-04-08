@@ -24,7 +24,6 @@
 #include "messagebox.h"
 #include "icon.h"
 #include "dialog.h"
-#include "localize.h"
 #include "config.h"
 #include "gtkstyle.h"
 #include "acceleratormanager.h"
@@ -65,7 +64,7 @@ void MessageBox::error(QWidget *parent, const QString &message, const QString &t
     QString msg;
     QString sub;
     splitMessage(message, msg, sub);
-    QMessageBox box(QMessageBox::Critical, title.isEmpty() ? i18n("Error") : title, msg, QMessageBox::Ok, parent, Qt::Sheet);
+    QMessageBox box(QMessageBox::Critical, title.isEmpty() ? QObject::tr("Error") : title, msg, QMessageBox::Ok, parent, Qt::Sheet);
     box.setInformativeText(sub);
     //AcceleratorManager::manage(&box);
     box.exec();
@@ -76,7 +75,7 @@ void MessageBox::information(QWidget *parent, const QString &message, const QStr
     QString msg;
     QString sub;
     splitMessage(message, msg, sub);
-    QMessageBox box(QMessageBox::Information, title.isEmpty() ? i18n("Information") : title, msg, QMessageBox::Ok, parent, Qt::Sheet);
+    QMessageBox box(QMessageBox::Information, title.isEmpty() ? QObject::tr("Information") : title, msg, QMessageBox::Ok, parent, Qt::Sheet);
     box.setInformativeText(sub);
     //AcceleratorManager::manage(&box);
     box.exec();
@@ -90,11 +89,11 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
     QString msg;
     QString sub;
     splitMessage(message, msg, sub);
-    QMessageBox box(isWarning ? QMessageBox::Warning : QMessageBox::Question, title.isEmpty() ? (isWarning ? i18n("Warning") : i18n("Question")) : title,
+    QMessageBox box(isWarning ? QMessageBox::Warning : QMessageBox::Question, title.isEmpty() ? (isWarning ? QObject::tr("Warning") : QObject::tr("Question")) : title,
                     msg, QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton), parent, Qt::Sheet);
     box.setInformativeText(sub);
     #else
-    QMessageBox box(isWarning ? QMessageBox::Warning : QMessageBox::Question, title.isEmpty() ? (isWarning ? i18n("Warning") : i18n("Question")) : title,
+    QMessageBox box(isWarning ? QMessageBox::Warning : QMessageBox::Question, title.isEmpty() ? (isWarning ? QObject::tr("Warning") : QObject::tr("Question")) : title,
                     message, QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton), parent);
     #endif
 
@@ -145,22 +144,22 @@ MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const Q
     iconLabel->setFixedSize(iconSize, iconSize);
     switch(type) {
     case Error:
-        dlg->setCaption(title.isEmpty() ? i18n("Error") : title);
+        dlg->setCaption(title.isEmpty() ? QObject::tr("Error") : title);
         dlg->setButtons(Dialog::Ok);
         iconLabel->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
         break;
     case Question:
-        dlg->setCaption(title.isEmpty() ? i18n("Question") : title);
+        dlg->setCaption(title.isEmpty() ? QObject::tr("Question") : title);
         dlg->setButtons(Dialog::Yes|Dialog::No);
         iconLabel->setPixmap(Icon("dialog-question").pixmap(iconSize, iconSize));
         break;
     case Warning:
-        dlg->setCaption(title.isEmpty() ? i18n("Warning") : title);
+        dlg->setCaption(title.isEmpty() ? QObject::tr("Warning") : title);
         dlg->setButtons(Dialog::Yes|Dialog::No);
         iconLabel->setPixmap(Icon("dialog-warning").pixmap(iconSize, iconSize));
         break;
     case Information:
-        dlg->setCaption(title.isEmpty() ? i18n("Information") : title);
+        dlg->setCaption(title.isEmpty() ? QObject::tr("Information") : title);
         dlg->setButtons(Dialog::Ok);
         iconLabel->setPixmap(Icon("dialog-information").pixmap(iconSize, iconSize));
         break;

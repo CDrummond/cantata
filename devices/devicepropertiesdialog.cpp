@@ -23,13 +23,12 @@
 
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
-#include "support/localize.h"
 
 DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     : Dialog(parent)
 {
     setButtons(Ok|Cancel);
-    setCaption(i18n("Device Properties"));
+    setCaption(tr("Device Properties"));
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowModality(Qt::WindowModal);
     devProp=new DevicePropertiesWidget(this);

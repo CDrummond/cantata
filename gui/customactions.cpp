@@ -25,7 +25,6 @@
 #include "mainwindow.h"
 #include "support/globalstatic.h"
 #include "support/configuration.h"
-#include "support/localize.h"
 #include <QMenu>
 #include <QProcess>
 
@@ -44,7 +43,7 @@ bool CustomActions::Command::operator<(const Command &o) const
 }
 
 CustomActions::CustomActions()
-    : Action(i18n("Custom Actions"), 0)
+    : Action(tr("Custom Actions"), 0)
     , mainWindow(0)
 {
     QMenu *m=new QMenu(0);

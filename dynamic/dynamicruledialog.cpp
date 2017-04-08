@@ -22,7 +22,6 @@
  */
 
 #include "dynamicruledialog.h"
-#include "support/localize.h"
 #include "support/monoicon.h"
 #include "models/mpdlibrarymodel.h"
 
@@ -38,7 +37,7 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     setMainWidget(mainWidet);
     setButtons(Ok|Cancel);
     enableButton(Ok, false);
-    setCaption(i18n("Dynamic Rule"));
+    setCaption(tr("Dynamic Rule"));
 
     connect(artistText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(composerText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
@@ -149,8 +148,8 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
     errorLabel->setVisible(false);
 
     setButtons(isAdd ? User1|Ok|Close : Ok|Cancel);
-    setButtonText(User1, i18n("Add"));
-    setButtonGuiItem(User1, GuiItem(i18n("Add"), FontAwesome::plus));
+    setButtonText(User1, tr("Add"));
+    setButtonGuiItem(User1, GuiItem(tr("Add"), FontAwesome::plus));
     enableOkButton();
     return QDialog::Accepted==exec();
 }
@@ -227,15 +226,15 @@ void DynamicRuleDialog::enableOkButton()
     if (!enable) {
         if (haveFrom && haveTo) {
             if (dateTo<dateFrom) {
-                errorLabel->setText(i18n("<i><b>ERROR</b>: 'From Year' should be less than 'To Year'</i>"));
+                errorLabel->setText(tr("<i><b>ERROR</b>: 'From Year' should be less than 'To Year'</i>"));
                 errorLabel->setVisible(true);
             } else if (dateTo-dateFrom>constMaxDateRange) {
-                errorLabel->setText(i18n("<i><b>ERROR:</b> Date range is too large (can only be a maximum of %1 years)</i>", constMaxDateRange));
+                errorLabel->setText(tr("<i><b>ERROR:</b> Date range is too large (can only be a maximum of %1 years)</i>").arg(constMaxDateRange));
                 errorLabel->setVisible(true);
             }
         }
         if (!filename().isEmpty() && exactCheck->isChecked() && !errorLabel->isVisible()) {
-            errorLabel->setText(i18n("<i><b>ERROR:</b> You can only match on filename / path if 'Exact match' is <b>not</b> checked</i>"));
+            errorLabel->setText(tr("<i><b>ERROR:</b> You can only match on filename / path if 'Exact match' is <b>not</b> checked</i>"));
             errorLabel->setVisible(true);
         }
     }

@@ -25,8 +25,23 @@
 #define COVERWIDGET_H
 
 #include <QWidget>
+#include <QLabel>
 
-class CoverLabel;
+class CoverLabel : public QLabel
+{
+    Q_OBJECT
+public:
+    CoverLabel(QWidget *p);
+
+    bool event(QEvent *event);
+    void paintEvent(QPaintEvent *);
+    void updatePix();
+    void deletePix();
+
+private:
+    bool pressed;
+    QPixmap pix;
+};
 
 class CoverWidget : public QWidget
 {

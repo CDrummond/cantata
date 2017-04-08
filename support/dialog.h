@@ -30,7 +30,6 @@
 #include <QMap>
 #include <QSet>
 #include <QApplication>
-#include "localize.h"
 #ifdef Q_OS_MAC
 #include <QProxyStyle>
 #endif

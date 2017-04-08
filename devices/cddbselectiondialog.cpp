@@ -22,7 +22,6 @@
  */
 
 #include "cddbselectiondialog.h"
-#include "support/localize.h"
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QComboBox>
@@ -35,7 +34,7 @@ CddbSelectionDialog::CddbSelectionDialog(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(wid);
 
     combo=new QComboBox(wid);
-    QLabel *label=new QLabel(i18n("Multiple matches were found. "
+    QLabel *label=new QLabel(tr("Multiple matches were found. "
                                   "Please choose the relevant one from below:"), wid);
 
     tracks = new QTreeWidget(wid);
@@ -44,7 +43,7 @@ CddbSelectionDialog::CddbSelectionDialog(QWidget *parent)
     tracks->setUniformRowHeights(true);
     tracks->setItemsExpandable(false);
     tracks->setAllColumnsShowFocus(true);
-    tracks->setHeaderLabels(QStringList() << i18n("Artist") << i18n("Title"));
+    tracks->setHeaderLabels(QStringList() << tr("Artist") << tr("Title"));
     tracks->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
     label->setWordWrap(true);
@@ -52,7 +51,7 @@ CddbSelectionDialog::CddbSelectionDialog(QWidget *parent)
     layout->addWidget(combo);
     layout->addWidget(tracks);
 
-    setCaption(i18n("Disc Selection"));
+    setCaption(tr("Disc Selection"));
     setMainWidget(wid);
     setButtons(Ok);
     connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(updateTracks()));
@@ -64,9 +63,9 @@ int CddbSelectionDialog::select(const QList<CdAlbum> &albums)
     albumDetails=albums;
     foreach (const CdAlbum &a, albums) {
         if (a.disc>0) {
-            combo->addItem(i18nc("artist - album Disc disc (year)", "%1 - %2 Disc %3 (%4)", a.artist, a.name, a.disc, a.year));
+            combo->addItem(tr("%1 - %2 Disc %3 (%4)", "artist - album Disc disc (year)").arg(a.artist).arg(a.name).arg(a.disc).arg(a.year));
         } else {
-            combo->addItem(i18nc("artist - album (year)", "%1 - %2 (%3)", a.artist, a.name, a.year));
+            combo->addItem(tr("%1 - %2 (%3)", "artist - album (year)").arg(a.artist).arg(a.name).arg(a.year));
         }
     }
 

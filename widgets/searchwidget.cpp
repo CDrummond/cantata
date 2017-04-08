@@ -24,7 +24,6 @@
 #include "searchwidget.h"
 #include "support/icon.h"
 #include "toolbutton.h"
-#include "support/localize.h"
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QKeySequence>
@@ -68,9 +67,9 @@ SearchWidget::SearchWidget(QWidget *p)
     bool closeOnLeft=Utils::Unity==Utils::currentDe();
     #endif
     edit=new LineEdit(this);
-    edit->setPlaceholderText(i18n("Search..."));
+    edit->setPlaceholderText(tr("Search..."));
     closeButton=new ToolButton(this);
-    closeButton->setToolTip(i18n("Close Search Bar")+QLatin1String(" (")+QKeySequence(Qt::Key_Escape).toString()+QLatin1Char(')'));
+    closeButton->setToolTip(tr("Close Search Bar")+QLatin1String(" (")+QKeySequence(Qt::Key_Escape).toString()+QLatin1Char(')'));
 
     if (closeOnLeft) {
         l->addWidget(closeButton);

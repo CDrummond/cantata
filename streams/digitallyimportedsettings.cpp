@@ -23,7 +23,6 @@
 
 #include "digitallyimportedsettings.h"
 #include "models/digitallyimported.h"
-#include "support/localize.h"
 #include "support/buddylabel.h"
 #include "support/lineedit.h"
 #include <QPushButton>
@@ -33,14 +32,14 @@ DigitallyImportedSettings::DigitallyImportedSettings(QWidget *parent)
     : Dialog(parent)
 {
     setButtons(Ok|Cancel);
-    setCaption(i18n("Digitally Imported Settings"));
+    setCaption(tr("Digitally Imported Settings"));
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
     setMainWidget(mainWidet);
 
-    audio->addItem(i18n("MP3 256k"), 0);
-    audio->addItem(i18n("AAC 64k"), 1);
-    audio->addItem(i18n("AAC 128k"), 2);
+    audio->addItem(tr("MP3 256k"), 0);
+    audio->addItem(tr("AAC 64k"), 1);
+    audio->addItem(tr("AAC 128k"), 2);
 
     connect(loginButton, SIGNAL(clicked()), this, SLOT(login()));
     connect(DigitallyImported::self(), SIGNAL(loginStatus(bool,QString)), SLOT(loginStatus(bool,QString)));
@@ -107,10 +106,10 @@ void DigitallyImportedSettings::show()
 void DigitallyImportedSettings::login()
 {
     if (DigitallyImported::self()->loggedIn()) {
-        loginStatusLabel->setText(i18n("Not Authenticated"));
+        loginStatusLabel->setText(tr("Not Authenticated"));
         DigitallyImported::self()->logout();
     } else {
-        loginStatusLabel->setText(i18n("Authenticating..."));
+        loginStatusLabel->setText(tr("Authenticating..."));
         messageWidget->close();
         DigitallyImported::self()->setUser(user->text().trimmed());
         DigitallyImported::self()->setPass(pass->text().trimmed());
@@ -120,7 +119,7 @@ void DigitallyImportedSettings::login()
 
 void DigitallyImportedSettings::loginStatus(bool status, const QString &msg)
 {
-    loginStatusLabel->setText(status ? i18n("Authenticated") : i18n("Not Authenticated"));
+    loginStatusLabel->setText(status ? tr("Authenticated") : tr("Not Authenticated"));
     if (status) {
         messageWidget->close();
     } else {
@@ -135,11 +134,11 @@ void DigitallyImportedSettings::setState()
     if (DigitallyImported::self()->sessionExpiry().isValid()) {
         expiry->setText(DigitallyImported::self()->sessionExpiry().toString(Qt::ISODate));
     } else {
-        loginButton->setText(i18n("Login"));
+        loginButton->setText(tr("Login"));
         expiry->setText(QString());
     }
 
     expiry->setVisible(DigitallyImported::self()->sessionExpiry().isValid());
     expiryLabel->setVisible(expiry->isVisible());
-    loginButton->setText(DigitallyImported::self()->loggedIn() ? i18n("Logout") : i18n("Login"));
+    loginButton->setText(DigitallyImported::self()->loggedIn() ? tr("Logout") : tr("Login"));
 }

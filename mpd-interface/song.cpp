@@ -27,7 +27,6 @@
 #include <cmath>
 #include "config.h"
 #include "song.h"
-#include "support/localize.h"
 #if !defined CANTATA_NO_UI_FUNCTIONS
 #include "online/onlineservice.h"
 #endif
@@ -57,8 +56,8 @@ const QString & Song::variousArtists()
 
 void Song::initTranslations()
 {
-    unknownStr=i18n("Unknown");
-    variousArtistsStr=i18n("Various Artists");
+    unknownStr=QObject::tr("Unknown");
+    variousArtistsStr=QObject::tr("Various Artists");
 }
 
 // When displaying albums, we use the 1st track's year as the year of the album.
@@ -530,26 +529,26 @@ QString Song::toolTip() const
     return QString();
     #else
     QString toolTip=QLatin1String("<table>");
-    addField(i18n("Title"), title, toolTip);
-    addField(i18n("Artist"), artist, toolTip);
+    addField(QObject::tr("Title"), title, toolTip);
+    addField(QObject::tr("Artist"), artist, toolTip);
     if (albumartist!=artist) {
-        addField(i18n("Album artist"), albumartist, toolTip);
+        addField(QObject::tr("Album artist"), albumartist, toolTip);
     }
-    addField(i18n("Composer"), composer(), toolTip);
-    addField(i18n("Performer"), performer(), toolTip);
-    addField(i18n("Album"), album, toolTip);
+    addField(QObject::tr("Composer"), composer(), toolTip);
+    addField(QObject::tr("Performer"), performer(), toolTip);
+    addField(QObject::tr("Album"), album, toolTip);
     if (track>0) {
-        addField(i18n("Track number"), QString::number(track), toolTip);
+        addField(QObject::tr("Track number"), QString::number(track), toolTip);
     }
     if (disc>0) {
-        addField(i18n("Disc number"), QString::number(disc), toolTip);
+        addField(QObject::tr("Disc number"), QString::number(disc), toolTip);
     }
-    addField(i18n("Genre"), displayGenre(), toolTip);
+    addField(QObject::tr("Genre"), displayGenre(), toolTip);
     if (year>0) {
-        addField(i18n("Year"), QString::number(year), toolTip);
+        addField(QObject::tr("Year"), QString::number(year), toolTip);
     }
     if (time>0) {
-        addField(i18n("Length"), Utils::formatTime(time, true), toolTip);
+        addField(QObject::tr("Length"), Utils::formatTime(time, true), toolTip);
     }
     toolTip+=QLatin1String("</table>");
 
@@ -720,8 +719,8 @@ QString Song::describe(bool withMarkup) const
         return withMarkup ? albumText : (QLatin1String("<b>")+albumText+QLatin1String("</b>"));
     }
     QString descr=artist.isEmpty()
-                    ? i18nc("Song on Album", "<b>%1</b> on <b>%2</b>", title, albumText)
-                    : i18nc("Song by Artist on Album", "<b>%1</b> by <b>%2</b> on <b>%3</b>", title, artist, albumText);
+                    ? QObject::tr("<b>%1</b> on <b>%2</b>", "Song on Album").arg(title).arg(albumText)
+                    : QObject::tr("<b>%1</b> by <b>%2</b> on <b>%3</b>", "Song by Artist on Album").arg(title).arg(artist).arg(albumText);
 
     if (!withMarkup) {
         descr=descr.replace("<b>", "");
@@ -774,7 +773,7 @@ void Song::populateSorts()
 //                ? QString()
 //                : artist.isEmpty()
 //                    ? title
-//                    : i18nc("track - artist", "%1 - %2", title, artist);
+//                    : trc("track - artist", "%1 - %2", title, artist);
 //}
 
 #ifdef ENABLE_EXTERNAL_TAGS

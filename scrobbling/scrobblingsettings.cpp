@@ -23,7 +23,6 @@
 
 #include "scrobblingsettings.h"
 #include "scrobbler.h"
-#include "support/localize.h"
 #include "support/buddylabel.h"
 #include "support/lineedit.h"
 #include <QPushButton>
@@ -56,7 +55,7 @@ ScrobblingSettings::ScrobblingSettings(QWidget *parent)
     foreach (const QString &k, keys) {
         bool viaMpd=Scrobbler::viaMpd(scrobblers[k]);
         if (viaMpd) {
-            scrobbler->addItem(i18nc("scrobbler name (via MPD)", "%1 (via MPD)", k), k);
+            scrobbler->addItem(tr("%1 (via MPD)", "scrobbler name (via MPD)").arg(k), k);
         } else {
             scrobbler->addItem(k);
         }
@@ -75,9 +74,9 @@ ScrobblingSettings::ScrobblingSettings(QWidget *parent)
     if (firstMpdClient.isEmpty()) {
         REMOVE(noteLabel)
     } else {
-        noteLabel->setText(i18n("If you use a scrobbler which is marked as '(via MPD)' (such as %1), "
+        noteLabel->setText(tr("If you use a scrobbler which is marked as '(via MPD)' (such as %1), "
                                 "then you will need to have this already started and running. "
-                                "Cantata can only 'Love' tracks via this, and cannot enable/disable scrobbling.", firstMpdClient));
+                                "Cantata can only 'Love' tracks via this, and cannot enable/disable scrobbling.").arg(firstMpdClient));
     }
 
     #ifdef Q_OS_MAC
@@ -112,7 +111,7 @@ void ScrobblingSettings::save()
 
     QString sc=scrobbler->itemData(scrobbler->currentIndex()).toString();
     if (sc.isEmpty()) {
-        loginStatusLabel->setText(i18n("Authenticating..."));
+        loginStatusLabel->setText(tr("Authenticating..."));
         sc=scrobbler->currentText();
     }
 
@@ -129,7 +128,7 @@ void ScrobblingSettings::save()
 
 void ScrobblingSettings::showStatus(bool status)
 {
-    loginStatusLabel->setText(status ? i18n("Authenticated") : i18n("Not Authenticated"));
+    loginStatusLabel->setText(status ? tr("Authenticated") : tr("Not Authenticated"));
     if (status) {
         messageWidget->close();
     }

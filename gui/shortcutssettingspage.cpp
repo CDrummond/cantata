@@ -27,7 +27,6 @@
 #include "support/actioncollection.h"
 #include "support/shortcutssettingswidget.h"
 #include "widgets/basicitemdelegate.h"
-#include "support/localize.h"
 #include "settings.h"
 #include "widgets/icons.h"
 #include "support/buddylabel.h"

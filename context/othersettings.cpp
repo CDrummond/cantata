@@ -25,7 +25,6 @@
 #include "gui/settings.h"
 #include "support/pathrequester.h"
 #include "widgets/playqueueview.h"
-#include "support/localize.h"
 
 static const char *constValueProperty="value";
 
@@ -39,8 +38,8 @@ OtherSettings::OtherSettings(QWidget *p)
     contextBackdrop_artist->setProperty(constValueProperty, PlayQueueView::BI_Cover);
     contextBackdrop_custom->setProperty(constValueProperty, PlayQueueView::BI_Custom);
     contextBackdropFile->setDirMode(false);
-    contextBackdropFile->setFilter(i18n("Images (*.png *.jpg)"));
-    int labelWidth=qMax(fontMetrics().width(QLatin1String("100%")), fontMetrics().width(i18nc("pixels", "10px")));
+    contextBackdropFile->setFilter(tr("Images (*.png *.jpg)"));
+    int labelWidth=qMax(fontMetrics().width(QLatin1String("100%")), fontMetrics().width(tr("10px", "pixels")));
     contextBackdropOpacityLabel->setFixedWidth(labelWidth);
     contextBackdropBlurLabel->setFixedWidth(labelWidth);
     connect(contextBackdropOpacity, SIGNAL(valueChanged(int)), SLOT(setContextBackdropOpacityLabel()));
@@ -97,12 +96,12 @@ void OtherSettings::toggleWikiNote()
 
 void OtherSettings::setContextBackdropOpacityLabel()
 {
-    contextBackdropOpacityLabel->setText(i18nc("value%", "%1%", contextBackdropOpacity->value()));
+    contextBackdropOpacityLabel->setText(tr("%1%", "value%").arg(contextBackdropOpacity->value()));
 }
 
 void OtherSettings::setContextBackdropBlurLabel()
 {
-    contextBackdropBlurLabel->setText(i18nc("pixels", "%1 px", contextBackdropBlur->value()));
+    contextBackdropBlurLabel->setText(tr("%1 px", "pixels").arg(contextBackdropBlur->value()));
 }
 
 void OtherSettings::enableContextBackdropOptions()

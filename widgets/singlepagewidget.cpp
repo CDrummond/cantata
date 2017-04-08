@@ -27,23 +27,21 @@
 #include "widgets/toolbutton.h"
 #include "widgets/icons.h"
 #include "gui/stdactions.h"
-#include "support/localize.h"
 #include "mpd-interface/mpdconnection.h"
 #include <QGridLayout>
 #include <QHBoxLayout>
-
 
 static QString viewTypeString(ItemView::Mode mode)
 {
     switch (mode) {
     default:
-    case ItemView::Mode_BasicTree:    return i18n("Basic Tree (No Icons)");
-    case ItemView::Mode_SimpleTree:   return i18n("Simple Tree");
-    case ItemView::Mode_DetailedTree: return i18n("Detailed Tree");
-    case ItemView::Mode_GroupedTree:  return i18n("Grouped Albums");
-    case ItemView::Mode_List:         return i18n("List");
-    case ItemView::Mode_IconTop:      return i18n("Grid");
-    case ItemView::Mode_Table:        return i18n("Table");
+    case ItemView::Mode_BasicTree:    return QObject::tr("Basic Tree (No Icons)");
+    case ItemView::Mode_SimpleTree:   return QObject::tr("Simple Tree");
+    case ItemView::Mode_DetailedTree: return QObject::tr("Detailed Tree");
+    case ItemView::Mode_GroupedTree:  return QObject::tr("Grouped Albums");
+    case ItemView::Mode_List:         return QObject::tr("List");
+    case ItemView::Mode_IconTop:      return QObject::tr("Grid");
+    case ItemView::Mode_Table:        return QObject::tr("Table");
     }
 }
 
@@ -103,7 +101,7 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
 
     if (flags&Refresh) {
         ToolButton *refreshButton=new ToolButton(this);
-        refreshAction=new Action(Icons::self()->reloadIcon, i18n("Refresh"), this);
+        refreshAction=new Action(Icons::self()->reloadIcon, tr("Refresh"), this);
         refreshButton->setDefaultAction(refreshAction);
         connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
         left.append(refreshButton);
@@ -197,7 +195,7 @@ QList<QAction *> SinglePageWidget::createViewActions(QList<ItemView::Mode> modes
 
 Action * SinglePageWidget::createViewMenu(QList<ItemView::Mode> modes)
 {
-    return createMenuGroup(i18n("View"), createViewActions(modes), this);
+    return createMenuGroup(tr("View"), createViewActions(modes), this);
 }
 
 void SinglePageWidget::setView(int v)

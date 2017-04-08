@@ -23,7 +23,6 @@
 
 #include "genrecombo.h"
 #include "toolbutton.h"
-#include "support/localize.h"
 #include "support/actioncollection.h"
 #include "support/action.h"
 #include <QEvent>
@@ -38,7 +37,7 @@ GenreCombo::GenreCombo(QWidget *p)
     setEditable(false);
     setFocusPolicy(Qt::NoFocus);
     if (!action) {
-        action=ActionCollection::get()->createAction("genrefilter", i18n("Filter On Genre"), 0);
+        action=ActionCollection::get()->createAction("genrefilter", tr("Filter On Genre"), 0);
         action->setShortcut(Qt::ControlModifier+Qt::Key_G);
     }
     addAction(action);
@@ -60,7 +59,7 @@ void GenreCombo::update(const QSet<QString> &g)
     genres=mg;
     QStringList entries=g.toList();
     qSort(entries);
-    entries.prepend(i18n("All Genres"));
+    entries.prepend(tr("All Genres"));
 
     if (count()==entries.count()) {
         bool noChange=true;

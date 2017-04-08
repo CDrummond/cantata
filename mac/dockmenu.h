@@ -31,6 +31,7 @@ class MPDStatus;
 
 class DockMenu : public QMenu
 {
+    Q_OBJECT
 public:
     DockMenu(QWidget *w);
     virtual ~DockMenu() { }

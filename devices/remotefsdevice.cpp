@@ -29,7 +29,6 @@
 #include "support/inputdialog.h"
 #include "support/utils.h"
 #include "http/httpserver.h"
-#include "support/localize.h"
 #include "support/configuration.h"
 #include "mountpoints.h"
 #include "mounterinterface.h"
@@ -170,7 +169,7 @@ void RemoteFsDevice::destroy(bool removeFromConfig)
 void RemoteFsDevice::serviceAdded(const QString &name)
 {
     if (name==details.serviceName && constSambaAvahiProtocol==details.url.scheme()) {
-        sub=i18n("Available");
+        sub=tr("Available");
         updateStatus();
     }
 }
@@ -178,7 +177,7 @@ void RemoteFsDevice::serviceAdded(const QString &name)
 void RemoteFsDevice::serviceRemoved(const QString &name)
 {
     if (name==details.serviceName && constSambaAvahiProtocol==details.url.scheme()) {
-        sub=i18n("Not Available");
+        sub=tr("Not Available");
         updateStatus();
     }
 }
@@ -279,7 +278,7 @@ void RemoteFsDevice::mount()
         Details det=details;
         AvahiService *srv=Avahi::self()->getService(det.serviceName);
         if (!srv || srv->getHost().isEmpty() || 0==srv->getPort()) {
-            emit error(i18n("Failed to resolve connection details for %1", details.name));
+            emit error(tr("Failed to resolve connection details for %1", details.name));
             return;
         }
         if (constPromptPassword==det.url.password()) {
@@ -294,7 +293,7 @@ void RemoteFsDevice::mount()
         det.url.setHost(srv->getHost());
         det.url.setPort(srv->getPort());
         mounter()->mount(det.url.toString(), mountPoint(details, true), getuid(), getgid(), getpid());
-        setStatusMessage(i18n("Connecting..."));
+        setStatusMessage(tr("Connecting..."));
         messageSent=true;
         return;
     }
@@ -309,7 +308,7 @@ void RemoteFsDevice::mount()
             det.url.setPassword(passwd);
         }
         mounter()->mount(det.url.toString(), mountPoint(details, true), getuid(), getgid(), getpid());
-        setStatusMessage(i18n("Connecting..."));
+        setStatusMessage(tr("Connecting..."));
         messageSent=true;
         return;
     }
@@ -322,7 +321,7 @@ void RemoteFsDevice::mount()
 
         if (needAskPass) {
             if (ttyname(0)) {
-                emit error(i18n("Password prompting does not work when cantata is started from the commandline."));
+                emit error(tr("Password prompting does not work when cantata is started from the commandline."));
                 return;
             }
             QStringList askPassList;
@@ -341,14 +340,14 @@ void RemoteFsDevice::mount()
             }
 
             if (askPass.isEmpty()) {
-                emit error(i18n("No suitable ssh-askpass application installed! This is required for entering passwords."));
+                emit error(tr("No suitable ssh-askpass application installed! This is required for entering passwords."));
                 return;
             }
         }
         cmd=Utils::findExe("sshfs");
         if (!cmd.isEmpty()) {
             if (!QDir(mountPoint(details, true)).entryList(QDir::NoDot|QDir::NoDotDot|QDir::AllEntries|QDir::Hidden).isEmpty()) {
-                emit error(i18n("Mount point (\"%1\") is not empty!", mountPoint(details, true)));
+                emit error(tr("Mount point (\"%1\") is not empty!", mountPoint(details, true)));
                 return;
             }
 
@@ -360,12 +359,12 @@ void RemoteFsDevice::mount()
                 args << details.extraOptions.split(' ', QString::SkipEmptyParts);
             }
         } else {
-            emit error(i18n("\"sshfs\" is not installed!"));
+            emit error(tr("\"sshfs\" is not installed!"));
         }
     }
 
     if (!cmd.isEmpty()) {
-        setStatusMessage(i18n("Connecting..."));
+        setStatusMessage(tr("Connecting..."));
         proc=new QProcess(this);
         proc->setProperty("mount", true);
         connect(proc, SIGNAL(finished(int)), SLOT(procFinished(int)));
@@ -388,7 +387,7 @@ void RemoteFsDevice::unmount()
     }
     if (constSambaProtocol==details.url.scheme() || constSambaAvahiProtocol==details.url.scheme()) {
         mounter()->umount(mountPoint(details, false), getpid());
-        setStatusMessage(i18n("Disconnecting..."));
+        setStatusMessage(tr("Disconnecting..."));
         messageSent=true;
         return;
     }
@@ -402,13 +401,13 @@ void RemoteFsDevice::unmount()
             if (!cmd.isEmpty()) {
                 args << QLatin1String("-u") << QLatin1String("-z") << mp;
             } else {
-                emit error(i18n("\"fusermount\" is not installed!"));
+                emit error(tr("\"fusermount\" is not installed!"));
             }
         }
     }
 
     if (!cmd.isEmpty()) {
-        setStatusMessage(i18n("Disconnecting..."));
+        setStatusMessage(tr("Disconnecting..."));
         proc=new QProcess(this);
         proc->setProperty("unmount", true);
         connect(proc, SIGNAL(finished(int)), SLOT(procFinished(int)));
@@ -423,11 +422,11 @@ void RemoteFsDevice::procFinished(int exitCode)
     proc=0;
 
     if (0!=exitCode) {
-        emit error(wasMount ? i18n("Failed to connect to \"%1\"", details.name)
-                            : i18n("Failed to disconnect from \"%1\"", details.name));
+        emit error(wasMount ? tr("Failed to connect to \"%1\"", details.name)
+                            : tr("Failed to disconnect from \"%1\"", details.name));
         setStatusMessage(QString());
     } else if (wasMount) {
-        setStatusMessage(i18n("Updating tracks..."));
+        setStatusMessage(tr("Updating tracks..."));
         load();
         emit connectionStateHasChanged(id(), true);
     } else {
@@ -444,10 +443,10 @@ void RemoteFsDevice::mountStatus(const QString &mp, int pid, int st)
     if (pid==getpid() && mp==mountPoint(details, false)) {
         messageSent=false;
         if (0!=st) {
-            emit error(i18n("Failed to connect to \"%1\"", details.name));
+            emit error(tr("Failed to connect to \"%1\"", details.name));
             setStatusMessage(QString());
         } else {
-            setStatusMessage(i18n("Updating tracks..."));
+            setStatusMessage(tr("Updating tracks..."));
             load();
             emit connectionStateHasChanged(id(), true);
         }
@@ -459,7 +458,7 @@ void RemoteFsDevice::umountStatus(const QString &mp, int pid, int st)
     if (pid==getpid() && mp==mountPoint(details, false)) {
         messageSent=false;
         if (0!=st) {
-            emit error(i18n("Failed to disconnect from \"%1\"", details.name));
+            emit error(tr("Failed to disconnect from \"%1\"", details.name));
             setStatusMessage(QString());
         } else {
             setStatusMessage(QString());
@@ -530,14 +529,14 @@ QString RemoteFsDevice::capacityString()
         return statusMessage();
     }
     if (!isConnected()) {
-        return i18n("Not Connected");
+        return tr("Not Connected");
     }
 
     spaceInfo.setPath(mountPoint(details, false));
     if (isOldSshfs()) {
-        return i18n("Capacity Unknown");
+        return tr("Capacity Unknown");
     }
-    return i18n("%1 free", Utils::formatByteSize(spaceInfo.size()-spaceInfo.used()));
+    return tr("%1 free", Utils::formatByteSize(spaceInfo.size()-spaceInfo.used()));
 }
 
 qint64 RemoteFsDevice::freeSpace()
@@ -566,9 +565,9 @@ void RemoteFsDevice::load()
         if (!details.serviceName.isEmpty()) {
             AvahiService *srv=Avahi::self()->getService(details.serviceName);
             if (!srv || srv->getHost().isEmpty()) {
-                sub=i18n("Not Available");
+                sub=tr("Not Available");
             } else {
-                sub=i18n("Available");
+                sub=tr("Available");
             }
         }
         connect(Avahi::self(), SIGNAL(serviceAdded(QString)), SLOT(serviceAdded(QString)));

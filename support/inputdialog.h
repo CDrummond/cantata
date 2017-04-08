@@ -25,7 +25,6 @@
 #define INPUT_DIALOG_H
 
 #include <QLineEdit>
-#include "localize.h"
 #include "dialog.h"
 
 class QSpinBox;
@@ -48,7 +47,7 @@ public:
         return getText(caption, label, QLineEdit::Normal, value, ok, parent);
     }
     static QString getPassword(const QString &value=QString(), bool *ok=0, QWidget *parent=0) {
-        return getText(i18n("Password"), i18n("Please enter password:"), QLineEdit::Password, value, ok, parent);
+        return getText(tr("Password"), tr("Please enter password:"), QLineEdit::Password, value, ok, parent);
     }
 
 private:

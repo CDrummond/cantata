@@ -481,7 +481,6 @@ void MainWindow::init()
     #ifdef USE_SYSTEM_MENU_ICON
     controlIconSize=22==controlIconSize ? 16 : 32==controlIconSize ? 22 : 32;
     #endif
-    stopTrackButton->setHideMenuIndicator(true);
     int playbackButtonSize=28==playbackIconSize ? 34 : controlButtonSize;
     int controlButtonWidth=Utils::touchFriendly() ? controlButtonSize*TouchProxyStyle::constScaleFactor : controlButtonSize;
     int playbackButtonWidth=Utils::touchFriendly() ? playbackButtonSize*TouchProxyStyle::constScaleFactor : playbackButtonSize;

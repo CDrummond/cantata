@@ -52,11 +52,7 @@ Icons::Icons()
 
     singleIcon=MonoIcon::icon(FontAwesome::ex_one, stdColor);
     consumeIcon=MonoIcon::icon(":consume.svg", stdColor);
-    #ifdef USE_SYSTEM_MENU_ICON
-    menuIcon=Icon("applications-system");
-    #else
     menuIcon=MonoIcon::icon(FontAwesome::bars, stdColor);
-    #endif
 
     QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"stream.png");
     if (QFile::exists(iconFile)) {
@@ -164,16 +160,11 @@ void Icons::initToolbarIcons(QColor toolbarText)
     toolbarStopIcon=MonoIcon::icon(QLatin1String(":media-stop"), toolbarText);
     toolbarNextIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-prev" : ":media-next"), toolbarText);
     infoIcon=MonoIcon::icon(QLatin1String(":sidebar-info"), toolbarText);
-    #ifdef USE_SYSTEM_MENU_ICON
-    toolbarMenuIcon=MonoIcon::icon(QLatin1String(":menu-icon"), toolbarText);
-    menuIcon=MonoIcon::icon(QLatin1String(":menu-icon"), stdColor);
-    #else
     if (toolbarText==stdColor) {
         toolbarMenuIcon=menuIcon;
     } else {
         toolbarMenuIcon=MonoIcon::icon(FontAwesome::bars, toolbarText);
     }
-    #endif
 }
 
 const Icon &Icons::albumIcon(int size, bool mono) const

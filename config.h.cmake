@@ -37,9 +37,6 @@
 #cmakedefine QT_QTDBUS_FOUND 1
 #cmakedefine ENABLE_UNCACHED_MTP 1
 #cmakedefine ENABLE_HTTP_SERVER 1
-#cmakedefine ENABLE_MODEL_TEST 1
-#cmakedefine USE_SYSTEM_MENU_ICON 1
-#cmakedefine ENABLE_UBUNTU 1
 #cmakedefine IOKIT_FOUND 1
 #cmakedefine QT_MAC_EXTRAS_FOUND 1
 #cmakedefine UNITY_MENU_HACK 1

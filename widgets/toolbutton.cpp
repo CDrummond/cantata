@@ -35,11 +35,6 @@
 
 ToolButton::ToolButton(QWidget *parent)
     : QToolButton(parent)
-    #if defined USE_SYSTEM_MENU_ICON && !defined Q_OS_MAC
-    , hideMenuIndicator(GtkStyle::isActive())
-    #else
-    , hideMenuIndicator(true)
-    #endif
 {
     Icon::init(this);
     #ifdef Q_OS_MAC
@@ -80,9 +75,7 @@ void ToolButton::paintEvent(QPaintEvent *e)
     QStylePainter p(this);
     QStyleOptionToolButton opt;
     initStyleOption(&opt);
-    if (hideMenuIndicator) {
-        opt.features=QStyleOptionToolButton::None;
-    }
+    opt.features=QStyleOptionToolButton::None;
     if (opt.state&QStyle::State_MouseOver && this!=QApplication::widgetAt(QCursor::pos())) {
         opt.state&=~QStyle::State_MouseOver;
     }
@@ -113,7 +106,7 @@ QSize ToolButton::sizeHint() const
             sz = QToolButton::sizeHint();
         sh=Utils::touchFriendly() ? QSize(sz.width()*TouchProxyStyle::constScaleFactor, sz.height()) : sz;
 
-        if (hideMenuIndicator && sh.width()>sh.height()) {
+        if (sh.width()>sh.height()) {
             sh.setWidth(sh.height());
         }
 

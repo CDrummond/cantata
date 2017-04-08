@@ -15,7 +15,7 @@ macro(ebur128_check_for_sse)
             HAS_SSE3_EXTENSIONS)
         if (HAS_SSE3_EXTENSIONS)
             add_definitions("-msse3 -mfpmath=sse")
-        else (HAS_SSE3_EXTENSIONS)
+        else ()
             # No sse3, check sse2
             set(CMAKE_REQUIRED_FLAGS "-msse2")
             check_cxx_source_runs("
@@ -24,7 +24,7 @@ macro(ebur128_check_for_sse)
                 HAS_SSE2_EXTENSIONS)
             if (HAS_SSE2_EXTENSIONS)
                 add_definitions("-msse2 -mfpmath=sse")
-            else (HAS_SSE2_EXTENSIONS)
+            else ()
                 # No sse2, check sse
                 set(CMAKE_REQUIRED_FLAGS "-msse")
                 check_cxx_source_runs("
@@ -33,16 +33,16 @@ macro(ebur128_check_for_sse)
                     HAS_SSE_EXTENSIONS)
                 if (HAS_SSE_EXTENSIONS)
                     add_definitions("-msse -mfpmath=sse")
-                endif (HAS_SSE_EXTENSIONS)
-            endif (HAS_SSE2_EXTENSIONS)
-        endif (HAS_SSE3_EXTENSIONS)
+                endif ()
+            endif ()
+        endif ()
         set(CMAKE_REQUIRED_FLAGS)
-    elseif (MSVC)
+    elseif ()
         check_cxx_source_runs("
             #include <emmintrin.h>
             int main() { __m128d a, b; double vals[2] = {0}; a = _mm_loadu_pd(vals);  b = _mm_add_pd(a,a);  _mm_storeu_pd(vals,b); return 0; }"
             HAS_SSE2_EXTENSIONS)
-    endif (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+    endif ()
 endmacro(ebur128_check_for_sse)
 
 ebur128_check_for_sse()
@@ -53,5 +53,5 @@ add_library (ebur128 STATIC ${ebur128_SRCS})
 if (SPEEXDSP_FOUND)
     include_directories(${SPEEXDSP_INCLUDE_DIRS})
     target_link_libraries(ebur128 ${SPEEXDSP_LIBRARIES})
-endif (SPEEXDSP_FOUND)
+endif ()
 

@@ -340,47 +340,6 @@ Under Linux, the Cantata config file will be:
 
 The following config items should be added to the "[General]" section.
 
-maxCoverUpdatePerIteration=<Integer>
-    Non cached covers, and cached covers in albums view, are not located and
-    loaded in the UI thread - as this causes lag when scrolling. A separate
-    background thread is use for this. These covers then need to be sent to the
-    UI thread to be displayed. This config controls the number of covers that
-    are sent in one batch. The default is 10. (Values 1..50 are acceptable)
-
-coverCacheSize=<Integer>
-    Cantata stores scaled versions of covers in a cache in memory, to reduce
-    memory usage and/or disk access. This setting controls the maximum size
-    (in megabytes) that Cantata will use for this cache. The default is 10
-    (Values 1..512 are acceptable)
-
-cueFileCodecs=<Comma separated list of codecs>
-    List of extra text codecs to try when loading CUE files. UTF-8 and System
-    default are tried first, and then the entries from this config are tried.
-    My Qt4.8 has the following codecs available:
-
-    GBK, CP936, MS936, windows-936, System, UTF-8, ISO-8859-1, latin1, CP819,
-    IBM819, iso-ir-100, csISOLatin1, ISO-8859-15, latin9, UTF-32LE, UTF-32BE,
-    UTF-32, UTF-16LE, UTF-16BE, UTF-16, mulelao-1, roman8, hp-roman8,
-    csHPRoman8, TIS-620, ISO, WINSAMI2, WS2, Apple, macintosh, MacRoman,
-    windows-1258, CP1258, windows-1257, CP1257, windows-1256, CP1256,
-    windows-1255, CP1255, windows-1254, CP1254, windows-1253, CP1253,
-    windows-1252, CP1252, windows-1251, CP1251, windows-1250, CP1250, IBM866,
-    CP866, csIBM866, IBM874, CP874, IBM850, CP850, csPC850Multilingual,
-    ISO-8859-16, iso-ir-226, latin10, ISO-8859-14, iso-ir-199, latin8,
-    iso-celtic, ISO-8859-13, ISO-8859-10, iso-ir-157, latin6, ISO-8859-10:1992,
-    csISOLatin6, ISO-8859-9, iso-ir-148, latin5, csISOLatin5, ISO-8859-8, ISO,
-    iso-ir-138, hebrew, csISOLatinHebrew, ISO-8859-7, ECMA-118, greek,
-    iso-ir-126, csISOLatinGreek, ISO-8859-6, ISO-8859-6-I, ECMA-114, ASMO-708,
-    arabic, iso-ir-127, csISOLatinArabic, ISO-8859-5, cyrillic, iso-ir-144,
-    csISOLatinCyrillic, ISO-8859-4, latin4, iso-ir-110, csISOLatin4, ISO-8859-3,
-    latin3, iso-ir-109, csISOLatin3, ISO-8859-2, latin2, iso-ir-101,
-    csISOLatin2, KOI8-U, KOI8-RU, KOI8-R, csKOI8R, Iscii-Mlm, Iscii-Knd,
-    Iscii-Tlg, Iscii-Tml, Iscii-Ori, Iscii-Gjr, Iscii-Pnj, Iscii-Bng, Iscii-Dev,
-    TSCII, GB18030, GB2312, gb2312.1980-0, gbk-0, EUC-JP, ISO-2022-JP,
-    Shift_JIS, jisx0201*-0, jisx0208*-0, JIS7, SJIS, MS_Kanji, EUC-KR,
-    ksc5601.1987-0, cp949, Big5, Big5-HKSCS, big5-0, big5hkscs-0, Big5-ETen,
-    CP950
-
 networkAccessEnabled=<Bool - true/false>
     Configure whether Cantata should be allowed to make networks requests - for
     accessing covers, etc. By default this is set to true.
@@ -389,75 +348,15 @@ volumeStep=<Integer>
     Volume % increments. Used when mouse wheel is activated over volume control.
     Default is 5. (Values 1..20 are acceptable)
 
-undoSteps=<Integer>
-    Control maximum number of playqueue undo/redo steps. Set to 0 to disable
-    undo/redo.
-    Default is 10. (Values 0..20 are acceptable)
-
-mpdPoll=<Integer>
-    Specified in seconds, this controls how often Cantata should poll MPD to
-    determine its current state whilst playing. Set to 0 to disable polling,
-    and rely on MPD's IDLE mechanism to determine MPD state changes.
-    Default is 0 (no polling). (Values 0..60 are acceptable)
-
-mpdListSize=<Integer>
-    This config controls the maximum number of files sent in 1 chunk of an
-    "add" command when adding files to the playqueue.
-    Default is 10000. (Values 100..65535 are acceptable)
-
-alwaysUseHttp=<Boolean>
-    Set to 'true' to always serve non-MPD files via HTTP server. If set to
-    'false', then Cantata will only use its internal HTTP server for songs
-    from media devices, or when connected to MPD via a standard socket (when
-    MPD version is <0.19 or not connected to 127.0.0.1).
-    Default is false.
-
-menu=<Integer>
-    Controls usage of menubar and menu button. If set to 1 then a menubar is
-    used. If set to 2 then a menu button is used. If set to 3 then both the
-    menubar and menu button are used - and there will be a menu item to toggle
-    between menubar and menu button. NOTE: This menu item is not present when
-    run under Unity or MacOSX - as these always have a menubar - in which case
-    menu=3 will cause both a menubar and menu button to be present.
-
-stopHttpStreamOnPause=<Boolean>
-    If Cantata is playing MPD's HTTP output stream, then this controls what
-    should happen when paused. When MPD's HTTP stream is paused, MPD will
-    output silence over the stream. If this option is set to true, then
-    Cantata will disconnect from MPD's HTTP stream. (NOTE: This will mean that
-    there will be a delay when un-pausing). If set to false, Cantata will
-    continue to play the 'silence' (NOTE: This will use more bandwidth).
-    Default is false.
-
-cacheScaledCovers=<Boolean>
-    Controls whether Cantata should save scaled covers into a disk based cache.
-    This speed up cover retrieval and drawing on subsequent runs.
-    Default is true.
-
 seekStep=<Integer>
     Configure seek time when Ctrl+Arrow keys is used.
     Default is 5. (Values 2..60 are acceptable)
 
-useStandardIcons=<Boolean>
-    If set to true, then Cantata will use icons from the user's configured icon
-    theme, and not its own icons.
-    Default is false.
-
 e.g.
 [General]
-maxCoverUpdatePerIteration=10
-coverCacheSize=10
-cueFileCodecs=GBK, big5-0
 networkAccessEnabled=false
 volumeStep=2
-undoSteps=20
-mpdPoll=true
-mpdListSize=5000
-menu=3
-stopHttpStreamOnPause=true
-cacheScaledCovers=true
 seekStep=5
-useStandardIcons=true
 
 8. CUE Files
 ============

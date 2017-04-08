@@ -98,7 +98,6 @@ static const QLatin1String constScaledExtension(".png");
 static const QLatin1String constScaledPrevExtension(".jpg");
 static const char * constScaledFormat="PNG";
 #endif
-static bool cacheScaledCovers=true;
 
 static QImage scale(const Song &song, const QImage &img, int size)
 {
@@ -977,12 +976,12 @@ void CoverLocator::locate(const Song &s)
 // To improve responsiveness of views, we only process a max of X images per even loop iteration.
 // If more images are asked for, we place these into a list, and get them on the next iteration
 // of the loop. This way things appear smoother.
-static int maxCoverUpdatePerIteration=10;
+static const int constMaxCoverUpdatePerIteration=10;
 
 void CoverLocator::locate()
 {
     QList<Song> toDo;
-    for (int i=0; i<maxCoverUpdatePerIteration && !queue.isEmpty(); ++i) {
+    for (int i=0; i<constMaxCoverUpdatePerIteration && !queue.isEmpty(); ++i) {
         toDo.append(queue.takeFirst());
     }
     if (toDo.isEmpty()) {
@@ -1036,7 +1035,7 @@ void CoverLoader::load(const Song &song)
 void CoverLoader::load()
 {
     QList<LoadedCover> toDo;
-    for (int i=0; i<maxCoverUpdatePerIteration && !queue.isEmpty(); ++i) {
+    for (int i=0; i<constMaxCoverUpdatePerIteration && !queue.isEmpty(); ++i) {
         toDo.append(queue.takeFirst());
     }
     if (toDo.isEmpty()) {
@@ -1069,14 +1068,12 @@ Covers::Covers()
     if (Settings::self()->retinaSupport()) {
         devicePixelRatio=qApp->devicePixelRatio();
     }
-    maxCoverUpdatePerIteration=Settings::self()->maxCoverUpdatePerIteration();
-    cache.setMaxCost(Settings::self()->coverCacheSize()*1024*1024);
+    cache.setMaxCost(10*1024*1024);
 }
 
 void Covers::readConfig()
 {
     saveInMpdDir=Settings::self()->storeCoversInMpdDir();
-    cacheScaledCovers=Settings::self()->cacheScaledCovers();
     fetchCovers=Settings::self()->fetchCovers();
 }
 
@@ -1126,7 +1123,7 @@ QPixmap * Covers::getScaledCover(const Song &song, int size)
 //    DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId << size;
     QString key=cacheKey(song, size);
     QPixmap *pix(cache.object(key));
-    if (!pix && cacheScaledCovers) {
+    if (!pix) {
         QImage img=loadScaledCover(song, size);
         if (!img.isNull()) {
             pix=new QPixmap(QPixmap::fromImage(img));
@@ -1149,7 +1146,7 @@ QPixmap * Covers::saveScaledCover(const QImage &img, const Song &song, int size)
         return 0;
     }
 
-    if (cacheScaledCovers && !isOnlineServiceImage(song)) {
+    if (!isOnlineServiceImage(song)) {
         QString fileName=getScaledCoverName(song, size, true);
         bool status=img.save(fileName, constScaledFormat);
         DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << size << fileName << status;
@@ -1256,11 +1253,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                     return pix;
                 }
             }
-            if (cacheScaledCovers) {
-                tryToLoad(setSizeRequest(song, origSize));
-            } else {
-                tryToLocate(setSizeRequest(song, origSize));
-            }
+            tryToLoad(setSizeRequest(song, origSize));
 
             // Create a dummy image so that we dont keep on locating/loading/downloading files that do not exist!
             pix=new QPixmap(1, 1);

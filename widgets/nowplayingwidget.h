@@ -101,7 +101,6 @@ private:
     QString currentSongFile;
     int lastVal;
     int pollCount;
-    int pollMpd;
 };
 
 #endif

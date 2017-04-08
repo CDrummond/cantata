@@ -104,7 +104,7 @@ static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
         if (QLatin1String("http")==u.scheme()) {
             useable.append(u.toString());
         } else if ((u.scheme().isEmpty() || QLatin1String("file")==u.scheme()) && checkExtension(u.path())) {
-            if (!HttpServer::self()->forceUsage() && MPDConnection::self()->localFilePlaybackSupported() && !u.path().startsWith(QLatin1String("/media/"))) {
+            if (MPDConnection::self()->localFilePlaybackSupported() && !u.path().startsWith(QLatin1String("/media/"))) {
                 useable.append(QLatin1String("file://")+u.path());
             } else if (HttpServer::self()->isAlive()) {
                 useable.append(HttpServer::self()->encodeUrl(u.path()));
@@ -189,7 +189,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     , mpdState(MPDState_Inactive)
     , stopAfterCurrent(false)
     , stopAfterTrackId(-1)
-    , undoLimit(Settings::self()->undoSteps())
+    , undoLimit(10)
     , undoEnabled(undoLimit>0)
     , lastCommand(Cmd_Other)
     , dropAdjust(0)

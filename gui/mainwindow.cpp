@@ -179,10 +179,8 @@ void MainWindow::init()
 {
     #if !defined Q_OS_MAC && !defined Q_OS_WIN
     // Work-aroud Qt5Ct incorrectly setting icon theme
-    if (!Settings::self()->useStandardIcons()) {
-        QIcon::setThemeSearchPaths(QStringList() << CANTATA_SYS_ICONS_DIR << QIcon::themeSearchPaths());
-        QIcon::setThemeName(QLatin1String("cantata"));
-    }
+    QIcon::setThemeSearchPaths(QStringList() << CANTATA_SYS_ICONS_DIR << QIcon::themeSearchPaths());
+    QIcon::setThemeName(QLatin1String("cantata"));
     #endif
 
     QPoint p=pos();
@@ -568,9 +566,22 @@ void MainWindow::init()
         }
     }
 
-    int menuCfg=Settings::self()->menu();
+    enum MenuControl
+    {
+        MC_Bar = 0x01,
+        MC_Button = 0x02
+    };
+
+    #if defined Q_OS_WIN
+    int menuCfg=MC_Button|MC_Bar;
+    #elif defined Q_OS_MAC
+    int menuCfg=MC_Bar;
+    #else
+    int menuCfg=Utils::Gnome==Utils::currentDe() ? MC_Button : Utils::Unity==Utils::currentDe() ? MC_Bar : (MC_Bar|MC_Button);
+    #endif
+
     #ifndef Q_OS_MAC
-    if (Utils::Unity!=Utils::currentDe() && menuCfg&Settings::MC_Bar && menuCfg&Settings::MC_Button) {
+    if (Utils::Unity!=Utils::currentDe() && menuCfg&MC_Bar && menuCfg&MC_Button) {
         showMenuAction=ActionCollection::get()->createAction("showmenubar", tr("Show Menubar"));
         showMenuAction->setShortcut(Qt::ControlModifier+Qt::Key_M);
         showMenuAction->setCheckable(true);
@@ -578,7 +589,7 @@ void MainWindow::init()
     }
     #endif
 
-    if (menuCfg&Settings::MC_Button) {
+    if (menuCfg&MC_Button) {
         QMenu *mainMenu=new QMenu(this);
         mainMenu->addAction(expandInterfaceAction);
 //        mainMenu->addAction(songInfoAction);
@@ -608,7 +619,7 @@ void MainWindow::init()
         menuButton=0;
     }
 
-    if (menuCfg&Settings::MC_Bar) {
+    if (menuCfg&MC_Bar) {
         QMenu *menu=new QMenu(tr("&Music"), this);
         addMenuAction(menu, refreshDbAction);
         menu->addSeparator();

@@ -47,7 +47,6 @@ HttpStream::HttpStream(QObject *p)
     , playStateCheckTimer(0)
     , player(0)
 {
-    stopOnPause=Settings::self()->stopHttpStreamOnPause();
 }
 
 void HttpStream::setEnabled(bool e)
@@ -147,13 +146,6 @@ void HttpStream::updateStatus()
         stopTimer();
         break;
     case MPDState_Paused:
-        if (stopOnPause) {
-            #ifdef LIBVLC_FOUND
-            libvlc_media_player_stop(player);
-            #else
-            player->stop();
-            #endif
-        }
         stopTimer();
         break;
     default:

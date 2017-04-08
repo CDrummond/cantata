@@ -52,7 +52,6 @@ public:
     #ifdef ENABLE_HTTP_SERVER
     HttpServer();
     bool isAlive() const { return true; } // Started on-demamnd!
-    bool forceUsage() const { return force; }
     void readConfig();
     QString address() const;
     bool isOurs(const QString &url) const;
@@ -63,7 +62,6 @@ public:
     #else
     HttpServer() { }
     bool isAlive() const { return false; } // Not used!
-    bool forceUsage() const { return false; }
     void readConfig() { }
     QString address() const { return QString(); }
     bool isOurs(const QString &) const { return false; }
@@ -89,7 +87,6 @@ Q_SIGNALS:
     void terminateSocket();
 
 private:
-    bool force;
     Thread *thread;
     HttpSocket *socket;
 

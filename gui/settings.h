@@ -39,12 +39,6 @@ public:
         SS_Previous
     };
 
-    enum MenuControl
-    {
-        MC_Bar = 0x01,
-        MC_Button = 0x02
-    };
-
     static Settings *self();
 
     Settings();
@@ -97,7 +91,6 @@ public:
     int stopFadeDuration();
     int httpAllocatedPort();
     QString httpInterface();
-    bool alwaysUseHttp();
     int playQueueView();
     bool playQueueAutoExpand();
     bool playQueueStartClosed();
@@ -111,7 +104,6 @@ public:
     bool playListsStartClosed();
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     bool playStream();
-    bool stopHttpStreamOnPause();
     #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     bool cdAuto();
@@ -137,20 +129,13 @@ public:
     QDateTime lastRssUpdate();
     QString podcastDownloadPath();
     int podcastAutoDownloadLimit();
-    int maxCoverUpdatePerIteration();
-    int coverCacheSize();
-    QStringList cueFileCodecs();
     bool networkAccessEnabled();
     int volumeStep();
     StartupState startupState();
-    int undoSteps();
     QString searchCategory();
-    bool cacheScaledCovers();
     bool fetchCovers();
-    int mpdPoll();
     QString lang();
     bool showMenubar();
-    int menu();
     bool touchFriendly();
     bool showCoverWidget();
     bool showStopButton();
@@ -159,9 +144,6 @@ public:
     bool retinaSupport();
     QSet<QString> ignorePrefixes();
     bool mpris();
-    #ifdef Q_OS_LINUX
-    bool useStandardIcons();
-    #endif
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

@@ -652,7 +652,7 @@ Song & PodcastService::fixPath(Song &song) const
     song.setIsFromOnlineService(constName);
     song.artist=title();
     if (!song.podcastLocalPath().isEmpty() && QFile::exists(song.podcastLocalPath())) {
-        if (!HttpServer::self()->forceUsage() && MPDConnection::self()->localFilePlaybackSupported()) {
+        if (MPDConnection::self()->localFilePlaybackSupported()) {
             song.file=QLatin1String("file://")+song.podcastLocalPath();
         } else if (HttpServer::self()->isAlive()) {
             song.file=song.podcastLocalPath();

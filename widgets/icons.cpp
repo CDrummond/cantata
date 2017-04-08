@@ -157,20 +157,6 @@ void Icons::initToolbarIcons(QColor toolbarText)
     QColor stdColor=Utils::monoIconColor();
     bool rtl=QApplication::isRightToLeft();
 
-    #ifdef Q_OS_LINUX
-    if (Settings::self()->useStandardIcons()) {
-        toolbarPrevIcon=Icon::getMediaIcon("media-skip-backward");
-        toolbarPlayIcon=Icon::getMediaIcon("media-playback-start");
-        toolbarPauseIcon=Icon::getMediaIcon("media-playback-pause");
-        toolbarStopIcon=Icon::getMediaIcon("media-playback-stop");
-        toolbarNextIcon=Icon::getMediaIcon("media-skip-forward");
-        infoIcon=Icon("dialog-information");
-        toolbarMenuIcon=Icon("applications-system");
-        menuIcon=MonoIcon::icon(QLatin1String(":menu-icon"), stdColor);
-        return;
-    }
-    #endif
-
     toolbarText=Utils::clampColor(toolbarText);
     toolbarPrevIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-next" : ":media-prev"), toolbarText);
     toolbarPlayIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-play-rtl" : ":media-play"), toolbarText);

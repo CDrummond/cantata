@@ -492,8 +492,8 @@ add the CUE File to the album's track listing.
 
 As of 1.4.0, Cantata only comes with TuneIn, ShoutCast, IceCast and Dirble
 stream providers. To install new providers, you can either use Cantata's
-download dialog (to install for Cantata's Google Drive), or install from file.
-To import new stream categories into Cantata, these files need to be GZip
+download dialog (to install for Cantata's extras github repo), or install from
+file. To import new stream categories into Cantata, these files need to be GZip
 compressed tarballs of the following format.
 
   Filename: CATEGORY_NAME.streams  (e.g. German Radio.streams)
@@ -509,7 +509,7 @@ compressed tarballs of the following format.
             e.g. 'Hard_Soft Rock.svg' for 'Hard/Soft Rock')
 
 settings.json is really only intended to be used by Cantata for providers
-stored in its Google Drive. This JSON file has the following syntax:
+stored in its extras github repo. This JSON file has the following syntax:
 
   { "type": "streamType", "url": "Stream listing URL" }
   
@@ -568,35 +568,33 @@ To create .streams file:
     4. mv NAME.tar.gz NAME.streams
 
 
-Google Drive
-------------
+cantata-extra on github
+-----------------------
 
 The streams page on Cantata's settings dialog, will allow you to install new
-providers from Cantata's Google Drive page. To do this, the dialog first
+providers from Cantata's extras github repo. To do this, the dialog first
 downloads the list of providers, this is obtained from the following URL:
 
-https://googledrive.com/host/0Bzghs6gQWi60dHBPajNjbjExZzQ
+https://raw.githubusercontent.com/CDrummond/cantata-extra/master/streams/2.1/list.xml
 
-This file is acutally named "list.xml" - for some reason Google Drive's
-download links never specify the actual name! The contents of this file will be
-something like:
+The contents of this file will be something like:
 
 <providers>
  <category type="0">
-  <provider name="1.fm" url="https://googledrive.com/host/0Bzghs6gQWi60RHRSa3dqeUtkNTA"/>
+  <provider name="1.fm" md5="cbd6ad834d4493662952a653cea5c779"/>
   ...
 
 If you want to manually download a provider, use the listed URL to download the
 .streams file. e.g. for the above:
 
-    wget "https://googledrive.com/host/0Bzghs6gQWi60RHRSa3dqeUtkNTA" -O 1.fm.streams
+    wget https://raw.githubusercontent.com/CDrummond/cantata-extra/master/streams/2.1/1.fm.streams.gz
 
 Extract the contents with:
 
-    tar zxvf 1.fm.streams
+    tar zxvf 1.fm.streams.gz
 
-If you wish to distribute a new stream provider via Cantata's Google Drive,
-please send me an email with the .streams file. My address is in the AUTHORS
+If you wish to distribute a new stream provider via Cantata's extras github
+repo, please send me an email with the .streams.gz file. My address is in the AUTHORS
 file.
 
 

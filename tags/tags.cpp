@@ -86,16 +86,6 @@
 #include <taglib-extras/realmediafiletyperesolver.h>
 #endif
 
-#ifdef ENABLE_EXTERNAL_TAGS
-// Mutex is locked in client, and server (that accesses this class) is single threaded
-#define LOCK_MUTEX
-#else
-#include <QMutex>
-#include <QMutexLocker>
-static QMutex mutex;
-#define LOCK_MUTEX QMutexLocker locker(&mutex);
-#endif
-
 namespace Tags
 {
 
@@ -1314,7 +1304,6 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
 
 Song read(const QString &fileName)
 {
-    LOCK_MUTEX
     Song song;
     TagLib::FileRef fileref = getFileRef(fileName);
     if (fileref.isNull()) {
@@ -1329,7 +1318,6 @@ Song read(const QString &fileName)
 
 QImage readImage(const QString &fileName)
 {
-    LOCK_MUTEX
     QImage img;
     TagLib::FileRef fileref = getFileRef(fileName);
     if (fileref.isNull()) {
@@ -1342,7 +1330,6 @@ QImage readImage(const QString &fileName)
 
 QString readLyrics(const QString &fileName)
 {
-    LOCK_MUTEX
     QString lyrics;
     TagLib::FileRef fileref = getFileRef(fileName);
     if (fileref.isNull()) {
@@ -1355,7 +1342,6 @@ QString readLyrics(const QString &fileName)
 
 QString readComment(const QString &fileName)
 {
-    LOCK_MUTEX
     TagLib::FileRef fileref = getFileRef(fileName);
     return fileref.isNull() ? QString() : tString2QString(fileref.tag()->comment());
 }
@@ -1383,7 +1369,6 @@ static Update update(const TagLib::FileRef fileref, const Song &from, const Song
 
 Update updateArtistAndTitle(const QString &fileName, const Song &song)
 {
-    LOCK_MUTEX
     TagLib::FileRef fileref = getFileRef(fileName);
     if (fileref.isNull()) {
         return Update_Failed;
@@ -1409,14 +1394,12 @@ Update updateArtistAndTitle(const QString &fileName, const Song &song)
 
 Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver, bool saveComment)
 {
-    LOCK_MUTEX
     TagLib::FileRef fileref = getFileRef(fileName);
     return fileref.isNull() ? Update_Failed : update(fileref, from, to, RgTags(), QByteArray(), id3Ver, saveComment);
 }
 
 ReplayGain readReplaygain(const QString &fileName)
 {
-    LOCK_MUTEX
     TagLib::FileRef fileref = getFileRef(fileName);
     if (fileref.isNull()) {
         return false;
@@ -1429,21 +1412,18 @@ ReplayGain readReplaygain(const QString &fileName)
 
 Update updateReplaygain(const QString &fileName, const ReplayGain &rg)
 {
-    LOCK_MUTEX
     TagLib::FileRef fileref = getFileRef(fileName);
     return fileref.isNull() ? Update_Failed : update(fileref, Song(), Song(), RgTags(rg), QByteArray());
 }
 
 Update embedImage(const QString &fileName, const QByteArray &cover)
 {
-    LOCK_MUTEX
     TagLib::FileRef fileref = getFileRef(fileName);
     return fileref.isNull() ? Update_Failed : update(fileref, Song(), Song(), RgTags(), cover);
 }
 
 QString oggMimeType(const QString &fileName)
 {
-    LOCK_MUTEX
     #ifdef Q_OS_WIN
     const wchar_t*encodedName=reinterpret_cast<const wchar_t*>(fileName.constData());
     #else
@@ -1476,7 +1456,6 @@ QString oggMimeType(const QString &fileName)
 
 int readRating(const QString &fileName)
 {
-    LOCK_MUTEX
     int rating=-1;
     TagLib::FileRef fileref = getFileRef(fileName);
     if (!fileref.isNull()) {
@@ -1487,7 +1466,6 @@ int readRating(const QString &fileName)
 
 Update updateRating(const QString &fileName, int rating)
 {
-    LOCK_MUTEX
     TagLib::FileRef fileref = getFileRef(fileName);
     return fileref.isNull() ? Update_Failed : update(fileref, Song(), Song(), RgTags(), QByteArray(), -1, false, rating);
 }

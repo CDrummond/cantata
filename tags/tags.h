@@ -31,7 +31,7 @@
 #include <QImage>
 #include <QMetaType>
 
-#if defined ENABLE_EXTERNAL_TAGS && !defined CANTATA_TAG_SERVER
+#ifndef CANTATA_TAG_SERVER
 #include "taghelperiface.h"
 #endif
 
@@ -66,7 +66,7 @@ namespace Tags
     };
 
     void enableDebug();
-    #if defined ENABLE_EXTERNAL_TAGS && !defined CANTATA_TAG_SERVER
+    #ifndef CANTATA_TAG_SERVER
     inline void init() { TagHelperIface::self(); }
     inline void stop() { TagHelperIface::self()->stop(); }
     inline Song read(const QString &fileName) { return TagHelperIface::self()->read(fileName); }
@@ -102,7 +102,6 @@ namespace Tags
     extern QString id3Genre(int id);
 }
 
-#ifdef ENABLE_EXTERNAL_TAGS
 Q_DECLARE_METATYPE(Tags::ReplayGain)
 
 inline QDataStream & operator<<(QDataStream &stream, const Tags::ReplayGain &rg)
@@ -116,6 +115,5 @@ inline QDataStream & operator>>(QDataStream &stream, Tags::ReplayGain &rg)
     stream >> rg.trackGain >> rg.albumGain >> rg.trackPeak >> rg.albumPeak;
     return stream;
 }
-#endif
 
 #endif

@@ -37,9 +37,6 @@
 #include <QNetworkProxy>
 #include <QUrlQuery>
 #include <QFileInfo>
-#if defined TAGLIB_FOUND && !defined ENABLE_EXTERNAL_TAGS
-#include "tags/tags.h"
-#endif
 #include <QDebug>
 #define DBUG if (HttpServer::debugEnabled()) qWarning() << "HttpSocket" << __FUNCTION__
 
@@ -49,15 +46,9 @@ static QString detectMimeType(const QString &file)
     if (suffix == QLatin1String("mp3")) {
         return QLatin1String("audio/mpeg");
     }
-    #if defined TAGLIB_FOUND && !defined ENABLE_EXTERNAL_TAGS
-    if (suffix == QLatin1String("ogg")) {
-        return Tags::oggMimeType(file);
-    }
-    #else
     if (suffix == QLatin1String("ogg")) {
         return QLatin1String("audio/ogg");
     }
-    #endif
     if (suffix == QLatin1String("flac")) {
         return QLatin1String("audio/x-flac");
     }

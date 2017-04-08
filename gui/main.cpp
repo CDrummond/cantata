@@ -53,9 +53,7 @@
 #include "widgets/songdialog.h"
 #include "network/networkaccessmanager.h"
 #include "context/ultimatelyricsprovider.h"
-#ifdef ENABLE_EXTERNAL_TAGS
 #include "tags/taghelperiface.h"
-#endif
 #include "context/contextwidget.h"
 #include "scrobbling/scrobbler.h"
 #include "gui/mediakeys.h"
@@ -203,11 +201,9 @@ static void installDebugMessageHandler()
         if (dbg&Dbg_Threads) {
             ThreadCleaner::enableDebug();
         }
-        #ifdef ENABLE_EXTERNAL_TAGS
         if (dbg&Dbg_Tags) {
             TagHelperIface::enableDebug();
         }
-        #endif
         if (dbg&Dbg_Scrobbling) {
             Scrobbler::enableDebug();
         }

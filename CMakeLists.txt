@@ -308,7 +308,7 @@ endif ()
 
 include_directories(${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${QTINCLUDES} ${ZLIB_INCLUDE_DIRS})
 
-set(CANTATA_SRCS
+set(CANTATA_SRCS ${CANTATA_SRCS}
     gui/settings.cpp gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp gui/customactionssettings.cpp
     gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/customactions.cpp
     gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
@@ -346,7 +346,7 @@ set(CANTATA_SRCS
     scrobbling/scrobbler.cpp scrobbling/pausabletimer.cpp scrobbling/scrobblingsettings.cpp scrobbling/scrobblingstatus.cpp
     scrobbling/scrobblinglove.cpp
     http/httpserver.cpp)
-set(CANTATA_MOC_HDRS
+set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
     gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h gui/playlistspage.h
     gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h
     gui/coverdialog.h gui/searchpage.h gui/customactions.h gui/customactionssettings.h gui/covers.h gui/currentcover.h

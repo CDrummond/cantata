@@ -96,14 +96,14 @@ set(solidlite_LIB_MOC_HDRS
             PATHS ENV XDG_DATA_DIRS
             PATH_SUFFIXES "media-player-info" NO_DEFAULT_PATH
          )
-      else(XDG_DATA_DIRS_ENV)
+      else()
          set(XDG_DATA_DIRS "/usr/share")
          message(STATUS "Warning: environment variable XDG_DATA_DIRS not set, falling back to ${XDG_DATA_DIRS}")
          find_path(MEDIAPLAYERINFO_PATH sony_psp.mpi
             PATHS "${XDG_DATA_DIRS}"
             PATH_SUFFIXES "media-player-info" NO_DEFAULT_PATH
          )
-      endif(XDG_DATA_DIRS_ENV)
+      endif()
 
       macro_log_feature(MEDIAPLAYERINFO_PATH
          "media-player-info"
@@ -113,7 +113,7 @@ set(solidlite_LIB_MOC_HDRS
          ""
          "Runtime-only dependency of the udev solid backend. Support for m-p-i is included even if not found during build"
       )
-   endif( UDEV_FOUND )
+   endif( )
 
 
    message(STATUS "Building Solid HAL backend." )
@@ -178,7 +178,7 @@ set(solidlite_LIB_MOC_HDRS
             backends/udisks2/udisksstoragevolume.h
             backends/udisks2/dbus/manager.h
             )
-        else ( WITH_SOLID_UDISKS2 )
+        else ( )
             message(STATUS "Building Solid UDisks backend." )
             set(solidlite_LIB_SRCS ${solidlite_LIB_SRCS}
             backends/udisks/udisksmanager.cpp
@@ -204,8 +204,8 @@ set(solidlite_LIB_MOC_HDRS
             backends/udisks/udisksstoragedrive.h
             backends/udisks/udisksstoragevolume.h
             )
-        endif ( WITH_SOLID_UDISKS2 )
-   endif (CMAKE_SYSTEM_NAME MATCHES Linux)
+        endif ( )
+   endif ()
 
 if(APPLE)
    find_package(IOKit REQUIRED)
@@ -233,9 +233,9 @@ if(WIN32)
    if(HAVE_WBEM AND WBEM_LIBRARIES)
       set(HAVE_WBEM True)
       message(STATUS "Found wbemuuid library: ${WBEM_LIBRARIES}")
-   else(HAVE_WBEM AND WBEM_LIBRARIES)
+   else()
       set(HAVE_WBEM False)
-   endif(HAVE_WBEM AND WBEM_LIBRARIES)
+   endif()
    if(HAVE_WBEM AND NOT WINCE)
        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_WBEM")
        message(STATUS "-- Building Solid WMI backend." )
@@ -268,8 +268,8 @@ if(WIN32)
        backends/wmi/wmistorage.h
        backends/wmi/wmivolume.h
        )
-    endif(HAVE_WBEM AND NOT WINCE)
-endif(WIN32)
+    endif()
+endif()
 
 set(solidlite_OPTIONAL_LIBS)
 
@@ -277,12 +277,12 @@ if(WIN32)
    set(solidlite_OPTIONAL_LIBS ${solidlite_OPTIONAL_LIBS} ${KDEWIN_LIBRARY})
    if(HAVE_WBEM)
       set(solidlite_OPTIONAL_LIBS ${solidlite_OPTIONAL_LIBS} ${WBEM_LIBRARIES})
-   endif(HAVE_WBEM)
-endif(WIN32)
+   endif()
+endif()
 
 if(APPLE)
    set(solidlite_OPTIONAL_LIBS ${IOKIT_LIBRARY})
-endif(APPLE)
+endif()
 
 QT5_WRAP_CPP(solidlite_LIB_MOC_SRCS ${solidlite_LIB_MOC_HDRS} )
 add_library(solidlite ${solidlite_LIB_SRCS} ${solidlite_LIB_MOC_SRCS})
@@ -290,7 +290,7 @@ add_library(solidlite ${solidlite_LIB_SRCS} ${solidlite_LIB_MOC_SRCS})
 
 if ( UDEV_FOUND )
    set(solidlite_OPTIONAL_LIBS ${solidlite_OPTIONAL_LIBS} ${UDEV_LIBS})
-endif ( UDEV_FOUND )
+endif ( )
 
 #target_link_libraries(solidlite ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTGUI_LIBRARY} ${solidlite_OPTIONAL_LIBS} )
 target_link_libraries(solidlite ${QTLIBS} ${solidlite_OPTIONAL_LIBS})
@@ -298,7 +298,7 @@ target_link_libraries(solidlite LINK_INTERFACE_LIBRARIES ${QT_CORE_LIBRARY} )
 
 if (WINCE)
    target_link_libraries(solidlite ${WCECOMPAT_LIBRARIES})
-endif(WINCE)
+endif()
 
 # set_target_properties(solidlite PROPERTIES
 #    VERSION ${GENERIC_LIB_VERSION}

@@ -347,8 +347,8 @@ set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
     gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h
     gui/coverdialog.h gui/searchpage.h gui/customactions.h gui/customactionssettings.h gui/covers.h gui/currentcover.h
     models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
-    models/playqueueproxymodel.h models/actionmodel.h models/browsemodel.h models/musiclibrarymodel.h models/searchmodel.h
-    models/sqllibrarymodel.h models/mpdlibrarymodel.h models/mpdsearchmodel.h models/digitallyimported.h models/streamsearchmodel.h
+    models/playqueueproxymodel.h models/actionmodel.h models/browsemodel.h  models/searchmodel.h models/sqllibrarymodel.h
+    models/mpdlibrarymodel.h models/mpdsearchmodel.h models/digitallyimported.h models/streamsearchmodel.h
     mpd-interface/mpdconnection.h mpd-interface/mpdstats.h mpd-interface/mpdstatus.h
     db/librarydb.h db/mpdlibrarydb.h
     network/networkaccessmanager.h
@@ -492,12 +492,13 @@ if (TAGLIB_FOUND)
                 models/devicesmodel.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
                 devices/devicepropertiesdialog.cpp devices/encoders.cpp devices/freespaceinfo.cpp
                 devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp
-                devices/synccollectionwidget.cpp online/onlinedevice.cpp models/musiclibrarymodel.cpp)
+                devices/synccollectionwidget.cpp
+                online/onlinedevice.cpp models/musiclibrarymodel.cpp)
         set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/devicespage.h devices/filejob.h
                 devices/fsdevice.h devices/umsdevice.h models/devicesmodel.h
                 devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
                 devices/transcodingjob.h devices/valueslider.h devices/syncdialog.h
-                devices/synccollectionwidget.h online/onlinedevice.h)
+                devices/synccollectionwidget.h online/onlinedevice.h models/musiclibrarymodel.h)
         set(CANTATA_UIS ${CANTATA_UIS} devices/actiondialog.ui devices/devicepropertieswidget.ui
                 devices/synccollectionwidget.ui)
 

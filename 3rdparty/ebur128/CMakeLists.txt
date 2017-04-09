@@ -37,7 +37,7 @@ macro(ebur128_check_for_sse)
             endif ()
         endif ()
         set(CMAKE_REQUIRED_FLAGS)
-    elseif ()
+    else ()
         check_cxx_source_runs("
             #include <emmintrin.h>
             int main() { __m128d a, b; double vals[2] = {0}; a = _mm_loadu_pd(vals);  b = _mm_add_pd(a,a);  _mm_storeu_pd(vals,b); return 0; }"

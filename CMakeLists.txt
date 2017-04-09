@@ -78,6 +78,7 @@ if (NOT APPLE AND NOT WIN32)
     set(SHARE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/share"
         CACHE PATH "Define install directory for read-only architecture-independent data")
 endif ()
+
 if (WIN32)
     set(CANTATA_ICON_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/icons/cantata)
 elseif (APPLE)
@@ -91,7 +92,7 @@ elseif (APPLE)
     set(MACOSX_BUNDLE_RESOURCES ${CANTATA_APP_CONTENTS_DIR}/Resources)
     set(MACOSX_BUNDLE_APP_DIR ${CANTATA_APP_CONTENTS_DIR}/MacOS)
     set(CANTATA_ICON_INSTALL_PREFIX ${MACOSX_BUNDLE_RESOURCES}/icons/cantata)
-elseif ()
+else ()
     set(CANTATA_ICON_INSTALL_PREFIX ${SHARE_INSTALL_PREFIX}/icons/hicolor)
 endif ()
 
@@ -390,7 +391,7 @@ if (WIN32)
     # Not installed for windows - script uses sym-links...
 elseif (APPLE)
     install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${MACOSX_BUNDLE_RESOURCES}/scripts/)
-elseif ()
+else ()
     install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/scripts)
 endif ()
 
@@ -612,7 +613,7 @@ if (WIN32)
 elseif (APPLE)
     install(FILES tags/tag_fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
             DESTINATION ${MACOSX_BUNDLE_RESOURCES}/config/)
-elseif ()
+else ()
     install(FILES tags/tag_fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
             DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/config/)
     install(FILES mpd-interface/mpd.conf.template DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/mpd)

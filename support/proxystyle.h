@@ -25,6 +25,7 @@
 #define PROXYSTYLE_H
 
 #include <QProxyStyle>
+#include <QIcon>
 
 class ProxyStyle : public QProxyStyle
 {
@@ -37,7 +38,7 @@ public:
         VF_Top  = 0x02
     };
 
-    ProxyStyle(int modView=VF_None) : modViewFrame(modView) { }
+    ProxyStyle(int modView=VF_None);
     virtual ~ProxyStyle() { }
     void setModifyViewFrame(int modView) { modViewFrame=modView; }
     int modifyViewFrame() const { return modViewFrame; }
@@ -45,9 +46,16 @@ public:
     void polish(QApplication *app) { QProxyStyle::polish(app); }
     void polish(QWidget *widget);
     void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    QPixmap standardPixmap(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const;
+    QIcon standardIcon(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const;
+    #endif
 
 private:
     int modViewFrame;
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    QIcon editClearIcon;
+    #endif
 };
 
 #endif

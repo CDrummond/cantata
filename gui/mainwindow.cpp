@@ -230,7 +230,7 @@ void MainWindow::init()
     }
     #endif
 
-    GtkStyle::applyTheme(this);
+    GtkStyle::applyTheme();
 
     UNITY_MENU_ICON_CHECK
 

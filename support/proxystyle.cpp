@@ -25,6 +25,7 @@
 #include "acceleratormanager.h"
 #include "gtkstyle.h"
 #include "utils.h"
+#include "monoicon.h"
 #include <QMenu>
 #include <QPainter>
 #include <QStyleOption>
@@ -34,6 +35,14 @@
 static const char * constAccelProp="managed-accel";
 #endif
 const char * ProxyStyle::constModifyFrameProp="mod-frame";
+
+ProxyStyle::ProxyStyle(int modView)
+    : modViewFrame(modView)
+{
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    editClearIcon=MonoIcon::icon(FontAwesome::timescircle, QColor(128, 128, 128), QColor(128, 128, 128));
+    #endif
+}
 
 void ProxyStyle::polish(QWidget *widget)
 {
@@ -72,3 +81,22 @@ void ProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *opt
         }
     }
 }
+
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
+QPixmap ProxyStyle::standardPixmap(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const
+{
+    QPixmap pixmap=baseStyle()->standardPixmap(sp, opt, widget);
+    if (SP_LineEditClearButton==sp) {
+        return editClearIcon.pixmap(pixmap.size());
+    }
+    return pixmap;
+}
+
+QIcon ProxyStyle::standardIcon(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const
+{
+    if (SP_LineEditClearButton==sp) {
+        return editClearIcon;
+    }
+    return baseStyle()->standardIcon(sp, opt, widget);
+}
+#endif

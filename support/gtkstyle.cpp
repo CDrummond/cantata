@@ -102,15 +102,12 @@ void GtkStyle::drawSelection(const QStyleOptionViewItem &opt, QPainter *painter,
 
 static QProxyStyle *proxyStyle=0;
 
-void GtkStyle::applyTheme(QWidget *widget)
+// This function should probably be moved somewhere more appropriate!
+void GtkStyle::applyTheme()
 {
-    #ifdef NO_GTK_SUPPORT
-    Q_UNUSED(widget)
-    #else
-    if (widget && isActive() && !proxyStyle) {
+    if (isActive() && !proxyStyle) {
         proxyStyle=new GtkProxyStyle(0);
     }
-    #endif
 
     #if defined Q_OS_WIN
     int modViewFrame=ProxyStyle::VF_Side;
@@ -123,11 +120,9 @@ void GtkStyle::applyTheme(QWidget *widget)
     if (!proxyStyle && Utils::touchFriendly()) {
         proxyStyle=new TouchProxyStyle(modViewFrame);
     }
-    if (!proxyStyle && modViewFrame) {
+    if (!proxyStyle) {
         proxyStyle=new ProxyStyle(modViewFrame);
     }
-    if (proxyStyle) {
-        qApp->setStyle(proxyStyle);
-    }
+    qApp->setStyle(proxyStyle);
 }
 

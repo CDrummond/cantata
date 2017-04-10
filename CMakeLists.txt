@@ -619,6 +619,7 @@ else ()
     install(FILES mpd-interface/mpd.conf.template DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/mpd)
 endif (WIN32)
 
+add_subdirectory(icons)
 add_subdirectory(translations)
 add_subdirectory(support)
 add_subdirectory(3rdparty/qtiocompressor)

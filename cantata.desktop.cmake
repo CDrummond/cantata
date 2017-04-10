@@ -39,7 +39,7 @@ Name[ko]=이전 곡
 Name[pl]=Poprzedni utwór
 Name[ru]=Предыдущий трек
 Name[zh_CN]=上一个
-Exec=@CMAKE_INSTALL_PREFIX@/share/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Previous
+Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Previous
 OnlyShowIn=Unity;
 
 [Desktop Action Play]
@@ -52,7 +52,7 @@ Name[ko]=연주
 Name[pl]=Odtwarzaj
 Name[ru]=Воспроизвести
 Name[zh_CN]=播放
-Exec=@CMAKE_INSTALL_PREFIX@/share/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Play
+Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Play
 OnlyShowIn=Unity;
 
 [Desktop Action Pause]
@@ -65,7 +65,7 @@ Name[ko]=멈춤
 Name[pl]=Wstrzymaj
 Name[ru]=Пауза
 Name[zh_CN]=暂停
-Exec=@CMAKE_INSTALL_PREFIX@/share/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Pause
+Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Pause
 OnlyShowIn=Unity;
 
 [Desktop Action Stop]
@@ -78,7 +78,7 @@ Name[ko]=정지
 Name[pl]=Stop
 Name[ru]=Остановить
 Name[zh_CN]=停止
-Exec=@CMAKE_INSTALL_PREFIX@/share/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Stop
+Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Stop
 OnlyShowIn=Unity;
 
 [Desktop Action StopAfterCurrent]
@@ -91,7 +91,7 @@ Name[ko]=지금 곡 다음 정지
 Name[pl]=Zatrzymaj po obecnym utworze
 Name[ru]=Остановить после текущего трека
 Name[zh_CN]=当前音轨后停止
-Exec=@CMAKE_INSTALL_PREFIX@/share/@CMAKE_PROJECT_NAME@/scripts/cantata-remote StopAfterCurrent
+Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote StopAfterCurrent
 OnlyShowIn=Unity;
 
 [Desktop Action Next]
@@ -104,6 +104,6 @@ Name[ko]=다음 곡
 Name[pl]=Następny utwór
 Name[ru]=Следующий трек
 Name[zh_CN]=下一个
-Exec=@CMAKE_INSTALL_PREFIX@/share/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Next
+Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Next
 OnlyShowIn=Unity;
 

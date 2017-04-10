@@ -503,7 +503,7 @@ void DevicesPage::forgetRemoteDevice()
     }
     QString udi=dev->id();
     QString devName=dev->data();
-    if (MessageBox::Yes==MessageBox::warningYesNo(this, tr("Are you sure you wish to forget '%1'?", devName))) {
+    if (MessageBox::Yes==MessageBox::warningYesNo(this, tr("Are you sure you wish to forget '%1'?").arg(devName))) {
         DevicesModel::self()->removeRemoteDevice(udi);
     }
     #endif

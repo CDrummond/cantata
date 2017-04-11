@@ -47,8 +47,6 @@ public:
         Close,
         Clear
     };
-    static QIcon std(Std i);
-    static void setStd(Std i, const QIcon &icon);
     static QPixmap getScaledPixmap(const QIcon &icon, int w, int h, int base);
     QPixmap getScaledPixmap(int w, int h, int base) const { return getScaledPixmap(*this, w, h, base); }
 };

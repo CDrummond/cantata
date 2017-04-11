@@ -119,63 +119,6 @@ Icon Icon::create(const QString &name, const QList<int> &sizes, bool andSvg)
     return icon;
 }
 
-#ifdef Q_OS_MAC
-QIcon Icon::std(Std i)
-{
-    static bool initResource=true;
-    if (initResource) {
-        Q_INIT_RESOURCE(support_mac_icons);
-        initResource=false;
-    }
-    QIcon icon;
-    switch (i) {
-    case Close: icon.addFile(":support-mac-close"); break;
-    case Clear: icon.addFile(":support-mac-clear"); break;
-    default: break;
-    }
-    return icon;
-}
-#else
-static QIcon closeIcon;
-static QIcon clearIcon;
-
-QIcon Icon::std(Std i)
-{
-    switch (i) {
-    case Close:
-        if (closeIcon.isNull()) {
-            closeIcon=Icon("dialog-close");
-            if (closeIcon.isNull()) {
-                closeIcon=Icon("window-close");
-            }
-        }
-        return closeIcon;
-    case Clear:
-        if (clearIcon.isNull()) {
-            clearIcon=Icon(qApp->isRightToLeft() ? "edit-clear-locationbar-ltr" : "edit-clear-locationbar-rtl");
-            if (clearIcon.isNull()) {
-                clearIcon=Icon("edit-clear");
-            }
-        }
-        return clearIcon;
-    default: break;
-    }
-    return QIcon();
-}
-
-void Icon::setStd(Std i, const QIcon &icon)
-{
-    switch (i) {
-    case Close:
-        closeIcon=icon;
-        break;
-    case Clear:
-        clearIcon=icon;
-    default: break;
-    }
-}
-#endif
-
 Icon::Icon(const QStringList &names)
 {
     foreach (const QString &name, names) {

@@ -110,9 +110,6 @@ Icons::Icons()
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     httpStreamIcon=MonoIcon::icon(FontAwesome::headphones, stdColor);
     #endif
-    #ifndef Q_OS_MAC
-    Icon::setStd(Icon::Close, MonoIcon::icon(FontAwesome::close, MonoIcon::constRed, MonoIcon::constRed));
-    #endif
     leftIcon=MonoIcon::icon(FontAwesome::chevronleft, stdColor);
     rightIcon=MonoIcon::icon(FontAwesome::chevronright, stdColor);
     upIcon=MonoIcon::icon(FontAwesome::chevronup, stdColor);

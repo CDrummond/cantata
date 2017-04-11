@@ -22,7 +22,7 @@
  */
 
 #include "searchwidget.h"
-#include "support/icon.h"
+#include "support/monoicon.h"
 #include "toolbutton.h"
 #include <QHBoxLayout>
 #include <QKeyEvent>
@@ -79,7 +79,7 @@ SearchWidget::SearchWidget(QWidget *p)
         l->addWidget(closeButton);
     }
 
-    closeButton->setIcon(Icon::std(Icon::Close));
+    closeButton->setIcon(MonoIcon::icon(FontAwesome::close, MonoIcon::constRed, MonoIcon::constRed));
     Icon::init(closeButton);
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(edit, SIGNAL(textChanged(QString)), SIGNAL(textChanged(QString)));

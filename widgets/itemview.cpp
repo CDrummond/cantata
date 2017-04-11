@@ -367,8 +367,8 @@ public:
             QApplication::style()->drawControl(QStyle::CE_ProgressBar, &opt, painter, 0L);
         }
 
-        if ((drawBgnd && mouseOver) || Utils::touchFriendly()) {
-            drawIcons(painter, AP_VTop==actionPos ? option.rect : r, mouseOver || (selected && Utils::touchFriendly()), rtl, actionPos, index);
+        if (drawBgnd && mouseOver) {
+            drawIcons(painter, AP_VTop==actionPos ? option.rect : r, mouseOver, rtl, actionPos, index);
         }
         if (!iconMode) {
             BasicItemDelegate::drawLine(painter, option.rect, textColor);
@@ -411,7 +411,7 @@ public:
         if (index.data(Cantata::Role_ListImage).toBool()) {
             sz.setHeight(qMax(sz.height(), listCoverSize));
         }
-        int textHeight = QApplication::fontMetrics().height()*(Utils::touchFriendly() ? 1.5 : 1.25);
+        int textHeight = QApplication::fontMetrics().height()*1.25;
         sz.setHeight(qMax(sz.height(), textHeight)+(constBorder*2));
         return sz;
     }
@@ -506,8 +506,8 @@ public:
             painter->restore();
         }
 
-        if (mouseOver || Utils::touchFriendly()) {
-            drawIcons(painter, option.rect, mouseOver || (selected && Utils::touchFriendly()), rtl, AP_HMiddle, index);
+        if (mouseOver) {
+            drawIcons(painter, option.rect, mouseOver, rtl, AP_HMiddle, index);
         }
         #ifdef Q_OS_WIN
         BasicItemDelegate::drawLine(painter, option.rect, option.palette.color(active ? QPalette::Active : QPalette::Inactive,
@@ -610,8 +610,8 @@ ItemView::ItemView(QWidget *p)
     TreeDelegate *td=new TreeDelegate(treeView);
     listView->setItemDelegate(ld);
     treeView->setItemDelegate(td);
-    listView->setProperty(ProxyStyle::constModifyFrameProp, Utils::touchFriendly() ? ProxyStyle::VF_Top : (ProxyStyle::VF_Side|ProxyStyle::VF_Top));
-    treeView->setProperty(ProxyStyle::constModifyFrameProp, Utils::touchFriendly() ? ProxyStyle::VF_Top : (ProxyStyle::VF_Side|ProxyStyle::VF_Top));
+    listView->setProperty(ProxyStyle::constModifyFrameProp, ProxyStyle::VF_Side|ProxyStyle::VF_Top);
+    treeView->setProperty(ProxyStyle::constModifyFrameProp, ProxyStyle::VF_Side|ProxyStyle::VF_Top);
     ViewEventHandler *listViewEventHandler=new ViewEventHandler(ld, listView);
     ViewEventHandler *treeViewEventHandler=new ViewEventHandler(td, treeView);
     listView->installFilter(listViewEventHandler);
@@ -694,7 +694,7 @@ void ItemView::allowGroupedView()
         connect(groupedView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(groupedView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
-        groupedView->setProperty(ProxyStyle::constModifyFrameProp, Utils::touchFriendly() ? ProxyStyle::VF_Top : (ProxyStyle::VF_Side|ProxyStyle::VF_Top));
+        groupedView->setProperty(ProxyStyle::constModifyFrameProp, ProxyStyle::VF_Side|ProxyStyle::VF_Top);
         #ifdef Q_OS_MAC
         groupedView->setAttribute(Qt::WA_MacShowFocusRect, 0);
         #endif
@@ -714,7 +714,7 @@ void ItemView::allowTableView(TableView *v)
         connect(tableView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
-        tableView->setProperty(ProxyStyle::constModifyFrameProp, Utils::touchFriendly() ? ProxyStyle::VF_Top : (ProxyStyle::VF_Side|ProxyStyle::VF_Top));
+        tableView->setProperty(ProxyStyle::constModifyFrameProp, ProxyStyle::VF_Side|ProxyStyle::VF_Top);
         #ifdef Q_OS_MAC
         tableView->setAttribute(Qt::WA_MacShowFocusRect, 0);
         #endif
@@ -1510,8 +1510,6 @@ void ItemView::controlViewFrame()
 {
     view()->setProperty(ProxyStyle::constModifyFrameProp,
                             title->isVisible() || title->property(constAlwaysShowProp).toBool()
-                                ? Utils::touchFriendly() ? 0 : ProxyStyle::VF_Side
-                                : Utils::touchFriendly()
-                                    ? (searchWidget->isActive() ? 0 : ProxyStyle::VF_Top)
-                                    : (searchWidget->isActive() ? ProxyStyle::VF_Side : (ProxyStyle::VF_Side|ProxyStyle::VF_Top)));
+                                ? ProxyStyle::VF_Side
+                                : (searchWidget->isActive() ? ProxyStyle::VF_Side : (ProxyStyle::VF_Side|ProxyStyle::VF_Top)));
 }

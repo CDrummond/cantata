@@ -9,7 +9,7 @@ add_library(support-core STATIC ${SUPPORT_CORE_MOC_SRCS} ${SUPPORT_CORE_SRCS})
     
 set (SUPPORT_SRCS icon.cpp fancytabwidget.cpp messagewidget.cpp buddylabel.cpp action.cpp actioncollection.cpp lineedit.cpp
      configuration.cpp gtkstyle.cpp spinner.cpp messagebox.cpp inputdialog.cpp thread.cpp squeezedtextlabel.cpp proxystyle.cpp
-     touchproxystyle.cpp pagewidget.cpp combobox.cpp configdialog.cpp monoicon.cpp)
+     pagewidget.cpp combobox.cpp configdialog.cpp monoicon.cpp)
 
 set(SUPPORT_MOC_HDRS fancytabwidget.h messagewidget.h inputdialog.h pagewidget.h action.h actioncollection.h configdialog.h)
 if (APPLE)
@@ -18,11 +18,6 @@ elseif (WIN32)
     install(FILES fontawesome-webfont.ttf DESTINATION ${CMAKE_INSTALL_PREFIX}/fonts)
 else ()
     install(FILES fontawesome-webfont.ttf DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/fonts)
-endif ()
-
-if (ENABLE_TOUCH_SUPPORT)
-    set(SUPPORT_SRCS ${SUPPORT_SRCS} flickcharm.cpp)
-    set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} flickcharm.h)
 endif ()
 
 set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} combobox.h)

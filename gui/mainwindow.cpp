@@ -38,7 +38,6 @@
 #include "mpd-interface/mpdparseutils.h"
 #include "settings.h"
 #include "support/utils.h"
-#include "support/touchproxystyle.h"
 #include "models/musiclibraryitemartist.h"
 #include "models/musiclibraryitemalbum.h"
 #include "models/mpdlibrarymodel.h"
@@ -482,8 +481,6 @@ void MainWindow::init()
     controlIconSize=22==controlIconSize ? 16 : 32==controlIconSize ? 22 : 32;
     #endif
     int playbackButtonSize=28==playbackIconSize ? 34 : controlButtonSize;
-    int controlButtonWidth=Utils::touchFriendly() ? controlButtonSize*TouchProxyStyle::constScaleFactor : controlButtonSize;
-    int playbackButtonWidth=Utils::touchFriendly() ? playbackButtonSize*TouchProxyStyle::constScaleFactor : playbackButtonSize;
     foreach (QToolButton *b, controlBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
@@ -492,18 +489,18 @@ void MainWindow::init()
             b->setFixedHeight(controlButtonSize);
         } else
         #endif
-        b->setFixedSize(QSize(controlButtonWidth, controlButtonSize));
+        b->setFixedSize(QSize(controlButtonSize, controlButtonSize));
         b->setIconSize(QSize(controlIconSize, controlIconSize));
     }
     foreach (QToolButton *b, playbackBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        b->setFixedSize(QSize(playbackButtonWidth, playbackButtonSize));
+        b->setFixedSize(QSize(playbackButtonSize, playbackButtonSize));
         b->setIconSize(QSize(playbackIconSize, playbackIconSize));
     }
 
     playPauseTrackButton->setIconSize(QSize(playPauseIconSize, playPauseIconSize));
-    playPauseTrackButton->setFixedSize(QSize((playPauseIconSize+6)*(Utils::touchFriendly() ? TouchProxyStyle::constScaleFactor : 1.0), playPauseIconSize+6));
+    playPauseTrackButton->setFixedSize(QSize(playPauseIconSize+6, playPauseIconSize+6));
 
     if (fullScreenAction->isEnabled()) {
         fullScreenAction->setChecked(Settings::self()->showFullScreen());

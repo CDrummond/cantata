@@ -636,31 +636,20 @@
           </widget>
          </item>
          <item row="3" column="0" colspan="2">
-          <widget class="QCheckBox" name="touchFriendly">
-           <property name="toolTip">
-            <string>&lt;p&gt;This will change Cantata's interface as detailed:
-&lt;ul&gt;&lt;li&gt;Playback, and control, buttons will be 33% wider&lt;/li&gt;&lt;li&gt;Views will be 'flickable'&lt;/li&gt;&lt;li&gt;To drag items, you will need to 'touch' the top-left corner&lt;/li&gt;&lt;li&gt;Scrollbars will only be a few pixels wide&lt;/li&gt;&lt;li&gt;Actions (e.g. 'Add To Play Queue') will always be visible (not just when item is under mouse)&lt;/li&gt;&lt;li&gt;Spin buttons will have + and - buttons at the side of the text field&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</string>
-           </property>
-           <property name="text">
-            <string>Make interface more touch friendly</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0" colspan="2">
           <widget class="QCheckBox" name="infoTooltips">
            <property name="text">
             <string>Show song information tooltips</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="0" colspan="2">
+         <item row="4" column="0" colspan="2">
           <widget class="QCheckBox" name="retinaSupport">
            <property name="text">
             <string>Support retina displays</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
+         <item row="5" column="0">
           <widget class="BuddyLabel" name="langLabel">
            <property name="text">
             <string>Language:</string>
@@ -670,7 +659,7 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
+         <item row="5" column="1">
           <widget class="QComboBox" name="lang"/>
          </item>
         </layout>
@@ -686,13 +675,6 @@
         <widget class="NoteLabel" name="langNoteLabel">
          <property name="text">
           <string>Changing the language setting will require a re-start of Cantata.</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="NoteLabel" name="touchFriendlyNoteLabel">
-         <property name="text">
-          <string>Changing the 'touch friendly' setting will require a re-start of Cantata.</string>
          </property>
         </widget>
        </item>

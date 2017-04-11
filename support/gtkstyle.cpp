@@ -24,6 +24,7 @@
 #include "gtkstyle.h"
 #include "config.h"
 #include "utils.h"
+#include "proxystyle.h"
 #include <QPainter>
 #include <QApplication>
 #include <QCache>
@@ -31,7 +32,6 @@
 #include <QTextStream>
 #include <QFile>
 #include <qglobal.h>
-#include "touchproxystyle.h"
 
 #if defined Q_OS_WIN || defined Q_OS_MAC || defined QT_NO_STYLE_GTK
 #define NO_GTK_SUPPORT
@@ -100,14 +100,15 @@ void GtkStyle::drawSelection(const QStyleOptionViewItem &opt, QPainter *painter,
     painter->setOpacity(opacityB4);
 }
 
-static QProxyStyle *proxyStyle=0;
-
 // This function should probably be moved somewhere more appropriate!
 void GtkStyle::applyTheme()
 {
+    QProxyStyle *proxyStyle=0;
+    #ifndef NO_GTK_SUPPORT
     if (isActive() && !proxyStyle) {
         proxyStyle=new GtkProxyStyle(0);
     }
+    #endif
 
     #if defined Q_OS_WIN
     int modViewFrame=ProxyStyle::VF_Side;
@@ -117,9 +118,6 @@ void GtkStyle::applyTheme()
     int modViewFrame=0;
     #endif
 
-    if (!proxyStyle && Utils::touchFriendly()) {
-        proxyStyle=new TouchProxyStyle(modViewFrame);
-    }
     if (!proxyStyle) {
         proxyStyle=new ProxyStyle(modViewFrame);
     }

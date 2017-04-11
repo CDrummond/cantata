@@ -112,7 +112,7 @@ MultiPageWidget::MultiPageWidget(QWidget *p)
 
     layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Fixed, QSizePolicy::MinimumExpanding));
     view->setLayout(layout);
-    scroll->setProperty(ProxyStyle::constModifyFrameProp, Utils::touchFriendly() ? ProxyStyle::VF_Top : (ProxyStyle::VF_Side|ProxyStyle::VF_Top));
+    scroll->setProperty(ProxyStyle::constModifyFrameProp, ProxyStyle::VF_Side|ProxyStyle::VF_Top);
     mainPage->setLayout(mainLayout);
     mainLayout->addWidget(scroll);
     mainLayout->setMargin(0);

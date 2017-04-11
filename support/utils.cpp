@@ -906,17 +906,6 @@ Utils::Desktop Utils::currentDe()
     return Other;
 }
 
-static bool isTouchFriendly=false;
-void Utils::setTouchFriendly(bool t)
-{
-    isTouchFriendly=t;
-}
-
-bool Utils::touchFriendly()
-{
-    return isTouchFriendly;
-}
-
 QPainterPath Utils::buildPath(const QRectF &r, double radius)
 {
     QPainterPath path;

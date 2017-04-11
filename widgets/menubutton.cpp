@@ -36,9 +36,7 @@ MenuButton::MenuButton(QWidget *parent)
     setPopupMode(QToolButton::InstantPopup);
     setIcon(Icons::self()->menuIcon);
     setToolTip(tr("Menu"));
-    if (!Utils::touchFriendly()) {
-        installEventFilter(this);
-    }
+    installEventFilter(this);
 }
 
 void MenuButton::controlState()

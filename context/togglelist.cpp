@@ -51,9 +51,6 @@ ToggleList::ToggleList(QWidget *p)
     available->setItemDelegate(new BasicItemDelegate(available));
     selected->setAlternatingRowColors(false);
     selected->setItemDelegate(new BasicItemDelegate(selected));
-    QSize sz=Utils::touchFriendly() ? removeButton->sizeHint() : QSize(0, 0);
-    spacerA->changeSize(sz.width(), sz.height());
-    spacerB->changeSize(sz.width(), sz.height());
 }
 
 void ToggleList::moveUp()

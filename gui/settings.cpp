@@ -636,15 +636,6 @@ bool Settings::showMenubar()
     return cfg.get("showMenubar", false);
 }
 
-bool Settings::touchFriendly()
-{
-    #ifdef ENABLE_TOUCH_SUPPORT
-    return cfg.get("touchFriendly", false);
-    #else
-    return false;
-    #endif
-}
-
 bool Settings::showCoverWidget()
 {
     return cfg.get("showCoverWidget", true);
@@ -1095,15 +1086,6 @@ void Settings::saveLang(const QString &v)
 void Settings::saveShowMenubar(bool v)
 {
     cfg.set("showMenubar", v);
-}
-
-void Settings::saveTouchFriendly(bool v)
-{
-    #ifdef ENABLE_TOUCH_SUPPORT
-    cfg.set("touchFriendly", v);
-    #else
-    Q_UNUSED(v)
-    #endif
 }
 
 void Settings::saveShowCoverWidget(bool v)

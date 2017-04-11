@@ -146,12 +146,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addView(tr("Info - Current song information (artist, album, and lyrics)"), QLatin1String("ContextPage"));
     connect(playQueueView, SIGNAL(currentIndexChanged(int)), SLOT(playQueueViewChanged()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
-    #ifdef ENABLE_TOUCH_SUPPORT
-    connect(touchFriendly, SIGNAL(toggled(bool)), SLOT(touchFriendlyChanged()));
-    #else
-    REMOVE(touchFriendly)
-    REMOVE(touchFriendlyNoteLabel)
-    #endif
     connect(views, SIGNAL(itemChanged(QListWidgetItem*)), SLOT(viewItemChanged(QListWidgetItem*)));
 
     sbStyle->addItem(tr("Large"), FancyTabWidget::Large);
@@ -242,9 +236,6 @@ void InterfaceSettings::load()
     if (retinaSupport) {
         retinaSupport->setChecked(Settings::self()->retinaSupport());
     }
-    if (touchFriendly) {
-        touchFriendly->setChecked(Settings::self()->touchFriendly());
-    }
     showStopButton->setChecked(Settings::self()->showStopButton());
     showCoverWidget->setChecked(Settings::self()->showCoverWidget());
     showRatingWidget->setChecked(Settings::self()->showRatingWidget());
@@ -330,9 +321,6 @@ void InterfaceSettings::save()
     Settings::self()->saveInfoTooltips(infoTooltips->isChecked());
     if (retinaSupport) {
         Settings::self()->saveRetinaSupport(retinaSupport->isChecked());
-    }
-    if (touchFriendly) {
-        Settings::self()->saveTouchFriendly(touchFriendly->isChecked());
     }
     Settings::self()->saveShowStopButton(showStopButton->isChecked());
     Settings::self()->saveShowCoverWidget(showCoverWidget->isChecked());
@@ -472,11 +460,6 @@ void InterfaceSettings::playQueueViewChanged()
 void InterfaceSettings::forceSingleClickChanged()
 {
     singleClickLabel->setOn(forceSingleClick->isChecked()!=Settings::self()->forceSingleClick());
-}
-
-void InterfaceSettings::touchFriendlyChanged()
-{
-    touchFriendlyNoteLabel->setOn(touchFriendly->isChecked()!=Settings::self()->touchFriendly());
 }
 
 void InterfaceSettings::retinaSupportChanged()

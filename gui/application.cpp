@@ -51,7 +51,6 @@ void Application::initObjects()
 
     Utils::initRand();
     Song::initTranslations();
-    Utils::setTouchFriendly(Settings::self()->touchFriendly());
 
     // Init sizes (before any widgets constructed!)
     ItemView::setup();

@@ -40,11 +40,6 @@ The following options may be passed to CMake:
         Enable usage of internal HTTP server for non-MPD file playback.
         Default: ON
 
-    -DENABLE_TOUCH_SUPPORT=ON
-        Enable support for making Cantata more touch-friendly. Currently only
-        really works under Windows.
-        Default: Windows:ON, Others:OFF
-
     -DENABLE_PROXY_CONFIG=ON
         Enable support for proxy settings in config dialog. If disabled,
         system proxy settings are used.

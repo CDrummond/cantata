@@ -39,15 +39,10 @@ static int splitterSize(const QWidget *w)
     static int size=-1;
 
     if (-1==size || !w || !w->isVisible()) {
-        if (Utils::touchFriendly()) {
-            size=4;
-        }
         #if defined Q_OS_MAC || defined Q_OS_WIN
-        else {
-            size=0;
-        }
+        size=0;
         #else
-        else if (qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents)) {
+        if (qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents)) {
             int spacing=qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing);
             int splitterSize=qApp->style()->pixelMetric(QStyle::PM_SplitterWidth);
             size=qMin(spacing+2, splitterSize);
@@ -122,7 +117,7 @@ AutohidingSplitter::AutohidingSplitter(QWidget *parent)
     autohideAnimation->setEasingCurve(QEasingCurve::Linear);
     //connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
     setMinimumWidth(32);
-    setHandleWidth(Utils::touchFriendly() ? 4 : 1);
+    setHandleWidth(1);
 }
 
 AutohidingSplitter::~AutohidingSplitter()

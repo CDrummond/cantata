@@ -23,7 +23,7 @@
 
 #include "messageoverlay.h"
 #include "toolbutton.h"
-#include "icons.h"
+#include "support/monoicon.h"
 #include "support/utils.h"
 #include <QPainter>
 #include <QPaintEvent>
@@ -47,7 +47,7 @@ MessageOverlay::MessageOverlay(QObject *p)
     cancelButton=new ToolButton(this);
     Icon::init(cancelButton);
     cancelButton->setToolTip(tr("Cancel"));
-    cancelButton->setIcon(Icon::std(Icon::Close));
+    cancelButton->setIcon(MonoIcon::icon(FontAwesome::close, MonoIcon::constRed, MonoIcon::constRed));
     cancelButton->adjustSize();
     connect(cancelButton, SIGNAL(clicked()), SIGNAL(cancel()));
 }

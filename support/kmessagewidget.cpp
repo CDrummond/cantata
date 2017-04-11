@@ -19,6 +19,7 @@
  */
 #include "kmessagewidget.h"
 #include "utils.h"
+#include "monoicon.h"
 #include "icon.h"
 #include "squeezedtextlabel.h"
 #include "flattoolbutton.h"
@@ -94,7 +95,7 @@ void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
     textLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
     QAction* closeAction = new QAction(q);
-    closeAction->setIcon(Icon::std(Icon::Close));
+    closeAction->setIcon(MonoIcon::icon(FontAwesome::close, MonoIcon::constRed, MonoIcon::constRed));
     closeAction->setToolTip(QObject::tr("Close"));
     QObject::connect(closeAction, SIGNAL(triggered()), q, SLOT(animatedHide()));
 

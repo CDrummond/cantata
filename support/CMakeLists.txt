@@ -29,7 +29,6 @@ endif ()
 if (APPLE)
     set(SUPPORT_SRCS ${SUPPORT_SRCS} osxstyle.cpp flattoolbutton.cpp windowmanager.cpp)
     set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} osxstyle.h windowmanager.h)
-    qt5_add_resources(SUPPORT_RC_SRCS support_mac_icons.qrc)
 endif ()
 
 set(SUPPORT_SRCS ${SUPPORT_SRCS} pathrequester.cpp kmessagewidget.cpp dialog.cpp shortcutsmodel.cpp

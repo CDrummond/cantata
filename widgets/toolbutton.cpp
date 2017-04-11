@@ -24,7 +24,6 @@
 #include "toolbutton.h"
 #include "support/icon.h"
 #include "support/gtkstyle.h"
-#include "support/touchproxystyle.h"
 #include "config.h"
 #include "support/utils.h"
 #include <QMenu>
@@ -92,7 +91,6 @@ QSize ToolButton::sizeHint() const
 {
     if (!sh.isValid()) {
         ensurePolished();
-        QSize sz;
         #ifdef UNITY_MENU_HACK
         if (!icon.isNull()) {
             QStyleOptionToolButton opt;
@@ -100,18 +98,16 @@ QSize ToolButton::sizeHint() const
             opt.toolButtonStyle=Qt::ToolButtonIconOnly;
             initStyleOption(&opt);
             opt.features=QStyleOptionToolButton::None;
-            sz = style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.iconSize, this).expandedTo(QApplication::globalStrut());
+            sh = style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.iconSize, this).expandedTo(QApplication::globalStrut());
         } else
         #endif
-            sz = QToolButton::sizeHint();
-        sh=Utils::touchFriendly() ? QSize(sz.width()*TouchProxyStyle::constScaleFactor, sz.height()) : sz;
+            sh = QToolButton::sizeHint();
 
         if (sh.width()>sh.height()) {
             sh.setWidth(sh.height());
         }
 
-        bool touchFriendly=Utils::touchFriendly();
-        sh=QSize(qMax(sh.width(), sh.height())*(touchFriendly ? TouchProxyStyle::constScaleFactor : 1.0), touchFriendly ? sh.height() : qMax(sh.width(), sh.height()));
+        sh=QSize(qMax(sh.width(), sh.height()), qMax(sh.width(), sh.height()));
         #ifdef Q_OS_MAC
         if (!touchFriendly) {
             sh=QSize(qMax(sh.width(), 22), qMax(sh.height(), 20));

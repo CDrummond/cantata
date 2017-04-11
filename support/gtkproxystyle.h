@@ -25,11 +25,11 @@
 #define GTKPROXYSTYLE_H
 
 #include "config.h"
-#include "touchproxystyle.h"
+#include "proxystyle.h"
 
 class ShortcutHandler;
 
-class GtkProxyStyle : public TouchProxyStyle
+class GtkProxyStyle : public ProxyStyle
 {
 public:
     GtkProxyStyle(int modView);

@@ -42,7 +42,7 @@ static inline void addEventFilter(QObject *object, QObject *filter)
 }
 
 GtkProxyStyle::GtkProxyStyle(int modView)
-    : TouchProxyStyle(modView, true, true)
+    : ProxyStyle(modView)
 {
     shortcutHander=new ShortcutHandler(this);
     setBaseStyle(qApp->style());
@@ -63,7 +63,7 @@ int GtkProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const Q
         break;
     }
 
-    return TouchProxyStyle::styleHint(hint, option, widget, returnData);
+    return ProxyStyle::styleHint(hint, option, widget, returnData);
 }
 
 void GtkProxyStyle::polish(QWidget *widget)
@@ -72,27 +72,27 @@ void GtkProxyStyle::polish(QWidget *widget)
         AcceleratorManager::manage(widget);
         widget->setProperty(constAccelProp, true);
     }
-    TouchProxyStyle::polish(widget);
+    ProxyStyle::polish(widget);
 }
 
 void GtkProxyStyle::polish(QPalette &pal)
 {
-    TouchProxyStyle::polish(pal);
+    ProxyStyle::polish(pal);
 }
 
 void GtkProxyStyle::polish(QApplication *app)
 {
     addEventFilter(app, shortcutHander);
-    TouchProxyStyle::polish(app);
+    ProxyStyle::polish(app);
 }
 
 void GtkProxyStyle::unpolish(QWidget *widget)
 {
-    TouchProxyStyle::unpolish(widget);
+    ProxyStyle::unpolish(widget);
 }
 
 void GtkProxyStyle::unpolish(QApplication *app)
 {
     app->removeEventFilter(shortcutHander);
-    TouchProxyStyle::unpolish(app);
+    ProxyStyle::unpolish(app);
 }

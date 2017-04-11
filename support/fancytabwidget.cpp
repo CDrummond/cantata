@@ -74,7 +74,7 @@ static int smallIconSize=16;
 void FancyTabWidget::setup()
 {
     largeIconSize=Icon::stdSize(Utils::scaleForDpi(32));
-    smallIconSize=Icon::stdSize(Utils::scaleForDpi(Utils::touchFriendly() ? 22 : 16));
+    smallIconSize=Icon::stdSize(Utils::scaleForDpi(16));
 }
 
 int FancyTabWidget::iconSize(bool large)

@@ -30,7 +30,6 @@
 #include "support/actioncollection.h"
 #include "support/action.h"
 #include "widgets/icons.h"
-#include "support/touchproxystyle.h"
 #include <QLabel>
 #include <QScrollBar>
 #include <QImage>
@@ -137,10 +136,6 @@ View::View(QWidget *parent, const QStringList &views)
     cancelJobAction->setEnabled(false);
     connect(cancelJobAction, SIGNAL(triggered()), SLOT(abort()));
     text=texts.at(0);
-
-    if (!Utils::touchFriendly()) {
-        QTimer::singleShot(0, this, SLOT(initStyle()));
-    }
 }
 
 View::~View()
@@ -292,17 +287,4 @@ void View::setHtml(const QString &h, int index)
 
 void View::abort()
 {
-}
-
-void View::initStyle()
-{
-    if (GtkStyle::isActive()) {
-        // Already have thin style scrollbars...
-        return;
-    }
-    static TouchProxyStyle *scrollbarStyle=new TouchProxyStyle(0, false, true);
-    foreach (TextBrowser *t, texts) {
-        t->verticalScrollBar()->setStyle(scrollbarStyle);
-        t->horizontalScrollBar()->setStyle(scrollbarStyle);
-    }
 }

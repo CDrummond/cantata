@@ -136,7 +136,6 @@ public:
     bool fetchCovers();
     QString lang();
     bool showMenubar();
-    bool touchFriendly();
     bool showCoverWidget();
     bool showStopButton();
     bool showRatingWidget();
@@ -234,7 +233,6 @@ public:
     void saveFetchCovers(bool v);
     void saveLang(const QString &v);
     void saveShowMenubar(bool v);
-    void saveTouchFriendly(bool v);
     void saveShowCoverWidget(bool v);
     void saveShowStopButton(bool v);
     void saveShowRatingWidget(bool v);

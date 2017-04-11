@@ -53,7 +53,7 @@ static double sizeAdjust=1.25;
 void GroupedView::setup()
 {
     int height=QApplication::fontMetrics().height();
-    sizeAdjust=Utils::touchFriendly() ? 1.5 : 1.25;
+    sizeAdjust=1.25;
 
     if (height>17) {
         constCoverSize=(((int)((height*2)/4))*4);
@@ -431,8 +431,8 @@ void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
         painter->drawText(duratioRect, duration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
     }
 
-    if (mouseOver || Utils::touchFriendly()) {
-        drawIcons(painter, option.rect, mouseOver || (selected && Utils::touchFriendly()), rtl, AlbumHeader==type || isCollection ? AP_HBottom : AP_HMiddle, index);
+    if (mouseOver) {
+        drawIcons(painter, option.rect, mouseOver, rtl, AlbumHeader==type || isCollection ? AP_HBottom : AP_HMiddle, index);
     }
     BasicItemDelegate::drawLine(painter, option.rect, textColor);
     painter->restore();
@@ -463,7 +463,7 @@ int GroupedViewDelegate::drawRatings(QPainter *painter, const Song &song, const 
 
 GroupedView::GroupedView(QWidget *parent, bool isPlayQueue)
     : TreeView(parent, isPlayQueue)
-    , allowClose(!Utils::touchFriendly())
+    , allowClose(true)
     , startClosed(allowClose)
     , autoExpand(true)
     , filterActive(false)

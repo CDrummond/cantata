@@ -83,7 +83,7 @@ VolumeSlider::VolumeSlider(QWidget *p)
     , muteAction(0)
     , menu(0)
 {
-    widthStep=Utils::touchFriendly() ? 5 : 4;
+    widthStep=4;
     setRange(0, 100);
     setPageStep(Settings::self()->volumeStep());
     lineWidth=Utils::scaleForDpi(1);

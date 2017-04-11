@@ -34,12 +34,10 @@
 #cmakedefine ENABLE_PROXY_CONFIG 1
 #cmakedefine CDPARANOIA_HAS_CACHEMODEL_SIZE 1
 #cmakedefine QT_QTDBUS_FOUND 1
-#cmakedefine ENABLE_UNCACHED_MTP 1
 #cmakedefine ENABLE_HTTP_SERVER 1
 #cmakedefine IOKIT_FOUND 1
 #cmakedefine QT_MAC_EXTRAS_FOUND 1
 #cmakedefine UNITY_MENU_HACK 1
-#cmakedefine ENABLE_TOUCH_SUPPORT 1
 #cmakedefine ENABLE_SIMPLE_MPD_SUPPORT 1
 
 #ifdef ENABLE_UBUNTU

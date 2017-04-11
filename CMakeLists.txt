@@ -61,7 +61,6 @@ option(ENABLE_MUSICBRAINZ "Enable MusicBrianz libraries (either this or CDDB req
 option(ENABLE_UDISKS2 "Build UDisks2 backend, and NOT UDisks, for Qt builds" ON)
 option(ENABLE_REMOTE_DEVICES "Enable support for remote (sshfs, samba) devices (EXPERIMENTAL)" OFF)
 option(ENABLE_MTP "Enable MTP library (required to support MTP devices)" ON)
-option(ENABLE_UNCACHED_MTP "Open MTP devices in un-cached mode (faster)" ON)
 
 if (NOT APPLE AND NOT WIN32)
     set(SHARE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/share"

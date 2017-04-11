@@ -31,16 +31,8 @@
     to a Mopdiy server. Therefore, when adding files (from devices) these are
     encoded.
 
-- Lyrics
-  - Add support for reading via tags in mp4 files.
-
 - PlayQueue
   - Move code out of MainWindow class.
-
-- General
-  - mixramp tag calculation
-  - mixramp MPD settings
-    - Does MPD need to be restarted to change settings?
 
 - Bugs
   - Handle font (High DPI detection) and palette changes in custom widgets

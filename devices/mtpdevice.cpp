@@ -164,23 +164,13 @@ void MtpConnection::connectToDevice()
     for (int i = 0; i < numDev; i++) {
         if (0!=busNum && 0!=devNum) {
             if (rawDevices[i].bus_location==busNum && rawDevices[i].devnum==devNum) {
-                #ifdef ENABLE_UNCACHED_MTP
                 mptDev = LIBMTP_Open_Raw_Device_Uncached(&rawDevices[i]);
-                #else
-                mptDev = LIBMTP_Open_Raw_Device(&rawDevices[i]);
-                #endif
                 break;
             }
         } else {
-            #ifdef ENABLE_UNCACHED_MTP
             if ((mptDev = LIBMTP_Open_Raw_Device_Uncached(&rawDevices[i]))) {
                 break;
             }
-            #else
-            if ((mptDev = LIBMTP_Open_Raw_Device(&rawDevices[i]))) {
-                break;
-            }
-            #endif
         }
     }
 
@@ -301,14 +291,10 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
 
     library = new MusicLibraryItemRoot;
     emit statusMessage(tr("Updating folders..."));
-    #ifdef ENABLE_UNCACHED_MTP
     updateFilesAndFolders();
     if (abortRequested) {
         return;
     }
-    #else
-    updateFolders();
-    #endif
     #ifdef TIME_MTP_OPERATIONS
     qWarning() << "Folder update:" << timer.elapsed();
     timer.restart();
@@ -318,14 +304,6 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
         emit libraryUpdated();
         return;
     }
-    #ifndef ENABLE_UNCACHED_MTP
-    emit statusMessage(tr("Updating files..."));
-    updateFiles();
-    #ifdef TIME_MTP_OPERATIONS
-    qWarning() << "Files update:" << timer.elapsed();
-    timer.restart();
-    #endif
-    #endif
     #ifdef MTP_CLEAN_ALBUMS
     updateAlbums();
     #ifdef TIME_MTP_OPERATIONS
@@ -543,7 +521,6 @@ void MtpConnection::setMusicFolder(Storage &store)
     }
 }
 
-#ifdef ENABLE_UNCACHED_MTP
 void MtpConnection::updateFilesAndFolders()
 {
     folderMap.clear();
@@ -591,43 +568,6 @@ void MtpConnection::listFolder(uint32_t storage, uint32_t parentDir, Folder *f)
         LIBMTP_destroy_file_t(file);
     }
 }
-#else
-void MtpConnection::updateFolders()
-{
-    folderMap.clear();
-    LIBMTP_folder_t *folders=LIBMTP_Get_Folder_List(device);
-    parseFolder(folders);
-    if (folders) {
-        // LIBMTP_destroy_folder_t is recursive
-        LIBMTP_destroy_folder_t(folders);
-    }
-}
-
-void MtpConnection::updateFiles()
-{
-    LIBMTP_file_t *files=LIBMTP_Get_Filelisting_With_Callback(device, 0, 0);
-    QSet<uint32_t> folders=folderMap.keys().toSet();
-    while (files) {
-        LIBMTP_file_t *file=files;
-        files=files->next;
-
-        if (folders.contains(file->parent_id)) {
-            Folder &folder=folderMap[file->parent_id];
-            if (LIBMTP_FILETYPE_FOLDER==file->filetype) {
-                folder.folders.insert(file->item_id);
-            } else {
-                QString name=QString::fromUtf8(file->filename);
-                if (name.endsWith(".jpg", Qt::CaseInsensitive) || name.endsWith(".png", Qt::CaseInsensitive) || QLatin1String("albumart.pamp")==name) {
-                    folder.covers.insert(file->item_id, File(name, file->filesize, file->item_id));
-                } else {
-                    folder.files.insert(file->item_id, File(name, file->filesize, file->item_id));
-                }
-            }
-        }
-        LIBMTP_destroy_file_t(file);
-    }
-}
-#endif
 
 void MtpConnection::updateStorage()
 {
@@ -767,37 +707,6 @@ uint32_t MtpConnection::checkFolderStructure(const QStringList &dirs, Storage &s
     }
     return parentId;
 }
-
-#ifndef ENABLE_UNCACHED_MTP
-void MtpConnection::parseFolder(LIBMTP_folder_t *folder)
-{
-    if (!folder) {
-        return;
-    }
-
-    QMap<uint32_t, Folder>::ConstIterator it=folderMap.find(folder->parent_id);
-    QString path;
-    if (it!=folderMap.constEnd()) {
-        path=it.value().path+QString::fromUtf8(folder->name)+QChar('/');
-    } else {
-        path=QString::fromUtf8(folder->name)+QChar('/');
-    }
-    bool isMusic=path.startsWith(constMusicFolder+QLatin1Char('/'), Qt::CaseInsensitive);
-    if (isMusic) {
-        folderMap.insert(folder->folder_id, Folder(path, folder->folder_id, folder->parent_id, folder->storage_id));
-        if (folderMap.contains(folder->parent_id)) {
-            folderMap[folder->parent_id].folders.insert(folder->folder_id);
-        }
-    }
-    // Only recurse into music folder...
-    if (folder->child && isMusic) {
-        parseFolder(folder->child);
-    }
-    if (folder->sibling) {
-        parseFolder(folder->sibling);
-    }
-}
-#endif
 
 static char * createString(const QString &str)
 {

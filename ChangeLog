@@ -68,6 +68,8 @@
 53. Add button on podcasts page to show only unplayed podcasts.
 54. Add min/max duration to dynamic playlist rules.
 55. Use Qt5's translation framework - ts files, not po files.
+56. When trying to read lyrics files; check for .txt extension as well as
+    .lyrics. Also check ~/.lyrics/Artist - Track.txt
 
 2.0.1
 -----

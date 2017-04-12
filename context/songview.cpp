@@ -87,6 +87,17 @@ static QString lyricsCacheFileName(const Song &song, bool createDir=false)
     return dir+Covers::encodeName(title)+SongView::constExtension;
 }
 
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
+static QString lyricsOtherFileName(const Song &song, bool createDir=false)
+{
+    QString artist=song.artist;
+    QString title=song.title;
+    title.replace("/", "_");
+    artist.replace("/", "_");
+    return QDir::homePath()+"/.lyrics/"+Covers::encodeName(artist)+" - "+Covers::encodeName(title)+".txt";
+}
+#endif
+
 static inline QString mpdLyricsFilePath(const QString &songFile)
 {
     return Utils::changeExtension(MPDConnection::self()->getDetails().dir+songFile, SongView::constExtension);
@@ -397,23 +408,46 @@ void SongView::loadLyrics()
                 setMode(Mode_Display);
                 return;
             }
+            // Try .txt extension
+            mpdLyrics=Utils::changeExtension(mpdLyrics, ".txt");
+            if (setLyricsFromFile(mpdLyrics)) {
+                lyricsFile=mpdLyrics;
+                setMode(Mode_Display);
+                return;
+            }
         }
     }
 
     // Check for cached file...
     QString file=lyricsCacheFileName(currentSong);
 
-    /*if (force && QFile::exists(file)) {
-        // Delete the cached lyrics file when the user is force-fully re-fetching the lyrics.
-        // Afterwards we'll simply do getLyrics() to get the new ones.
-        QFile::remove(file);
-    } else */if (setLyricsFromFile(file)) {
+    if (setLyricsFromFile(file)) {
        // We just wanted a normal update without explicit re-fetching. We can return
        // here because we got cached lyrics and we don't want an explicit re-fetch.
        lyricsFile=file;
        setMode(Mode_Display);
        return;
     }
+
+    file=Utils::changeExtension(file, ".txt");
+    if (setLyricsFromFile(file)) {
+       // We just wanted a normal update without explicit re-fetching. We can return
+       // here because we got cached lyrics and we don't want an explicit re-fetch.
+       lyricsFile=file;
+       setMode(Mode_Display);
+       return;
+    }
+
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    file=lyricsOtherFileName(currentSong);
+    if (setLyricsFromFile(file)) {
+       // We just wanted a normal update without explicit re-fetching. We can return
+       // here because we got cached lyrics and we don't want an explicit re-fetch.
+       lyricsFile=file;
+       setMode(Mode_Display);
+       return;
+    }
+    #endif
 
     getLyrics();
 }

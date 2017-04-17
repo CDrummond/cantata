@@ -80,11 +80,11 @@ StdActions::StdActions()
     prioCustomAction = new Action(QObject::tr("Custom Priority..."), 0);
     addToStoredPlaylistAction = new Action(Icons::self()->playlistListIcon, QObject::tr("Add To Playlist"), 0);
     #ifdef TAGLIB_FOUND
-    organiseFilesAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::folderopeno, col)), QObject::tr("Organize Files"), 0);
-    editTagsAction = new Action(QObject::tr("Edit Track Information"), 0);
+    organiseFilesAction = ActionCollection::get()->createAction("orgfiles", QObject::tr("Organize Files"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::folderopeno, col)));
+    editTagsAction = ActionCollection::get()->createAction("edittags", QObject::tr("Edit Track Information"), 0);
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::barchart, col)), QObject::tr("ReplayGain"), 0);
+    replaygainAction = ActionCollection::get()->createAction("replaygain", QObject::tr("ReplayGain"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::barchart, col)));
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::mobile, col)), QObject::tr("Copy Songs To Device"), 0);

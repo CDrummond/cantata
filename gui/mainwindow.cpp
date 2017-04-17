@@ -320,6 +320,8 @@ void MainWindow::init()
     playNextAction = ActionCollection::get()->createAction("playnext", tr("Play next"));
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", Utils::strippedText(StdActions::self()->editTagsAction->text()), StdActions::self()->editTagsAction->icon());
+    editPlayQueueTagsAction->setToolTip(tr("Edit Track Information (Play Queue)"));
+    editPlayQueueTagsAction->setProperty(Action::constTtForSettings, true);
     #endif
     addAction(expandAllAction = ActionCollection::get()->createAction("expandall", tr("Expand All")));
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);

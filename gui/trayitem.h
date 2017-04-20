@@ -58,7 +58,6 @@ public:
             trayItem->setIcon(icon);
         }
     }
-    #endif
     void setToolTip(const QString &iconName, const QString &title, const QString &subTitle) {
         if (trayItem) {
             Q_UNUSED(iconName)
@@ -66,6 +65,7 @@ public:
             trayItem->setToolTip(title);
         }
     }
+    #endif
     void songChanged(const Song &song, bool isPlaying);
     void updateConnections();
     void updateOutputs();

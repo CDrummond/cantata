@@ -763,7 +763,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
             s.artist=query.value(col++).toString();
             s.albumartist=query.value(col++).toString();
             s.setComposer(query.value(col++).toString());
-            s.album=album.isEmpty() ? albumId : album, albumId;
+            s.album=album.isEmpty() ? albumId : album;
             for (int i=0; i<Song::constNumGenres; ++i) {
                 QString genre=query.value(col++).toString();
                 if (genre!=constNullGenre) {

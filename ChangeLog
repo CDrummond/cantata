@@ -72,6 +72,7 @@
     .lyrics. Also check ~/.lyrics/Artist - Track.txt
 57. Add 3 seek levels (5 seconds, 30 seconds, and 60 seconds), with assignable
     shortcuts.
+58. When adding files to playqueue, and in btaches of up to 2000 files.
 
 2.0.1
 -----

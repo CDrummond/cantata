@@ -258,7 +258,7 @@ void CoverPreview::showImage(const QImage &img, const QString &u)
         scrollArea->show();
         QApplication::processEvents();
         adjustSize();
-        QStyleOptionFrameV3 opt;
+        QStyleOptionFrame opt;
         opt.init(scrollArea);
         int fw=style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &opt, scrollArea);
         if (fw<0) {

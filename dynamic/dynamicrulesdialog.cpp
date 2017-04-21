@@ -25,7 +25,6 @@
 #include "dynamicruledialog.h"
 #include "dynamic.h"
 #include "support/messagebox.h"
-#include "widgets/icons.h"
 #include "widgets/basicitemdelegate.h"
 #include <QIcon>
 #include <QStandardItem>
@@ -145,11 +144,6 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
     connect(addBtn, SIGNAL(clicked()), SLOT(add()));
     connect(editBtn, SIGNAL(clicked()), SLOT(edit()));
     connect(removeBtn, SIGNAL(clicked()), SLOT(remove()));
-
-    addBtn->setIcon(Icons::self()->addIcon);
-    editBtn->setIcon(Icons::self()->editIcon);
-    removeBtn->setIcon(Icons::self()->minusIcon);
-
     connect(rulesList, SIGNAL(itemsSelected(bool)), SLOT(controlButtons()));
     connect(nameText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(aboutLabel, SIGNAL(leftClickedUrl()), this, SLOT(showAbout()));

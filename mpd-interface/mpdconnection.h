@@ -321,8 +321,7 @@ public Q_SLOTS:
     void setRating(const QStringList &files, quint8 val);
     void getRating(const QString &file);
 
-    void forward() { seek(true); }
-    void reverse() { seek(false); }
+    void seek();
 
 Q_SIGNALS:
     void connectionChanged(const MPDConnectionDetails &details);
@@ -417,7 +416,6 @@ private:
     void getRatings(QList<Song> &songs);
     void getStickerSupport();
     void playFirstTrack(bool emitErrors);
-    void seek(bool fwd);
     void determineIfaceIp();
 
 private:

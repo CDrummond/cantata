@@ -70,6 +70,8 @@
 55. Use Qt5's translation framework - ts files, not po files.
 56. When trying to read lyrics files; check for .txt extension as well as
     .lyrics. Also check ~/.lyrics/Artist - Track.txt
+57. Add 3 seek levels (5 seconds, 30 seconds, and 60 seconds), with assignable
+    shortcuts.
 
 2.0.1
 -----

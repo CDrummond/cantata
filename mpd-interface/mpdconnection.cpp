@@ -59,11 +59,9 @@ void MPDConnection::enableDebug()
 // Uncomment the following to report error strings in MPDStatus to the UI
 // ...disabled, as stickers (for ratings) can cause lots of errors to be reported - and these all need clearing, etc.
 // #define REPORT_MPD_ERRORS
-static const int constSocketCommsTimeout=250
-        ;
+static const int constSocketCommsTimeout=250;
 static const int constMaxReadAttempts=4;
 static int maxFilesPerAddCommand=1000;
-static int seekStep=5;
 static int constConnTimer=5000;
 
 static const QByteArray constOkValue("OK");
@@ -269,7 +267,6 @@ MPDConnection::MPDConnection()
     #endif
     Configuration cfg;
     maxFilesPerAddCommand=cfg.get("mpdListSize", 10000, 100, 65535);
-    seekStep=cfg.get("seekStep", 5, 2, 60);
     MPDParseUtils::setSingleTracksFolders(cfg.get("singleTracksFolders", QStringList()).toSet());
 }
 
@@ -1215,20 +1212,30 @@ void MPDConnection::playFirstTrack(bool emitErrors)
     sendCommand("play 0", emitErrors);
 }
 
-void MPDConnection::seek(bool fwd)
+void MPDConnection::seek()
 {
+    QObject *s=sender();
+    int offset=s ? s->property("offset").toInt() : 0;
+    if (0==offset) {
+        return;
+    }
     toggleStopAfterCurrent(false);
     Response response=sendCommand("status");
     if (response.ok) {
         MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
-        if (fwd) {
-            if (sv.timeElapsed+seekStep<sv.timeTotal) {
-                setSeek(sv.song, sv.timeElapsed+seekStep);
+        if (offset>0) {
+            if (sv.timeElapsed+offset<sv.timeTotal) {
+                setSeek(sv.song, sv.timeElapsed+offset);
             } else {
                 goToNext();
             }
         } else {
-            setSeek(sv.song, sv.timeElapsed>=seekStep ? sv.timeElapsed-seekStep : 0);
+            if (sv.timeElapsed+offset>=0) {
+                setSeek(sv.song, sv.timeElapsed+offset);
+            } /*else {
+                // Not sure about this!!!
+                goToPrevious();
+            } */
         }
     }
 }

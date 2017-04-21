@@ -101,9 +101,6 @@ CustomActionsSettings::CustomActionsSettings(QWidget *parent)
     add->setText(tr("Add"));
     edit->setText(tr("Edit"));
     del->setText(tr("Remove"));
-    add->setIcon(Icons::self()->addIcon);
-    edit->setIcon(Icons::self()->editIcon);
-    del->setIcon(Icons::self()->minusIcon);
     edit->setEnabled(false);
     del->setEnabled(false);
 

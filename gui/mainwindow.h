@@ -305,8 +305,6 @@ private:
     Action *serverInfoAction;
     Action *cancelAction;
     Action *ratingAction;
-    Action *fwdAction;
-    Action *revAction;
     TrayItem *trayItem;
     QPoint lastPos;
     QSize expandedSize;

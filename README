@@ -348,15 +348,10 @@ volumeStep=<Integer>
     Volume % increments. Used when mouse wheel is activated over volume control.
     Default is 5. (Values 1..20 are acceptable)
 
-seekStep=<Integer>
-    Configure seek time when Ctrl+Arrow keys is used.
-    Default is 5. (Values 2..60 are acceptable)
-
 e.g.
 [General]
 networkAccessEnabled=false
 volumeStep=2
-seekStep=5
 
 8. CUE Files
 ============

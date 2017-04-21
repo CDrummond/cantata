@@ -272,14 +272,24 @@ void MainWindow::init()
     connectionsAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::server, iconCol)), tr("Collection"), this);
     outputsAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::volumeup, iconCol)), tr("Outputs"), this);
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", tr("Stop After Track"), Icons::self()->toolbarStopIcon);
-    fwdAction = new Action(this);
-    revAction = new Action(this);
-    fwdAction->setShortcut((Qt::RightToLeft==layoutDirection() ? Qt::Key_Left : Qt::Key_Right)+Qt::ControlModifier);
-    revAction->setShortcut((Qt::RightToLeft==layoutDirection() ? Qt::Key_Right : Qt::Key_Left)+Qt::ControlModifier);
-    connect(fwdAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(forward()));
-    connect(revAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(reverse()));
-    addAction(fwdAction);
-    addAction(revAction);
+
+    QList<int> seeks=QList<int>() << 5 << 30 << 60;
+    QList<int> seekShortcuts=QList<int>() << (int)Qt::ControlModifier << (int)Qt::ShiftModifier << (int)(Qt::ControlModifier|Qt::ShiftModifier);
+    for (int i=0; i<seeks.length(); ++i) {
+        int seek=seeks.at(i);
+        Action *fwdAction = ActionCollection::get()->createAction("seekfwd"+QString::number(seek), tr("Seek forward (%1 seconds)").arg(seek));
+        Action *revAction = ActionCollection::get()->createAction("seekrev"+QString::number(seek), tr("Seek backward (%1 seconds)").arg(seek));
+        fwdAction->setProperty("offset", seek);
+        revAction->setProperty("offset", -1*seek);
+        connect(fwdAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(seek()));
+        connect(revAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(seek()));
+        addAction(fwdAction);
+        addAction(revAction);
+        if (i<seekShortcuts.length()) {
+            fwdAction->setShortcut((Qt::RightToLeft==layoutDirection() ? Qt::Key_Left : Qt::Key_Right)+seekShortcuts.at(i));
+            revAction->setShortcut((Qt::RightToLeft==layoutDirection() ? Qt::Key_Right : Qt::Key_Left)+seekShortcuts.at(i));
+        }
+    }
 
     addPlayQueueToStoredPlaylistAction = new Action(HIDE_MENU_ICON(Icons::self()->playlistListIcon), tr("Add To Stored Playlist"), this);
     #ifdef ENABLE_DEVICES_SUPPORT

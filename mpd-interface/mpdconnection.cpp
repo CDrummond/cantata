@@ -61,8 +61,8 @@ void MPDConnection::enableDebug()
 // #define REPORT_MPD_ERRORS
 static const int constSocketCommsTimeout=250;
 static const int constMaxReadAttempts=4;
-static int maxFilesPerAddCommand=1000;
-static int constConnTimer=5000;
+static const int constMaxFilesPerAddCommand=2000;
+static const int constConnTimer=5000;
 
 static const QByteArray constOkValue("OK");
 static const QByteArray constOkMpdValue("OK MPD");
@@ -265,9 +265,7 @@ MPDConnection::MPDConnection()
     #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
     #endif
-    Configuration cfg;
-    maxFilesPerAddCommand=cfg.get("mpdListSize", 10000, 100, 65535);
-    MPDParseUtils::setSingleTracksFolders(cfg.get("singleTracksFolders", QStringList()).toSet());
+    MPDParseUtils::setSingleTracksFolders(Configuration().get("singleTracksFolders", QStringList()).toSet());
 }
 
 MPDConnection::~MPDConnection()
@@ -773,10 +771,10 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
     }
 
     QList<QStringList> fileLists;
-    if (priority.count()<=1 && files.count()>maxFilesPerAddCommand) {
-        int numChunks=(files.count()/maxFilesPerAddCommand)+(files.count()%maxFilesPerAddCommand ? 1 : 0);
+    if (priority.count()<=1 && files.count()>constMaxFilesPerAddCommand) {
+        int numChunks=(files.count()/constMaxFilesPerAddCommand)+(files.count()%constMaxFilesPerAddCommand ? 1 : 0);
         for (int i=0; i<numChunks; ++i) {
-            fileLists.append(files.mid(i*maxFilesPerAddCommand, maxFilesPerAddCommand));
+            fileLists.append(files.mid(i*constMaxFilesPerAddCommand, constMaxFilesPerAddCommand));
         }
     } else {
         fileLists.append(files);
@@ -2156,10 +2154,10 @@ void MPDConnection::setRating(const QStringList &files, quint8 val)
     }
 
     QList<QStringList> fileLists;
-    if (files.count()>maxFilesPerAddCommand) {
-        int numChunks=(files.count()/maxFilesPerAddCommand)+(files.count()%maxFilesPerAddCommand ? 1 : 0);
+    if (files.count()>constMaxFilesPerAddCommand) {
+        int numChunks=(files.count()/constMaxFilesPerAddCommand)+(files.count()%constMaxFilesPerAddCommand ? 1 : 0);
         for (int i=0; i<numChunks; ++i) {
-            fileLists.append(files.mid(i*maxFilesPerAddCommand, maxFilesPerAddCommand));
+            fileLists.append(files.mid(i*constMaxFilesPerAddCommand, constMaxFilesPerAddCommand));
         }
     } else {
         fileLists.append(files);

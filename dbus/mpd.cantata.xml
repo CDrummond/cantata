@@ -15,5 +15,9 @@
     <method name="setCollection">
         <arg type="s" name="name" direction="in"/>
     </method>
+    <property name='listActions' type='as' access='read'/>
+    <method name="triggerAction">
+        <arg type="s" name="name" direction="in"/>
+    </method>
   </interface>
 </node>

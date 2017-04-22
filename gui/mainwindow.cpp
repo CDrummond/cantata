@@ -975,6 +975,27 @@ QList<Song> MainWindow::selectedSongs() const
     return currentPage ? currentPage->selectedSongs() : QList<Song>();
 }
 
+QStringList MainWindow::listActions() const
+{
+    QStringList allActions;
+    for(int i = 0; i < ActionCollection::get()->actions().count(); i++) {
+        Action *action = qobject_cast<Action *>(ActionCollection::get()->actions().at(i));
+        if (!action) {
+            continue;
+        }
+        allActions.append(action->objectName()+" - "+Action::settingsText(action));
+    }
+    return allActions;
+}
+
+void MainWindow::triggerAction(const QString &name)
+{
+    QAction *act=ActionCollection::get()->action(name);
+    if (act) {
+        act->trigger();
+    }
+}
+
 void MainWindow::addMenuAction(QMenu *menu, QAction *action)
 {
     menu->addAction(action);

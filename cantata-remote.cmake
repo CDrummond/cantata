@@ -28,8 +28,24 @@
 #  the unity task bar.
 #
 
-if [ $# -ne 1 ] ; then
-    exit
+function usage() {
+    echo "$0 cantata <cantata action>"
+    echo "$0 <mpris action>"
+}
+
+if ([ $# -eq 2 ] && [ "cantata" != "$1" ])  || [ $# == 0 ] || [ $# -gt 2 ] ; then
+    usage
+fi
+
+if [ $1 = "cantata" ] ; then
+    path="/cantata"
+    methodPrefix=mpd.cantata
+    method="triggerAction"
+    methodArgument=$2
+else
+    path=/org/mpris/MediaPlayer2
+    methodPrefix=org.mpris.MediaPlayer2.Player
+    method=$1
 fi
 
 service=@PROJECT_REV_URL@
@@ -43,19 +59,22 @@ if [ "$qt" != "" ] ; then
         cantata &
         sleep 1s
     fi
-    $qt $service /org/mpris/MediaPlayer2 $1 > /dev/null
+    $qt $service $path $method $methodArgument > /dev/null
     exit
 fi
 
 # No qdbus so try dbus-send...
 dbus=`which dbus-send`
 if [ "$dbus" != "" ] ; then
-    status=`$dbus --print-reply --reply-timeout=250 --type=method_call --session --dest=$service /org/mpris/MediaPlayer2 org.freedesktop.DBus.Peer.Ping 2>&1 | grep "org.freedesktop.DBus.Error.ServiceUnknown" | wc -l`
+    status=`$dbus --print-reply --reply-timeout=250 --type=method_call --session --dest=$service $path org.freedesktop.DBus.Peer.Ping 2>&1 | grep "org.freedesktop.DBus.Error.ServiceUnknown" | wc -l`
     if [ "$status" != "0" ] ; then
         # Cantata not started? Try to start...
         cantata &
         sleep 1s
     fi
-    dbus-send --type=method_call --session --dest=$service /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.$1
+    if [ "$methodArgument" != "" ] ; then
+        methodArgument="string:$methodArgument"
+    fi
+    echo "dbus-send --type=method_call --session --dest=$service $path $methodPrefix.$method $methodArgument"
+    dbus-send --type=method_call --session --dest=$service $path $methodPrefix.$method $methodArgument
 fi
-

@@ -1230,10 +1230,11 @@ void MPDConnection::seek()
         } else {
             if (sv.timeElapsed+offset>=0) {
                 setSeek(sv.song, sv.timeElapsed+offset);
-            } /*else {
+            } else {
                 // Not sure about this!!!
-                goToPrevious();
-            } */
+                /*goToPrevious();*/
+                setSeek(sv.song, 0);
+            }
         }
     }
 }

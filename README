@@ -11,13 +11,14 @@ Table of Contents
  8. CUE Files
  9. Streams
 10. MultiMedia Keys
-11. Dynamic Helper Script - Local Mode
-12. Dynamic Helper Script - Server Mode
-13. Source Code
-14. Debug Logging
-15. Credits
-16. Windows
-17. Mac OSX
+11. DBUS Actions
+12. Dynamic Helper Script - Local Mode
+13. Dynamic Helper Script - Server Mode
+14. Source Code
+15. Debug Logging
+16. Credits
+17. Windows
+18. Mac OSX
 
 
 
@@ -503,7 +504,22 @@ Linux use the GNOME settings daemon's MediaKeys interface. This interface is
 normally started automatically under GNOME/Unity.
 
 
-11. Dynamic Helper Script - Local Mode
+11. DBUS Actions
+================
+
+All of Cantata's internal actions are accessible via DBUS. The
+cantata-remote helper script may be used to invoke these, e.g. to toggle
+playback:
+
+    cantata-remote cantata playpausetrack
+
+The list of action names maybe obtained by calling the listActions DBUS method,
+e.g.:
+
+    qdbus mpd.cantata /cantata listActions
+
+
+12. Dynamic Helper Script - Local Mode
 ======================================
 
 When a dynamic playlist is loaded in Cantata, the cantata-dynamic helper script
@@ -541,7 +557,7 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
     MPD_HOST=pass@hostname MPD_PORT=1234 /usr/share/cantata/scripts/cantata-dynamic start
 
 
-12. Dynamic Helper Script - Server Mode
+13. Dynamic Helper Script - Server Mode
 =======================================
 
 In addition to the above, the helper script may be installed on the system
@@ -618,9 +634,8 @@ these will need to be edited.
 Copy dynamic/init/cantata-dynamic.conf to /etc, and edit as appropriate.
 
 
-13. Source Code
+14. Source Code
 ===============
-
 The Cantata source folder contains the following structure:
 
     3rdparty   - Third party libraries
@@ -653,7 +668,7 @@ Symbolc media icons are taken from gnome icon theme, but have been scaled with
   rsvg-convert -a -w 128 -f svg in.svg -o out.svg
 
 
-14. Debug Logging
+15. Debug Logging
 =================
 
 Cantata contains some debug logging that might help to diagnose certain issues.
@@ -716,7 +731,7 @@ NOTE: Debug logging will function regardless of whether you have created a
 Debug or Release build.
 
 
-15. Credits
+16. Credits
 ===========
 
 Cantata contains code/icons from:
@@ -740,7 +755,7 @@ Cantata contains code/icons from:
     QMPDClient         - Last.fm scrobbling
 
 
-16. Windows
+17. Windows
 ===========
 
 Icon created under Linux using the createicon.sh in the windows folder.
@@ -801,7 +816,7 @@ following passed to cmake:
     -DCMAKE_BUILD_TYPE=Release -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PREFIX=z:\dev\taglib
 
 
-17. Mac OSX
+18. Mac OSX
 ===========
 
 Icon created under OSX using the createicon.sh in the mac folder.

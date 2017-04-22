@@ -90,6 +90,8 @@ class MainWindow : public QMainWindow, private Ui::MainWindow
 {
     Q_OBJECT
 
+    Q_PROPERTY( QStringList listActions READ listActions )
+
 public:
     enum Pages
     {
@@ -110,6 +112,7 @@ public:
 
     int mpdVolume() const { return volumeSlider->value(); }
     QList<Song> selectedSongs() const;
+    QStringList listActions() const;
 
 protected:
     void keyPressEvent(QKeyEvent *event);
@@ -235,6 +238,7 @@ public Q_SLOTS:
     void controlConnectionsMenu(bool enable=true);
     void controlDynamicButton();
     void setRating();
+    void triggerAction(const QString &name);
 
 private:
     bool canClose();

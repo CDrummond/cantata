@@ -73,6 +73,8 @@
 57. Add 3 seek levels (5 seconds, 30 seconds, and 60 seconds), with assignable
     shortcuts.
 58. When adding files to playqueue, and in btaches of up to 2000 files.
+59. Make all of Cantata's internal actions accessible via DBUS. See README for
+    details.
 
 2.0.1
 -----

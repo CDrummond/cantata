@@ -84,7 +84,12 @@ int FancyTabWidget::iconSize(bool large)
 
 static void drawIcon(const QIcon &icon, const QRect &r, QPainter *p, const QSize &iconSize, bool selected)
 {
+    #ifdef Q_OS_WIN
+    Q_UNUSED(selected);
+    QPixmap px = icon.pixmap(iconSize, QIcon::Normal);
+    #else
     QPixmap px = icon.pixmap(iconSize, selected ? QIcon::Selected : QIcon::Normal);
+    #endif
     QSize layoutSize = px.size() / px.devicePixelRatio();
     p->drawPixmap(r.x()+(r.width()-layoutSize.width())/2.0, r.y()+(r.height()-layoutSize.height())/2.0, layoutSize.width(), layoutSize.height(), px);
 }
@@ -219,6 +224,8 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
     #ifdef Q_OS_MAC
     p->setPen(selected && option->state&State_Active
               ? OSXStyle::self()->viewPalette().highlightedText().color() : OSXStyle::self()->viewPalette().foreground().color());
+    #elif defined Q_OS_WIN
+    p->setPen(QApplication::palette().foreground().color());
     #else
     p->setPen(selected && option->state&State_Active
               ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
@@ -536,6 +543,8 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
 
         #ifdef Q_OS_MAC
         painter->setPen(selected ? OSXStyle::self()->viewPalette().highlightedText().color() : OSXStyle::self()->viewPalette().foreground().color());
+        #elif defined Q_OS_WIN
+        painter->setPen(QApplication::palette().foreground().color());
         #else
         painter->setPen(selected ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
         #endif

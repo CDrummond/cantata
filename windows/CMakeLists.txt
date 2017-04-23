@@ -53,9 +53,12 @@ install(FILES ${QT_PLUGINS_DIR}/mediaservice/dsengine.dll DESTINATION ${CMAKE_IN
 set(EXTRA_WIN_LIBS ${EXTRA_WIN_LIBS}
     ${QT_BINARY_DIR}/Qt5Core.dll ${QT_BINARY_DIR}/Qt5Gui.dll ${QT_BINARY_DIR}/Qt5Network.dll ${QT_BINARY_DIR}/Qt5Svg.dll ${QT_BINARY_DIR}/Qt5Xml.dll
     ${QT_BINARY_DIR}/Qt5Widgets.dll ${QT_BINARY_DIR}/Qt5WinExtras.dll ${QT_BINARY_DIR}/Qt5Sql.dll
-    ${CMAKE_CURRENT_SOURCE_DIR}/icu/icudt52.dll ${QT_BINARY_DIR}/icuin52.dll ${QT_BINARY_DIR}/icuuc52.dll
     ${QT_BINARY_DIR}/libgcc_s_dw2-1.dll ${QT_BINARY_DIR}/libstdc++-6.dll ${QT_BINARY_DIR}/libwinpthread-1.dll
     ${ZLIB_INCLUDE_DIR}/../bin/libz-1.dll ${TAGLIB_INCLUDES}/../bin/libtag.dll)
+
+if (ENABLE_HTTP_STREAM_PLAYBACK)
+    set(EXTRA_WIN_LIBS ${EXTRA_WIN_LIBS} ${QT_BINARY_DIR}/Qt5Multimedia.dll)
+endif()
 
 # Qt translation files...
 file(GLOB qt_trans ${QT_TRANSLATIONS_DIR}/qt_*.qm)

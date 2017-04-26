@@ -27,7 +27,7 @@ Categories=Qt;KDE;AudioVideo;Player;
 X-DBUS-StartupType=Unique
 X-DBUS-ServiceName=mpd.cantata
 Keywords=Music;MPD;
-Actions=Previous;Play;Pause;Stop;StopAfterCurrent;Next;
+Actions=Previous;PlayPause;Stop;StopAfterCurrent;Next;
 
 [Desktop Action Previous]
 Name=Previous Track
@@ -40,33 +40,18 @@ Name[pl]=Poprzedni utwór
 Name[ru]=Предыдущий трек
 Name[zh_CN]=上一个
 Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Previous
-OnlyShowIn=Unity;
 
-[Desktop Action Play]
-Name=Play
-Name[cs]=Přehrát
-Name[de]=Abspielen
-Name[es]=Reproducir
-Name[hu]=Lejátszás
-Name[ko]=연주
-Name[pl]=Odtwarzaj
-Name[ru]=Воспроизвести
-Name[zh_CN]=播放
-Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Play
-OnlyShowIn=Unity;
-
-[Desktop Action Pause]
-Name=Pause
-Name[cs]=Pozastavit
-Name[de]=Pause
-Name[es]=Pausa
-Name[hu]=Szünet
-Name[ko]=멈춤
-Name[pl]=Wstrzymaj
-Name[ru]=Пауза
-Name[zh_CN]=暂停
-Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Pause
-OnlyShowIn=Unity;
+[Desktop Action PlayPause]
+Name=Play/Pause
+Name[cs]=Přehrát/Pozastavit
+Name[de]=Abspielen/Pause
+Name[es]=Reproducir/Pausa
+Name[hu]=Lejátszás/Szünet
+Name[ko]=연주/멈춤
+Name[pl]=Odtwarzaj/Wstrzymaj
+Name[ru]=Воспроизвести/Пауза
+Name[zh_CN]=播放/暂停
+Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote PlayPause
 
 [Desktop Action Stop]
 Name=Stop
@@ -79,7 +64,6 @@ Name[pl]=Stop
 Name[ru]=Остановить
 Name[zh_CN]=停止
 Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Stop
-OnlyShowIn=Unity;
 
 [Desktop Action StopAfterCurrent]
 Name=Stop After Current Track
@@ -92,7 +76,6 @@ Name[pl]=Zatrzymaj po obecnym utworze
 Name[ru]=Остановить после текущего трека
 Name[zh_CN]=当前音轨后停止
 Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote StopAfterCurrent
-OnlyShowIn=Unity;
 
 [Desktop Action Next]
 Name=Next Track
@@ -105,5 +88,4 @@ Name[pl]=Następny utwór
 Name[ru]=Следующий трек
 Name[zh_CN]=下一个
 Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Next
-OnlyShowIn=Unity;
 

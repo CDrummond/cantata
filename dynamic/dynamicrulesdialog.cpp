@@ -346,8 +346,13 @@ bool DynamicRulesDialog::save()
     entry.ratingTo=qMax(from, to);
     from=minDuration->value();
     to=maxDuration->value();
-    entry.minDuration=qMin(from, to);
-    entry.maxDuration=qMax(from, to);
+    if (to>0) {
+        entry.minDuration=qMin(from, to);
+        entry.maxDuration=qMax(from, to);
+    } else {
+        entry.minDuration=from;
+        entry.maxDuration=to;
+    }
 
     for (int i=0; i<model->rowCount(); ++i) {
         QStandardItem *itm=model->item(i);

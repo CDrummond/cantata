@@ -453,7 +453,7 @@ sub readRules() {
                         if (scalar(@vals)==2) {
                             $minDuration=int($vals[0]);
                             $maxDuration=int($vals[1]);
-                            if ($minDuration > $maxDuration) {
+                            if ($minDuration > $maxDuration && $maxDuration > 0 ) {
                                 my $tmp=$minDuration;
                                 $minDuration=$maxDuration;
                                 $maxDuration=$tmp;

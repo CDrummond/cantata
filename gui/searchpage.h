@@ -70,7 +70,8 @@ private:
         State_ComposerSupported  = 0x01,
         State_CommmentSupported  = 0x02,
         State_PerformerSupported = 0x04,
-        State_ModifiedSupported  = 0x08
+        State_ModifiedSupported  = 0x08,
+        State_OrigDateSupported  = 0x10
     };
 
     int state;

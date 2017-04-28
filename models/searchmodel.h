@@ -44,6 +44,7 @@ public:
         COL_ALBUM,
         COL_LENGTH,
         COL_YEAR,
+        COL_ORIGYEAR,
         COL_GENRE,
         COL_COMPOSER,
         COL_PERFORMER,

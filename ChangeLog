@@ -75,6 +75,7 @@
 58. When adding files to playqueue, and in btaches of up to 2000 files.
 59. Make all of Cantata's internal actions accessible via DBUS. See README for
     details.
+60. Add support for OriginalDate tag.
 
 2.0.1
 -----

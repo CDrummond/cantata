@@ -42,6 +42,7 @@ QString SearchModel::headerText(int col)
     case COL_ALBUM:     return PlayQueueModel::headerText(PlayQueueModel::COL_ALBUM);
     case COL_LENGTH:    return PlayQueueModel::headerText(PlayQueueModel::COL_LENGTH);
     case COL_YEAR:      return PlayQueueModel::headerText(PlayQueueModel::COL_YEAR);
+    case COL_ORIGYEAR:  return PlayQueueModel::headerText(PlayQueueModel::COL_ORIGYEAR);
     case COL_GENRE:     return PlayQueueModel::headerText(PlayQueueModel::COL_GENRE);
     case COL_COMPOSER:  return PlayQueueModel::headerText(PlayQueueModel::COL_COMPOSER);
     case COL_PERFORMER: return PlayQueueModel::headerText(PlayQueueModel::COL_PERFORMER);
@@ -55,7 +56,7 @@ SearchModel::SearchModel(QObject *parent)
     , multiCol(false)
 {
     alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
-    alignments[COL_TRACK]=alignments[COL_LENGTH]=alignments[COL_DISC]=alignments[COL_YEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
+    alignments[COL_TRACK]=alignments[COL_LENGTH]=alignments[COL_DISC]=alignments[COL_YEAR]=alignments[COL_ORIGYEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
     alignments[COL_RATING]=int(Qt::AlignVCenter|Qt::AlignHCenter);
 }
 
@@ -90,7 +91,7 @@ QVariant SearchModel::headerData(int section, Qt::Orientation orientation, int r
         case Qt::TextAlignmentRole:
             return alignments[section];
         case Cantata::Role_InitiallyHidden:
-            return COL_YEAR==section || COL_DISC==section || COL_GENRE==section ||
+            return COL_YEAR==section || COL_ORIGYEAR==section || COL_DISC==section || COL_GENRE==section ||
                    COL_COMPOSER==section || COL_PERFORMER==section || COL_RATING==section;
         case Cantata::Role_Hideable:
             return COL_TITLE!=section && COL_ARTIST!=section;
@@ -103,6 +104,7 @@ QVariant SearchModel::headerData(int section, Qt::Orientation orientation, int r
             case COL_ALBUM:     return 0.27;
             case COL_LENGTH:    return 0.05;
             case COL_YEAR:      return 0.05;
+            case COL_ORIGYEAR:  return 0.05;
             case COL_GENRE:     return 0.1;
             case COL_COMPOSER:  return 0.2;
             case COL_PERFORMER: return 0.2;
@@ -188,6 +190,11 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
                     return QVariant();
                 }
                 return song->year;
+            case COL_ORIGYEAR:
+                if (song->origYear <= 0) {
+                    return QVariant();
+                }
+                return song->origYear;
             case COL_GENRE:
                 return song->displayGenre();
             case COL_COMPOSER:

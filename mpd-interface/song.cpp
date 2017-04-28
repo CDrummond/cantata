@@ -151,6 +151,7 @@ Song::Song()
     , blank(0)
     , time(0)
     , track(0)
+    , origYear(0)
     , year(0)
     , type(Standard)
     , guessed(false)
@@ -176,6 +177,7 @@ Song & Song::operator=(const Song &s)
     disc = s.disc;
     blank = s.blank;
     priority = s.priority;
+    origYear = s.origYear;
     year = s.year;
     for (int i=0; i<constNumGenres; ++i) {
         genres[i]=s.genres[i];
@@ -240,6 +242,9 @@ int Song::compareTo(const Song &o) const
         }
         if (year!=o.year) {
             return year<o.year ? -1 : 1;
+        }
+        if (origYear!=o.origYear) {
+            return origYear<o.origYear ? -1 : 1;
         }
         compare=title.localeAwareCompare(o.title);
         if (0!=compare) {
@@ -434,6 +439,7 @@ void Song::clear()
     disc = 0;
     blank = 0;
     year = 0;
+    origYear = 0;
     for (int i=0; i<constNumGenres; ++i) {
         genres[i]=QString();
     }
@@ -511,7 +517,8 @@ QString Song::trackAndTitleStr(bool showArtistIfDifferent) const
 //    }
     return //(disc>0 ? (QString::number(disc)+QLatin1Char('.')) : QString())+
            (track>0 ? (track>9 ? QString::number(track)+QLatin1Char(' ') : (QLatin1Char('0')+QString::number(track)+QLatin1Char(' '))) : QString())+
-           (showArtistIfDifferent && diffArtist() ? artistSong() : title);
+           (showArtistIfDifferent && diffArtist() ? artistSong() : title) +
+           (origYear>0 && origYear != year ? QLatin1String(" (")+QString::number(origYear)+QLatin1Char(')') : QString());
 }
 
 #ifndef CANTATA_NO_UI_FUNCTIONS
@@ -546,6 +553,9 @@ QString Song::toolTip() const
     addField(QObject::tr("Genre"), displayGenre(), toolTip);
     if (year>0) {
         addField(QObject::tr("Year"), QString::number(year), toolTip);
+    }
+    if (origYear>0) {
+        addField(QObject::tr("Orignal Year"), QString::number(origYear), toolTip);
     }
     if (time>0) {
         addField(QObject::tr("Length"), Utils::formatTime(time, true), toolTip);
@@ -779,7 +789,7 @@ void Song::populateSorts()
 QDataStream & operator<<(QDataStream &stream, const Song &song)
 {
     stream << song.id << song.file << song.album << song.artist << song.albumartist << song.title
-           << song.disc << song.priority << song.time << song.track << (quint16)song.year
+           << song.disc << song.priority << song.time << song.track << (quint16)song.year // << song.origYear
            << (quint16)song.type << (bool)song.guessed << song.size << song.extra << song.extraFields;
     for (int i=0; i<Song::constNumGenres; ++i) {
         stream << song.genres[i];
@@ -794,7 +804,7 @@ QDataStream & operator>>(QDataStream &stream, Song &song)
     quint8 disc;
     bool guessed;
     stream >> song.id >> song.file >> song.album >> song.artist >> song.albumartist >> song.title
-           >> disc >> song.priority >> song.time >> song.track >> year
+           >> disc >> song.priority >> song.time >> song.track >> year // >> song.origYear
            >> type >> guessed >> song.size >> song.extra >> song.extraFields;
     song.type=(Song::Type)type;
     song.year=year;

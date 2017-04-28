@@ -67,6 +67,7 @@ static const QByteArray constTrackKey("Track: ");
 static const QByteArray constIdKey("Id: ");
 static const QByteArray constDiscKey("Disc: ");
 static const QByteArray constDateKey("Date: ");
+static const QByteArray constOriginalDateKey("OriginalDate: ");
 static const QByteArray constGenreKey("Genre: ");
 static const QByteArray constNameKey("Name: ");
 static const QByteArray constPriorityKey("Prio: ");
@@ -324,6 +325,10 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             QByteArray value=line.mid(constDateKey.length());
             int v=value.length()>4 ? value.left(4).toUInt() : value.toUInt();
             song.year=v<0 ? 0 : v;
+        } else if (line.startsWith(constOriginalDateKey)) {
+            QByteArray value=line.mid(constOriginalDateKey.length());
+            int v=value.length()>4 ? value.left(4).toUInt() : value.toUInt();
+            song.origYear=v<0 ? 0 : v;
         } else if (line.startsWith(constGenreKey)) {
             song.addGenre(QString::fromUtf8(line.mid(constGenreKey.length())));
         }  else if (line.startsWith(constNameKey)) {

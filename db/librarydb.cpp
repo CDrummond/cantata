@@ -30,7 +30,7 @@
 #include <QRegExp>
 #include <QDebug>
 
-static const int constSchemaVersion=4;
+static const int constSchemaVersion=5;
 
 bool LibraryDb::dbgEnabled=false;
 #define DBUG if (dbgEnabled) qWarning() << metaObject()->className() << __FUNCTION__ << (void *)this
@@ -527,6 +527,7 @@ enum SongFields {
     SF_disc,
     SF_time,
     SF_year,
+    SF_origYear,
     SF_type,
     SF_lastModified
 };
@@ -599,6 +600,7 @@ bool LibraryDb::init(const QString &dbFile)
                     "disc integer, "
                     "time integer, "
                     "year integer, "
+                    "origYear integer, "
                     "type integer, "
                     "lastModified integer, "
                     "primary key (file))")) {
@@ -622,8 +624,8 @@ void LibraryDb::insertSong(const Song &s)
 {
     if (!insertSongQuery) {
         insertSongQuery=new QSqlQuery(*db);
-        insertSongQuery->prepare("insert into songs(file, artist, artistId, albumArtist, artistSort, composer, album, albumId, albumSort, title, genre1, genre2, genre3, genre4, track, disc, time, year, type, lastModified) "
-                                 "values(:file, :artist, :artistId, :albumArtist, :artistSort, :composer, :album, :albumId, :albumSort, :title, :genre1, :genre2, :genre3, :genre4, :track, :disc, :time, :year, :type, :lastModified)");
+        insertSongQuery->prepare("insert into songs(file, artist, artistId, albumArtist, artistSort, composer, album, albumId, albumSort, title, genre1, genre2, genre3, genre4, track, disc, time, year, origYear, type, lastModified) "
+                                 "values(:file, :artist, :artistId, :albumArtist, :artistSort, :composer, :album, :albumId, :albumSort, :title, :genre1, :genre2, :genre3, :genre4, :track, :disc, :time, :year, :origYear, :type, :lastModified)");
     }
     QString albumId=s.albumId();
     insertSongQuery->bindValue(":file", s.file);
@@ -643,6 +645,7 @@ void LibraryDb::insertSong(const Song &s)
     insertSongQuery->bindValue(":disc", s.disc);
     insertSongQuery->bindValue(":time", s.time);
     insertSongQuery->bindValue(":year", s.year);
+    insertSongQuery->bindValue(":origYear", s.origYear);
     insertSongQuery->bindValue(":type", s.type);
     insertSongQuery->bindValue(":lastModified", s.lastModified);
     if (!insertSongQuery->exec()) {
@@ -1165,6 +1168,7 @@ Song LibraryDb::getSong(const QSqlQuery &query)
     s.disc=query.value(SF_disc).toUInt();
     s.time=query.value(SF_time).toUInt();
     s.year=query.value(SF_year).toUInt();
+    s.origYear=query.value(SF_origYear).toUInt();
     s.type=(Song::Type)query.value(SF_type).toUInt();
     val=query.value(SF_artistSort).toString();
     if (!val.isEmpty() && val!=s.albumArtist()) {

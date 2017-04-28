@@ -104,6 +104,7 @@ struct Song
     quint8 blank:3; // Which field were blank, and Cantata set to Unknown
     quint16 time;
     quint16 track;
+    quint16 origYear;
     quint16 year : 12;
     mutable Type type : 3;
     mutable bool guessed : 1;

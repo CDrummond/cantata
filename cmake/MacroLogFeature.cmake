@@ -92,8 +92,10 @@ MACRO(MACRO_LOG_FEATURE _var _package _description _url ) # _required _minvers _
 
    FILE(APPEND "${_LOGFILENAME}" "${_logtext}\n")
 
-   IF(COMMAND SET_PACKAGE_PROPERTIES)  # in FeatureSummary.cmake since CMake 2.8.3
-     SET_PACKAGE_PROPERTIES("${_package}" "\"${_description}\"" "${_url}" "\"${_comments}\"")
+   IF(COMMAND SET_PACKAGE_PROPERTIES)
+     SET_PACKAGE_PROPERTIES("${_package}" PROPERTIES DESCRIPTION "\"${_description}\"" URL  "${_url}" PURPOSE PURPOSE"\"${_comments}\"")
+   ELSEIF(COMMAND SET_PACKAGE_INFO)  # in FeatureSummary.cmake since CMake 2.8.3
+     SET_PACKAGE_INFO("${_package}" "\"${_description}\"" "${_url}" "\"${_comments}\"")
    ENDIF(COMMAND SET_PACKAGE_PROPERTIES)
 
 ENDMACRO(MACRO_LOG_FEATURE)

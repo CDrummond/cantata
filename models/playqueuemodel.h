@@ -54,6 +54,7 @@ public:
         COL_ALBUM,
         COL_LENGTH,
         COL_YEAR,
+        COL_ORIGYEAR,
         COL_GENRE,
         COL_PRIO,
         COL_COMPOSER,

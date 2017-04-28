@@ -195,7 +195,8 @@ void SearchPage::setSearchCategories()
     int newState=(MPDConnection::self()->composerTagSupported() ? State_ComposerSupported : 0)|
                  (MPDConnection::self()->commentTagSupported() ? State_CommmentSupported : 0)|
                  (MPDConnection::self()->performerTagSupported() ? State_PerformerSupported : 0)|
-                 (MPDConnection::self()->modifiedFindSupported() ? State_ModifiedSupported : 0);
+                 (MPDConnection::self()->modifiedFindSupported() ? State_ModifiedSupported : 0)|
+                 (MPDConnection::self()->originalDateTagSupported() ? State_OrigDateSupported : 0);
 
     if (state==newState) {
         // No changes to be made!
@@ -221,6 +222,10 @@ void SearchPage::setSearchCategories()
     }
     categories << SearchWidget::Category(tr("Date:"), QLatin1String("date"),
                                          tr("Find songs be searching the 'Date' tag.<br/><br/>Usually just entering the year should suffice."));
+    if (state&State_OrigDateSupported) {
+        categories << SearchWidget::Category(tr("Original Date:"), QLatin1String("originaldate"),
+                                             tr("Find songs be searching the 'Original Date' tag.<br/><br/>Usually just entering the year should suffice."));
+    }
     if (state&State_ModifiedSupported) {
         categories << SearchWidget::Category(tr("Modified:"), MPDConnection::constModifiedSince,
                                              tr("Enter date (YYYY/MM/DD - e.g. 2015/01/31) to search for files modified since that date.<br/><br>"

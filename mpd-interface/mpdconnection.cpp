@@ -59,7 +59,7 @@ void MPDConnection::enableDebug()
 // Uncomment the following to report error strings in MPDStatus to the UI
 // ...disabled, as stickers (for ratings) can cause lots of errors to be reported - and these all need clearing, etc.
 // #define REPORT_MPD_ERRORS
-static const int constSocketCommsTimeout=250;
+static const int constSocketCommsTimeout=2000;
 static const int constMaxReadAttempts=4;
 static const int constMaxFilesPerAddCommand=2000;
 static const int constConnTimer=5000;
@@ -86,7 +86,7 @@ static const QByteArray constRatingSticker("rating");
 
 static inline int socketTimeout(int dataSize)
 {
-    static const int constDataBlock=512;
+    static const int constDataBlock=256;
     return ((dataSize/constDataBlock)+((dataSize%constDataBlock) ? 1 : 0))*constSocketCommsTimeout;
 }
 
@@ -2027,7 +2027,7 @@ bool MPDConnection::checkRemoteDynamicSupport()
     if (ver>=CANTATA_MAKE_VERSION(0,17,0)) {
         Response response;
         if (-1!=idleSocket.write("channels\n")) {
-            idleSocket.waitForBytesWritten(socketTimeout(9));
+            idleSocket.waitForBytesWritten(constSocketCommsTimeout);
             response=readReply(idleSocket);
             if (response.ok) {
                 return MPDParseUtils::parseList(response.data, QByteArray("channel: ")).toSet().contains(constDynamicIn);
@@ -2040,7 +2040,7 @@ bool MPDConnection::checkRemoteDynamicSupport()
 bool MPDConnection::subscribe(const QByteArray &channel)
 {
     if (-1!=idleSocket.write("subscribe \""+channel+"\"\n")) {
-        idleSocket.waitForBytesWritten(socketTimeout(128));
+        idleSocket.waitForBytesWritten(constSocketCommsTimeout);
         Response response=readReply(idleSocket);
         if (response.ok || response.data.startsWith("ACK [56@0]")) { // ACK => already subscribed...
             DBUG << "Created subscription to " << channel;
@@ -2075,7 +2075,7 @@ void MPDConnection::setupRemoteDynamic()
 void MPDConnection::readRemoteDynamicMessages()
 {
     if (-1!=idleSocket.write("readmessages\n")) {
-        idleSocket.waitForBytesWritten(socketTimeout(22));
+        idleSocket.waitForBytesWritten(constSocketCommsTimeout);
         Response response=readReply(idleSocket);
         if (response.ok) {
             MPDParseUtils::MessageMap messages=MPDParseUtils::parseMessages(response.data);

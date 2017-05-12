@@ -834,7 +834,7 @@ These steps assume the following structure:
 
 2. Install HomeBrew
 
-3. brew install cmake taglib ffmpeg speex
+3. brew install cmake taglib ffmpeg speex openssl
 
 4. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
      ../src -DCMAKE_PREFIX_PATH=/Users/$USER/Qt/5.3/clang_64/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`pwd`/../install

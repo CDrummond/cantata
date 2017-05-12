@@ -25,7 +25,9 @@
 #include "settings.h"
 #include "support/utils.h"
 #include "config.h"
+#include <stdlib.h>
 #include <QIcon>
+#include <QDir>
 
 Application::Application(int &argc, char **argv)
     : SingleApplication(argc, argv)
@@ -43,4 +45,14 @@ Application::Application(int &argc, char **argv)
     }
 
     QIcon::setThemeName(QLatin1String("cantata"));
+
+    // Set DYLD_LIBRARY_PATH so that Qt finds our openSSL libs
+    QDir dir(argv[0]);
+    dir.cdUp();
+
+    QByteArray ldPath = qgetenv("DYLD_LIBRARY_PATH");
+    if (!ldPath.isEmpty()) {
+        ldPath=':'+ldPath;
+    }
+    ldPath = dir.absolutePath().toLocal8Bit()+ldPath;
 }

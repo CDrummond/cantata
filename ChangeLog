@@ -76,6 +76,7 @@
 59. Make all of Cantata's internal actions accessible via DBUS. See README for
     details.
 60. Add support for OriginalDate tag.
+61. Bundle newer openSSL with macOS builds.
 
 2.0.1
 -----

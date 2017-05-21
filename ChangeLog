@@ -77,6 +77,7 @@
     details.
 60. Add support for OriginalDate tag.
 61. Bundle newer openSSL with macOS builds.
+62. Update copy of libebur128
 
 2.0.1
 -----

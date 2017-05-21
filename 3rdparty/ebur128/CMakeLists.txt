@@ -1,57 +1,10 @@
-include(MacroLogFeature)
-find_package(SPEEXDSP)
-macro_log_feature(SPEEXDSP_FOUND "SpeexDSP" "Used to speedup/improve ReplayGain calculation." "http://www.speex.org")
-set(USE_SPEEX_RESAMPLER ${SPEEXDSP_FOUND})
-configure_file(ebur128-config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/ebur128-config.h)
-
-macro(ebur128_check_for_sse)
-    # check for SSE extensions
-    include(CheckCXXSourceRuns)
-    if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-        set(CMAKE_REQUIRED_FLAGS "-msse3")
-        check_cxx_source_runs("
-            #include <pmmintrin.h>
-            int main() { __m128d a, b; double vals[2] = {0}; a = _mm_loadu_pd(vals); b = _mm_hadd_pd(a,a); _mm_storeu_pd(vals, b); return 0; }"
-            HAS_SSE3_EXTENSIONS)
-        if (HAS_SSE3_EXTENSIONS)
-            add_definitions("-msse3 -mfpmath=sse")
-        else ()
-            # No sse3, check sse2
-            set(CMAKE_REQUIRED_FLAGS "-msse2")
-            check_cxx_source_runs("
-                #include <emmintrin.h>
-                int main() { __m128d a, b; double vals[2] = {0}; a = _mm_loadu_pd(vals); b = _mm_add_pd(a,a);  _mm_storeu_pd(vals,b); return 0; }"
-                HAS_SSE2_EXTENSIONS)
-            if (HAS_SSE2_EXTENSIONS)
-                add_definitions("-msse2 -mfpmath=sse")
-            else ()
-                # No sse2, check sse
-                set(CMAKE_REQUIRED_FLAGS "-msse")
-                check_cxx_source_runs("
-                    #include <xmmintrin.h>
-                    int main() { __m128 a, b; float vals[4] = {0}; a = _mm_loadu_ps(vals); b = a; b = _mm_add_ps(a,b); _mm_storeu_ps(vals,b); return 0; }"
-                    HAS_SSE_EXTENSIONS)
-                if (HAS_SSE_EXTENSIONS)
-                    add_definitions("-msse -mfpmath=sse")
-                endif ()
-            endif ()
-        endif ()
-        set(CMAKE_REQUIRED_FLAGS)
-    else ()
-        check_cxx_source_runs("
-            #include <emmintrin.h>
-            int main() { __m128d a, b; double vals[2] = {0}; a = _mm_loadu_pd(vals);  b = _mm_add_pd(a,a);  _mm_storeu_pd(vals,b); return 0; }"
-            HAS_SSE2_EXTENSIONS)
-    endif ()
-endmacro(ebur128_check_for_sse)
-
-ebur128_check_for_sse()
+if(MSVC)
+    add_definitions(-D_USE_MATH_DEFINES)
+    add_definitions(/arch:SSE2)
+    add_definitions(-D __SSE2_MATH__)
+endif()
 
 set (ebur128_SRCS ebur128.c)
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 add_library (ebur128 STATIC ${ebur128_SRCS})
-if (SPEEXDSP_FOUND)
-    include_directories(${SPEEXDSP_INCLUDE_DIRS})
-    target_link_libraries(ebur128 ${SPEEXDSP_LIBRARIES})
-endif ()
 

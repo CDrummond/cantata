@@ -73,12 +73,6 @@ TrackScanner::Data TrackScanner::global(const QList<TrackScanner *> &scanners)
     }
 }
 
-#ifdef EBUR128_USE_SPEEX_RESAMPLER
-static int constEbur128Mode=EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_TRUE_PEAK;
-#else
-static int constEbur128Mode=EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_SAMPLE_PEAK;
-#endif
-
 void TrackScanner::init()
 {
     static bool doneInit=false;
@@ -150,7 +144,7 @@ void TrackScanner::run()
         return;
     }
 
-    state=ebur128_init(input->channels(), input->sampleRate(), constEbur128Mode);
+    state=ebur128_init(input->channels(), input->sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_SAMPLE_PEAK);
 
     int *channelMap=new int [state->channels];
     if (input->setChannelMap(channelMap)) {
@@ -201,7 +195,6 @@ void TrackScanner::run()
             }
         }
     }
-    #ifdef EBUR128_USE_SPEEX_RESAMPLER
     if (EBUR128_MODE_TRUE_PEAK==(state->mode & EBUR128_MODE_TRUE_PEAK)) {
         for (unsigned i = 0; i < state->channels; ++i) {
             double tp;
@@ -211,7 +204,6 @@ void TrackScanner::run()
             }
         }
     }
-    #endif
     setFinishedStatus(true);
 }
 

@@ -83,12 +83,11 @@ Cantata may also use the following optional libraries:
             support.
 2. LibMTP - MTP devices.
 3. FFMPEG (libavcodec) - ReplayGain detection code.
-4. SpeexDSP - ReplayGain detection code.
-5. MPG123 - ReplayGain detection code.
-6. CDParanoia - Read/rip Audio CDs.
-7. CDDB - either this or MusicBrainz5 required for Audio CDs
-8. MusicBrainz5 - either this or CDDB required for Audio CDs
-9. LibEbur128 - ReplayGain detection code. If this is not found on the
+4. MPG123 - ReplayGain detection code.
+5. CDParanoia - Read/rip Audio CDs.
+6. CDDB - either this or MusicBrainz5 required for Audio CDs
+7. MusicBrainz5 - either this or CDDB required for Audio CDs
+8. LibEbur128 - ReplayGain detection code. If this is not found on the
    system then Cantata will use its own bundled copy.
 
 
@@ -834,7 +833,7 @@ These steps assume the following structure:
 
 2. Install HomeBrew
 
-3. brew install cmake taglib ffmpeg speex openssl
+3. brew install cmake taglib ffmpeg openssl
 
 4. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
      ../src -DCMAKE_PREFIX_PATH=/Users/$USER/Qt/5.3/clang_64/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`pwd`/../install

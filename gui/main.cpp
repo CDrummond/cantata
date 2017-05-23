@@ -201,9 +201,11 @@ static void installDebugMessageHandler()
         if (dbg&Dbg_Threads) {
             ThreadCleaner::enableDebug();
         }
+	#ifdef ENABLE_TAGLIB
         if (dbg&Dbg_Tags) {
             TagHelperIface::enableDebug();
         }
+	#endif
         if (dbg&Dbg_Scrobbling) {
             Scrobbler::enableDebug();
         }

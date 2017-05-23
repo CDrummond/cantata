@@ -35,6 +35,7 @@
 #include "widgets/groupedview.h"
 #include "widgets/actionitemdelegate.h"
 #include "http/httpserver.h"
+#include "config.h"
 
 void Application::initObjects()
 {
@@ -42,7 +43,9 @@ void Application::initObjects()
     ThreadCleaner::self();
     MPDStatus::self();
     MPDStats::self();
+    #ifdef ENABLE_TAGLIB
     TagHelperIface::self();
+    #endif
     Scrobbler::self();
     MpdLibraryModel::self();
 

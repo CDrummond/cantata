@@ -73,7 +73,7 @@ The following options may be passed to CMake:
 
     -DENABLE_SIMPLE_MPD_SUPPORT=ON
         Enable support for basic, Cantata controlled, MPD instance.
-        Default: ON
+        Default: OFF
 
     Windows specific:
 

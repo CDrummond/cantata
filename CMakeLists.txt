@@ -346,8 +346,7 @@ set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h widgets/singlepagewidget.h
     widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h widgets/tableview.h
     widgets/coverwidget.h widgets/ratingwidget.h widgets/selectorlabel.h widgets/titlewidget.h widgets/multipagewidget.h
-    widgets/stackedpagewidget.h widgets/mirrormenu.h widgets/genrecombo.h widgets/tagspinbox.h widgets/menubutton.h widgets/songdialog.h
-    widgets/notelabel.h
+    widgets/stackedpagewidget.h widgets/mirrormenu.h widgets/genrecombo.h widgets/menubutton.h widgets/songdialog.h widgets/notelabel.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h context/contextsettings.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
@@ -418,7 +417,7 @@ set(CANTATA_RCS cantata.qrc cantata_media.qrc)
 
 if (TAGLIB_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS}  tags/tageditor.cpp tags/trackorganiser.cpp devices/filenameschemedialog.cpp widgets/tagspinbox.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} tags/tageditor.h tags/trackorganiser.h devices/filenameschemedialog.h devices/device.h)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} tags/tageditor.h tags/trackorganiser.h devices/filenameschemedialog.h devices/device.h widgets/tagspinbox.h)
     set(CANTATA_UIS ${CANTATA_UIS} tags/tageditor.ui tags/trackorganiser.ui devices/filenameschemedialog.ui)
 
     # Cantata still links to taglib, even if external tag reader/writer is used, because JamendoService uses taglib for ID3 genres.
@@ -668,5 +667,5 @@ if ((ENABLE_DEVICES_SUPPORT AND ENABLE_REMOTE_DEVICES) OR ENABLE_PROXY_CONFIG OR
     endif ()
     if (ENABLE_SIMPLE_MPD_SUPPORT)
 	    message("    * Simple/Personal (Cantata controlled) MPD instance support")
-    message("")
+    endif()
 endif ()

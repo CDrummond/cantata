@@ -45,6 +45,7 @@ public:
     void polish(QPalette &pal) { QProxyStyle::polish(pal); }
     void polish(QApplication *app) { QProxyStyle::polish(app); }
     void polish(QWidget *widget);
+    int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
     void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     QPixmap standardPixmap(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const;

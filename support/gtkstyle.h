@@ -34,7 +34,6 @@ namespace GtkStyle
 {
     extern bool isActive();
     extern void drawSelection(const QStyleOptionViewItem &opt, QPainter *painter, double opacity);
-    extern void applyTheme();
 }
 
 #endif

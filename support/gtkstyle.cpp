@@ -37,15 +37,10 @@
 #define NO_GTK_SUPPORT
 #endif
 
-#ifndef NO_GTK_SUPPORT
-#include "gtkproxystyle.h"
-#endif
-
-static bool usingGtkStyle=false;
-
 bool GtkStyle::isActive()
 {
-    #ifndef NO_GTK_SUPPORT
+    static bool usingGtkStyle=false;
+    #if defined Q_OS_WIN || defined Q_OS_MAC || defined QT_NO_STYLE_GTK
     static bool init=false;
     if (!init) {
         init=true;
@@ -100,27 +95,4 @@ void GtkStyle::drawSelection(const QStyleOptionViewItem &opt, QPainter *painter,
     painter->setOpacity(opacityB4);
 }
 
-// This function should probably be moved somewhere more appropriate!
-void GtkStyle::applyTheme()
-{
-    QProxyStyle *proxyStyle=0;
-    #ifndef NO_GTK_SUPPORT
-    if (isActive() && !proxyStyle) {
-        proxyStyle=new GtkProxyStyle(0);
-    }
-    #endif
-
-    #if defined Q_OS_WIN
-    int modViewFrame=ProxyStyle::VF_Side;
-    #elif defined Q_OS_MAC
-    int modViewFrame=ProxyStyle::VF_Side|ProxyStyle::VF_Top;
-    #else
-    int modViewFrame=0;
-    #endif
-
-    if (!proxyStyle) {
-        proxyStyle=new ProxyStyle(modViewFrame);
-    }
-    qApp->setStyle(proxyStyle);
-}
 

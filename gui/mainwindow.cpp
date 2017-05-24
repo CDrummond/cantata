@@ -229,8 +229,6 @@ void MainWindow::init()
     }
     #endif
 
-    GtkStyle::applyTheme();
-
     UNITY_MENU_ICON_CHECK
 
     toolbar->ensurePolished();

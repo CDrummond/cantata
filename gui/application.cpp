@@ -23,6 +23,7 @@
 
 #include "application.h"
 #include "settings.h"
+#include "support/proxystyle.h"
 #include "models/mpdlibrarymodel.h"
 #include "support/utils.h"
 #include "mpd-interface/mpdstats.h"
@@ -37,8 +38,16 @@
 #include "http/httpserver.h"
 #include "config.h"
 
-void Application::initObjects()
+void Application::init()
 {
+    #if defined Q_OS_WIN
+    qApp->setStyle(new ProxyStyle(ProxyStyle::VF_Side));
+    #elif defined Q_OS_MAC
+    qApp->setStyle(new ProxyStyle(ProxyStyle::VF_Side|ProxyStyle::VF_Top));
+    #else
+    qApp->setStyle(new ProxyStyle(0));
+    #endif
+
     // Ensure these objects are created in the GUI thread...
     ThreadCleaner::self();
     MPDStatus::self();

@@ -55,6 +55,11 @@ void ProxyStyle::polish(QWidget *widget)
     baseStyle()->polish(widget);
 }
 
+int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
+{
+    return SH_DialogButtonBox_ButtonsHaveIcons == hint ? false : baseStyle()->styleHint(hint, option, widget, returnData);
+}
+
 void ProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     baseStyle()->drawPrimitive(element, option, painter, widget);

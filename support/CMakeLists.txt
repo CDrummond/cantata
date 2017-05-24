@@ -22,10 +22,6 @@ endif ()
 
 set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} combobox.h)
 
-if (NOT WIN32 AND NOT APPLE)
-    set(SUPPORT_SRCS ${SUPPORT_SRCS} gtkproxystyle.cpp shortcuthandler.cpp)
-    set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} shortcuthandler.h)
-endif ()
 if (APPLE)
     set(SUPPORT_SRCS ${SUPPORT_SRCS} osxstyle.cpp flattoolbutton.cpp windowmanager.cpp)
     set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} osxstyle.h windowmanager.h)

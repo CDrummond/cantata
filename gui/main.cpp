@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
     #endif
     loadTranslation("cantata", CANTATA_SYS_TRANS_DIR, lang);
 
-    Application::initObjects();
+    Application::init();
 
     if (Settings::self()->firstRun()) {
         InitialSettingsWizard wz;

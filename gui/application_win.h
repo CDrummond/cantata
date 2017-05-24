@@ -30,7 +30,7 @@
 class Application : public SingleApplication, public QAbstractNativeEventFilter
 {
 public:
-    static void initObjects();
+    static void init();
     Application(int &argc, char **argv);
     virtual ~Application() { }
     bool nativeEventFilter(const QByteArray &, void *message, long *result);

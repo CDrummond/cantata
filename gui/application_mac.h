@@ -29,7 +29,7 @@
 class Application : public SingleApplication    
 {
 public:
-    static void initObjects();
+    static void init();
     Application(int &argc, char **argv);
     virtual ~Application() { };
 };

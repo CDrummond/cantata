@@ -115,17 +115,17 @@ int FancyTabProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, co
 void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const
 {
 
-    const QStyleOptionTabV3 *v3Opt = qstyleoption_cast<const QStyleOptionTabV3*>(option);
+    const QStyleOptionTab *tabOpt = qstyleoption_cast<const QStyleOptionTab*>(option);
 
-    if (element != CE_TabBarTab || !v3Opt) {
+    if (element != CE_TabBarTab || !tabOpt) {
         QProxyStyle::drawControl(element, option, p, widget);
         return;
     }
 
-    const QRect rect = v3Opt->rect;
-    const bool selected = v3Opt->state  &State_Selected;
-    const bool verticalTabs = v3Opt->shape == QTabBar::RoundedWest;
-    const QString text = v3Opt->text;
+    const QRect rect = tabOpt->rect;
+    const bool selected = tabOpt->state  &State_Selected;
+    const bool verticalTabs = tabOpt->shape == QTabBar::RoundedWest;
+    const QString text = tabOpt->text;
 
     QTransform m;
     if (verticalTabs) {
@@ -144,7 +144,7 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
     p->save();
     p->setTransform(m);
 
-    QRect iconRect(QPoint(8, 0), v3Opt->iconSize);
+    QRect iconRect(QPoint(8, 0), tabOpt->iconSize);
     QRect textRect(iconRect.topRight() + QPoint(4, 0), draw_rect.size());
     textRect.setRight(draw_rect.width());
     iconRect.translate(0, (draw_rect.height() - iconRect.height()) / 2);
@@ -152,7 +152,7 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
     QStyleOptionViewItem styleOpt;
     styleOpt.palette=option->palette;
     styleOpt.rect=draw_rect;
-    if (QStyleOptionTab::Beginning==v3Opt->position) {
+    if (QStyleOptionTab::Beginning==tabOpt->position) {
         styleOpt.rect.adjust(0, 0, -1, 0);
     }
     styleOpt.state=option->state;
@@ -231,7 +231,7 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
               ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
     #endif
 
-    drawIcon(v3Opt->icon, iconRect, p, v3Opt->iconSize,
+    drawIcon(tabOpt->icon, iconRect, p, tabOpt->iconSize,
              selected && option->state&State_Active);
 
     QString txt=text;

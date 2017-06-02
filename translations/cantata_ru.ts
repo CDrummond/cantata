@@ -6763,22 +6763,22 @@ Could not copy file to &apos;%1&apos;!</source>
     </message>
     <message>
         <location filename="../gui/customactionssettings.cpp" line="103"/>
-        <location filename="../gui/customactionssettings.cpp" line="182"/>
+        <location filename="../gui/customactionssettings.cpp" line="179"/>
         <source>Remove</source>
         <translation type="unfinished">Удалить</translation>
     </message>
     <message>
-        <location filename="../gui/customactionssettings.cpp" line="110"/>
+        <location filename="../gui/customactionssettings.cpp" line="107"/>
         <source>Name</source>
         <translation type="unfinished">Имя</translation>
     </message>
     <message>
-        <location filename="../gui/customactionssettings.cpp" line="110"/>
+        <location filename="../gui/customactionssettings.cpp" line="107"/>
         <source>Command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/customactionssettings.cpp" line="182"/>
+        <location filename="../gui/customactionssettings.cpp" line="179"/>
         <source>Remove the selected commands?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7576,33 +7576,37 @@ This cannot be undone.</source>
 <context>
     <name>DynamicRulesDialog</name>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="143"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="142"/>
         <source>Dynamic Rules</source>
         <translation type="unfinished">Динамические правила</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="166"/>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="167"/>
         <source>None</source>
-        <translation type="unfinished">Нет</translation>
+        <translation type="obsolete">Нет</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="302"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="160"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="161"/>
+        <source>No Limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="296"/>
         <source>About dynamic rules</source>
         <translation type="unfinished">О динамических правилах</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="304"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="298"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with 10 entries. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="324"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="318"/>
         <source>Failed to save %1</source>
         <translation type="unfinished">Не удалось сохранить %1</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="342"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="336"/>
         <source>A set of rules named &apos;%1&apos; already exists!
 
 Overwrite?</source>
@@ -7611,12 +7615,12 @@ Overwrite?</source>
 Перезаписать?</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="343"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="337"/>
         <source>Overwrite Rules</source>
         <translation type="unfinished">Перезаписать правила</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="376"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="375"/>
         <source>Saving %1</source>
         <translation type="unfinished">Сохранение %1</translation>
     </message>
@@ -8368,49 +8372,46 @@ This cannot be undone.</source>
         <translation type="unfinished">Включать одним щелчком</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="641"/>
         <source>&lt;p&gt;This will change Cantata&apos;s interface as detailed:
 &lt;ul&gt;&lt;li&gt;Playback, and control, buttons will be 33% wider&lt;/li&gt;&lt;li&gt;Views will be &apos;flickable&apos;&lt;/li&gt;&lt;li&gt;To drag items, you will need to &apos;touch&apos; the top-left corner&lt;/li&gt;&lt;li&gt;Scrollbars will only be a few pixels wide&lt;/li&gt;&lt;li&gt;Actions (e.g. &apos;Add To Play Queue&apos;) will always be visible (not just when item is under mouse)&lt;/li&gt;&lt;li&gt;Spin buttons will have + and - buttons at the side of the text field&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Это действие изменит интерфейс Cantata следующим образом:
+        <translation type="obsolete">&lt;p&gt;Это действие изменит интерфейс Cantata следующим образом:
 &lt;ul&gt;&lt;li&gt;Кнопки проигрывания и управления станут на 33% шире&lt;/li&gt;&lt;li&gt;Окна будут «скользить» при прокрутке&lt;/li&gt;&lt;li&gt;Чтобы протащить элемент, нужно будет «прикоснуться» к верхнему левому углу&lt;/li&gt;&lt;li&gt;Панели прокрутки будут всего несколько пикселей в ширину&lt;/li&gt;&lt;li&gt;Действия, (например, «Добавить в очередь воспроизведения») всегда будут видимыми (а не только когда элемент находится точно под курсором)&lt;/li&gt;&lt;li&gt;Кнопки увеличения/уменьшения будут иметь дополнительные кнопочки «+» и «-» сбоку текстового поля&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="645"/>
         <source>Make interface more touch friendly</source>
-        <translation type="unfinished">Более дружественный сенсорный интерфейс</translation>
+        <translation type="obsolete">Более дружественный сенсорный интерфейс</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="652"/>
+        <location filename="../gui/interfacesettings.ui" line="641"/>
         <source>Show song information tooltips</source>
         <translation type="unfinished">Показывать подсказки с информацией о песне</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="659"/>
+        <location filename="../gui/interfacesettings.ui" line="648"/>
         <source>Support retina displays</source>
         <translation type="unfinished">Поддержка дисплеев Retina</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="666"/>
+        <location filename="../gui/interfacesettings.ui" line="655"/>
         <source>Language:</source>
         <translation type="unfinished">Язык:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="681"/>
+        <location filename="../gui/interfacesettings.ui" line="670"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation type="unfinished">Изменение параметра «Включать одним щелчком» требует перезапуска Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="688"/>
+        <location filename="../gui/interfacesettings.ui" line="677"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation type="unfinished">Изменение языкового параметра требует перезапуска Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="695"/>
         <source>Changing the &apos;touch friendly&apos; setting will require a re-start of Cantata.</source>
-        <translation type="unfinished">Изменение параметра «Более дружественный сенсорный интерфейс» требует перезапуска Cantata</translation>
+        <translation type="obsolete">Изменение параметра «Более дружественный сенсорный интерфейс» требует перезапуска Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="702"/>
+        <location filename="../gui/interfacesettings.ui" line="684"/>
         <source>Enabling support for retina displays will produce sharper icons on the retina display, but may produce less sharp icons on non-retina displays. Changing this setting will require a re-start of Cantata.</source>
         <translation type="unfinished">Включение поддержки для дисплеев Retina сделает иконки более чёткими на дисплеях Retina, и более расплывчатыми на других устройствах. Изменение этого параметра потребует перезапуска Cantata.</translation>
     </message>
@@ -8450,74 +8451,74 @@ This cannot be undone.</source>
         <translation type="unfinished">Информация - текущая информация о песне (исполнитель, альбом и текст)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="157"/>
+        <location filename="../gui/interfacesettings.cpp" line="151"/>
         <source>Large</source>
         <translation type="unfinished">Большой</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="158"/>
+        <location filename="../gui/interfacesettings.cpp" line="152"/>
         <source>Small</source>
         <translation type="unfinished">Маленький</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="159"/>
+        <location filename="../gui/interfacesettings.cpp" line="153"/>
         <source>Tab-bar</source>
         <translation type="unfinished">Панель вкладок</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="160"/>
+        <location filename="../gui/interfacesettings.cpp" line="154"/>
         <source>Left</source>
         <translation type="unfinished">Слева</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="160"/>
+        <location filename="../gui/interfacesettings.cpp" line="154"/>
         <source>Right</source>
         <translation type="unfinished">Справа</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="161"/>
+        <location filename="../gui/interfacesettings.cpp" line="155"/>
         <source>Top</source>
         <translation type="unfinished">Сверху</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="162"/>
+        <location filename="../gui/interfacesettings.cpp" line="156"/>
         <source>Bottom</source>
         <translation type="unfinished">Снизу</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="169"/>
+        <location filename="../gui/interfacesettings.cpp" line="163"/>
         <source>Images (*.png *.jpg)</source>
         <translation type="unfinished">Изображения (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="170"/>
+        <location filename="../gui/interfacesettings.cpp" line="164"/>
         <source>10px</source>
         <comment>pixels</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="195"/>
+        <location filename="../gui/interfacesettings.cpp" line="189"/>
         <source>Notifications</source>
         <translation type="unfinished">Уведомления</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="416"/>
+        <location filename="../gui/interfacesettings.cpp" line="404"/>
         <source>English (en)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="421"/>
+        <location filename="../gui/interfacesettings.cpp" line="409"/>
         <source>System default</source>
         <translation type="unfinished">Системный</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="527"/>
+        <location filename="../gui/interfacesettings.cpp" line="510"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation type="unfinished">%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="532"/>
+        <location filename="../gui/interfacesettings.cpp" line="515"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation type="unfinished">%1 пикс</translation>
@@ -8539,7 +8540,7 @@ This cannot be undone.</source>
 <context>
     <name>JamendoService</name>
     <message>
-        <location filename="../online/jamendoservice.cpp" line="378"/>
+        <location filename="../online/jamendoservice.cpp" line="373"/>
         <source>The world&apos;s largest digital service for free music</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8663,7 +8664,7 @@ Please choose another one.</source>
 <context>
     <name>LibraryDb</name>
     <message>
-        <location filename="../db/librarydb.cpp" line="548"/>
+        <location filename="../db/librarydb.cpp" line="549"/>
         <source>Database error - please check Qt SQLite driver is installed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8799,85 +8800,85 @@ If this search does find new lyrics, these will still be associated with the ori
 <context>
     <name>MPDConnection</name>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="172"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="170"/>
         <source>Unknown</source>
         <translation type="unfinished">Неизвестно</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="418"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="413"/>
         <source>Connection to %1 failed</source>
         <translation type="unfinished">Сбой подключения к %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="419"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="414"/>
         <source>Connection to %1 failed - please check your proxy settings</source>
         <translation type="unfinished">Сбой подключения к %1 — проверьте параметры прокси.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="420"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="415"/>
         <source>Connection to %1 failed - incorrect password</source>
         <translation type="unfinished">Сбой подключения к %1 — неправильный пароль</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="528"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="523"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">Подключение к %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="631"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="626"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation type="unfinished">Сбой передачи команды для %1 — нет подключения</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="686"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="681"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation type="unfinished">Сбой загрузки. Проверьте права на чтение для пользователя «mpd».</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="688"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="683"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation type="unfinished">Сбой загрузки. MPD может проигрывать локальные файлы только при подключении к локальному сокету.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="690"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="697"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="685"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="692"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">MPD выдал следующую ошибку: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="694"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="705"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="689"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="700"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation type="unfinished">Сбой передачи команды.  Отключено от %1.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1631"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1637"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation type="unfinished">Сбой переименования &lt;b&gt;%1&lt;/b&gt; в &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1643"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1649"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished">Сбой сохранения &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1656"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1662"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation type="unfinished">Нельзя добавлять фрагменты файла cue sheet в плейлист.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1659"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1665"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation type="unfinished">Нельзя добавлять плейлист к другому плейлисту.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1837"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1843"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation type="unfinished">Не удалось послать «%1» на %2. Проверьте, зарегистрирован ли %2 в MPD.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2120"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2147"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2126"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2153"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8966,305 +8967,320 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="unfinished">Выход из полноэкранного режима</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="252"/>
+        <location filename="../gui/mainwindow.cpp" line="247"/>
         <source>Configure Cantata...</source>
         <translation type="unfinished">Настроить Cantata...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="252"/>
+        <location filename="../gui/mainwindow.cpp" line="247"/>
         <source>Preferences</source>
         <translation type="unfinished">Настройки</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="255"/>
+        <location filename="../gui/mainwindow.cpp" line="250"/>
         <source>Quit</source>
         <translation type="unfinished">Выход</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="258"/>
+        <location filename="../gui/mainwindow.cpp" line="253"/>
         <source>About Cantata...</source>
         <translation type="unfinished">О программе Cantata...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="265"/>
+        <location filename="../gui/mainwindow.cpp" line="260"/>
         <source>Show Window</source>
         <translation type="unfinished">Показать окно</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="268"/>
+        <location filename="../gui/mainwindow.cpp" line="263"/>
         <source>Server information...</source>
         <translation type="unfinished">Сведения о сервере...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="271"/>
+        <location filename="../gui/mainwindow.cpp" line="266"/>
         <source>Refresh Database</source>
         <translation type="unfinished">Обновить базу данных</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="272"/>
+        <location filename="../gui/mainwindow.cpp" line="267"/>
         <source>Refresh</source>
         <translation type="unfinished">Обновить</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="274"/>
+        <location filename="../gui/mainwindow.cpp" line="269"/>
         <source>Connect</source>
         <translation type="unfinished">Подключиться</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="275"/>
+        <location filename="../gui/mainwindow.cpp" line="270"/>
         <source>Collection</source>
         <translation type="unfinished">Коллекция</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="276"/>
-        <location filename="../gui/mainwindow.cpp" line="1294"/>
-        <location filename="../gui/mainwindow.cpp" line="1298"/>
-        <location filename="../gui/mainwindow.cpp" line="1304"/>
+        <location filename="../gui/mainwindow.cpp" line="271"/>
+        <location filename="../gui/mainwindow.cpp" line="1332"/>
+        <location filename="../gui/mainwindow.cpp" line="1336"/>
+        <location filename="../gui/mainwindow.cpp" line="1342"/>
         <source>Outputs</source>
         <translation type="unfinished">Выводы</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="277"/>
+        <location filename="../gui/mainwindow.cpp" line="272"/>
         <source>Stop After Track</source>
         <translation type="unfinished">Остановить после трека</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="287"/>
+        <location filename="../gui/mainwindow.cpp" line="278"/>
+        <source>Seek forward (%1 seconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="279"/>
+        <source>Seek backward (%1 seconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="292"/>
         <source>Add To Stored Playlist</source>
         <translation type="unfinished">Добавить в сохраняемый плейлист</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="292"/>
+        <location filename="../gui/mainwindow.cpp" line="297"/>
         <source>Crop Others</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="293"/>
+        <location filename="../gui/mainwindow.cpp" line="298"/>
         <source>Add Stream URL</source>
         <translation type="unfinished">Добавить URL потока</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="294"/>
+        <location filename="../gui/mainwindow.cpp" line="299"/>
         <source>Clear</source>
         <translation type="unfinished">Очистить</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="296"/>
+        <location filename="../gui/mainwindow.cpp" line="301"/>
         <source>Center On Current Track</source>
         <translation type="unfinished">Центр по текущей дорожке</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="297"/>
+        <location filename="../gui/mainwindow.cpp" line="302"/>
         <source>Expanded Interface</source>
         <translation type="unfinished">Расширенный интерфейс</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="299"/>
+        <location filename="../gui/mainwindow.cpp" line="304"/>
         <source>Show Current Song Information</source>
         <translation type="unfinished">Показать инфо текущей песни</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="302"/>
+        <location filename="../gui/mainwindow.cpp" line="307"/>
         <source>Full Screen</source>
         <translation type="unfinished">Полный экран</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="306"/>
+        <location filename="../gui/mainwindow.cpp" line="311"/>
         <source>Random</source>
         <translation type="unfinished">Случайно</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="307"/>
+        <location filename="../gui/mainwindow.cpp" line="312"/>
         <source>Repeat</source>
         <translation type="unfinished">Повтор</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="308"/>
+        <location filename="../gui/mainwindow.cpp" line="313"/>
         <source>Single</source>
         <translation type="unfinished">Одиночный</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="308"/>
+        <location filename="../gui/mainwindow.cpp" line="313"/>
         <source>When &apos;Single&apos; is activated, playback is stopped after current song, or song is repeated if &apos;Repeat&apos; is enabled.</source>
         <translation type="unfinished">«Одиночный» режим: воспроизведение останавливается после текущей песни, или, в случае активного режима «Повтор», текущая песня повторяется</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="309"/>
+        <location filename="../gui/mainwindow.cpp" line="314"/>
         <source>Consume</source>
         <translation type="unfinished">Поглощение</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="309"/>
+        <location filename="../gui/mainwindow.cpp" line="314"/>
         <source>When consume is activated, a song is removed from the play queue after it has been played.</source>
         <translation type="unfinished">Режим «Поглощение»: песня удаляется из очереди после того, как была проиграна</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="310"/>
+        <location filename="../gui/mainwindow.cpp" line="315"/>
         <source>Find in Play Queue</source>
         <translation type="unfinished">Найти в очереди на воспроизведение</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="314"/>
+        <location filename="../gui/mainwindow.cpp" line="319"/>
         <source>Play Stream</source>
         <translation type="unfinished">Воспроизводить поток</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="322"/>
+        <location filename="../gui/mainwindow.cpp" line="327"/>
         <source>Locate In Library</source>
         <translation type="unfinished">Найти в библиотеке</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="323"/>
+        <location filename="../gui/mainwindow.cpp" line="328"/>
         <source>Play next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="327"/>
+        <location filename="../gui/mainwindow.cpp" line="331"/>
+        <source>Edit Track Information (Play Queue)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="334"/>
         <source>Expand All</source>
         <translation type="unfinished">Развернуть всё</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="329"/>
+        <location filename="../gui/mainwindow.cpp" line="336"/>
         <source>Collapse All</source>
         <translation type="unfinished">Свернуть всё</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="331"/>
+        <location filename="../gui/mainwindow.cpp" line="338"/>
         <source>Cancel</source>
         <translation type="unfinished">Отмена</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="384"/>
+        <location filename="../gui/mainwindow.cpp" line="391"/>
         <source>Play Queue</source>
         <translation type="unfinished">Проиграть очередь</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="389"/>
+        <location filename="../gui/mainwindow.cpp" line="396"/>
         <source>Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="394"/>
+        <location filename="../gui/mainwindow.cpp" line="401"/>
         <source>Folders</source>
         <translation type="unfinished">Папки</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="400"/>
+        <location filename="../gui/mainwindow.cpp" line="407"/>
         <source>Playlists</source>
         <translation type="unfinished">Плейлисты</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="409"/>
+        <location filename="../gui/mainwindow.cpp" line="416"/>
         <source>Internet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="418"/>
+        <location filename="../gui/mainwindow.cpp" line="425"/>
         <source>Devices</source>
         <translation type="unfinished">Устройства</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="425"/>
+        <location filename="../gui/mainwindow.cpp" line="432"/>
         <source>Search</source>
         <translation type="unfinished">Поиск</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="430"/>
+        <location filename="../gui/mainwindow.cpp" line="437"/>
         <source>Info</source>
         <translation type="unfinished">Инфо</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="574"/>
+        <location filename="../gui/mainwindow.cpp" line="591"/>
         <source>Show Menubar</source>
         <translation type="unfinished">Показать меню</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="612"/>
+        <location filename="../gui/mainwindow.cpp" line="629"/>
         <source>&amp;Music</source>
         <translation type="unfinished">&amp;Музыка</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="623"/>
+        <location filename="../gui/mainwindow.cpp" line="640"/>
         <source>&amp;Edit</source>
         <translation type="unfinished">&amp;Редактировать</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="635"/>
+        <location filename="../gui/mainwindow.cpp" line="652"/>
         <source>&amp;View</source>
         <translation type="unfinished">&amp;Вид</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="646"/>
+        <location filename="../gui/mainwindow.cpp" line="663"/>
         <source>&amp;Queue</source>
         <translation type="unfinished">&amp;Очередь</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="655"/>
+        <location filename="../gui/mainwindow.cpp" line="672"/>
         <source>&amp;Settings</source>
         <translation type="unfinished">&amp;Настройки</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="669"/>
+        <location filename="../gui/mainwindow.cpp" line="686"/>
         <source>&amp;Help</source>
         <translation type="unfinished">&amp;Помощь</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="688"/>
+        <location filename="../gui/mainwindow.cpp" line="705"/>
         <source>Set Rating</source>
         <translation type="unfinished">Указать рейтинг</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="693"/>
+        <location filename="../gui/mainwindow.cpp" line="710"/>
         <source>No Rating</source>
         <translation type="unfinished">Без рейтинга</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="968"/>
+        <location filename="../gui/mainwindow.cpp" line="1006"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation type="unfinished">Не удалось найти песен, подходящих под правила динамического плейлиста.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1089"/>
+        <location filename="../gui/mainwindow.cpp" line="1127"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">Подключение к %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1125"/>
+        <location filename="../gui/mainwindow.cpp" line="1163"/>
         <source>Refresh MPD Database?</source>
         <translation type="unfinished">Обновить базу данных MPD?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1131"/>
+        <location filename="../gui/mainwindow.cpp" line="1169"/>
         <source>About Cantata</source>
         <translation type="unfinished">О программе Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1132"/>
+        <location filename="../gui/mainwindow.cpp" line="1170"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1134"/>
+        <location filename="../gui/mainwindow.cpp" line="1172"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1135"/>
+        <location filename="../gui/mainwindow.cpp" line="1173"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">Художественное оформление контекстного вида предоставлено сайтом &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1136"/>
+        <location filename="../gui/mainwindow.cpp" line="1174"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation type="unfinished">Метаданные контекстного вида предоставлены сайтами &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; и &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1137"/>
+        <location filename="../gui/mainwindow.cpp" line="1175"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">Вы можете выкладывать ваши творческие работы на темы музыкального фан-арта на сайт &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1144"/>
+        <location filename="../gui/mainwindow.cpp" line="1182"/>
         <source>A Podcast is currently being downloaded
 
 Quiting now will abort the download.</source>
@@ -9273,95 +9289,95 @@ Quiting now will abort the download.</source>
 Выключение прекратит загрузку.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1145"/>
+        <location filename="../gui/mainwindow.cpp" line="1183"/>
         <source>Abort download and quit</source>
         <translation type="unfinished">Прервать загрузку и выключить</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1173"/>
+        <location filename="../gui/mainwindow.cpp" line="1211"/>
         <source>Please close other dialogs first.</source>
         <translation type="unfinished">Сначала необходимо закрыть другие диалоги.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1294"/>
-        <location filename="../gui/mainwindow.cpp" line="1305"/>
+        <location filename="../gui/mainwindow.cpp" line="1332"/>
+        <location filename="../gui/mainwindow.cpp" line="1343"/>
         <source>Enabled: %1</source>
         <translation type="unfinished">Включено: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1298"/>
-        <location filename="../gui/mainwindow.cpp" line="1306"/>
+        <location filename="../gui/mainwindow.cpp" line="1336"/>
+        <location filename="../gui/mainwindow.cpp" line="1344"/>
         <source>Disabled: %1</source>
         <translation type="unfinished">Отключено: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1494"/>
-        <location filename="../gui/mainwindow.cpp" line="1517"/>
+        <location filename="../gui/mainwindow.cpp" line="1532"/>
+        <location filename="../gui/mainwindow.cpp" line="1555"/>
         <source>Server Information</source>
         <translation type="unfinished">Сведения о сервере</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1497"/>
+        <location filename="../gui/mainwindow.cpp" line="1535"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Сервер&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Протокол:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Аптайм:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Играя:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Обработчики:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Тэги:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1508"/>
+        <location filename="../gui/mainwindow.cpp" line="1546"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;База данных&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Артисты:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Альбомы:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Песни:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Продолжительность:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Обновление:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1661"/>
+        <location filename="../gui/mainwindow.cpp" line="1699"/>
         <source>Cantata (%1)</source>
         <translation type="unfinished">Cantata (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1728"/>
+        <location filename="../gui/mainwindow.cpp" line="1766"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">MPD выдал следующую ошибку: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1799"/>
+        <location filename="../gui/mainwindow.cpp" line="1837"/>
         <source>Cantata</source>
         <translation type="unfinished">Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1799"/>
+        <location filename="../gui/mainwindow.cpp" line="1837"/>
         <source>Playback stopped</source>
         <translation type="unfinished">Воспроизведение остановлено</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1842"/>
+        <location filename="../gui/mainwindow.cpp" line="1880"/>
         <source>Remove all songs from play queue?</source>
         <translation type="unfinished">Удалить все песни из очереди?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1893"/>
+        <location filename="../gui/mainwindow.cpp" line="1931"/>
         <source>Priority</source>
         <translation type="unfinished">Приоритет</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1893"/>
+        <location filename="../gui/mainwindow.cpp" line="1931"/>
         <source>Enter priority (0..255):</source>
         <translation type="unfinished">Введите приоритет (0..255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1916"/>
+        <location filename="../gui/mainwindow.cpp" line="1954"/>
         <source>Playlist Name</source>
         <translation type="unfinished">Имя плейлиста</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1916"/>
+        <location filename="../gui/mainwindow.cpp" line="1954"/>
         <source>Enter a name for the playlist:</source>
         <translation type="unfinished">Введите имя плейлиста:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1919"/>
+        <location filename="../gui/mainwindow.cpp" line="1957"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation type="unfinished">«%1» используется для хранения «любимых» потоков, выберите другое название.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1923"/>
+        <location filename="../gui/mainwindow.cpp" line="1961"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -9370,12 +9386,12 @@ Add to that playlist?</source>
 Добавить к этому списку?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1924"/>
+        <location filename="../gui/mainwindow.cpp" line="1962"/>
         <source>Existing Playlist</source>
         <translation type="unfinished">Существующие плейлисты</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="1999"/>
+        <location filename="../gui/mainwindow.cpp" line="2037"/>
         <source>%n Track(s)</source>
         <translation type="unfinished">
             <numerusform>треков: %n</numerusform>
@@ -9384,7 +9400,7 @@ Add to that playlist?</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2001"/>
+        <location filename="../gui/mainwindow.cpp" line="2039"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>треков: %n (%1)</numerusform>
@@ -9410,6 +9426,14 @@ Add to that playlist?</source>
     </message>
 </context>
 <context>
+    <name>Mpris</name>
+    <message>
+        <location filename="../dbus/mpris.cpp" line="165"/>
+        <source>(Stream)</source>
+        <translation type="unfinished">(Поток)</translation>
+    </message>
+</context>
+<context>
     <name>MtpConnection</name>
     <message>
         <location filename="../devices/mtpdevice.cpp" line="153"/>
@@ -9418,32 +9442,31 @@ Add to that playlist?</source>
     </message>
     <message>
         <location filename="../devices/mtpdevice.cpp" line="155"/>
-        <location filename="../devices/mtpdevice.cpp" line="202"/>
+        <location filename="../devices/mtpdevice.cpp" line="192"/>
         <source>No devices found</source>
         <translation type="unfinished">Устройства не обнаружены</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="217"/>
+        <location filename="../devices/mtpdevice.cpp" line="207"/>
         <source>Connected to device</source>
         <translation type="unfinished">Подключено к устройству</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="230"/>
+        <location filename="../devices/mtpdevice.cpp" line="220"/>
         <source>Disconnected from device</source>
         <translation type="unfinished">Отключено от устройства</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="303"/>
+        <location filename="../devices/mtpdevice.cpp" line="293"/>
         <source>Updating folders...</source>
         <translation type="unfinished">Обновление папок...</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="322"/>
         <source>Updating files...</source>
-        <translation type="unfinished">Обновление файлов...</translation>
+        <translation type="obsolete">Обновление файлов...</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="336"/>
+        <location filename="../devices/mtpdevice.cpp" line="314"/>
         <source>Updating tracks...</source>
         <translation type="unfinished">Обновление треков...</translation>
     </message>
@@ -9451,12 +9474,12 @@ Add to that playlist?</source>
 <context>
     <name>MtpDevice</name>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1642"/>
+        <location filename="../devices/mtpdevice.cpp" line="1551"/>
         <source>Not Connected</source>
         <translation type="unfinished">Не подключено</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1645"/>
+        <location filename="../devices/mtpdevice.cpp" line="1554"/>
         <source>%1 free</source>
         <translation type="unfinished">%1 свободно</translation>
     </message>
@@ -9550,7 +9573,7 @@ Add to that playlist?</source>
 <context>
     <name>NowPlayingWidget</name>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="321"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="320"/>
         <source>(Stream)</source>
         <translation type="unfinished">(Поток)</translation>
     </message>
@@ -9855,13 +9878,13 @@ Add to that playlist?</source>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="169"/>
-        <location filename="../models/playqueuemodel.cpp" line="247"/>
+        <location filename="../models/playqueuemodel.cpp" line="248"/>
         <source>Artist</source>
         <translation type="unfinished">Исполнитель</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="170"/>
-        <location filename="../models/playqueuemodel.cpp" line="249"/>
+        <location filename="../models/playqueuemodel.cpp" line="250"/>
         <source>Album</source>
         <translation type="unfinished">Альбом</translation>
     </message>
@@ -9883,85 +9906,90 @@ Add to that playlist?</source>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="174"/>
-        <location filename="../models/playqueuemodel.cpp" line="252"/>
+        <location filename="../models/playqueuemodel.cpp" line="253"/>
         <source>Year</source>
         <translation type="unfinished">Год</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="175"/>
-        <location filename="../models/playqueuemodel.cpp" line="251"/>
+        <source>Original Year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/playqueuemodel.cpp" line="176"/>
+        <location filename="../models/playqueuemodel.cpp" line="252"/>
         <source>Genre</source>
         <translation type="unfinished">Жанр</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="176"/>
+        <location filename="../models/playqueuemodel.cpp" line="177"/>
         <source>Priority</source>
         <translation type="unfinished">Приоритет</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="177"/>
-        <location filename="../models/playqueuemodel.cpp" line="253"/>
+        <location filename="../models/playqueuemodel.cpp" line="178"/>
+        <location filename="../models/playqueuemodel.cpp" line="254"/>
         <source>Composer</source>
         <translation type="unfinished">Автор музыки</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="178"/>
-        <location filename="../models/playqueuemodel.cpp" line="254"/>
+        <location filename="../models/playqueuemodel.cpp" line="179"/>
+        <location filename="../models/playqueuemodel.cpp" line="255"/>
         <source>Performer</source>
         <translation type="unfinished">Исполнитель</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="179"/>
+        <location filename="../models/playqueuemodel.cpp" line="180"/>
         <source>Rating</source>
         <translation type="unfinished">Рейтинг</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="225"/>
+        <location filename="../models/playqueuemodel.cpp" line="226"/>
         <source>Remove Duplicates</source>
         <translation type="unfinished">Удаление дубликатов</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="228"/>
+        <location filename="../models/playqueuemodel.cpp" line="229"/>
         <source>Undo</source>
         <translation type="unfinished">Отменить</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="230"/>
+        <location filename="../models/playqueuemodel.cpp" line="231"/>
         <source>Redo</source>
         <translation type="unfinished">Повторить</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="236"/>
+        <location filename="../models/playqueuemodel.cpp" line="237"/>
         <source>Shuffle</source>
         <translation type="unfinished">Перемешать</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="238"/>
+        <location filename="../models/playqueuemodel.cpp" line="239"/>
         <source>Tracks</source>
         <translation type="unfinished">Дорожки</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="239"/>
+        <location filename="../models/playqueuemodel.cpp" line="240"/>
         <source>Albums</source>
         <translation type="unfinished">Альбомы</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="245"/>
+        <location filename="../models/playqueuemodel.cpp" line="246"/>
         <source>Sort By</source>
         <translation type="unfinished">Сортировать по</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="248"/>
+        <location filename="../models/playqueuemodel.cpp" line="249"/>
         <source>Album Artist</source>
         <translation type="unfinished">Исполнитель альбома</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="250"/>
+        <location filename="../models/playqueuemodel.cpp" line="251"/>
         <source>Track Title</source>
         <translation type="unfinished">Название трека</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="307"/>
+        <location filename="../models/playqueuemodel.cpp" line="309"/>
         <source># (Track Number)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10983,72 +11011,72 @@ Add to that playlist?</source>
         <translation type="unfinished">Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="66"/>
-        <location filename="../mpd-interface/song.cpp" line="533"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="65"/>
+        <location filename="../mpd-interface/song.cpp" line="540"/>
         <source>Artist</source>
         <translation type="unfinished">Исполнитель</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="68"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="67"/>
         <source>SimilarArtists</source>
         <translation type="unfinished">SimilarArtists</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="70"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="69"/>
         <source>AlbumArtist</source>
         <translation type="unfinished">AlbumArtist</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="72"/>
-        <location filename="../mpd-interface/song.cpp" line="537"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="71"/>
+        <location filename="../mpd-interface/song.cpp" line="544"/>
         <source>Composer</source>
         <translation type="unfinished">Автор музыки</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="74"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="73"/>
         <source>Comment</source>
         <translation type="unfinished">Комментарий</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="76"/>
-        <location filename="../mpd-interface/song.cpp" line="539"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="75"/>
+        <location filename="../mpd-interface/song.cpp" line="546"/>
         <source>Album</source>
         <translation type="unfinished">Альбом</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="78"/>
-        <location filename="../mpd-interface/song.cpp" line="532"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="77"/>
+        <location filename="../mpd-interface/song.cpp" line="539"/>
         <source>Title</source>
         <translation type="unfinished">Название</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="80"/>
-        <location filename="../mpd-interface/song.cpp" line="546"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="79"/>
+        <location filename="../mpd-interface/song.cpp" line="553"/>
         <source>Genre</source>
         <translation type="unfinished">Жанр</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="82"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="81"/>
         <source>Date</source>
         <translation type="unfinished">Дата</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="84"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="83"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="96"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="95"/>
         <source>Include</source>
         <translation type="unfinished">Включить</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="103"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="102"/>
         <source>Exclude</source>
         <translation type="unfinished">Исключить</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="126"/>
+        <location filename="../dynamic/dynamicrulesdialog.cpp" line="125"/>
         <source> (Exact)</source>
         <translation type="unfinished"> (Точное)</translation>
     </message>
@@ -11349,8 +11377,8 @@ width x height</comment>
         <translation type="unfinished">Другое</translation>
     </message>
     <message>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="203"/>
         <location filename="../mpd-interface/mpdconnection.cpp" line="205"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="207"/>
         <source>Default</source>
         <translation type="unfinished">По умолчанию</translation>
     </message>
@@ -11360,13 +11388,13 @@ width x height</comment>
         <translation type="obsolete">«%1»</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="218"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="216"/>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
         <translation type="unfinished">«%1» (%2:%3)</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdparseutils.cpp" line="732"/>
+        <location filename="../mpd-interface/mpdparseutils.cpp" line="737"/>
         <source>Single Tracks</source>
         <translation type="unfinished">Отдельные треки</translation>
     </message>
@@ -11387,43 +11415,48 @@ width x height</comment>
         <translation type="unfinished">Несколько исполнителей</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="535"/>
+        <location filename="../mpd-interface/song.cpp" line="542"/>
         <source>Album artist</source>
         <translation type="unfinished">Исполнитель альбома</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="538"/>
+        <location filename="../mpd-interface/song.cpp" line="545"/>
         <source>Performer</source>
         <translation type="unfinished">Исполнитель</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="541"/>
+        <location filename="../mpd-interface/song.cpp" line="548"/>
         <source>Track number</source>
         <translation type="unfinished">Номер трека</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="544"/>
+        <location filename="../mpd-interface/song.cpp" line="551"/>
         <source>Disc number</source>
         <translation type="unfinished">Номер диска</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="548"/>
+        <location filename="../mpd-interface/song.cpp" line="555"/>
         <source>Year</source>
         <translation type="unfinished">Год</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="551"/>
+        <location filename="../mpd-interface/song.cpp" line="558"/>
+        <source>Orignal Year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mpd-interface/song.cpp" line="561"/>
         <source>Length</source>
         <translation type="unfinished">Длина</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="722"/>
+        <location filename="../mpd-interface/song.cpp" line="732"/>
         <source>&lt;b&gt;%1&lt;/b&gt; on &lt;b&gt;%2&lt;/b&gt;</source>
         <comment>Song on Album</comment>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; на &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="723"/>
+        <location filename="../mpd-interface/song.cpp" line="733"/>
         <source>&lt;b&gt;%1&lt;/b&gt; by &lt;b&gt;%2&lt;/b&gt; on &lt;b&gt;%3&lt;/b&gt;</source>
         <comment>Song by Artist on Album</comment>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; исполнителя &lt;b&gt;%2&lt;/b&gt; на &lt;b&gt;%3&lt;/b&gt;</translation>
@@ -11589,7 +11622,7 @@ width x height</comment>
         <translation type="unfinished">&amp;Далее</translation>
     </message>
     <message>
-        <location filename="../support/kmessagewidget.cpp" line="98"/>
+        <location filename="../support/kmessagewidget.cpp" line="99"/>
         <source>Close</source>
         <translation type="unfinished">Закрыть</translation>
     </message>
@@ -12286,7 +12319,7 @@ Please choose a different name.</source>
 <context>
     <name>SearchModel</name>
     <message>
-        <location filename="../models/searchmodel.cpp" line="89"/>
+        <location filename="../models/searchmodel.cpp" line="90"/>
         <source># (Track Number)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12299,77 +12332,87 @@ Please choose a different name.</source>
         <translation type="unfinished">Найти в библиотеке</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="208"/>
+        <location filename="../gui/searchpage.cpp" line="209"/>
         <source>Artist:</source>
         <translation type="unfinished">Исполнитель:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="211"/>
+        <location filename="../gui/searchpage.cpp" line="212"/>
         <source>Composer:</source>
         <translation type="unfinished">Автор музыки:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="214"/>
+        <location filename="../gui/searchpage.cpp" line="215"/>
         <source>Performer:</source>
         <translation type="unfinished">Исполнитель:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="216"/>
+        <location filename="../gui/searchpage.cpp" line="217"/>
         <source>Album:</source>
         <translation type="unfinished">Альбом:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="217"/>
+        <location filename="../gui/searchpage.cpp" line="218"/>
         <source>Title:</source>
         <translation type="unfinished">Название:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="218"/>
+        <location filename="../gui/searchpage.cpp" line="219"/>
         <source>Genre:</source>
         <translation type="unfinished">Жанр:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="220"/>
+        <location filename="../gui/searchpage.cpp" line="221"/>
         <source>Comment:</source>
         <translation type="unfinished">Комментарий:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="222"/>
+        <location filename="../gui/searchpage.cpp" line="223"/>
         <source>Date:</source>
         <translation type="unfinished">Дата:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="223"/>
+        <location filename="../gui/searchpage.cpp" line="224"/>
         <source>Find songs be searching the &apos;Date&apos; tag.&lt;br/&gt;&lt;br/&gt;Usually just entering the year should suffice.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="225"/>
+        <location filename="../gui/searchpage.cpp" line="226"/>
+        <source>Original Date:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/searchpage.cpp" line="227"/>
+        <source>Find songs be searching the &apos;Original Date&apos; tag.&lt;br/&gt;&lt;br/&gt;Usually just entering the year should suffice.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/searchpage.cpp" line="230"/>
         <source>Modified:</source>
         <translation type="unfinished">Изменено:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="226"/>
+        <location filename="../gui/searchpage.cpp" line="231"/>
         <source>Enter date (YYYY/MM/DD - e.g. 2015/01/31) to search for files modified since that date.&lt;br/&gt;&lt;br&gt;Or enter a number of days to find files that were modified in the previous number of days.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="229"/>
+        <location filename="../gui/searchpage.cpp" line="234"/>
         <source>File:</source>
         <translation type="unfinished">Файл:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="230"/>
+        <location filename="../gui/searchpage.cpp" line="235"/>
         <source>Any:</source>
         <translation type="unfinished">Любые:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="236"/>
+        <location filename="../gui/searchpage.cpp" line="241"/>
         <source>No tracks found.</source>
         <translation type="unfinished">Треки не найдены.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/searchpage.cpp" line="236"/>
+        <location filename="../gui/searchpage.cpp" line="241"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>треков: %n (%1)</numerusform>
@@ -12621,57 +12664,57 @@ Please check that the device is still attached.</source>
 <context>
     <name>SongView</name>
     <message>
-        <location filename="../context/songview.cpp" line="118"/>
+        <location filename="../context/songview.cpp" line="129"/>
         <source>Lyrics</source>
         <translation type="unfinished">Слова песни</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="118"/>
+        <location filename="../context/songview.cpp" line="129"/>
         <source>Information</source>
         <translation type="unfinished">Инфо</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="118"/>
+        <location filename="../context/songview.cpp" line="129"/>
         <source>Metadata</source>
         <translation type="unfinished">Метаданные</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="131"/>
+        <location filename="../context/songview.cpp" line="142"/>
         <source>Scroll Lyrics</source>
         <translation type="unfinished">Прокрутка слов песни</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="132"/>
+        <location filename="../context/songview.cpp" line="143"/>
         <source>Refresh Lyrics</source>
         <translation type="unfinished">Обновить слова песни</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="133"/>
+        <location filename="../context/songview.cpp" line="144"/>
         <source>Edit Lyrics</source>
         <translation type="unfinished">Изменить слова песни</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="134"/>
+        <location filename="../context/songview.cpp" line="145"/>
         <source>Delete Lyrics File</source>
         <translation type="unfinished">Удалить файл со словами песни</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="145"/>
+        <location filename="../context/songview.cpp" line="156"/>
         <source>Refresh Track Information</source>
         <translation type="unfinished">Обновление информации о треках</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="146"/>
+        <location filename="../context/songview.cpp" line="157"/>
         <source>Cancel</source>
         <translation type="unfinished">Отмена</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="161"/>
+        <location filename="../context/songview.cpp" line="172"/>
         <source>Track</source>
         <translation type="unfinished">Трек</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="180"/>
+        <location filename="../context/songview.cpp" line="191"/>
         <source>Reload lyrics?
 
 Reload from disk, or delete disk copy and download?</source>
@@ -12680,239 +12723,239 @@ Reload from disk, or delete disk copy and download?</source>
 Перезагрузить с диска или удалить копию с диска и загрузить заново?</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="180"/>
+        <location filename="../context/songview.cpp" line="191"/>
         <source>Reload</source>
         <translation type="unfinished">Обновить</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="181"/>
+        <location filename="../context/songview.cpp" line="192"/>
         <source>Reload From Disk</source>
         <translation type="unfinished">Загрузить с диска</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="181"/>
+        <location filename="../context/songview.cpp" line="192"/>
         <source>Download</source>
         <translation type="unfinished">Скачать</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="213"/>
+        <location filename="../context/songview.cpp" line="224"/>
         <source>Current playing song has changed, still perform search?</source>
         <translation type="unfinished">Текущая песня сменилась, произвести поиск всё равно?</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="213"/>
+        <location filename="../context/songview.cpp" line="224"/>
         <source>Song Changed</source>
         <translation type="unfinished">Песня изменена</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="214"/>
+        <location filename="../context/songview.cpp" line="225"/>
         <source>Perform Search</source>
         <translation type="unfinished">Произвести поиск</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="236"/>
+        <location filename="../context/songview.cpp" line="247"/>
         <source>Delete lyrics file?</source>
         <translation type="unfinished">Удалить файл со словами песни?</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="236"/>
+        <location filename="../context/songview.cpp" line="247"/>
         <source>Delete File</source>
         <translation type="unfinished">Удалить файл</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="496"/>
-        <location filename="../context/songview.cpp" line="576"/>
+        <location filename="../context/songview.cpp" line="530"/>
+        <location filename="../context/songview.cpp" line="610"/>
         <source>Artist</source>
         <translation type="unfinished">Исполнитель</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="497"/>
-        <location filename="../context/songview.cpp" line="577"/>
+        <location filename="../context/songview.cpp" line="531"/>
+        <location filename="../context/songview.cpp" line="611"/>
         <source>Album artist</source>
         <translation type="unfinished">Исполнитель альбома</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="498"/>
-        <location filename="../context/songview.cpp" line="578"/>
+        <location filename="../context/songview.cpp" line="532"/>
+        <location filename="../context/songview.cpp" line="612"/>
         <source>Composer</source>
         <translation type="unfinished">Автор музыки</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="500"/>
+        <location filename="../context/songview.cpp" line="534"/>
         <source>Lyricist</source>
         <translation type="unfinished">Поэт-песенник</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="501"/>
+        <location filename="../context/songview.cpp" line="535"/>
         <source>Conductor</source>
         <translation type="unfinished">Дирижер</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="502"/>
+        <location filename="../context/songview.cpp" line="536"/>
         <source>Remixer</source>
         <translation type="unfinished">Ремиксер</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="503"/>
-        <location filename="../context/songview.cpp" line="580"/>
+        <location filename="../context/songview.cpp" line="537"/>
+        <location filename="../context/songview.cpp" line="614"/>
         <source>Album</source>
         <translation type="unfinished">Альбом</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="504"/>
+        <location filename="../context/songview.cpp" line="538"/>
         <source>Subtitle</source>
         <translation type="unfinished">Субтитры</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="505"/>
-        <location filename="../context/songview.cpp" line="581"/>
+        <location filename="../context/songview.cpp" line="539"/>
+        <location filename="../context/songview.cpp" line="615"/>
         <source>Track number</source>
         <translation type="unfinished">Номер трека</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="506"/>
-        <location filename="../context/songview.cpp" line="582"/>
+        <location filename="../context/songview.cpp" line="540"/>
+        <location filename="../context/songview.cpp" line="616"/>
         <source>Disc number</source>
         <translation type="unfinished">Номер диска</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="507"/>
-        <location filename="../context/songview.cpp" line="583"/>
+        <location filename="../context/songview.cpp" line="541"/>
+        <location filename="../context/songview.cpp" line="617"/>
         <source>Genre</source>
         <translation type="unfinished">Жанр</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="508"/>
+        <location filename="../context/songview.cpp" line="542"/>
         <source>Date</source>
         <translation type="unfinished">Дата</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="509"/>
+        <location filename="../context/songview.cpp" line="543"/>
         <source>Original date</source>
         <translation type="unfinished">Исходная дата</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="510"/>
-        <location filename="../context/songview.cpp" line="585"/>
+        <location filename="../context/songview.cpp" line="544"/>
+        <location filename="../context/songview.cpp" line="619"/>
         <source>Comment</source>
         <translation type="unfinished">Комментарий</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="511"/>
+        <location filename="../context/songview.cpp" line="545"/>
         <source>Copyright</source>
         <translation type="unfinished">Copyright</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="512"/>
+        <location filename="../context/songview.cpp" line="546"/>
         <source>Label</source>
         <translation type="unfinished">Лейбл</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="513"/>
+        <location filename="../context/songview.cpp" line="547"/>
         <source>Catalogue number</source>
         <translation type="unfinished">Номер по каталогу</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="514"/>
+        <location filename="../context/songview.cpp" line="548"/>
         <source>Title sort</source>
         <translation type="unfinished">Сортировать название</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="515"/>
+        <location filename="../context/songview.cpp" line="549"/>
         <source>Artist sort</source>
         <translation type="unfinished">Сортировать артист</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="516"/>
+        <location filename="../context/songview.cpp" line="550"/>
         <source>Album artist sort</source>
         <translation type="unfinished">Сортировать исполнитель альбома</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="517"/>
+        <location filename="../context/songview.cpp" line="551"/>
         <source>Album sort</source>
         <translation type="unfinished">Сортировать альбом</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="518"/>
+        <location filename="../context/songview.cpp" line="552"/>
         <source>Encoded by</source>
         <translation type="unfinished">Закодировано с помощью</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="519"/>
+        <location filename="../context/songview.cpp" line="553"/>
         <source>Encoder</source>
         <translation type="unfinished">Кодировщик</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="520"/>
+        <location filename="../context/songview.cpp" line="554"/>
         <source>Mood</source>
         <translation type="unfinished">Настроение</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="521"/>
+        <location filename="../context/songview.cpp" line="555"/>
         <source>Media</source>
         <translation type="unfinished">Медиа</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="522"/>
-        <location filename="../context/songview.cpp" line="561"/>
+        <location filename="../context/songview.cpp" line="556"/>
+        <location filename="../context/songview.cpp" line="595"/>
         <source>Bitrate</source>
         <translation type="unfinished">Битрейт</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="523"/>
-        <location filename="../context/songview.cpp" line="564"/>
+        <location filename="../context/songview.cpp" line="557"/>
+        <location filename="../context/songview.cpp" line="598"/>
         <source>Sample rate</source>
         <translation type="unfinished">Частота дискретизации</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="524"/>
-        <location filename="../context/songview.cpp" line="567"/>
+        <location filename="../context/songview.cpp" line="558"/>
+        <location filename="../context/songview.cpp" line="601"/>
         <source>Channels</source>
         <translation type="unfinished">Каналы</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="526"/>
+        <location filename="../context/songview.cpp" line="560"/>
         <source>Tagging time</source>
         <translation type="unfinished">Пометка времени</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="548"/>
+        <location filename="../context/songview.cpp" line="582"/>
         <source>Performer (%1)</source>
         <translation type="unfinished">Исполнитель (%1)</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="561"/>
+        <location filename="../context/songview.cpp" line="595"/>
         <source>%1 kb/s</source>
         <translation type="unfinished">%1 кбит/с</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="564"/>
+        <location filename="../context/songview.cpp" line="598"/>
         <source>%1 Hz</source>
         <translation type="unfinished">%1 Гц</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="571"/>
+        <location filename="../context/songview.cpp" line="605"/>
         <source>Bits</source>
         <translation type="unfinished">Бит</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="579"/>
+        <location filename="../context/songview.cpp" line="613"/>
         <source>Performer</source>
         <translation type="unfinished">Исполнитель</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="584"/>
+        <location filename="../context/songview.cpp" line="618"/>
         <source>Year</source>
         <translation type="unfinished">Год</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="621"/>
-        <location filename="../context/songview.cpp" line="624"/>
+        <location filename="../context/songview.cpp" line="655"/>
+        <location filename="../context/songview.cpp" line="658"/>
         <source>Filename</source>
         <translation type="unfinished">Имя файла</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="845"/>
+        <location filename="../context/songview.cpp" line="879"/>
         <source>Fetching lyrics via %1</source>
         <translation type="unfinished">Загрузка слов песни с %1</translation>
     </message>
@@ -14236,7 +14279,7 @@ If you rename a file (or the folder it is within), then the rating associated wi
 <context>
     <name>View</name>
     <message>
-        <location filename="../context/view.cpp" line="136"/>
+        <location filename="../context/view.cpp" line="135"/>
         <source>Cancel</source>
         <translation type="unfinished">Отмена</translation>
     </message>

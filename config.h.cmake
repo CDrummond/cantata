@@ -33,6 +33,7 @@
 #cmakedefine TAGLIB_CAN_SAVE_ID3VER 1
 #cmakedefine ENABLE_PROXY_CONFIG 1
 #cmakedefine CDPARANOIA_HAS_CACHEMODEL_SIZE 1
+#cmakedefine CDIOPARANOIA_FOUND 1
 #cmakedefine QT_QTDBUS_FOUND 1
 #cmakedefine ENABLE_HTTP_SERVER 1
 #cmakedefine IOKIT_FOUND 1

@@ -25,10 +25,16 @@
 #define CDPARANOIA_H
 
 #include <QString>
+#include "config.h"
 
 extern "C" {
+#ifdef CDIOPARANOIA_FOUND
+#include <cdio/paranoia.h>
+#include <cdio/cdda.h>
+#else
 #include <cdda_interface.h>
 #include <cdda_paranoia.h>
+#endif
 }
 
 class CdParanoia
@@ -41,7 +47,6 @@ public:
 
     void setParanoiaMode(int mode);
     void setFullParanoiaMode(bool f) { setParanoiaMode(f ? 3 : 0); }
-//    void setNeverSkip(bool b);
     void setMaxRetries(int m) { maxRetries=m; }
 
     qint16 * read();
@@ -49,8 +54,6 @@ public:
 
     int firstSectorOfTrack(int track);
     int lastSectorOfTrack(int track);
-//    int firstSectorOfDisc();
-//    int lastSectorOfDisc();
     int length();
 
     int lengthOfTrack(int n);
@@ -66,8 +69,13 @@ private:
 
 private:
     QString dev;
+    #ifdef CDIOPARANOIA_FOUND
+    cdrom_drive_t *drive;
+    cdrom_paranoia_t *paranoia;
+    #else
     cdrom_drive *drive;
     cdrom_paranoia *paranoia;
+    #endif
     int paranoiaMode;
     bool neverSkip;
     int maxRetries;

@@ -79,6 +79,7 @@
 61. Bundle newer openSSL with macOS builds.
 62. Update copy of libebur128
 63. Disable 'Personal' MPD instance support by default.
+64. Use libcdio_cdparanoia
 
 2.0.1
 -----

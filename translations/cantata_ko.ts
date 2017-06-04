@@ -867,11 +867,11 @@ i18n: ectx: property (text), widget (QTreeWidget, tracks)
     </message>
     <message>
         <source>Forget Device</source>
-        <translation type="vanished">장치 잃음</translation>
+        <translation type="vanished">장치 끊기</translation>
     </message>
     <message>
         <source>Add Device</source>
-        <translation type="vanished">장치 추가</translation>
+        <translation type="vanished">장치 연결</translation>
     </message>
     <message>
         <source>Lookup album and track details?</source>
@@ -919,7 +919,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <source>Are you sure you wish to forget &apos;%1&apos;?</source>
-        <translation type="vanished">&apos;%1&apos;을 무시할까요?</translation>
+        <translation type="vanished">&apos;%1&apos;을 끊을까요?</translation>
     </message>
     <message>
         <source>Are you sure you wish to eject Audio CD &apos;%1 - %2&apos;?</source>
@@ -1161,7 +1161,7 @@ Please choose a different name.</source>
     </message>
     <message>
         <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="vanished">삼바 공유 (호스트 및 포트 자동 검색)</translation>
+        <translation type="vanished">삼바 공유 (호스트와 포트 자동 검색)</translation>
     </message>
     <message>
         <source>Secure Shell (sshfs)</source>
@@ -1169,7 +1169,7 @@ Please choose a different name.</source>
     </message>
     <message>
         <source>Locally Mounted Folder</source>
-        <translation type="vanished">로컬 마운트 폴더</translation>
+        <translation type="vanished">로컬 폴더 마운트</translation>
     </message>
     <message>
         <source>Available</source>
@@ -2476,7 +2476,7 @@ i18n: ectx: property (text), widget (StateLabel, commentLabel)
     </message>
     <message>
         <source>Enter date (YYYY/MM/DD - e.g. 2015/01/31) to search for files modified since that date.&lt;br/&gt;&lt;br&gt;Or enter a number of days to find files that were modified in the previous number of days.</source>
-        <translation type="vanished">이후에 바뀐 파일을 찾기위해 날짜 (YYYY/MM/DD - e.g. 2015/01/31)를 넣습니다.&lt;br/&gt;&lt;br&gt;또는 이전에 바뀐 날짜 수를 넣습니다.</translation>
+        <translation type="vanished">이후에 바뀐 파일을 찾기위해 날짜 (YYYY/MM/DD - e.g. 2015/01/31)를 넣습니다.&lt;br/&gt;&lt;br&gt;아니면 이전에 바뀐 날짜 수를 넣습니다.</translation>
     </message>
     <message>
         <source>Any:</source>
@@ -3205,7 +3205,7 @@ i18n: ectx: property (text), widget (BuddyLabel, label_3)
     </message>
     <message>
         <source>Search for podcasts on %1</source>
-        <translation type="vanished">%1에서 팟캐스트를 찾기</translation>
+        <translation type="vanished">%1에서 팟캐스트 찾기</translation>
     </message>
     <message>
         <source>Add Podcast Subscription</source>
@@ -3213,11 +3213,11 @@ i18n: ectx: property (text), widget (BuddyLabel, label_3)
     </message>
     <message>
         <source>Browse %1</source>
-        <translation type="vanished">%1 둘러보기</translation>
+        <translation type="vanished">%1 보기</translation>
     </message>
     <message>
         <source>Browse %1 podcasts</source>
-        <translation type="vanished">%1 팟캐스트 둘러보기</translation>
+        <translation type="vanished">%1 팟캐스트 보기</translation>
     </message>
     <message>
         <source>You are already subscribed to this podcast!</source>
@@ -3382,7 +3382,7 @@ i18n: ectx: property (text), widget (BuddyLabel, label_3)
     </message>
     <message>
         <source>Refresh all subscriptions, or only those selected?</source>
-        <translation type="vanished">전체 또는 선택된 구독만 새로 읽을까요?</translation>
+        <translation type="vanished">전체나 선택된 구독만 새로 읽을까요?</translation>
     </message>
     <message>
         <source>Refresh Selected</source>
@@ -3531,7 +3531,7 @@ i18n: ectx: property (text), widget (QCheckBox, contextAlwaysCollapsed)
         <extracomment>i18n: file: context/othersettings.ui:206
 i18n: ectx: property (toolTip), widget (QCheckBox, contextAlwaysCollapsed)
 </extracomment>
-        <translation type="vanished">세 화면 모두 볼 수 있는 폭이더라도, &apos;연주자&apos;, &apos;음반&apos; 또는 &apos;가사&apos;만 봅니다.</translation>
+        <translation type="vanished">세 화면 모두 볼 수 있는 폭이더라도, &apos;연주자&apos;, &apos;음반&apos;이나 &apos;가사&apos;만 봅니다.</translation>
     </message>
     <message>
         <source>Only show basic wikipedia text</source>
@@ -4284,7 +4284,7 @@ i18n: ectx: property (text), widget (QCheckBox, storeCoversInMpdDir)
 i18n: file: gui/initialsettingswizard.ui:675
 i18n: ectx: property (text), widget (QCheckBox, storeCoversInMpdDir)
 </extracomment>
-        <translation type="vanished">내려받은 음반, 연주자, 작곡가 이미지를 음악 폴더에 저장합니다</translation>
+        <translation type="vanished">내려받은 음반, 연주자, 작곡가 이미지를 음악 폴더에 저장</translation>
     </message>
     <message>
         <source>Save downloaded lyrics in music folder</source>
@@ -4297,7 +4297,7 @@ i18n: ectx: property (text), widget (QCheckBox, storeLyricsInMpdDir)
 i18n: file: gui/initialsettingswizard.ui:682
 i18n: ectx: property (text), widget (QCheckBox, storeLyricsInMpdDir)
 </extracomment>
-        <translation type="vanished">음악 폴더에 내려받은 가사 저장</translation>
+        <translation type="vanished">내려받은 가사를 음악 폴더에 저장</translation>
     </message>
     <message>
         <source>Save downloaded backdrops in music folder</source>
@@ -4310,7 +4310,7 @@ i18n: ectx: property (text), widget (QCheckBox, storeBackdropsInMpdDir)
 i18n: file: gui/initialsettingswizard.ui:689
 i18n: ectx: property (text), widget (QCheckBox, storeBackdropsInMpdDir)
 </extracomment>
-        <translation type="vanished">음악 폴더에 내려받은 배경 저장</translation>
+        <translation type="vanished">내려받은 배경을 음악 폴더에 저장</translation>
     </message>
     <message>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
@@ -4323,7 +4323,7 @@ i18n: ectx: property (text), widget (NoteLabel, label_2)
 i18n: file: gui/initialsettingswizard.ui:696
 i18n: ectx: property (text), widget (NoteLabel, persNote)
 </extracomment>
-        <translation type="vanished">음악폴더에 음반표지, 가사 또는 배경을 저장하는데 쓰기 권한이 없다면, 개인 캐시 폴더에 파일들 저장합니다.</translation>
+        <translation type="vanished">음악폴더에 음반표지, 가사나 배경을 저장하는데 쓰기 권한이 없다면, 개인 캐시 폴더에 파일을 저장합니다.</translation>
     </message>
     <message>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
@@ -4455,7 +4455,7 @@ i18n: ectx: property (text), widget (QLabel, label_6f)
         <extracomment>i18n: file: gui/initialsettingswizard.ui:643
 i18n: ectx: property (text), widget (QLabel, label_5f)
 </extracomment>
-        <translation type="vanished">&lt;p&gt;인터넷으로부터 없는 음반표지와 가사를 내려받습니다.&lt;/p&gt;&lt;p&gt;이를 위하여, 음악폴더 또는 개인 캐시/설정 폴더에 내려받을 지를 확인합니다.&lt;/p&gt;</translation>
+        <translation type="vanished">&lt;p&gt;인터넷으로부터 없는 음반표지와 가사를 내려받습니다.&lt;/p&gt;&lt;p&gt;이를 위하여, 음악폴더나 개인 캐시/설정 폴더에 내려받을 지를 확인합니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
@@ -4490,7 +4490,7 @@ i18n: ectx: property (text), widget (NoteLabel, albumArtistsNoteLabel)
         <extracomment>i18n: file: gui/initialsettingswizard.ui:827
 i18n: ectx: property (text), widget (QLabel, groupWarningLabel)
 </extracomment>
-        <translation type="vanished">&lt;b&gt;경고:&lt;/b&gt; 지금 &apos;사용자&apos; 그룹에 포함되어 있지 않습니다. 이 그룹의 사용자라면 음반표지 및 가사를 저장하는 등의 기능을 더 잘 수행합니다. 만약 본인이나 관리자가 사용자를 이 그룹에 추가하였다면 다시 로그인을 해야 합니다.</translation>
+        <translation type="vanished">&lt;b&gt;경고:&lt;/b&gt; 지금 &apos;사용자&apos; 그룹에 포함되어 있지 않습니다. 이 그룹의 사용자라면 음반표지와 가사를 저장하는 등의 기능을 더 잘 수행합니다. 만약 본인이나 관리자가 사용자를 이 그룹에 추가하였다면 다시 로그인을 해야 합니다.</translation>
     </message>
     <message>
         <source>Sidebar</source>
@@ -5168,7 +5168,7 @@ i18n: ectx: property (text), widget (BuddyLabel, label_2)
         <extracomment>i18n: file: support/shortcutssettingswidget.ui:65
 i18n: ectx: property (title), widget (QGroupBox, actionBox)
 </extracomment>
-        <translation type="vanished">선택된 기능 단축키</translation>
+        <translation type="vanished">선택된 동작의 단축키</translation>
     </message>
     <message>
         <source>Default:</source>
@@ -5322,7 +5322,7 @@ i18n: ectx: property (text), widget (UrlNoteLabel, ratingsNote)
     </message>
     <message>
         <source>Do you wish to scan all tracks, or only tracks without existing tags?</source>
-        <translation type="vanished">모든 곡 또는 태그가 없는 곡만 검색할까요?</translation>
+        <translation type="vanished">모든 곡이나 태그가 없는 곡만 검색할까요?</translation>
     </message>
     <message>
         <source>Untagged Tracks</source>
@@ -7117,7 +7117,7 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
     <message>
         <location filename="../gui/coverdialog.ui" line="47"/>
         <source>This can only be used to change the file used for covers, it will not alter any embedded covers you may have in your song files.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">음반표지에 쓰인 파일을 바꿀 때에만 쓰이고, 내장 음반표지는 바꾸지 않습니다.</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="392"/>
@@ -7568,12 +7568,12 @@ Could not copy file to &apos;%1&apos;!</source>
     <message>
         <location filename="../devices/devicespage.cpp" line="68"/>
         <source>Forget Device</source>
-        <translation type="unfinished">장치 잃음</translation>
+        <translation type="unfinished">장치 끊기</translation>
     </message>
     <message>
         <location filename="../devices/devicespage.cpp" line="99"/>
         <source>Add Device</source>
-        <translation type="unfinished">장치 추가</translation>
+        <translation type="unfinished">장치 연결</translation>
     </message>
     <message>
         <location filename="../devices/devicespage.cpp" line="407"/>
@@ -7640,7 +7640,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../devices/devicespage.cpp" line="506"/>
         <source>Are you sure you wish to forget &apos;%1&apos;?</source>
-        <translation type="unfinished">&apos;%1&apos;을 무시할까요?</translation>
+        <translation type="unfinished">&apos;%1&apos;을 끊을까요?</translation>
     </message>
     <message>
         <location filename="../devices/devicespage.cpp" line="525"/>
@@ -8026,7 +8026,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../dynamic/dynamicrule.ui" line="200"/>
         <source>Filename / path:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">파일명 / 경로:</translation>
     </message>
     <message>
         <location filename="../dynamic/dynamicrule.ui" line="213"/>
@@ -8070,7 +8070,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../dynamic/dynamicruledialog.cpp" line="237"/>
         <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; You can only match on filename / path if &apos;Exact match&apos; is &lt;b&gt;not&lt;/b&gt; checked&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;i&gt;&lt;b&gt;오류:&lt;/b&gt; 파일명 / 경로만을 찾을 수 있는데 &apos;정확한 맞춤&apos;이 &lt;b&gt;not&lt;/b&gt; 확인되어야 합니다.checked&lt;/i&gt;</translation>
     </message>
 </context>
 <context>
@@ -8098,7 +8098,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../dynamic/dynamicrules.ui" line="107"/>
         <source>Songs with ratings between:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">등급 사이의 곡:</translation>
     </message>
     <message>
         <location filename="../dynamic/dynamicrules.ui" line="119"/>
@@ -8109,7 +8109,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../dynamic/dynamicrules.ui" line="144"/>
         <source>Songs with duration between:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">곡 길이:</translation>
     </message>
     <message>
         <location filename="../dynamic/dynamicrules.ui" line="153"/>
@@ -8138,7 +8138,7 @@ This cannot be undone.</source>
         <location filename="../dynamic/dynamicrulesdialog.cpp" line="160"/>
         <location filename="../dynamic/dynamicrulesdialog.cpp" line="161"/>
         <source>No Limit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">무제한</translation>
     </message>
     <message>
         <location filename="../dynamic/dynamicrulesdialog.cpp" line="296"/>
@@ -8148,7 +8148,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../dynamic/dynamicrulesdialog.cpp" line="298"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with 10 entries. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;칸타타는 아래의 모든 규정을 이용하여 음원을 찾습니다. &lt;i&gt;I포함&lt;/i&gt; 규정은 사용될 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;제외&lt;/i&gt; 규정은 사용되지 않을 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;포함&lt;/i&gt; 규정이 없으면 모든 곡으로 (&lt;i&gt;제외&lt;/i&gt;부터의 가로줄) 생각합니다.&lt;/p&gt;&lt;p&gt;예. &apos;어떤이 또는 여러 연주자의 Rock 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이 장르=Rock&lt;/li&gt;&lt;li&gt;포함 음반연주자=여러연주자&lt;/li&gt;&lt;/ul&gt; &apos;다른 음반이 아닌 어떤이의 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이&lt;/li&gt;&lt;li&gt;제외 음반연주자=어떤이 음반=다른&lt;/li&gt;&lt;/ul&gt;사용할 곡이 만들어진 다음, 칸타타는 무작위 곡을 골라 10곡의 연주순서를 만듭니다. 등급이 지정되면, 그 등급의 곡들만 사용됩니다. 곡 길이도 마찬가지입니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../dynamic/dynamicrulesdialog.cpp" line="318"/>
@@ -8187,22 +8187,22 @@ Overwrite?</source>
     <message>
         <location filename="../gui/filesettings.ui" line="32"/>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="unfinished">내려받은 음반, 연주자, 작곡가 이미지를 음악 폴더에 저장합니다</translation>
+        <translation type="unfinished">내려받은 음반, 연주자, 작곡가 이미지를 음악 폴더에 저장</translation>
     </message>
     <message>
         <location filename="../gui/filesettings.ui" line="39"/>
         <source>Save downloaded lyrics in music folder</source>
-        <translation type="unfinished">음악 폴더에 내려받은 가사 저장</translation>
+        <translation type="unfinished">내려받은 가사를 음악 폴더에 저장</translation>
     </message>
     <message>
         <location filename="../gui/filesettings.ui" line="46"/>
         <source>Save downloaded backdrops in music folder</source>
-        <translation type="unfinished">음악 폴더에 내려받은 배경 저장</translation>
+        <translation type="unfinished">내려받은 배경을 음악 폴더에 저장</translation>
     </message>
     <message>
         <location filename="../gui/filesettings.ui" line="53"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="unfinished">음악폴더에 음반표지, 가사 또는 배경을 저장하는데 쓰기 권한이 없다면, 개인 캐시 폴더에 파일들 저장합니다.</translation>
+        <translation type="unfinished">음악폴더에 음반표지, 가사나 배경을 저장하는데 쓰기 권한이 없다면, 개인 캐시 폴더에 파일 저장합니다.</translation>
     </message>
     <message>
         <location filename="../gui/filesettings.ui" line="60"/>
@@ -8331,7 +8331,7 @@ Overwrite?</source>
         <location filename="../devices/filenameschemedialog.cpp" line="61"/>
         <source>Various Artists</source>
         <comment>Example album artist</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">여러 연주자</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.cpp" line="62"/>
@@ -8564,27 +8564,27 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="643"/>
         <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;인터넷으로부터 없는 음반표지와 가사를 내려받습니다.&lt;/p&gt;&lt;p&gt;이를 위하여, 음악폴더 또는 개인 캐시/설정 폴더에 내려받을 지를 확인합니다.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;인터넷으로부터 없는 음반표지와 가사를 내려받습니다.&lt;/p&gt;&lt;p&gt;이를 위하여, 음악폴더나 개인 캐시/설정 폴더에 내려받을 지를 확인합니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="675"/>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="unfinished">내려받은 음반, 연주자, 작곡가 이미지를 음악 폴더에 저장합니다</translation>
+        <translation type="unfinished">내려받은 음반, 연주자, 작곡가 이미지를 음악 폴더에 저장</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="682"/>
         <source>Save downloaded lyrics in music folder</source>
-        <translation type="unfinished">음악 폴더에 내려받은 가사 저장</translation>
+        <translation type="unfinished">내려받은 가사를 음악 폴더에 저장</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="689"/>
         <source>Save downloaded backdrops in music folder</source>
-        <translation type="unfinished">음악 폴더에 내려받은 배경 저장</translation>
+        <translation type="unfinished">내려받은 배경을 음악 폴더에 저장</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="696"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="unfinished">음악폴더에 음반표지, 가사 또는 배경을 저장하는데 쓰기 권한이 없다면, 개인 캐시 폴더에 파일들 저장합니다.</translation>
+        <translation type="unfinished">음악폴더에 음반표지, 가사나 배경을 저장하는데 쓰기 권한이 없다면, 개인 캐시 폴더에 저장합니다.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="703"/>
@@ -8614,7 +8614,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="827"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation type="unfinished">&lt;b&gt;경고:&lt;/b&gt; 지금 &apos;사용자&apos; 그룹에 포함되어 있지 않습니다. 이 그룹의 사용자라면 음반표지 및 가사를 저장하는 등의 기능을 더 잘 수행합니다. 만약 본인이나 관리자가 사용자를 이 그룹에 추가하였다면 다시 로그인을 해야 합니다.</translation>
+        <translation type="unfinished">&lt;b&gt;경고:&lt;/b&gt; 지금 &apos;사용자&apos; 그룹에 포함되어 있지 않습니다. 이 그룹의 사용자라면 음반표지와 가사를 저장하는 등의 기능을 더 잘 수행합니다. 만약 본인이나 관리자가 사용자를 이 그룹에 추가하였다면 다시 로그인을 해야 합니다.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="57"/>
@@ -8634,7 +8634,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="159"/>
         <source>Cantata will now terminate</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">칸타타가 중지하지 않습니다</translation>
     </message>
 </context>
 <context>
@@ -9052,7 +9052,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="404"/>
         <source>English (en)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">영어 (en)</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="409"/>
@@ -9121,12 +9121,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="80"/>
         <source>The key you just pressed is not supported by Qt.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">누른 키가 Qt에서 지원되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="81"/>
         <source>Unsupported Key</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">지원하지 않는 키</translation>
     </message>
 </context>
 <context>
@@ -9135,37 +9135,37 @@ This cannot be undone.</source>
         <location filename="../support/keysequencewidget.cpp" line="176"/>
         <source>Click on the button, then enter the shortcut like you would in the program.
 Example for Ctrl+a: hold the Ctrl key and press a.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">단추를 누르고 사용할 단축키를 입력합니다.</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="274"/>
         <source>Meta</source>
         <comment>Meta key</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">메타키</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="275"/>
         <source>Ctrl</source>
         <comment>Ctrl key</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl 키</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="276"/>
         <source>Alt</source>
         <comment>Alt key</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alt 키</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="277"/>
         <source>Shift</source>
         <comment>Shift key</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Shift 키</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="281"/>
         <source>Input</source>
         <comment>What the user inputs now will be taken as the new shortcut</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">입력</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="288"/>
@@ -9177,28 +9177,28 @@ Example for Ctrl+a: hold the Ctrl key and press a.</source>
         <location filename="../support/keysequencewidget.cpp" line="383"/>
         <location filename="../support/keysequencewidget.cpp" line="389"/>
         <source>Shortcut Conflict</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">단축키 중복</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="384"/>
         <source>The &quot;%1&quot; shortcut is already in use, and cannot be configured.
 Please choose another one.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&quot;%1&quot; 단축키가 이미 사용중이라서 설정할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="390"/>
         <source>The &quot;%1&quot; shortcut is ambiguous with the shortcut for the following action:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&quot;%1&quot; 다음 동작의 단축키가 명확하지 않습니다:</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="392"/>
         <source>Do you want to reassign this shortcut to the selected action?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">이 단축키를 선택한 동작으로 다시 지정할까요?</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="395"/>
         <source>Reassign</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">다시 지정</translation>
     </message>
 </context>
 <context>
@@ -9214,7 +9214,7 @@ Please choose another one.</source>
     <message>
         <location filename="../db/librarydb.cpp" line="549"/>
         <source>Database error - please check Qt SQLite driver is installed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">데이터베이스 오류 - Qt SQLite 드라이버가 설치되었는지 확인바랍니다</translation>
     </message>
 </context>
 <context>
@@ -9580,12 +9580,12 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.cpp" line="278"/>
         <source>Seek forward (%1 seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">앞으로 가기 (%1 초)</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="279"/>
         <source>Seek backward (%1 seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">뒤로 가기 (%1 초)</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="292"/>
@@ -9675,12 +9675,12 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.cpp" line="328"/>
         <source>Play next</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">다음 곡 재생</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="331"/>
         <source>Edit Track Information (Play Queue)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">곡 정보 수정 (연주순서)</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="334"/>
@@ -10352,7 +10352,7 @@ Add to that playlist?</source>
     <message>
         <location filename="../context/othersettings.ui" line="206"/>
         <source>Only show &apos;Artist&apos;, &apos;Album&apos;, or &apos;Track&apos; even if sufficient width to show all three.</source>
-        <translation type="unfinished">세 화면 모두 볼 수 있는 폭이더라도, &apos;연주자&apos;, &apos;음반&apos; 또는 &apos;가사&apos;만 봅니다.</translation>
+        <translation type="unfinished">세 화면 모두 볼 수 있는 폭이더라도, &apos;연주자&apos;, &apos;음반&apos;이나 &apos;가사&apos;만 봅니다.</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="213"/>
@@ -10445,7 +10445,7 @@ Add to that playlist?</source>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="175"/>
         <source>Original Year</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">원본 연도</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="176"/>
@@ -10779,7 +10779,7 @@ Add to that playlist?</source>
         <location filename="../online/podcastsearchdialog.cpp" line="602"/>
         <location filename="../online/podcastsearchdialog.cpp" line="606"/>
         <source>Search for podcasts on %1</source>
-        <translation type="unfinished">%1에서 팟캐스트를 찾기</translation>
+        <translation type="unfinished">%1에서 팟캐스트 찾기</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="618"/>
@@ -10789,12 +10789,12 @@ Add to that playlist?</source>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="692"/>
         <source>Browse %1</source>
-        <translation type="unfinished">%1 둘러보기</translation>
+        <translation type="unfinished">%1 보기</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="692"/>
         <source>Browse %1 podcasts</source>
-        <translation type="unfinished">%1 팟캐스트 둘러보기</translation>
+        <translation type="unfinished">%1 팟캐스트 보기</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="708"/>
@@ -11058,7 +11058,7 @@ Add to that playlist?</source>
     <message>
         <location filename="../online/podcastwidget.cpp" line="48"/>
         <source>Show Unplayed Only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">듣지 않은 것만 보기</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="140"/>
@@ -11110,7 +11110,7 @@ Add to that playlist?</source>
     <message>
         <location filename="../online/podcastwidget.cpp" line="283"/>
         <source>Refresh all subscriptions, or only those selected?</source>
-        <translation type="unfinished">전체 또는 선택된 구독만 새로 읽을까요?</translation>
+        <translation type="unfinished">전체나 선택된 구독만 새로 읽을까요?</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="283"/>
@@ -11569,7 +11569,7 @@ Add to that playlist?</source>
     <message>
         <location filename="../dynamic/dynamicrulesdialog.cpp" line="83"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">파일</translation>
     </message>
     <message>
         <location filename="../dynamic/dynamicrulesdialog.cpp" line="95"/>
@@ -11963,7 +11963,7 @@ width x height</comment>
     <message>
         <location filename="../mpd-interface/song.cpp" line="60"/>
         <source>Various Artists</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">여러 연주자</translation>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="542"/>
@@ -11993,7 +11993,7 @@ width x height</comment>
     <message>
         <location filename="../mpd-interface/song.cpp" line="558"/>
         <source>Orignal Year</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">원본 연도</translation>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="561"/>
@@ -12347,7 +12347,7 @@ width x height</comment>
     <message>
         <location filename="../devices/remotedevicepropertiesdialog.cpp" line="59"/>
         <source>Add Device</source>
-        <translation type="unfinished">장치 추가</translation>
+        <translation type="unfinished">장치 연결</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertiesdialog.cpp" line="90"/>
@@ -12458,7 +12458,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="50"/>
         <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="unfinished">삼바 공유 (호스트 및 포트 자동 검색)</translation>
+        <translation type="unfinished">삼바 공유 (호스트와 포트 자동 검색)</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="51"/>
@@ -12468,7 +12468,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="52"/>
         <source>Locally Mounted Folder</source>
-        <translation type="unfinished">로컬 마운트 폴더</translation>
+        <translation type="unfinished">로컬 폴더 마운트</translation>
     </message>
 </context>
 <context>
@@ -12662,7 +12662,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../replaygain/rgdialog.cpp" line="259"/>
         <source>Do you wish to scan all tracks, or only tracks without existing tags?</source>
-        <translation type="unfinished">모든 곡 또는 태그가 없는 곡만 검색할까요?</translation>
+        <translation type="unfinished">모든 곡이나 태그가 없는 곡만 검색할까요?</translation>
     </message>
     <message>
         <location filename="../replaygain/rgdialog.cpp" line="260"/>
@@ -12910,12 +12910,12 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="226"/>
         <source>Original Date:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">원본 날짜:</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="227"/>
         <source>Find songs be searching the &apos;Original Date&apos; tag.&lt;br/&gt;&lt;br/&gt;Usually just entering the year should suffice.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">곡 찾기 &apos;원본 날짜&apos; tag.&lt;br/&gt;&lt;br/&gt;대부분 연도 입력만으로 충분합니다.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="230"/>
@@ -12925,7 +12925,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="231"/>
         <source>Enter date (YYYY/MM/DD - e.g. 2015/01/31) to search for files modified since that date.&lt;br/&gt;&lt;br&gt;Or enter a number of days to find files that were modified in the previous number of days.</source>
-        <translation type="unfinished">이후에 바뀐 파일을 찾기위해 날짜 (YYYY/MM/DD - e.g. 2015/01/31)를 넣습니다.&lt;br/&gt;&lt;br&gt;또는 이전에 바뀐 날짜 수를 넣습니다.</translation>
+        <translation type="unfinished">이후에 바뀐 파일을 찾기위해 날짜 (YYYY/MM/DD - e.g. 2015/01/31)를 넣습니다.&lt;br/&gt;&lt;br&gt;아니면 이전에 바뀐 날짜 수를 넣습니다.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="234"/>
@@ -13032,12 +13032,12 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/serversettings.cpp" line="87"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, and transferring to (and from) devices.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">이 폴더는 태그 수정, 리플레이게인, 장치로(부터) 전송할 음원을 찾기위해 사용됩니다.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.cpp" line="90"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, etc.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">이 폴더는 태그 수정, 리플레이게인 등을 위한 음원을 찾기위해 사용됩니다.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.cpp" line="257"/>
@@ -13118,12 +13118,12 @@ Please choose a different name.</source>
     <message>
         <location filename="../support/shortcutsmodel.cpp" line="112"/>
         <source>Action</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">동작</translation>
     </message>
     <message>
         <location filename="../support/shortcutsmodel.cpp" line="114"/>
         <source>Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">단축키</translation>
     </message>
 </context>
 <context>
@@ -13136,7 +13136,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../support/shortcutssettingswidget.ui" line="65"/>
         <source>Shortcut for Selected Action</source>
-        <translation type="unfinished">선택된 기능 단축키</translation>
+        <translation type="unfinished">선택된 동작의 단축키</translation>
     </message>
     <message>
         <location filename="../support/shortcutssettingswidget.ui" line="71"/>
@@ -13624,7 +13624,7 @@ Overwrite?</source>
     <message>
         <location filename="../streams/streamdialog.cpp" line="49"/>
         <source>Add stream to favourites</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">스트림을 즐겨찾기에 추가</translation>
     </message>
     <message>
         <location filename="../streams/streamdialog.cpp" line="54"/>

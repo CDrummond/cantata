@@ -41,6 +41,12 @@
 #cmakedefine UNITY_MENU_HACK 1
 #cmakedefine ENABLE_SIMPLE_MPD_SUPPORT 1
 
+#cmakedefine HAVE_CDIO_PARANOIA_H 1
+#cmakedefine HAVE_CDIO_PARANOIA_PARANOIA_H 1
+#cmakedefine HAVE_CDIO_CDDA_H 1
+#cmakedefine HAVE_CDIO_PARANOIA_CDDA_H 1
+
+
 #ifdef ENABLE_UBUNTU
 #define CANTATA_REV_URL "com.ubuntu.developer.nikwen.cantata-touch-reboot" //Sadly, it requires the com.ubuntu.developer.nikwen prefix to be published to the click store
 #else

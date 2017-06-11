@@ -356,6 +356,10 @@ static bool songsSortArAl(const Song &a, const Song &b)
 
 static QString artistSort(const Song &s)
 {
+    if (s.useComposer() && !s.composer().isEmpty()) {
+        return s.composer();
+
+    }
     if (!s.artistSortString().isEmpty()) {
         return s.artistSortString();
     }

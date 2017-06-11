@@ -29,7 +29,6 @@
 
 #include <QDateTime>
 #include <QObject>
-#include <sys/time.h>
 
 struct MPDStatsValues
 {

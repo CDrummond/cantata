@@ -289,17 +289,19 @@ void BrowseModel::folderContents(const QString &path, const QStringList &folders
         return;
     }
 
-    QModelIndex idx=it.value()==root ? QModelIndex() : createIndex(it.value()->getRow(), 0, it.value());
+	if (folders.count() + songs.count()) {
+		QModelIndex idx=it.value()==root ? QModelIndex() : createIndex(it.value()->getRow(), 0, it.value());
 
-    beginInsertRows(idx, 0, folders.count()+songs.count()-1);
-    foreach (const QString &folder, folders) {
-        FolderItem *item=new FolderItem(folder.split("/", QString::SkipEmptyParts).last(), folder, it.value());
-        it.value()->add(item);
-        folderIndex.insert(folder, item);
-    }
-    foreach (const Song &song, songs) {
-        it.value()->add(new TrackItem(song, it.value()));
-    }
-    it.value()->setState(FolderItem::State_Fetched);
-    endInsertRows();
+		beginInsertRows(idx, 0, folders.count() + songs.count() - 1);
+		foreach(const QString &folder, folders) {
+			FolderItem *item = new FolderItem(folder.split("/", QString::SkipEmptyParts).last(), folder, it.value());
+			it.value()->add(item);
+			folderIndex.insert(folder, item);
+		}
+		foreach(const Song &song, songs) {
+			it.value()->add(new TrackItem(song, it.value()));
+		}
+		it.value()->setState(FolderItem::State_Fetched);
+		endInsertRows();
+	}
 }

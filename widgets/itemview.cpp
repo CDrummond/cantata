@@ -1326,12 +1326,12 @@ void ItemView::backActivated()
     setTitle();
 
     if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
-        QModelIndex idx=static_cast<QSortFilterProxyModel *>(listView->model())->mapFromSource(prevTopIndex);
+        QModelIndex idx=static_cast<QSortFilterProxyModel *>(listView->model())->mapFromSource(prevTopIndex[currentLevel]);
         if (idx.isValid()) {
             listView->scrollTo(idx, QAbstractItemView::PositionAtTop);
         }
     } else {
-        listView->scrollTo(prevTopIndex, QAbstractItemView::PositionAtTop);
+        listView->scrollTo(prevTopIndex[currentLevel], QAbstractItemView::PositionAtTop);
     }
 }
 
@@ -1394,9 +1394,9 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
             return;
         }
 
-        prevTopIndex=listView->indexAt(QPoint(8, 8));
+        prevTopIndex[currentLevel]=listView->indexAt(QPoint(8, 8));
         if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
-            prevTopIndex=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(prevTopIndex);
+            prevTopIndex[currentLevel] =static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(prevTopIndex[currentLevel]);
         }
         setLevel(currentLevel+1, itemModel->canFetchMore(fistChild) || fistChild.child(0, 0).isValid());
         listView->setRootIndex(index);

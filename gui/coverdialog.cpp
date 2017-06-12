@@ -735,9 +735,9 @@ void CoverDialog::sendGoogleQuery(const QString &fixedQuery, int page)
 
 void CoverDialog::sendSpotifyQuery(const QString &fixedQuery)
 {
-#ifdef QT_NO_SSL
-	return;
-#else
+    #ifdef QT_NO_SSL
+    return;
+    #else
     if (!QSslSocket::supportsSsl()) {
         return;
     }
@@ -749,7 +749,7 @@ void CoverDialog::sendSpotifyQuery(const QString &fixedQuery)
     query.addQueryItem("q", fixedQuery);
     url.setQuery(query);
     sendQueryRequest(url);
-#endif
+    #endif
 }
 
 void CoverDialog::sendITunesQuery(const QString &fixedQuery)

@@ -199,11 +199,11 @@ NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
 
     // Windows builds do not support HTTPS - unless QtNetwork is recompiled...
     NetworkJob *reply=0;
-	bool supportsSsl = false;
-#ifndef QT_NO_SSL
-	supportsSsl = QSslSocket::supportsSsl();
-#endif
-	if (QLatin1String("https")==req.url().scheme() && !supportsSsl) {
+    bool supportsSsl = false;
+    #ifndef QT_NO_SSL
+    supportsSsl = QSslSocket::supportsSsl();
+    #endif
+    if (QLatin1String("https")==req.url().scheme() && !supportsSsl) {
         QUrl httpUrl=request.url();
         httpUrl.setScheme(QLatin1String("http"));
         request.setUrl(httpUrl);

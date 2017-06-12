@@ -893,7 +893,6 @@ void ItemView::setLevel(int l, bool haveChildren)
     if (isVisible()) {
         backAction->setEnabled(0!=currentLevel);
     }
-	if (!currentLevel) prevTopIndex.clear();
 
     if (Mode_IconTop==mode) {
         if (0==currentLevel || haveChildren) {

@@ -199,7 +199,7 @@ private:
     QAbstractItemModel *itemModel;
     int currentLevel;
     Mode mode;
-    QModelIndex prevTopIndex[3];			//max 4 levels - last one
+    QModelIndexList prevTopIndex;
     QSize iconGridSize;
     QSize listGridSize;
     GroupedView *groupedView;

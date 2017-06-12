@@ -751,6 +751,7 @@ void ItemView::setMode(Mode m)
         return;
     }
 
+    prevTopIndex.clear();
     searchWidget->setText(QString());
     if (!title->property(constAlwaysShowProp).toBool()) {
         title->setVisible(false);

@@ -68,6 +68,7 @@ MpdLibraryDb::MpdLibraryDb(QObject *p)
     : LibraryDb(p, "MPD")
     , loading(false)
     , coverQuery(0)
+    , albumIdOnlyCoverQuery(0)
     , artistImageQuery(0)
 {
     connect(MPDConnection::self(), SIGNAL(updatingLibrary(time_t)), this, SLOT(updateStarted(time_t)));
@@ -94,6 +95,13 @@ Song MpdLibraryDb::getCoverSong(const QString &artistId, const QString &albumId)
                 artistImageQuery->prepare("select * from songs where artistId=:artistId limit 1;");
             }
             query=artistImageQuery;
+        } else if (artistId.isEmpty()) {
+            if (!albumIdOnlyCoverQuery) {
+                albumIdOnlyCoverQuery=new QSqlQuery(*db);
+                albumIdOnlyCoverQuery->prepare("select * from songs where albumId=:albumId limit 1;");
+            }
+            albumIdOnlyCoverQuery->bindValue(":albumId", albumId);
+            query=albumIdOnlyCoverQuery;
         } else {
             if (!coverQuery) {
                 coverQuery=new QSqlQuery(*db);

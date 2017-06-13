@@ -177,7 +177,8 @@ void SqlLibraryModel::libraryUpdated()
         QList<LibraryDb::Album> albums=db->getAlbums(QString(), QString(), albumSort);
         if (!albums.isEmpty())  {
             foreach (const LibraryDb::Album &album, albums) {
-                root->add(new AlbumItem(album.artist, album.id, Song::displayAlbum(album.name, album.year),
+                root->add(new AlbumItem(T_Album==tl && album.identifyById ? QString() : album.artist,
+                                        album.id, Song::displayAlbum(album.name, album.year),
                                         T_Album==tl
                                             ? album.artist
                                             : tr("%n Tracks (%1)", "", album.trackCount).arg(Utils::formatTime(album.duration, true)), root));

@@ -759,6 +759,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
         DBUG << query.executedQuery() << timer.elapsed();
         int count=0;
         QMap<QString, Album> entries;
+        QMap<QString, QSet<QString> > albumIdArtists; // MAp of albumId -> albumartists/composers
         while (query.next()) {
             count++;
             int col=0;
@@ -783,11 +784,15 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
             int lastModified=wantModified ? query.value(col++).toInt() : 0;
             QString artist=wantArtist ? query.value(col++).toString() : QString();
             QString artistSort=wantArtist ? query.value(col++).toString() : QString();
-            QString key='{'+albumId+"}{"+(wantArtist ? artist : artistId)+'}';
+            // If listing albums not filtered on artist, then if we have a unqique id for the album use that.
+            // This will allow us to grouup albums with different composers when the composer tweak is set
+            // Issue #1025
+            bool haveUniqueId=wantArtist && !albumId.isEmpty() && !album.isEmpty() && albumId!=album;
+            QString key=haveUniqueId ? albumId : ('{'+albumId+"}{"+(wantArtist ? artist : artistId)+'}');
             QMap<QString, Album>::iterator it=entries.find(key);
 
             if (it==entries.end()) {
-                entries.insert(key, Album(album.isEmpty() ? albumId : album, albumId, albumSort, artist, artistSort, year, 1, time, lastModified));
+                entries.insert(key, Album(album.isEmpty() ? albumId : album, albumId, albumSort, artist, artistSort, year, 1, time, lastModified, haveUniqueId));
             } else {
                 Album &al=it.value();
                 if (wantModified) {
@@ -797,7 +802,28 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
                 al.duration+=time;
                 al.trackCount++;
             }
+            if (haveUniqueId) {
+                QMap<QString, QSet<QString> >::iterator aIt = albumIdArtists.find(key);
+                if (aIt == albumIdArtists.end()) {
+                    albumIdArtists.insert(key, QSet<QString>() << artist);
+                } else {
+                    aIt.value().insert(artist);
+                }
+            }
         }
+
+        QMap<QString, QSet<QString> >::ConstIterator aIt = albumIdArtists.constBegin();
+        QMap<QString, QSet<QString> >::ConstIterator aEnd = albumIdArtists.constEnd();
+        for(; aIt!=aEnd; ++aIt) {
+            if (aIt.value().count()>1) {
+                QStringList artists = aIt.value().toList();
+                artists.sort();
+                Album &al = entries.find(aIt.key()).value();
+                al.artist = artists.join(", ");
+                al.artistSort = QString();
+            }
+        }
+
         albums=entries.values();
         DBUG << count << albums.count();
     }

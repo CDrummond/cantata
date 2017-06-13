@@ -123,13 +123,6 @@ public:
         QString artistId;
     };
 
-    struct AlbumInfo {
-        QString albumName;
-        QString albumId;
-        QString artistId;
-        QString genreId;
-    };
-
     SqlLibraryModel(LibraryDb *d, QObject *p, Type top=T_Artist);
 
     void clear();

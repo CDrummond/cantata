@@ -64,6 +64,7 @@ private:
 private:
     bool loading;
     QSqlQuery *coverQuery;
+    QSqlQuery *albumIdOnlyCoverQuery;
     QSqlQuery *artistImageQuery;
 };
 

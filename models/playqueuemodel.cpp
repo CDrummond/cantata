@@ -76,6 +76,7 @@ static const QLatin1String constSortByYearKey("year");
 static const QLatin1String constSortByComposerKey("composer");
 static const QLatin1String constSortByPerformerKey("performer");
 static const QLatin1String constSortByTitleKey("title");
+static const QLatin1String constSortByNumberKey("track");
 
 static bool checkExtension(const QString &file)
 {
@@ -249,6 +250,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     addSortAction(tr("Album Artist"), constSortByAlbumArtistKey);
     addSortAction(tr("Album"), constSortByAlbumKey);
     addSortAction(tr("Track Title"), constSortByTitleKey);
+    addSortAction(tr("Track Number"), constSortByNumberKey);
     addSortAction(tr("Genre"), constSortByGenreKey);
     addSortAction(tr("Year"), constSortByYearKey);
     addSortAction(tr("Composer"), constSortByComposerKey);
@@ -1210,6 +1212,11 @@ static bool titleSort(const Song *s1, const Song *s2)
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
+static bool trackSort(const Song *s1, const Song *s2)
+{
+    return s1->track<s2->track || (s1->track==s2->track && (*s1)<(*s2));
+}
+
 void PlayQueueModel::sortBy()
 {
     Action *act=qobject_cast<Action *>(sender());
@@ -1237,6 +1244,8 @@ void PlayQueueModel::sortBy()
             qSort(copy.begin(), copy.end(), performerSort);
         } else if (constSortByTitleKey==key) {
             qSort(copy.begin(), copy.end(), titleSort);
+        } else if (constSortByNumberKey==key) {
+            qSort(copy.begin(), copy.end(), trackSort);
         }
         QList<quint32> positions;
         foreach (const Song *s, copy) {

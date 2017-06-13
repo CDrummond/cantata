@@ -5344,7 +5344,7 @@ Please choose another one.</source>
 <context>
     <name>LibraryDb</name>
     <message>
-        <location filename="../db/librarydb.cpp" line="549"/>
+        <location filename="../db/librarydb.cpp" line="553"/>
         <source>Database error - please check Qt SQLite driver is installed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6528,124 +6528,129 @@ Add to that playlist?</source>
 <context>
     <name>PlayQueueModel</name>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="168"/>
+        <location filename="../models/playqueuemodel.cpp" line="169"/>
         <source>Title</source>
         <translation type="unfinished">标题</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="169"/>
-        <location filename="../models/playqueuemodel.cpp" line="248"/>
+        <location filename="../models/playqueuemodel.cpp" line="170"/>
+        <location filename="../models/playqueuemodel.cpp" line="249"/>
         <source>Artist</source>
         <translation type="unfinished">艺术家</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="170"/>
-        <location filename="../models/playqueuemodel.cpp" line="250"/>
+        <location filename="../models/playqueuemodel.cpp" line="171"/>
+        <location filename="../models/playqueuemodel.cpp" line="251"/>
         <source>Album</source>
         <translation type="unfinished">专辑</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="171"/>
+        <location filename="../models/playqueuemodel.cpp" line="172"/>
         <source>#</source>
         <comment>Track number</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="172"/>
+        <location filename="../models/playqueuemodel.cpp" line="173"/>
         <source>Length</source>
         <translation type="unfinished">长度</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="173"/>
+        <location filename="../models/playqueuemodel.cpp" line="174"/>
         <source>Disc</source>
         <translation type="unfinished">碟片</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="174"/>
-        <location filename="../models/playqueuemodel.cpp" line="253"/>
+        <location filename="../models/playqueuemodel.cpp" line="175"/>
+        <location filename="../models/playqueuemodel.cpp" line="255"/>
         <source>Year</source>
         <translation type="unfinished">年份</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="175"/>
+        <location filename="../models/playqueuemodel.cpp" line="176"/>
         <source>Original Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="176"/>
-        <location filename="../models/playqueuemodel.cpp" line="252"/>
+        <location filename="../models/playqueuemodel.cpp" line="177"/>
+        <location filename="../models/playqueuemodel.cpp" line="254"/>
         <source>Genre</source>
         <translation type="unfinished">流派</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="177"/>
+        <location filename="../models/playqueuemodel.cpp" line="178"/>
         <source>Priority</source>
         <translation type="unfinished">优先级</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="178"/>
-        <location filename="../models/playqueuemodel.cpp" line="254"/>
+        <location filename="../models/playqueuemodel.cpp" line="179"/>
+        <location filename="../models/playqueuemodel.cpp" line="256"/>
         <source>Composer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="179"/>
-        <location filename="../models/playqueuemodel.cpp" line="255"/>
+        <location filename="../models/playqueuemodel.cpp" line="180"/>
+        <location filename="../models/playqueuemodel.cpp" line="257"/>
         <source>Performer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="180"/>
+        <location filename="../models/playqueuemodel.cpp" line="181"/>
         <source>Rating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="226"/>
+        <location filename="../models/playqueuemodel.cpp" line="227"/>
         <source>Remove Duplicates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="229"/>
+        <location filename="../models/playqueuemodel.cpp" line="230"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="231"/>
+        <location filename="../models/playqueuemodel.cpp" line="232"/>
         <source>Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="237"/>
+        <location filename="../models/playqueuemodel.cpp" line="238"/>
         <source>Shuffle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="239"/>
+        <location filename="../models/playqueuemodel.cpp" line="240"/>
         <source>Tracks</source>
         <translation type="unfinished">音轨</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="240"/>
+        <location filename="../models/playqueuemodel.cpp" line="241"/>
         <source>Albums</source>
         <translation type="unfinished">专辑</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="246"/>
+        <location filename="../models/playqueuemodel.cpp" line="247"/>
         <source>Sort By</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="249"/>
+        <location filename="../models/playqueuemodel.cpp" line="250"/>
         <source>Album Artist</source>
         <translation type="unfinished">专辑艺术家</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="251"/>
+        <location filename="../models/playqueuemodel.cpp" line="252"/>
         <source>Track Title</source>
         <translation type="unfinished">音轨标题</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="309"/>
+        <location filename="../models/playqueuemodel.cpp" line="253"/>
+        <source>Track Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/playqueuemodel.cpp" line="311"/>
         <source># (Track Number)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9545,27 +9550,27 @@ Reload from disk, or delete disk copy and download?</source>
     </message>
     <message numerus="yes">
         <location filename="../models/sqllibrarymodel.cpp" line="171"/>
-        <location filename="../models/sqllibrarymodel.cpp" line="282"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="283"/>
         <source>%n Album(s)</source>
         <translation type="unfinished">
             <numerusform>%n 专辑&quot;</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/sqllibrarymodel.cpp" line="183"/>
-        <location filename="../models/sqllibrarymodel.cpp" line="294"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="184"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="295"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n 音轨 (%1)</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="353"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="354"/>
         <source>Cue Sheet</source>
         <translation type="unfinished">Cue 表</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="353"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="354"/>
         <source>Playlist</source>
         <translation type="unfinished">播放列表</translation>
     </message>

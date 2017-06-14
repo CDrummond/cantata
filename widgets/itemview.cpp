@@ -864,6 +864,7 @@ QModelIndexList ItemView::selectedIndexes(bool sorted) const
 void ItemView::goToTop()
 {
     setLevel(0);
+    prevTopIndex.clear();
     if (dynamic_cast<ProxyModel *>(itemModel)) {
         static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
     }
@@ -1326,8 +1327,8 @@ void ItemView::backActivated()
     emit rootIndexSet(listView->rootIndex().parent());
     setTitle();
 
-	if (prevTopIndex.isEmpty()) return;
-	QModelIndex prevTop = prevTopIndex.takeLast();
+    if (prevTopIndex.isEmpty()) return;
+    QModelIndex prevTop = prevTopIndex.takeLast();
     if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
         QModelIndex idx=static_cast<QSortFilterProxyModel *>(listView->model())->mapFromSource(prevTop);
         if (idx.isValid()) {
@@ -1397,11 +1398,11 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
             return;
         }
 
-		QModelIndex curTop=listView->indexAt(QPoint(8, 8));
+        QModelIndex curTop=listView->indexAt(QPoint(8, 8));
         if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
-			curTop=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(curTop);
+            curTop=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(curTop);
         }
-		prevTopIndex.append(curTop);
+        prevTopIndex.append(curTop);
         setLevel(currentLevel+1, itemModel->canFetchMore(fistChild) || fistChild.child(0, 0).isValid());
         listView->setRootIndex(index);
         setTitle();

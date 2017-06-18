@@ -4352,7 +4352,7 @@ Aggiungere i brani a quella scaletta?</translation>
     <message>
         <location filename="../gui/playbacksettings.cpp" line="162"/>
         <source>&lt;i&gt;Connected to %1&lt;br/&gt;The entries below apply to the currently connected MPD collection.&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Connesso a %1&lt;br/&gt;Le voci sottostanti si applica no alla collezione di MPD attualmente connesso.&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;Connesso a %1&lt;br/&gt;Le voci sottostanti si applicano alla collezione di MPD attualmente connessa.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.cpp" line="172"/>

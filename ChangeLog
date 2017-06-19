@@ -82,6 +82,8 @@
 64. Use libcdio_cdparanoia
 65. If 'composer genre' is set in tweaks, then use composer to sort artists.
 66. Add 'Sort by track number' to playqueue.
+67. When grouping albums, use musicbrainz album id (if set, and MPD configured
+    for this - album name + year otherwise.
 
 2.0.1
 -----

@@ -325,7 +325,7 @@ void NowPlayingWidget::update(const Song &song)
         if (song.title.isEmpty() && song.artist.isEmpty() && (!name.isEmpty() || !song.file.isEmpty())) {
             track->setText(name.isEmpty() ? song.file : name);
         } else {
-            track->setText(song.title+(song.origYear>0 ? QLatin1String(" (")+QString::number(song.origYear)+QLatin1Char(')') : QString()));
+            track->setText(song.title+(song.origYear>0 && song.origYear!=song.year ? QLatin1String(" (")+QString::number(song.origYear)+QLatin1Char(')') : QString()));
         }
         if (song.album.isEmpty() && song.artist.isEmpty()) {
             artist->setText(track->fullText().isEmpty() ? QString() : Song::unknown());

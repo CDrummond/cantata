@@ -751,6 +751,7 @@ void ItemView::setMode(Mode m)
         return;
     }
 
+    prevTopIndex.clear();
     searchWidget->setText(QString());
     if (!title->property(constAlwaysShowProp).toBool()) {
         title->setVisible(false);
@@ -863,6 +864,7 @@ QModelIndexList ItemView::selectedIndexes(bool sorted) const
 void ItemView::goToTop()
 {
     setLevel(0);
+    prevTopIndex.clear();
     if (dynamic_cast<ProxyModel *>(itemModel)) {
         static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
     }
@@ -1325,13 +1327,15 @@ void ItemView::backActivated()
     emit rootIndexSet(listView->rootIndex().parent());
     setTitle();
 
+    if (prevTopIndex.isEmpty()) return;
+    QModelIndex prevTop = prevTopIndex.takeLast();
     if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
-        QModelIndex idx=static_cast<QSortFilterProxyModel *>(listView->model())->mapFromSource(prevTopIndex);
+        QModelIndex idx=static_cast<QSortFilterProxyModel *>(listView->model())->mapFromSource(prevTop);
         if (idx.isValid()) {
             listView->scrollTo(idx, QAbstractItemView::PositionAtTop);
         }
     } else {
-        listView->scrollTo(prevTopIndex, QAbstractItemView::PositionAtTop);
+        listView->scrollTo(prevTop, QAbstractItemView::PositionAtTop);
     }
 }
 
@@ -1394,10 +1398,11 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
             return;
         }
 
-        prevTopIndex=listView->indexAt(QPoint(8, 8));
+        QModelIndex curTop=listView->indexAt(QPoint(8, 8));
         if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
-            prevTopIndex=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(prevTopIndex);
+            curTop=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(curTop);
         }
+        prevTopIndex.append(curTop);
         setLevel(currentLevel+1, itemModel->canFetchMore(fistChild) || fistChild.child(0, 0).isValid());
         listView->setRootIndex(index);
         setTitle();

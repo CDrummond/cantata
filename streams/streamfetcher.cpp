@@ -30,6 +30,11 @@
 #include <QUrl>
 #include <QXmlStreamReader>
 
+#ifdef _MSC_VER 
+#define strncasecmp _strnicmp
+#define strcasecmp _stricmp
+#endif
+
 #include <QDebug>
 static bool debugEnabled=false;
 #define DBUG if (debugEnabled) qWarning() << "StreamFetcher" << __FUNCTION__

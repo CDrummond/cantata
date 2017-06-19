@@ -28,7 +28,6 @@
 #include "mpd-interface/song.h"
 #include "support/utils.h"
 #include <QMap>
-#include <sys/time.h>
 
 struct MPDStatsValues;
 

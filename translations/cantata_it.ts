@@ -434,7 +434,7 @@ Continuare con le impostazioni predefinite?</translation>
         <location filename="../devices/albumdetailsdialog.cpp" line="140"/>
         <location filename="../devices/albumdetailsdialog.cpp" line="277"/>
         <source>Capitalize</source>
-        <translation>Aggiusta maiuscole</translation>
+        <translation>Aggiusta Maiuscole</translation>
     </message>
     <message>
         <location filename="../devices/albumdetailsdialog.cpp" line="141"/>
@@ -1887,7 +1887,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../dynamic/dynamicrulesdialog.cpp" line="298"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with 10 entries. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Cantata interrogherà la libreria utilizzando tutte le regole elencare. La lista delle regole di &lt;i&gt;inclusione&lt;/i&gt; verrà usata per costruire un insieme di brani che possonno essere usati. La lista di regole di &lt;i&gt;esclusione&lt;/i&gt; verrà usata per costruire un insieme di brano che non possono essere usati. Se non ci sono regole di &lt;i&gt;inclusione&lt;/i&gt;, Catata assumerà che tutti i brani (eccetto quelli &lt;i&gt;esclusi&lt;/i&gt; possono essere usati.&lt;/p&gt;&lt;p&gt;es. per far sì che Cantata cerchi &apos;Canzoni rock di Wibble O canzoni di Artisti Vari&apos;, ti servirà quetso:&lt;ul&gt;&lt;li&gt;Includi ArtistaAlbum=Wibble Genere=Rock&lt;/li&gt;&lt;li&gt;Includi ArtistaAlbum=Artisti Vari&lt;/li&gt;&lt;/ul&gt;Perché Cantata cerchi &apos;Canzoni di Wibble ma non dall&apos;album Abc&apos;, ti servirà questo:&lt;ul&gt;&lt;li&gt;Includi ArtistaAlbum=Wibble&lt;/li&gt;&lt;li&gt;Escludi ArtistaAlbum=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Dopo che l&apos;insieme di brani utilizzabili è stato creato, Cantata selezionerà casualmente i 10 brani da tenere nella coda di riproduzione. Se è stato specificato un intervallo di valutazioni, allora saranno usati solo i brani all&apos;interno di quell&apos;intervallo. Similmente, se è stato impostato un intervallo di durata.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Cantata interrogherà la libreria utilizzando tutte le regole elencate. La lista delle regole di &lt;i&gt;inclusione&lt;/i&gt; verrà usata per costruire un insieme di brani che possonno essere usati. La lista di regole di &lt;i&gt;esclusione&lt;/i&gt; verrà usata per costruire un insieme di brani che non possono essere usati. Se non ci sono regole di &lt;i&gt;inclusione&lt;/i&gt;, Catata assumerà che tutti i brani (eccetto quelli &lt;i&gt;esclusi&lt;/i&gt; possono essere usati.&lt;/p&gt;&lt;p&gt;es. per far sì che Cantata cerchi &apos;Canzoni rock di Wibble O canzoni di Artisti Vari&apos;, ti servirà quetso:&lt;ul&gt;&lt;li&gt;Includi ArtistaAlbum=Wibble Genere=Rock&lt;/li&gt;&lt;li&gt;Includi ArtistaAlbum=Artisti Vari&lt;/li&gt;&lt;/ul&gt;Perché Cantata cerchi &apos;Canzoni di Wibble ma non dall&apos;album Abc&apos;, ti servirà questo:&lt;ul&gt;&lt;li&gt;Includi ArtistaAlbum=Wibble&lt;/li&gt;&lt;li&gt;Escludi ArtistaAlbum=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Dopo che l&apos;insieme di brani utilizzabili è stato creato, Cantata selezionerà casualmente i 10 brani da tenere nella coda di riproduzione. Se è stato specificato un intervallo di valutazioni, allora saranno usati solo i brani all&apos;interno di quell&apos;intervallo. Similmente, se è stato impostato un intervallo di durata.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../dynamic/dynamicrulesdialog.cpp" line="318"/>
@@ -1919,7 +1919,7 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../gui/filesettings.ui" line="32"/>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation>Salva le immagini scaricate di copertine,artisti e compositori nella cartella musica</translation>
+        <translation>Salva le immagini scaricate di copertine, artisti e compositori nella cartella musica</translation>
     </message>
     <message>
         <location filename="../gui/filesettings.ui" line="39"/>
@@ -2027,7 +2027,7 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="161"/>
         <source>The album number of a multi-album album. Often compilations consist of several albums.</source>
-        <translation>Il numero di album di un album multipli. Spesso, le raccolte consistono in diversi album.</translation>
+        <translation>Il numero dell'album di un album multiplo. Spesso, le raccolte consistono in diversi album.</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="164"/>
@@ -2515,7 +2515,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="383"/>
         <source>Show cover of current track</source>
-        <translation>Mostra la copertina traccia corrente</translation>
+        <translation>Mostra copertina della traccia corrente</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="390"/>
@@ -2545,7 +2545,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="431"/>
         <source>Minimize to notification area when closed</source>
-        <translation>Minimizza nell&apos;area di notifica alla chiusura</translation>
+        <translation>Alla chiusura, minimizza nell&apos;area di notifica</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="438"/>
@@ -2595,7 +2595,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="520"/>
         <source>By default, Cantata uses the &apos;Album Artist&apos; tag (or &apos;Artist&apos; tag if a song has no &apos;Album Artist&apos;) to group songs and albums. For certain genres, e.g &apos;Classical&apos;, it may be preferable to use the &apos;Composer&apos; tag (if set) to perform this grouping. Please enter a (comma separated) list of the genres with which you would like Cantata to use the &apos;Composer&apos; tag.</source>
-        <translation>Come impostazione predefinita, Cantata usa il tag &apos;Artista Album&apos; (o &apos;Artista&apos; se un brano non ha &apos;Artista Album&apos;) per raggruppare brani e album. Per certi generi, es &apos;Classica&apos;, può essere preferibile usare il tag &apos;compositore&apos; (se impostato) per fare il raggruppamento. Prego inserire una lista di generi (separata da virgole) per i quali vuoi che Cantata usi il tag &apos;Compositore&apos;.</translation>
+        <translation>Come impostazione predefinita, Cantata usa il tag &apos;Artista Album&apos; (o &apos;Artista&apos; se un brano non ha &apos;Artista Album&apos;) per raggruppare brani e album. Per certi generi, es &apos;Classical&apos;, può essere preferibile usare il tag &apos;compositore&apos; (se impostato) per fare il raggruppamento. Prego inserire una lista di generi (separata da virgole) per i quali vuoi che Cantata usi il tag &apos;Compositore&apos;.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="530"/>
@@ -2610,7 +2610,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="546"/>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
-        <translation>Se nella collezione hai molti artisti che contengon una sola traccia, potrebbe esere scomodo che ogniuno di essi abbia la propria voce nella lista degli artisti. È possibile aggirare il problema mettendo queste tracce in una cartella separata, ed inserendo il nome della cartella qua sotto, cosicché Cantata le raggruppi in un album chiamato &apos;Tracce Singole&apos; con artista album &apos;Artisti Vari&apos;</translation>
+        <translation>Se nella collezione hai molti artisti che contengona una sola traccia, potrebbe essere scomodo che ogniuno di essi abbia la propria voce nella lista degli artisti. È possibile aggirare il problema mettendo queste tracce in una cartella separata, ed inserendo il nome della cartella qua sotto, cosicché Cantata le raggruppi in un album chiamato &apos;Tracce Singole&apos; con artista album &apos;Artisti Vari&apos;</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="556"/>
@@ -2655,7 +2655,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="641"/>
         <source>Show song information tooltips</source>
-        <translation>Mostra in un suggerimento le informazioni dei brani</translation>
+        <translation>Mostra in un suggerimento le informazioni sui brani</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="648"/>
@@ -2700,7 +2700,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="139"/>
         <source>Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts</source>
-        <translation>Internet - Flussi, Jamendi, Magnatune, SoundCloud e Podcast</translation>
+        <translation>Internet - Flussi, Jamendo, Magnatune, SoundCloud e Podcast</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="141"/>
@@ -3501,7 +3501,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     <message>
         <location filename="../gui/mainwindow.cpp" line="710"/>
         <source>No Rating</source>
-        <translation>Nessuna Valutazione</translation>
+        <translation>Nessuna</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1006"/>
@@ -4357,7 +4357,7 @@ Aggiungere i brani a quella scaletta?</translation>
     <message>
         <location filename="../gui/playbacksettings.cpp" line="172"/>
         <source>Replay Gain is a proposed standard published in 2001 to normalize the perceived loudness of computer audio formats such as MP3 and Ogg Vorbis. It works on a track/album basis, and is now supported in a growing number of players.&lt;br/&gt;&lt;br/&gt;The following ReplayGain settings may be used:&lt;ul&gt;&lt;li&gt;&lt;i&gt;None&lt;/i&gt; - No ReplayGain is applied.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Track&lt;/i&gt; - Volume will be adjusted using the track&apos;s ReplayGain tags.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Album&lt;/i&gt; - Volume will be adjusted using the albums&apos;s ReplayGain tags.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Auto&lt;/i&gt; - Volume will be adjusted using the track&apos;s ReplayGain tags if random play is activated, otherwise the album&apos;s tags will be used.&lt;/li&gt;&lt;/ul&gt;</source>
-        <translation>Replay Gain è uno standard proposto pubblicato nel 2001 per normalizzare il volume percepito dei formati auto come MP3 e Ogg Vorbis.Funziona in base alla traccia o all&apos;allalbum ed è attualmete supportato da un sempre maggior numero di lettori.&lt;br/&gt;&lt;br/&gt;Possono venire usare le seguoenti impostazioni di Replay Gain:&lt;ul&gt;&lt;li&gt;&lt;i&gt;Nessuno&lt;/i&gt; - Non viene applicato Replay Gain&lt;/li&gt;&lt;li&gt;&lt;i&gt;Traccia&lt;/i&gt; - Il volume verrà regolato usando il tag Replay Gain della traccia.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Album&lt;/i&gt; - Il volume verrà regolato usando il tag Replay Gain dell&apos;album.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Auto&lt;/i&gt; - Se è attiva la riproduzione casuale, il volume verrà regolato usando il tag Replay Gain della traccia, altrimenti verrà usato quello dell&apos;album.&lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation>Replay Gain è uno standard proposto pubblicato nel 2001 per normalizzare il volume percepito dei formati audio come MP3 e Ogg Vorbis. Funziona in base alla traccia o all&apos;album ed è attualmete supportato da un sempre maggior numero di lettori.&lt;br/&gt;&lt;br/&gt;Possono venire usare le seguenti impostazioni di Replay Gain:&lt;ul&gt;&lt;li&gt;&lt;i&gt;Nessuno&lt;/i&gt; - Non viene applicato Replay Gain&lt;/li&gt;&lt;li&gt;&lt;i&gt;Traccia&lt;/i&gt; - Il volume verrà regolato usando il tag Replay Gain della traccia.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Album&lt;/i&gt; - Il volume verrà regolato usando il tag Replay Gain dell&apos;album.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Auto&lt;/i&gt; - Se è attiva la riproduzione casuale, il volume verrà regolato usando il tag Replay Gain della traccia, altrimenti verrà usato quello dell&apos;album.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -4851,7 +4851,7 @@ Aggiungere i brani a quella scaletta?</translation>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="78"/>
         <source>Scrobbling Settings</source>
-        <translation>Impostazioni di Scrobbing</translation>
+        <translation>Impostazioni di Scrobbling</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="82"/>
@@ -6935,7 +6935,7 @@ Ricaricare da disco, oppure cancellare la copia su disco e scaricare?</translati
         <location filename="../context/songview.cpp" line="557"/>
         <location filename="../context/songview.cpp" line="598"/>
         <source>Sample rate</source>
-        <translation>Frequenza campionamento</translation>
+        <translation>Campionamento</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="558"/>
@@ -7829,7 +7829,7 @@ Sovrascrivere?</translation>
         <location filename="../tags/tageditor.cpp" line="212"/>
         <location filename="../tags/tageditor.cpp" line="686"/>
         <source>Capitalize</source>
-        <translation>Aggiusta maiuscole</translation>
+        <translation>Aggiusta Maiuscole</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="213"/>

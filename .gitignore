@@ -1,2 +1,3 @@
 /.project
+build/
 CMakeLists.txt.user

@@ -29,7 +29,9 @@
 #include <QTimer>
 #include <QDebug>
 #include <signal.h>
+#ifndef _MSC_VER 
 #include <unistd.h>
+#endif
 
 static bool debugEnabled=false;
 #define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__

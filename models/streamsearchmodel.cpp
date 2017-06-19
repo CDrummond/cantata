@@ -246,11 +246,13 @@ void StreamSearchModel::clear()
     cancelAll();
     foreach (StreamsModel::Item *item, root->children) {
         StreamsModel::CategoryItem *cat=static_cast<StreamsModel::CategoryItem *>(item);
-        QModelIndex index=createIndex(root->children.indexOf(cat), 0, (void *)cat);
-        beginRemoveRows(index, 0, cat->children.count()-1);
-        qDeleteAll(cat->children);
-        cat->children.clear();
-        endRemoveRows();
+		if (cat->children.count()) {
+			QModelIndex index = createIndex(root->children.indexOf(cat), 0, (void *)cat);
+			beginRemoveRows(index, 0, cat->children.count() - 1);
+			qDeleteAll(cat->children);
+			cat->children.clear();
+			endRemoveRows();
+		}
     }
     currentSearch=QString();
 }

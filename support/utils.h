@@ -34,10 +34,7 @@
 #include <QFont>
 #include <QPainterPath>
 #include <stdlib.h>
-#ifdef Q_OS_WIN
-#include <time.h>
-#endif
-#include <sys/time.h>
+#include <QTime>
 
 class QString;
 class QWidget;
@@ -55,7 +52,7 @@ namespace Utils
         return (fabs(d1 - d2) < precision);
     }
     inline int random(int max=0) { return max ? (qrand()%max) : qrand(); }
-    inline void initRand() { timeval time; gettimeofday(&time, NULL); qsrand((time.tv_sec*1000)+(time.tv_usec/1000)); }
+	inline void initRand() { QTime time = QTime::currentTime();	qsrand((time.second() * 1000) + (time.msec()));	}
 
     extern QString fixPath(const QString &d, bool ensureEndsInSlash=true);
     #ifdef Q_OS_WIN

@@ -617,7 +617,12 @@ void Scrobbler::authenticate()
     QMap<QString, QString> params;
     params["method"] = "auth.getMobileSession";
     params["username"] = userName;
-    if (QSslSocket::supportsSsl()) {
+
+	bool supportsSsl = false;
+#ifndef QT_NO_SSL
+	supportsSsl = QSslSocket::supportsSsl();
+#endif
+	if (supportsSsl) {
         params["password"] = password;
         url.setScheme("https"); // Use HTTPS to authenticate
     } else {

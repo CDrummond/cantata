@@ -35,7 +35,12 @@
 #include <QDesktopWidget>
 #include <QEventLoop>
 #include <QStandardPaths>
+#ifndef _MSC_VER 
 #include <unistd.h>
+#include <utime.h>
+#else
+#include <sys/utime.h>
+#endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #ifndef Q_OS_WIN
@@ -43,7 +48,6 @@
 #include <pwd.h>
 #endif
 #include <sys/types.h>
-#include <utime.h>
 
 const QLatin1Char Utils::constDirSep('/');
 const QLatin1String Utils::constDirSepStr("/");

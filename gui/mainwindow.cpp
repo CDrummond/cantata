@@ -215,8 +215,9 @@ void MainWindow::init()
     topToolBar->ensurePolished();
     toolbar=topToolBar;
     #elif !defined Q_OS_WIN
-    if (style()->inherits("Kvantum::Style")) {
-        // Create a real toolbar so that window can be moved by this - if set in CSS
+    QProxyStyle *proxy=qobject_cast<QProxyStyle *>(style());
+    QStyle *check=proxy && proxy->baseStyle() ? proxy->baseStyle() : style();
+    if (check->inherits("Kvantum::Style")) {
         QToolBar *topToolBar = addToolBar("ToolBar");
         topToolBar->setObjectName("MainToolBar");
         topToolBar->addWidget(toolbar);

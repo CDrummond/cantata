@@ -95,9 +95,9 @@ public:
     bool CanControl() const { return true; }
     bool CanPlay() const { return true; }
     bool CanPause() const { return true; }
-    bool CanSeek() const { return true; }
-    bool CanGoNext() const { return true; }
-    bool CanGoPrevious() const { return true; }
+    bool CanSeek() const { return -1!=MPDStatus::self()->songId(); }
+    bool CanGoNext() const { return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1; }
+    bool CanGoPrevious() const { return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1; }
 
     // org.mpris.MediaPlayer2
     bool CanQuit() const { return true; }

@@ -23,17 +23,22 @@
 
 #include "sizewidget.h"
 #include "toolbutton.h"
-#include "icons.h"
+#include "support/combobox.h"
+#include <QHBoxLayout>
 
 SizeWidget::SizeWidget(QWidget *parent)
-    : ComboBox(parent)
+    : QWidget(parent)
 {
-//    #ifdef Q_OS_MAC
-//    // For some reason, using 0 pixles on Mac causes genre combo to overlap
-//    setFixedWidth(12);
-//    #else
-    setFixedWidth(0);
-//    #endif
+    QHBoxLayout *lay=new QHBoxLayout(this);
+    ComboBox *combo=new ComboBox(this);
+    ToolButton *btn=new ToolButton(this);
+
+    lay->setMargin(0);
+    lay->setSpacing(0);
+    combo->setFixedWidth(0);
+    btn->setFixedWidth(0);
+    lay->addWidget(combo);
+    lay->addWidget(btn);
 }
 
 void SizeWidget::paintEvent(QPaintEvent *e)

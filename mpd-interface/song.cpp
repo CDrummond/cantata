@@ -494,7 +494,7 @@ QString Song::albumName() const
 QString Song::albumId() const
 {
     QString mb=mbAlbumId();
-    return mb.isEmpty() ? (album+QLatin1String("::")+QString::number(year)) : mb;
+    return mb.isEmpty() ? album : mb;
 }
 
 QString Song::artistSong() const

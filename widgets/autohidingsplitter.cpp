@@ -23,7 +23,6 @@
  */
 
 #include "autohidingsplitter.h"
-#include "support/gtkstyle.h"
 #include "support/utils.h"
 #include <QSplitterHandle>
 #include <QTimer>
@@ -42,12 +41,13 @@ static int splitterSize(const QWidget *w)
         #if defined Q_OS_MAC || defined Q_OS_WIN
         size=0;
         #else
+        size=1;
         if (qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents)) {
             int spacing=qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing);
-            int splitterSize=qApp->style()->pixelMetric(QStyle::PM_SplitterWidth);
-            size=qMin(spacing+2, splitterSize);
-        } else {
-            size=GtkStyle::isActive() ? 0 : 1;
+            if (spacing>0) { // Kvantum has -ve spacing!
+                int splitterSize=qApp->style()->pixelMetric(QStyle::PM_SplitterWidth);
+                size=qMin(spacing+2, splitterSize);
+            }
         }
         #endif
     }

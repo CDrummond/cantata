@@ -95,7 +95,7 @@ public:
     bool CanControl() const { return true; }
     bool CanPlay() const { return true; }
     bool CanPause() const { return true; }
-    bool CanSeek() const { return -1!=MPDStatus::self()->songId(); }
+    bool CanSeek() const { return -1!=MPDStatus::self()->songId() && !currentSong.isCdda() && !currentSong.isStandardStream() && currentSong.time>5; }
     bool CanGoNext() const { return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1; }
     bool CanGoPrevious() const { return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1; }
 

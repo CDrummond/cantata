@@ -164,7 +164,7 @@ private:
 
 QString MonoIconEngine::fontAwesomeFontName;
 
-const QColor MonoIcon::constRed(220, 0, 0);
+const QColor MonoIcon::constRed(196, 32, 32);
 
 QIcon MonoIcon::icon(const QString &fileName, const QColor &col, const QColor &sel)
 {

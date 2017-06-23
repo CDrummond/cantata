@@ -22,8 +22,6 @@
  */
 
 #include "sizegrip.h"
-#include "toolbutton.h"
-#include "icons.h"
 #include <QBoxLayout>
 #include <QSizeGrip>
 
@@ -31,19 +29,10 @@ SizeGrip::SizeGrip(QWidget *parent)
     : QWidget(parent)
 {
     QBoxLayout *l=new QBoxLayout(QBoxLayout::TopToBottom, this);
-    l->addItem(new QSpacerItem(1, 0, QSizePolicy::Maximum, QSizePolicy::Preferred));
+    l->addItem(new QSpacerItem(0, 0, QSizePolicy::Maximum, QSizePolicy::Preferred));
     QSizeGrip *grip=new QSizeGrip(this);
     l->addWidget(grip);
     l->setMargin(0);
     l->setSpacing(0);
     l->setAlignment(Qt::AlignBottom);
-    ToolButton tb;
-    tb.move(65535, 65535);
-    tb.setToolButtonStyle(Qt::ToolButtonIconOnly);
-    tb.setIcon(Icons::self()->artistIcon);
-    tb.ensurePolished();
-    tb.setAttribute(Qt::WA_DontShowOnScreen);
-    tb.setVisible(true);
-    setMinimumWidth(qMax(grip->sizeHint().width(), tb.sizeHint().width()));
-    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 }

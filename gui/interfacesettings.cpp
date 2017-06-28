@@ -197,12 +197,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         connect(systemTrayPopup, SIGNAL(toggled(bool)), SLOT(systemTrayPopupToggled()));
     }
     #endif
-    #if QT_VERSION >= 0x050400 || (defined Q_OS_MAC && QT_VERSION >= 0x050100)
     connect(retinaSupport, SIGNAL(toggled(bool)), SLOT(retinaSupportChanged()));
-    #else
-    REMOVE(retinaSupport)
-    REMOVE(retinaSupportNoteLabel)
-    #endif
 }
 
 void InterfaceSettings::load()
@@ -233,9 +228,7 @@ void InterfaceSettings::load()
     playQueueViewChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
     infoTooltips->setChecked(Settings::self()->infoTooltips());
-    if (retinaSupport) {
-        retinaSupport->setChecked(Settings::self()->retinaSupport());
-    }
+    retinaSupport->setChecked(Settings::self()->retinaSupport());
     showStopButton->setChecked(Settings::self()->showStopButton());
     showCoverWidget->setChecked(Settings::self()->showCoverWidget());
     showRatingWidget->setChecked(Settings::self()->showRatingWidget());
@@ -319,9 +312,7 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueSearch(playQueueSearch->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
     Settings::self()->saveInfoTooltips(infoTooltips->isChecked());
-    if (retinaSupport) {
-        Settings::self()->saveRetinaSupport(retinaSupport->isChecked());
-    }
+    Settings::self()->saveRetinaSupport(retinaSupport->isChecked());
     Settings::self()->saveShowStopButton(showStopButton->isChecked());
     Settings::self()->saveShowCoverWidget(showCoverWidget->isChecked());
     Settings::self()->saveShowRatingWidget(showRatingWidget->isChecked());

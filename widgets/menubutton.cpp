@@ -29,6 +29,7 @@
 #include <QEvent>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QProxyStyle>
 
 MenuButton::MenuButton(QWidget *parent)
     : ToolButton(parent)
@@ -70,11 +71,24 @@ bool MenuButton::eventFilter(QObject *o, QEvent *e)
 {
     if (QEvent::Show==e->type()) {
         if (qobject_cast<QMenu *>(o)) {
+            static int shadowAdjust = -1;
+            if (-1==shadowAdjust) {
+                // Kvantum style adds its own shadows, which makes the menu appear in the wrong place.
+                // However, Kvatum sill set a property on the style object to indicate the size of
+                // the shadows. Use this to adjust positioning.
+                QProxyStyle *proxy=qobject_cast<QProxyStyle *>(style());
+                QStyle *check=proxy && proxy->baseStyle() ? proxy->baseStyle() : style();
+                QList<int> shadows = check ? check->property("menu_shadow").value<QList<int> >() : QList<int>();
+                shadowAdjust = 4 == shadows.length() ? shadows.at(2) : 0;
+                if (shadowAdjust<0 || shadowAdjust>18) {
+                    shadowAdjust = 0;
+                }
+            }
             QMenu *mnu=static_cast<QMenu *>(o);
             QPoint p=parentWidget()->mapToGlobal(pos());
             int newPos=isRightToLeft()
                     ? p.x()
-                    : ((p.x()+width())-mnu->width());
+                    : ((p.x()+width()+shadowAdjust)-mnu->width());
 
             if (newPos<0) {
                 newPos=0;

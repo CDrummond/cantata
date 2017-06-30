@@ -34,5 +34,5 @@ SizeGrip::SizeGrip(QWidget *parent)
     l->addWidget(grip);
     l->setMargin(0);
     l->setSpacing(0);
-    l->setAlignment(Qt::AlignBottom);
+    l->setAlignment(Qt::AlignBottom|Qt::AlignRight);
 }

@@ -1065,9 +1065,7 @@ Covers::Covers()
     , locator(0)
     , loader(0)
 {
-    if (Settings::self()->retinaSupport()) {
-        devicePixelRatio=qApp->devicePixelRatio();
-    }
+    devicePixelRatio=qApp->devicePixelRatio();
     cache.setMaxCost(10*1024*1024);
 }
 

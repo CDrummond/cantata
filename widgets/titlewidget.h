@@ -50,6 +50,9 @@ private Q_SLOTS:
     void coverRetrieved(const Song &s, const QImage &img, const QString &file);
 
 private:
+    void setImage(const QImage &img);
+
+private:
     Song song;
     bool pressed;
     QLabel *back;

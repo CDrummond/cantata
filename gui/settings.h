@@ -140,7 +140,6 @@ public:
     bool showStopButton();
     bool showRatingWidget();
     bool infoTooltips();
-    bool retinaSupport();
     QSet<QString> ignorePrefixes();
     bool mpris();
     QString style();
@@ -238,7 +237,6 @@ public:
     void saveShowStopButton(bool v);
     void saveShowRatingWidget(bool v);
     void saveInfoTooltips(bool v);
-    void saveRetinaSupport(bool v);
     void saveIgnorePrefixes(const QSet<QString> &v);
     void saveMpris(bool v);
     void save();

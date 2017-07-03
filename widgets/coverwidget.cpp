@@ -131,11 +131,8 @@ void CoverLabel::updatePix()
     if (style()->pixelMetric(QStyle::PM_ToolBarFrameWidth)==0) {
         size-=constBorder*2;
     }
-    double pixRatio=1.0;
-    if (Settings::self()->retinaSupport()) {
-        pixRatio=qApp->devicePixelRatio();
-        size*=pixRatio;
-    }
+    double pixRatio=qApp->devicePixelRatio();
+    size*=pixRatio;
     img=img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     img.setDevicePixelRatio(pixRatio);
     if (pix.isNull() || pix.size()!=img.size()) {

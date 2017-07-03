@@ -656,11 +656,6 @@ bool Settings::infoTooltips()
     return cfg.get("infoTooltips", true);
 }
 
-bool Settings::retinaSupport()
-{
-    return cfg.get("retinaSupport", false);
-}
-
 QSet<QString> Settings::ignorePrefixes()
 {
     return cfg.get("ignorePrefixes", Song::ignorePrefixes().toList()).toSet();
@@ -1111,11 +1106,6 @@ void Settings::saveShowRatingWidget(bool v)
 void Settings::saveInfoTooltips(bool v)
 {
     cfg.set("infoTooltips", v);
-}
-
-void Settings::saveRetinaSupport(bool v)
-{
-    cfg.set("retinaSupport", v);
 }
 
 void Settings::saveIgnorePrefixes(const QSet<QString> &v)

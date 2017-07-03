@@ -197,7 +197,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         connect(systemTrayPopup, SIGNAL(toggled(bool)), SLOT(systemTrayPopupToggled()));
     }
     #endif
-    connect(retinaSupport, SIGNAL(toggled(bool)), SLOT(retinaSupportChanged()));
 }
 
 void InterfaceSettings::load()
@@ -228,7 +227,6 @@ void InterfaceSettings::load()
     playQueueViewChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
     infoTooltips->setChecked(Settings::self()->infoTooltips());
-    retinaSupport->setChecked(Settings::self()->retinaSupport());
     showStopButton->setChecked(Settings::self()->showStopButton());
     showCoverWidget->setChecked(Settings::self()->showCoverWidget());
     showRatingWidget->setChecked(Settings::self()->showRatingWidget());
@@ -312,7 +310,6 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueSearch(playQueueSearch->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
     Settings::self()->saveInfoTooltips(infoTooltips->isChecked());
-    Settings::self()->saveRetinaSupport(retinaSupport->isChecked());
     Settings::self()->saveShowStopButton(showStopButton->isChecked());
     Settings::self()->saveShowCoverWidget(showCoverWidget->isChecked());
     Settings::self()->saveShowRatingWidget(showRatingWidget->isChecked());
@@ -451,11 +448,6 @@ void InterfaceSettings::playQueueViewChanged()
 void InterfaceSettings::forceSingleClickChanged()
 {
     singleClickLabel->setOn(forceSingleClick->isChecked()!=Settings::self()->forceSingleClick());
-}
-
-void InterfaceSettings::retinaSupportChanged()
-{
-    retinaSupportNoteLabel->setOn(retinaSupport->isChecked()!=Settings::self()->retinaSupport());
 }
 
 void InterfaceSettings::enableStartupState()

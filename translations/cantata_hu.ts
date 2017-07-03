@@ -6586,37 +6586,37 @@ Nem tudom letölteni az átmeneti fájlt!</translation>
         <translation type="unfinished">A képet nem tudtam letölteni!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="801"/>
+        <location filename="../gui/coverdialog.cpp" line="805"/>
         <source>Load Local Cover</source>
         <translation type="unfinished">Helyi borító letöltése</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="801"/>
+        <location filename="../gui/coverdialog.cpp" line="805"/>
         <source>Images (*.png *.jpg)</source>
         <translation type="unfinished">Képek (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="805"/>
+        <location filename="../gui/coverdialog.cpp" line="809"/>
         <source>File is already in list!</source>
         <translation type="unfinished">A fájl már szerepel a listában!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="809"/>
+        <location filename="../gui/coverdialog.cpp" line="813"/>
         <source>Failed to read image!</source>
         <translation type="unfinished">Nem tudtam olvasni a képet!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="822"/>
+        <location filename="../gui/coverdialog.cpp" line="826"/>
         <source>Display</source>
         <translation type="unfinished">Mutatás</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="823"/>
+        <location filename="../gui/coverdialog.cpp" line="827"/>
         <source>Remove</source>
         <translation type="unfinished">Eltávolítás</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1198"/>
+        <location filename="../gui/coverdialog.cpp" line="1202"/>
         <source>Failed to set cover!
 
 Could not make copy!</source>
@@ -6625,7 +6625,7 @@ Could not make copy!</source>
 Nem sikerült másolni!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1207"/>
+        <location filename="../gui/coverdialog.cpp" line="1211"/>
         <source>Failed to set cover!
 
 Could not backup original!</source>
@@ -6634,7 +6634,7 @@ Could not backup original!</source>
 Nem sikerült menteni az eredetit!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1255"/>
+        <location filename="../gui/coverdialog.cpp" line="1259"/>
         <source>Failed to set cover!
 
 Could not copy file to &apos;%1&apos;!</source>
@@ -6643,7 +6643,7 @@ Could not copy file to &apos;%1&apos;!</source>
 Nem sikerült ebbe: &apos;%1&apos; másolni a fájlt!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1309"/>
+        <location filename="../gui/coverdialog.cpp" line="1313"/>
         <source>Searching...</source>
         <translation type="unfinished">Keresés...</translation>
     </message>
@@ -6982,75 +6982,75 @@ Nem sikerült ebbe: &apos;%1&apos; másolni a fájlt!</translation>
 <context>
     <name>DevicesPage</name>
     <message>
-        <location filename="../devices/devicespage.cpp" line="61"/>
+        <location filename="../devices/devicespage.cpp" line="62"/>
         <source>Copy To Library</source>
         <translation type="unfinished">Másolás könyvtárba</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="64"/>
+        <location filename="../devices/devicespage.cpp" line="65"/>
         <source>Synchronise</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="68"/>
+        <location filename="../devices/devicespage.cpp" line="69"/>
         <source>Forget Device</source>
         <translation type="unfinished">Eszköz elfelejtése</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="99"/>
+        <location filename="../devices/devicespage.cpp" line="100"/>
         <source>Add Device</source>
         <translation type="unfinished">Eszköz hozzáadása</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="407"/>
-        <location filename="../devices/devicespage.cpp" line="419"/>
+        <location filename="../devices/devicespage.cpp" line="408"/>
+        <location filename="../devices/devicespage.cpp" line="420"/>
         <source>Lookup album and track details?</source>
         <translation type="unfinished">Keressem az album és szám részleteit?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="408"/>
-        <location filename="../devices/devicespage.cpp" line="420"/>
-        <location filename="../devices/devicespage.cpp" line="432"/>
+        <location filename="../devices/devicespage.cpp" line="409"/>
+        <location filename="../devices/devicespage.cpp" line="421"/>
+        <location filename="../devices/devicespage.cpp" line="433"/>
         <source>Refresh</source>
         <translation type="unfinished">Frissítés</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="408"/>
+        <location filename="../devices/devicespage.cpp" line="409"/>
         <source>Via CDDB</source>
         <translation type="unfinished">CDDB útján</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="408"/>
+        <location filename="../devices/devicespage.cpp" line="409"/>
         <source>Via MusicBrainz</source>
         <translation type="unfinished">MusicBrainz útján</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="429"/>
+        <location filename="../devices/devicespage.cpp" line="430"/>
         <source>Which type of refresh do you wish to perform?</source>
         <translation type="unfinished">Milyen típusú frissítést szeretnél?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="430"/>
+        <location filename="../devices/devicespage.cpp" line="431"/>
         <source>Partial - Only new songs are scanned (quick)</source>
         <translation type="unfinished">Részleges - csak az új számokat nézi át (gyors)</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="431"/>
+        <location filename="../devices/devicespage.cpp" line="432"/>
         <source>Full - All songs are rescanned (slow)</source>
         <translation type="unfinished">Teljes - minden számot újra átnéz (lassú)</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="432"/>
+        <location filename="../devices/devicespage.cpp" line="433"/>
         <source>Partial</source>
         <translation type="unfinished">Részleges</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="432"/>
+        <location filename="../devices/devicespage.cpp" line="433"/>
         <source>Full</source>
         <translation type="unfinished">Teljes</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="479"/>
+        <location filename="../devices/devicespage.cpp" line="480"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
@@ -7059,37 +7059,37 @@ This cannot be undone.</source>
 Ezt nem lehet visszavonni!</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="480"/>
+        <location filename="../devices/devicespage.cpp" line="481"/>
         <source>Delete Songs</source>
         <translation type="unfinished">Dalok törlése</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="506"/>
+        <location filename="../devices/devicespage.cpp" line="507"/>
         <source>Are you sure you wish to forget &apos;%1&apos;?</source>
         <translation type="unfinished">Biztosan el akarod vetni? %1&apos;?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="525"/>
+        <location filename="../devices/devicespage.cpp" line="526"/>
         <source>Are you sure you wish to eject Audio CD &apos;%1 - %2&apos;?</source>
         <translation type="unfinished">Biztosan ki akarod adatni a hang CD-t &apos;%1 - %2&apos;?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="526"/>
+        <location filename="../devices/devicespage.cpp" line="527"/>
         <source>Eject</source>
         <translation type="unfinished">Kiadás</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="527"/>
+        <location filename="../devices/devicespage.cpp" line="528"/>
         <source>Are you sure you wish to disconnect &apos;%1&apos;?</source>
         <translation type="unfinished">Biztosan le akarod választani &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="528"/>
+        <location filename="../devices/devicespage.cpp" line="529"/>
         <source>Disconnect</source>
         <translation type="unfinished">Leválasztás</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="547"/>
+        <location filename="../devices/devicespage.cpp" line="548"/>
         <source>Please close other dialogs first.</source>
         <translation type="unfinished">Légy szíves zárd be előbb a másik párbeszédet!</translation>
     </message>
@@ -8361,22 +8361,21 @@ Ezt nem lehet visszavonni!</translation>
         <translation type="unfinished">Dalinformációk-tipp megjelenítése</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="648"/>
         <source>Support retina displays</source>
-        <translation type="unfinished">Retina megjelenítők támogatása</translation>
+        <translation type="obsolete">Retina megjelenítők támogatása</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="655"/>
+        <location filename="../gui/interfacesettings.ui" line="648"/>
         <source>Language:</source>
         <translation type="unfinished">Nyelv:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="670"/>
+        <location filename="../gui/interfacesettings.ui" line="663"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation type="unfinished">A &apos;Egykattintásos elemaktiválás alkalmazása&apos; beállítása a Cantata újraindítását igényli.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="677"/>
+        <location filename="../gui/interfacesettings.ui" line="670"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation type="unfinished">A nyelvi beállítások változtatása a Cantata újraindítását igényli.</translation>
     </message>
@@ -8385,9 +8384,8 @@ Ezt nem lehet visszavonni!</translation>
         <translation type="obsolete">Az &apos;Érintésbarát&apos; beállítás változtatása a Cantata újraindítását igényli.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="684"/>
         <source>Enabling support for retina displays will produce sharper icons on the retina display, but may produce less sharp icons on non-retina displays. Changing this setting will require a re-start of Cantata.</source>
-        <translation type="unfinished">A retina megjelenítő-támogatás bekapcsolása a retina képernyőkön élesebb ikonokat eredményez, de a nem retina képernyőkön az ikonok elmosódottabbak lehetnek. A változtatás a Cantata újraindítását igényli.</translation>
+        <translation type="obsolete">A retina megjelenítő-támogatás bekapcsolása a retina képernyőkön élesebb ikonokat eredményez, de a nem retina képernyőkön az ikonok elmosódottabbak lehetnek. A változtatás a Cantata újraindítását igényli.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="136"/>
@@ -8476,23 +8474,23 @@ Ezt nem lehet visszavonni!</translation>
         <translation type="unfinished">Értesítések</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="404"/>
+        <location filename="../gui/interfacesettings.cpp" line="392"/>
         <source>English (en)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="409"/>
+        <location filename="../gui/interfacesettings.cpp" line="397"/>
         <source>System default</source>
         <translation type="unfinished">Rendszer alapbeállítása</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="510"/>
+        <location filename="../gui/interfacesettings.cpp" line="493"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation type="unfinished">%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="515"/>
+        <location filename="../gui/interfacesettings.cpp" line="498"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation type="unfinished">%1 px</translation>
@@ -8506,7 +8504,7 @@ Ezt nem lehet visszavonni!</translation>
         <translation type="unfinished">Visszalépés</translation>
     </message>
     <message>
-        <location filename="../widgets/itemview.cpp" line="1293"/>
+        <location filename="../widgets/itemview.cpp" line="1295"/>
         <source>Updating...</source>
         <translation type="unfinished">Frissítés...</translation>
     </message>
@@ -8941,320 +8939,320 @@ Ha a kereső új dalszöveget talál, hozzákapcsolható az eredeti dalhoz és e
         <translation type="unfinished">Kilépés a teljes képernyőből</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="247"/>
+        <location filename="../gui/mainwindow.cpp" line="248"/>
         <source>Configure Cantata...</source>
         <translation type="unfinished">Cantata beállítása...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="247"/>
+        <location filename="../gui/mainwindow.cpp" line="248"/>
         <source>Preferences</source>
         <translation type="unfinished">Testreszabás</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="250"/>
+        <location filename="../gui/mainwindow.cpp" line="251"/>
         <source>Quit</source>
         <translation type="unfinished">Megszakít</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="253"/>
+        <location filename="../gui/mainwindow.cpp" line="254"/>
         <source>About Cantata...</source>
         <translation type="unfinished">Cantata névjegye...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="260"/>
+        <location filename="../gui/mainwindow.cpp" line="261"/>
         <source>Show Window</source>
         <translation type="unfinished">Ablak mutatása</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="263"/>
+        <location filename="../gui/mainwindow.cpp" line="264"/>
         <source>Server information...</source>
         <translation type="unfinished">Kiszolgáló-információk</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="266"/>
+        <location filename="../gui/mainwindow.cpp" line="267"/>
         <source>Refresh Database</source>
         <translation type="unfinished">Adatbázis-frissítés</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="267"/>
+        <location filename="../gui/mainwindow.cpp" line="268"/>
         <source>Refresh</source>
         <translation type="unfinished">Frissítés</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="269"/>
+        <location filename="../gui/mainwindow.cpp" line="270"/>
         <source>Connect</source>
         <translation type="unfinished">Csatlakozás</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="270"/>
+        <location filename="../gui/mainwindow.cpp" line="271"/>
         <source>Collection</source>
         <translation type="unfinished">Gyűjtemény</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="271"/>
-        <location filename="../gui/mainwindow.cpp" line="1332"/>
-        <location filename="../gui/mainwindow.cpp" line="1336"/>
-        <location filename="../gui/mainwindow.cpp" line="1342"/>
+        <location filename="../gui/mainwindow.cpp" line="272"/>
+        <location filename="../gui/mainwindow.cpp" line="1334"/>
+        <location filename="../gui/mainwindow.cpp" line="1338"/>
+        <location filename="../gui/mainwindow.cpp" line="1344"/>
         <source>Outputs</source>
         <translation type="unfinished">Kimenetek</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="272"/>
+        <location filename="../gui/mainwindow.cpp" line="273"/>
         <source>Stop After Track</source>
         <translation type="unfinished">A szám után leáll</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="278"/>
+        <location filename="../gui/mainwindow.cpp" line="279"/>
         <source>Seek forward (%1 seconds)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="279"/>
+        <location filename="../gui/mainwindow.cpp" line="280"/>
         <source>Seek backward (%1 seconds)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="292"/>
+        <location filename="../gui/mainwindow.cpp" line="293"/>
         <source>Add To Stored Playlist</source>
         <translation type="unfinished">A tárolt lejátszási listához hozzáad</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="297"/>
+        <location filename="../gui/mainwindow.cpp" line="298"/>
         <source>Crop Others</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="298"/>
+        <location filename="../gui/mainwindow.cpp" line="299"/>
         <source>Add Stream URL</source>
         <translation type="unfinished">Stream URL hozzáadása</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="299"/>
+        <location filename="../gui/mainwindow.cpp" line="301"/>
         <source>Clear</source>
         <translation type="unfinished">Töröl</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="301"/>
+        <location filename="../gui/mainwindow.cpp" line="303"/>
         <source>Center On Current Track</source>
         <translation type="unfinished">Központosítás az aktuális számra</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="302"/>
+        <location filename="../gui/mainwindow.cpp" line="304"/>
         <source>Expanded Interface</source>
         <translation type="unfinished">Lejátszó kinyitása</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="304"/>
+        <location filename="../gui/mainwindow.cpp" line="306"/>
         <source>Show Current Song Information</source>
         <translation type="unfinished">A lejátszó kibontása</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="307"/>
+        <location filename="../gui/mainwindow.cpp" line="309"/>
         <source>Full Screen</source>
         <translation type="unfinished">Teljes képernyő</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="311"/>
+        <location filename="../gui/mainwindow.cpp" line="313"/>
         <source>Random</source>
         <translation type="unfinished">Véletlenszerűen</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="312"/>
+        <location filename="../gui/mainwindow.cpp" line="314"/>
         <source>Repeat</source>
         <translation type="unfinished">Ismétlés</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="313"/>
+        <location filename="../gui/mainwindow.cpp" line="315"/>
         <source>Single</source>
         <translation type="unfinished">Egyszeri</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="313"/>
+        <location filename="../gui/mainwindow.cpp" line="315"/>
         <source>When &apos;Single&apos; is activated, playback is stopped after current song, or song is repeated if &apos;Repeat&apos; is enabled.</source>
         <translation type="unfinished">&apos;Egyszeri&apos; beállítása esetén a lejátszás az aktuális dal után leáll, vagy a dal ismétlődik, ha az &apos;Ismétlés&apos; engedélyezett.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="314"/>
+        <location filename="../gui/mainwindow.cpp" line="316"/>
         <source>Consume</source>
         <translation type="unfinished">Elhasznál</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="314"/>
+        <location filename="../gui/mainwindow.cpp" line="316"/>
         <source>When consume is activated, a song is removed from the play queue after it has been played.</source>
         <translation type="unfinished">Amikor az &apos;Elhasznál&apos; aktív, a dal a lejátszása után kikerül a lejátszási sorból.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="315"/>
+        <location filename="../gui/mainwindow.cpp" line="317"/>
         <source>Find in Play Queue</source>
         <translation type="unfinished">Keresés a lejátszási sorban</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="319"/>
+        <location filename="../gui/mainwindow.cpp" line="321"/>
         <source>Play Stream</source>
         <translation type="unfinished">Hangfolyam (stream) lejátszása</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="327"/>
+        <location filename="../gui/mainwindow.cpp" line="329"/>
         <source>Locate In Library</source>
         <translation type="unfinished">Könyvtárban megkeres</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="328"/>
+        <location filename="../gui/mainwindow.cpp" line="330"/>
         <source>Play next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="331"/>
+        <location filename="../gui/mainwindow.cpp" line="333"/>
         <source>Edit Track Information (Play Queue)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="334"/>
+        <location filename="../gui/mainwindow.cpp" line="336"/>
         <source>Expand All</source>
         <translation type="unfinished">Mind kibontása</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="336"/>
+        <location filename="../gui/mainwindow.cpp" line="338"/>
         <source>Collapse All</source>
         <translation type="unfinished">Mind elrejtése</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="338"/>
+        <location filename="../gui/mainwindow.cpp" line="340"/>
         <source>Cancel</source>
         <translation type="unfinished">Kilépés</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="391"/>
+        <location filename="../gui/mainwindow.cpp" line="393"/>
         <source>Play Queue</source>
         <translation type="unfinished">Sor lejátszása</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="396"/>
+        <location filename="../gui/mainwindow.cpp" line="398"/>
         <source>Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="401"/>
+        <location filename="../gui/mainwindow.cpp" line="403"/>
         <source>Folders</source>
         <translation type="unfinished">Könyvtárak</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="407"/>
+        <location filename="../gui/mainwindow.cpp" line="409"/>
         <source>Playlists</source>
         <translation type="unfinished">Lejátszási listák</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="416"/>
+        <location filename="../gui/mainwindow.cpp" line="418"/>
         <source>Internet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="425"/>
+        <location filename="../gui/mainwindow.cpp" line="427"/>
         <source>Devices</source>
         <translation type="unfinished">Eszközök</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="432"/>
+        <location filename="../gui/mainwindow.cpp" line="434"/>
         <source>Search</source>
         <translation type="unfinished">Keresés</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="437"/>
+        <location filename="../gui/mainwindow.cpp" line="439"/>
         <source>Info</source>
         <translation type="unfinished">Info</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="591"/>
+        <location filename="../gui/mainwindow.cpp" line="593"/>
         <source>Show Menubar</source>
         <translation type="unfinished">Menüsáv megjelenítése</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="629"/>
+        <location filename="../gui/mainwindow.cpp" line="631"/>
         <source>&amp;Music</source>
         <translation type="unfinished">Zene</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="640"/>
+        <location filename="../gui/mainwindow.cpp" line="642"/>
         <source>&amp;Edit</source>
         <translation type="unfinished">Szerkesztés</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="652"/>
+        <location filename="../gui/mainwindow.cpp" line="654"/>
         <source>&amp;View</source>
         <translation type="unfinished">Nézet</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="663"/>
+        <location filename="../gui/mainwindow.cpp" line="665"/>
         <source>&amp;Queue</source>
         <translation type="unfinished">Sor</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="672"/>
+        <location filename="../gui/mainwindow.cpp" line="674"/>
         <source>&amp;Settings</source>
         <translation type="unfinished">Beállítások</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="686"/>
+        <location filename="../gui/mainwindow.cpp" line="688"/>
         <source>&amp;Help</source>
         <translation type="unfinished">Segítség</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="705"/>
+        <location filename="../gui/mainwindow.cpp" line="707"/>
         <source>Set Rating</source>
         <translation type="unfinished">Besorolás beállítása</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="710"/>
+        <location filename="../gui/mainwindow.cpp" line="712"/>
         <source>No Rating</source>
         <translation type="unfinished">Nincs besorolás</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1006"/>
+        <location filename="../gui/mainwindow.cpp" line="1008"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation type="unfinished">A dinamikus lejátszási lista feltételeinek megfelelő fájl nem található.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1127"/>
+        <location filename="../gui/mainwindow.cpp" line="1129"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">Csatlakozás ehhez %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1163"/>
+        <location filename="../gui/mainwindow.cpp" line="1165"/>
         <source>Refresh MPD Database?</source>
         <translation type="unfinished">Adatbázist frissítsem?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1169"/>
+        <location filename="../gui/mainwindow.cpp" line="1171"/>
         <source>About Cantata</source>
         <translation type="unfinished">Cantata névjegye</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1170"/>
+        <location filename="../gui/mainwindow.cpp" line="1172"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1172"/>
+        <location filename="../gui/mainwindow.cpp" line="1174"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1173"/>
+        <location filename="../gui/mainwindow.cpp" line="1175"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">A tartalmi nézet háttere innen származik &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1174"/>
+        <location filename="../gui/mainwindow.cpp" line="1176"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation type="unfinished">A tartalmi nézet metaadatai innen származnak &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipédia&lt;/a&gt; és &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1175"/>
+        <location filename="../gui/mainwindow.cpp" line="1177"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">Fontold meg a kedvenc zenéd feltöltését ide &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1182"/>
+        <location filename="../gui/mainwindow.cpp" line="1184"/>
         <source>A Podcast is currently being downloaded
 
 Quiting now will abort the download.</source>
@@ -9263,95 +9261,95 @@ Quiting now will abort the download.</source>
 A kilépés megszakítja az adatfolyam letöltését.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1183"/>
+        <location filename="../gui/mainwindow.cpp" line="1185"/>
         <source>Abort download and quit</source>
         <translation type="unfinished">Letöltés megszakítása és kilépés</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1211"/>
+        <location filename="../gui/mainwindow.cpp" line="1213"/>
         <source>Please close other dialogs first.</source>
         <translation type="unfinished">Légy szíves zárd be előbb a másik párbeszédet!</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1332"/>
-        <location filename="../gui/mainwindow.cpp" line="1343"/>
+        <location filename="../gui/mainwindow.cpp" line="1334"/>
+        <location filename="../gui/mainwindow.cpp" line="1345"/>
         <source>Enabled: %1</source>
         <translation type="unfinished">Engedélyezve: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1336"/>
-        <location filename="../gui/mainwindow.cpp" line="1344"/>
+        <location filename="../gui/mainwindow.cpp" line="1338"/>
+        <location filename="../gui/mainwindow.cpp" line="1346"/>
         <source>Disabled: %1</source>
         <translation type="unfinished">Nincs engedélyezve: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1532"/>
-        <location filename="../gui/mainwindow.cpp" line="1555"/>
+        <location filename="../gui/mainwindow.cpp" line="1534"/>
+        <location filename="../gui/mainwindow.cpp" line="1557"/>
         <source>Server Information</source>
         <translation type="unfinished">Szerver-információk</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1535"/>
+        <location filename="../gui/mainwindow.cpp" line="1537"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Szerver&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protokoll:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Idő:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Játszott:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Kezelők:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Címkék:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1546"/>
+        <location filename="../gui/mainwindow.cpp" line="1548"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Adatbázis&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Előadók:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albumok:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Dalok:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Időtartam:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Frissítve:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1699"/>
+        <location filename="../gui/mainwindow.cpp" line="1701"/>
         <source>Cantata (%1)</source>
         <translation type="unfinished">Cantata (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1766"/>
+        <location filename="../gui/mainwindow.cpp" line="1768"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">Az MPD a következő hibát jelezte: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1837"/>
+        <location filename="../gui/mainwindow.cpp" line="1839"/>
         <source>Cantata</source>
         <translation type="unfinished">Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1837"/>
+        <location filename="../gui/mainwindow.cpp" line="1839"/>
         <source>Playback stopped</source>
         <translation type="unfinished">Lejátszás leállt</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1880"/>
+        <location filename="../gui/mainwindow.cpp" line="1882"/>
         <source>Remove all songs from play queue?</source>
         <translation type="unfinished">A lejátszási sorból minden számot töröl?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1931"/>
+        <location filename="../gui/mainwindow.cpp" line="1933"/>
         <source>Priority</source>
         <translation type="unfinished">Prioritás</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1931"/>
+        <location filename="../gui/mainwindow.cpp" line="1933"/>
         <source>Enter priority (0..255):</source>
         <translation type="unfinished">Add meg a prioritást (0-255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1954"/>
+        <location filename="../gui/mainwindow.cpp" line="1956"/>
         <source>Playlist Name</source>
         <translation type="unfinished">Lejátszási lista neve</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1954"/>
+        <location filename="../gui/mainwindow.cpp" line="1956"/>
         <source>Enter a name for the playlist:</source>
         <translation type="unfinished">Írj be egy nevet a lejátszási listának:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1957"/>
+        <location filename="../gui/mainwindow.cpp" line="1959"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation type="unfinished">&apos;%1&apos; lefoglalva a kedvenc adatfolyamok tárolására, kérlek válassz másik nevet!</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1961"/>
+        <location filename="../gui/mainwindow.cpp" line="1963"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -9360,19 +9358,19 @@ Add to that playlist?</source>
 Hozzáadjam ahhoz a listához?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1962"/>
+        <location filename="../gui/mainwindow.cpp" line="1964"/>
         <source>Existing Playlist</source>
         <translation type="unfinished">Létező lejátszási lista</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2037"/>
+        <location filename="../gui/mainwindow.cpp" line="2039"/>
         <source>%n Track(s)</source>
         <translation type="unfinished">
             <numerusform>%n Szám</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2039"/>
+        <location filename="../gui/mainwindow.cpp" line="2041"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n Szám (%1)</numerusform>
@@ -9382,7 +9380,7 @@ Hozzáadjam ahhoz a listához?</translation>
 <context>
     <name>MenuButton</name>
     <message>
-        <location filename="../widgets/menubutton.cpp" line="38"/>
+        <location filename="../widgets/menubutton.cpp" line="39"/>
         <source>Menu</source>
         <translation type="unfinished">Menü</translation>
     </message>
@@ -10069,30 +10067,30 @@ Hozzáadjam ahhoz a listához?</translation>
 <context>
     <name>PlaylistsModel</name>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="89"/>
+        <location filename="../models/playlistsmodel.cpp" line="90"/>
         <source>New Playlist...</source>
         <translation type="unfinished">Új lejátszási lista...</translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="111"/>
+        <location filename="../models/playlistsmodel.cpp" line="112"/>
         <source>Stored Playlists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="116"/>
+        <location filename="../models/playlistsmodel.cpp" line="117"/>
         <source>Standard playlists</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/playlistsmodel.cpp" line="335"/>
-        <location filename="../models/playlistsmodel.cpp" line="346"/>
+        <location filename="../models/playlistsmodel.cpp" line="336"/>
+        <location filename="../models/playlistsmodel.cpp" line="347"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n Szám (%1)</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="344"/>
+        <location filename="../models/playlistsmodel.cpp" line="345"/>
         <source>Smart Playlist</source>
         <translation type="unfinished">Okos lejátszási lista</translation>
     </message>
@@ -10452,99 +10450,99 @@ Hozzáadjam ahhoz a listához?</translation>
 <context>
     <name>PodcastWidget</name>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="41"/>
+        <location filename="../online/podcastwidget.cpp" line="43"/>
         <source>Add Subscription</source>
         <translation type="unfinished">Előfizetés hozzáadása</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="42"/>
+        <location filename="../online/podcastwidget.cpp" line="44"/>
         <source>Remove Subscription</source>
         <translation type="unfinished">Előfizetés eltávolítása</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="43"/>
+        <location filename="../online/podcastwidget.cpp" line="45"/>
         <source>Download Episodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="44"/>
+        <location filename="../online/podcastwidget.cpp" line="46"/>
         <source>Delete Downloaded Episodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="45"/>
+        <location filename="../online/podcastwidget.cpp" line="47"/>
         <source>Cancel Download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="46"/>
+        <location filename="../online/podcastwidget.cpp" line="48"/>
         <source>Mark Episodes As New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="47"/>
+        <location filename="../online/podcastwidget.cpp" line="49"/>
         <source>Mark Episodes As Listened</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="48"/>
+        <location filename="../online/podcastwidget.cpp" line="50"/>
         <source>Show Unplayed Only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="140"/>
+        <location filename="../online/podcastwidget.cpp" line="142"/>
         <source>Unsubscribe from &apos;%1&apos;?</source>
         <translation type="unfinished">Leiratkozol a(z) &apos;%1&apos;-ről?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="186"/>
+        <location filename="../online/podcastwidget.cpp" line="188"/>
         <source>Do you wish to download the selected podcast episodes?</source>
         <translation type="unfinished">Biztosan eltávolítanád a kiválasztott %1 podcast epizódot?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="200"/>
+        <location filename="../online/podcastwidget.cpp" line="202"/>
         <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
         <translation type="unfinished">Podcast-rész letöltését megszakítja (mind a folyamatban lévőt, mind a várakozót)?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="210"/>
+        <location filename="../online/podcastwidget.cpp" line="212"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation type="unfinished">Letörölnéd a következő kiválasztott podcast részek letöltött fájljait?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="226"/>
+        <location filename="../online/podcastwidget.cpp" line="228"/>
         <source>Do you wish to mark the selected podcast episodes as new?</source>
         <translation type="unfinished">Megjelölöd a kiválasztott podcast-részt újnak?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="242"/>
+        <location filename="../online/podcastwidget.cpp" line="244"/>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
         <translation type="unfinished">Megjelölöd a kiválasztott podcast-részt meghallgatottnak?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="278"/>
+        <location filename="../online/podcastwidget.cpp" line="280"/>
         <source>Refresh all subscriptions?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="278"/>
-        <location filename="../online/podcastwidget.cpp" line="283"/>
+        <location filename="../online/podcastwidget.cpp" line="280"/>
+        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh</source>
         <translation type="unfinished">Frissítés</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="278"/>
-        <location filename="../online/podcastwidget.cpp" line="283"/>
+        <location filename="../online/podcastwidget.cpp" line="280"/>
+        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="283"/>
+        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh all subscriptions, or only those selected?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="283"/>
+        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh Selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11372,7 +11370,7 @@ width x height</comment>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="59"/>
-        <location filename="../support/utils.cpp" line="641"/>
+        <location filename="../support/utils.cpp" line="645"/>
         <source>Unknown</source>
         <translation type="unfinished">Ismeretlen</translation>
     </message>
@@ -11622,38 +11620,38 @@ width x height</comment>
         <translation type="unfinished">Kérdés</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="426"/>
-        <location filename="../support/utils.cpp" line="434"/>
+        <location filename="../support/utils.cpp" line="430"/>
+        <location filename="../support/utils.cpp" line="438"/>
         <source>%1 B</source>
         <translation type="unfinished">%1 B</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="427"/>
+        <location filename="../support/utils.cpp" line="431"/>
         <source>%1 kB</source>
         <translation type="unfinished">%1 kB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="428"/>
+        <location filename="../support/utils.cpp" line="432"/>
         <source>%1 MB</source>
         <translation type="unfinished">%1 MB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="430"/>
+        <location filename="../support/utils.cpp" line="434"/>
         <source>%1 GB</source>
         <translation type="unfinished">%1 GB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="435"/>
+        <location filename="../support/utils.cpp" line="439"/>
         <source>%1 KiB</source>
         <translation type="unfinished">%1 KiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="436"/>
+        <location filename="../support/utils.cpp" line="440"/>
         <source>%1 MiB</source>
         <translation type="unfinished">%1 MiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="438"/>
+        <location filename="../support/utils.cpp" line="442"/>
         <source>%1 GiB</source>
         <translation type="unfinished">%1 GiB</translation>
     </message>
@@ -12173,7 +12171,7 @@ Kérlek válassz másik nevet.</translation>
     <name>Scrobbler</name>
     <message>
         <location filename="../scrobbling/scrobbler.cpp" line="553"/>
-        <location filename="../scrobbling/scrobbler.cpp" line="668"/>
+        <location filename="../scrobbling/scrobbler.cpp" line="673"/>
         <source>%1 error: %2</source>
         <translation type="unfinished">%1 hiba: %2</translation>
     </message>
@@ -13071,7 +13069,7 @@ Felülírod?</translation>
 <context>
     <name>StreamFetcher</name>
     <message>
-        <location filename="../streams/streamfetcher.cpp" line="208"/>
+        <location filename="../streams/streamfetcher.cpp" line="213"/>
         <source>Loading %1</source>
         <translation type="unfinished"></translation>
     </message>

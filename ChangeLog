@@ -81,6 +81,7 @@
 63. Use libcdio_cdparanoia
 64. If 'composer genre' is set in tweaks, then use composer to sort artists.
 65. Add 'Sort by track number' to playqueue.
+66. Enable retina support for all builds.
 
 2.0.1
 -----

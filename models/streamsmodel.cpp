@@ -503,7 +503,7 @@ StreamsModel::StreamsModel(QObject *parent)
     : ActionModel(parent)
     , root(new CategoryItem(QString(), "root"))
 {
-    icn=Icons::self()->radioStreamIcon;
+    icn.addFile(":radio.svg");
     tuneIn=new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), tr("TuneIn"), root, getIcon("tunein"), QString(), "tunein");
     tuneIn->supportsBookmarks=true;
     root->children.append(tuneIn);

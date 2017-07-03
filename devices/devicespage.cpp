@@ -33,6 +33,7 @@
 #include "widgets/icons.h"
 #include "widgets/menubutton.h"
 #include "support/action.h"
+#include "support/monoicon.h"
 #include "gui/stdactions.h"
 #include "syncdialog.h"
 #ifdef ENABLE_REMOTE_DEVICES
@@ -61,7 +62,7 @@ DevicesPage::DevicesPage(QWidget *p)
     copyAction = new Action(Icons::self()->downloadIcon, tr("Copy To Library"), this);
     ToolButton *copyToLibraryButton=new ToolButton(this);
     copyToLibraryButton->setDefaultAction(copyAction);
-    syncAction = new Action(Icon("folder-sync"), tr("Synchronise"), this);
+    syncAction = new Action(MonoIcon::icon(FontAwesome::exchange, Utils::monoIconColor()), tr("Synchronise"), this);
     syncAction->setEnabled(false);
     connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
     #ifdef ENABLE_REMOTE_DEVICES

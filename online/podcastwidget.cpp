@@ -31,6 +31,8 @@
 #include "support/action.h"
 #include "support/messagebox.h"
 #include "support/configuration.h"
+#include "support/monoicon.h"
+#include "support/utils.h"
 #include <QTimer>
 
 PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
@@ -39,11 +41,11 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     , proxy(this)
 {
     subscribeAction = new Action(Icons::self()->addNewItemIcon, tr("Add Subscription"), this);
-    unSubscribeAction = new Action(Icon("list-remove"), tr("Remove Subscription"), this);
-    downloadAction = new Action(Icon("go-down"), tr("Download Episodes"), this);
-    deleteAction = new Action(Icon("edit-delete"), tr("Delete Downloaded Episodes"), this);
+    unSubscribeAction = new Action(Icons::self()->removeIcon, tr("Remove Subscription"), this);
+    downloadAction = new Action(Icons::self()->downloadIcon, tr("Download Episodes"), this);
+    deleteAction = new Action(MonoIcon::icon(FontAwesome::trash, MonoIcon::constRed, MonoIcon::constRed), tr("Delete Downloaded Episodes"), this);
     cancelDownloadAction = new Action(Icons::self()->cancelIcon, tr("Cancel Download"), this);
-    markAsNewAction = new Action(Icon("document-new"), tr("Mark Episodes As New"), this);
+    markAsNewAction = new Action(MonoIcon::icon(FontAwesome::asterisk, Utils::monoIconColor()), tr("Mark Episodes As New"), this);
     markAsListenedAction = new Action(tr("Mark Episodes As Listened"), this);
     unplayedOnlyAction = new Action(Icons::self()->rssListIcon, tr("Show Unplayed Only"), this);
     unplayedOnlyAction->setCheckable(true);

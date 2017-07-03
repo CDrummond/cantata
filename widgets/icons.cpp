@@ -64,7 +64,6 @@ Icons::Icons()
     podcastIcon=MonoIcon::icon(FontAwesome::podcast, stdColor);
     audioFileIcon=Icon("audio-x-generic");
     folderIcon=Icon("inode-directory");
-    dynamicRuleIcon=Icon(QStringList() << "dynamic-playlist" << "media-playlist-shuffle" << "text-x-generic");
     speakerIcon=Icon(QStringList() << "speaker" << "audio-speakers" << "gnome-volume-control");
     repeatIcon=MonoIcon::icon(FontAwesome::refresh, stdColor);
     shuffleIcon=MonoIcon::icon(FontAwesome::random, stdColor);
@@ -93,7 +92,7 @@ Icons::Icons()
     connectIcon=MonoIcon::icon(FontAwesome::plug, stdColor);
     disconnectIcon=MonoIcon::icon(FontAwesome::eject, stdColor);
     downloadIcon=MonoIcon::icon(FontAwesome::download, stdColor);
-    removeIcon=MonoIcon::icon(FontAwesome::trash, MonoIcon::constRed, MonoIcon::constRed);
+    removeIcon=MonoIcon::icon(FontAwesome::minussquare, MonoIcon::constRed, MonoIcon::constRed);
     minusIcon=MonoIcon::icon(FontAwesome::minus, MonoIcon::constRed, MonoIcon::constRed);
     addIcon=MonoIcon::icon(FontAwesome::plus, stdColor);
     addBookmarkIcon=MonoIcon::icon(FontAwesome::bookmark, stdColor);

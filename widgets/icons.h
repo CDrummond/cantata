@@ -45,7 +45,6 @@ public:
     Icon podcastIcon;
     Icon folderIcon;
     Icon audioFileIcon;
-    Icon dynamicRuleIcon; // Also used for Mopidy smart playlists...
     Icon singleIcon;
     Icon consumeIcon;
     Icon repeatIcon;

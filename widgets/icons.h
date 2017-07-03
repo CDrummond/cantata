@@ -49,7 +49,6 @@ public:
     Icon consumeIcon;
     Icon repeatIcon;
     Icon shuffleIcon;
-    Icon radioStreamIcon;
     Icon streamIcon;
     Icon speakerIcon;
     Icon menuIcon;

@@ -32,10 +32,7 @@
 <file alias="genre.svg">icons/view-media-genre.svg</file>
 <file alias="dice.svg">icons/dice.svg</file>
 <file alias="playlist.svg">icons/playlist.svg</file>
-<file alias="radio16.png">icons/view-radiostream16.png</file>
-<file alias="radio22.png">icons/view-radiostream22.png</file>
-<file alias="radio32.png">icons/view-radiostream32.png</file>
-<file alias="radio48.png">icons/view-radiostream48.png</file>
+<file alias="radio.svg">icons/radio.svg</file>
 
 </qresource>
 </RCC>

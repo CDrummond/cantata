@@ -40,8 +40,6 @@
 
 GLOBAL_STATIC(Icons, instance)
 
-static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48; // << 64;
-
 #if defined Q_OS_MAC || defined Q_OS_WIN
 #define ALWAYS_USE_MONO_ICONS
 #endif
@@ -68,7 +66,6 @@ Icons::Icons()
     repeatIcon=MonoIcon::icon(FontAwesome::refresh, stdColor);
     shuffleIcon=MonoIcon::icon(FontAwesome::random, stdColor);
     filesIcon=Icon(QStringList() << "folder-downloads" << "folder-download" << "folder" << "go-down");
-    radioStreamIcon=Icon::create("radio", constStdSizes);
     albumIconSmall.addFile(":album32.svg");
     albumIconLarge.addFile(":album.svg");
     albumMonoIcon=MonoIcon::icon(":mono-album.svg", stdColor);

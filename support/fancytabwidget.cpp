@@ -90,7 +90,7 @@ static void drawIcon(const QIcon &icon, const QRect &r, QPainter *p, const QSize
     #else
     QPixmap px = icon.pixmap(iconSize, selected ? QIcon::Selected : QIcon::Normal);
     #endif
-    QSize layoutSize = px.size() / px.devicePixelRatio();
+    QSize layoutSize = px.size() / px.devicePixelRatioF();
     p->drawPixmap(r.x()+(r.width()-layoutSize.width())/2.0, r.y()+(r.height()-layoutSize.height())/2.0, layoutSize.width(), layoutSize.height(), px);
 }
 

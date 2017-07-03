@@ -153,7 +153,7 @@ Dynamic::Dynamic()
     , currentJob(0)
     , currentCommand(Unknown)
 {
-    icn=Icon("dynamic-playlist");
+    icn.addFile(":dice.svg");
     loadLocal();
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
     connect(MPDConnection::self(), SIGNAL(dynamicSupport(bool)), this, SLOT(remoteDynamicSupported(bool)));

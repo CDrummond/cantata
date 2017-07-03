@@ -147,7 +147,7 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
 
     foreach (const QPointer<Action> &a, actions) {
         QPixmap pix=a->icon().pixmap(QSize(iconSize, iconSize));
-        QSize pixSize = pix.isNull() ? QSize(0, 0) : (pix.size() / pix.devicePixelRatio());
+        QSize pixSize = pix.isNull() ? QSize(0, 0) : (pix.size() / pix.devicePixelRatioF());
 
         if (!pix.isNull() && actionRect.width()>=pixSize.width()/* && r.x()>=0 && r.y()>=0*/) {
             drawBgnd(painter, actionRect, lightBgnd);

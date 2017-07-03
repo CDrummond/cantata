@@ -106,7 +106,7 @@ void CoverLabel::paintEvent(QPaintEvent *)
         return;
     }
     QPainter p(this);
-    QSize layoutSize = pix.size() / pix.devicePixelRatio();
+    QSize layoutSize = pix.size() / pix.devicePixelRatioF();
     QRect r((width()-layoutSize.width())/2, (height()-layoutSize.height())/2, layoutSize.width(), layoutSize.height());
     p.drawPixmap(r, pix);
     if (underMouse()) {

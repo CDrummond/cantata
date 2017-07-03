@@ -367,13 +367,13 @@ void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
             pix=cover ? *cover : (stream && !song.isCdda() ? Icons::self()->streamIcon : Icons::self()->albumIcon(constCoverSize)).pixmap(constCoverSize, constCoverSize);
         }
 
-        int maxSize=constCoverSize*pix.devicePixelRatio();
+        int maxSize=constCoverSize*pix.devicePixelRatioF();
 
         if (pix.width()>maxSize) {
             pix=pix.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
 
-        QSize pixSize = pix.isNull() ? QSize(0, 0) : (pix.size() / pix.devicePixelRatio());
+        QSize pixSize = pix.isNull() ? QSize(0, 0) : (pix.size() / pix.devicePixelRatioF());
 
         if (rtl) {
             painter->drawPixmap(r.x()+r.width()-(pixSize.width()-constBorder), r.y()+((r.height()-pixSize.height())/2), pixSize.width(), pixSize.height(), pix);

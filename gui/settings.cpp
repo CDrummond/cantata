@@ -671,6 +671,11 @@ bool Settings::mpris()
     return cfg.get("mpris", true);
 }
 
+QString Settings::style()
+{
+    return cfg.get("style", QString());
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

@@ -143,6 +143,7 @@ public:
     bool retinaSupport();
     QSet<QString> ignorePrefixes();
     bool mpris();
+    QString style();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

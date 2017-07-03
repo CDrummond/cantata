@@ -41,12 +41,20 @@
 void Application::init()
 {
     #if defined Q_OS_WIN
-    qApp->setStyle(new ProxyStyle(ProxyStyle::VF_Side));
+    ProxyStyle *proxy=new ProxyStyle(ProxyStyle::VF_Side);
     #elif defined Q_OS_MAC
-    qApp->setStyle(new ProxyStyle(ProxyStyle::VF_Side|ProxyStyle::VF_Top));
+    ProxyStyle *proxy=ProxyStyle(ProxyStyle::VF_Side|ProxyStyle::VF_Top);
     #else
-    qApp->setStyle(new ProxyStyle(0));
+    ProxyStyle *proxy=new ProxyStyle(0);
     #endif
+    QString theme = Settings::self()->style();
+    if (!theme.isEmpty()) {
+        QStyle *s=QApplication::setStyle(theme);
+        if (s) {
+            proxy->setBaseStyle(s);
+        }
+    }
+    qApp->setStyle(proxy);
 
     // Ensure these objects are created in the GUI thread...
     ThreadCleaner::self();

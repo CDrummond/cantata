@@ -2,7 +2,7 @@
 Name=Cantata
 Comment=Icons taken from Papirus theme.
 Inherits=breeze,oxygen,hicolor
-Directories=svg,svg64,6,22,32,48,64,128,256
+Directories=svg,svg64
 
 [svg]
 Size=48
@@ -15,32 +15,3 @@ Size=64
 MinSize=8
 MaxSize=512
 Type=Scalable
-
-[16]
-Size=16
-Type=Threshold
-
-[22]
-Size=22
-Type=Threshold
-
-[32]
-Size=32
-Type=Threshold
-
-[48]
-Size=48
-Type=Threshold
-
-[64]
-Size=64
-Type=Threshold
-
-[128]
-Size=128
-Type=Threshold
-
-[256]
-Size=256
-Type=Threshold
-

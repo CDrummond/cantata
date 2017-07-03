@@ -7160,37 +7160,37 @@ Could not download to temporary file!</source>
         <translation type="unfinished">이미지를 내려받을 수 없음!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="801"/>
+        <location filename="../gui/coverdialog.cpp" line="805"/>
         <source>Load Local Cover</source>
         <translation type="unfinished">로컬 표지 읽기</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="801"/>
+        <location filename="../gui/coverdialog.cpp" line="805"/>
         <source>Images (*.png *.jpg)</source>
         <translation type="unfinished">이미지 (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="805"/>
+        <location filename="../gui/coverdialog.cpp" line="809"/>
         <source>File is already in list!</source>
         <translation type="unfinished">파일이 이미 목록에 있음!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="809"/>
+        <location filename="../gui/coverdialog.cpp" line="813"/>
         <source>Failed to read image!</source>
         <translation type="unfinished">이미지를 읽을 수 없음!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="822"/>
+        <location filename="../gui/coverdialog.cpp" line="826"/>
         <source>Display</source>
         <translation type="unfinished">보기</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="823"/>
+        <location filename="../gui/coverdialog.cpp" line="827"/>
         <source>Remove</source>
         <translation type="unfinished">지우기</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1198"/>
+        <location filename="../gui/coverdialog.cpp" line="1202"/>
         <source>Failed to set cover!
 
 Could not make copy!</source>
@@ -7199,7 +7199,7 @@ Could not make copy!</source>
 복사할 수 없음!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1207"/>
+        <location filename="../gui/coverdialog.cpp" line="1211"/>
         <source>Failed to set cover!
 
 Could not backup original!</source>
@@ -7208,7 +7208,7 @@ Could not backup original!</source>
 원본을 백업할 수 없음!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1255"/>
+        <location filename="../gui/coverdialog.cpp" line="1259"/>
         <source>Failed to set cover!
 
 Could not copy file to &apos;%1&apos;!</source>
@@ -7217,7 +7217,7 @@ Could not copy file to &apos;%1&apos;!</source>
 &apos;%1&apos;에 복사할 수 없음!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1309"/>
+        <location filename="../gui/coverdialog.cpp" line="1313"/>
         <source>Searching...</source>
         <translation type="unfinished">찾기...</translation>
     </message>
@@ -7556,75 +7556,75 @@ Could not copy file to &apos;%1&apos;!</source>
 <context>
     <name>DevicesPage</name>
     <message>
-        <location filename="../devices/devicespage.cpp" line="61"/>
+        <location filename="../devices/devicespage.cpp" line="62"/>
         <source>Copy To Library</source>
         <translation type="unfinished">음원으로 복사</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="64"/>
+        <location filename="../devices/devicespage.cpp" line="65"/>
         <source>Synchronise</source>
         <translation type="unfinished">동기화</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="68"/>
+        <location filename="../devices/devicespage.cpp" line="69"/>
         <source>Forget Device</source>
         <translation type="unfinished">장치 끊기</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="99"/>
+        <location filename="../devices/devicespage.cpp" line="100"/>
         <source>Add Device</source>
         <translation type="unfinished">장치 연결</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="407"/>
-        <location filename="../devices/devicespage.cpp" line="419"/>
+        <location filename="../devices/devicespage.cpp" line="408"/>
+        <location filename="../devices/devicespage.cpp" line="420"/>
         <source>Lookup album and track details?</source>
         <translation type="unfinished">음반과 곡의 상세정보를 찾습니까?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="408"/>
-        <location filename="../devices/devicespage.cpp" line="420"/>
-        <location filename="../devices/devicespage.cpp" line="432"/>
+        <location filename="../devices/devicespage.cpp" line="409"/>
+        <location filename="../devices/devicespage.cpp" line="421"/>
+        <location filename="../devices/devicespage.cpp" line="433"/>
         <source>Refresh</source>
         <translation type="unfinished">새로 읽기</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="408"/>
+        <location filename="../devices/devicespage.cpp" line="409"/>
         <source>Via CDDB</source>
         <translation type="unfinished">CDDB 사용</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="408"/>
+        <location filename="../devices/devicespage.cpp" line="409"/>
         <source>Via MusicBrainz</source>
         <translation type="unfinished">MusicBrainz 사용</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="429"/>
+        <location filename="../devices/devicespage.cpp" line="430"/>
         <source>Which type of refresh do you wish to perform?</source>
         <translation type="unfinished">어떻게 새로 읽을까요?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="430"/>
+        <location filename="../devices/devicespage.cpp" line="431"/>
         <source>Partial - Only new songs are scanned (quick)</source>
         <translation type="unfinished">부분 - 새 음악만 읽기 (빠름)</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="431"/>
+        <location filename="../devices/devicespage.cpp" line="432"/>
         <source>Full - All songs are rescanned (slow)</source>
         <translation type="unfinished">전체 - 모든 음악 다시 읽기 (느림)</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="432"/>
+        <location filename="../devices/devicespage.cpp" line="433"/>
         <source>Partial</source>
         <translation type="unfinished">부분</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="432"/>
+        <location filename="../devices/devicespage.cpp" line="433"/>
         <source>Full</source>
         <translation type="unfinished">전체</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="479"/>
+        <location filename="../devices/devicespage.cpp" line="480"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
@@ -7633,37 +7633,37 @@ This cannot be undone.</source>
 되돌릴 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="480"/>
+        <location filename="../devices/devicespage.cpp" line="481"/>
         <source>Delete Songs</source>
         <translation type="unfinished">곡 지우기</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="506"/>
+        <location filename="../devices/devicespage.cpp" line="507"/>
         <source>Are you sure you wish to forget &apos;%1&apos;?</source>
         <translation type="unfinished">&apos;%1&apos;을 끊을까요?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="525"/>
+        <location filename="../devices/devicespage.cpp" line="526"/>
         <source>Are you sure you wish to eject Audio CD &apos;%1 - %2&apos;?</source>
         <translation type="unfinished">오디오 CD &apos;%1 - %2&apos;을 뺄까요?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="526"/>
+        <location filename="../devices/devicespage.cpp" line="527"/>
         <source>Eject</source>
         <translation type="unfinished">빼기</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="527"/>
+        <location filename="../devices/devicespage.cpp" line="528"/>
         <source>Are you sure you wish to disconnect &apos;%1&apos;?</source>
         <translation type="unfinished">&apos;%1&apos;을 끊을까요?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="528"/>
+        <location filename="../devices/devicespage.cpp" line="529"/>
         <source>Disconnect</source>
         <translation type="unfinished">연결 끊음</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="547"/>
+        <location filename="../devices/devicespage.cpp" line="548"/>
         <source>Please close other dialogs first.</source>
         <translation type="unfinished">다른 대화창을 먼저 닫으시기 바랍니다.</translation>
     </message>
@@ -8935,22 +8935,21 @@ This cannot be undone.</source>
         <translation type="unfinished">곡 정보 툴팁 보기</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="648"/>
         <source>Support retina displays</source>
-        <translation type="unfinished">등급 표시 지원</translation>
+        <translation type="obsolete">등급 표시 지원</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="655"/>
+        <location filename="../gui/interfacesettings.ui" line="648"/>
         <source>Language:</source>
         <translation type="unfinished">언어:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="670"/>
+        <location filename="../gui/interfacesettings.ui" line="663"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation type="unfinished">&apos;한 번 클릭 사용&apos; 설정을 바꾸면 다시 시작해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="677"/>
+        <location filename="../gui/interfacesettings.ui" line="670"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation type="unfinished">언어 설정을 바꾸면 다시 시작해야 합니다.</translation>
     </message>
@@ -8959,9 +8958,8 @@ This cannot be undone.</source>
         <translation type="obsolete">&apos;터치 친화적&apos; 설정을 바꾸면 다시 시작해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="684"/>
         <source>Enabling support for retina displays will produce sharper icons on the retina display, but may produce less sharp icons on non-retina displays. Changing this setting will require a re-start of Cantata.</source>
-        <translation type="unfinished">레티나 디스플레이 기능을 켜면 해당기기에서 아이콘이 보다 선명하게 보이지만, 해당기기가 아니면 덜 선명하게 보입니다. 이 설정을 바꾸면 다시 시작해야 합니다.</translation>
+        <translation type="obsolete">레티나 디스플레이 기능을 켜면 해당기기에서 아이콘이 보다 선명하게 보이지만, 해당기기가 아니면 덜 선명하게 보입니다. 이 설정을 바꾸면 다시 시작해야 합니다.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="136"/>
@@ -9050,23 +9048,23 @@ This cannot be undone.</source>
         <translation type="unfinished">알림</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="404"/>
+        <location filename="../gui/interfacesettings.cpp" line="392"/>
         <source>English (en)</source>
         <translation type="unfinished">영어 (en)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="409"/>
+        <location filename="../gui/interfacesettings.cpp" line="397"/>
         <source>System default</source>
         <translation type="unfinished">시스템 기본값</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="510"/>
+        <location filename="../gui/interfacesettings.cpp" line="493"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation type="unfinished">%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="515"/>
+        <location filename="../gui/interfacesettings.cpp" line="498"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation type="unfinished">%1 px</translation>
@@ -9080,7 +9078,7 @@ This cannot be undone.</source>
         <translation type="unfinished">돌아가기</translation>
     </message>
     <message>
-        <location filename="../widgets/itemview.cpp" line="1293"/>
+        <location filename="../widgets/itemview.cpp" line="1295"/>
         <source>Updating...</source>
         <translation type="unfinished">업데이트 중...</translation>
     </message>
@@ -9515,320 +9513,320 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="unfinished">전체화면 나가기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="247"/>
+        <location filename="../gui/mainwindow.cpp" line="248"/>
         <source>Configure Cantata...</source>
         <translation type="unfinished">칸타타 설정...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="247"/>
+        <location filename="../gui/mainwindow.cpp" line="248"/>
         <source>Preferences</source>
         <translation type="unfinished">설정</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="250"/>
+        <location filename="../gui/mainwindow.cpp" line="251"/>
         <source>Quit</source>
         <translation type="unfinished">나가기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="253"/>
+        <location filename="../gui/mainwindow.cpp" line="254"/>
         <source>About Cantata...</source>
         <translation type="unfinished">칸타타에 대하여...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="260"/>
+        <location filename="../gui/mainwindow.cpp" line="261"/>
         <source>Show Window</source>
         <translation type="unfinished">창 보기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="263"/>
+        <location filename="../gui/mainwindow.cpp" line="264"/>
         <source>Server information...</source>
         <translation type="unfinished">서버정보...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="266"/>
+        <location filename="../gui/mainwindow.cpp" line="267"/>
         <source>Refresh Database</source>
         <translation type="unfinished">데이터베이스 새로 읽기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="267"/>
+        <location filename="../gui/mainwindow.cpp" line="268"/>
         <source>Refresh</source>
         <translation type="unfinished">새로 읽기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="269"/>
+        <location filename="../gui/mainwindow.cpp" line="270"/>
         <source>Connect</source>
         <translation type="unfinished">연결</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="270"/>
+        <location filename="../gui/mainwindow.cpp" line="271"/>
         <source>Collection</source>
         <translation type="unfinished">음원</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="271"/>
-        <location filename="../gui/mainwindow.cpp" line="1332"/>
-        <location filename="../gui/mainwindow.cpp" line="1336"/>
-        <location filename="../gui/mainwindow.cpp" line="1342"/>
+        <location filename="../gui/mainwindow.cpp" line="272"/>
+        <location filename="../gui/mainwindow.cpp" line="1334"/>
+        <location filename="../gui/mainwindow.cpp" line="1338"/>
+        <location filename="../gui/mainwindow.cpp" line="1344"/>
         <source>Outputs</source>
         <translation type="unfinished">출력</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="272"/>
+        <location filename="../gui/mainwindow.cpp" line="273"/>
         <source>Stop After Track</source>
         <translation type="unfinished">곡 다음 정지</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="278"/>
+        <location filename="../gui/mainwindow.cpp" line="279"/>
         <source>Seek forward (%1 seconds)</source>
         <translation type="unfinished">앞으로 가기 (%1 초)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="279"/>
+        <location filename="../gui/mainwindow.cpp" line="280"/>
         <source>Seek backward (%1 seconds)</source>
         <translation type="unfinished">뒤로 가기 (%1 초)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="292"/>
+        <location filename="../gui/mainwindow.cpp" line="293"/>
         <source>Add To Stored Playlist</source>
         <translation type="unfinished">저장된 연주목록에 추가</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="297"/>
+        <location filename="../gui/mainwindow.cpp" line="298"/>
         <source>Crop Others</source>
         <translation type="unfinished">나머지 지우기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="298"/>
+        <location filename="../gui/mainwindow.cpp" line="299"/>
         <source>Add Stream URL</source>
         <translation type="unfinished">스트림 URL 추가</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="299"/>
+        <location filename="../gui/mainwindow.cpp" line="301"/>
         <source>Clear</source>
         <translation type="unfinished">지우기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="301"/>
+        <location filename="../gui/mainwindow.cpp" line="303"/>
         <source>Center On Current Track</source>
         <translation type="unfinished">지금 곡을 가운데로</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="302"/>
+        <location filename="../gui/mainwindow.cpp" line="304"/>
         <source>Expanded Interface</source>
         <translation type="unfinished">넓게 보기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="304"/>
+        <location filename="../gui/mainwindow.cpp" line="306"/>
         <source>Show Current Song Information</source>
         <translation type="unfinished">지금 곡 정보보기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="307"/>
+        <location filename="../gui/mainwindow.cpp" line="309"/>
         <source>Full Screen</source>
         <translation type="unfinished">전체화면</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="311"/>
+        <location filename="../gui/mainwindow.cpp" line="313"/>
         <source>Random</source>
         <translation type="unfinished">무작위</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="312"/>
+        <location filename="../gui/mainwindow.cpp" line="314"/>
         <source>Repeat</source>
         <translation type="unfinished">반복</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="313"/>
+        <location filename="../gui/mainwindow.cpp" line="315"/>
         <source>Single</source>
         <translation type="unfinished">단일</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="313"/>
+        <location filename="../gui/mainwindow.cpp" line="315"/>
         <source>When &apos;Single&apos; is activated, playback is stopped after current song, or song is repeated if &apos;Repeat&apos; is enabled.</source>
         <translation type="unfinished">&apos;단일&apos;이 선택되면, 지금 곡 다음에 연주를 멈춥니다. &apos;반복&apos;이 선택되면, 곡은 반복됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="314"/>
+        <location filename="../gui/mainwindow.cpp" line="316"/>
         <source>Consume</source>
         <translation type="unfinished">소비</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="314"/>
+        <location filename="../gui/mainwindow.cpp" line="316"/>
         <source>When consume is activated, a song is removed from the play queue after it has been played.</source>
         <translation type="unfinished">소비가 선택되면, 곡은 연주 후에 연주순서에서 없어집니다.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="315"/>
+        <location filename="../gui/mainwindow.cpp" line="317"/>
         <source>Find in Play Queue</source>
         <translation type="unfinished">연주순서에서 찾기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="319"/>
+        <location filename="../gui/mainwindow.cpp" line="321"/>
         <source>Play Stream</source>
         <translation type="unfinished">스트림 연주</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="327"/>
+        <location filename="../gui/mainwindow.cpp" line="329"/>
         <source>Locate In Library</source>
         <translation type="unfinished">음원에서 찾기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="328"/>
+        <location filename="../gui/mainwindow.cpp" line="330"/>
         <source>Play next</source>
         <translation type="unfinished">다음 곡 재생</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="331"/>
+        <location filename="../gui/mainwindow.cpp" line="333"/>
         <source>Edit Track Information (Play Queue)</source>
         <translation type="unfinished">곡 정보 수정 (연주순서)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="334"/>
+        <location filename="../gui/mainwindow.cpp" line="336"/>
         <source>Expand All</source>
         <translation type="unfinished">전체확장</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="336"/>
+        <location filename="../gui/mainwindow.cpp" line="338"/>
         <source>Collapse All</source>
         <translation type="unfinished">전체축소</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="338"/>
+        <location filename="../gui/mainwindow.cpp" line="340"/>
         <source>Cancel</source>
         <translation type="unfinished">취소</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="391"/>
+        <location filename="../gui/mainwindow.cpp" line="393"/>
         <source>Play Queue</source>
         <translation type="unfinished">연주순서</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="396"/>
+        <location filename="../gui/mainwindow.cpp" line="398"/>
         <source>Library</source>
         <translation type="unfinished">음원</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="401"/>
+        <location filename="../gui/mainwindow.cpp" line="403"/>
         <source>Folders</source>
         <translation type="unfinished">폴더</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="407"/>
+        <location filename="../gui/mainwindow.cpp" line="409"/>
         <source>Playlists</source>
         <translation type="unfinished">연주목록</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="416"/>
+        <location filename="../gui/mainwindow.cpp" line="418"/>
         <source>Internet</source>
         <translation type="unfinished">인터넷</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="425"/>
+        <location filename="../gui/mainwindow.cpp" line="427"/>
         <source>Devices</source>
         <translation type="unfinished">장치</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="432"/>
+        <location filename="../gui/mainwindow.cpp" line="434"/>
         <source>Search</source>
         <translation type="unfinished">찾기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="437"/>
+        <location filename="../gui/mainwindow.cpp" line="439"/>
         <source>Info</source>
         <translation type="unfinished">정보</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="591"/>
+        <location filename="../gui/mainwindow.cpp" line="593"/>
         <source>Show Menubar</source>
         <translation type="unfinished">메뉴 줄 보기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="629"/>
+        <location filename="../gui/mainwindow.cpp" line="631"/>
         <source>&amp;Music</source>
         <translation type="unfinished">음악(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="640"/>
+        <location filename="../gui/mainwindow.cpp" line="642"/>
         <source>&amp;Edit</source>
         <translation type="unfinished">수정(&amp;E)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="652"/>
+        <location filename="../gui/mainwindow.cpp" line="654"/>
         <source>&amp;View</source>
         <translation type="unfinished">보기(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="663"/>
+        <location filename="../gui/mainwindow.cpp" line="665"/>
         <source>&amp;Queue</source>
         <translation type="unfinished">순서(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="672"/>
+        <location filename="../gui/mainwindow.cpp" line="674"/>
         <source>&amp;Settings</source>
         <translation type="unfinished">설정(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="686"/>
+        <location filename="../gui/mainwindow.cpp" line="688"/>
         <source>&amp;Help</source>
         <translation type="unfinished">도움말(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="705"/>
+        <location filename="../gui/mainwindow.cpp" line="707"/>
         <source>Set Rating</source>
         <translation type="unfinished">등급 설정</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="710"/>
+        <location filename="../gui/mainwindow.cpp" line="712"/>
         <source>No Rating</source>
         <translation type="unfinished">등급 없음</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1006"/>
+        <location filename="../gui/mainwindow.cpp" line="1008"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation type="unfinished">활동 연주목록 규정에 맞는 음악을 찾지 못했습니다.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1127"/>
+        <location filename="../gui/mainwindow.cpp" line="1129"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">%1에 연결</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1163"/>
+        <location filename="../gui/mainwindow.cpp" line="1165"/>
         <source>Refresh MPD Database?</source>
         <translation type="unfinished">MPD 데이터베이스를 새로 읽을까요?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1169"/>
+        <location filename="../gui/mainwindow.cpp" line="1171"/>
         <source>About Cantata</source>
         <translation type="unfinished">칸타타에 대하여</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1170"/>
+        <location filename="../gui/mainwindow.cpp" line="1172"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation type="unfinished">&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD 클라이언트.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;&lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;에 따라 배포</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1172"/>
+        <location filename="../gui/mainwindow.cpp" line="1174"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation type="unfinished">&lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; 기반 - &amp;copy; 2007-2010 The QtMPC 개발자&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1173"/>
+        <location filename="../gui/mainwindow.cpp" line="1175"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">찾아보기 배경 도움은 &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1174"/>
+        <location filename="../gui/mainwindow.cpp" line="1176"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation type="unfinished">찾아보기 자료 도움은 &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;위키피디아&lt;/a&gt;와 &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1175"/>
+        <location filename="../gui/mainwindow.cpp" line="1177"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">나만의 음악 팬아트를 올려주실 곳은 &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1182"/>
+        <location filename="../gui/mainwindow.cpp" line="1184"/>
         <source>A Podcast is currently being downloaded
 
 Quiting now will abort the download.</source>
@@ -9837,95 +9835,95 @@ Quiting now will abort the download.</source>
 지금 취소하면 내려받기를 그만둡니다.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1183"/>
+        <location filename="../gui/mainwindow.cpp" line="1185"/>
         <source>Abort download and quit</source>
         <translation type="unfinished">내려받기를 그만두고 취소</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1211"/>
+        <location filename="../gui/mainwindow.cpp" line="1213"/>
         <source>Please close other dialogs first.</source>
         <translation type="unfinished">다른 대화창을 먼저 닫으시기 바랍니다.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1332"/>
-        <location filename="../gui/mainwindow.cpp" line="1343"/>
+        <location filename="../gui/mainwindow.cpp" line="1334"/>
+        <location filename="../gui/mainwindow.cpp" line="1345"/>
         <source>Enabled: %1</source>
         <translation type="unfinished">사용 가능: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1336"/>
-        <location filename="../gui/mainwindow.cpp" line="1344"/>
+        <location filename="../gui/mainwindow.cpp" line="1338"/>
+        <location filename="../gui/mainwindow.cpp" line="1346"/>
         <source>Disabled: %1</source>
         <translation type="unfinished">사용 불가능: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1532"/>
-        <location filename="../gui/mainwindow.cpp" line="1555"/>
+        <location filename="../gui/mainwindow.cpp" line="1534"/>
+        <location filename="../gui/mainwindow.cpp" line="1557"/>
         <source>Server Information</source>
         <translation type="unfinished">서버정보</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1535"/>
+        <location filename="../gui/mainwindow.cpp" line="1537"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;서버&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;프로토콜:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;가동시간:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;연주:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;처리:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;태그:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1546"/>
+        <location filename="../gui/mainwindow.cpp" line="1548"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;데이터베이스&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;연주자:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;음반:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;곡:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;지속시간:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;업데이트:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1699"/>
+        <location filename="../gui/mainwindow.cpp" line="1701"/>
         <source>Cantata (%1)</source>
         <translation type="unfinished">칸타타 (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1766"/>
+        <location filename="../gui/mainwindow.cpp" line="1768"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">MPD가 다음 오류를 보고함: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1837"/>
+        <location filename="../gui/mainwindow.cpp" line="1839"/>
         <source>Cantata</source>
         <translation type="unfinished">칸타타</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1837"/>
+        <location filename="../gui/mainwindow.cpp" line="1839"/>
         <source>Playback stopped</source>
         <translation type="unfinished">연주중지</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1880"/>
+        <location filename="../gui/mainwindow.cpp" line="1882"/>
         <source>Remove all songs from play queue?</source>
         <translation type="unfinished">연주순서의 모든 곡을 지울까요?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1931"/>
+        <location filename="../gui/mainwindow.cpp" line="1933"/>
         <source>Priority</source>
         <translation type="unfinished">우선순위</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1931"/>
+        <location filename="../gui/mainwindow.cpp" line="1933"/>
         <source>Enter priority (0..255):</source>
         <translation type="unfinished">우선순위 입력 (0..255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1954"/>
+        <location filename="../gui/mainwindow.cpp" line="1956"/>
         <source>Playlist Name</source>
         <translation type="unfinished">연주목록 이름</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1954"/>
+        <location filename="../gui/mainwindow.cpp" line="1956"/>
         <source>Enter a name for the playlist:</source>
         <translation type="unfinished">연주목록 이름을 입력합니다:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1957"/>
+        <location filename="../gui/mainwindow.cpp" line="1959"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation type="unfinished">&apos;%1&apos;이 즐겨찾는 스트림 저장에 사용되므로, 다른 이름을 선택합니다.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1961"/>
+        <location filename="../gui/mainwindow.cpp" line="1963"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -9934,19 +9932,19 @@ Add to that playlist?</source>
 연주목록에 추가할까요?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1962"/>
+        <location filename="../gui/mainwindow.cpp" line="1964"/>
         <source>Existing Playlist</source>
         <translation type="unfinished">이미 있는 연주목록</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2037"/>
+        <location filename="../gui/mainwindow.cpp" line="2039"/>
         <source>%n Track(s)</source>
         <translation type="unfinished">
             <numerusform>%n 곡</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2039"/>
+        <location filename="../gui/mainwindow.cpp" line="2041"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n 곡 (%2)</numerusform>
@@ -9956,7 +9954,7 @@ Add to that playlist?</source>
 <context>
     <name>MenuButton</name>
     <message>
-        <location filename="../widgets/menubutton.cpp" line="38"/>
+        <location filename="../widgets/menubutton.cpp" line="39"/>
         <source>Menu</source>
         <translation type="unfinished">메뉴</translation>
     </message>
@@ -10643,30 +10641,30 @@ Add to that playlist?</source>
 <context>
     <name>PlaylistsModel</name>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="89"/>
+        <location filename="../models/playlistsmodel.cpp" line="90"/>
         <source>New Playlist...</source>
         <translation type="unfinished">새로운 연주목록...</translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="111"/>
+        <location filename="../models/playlistsmodel.cpp" line="112"/>
         <source>Stored Playlists</source>
         <translation type="unfinished">저장된 연주목록</translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="116"/>
+        <location filename="../models/playlistsmodel.cpp" line="117"/>
         <source>Standard playlists</source>
         <translation type="unfinished">기본 연주목록</translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/playlistsmodel.cpp" line="335"/>
-        <location filename="../models/playlistsmodel.cpp" line="346"/>
+        <location filename="../models/playlistsmodel.cpp" line="336"/>
+        <location filename="../models/playlistsmodel.cpp" line="347"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n 곡 (%2)</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="344"/>
+        <location filename="../models/playlistsmodel.cpp" line="345"/>
         <source>Smart Playlist</source>
         <translation type="unfinished">고급 연주목록</translation>
     </message>
@@ -11026,99 +11024,99 @@ Add to that playlist?</source>
 <context>
     <name>PodcastWidget</name>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="41"/>
+        <location filename="../online/podcastwidget.cpp" line="43"/>
         <source>Add Subscription</source>
         <translation type="unfinished">구독 추가</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="42"/>
+        <location filename="../online/podcastwidget.cpp" line="44"/>
         <source>Remove Subscription</source>
         <translation type="unfinished">구독 삭제</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="43"/>
+        <location filename="../online/podcastwidget.cpp" line="45"/>
         <source>Download Episodes</source>
         <translation type="unfinished">에피소드 내려받기</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="44"/>
+        <location filename="../online/podcastwidget.cpp" line="46"/>
         <source>Delete Downloaded Episodes</source>
         <translation type="unfinished">내려받은 에피소드 지우기</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="45"/>
+        <location filename="../online/podcastwidget.cpp" line="47"/>
         <source>Cancel Download</source>
         <translation type="unfinished">내려받기 취소</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="46"/>
+        <location filename="../online/podcastwidget.cpp" line="48"/>
         <source>Mark Episodes As New</source>
         <translation type="unfinished">에피소드를 읽지 않음으로 처리</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="47"/>
+        <location filename="../online/podcastwidget.cpp" line="49"/>
         <source>Mark Episodes As Listened</source>
         <translation type="unfinished">에피소드를 읽음으로 처리</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="48"/>
+        <location filename="../online/podcastwidget.cpp" line="50"/>
         <source>Show Unplayed Only</source>
         <translation type="unfinished">듣지 않은 것만 보기</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="140"/>
+        <location filename="../online/podcastwidget.cpp" line="142"/>
         <source>Unsubscribe from &apos;%1&apos;?</source>
         <translation type="unfinished">&apos;%1&apos;을 구독 취소할까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="186"/>
+        <location filename="../online/podcastwidget.cpp" line="188"/>
         <source>Do you wish to download the selected podcast episodes?</source>
         <translation type="unfinished">선택된 팟캐스트 에피소드를 내려받을까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="200"/>
+        <location filename="../online/podcastwidget.cpp" line="202"/>
         <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
         <translation type="unfinished">팟캐스트 에피소드 내려받기를 취소할까요 (지금과 대기 모두)?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="210"/>
+        <location filename="../online/podcastwidget.cpp" line="212"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation type="unfinished">선택된 팟캐스트 에피소드에서 내려받은 파일을 지울까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="226"/>
+        <location filename="../online/podcastwidget.cpp" line="228"/>
         <source>Do you wish to mark the selected podcast episodes as new?</source>
         <translation type="unfinished">선택된 팟캐스트 에피소드를 읽지 않음으로 처리할까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="242"/>
+        <location filename="../online/podcastwidget.cpp" line="244"/>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
         <translation type="unfinished">선택된 팟캐스트 에피소드를 읽음으로 처리할까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="278"/>
+        <location filename="../online/podcastwidget.cpp" line="280"/>
         <source>Refresh all subscriptions?</source>
         <translation type="unfinished">전체 구독을 새로 읽을까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="278"/>
-        <location filename="../online/podcastwidget.cpp" line="283"/>
+        <location filename="../online/podcastwidget.cpp" line="280"/>
+        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh</source>
         <translation type="unfinished">새로 읽기</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="278"/>
-        <location filename="../online/podcastwidget.cpp" line="283"/>
+        <location filename="../online/podcastwidget.cpp" line="280"/>
+        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh All</source>
         <translation type="unfinished">전체 새로 읽기</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="283"/>
+        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh all subscriptions, or only those selected?</source>
         <translation type="unfinished">전체나 선택된 구독만 새로 읽을까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="283"/>
+        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh Selected</source>
         <translation type="unfinished">선택 새로 읽기</translation>
     </message>
@@ -11961,7 +11959,7 @@ width x height</comment>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="59"/>
-        <location filename="../support/utils.cpp" line="641"/>
+        <location filename="../support/utils.cpp" line="645"/>
         <source>Unknown</source>
         <translation type="unfinished">모름</translation>
     </message>
@@ -12211,38 +12209,38 @@ width x height</comment>
         <translation type="unfinished">질문</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="426"/>
-        <location filename="../support/utils.cpp" line="434"/>
+        <location filename="../support/utils.cpp" line="430"/>
+        <location filename="../support/utils.cpp" line="438"/>
         <source>%1 B</source>
         <translation type="unfinished">%1 B</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="427"/>
+        <location filename="../support/utils.cpp" line="431"/>
         <source>%1 kB</source>
         <translation type="unfinished">%1 kB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="428"/>
+        <location filename="../support/utils.cpp" line="432"/>
         <source>%1 MB</source>
         <translation type="unfinished">%1 MB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="430"/>
+        <location filename="../support/utils.cpp" line="434"/>
         <source>%1 GB</source>
         <translation type="unfinished">%1 GB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="435"/>
+        <location filename="../support/utils.cpp" line="439"/>
         <source>%1 KiB</source>
         <translation type="unfinished">%1 KiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="436"/>
+        <location filename="../support/utils.cpp" line="440"/>
         <source>%1 MiB</source>
         <translation type="unfinished">%1 MiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="438"/>
+        <location filename="../support/utils.cpp" line="442"/>
         <source>%1 GiB</source>
         <translation type="unfinished">%1 GiB</translation>
     </message>
@@ -12762,7 +12760,7 @@ Please choose a different name.</source>
     <name>Scrobbler</name>
     <message>
         <location filename="../scrobbling/scrobbler.cpp" line="553"/>
-        <location filename="../scrobbling/scrobbler.cpp" line="668"/>
+        <location filename="../scrobbling/scrobbler.cpp" line="673"/>
         <source>%1 error: %2</source>
         <translation type="unfinished">%1 오류: %2</translation>
     </message>
@@ -13660,7 +13658,7 @@ Overwrite?</source>
 <context>
     <name>StreamFetcher</name>
     <message>
-        <location filename="../streams/streamfetcher.cpp" line="208"/>
+        <location filename="../streams/streamfetcher.cpp" line="213"/>
         <source>Loading %1</source>
         <translation type="unfinished">읽는 중 %1</translation>
     </message>

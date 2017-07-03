@@ -149,7 +149,7 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
     if (!sng.isEmpty()) {
         Covers::Image cImg=Covers::self()->requestImage(sng, true);
         if (!cImg.img.isNull()) {
-            image->setPixmap(QPixmap::fromImage(cImg.img.scaled(image->width()-2, image->height()-2, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+            setImage(cImg.img);
             return;
         }
     }
@@ -161,7 +161,10 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
         if (iconSize<44 && iconSize>=32) {
             iconSize=32;
         }
-        image->setPixmap(Icon::getScaledPixmap(icon, iconSize, iconSize, 96));
+        double dpr=devicePixelRatioF();
+        QPixmap pix=Icon::getScaledPixmap(icon, iconSize*dpr, iconSize*dpr, 96*dpr);
+        pix.setDevicePixelRatio(dpr);
+        image->setPixmap(pix);
     }
 }
 
@@ -217,5 +220,14 @@ void TitleWidget::coverRetrieved(const Song &s, const QImage &img, const QString
     if (!s.isComposerImageRequest() && !s.isArtistImageRequest() && s.album!=song.album) {
         return;
     }
-    image->setPixmap(QPixmap::fromImage(img.scaled(image->width()-6, image->height()-6, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+    setImage(img);
+}
+
+
+void TitleWidget::setImage(const QImage &img)
+{
+    double dpr=devicePixelRatioF();
+    QPixmap pix=QPixmap::fromImage(img.scaled((image->width()-6)*dpr, (image->height()-6)*dpr, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    pix.setDevicePixelRatio(dpr);
+    image->setPixmap(pix);
 }

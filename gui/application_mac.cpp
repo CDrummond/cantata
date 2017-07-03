@@ -22,7 +22,6 @@
  */
 
 #include "application_mac.h"
-#include "settings.h"
 #include "support/utils.h"
 #include "config.h"
 #include <stdlib.h>
@@ -33,9 +32,8 @@ Application::Application(int &argc, char **argv)
     : SingleApplication(argc, argv)
 {
     setAttribute(Qt::AA_DontShowIconsInMenus, true);
-    if (Settings::self()->retinaSupport()) {
-        setAttribute(Qt::AA_UseHighDpiPixmaps);
-    }
+    setAttribute(Qt::AA_UseHighDpiPixmaps);
+    setAttribute(Qt::AA_EnableHighDpiScaling);
 
     // Setup icon path...
     QStringList paths=QIcon::themeSearchPaths();

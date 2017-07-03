@@ -7182,37 +7182,37 @@ Nepodařilo se stáhnout do dočasného souboru!</translation>
         <translation>Nepodařilo se stáhnout obrázek!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="801"/>
+        <location filename="../gui/coverdialog.cpp" line="805"/>
         <source>Load Local Cover</source>
         <translation>Nahrát místní obal</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="801"/>
+        <location filename="../gui/coverdialog.cpp" line="805"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Obrázky (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="805"/>
+        <location filename="../gui/coverdialog.cpp" line="809"/>
         <source>File is already in list!</source>
         <translation>Soubor je již v seznamu!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="809"/>
+        <location filename="../gui/coverdialog.cpp" line="813"/>
         <source>Failed to read image!</source>
         <translation>Nepodařilo se přečíst obrázek!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="822"/>
+        <location filename="../gui/coverdialog.cpp" line="826"/>
         <source>Display</source>
         <translation>Zobrazit</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="823"/>
+        <location filename="../gui/coverdialog.cpp" line="827"/>
         <source>Remove</source>
         <translation>Odstranit</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1198"/>
+        <location filename="../gui/coverdialog.cpp" line="1202"/>
         <source>Failed to set cover!
 
 Could not make copy!</source>
@@ -7221,7 +7221,7 @@ Could not make copy!</source>
 Nepodařilo se udělat kopii!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1207"/>
+        <location filename="../gui/coverdialog.cpp" line="1211"/>
         <source>Failed to set cover!
 
 Could not backup original!</source>
@@ -7230,7 +7230,7 @@ Could not backup original!</source>
 Nepodařilo se zazálohovat originál!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1255"/>
+        <location filename="../gui/coverdialog.cpp" line="1259"/>
         <source>Failed to set cover!
 
 Could not copy file to &apos;%1&apos;!</source>
@@ -7239,7 +7239,7 @@ Could not copy file to &apos;%1&apos;!</source>
 Nepodařilo se zkopírovat soubor do &apos;%1&apos;!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1309"/>
+        <location filename="../gui/coverdialog.cpp" line="1313"/>
         <source>Searching...</source>
         <translation>Hledá se...</translation>
     </message>
@@ -7578,75 +7578,75 @@ Nepodařilo se zkopírovat soubor do &apos;%1&apos;!</translation>
 <context>
     <name>DevicesPage</name>
     <message>
-        <location filename="../devices/devicespage.cpp" line="61"/>
+        <location filename="../devices/devicespage.cpp" line="62"/>
         <source>Copy To Library</source>
         <translation>Kopírovat do knihovny</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="64"/>
+        <location filename="../devices/devicespage.cpp" line="65"/>
         <source>Synchronise</source>
         <translation>Seřídit</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="68"/>
+        <location filename="../devices/devicespage.cpp" line="69"/>
         <source>Forget Device</source>
         <translation>Zapomenout zařízení</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="99"/>
+        <location filename="../devices/devicespage.cpp" line="100"/>
         <source>Add Device</source>
         <translation>Přidat zařízení</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="407"/>
-        <location filename="../devices/devicespage.cpp" line="419"/>
+        <location filename="../devices/devicespage.cpp" line="408"/>
+        <location filename="../devices/devicespage.cpp" line="420"/>
         <source>Lookup album and track details?</source>
         <translation>Vyhledat podrobnosti alba a skladby?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="408"/>
-        <location filename="../devices/devicespage.cpp" line="420"/>
-        <location filename="../devices/devicespage.cpp" line="432"/>
+        <location filename="../devices/devicespage.cpp" line="409"/>
+        <location filename="../devices/devicespage.cpp" line="421"/>
+        <location filename="../devices/devicespage.cpp" line="433"/>
         <source>Refresh</source>
         <translation>Obnovit</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="408"/>
+        <location filename="../devices/devicespage.cpp" line="409"/>
         <source>Via CDDB</source>
         <translation>Pomocí CDDB</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="408"/>
+        <location filename="../devices/devicespage.cpp" line="409"/>
         <source>Via MusicBrainz</source>
         <translation>Pomocí MusicBrainz</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="429"/>
+        <location filename="../devices/devicespage.cpp" line="430"/>
         <source>Which type of refresh do you wish to perform?</source>
         <translation>Který typ aktualizace chcete provést?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="430"/>
+        <location filename="../devices/devicespage.cpp" line="431"/>
         <source>Partial - Only new songs are scanned (quick)</source>
         <translation>Částečný - Jsou prohledány pouze nové písně (rychlé)</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="431"/>
+        <location filename="../devices/devicespage.cpp" line="432"/>
         <source>Full - All songs are rescanned (slow)</source>
         <translation>Úplný - Jsou prohledány všechny písně (pomalé)</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="432"/>
+        <location filename="../devices/devicespage.cpp" line="433"/>
         <source>Partial</source>
         <translation>Částečný</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="432"/>
+        <location filename="../devices/devicespage.cpp" line="433"/>
         <source>Full</source>
         <translation>Úplný</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="479"/>
+        <location filename="../devices/devicespage.cpp" line="480"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
@@ -7655,37 +7655,37 @@ This cannot be undone.</source>
 Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="480"/>
+        <location filename="../devices/devicespage.cpp" line="481"/>
         <source>Delete Songs</source>
         <translation>Smazat písně</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="506"/>
+        <location filename="../devices/devicespage.cpp" line="507"/>
         <source>Are you sure you wish to forget &apos;%1&apos;?</source>
         <translation>Opravdu chcete zapomenout na &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="525"/>
+        <location filename="../devices/devicespage.cpp" line="526"/>
         <source>Are you sure you wish to eject Audio CD &apos;%1 - %2&apos;?</source>
         <translation>Opravdu chcete vysunout zvukové CD &apos;%1 - %2&apos;?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="526"/>
+        <location filename="../devices/devicespage.cpp" line="527"/>
         <source>Eject</source>
         <translation>Vysunout</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="527"/>
+        <location filename="../devices/devicespage.cpp" line="528"/>
         <source>Are you sure you wish to disconnect &apos;%1&apos;?</source>
         <translation>Opravdu chcete odpojit &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="528"/>
+        <location filename="../devices/devicespage.cpp" line="529"/>
         <source>Disconnect</source>
         <translation>Odpojit</translation>
     </message>
     <message>
-        <location filename="../devices/devicespage.cpp" line="547"/>
+        <location filename="../devices/devicespage.cpp" line="548"/>
         <source>Please close other dialogs first.</source>
         <translation>Nejprve, prosím, zavřete další dialogy.</translation>
     </message>
@@ -8961,22 +8961,21 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Ukázat nástrojové rady s informacemi k písni</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="648"/>
         <source>Support retina displays</source>
-        <translation>Podpora pro obrazovky retina (sítnice)</translation>
+        <translation type="vanished">Podpora pro obrazovky retina (sítnice)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="655"/>
+        <location filename="../gui/interfacesettings.ui" line="648"/>
         <source>Language:</source>
         <translation>Jazyk:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="670"/>
+        <location filename="../gui/interfacesettings.ui" line="663"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation>Změna nastavení Vynutit zapnutí jedním klepnutím u položek vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="677"/>
+        <location filename="../gui/interfacesettings.ui" line="670"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation>Změna nastavení jazyka vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
@@ -8985,9 +8984,8 @@ Tento krok nelze vrátit zpět.</translation>
         <translation type="obsolete">Změna nastavení rozhraní na dotykově přátelské vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="684"/>
         <source>Enabling support for retina displays will produce sharper icons on the retina display, but may produce less sharp icons on non-retina displays. Changing this setting will require a re-start of Cantata.</source>
-        <translation>Povolení podpory pro obrazovky retina (retina = sítnice; obrazovky s vyšší hustotou pixelů, než jakou měly předchozí modely, firma Apple) povede k ostřejším ikonám na obrazovkách typu &quot;retina&quot;, ale může vést k méně ostrým ikonám na obrazovkách, které typu &quot;retina&quot; nejsou. Změna tohoto nastavení vyžaduje opětovné spuštění Cantaty.</translation>
+        <translation type="vanished">Povolení podpory pro obrazovky retina (retina = sítnice; obrazovky s vyšší hustotou pixelů, než jakou měly předchozí modely, firma Apple) povede k ostřejším ikonám na obrazovkách typu &quot;retina&quot;, ale může vést k méně ostrým ikonám na obrazovkách, které typu &quot;retina&quot; nejsou. Změna tohoto nastavení vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="136"/>
@@ -9076,23 +9074,23 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Oznámení</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="404"/>
+        <location filename="../gui/interfacesettings.cpp" line="392"/>
         <source>English (en)</source>
         <translation>Angličtina (en)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="409"/>
+        <location filename="../gui/interfacesettings.cpp" line="397"/>
         <source>System default</source>
         <translation>Výchozí nastavení systému</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="510"/>
+        <location filename="../gui/interfacesettings.cpp" line="493"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation>%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="515"/>
+        <location filename="../gui/interfacesettings.cpp" line="498"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation>%1 px</translation>
@@ -9106,7 +9104,7 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Jít zpět</translation>
     </message>
     <message>
-        <location filename="../widgets/itemview.cpp" line="1293"/>
+        <location filename="../widgets/itemview.cpp" line="1295"/>
         <source>Updating...</source>
         <translation>Obnovuje se...</translation>
     </message>
@@ -9543,320 +9541,320 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
         <translation>Opustit režim zobrazení na celou obrazovku</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="247"/>
+        <location filename="../gui/mainwindow.cpp" line="248"/>
         <source>Configure Cantata...</source>
         <translation>Nastavit Cantatu...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="247"/>
+        <location filename="../gui/mainwindow.cpp" line="248"/>
         <source>Preferences</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="250"/>
+        <location filename="../gui/mainwindow.cpp" line="251"/>
         <source>Quit</source>
         <translation>Ukončit</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="253"/>
+        <location filename="../gui/mainwindow.cpp" line="254"/>
         <source>About Cantata...</source>
         <translation>O programu Cantata...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="260"/>
+        <location filename="../gui/mainwindow.cpp" line="261"/>
         <source>Show Window</source>
         <translation>Ukázat okno</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="263"/>
+        <location filename="../gui/mainwindow.cpp" line="264"/>
         <source>Server information...</source>
         <translation>Informace o serveru...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="266"/>
+        <location filename="../gui/mainwindow.cpp" line="267"/>
         <source>Refresh Database</source>
         <translation>Obnovit databázi</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="267"/>
+        <location filename="../gui/mainwindow.cpp" line="268"/>
         <source>Refresh</source>
         <translation>Obnovit</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="269"/>
+        <location filename="../gui/mainwindow.cpp" line="270"/>
         <source>Connect</source>
         <translation>Spojit</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="270"/>
+        <location filename="../gui/mainwindow.cpp" line="271"/>
         <source>Collection</source>
         <translation>Sbírka</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="271"/>
-        <location filename="../gui/mainwindow.cpp" line="1332"/>
-        <location filename="../gui/mainwindow.cpp" line="1336"/>
-        <location filename="../gui/mainwindow.cpp" line="1342"/>
+        <location filename="../gui/mainwindow.cpp" line="272"/>
+        <location filename="../gui/mainwindow.cpp" line="1334"/>
+        <location filename="../gui/mainwindow.cpp" line="1338"/>
+        <location filename="../gui/mainwindow.cpp" line="1344"/>
         <source>Outputs</source>
         <translation>Výstupy</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="272"/>
+        <location filename="../gui/mainwindow.cpp" line="273"/>
         <source>Stop After Track</source>
         <translation>Zastavit po skladbě</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="278"/>
+        <location filename="../gui/mainwindow.cpp" line="279"/>
         <source>Seek forward (%1 seconds)</source>
         <translation>Přetočit vpřed (%1 sekund)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="279"/>
+        <location filename="../gui/mainwindow.cpp" line="280"/>
         <source>Seek backward (%1 seconds)</source>
         <translation>Přetočit zpět (%1 sekund)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="292"/>
+        <location filename="../gui/mainwindow.cpp" line="293"/>
         <source>Add To Stored Playlist</source>
         <translation>Přidat do uloženého seznamu skladeb</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="297"/>
+        <location filename="../gui/mainwindow.cpp" line="298"/>
         <source>Crop Others</source>
         <translation>Vystřihnout jiné</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="298"/>
+        <location filename="../gui/mainwindow.cpp" line="299"/>
         <source>Add Stream URL</source>
         <translation>Přidat adresu proudu</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="299"/>
+        <location filename="../gui/mainwindow.cpp" line="301"/>
         <source>Clear</source>
         <translation>Vyprázdnit</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="301"/>
+        <location filename="../gui/mainwindow.cpp" line="303"/>
         <source>Center On Current Track</source>
         <translation>Zaměřit na nynější skladbu</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="302"/>
+        <location filename="../gui/mainwindow.cpp" line="304"/>
         <source>Expanded Interface</source>
         <translation>Rozšířené rozhraní</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="304"/>
+        <location filename="../gui/mainwindow.cpp" line="306"/>
         <source>Show Current Song Information</source>
         <translation>Ukázat informace o nynější skladbě</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="307"/>
+        <location filename="../gui/mainwindow.cpp" line="309"/>
         <source>Full Screen</source>
         <translation>Na celou obrazovku</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="311"/>
+        <location filename="../gui/mainwindow.cpp" line="313"/>
         <source>Random</source>
         <translation>Náhodné</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="312"/>
+        <location filename="../gui/mainwindow.cpp" line="314"/>
         <source>Repeat</source>
         <translation>Opakování</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="313"/>
+        <location filename="../gui/mainwindow.cpp" line="315"/>
         <source>Single</source>
         <translation>Jednotlivé</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="313"/>
+        <location filename="../gui/mainwindow.cpp" line="315"/>
         <source>When &apos;Single&apos; is activated, playback is stopped after current song, or song is repeated if &apos;Repeat&apos; is enabled.</source>
         <translation>Když jsou zapnuty jednotlivé skladby, je přehrávání zastaveno po nynější písni, nebo je píseň opakována, pokud je povolen režim opakování.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="314"/>
+        <location filename="../gui/mainwindow.cpp" line="316"/>
         <source>Consume</source>
         <translation>Sníst</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="314"/>
+        <location filename="../gui/mainwindow.cpp" line="316"/>
         <source>When consume is activated, a song is removed from the play queue after it has been played.</source>
         <translation>Když je zapnuto snězení, píseň je odstraněna z řady skladeb k přehrání, poté co byla přehrána.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="315"/>
+        <location filename="../gui/mainwindow.cpp" line="317"/>
         <source>Find in Play Queue</source>
         <translation>Hledat v řadě skladeb k přehrání</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="319"/>
+        <location filename="../gui/mainwindow.cpp" line="321"/>
         <source>Play Stream</source>
         <translation>Přehrát proud</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="327"/>
+        <location filename="../gui/mainwindow.cpp" line="329"/>
         <source>Locate In Library</source>
         <translation>Najít v knihovně</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="328"/>
+        <location filename="../gui/mainwindow.cpp" line="330"/>
         <source>Play next</source>
         <translation>Přehrát další</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="331"/>
+        <location filename="../gui/mainwindow.cpp" line="333"/>
         <source>Edit Track Information (Play Queue)</source>
         <translation>Upravit informace o skladbě (řada skladeb k přehrání)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="334"/>
+        <location filename="../gui/mainwindow.cpp" line="336"/>
         <source>Expand All</source>
         <translation>Rozbalit vše</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="336"/>
+        <location filename="../gui/mainwindow.cpp" line="338"/>
         <source>Collapse All</source>
         <translation>Složit vše</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="338"/>
+        <location filename="../gui/mainwindow.cpp" line="340"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="391"/>
+        <location filename="../gui/mainwindow.cpp" line="393"/>
         <source>Play Queue</source>
         <translation>Řada</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="396"/>
+        <location filename="../gui/mainwindow.cpp" line="398"/>
         <source>Library</source>
         <translation>Knihovna</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="401"/>
+        <location filename="../gui/mainwindow.cpp" line="403"/>
         <source>Folders</source>
         <translation>Složky</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="407"/>
+        <location filename="../gui/mainwindow.cpp" line="409"/>
         <source>Playlists</source>
         <translation>Seznamy</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="416"/>
+        <location filename="../gui/mainwindow.cpp" line="418"/>
         <source>Internet</source>
         <translation>Internet</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="425"/>
+        <location filename="../gui/mainwindow.cpp" line="427"/>
         <source>Devices</source>
         <translation>Zařízení</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="432"/>
+        <location filename="../gui/mainwindow.cpp" line="434"/>
         <source>Search</source>
         <translation>Hledat</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="437"/>
+        <location filename="../gui/mainwindow.cpp" line="439"/>
         <source>Info</source>
         <translation>Informace</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="591"/>
+        <location filename="../gui/mainwindow.cpp" line="593"/>
         <source>Show Menubar</source>
         <translation>Ukázat pruh s nabídkou</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="629"/>
+        <location filename="../gui/mainwindow.cpp" line="631"/>
         <source>&amp;Music</source>
         <translation>&amp;Hudba</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="640"/>
+        <location filename="../gui/mainwindow.cpp" line="642"/>
         <source>&amp;Edit</source>
         <translation>Úp&amp;ravy</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="652"/>
+        <location filename="../gui/mainwindow.cpp" line="654"/>
         <source>&amp;View</source>
         <translation>&amp;Pohled</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="663"/>
+        <location filename="../gui/mainwindow.cpp" line="665"/>
         <source>&amp;Queue</source>
         <translation>Řa&amp;da</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="672"/>
+        <location filename="../gui/mainwindow.cpp" line="674"/>
         <source>&amp;Settings</source>
         <translation>&amp;Nastavení</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="686"/>
+        <location filename="../gui/mainwindow.cpp" line="688"/>
         <source>&amp;Help</source>
         <translation>Nápo&amp;věda</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="705"/>
+        <location filename="../gui/mainwindow.cpp" line="707"/>
         <source>Set Rating</source>
         <translation>Nastavit hodnocení</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="710"/>
+        <location filename="../gui/mainwindow.cpp" line="712"/>
         <source>No Rating</source>
         <translation>Žádné hodnocení</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1006"/>
+        <location filename="../gui/mainwindow.cpp" line="1008"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation>Nepodařilo se najít žádné písně odpovídající pravidlům dynamického seznamu skladeb.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1127"/>
+        <location filename="../gui/mainwindow.cpp" line="1129"/>
         <source>Connecting to %1</source>
         <translation>Připojuje se k %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1163"/>
+        <location filename="../gui/mainwindow.cpp" line="1165"/>
         <source>Refresh MPD Database?</source>
         <translation>Obnovit databázi MPD?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1169"/>
+        <location filename="../gui/mainwindow.cpp" line="1171"/>
         <source>About Cantata</source>
         <translation>O programu Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1170"/>
+        <location filename="../gui/mainwindow.cpp" line="1172"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Klient pro MPD.&lt;br/&gt;&lt;br/&gt;© Craig Drummond 2011-2016.&lt;br/&gt;Vydáno pod &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1172"/>
+        <location filename="../gui/mainwindow.cpp" line="1174"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation>Založeno na &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - © 2007-2010  Autoři QtMPC&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1173"/>
+        <location filename="../gui/mainwindow.cpp" line="1175"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation>Pozadí pohledu na souvislosti díky laskavosti &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1174"/>
+        <location filename="../gui/mainwindow.cpp" line="1176"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation>Popisná data pohledu na souvislosti díky laskavosti &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1175"/>
+        <location filename="../gui/mainwindow.cpp" line="1177"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation>Zvažte, prosím, nahrání vašeho vlastního fanouškovského umění na &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1182"/>
+        <location filename="../gui/mainwindow.cpp" line="1184"/>
         <source>A Podcast is currently being downloaded
 
 Quiting now will abort the download.</source>
@@ -9865,95 +9863,95 @@ Quiting now will abort the download.</source>
 Pokud bude program ukončen nyní, bude stahování zrušeno.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1183"/>
+        <location filename="../gui/mainwindow.cpp" line="1185"/>
         <source>Abort download and quit</source>
         <translation>Zrušit stahování a ukončit</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1211"/>
+        <location filename="../gui/mainwindow.cpp" line="1213"/>
         <source>Please close other dialogs first.</source>
         <translation>Nejprve, prosím, zavřete další dialogy.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1332"/>
-        <location filename="../gui/mainwindow.cpp" line="1343"/>
+        <location filename="../gui/mainwindow.cpp" line="1334"/>
+        <location filename="../gui/mainwindow.cpp" line="1345"/>
         <source>Enabled: %1</source>
         <translation>Povoleno: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1336"/>
-        <location filename="../gui/mainwindow.cpp" line="1344"/>
+        <location filename="../gui/mainwindow.cpp" line="1338"/>
+        <location filename="../gui/mainwindow.cpp" line="1346"/>
         <source>Disabled: %1</source>
         <translation>Zakázáno: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1532"/>
-        <location filename="../gui/mainwindow.cpp" line="1555"/>
+        <location filename="../gui/mainwindow.cpp" line="1534"/>
+        <location filename="../gui/mainwindow.cpp" line="1557"/>
         <source>Server Information</source>
         <translation>Informace o serveru</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1535"/>
+        <location filename="../gui/mainwindow.cpp" line="1537"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protokol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Doba provozu:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Přehrává se:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Ovladače:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Značky:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1546"/>
+        <location filename="../gui/mainwindow.cpp" line="1548"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Databáze&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Umělci:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Alba:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Písně:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Doba trvání:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Obnoveno:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1699"/>
+        <location filename="../gui/mainwindow.cpp" line="1701"/>
         <source>Cantata (%1)</source>
         <translation>Cantata (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1766"/>
+        <location filename="../gui/mainwindow.cpp" line="1768"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD nahlásilo následující chybu: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1837"/>
+        <location filename="../gui/mainwindow.cpp" line="1839"/>
         <source>Cantata</source>
         <translation>Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1837"/>
+        <location filename="../gui/mainwindow.cpp" line="1839"/>
         <source>Playback stopped</source>
         <translation>Přehrávání zastaveno</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1880"/>
+        <location filename="../gui/mainwindow.cpp" line="1882"/>
         <source>Remove all songs from play queue?</source>
         <translation>Odstranit všechny písně z řady skladeb k přehrání?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1931"/>
+        <location filename="../gui/mainwindow.cpp" line="1933"/>
         <source>Priority</source>
         <translation>Přednost</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1931"/>
+        <location filename="../gui/mainwindow.cpp" line="1933"/>
         <source>Enter priority (0..255):</source>
         <translation>Zadejte přednost (0..255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1954"/>
+        <location filename="../gui/mainwindow.cpp" line="1956"/>
         <source>Playlist Name</source>
         <translation>Název seznamu skladeb</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1954"/>
+        <location filename="../gui/mainwindow.cpp" line="1956"/>
         <source>Enter a name for the playlist:</source>
         <translation>Zadejte název pro seznam skladeb:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1957"/>
+        <location filename="../gui/mainwindow.cpp" line="1959"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation>&apos;%1&apos; se používá na ukládání oblíbených proudů. Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1961"/>
+        <location filename="../gui/mainwindow.cpp" line="1963"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -9962,12 +9960,12 @@ Add to that playlist?</source>
 Přidat do tohoto seznamu skladeb?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1962"/>
+        <location filename="../gui/mainwindow.cpp" line="1964"/>
         <source>Existing Playlist</source>
         <translation>Existující seznam skladeb</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2037"/>
+        <location filename="../gui/mainwindow.cpp" line="2039"/>
         <source>%n Track(s)</source>
         <translation>
             <numerusform>Skladby: %n</numerusform>
@@ -9976,7 +9974,7 @@ Přidat do tohoto seznamu skladeb?</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2039"/>
+        <location filename="../gui/mainwindow.cpp" line="2041"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>Skladby: %n (%1)</numerusform>
@@ -9988,7 +9986,7 @@ Přidat do tohoto seznamu skladeb?</translation>
 <context>
     <name>MenuButton</name>
     <message>
-        <location filename="../widgets/menubutton.cpp" line="38"/>
+        <location filename="../widgets/menubutton.cpp" line="39"/>
         <source>Menu</source>
         <translation>Nabídka</translation>
     </message>
@@ -10687,23 +10685,23 @@ Přidat do tohoto seznamu skladeb?</translation>
 <context>
     <name>PlaylistsModel</name>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="89"/>
+        <location filename="../models/playlistsmodel.cpp" line="90"/>
         <source>New Playlist...</source>
         <translation>Nový seznam skladeb...</translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="111"/>
+        <location filename="../models/playlistsmodel.cpp" line="112"/>
         <source>Stored Playlists</source>
         <translation>Uložené seznamy skladeb</translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="116"/>
+        <location filename="../models/playlistsmodel.cpp" line="117"/>
         <source>Standard playlists</source>
         <translation>Obvyklé seznamy skladeb</translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/playlistsmodel.cpp" line="335"/>
-        <location filename="../models/playlistsmodel.cpp" line="346"/>
+        <location filename="../models/playlistsmodel.cpp" line="336"/>
+        <location filename="../models/playlistsmodel.cpp" line="347"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>Skladby: %n (%1)</numerusform>
@@ -10712,7 +10710,7 @@ Přidat do tohoto seznamu skladeb?</translation>
         </translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="344"/>
+        <location filename="../models/playlistsmodel.cpp" line="345"/>
         <source>Smart Playlist</source>
         <translation>Chytrý seznam skladeb</translation>
     </message>
@@ -11096,99 +11094,99 @@ Přidat do tohoto seznamu skladeb?</translation>
 <context>
     <name>PodcastWidget</name>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="41"/>
+        <location filename="../online/podcastwidget.cpp" line="43"/>
         <source>Add Subscription</source>
         <translation>Přidat odběr</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="42"/>
+        <location filename="../online/podcastwidget.cpp" line="44"/>
         <source>Remove Subscription</source>
         <translation>Odstranit odběr</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="43"/>
+        <location filename="../online/podcastwidget.cpp" line="45"/>
         <source>Download Episodes</source>
         <translation>Stáhnout díly</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="44"/>
+        <location filename="../online/podcastwidget.cpp" line="46"/>
         <source>Delete Downloaded Episodes</source>
         <translation>Smazat stažené díly</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="45"/>
+        <location filename="../online/podcastwidget.cpp" line="47"/>
         <source>Cancel Download</source>
         <translation>Zrušit stahování</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="46"/>
+        <location filename="../online/podcastwidget.cpp" line="48"/>
         <source>Mark Episodes As New</source>
         <translation>Označit díly jako nové</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="47"/>
+        <location filename="../online/podcastwidget.cpp" line="49"/>
         <source>Mark Episodes As Listened</source>
         <translation>Označit díly jako poslechnuté</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="48"/>
+        <location filename="../online/podcastwidget.cpp" line="50"/>
         <source>Show Unplayed Only</source>
         <translation>Ukázat jen nepřehrané</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="140"/>
+        <location filename="../online/podcastwidget.cpp" line="142"/>
         <source>Unsubscribe from &apos;%1&apos;?</source>
         <translation>Odhlásit odběr z &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="186"/>
+        <location filename="../online/podcastwidget.cpp" line="188"/>
         <source>Do you wish to download the selected podcast episodes?</source>
         <translation>Chcete stáhnout vybrané díly zvukového záznamu?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="200"/>
+        <location filename="../online/podcastwidget.cpp" line="202"/>
         <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
         <translation>Zrušit stahování dílů zvukového záznamu (nynější a všechny zařazené)?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="210"/>
+        <location filename="../online/podcastwidget.cpp" line="212"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation>Chcete smazat stažené soubory vybraných dílů zvukového záznamu?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="226"/>
+        <location filename="../online/podcastwidget.cpp" line="228"/>
         <source>Do you wish to mark the selected podcast episodes as new?</source>
         <translation>Chcete označit vybrané díly zvukového záznamu jako nové?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="242"/>
+        <location filename="../online/podcastwidget.cpp" line="244"/>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
         <translation>Chcete označit vybrané díly zvukového záznamu jako poslechnuté?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="278"/>
+        <location filename="../online/podcastwidget.cpp" line="280"/>
         <source>Refresh all subscriptions?</source>
         <translation>Obnovit všechny odběry?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="278"/>
-        <location filename="../online/podcastwidget.cpp" line="283"/>
+        <location filename="../online/podcastwidget.cpp" line="280"/>
+        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh</source>
         <translation>Obnovit</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="278"/>
-        <location filename="../online/podcastwidget.cpp" line="283"/>
+        <location filename="../online/podcastwidget.cpp" line="280"/>
+        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh All</source>
         <translation>Obnovit vše</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="283"/>
+        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh all subscriptions, or only those selected?</source>
         <translation>Obnovit všechny odběry nebo jen ty vybrané?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="283"/>
+        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh Selected</source>
         <translation>Obnovit vybrané</translation>
     </message>
@@ -11986,7 +11984,7 @@ width x height</comment>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="59"/>
-        <location filename="../support/utils.cpp" line="641"/>
+        <location filename="../support/utils.cpp" line="645"/>
         <source>Unknown</source>
         <translation>Neznámý</translation>
     </message>
@@ -12236,38 +12234,38 @@ width x height</comment>
         <translation>Otázka</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="426"/>
-        <location filename="../support/utils.cpp" line="434"/>
+        <location filename="../support/utils.cpp" line="430"/>
+        <location filename="../support/utils.cpp" line="438"/>
         <source>%1 B</source>
         <translation>%1 B</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="427"/>
+        <location filename="../support/utils.cpp" line="431"/>
         <source>%1 kB</source>
         <translation>%1 KB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="428"/>
+        <location filename="../support/utils.cpp" line="432"/>
         <source>%1 MB</source>
         <translation>%1 MB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="430"/>
+        <location filename="../support/utils.cpp" line="434"/>
         <source>%1 GB</source>
         <translation>%1 GB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="435"/>
+        <location filename="../support/utils.cpp" line="439"/>
         <source>%1 KiB</source>
         <translation>%1 KiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="436"/>
+        <location filename="../support/utils.cpp" line="440"/>
         <source>%1 MiB</source>
         <translation>%1 MiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="438"/>
+        <location filename="../support/utils.cpp" line="442"/>
         <source>%1 GiB</source>
         <translation>%1 GiB</translation>
     </message>
@@ -12807,7 +12805,7 @@ Vyberte, prosím, jiný název.</translation>
     <name>Scrobbler</name>
     <message>
         <location filename="../scrobbling/scrobbler.cpp" line="553"/>
-        <location filename="../scrobbling/scrobbler.cpp" line="668"/>
+        <location filename="../scrobbling/scrobbler.cpp" line="673"/>
         <source>%1 error: %2</source>
         <translation>%1 chyba: %2</translation>
     </message>
@@ -13713,7 +13711,7 @@ Přepsat?</translation>
 <context>
     <name>StreamFetcher</name>
     <message>
-        <location filename="../streams/streamfetcher.cpp" line="208"/>
+        <location filename="../streams/streamfetcher.cpp" line="213"/>
         <source>Loading %1</source>
         <translation>Nahrává se %1</translation>
     </message>

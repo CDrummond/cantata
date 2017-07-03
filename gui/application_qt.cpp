@@ -22,7 +22,6 @@
  */
 
 #include "application_qt.h"
-#include "settings.h"
 #include "config.h"
 #include <QDBusConnection>
 #include <QDBusMessage>
@@ -41,9 +40,8 @@ static void setupIconTheme(Application *app)
 Application::Application(int &argc, char **argv)
     : QApplication(argc, argv)
 {
-    if (Settings::self()->retinaSupport()) {
-        setAttribute(Qt::AA_UseHighDpiPixmaps);
-    }
+    setAttribute(Qt::AA_UseHighDpiPixmaps);
+    setAttribute(Qt::AA_EnableHighDpiScaling);
 }
 
 bool Application::start()

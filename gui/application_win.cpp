@@ -22,7 +22,6 @@
  */
 
 #include "application_win.h"
-#include "settings.h"
 #include "config.h"
 #include <QIcon>
 #include <windows.h>
@@ -33,9 +32,8 @@ Application::Application(int &argc, char **argv)
     installNativeEventFilter(this);
     QIcon::setThemeName(QLatin1String("cantata"));
     setAttribute(Qt::AA_DontShowIconsInMenus, true);
-    if (Settings::self()->retinaSupport()) {
-        setAttribute(Qt::AA_UseHighDpiPixmaps);
-    }
+    setAttribute(Qt::AA_UseHighDpiPixmaps);
+    setAttribute(Qt::AA_EnableHighDpiScaling);
 }
 
 bool Application::nativeEventFilter(const QByteArray &, void *message, long *result)

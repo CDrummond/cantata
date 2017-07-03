@@ -36,6 +36,7 @@
 #include "gui/covers.h"
 #include "gui/settings.h"
 #include "support/utils.h"
+#include "support/monoicon.h"
 #include "support/globalstatic.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "mpd-interface/mpdstats.h"
@@ -86,7 +87,7 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     connect(this, SIGNAL(moveInPlaylist(const QString &, const QList<quint32> &, quint32, quint32)), MPDConnection::self(), SLOT(moveInPlaylist(const QString &, const
     QList<quint32> &, quint32, quint32)));
     connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
-    newAction=new QAction(Icon("document-new"), tr("New Playlist..."), this);
+    newAction=new QAction(MonoIcon::icon(FontAwesome::asterisk, Utils::monoIconColor()), tr("New Playlist..."), this);
     connect(newAction, SIGNAL(triggered()), this, SIGNAL(addToNew()));
     Action::initIcon(newAction);
     alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
@@ -334,7 +335,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 ? pl->visibleName()
                 : pl->visibleName()+"\n"+tr("%n Tracks (%1)", "", pl->songs.count()).arg(Utils::formatTime(pl->totalTime()));
         case Qt::DecorationRole:
-            return multiCol ? QVariant() : (pl->isSmartPlaylist ? Icons::self()->dynamicRuleIcon : Icons::self()->playlistListIcon);
+            return multiCol ? QVariant() : (pl->isSmartPlaylist ? Icons::self()->dynamicListIcon : Icons::self()->playlistListIcon);
         case Cantata::Role_SubText:
             if (!pl->loaded) {
                 pl->loaded=true;

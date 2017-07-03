@@ -297,7 +297,8 @@ void MainWindow::init()
     #endif
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", tr("Crop Others"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", tr("Add Stream URL"));
-    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", tr("Clear"), HIDE_MENU_ICON(Icons::self()->removeIcon));
+    QIcon clearIcon = MonoIcon::icon(FontAwesome::times, MonoIcon::constRed, MonoIcon::constRed);
+    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", tr("Clear"), HIDE_MENU_ICON(clearIcon));
     clearPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_K);
     centerPlayQueueAction = ActionCollection::get()->createAction("centerplaylist", tr("Center On Current Track"), Icons::self()->centrePlayQueueOnTrackIcon);
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", tr("Expanded Interface"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::expand, iconCol)));
@@ -531,7 +532,7 @@ void MainWindow::init()
         streamPlayButton->setIcon(Icons::self()->httpStreamIcon);
         #endif
         savePlayQueueButton->setIcon(Icons::self()->savePlayQueueIcon);
-        clearPlayQueueButton->setIcon(Icons::self()->removeIcon);
+        clearPlayQueueButton->setIcon(MonoIcon::icon(FontAwesome::times, MonoIcon::constRed, MonoIcon::constRed));
     }
     #endif
     expandedSize=Settings::self()->mainWindowSize();

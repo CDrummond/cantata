@@ -32,9 +32,6 @@ Application::Application(int &argc, char **argv)
     : SingleApplication(argc, argv)
 {
     setAttribute(Qt::AA_DontShowIconsInMenus, true);
-    setAttribute(Qt::AA_UseHighDpiPixmaps);
-    setAttribute(Qt::AA_EnableHighDpiScaling);
-
     // Setup icon path...
     QStringList paths=QIcon::themeSearchPaths();
     QString path=Utils::systemDir("icons");

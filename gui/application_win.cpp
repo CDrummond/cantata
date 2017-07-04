@@ -32,8 +32,6 @@ Application::Application(int &argc, char **argv)
     installNativeEventFilter(this);
     QIcon::setThemeName(QLatin1String("cantata"));
     setAttribute(Qt::AA_DontShowIconsInMenus, true);
-    setAttribute(Qt::AA_UseHighDpiPixmaps);
-    setAttribute(Qt::AA_EnableHighDpiScaling);
 }
 
 bool Application::nativeEventFilter(const QByteArray &, void *message, long *result)

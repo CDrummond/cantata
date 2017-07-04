@@ -237,10 +237,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName(PACKAGE_NAME);
     QCoreApplication::setOrganizationName(ORGANIZATION_NAME);
 
-    #if defined Q_OS_WIN || defined Q_OS_LINUX
-        #if QT_VERSION >= 0x050600
-        QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-        #endif
+    QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    #if QT_VERSION >= 0x050600
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     #endif
 
     Application app(argc, argv);

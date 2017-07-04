@@ -829,23 +829,21 @@ These steps assume the following structure:
     build/
     install/
 
-1. Install Qt5.3.1 (or later) from https://www.qt.io/download-open-source/
+1. Install HomeBrew
 
-2. Install HomeBrew
+2. brew install cmake taglib ffmpeg openssl qt5
 
-3. brew install cmake taglib ffmpeg openssl
+3. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
+     ../src -DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt5/5.9.1/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`pwd`/../install
 
-4. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
-     ../src -DCMAKE_PREFIX_PATH=/Users/$USER/Qt/5.3/clang_64/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`pwd`/../install
+4. Build via QtCreator
 
-5. Build via QtCreator
-
-6. Create an 'install' project in QtCreator
+5. Create an 'install' project in QtCreator
   - Projects
   - Add/Clone Selected
   - Expand Build Steps, and select install
 
-7. Build 'install' project via QtCreator
+6. Build 'install' project via QtCreator
 
 
 Create Installer

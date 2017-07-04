@@ -1,13 +1,11 @@
 set(ICON_FILES
 svg/audio-x-generic.svg
 svg/information.svg
-svg/dynamic-playlist.svg
 svg/folder-downloads.svg
 svg/folder-temp.svg
 svg/fork.svg
 svg/inode-directory.svg
 svg/network-server-database.svg
-svg/playlist.svg
 svg/preferences-desktop-keyboard.svg
 svg/preferences-other.svg
 svg/speaker.svg

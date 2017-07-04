@@ -161,7 +161,7 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
         if (iconSize<44 && iconSize>=32) {
             iconSize=32;
         }
-        double dpr=devicePixelRatioF();
+        double dpr=DEVICE_PIXEL_RATIO();
         QPixmap pix=Icon::getScaledPixmap(icon, iconSize*dpr, iconSize*dpr, 96*dpr);
         pix.setDevicePixelRatio(dpr);
         image->setPixmap(pix);
@@ -226,7 +226,7 @@ void TitleWidget::coverRetrieved(const Song &s, const QImage &img, const QString
 
 void TitleWidget::setImage(const QImage &img)
 {
-    double dpr=devicePixelRatioF();
+    double dpr=DEVICE_PIXEL_RATIO();
     QPixmap pix=QPixmap::fromImage(img.scaled((image->width()-6)*dpr, (image->height()-6)*dpr, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     pix.setDevicePixelRatio(dpr);
     image->setPixmap(pix);

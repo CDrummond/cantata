@@ -43,7 +43,7 @@ void Application::init()
     #if defined Q_OS_WIN
     ProxyStyle *proxy=new ProxyStyle(ProxyStyle::VF_Side);
     #elif defined Q_OS_MAC
-    ProxyStyle *proxy=ProxyStyle(ProxyStyle::VF_Side|ProxyStyle::VF_Top);
+    ProxyStyle *proxy=new ProxyStyle(ProxyStyle::VF_Side|ProxyStyle::VF_Top);
     #else
     ProxyStyle *proxy=new ProxyStyle(0);
     #endif

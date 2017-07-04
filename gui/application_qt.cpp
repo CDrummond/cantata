@@ -40,8 +40,6 @@ static void setupIconTheme(Application *app)
 Application::Application(int &argc, char **argv)
     : QApplication(argc, argv)
 {
-    setAttribute(Qt::AA_UseHighDpiPixmaps);
-    setAttribute(Qt::AA_EnableHighDpiScaling);
 }
 
 bool Application::start()

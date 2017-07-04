@@ -121,7 +121,7 @@ public:
         const QPixmap pixmap = icon.pixmap(iconSize, iconSize);
 
         QFontMetrics fm = painter->fontMetrics();
-        QSize layoutSize = pixmap.size() / pixmap.devicePixelRatioF();
+        QSize layoutSize = pixmap.size() / pixmap.DEVICE_PIXEL_RATIO();
 
         QTextLayout iconTextLayout(text, option.font);
         QTextOption textOption(Qt::AlignHCenter);
@@ -180,7 +180,7 @@ public:
 
         QFontMetrics fm = option.fontMetrics;
         int gap = fm.height();
-        QSize layoutSize = pixmap.size() / pixmap.devicePixelRatioF();
+        QSize layoutSize = pixmap.size() / pixmap.DEVICE_PIXEL_RATIO();
 
         if (layoutSize.height() == 0) {
             /**

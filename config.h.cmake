@@ -4,6 +4,12 @@
 #include <QCoreApplication>
 #include "support/utils.h"
 
+#if QT_VERSION >= 0x050600
+#define DEVICE_PIXEL_RATIO devicePixelRatioF
+#else
+#define DEVICE_PIXEL_RATIO devicePixelRatio
+#endif
+
 #define CANTATA_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))
 #define PACKAGE_NAME  "@PROJECT_NAME@"
 #define ORGANIZATION_NAME "@ORGANIZATION_NAME@"

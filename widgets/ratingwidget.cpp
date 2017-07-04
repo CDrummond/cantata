@@ -40,7 +40,7 @@ RatingPainter::RatingPainter(int s)
     , pixmapSize((starSz*constNumStars)+(constBorder*(constNumStars-1)), starSz)
     , col(QApplication::palette().text().color())
 {
-    pixelRatio=Icon("dialog-ok").pixmap(16, 16).devicePixelRatioF();
+    pixelRatio=Icon("dialog-ok").pixmap(16, 16).DEVICE_PIXEL_RATIO();
 }
 
 void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
@@ -49,7 +49,7 @@ void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
         return;
     }
 
-    if (!isNull() && !Utils::equal(pixelRatio, pixmaps[0].devicePixelRatioF())) {
+    if (!isNull() && !Utils::equal(pixelRatio, pixmaps[0].DEVICE_PIXEL_RATIO())) {
         pixmaps[0]=QPixmap();
     }
 
@@ -90,7 +90,7 @@ void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
 
     int fullStars=rating/Song::Rating_Step;
     bool half=allowHalfStars && rating%Song::Rating_Step;
-    QSize layoutSize = pixmaps[0].size() / pixmaps[0].devicePixelRatioF();
+    QSize layoutSize = pixmaps[0].size() / pixmaps[0].DEVICE_PIXEL_RATIO();
     QRect pr(r.x(), r.y()+(r.height()-layoutSize.width())/2, layoutSize.width(), layoutSize.height());
 
     for (int i=0; i<constNumStars; ++i) {

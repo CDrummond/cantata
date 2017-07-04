@@ -68,7 +68,7 @@ public:
         mainText->setAlignment(Qt::AlignBottom);
         subText->setAlignment(Qt::AlignTop);
         icon->setAlignment(Qt::AlignCenter);
-        double dpr=devicePixelRatioF();
+        double dpr=DEVICE_PIXEL_RATIO();
         QPixmap pix=icn.getScaledPixmap(icon->width()*dpr, icon->height()*dpr, 96*dpr);
         pix.setDevicePixelRatio(dpr);
         icon->setPixmap(pix);

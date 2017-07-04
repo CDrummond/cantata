@@ -264,7 +264,7 @@ public:
             r.adjust(constBorder, 0, -constBorder, 0);
         }
         if (!pix.isNull()) {
-            QSize layoutSize = pix.size() / pix.devicePixelRatioF();
+            QSize layoutSize = pix.size() / pix.DEVICE_PIXEL_RATIO();
             int adjust=qMax(layoutSize.width(), layoutSize.height());
             if (AP_VTop==actionPos) {
                 int xpos=r.x()+((r.width()-layoutSize.width())/2);
@@ -466,7 +466,7 @@ public:
             }
 
             if (!pix.isNull()) {
-                QSize layoutSize = pix.size() / pix.devicePixelRatioF();
+                QSize layoutSize = pix.size() / pix.DEVICE_PIXEL_RATIO();
                 int adjust=qMax(layoutSize.width(), layoutSize.height());
                 if (rtl) {
                     painter->drawPixmap(r.x()+r.width()-layoutSize.width(), r.y()+((r.height()-layoutSize.height())/2), layoutSize.width(), layoutSize.height(), pix);

@@ -40,7 +40,6 @@ RatingPainter::RatingPainter(int s)
     , pixmapSize((starSz*constNumStars)+(constBorder*(constNumStars-1)), starSz)
     , col(QApplication::palette().text().color())
 {
-    pixelRatio=Icon("dialog-ok").pixmap(16, 16).DEVICE_PIXEL_RATIO();
 }
 
 void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
@@ -49,6 +48,7 @@ void RatingPainter::paint(QPainter *p, const QRect &r, int rating)
         return;
     }
 
+    double pixelRatio=p && p->device() ? p->device()->DEVICE_PIXEL_RATIO() : 1.0;
     if (!isNull() && !Utils::equal(pixelRatio, pixmaps[0].DEVICE_PIXEL_RATIO())) {
         pixmaps[0]=QPixmap();
     }

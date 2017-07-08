@@ -130,6 +130,9 @@ if(TAGLIB_FOUND)
     message(STATUS "Taglib found: ${TAGLIB_LIBRARIES}")
   endif(NOT Taglib_FIND_QUIETLY AND TAGLIBCONFIG_EXECUTABLE)
 
+  if(NOT WIN32)
+    set(TAGLIB_INCLUDES "${TAGLIB_INCLUDES};/usr/local/include")
+  endif()
   set(CMAKE_REQUIRED_INCLUDES ${TAGLIB_INCLUDES})
   set(CMAKE_REQUIRED_LIBRARIES ${TAGLIB_LIBRARIES})
   check_cxx_source_compiles("#include <taglib/mpegfile.h>

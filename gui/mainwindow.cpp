@@ -202,6 +202,7 @@ void MainWindow::init()
     int vSpace=fontMetrics().height()<14 ? hSpace/2 : 0;
     toolbarLayout->setContentsMargins(hSpace, vSpace, hSpace, vSpace);
     toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    setWindowTitle("Cantata");
     #ifdef Q_OS_MAC
     setUnifiedTitleAndToolBarOnMac(true);
     QToolBar *topToolBar = addToolBar("ToolBar");

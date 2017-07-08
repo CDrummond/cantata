@@ -84,8 +84,8 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     advanced->setChecked(true);
     #else
     introStack->setCurrentIndex(0);
-    basic->setChecked(true);
-    advanced->setChecked(false);
+    basic->setChecked(false);
+    advanced->setChecked(true);
     #endif
 
     #ifndef Q_OS_WIN

@@ -365,7 +365,7 @@ QSize FancyTab::sizeHint() const
         int width = qMax(iconSize, qMin(3*iconSize, textWidth)) + spacing;
         return QSize(width, iconSize + spacing + fm.height() + padding);
     } else {
-        return QSize(iconSize + spacing + padding, iconSize + spacing);
+        return QSize(iconSize + spacing + padding, iconSize + spacing + padding);
     }
 }
 

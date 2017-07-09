@@ -113,7 +113,7 @@ if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT AND NOT APPLE AND NOT WIN32)
 endif ()
 
 if (ENABLE_TAGLIB)
-    if (TAGLIB_FOUND)
+    if (NOT TAGLIB_FOUND)
         set(TAGLIB_MIN_VERSION "1.6")
         find_package(Taglib)
     endif()

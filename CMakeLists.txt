@@ -19,7 +19,7 @@ else ()
 endif ()
 
 cmake_minimum_required(VERSION 2.6)
-
+cmake_policy(SET CMP0020 OLD)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
@@ -113,8 +113,10 @@ if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT AND NOT APPLE AND NOT WIN32)
 endif ()
 
 if (ENABLE_TAGLIB)
-    set(TAGLIB_MIN_VERSION "1.6")
-    find_package(Taglib)
+    if (TAGLIB_FOUND)
+        set(TAGLIB_MIN_VERSION "1.6")
+        find_package(Taglib)
+    endif()
     macro_log_feature(TAGLIB_FOUND "TagLib" "Tag editor, file organiser, etc." "http://taglib.github.io/")
 endif ()
 
@@ -212,6 +214,7 @@ find_package(Qt5Svg REQUIRED)
 find_package(Qt5Sql REQUIRED)
 
 if (${Qt5Widgets_VERSION} VERSION_GREATER "5.6.99")
+    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
     set(CMAKE_CXX_STANDARD "11")
 endif ()
 

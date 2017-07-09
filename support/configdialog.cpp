@@ -159,14 +159,14 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &name, const QSize &de
     lay->addWidget(stack);
     if (instantApply) {
         buttonBox=0;
-        setWindowFlags(Qt::Dialog);
+        setWindowFlags(Qt::Window|Qt::WindowTitleHint|Qt::CustomizeWindowHint|Qt::WindowMaximizeButtonHint|Qt::WindowCloseButtonHint);
     } else {
         buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Apply, Qt::Horizontal, mw);
         lay->addWidget(buttonBox);
         connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(macButtonPressed(QAbstractButton *)));
         buttonBox->setStyle(Dialog::buttonProxyStyle());
         // Hide window buttons if not instany apply - dont want user just closing dialog
-        setWindowFlags(Qt::Dialog|Qt::WindowTitleHint|Qt::CustomizeWindowHint|Qt::WindowMaximizeButtonHint );
+        setWindowFlags(Qt::Window|Qt::WindowTitleHint|Qt::CustomizeWindowHint|Qt::WindowMaximizeButtonHint);
     }
 
     group->setExclusive(true);

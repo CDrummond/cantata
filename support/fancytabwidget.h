@@ -40,7 +40,6 @@
 #include <QProxyStyle>
 #include <QTabBar>
 #include <QWidget>
-#include <QPropertyAnimation>
 #include <QTimer>
 #include <QScopedPointer>
 #include <QStringList>
@@ -71,33 +70,20 @@ protected:
 class FancyTabBar;
 class FancyTab : public QWidget
 {
-    Q_OBJECT
-
-    Q_PROPERTY(float fader READ fader WRITE setFader)
-
 public:
     FancyTab(FancyTabBar *tabbar);
-    float fader() { return faderValue; }
-    void setFader(float value);
 
     QSize sizeHint() const;
-
-    void fadeIn();
-    void fadeOut();
-
     QIcon icon;
     QString text;
+    bool underMouse;
 
 protected:
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
 
 private:
-    #ifndef Q_OS_MAC
-    QPropertyAnimation animator;
-    #endif
     FancyTabBar *tabbar;
-    float faderValue;
 };
 
 class FancyTabBar : public QWidget
@@ -246,6 +232,5 @@ private:
     QScopedPointer<FancyTabProxyStyle> proxyStyle;
 };
 
-Q_DECLARE_METATYPE(QPropertyAnimation*);
 
 #endif // FANCYTABWIDGET_H

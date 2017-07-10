@@ -44,6 +44,8 @@ static int twHeight=-1;
 
 TitleWidget::TitleWidget(QWidget *p)
     : QWidget(p)
+    , pressed(false)
+    , underMouse(false)
     , controls(0)
 {
     QGridLayout *layout=new QGridLayout(this);
@@ -173,16 +175,20 @@ bool TitleWidget::eventFilter(QObject *o, QEvent *event)
     switch(event->type()) {
     case QEvent::HoverEnter:
         if (isEnabled() && o==this) {
+            /*
             #ifdef Q_OS_MAC
             setStyleSheet(QString("QLabel{color:%1;}").arg(OSXStyle::self()->viewPalette().highlight().color().name()));
             #else
             setStyleSheet(QLatin1String("QLabel{color:palette(highlight);}"));
             #endif
+            */
+            underMouse = true;
         }
         break;
     case QEvent::HoverLeave:
         if (isEnabled() && o==this) {
-            setStyleSheet(QString());
+            //setStyleSheet(QString());
+            underMouse = false;
         }
         break;
     case QEvent::MouseButtonPress:
@@ -200,6 +206,24 @@ bool TitleWidget::eventFilter(QObject *o, QEvent *event)
         break;
     }
     return QWidget::eventFilter(o, event);
+}
+
+void TitleWidget::paintEvent(QPaintEvent *e)
+{
+    if (pressed || underMouse) {
+        QPainter p(this);
+        #ifdef Q_OS_MAC
+        QColor col = OSXStyle::self()->viewPalette().highlight().color();
+        #else
+        QColor col = palette().highlight().color();
+        #endif
+
+        QPainterPath path = Utils::buildPath(rect().adjusted(1, 1, -1, -1), 2.0);
+        p.setRenderHint(QPainter::Antialiasing);
+        col.setAlphaF(pressed ? 0.5 : 0.2);
+        p.fillPath(path, col);
+    }
+    QWidget::paintEvent(e);
 }
 
 void TitleWidget::coverRetrieved(const Song &s, const QImage &img, const QString &file)

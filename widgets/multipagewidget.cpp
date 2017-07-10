@@ -27,6 +27,9 @@
 #include "support/squeezedtextlabel.h"
 #include "support/proxystyle.h"
 #include "support/configuration.h"
+#ifdef Q_OS_MAC
+#include "support/osxstyle.h"
+#endif
 #include "listview.h"
 #include "sizewidget.h"
 #include "singlepagewidget.h"
@@ -35,6 +38,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QScrollArea>
+#include <QStylePainter>
 
 class SelectorButton : public ToolButton
 {
@@ -80,6 +84,7 @@ public:
         layout->setMargin(qMin(layout->margin(), 8));
         setMinimumHeight(qMax(textSize, size)+(layout->margin()*2));
         updateToolTip();
+        setFocusPolicy(Qt::TabFocus);
     }
 
     void setSubText(const QString &str)
@@ -91,6 +96,29 @@ public:
     void updateToolTip()
     {
         setToolTip("<b>"+mainText->fullText()+"</b><br/>"+subText->fullText());
+    }
+
+    void paintEvent(QPaintEvent *e)
+    {
+        QStylePainter p(this);
+        QStyleOptionToolButton opt;
+        initStyleOption(&opt);
+
+        if (opt.state&QStyle::State_Sunken || opt.state&QStyle::State_MouseOver) {
+            #ifdef Q_OS_MAC
+            QColor col = OSXStyle::self()->viewPalette().highlight().color();
+            #else
+            QColor col = qApp->palette().highlight().color();
+            #endif
+
+            QPainterPath path = Utils::buildPath(opt.rect, 2.0);
+            p.setRenderHint(QPainter::Antialiasing);
+            col.setAlphaF(opt.state&QStyle::State_Sunken ? 0.5 : 0.2);
+            p.fillPath(path, col);
+        }
+        opt.state&=~(QStyle::State_Sunken|QStyle::State_MouseOver|QStyle::State_Raised|QStyle::State_On);
+        opt.state|=QStyle::State_AutoRaise;
+        p.drawComplexControl(QStyle::CC_ToolButton, opt);
     }
 
 private:
@@ -125,7 +153,7 @@ MultiPageWidget::MultiPageWidget(QWidget *p)
     mainLayout->addWidget(sizer);
     layout->setSpacing(0);
     layout->setSizeConstraint(QLayout::SetMinimumSize);
-    layout->setMargin(qMin(layout->margin(), 8));
+    layout->setMargin(qMin(layout->margin(), 4));
     #ifdef Q_OS_MAC
     // TODO: This feels a bt of a hack...
     mainPage->setContentsMargins(-3, 0, -3, 0);

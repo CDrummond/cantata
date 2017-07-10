@@ -51,8 +51,6 @@
 #include <QToolTip>
 #include <QVBoxLayout>
 #include <QApplication>
-#include <QAnimationGroup>
-#include <QPropertyAnimation>
 #include <QSignalMapper>
 #include <QMenu>
 
@@ -115,7 +113,6 @@ int FancyTabProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, co
 
 void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const
 {
-
     const QStyleOptionTab *tabOpt = qstyleoption_cast<const QStyleOptionTab*>(option);
 
     if (element != CE_TabBarTab || !tabOpt) {
@@ -124,7 +121,8 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
     }
 
     const QRect rect = tabOpt->rect;
-    const bool selected = tabOpt->state  &State_Selected;
+    const bool selected = tabOpt->state&State_Selected;
+    const bool underMouse = tabOpt->state&State_MouseOver;
     const bool verticalTabs = tabOpt->shape == QTabBar::RoundedWest;
     const QString text = tabOpt->text;
 
@@ -138,10 +136,6 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
 
     const QRect draw_rect(QPoint(0, 0), m.mapRect(rect).size());
 
-    //if (!selected && GtkStyle::isActive()) {
-    //    p->fillRect(option->rect, option->palette.background());
-    //}
-
     p->save();
     p->setTransform(m);
 
@@ -150,75 +144,19 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
     textRect.setRight(draw_rect.width());
     iconRect.translate(0, (draw_rect.height() - iconRect.height()) / 2);
 
-    QStyleOptionViewItem styleOpt;
-    styleOpt.palette=option->palette;
-    styleOpt.rect=draw_rect;
-    if (QStyleOptionTab::Beginning==tabOpt->position) {
-        styleOpt.rect.adjust(0, 0, -1, 0);
-    }
-    styleOpt.state=option->state;
-    styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
-    styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;
-    styleOpt.viewItemPosition = QStyleOptionViewItem::OnlyOne;
-    styleOpt.showDecorationSelected=true;
-    bool drawBgnd=true;
-    int fader = 1;
-
-    if (!selected && drawBgnd) {
-        const QString faderKey = "tab_" + text + "_fader";
-        const QString animationKey = "tab_" + text + "_animation";
-
-        const QString tab_hover = widget->property("tab_hover").toString();
-        fader=widget->property(faderKey.toUtf8().constData()).toInt();
-        QPropertyAnimation *animation = widget->property(animationKey.toUtf8().constData()).value<QPropertyAnimation*>();
-
-        if (!animation) {
-            QWidget* mut_widget = const_cast<QWidget*>(widget);
-            fader = 0;
-            mut_widget->setProperty(faderKey.toUtf8().constData(), fader);
-            animation = new QPropertyAnimation(mut_widget, faderKey.toUtf8(), mut_widget);
-            connect(animation, SIGNAL(valueChanged(QVariant)), mut_widget, SLOT(update()));
-            mut_widget->setProperty(animationKey.toUtf8().constData(), QVariant::fromValue(animation));
-        }
-
-        if (text == tab_hover) {
-            if (animation->state() != QAbstractAnimation::Running && fader != 40) {
-                animation->stop();
-                animation->setDuration(80);
-                animation->setEndValue(50);
-                animation->start();
-            }
-        } else {
-            if (animation->state() != QAbstractAnimation::Running && fader != 0) {
-                animation->stop();
-                animation->setDuration(160);
-                animation->setEndValue(0);
-                animation->start();
-            }
-        }
-
-        if (fader<1) {
-            drawBgnd=false;
-        }
-    }
-
-    if (drawBgnd) {
+    if (selected || underMouse) {
         #ifdef Q_OS_MAC
-        OSXStyle::self()->drawSelection(styleOpt, p, selected ? 1.0 : (fader*1.0)/150.0);
+        QColor col = OSXStyle::self()->viewPalette().highlight().color();
         #else
-        #ifdef Q_OS_WIN
-        if (QPalette::Active!=styleOpt.palette.currentColorGroup()) {
-            styleOpt.palette.setColor(QPalette::Highlight, styleOpt.palette.color(QPalette::Window).darker(110));
-        }
+        QColor col = option->palette.highlight().color();
         #endif
+
+        QPainterPath path = Utils::buildPath(draw_rect, 2.0);
         if (!selected) {
-            p->setOpacity((fader*1.0)/150.0);
+            col.setAlphaF(0.2);
         }
-        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, p, 0);
-        if (!selected) {
-            p->setOpacity(1.0);
-        }
-        #endif
+        p->setRenderHint(QPainter::Antialiasing);
+        p->fillPath(path, col);
     }
 
     int textFlags = Qt::AlignTop | Qt::AlignVCenter;
@@ -281,39 +219,10 @@ bool FancyTabProxyStyle::eventFilter(QObject* o, QEvent* e)
 }
 
 FancyTab::FancyTab(FancyTabBar* tabbar)
-    : QWidget(tabbar), tabbar(tabbar), faderValue(0)
+    : QWidget(tabbar), tabbar(tabbar), underMouse(false)
 {
-    #ifndef Q_OS_MAC
-    animator.setPropertyName("fader");
-    animator.setTargetObject(this);
-    #endif
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-}
-
-void FancyTab::fadeIn()
-{
-    #ifndef Q_OS_MAC
-    animator.stop();
-    animator.setDuration(80);
-    animator.setEndValue(50);
-    animator.start();
-    #endif
-}
-
-void FancyTab::fadeOut()
-{
-    #ifndef Q_OS_MAC
-    animator.stop();
-    animator.setDuration(160);
-    animator.setEndValue(0);
-    animator.start();
-    #endif
-}
-
-void FancyTab::setFader(float value)
-{
-    faderValue = value;
-    tabbar->update();
+    setAttribute(Qt::WA_Hover, true);
 }
 
 FancyTabBar::FancyTabBar(QWidget *parent, bool text, int iSize, Pos pos)
@@ -404,12 +313,12 @@ void FancyTabBar::paintEvent(QPaintEvent *event)
 
 void FancyTab::enterEvent(QEvent*)
 {
-    fadeIn();
+    underMouse = true;
 }
 
 void FancyTab::leaveEvent(QEvent*)
 {
-    fadeOut();
+    underMouse = false;
 }
 
 QSize FancyTabBar::sizeHint() const
@@ -497,39 +406,21 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
 
     QRect rect = tabRect(tabIndex);
     bool selected = (tabIndex == currentIdx);
+    bool underMouse = tabs[tabIndex]->underMouse;
 
-    QStyleOptionViewItem styleOpt;
-    styleOpt.initFrom(this);
-    styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
-    styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;
-    styleOpt.rect=rect;
-    styleOpt.viewItemPosition = QStyleOptionViewItem::OnlyOne;
-    styleOpt.showDecorationSelected=true;
-    bool drawBgnd=true;
-
-    if (!selected && drawBgnd) {
-        int fader=int(tabs[tabIndex]->fader());
-        if (fader<1) {
-            drawBgnd=false;
-        }
-    }
-    if (drawBgnd) {
+    if (selected || underMouse) {
         #ifdef Q_OS_MAC
-        OSXStyle::self()->drawSelection(styleOpt, painter, selected ? 1.0 : tabs[tabIndex]->fader()/150.0);
+        QColor col = OSXStyle::self()->viewPalette().highlight().color();
         #else
-        #ifdef Q_OS_WIN
-        if (QPalette::Active!=styleOpt.palette.currentColorGroup()) {
-            styleOpt.palette.setColor(QPalette::Highlight, styleOpt.palette.color(QPalette::Window).darker(110));
-        }
+        QColor col = palette().highlight().color();
         #endif
+
+        QPainterPath path = Utils::buildPath(rect, 2.0);
         if (!selected) {
-            painter->setOpacity(tabs[tabIndex]->fader()/150.0);
+            col.setAlphaF(0.2);
         }
-        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, painter, 0);
-        if (!selected) {
-            painter->setOpacity(1.0);
-        }
-        #endif
+        painter->setRenderHint(QPainter::Antialiasing);
+        painter->fillPath(path, col);
     }
 
     selected = selected && (palette().currentColorGroup()==QPalette::Active ||

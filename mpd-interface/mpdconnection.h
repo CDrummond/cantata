@@ -161,6 +161,7 @@ struct MPDConnectionDetails {
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     QString streamUrl;
     #endif
+    QString replayGain;
 };
 
 class MPDConnection : public QObject
@@ -209,7 +210,6 @@ public:
     ~MPDConnection();
 
     void start();
-    void stop();
     const MPDConnectionDetails & getDetails() const { return details; }
     void setDirReadable() { details.setDirReadable(); }
     bool isConnected() const { return State_Connected==state; }
@@ -234,6 +234,7 @@ public:
     QString ipAddress() const { return details.isLocal() ? QString() : sock.address(); }
 
 public Q_SLOTS:
+    void stop();
     void reconnect();
     void setDetails(const MPDConnectionDetails &d);
 //    void disconnectMpd();

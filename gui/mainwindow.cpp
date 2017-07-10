@@ -775,6 +775,7 @@ void MainWindow::init()
     connect(this, SIGNAL(pause(bool)), MPDConnection::self(), SLOT(setPause(bool)));
     connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(play()));
     connect(this, SIGNAL(stop(bool)), MPDConnection::self(), SLOT(stopPlaying(bool)));
+    connect(this, SIGNAL(terminating()), MPDConnection::self(), SLOT(stop()));
     connect(this, SIGNAL(getStatus()), MPDConnection::self(), SLOT(getStatus()));
     connect(this, SIGNAL(playListInfo()), MPDConnection::self(), SLOT(playListInfo()));
     connect(this, SIGNAL(currentSong()), MPDConnection::self(), SLOT(currentSong()));
@@ -952,7 +953,7 @@ MainWindow::~MainWindow()
         Dynamic::self()->stop();
     }
     if (Settings::self()->stopOnExit()) {
-        emit stop();
+        emit terminating();
         Utils::sleep(); // Allow time for stop to be sent...
     } else if (hadCantataStreams) {
         Utils::sleep(); // Allow time for removal of cantata streams...

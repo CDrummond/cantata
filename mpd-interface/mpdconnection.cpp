@@ -41,6 +41,7 @@
 #include <QPropertyAnimation>
 #include <QCoreApplication>
 #include <QUdpSocket>
+#include <complex>
 #include "support/thread.h"
 #include "cuefile.h"
 #if defined Q_OS_LINUX && defined QT_QTDBUS_FOUND
@@ -511,7 +512,7 @@ void MPDConnection::reconnect()
         emit stateChanged(true);
         break;
     case Failed:
-        if (0==reconnectStart || abs(now-reconnectStart)<15) {
+        if (0==reconnectStart || std::abs(now-reconnectStart)<15) {
             if (0==reconnectStart) {
                 reconnectStart=now;
             }
@@ -520,7 +521,7 @@ void MPDConnection::reconnect()
                 reconnectTimer->setSingleShot(true);
                 connect(reconnectTimer, SIGNAL(timeout()), this, SLOT(reconnect()), Qt::QueuedConnection);
             }
-            if (abs(now-reconnectStart)>1) {
+            if (std::abs(now-reconnectStart)>1) {
                 emit info(tr("Connecting to %1").arg(details.description()));
             }
             reconnectTimer->start(500);

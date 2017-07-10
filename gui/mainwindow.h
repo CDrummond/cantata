@@ -131,6 +131,7 @@ Q_SIGNALS:
     void pause(bool p);
     void play();
     void stop(bool afterCurrent=false);
+    void terminating();
     void getStatus();
     void playListInfo();
     void currentSong();

@@ -29,8 +29,8 @@
 #include "models/streamsmodel.h"
 #ifdef ENABLE_SIMPLE_MPD_SUPPORT
 #include "mpduser.h"
-#include "gui/settings.h"
 #endif
+#include "gui/settings.h"
 #include "support/globalstatic.h"
 #include "support/configuration.h"
 #include <QStringList>
@@ -296,6 +296,7 @@ void MPDConnection::start()
 
 void MPDConnection::stop()
 {
+    stopPlaying();
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     if (details.name==MPDUser::constName && Settings::self()->stopOnExit()) {
         MPDUser::self()->stop();
@@ -559,6 +560,9 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
     #endif
 
     details=det;
+    // Issue #1041 - If this is a user MPD, then the call to MPDUser::self()->details() will clear the replayGain setting
+    // We can safely use that of the passed in details.
+    details.replayGain=d.replayGain;
 
     if (diffDetails || State_Connected!=state) {
         emit connectionChanged(details);
@@ -584,6 +588,10 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
         ConnectionReturn status=connectToMPD();
         switch (status) {
         case Success:
+            // Issue #1041 - MPD does not seem to persist user/client made replaygain changes, so use the values read from Cantata's config.
+            if (replaygainSupported() && !details.replayGain.isEmpty()) {
+                sendCommand("replay_gain_mode "+details.replayGain.toLatin1());
+            }
             getStatus();
             getStats();
             getUrlHandlers();
@@ -1162,6 +1170,8 @@ void MPDConnection::setCrossFade(int secs)
 void MPDConnection::setReplayGain(const QString &v)
 {
     if (replaygainSupported()) {
+        // Issue #1041 - MPD does not seem to persist user/client made replaygain changes, so store in Cantata's config file.
+        Settings::self()->saveReplayGain(details.name, v);
         sendCommand("replay_gain_mode "+v.toLatin1());
     }
 }
@@ -1172,7 +1182,10 @@ void MPDConnection::getReplayGain()
         QStringList lines=QString(sendCommand("replay_gain_status").data).split('\n', QString::SkipEmptyParts);
 
         if (2==lines.count() && "OK"==lines[1] && lines[0].startsWith(QLatin1String("replay_gain_mode: "))) {
-            emit replayGain(lines[0].mid(18));
+            QString mode=lines[0].mid(18);
+            // Issue #1041 - MPD does not seem to persist user/client made replaygain changes, so store in Cantata's config file.
+            Settings::self()->saveReplayGain(details.name, mode);
+            emit replayGain(mode);
         } else {
             emit replayGain(QString());
         }

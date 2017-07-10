@@ -170,6 +170,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         details.streamUrl=grp.get("streamUrl", QString());
         #endif
+        details.replayGain=grp.get("replayGain", QString());
     } else {
         details.hostname=mpdDefaults.host;
         details.port=mpdDefaults.port;
@@ -1116,6 +1117,13 @@ void Settings::saveIgnorePrefixes(const QSet<QString> &v)
 void Settings::saveMpris(bool v)
 {
     cfg.set("mpris", v);
+}
+
+void Settings::saveReplayGain(const QString &conn, const QString &v)
+{
+    QString n=MPDConnectionDetails::configGroupName(conn);
+    Configuration grp(n);
+    grp.set("replayGain", v);
 }
 
 void Settings::save()

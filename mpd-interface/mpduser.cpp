@@ -348,7 +348,6 @@ bool MPDUser::controlMpd(bool stop)
             QFile::remove(pidFileName);
         }
     }
-
     bool started=QProcess::startDetached(mpdExe, args);
     if (started && !stop) {
         for (int i=0; i<8; ++i) {
@@ -357,9 +356,6 @@ bool MPDUser::controlMpd(bool stop)
                 return true;
             }
         }
-    }
-    if (stop && !pidFileName.isEmpty() && QFile::exists(pidFileName)) {
-        QFile::remove(pidFileName);
     }
     return started;
 }

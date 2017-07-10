@@ -239,6 +239,7 @@ public:
     void saveInfoTooltips(bool v);
     void saveIgnorePrefixes(const QSet<QString> &v);
     void saveMpris(bool v);
+    void saveReplayGain(const QString &conn, const QString &v);
     void save();
     void clearVersion();
 

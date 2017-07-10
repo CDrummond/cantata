@@ -49,7 +49,7 @@ public:
         if (QStyleOptionViewItem::Beginning==v4.viewItemPosition) {
             v4.icon=index.data(Cantata::Role_Decoration).value<QIcon>();
             if (!v4.icon.isNull()) {
-                v4.features |= QStyleOptionViewItemV2::HasDecoration;
+                v4.features |= QStyleOptionViewItem::HasDecoration;
                 v4.decorationSize=v4.icon.actualSize(option.decorationSize, QIcon::Normal, QIcon::Off);
             }
         }

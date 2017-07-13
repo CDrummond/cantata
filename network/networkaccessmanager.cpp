@@ -128,8 +128,16 @@ void NetworkJob::jobFinished()
 
     QVariant redirect = j->header(QNetworkRequest::LocationHeader);
     if (redirect.isValid() && ++numRedirects<constMaxRedirects) {
-        QNetworkReply *newJob=static_cast<QNetworkAccessManager *>(j->manager())->get(QNetworkRequest(redirect.toUrl()));
+        QNetworkRequest newReq(redirect.toUrl());
+        QNetworkRequest origReq(job->request());
+        // Copy headers...
+        const QList<QByteArray> &headers=origReq.rawHeaderList();;
+        foreach (const QByteArray &header, headers) {
+            newReq.setRawHeader(header, origReq.rawHeader(header));
+        }
+        QNetworkReply *newJob=static_cast<QNetworkAccessManager *>(j->manager())->get(newReq);
         DBUG << j->url().toString() << "redirected to" << newJob->url().toString();
+
         cancelJob();
         job=newJob;
         connectJob();

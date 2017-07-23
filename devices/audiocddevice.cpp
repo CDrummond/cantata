@@ -138,6 +138,10 @@ AudioCdDevice::~AudioCdDevice()
         mb=0;
     }
     #endif
+    // Remove any downloaded cover image...
+    if (!coverImage.fileName.isEmpty() && coverImage.fileName.startsWith(Utils::cacheDir(Covers::constCddaCoverDir, false))) {
+        QFile::remove(coverImage.fileName);
+    }
 }
 
 void AudioCdDevice::dequeue()

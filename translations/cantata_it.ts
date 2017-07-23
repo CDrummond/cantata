@@ -1574,7 +1574,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../dynamic/dynamic.cpp" line="174"/>
         <source>Dynamic Playlists</source>
-        <translation>Scalette DInamiche</translation>
+        <translation>Scalette Dinamiche</translation>
     </message>
     <message>
         <location filename="../dynamic/dynamic.cpp" line="179"/>

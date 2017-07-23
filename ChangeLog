@@ -85,6 +85,7 @@
 67. Store replaygain settings in Cantata's config file, as it appears MPD does
     not persist changes.
 68. If HTTP requests are redirected, copy over original headers.
+69. When AudioCD changed, delete its cached downloaded cover.
 
 2.0.1
 -----

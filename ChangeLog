@@ -86,6 +86,7 @@
     not persist changes.
 68. If HTTP requests are redirected, copy over original headers.
 69. When AudioCD changed, delete its cached downloaded cover.
+70. Fix adding covers to MTP devices when transcoding.
 
 2.0.1
 -----

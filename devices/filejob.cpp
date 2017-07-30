@@ -132,7 +132,7 @@ void CopyJob::updateTagsDest()
 
 void CopyJob::copyCover(const QString &origSrcFile)
 {
-    if (!stopRequested && Device::constNoCover!=deviceOpts.coverName && Device::constEmbedCover!=deviceOpts.coverName) {
+    if (!stopRequested && !deviceOpts.coverName.isEmpty() && Device::constNoCover!=deviceOpts.coverName && Device::constEmbedCover!=deviceOpts.coverName) {
         song.file=destFile;
         copiedCover=Covers::copyCover(song, Utils::getDir(origSrcFile), Utils::getDir(destFile), deviceOpts.coverName, deviceOpts.coverMaxSize);
     }

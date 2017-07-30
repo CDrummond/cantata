@@ -68,6 +68,8 @@ static const QLatin1String constMtpDefaultCover("AlbumArt.jpg");
 static const uint32_t constRootFolder=0xffffffffU;
 static const QString constMusicFolder=QLatin1String("Music");
 
+static const quint16 constOrigFileName = Song::Performer;
+
 static int progressMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
     const MtpConnection *con=static_cast<const MtpConnection *>(data);
@@ -876,7 +878,13 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
         // Send cover, as a plain file...
         if (copyCover) {
             QString srcFile;
-            Covers::Image coverImage=Covers::self()->getImage(s);
+
+            // If we have transcoded a song, the song.file will point to /tmp!!!
+            Song orig = s;
+            if (orig.hasExtraField(constOrigFileName)) {
+                orig.file=orig.extraField(constOrigFileName);
+            }
+            Covers::Image coverImage=Covers::self()->getImage(orig);
             QTemporaryFile *temp=0;
             if (!coverImage.img.isNull() && !coverImage.fileName.isEmpty()) {
                 if (opts.coverMaxSize && (coverImage.img.width()>(int)opts.coverMaxSize || coverImage.img.height()>(int)opts.coverMaxSize)) {
@@ -1346,6 +1354,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
             connect(job, SIGNAL(result(int)), SLOT(transcodeSongResult(int)));
             connect(job, SIGNAL(percent(int)), SLOT(transcodePercent(int)));
             job->start();
+            currentSong.setExtraField(constOrigFileName, currentSong.file);
             currentSong.file=destFile;
             return;
         }

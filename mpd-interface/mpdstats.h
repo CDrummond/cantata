@@ -27,6 +27,7 @@
 #ifndef MPD_STATS_H
 #define MPD_STATS_H
 
+#include <ctime>
 #include <QDateTime>
 #include <QObject>
 

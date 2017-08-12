@@ -39,8 +39,10 @@ my $dynamicIsActive =1;
 my $currentStatus ="IDLE";
 
 $testMode=0;
-$PLAY_QUEUE_DESIRED_LENGTH=10;
-$PLAY_QUEUE_CURRENT_POS=5;
+$MIN_PLAY_QUEUE_DESIRED_LENGTH=10;
+$MAX_PLAY_QUEUE_DESIRED_LENGTH=500;
+$DEFAULT_PLAY_QUEUE_DESIRED_LENGTH=10;
+$playQueueDesiredLength=$DEFAULT_PLAY_QUEUE_DESIRED_LENGTH;
 
 my $mpdHost : shared = "localhost";
 my $mpdPort : shared = "6600";
@@ -416,6 +418,7 @@ sub readRules() {
             $ratingTo=0;
             $minDuration=0;
             $maxDuration=0;
+            $playQueueDesiredLength=$DEFAULT_PLAY_QUEUE_DESIRED_LENGTH;
             close($fileHandle);
             foreach my $line (@lines) {
                 if (! ($line=~ m/^(#)/)) {
@@ -457,6 +460,13 @@ sub readRules() {
                                 my $tmp=$minDuration;
                                 $minDuration=$maxDuration;
                                 $maxDuration=$tmp;
+                            }
+                        }
+                    } elsif ($key=~ m/^(NumTracks)/) {
+                        if ($val >= $MIN_PLAY_QUEUE_DESIRED_LENGTH && $val <= $MAX_PLAY_QUEUE_DESIRED_LENGTH) {
+                            $playQueueDesiredLength=$val;
+                            if ($playQueueDesiredLength % 2 > 0) {
+                                $playQueueDesiredLength += 1;
                             }
                         }
                     } else {
@@ -891,8 +901,9 @@ sub populatePlayQueue() {
                     $playQueueLength--;
                 }
 
-                # trim playlist start so that current becomes <=$PLAY_QUEUE_CURRENT_POS
-                for (my $i=0; $i < $playQueueCurrentTrackPos - ($PLAY_QUEUE_CURRENT_POS-1); $i++) {
+                # trim playlist start so that current becomes <=$playQueueDesiredLength/2
+                my $wantCurrentPos = $playQueueDesiredLength/2;
+                for (my $i=0; $i < $playQueueCurrentTrackPos - ($wantCurrentPos-1); $i++) {
                     &sendCommand("delete 0");
                     $playQueueLength--;
                 }
@@ -906,7 +917,7 @@ sub populatePlayQueue() {
                     # fill up playlist to 10 random tunes
                     my $failues=0;
                     my $added=0;
-                    while ($playQueueLength < $PLAY_QUEUE_DESIRED_LENGTH && $numMpdSongs>0) {
+                    while ($playQueueLength < $playQueueDesiredLength && $numMpdSongs>0) {
                         my $pos=int(rand($numMpdSongs));
                         my $origFile=${mpdSongs[$pos]};
                         my $file=$origFile;
@@ -927,7 +938,7 @@ sub populatePlayQueue() {
                         }
                     }
                     # If we are not currently playing and we filled playqueue - then play first!
-                    if ($numMpdSongs>0 && $isPlaying==0 && $added==$PLAY_QUEUE_DESIRED_LENGTH) {
+                    if ($numMpdSongs>0 && $isPlaying==0 && $added==$playQueueDesiredLength) {
                         &sendCommand("play 0")
                     }
                 }

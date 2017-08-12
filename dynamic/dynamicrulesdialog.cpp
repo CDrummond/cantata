@@ -191,6 +191,7 @@ void DynamicRulesDialog::edit(const QString &name)
     ratingTo->setValue(e.ratingTo);
     minDuration->setValue(e.minDuration);
     maxDuration->setValue(e.maxDuration);
+    numTracks->setValue(e.numTracks);
     show();
 }
 
@@ -304,7 +305,7 @@ void DynamicRulesDialog::showAbout()
                               "To have Cantata look for 'Songs by Wibble but not from album Abc', you would need the following: "
                               "<ul><li>Include AlbumArtist=Wibble</li><li>Exclude AlbumArtist=Wibble Album=Abc</li></ul>"
                               "After the set of usable songs has been created, Cantata will randomly select songs to "
-                              "keep the play queue filled with 10 entries. If a range of ratings has been specified, then "
+                              "keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then "
                               "only songs with a rating within this range will be used. Likewise, if a duration has been set.</p>")
                         );
 
@@ -353,6 +354,7 @@ bool DynamicRulesDialog::save()
         entry.minDuration=from;
         entry.maxDuration=to;
     }
+    entry.numTracks=numTracks->value();
 
     for (int i=0; i<model->rowCount(); ++i) {
         QStandardItem *itm=model->item(i);

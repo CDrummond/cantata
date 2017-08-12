@@ -135,6 +135,7 @@ const QString Dynamic::constGenreKey=QLatin1String("Genre");
 const QString Dynamic::constDateKey=QLatin1String("Date");
 const QString Dynamic::constRatingKey=QLatin1String("Rating");
 const QString Dynamic::constDurationKey=QLatin1String("Duration");
+const QString Dynamic::constNumTracksKey=QLatin1String("NumTracks");
 const QString Dynamic::constFileKey=QLatin1String("File");
 const QString Dynamic::constExactKey=QLatin1String("Exact");
 const QString Dynamic::constExcludeKey=QLatin1String("Exclude");
@@ -280,11 +281,14 @@ bool Dynamic::save(const Entry &e)
 
     QString string;
     QTextStream str(&string);
+    if (e.numTracks > 10 && e.numTracks <= 500) {
+        str << constNumTracksKey << constKeyValSep << e.numTracks << '\n';
+    }
     if (e.ratingFrom!=0 || e.ratingTo!=0) {
-        str << constRatingKey << constKeyValSep << e.ratingFrom << constRangeSep << e.ratingTo<< '\n';
+        str << constRatingKey << constKeyValSep << e.ratingFrom << constRangeSep << e.ratingTo << '\n';
     }
     if (e.minDuration!=0 || e.maxDuration!=0) {
-        str << constDurationKey << constKeyValSep << e.minDuration << constRangeSep << e.maxDuration<< '\n';
+        str << constDurationKey << constKeyValSep << e.minDuration << constRangeSep << e.maxDuration << '\n';
     }
     foreach (const Rule &rule, e.rules) {
         if (!rule.isEmpty()) {

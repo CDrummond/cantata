@@ -57,7 +57,7 @@ public:
 
     typedef QMap<QString, QString> Rule;
     struct Entry {
-        Entry(const QString &n=QString()) : name(n), ratingFrom(0), ratingTo(0), minDuration(0), maxDuration(0) { }
+        Entry(const QString &n=QString()) : name(n), ratingFrom(0), ratingTo(0), minDuration(0), maxDuration(0), numTracks(10) { }
         bool operator==(const Entry &o) const { return name==o.name; }
         bool haveRating() const { return ratingFrom>=0 && ratingTo>0; }
         QString name;
@@ -66,6 +66,7 @@ public:
         int ratingTo;
         int minDuration;
         int maxDuration;
+        int numTracks;
     };
 
     static Dynamic * self();
@@ -82,6 +83,7 @@ public:
     static const QString constDateKey;
     static const QString constRatingKey;
     static const QString constDurationKey;
+    static const QString constNumTracksKey;
     static const QString constFileKey;
     static const QString constExactKey;
     static const QString constExcludeKey;

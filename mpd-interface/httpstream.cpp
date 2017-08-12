@@ -25,7 +25,9 @@
 #include "mpdconnection.h"
 #include "mpdstatus.h"
 #include "gui/settings.h"
+#ifndef LIBVLC_FOUND
 #include <QtMultimedia/QMediaPlayer>
+#endif
 #include <QTimer>
 
 static const int constPlayerCheckPeriod=250;

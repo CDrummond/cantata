@@ -42,6 +42,7 @@
 #endif
 #include <QSystemTrayIcon>
 #include <QSysInfo>
+#include <QStyleFactory>
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -106,7 +107,7 @@ static const char * constSep=",";
 
 InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
-    , loadedLangs(false)
+    , loaded(false)
 {
     #ifdef Q_OS_MAC
     // OSX always displays an entry in the taskbar - and the tray seems to confuse things.
@@ -324,10 +325,12 @@ void InterfaceSettings::save()
         Settings::self()->saveStartupState(Settings::SS_Previous);
     }
     Settings::self()->saveFetchCovers(fetchCovers->isChecked());
-    if (loadedLangs && lang) {
+    if (loaded && lang) {
         Settings::self()->saveLang(lang->itemData(lang->currentIndex()).toString());
     }
-
+    if (loaded && styleOption) {
+        Settings::self()->saveStyle(0==styleOption->currentIndex() ? QString() : styleOption->currentText());
+    }
     QStringList hiddenPages;
     for (int i=0; i<views->count(); ++i) {
         QListWidgetItem *v=views->item(i);
@@ -368,8 +371,8 @@ static QSet<QString> translationCodes(const QString &dir)
 
 void InterfaceSettings::showEvent(QShowEvent *e)
 {
-    if (!loadedLangs) {
-        loadedLangs=true;
+    if (!loaded) {
+        loaded=true;
 
         QMap<QString, QString> langMap;
         QSet<QString> transCodes;
@@ -409,6 +412,27 @@ void InterfaceSettings::showEvent(QShowEvent *e)
             REMOVE(langNoteLabel)
         } else {
             connect(lang, SIGNAL(currentIndexChanged(int)), SLOT(langChanged()));
+        }
+
+        styleOption->addItem(tr("System default"));
+        styleOption->addItems(QStyleFactory::keys());
+
+        if (styleOption->count()<3) {
+            REMOVE(styleOption)
+            REMOVE(styleLabel)
+            REMOVE(styleNoteLabel)
+        } else {
+            QString selected = Settings::self()->style();
+            styleOption->setCurrentIndex(0);
+            if (!selected.isEmpty()) {
+                for (int i=1; i<styleOption->count(); ++i) {
+                    if (styleOption->itemText(i) == selected) {
+                        styleOption->setCurrentIndex(i);
+                        break;
+                    }
+                }
+            }
+            connect(styleOption, SIGNAL(currentIndexChanged(int)), SLOT(styleChanged()));
         }
     }
     QWidget::showEvent(e);
@@ -460,6 +484,12 @@ void InterfaceSettings::enableStartupState()
 void InterfaceSettings::langChanged()
 {
     langNoteLabel->setOn(lang->itemData(lang->currentIndex()).toString()!=Settings::self()->lang());
+}
+
+void InterfaceSettings::styleChanged()
+{
+    QString st = 0==styleOption->currentIndex() ? QString() : styleOption->currentText();
+    styleNoteLabel->setOn(st!=Settings::self()->style());
 }
 
 void InterfaceSettings::viewItemChanged(QListWidgetItem *changedItem)

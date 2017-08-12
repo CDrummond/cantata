@@ -51,6 +51,7 @@ private Q_SLOTS:
     void forceSingleClickChanged();
     void enableStartupState();
     void langChanged();
+    void styleChanged();
     void viewItemChanged(QListWidgetItem *changedItem);
     void sbAutoHideChanged();
     void setPlayQueueBackgroundOpacityLabel();
@@ -60,7 +61,7 @@ private Q_SLOTS:
     void systemTrayPopupToggled();
 
 private:
-    bool loadedLangs;
+    bool loaded;
 };
 
 #endif

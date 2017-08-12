@@ -655,6 +655,19 @@
          <item row="4" column="1">
           <widget class="QComboBox" name="lang"/>
          </item>
+         <item row="5" column="0">
+          <widget class="BuddyLabel" name="styleLabel">
+           <property name="text">
+            <string>Style:</string>
+           </property>
+           <property name="buddy">
+            <cstring>styleOption</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QComboBox" name="styleOption"/>
+         </item>
         </layout>
        </item>
        <item>
@@ -668,6 +681,13 @@
         <widget class="NoteLabel" name="langNoteLabel">
          <property name="text">
           <string>Changing the language setting will require a re-start of Cantata.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="NoteLabel" name="styleNoteLabel">
+         <property name="text">
+          <string>Changing the style setting will require a re-start of Cantata.</string>
          </property>
         </widget>
        </item>

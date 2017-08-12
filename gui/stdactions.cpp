@@ -45,6 +45,32 @@ static void setToolTip(Action *act, const QString &tt)
     act->setProperty(Action::constTtForSettings, true);
 }
 
+static QMenu * priorityMenu()
+{
+    Action *prioHighestAction = new Action(QObject::tr("Highest Priority (255)"), 0);
+    Action *prioHighAction = new Action(QObject::tr("High Priority (200)"), 0);
+    Action *prioMediumAction = new Action(QObject::tr("Medium Priority (125)"), 0);
+    Action *prioLowAction = new Action(QObject::tr("Low Priority (50)"), 0);
+    Action *prioDefaultAction = new Action(QObject::tr("Default Priority (0)"), 0);
+    Action *prioCustomAction = new Action(QObject::tr("Custom Priority..."), 0);
+
+    prioHighestAction->setData(255);
+    prioHighAction->setData(200);
+    prioMediumAction->setData(125);
+    prioLowAction->setData(50);
+    prioDefaultAction->setData(0);
+    prioCustomAction->setData(-1);
+
+    QMenu *prioMenu=new QMenu();
+    prioMenu->addAction(prioHighestAction);
+    prioMenu->addAction(prioHighAction);
+    prioMenu->addAction(prioMediumAction);
+    prioMenu->addAction(prioLowAction);
+    prioMenu->addAction(prioDefaultAction);
+    prioMenu->addAction(prioCustomAction);
+    return prioMenu;
+}
+
 StdActions::StdActions()
 {
     UNITY_MENU_ICON_CHECK
@@ -72,12 +98,9 @@ StdActions::StdActions()
 
     addWithPriorityAction = new Action(QObject::tr("Add With Priority"), 0);
     setPriorityAction = new Action(QObject::tr("Set Priority"), 0);
-    prioHighestAction = new Action(QObject::tr("Highest Priority (255)"), 0);
-    prioHighAction = new Action(QObject::tr("High Priority (200)"), 0);
-    prioMediumAction = new Action(QObject::tr("Medium Priority (125)"), 0);
-    prioLowAction = new Action(QObject::tr("Low Priority (50)"), 0);
-    prioDefaultAction = new Action(QObject::tr("Default Priority (0)"), 0);
-    prioCustomAction = new Action(QObject::tr("Custom Priority..."), 0);
+    setPriorityAction->setMenu(priorityMenu());
+    addWithPriorityAction->setMenu(priorityMenu());
+
     addToStoredPlaylistAction = new Action(Icons::self()->playlistListIcon, QObject::tr("Add To Playlist"), 0);
     #ifdef TAGLIB_FOUND
     organiseFilesAction = ActionCollection::get()->createAction("orgfiles", QObject::tr("Organize Files"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::folderopeno, col)));
@@ -97,29 +120,6 @@ StdActions::StdActions()
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
 
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
-    prioHighestAction->setData(255);
-    prioHighAction->setData(200);
-    prioMediumAction->setData(125);
-    prioLowAction->setData(50);
-    prioDefaultAction->setData(0);
-    prioCustomAction->setData(-1);
-
-    QMenu *prioMenu=new QMenu();
-    prioMenu->addAction(prioHighestAction);
-    prioMenu->addAction(prioHighAction);
-    prioMenu->addAction(prioMediumAction);
-    prioMenu->addAction(prioLowAction);
-    prioMenu->addAction(prioDefaultAction);
-    prioMenu->addAction(prioCustomAction);
-    setPriorityAction->setMenu(prioMenu);
-    prioMenu=new QMenu();
-    prioMenu->addAction(prioHighestAction);
-    prioMenu->addAction(prioHighAction);
-    prioMenu->addAction(prioMediumAction);
-    prioMenu->addAction(prioLowAction);
-    prioMenu->addAction(prioDefaultAction);
-    prioMenu->addAction(prioCustomAction);
-    addWithPriorityAction->setMenu(prioMenu);
 
     QMenu *addMenu=new QMenu();
     addToPlayQueueMenuAction = new Action(QObject::tr("Add To Play Queue"), 0);

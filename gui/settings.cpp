@@ -1126,6 +1126,11 @@ void Settings::saveReplayGain(const QString &conn, const QString &v)
     grp.set("replayGain", v);
 }
 
+void Settings::saveStyle(const QString &v)
+{
+    cfg.set("style", v);
+}
+
 void Settings::save()
 {
     if (AP_NotConfigured!=state) {

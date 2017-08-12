@@ -761,11 +761,9 @@ void MainWindow::init()
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     #endif
-    connect(StdActions::self()->prioHighAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->prioMediumAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->prioLowAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->prioDefaultAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
-    connect(StdActions::self()->prioCustomAction, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    foreach (QAction *act, StdActions::self()->setPriorityAction->menu()->actions()) {
+        connect(act, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    }
     connect(StdActions::self()->appendToPlayQueueAndPlayAction, SIGNAL(triggered()), this, SLOT(appendToPlayQueueAndPlay()));
     connect(StdActions::self()->addToPlayQueueAndPlayAction, SIGNAL(triggered()), this, SLOT(addToPlayQueueAndPlay()));
     connect(StdActions::self()->insertAfterCurrentAction, SIGNAL(triggered()), this, SLOT(insertIntoPlayQueue()));

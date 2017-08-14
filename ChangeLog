@@ -3,6 +3,8 @@
 1. Add option to specify number of play queue tracks for dynamic playlists.
 2. Add option to set application style.
 3. Fix potential issue with priority menu items being disabled.
+4. When adding items with a custom priority, or updating a custom priority,
+   add option to have this priority decrease with each item.
 
 2.1.0
 -----

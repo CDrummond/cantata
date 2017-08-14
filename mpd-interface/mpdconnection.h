@@ -239,9 +239,10 @@ public Q_SLOTS:
     void setDetails(const MPDConnectionDetails &d);
 //    void disconnectMpd();
     // Current Playlist
-    void add(const QStringList &files, int action, quint8 priority);
-    void add(const QStringList &files, quint32 pos, quint32 size, int action, quint8 priority);
+    void add(const QStringList &files, int action, quint8 priority, bool decreasePriority);
+    void add(const QStringList &files, quint32 pos, quint32 size, int action, quint8 priority, bool decreasePriority);
     void add(const QStringList &files, quint32 pos, quint32 size, int action, const QList<quint8> &priority);
+    void add(const QStringList &files, quint32 pos, quint32 size, int action, QList<quint8> priority, bool decreasePriority);
     void populate(const QStringList &files, const QList<quint8> &priority);
     void addAndPlay(const QString &file);
     void currentSong();
@@ -306,7 +307,7 @@ public Q_SLOTS:
     void removeFromPlaylist(const QString &name, const QList<quint32> &positions);
     void moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 row, quint32 size);
 
-    void setPriority(const QList<qint32> &ids, quint8 priority);
+    void setPriority(const QList<qint32> &ids, quint8 priority, bool decreasePriority);
 
     void search(const QString &field, const QString &value, int id);
 
@@ -354,7 +355,7 @@ Q_SIGNALS:
     void error(const QString &err, bool showActions=false);
     void info(const QString &msg);
     void dirChanged();
-    void prioritySet(const QList<qint32> &ids, quint8 priority);
+    void prioritySet(const QMap<qint32, quint8> &tracks);
 
     void stopAfterCurrentChanged(bool afterCurrent);
     void streamUrl(const QString &url);
@@ -463,5 +464,6 @@ private:
     int fadeDuration;
     int restoreVolume;
 };
+
 
 #endif

@@ -99,7 +99,7 @@ DevicesModel::DevicesModel(QObject *parent)
     editAction = new Action(Icons::self()->editIcon, tr("Edit CD Details"), this);
     #endif
     updateItemMenu();
-    connect(this, SIGNAL(add(const QStringList &, int, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8)));
+    connect(this, SIGNAL(add(const QStringList &, int, quint8, bool)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8, bool)));
 }
 
 DevicesModel::~DevicesModel()
@@ -942,7 +942,7 @@ void DevicesModel::play(const QList<Song> &songs)
         }
 
         if (!paths.isEmpty()) {
-            emit add(paths, MPDConnection::ReplaceAndplay, 0);
+            emit add(paths, MPDConnection::ReplaceAndplay, 0, false);
         }
     }
 }

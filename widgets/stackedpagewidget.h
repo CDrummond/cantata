@@ -46,7 +46,7 @@ public:
     void focusSearch();
     QStringList selectedFiles(bool allowPlaylists) const;
     QList<Song> selectedSongs(bool allowPlaylists) const;
-    void addSelectionToPlaylist(const QString &name, int action, quint8 priorty);
+    void addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority);
     void removeItems();
 
 Q_SIGNALS:

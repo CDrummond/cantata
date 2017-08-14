@@ -63,10 +63,10 @@ StreamsPage::StreamsPage(QWidget *p)
     addWidget(search);
     connect(search, SIGNAL(close()), this, SLOT(closeSearch()));
 
-    disconnect(browse, SIGNAL(add(const QStringList &, int, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8)));
-    disconnect(search, SIGNAL(add(const QStringList &, int, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8)));
-    connect(browse, SIGNAL(add(const QStringList &, int, quint8)), PlayQueueModel::self(), SLOT(addItems(const QStringList &, int, quint8)));
-    connect(search, SIGNAL(add(const QStringList &, int, quint8)), PlayQueueModel::self(), SLOT(addItems(const QStringList &, int, quint8)));
+    disconnect(browse, SIGNAL(add(const QStringList &, int, quint8, bool)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8, bool)));
+    disconnect(search, SIGNAL(add(const QStringList &, int, quint8, bool)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8, bool)));
+    connect(browse, SIGNAL(add(const QStringList &, int, quint8, bool)), PlayQueueModel::self(), SLOT(addItems(const QStringList &, int, quint8, bool)));
+    connect(search, SIGNAL(add(const QStringList &, int, quint8, bool)), PlayQueueModel::self(), SLOT(addItems(const QStringList &, int, quint8, bool)));
     connect(StreamsModel::self()->addToFavouritesAct(), SIGNAL(triggered()), this, SLOT(addToFavourites()));
     connect(search, SIGNAL(addToFavourites(QList<StreamItem>)), browse, SLOT(addToFavourites(QList<StreamItem>)));
 }
@@ -185,13 +185,13 @@ void StreamsBrowsePage::showEvent(QShowEvent *e)
     QWidget::showEvent(e);
 }
 
-void StreamsBrowsePage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
+void StreamsBrowsePage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
 {
     Q_UNUSED(name)
-    addItemsToPlayQueue(view->selectedIndexes(), action, priorty);
+    addItemsToPlayQueue(view->selectedIndexes(), action, priorty, decreasePriority);
 }
 
-void StreamsBrowsePage::addItemsToPlayQueue(const QModelIndexList &indexes, int action, quint8 priorty)
+void StreamsBrowsePage::addItemsToPlayQueue(const QModelIndexList &indexes, int action, quint8 priorty, bool decreasePriority)
 {
     if (indexes.isEmpty()) {
         return;
@@ -204,7 +204,7 @@ void StreamsBrowsePage::addItemsToPlayQueue(const QModelIndexList &indexes, int 
     QStringList files=StreamsModel::self()->filenames(mapped, true);
 
     if (!files.isEmpty()) {
-        emit add(files, action, priorty);
+        emit add(files, action, priorty, decreasePriority);
         view->clearSelection();
     }
 }
@@ -617,7 +617,7 @@ void StreamSearchPage::doSearch()
     model.search(view->searchText().trimmed(), false);
 }
 
-void StreamSearchPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
+void StreamSearchPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
 {
     Q_UNUSED(name)
     QModelIndexList indexes=view->selectedIndexes();
@@ -632,7 +632,7 @@ void StreamSearchPage::addSelectionToPlaylist(const QString &name, int action, q
     QStringList files=StreamsModel::self()->filenames(mapped, true);
 
     if (!files.isEmpty()) {
-        emit add(files, action, priorty);
+        emit add(files, action, priorty, decreasePriority);
         view->clearSelection();
     }
 }

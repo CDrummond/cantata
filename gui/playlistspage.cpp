@@ -139,9 +139,9 @@ void StoredPlaylistsPage::clear()
 //    return PlaylistsModel::self()->filenames(mapped, true);
 //}
 
-void StoredPlaylistsPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
+void StoredPlaylistsPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
 {
-    addItemsToPlayList(view->selectedIndexes(), name, action, priorty);
+    addItemsToPlayList(view->selectedIndexes(), name, action, priorty, decreasePriority);
 }
 
 void StoredPlaylistsPage::setView(int mode)
@@ -293,7 +293,7 @@ void StoredPlaylistsPage::itemDoubleClicked(const QModelIndex &index)
     }
 }
 
-void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QString &name, int action, quint8 priorty)
+void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QString &name, int action, quint8 priorty, bool decreasePriority)
 {
     if (indexes.isEmpty()) {
         return;
@@ -326,7 +326,7 @@ void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, con
     QStringList files=PlaylistsModel::self()->filenames(proxy.mapToSource(indexes));
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files, action, priorty);
+            emit add(files, action, priorty, decreasePriority);
         } else {
             emit addSongsToPlaylist(name, files);
         }
@@ -431,7 +431,7 @@ void StoredPlaylistsPage::updateToPlayQueue(const QModelIndex &idx, bool replace
 {
     QStringList files=PlaylistsModel::self()->filenames(proxy.mapToSource(QModelIndexList() << idx, false));
     if (!files.isEmpty()) {
-        emit add(files, replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0);
+        emit add(files, replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0, false);
     }
 }
 

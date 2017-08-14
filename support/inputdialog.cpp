@@ -27,7 +27,7 @@
 #include "dialog.h"
 #include "utils.h"
 #include <QLabel>
-#include <QBoxLayout>
+#include <QFormLayout>
 #include <QSpinBox>
 
 InputDialog::InputDialog(const QString &caption, const QString &label, const QString &value, QLineEdit::EchoMode echo, QWidget *parent)
@@ -51,11 +51,18 @@ InputDialog::InputDialog(const QString &caption, const QString &label, int value
     spin->setSingleStep(step);
 }
 
+void InputDialog::addExtraWidget(const QString &label, QWidget *w)
+{
+    w->setParent(mainWidget());
+    qobject_cast<QFormLayout *>(mainWidget()->layout())->addRow(new QLabel(label, mainWidget()), w);
+}
+
 void InputDialog::init(bool intInput, const QString &caption, const QString &label)
 {
+    extra = 0;
     setButtons(Ok|Cancel);
     QWidget *wid=new QWidget(this);
-    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, wid);
+    QFormLayout *layout=new QFormLayout(wid);
 
     if (intInput) {
         spin=new QSpinBox(wid);
@@ -66,8 +73,7 @@ void InputDialog::init(bool intInput, const QString &caption, const QString &lab
         edit->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
         setMinimumWidth(Utils::scaleForDpi(350));
     }
-    layout->addWidget(new QLabel(label, wid));
-    layout->addWidget(intInput ? static_cast<QWidget *>(spin) : static_cast<QWidget *>(edit));
+    layout->addRow(new QLabel(label, wid), intInput ? static_cast<QWidget *>(spin) : static_cast<QWidget *>(edit));
     layout->setMargin(0);
 
     setCaption(caption);

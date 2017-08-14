@@ -334,7 +334,7 @@ void LibraryPage::updateToPlayQueue(const QModelIndex &idx, bool replace)
 {
     QStringList files=MpdLibraryModel::self()->filenames(QModelIndexList() << idx, true);
     if (!files.isEmpty()) {
-        emit add(files, replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0);
+        emit add(files, replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0, false);
     }
 }
 
@@ -404,7 +404,7 @@ void LibraryPage::addRandomAlbum()
         foreach (const Song &s, songs) {
             files.append(s.file);
         }
-        emit add(files, /*replace ? MPDConnection::ReplaceAndplay : */MPDConnection::Append, 0);
+        emit add(files, /*replace ? MPDConnection::ReplaceAndplay : */MPDConnection::Append, 0, false);
     }
 }
 

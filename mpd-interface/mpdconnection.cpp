@@ -261,6 +261,7 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<MPDStatsValues>("MPDStatsValues");
     qRegisterMetaType<MPDStatusValues>("MPDStatusValues");
     qRegisterMetaType<MPDConnectionDetails>("MPDConnectionDetails");
+    qRegisterMetaType<QMap<qint32, quint8>>("QMap<qint32, quint8>");
     qRegisterMetaType<Stream>("Stream");
     qRegisterMetaType<QList<Stream> >("QList<Stream>");
     #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
@@ -730,21 +731,26 @@ bool MPDConnection::isPlaylist(const QString &file)
            file.endsWith(QLatin1String(".xspf"), Qt::CaseInsensitive);
 }
 
-void MPDConnection::add(const QStringList &files, int action, quint8 priority)
+void MPDConnection::add(const QStringList &files, int action, quint8 priority, bool decreasePriority)
 {
-    add(files, 0, 0, action, priority);
+    add(files, 0, 0, action, priority, decreasePriority);
 }
 
-void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int action, quint8 priority)
+void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int action, quint8 priority, bool decreasePriority)
 {
     QList<quint8> prioList;
     if (priority>0) {
         prioList << priority;
     }
-    add(files, pos, size, action, prioList);
+    add(files, pos, size, action, prioList, decreasePriority);
 }
 
 void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, int action, const QList<quint8> &priority)
+{
+    add(origList, pos, size, action, priority, false);
+}
+
+void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, int action, QList<quint8> priority, bool decreasePriority)
 {
     quint32 playPos=0;
     if (0==pos && 0==size && (AddAfterCurrent==action || AppendAndPlay==action || AddAndPlay==action)) {
@@ -793,6 +799,18 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
     int curPos = pos;
     //    bool addedFile=false;
     bool havePlaylist=false;
+
+    if (1==priority.count() && decreasePriority) {
+        quint8 prio=priority.at(0);
+        priority.clear();
+        for (int i=0; i<files.count(); ++i) {
+            priority.append(prio);
+            if (prio>1) {
+                prio--;
+            }
+        }
+    }
+
     bool usePrio=!priority.isEmpty() && canUsePriority() && (1==priority.count() || priority.count()==files.count());
     quint8 singlePrio=usePrio && 1==priority.count() ? priority.at(0) : 0;
     QStringList cStreamFiles;
@@ -1744,18 +1762,23 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<quint32>
 //     playlistInfo(name);
 }
 
-void MPDConnection::setPriority(const QList<qint32> &ids, quint8 priority)
+void MPDConnection::setPriority(const QList<qint32> &ids, quint8 priority, bool decreasePriority)
 {
     if (canUsePriority()) {
+        QMap<qint32, quint8> tracks;
         QByteArray send = "command_list_begin\n";
 
         foreach (quint32 id, ids) {
+            tracks.insert(id, priority);
             send += "prioid "+quote(priority)+" "+quote(id)+'\n';
+            if (decreasePriority && priority>0) {
+                priority--;
+            }
         }
 
         send += "command_list_end";
         if (sendCommand(send).ok) {
-            emit prioritySet(ids, priority);
+            emit prioritySet(tracks);
         }
     }
 }

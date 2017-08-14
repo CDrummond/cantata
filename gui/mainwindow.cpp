@@ -764,6 +764,9 @@ void MainWindow::init()
     foreach (QAction *act, StdActions::self()->setPriorityAction->menu()->actions()) {
         connect(act, SIGNAL(triggered()), this, SLOT(addWithPriority()));
     }
+    foreach (QAction *act, StdActions::self()->addWithPriorityAction->menu()->actions()) {
+        connect(act, SIGNAL(triggered()), this, SLOT(addWithPriority()));
+    }
     connect(StdActions::self()->appendToPlayQueueAndPlayAction, SIGNAL(triggered()), this, SLOT(appendToPlayQueueAndPlay()));
     connect(StdActions::self()->addToPlayQueueAndPlayAction, SIGNAL(triggered()), this, SLOT(addToPlayQueueAndPlay()));
     connect(StdActions::self()->insertAfterCurrentAction, SIGNAL(triggered()), this, SLOT(insertIntoPlayQueue()));
@@ -780,7 +783,7 @@ void MainWindow::init()
     connect(this, SIGNAL(setSeekId(qint32, quint32)), MPDConnection::self(), SLOT(setSeekId(qint32, quint32)));
     connect(this, SIGNAL(startPlayingSongId(qint32)), MPDConnection::self(), SLOT(startPlayingSongId(qint32)));
     connect(this, SIGNAL(setDetails(const MPDConnectionDetails &)), MPDConnection::self(), SLOT(setDetails(const MPDConnectionDetails &)));
-    connect(this, SIGNAL(setPriority(const QList<qint32> &, quint8 )), MPDConnection::self(), SLOT(setPriority(const QList<qint32> &, quint8)));
+    connect(this, SIGNAL(setPriority(const QList<qint32> &, quint8, bool)), MPDConnection::self(), SLOT(setPriority(const QList<qint32> &, quint8, bool)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(PlayQueueModel::self(), SIGNAL(statsUpdated(int, quint32)), this, SLOT(updatePlayQueueStats(int, quint32)));
     connect(PlayQueueModel::self(), SIGNAL(fetchingStreams()), playQueue, SLOT(showSpinner()));
@@ -1901,11 +1904,11 @@ void MainWindow::centerPlayQueue()
     }
 }
 
-void MainWindow::appendToPlayQueue(int action, quint8 priority)
+void MainWindow::appendToPlayQueue(int action, quint8 priority, bool decreasePriority)
 {
     playQueueSearchWidget->clear();
     if (currentPage) {
-        currentPage->addSelectionToPlaylist(QString(), action, priority);
+        currentPage->addSelectionToPlaylist(QString(), action, priority, decreasePriority);
     }
 }
 
@@ -1919,6 +1922,7 @@ void MainWindow::addWithPriority()
 
     int prio=act->data().toInt();
     bool isPlayQueue=playQueue->hasFocus();
+    bool decreasePriority=false;
     QModelIndexList pqItems;
 
     if (isPlayQueue) {
@@ -1929,11 +1933,15 @@ void MainWindow::addWithPriority()
     }
 
     if (-1==prio) {
-        bool ok=false;
-        prio=InputDialog::getInteger(tr("Priority"), tr("Enter priority (0..255):"), 150, 0, 255, 5, 10, &ok, this);
-        if (!ok) {
+        InputDialog dlg(tr("Priority"), tr("Enter priority (0..255):"), 150, 0, 255, 5, this);
+        QCheckBox *dec = new QCheckBox(tr("Decrease priority for each subsequent track"), this);
+        dec->setChecked(false);
+        dlg.addExtraWidget(QString(), dec);
+        if (QDialog::Accepted!=dlg.exec()) {
             return;
         }
+        prio=dlg.spinBox()->value();
+        decreasePriority=dec->isChecked();
     }
 
     if (prio>=0 && prio<=255) {
@@ -1942,9 +1950,9 @@ void MainWindow::addWithPriority()
             foreach (const QModelIndex &idx, pqItems) {
                 ids.append(PlayQueueModel::self()->getIdByRow(playQueueProxyModel.mapToSource(idx).row()));
             }
-            emit setPriority(ids, prio);
+            emit setPriority(ids, prio, decreasePriority);
         } else {
-            appendToPlayQueue(false, prio);
+            appendToPlayQueue(false, prio, decreasePriority);
         }
     }
 }
@@ -2009,7 +2017,7 @@ void MainWindow::addStreamToPlayQueue()
         if (dlg.save()) {
             StreamsModel::self()->addToFavourites(url, dlg.name());
         }
-        PlayQueueModel::self()->addItems(QStringList() << StreamsModel::modifyUrl(url, true, dlg.name()), false, 0);
+        PlayQueueModel::self()->addItems(QStringList() << StreamsModel::modifyUrl(url, true, dlg.name()), MPDConnection::Append, 0, false);
     }
 }
 

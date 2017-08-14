@@ -166,7 +166,7 @@ void OnlineDbWidget::addRandomAlbum()
         foreach (const Song &s, songs) {
             files.append(s.file);
         }
-        emit add(files, /*replace ? MPDConnection::ReplaceAndplay : */MPDConnection::Append, 0);
+        emit add(files, /*replace ? MPDConnection::ReplaceAndplay : */MPDConnection::Append, 0, false);
     }
 }
 
@@ -208,6 +208,6 @@ void OnlineDbWidget::updateToPlayQueue(const QModelIndex &idx, bool replace)
 {
     QStringList files=srv->filenames(QModelIndexList() << idx, true);
     if (!files.isEmpty()) {
-        emit add(files, replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0);
+        emit add(files, replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0, false);
     }
 }

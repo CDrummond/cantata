@@ -28,7 +28,6 @@
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "mpd-interface/mpdstats.h"
-#include "mpd-interface/mpdstatus.h"
 #include "streams/streamfetcher.h"
 #include "streamsmodel.h"
 #include "http/httpserver.h"
@@ -198,16 +197,16 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
 {
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
-    connect(fetcher, SIGNAL(result(const QStringList &, int, int, quint8)), SLOT(addFiles(const QStringList &, int, int, quint8)));
-    connect(fetcher, SIGNAL(result(const QStringList &, int, int, quint8)), SIGNAL(streamsFetched()));
+    connect(fetcher, SIGNAL(result(const QStringList &, int, int, quint8, bool)), SLOT(addFiles(const QStringList &, int, int, quint8, bool)));
+    connect(fetcher, SIGNAL(result(const QStringList &, int, int, quint8, bool)), SIGNAL(streamsFetched()));
     connect(fetcher, SIGNAL(status(QString)), SIGNAL(streamFetchStatus(QString)));
-    connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, int, quint8)),
-            MPDConnection::self(), SLOT(add(const QStringList, quint32, quint32, int, quint8)));
+    connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, int, quint8, bool)),
+            MPDConnection::self(), SLOT(add(const QStringList, quint32, quint32, int, quint8, bool)));
     connect(this, SIGNAL(populate(QStringList, QList<quint8>)), MPDConnection::self(), SLOT(populate(QStringList, QList<quint8>)));
     connect(this, SIGNAL(move(const QList<quint32> &, quint32, quint32)),
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
     connect(this, SIGNAL(setOrder(const QList<quint32> &)), MPDConnection::self(), SLOT(setOrder(const QList<quint32> &)));
-    connect(MPDConnection::self(), SIGNAL(prioritySet(const QList<qint32> &, quint8)), SLOT(prioritySet(const QList<qint32> &, quint8)));
+    connect(MPDConnection::self(), SIGNAL(prioritySet(const QMap<qint32, quint8> &)), SLOT(prioritySet(const QMap<qint32, quint8> &)));
     connect(MPDConnection::self(), SIGNAL(stopAfterCurrentChanged(bool)), SLOT(stopAfterCurrentChanged(bool)));
     connect(this, SIGNAL(stop(bool)), MPDConnection::self(), SLOT(stopPlaying(bool)));
     connect(this, SIGNAL(clearStopAfter()), MPDConnection::self(), SLOT(clearStopAfter()));
@@ -670,12 +669,12 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         return true;
     } else if (data->hasFormat(constFileNameMimeType)) {
         //Act on moves from the music library and dir view
-        addItems(decode(*data, constFileNameMimeType), row, false, 0);
+        addItems(decode(*data, constFileNameMimeType), row, false, 0, false);
         return true;
     } else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->getDetails().isLocal()*/) {
         QStringList useable=parseUrls(decode(*data, constUriMimeType), true);
         if (useable.count()) {
-            addItems(useable, row, false, 0);
+            addItems(useable, row, false, 0, false);
             return true;
         }
     }
@@ -686,11 +685,11 @@ void PlayQueueModel::load(const QStringList &urls)
 {
     QStringList useable=parseUrls(urls, false);
     if (useable.count()) {
-        addItems(useable, songs.count(), songs.isEmpty(), 0);
+        addItems(useable, songs.count(), songs.isEmpty(), 0, false);
     }
 }
 
-void PlayQueueModel::addItems(const QStringList &items, int row, int action, quint8 priority)
+void PlayQueueModel::addItems(const QStringList &items, int row, int action, quint8 priority, bool decreasePriority)
 {
     bool haveRadioStream=false;
 
@@ -705,26 +704,26 @@ void PlayQueueModel::addItems(const QStringList &items, int row, int action, qui
 
     if (haveRadioStream) {
         emit fetchingStreams();
-        fetcher->get(items, row, action, priority);
+        fetcher->get(items, row, action, priority, decreasePriority);
     } else {
-        addFiles(items, row, action, priority);
+        addFiles(items, row, action, priority, decreasePriority);
     }
 }
 
-void PlayQueueModel::addFiles(const QStringList &filenames, int row, int action, quint8 priority)
+void PlayQueueModel::addFiles(const QStringList &filenames, int row, int action, quint8 priority, bool decreasePriority)
 {
     if (MPDConnection::ReplaceAndplay==action) {
-        emit filesAdded(filenames, 0, 0, MPDConnection::ReplaceAndplay, priority);
+        emit filesAdded(filenames, 0, 0, MPDConnection::ReplaceAndplay, priority, decreasePriority);
     } else if (songs.isEmpty()) {
-         emit filesAdded(filenames, 0, 0, MPDConnection::Append, priority);
+         emit filesAdded(filenames, 0, 0, MPDConnection::Append, priority, decreasePriority);
     } else if (row < 0) {
-        emit filesAdded(filenames, songs.size(), songs.size(), action, priority);
+        emit filesAdded(filenames, songs.size(), songs.size(), action, priority, decreasePriority);
     } else {
-        emit filesAdded(filenames, row, songs.size(), action, priority);
+        emit filesAdded(filenames, row, songs.size(), action, priority, decreasePriority);
     }
 }
 
-void PlayQueueModel::prioritySet(const QList<qint32> &ids, quint8 priority)
+void PlayQueueModel::prioritySet(const QMap<qint32, quint8> &prio)
 {
     QList<Song> prev;
     if (undoEnabled) {
@@ -732,16 +731,17 @@ void PlayQueueModel::prioritySet(const QList<qint32> &ids, quint8 priority)
             prev.append(s);
         }
     }
-    QSet<qint32> i=ids.toSet();
+    QMap<qint32, quint8> copy = prio;
     int row=0;
 
     foreach (const Song &s, songs) {
-        if (i.contains(s.id)) {
-            s.priority=priority;
-            i.remove(s.id);
+        QMap<qint32, quint8>::ConstIterator it = copy.find(s.id);
+        if (copy.end()!=it) {
+            s.priority=it.value();
+            copy.remove(s.id);
             QModelIndex idx(index(row, 0));
             emit dataChanged(idx, idx);
-            if (i.isEmpty()) {
+            if (copy.isEmpty()) {
                 break;
             }
         }

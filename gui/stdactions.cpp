@@ -73,7 +73,6 @@ static QMenu * priorityMenu()
 
 StdActions::StdActions()
 {
-    UNITY_MENU_ICON_CHECK
     QColor col=Utils::monoIconColor();
     prevTrackAction = ActionCollection::get()->createAction("prevtrack", QObject::tr("Previous Track"), Icons::self()->toolbarPrevIcon);
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", QObject::tr("Next Track"), Icons::self()->toolbarNextIcon);
@@ -83,7 +82,7 @@ StdActions::StdActions()
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", QObject::tr("Stop After Track"), Icons::self()->toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", QObject::tr("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", QObject::tr("Decrease Volume"));
-    savePlayQueueAction = ActionCollection::get()->createAction("saveplayqueue", QObject::tr("Save As"), HIDE_MENU_ICON(Icons::self()->savePlayQueueIcon));
+    savePlayQueueAction = ActionCollection::get()->createAction("saveplayqueue", QObject::tr("Save As"), Icons::self()->savePlayQueueIcon);
     appendToPlayQueueAction = ActionCollection::get()->createAction("appendtoplayqueue", QObject::tr("Append"), Icons::self()->appendToPlayQueueIcon);
     setToolTip(appendToPlayQueueAction, QObject::tr("Append To Play Queue"));
     appendToPlayQueueAndPlayAction = ActionCollection::get()->createAction("appendtoplayqueueandplay", QObject::tr("Append And Play"));
@@ -103,20 +102,20 @@ StdActions::StdActions()
 
     addToStoredPlaylistAction = new Action(Icons::self()->playlistListIcon, QObject::tr("Add To Playlist"), 0);
     #ifdef TAGLIB_FOUND
-    organiseFilesAction = ActionCollection::get()->createAction("orgfiles", QObject::tr("Organize Files"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::folderopeno, col)));
+    organiseFilesAction = ActionCollection::get()->createAction("orgfiles", QObject::tr("Organize Files"), MonoIcon::icon(FontAwesome::folderopeno, col));
     editTagsAction = ActionCollection::get()->createAction("edittags", QObject::tr("Edit Track Information"), 0);
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction = ActionCollection::get()->createAction("replaygain", QObject::tr("ReplayGain"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::barchart, col)));
+    replaygainAction = ActionCollection::get()->createAction("replaygain", QObject::tr("ReplayGain"), MonoIcon::icon(FontAwesome::barchart, col));
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::mobile, col)), QObject::tr("Copy Songs To Device"), 0);
+    copyToDeviceAction = new Action(MonoIcon::icon(FontAwesome::mobile, col), QObject::tr("Copy Songs To Device"), 0);
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
     deleteSongsAction = new Action(MonoIcon::icon(FontAwesome::trash, MonoIcon::constRed), QObject::tr("Delete Songs"), 0);
     #endif
     setCoverAction = new Action(QObject::tr("Set Image"), 0);
     removeAction = new Action(Icons::self()->removeIcon, QObject::tr("Remove"), 0);
-    searchAction = ActionCollection::get()->createAction("search", QObject::tr("Find"), HIDE_MENU_ICON(Icons::self()->searchIcon));
+    searchAction = ActionCollection::get()->createAction("search", QObject::tr("Find"), Icons::self()->searchIcon);
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
 
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());

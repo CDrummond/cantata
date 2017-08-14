@@ -44,7 +44,6 @@
 #cmakedefine ENABLE_HTTP_SERVER 1
 #cmakedefine IOKIT_FOUND 1
 #cmakedefine QT_MAC_EXTRAS_FOUND 1
-#cmakedefine UNITY_MENU_HACK 1
 #cmakedefine ENABLE_SIMPLE_MPD_SUPPORT 1
 
 #cmakedefine HAVE_CDIO_PARANOIA_H 1
@@ -52,12 +51,7 @@
 #cmakedefine HAVE_CDIO_CDDA_H 1
 #cmakedefine HAVE_CDIO_PARANOIA_CDDA_H 1
 
-
-#ifdef ENABLE_UBUNTU
-#define CANTATA_REV_URL "com.ubuntu.developer.nikwen.cantata-touch-reboot" //Sadly, it requires the com.ubuntu.developer.nikwen prefix to be published to the click store
-#else
 #define CANTATA_REV_URL "@PROJECT_REV_URL@"
-#endif
 #define CANTATA_URL "@PROJECT_URL@"
 
 #define CANTATA_SYS_CONFIG_DIR  Utils::systemDir(QLatin1String("config"))
@@ -65,16 +59,6 @@
 #define CANTATA_SYS_MPD_DIR     Utils::systemDir(QLatin1String("mpd"))
 #define CANTATA_SYS_TRANS_DIR   Utils::systemDir(QLatin1String("translations"))
 #define CANTATA_SYS_SCRIPTS_DIR Utils::systemDir(QLatin1String("scripts"))
-
-#ifdef UNITY_MENU_HACK
-#define HIDE_MENU_ICON(A) menuIcons ? A : Icon()
-#define HIDE_MENU_ICON_NAME(A) menuIcons ? A : 0
-#define UNITY_MENU_ICON_CHECK bool menuIcons=Utils::Unity!=Utils::currentDe() && !QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
-#else
-#define HIDE_MENU_ICON(A) A
-#define HIDE_MENU_ICON_NAME(A) A
-#define UNITY_MENU_ICON_CHECK
-#endif
 
 #define LINUX_LIB_DIR "@LINUX_LIB_DIR@"
 

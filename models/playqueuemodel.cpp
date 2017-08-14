@@ -222,13 +222,12 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(DevicesModel::self(), SIGNAL(updatedDetails(QList<Song>)), SLOT(updateDetails(QList<Song>)));
     #endif
 
-    UNITY_MENU_ICON_CHECK
     removeDuplicatesAction=new Action(tr("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
     QColor col=Utils::monoIconColor();
-    undoAction=ActionCollection::get()->createAction("playqueue-undo", tr("Undo"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::undo, col)));
+    undoAction=ActionCollection::get()->createAction("playqueue-undo", tr("Undo"), MonoIcon::icon(FontAwesome::undo, col));
     undoAction->setShortcut(Qt::ControlModifier+Qt::Key_Z);
-    redoAction=ActionCollection::get()->createAction("playqueue-redo", tr("Redo"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::repeat, col)));
+    redoAction=ActionCollection::get()->createAction("playqueue-redo", tr("Redo"), MonoIcon::icon(FontAwesome::repeat, col));
     redoAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Z);
     connect(undoAction, SIGNAL(triggered()), this, SLOT(undo()));
     connect(redoAction, SIGNAL(triggered()), this, SLOT(redo()));

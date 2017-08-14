@@ -26,7 +26,6 @@
 
 #include <QToolButton>
 #include "support/icon.h"
-#include "config.h"
 
 class QMenu;
 class ToolButton : public QToolButton
@@ -36,15 +35,9 @@ public:
     QSize sizeHint() const;
     void setMenu(QMenu *m);
     void paintEvent(QPaintEvent *e);
-    #ifdef UNITY_MENU_HACK
-    void setIcon(const QIcon &i) { icon=i; }
-    #endif
 
 private:
     mutable QSize sh;
-    #ifdef UNITY_MENU_HACK
-    QIcon icon;
-    #endif
     #ifdef Q_OS_MAC
     bool allowMouseOver;
     #endif

@@ -78,12 +78,6 @@ void ToolButton::paintEvent(QPaintEvent *e)
     if (opt.state&QStyle::State_MouseOver && this!=QApplication::widgetAt(QCursor::pos())) {
         opt.state&=~QStyle::State_MouseOver;
     }
-    #ifdef UNITY_MENU_HACK
-    if (!icon.isNull()) {
-        opt.icon=icon;
-        opt.toolButtonStyle=Qt::ToolButtonIconOnly;
-    }
-    #endif
     p.drawComplexControl(QStyle::CC_ToolButton, opt);
 }
 
@@ -91,17 +85,7 @@ QSize ToolButton::sizeHint() const
 {
     if (!sh.isValid()) {
         ensurePolished();
-        #ifdef UNITY_MENU_HACK
-        if (!icon.isNull()) {
-            QStyleOptionToolButton opt;
-            opt.icon=icon;
-            opt.toolButtonStyle=Qt::ToolButtonIconOnly;
-            initStyleOption(&opt);
-            opt.features=QStyleOptionToolButton::None;
-            sh = style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.iconSize, this).expandedTo(QApplication::globalStrut());
-        } else
-        #endif
-            sh = QToolButton::sizeHint();
+        sh = QToolButton::sizeHint();
 
         if (sh.width()>sh.height()) {
             sh.setWidth(sh.height());

@@ -231,8 +231,6 @@ void MainWindow::init()
     }
     #endif
 
-    UNITY_MENU_ICON_CHECK
-
     toolbar->ensurePolished();
     toolbar->adjustSize();
     coverWidget->setSize(toolbar->height());
@@ -247,12 +245,12 @@ void MainWindow::init()
     setWindowIcon(Icons::self()->appIcon);
 
     prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? tr("Configure Cantata...") : tr("Preferences"),
-                                                     HIDE_MENU_ICON(Icons::self()->configureIcon));
+                                                     Icons::self()->configureIcon);
     connect(prefAction, SIGNAL(triggered()),this, SLOT(showPreferencesDialog()));
-    quitAction = ActionCollection::get()->createAction("quit", tr("Quit"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::poweroff, MonoIcon::constRed, MonoIcon::constRed)));
+    quitAction = ActionCollection::get()->createAction("quit", tr("Quit"), MonoIcon::icon(FontAwesome::poweroff, MonoIcon::constRed, MonoIcon::constRed));
     connect(quitAction, SIGNAL(triggered()), this, SLOT(quit()));
     quitAction->setShortcut(QKeySequence::Quit);
-    Action *aboutAction=ActionCollection::get()->createAction("about", tr("About Cantata..."), HIDE_MENU_ICON(Icons::self()->appIcon));
+    Action *aboutAction=ActionCollection::get()->createAction("about", tr("About Cantata..."), Icons::self()->appIcon);
     connect(aboutAction, SIGNAL(triggered()),this, SLOT(showAboutDialog()));
     #ifdef Q_OS_MAC
     prefAction->setMenuRole(QAction::PreferencesRole);
@@ -262,15 +260,15 @@ void MainWindow::init()
     restoreAction = new Action(tr("Show Window"), this);
     connect(restoreAction, SIGNAL(triggered()), this, SLOT(restoreWindow()));
 
-    serverInfoAction=ActionCollection::get()->createAction("mpdinfo", tr("Server information..."), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::server, iconCol)));
+    serverInfoAction=ActionCollection::get()->createAction("mpdinfo", tr("Server information..."), MonoIcon::icon(FontAwesome::server, iconCol));
     connect(serverInfoAction, SIGNAL(triggered()),this, SLOT(showServerInfo()));
     serverInfoAction->setEnabled(Settings::self()->firstRun());
-    refreshDbAction = ActionCollection::get()->createAction("refresh", tr("Refresh Database"), HIDE_MENU_ICON(Icons::self()->refreshIcon));
+    refreshDbAction = ActionCollection::get()->createAction("refresh", tr("Refresh Database"), Icons::self()->refreshIcon);
     doDbRefreshAction = new Action(refreshDbAction->icon(), tr("Refresh"), this);
     refreshDbAction->setEnabled(false);
     connectAction = new Action(Icons::self()->connectIcon, tr("Connect"), this);
-    connectionsAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::server, iconCol)), tr("Collection"), this);
-    outputsAction = new Action(HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::volumeup, iconCol)), tr("Outputs"), this);
+    connectionsAction = new Action(MonoIcon::icon(FontAwesome::server, iconCol), tr("Collection"), this);
+    outputsAction = new Action(MonoIcon::icon(FontAwesome::volumeup, iconCol), tr("Outputs"), this);
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", tr("Stop After Track"), Icons::self()->toolbarStopIcon);
 
     QList<int> seeks=QList<int>() << 5 << 30 << 60;
@@ -291,23 +289,23 @@ void MainWindow::init()
         }
     }
 
-    addPlayQueueToStoredPlaylistAction = new Action(HIDE_MENU_ICON(Icons::self()->playlistListIcon), tr("Add To Stored Playlist"), this);
+    addPlayQueueToStoredPlaylistAction = new Action(Icons::self()->playlistListIcon, tr("Add To Stored Playlist"), this);
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction = new Action(HIDE_MENU_ICON(StdActions::self()->copyToDeviceAction->icon()), Utils::strippedText(StdActions::self()->copyToDeviceAction->text()), this);
+    copyToDeviceAction = new Action(StdActions::self()->copyToDeviceAction->icon(), Utils::strippedText(StdActions::self()->copyToDeviceAction->text()), this);
     copyToDeviceAction->setMenu(DevicesModel::self()->menu()->duplicate(0));
     #endif
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", tr("Crop Others"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", tr("Add Stream URL"));
     QIcon clearIcon = MonoIcon::icon(FontAwesome::times, MonoIcon::constRed, MonoIcon::constRed);
-    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", tr("Clear"), HIDE_MENU_ICON(clearIcon));
+    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", tr("Clear"), clearIcon);
     clearPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_K);
     centerPlayQueueAction = ActionCollection::get()->createAction("centerplaylist", tr("Center On Current Track"), Icons::self()->centrePlayQueueOnTrackIcon);
-    expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", tr("Expanded Interface"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::expand, iconCol)));
+    expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", tr("Expanded Interface"), MonoIcon::icon(FontAwesome::expand, iconCol));
     expandInterfaceAction->setCheckable(true);
     songInfoAction = ActionCollection::get()->createAction("showsonginfo", tr("Show Current Song Information"), Icons::self()->infoIcon);
     songInfoAction->setShortcut(Qt::Key_F12);
     songInfoAction->setCheckable(true);
-    fullScreenAction = ActionCollection::get()->createAction("fullScreen", tr("Full Screen"), HIDE_MENU_ICON(MonoIcon::icon(FontAwesome::arrowsalt, iconCol)));
+    fullScreenAction = ActionCollection::get()->createAction("fullScreen", tr("Full Screen"), MonoIcon::icon(FontAwesome::arrowsalt, iconCol));
     #ifndef Q_OS_MAC
     fullScreenAction->setShortcut(Qt::Key_F11);
     #endif
@@ -315,11 +313,11 @@ void MainWindow::init()
     repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", tr("Repeat"), Icons::self()->repeatIcon);
     singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", tr("Single"), Icons::self()->singleIcon, tr("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
     consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", tr("Consume"), Icons::self()->consumeIcon, tr("When consume is activated, a song is removed from the play queue after it has been played."));
-    searchPlayQueueAction = ActionCollection::get()->createAction("searchplaylist", tr("Find in Play Queue"), HIDE_MENU_ICON(Icons::self()->searchIcon));
+    searchPlayQueueAction = ActionCollection::get()->createAction("searchplaylist", tr("Find in Play Queue"), Icons::self()->searchIcon);
     addAction(searchPlayQueueAction);
     searchPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_F);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamPlayAction = ActionCollection::get()->createAction("streamplay", tr("Play Stream"), HIDE_MENU_ICON(Icons::self()->httpStreamIcon));
+    streamPlayAction = ActionCollection::get()->createAction("streamplay", tr("Play Stream"), Icons::self()->httpStreamIcon);
     streamPlayAction->setCheckable(true);
     streamPlayAction->setChecked(false);
     streamPlayAction->setVisible(false);
@@ -524,18 +522,6 @@ void MainWindow::init()
     singlePlayQueueAction->setChecked(false);
     consumePlayQueueAction->setChecked(false);
 
-    #ifdef UNITY_MENU_HACK
-    if (!menuIcons) {
-        // These buttons have actions that are in the menubar, as wall as in the main window.
-        // Under unity we dont want any icons in menus - so the actions themselves have no icons.
-        // But the toolbuttuns need icons!
-        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-        streamPlayButton->setIcon(Icons::self()->httpStreamIcon);
-        #endif
-        savePlayQueueButton->setIcon(Icons::self()->savePlayQueueIcon);
-        clearPlayQueueButton->setIcon(MonoIcon::icon(FontAwesome::times, MonoIcon::constRed, MonoIcon::constRed));
-    }
-    #endif
     expandedSize=Settings::self()->mainWindowSize();
     collapsedSize=Settings::self()->mainWindowCollapsedSize();
 

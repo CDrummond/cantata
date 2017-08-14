@@ -41,7 +41,7 @@ public:
     StreamFetcher(QObject *p);
     virtual ~StreamFetcher();
 
-    void get(const QStringList &items, int insertRow, int action, quint8 priority);
+    void get(const QStringList &items, int insertRow, int action, quint8 priority, bool decPriority);
 
 private:
     void doNext();
@@ -50,7 +50,7 @@ public Q_SLOTS:
     void cancel();
 
 Q_SIGNALS:
-    void result(const QStringList &items, int insertRow, int action, quint8 priority);
+    void result(const QStringList &items, int insertRow, int action, quint8 priority, bool decreasePriority);
     void status(const QString &msg);
 
 private Q_SLOTS:
@@ -70,6 +70,7 @@ private:
     int row;
     int playQueueAction;
     quint8 prio;
+    bool decreasePriority;
     int redirects;
     QByteArray data;
 };

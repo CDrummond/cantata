@@ -178,7 +178,7 @@ StreamFetcher::~StreamFetcher()
 {
 }
 
-void StreamFetcher::get(const QStringList &items, int insertRow, int action, quint8 priority)
+void StreamFetcher::get(const QStringList &items, int insertRow, int action, quint8 priority, bool decPriority)
 {
     if (items.isEmpty()) {
         return;
@@ -191,6 +191,7 @@ void StreamFetcher::get(const QStringList &items, int insertRow, int action, qui
     row=insertRow;
     playQueueAction=action;
     prio=priority;
+    decreasePriority=decPriority;
     current=QString();
     currentName=QString();
     doNext();
@@ -234,7 +235,7 @@ void StreamFetcher::doNext()
 
     if (todo.isEmpty() && !done.isEmpty()) {
         job=0;
-        emit result(done, row, playQueueAction, prio);
+        emit result(done, row, playQueueAction, prio, decreasePriority);
         emit status(QString());
     }
 }

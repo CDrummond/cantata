@@ -34,8 +34,8 @@ public:
     virtual ~Page() { }
     virtual Song coverRequest() const { return Song(); }
     virtual QList<Song> selectedSongs(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists) return QList<Song>(); }
-    virtual void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0) {
-        Q_UNUSED(name) Q_UNUSED(action) Q_UNUSED(priorty)
+    virtual void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0, bool decreasePriority=false) {
+        Q_UNUSED(name) Q_UNUSED(action) Q_UNUSED(priorty) Q_UNUSED(decreasePriority)
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     virtual void addSelectionToDevice(const QString &udi) { Q_UNUSED(udi) }

@@ -158,7 +158,7 @@ void FolderPage::updateToPlayQueue(const QModelIndex &idx, bool replace)
     BrowseModel::Item *item = static_cast<BrowseModel::Item *>(idx.internalPointer());
     if (item->isFolder()) {
         emit add(QStringList() << MPDConnection::constDirPrefix+static_cast<BrowseModel::FolderItem *>(item)->getPath(),
-                 replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0);
+                 replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0, false);
     }
 }
 
@@ -177,7 +177,7 @@ QStringList FolderPage::selectedFiles(bool allowPlaylists) const
     return files;
 }
 
-void FolderPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
+void FolderPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
 {
     QModelIndexList selected=view->selectedIndexes();
     QStringList dirs;
@@ -193,7 +193,7 @@ void FolderPage::addSelectionToPlaylist(const QString &name, int action, quint8 
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files, action, priorty);
+            emit add(files, action, priorty, decreasePriority);
         } else {
             emit addSongsToPlaylist(name, files);
         }

@@ -136,10 +136,10 @@ private:
 
 public Q_SLOTS:
     void load(const QStringList &urls);
-    void addItems(const QStringList &items, int row, int action, quint8 priority);
-    void addItems(const QStringList &items, int action, quint8 priority) { addItems(items, -1, action, priority); }
-    void addFiles(const QStringList &filenames, int row, int action, quint8 priority);
-    void prioritySet(const QList<qint32> &ids, quint8 priority);
+    void addItems(const QStringList &items, int row, int action, quint8 priority, bool decreasePriority);
+    void addItems(const QStringList &items, int action, quint8 priority, bool decreasePriority) { addItems(items, -1, action, priority, decreasePriority); }
+    void addFiles(const QStringList &filenames, int row, int action, quint8 priority, bool decreasePriority=false);
+    void prioritySet(const QMap<qint32, quint8> &prio);
     void stats();
     void cancelStreamFetch();
     void shuffleAlbums();
@@ -158,7 +158,7 @@ private Q_SLOTS:
 Q_SIGNALS:
     void stop(bool afterCurrent);
     void clearStopAfter();
-    void filesAdded(const QStringList filenames, const quint32 row, const quint32 size, int action, quint8 priority);
+    void filesAdded(const QStringList filenames, const quint32 row, const quint32 size, int action, quint8 priority, bool decreasePriority);
     void populate(const QStringList &items, const QList<quint8> &priority);
     void move(const QList<quint32> &items, const quint32 row, const quint32 size);
     void setOrder(const QList<quint32> &items);

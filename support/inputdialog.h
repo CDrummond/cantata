@@ -25,6 +25,7 @@
 #define INPUT_DIALOG_H
 
 #include <QLineEdit>
+#include <QWidget>
 #include "dialog.h"
 
 class QSpinBox;
@@ -50,6 +51,14 @@ public:
         return getText(tr("Password"), tr("Please enter password:"), QLineEdit::Password, value, ok, parent);
     }
 
+    void addExtraWidget(const QString &label, QWidget *w);
+    QSpinBox *spinBox() {
+        return spin;
+    }
+    LineEdit *lineEdit() {
+        return edit;
+    }
+
 private:
     void init(bool intInput, const QString &caption, const QString &label);
 
@@ -59,6 +68,7 @@ private Q_SLOTS:
 private:
     QSpinBox *spin;
     LineEdit *edit;
+    QWidget *extra;
 };
 
 #endif // INPUT_DIALOG_H

@@ -140,7 +140,7 @@ Q_SIGNALS:
     void setVolume(int);
     void outputs();
     void enableOutput(int id, bool);
-    void setPriority(const QList<qint32> &ids, quint8 priority);
+    void setPriority(const QList<qint32> &ids, quint8 priority, bool decreasePriority);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
     void showPreferencesPage(const QString &page);
     void playNext(const QList<quint32> &items, quint32 pos, quint32 size);
@@ -248,7 +248,7 @@ private:
     void enableStopActions(bool enable);
     void updateStatus(MPDStatus * const status);
     void readSettings();
-    void appendToPlayQueue(int action, quint8 priority=0);
+    void appendToPlayQueue(int action, quint8 priority=0, bool decreasePriority=false);
     bool currentIsStream() const { return PlayQueueModel::self()->rowCount() && -1!=current.id && current.isStream(); }
     void updateWindowTitle();
     void showTab(int page) { tabWidget->setCurrentIndex(page); }

@@ -60,7 +60,7 @@ SinglePageWidget::SinglePageWidget(QWidget *p)
     layout->setSpacing(0);
     connect(view, SIGNAL(searchItems()), this, SIGNAL(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
-    connect(this, SIGNAL(add(const QStringList &, int, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8)));
+    connect(this, SIGNAL(add(const QStringList &, int, quint8, bool)), MPDConnection::self(), SLOT(add(const QStringList &, int, quint8, bool)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
 }
 
@@ -125,13 +125,13 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
     }
 }
 
-void SinglePageWidget::addSelectionToPlaylist(const QString &name, int action, quint8 priorty)
+void SinglePageWidget::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
 {
     // Always get tracks and playlists - this way error message can be shown. #902
     QStringList files=selectedFiles(true);
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files, action, priorty);
+            emit add(files, action, priorty, decreasePriority);
         } else {
             emit addSongsToPlaylist(name, files);
         }

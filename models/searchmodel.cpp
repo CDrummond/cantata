@@ -219,13 +219,13 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         QString al=song->displayAlbum();
         if (!al.isEmpty()) {
             if (!resp.isEmpty()) {
-                resp+=QLatin1String(" – ");
+                resp+=QLatin1String(" - ");
             }
             resp+=al;
         }
         if (song->time>0) {
             if (!resp.isEmpty()) {
-                resp+=QLatin1String(" – ");
+                resp+=QLatin1String(" - ");
             }
             resp+=Utils::formatTime(song->time);
         }

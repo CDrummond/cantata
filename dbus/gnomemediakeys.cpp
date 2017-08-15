@@ -31,7 +31,7 @@
 #include <QDBusServiceWatcher>
 #include <QCoreApplication>
 
-static const char * constService = "org.gnome.SettingsDaemon.MediaKeys";
+static const char * constService = "org.gnome.SettingsDaemon";
 static const char * constDaemonPath = "/org/gnome/SettingsDaemon";
 static const char * constMediaKeysPath = "/org/gnome/SettingsDaemon/MediaKeys";
 

@@ -56,7 +56,7 @@ public:
         textSize+=6;
         int size=textSize;
         if (size<72) {
-            size=Utils::scaleForDpi(32);
+            size=32;
         }
         QPalette pal=mainText->palette();
         QColor col(mainText->palette().windowText().color());

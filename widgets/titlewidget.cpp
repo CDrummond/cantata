@@ -75,8 +75,8 @@ TitleWidget::TitleWidget(QWidget *p)
     if (size<72) {
         size=Icon::stdSize(size);
     }
-    int pad=Utils::scaleForDpi(6);
-    size=qMax(qMax(size, QFontMetrics(mainText->font()).height()+QFontMetrics(subText->font()).height()+spacing), Utils::scaleForDpi(40))+pad;
+    int pad=6;
+    size=qMax(qMax(size, QFontMetrics(mainText->font()).height()+QFontMetrics(subText->font()).height()+spacing), 40)+pad;
     image->setFixedSize(size, size);
     setToolTip(tr("Click to go back"));
     spacing=qMin(4, spacing-1);
@@ -158,7 +158,7 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
     if (icon.isNull()) {
         image->setVisible(false);
     } else {
-        int iconPad=Utils::scaleForDpi(8);
+        int iconPad=8;
         int iconSize=image->width()-iconPad;
         if (iconSize<44 && iconSize>=32) {
             iconSize=32;

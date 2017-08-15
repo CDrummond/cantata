@@ -2482,7 +2482,7 @@ int MainWindow::calcMinHeight()
 {
     return tabWidget->style()&FancyTabWidget::Side && tabWidget->style()&FancyTabWidget::Large
             ? calcCollapsedSize()+(tabWidget->visibleCount()*tabWidget->tabSize().height())
-            : Utils::scaleForDpi(256);
+            : 256;
 }
 
 int MainWindow::calcCollapsedSize()

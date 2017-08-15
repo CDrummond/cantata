@@ -102,7 +102,7 @@ public:
 
         painter.setFont(f);
         if (isChecked() || mo) {
-            int lh=Utils::isHighDpi() ? 5 : 3;
+            int lh=3;
             #ifdef Q_OS_MAC
             QColor col=OSXStyle::self()->viewPalette().highlight().color();
             #else

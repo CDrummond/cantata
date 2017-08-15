@@ -832,22 +832,9 @@ int Utils::layoutSpacing(QWidget *w)
 {
     int spacing=(w ? w->style() : qApp->style())->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
     if (spacing<0) {
-        spacing=scaleForDpi(4);
+        spacing=4;
     }
     return spacing;
-}
-
-double Utils::screenDpiScale()
-{
-    static double scaleFactor=-1.0;
-    if (scaleFactor<0) {
-        QWidget *dw=QApplication::desktop();
-        if (!dw) {
-            return 1.0;
-        }
-        scaleFactor=dw->logicalDpiX()>120 ? qMin(qMax(dw->logicalDpiX()/96.0, 1.0), 4.0) : 1.0;
-    }
-    return scaleFactor;
 }
 
 bool Utils::limitedHeight(QWidget *w)

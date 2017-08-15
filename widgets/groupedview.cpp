@@ -345,7 +345,7 @@ void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
         }
         gradCol.setAlphaF(selected ? 0.4 : 0.25);
         painter->setRenderHint(QPainter::Antialiasing, true);
-        int radius=Utils::scaleForDpi(3);
+        int radius=3;
         painter->fillPath(Utils::buildPath(border, radius), gradCol);
         painter->setPen(QPen(borderCol, 1));
         painter->drawPath(Utils::buildPath(border, radius));

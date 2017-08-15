@@ -56,7 +56,7 @@
 
 static inline int sidebarSpacing(bool withText)
 {
-    int sp=Utils::scaleForDpi(12);
+    int sp=12;
     if (!withText) {
         sp*=1.25;
     }
@@ -72,8 +72,8 @@ static int largeIconSize=32;
 static int smallIconSize=16;
 void FancyTabWidget::setup()
 {
-    largeIconSize=Icon::stdSize(Utils::scaleForDpi(32));
-    smallIconSize=Icon::stdSize(Utils::scaleForDpi(16));
+    largeIconSize=Icon::stdSize(32);
+    smallIconSize=Icon::stdSize(16);
 }
 
 int FancyTabWidget::iconSize(bool large)
@@ -267,7 +267,7 @@ QSize FancyTab::sizeHint() const
     int iconSize = tabbar->iconSize();
     bool withText = tabbar->showText();
     int spacing = sidebarSpacing(withText);
-    int padding = FancyTabBar::Side==tabbar->position() ? Utils::scaleForDpi(12) : 0;
+    int padding = FancyTabBar::Side==tabbar->position() ? 12 : 0;
     if (withText) {
         QFontMetrics fm(font());
         int textWidth = fm.width(text)*1.1;
@@ -281,7 +281,7 @@ QSize FancyTab::sizeHint() const
 QSize FancyTabBar::tabSizeHint() const
 {
     int spacing = sidebarSpacing(withText);
-    int padding = Side==pos ? Utils::scaleForDpi(12) : 0;
+    int padding = Side==pos ? 12 : 0;
     if (withText) {
         QFontMetrics fm(font());
         int maxTw=0;

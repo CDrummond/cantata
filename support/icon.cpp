@@ -41,13 +41,6 @@ int Icon::stdSize(int v)
         return 64;
     }
 
-    if (Utils::isHighDpi()) {
-        if (v<=160) {
-            return 128;
-        } else {
-            return 256;
-        }
-    }
     return 128;
 }
 

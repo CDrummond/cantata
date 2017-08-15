@@ -21,22 +21,21 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef PLAYLISTS_PAGE_H
-#define PLAYLISTS_PAGE_H
+#ifndef STORED_PAGE_H
+#define STORED_PAGE_H
 
 #include "widgets/singlepagewidget.h"
 #include "widgets/multipagewidget.h"
 #include "models/playlistsproxymodel.h"
 
 class Action;
-class DynamicPage;
 
-class StoredPlaylistsPage : public SinglePageWidget
+class StoredPage : public SinglePageWidget
 {
     Q_OBJECT
 public:
-    StoredPlaylistsPage(QWidget *p);
-    virtual ~StoredPlaylistsPage();
+    StoredPage(QWidget *p);
+    virtual ~StoredPage();
 
     void updateRows();
     void clear();
@@ -83,25 +82,6 @@ private:
     Action *removeDuplicatesAction;
     Action *intitiallyCollapseAction;
     PlaylistsProxyModel proxy;
-};
-
-class PlaylistsPage : public MultiPageWidget
-{
-    Q_OBJECT
-public:
-    PlaylistsPage(QWidget *p);
-    virtual ~PlaylistsPage();
-
-    #ifdef ENABLE_DEVICES_SUPPORT
-    void addSelectionToDevice(const QString &udi);
-    #endif
-
-Q_SIGNALS:
-    void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
-
-private:
-    StoredPlaylistsPage *stored;
-    DynamicPage *dynamic;
 };
 
 #endif

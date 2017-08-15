@@ -20,10 +20,10 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
-#include "dynamicproxymodel.h"
+#include "playlistproxymodel.h"
 #include "dynamic.h"
 
-DynamicProxyModel::DynamicProxyModel(QObject *parent)
+PlaylistProxyModel::PlaylistProxyModel(QObject *parent)
     : ProxyModel(parent)
 {
     setDynamicSortFilter(true);
@@ -33,7 +33,7 @@ DynamicProxyModel::DynamicProxyModel(QObject *parent)
     sort(0);
 }
 
-bool DynamicProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool PlaylistProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     if (!filterEnabled) {
         return true;

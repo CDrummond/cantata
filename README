@@ -622,15 +622,13 @@ simple HTTP control page - allowing playlists to be started and stopped.
 Installation
 -------------
 
-Within the dynamic/init folder are example configuration and init files. Copy
-one of the example init scripts (or create a new one) to
-/etc/init.d/cantata.dynamic - and create the appropriate links in /etc/rc?.d
+Within the playlists folder is a systemd service file.
 
-NOTE: These example scripts assume cantata has been installed to /usr, and that
+NOTE: This service file assumes cantata has been installed to /usr, and that
 cantata-dynamic is in /usr/share/cantata/scripts. If this is not the case, then
-these will need to be edited.
+this will need to be edited.
 
-Copy dynamic/init/cantata-dynamic.conf to /etc, and edit as appropriate.
+Copy playlists/cantata-dynamic.conf to /etc, and edit as appropriate.
 
 
 14. Source Code
@@ -642,7 +640,7 @@ The Cantata source folder contains the following structure:
     context    - Context view classes
     dbus       - DBUS related classes and XML files
     devices    - Device related classes
-    dynamic    - Dynamic playlists
+    playlists  - Playlists
     gui        - General GUI classes, e.g. MainWindow, LibraryPage, etc.
     http       - HTTP server
     icons      - Icons

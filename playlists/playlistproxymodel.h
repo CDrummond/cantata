@@ -21,15 +21,15 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DYNAMICPROXYMODEL_H
-#define DYNAMICPROXYMODEL_H
+#ifndef PLAYLIST_PROXY_MODEL_H
+#define PLAYLIST_PROXY_MODEL_H
 
 #include "models/proxymodel.h"
 
-class DynamicProxyModel : public ProxyModel
+class PlaylistProxyModel : public ProxyModel
 {
 public:
-    DynamicProxyModel(QObject *parent = 0);
+    PlaylistProxyModel(QObject *parent = 0);
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 };
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DynamicRules</class>
- <widget class="QWidget" name="DynamicRules">
+ <class>PlaylistRules</class>
+ <widget class="QWidget" name="PlaylistRules">
   <property name="geometry">
    <rect>
     <x>0</x>

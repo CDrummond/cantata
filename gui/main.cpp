@@ -44,7 +44,7 @@
 #include "context/wikipediaengine.h"
 #include "context/lastfmengine.h"
 #include "context/metaengine.h"
-#include "dynamic/dynamic.h"
+#include "playlists/dynamic.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "models/devicesmodel.h"
 #endif

@@ -121,7 +121,7 @@ QVariant RulesPlaylists::data(const QModelIndex &index, int role) const
         return entryList.at(index.row()).name;
     case Cantata::Role_SubText: {
         const Entry &e=entryList.at(index.row());
-        return tr("%n Rule(s)", "", e.rules.count())+(e.haveRating() ? tr(" - Rating: %1..%2")
+        return tr("%n Rule(s)", "", e.rules.count())+(e.haveRating() ? tr(" – Rating: %1..%2")
                               .arg((double)e.ratingFrom/Song::Rating_Step).arg((double)e.ratingTo/Song::Rating_Step) : QString());
     }
     default:

@@ -25,7 +25,7 @@
 #define DYNAMICPAGE_H
 
 #include "widgets/singlepagewidget.h"
-#include "dynamicproxymodel.h"
+#include "playlistproxymodel.h"
 
 class Action;
 class QLabel;
@@ -58,7 +58,7 @@ private:
     void hideEvent(QHideEvent *e);
 
 private:
-    DynamicProxyModel proxy;
+    PlaylistProxyModel proxy;
     Action *addAction;
     Action *editAction;
     Action *removeAction;

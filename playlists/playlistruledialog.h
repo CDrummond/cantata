@@ -21,21 +21,21 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DYNAMIC_RULE_DIALOG_H
-#define DYNAMIC_RULE_DIALOG_H
+#ifndef PLAYLIST_RULE_DIALOG_H
+#define PLAYLIST_RULE_DIALOG_H
 
 #include "config.h"
 #include "support/dialog.h"
-#include "ui_dynamicrule.h"
+#include "ui_playlistrule.h"
 #include "dynamic.h"
 
-class DynamicRuleDialog : public Dialog, Ui::DynamicRule
+class PlaylistRuleDialog : public Dialog, Ui::PlaylistRule
 {
     Q_OBJECT
 
 public:
-    DynamicRuleDialog(QWidget *parent);
-    virtual ~DynamicRuleDialog();
+    PlaylistRuleDialog(QWidget *parent);
+    virtual ~PlaylistRuleDialog();
 
     void createNew() { edit(Dynamic::Rule(), true); }
     bool edit(const Dynamic::Rule &rule, bool isAdd=false);

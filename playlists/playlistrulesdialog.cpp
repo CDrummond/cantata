@@ -21,8 +21,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "dynamicrulesdialog.h"
-#include "dynamicruledialog.h"
+#include "playlistrulesdialog.h"
+#include "playlistruledialog.h"
 #include "dynamic.h"
 #include "support/messagebox.h"
 #include "widgets/basicitemdelegate.h"
@@ -130,8 +130,8 @@ static void update(QStandardItem *i, const Dynamic::Rule &rule)
     i->setFlags(Qt::ItemIsSelectable| Qt::ItemIsEnabled);
 }
 
-DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
-    : Dialog(parent, "DynamicRulesDialog")
+PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent)
+    : Dialog(parent, "PlaylistRulesDialog")
     , dlg(0)
 {
     QWidget *mainWidet = new QWidget(this);
@@ -170,11 +170,11 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
     }
 }
 
-DynamicRulesDialog::~DynamicRulesDialog()
+PlaylistRulesDialog::~PlaylistRulesDialog()
 {
 }
 
-void DynamicRulesDialog::edit(const QString &name)
+void PlaylistRulesDialog::edit(const QString &name)
 {
     Dynamic::Entry e=Dynamic::self()->entry(name);
     if (model->rowCount()) {
@@ -195,13 +195,13 @@ void DynamicRulesDialog::edit(const QString &name)
     show();
 }
 
-void DynamicRulesDialog::enableOkButton()
+void PlaylistRulesDialog::enableOkButton()
 {
     bool enable=!nameText->text().trimmed().isEmpty();
     enableButton(Ok, enable);
 }
 
-void DynamicRulesDialog::slotButtonClicked(int button)
+void PlaylistRulesDialog::slotButtonClicked(int button)
 {
     switch (button) {
     case Ok: {
@@ -220,23 +220,23 @@ void DynamicRulesDialog::slotButtonClicked(int button)
     }
 }
 
-void DynamicRulesDialog::controlButtons()
+void PlaylistRulesDialog::controlButtons()
 {
     int numSel=rulesList->selectedIndexes().count();
     removeBtn->setEnabled(numSel>0);
     editBtn->setEnabled(1==numSel);
 }
 
-void DynamicRulesDialog::add()
+void PlaylistRulesDialog::add()
 {
     if (!dlg) {
-        dlg=new DynamicRuleDialog(this);
+        dlg=new PlaylistRuleDialog(this);
         connect(dlg, SIGNAL(addRule(const Dynamic::Rule&)), SLOT(addRule(const Dynamic::Rule&)));
     }
     dlg->createNew();
 }
 
-void DynamicRulesDialog::addRule(const Dynamic::Rule &rule)
+void PlaylistRulesDialog::addRule(const Dynamic::Rule &rule)
 {
     QStandardItem *item = new QStandardItem();
     ::update(item, rule);
@@ -248,7 +248,7 @@ void DynamicRulesDialog::addRule(const Dynamic::Rule &rule)
     }
 }
 
-void DynamicRulesDialog::edit()
+void PlaylistRulesDialog::edit()
 {
     QModelIndexList items=rulesList->selectedIndexes();
 
@@ -256,7 +256,7 @@ void DynamicRulesDialog::edit()
         return;
     }
     if (!dlg) {
-        dlg=new DynamicRuleDialog(this);
+        dlg=new PlaylistRuleDialog(this);
         connect(dlg, SIGNAL(addRule(const Dynamic::Rule&)), SLOT(addRule(const Dynamic::Rule&)));
     }
     QModelIndex index=proxy->mapToSource(items.at(0));
@@ -277,7 +277,7 @@ void DynamicRulesDialog::edit()
     }
 }
 
-void DynamicRulesDialog::remove()
+void PlaylistRulesDialog::remove()
 {
     QModelIndexList items=rulesList->selectedIndexes();
     QList<int> rows;
@@ -290,7 +290,7 @@ void DynamicRulesDialog::remove()
     }
 }
 
-void DynamicRulesDialog::showAbout()
+void PlaylistRulesDialog::showAbout()
 {
     MessageBox::information(this,
                          #ifdef Q_OS_MAC
@@ -311,7 +311,7 @@ void DynamicRulesDialog::showAbout()
 
 }
 
-void DynamicRulesDialog::saved(bool s)
+void PlaylistRulesDialog::saved(bool s)
 {
     if (s) {
         accept();
@@ -321,7 +321,7 @@ void DynamicRulesDialog::saved(bool s)
     }
 }
 
-bool DynamicRulesDialog::save()
+bool PlaylistRulesDialog::save()
 {
     if (!controls->isEnabled()) {
         return false;
@@ -387,7 +387,7 @@ bool DynamicRulesDialog::save()
     }
 }
 
-int DynamicRulesDialog::indexOf(QStandardItem *item, bool diff)
+int PlaylistRulesDialog::indexOf(QStandardItem *item, bool diff)
 {
     QMap<QString, QVariant> v=item->data().toMap();
 

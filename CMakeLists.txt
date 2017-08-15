@@ -303,7 +303,7 @@ include_directories(${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BIN
 set(CANTATA_SRCS ${CANTATA_SRCS}
     gui/settings.cpp gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp gui/customactionssettings.cpp
     gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/customactions.cpp
-    gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
+    gui/folderpage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
     gui/main.cpp gui/covers.cpp gui/currentcover.cpp
     devices/deviceoptions.cpp
     db/librarydb.cpp db/mpdlibrarydb.cpp
@@ -329,7 +329,8 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     mpd-interface/mpdconnection.cpp mpd-interface/mpdparseutils.cpp mpd-interface/mpdstats.cpp mpd-interface/mpdstatus.cpp
     mpd-interface/song.cpp mpd-interface/cuefile.cpp
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
-    dynamic/dynamic.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicpage.cpp dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp
+    playlists/dynamic.cpp playlists/playlistproxymodel.cpp playlists/dynamicpage.cpp playlists/playlistruledialog.cpp
+    playlists/playlistrulesdialog.cpp playlists/playlistspage.cpp playlists/storedpage.cpp
     online/onlineservicespage.cpp online/onlinedbservice.cpp online/jamendoservice.cpp online/onlinedbwidget.cpp online/onlineservice.cpp
     online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp
     online/onlinesearchwidget.cpp online/podcastservice.cpp online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp
@@ -339,7 +340,7 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     scrobbling/scrobblinglove.cpp
     http/httpserver.cpp)
 set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
-    gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h gui/playlistspage.h
+    gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h
     gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h
     gui/coverdialog.h gui/searchpage.h gui/customactions.h gui/customactionssettings.h gui/covers.h gui/currentcover.h
     models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
@@ -365,14 +366,15 @@ set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
     online/podcastsettingsdialog.h online/podcastwidget.h  online/jamendoservice.h online/jamendosettingsdialog.h online/magnatuneservice.h
     online/onlinesearchservice.h
     db/onlinedb.h
-    dynamic/dynamic.h dynamic/dynamicruledialog.h dynamic/dynamicpage.h dynamic/dynamicrulesdialog.h
+    playlists/dynamic.h playlists/playlistruledialog.h playlists/dynamicpage.h playlists/playlistrulesdialog.h playlists/playlistspage.h
+    playlists/storedpage.h
     scrobbling/scrobbler.h scrobbling/scrobblingsettings.h scrobbling/scrobblingstatus.h scrobbling/scrobblinglove.h)
 set(CANTATA_UIS ${CANTATA_UIS}
     gui/initialsettingswizard.ui gui/mainwindow.ui
     gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui
     context/togglelist.ui context/othersettings.ui
     streams/digitallyimportedsettings.ui streams/streamssettings.ui
-    dynamic/dynamicrule.ui dynamic/dynamicrules.ui
+    playlists/playlistrule.ui playlists/playlistrules.ui
     widgets/itemview.ui scrobbling/scrobblingsettings.ui)
 
 if (ENABLE_SIMPLE_MPD_SUPPORT)
@@ -384,9 +386,9 @@ set(CANTATA_LIBS ${CANTATA_LIBS} support)
 if (WIN32)
     # Not installed for windows - script uses sym-links...
 elseif (APPLE)
-    install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${MACOSX_BUNDLE_RESOURCES}/scripts/)
+    install(PROGRAMS playlists/cantata-dynamic DESTINATION ${MACOSX_BUNDLE_RESOURCES}/scripts/)
 else ()
-    install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/scripts)
+    install(PROGRAMS playlists/cantata-dynamic DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/scripts)
 endif ()
 
 if (ENABLE_HTTP_SERVER)

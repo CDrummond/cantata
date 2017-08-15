@@ -69,7 +69,7 @@
 #endif
 #endif
 #include "models/streamsmodel.h"
-#include "playlistspage.h"
+#include "playlists/playlistspage.h"
 #include "support/fancytabwidget.h"
 #include "support/monoicon.h"
 #ifdef QT_QTDBUS_FOUND
@@ -90,7 +90,7 @@
 #include "mac/powermanagement.h"
 #endif
 #endif
-#include "dynamic/dynamic.h"
+#include "playlists/dynamic.h"
 #include "support/messagewidget.h"
 #include "widgets/groupedview.h"
 #include "widgets/actionitemdelegate.h"

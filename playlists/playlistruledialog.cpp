@@ -21,14 +21,14 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "dynamicruledialog.h"
+#include "playlistruledialog.h"
 #include "support/monoicon.h"
 #include "models/mpdlibrarymodel.h"
 
 static const int constMinDate=1800;
 static const int constMaxDate=2100;
 
-DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
+PlaylistRuleDialog::PlaylistRuleDialog(QWidget *parent)
     : Dialog(parent)
     , addingRules(false)
 {
@@ -105,11 +105,11 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     }
 }
 
-DynamicRuleDialog::~DynamicRuleDialog()
+PlaylistRuleDialog::~PlaylistRuleDialog()
 {
 }
 
-bool DynamicRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
+bool PlaylistRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
 {
     addingRules=isAdd;
     typeCombo->setCurrentIndex(QLatin1String("true")==rule[Dynamic::constExcludeKey] ? 1 : 0);
@@ -154,7 +154,7 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
     return QDialog::Accepted==exec();
 }
 
-Dynamic::Rule DynamicRuleDialog::rule() const
+Dynamic::Rule PlaylistRuleDialog::rule() const
 {
     Dynamic::Rule r;
     if (!artist().isEmpty()) {
@@ -206,7 +206,7 @@ Dynamic::Rule DynamicRuleDialog::rule() const
     return r;
 }
 
-void DynamicRuleDialog::enableOkButton()
+void PlaylistRuleDialog::enableOkButton()
 {
     static const int constMaxDateRange=20;
 
@@ -244,7 +244,7 @@ void DynamicRuleDialog::enableOkButton()
     }
 }
 
-void DynamicRuleDialog::slotButtonClicked(int button)
+void PlaylistRuleDialog::slotButtonClicked(int button)
 {
     if (addingRules && (User1==button || Ok==button)) {
         emit addRule(rule());

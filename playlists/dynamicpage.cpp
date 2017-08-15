@@ -23,7 +23,7 @@
 
 #include "dynamicpage.h"
 #include "dynamic.h"
-#include "dynamicrulesdialog.h"
+#include "playlistrulesdialog.h"
 #include "widgets/icons.h"
 #include "support/action.h"
 #include "support/configuration.h"
@@ -130,7 +130,7 @@ void DynamicPage::remoteDynamicSupport(bool s)
 
 void DynamicPage::add()
 {
-    DynamicRulesDialog *dlg=new DynamicRulesDialog(this);
+    PlaylistRulesDialog *dlg=new PlaylistRulesDialog(this);
     dlg->edit(QString());
 }
 
@@ -142,7 +142,7 @@ void DynamicPage::edit()
         return;
     }
 
-    DynamicRulesDialog *dlg=new DynamicRulesDialog(this);
+    PlaylistRulesDialog *dlg=new PlaylistRulesDialog(this);
     dlg->edit(selected.at(0).data(Qt::DisplayRole).toString());
 }
 

@@ -21,49 +21,32 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DYNAMIC_RULES_DIALOG_H
-#define DYNAMIC_RULES_DIALOG_H
+#ifndef PLAYLISTS_PAGE_H
+#define PLAYLISTS_PAGE_H
 
-#include "config.h"
-#include "support/dialog.h"
-#include "ui_dynamicrules.h"
-#include "dynamic.h"
+#include "widgets/multipagewidget.h"
 
-class DynamicRuleDialog;
-class QStandardItemModel;
-class QStandardItem;
-class RulesSort;
+class Action;
+class StoredPage;
+class DynamicPage;
 
-class DynamicRulesDialog : public Dialog, Ui::DynamicRules
+class PlaylistsPage : public MultiPageWidget
 {
     Q_OBJECT
-
 public:
-    DynamicRulesDialog(QWidget *parent);
-    virtual ~DynamicRulesDialog();
+    PlaylistsPage(QWidget *p);
+    virtual ~PlaylistsPage();
 
-    void edit(const QString &name);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    void addSelectionToDevice(const QString &udi);
+    #endif
 
-private:
-    void slotButtonClicked(int button);
-    bool save();
-    int indexOf(QStandardItem *item, bool diff=false);
-
-private Q_SLOTS:
-    void saved(bool s);
-    void enableOkButton();
-    void controlButtons();
-    void add();
-    void addRule(const Dynamic::Rule &rule);
-    void edit();
-    void remove();
-    void showAbout();
+Q_SIGNALS:
+    void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
 
 private:
-    RulesSort *proxy;
-    QStandardItemModel *model;
-    QString origName;
-    DynamicRuleDialog *dlg;
+    StoredPage *stored;
+    DynamicPage *dynamic;
 };
 
 #endif

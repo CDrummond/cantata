@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DynamicRule</class>
- <widget class="QWidget" name="DynamicRule">
+ <class>PlaylistRule</class>
+ <widget class="QWidget" name="PlaylistRule">
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
     <number>0</number>

@@ -23,6 +23,7 @@
 
 #include "searchwidget.h"
 #include "support/monoicon.h"
+#include "support/utils.h"
 #include "toolbutton.h"
 #include <QHBoxLayout>
 #include <QKeyEvent>

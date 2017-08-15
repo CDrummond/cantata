@@ -35,6 +35,7 @@
 #include <QDesktopWidget>
 #include <QEventLoop>
 #include <QStandardPaths>
+#include <QSet>
 #ifndef _MSC_VER 
 #include <unistd.h>
 #include <utime.h>
@@ -891,12 +892,12 @@ Utils::Desktop Utils::currentDe()
     static int de=-1;
     if (-1==de) {
         de=Other;
-        QByteArray desktop=qgetenv("XDG_CURRENT_DESKTOP").toLower();
-        if ("unity"==desktop) {
+        QSet<QByteArray> desktop=qgetenv("XDG_CURRENT_DESKTOP").toLower().split(':').toSet();
+        if (desktop.contains("unity")) {
             de=Unity;
-        } else if ("kde"==desktop) {
+        } else if (desktop.contains("kde")) {
             de=KDE;
-        } else if ("gnome"==desktop || "pantheon"==desktop) {
+        } else if (desktop.contains("gnome") || desktop.contains("pantheon")) {
             de=Gnome;
         } else {
             QByteArray kde=qgetenv("KDE_FULL_SESSION");

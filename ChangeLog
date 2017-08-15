@@ -18,6 +18,7 @@
 12. Don't try to seek if no song loaded.
 13. Only use menubar for macOS builds.
 14. Smart playlists - like dynamic, but do not auto update.
+15. Use em-dash to as separator.
 
 2.1.0
 -----

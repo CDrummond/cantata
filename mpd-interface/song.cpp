@@ -499,8 +499,8 @@ QString Song::albumId() const
 
 QString Song::artistSong() const
 {
-    //return artist+QLatin1String(" – ")+title;
-    return title+QLatin1String(" – ")+artist;
+    //return artist+QLatin1String(" - ")+title;
+    return title+QLatin1String(" - ")+artist;
 }
 
 QString Song::trackAndTitleStr(bool showArtistIfDifferent) const
@@ -783,7 +783,7 @@ void Song::populateSorts()
 //                ? QString()
 //                : artist.isEmpty()
 //                    ? title
-//                    : trc("track – artist", "%1 – %2", title, artist);
+//                    : trc("track - artist", "%1 - %2", title, artist);
 //}
 
 QDataStream & operator<<(QDataStream &stream, const Song &song)

@@ -172,14 +172,14 @@ static QString streamText(const Song &song, const QString &trackTitle, bool useN
                   ? song.title
                   : song.title.isEmpty()
                     ? songName
-                    : (song.title + " - " + songName);
+                    : (song.title + " – " + songName);
     } else if (!song.title.isEmpty() && !song.artist.isEmpty()) {
         QString name=song.name();
-        return song.artist + " - " + (!useName || name.isEmpty()
+        return song.artist + " – " + (!useName || name.isEmpty()
                                         ? song.title
                                         : song.title.isEmpty()
                                             ? name
-                                            : (song.title + " - " + name));
+                                            : (song.title + " – " + name));
     } else {
         return trackTitle;
     }
@@ -302,7 +302,7 @@ void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
             if (song.isFromOnlineService()) {
                 title=Song::displayAlbum(song.albumName(), Song::albumYear(song));
             } else {
-                title=song.artistOrComposer()+QLatin1String(" - ")+Song::displayAlbum(song.albumName(), Song::albumYear(song));
+                title=song.artistOrComposer()+QLatin1String(" – ")+Song::displayAlbum(song.albumName(), Song::albumYear(song));
             }
             track=song.trackAndTitleStr();
         }

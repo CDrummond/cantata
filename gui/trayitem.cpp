@@ -214,7 +214,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
         if (useable) {
             QString text=song.describe(false);
             if (song.time>0) {
-                text+=QLatin1String(" - ")+Utils::formatTime(song.time);
+                text+=QLatin1String(" – ")+Utils::formatTime(song.time);
             }
             MacNotify::showMessage(tr("Now playing"), text, CurrentCover::self()->image());
         }
@@ -227,7 +227,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
         if (useable) {
             QString text=song.describe(false);
             if (song.time>0) {
-                text+=QLatin1String(" - ")+Utils::formatTime(song.time);
+                text+=QLatin1String(" – ")+Utils::formatTime(song.time);
             }
 
             if (trayItem) {

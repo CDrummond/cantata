@@ -455,8 +455,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case Cantata::Role_MainText:
             return s->title.isEmpty() ? s->name().isEmpty() ? s->file : s->name() : s->title;
         case Cantata::Role_SubText:
-            return (s->artist.isEmpty() ? QString() : (s->artist+QLatin1String(" - ")))+
-                   (s->displayAlbum().isEmpty() ? QString() : (s->displayAlbum()+QLatin1String(" - ")))+
+            return (s->artist.isEmpty() ? QString() : (s->artist+QLatin1String(" – ")))+
+                   (s->displayAlbum().isEmpty() ? QString() : (s->displayAlbum()+QLatin1String(" – ")))+
                    (s->time>0 ? Utils::formatTime(s->time) : QString());
         default:
             return ActionModel::data(index, role);

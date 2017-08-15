@@ -240,7 +240,7 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
         return IS_ACTIVE(entryList.at(index.row()).name) ? Icons::self()->replacePlayQueueIcon : Icons::self()->dynamicListIcon;
     case Cantata::Role_SubText: {
         const Entry &e=entryList.at(index.row());
-        return tr("%n Rule(s)", "", e.rules.count())+(e.haveRating() ? tr(" - Rating: %1..%2")
+        return tr("%n Rule(s)", "", e.rules.count())+(e.haveRating() ? tr(" – Rating: %1..%2")
                               .arg((double)e.ratingFrom/Song::Rating_Step).arg((double)e.ratingTo/Song::Rating_Step) : QString());
     }
     case Cantata::Role_Actions: {

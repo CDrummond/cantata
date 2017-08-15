@@ -8,6 +8,8 @@
 5. Remove unity menu icon work-around.
 6. To support alder GNOME settings daemon installations, revert to the
    previous MediaKeys DBUS interface.
+7. Fix desktop detection via XDG_CURRENT_DESKTOP - check for colon separated
+   values.
 
 2.1.0
 -----

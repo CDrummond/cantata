@@ -322,7 +322,7 @@ JamendoService::JamendoService(QObject *p)
     icn.addFile(":"+constName);
     useCovers(name());
     Configuration cfg(constName);
-    format=toFormat(cfg.get("format", formatStr(format)));
+    format=toFormat(cfg.get("format", formatStr(FMT_MP3)));
 }
 
 QVariant JamendoService::data(const QModelIndex &index, int role) const

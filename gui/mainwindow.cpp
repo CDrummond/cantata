@@ -477,18 +477,10 @@ void MainWindow::init()
     int controlIconSize=22;
     int controlButtonSize=32;
 
-    #ifdef USE_SYSTEM_MENU_ICON
-    controlIconSize=22==controlIconSize ? 16 : 32==controlIconSize ? 22 : 32;
-    #endif
     int playbackButtonSize=28==playbackIconSize ? 34 : controlButtonSize;
     foreach (QToolButton *b, controlBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        #ifdef USE_SYSTEM_MENU_ICON
-        if (b==menuButton && !GtkStyle::isActive()) {
-            b->setFixedHeight(controlButtonSize);
-        } else
-        #endif
         b->setFixedSize(QSize(controlButtonSize, controlButtonSize));
         b->setIconSize(QSize(controlIconSize, controlIconSize));
     }

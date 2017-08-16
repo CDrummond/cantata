@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "storedpage.h"
+#include "storedplaylistspage.h"
 #include "models/playlistsmodel.h"
 #include "mpd-interface/mpdconnection.h"
 #include "support/messagebox.h"
@@ -51,7 +51,7 @@ public:
     virtual ~PlaylistTableView() { }
 };
 
-StoredPage::StoredPage(QWidget *p)
+StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     : SinglePageWidget(p)
 {
     renamePlaylistAction = new Action(Icons::self()->editIcon, tr("Rename"), this);
@@ -106,18 +106,18 @@ StoredPage::StoredPage(QWidget *p)
     connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
 }
 
-StoredPage::~StoredPage()
+StoredPlaylistsPage::~StoredPlaylistsPage()
 {
     Configuration config(metaObject()->className());
     view->save(config);
 }
 
-void StoredPage::updateRows()
+void StoredPlaylistsPage::updateRows()
 {
     view->updateRows();
 }
 
-void StoredPage::clear()
+void StoredPlaylistsPage::clear()
 {
     PlaylistsModel::self()->clear();
 }
@@ -137,19 +137,19 @@ void StoredPage::clear()
 //    return PlaylistsModel::self()->filenames(mapped, true);
 //}
 
-void StoredPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
+void StoredPlaylistsPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
 {
     addItemsToPlayList(view->selectedIndexes(), name, action, priorty, decreasePriority);
 }
 
-void StoredPage::setView(int mode)
+void StoredPlaylistsPage::setView(int mode)
 {
     PlaylistsModel::self()->setMultiColumn(ItemView::Mode_Table==mode);
     SinglePageWidget::setView(mode);
     intitiallyCollapseAction->setEnabled(ItemView::Mode_GroupedTree==mode);
 }
 
-void StoredPage::removeItems()
+void StoredPlaylistsPage::removeItems()
 {
     QSet<QString> remPlaylists;
     QMap<QString, QList<quint32> > remSongs;
@@ -200,7 +200,7 @@ void StoredPage::removeItems()
     }
 }
 
-void StoredPage::savePlaylist()
+void StoredPlaylistsPage::savePlaylist()
 {
     QString name = InputDialog::getText(tr("Playlist Name"), tr("Enter a name for the playlist:"), QString(), 0, this);
 
@@ -218,7 +218,7 @@ void StoredPage::savePlaylist()
     }
 }
 
-void StoredPage::renamePlaylist()
+void StoredPlaylistsPage::renamePlaylist()
 {
     const QModelIndexList items = view->selectedIndexes(false); // Dont need sorted selection here...
 
@@ -246,7 +246,7 @@ void StoredPage::renamePlaylist()
     }
 }
 
-void StoredPage::removeDuplicates()
+void StoredPlaylistsPage::removeDuplicates()
 {
     const QModelIndexList items = view->selectedIndexes(false); // Dont need sorted selection here...
 
@@ -281,7 +281,7 @@ void StoredPage::removeDuplicates()
     }
 }
 
-void StoredPage::itemDoubleClicked(const QModelIndex &index)
+void StoredPlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
     if (style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
         || !static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist()) {
@@ -291,7 +291,7 @@ void StoredPage::itemDoubleClicked(const QModelIndex &index)
     }
 }
 
-void StoredPage::addItemsToPlayList(const QModelIndexList &indexes, const QString &name, int action, quint8 priorty, bool decreasePriority)
+void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QString &name, int action, quint8 priorty, bool decreasePriority)
 {
     if (indexes.isEmpty()) {
         return;
@@ -333,7 +333,7 @@ void StoredPage::addItemsToPlayList(const QModelIndexList &indexes, const QStrin
 }
 
 #ifdef ENABLE_DEVICES_SUPPORT
-QList<Song> StoredPage::selectedSongs(bool allowPlaylists) const
+QList<Song> StoredPlaylistsPage::selectedSongs(bool allowPlaylists) const
 {
     Q_UNUSED(allowPlaylists)
     QModelIndexList selected = view->selectedIndexes();
@@ -343,7 +343,7 @@ QList<Song> StoredPage::selectedSongs(bool allowPlaylists) const
     return PlaylistsModel::self()->songs(proxy.mapToSource(selected));
 }
 
-void StoredPage::addSelectionToDevice(const QString &udi)
+void StoredPlaylistsPage::addSelectionToDevice(const QString &udi)
 {
     QList<Song> songs=selectedSongs();
     if (!songs.isEmpty()) {
@@ -353,7 +353,7 @@ void StoredPage::addSelectionToDevice(const QString &udi)
 }
 #endif
 
-void StoredPage::controlActions()
+void StoredPlaylistsPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enableActions=selected.count()>0;
@@ -396,7 +396,7 @@ void StoredPage::controlActions()
     #endif
 }
 
-void StoredPage::doSearch()
+void StoredPlaylistsPage::doSearch()
 {
     QString text=view->searchText().trimmed();
     bool updated=proxy.update(text);
@@ -408,24 +408,24 @@ void StoredPage::doSearch()
     }
 }
 
-void StoredPage::updated(const QModelIndex &index)
+void StoredPlaylistsPage::updated(const QModelIndex &index)
 {
     view->updateRows(proxy.mapFromSource(index));
 }
 
-void StoredPage::headerClicked(int level)
+void StoredPlaylistsPage::headerClicked(int level)
 {
     if (0==level) {
         emit close();
     }
 }
 
-void StoredPage::setStartClosed(bool sc)
+void StoredPlaylistsPage::setStartClosed(bool sc)
 {
     view->setStartClosed(sc);
 }
 
-void StoredPage::updateToPlayQueue(const QModelIndex &idx, bool replace)
+void StoredPlaylistsPage::updateToPlayQueue(const QModelIndex &idx, bool replace)
 {
     QStringList files=PlaylistsModel::self()->filenames(proxy.mapToSource(QModelIndexList() << idx, false));
     if (!files.isEmpty()) {

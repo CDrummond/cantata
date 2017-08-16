@@ -329,8 +329,8 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     mpd-interface/mpdconnection.cpp mpd-interface/mpdparseutils.cpp mpd-interface/mpdstats.cpp mpd-interface/mpdstatus.cpp
     mpd-interface/song.cpp mpd-interface/cuefile.cpp
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
-    playlists/dynamic.cpp playlists/playlistproxymodel.cpp playlists/dynamicpage.cpp playlists/playlistruledialog.cpp
-    playlists/playlistrulesdialog.cpp playlists/playlistspage.cpp playlists/storedpage.cpp
+    playlists/dynamic.cpp playlists/playlistproxymodel.cpp playlists/dynamicplaylistspage.cpp playlists/playlistruledialog.cpp
+    playlists/playlistrulesdialog.cpp playlists/playlistspage.cpp playlists/storedplaylistspage.cpp
     online/onlineservicespage.cpp online/onlinedbservice.cpp online/jamendoservice.cpp online/onlinedbwidget.cpp online/onlineservice.cpp
     online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp
     online/onlinesearchwidget.cpp online/podcastservice.cpp online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp
@@ -366,8 +366,8 @@ set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
     online/podcastsettingsdialog.h online/podcastwidget.h  online/jamendoservice.h online/jamendosettingsdialog.h online/magnatuneservice.h
     online/onlinesearchservice.h
     db/onlinedb.h
-    playlists/dynamic.h playlists/playlistruledialog.h playlists/dynamicpage.h playlists/playlistrulesdialog.h playlists/playlistspage.h
-    playlists/storedpage.h
+    playlists/dynamic.h playlists/playlistruledialog.h playlists/dynamicplaylistspage.h playlists/playlistrulesdialog.h playlists/playlistspage.h
+    playlists/storedplaylistspage.h
     scrobbling/scrobbler.h scrobbling/scrobblingsettings.h scrobbling/scrobblingstatus.h scrobbling/scrobblinglove.h)
 set(CANTATA_UIS ${CANTATA_UIS}
     gui/initialsettingswizard.ui gui/mainwindow.ui

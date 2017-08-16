@@ -30,12 +30,12 @@
 
 class Action;
 
-class StoredPage : public SinglePageWidget
+class StoredPlaylistsPage : public SinglePageWidget
 {
     Q_OBJECT
 public:
-    StoredPage(QWidget *p);
-    virtual ~StoredPage();
+    StoredPlaylistsPage(QWidget *p);
+    virtual ~StoredPlaylistsPage();
 
     void updateRows();
     void clear();

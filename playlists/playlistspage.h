@@ -27,8 +27,8 @@
 #include "widgets/multipagewidget.h"
 
 class Action;
-class StoredPage;
-class DynamicPage;
+class StoredPlaylistsPage;
+class DynamicPlaylistsPage;
 
 class PlaylistsPage : public MultiPageWidget
 {
@@ -45,8 +45,8 @@ Q_SIGNALS:
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
 
 private:
-    StoredPage *stored;
-    DynamicPage *dynamic;
+    StoredPlaylistsPage *stored;
+    DynamicPlaylistsPage *dynamic;
 };
 
 #endif

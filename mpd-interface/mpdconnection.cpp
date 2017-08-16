@@ -224,7 +224,8 @@ void MPDConnectionDetails::setDirReadable()
 }
 
 MPDConnection::MPDConnection()
-    : thread(0)
+    : isInitialConnect(true)
+    , thread(0)
     , ver(0)
     , canUseStickers(false)
     , sock(this)
@@ -485,23 +486,24 @@ void MPDConnection::reconnect()
     if (reconnectTimer && reconnectTimer->isActive()) {
         return;
     }
-    if (0==reconnectStart) {
-        if (isConnected()) {
-            disconnectFromMPD();
-        } else {
-            return;
-        }
+    qWarning() << reconnectStart;
+    if (0==reconnectStart && isConnected()) {
+        disconnectFromMPD();
     }
 
     if (isConnected()) { // Perhaps the user pressed a button which caused the reconnect???
         reconnectStart=0;
         return;
     }
-
+qWarning() << "TRY TO CONNECT";
     time_t now=time(NULL);
     ConnectionReturn status=connectToMPD();
     switch (status) {
-    case Success:
+    case Success:        
+        // Issue #1041 - MPD does not seem to persist user/client made replaygain changes, so use the values read from Cantata's config.
+        if (replaygainSupported() && !details.replayGain.isEmpty()) {
+            sendCommand("replay_gain_mode "+details.replayGain.toLatin1());
+        }
         getStatus();
         getStats();
         getUrlHandlers();
@@ -510,6 +512,7 @@ void MPDConnection::reconnect()
         playListInfo();
         outputs();
         reconnectStart=0;
+        determineIfaceIp();
         emit stateChanged(true);
         break;
     case Failed:
@@ -599,12 +602,17 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
             getUrlHandlers();
             getTagTypes();
             getStickerSupport();
+            playListInfo();
+            outputs();
             determineIfaceIp();
             emit stateChanged(true);
             break;
         default:
             emit stateChanged(false);
             emit error(errorString(status), true);
+            if (isInitialConnect) {
+                reconnect();
+            }
         }
     } else if (diffName) {
          emit stateChanged(true);
@@ -617,6 +625,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
     if (changedDir) {
         emit dirChanged();
     }
+    isInitialConnect = false;
 }
 
 //void MPDConnection::disconnectMpd()

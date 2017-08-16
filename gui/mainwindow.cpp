@@ -993,6 +993,13 @@ void MainWindow::addMenuAction(QMenu *menu, QAction *action)
 
 void MainWindow::showError(const QString &message, bool showActions)
 {
+    if (!message.isEmpty()) {
+        if (!isVisible()) {
+            show();
+        }
+        expand();
+    }
+
     if (QLatin1String("NO_SONGS")==message) {
         messageWidget->setError(tr("Failed to locate any songs matching the dynamic playlist rules."));
     } else {
@@ -1002,9 +1009,6 @@ void MainWindow::showError(const QString &message, bool showActions)
         messageWidget->setActions(QList<QAction*>() << prefAction << connectAction);
     } else {
         messageWidget->removeAllActions();
-    }
-    if (!message.isEmpty()) {
-        expand();
     }
     QApplication::alert(this);
 }

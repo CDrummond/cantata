@@ -1008,12 +1008,13 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
     refreshDbAction->setEnabled(connected);
     addStreamToPlayQueueAction->setEnabled(connected);
     if (connected) {
-        if (!messageWidget->showingError()) {
+        //if (!messageWidget->showingError()) {
             messageWidget->hide();
-        }
+        //}
         if (CS_Connected!=connectedState) {
             emit playListInfo();
             emit outputs();
+            MpdLibraryModel::self()->reload();
             if (CS_Init!=connectedState) {
                 currentTabChanged(tabWidget->currentIndex());
             }

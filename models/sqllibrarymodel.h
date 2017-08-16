@@ -125,6 +125,7 @@ public:
 
     SqlLibraryModel(LibraryDb *d, QObject *p, Type top=T_Artist);
 
+    void reload() { libraryUpdated(); }
     void clear();
     void settings(Type top, LibraryDb::AlbumSort lib, LibraryDb::AlbumSort al);
     Type topLevel() const { return tl; }

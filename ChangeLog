@@ -1,17 +1,19 @@
 2.2.0
 -----
-1. Add option to specify number of play queue tracks for dynamic playlists.
-2. Add option to set application style.
-3. Fix potential issue with priority menu items being disabled.
-4. When adding items with a custom priority, or updating a custom priority,
-   add option to have this priority decrease with each item.
-5. Remove unity menu icon work-around.
-6. To support alder GNOME settings daemon installations, revert to the
-   previous MediaKeys DBUS interface.
-7. Fix desktop detection via XDG_CURRENT_DESKTOP - check for colon separated
-   values.
-8. Remove Cantata's high-dpi handling code, this should be done by Qt.
-9. If an error is to be shown, ensure Cantata is not minimised to system tray.
+ 1. Add option to specify number of play queue tracks for dynamic playlists.
+ 2. Add option to set application style.
+ 3. Fix potential issue with priority menu items being disabled.
+ 4. When adding items with a custom priority, or updating a custom priority,
+    add option to have this priority decrease with each item.
+ 5. Remove unity menu icon work-around.
+ 6. To support alder GNOME settings daemon installations, revert to the
+    previous MediaKeys DBUS interface.
+ 7. Fix desktop detection via XDG_CURRENT_DESKTOP - check for colon separated
+    values.
+ 8. Remove Cantata's high-dpi handling code, this should be done by Qt.
+ 9. If an error is to be shown, ensure Cantata is not minimised to system tray.
+10. If the initial start-up connection fails, try again every .5 second for a
+    few seconds.
 
 2.1.0
 -----

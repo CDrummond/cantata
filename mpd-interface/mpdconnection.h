@@ -422,6 +422,7 @@ private:
     void determineIfaceIp();
 
 private:
+    bool isInitialConnect;
     Thread *thread;
     long ver;
     QSet<QString> handlers;

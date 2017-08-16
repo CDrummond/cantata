@@ -472,22 +472,11 @@ void MainWindow::init()
     }
     QList<QToolButton *> playbackBtns=QList<QToolButton *>() << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     QList<QToolButton *> controlBtns=QList<QToolButton *>() << menuButton << songInfoButton;
-    int playbackIconSize=28;
+    int playbackIconSize=playbackIconSize=24==Icons::self()->toolbarPlayIcon.actualSize(QSize(24, 24)).width() ? 24 : 28;
     int playPauseIconSize=32;
     int controlIconSize=22;
     int controlButtonSize=32;
 
-    if (repeatButton->iconSize().height()>=32) {
-        controlIconSize=playbackIconSize=48;
-        controlButtonSize=54;
-        playPauseIconSize=64;
-    } else if (repeatButton->iconSize().height()>=22) {
-        controlIconSize=playbackIconSize=32;
-        controlButtonSize=36;
-        playPauseIconSize=48;
-    } else {
-        playbackIconSize=24==Icons::self()->toolbarPlayIcon.actualSize(QSize(24, 24)).width() ? 24 : 28;
-    }
     #ifdef USE_SYSTEM_MENU_ICON
     controlIconSize=22==controlIconSize ? 16 : 32==controlIconSize ? 22 : 32;
     #endif

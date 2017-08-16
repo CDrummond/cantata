@@ -30,13 +30,13 @@
 class Action;
 class QLabel;
 
-class DynamicPage : public SinglePageWidget
+class DynamicPlaylistsPage : public SinglePageWidget
 {
     Q_OBJECT
 
 public:
-    DynamicPage(QWidget *p);
-    virtual ~DynamicPage();
+    DynamicPlaylistsPage(QWidget *p);
+    virtual ~DynamicPlaylistsPage();
     void setView(int) { }
 
 private Q_SLOTS:

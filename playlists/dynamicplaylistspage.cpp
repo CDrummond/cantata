@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "dynamicpage.h"
+#include "dynamicplaylistspage.h"
 #include "dynamic.h"
 #include "playlistrulesdialog.h"
 #include "widgets/icons.h"
@@ -31,7 +31,7 @@
 #include "support/messagebox.h"
 #include "gui/stdactions.h"
 
-DynamicPage::DynamicPage(QWidget *p)
+DynamicPlaylistsPage::DynamicPlaylistsPage(QWidget *p)
     : SinglePageWidget(p)
 {
     addAction = new Action(Icons::self()->addNewItemIcon, tr("Add"), this);
@@ -95,13 +95,13 @@ DynamicPage::DynamicPage(QWidget *p)
     #endif
 }
 
-DynamicPage::~DynamicPage()
+DynamicPlaylistsPage::~DynamicPlaylistsPage()
 {
     Configuration config(metaObject()->className());
     view->save(config);
 }
 
-void DynamicPage::doSearch()
+void DynamicPlaylistsPage::doSearch()
 {
     QString text=view->searchText().trimmed();
     proxy.update(text);
@@ -110,7 +110,7 @@ void DynamicPage::doSearch()
     }
 }
 
-void DynamicPage::controlActions()
+void DynamicPlaylistsPage::controlActions()
 {
     QModelIndexList selected=qobject_cast<Dynamic *>(sender()) ? QModelIndexList() : view->selectedIndexes(false); // Dont need sorted selection here...
 
@@ -119,7 +119,7 @@ void DynamicPage::controlActions()
     removeAction->setEnabled(selected.count());
 }
 
-void DynamicPage::remoteDynamicSupport(bool s)
+void DynamicPlaylistsPage::remoteDynamicSupport(bool s)
 {
     #ifdef Q_OS_WIN
     remoteRunningLabel->setVisible(!s);
@@ -128,13 +128,13 @@ void DynamicPage::remoteDynamicSupport(bool s)
     view->setBackgroundImage(s ? Icon(QStringList() << "network-server-database.svg" << "applications-internet") : Icon());
 }
 
-void DynamicPage::add()
+void DynamicPlaylistsPage::add()
 {
     PlaylistRulesDialog *dlg=new PlaylistRulesDialog(this);
     dlg->edit(QString());
 }
 
-void DynamicPage::edit()
+void DynamicPlaylistsPage::edit()
 {
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
 
@@ -146,7 +146,7 @@ void DynamicPage::edit()
     dlg->edit(selected.at(0).data(Qt::DisplayRole).toString());
 }
 
-void DynamicPage::remove()
+void DynamicPlaylistsPage::remove()
 {
     QModelIndexList selected=view->selectedIndexes();
 
@@ -166,7 +166,7 @@ void DynamicPage::remove()
     }
 }
 
-void DynamicPage::start()
+void DynamicPlaylistsPage::start()
 {
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
 
@@ -176,12 +176,12 @@ void DynamicPage::start()
     Dynamic::self()->start(selected.at(0).data(Qt::DisplayRole).toString());
 }
 
-void DynamicPage::stop()
+void DynamicPlaylistsPage::stop()
 {
     Dynamic::self()->stop();
 }
 
-void DynamicPage::toggle()
+void DynamicPlaylistsPage::toggle()
 {
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
 
@@ -192,19 +192,19 @@ void DynamicPage::toggle()
     Dynamic::self()->toggle(selected.at(0).data(Qt::DisplayRole).toString());
 }
 
-void DynamicPage::running(bool status)
+void DynamicPlaylistsPage::running(bool status)
 {
     Dynamic::self()->stopAct()->setEnabled(status);
 }
 
-void DynamicPage::headerClicked(int level)
+void DynamicPlaylistsPage::headerClicked(int level)
 {
     if (0==level) {
         emit close();
     }
 }
 
-void DynamicPage::enableWidgets(bool enable)
+void DynamicPlaylistsPage::enableWidgets(bool enable)
 {
     foreach (QWidget *c, controls) {
         c->setEnabled(enable);
@@ -213,14 +213,14 @@ void DynamicPage::enableWidgets(bool enable)
     view->setEnabled(enable);
 }
 
-void DynamicPage::showEvent(QShowEvent *e)
+void DynamicPlaylistsPage::showEvent(QShowEvent *e)
 {
     view->focusView();
     Dynamic::self()->enableRemotePolling(true);
     SinglePageWidget::showEvent(e);
 }
 
-void DynamicPage::hideEvent(QHideEvent *e)
+void DynamicPlaylistsPage::hideEvent(QHideEvent *e)
 {
     Dynamic::self()->enableRemotePolling(false);
     SinglePageWidget::hideEvent(e);

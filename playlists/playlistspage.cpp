@@ -25,16 +25,16 @@
 #include "support/configuration.h"
 #include "models/playlistsmodel.h"
 #include "dynamic.h"
-#include "dynamicpage.h"
-#include "storedpage.h"
+#include "dynamicplaylistspage.h"
+#include "storedplaylistspage.h"
 #include "gui/settings.h"
 
 PlaylistsPage::PlaylistsPage(QWidget *p)
     : MultiPageWidget(p)
 {
-    stored=new StoredPage(this);
+    stored=new StoredPlaylistsPage(this);
     addPage(PlaylistsModel::self()->name(), PlaylistsModel::self()->icon(), PlaylistsModel::self()->title(), PlaylistsModel::self()->descr(), stored);
-    dynamic=new DynamicPage(this);
+    dynamic=new DynamicPlaylistsPage(this);
     addPage(Dynamic::self()->name(), Dynamic::self()->icon(), Dynamic::self()->title(), Dynamic::self()->descr(), dynamic);
 
     connect(stored, SIGNAL(addToDevice(QString,QString,QList<Song>)), SIGNAL(addToDevice(QString,QString,QList<Song>)));

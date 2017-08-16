@@ -603,7 +603,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
             emit stateChanged(true);
             break;
         default:
-            emit stateChanged(true);
+            emit stateChanged(false);
             emit error(errorString(status), true);
         }
     } else if (diffName) {
@@ -634,7 +634,9 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
     DBUG << (void *)(&sock) << "sendCommand:" << log(command) << emitErrors << retry;
 
     if (!isConnected()) {
-        emit error(tr("Failed to send command to %1 - not connected").arg(details.description()), true);
+        if ("stop"!=command) {
+            emit error(tr("Failed to send command to %1 - not connected").arg(details.description()), true);
+        }
         return Response(false);
     }
 

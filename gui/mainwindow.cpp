@@ -2479,7 +2479,6 @@ void MainWindow::setCollapsedSize()
 {
     if (!expandInterfaceAction->isChecked()) {
         int w=width();
-        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         adjustSize();
         collapsedSize=QSize(w, calcCollapsedSize());
         resize(collapsedSize);
@@ -2517,7 +2516,6 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
     if (!showing) {
         setWindowState(windowState()&~Qt::WindowMaximized);
     }
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     adjustSize();
 
     if (showing) {

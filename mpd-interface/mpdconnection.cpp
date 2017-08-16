@@ -603,6 +603,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
             emit stateChanged(true);
             break;
         default:
+            emit stateChanged(true);
             emit error(errorString(status), true);
         }
     } else if (diffName) {

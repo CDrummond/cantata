@@ -160,8 +160,8 @@ MagnatuneService::MagnatuneService(QObject *p)
     icn.addFile(":"+constName);
     useCovers(name());
     Configuration cfg(constName);
-    membership=toMembership(cfg.get("membership", membershipStr(membership)));
-    download=toDownloadType(cfg.get("download", downloadTypeStr(download)));
+    membership=toMembership(cfg.get("membership", membershipStr(MB_None)));
+    download=toDownloadType(cfg.get("download", downloadTypeStr(DL_Mp3)));
     username=cfg.get("username", username);
     password=cfg.get("username", password);
 }

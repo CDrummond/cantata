@@ -90,7 +90,7 @@
 #include "mac/powermanagement.h"
 #endif
 #endif
-#include "playlists/dynamic.h"
+#include "playlists/dynamicplaylists.h"
 #include "support/messagewidget.h"
 #include "widgets/groupedview.h"
 #include "widgets/actionitemdelegate.h"
@@ -409,10 +409,10 @@ void MainWindow::init()
     playlistsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     connect(playlistsTabAction, SIGNAL(triggered()), this, SLOT(showPlaylistsTab()));
-    connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
-    connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
-    connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
-    stopDynamicButton->setDefaultAction(Dynamic::self()->stopAct());
+    connect(DynamicPlaylists::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
+    connect(DynamicPlaylists::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
+    connect(DynamicPlaylists::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
+    stopDynamicButton->setDefaultAction(DynamicPlaylists::self()->stopAct());
     onlinePage = new OnlineServicesPage(this);
     addAction(onlineTabAction = ActionCollection::get()->createAction("showonlinetab", tr("Internet"), Icons::self()->onlineIcon));
     onlineTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
@@ -918,7 +918,7 @@ MainWindow::~MainWindow()
     Settings::self()->save();
     disconnect(MPDConnection::self(), 0, 0, 0);
     if (Settings::self()->stopOnExit()) {
-        Dynamic::self()->stop();
+        DynamicPlaylists::self()->stop();
     }
     if (Settings::self()->stopOnExit()) {
         emit terminating();
@@ -1099,7 +1099,7 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         PlayQueueModel::self()->clear();
         searchPage->clear();
         if (!MPDConnection::self()->getDetails().isEmpty() && details!=MPDConnection::self()->getDetails()) {
-            Dynamic::self()->stop();
+            DynamicPlaylists::self()->stop();
         }
         showInformation(tr("Connecting to %1").arg(details.description()));
         outputsAction->setVisible(false);
@@ -1375,8 +1375,8 @@ void MainWindow::controlConnectionsMenu(bool enable)
 
 void MainWindow::controlDynamicButton()
 {
-    stopDynamicButton->setVisible(Dynamic::self()->isRunning());
-    PlayQueueModel::self()->enableUndo(!Dynamic::self()->isRunning());
+    stopDynamicButton->setVisible(DynamicPlaylists::self()->isRunning());
+    PlayQueueModel::self()->enableUndo(!DynamicPlaylists::self()->isRunning());
 }
 
 void MainWindow::setRating()
@@ -1856,7 +1856,7 @@ void MainWindow::clearPlayQueue()
     if (!Settings::self()->playQueueConfirmClear() ||
         MessageBox::Yes==MessageBox::questionYesNo(this, tr("Remove all songs from play queue?"))) {
         if (dynamicLabel->isVisible()) {
-            Dynamic::self()->stop(true);
+            DynamicPlaylists::self()->stop(true);
         } else {
             PlayQueueModel::self()->removeAll();
         }
@@ -2184,7 +2184,7 @@ void MainWindow::locateAlbum(const QString &artist, const QString &album)
 
 void MainWindow::dynamicStatus(const QString &message)
 {
-    Dynamic::self()->helperMessage(message);
+    DynamicPlaylists::self()->helperMessage(message);
 }
 
 void MainWindow::setCollection(const QString &collection)

@@ -44,7 +44,7 @@
 #include "context/wikipediaengine.h"
 #include "context/lastfmengine.h"
 #include "context/metaengine.h"
-#include "playlists/dynamic.h"
+#include "playlists/dynamicplaylists.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "models/devicesmodel.h"
 #endif
@@ -181,7 +181,7 @@ static void installDebugMessageHandler()
             ContextWidget::enableDebug();
         }
         if (dbg&Dbg_Dynamic) {
-            Dynamic::enableDebug();
+            DynamicPlaylists::enableDebug();
         }
         if (dbg&Dbg_StreamFetching) {
             StreamFetcher::enableDebug();

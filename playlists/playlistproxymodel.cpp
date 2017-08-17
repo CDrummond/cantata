@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 #include "playlistproxymodel.h"
-#include "dynamic.h"
+#include "dynamicplaylists.h"
 
 PlaylistProxyModel::PlaylistProxyModel(QObject *parent)
     : ProxyModel(parent)
@@ -45,10 +45,10 @@ bool PlaylistProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sour
         return true;
     }
 
-    Dynamic::Entry item = Dynamic::self()->entry(sourceRow);
-    foreach (const Dynamic::Rule & r, item.rules) {
-        Dynamic::Rule::ConstIterator it=r.constBegin();
-        Dynamic::Rule::ConstIterator end=r.constEnd();
+    DynamicPlaylists::Entry item = DynamicPlaylists::self()->entry(sourceRow);
+    foreach (const DynamicPlaylists::Rule & r, item.rules) {
+        DynamicPlaylists::Rule::ConstIterator it=r.constBegin();
+        DynamicPlaylists::Rule::ConstIterator end=r.constEnd();
         for (; it!=end; ++it) {
             if (matchesFilter(QStringList() << it.value())) {
                 return true;

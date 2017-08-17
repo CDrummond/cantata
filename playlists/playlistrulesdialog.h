@@ -27,7 +27,7 @@
 #include "config.h"
 #include "support/dialog.h"
 #include "ui_playlistrules.h"
-#include "dynamic.h"
+#include "dynamicplaylists.h"
 
 class PlaylistRuleDialog;
 class QStandardItemModel;
@@ -54,7 +54,7 @@ private Q_SLOTS:
     void enableOkButton();
     void controlButtons();
     void add();
-    void addRule(const Dynamic::Rule &rule);
+    void addRule(const DynamicPlaylists::Rule &rule);
     void edit();
     void remove();
     void showAbout();

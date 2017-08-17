@@ -22,7 +22,7 @@
  */
 
 #include "dynamicplaylistspage.h"
-#include "dynamic.h"
+#include "dynamicplaylists.h"
 #include "playlistrulesdialog.h"
 #include "widgets/icons.h"
 #include "support/action.h"
@@ -47,11 +47,11 @@ DynamicPlaylistsPage::DynamicPlaylistsPage(QWidget *p)
     addBtn->setDefaultAction(addAction);
     editBtn->setDefaultAction(editAction);
     removeBtn->setDefaultAction(removeAction);
-    startBtn->setDefaultAction(Dynamic::self()->startAct());
+    startBtn->setDefaultAction(DynamicPlaylists::self()->startAct());
 
     view->addAction(editAction);
     view->addAction(removeAction);
-    view->addAction(Dynamic::self()->startAct());
+    view->addAction(DynamicPlaylists::self()->startAct());
     view->alwaysShowHeader();
 
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
@@ -61,12 +61,12 @@ DynamicPlaylistsPage::DynamicPlaylistsPage(QWidget *p)
     connect(addAction, SIGNAL(triggered()), SLOT(add()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));
     connect(removeAction, SIGNAL(triggered()), SLOT(remove()));
-    connect(Dynamic::self()->startAct(), SIGNAL(triggered()), SLOT(start()));
-    connect(Dynamic::self()->stopAct(), SIGNAL(triggered()), SLOT(stop()));
+    connect(DynamicPlaylists::self()->startAct(), SIGNAL(triggered()), SLOT(start()));
+    connect(DynamicPlaylists::self()->stopAct(), SIGNAL(triggered()), SLOT(stop()));
     connect(toggleAction, SIGNAL(triggered()), SLOT(toggle()));
-    connect(Dynamic::self(), SIGNAL(running(bool)), SLOT(running(bool)));
-    connect(Dynamic::self(), SIGNAL(loadingList()), view, SLOT(showSpinner()));
-    connect(Dynamic::self(), SIGNAL(loadedList()), view, SLOT(hideSpinner()));
+    connect(DynamicPlaylists::self(), SIGNAL(running(bool)), SLOT(running(bool)));
+    connect(DynamicPlaylists::self(), SIGNAL(loadingList()), view, SLOT(showSpinner()));
+    connect(DynamicPlaylists::self(), SIGNAL(loadedList()), view, SLOT(hideSpinner()));
 
     #ifdef Q_OS_WIN
     remoteRunningLabel=new QLabel(this);
@@ -79,8 +79,8 @@ DynamicPlaylistsPage::DynamicPlaylistsPage(QWidget *p)
                           "color: black; }"));
     remoteRunningLabel->setText(tr("Remote dynamizer is not running."));
     #endif
-    Dynamic::self()->stopAct()->setEnabled(false);
-    proxy.setSourceModel(Dynamic::self());
+    DynamicPlaylists::self()->stopAct()->setEnabled(false);
+    proxy.setSourceModel(DynamicPlaylists::self());
     view->setModel(&proxy);
     view->setDeleteAction(removeAction);
     view->setMode(ItemView::Mode_List);
@@ -112,10 +112,10 @@ void DynamicPlaylistsPage::doSearch()
 
 void DynamicPlaylistsPage::controlActions()
 {
-    QModelIndexList selected=qobject_cast<Dynamic *>(sender()) ? QModelIndexList() : view->selectedIndexes(false); // Dont need sorted selection here...
+    QModelIndexList selected=qobject_cast<DynamicPlaylists *>(sender()) ? QModelIndexList() : view->selectedIndexes(false); // Dont need sorted selection here...
 
     editAction->setEnabled(1==selected.count());
-    Dynamic::self()->startAct()->setEnabled(1==selected.count());
+    DynamicPlaylists::self()->startAct()->setEnabled(1==selected.count());
     removeAction->setEnabled(selected.count());
 }
 
@@ -162,7 +162,7 @@ void DynamicPlaylistsPage::remove()
     }
 
     foreach (const QString &name, names) {
-        Dynamic::self()->del(name);
+        DynamicPlaylists::self()->del(name);
     }
 }
 
@@ -173,12 +173,12 @@ void DynamicPlaylistsPage::start()
     if (1!=selected.count()) {
         return;
     }
-    Dynamic::self()->start(selected.at(0).data(Qt::DisplayRole).toString());
+    DynamicPlaylists::self()->start(selected.at(0).data(Qt::DisplayRole).toString());
 }
 
 void DynamicPlaylistsPage::stop()
 {
-    Dynamic::self()->stop();
+    DynamicPlaylists::self()->stop();
 }
 
 void DynamicPlaylistsPage::toggle()
@@ -189,12 +189,12 @@ void DynamicPlaylistsPage::toggle()
         return;
     }
 
-    Dynamic::self()->toggle(selected.at(0).data(Qt::DisplayRole).toString());
+    DynamicPlaylists::self()->toggle(selected.at(0).data(Qt::DisplayRole).toString());
 }
 
 void DynamicPlaylistsPage::running(bool status)
 {
-    Dynamic::self()->stopAct()->setEnabled(status);
+    DynamicPlaylists::self()->stopAct()->setEnabled(status);
 }
 
 void DynamicPlaylistsPage::headerClicked(int level)
@@ -216,12 +216,12 @@ void DynamicPlaylistsPage::enableWidgets(bool enable)
 void DynamicPlaylistsPage::showEvent(QShowEvent *e)
 {
     view->focusView();
-    Dynamic::self()->enableRemotePolling(true);
+    DynamicPlaylists::self()->enableRemotePolling(true);
     SinglePageWidget::showEvent(e);
 }
 
 void DynamicPlaylistsPage::hideEvent(QHideEvent *e)
 {
-    Dynamic::self()->enableRemotePolling(false);
+    DynamicPlaylists::self()->enableRemotePolling(false);
     SinglePageWidget::hideEvent(e);
 }

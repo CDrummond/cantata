@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "dynamic.h"
+#include "dynamicplaylists.h"
 #include "config.h"
 #include "support/utils.h"
 #include "mpd-interface/mpdconnection.h"
@@ -45,7 +45,7 @@
 #include <QDebug>
 static bool debugEnabled=false;
 #define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
-void Dynamic::enableDebug()
+void DynamicPlaylists::enableDebug()
 {
     debugEnabled=true;
 }
@@ -83,7 +83,7 @@ static QString remoteError(const QStringList &status)
     return QObject::tr("Unknown error");
 }
 
-Dynamic::Command Dynamic::toCommand(const QString &cmd)
+DynamicPlaylists::Command DynamicPlaylists::toCommand(const QString &cmd)
 {
     if (constListCmd==cmd) {
         return List;
@@ -106,7 +106,7 @@ Dynamic::Command Dynamic::toCommand(const QString &cmd)
     return Unknown;
 }
 
-QString Dynamic::toString(Command cmd)
+QString DynamicPlaylists::toString(Command cmd)
 {
     switch (cmd) {
     case Unknown:   return QString();
@@ -121,31 +121,31 @@ QString Dynamic::toString(Command cmd)
     return QString();
 }
 
-GLOBAL_STATIC(Dynamic, instance)
+GLOBAL_STATIC(DynamicPlaylists, instance)
 
-const QString Dynamic::constRuleKey=QLatin1String("Rule");
-const QString Dynamic::constArtistKey=QLatin1String("Artist");
-const QString Dynamic::constSimilarArtistsKey=QLatin1String("SimilarArtists");
-const QString Dynamic::constAlbumArtistKey=QLatin1String("AlbumArtist");
-const QString Dynamic::constComposerKey=QLatin1String("Composer");
-const QString Dynamic::constCommentKey=QLatin1String("Comment");
-const QString Dynamic::constAlbumKey=QLatin1String("Album");
-const QString Dynamic::constTitleKey=QLatin1String("Title");
-const QString Dynamic::constGenreKey=QLatin1String("Genre");
-const QString Dynamic::constDateKey=QLatin1String("Date");
-const QString Dynamic::constRatingKey=QLatin1String("Rating");
-const QString Dynamic::constDurationKey=QLatin1String("Duration");
-const QString Dynamic::constNumTracksKey=QLatin1String("NumTracks");
-const QString Dynamic::constFileKey=QLatin1String("File");
-const QString Dynamic::constExactKey=QLatin1String("Exact");
-const QString Dynamic::constExcludeKey=QLatin1String("Exclude");
-const QChar Dynamic::constRangeSep=QLatin1Char('-');
+const QString DynamicPlaylists::constRuleKey=QLatin1String("Rule");
+const QString DynamicPlaylists::constArtistKey=QLatin1String("Artist");
+const QString DynamicPlaylists::constSimilarArtistsKey=QLatin1String("SimilarArtists");
+const QString DynamicPlaylists::constAlbumArtistKey=QLatin1String("AlbumArtist");
+const QString DynamicPlaylists::constComposerKey=QLatin1String("Composer");
+const QString DynamicPlaylists::constCommentKey=QLatin1String("Comment");
+const QString DynamicPlaylists::constAlbumKey=QLatin1String("Album");
+const QString DynamicPlaylists::constTitleKey=QLatin1String("Title");
+const QString DynamicPlaylists::constGenreKey=QLatin1String("Genre");
+const QString DynamicPlaylists::constDateKey=QLatin1String("Date");
+const QString DynamicPlaylists::constRatingKey=QLatin1String("Rating");
+const QString DynamicPlaylists::constDurationKey=QLatin1String("Duration");
+const QString DynamicPlaylists::constNumTracksKey=QLatin1String("NumTracks");
+const QString DynamicPlaylists::constFileKey=QLatin1String("File");
+const QString DynamicPlaylists::constExactKey=QLatin1String("Exact");
+const QString DynamicPlaylists::constExcludeKey=QLatin1String("Exclude");
+const QChar DynamicPlaylists::constRangeSep=QLatin1Char('-');
 
 const QChar constKeyValSep=QLatin1Char(':');
 const QString constOk=QLatin1String("0");
 const QString constFilename=QLatin1String("FILENAME:");
 
-Dynamic::Dynamic()
+DynamicPlaylists::DynamicPlaylists()
     : localTimer(0)
     , usingRemote(false)
     , remoteTimer(0)
@@ -165,42 +165,42 @@ Dynamic::Dynamic()
     stopAction = ActionCollection::get()->createAction("stopdynamic", tr("Stop Dynamic Mode"), Icons::self()->stopDynamicIcon);
 }
 
-QString Dynamic::name() const
+QString DynamicPlaylists::name() const
 {
     return QLatin1String("dynamic");
 }
 
-QString Dynamic::title() const
+QString DynamicPlaylists::title() const
 {
     return tr("Dynamic Playlists");
 }
 
-QString Dynamic::descr() const
+QString DynamicPlaylists::descr() const
 {
     return tr("Dynamically generated playlists");
 }
 
-QVariant Dynamic::headerData(int, Qt::Orientation, int) const
+QVariant DynamicPlaylists::headerData(int, Qt::Orientation, int) const
 {
     return QVariant();
 }
 
-int Dynamic::rowCount(const QModelIndex &parent) const
+int DynamicPlaylists::rowCount(const QModelIndex &parent) const
 {
     return parent.isValid() ? 0 : entryList.count();
 }
 
-bool Dynamic::hasChildren(const QModelIndex &parent) const
+bool DynamicPlaylists::hasChildren(const QModelIndex &parent) const
 {
     return !parent.isValid();
 }
 
-QModelIndex Dynamic::parent(const QModelIndex &) const
+QModelIndex DynamicPlaylists::parent(const QModelIndex &) const
 {
     return QModelIndex();
 }
 
-QModelIndex Dynamic::index(int row, int column, const QModelIndex &parent) const
+QModelIndex DynamicPlaylists::index(int row, int column, const QModelIndex &parent) const
 {
     if (parent.isValid() || !hasIndex(row, column, parent) || row>=entryList.count()) {
         return QModelIndex();
@@ -211,7 +211,7 @@ QModelIndex Dynamic::index(int row, int column, const QModelIndex &parent) const
 
 #define IS_ACTIVE(E) !currentEntry.isEmpty() && (E)==currentEntry && (!isRemote() || QLatin1String("IDLE")!=lastState)
 
-QVariant Dynamic::data(const QModelIndex &index, int role) const
+QVariant DynamicPlaylists::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
         switch (role) {
@@ -253,7 +253,7 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
     }
 }
 
-Qt::ItemFlags Dynamic::flags(const QModelIndex &index) const
+Qt::ItemFlags DynamicPlaylists::flags(const QModelIndex &index) const
 {
     if (index.isValid()) {
         return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
@@ -261,7 +261,7 @@ Qt::ItemFlags Dynamic::flags(const QModelIndex &index) const
     return Qt::NoItemFlags;
 }
 
-Dynamic::Entry Dynamic::entry(const QString &e)
+DynamicPlaylists::Entry DynamicPlaylists::entry(const QString &e)
 {
     if (!e.isEmpty()) {
         QList<Entry>::Iterator it=find(e);
@@ -273,7 +273,7 @@ Dynamic::Entry Dynamic::entry(const QString &e)
     return Entry();
 }
 
-bool Dynamic::save(const Entry &e)
+bool DynamicPlaylists::save(const Entry &e)
 {
     if (e.name.isEmpty()) {
         return false;
@@ -320,9 +320,9 @@ bool Dynamic::save(const Entry &e)
     return false;
 }
 
-void Dynamic::updateEntry(const Entry &e)
+void DynamicPlaylists::updateEntry(const Entry &e)
 {
-    QList<Dynamic::Entry>::Iterator it=find(e.name);
+    QList<DynamicPlaylists::Entry>::Iterator it=find(e.name);
     if (it!=entryList.end()) {
         entryList.replace(it-entryList.begin(), e);
         QModelIndex idx=index(it-entryList.begin(), 0, QModelIndex());
@@ -334,7 +334,7 @@ void Dynamic::updateEntry(const Entry &e)
     }
 }
 
-void Dynamic::del(const QString &name)
+void DynamicPlaylists::del(const QString &name)
 {
     if (isRemote()) {
         if (sendCommand(Del, QStringList() << name)) {
@@ -343,7 +343,7 @@ void Dynamic::del(const QString &name)
         return;
     }
 
-    QList<Dynamic::Entry>::Iterator it=find(name);
+    QList<DynamicPlaylists::Entry>::Iterator it=find(name);
     if (it==entryList.end()) {
         return;
     }
@@ -361,7 +361,7 @@ void Dynamic::del(const QString &name)
     }
 }
 
-void Dynamic::start(const QString &name)
+void DynamicPlaylists::start(const QString &name)
 {
     if (isRemote()) {
         sendCommand(SetActive, QStringList() << name << "1");
@@ -419,7 +419,7 @@ void Dynamic::start(const QString &name)
     }
 }
 
-void Dynamic::stop(bool sendClear)
+void DynamicPlaylists::stop(bool sendClear)
 {
     if (isRemote()) {
         if (sendClear) {
@@ -473,7 +473,7 @@ void Dynamic::stop(bool sendClear)
     #endif
 }
 
-void Dynamic::toggle(const QString &name)
+void DynamicPlaylists::toggle(const QString &name)
 {
     if(name==currentEntry) {
         stop();
@@ -482,7 +482,7 @@ void Dynamic::toggle(const QString &name)
     }
 }
 
-bool Dynamic::isRunning()
+bool DynamicPlaylists::isRunning()
 {
     #if defined Q_OS_WIN
     return false;
@@ -492,7 +492,7 @@ bool Dynamic::isRunning()
     #endif
 }
 
-void Dynamic::enableRemotePolling(bool e)
+void DynamicPlaylists::enableRemotePolling(bool e)
 {
     remotePollingEnabled=e;
     if (remoteTimer && remoteTimer->isActive()) {
@@ -503,7 +503,7 @@ void Dynamic::enableRemotePolling(bool e)
     }
 }
 
-int Dynamic::getPid() const
+int DynamicPlaylists::getPid() const
 {
     QFile pidFile(Utils::cacheDir(constDir, false)+constLockFile);
 
@@ -517,7 +517,7 @@ int Dynamic::getPid() const
     return 0;
 }
 
-bool Dynamic::controlApp(bool isStart)
+bool DynamicPlaylists::controlApp(bool isStart)
 {
     QString cmd=CANTATA_SYS_SCRIPTS_DIR+QLatin1String("cantata-dynamic");
     QProcess process;
@@ -540,10 +540,10 @@ bool Dynamic::controlApp(bool isStart)
     return rv;
 }
 
-QList<Dynamic::Entry>::Iterator Dynamic::find(const QString &e)
+QList<DynamicPlaylists::Entry>::Iterator DynamicPlaylists::find(const QString &e)
 {
-    QList<Dynamic::Entry>::Iterator it(entryList.begin());
-    QList<Dynamic::Entry>::Iterator end(entryList.end());
+    QList<DynamicPlaylists::Entry>::Iterator it(entryList.begin());
+    QList<DynamicPlaylists::Entry>::Iterator end(entryList.end());
 
     for (; it!=end; ++it) {
         if ((*it).name==e) {
@@ -553,7 +553,7 @@ QList<Dynamic::Entry>::Iterator Dynamic::find(const QString &e)
     return it;
 }
 
-void Dynamic::loadLocal()
+void DynamicPlaylists::loadLocal()
 {
     beginResetModel();
     entryList.clear();
@@ -619,7 +619,7 @@ void Dynamic::loadLocal()
     endResetModel();
 }
 
-void Dynamic::parseRemote(const QStringList &response)
+void DynamicPlaylists::parseRemote(const QStringList &response)
 {
     DBUG << response;
     beginResetModel();
@@ -684,7 +684,7 @@ void Dynamic::parseRemote(const QStringList &response)
     endResetModel();
 }
 
-void Dynamic::parseStatus(QStringList response)
+void DynamicPlaylists::parseStatus(QStringList response)
 {
     DBUG << response;
     if (response.isEmpty()) {
@@ -754,7 +754,7 @@ void Dynamic::parseStatus(QStringList response)
     }
 }
 
-bool Dynamic::sendCommand(Command cmd, const QStringList &args)
+bool DynamicPlaylists::sendCommand(Command cmd, const QStringList &args)
 {
     DBUG << toString(cmd) << args;
     if (Ping==cmd) {
@@ -781,7 +781,7 @@ bool Dynamic::sendCommand(Command cmd, const QStringList &args)
     return true;
 }
 
-void Dynamic::checkHelper()
+void DynamicPlaylists::checkHelper()
 {
     if (isRemote()) {
         return;
@@ -822,7 +822,7 @@ void Dynamic::checkHelper()
     }
 }
 
-void Dynamic::pollRemoteHelper()
+void DynamicPlaylists::pollRemoteHelper()
 {
     if (!remoteTimer) {
         remoteTimer=new QTimer(this);
@@ -835,7 +835,7 @@ void Dynamic::pollRemoteHelper()
     remoteTimer->start(remotePollingEnabled ? 5000 : 30000);
 }
 
-void Dynamic::checkIfRemoteIsRunning()
+void DynamicPlaylists::checkIfRemoteIsRunning()
 {
     if (isRemote()) {
         if (remotePollingEnabled) {
@@ -846,14 +846,14 @@ void Dynamic::checkIfRemoteIsRunning()
     }
 }
 
-void Dynamic::updateRemoteStatus()
+void DynamicPlaylists::updateRemoteStatus()
 {
     if (isRemote()) {
         sendCommand(Status);
     }
 }
 
-void Dynamic::remoteResponse(QStringList msg)
+void DynamicPlaylists::remoteResponse(QStringList msg)
 {
     DBUG << msg;
     if (msg.isEmpty()) {
@@ -884,7 +884,7 @@ void Dynamic::remoteResponse(QStringList msg)
         break;
     case Del:
         if (!msg.isEmpty() && msg.at(0)==constOk) {
-            QList<Dynamic::Entry>::Iterator it=find(currentDelete);
+            QList<DynamicPlaylists::Entry>::Iterator it=find(currentDelete);
             if (it!=entryList.end()) {
                 beginRemoveRows(QModelIndex(), it-entryList.begin(), it-entryList.begin());
                 entryList.erase(it);
@@ -919,7 +919,7 @@ void Dynamic::remoteResponse(QStringList msg)
     }
 }
 
-void Dynamic::remoteDynamicSupported(bool s)
+void DynamicPlaylists::remoteDynamicSupported(bool s)
 {
     if (usingRemote==s) {
         return;

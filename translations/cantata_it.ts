@@ -1560,34 +1560,34 @@ Non sarà possibile tornare indietro.</translation>
     </message>
 </context>
 <context>
-    <name>Dynamic</name>
+    <name>DynamicPlaylists</name>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="163"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="163"/>
         <source>Start Dynamic Playlist</source>
         <translation>Avvia Scaletta Dinamica</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="164"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="164"/>
         <source>Stop Dynamic Mode</source>
         <translation>Ferma Modalità Dinamica</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="174"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="174"/>
         <source>Dynamic Playlists</source>
         <translation>Scalette Dinamiche</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="179"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="179"/>
         <source>Dynamically generated playlists</source>
         <translation>Scalette generate dinamicamente</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="242"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="242"/>
         <source> - Rating: %1..%2</source>
         <translation> - Valutazione: %1..%2</translation>
     </message>
     <message numerus="yes">
-        <location filename="../dynamic/dynamic.cpp" line="242"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="242"/>
         <source>%n Rule(s)</source>
         <translation>
             <numerusform>%n Regola</numerusform>
@@ -1595,63 +1595,63 @@ Non sarà possibile tornare indietro.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="368"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="368"/>
         <source>You need to install &quot;perl&quot; on your system in order for Cantata&apos;s dynamic mode to function.</source>
         <translation>Per l&apos;utilizzo della modalità dinamica, è necessatio installare &quot;perl&quot; sul sistema.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="375"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="375"/>
         <source>Failed to locate rules file - %1</source>
         <translation>Impossibile trovare il file di regole - %1</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="383"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="383"/>
         <source>Failed to remove previous rules file - %1</source>
         <translation>Impossibile rimuovere il precedente file di regole - %1</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="388"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="388"/>
         <source>Failed to install rules file - %1 -&gt; %2</source>
         <translation>Impossibile installare il file di regole - %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="722"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="722"/>
         <source>Dynamizer has been terminated.</source>
         <translation>Dynamizer è stato terminato.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="768"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="768"/>
         <source>Awaiting response for previous command. (%1)</source>
         <translation>In attesa di risposta dal comando precedente. (%1)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="768"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="768"/>
         <source>Saving rule</source>
         <translation>Salvataggio regola</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="768"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="768"/>
         <source>Deleting rule</source>
         <translation>Cancellazione regola</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="875"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="875"/>
         <source>Failed to save %1. (%2)</source>
         <translation>Impossibile salvare %1. (%2)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="889"/>
-        <location filename="../dynamic/dynamic.cpp" line="892"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="889"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="892"/>
         <source>Failed to delete rules file. (%1)</source>
         <translation>Impossibile cancellare il file regole. (%1)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="899"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="899"/>
         <source>Failed to control dynamizer state. (%1)</source>
         <translation>Impossibile controllare lo stato del dynamizer. (%1)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="906"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="906"/>
         <source>Failed to set the current dynamic rules. (%1)</source>
         <translation>Impossibile impostare le regole dinamiche selezionate. (%1)</translation>
     </message>
@@ -1659,27 +1659,27 @@ Non sarà possibile tornare indietro.</translation>
 <context>
     <name>DynamicPlaylistsPage</name>
     <message>
-        <location filename="../dynamic/dynamicpage.cpp" line="37"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="37"/>
         <source>Add</source>
         <translation>Aggiungi</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicpage.cpp" line="38"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="38"/>
         <source>Edit</source>
         <translation>Modifica</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicpage.cpp" line="39"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="39"/>
         <source>Remove</source>
         <translation>Rimuovi</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicpage.cpp" line="80"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="80"/>
         <source>Remote dynamizer is not running.</source>
         <translation>Il dynamizer remoto non è in esecuzione.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicpage.cpp" line="154"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="154"/>
         <source>Are you sure you wish to remove the selected rules?
 
 This cannot be undone.</source>
@@ -1688,7 +1688,7 @@ This cannot be undone.</source>
 Non sarà possibile tornare indietro.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicpage.cpp" line="155"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="155"/>
         <source>Remove Dynamic Rules</source>
         <translation>Rimuovi Regole Dinamiche</translation>
     </message>
@@ -1696,93 +1696,93 @@ Non sarà possibile tornare indietro.</translation>
 <context>
     <name>PlaylistRule</name>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="26"/>
+        <location filename="../playlists/playlistrule.ui" line="26"/>
         <source>Type:</source>
         <translation>Tipo:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="37"/>
+        <location filename="../playlists/playlistrule.ui" line="37"/>
         <source>Include songs that match the following:</source>
         <translation>Includi i brani che corrispondono ai seguenti:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="42"/>
+        <location filename="../playlists/playlistrule.ui" line="42"/>
         <source>Exclude songs that match the following:</source>
         <translation>Escludi i brani che corrispondono ai seguenti:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="50"/>
+        <location filename="../playlists/playlistrule.ui" line="50"/>
         <source>Artist:</source>
         <translation>Artista:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="63"/>
+        <location filename="../playlists/playlistrule.ui" line="63"/>
         <source>Artists similar to:</source>
         <translation>Artista simile a:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="76"/>
+        <location filename="../playlists/playlistrule.ui" line="76"/>
         <source>Album Artist:</source>
         <translation>Artista Album:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="89"/>
+        <location filename="../playlists/playlistrule.ui" line="89"/>
         <source>Composer:</source>
         <translation>Compositore:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="102"/>
+        <location filename="../playlists/playlistrule.ui" line="102"/>
         <source>Album:</source>
         <translation>Album:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="115"/>
+        <location filename="../playlists/playlistrule.ui" line="115"/>
         <source>Title:</source>
         <translation>Titolo:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="128"/>
+        <location filename="../playlists/playlistrule.ui" line="128"/>
         <source>Genre</source>
         <translation>Genere</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="141"/>
+        <location filename="../playlists/playlistrule.ui" line="141"/>
         <source>From Year:</source>
         <translation>Dall&apos;anno:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="157"/>
-        <location filename="../dynamic/dynamicrule.ui" line="180"/>
+        <location filename="../playlists/playlistrule.ui" line="157"/>
+        <location filename="../playlists/playlistrule.ui" line="180"/>
         <source>Any</source>
         <translation>Qualsiasi</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="164"/>
+        <location filename="../playlists/playlistrule.ui" line="164"/>
         <source>To Year:</source>
         <translation>All&apos;anno:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="187"/>
+        <location filename="../playlists/playlistrule.ui" line="187"/>
         <source>Comment:</source>
         <translation>Commento:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="200"/>
+        <location filename="../playlists/playlistrule.ui" line="200"/>
         <source>Filename / path:</source>
         <translation>Nome file / percorso:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="213"/>
+        <location filename="../playlists/playlistrule.ui" line="213"/>
         <source>Exact match</source>
         <translation>Corrispondenza esatta</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="241"/>
+        <location filename="../playlists/playlistrule.ui" line="241"/>
         <source>Only enter values for the tags you wish to be search on.</source>
         <translation>Inserire solamente i valori dei tag per i quali fare la ricerca.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="248"/>
+        <location filename="../playlists/playlistrule.ui" line="248"/>
         <source>For genre, end string with an asterisk to match various genres. e.g &apos;rock*&apos; matches &apos;Hard Rock&apos; and &apos;Rock and Roll&apos;.</source>
         <translation>Per il genere, terminare la stringa con un asterisco per trovare corrispondenze con diversi generi. es. &apos;rock*&apos; corrisponde a &apos;Hard Rock&apos; e &apos;Rock and Roll&apos;.</translation>
     </message>
@@ -1790,28 +1790,28 @@ Non sarà possibile tornare indietro.</translation>
 <context>
     <name>PlaylistRuleDialog</name>
     <message>
-        <location filename="../dynamic/dynamicruledialog.cpp" line="40"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="40"/>
         <source>Dynamic Rule</source>
         <translation>Regola Dinamica</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicruledialog.cpp" line="151"/>
-        <location filename="../dynamic/dynamicruledialog.cpp" line="152"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="151"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="152"/>
         <source>Add</source>
         <translation>Aggiungi</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicruledialog.cpp" line="229"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="229"/>
         <source>&lt;i&gt;&lt;b&gt;ERROR&lt;/b&gt;: &apos;From Year&apos; should be less than &apos;To Year&apos;&lt;/i&gt;</source>
         <translation>&lt;i&gt;&lt;b&gt;ERRORE&lt;/b&gt;: &apos;Dall&apos;anno&apos; dovrebbe essere inferiore ad &apos;All&apos;anno&apos;&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicruledialog.cpp" line="232"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="232"/>
         <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; Date range is too large (can only be a maximum of %1 years)&lt;/i&gt;</source>
         <translation>&lt;i&gt;&lt;b&gt;ERRORE:&lt;/b&gt; L&apos;intervallo di date è troppo largo (può essere al massimo di %1 anni)&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicruledialog.cpp" line="237"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="237"/>
         <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; You can only match on filename / path if &apos;Exact match&apos; is &lt;b&gt;not&lt;/b&gt; checked&lt;/i&gt;</source>
         <translation>&lt;i&gt;&lt;b&gt;ERRORE:&lt;/b&gt; Puoi cercare corrispondenze di nome file/ percorso se &apos;Corrispondenza esatta&apos; &lt;b&gt;non&lt;/b&gt; è selezionato&lt;/i&gt;</translation>
     </message>
@@ -1819,49 +1819,49 @@ Non sarà possibile tornare indietro.</translation>
 <context>
     <name>PlaylistRules</name>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="39"/>
+        <location filename="../playlists/playlistrules.ui" line="39"/>
         <source>Name of Dynamic Rules</source>
         <translation>Nome delle Regole Dinamiche</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="71"/>
+        <location filename="../playlists/playlistrules.ui" line="71"/>
         <source>Add</source>
         <translation>Aggiungi</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="78"/>
+        <location filename="../playlists/playlistrules.ui" line="78"/>
         <source>Edit</source>
         <translation>Modifica</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="85"/>
+        <location filename="../playlists/playlistrules.ui" line="85"/>
         <source>Remove</source>
         <translation>Rimuovi</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="107"/>
+        <location filename="../playlists/playlistrules.ui" line="107"/>
         <source>Songs with ratings between:</source>
         <translation>Brani con valutazione tra:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="119"/>
-        <location filename="../dynamic/dynamicrules.ui" line="166"/>
+        <location filename="../playlists/playlistrules.ui" line="119"/>
+        <location filename="../playlists/playlistrules.ui" line="166"/>
         <source> - </source>
         <translation> - </translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="144"/>
+        <location filename="../playlists/playlistrules.ui" line="144"/>
         <source>Songs with duration between:</source>
         <translation>Brani con durata tra:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="153"/>
-        <location filename="../dynamic/dynamicrules.ui" line="173"/>
+        <location filename="../playlists/playlistrules.ui" line="153"/>
+        <location filename="../playlists/playlistrules.ui" line="173"/>
         <source> seconds</source>
         <translation> secondi</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="209"/>
+        <location filename="../playlists/playlistrules.ui" line="209"/>
         <source>About Rules</source>
         <translation>Informazioni su Regole</translation>
     </message>
@@ -1869,33 +1869,33 @@ Non sarà possibile tornare indietro.</translation>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="142"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="142"/>
         <source>Dynamic Rules</source>
         <translation>Regole Dinamiche</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="160"/>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="161"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="160"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="161"/>
         <source>No Limit</source>
         <translation>Nessun Limite</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="296"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="296"/>
         <source>About dynamic rules</source>
         <translation>Informazioni su regole dinamiche</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="298"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="298"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with 10 entries. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cantata interrogherà la libreria utilizzando tutte le regole elencate. La lista delle regole di &lt;i&gt;inclusione&lt;/i&gt; verrà usata per costruire un insieme di brani che possonno essere usati. La lista di regole di &lt;i&gt;esclusione&lt;/i&gt; verrà usata per costruire un insieme di brani che non possono essere usati. Se non ci sono regole di &lt;i&gt;inclusione&lt;/i&gt;, Catata assumerà che tutti i brani (eccetto quelli &lt;i&gt;esclusi&lt;/i&gt; possono essere usati.&lt;/p&gt;&lt;p&gt;es. per far sì che Cantata cerchi &apos;Canzoni rock di Wibble O canzoni di Artisti Vari&apos;, ti servirà quetso:&lt;ul&gt;&lt;li&gt;Includi ArtistaAlbum=Wibble Genere=Rock&lt;/li&gt;&lt;li&gt;Includi ArtistaAlbum=Artisti Vari&lt;/li&gt;&lt;/ul&gt;Perché Cantata cerchi &apos;Canzoni di Wibble ma non dall&apos;album Abc&apos;, ti servirà questo:&lt;ul&gt;&lt;li&gt;Includi ArtistaAlbum=Wibble&lt;/li&gt;&lt;li&gt;Escludi ArtistaAlbum=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Dopo che l&apos;insieme di brani utilizzabili è stato creato, Cantata selezionerà casualmente i 10 brani da tenere nella coda di riproduzione. Se è stato specificato un intervallo di valutazioni, allora saranno usati solo i brani all&apos;interno di quell&apos;intervallo. Similmente, se è stato impostato un intervallo di durata.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="318"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="318"/>
         <source>Failed to save %1</source>
         <translation>Impossibile salvare %1</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="336"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="336"/>
         <source>A set of rules named &apos;%1&apos; already exists!
 
 Overwrite?</source>
@@ -1904,12 +1904,12 @@ Overwrite?</source>
 Sovrascrivere?</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="337"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="337"/>
         <source>Overwrite Rules</source>
         <translation>Sovrascrivi Regole</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="375"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="375"/>
         <source>Saving %1</source>
         <translation>Salvataggio %1</translation>
     </message>
@@ -5124,133 +5124,133 @@ Aggiungere i brani a quella scaletta?</translation>
         <translation>Il bitrate è la misura della quantità di dati utilizzati per rappresentare un secondo di suono in una traccia audio.&lt;br&gt;A causa delle limitazione del formato proprietario &lt;b&gt;WMA&lt;/b&gt; ed alla difficoltà di fare reverse engineering su un encoder proprietario, il codec WMA usato da Cantata imposta il &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;bitrate costante (CBR)&lt;/a&gt;.&lt;br&gt;Per questa ragione, la misura del bitrate sul cursore è una stima abbastanza accurata del bitrate della traccia codificata.&lt;br&gt;&lt;b&gt;136kb/s&lt;/b&gt; è una buona scelta per ascoltare musica su un lettore portatile.&lt;br/&gt;Valori sotto &lt;b&gt;112kb/s&lt;/b&gt; potrebbero essere insoddisfacenti per la musica e qualsiasi valore sopra i &lt;b&gt;182kb/s&lt;/b&gt; sarebbe probabilmente esagerato.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="70"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="70"/>
         <source>Empty filename.</source>
         <translation>Nome file vuoto.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="71"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="71"/>
         <source>Invalid filename. (%1)</source>
         <translation>Nome file non valido. (%1)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="72"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="72"/>
         <source>Failed to save %1.</source>
         <translation>Impossibile salvare %1.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="73"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="73"/>
         <source>Failed to delete rules file. (%1)</source>
         <translation>Impossibile cancellare il file regole. (%1)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="74"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="74"/>
         <source>Invalid command. (%1)</source>
         <translation>Comando non valido. (%1)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="75"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="75"/>
         <source>Could not remove active rules link.</source>
         <translation>Impossibile rimuovere il collegamento alle regole attive.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="76"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="76"/>
         <source>Active rules is not a link.</source>
         <translation>Le regole attive non sono un collegamento.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="77"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="77"/>
         <source>Could not create active rules link.</source>
         <translation>Impossibile creare il collegamento alle regole attive.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="78"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="78"/>
         <source>Rules file, %1, does not exist.</source>
         <translation>Il file di regole %1 non esiste.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="79"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="79"/>
         <source>Incorrect arguments supplied.</source>
         <translation>Gli argomenti forniti non sono corretti.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="80"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="80"/>
         <source>Unknown method called.</source>
         <translation>Chiamata a metodo sconosciuta.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="83"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="83"/>
         <location filename="../scrobbling/scrobbler.cpp" line="104"/>
         <source>Unknown error</source>
         <translation>Errore sconosciuto</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="65"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="65"/>
         <location filename="../mpd-interface/song.cpp" line="540"/>
         <source>Artist</source>
         <translation>Artista</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="67"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="67"/>
         <source>SimilarArtists</source>
         <translation>ArtistiSimili</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="69"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="69"/>
         <source>AlbumArtist</source>
         <translation>ArtistaAlbum</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="71"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="71"/>
         <location filename="../mpd-interface/song.cpp" line="544"/>
         <source>Composer</source>
         <translation>Compositore</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="73"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="73"/>
         <source>Comment</source>
         <translation>Commento</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="75"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="75"/>
         <location filename="../mpd-interface/song.cpp" line="546"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="77"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="77"/>
         <location filename="../mpd-interface/song.cpp" line="539"/>
         <source>Title</source>
         <translation>Titolo</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="79"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="79"/>
         <location filename="../mpd-interface/song.cpp" line="553"/>
         <source>Genre</source>
         <translation>Genere</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="81"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="81"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="83"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="83"/>
         <source>File</source>
         <translation>File</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="95"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="95"/>
         <source>Include</source>
         <translation>Includi</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="102"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="102"/>
         <source>Exclude</source>
         <translation>Escludi</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="125"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="125"/>
         <source> (Exact)</source>
         <translation> (Esatto)</translation>
     </message>

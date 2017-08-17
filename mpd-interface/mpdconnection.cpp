@@ -1265,6 +1265,9 @@ void MPDConnection::seek()
     Response response=sendCommand("status");
     if (response.ok) {
         MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
+        if (-1==sv.songId) {
+            return;
+        }
         if (offset>0) {
             if (sv.timeElapsed+offset<sv.timeTotal) {
                 setSeek(sv.song, sv.timeElapsed+offset);

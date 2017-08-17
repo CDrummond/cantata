@@ -1725,7 +1725,7 @@ This cannot be undone.</source>
     </message>
 </context>
 <context>
-    <name>DynamicPage</name>
+    <name>DynamicPlaylistsPage</name>
     <message>
         <location filename="../dynamic/dynamicpage.cpp" line="37"/>
         <source>Add</source>
@@ -1760,7 +1760,7 @@ This cannot be undone.</source>
     </message>
 </context>
 <context>
-    <name>DynamicRule</name>
+    <name>PlaylistRule</name>
     <message>
         <location filename="../dynamic/dynamicrule.ui" line="26"/>
         <source>Type:</source>
@@ -1854,7 +1854,7 @@ This cannot be undone.</source>
     </message>
 </context>
 <context>
-    <name>DynamicRuleDialog</name>
+    <name>PlaylistRuleDialog</name>
     <message>
         <location filename="../dynamic/dynamicruledialog.cpp" line="40"/>
         <source>Dynamic Rule</source>
@@ -1883,7 +1883,7 @@ This cannot be undone.</source>
     </message>
 </context>
 <context>
-    <name>DynamicRules</name>
+    <name>PlaylistRules</name>
     <message>
         <location filename="../dynamic/dynamicrules.ui" line="39"/>
         <source>Name of Dynamic Rules</source>
@@ -1933,7 +1933,7 @@ This cannot be undone.</source>
     </message>
 </context>
 <context>
-    <name>DynamicRulesDialog</name>
+    <name>PlaylistRulesDialog</name>
     <message>
         <location filename="../dynamic/dynamicrulesdialog.cpp" line="142"/>
         <source>Dynamic Rules</source>

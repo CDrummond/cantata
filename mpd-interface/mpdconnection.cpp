@@ -262,7 +262,7 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<MPDStatsValues>("MPDStatsValues");
     qRegisterMetaType<MPDStatusValues>("MPDStatusValues");
     qRegisterMetaType<MPDConnectionDetails>("MPDConnectionDetails");
-    qRegisterMetaType<QMap<qint32, quint8>>("QMap<qint32, quint8>");
+    qRegisterMetaType<QMap<qint32, quint8> >("QMap<qint32, quint8>");
     qRegisterMetaType<Stream>("Stream");
     qRegisterMetaType<QList<Stream> >("QList<Stream>");
     #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)

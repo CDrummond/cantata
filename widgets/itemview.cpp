@@ -892,9 +892,6 @@ void ItemView::setEnabled(bool en)
 void ItemView::setLevel(int l, bool haveChildren)
 {
     currentLevel=l;
-    if (isVisible()) {
-        backAction->setEnabled(0!=currentLevel);
-    }
 
     if (Mode_IconTop==mode) {
         if (0==currentLevel || haveChildren) {
@@ -1261,12 +1258,6 @@ void ItemView::setSearchCategories(const QList<SearchWidget::Category> &categori
 void ItemView::setSearchCategory(const QString &id)
 {
     searchWidget->setCategory(id);
-}
-
-void ItemView::showEvent(QShowEvent *ev)
-{
-    QWidget::showEvent(ev);
-    backAction->setEnabled(0!=currentLevel);
 }
 
 void ItemView::showSpinner(bool v)

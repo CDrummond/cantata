@@ -143,7 +143,6 @@ public:
     void setSearchCategories(const QList<SearchWidget::Category> &categories);
     void setSearchCategory(const QString &id);
     void setSearchResetLevel(int l) { searchResetLevel=l; }
-    void showEvent(QShowEvent *ev);
     void goToTop();
     void setOpenAfterSearch(bool o) { openFirstLevelAfterSearch=o; }
     void setEnabled(bool en);

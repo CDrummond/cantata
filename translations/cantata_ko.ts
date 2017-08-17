@@ -7818,97 +7818,97 @@ This cannot be undone.</source>
     </message>
 </context>
 <context>
-    <name>Dynamic</name>
+    <name>DynamicPlaylists</name>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="163"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="163"/>
         <source>Start Dynamic Playlist</source>
         <translation type="unfinished">활동 연주목록 시작</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="164"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="164"/>
         <source>Stop Dynamic Mode</source>
         <translation type="unfinished">활동 방식 중지</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="174"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="174"/>
         <source>Dynamic Playlists</source>
         <translation type="unfinished">활동 연주목록</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="179"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="179"/>
         <source>Dynamically generated playlists</source>
         <translation type="unfinished">동적 생성 연주목록</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="242"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="242"/>
         <source> - Rating: %1..%2</source>
         <translation type="unfinished"> - 등급: %1..%2</translation>
     </message>
     <message numerus="yes">
-        <location filename="../dynamic/dynamic.cpp" line="242"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="242"/>
         <source>%n Rule(s)</source>
         <translation type="unfinished">
             <numerusform>%n 규정</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="368"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="368"/>
         <source>You need to install &quot;perl&quot; on your system in order for Cantata&apos;s dynamic mode to function.</source>
         <translation type="unfinished">칸타타의 활동 상태를 작동하려면 &quot;perl&quot;을 시스템에 설치해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="375"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="375"/>
         <source>Failed to locate rules file - %1</source>
         <translation type="unfinished">규정 파일을 찾을 수 없음 - %1</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="383"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="383"/>
         <source>Failed to remove previous rules file - %1</source>
         <translation type="unfinished">이전 규정 파일을 지울 수 없음 - %1</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="388"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="388"/>
         <source>Failed to install rules file - %1 -&gt; %2</source>
         <translation type="unfinished">규정 파일을 설치할 수 없음 - %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="722"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="722"/>
         <source>Dynamizer has been terminated.</source>
         <translation type="unfinished">활동자가 중지됨.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="768"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="768"/>
         <source>Awaiting response for previous command. (%1)</source>
         <translation type="unfinished">이전 명령어 응답 대기 중. (%1)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="768"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="768"/>
         <source>Saving rule</source>
         <translation type="unfinished">규정 저장</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="768"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="768"/>
         <source>Deleting rule</source>
         <translation type="unfinished">규정 지우기</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="875"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="875"/>
         <source>Failed to save %1. (%2)</source>
         <translation type="unfinished">%1 저장 안됨. (%2)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="889"/>
-        <location filename="../dynamic/dynamic.cpp" line="892"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="889"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="892"/>
         <source>Failed to delete rules file. (%1)</source>
         <translation type="unfinished">규정 파일 지워지지 않음. (%1)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="899"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="899"/>
         <source>Failed to control dynamizer state. (%1)</source>
         <translation type="unfinished">활동자 상태 관리 안 됨. (%1)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="906"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="906"/>
         <source>Failed to set the current dynamic rules. (%1)</source>
         <translation type="unfinished">현재 활동 규정 설정 안 됨. (%1)</translation>
     </message>
@@ -7916,27 +7916,27 @@ This cannot be undone.</source>
 <context>
     <name>DynamicPlaylistsPage</name>
     <message>
-        <location filename="../dynamic/dynamicpage.cpp" line="37"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="37"/>
         <source>Add</source>
         <translation type="unfinished">추가</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicpage.cpp" line="38"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="38"/>
         <source>Edit</source>
         <translation type="unfinished">수정</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicpage.cpp" line="39"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="39"/>
         <source>Remove</source>
         <translation type="unfinished">지우기</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicpage.cpp" line="80"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="80"/>
         <source>Remote dynamizer is not running.</source>
         <translation type="unfinished">원격 활동자가 실행 중이 아님.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicpage.cpp" line="154"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="154"/>
         <source>Are you sure you wish to remove the selected rules?
 
 This cannot be undone.</source>
@@ -7945,7 +7945,7 @@ This cannot be undone.</source>
 되돌릴 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicpage.cpp" line="155"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="155"/>
         <source>Remove Dynamic Rules</source>
         <translation type="unfinished">활동 규정 지우기</translation>
     </message>
@@ -7953,93 +7953,93 @@ This cannot be undone.</source>
 <context>
     <name>PlaylistRule</name>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="26"/>
+        <location filename="../playlists/playlistrule.ui" line="26"/>
         <source>Type:</source>
         <translation type="unfinished">형태:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="37"/>
+        <location filename="../playlists/playlistrule.ui" line="37"/>
         <source>Include songs that match the following:</source>
         <translation type="unfinished">아래와 맞는 음악 포함:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="42"/>
+        <location filename="../playlists/playlistrule.ui" line="42"/>
         <source>Exclude songs that match the following:</source>
         <translation type="unfinished">아래와 맞는 음악 제외:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="50"/>
+        <location filename="../playlists/playlistrule.ui" line="50"/>
         <source>Artist:</source>
         <translation type="unfinished">연주자:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="63"/>
+        <location filename="../playlists/playlistrule.ui" line="63"/>
         <source>Artists similar to:</source>
         <translation type="unfinished">비슷한 연주자:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="76"/>
+        <location filename="../playlists/playlistrule.ui" line="76"/>
         <source>Album Artist:</source>
         <translation type="unfinished">음반연주자:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="89"/>
+        <location filename="../playlists/playlistrule.ui" line="89"/>
         <source>Composer:</source>
         <translation type="unfinished">작곡가:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="102"/>
+        <location filename="../playlists/playlistrule.ui" line="102"/>
         <source>Album:</source>
         <translation type="unfinished">음반:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="115"/>
+        <location filename="../playlists/playlistrule.ui" line="115"/>
         <source>Title:</source>
         <translation type="unfinished">제목:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="128"/>
+        <location filename="../playlists/playlistrule.ui" line="128"/>
         <source>Genre</source>
         <translation type="unfinished">장르</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="141"/>
+        <location filename="../playlists/playlistrule.ui" line="141"/>
         <source>From Year:</source>
         <translation type="unfinished">시작 연도:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="157"/>
-        <location filename="../dynamic/dynamicrule.ui" line="180"/>
+        <location filename="../playlists/playlistrule.ui" line="157"/>
+        <location filename="../playlists/playlistrule.ui" line="180"/>
         <source>Any</source>
         <translation type="unfinished">모두</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="164"/>
+        <location filename="../playlists/playlistrule.ui" line="164"/>
         <source>To Year:</source>
         <translation type="unfinished">마지막 연도:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="187"/>
+        <location filename="../playlists/playlistrule.ui" line="187"/>
         <source>Comment:</source>
         <translation type="unfinished">설명:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="200"/>
+        <location filename="../playlists/playlistrule.ui" line="200"/>
         <source>Filename / path:</source>
         <translation type="unfinished">파일명 / 경로:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="213"/>
+        <location filename="../playlists/playlistrule.ui" line="213"/>
         <source>Exact match</source>
         <translation type="unfinished">정확한 맞춤</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="241"/>
+        <location filename="../playlists/playlistrule.ui" line="241"/>
         <source>Only enter values for the tags you wish to be search on.</source>
         <translation type="unfinished">찾고자 하는 태그값만 입력합니다.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrule.ui" line="248"/>
+        <location filename="../playlists/playlistrule.ui" line="248"/>
         <source>For genre, end string with an asterisk to match various genres. e.g &apos;rock*&apos; matches &apos;Hard Rock&apos; and &apos;Rock and Roll&apos;.</source>
         <translation type="unfinished">장르에서 별표(*)로 끝나는 문자열은 다양한 장르를 포함합니다. 예) &apos;rock*&apos;은 &apos;Hard Rock&apos;과 &apos;Rock and Roll&apos;을 포함.</translation>
     </message>
@@ -8047,28 +8047,28 @@ This cannot be undone.</source>
 <context>
     <name>PlaylistRuleDialog</name>
     <message>
-        <location filename="../dynamic/dynamicruledialog.cpp" line="40"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="40"/>
         <source>Dynamic Rule</source>
         <translation type="unfinished">활동 규정</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicruledialog.cpp" line="151"/>
-        <location filename="../dynamic/dynamicruledialog.cpp" line="152"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="151"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="152"/>
         <source>Add</source>
         <translation type="unfinished">추가</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicruledialog.cpp" line="229"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="229"/>
         <source>&lt;i&gt;&lt;b&gt;ERROR&lt;/b&gt;: &apos;From Year&apos; should be less than &apos;To Year&apos;&lt;/i&gt;</source>
         <translation type="unfinished">&lt;i&gt;&lt;b&gt;오류&lt;/b&gt;: &apos;시작 연도&apos;는 &apos;마지막 연도&apos;보다 작아야 합니다&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicruledialog.cpp" line="232"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="232"/>
         <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; Date range is too large (can only be a maximum of %1 years)&lt;/i&gt;</source>
         <translation type="unfinished">&lt;i&gt;&lt;b&gt;오류:&lt;/b&gt; 날짜 범위가 너무 큽니다 (최대 %1년 이내여야 합니다)&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicruledialog.cpp" line="237"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="237"/>
         <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; You can only match on filename / path if &apos;Exact match&apos; is &lt;b&gt;not&lt;/b&gt; checked&lt;/i&gt;</source>
         <translation type="unfinished">&lt;i&gt;&lt;b&gt;오류:&lt;/b&gt; 파일명 / 경로만을 찾을 수 있는데 &apos;정확한 맞춤&apos;이 &lt;b&gt;not&lt;/b&gt; 확인되어야 합니다.checked&lt;/i&gt;</translation>
     </message>
@@ -8076,49 +8076,49 @@ This cannot be undone.</source>
 <context>
     <name>PlaylistRules</name>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="39"/>
+        <location filename="../playlists/playlistrules.ui" line="39"/>
         <source>Name of Dynamic Rules</source>
         <translation type="unfinished">새로운 활동 규정</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="71"/>
+        <location filename="../playlists/playlistrules.ui" line="71"/>
         <source>Add</source>
         <translation type="unfinished">추가</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="78"/>
+        <location filename="../playlists/playlistrules.ui" line="78"/>
         <source>Edit</source>
         <translation type="unfinished">수정</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="85"/>
+        <location filename="../playlists/playlistrules.ui" line="85"/>
         <source>Remove</source>
         <translation type="unfinished">지우기</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="107"/>
+        <location filename="../playlists/playlistrules.ui" line="107"/>
         <source>Songs with ratings between:</source>
         <translation type="unfinished">등급 사이의 곡:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="119"/>
-        <location filename="../dynamic/dynamicrules.ui" line="166"/>
+        <location filename="../playlists/playlistrules.ui" line="119"/>
+        <location filename="../playlists/playlistrules.ui" line="166"/>
         <source> - </source>
         <translation type="unfinished"> - </translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="144"/>
+        <location filename="../playlists/playlistrules.ui" line="144"/>
         <source>Songs with duration between:</source>
         <translation type="unfinished">곡 길이:</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="153"/>
-        <location filename="../dynamic/dynamicrules.ui" line="173"/>
+        <location filename="../playlists/playlistrules.ui" line="153"/>
+        <location filename="../playlists/playlistrules.ui" line="173"/>
         <source> seconds</source>
         <translation type="unfinished"> 초</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrules.ui" line="209"/>
+        <location filename="../playlists/playlistrules.ui" line="209"/>
         <source>About Rules</source>
         <translation type="unfinished">규정에 대하여</translation>
     </message>
@@ -8126,7 +8126,7 @@ This cannot be undone.</source>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="142"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="142"/>
         <source>Dynamic Rules</source>
         <translation type="unfinished">활동 규정</translation>
     </message>
@@ -8135,28 +8135,28 @@ This cannot be undone.</source>
         <translation type="obsolete">없음</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="160"/>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="161"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="160"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="161"/>
         <source>No Limit</source>
         <translation type="unfinished">무제한</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="296"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="296"/>
         <source>About dynamic rules</source>
         <translation type="unfinished">활동 규정에 대하여</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="298"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="298"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with 10 entries. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;칸타타는 아래의 모든 규정을 이용하여 음원을 찾습니다. &lt;i&gt;I포함&lt;/i&gt; 규정은 사용될 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;제외&lt;/i&gt; 규정은 사용되지 않을 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;포함&lt;/i&gt; 규정이 없으면 모든 곡으로 (&lt;i&gt;제외&lt;/i&gt;부터의 가로줄) 생각합니다.&lt;/p&gt;&lt;p&gt;예. &apos;어떤이 또는 여러 연주자의 Rock 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이 장르=Rock&lt;/li&gt;&lt;li&gt;포함 음반연주자=여러연주자&lt;/li&gt;&lt;/ul&gt; &apos;다른 음반이 아닌 어떤이의 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이&lt;/li&gt;&lt;li&gt;제외 음반연주자=어떤이 음반=다른&lt;/li&gt;&lt;/ul&gt;사용할 곡이 만들어진 다음, 칸타타는 무작위 곡을 골라 10곡의 연주순서를 만듭니다. 등급이 지정되면, 그 등급의 곡들만 사용됩니다. 곡 길이도 마찬가지입니다.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="318"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="318"/>
         <source>Failed to save %1</source>
         <translation type="unfinished">%1 저장 안 됨</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="336"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="336"/>
         <source>A set of rules named &apos;%1&apos; already exists!
 
 Overwrite?</source>
@@ -8165,12 +8165,12 @@ Overwrite?</source>
 덮어쓸까요?</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="337"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="337"/>
         <source>Overwrite Rules</source>
         <translation type="unfinished">규정 덮어쓰기</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="375"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="375"/>
         <source>Saving %1</source>
         <translation type="unfinished">%1로 저장함</translation>
     </message>
@@ -11459,133 +11459,133 @@ Add to that playlist?</source>
         <translation type="unfinished">비트레이트는 오디오 트랙의 초당 데이터를 나타내는 양을 수치화한 것입니다.&lt;br&gt;&lt;b&gt;WMA&lt;/b&gt; 독점 포맷의 한계로 역설계가 어려워, 칸타타에 쓰인 WMA 인코더는 &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;고정 비트레이트 (CBR)&lt;/a&gt; 설정입니다.&lt;br&gt;따라서 이 슬라이더의 비트레이트 측정값은 인코딩된 트랙의 상당히 정확한 예측치입니다.&lt;br&gt;&lt;b&gt;136kb/s&lt;/b&gt;는 휴대용 음악 연주기에서 좋은 선택입니다.&lt;br/&gt;&lt;b&gt;112kb/s 이하&lt;/b&gt;는 음악이 불만족스러울 수 있습니다.&lt;b&gt;182kb/s 이상&lt;/b&gt;은 너무 높을 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="70"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="70"/>
         <source>Empty filename.</source>
         <translation type="unfinished">빈 파일명.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="71"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="71"/>
         <source>Invalid filename. (%1)</source>
         <translation type="unfinished">무효 파일명 (%1)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="72"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="72"/>
         <source>Failed to save %1.</source>
         <translation type="unfinished">%1 저장 안됨.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="73"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="73"/>
         <source>Failed to delete rules file. (%1)</source>
         <translation type="unfinished">규정 파일 지워지지 않음. (%1)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="74"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="74"/>
         <source>Invalid command. (%1)</source>
         <translation type="unfinished">무효 명령. (%1)</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="75"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="75"/>
         <source>Could not remove active rules link.</source>
         <translation type="unfinished">활성화된 규정 연결을 지울 수 없음.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="76"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="76"/>
         <source>Active rules is not a link.</source>
         <translation type="unfinished">활성화된 규정이 연결이 아님.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="77"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="77"/>
         <source>Could not create active rules link.</source>
         <translation type="unfinished">활성화된 규정 연결을 만들 수 없음.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="78"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="78"/>
         <source>Rules file, %1, does not exist.</source>
         <translation type="unfinished">규정 파일, %1,이 없음.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="79"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="79"/>
         <source>Incorrect arguments supplied.</source>
         <translation type="unfinished">잘못된 변수가 주어짐.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="80"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="80"/>
         <source>Unknown method called.</source>
         <translation type="unfinished">모르는 방법을 요청함.</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamic.cpp" line="83"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="83"/>
         <location filename="../scrobbling/scrobbler.cpp" line="104"/>
         <source>Unknown error</source>
         <translation type="unfinished">모르는 오류</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="65"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="65"/>
         <location filename="../mpd-interface/song.cpp" line="540"/>
         <source>Artist</source>
         <translation type="unfinished">연주자</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="67"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="67"/>
         <source>SimilarArtists</source>
         <translation type="unfinished">비슷한 연주자</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="69"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="69"/>
         <source>AlbumArtist</source>
         <translation type="unfinished">음반연주자</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="71"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="71"/>
         <location filename="../mpd-interface/song.cpp" line="544"/>
         <source>Composer</source>
         <translation type="unfinished">작곡가</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="73"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="73"/>
         <source>Comment</source>
         <translation type="unfinished">설명</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="75"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="75"/>
         <location filename="../mpd-interface/song.cpp" line="546"/>
         <source>Album</source>
         <translation type="unfinished">음반</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="77"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="77"/>
         <location filename="../mpd-interface/song.cpp" line="539"/>
         <source>Title</source>
         <translation type="unfinished">제목</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="79"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="79"/>
         <location filename="../mpd-interface/song.cpp" line="553"/>
         <source>Genre</source>
         <translation type="unfinished">장르</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="81"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="81"/>
         <source>Date</source>
         <translation type="unfinished">날짜</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="83"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="83"/>
         <source>File</source>
         <translation type="unfinished">파일</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="95"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="95"/>
         <source>Include</source>
         <translation type="unfinished">포함</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="102"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="102"/>
         <source>Exclude</source>
         <translation type="unfinished">제외</translation>
     </message>
     <message>
-        <location filename="../dynamic/dynamicrulesdialog.cpp" line="125"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="125"/>
         <source> (Exact)</source>
         <translation type="unfinished"> (정확)</translation>
     </message>

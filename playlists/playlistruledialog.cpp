@@ -109,25 +109,25 @@ PlaylistRuleDialog::~PlaylistRuleDialog()
 {
 }
 
-bool PlaylistRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
+bool PlaylistRuleDialog::edit(const DynamicPlaylists::Rule &rule, bool isAdd)
 {
     addingRules=isAdd;
-    typeCombo->setCurrentIndex(QLatin1String("true")==rule[Dynamic::constExcludeKey] ? 1 : 0);
-    artistText->setText(rule[Dynamic::constArtistKey]);
-    similarArtistsText->setText(rule[Dynamic::constSimilarArtistsKey]);
-    albumArtistText->setText(rule[Dynamic::constAlbumArtistKey]);
-    composerText->setText(rule[Dynamic::constComposerKey]);
-    commentText->setText(rule[Dynamic::constCommentKey]);
-    albumText->setText(rule[Dynamic::constAlbumKey]);
-    titleText->setText(rule[Dynamic::constTitleKey]);
-    genreText->setText(rule[Dynamic::constGenreKey]);
-    filenameText->setText(rule[Dynamic::constFileKey]);
+    typeCombo->setCurrentIndex(QLatin1String("true")==rule[DynamicPlaylists::constExcludeKey] ? 1 : 0);
+    artistText->setText(rule[DynamicPlaylists::constArtistKey]);
+    similarArtistsText->setText(rule[DynamicPlaylists::constSimilarArtistsKey]);
+    albumArtistText->setText(rule[DynamicPlaylists::constAlbumArtistKey]);
+    composerText->setText(rule[DynamicPlaylists::constComposerKey]);
+    commentText->setText(rule[DynamicPlaylists::constCommentKey]);
+    albumText->setText(rule[DynamicPlaylists::constAlbumKey]);
+    titleText->setText(rule[DynamicPlaylists::constTitleKey]);
+    genreText->setText(rule[DynamicPlaylists::constGenreKey]);
+    filenameText->setText(rule[DynamicPlaylists::constFileKey]);
 
-    QString date=rule[Dynamic::constDateKey];
+    QString date=rule[DynamicPlaylists::constDateKey];
     int dateFrom=0;
     int dateTo=0;
     if (!date.isEmpty()) {
-        int idx=date.indexOf(Dynamic::constRangeSep);
+        int idx=date.indexOf(DynamicPlaylists::constRangeSep);
         if (-1==idx) {
             dateFrom=date.toInt();
         } else {
@@ -144,7 +144,7 @@ bool PlaylistRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
     }
     dateFromSpin->setValue(dateFrom);
     dateToSpin->setValue(dateTo);
-    exactCheck->setChecked(QLatin1String("false")!=rule[Dynamic::constExactKey]);
+    exactCheck->setChecked(QLatin1String("false")!=rule[DynamicPlaylists::constExactKey]);
     errorLabel->setVisible(false);
 
     setButtons(isAdd ? User1|Ok|Close : Ok|Cancel);
@@ -154,35 +154,35 @@ bool PlaylistRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
     return QDialog::Accepted==exec();
 }
 
-Dynamic::Rule PlaylistRuleDialog::rule() const
+DynamicPlaylists::Rule PlaylistRuleDialog::rule() const
 {
-    Dynamic::Rule r;
+    DynamicPlaylists::Rule r;
     if (!artist().isEmpty()) {
-        r.insert(Dynamic::constArtistKey, artist());
+        r.insert(DynamicPlaylists::constArtistKey, artist());
     }
     if (!similarArtists().isEmpty()) {
-        r.insert(Dynamic::constSimilarArtistsKey, similarArtists());
+        r.insert(DynamicPlaylists::constSimilarArtistsKey, similarArtists());
     }
     if (!albumArtist().isEmpty()) {
-        r.insert(Dynamic::constAlbumArtistKey, albumArtist());
+        r.insert(DynamicPlaylists::constAlbumArtistKey, albumArtist());
     }
     if (!composer().isEmpty()) {
-        r.insert(Dynamic::constComposerKey, composer());
+        r.insert(DynamicPlaylists::constComposerKey, composer());
     }
     if (!comment().isEmpty()) {
-        r.insert(Dynamic::constCommentKey, comment());
+        r.insert(DynamicPlaylists::constCommentKey, comment());
     }
     if (!album().isEmpty()) {
-        r.insert(Dynamic::constAlbumKey, album());
+        r.insert(DynamicPlaylists::constAlbumKey, album());
     }
     if (!title().isEmpty()) {
-        r.insert(Dynamic::constTitleKey, title());
+        r.insert(DynamicPlaylists::constTitleKey, title());
     }
     if (!genre().isEmpty()) {
-        r.insert(Dynamic::constGenreKey, genre());
+        r.insert(DynamicPlaylists::constGenreKey, genre());
     }
     if (!filename().isEmpty()) {
-        r.insert(Dynamic::constFileKey, filename());
+        r.insert(DynamicPlaylists::constFileKey, filename());
     }
     int dateFrom=dateFromSpin->value();
     int dateTo=dateToSpin->value();
@@ -190,18 +190,18 @@ Dynamic::Rule PlaylistRuleDialog::rule() const
     bool haveTo=dateTo>=constMinDate && dateTo<=constMaxDate && dateTo!=dateFrom;
 
     if (haveFrom && haveTo) {
-        r.insert(Dynamic::constDateKey, QString::number(dateFrom)+Dynamic::constRangeSep+QString::number(dateTo));
+        r.insert(DynamicPlaylists::constDateKey, QString::number(dateFrom)+DynamicPlaylists::constRangeSep+QString::number(dateTo));
     } else if (haveFrom) {
-        r.insert(Dynamic::constDateKey, QString::number(dateFrom));
+        r.insert(DynamicPlaylists::constDateKey, QString::number(dateFrom));
     } else if (haveTo) {
-        r.insert(Dynamic::constDateKey, QString::number(dateTo));
+        r.insert(DynamicPlaylists::constDateKey, QString::number(dateTo));
     }
 
     if (!exactCheck->isChecked()) {
-        r.insert(Dynamic::constExactKey, QLatin1String("false"));
+        r.insert(DynamicPlaylists::constExactKey, QLatin1String("false"));
     }
     if (1==typeCombo->currentIndex()) {
-        r.insert(Dynamic::constExcludeKey, QLatin1String("true"));
+        r.insert(DynamicPlaylists::constExcludeKey, QLatin1String("true"));
     }
     return r;
 }

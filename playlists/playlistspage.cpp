@@ -24,7 +24,7 @@
 #include "playlistspage.h"
 #include "support/configuration.h"
 #include "models/playlistsmodel.h"
-#include "dynamic.h"
+#include "dynamicplaylists.h"
 #include "dynamicplaylistspage.h"
 #include "storedplaylistspage.h"
 #include "gui/settings.h"
@@ -35,7 +35,7 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     stored=new StoredPlaylistsPage(this);
     addPage(PlaylistsModel::self()->name(), PlaylistsModel::self()->icon(), PlaylistsModel::self()->title(), PlaylistsModel::self()->descr(), stored);
     dynamic=new DynamicPlaylistsPage(this);
-    addPage(Dynamic::self()->name(), Dynamic::self()->icon(), Dynamic::self()->title(), Dynamic::self()->descr(), dynamic);
+    addPage(DynamicPlaylists::self()->name(), DynamicPlaylists::self()->icon(), DynamicPlaylists::self()->title(), DynamicPlaylists::self()->descr(), dynamic);
 
     connect(stored, SIGNAL(addToDevice(QString,QString,QList<Song>)), SIGNAL(addToDevice(QString,QString,QList<Song>)));
     Configuration config(metaObject()->className());

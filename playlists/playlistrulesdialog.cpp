@@ -23,7 +23,6 @@
 
 #include "playlistrulesdialog.h"
 #include "playlistruledialog.h"
-#include "dynamic.h"
 #include "support/messagebox.h"
 #include "widgets/basicitemdelegate.h"
 #include <QIcon>
@@ -61,35 +60,35 @@ public:
 
 static QString translateStr(const QString &key)
 {
-    if (Dynamic::constArtistKey==key) {
+    if (DynamicPlaylists::constArtistKey==key) {
         return QObject::tr("Artist");
-    } else if (Dynamic::constSimilarArtistsKey==key) {
+    } else if (DynamicPlaylists::constSimilarArtistsKey==key) {
         return QObject::tr("SimilarArtists");
-    } else if (Dynamic::constAlbumArtistKey==key) {
+    } else if (DynamicPlaylists::constAlbumArtistKey==key) {
         return QObject::tr("AlbumArtist");
-    } else if (Dynamic::constComposerKey==key) {
+    } else if (DynamicPlaylists::constComposerKey==key) {
         return QObject::tr("Composer");
-    } else if (Dynamic::constCommentKey==key) {
+    } else if (DynamicPlaylists::constCommentKey==key) {
         return QObject::tr("Comment");
-    } else if (Dynamic::constAlbumKey==key) {
+    } else if (DynamicPlaylists::constAlbumKey==key) {
         return QObject::tr("Album");
-    } else if (Dynamic::constTitleKey==key) {
+    } else if (DynamicPlaylists::constTitleKey==key) {
         return QObject::tr("Title");
-    } else if (Dynamic::constGenreKey==key) {
+    } else if (DynamicPlaylists::constGenreKey==key) {
         return QObject::tr("Genre");
-    } else if (Dynamic::constDateKey==key) {
+    } else if (DynamicPlaylists::constDateKey==key) {
         return QObject::tr("Date");
-    } else if (Dynamic::constFileKey==key) {
+    } else if (DynamicPlaylists::constFileKey==key) {
         return QObject::tr("File");
     } else {
         return key;
     }
 }
 
-static void update(QStandardItem *i, const Dynamic::Rule &rule)
+static void update(QStandardItem *i, const DynamicPlaylists::Rule &rule)
 {
-    Dynamic::Rule::ConstIterator it(rule.constBegin());
-    Dynamic::Rule::ConstIterator end(rule.constEnd());
+    DynamicPlaylists::Rule::ConstIterator it(rule.constBegin());
+    DynamicPlaylists::Rule::ConstIterator end(rule.constEnd());
     QMap<QString, QVariant> v;
     QString str;
     QString type=QObject::tr("Include");
@@ -97,12 +96,12 @@ static void update(QStandardItem *i, const Dynamic::Rule &rule)
     bool include=true;
 
     for (int count=0; it!=end; ++it, ++count) {
-        if (Dynamic::constExcludeKey==it.key()) {
+        if (DynamicPlaylists::constExcludeKey==it.key()) {
             if (QLatin1String("true")==it.value()) {
                 type=QObject::tr("Exclude");
                 include=false;
             }
-        } else if (Dynamic::constExactKey==it.key()) {
+        } else if (DynamicPlaylists::constExactKey==it.key()) {
             if (QLatin1String("false")==it.value()) {
                 exact=false;
             }
@@ -147,7 +146,7 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent)
     connect(rulesList, SIGNAL(itemsSelected(bool)), SLOT(controlButtons()));
     connect(nameText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(aboutLabel, SIGNAL(leftClickedUrl()), this, SLOT(showAbout()));
-    connect(Dynamic::self(), SIGNAL(saved(bool)), SLOT(saved(bool)));
+    connect(DynamicPlaylists::self(), SIGNAL(saved(bool)), SLOT(saved(bool)));
 
     messageWidget->setVisible(false);
     model=new QStandardItemModel(this);
@@ -165,7 +164,7 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent)
 
     static bool registered=false;
     if (!registered) {
-        qRegisterMetaType<Dynamic::Rule>("Dynamic::Rule");
+        qRegisterMetaType<DynamicPlaylists::Rule>("Dynamic::Rule");
         registered=true;
     }
 }
@@ -176,12 +175,12 @@ PlaylistRulesDialog::~PlaylistRulesDialog()
 
 void PlaylistRulesDialog::edit(const QString &name)
 {
-    Dynamic::Entry e=Dynamic::self()->entry(name);
+    DynamicPlaylists::Entry e=DynamicPlaylists::self()->entry(name);
     if (model->rowCount()) {
         model->removeRows(0, model->rowCount());
     }
     nameText->setText(name);
-    foreach (const Dynamic::Rule &r, e.rules) {
+    foreach (const DynamicPlaylists::Rule &r, e.rules) {
         QStandardItem *item = new QStandardItem();
         ::update(item, r);
         model->setItem(model->rowCount(), 0, item);
@@ -231,12 +230,12 @@ void PlaylistRulesDialog::add()
 {
     if (!dlg) {
         dlg=new PlaylistRuleDialog(this);
-        connect(dlg, SIGNAL(addRule(const Dynamic::Rule&)), SLOT(addRule(const Dynamic::Rule&)));
+        connect(dlg, SIGNAL(addRule(const DynamicPlaylists::Rule&)), SLOT(addRule(const DynamicPlaylists::Rule&)));
     }
     dlg->createNew();
 }
 
-void PlaylistRulesDialog::addRule(const Dynamic::Rule &rule)
+void PlaylistRulesDialog::addRule(const DynamicPlaylists::Rule &rule)
 {
     QStandardItem *item = new QStandardItem();
     ::update(item, rule);
@@ -257,11 +256,11 @@ void PlaylistRulesDialog::edit()
     }
     if (!dlg) {
         dlg=new PlaylistRuleDialog(this);
-        connect(dlg, SIGNAL(addRule(const Dynamic::Rule&)), SLOT(addRule(const Dynamic::Rule&)));
+        connect(dlg, SIGNAL(addRule(const DynamicPlaylists::Rule&)), SLOT(addRule(const DynamicPlaylists::Rule&)));
     }
     QModelIndex index=proxy->mapToSource(items.at(0));
     QStandardItem *item=model->itemFromIndex(index);
-    Dynamic::Rule rule;
+    DynamicPlaylists::Rule rule;
     QMap<QString, QVariant> v=item->data().toMap();
     QMap<QString, QVariant>::ConstIterator it(v.constBegin());
     QMap<QString, QVariant>::ConstIterator end(v.constEnd());
@@ -333,13 +332,13 @@ bool PlaylistRulesDialog::save()
         return false;
     }
 
-    if (name!=origName && Dynamic::self()->exists(name) &&
+    if (name!=origName && DynamicPlaylists::self()->exists(name) &&
         MessageBox::No==MessageBox::warningYesNo(this, tr("A set of rules named '%1' already exists!\n\nOverwrite?").arg(name),
                                                   tr("Overwrite Rules"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
         return false;
     }
 
-    Dynamic::Entry entry;
+    DynamicPlaylists::Entry entry;
     entry.name=name;
     int from=ratingFrom->value();
     int to=ratingTo->value();
@@ -362,7 +361,7 @@ bool PlaylistRulesDialog::save()
             QMap<QString, QVariant> v=itm->data().toMap();
             QMap<QString, QVariant>::ConstIterator it(v.constBegin());
             QMap<QString, QVariant>::ConstIterator end(v.constEnd());
-            Dynamic::Rule rule;
+            DynamicPlaylists::Rule rule;
             for (; it!=end; ++it) {
                 rule.insert(it.key(), it.value().toString());
             }
@@ -370,9 +369,9 @@ bool PlaylistRulesDialog::save()
         }
     }
 
-    bool saved=Dynamic::self()->save(entry);
+    bool saved=DynamicPlaylists::self()->save(entry);
 
-    if (Dynamic::self()->isRemote()) {
+    if (DynamicPlaylists::self()->isRemote()) {
         if (saved) {
             messageWidget->setInformation(tr("Saving %1").arg(name));
             controls->setEnabled(false);
@@ -381,7 +380,7 @@ bool PlaylistRulesDialog::save()
         return false;
     } else {
         if (saved && !origName.isEmpty() && entry.name!=origName) {
-            Dynamic::self()->del(origName);
+            DynamicPlaylists::self()->del(origName);
         }
         return saved;
     }

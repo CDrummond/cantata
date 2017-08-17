@@ -21,8 +21,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DYNAMIC_H
-#define DYNAMIC_H
+#ifndef DYNAMIC_PLAYLISTS_H
+#define DYNAMIC_PLAYLISTS_H
 
 #include <QIcon>
 #include <QList>
@@ -35,7 +35,7 @@
 class QTimer;
 class NetworkJob;
 
-class Dynamic : public ActionModel
+class DynamicPlaylists : public ActionModel
 {
     Q_OBJECT
 
@@ -69,7 +69,7 @@ public:
         int numTracks;
     };
 
-    static Dynamic * self();
+    static DynamicPlaylists * self();
 
     static const QString constRuleKey;
     static const QString constArtistKey;
@@ -89,8 +89,8 @@ public:
     static const QString constExcludeKey;
     static const QChar constRangeSep;
 
-    Dynamic();
-    virtual ~Dynamic() { }
+    DynamicPlaylists();
+    virtual ~DynamicPlaylists() { }
 
     QString name() const;
     QString title() const;

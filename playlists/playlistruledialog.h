@@ -27,7 +27,7 @@
 #include "config.h"
 #include "support/dialog.h"
 #include "ui_playlistrule.h"
-#include "dynamic.h"
+#include "dynamicplaylists.h"
 
 class PlaylistRuleDialog : public Dialog, Ui::PlaylistRule
 {
@@ -37,9 +37,9 @@ public:
     PlaylistRuleDialog(QWidget *parent);
     virtual ~PlaylistRuleDialog();
 
-    void createNew() { edit(Dynamic::Rule(), true); }
-    bool edit(const Dynamic::Rule &rule, bool isAdd=false);
-    Dynamic::Rule rule() const;
+    void createNew() { edit(DynamicPlaylists::Rule(), true); }
+    bool edit(const DynamicPlaylists::Rule &rule, bool isAdd=false);
+    DynamicPlaylists::Rule rule() const;
 
     QString artist() const { return artistText->text().trimmed(); }
     QString similarArtists() const { return similarArtistsText->text().trimmed(); }
@@ -52,7 +52,7 @@ public:
     QString filename() const { return filenameText->text().trimmed(); }
 
 Q_SIGNALS:
-    void addRule(const Dynamic::Rule &r);
+    void addRule(const DynamicPlaylists::Rule &r);
 
 private Q_SLOTS:
     void enableOkButton();

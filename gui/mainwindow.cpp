@@ -226,7 +226,7 @@ void MainWindow::init()
         topToolBar->ensurePolished();
         toolbar=topToolBar;
     } else {
-        toolbar->setMinimumHeight(fontMetrics().height()*4);
+        toolbar->setFixedHeight(fontMetrics().height()*3.5);
     }
     #endif
 

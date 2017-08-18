@@ -16,6 +16,7 @@
     few seconds.
 11. In playlists page, internet, etc, allow back navigation to go fully back.
 12. Don't try to seek if no song loaded.
+13. Only use menubar for macOS builds.
 
 2.1.0
 -----

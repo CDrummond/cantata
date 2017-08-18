@@ -632,11 +632,6 @@ QString Settings::lang()
     return cfg.get("lang", QString());
 }
 
-bool Settings::showMenubar()
-{
-    return cfg.get("showMenubar", false);
-}
-
 bool Settings::showCoverWidget()
 {
     return cfg.get("showCoverWidget", true);
@@ -1082,11 +1077,6 @@ void Settings::saveFetchCovers(bool v)
 void Settings::saveLang(const QString &v)
 {
     cfg.set("lang", v);
-}
-
-void Settings::saveShowMenubar(bool v)
-{
-    cfg.set("showMenubar", v);
 }
 
 void Settings::saveShowCoverWidget(bool v)

@@ -14,7 +14,7 @@
  9. If an error is to be shown, ensure Cantata is not minimised to system tray.
 10. If the initial start-up connection fails, try again every .5 second for a
     few seconds.
-11. In playlists page, internet, etc, allo back navigation to go fully back.
+11. In playlists page, internet, etc, allow back navigation to go fully back.
 12. Don't try to seek if no song loaded.
 
 2.1.0

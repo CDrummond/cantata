@@ -7266,6 +7266,23 @@ This cannot be undone.</source>
     </message>
 </context>
 <context>
+    <name>RulesPlaylists</name>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="242"/>
+        <source> - Rating: %1..%2</source>
+        <translation type="unfinished"> - Рейтинг: %1..%2</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../playlists/rulesplaylists.cpp" line="242"/>
+        <source>%n Rule(s)</source>
+        <translation type="unfinished">
+            <numerusform>подкаст: %n</numerusform>
+            <numerusform>подкаст: %n</numerusform>
+            <numerusform>подкаст: %n</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>DynamicPlaylists</name>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="163"/>
@@ -7286,20 +7303,6 @@ This cannot be undone.</source>
         <location filename="../playlists/dynamicplaylists.cpp" line="179"/>
         <source>Dynamically generated playlists</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="242"/>
-        <source> - Rating: %1..%2</source>
-        <translation type="unfinished"> - Рейтинг: %1..%2</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../playlists/dynamicplaylists.cpp" line="242"/>
-        <source>%n Rule(s)</source>
-        <translation type="unfinished">
-            <numerusform>подкаст: %n</numerusform>
-            <numerusform>подкаст: %n</numerusform>
-            <numerusform>подкаст: %n</numerusform>
-        </translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="368"/>

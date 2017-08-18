@@ -1560,6 +1560,22 @@ Non sarà possibile tornare indietro.</translation>
     </message>
 </context>
 <context>
+    <name>RulesPlaylists</name>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="242"/>
+        <source> - Rating: %1..%2</source>
+        <translation> - Valutazione: %1..%2</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../playlists/rulesplaylists.cpp" line="242"/>
+        <source>%n Rule(s)</source>
+        <translation>
+            <numerusform>%n Regola</numerusform>
+            <numerusform>%n Regole</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>DynamicPlaylists</name>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="163"/>
@@ -1580,19 +1596,6 @@ Non sarà possibile tornare indietro.</translation>
         <location filename="../playlists/dynamicplaylists.cpp" line="179"/>
         <source>Dynamically generated playlists</source>
         <translation>Scalette generate dinamicamente</translation>
-    </message>
-    <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="242"/>
-        <source> - Rating: %1..%2</source>
-        <translation> - Valutazione: %1..%2</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../playlists/dynamicplaylists.cpp" line="242"/>
-        <source>%n Rule(s)</source>
-        <translation>
-            <numerusform>%n Regola</numerusform>
-            <numerusform>%n Regole</numerusform>
-        </translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="368"/>

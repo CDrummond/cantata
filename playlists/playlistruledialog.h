@@ -34,15 +34,15 @@ class PlaylistRuleDialog : public Dialog, Ui::PlaylistRule
     Q_OBJECT
 
 public:
-    PlaylistRuleDialog(QWidget *parent);
+    PlaylistRuleDialog(QWidget *parent, bool isDynamic);
     virtual ~PlaylistRuleDialog();
 
-    void createNew() { edit(DynamicPlaylists::Rule(), true); }
-    bool edit(const DynamicPlaylists::Rule &rule, bool isAdd=false);
-    DynamicPlaylists::Rule rule() const;
+    void createNew() { edit(RulesPlaylists::Rule(), true); }
+    bool edit(const RulesPlaylists::Rule &rule, bool isAdd=false);
+    RulesPlaylists::Rule rule() const;
 
     QString artist() const { return artistText->text().trimmed(); }
-    QString similarArtists() const { return similarArtistsText->text().trimmed(); }
+    QString similarArtists() const { return similarArtistsText ? similarArtistsText->text().trimmed() : QString(); }
     QString albumArtist() const { return albumArtistText->text().trimmed(); }
     QString composer() const { return composerText->text().trimmed(); }
     QString comment() const { return commentText->text().trimmed(); }
@@ -52,7 +52,7 @@ public:
     QString filename() const { return filenameText->text().trimmed(); }
 
 Q_SIGNALS:
-    void addRule(const DynamicPlaylists::Rule &r);
+    void addRule(const RulesPlaylists::Rule &r);
 
 private Q_SLOTS:
     void enableOkButton();

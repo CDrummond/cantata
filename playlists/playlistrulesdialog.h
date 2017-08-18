@@ -39,7 +39,7 @@ class PlaylistRulesDialog : public Dialog, Ui::PlaylistRules
     Q_OBJECT
 
 public:
-    PlaylistRulesDialog(QWidget *parent);
+    PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m);
     virtual ~PlaylistRulesDialog();
 
     void edit(const QString &name);
@@ -54,12 +54,13 @@ private Q_SLOTS:
     void enableOkButton();
     void controlButtons();
     void add();
-    void addRule(const DynamicPlaylists::Rule &rule);
+    void addRule(const RulesPlaylists::Rule &rule);
     void edit();
     void remove();
     void showAbout();
 
 private:
+    RulesPlaylists *rules;
     RulesSort *proxy;
     QStandardItemModel *model;
     QString origName;

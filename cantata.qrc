@@ -33,6 +33,7 @@
 <file alias="dice.svg">icons/dice.svg</file>
 <file alias="playlist.svg">icons/playlist.svg</file>
 <file alias="radio.svg">icons/radio.svg</file>
+<file alias="gradcap.svg">icons/gradcap.svg</file>
 
 </qresource>
 </RCC>

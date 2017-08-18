@@ -788,6 +788,29 @@ QByteArray MPDParseUtils::parseSticker(const QByteArray &data, const QByteArray 
     return QByteArray();
 }
 
+QList<MPDParseUtils::Sticker> MPDParseUtils::parseStickers(const QByteArray &data, const QByteArray &sticker)
+{
+    QList<Sticker> stickers;
+    QList<QByteArray> lines = data.split('\n');
+    Sticker s;
+    QByteArray key=constSticker+sticker+'=';
+
+    foreach (const QByteArray &line, lines) {
+        if (constOkValue==line) {
+            break;
+        }
+
+        if (line.startsWith(constFileKey)) {
+            s.file=line.mid(constFileKey.length());
+        } else if (line.startsWith(key)) {
+            s.value=line.mid(key.length());
+            stickers.append(s);
+        }
+    }
+
+    return stickers;
+}
+
 QString MPDParseUtils::addStreamName(const QString &url, const QString &name)
 {
     return name.isEmpty()

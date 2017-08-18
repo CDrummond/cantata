@@ -112,7 +112,7 @@ void DynamicPlaylistsPage::doSearch()
 
 void DynamicPlaylistsPage::controlActions()
 {
-    QModelIndexList selected=qobject_cast<DynamicPlaylists *>(sender()) ? QModelIndexList() : view->selectedIndexes(false); // Dont need sorted selection here...
+    QModelIndexList selected=qobject_cast<RulesPlaylists *>(sender()) ? QModelIndexList() : view->selectedIndexes(false); // Dont need sorted selection here...
 
     editAction->setEnabled(1==selected.count());
     DynamicPlaylists::self()->startAct()->setEnabled(1==selected.count());
@@ -130,7 +130,7 @@ void DynamicPlaylistsPage::remoteDynamicSupport(bool s)
 
 void DynamicPlaylistsPage::add()
 {
-    PlaylistRulesDialog *dlg=new PlaylistRulesDialog(this);
+    PlaylistRulesDialog *dlg=new PlaylistRulesDialog(this, DynamicPlaylists::self());
     dlg->edit(QString());
 }
 
@@ -142,7 +142,7 @@ void DynamicPlaylistsPage::edit()
         return;
     }
 
-    PlaylistRulesDialog *dlg=new PlaylistRulesDialog(this);
+    PlaylistRulesDialog *dlg=new PlaylistRulesDialog(this, DynamicPlaylists::self());
     dlg->edit(selected.at(0).data(Qt::DisplayRole).toString());
 }
 

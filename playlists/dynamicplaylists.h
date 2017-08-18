@@ -29,13 +29,14 @@
 #include <QMap>
 #include <QString>
 #include <QStringList>
+#include "rulesplaylists.h"
 #include "models/actionmodel.h"
 #include "support/icon.h"
 
 class QTimer;
 class NetworkJob;
 
-class DynamicPlaylists : public ActionModel
+class DynamicPlaylists : public RulesPlaylists
 {
     Q_OBJECT
 
@@ -55,39 +56,7 @@ public:
     static QString toString(Command cmd);
     static void enableDebug();
 
-    typedef QMap<QString, QString> Rule;
-    struct Entry {
-        Entry(const QString &n=QString()) : name(n), ratingFrom(0), ratingTo(0), minDuration(0), maxDuration(0), numTracks(10) { }
-        bool operator==(const Entry &o) const { return name==o.name; }
-        bool haveRating() const { return ratingFrom>=0 && ratingTo>0; }
-        QString name;
-        QList<Rule> rules;
-        int ratingFrom;
-        int ratingTo;
-        int minDuration;
-        int maxDuration;
-        int numTracks;
-    };
-
     static DynamicPlaylists * self();
-
-    static const QString constRuleKey;
-    static const QString constArtistKey;
-    static const QString constSimilarArtistsKey;
-    static const QString constAlbumArtistKey;
-    static const QString constComposerKey;
-    static const QString constCommentKey;
-    static const QString constAlbumKey;
-    static const QString constTitleKey;
-    static const QString constGenreKey;
-    static const QString constDateKey;
-    static const QString constRatingKey;
-    static const QString constDurationKey;
-    static const QString constNumTracksKey;
-    static const QString constFileKey;
-    static const QString constExactKey;
-    static const QString constExcludeKey;
-    static const QChar constRangeSep;
 
     DynamicPlaylists();
     virtual ~DynamicPlaylists() { }
@@ -95,27 +64,16 @@ public:
     QString name() const;
     QString title() const;
     QString descr() const;
+    bool isDynamic() const { return true; }
+    QVariant data(const QModelIndex &index, int role) const;
     const Icon & icon() const { return icn; }
     bool isRemote() const { return usingRemote; }
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex&) const { return 1; }
-    bool hasChildren(const QModelIndex &parent) const;
-    QModelIndex parent(const QModelIndex &index) const;
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &, int) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    Entry entry(const QString &e);
-    Entry entry(int row) const { return row>=0 && row<entryList.count() ? entryList.at(row) : Entry(); }
-    bool exists(const QString &e) { return entryList.end()!=find(e); }
-    bool save(const Entry &e);
+    bool saveRemote(const QString &string, const Entry &e);
     void del(const QString &name);
     void start(const QString &name);
     void stop(bool sendClear=false);
     void toggle(const QString &name);
     bool isRunning();
-    QString current() const { return currentEntry; }
-    const QList<Entry> & entries() const { return entryList; }
     void helperMessage(const QString &message) {  Q_UNUSED(message) checkHelper(); }
     Action * startAct() const { return startAction; }
     Action * stopAct() const { return stopAction; }
@@ -146,17 +104,11 @@ private:
     void pollRemoteHelper();
     int getPid() const;
     bool controlApp(bool isStart);
-    QList<Entry>::Iterator find(const QString &e);
     bool sendCommand(Command cmd, const QStringList &args=QStringList());
-    void loadLocal();
     void parseRemote(const QStringList &response);
-    void updateEntry(const Entry &e);
 
 private:
-    Icon icn;
     QTimer *localTimer;
-    QList<Entry> entryList;
-    QString currentEntry;
     Action *startAction;
     Action *stopAction;
 

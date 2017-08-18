@@ -310,6 +310,7 @@ public Q_SLOTS:
     void setPriority(const QList<qint32> &ids, quint8 priority, bool decreasePriority);
 
     void search(const QString &field, const QString &value, int id);
+    void search(const QByteArray &query, const QString &id);
 
     void listStreams();
     void saveStream(const QString &url, const QString &name);
@@ -361,6 +362,7 @@ Q_SIGNALS:
     void streamUrl(const QString &url);
 
     void searchResponse(int id, const QList<Song> &songs);
+    void searchResponse(const QString &id, const QList<Song> &songs);
 
     void socketAddress(const QString &addr);
     void cantataStreams(const QStringList &files);

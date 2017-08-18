@@ -7840,6 +7840,23 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
 </context>
 <context>
+    <name>RulesPlaylists</name>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="242"/>
+        <source> - Rating: %1..%2</source>
+        <translation> - Hodnocení: %1...%2</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../playlists/rulesplaylists.cpp" line="242"/>
+        <source>%n Rule(s)</source>
+        <translation>
+            <numerusform>Pravidla: %n</numerusform>
+            <numerusform>Pravidla: %n</numerusform>
+            <numerusform>Pravidla: %n</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>DynamicPlaylists</name>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="163"/>
@@ -7860,20 +7877,6 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../playlists/dynamicplaylists.cpp" line="179"/>
         <source>Dynamically generated playlists</source>
         <translation>Dynamicky tvořené seznamy skladeb</translation>
-    </message>
-    <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="242"/>
-        <source> - Rating: %1..%2</source>
-        <translation> - Hodnocení: %1...%2</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../playlists/dynamicplaylists.cpp" line="242"/>
-        <source>%n Rule(s)</source>
-        <translation>
-            <numerusform>Pravidla: %n</numerusform>
-            <numerusform>Pravidla: %n</numerusform>
-            <numerusform>Pravidla: %n</numerusform>
-        </translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="368"/>

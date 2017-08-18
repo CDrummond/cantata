@@ -440,6 +440,8 @@ sub readRules() {
                         @dates=();
                         @similarArtists=();
                         @genres=();
+                        $isInclude=1;
+                        $ruleMatch="find";
                     } elsif ($key=~ m/^(Rating)/) {
                         my @vals = split("-", $val);
                         if (scalar(@vals)==2) {

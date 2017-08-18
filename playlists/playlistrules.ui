@@ -196,7 +196,7 @@
          </layout>
         </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="labela">
+         <widget class="QLabel" name="numberOfSongsLabel">
           <property name="text">
            <string>Number of songs in play queue:</string>
           </property>

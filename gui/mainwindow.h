@@ -122,7 +122,9 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private:
+    #ifdef Q_OS_MAC
     void addMenuAction(QMenu *menu, QAction *action);
+    #endif
     void setupTrayIcon();
 
 Q_SIGNALS:
@@ -262,7 +264,6 @@ private:
 private Q_SLOTS:
     void init();
     void toggleContext();
-    void toggleMenubar();
     void initMpris();
 
 private:
@@ -271,7 +272,6 @@ private:
     qint32 lastSongId;
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
-    Action *showMenuAction;
     Action *prefAction;
     Action *refreshDbAction;
     Action *doDbRefreshAction;

@@ -50,8 +50,6 @@ void DynamicPlaylists::enableDebug()
     debugEnabled=true;
 }
 
-static const QString constDir=QLatin1String("dynamic");
-static const QString constExtension=QLatin1String(".rules");
 static const QString constActiveRules=QLatin1String("rules");
 static const QString constLockFile=QLatin1String("lock");
 
@@ -123,30 +121,12 @@ QString DynamicPlaylists::toString(Command cmd)
 
 GLOBAL_STATIC(DynamicPlaylists, instance)
 
-const QString DynamicPlaylists::constRuleKey=QLatin1String("Rule");
-const QString DynamicPlaylists::constArtistKey=QLatin1String("Artist");
-const QString DynamicPlaylists::constSimilarArtistsKey=QLatin1String("SimilarArtists");
-const QString DynamicPlaylists::constAlbumArtistKey=QLatin1String("AlbumArtist");
-const QString DynamicPlaylists::constComposerKey=QLatin1String("Composer");
-const QString DynamicPlaylists::constCommentKey=QLatin1String("Comment");
-const QString DynamicPlaylists::constAlbumKey=QLatin1String("Album");
-const QString DynamicPlaylists::constTitleKey=QLatin1String("Title");
-const QString DynamicPlaylists::constGenreKey=QLatin1String("Genre");
-const QString DynamicPlaylists::constDateKey=QLatin1String("Date");
-const QString DynamicPlaylists::constRatingKey=QLatin1String("Rating");
-const QString DynamicPlaylists::constDurationKey=QLatin1String("Duration");
-const QString DynamicPlaylists::constNumTracksKey=QLatin1String("NumTracks");
-const QString DynamicPlaylists::constFileKey=QLatin1String("File");
-const QString DynamicPlaylists::constExactKey=QLatin1String("Exact");
-const QString DynamicPlaylists::constExcludeKey=QLatin1String("Exclude");
-const QChar DynamicPlaylists::constRangeSep=QLatin1Char('-');
-
-const QChar constKeyValSep=QLatin1Char(':');
 const QString constOk=QLatin1String("0");
 const QString constFilename=QLatin1String("FILENAME:");
 
 DynamicPlaylists::DynamicPlaylists()
-    : localTimer(0)
+    : RulesPlaylists("dice", "dynamic")
+    , localTimer(0)
     , usingRemote(false)
     , remoteTimer(0)
     , remotePollingEnabled(false)
@@ -154,8 +134,6 @@ DynamicPlaylists::DynamicPlaylists()
     , currentJob(0)
     , currentCommand(Unknown)
 {
-    icn.addFile(":dice.svg");
-    loadLocal();
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
     connect(MPDConnection::self(), SIGNAL(dynamicSupport(bool)), this, SLOT(remoteDynamicSupported(bool)));
     connect(this, SIGNAL(remoteMessage(QStringList)), MPDConnection::self(), SLOT(sendDynamicMessage(QStringList)));
@@ -180,49 +158,12 @@ QString DynamicPlaylists::descr() const
     return tr("Dynamically generated playlists");
 }
 
-QVariant DynamicPlaylists::headerData(int, Qt::Orientation, int) const
-{
-    return QVariant();
-}
-
-int DynamicPlaylists::rowCount(const QModelIndex &parent) const
-{
-    return parent.isValid() ? 0 : entryList.count();
-}
-
-bool DynamicPlaylists::hasChildren(const QModelIndex &parent) const
-{
-    return !parent.isValid();
-}
-
-QModelIndex DynamicPlaylists::parent(const QModelIndex &) const
-{
-    return QModelIndex();
-}
-
-QModelIndex DynamicPlaylists::index(int row, int column, const QModelIndex &parent) const
-{
-    if (parent.isValid() || !hasIndex(row, column, parent) || row>=entryList.count()) {
-        return QModelIndex();
-    }
-
-    return createIndex(row, column);
-}
-
 #define IS_ACTIVE(E) !currentEntry.isEmpty() && (E)==currentEntry && (!isRemote() || QLatin1String("IDLE")!=lastState)
 
 QVariant DynamicPlaylists::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
-        switch (role) {
-        case Cantata::Role_TitleText:
-            return title();
-        case Cantata::Role_SubText:
-            return descr();
-        case Qt::DecorationRole:
-            return icon();
-        }
-        return QVariant();
+        return RulesPlaylists::data(index, role);
     }
 
     if (index.parent().isValid() || index.row()>=entryList.count()) {
@@ -230,108 +171,25 @@ QVariant DynamicPlaylists::data(const QModelIndex &index, int role) const
     }
 
     switch (role) {
-    case Qt::ToolTipRole:
-        if (!Settings::self()->infoTooltips()) {
-            return QVariant();
-        }
-    case Qt::DisplayRole:
-        return entryList.at(index.row()).name;
     case Qt::DecorationRole:
         return IS_ACTIVE(entryList.at(index.row()).name) ? Icons::self()->replacePlayQueueIcon : Icons::self()->dynamicListIcon;
-    case Cantata::Role_SubText: {
-        const Entry &e=entryList.at(index.row());
-        return tr("%n Rule(s)", "", e.rules.count())+(e.haveRating() ? tr(" - Rating: %1..%2")
-                              .arg((double)e.ratingFrom/Song::Rating_Step).arg((double)e.ratingTo/Song::Rating_Step) : QString());
-    }
     case Cantata::Role_Actions: {
         QVariant v;
         v.setValue<QList<Action *> >(QList<Action *>() << (IS_ACTIVE(entryList.at(index.row()).name) ? stopAction : startAction));
         return v;
     }
     default:
-        return QVariant();
+        return RulesPlaylists::data(index, role);
     }
 }
 
-Qt::ItemFlags DynamicPlaylists::flags(const QModelIndex &index) const
+bool DynamicPlaylists::saveRemote(const QString &string, const Entry &e)
 {
-    if (index.isValid()) {
-        return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-    }
-    return Qt::NoItemFlags;
-}
-
-DynamicPlaylists::Entry DynamicPlaylists::entry(const QString &e)
-{
-    if (!e.isEmpty()) {
-        QList<Entry>::Iterator it=find(e);
-        if (it!=entryList.end()) {
-            return *it;
-        }
-    }
-
-    return Entry();
-}
-
-bool DynamicPlaylists::save(const Entry &e)
-{
-    if (e.name.isEmpty()) {
-        return false;
-    }
-
-    QString string;
-    QTextStream str(&string);
-    if (e.numTracks > 10 && e.numTracks <= 500) {
-        str << constNumTracksKey << constKeyValSep << e.numTracks << '\n';
-    }
-    if (e.ratingFrom!=0 || e.ratingTo!=0) {
-        str << constRatingKey << constKeyValSep << e.ratingFrom << constRangeSep << e.ratingTo << '\n';
-    }
-    if (e.minDuration!=0 || e.maxDuration!=0) {
-        str << constDurationKey << constKeyValSep << e.minDuration << constRangeSep << e.maxDuration << '\n';
-    }
-    foreach (const Rule &rule, e.rules) {
-        if (!rule.isEmpty()) {
-            str << constRuleKey << '\n';
-            Rule::ConstIterator it(rule.constBegin());
-            Rule::ConstIterator end(rule.constEnd());
-            for (; it!=end; ++it) {
-                str << it.key() << constKeyValSep << it.value() << '\n';
-            }
-        }
-    }
-
-    if (isRemote()) {
-        if (sendCommand(Save, QStringList() << e.name << string)) {
-            currentSave=e;
-            return true;
-        }
-        return false;
-    }
-
-    QFile f(Utils::dataDir(constDir, true)+e.name+constExtension);
-    if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
-        QTextStream out(&f);
-        out.setCodec("UTF-8");
-        out << string;
-        updateEntry(e);
+    if (sendCommand(Save, QStringList() << e.name << string)) {
+        currentSave=e;
         return true;
     }
     return false;
-}
-
-void DynamicPlaylists::updateEntry(const Entry &e)
-{
-    QList<DynamicPlaylists::Entry>::Iterator it=find(e.name);
-    if (it!=entryList.end()) {
-        entryList.replace(it-entryList.begin(), e);
-        QModelIndex idx=index(it-entryList.begin(), 0, QModelIndex());
-        emit dataChanged(idx, idx);
-    } else {
-        beginInsertRows(QModelIndex(), entryList.count(), entryList.count());
-        entryList.append(e);
-        endInsertRows();
-    }
 }
 
 void DynamicPlaylists::del(const QString &name)
@@ -340,24 +198,8 @@ void DynamicPlaylists::del(const QString &name)
         if (sendCommand(Del, QStringList() << name)) {
             currentDelete=name;
         }
-        return;
-    }
-
-    QList<DynamicPlaylists::Entry>::Iterator it=find(name);
-    if (it==entryList.end()) {
-        return;
-    }
-    QString fName(Utils::dataDir(constDir, false)+name+constExtension);
-    bool isCurrent=currentEntry==name;
-
-    if (!QFile::exists(fName) || QFile::remove(fName)) {
-        if (isCurrent) {
-            stop();
-        }
-        beginRemoveRows(QModelIndex(), it-entryList.begin(), it-entryList.begin());
-        entryList.erase(it);
-        endRemoveRows();
-        return;
+    } else {
+        RulesPlaylists::del(name);
     }
 }
 
@@ -373,14 +215,14 @@ void DynamicPlaylists::start(const QString &name)
         return;
     }
 
-    QString fName(Utils::dataDir(constDir, false)+name+constExtension);
+    QString fName(Utils::dataDir(rulesDir, false)+name+constExtension);
 
     if (!QFile::exists(fName)) {
         emit error(tr("Failed to locate rules file - %1").arg(fName));
         return;
     }
 
-    QString rules(Utils::cacheDir(constDir, true)+constActiveRules);
+    QString rules(Utils::cacheDir(rulesDir, true)+constActiveRules);
 
     QFile::remove(rules);
     if (QFile::exists(rules)) {
@@ -505,7 +347,7 @@ void DynamicPlaylists::enableRemotePolling(bool e)
 
 int DynamicPlaylists::getPid() const
 {
-    QFile pidFile(Utils::cacheDir(constDir, false)+constLockFile);
+    QFile pidFile(Utils::cacheDir(rulesDir, false)+constLockFile);
 
     if (pidFile.open(QIODevice::ReadOnly|QIODevice::Text)) {
         QTextStream str(&pidFile);
@@ -538,85 +380,6 @@ bool DynamicPlaylists::controlApp(bool isStart)
     bool rv=process.waitForFinished(1000);
     localTimer->start(1000);
     return rv;
-}
-
-QList<DynamicPlaylists::Entry>::Iterator DynamicPlaylists::find(const QString &e)
-{
-    QList<DynamicPlaylists::Entry>::Iterator it(entryList.begin());
-    QList<DynamicPlaylists::Entry>::Iterator end(entryList.end());
-
-    for (; it!=end; ++it) {
-        if ((*it).name==e) {
-            break;
-        }
-    }
-    return it;
-}
-
-void DynamicPlaylists::loadLocal()
-{
-    beginResetModel();
-    entryList.clear();
-    currentEntry=QString();
-
-    // Load all current enttries...
-    QString dirName=Utils::dataDir(constDir);
-    QDir d(dirName);
-    if (d.exists()) {
-        QStringList rulesFiles=d.entryList(QStringList() << QChar('*')+constExtension);
-        foreach (const QString &rf, rulesFiles) {
-            QFile f(dirName+rf);
-            if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
-                QStringList keys=QStringList() << constArtistKey << constSimilarArtistsKey << constAlbumArtistKey << constDateKey
-                                               << constExactKey << constAlbumKey << constTitleKey << constGenreKey << constFileKey << constExcludeKey;
-
-                Entry e;
-                e.name=rf.left(rf.length()-constExtension.length());
-                Rule r;
-                QTextStream in(&f);
-                in.setCodec("UTF-8");
-                QStringList lines = in.readAll().split('\n', QString::SkipEmptyParts);
-                foreach (const QString &line, lines) {
-                    QString str=line.trimmed();
-
-                    if (str.isEmpty() || str.startsWith('#')) {
-                        continue;
-                    }
-
-                    if (str==constRuleKey) {
-                        if (!r.isEmpty()) {
-                            e.rules.append(r);
-                            r.clear();
-                        }
-                    } else if (str.startsWith(constRatingKey+constKeyValSep)) {
-                        QStringList vals=str.mid(constRatingKey.length()+1).split(constRangeSep);
-                        if (2==vals.count()) {
-                            e.ratingFrom=vals.at(0).toUInt();
-                            e.ratingTo=vals.at(1).toUInt();
-                        }
-                    } else if (str.startsWith(constDurationKey+constKeyValSep)) {
-                        QStringList vals=str.mid(constDurationKey.length()+1).split(constRangeSep);
-                        if (2==vals.count()) {
-                            e.minDuration=vals.at(0).toUInt();
-                            e.maxDuration=vals.at(1).toUInt();
-                        }
-                    } else {
-                        foreach (const QString &k, keys) {
-                            if (str.startsWith(k+constKeyValSep)) {
-                                r.insert(k, str.mid(k.length()+1));
-                            }
-                        }
-                    }
-                }
-                if (!r.isEmpty()) {
-                    e.rules.append(r);
-                    r.clear();
-                }
-                entryList.append(e);
-            }
-        }
-    }
-    endResetModel();
 }
 
 void DynamicPlaylists::parseRemote(const QStringList &response)
@@ -806,7 +569,7 @@ void DynamicPlaylists::checkHelper()
             }
         } else { // No timer => app startup!
             // Attempt to read current name...
-            QFileInfo inf(Utils::cacheDir(constDir, false)+constActiveRules);
+            QFileInfo inf(Utils::cacheDir(rulesDir, false)+constActiveRules);
 
             if (inf.exists() && inf.isSymLink()) {
                 QString link=inf.readLink();

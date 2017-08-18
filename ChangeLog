@@ -17,6 +17,7 @@
 11. In playlists page, internet, etc, allow back navigation to go fully back.
 12. Don't try to seek if no song loaded.
 13. Only use menubar for macOS builds.
+14. Smart playlists - like dynamic, but do not auto update.
 
 2.1.0
 -----

@@ -67,6 +67,11 @@ namespace MPDParseUtils
         Cue_Count
     };
 
+    struct Sticker {
+        QByteArray file;
+        QByteArray value;
+    };
+
     extern QString toStr(CueSupport cs);
     extern CueSupport toCueSupport(const QString &cs);
     extern void setCueFileSupport(CueSupport cs);
@@ -85,6 +90,7 @@ namespace MPDParseUtils
     extern void parseDirItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songList, const QString &dir, QStringList &subDirs, Location loc);
     extern QList<Output> parseOuputs(const QByteArray &data);
     extern QByteArray parseSticker(const QByteArray &data, const QByteArray &sticker);
+    extern QList<Sticker> parseStickers(const QByteArray &data, const QByteArray &sticker);
     extern QString addStreamName(const QString &url, const QString &name);
     extern QString getStreamName(const QString &url);
     extern QString getAndRemoveStreamName(QString &url);

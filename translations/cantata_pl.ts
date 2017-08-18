@@ -7850,15 +7850,33 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>DockMenu</name>
     <message>
-        <location filename="../mac/dockmenu.cpp" line="33"/>
-        <location filename="../mac/dockmenu.cpp" line="43"/>
-        <source>Play</source>
-        <translation>Odtwarzaj</translation>
+        <location filename="../playlists/rulesplaylists.cpp" line="242"/>
+        <source> - Rating: %1..%2</source>
+        <translation> - Ocena: %1..%2</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../playlists/rulesplaylists.cpp" line="242"/>
+        <source>%n Rule(s)</source>
+        <translation>
+            <numerusform>1 Reguła</numerusform>
+            <numerusform>%n Reguły</numerusform>
+            <numerusform>%n Reguł</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>RulesPlaylists</name>
     <message>
-        <location filename="../mac/dockmenu.cpp" line="43"/>
-        <source>Pause</source>
-        <translation>Wstrzymaj</translation>
+        <location filename="../playlists/rulesplaylists.cpp" line="242"/>
+        <source> - Rating: %1..%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../playlists/rulesplaylists.cpp" line="242"/>
+        <source>%n Rule(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -7882,20 +7900,6 @@ Ta operacja nie może być cofnięta.</translation>
         <location filename="../playlists/dynamicplaylists.cpp" line="179"/>
         <source>Dynamically generated playlists</source>
         <translation>Dynamicznie generowane playlisty</translation>
-    </message>
-    <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="242"/>
-        <source> - Rating: %1..%2</source>
-        <translation> - Ocena: %1..%2</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../playlists/dynamicplaylists.cpp" line="242"/>
-        <source>%n Rule(s)</source>
-        <translation>
-            <numerusform>1 Reguła</numerusform>
-            <numerusform>%n Reguły</numerusform>
-            <numerusform>%n Reguł</numerusform>
-        </translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="368"/>

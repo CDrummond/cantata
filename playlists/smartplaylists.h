@@ -21,34 +21,30 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef PLAYLISTS_PAGE_H
-#define PLAYLISTS_PAGE_H
+#ifndef SMART_PLAYLISTS_H
+#define SMART_PLAYLISTS_H
 
-#include "widgets/multipagewidget.h"
+#include <QIcon>
+#include "rulesplaylists.h"
 
-class Action;
-class StoredPlaylistsPage;
-class DynamicPlaylistsPage;
-class SmartPlaylistsPage;
-
-class PlaylistsPage : public MultiPageWidget
+class SmartPlaylists : public RulesPlaylists
 {
     Q_OBJECT
+
 public:
-    PlaylistsPage(QWidget *p);
-    virtual ~PlaylistsPage();
+    static SmartPlaylists * self();
 
-    #ifdef ENABLE_DEVICES_SUPPORT
-    void addSelectionToDevice(const QString &udi);
-    #endif
+    SmartPlaylists();
+    virtual ~SmartPlaylists() { }
 
-Q_SIGNALS:
-    void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
+    QString name() const;
+    QString title() const;
+    QString descr() const;
+    QVariant data(const QModelIndex &index, int role) const;
+    int maxTracks() const { return 10000; }
 
 private:
-    StoredPlaylistsPage *stored;
-    DynamicPlaylistsPage *dynamic;
-    SmartPlaylistsPage *smart;
+    QIcon playlistIcon;
 };
 
 #endif

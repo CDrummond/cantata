@@ -60,35 +60,35 @@ public:
 
 static QString translateStr(const QString &key)
 {
-    if (DynamicPlaylists::constArtistKey==key) {
+    if (RulesPlaylists::constArtistKey==key) {
         return QObject::tr("Artist");
-    } else if (DynamicPlaylists::constSimilarArtistsKey==key) {
+    } else if (RulesPlaylists::constSimilarArtistsKey==key) {
         return QObject::tr("SimilarArtists");
-    } else if (DynamicPlaylists::constAlbumArtistKey==key) {
+    } else if (RulesPlaylists::constAlbumArtistKey==key) {
         return QObject::tr("AlbumArtist");
-    } else if (DynamicPlaylists::constComposerKey==key) {
+    } else if (RulesPlaylists::constComposerKey==key) {
         return QObject::tr("Composer");
-    } else if (DynamicPlaylists::constCommentKey==key) {
+    } else if (RulesPlaylists::constCommentKey==key) {
         return QObject::tr("Comment");
-    } else if (DynamicPlaylists::constAlbumKey==key) {
+    } else if (RulesPlaylists::constAlbumKey==key) {
         return QObject::tr("Album");
-    } else if (DynamicPlaylists::constTitleKey==key) {
+    } else if (RulesPlaylists::constTitleKey==key) {
         return QObject::tr("Title");
-    } else if (DynamicPlaylists::constGenreKey==key) {
+    } else if (RulesPlaylists::constGenreKey==key) {
         return QObject::tr("Genre");
-    } else if (DynamicPlaylists::constDateKey==key) {
+    } else if (RulesPlaylists::constDateKey==key) {
         return QObject::tr("Date");
-    } else if (DynamicPlaylists::constFileKey==key) {
+    } else if (RulesPlaylists::constFileKey==key) {
         return QObject::tr("File");
     } else {
         return key;
     }
 }
 
-static void update(QStandardItem *i, const DynamicPlaylists::Rule &rule)
+static void update(QStandardItem *i, const RulesPlaylists::Rule &rule)
 {
-    DynamicPlaylists::Rule::ConstIterator it(rule.constBegin());
-    DynamicPlaylists::Rule::ConstIterator end(rule.constEnd());
+    RulesPlaylists::Rule::ConstIterator it(rule.constBegin());
+    RulesPlaylists::Rule::ConstIterator end(rule.constEnd());
     QMap<QString, QVariant> v;
     QString str;
     QString type=QObject::tr("Include");
@@ -96,12 +96,12 @@ static void update(QStandardItem *i, const DynamicPlaylists::Rule &rule)
     bool include=true;
 
     for (int count=0; it!=end; ++it, ++count) {
-        if (DynamicPlaylists::constExcludeKey==it.key()) {
+        if (RulesPlaylists::constExcludeKey==it.key()) {
             if (QLatin1String("true")==it.value()) {
                 type=QObject::tr("Exclude");
                 include=false;
             }
-        } else if (DynamicPlaylists::constExactKey==it.key()) {
+        } else if (RulesPlaylists::constExactKey==it.key()) {
             if (QLatin1String("false")==it.value()) {
                 exact=false;
             }
@@ -129,8 +129,9 @@ static void update(QStandardItem *i, const DynamicPlaylists::Rule &rule)
     i->setFlags(Qt::ItemIsSelectable| Qt::ItemIsEnabled);
 }
 
-PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent)
+PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
     : Dialog(parent, "PlaylistRulesDialog")
+    , rules(m)
     , dlg(0)
 {
     QWidget *mainWidet = new QWidget(this);
@@ -138,7 +139,7 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent)
     setMainWidget(mainWidet);
     setButtons(Ok|Cancel);
     enableButton(Ok, false);
-    setCaption(tr("Dynamic Rules"));
+    setCaption(rules->isDynamic() ? tr("Dynamic Rules") : tr("Smart Rules"));
     setAttribute(Qt::WA_DeleteOnClose);
     connect(addBtn, SIGNAL(clicked()), SLOT(add()));
     connect(editBtn, SIGNAL(clicked()), SLOT(edit()));
@@ -146,7 +147,9 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent)
     connect(rulesList, SIGNAL(itemsSelected(bool)), SLOT(controlButtons()));
     connect(nameText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(aboutLabel, SIGNAL(leftClickedUrl()), this, SLOT(showAbout()));
-    connect(DynamicPlaylists::self(), SIGNAL(saved(bool)), SLOT(saved(bool)));
+    if (rules->isDynamic()) {
+        connect(rules, SIGNAL(saved(bool)), SLOT(saved(bool)));
+    }
 
     messageWidget->setVisible(false);
     model=new QStandardItemModel(this);
@@ -159,12 +162,20 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent)
     minDuration->setSpecialValueText(tr("No Limit"));
     maxDuration->setSpecialValueText(tr("No Limit"));
 
+    numTracks->setMinimum(rules->minTracks());
+    numTracks->setMaximum(rules->maxTracks());
+
     controlButtons();
     resize(500, 240);
 
+    if (!rules->isDynamic()) {
+        nameText->setPlaceholderText(tr("Name of Smart Rules"));
+        numberOfSongsLabel->setText(tr("Number of songs"));
+    }
+
     static bool registered=false;
     if (!registered) {
-        qRegisterMetaType<DynamicPlaylists::Rule>("Dynamic::Rule");
+        qRegisterMetaType<RulesPlaylists::Rule>("RulesPlaylists::Rule");
         registered=true;
     }
 }
@@ -175,12 +186,12 @@ PlaylistRulesDialog::~PlaylistRulesDialog()
 
 void PlaylistRulesDialog::edit(const QString &name)
 {
-    DynamicPlaylists::Entry e=DynamicPlaylists::self()->entry(name);
+    RulesPlaylists::Entry e=rules->entry(name);
     if (model->rowCount()) {
         model->removeRows(0, model->rowCount());
     }
     nameText->setText(name);
-    foreach (const DynamicPlaylists::Rule &r, e.rules) {
+    foreach (const RulesPlaylists::Rule &r, e.rules) {
         QStandardItem *item = new QStandardItem();
         ::update(item, r);
         model->setItem(model->rowCount(), 0, item);
@@ -229,13 +240,13 @@ void PlaylistRulesDialog::controlButtons()
 void PlaylistRulesDialog::add()
 {
     if (!dlg) {
-        dlg=new PlaylistRuleDialog(this);
-        connect(dlg, SIGNAL(addRule(const DynamicPlaylists::Rule&)), SLOT(addRule(const DynamicPlaylists::Rule&)));
+        dlg=new PlaylistRuleDialog(this, rules->isDynamic());
+        connect(dlg, SIGNAL(addRule(const RulesPlaylists::Rule&)), SLOT(addRule(const RulesPlaylists::Rule&)));
     }
     dlg->createNew();
 }
 
-void PlaylistRulesDialog::addRule(const DynamicPlaylists::Rule &rule)
+void PlaylistRulesDialog::addRule(const RulesPlaylists::Rule &rule)
 {
     QStandardItem *item = new QStandardItem();
     ::update(item, rule);
@@ -255,12 +266,12 @@ void PlaylistRulesDialog::edit()
         return;
     }
     if (!dlg) {
-        dlg=new PlaylistRuleDialog(this);
-        connect(dlg, SIGNAL(addRule(const DynamicPlaylists::Rule&)), SLOT(addRule(const DynamicPlaylists::Rule&)));
+        dlg=new PlaylistRuleDialog(this, rules->isDynamic());
+        connect(dlg, SIGNAL(addRule(const RulesPlaylists::Rule&)), SLOT(addRule(const RulesPlaylists::Rule&)));
     }
     QModelIndex index=proxy->mapToSource(items.at(0));
     QStandardItem *item=model->itemFromIndex(index);
-    DynamicPlaylists::Rule rule;
+    RulesPlaylists::Rule rule;
     QMap<QString, QVariant> v=item->data().toMap();
     QMap<QString, QVariant>::ConstIterator it(v.constBegin());
     QMap<QString, QVariant>::ConstIterator end(v.constEnd());
@@ -291,23 +302,41 @@ void PlaylistRulesDialog::remove()
 
 void PlaylistRulesDialog::showAbout()
 {
-    MessageBox::information(this,
-                         #ifdef Q_OS_MAC
-                         tr("About dynamic rules")+QLatin1String("<br/><br/>")+
-                         #endif
-                         tr("<p>Cantata will query your library using all of the rules listed. "
-                              "The list of <i>Include</i> rules will be used to build a set of songs that can be used. "
-                              "The list of <i>Exclude</i> rules will be used to build a set of songs that cannot be used. "
-                              "If there are no <i>Include</i> rules, Cantata will assume that all songs (bar those from <i>Exclude</i>) can be used.</p>"
-                              "<p>e.g. to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', you would need the following: "
-                              "<ul><li>Include AlbumArtist=Wibble Genre=Rock</li><li>Include AlbumArtist=Various Artists</li></ul> "
-                              "To have Cantata look for 'Songs by Wibble but not from album Abc', you would need the following: "
-                              "<ul><li>Include AlbumArtist=Wibble</li><li>Exclude AlbumArtist=Wibble Album=Abc</li></ul>"
-                              "After the set of usable songs has been created, Cantata will randomly select songs to "
-                              "keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then "
-                              "only songs with a rating within this range will be used. Likewise, if a duration has been set.</p>")
-                        );
-
+    if (rules->isDynamic()) {
+        MessageBox::information(this,
+                                #ifdef Q_OS_MAC
+                                tr("About dynamic rules")+QLatin1String("<br/><br/>")+
+                                #endif
+                                tr("<p>Cantata will query your library using all of the rules listed. "
+                                   "The list of <i>Include</i> rules will be used to build a set of songs that can be used. "
+                                   "The list of <i>Exclude</i> rules will be used to build a set of songs that cannot be used. "
+                                   "If there are no <i>Include</i> rules, Cantata will assume that all songs (bar those from <i>Exclude</i>) can be used.</p>"
+                                   "<p>e.g. to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', you would need the following: "
+                                   "<ul><li>Include AlbumArtist=Wibble Genre=Rock</li><li>Include AlbumArtist=Various Artists</li></ul> "
+                                   "To have Cantata look for 'Songs by Wibble but not from album Abc', you would need the following: "
+                                   "<ul><li>Include AlbumArtist=Wibble</li><li>Exclude AlbumArtist=Wibble Album=Abc</li></ul>"
+                                   "After the set of usable songs has been created, Cantata will randomly select songs to "
+                                   "keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then "
+                                   "only songs with a rating within this range will be used. Likewise, if a duration has been set.</p>")
+                                );
+    } else {
+        MessageBox::information(this,
+                                #ifdef Q_OS_MAC
+                                tr("About smart rules")+QLatin1String("<br/><br/>")+
+                                #endif
+                                tr("<p>Cantata will query your library using all of the rules listed. "
+                                   "The list of <i>Include</i> rules will be used to build a set of songs that can be used. "
+                                   "The list of <i>Exclude</i> rules will be used to build a set of songs that cannot be used. "
+                                   "If there are no <i>Include</i> rules, Cantata will assume that all songs (bar those from <i>Exclude</i>) can be used.</p>"
+                                   "<p>e.g. to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', you would need the following: "
+                                   "<ul><li>Include AlbumArtist=Wibble Genre=Rock</li><li>Include AlbumArtist=Various Artists</li></ul> "
+                                   "To have Cantata look for 'Songs by Wibble but not from album Abc', you would need the following: "
+                                   "<ul><li>Include AlbumArtist=Wibble</li><li>Exclude AlbumArtist=Wibble Album=Abc</li></ul>"
+                                   "After the set of usable songs has been created, Cantata will add the desired number of songs to "
+                                   "the play queue. If a range of ratings has been specified, then "
+                                   "only songs with a rating within this range will be used. Likewise, if a duration has been set.</p>")
+                                );
+    }
 }
 
 void PlaylistRulesDialog::saved(bool s)
@@ -332,13 +361,13 @@ bool PlaylistRulesDialog::save()
         return false;
     }
 
-    if (name!=origName && DynamicPlaylists::self()->exists(name) &&
+    if (name!=origName && rules->exists(name) &&
         MessageBox::No==MessageBox::warningYesNo(this, tr("A set of rules named '%1' already exists!\n\nOverwrite?").arg(name),
                                                   tr("Overwrite Rules"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
         return false;
     }
 
-    DynamicPlaylists::Entry entry;
+    RulesPlaylists::Entry entry;
     entry.name=name;
     int from=ratingFrom->value();
     int to=ratingTo->value();
@@ -361,7 +390,7 @@ bool PlaylistRulesDialog::save()
             QMap<QString, QVariant> v=itm->data().toMap();
             QMap<QString, QVariant>::ConstIterator it(v.constBegin());
             QMap<QString, QVariant>::ConstIterator end(v.constEnd());
-            DynamicPlaylists::Rule rule;
+            RulesPlaylists::Rule rule;
             for (; it!=end; ++it) {
                 rule.insert(it.key(), it.value().toString());
             }
@@ -369,9 +398,9 @@ bool PlaylistRulesDialog::save()
         }
     }
 
-    bool saved=DynamicPlaylists::self()->save(entry);
+    bool saved=rules->save(entry);
 
-    if (DynamicPlaylists::self()->isRemote()) {
+    if (rules->isRemote()) {
         if (saved) {
             messageWidget->setInformation(tr("Saving %1").arg(name));
             controls->setEnabled(false);
@@ -380,7 +409,7 @@ bool PlaylistRulesDialog::save()
         return false;
     } else {
         if (saved && !origName.isEmpty() && entry.name!=origName) {
-            DynamicPlaylists::self()->del(origName);
+            rules->del(origName);
         }
         return saved;
     }

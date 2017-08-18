@@ -1830,6 +1830,54 @@ void MPDConnection::search(const QString &field, const QString &value, int id)
     emit searchResponse(id, songs);
 }
 
+void MPDConnection::search(const QByteArray &query, const QString &id)
+{
+    QList<Song> songs;
+    if (query.isEmpty()) {
+        Response response=sendCommand("list albumartist", false, false);
+        if (response.ok) {
+            QList<QByteArray> lines = response.data.split('\n');
+            foreach (const QByteArray &line, lines) {
+                if (line.startsWith("AlbumArtist: ")) {
+                    Response resp = sendCommand("find albumartist " + encodeName(QString::fromUtf8(line.mid(13))) , false, false);
+                    if (resp.ok) {
+                        songs += MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Search);
+                    }
+                }
+            }
+        }
+    } else if (query.startsWith("RATING:")) {
+        QList<QByteArray> parts = query.split(':');
+        if (3==parts.length()) {
+            Response response=sendCommand("sticker find song \"\" rating", false, false);
+            if (response.ok) {
+                int min = parts.at(1).toInt();
+                int max = parts.at(2).toInt();
+                QList<MPDParseUtils::Sticker> stickers=MPDParseUtils::parseStickers(response.data, constRatingSticker);
+                if (!stickers.isEmpty()) {
+                    foreach (const MPDParseUtils::Sticker &sticker, stickers) {
+                        if (!sticker.file.isEmpty() && !sticker.value.isEmpty()) {
+                            int val = sticker.value.toInt();
+                            if (val>=min && val<=max) {
+                                Response resp = sendCommand("find file " + encodeName(QString::fromUtf8(sticker.file)) , false, false);
+                                if (resp.ok) {
+                                    songs.append(MPDParseUtils::parseSong(response.data, MPDParseUtils::Loc_Search));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        Response response=sendCommand(query);
+        if (response.ok) {
+            songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Search);
+        }
+    }
+    emit searchResponse(id, songs);
+}
+
 void MPDConnection::listStreams()
 {
     Response response=sendCommand("listplaylistinfo "+encodeName(constStreamsPlayListName), false);

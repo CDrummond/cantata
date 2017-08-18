@@ -45,13 +45,17 @@ bool PlaylistProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sour
         return true;
     }
 
-    DynamicPlaylists::Entry item = DynamicPlaylists::self()->entry(sourceRow);
-    foreach (const DynamicPlaylists::Rule & r, item.rules) {
-        DynamicPlaylists::Rule::ConstIterator it=r.constBegin();
-        DynamicPlaylists::Rule::ConstIterator end=r.constEnd();
-        for (; it!=end; ++it) {
-            if (matchesFilter(QStringList() << it.value())) {
-                return true;
+    RulesPlaylists *rules = qobject_cast<RulesPlaylists *>(sourceModel());
+
+    if (rules) {
+        RulesPlaylists::Entry item = rules->entry(sourceRow);
+        foreach (const RulesPlaylists::Rule & r, item.rules) {
+            RulesPlaylists::Rule::ConstIterator it=r.constBegin();
+            RulesPlaylists::Rule::ConstIterator end=r.constEnd();
+            for (; it!=end; ++it) {
+                if (matchesFilter(QStringList() << it.value())) {
+                    return true;
+                }
             }
         }
     }

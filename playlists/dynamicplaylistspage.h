@@ -21,8 +21,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DYNAMICPAGE_H
-#define DYNAMICPAGE_H
+#ifndef DYNAMIC_RULES_PAGE_H
+#define DYNAMIC_RULES_PAGE_H
 
 #include "widgets/singlepagewidget.h"
 #include "playlistproxymodel.h"

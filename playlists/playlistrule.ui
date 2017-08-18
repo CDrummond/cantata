@@ -58,7 +58,7 @@
       <widget class="CompletionCombo" name="artistText"/>
      </item>
      <item row="2" column="0">
-      <widget class="BuddyLabel" name="similarArtistsText_label">
+      <widget class="BuddyLabel" name="similarArtistsTextLabel">
        <property name="text">
         <string>Artists similar to:</string>
        </property>

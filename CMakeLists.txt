@@ -209,10 +209,8 @@ find_package(Qt5Concurrent REQUIRED)
 find_package(Qt5Svg REQUIRED)
 find_package(Qt5Sql REQUIRED)
 
-if (${Qt5Widgets_VERSION} VERSION_GREATER "5.6.99")
-    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
-    set(CMAKE_CXX_STANDARD "11")
-endif ()
+set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_STANDARD 11)
 
 set(QTCORELIBS ${Qt5Core_LIBRARIES})
 set(QTNETWORKLIBS ${Qt5Network_LIBRARIES})
@@ -330,7 +328,8 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     mpd-interface/song.cpp mpd-interface/cuefile.cpp
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
     playlists/dynamicplaylists.cpp playlists/playlistproxymodel.cpp playlists/dynamicplaylistspage.cpp playlists/playlistruledialog.cpp
-    playlists/playlistrulesdialog.cpp playlists/playlistspage.cpp playlists/storedplaylistspage.cpp
+    playlists/playlistrulesdialog.cpp playlists/playlistspage.cpp playlists/storedplaylistspage.cpp playlists/rulesplaylists.cpp
+    playlists/smartplaylists.cpp playlists/smartplaylistspage.cpp
     online/onlineservicespage.cpp online/onlinedbservice.cpp online/jamendoservice.cpp online/onlinedbwidget.cpp online/onlineservice.cpp
     online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp
     online/onlinesearchwidget.cpp online/podcastservice.cpp online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp
@@ -367,7 +366,8 @@ set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
     online/onlinesearchservice.h
     db/onlinedb.h
     playlists/dynamicplaylists.h playlists/playlistruledialog.h playlists/dynamicplaylistspage.h playlists/playlistrulesdialog.h
-    playlists/playlistspage.h playlists/storedplaylistspage.h
+    playlists/playlistspage.h playlists/storedplaylistspage.h playlists/rulesplaylists.h playlists/smartplaylists.h
+    playlists/smartplaylistspage.h
     scrobbling/scrobbler.h scrobbling/scrobblingsettings.h scrobbling/scrobblingstatus.h scrobbling/scrobblinglove.h)
 set(CANTATA_UIS ${CANTATA_UIS}
     gui/initialsettingswizard.ui gui/mainwindow.ui

@@ -25,10 +25,10 @@
 #define INPUT_DIALOG_H
 
 #include <QLineEdit>
+#include <QSpinBox>
 #include <QWidget>
 #include "dialog.h"
 
-class QSpinBox;
 class LineEdit;
 
 class InputDialog : public Dialog

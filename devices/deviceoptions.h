@@ -71,7 +71,9 @@ struct DeviceOptions {
                 && coverMaxSize==o.coverMaxSize && coverName==o.coverName && name==o.name
                 && fixVariousArtists==o.fixVariousArtists && useCache==o.useCache &&
                 transcoderCodec==o.transcoderCodec && autoScan==o.autoScan && volumeId==o.volumeId &&
-                (transcoderCodec.isEmpty() || (transcoderValue==o.transcoderValue && transcoderWhenDifferent==o.transcoderWhenDifferent))
+                (transcoderCodec.isEmpty() ||
+                 (transcoderValue==o.transcoderValue && transcoderWhenDifferent==o.transcoderWhenDifferent &&
+                  transcoderWhenSourceIsLosssless==o.transcoderWhenSourceIsLosssless))
                 #endif
                 ;
     }
@@ -98,6 +100,7 @@ struct DeviceOptions {
     QString transcoderCodec;
     int transcoderValue;
     bool transcoderWhenDifferent;
+    bool transcoderWhenSourceIsLosssless;
     bool useCache;
     bool autoScan;
     QString name;

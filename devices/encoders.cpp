@@ -371,7 +371,7 @@ QString Encoder::changeExtension(const QString &file)
 
 bool Encoder::isDifferent(const QString &file)
 {
-    return file!=changeExtension(file);
+    return file.toLower()!=changeExtension(file).toLower();
 }
 
 QStringList Encoder::params(int value, const QString &in, const QString &out) const

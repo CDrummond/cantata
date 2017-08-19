@@ -1325,42 +1325,48 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
         return;
     }
     currentSong=s;
+
+    Encoders::Encoder encoder;
+
     if (!opts.transcoderCodec.isEmpty()) {
-        Encoders::Encoder encoder=Encoders::getEncoder(opts.transcoderCodec);
+        encoder=Encoders::getEncoder(opts.transcoderCodec);
         if (encoder.codec.isEmpty()) {
             emit actionStatus(CodecNotAvailable);
             return;
         }
+    }
 
-        if (!opts.transcoderWhenDifferent || encoder.isDifferent(s.file)) {
+    transcoding = !opts.transcoderCodec.isEmpty() &&
+                     (!opts.transcoderWhenDifferent || encoder.isDifferent(s.file)) &&
+                     (!opts.transcoderWhenSourceIsLosssless || Device::isLossless(s.file));
+
+    if (transcoding) {
+        deleteTemp();
+        tempFile=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX."+encoder.extension);
+        tempFile->setAutoRemove(false);
+
+        if (!tempFile->open()) {
             deleteTemp();
-            tempFile=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX."+encoder.extension);
-            tempFile->setAutoRemove(false);
-
-            if (!tempFile->open()) {
-                deleteTemp();
-                emit actionStatus(FailedToCreateTempFile);
-                return;
-            }
-            QString destFile=tempFile->fileName();
-            tempFile->close();
-            if (QFile::exists(destFile)) {
-                QFile::remove(destFile);
-            }
-            transcoding=true;
-            TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, destFile);
-            job->setProperty("overwrite", overwrite);
-            job->setProperty("copyCover", copyCover);
-            connect(job, SIGNAL(result(int)), SLOT(transcodeSongResult(int)));
-            connect(job, SIGNAL(percent(int)), SLOT(transcodePercent(int)));
-            job->start();
-            currentSong.setExtraField(constOrigFileName, currentSong.file);
-            currentSong.file=destFile;
+            emit actionStatus(FailedToCreateTempFile);
             return;
         }
+        QString destFile=tempFile->fileName();
+        tempFile->close();
+        if (QFile::exists(destFile)) {
+            QFile::remove(destFile);
+        }
+        transcoding=true;
+        TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, destFile);
+        job->setProperty("overwrite", overwrite);
+        job->setProperty("copyCover", copyCover);
+        connect(job, SIGNAL(result(int)), SLOT(transcodeSongResult(int)));
+        connect(job, SIGNAL(percent(int)), SLOT(transcodePercent(int)));
+        job->start();
+        currentSong.setExtraField(constOrigFileName, currentSong.file);
+        currentSong.file=destFile;
+    } else {
+        emit putSong(currentSong, needToFixVa, opts, overwrite, copyCover);
     }
-    transcoding=false;
-    emit putSong(currentSong, needToFixVa, opts, overwrite, copyCover);
 }
 
 void MtpDevice::copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover)

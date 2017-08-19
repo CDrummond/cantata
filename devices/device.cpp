@@ -286,6 +286,18 @@ QTemporaryFile * Device::copySongToTemp(Song &song)
     return temp;
 }
 
+bool Device::isLossless(const QString &file)
+{
+    static QStringList lossless=QStringList() << ".flac" << ".wav"; // TODO: ALAC?? Its in .m4a!!!
+    QString lower = file.toLower();
+    for (const auto &e: lossless) {
+        if (lower.endsWith(e)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 Device::Device(MusicLibraryModel *m, Solid::Device &dev, bool albumArtistSupport, bool flat)
     : MusicLibraryItemRoot(dev.product().startsWith(dev.vendor()) ? dev.product() : (dev.vendor()+QChar(' ')+dev.product()), albumArtistSupport, flat)
     , configured(false)

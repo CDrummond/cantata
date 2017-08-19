@@ -56,6 +56,7 @@ public:
     static bool fixVariousArtists(const QString &file, Song &song, bool applyFix);
     static void embedCover(const QString &file, Song &song, unsigned int coverMaxSize);
     static QTemporaryFile * copySongToTemp(Song &song);
+    static bool isLossless(const QString &file);
     #endif
     static void moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile);
     static void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);

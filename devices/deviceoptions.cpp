@@ -195,6 +195,7 @@ DeviceOptions::DeviceOptions()
     , fixVariousArtists(false)
     , transcoderValue(0)
     , transcoderWhenDifferent(false)
+    , transcoderWhenSourceIsLosssless(false)
     , useCache(true)
     , autoScan(false)
     , coverName(cvrName)
@@ -213,6 +214,7 @@ static const QLatin1String constSpacesKey("replaceSpaces");
 static const QLatin1String constTransCodecKey("transcoderCodec");
 static const QLatin1String constTransValKey("transcoderValue");
 static const QLatin1String constTransIfDiffKey("transcoderWhenDifferent");
+static const QLatin1String constTransIfLosslessKey("transcoderWhenSourceIsLosssless");
 #endif
 static const QLatin1String constUseCacheKey("useCache");
 static const QLatin1String constFixVaKey("fixVariousArtists");
@@ -249,6 +251,7 @@ void DeviceOptions::load(const QString &group, bool isMpd)
             transcoderCodec=mpdGrp.get(constTransCodecKey, (isMpd ? "lame" : transcoderCodec));
             transcoderValue=mpdGrp.get(constTransValKey, (isMpd ? 2 : transcoderValue));
             transcoderWhenDifferent=mpdGrp.get(constTransIfDiffKey, transcoderWhenDifferent);
+            transcoderWhenSourceIsLosssless=mpdGrp.get(constTransIfLosslessKey, transcoderWhenSourceIsLosssless);
             #endif
             // Save these settings into new group, [mpd] is left for other connections...
             save(group, true, true, true);
@@ -272,6 +275,7 @@ void DeviceOptions::load(const QString &group, bool isMpd)
         transcoderCodec=cfg.get(constTransCodecKey, (isMpd ? "lame" : transcoderCodec));
         transcoderValue=cfg.get(constTransValKey, (isMpd ? 2 : transcoderValue));
         transcoderWhenDifferent=cfg.get(constTransIfDiffKey, transcoderWhenDifferent);
+        transcoderWhenSourceIsLosssless=cfg.get(constTransIfLosslessKey, transcoderWhenSourceIsLosssless);
         #endif
     }
 }
@@ -300,6 +304,7 @@ void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans, bool 
         cfg.set(constTransCodecKey, transcoderCodec);
         cfg.set(constTransValKey, transcoderValue);
         cfg.set(constTransIfDiffKey, transcoderWhenDifferent);
+        cfg.set(constTransIfLosslessKey, transcoderWhenSourceIsLosssless);
     }
     #else
     Q_UNUSED(isMpd)

@@ -19,6 +19,8 @@
 13. Only use menubar for macOS builds.
 14. Smart playlists - like dynamic, but do not auto update.
 15. Use em-dash to as separator.
+16. Add device option to only transcode if source is FLAC or WAV (detection is
+    solely extension based).
 
 2.1.0
 -----

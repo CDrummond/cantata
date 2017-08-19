@@ -212,10 +212,13 @@ bool FsDevice::readOpts(const QString &fileName, DeviceOptions &opts, bool readA
                 opts.fixVariousArtists=QLatin1String("true")==line.section('=', 1, 1);
             } else if (line.startsWith(constTranscoderKey+"="))  {
                 QStringList parts=line.section('=', 1, 1).split(',');
-                if (3==parts.size()) {
+                if (parts.size()>=3) {
                     opts.transcoderCodec=parts.at(0);
                     opts.transcoderValue=parts.at(1).toInt();
                     opts.transcoderWhenDifferent=QLatin1String("true")==parts.at(2);
+                    if (parts.size()>=4) {
+                        opts.transcoderWhenSourceIsLosssless=QLatin1String("true")==parts.at(3);
+                    }
                 }
             } else if (line.startsWith(constUseCacheKey+"=")) {
                 opts.useCache=QLatin1String("true")==line.section('=', 1, 1);
@@ -297,7 +300,8 @@ void FsDevice::writeOpts(const QString &fileName, const DeviceOptions &opts, boo
             out << constVariousArtistsFixKey << '=' << toString(opts.fixVariousArtists) << '\n';
         }
         if (!opts.transcoderCodec.isEmpty()) {
-            out << constTranscoderKey << '=' << opts.transcoderCodec << ',' << opts.transcoderValue << ',' << toString(opts.transcoderWhenDifferent) << '\n';
+            out << constTranscoderKey << '=' << opts.transcoderCodec << ',' << opts.transcoderValue
+                << ',' << toString(opts.transcoderWhenDifferent) << ',' << toString(opts.transcoderWhenSourceIsLosssless) << '\n';
         }
         if (opts.useCache!=def.useCache) {
             out << constUseCacheKey << '=' << toString(opts.useCache) << '\n';
@@ -401,20 +405,23 @@ void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
         return;
     }
     currentSong=s;
-    if (encoder.codec.isEmpty() || (opts.transcoderWhenDifferent && !encoder.isDifferent(s.file))) {
-        transcoding=false;
-        CopyJob *job=new CopyJob(s.file, currentDestFile, copyCover ? opts : DeviceOptions(Device::constNoCover),
-                                 (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|(Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone),
-                                 currentSong);
-        connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
-        connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
-        job->start();
-    } else {
-        transcoding=true;
+
+    transcoding = !opts.transcoderCodec.isEmpty() &&
+                     (!opts.transcoderWhenDifferent || encoder.isDifferent(s.file)) &&
+                     (!opts.transcoderWhenSourceIsLosssless || Device::isLossless(s.file));
+
+    if (transcoding) {
         TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, currentDestFile, copyCover ? opts : DeviceOptions(Device::constNoCover),
                                                (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|
                                                    (Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone),
                                                currentSong);
+        connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
+        connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
+        job->start();
+    } else {
+        CopyJob *job=new CopyJob(s.file, currentDestFile, copyCover ? opts : DeviceOptions(Device::constNoCover),
+                                 (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|(Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone),
+                                 currentSong);
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
         connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
         job->start();

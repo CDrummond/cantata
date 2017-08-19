@@ -216,6 +216,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="transcoderWhenSourceIsLosssless">
+        <property name="text">
+         <string>Only transcode if source is FALC/WAV</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="ValueSlider" name="transcoderValue"/>
       </item>
      </layout>
@@ -280,6 +287,7 @@
   <tabstop>configFilename</tabstop>
   <tabstop>transcoderName</tabstop>
   <tabstop>transcoderWhenDifferent</tabstop>
+  <tabstop>transcoderWhenSourceIsLosssless</tabstop>
   <tabstop>transcoderValue</tabstop>
  </tabstops>
  <resources/>

@@ -32,6 +32,7 @@
 #include "../shared/udevqt.h"
 
 #include "udisks2.h"
+#include "udisksdevice.h"
 #include "udisksopticaldisc.h"
 #include "soliddefs_p.h"
 

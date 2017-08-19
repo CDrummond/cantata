@@ -1034,11 +1034,14 @@ QSet<QString> LibraryDb::get(const QString &type)
 
     QStringList columns;
     bool isGenre="genre"==type;
+    bool isAlbum="album"==type;
 
     if (isGenre) {
         for (int i=0; i<Song::constNumGenres; ++i) {
             columns << type+QString::number(i+1);
         }
+    } else if (isAlbum) {
+        columns << type << "albumId";
     } else {
         columns << type;
     }
@@ -1048,9 +1051,28 @@ QSet<QString> LibraryDb::get(const QString &type)
         query.exec();
         DBUG << query.executedQuery();
         while (query.next()) {
-            QString val=query.value(0).toString();
-            if (!val.isEmpty() && (!isGenre || constNullGenre!=val)) {
-                set.insert(val);
+            if (isGenre) {
+                for (int i=0; i<Song::constNumGenres; ++i) {
+                    QString val=query.value(i).toString();
+                    if (!val.isEmpty() && constNullGenre!=val) {
+                        set.insert(val);
+                    }
+                }
+            } else if (isAlbum) {
+                // For albums, we have album and albumId
+                // album is only stored if it is different to albumId - in this case albumId would be the musicbrainz id
+                QString val=query.value(0).toString();
+                if (val.isEmpty()) {
+                    val=query.value(1).toString();
+                }
+                if (!val.isEmpty()) {
+                    set.insert(val);
+                }
+            } else {
+                QString val=query.value(0).toString();
+                if (!val.isEmpty()) {
+                    set.insert(val);
+                }
             }
         }
     }

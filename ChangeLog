@@ -21,6 +21,8 @@
 15. Use em-dash to as separator.
 16. Add device option to only transcode if source is FLAC or WAV (detection is
     solely extension based).
+17. Fix extraction of album names from DB - for use in tag editor and playlist
+    rules dialogs.
 
 2.1.0
 -----

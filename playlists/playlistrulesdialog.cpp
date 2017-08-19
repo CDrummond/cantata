@@ -31,6 +31,11 @@
 #include <QSortFilterProxyModel>
 #include <QSpinBox>
 
+#define REMOVE(w) \
+    w->setVisible(false); \
+    w->deleteLater(); \
+    w=0;
+
 class RulesSort : public QSortFilterProxyModel
 {
 public:
@@ -162,8 +167,20 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
     minDuration->setSpecialValueText(tr("No Limit"));
     maxDuration->setSpecialValueText(tr("No Limit"));
 
-    numTracks->setMinimum(rules->minTracks());
-    numTracks->setMaximum(rules->maxTracks());
+    numTracks->setRange(rules->minTracks(), rules->maxTracks());
+
+    if (rules->isDynamic()) {
+        REMOVE(orderLabel)
+        REMOVE(order)
+        numTracks->setValue(qMax(qMin(10, rules->maxTracks()), rules->minTracks()));
+    } else {
+        numTracks->setValue(qMax(qMin(100, rules->maxTracks()), rules->minTracks()));
+
+        for (int i=0; i<RulesPlaylists::Order_Count; ++i) {
+            order->addItem(RulesPlaylists::orderName((RulesPlaylists::Order)i), i);
+        }
+        order->setCurrentIndex(RulesPlaylists::Order_Random);
+    }
 
     controlButtons();
     resize(500, 240);
@@ -202,6 +219,9 @@ void PlaylistRulesDialog::edit(const QString &name)
     minDuration->setValue(e.minDuration);
     maxDuration->setValue(e.maxDuration);
     numTracks->setValue(e.numTracks);
+    if (order) {
+        order->setCurrentIndex(e.order);
+    }
     show();
 }
 
@@ -373,6 +393,9 @@ bool PlaylistRulesDialog::save()
     int to=ratingTo->value();
     entry.ratingFrom=qMin(from, to);
     entry.ratingTo=qMax(from, to);
+    if (order) {
+        entry.order=(RulesPlaylists::Order)order->currentData().toInt();
+    }
     from=minDuration->value();
     to=maxDuration->value();
     if (to>0) {

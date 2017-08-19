@@ -55,8 +55,49 @@ const QString RulesPlaylists::constNumTracksKey=QLatin1String("NumTracks");
 const QString RulesPlaylists::constFileKey=QLatin1String("File");
 const QString RulesPlaylists::constExactKey=QLatin1String("Exact");
 const QString RulesPlaylists::constExcludeKey=QLatin1String("Exclude");
+const QString RulesPlaylists::constOrderKey=QLatin1String("Order");
 const QChar RulesPlaylists::constRangeSep=QLatin1Char('-');
 const QChar RulesPlaylists::constKeyValSep=QLatin1Char(':');
+
+RulesPlaylists::Order RulesPlaylists::toOrder(const QString &str)
+{
+    for (int i=0; i<Order_Count; ++i) {
+        if (orderStr((Order)i)==str) {
+            return (Order)i;
+        }
+    }
+    return Order_Random;
+}
+
+QString RulesPlaylists::orderStr(Order order)
+{
+    switch(order) {
+    case Order_AlbumArtist: return constAlbumArtistKey;
+    case Order_Artist:      return constArtistKey;
+    case Order_Album:       return constAlbumKey;
+    case Order_Composer:    return constComposerKey;
+    case Order_Date:        return constDateKey;
+    case Order_Genre:       return constGenreKey;
+    case Order_Rating:      return constRatingKey;
+    default:
+    case Order_Random:      return "Random";
+    }
+}
+
+QString RulesPlaylists::orderName(Order order)
+{
+    switch(order) {
+    case Order_AlbumArtist: return tr("Album Artist");
+    case Order_Artist:      return tr("Artist");
+    case Order_Album:       return tr("Album");
+    case Order_Composer:    return tr("Composer");
+    case Order_Date:        return tr("Date");
+    case Order_Genre:       return tr("Genre");
+    case Order_Rating:      return tr("Rating");
+    default:
+    case Order_Random: return tr("Random");
+    }
+}
 
 RulesPlaylists::RulesPlaylists(const QString &iconFile, const QString &dir)
     : rulesDir(dir)
@@ -121,8 +162,9 @@ QVariant RulesPlaylists::data(const QModelIndex &index, int role) const
         return entryList.at(index.row()).name;
     case Cantata::Role_SubText: {
         const Entry &e=entryList.at(index.row());
-        return tr("%n Rule(s)", "", e.rules.count())+(e.haveRating() ? tr(" – Rating: %1..%2")
-                              .arg((double)e.ratingFrom/Song::Rating_Step).arg((double)e.ratingTo/Song::Rating_Step) : QString());
+        return tr("%n Rule(s)", "", e.rules.count())+(e.haveRating() ? tr(", Rating: %1..%2")
+                              .arg((double)e.ratingFrom/Song::Rating_Step).arg((double)e.ratingTo/Song::Rating_Step) : QString()) +
+               (isDynamic() ? QString() : (QLatin1String(", ") + orderName(e.order)));
     }
     default:
         return QVariant();
@@ -146,7 +188,9 @@ RulesPlaylists::Entry RulesPlaylists::entry(const QString &e)
         }
     }
 
-    return Entry();
+    Entry def;
+    def.numTracks=defaultNumTracks();
+    return def;
 }
 
 bool RulesPlaylists::save(const Entry &e)
@@ -165,6 +209,9 @@ bool RulesPlaylists::save(const Entry &e)
     }
     if (e.minDuration!=0 || e.maxDuration!=0) {
         str << constDurationKey << constKeyValSep << e.minDuration << constRangeSep << e.maxDuration << '\n';
+    }
+    if (Order_Random!=e.order) {
+        str << constOrderKey << constKeyValSep << orderStr(e.order) << '\n';
     }
     foreach (const Rule &rule, e.rules) {
         if (!rule.isEmpty()) {
@@ -258,6 +305,7 @@ void RulesPlaylists::loadLocal()
 
                 Entry e;
                 e.name=rf.left(rf.length()-constExtension.length());
+                e.numTracks=defaultNumTracks();
                 Rule r;
                 QTextStream in(&f);
                 in.setCodec("UTF-8");
@@ -286,6 +334,8 @@ void RulesPlaylists::loadLocal()
                             e.minDuration=vals.at(0).toUInt();
                             e.maxDuration=vals.at(1).toUInt();
                         }
+                    } else if (str.startsWith(constOrderKey+constKeyValSep)) {
+                        e.order=toOrder(str.mid(constOrderKey.length()+1));
                     } else {
                         foreach (const QString &k, keys) {
                             if (str.startsWith(k+constKeyValSep)) {

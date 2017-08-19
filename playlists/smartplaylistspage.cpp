@@ -196,7 +196,7 @@ void SmartPlaylistsPage::filterCommand()
         }
     }
 
-    if (command.filterRating) {
+    if (command.filterRating || command.fetchRatings) {
         if (command.toCheck.isEmpty()) {
             for (const auto &s: command.songs) {
                 command.toCheck.append(s.file);
@@ -215,12 +215,13 @@ void SmartPlaylistsPage::rating(const QString &file, quint8 val)
         return;
     }
 
-    if (command.ratingFrom>val && command.ratingTo<val) {
-        for (const auto &s: command.songs) {
-            if (s.file==file) {
+    for (auto &s: command.songs) {
+        if (s.file==file) {
+            s.rating=val;
+            if (command.filterRating && (val<command.ratingFrom || val>command.ratingTo)) {
                 command.songs.remove(s);
-                break;
             }
+            break;
         }
     }
 
@@ -233,6 +234,54 @@ void SmartPlaylistsPage::rating(const QString &file, quint8 val)
     }
 }
 
+static bool composerSort(const Song &s1, const Song &s2)
+{
+    const QString v1=s1.hasComposer() ? s1.composer() : QString();
+    const QString v2=s2.hasComposer() ? s2.composer() : QString();
+    int c=v1.localeAwareCompare(v2);
+    return c<0 || (c==0 && s1<s2);
+}
+
+static bool artistSort(const Song &s1, const Song &s2)
+{
+    const QString v1=s1.hasArtistSort() ? s1.artistSort() : s1.artist;
+    const QString v2=s2.hasArtistSort() ? s2.artistSort() : s2.artist;
+    int c=v1.localeAwareCompare(v2);
+    return c<0 || (c==0 && s1<s2);
+}
+
+static bool albumArtistSort(const Song &s1, const Song &s2)
+{
+    const QString v1=s1.hasAlbumArtistSort() ? s1.albumArtistSort() : s1.artistOrComposer();
+    const QString v2=s2.hasAlbumArtistSort() ? s2.albumArtistSort() : s2.artistOrComposer();
+    int c=v1.localeAwareCompare(v2);
+    return c<0 || (c==0 && s1<s2);
+}
+
+static bool albumSort(const Song &s1, const Song &s2)
+{
+    const QString v1=s1.hasAlbumSort() ? s1.albumSort() : s1.album;
+    const QString v2=s2.hasAlbumSort() ? s2.albumSort() : s2.album;
+    int c=v1.localeAwareCompare(v2);
+    return c<0 || (c==0 && s1<s2);
+}
+
+static bool genreSort(const Song &s1, const Song &s2)
+{
+    int c=s1.compareGenres(s2);
+    return c<0 || (c==0 && s1<s2);
+}
+
+static bool dateSort(const Song &s1, const Song &s2)
+{
+    return s1.year<s2.year || (s1.year==s2.year && s1<s2);
+}
+
+static bool ratingSort(const Song &s1, const Song &s2)
+{
+    return s1.rating>s2.rating || (s1.rating==s2.rating && s1<s2);
+}
+
 void SmartPlaylistsPage::addSongsToPlayQueue()
 {
     if (command.songs.isEmpty()) {
@@ -243,7 +292,34 @@ void SmartPlaylistsPage::addSongsToPlayQueue()
 
     QList<Song> songs = command.songs.toList();
     command.songs.clear();
-    std::random_shuffle(songs.begin(), songs.end());
+
+    switch(command.order) {
+    case RulesPlaylists::Order_AlbumArtist:
+        qSort(songs.begin(), songs.end(), albumArtistSort);
+        break;
+    case RulesPlaylists::Order_Artist:
+        qSort(songs.begin(), songs.end(), artistSort);
+        break;
+    case RulesPlaylists::Order_Album:
+        qSort(songs.begin(), songs.end(), albumSort);
+        break;
+    case RulesPlaylists::Order_Composer:
+        qSort(songs.begin(), songs.end(), composerSort);
+        break;
+    case RulesPlaylists::Order_Date:
+        qSort(songs.begin(), songs.end(), dateSort);
+        break;
+    case RulesPlaylists::Order_Genre:
+        qSort(songs.begin(), songs.end(), genreSort);
+        break;
+    case RulesPlaylists::Order_Rating:
+        qSort(songs.begin(), songs.end(), ratingSort);
+        break;
+    default:
+    case RulesPlaylists::Order_Random:
+        std::random_shuffle(songs.begin(), songs.end());
+    }
+
     QStringList files;
     for (int i=0; i<command.numTracks && !songs.isEmpty(); ++i) {
         files.append(songs.takeFirst().file);
@@ -275,7 +351,7 @@ void SmartPlaylistsPage::addSelectionToPlaylist(const QString &name, int action,
         return;
     }
 
-    command = Command(pl.name, action, priorty, decreasePriority, command.id+1);
+    command = Command(pl, action, priorty, decreasePriority, command.id+1);
 
     QList<RulesPlaylists::Rule>::ConstIterator it = pl.rules.constBegin();
     QList<RulesPlaylists::Rule>::ConstIterator end = pl.rules.constEnd();
@@ -370,10 +446,12 @@ void SmartPlaylistsPage::addSelectionToPlaylist(const QString &name, int action,
     }
 
     command.filterRating = command.haveRating();
+    command.fetchRatings = RulesPlaylists::Order_Rating == command.order;
     if (command.includeRules.isEmpty()) {
         if (command.haveRating()) {
             command.includeRules.append("RATING:"+QByteArray::number(command.ratingFrom)+":"+QByteArray::number(command.ratingTo));
             command.filterRating = false;
+            command.fetchRatings = false;
         } else {
             command.includeRules.append(QByteArray());
         }

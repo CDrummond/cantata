@@ -38,7 +38,7 @@ class SmartPlaylistsPage : public SinglePageWidget
     struct Command {
         Command(const RulesPlaylists::Entry &e=RulesPlaylists::Entry(), int a=0, quint8 prio=0, bool dec=false, quint32 i=0)
             : playlist(e.name), action(a), priorty(prio), decreasePriority(dec), ratingFrom(e.ratingFrom), ratingTo(e.ratingTo),
-              minDuration(e.minDuration), maxDuration(e.maxDuration), numTracks(e.numTracks), id(i) { }
+              minDuration(e.minDuration), maxDuration(e.maxDuration), numTracks(e.numTracks), order(e.order), id(i) { }
         bool isEmpty() const { return playlist.isEmpty(); }
         void clear() { playlist.clear(); includeRules.clear(); excludeRules.clear(); songs.clear(); toCheck.clear(); checking.clear(); }
         bool haveRating() const { return ratingFrom>=0 && ratingTo>0; }
@@ -53,11 +53,14 @@ class SmartPlaylistsPage : public SinglePageWidget
         QList<QByteArray> excludeRules;
 
         bool filterRating = false;
+        bool fetchRatings = false;
+
         int ratingFrom = 0;
         int ratingTo = 0;
         int minDuration = 0;
         int maxDuration = 0;
         int numTracks = 0;
+        RulesPlaylists::Order order = RulesPlaylists::Order_Random;
 
         quint32 id;
 

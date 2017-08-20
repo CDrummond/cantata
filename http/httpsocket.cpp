@@ -40,6 +40,8 @@
 #include <QDebug>
 #define DBUG if (HttpServer::debugEnabled()) qWarning() << "HttpSocket" << __FUNCTION__
 
+static const quint64 constMaxBuffer = 32768;
+
 static QString detectMimeType(const QString &file)
 {
     QString suffix = QFileInfo(file).suffix().toLower();
@@ -229,6 +231,9 @@ void HttpSocket::handleNewConnection()
     while (hasPendingConnections()) {
         QTcpSocket *socket = nextPendingConnection();
 
+        // prevent clients from sending too much data
+        socket->setReadBufferSize(constMaxBuffer);
+
         static const QLatin1String constIpV6Prefix("::ffff:");
 
         QString peer=socket->peerAddress().toString();
@@ -256,6 +261,15 @@ void HttpSocket::readClient()
     }
 
     QTcpSocket *socket = static_cast<QTcpSocket *>(sender());
+
+    if (socket->bytesAvailable() >= constMaxBuffer) {
+        // Request too large, reject
+        sendErrorResponse(socket, 400);
+        socket->close();
+        DBUG << "Request too large";
+        return;
+    }
+
     if (socket->canReadLine()) {
         QList<QByteArray> tokens = split(socket->readLine()); // QRegExp("[ \r\n][ \r\n]*"));
         if (tokens.length()>=2 && "GET"==tokens[0]) {

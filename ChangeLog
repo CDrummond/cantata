@@ -23,6 +23,8 @@
     solely extension based).
 17. Fix extraction of album names from DB - for use in tag editor and playlist
     rules dialogs.
+18. Fix some potential security issues - thanks to Jonas Wielicki for the
+    patches.
 
 2.1.0
 -----

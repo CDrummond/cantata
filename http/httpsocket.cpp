@@ -227,9 +227,25 @@ void HttpSocket::handleNewConnection()
 {
     DBUG;
     while (hasPendingConnections()) {
-        QTcpSocket *s = nextPendingConnection();
-        connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
-        connect(s, SIGNAL(disconnected()), this, SLOT(discardClient()));
+        QTcpSocket *socket = nextPendingConnection();
+
+        static const QLatin1String constIpV6Prefix("::ffff:");
+
+        QString peer=socket->peerAddress().toString();
+        QString ifaceAddress=serverAddress().toString();
+        const bool hostOk=peer==ifaceAddress || peer==mpdAddr || peer==(constIpV6Prefix+mpdAddr) ||
+                          peer==QLatin1String("127.0.0.1") || peer==(constIpV6Prefix+QLatin1String("127.0.0.1"));
+
+        DBUG << "peer:" << peer << "mpd:" << mpdAddr << "iface:" << ifaceAddress << "ok:" << hostOk;
+        if (!hostOk) {
+            sendErrorResponse(socket, 400);
+            socket->close();
+            DBUG << "Not from valid host";
+            return;
+        }
+
+        connect(socket, SIGNAL(readyRead()), this, SLOT(readClient()));
+        connect(socket, SIGNAL(disconnected()), this, SLOT(discardClient()));
     }
 }
 
@@ -250,21 +266,6 @@ void HttpSocket::readClient()
                 sendErrorResponse(socket, 400);
                 socket->close();
                 DBUG << "Not from MPD";
-                return;
-            }
-
-            static const QLatin1String constIpV6Prefix("::ffff:");
-
-            QString peer=socket->peerAddress().toString();
-            QString ifaceAddress=serverAddress().toString();
-            bool hostOk=peer==ifaceAddress || peer==mpdAddr || peer==(constIpV6Prefix+mpdAddr) ||
-                        peer==QLatin1String("127.0.0.1") || peer==(constIpV6Prefix+QLatin1String("127.0.0.1"));
-
-            DBUG << "peer:" << peer << "mpd:" << mpdAddr << "iface:" << ifaceAddress << "ok:" << hostOk;
-            if (!hostOk) {
-                sendErrorResponse(socket, 400);
-                socket->close();
-                DBUG << "Not from valid host";
                 return;
             }
 

@@ -414,6 +414,12 @@ void HttpSocket::readClient()
             if (QTcpSocket::UnconnectedState==socket->state()) {
                 delete socket;
             }
+        } else {
+            // Bad Request
+            sendErrorResponse(socket, 400);
+            socket->close();
+            DBUG << "Bad Request";
+            return;
         }
     }
 }

@@ -25,6 +25,8 @@
     rules dialogs.
 18. Fix some potential security issues - thanks to Jonas Wielicki for the
     patches.
+19. Only set Qt::AA_EnableHighDpiScaling under Linux if
+    QT_AUTO_SCREEN_SCALE_FACTOR is set and non-zero.
 
 2.1.0
 -----

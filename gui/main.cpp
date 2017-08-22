@@ -65,6 +65,8 @@
 #include <QMutexLocker>
 #include <QTextStream>
 #include <QDateTime>
+#include <QByteArray>
+
 static QMutex msgMutex;
 static bool firstMsg=true;
 static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QString &msg)
@@ -201,11 +203,11 @@ static void installDebugMessageHandler()
         if (dbg&Dbg_Threads) {
             ThreadCleaner::enableDebug();
         }
-	#ifdef ENABLE_TAGLIB
+        #ifdef ENABLE_TAGLIB
         if (dbg&Dbg_Tags) {
             TagHelperIface::enableDebug();
         }
-	#endif
+        #endif
         if (dbg&Dbg_Scrobbling) {
             Scrobbler::enableDebug();
         }
@@ -239,7 +241,14 @@ int main(int argc, char *argv[])
 
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     #if QT_VERSION >= 0x050600
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    #ifdef Q_OS_LINUX
+    // Qt::AA_EnableHighDpiScaling broken for linux? #1063 / #1073
+    QByteArray autoScale = qgetenv("QT_AUTO_SCREEN_SCALE_FACTOR");
+    if (!autoScale.isEmpty() && "0"!=autoScale)
+    #endif
+    {
+        QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    }
     #endif
 
     Application app(argc, argv);

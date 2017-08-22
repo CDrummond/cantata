@@ -56,6 +56,7 @@ const QString RulesPlaylists::constFileKey=QLatin1String("File");
 const QString RulesPlaylists::constExactKey=QLatin1String("Exact");
 const QString RulesPlaylists::constExcludeKey=QLatin1String("Exclude");
 const QString RulesPlaylists::constOrderKey=QLatin1String("Order");
+const QString RulesPlaylists::constOrderAscendingKey=QLatin1String("OrderAscending");
 const QChar RulesPlaylists::constRangeSep=QLatin1Char('-');
 const QChar RulesPlaylists::constKeyValSep=QLatin1Char(':');
 
@@ -214,7 +215,7 @@ bool RulesPlaylists::save(const Entry &e)
         str << constDurationKey << constKeyValSep << e.minDuration << constRangeSep << e.maxDuration << '\n';
     }
     if (Order_Random!=e.order) {
-        str << constOrderKey << constKeyValSep << orderStr(e.order) << constRangeSep << QLatin1String(e.orderAscending ? "true" : "false") << '\n';
+        str << constOrderKey << constKeyValSep << orderStr(e.order) << '\n';
     }
     foreach (const Rule &rule, e.rules) {
         if (!rule.isEmpty()) {
@@ -338,11 +339,9 @@ void RulesPlaylists::loadLocal()
                             e.maxDuration=vals.at(1).toUInt();
                         }
                     } else if (str.startsWith(constOrderKey+constKeyValSep)) {
-                        QStringList vals=str.mid(constOrderKey.length()+1).split(constRangeSep);
-                        e.order=toOrder(vals.at(0).mid(constOrderKey.length()+1));
-                        if (2==vals.count()) {
-                            e.orderAscending="true"==vals.at(1);
-                        }
+                        e.order=toOrder(str.mid(constOrderKey.length()+1));
+                    } else if (str.startsWith(constOrderAscendingKey+constKeyValSep)) {
+                        e.orderAscending="true"==str.mid(constOrderAscendingKey.length()+1);
                     } else {
                         foreach (const QString &k, keys) {
                             if (str.startsWith(k+constKeyValSep)) {

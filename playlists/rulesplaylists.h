@@ -89,6 +89,7 @@ public:
     static const QString constExactKey;
     static const QString constExcludeKey;
     static const QString constOrderKey;
+    static const QString constOrderAscendingKey;
     static const QChar constRangeSep;
     static const QChar constKeyValSep;
 

@@ -79,6 +79,7 @@ QString RulesPlaylists::orderStr(Order order)
     case Order_Date:        return constDateKey;
     case Order_Genre:       return constGenreKey;
     case Order_Rating:      return constRatingKey;
+    case Order_Age:         return "Age";
     default:
     case Order_Random:      return "Random";
     }
@@ -94,6 +95,7 @@ QString RulesPlaylists::orderName(Order order)
     case Order_Date:        return tr("Date");
     case Order_Genre:       return tr("Genre");
     case Order_Rating:      return tr("Rating");
+    case Order_Age:         return tr("File Age");
     default:
     case Order_Random: return tr("Random");
     }
@@ -211,7 +213,7 @@ bool RulesPlaylists::save(const Entry &e)
         str << constDurationKey << constKeyValSep << e.minDuration << constRangeSep << e.maxDuration << '\n';
     }
     if (Order_Random!=e.order) {
-        str << constOrderKey << constKeyValSep << orderStr(e.order) << '\n';
+        str << constOrderKey << constKeyValSep << orderStr(e.order) << constRangeSep << QLatin1String(e.orderAscending ? "true" : "false") << '\n';
     }
     foreach (const Rule &rule, e.rules) {
         if (!rule.isEmpty()) {
@@ -335,7 +337,11 @@ void RulesPlaylists::loadLocal()
                             e.maxDuration=vals.at(1).toUInt();
                         }
                     } else if (str.startsWith(constOrderKey+constKeyValSep)) {
-                        e.order=toOrder(str.mid(constOrderKey.length()+1));
+                        QStringList vals=str.mid(constOrderKey.length()+1).split(constRangeSep);
+                        e.order=toOrder(vals.at(0).mid(constOrderKey.length()+1));
+                        if (2==vals.count()) {
+                            e.orderAscending="true"==vals.at(1);
+                        }
                     } else {
                         foreach (const QString &k, keys) {
                             if (str.startsWith(k+constKeyValSep)) {

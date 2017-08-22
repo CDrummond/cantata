@@ -45,6 +45,7 @@ public:
         Order_Date,
         Order_Genre,
         Order_Rating,
+        Order_Age,
         Order_Random,
 
         Order_Count
@@ -67,6 +68,7 @@ public:
         int maxDuration = 0;
         int numTracks = 10;
         Order order = Order_Random;
+        bool orderAscending = true;
     };
 
     static const QString constExtension;

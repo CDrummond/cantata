@@ -234,12 +234,13 @@ void SmartPlaylistsPage::rating(const QString &file, quint8 val)
     }
 }
 
+static bool sortAscending = true;
 static bool composerSort(const Song &s1, const Song &s2)
 {
     const QString v1=s1.hasComposer() ? s1.composer() : QString();
     const QString v2=s2.hasComposer() ? s2.composer() : QString();
     int c=v1.localeAwareCompare(v2);
-    return c<0 || (c==0 && s1<s2);
+    return sortAscending ? (c<0 || (c==0 && s1<s2)) : (c>0 || (c==0 && s1<s2));
 }
 
 static bool artistSort(const Song &s1, const Song &s2)
@@ -247,7 +248,7 @@ static bool artistSort(const Song &s1, const Song &s2)
     const QString v1=s1.hasArtistSort() ? s1.artistSort() : s1.artist;
     const QString v2=s2.hasArtistSort() ? s2.artistSort() : s2.artist;
     int c=v1.localeAwareCompare(v2);
-    return c<0 || (c==0 && s1<s2);
+    return sortAscending ? (c<0 || (c==0 && s1<s2)) : (c>0 || (c==0 && s1<s2));
 }
 
 static bool albumArtistSort(const Song &s1, const Song &s2)
@@ -255,7 +256,7 @@ static bool albumArtistSort(const Song &s1, const Song &s2)
     const QString v1=s1.hasAlbumArtistSort() ? s1.albumArtistSort() : s1.artistOrComposer();
     const QString v2=s2.hasAlbumArtistSort() ? s2.albumArtistSort() : s2.artistOrComposer();
     int c=v1.localeAwareCompare(v2);
-    return c<0 || (c==0 && s1<s2);
+    return sortAscending ? (c<0 || (c==0 && s1<s2)) : (c>0 || (c==0 && s1<s2));
 }
 
 static bool albumSort(const Song &s1, const Song &s2)
@@ -263,23 +264,30 @@ static bool albumSort(const Song &s1, const Song &s2)
     const QString v1=s1.hasAlbumSort() ? s1.albumSort() : s1.album;
     const QString v2=s2.hasAlbumSort() ? s2.albumSort() : s2.album;
     int c=v1.localeAwareCompare(v2);
-    return c<0 || (c==0 && s1<s2);
+    return sortAscending ? (c<0 || (c==0 && s1<s2)) : (c>0 || (c==0 && s1<s2));
 }
 
 static bool genreSort(const Song &s1, const Song &s2)
 {
     int c=s1.compareGenres(s2);
-    return c<0 || (c==0 && s1<s2);
+    return sortAscending ? (c<0 || (c==0 && s1<s2)) : (c>0 || (c==0 && s1<s2));
 }
 
 static bool dateSort(const Song &s1, const Song &s2)
 {
-    return s1.year<s2.year || (s1.year==s2.year && s1<s2);
+    return sortAscending ? (s1.year<s2.year || (s1.year==s2.year && s1<s2)) : (s1.year>s2.year || (s1.year==s2.year && s1<s2));
 }
 
 static bool ratingSort(const Song &s1, const Song &s2)
 {
-    return s1.rating>s2.rating || (s1.rating==s2.rating && s1<s2);
+    return sortAscending ? (s1.rating<s2.rating || (s1.rating==s2.rating && s1<s2))
+                         : (s1.rating>s2.rating || (s1.rating==s2.rating && s1<s2));
+}
+
+static bool ageSort(const Song &s1, const Song &s2)
+{
+    return sortAscending ? (s1.lastModified<s2.lastModified || (s1.lastModified==s2.lastModified && s1<s2))
+                         : (s1.lastModified>s2.lastModified || (s1.lastModified==s2.lastModified && s1<s2));
 }
 
 void SmartPlaylistsPage::addSongsToPlayQueue()
@@ -293,6 +301,7 @@ void SmartPlaylistsPage::addSongsToPlayQueue()
     QList<Song> songs = command.songs.toList();
     command.songs.clear();
 
+    sortAscending = command.orderAscending;
     switch(command.order) {
     case RulesPlaylists::Order_AlbumArtist:
         qSort(songs.begin(), songs.end(), albumArtistSort);
@@ -314,6 +323,9 @@ void SmartPlaylistsPage::addSongsToPlayQueue()
         break;
     case RulesPlaylists::Order_Rating:
         qSort(songs.begin(), songs.end(), ratingSort);
+        break;
+    case RulesPlaylists::Order_Age:
+        qSort(songs.begin(), songs.end(), ageSort);
         break;
     default:
     case RulesPlaylists::Order_Random:

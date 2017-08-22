@@ -166,7 +166,8 @@ QVariant RulesPlaylists::data(const QModelIndex &index, int role) const
         const Entry &e=entryList.at(index.row());
         return tr("%n Rule(s)", "", e.rules.count())+(e.haveRating() ? tr(", Rating: %1..%2")
                               .arg((double)e.ratingFrom/Song::Rating_Step).arg((double)e.ratingTo/Song::Rating_Step) : QString()) +
-               (isDynamic() ? QString() : (QLatin1String(", ") + orderName(e.order)));
+               (isDynamic() ? QString() : (QLatin1String(", ") + orderName(e.order))) +
+               (isDynamic() || Order_Random==e.order ? QString() : (" ("+(e.orderAscending ? tr("Ascending") : tr("Descending"))+")"));
     }
     default:
         return QVariant();

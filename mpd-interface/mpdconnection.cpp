@@ -1841,7 +1841,7 @@ void MPDConnection::search(const QByteArray &query, const QString &id)
                 if (line.startsWith("AlbumArtist: ")) {
                     Response resp = sendCommand("find albumartist " + encodeName(QString::fromUtf8(line.mid(13))) , false, false);
                     if (resp.ok) {
-                        songs += MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Search);
+                        songs += MPDParseUtils::parseSongs(resp.data, MPDParseUtils::Loc_Search);
                     }
                 }
             }

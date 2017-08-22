@@ -339,7 +339,9 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             song.type=Song::Playlist;
         }  else if (line.startsWith(constAlbumId)) {
             song.setMbAlbumId(line.mid(constAlbumId.length()));
-        } else if ((Loc_Search==location || Loc_Playlists==location || Loc_PlayQueue==location)  &&
+        } else if ((Loc_Search==location || Loc_Library==location) && line.startsWith(constLastModifiedKey)) {
+            song.lastModified=QDateTime::fromString(QString::fromUtf8(line.mid(constLastModifiedKey.length())), Qt::ISODate).toTime_t();
+        } else if ((Loc_Search==location || Loc_Playlists==location || Loc_PlayQueue==location) &&
                    line.startsWith(constPerformerKey)) {
             if (song.hasPerformer()) {
                 song.setPerformer(song.performer()+QLatin1String(", ")+QString::fromUtf8(line.mid(constPerformerKey.length())));
@@ -359,8 +361,6 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
                 song.setArtistSort(QString::fromUtf8(line.mid(constArtistSortKey.length())));
             } else if (line.startsWith(constAlbumArtistSortKey)) {
                 song.setAlbumArtistSort(QString::fromUtf8(line.mid(constAlbumArtistSortKey.length())));
-            } else if (line.startsWith(constLastModifiedKey)) {
-                song.lastModified=QDateTime::fromString(QString::fromUtf8(line.mid(constLastModifiedKey.length())), Qt::ISODate).toTime_t();
             }
         }
     }

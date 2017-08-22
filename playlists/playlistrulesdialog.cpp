@@ -172,6 +172,8 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
     if (rules->isDynamic()) {
         REMOVE(orderLabel)
         REMOVE(order)
+        REMOVE(orderAscending)
+        orderLayout->deleteLater();
         numTracks->setValue(qMax(qMin(10, rules->maxTracks()), rules->minTracks()));
     } else {
         numTracks->setValue(qMax(qMin(100, rules->maxTracks()), rules->minTracks()));
@@ -180,6 +182,10 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
             order->addItem(RulesPlaylists::orderName((RulesPlaylists::Order)i), i);
         }
         order->setCurrentIndex(RulesPlaylists::Order_Random);
+        orderAscending->addItem(tr("Ascending"));
+        orderAscending->addItem(tr("Descending"));
+        orderAscending->setEnabled(false);
+        connect(order, SIGNAL(currentIndexChanged(int)), this, SLOT(setOrder()));
     }
 
     controlButtons();
@@ -221,6 +227,8 @@ void PlaylistRulesDialog::edit(const QString &name)
     numTracks->setValue(e.numTracks);
     if (order) {
         order->setCurrentIndex(e.order);
+        setOrder();
+        orderAscending->setCurrentIndex(e.orderAscending ? 0 : 1);
     }
     show();
 }
@@ -359,6 +367,14 @@ void PlaylistRulesDialog::showAbout()
     }
 }
 
+void PlaylistRulesDialog::setOrder()
+{
+    orderAscending->setEnabled(RulesPlaylists::Order_Random!=order->currentData().toInt());
+    if (RulesPlaylists::Order_Rating==order->currentData().toInt()) {
+        orderAscending->setCurrentIndex(1);
+    }
+}
+
 void PlaylistRulesDialog::saved(bool s)
 {
     if (s) {
@@ -395,6 +411,7 @@ bool PlaylistRulesDialog::save()
     entry.ratingTo=qMax(from, to);
     if (order) {
         entry.order=(RulesPlaylists::Order)order->currentData().toInt();
+        entry.orderAscending=0==orderAscending->currentIndex();
     }
     from=minDuration->value();
     to=maxDuration->value();

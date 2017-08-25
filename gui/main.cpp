@@ -240,15 +240,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName(ORGANIZATION_NAME);
 
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    #if QT_VERSION >= 0x050600
-    #ifdef Q_OS_LINUX
-    // Qt::AA_EnableHighDpiScaling broken for linux? #1063 / #1073
-    QByteArray autoScale = qgetenv("QT_AUTO_SCREEN_SCALE_FACTOR");
-    if (!autoScale.isEmpty() && "0"!=autoScale)
-    #endif
-    {
-        QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    }
+    #if QT_VERSION >= 0x050600 && defined Q_OS_WIN
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     #endif
 
     Application app(argc, argv);

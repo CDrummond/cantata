@@ -154,7 +154,6 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
         QColor col = option->palette.highlight().color();
         #endif
 
-        QPainterPath path = Utils::buildPath(draw_rect, 2.0);
         if (!selected) {
             #if defined Q_OS_WIN
             col.setAlphaF(0.1);
@@ -162,8 +161,7 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
             col.setAlphaF(0.2);
             #endif
         }
-        p->setRenderHint(QPainter::Antialiasing);
-        p->fillPath(path, col);
+        p->fillRect(rect, col);
     }
 
     int textFlags = Qt::AlignTop | Qt::AlignVCenter;
@@ -425,7 +423,6 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
         QColor col = palette().highlight().color();
         #endif
 
-        QPainterPath path = Utils::buildPath(rect, 2.0);
         if (!selected) {
             #if defined Q_OS_WIN
             col.setAlphaF(0.1);
@@ -433,8 +430,7 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
             col.setAlphaF(0.2);
             #endif
         }
-        painter->setRenderHint(QPainter::Antialiasing);
-        painter->fillPath(path, col);
+        painter->fillRect(rect, col);
     }
 
     selected = selected && (palette().currentColorGroup()==QPalette::Active ||

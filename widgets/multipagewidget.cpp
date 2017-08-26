@@ -110,11 +110,8 @@ public:
             #else
             QColor col = qApp->palette().highlight().color();
             #endif
-
-            QPainterPath path = Utils::buildPath(opt.rect, 2.0);
-            p.setRenderHint(QPainter::Antialiasing);
             col.setAlphaF(opt.state&QStyle::State_Sunken ? 0.5 : 0.2);
-            p.fillPath(path, col);
+            p.fillRect(opt.rect, col);
         }
         opt.state&=~(QStyle::State_Sunken|QStyle::State_MouseOver|QStyle::State_Raised|QStyle::State_On);
         opt.state|=QStyle::State_AutoRaise;

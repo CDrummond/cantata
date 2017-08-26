@@ -329,7 +329,7 @@ void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
     QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));
 
     if (state && GroupedView::State_StopAfterTrack!=state) {
-        QRectF border(option.rect.x()+1.5, option.rect.y()+1.5, option.rect.width()-3, option.rect.height()-3);
+        QRectF border(option.rect.x()+1, option.rect.y()+1, option.rect.width()-3, option.rect.height()-3);
         if (!title.isEmpty()) {
             border.adjust(0, (border.height()/2)+1, 0, 0);
         }
@@ -344,12 +344,9 @@ void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
             borderCol.setAlphaF(0.5);
         }
         gradCol.setAlphaF(selected ? 0.4 : 0.25);
-        painter->setRenderHint(QPainter::Antialiasing, true);
-        int radius=3;
-        painter->fillPath(Utils::buildPath(border, radius), gradCol);
+        painter->fillRect(border, gradCol);
         painter->setPen(QPen(borderCol, 1));
-        painter->drawPath(Utils::buildPath(border, radius));
-        painter->setRenderHint(QPainter::Antialiasing, false);
+        painter->drawRect(border);
     }
 
     painter->setPen(textColor);

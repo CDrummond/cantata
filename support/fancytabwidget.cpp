@@ -147,13 +147,20 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
     if (selected || underMouse) {
         #ifdef Q_OS_MAC
         QColor col = OSXStyle::self()->viewPalette().highlight().color();
+        #elif defined Q_OS_WIN
+        QColor col = option->palette.highlight().color();
+        col.setAlphaF(0.25);
         #else
         QColor col = option->palette.highlight().color();
         #endif
 
         QPainterPath path = Utils::buildPath(draw_rect, 2.0);
         if (!selected) {
+            #if defined Q_OS_WIN
+            col.setAlphaF(0.1);
+            #else
             col.setAlphaF(0.2);
+            #endif
         }
         p->setRenderHint(QPainter::Antialiasing);
         p->fillPath(path, col);
@@ -411,13 +418,20 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
     if (selected || underMouse) {
         #ifdef Q_OS_MAC
         QColor col = OSXStyle::self()->viewPalette().highlight().color();
+        #elif defined Q_OS_WIN
+        QColor col = palette().highlight().color();
+        col.setAlphaF(0.25);
         #else
         QColor col = palette().highlight().color();
         #endif
 
         QPainterPath path = Utils::buildPath(rect, 2.0);
         if (!selected) {
+            #if defined Q_OS_WIN
+            col.setAlphaF(0.1);
+            #else
             col.setAlphaF(0.2);
+            #endif
         }
         painter->setRenderHint(QPainter::Antialiasing);
         painter->fillPath(path, col);

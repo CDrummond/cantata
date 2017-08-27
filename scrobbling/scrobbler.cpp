@@ -618,11 +618,11 @@ void Scrobbler::authenticate()
     params["method"] = "auth.getMobileSession";
     params["username"] = userName;
 
-	bool supportsSsl = false;
-#ifndef QT_NO_SSL
-	supportsSsl = QSslSocket::supportsSsl();
-#endif
-	if (supportsSsl) {
+    bool supportsSsl = false;
+    #ifndef QT_NO_SSL
+    supportsSsl = QSslSocket::supportsSsl();
+    #endif
+    if (supportsSsl) {
         params["password"] = password;
         url.setScheme("https"); // Use HTTPS to authenticate
     } else {

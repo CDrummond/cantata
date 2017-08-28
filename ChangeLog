@@ -6,7 +6,7 @@
  4. When adding items with a custom priority, or updating a custom priority,
     add option to have this priority decrease with each item.
  5. Remove unity menu icon work-around.
- 6. To support alder GNOME settings daemon installations, revert to the
+ 6. To support older GNOME settings daemon installations, revert to the
     previous MediaKeys DBUS interface.
  7. Fix desktop detection via XDG_CURRENT_DESKTOP - check for colon separated
     values.

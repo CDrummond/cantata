@@ -108,13 +108,14 @@ void CoverLabel::paintEvent(QPaintEvent *)
     QPainter p(this);
     QSize layoutSize = pix.size() / pix.DEVICE_PIXEL_RATIO();
     QRect r((width()-layoutSize.width())/2, (height()-layoutSize.height())/2, layoutSize.width(), layoutSize.height());
+
     p.drawPixmap(r, pix);
     if (underMouse()) {
-#ifdef Q_OS_MAC
+        #ifdef Q_OS_MAC
         QPen pen(OSXStyle::self()->viewPalette().color(QPalette::Highlight), 2);
-#else
+        #else
         QPen pen(palette().color(QPalette::Highlight), 2);
-#endif
+        #endif
         pen.setJoinStyle(Qt::MiterJoin);
         p.setPen(pen);
         p.drawRect(r.adjusted(1, 1, -1, -1));
@@ -128,9 +129,6 @@ void CoverLabel::updatePix()
         return;
     }
     int size=height();
-    if (style()->pixelMetric(QStyle::PM_ToolBarFrameWidth)==0) {
-        size-=constBorder*2;
-    }
     double pixRatio=qApp->devicePixelRatio();
     size*=pixRatio;
     img=img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);

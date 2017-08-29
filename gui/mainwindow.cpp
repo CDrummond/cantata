@@ -223,16 +223,18 @@ void MainWindow::init()
         topToolBar->addWidget(toolbar);
         topToolBar->setMovable(false);
         topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
+        topToolBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        topToolBar->setContentsMargins(0, 0, 0, 0);
         topToolBar->ensurePolished();
         toolbar=topToolBar;
     } else {
-        toolbar->setFixedHeight(fontMetrics().height()*3.5);
+        toolbar->setFixedHeight(qMax(54, (int)(fontMetrics().height()*3.5)+(toolbarLayout->spacing()*3)+(vSpace*2)));
     }
     #endif
 
     toolbar->ensurePolished();
     toolbar->adjustSize();
-    coverWidget->setSize(toolbar->height());
+    coverWidget->setSize(toolbar->height()-(vSpace*2));
     nowPlaying->ensurePolished();
     nowPlaying->adjustSize();
     nowPlaying->setFixedHeight(nowPlaying->height());

@@ -134,7 +134,7 @@ const QImage & CurrentCover::stdImage(bool stream)
     QImage &img=stream ? noStreamCover : noCover;
 
     if (img.isNull()) {
-        int iconSize=Icon::stdSize(128);
+        int iconSize=Icon::stdSize(Utils::scaleForDpi(128));
         img = (stream ? Icons::self()->streamIcon : Icons::self()->albumIcon(iconSize)).pixmap(iconSize, iconSize).toImage();
 
         QString &file=stream ? noStreamCoverFileName : noCoverFileName;

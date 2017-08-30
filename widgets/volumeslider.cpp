@@ -86,7 +86,7 @@ VolumeSlider::VolumeSlider(QWidget *p)
     widthStep=4;
     setRange(0, 100);
     setPageStep(Settings::self()->volumeStep());
-    lineWidth=1;
+    lineWidth=Utils::scaleForDpi(1);
 
     int w=lineWidth*widthStep*19;
     int h=lineWidth*constHeightStep*10;

@@ -371,7 +371,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         connect(ratingWidget, SIGNAL(valueChanged(int)), SLOT(checkRating()));
     }
     adjustSize();
-    int w=600;
+    int w=Utils::scaleForDpi(600);
     if (width()<w) {
         resize(w, height());
     }

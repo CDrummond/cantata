@@ -10,23 +10,22 @@
     previous MediaKeys DBUS interface.
  7. Fix desktop detection via XDG_CURRENT_DESKTOP - check for colon separated
     values.
- 8. Remove Cantata's high-dpi handling code, this should be done by Qt.
- 9. If an error is to be shown, ensure Cantata is not minimised to system tray.
-10. If the initial start-up connection fails, try again every .5 second for a
+ 8. If an error is to be shown, ensure Cantata is not minimised to system tray.
+ 9. If the initial start-up connection fails, try again every .5 second for a
     few seconds.
-11. In playlists page, internet, etc, allow back navigation to go fully back.
-12. Don't try to seek if no song loaded.
-13. Only use menubar for macOS builds.
-14. Smart playlists - like dynamic, but do not auto update.
-15. Use em-dash to as separator.
-16. Add device option to only transcode if source is FLAC or WAV (detection is
+10. In playlists page, internet, etc, allow back navigation to go fully back.
+11. Don't try to seek if no song loaded.
+12. Only use menubar for macOS builds.
+13. Smart playlists - like dynamic, but do not auto update.
+14. Use em-dash to as separator.
+15. Add device option to only transcode if source is FLAC or WAV (detection is
     solely extension based).
-17. Fix extraction of album names from DB - for use in tag editor and playlist
+16. Fix extraction of album names from DB - for use in tag editor and playlist
     rules dialogs.
-18. Fix some potential security issues - thanks to Jonas Wielicki for the
+17. Fix some potential security issues - thanks to Jonas Wielicki for the
     patches.
-19. Only set Qt::AA_EnableHighDpiScaling for Windows builds.
-20. Fix sidebar highlight for windows (at least for Windows 10).
+18. Only set Qt::AA_EnableHighDpiScaling for Windows builds.
+19. Fix sidebar highlight for windows (at least for Windows 10).
 
 2.1.0
 -----

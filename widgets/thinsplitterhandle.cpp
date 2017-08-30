@@ -31,7 +31,7 @@ ThinSplitterHandle::ThinSplitterHandle(Qt::Orientation orientation, QSplitter *p
     , highlightUnderMouse(false)
     , underMouse(false)
 {
-    sz=4;
+    sz=Utils::scaleForDpi(4);
     updateMask();
     setAttribute(Qt::WA_MouseNoMask, true);
 }
@@ -49,7 +49,7 @@ void ThinSplitterHandle::paintEvent(QPaintEvent *event)
     if (underMouse) {
         QColor col(palette().highlight().color());
         QPainter p(this);
-        int width=2;
+        int width=Utils::scaleForDpi(2);
         QRect r=event->rect();
         r=QRect(r.x()+((r.width()-width)/2), r.y(), width, r.height());
         col.setAlphaF(0.5);

@@ -158,7 +158,7 @@ void TreeView::drag(Qt::DropActions supportedActions, QAbstractItemView *view, c
         }
         QDrag *drag = new QDrag(view);
         drag->setMimeData(data);
-        int pixSize=Icon::stdSize(32);
+        int pixSize=Icon::stdSize(Utils::scaleForDpi(32));
         drag->setPixmap(Icon("audio-x-generic").pixmap(pixSize, pixSize));
         drag->start(supportedActions);
     }

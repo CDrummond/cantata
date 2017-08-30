@@ -109,7 +109,7 @@ PlaylistRuleDialog::PlaylistRuleDialog(QWidget *parent, bool isDynamic)
     adjustSize();
     int h=height();
     int w=width();
-    int minW=500;
+    int minW=Utils::scaleForDpi(500);
     setMinimumWidth(minW);
     setMinimumHeight(h);
     if (w<minW) {

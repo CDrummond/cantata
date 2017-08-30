@@ -156,7 +156,7 @@ CoverWidget::CoverWidget(QWidget *parent)
     QBoxLayout *l=new QBoxLayout(QBoxLayout::LeftToRight, this);
     l->setMargin(0);
     l->setSpacing(0);
-    l->addItem(new QSpacerItem(qMax(8, Utils::layoutSpacing(this)), 4, QSizePolicy::Fixed, QSizePolicy::Fixed));
+    l->addItem(new QSpacerItem(qMax(Utils::scaleForDpi(8), Utils::layoutSpacing(this)), 4, QSizePolicy::Fixed, QSizePolicy::Fixed));
     label=new CoverLabel(this);
     l->addWidget(label);
     label->setStyleSheet(QString("QLabel {border: %1px solid transparent} QToolTip {background-color:#111111; color: #DDDDDD}").arg(constBorder));

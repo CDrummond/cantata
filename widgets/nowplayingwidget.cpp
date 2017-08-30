@@ -273,7 +273,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     QBoxLayout *topLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
     QBoxLayout *botLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
     int space=Utils::layoutSpacing(this);
-    int pad=qMax(space,8);
+    int pad=qMax(space, Utils::scaleForDpi(8));
     #ifdef Q_OS_MAC
     layout->setContentsMargins(pad, 0, pad, 0);
     #else

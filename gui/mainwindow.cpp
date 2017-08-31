@@ -473,12 +473,13 @@ void MainWindow::init()
     }
     QList<QToolButton *> playbackBtns=QList<QToolButton *>() << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     QList<QToolButton *> controlBtns=QList<QToolButton *>() << menuButton << songInfoButton;
-    int playbackIconSize=playbackIconSize=24==Icons::self()->toolbarPlayIcon.actualSize(QSize(24, 24)).width() ? 24 : 28;
-    int playPauseIconSize=32;
-    int controlIconSize=22;
-    int controlButtonSize=32;
+    int playbackIconSizeNonScaled=24==Icons::self()->toolbarPlayIcon.actualSize(QSize(24, 24)).width() ? 24 : 28;
+    int playbackIconSize=Utils::scaleForDpi(playbackIconSizeNonScaled);
+    int playPauseIconSize=Utils::scaleForDpi(32);
+    int controlIconSize=Utils::scaleForDpi(22);
+    int controlButtonSize=Utils::scaleForDpi(32);
+    int playbackButtonSize=28==playbackIconSizeNonScaled ? Utils::scaleForDpi(34) : controlButtonSize;
 
-    int playbackButtonSize=28==playbackIconSize ? 34 : controlButtonSize;
     foreach (QToolButton *b, controlBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);

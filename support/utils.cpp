@@ -898,7 +898,7 @@ Utils::Desktop Utils::currentDe()
         } else if (desktop.contains("kde")) {
             de=KDE;
         } else if (desktop.contains("gnome") || desktop.contains("pantheon")) {
-            de=Gnome;
+            de=desktop.contains("ubuntu") ? Ubuntu_Gnome : Gnome;
         } else {
             QByteArray kde=qgetenv("KDE_FULL_SESSION");
             if ("true"==kde) {

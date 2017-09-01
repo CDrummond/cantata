@@ -815,7 +815,7 @@ void MainWindow::init()
     updateActionToolTips();
     CustomActions::self()->setMainWindow(this);
 
-    if (Settings::self()->startHidden()) {
+    if (Utils::Gnome!=Utils::currentDe() && Settings::self()->startHidden()) {
         hide();
     } else {
         show();
@@ -850,9 +850,11 @@ MainWindow::~MainWindow()
     StreamsModel::self()->save();
     nowPlaying->saveConfig();
     Settings::self()->saveForceSingleClick(TreeView::getForceSingleClick());
-    Settings::StartupState startupState=Settings::self()->startupState();
-    Settings::self()->saveStartHidden(trayItem->isActive() && Settings::self()->minimiseOnClose() &&
-                                      ((isHidden() && Settings::SS_ShowMainWindow!=startupState) || (Settings::SS_HideMainWindow==startupState)));
+    if (Utils::Gnome!=Utils::currentDe()) {
+        Settings::StartupState startupState=Settings::self()->startupState();
+        Settings::self()->saveStartHidden(trayItem->isActive() && Settings::self()->minimiseOnClose() &&
+                                          ((isHidden() && Settings::SS_ShowMainWindow!=startupState) || (Settings::SS_HideMainWindow==startupState)));
+    }
     Settings::self()->save();
     disconnect(MPDConnection::self(), 0, 0, 0);
     if (Settings::self()->stopOnExit()) {

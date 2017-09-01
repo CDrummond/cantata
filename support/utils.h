@@ -114,6 +114,7 @@ namespace Utils
     enum Desktop {
         KDE,
         Gnome,
+        Ubuntu_Gnome,
         Unity,
         Other
     };

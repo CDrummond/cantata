@@ -113,7 +113,7 @@ static Action * copyAction(Action *orig)
 void TrayItem::setup()
 {
     #ifndef Q_OS_MAC
-    if (!Settings::self()->useSystemTray()) {
+    if (Utils::Gnome==Utils::currentDe() || !Settings::self()->useSystemTray()) {
         if (trayItem) {
             trayItem->setVisible(false);
             trayItem->deleteLater();

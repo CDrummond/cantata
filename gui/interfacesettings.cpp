@@ -109,6 +109,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
     , loaded(false)
 {
+    bool mprisSettings=false;
     #ifdef Q_OS_MAC
     // OSX always displays an entry in the taskbar - and the tray seems to confuse things.
     bool enableTrayItem=false;
@@ -117,10 +118,11 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #ifdef QT_QTDBUS_FOUND
     // We have dbus, check that org.freedesktop.Notifications exists
     bool enableNotifications=QDBusConnection::sessionBus().interface()->isServiceRegistered("org.freedesktop.Notifications");
+    mprisSettings=true;
     #else // QT_QTDBUS_FOUND
     bool enableNotifications=true;
     #endif // QT_QTDBUS_FOUND
-    bool enableTrayItem=true;
+    bool enableTrayItem=Utils::Gnome!=Utils::currentDe();
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
         enableTrayItem=false;
         #ifndef QT_QTDBUS_FOUND
@@ -184,14 +186,14 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         REMOVE(startupState)
     }
 
-    if (!enableNotifications && !enableTrayItem) {
+    if (!enableNotifications && !enableTrayItem && !mprisSettings) {
         tabWidget->removeTab(3);
-    } else if (!enableTrayItem && enableNotifications) {
+    } else if (!enableTrayItem && enableNotifications && !mprisSettings) {
         tabWidget->setTabText(3, tr("Notifications"));
     }
-    #if !defined QT_QTDBUS_FOUND
-    REMOVE(enableMpris)
-    #endif
+    if (!mprisSettings) {
+        REMOVE(enableMpris)
+    }
     #if defined Q_OS_WIN || defined Q_OS_MAC || !defined QT_QTDBUS_FOUND
     if (systemTrayPopup && systemTrayCheckBox) {
         connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(systemTrayCheckBoxToggled()));

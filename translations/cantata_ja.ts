@@ -6678,7 +6678,7 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
         <translation type="unfinished">ディスクの読込中</translation>
     </message>
     <message numerus="yes">
-        <location filename="../devices/audiocddevice.cpp" line="352"/>
+        <location filename="../devices/audiocddevice.cpp" line="356"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n トラック (%1)</numerusform>
@@ -7218,12 +7218,12 @@ Could not copy file to &apos;%1&apos;!</source>
 <context>
     <name>Device</name>
     <message>
-        <location filename="../devices/device.cpp" line="382"/>
+        <location filename="../devices/device.cpp" line="394"/>
         <source>Updating (%1)...</source>
         <translation type="unfinished">更新中 (%1)...</translation>
     </message>
     <message>
-        <location filename="../devices/device.cpp" line="387"/>
+        <location filename="../devices/device.cpp" line="399"/>
         <source>Updating (%1%)...</source>
         <translation type="unfinished">更新中 (%1%)...</translation>
     </message>
@@ -7329,6 +7329,11 @@ Could not copy file to &apos;%1&apos;!</source>
         <translation type="unfinished">ソースファイルが異なる書式の場合のみコード変換する</translation>
     </message>
     <message>
+        <location filename="../devices/devicepropertieswidget.ui" line="221"/>
+        <source>Only transcode if source is FALC/WAV</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>
         <source>Don&apos;t copy covers</source>
         <translation type="unfinished">カバーを複写しない</translation>
@@ -7379,17 +7384,17 @@ Could not copy file to &apos;%1&apos;!</source>
         <translation type="unfinished">トランスコードしない</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="226"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="229"/>
         <source>Encoder</source>
         <translation type="unfinished">エンコーダ</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="241"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="245"/>
         <source>Transcode to %1</source>
         <translation type="unfinished">%1 へトランスコード</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="272"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="276"/>
         <source>%1 (%2 free)</source>
         <comment>name (size free)</comment>
         <translation type="unfinished">%1 (%2 空き)</translation>
@@ -7696,100 +7701,85 @@ This cannot be undone.</source>
     </message>
 </context>
 <context>
-    <name>RulesPlaylists</name>
-    <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="242"/>
-        <source> - Rating: %1..%2</source>
-        <translation type="unfinished"> - レーティング: %1..%2</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../playlists/rulesplaylists.cpp" line="242"/>
-        <source>%n Rule(s)</source>
-        <translation type="unfinished">
-            <numerusform>%n ルール</numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>DynamicPlaylists</name>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="163"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="142"/>
         <source>Start Dynamic Playlist</source>
         <translation type="unfinished">ダイナミックプレイリストの開始</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="164"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="143"/>
         <source>Stop Dynamic Mode</source>
         <translation type="unfinished">ダイナミックプレイリストの停止</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="174"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="153"/>
         <source>Dynamic Playlists</source>
         <translation type="unfinished">ダイナミックプレイリスト</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="179"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="158"/>
         <source>Dynamically generated playlists</source>
         <translation type="unfinished">動的に生成されたプレイリスト</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="368"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="214"/>
         <source>You need to install &quot;perl&quot; on your system in order for Cantata&apos;s dynamic mode to function.</source>
         <translation type="unfinished">Cantata のダイナミックモードを動作させるにはこのシステムに &quot;perl&quot; をインストールする必要があります。</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="375"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="221"/>
         <source>Failed to locate rules file - %1</source>
         <translation type="unfinished">ルールファイルの検索に失敗しました - %1</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="383"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="229"/>
         <source>Failed to remove previous rules file - %1</source>
         <translation type="unfinished">以前のルールファイルの証書に失敗しました - %1</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="388"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="234"/>
         <source>Failed to install rules file - %1 -&gt; %2</source>
         <translation type="unfinished">ルールファイルのインストールに失敗しました  - %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="722"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="489"/>
         <source>Dynamizer has been terminated.</source>
         <translation type="unfinished">ダイナマイザは停止しました。</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="768"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="535"/>
         <source>Awaiting response for previous command. (%1)</source>
         <translation type="unfinished">以前のコマンドに対する応答を待っています。 (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="768"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="535"/>
         <source>Saving rule</source>
         <translation type="unfinished">ルールを保存中</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="768"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="535"/>
         <source>Deleting rule</source>
         <translation type="unfinished">ルールを削除中</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="875"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="642"/>
         <source>Failed to save %1. (%2)</source>
         <translation type="unfinished">%1 の保存に失敗しました。 (%2)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="889"/>
-        <location filename="../playlists/dynamicplaylists.cpp" line="892"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="656"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="659"/>
         <source>Failed to delete rules file. (%1)</source>
         <translation type="unfinished">ルールファイルの削除に失敗しました。 (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="899"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="666"/>
         <source>Failed to control dynamizer state. (%1)</source>
         <translation type="unfinished">ダイナマイザの状態制御に失敗しました。 (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="906"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="673"/>
         <source>Failed to set the current dynamic rules. (%1)</source>
         <translation type="unfinished">現在のダイナミックルールの設定に失敗しました。 (%1)</translation>
     </message>
@@ -7829,229 +7819,6 @@ This cannot be undone.</source>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="155"/>
         <source>Remove Dynamic Rules</source>
         <translation type="unfinished">ダイナミックルールを削除</translation>
-    </message>
-</context>
-<context>
-    <name>PlaylistRule</name>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="26"/>
-        <source>Type:</source>
-        <translation type="unfinished">タイプ:</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="37"/>
-        <source>Include songs that match the following:</source>
-        <translation type="unfinished">次のものと一致する曲を含む：</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="42"/>
-        <source>Exclude songs that match the following:</source>
-        <translation type="unfinished">次のものと一致しない曲を含む:</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="50"/>
-        <source>Artist:</source>
-        <translation type="unfinished">アーテイスト:</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="63"/>
-        <source>Artists similar to:</source>
-        <translation type="unfinished">同様のアーティスト:</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="76"/>
-        <source>Album Artist:</source>
-        <translation type="unfinished">アルバムアーティスト：</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="89"/>
-        <source>Composer:</source>
-        <translation type="unfinished">作曲家:</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="102"/>
-        <source>Album:</source>
-        <translation type="unfinished">アルバム:</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="115"/>
-        <source>Title:</source>
-        <translation type="unfinished">タイトル:</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="128"/>
-        <source>Genre</source>
-        <translation type="unfinished">ジャンル</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="141"/>
-        <source>From Year:</source>
-        <translation type="unfinished">開始年：</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="157"/>
-        <location filename="../playlists/playlistrule.ui" line="180"/>
-        <source>Any</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="164"/>
-        <source>To Year:</source>
-        <translation type="unfinished">終了年:</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="187"/>
-        <source>Comment:</source>
-        <translation type="unfinished">コメント:</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="200"/>
-        <source>Filename / path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="213"/>
-        <source>Exact match</source>
-        <translation type="unfinished">完全に一致</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="241"/>
-        <source>Only enter values for the tags you wish to be search on.</source>
-        <translation type="unfinished">検索したいタグの値のみを入力してください。</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrule.ui" line="248"/>
-        <source>For genre, end string with an asterisk to match various genres. e.g &apos;rock*&apos; matches &apos;Hard Rock&apos; and &apos;Rock and Roll&apos;.</source>
-        <translation type="unfinished">ジャンルについては、さまざまなジャンルに一致するようにアスタリスクで終了文字列を指定します。 例えば &apos;rock *&apos;は &apos;Hard Rock&apos;と &apos;Rock and Roll&apos;に一致します。</translation>
-    </message>
-</context>
-<context>
-    <name>PlaylistRuleDialog</name>
-    <message>
-        <location filename="../playlists/playlistruledialog.cpp" line="40"/>
-        <source>Dynamic Rule</source>
-        <translation type="unfinished">ダイナミックルール</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistruledialog.cpp" line="151"/>
-        <location filename="../playlists/playlistruledialog.cpp" line="152"/>
-        <source>Add</source>
-        <translation type="unfinished">追加</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistruledialog.cpp" line="229"/>
-        <source>&lt;i&gt;&lt;b&gt;ERROR&lt;/b&gt;: &apos;From Year&apos; should be less than &apos;To Year&apos;&lt;/i&gt;</source>
-        <translation type="unfinished">&lt;i&gt;&lt;b&gt;エラー&lt;/b&gt;: &apos;開始年&apos; は &apos;終了年&apos; より小さい必要があります&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistruledialog.cpp" line="232"/>
-        <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; Date range is too large (can only be a maximum of %1 years)&lt;/i&gt;</source>
-        <translation type="unfinished">&lt;i&gt;&lt;b&gt;エラー:&lt;/b&gt; 日付範囲が大きすぎます (最大でも %1 年間以内である必要あり)&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistruledialog.cpp" line="237"/>
-        <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; You can only match on filename / path if &apos;Exact match&apos; is &lt;b&gt;not&lt;/b&gt; checked&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PlaylistRules</name>
-    <message>
-        <location filename="../playlists/playlistrules.ui" line="39"/>
-        <source>Name of Dynamic Rules</source>
-        <translation type="unfinished">ダイナミックルールの名称</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrules.ui" line="71"/>
-        <source>Add</source>
-        <translation type="unfinished">追加</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrules.ui" line="78"/>
-        <source>Edit</source>
-        <translation type="unfinished">編集</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrules.ui" line="85"/>
-        <source>Remove</source>
-        <translation type="unfinished">削除</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrules.ui" line="107"/>
-        <source>Songs with ratings between:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrules.ui" line="119"/>
-        <location filename="../playlists/playlistrules.ui" line="166"/>
-        <source> - </source>
-        <translation type="unfinished">-</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrules.ui" line="144"/>
-        <source>Songs with duration between:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrules.ui" line="153"/>
-        <location filename="../playlists/playlistrules.ui" line="173"/>
-        <source> seconds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrules.ui" line="209"/>
-        <source>About Rules</source>
-        <translation type="unfinished">ルールについて</translation>
-    </message>
-</context>
-<context>
-    <name>PlaylistRulesDialog</name>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="142"/>
-        <source>Dynamic Rules</source>
-        <translation type="unfinished">ダイナミックルール</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation type="obsolete">なし</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="160"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="161"/>
-        <source>No Limit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="296"/>
-        <source>About dynamic rules</source>
-        <translation type="unfinished">ダイナミックルールについて</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="298"/>
-        <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with 10 entries. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="318"/>
-        <source>Failed to save %1</source>
-        <translation type="unfinished">%1 の保存に失敗</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="336"/>
-        <source>A set of rules named &apos;%1&apos; already exists!
-
-Overwrite?</source>
-        <translation type="unfinished">&apos;%1&apos; という名前のルールセットは既に存在します! 上書きしますか?</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="337"/>
-        <source>Overwrite Rules</source>
-        <translation type="unfinished">ルールの上書</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="375"/>
-        <source>Saving %1</source>
-        <translation type="unfinished">%1 の保存中</translation>
     </message>
 </context>
 <context>
@@ -8276,22 +8043,22 @@ This cannot be undone.</source>
 <context>
     <name>FsDevice</name>
     <message>
-        <location filename="../devices/fsdevice.cpp" line="654"/>
+        <location filename="../devices/fsdevice.cpp" line="661"/>
         <source>Updating...</source>
         <translation type="unfinished">更新中...</translation>
     </message>
     <message>
-        <location filename="../devices/fsdevice.cpp" line="730"/>
+        <location filename="../devices/fsdevice.cpp" line="737"/>
         <source>Reading cache</source>
         <translation type="unfinished">キャッシュ読込中</translation>
     </message>
     <message>
-        <location filename="../devices/fsdevice.cpp" line="735"/>
+        <location filename="../devices/fsdevice.cpp" line="742"/>
         <source>Saving cache</source>
         <translation type="unfinished">キャッシュを保存中</translation>
     </message>
     <message>
-        <location filename="../devices/fsdevice.cpp" line="742"/>
+        <location filename="../devices/fsdevice.cpp" line="749"/>
         <source>%1 %2%</source>
         <comment>Message percent</comment>
         <translation type="unfinished">%1 %2%</translation>
@@ -8323,7 +8090,7 @@ This cannot be undone.</source>
         <translation type="unfinished">ストリーム</translation>
     </message>
     <message numerus="yes">
-        <location filename="../widgets/groupedview.cpp" line="409"/>
+        <location filename="../widgets/groupedview.cpp" line="406"/>
         <source>%n Track(s)</source>
         <translation type="unfinished">
             <numerusform>%n トラック</numerusform>
@@ -8517,12 +8284,12 @@ This cannot be undone.</source>
 <context>
     <name>InputDialog</name>
     <message>
-        <location filename="../support/inputdialog.h" line="50"/>
+        <location filename="../support/inputdialog.h" line="51"/>
         <source>Password</source>
         <translation type="unfinished">パスワード</translation>
     </message>
     <message>
-        <location filename="../support/inputdialog.h" line="50"/>
+        <location filename="../support/inputdialog.h" line="51"/>
         <source>Please enter password:</source>
         <translation type="unfinished">パスワードを入力してください:</translation>
     </message>
@@ -8557,6 +8324,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="82"/>
         <location filename="../gui/interfacesettings.ui" line="137"/>
+        <location filename="../gui/interfacesettings.ui" line="661"/>
         <source>Style:</source>
         <translation type="unfinished">スタイル:</translation>
     </message>
@@ -8577,7 +8345,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="128"/>
-        <location filename="../gui/interfacesettings.cpp" line="135"/>
+        <location filename="../gui/interfacesettings.cpp" line="138"/>
         <source>Play Queue</source>
         <translation type="unfinished">プレイキュー</translation>
     </message>
@@ -8797,6 +8565,11 @@ This cannot be undone.</source>
         <translation type="unfinished">シングルクリックでのアイテムのアクティブ化を強制する</translation>
     </message>
     <message>
+        <location filename="../gui/interfacesettings.ui" line="690"/>
+        <source>Changing the style setting will require a re-start of Cantata.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&lt;p&gt;This will change Cantata&apos;s interface as detailed:
 &lt;ul&gt;&lt;li&gt;Playback, and control, buttons will be 33% wider&lt;/li&gt;&lt;li&gt;Views will be &apos;flickable&apos;&lt;/li&gt;&lt;li&gt;To drag items, you will need to &apos;touch&apos; the top-left corner&lt;/li&gt;&lt;li&gt;Scrollbars will only be a few pixels wide&lt;/li&gt;&lt;li&gt;Actions (e.g. &apos;Add To Play Queue&apos;) will always be visible (not just when item is under mouse)&lt;/li&gt;&lt;li&gt;Spin buttons will have + and - buttons at the side of the text field&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
         <translation type="obsolete">&lt;p&gt;これにより、Cantataのインターフェースが以下の通り変更されます:
@@ -8821,12 +8594,12 @@ This cannot be undone.</source>
         <translation type="unfinished">言語:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="663"/>
+        <location filename="../gui/interfacesettings.ui" line="676"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation type="unfinished">「シングルクリックでのアイテムのアクティブ化を強制する」設定を変更するには、Cantataを再起動する必要があります。</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="670"/>
+        <location filename="../gui/interfacesettings.ui" line="683"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation type="unfinished">言語設定の変更時はCantataを再起動する必要があります。</translation>
     </message>
@@ -8839,109 +8612,110 @@ This cannot be undone.</source>
         <translation type="obsolete">高解像度ディスプレイのサポートを有効にすると、高解像度ディスプレイ上でより鮮明なアイコンが生成されるが、通常解像度のディスプレイ上ではあまり鮮明でないアイコンを生成することがあります。この設定を変更するには、Cantataを再起動する必要があります。</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="136"/>
+        <location filename="../gui/interfacesettings.cpp" line="139"/>
         <source>Library</source>
         <translation type="unfinished">ライブラリ</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="137"/>
+        <location filename="../gui/interfacesettings.cpp" line="140"/>
         <source>Folders</source>
         <translation type="unfinished">フォルダ</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="138"/>
+        <location filename="../gui/interfacesettings.cpp" line="141"/>
         <source>Playlists</source>
         <translation type="unfinished">プレイリスト</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="139"/>
+        <location filename="../gui/interfacesettings.cpp" line="142"/>
         <source>Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts</source>
         <translation type="unfinished">インターネット - Streams, Jamendo, Maganatune, SoundCloud, Podcast</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="141"/>
+        <location filename="../gui/interfacesettings.cpp" line="144"/>
         <source>Devices - UMS, MTP (e.g. Android), and AudioCDs</source>
         <translation type="unfinished">デバイス - UMS, MTP(例えば Android), オーディオCD</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="145"/>
+        <location filename="../gui/interfacesettings.cpp" line="148"/>
         <source>Search (via MPD)</source>
         <translation type="unfinished">検索(MPD経由)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="146"/>
+        <location filename="../gui/interfacesettings.cpp" line="149"/>
         <source>Info - Current song information (artist, album, and lyrics)</source>
         <translation type="unfinished">情報 - 現在の楽曲情報（アーティスト, アルバム, 歌詞）</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="151"/>
+        <location filename="../gui/interfacesettings.cpp" line="154"/>
         <source>Large</source>
         <translation type="unfinished">大</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="152"/>
+        <location filename="../gui/interfacesettings.cpp" line="155"/>
         <source>Small</source>
         <translation type="unfinished">小</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="153"/>
+        <location filename="../gui/interfacesettings.cpp" line="156"/>
         <source>Tab-bar</source>
         <translation type="unfinished">タブバー</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="154"/>
+        <location filename="../gui/interfacesettings.cpp" line="157"/>
         <source>Left</source>
         <translation type="unfinished">左</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="154"/>
+        <location filename="../gui/interfacesettings.cpp" line="157"/>
         <source>Right</source>
         <translation type="unfinished">右</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="155"/>
+        <location filename="../gui/interfacesettings.cpp" line="158"/>
         <source>Top</source>
         <translation type="unfinished">上</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="156"/>
+        <location filename="../gui/interfacesettings.cpp" line="159"/>
         <source>Bottom</source>
         <translation type="unfinished">下</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="163"/>
+        <location filename="../gui/interfacesettings.cpp" line="166"/>
         <source>Images (*.png *.jpg)</source>
         <translation type="unfinished">画像ファイル (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="164"/>
+        <location filename="../gui/interfacesettings.cpp" line="167"/>
         <source>10px</source>
         <comment>pixels</comment>
         <translation type="unfinished">10px</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="189"/>
+        <location filename="../gui/interfacesettings.cpp" line="192"/>
         <source>Notifications</source>
         <translation type="unfinished">通知</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="392"/>
+        <location filename="../gui/interfacesettings.cpp" line="397"/>
         <source>English (en)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="397"/>
+        <location filename="../gui/interfacesettings.cpp" line="402"/>
+        <location filename="../gui/interfacesettings.cpp" line="419"/>
         <source>System default</source>
         <translation type="unfinished">システム規定値</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="493"/>
+        <location filename="../gui/interfacesettings.cpp" line="525"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation type="unfinished">%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="498"/>
+        <location filename="../gui/interfacesettings.cpp" line="530"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation type="unfinished">%1 px</translation>
@@ -8955,7 +8729,7 @@ This cannot be undone.</source>
         <translation type="unfinished">戻る</translation>
     </message>
     <message>
-        <location filename="../widgets/itemview.cpp" line="1295"/>
+        <location filename="../widgets/itemview.cpp" line="1286"/>
         <source>Updating...</source>
         <translation type="unfinished">更新中...</translation>
     </message>
@@ -9221,85 +8995,85 @@ If this search does find new lyrics, these will still be associated with the ori
 <context>
     <name>MPDConnection</name>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="170"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="171"/>
         <source>Unknown</source>
         <translation type="unfinished">不明</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="413"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="417"/>
         <source>Connection to %1 failed</source>
         <translation type="unfinished">%1 への接続に失敗しました</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="414"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="418"/>
         <source>Connection to %1 failed - please check your proxy settings</source>
         <translation type="unfinished">%1 への接続に失敗しました - プロキシ設定を確認ください</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="415"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="419"/>
         <source>Connection to %1 failed - incorrect password</source>
         <translation type="unfinished">%1 への接続に失敗しました - 無効なパスワードです</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="523"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="529"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">%1 に接続中</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="626"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="647"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation type="unfinished">%1 へのコマンド送信に失敗しました - 未接続です</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="681"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="703"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation type="unfinished">読込に失敗しました。ユーザ &quot;mpd&quot; に読込許可があるか確認してください。</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="683"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="705"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation type="unfinished">読込に失敗しました。ローカルソケット経由で接続の際、 MPD はローカルファイルのみ再生可能です。</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="685"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="692"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="707"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="714"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">MPDが以下のエラーを返しました: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="689"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="700"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="711"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="722"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation type="unfinished">コマンド送信に失敗しました。%1 から切断されました</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1637"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1684"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; から &lt;b&gt;%2&lt;/b&gt; への名前変更に失敗</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1649"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1696"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; への保存に失敗しました</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1662"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1709"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation type="unfinished">キューシートのパーツをプレイリストへ追加が出来ません!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1665"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1712"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation type="unfinished">他のプレイリストへのプレイリストの追加が出来ません!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1843"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1943"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation type="unfinished">&apos;%1&apos;から’%2’への送信に失敗しました。%2がMPDに登録されているか確認してください。</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2126"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2153"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2226"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2253"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation type="unfinished">&apos;sticker&apos; MPD コマンドが未サポートなため、レーティングが格納できません。</translation>
     </message>
@@ -9439,9 +9213,9 @@ If this search does find new lyrics, these will still be associated with the ori
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="272"/>
-        <location filename="../gui/mainwindow.cpp" line="1334"/>
-        <location filename="../gui/mainwindow.cpp" line="1338"/>
-        <location filename="../gui/mainwindow.cpp" line="1344"/>
+        <location filename="../gui/mainwindow.cpp" line="1251"/>
+        <location filename="../gui/mainwindow.cpp" line="1255"/>
+        <location filename="../gui/mainwindow.cpp" line="1261"/>
         <source>Outputs</source>
         <translation type="unfinished">出力先</translation>
     </message>
@@ -9611,97 +9385,95 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="unfinished">情報</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="593"/>
         <source>Show Menubar</source>
-        <translation type="unfinished">メニューバーの表示</translation>
+        <translation type="obsolete">メニューバーの表示</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="631"/>
+        <location filename="../gui/mainwindow.cpp" line="548"/>
         <source>&amp;Music</source>
         <translation type="unfinished">ミュージック(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="642"/>
+        <location filename="../gui/mainwindow.cpp" line="559"/>
         <source>&amp;Edit</source>
         <translation type="unfinished">編集(&amp;E)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="654"/>
+        <location filename="../gui/mainwindow.cpp" line="568"/>
         <source>&amp;View</source>
         <translation type="unfinished">ビュー(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="665"/>
+        <location filename="../gui/mainwindow.cpp" line="572"/>
         <source>&amp;Queue</source>
         <translation type="unfinished">キュー(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="674"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished">設定(&amp;S)</translation>
+        <translation type="obsolete">設定(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="688"/>
+        <location filename="../gui/mainwindow.cpp" line="581"/>
         <source>&amp;Help</source>
         <translation type="unfinished">ヘルプ(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="707"/>
+        <location filename="../gui/mainwindow.cpp" line="616"/>
         <source>Set Rating</source>
         <translation type="unfinished">レーティングの設定</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="712"/>
+        <location filename="../gui/mainwindow.cpp" line="621"/>
         <source>No Rating</source>
         <translation type="unfinished">レーティングなし</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1008"/>
+        <location filename="../gui/mainwindow.cpp" line="927"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation type="unfinished">ダイナミックプレイリストルールに一致する楽曲が捜索出来ませんでした。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1129"/>
+        <location filename="../gui/mainwindow.cpp" line="1046"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">%1 に接続中</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1165"/>
+        <location filename="../gui/mainwindow.cpp" line="1082"/>
         <source>Refresh MPD Database?</source>
         <translation type="unfinished">MPD データベースを更新しますか?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1171"/>
+        <location filename="../gui/mainwindow.cpp" line="1088"/>
         <source>About Cantata</source>
         <translation type="unfinished">Cantata について</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1172"/>
+        <location filename="../gui/mainwindow.cpp" line="1089"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation type="unfinished">&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1174"/>
+        <location filename="../gui/mainwindow.cpp" line="1091"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation type="unfinished">Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1175"/>
+        <location filename="../gui/mainwindow.cpp" line="1092"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">コンテキストビューの背景 &lt;a href=&quot;http://fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt; の協賛</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1176"/>
+        <location filename="../gui/mainwindow.cpp" line="1093"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation type="unfinished">コンテキストビューのメータデータは&lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; と &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt; の協賛</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1177"/>
+        <location filename="../gui/mainwindow.cpp" line="1094"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">あなたのミュージックファンアートを&lt;a href=&quot;http://fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;にアップロードしてください</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1184"/>
+        <location filename="../gui/mainwindow.cpp" line="1101"/>
         <source>A Podcast is currently being downloaded
 
 Quiting now will abort the download.</source>
@@ -9710,95 +9482,100 @@ Quiting now will abort the download.</source>
 終了すると、ダウンロードが中止されます。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1185"/>
+        <location filename="../gui/mainwindow.cpp" line="1102"/>
         <source>Abort download and quit</source>
         <translation type="unfinished">ダウンロードを中止し終了する</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1213"/>
+        <location filename="../gui/mainwindow.cpp" line="1130"/>
         <source>Please close other dialogs first.</source>
         <translation type="unfinished">他のダイアログを先に閉じてください。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1334"/>
-        <location filename="../gui/mainwindow.cpp" line="1345"/>
+        <location filename="../gui/mainwindow.cpp" line="1251"/>
+        <location filename="../gui/mainwindow.cpp" line="1262"/>
         <source>Enabled: %1</source>
         <translation type="unfinished">有効化済: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1338"/>
-        <location filename="../gui/mainwindow.cpp" line="1346"/>
+        <location filename="../gui/mainwindow.cpp" line="1255"/>
+        <location filename="../gui/mainwindow.cpp" line="1263"/>
         <source>Disabled: %1</source>
         <translation type="unfinished">無効化済: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1534"/>
-        <location filename="../gui/mainwindow.cpp" line="1557"/>
+        <location filename="../gui/mainwindow.cpp" line="1451"/>
+        <location filename="../gui/mainwindow.cpp" line="1474"/>
         <source>Server Information</source>
         <translation type="unfinished">サーバー情報</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1537"/>
+        <location filename="../gui/mainwindow.cpp" line="1454"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;サーバー&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;プロトコル:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;稼働時間:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;再生中:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;ハンドラ:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;タグ:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1548"/>
+        <location filename="../gui/mainwindow.cpp" line="1465"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;データベース&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;アーティスト:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;アルバム:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;楽曲:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1701"/>
+        <location filename="../gui/mainwindow.cpp" line="1618"/>
         <source>Cantata (%1)</source>
         <translation type="unfinished">Cantata (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1768"/>
+        <location filename="../gui/mainwindow.cpp" line="1685"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">MPDが以下のエラーを返しました: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1839"/>
+        <location filename="../gui/mainwindow.cpp" line="1756"/>
         <source>Cantata</source>
         <translation type="unfinished">Canata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1839"/>
+        <location filename="../gui/mainwindow.cpp" line="1756"/>
         <source>Playback stopped</source>
         <translation type="unfinished">再生が停止しました</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1882"/>
+        <location filename="../gui/mainwindow.cpp" line="1799"/>
         <source>Remove all songs from play queue?</source>
         <translation type="unfinished">プレイキューからすべての楽曲を削除しますか?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1933"/>
+        <location filename="../gui/mainwindow.cpp" line="1850"/>
         <source>Priority</source>
         <translation type="unfinished">プライオリティ</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1933"/>
+        <location filename="../gui/mainwindow.cpp" line="1850"/>
         <source>Enter priority (0..255):</source>
         <translation type="unfinished">プライオリティを入力 (0..255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1956"/>
+        <location filename="../gui/mainwindow.cpp" line="1851"/>
+        <source>Decrease priority for each subsequent track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="1878"/>
         <source>Playlist Name</source>
         <translation type="unfinished">プレイリスト名</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1956"/>
+        <location filename="../gui/mainwindow.cpp" line="1878"/>
         <source>Enter a name for the playlist:</source>
         <translation type="unfinished">プレイリスト名を入力:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1959"/>
+        <location filename="../gui/mainwindow.cpp" line="1881"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation type="unfinished">&apos;%1&apos; はお気に入りのストリームを保存するために使用されています、他の名前を選択してください。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1963"/>
+        <location filename="../gui/mainwindow.cpp" line="1885"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -9807,19 +9584,19 @@ Add to that playlist?</source>
 プレイリストに追加しますか?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1964"/>
+        <location filename="../gui/mainwindow.cpp" line="1886"/>
         <source>Existing Playlist</source>
         <translation type="unfinished">存在するプレイリスト</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2039"/>
+        <location filename="../gui/mainwindow.cpp" line="1961"/>
         <source>%n Track(s)</source>
         <translation type="unfinished">
             <numerusform>%n トラック</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2041"/>
+        <location filename="../gui/mainwindow.cpp" line="1963"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n トラック (%1)</numerusform>
@@ -9853,28 +9630,28 @@ Add to that playlist?</source>
 <context>
     <name>MtpConnection</name>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="153"/>
+        <location filename="../devices/mtpdevice.cpp" line="155"/>
         <source>Connecting to device...</source>
         <translation type="unfinished">デバイスへの接続中...</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="155"/>
-        <location filename="../devices/mtpdevice.cpp" line="192"/>
+        <location filename="../devices/mtpdevice.cpp" line="157"/>
+        <location filename="../devices/mtpdevice.cpp" line="194"/>
         <source>No devices found</source>
         <translation type="unfinished">デバイスが見つかりません</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="207"/>
+        <location filename="../devices/mtpdevice.cpp" line="209"/>
         <source>Connected to device</source>
         <translation type="unfinished">デバイスに接続済</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="220"/>
+        <location filename="../devices/mtpdevice.cpp" line="222"/>
         <source>Disconnected from device</source>
         <translation type="unfinished">デバイスに切断済</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="293"/>
+        <location filename="../devices/mtpdevice.cpp" line="295"/>
         <source>Updating folders...</source>
         <translation type="unfinished">フォルダの更新中...</translation>
     </message>
@@ -9883,7 +9660,7 @@ Add to that playlist?</source>
         <translation type="obsolete">ファイルの更新中...</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="314"/>
+        <location filename="../devices/mtpdevice.cpp" line="316"/>
         <source>Updating tracks...</source>
         <translation type="unfinished">トラックの更新中...</translation>
     </message>
@@ -9891,12 +9668,12 @@ Add to that playlist?</source>
 <context>
     <name>MtpDevice</name>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1551"/>
+        <location filename="../devices/mtpdevice.cpp" line="1566"/>
         <source>Not Connected</source>
         <translation type="unfinished">未接続</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1554"/>
+        <location filename="../devices/mtpdevice.cpp" line="1569"/>
         <source>%1 free</source>
         <translation type="unfinished">%1 空き</translation>
     </message>
@@ -10277,129 +10054,129 @@ Add to that playlist?</source>
 <context>
     <name>PlayQueueModel</name>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="169"/>
+        <location filename="../models/playqueuemodel.cpp" line="168"/>
         <source>Title</source>
         <translation type="unfinished">タイトル</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="170"/>
-        <location filename="../models/playqueuemodel.cpp" line="249"/>
+        <location filename="../models/playqueuemodel.cpp" line="169"/>
+        <location filename="../models/playqueuemodel.cpp" line="247"/>
         <source>Artist</source>
         <translation type="unfinished">アーティスト</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="171"/>
-        <location filename="../models/playqueuemodel.cpp" line="251"/>
+        <location filename="../models/playqueuemodel.cpp" line="170"/>
+        <location filename="../models/playqueuemodel.cpp" line="249"/>
         <source>Album</source>
         <translation type="unfinished">アルバム</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="172"/>
+        <location filename="../models/playqueuemodel.cpp" line="171"/>
         <source>#</source>
         <comment>Track number</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="173"/>
+        <location filename="../models/playqueuemodel.cpp" line="172"/>
         <source>Length</source>
         <translation type="unfinished">時間</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="174"/>
+        <location filename="../models/playqueuemodel.cpp" line="173"/>
         <source>Disc</source>
         <translation type="unfinished">ディスク</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="175"/>
-        <location filename="../models/playqueuemodel.cpp" line="255"/>
+        <location filename="../models/playqueuemodel.cpp" line="174"/>
+        <location filename="../models/playqueuemodel.cpp" line="253"/>
         <source>Year</source>
         <translation type="unfinished">年</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="176"/>
+        <location filename="../models/playqueuemodel.cpp" line="175"/>
         <source>Original Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="177"/>
-        <location filename="../models/playqueuemodel.cpp" line="254"/>
+        <location filename="../models/playqueuemodel.cpp" line="176"/>
+        <location filename="../models/playqueuemodel.cpp" line="252"/>
         <source>Genre</source>
         <translation type="unfinished">ジャンル</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="178"/>
+        <location filename="../models/playqueuemodel.cpp" line="177"/>
         <source>Priority</source>
         <translation type="unfinished">プライオリティ</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="179"/>
-        <location filename="../models/playqueuemodel.cpp" line="256"/>
+        <location filename="../models/playqueuemodel.cpp" line="178"/>
+        <location filename="../models/playqueuemodel.cpp" line="254"/>
         <source>Composer</source>
         <translation type="unfinished">作曲家</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="180"/>
-        <location filename="../models/playqueuemodel.cpp" line="257"/>
+        <location filename="../models/playqueuemodel.cpp" line="179"/>
+        <location filename="../models/playqueuemodel.cpp" line="255"/>
         <source>Performer</source>
         <translation type="unfinished">演奏者</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="181"/>
+        <location filename="../models/playqueuemodel.cpp" line="180"/>
         <source>Rating</source>
         <translation type="unfinished">レーティング</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="227"/>
+        <location filename="../models/playqueuemodel.cpp" line="225"/>
         <source>Remove Duplicates</source>
         <translation type="unfinished">複製を削除</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="230"/>
+        <location filename="../models/playqueuemodel.cpp" line="228"/>
         <source>Undo</source>
         <translation type="unfinished">元に戻す</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="232"/>
+        <location filename="../models/playqueuemodel.cpp" line="230"/>
         <source>Redo</source>
         <translation type="unfinished">やり直し</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="238"/>
+        <location filename="../models/playqueuemodel.cpp" line="236"/>
         <source>Shuffle</source>
         <translation type="unfinished">シャッフル</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="240"/>
+        <location filename="../models/playqueuemodel.cpp" line="238"/>
         <source>Tracks</source>
         <translation type="unfinished">トラック</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="241"/>
+        <location filename="../models/playqueuemodel.cpp" line="239"/>
         <source>Albums</source>
         <translation type="unfinished">アルバム</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="247"/>
+        <location filename="../models/playqueuemodel.cpp" line="245"/>
         <source>Sort By</source>
         <translation type="unfinished">ソートする</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="250"/>
+        <location filename="../models/playqueuemodel.cpp" line="248"/>
         <source>Album Artist</source>
         <translation type="unfinished">アルバムアーティスト</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="252"/>
+        <location filename="../models/playqueuemodel.cpp" line="250"/>
         <source>Track Title</source>
         <translation type="unfinished">トラック名</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="253"/>
+        <location filename="../models/playqueuemodel.cpp" line="251"/>
         <source>Track Number</source>
         <translation type="unfinished">トラック番号</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="311"/>
+        <location filename="../models/playqueuemodel.cpp" line="309"/>
         <source># (Track Number)</source>
         <translation type="unfinished"># (トラック番号)</translation>
     </message>
@@ -10511,6 +10288,279 @@ Add to that playlist?</source>
         <location filename="../gui/playbacksettings.cpp" line="172"/>
         <source>Replay Gain is a proposed standard published in 2001 to normalize the perceived loudness of computer audio formats such as MP3 and Ogg Vorbis. It works on a track/album basis, and is now supported in a growing number of players.&lt;br/&gt;&lt;br/&gt;The following ReplayGain settings may be used:&lt;ul&gt;&lt;li&gt;&lt;i&gt;None&lt;/i&gt; - No ReplayGain is applied.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Track&lt;/i&gt; - Volume will be adjusted using the track&apos;s ReplayGain tags.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Album&lt;/i&gt; - Volume will be adjusted using the albums&apos;s ReplayGain tags.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Auto&lt;/i&gt; - Volume will be adjusted using the track&apos;s ReplayGain tags if random play is activated, otherwise the album&apos;s tags will be used.&lt;/li&gt;&lt;/ul&gt;</source>
         <translation type="unfinished">Replay Gainは、MP3やOgg Vorbisなどのコンピュータオーディオフォーマットで知覚される音量を標準化するために2001年に発表され提案された標準規格です。これはトラック/アルバムベースで動作し、現在、ますます多くのプレーヤーでサポートされています。&lt;br/&gt;&lt;br/&gt;以下の通り、リプレイゲイン設定が使用されます:&lt;ul&gt;&lt;li&gt;&lt;i&gt;なし&lt;/i&gt; - リプレイゲインが適用されません。&lt;/li&gt;&lt;li&gt;&lt;i&gt;トラック&lt;/i&gt; - 各楽曲のReplayGainタグ情報でボリウムが調整されます。&lt;/li&gt;&lt;li&gt;&lt;i&gt;アルバム&lt;/i&gt; - アルバムのReplayGainタグ情報でボリウムが調整されます。&lt;/li&gt;&lt;li&gt;&lt;i&gt;自動&lt;/i&gt; - ランダムプレイが有効な場合は楽曲のReplayGainタグを使用してボリウムが調整され、それ以外の場合はアルバムのタグが使用されます。&lt;/li&gt;&lt;/ul&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>PlaylistRule</name>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="26"/>
+        <source>Type:</source>
+        <translation type="unfinished">タイプ:</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="37"/>
+        <source>Include songs that match the following:</source>
+        <translation type="unfinished">次のものと一致する曲を含む：</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="42"/>
+        <source>Exclude songs that match the following:</source>
+        <translation type="unfinished">次のものと一致しない曲を含む:</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="50"/>
+        <source>Artist:</source>
+        <translation type="unfinished">アーテイスト:</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="63"/>
+        <source>Artists similar to:</source>
+        <translation type="unfinished">同様のアーティスト:</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="76"/>
+        <source>Album Artist:</source>
+        <translation type="unfinished">アルバムアーティスト：</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="89"/>
+        <source>Composer:</source>
+        <translation type="unfinished">作曲家:</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="102"/>
+        <source>Album:</source>
+        <translation type="unfinished">アルバム:</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="115"/>
+        <source>Title:</source>
+        <translation type="unfinished">タイトル:</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="128"/>
+        <source>Genre</source>
+        <translation type="unfinished">ジャンル</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="141"/>
+        <source>From Year:</source>
+        <translation type="unfinished">開始年：</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="157"/>
+        <location filename="../playlists/playlistrule.ui" line="180"/>
+        <source>Any</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="164"/>
+        <source>To Year:</source>
+        <translation type="unfinished">終了年:</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="187"/>
+        <source>Comment:</source>
+        <translation type="unfinished">コメント:</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="200"/>
+        <source>Filename / path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="213"/>
+        <source>Exact match</source>
+        <translation type="unfinished">完全に一致</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="241"/>
+        <source>Only enter values for the tags you wish to be search on.</source>
+        <translation type="unfinished">検索したいタグの値のみを入力してください。</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="248"/>
+        <source>For genre, end string with an asterisk to match various genres. e.g &apos;rock*&apos; matches &apos;Hard Rock&apos; and &apos;Rock and Roll&apos;.</source>
+        <translation type="unfinished">ジャンルについては、さまざまなジャンルに一致するようにアスタリスクで終了文字列を指定します。 例えば &apos;rock *&apos;は &apos;Hard Rock&apos;と &apos;Rock and Roll&apos;に一致します。</translation>
+    </message>
+</context>
+<context>
+    <name>PlaylistRuleDialog</name>
+    <message>
+        <location filename="../playlists/playlistruledialog.cpp" line="45"/>
+        <source>Dynamic Rule</source>
+        <translation type="unfinished">ダイナミックルール</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistruledialog.cpp" line="45"/>
+        <source>Smart Rule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistruledialog.cpp" line="165"/>
+        <location filename="../playlists/playlistruledialog.cpp" line="166"/>
+        <source>Add</source>
+        <translation type="unfinished">追加</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistruledialog.cpp" line="243"/>
+        <source>&lt;i&gt;&lt;b&gt;ERROR&lt;/b&gt;: &apos;From Year&apos; should be less than &apos;To Year&apos;&lt;/i&gt;</source>
+        <translation type="unfinished">&lt;i&gt;&lt;b&gt;エラー&lt;/b&gt;: &apos;開始年&apos; は &apos;終了年&apos; より小さい必要があります&lt;/i&gt;</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistruledialog.cpp" line="246"/>
+        <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; Date range is too large (can only be a maximum of %1 years)&lt;/i&gt;</source>
+        <translation type="unfinished">&lt;i&gt;&lt;b&gt;エラー:&lt;/b&gt; 日付範囲が大きすぎます (最大でも %1 年間以内である必要あり)&lt;/i&gt;</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistruledialog.cpp" line="251"/>
+        <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; You can only match on filename / path if &apos;Exact match&apos; is &lt;b&gt;not&lt;/b&gt; checked&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PlaylistRules</name>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="39"/>
+        <source>Name of Dynamic Rules</source>
+        <translation type="unfinished">ダイナミックルールの名称</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="71"/>
+        <source>Add</source>
+        <translation type="unfinished">追加</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="78"/>
+        <source>Edit</source>
+        <translation type="unfinished">編集</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="85"/>
+        <source>Remove</source>
+        <translation type="unfinished">削除</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="107"/>
+        <source>Songs with ratings between:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="119"/>
+        <location filename="../playlists/playlistrules.ui" line="166"/>
+        <source> - </source>
+        <translation type="unfinished">-</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="144"/>
+        <source>Songs with duration between:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="153"/>
+        <location filename="../playlists/playlistrules.ui" line="173"/>
+        <source> seconds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="201"/>
+        <source>Number of songs in play queue:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="215"/>
+        <source>Order songs:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="240"/>
+        <source>About Rules</source>
+        <translation type="unfinished">ルールについて</translation>
+    </message>
+</context>
+<context>
+    <name>PlaylistRulesDialog</name>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
+        <source>Dynamic Rules</source>
+        <translation type="unfinished">ダイナミックルール</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="obsolete">なし</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="167"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="168"/>
+        <source>No Limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="336"/>
+        <source>About dynamic rules</source>
+        <translation type="unfinished">ダイナミックルールについて</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
+        <source>Smart Rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="185"/>
+        <source>Ascending</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="186"/>
+        <source>Descending</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="195"/>
+        <source>Name of Smart Rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="196"/>
+        <source>Number of songs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="338"/>
+        <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="353"/>
+        <source>About smart rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="355"/>
+        <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will add the desired number of songs to the play queue. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="383"/>
+        <source>Failed to save %1</source>
+        <translation type="unfinished">%1 の保存に失敗</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="401"/>
+        <source>A set of rules named &apos;%1&apos; already exists!
+
+Overwrite?</source>
+        <translation type="unfinished">&apos;%1&apos; という名前のルールセットは既に存在します! 上書きしますか?</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="402"/>
+        <source>Overwrite Rules</source>
+        <translation type="unfinished">ルールの上書</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="445"/>
+        <source>Saving %1</source>
+        <translation type="unfinished">%1 の保存中</translation>
     </message>
 </context>
 <context>
@@ -11334,133 +11384,133 @@ Add to that playlist?</source>
         <translation type="unfinished">ビットレートは、そのオーディオトラックが1秒辺りに使用するデータの量の尺度を示しています。&lt;br&gt;&lt;b&gt;WMA&lt;/b&gt;形式独自のの制限と独自エンコーダのリバースエンジニアリングの難しさのため、Cantataが使用するWMAエンコーダは&lt;a href=&quot;http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&quot;&gt;固定ビットレート (CBR)&lt;/a&gt; 設定のみ使用します。&lt;br&gt;この理由から、このスライダーのビットレートは、コード化されたトラックのビットレートのかなり正確な見積もりです。&lt;b&gt;136kb/s&lt;/b&gt;は、ポータブルプレーヤーでの音楽聴取に適しています。 &lt;br/&gt;&lt;b&gt;112kb/s&lt;/b&gt;未満は音楽には不満足で、&lt;b&gt;182kb/s&lt;/b&gt;以上はおそらく過剰です。</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="70"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="68"/>
         <source>Empty filename.</source>
         <translation type="unfinished">ファイル名なし。</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="71"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="69"/>
         <source>Invalid filename. (%1)</source>
         <translation type="unfinished">無効なファイル名。 (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="72"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="70"/>
         <source>Failed to save %1.</source>
         <translation type="unfinished">%1 への保存に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="73"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="71"/>
         <source>Failed to delete rules file. (%1)</source>
         <translation type="unfinished">ルールファイルの削除に失敗しました。 (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="74"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="72"/>
         <source>Invalid command. (%1)</source>
         <translation type="unfinished">無効なコマンドです。 (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="75"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="73"/>
         <source>Could not remove active rules link.</source>
         <translation type="unfinished">アクティブなルールリンクの削除が出来ません。</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="76"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="74"/>
         <source>Active rules is not a link.</source>
         <translation type="unfinished">アクティブなルールはリンクではありません。</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="77"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="75"/>
         <source>Could not create active rules link.</source>
         <translation type="unfinished">アクティブルールリンクの生成に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="78"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="76"/>
         <source>Rules file, %1, does not exist.</source>
         <translation type="unfinished">ルールファイル %1 は存在しません。</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="79"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="77"/>
         <source>Incorrect arguments supplied.</source>
         <translation type="unfinished">不適切な引数が指定されました。</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="80"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="78"/>
         <source>Unknown method called.</source>
         <translation type="unfinished">不明なメソッドが呼ばれました。</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="83"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="81"/>
         <location filename="../scrobbling/scrobbler.cpp" line="104"/>
         <source>Unknown error</source>
         <translation type="unfinished">不明なエラー</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="65"/>
         <location filename="../mpd-interface/song.cpp" line="540"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="69"/>
         <source>Artist</source>
         <translation type="unfinished">アーティスト</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="67"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="71"/>
         <source>SimilarArtists</source>
         <translation type="unfinished">関連アーティスト</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="69"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="73"/>
         <source>AlbumArtist</source>
         <translation type="unfinished">アルバムアーティスト</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="71"/>
         <location filename="../mpd-interface/song.cpp" line="544"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="75"/>
         <source>Composer</source>
         <translation type="unfinished">作曲家</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="73"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="77"/>
         <source>Comment</source>
         <translation type="unfinished">コメント</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="75"/>
         <location filename="../mpd-interface/song.cpp" line="546"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="79"/>
         <source>Album</source>
         <translation type="unfinished">アルバム</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="77"/>
         <location filename="../mpd-interface/song.cpp" line="539"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="81"/>
         <source>Title</source>
         <translation type="unfinished">タイトル</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="79"/>
         <location filename="../mpd-interface/song.cpp" line="553"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="83"/>
         <source>Genre</source>
         <translation type="unfinished">ジャンル</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="81"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="85"/>
         <source>Date</source>
         <translation type="unfinished">日付</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="83"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="87"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="95"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="99"/>
         <source>Include</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="102"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="106"/>
         <source>Exclude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="125"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="129"/>
         <source> (Exact)</source>
         <translation type="unfinished">(一致)</translation>
     </message>
@@ -11491,29 +11541,29 @@ width x height</comment>
         <translation type="unfinished">カバーアート アーカイブ</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="55"/>
+        <location filename="../gui/interfacesettings.cpp" line="56"/>
         <location filename="../widgets/singlepagewidget.cpp" line="41"/>
         <source>Grouped Albums</source>
         <translation type="unfinished">グループ化されたアルバム</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="56"/>
+        <location filename="../gui/interfacesettings.cpp" line="57"/>
         <location filename="../widgets/singlepagewidget.cpp" line="44"/>
         <source>Table</source>
         <translation type="unfinished">テーブル</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="71"/>
+        <location filename="../gui/interfacesettings.cpp" line="72"/>
         <source>Parse in Library view, and show in Folders view</source>
         <translation type="unfinished">ライブラリビュー内で解析され、フォルダビュー内で表示</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="72"/>
+        <location filename="../gui/interfacesettings.cpp" line="73"/>
         <source>Only show in Folders view</source>
         <translation type="unfinished">フォルダービュー内のみで表示</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="73"/>
+        <location filename="../gui/interfacesettings.cpp" line="74"/>
         <source>Do not list</source>
         <translation type="unfinished">表記しない</translation>
     </message>
@@ -11573,177 +11623,177 @@ width x height</comment>
         <translation type="obsolete">%1 更新あり</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="52"/>
+        <location filename="../gui/stdactions.cpp" line="77"/>
         <source>Previous Track</source>
         <translation type="unfinished">前のトラック</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="53"/>
+        <location filename="../gui/stdactions.cpp" line="78"/>
         <source>Next Track</source>
         <translation type="unfinished">次のトラック</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="54"/>
+        <location filename="../gui/stdactions.cpp" line="79"/>
         <source>Play/Pause</source>
         <translation type="unfinished">再生/一時停止</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="55"/>
+        <location filename="../gui/stdactions.cpp" line="80"/>
         <source>Stop</source>
         <translation type="unfinished">停止</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="56"/>
+        <location filename="../gui/stdactions.cpp" line="81"/>
         <source>Stop After Current Track</source>
         <translation type="unfinished">現在トラック再生後停止</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="57"/>
+        <location filename="../gui/stdactions.cpp" line="82"/>
         <source>Stop After Track</source>
         <translation type="unfinished">トラック再生後停止</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="58"/>
+        <location filename="../gui/stdactions.cpp" line="83"/>
         <source>Increase Volume</source>
         <translation type="unfinished">音量Up</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="59"/>
+        <location filename="../gui/stdactions.cpp" line="84"/>
         <source>Decrease Volume</source>
         <translation type="unfinished">音量Down</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="60"/>
+        <location filename="../gui/stdactions.cpp" line="85"/>
         <source>Save As</source>
         <translation type="unfinished">別名で保存</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="61"/>
+        <location filename="../gui/stdactions.cpp" line="86"/>
         <source>Append</source>
         <translation type="unfinished">追加</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="62"/>
+        <location filename="../gui/stdactions.cpp" line="87"/>
         <source>Append To Play Queue</source>
         <translation type="unfinished">プレイキューの末尾に追加</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="63"/>
+        <location filename="../gui/stdactions.cpp" line="88"/>
         <source>Append And Play</source>
         <translation type="unfinished">末尾に追加し再生</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="64"/>
+        <location filename="../gui/stdactions.cpp" line="89"/>
         <source>Add And Play</source>
         <translation type="unfinished">追加し再生</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="65"/>
+        <location filename="../gui/stdactions.cpp" line="90"/>
         <source>Append To Play Queue And Play</source>
         <translation type="unfinished">プレイキューの末尾に追加し再生</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="66"/>
+        <location filename="../gui/stdactions.cpp" line="91"/>
         <source>Insert After Current</source>
         <translation type="unfinished">現楽曲の直後に挿入</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="67"/>
+        <location filename="../gui/stdactions.cpp" line="92"/>
         <source>Append Random Album</source>
         <translation type="unfinished">ランダムアルバムの末尾に追加</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="68"/>
+        <location filename="../gui/stdactions.cpp" line="93"/>
         <source>Play Now (And Replace Play Queue)</source>
         <translation type="unfinished">直ちに再生(し、プレイキューを更新)</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="73"/>
+        <location filename="../gui/stdactions.cpp" line="98"/>
         <source>Add With Priority</source>
         <translation type="unfinished">プライオリティ付きで追加</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="74"/>
+        <location filename="../gui/stdactions.cpp" line="99"/>
         <source>Set Priority</source>
         <translation type="unfinished">プライオリティの設定</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="75"/>
+        <location filename="../gui/stdactions.cpp" line="50"/>
         <source>Highest Priority (255)</source>
         <translation type="unfinished">最高位のプライオリティ(255)</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="76"/>
+        <location filename="../gui/stdactions.cpp" line="51"/>
         <source>High Priority (200)</source>
         <translation type="unfinished">高プライオリティ(200)</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="77"/>
+        <location filename="../gui/stdactions.cpp" line="52"/>
         <source>Medium Priority (125)</source>
         <translation type="unfinished">中プライオリティ(125)</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="78"/>
+        <location filename="../gui/stdactions.cpp" line="53"/>
         <source>Low Priority (50)</source>
         <translation type="unfinished">低プライオリティ(50)</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="79"/>
+        <location filename="../gui/stdactions.cpp" line="54"/>
         <source>Default Priority (0)</source>
         <translation type="unfinished">規定のプライオリティ(0)</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="80"/>
+        <location filename="../gui/stdactions.cpp" line="55"/>
         <source>Custom Priority...</source>
         <translation type="unfinished">カスタム プライオリティ...</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="81"/>
+        <location filename="../gui/stdactions.cpp" line="103"/>
         <source>Add To Playlist</source>
         <translation type="unfinished">プレイリストに追加</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="83"/>
+        <location filename="../gui/stdactions.cpp" line="105"/>
         <source>Organize Files</source>
         <translation type="unfinished">ファイルの整理</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="84"/>
+        <location filename="../gui/stdactions.cpp" line="106"/>
         <source>Edit Track Information</source>
         <translation type="unfinished">トラック情報の編集</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="87"/>
+        <location filename="../gui/stdactions.cpp" line="109"/>
         <source>ReplayGain</source>
         <translation type="unfinished">リプレイゲイン</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="90"/>
+        <location filename="../gui/stdactions.cpp" line="112"/>
         <source>Copy Songs To Device</source>
         <translation type="unfinished">楽曲をデバイスに複写</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="92"/>
+        <location filename="../gui/stdactions.cpp" line="114"/>
         <source>Delete Songs</source>
         <translation type="unfinished">楽曲を削除</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="94"/>
+        <location filename="../gui/stdactions.cpp" line="116"/>
         <source>Set Image</source>
         <translation type="unfinished">イメージの設定</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="95"/>
+        <location filename="../gui/stdactions.cpp" line="117"/>
         <source>Remove</source>
         <translation type="unfinished">削除</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="96"/>
+        <location filename="../gui/stdactions.cpp" line="118"/>
         <source>Find</source>
         <translation type="unfinished">検索</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="125"/>
+        <location filename="../gui/stdactions.cpp" line="124"/>
         <source>Add To Play Queue</source>
         <translation type="unfinished">プレイキューへの追加</translation>
     </message>
@@ -11759,19 +11809,19 @@ width x height</comment>
         <translation type="unfinished">その他</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="203"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="205"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="204"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="206"/>
         <source>Default</source>
         <translation type="unfinished">規定</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="216"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="217"/>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdparseutils.cpp" line="737"/>
+        <location filename="../mpd-interface/mpdparseutils.cpp" line="736"/>
         <source>Single Tracks</source>
         <translation type="unfinished">シングルトラック</translation>
     </message>
@@ -11782,7 +11832,7 @@ width x height</comment>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="59"/>
-        <location filename="../support/utils.cpp" line="645"/>
+        <location filename="../support/utils.cpp" line="646"/>
         <source>Unknown</source>
         <translation type="unfinished">不明</translation>
     </message>
@@ -12032,38 +12082,38 @@ width x height</comment>
         <translation type="unfinished">質問</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="430"/>
-        <location filename="../support/utils.cpp" line="438"/>
+        <location filename="../support/utils.cpp" line="431"/>
+        <location filename="../support/utils.cpp" line="439"/>
         <source>%1 B</source>
         <translation type="unfinished">%1 B</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="431"/>
+        <location filename="../support/utils.cpp" line="432"/>
         <source>%1 kB</source>
         <translation type="unfinished">%1 kB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="432"/>
+        <location filename="../support/utils.cpp" line="433"/>
         <source>%1 MB</source>
         <translation type="unfinished">%1 MB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="434"/>
+        <location filename="../support/utils.cpp" line="435"/>
         <source>%1 GB</source>
         <translation type="unfinished">%1 GB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="439"/>
+        <location filename="../support/utils.cpp" line="440"/>
         <source>%1 KiB</source>
         <translation type="unfinished">%1 KiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="440"/>
+        <location filename="../support/utils.cpp" line="441"/>
         <source>%1 MiB</source>
         <translation type="unfinished">%1 MiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="442"/>
+        <location filename="../support/utils.cpp" line="443"/>
         <source>%1 GiB</source>
         <translation type="unfinished">%1 GiB</translation>
     </message>
@@ -12580,6 +12630,80 @@ Please choose a different name.</source>
     </message>
 </context>
 <context>
+    <name>RulesPlaylists</name>
+    <message>
+        <source> - Rating: %1..%2</source>
+        <translation type="obsolete"> - レーティング: %1..%2</translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="92"/>
+        <source>Album Artist</source>
+        <translation type="unfinished">アルバムアーティスト</translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="93"/>
+        <source>Artist</source>
+        <translation type="unfinished">アーティスト</translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="94"/>
+        <source>Album</source>
+        <translation type="unfinished">アルバム</translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="95"/>
+        <source>Composer</source>
+        <translation type="unfinished">作曲家</translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="96"/>
+        <source>Date</source>
+        <translation type="unfinished">日付</translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="97"/>
+        <source>Genre</source>
+        <translation type="unfinished">ジャンル</translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="98"/>
+        <source>Rating</source>
+        <translation type="unfinished">レーティング</translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="99"/>
+        <source>File Age</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="101"/>
+        <source>Random</source>
+        <translation type="unfinished">ランダム</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../playlists/rulesplaylists.cpp" line="168"/>
+        <source>%n Rule(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n ルール</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="168"/>
+        <source>, Rating: %1..%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="171"/>
+        <source>Ascending</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="171"/>
+        <source>Descending</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Scrobbler</name>
     <message>
         <location filename="../scrobbling/scrobbler.cpp" line="553"/>
@@ -12779,12 +12903,12 @@ Please choose a different name.</source>
 <context>
     <name>SearchWidget</name>
     <message>
-        <location filename="../widgets/searchwidget.cpp" line="70"/>
+        <location filename="../widgets/searchwidget.cpp" line="71"/>
         <source>Search...</source>
         <translation type="unfinished">検索...</translation>
     </message>
     <message>
-        <location filename="../widgets/searchwidget.cpp" line="72"/>
+        <location filename="../widgets/searchwidget.cpp" line="73"/>
         <source>Close Search Bar</source>
         <translation type="unfinished">検索バーを閉じる</translation>
     </message>
@@ -12993,6 +13117,58 @@ Please choose a different name.</source>
         <location filename="../widgets/singlepagewidget.cpp" line="198"/>
         <source>View</source>
         <translation type="unfinished">ビュー</translation>
+    </message>
+</context>
+<context>
+    <name>SmartPlaylists</name>
+    <message>
+        <location filename="../playlists/smartplaylists.cpp" line="44"/>
+        <source>Smart Playlists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/smartplaylists.cpp" line="49"/>
+        <source>Rules based playlists</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmartPlaylistsPage</name>
+    <message>
+        <location filename="../playlists/smartplaylistspage.cpp" line="38"/>
+        <source>Add</source>
+        <translation type="unfinished">追加</translation>
+    </message>
+    <message>
+        <location filename="../playlists/smartplaylistspage.cpp" line="39"/>
+        <source>Edit</source>
+        <translation type="unfinished">編集</translation>
+    </message>
+    <message>
+        <location filename="../playlists/smartplaylistspage.cpp" line="40"/>
+        <source>Remove</source>
+        <translation type="unfinished">削除</translation>
+    </message>
+    <message>
+        <location filename="../playlists/smartplaylistspage.cpp" line="121"/>
+        <source>Are you sure you wish to remove the selected rules?
+
+This cannot be undone.</source>
+        <translation type="unfinished">選択済みのルールを削除しますか?
+
+この操作はやり直しできません。</translation>
+    </message>
+    <message>
+        <location filename="../playlists/smartplaylistspage.cpp" line="122"/>
+        <source>Remove Smart Rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/smartplaylistspage.cpp" line="167"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="194"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="297"/>
+        <source>Failed to locate any matching songs</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13373,22 +13549,22 @@ Reload from disk, or delete disk copy and download?</source>
 <context>
     <name>StoredPlaylistsPage</name>
     <message>
-        <location filename="../gui/playlistspage.cpp" line="59"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="57"/>
         <source>Rename</source>
         <translation type="unfinished">名前を変更</translation>
     </message>
     <message>
-        <location filename="../gui/playlistspage.cpp" line="60"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="58"/>
         <source>Remove Duplicates</source>
         <translation type="unfinished">複製を削除</translation>
     </message>
     <message>
-        <location filename="../gui/playlistspage.cpp" line="86"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="84"/>
         <source>Initially Collapse Albums</source>
         <translation type="unfinished">初期動作時はアルバムをたたむ</translation>
     </message>
     <message>
-        <location filename="../gui/playlistspage.cpp" line="190"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="188"/>
         <source>Are you sure you wish to remove the selected playlists?
 
 This cannot be undone.</source>
@@ -13397,23 +13573,23 @@ This cannot be undone.</source>
 この操作はやり直しできません。</translation>
     </message>
     <message>
-        <location filename="../gui/playlistspage.cpp" line="191"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="189"/>
         <source>Remove Playlists</source>
         <translation type="unfinished">プレイリストの削除</translation>
     </message>
     <message>
-        <location filename="../gui/playlistspage.cpp" line="207"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="205"/>
         <source>Playlist Name</source>
         <translation type="unfinished">プレイリスト名</translation>
     </message>
     <message>
-        <location filename="../gui/playlistspage.cpp" line="207"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="205"/>
         <source>Enter a name for the playlist:</source>
         <translation type="unfinished">プレイリスト名を入力:</translation>
     </message>
     <message>
-        <location filename="../gui/playlistspage.cpp" line="211"/>
-        <location filename="../gui/playlistspage.cpp" line="238"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="209"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="236"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Overwrite?</source>
@@ -13422,23 +13598,23 @@ Overwrite?</source>
 上書しますか?</translation>
     </message>
     <message>
-        <location filename="../gui/playlistspage.cpp" line="212"/>
-        <location filename="../gui/playlistspage.cpp" line="239"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="210"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="237"/>
         <source>Overwrite Playlist</source>
         <translation type="unfinished">プレイリストの上書</translation>
     </message>
     <message>
-        <location filename="../gui/playlistspage.cpp" line="234"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="232"/>
         <source>Rename Playlist</source>
         <translation type="unfinished">プレイリストの名前変更</translation>
     </message>
     <message>
-        <location filename="../gui/playlistspage.cpp" line="234"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="232"/>
         <source>Enter new name for playlist:</source>
         <translation type="unfinished">プレイリストの新しい名前を入力:</translation>
     </message>
     <message>
-        <location filename="../gui/playlistspage.cpp" line="320"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="318"/>
         <source>Cannot add songs from &apos;%1&apos; to &apos;%2&apos;</source>
         <translation type="unfinished">&apos;%1&apos; から &apos;%2&apos; へ楽曲の追加が出来ません</translation>
     </message>
@@ -13479,7 +13655,7 @@ Overwrite?</source>
 <context>
     <name>StreamFetcher</name>
     <message>
-        <location filename="../streams/streamfetcher.cpp" line="213"/>
+        <location filename="../streams/streamfetcher.cpp" line="214"/>
         <source>Loading %1</source>
         <translation type="unfinished">%1 読込中</translation>
     </message>
@@ -14388,17 +14564,17 @@ Overwrite?</source>
 <context>
     <name>TitleWidget</name>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="79"/>
+        <location filename="../widgets/titlewidget.cpp" line="81"/>
         <source>Click to go back</source>
         <translation type="unfinished">クリックし戻る</translation>
     </message>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="137"/>
+        <location filename="../widgets/titlewidget.cpp" line="139"/>
         <source>Add All To Play Queue</source>
         <translation type="unfinished">プレイキューにすべて追加</translation>
     </message>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="138"/>
+        <location filename="../widgets/titlewidget.cpp" line="140"/>
         <source>Add All And Replace Play Queue</source>
         <translation type="unfinished">すべて追加しプレイキューを書換</translation>
     </message>

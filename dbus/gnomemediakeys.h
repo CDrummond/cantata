@@ -57,6 +57,7 @@ private:
     OrgGnomeSettingsDaemonInterface *daemon;
     OrgGnomeSettingsDaemonMediaKeysInterface *mk;
     QDBusServiceWatcher *watcher;
+    QString serviceName;
 };
 
 #endif

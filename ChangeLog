@@ -6,8 +6,8 @@
  4. When adding items with a custom priority, or updating a custom priority,
     add option to have this priority decrease with each item.
  5. Remove unity menu icon work-around.
- 6. To support older GNOME settings daemon installations, revert to the
-    previous MediaKeys DBUS interface.
+ 6. To support older GNOME settings daemon installations, if fail to use the
+    new MediaKeys DBUS interface the use the previous.
  7. Fix desktop detection via XDG_CURRENT_DESKTOP - check for colon separated
     values.
  8. If an error is to be shown, ensure Cantata is not minimised to system tray.

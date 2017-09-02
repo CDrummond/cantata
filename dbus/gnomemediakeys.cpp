@@ -31,7 +31,8 @@
 #include <QDBusServiceWatcher>
 #include <QCoreApplication>
 
-static const char * constService = "org.gnome.SettingsDaemon";
+static const char * constOrigService = "org.gnome.SettingsDaemon";
+static const char * constNewService = "org.gnome.SettingsDaemon.MediaKeys";
 static const char * constDaemonPath = "/org/gnome/SettingsDaemon";
 static const char * constMediaKeysPath = "/org/gnome/SettingsDaemon/MediaKeys";
 
@@ -70,11 +71,12 @@ void GnomeMediaKeys::deactivate()
 bool GnomeMediaKeys::daemonIsRunning()
 {
     // Check if the service is available
-    if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(constService)) {
+    if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(constNewService) &&
+        !QDBusConnection::sessionBus().interface()->isServiceRegistered(constOrigService)) {
         //...not already started, so attempt to start!
-        QDBusConnection::sessionBus().interface()->startService(constService);
+        QDBusConnection::sessionBus().interface()->startService(constOrigService); // ??
         if (!daemon) {
-            daemon = new OrgGnomeSettingsDaemonInterface(constService, constDaemonPath, QDBusConnection::sessionBus(), this);
+            daemon = new OrgGnomeSettingsDaemonInterface(constOrigService, constDaemonPath, QDBusConnection::sessionBus(), this);
             connect(daemon, SIGNAL(PluginActivated(QString)), this, SLOT(pluginActivated(QString)));
             daemon->Start();
             return false;
@@ -95,20 +97,25 @@ void GnomeMediaKeys::releaseKeys()
 
 void GnomeMediaKeys::grabKeys()
 {
-    if (QDBusConnection::sessionBus().interface()->isServiceRegistered(constService)) {
-        if (!mk) {
-            mk = new OrgGnomeSettingsDaemonMediaKeysInterface(constService, constMediaKeysPath, QDBusConnection::sessionBus(), this);
-        }
+    QStringList services { constNewService, constOrigService };
+    for (const auto &service: services) {
+        if (QDBusConnection::sessionBus().interface()->isServiceRegistered(service)) {
+            if (!mk) {
+                mk = new OrgGnomeSettingsDaemonMediaKeysInterface(service, constMediaKeysPath, QDBusConnection::sessionBus(), this);
+            }
 
-        QDBusPendingReply<> reply = mk->GrabMediaPlayerKeys(QCoreApplication::applicationName(), QDateTime::currentDateTime().toTime_t());
-        QDBusPendingCallWatcher *callWatcher = new QDBusPendingCallWatcher(reply, this);
-        connect(callWatcher, SIGNAL(finished(QDBusPendingCallWatcher *)), this, SLOT(registerFinished(QDBusPendingCallWatcher*)));
+            QDBusPendingReply<> reply = mk->GrabMediaPlayerKeys(QCoreApplication::applicationName(), QDateTime::currentDateTime().toTime_t());
+            QDBusPendingCallWatcher *callWatcher = new QDBusPendingCallWatcher(reply, this);
+            connect(callWatcher, SIGNAL(finished(QDBusPendingCallWatcher *)), this, SLOT(registerFinished(QDBusPendingCallWatcher*)));
 
-        if (!watcher) {
-            watcher = new QDBusServiceWatcher(this);
-            watcher->setConnection(QDBusConnection::sessionBus());
-            watcher->setWatchMode(QDBusServiceWatcher::WatchForOwnerChange);
-            connect(watcher, SIGNAL(serviceOwnerChanged(QString, QString, QString)), this, SLOT(serviceOwnerChanged(QString, QString, QString)));
+            if (!watcher) {
+                watcher = new QDBusServiceWatcher(this);
+                watcher->setConnection(QDBusConnection::sessionBus());
+                watcher->setWatchMode(QDBusServiceWatcher::WatchForOwnerChange);
+                connect(watcher, SIGNAL(serviceOwnerChanged(QString, QString, QString)), this, SLOT(serviceOwnerChanged(QString, QString, QString)));
+            }
+            serviceName = service;
+            break;
         }
     }
 }
@@ -124,7 +131,7 @@ void GnomeMediaKeys::disconnectDaemon()
 
 void GnomeMediaKeys::serviceOwnerChanged(const QString &name, const QString &, const QString &)
 {
-    if (name==constService) {
+    if (name==serviceName) {
         releaseKeys();
         disconnectDaemon();
         if (daemonIsRunning()) {

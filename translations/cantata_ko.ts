@@ -1340,7 +1340,7 @@ i18n: ectx: property (text), widget (QPushButton, search)
     </message>
     <message>
         <source> - Rating: %1..%2</source>
-        <translation type="vanished"> - 등급: %1..%2</translation>
+        <translation type="vanished"> - 평점: %1..%2</translation>
     </message>
     <message>
         <source>You need to install &quot;perl&quot; on your system in order for Cantata&apos;s dynamic mode to function.</source>
@@ -1985,11 +1985,11 @@ i18n: ectx: property (text), widget (QPushButton, connectButton)
     </message>
     <message>
         <source>Consume</source>
-        <translation type="vanished">소비</translation>
+        <translation type="vanished">써버리기</translation>
     </message>
     <message>
         <source>When consume is activated, a song is removed from the play queue after it has been played.</source>
-        <translation type="vanished">소비가 선택되면, 곡은 연주 후에 연주순서에서 없어집니다.</translation>
+        <translation type="vanished">써버리기가 선택되면, 곡은 연주 후에 연주순서에서 없어집니다.</translation>
     </message>
     <message>
         <source>Find in Play Queue</source>
@@ -2053,11 +2053,11 @@ i18n: ectx: property (text), widget (QPushButton, connectButton)
     </message>
     <message>
         <source>Set Rating</source>
-        <translation type="vanished">등급 설정</translation>
+        <translation type="vanished">평점 설정</translation>
     </message>
     <message>
         <source>No Rating</source>
-        <translation type="vanished">등급 없음</translation>
+        <translation type="vanished">평점 없음</translation>
     </message>
     <message>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
@@ -2786,7 +2786,7 @@ i18n: ectx: property (text), widget (NoteLabel, musicFolderNoteLabel_2)
     </message>
     <message>
         <source>Rating</source>
-        <translation type="vanished">등급</translation>
+        <translation type="vanished">평점</translation>
     </message>
     <message>
         <source>Undo</source>
@@ -2950,7 +2950,7 @@ i18n: ectx: property (text), widget (QPushButton, trackTitle)
     </message>
     <message>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
-        <translation type="vanished">MPD &apos;sticker&apos; 명령어를 지원하지 않아, 등급을 저장할 수 없습니다.</translation>
+        <translation type="vanished">MPD &apos;sticker&apos; 명령어를 지원하지 않아, 평점을 저장할 수 없습니다.</translation>
     </message>
     <message>
         <source>Single Tracks</source>
@@ -3229,7 +3229,7 @@ i18n: ectx: property (text), widget (BuddyLabel, label_3)
     </message>
     <message>
         <source>Subscribe to RSS feeds</source>
-        <translation type="vanished">RSS 피드 구독</translation>
+        <translation type="vanished">RSS 구독</translation>
     </message>
     <message>
         <source>%1 (%2)</source>
@@ -3342,11 +3342,11 @@ i18n: ectx: property (text), widget (BuddyLabel, label_3)
     </message>
     <message>
         <source>Mark Episodes As New</source>
-        <translation type="vanished">에피소드를 읽지 않음으로 처리</translation>
+        <translation type="vanished">에피소드를 안 들은 것으로 하기</translation>
     </message>
     <message>
         <source>Mark Episodes As Listened</source>
-        <translation type="vanished">에피소드를 읽음으로 처리</translation>
+        <translation type="vanished">에피소드를 들은 것으로 하기</translation>
     </message>
     <message>
         <source>Unsubscribe from &apos;%1&apos;?</source>
@@ -3366,11 +3366,11 @@ i18n: ectx: property (text), widget (BuddyLabel, label_3)
     </message>
     <message>
         <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation type="vanished">선택된 팟캐스트 에피소드를 읽지 않음으로 처리할까요?</translation>
+        <translation type="vanished">선택된 팟캐스트 에피소드를 안 들은 것으로 할까요?</translation>
     </message>
     <message>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="vanished">선택된 팟캐스트 에피소드를 읽음으로 처리할까요?</translation>
+        <translation type="vanished">선택된 팟캐스트 에피소드를 읽은 것으로 할까요?</translation>
     </message>
     <message>
         <source>Refresh all subscriptions?</source>
@@ -4622,7 +4622,7 @@ i18n: ectx: property (text), widget (QCheckBox, showCoverWidget)
         <extracomment>i18n: file: gui/interfacesettings.ui:390
 i18n: ectx: property (text), widget (QCheckBox, showRatingWidget)
 </extracomment>
-        <translation type="vanished">곡 등급 보기</translation>
+        <translation type="vanished">곡 평점 보기</translation>
     </message>
     <message>
         <source>External</source>
@@ -4828,7 +4828,7 @@ i18n: ectx: property (text), widget (QCheckBox, infoTooltips)
         <extracomment>i18n: file: gui/interfacesettings.ui:659
 i18n: ectx: property (text), widget (QCheckBox, retinaSupport)
 </extracomment>
-        <translation type="vanished">등급 표시 지원</translation>
+        <translation type="vanished">평점 표시 지원</translation>
     </message>
     <message>
         <source>Language:</source>
@@ -5210,7 +5210,7 @@ i18n: ectx: property (text), widget (StateLabel, discLabel)
         <extracomment>i18n: file: tags/tageditor.ui:171
 i18n: ectx: property (text), widget (StateLabel, ratingLabel)
 </extracomment>
-        <translation type="vanished">등급:</translation>
+        <translation type="vanished">평점:</translation>
     </message>
     <message>
         <source>&lt;i&gt;(Various)&lt;/i&gt;</source>
@@ -5231,7 +5231,7 @@ i18n: ectx: property (text), widget (PlainNoteLabel, label_7x)
         <extracomment>i18n: file: tags/tageditor.ui:217
 i18n: ectx: property (text), widget (PlainNoteLabel, ratingNoteLabel)
 </extracomment>
-        <translation type="vanished">등급은 외부 데이터베이스에 저장되며, 곡 파일에 저정되지 &lt;b&gt;않&lt;/b&gt;습니다.</translation>
+        <translation type="vanished">평점은 외부 데이터베이스에 저장되며, 곡 파일에 저정되지 &lt;b&gt;않&lt;/b&gt;습니다.</translation>
     </message>
     <message>
         <source>Original Name</source>
@@ -5252,7 +5252,7 @@ i18n: ectx: property (text), widget (QTreeWidget, files)
         <extracomment>i18n: file: tags/trackorganiser.ui:130
 i18n: ectx: property (text), widget (UrlNoteLabel, ratingsNote)
 </extracomment>
-        <translation type="vanished">등급은 파일이름이 바뀌면 사라집니다.</translation>
+        <translation type="vanished">평점은 파일이름이 바뀌면 사라집니다.</translation>
     </message>
     <message>
         <source>Your names</source>
@@ -5423,7 +5423,7 @@ i18n: ectx: property (text), widget (UrlNoteLabel, ratingsNote)
     </message>
     <message>
         <source>Rate-limit exceeded</source>
-        <translation type="vanished">등급-한도 초과</translation>
+        <translation type="vanished">평점-한도 초과</translation>
     </message>
     <message>
         <source>%1 error: %2</source>
@@ -5861,11 +5861,11 @@ Overwrite?</source>
     </message>
     <message>
         <source>Read Ratings from File</source>
-        <translation type="vanished">파일로부터 등급 읽기</translation>
+        <translation type="vanished">파일로부터 평점 읽기</translation>
     </message>
     <message>
         <source>Write Ratings to File</source>
-        <translation type="vanished">파일에 등급 쓰기</translation>
+        <translation type="vanished">파일에 평점 쓰기</translation>
     </message>
     <message>
         <source>All tracks</source>
@@ -5917,63 +5917,63 @@ Overwrite?</source>
     </message>
     <message>
         <source>Read ratings for all tracks from the music files?</source>
-        <translation type="vanished">음악 파일 모든 곡의 등급을 읽을까요?</translation>
+        <translation type="vanished">음악 파일 모든 곡의 평점을 읽을까요?</translation>
     </message>
     <message>
         <source>Read rating from music file?</source>
-        <translation type="vanished">음악 파일의 등급을 읽을까요?</translation>
+        <translation type="vanished">음악 파일의 평점을 읽을까요?</translation>
     </message>
     <message>
         <source>Ratings</source>
-        <translation type="vanished">등급</translation>
+        <translation type="vanished">평점</translation>
     </message>
     <message>
         <source>Read Ratings</source>
-        <translation type="vanished">등급 읽기</translation>
+        <translation type="vanished">평점 읽기</translation>
     </message>
     <message>
         <source>Read Rating</source>
-        <translation type="vanished">등급 읽기</translation>
+        <translation type="vanished">평점 읽기</translation>
     </message>
     <message>
         <source>Read, and updated, ratings from the following tracks:</source>
-        <translation type="vanished">아래 곡의 등급을 읽고 업데이트 함:</translation>
+        <translation type="vanished">아래 곡의 평점을 읽고 업데이트 함:</translation>
     </message>
     <message>
         <source>Not all Song ratings have been read from MPD!</source>
-        <translation type="vanished">MPD로부터 모든 곡의 등급을 읽지 않았음!</translation>
+        <translation type="vanished">MPD로부터 모든 곡의 평점을 읽지 않았음!</translation>
     </message>
     <message>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database. In order to save these into the actual file, Cantata must first read them from MPD.</source>
-        <translation type="vanished">곡 등급은 파일이 아니라, MPD의 &apos;sticker&apos; 데이터베이스에 저정됩니다.실제 파일에 저장하기 위해서, 칸타타는 MPD로부터 등급을 먼저 읽어야 합니다.</translation>
+        <translation type="vanished">곡 평점은 파일이 아니라, MPD의 &apos;sticker&apos; 데이터베이스에 저정됩니다.실제 파일에 저장하기 위해서, 칸타타는 MPD로부터 평점을 먼저 읽어야 합니다.</translation>
     </message>
     <message>
         <source>Song rating has not been read from MPD!</source>
-        <translation type="vanished">MPD로부터 곡 등급을 읽지 않았음!</translation>
+        <translation type="vanished">MPD로부터 곡 평점을 읽지 않았음!</translation>
     </message>
     <message>
         <source>Write ratings for all tracks to the music files?</source>
-        <translation type="vanished">모든 곡의 등급을 음악 파일에 쓸까요?</translation>
+        <translation type="vanished">모든 곡의 평점을 음악 파일에 쓸까요?</translation>
     </message>
     <message>
         <source>Write rating to music file?</source>
-        <translation type="vanished">등급을 음악 파일에 쓸까요?</translation>
+        <translation type="vanished">평점을 음악 파일에 쓸까요?</translation>
     </message>
     <message>
         <source>Write Ratings</source>
-        <translation type="vanished">등급 쓰기</translation>
+        <translation type="vanished">평점 쓰기</translation>
     </message>
     <message>
         <source>Write Rating</source>
-        <translation type="vanished">등급 쓰기</translation>
+        <translation type="vanished">평점 쓰기</translation>
     </message>
     <message>
         <source>Failed to write ratings of the following tracks:</source>
-        <translation type="vanished">아래 파일의 등급을 쓸 수 없음:</translation>
+        <translation type="vanished">아래 파일의 평점을 쓸 수 없음:</translation>
     </message>
     <message>
         <source>Failed to write rating to music file!</source>
-        <translation type="vanished">음악 파일에 등급을 쓸 수 없음!</translation>
+        <translation type="vanished">음악 파일에 평점을 쓸 수 없음!</translation>
     </message>
     <message>
         <source>All tracks [modified]</source>
@@ -6015,9 +6015,9 @@ Overwrite?</source>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database.
 
 If you rename a file (or the folder it is within), then the rating associated with the song will be lost.</source>
-        <translation type="vanished">곡 등급은 파일이 아니라, MPD의 &apos;sticker&apos; 데이터베이스에 저정됩니다.
+        <translation type="vanished">곡 평점은 파일이 아니라, MPD의 &apos;sticker&apos; 데이터베이스에 저정됩니다.
 
-파일 (또는 저장된 폴더) 이름을 바꾸면, 곡의 등급은 지워집니다.</translation>
+파일 (또는 저장된 폴더) 이름을 바꾸면, 곡의 평점은 지워집니다.</translation>
     </message>
     <message>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
@@ -7451,7 +7451,7 @@ Could not copy file to &apos;%1&apos;!</source>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="221"/>
         <source>Only transcode if source is FALC/WAV</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">원본 파일이 FLAC/WAV일 때만 변환</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>
@@ -8556,7 +8556,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="390"/>
         <source>Show track rating</source>
-        <translation type="unfinished">곡 등급 보기</translation>
+        <translation type="unfinished">곡 평점 보기</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="398"/>
@@ -8691,7 +8691,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="690"/>
         <source>Changing the style setting will require a re-start of Cantata.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">모양을 바꾸면 다시 시작해야 합니다.</translation>
     </message>
     <message>
         <source>&lt;p&gt;This will change Cantata&apos;s interface as detailed:
@@ -8710,7 +8710,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <source>Support retina displays</source>
-        <translation type="obsolete">등급 표시 지원</translation>
+        <translation type="obsolete">평점 표시 지원</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="648"/>
@@ -9201,7 +9201,7 @@ If this search does find new lyrics, these will still be associated with the ori
         <location filename="../mpd-interface/mpdconnection.cpp" line="2226"/>
         <location filename="../mpd-interface/mpdconnection.cpp" line="2253"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
-        <translation type="unfinished">MPD &apos;sticker&apos; 명령어를 지원하지 않아, 등급을 저장할 수 없습니다.</translation>
+        <translation type="unfinished">MPD &apos;sticker&apos; 명령어를 지원하지 않아, 평점을 저장할 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -9423,12 +9423,12 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.cpp" line="316"/>
         <source>Consume</source>
-        <translation type="unfinished">소비</translation>
+        <translation type="unfinished">써버리기</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="316"/>
         <source>When consume is activated, a song is removed from the play queue after it has been played.</source>
-        <translation type="unfinished">소비가 선택되면, 곡은 연주 후에 연주순서에서 없어집니다.</translation>
+        <translation type="unfinished">써버리기가 선택되면, 곡은 연주 후에 연주순서에서 없어집니다.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="317"/>
@@ -9546,12 +9546,12 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.cpp" line="616"/>
         <source>Set Rating</source>
-        <translation type="unfinished">등급 설정</translation>
+        <translation type="unfinished">평점 설정</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="621"/>
         <source>No Rating</source>
-        <translation type="unfinished">등급 없음</translation>
+        <translation type="unfinished">평점 없음</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="927"/>
@@ -9683,7 +9683,7 @@ Quiting now will abort the download.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1851"/>
         <source>Decrease priority for each subsequent track</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">다음 각 곡들의 우선순위를 내립니다</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1878"/>
@@ -10249,7 +10249,7 @@ Add to that playlist?</source>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="180"/>
         <source>Rating</source>
-        <translation type="unfinished">등급</translation>
+        <translation type="unfinished">평점</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="225"/>
@@ -10520,7 +10520,7 @@ Add to that playlist?</source>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="45"/>
         <source>Smart Rule</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">스마트 규정</translation>
     </message>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="165"/>
@@ -10569,7 +10569,7 @@ Add to that playlist?</source>
     <message>
         <location filename="../playlists/playlistrules.ui" line="107"/>
         <source>Songs with ratings between:</source>
-        <translation type="unfinished">등급 사이의 곡:</translation>
+        <translation type="unfinished">평점 사이의 곡:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="119"/>
@@ -10591,12 +10591,12 @@ Add to that playlist?</source>
     <message>
         <location filename="../playlists/playlistrules.ui" line="201"/>
         <source>Number of songs in play queue:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">연주순서의 곡 수:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="215"/>
         <source>Order songs:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">곡 순서:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="240"/>
@@ -10628,47 +10628,47 @@ Add to that playlist?</source>
     </message>
     <message>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with 10 entries. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt;칸타타는 아래의 모든 규정을 이용하여 음원을 찾습니다. &lt;i&gt;I포함&lt;/i&gt; 규정은 사용될 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;제외&lt;/i&gt; 규정은 사용되지 않을 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;포함&lt;/i&gt; 규정이 없으면 모든 곡으로 (&lt;i&gt;제외&lt;/i&gt;부터의 가로줄) 생각합니다.&lt;/p&gt;&lt;p&gt;예. &apos;어떤이 또는 여러 연주자의 Rock 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이 장르=Rock&lt;/li&gt;&lt;li&gt;포함 음반연주자=여러연주자&lt;/li&gt;&lt;/ul&gt; &apos;다른 음반이 아닌 어떤이의 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이&lt;/li&gt;&lt;li&gt;제외 음반연주자=어떤이 음반=다른&lt;/li&gt;&lt;/ul&gt;사용할 곡이 만들어진 다음, 칸타타는 무작위 곡을 골라 10곡의 연주순서를 만듭니다. 등급이 지정되면, 그 등급의 곡들만 사용됩니다. 곡 길이도 마찬가지입니다.&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;p&gt;칸타타는 아래의 모든 규정을 이용하여 음원을 찾습니다. &lt;i&gt;포함&lt;/i&gt; 규정은 사용될 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;제외&lt;/i&gt; 규정은 사용되지 않을 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;포함&lt;/i&gt; 규정이 없으면 모든 곡으로 (&lt;i&gt;제외&lt;/i&gt;부터의 가로줄) 생각합니다.&lt;/p&gt;&lt;p&gt;예. &apos;어떤이 또는 여러 연주자의 Rock 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이 장르=Rock&lt;/li&gt;&lt;li&gt;포함 음반연주자=여러연주자&lt;/li&gt;&lt;/ul&gt; &apos;다른 음반이 아닌 어떤이의 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이&lt;/li&gt;&lt;li&gt;제외 음반연주자=어떤이 음반=다른&lt;/li&gt;&lt;/ul&gt;사용할 곡이 만들어진 다음, 칸타타는 무작위 곡을 골라 10곡의 연주순서를 만듭니다. 평점이 지정되면, 그 평점의 곡들만 사용됩니다. 곡 길이도 마찬가지입니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
         <source>Smart Rules</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">스마트 규정</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="185"/>
         <source>Ascending</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">오름차순</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="186"/>
         <source>Descending</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">내림차순</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="195"/>
         <source>Name of Smart Rules</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">스마트 규정 이름</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="196"/>
         <source>Number of songs</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">곡 수</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="338"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;칸타타는 아래의 모든 규정을 이용하여 음원을 찾습니다. &lt;i&gt;포함&lt;/i&gt; 규정은 사용될 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;제외&lt;/i&gt; 규정은 사용되지 않을 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;포함&lt;/i&gt; 규정이 없으면 모든 곡으로 (&lt;i&gt;제외&lt;/i&gt;부터의 가로줄) 생각합니다.&lt;/p&gt;&lt;p&gt;예. &apos;어떤이 또는 여러 연주자의 Rock 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이 장르=Rock&lt;/li&gt;&lt;li&gt;포함 음반연주자=여러연주자&lt;/li&gt;&lt;/ul&gt; &apos;다른 음반이 아닌 어떤이의 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이&lt;/li&gt;&lt;li&gt;제외 음반연주자=어떤이 음반=다른&lt;/li&gt;&lt;/ul&gt;사용할 곡이 만들어진 다음, 칸타타는 무작위 곡을 골라 정해진 곡 수(기본 10곡)만큼의 연주순서를 만듭니다. 평점이 지정되면, 그 평점의 곡들만 사용됩니다. 곡 길이도 마찬가지입니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="353"/>
         <source>About smart rules</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">스마트 규정에 대하여</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="355"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will add the desired number of songs to the play queue. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;칸타타는 아래의 모든 규정을 이용하여 음원을 찾습니다. &lt;i&gt;포함&lt;/i&gt; 규정은 사용될 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;제외&lt;/i&gt; 규정은 사용되지 않을 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;포함&lt;/i&gt; 규정이 없으면 모든 곡으로 (&lt;i&gt;제외&lt;/i&gt;부터의 가로줄) 생각합니다.&lt;/p&gt;&lt;p&gt;예. &apos;어떤이 또는 여러 연주자의 Rock 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이 장르=Rock&lt;/li&gt;&lt;li&gt;포함 음반연주자=여러연주자&lt;/li&gt;&lt;/ul&gt; &apos;다른 음반이 아닌 어떤이의 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이&lt;/li&gt;&lt;li&gt;제외 음반연주자=어떤이 음반=다른&lt;/li&gt;&lt;/ul&gt;사용할 곡이 만들어진 다음, 칸타타는 원하는 곡 수를 연주순서에 추가합니다. 평점이 지정되면, 그 평점의 곡들만 사용됩니다. 곡 길이도 마찬가지입니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="383"/>
@@ -10895,7 +10895,7 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastservice.cpp" line="411"/>
         <source>Subscribe to RSS feeds</source>
-        <translation type="unfinished">RSS 피드 구독</translation>
+        <translation type="unfinished">RSS 구독</translation>
     </message>
     <message numerus="yes">
         <location filename="../online/podcastservice.cpp" line="494"/>
@@ -11108,17 +11108,17 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastwidget.cpp" line="48"/>
         <source>Mark Episodes As New</source>
-        <translation type="unfinished">에피소드를 읽지 않음으로 처리</translation>
+        <translation type="unfinished">에피소드를 안 들은 것으로 하기</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="49"/>
         <source>Mark Episodes As Listened</source>
-        <translation type="unfinished">에피소드를 읽음으로 처리</translation>
+        <translation type="unfinished">에피소드를 들은 것으로 하기</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="50"/>
         <source>Show Unplayed Only</source>
-        <translation type="unfinished">듣지 않은 것만 보기</translation>
+        <translation type="unfinished">안 들은 것만 보기</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="142"/>
@@ -11143,12 +11143,12 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastwidget.cpp" line="228"/>
         <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation type="unfinished">선택된 팟캐스트 에피소드를 읽지 않음으로 처리할까요?</translation>
+        <translation type="unfinished">선택된 팟캐스트 에피소드를 안 들은 것으로 할까요?</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="244"/>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="unfinished">선택된 팟캐스트 에피소드를 읽음으로 처리할까요?</translation>
+        <translation type="unfinished">선택된 팟캐스트 에피소드를 읽은 것으로 할까요?</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="280"/>
@@ -12130,7 +12130,7 @@ width x height</comment>
     <message>
         <location filename="../scrobbling/scrobbler.cpp" line="102"/>
         <source>Rate-limit exceeded</source>
-        <translation type="unfinished">등급-한도 초과</translation>
+        <translation type="unfinished">평점-한도 초과</translation>
     </message>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="215"/>
@@ -12817,7 +12817,7 @@ Please choose a different name.</source>
     <name>RulesPlaylists</name>
     <message>
         <source> - Rating: %1..%2</source>
-        <translation type="obsolete"> - 등급: %1..%2</translation>
+        <translation type="obsolete"> - 평점: %1..%2</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="92"/>
@@ -12852,12 +12852,12 @@ Please choose a different name.</source>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="98"/>
         <source>Rating</source>
-        <translation type="unfinished">등급</translation>
+        <translation type="unfinished">평점</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="99"/>
         <source>File Age</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">파일 나이</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="101"/>
@@ -12874,17 +12874,17 @@ Please choose a different name.</source>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="168"/>
         <source>, Rating: %1..%2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">, 평점: %1..%2</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="171"/>
         <source>Ascending</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">오름차순</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="171"/>
         <source>Descending</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">내림차순</translation>
     </message>
 </context>
 <context>
@@ -13308,12 +13308,12 @@ Please choose a different name.</source>
     <message>
         <location filename="../playlists/smartplaylists.cpp" line="44"/>
         <source>Smart Playlists</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">스마트 연주목록</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylists.cpp" line="49"/>
         <source>Rules based playlists</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">규정에 따른 연주목록</translation>
     </message>
 </context>
 <context>
@@ -13345,14 +13345,14 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="122"/>
         <source>Remove Smart Rules</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">스마트 규정 지우기</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="167"/>
         <location filename="../playlists/smartplaylistspage.cpp" line="194"/>
         <location filename="../playlists/smartplaylistspage.cpp" line="297"/>
         <source>Failed to locate any matching songs</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">맞는 곡이 없습니다</translation>
     </message>
 </context>
 <context>
@@ -14455,7 +14455,7 @@ Overwrite?</source>
     <message>
         <location filename="../tags/tageditor.ui" line="171"/>
         <source>Rating:</source>
-        <translation type="unfinished">등급:</translation>
+        <translation type="unfinished">평점:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="186"/>
@@ -14475,7 +14475,7 @@ Overwrite?</source>
     <message>
         <location filename="../tags/tageditor.ui" line="217"/>
         <source>Ratings are stored in an external database, and &lt;b&gt;not&lt;/b&gt; in the song&apos;s file.</source>
-        <translation type="unfinished">등급은 외부 데이터베이스에 저장되며, 곡 파일에 저정되지 &lt;b&gt;않&lt;/b&gt;습니다.</translation>
+        <translation type="unfinished">평점은 외부 데이터베이스에 저장되며, 곡 파일에 저정되지 &lt;b&gt;않&lt;/b&gt;습니다.</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="199"/>
@@ -14519,12 +14519,12 @@ Overwrite?</source>
     <message>
         <location filename="../tags/tageditor.cpp" line="215"/>
         <source>Read Ratings from File</source>
-        <translation type="unfinished">파일로부터 등급 읽기</translation>
+        <translation type="unfinished">파일로부터 평점 읽기</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="216"/>
         <source>Write Ratings to File</source>
-        <translation type="unfinished">파일에 등급 쓰기</translation>
+        <translation type="unfinished">파일에 평점 쓰기</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="340"/>
@@ -14605,79 +14605,79 @@ Overwrite?</source>
     <message>
         <location filename="../tags/tageditor.cpp" line="746"/>
         <source>Read ratings for all tracks from the music files?</source>
-        <translation type="unfinished">음악 파일 모든 곡의 등급을 읽을까요?</translation>
+        <translation type="unfinished">음악 파일 모든 곡의 평점을 읽을까요?</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="747"/>
         <source>Read rating from music file?</source>
-        <translation type="unfinished">음악 파일의 등급을 읽을까요?</translation>
+        <translation type="unfinished">음악 파일의 평점을 읽을까요?</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="748"/>
         <location filename="../tags/tageditor.cpp" line="816"/>
         <source>Ratings</source>
-        <translation type="unfinished">등급</translation>
+        <translation type="unfinished">평점</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="749"/>
         <source>Read Ratings</source>
-        <translation type="unfinished">등급 읽기</translation>
+        <translation type="unfinished">평점 읽기</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="749"/>
         <source>Read Rating</source>
-        <translation type="unfinished">등급 읽기</translation>
+        <translation type="unfinished">평점 읽기</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="778"/>
         <source>Read, and updated, ratings from the following tracks:</source>
-        <translation type="unfinished">아래 곡의 등급을 읽고 업데이트 함:</translation>
+        <translation type="unfinished">아래 곡의 평점을 읽고 업데이트 함:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="799"/>
         <source>Not all Song ratings have been read from MPD!</source>
-        <translation type="unfinished">MPD로부터 모든 곡의 등급을 읽지 않았음!</translation>
+        <translation type="unfinished">MPD로부터 모든 곡의 평점을 읽지 않았음!</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="800"/>
         <location filename="../tags/tageditor.cpp" line="808"/>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database. In order to save these into the actual file, Cantata must first read them from MPD.</source>
-        <translation type="unfinished">곡 등급은 파일이 아니라, MPD의 &apos;sticker&apos; 데이터베이스에 저정됩니다.실제 파일에 저장하기 위해서, 칸타타는 MPD로부터 등급을 먼저 읽어야 합니다.</translation>
+        <translation type="unfinished">곡 평점은 파일이 아니라, MPD의 &apos;sticker&apos; 데이터베이스에 저정됩니다.실제 파일에 저장하기 위해서, 칸타타는 MPD로부터 평점을 먼저 읽어야 합니다.</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="807"/>
         <source>Song rating has not been read from MPD!</source>
-        <translation type="unfinished">MPD로부터 곡 등급을 읽지 않았음!</translation>
+        <translation type="unfinished">MPD로부터 곡 평점을 읽지 않았음!</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="814"/>
         <source>Write ratings for all tracks to the music files?</source>
-        <translation type="unfinished">모든 곡의 등급을 음악 파일에 쓸까요?</translation>
+        <translation type="unfinished">모든 곡의 평점을 음악 파일에 쓸까요?</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="815"/>
         <source>Write rating to music file?</source>
-        <translation type="unfinished">등급을 음악 파일에 쓸까요?</translation>
+        <translation type="unfinished">평점을 음악 파일에 쓸까요?</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="817"/>
         <source>Write Ratings</source>
-        <translation type="unfinished">등급 쓰기</translation>
+        <translation type="unfinished">평점 쓰기</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="817"/>
         <source>Write Rating</source>
-        <translation type="unfinished">등급 쓰기</translation>
+        <translation type="unfinished">평점 쓰기</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="841"/>
         <source>Failed to write ratings of the following tracks:</source>
-        <translation type="unfinished">아래 파일의 등급을 쓸 수 없음:</translation>
+        <translation type="unfinished">아래 파일의 평점을 쓸 수 없음:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="848"/>
         <source>Failed to write rating to music file!</source>
-        <translation type="unfinished">음악 파일에 등급을 쓸 수 없음!</translation>
+        <translation type="unfinished">음악 파일에 평점을 쓸 수 없음!</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="885"/>
@@ -14823,7 +14823,7 @@ Overwrite?</source>
     <message>
         <location filename="../tags/trackorganiser.ui" line="130"/>
         <source>Ratings will be lost if a file is renamed.</source>
-        <translation type="unfinished">등급은 파일이름이 바뀌면 사라집니다.</translation>
+        <translation type="unfinished">평점은 파일이름이 바뀌면 사라집니다.</translation>
     </message>
     <message>
         <location filename="../tags/trackorganiser.cpp" line="67"/>
@@ -14901,9 +14901,9 @@ Overwrite?</source>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database.
 
 If you rename a file (or the folder it is within), then the rating associated with the song will be lost.</source>
-        <translation type="unfinished">곡 등급은 파일이 아니라, MPD의 &apos;sticker&apos; 데이터베이스에 저정됩니다.
+        <translation type="unfinished">곡 평점은 파일이 아니라, MPD의 &apos;sticker&apos; 데이터베이스에 저정됩니다.
 
-파일 (또는 저장된 폴더) 이름을 바꾸면, 곡의 등급은 지워집니다.</translation>
+파일 (또는 저장된 폴더) 이름을 바꾸면, 곡의 평점은 지워집니다.</translation>
     </message>
     <message>
         <location filename="../tags/trackorganiser.cpp" line="533"/>

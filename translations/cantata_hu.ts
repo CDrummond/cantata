@@ -6876,7 +6876,7 @@ Nem sikerült ebbe: &apos;%1&apos; másolni a fájlt!</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="221"/>
-        <source>Only transcode if source is FALC/WAV</source>
+        <source>Only transcode if source is FLAC/WAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

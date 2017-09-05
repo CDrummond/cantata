@@ -7450,7 +7450,7 @@ Could not copy file to &apos;%1&apos;!</source>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="221"/>
-        <source>Only transcode if source is FALC/WAV</source>
+        <source>Only transcode if source is FLAC/WAV</source>
         <translation type="unfinished">원본 파일이 FLAC/WAV일 때만 변환</translation>
     </message>
     <message>

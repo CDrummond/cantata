@@ -41,6 +41,7 @@
 #include <QSlider>
 #include <QToolTip>
 #include <QSpacerItem>
+#include <QToolButton>
 
 static const int constPollMpd = 2; // Poll every 2 seconds when playing
 
@@ -447,8 +448,13 @@ void NowPlayingWidget::showEvent(QShowEvent *e)
 {
     QWidget::showEvent(e);
     if (!shown) {
+        QToolButton btn(this);
+        btn.ensurePolished();
+        track->setPalette(btn.palette());
+        artist->setPalette(btn.palette());
+        time->setPalette(btn.palette());
         slider->updateStyleSheet();
         shown=true;
-        ratingWidget->setColor(VolumeSlider::clampColor(track->palette().text().color()));
+        ratingWidget->setColor(VolumeSlider::clampColor(btn.palette().text().color()));
     }
 }

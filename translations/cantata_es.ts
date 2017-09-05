@@ -6051,7 +6051,7 @@ Could not copy file to &apos;%1&apos;!</source>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="221"/>
-        <source>Only transcode if source is FALC/WAV</source>
+        <source>Only transcode if source is FLAC/WAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

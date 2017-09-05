@@ -5071,7 +5071,7 @@ Konnte die Datei nicht nach ‚%1‘ kopieren.</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="221"/>
-        <source>Only transcode if source is FALC/WAV</source>
+        <source>Only transcode if source is FLAC/WAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

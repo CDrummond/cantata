@@ -218,7 +218,7 @@
       <item>
        <widget class="QCheckBox" name="transcoderWhenSourceIsLosssless">
         <property name="text">
-         <string>Only transcode if source is FALC/WAV</string>
+         <string>Only transcode if source is FLAC/WAV</string>
         </property>
        </widget>
       </item>

@@ -1192,8 +1192,8 @@ Non è stato possibile copiare il file su &apos;%1&apos;!</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="221"/>
-        <source>Only transcode if source is FALC/WAV</source>
-        <translation type="unfinished"></translation>
+        <source>Only transcode if source is FLAC/WAV</source>
+        <translation>Transcodifica solo se il file sorgente è FLAC/WAV</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>

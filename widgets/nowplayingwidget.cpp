@@ -157,11 +157,10 @@ PosSlider::PosSlider(QWidget *p)
     int h=qMax((int)(fontMetrics().height()*0.5), 8);
     setMinimumHeight(h);
     setMaximumHeight(h);
-    updateStyleSheet();
     setMouseTracking(true);
 }
 
-void PosSlider::updateStyleSheet()
+void PosSlider::updateStyleSheet(const QColor &col)
 {
     int lineWidth=maximumHeight()>12 ? 2 : 1;
 
@@ -174,17 +173,15 @@ void PosSlider::updateStyleSheet()
                                      "border-radius: %1px; margin: %2px} ")+
                        QLatin1String("QSlider::")+QLatin1String(isRightToLeft() ? "add" : "sub")+
                        QLatin1String("-page:horizontal:disabled {border: 0px; background: solid rgba(0, 0, 0, 0)}");
-    QLabel lbl(parentWidget());
-    lbl.ensurePolished();
-    QColor textColor=lbl.palette().color(QPalette::Active, QPalette::Text);
+
     #ifdef Q_OS_MAC
     QColor fillColor=OSXStyle::self()->viewPalette().highlight().color();
     #else
-    QColor fillColor=lbl.palette().highlight().color();
+    QColor fillColor=qApp->palette().highlight().color();
     #endif
-    int alpha=textColor.value()<32 ? 96 : 64;
+    int alpha=col.value()<32 ? 96 : 64;
 
-    setStyleSheet(boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha)
+    setStyleSheet(boderFormat.arg(lineWidth).arg(col.red()).arg(col.green()).arg(col.blue()).arg(alpha)
                              .arg(alpha/4).arg(lineWidth*2)+
                   fillFormat.arg(lineWidth).arg(lineWidth*2).arg(fillColor.red()).arg(fillColor.green()).arg(fillColor.blue()));
 }
@@ -451,6 +448,6 @@ void NowPlayingWidget::initColors()
     track->setPalette(btn.palette());
     artist->setPalette(btn.palette());
     time->setPalette(btn.palette());
-    slider->updateStyleSheet();
+    slider->updateStyleSheet(track->palette().windowText().color());
     ratingWidget->setColor(Utils::clampColor(track->palette().text().color()));
 }

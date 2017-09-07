@@ -42,7 +42,7 @@ public:
     PosSlider(QWidget *p);
     virtual ~PosSlider() { }
 
-    void updateStyleSheet();
+    void updateStyleSheet(const QColor &col);
     void mouseMoveEvent(QMouseEvent *e);
     void wheelEvent(QWheelEvent *ev);
     void setRange(int min, int max);

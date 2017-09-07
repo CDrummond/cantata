@@ -143,21 +143,16 @@ void Icons::initSidebarIcons()
 
 void Icons::initToolbarIcons(QColor toolbarText)
 {
-    QColor stdColor=Utils::monoIconColor();
     bool rtl=QApplication::isRightToLeft();
 
     toolbarText=Utils::clampColor(toolbarText);
-    toolbarPrevIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-next" : ":media-prev"), toolbarText);
-    toolbarPlayIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-play-rtl" : ":media-play"), toolbarText);
-    toolbarPauseIcon=MonoIcon::icon(QLatin1String(":media-pause"), toolbarText);
-    toolbarStopIcon=MonoIcon::icon(QLatin1String(":media-stop"), toolbarText);
-    toolbarNextIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-prev" : ":media-next"), toolbarText);
-    infoIcon=MonoIcon::icon(QLatin1String(":sidebar-info"), toolbarText);
-    if (toolbarText==stdColor) {
-        toolbarMenuIcon=menuIcon;
-    } else {
-        toolbarMenuIcon=MonoIcon::icon(FontAwesome::bars, toolbarText);
-    }
+    toolbarPrevIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-next" : ":media-prev"), toolbarText, toolbarText);
+    toolbarPlayIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-play-rtl" : ":media-play"), toolbarText, toolbarText);
+    toolbarPauseIcon=MonoIcon::icon(QLatin1String(":media-pause"), toolbarText, toolbarText);
+    toolbarStopIcon=MonoIcon::icon(QLatin1String(":media-stop"), toolbarText, toolbarText);
+    toolbarNextIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-prev" : ":media-next"), toolbarText, toolbarText);
+    infoIcon=MonoIcon::icon(QLatin1String(":sidebar-info"), toolbarText, toolbarText);
+    toolbarMenuIcon=MonoIcon::icon(FontAwesome::bars, toolbarText, toolbarText);
 }
 
 const Icon &Icons::albumIcon(int size, bool mono) const

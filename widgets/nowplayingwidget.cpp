@@ -253,7 +253,6 @@ void PosSlider::setRange(int min, int max)
 
 NowPlayingWidget::NowPlayingWidget(QWidget *p)
     : QWidget(p)
-    , shown(false)
     , timer(0)
     , lastVal(0)
     , pollCount(0)
@@ -444,17 +443,14 @@ void NowPlayingWidget::setRating(int v)
     emit setRating(currentSongFile, v);
 }
 
-void NowPlayingWidget::showEvent(QShowEvent *e)
+void NowPlayingWidget::initColors()
 {
-    QWidget::showEvent(e);
-    if (!shown) {
-        QToolButton btn(this);
-        btn.ensurePolished();
-        track->setPalette(btn.palette());
-        artist->setPalette(btn.palette());
-        time->setPalette(btn.palette());
-        slider->updateStyleSheet();
-        shown=true;
-        ratingWidget->setColor(VolumeSlider::clampColor(btn.palette().text().color()));
-    }
+    ensurePolished();
+    QToolButton btn(this);
+    btn.ensurePolished();
+    track->setPalette(btn.palette());
+    artist->setPalette(btn.palette());
+    time->setPalette(btn.palette());
+    slider->updateStyleSheet();
+    ratingWidget->setColor(Utils::clampColor(track->palette().text().color()));
 }

@@ -62,19 +62,6 @@ public:
 static int widthStep=4;
 static int constHeightStep=2;
 
-QColor VolumeSlider::clampColor(const QColor &col)
-{
-    static const int constMin=64;
-    static const int constMax=240;
-
-    if (col.value()<constMin) {
-        return QColor(constMin, constMin, constMin);
-    } else if (col.value()>constMax) {
-        return QColor(constMax, constMax, constMax);
-    }
-    return col;
-}
-
 VolumeSlider::VolumeSlider(QWidget *p)
     : QSlider(p)
     , lineWidth(0)
@@ -99,7 +86,7 @@ VolumeSlider::VolumeSlider(QWidget *p)
     setStyleSheet(QString("QSlider::groove:horizontal {border: 0px;} "
                           "QSlider::sub-page:horizontal {border: 0px;} "
                           "QSlider::handle:horizontal {width: 0px; height:0px; margin:0;}"));
-    textCol=clampColor(palette().color(QPalette::Active, QPalette::Text));
+    textCol=Utils::clampColor(palette().color(QPalette::Active, QPalette::Text));
     generatePixmaps();
 }
 

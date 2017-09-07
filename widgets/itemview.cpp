@@ -345,6 +345,10 @@ public:
         }
 
         if (showCapacity) {
+            QColor col(Qt::white);
+            col.setAlphaF(0.25);
+            painter->fillRect(QRect(r2.x(), r2.bottom()-(textHeight+8), r2.width(), textHeight+8), col);
+
             QStyleOptionProgressBar opt;
             double capacity=index.data(Cantata::Role_Capacity).toDouble();
 

@@ -68,6 +68,7 @@ public:
     void saveConfig();
     void setEnabled(bool e) { slider->setEnabled(e); }
     bool isEnabled() const { return slider->isEnabled(); }
+    void initColors();
     QColor textColor() const { return track->palette().windowText().color(); }
 
 Q_SIGNALS:
@@ -87,10 +88,6 @@ private Q_SLOTS:
     void setRating(int v);
 
 private:
-    void showEvent(QShowEvent *e);
-
-private:
-    bool shown;
     SqueezedTextLabel *track;
     SqueezedTextLabel *artist;
     TimeLabel *time;

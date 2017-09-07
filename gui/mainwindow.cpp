@@ -235,7 +235,7 @@ void MainWindow::init()
     toolbar->ensurePolished();
     toolbar->adjustSize();
     coverWidget->setSize(toolbar->height()-(vSpace*2));
-    nowPlaying->ensurePolished();
+    nowPlaying->initColors();
     nowPlaying->adjustSize();
     nowPlaying->setFixedHeight(nowPlaying->height());
     volumeSlider->setColor(nowPlaying->textColor());

@@ -28,6 +28,8 @@
 19. Fix sidebar highlight for windows (at least for Windows 10).
 20. Disable system-tray icon code for GNOME shell (but not Ubuntu's GNOME
     shell session).
+21. Fix MPRIS track path.
+22. Fix MPRIS can go next/previous state changes.
 
 2.1.0
 -----

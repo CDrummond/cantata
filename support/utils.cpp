@@ -49,6 +49,10 @@
 #include <pwd.h>
 #endif
 #include <sys/types.h>
+#if QT_QTDBUS_FOUND && !defined Q_OS_MAC && !defined Q_OS_WIN
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+#endif
 
 const QLatin1Char Utils::constDirSep('/');
 const QLatin1String Utils::constDirSepStr("/");
@@ -909,6 +913,19 @@ Utils::Desktop Utils::currentDe()
     return (Utils::Desktop)de;
     #endif
     return Other;
+}
+
+bool Utils::useSystemTray()
+{
+    #if defined Q_OS_MAC
+    return false;
+    #elif defined Q_OS_WIN
+    return true;
+    #elif QT_QTDBUS_FOUND
+    return QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.StatusNotifierWatcher");
+    #else
+    return false;
+    #endif
 }
 
 QPainterPath Utils::buildPath(const QRectF &r, double radius)

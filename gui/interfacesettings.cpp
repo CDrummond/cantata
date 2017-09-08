@@ -110,9 +110,9 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     , loaded(false)
 {
     bool mprisSettings=false;
+    bool enableTrayItem=Utils::useSystemTray();
     #ifdef Q_OS_MAC
     // OSX always displays an entry in the taskbar - and the tray seems to confuse things.
-    bool enableTrayItem=false;
     bool enableNotifications=QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8;
     #else
     #ifdef QT_QTDBUS_FOUND
@@ -122,13 +122,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #else // QT_QTDBUS_FOUND
     bool enableNotifications=true;
     #endif // QT_QTDBUS_FOUND
-    bool enableTrayItem=Utils::Gnome!=Utils::currentDe();
-    if (!QSystemTrayIcon::isSystemTrayAvailable()) {
-        enableTrayItem=false;
-        #ifndef QT_QTDBUS_FOUND
-        enableNotifications=false;
-        #endif
-    }
     #endif // Q_MAC_OS
 
     setupUi(this);

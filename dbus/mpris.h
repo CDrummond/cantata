@@ -77,7 +77,7 @@ public:
     void StopAfterCurrent() { StdActions::self()->stopAfterCurrentTrackAction->trigger(); }
     void Play();
     void Seek(qlonglong pos) { emit setSeekId(-1, pos/1000000); }
-    void SetPosition(const QDBusObjectPath &, qlonglong pos) {emit setSeekId(-1, pos/1000000); }
+    void SetPosition(const QDBusObjectPath &trackId, qlonglong pos);
     void OpenUri(const QString &) { }
     QString PlaybackStatus() const;
     QString LoopStatus() { return MPDStatus::self()->repeat() ? QLatin1String("Playlist") : QLatin1String("None"); }
@@ -133,6 +133,7 @@ private Q_SLOTS:
 private:
     void signalUpdate(const QString &property, const QVariant &value);
     void signalUpdate(const QVariantMap &map);
+    QString currentTrackId() const;
 
 private:
     MPDStatusValues status;

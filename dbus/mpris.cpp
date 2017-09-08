@@ -33,8 +33,6 @@ static inline qlonglong convertTime(int t)
     return t*1000000;
 }
 
-static QString mprisPath;
-
 Mpris::Mpris(QObject *p)
     : QObject(p)
     , pos(-1)
@@ -52,11 +50,6 @@ Mpris::Mpris(QObject *p)
 
 //    connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
-    if (mprisPath.isEmpty()) {
-        mprisPath=QLatin1String(CANTATA_REV_URL);
-        mprisPath.replace(".", "/");
-        mprisPath="/"+mprisPath+"/Track/%1";
-    }
     connect(CurrentCover::self(), SIGNAL(coverFile(const QString &)), this, SLOT(updateCurrentCover(const QString &)));
 }
 
@@ -77,6 +70,13 @@ void Mpris::Play()
     MPDStatus * const status = MPDStatus::self();
     if (status->playlistLength() && MPDState_Playing!=status->state()) {
         StdActions::self()->playPauseTrackAction->trigger();
+    }
+}
+
+void Mpris::SetPosition(const QDBusObjectPath &trackId, qlonglong pos)
+{
+    if (trackId.path()==currentTrackId()) {
+        emit setSeekId(-1, pos/1000000);
     }
 }
 
@@ -150,7 +150,7 @@ void Mpris::updateCurrentSong(const Song &song)
 QVariantMap Mpris::Metadata() const {
     QVariantMap metadataMap;
     if ((!currentSong.title.isEmpty() && !currentSong.artist.isEmpty()) || (currentSong.isStandardStream() && !currentSong.name().isEmpty())) {
-        metadataMap.insert("mpris:trackid", QVariant::fromValue<QDBusObjectPath>(QDBusObjectPath(mprisPath.arg(currentSong.id))));
+        metadataMap.insert("mpris:trackid", currentTrackId());
         QString artist=currentSong.artist;
         QString album=currentSong.album;
         QString title=currentSong.title;
@@ -236,4 +236,9 @@ void Mpris::signalUpdate(const QVariantMap &map)
                           << QStringList();
     signal.setArguments(args);
     QDBusConnection::sessionBus().send(signal);
+}
+
+QString Mpris::currentTrackId() const
+{
+    return QString("/org/mpris/MediaPlayer2/Track/%1").arg(QString::number(currentSong.id));
 }

@@ -119,6 +119,7 @@ namespace Utils
         Other
     };
     extern Desktop currentDe();
+    extern bool useSystemTray();
     extern QPainterPath buildPath(const QRectF &r, double radius);
     extern QColor clampColor(const QColor &col);
     extern QColor monoIconColor();

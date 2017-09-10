@@ -323,7 +323,15 @@ void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
     #ifdef Q_OS_WIN
     QColor textColor(option.palette.color(QPalette::Text));
     #else
-    QColor textColor(option.palette.color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
+
+    bool active = option.state&QStyle::State_Active;
+    #ifdef Q_OS_LINUX
+    if (!active && view && view->topLevelWidget() && view->topLevelWidget()->isActiveWindow()) {
+        active=true;
+    }
+    #endif
+
+    QColor textColor(option.palette.color(active ? QPalette::Active : QPalette::Inactive, option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
     #endif
     QTextOption textOpt(Qt::AlignVCenter);
     QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));

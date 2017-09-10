@@ -136,14 +136,6 @@ public:
             cg = QPalette::Inactive;
         }
 
-        #ifdef Q_OS_LINUX
-        if (QPalette::Inactive==cg && option.state & QStyle::State_Enabled && parent() && qobject_cast<QWidget *>(parent())) {
-            QWidget *pw=static_cast<QWidget *>(parent());
-            if (pw->topLevelWidget() && pw->topLevelWidget()->isActiveWindow()) {
-                cg = QPalette::Normal;
-            }
-        }
-        #endif
         QStyleOptionViewItem opt(option);
         opt.showDecorationSelected = true;
         QStyle *style = opt.widget ? opt.widget->style() : QApplication::style();

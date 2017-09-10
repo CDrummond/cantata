@@ -179,11 +179,6 @@ public:
         bool gtk=mouseOver && GtkStyle::isActive();
         bool selected=option.state&QStyle::State_Selected;
         bool active=option.state&QStyle::State_Active;
-        #ifdef Q_OS_LINUX
-        if (!active && itemView() && itemView()->topLevelWidget() && itemView()->topLevelWidget()->isActiveWindow()) {
-            active=true;
-        }
-        #endif
         bool drawBgnd=true;
         bool iconMode = view && QListView::IconMode==view->viewMode();
         QStyleOptionViewItem opt(option);
@@ -441,11 +436,6 @@ public:
         bool rtl = QApplication::isRightToLeft();
         bool selected=option.state&QStyle::State_Selected;
         bool active=option.state&QStyle::State_Active;
-        #ifdef Q_OS_LINUX
-        if (!active && itemView() && itemView()->topLevelWidget() && itemView()->topLevelWidget()->isActiveWindow()) {
-            active=true;
-        }
-        #endif
         bool mouseOver=underMouse && option.state&QStyle::State_MouseOver;
         #ifdef Q_OS_WIN
         QColor textColor(option.palette.color(active ? QPalette::Active : QPalette::Inactive, QPalette::Text));

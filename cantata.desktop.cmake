@@ -71,7 +71,7 @@ Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Stop
 [Desktop Action StopAfterCurrent]
 Name=Stop After Current Track
 Name[cs]=Zastavit po současné skladbě
-Name[de]=Stoppe nach Stück
+Name[de]=Stoppe nach aktuellem Stück
 Name[es]=Detener después de la pista actual
 Name[hu]=A mostani szám után leáll
 Name[ko]=지금 곡 다음 정지

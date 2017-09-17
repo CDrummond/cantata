@@ -7495,7 +7495,7 @@ Nie można skopiować pliku do &apos;%1&apos;!</translation>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="221"/>
         <source>Only transcode if source is FLAC/WAV</source>
-        <translation type="unfinished"></translation>
+        <translation>Transkoduj tylko jeżeli źródło jest w formacie FLAC/WAV</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>
@@ -7870,12 +7870,12 @@ Ta operacja nie może być cofnięta.</translation>
         <location filename="../mac/dockmenu.cpp" line="33"/>
         <location filename="../mac/dockmenu.cpp" line="43"/>
         <source>Play</source>
-        <translation type="unfinished">Odtwarzaj</translation>
+        <translation>Odtwarzaj</translation>
     </message>
     <message>
         <location filename="../mac/dockmenu.cpp" line="43"/>
         <source>Pause</source>
-        <translation type="unfinished">Wstrzymaj</translation>
+        <translation>Wstrzymaj</translation>
     </message>
 </context>
 <context>
@@ -8749,7 +8749,7 @@ Ta operacja nie może być cofnięta.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="690"/>
         <source>Changing the style setting will require a re-start of Cantata.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmiana ustawienia stylu wymaga restartu programu Cantata.</translation>
     </message>
     <message>
         <source>&lt;p&gt;This will change Cantata&apos;s interface as detailed:
@@ -9743,7 +9743,7 @@ Wyjście z programu spowoduje przerwanie pobierania.</translation>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1851"/>
         <source>Decrease priority for each subsequent track</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmniejsz priorytet dla każdego kolejnego utowru</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1878"/>
@@ -10596,7 +10596,7 @@ Dodać do tej playlisty?</translation>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="45"/>
         <source>Smart Rule</source>
-        <translation type="unfinished"></translation>
+        <translation>Inteligentne reguły</translation>
     </message>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="165"/>
@@ -10667,12 +10667,12 @@ Dodać do tej playlisty?</translation>
     <message>
         <location filename="../playlists/playlistrules.ui" line="201"/>
         <source>Number of songs in play queue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość utworów w kolejce:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="215"/>
         <source>Order songs:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolejność utworów:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="240"/>
@@ -10709,42 +10709,42 @@ Dodać do tej playlisty?</translation>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
         <source>Smart Rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Inteligentne reguły</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="185"/>
         <source>Ascending</source>
-        <translation type="unfinished"></translation>
+        <translation>Rosnąco</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="186"/>
         <source>Descending</source>
-        <translation type="unfinished"></translation>
+        <translation>Malejąco</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="195"/>
         <source>Name of Smart Rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa inteligentnych reguł</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="196"/>
         <source>Number of songs</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość utworów</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="338"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Program Cantata będzie odpytywać bibliotekę przy użyciu podanych reguł. Lista reguł oznaczona jako &lt;i&gt;Zawiera&lt;/i&gt; zostanie użyta do zbudowania zbioru utworów, które mogą zostać dodane. Lista reguł oznaczona jako &lt;i&gt;Nie zawiera&lt;/i&gt; zostanie użyta do zbudowania zbioru utworów, które nie mogą zostać dodane. Jeśli nie ma reguł oznaczonych jako &lt;i&gt;Zawiera&lt;/i&gt;, program Cantata założy że wszystkie utwory (z wyłączeniem utworów ze zbioru &lt;i&gt;Nie zawiera&lt;/i&gt;) mogą zostać dodane.&lt;/p&gt;&lt;p&gt;Np. aby wyszukać utwory &apos;z gatunku Rock w wykonaniu Wibble ALBO utwory w wykonaniu Various Artists&apos;, należy użyć następujących reguł: &lt;ul&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Wibble Gatunek=Rock&lt;/li&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Various Artists&lt;/li&gt;&lt;/ul&gt; Aby wyszukać utwory &apos;w wykonaniu Wibble ale nie z albumu Abc&apos;, należy użyć następujących reguł: &lt;ul&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Wibble&lt;/li&gt;&lt;li&gt;Nie zawiera ArtystaAlbumu=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Po utworzeniu zbioru uworów program Cantata losowo wybierze z niego utwory tak aby kolejka odtwarzania miała określoną liczbę elementów (domyślnie 10). Jeżeli zakres ocen zostanie ustawiony, to tylko utwory o takich ocenach będą dodane. Analogicznie można ustawić zakres długości.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="353"/>
         <source>About smart rules</source>
-        <translation type="unfinished"></translation>
+        <translation>O inteligentnych regułach</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="355"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will add the desired number of songs to the play queue. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Program Cantata będzie odpytywać bibliotekę przy użyciu podanych reguł. Lista reguł oznaczona jako &lt;i&gt;Zawiera&lt;/i&gt; zostanie użyta do zbudowania zbioru utworów, które mogą zostać dodane. Lista reguł oznaczona jako &lt;i&gt;Nie zawiera&lt;/i&gt; zostanie użyta do zbudowania zbioru utworów, które nie mogą zostać dodane. Jeśli nie ma reguł oznaczonych jako &lt;i&gt;Zawiera&lt;/i&gt;, program Cantata założy że wszystkie utwory (z wyłączeniem utworów ze zbioru &lt;i&gt;Nie zawiera&lt;/i&gt;) mogą zostać dodane.&lt;/p&gt;&lt;p&gt;Np. aby wyszukać utwory &apos;z gatunku Rock w wykonaniu Wibble ALBO utwory w wykonaniu Various Artists&apos;, należy użyć następujących reguł: &lt;ul&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Wibble Gatunek=Rock&lt;/li&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Various Artists&lt;/li&gt;&lt;/ul&gt; Aby wyszukać utwory &apos;w wykonaniu Wibble ale nie z albumu Abc&apos;, należy użyć następujących reguł: &lt;ul&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Wibble&lt;/li&gt;&lt;li&gt;Nie zawiera ArtystaAlbumu=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Po utworzeniu zbioru uworów program Cantata doda określoną ilość utworów do kolejki. Jeżeli zakres ocen zostanie ustawiony, to tylko utwory o takich ocenach będą dodane. Analogicznie można ustawić zakres długości.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="383"/>
@@ -12895,71 +12895,71 @@ Proszę wybrać inną nazwę.</translation>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="92"/>
         <source>Album Artist</source>
-        <translation type="unfinished">Artysta albumu</translation>
+        <translation>Artysta albumu</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="93"/>
         <source>Artist</source>
-        <translation type="unfinished">Artysta</translation>
+        <translation>Artysta</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="94"/>
         <source>Album</source>
-        <translation type="unfinished">Album</translation>
+        <translation>Album</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="95"/>
         <source>Composer</source>
-        <translation type="unfinished">Kompozytor</translation>
+        <translation>Kompozytor</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="96"/>
         <source>Date</source>
-        <translation type="unfinished">Data</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="97"/>
         <source>Genre</source>
-        <translation type="unfinished">Gatunek</translation>
+        <translation>Gatunek</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="98"/>
         <source>Rating</source>
-        <translation type="unfinished">Ocena</translation>
+        <translation>Ocena</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="99"/>
         <source>File Age</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiek pliku</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="101"/>
         <source>Random</source>
-        <translation type="unfinished">Losowo</translation>
+        <translation>Losowo</translation>
     </message>
     <message numerus="yes">
         <location filename="../playlists/rulesplaylists.cpp" line="168"/>
         <source>%n Rule(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n reguła</numerusform>
+            <numerusform>%n reguły</numerusform>
+            <numerusform>% reguł</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="168"/>
         <source>, Rating: %1..%2</source>
-        <translation type="unfinished"></translation>
+        <translation>, ocena: %1..%2</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="171"/>
         <source>Ascending</source>
-        <translation type="unfinished"></translation>
+        <translation>Rosnąco</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="171"/>
         <source>Descending</source>
-        <translation type="unfinished"></translation>
+        <translation>Malejąco</translation>
     </message>
 </context>
 <context>
@@ -13385,12 +13385,12 @@ Proszę wybrać inną nazwę.</translation>
     <message>
         <location filename="../playlists/smartplaylists.cpp" line="44"/>
         <source>Smart Playlists</source>
-        <translation type="unfinished"></translation>
+        <translation>Inteligentne listy odtwarzania</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylists.cpp" line="49"/>
         <source>Rules based playlists</source>
-        <translation type="unfinished"></translation>
+        <translation>Listy odtwarzania bazujące na regułach</translation>
     </message>
 </context>
 <context>
@@ -13398,38 +13398,38 @@ Proszę wybrać inną nazwę.</translation>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="38"/>
         <source>Add</source>
-        <translation type="unfinished">Dodaj</translation>
+        <translation>Dodaj</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="39"/>
         <source>Edit</source>
-        <translation type="unfinished">Edytuj</translation>
+        <translation>Edytuj</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="40"/>
         <source>Remove</source>
-        <translation type="unfinished">Usuń</translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="121"/>
         <source>Are you sure you wish to remove the selected rules?
 
 This cannot be undone.</source>
-        <translation type="unfinished">Czy na pewno usunąć zaznaczone reguły?
+        <translation>Czy na pewno usunąć zaznaczone reguły?
 
 Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="122"/>
         <source>Remove Smart Rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń inteligentne reguły</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="167"/>
         <location filename="../playlists/smartplaylistspage.cpp" line="194"/>
         <location filename="../playlists/smartplaylistspage.cpp" line="297"/>
         <source>Failed to locate any matching songs</source>
-        <translation type="unfinished"></translation>
+        <translation>Znalezienie pasujących utworów nie powiodło się</translation>
     </message>
 </context>
 <context>

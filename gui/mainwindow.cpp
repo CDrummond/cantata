@@ -582,6 +582,7 @@ void MainWindow::init()
     addMenuAction(menu, serverInfoAction);
     addMenuAction(menu, aboutAction);
     menuBar()->addMenu(menu);
+    menuButton->hide();
     #else
     QMenu *mainMenu=new QMenu(this);
     mainMenu->addAction(expandInterfaceAction);

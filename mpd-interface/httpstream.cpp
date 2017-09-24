@@ -56,8 +56,8 @@ void HttpStream::setEnabled(bool e)
     if (e==enabled) {
         return;
     }
-   
-    enabled=e; 
+
+    enabled=e;
     if (enabled) {
         connect(MPDConnection::self(), SIGNAL(streamUrl(QString)), this, SLOT(streamUrl(QString)));
         connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
@@ -144,6 +144,7 @@ void HttpStream::updateStatus()
         }
         #endif
         break;
+    case MPDState_Paused:
     case MPDState_Inactive:
     case MPDState_Stopped:
         #ifdef LIBVLC_FOUND
@@ -151,9 +152,6 @@ void HttpStream::updateStatus()
         #else
         player->stop();
         #endif
-        stopTimer();
-        break;
-    case MPDState_Paused:
         stopTimer();
         break;
     default:

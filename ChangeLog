@@ -30,8 +30,7 @@
     service is registered.
 21. Fix MPRIS track path.
 22. Fix MPRIS can go next/previous state changes.
-23. When playing MPD's HTTP output, only ask media backend to start playback
-    if it is not already playing.
+23. When playing MPD's HTTP output, stop backend when MPD is paused.
 
 2.1.0
 -----

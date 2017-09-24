@@ -131,12 +131,18 @@ void HttpStream::updateStatus()
     state=status->state();
     switch (status->state()) {
     case MPDState_Playing:
+        // Only start playback if not aready playing
         #ifdef LIBVLC_FOUND
-        libvlc_media_player_play(player);
+        if (libvlc_Playing!=libvlc_media_player_get_state(player)) {
+            libvlc_media_player_play(player);
+            startTimer();
+        }
         #else
-        player->play();
+        if (QMediaPlayer::PlayingState!=player->state()) {
+            player->play();
+            startTimer();
+        }
         #endif
-        startTimer();
         break;
     case MPDState_Inactive:
     case MPDState_Stopped:

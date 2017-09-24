@@ -188,7 +188,7 @@ void MainWindow::init()
     new CantataAdaptor(this);
     QDBusConnection::sessionBus().registerObject("/cantata", this);
     #endif
-    setMinimumHeight(256);
+    setMinimumHeight(Utils::scaleForDpi(480));
     QWidget *widget = new QWidget(this);
     setupUi(widget);
     setCentralWidget(widget);

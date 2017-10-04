@@ -1,3 +1,8 @@
+2.2.1
+-----
+1. Only disable system tray support if org.kde.StatusNotifierWatcher is not
+   registered when running under Gnome.
+
 2.2.0
 -----
  1. Add option to specify number of play queue tracks for dynamic playlists.

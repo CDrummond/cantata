@@ -922,9 +922,9 @@ bool Utils::useSystemTray()
     #elif defined Q_OS_WIN
     return true;
     #elif QT_QTDBUS_FOUND
-    return QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.StatusNotifierWatcher");
+    return Ubuntu_Gnome==currentDe() || Gnome==currentDe() ? QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.StatusNotifierWatcher") : true;
     #else
-    return false;
+    return Ubuntu_Gnome!=currentDe() && Gnome!=currentDe();
     #endif
 }
 

@@ -486,7 +486,6 @@ void MPDConnection::reconnect()
     if (reconnectTimer && reconnectTimer->isActive()) {
         return;
     }
-    qWarning() << reconnectStart;
     if (0==reconnectStart && isConnected()) {
         disconnectFromMPD();
     }
@@ -495,7 +494,6 @@ void MPDConnection::reconnect()
         reconnectStart=0;
         return;
     }
-qWarning() << "TRY TO CONNECT";
     time_t now=time(NULL);
     ConnectionReturn status=connectToMPD();
     switch (status) {

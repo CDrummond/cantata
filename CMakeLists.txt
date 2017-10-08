@@ -669,7 +669,7 @@ if ((NOT ENABLE_DEVICES_SUPPORT AND NOT WIN32 AND NOT APPLE) OR (NOT ENABLE_HTTP
     message("")
 endif ()
 
-if ((ENABLE_DEVICES_SUPPORT AND ENABLE_REMOTE_DEVICES) OR ENABLE_PROXY_CONFIG OR ENABLE_SIMPLE_MPD_SUPPORT)
+if ((ENABLE_DEVICES_SUPPORT AND ENABLE_REMOTE_DEVICES) OR ENABLE_PROXY_CONFIG OR ((WIN32 OR APPLE) AND ENABLE_SIMPLE_MPD_SUPPORT))
     message("-----------------------------------------------------------------------------")
     message("-- The following NON STANDARD options have been ENABLED.")
     message("-----------------------------------------------------------------------------")

@@ -27,6 +27,7 @@
 #include "messageoverlay.h"
 #include "models/roles.h"
 #include "gui/covers.h"
+#include "gui/stdactions.h"
 #include "models/proxymodel.h"
 #include "actionitemdelegate.h"
 #include "basicitemdelegate.h"
@@ -136,6 +137,14 @@ static inline double subTextAlpha(bool selected)
     return selected ? 0.7 : 0.5;
 }
 
+static int zoomedSize(ListView *view, int size) {
+    return view ? view->zoom()*size : size;
+}
+
+static QSize zoomedSize(ListView *view, QSize size) {
+    return view ? view->zoom()*size : size;
+}
+
 class ListDelegate : public ActionItemDelegate
 {
 public:
@@ -153,7 +162,7 @@ public:
     {
         Q_UNUSED(option)
         if (view && QListView::IconMode==view->viewMode()) {
-            return QSize(gridCoverSize+8, gridCoverSize+(QApplication::fontMetrics().height()*2.5));
+            return QSize(zoomedSize(view, gridCoverSize)+8, zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*2.5));
         } else {
             int imageSize = index.data(Cantata::Role_ListImage).toBool() ? listCoverSize : 0;
             // TODO: Any point to checking one-line here? All models return sub-text...
@@ -219,20 +228,20 @@ public:
 
         QPixmap pix;
         if (showCapacity) {
-            const_cast<QAbstractItemModel *>(index.model())->setData(index, iconMode ? gridCoverSize : listCoverSize, Cantata::Role_Image);
+            const_cast<QAbstractItemModel *>(index.model())->setData(index, iconMode ? zoomedSize(view, gridCoverSize) : listCoverSize, Cantata::Role_Image);
             pix=index.data(Cantata::Role_Image).value<QPixmap>();
         }
         if (pix.isNull() && (iconMode || index.data(Cantata::Role_ListImage).toBool())) {
             Song cSong=index.data(iconMode ? Cantata::Role_GridCoverSong : Cantata::Role_CoverSong).value<Song>();
             if (!cSong.isEmpty()) {
-                QPixmap *cp=Covers::self()->get(cSong, iconMode ? gridCoverSize : listCoverSize, getCoverInUiThread(index));
+                QPixmap *cp=Covers::self()->get(cSong, iconMode ? zoomedSize(view, gridCoverSize) : listCoverSize, getCoverInUiThread(index));
                 if (cp) {
                     pix=*cp;
                 }
             }
         }
         if (pix.isNull()) {
-            int size=iconMode ? gridCoverSize : detailedViewDecorationSize;
+            int size=iconMode ? zoomedSize(view, gridCoverSize) : detailedViewDecorationSize;
             pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(size, size, selected &&
                                                                      textColor==qApp->palette().color(QPalette::HighlightedText)
                                                                         ? QIcon::Selected : QIcon::Normal);
@@ -575,10 +584,15 @@ static const char *constPageProp="page";
 static const char *constAlwaysShowProp="always";
 static Action *backAction=0;
 
+static const QLatin1String constZoomKey("gridZoom");
 const QLatin1String ItemView::constSearchActiveKey("searchActive");
 const QLatin1String ItemView::constViewModeKey("viewMode");
 const QLatin1String ItemView::constStartClosedKey("startClosed");
 const QLatin1String ItemView::constSearchCategoryKey("searchCategory");
+
+static const double constMinZoom = 1.0;
+static const double constMaxZoom = 4.0;
+static const double constZoomStep = 0.25;
 
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
@@ -641,6 +655,11 @@ ItemView::ItemView(QWidget *p)
     treeView->setAttribute(Qt::WA_MacShowFocusRect, 0);
     listView->setAttribute(Qt::WA_MacShowFocusRect, 0);
     #endif
+
+    listView->addAction(StdActions::self()->zoomInAction);
+    listView->addAction(StdActions::self()->zoomOutAction);
+    connect(StdActions::self()->zoomInAction, SIGNAL(triggered()), SLOT(zoomIn()));
+    connect(StdActions::self()->zoomOutAction, SIGNAL(triggered()), SLOT(zoomOut()));
 }
 
 ItemView::~ItemView()
@@ -663,12 +682,17 @@ void ItemView::load(Configuration &config)
     setMode(toMode(config.get(constViewModeKey, modeStr(mode))));
     setStartClosed(config.get(constStartClosedKey, isStartClosed()));
     setSearchCategory(config.get(constSearchCategoryKey, searchCategory()));
+    int zoom=config.get(constZoomKey, 100);
+    if (zoom>100) {
+        listView->setZoom(zoom/100.0);
+    }
 }
 
 void ItemView::save(Configuration &config)
 {
     config.set(constSearchActiveKey, searchWidget->isActive());
     config.set(constViewModeKey, modeStr(mode));
+    config.set(constZoomKey, (int)(listView->zoom()*100));
     if (groupedView) {
         config.set(constStartClosedKey, isStartClosed());
     }
@@ -900,7 +924,7 @@ void ItemView::setLevel(int l, bool haveChildren)
     if (Mode_IconTop==mode) {
         if (0==currentLevel || haveChildren) {
             if (QListView::IconMode!=listView->viewMode()) {
-                listView->setGridSize(iconGridSize);
+                listView->setGridSize(zoomedSize(listView, iconGridSize));
                 listView->setViewMode(QListView::IconMode);
                 listView->setResizeMode(QListView::Adjust);
 //                listView->setAlternatingRowColors(false);
@@ -1027,15 +1051,6 @@ void ItemView::setDragDropMode(QAbstractItemView::DragDropMode v)
     }
     if (tableView) {
         tableView->setDragDropMode(v);
-    }
-}
-
-void ItemView::setGridSize(const QSize &sz)
-{
-    iconGridSize=sz;
-    if (Mode_IconTop==mode && 0==currentLevel) {
-        listView->setGridSize(listGridSize);
-        static_cast<ActionItemDelegate *>(listView->itemDelegate())->setLargeIcons(iconGridSize.width()>(ActionItemDelegate::constLargeActionIconSize*6));
     }
 }
 
@@ -1447,10 +1462,32 @@ void ItemView::replaceTitleButtonClicked()
 void ItemView::coverLoaded(const Song &song, int size)
 {
     Q_UNUSED(song)
-    if (Mode_BasicTree==mode || Mode_GroupedTree==mode || !isVisible() || (Mode_IconTop==mode && size!=gridCoverSize) || (Mode_IconTop!=mode && size!=listCoverSize)) {
+    if (Mode_BasicTree==mode || Mode_GroupedTree==mode || !isVisible() || (Mode_IconTop==mode && size!=zoomedSize(listView, gridCoverSize)) || (Mode_IconTop!=mode && size!=listCoverSize)) {
         return;
     }
     view()->viewport()->update();
+}
+
+void ItemView::zoomIn()
+{
+    if (listView->isVisible() && Mode_IconTop==mode) {
+        if (listView->zoom()+constZoomStep<=constMaxZoom) {
+            listView->setZoom(listView->zoom()+constZoomStep);
+            listView->setGridSize(zoomedSize(listView, iconGridSize));
+            listView->viewport()->update();
+        }
+    }
+}
+
+void ItemView::zoomOut()
+{
+    if (listView->isVisible() && Mode_IconTop==mode) {
+        if (listView->zoom()-constZoomStep>=constMinZoom) {
+            listView->setZoom(listView->zoom()-constZoomStep);
+            listView->setGridSize(zoomedSize(listView, iconGridSize));
+            listView->viewport()->update();
+        }
+    }
 }
 
 void ItemView::delaySearchItems()

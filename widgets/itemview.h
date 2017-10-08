@@ -122,8 +122,6 @@ public:
     void setAcceptDrops(bool v);
     void setDragDropOverwriteMode(bool v);
     void setDragDropMode(QAbstractItemView::DragDropMode v);
-    void setGridSize(const QSize &sz);
-    QSize gridSize() const { return listView->gridSize(); }
     void update();
     void setDeleteAction(QAction *act);
     void setRootIsDecorated(bool v) { treeView->setRootIsDecorated(v); }
@@ -187,6 +185,8 @@ private Q_SLOTS:
     void addTitleButtonClicked();
     void replaceTitleButtonClicked();
     void coverLoaded(const Song &song, int size);
+    void zoomIn();
+    void zoomOut();
 
 private:
     QAction * getAction(const QModelIndex &index);

@@ -2,6 +2,7 @@
 -----
 1. Only disable system tray support if org.kde.StatusNotifierWatcher is not
    registered when running under Gnome.
+2. Add ability to change grid cover size - Ctrl+ / Ctrl-
 
 2.2.0
 -----

@@ -39,6 +39,7 @@ ListView::ListView(QWidget *parent)
     : QListView(parent)
     , eventFilter(0)
     , menu(0)
+    , zoomLevel(1.0)
 {
     setDragEnabled(true);
     setContextMenuPolicy(Qt::NoContextMenu);

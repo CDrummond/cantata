@@ -334,9 +334,9 @@ void MainWindow::init()
     editPlayQueueTagsAction->setProperty(Action::constTtForSettings, true);
     #endif
     addAction(expandAllAction = ActionCollection::get()->createAction("expandall", tr("Expand All")));
-    expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
+    expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Down);
     addAction(collapseAllAction = ActionCollection::get()->createAction("collapseall", tr("Collapse All")));
-    collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
+    collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Up);
     cancelAction = ActionCollection::get()->createAction("cancel", tr("Cancel"), Icons::self()->cancelIcon);
     cancelAction->setShortcut(Qt::AltModifier+Qt::Key_Escape);
     connect(cancelAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));

@@ -52,6 +52,8 @@ public:
     void paintEvent(QPaintEvent *e);
     void installFilter(QObject *f) { eventFilter=f; installEventFilter(f); }
     QObject * filter() const { return eventFilter; }
+    double zoom() const { return zoomLevel; }
+    void setZoom(double l) { zoomLevel = l; }
 
 private Q_SLOTS:
     void correctSelection();
@@ -66,6 +68,7 @@ private:
     QObject *eventFilter;
     QMenu *menu;
     QPixmap bgnd;
+    double zoomLevel;
 };
 
 #endif

@@ -67,6 +67,8 @@ public:
     Action *setCoverAction;
     Action *removeAction;
     Action *searchAction;
+    Action *zoomInAction;
+    Action *zoomOutAction;
 
     void enableAddToPlayQueue(bool en);
 

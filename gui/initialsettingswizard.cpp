@@ -31,6 +31,9 @@
 #ifdef ENABLE_SIMPLE_MPD_SUPPORT
 #include "mpd-interface/mpduser.h"
 #endif
+#ifdef AVAHI_FOUND
+#include "findmpddialog.h"
+#endif
 #include <QDir>
 #include <QStandardPaths>
 #include <QTimer>
@@ -113,11 +116,32 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     setMinimumSize(sz);
     #endif
     httpNote->setOn(true);
+
+    #ifdef AVAHI_FOUND
+    discoveryButton = new QPushButton(tr("Discover..."), this);
+    hostLayout->insertWidget(0, discoveryButton);
+    connect(discoveryButton, &QPushButton::clicked, this, &InitialSettingsWizard::detectMPDs);
+    #endif
 }
 
 InitialSettingsWizard::~InitialSettingsWizard()
 {
 }
+
+#ifdef AVAHI_FOUND
+void InitialSettingsWizard::adoptServerSettings(QString ip, QString p)
+{
+    host->setText(ip);
+    port->setValue(p.toInt());
+}
+
+void InitialSettingsWizard::detectMPDs()
+{
+    FindMpdDialog findMpdDlg(this);
+    QObject::connect(&findMpdDlg, &FindMpdDialog::serverChosen, this, &InitialSettingsWizard::adoptServerSettings);
+    findMpdDlg.exec();
+}
+#endif
 
 MPDConnectionDetails InitialSettingsWizard::getDetails()
 {

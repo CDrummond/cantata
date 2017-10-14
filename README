@@ -89,6 +89,7 @@ Cantata may also use the following optional libraries:
 7. MusicBrainz5 - either this or CDDB required for Audio CDs
 8. LibEbur128 - ReplayGain detection code. If this is not found on the
    system then Cantata will use its own bundled copy.
+9. libavahi-common / libavahi-client - Avahi support (automatic mpd discovery)
 
 
 3. Building

@@ -28,6 +28,8 @@
 #include "mpd-interface/mpdconnection.h"
 #include "devices/deviceoptions.h"
 
+#include <QPushButton>
+
 class ServerSettings : public QWidget, private Ui::ServerSettings
 {
     Q_OBJECT
@@ -53,11 +55,19 @@ private Q_SLOTS:
     void remove();
     void nameChanged();
     void basicDirChanged();
+    #ifdef AVAHI_FOUND
+    void detectMPDs();
+    void adoptServerSettings(QString ip, QString port);
+    #endif
 
 private:
     void setDetails(const MPDConnectionDetails &details);
     MPDConnectionDetails getDetails() const;
     QString generateName(int ignore=-1) const;
+
+    #ifdef AVAHI_FOUND
+    QPushButton *discoveryButton;
+    #endif
 
 private:
     QList<Collection> collections;

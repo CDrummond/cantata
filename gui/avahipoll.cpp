@@ -72,18 +72,18 @@ const AvahiPoll * getAvahiPoll(void)
     return &avahiPoll;
 }
 
-AvahiTimeout::AvahiTimeout(const struct timeval *tv, AvahiTimeoutCallback callback, void *userdata)
-    : m_callback(callback)
-    , m_userdata(userdata)
+AvahiTimeout::AvahiTimeout(const struct timeval *tv, AvahiTimeoutCallback cb, void *ud)
+    : callback(cb)
+    , userData(ud)
 {
-    connect(&m_timer, &QTimer::timeout, this, &AvahiTimeout::timeout);
+    connect(&timer, &QTimer::timeout, this, &AvahiTimeout::timeout);
     updateTimeout(tv);
 }
 
 void AvahiTimeout::updateTimeout(const struct timeval *tv)
 {
     if (0==tv) {
-        m_timer.stop();
+        timer.stop();
         return;
     }
 
@@ -91,40 +91,40 @@ void AvahiTimeout::updateTimeout(const struct timeval *tv)
 
     msecs = (msecs > 0) ? 0 : -msecs;
 
-    m_timer.setInterval(msecs);
-    m_timer.start();
+    timer.setInterval(msecs);
+    timer.start();
 }
 
 void AvahiTimeout::timeout()
 {
-    m_timer.stop();
-    m_callback(this, m_userdata);
+    timer.stop();
+    callback(this, userData);
 }
 
-AvahiWatch::AvahiWatch(int fd, AvahiWatchEvent event, AvahiWatchCallback callback, void *userdata)
-    : m_notifier(0)
-    , m_callback(callback)
-    , m_event(event)
-    , m_previousEvent(static_cast<AvahiWatchEvent>(0))
-    , m_userdata(userdata)
-    , m_fd(fd)
+AvahiWatch::AvahiWatch(int f, AvahiWatchEvent ev, AvahiWatchCallback cb, void *ud)
+    : notifier(0)
+    , callback(cb)
+    , event(ev)
+    , prevEvent(static_cast<AvahiWatchEvent>(0))
+    , userData(ud)
+    , fd(f)
 {
-    setEventType(event);
+    setEventType(ev);
 }
 
 void AvahiWatch::setEventType(AvahiWatchEvent event)
 {
-    m_event = event;
+    event = event;
 
-    switch(m_event) {
+    switch(event) {
     case AVAHI_WATCH_IN : {
-        m_notifier.reset(new QSocketNotifier(m_fd, QSocketNotifier::Read, this));
-        connect(m_notifier.data(), &QSocketNotifier::activated, this, &AvahiWatch::activated);
+        notifier.reset(new QSocketNotifier(fd, QSocketNotifier::Read, this));
+        connect(notifier.data(), &QSocketNotifier::activated, this, &AvahiWatch::activated);
         break;
     }
     case AVAHI_WATCH_OUT : {
-        m_notifier.reset(new QSocketNotifier(m_fd, QSocketNotifier::Write, this));
-        connect(m_notifier.data(), &QSocketNotifier::activated, this, &AvahiWatch::activated);
+        notifier.reset(new QSocketNotifier(fd, QSocketNotifier::Write, this));
+        connect(notifier.data(), &QSocketNotifier::activated, this, &AvahiWatch::activated);
         break;
     }
     default:
@@ -137,12 +137,12 @@ void AvahiWatch::activated(int fd)
 {
     Q_UNUSED(fd)
 
-    m_previousEvent = m_event;
-    m_callback(this, m_fd, m_event, m_userdata);
-    m_previousEvent = static_cast<AvahiWatchEvent>(0);
+    prevEvent = event;
+    callback(this, this->fd, event, userData);
+    prevEvent = static_cast<AvahiWatchEvent>(0);
 }
 
 AvahiWatchEvent AvahiWatch::previousEvent()
 {
-    return m_previousEvent;
+    return prevEvent;
 }

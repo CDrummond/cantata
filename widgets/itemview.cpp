@@ -656,8 +656,8 @@ ItemView::ItemView(QWidget *p)
     listView->setAttribute(Qt::WA_MacShowFocusRect, 0);
     #endif
 
-    listView->addAction(StdActions::self()->zoomInAction);
-    listView->addAction(StdActions::self()->zoomOutAction);
+    QWidget::addAction(StdActions::self()->zoomInAction);
+    QWidget::addAction(StdActions::self()->zoomOutAction);
     connect(StdActions::self()->zoomInAction, SIGNAL(triggered()), SLOT(zoomIn()));
     connect(StdActions::self()->zoomOutAction, SIGNAL(triggered()), SLOT(zoomOut()));
 }

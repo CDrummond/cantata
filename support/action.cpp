@@ -70,8 +70,11 @@ void Action::updateToolTip(QAction *act)
     }
     QKeySequence sc=act->shortcut();
     if (sc.isEmpty()) {
-        act->setToolTip(act->property(constPlainToolTipProperty).toString());
-        act->setProperty(constPlainToolTipProperty, QString());
+        QString tt=act->property(constPlainToolTipProperty).toString();
+        if (!tt.isEmpty()) {
+            act->setToolTip(tt);
+            act->setProperty(constPlainToolTipProperty, QString());
+        }
     } else {
         QString tt=act->property(constPlainToolTipProperty).toString();
         if (tt.isEmpty()) {

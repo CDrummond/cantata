@@ -330,6 +330,13 @@ void MainWindow::init()
     locateArtistAction = ActionCollection::get()->createAction("locateartist", tr("Artist"));
     locateAlbumAction = ActionCollection::get()->createAction("locatealbum", tr("Album"));
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", tr("Track"));
+    locateArtistAction->setToolTip(tr("Locate In Library / Artist"));
+    locateAlbumAction->setToolTip(tr("Locate In Library / Album"));
+    locateTrackAction->setToolTip(tr("Locate In Library / Track"));
+    locateArtistAction->setProperty(Action::constTtForSettings, true);
+    locateAlbumAction->setProperty(Action::constTtForSettings, true);
+    locateTrackAction->setProperty(Action::constTtForSettings, true);
+    addAction(locateAction);
 
     QMenu *locateMenu=new QMenu();
     locateMenu->addAction(locateArtistAction);

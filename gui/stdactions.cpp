@@ -131,9 +131,9 @@ StdActions::StdActions()
     addToPlayQueueMenuAction->setMenu(addMenu);
     addRandomAlbumToPlayQueueAction->setVisible(false);
 
-    zoomInAction = new Action(qApp); // ActionCollection::get()->createAction("zoomIn", QObject::XX("Zoom In"));
+    zoomInAction = ActionCollection::get()->createAction("zoomIn", QObject::tr("Zoom In"));
     zoomInAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
-    zoomOutAction = new Action(qApp); // ActionCollection::get()->createAction("zoomOut", QObject::XX("Zoom Out"));
+    zoomOutAction = ActionCollection::get()->createAction("zoomOut", QObject::tr("Zoom Out"));
     zoomOutAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
 }
 

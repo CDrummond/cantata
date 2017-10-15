@@ -424,6 +424,7 @@ void LibraryPage::controlActions()
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enable=selected.count()>0;
 
+    CustomActions::self()->setEnabled(enable);
     StdActions::self()->enableAddToPlayQueue(enable);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
     #ifdef TAGLIB_FOUND

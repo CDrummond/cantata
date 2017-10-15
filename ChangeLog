@@ -4,6 +4,7 @@
    registered when running under Gnome.
 2. Add ability to change grid cover size - Ctrl+ / Ctrl-
 3. Avahi support (automatic mpd discovery)
+4. Make serving of files to MPD via HTTP configurable.
 
 2.2.0
 -----

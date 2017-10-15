@@ -126,7 +126,7 @@ ServerSettings::ServerSettings(QWidget *p)
 
     #ifdef AVAHI_FOUND
     discoveryButton = new QPushButton(tr("Discover..."), this);
-    hostLayout->insertWidget(0, discoveryButton);
+    hostLayout->insertWidget(hostLayout->count(), discoveryButton);
     connect(discoveryButton, &QPushButton::clicked, this, &ServerSettings::detectMPDs);
     #endif
 }

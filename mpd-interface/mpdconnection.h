@@ -162,6 +162,7 @@ struct MPDConnectionDetails {
     QString streamUrl;
     #endif
     QString replayGain;
+    bool allowLocalStreaming;
 };
 
 class MPDConnection : public QObject

@@ -71,6 +71,12 @@ HttpServer::HttpServer()
     connect(MPDConnection::self(), SIGNAL(ifaceIp(QString)), this, SLOT(ifaceIp(QString)));
 }
 
+bool HttpServer::isAlive() const
+{
+    // started on demand, but only start if allowed
+    return Settings::self()->connectionDetails().allowLocalStreaming;
+}
+
 bool HttpServer::start()
 {
     if (closeTimer) {

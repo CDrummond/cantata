@@ -65,10 +65,6 @@ private:
     MPDConnectionDetails getDetails() const;
     QString generateName(int ignore=-1) const;
 
-    #ifdef AVAHI_FOUND
-    QPushButton *discoveryButton;
-    #endif
-
 private:
     QList<Collection> collections;
     Collection prevBasic;
@@ -76,6 +72,9 @@ private:
     bool isCurrentConnection;
     bool allOptions;
     int prevIndex;
+    #ifdef AVAHI_FOUND
+    QPushButton *discoveryButton;
+    #endif
 };
 
 #endif

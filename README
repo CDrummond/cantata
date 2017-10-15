@@ -695,7 +695,7 @@ The following debug values may be used:
     Devices                   131072   0x00020000
     SQL                       262144   0x00040000
     MPD HTTP stream playback  524288   0x00080000
-    Other                    1048576   0x00100000 (e.g. MediaKeys)
+    Other                    1048576   0x00100000 (e.g. MediaKeys, Avahi)
 
 These values may be combined to enable multiple output. e.g. to enable MPD and
 covers logging:

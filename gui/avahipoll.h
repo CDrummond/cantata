@@ -19,11 +19,9 @@
 #define AVAHIPOLL_H
 
 #include <avahi-common/watch.h>
-
 #include <QObject>
 #include <QSocketNotifier>
 #include <QTimer>
-
 
 class AvahiTimeout: public QObject
 {
@@ -38,7 +36,7 @@ private:
     AvahiTimeoutCallback m_callback;
     void *m_userdata;
 
-private slots:
+private Q_SLOTS:
     void timeout();
 };
 
@@ -60,7 +58,7 @@ private:
     void *m_userdata;
     int m_fd;
 
-private slots:
+private Q_SLOTS:
     void activated(int);
 };
 

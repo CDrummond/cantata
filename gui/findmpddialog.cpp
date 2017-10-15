@@ -16,11 +16,7 @@
  */
 
 #include "findmpddialog.h"
-
-#include <QDebug>
 #include <QPushButton>
-
-
 
 FindMpdDialog::FindMpdDialog(QWidget *p)
     : QDialog(p)
@@ -41,7 +37,6 @@ FindMpdDialog::FindMpdDialog(QWidget *p)
     QObject::connect(tableWidget, &QTableWidget::itemSelectionChanged, this, [this](){ buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true); });
 }
 
-
 void FindMpdDialog::addMpd(QString name, QString address, int port)
 {
     int rowCount = tableWidget->model()->rowCount();
@@ -55,28 +50,23 @@ void FindMpdDialog::addMpd(QString name, QString address, int port)
     tableWidget->resizeColumnToContents(1);
 }
 
-
 void FindMpdDialog::removeMpd(QString name)
 {
-    for(int row = 0; row <= tableWidget->rowCount(); row++)
-    {
+    for(int row = 0; row <= tableWidget->rowCount(); row++) {
         auto nameItem = tableWidget->item(row, 0);
 
-        if(nameItem->text() == name)
-        {
+        if (nameItem->text() == name) {
             tableWidget->removeRow(row);
             return;
         }
     }
 }
 
-
 void FindMpdDialog::okClicked()
 {
     QItemSelectionModel *selection = tableWidget->selectionModel();
 
-    if(selection->hasSelection())
-    {
+    if (selection->hasSelection()) {
         QModelIndexList indexList = selection->selectedRows();
         QModelIndex addressIndex = selection->selectedRows(1).first();
         QModelIndex portIndex = selection->selectedRows(2).first();
@@ -84,4 +74,3 @@ void FindMpdDialog::okClicked()
         emit serverChosen(tableWidget->item(addressIndex.row(), addressIndex.column())->text(), tableWidget->item(portIndex.row(), portIndex.column())->text());
     }
 }
-

@@ -21,9 +21,6 @@
 #include "avahidiscovery.h"
 #include "ui_findmpddialog.h"
 
-#include <QDebug>
-
-
 class FindMpdDialog : public QDialog, private Ui::FindMpdDialog
 {
     Q_OBJECT
@@ -31,10 +28,10 @@ class FindMpdDialog : public QDialog, private Ui::FindMpdDialog
 public:
     FindMpdDialog(QWidget *p);
 
-signals:
+Q_SIGNALS:
     void serverChosen(QString ip, QString port);
 
-public slots:
+public Q_SLOTS:
     void addMpd(QString name, QString address, int port);
     void removeMpd(QString name);
     void okClicked();

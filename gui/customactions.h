@@ -43,6 +43,7 @@ public:
         Action *act;
     };
 
+    static void enableDebug();
     static CustomActions * self();
     CustomActions();
 

@@ -1,4 +1,4 @@
-2.2.1
+2.3.0
 -----
 1. Only disable system tray support if org.kde.StatusNotifierWatcher is not
    registered when running under Gnome.

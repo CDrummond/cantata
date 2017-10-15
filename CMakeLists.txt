@@ -62,6 +62,20 @@ option(ENABLE_MUSICBRAINZ "Enable MusicBrianz libraries (either this or CDDB req
 option(ENABLE_UDISKS2 "Build UDisks2 backend, and NOT UDisks, for Qt builds" ON)
 option(ENABLE_REMOTE_DEVICES "Enable support for remote (sshfs, samba) devices (EXPERIMENTAL)" OFF)
 option(ENABLE_MTP "Enable MTP library (required to support MTP devices)" ON)
+option(ENABLE_AVAHI "Enable automatic mpd server discovery" ${UNIX})
+
+if(ENABLE_AVAHI)
+    find_package(Avahi)
+    macro_log_feature(AVAHI_FOUND "Avahi Support" "Automatic MPD-Server Detection" "https://www.avahi.org/" FALSE "" "")
+endif()
+
+if (AVAHI_FOUND)
+    set(CANTATA_SRCS ${CANTATA_SRCS} gui/findmpddialog.cpp gui/avahidiscovery.cpp gui/avahipoll.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/findmpddialog.h gui/avahidiscovery.cpp gui/avahipoll.h gui/avahidiscovery.h)
+    set(CANTATA_UIS ${CANTATA_UIS} gui/findmpddialog.ui)
+
+    set(CANTATA_LIBS ${CANTATA_LIBS} ${AVAHI_LIBRARIES})
+endif()
 
 if (NOT APPLE AND NOT WIN32)
     set(SHARE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/share"

@@ -75,6 +75,10 @@ The following options may be passed to CMake:
         Enable support for basic, Cantata controlled, MPD instance.
         Default: ON
 
+    -DENABLE_AVAHI=ON
+        Enable avahi support (automatic mpd discovery)
+        Default: ON
+
     Windows specific:
 
     -DCANTATA_WINDOWS_INSTALLER_DEST=<folder>

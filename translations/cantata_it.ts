@@ -1878,6 +1878,34 @@ Non sarà possibile tornare indietro.</translation>
     </message>
 </context>
 <context>
+    <name>FindMpdDialog</name>
+    <message>
+        <location filename="../gui/findmpddialog.ui" line="20"/>
+        <source>Server Detection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/findmpddialog.ui" line="26"/>
+        <source>Please select your MPD. If you don&apos;t see your MPD listed here, check that zeroconf is activated in your MPD configuration or insert the host configuration manually.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/findmpddialog.cpp" line="28"/>
+        <source>Name</source>
+        <translation type="unfinished">Nome</translation>
+    </message>
+    <message>
+        <location filename="../gui/findmpddialog.cpp" line="28"/>
+        <source>Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/findmpddialog.cpp" line="28"/>
+        <source>Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FolderPage</name>
     <message>
         <location filename="../gui/folderpage.cpp" line="44"/>
@@ -2121,22 +2149,27 @@ Non sarà possibile tornare indietro.</translation>
         <translation>&lt;b&gt;Attenzione:&lt;/b&gt; Non sei attualmente un membro del gruppo &apos;users&apos;. Cantata funziona meglio (salvando copertine di album, testi, ecc. con i permessi corretti) se tu (o il tuo amministratore) ti aggiungi a questo gruppo. Se ti aggiungi dovrai fare logour e rientrare per far sì che la modifica abbia effetto.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="57"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="60"/>
         <source>Not Connected</source>
         <translation>Non Connesso</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="146"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="121"/>
+        <source>Discover...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/initialsettingswizard.cpp" line="170"/>
         <source>Connection Established</source>
         <translation>Connession Stabilita</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="146"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="170"/>
         <source>Connection Failed</source>
         <translation>Connessione Fallita</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="159"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="183"/>
         <source>Cantata will now terminate</source>
         <translation>Cantata verrà ora terminato</translation>
     </message>
@@ -2205,7 +2238,7 @@ Non sarà possibile tornare indietro.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="128"/>
-        <location filename="../gui/interfacesettings.cpp" line="138"/>
+        <location filename="../gui/interfacesettings.cpp" line="131"/>
         <source>Play Queue</source>
         <translation>Coda di Riproduzione</translation>
     </message>
@@ -2432,7 +2465,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="690"/>
         <source>Changing the style setting will require a re-start of Cantata.</source>
-        <translation>Le modifiche all'impostazione di stile richiedono il riavvio di Cantata.</translation>
+        <translation>Le modifiche all&apos;impostazione di stile richiedono il riavvio di Cantata.</translation>
     </message>
     <message>
         <source>Support retina displays</source>
@@ -2458,110 +2491,110 @@ Non sarà possibile tornare indietro.</translation>
         <translation type="vanished">Abilitare il supporto per gli schermi &apos;retina&apos; produrrà icone più nitide su di essi, ma potrebbe produrne di meno nitide sugli schemi non &apos;retina&apos;. La modifica di quest&apos;impostazione richiederà il riavvio di Cantata.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="139"/>
+        <location filename="../gui/interfacesettings.cpp" line="132"/>
         <source>Library</source>
         <translation>Libreria</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="140"/>
+        <location filename="../gui/interfacesettings.cpp" line="133"/>
         <source>Folders</source>
         <translation>Cartelle</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="141"/>
+        <location filename="../gui/interfacesettings.cpp" line="134"/>
         <source>Playlists</source>
         <translation>Scalette</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="142"/>
+        <location filename="../gui/interfacesettings.cpp" line="135"/>
         <source>Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts</source>
         <translation>Internet - Flussi, Jamendo, Magnatune, SoundCloud e Podcast</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="144"/>
+        <location filename="../gui/interfacesettings.cpp" line="137"/>
         <source>Devices - UMS, MTP (e.g. Android), and AudioCDs</source>
         <translation>Dispositivi - UMS, MTP (es. Android) e CD Audio</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="148"/>
+        <location filename="../gui/interfacesettings.cpp" line="141"/>
         <source>Search (via MPD)</source>
         <translation>Cerca (tramite MPD)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="149"/>
+        <location filename="../gui/interfacesettings.cpp" line="142"/>
         <source>Info - Current song information (artist, album, and lyrics)</source>
         <translation>Info - Informazioni sul brano corrente (artista, album e testi)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="154"/>
+        <location filename="../gui/interfacesettings.cpp" line="147"/>
         <source>Large</source>
         <translation>Grande</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="155"/>
+        <location filename="../gui/interfacesettings.cpp" line="148"/>
         <source>Small</source>
         <translation>Piccolo</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="156"/>
+        <location filename="../gui/interfacesettings.cpp" line="149"/>
         <source>Tab-bar</source>
         <translation>Barra a schede</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="157"/>
+        <location filename="../gui/interfacesettings.cpp" line="150"/>
         <source>Left</source>
         <translation>Sinistra</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="157"/>
+        <location filename="../gui/interfacesettings.cpp" line="150"/>
         <source>Right</source>
         <translation>Destra</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="158"/>
+        <location filename="../gui/interfacesettings.cpp" line="151"/>
         <source>Top</source>
         <translation>Sopra</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="159"/>
+        <location filename="../gui/interfacesettings.cpp" line="152"/>
         <source>Bottom</source>
         <translation>Sotto</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="166"/>
+        <location filename="../gui/interfacesettings.cpp" line="159"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Immagini (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="167"/>
+        <location filename="../gui/interfacesettings.cpp" line="160"/>
         <source>10px</source>
         <comment>pixels</comment>
         <translation>10px</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="192"/>
+        <location filename="../gui/interfacesettings.cpp" line="185"/>
         <source>Notifications</source>
         <translation>Notifiche</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="397"/>
+        <location filename="../gui/interfacesettings.cpp" line="390"/>
         <source>English (en)</source>
         <translation>Inglese (en)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="402"/>
-        <location filename="../gui/interfacesettings.cpp" line="419"/>
+        <location filename="../gui/interfacesettings.cpp" line="395"/>
+        <location filename="../gui/interfacesettings.cpp" line="412"/>
         <source>System default</source>
         <translation>Predefinita del sistema</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="525"/>
+        <location filename="../gui/interfacesettings.cpp" line="518"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation>%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="530"/>
+        <location filename="../gui/interfacesettings.cpp" line="523"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation>%1 px</translation>
@@ -2570,12 +2603,12 @@ Non sarà possibile tornare indietro.</translation>
 <context>
     <name>ItemView</name>
     <message>
-        <location filename="../widgets/itemview.cpp" line="596"/>
+        <location filename="../widgets/itemview.cpp" line="614"/>
         <source>Go Back</source>
         <translation>Indietro</translation>
     </message>
     <message>
-        <location filename="../widgets/itemview.cpp" line="1286"/>
+        <location filename="../widgets/itemview.cpp" line="1307"/>
         <source>Updating...</source>
         <translation>Aggiornamento...</translation>
     </message>
@@ -2865,65 +2898,65 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
         <translation>Connessione a %1 fallita - password errata</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="529"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="527"/>
         <source>Connecting to %1</source>
         <translation>Connessione a %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="647"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="645"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation>Impossibile inviare il comando a %1 - non connesso</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="703"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="701"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation>Impossibile caricare. Prego verificare che l&apos;utente &quot;mpd&quot; abbia i permessi di lettura.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="705"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="703"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation>Impossibile caricare. MPD può riprodure i file locali solo se connesso tramire un socket locale.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="707"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="714"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="705"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="712"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD ha riportato il seguente errore: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="711"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="722"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="709"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="720"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation>Impossibile inviare il comando. Disconnesso da %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1684"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1682"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>Impossibile rinominare &lt;b&gt;%1&lt;/b&gt; in &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1696"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1694"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Impossibile salvare &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1709"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1707"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation>Non è possibile aggiungere parti di un cue sheet ad una playlist!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1712"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1710"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation>Non è possibile aggiungere una playlist ad un&apos;altra playlist!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1943"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1941"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation>Impossibile inviare &apos;%1&apos; a %2. Prego verificare che %2 sia registrato con MPD.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2226"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2253"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2224"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2251"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation>Impossibile memorizzare le valutazioni perché il comando MPD &apos;sticker&apos; non è supportato.</translation>
     </message>
@@ -3063,9 +3096,9 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="272"/>
-        <location filename="../gui/mainwindow.cpp" line="1251"/>
-        <location filename="../gui/mainwindow.cpp" line="1255"/>
-        <location filename="../gui/mainwindow.cpp" line="1261"/>
+        <location filename="../gui/mainwindow.cpp" line="1271"/>
+        <location filename="../gui/mainwindow.cpp" line="1275"/>
+        <location filename="../gui/mainwindow.cpp" line="1281"/>
         <source>Outputs</source>
         <translation>Uscite</translation>
     </message>
@@ -3171,66 +3204,96 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="330"/>
+        <source>Artist</source>
+        <translation type="unfinished">Artista</translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="331"/>
+        <source>Album</source>
+        <translation type="unfinished">Album</translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="332"/>
+        <source>Track</source>
+        <translation type="unfinished">Traccia</translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="333"/>
+        <source>Locate In Library / Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="334"/>
+        <source>Locate In Library / Album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="335"/>
+        <source>Locate In Library / Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="347"/>
         <source>Play next</source>
         <translation>Riproduci il prossimo</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="333"/>
+        <location filename="../gui/mainwindow.cpp" line="350"/>
         <source>Edit Track Information (Play Queue)</source>
         <translation>Modifica Informazioni Traccia (Coda di Riproduzione)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="336"/>
+        <location filename="../gui/mainwindow.cpp" line="353"/>
         <source>Expand All</source>
         <translation>Espandi Tutto</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="338"/>
+        <location filename="../gui/mainwindow.cpp" line="355"/>
         <source>Collapse All</source>
         <translation>Contrai Tutto</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="340"/>
+        <location filename="../gui/mainwindow.cpp" line="357"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="393"/>
+        <location filename="../gui/mainwindow.cpp" line="410"/>
         <source>Play Queue</source>
         <translation>Coda di Riproduzione</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="398"/>
+        <location filename="../gui/mainwindow.cpp" line="415"/>
         <source>Library</source>
         <translation>Libreria</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="403"/>
+        <location filename="../gui/mainwindow.cpp" line="420"/>
         <source>Folders</source>
         <translation>Cartelle</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="409"/>
+        <location filename="../gui/mainwindow.cpp" line="426"/>
         <source>Playlists</source>
         <translation>Scalette</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="418"/>
+        <location filename="../gui/mainwindow.cpp" line="435"/>
         <source>Internet</source>
         <translation>Internet</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="427"/>
+        <location filename="../gui/mainwindow.cpp" line="444"/>
         <source>Devices</source>
         <translation>Dispositivi</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="434"/>
+        <location filename="../gui/mainwindow.cpp" line="451"/>
         <source>Search</source>
         <translation>Cerca</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="439"/>
+        <location filename="../gui/mainwindow.cpp" line="456"/>
         <source>Info</source>
         <translation>Informazioni</translation>
     </message>
@@ -3239,22 +3302,22 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
         <translation type="vanished">Mostra la barra dei menu</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="548"/>
+        <location filename="../gui/mainwindow.cpp" line="565"/>
         <source>&amp;Music</source>
         <translation>&amp;Musica</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="559"/>
+        <location filename="../gui/mainwindow.cpp" line="576"/>
         <source>&amp;Edit</source>
         <translation>&amp;Modifica</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="568"/>
+        <location filename="../gui/mainwindow.cpp" line="585"/>
         <source>&amp;View</source>
         <translation>&amp;Vista</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="572"/>
+        <location filename="../gui/mainwindow.cpp" line="589"/>
         <source>&amp;Queue</source>
         <translation>&amp;Coda</translation>
     </message>
@@ -3263,67 +3326,67 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
         <translation type="vanished">&amp;Impostazioni</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="581"/>
+        <location filename="../gui/mainwindow.cpp" line="598"/>
         <source>&amp;Help</source>
         <translation>&amp;Aiuto</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="616"/>
+        <location filename="../gui/mainwindow.cpp" line="634"/>
         <source>Set Rating</source>
         <translation>Imposta Valutazione</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="621"/>
+        <location filename="../gui/mainwindow.cpp" line="639"/>
         <source>No Rating</source>
         <translation>Nessuna</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="927"/>
+        <location filename="../gui/mainwindow.cpp" line="947"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation>Impossibile trovare brani che corrispondano alle regole dinamiche della scaletta.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1046"/>
+        <location filename="../gui/mainwindow.cpp" line="1066"/>
         <source>Connecting to %1</source>
         <translation>Connessione a %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1082"/>
+        <location filename="../gui/mainwindow.cpp" line="1102"/>
         <source>Refresh MPD Database?</source>
         <translation>Aggiornare il Database di MPD?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1088"/>
+        <location filename="../gui/mainwindow.cpp" line="1108"/>
         <source>About Cantata</source>
         <translation>Informazoni su Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1089"/>
+        <location filename="../gui/mainwindow.cpp" line="1109"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Client per MPD.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;Rilasciato sotto licenza &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1091"/>
+        <location filename="../gui/mainwindow.cpp" line="1111"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation>Basato su &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 Gli autori di QtMPC&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1092"/>
+        <location filename="../gui/mainwindow.cpp" line="1112"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation>Sfondi della vista contestuale per cortesia di &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1093"/>
+        <location filename="../gui/mainwindow.cpp" line="1113"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation>Metadati della vista contestuale per cortesia di &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; e &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1094"/>
+        <location filename="../gui/mainwindow.cpp" line="1114"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation>Siete invitati a caricare la fostra fan-art musicale su &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1101"/>
+        <location filename="../gui/mainwindow.cpp" line="1121"/>
         <source>A Podcast is currently being downloaded
 
 Quiting now will abort the download.</source>
@@ -3332,100 +3395,100 @@ Quiting now will abort the download.</source>
 Uscire ora interromperà lo scaricamento.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1102"/>
+        <location filename="../gui/mainwindow.cpp" line="1122"/>
         <source>Abort download and quit</source>
         <translation>Interrompi scaricamento ed esci</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1130"/>
+        <location filename="../gui/mainwindow.cpp" line="1150"/>
         <source>Please close other dialogs first.</source>
         <translation>Si prega di chiudere prima le altre finestre di dialogo.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1251"/>
-        <location filename="../gui/mainwindow.cpp" line="1262"/>
+        <location filename="../gui/mainwindow.cpp" line="1271"/>
+        <location filename="../gui/mainwindow.cpp" line="1282"/>
         <source>Enabled: %1</source>
         <translation>Abilitato: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1255"/>
-        <location filename="../gui/mainwindow.cpp" line="1263"/>
+        <location filename="../gui/mainwindow.cpp" line="1275"/>
+        <location filename="../gui/mainwindow.cpp" line="1283"/>
         <source>Disabled: %1</source>
         <translation>Disabilitato: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1451"/>
-        <location filename="../gui/mainwindow.cpp" line="1474"/>
+        <location filename="../gui/mainwindow.cpp" line="1471"/>
+        <location filename="../gui/mainwindow.cpp" line="1494"/>
         <source>Server Information</source>
         <translation>Informazioni sul Server</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1454"/>
+        <location filename="../gui/mainwindow.cpp" line="1474"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocollo:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Riproduzione:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tag:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1465"/>
+        <location filename="../gui/mainwindow.cpp" line="1485"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artisti:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Album:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Brani:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Durata:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Aggiornato il:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1618"/>
+        <location filename="../gui/mainwindow.cpp" line="1638"/>
         <source>Cantata (%1)</source>
         <translation>Cantata (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1685"/>
+        <location filename="../gui/mainwindow.cpp" line="1705"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD ha riportato il seguente errore: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1756"/>
+        <location filename="../gui/mainwindow.cpp" line="1776"/>
         <source>Cantata</source>
         <translation>Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1756"/>
+        <location filename="../gui/mainwindow.cpp" line="1776"/>
         <source>Playback stopped</source>
         <translation>Riproduzione fermata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1799"/>
+        <location filename="../gui/mainwindow.cpp" line="1819"/>
         <source>Remove all songs from play queue?</source>
         <translation>Rimuovere tutti i brani dalla coda di riproduzione?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1850"/>
+        <location filename="../gui/mainwindow.cpp" line="1870"/>
         <source>Priority</source>
         <translation>Priorità</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1850"/>
+        <location filename="../gui/mainwindow.cpp" line="1870"/>
         <source>Enter priority (0..255):</source>
         <translation>Inserire priorità (0..255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1851"/>
+        <location filename="../gui/mainwindow.cpp" line="1871"/>
         <source>Decrease priority for each subsequent track</source>
         <translation>Riduci la priorità di tutte le tracce successive</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1878"/>
+        <location filename="../gui/mainwindow.cpp" line="1898"/>
         <source>Playlist Name</source>
         <translation>Nome Scaletta</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1878"/>
+        <location filename="../gui/mainwindow.cpp" line="1898"/>
         <source>Enter a name for the playlist:</source>
         <translation>Inserire un nome per la scaletta:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1881"/>
+        <location filename="../gui/mainwindow.cpp" line="1901"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation>&apos;%1&apos; è già usato per salvare i flussi preferiti, prego scegliere un altro nome.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1885"/>
+        <location filename="../gui/mainwindow.cpp" line="1905"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -3434,12 +3497,12 @@ Add to that playlist?</source>
 Aggiungere i brani a quella scaletta?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1886"/>
+        <location filename="../gui/mainwindow.cpp" line="1906"/>
         <source>Existing Playlist</source>
         <translation>Scalette Esistenti</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="1961"/>
+        <location filename="../gui/mainwindow.cpp" line="1981"/>
         <source>%n Track(s)</source>
         <translation>
             <numerusform>%n Traccia</numerusform>
@@ -3447,7 +3510,7 @@ Aggiungere i brani a quella scaletta?</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="1963"/>
+        <location filename="../gui/mainwindow.cpp" line="1983"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>%n Traccia (%1)</numerusform>
@@ -3611,7 +3674,7 @@ Aggiungere i brani a quella scaletta?</translation>
 <context>
     <name>NowPlayingWidget</name>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="320"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="317"/>
         <source>(Stream)</source>
         <translation>(Flusso)</translation>
     </message>
@@ -4378,7 +4441,7 @@ Aggiungere i brani a quella scaletta?</translation>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="338"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Cantata interrogherà la libreria utilizzando tutte le regole elencate. La lista delle regole di &lt;i&gt;inclusione&lt;/i&gt; verrà usata per costruire un insieme di brani che possonno essere usati. La lista di regole di &lt;i&gt;esclusione&lt;/i&gt; verrà usata per costruire un insieme di brani che non possono essere usati. Se non ci sono regole di &lt;i&gt;inclusione&lt;/i&gt;, Catata assumerà che tutti i brani (eccetto quelli &lt;i&gt;esclusi&lt;/i&gt; possono essere usati.&lt;/p&gt;&lt;p&gt;es. per far sì che Cantata cerchi &apos;Canzoni rock di Wibble O canzoni di Artisti Vari&apos;, ti servirà quetso:&lt;ul&gt;&lt;li&gt;Includi ArtistaAlbum=Wibble Genere=Rock&lt;/li&gt;&lt;li&gt;Includi ArtistaAlbum=Artisti Vari&lt;/li&gt;&lt;/ul&gt;Perché Cantata cerchi &apos;Canzoni di Wibble ma non dall&apos;album Abc&apos;, ti servirà questo:&lt;ul&gt;&lt;li&gt;Includi ArtistaAlbum=Wibble&lt;/li&gt;&lt;li&gt;Escludi ArtistaAlbum=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Dopo che l&apos;insieme di brani utilizzabili è stato creato, Cantata selezionerà casualmente i brani da tenere nella coda di riproduzione (l'impostazione predefinita è 10). Se è stato specificato un intervallo di valutazioni, allora saranno usati solo i brani all&apos;interno di quell&apos;intervallo. Similmente, se è stato impostato un intervallo di durata.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Cantata interrogherà la libreria utilizzando tutte le regole elencate. La lista delle regole di &lt;i&gt;inclusione&lt;/i&gt; verrà usata per costruire un insieme di brani che possonno essere usati. La lista di regole di &lt;i&gt;esclusione&lt;/i&gt; verrà usata per costruire un insieme di brani che non possono essere usati. Se non ci sono regole di &lt;i&gt;inclusione&lt;/i&gt;, Catata assumerà che tutti i brani (eccetto quelli &lt;i&gt;esclusi&lt;/i&gt; possono essere usati.&lt;/p&gt;&lt;p&gt;es. per far sì che Cantata cerchi &apos;Canzoni rock di Wibble O canzoni di Artisti Vari&apos;, ti servirà quetso:&lt;ul&gt;&lt;li&gt;Includi ArtistaAlbum=Wibble Genere=Rock&lt;/li&gt;&lt;li&gt;Includi ArtistaAlbum=Artisti Vari&lt;/li&gt;&lt;/ul&gt;Perché Cantata cerchi &apos;Canzoni di Wibble ma non dall&apos;album Abc&apos;, ti servirà questo:&lt;ul&gt;&lt;li&gt;Includi ArtistaAlbum=Wibble&lt;/li&gt;&lt;li&gt;Escludi ArtistaAlbum=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Dopo che l&apos;insieme di brani utilizzabili è stato creato, Cantata selezionerà casualmente i brani da tenere nella coda di riproduzione (l&apos;impostazione predefinita è 10). Se è stato specificato un intervallo di valutazioni, allora saranno usati solo i brani all&apos;interno di quell&apos;intervallo. Similmente, se è stato impostato un intervallo di durata.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="353"/>
@@ -5461,6 +5524,16 @@ width x height</comment>
         <translation>Imposta Priorità</translation>
     </message>
     <message>
+        <location filename="../gui/stdactions.cpp" line="134"/>
+        <source>Zoom In</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="136"/>
+        <source>Zoom Out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/stdactions.cpp" line="50"/>
         <source>Highest Priority (255)</source>
         <translation>Piorità Massima (255)</translation>
@@ -5575,7 +5648,7 @@ width x height</comment>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="59"/>
-        <location filename="../support/utils.cpp" line="646"/>
+        <location filename="../support/utils.cpp" line="650"/>
         <source>Unknown</source>
         <translation>Sconosciuto</translation>
     </message>
@@ -5825,38 +5898,38 @@ width x height</comment>
         <translation>Domanda</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="431"/>
-        <location filename="../support/utils.cpp" line="439"/>
+        <location filename="../support/utils.cpp" line="435"/>
+        <location filename="../support/utils.cpp" line="443"/>
         <source>%1 B</source>
         <translation>%1 B</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="432"/>
+        <location filename="../support/utils.cpp" line="436"/>
         <source>%1 kB</source>
         <translation>%1 kB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="433"/>
+        <location filename="../support/utils.cpp" line="437"/>
         <source>%1 MB</source>
         <translation>%1 MB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="435"/>
+        <location filename="../support/utils.cpp" line="439"/>
         <source>%1 GB</source>
         <translation>%1 GB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="440"/>
+        <location filename="../support/utils.cpp" line="444"/>
         <source>%1 KiB</source>
         <translation>%1 KiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="441"/>
+        <location filename="../support/utils.cpp" line="445"/>
         <source>%1 MiB</source>
         <translation>%1 MiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="443"/>
+        <location filename="../support/utils.cpp" line="447"/>
         <source>%1 GiB</source>
         <translation>%1 GiB</translation>
     </message>
@@ -6612,7 +6685,7 @@ Prego scegliere un nome diverso.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
-        <location filename="../gui/serversettings.cpp" line="104"/>
+        <location filename="../gui/serversettings.cpp" line="107"/>
         <source>Host:</source>
         <translation>Host:</translation>
     </message>
@@ -6665,72 +6738,77 @@ Prego scegliere un nome diverso.</translation>
         <translation>Se modifichi l&apos;impostazione &quot;Cartella Musica&apos;, dovrai aggiornare manualmente il database musicale. Ciò può essere fatto premendo il pulsante &apos;Aggiorna Database&apos; nelle viste &apos;Artisti&apos; o &apos;Album&apos;.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="87"/>
+        <location filename="../gui/serversettings.cpp" line="90"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, and transferring to (and from) devices.</source>
         <translation>Questa cartella verrà usata anche per trovare i file musicali per la modifica di tag, replay gain e per trasferirli verso (e da) i dispositivi.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="90"/>
+        <location filename="../gui/serversettings.cpp" line="93"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, etc.</source>
         <translation>Questa cartella verrà usata anche per trovare i file musicali per la modifica di tag, ecc.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="257"/>
+        <location filename="../gui/serversettings.cpp" line="128"/>
+        <source>Discover...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.cpp" line="266"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation>A che tipo di collezione ti vuoi connettere?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="258"/>
+        <location filename="../gui/serversettings.cpp" line="267"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation>Standard - la collezione musicale può venire condivisa, è su un&apos;altra macchina, è già configurata, oppure vuoi permettere l&apos;accesso da altri client (es. MPDroid)</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="261"/>
+        <location filename="../gui/serversettings.cpp" line="270"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation>Base - la collezione musicale non è condivisa con altri e Cantata configurerà e controllerà l&apos;istanza di MPD. Quest&apos;impostazione sarà esclusiva per Cantata e &lt;b&gt;non&lt;/b&gt; sarà accessibile ad altri client MPD.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="265"/>
+        <location filename="../gui/serversettings.cpp" line="274"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="265"/>
+        <location filename="../gui/serversettings.cpp" line="274"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation>Se desideri una configurazione di MPD avanzata (es. uscite audio multiple, supporto completo DSD, ecc) allora &lt;b&gt;dovrai&lt;/b&gt; scegliere &apos;Standard&apos;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="267"/>
+        <location filename="../gui/serversettings.cpp" line="276"/>
         <source>Add Collection</source>
         <translation>Aggiungi Collezione</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="267"/>
+        <location filename="../gui/serversettings.cpp" line="276"/>
         <source>Standard</source>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="267"/>
+        <location filename="../gui/serversettings.cpp" line="276"/>
         <source>Basic</source>
         <translation>Base</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="312"/>
+        <location filename="../gui/serversettings.cpp" line="321"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation>Cancellare &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="313"/>
+        <location filename="../gui/serversettings.cpp" line="322"/>
         <source>Delete</source>
         <translation>Cancella</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="351"/>
+        <location filename="../gui/serversettings.cpp" line="375"/>
         <source>New Collection %1</source>
         <translation>Nuova Collezione %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="369"/>
+        <location filename="../gui/serversettings.cpp" line="393"/>
         <source>Default</source>
         <translation>Predefinito</translation>
     </message>
@@ -8497,24 +8575,24 @@ Se rinomini un file (o la cartella che lo contiene), la valutazione associata al
 <context>
     <name>VolumeSlider</name>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="111"/>
-        <location filename="../widgets/volumeslider.cpp" line="214"/>
-        <location filename="../widgets/volumeslider.cpp" line="221"/>
+        <location filename="../widgets/volumeslider.cpp" line="98"/>
+        <location filename="../widgets/volumeslider.cpp" line="201"/>
+        <location filename="../widgets/volumeslider.cpp" line="208"/>
         <source>Mute</source>
         <translation>Muto</translation>
     </message>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="221"/>
+        <location filename="../widgets/volumeslider.cpp" line="208"/>
         <source>Unmute</source>
         <translation>Non Muto</translation>
     </message>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="268"/>
+        <location filename="../widgets/volumeslider.cpp" line="255"/>
         <source>Volume %1% (Muted)</source>
         <translation>Volume %1% (Muto)</translation>
     </message>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="268"/>
+        <location filename="../widgets/volumeslider.cpp" line="255"/>
         <source>Volume %1%</source>
         <translation>Volume %1%</translation>
     </message>

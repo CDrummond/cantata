@@ -8143,6 +8143,34 @@ This cannot be undone.</source>
     </message>
 </context>
 <context>
+    <name>FindMpdDialog</name>
+    <message>
+        <location filename="../gui/findmpddialog.ui" line="20"/>
+        <source>Server Detection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/findmpddialog.ui" line="26"/>
+        <source>Please select your MPD. If you don&apos;t see your MPD listed here, check that zeroconf is activated in your MPD configuration or insert the host configuration manually.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/findmpddialog.cpp" line="28"/>
+        <source>Name</source>
+        <translation type="unfinished">이름</translation>
+    </message>
+    <message>
+        <location filename="../gui/findmpddialog.cpp" line="28"/>
+        <source>Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/findmpddialog.cpp" line="28"/>
+        <source>Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FolderPage</name>
     <message>
         <location filename="../gui/folderpage.cpp" line="44"/>
@@ -8385,22 +8413,27 @@ This cannot be undone.</source>
         <translation type="unfinished">&lt;b&gt;경고:&lt;/b&gt; 지금 &apos;사용자&apos; 그룹에 포함되어 있지 않습니다. 이 그룹의 사용자라면 음반표지와 가사를 저장하는 등의 기능을 더 잘 수행합니다. 만약 본인이나 관리자가 사용자를 이 그룹에 추가하였다면 다시 로그인을 해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="57"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="60"/>
         <source>Not Connected</source>
         <translation type="unfinished">연결 안 됨</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="146"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="121"/>
+        <source>Discover...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/initialsettingswizard.cpp" line="170"/>
         <source>Connection Established</source>
         <translation type="unfinished">연결됨</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="146"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="170"/>
         <source>Connection Failed</source>
         <translation type="unfinished">연결 안 됨</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="159"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="183"/>
         <source>Cantata will now terminate</source>
         <translation type="unfinished">칸타타가 중지하지 않습니다</translation>
     </message>
@@ -8469,7 +8502,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="128"/>
-        <location filename="../gui/interfacesettings.cpp" line="138"/>
+        <location filename="../gui/interfacesettings.cpp" line="131"/>
         <source>Play Queue</source>
         <translation type="unfinished">연주순서</translation>
     </message>
@@ -8736,110 +8769,110 @@ This cannot be undone.</source>
         <translation type="obsolete">레티나 디스플레이 기능을 켜면 해당기기에서 아이콘이 보다 선명하게 보이지만, 해당기기가 아니면 덜 선명하게 보입니다. 이 설정을 바꾸면 다시 시작해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="139"/>
+        <location filename="../gui/interfacesettings.cpp" line="132"/>
         <source>Library</source>
         <translation type="unfinished">음원</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="140"/>
+        <location filename="../gui/interfacesettings.cpp" line="133"/>
         <source>Folders</source>
         <translation type="unfinished">폴더</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="141"/>
+        <location filename="../gui/interfacesettings.cpp" line="134"/>
         <source>Playlists</source>
         <translation type="unfinished">연주목록</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="142"/>
+        <location filename="../gui/interfacesettings.cpp" line="135"/>
         <source>Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts</source>
         <translation type="unfinished">인터넷 - 스트림, Jamendo, Magnatune, SoundCloud, 팟캐스트</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="144"/>
+        <location filename="../gui/interfacesettings.cpp" line="137"/>
         <source>Devices - UMS, MTP (e.g. Android), and AudioCDs</source>
         <translation type="unfinished">장치 - UMS, MTP (예, 안드로이드), 오디오CD</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="148"/>
+        <location filename="../gui/interfacesettings.cpp" line="141"/>
         <source>Search (via MPD)</source>
         <translation type="unfinished">찾기 (MPD를 통해서)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="149"/>
+        <location filename="../gui/interfacesettings.cpp" line="142"/>
         <source>Info - Current song information (artist, album, and lyrics)</source>
         <translation type="unfinished">정보 - 현재 곡 정보 (연주자, 음반, 가사)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="154"/>
+        <location filename="../gui/interfacesettings.cpp" line="147"/>
         <source>Large</source>
         <translation type="unfinished">크게</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="155"/>
+        <location filename="../gui/interfacesettings.cpp" line="148"/>
         <source>Small</source>
         <translation type="unfinished">작게</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="156"/>
+        <location filename="../gui/interfacesettings.cpp" line="149"/>
         <source>Tab-bar</source>
         <translation type="unfinished">꼬리표</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="157"/>
+        <location filename="../gui/interfacesettings.cpp" line="150"/>
         <source>Left</source>
         <translation type="unfinished">왼쪽</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="157"/>
+        <location filename="../gui/interfacesettings.cpp" line="150"/>
         <source>Right</source>
         <translation type="unfinished">오른쪽</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="158"/>
+        <location filename="../gui/interfacesettings.cpp" line="151"/>
         <source>Top</source>
         <translation type="unfinished">위</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="159"/>
+        <location filename="../gui/interfacesettings.cpp" line="152"/>
         <source>Bottom</source>
         <translation type="unfinished">아래</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="166"/>
+        <location filename="../gui/interfacesettings.cpp" line="159"/>
         <source>Images (*.png *.jpg)</source>
         <translation type="unfinished">이미지 (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="167"/>
+        <location filename="../gui/interfacesettings.cpp" line="160"/>
         <source>10px</source>
         <comment>pixels</comment>
         <translation type="unfinished">10화소</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="192"/>
+        <location filename="../gui/interfacesettings.cpp" line="185"/>
         <source>Notifications</source>
         <translation type="unfinished">알림</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="397"/>
+        <location filename="../gui/interfacesettings.cpp" line="390"/>
         <source>English (en)</source>
         <translation type="unfinished">영어 (en)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="402"/>
-        <location filename="../gui/interfacesettings.cpp" line="419"/>
+        <location filename="../gui/interfacesettings.cpp" line="395"/>
+        <location filename="../gui/interfacesettings.cpp" line="412"/>
         <source>System default</source>
         <translation type="unfinished">시스템 기본값</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="525"/>
+        <location filename="../gui/interfacesettings.cpp" line="518"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation type="unfinished">%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="530"/>
+        <location filename="../gui/interfacesettings.cpp" line="523"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation type="unfinished">%1 px</translation>
@@ -8848,12 +8881,12 @@ This cannot be undone.</source>
 <context>
     <name>ItemView</name>
     <message>
-        <location filename="../widgets/itemview.cpp" line="596"/>
+        <location filename="../widgets/itemview.cpp" line="614"/>
         <source>Go Back</source>
         <translation type="unfinished">돌아가기</translation>
     </message>
     <message>
-        <location filename="../widgets/itemview.cpp" line="1286"/>
+        <location filename="../widgets/itemview.cpp" line="1307"/>
         <source>Updating...</source>
         <translation type="unfinished">업데이트 중...</translation>
     </message>
@@ -9141,65 +9174,65 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="unfinished">%1에 연결 안 됨 - 틀린 암호</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="529"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="527"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">%1에 연결</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="647"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="645"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation type="unfinished">%1에 명령어 전달 안 됨 - 연결 안 됨</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="703"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="701"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation type="unfinished">연결 안 됨. &quot;mpd&quot; 사용자가 읽기 권한이 있는지 확인해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="705"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="703"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation type="unfinished">불러오기 안 됨. MPD는 로컬에 연결된 파일만 불러올 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="707"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="714"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="705"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="712"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">MPD가 다음 오류를 보고함: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="711"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="722"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="709"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="720"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation type="unfinished">명령어 전달 안 됨. %1 연결 해제</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1684"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1682"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt;에서 &lt;b&gt;%2&lt;/b&gt;로 이름 바꾸기 안 됨</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1696"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1694"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; 저장 안 됨</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1709"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1707"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation type="unfinished">큐시트의 일부를 연주목록에 추가할 수 없습니다!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1712"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1710"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation type="unfinished">연주목록을 다른 연주목록에 추가할 수 없습니다!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1943"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1941"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation type="unfinished">&apos;%1&apos;을 %2로 보낼 수 없음. %2가 MPD에 등록되어 있는지 확인해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2226"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2253"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2224"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2251"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation type="unfinished">MPD &apos;sticker&apos; 명령어를 지원하지 않아, 평점을 저장할 수 없습니다.</translation>
     </message>
@@ -9339,9 +9372,9 @@ If this search does find new lyrics, these will still be associated with the ori
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="272"/>
-        <location filename="../gui/mainwindow.cpp" line="1251"/>
-        <location filename="../gui/mainwindow.cpp" line="1255"/>
-        <location filename="../gui/mainwindow.cpp" line="1261"/>
+        <location filename="../gui/mainwindow.cpp" line="1271"/>
+        <location filename="../gui/mainwindow.cpp" line="1275"/>
+        <location filename="../gui/mainwindow.cpp" line="1281"/>
         <source>Outputs</source>
         <translation type="unfinished">출력</translation>
     </message>
@@ -9447,66 +9480,96 @@ If this search does find new lyrics, these will still be associated with the ori
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="330"/>
+        <source>Artist</source>
+        <translation type="unfinished">연주자</translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="331"/>
+        <source>Album</source>
+        <translation type="unfinished">음반</translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="332"/>
+        <source>Track</source>
+        <translation type="unfinished">곡</translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="333"/>
+        <source>Locate In Library / Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="334"/>
+        <source>Locate In Library / Album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="335"/>
+        <source>Locate In Library / Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="347"/>
         <source>Play next</source>
         <translation type="unfinished">다음 곡 재생</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="333"/>
+        <location filename="../gui/mainwindow.cpp" line="350"/>
         <source>Edit Track Information (Play Queue)</source>
         <translation type="unfinished">곡 정보 수정 (연주순서)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="336"/>
+        <location filename="../gui/mainwindow.cpp" line="353"/>
         <source>Expand All</source>
         <translation type="unfinished">전체확장</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="338"/>
+        <location filename="../gui/mainwindow.cpp" line="355"/>
         <source>Collapse All</source>
         <translation type="unfinished">전체축소</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="340"/>
+        <location filename="../gui/mainwindow.cpp" line="357"/>
         <source>Cancel</source>
         <translation type="unfinished">취소</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="393"/>
+        <location filename="../gui/mainwindow.cpp" line="410"/>
         <source>Play Queue</source>
         <translation type="unfinished">연주순서</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="398"/>
+        <location filename="../gui/mainwindow.cpp" line="415"/>
         <source>Library</source>
         <translation type="unfinished">음원</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="403"/>
+        <location filename="../gui/mainwindow.cpp" line="420"/>
         <source>Folders</source>
         <translation type="unfinished">폴더</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="409"/>
+        <location filename="../gui/mainwindow.cpp" line="426"/>
         <source>Playlists</source>
         <translation type="unfinished">연주목록</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="418"/>
+        <location filename="../gui/mainwindow.cpp" line="435"/>
         <source>Internet</source>
         <translation type="unfinished">인터넷</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="427"/>
+        <location filename="../gui/mainwindow.cpp" line="444"/>
         <source>Devices</source>
         <translation type="unfinished">장치</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="434"/>
+        <location filename="../gui/mainwindow.cpp" line="451"/>
         <source>Search</source>
         <translation type="unfinished">찾기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="439"/>
+        <location filename="../gui/mainwindow.cpp" line="456"/>
         <source>Info</source>
         <translation type="unfinished">정보</translation>
     </message>
@@ -9515,22 +9578,22 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="obsolete">메뉴 줄 보기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="548"/>
+        <location filename="../gui/mainwindow.cpp" line="565"/>
         <source>&amp;Music</source>
         <translation type="unfinished">음악(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="559"/>
+        <location filename="../gui/mainwindow.cpp" line="576"/>
         <source>&amp;Edit</source>
         <translation type="unfinished">수정(&amp;E)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="568"/>
+        <location filename="../gui/mainwindow.cpp" line="585"/>
         <source>&amp;View</source>
         <translation type="unfinished">보기(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="572"/>
+        <location filename="../gui/mainwindow.cpp" line="589"/>
         <source>&amp;Queue</source>
         <translation type="unfinished">순서(&amp;Q)</translation>
     </message>
@@ -9539,67 +9602,67 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="obsolete">설정(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="581"/>
+        <location filename="../gui/mainwindow.cpp" line="598"/>
         <source>&amp;Help</source>
         <translation type="unfinished">도움말(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="616"/>
+        <location filename="../gui/mainwindow.cpp" line="634"/>
         <source>Set Rating</source>
         <translation type="unfinished">평점 설정</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="621"/>
+        <location filename="../gui/mainwindow.cpp" line="639"/>
         <source>No Rating</source>
         <translation type="unfinished">평점 없음</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="927"/>
+        <location filename="../gui/mainwindow.cpp" line="947"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation type="unfinished">활동 연주목록 규정에 맞는 음악을 찾지 못했습니다.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1046"/>
+        <location filename="../gui/mainwindow.cpp" line="1066"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">%1에 연결</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1082"/>
+        <location filename="../gui/mainwindow.cpp" line="1102"/>
         <source>Refresh MPD Database?</source>
         <translation type="unfinished">MPD 데이터베이스를 새로 읽을까요?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1088"/>
+        <location filename="../gui/mainwindow.cpp" line="1108"/>
         <source>About Cantata</source>
         <translation type="unfinished">칸타타에 대하여</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1089"/>
+        <location filename="../gui/mainwindow.cpp" line="1109"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation type="unfinished">&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD 클라이언트.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;&lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;에 따라 배포</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1091"/>
+        <location filename="../gui/mainwindow.cpp" line="1111"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation type="unfinished">&lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; 기반 - &amp;copy; 2007-2010 The QtMPC 개발자&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1092"/>
+        <location filename="../gui/mainwindow.cpp" line="1112"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">찾아보기 배경 도움은 &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1093"/>
+        <location filename="../gui/mainwindow.cpp" line="1113"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation type="unfinished">찾아보기 자료 도움은 &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;위키피디아&lt;/a&gt;와 &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1094"/>
+        <location filename="../gui/mainwindow.cpp" line="1114"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">나만의 음악 팬아트를 올려주실 곳은 &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1101"/>
+        <location filename="../gui/mainwindow.cpp" line="1121"/>
         <source>A Podcast is currently being downloaded
 
 Quiting now will abort the download.</source>
@@ -9608,100 +9671,100 @@ Quiting now will abort the download.</source>
 지금 취소하면 내려받기를 그만둡니다.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1102"/>
+        <location filename="../gui/mainwindow.cpp" line="1122"/>
         <source>Abort download and quit</source>
         <translation type="unfinished">내려받기를 그만두고 취소</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1130"/>
+        <location filename="../gui/mainwindow.cpp" line="1150"/>
         <source>Please close other dialogs first.</source>
         <translation type="unfinished">다른 대화창을 먼저 닫으시기 바랍니다.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1251"/>
-        <location filename="../gui/mainwindow.cpp" line="1262"/>
+        <location filename="../gui/mainwindow.cpp" line="1271"/>
+        <location filename="../gui/mainwindow.cpp" line="1282"/>
         <source>Enabled: %1</source>
         <translation type="unfinished">사용 가능: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1255"/>
-        <location filename="../gui/mainwindow.cpp" line="1263"/>
+        <location filename="../gui/mainwindow.cpp" line="1275"/>
+        <location filename="../gui/mainwindow.cpp" line="1283"/>
         <source>Disabled: %1</source>
         <translation type="unfinished">사용 불가능: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1451"/>
-        <location filename="../gui/mainwindow.cpp" line="1474"/>
+        <location filename="../gui/mainwindow.cpp" line="1471"/>
+        <location filename="../gui/mainwindow.cpp" line="1494"/>
         <source>Server Information</source>
         <translation type="unfinished">서버정보</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1454"/>
+        <location filename="../gui/mainwindow.cpp" line="1474"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;서버&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;프로토콜:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;가동시간:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;연주:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;처리:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;태그:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1465"/>
+        <location filename="../gui/mainwindow.cpp" line="1485"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;데이터베이스&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;연주자:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;음반:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;곡:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;지속시간:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;업데이트:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1618"/>
+        <location filename="../gui/mainwindow.cpp" line="1638"/>
         <source>Cantata (%1)</source>
         <translation type="unfinished">칸타타 (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1685"/>
+        <location filename="../gui/mainwindow.cpp" line="1705"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">MPD가 다음 오류를 보고함: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1756"/>
+        <location filename="../gui/mainwindow.cpp" line="1776"/>
         <source>Cantata</source>
         <translation type="unfinished">칸타타</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1756"/>
+        <location filename="../gui/mainwindow.cpp" line="1776"/>
         <source>Playback stopped</source>
         <translation type="unfinished">연주중지</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1799"/>
+        <location filename="../gui/mainwindow.cpp" line="1819"/>
         <source>Remove all songs from play queue?</source>
         <translation type="unfinished">연주순서의 모든 곡을 지울까요?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1850"/>
+        <location filename="../gui/mainwindow.cpp" line="1870"/>
         <source>Priority</source>
         <translation type="unfinished">우선순위</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1850"/>
+        <location filename="../gui/mainwindow.cpp" line="1870"/>
         <source>Enter priority (0..255):</source>
         <translation type="unfinished">우선순위 입력 (0..255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1851"/>
+        <location filename="../gui/mainwindow.cpp" line="1871"/>
         <source>Decrease priority for each subsequent track</source>
         <translation type="unfinished">다음 각 곡들의 우선순위를 내립니다</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1878"/>
+        <location filename="../gui/mainwindow.cpp" line="1898"/>
         <source>Playlist Name</source>
         <translation type="unfinished">연주목록 이름</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1878"/>
+        <location filename="../gui/mainwindow.cpp" line="1898"/>
         <source>Enter a name for the playlist:</source>
         <translation type="unfinished">연주목록 이름을 입력합니다:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1881"/>
+        <location filename="../gui/mainwindow.cpp" line="1901"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation type="unfinished">&apos;%1&apos;이 즐겨찾는 스트림 저장에 사용되므로, 다른 이름을 선택합니다.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1885"/>
+        <location filename="../gui/mainwindow.cpp" line="1905"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -9710,19 +9773,19 @@ Add to that playlist?</source>
 연주목록에 추가할까요?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1886"/>
+        <location filename="../gui/mainwindow.cpp" line="1906"/>
         <source>Existing Playlist</source>
         <translation type="unfinished">이미 있는 연주목록</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="1961"/>
+        <location filename="../gui/mainwindow.cpp" line="1981"/>
         <source>%n Track(s)</source>
         <translation type="unfinished">
             <numerusform>%n 곡</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="1963"/>
+        <location filename="../gui/mainwindow.cpp" line="1983"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n 곡 (%2)</numerusform>
@@ -9885,7 +9948,7 @@ Add to that playlist?</source>
 <context>
     <name>NowPlayingWidget</name>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="320"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="317"/>
         <source>(Stream)</source>
         <translation type="unfinished">(스트림)</translation>
     </message>
@@ -11897,6 +11960,16 @@ width x height</comment>
         <translation type="unfinished">우선순위 설정</translation>
     </message>
     <message>
+        <location filename="../gui/stdactions.cpp" line="134"/>
+        <source>Zoom In</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="136"/>
+        <source>Zoom Out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/stdactions.cpp" line="50"/>
         <source>Highest Priority (255)</source>
         <translation type="unfinished">최고 우선순위 (255)</translation>
@@ -12016,7 +12089,7 @@ width x height</comment>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="59"/>
-        <location filename="../support/utils.cpp" line="646"/>
+        <location filename="../support/utils.cpp" line="650"/>
         <source>Unknown</source>
         <translation type="unfinished">모름</translation>
     </message>
@@ -12266,38 +12339,38 @@ width x height</comment>
         <translation type="unfinished">질문</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="431"/>
-        <location filename="../support/utils.cpp" line="439"/>
+        <location filename="../support/utils.cpp" line="435"/>
+        <location filename="../support/utils.cpp" line="443"/>
         <source>%1 B</source>
         <translation type="unfinished">%1 B</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="432"/>
+        <location filename="../support/utils.cpp" line="436"/>
         <source>%1 kB</source>
         <translation type="unfinished">%1 kB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="433"/>
+        <location filename="../support/utils.cpp" line="437"/>
         <source>%1 MB</source>
         <translation type="unfinished">%1 MB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="435"/>
+        <location filename="../support/utils.cpp" line="439"/>
         <source>%1 GB</source>
         <translation type="unfinished">%1 GB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="440"/>
+        <location filename="../support/utils.cpp" line="444"/>
         <source>%1 KiB</source>
         <translation type="unfinished">%1 KiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="441"/>
+        <location filename="../support/utils.cpp" line="445"/>
         <source>%1 MiB</source>
         <translation type="unfinished">%1 MiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="443"/>
+        <location filename="../support/utils.cpp" line="447"/>
         <source>%1 GiB</source>
         <translation type="unfinished">%1 GiB</translation>
     </message>
@@ -13111,7 +13184,7 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
-        <location filename="../gui/serversettings.cpp" line="104"/>
+        <location filename="../gui/serversettings.cpp" line="107"/>
         <source>Host:</source>
         <translation type="unfinished">호스트:</translation>
     </message>
@@ -13164,72 +13237,77 @@ Please choose a different name.</source>
         <translation type="unfinished">&apos;음악폴더&apos; 설정을 바꾸면, 음악데이터베이스를 직접 업데이트해야 합니다. 이는 &apos;연주자&apos;나 &apos;음반&apos; 보기의 &apos;데이터베이스 새로 읽기&apos; 단추를 누르면 됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="87"/>
+        <location filename="../gui/serversettings.cpp" line="90"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, and transferring to (and from) devices.</source>
         <translation type="unfinished">이 폴더는 태그 수정, 리플레이게인, 장치로(부터) 전송할 음원을 찾기위해 사용됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="90"/>
+        <location filename="../gui/serversettings.cpp" line="93"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, etc.</source>
         <translation type="unfinished">이 폴더는 태그 수정, 리플레이게인 등을 위한 음원을 찾기위해 사용됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="257"/>
+        <location filename="../gui/serversettings.cpp" line="128"/>
+        <source>Discover...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.cpp" line="266"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation type="unfinished">어떤 형식의 음원에 연결할까요?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="258"/>
+        <location filename="../gui/serversettings.cpp" line="267"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation type="unfinished">표준 - 다른 기기에서 이미 설정된 음원을 공유하거나, 다른 클라이언트(예.MPDroid)에서 접속할 수 있습니다</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="261"/>
+        <location filename="../gui/serversettings.cpp" line="270"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation type="unfinished">기본 - 음원을 공유하지 않고 칸타타가 MPD를 설정하고 제어합니다. 이것은 칸타타만의 설정으로 다른 MPD 클라이언트에서는 접속이 &lt;b&gt;안&lt;/b&gt;됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="265"/>
+        <location filename="../gui/serversettings.cpp" line="274"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation type="unfinished">&lt;i&gt;&lt;b&gt;참고:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="265"/>
+        <location filename="../gui/serversettings.cpp" line="274"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation type="unfinished">MPD의 고급 설정을 하려면(예. 다중 오디오 출력, DSD 지원 등) &lt;b&gt;반드시&lt;/b&gt; &apos;표준&apos;을 선택해야 합니다</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="267"/>
+        <location filename="../gui/serversettings.cpp" line="276"/>
         <source>Add Collection</source>
         <translation type="unfinished">음원 추가</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="267"/>
+        <location filename="../gui/serversettings.cpp" line="276"/>
         <source>Standard</source>
         <translation type="unfinished">표준</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="267"/>
+        <location filename="../gui/serversettings.cpp" line="276"/>
         <source>Basic</source>
         <translation type="unfinished">기본</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="312"/>
+        <location filename="../gui/serversettings.cpp" line="321"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation type="unfinished">&apos;%1&apos;을 지울까요?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="313"/>
+        <location filename="../gui/serversettings.cpp" line="322"/>
         <source>Delete</source>
         <translation type="unfinished">지우기</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="351"/>
+        <location filename="../gui/serversettings.cpp" line="375"/>
         <source>New Collection %1</source>
         <translation type="unfinished">새로운 음원 %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="369"/>
+        <location filename="../gui/serversettings.cpp" line="393"/>
         <source>Default</source>
         <translation type="unfinished">기본값</translation>
     </message>
@@ -14990,24 +15068,24 @@ If you rename a file (or the folder it is within), then the rating associated wi
 <context>
     <name>VolumeSlider</name>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="111"/>
-        <location filename="../widgets/volumeslider.cpp" line="214"/>
-        <location filename="../widgets/volumeslider.cpp" line="221"/>
+        <location filename="../widgets/volumeslider.cpp" line="98"/>
+        <location filename="../widgets/volumeslider.cpp" line="201"/>
+        <location filename="../widgets/volumeslider.cpp" line="208"/>
         <source>Mute</source>
         <translation type="unfinished">조용히</translation>
     </message>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="221"/>
+        <location filename="../widgets/volumeslider.cpp" line="208"/>
         <source>Unmute</source>
         <translation type="unfinished">조용히 안 함</translation>
     </message>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="268"/>
+        <location filename="../widgets/volumeslider.cpp" line="255"/>
         <source>Volume %1% (Muted)</source>
         <translation type="unfinished">음량 %1% (조용히 함)</translation>
     </message>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="268"/>
+        <location filename="../widgets/volumeslider.cpp" line="255"/>
         <source>Volume %1%</source>
         <translation type="unfinished">음량 %1%</translation>
     </message>

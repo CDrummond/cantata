@@ -1123,6 +1123,8 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
                 listView->scrollTo(idx, QAbstractItemView::PositionAtTop);
             }
             setTitle();
+        } else if (idx.isValid() && scrollTo) {
+            listView->scrollTo(idx, QAbstractItemView::PositionAtTop);
         }
     }
 

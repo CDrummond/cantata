@@ -219,7 +219,7 @@ public Q_SLOTS:
     void showSearchTab() { showTab(PAGE_SEARCH); }
     void toggleSplitterAutoHide();
     void locateTracks(const QList<Song> &songs);
-    void locateTrack() { locateTracks(playQueue->selectedSongs()); }
+    void locateTrack();
     void moveSelectionAfterCurrentSong();
     void locateArtist(const QString &artist);
     void locateAlbum(const QString &artist, const QString &album);
@@ -299,7 +299,10 @@ private:
     Action *fullScreenAction;
     Action *quitAction;
     Action *restoreAction;
+    Action *locateAction;
     Action *locateTrackAction;
+    Action *locateAlbumAction;
+    Action *locateArtistAction;
     Action *playNextAction;
     #ifdef TAGLIB_FOUND
     Action *editPlayQueueTagsAction;

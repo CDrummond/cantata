@@ -20,62 +20,27 @@
 
 #include <avahi-client/client.h>
 #include <avahi-client/lookup.h>
-
 #include <stdio.h>
 #include <assert.h>
-
 #include <QObject>
 
-
-class AvahiDiscovery: public QObject
+class AvahiDiscovery : public QObject
 {
     Q_OBJECT
+
+public:
+    static void enableDebug();
+
+    AvahiDiscovery();
+    ~AvahiDiscovery();
+
+Q_SIGNALS:
+    void mpdFound(QString name, QString address, int port);
+    void mpdRemoved(QString name);
 
 private:
     AvahiClient* m_client = nullptr;
     AvahiServiceBrowser* m_browser = nullptr;
-    static AvahiDiscovery *ptr;
-
-
-public:
-    AvahiDiscovery();
-    ~AvahiDiscovery();
-
-    static void client_callback(
-        AvahiClient *c,
-        AvahiClientState state,
-        AVAHI_GCC_UNUSED void * userdata);
-
-    static void resolver_callback(
-        AvahiServiceResolver *r,
-        AvahiIfIndex interface,
-        AvahiProtocol protocol,
-        AvahiResolverEvent event,
-        const char *name,
-        const char *type,
-        const char *domain,
-        const char *host_name,
-        const AvahiAddress *address,
-        uint16_t port,
-        AvahiStringList *txt,
-        AvahiLookupResultFlags flags,
-        void *userdata);
-
-    static void browse_callback(
-        AvahiServiceBrowser *b,
-        AvahiIfIndex interface,
-        AvahiProtocol protocol,
-        AvahiBrowserEvent event,
-        const char *name,
-        const char *type,
-        const char *domain,
-        AVAHI_GCC_UNUSED AvahiLookupResultFlags flags,
-        void* userdata);
-
-signals:
-    void mpdFound(QString name, QString address, int port);
-    void mpdRemoved(QString name);
-
 };
 
 

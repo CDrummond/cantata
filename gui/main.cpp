@@ -60,6 +60,9 @@
 #ifdef ENABLE_HTTP_STREAM_PLAYBACK
 #include "mpd-interface/httpstream.h"
 #endif
+#ifdef AVAHI_FOUND
+#include "avahidiscovery.h"
+#endif
 
 #include <QMutex>
 #include <QMutexLocker>
@@ -226,6 +229,9 @@ static void installDebugMessageHandler()
         #endif
         if (dbg&DBG_Other) {
             MediaKeys::enableDebug();
+            #ifdef AVAHI_FOUND
+            AvahiDiscovery::enableDebug();
+            #endif
         }
         if (dbg&Dbg_All && logToFile) {
             qInstallMessageHandler(cantataQtMsgHandler);

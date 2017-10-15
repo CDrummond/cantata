@@ -182,6 +182,7 @@ void SearchPage::controlActions()
     bool enable=selected.count()>0;
 
     StdActions::self()->enableAddToPlayQueue(enable);
+    CustomActions::self()->setEnabled(enable);
     locateAction->setEnabled(enable);
 }
 

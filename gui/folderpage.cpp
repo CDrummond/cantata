@@ -113,8 +113,10 @@ void FolderPage::controlActions()
 
     StdActions::self()->enableAddToPlayQueue(enable);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
+    bool fileActions = enable && trackSelected && MPDConnection::self()->getDetails().dirReadable;
+    CustomActions::self()->setEnabled(fileActions);
     #ifdef TAGLIB_FOUND
-    StdActions::self()->organiseFilesAction->setEnabled(enable && trackSelected && MPDConnection::self()->getDetails().dirReadable);
+    StdActions::self()->organiseFilesAction->setEnabled(fileActions);
     StdActions::self()->editTagsAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     StdActions::self()->replaygainAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());

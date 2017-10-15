@@ -2883,80 +2883,80 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
         <translation>Sconosciuto</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="417"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="418"/>
         <source>Connection to %1 failed</source>
         <translation>Connessione a %1 fallita</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="418"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="419"/>
         <source>Connection to %1 failed - please check your proxy settings</source>
         <translation>Connessione a %1 fallita - prego verificare le impostazioni del proxy</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="419"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="420"/>
         <source>Connection to %1 failed - incorrect password</source>
         <translation>Connessione a %1 fallita - password errata</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="527"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="528"/>
         <source>Connecting to %1</source>
         <translation>Connessione a %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="645"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="646"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation>Impossibile inviare il comando a %1 - non connesso</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="701"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="702"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation>Impossibile caricare. Prego verificare che l&apos;utente &quot;mpd&quot; abbia i permessi di lettura.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="703"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="704"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation>Impossibile caricare. MPD può riprodure i file locali solo se connesso tramire un socket locale.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="705"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="712"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="706"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="713"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD ha riportato il seguente errore: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="709"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="720"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="710"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="721"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation>Impossibile inviare il comando. Disconnesso da %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1682"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1683"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>Impossibile rinominare &lt;b&gt;%1&lt;/b&gt; in &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1694"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1695"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Impossibile salvare &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1707"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1708"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation>Non è possibile aggiungere parti di un cue sheet ad una playlist!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1710"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1711"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation>Non è possibile aggiungere una playlist ad un&apos;altra playlist!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1941"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1942"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation>Impossibile inviare &apos;%1&apos; a %2. Prego verificare che %2 sia registrato con MPD.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2224"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2251"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2225"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2252"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation>Impossibile memorizzare le valutazioni perché il comando MPD &apos;sticker&apos; non è supportato.</translation>
     </message>
@@ -5625,13 +5625,13 @@ width x height</comment>
         <translation>Altro</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="204"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="206"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="205"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="207"/>
         <source>Default</source>
         <translation>Predefinito</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="217"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="218"/>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
         <translation>&quot;%1&quot; (%2:%3)</translation>
@@ -6696,13 +6696,13 @@ Prego scegliere un nome diverso.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="126"/>
-        <location filename="../gui/serversettings.ui" line="230"/>
+        <location filename="../gui/serversettings.ui" line="257"/>
         <source>Music folder:</source>
         <translation>Cartella musica:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="139"/>
-        <location filename="../gui/serversettings.ui" line="243"/>
+        <location filename="../gui/serversettings.ui" line="270"/>
         <source>Cover filename:</source>
         <translation>Nome Coperina:</translation>
     </message>
@@ -6717,23 +6717,43 @@ Prego scegliere un nome diverso.</translation>
         <translation>URL del flusso HTTP:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="171"/>
+        <location filename="../gui/serversettings.ui" line="169"/>
+        <source>Local file playback:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="179"/>
+        <source>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="182"/>
+        <source>Via in-built HTTP server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="191"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation>L&apos;impostazione della &apos;Cartella Musica&apos; verrà usata per cercare la copertina. Può venire impostata ad un URL HTTP se il tuo MPD è su un&apos;altra macchina e le copertine sono accessibili tramite HTTP. Se non è impostata su un URL HTTP ed hai i permessi di scrittua in quella cartella (e nelle sue sotto-cartelle), Cantata salverà qualsiasi copertina scaricata nella rispettiva cartella dell&apos;album.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="178"/>
-        <location filename="../gui/serversettings.ui" line="265"/>
+        <location filename="../gui/serversettings.ui" line="198"/>
+        <location filename="../gui/serversettings.ui" line="292"/>
         <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
         <translation>Se non viene specificato nulla per &apos;Nome Copertina&apos;, Cantata usera l&apos;impostazione predefinita &lt;code&gt;cover&lt;/code&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="185"/>
+        <location filename="../gui/serversettings.ui" line="205"/>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
         <translation>&apos;URL del flusso HTTP&apos; è utile solamente se MPD è configurato per uscire su un flusso HTTP e vuoi che Cantata sia in grado di riprodurre quel flusso.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="258"/>
+        <location filename="../gui/serversettings.ui" line="212"/>
+        <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="285"/>
         <source>If you change the &apos;Music folder&apos; setting, then you will need to manually update the music database. This can be performed by pressing the &apos;Refresh Database&apos; button in the &apos;Artists&apos; or &apos;Albums&apos; views.</source>
         <translation>Se modifichi l&apos;impostazione &quot;Cartella Musica&apos;, dovrai aggiornare manualmente il database musicale. Ciò può essere fatto premendo il pulsante &apos;Aggiorna Database&apos; nelle viste &apos;Artisti&apos; o &apos;Album&apos;.</translation>
     </message>
@@ -6748,67 +6768,67 @@ Prego scegliere un nome diverso.</translation>
         <translation>Questa cartella verrà usata anche per trovare i file musicali per la modifica di tag, ecc.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="128"/>
+        <location filename="../gui/serversettings.cpp" line="135"/>
         <source>Discover...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="266"/>
+        <location filename="../gui/serversettings.cpp" line="274"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation>A che tipo di collezione ti vuoi connettere?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="267"/>
+        <location filename="../gui/serversettings.cpp" line="275"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation>Standard - la collezione musicale può venire condivisa, è su un&apos;altra macchina, è già configurata, oppure vuoi permettere l&apos;accesso da altri client (es. MPDroid)</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="270"/>
+        <location filename="../gui/serversettings.cpp" line="278"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation>Base - la collezione musicale non è condivisa con altri e Cantata configurerà e controllerà l&apos;istanza di MPD. Quest&apos;impostazione sarà esclusiva per Cantata e &lt;b&gt;non&lt;/b&gt; sarà accessibile ad altri client MPD.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="274"/>
+        <location filename="../gui/serversettings.cpp" line="282"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="274"/>
+        <location filename="../gui/serversettings.cpp" line="282"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation>Se desideri una configurazione di MPD avanzata (es. uscite audio multiple, supporto completo DSD, ecc) allora &lt;b&gt;dovrai&lt;/b&gt; scegliere &apos;Standard&apos;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="276"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>Add Collection</source>
         <translation>Aggiungi Collezione</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="276"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>Standard</source>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="276"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>Basic</source>
         <translation>Base</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="321"/>
+        <location filename="../gui/serversettings.cpp" line="331"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation>Cancellare &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="322"/>
+        <location filename="../gui/serversettings.cpp" line="332"/>
         <source>Delete</source>
         <translation>Cancella</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="375"/>
+        <location filename="../gui/serversettings.cpp" line="385"/>
         <source>New Collection %1</source>
         <translation>Nuova Collezione %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="393"/>
+        <location filename="../gui/serversettings.cpp" line="403"/>
         <source>Default</source>
         <translation>Predefinito</translation>
     </message>

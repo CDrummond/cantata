@@ -51,7 +51,7 @@ public:
 
     #ifdef ENABLE_HTTP_SERVER
     HttpServer();
-    bool isAlive() const { return true; } // Started on-demamnd!
+    bool isAlive() const; // Started on-demamnd!
     void readConfig();
     QString address() const;
     bool isOurs(const QString &url) const;

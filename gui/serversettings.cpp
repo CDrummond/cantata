@@ -31,6 +31,9 @@
 #include "mpd-interface/mpduser.h"
 #endif
 #include "support/utils.h"
+#ifdef AVAHI_FOUND
+#include "findmpddialog.h"
+#endif
 #include <QDir>
 #include <QComboBox>
 #include <QPushButton>
@@ -119,6 +122,12 @@ ServerSettings::ServerSettings(QWidget *p)
 
     #ifdef Q_OS_MAC
     expandingSpacer->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    #endif
+
+    #ifdef AVAHI_FOUND
+    discoveryButton = new QPushButton(tr("Discover..."), this);
+    hostLayout->insertWidget(0, discoveryButton);
+    connect(discoveryButton, &QPushButton::clicked, this, &ServerSettings::detectMPDs);
     #endif
 }
 
@@ -336,6 +345,21 @@ void ServerSettings::basicDirChanged()
         basicMusicFolderNoteLabel->setOn(d.isEmpty() || d!=prevBasic.details.dir);
     }
 }
+
+#ifdef AVAHI_FOUND
+void ServerSettings::adoptServerSettings(QString ip, QString p)
+{
+    host->setText(ip);
+    port->setValue(p.toInt());
+}
+
+void ServerSettings::detectMPDs()
+{
+    FindMpdDialog findMpdDlg(this);
+    QObject::connect(&findMpdDlg, &FindMpdDialog::serverChosen, this, &ServerSettings::adoptServerSettings);
+    findMpdDlg.exec();
+}
+#endif
 
 QString ServerSettings::generateName(int ignore) const
 {

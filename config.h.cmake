@@ -45,6 +45,7 @@
 #cmakedefine IOKIT_FOUND 1
 #cmakedefine QT_MAC_EXTRAS_FOUND 1
 #cmakedefine ENABLE_SIMPLE_MPD_SUPPORT 1
+#cmakedefine AVAHI_FOUND
 
 #cmakedefine HAVE_CDIO_PARANOIA_H 1
 #cmakedefine HAVE_CDIO_PARANOIA_PARANOIA_H 1

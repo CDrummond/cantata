@@ -326,7 +326,17 @@ void MainWindow::init()
     #endif
     streamPlayButton->setVisible(false);
 
-    locateTrackAction = ActionCollection::get()->createAction("locatetrack", tr("Locate In Library"), Icons::self()->searchIcon);
+    locateAction = new Action(Icons::self()->searchIcon, tr("Locate In Library"), this);
+    locateArtistAction = ActionCollection::get()->createAction("locateartist", tr("Artist"));
+    locateAlbumAction = ActionCollection::get()->createAction("locatealbum", tr("Album"));
+    locateTrackAction = ActionCollection::get()->createAction("locatetrack", tr("Track"));
+
+    QMenu *locateMenu=new QMenu();
+    locateMenu->addAction(locateArtistAction);
+    locateMenu->addAction(locateAlbumAction);
+    locateMenu->addAction(locateTrackAction);
+    locateAction->setMenu(locateMenu);
+
     playNextAction = ActionCollection::get()->createAction("playnext", tr("Play next"));
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", Utils::strippedText(StdActions::self()->editTagsAction->text()), StdActions::self()->editTagsAction->icon());
@@ -634,7 +644,7 @@ void MainWindow::init()
     playQueue->addAction(ratingAction);
     playQueue->addAction(StdActions::self()->setPriorityAction);
     playQueue->addAction(stopAfterTrackAction);
-    playQueue->addAction(locateTrackAction);
+    playQueue->addAction(locateAction);
     #ifdef TAGLIB_FOUND
     playQueue->addAction(editPlayQueueTagsAction);
     #endif
@@ -756,6 +766,8 @@ void MainWindow::init()
     connect(context, SIGNAL(findAlbum(QString,QString)), this, SLOT(locateAlbum(QString,QString)));
     connect(context, SIGNAL(playSong(QString)), PlayQueueModel::self(), SLOT(playSong(QString)));
     connect(locateTrackAction, SIGNAL(triggered()), this, SLOT(locateTrack()));
+    connect(locateAlbumAction, SIGNAL(triggered()), this, SLOT(locateTrack()));
+    connect(locateArtistAction, SIGNAL(triggered()), this, SLOT(locateTrack()));
     connect(this, SIGNAL(playNext(QList<quint32>,quint32,quint32)), MPDConnection::self(), SLOT(move(QList<quint32>,quint32,quint32)));
     connect(playNextAction, SIGNAL(triggered()), this, SLOT(moveSelectionAfterCurrentSong()));
 
@@ -1020,7 +1032,7 @@ void MainWindow::playQueueItemsSelected(bool s)
     bool singleSelection=1==playQueue->selectedIndexes(false).count(); // Dont need sorted selection here...
     playQueue->removeFromAct()->setEnabled(s && haveItems);
     StdActions::self()->setPriorityAction->setEnabled(s && haveItems);
-    locateTrackAction->setEnabled(singleSelection);
+    locateAction->setEnabled(singleSelection);
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction->setEnabled(s && haveItems && MPDConnection::self()->getDetails().dirReadable);
@@ -2050,7 +2062,7 @@ void MainWindow::tabToggled(int index)
         }
         break;
     case PAGE_LIBRARY:
-        locateTrackAction->setVisible(tabWidget->isEnabled(index));
+        locateAction->setVisible(tabWidget->isEnabled(index));
         break;
     case PAGE_FOLDERS:
         folderPage->setEnabled(!folderPage->isEnabled());
@@ -2086,6 +2098,33 @@ void MainWindow::locateTracks(const QList<Song> &songs)
     if (!songs.isEmpty() && tabWidget->isEnabled(PAGE_LIBRARY)) {
         showLibraryTab();
         libraryPage->showSongs(songs);
+    }
+}
+
+void MainWindow::locateTrack()
+{
+    if (!locateAction->isVisible() || !locateAction->isEnabled()) {
+        return;
+    }
+    Action *act = qobject_cast<Action *>(sender());
+    if (!act) {
+        return;
+    }
+
+    QList<Song> songs = playQueue->selectedSongs();
+    if (1!=songs.count() || !tabWidget->isEnabled(PAGE_LIBRARY)) {
+        return;
+    }
+    showLibraryTab();
+    if (locateTrackAction==act) {
+        libraryPage->showSongs(songs);
+    }
+    Song s = songs.first();
+    if (locateAlbumAction==act) {
+        libraryPage->showAlbum(s.albumArtist(), s.album);
+    }
+    if (locateArtistAction==act) {
+        libraryPage->showArtist(s.albumArtist());
     }
 }
 

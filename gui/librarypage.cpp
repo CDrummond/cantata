@@ -235,7 +235,10 @@ void LibraryPage::showArtist(const QString &artist)
     if (idx.isValid()) {
         view->showIndex(idx, true);
         if (ItemView::Mode_SimpleTree==view->viewMode() || ItemView::Mode_DetailedTree==view->viewMode()) {
-            view->setExpanded(idx);
+            while (idx.isValid()) {
+                view->setExpanded(idx);
+                idx=idx.parent();
+            }
         }
     }
 }
@@ -247,8 +250,10 @@ void LibraryPage::showAlbum(const QString &artist, const QString &album)
     if (idx.isValid()) {
         view->showIndex(idx, true);
         if (ItemView::Mode_SimpleTree==view->viewMode() || ItemView::Mode_DetailedTree==view->viewMode()) {
-            view->setExpanded(idx.parent());
-            view->setExpanded(idx);
+            while (idx.isValid()) {
+                view->setExpanded(idx);
+                idx=idx.parent();
+            }
         }
     }
 }

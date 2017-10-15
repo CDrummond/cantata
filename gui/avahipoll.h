@@ -28,39 +28,37 @@ class AvahiTimeout: public QObject
     Q_OBJECT
 
 public:
-    AvahiTimeout(const struct timeval *tv, AvahiTimeoutCallback callback, void *userdata);
+    AvahiTimeout(const struct timeval *tv, AvahiTimeoutCallback cb, void *ud);
     void updateTimeout(const struct timeval *tv);
 
 private:
-    QTimer m_timer;
-    AvahiTimeoutCallback m_callback;
-    void *m_userdata;
+    QTimer timer;
+    AvahiTimeoutCallback callback;
+    void *userData;
 
 private Q_SLOTS:
     void timeout();
 };
-
 
 class AvahiWatch: public QObject
 {
     Q_OBJECT
 
 public:
-    AvahiWatch(int fd, AvahiWatchEvent event, AvahiWatchCallback callback, void *userdata);
+    AvahiWatch(int f, AvahiWatchEvent ev, AvahiWatchCallback cb, void *ud);
     void setEventType(AvahiWatchEvent event);
     AvahiWatchEvent previousEvent();
 
 private:
-    QScopedPointer<QSocketNotifier> m_notifier;
-    AvahiWatchCallback m_callback;
-    AvahiWatchEvent m_event;
-    AvahiWatchEvent m_previousEvent;
-    void *m_userdata;
-    int m_fd;
+    QScopedPointer<QSocketNotifier> notifier;
+    AvahiWatchCallback callback;
+    AvahiWatchEvent event;
+    AvahiWatchEvent prevEvent;
+    void *userData;
+    int fd;
 
 private Q_SLOTS:
-    void activated(int);
+    void activated(int fd);
 };
-
 
 #endif //AVAHIPOLL_H

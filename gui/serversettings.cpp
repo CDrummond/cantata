@@ -119,8 +119,12 @@ ServerSettings::ServerSettings(QWidget *p)
     REMOVE(streamUrl)
     REMOVE(streamUrlNoteLabel)
     #endif
-    #ifndef ENABLE_HTTP_SERVER
-    REMOVE(allowLocalStreaming);
+    #ifdef ENABLE_HTTP_SERVER
+    allowLocalStreamingLabel->setToolTip(allowLocalStreaming->toolTip());
+    #else
+    REMOVE(allowLocalStreaming)
+    REMOVE(allowLocalStreamingLabel)
+    REMOVE(allowLocalStreamingNoteLabel)
     #endif
 
     #ifdef Q_OS_MAC

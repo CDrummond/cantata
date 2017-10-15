@@ -63,6 +63,7 @@
 #ifdef AVAHI_FOUND
 #include "avahidiscovery.h"
 #endif
+#include "customactions.h"
 
 #include <QMutex>
 #include <QMutexLocker>
@@ -232,6 +233,7 @@ static void installDebugMessageHandler()
             #ifdef AVAHI_FOUND
             AvahiDiscovery::enableDebug();
             #endif
+            CustomActions::enableDebug();
         }
         if (dbg&Dbg_All && logToFile) {
             qInstallMessageHandler(cantataQtMsgHandler);

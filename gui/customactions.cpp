@@ -30,6 +30,15 @@
 
 GLOBAL_STATIC(CustomActions, instance)
 
+#include <QDebug>
+static bool debugIsEnabled=false;
+#define DBUG if (debugIsEnabled) qWarning() << "CustomActions" << __FUNCTION__
+
+void CustomActions::enableDebug()
+{
+    debugIsEnabled=true;
+}
+
 bool CustomActions::Command::operator<(const Command &o) const
 {
     int c=name.localeAwareCompare(o.name);
@@ -110,13 +119,16 @@ void CustomActions::set(QList<Command> cmds)
 void CustomActions::doAction()
 {
     if (!mainWindow) {
+        DBUG << "No main window?";
         return;
     }
     Action *act=qobject_cast<Action *>(sender());
     if (!act) {
+        DBUG << "No action";
         return;
     }
     if (!MPDConnection::self()->getDetails().dirReadable) {
+        DBUG << "MPD dir is not readable";
         return;
     }
     QString mpdDir=MPDConnection::self()->getDetails().dir;
@@ -124,6 +136,7 @@ void CustomActions::doAction()
         if (cmd.act==act) {
             QList<Song> songs=mainWindow->selectedSongs();
             if (songs.isEmpty()) {
+                DBUG << "No selected songs?";
                 return;
             }
             QStringList items;
@@ -162,9 +175,11 @@ void CustomActions::doAction()
                 if (!added) {
                     args+=items;
                 }
+                DBUG << "Start" << cmd << args;
                 QProcess::startDetached(cmd, args);
             }
             return;
         }
     }
+    DBUG << "Command not found";
 }

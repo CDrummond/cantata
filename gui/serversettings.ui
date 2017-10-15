@@ -163,13 +163,23 @@
          <item row="5" column="1">
           <widget class="LineEdit" name="streamUrl"/>
          </item>
-         <item row="6" column="0" colspan="2">
+         <item row="6" column="0">
+          <widget class="BuddyLabel" name="allowLocalStreamingLabel">
+           <property name="text">
+            <string>Local file playback:</string>
+           </property>
+           <property name="buddy">
+            <cstring>allowLocalStreaming</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
           <widget class="QCheckBox" name="allowLocalStreaming">
            <property name="toolTip">
-            <string>If enabled, you can drag local files into the play queue. For this to work, MPD gets access to those (and only those) local files via HTTP.</string>
+            <string>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</string>
            </property>
            <property name="text">
-            <string>Allow access to local files</string>
+            <string>Via in-built HTTP server</string>
            </property>
           </widget>
          </item>
@@ -196,7 +206,14 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="5" column="0" colspan="2">
+        <widget class="NoteLabel" name="allowLocalStreamingNoteLabel">
+         <property name="text">
+          <string>MPD usually only plays songs from within your collection. Newer MPD's (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is '127.0.0.1' or 'localhost') For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

@@ -195,6 +195,7 @@ QString MPDConnection::Response::getError(const QByteArray &command)
 MPDConnectionDetails::MPDConnectionDetails()
     : port(6600)
     , dirReadable(false)
+    , allowLocalStreaming(false)
 {
 }
 

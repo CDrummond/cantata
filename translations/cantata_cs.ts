@@ -9185,80 +9185,80 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
         <translation>Neznámý</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="417"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="418"/>
         <source>Connection to %1 failed</source>
         <translation>Nepodařilo se připojit k %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="418"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="419"/>
         <source>Connection to %1 failed - please check your proxy settings</source>
         <translation>Nepodařilo se připojit k %1 - Prověřte, prosím, nastavení vaší proxy</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="419"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="420"/>
         <source>Connection to %1 failed - incorrect password</source>
         <translation>Nepodařilo se připojit k %1 - nesprávné heslo</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="527"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="528"/>
         <source>Connecting to %1</source>
         <translation>Připojuje se k %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="645"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="646"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation>Nepodařilo se poslat příkaz %1 - nepřipojeno</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="701"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="702"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation>Nepodařilo se nahrát. Ověřte, prosím, zda má mpd oprávnění ke čtení.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="703"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="704"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation>Nepodařilo se nahrát. MPD může přehrát jen místní soubory, pokud je připojen přes místní zásuvku.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="705"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="712"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="706"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="713"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD nahlásilo následující chybu: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="709"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="720"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="710"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="721"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation>Nepodařilo se poslat příkaz. Odpojeno od %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1682"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1683"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>Nepodařilo se přejmenovat &lt;b&gt;%1&lt;/b&gt; na &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1694"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1695"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Nepodařilo se uložit &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1707"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1708"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation>Nelze přidat části seznamu v souboru CUE do seznamu skladeb!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1710"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1711"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation>Nelze přidat seznam skladeb do jiného seznamu skladeb!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1941"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1942"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation>Nepodařilo se poslat &apos;%1&apos; %2. Ověřte, prosím, že %2 je zaregistrováno u MPD.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2224"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2251"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2225"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2252"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation>Nelze uložit hodnocení, jelikož příkaz lepiče MPD není podporován.</translation>
     </message>
@@ -12080,8 +12080,8 @@ width x height</comment>
         <translation>Jiné</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="204"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="206"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="205"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="207"/>
         <source>Default</source>
         <translation>Výchozí</translation>
     </message>
@@ -12091,7 +12091,7 @@ width x height</comment>
         <translation type="obsolete">&quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="217"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="218"/>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
         <translation>&quot;%1&quot; (%2:%3)</translation>
@@ -13238,13 +13238,13 @@ Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="126"/>
-        <location filename="../gui/serversettings.ui" line="230"/>
+        <location filename="../gui/serversettings.ui" line="257"/>
         <source>Music folder:</source>
         <translation>Složka s hudbou:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="139"/>
-        <location filename="../gui/serversettings.ui" line="243"/>
+        <location filename="../gui/serversettings.ui" line="270"/>
         <source>Cover filename:</source>
         <translation>Název souboru obalu:</translation>
     </message>
@@ -13259,23 +13259,43 @@ Vyberte, prosím, jiný název.</translation>
         <translation>Adresa (URL) proudu HTTP:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="171"/>
+        <location filename="../gui/serversettings.ui" line="169"/>
+        <source>Local file playback:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="179"/>
+        <source>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="182"/>
+        <source>Via in-built HTTP server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="191"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation>Nastavení pro hudební složku je používáno k vyhledání obrázků obalů. Může být nastaveno na adresu (URL) HTTP, pokud je vaše MPD na jiném stroji a obaly jsou přístupné přes HTTP. Pokud není nastaveno na adresu (URL) HTTP a vy máte i oprávnění pro zápis do této složky (a jejích podsložek), Cantata uloží všechny stažené obaly do příslušné složky s albem.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="178"/>
-        <location filename="../gui/serversettings.ui" line="265"/>
+        <location filename="../gui/serversettings.ui" line="198"/>
+        <location filename="../gui/serversettings.ui" line="292"/>
         <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
         <translation>Pokud není nastaveno žádné nastavení pro název souboru s obalem, pak bude Cantata používat výchozí &lt;code&gt;obal&lt;/code&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="185"/>
+        <location filename="../gui/serversettings.ui" line="205"/>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
         <translation>Adresa (URL) proudu HTTP se používá jen tehdy, když máte nastaveno MPD na výstup do proudu HTTP, a přejete si, aby Cantata mohla tento proud přehrávat.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="258"/>
+        <location filename="../gui/serversettings.ui" line="212"/>
+        <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="285"/>
         <source>If you change the &apos;Music folder&apos; setting, then you will need to manually update the music database. This can be performed by pressing the &apos;Refresh Database&apos; button in the &apos;Artists&apos; or &apos;Albums&apos; views.</source>
         <translation>Pokud změníte nastavení pro složku s hudbou, budete muset hudební databázi obnovovat ručně. To je možné provádět stisknutím tlačítka Obnovit databázi v pohledech s umělci nebo alby.</translation>
     </message>
@@ -13290,67 +13310,67 @@ Vyberte, prosím, jiný název.</translation>
         <translation>Tato složka se bude používat i na umísťování hudebních souborů pro upravování značek, vyrovnávání hlasitosti přehrávaných skladeb atd.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="128"/>
+        <location filename="../gui/serversettings.cpp" line="135"/>
         <source>Discover...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="266"/>
+        <location filename="../gui/serversettings.cpp" line="274"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation>Který typ sbírky chcete připojit?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="267"/>
+        <location filename="../gui/serversettings.cpp" line="275"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation>Obvyklý - hudební sbírku může být sdílena, je na jiném stroji, nebo je již nastavena, nebo chcete povolit přístup z jiných klientů (např. MPDroid)</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="270"/>
+        <location filename="../gui/serversettings.cpp" line="278"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation>Základní - hudební sbírka není sdílena s ostatními, a Cantata nastaví a bude řídit instanci MPD. Toto nastavení bude pro Cantatu výlučné a &lt;b&gt;nebude&lt;/b&gt; přístupné pro jiné klienty MPD.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="274"/>
+        <location filename="../gui/serversettings.cpp" line="282"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation>&lt;i&gt;&lt;b&gt;POZNÁMKA:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="274"/>
+        <location filename="../gui/serversettings.cpp" line="282"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation>Pokud chcete mít pokročilé nastavení MPD (např. více výstupů zvuku, plnou podporu pro DSD atd.), potom &lt;b&gt;musíte&lt;/b&gt; vybrat Obvyklý</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="276"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>Add Collection</source>
         <translation>Přidat sbírku</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="276"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>Standard</source>
         <translation>Obvyklý</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="276"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>Basic</source>
         <translation>Základní</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="321"/>
+        <location filename="../gui/serversettings.cpp" line="331"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation>Smazat &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="322"/>
+        <location filename="../gui/serversettings.cpp" line="332"/>
         <source>Delete</source>
         <translation>Smazat</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="375"/>
+        <location filename="../gui/serversettings.cpp" line="385"/>
         <source>New Collection %1</source>
         <translation>Nová sbírka %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="393"/>
+        <location filename="../gui/serversettings.cpp" line="403"/>
         <source>Default</source>
         <translation>Výchozí</translation>
     </message>

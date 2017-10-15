@@ -9033,80 +9033,80 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="unfinished">不明</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="417"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="418"/>
         <source>Connection to %1 failed</source>
         <translation type="unfinished">%1 への接続に失敗しました</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="418"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="419"/>
         <source>Connection to %1 failed - please check your proxy settings</source>
         <translation type="unfinished">%1 への接続に失敗しました - プロキシ設定を確認ください</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="419"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="420"/>
         <source>Connection to %1 failed - incorrect password</source>
         <translation type="unfinished">%1 への接続に失敗しました - 無効なパスワードです</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="527"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="528"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">%1 に接続中</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="645"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="646"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation type="unfinished">%1 へのコマンド送信に失敗しました - 未接続です</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="701"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="702"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation type="unfinished">読込に失敗しました。ユーザ &quot;mpd&quot; に読込許可があるか確認してください。</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="703"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="704"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation type="unfinished">読込に失敗しました。ローカルソケット経由で接続の際、 MPD はローカルファイルのみ再生可能です。</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="705"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="712"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="706"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="713"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">MPDが以下のエラーを返しました: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="709"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="720"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="710"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="721"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation type="unfinished">コマンド送信に失敗しました。%1 から切断されました</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1682"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1683"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; から &lt;b&gt;%2&lt;/b&gt; への名前変更に失敗</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1694"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1695"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; への保存に失敗しました</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1707"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1708"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation type="unfinished">キューシートのパーツをプレイリストへ追加が出来ません!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1710"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1711"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation type="unfinished">他のプレイリストへのプレイリストの追加が出来ません!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1941"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1942"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation type="unfinished">&apos;%1&apos;から’%2’への送信に失敗しました。%2がMPDに登録されているか確認してください。</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2224"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2251"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2225"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2252"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation type="unfinished">&apos;sticker&apos; MPD コマンドが未サポートなため、レーティングが格納できません。</translation>
     </message>
@@ -11882,13 +11882,13 @@ width x height</comment>
         <translation type="unfinished">その他</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="204"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="206"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="205"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="207"/>
         <source>Default</source>
         <translation type="unfinished">規定</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="217"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="218"/>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
         <translation type="unfinished"></translation>
@@ -13011,13 +13011,13 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="126"/>
-        <location filename="../gui/serversettings.ui" line="230"/>
+        <location filename="../gui/serversettings.ui" line="257"/>
         <source>Music folder:</source>
         <translation type="unfinished">音楽フォルダ:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="139"/>
-        <location filename="../gui/serversettings.ui" line="243"/>
+        <location filename="../gui/serversettings.ui" line="270"/>
         <source>Cover filename:</source>
         <translation type="unfinished">カバーファイル名:</translation>
     </message>
@@ -13032,23 +13032,43 @@ Please choose a different name.</source>
         <translation type="unfinished">HTTP ストリーム URL:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="171"/>
+        <location filename="../gui/serversettings.ui" line="169"/>
+        <source>Local file playback:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="179"/>
+        <source>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="182"/>
+        <source>Via in-built HTTP server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="191"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation type="unfinished">「音楽フォルダ」の設定は、カバーアートを検索するために使用されます。MPDが別のマシンにあり、HTTPを介してカバーにアクセスできる場合は、HTTP URLに設定されます。それがHTTP URLに設定されておらず、このフォルダ（およびそのサブフォルダ）への書き込み権限もある場合、Cantataはダウンロードしたすべてのカバーをそれぞれのアルバムフォルダに保存します。</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="178"/>
-        <location filename="../gui/serversettings.ui" line="265"/>
+        <location filename="../gui/serversettings.ui" line="198"/>
+        <location filename="../gui/serversettings.ui" line="292"/>
         <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
         <translation type="unfinished">&apos;カバー ファイル名&apos;を特定しない場合、Cantata は規定値の&lt;code&gt;cover&lt;/code&gt; を使用する</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="185"/>
+        <location filename="../gui/serversettings.ui" line="205"/>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
         <translation type="unfinished">「HTTP Stream URL」は、HTTPストリームに出力するようにMPDが設定されていて、Cantataがそのストリームを再生できるようにしたい場合にのみ使用します。</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="258"/>
+        <location filename="../gui/serversettings.ui" line="212"/>
+        <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="285"/>
         <source>If you change the &apos;Music folder&apos; setting, then you will need to manually update the music database. This can be performed by pressing the &apos;Refresh Database&apos; button in the &apos;Artists&apos; or &apos;Albums&apos; views.</source>
         <translation type="unfinished">「ミュージックフォルダ」の設定を変更した場合、音楽データベースを手動で更新する必要があります。これは、 &apos;アーティスト&apos; または &apos;アルバム&apos; ビューの &apos;データベースの更新&apos; ボタンを押すことで実行できます。</translation>
     </message>
@@ -13063,67 +13083,67 @@ Please choose a different name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="128"/>
+        <location filename="../gui/serversettings.cpp" line="135"/>
         <source>Discover...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="266"/>
+        <location filename="../gui/serversettings.cpp" line="274"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation type="unfinished">どのタイプのコレクションに接続しますか？</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="267"/>
+        <location filename="../gui/serversettings.cpp" line="275"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation type="unfinished">標準 - ミュージックコレクションが共有されている、他のマシーンにあり既にセットアップ済、もしくは他のクライアントからアクセスを許可したい場合(例 MPDroid)</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="270"/>
+        <location filename="../gui/serversettings.cpp" line="278"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation type="unfinished">基本 - ミュージックコレクションが他の端末と共有されておらず、Cantata はMPDインスタンスを設定し制御します。本セットアップは Cantata でのみ適用され、他のMPDクライアントはアクセス&lt;b&gt;出来ません&lt;/b&gt;。</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="274"/>
+        <location filename="../gui/serversettings.cpp" line="282"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation type="unfinished">&lt;i&gt;&lt;b&gt;追記:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="274"/>
+        <location filename="../gui/serversettings.cpp" line="282"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation type="unfinished">高度なMPD設定（複数のオーディオ出力、完全なDSDサポートなど）を希望する場合、&apos;標準&apos;を選択する&lt;b&gt;必要があります&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="276"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>Add Collection</source>
         <translation type="unfinished">コレクションの追加</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="276"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>Standard</source>
         <translation type="unfinished">標準</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="276"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>Basic</source>
         <translation type="unfinished">基本</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="321"/>
+        <location filename="../gui/serversettings.cpp" line="331"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation type="unfinished">’%1’ を削除しますか?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="322"/>
+        <location filename="../gui/serversettings.cpp" line="332"/>
         <source>Delete</source>
         <translation type="unfinished">削除</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="375"/>
+        <location filename="../gui/serversettings.cpp" line="385"/>
         <source>New Collection %1</source>
         <translation type="unfinished">新規コレクション %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="393"/>
+        <location filename="../gui/serversettings.cpp" line="403"/>
         <source>Default</source>
         <translation type="unfinished">規定</translation>
     </message>

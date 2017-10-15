@@ -171,6 +171,9 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         details.streamUrl=grp.get("streamUrl", QString());
         #endif
         details.replayGain=grp.get("replayGain", QString());
+        // if the setting hasn't been set before, we set it to true to allow
+        // for easy migration of existing settings
+        details.allowLocalStreaming=grp.get("allowLocalStreaming", true);
     } else {
         details.hostname=mpdDefaults.host;
         details.port=mpdDefaults.port;
@@ -180,6 +183,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         details.streamUrl=QString();
         #endif
+        details.allowLocalStreaming=true;
     }
     details.setDirReadable();
     return details;
@@ -695,6 +699,7 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     grp.set("streamUrl", v.streamUrl);
     #endif
+    grp.set("allowLocalStreaming", v.allowLocalStreaming);
 }
 
 void Settings::saveCurrentConnection(const QString &v)

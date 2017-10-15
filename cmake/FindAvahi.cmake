@@ -12,10 +12,7 @@ find_library(AVAHI_CLIENT_LIB avahi-client PATHS ${CLIENT_LIB_DIR})
 if(AVAHI_COMMON_LIB AND AVAHI_CLIENT_LIB)
     set(AVAHI_LIBRARIES ${AVAHI_COMMON_LIB} ${AVAHI_CLIENT_LIB})
     message(STATUS "Avahi-Libs found: ${AVAHI_LIBRARIES}")
-else()
-    message(FATAL_ERROR "Avahi-Libs not found")
 endif()
-
 
 find_path(COMMON_INCLUDE_DIR watch.h  PATH_SUFFIXES avahi-common HINTS ${COMMON_INCLUDE_DIR})
 find_path(CLIENT_INCLUDE_DIR client.h PATH_SUFFIXES avahi-client HINTS ${CLIENT_INCLUDE_DIR})
@@ -23,8 +20,6 @@ find_path(CLIENT_INCLUDE_DIR client.h PATH_SUFFIXES avahi-client HINTS ${CLIENT_
 if(COMMON_INCLUDE_DIR AND CLIENT_INCLUDE_DIR)
     set(AVAHI_INCLUDE_DIRS ${COMMON_INCLUDE_DIR} ${CLIENT_INCLUDE_DIR})
     message(STATUS "Avahi-Include-Dirs found: ${AVAHI_INCLUDE_DIRS}")
-else()
-    message(FATAL_ERROR "Avahi header not found")
 endif()
 
 if(AVAHI_LIBRARIES AND AVAHI_INCLUDE_DIRS)

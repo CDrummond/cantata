@@ -23,21 +23,20 @@
 
 #include "pathrequester.h"
 #include "icon.h"
+#include "monoicon.h"
 #include "utils.h"
 #include <QFileDialog>
 #include <QHBoxLayout>
 
 static QIcon icon;
 
-void PathRequester::setIcon(const QIcon &icn)
-{
-    icon=icn;
-}
-
 PathRequester::PathRequester(QWidget *parent)
     : QWidget(parent)
     , dirMode(true)
 {
+    if (icon.isNull()) {
+        icon = MonoIcon::icon(FontAwesome::foldero, Utils::monoIconColor());
+    }
     QHBoxLayout *layout=new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     edit=new LineEdit(this);

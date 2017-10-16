@@ -92,7 +92,8 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     #endif
 
     #ifndef Q_OS_WIN
-    QSize sz=size();
+    ensurePolished();
+    QSize sz=size()+QSize(64, 32);
     // Adjust size for high-DPI setups...
     bool highDpi=fontMetrics().height()>20;
     if (highDpi) {

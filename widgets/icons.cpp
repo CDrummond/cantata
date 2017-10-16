@@ -25,7 +25,6 @@
 #include "gui/settings.h"
 #include "support/globalstatic.h"
 #include "support/utils.h"
-#include "support/pathrequester.h"
 #include "support/monoicon.h"
 #if !defined Q_OS_WIN && !defined Q_OS_MAC
 #include "support/gtkstyle.h"
@@ -110,7 +109,6 @@ Icons::Icons()
     rightIcon=MonoIcon::icon(FontAwesome::chevronright, stdColor);
     upIcon=MonoIcon::icon(FontAwesome::chevronup, stdColor);
     downIcon=MonoIcon::icon(FontAwesome::chevrondown, stdColor);
-    PathRequester::setIcon(folderListIcon);
     cancelIcon=MonoIcon::icon(FontAwesome::close, MonoIcon::constRed, MonoIcon::constRed);
 
     #if !defined Q_OS_WIN

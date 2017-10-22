@@ -1882,27 +1882,27 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/findmpddialog.ui" line="20"/>
         <source>Server Detection</source>
-        <translation type="unfinished"></translation>
+        <translation>Rilevazione Server</translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.ui" line="26"/>
         <source>Please select your MPD. If you don&apos;t see your MPD listed here, check that zeroconf is activated in your MPD configuration or insert the host configuration manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selezionare il MPD. Se il tuo MPD non è in questa lista, verifica che nella tua configurazione di MPD sia attivato zeroconf oppure inserisci manualmente la configurazione del host.</translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.cpp" line="28"/>
         <source>Name</source>
-        <translation type="unfinished">Nome</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.cpp" line="28"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Indirizzo</translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.cpp" line="28"/>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Porta</translation>
     </message>
 </context>
 <context>
@@ -2156,7 +2156,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="121"/>
         <source>Discover...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ricerca...</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="170"/>
@@ -3205,32 +3205,32 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     <message>
         <location filename="../gui/mainwindow.cpp" line="330"/>
         <source>Artist</source>
-        <translation type="unfinished">Artista</translation>
+        <translation>Artista</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="331"/>
         <source>Album</source>
-        <translation type="unfinished">Album</translation>
+        <translation>Album</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="332"/>
         <source>Track</source>
-        <translation type="unfinished">Traccia</translation>
+        <translation>Traccia</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="333"/>
         <source>Locate In Library / Artist</source>
-        <translation type="unfinished"></translation>
+        <translation>Localizza nella Libreria / Artista</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="334"/>
         <source>Locate In Library / Album</source>
-        <translation type="unfinished"></translation>
+        <translation>Localizza nella Libreria / Album</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="335"/>
         <source>Locate In Library / Track</source>
-        <translation type="unfinished"></translation>
+        <translation>Localizza nella Libreria / Traccia</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="347"/>
@@ -5526,12 +5526,12 @@ width x height</comment>
     <message>
         <location filename="../gui/stdactions.cpp" line="134"/>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>Aumenta Zoom</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="136"/>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Riduci Zoom</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="50"/>
@@ -6719,17 +6719,17 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/serversettings.ui" line="169"/>
         <source>Local file playback:</source>
-        <translation type="unfinished"></translation>
+        <translation>Riproduzione file locale:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="179"/>
         <source>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usa un semplice server HTTP integrato per permettere a MPD di riprodurre i file inseriti nella coda di riproduzione.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="182"/>
         <source>Via in-built HTTP server</source>
-        <translation type="unfinished"></translation>
+        <translation>Mediante server HTTP integrato</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="191"/>
@@ -6750,7 +6750,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/serversettings.ui" line="212"/>
         <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
-        <translation type="unfinished"></translation>
+        <translation>Normalmente MPD riproduce solamente i brani della tua collezione. Le nuove versioni di MPD (dalla 0.19) possono anche riprodurre altri file se sei collegato ad un server MPD locale (es. l'indirizzo è &apos;127.0.0.1&apos; oppure &apos;localhost&apos;). Perché funzioni, il server MPD deve avere accesso in lettura ovunque i file siano situati. Se stai usando un MPD più vecchio, un MPD non locale, oppure i tuoi file non sono accessibili dagli altri utenti, allora portai scegliere di usare il semplice server HTTP fornito con Cantata. Questo server permetterà l'accesso ai soli file della coda di riproduzione e solo quando Cantata è in esecuzione.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="285"/>
@@ -6770,7 +6770,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/serversettings.cpp" line="135"/>
         <source>Discover...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ricerca...</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.cpp" line="274"/>

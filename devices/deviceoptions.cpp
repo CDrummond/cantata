@@ -194,8 +194,7 @@ DeviceOptions::DeviceOptions()
     #ifdef ENABLE_DEVICES_SUPPORT
     , fixVariousArtists(false)
     , transcoderValue(0)
-    , transcoderWhenDifferent(false)
-    , transcoderWhenSourceIsLosssless(false)
+    , transcoderWhen(TW_Always)
     , useCache(true)
     , autoScan(false)
     , coverName(cvrName)
@@ -215,6 +214,7 @@ static const QLatin1String constTransCodecKey("transcoderCodec");
 static const QLatin1String constTransValKey("transcoderValue");
 static const QLatin1String constTransIfDiffKey("transcoderWhenDifferent");
 static const QLatin1String constTransIfLosslessKey("transcoderWhenSourceIsLosssless");
+static const QLatin1String constTransWhenKey("transcoderWhen");
 #endif
 static const QLatin1String constUseCacheKey("useCache");
 static const QLatin1String constFixVaKey("fixVariousArtists");
@@ -250,8 +250,19 @@ void DeviceOptions::load(const QString &group, bool isMpd)
             #ifdef ENABLE_DEVICES_SUPPORT
             transcoderCodec=mpdGrp.get(constTransCodecKey, (isMpd ? "lame" : transcoderCodec));
             transcoderValue=mpdGrp.get(constTransValKey, (isMpd ? 2 : transcoderValue));
-            transcoderWhenDifferent=mpdGrp.get(constTransIfDiffKey, transcoderWhenDifferent);
-            transcoderWhenSourceIsLosssless=mpdGrp.get(constTransIfLosslessKey, transcoderWhenSourceIsLosssless);
+            if (mpdGrp.hasEntry(constTransWhenKey)) {
+                transcoderWhen=(TranscodeWhen)mpdGrp.get(constTransWhenKey, (int)transcoderWhen);
+            } else {
+                bool transcoderWhenDifferent=mpdGrp.get(constTransIfDiffKey, false);
+                bool transcoderWhenSourceIsLosssless=mpdGrp.get(constTransIfLosslessKey, false);
+                if (mpdGrp.get(constTransIfLosslessKey, false)) {
+                    transcoderWhen=TW_IfLossess;
+                } else if (mpdGrp.get(constTransIfDiffKey, false)) {
+                    transcoderWhen=TW_IfDifferent;
+                } else {
+                    transcoderWhen=TW_Always;
+                }
+            }
             #endif
             // Save these settings into new group, [mpd] is left for other connections...
             save(group, true, true, true);
@@ -274,8 +285,17 @@ void DeviceOptions::load(const QString &group, bool isMpd)
         }
         transcoderCodec=cfg.get(constTransCodecKey, (isMpd ? "lame" : transcoderCodec));
         transcoderValue=cfg.get(constTransValKey, (isMpd ? 2 : transcoderValue));
-        transcoderWhenDifferent=cfg.get(constTransIfDiffKey, transcoderWhenDifferent);
-        transcoderWhenSourceIsLosssless=cfg.get(constTransIfLosslessKey, transcoderWhenSourceIsLosssless);
+        if (cfg.hasEntry(constTransWhenKey)) {
+            transcoderWhen=(TranscodeWhen)cfg.get(constTransWhenKey, (int)transcoderWhen);
+        } else {
+            if (cfg.get(constTransIfLosslessKey, false)) {
+                transcoderWhen=TW_IfLossess;
+            } else if (cfg.get(constTransIfDiffKey, false)) {
+                transcoderWhen=TW_IfDifferent;
+            } else {
+                transcoderWhen=TW_Always;
+            }
+        }
         #endif
     }
 }
@@ -303,8 +323,7 @@ void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans, bool 
     if (saveTrans) {
         cfg.set(constTransCodecKey, transcoderCodec);
         cfg.set(constTransValKey, transcoderValue);
-        cfg.set(constTransIfDiffKey, transcoderWhenDifferent);
-        cfg.set(constTransIfLosslessKey, transcoderWhenSourceIsLosssless);
+        cfg.set(constTransWhenKey, (int)transcoderWhen);
     }
     #else
     Q_UNUSED(isMpd)

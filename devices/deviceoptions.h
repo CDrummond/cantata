@@ -42,6 +42,12 @@ struct DeviceStorage {
 };
 
 struct DeviceOptions {
+    enum TranscodeWhen {
+        TW_Always      = 0,
+        TW_IfDifferent = 1,
+        TW_IfLossess   = 2
+    };
+
     static const QLatin1String constAlbumArtist;
     static const QLatin1String constComposer;
     static const QLatin1String constAlbumTitle;
@@ -72,8 +78,7 @@ struct DeviceOptions {
                 && fixVariousArtists==o.fixVariousArtists && useCache==o.useCache &&
                 transcoderCodec==o.transcoderCodec && autoScan==o.autoScan && volumeId==o.volumeId &&
                 (transcoderCodec.isEmpty() ||
-                 (transcoderValue==o.transcoderValue && transcoderWhenDifferent==o.transcoderWhenDifferent &&
-                  transcoderWhenSourceIsLosssless==o.transcoderWhenSourceIsLosssless))
+                 (transcoderValue==o.transcoderValue && transcoderWhen==o.transcoderWhen))
                 #endif
                 ;
     }
@@ -99,8 +104,7 @@ struct DeviceOptions {
     bool fixVariousArtists;
     QString transcoderCodec;
     int transcoderValue;
-    bool transcoderWhenDifferent;
-    bool transcoderWhenSourceIsLosssless;
+    TranscodeWhen transcoderWhen;
     bool useCache;
     bool autoScan;
     QString name;

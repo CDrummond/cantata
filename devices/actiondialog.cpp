@@ -137,10 +137,10 @@ void ActionDialog::controlInfoLabel(Device *dev)
                 index++;
             }
             codec->setText(QString("%1 (%2)").arg(encoder.name).arg(encoder.values.at(settingIndex).descr)+
-                           (sourceIsAudioCd && opts.transcoderWhenDifferent ? QLatin1String("")+tr("<i>(When different)</i>") : QString()));
+                           (!sourceIsAudioCd && DeviceOptions::TW_IfDifferent==opts.transcoderWhen ? tr("<i>(When different)</i>") : QString()));
         } else {
             codec->setText(encoder.name+
-                           (sourceIsAudioCd && opts.transcoderWhenDifferent ? QLatin1String("")+tr("<i>(When different)</i>") : QString()));
+                           (!sourceIsAudioCd && DeviceOptions::TW_IfDifferent==opts.transcoderWhen ? tr("<i>(When different)</i>") : QString()));
         }
     }
 }

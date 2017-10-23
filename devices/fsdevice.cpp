@@ -385,13 +385,21 @@ void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
     currentDestFile=audioFolder+opts.createFilename(s);
     Encoders::Encoder encoder;
 
+    transcoding = false;
     if (!opts.transcoderCodec.isEmpty()) {
         encoder=Encoders::getEncoder(opts.transcoderCodec);
         if (encoder.codec.isEmpty()) {
             emit actionStatus(CodecNotAvailable);
             return;
         }
-        currentDestFile=encoder.changeExtension(currentDestFile);
+
+        transcoding = !opts.transcoderCodec.isEmpty() &&
+                         (!opts.transcoderWhenDifferent || encoder.isDifferent(s.file)) &&
+                         (!opts.transcoderWhenSourceIsLosssless || Device::isLossless(s.file));
+
+        if (transcoding) {
+            currentDestFile=encoder.changeExtension(currentDestFile);
+        }
     }
 
     if (!overwrite && QFile::exists(currentDestFile)) {
@@ -405,10 +413,6 @@ void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
         return;
     }
     currentSong=s;
-
-    transcoding = !opts.transcoderCodec.isEmpty() &&
-                     (!opts.transcoderWhenDifferent || encoder.isDifferent(s.file)) &&
-                     (!opts.transcoderWhenSourceIsLosssless || Device::isLossless(s.file));
 
     if (transcoding) {
         TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, currentDestFile, copyCover ? opts : DeviceOptions(Device::constNoCover),

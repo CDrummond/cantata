@@ -5,6 +5,8 @@
 2. Add ability to change grid cover size - Ctrl+ / Ctrl-
 3. Avahi support (automatic mpd discovery)
 4. Make serving of files to MPD via HTTP configurable.
+5. If set to only transcode if source is different, or lossless, then only
+   change extension if song is actually transcoded.
 
 2.2.0
 -----

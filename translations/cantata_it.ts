@@ -1243,12 +1243,12 @@ Non è stato possibile copiare il file su &apos;%1&apos;!</translation>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="219"/>
         <source>Do not transcode</source>
-        <translation>Non fare transcodifica</translation>
+        <translation>Non fare la transcodifica</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
         <source>Always transcode</source>
-        <translation type="unfinished"></translation>
+        <translation>Fai sempre la transcodifica</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="235"/>

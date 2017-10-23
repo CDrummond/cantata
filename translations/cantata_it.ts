@@ -1033,7 +1033,7 @@ Non è stato possibile copiare il file su &apos;%1&apos;!</translation>
 <context>
     <name>CustomActions</name>
     <message>
-        <location filename="../gui/customactions.cpp" line="46"/>
+        <location filename="../gui/customactions.cpp" line="55"/>
         <source>Custom Actions</source>
         <translation>Azioni Personalizzate</translation>
     </message>
@@ -1186,12 +1186,12 @@ Non è stato possibile copiare il file su &apos;%1&apos;!</translation>
         <translation>Transcodifica</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.ui" line="214"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
         <source>Only transcode if source file is of a different format</source>
         <translation>Transcodifica solo se il file sorgente è in un formato diverso</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.ui" line="221"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
         <source>Only transcode if source is FLAC/WAV</source>
         <translation>Transcodifica solo se il file sorgente è FLAC/WAV</translation>
     </message>
@@ -1246,17 +1246,22 @@ Non è stato possibile copiare il file su &apos;%1&apos;!</translation>
         <translation>Non fare transcodifica</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="229"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
+        <source>Always transcode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="235"/>
         <source>Encoder</source>
         <translation>Codificatore</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="245"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="250"/>
         <source>Transcode to %1</source>
         <translation>Transcodifica su %1</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="276"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="281"/>
         <source>%1 (%2 free)</source>
         <comment>name (size free)</comment>
         <translation>%1 (%2 liberi)</translation>
@@ -1913,7 +1918,7 @@ Non sarà possibile tornare indietro.</translation>
         <translation>Apri nel Gestore File</translation>
     </message>
     <message>
-        <location filename="../gui/folderpage.cpp" line="220"/>
+        <location filename="../gui/folderpage.cpp" line="222"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
@@ -1922,7 +1927,7 @@ This cannot be undone.</source>
 Non sarà possibile tornare indietro.</translation>
     </message>
     <message>
-        <location filename="../gui/folderpage.cpp" line="221"/>
+        <location filename="../gui/folderpage.cpp" line="223"/>
         <source>Delete Songs</source>
         <translation>Cancella Brani</translation>
     </message>
@@ -1930,22 +1935,22 @@ Non sarà possibile tornare indietro.</translation>
 <context>
     <name>FsDevice</name>
     <message>
-        <location filename="../devices/fsdevice.cpp" line="661"/>
+        <location filename="../devices/fsdevice.cpp" line="679"/>
         <source>Updating...</source>
         <translation>Aggiornamento...</translation>
     </message>
     <message>
-        <location filename="../devices/fsdevice.cpp" line="737"/>
+        <location filename="../devices/fsdevice.cpp" line="755"/>
         <source>Reading cache</source>
         <translation>Lettura cache</translation>
     </message>
     <message>
-        <location filename="../devices/fsdevice.cpp" line="742"/>
+        <location filename="../devices/fsdevice.cpp" line="760"/>
         <source>Saving cache</source>
         <translation>Salvataggio cache</translation>
     </message>
     <message>
-        <location filename="../devices/fsdevice.cpp" line="749"/>
+        <location filename="../devices/fsdevice.cpp" line="767"/>
         <source>%1 %2%</source>
         <comment>Message percent</comment>
         <translation>%1 %2%</translation>
@@ -2064,87 +2069,87 @@ Non sarà possibile tornare indietro.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="428"/>
-        <location filename="../gui/initialsettingswizard.ui" line="569"/>
+        <location filename="../gui/initialsettingswizard.ui" line="572"/>
         <source>Music folder:</source>
         <translation>Cartella musica:</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="472"/>
+        <location filename="../gui/initialsettingswizard.ui" line="475"/>
         <source>Connect</source>
         <translation>Connetti</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="481"/>
+        <location filename="../gui/initialsettingswizard.ui" line="484"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art, lyrics, etc. If your MPD instance is on a remote host, you may set this to a HTTP URL.</source>
         <translation>L&apos;impostazione &apos;Cartella musica&apos; viene usata per cercare copertine, testi, ecc. Se la tua istanza MPD è su un host remoto, puoi impostare questa voce ad un URL HTTP.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="511"/>
+        <location filename="../gui/initialsettingswizard.ui" line="514"/>
         <source>Music folder</source>
         <translation>Cartella musica</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="534"/>
+        <location filename="../gui/initialsettingswizard.ui" line="537"/>
         <source>Please choose the folder containing your music collection.</source>
         <translation>Prego selezionare la cartella contenente la collezione musicale.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="620"/>
+        <location filename="../gui/initialsettingswizard.ui" line="623"/>
         <source>Covers and Lyrics</source>
         <translation>Copertine e Testi</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="643"/>
+        <location filename="../gui/initialsettingswizard.ui" line="646"/>
         <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cantata scaricherà le copertine ed i testi mancanti da internet.&lt;/p&gt;&lt;p&gt;Per ognuno di questi, prego confermare se desideri che Cantata memorizzi i file in questione nella cartella musica, oppure nella tua personale cartella cache/configurazione.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="675"/>
+        <location filename="../gui/initialsettingswizard.ui" line="678"/>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
         <translation>Salva le immagini di copertine, artisti e compositori scaricate nella cartella musica</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="682"/>
+        <location filename="../gui/initialsettingswizard.ui" line="685"/>
         <source>Save downloaded lyrics in music folder</source>
         <translation>Salva i testi scaricati nella cartella musica</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="689"/>
+        <location filename="../gui/initialsettingswizard.ui" line="692"/>
         <source>Save downloaded backdrops in music folder</source>
         <translation>Salva gli sfondi scaricati nella cartella musica</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="696"/>
+        <location filename="../gui/initialsettingswizard.ui" line="699"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
         <translation>Se hai scelto che Cantata memorizzi copertine, testi o sfondi all&apos;interno della cartella musica e non hai permessi di accesso in essa, Cantata salverà i file nella tua cartella cache personale.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="703"/>
+        <location filename="../gui/initialsettingswizard.ui" line="706"/>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
         <translation>Cantata può salvare le immagini di sfondi, artisti e compositore all&apos;interno della gerarchia della cartella musica solo se questa è profonda due livelli. es. &apos;Artista/Album/Brani&apos;.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="710"/>
+        <location filename="../gui/initialsettingswizard.ui" line="713"/>
         <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
         <translation>La &apos;Cartella musica&apos; è impostata su un indirizzo HTTP e Cantata non può al momento caricare file su server HTTP esterni. Pertanto l&apos;impostazione dovrà essere lasciata disattivata.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="740"/>
+        <location filename="../gui/initialsettingswizard.ui" line="743"/>
         <source>Finished!</source>
         <translation>Finito!</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="763"/>
+        <location filename="../gui/initialsettingswizard.ui" line="766"/>
         <source>Cantata is now configured!&lt;br/&gt;&lt;br/&gt;Cantata&apos;s configuration dialog maybe used to customise Cantata&apos;s appearance, as well as to add extra MPD hosts, etc.</source>
         <translation>Cantata ora è configurato!&lt;br/&gt;&lt;br/&gt;La finestra di configurazione di cantata può esssere usata per personalizzare l&apos;aspetto di cantata, ed anche per aggiungere altri host MPD.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="795"/>
+        <location filename="../gui/initialsettingswizard.ui" line="798"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation>Cantata raggrupperà le tracce in album usando il tag &apos;ArtistaAlbum&apos; se impostato, altrimenti ripiegherà sul tag &apos;Artista&apos;. Se hai album con artisti multipli, &lt;b&gt;dovrai&lt;b&gt; impostare il tag &quot;ArtistaAlbum&apos; per far sì che il raggruppamento funzioni correttamente.In quel scenario, suggeriamo di usare &apos;Artisti Vari&apos;.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="827"/>
+        <location filename="../gui/initialsettingswizard.ui" line="830"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
         <translation>&lt;b&gt;Attenzione:&lt;/b&gt; Non sei attualmente un membro del gruppo &apos;users&apos;. Cantata funziona meglio (salvando copertine di album, testi, ecc. con i permessi corretti) se tu (o il tuo amministratore) ti aggiungi a questo gruppo. Se ti aggiungi dovrai fare logour e rientrare per far sì che la modifica abbia effetto.</translation>
     </message>
@@ -2154,22 +2159,22 @@ Non sarà possibile tornare indietro.</translation>
         <translation>Non Connesso</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="121"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="122"/>
         <source>Discover...</source>
         <translation>Ricerca...</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="170"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
         <source>Connection Established</source>
         <translation>Connession Stabilita</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="170"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
         <source>Connection Failed</source>
         <translation>Connessione Fallita</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="183"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="184"/>
         <source>Cantata will now terminate</source>
         <translation>Cantata verrà ora terminato</translation>
     </message>
@@ -3958,12 +3963,12 @@ Aggiungere i brani a quella scaletta?</translation>
 <context>
     <name>PathRequester</name>
     <message>
-        <location filename="../support/pathrequester.cpp" line="56"/>
+        <location filename="../support/pathrequester.cpp" line="55"/>
         <source>Select Folder</source>
         <translation>Seleziona Cartella</translation>
     </message>
     <message>
-        <location filename="../support/pathrequester.cpp" line="57"/>
+        <location filename="../support/pathrequester.cpp" line="56"/>
         <source>Select File</source>
         <translation>Selezione File</translation>
     </message>
@@ -6570,87 +6575,87 @@ Prego scegliere un nome diverso.</translation>
         <translation>Trova nella Libreria</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="209"/>
+        <location filename="../gui/searchpage.cpp" line="210"/>
         <source>Artist:</source>
         <translation>Artista:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="212"/>
+        <location filename="../gui/searchpage.cpp" line="213"/>
         <source>Composer:</source>
         <translation>Compositore:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="215"/>
+        <location filename="../gui/searchpage.cpp" line="216"/>
         <source>Performer:</source>
         <translation>Esecutore:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="217"/>
+        <location filename="../gui/searchpage.cpp" line="218"/>
         <source>Album:</source>
         <translation>Album:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="218"/>
+        <location filename="../gui/searchpage.cpp" line="219"/>
         <source>Title:</source>
         <translation>Titolo:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="219"/>
+        <location filename="../gui/searchpage.cpp" line="220"/>
         <source>Genre:</source>
         <translation>Genere:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="221"/>
+        <location filename="../gui/searchpage.cpp" line="222"/>
         <source>Comment:</source>
         <translation>Commento:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="223"/>
+        <location filename="../gui/searchpage.cpp" line="224"/>
         <source>Date:</source>
         <translation>Data:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="224"/>
+        <location filename="../gui/searchpage.cpp" line="225"/>
         <source>Find songs be searching the &apos;Date&apos; tag.&lt;br/&gt;&lt;br/&gt;Usually just entering the year should suffice.</source>
         <translation>Trova brani usando il tag &apos;Data&apos;.&lt;br/&gt;&lt;br/&gt;Solitamente è sufficiente inserire l&apos;anno.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="226"/>
+        <location filename="../gui/searchpage.cpp" line="227"/>
         <source>Original Date:</source>
         <translation>Data Originale:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="227"/>
+        <location filename="../gui/searchpage.cpp" line="228"/>
         <source>Find songs be searching the &apos;Original Date&apos; tag.&lt;br/&gt;&lt;br/&gt;Usually just entering the year should suffice.</source>
         <translation>Trova brani usando il tag &apos;Data Originale&apos;.&lt;br/&gt;&lt;br/&gt;Solitamente è sufficiente inserire l&apos;anno.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="230"/>
+        <location filename="../gui/searchpage.cpp" line="231"/>
         <source>Modified:</source>
         <translation>Modificato:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="231"/>
+        <location filename="../gui/searchpage.cpp" line="232"/>
         <source>Enter date (YYYY/MM/DD - e.g. 2015/01/31) to search for files modified since that date.&lt;br/&gt;&lt;br&gt;Or enter a number of days to find files that were modified in the previous number of days.</source>
         <translation>Inserisci una data (AAAA/MM/GG - es, 2015/01/31) per cercare file modificati a partire da quella data.&lt;br/&gt;&lt;br&gt;Oppure inserisci un numero di giorni per trovare i file che sono stati modificati nei giorni precedenti.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="234"/>
+        <location filename="../gui/searchpage.cpp" line="235"/>
         <source>File:</source>
         <translation>File:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="235"/>
+        <location filename="../gui/searchpage.cpp" line="236"/>
         <source>Any:</source>
         <translation>Qualsiasi:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="241"/>
+        <location filename="../gui/searchpage.cpp" line="242"/>
         <source>No tracks found.</source>
         <translation>Nessuna traccia trovata.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/searchpage.cpp" line="241"/>
+        <location filename="../gui/searchpage.cpp" line="242"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>%n Traccia (%1)</numerusform>
@@ -6750,7 +6755,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/serversettings.ui" line="212"/>
         <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
-        <translation>Normalmente MPD riproduce solamente i brani della tua collezione. Le nuove versioni di MPD (dalla 0.19) possono anche riprodurre altri file se sei collegato ad un server MPD locale (es. l'indirizzo è &apos;127.0.0.1&apos; oppure &apos;localhost&apos;). Perché funzioni, il server MPD deve avere accesso in lettura ovunque i file siano situati. Se stai usando un MPD più vecchio, un MPD non locale, oppure i tuoi file non sono accessibili dagli altri utenti, allora portai scegliere di usare il semplice server HTTP fornito con Cantata. Questo server permetterà l'accesso ai soli file della coda di riproduzione e solo quando Cantata è in esecuzione.</translation>
+        <translation>Normalmente MPD riproduce solamente i brani della tua collezione. Le nuove versioni di MPD (dalla 0.19) possono anche riprodurre altri file se sei collegato ad un server MPD locale (es. l&apos;indirizzo è &apos;127.0.0.1&apos; oppure &apos;localhost&apos;). Perché funzioni, il server MPD deve avere accesso in lettura ovunque i file siano situati. Se stai usando un MPD più vecchio, un MPD non locale, oppure i tuoi file non sono accessibili dagli altri utenti, allora portai scegliere di usare il semplice server HTTP fornito con Cantata. Questo server permetterà l&apos;accesso ai soli file della coda di riproduzione e solo quando Cantata è in esecuzione.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="285"/>

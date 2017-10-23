@@ -215,9 +215,23 @@ bool FsDevice::readOpts(const QString &fileName, DeviceOptions &opts, bool readA
                 if (parts.size()>=3) {
                     opts.transcoderCodec=parts.at(0);
                     opts.transcoderValue=parts.at(1).toInt();
-                    opts.transcoderWhenDifferent=QLatin1String("true")==parts.at(2);
                     if (parts.size()>=4) {
-                        opts.transcoderWhenSourceIsLosssless=QLatin1String("true")==parts.at(3);
+                        if (QLatin1String("true")==parts.at(3)) {
+                            opts.transcoderWhen=DeviceOptions::TW_IfLossess;
+                        } else if (QLatin1String("true")==parts.at(2)) {
+                            opts.transcoderWhen=DeviceOptions::TW_IfDifferent;
+                        } else {
+                            opts.transcoderWhen=DeviceOptions::TW_Always;
+                        }
+                    } else {
+                        const QString &val = parts.at(2);
+                        if (QLatin1String("true")==val) {
+                            opts.transcoderWhen=DeviceOptions::TW_IfDifferent;
+                        } else if (QLatin1String("false")==val) {
+                            opts.transcoderWhen=DeviceOptions::TW_Always;
+                        } else {
+                            opts.transcoderWhen=(DeviceOptions::TranscodeWhen)val.toInt();
+                        }
                     }
                 }
             } else if (line.startsWith(constUseCacheKey+"=")) {
@@ -301,7 +315,7 @@ void FsDevice::writeOpts(const QString &fileName, const DeviceOptions &opts, boo
         }
         if (!opts.transcoderCodec.isEmpty()) {
             out << constTranscoderKey << '=' << opts.transcoderCodec << ',' << opts.transcoderValue
-                << ',' << toString(opts.transcoderWhenDifferent) << ',' << toString(opts.transcoderWhenSourceIsLosssless) << '\n';
+                << ',' << opts.transcoderWhen << '\n';
         }
         if (opts.useCache!=def.useCache) {
             out << constUseCacheKey << '=' << toString(opts.useCache) << '\n';
@@ -394,8 +408,8 @@ void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
         }
 
         transcoding = !opts.transcoderCodec.isEmpty() &&
-                         (!opts.transcoderWhenDifferent || encoder.isDifferent(s.file)) &&
-                         (!opts.transcoderWhenSourceIsLosssless || Device::isLossless(s.file));
+                         (DeviceOptions::TW_IfDifferent!=opts.transcoderWhen || encoder.isDifferent(s.file)) &&
+                         (DeviceOptions::TW_IfLossess!=opts.transcoderWhen || Device::isLossless(s.file));
 
         if (transcoding) {
             currentDestFile=encoder.changeExtension(currentDestFile);

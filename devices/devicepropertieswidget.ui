@@ -209,18 +209,7 @@
        <widget class="QComboBox" name="transcoderName"/>
       </item>
       <item>
-       <widget class="QCheckBox" name="transcoderWhenDifferent">
-        <property name="text">
-         <string>Only transcode if source file is of a different format</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="transcoderWhenSourceIsLosssless">
-        <property name="text">
-         <string>Only transcode if source is FLAC/WAV</string>
-        </property>
-       </widget>
+       <widget class="QComboBox" name="transcoderWhen"/>
       </item>
       <item>
        <widget class="ValueSlider" name="transcoderValue"/>

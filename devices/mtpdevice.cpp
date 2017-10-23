@@ -1337,8 +1337,8 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
     }
 
     transcoding = !opts.transcoderCodec.isEmpty() &&
-                     (!opts.transcoderWhenDifferent || encoder.isDifferent(s.file)) &&
-                     (!opts.transcoderWhenSourceIsLosssless || Device::isLossless(s.file));
+            (DeviceOptions::TW_IfDifferent!=opts.transcoderWhen || encoder.isDifferent(s.file)) &&
+            (DeviceOptions::TW_IfLossess!=opts.transcoderWhen || Device::isLossless(s.file));
 
     if (transcoding) {
         deleteTemp();

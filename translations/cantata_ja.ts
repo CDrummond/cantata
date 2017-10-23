@@ -7171,7 +7171,7 @@ Could not copy file to &apos;%1&apos;!</source>
 <context>
     <name>CustomActions</name>
     <message>
-        <location filename="../gui/customactions.cpp" line="46"/>
+        <location filename="../gui/customactions.cpp" line="55"/>
         <source>Custom Actions</source>
         <translation type="unfinished">カスタムアクション</translation>
     </message>
@@ -7324,12 +7324,12 @@ Could not copy file to &apos;%1&apos;!</source>
         <translation type="unfinished">コード変換中</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.ui" line="214"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
         <source>Only transcode if source file is of a different format</source>
         <translation type="unfinished">ソースファイルが異なる書式の場合のみコード変換する</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.ui" line="221"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
         <source>Only transcode if source is FLAC/WAV</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7384,17 +7384,22 @@ Could not copy file to &apos;%1&apos;!</source>
         <translation type="unfinished">トランスコードしない</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="229"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
+        <source>Always transcode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="235"/>
         <source>Encoder</source>
         <translation type="unfinished">エンコーダ</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="245"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="250"/>
         <source>Transcode to %1</source>
         <translation type="unfinished">%1 へトランスコード</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="276"/>
+        <location filename="../devices/devicepropertieswidget.cpp" line="281"/>
         <source>%1 (%2 free)</source>
         <comment>name (size free)</comment>
         <translation type="unfinished">%1 (%2 空き)</translation>
@@ -8056,14 +8061,14 @@ This cannot be undone.</source>
         <translation type="unfinished">ファイルマネージャで開く</translation>
     </message>
     <message>
-        <location filename="../gui/folderpage.cpp" line="220"/>
+        <location filename="../gui/folderpage.cpp" line="222"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
         <translation type="unfinished">選択楽曲を削除しますか? 本操作はやり直しできません。</translation>
     </message>
     <message>
-        <location filename="../gui/folderpage.cpp" line="221"/>
+        <location filename="../gui/folderpage.cpp" line="223"/>
         <source>Delete Songs</source>
         <translation type="unfinished">楽曲を削除</translation>
     </message>
@@ -8071,22 +8076,22 @@ This cannot be undone.</source>
 <context>
     <name>FsDevice</name>
     <message>
-        <location filename="../devices/fsdevice.cpp" line="661"/>
+        <location filename="../devices/fsdevice.cpp" line="679"/>
         <source>Updating...</source>
         <translation type="unfinished">更新中...</translation>
     </message>
     <message>
-        <location filename="../devices/fsdevice.cpp" line="737"/>
+        <location filename="../devices/fsdevice.cpp" line="755"/>
         <source>Reading cache</source>
         <translation type="unfinished">キャッシュ読込中</translation>
     </message>
     <message>
-        <location filename="../devices/fsdevice.cpp" line="742"/>
+        <location filename="../devices/fsdevice.cpp" line="760"/>
         <source>Saving cache</source>
         <translation type="unfinished">キャッシュを保存中</translation>
     </message>
     <message>
-        <location filename="../devices/fsdevice.cpp" line="749"/>
+        <location filename="../devices/fsdevice.cpp" line="767"/>
         <source>%1 %2%</source>
         <comment>Message percent</comment>
         <translation type="unfinished">%1 %2%</translation>
@@ -8204,87 +8209,87 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="428"/>
-        <location filename="../gui/initialsettingswizard.ui" line="569"/>
+        <location filename="../gui/initialsettingswizard.ui" line="572"/>
         <source>Music folder:</source>
         <translation type="unfinished">音楽フォルダ:</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="472"/>
+        <location filename="../gui/initialsettingswizard.ui" line="475"/>
         <source>Connect</source>
         <translation type="unfinished">接続</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="481"/>
+        <location filename="../gui/initialsettingswizard.ui" line="484"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art, lyrics, etc. If your MPD instance is on a remote host, you may set this to a HTTP URL.</source>
         <translation type="unfinished">「音楽フォルダ」設定は、カバーアート、歌詞などを検索するために使用されます。MPDインスタンスがリモートホスト上にある場合、これをHTTP URLに設定することができます。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="511"/>
+        <location filename="../gui/initialsettingswizard.ui" line="514"/>
         <source>Music folder</source>
         <translation type="unfinished">音楽フォルダ</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="534"/>
+        <location filename="../gui/initialsettingswizard.ui" line="537"/>
         <source>Please choose the folder containing your music collection.</source>
         <translation type="unfinished">あなたの音楽コレクションを含むフォルダを選択してください。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="620"/>
+        <location filename="../gui/initialsettingswizard.ui" line="623"/>
         <source>Covers and Lyrics</source>
         <translation type="unfinished">カバーと歌詞</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="643"/>
+        <location filename="../gui/initialsettingswizard.ui" line="646"/>
         <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;Cantata はインターネットから不明なカバーや歌詞をダウンロードします。&lt;/p&gt;&lt;p&gt;これらそれぞれについて、Cantataに関連するファイルをミュージックフォルダ内に保存するか、個人のキャッシュ/設定フォルダ内に保存するかを確認してください。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="675"/>
+        <location filename="../gui/initialsettingswizard.ui" line="678"/>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
         <translation type="unfinished">ダウンロード済のカバー, アーティスト, 作曲家のイメージを音楽フォルダに保存する</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="682"/>
+        <location filename="../gui/initialsettingswizard.ui" line="685"/>
         <source>Save downloaded lyrics in music folder</source>
         <translation type="unfinished">ダウンロード済みの歌詞を音楽フォルダに保存する</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="689"/>
+        <location filename="../gui/initialsettingswizard.ui" line="692"/>
         <source>Save downloaded backdrops in music folder</source>
         <translation type="unfinished">ダウンロード済みのバックドロップを音楽フォルダに保存する</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="696"/>
+        <location filename="../gui/initialsettingswizard.ui" line="699"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
         <translation type="unfinished">音楽フォルダ内にCantataのカバー、歌詞、または背景を保存することを選択した場合、このフォルダへの書き込みアクセス権がない場合、Cantataはファイルを自分のキャッシュフォルダに保存します。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="703"/>
+        <location filename="../gui/initialsettingswizard.ui" line="706"/>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
         <translation type="unfinished">Cantataは、2レベルの深さまでならば、音楽フォルダ階層内の背景、アーティスト、および作曲家の画像のみを保存できます。 すなわち「Artist / Album / Tracks」と表示されます。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="710"/>
+        <location filename="../gui/initialsettingswizard.ui" line="713"/>
         <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
         <translation type="unfinished">&apos;Music folder&apos;はHTTPアドレスに設定されており、Cantataは現在、外部HTTPサーバーにファイルをアップロードできません。したがって、上記の設定は未チェックのままにしておく必要があります。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="740"/>
+        <location filename="../gui/initialsettingswizard.ui" line="743"/>
         <source>Finished!</source>
         <translation type="unfinished">完了!</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="763"/>
+        <location filename="../gui/initialsettingswizard.ui" line="766"/>
         <source>Cantata is now configured!&lt;br/&gt;&lt;br/&gt;Cantata&apos;s configuration dialog maybe used to customise Cantata&apos;s appearance, as well as to add extra MPD hosts, etc.</source>
         <translation type="unfinished">Cantata が設定されました！&lt;br/&gt;&lt;br/&gt;Cantataの設定ダイアログは、Cantataの外観をカスタマイズするために使用されるほか、追加のMPDホストなどを追加するために使用されます。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="795"/>
+        <location filename="../gui/initialsettingswizard.ui" line="798"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation type="unfinished">Cantataは &apos;AlbumArtist&apos;タグが設定されている場合はトラックをアルバムにグループ化し、そうでない場合は &apos;Artist&apos;タグにフォールバックします。複数のアーティストを含むアルバムをお持ちの場合は、グループ化が正しく機能するように &apos;AlbumArtist&apos;タグを&lt;b&gt;設定&lt;/b&gt;する必要があります。このシナリオでは、「Various Artists」を使用することをお勧めします。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="827"/>
+        <location filename="../gui/initialsettingswizard.ui" line="830"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
         <translation type="unfinished">&lt;b&gt;注意:&lt;/b&gt; お使いのユーザアカウントは &apos;users&apos; グループのメンバーではありません. Cantata はあなた(もしくは管理者が)ユーザアカウントをこのグループに追加することにより より良く動作します (アルバムカバー, 歌詞, その他の保存が正しい許可で行われる)。グループに使用中のアカウントを追加した場合は一旦ログアウト ログインを行ってアプリケーションを再起動することでこの機能が動作します。</translation>
     </message>
@@ -8294,22 +8299,22 @@ This cannot be undone.</source>
         <translation type="unfinished">未接続</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="121"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="122"/>
         <source>Discover...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="170"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
         <source>Connection Established</source>
         <translation type="unfinished">接続が確立しました</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="170"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
         <source>Connection Failed</source>
         <translation type="unfinished">接続に失敗しました</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="183"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="184"/>
         <source>Cantata will now terminate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10104,12 +10109,12 @@ Add to that playlist?</source>
 <context>
     <name>PathRequester</name>
     <message>
-        <location filename="../support/pathrequester.cpp" line="56"/>
+        <location filename="../support/pathrequester.cpp" line="55"/>
         <source>Select Folder</source>
         <translation type="unfinished">フォルダの選択</translation>
     </message>
     <message>
-        <location filename="../support/pathrequester.cpp" line="57"/>
+        <location filename="../support/pathrequester.cpp" line="56"/>
         <source>Select File</source>
         <translation type="unfinished">ファイルの選択</translation>
     </message>
@@ -12886,87 +12891,87 @@ Please choose a different name.</source>
         <translation type="unfinished">ライブラリ内での捜索</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="209"/>
+        <location filename="../gui/searchpage.cpp" line="210"/>
         <source>Artist:</source>
         <translation type="unfinished">アーテイスト:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="212"/>
+        <location filename="../gui/searchpage.cpp" line="213"/>
         <source>Composer:</source>
         <translation type="unfinished">作曲家:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="215"/>
+        <location filename="../gui/searchpage.cpp" line="216"/>
         <source>Performer:</source>
         <translation type="unfinished">演奏者:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="217"/>
+        <location filename="../gui/searchpage.cpp" line="218"/>
         <source>Album:</source>
         <translation type="unfinished">アルバム:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="218"/>
+        <location filename="../gui/searchpage.cpp" line="219"/>
         <source>Title:</source>
         <translation type="unfinished">タイトル:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="219"/>
+        <location filename="../gui/searchpage.cpp" line="220"/>
         <source>Genre:</source>
         <translation type="unfinished">ジャンル:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="221"/>
+        <location filename="../gui/searchpage.cpp" line="222"/>
         <source>Comment:</source>
         <translation type="unfinished">コメント:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="223"/>
+        <location filename="../gui/searchpage.cpp" line="224"/>
         <source>Date:</source>
         <translation type="unfinished">日付:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="224"/>
+        <location filename="../gui/searchpage.cpp" line="225"/>
         <source>Find songs be searching the &apos;Date&apos; tag.&lt;br/&gt;&lt;br/&gt;Usually just entering the year should suffice.</source>
         <translation type="unfinished">’Date’ タグで楽曲を検索します&lt;br/&gt;&lt;br/&gt;通常、年を入力するだけで十分です。</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="226"/>
+        <location filename="../gui/searchpage.cpp" line="227"/>
         <source>Original Date:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="227"/>
+        <location filename="../gui/searchpage.cpp" line="228"/>
         <source>Find songs be searching the &apos;Original Date&apos; tag.&lt;br/&gt;&lt;br/&gt;Usually just entering the year should suffice.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="230"/>
+        <location filename="../gui/searchpage.cpp" line="231"/>
         <source>Modified:</source>
         <translation type="unfinished">変更済:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="231"/>
+        <location filename="../gui/searchpage.cpp" line="232"/>
         <source>Enter date (YYYY/MM/DD - e.g. 2015/01/31) to search for files modified since that date.&lt;br/&gt;&lt;br&gt;Or enter a number of days to find files that were modified in the previous number of days.</source>
         <translation type="unfinished">ファイルが変更された日付(YYYY/MM/DD - 例 2015/01/31)。&lt;br/&gt;&lt;br&gt;または、ファイルの修正されてからの経過日数を確認するためは日数指定して下さい。</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="234"/>
+        <location filename="../gui/searchpage.cpp" line="235"/>
         <source>File:</source>
         <translation type="unfinished">ファイル:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="235"/>
+        <location filename="../gui/searchpage.cpp" line="236"/>
         <source>Any:</source>
         <translation type="unfinished">全検索:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="241"/>
+        <location filename="../gui/searchpage.cpp" line="242"/>
         <source>No tracks found.</source>
         <translation type="unfinished">トラックが見つかりません。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/searchpage.cpp" line="241"/>
+        <location filename="../gui/searchpage.cpp" line="242"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n トラック (%1)</numerusform>

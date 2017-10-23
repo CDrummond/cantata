@@ -219,16 +219,21 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
             transcoderName->addItem(tr("Do not transcode"), QString());
             transcoderName->setCurrentIndex(0);
             transcoderValue->setVisible(false);
-            transcoderWhenDifferent->setVisible(false);
-            transcoderWhenDifferent->setChecked(opts.transcoderWhenDifferent);
-            transcoderWhenSourceIsLosssless->setVisible(false);
-            transcoderWhenSourceIsLosssless->setChecked(opts.transcoderWhenSourceIsLosssless);
-            connect(transcoderWhenDifferent, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
-            connect(transcoderWhenSourceIsLosssless, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+            transcoderWhen->addItem(tr("Always transcode"), DeviceOptions::TW_Always);
+            transcoderWhen->addItem(tr("Only transcode if source file is of a different format"), DeviceOptions::TW_IfDifferent);
+            transcoderWhen->addItem(tr("Only transcode if source is FLAC/WAV"), DeviceOptions::TW_IfLossess);
+            transcoderWhen->setVisible(false);
+            transcoderWhen->setCurrentIndex(0);
+            for (int i=0; i<transcoderWhen->count(); ++i) {
+                if (transcoderWhen->itemData(i).toInt()==opts.transcoderWhen) {
+                    transcoderWhen->setCurrentIndex(i);
+                    break;
+                }
+            }
+            connect(transcoderWhen, SIGNAL(currentIndexChanged(int)), this, SLOT(checkSaveable()));
         } else {
             transcoderFrame->setTitle(tr("Encoder"));
-            REMOVE(transcoderWhenDifferent);
-            REMOVE(transcoderWhenSourceIsLosssless);
+            REMOVE(transcoderWhen);
         }
 
         QList<Encoders::Encoder> encs=Encoders::getAvailable();
@@ -308,20 +313,14 @@ void DevicePropertiesWidget::transcoderChanged()
     if (codec.isEmpty()) {
         transcoderName->setToolTip(QString());
         transcoderValue->setVisible(false);
-        if (transcoderWhenDifferent) {
-            transcoderWhenDifferent->setVisible(false);
-        }
-        if (transcoderWhenSourceIsLosssless) {
-            transcoderWhenSourceIsLosssless->setVisible(false);
+        if (transcoderWhen) {
+            transcoderWhen->setVisible(false);
         }
     } else {
         Encoders::Encoder enc=Encoders::getEncoder(codec);
         transcoderName->setToolTip(enc.description);
-        if (transcoderWhenDifferent) {
-            transcoderWhenDifferent->setVisible(true);
-        }
-        if (transcoderWhenSourceIsLosssless) {
-            transcoderWhenSourceIsLosssless->setVisible(true);
+        if (transcoderWhen) {
+            transcoderWhen->setVisible(true);
         }
         if (enc.values.count()) {
             transcoderValue->setValues(enc);
@@ -398,8 +397,7 @@ DeviceOptions DevicePropertiesWidget::settings()
     opts.autoScan=autoScan ? autoScan->isChecked() : false;
     opts.transcoderCodec=QString();
     opts.transcoderValue=0;
-    opts.transcoderWhenDifferent=false;
-    opts.transcoderWhenSourceIsLosssless=false;
+    opts.transcoderWhen=DeviceOptions::TW_Always;
     opts.coverName=cover();
     opts.coverMaxSize=(!coverMaxSize || 0==coverMaxSize->currentIndex()) ? 0 : ((coverMaxSize->count()-coverMaxSize->currentIndex())*100);
     opts.volumeId=defaultVolume && defaultVolume->isVisible() ? defaultVolume->itemData(defaultVolume->currentIndex()).toString() : QString();
@@ -409,8 +407,7 @@ DeviceOptions DevicePropertiesWidget::settings()
         if (!opts.transcoderCodec.isEmpty()) {
             Encoders::Encoder enc=Encoders::getEncoder(opts.transcoderCodec);
 
-            opts.transcoderWhenDifferent=transcoderWhenDifferent ? transcoderWhenDifferent->isChecked() : false;
-            opts.transcoderWhenSourceIsLosssless=transcoderWhenSourceIsLosssless ? transcoderWhenSourceIsLosssless->isChecked() : false;
+            opts.transcoderWhen=(DeviceOptions::TranscodeWhen)transcoderWhen->itemData(transcoderWhen->currentIndex()).toUInt();
             if (!enc.isNull() && transcoderValue->value()<enc.values.count()) {
                 opts.transcoderValue=enc.values.at(transcoderValue->value()).value;
             }

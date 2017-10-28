@@ -21,6 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include <QListView>
 #include "application.h"
 #include "settings.h"
 #include "support/proxystyle.h"
@@ -55,6 +56,15 @@ void Application::init()
         }
     }
     qApp->setStyle(proxy);
+
+    #ifdef Q_OS_WIN
+    // Qt does not seem to consistently apply the application font under Windows.
+    // To work-around this, set the application font to that used for a listview.
+    // Issues #1097 and #1109
+    QListView view;
+    view.ensurePolished();
+    QApplication::setFont(view.font());
+    #endif
 
     // Ensure these objects are created in the GUI thread...
     ThreadCleaner::self();

@@ -195,6 +195,7 @@ public Q_SLOTS:
     void addToExistingStoredPlaylist(const QString &name) { addToExistingStoredPlaylist(name, playQueue->hasFocus()); }
     void addToExistingStoredPlaylist(const QString &name, bool pq);
     void addStreamToPlayQueue();
+    void addLocalFilesToPlayQueue();
     void removeItems();
     void checkMpdAccessibility();
     void cropPlayQueue() { PlayQueueModel::self()->crop(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes())); }
@@ -286,6 +287,7 @@ private:
     Action *expandInterfaceAction;
     Action *cropPlayQueueAction;
     Action *addStreamToPlayQueueAction;
+    Action *addLocalFilesToPlayQueueAction;
     Action *randomPlayQueueAction;
     Action *repeatPlayQueueAction;
     Action *singlePlayQueueAction;

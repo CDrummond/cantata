@@ -11,6 +11,7 @@
 7. Work-around Windows font issues.
 8. If dynamic playlists helper does not start, show link to wiki page
    detailing perl dependencies.
+9. Add "Add Local Files" to playqueu context menu.
 
 2.2.0
 -----

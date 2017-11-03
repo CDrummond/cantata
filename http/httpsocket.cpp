@@ -484,7 +484,7 @@ void HttpSocket::removedIds(const QSet<qint32> &ids)
 
 bool HttpSocket::write(QTcpSocket *socket, char *buffer, qint32 bytesRead, bool &stop)
 {
-    if (bytesRead<0 || terminated) {
+    if (bytesRead<0 || terminated || !socket) {
         return false;
     }
 

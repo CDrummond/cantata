@@ -470,9 +470,14 @@ void HttpSocket::cantataStreams(const QList<Song> &songs, bool isUpdate)
 
     foreach (const Song &s, songs) {
         DBUG << s.file;
-        streamIds.insert(s.id, s.file);
+        if (s.isCantataStream()) {
+            streamIds.insert(s.id, HttpServer::self()->decodeUrl(s.file).file);
+        } else {
+            streamIds.insert(s.id, s.file);
+        }
         newlyAddedFiles.remove(s.file);
     }
+    DBUG << streamIds;
 }
 
 void HttpSocket::removedIds(const QSet<qint32> &ids)

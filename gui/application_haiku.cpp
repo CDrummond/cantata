@@ -28,5 +28,14 @@
 Application::Application(int &argc, char **argv)
     : SingleApplication(argc, argv)
 {
+}
+
+bool Application::start()
+{
+    return true;
+}
+
+void Application::loadFiles()
+{
 
 }

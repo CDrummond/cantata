@@ -378,6 +378,13 @@ bool DynamicPlaylists::controlApp(bool isStart)
         connect(localTimer, SIGNAL(timeout()), SLOT(checkHelper()));
     }
     bool rv=process.waitForFinished(1000);
+    if (isStart && rv) {
+        int exitCode = process.exitCode();
+        DBUG << exitCode;
+        if (0!=exitCode) {
+            emit error(tr("Could not start dynamic helper. Please check all <a href=\"https://github.com/CDrummond/cantata/wiki/Dynamic-Palylists-Helper\">dependencies</a> are installed."));
+        }
+    }
     localTimer->start(1000);
     return rv;
 }

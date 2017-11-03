@@ -114,6 +114,7 @@
 #include <QKeyEvent>
 #include <QSpacerItem>
 #include <QMenuBar>
+#include <QFileDialog>
 #include "mediakeys.h"
 #include <cstdlib>
 
@@ -297,6 +298,7 @@ void MainWindow::init()
     #endif
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", tr("Crop Others"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", tr("Add Stream URL"));
+    addLocalFilesToPlayQueueAction = ActionCollection::get()->createAction("addlocalfiles", tr("Add Local Files"));
     QIcon clearIcon = MonoIcon::icon(FontAwesome::times, MonoIcon::constRed, MonoIcon::constRed);
     clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", tr("Clear"), clearIcon);
     clearPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_K);
@@ -386,6 +388,7 @@ void MainWindow::init()
     centerPlayQueueAction->setEnabled(false);
     StdActions::self()->savePlayQueueAction->setEnabled(false);
     addStreamToPlayQueueAction->setEnabled(false);
+    addLocalFilesToPlayQueueAction->setEnabled(false);
     clearPlayQueueButton->setDefaultAction(clearPlayQueueAction);
     savePlayQueueButton->setDefaultAction(StdActions::self()->savePlayQueueAction);
     centerPlayQueueButton->setDefaultAction(centerPlayQueueAction);
@@ -590,6 +593,7 @@ void MainWindow::init()
     addMenuAction(menu, clearPlayQueueAction);
     addMenuAction(menu, StdActions::self()->savePlayQueueAction);
     addMenuAction(menu, addStreamToPlayQueueAction);
+    addMenuAction(menum addLocalFilesToPlayQueue);
     menu->addSeparator();
     addMenuAction(menu, PlayQueueModel::self()->shuffleAct());
     addMenuAction(menu, PlayQueueModel::self()->sortAct());
@@ -664,6 +668,7 @@ void MainWindow::init()
     playQueue->addAction(cropPlayQueueAction);
     playQueue->addAction(StdActions::self()->savePlayQueueAction);
     playQueue->addAction(addStreamToPlayQueueAction);
+    playQueue->addAction(addLocalFilesToPlayQueueAction);
     playQueue->addAction(addPlayQueueToStoredPlaylistAction);
     #ifdef ENABLE_DEVICES_SUPPORT
     playQueue->addAction(copyToDeviceAction);
@@ -784,6 +789,7 @@ void MainWindow::init()
     connect(expandAllAction, SIGNAL(triggered()), this, SLOT(expandAll()));
     connect(collapseAllAction, SIGNAL(triggered()), this, SLOT(collapseAll()));
     connect(addStreamToPlayQueueAction, SIGNAL(triggered()), this, SLOT(addStreamToPlayQueue()));
+    connect(addLocalFilesToPlayQueueAction, SIGNAL(triggered()), this, SLOT(addLocalFilesToPlayQueue()));
     connect(StdActions::self()->setCoverAction, SIGNAL(triggered()), SLOT(setCover()));
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     connect(StdActions::self()->replaygainAction, SIGNAL(triggered()), SLOT(replayGain()));
@@ -969,6 +975,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
     serverInfoAction->setEnabled(connected && !MPDConnection::self()->isMopidy());
     refreshDbAction->setEnabled(connected);
     addStreamToPlayQueueAction->setEnabled(connected);
+    addLocalFilesToPlayQueueAction->setEnabled(connected && (HttpServer::self()->isAlive() || MPDConnection::self()->localFilePlaybackSupported()));
     if (connected) {
         //if (!messageWidget->showingError()) {
             messageWidget->hide();
@@ -1952,6 +1959,21 @@ void MainWindow::addStreamToPlayQueue()
             StreamsModel::self()->addToFavourites(url, dlg.name());
         }
         PlayQueueModel::self()->addItems(QStringList() << StreamsModel::modifyUrl(url, true, dlg.name()), MPDConnection::Append, 0, false);
+    }
+}
+
+void MainWindow::addLocalFilesToPlayQueue()
+{
+    QString extensions;
+    for (const auto &ext: PlayQueueModel::constFileExtensions) {
+        if (!extensions.isEmpty()) {
+            extensions+=" ";
+        }
+        extensions+="*"+ext;
+    }
+    QStringList files=QFileDialog::getOpenFileNames(this, tr("Select Music Files"), QString(), tr("Music Files ")+"("+extensions+")");
+    if (!files.isEmpty()) {
+        PlayQueueModel::self()->load(files);
     }
 }
 

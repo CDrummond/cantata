@@ -77,17 +77,17 @@ static const QLatin1String constSortByPerformerKey("performer");
 static const QLatin1String constSortByTitleKey("title");
 static const QLatin1String constSortByNumberKey("track");
 
+QSet<QString> PlayQueueModel::constFileExtensions = QSet<QString>()
+                                                  << QLatin1String("mp3") << QLatin1String("ogg") << QLatin1String("flac") << QLatin1String("wma") << QLatin1String("m4a")
+                                                  << QLatin1String("m4b") << QLatin1String("mp4") << QLatin1String("m4p") << QLatin1String("wav") << QLatin1String("wv")
+                                                  << QLatin1String("wvp") << QLatin1String("aiff") << QLatin1String("aif") << QLatin1String("aifc") << QLatin1String("ape")
+                                                  << QLatin1String("spx") << QLatin1String("tta") << QLatin1String("mpc") << QLatin1String("mpp") << QLatin1String("mp+")
+                                                  << QLatin1String("dff") << QLatin1String("dsf");
+
 static bool checkExtension(const QString &file)
 {
-    static QSet<QString> constExtensions=QSet<QString>()
-            << QLatin1String("mp3") << QLatin1String("ogg") << QLatin1String("flac") << QLatin1String("wma") << QLatin1String("m4a")
-            << QLatin1String("m4b") << QLatin1String("mp4") << QLatin1String("m4p") << QLatin1String("wav") << QLatin1String("wv")
-            << QLatin1String("wvp") << QLatin1String("aiff") << QLatin1String("aif") << QLatin1String("aifc") << QLatin1String("ape")
-            << QLatin1String("spx") << QLatin1String("tta") << QLatin1String("mpc") << QLatin1String("mpp") << QLatin1String("mp+")
-            << QLatin1String("dff") << QLatin1String("dsf");
-
     int pos=file.lastIndexOf('.');
-    return pos>1 ? constExtensions.contains(file.mid(pos+1).toLower()) : false;
+    return pos>1 ? PlayQueueModel::constFileExtensions.contains(file.mid(pos+1).toLower()) : false;
 }
 
 static QStringList parseUrls(const QStringList &urls, bool percentEncoded)

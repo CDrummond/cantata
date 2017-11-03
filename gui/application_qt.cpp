@@ -23,10 +23,8 @@
 
 #include "application_qt.h"
 #include "config.h"
-#ifdef QT_QTDBUS_FOUND
 #include <QDBusConnection>
 #include <QDBusMessage>
-#endif
 #include <QDir>
 #include <QIcon>
 
@@ -46,7 +44,6 @@ Application::Application(int &argc, char **argv)
 
 bool Application::start()
 {
-#ifdef QT_QTDBUS_FOUND
     if (QDBusConnection::sessionBus().registerService(CANTATA_REV_URL)) {
         setupIconTheme(this);
         return true;
@@ -55,12 +52,10 @@ bool Application::start()
     // ...and activate window!
     QDBusConnection::sessionBus().send(QDBusMessage::createMethodCall("mpd.cantata", "/org/mpris/MediaPlayer2", "", "Raise"));
     return false;
-#endif
 }
 
 void Application::loadFiles()
 {
-#ifdef QT_QTDBUS_FOUND
     QStringList args(arguments());
     if (args.count()>1) {
         args.takeAt(0);
@@ -70,6 +65,5 @@ void Application::loadFiles()
         m.setArguments(a);
         QDBusConnection::sessionBus().send(m);
     }
-#endif
 }
 

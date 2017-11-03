@@ -32,6 +32,9 @@ public:
     static void init();
     Application(int &argc, char **argv);
     virtual ~Application() { };
+
+    bool start();
+    void loadFiles();
 };
 
 #endif

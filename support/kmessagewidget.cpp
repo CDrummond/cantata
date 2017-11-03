@@ -93,6 +93,7 @@ void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
     textLabel = new SqueezedTextLabel(content);
     textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     textLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    textLabel->setOpenExternalLinks(true);
 
     QAction* closeAction = new QAction(q);
     closeAction->setIcon(MonoIcon::icon(FontAwesome::close, MonoIcon::constRed, MonoIcon::constRed));

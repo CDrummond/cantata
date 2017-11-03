@@ -261,6 +261,9 @@ void HttpSocket::readClient()
     }
 
     QTcpSocket *socket = static_cast<QTcpSocket *>(sender());
+    if (!socket) {
+        return;
+    }
 
     if (socket->bytesAvailable() >= constMaxBuffer) {
         // Request too large, reject
@@ -412,7 +415,7 @@ void HttpSocket::readClient()
             socket->close();
 
             if (QTcpSocket::UnconnectedState==socket->state()) {
-                delete socket;
+                socket->deleteLater();
             }
         } else {
             // Bad Request
@@ -489,7 +492,7 @@ void HttpSocket::removedIds(const QSet<qint32> &ids)
 
 bool HttpSocket::write(QTcpSocket *socket, char *buffer, qint32 bytesRead, bool &stop)
 {
-    if (bytesRead<0 || terminated || !socket) {
+    if (bytesRead<0 || terminated) {
         return false;
     }
 

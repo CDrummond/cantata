@@ -1,17 +1,18 @@
 2.3.0
 -----
-1. Only disable system tray support if org.kde.StatusNotifierWatcher is not
-   registered when running under Gnome.
-2. Add ability to change grid cover size - Ctrl+ / Ctrl-
-3. Avahi support (automatic mpd discovery)
-4. Make serving of files to MPD via HTTP configurable.
-5. If set to only transcode if source is different, or lossless, then only
-   change extension if song is actually transcoded.
-6. Use a combo box for 'Transcode if...' options.
-7. Work-around Windows font issues.
-8. If dynamic playlists helper does not start, show link to wiki page
-   detailing perl dependencies.
-9. Add "Add Local Files" to playqueu context menu.
+ 1. Only disable system tray support if org.kde.StatusNotifierWatcher is not
+    registered when running under Gnome.
+ 2. Add ability to change grid cover size - Ctrl+ / Ctrl-
+ 3. Avahi support (automatic mpd discovery)
+ 4. Make serving of files to MPD via HTTP configurable.
+ 5. If set to only transcode if source is different, or lossless, then only
+    change extension if song is actually transcoded.
+ 6. Use a combo box for 'Transcode if...' options.
+ 7. Work-around Windows font issues.
+ 8. If dynamic playlists helper does not start, show link to wiki page
+    detailing perl dependencies.
+ 9. Add "Add Local Files" to playqueu context menu.
+10. Add support for Haiku - thanks to miqlas
 
 2.2.0
 -----

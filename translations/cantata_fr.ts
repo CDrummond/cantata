@@ -6800,43 +6800,48 @@ Cette action est définitive.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="489"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="385"/>
+        <source>Could not start dynamic helper. Please check all &lt;a href=&quot;https://github.com/CDrummond/cantata/wiki/Dynamic-Palylists-Helper&quot;&gt;dependencies&lt;/a&gt; are installed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/dynamicplaylists.cpp" line="496"/>
         <source>Dynamizer has been terminated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="535"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="542"/>
         <source>Awaiting response for previous command. (%1)</source>
         <translation type="unfinished">En attente de la réponse pour la commande précédente. (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="535"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="542"/>
         <source>Saving rule</source>
         <translation type="unfinished">Sauvegarde des règles</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="535"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="542"/>
         <source>Deleting rule</source>
         <translation type="unfinished">Suppression des règles</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="642"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="649"/>
         <source>Failed to save %1. (%2)</source>
         <translation type="unfinished">La sauvegarde de %1 a échoué. (%2)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="656"/>
-        <location filename="../playlists/dynamicplaylists.cpp" line="659"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="663"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="666"/>
         <source>Failed to delete rules file. (%1)</source>
         <translation type="unfinished">La suppression des droits sur le fichier a échoué. (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="666"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="673"/>
         <source>Failed to control dynamizer state. (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="673"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="680"/>
         <source>Failed to set the current dynamic rules. (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8247,255 +8252,260 @@ Si cette recherche donne de nouveaux résultats, ils seront toujours associés a
         <translation type="unfinished">Sortir du mode plein écran</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="248"/>
+        <location filename="../gui/mainwindow.cpp" line="249"/>
         <source>Configure Cantata...</source>
         <translation type="unfinished">Configurer Cantata…</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="248"/>
+        <location filename="../gui/mainwindow.cpp" line="249"/>
         <source>Preferences</source>
         <translation type="unfinished">Préférences</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="251"/>
+        <location filename="../gui/mainwindow.cpp" line="252"/>
         <source>Quit</source>
         <translation type="unfinished">Quitter</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="254"/>
+        <location filename="../gui/mainwindow.cpp" line="255"/>
         <source>About Cantata...</source>
         <translation type="unfinished">À propos de Cantata…</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="261"/>
+        <location filename="../gui/mainwindow.cpp" line="262"/>
         <source>Show Window</source>
         <translation type="unfinished">Afficher la fenêtre</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="264"/>
+        <location filename="../gui/mainwindow.cpp" line="265"/>
         <source>Server information...</source>
         <translation type="unfinished">Informations sur le serveur…</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="267"/>
+        <location filename="../gui/mainwindow.cpp" line="268"/>
         <source>Refresh Database</source>
         <translation type="unfinished">Rafraîchir la base de données</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="268"/>
+        <location filename="../gui/mainwindow.cpp" line="269"/>
         <source>Refresh</source>
         <translation type="unfinished">Rafraîchir</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="270"/>
+        <location filename="../gui/mainwindow.cpp" line="271"/>
         <source>Connect</source>
         <translation type="unfinished">Connecter</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="271"/>
+        <location filename="../gui/mainwindow.cpp" line="272"/>
         <source>Collection</source>
         <translation type="unfinished">Collection</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="272"/>
-        <location filename="../gui/mainwindow.cpp" line="1271"/>
-        <location filename="../gui/mainwindow.cpp" line="1275"/>
-        <location filename="../gui/mainwindow.cpp" line="1281"/>
+        <location filename="../gui/mainwindow.cpp" line="273"/>
+        <location filename="../gui/mainwindow.cpp" line="1278"/>
+        <location filename="../gui/mainwindow.cpp" line="1282"/>
+        <location filename="../gui/mainwindow.cpp" line="1288"/>
         <source>Outputs</source>
         <translation type="unfinished">Sorties</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="273"/>
+        <location filename="../gui/mainwindow.cpp" line="274"/>
         <source>Stop After Track</source>
         <translation type="unfinished">Arrêter après la piste</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="279"/>
+        <location filename="../gui/mainwindow.cpp" line="280"/>
         <source>Seek forward (%1 seconds)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="280"/>
+        <location filename="../gui/mainwindow.cpp" line="281"/>
         <source>Seek backward (%1 seconds)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="293"/>
+        <location filename="../gui/mainwindow.cpp" line="294"/>
         <source>Add To Stored Playlist</source>
         <translation type="unfinished">Ajouter à la liste sauvegardée</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="298"/>
+        <location filename="../gui/mainwindow.cpp" line="299"/>
         <source>Crop Others</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="299"/>
+        <location filename="../gui/mainwindow.cpp" line="300"/>
         <source>Add Stream URL</source>
         <translation type="unfinished">Ajouter l&apos;URL de flux</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="301"/>
+        <source>Add Local Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="303"/>
         <source>Clear</source>
         <translation type="unfinished">Nettoyer</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="303"/>
+        <location filename="../gui/mainwindow.cpp" line="305"/>
         <source>Center On Current Track</source>
         <translation type="unfinished">Centrer sur la piste courante</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="304"/>
+        <location filename="../gui/mainwindow.cpp" line="306"/>
         <source>Expanded Interface</source>
         <translation type="unfinished">Interface étendue</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="306"/>
+        <location filename="../gui/mainwindow.cpp" line="308"/>
         <source>Show Current Song Information</source>
         <translation type="unfinished">Afficher les informations de la piste courante</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="309"/>
+        <location filename="../gui/mainwindow.cpp" line="311"/>
         <source>Full Screen</source>
         <translation type="unfinished">Plein écran</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="313"/>
+        <location filename="../gui/mainwindow.cpp" line="315"/>
         <source>Random</source>
         <translation type="unfinished">Aléatoire</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="314"/>
+        <location filename="../gui/mainwindow.cpp" line="316"/>
         <source>Repeat</source>
         <translation type="unfinished">Répéter</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="315"/>
+        <location filename="../gui/mainwindow.cpp" line="317"/>
         <source>Single</source>
         <translation type="unfinished">Single</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="315"/>
+        <location filename="../gui/mainwindow.cpp" line="317"/>
         <source>When &apos;Single&apos; is activated, playback is stopped after current song, or song is repeated if &apos;Repeat&apos; is enabled.</source>
         <translation type="unfinished">Quand le mode &apos;Single&apos; est activé, la lecture est stoppée après la piste courante ou la piste est répétée si le mode &apos;Répéter&apos; est activé.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="316"/>
+        <location filename="../gui/mainwindow.cpp" line="318"/>
         <source>Consume</source>
         <translation type="unfinished">Consommer</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="316"/>
+        <location filename="../gui/mainwindow.cpp" line="318"/>
         <source>When consume is activated, a song is removed from the play queue after it has been played.</source>
         <translation type="unfinished">Quand le mode &apos;Consommer&apos; est activé, la piste courante est retirée de la liste de lecture après sa lecture.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="317"/>
+        <location filename="../gui/mainwindow.cpp" line="319"/>
         <source>Find in Play Queue</source>
         <translation type="unfinished">Trouver dans la liste de lecture</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="321"/>
+        <location filename="../gui/mainwindow.cpp" line="323"/>
         <source>Play Stream</source>
         <translation type="unfinished">Lire le flux</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="329"/>
+        <location filename="../gui/mainwindow.cpp" line="331"/>
         <source>Locate In Library</source>
         <translation type="unfinished">Trouver dans la bibliothèque</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="330"/>
+        <location filename="../gui/mainwindow.cpp" line="332"/>
         <source>Artist</source>
         <translation type="unfinished">Artiste</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="331"/>
+        <location filename="../gui/mainwindow.cpp" line="333"/>
         <source>Album</source>
         <translation type="unfinished">Album</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="332"/>
+        <location filename="../gui/mainwindow.cpp" line="334"/>
         <source>Track</source>
         <translation type="unfinished">Piste</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="333"/>
+        <location filename="../gui/mainwindow.cpp" line="335"/>
         <source>Locate In Library / Artist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="334"/>
+        <location filename="../gui/mainwindow.cpp" line="336"/>
         <source>Locate In Library / Album</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="335"/>
+        <location filename="../gui/mainwindow.cpp" line="337"/>
         <source>Locate In Library / Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="347"/>
+        <location filename="../gui/mainwindow.cpp" line="349"/>
         <source>Play next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="350"/>
+        <location filename="../gui/mainwindow.cpp" line="352"/>
         <source>Edit Track Information (Play Queue)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="353"/>
+        <location filename="../gui/mainwindow.cpp" line="355"/>
         <source>Expand All</source>
         <translation type="unfinished">Tout étendre</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="355"/>
+        <location filename="../gui/mainwindow.cpp" line="357"/>
         <source>Collapse All</source>
         <translation type="unfinished">Tout replier</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="357"/>
+        <location filename="../gui/mainwindow.cpp" line="359"/>
         <source>Cancel</source>
         <translation type="unfinished">Annuler</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="410"/>
+        <location filename="../gui/mainwindow.cpp" line="413"/>
         <source>Play Queue</source>
         <translation type="unfinished">Liste de lecture courante</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="415"/>
+        <location filename="../gui/mainwindow.cpp" line="418"/>
         <source>Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="420"/>
+        <location filename="../gui/mainwindow.cpp" line="423"/>
         <source>Folders</source>
         <translation type="unfinished">Dossiers</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="426"/>
+        <location filename="../gui/mainwindow.cpp" line="429"/>
         <source>Playlists</source>
         <translation type="unfinished">Listes de lecture</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="435"/>
+        <location filename="../gui/mainwindow.cpp" line="438"/>
         <source>Internet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="444"/>
+        <location filename="../gui/mainwindow.cpp" line="447"/>
         <source>Devices</source>
         <translation type="unfinished">Périphériques</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="451"/>
+        <location filename="../gui/mainwindow.cpp" line="454"/>
         <source>Search</source>
         <translation type="unfinished">Recherche</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="456"/>
+        <location filename="../gui/mainwindow.cpp" line="459"/>
         <source>Info</source>
         <translation type="unfinished">Infos</translation>
     </message>
@@ -8504,22 +8514,22 @@ Si cette recherche donne de nouveaux résultats, ils seront toujours associés a
         <translation type="obsolete">Afficher la barre de menu</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="565"/>
+        <location filename="../gui/mainwindow.cpp" line="568"/>
         <source>&amp;Music</source>
         <translation type="unfinished">&amp;Musique</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="576"/>
+        <location filename="../gui/mainwindow.cpp" line="579"/>
         <source>&amp;Edit</source>
         <translation type="unfinished">&amp;Éditer</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="585"/>
+        <location filename="../gui/mainwindow.cpp" line="588"/>
         <source>&amp;View</source>
         <translation type="unfinished">&amp;Voir</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="589"/>
+        <location filename="../gui/mainwindow.cpp" line="592"/>
         <source>&amp;Queue</source>
         <translation type="unfinished">&amp;File</translation>
     </message>
@@ -8528,67 +8538,67 @@ Si cette recherche donne de nouveaux résultats, ils seront toujours associés a
         <translation type="obsolete">&amp;Paramètres</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="598"/>
+        <location filename="../gui/mainwindow.cpp" line="602"/>
         <source>&amp;Help</source>
         <translation type="unfinished">&amp;Aide</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="634"/>
+        <location filename="../gui/mainwindow.cpp" line="638"/>
         <source>Set Rating</source>
         <translation type="unfinished">Définir une note</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="639"/>
+        <location filename="../gui/mainwindow.cpp" line="643"/>
         <source>No Rating</source>
         <translation type="unfinished">Pas de note</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="947"/>
+        <location filename="../gui/mainwindow.cpp" line="953"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation type="unfinished">Aucune piste respectant les choix définis pour la liste de lecture dynamique n&apos;a été trouvée.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1066"/>
+        <location filename="../gui/mainwindow.cpp" line="1073"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">Connecté à %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1102"/>
+        <location filename="../gui/mainwindow.cpp" line="1109"/>
         <source>Refresh MPD Database?</source>
         <translation type="unfinished">Rafraîchir la base de données MPD ?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1108"/>
+        <location filename="../gui/mainwindow.cpp" line="1115"/>
         <source>About Cantata</source>
         <translation type="unfinished">À propos de Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1109"/>
+        <location filename="../gui/mainwindow.cpp" line="1116"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1111"/>
+        <location filename="../gui/mainwindow.cpp" line="1118"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1112"/>
+        <location filename="../gui/mainwindow.cpp" line="1119"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">Les images de fond sont issues de &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1113"/>
+        <location filename="../gui/mainwindow.cpp" line="1120"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation type="unfinished">Les informations de lecture sont issues de &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; et &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1114"/>
+        <location filename="../gui/mainwindow.cpp" line="1121"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">N&apos;hésitez pas à envoyer vos propres images fan-art sur &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1121"/>
+        <location filename="../gui/mainwindow.cpp" line="1128"/>
         <source>A Podcast is currently being downloaded
 
 Quiting now will abort the download.</source>
@@ -8597,100 +8607,100 @@ Quiting now will abort the download.</source>
 Le téléchargement sera abandonné si vous quittez maintenant.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1122"/>
+        <location filename="../gui/mainwindow.cpp" line="1129"/>
         <source>Abort download and quit</source>
         <translation type="unfinished">Abandonner et quitter</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1150"/>
+        <location filename="../gui/mainwindow.cpp" line="1157"/>
         <source>Please close other dialogs first.</source>
         <translation type="unfinished">Veuillez fermer au préalable les autres boites de dialogue.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1271"/>
-        <location filename="../gui/mainwindow.cpp" line="1282"/>
+        <location filename="../gui/mainwindow.cpp" line="1278"/>
+        <location filename="../gui/mainwindow.cpp" line="1289"/>
         <source>Enabled: %1</source>
         <translation type="unfinished">Activé: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1275"/>
-        <location filename="../gui/mainwindow.cpp" line="1283"/>
+        <location filename="../gui/mainwindow.cpp" line="1282"/>
+        <location filename="../gui/mainwindow.cpp" line="1290"/>
         <source>Disabled: %1</source>
         <translation type="unfinished">Désactivé: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1471"/>
-        <location filename="../gui/mainwindow.cpp" line="1494"/>
+        <location filename="../gui/mainwindow.cpp" line="1478"/>
+        <location filename="../gui/mainwindow.cpp" line="1501"/>
         <source>Server Information</source>
         <translation type="unfinished">Informations du serveur</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1474"/>
+        <location filename="../gui/mainwindow.cpp" line="1481"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Serveur&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocole:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Durée de fonctionnement:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Temps de lecture:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Formats:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Étiquettes:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1485"/>
+        <location filename="../gui/mainwindow.cpp" line="1492"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Base de données&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artistes:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Pistes:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Durée totale:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Mise à jour:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1638"/>
+        <location filename="../gui/mainwindow.cpp" line="1645"/>
         <source>Cantata (%1)</source>
         <translation type="unfinished">Cantata (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1705"/>
+        <location filename="../gui/mainwindow.cpp" line="1712"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">MPD a retourné l&apos;erreur suivante: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1776"/>
+        <location filename="../gui/mainwindow.cpp" line="1783"/>
         <source>Cantata</source>
         <translation type="unfinished">Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1776"/>
+        <location filename="../gui/mainwindow.cpp" line="1783"/>
         <source>Playback stopped</source>
         <translation type="unfinished">La lecture a été interrompue</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1819"/>
+        <location filename="../gui/mainwindow.cpp" line="1826"/>
         <source>Remove all songs from play queue?</source>
         <translation type="unfinished">Supprimer toutes les pistes de la liste de lecture ?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1870"/>
+        <location filename="../gui/mainwindow.cpp" line="1877"/>
         <source>Priority</source>
         <translation type="unfinished">Priorité</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1870"/>
+        <location filename="../gui/mainwindow.cpp" line="1877"/>
         <source>Enter priority (0..255):</source>
         <translation type="unfinished">Saisir une priorité (0…255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1871"/>
+        <location filename="../gui/mainwindow.cpp" line="1878"/>
         <source>Decrease priority for each subsequent track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1898"/>
+        <location filename="../gui/mainwindow.cpp" line="1905"/>
         <source>Playlist Name</source>
         <translation type="unfinished">Nom de la liste de lecture</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1898"/>
+        <location filename="../gui/mainwindow.cpp" line="1905"/>
         <source>Enter a name for the playlist:</source>
         <translation type="unfinished">Entrez un nom pour la liste de lecture:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1901"/>
+        <location filename="../gui/mainwindow.cpp" line="1908"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation type="unfinished">Le nom &apos;%1&apos; est déjà utilisé pour enregistrer vos flux favoris, veuillez choisir un autre nom.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1905"/>
+        <location filename="../gui/mainwindow.cpp" line="1912"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -8699,12 +8709,22 @@ Add to that playlist?</source>
 Ajouter à cette liste de lecture ?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1906"/>
+        <location filename="../gui/mainwindow.cpp" line="1913"/>
         <source>Existing Playlist</source>
         <translation type="unfinished">Liste de lecture existante</translation>
     </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="1974"/>
+        <source>Select Music Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="1974"/>
+        <source>Music Files </source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="1981"/>
+        <location filename="../gui/mainwindow.cpp" line="2003"/>
         <source>%n Track(s)</source>
         <translation type="unfinished">
             <numerusform>1 piste</numerusform>
@@ -8712,7 +8732,7 @@ Ajouter à cette liste de lecture ?</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="1983"/>
+        <location filename="../gui/mainwindow.cpp" line="2005"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>1 piste (%1)</numerusform>
@@ -11204,7 +11224,7 @@ width x height</comment>
         <translation type="unfinished">&amp;Suivant</translation>
     </message>
     <message>
-        <location filename="../support/kmessagewidget.cpp" line="99"/>
+        <location filename="../support/kmessagewidget.cpp" line="100"/>
         <source>Close</source>
         <translation type="unfinished">Fermer</translation>
     </message>

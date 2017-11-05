@@ -7723,7 +7723,7 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../streams/streamspage.cpp" line="409"/>
         <source>Reload &apos;%1&apos; streams?</source>
-        <translation>Ricaricare &apos;%1&apos; flussi?</translation>
+        <translation>Ricaricare i flussi di &apos;%1&apos;?</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="423"/>

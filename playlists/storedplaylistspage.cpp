@@ -73,7 +73,7 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
     connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
-    connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
+    connect(this, SIGNAL(savePlaylist(const QString &, bool)), MPDConnection::self(), SLOT(savePlaylist(const QString &, bool)));
     connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(renamePlaylist(const QString &, const QString &)));
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<quint32> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<quint32> &)));
     connect(StdActions::self()->savePlayQueueAction, SIGNAL(triggered()), this, SLOT(savePlaylist()));
@@ -202,19 +202,15 @@ void StoredPlaylistsPage::removeItems()
 
 void StoredPlaylistsPage::savePlaylist()
 {
-    QString name = InputDialog::getText(tr("Playlist Name"), tr("Enter a name for the playlist:"), QString(), 0, this);
+    QStringList existing;
+    for (int i=0; i<proxy.rowCount(); ++i) {
+        existing.append(proxy.data(proxy.index(i, 0, QModelIndex())).toString());
+    }
 
+    QString name = InputDialog::getText(tr("Playlist Name"), tr("Enter a name for the playlist:"), lastPlaylist, existing, 0, this);
     if (!name.isEmpty()) {
-        if (PlaylistsModel::self()->exists(name)) {
-            if (MessageBox::No==MessageBox::warningYesNo(this, tr("A playlist named '%1' already exists!\n\nOverwrite?").arg(name),
-                                                         tr("Overwrite Playlist"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
-                return;
-            }
-            else {
-                emit removePlaylist(name);
-            }
-        }
-        emit savePlaylist(name);
+        lastPlaylist=name;
+        emit savePlaylist(name, true);
     }
 }
 
@@ -304,12 +300,14 @@ void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, con
         PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
 
         if (item->isPlaylist()) {
-            emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(item)->name, false);
+            lastPlaylist=static_cast<PlaylistsModel::PlaylistItem*>(item)->name;
+            emit loadPlaylist(lastPlaylist, false);
             return;
         }
     }
 
     if (!name.isEmpty()) {
+        lastPlaylist.clear();
         foreach (const QModelIndex &idx, indexes) {
             QModelIndex m=proxy.mapToSource(idx);
             PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(m.internalPointer());

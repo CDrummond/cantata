@@ -51,7 +51,7 @@ Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void loadPlaylist(const QString &name, bool replace);
     void removePlaylist(const QString &name);
-    void savePlaylist(const QString &name);
+    void savePlaylist(const QString &name, bool overwrite);
     void renamePlaylist(const QString &oldname, const QString &newname);
     void removeFromPlaylist(const QString &name, const QList<quint32> &positions);
 
@@ -78,6 +78,7 @@ private:
     void controlActions();
 
 private:
+    QString lastPlaylist;
     Action *renamePlaylistAction;
     Action *removeDuplicatesAction;
     Action *intitiallyCollapseAction;

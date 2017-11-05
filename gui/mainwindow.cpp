@@ -1877,7 +1877,7 @@ void MainWindow::addWithPriority()
         InputDialog dlg(tr("Priority"), tr("Enter priority (0..255):"), 150, 0, 255, 5, this);
         QCheckBox *dec = new QCheckBox(tr("Decrease priority for each subsequent track"), this);
         dec->setChecked(false);
-        dlg.addExtraWidget(QString(), dec);
+        dlg.addExtraWidget(dec);
         if (QDialog::Accepted!=dlg.exec()) {
             return;
         }

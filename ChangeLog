@@ -13,6 +13,8 @@
     detailing perl dependencies.
  9. Add "Add Local Files" to playqueu context menu.
 10. Add support for Haiku - thanks to miqlas
+11. Remember last loaded/saved playlist name - and use this as the default
+    name when saving.
 
 2.2.0
 -----

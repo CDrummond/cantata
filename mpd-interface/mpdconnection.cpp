@@ -1689,8 +1689,11 @@ void MPDConnection::removePlaylist(const QString &name)
     sendCommand("rm "+encodeName(name));
 }
 
-void MPDConnection::savePlaylist(const QString &name)
+void MPDConnection::savePlaylist(const QString &name, bool overwrite)
 {
+    if (overwrite) {
+        sendCommand("rm "+encodeName(name), false);
+    }
     if (!sendCommand("save "+encodeName(name), false).ok) {
         emit error(tr("Failed to save <b>%1</b>").arg(name));
     }

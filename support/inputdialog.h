@@ -28,6 +28,7 @@
 #include <QSpinBox>
 #include <QWidget>
 #include "dialog.h"
+#include "combobox.h"
 
 class LineEdit;
 
@@ -36,31 +37,46 @@ class InputDialog : public Dialog
     Q_OBJECT
 
 public:
-    InputDialog(const QString &caption, const QString &label, const QString &value, QLineEdit::EchoMode echo, QWidget *parent);
+    InputDialog(const QString &caption, const QString &label, const QString &value, const QStringList &options, QLineEdit::EchoMode echo, QWidget *parent);
     InputDialog(const QString &caption, const QString &label, int value, int minValue, int maxValue, int step, QWidget *parent);
 
     static QString getText(const QString &caption, const QString &label, QLineEdit::EchoMode echoMode, const QString &value=QString(),
-                           bool *ok=0, QWidget *parent=0);
+                           const QStringList &options=QStringList(), bool *ok=0, QWidget *parent=0);
+
     static int getInteger(const QString &caption, const QString &label, int value=0, int minValue=INT_MIN, int maxValue=INT_MAX,
                           int step=1, int base=10, bool *ok=0, QWidget *parent=0);
 
-    static QString getText(const QString &caption, const QString &label, const QString &value=QString(), bool *ok=0, QWidget *parent=0) {
-        return getText(caption, label, QLineEdit::Normal, value, ok, parent);
-    }
-    static QString getPassword(const QString &value=QString(), bool *ok=0, QWidget *parent=0) {
-        return getText(tr("Password"), tr("Please enter password:"), QLineEdit::Password, value, ok, parent);
+    static QString getText(const QString &caption, const QString &label, const QString &value=QString(),
+                           const QStringList &options=QStringList(), bool *ok=0, QWidget *parent=0) {
+        return getText(caption, label, QLineEdit::Normal, value, options, ok, parent);
     }
 
-    void addExtraWidget(const QString &label, QWidget *w);
+    static QString getText(const QString &caption, const QString &label, QLineEdit::EchoMode echoMode, const QString &value,
+                           bool *ok, QWidget *parent) {
+        return getText(caption, label, echoMode, value, QStringList(), ok, parent);
+    }
+
+    static QString getText(const QString &caption, const QString &label, const QString &value, bool *ok, QWidget *parent) {
+        return getText(caption, label, QLineEdit::Normal, value, QStringList(), ok, parent);
+    }
+
+    static QString getPassword(const QString &value=QString(), bool *ok=0, QWidget *parent=0) {
+        return getText(tr("Password"), tr("Please enter password:"), QLineEdit::Password, value, QStringList(), ok, parent);
+    }
+
+    void addExtraWidget(QWidget *w);
     QSpinBox *spinBox() {
         return spin;
     }
-    LineEdit *lineEdit() {
-        return edit;
+    QLineEdit *lineEdit() {
+        return edit ? (QLineEdit *)edit : combo ? combo->lineEdit() : nullptr;
+    }
+    ComboBox *comboBox() {
+        return combo;
     }
 
 private:
-    void init(bool intInput, const QString &caption, const QString &label);
+    void init(int type, const QString &caption, const QString &labelText);
 
 private Q_SLOTS:
     void enableOkButton();
@@ -68,6 +84,7 @@ private Q_SLOTS:
 private:
     QSpinBox *spin;
     LineEdit *edit;
+    ComboBox *combo;
     QWidget *extra;
 };
 

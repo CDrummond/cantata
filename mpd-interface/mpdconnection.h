@@ -302,7 +302,7 @@ public Q_SLOTS:
     void loadPlaylist(const QString &name, bool replace);
     void renamePlaylist(const QString oldName, const QString newName);
     void removePlaylist(const QString &name);
-    void savePlaylist(const QString &name);
+    void savePlaylist(const QString &name, bool overwrite);
     void addToPlaylist(const QString &name, const QStringList &songs) { addToPlaylist(name, songs, 0, 0); }
     void addToPlaylist(const QString &name, const QStringList &songs, quint32 pos, quint32 size);
     void removeFromPlaylist(const QString &name, const QList<quint32> &positions);

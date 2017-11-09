@@ -651,7 +651,7 @@ void SongView::loadMetadata()
         tagInfo+=QLatin1String("<tr/>");
     }
     if (MPDConnection::self()->getDetails().dirReadable) {
-        QString path=Utils::getDir(MPDConnection::self()->getDetails().dir+currentSong.filePath());
+        QString path=Utils::getDir(currentSong.filePath(MPDConnection::self()->getDetails().dir));
         tagInfo+=createRow(tr("Filename"), QLatin1String("<a href=\"file://")+path+QLatin1String("\">")+
                                              currentSong.filePath()+QLatin1String("</a>"));
     } else {

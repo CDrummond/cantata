@@ -728,6 +728,16 @@ QString Song::basicArtist() const
     return artist;
 }
 
+QString Song::filePath(const QString &base) const
+{
+    QString fileName=filePath();
+    bool haveAbsPath=fileName.startsWith("/"); // Utils::constDirSep
+    if (!haveAbsPath) {
+        return QString(base+fileName);
+    }
+    return fileName;
+}
+
 QString Song::describe(bool withMarkup) const
 {
     QString albumText=album.isEmpty() ? name() : displayAlbum(album, Song::albumYear(*this));

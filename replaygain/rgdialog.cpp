@@ -304,7 +304,7 @@ void RgDialog::createScanner(const QList<int> &indexes)
 {
     QMap<int, QString> fileMap;
     foreach (int i, indexes) {
-        fileMap[i]=base+origSongs.at(i).filePath();
+        fileMap[i]=origSongs.at(i).filePath(base);
     }
 
     AlbumScanner *s=new AlbumScanner(fileMap);
@@ -379,8 +379,8 @@ bool RgDialog::saveTags()
     QMap<int, Tags::ReplayGain>::ConstIterator end=tagsToSave.constEnd();
 
     for (; it!=end; ++it) {
-        QString filePath=origSongs.at(it.key()).filePath();
-        switch (Tags::updateReplaygain(base+filePath, it.value())) {
+        QString filePath=origSongs.at(it.key()).filePath(base);
+        switch (Tags::updateReplaygain(filePath, it.value())) {
         case Tags::Update_Failed:
             failed.append(filePath);
             break;

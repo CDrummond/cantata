@@ -209,6 +209,7 @@ struct Song
     bool isStandardStream() const { return Stream==type && !isDlnaStream(); }
     bool isDlnaStream() const { return Stream==type && !albumArtist().isEmpty() && !album.isEmpty() && track>0; }
     bool isNonMPD() const { return isStream() || OnlineSvrTrack==type || Cdda==type || (!file.isEmpty() && file.startsWith(Utils::constDirSep)); }
+    bool hasProtocolOrIsAbsolute() const { return !file.isEmpty() && (file.startsWith(Utils::constDirSep) || (!file.startsWith(constForkedDaapdLocal) && file.contains(":/")));}
     bool isCantataStream() const { return CantataStream==type; }
     bool isCdda() const { return Cdda==type; }
     QString albumKey() const;

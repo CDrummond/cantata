@@ -347,7 +347,7 @@ QList<Song> PlayQueueView::selectedSongs() const
 
     foreach (const QModelIndex &idx, selected) {
         Song song=idx.data(Cantata::Role_Song).value<Song>();
-        if (!song.file.isEmpty() && !song.file.contains(":/") && !song.file.startsWith('/')) {
+        if (!song.file.isEmpty() && !song.hasProtocolOrIsAbsolute()) {
             songs.append(song);
         }
     }

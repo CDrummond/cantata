@@ -516,7 +516,7 @@ void TagEditor::readComments()
             continue;
         }
         Song song=original.at(i);
-        QString comment=Tags::readComment(baseDir+song.file);
+        QString comment=Tags::readComment(song.filePath(baseDir));
         if (!comment.isEmpty()) {
             song.setComment(comment);
             original.replace(i, song);
@@ -761,7 +761,7 @@ void TagEditor::readRatings()
                 QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
             }
             Song s=edited.at(i);
-            int r=Tags::readRating(baseDir+s.file);
+            int r=Tags::readRating(s.filePath(baseDir));
             if (r>=0 && r<=Song::Rating_Max && s.rating!=r) {
                 s.rating=r;
                 edited.replace(i, s);
@@ -779,7 +779,7 @@ void TagEditor::readRatings()
         }
     } else {
         Song s=edited.at(currentSongIndex);
-        int r=Tags::readRating(baseDir+s.file);
+        int r=Tags::readRating(s.filePath(baseDir));
         if (r>=0 && r<=Song::Rating_Max && s.rating!=r) {
             s.rating=r;
             edited.replace(currentSongIndex, s);
@@ -830,7 +830,7 @@ void TagEditor::writeRatings()
             }
             Song s=edited.at(i);
             if (s.rating<=Song::Rating_Max) {
-                Tags::Update status=Tags::updateRating(baseDir+s.file, s.rating);
+                Tags::Update status=Tags::updateRating(s.filePath(baseDir), s.rating);
                 if (Tags::Update_Failed==status || Tags::Update_BadFile==status){
                     failed.append(s.file);
                 }
@@ -843,7 +843,7 @@ void TagEditor::writeRatings()
     } else {
         Song s=edited.at(currentSongIndex);
         if (s.rating<=Song::Rating_Max) {
-            Tags::Update status=Tags::updateRating(baseDir+s.file, s.rating);
+            Tags::Update status=Tags::updateRating(s.filePath(baseDir), s.rating);
             if (Tags::Update_Failed==status || Tags::Update_BadFile==status){
                 MessageBox::error(this, tr("Failed to write rating to music file!"));
             }
@@ -1168,9 +1168,10 @@ bool TagEditor::applyUpdates()
         }
 
         QString file=orig.filePath();
+        QString afile=orig.filePath(baseDir);
         splitGenres(orig);
         splitGenres(edit);
-        switch(Tags::update(baseDir+file, orig, edit, -1, commentSupport)) {
+        switch(Tags::update(afile, orig, edit, -1, commentSupport)) {
         case Tags::Update_Modified:
             edit.setComment(QString());
             #ifdef ENABLE_DEVICES_SUPPORT

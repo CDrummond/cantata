@@ -41,6 +41,7 @@
 
 const QString Song::constCddaProtocol=QLatin1String("/[cantata-cdda]/");
 const QString Song::constMopidyLocal=QLatin1String("local:track:");
+const QString Song::constForkedDaapdLocal=QLatin1String("file:");
 
 static QString unknownStr;
 static QString variousArtistsStr;
@@ -124,7 +125,13 @@ QString Song::decodePath(const QString &file, bool cdda)
     if (cdda) {
         return QString(file).replace("/", "_").replace(":", "_");
     }
-    return file.startsWith(constMopidyLocal) ? QUrl::fromPercentEncoding(file.mid(constMopidyLocal.length()).toLatin1()) : file;
+    if (file.startsWith(constMopidyLocal)) {
+        return QUrl::fromPercentEncoding(file.mid(constMopidyLocal.length()).toLatin1());
+    }
+    if (file.startsWith(constForkedDaapdLocal)) {
+        return file.mid(constForkedDaapdLocal.length());
+    }
+    return file;
 }
 
 QString Song::encodePath(const QString &file)

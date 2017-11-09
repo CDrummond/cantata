@@ -121,6 +121,7 @@ struct Song
     static void initTranslations();
     static const QString constCddaProtocol;
     static const QString constMopidyLocal;
+    static const QString constForkedDaapdLocal;
     static void storeAlbumYear(const Song &s);
     static int albumYear(const Song &s);
     static void sortViaType(QList<Song> &songs);

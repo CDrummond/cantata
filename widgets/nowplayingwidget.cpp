@@ -411,7 +411,7 @@ void NowPlayingWidget::updateTimes()
 
 void NowPlayingWidget::updatePos()
 {
-    int elapsed=(startTime.elapsed()/1000.0)+0.5;
+    quint16 elapsed=(startTime.elapsed()/1000.0)+0.5;
     slider->setValue(lastVal+elapsed);
     MPDStatus::self()->setGuessedElapsed(lastVal+elapsed);
     if (++pollCount>=constPollMpd) {

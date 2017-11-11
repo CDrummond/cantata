@@ -651,6 +651,11 @@ bool Settings::showRatingWidget()
     return cfg.get("showRatingWidget", false);
 }
 
+bool Settings::showTechnicalInfo()
+{
+    return cfg.get("showTechnicalInfo", false);
+}
+
 bool Settings::infoTooltips()
 {
     return cfg.get("infoTooltips", true);
@@ -1097,6 +1102,11 @@ void Settings::saveShowStopButton(bool v)
 void Settings::saveShowRatingWidget(bool v)
 {
     cfg.set("showRatingWidget", v);
+}
+
+void Settings::saveShowTechnicalInfo(bool v)
+{
+    cfg.set("showTechnicalInfo", v);
 }
 
 void Settings::saveInfoTooltips(bool v)

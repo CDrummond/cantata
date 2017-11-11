@@ -259,6 +259,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     slider=new PosSlider(this);
     time=new TimeLabel(this, slider);
     ratingWidget=new RatingWidget(this);
+    infoLabel=new QLabel(this);
     QFont f=track->font();
     QFont small=Utils::smallFont(f);
     f.setBold(true);
@@ -283,6 +284,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     botLayout->setSpacing(space/2);
     topLayout->addWidget(track);
     topLayout->addWidget(ratingWidget);
+    topLayout->addWidget(infoLabel);
     layout->addLayout(topLayout);
     botLayout->addWidget(artist);
     botLayout->addWidget(time);
@@ -300,6 +302,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     connect(ratingWidget, SIGNAL(valueChanged(int)), SLOT(setRating(int)));
     connect(this, SIGNAL(setRating(QString,quint8)), MPDConnection::self(), SLOT(setRating(QString,quint8)));
     connect(PlayQueueModel::self(), SIGNAL(currentSongRating(QString,quint8)), this, SLOT(rating(QString,quint8)));
+    connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateInfo()));
 }
 
 void NowPlayingWidget::update(const Song &song)
@@ -308,6 +311,7 @@ void NowPlayingWidget::update(const Song &song)
     currentSongFile=song.file;
     ratingWidget->setEnabled(!song.isEmpty() && Song::Standard==song.type);
     ratingWidget->setValue(0);
+    updateInfo();
     if (song.isEmpty()) {
         track->setText(" ");
         artist->setText(" ");
@@ -388,6 +392,7 @@ int NowPlayingWidget::value() const
 void NowPlayingWidget::readConfig()
 {
     ratingWidget->setVisible(Settings::self()->showRatingWidget());
+    infoLabel->setVisible(Settings::self()->showTechnicalInfo());
 }
 
 void NowPlayingWidget::saveConfig()
@@ -440,6 +445,22 @@ void NowPlayingWidget::setRating(int v)
     emit setRating(currentSongFile, v);
 }
 
+void NowPlayingWidget::updateInfo()
+{
+    if (currentSongFile.isEmpty()) {
+        infoLabel->setText(QString());
+        return;
+    }
+    QString info;
+
+    info=info.sprintf("%d kbps, %.1f kHz", MPDStatus::self()->bitrate(), MPDStatus::self()->samplerate()/1000.0);
+    int pos=currentSongFile.lastIndexOf('.');
+    if (pos>1) {
+        info+=", "+currentSongFile.mid(pos+1).toUpper();
+    }
+    infoLabel->setText(info);
+}
+
 void NowPlayingWidget::initColors()
 {
     ensurePolished();
@@ -449,5 +470,6 @@ void NowPlayingWidget::initColors()
     artist->setPalette(btn.palette());
     time->setPalette(btn.palette());
     slider->updateStyleSheet(track->palette().windowText().color());
-    ratingWidget->setColor(Utils::clampColor(track->palette().text().color()));
+    ratingWidget->setColor(Utils::clampColor(track->palette().buttonText().color()));
+    infoLabel->setPalette(btn.palette());
 }

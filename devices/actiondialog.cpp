@@ -570,7 +570,7 @@ void ActionDialog::doNext()
                 performingAction=true;
                 if (copyToDev) {
                     destFile=dev->path()+dev->options().createFilename(currentSong);
-                    currentSong.file=MPDConnection::self()->getDetails().dir+currentSong.filePath();
+                    currentSong.file=currentSong.filePath(MPDConnection::self()->getDetails().dir);
                     dev->addSong(currentSong, overwrite->isChecked(), !copiedCovers.contains(Utils::getDir(destFile)));
                 } else {
                     Song copy=currentSong;

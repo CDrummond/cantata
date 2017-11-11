@@ -203,10 +203,24 @@ void TrackOrganiser::updateView()
     files->clear();
     bool different=false;
     readOptions();
+
+    QString musicFolder;
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (!deviceUdi.isEmpty()) {
+        Device *dev=getDevice();
+        if (!dev) {
+            return;
+        }
+        musicFolder=dev->path();
+    } else
+    #endif
+        musicFolder=MPDConnection::self()->getDetails().dir;
+
     foreach (const Song &s, origSongs) {
-        QString modified=opts.createFilename(s);
+
+        QString modified=musicFolder + opts.createFilename(s);
         //different=different||(modified!=s.file);
-        QString orig=s.filePath();
+        QString orig=s.filePath(musicFolder);
         bool diff=modified!=orig;
         different|=diff;
         QTreeWidgetItem *item=new QTreeWidgetItem(files, QStringList() << orig << modified);
@@ -258,10 +272,9 @@ void TrackOrganiser::renameFile()
     #endif
         musicFolder=MPDConnection::self()->getDetails().dir;
 
-    QString orig=s.filePath();
-    if (modified!=orig) {
-        QString source=musicFolder+orig;
-        QString dest=musicFolder+modified;
+    QString source=s.filePath(musicFolder);
+    QString dest=musicFolder+modified;
+    if (source!=dest) {
         bool skip=false;
         if (!QFile::exists(source)) {
             if (autoSkip) {
@@ -405,7 +418,7 @@ void TrackOrganiser::renameFile()
                     }
                 }
             }
-            item->setText(0, modified);
+            item->setText(0, dest);
             item->setFont(0, font());
             item->setFont(1, font());
             Song to=s;
@@ -413,6 +426,8 @@ void TrackOrganiser::renameFile()
             if (s.file.startsWith(Song::constMopidyLocal)) {
                 origPath=to.file;
                 to.file=Song::encodePath(to.file);
+            } else if (MPDConnection::self()->isforkedDaapd()) {
+                to.file=Song::constForkedDaapdLocal + dest;
             } else {
                 to.file=modified;
             }

@@ -231,6 +231,7 @@ public:
     int unmuteVolume() { return unmuteVol; }
     bool isMuted() { return -1!=unmuteVol; }
     bool isMopidy() const { return mopidy; }
+    bool isforkedDaapd() const { return forkedDaapd; }
     void setVolumeFadeDuration(int f) { fadeDuration=f; }
     QString ipAddress() const { return details.isLocal() ? QString() : sock.address(); }
 
@@ -462,6 +463,7 @@ private:
     quint32 songPos; // USe for stop-after-current when we only have 1 songin playqueue!
     int unmuteVol;
     bool mopidy;
+    bool forkedDaapd;
     bool isUpdatingDb;
 
     QPropertyAnimation *volumeFade;

@@ -85,6 +85,8 @@ static const QByteArray constDynamicIn("cantata-dynamic-in");
 static const QByteArray constDynamicOut("cantata-dynamic-out");
 static const QByteArray constRatingSticker("rating");
 
+static const QByteArray constAckLsinfoForkedDaapd("ACK [50@0] {lsinfo} Directory info not found for virtual-path '/file:/'");
+
 static inline int socketTimeout(int dataSize)
 {
     static const int constDataBlock=256;
@@ -242,6 +244,7 @@ MPDConnection::MPDConnection()
     , songPos(0)
     , unmuteVol(-1)
     , mopidy(false)
+    , forkedDaapd(false)
     , isUpdatingDb(false)
     , volumeFade(0)
     , fadeDuration(0)
@@ -477,6 +480,7 @@ void MPDConnection::disconnectFromMPD()
     currentSongId=0;
     songPos=0;
     mopidy=false;
+    forkedDaapd=false;
     isUpdatingDb=false;
     emit socketAddress(QString());
 }
@@ -580,6 +584,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
         unmuteVol=-1;
         toggleStopAfterCurrent(false);
         mopidy=false;
+        forkedDaapd=false;
         #ifdef ENABLE_SIMPLE_MPD_SUPPORT
         if (isUser) {
             MPDUser::self()->start();
@@ -1409,6 +1414,17 @@ void MPDConnection::getStats()
             dbUpdate=stats.dbUpdate=1;
         }
         emit statsUpdated(stats);
+    }
+    if ( !mopidy ) {
+        Response response=sendCommand("lsinfo file:/", false, false);
+        QList<QByteArray> lines = response.data.split('\n');
+        foreach (const QByteArray &line, lines) {
+            if ( line == constAckLsinfoForkedDaapd ) {
+                DBUG << "forked-daapd detected: " << line;
+                forkedDaapd=true;
+                break;
+            }
+        }
     }
 }
 

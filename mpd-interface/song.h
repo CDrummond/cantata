@@ -121,6 +121,7 @@ struct Song
     static void initTranslations();
     static const QString constCddaProtocol;
     static const QString constMopidyLocal;
+    static const QString constForkedDaapdLocal;
     static void storeAlbumYear(const Song &s);
     static int albumYear(const Song &s);
     static void sortViaType(QList<Song> &songs);
@@ -208,6 +209,7 @@ struct Song
     bool isStandardStream() const { return Stream==type && !isDlnaStream(); }
     bool isDlnaStream() const { return Stream==type && !albumArtist().isEmpty() && !album.isEmpty() && track>0; }
     bool isNonMPD() const { return isStream() || OnlineSvrTrack==type || Cdda==type || (!file.isEmpty() && file.startsWith(Utils::constDirSep)); }
+    bool hasProtocolOrIsAbsolute() const { return !file.isEmpty() && (file.startsWith(Utils::constDirSep) || (!file.startsWith(constForkedDaapdLocal) && file.contains(":/")));}
     bool isCantataStream() const { return CantataStream==type; }
     bool isCdda() const { return Cdda==type; }
     QString albumKey() const;
@@ -215,6 +217,7 @@ struct Song
     bool isFromCue() const { return CueFile::isCue(file); }
     QString basicArtist() const;
     QString filePath() const { return decodePath(file, isCdda()); }
+    QString filePath(const QString &base) const;
     QString displayAlbum(bool useComp=true) const { return displayAlbum(useComp ? albumName() : album, year); }
     QString describe(bool withMarkup=false) const;
     bool useComposer() const;

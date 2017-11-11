@@ -6358,12 +6358,12 @@ Dies kann nicht rückgängig gemacht werden.</translation>
 <context>
     <name>InputDialog</name>
     <message>
-        <location filename="../support/inputdialog.h" line="51"/>
+        <location filename="../support/inputdialog.h" line="64"/>
         <source>Password</source>
         <translation>Kennwort</translation>
     </message>
     <message>
-        <location filename="../support/inputdialog.h" line="51"/>
+        <location filename="../support/inputdialog.h" line="64"/>
         <source>Please enter password:</source>
         <translation>Bitte Kennwort eingeben:</translation>
     </message>
@@ -6398,7 +6398,7 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="82"/>
         <location filename="../gui/interfacesettings.ui" line="137"/>
-        <location filename="../gui/interfacesettings.ui" line="661"/>
+        <location filename="../gui/interfacesettings.ui" line="668"/>
         <source>Style:</source>
         <translation>Stil:</translation>
     </message>
@@ -6509,157 +6509,162 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <translation>Bewertung des Stücks anzeigen</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="398"/>
+        <location filename="../gui/interfacesettings.ui" line="397"/>
+        <source>Show technical info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="405"/>
         <source>External</source>
         <translation>Extern</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="404"/>
+        <location filename="../gui/interfacesettings.ui" line="411"/>
         <source>Enable MPRIS D-BUS interface</source>
         <translation>MPRIS-D-Bus-Schnittstelle aktivieren</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="411"/>
+        <location filename="../gui/interfacesettings.ui" line="418"/>
         <source>Show popup messages when changing tracks</source>
         <translation>Bei Liedwechseln Benachrichtigungen einblenden</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="421"/>
+        <location filename="../gui/interfacesettings.ui" line="428"/>
         <source>Show icon in notification area</source>
         <translation>Symbol in der Systemlesite anzeigen</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="431"/>
+        <location filename="../gui/interfacesettings.ui" line="438"/>
         <source>Minimize to notification area when closed</source>
         <translation>Beim Schließen in die Systemleiste minimieren</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="438"/>
+        <location filename="../gui/interfacesettings.ui" line="445"/>
         <source>On Start-up</source>
         <translation>Bei Programmstart</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="444"/>
+        <location filename="../gui/interfacesettings.ui" line="451"/>
         <source>Show main window</source>
         <translation>Hauptfenster anzeigen</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="451"/>
+        <location filename="../gui/interfacesettings.ui" line="458"/>
         <source>Hide main window</source>
         <translation>Hauptfenster verstecken</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="458"/>
+        <location filename="../gui/interfacesettings.ui" line="465"/>
         <source>Restore previous state</source>
         <translation>Letzten Zustand wiederherstellen</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="482"/>
+        <location filename="../gui/interfacesettings.ui" line="489"/>
         <source>Tweaks</source>
         <translation>Besondere Anpassungen</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="488"/>
+        <location filename="../gui/interfacesettings.ui" line="495"/>
         <source>Artist &amp;&amp; Album Sorting</source>
         <translation>Sortierung von Interpreten und Alben</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="494"/>
+        <location filename="../gui/interfacesettings.ui" line="501"/>
         <source>Enter a (comma separated) list of prefixes to ignore when sorting artist and albums. e.g. if set to &apos;The&apos; then &apos;The Beatles&apos; would be sorted by &apos;Beatles&apos;</source>
         <translation>Gib eine (kommaseparierte) Liste von Präfixen an, die beim Sortieren ignoriert werden sollen. Ist z. B. ‚The‘ gesetzt, so wird ‚The Beatles‘ als ‚Beatles‘ einsortiert.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="504"/>
+        <location filename="../gui/interfacesettings.ui" line="511"/>
         <source>Enter comma separated list of prefixes...</source>
         <translation>Kommaseparierte Liste von Präfixen eingeben …</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="514"/>
+        <location filename="../gui/interfacesettings.ui" line="521"/>
         <source>Composer Support</source>
         <translation>Unterstützung für den ‚Komponist‘-Tag</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="520"/>
+        <location filename="../gui/interfacesettings.ui" line="527"/>
         <source>By default, Cantata uses the &apos;Album Artist&apos; tag (or &apos;Artist&apos; tag if a song has no &apos;Album Artist&apos;) to group songs and albums. For certain genres, e.g &apos;Classical&apos;, it may be preferable to use the &apos;Composer&apos; tag (if set) to perform this grouping. Please enter a (comma separated) list of the genres with which you would like Cantata to use the &apos;Composer&apos; tag.</source>
         <translation>Um Alben und Stücke zu gruppieren, verwendet Cantata standardmäßig den ‚Album-Interpret‘-Tag, falls dieser existert, und sonst den ‚Interpret‘-Tag. Für gewisse Genres, z. B. Klassische Musik, kann es wünschenswert sein, zum Gruppieren den ‚Komponist‘-Tag zu verwenden. Bitte gib eine (kommaseparierte) Liste von Genres an, für die Cantata den ‚Komponist‘-Tag verwenden soll.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="530"/>
+        <location filename="../gui/interfacesettings.ui" line="537"/>
         <source>Enter comma separated list of genres...</source>
         <translation>Kommaseparierte Liste von Genres eingeben …</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="540"/>
+        <location filename="../gui/interfacesettings.ui" line="547"/>
         <source>Single Tracks</source>
         <translation>Einzelne Stücke</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="546"/>
+        <location filename="../gui/interfacesettings.ui" line="553"/>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
         <translation>Falls du in deiner Sammlung viele Interpreten mit nur einem Stück hast, kann es lästig sein, für jeden von diesen einen eigenen Eintrag in der Interpretenliste zu haben. Um das zu umgehen, kannst du solche Einzelstücke in einen gemeinsamen Ordner stecken und dessen Name unten angeben; Cantata gruppiert diese Stücke dann unter einem Album namens „Einzelne Stücke“ mit dem Album-Interpret „Diverse Interpreten“.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="556"/>
+        <location filename="../gui/interfacesettings.ui" line="563"/>
         <source>Folder that contains single track files...</source>
         <translation>Ordner mit Einzelstücken …</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="566"/>
+        <location filename="../gui/interfacesettings.ui" line="573"/>
         <source>CUE Files</source>
         <translation>Cue-Dateien</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="572"/>
+        <location filename="../gui/interfacesettings.ui" line="579"/>
         <source>A cue file is a metadata file which describes how the tracks of a CD are laid out.</source>
         <translation>Eine Cue-Datei ist eine Metadaten-Datei, die die Aufteilung der Stücke einer CD beschreibt.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="588"/>
+        <location filename="../gui/interfacesettings.ui" line="595"/>
         <source>Changing any of the above will require a DB refresh (and possibly restarting Cantata) in order to take affect.</source>
         <translation>Die Veränderung obiger Einstellungen macht eine Aktualisierung der Datenbank (und möglicherweise einen Neustart von Cantata) notwendig, um wirksam zu werden.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="609"/>
+        <location filename="../gui/interfacesettings.ui" line="616"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="620"/>
+        <location filename="../gui/interfacesettings.ui" line="627"/>
         <source>Fetch missing covers from Last.fm</source>
         <translation>Fehlende Coverbilder von Last.fm herunterladen</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="627"/>
+        <location filename="../gui/interfacesettings.ui" line="634"/>
         <source>Show delete action in context menus</source>
         <translation>Löschfunktion im Kontextmenü anzeigen</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="634"/>
+        <location filename="../gui/interfacesettings.ui" line="641"/>
         <source>Enforce single-click activation of items</source>
         <translation>Einzelklick zur Aktivierung von Elementen erzwingen</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="641"/>
+        <location filename="../gui/interfacesettings.ui" line="648"/>
         <source>Show song information tooltips</source>
         <translation>Informationen über Stücke als Tooltip anzeigen</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="648"/>
+        <location filename="../gui/interfacesettings.ui" line="655"/>
         <source>Language:</source>
         <translation>Sprache:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="676"/>
+        <location filename="../gui/interfacesettings.ui" line="683"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation>Das Erzwingen der Einzelklick-Aktivierung macht einen Neustart von Cantata notwendig.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="683"/>
+        <location filename="../gui/interfacesettings.ui" line="690"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation>Das Ändern der Sprache macht einen Neustart von Cantata notwendig.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="690"/>
+        <location filename="../gui/interfacesettings.ui" line="697"/>
         <source>Changing the style setting will require a re-start of Cantata.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6750,24 +6755,24 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <translation>Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="390"/>
+        <location filename="../gui/interfacesettings.cpp" line="392"/>
         <source>English (en)</source>
         <translation>English (en)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="395"/>
-        <location filename="../gui/interfacesettings.cpp" line="412"/>
+        <location filename="../gui/interfacesettings.cpp" line="397"/>
+        <location filename="../gui/interfacesettings.cpp" line="414"/>
         <source>System default</source>
         <translation>Systemeinstellung</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="518"/>
+        <location filename="../gui/interfacesettings.cpp" line="520"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation>%1 %</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="523"/>
+        <location filename="../gui/interfacesettings.cpp" line="525"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation>%1 px</translation>
@@ -7051,85 +7056,85 @@ Wenn die Suche einen neuen Liedtext findet, dann wird dieser mit dem ursprüngli
 <context>
     <name>MPDConnection</name>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="171"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="173"/>
         <source>Unknown</source>
         <translation>Unbekannt</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="418"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="421"/>
         <source>Connection to %1 failed</source>
         <translation>Verbindung zu %1 fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="419"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="422"/>
         <source>Connection to %1 failed - please check your proxy settings</source>
         <translation>Verbindung zu %1 fehlgeschlagen – bitte überprüfe deine Proxy-Einstellungen</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="420"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="423"/>
         <source>Connection to %1 failed - incorrect password</source>
         <translation>Verbindung zu %1 fehlgeschlagen – falsches Kennwort</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="528"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="532"/>
         <source>Connecting to %1</source>
         <translation>Verbinde zu %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="646"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="651"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation>Senden des Befehls zu %1 fehlgeschlagen – nicht verbunden</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="702"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="707"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation>Laden fehlgeschlagen. Bitte überprüfe, ob der Benutzer „mpd“ Leserechte besitzt.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="704"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="709"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation>Laden fehlgeschlagen. MPD kann nur lokale Dateien abspielen, wenn eine Verbindung über einen lokalen Socket besteht.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="706"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="713"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="711"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="718"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD meldet folgenden Fehler: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="710"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="721"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="715"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="726"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation>Senden des Befehls fehlgeschlagen. Verbindung  zu %1 unterbrochen.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1683"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1699"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>Umbenennen von &lt;b&gt;%1&lt;/b&gt; zu &lt;b&gt;%2&lt;/b&gt; fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1695"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1714"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Speichern von &lt;b&gt;%1&lt;/b&gt; fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1708"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1727"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation>Du kannst nicht Teile eines Cue-Sheets zu einer Wiedergabeliste hinzufügen.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1711"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1730"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation>Du kannst eine Wiedergabeliste nicht zu einer anderen Wiedergabeliste hinzufügen.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1942"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1961"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation>Senden von ‚%1‘ zu %2 fehlgeschlagen. Bitte stelle sicher, dass %2 bei MPD registriert ist.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2225"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2252"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2244"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2271"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation>Bewertung kann nicht gespeichert werden, da der MPD-Befehl ‚sticker‘ nicht unterstützt wird.</translation>
     </message>
@@ -7866,7 +7871,7 @@ Zu dieser hinzufügen?</translation>
 <context>
     <name>NowPlayingWidget</name>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="317"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="321"/>
         <source>(Stream)</source>
         <translation>(Stream)</translation>
     </message>
@@ -9565,7 +9570,7 @@ Overwrite?</source>
         <translation>Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="540"/>
+        <location filename="../mpd-interface/song.cpp" line="547"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="69"/>
         <source>Artist</source>
         <translation>Interpret</translation>
@@ -9581,7 +9586,7 @@ Overwrite?</source>
         <translation>Album-Interpret</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="544"/>
+        <location filename="../mpd-interface/song.cpp" line="551"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="75"/>
         <source>Composer</source>
         <translation>Komponist</translation>
@@ -9592,19 +9597,19 @@ Overwrite?</source>
         <translation>Kommentar</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="546"/>
+        <location filename="../mpd-interface/song.cpp" line="553"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="79"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="539"/>
+        <location filename="../mpd-interface/song.cpp" line="546"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="81"/>
         <source>Title</source>
         <translation>Titel</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="553"/>
+        <location filename="../mpd-interface/song.cpp" line="560"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="83"/>
         <source>Genre</source>
         <translation>Genre</translation>
@@ -9936,8 +9941,8 @@ width x height</comment>
         <translation>Anderes</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="205"/>
         <location filename="../mpd-interface/mpdconnection.cpp" line="207"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="209"/>
         <source>Default</source>
         <translation>Voreinstellung</translation>
     </message>
@@ -9947,7 +9952,7 @@ width x height</comment>
         <translation type="obsolete">&quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="218"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="220"/>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
         <translation>„%1“ (%2:%3)</translation>
@@ -9963,59 +9968,59 @@ width x height</comment>
         <translation>Persönlich</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="59"/>
+        <location filename="../mpd-interface/song.cpp" line="60"/>
         <location filename="../support/utils.cpp" line="650"/>
         <source>Unknown</source>
         <translation>Unbekannt</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="60"/>
+        <location filename="../mpd-interface/song.cpp" line="61"/>
         <source>Various Artists</source>
         <translation>Diverse Interpreten</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="542"/>
+        <location filename="../mpd-interface/song.cpp" line="549"/>
         <source>Album artist</source>
         <translation>Album-Interpret</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="545"/>
+        <location filename="../mpd-interface/song.cpp" line="552"/>
         <source>Performer</source>
         <translation>Ausführender Künstler</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="548"/>
+        <location filename="../mpd-interface/song.cpp" line="555"/>
         <source>Track number</source>
         <translation>Stücknummer</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="551"/>
+        <location filename="../mpd-interface/song.cpp" line="558"/>
         <source>Disc number</source>
         <translation>Disc-Nummer</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="555"/>
+        <location filename="../mpd-interface/song.cpp" line="562"/>
         <source>Year</source>
         <translation>Jahr</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="558"/>
+        <location filename="../mpd-interface/song.cpp" line="565"/>
         <source>Orignal Year</source>
         <translation>Original-Jahr</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="561"/>
+        <location filename="../mpd-interface/song.cpp" line="568"/>
         <source>Length</source>
         <translation>Länge</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="732"/>
+        <location filename="../mpd-interface/song.cpp" line="749"/>
         <source>&lt;b&gt;%1&lt;/b&gt; on &lt;b&gt;%2&lt;/b&gt;</source>
         <comment>Song on Album</comment>
         <translation>&lt;b&gt;%1&lt;/b&gt; auf &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="733"/>
+        <location filename="../mpd-interface/song.cpp" line="750"/>
         <source>&lt;b&gt;%1&lt;/b&gt; by &lt;b&gt;%2&lt;/b&gt; on &lt;b&gt;%3&lt;/b&gt;</source>
         <comment>Song by Artist on Album</comment>
         <translation>&lt;b&gt;%1&lt;/b&gt; von &lt;b&gt;%2&lt;/b&gt; auf &lt;b&gt;%3&lt;/b&gt;</translation>
@@ -11337,7 +11342,7 @@ This cannot be undone.</source>
 <context>
     <name>SongDialog</name>
     <message>
-        <location filename="../widgets/songdialog.cpp" line="48"/>
+        <location filename="../widgets/songdialog.cpp" line="49"/>
         <source>Cannot access song files!
 
 Please check Cantata&apos;s &quot;Music folder&quot; setting, and MPD&apos;s &quot;music_directory&quot; setting.</source>
@@ -11346,7 +11351,7 @@ Please check Cantata&apos;s &quot;Music folder&quot; setting, and MPD&apos;s &qu
 Bitte überprüfe die ‚Musikverzeichnis‘-Einstellung in Cantata und die ‚music_directory‘-Einstellung in MPD.</translation>
     </message>
     <message>
-        <location filename="../widgets/songdialog.cpp" line="51"/>
+        <location filename="../widgets/songdialog.cpp" line="52"/>
         <source>Cannot access song files!
 
 Please check that the device is still attached.</source>
@@ -11746,18 +11751,17 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <translation>Wiedergabelisten entfernen</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="205"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="210"/>
         <source>Playlist Name</source>
         <translation>Name der Wiedergabeliste</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="205"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="210"/>
         <source>Enter a name for the playlist:</source>
         <translation>Gib einen Namen für die Wiedergabeliste ein:</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="209"/>
-        <location filename="../playlists/storedplaylistspage.cpp" line="236"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="232"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Overwrite?</source>
@@ -11766,23 +11770,22 @@ Overwrite?</source>
 Überschreiben?</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="210"/>
-        <location filename="../playlists/storedplaylistspage.cpp" line="237"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="233"/>
         <source>Overwrite Playlist</source>
         <translation>Wiedergabeliste überschreiben</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="232"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="228"/>
         <source>Rename Playlist</source>
         <translation>Wiedergabeliste umbenennen</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="232"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="228"/>
         <source>Enter new name for playlist:</source>
         <translation>Gib einen neuen Namen für die Wiedergabeliste ein:</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="318"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="316"/>
         <source>Cannot add songs from &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>Kann Stücke von ‚%1‘ nicht zu ‚%2‘ hinzufügen</translation>
     </message>
@@ -12675,43 +12678,43 @@ Overwrite?</source>
         <translation>%1 [geändert]</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1199"/>
+        <location filename="../tags/tageditor.cpp" line="1200"/>
         <source>%1 (Corrupt tags?)</source>
         <comment>filename (Corrupt tags?)</comment>
         <translation>%1 (korrupte Tags?)</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1208"/>
+        <location filename="../tags/tageditor.cpp" line="1209"/>
         <source>Failed to update the tags of the following tracks:</source>
         <translation>Aktualisieren der Tags in den folgenden Stücken fehlgeschlagen:</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1214"/>
+        <location filename="../tags/tageditor.cpp" line="1215"/>
         <source>Would you also like to rename your song files, so as to match your tags?</source>
         <translation>Möchtest du auch deine Musikdateien umbenennen, sodass die Dateinamen den Tags entsprechen?</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1215"/>
+        <location filename="../tags/tageditor.cpp" line="1216"/>
         <source>Rename Files</source>
         <translation>Dateien umbenennen</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1215"/>
+        <location filename="../tags/tageditor.cpp" line="1216"/>
         <source>Rename</source>
         <translation>Umbenennen</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1279"/>
+        <location filename="../tags/tageditor.cpp" line="1280"/>
         <source>Device has been removed!</source>
         <translation>Gerät wurde entfernt.</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1284"/>
+        <location filename="../tags/tageditor.cpp" line="1285"/>
         <source>Device is not connected.</source>
         <translation>Gerät ist nicht verbunden.</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1289"/>
+        <location filename="../tags/tageditor.cpp" line="1290"/>
         <source>Device is busy?</source>
         <translation>Gerät aktuell beschäftigt?</translation>
     </message>
@@ -12836,53 +12839,53 @@ Overwrite?</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="270"/>
+        <location filename="../tags/trackorganiser.cpp" line="283"/>
         <source>Source file does not exist!</source>
         <translation>Quelldatei existiert nicht.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="271"/>
-        <location filename="../tags/trackorganiser.cpp" line="290"/>
-        <location filename="../tags/trackorganiser.cpp" line="312"/>
-        <location filename="../tags/trackorganiser.cpp" line="333"/>
+        <location filename="../tags/trackorganiser.cpp" line="284"/>
+        <location filename="../tags/trackorganiser.cpp" line="303"/>
+        <location filename="../tags/trackorganiser.cpp" line="325"/>
+        <location filename="../tags/trackorganiser.cpp" line="346"/>
         <source>Skip</source>
         <translation>Überspringen</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="271"/>
-        <location filename="../tags/trackorganiser.cpp" line="290"/>
-        <location filename="../tags/trackorganiser.cpp" line="312"/>
-        <location filename="../tags/trackorganiser.cpp" line="333"/>
+        <location filename="../tags/trackorganiser.cpp" line="284"/>
+        <location filename="../tags/trackorganiser.cpp" line="303"/>
+        <location filename="../tags/trackorganiser.cpp" line="325"/>
+        <location filename="../tags/trackorganiser.cpp" line="346"/>
         <source>Auto Skip</source>
         <translation>Automatisch überspringen</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="289"/>
+        <location filename="../tags/trackorganiser.cpp" line="302"/>
         <source>Destination file already exists!</source>
         <translation>Zieldatei existiert bereits.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="311"/>
+        <location filename="../tags/trackorganiser.cpp" line="324"/>
         <source>Failed to create destination folder!</source>
         <translation>Fehler beim Erstellen des Zielordners.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="332"/>
+        <location filename="../tags/trackorganiser.cpp" line="345"/>
         <source>Failed to rename &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>Fehler beim Umbenennen von ‚%1‘ nach ‚%2‘</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="457"/>
+        <location filename="../tags/trackorganiser.cpp" line="472"/>
         <source>Remove the selected tracks from the list?</source>
         <translation>Ausgewählte Stücke von der Liste entfernen?</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="458"/>
+        <location filename="../tags/trackorganiser.cpp" line="473"/>
         <source>Remove Tracks</source>
         <translation>Stücke entfernen</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="473"/>
+        <location filename="../tags/trackorganiser.cpp" line="488"/>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database.
 
 If you rename a file (or the folder it is within), then the rating associated with the song will be lost.</source>
@@ -12891,17 +12894,17 @@ If you rename a file (or the folder it is within), then the rating associated wi
 Wenn du eine Datei (oder den Ordner, der sie enthält) umbenennst, geht die mit dem Stück assoziierte Bewertung verloren.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="533"/>
+        <location filename="../tags/trackorganiser.cpp" line="548"/>
         <source>Device has been removed!</source>
         <translation>Gerät wurde entfernt.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="538"/>
+        <location filename="../tags/trackorganiser.cpp" line="553"/>
         <source>Device is not connected.</source>
         <translation>Gerät ist nicht verbunden.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="543"/>
+        <location filename="../tags/trackorganiser.cpp" line="558"/>
         <source>Device is busy?</source>
         <translation>Gerät aktuell beschäftigt?</translation>
     </message>

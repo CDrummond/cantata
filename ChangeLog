@@ -17,6 +17,7 @@
     name when saving.
 12. Fix MPRIS length field.
 13. Add option to show bitrate, sample rate, and format in toolbar.
+14. Add support for forked-DAAP.
 
 2.2.0
 -----

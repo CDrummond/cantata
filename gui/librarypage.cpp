@@ -200,7 +200,7 @@ void LibraryPage::showSongs(const QList<Song> &songs)
     // Filter out non-mpd file songs...
     QList<Song> sngs;
     foreach (const Song &s, songs) {
-        if (!s.file.isEmpty() && !s.file.contains(":/") && !s.file.startsWith('/')) {
+        if (!s.file.isEmpty() && !s.hasProtocolOrIsAbsolute()) {
             sngs.append(s);
         }
     }

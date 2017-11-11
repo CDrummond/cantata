@@ -16,6 +16,7 @@
 11. Remember last loaded/saved playlist name - and use this as the default
     name when saving.
 12. Fix MPRIS length field.
+13. Add option to show bitrate, sample rate, and format in toolbar.
 
 2.2.0
 -----

@@ -226,6 +226,7 @@ void InterfaceSettings::load()
     showStopButton->setChecked(Settings::self()->showStopButton());
     showCoverWidget->setChecked(Settings::self()->showCoverWidget());
     showRatingWidget->setChecked(Settings::self()->showRatingWidget());
+    showTechnicalInfo->setChecked(Settings::self()->showTechnicalInfo());
     if (systemTrayCheckBox) {
         systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
         if (minimiseOnClose) {
@@ -309,6 +310,7 @@ void InterfaceSettings::save()
     Settings::self()->saveShowStopButton(showStopButton->isChecked());
     Settings::self()->saveShowCoverWidget(showCoverWidget->isChecked());
     Settings::self()->saveShowRatingWidget(showRatingWidget->isChecked());
+    Settings::self()->saveShowTechnicalInfo(showTechnicalInfo->isChecked());
     Settings::self()->saveUseSystemTray(systemTrayCheckBox && systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup && systemTrayPopup->isChecked());
     Settings::self()->saveMinimiseOnClose(minimiseOnClose && minimiseOnClose->isChecked());

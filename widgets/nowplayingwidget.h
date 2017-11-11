@@ -86,10 +86,12 @@ private Q_SLOTS:
     void pressed();
     void released();
     void setRating(int v);
+    void updateInfo();
 
 private:
     SqueezedTextLabel *track;
     SqueezedTextLabel *artist;
+    QLabel *infoLabel;
     TimeLabel *time;
     PosSlider *slider;
     RatingWidget *ratingWidget;

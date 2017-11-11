@@ -138,6 +138,7 @@ public:
     bool showCoverWidget();
     bool showStopButton();
     bool showRatingWidget();
+    bool showTechnicalInfo();
     bool infoTooltips();
     QSet<QString> ignorePrefixes();
     bool mpris();
@@ -234,6 +235,7 @@ public:
     void saveShowCoverWidget(bool v);
     void saveShowStopButton(bool v);
     void saveShowRatingWidget(bool v);
+    void saveShowTechnicalInfo(bool v);
     void saveInfoTooltips(bool v);
     void saveIgnorePrefixes(const QSet<QString> &v);
     void saveMpris(bool v);

@@ -11,13 +11,13 @@
  7. Work-around Windows font issues.
  8. If dynamic playlists helper does not start, show link to wiki page
     detailing perl dependencies.
- 9. Add "Add Local Files" to playqueu context menu.
+ 9. Add "Add Local Files" to playqueue context menu.
 10. Add support for Haiku - thanks to miqlas
 11. Remember last loaded/saved playlist name - and use this as the default
     name when saving.
 12. Fix MPRIS length field.
 13. Add option to show bitrate, sample rate, and format in toolbar.
-14. Add support for forked-DAAP.
+14. Add support for forked-DAAP - thanks to Wolfgang Scherer.
 
 2.2.0
 -----

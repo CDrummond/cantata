@@ -60,7 +60,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>&amp;Name:</string>
+            <string>Name:</string>
            </property>
            <property name="buddy">
             <cstring>name</cstring>
@@ -82,16 +82,7 @@
          </item>
          <item row="1" column="1">
           <layout class="QHBoxLayout" name="hostLayout">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>0</number>
            </property>
            <item>
@@ -115,7 +106,7 @@
          <item row="2" column="0">
           <widget class="BuddyLabel" name="passwordLabel">
            <property name="text">
-            <string>&amp;Password:</string>
+            <string>Password:</string>
            </property>
            <property name="buddy">
             <cstring>password</cstring>
@@ -145,7 +136,7 @@
          <item row="4" column="0">
           <widget class="BuddyLabel" name="coverNameLabel">
            <property name="text">
-            <string>&amp;Cover filename:</string>
+            <string>Cover filename:</string>
            </property>
            <property name="buddy">
             <cstring>coverName</cstring>
@@ -162,7 +153,7 @@
          <item row="5" column="0">
           <widget class="BuddyLabel" name="streamUrlLabel">
            <property name="text">
-            <string>HTTP stream &amp;URL:</string>
+            <string>HTTP stream URL:</string>
            </property>
            <property name="buddy">
             <cstring>streamUrl</cstring>
@@ -175,7 +166,7 @@
          <item row="6" column="0">
           <widget class="BuddyLabel" name="allowLocalStreamingLabel">
            <property name="text">
-            <string>&amp;Local file playback:</string>
+            <string>Local file playback:</string>
            </property>
            <property name="buddy">
             <cstring>allowLocalStreaming</cstring>
@@ -193,16 +184,19 @@
           </widget>
          </item>
          <item row="7" column="0">
-          <widget class="QLabel" name="autoUpdateLabel">
+          <widget class="BuddyLabel" name="autoUpdateLabel">
            <property name="text">
             <string>Auto update</string>
+           </property>
+           <property name="buddy">
+            <cstring>autoUpdate</cstring>
            </property>
           </widget>
          </item>
          <item row="7" column="1">
           <widget class="QCheckBox" name="autoUpdate">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the server detects modifications automatically, there is no need to send an update command for some actions (MPD, forked-daapd).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>If the server detects modifications automatically, there is no need to send an update command for certain actions.</string>
            </property>
            <property name="text">
             <string>Server detects changes automatically</string>

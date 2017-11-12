@@ -3877,43 +3877,53 @@ i18n: ectx: property (text), widget (QTreeWidget, files)
     <name>ActionDialog</name>
     <message>
         <location filename="../devices/actiondialog.ui" line="86"/>
+        <location filename="../build/ui_actiondialog.h" line="360"/>
         <source>Calculating size of files to be copied, please wait...</source>
         <translation>Berechne Größe der zu kopierenden Dateien, bitte warten …</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="180"/>
+        <location filename="../build/ui_actiondialog.h" line="361"/>
         <source>Copy songs from:</source>
         <translation>Kopiere Stücke von:</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="196"/>
         <location filename="../devices/actiondialog.ui" line="249"/>
+        <location filename="../build/ui_actiondialog.h" line="364"/>
+        <location filename="../build/ui_actiondialog.h" line="370"/>
         <source>Configure</source>
         <translation>Konfigurieren</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="211"/>
         <location filename="../devices/actiondialog.ui" line="264"/>
+        <location filename="../build/ui_actiondialog.h" line="366"/>
+        <location filename="../build/ui_actiondialog.h" line="372"/>
         <source>(Needs configuring)</source>
         <translation>(Einstellungen benötigt)</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="233"/>
+        <location filename="../build/ui_actiondialog.h" line="367"/>
         <source>Copy songs to:</source>
         <translation>Kopiere Stücke nach:</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="296"/>
+        <location filename="../build/ui_actiondialog.h" line="373"/>
         <source>Destination format:</source>
         <translation>Zielformat:</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="310"/>
+        <location filename="../build/ui_actiondialog.h" line="375"/>
         <source>Overwrite songs</source>
         <translation>Stücke überschreiben</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="317"/>
+        <location filename="../build/ui_actiondialog.h" line="376"/>
         <source>To copy:</source>
         <translation>Zu kopieren:</translation>
     </message>
@@ -4232,61 +4242,73 @@ Mit Standardeinstellungen fortfahren?</translation>
     <name>AlbumDetails</name>
     <message>
         <location filename="../devices/albumdetails.ui" line="26"/>
+        <location filename="../build/ui_albumdetails.h" line="196"/>
         <source>Album Details</source>
         <translation>Album-Details</translation>
     </message>
     <message>
         <location filename="../devices/albumdetails.ui" line="37"/>
+        <location filename="../build/ui_albumdetails.h" line="197"/>
         <source>Artist:</source>
         <translation>Interpret:</translation>
     </message>
     <message>
         <location filename="../devices/albumdetails.ui" line="50"/>
+        <location filename="../build/ui_albumdetails.h" line="198"/>
         <source>Composer:</source>
         <translation>Komponist:</translation>
     </message>
     <message>
         <location filename="../devices/albumdetails.ui" line="63"/>
+        <location filename="../build/ui_albumdetails.h" line="199"/>
         <source>Title:</source>
         <translation>Titel:</translation>
     </message>
     <message>
         <location filename="../devices/albumdetails.ui" line="76"/>
+        <location filename="../build/ui_albumdetails.h" line="200"/>
         <source>Genre:</source>
         <translation>Genre:</translation>
     </message>
     <message>
         <location filename="../devices/albumdetails.ui" line="89"/>
+        <location filename="../build/ui_albumdetails.h" line="201"/>
         <source>Year:</source>
         <translation>Jahr:</translation>
     </message>
     <message>
         <location filename="../devices/albumdetails.ui" line="102"/>
+        <location filename="../build/ui_albumdetails.h" line="202"/>
         <source>Disc:</source>
         <translation>Disc:</translation>
     </message>
     <message>
         <location filename="../devices/albumdetails.ui" line="115"/>
+        <location filename="../build/ui_albumdetails.h" line="203"/>
         <source>Single artist</source>
         <translation>Einzelner Interpret</translation>
     </message>
     <message>
         <location filename="../devices/albumdetails.ui" line="136"/>
+        <location filename="../build/ui_albumdetails.h" line="204"/>
         <source>Tracks</source>
         <translation>Stücke</translation>
     </message>
     <message>
         <location filename="../devices/albumdetails.ui" line="158"/>
+        <location filename="../build/ui_albumdetails.h" line="208"/>
         <source>Track</source>
         <translation>Stück</translation>
     </message>
     <message>
         <location filename="../devices/albumdetails.ui" line="163"/>
+        <location filename="../build/ui_albumdetails.h" line="207"/>
         <source>Artist</source>
         <translation>Interpret</translation>
     </message>
     <message>
         <location filename="../devices/albumdetails.ui" line="168"/>
+        <location filename="../build/ui_albumdetails.h" line="206"/>
         <source>Title</source>
         <translation>Titel</translation>
     </message>
@@ -4430,41 +4452,49 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
     <name>AudioCdSettings</name>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="29"/>
+        <location filename="../build/ui_audiocdsettings.h" line="136"/>
         <source>Album and Track Information Retrieval</source>
         <translation>Album- und Stück-Informationen beziehen</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="38"/>
+        <location filename="../build/ui_audiocdsettings.h" line="137"/>
         <source>Initially look up via:</source>
         <translation>Zunächst nachschlagen via:</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="51"/>
+        <location filename="../build/ui_audiocdsettings.h" line="138"/>
         <source>CDDB Host:</source>
         <translation>CDDB-Host:</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="64"/>
+        <location filename="../build/ui_audiocdsettings.h" line="139"/>
         <source>CDDB Port:</source>
         <translation>CDDB-Port:</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="84"/>
+        <location filename="../build/ui_audiocdsettings.h" line="140"/>
         <source>Lookup information as soon as CD is inserted</source>
         <translation>Informationen nachschlagen, sobald CD eingelegt ist</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="94"/>
+        <location filename="../build/ui_audiocdsettings.h" line="141"/>
         <source>Audio Extraction</source>
         <translation>Audio-Extraktion</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="100"/>
+        <location filename="../build/ui_audiocdsettings.h" line="142"/>
         <source>Full paranoia mode (best quality)</source>
         <translation>Voller Paranoia-Modus (beste Qualität)</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="107"/>
+        <location filename="../build/ui_audiocdsettings.h" line="143"/>
         <source>Never skip on read error</source>
         <translation>Bei Lesefehlern niemals überspringen</translation>
     </message>
@@ -4722,21 +4752,25 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
     <name>CoverDialog</name>
     <message>
         <location filename="../gui/coverdialog.ui" line="23"/>
+        <location filename="../build/ui_coverdialog.h" line="85"/>
         <source>Search</source>
         <translation>Suche</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.ui" line="30"/>
+        <location filename="../build/ui_coverdialog.h" line="87"/>
         <source>Add a local file</source>
         <translation>Lokale Datei hinzufügen</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.ui" line="37"/>
+        <location filename="../build/ui_coverdialog.h" line="90"/>
         <source>Configure</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.ui" line="47"/>
+        <location filename="../build/ui_coverdialog.h" line="92"/>
         <source>This can only be used to change the file used for covers, it will not alter any embedded covers you may have in your song files.</source>
         <translation>Hier kann die Datei gewählt werden, die als Coverbild verwendet wird; die Einstellung hat keinen Einfluss auf in die Audiodateien eingebettete Coverbilder.</translation>
     </message>
@@ -4981,86 +5015,103 @@ Konnte die Datei nicht nach ‚%1‘ kopieren.</translation>
     <name>DevicePropertiesWidget</name>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="20"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="264"/>
         <source>These settings are only valid, and editable, when the device is connected.</source>
         <translation>Diese Einstellungen sind nur gültig und bearbeitbar, wenn das Gerät verbunden ist.</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="32"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="265"/>
         <source>Name:</source>
         <translation>Name:</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="45"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="266"/>
         <source>Music folder:</source>
         <translation>Musikverzeichnis:</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="58"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="267"/>
         <source>Copy album covers as:</source>
         <translation>Kopiere Coverbilder als:</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="75"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="268"/>
         <source>Maximum cover size:</source>
         <translation>Maximale Größe des Coverbilds:</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="95"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="269"/>
         <source>Default volume:</source>
         <translation>Voreinstellung der Lautstärke:</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="102"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="270"/>
         <source>&apos;Various Artists&apos; workaround</source>
         <translation>‚Diverse Interpreten‘-Workaround</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="109"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="271"/>
         <source>Automatically scan music when attached</source>
         <translation>Automatisch nach Musik suchen, wenn verbunden</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="116"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="272"/>
         <source>Use cache</source>
         <translation>Zwischenspeicher benutzen</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="125"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="273"/>
         <source>Filenames</source>
         <translation>Dateinamen</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="134"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="274"/>
         <source>Filename scheme:</source>
         <translation>Dateinamen-Schema:</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="171"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="275"/>
         <source>VFAT safe</source>
         <translation>VFAT-sicher</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="178"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="276"/>
         <source>Use only ASCII characters</source>
         <translation>Nur ASCII-Zeichen verwenden</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="185"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="277"/>
         <source>Replace spaces with underscores</source>
         <translation>Leerzeichen durch Unterstriche ersetzen</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="192"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="278"/>
         <source>Append &apos;The&apos; to artist names</source>
         <translation>„The“ zu Interpretennamen hinzufügen</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="280"/>
         <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
         <translation>Wenn ein Interpretenname mit „The“ beginnt, hänge dies im Ordnernamen hinten an, z. B. „The Beatles“ wird zu „Beatles, The“</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="205"/>
+        <location filename="../build/ui_devicepropertieswidget.h" line="282"/>
         <source>Transcoding</source>
         <translation>Umwandeln</translation>
     </message>
@@ -5342,36 +5393,43 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <name>DigitallyImportedSettings</name>
     <message>
         <location filename="../streams/digitallyimportedsettings.ui" line="29"/>
+        <location filename="../build/ui_digitallyimportedsettings.h" line="180"/>
         <source>You can listen for free without an account, but Premium members can listen to higher quality streams without advertisements. Visit &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt; to upgrade to a premium account.</source>
         <translation>Du kannst umsonst hören, ohne ein Konto zu besitzen, aber Premium-Mitglieder können Streams in höherer Qualität und ohne Werbung hören. Besuche  &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt; für ein Premium-Konto.</translation>
     </message>
     <message>
         <location filename="../streams/digitallyimportedsettings.ui" line="42"/>
+        <location filename="../build/ui_digitallyimportedsettings.h" line="181"/>
         <source>Premium Account</source>
         <translation>Premium-Konto</translation>
     </message>
     <message>
         <location filename="../streams/digitallyimportedsettings.ui" line="51"/>
+        <location filename="../build/ui_digitallyimportedsettings.h" line="182"/>
         <source>Username:</source>
         <translation>Benutzername:</translation>
     </message>
     <message>
         <location filename="../streams/digitallyimportedsettings.ui" line="64"/>
+        <location filename="../build/ui_digitallyimportedsettings.h" line="183"/>
         <source>Password:</source>
         <translation>Kennwort:</translation>
     </message>
     <message>
         <location filename="../streams/digitallyimportedsettings.ui" line="81"/>
+        <location filename="../build/ui_digitallyimportedsettings.h" line="184"/>
         <source>Stream type:</source>
         <translation>Streamtyp:</translation>
     </message>
     <message>
         <location filename="../streams/digitallyimportedsettings.ui" line="94"/>
+        <location filename="../build/ui_digitallyimportedsettings.h" line="185"/>
         <source>Status:</source>
         <translation>Status:</translation>
     </message>
     <message>
         <location filename="../streams/digitallyimportedsettings.ui" line="120"/>
+        <location filename="../build/ui_digitallyimportedsettings.h" line="187"/>
         <location filename="../streams/digitallyimportedsettings.cpp" line="137"/>
         <location filename="../streams/digitallyimportedsettings.cpp" line="143"/>
         <source>Login</source>
@@ -5379,16 +5437,19 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     </message>
     <message>
         <location filename="../streams/digitallyimportedsettings.ui" line="127"/>
+        <location filename="../build/ui_digitallyimportedsettings.h" line="188"/>
         <source>Session expiry:</source>
         <translation>Ablauffrist der Sitzung:</translation>
     </message>
     <message>
         <location filename="../streams/digitallyimportedsettings.ui" line="157"/>
+        <location filename="../build/ui_digitallyimportedsettings.h" line="189"/>
         <source>These settings apply to Digitally Imported, JazzRadio.com, RockRadio.com, and Sky.fm</source>
         <translation>Diese Einstellungen gelten für Digitally Imported, JazzRadio.com, RockRadio.com und Sky.fm</translation>
     </message>
     <message>
         <location filename="../streams/digitallyimportedsettings.ui" line="164"/>
+        <location filename="../build/ui_digitallyimportedsettings.h" line="190"/>
         <source>If you enter account details, then a &apos;DI&apos; status item will appear under the list of streams. This will indicate if you are logged in or not.</source>
         <translation>Wenn du Kontodaten eingibst, erscheint ein ‚DI‘-Statussymbol unter der Streamliste. Dadurch wird angezeigt, ob du eingeloggt bist oder nicht.</translation>
     </message>
@@ -5870,26 +5931,31 @@ Overwrite?</source>
     <name>FileSettings</name>
     <message>
         <location filename="../gui/filesettings.ui" line="32"/>
+        <location filename="../build/ui_filesettings.h" line="82"/>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
         <translation>Speichere heruntergeladene Coverbilder, Interpreten- und Komponistenbilder im Musikverzeichnis</translation>
     </message>
     <message>
         <location filename="../gui/filesettings.ui" line="39"/>
+        <location filename="../build/ui_filesettings.h" line="83"/>
         <source>Save downloaded lyrics in music folder</source>
         <translation>Speichere heruntergeladene Liedtexte im Musikverzeichnis</translation>
     </message>
     <message>
         <location filename="../gui/filesettings.ui" line="46"/>
+        <location filename="../build/ui_filesettings.h" line="84"/>
         <source>Save downloaded backdrops in music folder</source>
         <translation>Speichere heruntergeladene Hintergrundbilder im Musikverzeichnis</translation>
     </message>
     <message>
         <location filename="../gui/filesettings.ui" line="53"/>
+        <location filename="../build/ui_filesettings.h" line="85"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
         <translation>Wenn du wählst, dass Cantata Coverbilder, Liedtexte oder Hintergrundbilder im Musikverzeichnis speichern soll, du aber keine Schreibrechte für dieses Verzeichnis hast, so wird Cantata die Dateien in deinem persönlichen Zwischenspeicherverzeichnis speichern.</translation>
     </message>
     <message>
         <location filename="../gui/filesettings.ui" line="60"/>
+        <location filename="../build/ui_filesettings.h" line="86"/>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
         <translation>Cantata kann Hintergrund-, Interpreten- und Komponistenbilder nur dann in der Musikverzeichnis-Hierarchie speichern, wenn diese 2 Ebenen tief ist, d. h. ‚Interpret/Album/Stücke‘.</translation>
     </message>
@@ -5898,111 +5964,133 @@ Overwrite?</source>
     <name>FilenameSchemeDialog</name>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="38"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="154"/>
         <source>Example:</source>
         <translation>Beispiel:</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="67"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="155"/>
         <source>About filename schemes</source>
         <translation>Hinweis zum Dateinamenschema</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="79"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="157"/>
         <source>The artist of the album. For most albums, this will be the same as the &lt;i&gt;Track Artist.&lt;/i&gt; For compilations, this will often be &lt;i&gt;Various Artists.&lt;/i&gt;</source>
         <translation>Der Interpret des Albums. Bei den meisten Alben ist dieser identisch mit &lt;i&gt;Stück-Interpret&lt;/i&gt;. Bei Kompilationen ist er oft &lt;i&gt;Diverse Interpreten&lt;/i&gt; bzw. &lt;i&gt;Various Artists&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="82"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="159"/>
         <source>Album Artist</source>
         <translation>Album-Interpret</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="89"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="161"/>
         <source>The name of the album.</source>
         <translation>Der Name des Albums.</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="92"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="163"/>
         <source>Album Title</source>
         <translation>Albumtitel</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="99"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="165"/>
         <source>The composer.</source>
         <translation>Der Komponist.</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="102"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="167"/>
         <source>Composer</source>
         <translation>Komponist</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="109"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="169"/>
         <source>The artist of each track.</source>
         <translation>Der Interpret des jeweiligen Stücks</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="112"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="171"/>
         <source>Track Artist</source>
         <translation>Stück-Interpret</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="119"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="173"/>
         <source>The track title (without &lt;i&gt;Track Artist&lt;/i&gt;).</source>
         <translation>Der Titel des Stücks (ohne &lt;i&gt;Stück-Interpret&lt;/i&gt;).</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="122"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="175"/>
         <source>Track Title</source>
         <translation>Stücktitel</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="141"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="177"/>
         <source>The track title (with &lt;i&gt;Track Artist&lt;/i&gt;, if different to &lt;i&gt;Album Artist&lt;/i&gt;).</source>
         <translation>Der Stücktitel (mit &lt;i&gt;Stück-Interpret&lt;/i&gt;, sofern verschieden von &lt;i&gt;Album-Interpret&lt;/i&gt;).</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="144"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="179"/>
         <source>Track Title (+Artist)</source>
         <translation>Stücktitel (+ Interpret)</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="151"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="181"/>
         <source>The track number.</source>
         <translation>Die Stücknummer.</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="154"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="183"/>
         <source>Track #</source>
         <translation>Stück #</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="161"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="185"/>
         <source>The album number of a multi-album album. Often compilations consist of several albums.</source>
         <translation>Die Albumnummer eines Multi-Album-Albums. Kompilationen bestehen oft aus mehreren Alben.</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="164"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="187"/>
         <source>CD #</source>
         <translation>CD #</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="171"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="189"/>
         <source>The year of the album&apos;s release.</source>
         <translation>Das Jahr der Veröffentlichung des Albums.</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="174"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="191"/>
         <source>Year</source>
         <translation>Jahr</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="181"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="193"/>
         <source>The genre of the album.</source>
         <translation>Das Genre des Albums.</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="184"/>
+        <location filename="../build/ui_filenameschemedialog.h" line="195"/>
         <source>Genre</source>
         <translation>Genre</translation>
     </message>
@@ -6062,11 +6150,13 @@ Overwrite?</source>
     <name>FindMpdDialog</name>
     <message>
         <location filename="../gui/findmpddialog.ui" line="20"/>
+        <location filename="../build/ui_findmpddialog.h" line="78"/>
         <source>Server Detection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.ui" line="26"/>
+        <location filename="../build/ui_findmpddialog.h" line="79"/>
         <source>Please select your MPD. If you don&apos;t see your MPD listed here, check that zeroconf is activated in your MPD configuration or insert the host configuration manually.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6170,162 +6260,195 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <name>InitialSettingsWizard</name>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="14"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="571"/>
         <source>Cantata First Run</source>
         <translation>Erster Start von Cantata</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="46"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="572"/>
         <source>Welcome to Cantata</source>
         <translation>Willkommen bei Cantata</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="69"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="573"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata ist ein funktionsreicher, benutzerfreundlicher Client für Music Player Daemon (MPD). MPD ist eine flexible, mächtige Server-Anwendung für Musikwiedergabe.&lt;/p&gt;&lt;p&gt;Für mehr Informationen über MPD an sich wende dich bitte an die MPD-Website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Dieser ‚Wizard‘ wird dich durch die grundlegenden Einstellungen führen, die für ein Funktionieren von Cantata notwendig sind.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="108"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="574"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Willkommen bei Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="134"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="575"/>
         <source>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music. MPD may be started either system-wide, or on a per-user basis.&lt;br/&gt;&lt;br/&gt;Please select how you would like to have Cantata initially connect to (or startup) MPD:&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cantata ist ein funktionsreicher, benutzerfreundlicher Client für Music Player Daemon (MPD). MPD ist eine flexible, mächtige Server-Anwendung für Musikwiedergabe. MPD kann entweder systemweit oder auf User-Basis gestartet werden.&lt;br/&gt;&lt;br/&gt;Bitte wähle aus, wie Cantata die anfängliche Verbindung zu MPD herstellen (bzw. MPD starten) soll:&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="159"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="576"/>
         <source>Standard multi-user/server setup</source>
         <translation>Standard-Mehrbenutzer-/Server-Konfiguration</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="172"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="577"/>
         <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therfore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
         <translation>&lt;i&gt;Wähle diese Option, wenn deine Musiksammlung zwischen Benutzern geteilt wird, deine MPD-Instanz auf einem anderen Rechner läuft, du bereits eine persönliche MPD-Konfiguration eingerichtet hast oder du den Zugriff von anderen Clients (z. B: MPDroid) ermöglichen möchtest. Wenn du diese Option wählst, kann Cantata selbst den MPD-Server nicht starten und stoppen. Du musst daher sicherstellen, dass MPD bereits eingerichtet ist und läuft.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="204"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="578"/>
         <source>Basic single user setup</source>
         <translation>Einfache Einzelnutzer-Konfiguration</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="217"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="579"/>
         <source>&lt;i&gt;Select this option if your music collection is not shared with others, and you wish Cantata to configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients (e.g. MPDroid)&lt;/i&gt;</source>
         <translation>&lt;i&gt;Wähle diese Option, wenn deine Musiksammlung nicht mit anderen geteilt wird und du möchtest, dass Cantata die MPD-Instanz einrichtet und kontrolliert. Diese Konfiguration ist dann exklusiv für Cantata und wird &lt;b&gt;nicht&lt;/b&gt; für andere MPD-Clients (z. B. MPDroid) zugänglich sein.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="236"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="580"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation>Wenn du eine ausgefeiltere MPD-Konfiguration (z. B. mehrere Audioausgänge, volle DSD-Unterstützung etc.) haben möchtest, &lt;b&gt;musst&lt;/b&gt; du ‚Standard‘ wählen.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="259"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="581"/>
         <source>For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.</source>
         <translation>Für mehr Informationen über MPD an sich wende dich bitte an die MPD-Website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Dieser ‚Wizard‘ wird dich durch die grundlegenden Einstellungen führen, die für ein Funktionieren von Cantata notwendig sind.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="321"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="582"/>
         <source>Connection details</source>
         <translation>Verbindungdetails</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="344"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="583"/>
         <source>The settings below are the basic settings required by Cantata. Please enter the relevant details, and use the &apos;Connect&apos; button to test the connection.</source>
         <translation>Die folgenden Einstellungen sind die grundlegenden Einstellungen, welche Cantata benötigt. Bitte gib die nötigen Details ein und klicke die „Verbinden“-Schaltfläche, um die Verbindung zu testen.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="378"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="584"/>
         <source>Host:</source>
         <translation>Host:</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="411"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="585"/>
         <source>Password:</source>
         <translation>Kennwort:</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="428"/>
         <location filename="../gui/initialsettingswizard.ui" line="572"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="586"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="592"/>
         <source>Music folder:</source>
         <translation>Musikverzeichnis:</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="475"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="588"/>
         <source>Connect</source>
         <translation>Verbinden</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="484"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="589"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art, lyrics, etc. If your MPD instance is on a remote host, you may set this to a HTTP URL.</source>
         <translation>Die „Musikverzeichnis“-Einstellung wird verwendet, um Coverbilder, Liedtexte etc. nachzuschlagen. Wenn deine MPD-Instanz auf einem entfernten Rechner läuft, kannst du eine HTTP-URL angeben.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="514"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="590"/>
         <source>Music folder</source>
         <translation>Musikverzeichnis</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="537"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="591"/>
         <source>Please choose the folder containing your music collection.</source>
         <translation>Bitte wähle das Verzeichnis, das deine Musiksammlung enthält.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="623"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="594"/>
         <source>Covers and Lyrics</source>
         <translation>Coverbilder und Liedtexte</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="646"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="595"/>
         <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cantata wird fehlende Coverbilder und Liedtexte aus dem Internet herunterladen.&lt;/p&gt;&lt;p&gt;Bitte entscheide für beide jeweils, ob Cantata die entsprechenden Dateien im Musikverzeichnis oder in deinem persönlichen Zwischenspeicher-/Konfigurationsverzeichnis ablegen soll.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="596"/>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
         <translation>Speichere heruntergeladene Cover-, Interpreten- und Komponistenbilder im Musikverzeichnis</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="597"/>
         <source>Save downloaded lyrics in music folder</source>
         <translation>Speichere heruntergeladene Liedtexte im Musikverzeichnis</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="692"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="598"/>
         <source>Save downloaded backdrops in music folder</source>
         <translation>Speichere heruntergeladene Hintergrundbilder im Musikverzeichnis</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="699"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="599"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
         <translation>Wenn du wählst, dass Cantata Coverbilder, Liedtexte oder Hintergrundbilder im Musikverzeichnis speichern soll, du aber keine Schreibrechte für dieses Verzeichnis hast, so wird Cantata die Dateien in deinem persönlichen Zwischenspeicherverzeichnis speichern.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="706"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="600"/>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
         <translation>Cantata kann Hintergrund-, Interpreten- und Komponistenbilder nur dann in der Musikverzeichnis-Hierarchie speichern, wenn diese 2 Ebenen tief ist, d. h. ‚Interpret/Album/Stücke‘.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="713"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="601"/>
         <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
         <translation>Das Musikverzeichnis ist auf eine HTTP-Adresse gesetzt und Cantata kann derzeit Dateien nicht auf externe HTTP-Server hochladen. Die obige Einstellung sollte daher nicht gesetzt werden.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="743"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="602"/>
         <source>Finished!</source>
         <translation>Fertig!</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="766"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="603"/>
         <source>Cantata is now configured!&lt;br/&gt;&lt;br/&gt;Cantata&apos;s configuration dialog maybe used to customise Cantata&apos;s appearance, as well as to add extra MPD hosts, etc.</source>
         <translation>Cantata ist nun eingerichtet!&lt;br/&gt;&lt;br/&gt;Der Konfigurationsdialog von Cantata kann benutzt werden, um das Erscheinungsbild anzupassen, sowie um weitere MPD-Server hinzuzufügen, etc.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="798"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="604"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation>Cantata wird Stücke zu Alben gruppieren, indem es den ‚Album-Interpret‘-Tag verwendet, sofern er gesetzt ist, und andernfalls den ‚Interpret‘-Tag verwenden. Falls du Alben mit mehreren Interpreten hast, &lt;b&gt;musst&lt;/b&gt; du den ‚Album-Interpret‘-Tag setzen, damit das Gruppieren richtig funktioniert. Es empfiehlt sich, hier „Diverse Interpreten“ o. ä. zu setzen.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="830"/>
+        <location filename="../build/ui_initialsettingswizard.h" line="605"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
         <translation>&lt;b&gt;Achtung:&lt;/b&gt; Du bist aktuell nicht Mitglied der ‚users‘-Gruppe. Cantata wird besser funktionieren (Albencover, Texte usw. mit den richtigen Berechtigungen speichern), wenn du (oder der Systemverwalter) dich dieser Gruppe hinzufügst. Wenn du dich selbst hinzufügst, musst du dich erneut anmelden, damit die Änderungen aktiv werden.</translation>
     </message>
@@ -6337,7 +6460,7 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="122"/>
         <source>Discover...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Erkunden...</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="171"/>
@@ -6372,26 +6495,31 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <name>InterfaceSettings</name>
     <message>
         <location filename="../gui/interfacesettings.ui" line="36"/>
+        <location filename="../build/ui_interfacesettings.h" line="625"/>
         <source>Sidebar</source>
         <translation>Seitenleiste</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="42"/>
+        <location filename="../build/ui_interfacesettings.h" line="617"/>
         <source>Views</source>
         <translation>Ansichten</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="48"/>
+        <location filename="../build/ui_interfacesettings.h" line="618"/>
         <source>Use the checkboxes below to configure which views will appear in the sidebar.</source>
         <translation>Verwende die Kästchen unten, um auszuwählen, welche Ansichten in der Seitenleiste erscheinen.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="61"/>
+        <location filename="../build/ui_interfacesettings.h" line="619"/>
         <source>If &apos;Play Queue&apos; is not checked above, then it will appear to the side of the other views. If &apos;Info&apos; is not checked above, then a button will be added to the toolbar allowing you to access song information.</source>
         <translation>Wenn ‚Warteschlange‘ oben nicht ausgewählt ist, dann wir diese neben den anderen Ansichten angezeigt. Wenn ‚Info‘ nicht ausgewählt ist, dann wird der Werkzeugleiste eine Schaltfläche für Informationen über das laufende Stück hinzugefügt.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="71"/>
+        <location filename="../build/ui_interfacesettings.h" line="620"/>
         <source>Options</source>
         <translation>Optionen</translation>
     </message>
@@ -6399,272 +6527,328 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <location filename="../gui/interfacesettings.ui" line="82"/>
         <location filename="../gui/interfacesettings.ui" line="137"/>
         <location filename="../gui/interfacesettings.ui" line="668"/>
+        <location filename="../build/ui_interfacesettings.h" line="621"/>
+        <location filename="../build/ui_interfacesettings.h" line="626"/>
+        <location filename="../build/ui_interfacesettings.h" line="673"/>
         <source>Style:</source>
         <translation>Stil:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="95"/>
+        <location filename="../build/ui_interfacesettings.h" line="622"/>
         <source>Position:</source>
         <translation>Position:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="108"/>
+        <location filename="../build/ui_interfacesettings.h" line="623"/>
         <source>Only show icons, no text</source>
         <translation>Zeige nur Symbole, keinen Text</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="115"/>
+        <location filename="../build/ui_interfacesettings.h" line="624"/>
         <source>Auto-hide</source>
         <translation>Automatisch ausblenden</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="128"/>
+        <location filename="../build/ui_interfacesettings.h" line="640"/>
         <location filename="../gui/interfacesettings.cpp" line="131"/>
         <source>Play Queue</source>
         <translation>Warteschlange</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="150"/>
+        <location filename="../build/ui_interfacesettings.h" line="627"/>
         <source>Initially collapse albums</source>
         <translation>Alben standardmäßig einklappen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="157"/>
+        <location filename="../build/ui_interfacesettings.h" line="628"/>
         <source>Automatically expand current album</source>
         <translation>Automatisch aktuelles Album erweitern</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="164"/>
+        <location filename="../build/ui_interfacesettings.h" line="629"/>
         <source>Scroll to current track</source>
         <translation>Zum aktuellen Stück scrollen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="171"/>
+        <location filename="../build/ui_interfacesettings.h" line="630"/>
         <source>Prompt before clearing</source>
         <translation>Vor dem Leeren nachfragen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="178"/>
+        <location filename="../build/ui_interfacesettings.h" line="631"/>
         <source>Separate action (and shortcut) for play queue search</source>
         <translation>Suche in der Warteschlange als separate Aktion (und Tastenkrürzel)</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="207"/>
+        <location filename="../build/ui_interfacesettings.h" line="632"/>
         <source>Background Image</source>
         <translation>Hintergrundbild</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="213"/>
+        <location filename="../build/ui_interfacesettings.h" line="633"/>
         <source>None</source>
         <translation>Keins</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="220"/>
+        <location filename="../build/ui_interfacesettings.h" line="634"/>
         <source>Current album cover</source>
         <translation>Aktuelles Coverbild</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="227"/>
+        <location filename="../build/ui_interfacesettings.h" line="635"/>
         <source>Custom image:</source>
         <translation>Benutzerdefiniertes Bild:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="247"/>
+        <location filename="../build/ui_interfacesettings.h" line="636"/>
         <source>Blur:</source>
         <translation>Unschärfe:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="293"/>
+        <location filename="../build/ui_interfacesettings.h" line="637"/>
         <source>10px</source>
         <translation>10 px</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="305"/>
+        <location filename="../build/ui_interfacesettings.h" line="638"/>
         <source>Opacity:</source>
         <translation>Transparenz:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="351"/>
+        <location filename="../build/ui_interfacesettings.h" line="639"/>
         <source>40%</source>
         <translation>40 %</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="367"/>
+        <location filename="../build/ui_interfacesettings.h" line="645"/>
         <source>Toolbar</source>
         <translation>Werkzeugleiste</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="376"/>
+        <location filename="../build/ui_interfacesettings.h" line="641"/>
         <source>Show stop button</source>
         <translation>‚Stopp‘-Knopf anzeigen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="383"/>
+        <location filename="../build/ui_interfacesettings.h" line="642"/>
         <source>Show cover of current track</source>
         <translation>Aktuelles Coverbild anzeigen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="390"/>
+        <location filename="../build/ui_interfacesettings.h" line="643"/>
         <source>Show track rating</source>
         <translation>Bewertung des Stücks anzeigen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="397"/>
+        <location filename="../build/ui_interfacesettings.h" line="644"/>
         <source>Show technical info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="405"/>
+        <location filename="../build/ui_interfacesettings.h" line="654"/>
         <source>External</source>
         <translation>Extern</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="411"/>
+        <location filename="../build/ui_interfacesettings.h" line="646"/>
         <source>Enable MPRIS D-BUS interface</source>
         <translation>MPRIS-D-Bus-Schnittstelle aktivieren</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="418"/>
+        <location filename="../build/ui_interfacesettings.h" line="647"/>
         <source>Show popup messages when changing tracks</source>
         <translation>Bei Liedwechseln Benachrichtigungen einblenden</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="428"/>
+        <location filename="../build/ui_interfacesettings.h" line="648"/>
         <source>Show icon in notification area</source>
         <translation>Symbol in der Systemlesite anzeigen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="438"/>
+        <location filename="../build/ui_interfacesettings.h" line="649"/>
         <source>Minimize to notification area when closed</source>
         <translation>Beim Schließen in die Systemleiste minimieren</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="445"/>
+        <location filename="../build/ui_interfacesettings.h" line="650"/>
         <source>On Start-up</source>
         <translation>Bei Programmstart</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="451"/>
+        <location filename="../build/ui_interfacesettings.h" line="651"/>
         <source>Show main window</source>
         <translation>Hauptfenster anzeigen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="458"/>
+        <location filename="../build/ui_interfacesettings.h" line="652"/>
         <source>Hide main window</source>
         <translation>Hauptfenster verstecken</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="465"/>
+        <location filename="../build/ui_interfacesettings.h" line="653"/>
         <source>Restore previous state</source>
         <translation>Letzten Zustand wiederherstellen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="489"/>
+        <location filename="../build/ui_interfacesettings.h" line="667"/>
         <source>Tweaks</source>
         <translation>Besondere Anpassungen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="495"/>
+        <location filename="../build/ui_interfacesettings.h" line="655"/>
         <source>Artist &amp;&amp; Album Sorting</source>
         <translation>Sortierung von Interpreten und Alben</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="501"/>
+        <location filename="../build/ui_interfacesettings.h" line="656"/>
         <source>Enter a (comma separated) list of prefixes to ignore when sorting artist and albums. e.g. if set to &apos;The&apos; then &apos;The Beatles&apos; would be sorted by &apos;Beatles&apos;</source>
         <translation>Gib eine (kommaseparierte) Liste von Präfixen an, die beim Sortieren ignoriert werden sollen. Ist z. B. ‚The‘ gesetzt, so wird ‚The Beatles‘ als ‚Beatles‘ einsortiert.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="511"/>
+        <location filename="../build/ui_interfacesettings.h" line="657"/>
         <source>Enter comma separated list of prefixes...</source>
         <translation>Kommaseparierte Liste von Präfixen eingeben …</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="521"/>
+        <location filename="../build/ui_interfacesettings.h" line="658"/>
         <source>Composer Support</source>
         <translation>Unterstützung für den ‚Komponist‘-Tag</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="527"/>
+        <location filename="../build/ui_interfacesettings.h" line="659"/>
         <source>By default, Cantata uses the &apos;Album Artist&apos; tag (or &apos;Artist&apos; tag if a song has no &apos;Album Artist&apos;) to group songs and albums. For certain genres, e.g &apos;Classical&apos;, it may be preferable to use the &apos;Composer&apos; tag (if set) to perform this grouping. Please enter a (comma separated) list of the genres with which you would like Cantata to use the &apos;Composer&apos; tag.</source>
         <translation>Um Alben und Stücke zu gruppieren, verwendet Cantata standardmäßig den ‚Album-Interpret‘-Tag, falls dieser existert, und sonst den ‚Interpret‘-Tag. Für gewisse Genres, z. B. Klassische Musik, kann es wünschenswert sein, zum Gruppieren den ‚Komponist‘-Tag zu verwenden. Bitte gib eine (kommaseparierte) Liste von Genres an, für die Cantata den ‚Komponist‘-Tag verwenden soll.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="537"/>
+        <location filename="../build/ui_interfacesettings.h" line="660"/>
         <source>Enter comma separated list of genres...</source>
         <translation>Kommaseparierte Liste von Genres eingeben …</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="547"/>
+        <location filename="../build/ui_interfacesettings.h" line="661"/>
         <source>Single Tracks</source>
         <translation>Einzelne Stücke</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="553"/>
+        <location filename="../build/ui_interfacesettings.h" line="662"/>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
         <translation>Falls du in deiner Sammlung viele Interpreten mit nur einem Stück hast, kann es lästig sein, für jeden von diesen einen eigenen Eintrag in der Interpretenliste zu haben. Um das zu umgehen, kannst du solche Einzelstücke in einen gemeinsamen Ordner stecken und dessen Name unten angeben; Cantata gruppiert diese Stücke dann unter einem Album namens „Einzelne Stücke“ mit dem Album-Interpret „Diverse Interpreten“.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="563"/>
+        <location filename="../build/ui_interfacesettings.h" line="663"/>
         <source>Folder that contains single track files...</source>
         <translation>Ordner mit Einzelstücken …</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="573"/>
+        <location filename="../build/ui_interfacesettings.h" line="664"/>
         <source>CUE Files</source>
         <translation>Cue-Dateien</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="579"/>
+        <location filename="../build/ui_interfacesettings.h" line="665"/>
         <source>A cue file is a metadata file which describes how the tracks of a CD are laid out.</source>
         <translation>Eine Cue-Datei ist eine Metadaten-Datei, die die Aufteilung der Stücke einer CD beschreibt.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="595"/>
+        <location filename="../build/ui_interfacesettings.h" line="666"/>
         <source>Changing any of the above will require a DB refresh (and possibly restarting Cantata) in order to take affect.</source>
         <translation>Die Veränderung obiger Einstellungen macht eine Aktualisierung der Datenbank (und möglicherweise einen Neustart von Cantata) notwendig, um wirksam zu werden.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="616"/>
+        <location filename="../build/ui_interfacesettings.h" line="677"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="627"/>
+        <location filename="../build/ui_interfacesettings.h" line="668"/>
         <source>Fetch missing covers from Last.fm</source>
         <translation>Fehlende Coverbilder von Last.fm herunterladen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="634"/>
+        <location filename="../build/ui_interfacesettings.h" line="669"/>
         <source>Show delete action in context menus</source>
         <translation>Löschfunktion im Kontextmenü anzeigen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="641"/>
+        <location filename="../build/ui_interfacesettings.h" line="670"/>
         <source>Enforce single-click activation of items</source>
         <translation>Einzelklick zur Aktivierung von Elementen erzwingen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="648"/>
+        <location filename="../build/ui_interfacesettings.h" line="671"/>
         <source>Show song information tooltips</source>
         <translation>Informationen über Stücke als Tooltip anzeigen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="655"/>
+        <location filename="../build/ui_interfacesettings.h" line="672"/>
         <source>Language:</source>
         <translation>Sprache:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="683"/>
+        <location filename="../build/ui_interfacesettings.h" line="674"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation>Das Erzwingen der Einzelklick-Aktivierung macht einen Neustart von Cantata notwendig.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="690"/>
+        <location filename="../build/ui_interfacesettings.h" line="675"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation>Das Ändern der Sprache macht einen Neustart von Cantata notwendig.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="697"/>
+        <location filename="../build/ui_interfacesettings.h" line="676"/>
         <source>Changing the style setting will require a re-start of Cantata.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7061,80 +7245,80 @@ Wenn die Suche einen neuen Liedtext findet, dann wird dieser mit dem ursprüngli
         <translation>Unbekannt</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="421"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="422"/>
         <source>Connection to %1 failed</source>
         <translation>Verbindung zu %1 fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="422"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="423"/>
         <source>Connection to %1 failed - please check your proxy settings</source>
         <translation>Verbindung zu %1 fehlgeschlagen – bitte überprüfe deine Proxy-Einstellungen</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="423"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="424"/>
         <source>Connection to %1 failed - incorrect password</source>
         <translation>Verbindung zu %1 fehlgeschlagen – falsches Kennwort</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="532"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="533"/>
         <source>Connecting to %1</source>
         <translation>Verbinde zu %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="651"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="652"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation>Senden des Befehls zu %1 fehlgeschlagen – nicht verbunden</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="707"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="708"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation>Laden fehlgeschlagen. Bitte überprüfe, ob der Benutzer „mpd“ Leserechte besitzt.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="709"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="710"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation>Laden fehlgeschlagen. MPD kann nur lokale Dateien abspielen, wenn eine Verbindung über einen lokalen Socket besteht.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="711"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="718"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="712"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="719"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD meldet folgenden Fehler: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="715"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="726"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="716"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="727"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation>Senden des Befehls fehlgeschlagen. Verbindung  zu %1 unterbrochen.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1699"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1707"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>Umbenennen von &lt;b&gt;%1&lt;/b&gt; zu &lt;b&gt;%2&lt;/b&gt; fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1714"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1722"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Speichern von &lt;b&gt;%1&lt;/b&gt; fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1727"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1735"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation>Du kannst nicht Teile eines Cue-Sheets zu einer Wiedergabeliste hinzufügen.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1730"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1738"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation>Du kannst eine Wiedergabeliste nicht zu einer anderen Wiedergabeliste hinzufügen.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1961"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1969"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation>Senden von ‚%1‘ zu %2 fehlgeschlagen. Bitte stelle sicher, dass %2 bei MPD registriert ist.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2244"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2271"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2252"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2279"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation>Bewertung kann nicht gespeichert werden, da der MPD-Befehl ‚sticker‘ nicht unterstützt wird.</translation>
     </message>
@@ -7214,11 +7398,13 @@ Wenn die Suche einen neuen Liedtext findet, dann wird dieser mit dem ursprüngli
     <name>MainWindow</name>
     <message>
         <location filename="../gui/mainwindow.ui" line="181"/>
+        <location filename="../build/ui_mainwindow.h" line="346"/>
         <source>[Dynamic]</source>
         <translation>[Dynamisch]</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.ui" line="204"/>
+        <location filename="../build/ui_mainwindow.h" line="347"/>
         <source>Exit Full Screen</source>
         <translation>Vollbild verlassen</translation>
     </message>
@@ -8045,86 +8231,103 @@ Zu dieser hinzufügen?</translation>
     <name>OtherSettings</name>
     <message>
         <location filename="../context/othersettings.ui" line="26"/>
+        <location filename="../build/ui_othersettings.h" line="212"/>
         <source>Background Image</source>
         <translation>Hintergrundbild</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="32"/>
+        <location filename="../build/ui_othersettings.h" line="213"/>
         <source>None</source>
         <translation>Keins</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="39"/>
+        <location filename="../build/ui_othersettings.h" line="214"/>
         <source>Artist image</source>
         <translation>Interpretenbild</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="46"/>
+        <location filename="../build/ui_othersettings.h" line="215"/>
         <source>Custom image:</source>
         <translation>Benutzerdefiniertes Bild:</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="66"/>
+        <location filename="../build/ui_othersettings.h" line="216"/>
         <source>Blur:</source>
         <translation>Unschärfe:</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="103"/>
+        <location filename="../build/ui_othersettings.h" line="217"/>
         <source>10px</source>
         <translation>10 px</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="115"/>
+        <location filename="../build/ui_othersettings.h" line="218"/>
         <source>Opacity:</source>
         <translation>Transparenz:</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="152"/>
+        <location filename="../build/ui_othersettings.h" line="219"/>
         <source>40%</source>
         <translation>40 %</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="167"/>
+        <location filename="../build/ui_othersettings.h" line="220"/>
         <source>Automatically switch to view after:</source>
         <translation>Automatisch zur Info-Ansicht wechseln nach:</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="177"/>
+        <location filename="../build/ui_othersettings.h" line="221"/>
         <source>Do not auto-switch</source>
         <translation>Nicht automatisch wechseln</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="180"/>
+        <location filename="../build/ui_othersettings.h" line="222"/>
         <source> ms</source>
         <translation> ms</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="193"/>
+        <location filename="../build/ui_othersettings.h" line="223"/>
         <source>Dark background</source>
         <translation>Dunkler Hintergrund</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="196"/>
+        <location filename="../build/ui_othersettings.h" line="225"/>
         <source>Darken background, and use white text, regardless of current color palette.</source>
         <translation>Hintergrund abdunkeln und weißen Text verwenden unabhängig von aktueller Farbpalette.</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="203"/>
+        <location filename="../build/ui_othersettings.h" line="227"/>
         <source>Always collapse into a single pane</source>
         <translation>Immer nur eine Info-Kategorie anzeigen</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="206"/>
+        <location filename="../build/ui_othersettings.h" line="229"/>
         <source>Only show &apos;Artist&apos;, &apos;Album&apos;, or &apos;Track&apos; even if sufficient width to show all three.</source>
         <translation>Nur ‚Interpret‘-, ‚Album‘- oder ‚Stück‘-Informationen anzeigen, auch wenn genug Platz für alle drei wäre.</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="213"/>
+        <location filename="../build/ui_othersettings.h" line="231"/>
         <source>Only show basic wikipedia text</source>
         <translation>Vereinfachten Wikipedia-Text anzeigen</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="220"/>
+        <location filename="../build/ui_othersettings.h" line="232"/>
         <source>Cantata only shows a trimmed down version of wikipedia pages (no images, links, etc). This trimming is not always 100% accurate, which is why Cantata defaults to only showing the introduction. If you elect to show the full article, then there may be parsing errors. You will also need to remove any currently cached articles (using the &apos;Cache&apos; page).</source>
         <translation>Cantata zeigt nur eine gestutzte Version der Wikipedia-Artikel (keine Bilder, Links etc.). Diese Stutzung is nicht immer 100 % akkurat, weshalb Cantata standardäßig nur den Einleitungsabschnitt anzeigt. Wenn du die Anzeige des vollen Artikels auswählst, kann es zu Verarbeitungsfehlern kommen; außerdem musst du zwischengespeicherte Artikel entfernen (über den ‚Zwischenspeicher‘-Dialog).</translation>
     </message>
@@ -8307,74 +8510,89 @@ Zu dieser hinzufügen?</translation>
     <name>PlaybackSettings</name>
     <message>
         <location filename="../gui/playbacksettings.ui" line="29"/>
+        <location filename="../build/ui_playbacksettings.h" line="202"/>
         <source>Playback</source>
         <translation>Wiedergabe</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="38"/>
+        <location filename="../build/ui_playbacksettings.h" line="203"/>
         <source>Fa&amp;deout on stop:</source>
         <translation>Beim Stoppen aus&amp;blenden</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="48"/>
         <location filename="../gui/playbacksettings.ui" line="122"/>
+        <location filename="../build/ui_playbacksettings.h" line="204"/>
+        <location filename="../build/ui_playbacksettings.h" line="212"/>
         <location filename="../gui/playbacksettings.cpp" line="46"/>
         <source>None</source>
         <translation>Deaktiviert</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="51"/>
+        <location filename="../build/ui_playbacksettings.h" line="205"/>
         <source> ms</source>
         <translation> ms</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="58"/>
+        <location filename="../build/ui_playbacksettings.h" line="206"/>
         <source>Stop playback on exit</source>
         <translation>Beim Beenden Wiedergabe stoppen</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="65"/>
+        <location filename="../build/ui_playbacksettings.h" line="207"/>
         <source>Inhibit suspend whilst playing</source>
         <translation>Während der Wiedergabe Ruhemodus unterbinden</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="72"/>
+        <location filename="../build/ui_playbacksettings.h" line="208"/>
         <source>If you press and hold the stop button, then a menu will be shown allowing you to choose whether to stop playback now, or after the current track. (The stop button can be enabled in the Interface/Toolbar section)</source>
         <translation>Wenn du den Stopp-Knopf klickst und hältst, erscheint ein Menü, in dem du auswählen kannst, ob du gleich stoppen willst oder nach dem laufenden Stück. (Der Stopp-Knopf kann im Anschnitt ‚Oberfläche/Werkzeugleiste‘ aktiviert werden.)</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="88"/>
+        <location filename="../build/ui_playbacksettings.h" line="209"/>
         <source>Output</source>
         <translation>Ausgabe</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="94"/>
+        <location filename="../build/ui_playbacksettings.h" line="210"/>
         <location filename="../gui/playbacksettings.cpp" line="165"/>
         <source>&lt;i&gt;Not Connected!&lt;br/&gt;The entries below cannot be modified, as Cantata is not connected to MPD.&lt;/i&gt;</source>
         <translation>&lt;i&gt;Nicht verbunden.&lt;br/&gt;Unten stehende Einträge können nicht bearbeitet werden, solange Cantata nicht mit MPD verbunden ist.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="112"/>
+        <location filename="../build/ui_playbacksettings.h" line="211"/>
         <source>&amp;Crossfade between tracks:</source>
         <translation>Zwischen Stücken &amp;überblenden:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
+        <location filename="../build/ui_playbacksettings.h" line="213"/>
         <source> s</source>
         <translation> s</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="135"/>
+        <location filename="../build/ui_playbacksettings.h" line="214"/>
         <source>Replay &amp;gain:</source>
         <translation>Replay &amp;Gain</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="178"/>
+        <location filename="../build/ui_playbacksettings.h" line="215"/>
         <source>About replay gain</source>
         <translation>Über Replay Gain</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="187"/>
+        <location filename="../build/ui_playbacksettings.h" line="216"/>
         <source>Use the checkboxes below to control the active outputs.</source>
         <translation>Verwende die Kästchen unten, um die aktiven Ausgaben zu bestimmen.</translation>
     </message>
@@ -8408,92 +8626,111 @@ Zu dieser hinzufügen?</translation>
     <name>PlaylistRule</name>
     <message>
         <location filename="../playlists/playlistrule.ui" line="26"/>
+        <location filename="../build/ui_playlistrule.h" line="253"/>
         <source>Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="37"/>
+        <location filename="../build/ui_playlistrule.h" line="256"/>
         <source>Include songs that match the following:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="42"/>
+        <location filename="../build/ui_playlistrule.h" line="257"/>
         <source>Exclude songs that match the following:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="50"/>
+        <location filename="../build/ui_playlistrule.h" line="259"/>
         <source>Artist:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="63"/>
+        <location filename="../build/ui_playlistrule.h" line="260"/>
         <source>Artists similar to:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="76"/>
+        <location filename="../build/ui_playlistrule.h" line="261"/>
         <source>Album Artist:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="89"/>
+        <location filename="../build/ui_playlistrule.h" line="262"/>
         <source>Composer:</source>
         <translation type="unfinished">Komponist:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="102"/>
+        <location filename="../build/ui_playlistrule.h" line="263"/>
         <source>Album:</source>
         <translation type="unfinished">Album:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="115"/>
+        <location filename="../build/ui_playlistrule.h" line="264"/>
         <source>Title:</source>
         <translation type="unfinished">Titel:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="128"/>
+        <location filename="../build/ui_playlistrule.h" line="265"/>
         <source>Genre</source>
         <translation type="unfinished">Genre</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="141"/>
+        <location filename="../build/ui_playlistrule.h" line="266"/>
         <source>From Year:</source>
         <translation type="unfinished">Von Jahr:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="157"/>
         <location filename="../playlists/playlistrule.ui" line="180"/>
+        <location filename="../build/ui_playlistrule.h" line="267"/>
+        <location filename="../build/ui_playlistrule.h" line="269"/>
         <source>Any</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="164"/>
+        <location filename="../build/ui_playlistrule.h" line="268"/>
         <source>To Year:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="187"/>
+        <location filename="../build/ui_playlistrule.h" line="270"/>
         <source>Comment:</source>
         <translation type="unfinished">Kommentar:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="200"/>
+        <location filename="../build/ui_playlistrule.h" line="271"/>
         <source>Filename / path:</source>
         <translation type="unfinished">Dateiname/Pfad</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="213"/>
+        <location filename="../build/ui_playlistrule.h" line="272"/>
         <source>Exact match</source>
         <translation type="unfinished">Exakter Treffer</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="241"/>
+        <location filename="../build/ui_playlistrule.h" line="273"/>
         <source>Only enter values for the tags you wish to be search on.</source>
         <translation type="unfinished">Gib nur für die Tags etwas ein, über die du suchen willst.</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="248"/>
+        <location filename="../build/ui_playlistrule.h" line="274"/>
         <source>For genre, end string with an asterisk to match various genres. e.g &apos;rock*&apos; matches &apos;Hard Rock&apos; and &apos;Rock and Roll&apos;.</source>
         <translation type="unfinished">Schließe den Suchbegriff für das Genre mit einem Sternchen ab, um mehrere Genres zu finden; z. B: trifft ‚rock*‘ ‚Hard Rock‘ und ‚Rock and Roll‘.</translation>
     </message>
@@ -8536,58 +8773,71 @@ Zu dieser hinzufügen?</translation>
     <name>PlaylistRules</name>
     <message>
         <location filename="../playlists/playlistrules.ui" line="39"/>
+        <location filename="../build/ui_playlistrules.h" line="247"/>
         <source>Name of Dynamic Rules</source>
         <translation type="unfinished">Name der dynamischen Regeln</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="71"/>
+        <location filename="../build/ui_playlistrules.h" line="248"/>
         <source>Add</source>
         <translation type="unfinished">Hinzufügen</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="78"/>
+        <location filename="../build/ui_playlistrules.h" line="249"/>
         <source>Edit</source>
         <translation type="unfinished">Bearbeiten</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="85"/>
+        <location filename="../build/ui_playlistrules.h" line="250"/>
         <source>Remove</source>
         <translation type="unfinished">Entfernen</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="107"/>
+        <location filename="../build/ui_playlistrules.h" line="251"/>
         <source>Songs with ratings between:</source>
         <translation type="unfinished">Stücke mit Bewertung zwischen:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="119"/>
         <location filename="../playlists/playlistrules.ui" line="166"/>
+        <location filename="../build/ui_playlistrules.h" line="252"/>
+        <location filename="../build/ui_playlistrules.h" line="255"/>
         <source> - </source>
         <translation type="unfinished"> – </translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="144"/>
+        <location filename="../build/ui_playlistrules.h" line="253"/>
         <source>Songs with duration between:</source>
         <translation type="unfinished">Stücke mit Länge zwischen:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="153"/>
         <location filename="../playlists/playlistrules.ui" line="173"/>
+        <location filename="../build/ui_playlistrules.h" line="254"/>
+        <location filename="../build/ui_playlistrules.h" line="256"/>
         <source> seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="201"/>
+        <location filename="../build/ui_playlistrules.h" line="257"/>
         <source>Number of songs in play queue:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="215"/>
+        <location filename="../build/ui_playlistrules.h" line="258"/>
         <source>Order songs:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="240"/>
+        <location filename="../build/ui_playlistrules.h" line="259"/>
         <source>About Rules</source>
         <translation type="unfinished">Über Regeln</translation>
     </message>
@@ -9941,8 +10191,8 @@ width x height</comment>
         <translation>Anderes</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="207"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="209"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="208"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="210"/>
         <source>Default</source>
         <translation>Voreinstellung</translation>
     </message>
@@ -9952,7 +10202,7 @@ width x height</comment>
         <translation type="obsolete">&quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="220"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="221"/>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
         <translation>„%1“ (%2:%3)</translation>
@@ -10873,36 +11123,43 @@ Bitte wähle einen anderen Namen.</translation>
     <name>ScrobblingSettings</name>
     <message>
         <location filename="../scrobbling/scrobblingsettings.ui" line="32"/>
+        <location filename="../build/ui_scrobblingsettings.h" line="169"/>
         <source>Scrobble using:</source>
         <translation>Scrobbeln über:</translation>
     </message>
     <message>
         <location filename="../scrobbling/scrobblingsettings.ui" line="58"/>
+        <location filename="../build/ui_scrobblingsettings.h" line="170"/>
         <source>Username:</source>
         <translation>Benutzername:</translation>
     </message>
     <message>
         <location filename="../scrobbling/scrobblingsettings.ui" line="71"/>
+        <location filename="../build/ui_scrobblingsettings.h" line="171"/>
         <source>Password:</source>
         <translation>Kennwort:</translation>
     </message>
     <message>
         <location filename="../scrobbling/scrobblingsettings.ui" line="88"/>
+        <location filename="../build/ui_scrobblingsettings.h" line="172"/>
         <source>Status:</source>
         <translation>Status:</translation>
     </message>
     <message>
         <location filename="../scrobbling/scrobblingsettings.ui" line="114"/>
+        <location filename="../build/ui_scrobblingsettings.h" line="174"/>
         <source>Login</source>
         <translation>Einloggen</translation>
     </message>
     <message>
         <location filename="../scrobbling/scrobblingsettings.ui" line="131"/>
+        <location filename="../build/ui_scrobblingsettings.h" line="175"/>
         <source>Scrobble tracks</source>
         <translation>Stücke scrobbeln</translation>
     </message>
     <message>
         <location filename="../scrobbling/scrobblingsettings.ui" line="138"/>
+        <location filename="../build/ui_scrobblingsettings.h" line="176"/>
         <source>Show &apos;Love&apos; button</source>
         <translation>‚Love‘-Knopf anzeigen</translation>
     </message>
@@ -11062,85 +11319,142 @@ Bitte wähle einen anderen Namen.</translation>
     <name>ServerSettings</name>
     <message>
         <location filename="../gui/serversettings.ui" line="35"/>
+        <location filename="../build/ui_serversettings.h" line="321"/>
         <source>Collection:</source>
         <translation>Sammlung:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="63"/>
         <source>Name:</source>
-        <translation>Name:</translation>
+        <translation type="vanished">Name:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
+        <location filename="../build/ui_serversettings.h" line="323"/>
         <location filename="../gui/serversettings.cpp" line="107"/>
         <source>Host:</source>
         <translation>Host:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="109"/>
         <source>Password:</source>
-        <translation>Kennwort:</translation>
+        <translation type="vanished">Kennwort:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="126"/>
-        <location filename="../gui/serversettings.ui" line="257"/>
+        <location filename="../gui/serversettings.ui" line="135"/>
+        <location filename="../gui/serversettings.ui" line="283"/>
+        <location filename="../build/ui_serversettings.h" line="325"/>
+        <location filename="../build/ui_serversettings.h" line="345"/>
         <source>Music folder:</source>
         <translation>Musikverzeichnis:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="139"/>
-        <location filename="../gui/serversettings.ui" line="270"/>
+        <location filename="../gui/serversettings.ui" line="296"/>
+        <location filename="../build/ui_serversettings.h" line="346"/>
         <source>Cover filename:</source>
         <translation>Dateiname für Coverbilder:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="149"/>
+        <location filename="../gui/serversettings.ui" line="158"/>
+        <location filename="../build/ui_serversettings.h" line="328"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Dateiname (ohne Endung) zum Speichern der Coverbilder.&lt;br/&gt;Ist der Dateiname leer, wird „cover“ verwendet.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% wird ersetzt durch den Album-Interpreten des aktuellen Stücks, %album% durch den Titel des Albums.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="156"/>
         <source>HTTP stream URL:</source>
-        <translation>HTTP-Stream-URL:</translation>
+        <translation type="vanished">HTTP-Stream-URL:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="169"/>
         <source>Local file playback:</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Lokale Wiedergabe:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="179"/>
+        <location filename="../gui/serversettings.ui" line="63"/>
+        <location filename="../build/ui_serversettings.h" line="322"/>
+        <source>&amp;Name:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="118"/>
+        <location filename="../build/ui_serversettings.h" line="324"/>
+        <source>&amp;Password:</source>
+        <translation>&amp;Passwort:</translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="148"/>
+        <location filename="../build/ui_serversettings.h" line="326"/>
+        <source>&amp;Cover filename:</source>
+        <translation>&amp;Cover Dateiname:</translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="165"/>
+        <location filename="../build/ui_serversettings.h" line="330"/>
+        <source>HTTP stream &amp;URL:</source>
+        <translation>HTTP Stream &amp;URL:</translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="178"/>
+        <location filename="../build/ui_serversettings.h" line="331"/>
+        <source>&amp;Local file playback:</source>
+        <translation>&amp;Lokale Wiedergabe:</translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="188"/>
+        <location filename="../build/ui_serversettings.h" line="333"/>
         <source>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/serversettings.ui" line="182"/>
-        <source>Via in-built HTTP server</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze einen einfachen eingebetteten HTTP-Server, um MPD die WIedergabe von lokalen Dateien zu ermöglichen, die in die Wiedergabeliste eingefügt wurden.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="191"/>
+        <location filename="../build/ui_serversettings.h" line="335"/>
+        <source>Via in-built HTTP server</source>
+        <translation>Über eingebetteten HTTP-Server</translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="198"/>
+        <location filename="../build/ui_serversettings.h" line="336"/>
+        <source>Auto update</source>
+        <translation>Update autom.:</translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="205"/>
+        <location filename="../build/ui_serversettings.h" line="338"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the server detects modifications automatically, there is no need to send an update command for some actions (MPD, forked-daapd).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn der Server Änderungen automatisch erkennt, ist es nicht nötig, dass für manche Aktionen ein &quot;update&quot; Kommando gesendet wird (MPD, forked-daapd).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="208"/>
+        <location filename="../build/ui_serversettings.h" line="340"/>
+        <source>Server detects changes automatically</source>
+        <translation>Server erkennt Änderungen automatisch</translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="217"/>
+        <location filename="../build/ui_serversettings.h" line="341"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation>Die Einstellung ‚Musikverzeichnis‘ wird verwendet, um Coverbilder nachzuschlagen. Es kann auf eine HTTP-URL gesetzt werden, wenn MPD auf einem anderen Rechner läuft und die Coverbilder über HTTP verfügbar sind. Wenn die Einstellung nicht auf eine HTTP-URL gesetzt ist und du Schreibrechte für dieses Verzeichnis (und seine Unterverzeichnisse) besitzt, dann wird Cantata heruntergeladene Coverbilder in dem entsprechenden Verzeichnis des Albums speichern.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="198"/>
-        <location filename="../gui/serversettings.ui" line="292"/>
+        <location filename="../gui/serversettings.ui" line="224"/>
+        <location filename="../gui/serversettings.ui" line="318"/>
+        <location filename="../build/ui_serversettings.h" line="342"/>
+        <location filename="../build/ui_serversettings.h" line="348"/>
         <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
         <translation>Wenn ‚Dateiname für Coverbilder‘ nicht gesetzt ist, dann wird Cantata die Statndardeinstellung &lt;code&gt;cover&lt;/code&gt; verwenden.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="205"/>
+        <location filename="../gui/serversettings.ui" line="231"/>
+        <location filename="../build/ui_serversettings.h" line="343"/>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
         <translation>‚HTTP-Stream-URL‘ ist nur nützlich, wenn dein MPD so konfiguriert ist, dass er einen HTTP-Stream ausgibt, und du mit Cantata diesen Stream wiedergeben möchtest.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="212"/>
+        <location filename="../gui/serversettings.ui" line="238"/>
+        <location filename="../build/ui_serversettings.h" line="344"/>
         <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
-        <translation type="unfinished"></translation>
+        <translation>Normalerweise gibt MPD nur Stücke aus seiner Sammlung wieder. Neuer MPDs (ab v0.19) können auch andere Dateien wiedergeben, wennn die Verbindung zu dem Server lokal ist (die Adresse ist z.B. &apos;127.0.01&apos; oder &apos;localhost&apos;). Damit das funktioniert, muss der MPD-Server auf die entsprechenden Dateien Zugriff haben. Für ältere oder nicht-lokale MPDs, oder falls der Server keine Berechtigungen für den Zugriff auf die Dateien hat, kann der ingebettete HTTP-Server von Cantata aktiviert werden. Dieser Server gestattet nur Zugriff auf Einträge in der Wiedergabeliste und das auch nur solange Cantata ausgeführt wird.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="285"/>
+        <location filename="../gui/serversettings.ui" line="311"/>
+        <location filename="../build/ui_serversettings.h" line="347"/>
         <source>If you change the &apos;Music folder&apos; setting, then you will need to manually update the music database. This can be performed by pressing the &apos;Refresh Database&apos; button in the &apos;Artists&apos; or &apos;Albums&apos; views.</source>
         <translation>Wenn du die Einstellung ‚Musikverzeichnis‘ änderst, musst du manuell die Musikdatenbank aktualisieren. Dies geschieht über die Schlatfläche „Datenbank aktualisieren“ in der Interpreten- oder Albenansicht.</translation>
     </message>
@@ -11155,67 +11469,67 @@ Bitte wähle einen anderen Namen.</translation>
         <translation>Dieses Verzeichnis wird ebenso verwendet, um Musikdateien zur Tag-Bearbeitung zu finden, für Replay Gain etc.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="135"/>
+        <location filename="../gui/serversettings.cpp" line="136"/>
         <source>Discover...</source>
-        <translation type="unfinished"></translation>
+        <translation>Erkennen...</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="274"/>
+        <location filename="../gui/serversettings.cpp" line="276"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation>Welche Art von Sammlung möchtest du einbinden?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="275"/>
+        <location filename="../gui/serversettings.cpp" line="277"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation>Standard – die Musiksammlung kann freigegeben sein, auf einem anderen Rechner, bereits eingerichtet, oder du möchtest den Zugriff von anderen Clients (z. B. MPDroid) ermöglichen.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="278"/>
+        <location filename="../gui/serversettings.cpp" line="280"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation>Einfach – Die Musiksammlung wird nicht für andere freigegeben, und Cantata wird die MPD-Instaz einrichten und steuern. Diese Konfiguration wird nur für Cantata und &lt;b&gt;nicht&lt;/b&gt; für andere MPD-Clients zugänglich sein.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="282"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation>&lt;i&gt;&lt;b&gt;HINWEIS:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="282"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation>Wenn du eine ausgefeiltere MPD-Konfiguration (z. B. mehrere Audioausgänge, volle DSD-Unterstützung etc.) haben möchtest, &lt;b&gt;musst&lt;/b&gt; du ‚Standard‘ wählen.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="284"/>
+        <location filename="../gui/serversettings.cpp" line="286"/>
         <source>Add Collection</source>
         <translation>Sammlung hinzufügen</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="284"/>
+        <location filename="../gui/serversettings.cpp" line="286"/>
         <source>Standard</source>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="284"/>
+        <location filename="../gui/serversettings.cpp" line="286"/>
         <source>Basic</source>
         <translation>Einfach</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="331"/>
+        <location filename="../gui/serversettings.cpp" line="334"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation>‚%1‘ löschen?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="332"/>
+        <location filename="../gui/serversettings.cpp" line="335"/>
         <source>Delete</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="385"/>
+        <location filename="../gui/serversettings.cpp" line="388"/>
         <source>New Collection %1</source>
         <translation>Neue Sammlung %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="403"/>
+        <location filename="../gui/serversettings.cpp" line="406"/>
         <source>Default</source>
         <translation>Voreinstellung</translation>
     </message>
@@ -11250,21 +11564,25 @@ Bitte wähle einen anderen Namen.</translation>
     <name>ShortcutsSettingsWidget</name>
     <message>
         <location filename="../support/shortcutssettingswidget.ui" line="22"/>
+        <location filename="../build/support/ui_shortcutssettingswidget.h" line="129"/>
         <source>Search:</source>
         <translation>Suche:</translation>
     </message>
     <message>
         <location filename="../support/shortcutssettingswidget.ui" line="65"/>
+        <location filename="../build/support/ui_shortcutssettingswidget.h" line="130"/>
         <source>Shortcut for Selected Action</source>
         <translation>Tastaturkürzel für gewählte Aktion</translation>
     </message>
     <message>
         <location filename="../support/shortcutssettingswidget.ui" line="71"/>
+        <location filename="../build/support/ui_shortcutssettingswidget.h" line="131"/>
         <source>Default:</source>
         <translation>Voreinstellung:</translation>
     </message>
     <message>
         <location filename="../support/shortcutssettingswidget.ui" line="78"/>
+        <location filename="../build/support/ui_shortcutssettingswidget.h" line="132"/>
         <location filename="../support/shortcutssettingswidget.cpp" line="99"/>
         <location filename="../support/shortcutssettingswidget.cpp" line="109"/>
         <source>None</source>
@@ -11272,6 +11590,7 @@ Bitte wähle einen anderen Namen.</translation>
     </message>
     <message>
         <location filename="../support/shortcutssettingswidget.ui" line="85"/>
+        <location filename="../build/support/ui_shortcutssettingswidget.h" line="133"/>
         <source>Custom:</source>
         <translation>Benutzerdefiniert:</translation>
     </message>
@@ -11294,12 +11613,12 @@ Bitte wähle einen anderen Namen.</translation>
     <message>
         <location filename="../playlists/smartplaylists.cpp" line="44"/>
         <source>Smart Playlists</source>
-        <translation type="unfinished"></translation>
+        <translation>INtelligente Wiedergabelisten</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylists.cpp" line="49"/>
         <source>Rules based playlists</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -11307,24 +11626,24 @@ Bitte wähle einen anderen Namen.</translation>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="38"/>
         <source>Add</source>
-        <translation type="unfinished">Hinzufügen</translation>
+        <translation>Hinzufügen</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="39"/>
         <source>Edit</source>
-        <translation type="unfinished">Bearbeiten</translation>
+        <translation>Bearbeiten</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="40"/>
         <source>Remove</source>
-        <translation type="unfinished">Entfernen</translation>
+        <translation>Entfernen</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="121"/>
         <source>Are you sure you wish to remove the selected rules?
 
 This cannot be undone.</source>
-        <translation type="unfinished">Bist du sicher, dass du die ausgewählten Regeln entfernen möchtest? Dies kann nicht rückgängig gemacht werden.</translation>
+        <translation>Bist du sicher, dass du die ausgewählten Regeln entfernen möchtest?\n\nDies kann nicht rückgängig gemacht werden.</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="122"/>
@@ -12194,11 +12513,13 @@ Overwrite?</source>
     <name>StreamsSettings</name>
     <message>
         <location filename="../streams/streamssettings.ui" line="12"/>
+        <location filename="../build/ui_streamssettings.h" line="64"/>
         <source>Use the checkboxes below to configure the list of active providers.</source>
         <translation>Verwende die Kästchen unten, um die Liste aktiver Anbieter zu konfigurieren.</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.ui" line="25"/>
+        <location filename="../build/ui_streamssettings.h" line="65"/>
         <source>Built-in categories are shown in italic, and these cannot be removed.</source>
         <translation>Feste Kategorien sind kursiv dargestellt und können nicht entfernt werden.</translation>
     </message>
@@ -12392,76 +12713,91 @@ Overwrite?</source>
     <name>TagEditor</name>
     <message>
         <location filename="../tags/tageditor.ui" line="34"/>
+        <location filename="../build/ui_tageditor.h" line="257"/>
         <source>Track:</source>
         <translation>Stück:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="54"/>
+        <location filename="../build/ui_tageditor.h" line="258"/>
         <source>Title:</source>
         <translation>Titel:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="67"/>
+        <location filename="../build/ui_tageditor.h" line="259"/>
         <source>Artist:</source>
         <translation>Interpret:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="80"/>
+        <location filename="../build/ui_tageditor.h" line="260"/>
         <source>Album artist:</source>
         <translation>Album-Interpret:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="93"/>
+        <location filename="../build/ui_tageditor.h" line="261"/>
         <source>Composer:</source>
         <translation>Komponist:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="106"/>
+        <location filename="../build/ui_tageditor.h" line="262"/>
         <source>Album:</source>
         <translation>Album:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="119"/>
+        <location filename="../build/ui_tageditor.h" line="263"/>
         <source>Track number:</source>
         <translation>Stücknummer:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="132"/>
+        <location filename="../build/ui_tageditor.h" line="264"/>
         <source>Disc number:</source>
         <translation>Disc-Nummer</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="145"/>
+        <location filename="../build/ui_tageditor.h" line="265"/>
         <source>Genre:</source>
         <translation>Genre:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="158"/>
+        <location filename="../build/ui_tageditor.h" line="266"/>
         <source>Year:</source>
         <translation>Jahr:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="171"/>
+        <location filename="../build/ui_tageditor.h" line="267"/>
         <source>Rating:</source>
         <translation>Bewertung:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="186"/>
+        <location filename="../build/ui_tageditor.h" line="268"/>
         <source>&lt;i&gt;(Various)&lt;/i&gt;</source>
         <translation>&lt;i&gt;(Unterschiedlich)&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="195"/>
+        <location filename="../build/ui_tageditor.h" line="269"/>
         <source>Comment:</source>
         <translation>Kommentar:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="210"/>
+        <location filename="../build/ui_tageditor.h" line="270"/>
         <source>Multiple genres should be separated via a comma (e.g. &apos;Rock,Hard Rock&apos;)</source>
         <translation>Mehrfache Genres sollten durch Komma getrennt werden (z. B. „Rock,Hard Rock“)</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="217"/>
+        <location filename="../build/ui_tageditor.h" line="271"/>
         <source>Ratings are stored in an external database, and &lt;b&gt;not&lt;/b&gt; in the song&apos;s file.</source>
         <translation>Bewertungen werden in einer externen Datenbank gespeichert, &lt;b&gt;nicht&lt;/b&gt; in der Musikdatei.</translation>
     </message>
@@ -12757,11 +13093,13 @@ Overwrite?</source>
     <name>ToggleList</name>
     <message>
         <location filename="../context/togglelist.ui" line="17"/>
+        <location filename="../build/ui_togglelist.h" line="128"/>
         <source>Available:</source>
         <translation>Verfügbar:</translation>
     </message>
     <message>
         <location filename="../context/togglelist.ui" line="24"/>
+        <location filename="../build/ui_togglelist.h" line="129"/>
         <source>Selected:</source>
         <translation>Ausgewählt:</translation>
     </message>
@@ -12770,46 +13108,55 @@ Overwrite?</source>
     <name>TrackOrganiser</name>
     <message>
         <location filename="../tags/trackorganiser.ui" line="25"/>
+        <location filename="../build/ui_trackorganiser.h" line="155"/>
         <source>Filenames</source>
         <translation>Dateinamen</translation>
     </message>
     <message>
         <location filename="../tags/trackorganiser.ui" line="61"/>
+        <location filename="../build/ui_trackorganiser.h" line="156"/>
         <source>Filename scheme:</source>
         <translation>Dateinamen-Schema:</translation>
     </message>
     <message>
         <location filename="../tags/trackorganiser.ui" line="71"/>
+        <location filename="../build/ui_trackorganiser.h" line="157"/>
         <source>VFAT safe</source>
         <translation>VFAT-sicher</translation>
     </message>
     <message>
         <location filename="../tags/trackorganiser.ui" line="78"/>
+        <location filename="../build/ui_trackorganiser.h" line="158"/>
         <source>Use only ASCII characters</source>
         <translation>Nur ASCII-Zeichen verwenden</translation>
     </message>
     <message>
         <location filename="../tags/trackorganiser.ui" line="85"/>
+        <location filename="../build/ui_trackorganiser.h" line="159"/>
         <source>Replace spaces with underscores</source>
         <translation>Leerzeichen durch Unterstriche ersetzen</translation>
     </message>
     <message>
         <location filename="../tags/trackorganiser.ui" line="92"/>
+        <location filename="../build/ui_trackorganiser.h" line="160"/>
         <source>Append &apos;The&apos; to artist names</source>
         <translation>„The“ zu Interpretennamen hinzufügen</translation>
     </message>
     <message>
         <location filename="../tags/trackorganiser.ui" line="115"/>
+        <location filename="../build/ui_trackorganiser.h" line="163"/>
         <source>Original Name</source>
         <translation>Ursprünglicher Name</translation>
     </message>
     <message>
         <location filename="../tags/trackorganiser.ui" line="120"/>
+        <location filename="../build/ui_trackorganiser.h" line="162"/>
         <source>New Name</source>
         <translation>Neuer Name:</translation>
     </message>
     <message>
         <location filename="../tags/trackorganiser.ui" line="130"/>
+        <location filename="../build/ui_trackorganiser.h" line="164"/>
         <source>Ratings will be lost if a file is renamed.</source>
         <translation>Bewertungen gehen verloren, wenn eine Datei umbenannt wird.</translation>
     </message>

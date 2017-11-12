@@ -366,7 +366,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(genre, SIGNAL(editTextChanged(const QString &)), SLOT(checkChanged()));
     connect(year, SIGNAL(valueChanged(int)), SLOT(checkChanged()));
     connect(trackName, SIGNAL(activated(int)), SLOT(setIndex(int)));
-    connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
+    connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(updateMaybe()));
     if (ratingWidget) {
         connect(ratingWidget, SIGNAL(valueChanged(int)), SLOT(checkRating()));
     }

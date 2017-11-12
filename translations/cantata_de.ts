@@ -6460,7 +6460,7 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="122"/>
         <source>Discover...</source>
-        <translation type="unfinished">Erkunden...</translation>
+        <translation>Erkennen...</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="171"/>
@@ -11319,142 +11319,122 @@ Bitte wähle einen anderen Namen.</translation>
     <name>ServerSettings</name>
     <message>
         <location filename="../gui/serversettings.ui" line="35"/>
-        <location filename="../build/ui_serversettings.h" line="321"/>
+        <location filename="../build/ui_serversettings.h" line="322"/>
         <source>Collection:</source>
         <translation>Sammlung:</translation>
     </message>
     <message>
+        <location filename="../gui/serversettings.ui" line="63"/>
+        <location filename="../build/ui_serversettings.h" line="323"/>
         <source>Name:</source>
-        <translation type="vanished">Name:</translation>
+        <translation>Name:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
-        <location filename="../build/ui_serversettings.h" line="323"/>
+        <location filename="../build/ui_serversettings.h" line="324"/>
         <location filename="../gui/serversettings.cpp" line="107"/>
         <source>Host:</source>
         <translation>Host:</translation>
     </message>
     <message>
+        <location filename="../gui/serversettings.ui" line="109"/>
+        <location filename="../build/ui_serversettings.h" line="325"/>
         <source>Password:</source>
-        <translation type="vanished">Kennwort:</translation>
+        <translation>Kennwort:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="135"/>
-        <location filename="../gui/serversettings.ui" line="283"/>
-        <location filename="../build/ui_serversettings.h" line="325"/>
-        <location filename="../build/ui_serversettings.h" line="345"/>
+        <location filename="../gui/serversettings.ui" line="126"/>
+        <location filename="../gui/serversettings.ui" line="277"/>
+        <location filename="../build/ui_serversettings.h" line="326"/>
+        <location filename="../build/ui_serversettings.h" line="346"/>
         <source>Music folder:</source>
         <translation>Musikverzeichnis:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="296"/>
-        <location filename="../build/ui_serversettings.h" line="346"/>
+        <location filename="../gui/serversettings.ui" line="139"/>
+        <location filename="../gui/serversettings.ui" line="290"/>
+        <location filename="../build/ui_serversettings.h" line="327"/>
+        <location filename="../build/ui_serversettings.h" line="347"/>
         <source>Cover filename:</source>
         <translation>Dateiname für Coverbilder:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="158"/>
-        <location filename="../build/ui_serversettings.h" line="328"/>
+        <location filename="../gui/serversettings.ui" line="149"/>
+        <location filename="../build/ui_serversettings.h" line="329"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Dateiname (ohne Endung) zum Speichern der Coverbilder.&lt;br/&gt;Ist der Dateiname leer, wird „cover“ verwendet.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% wird ersetzt durch den Album-Interpreten des aktuellen Stücks, %album% durch den Titel des Albums.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>HTTP stream URL:</source>
-        <translation type="vanished">HTTP-Stream-URL:</translation>
-    </message>
-    <message>
-        <source>Local file playback:</source>
-        <translation type="vanished">Lokale Wiedergabe:</translation>
-    </message>
-    <message>
-        <location filename="../gui/serversettings.ui" line="63"/>
-        <location filename="../build/ui_serversettings.h" line="322"/>
-        <source>&amp;Name:</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../gui/serversettings.ui" line="118"/>
-        <location filename="../build/ui_serversettings.h" line="324"/>
-        <source>&amp;Password:</source>
-        <translation>&amp;Passwort:</translation>
-    </message>
-    <message>
-        <location filename="../gui/serversettings.ui" line="148"/>
-        <location filename="../build/ui_serversettings.h" line="326"/>
-        <source>&amp;Cover filename:</source>
-        <translation>&amp;Cover Dateiname:</translation>
-    </message>
-    <message>
-        <location filename="../gui/serversettings.ui" line="165"/>
-        <location filename="../build/ui_serversettings.h" line="330"/>
-        <source>HTTP stream &amp;URL:</source>
-        <translation>HTTP Stream &amp;URL:</translation>
-    </message>
-    <message>
-        <location filename="../gui/serversettings.ui" line="178"/>
+        <location filename="../gui/serversettings.ui" line="156"/>
         <location filename="../build/ui_serversettings.h" line="331"/>
-        <source>&amp;Local file playback:</source>
-        <translation>&amp;Lokale Wiedergabe:</translation>
+        <source>HTTP stream URL:</source>
+        <translation>HTTP-Stream-URL:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="188"/>
-        <location filename="../build/ui_serversettings.h" line="333"/>
+        <location filename="../gui/serversettings.ui" line="169"/>
+        <location filename="../build/ui_serversettings.h" line="332"/>
+        <source>Local file playback:</source>
+        <translation>Lokale Wiedergabe:</translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="179"/>
+        <location filename="../build/ui_serversettings.h" line="334"/>
         <source>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</source>
         <translation>Benutze einen einfachen eingebetteten HTTP-Server, um MPD die WIedergabe von lokalen Dateien zu ermöglichen, die in die Wiedergabeliste eingefügt wurden.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="191"/>
-        <location filename="../build/ui_serversettings.h" line="335"/>
+        <location filename="../gui/serversettings.ui" line="182"/>
+        <location filename="../build/ui_serversettings.h" line="336"/>
         <source>Via in-built HTTP server</source>
         <translation>Über eingebetteten HTTP-Server</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="198"/>
-        <location filename="../build/ui_serversettings.h" line="336"/>
+        <location filename="../gui/serversettings.ui" line="189"/>
+        <location filename="../build/ui_serversettings.h" line="337"/>
         <source>Auto update</source>
-        <translation>Update autom.:</translation>
+        <translation>Update automatisch:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="205"/>
-        <location filename="../build/ui_serversettings.h" line="338"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the server detects modifications automatically, there is no need to send an update command for some actions (MPD, forked-daapd).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn der Server Änderungen automatisch erkennt, ist es nicht nötig, dass für manche Aktionen ein &quot;update&quot; Kommando gesendet wird (MPD, forked-daapd).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../gui/serversettings.ui" line="199"/>
+        <location filename="../build/ui_serversettings.h" line="339"/>
+        <source>If the server detects modifications automatically, there is no need to send an update command for certain actions.</source>
+        <translation>Wenn der Server Änderungen automatisch erkennt, ist es nicht nötig, dass für manche Aktionen ein &quot;update&quot; Kommando gesendet wird.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="208"/>
-        <location filename="../build/ui_serversettings.h" line="340"/>
+        <location filename="../gui/serversettings.ui" line="202"/>
+        <location filename="../build/ui_serversettings.h" line="341"/>
         <source>Server detects changes automatically</source>
         <translation>Server erkennt Änderungen automatisch</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="217"/>
-        <location filename="../build/ui_serversettings.h" line="341"/>
+        <location filename="../gui/serversettings.ui" line="211"/>
+        <location filename="../build/ui_serversettings.h" line="342"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation>Die Einstellung ‚Musikverzeichnis‘ wird verwendet, um Coverbilder nachzuschlagen. Es kann auf eine HTTP-URL gesetzt werden, wenn MPD auf einem anderen Rechner läuft und die Coverbilder über HTTP verfügbar sind. Wenn die Einstellung nicht auf eine HTTP-URL gesetzt ist und du Schreibrechte für dieses Verzeichnis (und seine Unterverzeichnisse) besitzt, dann wird Cantata heruntergeladene Coverbilder in dem entsprechenden Verzeichnis des Albums speichern.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="224"/>
-        <location filename="../gui/serversettings.ui" line="318"/>
-        <location filename="../build/ui_serversettings.h" line="342"/>
-        <location filename="../build/ui_serversettings.h" line="348"/>
+        <location filename="../gui/serversettings.ui" line="218"/>
+        <location filename="../gui/serversettings.ui" line="312"/>
+        <location filename="../build/ui_serversettings.h" line="343"/>
+        <location filename="../build/ui_serversettings.h" line="349"/>
         <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
         <translation>Wenn ‚Dateiname für Coverbilder‘ nicht gesetzt ist, dann wird Cantata die Statndardeinstellung &lt;code&gt;cover&lt;/code&gt; verwenden.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="231"/>
-        <location filename="../build/ui_serversettings.h" line="343"/>
+        <location filename="../gui/serversettings.ui" line="225"/>
+        <location filename="../build/ui_serversettings.h" line="344"/>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
         <translation>‚HTTP-Stream-URL‘ ist nur nützlich, wenn dein MPD so konfiguriert ist, dass er einen HTTP-Stream ausgibt, und du mit Cantata diesen Stream wiedergeben möchtest.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="238"/>
-        <location filename="../build/ui_serversettings.h" line="344"/>
+        <location filename="../gui/serversettings.ui" line="232"/>
+        <location filename="../build/ui_serversettings.h" line="345"/>
         <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
-        <translation>Normalerweise gibt MPD nur Stücke aus seiner Sammlung wieder. Neuer MPDs (ab v0.19) können auch andere Dateien wiedergeben, wennn die Verbindung zu dem Server lokal ist (die Adresse ist z.B. &apos;127.0.01&apos; oder &apos;localhost&apos;). Damit das funktioniert, muss der MPD-Server auf die entsprechenden Dateien Zugriff haben. Für ältere oder nicht-lokale MPDs, oder falls der Server keine Berechtigungen für den Zugriff auf die Dateien hat, kann der ingebettete HTTP-Server von Cantata aktiviert werden. Dieser Server gestattet nur Zugriff auf Einträge in der Wiedergabeliste und das auch nur solange Cantata ausgeführt wird.</translation>
+        <translation>Normalerweise gibt MPD nur Stücke aus seiner Sammlung wieder. Neuere MPD-Versionen (ab v0.19) können auch andere Dateien wiedergeben, wennn die Verbindung zum Server lokal ist (die Adresse ist z.B. &apos;127.0.01&apos; oder &apos;localhost&apos;). Damit das funktioniert, muss der MPD-Server auf die entsprechenden Dateien Zugriff haben. Für ältere oder entfernte MPD-Server, oder falls der Server keine Berechtigung für den Dateizugriff hat, kann der eingebettete HTTP-Server von Cantata aktiviert werden. Dieser Server gestattet nur Zugriff auf Einträge in der Wiedergabeliste und das auch nur solange Cantata ausgeführt wird.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="311"/>
-        <location filename="../build/ui_serversettings.h" line="347"/>
+        <location filename="../gui/serversettings.ui" line="305"/>
+        <location filename="../build/ui_serversettings.h" line="348"/>
         <source>If you change the &apos;Music folder&apos; setting, then you will need to manually update the music database. This can be performed by pressing the &apos;Refresh Database&apos; button in the &apos;Artists&apos; or &apos;Albums&apos; views.</source>
         <translation>Wenn du die Einstellung ‚Musikverzeichnis‘ änderst, musst du manuell die Musikdatenbank aktualisieren. Dies geschieht über die Schlatfläche „Datenbank aktualisieren“ in der Interpreten- oder Albenansicht.</translation>
     </message>
@@ -11613,12 +11593,12 @@ Bitte wähle einen anderen Namen.</translation>
     <message>
         <location filename="../playlists/smartplaylists.cpp" line="44"/>
         <source>Smart Playlists</source>
-        <translation>INtelligente Wiedergabelisten</translation>
+        <translation>Intelligente Wiedergabelisten</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylists.cpp" line="49"/>
         <source>Rules based playlists</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11643,7 +11623,9 @@ Bitte wähle einen anderen Namen.</translation>
         <source>Are you sure you wish to remove the selected rules?
 
 This cannot be undone.</source>
-        <translation>Bist du sicher, dass du die ausgewählten Regeln entfernen möchtest?\n\nDies kann nicht rückgängig gemacht werden.</translation>
+        <translation>Bist du sicher, dass du die ausgewählten Regeln entfernen möchtest?
+
+Dies kann nicht rückgängig gemacht werden.</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="122"/>

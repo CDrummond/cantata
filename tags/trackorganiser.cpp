@@ -71,7 +71,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     setMainWidget(mainWidet);
     configFilename->setIcon(Icons::self()->configureIcon);
     setButtonGuiItem(Ok, GuiItem(tr("Rename")));
-    connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
+    connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(updateMaybe()));
     progress->setVisible(false);
     files->setItemDelegate(new BasicItemDelegate(files));
     files->setAlternatingRowColors(false);

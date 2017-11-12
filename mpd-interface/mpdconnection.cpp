@@ -198,6 +198,7 @@ MPDConnectionDetails::MPDConnectionDetails()
     : port(6600)
     , dirReadable(false)
     , allowLocalStreaming(false)
+    , autoUpdate(false)
 {
 }
 
@@ -1610,6 +1611,13 @@ void MPDConnection::enableOutput(int id, bool enable)
 /*
  * Admin commands
  */
+void MPDConnection::updateMaybe()
+{
+    if (!details.autoUpdate) {
+        update();
+    }
+}
+
 void MPDConnection::update()
 {
     if (mopidy) {

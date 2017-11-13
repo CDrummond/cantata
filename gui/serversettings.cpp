@@ -126,6 +126,7 @@ ServerSettings::ServerSettings(QWidget *p)
     REMOVE(allowLocalStreamingLabel)
     REMOVE(allowLocalStreamingNoteLabel)
     #endif
+    autoUpdate->setToolTip(autoUpdate->toolTip());
 
     #ifdef Q_OS_MAC
     expandingSpacer->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -195,6 +196,7 @@ void ServerSettings::save()
                     || c.details.streamUrl!=e.streamUrl
                     #endif
                     || c.details.allowLocalStreaming!=e.allowLocalStreaming
+                    || c.details.autoUpdate!=e.autoUpdate
                     ) {
                     toAdd.append(c);
                 }
@@ -298,6 +300,7 @@ void ServerSettings::add()
         details.dir=QLatin1String("/var/lib/mpd/music/");
         // disable local streaming by default
         details.allowLocalStreaming=false;
+        details.autoUpdate=false;
         combo->addItem(details.name);
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     } else {
@@ -412,6 +415,7 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
         #ifdef ENABLE_HTTP_SERVER
         allowLocalStreaming->setChecked(details.allowLocalStreaming);
         #endif
+        autoUpdate->setChecked(details.autoUpdate);
         stackedWidget->setCurrentIndex(0);
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     }
@@ -439,6 +443,7 @@ MPDConnectionDetails ServerSettings::getDetails() const
         #ifdef ENABLE_HTTP_SERVER
         details.allowLocalStreaming=allowLocalStreaming->checkState() == Qt::Checked;
         #endif
+        details.autoUpdate=autoUpdate->checkState() == Qt::Checked;
     }
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     else {

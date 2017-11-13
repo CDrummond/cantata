@@ -10,5 +10,5 @@ for app in lupdate lconvert sed grep ; do
 done
 
 find .. -name '*.cpp' -o -name '*.h' -o -name '*.c' -o -name '*.ui' | grep -v "solid-lite" | grep -v "3rdparty" | sort > filelist
-lupdate @filelist -ts *.ts
+lupdate @filelist -ts ${1-*.ts} ${1+"$@"}
 rm filelist

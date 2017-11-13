@@ -163,6 +163,7 @@ struct MPDConnectionDetails {
     #endif
     QString replayGain;
     bool allowLocalStreaming;
+    bool autoUpdate;
 };
 
 class MPDConnection : public QObject
@@ -294,6 +295,7 @@ public Q_SLOTS:
     void listFolder(const QString &folder);
 
     // Admin
+    void updateMaybe();
     void update();
 
     // Playlists

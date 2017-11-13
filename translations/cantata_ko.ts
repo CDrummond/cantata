@@ -9174,80 +9174,80 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="unfinished">모름</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="421"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="422"/>
         <source>Connection to %1 failed</source>
         <translation type="unfinished">%1에 연결 안 됨</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="422"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="423"/>
         <source>Connection to %1 failed - please check your proxy settings</source>
         <translation type="unfinished">%1에 연결할 수 없음 - 프록시 설정을 확인해야 합니다</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="423"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="424"/>
         <source>Connection to %1 failed - incorrect password</source>
         <translation type="unfinished">%1에 연결 안 됨 - 틀린 암호</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="532"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="533"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">%1에 연결</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="651"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="652"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation type="unfinished">%1에 명령어 전달 안 됨 - 연결 안 됨</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="707"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="708"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation type="unfinished">연결 안 됨. &quot;mpd&quot; 사용자가 읽기 권한이 있는지 확인해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="709"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="710"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation type="unfinished">불러오기 안 됨. MPD는 로컬에 연결된 파일만 불러올 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="711"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="718"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="712"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="719"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">MPD가 다음 오류를 보고함: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="715"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="726"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="716"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="727"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation type="unfinished">명령어 전달 안 됨. %1 연결 해제</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1699"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1707"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt;에서 &lt;b&gt;%2&lt;/b&gt;로 이름 바꾸기 안 됨</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1714"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1722"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; 저장 안 됨</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1727"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1735"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation type="unfinished">큐시트의 일부를 연주목록에 추가할 수 없습니다!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1730"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1738"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation type="unfinished">연주목록을 다른 연주목록에 추가할 수 없습니다!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1961"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1969"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation type="unfinished">&apos;%1&apos;을 %2로 보낼 수 없음. %2가 MPD에 등록되어 있는지 확인해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2244"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2271"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2252"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2279"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation type="unfinished">MPD &apos;sticker&apos; 명령어를 지원하지 않아, 평점을 저장할 수 없습니다.</translation>
     </message>
@@ -12091,8 +12091,8 @@ width x height</comment>
         <translation type="unfinished">기타</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="207"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="209"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="208"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="210"/>
         <source>Default</source>
         <translation type="unfinished">기본값</translation>
     </message>
@@ -12102,7 +12102,7 @@ width x height</comment>
         <translation type="obsolete">&quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="220"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="221"/>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
         <translation type="unfinished">&quot;%1&quot; (%2:%3)</translation>
@@ -13225,13 +13225,13 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="126"/>
-        <location filename="../gui/serversettings.ui" line="257"/>
+        <location filename="../gui/serversettings.ui" line="277"/>
         <source>Music folder:</source>
         <translation type="unfinished">음악 폴더:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="139"/>
-        <location filename="../gui/serversettings.ui" line="270"/>
+        <location filename="../gui/serversettings.ui" line="290"/>
         <source>Cover filename:</source>
         <translation type="unfinished">표지 파일이름:</translation>
     </message>
@@ -13261,28 +13261,43 @@ Please choose a different name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="191"/>
+        <location filename="../gui/serversettings.ui" line="189"/>
+        <source>Auto update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="199"/>
+        <source>If the server detects modifications automatically, there is no need to send an update command for certain actions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="202"/>
+        <source>Server detects changes automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.ui" line="211"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation type="unfinished">&apos;음악 폴더&apos; 설정은 음반표지를 찾기 위해 사용됩니다. MPD가 다른 기기에 있고 표지가 HTTP를 통해야 한다면, HTTP URL로 설정할 수 있습니다. HTTP URL로 설정되지 않고 이 폴더에 쓰기 권한이 있다면, 내려받은 표지를 각각의 음반 폴더에 저장합니다. 이 폴더는 장치로(부터) 전송하는 음악파일을 찾는데에도 사용됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="198"/>
-        <location filename="../gui/serversettings.ui" line="292"/>
+        <location filename="../gui/serversettings.ui" line="218"/>
+        <location filename="../gui/serversettings.ui" line="312"/>
         <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
         <translation type="unfinished">&apos;표지 파일이름&apos;이 설정되지 않으면, 기본 &lt;code&gt;표지&lt;/code&gt;를 사용합니다</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="205"/>
+        <location filename="../gui/serversettings.ui" line="225"/>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
         <translation type="unfinished">&apos;HTTP 스트림 URL&apos;은 MPD가 HTTP 스트림으로 출력하도록 설정되어있고, 칸타타로 그 스트림을 연주할 때에만 의미가 있습니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="212"/>
+        <location filename="../gui/serversettings.ui" line="232"/>
         <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="285"/>
+        <location filename="../gui/serversettings.ui" line="305"/>
         <source>If you change the &apos;Music folder&apos; setting, then you will need to manually update the music database. This can be performed by pressing the &apos;Refresh Database&apos; button in the &apos;Artists&apos; or &apos;Albums&apos; views.</source>
         <translation type="unfinished">&apos;음악폴더&apos; 설정을 바꾸면, 음악데이터베이스를 직접 업데이트해야 합니다. 이는 &apos;연주자&apos;나 &apos;음반&apos; 보기의 &apos;데이터베이스 새로 읽기&apos; 단추를 누르면 됩니다.</translation>
     </message>
@@ -13297,67 +13312,67 @@ Please choose a different name.</source>
         <translation type="unfinished">이 폴더는 태그 수정, 리플레이게인 등을 위한 음원을 찾기위해 사용됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="135"/>
+        <location filename="../gui/serversettings.cpp" line="136"/>
         <source>Discover...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="274"/>
+        <location filename="../gui/serversettings.cpp" line="276"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation type="unfinished">어떤 형식의 음원에 연결할까요?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="275"/>
+        <location filename="../gui/serversettings.cpp" line="277"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation type="unfinished">표준 - 다른 기기에서 이미 설정된 음원을 공유하거나, 다른 클라이언트(예.MPDroid)에서 접속할 수 있습니다</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="278"/>
+        <location filename="../gui/serversettings.cpp" line="280"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation type="unfinished">기본 - 음원을 공유하지 않고 칸타타가 MPD를 설정하고 제어합니다. 이것은 칸타타만의 설정으로 다른 MPD 클라이언트에서는 접속이 &lt;b&gt;안&lt;/b&gt;됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="282"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation type="unfinished">&lt;i&gt;&lt;b&gt;참고:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="282"/>
+        <location filename="../gui/serversettings.cpp" line="284"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation type="unfinished">MPD의 고급 설정을 하려면(예. 다중 오디오 출력, DSD 지원 등) &lt;b&gt;반드시&lt;/b&gt; &apos;표준&apos;을 선택해야 합니다</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="284"/>
+        <location filename="../gui/serversettings.cpp" line="286"/>
         <source>Add Collection</source>
         <translation type="unfinished">음원 추가</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="284"/>
+        <location filename="../gui/serversettings.cpp" line="286"/>
         <source>Standard</source>
         <translation type="unfinished">표준</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="284"/>
+        <location filename="../gui/serversettings.cpp" line="286"/>
         <source>Basic</source>
         <translation type="unfinished">기본</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="331"/>
+        <location filename="../gui/serversettings.cpp" line="334"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation type="unfinished">&apos;%1&apos;을 지울까요?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="332"/>
+        <location filename="../gui/serversettings.cpp" line="335"/>
         <source>Delete</source>
         <translation type="unfinished">지우기</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="385"/>
+        <location filename="../gui/serversettings.cpp" line="388"/>
         <source>New Collection %1</source>
         <translation type="unfinished">새로운 음원 %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="403"/>
+        <location filename="../gui/serversettings.cpp" line="406"/>
         <source>Default</source>
         <translation type="unfinished">기본값</translation>
     </message>

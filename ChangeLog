@@ -18,6 +18,8 @@
 12. Fix MPRIS length field.
 13. Add option to show bitrate, sample rate, and format in toolbar.
 14. Add support for forked-DAAP - thanks to Wolfgang Scherer.
+15. Add checkbox to indicate that server auto-updates when files changed.
+    Thanks to Wolfgang Scherer.
 
 2.2.0
 -----

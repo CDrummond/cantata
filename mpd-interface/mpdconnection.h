@@ -164,6 +164,7 @@ struct MPDConnectionDetails {
     QString replayGain;
     bool allowLocalStreaming;
     bool autoUpdate;
+    double ratingFactor;
 };
 
 class MPDConnection : public QObject

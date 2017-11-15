@@ -127,6 +127,7 @@ ServerSettings::ServerSettings(QWidget *p)
     REMOVE(allowLocalStreamingNoteLabel)
     #endif
     autoUpdate->setToolTip(autoUpdate->toolTip());
+    ratingFactor->setToolTip(ratingFactor->toolTip());
 
     #ifdef Q_OS_MAC
     expandingSpacer->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -197,6 +198,7 @@ void ServerSettings::save()
                     #endif
                     || c.details.allowLocalStreaming!=e.allowLocalStreaming
                     || c.details.autoUpdate!=e.autoUpdate
+                    || c.details.ratingFactor!=e.ratingFactor
                     ) {
                     toAdd.append(c);
                 }
@@ -301,6 +303,7 @@ void ServerSettings::add()
         // disable local streaming by default
         details.allowLocalStreaming=false;
         details.autoUpdate=false;
+        details.ratingFactor=1.0;
         combo->addItem(details.name);
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     } else {
@@ -416,6 +419,7 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
         allowLocalStreaming->setChecked(details.allowLocalStreaming);
         #endif
         autoUpdate->setChecked(details.autoUpdate);
+        ratingFactor->setValue(details.ratingFactor);
         stackedWidget->setCurrentIndex(0);
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     }
@@ -444,6 +448,7 @@ MPDConnectionDetails ServerSettings::getDetails() const
         details.allowLocalStreaming=allowLocalStreaming->checkState() == Qt::Checked;
         #endif
         details.autoUpdate=autoUpdate->checkState() == Qt::Checked;
+        details.ratingFactor=ratingFactor->value();
     }
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     else {

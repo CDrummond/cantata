@@ -175,6 +175,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         // for easy migration of existing settings
         details.allowLocalStreaming=grp.get("allowLocalStreaming", true);
         details.autoUpdate=grp.get("autoUpdate", false);
+        details.ratingFactor=grp.get("ratingFactor", 1.0);
     } else {
         details.hostname=mpdDefaults.host;
         details.port=mpdDefaults.port;
@@ -186,6 +187,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         #endif
         details.allowLocalStreaming=true;
         details.autoUpdate=false;
+        details.ratingFactor=1.0;
     }
     details.setDirReadable();
     return details;
@@ -708,6 +710,7 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     #endif
     grp.set("allowLocalStreaming", v.allowLocalStreaming);
     grp.set("autoUpdate", v.autoUpdate);
+    grp.set("ratingFactor", v.ratingFactor);
 }
 
 void Settings::saveCurrentConnection(const QString &v)

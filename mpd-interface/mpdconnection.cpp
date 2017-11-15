@@ -199,6 +199,7 @@ MPDConnectionDetails::MPDConnectionDetails()
     , dirReadable(false)
     , allowLocalStreaming(false)
     , autoUpdate(false)
+    , ratingFactor(1.0)
 {
 }
 
@@ -1420,7 +1421,7 @@ void MPDConnection::getStats()
         Response response=sendCommand("lsinfo file:/", false, false);
         QList<QByteArray> lines = response.data.split('\n');
         foreach (const QByteArray &line, lines) {
-            if ( line == constAckLsinfoForkedDaapd ) {
+            if ( line.startsWith(constAckLsinfoForkedDaapd)) {
                 DBUG << "forked-daapd detected: " << line;
                 forkedDaapd=true;
                 break;
@@ -1875,7 +1876,9 @@ void MPDConnection::search(const QByteArray &query, const QString &id)
     } else if (query.startsWith("RATING:")) {
         QList<QByteArray> parts = query.split(':');
         if (3==parts.length()) {
-            Response response=sendCommand("sticker find song \"\" rating", false, false);
+            QByteArray cmd = "sticker find song \"";
+            cmd += (forkedDaapd ? details.dir : "") + "\" " + constRatingSticker;
+            Response response=sendCommand(cmd, false, false);
             if (response.ok) {
                 int min = parts.at(1).toInt();
                 int max = parts.at(2).toInt();
@@ -1883,7 +1886,7 @@ void MPDConnection::search(const QByteArray &query, const QString &id)
                 if (!stickers.isEmpty()) {
                     foreach (const MPDParseUtils::Sticker &sticker, stickers) {
                         if (!sticker.file.isEmpty() && !sticker.value.isEmpty()) {
-                            int val = sticker.value.toInt();
+                            int val = int(sticker.value.toInt() / details.ratingFactor);
                             if (val>=min && val<=max) {
                                 Response resp = sendCommand("find file " + encodeName(QString::fromUtf8(sticker.file)) , false, false);
                                 if (resp.ok) {
@@ -2255,7 +2258,7 @@ void MPDConnection::setRating(const QString &file, quint8 val)
 
     bool ok=0==val
                 ? sendCommand("sticker delete song "+encodeName(file)+' '+constRatingSticker, 0!=val).ok
-                : sendCommand("sticker set song "+encodeName(file)+' '+constRatingSticker+' '+quote(val)).ok;
+                : sendCommand("sticker set song "+encodeName(file)+' '+constRatingSticker+' '+quote(int(val * details.ratingFactor))).ok;
 
     if (!ok && 0==val) {
         clearError();
@@ -2298,7 +2301,7 @@ void MPDConnection::setRating(const QStringList &files, quint8 val)
             if (0==val) {
                 cmd+="sticker delete song "+encodeName(f)+' '+constRatingSticker+'\n';
             } else {
-                cmd+="sticker set song "+encodeName(f)+' '+constRatingSticker+' '+quote(val)+'\n';
+                cmd+="sticker set song "+encodeName(f)+' '+constRatingSticker+' '+quote(int(val*details.ratingFactor))+'\n';
             }
         }
 
@@ -2322,7 +2325,7 @@ void MPDConnection::getRating(const QString &file)
         if (resp.ok) {
             QByteArray val=MPDParseUtils::parseSticker(resp.data, constRatingSticker);
             if (!val.isEmpty()) {
-                r=val.toUInt();
+                r=int(val.toUInt()/details.ratingFactor);
             }
         } else { // Ignore errors about uknown sticker...
             clearError();

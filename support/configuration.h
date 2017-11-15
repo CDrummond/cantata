@@ -44,6 +44,7 @@ public:
     bool         get(const QString &key, bool def)               { return contains(key) ? value(key).toBool() : def; }
     int          get(const QString &key, int def)                { return contains(key) ? value(key).toInt() : def; }
     unsigned int get(const QString &key, unsigned int def)       { return contains(key) ? value(key).toUInt() : def; }
+    double       get(const QString &key, double def)             { return contains(key) ? value(key).toDouble() : def; }
     QByteArray   get(const QString &key, const QByteArray &def)  { return contains(key) ? value(key).toByteArray() : def; }
     QSize        get(const QString &key, const QSize &def)       { return contains(key) ? value(key).toSize() : def; }
     QDateTime    get(const QString &key, const QDateTime &def)   { return contains(key) ? value(key).toDateTime() : def; }
@@ -53,6 +54,7 @@ public:
     void         set(const QString &key, bool val)               { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }
     void         set(const QString &key, int val)                { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }
     void         set(const QString &key, unsigned int val)       { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }
+    void         set(const QString &key, double val)             { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }
     void         set(const QString &key, const QByteArray &val)  { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }
     void         set(const QString &key, const QSize &val)       { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }
     void         set(const QString &key, const QDateTime &val)   { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }

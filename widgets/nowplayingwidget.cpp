@@ -266,6 +266,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     track->setFont(f);
     artist->setFont(small);
     time->setFont(small);
+    infoLabel->setFont(small);
     slider->setOrientation(Qt::Horizontal);
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
     QBoxLayout *topLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);

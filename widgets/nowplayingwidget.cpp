@@ -451,12 +451,26 @@ void NowPlayingWidget::updateInfo()
         infoLabel->setText(QString());
         return;
     }
-    QString info;
 
-    info=info.sprintf("%d kbps, %.1f kHz", MPDStatus::self()->bitrate(), MPDStatus::self()->samplerate()/1000.0);
+    QString info;
+    info = MPDStatus::self()->bitrate()>0
+            ? MPDStatus::self()->samplerate()>0
+                ? info.sprintf("%d kbps, %.1f kHz", MPDStatus::self()->bitrate(), MPDStatus::self()->samplerate()/1000.0)
+                : info.sprintf("%d kbps", MPDStatus::self()->bitrate())
+            : MPDStatus::self()->samplerate()>0
+                  ? info.sprintf("%.1f kHz", MPDStatus::self()->samplerate()/1000.0)
+                  : QString();
+
     int pos=currentSongFile.lastIndexOf('.');
     if (pos>1) {
-        info+=", "+currentSongFile.mid(pos+1).toUpper();
+        QString ext = currentSongFile.mid(pos+1).toUpper();
+
+        if (ext.length()<5) {
+            if (!info.isEmpty()) {
+                info+=", ";
+            }
+            info+=ext;
+        }
     }
     infoLabel->setText(info);
 }

@@ -85,8 +85,6 @@ static const QByteArray constDynamicIn("cantata-dynamic-in");
 static const QByteArray constDynamicOut("cantata-dynamic-out");
 static const QByteArray constRatingSticker("rating");
 
-static const QByteArray constAckLsinfoForkedDaapd("ACK [50@0] {lsinfo} Directory info not found for virtual-path '/file:/'");
-
 static inline int socketTimeout(int dataSize)
 {
     static const int constDataBlock=256;
@@ -244,8 +242,6 @@ MPDConnection::MPDConnection()
     , currentSongId(-1)
     , songPos(0)
     , unmuteVol(-1)
-    , mopidy(false)
-    , forkedDaapd(false)
     , isUpdatingDb(false)
     , volumeFade(0)
     , fadeDuration(0)
@@ -480,8 +476,7 @@ void MPDConnection::disconnectFromMPD()
     lastUpdatePlayQueueVersion=0;
     currentSongId=0;
     songPos=0;
-    mopidy=false;
-    forkedDaapd=false;
+    serverInfo.reset();
     isUpdatingDb=false;
     emit socketAddress(QString());
 }
@@ -584,8 +579,6 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
         DBUG << "call connectToMPD";
         unmuteVol=-1;
         toggleStopAfterCurrent(false);
-        mopidy=false;
-        forkedDaapd=false;
         #ifdef ENABLE_SIMPLE_MPD_SUPPORT
         if (isUser) {
             MPDUser::self()->start();
@@ -699,7 +692,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             bool emitError=true;
             // Mopidy returns "incorrect arguments" for commands it does not support. The docs state that crossfade and replaygain mode
             // setting commands are not supported. So, if we get this error then just ignore it.
-            if (mopidy && (command.startsWith("crossfade ") || command.startsWith("replay_gain_mode "))) {
+            if (!isMpd() && (command.startsWith("crossfade ") || command.startsWith("replay_gain_mode "))) {
                 emitError=false;
             }
             if (emitError) {
@@ -1404,28 +1397,16 @@ void MPDConnection::clearStopAfter()
 
 void MPDConnection::getStats()
 {
+    serverInfo.detect();
     Response response=sendCommand("stats");
     if (response.ok) {
         MPDStatsValues stats=MPDParseUtils::parseStats(response.data);
         dbUpdate=stats.dbUpdate;
-        mopidy=0==stats.artists && 0==stats.albums && 0==stats.songs &&
-               0==stats.uptime && 0==stats.playtime && 0==stats.dbPlaytime && 0==dbUpdate;
-        if (mopidy) {
+        if (isMopidy()) {
             // Set version to 1 so that SQL cache is updated - it uses 0 as intial value
             dbUpdate=stats.dbUpdate=1;
         }
         emit statsUpdated(stats);
-    }
-    if ( !mopidy ) {
-        Response response=sendCommand("lsinfo file:/", false, false);
-        QList<QByteArray> lines = response.data.split('\n');
-        foreach (const QByteArray &line, lines) {
-            if ( line == constAckLsinfoForkedDaapd ) {
-                DBUG << "forked-daapd detected: " << line;
-                forkedDaapd=true;
-                break;
-            }
-        }
     }
 }
 
@@ -1620,7 +1601,7 @@ void MPDConnection::updateMaybe()
 
 void MPDConnection::update()
 {
-    if (mopidy) {
+    if (isMopidy()) {
         // Mopidy does not support MPD's update command. So, when user presses update DB, what we
         // just reload the library.
         loadLibrary();
@@ -2067,7 +2048,7 @@ bool MPDConnection::recursivelyListDir(const QString &dir, QList<Song> &songs)
 {
     bool topLevel="/"==dir || ""==dir;
 
-    if (topLevel && !mopidy) {
+    if (topLevel && isMpd()) {
         // UPnP database backend does not list separate metadata items, so if "list genre" returns
         // empty response assume this is a UPnP backend and dont attempt to get rest of data...
         // Although we dont use "list XXX", lsinfo will return duplciate items (due to the way most
@@ -2084,7 +2065,7 @@ bool MPDConnection::recursivelyListDir(const QString &dir, QList<Song> &songs)
     }
 
     Response response=sendCommand(topLevel
-                                    ? QByteArray(mopidy ? "lsinfo \"Local media\"" : "lsinfo")
+                                    ? serverInfo.topLevelLsinfo()
                                     : ("lsinfo "+encodeName(dir)));
     if (response.ok) {
         QStringList subDirs;
@@ -2484,4 +2465,94 @@ void MpdSocket::deleteLocal()
         local->deleteLater();
         local=0;
     }
+}
+
+MPDServerInfo::ResponseParameter MPDServerInfo::lsinfoResponseParameters[] = {
+    // github
+    { "{lsinfo} Directory info not found for virtual-path '/",
+      true, MPDServerInfo::ForkedDaapd, "forked-daapd" },
+    // lower case since 2013, ubuntu 16.10 / upper case since 2015
+    { "{lsinfo} Unsupported URI scheme", true, MPDServerInfo::Mpd, "MPD" },
+    // ubuntu 11.10
+    { "ACK [50@0] {lsinfo} directory not found", false, MPDServerInfo::Mpd, "MPD" },
+    // ubuntu 16.10 (this seems too generic?)
+    // { "ACK [50@0] {lsinfo} Not found", false, MPDServerInfo::Mopidy, "Mopidy" },
+    // ubuntu 16.10
+    { "OK", false, MPDServerInfo::ForkedDaapd, "forked-daapd" }
+};
+
+void MPDServerInfo::detect(void) {
+    MPDConnection *conn;
+
+    if (!isUndetermined()) {
+        return;
+    }
+
+    conn = MPDConnection::self();
+
+    if (isUndetermined()) {
+        MPDConnection::Response response=conn->sendCommand("stats");
+        if (response.ok) {
+            MPDStatsValues stats=MPDParseUtils::parseStats(response.data);
+            if (0==stats.artists && 0==stats.albums && 0==stats.songs
+                && 0==stats.uptime && 0==stats.playtime && 0==stats.dbPlaytime
+                && 0==stats.dbUpdate) {
+                setServerType(Mopidy);
+                theServerName = "Mopidy";
+            }
+        }
+    }
+
+    if (isUndetermined()) {
+        MPDConnection::Response response=conn->sendCommand(lsinfoCommand, false, false);
+        QList<QByteArray> lines = response.data.split('\n');
+        bool match = false;
+        int indx;
+        foreach (const QByteArray &line, lines) {
+            for (indx=0; indx<sizeof(lsinfoResponseParameters)/sizeof(ResponseParameter); ++indx) {
+                ResponseParameter &rp = lsinfoResponseParameters[indx];
+                if (rp.isSubstring) {
+                    match = line.toLower().contains(rp.response.toLower());
+                } else {
+                    match = line.toLower() == rp.response.toLower();
+                }
+                if (match) {
+                    setServerType(rp.serverType);
+                    theServerName = rp.name;
+                    break;
+                }
+            }
+            // first line is currently enough
+            break;
+        }
+    }
+
+    if (isUndetermined()) {
+        setServerType(Unknown);
+        theServerName = "unknown";
+    }
+
+    DBUG << "detected serverType: " << serverName() << "(" << serverType() << ")";
+
+    if (isMopidy()) {
+        theTopLevelLsinfo = "lsinfo \"Local media\"";
+    }
+
+    if (isForkedDaapd()) {
+        theTopLevelLsinfo = "lsinfo file:";
+
+        QByteArray message = "sendmessage rating \"";
+        message += "rating ";                           // sticker name
+        message += QString().number(Song::Rating_Max);  // max rating
+        message += " ";
+        message += QString().number(Song::Rating_Step); // rating step (optional)
+        message += "\"";
+        conn->sendCommand(message, false, false);
+    }
+}
+
+void MPDServerInfo::reset(void) {
+    setServerType(MPDServerInfo::Undetermined);
+    theServerName = "undetermined";
+    theTopLevelLsinfo = "lsinfo";
 }

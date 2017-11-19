@@ -166,6 +166,53 @@ struct MPDConnectionDetails {
     bool autoUpdate;
 };
 
+class MPDServerInfo {
+public:
+    enum ServerType {
+        Undetermined,
+        Mpd,
+        Mopidy,
+        ForkedDaapd,
+        Unknown
+    };
+
+    MPDServerInfo() {
+        reset();
+        lsinfoCommand = "lsinfo \"mpd-client://cantata/";
+        lsinfoCommand += PACKAGE_VERSION_STRING;
+        lsinfoCommand += "\"";
+    };
+
+    void reset(void);
+    void detect(void);
+
+    ServerType serverType(void) const { return theServerType;}
+    bool isUndetermined(void) const { return theServerType == Undetermined; }
+    bool isMpd(void) const { return theServerType == Mpd; }
+    bool isMopidy(void) const { return theServerType == Mopidy; }
+    bool isForkedDaapd(void) const { return theServerType == ForkedDaapd; }
+
+    const QString &serverName(void) const { return theServerName;}
+    const QByteArray &topLevelLsinfo(void) const { return theTopLevelLsinfo; }
+
+private:
+    void setServerType(ServerType serverType) { theServerType = serverType; }
+
+    ServerType theServerType;
+    QString theServerName;
+    QByteArray theTopLevelLsinfo;
+
+    struct ResponseParameter {
+        QByteArray response;
+        bool isSubstring;
+        ServerType serverType;
+        QString name;
+    };
+
+    QByteArray lsinfoCommand;
+    static ResponseParameter lsinfoResponseParameters[];
+};
+
 class MPDConnection : public QObject
 {
     Q_OBJECT
@@ -215,7 +262,7 @@ public:
     const MPDConnectionDetails & getDetails() const { return details; }
     void setDirReadable() { details.setDirReadable(); }
     bool isConnected() const { return State_Connected==state; }
-    bool canUsePriority() const { return ver>=CANTATA_MAKE_VERSION(0, 17, 0) && !mopidy; }
+    bool canUsePriority() const { return ver>=CANTATA_MAKE_VERSION(0, 17, 0) && isMpd(); }
     const QSet<QString> & urlHandlers() const { return handlers; }
     const QSet<QString> & tags() const { return tagTypes; }
     bool composerTagSupported() const { return tagTypes.contains(QLatin1String("Composer")); }
@@ -231,8 +278,9 @@ public:
     static bool isPlaylist(const QString &file);
     int unmuteVolume() { return unmuteVol; }
     bool isMuted() { return -1!=unmuteVol; }
-    bool isMopidy() const { return mopidy; }
-    bool isforkedDaapd() const { return forkedDaapd; }
+    bool isMpd(void) const { return serverInfo.isMpd(); }
+    bool isMopidy(void) const { return serverInfo.isMopidy(); }
+    bool isForkedDaapd(void) const { return serverInfo.isForkedDaapd(); }
     void setVolumeFadeDuration(int f) { fadeDuration=f; }
     QString ipAddress() const { return details.isLocal() ? QString() : sock.address(); }
 
@@ -464,14 +512,13 @@ private:
     qint32 currentSongId;
     quint32 songPos; // USe for stop-after-current when we only have 1 songin playqueue!
     int unmuteVol;
-    bool mopidy;
-    bool forkedDaapd;
+    friend class MPDServerInfo;
+    MPDServerInfo serverInfo;
     bool isUpdatingDb;
 
     QPropertyAnimation *volumeFade;
     int fadeDuration;
     int restoreVolume;
 };
-
 
 #endif

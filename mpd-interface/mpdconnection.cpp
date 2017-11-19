@@ -595,6 +595,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
             if (replaygainSupported() && !details.replayGain.isEmpty()) {
                 sendCommand("replay_gain_mode "+details.replayGain.toLatin1());
             }
+            serverInfo.detect();
             getStatus();
             getStats();
             getUrlHandlers();
@@ -1397,7 +1398,6 @@ void MPDConnection::clearStopAfter()
 
 void MPDConnection::getStats()
 {
-    serverInfo.detect();
     Response response=sendCommand("stats");
     if (response.ok) {
         MPDStatsValues stats=MPDParseUtils::parseStats(response.data);

@@ -2065,7 +2065,7 @@ bool MPDConnection::recursivelyListDir(const QString &dir, QList<Song> &songs)
     }
 
     Response response=sendCommand(topLevel
-                                    ? serverInfo.topLevelLsinfo()
+                                    ? serverInfo.getTopLevelLsinfo()
                                     : ("lsinfo "+encodeName(dir)));
     if (response.ok) {
         QStringList subDirs;
@@ -2498,7 +2498,7 @@ void MPDServerInfo::detect(void) {
                 && 0==stats.uptime && 0==stats.playtime && 0==stats.dbPlaytime
                 && 0==stats.dbUpdate) {
                 setServerType(Mopidy);
-                theServerName = "Mopidy";
+                serverName = "Mopidy";
             }
         }
     }
@@ -2518,7 +2518,7 @@ void MPDServerInfo::detect(void) {
                 }
                 if (match) {
                     setServerType(rp.serverType);
-                    theServerName = rp.name;
+                    serverName = rp.name;
                     break;
                 }
             }
@@ -2529,17 +2529,17 @@ void MPDServerInfo::detect(void) {
 
     if (isUndetermined()) {
         setServerType(Unknown);
-        theServerName = "unknown";
+        serverName = "unknown";
     }
 
-    DBUG << "detected serverType: " << serverName() << "(" << serverType() << ")";
+    DBUG << "detected serverType: " << getServerName() << "(" << getServerType() << ")";
 
     if (isMopidy()) {
-        theTopLevelLsinfo = "lsinfo \"Local media\"";
+        topLevelLsinfo = "lsinfo \"Local media\"";
     }
 
     if (isForkedDaapd()) {
-        theTopLevelLsinfo = "lsinfo file:";
+        topLevelLsinfo = "lsinfo file:";
 
         QByteArray message = "sendmessage rating \"";
         message += "rating ";                           // sticker name
@@ -2553,6 +2553,6 @@ void MPDServerInfo::detect(void) {
 
 void MPDServerInfo::reset(void) {
     setServerType(MPDServerInfo::Undetermined);
-    theServerName = "undetermined";
-    theTopLevelLsinfo = "lsinfo";
+    serverName = "undetermined";
+    topLevelLsinfo = "lsinfo";
 }

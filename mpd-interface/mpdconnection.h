@@ -186,21 +186,21 @@ public:
     void reset(void);
     void detect(void);
 
-    ServerType serverType(void) const { return theServerType;}
-    bool isUndetermined(void) const { return theServerType == Undetermined; }
-    bool isMpd(void) const { return theServerType == Mpd; }
-    bool isMopidy(void) const { return theServerType == Mopidy; }
-    bool isForkedDaapd(void) const { return theServerType == ForkedDaapd; }
+    ServerType getServerType(void) const { return serverType;}
+    bool isUndetermined(void) const { return serverType == Undetermined; }
+    bool isMpd(void) const { return serverType == Mpd; }
+    bool isMopidy(void) const { return serverType == Mopidy; }
+    bool isForkedDaapd(void) const { return serverType == ForkedDaapd; }
 
-    const QString &serverName(void) const { return theServerName;}
-    const QByteArray &topLevelLsinfo(void) const { return theTopLevelLsinfo; }
+    const QString &getServerName(void) const { return serverName;}
+    const QByteArray &getTopLevelLsinfo(void) const { return topLevelLsinfo; }
 
 private:
-    void setServerType(ServerType serverType) { theServerType = serverType; }
+    void setServerType(ServerType serverType) { serverType = serverType; }
 
-    ServerType theServerType;
-    QString theServerName;
-    QByteArray theTopLevelLsinfo;
+    ServerType serverType;
+    QString serverName;
+    QByteArray topLevelLsinfo;
 
     struct ResponseParameter {
         QByteArray response;

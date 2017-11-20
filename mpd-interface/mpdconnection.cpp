@@ -1048,7 +1048,7 @@ void MPDConnection::playListChanges()
     QByteArray data = "plchangesposid "+quote(lastUpdatePlayQueueVersion);
     Response status=sendCommand("status"); // We need an updated status so as to detect deletes at end of list...
     Response response=sendCommand(data, false);
-    if (response.ok && status.ok) {
+    if (response.ok && status.ok && isPlayQueueIdValid()) {
         MPDStatusValues sv=MPDParseUtils::parseStatus(status.data);
         lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion=sv.playlist;
         emitStatusUpdated(sv);
@@ -2532,7 +2532,7 @@ void MPDServerInfo::detect(void) {
         serverName = "unknown";
     }
 
-    DBUG << "detected serverType: " << getServerName() << "(" << getServerType() << ")";
+    DBUG << "detected serverType:" << getServerName() << "(" << getServerType() << ")";
 
     if (isMopidy()) {
         topLevelLsinfo = "lsinfo \"Local media\"";

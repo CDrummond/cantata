@@ -196,7 +196,7 @@ public:
     const QByteArray &getTopLevelLsinfo(void) const { return topLevelLsinfo; }
 
 private:
-    void setServerType(ServerType serverType) { serverType = serverType; }
+    void setServerType(ServerType newServerType) { serverType = newServerType; }
 
     ServerType serverType;
     QString serverName;

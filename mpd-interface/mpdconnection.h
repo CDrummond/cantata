@@ -191,6 +191,7 @@ public:
     bool isMpd(void) const { return serverType == Mpd; }
     bool isMopidy(void) const { return serverType == Mopidy; }
     bool isForkedDaapd(void) const { return serverType == ForkedDaapd; }
+    bool isPlayQueueIdValid(void) const { return serverType != ForkedDaapd; }
 
     const QString &getServerName(void) const { return serverName;}
     const QByteArray &getTopLevelLsinfo(void) const { return topLevelLsinfo; }
@@ -281,6 +282,7 @@ public:
     bool isMpd(void) const { return serverInfo.isMpd(); }
     bool isMopidy(void) const { return serverInfo.isMopidy(); }
     bool isForkedDaapd(void) const { return serverInfo.isForkedDaapd(); }
+    bool isPlayQueueIdValid(void) const { return serverInfo.isPlayQueueIdValid(); }
     void setVolumeFadeDuration(int f) { fadeDuration=f; }
     QString ipAddress() const { return details.isLocal() ? QString() : sock.address(); }
 

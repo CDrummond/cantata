@@ -426,7 +426,7 @@ void TrackOrganiser::renameFile()
             if (s.file.startsWith(Song::constMopidyLocal)) {
                 origPath=to.file;
                 to.file=Song::encodePath(to.file);
-            } else if (MPDConnection::self()->isforkedDaapd()) {
+            } else if (MPDConnection::self()->isForkedDaapd()) {
                 to.file=Song::constForkedDaapdLocal + dest;
             } else {
                 to.file=modified;

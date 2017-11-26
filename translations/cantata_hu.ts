@@ -8595,85 +8595,85 @@ Ha a kereső új dalszöveget talál, hozzákapcsolható az eredeti dalhoz és e
 <context>
     <name>MPDConnection</name>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="173"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="171"/>
         <source>Unknown</source>
         <translation type="unfinished">Ismeretlen</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="422"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="418"/>
         <source>Connection to %1 failed</source>
         <translation type="unfinished">Csatlakozás ehhez %1 sikertelen</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="423"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="419"/>
         <source>Connection to %1 failed - please check your proxy settings</source>
         <translation type="unfinished">Kapcsolódás %1 -hez nem sikerült - kérem ellenőrizd a proxy beállításait.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="424"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="420"/>
         <source>Connection to %1 failed - incorrect password</source>
         <translation type="unfinished">Csatlakozás ehhez %1 sikertelen - hibás jelszó</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="533"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="528"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">Csatlakozás ehhez %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="652"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="646"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation type="unfinished">Csatlakozás ehhez %1 sikertelen - nincs csatlakozva</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="708"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="702"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation type="unfinished">Betöltés sikertelen. Ellenőrizd a felhasználó &quot;mpd&quot; olvasási jogát.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="710"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="704"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation type="unfinished">Betöltés sikertelen. Az MPD csak helyi fájlokat játszik le, ha helyi csatlakozóra csatolva.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="712"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="719"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="706"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="713"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">Az MPD a következő hibát jelezte: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="716"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="727"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="710"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="721"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation type="unfinished">Sikertelen parancsküldés. Leválasztva innen: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1707"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1688"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation type="unfinished">Sikertelen átnevezés erről &lt;b&gt;%1&lt;/b&gt; erre &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1722"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1703"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished">Sikertelen mentés</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1735"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1716"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation type="unfinished">Kulcslap részletét nem adhatod a lejátszási listához!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1738"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1719"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation type="unfinished">Nem adhatsz lejátszási listát másik listához!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1969"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1950"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation type="unfinished">Nem sikerült %1 elküldése %2 -re. Ellenőrizd, hogy %2 MPD-be be lett-e jegyezve.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2252"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2279"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2233"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2260"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9139,78 +9139,78 @@ A kilépés megszakítja az adatfolyam letöltését.</translation>
         <translation type="unfinished">Nincs engedélyezve: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1478"/>
-        <location filename="../gui/mainwindow.cpp" line="1501"/>
+        <location filename="../gui/mainwindow.cpp" line="1479"/>
+        <location filename="../gui/mainwindow.cpp" line="1502"/>
         <source>Server Information</source>
         <translation type="unfinished">Szerver-információk</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1481"/>
+        <location filename="../gui/mainwindow.cpp" line="1482"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Szerver&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protokoll:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Idő:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Játszott:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Kezelők:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Címkék:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1492"/>
+        <location filename="../gui/mainwindow.cpp" line="1493"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Adatbázis&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Előadók:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albumok:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Dalok:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Időtartam:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Frissítve:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1645"/>
+        <location filename="../gui/mainwindow.cpp" line="1646"/>
         <source>Cantata (%1)</source>
         <translation type="unfinished">Cantata (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1712"/>
+        <location filename="../gui/mainwindow.cpp" line="1713"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">Az MPD a következő hibát jelezte: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1783"/>
+        <location filename="../gui/mainwindow.cpp" line="1784"/>
         <source>Cantata</source>
         <translation type="unfinished">Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1783"/>
+        <location filename="../gui/mainwindow.cpp" line="1784"/>
         <source>Playback stopped</source>
         <translation type="unfinished">Lejátszás leállt</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1826"/>
+        <location filename="../gui/mainwindow.cpp" line="1827"/>
         <source>Remove all songs from play queue?</source>
         <translation type="unfinished">A lejátszási sorból minden számot töröl?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1877"/>
+        <location filename="../gui/mainwindow.cpp" line="1878"/>
         <source>Priority</source>
         <translation type="unfinished">Prioritás</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1877"/>
+        <location filename="../gui/mainwindow.cpp" line="1878"/>
         <source>Enter priority (0..255):</source>
         <translation type="unfinished">Add meg a prioritást (0-255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1878"/>
+        <location filename="../gui/mainwindow.cpp" line="1879"/>
         <source>Decrease priority for each subsequent track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1905"/>
+        <location filename="../gui/mainwindow.cpp" line="1906"/>
         <source>Playlist Name</source>
         <translation type="unfinished">Lejátszási lista neve</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1905"/>
+        <location filename="../gui/mainwindow.cpp" line="1906"/>
         <source>Enter a name for the playlist:</source>
         <translation type="unfinished">Írj be egy nevet a lejátszási listának:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1908"/>
+        <location filename="../gui/mainwindow.cpp" line="1909"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation type="unfinished">&apos;%1&apos; lefoglalva a kedvenc adatfolyamok tárolására, kérlek válassz másik nevet!</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1912"/>
+        <location filename="../gui/mainwindow.cpp" line="1913"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -9219,29 +9219,29 @@ Add to that playlist?</source>
 Hozzáadjam ahhoz a listához?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1913"/>
+        <location filename="../gui/mainwindow.cpp" line="1914"/>
         <source>Existing Playlist</source>
         <translation type="unfinished">Létező lejátszási lista</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1974"/>
+        <location filename="../gui/mainwindow.cpp" line="1975"/>
         <source>Select Music Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1974"/>
+        <location filename="../gui/mainwindow.cpp" line="1975"/>
         <source>Music Files </source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2003"/>
+        <location filename="../gui/mainwindow.cpp" line="2004"/>
         <source>%n Track(s)</source>
         <translation type="unfinished">
             <numerusform>%n Szám</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2005"/>
+        <location filename="../gui/mainwindow.cpp" line="2006"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n Szám (%1)</numerusform>
@@ -9404,7 +9404,7 @@ Hozzáadjam ahhoz a listához?</translation>
 <context>
     <name>NowPlayingWidget</name>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="321"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="322"/>
         <source>(Stream)</source>
         <translation type="unfinished">(Stream)</translation>
     </message>
@@ -9843,7 +9843,7 @@ Hozzáadjam ahhoz a listához?</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="38"/>
-        <source>Fa&amp;deout on stop:</source>
+        <source>Fadeout on stop:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9880,13 +9880,18 @@ Hozzáadjam ahhoz a listához?</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="94"/>
-        <location filename="../gui/playbacksettings.cpp" line="165"/>
+        <location filename="../gui/playbacksettings.cpp" line="168"/>
         <source>&lt;i&gt;Not Connected!&lt;br/&gt;The entries below cannot be modified, as Cantata is not connected to MPD.&lt;/i&gt;</source>
         <translation type="unfinished">&lt;i&gt;Nincs csatlakoztatva!&lt;br/&gt;Az alábbi elemek nem módosíthatóak, mivel a Cantata ben csatlakozik az MPD-hez.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="112"/>
-        <source>&amp;Crossfade between tracks:</source>
+        <source>Crossfade between tracks:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="135"/>
+        <source>Replay gain:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9895,17 +9900,27 @@ Hozzáadjam ahhoz a listához?</translation>
         <translation type="unfinished">s</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.ui" line="135"/>
-        <source>Replay &amp;gain:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../gui/playbacksettings.ui" line="178"/>
         <source>About replay gain</source>
         <translation type="unfinished">A lejátszási szintről</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="187"/>
+        <source>Volume step:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="193"/>
+        <source>&lt;p&gt;Amount to change volume by when using either the volume control keyboard shortcuts, or the mouse wheel over the toolbar volume control.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="200"/>
+        <source> %</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="213"/>
         <source>Use the checkboxes below to control the active outputs.</source>
         <translation type="unfinished">Az aktív kimenet beállítására használd az lenti kijelölő gombokat.</translation>
     </message>
@@ -9925,12 +9940,12 @@ Hozzáadjam ahhoz a listához?</translation>
         <translation type="unfinished">Automatikus</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.cpp" line="162"/>
+        <location filename="../gui/playbacksettings.cpp" line="165"/>
         <source>&lt;i&gt;Connected to %1&lt;br/&gt;The entries below apply to the currently connected MPD collection.&lt;/i&gt;</source>
         <translation type="unfinished">&lt;i&gt;csatlakozva ehhez %1&lt;br/&gt;Alábbi elemeket a jelenleg kapcsolt MPD-gyűjteményre érvényesíti.&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.cpp" line="172"/>
+        <location filename="../gui/playbacksettings.cpp" line="175"/>
         <source>Replay Gain is a proposed standard published in 2001 to normalize the perceived loudness of computer audio formats such as MP3 and Ogg Vorbis. It works on a track/album basis, and is now supported in a growing number of players.&lt;br/&gt;&lt;br/&gt;The following ReplayGain settings may be used:&lt;ul&gt;&lt;li&gt;&lt;i&gt;None&lt;/i&gt; - No ReplayGain is applied.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Track&lt;/i&gt; - Volume will be adjusted using the track&apos;s ReplayGain tags.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Album&lt;/i&gt; - Volume will be adjusted using the albums&apos;s ReplayGain tags.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Auto&lt;/i&gt; - Volume will be adjusted using the track&apos;s ReplayGain tags if random play is activated, otherwise the album&apos;s tags will be used.&lt;/li&gt;&lt;/ul&gt;</source>
         <translation type="unfinished">A Replay Gain egy 2001-ben abból a célból kiadott ajánlott szabvány, hogy beszabályozza az MP3 és Ogg Vorbis-hez hasonló számítógépes hangformátum várható hangerejét. Szám/album alapon dolgozik, és mára növekvő számú lejátszó támogatja..&lt;br/&gt;&lt;br/&gt; A következő Replay Gain (lejátszási szint)beállítások használhatók &lt;ul&gt;&lt;li&gt;&lt;i&gt;Nincs&lt;/i&gt; - értelemszerű.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Szám&lt;/i&gt; - A hangerőt a szám ReplayGain jelölője szerint állítja be.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Album&lt;/i&gt; - A hangerő beállításához az album ReplayGain jelölőjét használja.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Auto&lt;/i&gt; - Amennyiben véletlenszerű lejátszás van, akkor a hangerőt a szám ReplayGain jelölője szerint, más esetben pedig az album jelölője szerint állítja be.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
@@ -11498,8 +11513,8 @@ width x height</comment>
         <translation type="unfinished">Továbbiak</translation>
     </message>
     <message>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="206"/>
         <location filename="../mpd-interface/mpdconnection.cpp" line="208"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="210"/>
         <source>Default</source>
         <translation type="unfinished">Alapbeállítás</translation>
     </message>
@@ -11509,7 +11524,7 @@ width x height</comment>
         <translation type="obsolete">&quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="221"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="219"/>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
         <translation type="unfinished">&quot;%1&quot; (%2:%3)</translation>
@@ -11895,6 +11910,11 @@ width x height</comment>
         <translation type="obsolete">
             <numerusform>%n frissítés érhető el</numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="209"/>
+        <source>MPD Client</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

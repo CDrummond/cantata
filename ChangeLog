@@ -20,6 +20,7 @@
 14. Add support for forked-DAAP - thanks to Wolfgang Scherer.
 15. Add checkbox to indicate that server auto-updates when files changed.
     Thanks to Wolfgang Scherer.
+16. Add GUI option to control volume step.
 
 2.2.0
 -----

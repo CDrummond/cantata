@@ -35,7 +35,7 @@
       <item row="0" column="0">
        <widget class="BuddyLabel" name="label_6b">
         <property name="text">
-         <string>Fa&amp;deout on stop:</string>
+         <string>Fadeout on stop:</string>
         </property>
         <property name="buddy">
          <cstring>stopFadeDuration</cstring>
@@ -109,7 +109,7 @@
         <item row="0" column="0">
          <widget class="BuddyLabel" name="crossfadingLabel">
           <property name="text">
-           <string>&amp;Crossfade between tracks:</string>
+           <string>Crossfade between tracks:</string>
           </property>
           <property name="buddy">
            <cstring>crossfading</cstring>
@@ -132,7 +132,7 @@
         <item row="1" column="0">
          <widget class="BuddyLabel" name="replayGainLabel">
           <property name="text">
-           <string>Replay &amp;gain:</string>
+           <string>Replay gain:</string>
           </property>
           <property name="buddy">
            <cstring>replayGain</cstring>
@@ -181,7 +181,33 @@
           </item>
          </layout>
         </item>
-        <item row="2" column="0" colspan="2">
+        <item row="2" column="0">
+         <widget class="BuddyLabel" name="volumeStepLabel">
+          <property name="text">
+           <string>Volume step:</string>
+          </property>
+          <property name="buddy">
+           <cstring>volumeStep</cstring>
+          </property>
+          <property name="toolTip">
+           <string>&lt;p&gt;Amount to change volume by when using either the volume control keyboard shortcuts, or the mouse wheel over the toolbar volume control.&lt;/p&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="volumeStep">
+          <property name="suffix">
+           <string> %</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>20</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
          <widget class="QLabel" name="outputsViewLabel">
           <property name="text">
            <string>Use the checkboxes below to control the active outputs.</string>
@@ -191,7 +217,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
+        <item row="4" column="0" colspan="2">
          <widget class="QListWidget" name="outputsView"/>
         </item>
        </layout>

@@ -1072,6 +1072,11 @@ void Settings::savePodcastAutoDownloadLimit(int v)
     cfg.set("podcastAutoDownloadLimit", v);
 }
 
+void Settings::saveVolumeStep(int v)
+{
+    cfg.set("volumeStep", v);
+}
+
 void Settings::saveStartupState(int v)
 {
     cfg.set("startupState", getStartupStateStr((StartupState)v));

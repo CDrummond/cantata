@@ -39,6 +39,12 @@ void NetworkAccessManager::enableDebug()
     debugEnabled=true;
 }
 
+static bool networkAccessEnabled=true;
+void NetworkAccessManager::disableNetworkAccess()
+{
+    networkAccessEnabled = false;
+}
+
 static const int constMaxRedirects=5;
 
 NetworkJob::NetworkJob(NetworkAccessManager *p, const QUrl &u)
@@ -184,16 +190,15 @@ GLOBAL_STATIC(NetworkAccessManager, instance)
 NetworkAccessManager::NetworkAccessManager(QObject *parent)
     : QNetworkAccessManager(parent)
 {
-    enabled=Settings::self()->networkAccessEnabled();
-    if (enabled) {
+    if (networkAccessEnabled) {
         NetworkProxyFactory::self();
     }
 }
 
 NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
 {
-    DBUG << req.url().toString() << enabled;
-    if (!enabled) {
+    DBUG << req.url().toString() << networkAccessEnabled;
+    if (!networkAccessEnabled) {
         return new NetworkJob(this, req.url());
     }
 
@@ -244,8 +249,8 @@ struct FakeNetworkReply : public QNetworkReply
 
 QNetworkReply * NetworkAccessManager::postFormData(QNetworkRequest req, const QByteArray &data)
 {
-    DBUG << req.url().toString() << enabled << data.length();
-    if (enabled) {
+    DBUG << req.url().toString() << networkAccessEnabled << data.length();
+    if (networkAccessEnabled) {
         if (!data.isEmpty()) {
             req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
         }

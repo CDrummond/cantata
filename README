@@ -7,18 +7,17 @@ Table of Contents
  4. Bugs
  5. Translations
  6. Covers
- 7. Advanced Config Items
- 8. CUE Files
- 9. Streams
-10. MultiMedia Keys
-11. DBUS Actions
-12. Dynamic Helper Script - Local Mode
-13. Dynamic Helper Script - Server Mode
-14. Source Code
-15. Debug Logging
-16. Credits
-17. Windows
-18. Mac OSX
+ 7. CUE Files
+ 8. Streams
+ 9. MultiMedia Keys
+10. DBUS Actions
+11. Dynamic Helper Script - Local Mode
+12. Dynamic Helper Script - Server Mode
+13. Source Code
+14. Debug Logging
+15. Credits
+16. Windows
+17. Mac OSX
 
 
 
@@ -328,29 +327,7 @@ the folder hierarchy is 2 levels (artist/album/), and the user has write
 permissions. If not, then they will be saved in Cantata's cache folder.
 
 
-7. Advanced Config Items
-========================
-
-Cantata contains a few advanced config items, for which there is currently no
-graphical way to control the setting. For these, you will need to edit
-Cantata's config by hand - whilst Cantata is NOT running!
-
-Under Linux, the Cantata config file will be:
-    ~/.config/cantata/cantata.conf  ( Current User )
-    /etc/xdg/cantata.conf           ( All Users    )
-
-The following config items should be added to the "[General]" section.
-
-networkAccessEnabled=<Bool - true/false>
-    Configure whether Cantata should be allowed to make networks requests - for
-    accessing covers, etc. By default this is set to true.
-
-e.g.
-[General]
-networkAccessEnabled=false
-
-
-8. CUE Files
+7. CUE Files
 ============
 
 If Cantata is running with MPD>=0.17, then it will attempt to parse the contents
@@ -378,7 +355,7 @@ or you have not configured the music folder correctly, etc.) then Cantata will
 add the CUE File to the album's track listing.
 
 
-9. Streams
+8. Streams
 ==========
 
 As of 1.4.0, Cantata only comes with TuneIn, ShoutCast, IceCast and Dirble
@@ -489,8 +466,8 @@ repo, please send me an email with the .streams.gz file. My address is in the AU
 file.
 
 
-10. MultiMedia Keys
-===================
+9. MultiMedia Keys
+==================
 
 Linux and Windows builds, as of 1.2, now also support basic media-keys
 shortcuts.
@@ -499,7 +476,7 @@ Linux use the GNOME settings daemon's MediaKeys interface. This interface is
 normally started automatically under GNOME/Unity.
 
 
-11. DBUS Actions
+10. DBUS Actions
 ================
 
 All of Cantata's internal actions are accessible via DBUS. The
@@ -514,7 +491,7 @@ e.g.:
     qdbus mpd.cantata /cantata listActions
 
 
-12. Dynamic Helper Script - Local Mode
+11. Dynamic Helper Script - Local Mode
 ======================================
 
 When a dynamic playlist is loaded in Cantata, the cantata-dynamic helper script
@@ -552,7 +529,7 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
     MPD_HOST=pass@hostname MPD_PORT=1234 /usr/share/cantata/scripts/cantata-dynamic start
 
 
-13. Dynamic Helper Script - Server Mode
+12. Dynamic Helper Script - Server Mode
 =======================================
 
 In addition to the above, the helper script may be installed on the system
@@ -627,7 +604,7 @@ this will need to be edited.
 Copy playlists/cantata-dynamic.conf to /etc, and edit as appropriate.
 
 
-14. Source Code
+13. Source Code
 ===============
 The Cantata source folder contains the following structure:
 
@@ -661,70 +638,56 @@ Symbolc media icons are taken from gnome icon theme, but have been scaled with
   rsvg-convert -a -w 128 -f svg in.svg -o out.svg
 
 
-15. Debug Logging
+14. Debug Logging
 =================
 
 Cantata contains some debug logging that might help to diagnose certain issues.
-To enable this, you must set an environment variable before starting Cantata.
+To enable this, you need to use the --debug commandline option. This option
+takes a comma-separated list of debug areas.
 Therefore, its probably better to start Cantata from the commandline.
 
-The following debug values may be used:
+The following debug areas may be used:
 
-    MPD communications             1   0x00000001
-    MPD Parsing                    2   0x00000002
-    Covers                         4   0x00000004
-    Wikipedia context info         8   0x00000008
-    Last.fm context info          16   0x00000010
-    Combined context info         32   0x00000020
-    Context widget                64   0x00000040
-    Context backdrop             128   0x00000080
-    Dynamic                      256   0x00000100
-    Stream fetching              512   0x00000200
-    Http server                 1024   0x00000400
-    Song dialog file checks     2048   0x00000800 (Tag Editor, etc)
-    Network access              4096   0x00001000
-    Context lyrics              8192   0x00002000
-    Threads                    16384   0x00004000
-    External tags              32768   0x00008000
-    Scrobbling                 65536   0x00010000
-    Devices                   131072   0x00020000
-    SQL                       262144   0x00040000
-    MPD HTTP stream playback  524288   0x00080000
-    Other                    1048576   0x00100000 (e.g. MediaKeys, Avahi, Custom Actions)
+    MPD communications        mpd
+    MPD Parsing               mpdparse
+    Covers                    covers
+    Wikipedia context info    context-wikipedia
+    Last.fm context info      context-lastfm
+    Combined context info     context-info
+    Context widget            context-widget
+    Context lyrics            context-lyrics
+    Dynamic                   dynamic
+    Stream fetching           stream-fetcher
+    Http server               http-server
+    Song dialog file checks   song-dialog
+    Network access            network-access
+    Threads                   threads
+    External tags             tags
+    Scrobbling                scrobbler
+    Devices                   devices
+    SQL                       sql
+    MPD HTTP stream playback  http-stream
+    MPD auto discover         avahi
+    Media keys                media-keys
+    Cusrtom actions           custom-actions
 
-These values may be combined to enable multiple output. e.g. to enable MPD and
-covers logging:
+To log debug to a file, use the "to-file" debug area. e.g. To log MPD
+communications and cover access to a file, start cantata as follows:
 
-    CANTATA_DEBUG=5 cantata
-    
-for just covers logging:
+    cantata --debug=mpd,covers,to-file
 
-    CANTATA_DEBUG=4 cantata
 
-As of Cantata 1.2.0, all logging output is saved to a file. On Linux systems
+The loccation of the debug file will vary dependant upon OS. On Linux systems
 this will be ~/.cache/cantata/cantata.log For Windows this will be
 C:\Users\USERNAME\AppData\Local\mpd\cantata\cache\cantata.log And for OSX it
 will be /Users/$USER/Library/Caches/cantata/cantata/cantata.log
 
-When using the external helper to read/write tags, then there might also be
-additional logging in cantata-tags.log (in the same location as cantata.log)
-
-To disable logging to file, and log to the terminal instead, use a negative
-number. e.g. CANTATA_DEBUG=-4
-
-With windows builds, it is probably easier to set the env var from a DOS
-command prompt box. e.g.:
-
-    1. Run cmd.exe from start menu.
-    2. cd c:\Program Files\Cantata
-    3. set CANTATA_DEBUG=4
-    4. cantata.exe
 
 NOTE: Debug logging will function regardless of whether you have created a
 Debug or Release build.
 
 
-16. Credits
+15. Credits
 ===========
 
 Cantata contains code/icons from:
@@ -748,7 +711,7 @@ Cantata contains code/icons from:
     QMPDClient         - Last.fm scrobbling
 
 
-17. Windows
+16. Windows
 ===========
 
 Icon created under Linux using the createicon.sh in the windows folder.
@@ -809,7 +772,7 @@ following passed to cmake:
     -DCMAKE_BUILD_TYPE=Release -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PREFIX=z:\dev\taglib
 
 
-18. Mac OSX
+17. Mac OSX
 ===========
 
 Icon created under OSX using the createicon.sh in the mac folder.

@@ -608,11 +608,6 @@ int Settings::podcastAutoDownloadLimit()
     return cfg.get("podcastAutoDownloadLimit", 0, 0, 1000);
 }
 
-bool Settings::networkAccessEnabled()
-{
-    return cfg.get("networkAccessEnabled", true);
-}
-
 int Settings::volumeStep()
 {
     return cfg.get("volumeStep", 5, 1, 20);

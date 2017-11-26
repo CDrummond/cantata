@@ -129,7 +129,6 @@ public:
     QDateTime lastRssUpdate();
     QString podcastDownloadPath();
     int podcastAutoDownloadLimit();
-    bool networkAccessEnabled();
     int volumeStep();
     StartupState startupState();
     QString searchCategory();

@@ -68,6 +68,7 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     #ifdef Q_OS_MAC
     expandingSpacer->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
     #endif
+    volumeStep->setToolTip(volumeStepLabel->toolTip());
 }
 
 void PlaybackSettings::load()
@@ -77,6 +78,7 @@ void PlaybackSettings::load()
     #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     inhibitSuspend->setChecked(Settings::self()->inhibitSuspend());
     #endif
+    volumeStep->setValue(Settings::self()->volumeStep());
 
     crossfading->setValue(MPDStatus::self()->crossFade());
     if (MPDConnection::self()->isConnected()) {
@@ -91,6 +93,7 @@ void PlaybackSettings::save()
     #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     Settings::self()->saveInhibitSuspend(inhibitSuspend->isChecked());
     #endif
+    Settings::self()->saveVolumeStep(volumeStep->value());
 
     if (MPDConnection::self()->isConnected()) {
         int crossFade=crossfading->value();

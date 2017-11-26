@@ -1425,6 +1425,7 @@ void MainWindow::readSettings()
     MPDParseUtils::setSingleTracksFolders(Settings::self()->singleTracksFolders());
     MPDParseUtils::setCueFileSupport(Settings::self()->cueSupport());
     leftSpacer->setVisible(loveTrack->isVisible() || scrobblingStatus->isVisible() || streamPlayButton->isVisible());
+    volumeSlider->setPageStep(Settings::self()->volumeStep());
 }
 
 void MainWindow::updateSettings()

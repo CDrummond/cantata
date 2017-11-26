@@ -345,14 +345,9 @@ networkAccessEnabled=<Bool - true/false>
     Configure whether Cantata should be allowed to make networks requests - for
     accessing covers, etc. By default this is set to true.
 
-volumeStep=<Integer>
-    Volume % increments. Used when mouse wheel is activated over volume control.
-    Default is 5. (Values 1..20 are acceptable)
-
 e.g.
 [General]
 networkAccessEnabled=false
-volumeStep=2
 
 
 8. CUE Files

@@ -1246,7 +1246,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                         pix->setDevicePixelRatio(devicePixelRatio);
                         DBUG << "Set pixel ratio of loaded scaled cover" << devicePixelRatio;
                     }
-                    cache.insert(key, pix);
+                    cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
                     cacheSizes.insert(size);
                     return pix;
                 }
@@ -1759,7 +1759,7 @@ void Covers::loaded(const QList<LoadedCover> &covers)
                 pix->setDevicePixelRatio(devicePixelRatio);
                 DBUG << "Set pixel ratio of loaded pixmap" << devicePixelRatio;
             }
-            cache.insert(cacheKey(cvr.song, size), pix);
+            cache.insert(cacheKey(cvr.song, size), pix, pix->width()*pix->height()*(pix->depth()/8));
             cacheSizes.insert(size);
             emit loaded(cvr.song, cvr.song.size);
         } else { // Failed to load a scaled cover, try locating non-scaled cover...

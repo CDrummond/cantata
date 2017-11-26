@@ -91,6 +91,7 @@ class NetworkAccessManager : public QNetworkAccessManager
 
 public:
     static void enableDebug();
+    static void disableNetworkAccess();
     static NetworkAccessManager * self();
 
     NetworkAccessManager(QObject *parent=0);
@@ -101,9 +102,6 @@ public:
     QNetworkReply * postFormData(QNetworkRequest req, const QByteArray &data);
     QNetworkReply * postFormData(const QUrl &url, const QByteArray &data) { return postFormData(QNetworkRequest(url), data); }
 
-    void setEnabled(bool e) { enabled=e; }
-    bool isEnabled() const { return enabled; }
-
 protected:
     void timerEvent(QTimerEvent *e);
 
@@ -111,7 +109,6 @@ private Q_SLOTS:
     void replyFinished();
 
 private:
-    bool enabled;
     QMap<NetworkJob *, int> timers;
     friend class NetworkJob;
 };

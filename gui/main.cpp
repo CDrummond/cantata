@@ -70,6 +70,7 @@
 #include <QTextStream>
 #include <QDateTime>
 #include <QByteArray>
+#include <QCommandLineParser>
 
 static QMutex msgMutex;
 static bool firstMsg=true;
@@ -124,120 +125,70 @@ static void removeOldFiles()
     removeOldFiles(Utils::cacheDir("magnatune"), QStringList() << "*.xml.gz");
 }
 
-enum Debug {
-    Dbg_Mpd               = 0x00000001,
-    Dbg_MpdParse          = 0x00000002,
-    Dbg_Covers            = 0x00000004,
-    Dbg_Context_Wikipedia = 0x00000008,
-    Dbg_Context_LastFm    = 0x00000010,
-    Dbg_Context_Meta      = 0x00000020,
-    Dbg_Context_Widget    = 0x00000040,
-//    Dbg_Context_Backdrop  = 0x00000080,
-    Dbg_Dynamic           = 0x00000100,
-    Dbg_StreamFetching    = 0x00000200,
-    Dbg_HttpServer        = 0x00000400,
-    Dbg_SongDialogs       = 0x00000800,
-    Dbg_NetworkAccess     = 0x00001000,
-    Dbg_Context_Lyrics    = 0x00002000,
-    Dbg_Threads           = 0x00004000,
-    Dbg_Tags              = 0x00008000,
-    Dbg_Scrobbling        = 0x00010000,
-    Dbg_Devices           = 0x00020000,
-    Dbg_Sql               = 0x00040000,
-    Dbg_HttpStream        = 0x00080000,
-    DBG_Other             = 0x00100000,
-
-    // NOTE: MUST UPDATE Dbg_All IF ADD NEW ITEMS!!!
-    Dbg_All               = 0x000FFFFF
-};
-
-static void installDebugMessageHandler()
+static void installDebugMessageHandler(const QString &cmdLine)
 {
-    QString debug=qgetenv("CANTATA_DEBUG");
-    if (!debug.isEmpty()) {
-        int dbg=0;
-        if (debug.contains(QLatin1String("0x"))) {
-            dbg=debug.startsWith(QLatin1Char('-')) ? (debug.mid(1).toInt(0, 16)*-1) : debug.toInt(0, 16);
-        } else {
-            dbg=debug.toInt();
-        }
-        bool logToFile=dbg>0;
-        if (dbg<0) {
-            dbg*=-1;
-        }
-        if (dbg&Dbg_Mpd) {
+    QStringList items=cmdLine.split(",", QString::SkipEmptyParts);
+
+    for (const auto &area: items) {
+        if (QLatin1String("mpd")==area) {
             MPDConnection::enableDebug();
-        }
-        if (dbg&Dbg_MpdParse) {
+        } else if (QLatin1String("mpdparse")==area) {
             MPDParseUtils::enableDebug();
-        }
-        if (dbg&Dbg_Covers) {
+        } else if (QLatin1String("covers")==area) {
             Covers::enableDebug();
-        }
-        if (dbg&Dbg_Context_Wikipedia) {
+        } else if (QLatin1String("context-wikipedia")==area) {
             WikipediaEngine::enableDebug();
-        }
-        if (dbg&Dbg_Context_LastFm) {
+        } else if (QLatin1String("context-lastfm")==area) {
             LastFmEngine::enableDebug();
-        }
-        if (dbg&Dbg_Context_Meta) {
+        } else if (QLatin1String("context-info")==area) {
             MetaEngine::enableDebug();
-        }
-        if (dbg&Dbg_Context_Widget) {
+        } else if (QLatin1String("context-widget")==area) {
             ContextWidget::enableDebug();
-        }
-        if (dbg&Dbg_Dynamic) {
+        } else if (QLatin1String("dynamic")==area) {
             DynamicPlaylists::enableDebug();
-        }
-        if (dbg&Dbg_StreamFetching) {
+        } else if (QLatin1String("stream-fetcher")==area) {
             StreamFetcher::enableDebug();
-        }
-        if (dbg&Dbg_HttpServer) {
+        } else if (QLatin1String("http-server")==area) {
             HttpServer::enableDebug();
-        }
-        if (dbg&Dbg_SongDialogs) {
+        } else if (QLatin1String("song-dialog")==area) {
             SongDialog::enableDebug();
-        }
-        if (dbg&Dbg_NetworkAccess) {
+        } else if (QLatin1String("network-access")==area) {
             NetworkAccessManager::enableDebug();
-        }
-        if (dbg&Dbg_Context_Lyrics) {
+        } else if (QLatin1String("context-lyrics")==area) {
             UltimateLyricsProvider::enableDebug();
-        }
-        if (dbg&Dbg_Threads) {
+        } else if (QLatin1String("threads")==area) {
             ThreadCleaner::enableDebug();
+        } else if (QLatin1String("scrobbler")==area) {
+            Scrobbler::enableDebug();
+        } else if (QLatin1String("sql")==area) {
+            LibraryDb::enableDebug();
+        } else if (QLatin1String("media-keys")==area) {
+            MediaKeys::enableDebug();
+        } else if (QLatin1String("custom-actions")==area) {
+            CustomActions::enableDebug();
+        } else if (QLatin1String("to-file")==area) {
+            qInstallMessageHandler(cantataQtMsgHandler);
         }
         #ifdef ENABLE_TAGLIB
-        if (dbg&Dbg_Tags) {
+        else if (QLatin1String("tags")==area) {
             TagHelperIface::enableDebug();
         }
         #endif
-        if (dbg&Dbg_Scrobbling) {
-            Scrobbler::enableDebug();
-        }
         #ifdef ENABLE_DEVICES_SUPPORT
-        if (dbg&Dbg_Devices) {
+        else if (QLatin1String("devices")==area) {
             DevicesModel::enableDebug();
         }
         #endif
-        if (dbg&Dbg_Sql) {
-            LibraryDb::enableDebug();
-        }
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-        if (dbg&Dbg_HttpStream) {
+        else if (QLatin1String("http-stream")==area) {
             HttpStream::enableDebug();
         }
         #endif
-        if (dbg&DBG_Other) {
-            MediaKeys::enableDebug();
-            #ifdef AVAHI_FOUND
+        #ifdef AVAHI_FOUND
+        else if (QLatin1String("avahi")==area) {
             AvahiDiscovery::enableDebug();
-            #endif
-            CustomActions::enableDebug();
         }
-        if (dbg&Dbg_All && logToFile) {
-            qInstallMessageHandler(cantataQtMsgHandler);
-        }
+        #endif
     }
 }
 
@@ -253,8 +204,23 @@ int main(int argc, char *argv[])
     #endif
 
     Application app(argc, argv);
+
+    QCommandLineParser cmdLineParser;
+    cmdLineParser.setApplicationDescription(QObject::tr("MPD Client"));
+    cmdLineParser.addHelpOption();
+    cmdLineParser.addVersionOption();
+    QCommandLineOption debugOption(QStringList() << "d" << "debug", "Set debug areas", "debug", "");
+    QCommandLineOption noNetworkOption(QStringList() << "n" << "no-network", "Disable network access", "", "false");
+    cmdLineParser.addOption(debugOption);
+    cmdLineParser.addOption(noNetworkOption);
+    cmdLineParser.process(app);
+
     if (!app.start()) {
         return 0;
+    }
+
+    if (cmdLineParser.isSet(noNetworkOption)) {
+        NetworkAccessManager::disableNetworkAccess();
     }
 
     // Set the permissions on the config file on Unix - it can contain passwords
@@ -274,7 +240,9 @@ int main(int argc, char *argv[])
     #endif
 
     removeOldFiles();
-    installDebugMessageHandler();
+    if (cmdLineParser.isSet(debugOption)) {
+        installDebugMessageHandler(cmdLineParser.value(debugOption));
+    }
 
     // Translations
     QString lang=Settings::self()->lang();

@@ -275,8 +275,7 @@
   <tabstop>filenameScheme</tabstop>
   <tabstop>configFilename</tabstop>
   <tabstop>transcoderName</tabstop>
-  <tabstop>transcoderWhenDifferent</tabstop>
-  <tabstop>transcoderWhenSourceIsLosssless</tabstop>
+  <tabstop>transcoderWhen</tabstop>
   <tabstop>transcoderValue</tabstop>
  </tabstops>
  <resources/>

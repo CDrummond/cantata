@@ -91,7 +91,7 @@ void LastFmEngine::search(const QStringList &query, Mode mode)
     job->setProperty(constModeProperty, (int)mode);
     
     QStringList queryString;
-    foreach (QString q, fixedQuery) {
+    for (QString q: fixedQuery) {
         q=q.replace("/", "%2F");
         q=q.replace(" ", "+");
         queryString.append(q);

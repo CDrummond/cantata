@@ -102,7 +102,7 @@ static QIcon getIcon(const QString &name)
 
 static Icon getExternalIcon(const QString &path, QStringList files=QStringList() << StreamsModel::constSvgIcon <<  StreamsModel::constPngIcon)
 {
-    foreach (const QString &file, files) {
+    for (const QString &file: files) {
         QString iconFile=path+Utils::constDirSep+file;
         if (QFile::exists(iconFile)) {
             Icon icon;
@@ -162,7 +162,7 @@ void StreamsModel::CategoryItem::saveBookmarks()
         return;
     }
 
-    foreach (Item *child, children) {
+    for (Item *child: children) {
         if (child->isCategory()) {
              CategoryItem *cat=static_cast<CategoryItem *>(child);
              if (cat->isBookmarks) {
@@ -176,7 +176,7 @@ void StreamsModel::CategoryItem::saveBookmarks()
                          doc.writeStartElement("bookmarks");
                          doc.writeAttribute("version", "1.0");
                          doc.setAutoFormatting(false);
-                         foreach (Item *i, cat->children) {
+                         for (Item *i: cat->children) {
                              doc.writeStartElement("bookmark");
                              doc.writeAttribute("name", i->name);
                              doc.writeAttribute("url", i->url);
@@ -226,7 +226,7 @@ QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadBookmarks()
 
 StreamsModel::CategoryItem * StreamsModel::CategoryItem::getBookmarksCategory()
 {
-    foreach (Item *i, children) {
+    for (Item *i: children) {
         if (i->isCategory() && static_cast<CategoryItem *>(i)->isBookmarks) {
             return static_cast<CategoryItem *>(i);
         }
@@ -282,7 +282,7 @@ QList<StreamsModel::Item *> StreamsModel::XmlCategoryItem::loadCache()
     if (QFile::exists(cacheName)) {
         newItems=loadXml(cacheName);
         QString dir=Utils::getDir(cacheName);
-        foreach (Item *i, newItems) {
+        for (Item *i: newItems) {
             if (i->isCategory()) {
                 StreamsModel::CategoryItem *cat=static_cast<StreamsModel::CategoryItem *>(i);
                 QString name=cat->name;
@@ -331,7 +331,7 @@ static void saveCategory(QXmlStreamWriter &doc, const StreamsModel::CategoryItem
     if (cat->isAll) {
         doc.writeAttribute("isAll", "true");
     }
-    foreach (const StreamsModel::Item *i, cat->children) {
+    for (const StreamsModel::Item *i: cat->children) {
         if (i->isCategory()) {
             saveCategory(doc, static_cast<const StreamsModel::CategoryItem *>(i));
         } else {
@@ -354,7 +354,7 @@ bool StreamsModel::CategoryItem::saveXml(QIODevice *dev, bool format) const
         doc.setAutoFormatting(false);
     }
 
-    foreach (const Item *i, children) {
+    for (const Item *i: children) {
         if (i->isCategory()) {
             ::saveCategory(doc, static_cast<const CategoryItem *>(i));
         } else {
@@ -434,7 +434,7 @@ QList<StreamsModel::Item *> StreamsModel::FavouritesCategoryItem::loadXml(QIODev
     QSet<QString> existingUrls;
     QSet<QString> existingNames;
 
-    foreach (Item *i, children) {
+    for (Item *i: children) {
         existingUrls.insert(i->url);
         existingNames.insert(i->name);
     }
@@ -523,7 +523,7 @@ StreamsModel::StreamsModel(QObject *parent)
     reloadAction = new Action(Icons::self()->reloadIcon, tr("Reload"), this);
 
     QSet<QString> hidden=Settings::self()->hiddenStreamCategories().toSet();
-    foreach (Item *c, root->children) {
+    for (Item *c: root->children) {
         if (c!=favourites) {
             CategoryItem *cat=static_cast<CategoryItem *>(c);
             if (hidden.contains(cat->configName)) {
@@ -776,7 +776,7 @@ void StreamsModel::importIntoFavourites(const QString &fileName)
 {
     QList<Item *> newItems=favourites->CategoryItem::loadXml(fileName);
     if (!newItems.isEmpty()) {
-        foreach (Item *i, newItems) {
+        for (Item *i: newItems) {
             emit saveFavouriteStream(i->url, i->name);
         }
         qDeleteAll(newItems);
@@ -786,7 +786,7 @@ void StreamsModel::importIntoFavourites(const QString &fileName)
 void StreamsModel::removeFromFavourites(const QModelIndexList &indexes)
 {
     QList<quint32> rows;
-    foreach (const QModelIndex &idx, indexes) {
+    for (const QModelIndex &idx: indexes) {
         rows.append(idx.row());
     }
 
@@ -799,7 +799,7 @@ bool StreamsModel::addToFavourites(const QString &url, const QString &name)
 {
     QSet<QString> existingNames;
 
-    foreach (Item *i, favourites->children) {
+    for (Item *i: favourites->children) {
         if (i->url==url) {
             return false;
         }
@@ -821,7 +821,7 @@ bool StreamsModel::addToFavourites(const QString &url, const QString &name)
 
 QString StreamsModel::favouritesNameForUrl(const QString &u)
 {
-    foreach (Item *i, favourites->children) {
+    for (Item *i: favourites->children) {
         if (i->url==u) {
             return i->name;
         }
@@ -831,7 +831,7 @@ QString StreamsModel::favouritesNameForUrl(const QString &u)
 
 bool StreamsModel::nameExistsInFavourites(const QString &n)
 {
-    foreach (Item *i, favourites->children) {
+    for (Item *i: favourites->children) {
         if (i->name==n) {
             return true;
         }
@@ -860,7 +860,7 @@ bool StreamsModel::addBookmark(const QString &url, const QString &name, Category
             endInsertRows();
         }
 
-        foreach (Item *i, bookmarkCat->children) {
+        for (Item *i: bookmarkCat->children) {
             if (i->url==url) {
                 return false;
             }
@@ -930,7 +930,7 @@ static QString addDiHash(const StreamsModel::Item *item)
 QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPrefix) const
 {
     QStringList fnames;
-    foreach(QModelIndex index, indexes) {
+    for (const QModelIndex &index: indexes) {
         Item *item=static_cast<Item *>(index.internalPointer());
         if (!item->isCategory()) {
             fnames << modifyUrl(addDiHash(item), addPrefix, addPrefix ? item->modifiedName() : item->name);
@@ -957,7 +957,7 @@ QStringList StreamsModel::mimeTypes() const
 void StreamsModel::save()
 {
     QStringList disabled;
-    foreach (Item *i, hiddenCategories) {
+    for (Item *i: hiddenCategories) {
         disabled.append(static_cast<CategoryItem *>(i)->configName);
     }
     disabled.sort();
@@ -967,11 +967,11 @@ void StreamsModel::save()
 QList<StreamsModel::Category> StreamsModel::getCategories() const
 {
     QList<StreamsModel::Category> categories;
-    foreach (Item *i, hiddenCategories) {
+    for (Item *i: hiddenCategories) {
         categories.append(Category(i->name, static_cast<CategoryItem *>(i)->icon, static_cast<CategoryItem *>(i)->configName,
                                    static_cast<CategoryItem *>(i)->isBuiltIn(), true, static_cast<CategoryItem *>(i)->isDi()));
     }
-    foreach (Item *i, root->children) {
+    for (Item *i: root->children) {
         if (i!=favourites) {
             categories.append(Category(i->name, static_cast<CategoryItem *>(i)->icon, static_cast<CategoryItem *>(i)->configName,
                                        static_cast<CategoryItem *>(i)->isBuiltIn(), false, static_cast<CategoryItem *>(i)->isDi()));
@@ -983,7 +983,7 @@ QList<StreamsModel::Category> StreamsModel::getCategories() const
 void StreamsModel::setHiddenCategories(const QSet<QString> &cats)
 {
     bool changed=false;
-    foreach (Item *i, hiddenCategories) {
+    for (Item *i: hiddenCategories) {
         if (!cats.contains(static_cast<CategoryItem *>(i)->configName)) {
             beginInsertRows(QModelIndex(), root->children.count(), root->children.count());
             root->children.append(i);
@@ -993,7 +993,7 @@ void StreamsModel::setHiddenCategories(const QSet<QString> &cats)
         }
     }
 
-    foreach (Item *i, root->children) {
+    for (Item *i: root->children) {
         if (cats.contains(static_cast<CategoryItem *>(i)->configName)) {
             int row=root->children.indexOf(i);
             if (row>0) {
@@ -1044,7 +1044,7 @@ void StreamsModel::jobFinished()
         // ShoutCast and Dirble have two jobs when listing a category - child categories and station list.
         // So, only set as fetched if both are finished.
         bool haveOtherJob=false;
-        foreach (CategoryItem *c, jobs.values()) {
+        for (CategoryItem *c: jobs.values()) {
             if (c==cat) {
                 haveOtherJob=true;
                 break;
@@ -1084,8 +1084,8 @@ void StreamsModel::jobFinished()
 
                     if (bookmarksCat) {
                         QList<Item *> newBookmarks;
-                        foreach (Item *bm, bookmarks) {
-                            foreach (Item *ex, bookmarksCat->children) {
+                        for (Item *bm: bookmarks) {
+                            for (Item *ex: bookmarksCat->children) {
                                 if (ex->url==bm->url) {
                                     delete bm;
                                     bm=0;
@@ -1105,7 +1105,7 @@ void StreamsModel::jobFinished()
                         }
                     } else {
                         bookmarksCat=cat->createBookmarksCategory();
-                        foreach (Item *i, bookmarks) {
+                        for (Item *i: bookmarks) {
                             i->parent=bookmarksCat;
                         }
                         bookmarksCat->children=bookmarks;
@@ -1179,7 +1179,7 @@ void StreamsModel::removedFavouriteStreams(const QList<quint32> &removed)
 static StreamsModel::Item * getStream(StreamsModel::FavouritesCategoryItem *fav, const Stream &stream, int offset)
 {
     int i=0;
-    foreach (StreamsModel::Item *s, fav->children) {
+    for (StreamsModel::Item *s: fav->children) {
         if (++i<offset) {
             continue;
         }
@@ -1203,7 +1203,7 @@ void StreamsModel::favouriteStreams(const QList<Stream> &streams)
             return;
         }
         beginInsertRows(idx, 0, streams.count()-1);
-        foreach (const Stream &s, streams) {
+        for (const Stream &s: streams) {
             favourites->children.append(new Item(s.url, s.name, favourites));
         }
         endInsertRows();
@@ -1278,7 +1278,7 @@ static QStringList fixGenres(const QString &genre)
 {
     QStringList allGenres=Song::capitalize(genre).split(' ', QString::SkipEmptyParts);
     QStringList fixed;
-    foreach (const QString &genre, allGenres) {
+    for (const QString &genre: allGenres) {
         if (genre.length() < 2 ||
             genre.contains("ÃÂ") ||  // Broken unicode.
             genre.contains(QRegExp("^#x[0-9a-f][0-9a-f]"))) { // Broken XML entities.
@@ -1301,7 +1301,7 @@ static void trimGenres(QMap<QString, QList<StreamsModel::Item *> > &genres)
 {
     QString other=QObject::tr("Other");
     QSet<QString> genreSet = genres.keys().toSet();
-    foreach (const QString &genre, genreSet) {
+    for (const QString &genre: genreSet) {
         if (other!=genre && genres[genre].count() < 2) {
             genres[other]+=genres[genre];
             genres.remove(genre);
@@ -1344,7 +1344,7 @@ QList<StreamsModel::Item *> StreamsModel::parseIceCastResponse(QIODevice *dev, C
 
             if (!name.isEmpty() && !url.isEmpty() && !names.contains(name)) {
                 names.insert(name);
-                foreach (const QString &g, stationGenres) {
+                for (const QString &g: stationGenres) {
                     genres[g].append(new Item(url, name, cat));
                 }
             }
@@ -1357,7 +1357,7 @@ QList<StreamsModel::Item *> StreamsModel::parseIceCastResponse(QIODevice *dev, C
     for (; it!=end; ++it) {
         CategoryItem *genre=new CategoryItem(QString(), it.key(), cat);
         genre->state=CategoryItem::Fetched;
-        foreach (Item *i, it.value()) {
+        for (Item *i: it.value()) {
             i->parent=genre;
             genre->children.append(i);
         }
@@ -1392,7 +1392,7 @@ QList<StreamsModel::Item *> StreamsModel::parseDigitallyImportedResponse(QIODevi
     if (data.contains("channel_filters")) {
         QVariantList filters = data["channel_filters"].toList();
 
-        foreach (const QVariant &filter, filters) {
+        for (const QVariant &filter: filters) {
             // Find the filter called "All"
             QVariantMap filterMap = filter.toMap();
             if (filterMap.value("name", QString()).toString() != "All") {
@@ -1401,7 +1401,7 @@ QList<StreamsModel::Item *> StreamsModel::parseDigitallyImportedResponse(QIODevi
 
             // Add all its stations to the result
             QVariantList channels = filterMap.value("channels", QVariantList()).toList();
-            foreach (const QVariant &channel, channels) {
+            for (const QVariant &channel: channels) {
                 QVariantMap channelMap = channel.toMap();
                 QString url=constDiStdUrl.arg(listenHost).arg(channelMap.value("key").toString());
                 newItems.append(new Item(url, channelMap.value("name").toString(), cat));
@@ -1624,7 +1624,7 @@ QList<StreamsModel::Item *> StreamsModel::parseDirbleResponse(QIODevice *dev, Ca
 
     // Get categories...::f
     if (!data.isEmpty()) {
-        foreach (const QVariant &d, data) {
+        for (const QVariant &d: data) {
             QVariantMap map = d.toMap();
             newItems.append(new DirbleCategoryItem(QLatin1String("http://")+constDirbleHost+QLatin1String("/v2/category/")+map["id"].toString()+
                                                    QLatin1String("/stations?token=")+StreamsModel::constDirbleApiKey, map["title"].toString(), cat));
@@ -1639,14 +1639,14 @@ QList<StreamsModel::Item *> StreamsModel::parseDirbleStations(QIODevice *dev, Ca
     QVariantList data=QJsonDocument::fromJson(dev->readAll()).toVariant().toList();
 
     QSet<QString> added;
-    foreach (const QVariant &d, data) {
+    for (const QVariant &d: data) {
         QVariantMap map = d.toMap();
         QString name=map["name"].toString().trimmed().simplified();
         if (!name.isEmpty()) {
             QVariantList streams=map["streams"].toList();
             int bitrate=0;
             QString url;
-            foreach (const QVariant &s, streams) {
+            for (const QVariant &s: streams) {
                 QVariantMap streamMap=s.toMap();
                 int br=streamMap["bitrate"].toInt();
                 QString u=streamMap["stream"].toString().trimmed().simplified();
@@ -1757,9 +1757,9 @@ void StreamsModel::loadInstalledProviders()
     QString dir=Utils::dataDir(StreamsModel::constSubDir);
     QStringList subDirs=QDir(dir).entryList(QStringList() << "*", QDir::Dirs|QDir::Readable|QDir::NoDot|QDir::NoDotDot);
     QStringList streamFiles=QStringList() << constCompressedXmlFile << constXmlFile << constSettingsFile;
-    foreach (const QString &sub, subDirs) {
+    for (const QString &sub: subDirs) {
         if (!added.contains(sub)) {
-            foreach (const QString &streamFile, streamFiles) {
+            for (const QString &streamFile: streamFiles) {
                 if (QFile::exists(dir+sub+Utils::constDirSep+streamFile)) {
                     addInstalledProvider(sub, getExternalIcon(dir+sub), dir+sub+Utils::constDirSep+streamFile, false);
                     added.insert(sub);
@@ -1783,7 +1783,7 @@ StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &n
             if (!url.isEmpty() && !type.isEmpty()) {
                 QStringList toRemove=QStringList() << " " << "." << "/" << "\\" << "(" << ")";
                 QString cacheName=name;
-                foreach (const QString &rem, toRemove) {
+                for (const QString &rem: toRemove) {
                     cacheName=cacheName.replace(rem, "");
                 }
                 cacheName=cacheName.toLower();
@@ -1823,7 +1823,7 @@ StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &n
 
 void StreamsModel::removeInstalledProvider(const QString &key)
 {
-    foreach (Item *i, root->children) {
+    for (Item *i: root->children) {
         if (key==static_cast<CategoryItem *>(i)->configName) {
             int row=root->children.indexOf(i);
             if (row>=0) {

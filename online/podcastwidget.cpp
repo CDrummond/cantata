@@ -156,10 +156,10 @@ enum GetEp {
 static QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > getEpisodes(PodcastService::Proxy &proxy, const QModelIndexList &selected, GetEp get)
 {
     QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls;
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         PodcastService::Item *item=static_cast<PodcastService::Item *>(proxy.mapToSource(idx).internalPointer());
         if (item->isPodcast()) {
-            foreach (PodcastService::Episode *episode, static_cast<PodcastService::Podcast *>(item)->episodes) {
+            for (PodcastService::Episode *episode: static_cast<PodcastService::Podcast *>(item)->episodes) {
                 if ((GetEp_Downloaded==get && !episode->localFile.isEmpty()) ||
                     (GetEp_NotDownloaded==get && episode->localFile.isEmpty()) ||
                     (GetEp_Listened==get && episode->played) ||
@@ -270,7 +270,7 @@ void PodcastWidget::refresh()
 {
     QModelIndexList sel=view->selectedIndexes(false);
     QModelIndexList selected;
-    foreach (const QModelIndex &i, sel) {
+    for (const QModelIndex &i: sel) {
         if (!i.parent().isValid()) {
             selected+=proxy.mapToSource(i);
         }

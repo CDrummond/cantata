@@ -107,7 +107,7 @@ static UltimateLyricsProvider * parseProvider(QXmlStreamReader *reader)
 
 void UltimateLyrics::release()
 {
-    foreach (UltimateLyricsProvider *provider, providers) {
+    for (UltimateLyricsProvider *provider: providers) {
         delete provider;
     }
     providers.clear();
@@ -121,7 +121,7 @@ const QList<UltimateLyricsProvider *> UltimateLyrics::getProviders()
 
 UltimateLyricsProvider * UltimateLyrics::providerByName(const QString &name) const
 {
-    foreach (UltimateLyricsProvider *provider, providers) {
+    for (UltimateLyricsProvider *provider: providers) {
         if (provider->getName() == name) {
             return provider;
         }
@@ -153,12 +153,12 @@ void UltimateLyrics::load()
     QStringList dirs=QStringList() << Utils::dataDir() << CANTATA_SYS_CONFIG_DIR;
 
     QSet<QString> providerNames;
-    foreach (const QString &d, dirs) {
+    for (const QString &d: dirs) {
         if (d.isEmpty()) {
             continue;
         }
         QFileInfoList files=QDir(d).entryInfoList(QStringList() << QLatin1String("lyrics_*.xml"), QDir::NoDotAndDotDot|QDir::Files);
-        foreach (const QFileInfo &f, files) {
+        for (const QFileInfo &f: files) {
             QFile file(f.absoluteFilePath());
             if (file.open(QIODevice::ReadOnly)) {
                 QXmlStreamReader reader(&file);
@@ -187,13 +187,13 @@ void UltimateLyrics::load()
 
 void UltimateLyrics::setEnabled(const QStringList &enabled)
 {
-    foreach (UltimateLyricsProvider *provider, providers) {
+    for (UltimateLyricsProvider *provider: providers) {
         provider->setEnabled(false);
         provider->setRelevance(0xFFFF);
     }
 
     int relevance=0;
-    foreach (const QString &p, enabled) {
+    for (const QString &p: enabled) {
         UltimateLyricsProvider *provider=providerByName(p);
         if (provider) {
             provider->setEnabled(true);

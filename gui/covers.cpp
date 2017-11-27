@@ -276,7 +276,7 @@ static void clearScaledCache(const Song &song)
 
         for (int i=0; constExtensions[i]; ++i) {
             QString fileName=Covers::encodeName(artistImage ? song.artist : song.composer())+constExtensions[i];
-            foreach (const QString &sizeDirName, sizeDirNames) {
+            for (const QString &sizeDirName: sizeDirNames) {
                 QString fname=dirName+sizeDirName+QLatin1Char('/')+fileName;
                 if (QFile::exists(fname)) {
                     QFile::remove(fname);
@@ -287,7 +287,7 @@ static void clearScaledCache(const Song &song)
         QString subDir=Covers::encodeName(song.artist);
         for (int i=0; constExtensions[i]; ++i) {
             QString fileName=Covers::encodeName(song.album)+constExtensions[i];
-            foreach (const QString &sizeDirName, sizeDirNames) {
+            for (const QString &sizeDirName: sizeDirNames) {
                 QString fname=dirName+sizeDirName+QLatin1Char('/')+subDir+QLatin1Char('/')+fileName;
                 if (QFile::exists(fname)) {
                     QFile::remove(fname);
@@ -410,7 +410,7 @@ QString Covers::fixArtist(const QString &artist)
     if (!initialised) {
         initialised=true;
         QStringList dirs=QStringList() << Utils::dataDir() << CANTATA_SYS_CONFIG_DIR;
-        foreach (const QString &dir, dirs) {
+        for (const QString &dir: dirs) {
             if (dir.isEmpty()) {
                 continue;
             }
@@ -488,14 +488,14 @@ bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString
     for (int e=0; constExtensions[e]; ++e) {
         names+=song.albumArtist()+QLatin1String(" - ")+song.album+constExtensions[e];
     }
-    foreach (const QString &coverFile, names) {
+    for (const QString &coverFile: names) {
         if (fExists(destDir, coverFile)) {
             return true;
         }
     }
 
     // No cover found, try to copy from source folder
-    foreach (const QString &coverFile, names) {
+    for (const QString &coverFile: names) {
         if (fExists(sourceDir, coverFile)) {
             QString destName(name);
             if (destName.isEmpty()) { // copying into mpd dir, so we want cover.jpg/png...
@@ -536,7 +536,7 @@ const QStringList & Covers::standardNames()
         coverFileNames=new QStringList();
         QStringList fileNames;
         fileNames << Covers::constFileName << QLatin1String("AlbumArt") << QLatin1String("folder");
-        foreach (const QString &fileName, fileNames) {
+        for (const QString &fileName: fileNames) {
             for (int e=0; constExtensions[e]; ++e) {
                 *coverFileNames << fileName+constExtensions[e];
             }
@@ -988,7 +988,7 @@ void CoverLocator::locate()
         return;
     }
     QList<LocatedCover> covers;
-    foreach (const Song &s, toDo) {
+    for (const Song &s: toDo) {
         DBUG << s.file << s.artist << s.albumartist << s.album;
         Covers::Image img=Covers::locateImage(s);
         covers.append(LocatedCover(s, img.img, img.fileName));
@@ -1042,7 +1042,7 @@ void CoverLoader::load()
         return;
     }
     QList<LoadedCover> covers;
-    foreach (const LoadedCover &s, toDo) {
+    for (const LoadedCover &s: toDo) {
         DBUG << s.song.artist << s.song.albumId() << s.song.size;
         int size=s.song.size;
         if (size<constRetinaScaleMaxSize) {
@@ -1300,7 +1300,7 @@ bool Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesO
     #endif
     bool updated=false;
 
-    foreach (int s, cacheSizes) {
+    for (int s: cacheSizes) {
         QString key=cacheKey(song, s);
         QPixmap *pix(cache.object(key));
 
@@ -1385,7 +1385,7 @@ Covers::Image Covers::findImage(const Song &song, bool emitResult)
 
 static Covers::Image findCoverInDir(const Song &song, const QString &dirName, const QStringList &coverFileNames, const QString &songFileName=QString())
 {
-    foreach (const QString &fileName, coverFileNames) {
+    for (const QString &fileName: coverFileNames) {
         DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
         if (QFile::exists(dirName+fileName)) {
             QImage img=loadImage(dirName+fileName);
@@ -1422,7 +1422,7 @@ static Covers::Image findCoverInDir(const Song &song, const QString &dirName, co
     }
 
     QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
-    foreach (const QString &fileName, files) {
+    for (const QString &fileName: files) {
         DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
         QImage img=loadImage(dirName+fileName);
         if (!img.isNull()) {
@@ -1526,7 +1526,7 @@ Covers::Image Covers::locateImage(const Song &song)
                 coverFileNames << mpdCover+constExtensions[e];
             }
         }
-        foreach (const QString &std, standardNames()) {
+        for (const QString &std: standardNames()) {
             if (!coverFileNames.contains(std)) {
                 coverFileNames << std;
             }
@@ -1547,7 +1547,7 @@ Covers::Image Covers::locateImage(const Song &song)
 
         if (song.isArtistImageRequest() || song.isComposerImageRequest()) {
             for (int level=0; level<2; ++level) {
-                foreach (const QString &fileName, coverFileNames) {
+                for (const QString &fileName: coverFileNames) {
                     DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
                     if (QFile::exists(dirName+fileName)) {
                         QImage img=loadImage(dirName+fileName);
@@ -1569,7 +1569,7 @@ Covers::Image Covers::locateImage(const Song &song)
                 dirName=MPDConnection::self()->getDetails().dirReadable ? MPDConnection::self()->getDetails().dir : QString();
                 if (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/"))) {
                     dirName+=basicArtist+Utils::constDirSep;
-                    foreach (const QString &fileName, coverFileNames) {
+                    for (const QString &fileName: coverFileNames) {
                         DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
                         if (QFile::exists(dirName+fileName)) {
                             QImage img=loadImage(dirName+fileName);
@@ -1588,7 +1588,7 @@ Covers::Image Covers::locateImage(const Song &song)
             }
 
             QStringList dirs=QDir(dirName).entryList(QDir::Dirs|QDir::Readable|QDir::NoDotAndDotDot);
-            foreach (const QString &dir, dirs) {
+            for (const QString &dir: dirs) {
                 img=findCoverInDir(song, dirName+dir+Utils::constDirSep, coverFileNames);
                 if (!img.img.isNull()) {
                     return img;
@@ -1606,7 +1606,7 @@ Covers::Image Covers::locateImage(const Song &song)
                 if (!song.file.startsWith(songDir)) {
                     QString dirName=MPDConnection::self()->getDetails().dir+songDir;
                     if (QDir(dirName).exists()) {
-                        foreach (const QString &fileName, coverFileNames) {
+                        for (const QString &fileName: coverFileNames) {
                             DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
                             if (QFile::exists(dirName+fileName)) {
                                 QImage img=loadImage(dirName+fileName);
@@ -1641,7 +1641,7 @@ Covers::Image Covers::locateImage(const Song &song)
             if (!song.file.startsWith(songDir)) {
                 QString dirName=MPDConnection::self()->getDetails().dir+songDir;
                 if (QDir(dirName).exists()) {
-                    foreach (const QString &fileName, coverFileNames) {
+                    for (const QString &fileName: coverFileNames) {
                         DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
                         if (QFile::exists(dirName+fileName)) {
                             QImage img=loadImage(dirName+fileName);
@@ -1730,7 +1730,7 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
 
 void Covers::located(const QList<LocatedCover> &covers)
 {
-    foreach (const LocatedCover &cvr, covers) {
+    for (const LocatedCover &cvr: covers) {
         if (!cvr.img.isNull()) {
             if (cvr.song.isArtistImageRequest()) {
                 gotArtistImage(cvr.song, cvr.img, cvr.fileName);
@@ -1747,7 +1747,7 @@ void Covers::located(const QList<LocatedCover> &covers)
 
 void Covers::loaded(const QList<LoadedCover> &covers)
 {
-    foreach (const LoadedCover &cvr, covers) {
+    for (const LoadedCover &cvr: covers) {
         if (!cvr.img.isNull()) {
             int size=cvr.song.size;
             int origSize=size;
@@ -1788,7 +1788,7 @@ void Covers::cleanCdda()
         QDir d(dir);
         QStringList entries=d.entryList(QDir::Files|QDir::NoSymLinks|QDir::NoDotAndDotDot);
 
-        foreach (const QString &f, entries) {
+        for (const QString &f: entries) {
             if (f.endsWith(".jpg") || f.endsWith(".png")) {
                 QFile::remove(dir+f);
             }

@@ -283,7 +283,7 @@ void MultiPageWidget::sortItems()
         layout->removeWidget(it.value().btn);
     }
 
-    foreach (const QString &key, keys) {
+    for (const QString &key: keys) {
         layout->insertWidget(view->layout()->count()-1, entries[key].btn);
     }
 }

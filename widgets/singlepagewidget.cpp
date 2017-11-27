@@ -111,14 +111,14 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
 
     if (!left.isEmpty()) {
         QHBoxLayout *ll=new QHBoxLayout();
-        foreach (QWidget *b, left) {
+        for (QWidget *b: left) {
             ll->addWidget(b);
         }
         static_cast<QGridLayout *>(layout())->addItem(ll, 2, 0, 1, 1);
     }
     if (!right.isEmpty()) {
         QHBoxLayout *rl=new QHBoxLayout();
-        foreach (QWidget *b, right) {
+        for (QWidget *b: right) {
             rl->addWidget(b);
         }
         static_cast<QGridLayout *>(layout())->addItem(rl, 2, 4, 1, 1);
@@ -158,7 +158,7 @@ QList<QAction *> SinglePageWidget::createActions(const QList<SinglePageWidget::M
 {
     QList<QAction *> actions;
     QActionGroup *group=new QActionGroup(parent);
-    foreach (const MenuItem &v, values) {
+    for (const MenuItem &v: values) {
         QAction *act=new QAction(v.first, parent);
         connect(act, SIGNAL(toggled(bool)), parent, slot);
         act->setActionGroup(group);
@@ -187,7 +187,7 @@ Action * SinglePageWidget::createMenuGroup(const QString &name, const QList<Sing
 QList<QAction *> SinglePageWidget::createViewActions(QList<ItemView::Mode> modes)
 {
     QList<QPair<QString, int> > vals;
-    foreach (ItemView::Mode m, modes) {
+    for (ItemView::Mode m: modes) {
         vals.append(MenuItem(viewTypeString(m), m));
     }
     return createActions(vals, view->viewMode(), this, SLOT(viewModeSelected()));

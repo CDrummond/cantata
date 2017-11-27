@@ -97,7 +97,7 @@ void MusicLibraryItemAlbum::updateStats()
 {
     if (0==m_totalTime) {
         m_numTracks=0;
-        foreach (MusicLibraryItem *i, m_childItems) {
+        for (MusicLibraryItem *i: m_childItems) {
             MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
             if (Song::Playlist!=song->song().type) {
                 m_totalTime+=song->time();
@@ -121,7 +121,7 @@ void MusicLibraryItemAlbum::remove(int row)
     MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
     if (m_yearOfDisc==song->disc() && m_yearOfTrack==song->track()) {
         m_yearOfDisc=m_yearOfTrack=0xFFFF;
-        foreach (MusicLibraryItem *itm, m_childItems) {
+        for (MusicLibraryItem *itm: m_childItems) {
             setYear(static_cast<MusicLibraryItemSong *>(itm));
         }
     }
@@ -158,7 +158,7 @@ void MusicLibraryItemAlbum::removeAll(const QSet<QString> &fileNames)
 QMap<QString, Song> MusicLibraryItemAlbum::getSongs(const QSet<QString> &fileNames) const
 {
     QMap<QString, Song> map;
-    foreach (const MusicLibraryItem *i, m_childItems) {
+    for (const MusicLibraryItem *i: m_childItems) {
         const MusicLibraryItemSong *song=static_cast<const MusicLibraryItemSong *>(i);
         if (fileNames.contains(song->file())) {
             map.insert(song->file(), song->song());
@@ -174,7 +174,7 @@ QMap<QString, Song> MusicLibraryItemAlbum::getSongs(const QSet<QString> &fileNam
 bool MusicLibraryItemAlbum::updateYear()
 {
     quint32 currentYear=m_year;
-    foreach (MusicLibraryItem *track, m_childItems) {
+    for (MusicLibraryItem *track: m_childItems) {
         MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong*>(track);
         if (Song::Playlist!=song->song().type) {
             m_year=song->song().year;

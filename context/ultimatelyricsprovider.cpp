@@ -160,7 +160,7 @@ static QString excludeXmlTag(const QString &source, const QString &tag)
 
 static void applyExtractRule(const UltimateLyricsProvider::Rule &rule, QString &content, const Song &song)
 {
-    foreach (const UltimateLyricsProvider::RuleItem &item, rule) {
+    for (const UltimateLyricsProvider::RuleItem &item: rule) {
         if (item.second.isNull()) {
             content = extractXmlTag(content, doTagReplace(item.first, song));
         } else {
@@ -171,7 +171,7 @@ static void applyExtractRule(const UltimateLyricsProvider::Rule &rule, QString &
 
 static void applyExcludeRule(const UltimateLyricsProvider::Rule &rule, QString &content, const Song &song)
 {
-    foreach (const UltimateLyricsProvider::RuleItem &item, rule) {
+    for (const UltimateLyricsProvider::RuleItem &item: rule) {
         if (item.second.isNull()) {
             content = excludeXmlTag(content, doTagReplace(item.first, song));
         } else {
@@ -367,7 +367,7 @@ void UltimateLyricsProvider::lyricsFetched()
 
     DBUG << name << "response" << originalContent;
     // Check for invalid indicators
-    foreach (const QString &indicator, invalidIndicators) {
+    for (const QString &indicator: invalidIndicators) {
         if (originalContent.contains(indicator)) {
             //emit Finished(id);
             DBUG << name << "invalid";
@@ -379,7 +379,7 @@ void UltimateLyricsProvider::lyricsFetched()
     QString lyrics;
 
     // Apply extract rules
-    foreach (const Rule& rule, extractRules) {
+    for (const Rule& rule: extractRules) {
         QString content = originalContent;
         applyExtractRule(rule, content, song);
         #ifndef Q_OS_WIN
@@ -394,7 +394,7 @@ void UltimateLyricsProvider::lyricsFetched()
     }
 
     // Apply exclude rules
-    foreach (const Rule& rule, excludeRules) {
+    for (const Rule& rule: excludeRules) {
         applyExcludeRule(rule, lyrics, song);
     }
 
@@ -413,7 +413,7 @@ void UltimateLyricsProvider::doUrlReplace(const QString &tag, const QString &val
 
     // Apply URL character replacement
     QString valueCopy(value);
-    foreach (const UltimateLyricsProvider::UrlFormat& format, urlFormats) {
+    for (const UltimateLyricsProvider::UrlFormat& format: urlFormats) {
         QRegExp re("[" + QRegExp::escape(format.first) + "]");
         valueCopy.replace(re, format.second);
     }

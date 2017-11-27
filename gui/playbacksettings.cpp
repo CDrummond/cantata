@@ -139,7 +139,7 @@ void PlaybackSettings::updateOutputs(const QList<Output> &outputs)
 {
     outputsView->clear();
     enabledOutputs.clear();
-    foreach(const Output &output, outputs) {
+    for (const Output &output: outputs) {
         QListWidgetItem *item=new QListWidgetItem(output.name, outputsView);
         item->setCheckState(output.enabled ? Qt::Checked : Qt::Unchecked);
         item->setData(Qt::UserRole, output.id);

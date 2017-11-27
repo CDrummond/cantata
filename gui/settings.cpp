@@ -195,7 +195,7 @@ QList<MPDConnectionDetails> Settings::allConnections()
 {
     QStringList groups=cfg.childGroups();
     QList<MPDConnectionDetails> connections;
-    foreach (const QString &grp, groups) {
+    for (const QString &grp: groups) {
         if (cfg.hasGroup(grp) && grp.startsWith("Connection")) {
             connections.append(connectionDetails(grp=="Connection" ? QString() : grp.mid(11)));
         }

@@ -90,7 +90,7 @@ void SyncCollectionWidget::update(const QSet<Song> &songs)
 QList<Song> SyncCollectionWidget::checkedSongs() const
 {
     QList<Song> songs;
-    foreach (const Song *s, checked) {
+    for (const Song *s: checked) {
         songs.append(*s);
     }
     qSort(songs);
@@ -108,8 +108,8 @@ void SyncCollectionWidget::dataChanged(const QModelIndex &tl, const QModelIndex 
         for (int i=firstIndex.row(); i<=lastIndex.row(); ++i) {
             QModelIndex index=model.index(i, 0, firstIndex.parent());
             const MusicLibraryItemArtist *artist=static_cast<const MusicLibraryItemArtist *>(index.internalPointer());
-            foreach (const MusicLibraryItem *alItem, artist->childItems()) {
-                foreach (const MusicLibraryItem *sItem, static_cast<const MusicLibraryItemContainer *>(alItem)->childItems()) {
+            for (const MusicLibraryItem *alItem: artist->childItems()) {
+                for (const MusicLibraryItem *sItem: static_cast<const MusicLibraryItemContainer *>(alItem)->childItems()) {
                     songToggled(static_cast<const MusicLibraryItemSong *>(sItem));
                 }
             }
@@ -119,7 +119,7 @@ void SyncCollectionWidget::dataChanged(const QModelIndex &tl, const QModelIndex 
         for (int i=firstIndex.row(); i<=lastIndex.row(); ++i) {
             QModelIndex index=model.index(i, 0, firstIndex.parent());
             const MusicLibraryItemAlbum *album=static_cast<const MusicLibraryItemAlbum *>(index.internalPointer());
-            foreach (const MusicLibraryItem *sItem, album->childItems()) {
+            for (const MusicLibraryItem *sItem: album->childItems()) {
                 songToggled(static_cast<const MusicLibraryItemSong *>(sItem));
             }
         }
@@ -168,7 +168,7 @@ void SyncCollectionWidget::checkItems(bool c)
         return;
     }
 
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         model.setData(proxy.mapToSource(idx), c, Qt::CheckStateRole);
     }
 }

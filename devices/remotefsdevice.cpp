@@ -108,7 +108,7 @@ QList<Device *> RemoteFsDevice::loadAll(MusicLibraryModel *m)
     QList<Device *> devices;
     Configuration cfg;
     QStringList names=cfg.get(constCfgKey, QStringList());
-    foreach (const QString &n, names) {
+    for (const QString &n: names) {
         Details d;
         d.load(n);
         if (d.isEmpty()) {
@@ -332,7 +332,7 @@ void RemoteFsDevice::mount()
             }
 
             QString askPass;
-            foreach (const QString &ap, askPassList) {
+            for (const QString &ap: askPassList) {
                 askPass=Utils::findExe(ap);
                 if (!askPass.isEmpty()) {
                     break;

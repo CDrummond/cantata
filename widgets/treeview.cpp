@@ -182,7 +182,7 @@ QModelIndexList TreeView::selectedIndexes(bool sorted) const
     } else if (model() && model()->columnCount()>1) {
         QModelIndexList list=selectionModel()->selectedIndexes();
         QModelIndexList sel;
-        foreach (const QModelIndex &idx, list) {
+        for (const QModelIndex &idx: list) {
             if (0==idx.column()) {
                 sel.append(idx);
             }
@@ -234,7 +234,7 @@ QModelIndexList TreeView::sortIndexes(const QModelIndexList &list)
     // have different parents. Therefore, we use the sort above - so that the hierarchy is preserved.
     // First, create the list of 'Index' items to be sorted...
     QList<Index> toSort;
-    foreach (const QModelIndex &i, list) {
+    for (const QModelIndex &i: list) {
         if (0==i.column()) {
             toSort.append(Index(i));
         }
@@ -244,7 +244,7 @@ QModelIndexList TreeView::sortIndexes(const QModelIndexList &list)
 
     // Now convert the QList<Index> into a QModelIndexList
     QModelIndexList sorted;
-    foreach (const Index &i, toSort) {
+    for (const Index &i: toSort) {
         sorted.append(i);
     }
     return sorted;

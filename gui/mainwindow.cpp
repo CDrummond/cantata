@@ -500,13 +500,13 @@ void MainWindow::init()
     int controlButtonSize=Utils::scaleForDpi(32);
     int playbackButtonSize=28==playbackIconSizeNonScaled ? Utils::scaleForDpi(34) : controlButtonSize;
 
-    foreach (QToolButton *b, controlBtns) {
+    for (QToolButton *b: controlBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
         b->setFixedSize(QSize(controlButtonSize, controlButtonSize));
         b->setIconSize(QSize(controlIconSize, controlIconSize));
     }
-    foreach (QToolButton *b, playbackBtns) {
+    for (QToolButton *b: playbackBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
         b->setFixedSize(QSize(playbackButtonSize, playbackButtonSize));
@@ -692,10 +692,10 @@ void MainWindow::init()
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     #endif
-    foreach (QAction *act, StdActions::self()->setPriorityAction->menu()->actions()) {
+    for (QAction *act: StdActions::self()->setPriorityAction->menu()->actions()) {
         connect(act, SIGNAL(triggered()), this, SLOT(addWithPriority()));
     }
-    foreach (QAction *act, StdActions::self()->addWithPriorityAction->menu()->actions()) {
+    for (QAction *act: StdActions::self()->addWithPriorityAction->menu()->actions()) {
         connect(act, SIGNAL(triggered()), this, SLOT(addWithPriority()));
     }
     connect(StdActions::self()->appendToPlayQueueAndPlayAction, SIGNAL(triggered()), this, SLOT(appendToPlayQueueAndPlay()));
@@ -1234,14 +1234,14 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
     QSet<QString> mpd;
     QSet<QString> menuItems;
     QMenu *menu=outputsAction->menu();
-    foreach (const Output &o, outputs) {
+    for (const Output &o: outputs) {
         if (o.enabled) {
             enabledMpd.insert(o.name);
         }
         mpd.insert(o.name);
     }
 
-    foreach (QAction *act, menu->actions()) {
+    for (QAction *act: menu->actions()) {
         menuItems.insert(act->data().toString());
     }
 
@@ -1250,7 +1250,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         QList<Output> out=outputs;
         qSort(out);
         int i=Qt::Key_1;
-        foreach (const Output &o, out) {
+        for (const Output &o: out) {
             QAction *act=menu->addAction(o.name, this, SLOT(toggleOutput()));
             act->setData(o.id);
             act->setCheckable(true);
@@ -1258,8 +1258,8 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
             act->setShortcut(Qt::ControlModifier+Qt::AltModifier+nextKey(i));
         }
     } else {
-        foreach (const Output &o, outputs) {
-            foreach (QAction *act, menu->actions()) {
+        for (const Output &o: outputs) {
+            for (QAction *act: menu->actions()) {
                 if (Utils::strippedText(act->text())==o.name) {
                     act->setChecked(o.enabled);
                     break;
@@ -1306,11 +1306,11 @@ void MainWindow::updateConnectionsMenu()
         QSet<QString> cfg;
         QSet<QString> menuItems;
         QMenu *menu=connectionsAction->menu();
-        foreach (const MPDConnectionDetails &d, connections) {
+        for (const MPDConnectionDetails &d: connections) {
             cfg.insert(d.name);
         }
 
-        foreach (QAction *act, menu->actions()) {
+        for (QAction *act: menu->actions()) {
             menuItems.insert(act->data().toString());
             act->setChecked(act->data().toString()==current);
         }
@@ -1319,7 +1319,7 @@ void MainWindow::updateConnectionsMenu()
             menu->clear();
             qSort(connections);
             int i=Qt::Key_1;
-            foreach (const MPDConnectionDetails &d, connections) {
+            for (const MPDConnectionDetails &d: connections) {
                 QAction *act=menu->addAction(d.getName(), this, SLOT(changeConnection()));
                 act->setData(d.name);
                 act->setCheckable(true);
@@ -1337,7 +1337,7 @@ void MainWindow::controlConnectionsMenu(bool enable)
     if (enable) {
         updateConnectionsMenu();
     }
-    foreach(QAction *act, connectionsAction->menu()->actions()) {
+    for (QAction *act: connectionsAction->menu()->actions()) {
         act->setEnabled(enable);
     }
 }
@@ -1889,7 +1889,7 @@ void MainWindow::addWithPriority()
     if (prio>=0 && prio<=255) {
         if (isPlayQueue) {
             QList<qint32> ids;
-            foreach (const QModelIndex &idx, pqItems) {
+            for (const QModelIndex &idx: pqItems) {
                 ids.append(PlayQueueModel::self()->getIdByRow(playQueueProxyModel.mapToSource(idx).row()));
             }
             emit setPriority(ids, prio, decreasePriority);
@@ -1934,7 +1934,7 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
         if (items.isEmpty()) {
             files = PlayQueueModel::self()->filenames();
         } else {
-            foreach (const QModelIndex &idx, items) {
+            for (const QModelIndex &idx: items) {
                 Song s = PlayQueueModel::self()->getSongByRow(playQueueProxyModel.mapToSource(idx).row());
                 if (!s.file.isEmpty()) {
                     files.append(s.file);
@@ -2164,7 +2164,7 @@ void MainWindow::moveSelectionAfterCurrentSong()
 
     if( !selectedIdexes.empty() ){
         QList<quint32> selectedSongIds;
-        foreach (int row, selectedIdexes){
+        for (int row: selectedIdexes){
             selectedSongIds.append( (quint32) row);
         }
 
@@ -2204,7 +2204,7 @@ void MainWindow::setCollection(const QString &collection)
     if (!connectionsAction->isVisible()) {
         return;
     }
-    foreach (QAction *act, connectionsAction->menu()->actions()) {
+    for (QAction *act: connectionsAction->menu()->actions()) {
         if (Utils::strippedText(act->text())==collection) {
             if (!act->isChecked()) {
                 act->trigger();
@@ -2216,7 +2216,7 @@ void MainWindow::setCollection(const QString &collection)
 
 void MainWindow::mpdConnectionName(const QString &name)
 {
-    foreach (QAction *act, connectionsAction->menu()->actions()) {
+    for (QAction *act: connectionsAction->menu()->actions()) {
         if (Utils::strippedText(act->text())==name) {
             if (!act->isChecked()) {
                 act->setChecked(true);

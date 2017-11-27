@@ -231,7 +231,7 @@ QSplitterHandle * ThinSplitter::createHandle()
 void ThinSplitter::reset()
 {
     int totalSize=0;
-    foreach (int s, sizes()) {
+    for (int s: sizes()) {
         totalSize+=s;
     }
     QList<int> newSizes;
@@ -682,7 +682,7 @@ void ContextWidget::updateBackdrop(bool force)
             dirName+=Utils::getDir(currentSong.file);
 
             for (int level=0; level<2; ++level) {
-                foreach (const QString &fileName, names) {
+                for (const QString &fileName: names) {
                     DBUG << "Checking file(1)" << QString(dirName+fileName);
                     if (QFile::exists(dirName+fileName)) {
                         QImage img(dirName+fileName);
@@ -708,7 +708,7 @@ void ContextWidget::updateBackdrop(bool force)
         QString dirName=MPDConnection::self()->getDetails().dirReadable ? MPDConnection::self()->getDetails().dir : QString();
         if (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/"))) {
             dirName+=currentArtist+Utils::constDirSep;
-            foreach (const QString &fileName, names) {
+            for (const QString &fileName: names) {
                 DBUG << "Checking file(2)" << QString(dirName+fileName);
                 if (QFile::exists(dirName+fileName)) {
                     QImage img(dirName+fileName);

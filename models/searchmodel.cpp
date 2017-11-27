@@ -262,7 +262,7 @@ QStringList SearchModel::filenames(const QModelIndexList &indexes, bool allowPla
 {
     QList<Song> list=songs(indexes, allowPlaylists);
     QStringList fnames;
-    foreach (const Song &s, list) {
+    for (const Song &s: list) {
         fnames.append(s.file);
     }
     return fnames;
@@ -272,7 +272,7 @@ QList<Song> SearchModel::songs(const QModelIndexList &indexes, bool allowPlaylis
 {
     QList<Song> list;
     QSet<QString> files;
-    foreach(QModelIndex index, indexes) {
+    for (const QModelIndex &index: indexes) {
         if (!index.isValid() || 0!=index.column()) {
             continue;
         }
@@ -327,7 +327,7 @@ void SearchModel::results(const QList<Song> &songs)
     songList=songs;
     endResetModel();
     quint32 time=0;
-    foreach (const Song &s, songList) {
+    for (const Song &s: songList) {
         time+=s.time;
     }
 

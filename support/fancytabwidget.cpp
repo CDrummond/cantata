@@ -290,7 +290,7 @@ QSize FancyTabBar::tabSizeHint() const
     if (withText) {
         QFontMetrics fm(font());
         int maxTw=0;
-        foreach (FancyTab *tab, tabs) {
+        for (FancyTab *tab: tabs) {
             maxTw=qMax(maxTw, tab->sizeHint().width());
         }
         return QSize(qMax(icnSize + spacing, maxTw), icnSize + spacing + fm.height() + padding);
@@ -530,7 +530,7 @@ int FancyTabWidget::count() const
 int FancyTabWidget::visibleCount() const
 {
     int c=0;
-    foreach (const Item &i, items) {
+    for (const Item &i: items) {
         if (i.enabled) {
             c++;
         }

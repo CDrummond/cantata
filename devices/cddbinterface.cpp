@@ -227,7 +227,7 @@ public:
             url.setPort(Settings::self()->cddbPort());
             QList<QNetworkProxy> proxies=NetworkProxyFactory::self()->queryProxy(QNetworkProxyQuery(url));
 
-            foreach (const QNetworkProxy &p, proxies) {
+            for (const QNetworkProxy &p: proxies) {
                 if (QNetworkProxy::HttpProxy==p.type() && 0!=p.port()) {
                     cddb_set_http_proxy_server_name(connection, p.hostName().toLatin1().constData());
                     cddb_set_http_proxy_server_port(connection, p.port());

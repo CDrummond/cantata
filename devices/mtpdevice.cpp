@@ -443,7 +443,7 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
             QSet<quint16> tracks;
             QString shortestArtist;
             bool duplicateTrackNumbers=false;
-            foreach (MusicLibraryItemSong *s, (*it).songs) {
+            for (MusicLibraryItemSong *s: (*it).songs) {
                 if (tracks.contains(s->track())) {
                     duplicateTrackNumbers=true;
                     break;
@@ -461,7 +461,7 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
                 // Now, check to see if all artists contain 'shortestArtist'. If so then use 'shortestArtist' as the album
                 // artist. This is probably due to songs which have artist set to '${artist} and somebodyelse'
                 QString albumArtist=shortestArtist;
-                foreach (const QString &artist, (*it).artists) {
+                for (const QString &artist: (*it).artists) {
                     if (!artist.contains(shortestArtist)) {
                         // Found an artist that did not contain 'shortestArtist', so use 'Various Artists' for album artist
                         albumArtist=!f.artist.isEmpty() && f.album==it.key() ? f.artist : Song::variousArtists();
@@ -470,7 +470,7 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
                 }
 
                 // Now move songs to correct artist/album...
-                foreach (MusicLibraryItemSong *s, (*it).songs) {
+                for (MusicLibraryItemSong *s: (*it).songs) {
                     if (s->song().albumartist==albumArtist) {
                         continue;
                     }
@@ -526,7 +526,7 @@ void MtpConnection::setMusicFolder(Storage &store)
 void MtpConnection::updateFilesAndFolders()
 {
     folderMap.clear();
-    foreach (const Storage st, storage) {
+    for (const Storage st: storage) {
         if (abortRequested) {
             return;
         }
@@ -693,7 +693,7 @@ uint32_t MtpConnection::checkFolderStructure(const QStringList &dirs, Storage &s
     QString path;
     uint32_t parentId=store.musicFolderId;
 
-    foreach (const QString &d, dirs) {
+    for (const QString &d: dirs) {
         path+=d+QChar('/');
         uint32_t folderId=getFolder(path, store.id);
         if (0==folderId) {
@@ -1034,7 +1034,7 @@ bool MtpConnection::removeFolder(uint32_t folderId)
     if (folderMap.end()!=folder && (*folder).folders.isEmpty() && (*folder).files.isEmpty()) {
         // Delete any cover files...
         QList<uint32_t> toRemove=(*folder).covers.keys();
-        foreach (uint32_t cover, toRemove) {
+        for (uint32_t cover: toRemove) {
             if (0==LIBMTP_Delete_Object(device, cover)) {
                 (*folder).covers.remove(cover);
             }
@@ -1054,7 +1054,7 @@ bool MtpConnection::removeFolder(uint32_t folderId)
 
 void MtpConnection::cleanDirs(const QSet<QString> &dirs)
 {
-    foreach (const QString &d, dirs) {
+    for (const QString &d: dirs) {
         Path path=decodePath(d);
         Storage &store=getStorage(path.storage);
         if (0==store.musicFolderId) {

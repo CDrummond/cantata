@@ -105,7 +105,7 @@ void MpdLibraryModel::setUseArtistImages(bool u)
         showArtistImages=u;
         switch(topLevel()) {
         case T_Genre: {
-            foreach (const Item *g, root->getChildren()) {
+            for (const Item *g: root->getChildren()) {
                 const CollectionItem *genre=static_cast<const CollectionItem *>(g);
                 if (genre->getChildCount()) {
                     QModelIndex idx=index(genre->getRow(), 0, QModelIndex());

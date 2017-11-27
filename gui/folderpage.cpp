@@ -99,7 +99,7 @@ void FolderPage::controlActions()
     bool trackSelected=false;
     bool folderSelected=false;
 
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         if (static_cast<BrowseModel::Item *>(idx.internalPointer())->isFolder()) {
             folderSelected=true;
         } else {
@@ -173,7 +173,7 @@ QStringList FolderPage::selectedFiles(bool allowPlaylists) const
 {
     QList<Song> songs=selectedSongs(allowPlaylists);
     QStringList files;
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         files.append(s.file);
     }
     return files;
@@ -185,7 +185,7 @@ void FolderPage::addSelectionToPlaylist(const QString &name, int action, quint8 
     QStringList dirs;
     QStringList files;
 
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         if (static_cast<BrowseModel::Item *>(idx.internalPointer())->isFolder()) {
             files+=static_cast<BrowseModel::FolderItem *>(idx.internalPointer())->allEntries(false);
         } else {

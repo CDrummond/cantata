@@ -75,7 +75,7 @@ void SingleApplication::load(const QStringList &files)
     }
 
     QStringList urls;
-    foreach (const QString &f, files) {
+    for (const QString &f: files) {
         urls.append(f);
     }
     if (!urls.isEmpty()) {

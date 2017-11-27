@@ -52,7 +52,7 @@ ScrobblingSettings::ScrobblingSettings(QWidget *parent)
     QStringList keys=scrobblers.keys();
     keys.sort();
     QString firstMpdClient;
-    foreach (const QString &k, keys) {
+    for (const QString &k: keys) {
         bool viaMpd=Scrobbler::viaMpd(scrobblers[k]);
         if (viaMpd) {
             scrobbler->addItem(tr("%1 (via MPD)", "scrobbler name (via MPD)").arg(k), k);

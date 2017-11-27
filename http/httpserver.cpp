@@ -149,7 +149,7 @@ bool HttpServer::isOurs(const QString &url) const
         return false;
     }
 
-    foreach (const QString &ip, ipAddresses) {
+    for (const QString &ip: ipAddresses) {
         if (url.startsWith(serverUrl(ip, socket->serverPort()))) {
             return true;
         }
@@ -315,7 +315,7 @@ void HttpServer::startCloseTimer()
 void HttpServer::cantataStreams(const QStringList &files)
 {
     DBUG << files;
-    foreach (const QString &f, files) {
+    for (const QString &f: files) {
         Song s=HttpServer::self()->decodeUrl(f);
         if (s.isCantataStream() || s.isCdda()) {
             start();
@@ -331,7 +331,7 @@ void HttpServer::cantataStreams(const QList<Song> &songs, bool isUpdate)
         streamIds.clear();
     }
 
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         streamIds.insert(s.id);
     }
 

@@ -55,13 +55,13 @@ static void calculate(const QString &d, const QStringList &types, int &items, qu
         QDir dir(d);
         if (dir.exists()) {
             QFileInfoList files=dir.entryInfoList(types, QDir::Files|QDir::NoDotAndDotDot);
-            foreach (const QFileInfo &file, files) {
+            for (const QFileInfo &file: files) {
                 space+=file.size();
             }
             items+=files.count();
 
             QFileInfoList dirs=dir.entryInfoList(QDir::Dirs|QDir::NoDotAndDotDot);
-            foreach (const QFileInfo &subDir, dirs) {
+            for (const QFileInfo &subDir: dirs) {
                 calculate(subDir.absoluteFilePath(), types, items, space, level+1);
             }
         }
@@ -74,12 +74,12 @@ static void deleteAll(const QString &d, const QStringList &types, int level=0)
         QDir dir(d);
         if (dir.exists()) {
             QFileInfoList dirs=dir.entryInfoList(QDir::Dirs|QDir::NoDotAndDotDot);
-            foreach (const QFileInfo &subDir, dirs) {
+            for (const QFileInfo &subDir: dirs) {
                 deleteAll(subDir.absoluteFilePath(), types, level+1);
             }
 
             QFileInfoList files=dir.entryInfoList(types, QDir::Files|QDir::NoDotAndDotDot);
-            foreach (const QFileInfo &file, files) {
+            for (const QFileInfo &file: files) {
                 QFile::remove(file.absoluteFilePath());
             }
             if (0!=level) {
@@ -324,7 +324,7 @@ void CacheSettings::deleteAll()
             static const QChar constBullet(0x2022);
 
             QString items;
-            foreach (CacheItem *i, toDelete) {
+            for (CacheItem *i: toDelete) {
                 items+=constBullet+QLatin1Char(' ')+i->name()+QLatin1Char('\n');
             }
 
@@ -333,7 +333,7 @@ void CacheSettings::deleteAll()
                 return;
             }
 
-            foreach (CacheItem *i, toDelete) {
+            for (CacheItem *i: toDelete) {
                 i->clean();
             }
         }

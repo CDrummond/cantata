@@ -80,7 +80,7 @@ void MessageWidget::setVisible(bool v)
 void MessageWidget::removeAllActions()
 {
      QList<QAction *> acts=actions();
-     foreach (QAction *a, acts) {
+     for (QAction *a: acts) {
          removeAction(a);
      }
 }
@@ -92,7 +92,7 @@ void MessageWidget::setActions(const QList<QAction *> acts)
     }
 
     removeAllActions();
-    foreach (QAction *a, acts) {
+    for (QAction *a: acts) {
         addAction(a);
     }
 }

@@ -147,7 +147,7 @@ AudioCdDevice::~AudioCdDevice()
 void AudioCdDevice::dequeue()
 {
     QList<Song> tracks;
-    foreach (const MusicLibraryItem *item, childItems()) {
+    for (const MusicLibraryItem *item: childItems()) {
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             Song song=static_cast<const MusicLibraryItemSong *>(item)->song();
             song.file=path()+song.file;
@@ -282,7 +282,7 @@ quint32 AudioCdDevice::totalTime()
 {
     if (0xFFFFFFFF==time) {
         time=0;
-        foreach (MusicLibraryItem *i, childItems()) {
+        for (MusicLibraryItem *i: childItems()) {
             time+=static_cast<MusicLibraryItemSong *>(i)->song().time;
         }
     }
@@ -347,7 +347,7 @@ void AudioCdDevice::setDetails(const CdAlbum &a)
     disc=a.disc;
     update=new MusicLibraryItemRoot();
     int totalDuration=0;
-    foreach (Song s, a.tracks) {
+    for (Song s: a.tracks) {
         totalDuration+=s.time;
         s.size=s.time*constBytesPerSecond;
         update->append(new MusicLibraryItemSong(s, update));
@@ -421,7 +421,7 @@ void AudioCdDevice::autoplay()
 void AudioCdDevice::playTracks()
 {
     QList<Song> tracks;
-    foreach (const MusicLibraryItem *item, childItems()) {
+    for (const MusicLibraryItem *item: childItems()) {
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             Song song=static_cast<const MusicLibraryItemSong *>(item)->song();
             song.file=path()+song.file;
@@ -437,7 +437,7 @@ void AudioCdDevice::playTracks()
 void AudioCdDevice::updateDetails()
 {
     QList<Song> tracks;
-    foreach (const MusicLibraryItem *item, childItems()) {
+    for (const MusicLibraryItem *item: childItems()) {
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             Song song=static_cast<const MusicLibraryItemSong *>(item)->song();
             song.file=path()+song.file;

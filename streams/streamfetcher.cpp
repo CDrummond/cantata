@@ -51,9 +51,9 @@ static QString parsePlaylist(const QByteArray &data, const QString &key, const Q
 {
     QStringList lines=QString(data).split('\n', QString::SkipEmptyParts);
 
-    foreach (QString line, lines) {
+    for (QString line: lines) {
         if (line.startsWith(key, Qt::CaseInsensitive)) {
-            foreach (const QString &handler, handlers) {
+            for (const QString &handler: handlers) {
                 QString protocol(handler+QLatin1String("://"));
                 int index=line.indexOf(protocol, Qt::CaseInsensitive);
                 if (index>-1 && index<7) {
@@ -72,8 +72,8 @@ static QString parseExt3Mu(const QByteArray &data, const QSet<QString> &handlers
 {
     QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), QString::SkipEmptyParts);
 
-    foreach (QString line, lines) {
-        foreach (const QString &handler, handlers) {
+    for (QString line: lines) {
+        for (const QString &handler: handlers) {
             QString protocol(handler+QLatin1String("://"));
             if (line.startsWith(protocol, Qt::CaseInsensitive)) {
                 line.remove('\n');
@@ -90,15 +90,15 @@ static QString parseAsx(const QByteArray &data, const QSet<QString> &handlers)
 {
     QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r|/>)")), QString::SkipEmptyParts);
 
-    foreach (QString line, lines) {
+    for (QString line: lines) {
         int ref=line.indexOf(QLatin1String("<ref href"), Qt::CaseInsensitive);
         if (-1!=ref) {
-            foreach (const QString &handler, handlers) {
+            for (const QString &handler: handlers) {
                 QString protocol(handler+QLatin1String("://"));
                 int prot=line.indexOf(protocol, Qt::CaseInsensitive);
                 if (-1!=prot) {
                     QStringList parts=line.split('\"');
-                    foreach (QString part, parts) {
+                    for (const QString &part: parts) {
                         if (part.startsWith(protocol)) {
                             return part;
                         }
@@ -120,7 +120,7 @@ static QString parseXml(const QByteArray &data, const QSet<QString> &handlers)
         reader.readNext();
         if (QXmlStreamReader::StartElement==reader.tokenType() && QLatin1String("location")==reader.name()) {
             QString loc=reader.readElementText().trimmed();
-            foreach (const QString &handler, handlers) {
+            for (const QString &handler: handlers) {
                 if (loc.startsWith(handler+QLatin1String("://"))) {
                     return loc;
                 }

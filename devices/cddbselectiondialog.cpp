@@ -61,7 +61,7 @@ int CddbSelectionDialog::select(const QList<CdAlbum> &albums)
 {
     combo->clear();
     albumDetails=albums;
-    foreach (const CdAlbum &a, albums) {
+    for (const CdAlbum &a: albums) {
         if (a.disc>0) {
             combo->addItem(tr("%1 - %2 Disc %3 (%4)", "artist - album Disc disc (year)").arg(a.artist).arg(a.name).arg(a.disc).arg(a.year));
         } else {
@@ -79,7 +79,7 @@ void CddbSelectionDialog::updateTracks()
     tracks->clear();
     bool sameArtist=true;
     const CdAlbum &a=albumDetails.at(combo->currentIndex());
-    foreach (const Song &s, a.tracks) {
+    for (const Song &s: a.tracks) {
         new QTreeWidgetItem(tracks, QStringList() << s.artist << s.title);
         if (s.artist!=a.artist) {
             sameArtist=false;

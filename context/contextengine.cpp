@@ -45,7 +45,7 @@ ContextEngine::~ContextEngine()
 QStringList ContextEngine::fixQuery(const QStringList &query) const
 {
     QStringList fixedQuery;
-    foreach (QString q, query) {
+    for (QString q: query) {
         if (q.contains(QLatin1String("PREVIEW: buy it at www.magnatune.com"))) {
             q = q.remove(QLatin1String(" (PREVIEW: buy it at www.magnatune.com)"));
             int index = q.indexOf(QLatin1Char('-'));

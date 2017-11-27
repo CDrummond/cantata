@@ -95,7 +95,7 @@ Icon Icon::getMediaIcon(const QString &name)
     Icon icn;
     Icon icon(name);
 
-    foreach (QIcon::Mode mode, modes) {
+    for (QIcon::Mode mode: modes) {
         icn.addPixmap(icon.pixmap(QSize(64, 64), mode).scaled(QSize(28, 28), Qt::KeepAspectRatio, Qt::SmoothTransformation), mode);
         icn.addPixmap(icon.pixmap(QSize(48, 48), mode), mode);
         icn.addPixmap(icon.pixmap(QSize(32, 32), mode), mode);
@@ -110,7 +110,7 @@ Icon Icon::getMediaIcon(const QString &name)
 Icon Icon::create(const QString &name, const QList<int> &sizes, bool andSvg)
 {
     Icon icon;
-    foreach (int s, sizes) {
+    for (int s: sizes) {
         icon.addFile(QLatin1Char(':')+name+QString::number(s), QSize(s, s));
     }
     if (andSvg) {
@@ -121,7 +121,7 @@ Icon Icon::create(const QString &name, const QList<int> &sizes, bool andSvg)
 
 Icon::Icon(const QStringList &names)
 {
-    foreach (const QString &name, names) {
+    for (const QString &name: names) {
         Icon icn(name);
         if (!icn.isNull()) {
             *this=icn;
@@ -134,7 +134,7 @@ Icon::Icon(const QStringList &names)
 QPixmap Icon::getScaledPixmap(const QIcon &icon, int w, int h, int base)
 {
     QList<QSize> sizes=icon.availableSizes();
-    foreach (const QSize &s, sizes) {
+    for (const QSize &s: sizes) {
         if (s.width()==w && s.height()==h) {
             return icon.pixmap(s);
         }

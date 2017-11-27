@@ -332,7 +332,7 @@ static void init()
             }
 
             QStringList lines=output.split('\n', QString::SkipEmptyParts);
-            foreach (const QString &line, lines) {
+            for (const QString &line: lines) {
                 int pos=line.indexOf(QRegExp(QLatin1String("[\\. D]EA")));
                 if (0==pos || 1==pos) {
                     QList<Encoder>::Iterator it(initial.begin());
@@ -385,7 +385,7 @@ QStringList Encoder::params(int value, const QString &in, const QString &out) co
     if (!param.isEmpty() && values.size()>1) {
         bool increase=values.at(0).value<values.at(1).value;
         int v=values.at(defaultValueIndex).value;
-        foreach (const Setting &s, values) {
+        for (const Setting &s: values) {
             if ((increase && s.value>value) || (!increase && s.value<value)) {
                 break;
             } else {
@@ -417,7 +417,7 @@ QList<Encoder> getAvailable()
 Encoder getEncoder(const QString &codec)
 {
     init();
-    foreach (const Encoder &encoder, installedEncoders) {
+    for (const Encoder &encoder: installedEncoders) {
         if (encoder.codec==codec) {
             return encoder;
         }

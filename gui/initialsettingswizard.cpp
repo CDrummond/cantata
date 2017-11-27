@@ -97,7 +97,7 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     // Adjust size for high-DPI setups...
     bool highDpi=fontMetrics().height()>20;
     if (highDpi) {
-        foreach (int id, pageIds()) {
+        for (int id: pageIds()) {
             QWizardPage *p=QWizard::page(id);
             p->adjustSize();
             QSize ps=p->size();

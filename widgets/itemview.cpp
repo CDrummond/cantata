@@ -1113,7 +1113,7 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
             if (dynamic_cast<ProxyModel *>(itemModel)) {
                 static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
             }
-            foreach (const QModelIndex &i, indexes) {
+            for (const QModelIndex &i: indexes) {
                 activateItem(i, false);
             }
             if (p.isValid()) {

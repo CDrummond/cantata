@@ -190,7 +190,7 @@ MPDStatsValues MPDParseUtils::parseStats(const QByteArray &data)
     MPDStatsValues v;
     QList<QByteArray> lines = data.split('\n');
 
-    foreach (const QByteArray &line, lines) {
+    for (const QByteArray &line: lines) {
         if (line.startsWith(constStatsArtistsKey)) {
             v.artists=line.mid(constStatsArtistsKey.length()).toUInt();
         } else if (line.startsWith(constStatsAlbumsKey)) {
@@ -215,7 +215,7 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
     MPDStatusValues v;
     QList<QByteArray> lines = data.split('\n');
 
-    foreach (const QByteArray &line, lines) {
+    for (const QByteArray &line: lines) {
         if (line.startsWith(constStatusVolumeKey)) {
             v.volume=line.mid(constStatusVolumeKey.length()).toInt();
         } else if (line.startsWith(constStatusConsumeKey)) {
@@ -298,7 +298,7 @@ static QSet<QString> constStdProtocols=QSet<QString>() << constHttpProtocol
 Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
 {
     Song song;
-    foreach (const QByteArray &line, lines) {
+    for (const QByteArray &line: lines) {
         if (line.startsWith(constFileKey)) {
             song.file = QString::fromUtf8(line.mid(constFileKey.length()));
         } else if (line.startsWith(constTimeKey) ){
@@ -391,7 +391,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             if (song.file.contains(Song::constCddaProtocol)) {
                 song.type=Song::Cdda;
             } else if (song.file.contains(constProtocol)) {
-                foreach (const QString &protocol, constStdProtocols) {
+                for (const QString &protocol: constStdProtocols) {
                     if (song.file.startsWith(protocol)) {
                         song.type=Song::Stream;
                         break;
@@ -517,7 +517,7 @@ QStringList MPDParseUtils::parseList(const QByteArray &data, const QByteArray &k
     QList<QByteArray> lines = data.split('\n');
     int keyLen=key.length();
 
-    foreach (const QByteArray &line, lines) {
+    for (const QByteArray &line: lines) {
         // Skip the "OK" line, this is NOT a valid item!!!
         if (constOkValue==line) {
             continue;
@@ -536,7 +536,7 @@ MPDParseUtils::MessageMap MPDParseUtils::parseMessages(const QByteArray &data)
     QList<QByteArray> lines = data.split('\n');
     QByteArray channel;
 
-    foreach (const QByteArray &line, lines) {
+    for (const QByteArray &line: lines) {
         // Skip the "OK" line, this is NOT a valid item!!!
         if (constOkValue==line) {
             continue;
@@ -634,7 +634,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                         (cueFiles.count()<cueSongs.count() || (firstSong.albumArtist().isEmpty() && firstSong.album.isEmpty()))) {
 
                     bool canUseThisCueFile=true;
-                    foreach (const Song &s, cueSongs) {
+                    for (const Song &s: cueSongs) {
                         if (!QFile::exists(mpdDir+s.name())) {
                             DBUG << QString(mpdDir+s.name()) << "is referenced in cue file, but does not exist in MPD folder";
                             canUseThisCueFile=false;
@@ -652,7 +652,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                     if (songs.size()==cueFiles.size()) {
                         quint32 albumTime=0;
                         QMap<QString, Song> origFiles;
-                        foreach (const Song &s, songs) {
+                        for (const Song &s: songs) {
                             origFiles.insert(s.file, s);
                             albumTime+=s.time;
                         }
@@ -661,7 +661,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                         bool setTimeFromSource=origFiles.size()==cueSongs.size();
                         DBUG << "setTimeFromSource" << setTimeFromSource << "at" << albumTime << "#c" << cueFiles.size();
                         quint32 usedAlbumTime=0;
-                        foreach (const Song &orig, cueSongs) {
+                        for (const Song &orig: cueSongs) {
                             Song s=orig;
                             Song albumSong=origFiles[s.name()];
                             s.setName(QString()); // CueFile has placed source file name here!
@@ -705,7 +705,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                     if (!canUseCueFileTracks) {
                         // Album had a different number of source files to the CUE file. If so, then we need to ensure
                         // all tracks have meta data - otherwise just fallback to listing file + cue
-                        foreach (const Song &orig, cueSongs) {
+                        for (const Song &orig: cueSongs) {
                             Song s=orig;
                             s.setName(QString()); // CueFile has placed source file name here!
                             if (s.artist.isEmpty() || s.album.isEmpty()) {
@@ -749,7 +749,7 @@ QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)
     QList<QByteArray> lines = data.split('\n');
     Output output;
 
-    foreach (const QByteArray &line, lines) {
+    for (const QByteArray &line: lines) {
         if (constOkValue==line) {
             break;
         }
@@ -779,7 +779,7 @@ QByteArray MPDParseUtils::parseSticker(const QByteArray &data, const QByteArray 
 {
     QList<QByteArray> lines = data.split('\n');
     QByteArray key=constSticker+sticker+'=';
-    foreach (const QByteArray &line, lines) {
+    for (const QByteArray &line: lines) {
         if (line.startsWith(key)) {
             return line.mid(key.length());
         }
@@ -794,7 +794,7 @@ QList<MPDParseUtils::Sticker> MPDParseUtils::parseStickers(const QByteArray &dat
     Sticker s;
     QByteArray key=constSticker+sticker+'=';
 
-    foreach (const QByteArray &line, lines) {
+    for (const QByteArray &line: lines) {
         if (constOkValue==line) {
             break;
         }

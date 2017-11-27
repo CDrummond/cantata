@@ -86,14 +86,14 @@ void CustomActions::set(QList<Command> cmds)
     }
     QMenu *m=menu();
     if (diff) {
-        foreach (const Command &cmd, commands) {
+        for (const Command &cmd: commands) {
             m->removeAction(cmd.act);
             disconnect(cmd.act, SIGNAL(triggered()), this, SLOT(doAction()));
             cmd.act->deleteLater();
         }
         commands.clear();
 
-        foreach (const Command &cmd, cmds) {
+        for (const Command &cmd: cmds) {
             Command c(cmd);
             c.act=new Action(c.name, this);
             m->addAction(c.act);
@@ -132,7 +132,7 @@ void CustomActions::doAction()
         return;
     }
     QString mpdDir=MPDConnection::self()->getDetails().dir;
-    foreach (const Command &cmd, commands) {
+    for (const Command &cmd: commands) {
         if (cmd.act==act) {
             QList<Song> songs=mainWindow->selectedSongs();
             if (songs.isEmpty()) {
@@ -142,7 +142,7 @@ void CustomActions::doAction()
             QStringList items;
             if (cmd.cmd.contains("%d")) {
                 QSet<QString> used;
-                foreach (const Song &s, songs) {
+                for (const Song &s: songs) {
                     if (Song::Playlist!=s.type) {
                         QString dir=Utils::getDir(s.file);
                         if (!used.contains(dir)) {
@@ -152,7 +152,7 @@ void CustomActions::doAction()
                     }
                 }
             } else {
-                foreach (const Song &s, songs) {
+                for (const Song &s: songs) {
                     if (Song::Playlist!=s.type) {
                         items.append(mpdDir+s.file);
                     }
@@ -164,7 +164,7 @@ void CustomActions::doAction()
                 bool added=false;
                 QString cmd=parts.takeFirst();
                 QStringList args;
-                foreach (const QString &part, parts) {
+                for (const QString &part: parts) {
                     if (part.startsWith('%')) {
                         args+=items;
                         added=true;

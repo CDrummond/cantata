@@ -122,7 +122,7 @@ AutohidingSplitter::AutohidingSplitter(QWidget *parent)
 
 AutohidingSplitter::~AutohidingSplitter()
 {
-    foreach(QTimer *sat, animationDelayTimer) {
+    for (QTimer *sat: animationDelayTimer) {
         sat->stop();
         delete sat;
     }
@@ -146,7 +146,7 @@ void AutohidingSplitter::addChild(QObject *pObject)
         pObject->installEventFilter(this);
 
         const QObjectList &childList = pObject->children();
-        foreach (QObject *obj, childList) {
+        for  (QObject *obj: childList) {
             addChild(obj);
         }
     }
@@ -162,7 +162,7 @@ void AutohidingSplitter::removeChild(QObject *pObject)
     if (pObject && (pObject->isWidgetType())) {
         pObject->removeEventFilter(this);
         const QObjectList& childList = pObject->children();
-        foreach (QObject *obj, childList) {
+        for (QObject *obj: childList) {
             removeChild(obj);
         }
     }
@@ -222,7 +222,7 @@ bool AutohidingSplitter::eventFilter(QObject *target, QEvent *e)
         break;
     case QEvent::MouseButtonPress:
         if(qobject_cast<AutohidingSplitterHandle *>(target)){
-            foreach(QTimer * timer, animationDelayTimer) {
+            for (QTimer *timer: animationDelayTimer) {
                 timer->stop();
             }
             haltModifications = true;
@@ -282,7 +282,7 @@ void AutohidingSplitter::resizeEvent(QResizeEvent *event)
     if (autoHideEnabled && !haltModifications && event->oldSize().width() > 0) {
 //        int oldUsableSize = event->oldSize().width()/*-(count()-1)*handleWidth()*/;
         int oldUsableSize = 0;
-        foreach(int size, expandedSizes) {
+        for (int size: expandedSizes) {
             oldUsableSize+=size;
         }
         int newUsableSize = event->size().width()/*-(count()-1)*handleWidth()*/;

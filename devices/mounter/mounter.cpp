@@ -224,7 +224,7 @@ void Mounter::timeout()
 
     QSet<int> running;
 
-    foreach (int p, pids) {
+    for (int p: pids) {
         if (0==kill(p, 0)) {
             running.insert(p);
         }

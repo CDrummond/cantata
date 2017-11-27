@@ -157,11 +157,11 @@ void DynamicPlaylistsPage::remove()
     }
 
     QStringList names;
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         names.append(idx.data(Qt::DisplayRole).toString());
     }
 
-    foreach (const QString &name, names) {
+    for (const QString &name: names) {
         DynamicPlaylists::self()->del(name);
     }
 }
@@ -206,7 +206,7 @@ void DynamicPlaylistsPage::headerClicked(int level)
 
 void DynamicPlaylistsPage::enableWidgets(bool enable)
 {
-    foreach (QWidget *c, controls) {
+    for (QWidget *c: controls) {
         c->setEnabled(enable);
     }
 

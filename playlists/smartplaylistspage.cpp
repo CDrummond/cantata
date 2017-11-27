@@ -124,11 +124,11 @@ void SmartPlaylistsPage::remove()
     }
 
     QStringList names;
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         names.append(idx.data(Qt::DisplayRole).toString());
     }
 
-    foreach (const QString &name, names) {
+    for (const QString &name: names) {
         DynamicPlaylists::self()->del(name);
     }
 }
@@ -142,7 +142,7 @@ void SmartPlaylistsPage::headerClicked(int level)
 
 void SmartPlaylistsPage::enableWidgets(bool enable)
 {
-    foreach (QWidget *c, controls) {
+    for (QWidget *c: controls) {
         c->setEnabled(enable);
     }
 
@@ -402,7 +402,7 @@ void SmartPlaylistsPage::addSelectionToPlaylist(const QString &name, int action,
                     if (mpdGenres.isEmpty()) {
                         mpdGenres = MpdLibraryModel::self()->getGenres();
                     }
-                    foreach (const QString &g, mpdGenres) {
+                    for (const QString &g: mpdGenres) {
                         if (g.startsWith(find)) {
                             genres.append(g);
                         }
@@ -431,17 +431,17 @@ void SmartPlaylistsPage::addSelectionToPlaylist(const QString &name, int action,
                 if (dates.isEmpty()) {
                     rules.append(match + baseRule);
                 } else {
-                    foreach(int d, dates) {
+                    for(int d: dates) {
                         rules.append(match + baseRule + " Date \"" + QByteArray::number(d) + "\"");
                     }
                 }
             } else {
-                foreach (const QString &genre, genres) {
+                for (const QString &genre: genres) {
                     QByteArray rule = match + baseRule + " Genre  " + MPDConnection::encodeName(genre);
                     if (dates.isEmpty()) {
                         rules.append(rule);
                     } else {
-                        foreach(int d, dates) {
+                        for (int d: dates) {
                             rules.append(rule + " Date \"" + QByteArray::number(d) + "\"");
                         }
                     }

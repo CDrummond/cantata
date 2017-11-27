@@ -79,7 +79,7 @@ void ValueSlider::setValue(int value)
     if (settings.count()>1) {
         bool increase=settings.at(0).value<settings.at(1).value;
         int index=0;
-        foreach (const Encoders::Setting &s, settings) {
+        for (const Encoders::Setting &s: settings) {
             if ((increase && s.value>=value) || (!increase && s.value<=value)) {
                 break;
             } else {

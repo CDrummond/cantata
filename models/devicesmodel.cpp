@@ -153,7 +153,7 @@ int DevicesModel::rowCount(const QModelIndex &parent) const
 
 void DevicesModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres)
 {
-    foreach (MusicLibraryItemRoot *col, collections) {
+    for (MusicLibraryItemRoot *col: collections) {
         col->getDetails(artists, albumArtists, composers, albums, genres);
     }
 }
@@ -161,7 +161,7 @@ void DevicesModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtist
 int DevicesModel::indexOf(const QString &id)
 {
     int i=0;
-    foreach (MusicLibraryItemRoot *col, collections) {
+    for (MusicLibraryItemRoot *col: collections) {
         if (col->id()==id) {
             return i;
         }
@@ -175,7 +175,7 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
     QMap<MusicLibraryItem *, QList<Song> > colSongs;
     QMap<MusicLibraryItem *, QSet<QString> > colFiles;
 
-    foreach(QModelIndex index, indexes) {
+    for (QModelIndex index: indexes) {
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
         MusicLibraryItem *p=item;
 
@@ -196,7 +196,7 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root: {
             if (static_cast<MusicLibraryItemRoot *>(parent)->flat()) {
-                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
+                for (const MusicLibraryItem *song: static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
                     if (MusicLibraryItem::Type_Song==song->itemType() && !colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->file())) {
                         colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), fullPath);
                         colFiles[parent] << static_cast<const MusicLibraryItemSong*>(song)->file();
@@ -211,14 +211,14 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
 
                 qSort(artists.begin(), artists.end(), MusicLibraryItemArtist::lessThan);
 
-                foreach (MusicLibraryItem *a, artists) {
+                for (MusicLibraryItem *a: artists) {
                     const MusicLibraryItemContainer *artist=static_cast<const MusicLibraryItemContainer *>(a);
                     // Now sort all albums as they would appear in UI...
                     QList<MusicLibraryItem *> artistAlbums=artist->childItems();
                     qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
-                    foreach (MusicLibraryItem *i, artistAlbums) {
+                    for (MusicLibraryItem *i: artistAlbums) {
                         const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
-                        foreach (const MusicLibraryItem *song, album->childItems()) {
+                        for (const MusicLibraryItem *song: album->childItems()) {
                             if (MusicLibraryItem::Type_Song==song->itemType() && !colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->file())) {
                                 colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), fullPath);
                                 colFiles[parent] << static_cast<const MusicLibraryItemSong*>(song)->file();
@@ -234,9 +234,9 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
             QList<MusicLibraryItem *> artistAlbums=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
             qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
 
-            foreach (MusicLibraryItem *i, artistAlbums) {
+            for (MusicLibraryItem *i: artistAlbums) {
                 const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
-                foreach (const MusicLibraryItem *song, album->childItems()) {
+                for (const MusicLibraryItem *song: album->childItems()) {
                     if (MusicLibraryItem::Type_Song==song->itemType() && !colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->file())) {
                         colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), fullPath);
                         colFiles[parent] << static_cast<const MusicLibraryItemSong*>(song)->file();
@@ -246,7 +246,7 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
             break;
         }
         case MusicLibraryItem::Type_Album:
-            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
+            for (const MusicLibraryItem *song: static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
                 if (MusicLibraryItem::Type_Song==song->itemType() && !colFiles[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->file())) {
                     colSongs[parent] << parent->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), fullPath);
                     colFiles[parent] << static_cast<const MusicLibraryItemSong*>(song)->file();
@@ -279,7 +279,7 @@ QStringList DevicesModel::filenames(const QModelIndexList &indexes, bool playabl
 {
     QList<Song> songList=songs(indexes, playableOnly, fullPath);
     QStringList fnames;
-    foreach (const Song &s, songList) {
+    for (const Song &s: songList) {
         fnames.append(s.file);
     }
     return fnames;
@@ -396,7 +396,7 @@ void DevicesModel::clear(bool clearConfig)
     inhibitMenuUpdate=true;
     QSet<QString> remoteUdis;
     QSet<QString> udis;
-    foreach (MusicLibraryItemRoot *col, collections) {
+    for (MusicLibraryItemRoot *col: collections) {
         Device *dev=static_cast<Device *>(col);
         if (Device::RemoteFs==dev->devType()) {
             remoteUdis.insert(dev->id());
@@ -405,10 +405,10 @@ void DevicesModel::clear(bool clearConfig)
         }
     }
 
-    foreach (const QString &u, udis) {
+    for (const QString &u: udis) {
         deviceRemoved(u);
     }
-    foreach (const QString &u, remoteUdis) {
+    for (const QString &u: remoteUdis) {
         removeRemoteDevice(u, clearConfig);
     }
 
@@ -452,7 +452,7 @@ void DevicesModel::setEnabled(bool e)
 
 void DevicesModel::stop()
 {
-    foreach (MusicLibraryItemRoot *col, collections) {
+    for (MusicLibraryItemRoot *col: collections) {
         static_cast<Device *>(col)->stop();
     }
 
@@ -555,7 +555,7 @@ QStringList DevicesModel::playableUrls(const QModelIndexList &indexes) const
 {
     QList<Song> songList=songs(indexes, true, true);
     QStringList urls;
-    foreach (const Song &s, songList) {
+    for (const Song &s: songList) {
         QByteArray encoded=HttpServer::self()->encodeUrl(s);
         if (!encoded.isEmpty()) {
             urls.append(encoded);
@@ -743,7 +743,7 @@ void DevicesModel::remoteDeviceUdiChanged()
 void DevicesModel::mountsChanged()
 {
     #ifdef ENABLE_REMOTE_DEVICES
-    foreach (MusicLibraryItemRoot *col, collections) {
+    for (MusicLibraryItemRoot *col: collections) {
         Device *dev=static_cast<Device *>(col);
         if (Device::RemoteFs==dev->devType() && ((RemoteFsDevice *)dev)->getDetails().isLocalFile()) {
             if (0==dev->childCount()) {
@@ -765,7 +765,7 @@ void DevicesModel::loadLocal()
 {
     // Build set of currently known MTP/UMS collections...
     QSet<QString> existingUdis;
-    foreach (MusicLibraryItemRoot *col, collections) {
+    for (MusicLibraryItemRoot *col: collections) {
         Device *dev=static_cast<Device *>(col);
         if (Device::Mtp==dev->devType() || Device::Ums==dev->devType()) {
             existingUdis.insert(dev->id());
@@ -773,7 +773,7 @@ void DevicesModel::loadLocal()
     }
 
     QList<Solid::Device> deviceList = Solid::Device::listFromType(Solid::DeviceInterface::PortableMediaPlayer);
-    foreach (const Solid::Device &device, deviceList) {
+    for (const Solid::Device &device: deviceList) {
         if (existingUdis.contains(device.udi())) {
             existingUdis.remove(device.udi());
             continue;
@@ -786,8 +786,7 @@ void DevicesModel::loadLocal()
         addLocalDevice(device.udi());
     }
     deviceList = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
-    foreach (const Solid::Device &device, deviceList)
-    {
+    for (const Solid::Device &device: deviceList) {
         if (existingUdis.contains(device.udi())) {
             existingUdis.remove(device.udi());
             continue;
@@ -811,7 +810,7 @@ void DevicesModel::loadLocal()
 
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     deviceList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDisc);
-    foreach (const Solid::Device &device, deviceList) {
+    for (const Solid::Device &device: deviceList) {
         if (existingUdis.contains(device.udi())) {
             existingUdis.remove(device.udi());
             continue;
@@ -828,7 +827,7 @@ void DevicesModel::loadLocal()
 
     // Remove any previous MTP/UMS devices that were not listed above.
     // This is to fix BUG:127
-    foreach (const QString &udi, existingUdis) {
+    for (const QString &udi: existingUdis) {
         deviceRemoved(udi);
     }
 }
@@ -839,7 +838,7 @@ void DevicesModel::loadRemote()
     QList<Device *> rem=RemoteFsDevice::loadAll(this);
     if (rem.count()) {
         beginInsertRows(QModelIndex(), collections.count(), collections.count()+(rem.count()-1));
-        foreach (Device *dev, rem) {
+        for (Device *dev: rem) {
             collections.append(dev);
             connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
             connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
@@ -855,7 +854,7 @@ void DevicesModel::loadRemote()
 
 void DevicesModel::unmountRemote()
 {
-    foreach (MusicLibraryItemRoot *col, collections) {
+    for (MusicLibraryItemRoot *col: collections) {
         Device *dev=static_cast<Device *>(col);
         if (Device::RemoteFs==dev->devType()) {
             static_cast<RemoteFsDevice *>(dev)->unmount();
@@ -867,7 +866,7 @@ void DevicesModel::unmountRemote()
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 void DevicesModel::playCd(const QString &dev)
 {
-    foreach (MusicLibraryItemRoot *col, collections) {
+    for (MusicLibraryItemRoot *col: collections) {
         Device *d=static_cast<Device *>(col);
         if (Device::AudioCd==d->devType() && static_cast<AudioCdDevice *>(d)->isAudioDevice(dev)) {
             static_cast<AudioCdDevice *>(d)->autoplay();
@@ -899,7 +898,7 @@ void DevicesModel::updateItemMenu()
     if (!collections.isEmpty()) {
         QMap<QString, const MusicLibraryItemRoot *> items;
 
-        foreach (const MusicLibraryItemRoot *d, collections) {
+        for (const MusicLibraryItemRoot *d: collections) {
             if (Device::AudioCd!=static_cast<const Device *>(d)->devType()) {
                 items.insert(d->data(), d);
             }
@@ -908,7 +907,7 @@ void DevicesModel::updateItemMenu()
         QStringList keys=items.keys();
         qSort(keys.begin(), keys.end(), lessThan);
 
-        foreach (const QString &k, keys) {
+        for (const QString &k: keys) {
             const MusicLibraryItemRoot *d=items[k];
             QAction *act=itemMenu->addAction(d->icon(), k, this, SLOT(emitAddToDevice()));
             act->setData(d->id());
@@ -937,7 +936,7 @@ void DevicesModel::play(const QList<Song> &songs)
 {
     QStringList paths;
     if (HttpServer::self()->isAlive()) {
-        foreach (const Song &s, songs) {
+        for (const Song &s: songs) {
             paths.append(HttpServer::self()->encodeUrl(s));
         }
 

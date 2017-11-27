@@ -156,7 +156,7 @@ StreamProviderListDialog::~StreamProviderListDialog()
 void StreamProviderListDialog::show(const QSet<QString> &installed)
 {
     installedProviders.clear();
-    foreach (const QString &inst, installed) {
+    for (const QString &inst: installed) {
         installedProviders.insert(inst, getMd5(inst));
     }
 
@@ -344,7 +344,7 @@ void StreamProviderListDialog::slotButtonClicked(int button)
                 }
             }
         } else {
-            foreach (QTreeWidgetItem *i, checkedItems) {
+            for (QTreeWidgetItem *i: checkedItems) {
                 if (installedProviders.keys().contains(i->text(0))) {
                     update=true;
                 } else {

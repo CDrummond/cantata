@@ -116,7 +116,7 @@ static void sign(QMap<QString, QString> &params)
     params[QLatin1String("api_key")] = Covers::constLastFmApiKey;
     QStringList keys=params.keys();
     keys.sort();
-    foreach (const QString &k, keys) {
+    for (const QString &k: keys) {
         s += k+params[k];
     }
     s += constSecretKey;
@@ -746,7 +746,7 @@ void Scrobbler::saveCache()
         writer.writeAttribute("version", "1");
 
         const QQueue<Track> &queue=lastScrobbledSongs.isEmpty() ? songQueue : lastScrobbledSongs;
-        foreach (const Track &t, queue) {
+        for (const Track &t: queue) {
             writer.writeEmptyElement("track");
             writer.writeAttribute(QLatin1String("artist"), t.artist);
             writer.writeAttribute(QLatin1String("album"), t.album);
@@ -864,7 +864,7 @@ void Scrobbler::loadScrobblers()
 {
     if (scrobblers.isEmpty()) {
         QStringList dirs=QStringList() << Utils::dataDir() << CANTATA_SYS_CONFIG_DIR;
-        foreach (const QString &dir, dirs) {
+        for (const QString &dir: dirs) {
             if (dir.isEmpty()) {
                 continue;
             }

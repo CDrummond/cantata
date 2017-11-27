@@ -55,7 +55,7 @@ bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
             return true;
         }
 
-        foreach (PlaylistsModel::SongItem *s, pl->songs) {
+        for (PlaylistsModel::SongItem *s: pl->songs) {
             if (matchesFilter(*s)) {
                 return true;
             }

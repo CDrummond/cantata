@@ -50,7 +50,7 @@ void MountPoints::updateMountPoints()
     QFile f("/proc/mounts");
     if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
         QStringList lines=QString(f.readAll()).split("\n");
-        foreach (const QString &l, lines) {
+        for (const QString &l: lines) {
             QStringList parts = l.split(' ');
             if (parts.size()>=2) {
                 entries.insert(QString(parts.at(1)).replace("\\040", " "));

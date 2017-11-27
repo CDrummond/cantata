@@ -159,7 +159,7 @@ SongView::SongView(QWidget *p)
     connect(refreshInfoAction, SIGNAL(triggered()), SLOT(refreshInfo()));
     connect(cancelInfoJobAction, SIGNAL(triggered()), SLOT(abortInfoSearch()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(infoSearchResponse(QString,QString)));
-    foreach (TextBrowser *t, texts) {
+    for (TextBrowser *t: texts) {
         connect(t, SIGNAL(anchorClicked(QUrl)), SLOT(showMoreInfo(QUrl)));
     }
 
@@ -458,7 +458,7 @@ void SongView::loadInfo()
         return;
     }
     infoNeedsUpdating=false;
-    foreach (const QString &lang, engine->getLangs()) {
+    for (const QString &lang: engine->getLangs()) {
         QString prefix=engine->getPrefix(lang);
         QString cachedFile=infoCacheFileName(currentSong, prefix, false);
         if (QFile::exists(cachedFile)) {
@@ -667,7 +667,7 @@ void SongView::refreshInfo()
     if (currentSong.isEmpty()) {
         return;
     }
-    foreach (const QString &lang, engine->getLangs()) {
+    for (const QString &lang: engine->getLangs()) {
         QFile::remove(infoCacheFileName(currentSong, engine->getPrefix(lang), false));
     }
     searchForInfo();

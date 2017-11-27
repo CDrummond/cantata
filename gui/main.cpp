@@ -105,7 +105,7 @@ static void removeOldFiles(const QString &d, const QStringList &types)
         QDir dir(d);
         if (dir.exists()) {
             QFileInfoList files=dir.entryInfoList(types, QDir::Files|QDir::NoDotAndDotDot);
-            foreach (const QFileInfo &file, files) {
+            for (const QFileInfo &file: files) {
                 QFile::remove(file.absoluteFilePath());
             }
             QString dirName=dir.dirName();

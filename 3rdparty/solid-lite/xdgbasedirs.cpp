@@ -94,7 +94,7 @@ QString Solid::XdgBaseDirs::findResourceFile( const char *resource, const QStrin
 
   const QStringList pathList = systemPathList( resource );
 
-  foreach ( const QString &path, pathList ) {
+  for ( const QString &path: pathList ) {
     fileInfo = QFileInfo( path + QLatin1Char('/' ) + relPath );
     if ( fileInfo.exists() && fileInfo.isFile() && fileInfo.isReadable() ) {
       return fileInfo.absoluteFilePath();

@@ -59,7 +59,7 @@ void MusicLibraryItem::setParent(MusicLibraryItemContainer *p)
 
 MusicLibraryItem * MusicLibraryItemContainer::childItem(const QString &name) const
 {
-    foreach (MusicLibraryItem *i, m_childItems) {
+    for (MusicLibraryItem *i: m_childItems) {
         if (i->data()==name) {
             return i;
         }
@@ -71,7 +71,7 @@ MusicLibraryItem * MusicLibraryItemContainer::childItem(const QString &name) con
 void MusicLibraryItemContainer::resetRows()
 {
     if (m_rowsSet) {
-        foreach (MusicLibraryItem *i, m_childItems) {
+        for (MusicLibraryItem *i: m_childItems) {
             i->m_row=0;
         }
         m_rowsSet=false;

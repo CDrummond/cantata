@@ -49,7 +49,7 @@ static void splitMessage(const QString &orig, QString &msg, QString &sub)
     static QStringList constSeps=QStringList() << QLatin1String("\n\n") << QLatin1String("<br/><br/>");
     msg=orig;
 
-    foreach (const QString &sep, constSeps) {
+    for (const QString &sep: constSeps) {
         QStringList parts=orig.split(sep);
         if (parts.count()>1) {
             msg=parts.takeAt(0);

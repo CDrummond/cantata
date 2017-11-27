@@ -122,7 +122,7 @@ QStringList SearchPage::selectedFiles(bool allowPlaylists) const
     }
 
     QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         mapped.append(proxy.mapToSource(idx));
     }
 
@@ -137,7 +137,7 @@ QList<Song> SearchPage::selectedSongs(bool allowPlaylists) const
     }
 
     QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         mapped.append(proxy.mapToSource(idx));
     }
 

@@ -142,7 +142,7 @@ QSet<QString> standardNames()
                                             << close().text << help().text << overwrite().text << reset().text << cont().text << del().text
                                             << stop().text << remove().text << back().text << forward().text;
 
-        foreach (QString s, strings) {
+        for (QString s: strings) {
             names.insert(s.remove("&"));
         }
     }

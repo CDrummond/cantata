@@ -250,7 +250,7 @@ void MusicBrainz::lookup(bool full)
     MusicBrainz5::CQuery Query("cantata-" PACKAGE_VERSION_STRING);
     QList<CdAlbum> m;
     QList<QNetworkProxy> proxies=NetworkProxyFactory::self()->queryProxy(QNetworkProxyQuery(QUrl("http://musicbrainz.org")));
-    foreach (const QNetworkProxy &p, proxies) {
+    for (const QNetworkProxy &p: proxies) {
         if (QNetworkProxy::HttpProxy==p.type() && 0!=p.port()) {
             Query.SetProxyHost(p.hostName().toLatin1().constData());
             Query.SetProxyPort(p.port());

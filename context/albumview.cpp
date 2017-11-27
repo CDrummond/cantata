@@ -99,7 +99,7 @@ void AlbumView::refresh()
     if (currentSong.isEmpty()) {
         return;
     }
-    foreach (const QString &lang, engine->getLangs()) {
+    for (const QString &lang: engine->getLangs()) {
         QFile::remove(cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, engine->getPrefix(lang), false));
     }
     update(currentSong, true);
@@ -174,7 +174,7 @@ void AlbumView::getTrackListing()
 
     if (!songs.isEmpty()) {
         trackList=View::subHeader(tr("Tracks"))+QLatin1String("<p><table>");
-        foreach (const Song &s, songs) {
+        for (const Song &s: songs) {
             trackList+=QLatin1String("<tr><td align='right'>")+QString::number(s.track)+
                        QLatin1String("</td><td><a href=\"cantata:///")+s.file+"\">"+
                        (s.file==currentSong.file ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+QLatin1String("</a></td></tr>");
@@ -188,7 +188,7 @@ void AlbumView::getTrackListing()
 void AlbumView::getDetails()
 {
     engine->cancel();
-    foreach (const QString &lang, engine->getLangs()) {
+    for (const QString &lang: engine->getLangs()) {
         QString prefix=engine->getPrefix(lang);
         QString cachedFile=cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, prefix, false);
         if (QFile::exists(cachedFile)) {

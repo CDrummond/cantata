@@ -137,7 +137,7 @@ void MusicScanner::scanFolder(MusicLibraryItemRoot *library, const QString &topL
         QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
         MusicLibraryItemArtist *artistItem = 0;
         MusicLibraryItemAlbum *albumItem = 0;
-        foreach (const QFileInfo &info, entries) {
+        for (const QFileInfo &info: entries) {
             if (stopRequested) {
                 return;
             }
@@ -539,7 +539,7 @@ Covers::Image FsDevice::requestCover(const Song &s)
     }
 
     QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
-    foreach (const QString &fileName, files) {
+    for (const QString &fileName: files) {
         QImage img(dirName+fileName);
 
         if (!img.isNull()) {
@@ -670,7 +670,7 @@ void FsDevice::startScanner(bool fullScan)
     if (!fullScan) {
         QSet<Song> songs=allSongs();
 
-        foreach (const Song &s, songs) {
+        for (const Song &s: songs) {
             existingSongs.insert(FileOnlySong(s));
         }
     }

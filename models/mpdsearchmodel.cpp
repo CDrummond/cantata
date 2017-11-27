@@ -102,7 +102,7 @@ void MpdSearchModel::coverLoaded(const Song &song, int s)
     Q_UNUSED(s)
     if (!song.isArtistImageRequest() && !song.isComposerImageRequest()) {
         int row=0;
-        foreach (const Song &s, songList) {
+        for (const Song &s: songList) {
             if (s.albumArtist()==song.albumArtist() && s.album==song.album) {
                 QModelIndex idx=index(row, 0, QModelIndex());
                 emit dataChanged(idx, idx);

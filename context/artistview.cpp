@@ -137,7 +137,7 @@ void ArtistView::refresh()
     if (currentSong.isEmpty()) {
         return;
     }
-    foreach (const QString &lang, engine->getLangs()) {
+    for (const QString &lang: engine->getLangs()) {
         QFile::remove(cacheFileName(currentSong.artist, engine->getPrefix(lang), false, false));
     }
     QFile::remove(cacheFileName(currentSong.artist, QString(), true, false));
@@ -221,7 +221,7 @@ void ArtistView::artistImageUpdated(const Song &song, const QImage &i, const QSt
 
 void ArtistView::loadBio()
 {
-    foreach (const QString &lang, engine->getLangs()) {
+    for (const QString &lang: engine->getLangs()) {
         QString prefix=engine->getPrefix(lang);
         QString cachedFile=cacheFileName(currentSong.artist, prefix, false, false);
         if (QFile::exists(cachedFile)) {
@@ -286,7 +286,7 @@ void ArtistView::handleSimilarReply()
                 QFile f(cacheFileName(reply->property(constNameKey).toString(), QString(), true, true));
                 if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
                     QTextStream stream(&f);
-                    foreach (const QString &artist, artists) {
+                    for (const QString &artist: artists) {
                         stream << artist << endl;
                     }
                 }
@@ -309,8 +309,8 @@ void ArtistView::setBio()
     if (albums.isEmpty()) {
         getArtistAlbums();
 
-        foreach (const LibraryDb::Album &al, artistAlbums) {
-                albums+=QLatin1String("<li><a href=\"")+buildUrl(al)+"\">"+al.name+"</a></li>";
+        for (const LibraryDb::Album &al: artistAlbums) {
+            albums+=QLatin1String("<li><a href=\"")+buildUrl(al)+"\">"+al.name+"</a></li>";
         }
     }
 
@@ -420,7 +420,7 @@ void ArtistView::buildSimilar(const QStringList &artists)
     QSet<QString> mpdArtists=MpdLibraryModel::self()->getArtists();
     QSet<QString> mpdLowerArtists;
     bool first=true;
-    foreach (QString artist, artists) {
+    for (QString artist: artists) {
         if (similarArtists.isEmpty()) {
             similarArtists=QLatin1String("<br/>")+View::subHeader(tr("Similar Artists"));
         }
@@ -429,7 +429,7 @@ void ArtistView::buildSimilar(const QStringList &artists)
         if (artistLink.isEmpty()) {
             // ...and check case-insensitively...
             if (mpdLowerArtists.isEmpty()) {
-                foreach (const QString &a, mpdArtists) {
+                for (const QString &a: mpdArtists) {
                     mpdLowerArtists.insert(a.toLower());
                 }
             }

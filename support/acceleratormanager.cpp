@@ -206,8 +206,7 @@ void AcceleratorManagerPrivate::calculateAccelerators(Item *item, QString &used)
 
     // collect the contents
     AccelStringList contents;
-    foreach(Item *it, *item->m_children)
-    {
+    for (Item *it: *item->m_children) {
         contents << it->m_content;
     }
 
@@ -216,32 +215,26 @@ void AcceleratorManagerPrivate::calculateAccelerators(Item *item, QString &used)
 
     // write them back into the widgets
     int cnt = -1;
-    foreach(Item *it, *item->m_children)
-    {
+    for (Item *it: *item->m_children) {
         cnt++;
 
         QDockWidget *dock = qobject_cast<QDockWidget*>(it->m_widget);
-        if (dock)
-        {
+        if (dock) {
             if (checkChange(contents[cnt]))
                 dock->setWindowTitle(contents[cnt].accelerated());
             continue;
         }
         QTabBar *tabBar = qobject_cast<QTabBar*>(it->m_widget);
-        if (tabBar)
-        {
+        if (tabBar) {
             if (checkChange(contents[cnt]))
                 tabBar->setTabText(it->m_index, contents[cnt].accelerated());
             continue;
         }
         QMenuBar *menuBar = qobject_cast<QMenuBar*>(it->m_widget);
-        if (menuBar)
-        {
-            if (it->m_index >= 0)
-            {
+        if (menuBar) {
+            if (it->m_index >= 0) {
                 QAction *maction = menuBar->actions()[it->m_index];
-                if (maction)
-                {
+                if (maction) {
                     checkChange(contents[cnt]);
                     maction->setText(contents[cnt].accelerated());
                 }
@@ -266,8 +259,7 @@ void AcceleratorManagerPrivate::calculateAccelerators(Item *item, QString &used)
     }
 
     // calculate the accelerators for the children
-    foreach(Item *it, *item->m_children)
-    {
+    for (Item *it: *item->m_children) {
         if (it->m_widget && it->m_widget->isVisibleTo( item->m_widget ) )
             calculateAccelerators(it, used);
     }
@@ -277,7 +269,7 @@ void AcceleratorManagerPrivate::calculateAccelerators(Item *item, QString &used)
 void AcceleratorManagerPrivate::traverseChildren(QWidget *widget, Item *item)
 {
   QList<QWidget*> childList = widget->findChildren<QWidget*>();
-  foreach ( QWidget *w , childList ) {
+  for ( QWidget *w: childList ) {
     // Ignore unless we have the direct parent
     if(qobject_cast<QWidget *>(w->parent()) != widget) continue;
 
@@ -845,7 +837,7 @@ void PopupAccelManager::findMenuEntries(AccelStringList &list)
   list.clear();
 
   // read out the menu entries
-  foreach (QAction *maction, m_popup->actions())
+  for (QAction *maction: m_popup->actions())
   {
     if (maction->isSeparator())
       continue;
@@ -869,7 +861,7 @@ void PopupAccelManager::findMenuEntries(AccelStringList &list)
 void PopupAccelManager::setMenuEntries(const AccelStringList &list)
 {
   uint cnt = 0;
-  foreach (QAction *maction, m_popup->actions())
+  for (QAction *maction: m_popup->actions())
   {
     if (maction->isSeparator())
       continue;

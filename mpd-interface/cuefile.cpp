@@ -210,7 +210,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
      if (f.open(QIODevice::ReadOnly)) {
          // First attempt to use QTextDecoder to decode cue file contents into a QString
          QByteArray contents=f.readAll();
-         foreach (QTextCodec *codec, codecList()) {
+         for (QTextCodec *codec: codecList()) {
              QTextDecoder decoder(codec);
              decoded=decoder.toUnicode(contents);
              if (!decoder.hasFailure()) {

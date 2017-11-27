@@ -70,7 +70,7 @@ void Device::moveDir(const QString &from, const QString &to, const QString &base
             }
         }
 
-        foreach (const QFileInfo &info, entries) {
+        for (const QFileInfo &info: entries) {
             if (info.isDir()) {
                 return;
             }
@@ -80,7 +80,7 @@ void Device::moveDir(const QString &from, const QString &to, const QString &base
             extraFiles.append(info.fileName());
         }
 
-        foreach (const QString &f, extraFiles) {
+        for (const QString &f: extraFiles) {
             if (!QFile::rename(from+'/'+f, to+'/'+f)) {
                 return;
             }
@@ -98,7 +98,7 @@ void Device::cleanDir(const QString &dir, const QString &base, const QString &co
         QSet<QString> others=Covers::standardNames().toSet();
         others << coverFile << "albumart.pamp";
 
-        foreach (const QFileInfo &info, entries) {
+        for (const QFileInfo &info: entries) {
             if (info.isDir()) {
                 return;
             }
@@ -108,7 +108,7 @@ void Device::cleanDir(const QString &dir, const QString &base, const QString &co
             extraFiles.append(info.absoluteFilePath());
         }
 
-        foreach (const QString &cf, extraFiles) {
+        for (const QString &cf: extraFiles) {
             if (!QFile::remove(cf)) {
                 return;
             }
@@ -342,10 +342,10 @@ void Device::applyUpdate()
         QSet<Song> removed=currentSongs-updateSongs;
         QSet<Song> added=updateSongs-currentSongs;
 
-        foreach (const Song &s, removed) {
+        for (const Song &s: removed) {
             removeSongFromList(s);
         }
-        foreach (const Song &s, added) {
+        for (const Song &s: added) {
             addSongToList(s);
         }
         delete update;
@@ -359,7 +359,7 @@ void Device::applyUpdate()
         int newCount=newRows();
         if (newCount>0) {
             m_model->beginInsertRows(index(), 0, newCount-1);
-            foreach (MusicLibraryItem *item, update->childItems()) {
+            for (MusicLibraryItem *item: update->childItems()) {
                 item->setParent(this);
             }
             if (AudioCd!=devType()) {

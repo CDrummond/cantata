@@ -42,7 +42,7 @@ QStringList BrowseModel::FolderItem::allEntries(bool allowPlaylists) const
     if (children.isEmpty()) {
         entries << MPDConnection::constDirPrefix+path;
     } else {
-        foreach (Item *i, children) {
+        for (Item *i: children) {
             if (i->isFolder()) {
                 entries+=static_cast<FolderItem *>(i)->allEntries(allowPlaylists);
             } else if (allowPlaylists || Song::Playlist!=static_cast<TrackItem *>(i)->getSong().type) {
@@ -235,7 +235,7 @@ QMimeData * BrowseModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
     QStringList files;
-    foreach (const QModelIndex &idx, indexes) {
+    for (const QModelIndex &idx: indexes) {
         Item *item=toItem(idx);
         if (item) {
             if (item->isFolder()) {
@@ -253,7 +253,7 @@ QMimeData * BrowseModel::mimeData(const QModelIndexList &indexes) const
 QList<Song> BrowseModel::songs(const QModelIndexList &indexes, bool allowPlaylists) const
 {
     QList<Song> songList;
-    foreach (const QModelIndex &idx, indexes) {
+    for (const QModelIndex &idx: indexes) {
         Item *item=toItem(idx);
         if (item && !item->isFolder() && (allowPlaylists || Song::Standard==static_cast<TrackItem *>(item)->getSong().type)) {
             songList.append(static_cast<TrackItem *>(item)->getSong());
@@ -293,12 +293,12 @@ void BrowseModel::folderContents(const QString &path, const QStringList &folders
 		QModelIndex idx=it.value()==root ? QModelIndex() : createIndex(it.value()->getRow(), 0, it.value());
 
 		beginInsertRows(idx, 0, folders.count() + songs.count() - 1);
-		foreach(const QString &folder, folders) {
+        for (const QString &folder: folders) {
 			FolderItem *item = new FolderItem(folder.split("/", QString::SkipEmptyParts).last(), folder, it.value());
 			it.value()->add(item);
 			folderIndex.insert(folder, item);
 		}
-		foreach(const Song &song, songs) {
+        for (const Song &song: songs) {
 			it.value()->add(new TrackItem(song, it.value()));
 		}
 		it.value()->setState(FolderItem::State_Fetched);

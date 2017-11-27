@@ -652,7 +652,7 @@ QModelIndexList GroupedView::selectedIndexes(bool sorted) const
     QSet<QModelIndex> indexSet;
     QModelIndexList sel;
 
-    foreach (const QModelIndex &idx, indexes) {
+    for (const QModelIndex &idx: indexes) {
         if (!indexSet.contains(idx)) {
             indexSet.insert(idx);
             sel.append(idx);
@@ -816,17 +816,17 @@ void GroupedView::itemClicked(const QModelIndex &idx)
             if (list.count()) {
                 #if 0 // Commendted out as (as noted below) unselection is not working, and we always add to 'unsel' above (because of playlists)
                 if (unsel.isEmpty()) { // TODO: This is not working!!!   CHECK selModel if re-add!!!
-                    foreach(const QModelIndex &i, list) {
+                    for (const QModelIndex &i: list) {
                         selModel->select(i, QItemSelectionModel::Deselect|QItemSelectionModel::Rows);
                     }
                 } else {
-                    foreach(const QModelIndex &i, unsel) {
+                    for (const QModelIndex &i: unsel) {
                         selModel->select(i, QItemSelectionModel::Select|QItemSelectionModel::Rows);
                     }
                 }
                 #else
                 if (!unsel.isEmpty() && selModel) {
-                    foreach(const QModelIndex &i, unsel) {
+                    for (const QModelIndex &i: unsel) {
                         selModel->select(i, QItemSelectionModel::Select|QItemSelectionModel::Rows);
                     }
                 }

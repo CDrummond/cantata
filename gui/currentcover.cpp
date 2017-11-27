@@ -44,7 +44,7 @@ static void themes(const QString &theme, QStringList &iconThemes)
     }
     QStringList paths=QIcon::themeSearchPaths();
     QString key("Inherits=");
-    foreach (const QString &p, paths) {
+    for (const QString &p: paths) {
         QString index(p+"/"+theme+"/index.theme");
         QFile f(index);
         if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
@@ -52,7 +52,7 @@ static void themes(const QString &theme, QStringList &iconThemes)
                 QString line=QString::fromUtf8(f.readLine()).trimmed().simplified();
                 if (line.startsWith(key)) {
                     QStringList inherited=line.mid(key.length()).split(",", QString::SkipEmptyParts);
-                    foreach (const QString &i, inherited) {
+                    for (const QString &i: inherited) {
                         themes(i, iconThemes);
                     }
                     return;
@@ -75,12 +75,12 @@ QString CurrentCover::findIcon(const QStringList &names)
     QList<int> sizes=QList<int>() << 256 << 128 << 64 << 48 << 32 << 24 << 22;
     QStringList paths=QIcon::themeSearchPaths();
     QStringList sections=QStringList() << "categories" << "devices";
-    foreach (const QString &p, paths) {;
-        foreach (const QString &n, names) {
-            foreach (const QString &theme, iconThemes) {
+    for (const QString &p: paths) {;
+        for (const QString &n: names) {
+            for (const QString &theme: iconThemes) {
                 QMap<int, QString> files;
-                foreach (int s, sizes) {
-                    foreach (const QString &sect, sections) {
+                for (int s: sizes) {
+                    for (const QString &sect: sections) {
                         QString f(p+"/"+theme+"/"+QString::number(s)+"x"+QString::number(s)+"/"+sect+"/"+n+".png");
                         if (QFile::exists(f)) {
                             files.insert(s, f);
@@ -100,7 +100,7 @@ QString CurrentCover::findIcon(const QStringList &names)
                 }
 
                 if (!files.isEmpty()) {
-                    foreach (int s, sizes) {
+                    for (int s: sizes) {
                         if (files.contains(s)) {
                             return files[s];
                         }

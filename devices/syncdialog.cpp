@@ -68,23 +68,23 @@ static void getDiffs(const QSet<Song> &s1, const QSet<Song> &s2, QSet<Song> &in1
     QSet<SyncSong> a;
     QSet<SyncSong> b;
 
-    foreach (const Song &s, s1) {
+    for (const Song &s: s1) {
         a.insert(s);
     }
 
-    foreach (const Song &s, s2) {
+    for (const Song &s: s2) {
         b.insert(s);
     }
 
     QSet<SyncSong> r=a-b;
 
-    foreach (const Song &s, r) {
+    for (const Song &s: r) {
         in1.insert(s);
     }
 
     r=b-a;
 
-    foreach (const Song &s, r) {
+    for (const Song &s: r) {
         in2.insert(s);
     }
 }

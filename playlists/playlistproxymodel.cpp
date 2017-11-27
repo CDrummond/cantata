@@ -49,7 +49,7 @@ bool PlaylistProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 
     if (rules) {
         RulesPlaylists::Entry item = rules->entry(sourceRow);
-        foreach (const RulesPlaylists::Rule & r, item.rules) {
+        for (const RulesPlaylists::Rule &r: item.rules) {
             RulesPlaylists::Rule::ConstIterator it=r.constBegin();
             RulesPlaylists::Rule::ConstIterator end=r.constEnd();
             for (; it!=end; ++it) {

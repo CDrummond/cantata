@@ -60,7 +60,7 @@ static QString viewTypeString(ItemView::Mode mode)
 
 static void addViewTypes(QComboBox *box, QList<ItemView::Mode> modes)
 {
-    foreach (ItemView::Mode m, modes) {
+    for (ItemView::Mode m: modes) {
         box->addItem(viewTypeString(m), m);
     }
 }
@@ -272,7 +272,7 @@ static QSet<QString> toSet(const QString &str)
 {
     QStringList parts=str.split(constSep, QString::SkipEmptyParts);
     QSet<QString> set;
-    foreach (QString s, parts) {
+    for (QString s: parts) {
         set.insert(s.trimmed());
     }
     return set;
@@ -358,7 +358,7 @@ static QSet<QString> translationCodes(const QString &dir)
     QDir d(dir);
     QStringList installed(d.entryList(QStringList() << "*.qm"));
     QRegExp langRegExp("^cantata_(.*).qm$");
-    foreach (const QString &filename, installed) {
+    for (const QString &filename: installed) {
         if (langRegExp.exactMatch(filename)) {
             codes.insert(langRegExp.cap(1));
         }
@@ -380,7 +380,7 @@ void InterfaceSettings::showEvent(QShowEvent *e)
         transCodes+=translationCodes(CANTATA_SYS_TRANS_DIR);
         #endif
 
-        foreach (const QString &code, transCodes) {
+        for (const QString &code: transCodes) {
             QString langName = QLocale::languageToString(QLocale(code).language());
             QString nativeName = QLocale(code).nativeLanguageName();
             if (!nativeName.isEmpty()) {
@@ -396,7 +396,7 @@ void InterfaceSettings::showEvent(QShowEvent *e)
         qStableSort(names.begin(), names.end(), localeAwareCompare);
         lang->addItem(tr("System default"), QString());
         lang->setCurrentIndex(0);
-        foreach (const QString &name, names) {
+        for (const QString &name: names) {
             lang->addItem(name, langMap[name]);
             if (langMap[name]==current) {
                 lang->setCurrentIndex(lang->count()-1);

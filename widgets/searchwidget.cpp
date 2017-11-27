@@ -120,7 +120,7 @@ void SearchWidget::setCategories(const QList<Category> &categories)
 
     cat->clear();
 
-    foreach (const Category &c, categories) {
+    for (const Category &c: categories) {
         cat->addItem(c.text, c.field, c.toolTip);
     }
 

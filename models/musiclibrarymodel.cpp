@@ -273,12 +273,12 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
             MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(item);
             QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());
             item->setCheckState(check);
-            foreach (MusicLibraryItem *album, artistItem->childItems()) {
+            for (MusicLibraryItem *album: artistItem->childItems()) {
                 if (check!=album->checkState()) {
                     MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
                     QModelIndex albumIndex=index(albumItem->row(), 0, artistIndex);
                     album->setCheckState(check);
-                    foreach (MusicLibraryItem *song, albumItem->childItems()) {
+                    for (MusicLibraryItem *song: albumItem->childItems()) {
                         song->setCheckState(check);
                     }
                     emit dataChanged(index(0, 0, albumIndex), index(0, albumItem->childCount(), albumIndex));
@@ -293,7 +293,7 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
             MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(item);
             QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());
             item->setCheckState(check);
-            foreach (MusicLibraryItem *song, albumItem->childItems()) {
+            for (MusicLibraryItem *song: albumItem->childItems()) {
                 song->setCheckState(check);
             }
             setParentState(artistIndex);
@@ -328,7 +328,7 @@ void MusicLibraryModel::setParentState(const QModelIndex &parent)
     bool haveUncheckedChildren=false;
     bool stop=false;
 
-    foreach (MusicLibraryItem *child, parentItem->childItems()) {
+    for (MusicLibraryItem *child: parentItem->childItems()) {
         switch (child->checkState()) {
         case Qt::PartiallyChecked:
             parentCheck=Qt::PartiallyChecked;
@@ -366,14 +366,14 @@ void MusicLibraryModel::clear()
 void MusicLibraryModel::setSongs(const QSet<Song> &songs)
 {
     rootItem->update(songs);
-//    foreach (MusicLibraryItem *artist, rootItem->childItems()) {
+//    for (MusicLibraryItem *artist: rootItem->childItems()) {
 //        MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(artist);
 //        artistItem->setCheckState(Qt::Checked);
 
-//        foreach (MusicLibraryItem *album, artistItem->childItems()) {
+//        for (MusicLibraryItem *album: artistItem->childItems()) {
 //            MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
 //            albumItem->setCheckState(Qt::Checked);
-//            foreach (MusicLibraryItem *song, albumItem->childItems()) {
+//            for (MusicLibraryItem *song: albumItem->childItems()) {
 //                song->setCheckState(Qt::Checked);
 //            }
 //        }

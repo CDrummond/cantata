@@ -43,7 +43,7 @@ bool StreamsProxyModel::filterAcceptsItem(const void *i, QStringList strings) co
 
     if (item->isCategory()) {
         const StreamsModel::CategoryItem *cat=static_cast<const StreamsModel::CategoryItem *>(item);
-        foreach (const StreamsModel::Item *c, cat->children) {
+        for (const StreamsModel::Item *c: cat->children) {
             if (filterAcceptsItem(c, strings)) {
                 return true;
             }

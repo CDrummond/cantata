@@ -53,7 +53,7 @@ bool ProxyModel::matchesFilter(const QStringList &strings) const
     uint ums = unmatchedStrings;
     int numStrings = filterStrings.count();
 
-    foreach (const QString &str, strings) {
+    for (const QString &str: strings) {
         QString candidate = str.simplified();
         QString basic;
         bool useBasic=false;
@@ -163,7 +163,7 @@ void ProxyModel::sort(int column, Qt::SortOrder order)
 QList<int> ProxyModel::mapToSourceRows(const QModelIndexList &list) const
 {
     QList<int> rows;
-    foreach (const QModelIndex &idx, list) {
+    for (const QModelIndex &idx: list) {
         rows.append(mapToSource(idx).row());
     }
     return rows;
@@ -174,11 +174,11 @@ QModelIndexList ProxyModel::mapToSource(const QModelIndexList &list, bool leaves
     QModelIndexList mapped;
     if (leavesOnly) {
         QModelIndexList l=leaves(list);
-        foreach (const QModelIndex &idx, l) {
+        for (const QModelIndex &idx: l) {
             mapped.append(mapToSource(idx));
         }
     } else {
-        foreach (const QModelIndex &idx, list) {
+        for (const QModelIndex &idx: list) {
             mapped.append(mapToSource(idx));
         }
     }
@@ -189,7 +189,7 @@ QMimeData * ProxyModel::mimeData(const QModelIndexList &indexes) const
 {
     QModelIndexList nodes=leaves(indexes);
     QModelIndexList sourceIndexes;
-    foreach (const QModelIndex &idx, nodes) {
+    for (const QModelIndex &idx: nodes) {
         sourceIndexes << mapToSource(idx);
     }
     return sourceModel()->mimeData(sourceIndexes);
@@ -199,7 +199,7 @@ QModelIndexList ProxyModel::leaves(const QModelIndexList &list) const
 {
     QModelIndexList l;
 
-    foreach (const QModelIndex &idx, list) {
+    for (const QModelIndex &idx: list) {
         l+=leaves(idx);
     }
     return l;

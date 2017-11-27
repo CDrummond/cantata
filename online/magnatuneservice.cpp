@@ -76,7 +76,7 @@ Song MagnatuneXmlParser::parseSong(QXmlStreamReader &xml)
                 s.year=value.toInt();
             } else  if (QLatin1String("magnatunegenres")==name) {
                 QStringList genres=value.split(',', QString::SkipEmptyParts);
-//                foreach (const QString &g, genres) {
+//                for (const QString &g: genres) {
 //                    s.addGenre(g);
 //                }
                 s.genres[0]=genres.first();

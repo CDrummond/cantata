@@ -150,7 +150,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     ratingsSupport=MPDConnection::self()->stickersSupported();
     #endif
 
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         if (CueFile::isCue(s.file)) {
             continue;
         }
@@ -275,7 +275,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         QSet<int> songYears;
         QSet<int> songDiscs;
 
-        foreach (const Song &s, original) {
+        for (const Song &s: original) {
             songArtists.insert(s.artist);
             songAlbumArtists.insert(s.albumartist);
             songAlbums.insert(s.album);
@@ -335,7 +335,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     }
 
     bool first=original.count()>1;
-    foreach (const Song &s, original) {
+    for (const Song &s: original) {
         if (first) {
             trackName->insertItem(trackName->count(), tr("All tracks"));
             first=false;
@@ -1146,7 +1146,7 @@ bool TagEditor::applyUpdates()
 
     int count=0;
     bool someTimedout=false;
-    foreach (int idx, editedIndexes) {
+    for (int idx: editedIndexes) {
         progress->setValue(progress->value()+1);
 
         if (0==count++%10) {

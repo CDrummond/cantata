@@ -144,7 +144,7 @@ void TableView::initHeader()
     Configuration config(configGroup);
     QByteArray state=config.get(constHeaderKey, QByteArray());
     if (state.isEmpty()) {
-        foreach (int i, initiallyHidden) {
+        for (int i: initiallyHidden) {
             hdr->HideSection(i);
         }
     } else {
@@ -175,7 +175,7 @@ void TableView::initHeader()
         menu->addAction(alignAction);
 
         menu->addSeparator();
-        foreach (int col, hideable) {
+        for (int col: hideable) {
             QAction *act=new QAction(model()->headerData(col, Qt::Horizontal, Cantata::Role_ContextMenuText).toString(), menu);
             act->setCheckable(true);
             act->setChecked(!hdr->isSectionHidden(col));

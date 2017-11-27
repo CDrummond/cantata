@@ -156,7 +156,7 @@ static QList<QByteArray> split(const QByteArray &a)
 
 static bool isFromMpd(const QStringList &params)
 {
-    foreach (const QString &str, params) {
+    for (const QString &str: params) {
         if (str.startsWith("User-Agent:") && str.contains("Music Player Daemon")) {
             return true;
         }
@@ -166,7 +166,7 @@ static bool isFromMpd(const QStringList &params)
 
 static void getRange(const QStringList &params, qint32 &from, qint32 &to)
 {
-    foreach (const QString &str, params) {
+    for (const QString &str: params) {
         if (str.startsWith("Range:")) {
             int start=str.indexOf("bytes=");
             if (start>0) {
@@ -455,7 +455,7 @@ void HttpSocket::sendErrorResponse(QTcpSocket *socket, int code)
 void HttpSocket::cantataStreams(const QStringList &files)
 {
     DBUG << files;
-    foreach (const QString &f, files) {
+    for (const QString &f: files) {
         Song s=HttpServer::self()->decodeUrl(f);
         if (s.isCantataStream() || s.isCdda()) {
             DBUG << s.file;
@@ -471,7 +471,7 @@ void HttpSocket::cantataStreams(const QList<Song> &songs, bool isUpdate)
         streamIds.clear();
     }
 
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         DBUG << s.file;
         if (s.isCantataStream()) {
             streamIds.insert(s.id, HttpServer::self()->decodeUrl(s.file).file);
@@ -485,7 +485,7 @@ void HttpSocket::cantataStreams(const QList<Song> &songs, bool isUpdate)
 
 void HttpSocket::removedIds(const QSet<qint32> &ids)
 {
-    foreach (qint32 id, ids) {
+    for (qint32 id: ids) {
         streamIds.remove(id);
     }
 }

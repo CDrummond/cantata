@@ -147,7 +147,7 @@ Device * DevicesPage::activeFsDevice() const
 
     QString udi;
     Device *activeDev=0;
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         QModelIndex index = proxy.mapToSource(idx);
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
 
@@ -180,7 +180,7 @@ QStringList DevicesPage::playableUrls() const
     }
 
     QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         mapped.append(proxy.mapToSource(idx));
     }
 
@@ -196,7 +196,7 @@ QList<Song> DevicesPage::selectedSongs(bool allowPlaylists) const
     }
 
     // Ensure all songs are from UMS/Remote devices...
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
         if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
             while(item->parentItem()) {
@@ -276,7 +276,7 @@ void DevicesPage::controlActions()
     bool canPlay=false;
     QString udi;
 
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
 
         if (item && MusicLibraryItem::Type_Root==item->itemType()) {
@@ -347,7 +347,7 @@ void DevicesPage::copyToLibrary()
     }
 
     QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         mapped.append(proxy.mapToSource(idx));
     }
 
@@ -457,7 +457,7 @@ void DevicesPage::deleteSongs()
     }
 
     QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         mapped.append(proxy.mapToSource(idx));
     }
 

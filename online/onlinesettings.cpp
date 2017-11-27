@@ -49,7 +49,7 @@ OnlineSettings::OnlineSettings(QWidget *p)
 void OnlineSettings::load()
 {
     QList<OnlineServicesModel::Provider> provs=OnlineServicesModel::self()->getProviders();
-    foreach (const OnlineServicesModel::Provider &prov, provs) {
+    for (const OnlineServicesModel::Provider &prov: provs) {
         QListWidgetItem *item=new QListWidgetItem(prov.name, providers);
         item->setCheckState(prov.hidden ? Qt::Unchecked : Qt::Checked);
         item->setData(KeyRole, prov.key);

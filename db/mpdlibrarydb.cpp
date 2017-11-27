@@ -52,12 +52,12 @@ void MpdLibraryDb::removeUnusedDbs()
         return;
     }
 
-    foreach (const MPDConnectionDetails &conn, connections) {
+    for (const MPDConnectionDetails &conn: connections) {
         existing.insert(databaseName(conn).mid(dirPath.length()));
     }
 
     QFileInfoList files=QDir(dirPath).entryInfoList(QStringList() << "*"+LibraryDb::constFileExt, QDir::Files);
-    foreach (const QFileInfo &file, files) {
+    for (const QFileInfo &file: files) {
         if (!existing.contains(file.fileName())) {
             QFile::remove(file.absoluteFilePath());
         }

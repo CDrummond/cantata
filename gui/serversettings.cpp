@@ -148,7 +148,7 @@ void ServerSettings::load()
     combo->clear();
     int idx=0;
     haveBasicCollection=false;
-    foreach (MPDConnectionDetails d, all) {
+    for (MPDConnectionDetails d: all) {
         combo->addItem(d.getName(), d.name);
         if (d.name==currentCon) {
             prevIndex=idx;
@@ -183,7 +183,7 @@ void ServerSettings::save()
     QList<MPDConnectionDetails> existingInConfig=Settings::self()->allConnections();
     QList<Collection> toAdd;
 
-    foreach (const Collection &c, collections) {
+    for (const Collection &c: collections) {
         bool found=false;
         for (int i=0; i<existingInConfig.count(); ++i) {
             MPDConnectionDetails e=existingInConfig.at(i);
@@ -212,11 +212,11 @@ void ServerSettings::save()
         #endif
     }
 
-    foreach (const MPDConnectionDetails &c, existingInConfig) {
+    for (const MPDConnectionDetails &c: existingInConfig) {
         Settings::self()->removeConnectionDetails(c.name);
     }
 
-    foreach (const Collection &c, toAdd) {
+    for (const Collection &c: toAdd) {
         Settings::self()->saveConnectionDetails(c.details);
         c.namingOpts.save(MPDConnectionDetails::configGroupName(c.details.name), true);
     }

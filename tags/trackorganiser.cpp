@@ -94,7 +94,7 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi, bool for
     // If we are called from the TagEditor dialog, then forceUpdate will be true. This is so that we dont do 2
     // MPD updates (one from TagEditor, and one from here!)
     alwaysUpdate=forceUpdate;
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         if (!CueFile::isCue(s.file)) {
            origSongs.append(s);
         }
@@ -216,8 +216,7 @@ void TrackOrganiser::updateView()
     #endif
         musicFolder=MPDConnection::self()->getDetails().dir;
 
-    foreach (const Song &s, origSongs) {
-
+    for (const Song &s: origSongs) {
         QString modified=musicFolder + opts.createFilename(s);
         //different=different||(modified!=s.file);
         QString orig=s.filePath(musicFolder);
@@ -393,7 +392,7 @@ void TrackOrganiser::renameFile()
                                                          << ContextWidget::constBackdropFileName+QLatin1String(".jpg")
                                                          << ContextWidget::constBackdropFileName+QLatin1String(".png");
 
-                foreach (const QFileInfo &entry, entries) {
+                for (const QFileInfo &entry: entries) {
                     if (entry.isDir() || !acceptable.contains(entry.fileName())) {
                         artistImages.clear();
                         break;
@@ -403,7 +402,7 @@ void TrackOrganiser::renameFile()
                 }
                 if (!artistImages.isEmpty()) {
                     bool delDir=true;
-                    foreach (const QString &f, artistImages) {
+                    for (const QString &f: artistImages) {
                         if (!QFile::rename(sArtistDir.absolutePath()+Utils::constDirSep+f, dArtistDir.absolutePath()+Utils::constDirSep+f)) {
                             delDir=false;
                             break;
@@ -473,7 +472,7 @@ void TrackOrganiser::removeItems()
                                                    tr("Remove Tracks"), StdGuiItem::remove(), StdGuiItem::cancel())) {
 
         QList<QTreeWidgetItem *> selection=files->selectedItems();
-        foreach (QTreeWidgetItem *item, selection) {
+        for (QTreeWidgetItem *item: selection) {
             int idx=files->indexOfTopLevelItem(item);
             if (idx>-1 && idx<origSongs.count()) {
                 origSongs.removeAt(idx);

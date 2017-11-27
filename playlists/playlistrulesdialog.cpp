@@ -214,7 +214,7 @@ void PlaylistRulesDialog::edit(const QString &name)
         model->removeRows(0, model->rowCount());
     }
     nameText->setText(name);
-    foreach (const RulesPlaylists::Rule &r, e.rules) {
+    for (const RulesPlaylists::Rule &r: e.rules) {
         QStandardItem *item = new QStandardItem();
         ::update(item, r);
         model->setItem(model->rowCount(), 0, item);
@@ -319,7 +319,7 @@ void PlaylistRulesDialog::remove()
 {
     QModelIndexList items=rulesList->selectedIndexes();
     QList<int> rows;
-    foreach (const QModelIndex &i, items) {
+    for (const QModelIndex &i: items) {
         rows.append(proxy->mapToSource(i).row());
     }
     qSort(rows);

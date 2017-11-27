@@ -86,7 +86,7 @@ QMenu * MirrorMenu::duplicate(QWidget *p)
 
 void MirrorMenu::updateMenus()
 {
-    foreach (QMenu *m, menus) {
+    for (QMenu *m: menus) {
         updateMenu(m);
     }
 }

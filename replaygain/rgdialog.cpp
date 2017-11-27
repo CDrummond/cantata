@@ -152,7 +152,7 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi, bool autoScan)
         return;
     }
 
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         if (!CueFile::isCue(s.file)) {
            origSongs.append(s);
         }
@@ -190,7 +190,7 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi, bool autoScan)
     state=State_Idle;
     enableButton(User1, origSongs.count());
     view->clear();
-    foreach (const Song &s, origSongs) {
+    for (const Song &s: origSongs) {
         new QTreeWidgetItem(view, QStringList() << s.albumArtist() << s.album << s.title);
     }
     Dialog::show();
@@ -303,7 +303,7 @@ void RgDialog::stopScanning()
 void RgDialog::createScanner(const QList<int> &indexes)
 {
     QMap<int, QString> fileMap;
-    foreach (int i, indexes) {
+    for (int i: indexes) {
         fileMap[i]=origSongs.at(i).filePath(base);
     }
 
@@ -317,7 +317,7 @@ void RgDialog::createScanner(const QList<int> &indexes)
 void RgDialog::clearScanners()
 {
     QList<AlbumScanner *> scannerList=scanners.keys();
-    foreach (AlbumScanner *sc, scannerList) {
+    for (AlbumScanner *sc: scannerList) {
         sc->stop();
     }
     scanners.clear();
@@ -624,7 +624,7 @@ void RgDialog::removeItems()
     if (MessageBox::Yes==MessageBox::questionYesNo(this, tr("Remove the selected tracks from the list?"),
                                                    tr("Remove Tracks"), StdGuiItem::remove(), StdGuiItem::cancel())) {
         QList<QTreeWidgetItem *> selection=view->selectedItems();
-        foreach (QTreeWidgetItem *item, selection) {
+        for (QTreeWidgetItem *item: selection) {
             int index=view->indexOfTopLevelItem(item);
             view->setItemHidden(item, true);
             removedItems.insert(index);

@@ -786,7 +786,7 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
     }
 
     QStringList files;
-    foreach (const QString &file, origList) {
+    for (const QString &file: origList) {
         if (file.startsWith(constDirPrefix)) {
             files+=getAllFiles(file.mid(constDirPrefix.length()));
         } else if (file.startsWith(constPlaylistPrefix)) {
@@ -831,7 +831,7 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
         curPos=playQueueIds.size();
     }
 
-    foreach (const QStringList &files, fileLists) {
+    for (const QStringList &files: fileLists) {
         QByteArray send = "command_list_begin\n";
 
         for (int i = 0; i < files.size(); i++) {
@@ -920,7 +920,7 @@ void MPDConnection::removeSongs(const QList<qint32> &items)
 {
     toggleStopAfterCurrent(false);
     QByteArray send = "command_list_begin\n";
-    foreach (qint32 i, items) {
+    for (qint32 i: items) {
         send += "deleteid "+quote(i)+'\n';
     }
 
@@ -1066,7 +1066,7 @@ void MPDConnection::playListChanges()
             QSet<qint32> prevIds=playQueueIds.toSet();
             QSet<qint32> strmIds;
 
-            foreach (const MPDParseUtils::IdPos &idp, changes) {
+            for (const MPDParseUtils::IdPos &idp: changes) {
                 if (first) {
                     first=false;
                     firstPos=idp.pos;
@@ -1163,7 +1163,7 @@ void MPDConnection::playListInfo()
         streamIds.clear();
 
         QList<Song> cStreams;
-        foreach (const Song &s, songs) {
+        for (const Song &s: songs) {
             playQueueIds.append(s.id);
             if (s.isCdda()) {
                 cStreams.append(s);
@@ -1533,7 +1533,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
      */
     bool playListUpdated=false;
     bool statusUpdated=false;
-    foreach(const QByteArray &line, lines) {
+    for (const QByteArray &line: lines) {
         if (line.startsWith(constIdleChangedKey)) {
             QByteArray value=line.mid(constIdleChangedKey.length());
             if (constIdleDbValue==value) {
@@ -1711,7 +1711,7 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
     }
 
     if (!name.isEmpty()) {
-        foreach (const QString &song, songs) {
+        for (const QString &song: songs) {
             if (CueFile::isCue(song)) {
                 emit error(tr("You cannot add parts of a cue sheet to a playlist!")+QLatin1String(" (")+song+QLatin1Char(')'));
                 return;
@@ -1723,7 +1723,7 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
     }
 
     QStringList files;
-    foreach (const QString &file, songs) {
+    for (const QString &file: songs) {
         if (file.startsWith(constDirPrefix)) {
             files+=getAllFiles(file.mid(constDirPrefix.length()));
         } else if (file.startsWith(constPlaylistPrefix)) {
@@ -1735,7 +1735,7 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
 
     QByteArray encodedName=encodeName(name);
     QByteArray send = "command_list_begin\n";
-    foreach (const QString &s, files) {
+    for (const QString &s: files) {
         send += "playlistadd "+encodedName+" "+encodeName(s)+'\n';
     }
     send += "command_list_end";
@@ -1790,7 +1790,7 @@ void MPDConnection::setPriority(const QList<qint32> &ids, quint8 priority, bool 
         QMap<qint32, quint8> tracks;
         QByteArray send = "command_list_begin\n";
 
-        foreach (quint32 id, ids) {
+        for (quint32 id: ids) {
             tracks.insert(id, priority);
             send += "prioid "+quote(priority)+" "+quote(id)+'\n';
             if (decreasePriority && priority>0) {
@@ -1844,7 +1844,7 @@ void MPDConnection::search(const QByteArray &query, const QString &id)
         Response response=sendCommand("list albumartist", false, false);
         if (response.ok) {
             QList<QByteArray> lines = response.data.split('\n');
-            foreach (const QByteArray &line, lines) {
+            for (const QByteArray &line: lines) {
                 if (line.startsWith("AlbumArtist: ")) {
                     Response resp = sendCommand("find albumartist " + encodeName(QString::fromUtf8(line.mid(13))) , false, false);
                     if (resp.ok) {
@@ -1862,7 +1862,7 @@ void MPDConnection::search(const QByteArray &query, const QString &id)
                 int max = parts.at(2).toInt();
                 QList<MPDParseUtils::Sticker> stickers=MPDParseUtils::parseStickers(response.data, constRatingSticker);
                 if (!stickers.isEmpty()) {
-                    foreach (const MPDParseUtils::Sticker &sticker, stickers) {
+                    for (const MPDParseUtils::Sticker &sticker: stickers) {
                         if (!sticker.file.isEmpty() && !sticker.value.isEmpty()) {
                             int val = sticker.value.toInt();
                             if (val>=min && val<=max) {
@@ -1891,7 +1891,7 @@ void MPDConnection::listStreams()
     QList<Stream> streams;
     if (response.ok) {
         QList<Song> songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Streams);
-        foreach (const Song &song, songs) {
+        for (const Song &song: songs) {
             streams.append(Stream(song.file, song.name()));
         }    
     }
@@ -1964,7 +1964,7 @@ void MPDConnection::sendDynamicMessage(const QStringList &msg)
     }
 
     QByteArray data;
-    foreach (QString part, msg) {
+    for (QString part: msg) {
         if (data.isEmpty()) {
             data+='\"'+part.toUtf8()+':'+dynamicId;
         } else {
@@ -2077,7 +2077,7 @@ bool MPDConnection::recursivelyListDir(const QString &dir, QList<Song> &songs)
             emit librarySongs(copy);
             songs.clear();
         }
-        foreach (const QString &sub, subDirs) {
+        for (const QString &sub: subDirs) {
             if (!recursivelyListDir(sub, songs)) {
                 return false;
             }
@@ -2101,7 +2101,7 @@ QStringList MPDConnection::getPlaylistFiles(const QString &name)
     if (response.ok) {
         QList<Song> songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Playlists);
         emit playlistInfoRetrieved(name, songs);
-        foreach (const Song &s, songs) {
+        for (const Song &s: songs) {
             files.append(s.file);
         }    
     }
@@ -2116,12 +2116,12 @@ QStringList MPDConnection::getAllFiles(const QString &dir)
         QStringList subDirs;
         QList<Song> songs;
         MPDParseUtils::parseDirItems(response.data, details.dir, ver, songs, dir, subDirs, MPDParseUtils::Loc_Browse);
-        foreach (const Song &song, songs) {
+        for (const Song &song: songs) {
             if (Song::Playlist!=song.type) {
                 files.append(song.file);
             }
         }
-        foreach (const QString &sub, subDirs) {
+        for (const QString &sub: subDirs) {
             files+=getAllFiles(sub);
         }
     }
@@ -2188,14 +2188,14 @@ void MPDConnection::readRemoteDynamicMessages()
             MPDParseUtils::MessageMap messages=MPDParseUtils::parseMessages(response.data);
             if (!messages.isEmpty()) {
                 QList<QByteArray> channels=QList<QByteArray>() << constDynamicOut << constDynamicOut+'-'+dynamicId;
-                foreach (const QByteArray &channel, channels) {
+                for (const QByteArray &channel: channels) {
                     if (messages.contains(channel)) {
-                        foreach (const QString &m, messages[channel]) {
+                        for (const QString &m: messages[channel]) {
                             if (!m.isEmpty()) {
                                 DBUG << "Received message " << m;
                                 QStringList parts=m.split(':', QString::SkipEmptyParts);
                                 QStringList message;
-                                foreach (QString part, parts) {
+                                for (QString part: parts) {
                                     part=part.replace("{c}", ":");
                                     part=part.replace("{n}", "\n");
                                     part=part.replace("{cb}", "}");
@@ -2272,10 +2272,10 @@ void MPDConnection::setRating(const QStringList &files, quint8 val)
     }
 
     bool ok=true;
-    foreach (const QStringList &list, fileLists) {
+    for (const QStringList &list: fileLists) {
         QByteArray cmd = "command_list_begin\n";
 
-        foreach (const QString &f, list) {
+        for (const QString &f: list) {
             if (0==val) {
                 cmd+="sticker delete song "+encodeName(f)+' '+constRatingSticker+'\n';
             } else {
@@ -2508,7 +2508,7 @@ void MPDServerInfo::detect(void) {
         QList<QByteArray> lines = response.data.split('\n');
         bool match = false;
         int indx;
-        foreach (const QByteArray &line, lines) {
+        for (const QByteArray &line: lines) {
             for (indx=0; indx<sizeof(lsinfoResponseParameters)/sizeof(ResponseParameter); ++indx) {
                 ResponseParameter &rp = lsinfoResponseParameters[indx];
                 if (rp.isSubstring) {

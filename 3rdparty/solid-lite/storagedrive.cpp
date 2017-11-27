@@ -81,7 +81,7 @@ bool Solid::StorageDrive::isInUse() const
     QList<Device> devices = Device::listFromQuery(p, d->devicePrivate()->udi());
 
     bool inUse = false;
-    foreach (const Device &dev, devices)	{
+    for (const Device &dev: devices)	{
         if (dev.is<Solid::StorageAccess>()) {
             const Solid::StorageAccess* access = dev.as<Solid::StorageAccess>();
             inUse |= (access->isAccessible());

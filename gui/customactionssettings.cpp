@@ -132,7 +132,7 @@ void CustomActionsSettings::controlButtons()
 
 void CustomActionsSettings::load()
 {
-    foreach (const CustomActions::Command &cmd, CustomActions::self()->commandList()) {
+    for (const CustomActions::Command &cmd: CustomActions::self()->commandList()) {
         new QTreeWidgetItem(tree, QStringList() << cmd.name << cmd.cmd);
     }
 }
@@ -177,7 +177,7 @@ void CustomActionsSettings::editCommand()
 void CustomActionsSettings::delCommand()
 {
     if (MessageBox::Yes==MessageBox::warningYesNo(this, tr("Remove the selected commands?"), QString(), GuiItem(tr("Remove")), StdGuiItem::cancel())) {
-        foreach (QTreeWidgetItem *i, tree->selectedItems()) {
+        for (QTreeWidgetItem *i: tree->selectedItems()) {
             delete i;
         }
     }

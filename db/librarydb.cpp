@@ -391,7 +391,7 @@ public:
         // ignore 'literal' for IN
         if (!op.compare("IN", Qt::CaseInsensitive)) {
             QStringList final;
-            foreach(const QString &singleValue, value.toStringList()) {
+            for(const QString &singleValue: value.toStringList()) {
                 final.append("?");
                 boundValues << singleValue;
             }
@@ -455,7 +455,7 @@ public:
         }
         query=QSqlQuery(sql, db);
 
-        foreach (const QVariant &value, boundValues) {
+        for (const QVariant &value: boundValues) {
             query.addBindValue(value);
         }
         return query.exec();
@@ -937,7 +937,7 @@ QList<Song> LibraryDb::songs(const QStringList &files, bool allowPlaylists) cons
 {
     QList<Song> songList;
     if (0!=currentVersion && db) {
-        foreach (const QString &f, files) {
+        for (const QString &f: files) {
             SqlQuery query("*", *db);
             query.addWhere("file", f);
             query.exec();
@@ -1007,11 +1007,11 @@ LibraryDb::Album LibraryDb::getRandomAlbum(const QStringList &genres, const QStr
 
     QList<Album> albums;
 
-    foreach (const QString &genre, genres) {
+    for (const QString &genre: genres) {
         albums.append(getRandomAlbum(genre, QString()));
     }
 
-    foreach (const QString &artist, artists) {
+    for (const QString &artist: artists) {
         albums.append(getRandomAlbum(QString(), artist));
     }
 
@@ -1046,7 +1046,7 @@ QSet<QString> LibraryDb::get(const QString &type)
         columns << type;
     }
 
-    foreach (const QString &col, columns) {
+    for (const QString &col: columns) {
         SqlQuery query("distinct "+col, *db);
         query.exec();
         DBUG << query.executedQuery();
@@ -1112,8 +1112,8 @@ bool LibraryDb::setFilter(const QString &f, const QString &genre)
         static QList<QLatin1Char> replaceChars=QList<QLatin1Char>() << QLatin1Char('(') << QLatin1Char(')') << QLatin1Char('"')
                                                                     << QLatin1Char(':') << QLatin1Char('-');
         QStringList tokens;
-        foreach (QString str, strings) {
-            foreach (const QLatin1Char ch, replaceChars) {
+        for (QString str: strings) {
+            for (const QLatin1Char ch: replaceChars) {
                 str.replace(ch, '?');
             }
             if (str.length()>0) {
@@ -1150,7 +1150,7 @@ void LibraryDb::insertSongs(QList<Song> *songs)
         return;
     }
 
-    foreach (const Song &s, *songs) {
+    for (const Song &s: *songs) {
         insertSong(s);
     }
     delete songs;

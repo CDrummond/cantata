@@ -171,12 +171,12 @@ void AlbumDetailsDialog::show(AudioCdDevice *dev)
     artists.insert(dev->albumArtist());
 
     QList<Song> songs;
-    foreach (const MusicLibraryItem *i, dev->childItems()) {
+    for (const MusicLibraryItem *i: dev->childItems()) {
         songs.append(static_cast<const MusicLibraryItemSong *>(i)->song());
     }
     qSort(songs);
 
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         QTreeWidgetItem *item=new QTreeWidgetItem(tracks);
         update(item, s);
         artists.insert(s.artist);

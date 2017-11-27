@@ -83,7 +83,7 @@ void AlbumScanner::read()
 
     QStringList lines=output.split("\n", QString::SkipEmptyParts);
 
-    foreach (const QString &line, lines) {
+    for (const QString &line: lines) {
         if (line.startsWith(constProgLine)) {
             emit progress(line.mid(constProgLine.length()).toUInt());
         } else if (line.startsWith(constTrackLine)) {

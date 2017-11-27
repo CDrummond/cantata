@@ -139,8 +139,8 @@ static QString strip(const QString &string, QString open, QString close, QString
 static QString stripEmptySections(QString answer)
 {
     QStringList headers=QStringList() << "h3" << "h2" << "b";
-    foreach (const QString &h1, headers) {
-        foreach (const QString &h2, headers) {
+    for (const QString &h1: headers) {
+        for (const QString &h2: headers) {
             int end=-1;
             do {
                 end=answer.indexOf("</"+h1+"><"+h2+">");
@@ -167,7 +167,7 @@ static QString stripLastEmptySection(QString answer)
     bool modified=false;
     do {
         modified=false;
-        foreach (const QString &h, headers) {
+        for (const QString &h: headers) {
             if (answer.endsWith("</"+h+">") || answer.endsWith("</"+h+"> ") || answer.endsWith("</"+h+">  ")) {
                 int start=answer.lastIndexOf("<"+h+">", answer.length()-4);
                 if (-1!=start) {
@@ -437,7 +437,7 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     QStringList queryCopy(query);
     QStringList queries;
     QStringList simplifiedTitles;
-    foreach (QString t, titles) {
+    for (QString t: titles) {
         simplifiedTitles.append(t.simplified());
     }
 
@@ -480,7 +480,7 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
         break;
     }
 
-    foreach (const QString &eng, englishPatterns) {
+    for (const QString &eng: englishPatterns) {
         if (!patterns.contains(eng)) {
             patterns.append(eng);
         }
@@ -491,7 +491,7 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     int index=-1;
     if ((mode==Album || mode==Track) && 2==query.count()) {
         DBUG <<  "Check track/album";
-        foreach (const QString &pattern, patterns) {
+        for (const QString &pattern: patterns) {
             QString q=query.at(1)+" ("+query.at(0)+" "+pattern+")";
             DBUG <<  "Try" << q;
             index=indexOf(simplifiedTitles, q);
@@ -503,10 +503,10 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     }
 
     if (-1==index) {
-        foreach (const QString &q, queries) {
+        for (const QString &q: queries) {
             DBUG <<  "Query" << q;
             // First check original query with one of the patterns...
-            foreach (const QString &pattern, patterns) {
+            for (const QString &pattern: patterns) {
                 index=indexOf(simplifiedTitles, q+" ("+pattern+")");
                 if (-1!=index) {
                     DBUG <<  "Matched with pattern" << index << QString(q+" ("+pattern+")");

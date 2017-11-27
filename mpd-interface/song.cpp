@@ -306,7 +306,7 @@ void Song::guessTags()
             static const QSet<QChar> constSeparators=QSet<QChar>() << QLatin1Char(' ') << QLatin1Char('-') << QLatin1Char('_') << QLatin1Char('.');
             int separator=0;
 
-            foreach (const QChar &sep, constSeparators) {
+            for (const QChar &sep: constSeparators) {
                 separator=title.indexOf(sep);
                 if (1==separator || 2==separator) {
                     break;
@@ -389,7 +389,7 @@ void Song::setIgnorePrefixes(const QSet<QString> &prefixes)
 
 static QString ignorePrefix(const QString &str)
 {
-    foreach (const QString &p, prefixesToIngore) {
+    for (const QString &p: prefixesToIngore) {
         if (str.startsWith(p+QLatin1Char(' '))) {
             return str.mid(p.length()+1)+QLatin1String(", ")+p;
         }
@@ -717,8 +717,8 @@ QString Song::basicArtist() const
     QStringList toStrip=QStringList() << QLatin1String("ft. ") << QLatin1String("feat. ") << QLatin1String("featuring ") << QLatin1String("f. ");
     QStringList prefixes=QStringList() << QLatin1String(" ") << QLatin1String(" (") << QLatin1String(" [");
 
-    foreach (const QString s, toStrip) {
-        foreach (const QString p, prefixes) {
+    for (const QString &s: toStrip) {
+        for (const QString &p: prefixes) {
             int strip = artist.toLower().indexOf(p+s);
             if (-1!=strip) {
                 return artist.mid(0, strip);

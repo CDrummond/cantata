@@ -104,7 +104,7 @@ View::View(QWidget *parent, const QStringList &views)
         stack=new QStackedWidget(this);
         selector=new SelectorLabel(this);
         selector->setUseArrow(true);
-        foreach (const QString &v, views) {
+        for (const QString &v: views) {
             TextBrowser *t=createView(stack);
             selector->addItem(v, v);
             stack->addWidget(t);
@@ -146,7 +146,7 @@ View::~View()
 void View::clear()
 {
     setHeader(stdHeader);
-    foreach (TextBrowser *t, texts) {
+    for (TextBrowser *t: texts) {
         t->clear();
     }
 }
@@ -162,7 +162,7 @@ void View::setHeader(const QString &str)
 
 void View::setPicSize(const QSize &sz)
 {
-    foreach (TextBrowser *t, texts) {
+    for (TextBrowser *t: texts) {
         t->setPicSize(sz);
     }
 }
@@ -230,7 +230,7 @@ void View::setEditable(bool e, int index)
 
 void View::setPal(const QPalette &pal, const QColor &linkColor, const QColor &prevLinkColor)
 {
-    foreach (TextBrowser *t, texts) {
+    for (TextBrowser *t: texts) {
         // QTextBrowser seems to save link colour within the HTML, so we need to manually
         // update this when the palette changes!
         QString old=t->toHtml();
@@ -251,7 +251,7 @@ void View::setPal(const QPalette &pal, const QColor &linkColor, const QColor &pr
 void View::addEventFilter(QObject *obj)
 {
     installEventFilter(obj);
-    foreach (TextBrowser *t, texts) {
+    for (TextBrowser *t: texts) {
         t->installEventFilter(obj);
         t->viewport()->installEventFilter(obj);
     }
@@ -260,7 +260,7 @@ void View::addEventFilter(QObject *obj)
 
 void View::setZoom(int z)
 {
-    foreach (TextBrowser *t, texts) {
+    for (TextBrowser *t: texts) {
         t->setZoom(z);
     }
     QFont f=header->font();

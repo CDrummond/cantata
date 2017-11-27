@@ -388,7 +388,7 @@ static QWidget *firstFocusableWidget(QWidget *w)
 
     QObjectList children=w->children();
     // Try each child first...
-    foreach (QObject *c, children) {
+    for (QObject *c: children) {
         if (qobject_cast<QWidget *>(c)) {
             QWidget *cw=static_cast<QWidget *>(c);
             if (isFocusable(cw)) {
@@ -397,7 +397,7 @@ static QWidget *firstFocusableWidget(QWidget *w)
         }
     }
     // Now try grandchildren...
-    foreach (QObject *c, children) {
+    for (QObject *c: children) {
         if (qobject_cast<QWidget *>(c)) {
             QWidget *f=firstFocusableWidget(static_cast<QWidget *>(c));
             if (f) {

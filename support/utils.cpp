@@ -329,7 +329,7 @@ bool Utils::createWorldReadableDir(const QString &dir, const QString &base, cons
         QStringList parts=dir.mid(base.length()).split(constDirSep);
         QString d(base);
 
-        foreach (const QString &p, parts) {
+        for (const QString &p: parts) {
             d+=constDirSep+p;
             int rv=::chown(QFile::encodeName(d).constData(), geteuid(), gid);
             Q_UNUSED(rv)
@@ -601,7 +601,7 @@ QString Utils::findExe(const QString &appname, const QString &pstr)
     QStringList executable_extensions = executableExtensions();
     if (!executable_extensions.contains(appname.section(QLatin1Char('.'), -1, -1, QString::SectionIncludeLeadingSep), Qt::CaseInsensitive)) {
         QString found_exe;
-        foreach (const QString& extension, executable_extensions) {
+        for (const QString& extension: executable_extensions) {
             found_exe = findExe(appname + extension, pstr);
             if (!found_exe.isEmpty()) {
                 return found_exe;
@@ -768,7 +768,7 @@ void Utils::moveDir(const QString &from, const QString &to)
     }
 
     QFileInfoList files=f.entryInfoList(QStringList() << "*", QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot);
-    foreach (const QFileInfo &file, files) {
+    for (const QFileInfo &file: files) {
         if (file.isDir()) {
             QString dest=to+file.fileName()+constDirSep;
             if (!QDir(dest).exists()) {
@@ -800,7 +800,7 @@ void Utils::clearOldCache(const QString &sub, int maxAge)
         QFileInfoList files=dir.entryInfoList(QDir::Files|QDir::NoDotAndDotDot);
         if (files.count()) {
             QDateTime now=QDateTime::currentDateTime();
-            foreach (const QFileInfo &f, files) {
+            for (const QFileInfo &f: files) {
                 if (f.lastModified().daysTo(now)>maxAge) {
                     QFile::remove(f.absoluteFilePath());
                 }

@@ -44,7 +44,7 @@ Solid::DeviceManagerPrivate::DeviceManagerPrivate()
     loadBackends();
 
     QList<QObject*> backends = managerBackends();
-    foreach (QObject *backend, backends) {
+    for (QObject *backend: backends) {
         connect(backend, SIGNAL(deviceAdded(QString)),
                 this, SLOT(_k_deviceAdded(QString)));
         connect(backend, SIGNAL(deviceRemoved(QString)),
@@ -55,11 +55,11 @@ Solid::DeviceManagerPrivate::DeviceManagerPrivate()
 Solid::DeviceManagerPrivate::~DeviceManagerPrivate()
 {
     QList<QObject*> backends = managerBackends();
-    foreach (QObject *backend, backends) {
+    for (QObject *backend: backends) {
         disconnect(backend, 0, this, 0);
     }
 
-    foreach (QtPointer<DevicePrivate> dev, m_devicesMap) {
+    for (QtPointer<DevicePrivate> dev: m_devicesMap) {
         if (!dev.data()->ref.deref()) {
             delete dev.data();
         }
@@ -73,14 +73,14 @@ QList<Solid::Device> Solid::Device::allDevices()
     QList<Device> list;
     QList<QObject*> backends = globalDeviceStorage->managerBackends();
 
-    foreach (QObject *backendObj, backends) {
+    for (QObject *backendObj: backends) {
         Ifaces::DeviceManager *backend = qobject_cast<Ifaces::DeviceManager *>(backendObj);
 
         if (backend == 0) continue;
 
         QStringList udis = backend->allDevices();
 
-        foreach (const QString &udi, udis) {
+        for (const QString &udi: udis) {
             list.append(Device(udi));
         }
     }
@@ -109,7 +109,7 @@ QList<Solid::Device> Solid::Device::listFromType(const DeviceInterface::Type &ty
     QList<Device> list;
     QList<QObject*> backends = globalDeviceStorage->managerBackends();
 
-    foreach (QObject *backendObj, backends) {
+    for (QObject *backendObj: backends) {
         Ifaces::DeviceManager *backend = qobject_cast<Ifaces::DeviceManager *>(backendObj);
 
         if (backend == 0) continue;
@@ -117,7 +117,7 @@ QList<Solid::Device> Solid::Device::listFromType(const DeviceInterface::Type &ty
 
         QStringList udis = backend->devicesFromQuery(parentUdi, type);
 
-        foreach (const QString &udi, udis) {
+        for (const QString &udi: udis) {
             list.append(Device(udi));
         }
     }
@@ -132,7 +132,7 @@ QList<Solid::Device> Solid::Device::listFromQuery(const Predicate &predicate,
     QList<QObject*> backends = globalDeviceStorage->managerBackends();
     QSet<DeviceInterface::Type> usedTypes = predicate.usedTypes();
 
-    foreach (QObject *backendObj, backends) {
+    for (QObject *backendObj: backends) {
         Ifaces::DeviceManager *backend = qobject_cast<Ifaces::DeviceManager *>(backendObj);
 
         if (backend == 0) continue;
@@ -144,14 +144,14 @@ QList<Solid::Device> Solid::Device::listFromQuery(const Predicate &predicate,
                 continue;
             }
 
-            foreach (DeviceInterface::Type type, supportedTypes) {
+            for (DeviceInterface::Type type: supportedTypes) {
                 udis+= QSet<QString>::fromList(backend->devicesFromQuery(parentUdi, type));
             }
         } else {
             udis+= QSet<QString>::fromList(backend->allDevices());
         }
 
-        foreach (const QString &udi, udis)
+        for (const QString &udi: udis)
         {
             Device dev(udi);
 
@@ -249,7 +249,7 @@ Solid::Ifaces::Device *Solid::DeviceManagerPrivate::createBackendObject(const QS
 {
     QList<QObject*> backends = globalDeviceStorage->managerBackends();
 
-    foreach (QObject *backendObj, backends) {
+    for (QObject *backendObj: backends) {
         Ifaces::DeviceManager *backend = qobject_cast<Ifaces::DeviceManager *>(backendObj);
 
         if (backend == 0) continue;

@@ -440,7 +440,7 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
         QString dirName=MPDConnection::self()->getDetails().dir+Utils::getDir(s.file);
         QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
         qWarning() << files;
-        foreach (const QString &f, files) {
+        for (const QString &f: files) {
             QString fileName=dirName+f;
             if (fileName!=img.fileName) {
                 QImage i(fileName);
@@ -673,7 +673,7 @@ void CoverDialog::sendQuery()
             }
         }
 
-        foreach (CoverItem *item, keep) {
+        for (CoverItem *item: keep) {
             list->addItem(item);
         }
 
@@ -793,7 +793,7 @@ void CoverDialog::checkStatus()
 
 void CoverDialog::cancelQuery()
 {
-    foreach (NetworkJob *job, currentQuery) {
+    for (NetworkJob *job: currentQuery) {
         job->cancelAndDelete();
     }
     currentQuery.clear();
@@ -833,7 +833,7 @@ void CoverDialog::menuRequested(const QPoint &pos)
     showAction->setEnabled(1==items.count());
     removeAction->setEnabled(!items.isEmpty());
     if (removeAction->isEnabled()) {
-        foreach (QListWidgetItem *i, items) {
+        for (QListWidgetItem *i: items) {
             if (static_cast<CoverItem *>(i)->isExisting()) {
                 removeAction->setEnabled(false);
             }
@@ -853,7 +853,7 @@ void CoverDialog::showImage()
 void CoverDialog::removeImages()
 {
     QList<QListWidgetItem*> items=list->selectedItems();
-    foreach (QListWidgetItem *i, items) {
+    for (QListWidgetItem *i: items) {
         delete i;
     }
 }
@@ -871,7 +871,7 @@ void CoverDialog::updateProviders()
         }
     }
 
-    foreach (const QAction *act, configureButton->menu()->actions()) {
+    for (const QAction *act: configureButton->menu()->actions()) {
         if (act->isChecked()) {
             enabledProviders|=act->data().toUInt();
         }
@@ -881,7 +881,7 @@ void CoverDialog::updateProviders()
 
 void CoverDialog::clearTempFiles()
 {
-    foreach (QTemporaryFile *file, tempFiles) {
+    for (QTemporaryFile *file: tempFiles) {
         file->remove();
         delete file;
     }
@@ -906,7 +906,7 @@ NetworkJob * CoverDialog::downloadImage(const QString &url, DownloadType dlType)
         }
         currentUrls.insert(url);
     } else {
-        foreach (QTemporaryFile *tmp, tempFiles) {
+        for (QTemporaryFile *tmp: tempFiles) {
             if (tmp->property(constLargeProperty).toString()==url) {
                 QImage img;
                 if (img.load(tmp->fileName())) {
@@ -1007,18 +1007,18 @@ void CoverDialog::parseLastFmQueryResponse(const QByteArray &resp)
     QStringList largeUrls=QStringList() << "extralarge" << "large";
     QStringList thumbUrls=QStringList() << "large" << "medium" << "small";
 
-    foreach (const SizeMap &urls, entries) {
+    for (const SizeMap &urls: entries) {
         QString largeUrl;
         QString thumbUrl;
 
-        foreach (const QString &u, largeUrls) {
+        for (const QString &u: largeUrls) {
             if (urls.contains(u)) {
                 largeUrl=urls[u];
                 break;
             }
         }
 
-        foreach (const QString &u, thumbUrls) {
+        for (const QString &u: thumbUrls) {
             if (urls.contains(u)) {
                 thumbUrl=urls[u];
                 break;
@@ -1028,7 +1028,7 @@ void CoverDialog::parseLastFmQueryResponse(const QByteArray &resp)
     }
 
     if (enabledProviders&Prov_CoverArt) {
-        foreach (const QString &id, musibBrainzIds) {
+        for (const QString &id: musibBrainzIds) {
             QUrl coverartUrl;
             coverartUrl.setScheme("http");
             coverartUrl.setHost(constCoverArtArchiveHost);
@@ -1069,7 +1069,7 @@ void CoverDialog::parseCoverArtArchiveQueryResponse(const QByteArray &resp)
 
     if (ok && parsed.contains("images")) {
         QVariantList images=parsed["images"].toList();
-        foreach (const QVariant &i, images) {
+        for (const QVariant &i: images) {
             QVariantMap im=i.toMap();
             if (im.contains("front") && im["front"].toBool() && im.contains("image") && im.contains("thumbnails")) {
                 QVariantMap thumb=im["thumbnails"].toMap();
@@ -1099,7 +1099,7 @@ void CoverDialog::parseSpotifyQueryResponse(const QByteArray &resp)
             const QString baseUrl=QLatin1String("https://embed.spotify.com/oembed/?url=http://open.spotify.com/")+QLatin1String(isArtist ? "artist/" : "album/");
             if (parsed.contains(key)) {
                 QVariantList results=parsed[key].toList();
-                foreach (const QVariant &res, results) {
+                for (const QVariant &res: results) {
                     QVariantMap item=res.toMap();
                     if (item.contains("href")) {
                         QString url=item["href"].toString();
@@ -1125,7 +1125,7 @@ void CoverDialog::parseITunesQueryResponse(const QByteArray &resp)
 
     if (ok && parsed.contains("results")) {
         QVariantList results=parsed["results"].toList();
-        foreach (const QVariant &res, results) {
+        for (const QVariant &res: results) {
             QVariantMap item=res.toMap();
             if (item.contains("artworkUrl100")) {
                 QString thumbUrl=item["artworkUrl100"].toString();
@@ -1144,7 +1144,7 @@ void CoverDialog::parseDeezerQueryResponse(const QByteArray &resp)
 
     if (ok && parsed.contains("data")) {
         QVariantList results=parsed["data"].toList();
-        foreach (const QVariant &res, results) {
+        for (const QVariant &res: results) {
             QVariantMap item=res.toMap();
             if (item.contains(key)) {
                 QString thumbUrl=item[key].toString();
@@ -1279,7 +1279,7 @@ void CoverDialog::dropEvent(QDropEvent *event)
         event->acceptProposedAction();
 
         QList<QUrl> urls(event->mimeData()->urls());
-        foreach (const QUrl &url, urls) {
+        for (const QUrl &url: urls) {
             if (url.scheme().isEmpty() || "file"==url.scheme()) {
                 QString path=url.path();
                 if (!currentLocalCovers.contains(path) && (path.endsWith(".jpg", Qt::CaseInsensitive) || path.endsWith(".png", Qt::CaseInsensitive))) {

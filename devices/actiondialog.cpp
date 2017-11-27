@@ -128,7 +128,7 @@ void ActionDialog::controlInfoLabel(Device *dev)
             int settingIndex=0;
             bool increase=encoder.values.at(0).value<encoder.values.at(1).value;
             int index=0;
-            foreach (const Encoders::Setting &s, encoder.values) {
+            for (const Encoders::Setting &s: encoder.values) {
                 if ((increase && s.value>opts.transcoderValue) || (!increase && s.value<opts.transcoderValue)) {
                     break;
                 } else {
@@ -164,7 +164,7 @@ void ActionDialog::updateSongCountLabel()
     QSet<QString> artists;
     QSet<QString> albums;
 
-    foreach (const Song &s, songsToAction) {
+    for (const Song &s: songsToAction) {
         artists.insert(s.albumArtist());
         albums.insert(s.albumArtist()+"--"+s.album);
     }
@@ -369,7 +369,7 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
     }
 
     setPage(PAGE_PROGRESS);
-    foreach (const Song &s, songsToAction) {
+    for (const Song &s: songsToAction) {
         dirsToClean.insert(baseDir+Utils::getDir(s.file));
     }
     show();
@@ -626,7 +626,7 @@ void ActionDialog::doNext()
                     opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
                     Encoders::Encoder encoder=Encoders::getEncoder(opts.transcoderCodec);
 
-                    foreach (const Song &s, actionedSongs) {
+                    for (const Song &s: actionedSongs) {
                         if (albumsWithoutRgTags.contains(s.album)) {
                             Song song=s;
                             song.file=encoder.changeExtension(namingOptions.createFilename(s));

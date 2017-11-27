@@ -199,7 +199,7 @@ void LibraryPage::showSongs(const QList<Song> &songs)
 {
     // Filter out non-mpd file songs...
     QList<Song> sngs;
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         if (!s.file.isEmpty() && !s.hasProtocolOrIsAbsolute()) {
             sngs.append(s);
         }
@@ -212,7 +212,7 @@ void LibraryPage::showSongs(const QList<Song> &songs)
     view->clearSearchText();
 
     bool first=true;
-    foreach (const Song &s, sngs) {
+    for (const Song &s: sngs) {
         QModelIndex idx=MpdLibraryModel::self()->findSongIndex(s);
         if (idx.isValid()) {
             if (ItemView::Mode_SimpleTree==view->viewMode() || ItemView::Mode_DetailedTree==view->viewMode() || first) {
@@ -305,7 +305,7 @@ void LibraryPage::groupByChanged()
         view->setMode(SqlLibraryModel::T_Album==mode ? ItemView::Mode_IconTop : ItemView::Mode_DetailedTree);
     }
     view->load(config);
-    foreach (QAction *act, viewAction->menu()->actions()) {
+    for (QAction *act: viewAction->menu()->actions()) {
         if (act->property(constValProp).toInt()==view->viewMode()) {
             act->setChecked(true);
             break;
@@ -353,7 +353,7 @@ void LibraryPage::addRandomAlbum()
     QStringList artists;
     QList<SqlLibraryModel::AlbumItem *> albums;
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         SqlLibraryModel::Item *item=static_cast<SqlLibraryModel::Item *>(idx.internalPointer());
         switch (item->getType()) {
         case SqlLibraryModel::T_Genre:
@@ -406,7 +406,7 @@ void LibraryPage::addRandomAlbum()
     QList<Song> songs=MpdLibraryModel::self()->getAlbumTracks(album.artist, album.id);
     if (!songs.isEmpty()) {
         QStringList files;
-        foreach (const Song &s, songs) {
+        for (const Song &s: songs) {
             files.append(s.file);
         }
         emit add(files, /*replace ? MPDConnection::ReplaceAndplay : */MPDConnection::Append, 0, false);
@@ -451,7 +451,7 @@ void LibraryPage::controlActions()
     bool allowRandomAlbum=isVisible() && !selected.isEmpty();
     if (allowRandomAlbum) {
         bool groupingAlbums=SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel();
-        foreach (const QModelIndex &idx, selected) {
+        for (const QModelIndex &idx: selected) {
             if (SqlLibraryModel::T_Track==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType() ||
                 (!groupingAlbums && SqlLibraryModel::T_Album==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType())) {
                 allowRandomAlbum=false;

@@ -158,7 +158,7 @@ void SqlLibraryModel::libraryUpdated()
     case T_Genre: {
         QList<LibraryDb::Genre> genres=db->getGenres();
         if (!genres.isEmpty())  {
-            foreach (const LibraryDb::Genre &genre, genres) {
+            for (const LibraryDb::Genre &genre: genres) {
                 root->add(new CollectionItem(T_Genre, genre.name, genre.name, tr("%n Artist(s)", "", genre.artistCount), root));
             }
         }
@@ -167,7 +167,7 @@ void SqlLibraryModel::libraryUpdated()
     case T_Artist: {
         QList<LibraryDb::Artist> artists=db->getArtists();
         if (!artists.isEmpty())  {
-            foreach (const LibraryDb::Artist &artist, artists) {
+            for (const LibraryDb::Artist &artist: artists) {
                 root->add(new CollectionItem(T_Artist, artist.name, artist.name, tr("%n Album(s)", "", artist.albumCount), root));
             }
         }
@@ -176,7 +176,7 @@ void SqlLibraryModel::libraryUpdated()
     case T_Album: {
         QList<LibraryDb::Album> albums=db->getAlbums(QString(), QString(), albumSort);
         if (!albums.isEmpty())  {
-            foreach (const LibraryDb::Album &album, albums) {
+            for (const LibraryDb::Album &album: albums) {
                 root->add(new AlbumItem(T_Album==tl && album.identifyById ? QString() : album.artist,
                                         album.id, Song::displayAlbum(album.name, album.year),
                                         T_Album==tl
@@ -279,7 +279,7 @@ void SqlLibraryModel::fetchMore(const QModelIndex &index)
         QList<LibraryDb::Artist> artists=db->getArtists(item->getId());
         if (!artists.isEmpty())  {
             beginInsertRows(index, 0, artists.count()-1);
-            foreach (const LibraryDb::Artist &artist, artists) {
+            for (const LibraryDb::Artist &artist: artists) {
                 item->add(new CollectionItem(T_Artist, artist.name, artist.name, tr("%n Album(s)", "", artist.albumCount), item));
             }
             endInsertRows();
@@ -290,7 +290,7 @@ void SqlLibraryModel::fetchMore(const QModelIndex &index)
         QList<LibraryDb::Album> albums=db->getAlbums(item->getId(), T_Genre==tl ? item->getParent()->getId() : QString(), librarySort);
         if (!albums.isEmpty())  {
             beginInsertRows(index, 0, albums.count()-1);
-            foreach (const LibraryDb::Album &album, albums) {
+            for (const LibraryDb::Album &album: albums) {
                 item->add(new CollectionItem(T_Album, album.id, Song::displayAlbum(album.name, album.year),
                                              tr("%n Tracks (%1)", "", album.trackCount).arg(Utils::formatTime(album.duration, true)), item));
             }
@@ -306,7 +306,7 @@ void SqlLibraryModel::fetchMore(const QModelIndex &index)
 
         if (!songs.isEmpty())  {
             beginInsertRows(index, 0, songs.count()-1);
-            foreach (const Song &song, songs) {
+            for (const Song &song: songs) {
                 item->add(new TrackItem(song, item));
             }
             endInsertRows();
@@ -411,7 +411,7 @@ QList<Song> SqlLibraryModel::songs(const QModelIndexList &list, bool allowPlayli
     QList<Song> songList;
     QSet<QModelIndex> set=list.toSet();
     populate(list);
-    foreach (const QModelIndex &idx, list) {
+    for (const QModelIndex &idx: list) {
         if (!containsParent(set, idx)) {
             songList+=songs(idx, allowPlaylists);
         }
@@ -424,7 +424,7 @@ QStringList SqlLibraryModel::filenames(const QModelIndexList &list, bool allowPl
 {
     QStringList files;
     QList<Song> songList=songs(list, allowPlaylists);
-    foreach (const Song &s, songList) {
+    for (const Song &s: songList) {
         files.append(s.file);
     }
     return files;
@@ -439,7 +439,7 @@ QModelIndex SqlLibraryModel::findSongIndex(const Song &song)
                 fetchMore(albumIndex);
             }
             CollectionItem *al=static_cast<CollectionItem *>(albumIndex.internalPointer());
-            foreach (Item *t, al->getChildren()) {
+            for (Item *t: al->getChildren()) {
                 if (static_cast<TrackItem *>(t)->getSong().title==song.title) {
                     return index(t->getRow(), 0, albumIndex);
                 }
@@ -463,7 +463,7 @@ QModelIndex SqlLibraryModel::findAlbumIndex(const QString &artist, const QString
 {
     if (root) {
         if (T_Album==tl) {
-            foreach (Item *a, root->getChildren()) {
+            for (Item *a: root->getChildren()) {
                 if (a->getId()==album && static_cast<AlbumItem *>(a)->getArtistId()==artist) {
                     return index(a->getRow(), 0, QModelIndex());
                 }
@@ -475,7 +475,7 @@ QModelIndex SqlLibraryModel::findAlbumIndex(const QString &artist, const QString
                     fetchMore(artistIndex);
                 }
                 CollectionItem *ar=static_cast<CollectionItem *>(artistIndex.internalPointer());
-                foreach (Item *al, ar->getChildren()) {
+                for (Item *al: ar->getChildren()) {
                     if (al->getId()==album) {
                         return index(al->getRow(), 0, artistIndex);
                     }
@@ -490,19 +490,19 @@ QModelIndex SqlLibraryModel::findArtistIndex(const QString &artist)
 {
     if (root) {
         if (T_Genre==tl) {
-            foreach (Item *g, root->getChildren()) {
+            for (Item *g: root->getChildren()) {
                 QModelIndex gIndex=index(g->getRow(), 0, QModelIndex());
                 if (canFetchMore(gIndex)) {
                     fetchMore(gIndex);
                 }
-                foreach (Item *a, static_cast<CollectionItem *>(g)->getChildren()) {
+                for (Item *a: static_cast<CollectionItem *>(g)->getChildren()) {
                     if (a->getId()==artist) {
                         return index(a->getRow(), 0, gIndex);
                     }
                 }
             }
         } if (T_Artist==tl) {
-            foreach (Item *a, root->getChildren()) {
+            for (Item *a: root->getChildren()) {
                 if (a->getId()==artist) {
                     return index(a->getRow(), 0, QModelIndex());
                 }
@@ -549,7 +549,7 @@ bool SqlLibraryModel::songExists(const Song &song)
 
 void SqlLibraryModel::populate(const QModelIndexList &list) const
 {
-    foreach (const QModelIndex &idx, list) {
+    for (const QModelIndex &idx: list) {
         if (canFetchMore(idx)) {
             const_cast<SqlLibraryModel *>(this)->fetchMore(idx);
         }
@@ -573,7 +573,7 @@ QList<Song> SqlLibraryModel::songs(const QModelIndex &idx, bool allowPlaylists) 
 {
     QList<Song> list;
     if (hasChildren(idx)) {
-        foreach (const QModelIndex &c, children(idx)) {
+        for (const QModelIndex &c: children(idx)) {
             list+=songs(c, allowPlaylists);
         }
     } else {

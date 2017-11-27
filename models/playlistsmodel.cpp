@@ -501,12 +501,12 @@ QStringList PlaylistsModel::filenames(const QModelIndexList &indexes, bool files
 {
     QStringList fnames;
     QSet<Item *> selectedPlaylists;
-    foreach(QModelIndex index, indexes) {
+    for(QModelIndex index: indexes) {
         Item *item=static_cast<Item *>(index.internalPointer());
 
         if (item->isPlaylist()) {
             selectedPlaylists.insert(item);
-            foreach (const SongItem *s, static_cast<PlaylistItem*>(item)->songs) {
+            for (const SongItem *s: static_cast<PlaylistItem*>(item)->songs) {
                 if (!filesOnly || !s->file.contains(':')) {
                     fnames << s->file;
                 }
@@ -526,17 +526,17 @@ QList<Song> PlaylistsModel::songs(const QModelIndexList &indexes) const
     QList<Song> songs;
     QSet<Item *> selectedPlaylists;
 
-    foreach (const QModelIndex &idx, indexes) {
+    for (const QModelIndex &idx: indexes) {
         Item *item=static_cast<Item *>(idx.internalPointer());
         if (item->isPlaylist()) {
             PlaylistItem *playlist=static_cast<PlaylistItem *>(item);
-            foreach (const SongItem *song, playlist->songs) {
+            for (const SongItem *song: playlist->songs) {
                 selectedPlaylists.insert(item);
                 songs.append(*song);
             }
         }
     }
-    foreach (const QModelIndex &idx, indexes) {
+    for (const QModelIndex &idx: indexes) {
         PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
         if (!item->isPlaylist()) {
             SongItem *song=static_cast<SongItem *>(item);
@@ -559,7 +559,7 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
     QStringList playlists;
     QList<quint32> positions;
     QSet<Item *> selectedPlaylists;
-    foreach(QModelIndex index, indexes) {
+    for (QModelIndex index: indexes) {
         if (!index.isValid() || 0!=index.column()) {
             continue;
         }
@@ -575,7 +575,7 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
                 playlists << playlist->name;
                 positions << pos++;
             } else {
-                foreach (const SongItem *s, playlist->songs) {
+                for (const SongItem *s: playlist->songs) {
                     filenames << s->file;
                     playlists << playlist->name;
                     positions << pos++;
@@ -645,7 +645,7 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
 
             bool fromThis=false;
             bool fromOthers=false;
-            foreach (const QString &p, playlists) {
+            for (const QString &p: playlists) {
                 if (p==pl->name) {
                     fromThis=true;
                 } else {
@@ -706,7 +706,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
             return;
         }
         beginResetModel();
-        foreach (const Playlist &p, playlists) {
+        for (const Playlist &p: playlists) {
             items.append(new PlaylistItem(p, allocateKey()));
         }
         endResetModel();
@@ -720,11 +720,11 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         QSet<QString> removed;
         QSet<QString> added;
 
-        foreach (PlaylistItem *p, items) {
+        for (PlaylistItem *p: items) {
             existing.insert(p->name);
         }
 
-        foreach (const Playlist &p, playlists) {
+        for (const Playlist &p: playlists) {
             retreived.insert(p.name);
             PlaylistItem *pl=getPlaylist(p.name);
 
@@ -740,7 +740,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         added=retreived-existing;
 
         if (removed.count()) {
-            foreach (const QString &p, removed) {
+            for (const QString &p: removed) {
                 PlaylistItem *pl=getPlaylist(p);
                 if (pl) {
                     int index=items.indexOf(pl);
@@ -754,7 +754,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         }
         if (added.count()) {
             beginInsertRows(parent, items.count(), items.count()+added.count()-1);
-            foreach (const QString &p, added) {
+            for (const QString &p: added) {
                 int idx=playlists.indexOf(Playlist(p));
                 if (-1!=idx) {
                     items.append(new PlaylistItem(playlists.at(idx), allocateKey()));
@@ -788,7 +788,7 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
 
         if (!songs.isEmpty()) {
             beginInsertRows(idx, 0, songs.count()-1);
-            foreach (const Song &s, songs) {
+            for (const Song &s: songs) {
                 pl->songs.append(new SongItem(s, pl));
             }
             endInsertRows();
@@ -845,7 +845,7 @@ void PlaylistsModel::movedInPlaylist(const QString &name, const QList<quint32> &
         return;
     }
 
-    foreach (quint32 i, idx) {
+    for (quint32 i: idx) {
         if (i>=(quint32)pl->songs.count()) {
             emit listPlaylists();
             return;
@@ -899,10 +899,10 @@ void PlaylistsModel::coverLoaded(const Song &song, int s)
     Q_UNUSED(s)
     if (!song.isArtistImageRequest() && !song.isComposerImageRequest()) {
         int plRow=0;
-        foreach (const PlaylistItem *pl, items) {
+        for (const PlaylistItem *pl: items) {
             QModelIndex plIdx;
             int songRow=0;
-            foreach (const SongItem *s, pl->songs) {
+            for (const SongItem *s: pl->songs) {
                 if (s->albumArtist()==song.albumArtist() && s->album==song.album) {
                     if (!plIdx.isValid()) {
                         plIdx=index(plRow, 0, QModelIndex());
@@ -929,20 +929,20 @@ void PlaylistsModel::updateItemMenu(bool create)
     itemMenu->clear();
     itemMenu->addAction(newAction);
     QStringList names;
-    foreach (const PlaylistItem *p, items) {
+    for (const PlaylistItem *p: items) {
         if (!p->isSmartPlaylist) {
             names << p->name;
         }
     }
     qSort(names.begin(), names.end(), PlaylistsProxyModel::compareNames);
-    foreach (const QString &n, names) {
+    for (const QString &n: names) {
         itemMenu->addAction(n, this, SLOT(emitAddToExisting()));
     }
 }
 
 PlaylistsModel::PlaylistItem * PlaylistsModel::getPlaylist(const QString &name)
 {
-    foreach (PlaylistItem *p, items) {
+    for (PlaylistItem *p: items) {
         if (p->name==name) {
             return p;
         }
@@ -953,7 +953,7 @@ PlaylistsModel::PlaylistItem * PlaylistsModel::getPlaylist(const QString &name)
 
 void PlaylistsModel::clearPlaylists()
 {
-    foreach (PlaylistItem *p, items) {
+    for (PlaylistItem *p: items) {
         usedKeys.remove(p->key);
         emit playlistRemoved(p->key);
     }
@@ -1000,7 +1000,7 @@ void PlaylistsModel::PlaylistItem::clearSongs()
 PlaylistsModel::SongItem * PlaylistsModel::PlaylistItem::getSong(const Song &song, int offset)
 {
     int i=0;
-    foreach (SongItem *s, songs) {
+    for (SongItem *s: songs) {
         if (++i<offset) {
             continue;
         }
@@ -1015,7 +1015,7 @@ PlaylistsModel::SongItem * PlaylistsModel::PlaylistItem::getSong(const Song &son
 quint32 PlaylistsModel::PlaylistItem::totalTime()
 {
     if (0==time) {
-        foreach (SongItem *s, songs) {
+        for (SongItem *s: songs) {
             time+=s->time;
         }
     }

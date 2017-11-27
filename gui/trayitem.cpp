@@ -168,7 +168,7 @@ void TrayItem::setup()
     // add icon files here...
     if (icon.isNull()) {
         QStringList sizes=QStringList() << "16" << "22" << "24" << "32" << "48" << "64";
-        foreach (const QString &s, sizes) {
+        for (const QString &s: sizes) {
             icon.addFile(QLatin1String(ICON_INSTALL_PREFIX "/")+s+QLatin1Char('x')+s+QLatin1String("/apps/cantata.png"));
         }
 
@@ -270,7 +270,7 @@ static void copyMenu(Action *from, Action *to)
         QMenu *m=to->menu();
         m->clear();
 
-        foreach (QAction *act, from->menu()->actions()) {
+        for (QAction *act: from->menu()->actions()) {
             m->addAction(act);
         }
     }

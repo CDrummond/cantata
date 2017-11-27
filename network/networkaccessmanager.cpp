@@ -138,7 +138,7 @@ void NetworkJob::jobFinished()
         QNetworkRequest origReq(job->request());
         // Copy headers...
         const QList<QByteArray> &headers=origReq.rawHeaderList();;
-        foreach (const QByteArray &header, headers) {
+        for (const QByteArray &header: headers) {
             newReq.setRawHeader(header, origReq.rawHeader(header));
         }
         QNetworkReply *newJob=static_cast<QNetworkAccessManager *>(j->manager())->get(newReq);

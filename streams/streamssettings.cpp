@@ -48,7 +48,7 @@ static bool removeDir(const QString &d, const QStringList &types)
     QDir dir(d);
     if (dir.exists()) {
         QFileInfoList files=dir.entryInfoList(types, QDir::Files|QDir::NoDotAndDotDot);
-        foreach (const QFileInfo &file, files) {
+        for (const QFileInfo &file: files) {
             if (!QFile::remove(file.absoluteFilePath())) {
                 return false;
             }
@@ -92,7 +92,7 @@ void StreamsSettings::load()
     QFont f(font());
     f.setItalic(true);
     categories->clear();
-    foreach (const StreamsModel::Category &cat, cats) {
+    for (const StreamsModel::Category &cat: cats) {
         QListWidgetItem *item=new QListWidgetItem(cat.name, categories);
         item->setCheckState(cat.hidden ? Qt::Unchecked : Qt::Checked);
         item->setData(KeyRole, cat.key);

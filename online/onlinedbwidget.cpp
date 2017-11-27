@@ -135,7 +135,7 @@ void OnlineDbWidget::addRandomAlbum()
     QStringList genres;
     QStringList artists;
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         SqlLibraryModel::Item *item=static_cast<SqlLibraryModel::Item *>(idx.internalPointer());
         switch (item->getType()) {
         case SqlLibraryModel::T_Genre:
@@ -163,7 +163,7 @@ void OnlineDbWidget::addRandomAlbum()
     QList<Song> songs=srv->getAlbumTracks(album.artist, album.id);
     if (!songs.isEmpty()) {
         QStringList files;
-        foreach (const Song &s, songs) {
+        for (const Song &s: songs) {
             files.append(s.file);
         }
         emit add(files, /*replace ? MPDConnection::ReplaceAndplay : */MPDConnection::Append, 0, false);
@@ -188,7 +188,7 @@ void OnlineDbWidget::controlActions()
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool allowRandomAlbum=isVisible() && !selected.isEmpty();
     if (allowRandomAlbum) {
-        foreach (const QModelIndex &idx, selected) {
+        for (const QModelIndex &idx: selected) {
             if (SqlLibraryModel::T_Track==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType() ||
                 SqlLibraryModel::T_Album==static_cast<SqlLibraryModel::Item *>(idx.internalPointer())->getType()) {
                 allowRandomAlbum=false;

@@ -384,7 +384,7 @@ QString DeviceOptions::createFilename(const Song &s) const
                << QLatin1String("%initial%");
     }
 
-    foreach (const QString &i, ignore) {
+    for (const QString &i: ignore) {
         path.replace(i, QLatin1String(""));
     }
     if (replaceSpaces) {

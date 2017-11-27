@@ -130,7 +130,7 @@ void StoredPlaylistsPage::clear()
 //    }
 //
 //    QModelIndexList mapped;
-//    foreach (const QModelIndex &idx, indexes) {
+//    for (const QModelIndex &idx: indexes) {
 //        mapped.append(proxy.mapToSource(idx));
 //    }
 //
@@ -155,7 +155,7 @@ void StoredPlaylistsPage::removeItems()
     QMap<QString, QList<quint32> > remSongs;
     QModelIndexList selected = view->selectedIndexes();
 
-    foreach(const QModelIndex &index, selected) {
+    for (const QModelIndex &index: selected) {
         if(index.isValid()) {
             QModelIndex realIndex(proxy.mapToSource(index));
 
@@ -190,7 +190,7 @@ void StoredPlaylistsPage::removeItems()
             return;
     }
 
-    foreach (const QString &pl, remPlaylists) {
+    for (const QString &pl: remPlaylists) {
         emit removePlaylist(pl);
     }
     QMap<QString, QList<quint32> >::ConstIterator it=remSongs.constBegin();
@@ -262,7 +262,7 @@ void StoredPlaylistsPage::removeDuplicates()
         }
 
         QList<quint32> toRemove;
-        foreach (const QString &key, map.keys()) {
+        for (const QString &key: map.keys()) {
             QList<Song> values=map.value(key);
             if (values.size()>1) {
                 Song::sortViaType(values);
@@ -308,7 +308,7 @@ void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, con
 
     if (!name.isEmpty()) {
         lastPlaylist.clear();
-        foreach (const QModelIndex &idx, indexes) {
+        for (const QModelIndex &idx: indexes) {
             QModelIndex m=proxy.mapToSource(idx);
             PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(m.internalPointer());
             if ( (item->isPlaylist() && static_cast<PlaylistsModel::PlaylistItem *>(item)->name==name) ||
@@ -374,7 +374,7 @@ void StoredPlaylistsPage::controlActions()
         }
     } else if (selected.count()<=200) {
         allSmartPlaylists=true;
-        foreach (const QModelIndex &index, selected) {
+        for (const QModelIndex &index: selected) {
             PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer());
             if (item && !(item->isPlaylist() ? static_cast<PlaylistsModel::PlaylistItem *>(item)->isSmartPlaylist
                                              : static_cast<PlaylistsModel::SongItem *>(item)->parent->isSmartPlaylist)) {

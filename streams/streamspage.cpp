@@ -170,7 +170,7 @@ StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
 
 StreamsBrowsePage::~StreamsBrowsePage()
 {
-    foreach (NetworkJob *job, resolveJobs) {
+    for (NetworkJob *job: resolveJobs) {
         disconnect(job, SIGNAL(finished()), this, SLOT(tuneInResolved()));
         job->deleteLater();
     }
@@ -197,7 +197,7 @@ void StreamsBrowsePage::addItemsToPlayQueue(const QModelIndexList &indexes, int 
         return;
     }
     QModelIndexList mapped;
-    foreach (const QModelIndex &idx, indexes) {
+    for (const QModelIndex &idx: indexes) {
         mapped.append(proxy.mapToSource(idx));
     }
 
@@ -320,7 +320,7 @@ void StreamsBrowsePage::addToFavourites()
 
     QList<const StreamsModel::Item *> items;
 
-    foreach (const QModelIndex &i, selected) {
+    for (const QModelIndex &i: selected) {
         QModelIndex mapped=proxy.mapToSource(i);
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
         if (!item->isCategory() && item->parent && !item->parent->isFavourites()) {
@@ -328,7 +328,7 @@ void StreamsBrowsePage::addToFavourites()
         }
     }
     QList<StreamItem> itemsToAdd;
-    foreach (const StreamsModel::Item *item, items) {
+    for (const StreamsModel::Item *item: items) {
         itemsToAdd.append(StreamItem(item->url, item->modifiedName()));
     }
     addToFavourites(itemsToAdd);
@@ -337,7 +337,7 @@ void StreamsBrowsePage::addToFavourites()
 void StreamsBrowsePage::addToFavourites(const QList<StreamItem> &items)
 {
     int added=0;
-    foreach (const StreamItem item, items) {
+    for (const StreamItem item: items) {
         QUrl url(item.url);
         QUrlQuery query(url);
         query.removeQueryItem(QLatin1String("locale"));
@@ -437,7 +437,7 @@ void StreamsBrowsePage::removeItems()
         
     QModelIndexList useable;
 
-    foreach (const QModelIndex &i, selected) {
+    for (const QModelIndex &i: selected) {
         QModelIndex mapped=proxy.mapToSource(i);
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
         if (!item->isCategory() && item->parent && item->parent->isFavourites()) {
@@ -524,7 +524,7 @@ void StreamsBrowsePage::controlActions()
     StreamsModel::self()->reloadAct()->setEnabled(false);
 
     bool enableRemove=true;
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(idx).internalPointer());
         if (item->isCategory() || (item->parent && !item->parent->isFavourites())) {
             enableRemove=false;
@@ -625,7 +625,7 @@ void StreamSearchPage::addSelectionToPlaylist(const QString &name, int action, q
         return;
     }
     QModelIndexList mapped;
-    foreach (const QModelIndex &idx, indexes) {
+    for (const QModelIndex &idx: indexes) {
         mapped.append(proxy.mapToSource(idx));
     }
 
@@ -643,7 +643,7 @@ void StreamSearchPage::addToFavourites()
 
     QList<const StreamsModel::Item *> items;
 
-    foreach (const QModelIndex &i, selected) {
+    for (const QModelIndex &i: selected) {
         QModelIndex mapped=proxy.mapToSource(i);
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
         if (!item->isCategory() && item->parent && !item->parent->isFavourites()) {
@@ -651,7 +651,7 @@ void StreamSearchPage::addToFavourites()
         }
     }
     QList<StreamItem> itemsToAdd;
-    foreach (const StreamsModel::Item *item, items) {
+    for (const StreamsModel::Item *item: items) {
         itemsToAdd.append(StreamItem(item->url, item->modifiedName()));
     }
     emit addToFavourites(itemsToAdd);

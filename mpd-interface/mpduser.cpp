@@ -150,7 +150,7 @@ void MPDUser::setMusicFolder(const QString &folder)
         cfgFile.close();
         if (cfgFile.open(QIODevice::WriteOnly|QIODevice::Text)) {
             QTextStream out(&cfgFile);
-            foreach (const QString &line, lines) {
+            for (const QString &line: lines) {
                 out << line;
             }
         }
@@ -200,7 +200,7 @@ void MPDUser::cleanup()
         QStringList dirKeys=QStringList() << constPlaylistsKey;
         while (!cfgFile.atEnd()) {
             QString line = QString::fromUtf8(cfgFile.readLine());
-            foreach (const QString &key, fileKeys) {
+            for (const QString &key: fileKeys) {
                 if (line.startsWith(key)) {
                     QString file=readValue(line);
                     if (!file.isEmpty()) {
@@ -222,19 +222,19 @@ void MPDUser::cleanup()
     }
 
     if (!dirs.isEmpty() && !files.isEmpty()) {
-        foreach (const QString &f, files) {
+        for (const QString &f: files) {
             QFile::remove(f);
         }
 
         if (!playlistDir.isEmpty()) {
             QFileInfoList files=QDir(playlistDir).entryInfoList(QStringList() << "*.m3u", QDir::Files|QDir::NoDotAndDotDot);
-            foreach (const QFileInfo &file, files) {
+            for (const QFileInfo &file: files) {
                 QFile::remove(file.absoluteFilePath());
             }
             removeDir(playlistDir);
         }
 
-        foreach (const QString &d, dirs) {
+        for (const QString &d: dirs) {
             removeDir(d);
         }
         removeDir(Utils::dataDir(constDir, false));

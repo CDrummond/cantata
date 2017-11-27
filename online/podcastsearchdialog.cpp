@@ -96,7 +96,7 @@ public:
 
     void parse(const QVariant &data)
     {
-        foreach (const QVariant &resultVariant, data.toMap()[QLatin1String("results")].toList()) {
+        for (const QVariant &resultVariant: data.toMap()[QLatin1String("results")].toList()) {
             QVariantMap result(resultVariant.toMap());
             if (result[QLatin1String("kind")].toString() != QLatin1String("podcast")) {
                 continue;
@@ -127,7 +127,7 @@ public:
     void parse(const QVariant &data)
     {
         QVariantList list=data.toList();
-        foreach (const QVariant &var, list) {
+        for (const QVariant &var: list) {
             QVariantMap map=var.toMap();
             addPodcast(map[QLatin1String("title")].toString(),
                        map[QLatin1String("url")].toUrl(),
@@ -453,10 +453,10 @@ void OpmlBrowsePage::parseResonse(QIODevice *dev)
     if (1==parsed.categories.count() && parsed.podcasts.isEmpty()) {
         parsed=parsed.categories.at(0);
     }
-    foreach (const OpmlParser::Category &cat, parsed.categories) {
+    for (const OpmlParser::Category &cat: parsed.categories) {
         addCategory(cat, 0);
     }
-    foreach (const OpmlParser::Podcast &pod, parsed.podcasts) {
+    for (const OpmlParser::Podcast &pod: parsed.podcasts) {
         addPodcast(pod, 0);
     }
     if (!isLoadingFromCache && tree->topLevelItemCount()>0) {
@@ -481,10 +481,10 @@ void OpmlBrowsePage::addCategory(const OpmlParser::Category &cat, QTreeWidgetIte
 
     catItem->setData(0, IsPodcastRole, false);
     catItem->setIcon(0, Icons::self()->folderIcon);
-    foreach (const OpmlParser::Podcast &pod, cat.podcasts) {
+    for (const OpmlParser::Podcast &pod: cat.podcasts) {
         addPodcast(pod, catItem);
     }
-    foreach (const OpmlParser::Category &cat, cat.categories) {
+    for (const OpmlParser::Category &cat: cat.categories) {
         addCategory(cat, catItem);
     }
 }
@@ -610,7 +610,7 @@ PodcastSearchDialog::PodcastSearchDialog(PodcastService *s, QWidget *parent)
     pages << loadDirectories(Utils::dataDir(), false, loaded);
     pages << loadDirectories(CANTATA_SYS_CONFIG_DIR, true, loaded);
 
-    foreach (PodcastPage *p, pages) {
+    for (PodcastPage *p: pages) {
         connect(p, SIGNAL(rssSelected(QUrl)), SLOT(rssSelected(QUrl)));
         connect(p, SIGNAL(error(QString)), SLOT(showError(QString)));
     }

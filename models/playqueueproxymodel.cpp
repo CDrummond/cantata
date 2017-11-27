@@ -53,7 +53,7 @@ QMimeData *PlayQueueProxyModel::mimeData(const QModelIndexList &indexes) const
 {
     QModelIndexList sourceIndexes;
 
-    foreach(QModelIndex index, indexes) {
+    for (const QModelIndex &index: indexes) {
         sourceIndexes.append(mapToSource(index));
     }
 

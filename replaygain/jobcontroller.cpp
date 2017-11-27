@@ -99,12 +99,12 @@ void JobController::startJobs()
 }
 
 void JobController::cancel() {
-    foreach (Job *j, active) {
+    for (Job *j: active) {
         disconnect(j, SIGNAL(done()), this, SLOT(jobDone()));
         j->stop();
     }
     active.clear();
-    foreach (Job *j, jobs) {
+    for (Job *j: jobs) {
         j->deleteLater();
     }
     jobs.clear();

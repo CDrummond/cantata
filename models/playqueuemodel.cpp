@@ -93,7 +93,7 @@ static bool checkExtension(const QString &file)
 static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
 {
     QStringList useable;
-    foreach (const QString &path, urls) {
+    for (const QString &path: urls) {
         QUrl u=percentEncoded ? QUrl::fromPercentEncoding(path.toUtf8()) : QUrl(path);
         #if defined ENABLE_DEVICES_SUPPORT && (defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND)
         QString cdDevice=AudioCdDevice::getDevice(u);
@@ -119,7 +119,7 @@ void PlayQueueModel::encode(QMimeData &mimeData, const QString &mime, const QStr
     QByteArray encodedData;
     QTextStream stream(&encodedData, QIODevice::WriteOnly);
 
-    foreach (const QString &v, values) {
+    for (const QString &v: values) {
         stream << v << endl;
     }
 
@@ -130,7 +130,7 @@ void PlayQueueModel::encode(QMimeData &mimeData, const QString &mime, const QLis
 {
     QByteArray encodedData;
     QDataStream stream(&encodedData, QIODevice::WriteOnly);
-    foreach (quint32 v, values) {
+    for (quint32 v: values) {
         stream << v;
     }
     mimeData.setData(mime, encodedData);
@@ -628,7 +628,7 @@ QMimeData *PlayQueueModel::mimeData(const QModelIndexList &indexes) const
     QList<quint32> positions;
     QStringList filenames;
 
-    foreach(QModelIndex index, indexes) {
+    for (const QModelIndex &index: indexes) {
         if (index.isValid() && 0==index.column()) {
             positions.append(index.row());
             filenames.append(static_cast<Song *>(index.internalPointer())->file);
@@ -692,7 +692,7 @@ void PlayQueueModel::addItems(const QStringList &items, int row, int action, qui
 {
     bool haveRadioStream=false;
 
-    foreach (const QString &f, items) {
+    for (const QString &f: items) {
         QUrl u(f);
 
         if (u.scheme().startsWith(StreamsModel::constPrefix)) {
@@ -726,14 +726,14 @@ void PlayQueueModel::prioritySet(const QMap<qint32, quint8> &prio)
 {
     QList<Song> prev;
     if (undoEnabled) {
-        foreach (Song s, songs) {
+        for (const Song &s: songs) {
             prev.append(s);
         }
     }
     QMap<qint32, quint8> copy = prio;
     int row=0;
 
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         QMap<qint32, quint8>::ConstIterator it = copy.find(s.id);
         if (copy.end()!=it) {
             s.priority=it.value();
@@ -757,7 +757,7 @@ qint32 PlayQueueModel::getIdByRow(qint32 row) const
 
 qint32 PlayQueueModel::getSongId(const QString &file) const
 {
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         if (s.file==file) {
             return s.id;
         }
@@ -789,7 +789,7 @@ Song PlayQueueModel::getSongByRow(const qint32 row) const
 
 Song PlayQueueModel::getSongById(qint32 id) const
 {
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         if (s.id==id) {
             return s;
         }
@@ -873,7 +873,7 @@ void PlayQueueModel::update(const QList<Song> &songList, bool isComplete)
     }
 
     QSet<qint32> newIds;
-    foreach (const Song &s, songList) {
+    for (const Song &s: songList) {
         newIds.insert(s.id);
     }
 
@@ -895,7 +895,7 @@ void PlayQueueModel::update(const QList<Song> &songList, bool isComplete)
         time = 0;
 
         QSet<qint32> removed=ids-newIds;
-        foreach (qint32 id, removed) {
+        for (qint32 id: removed) {
             qint32 row=getRowById(id);
             if (row!=-1) {
                 beginRemoveRows(QModelIndex(), row, row);
@@ -980,7 +980,7 @@ void PlayQueueModel::setStopAfterTrack(qint32 track)
 bool PlayQueueModel::removeCantataStreams(bool cdOnly)
 {
     QList<qint32> ids;
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         if (s.isCdda() || (!cdOnly && s.isCantataStream())) {
             ids.append(s.id);
         }
@@ -1001,7 +1001,7 @@ void PlayQueueModel::removeAll()
 void PlayQueueModel::remove(const QList<int> &rowsToRemove)
 {
     QList<qint32> removeIds;
-    foreach (const int &r, rowsToRemove) {
+    for (const int &r: rowsToRemove) {
         if (r>-1 && r<songs.count()) {
             removeIds.append(songs.at(r).id);
         }
@@ -1015,12 +1015,12 @@ void PlayQueueModel::remove(const QList<int> &rowsToRemove)
 void PlayQueueModel::crop(const QList<int> &rowsToKeep)
 {
     QSet<qint32> allIds;
-    foreach(const Song &song, songs) {
+    for (const Song &song: songs) {
         allIds.insert(song.id);
     }
 
     QSet<qint32> keepIds;
-    foreach (const int &r, rowsToKeep) {
+    for (const int &r: rowsToKeep) {
         if (r>-1 && r<songs.count()) {
             keepIds.insert(songs.at(r).id);
         }
@@ -1035,7 +1035,7 @@ void PlayQueueModel::crop(const QList<int> &rowsToKeep)
 void PlayQueueModel::setRating(const QList<int> &rows, quint8 rating) const
 {
     QSet<QString> files;
-    foreach (const int &r, rows) {
+    for (const int &r: rows) {
         if (r>-1 && r<songs.count()) {
             const Song &s=songs.at(r);
             if (Song::Standard==s.type && !files.contains(s.file)) {
@@ -1062,7 +1062,7 @@ void PlayQueueModel::enableUndo(bool e)
 static PlayQueueModel::UndoItem getState(const QList<Song> &songs)
 {
     PlayQueueModel::UndoItem item;
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         item.files.append(s.file);
         item.priority.append(s.priority);
     }
@@ -1223,7 +1223,7 @@ void PlayQueueModel::sortBy()
     if (act) {
         QString key=act->property(constSortByKey).toString();
         QList<const Song *> copy;
-        foreach (const Song &s, songs) {
+        for (const Song &s: songs) {
             ((Song &)s).populateSorts();
             copy.append(&s);
         }
@@ -1248,7 +1248,7 @@ void PlayQueueModel::sortBy()
             qSort(copy.begin(), copy.end(), trackSort);
         }
         QList<quint32> positions;
-        foreach (const Song *s, copy) {
+        for (const Song *s: copy) {
             positions.append(getRowById(s->id));
         }
         emit setOrder(positions);
@@ -1258,12 +1258,12 @@ void PlayQueueModel::sortBy()
 void PlayQueueModel::removeDuplicates()
 {
     QMap<QString, QList<Song> > map;
-    foreach (const Song &song, songs) {
+    for (const Song &song: songs) {
         map[song.albumKey()+"-"+song.artistSong()+"-"+song.track].append(song);
     }
 
     QList<qint32> toRemove;
-    foreach (const QString &key, map.keys()) {
+    for (const QString &key: map.keys()) {
         QList<Song> values=map.value(key);
         if (values.size()>1) {
             Song::sortViaType(values);
@@ -1298,7 +1298,7 @@ void PlayQueueModel::stickerDbChanged()
 {
     // Sticker DB changed, need to re-request ratings...
     QSet<QString> requests;
-    foreach (const Song &song, songs) {
+    for (const Song &song: songs) {
         if (Song::Standard==song.type && song.rating<=Song::Rating_Max && !requests.contains(song.file)) {
             emit getRating(song.file);
             requests.insert(song.file);
@@ -1340,7 +1340,7 @@ void PlayQueueModel::stats()
 {
     time = 0;
     //Loop over all songs
-    foreach(const Song &song, songs) {
+    for (const Song &song: songs) {
         time += song.time;
     }
 
@@ -1360,7 +1360,7 @@ static bool songSort(const Song *s1, const Song *s2)
 void PlayQueueModel::shuffleAlbums()
 {
     QMap<quint32, QList<const Song *> > albums;
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         albums[s.key].append(&s);
     }
 
@@ -1374,7 +1374,7 @@ void PlayQueueModel::shuffleAlbums()
         quint32 key=keys.takeAt(Utils::random(keys.count()));
         QList<const Song *> albumSongs=albums[key];
         qSort(albumSongs.begin(), albumSongs.end(), songSort);
-        foreach (const Song *song, albumSongs) {
+        for (const Song *song: albumSongs) {
             positions.append(getRowById(song->id));
         }
     }
@@ -1394,11 +1394,11 @@ void PlayQueueModel::remove(const QList<Song> &rem)
     QSet<QString> s;
     QList<qint32> ids;
 
-    foreach (const Song &song, rem) {
+    for (const Song &song: rem) {
         s.insert(song.file);
     }
 
-    foreach (const Song &song, songs) {
+    for (const Song &song: songs) {
         if (s.contains(song.file)) {
             ids.append(song.id);
             s.remove(song.file);
@@ -1420,7 +1420,7 @@ void PlayQueueModel::updateDetails(const QList<Song> &updated)
     bool currentUpdated=false;
     Song currentSong;
 
-    foreach (const Song &song, updated) {
+    for (const Song &song: updated) {
         songMap[song.file]=song;
     }
 
@@ -1452,7 +1452,7 @@ void PlayQueueModel::updateDetails(const QList<Song> &updated)
             beginResetModel();
             endResetModel();
         } else {
-            foreach (int row, updatedRows) {
+            for (int row: updatedRows) {
                 emit dataChanged(index(row, 0), index(row, columnCount(QModelIndex())-1));
             }
         }
@@ -1466,7 +1466,7 @@ void PlayQueueModel::updateDetails(const QList<Song> &updated)
 QStringList PlayQueueModel::filenames()
 {
     QStringList names;
-    foreach(const Song &song, songs) {
+    for (const Song &song: songs) {
         names << song.file;
     }
     return names;

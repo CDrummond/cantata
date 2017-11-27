@@ -189,7 +189,7 @@ void UmsDevice::setup()
         dirs << QLatin1String("Music") << QLatin1String("MUSIC")
              << QLatin1String("Albums") << QLatin1String("ALBUMS");
 
-        foreach (const QString &d, dirs) {
+        for (const QString &d: dirs) {
             if (QDir(path+d).exists()) {
                 audioFolder=path+d;
                 break;
@@ -280,7 +280,7 @@ void UmsDevice::saveOptions()
             out << constCollectionNameKey << '=' << opts.name << '\n';
         }
 
-        foreach (const QString &u, unusedParams) {
+        for (const QString &u: unusedParams) {
             out << u << '\n';
         }
     }

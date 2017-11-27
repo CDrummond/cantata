@@ -96,7 +96,7 @@ void WindowManager::registerWidgetAndChildren(QWidget *w)
 {
     QObjectList children=w->children();
 
-    foreach (QObject *o, children) {
+    for (QObject *o: children) {
         if (qobject_cast<QWidget *>(o)) {
             registerWidgetAndChildren((QWidget *)o);
         }

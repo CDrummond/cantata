@@ -83,7 +83,7 @@ bool PodcastService::Proxy::lessThan(const QModelIndex &left, const QModelIndex 
 
 bool PodcastService::Proxy::filterAcceptsPodcast(const Podcast *pod) const
 {
-    foreach (const Episode *ep, pod->episodes) {
+    for (const Episode *ep: pod->episodes) {
         if (filterAcceptsEpisode(ep)) {
             return true;
         }
@@ -301,7 +301,7 @@ bool PodcastService::Podcast::save() const
     writer.writeAttribute(constRssAttribute, url.toString()); // ??
     writer.writeAttribute(constNameAttribute, name);
     writer.writeAttribute(constDateAttribute, descr);
-    foreach (Episode *ep, episodes) {
+    for (Episode *ep: episodes) {
         writer.writeStartElement(constEpisodeTag);
         writer.writeAttribute(constNameAttribute, ep->name);
         writer.writeAttribute(constDescrAttribute, ep->descr);
@@ -333,7 +333,7 @@ void PodcastService::Podcast::add(Episode *ep)
 
 void PodcastService::Podcast::add(QList<Episode *> &eps)
 {
-    foreach(Episode *ep, eps) {
+    for (Episode *ep: eps) {
         add(ep);
     }
     setUnplayedCount();
@@ -341,7 +341,7 @@ void PodcastService::Podcast::add(QList<Episode *> &eps)
 
 PodcastService::Episode * PodcastService::Podcast::getEpisode(const QUrl &epUrl) const
 {
-    foreach (Episode *episode, episodes) {
+    for (Episode *episode: episodes) {
         if (episode->url==epUrl) {
             return episode;
         }
@@ -352,7 +352,7 @@ PodcastService::Episode * PodcastService::Podcast::getEpisode(const QUrl &epUrl)
 void PodcastService::Podcast::setUnplayedCount()
 {
     unplayedCount=episodes.count();
-    foreach (Episode *episode, episodes) {
+    for (Episode *episode: episodes) {
         if (episode->played) {
             unplayedCount--;
         }
@@ -610,7 +610,7 @@ QStringList PodcastService::filenames(const QModelIndexList &indexes, bool allow
     Q_UNUSED(allowPlaylists)
     QList<Song> songList=songs(indexes);
     QStringList files;
-    foreach (const Song &song, songList) {
+    for (const Song &song: songList) {
         files.append(song.file);
     }
     return files;
@@ -622,18 +622,18 @@ QList<Song> PodcastService::songs(const QModelIndexList &indexes, bool allowPlay
     QList<Song> songs;
     QSet<Item *> selectedPodcasts;
 
-    foreach (const QModelIndex &idx, indexes) {
+    for (const QModelIndex &idx: indexes) {
         Item *item=static_cast<Item *>(idx.internalPointer());
         if (item->isPodcast()) {
             Podcast *podcast=static_cast<Podcast *>(item);
-            foreach (const Episode *episode, podcast->episodes) {
+            for (const Episode *episode: podcast->episodes) {
                 selectedPodcasts.insert(item);
                 Song s=episode->toSong();
                 songs.append(fixPath(s));
             }
         }
     }
-    foreach (const QModelIndex &idx, indexes) {
+    for (const QModelIndex &idx: indexes) {
         Item *item=static_cast<Item *>(idx.internalPointer());
         if (!item->isPodcast()) {
             Episode *episode=static_cast<Episode *>(item);
@@ -681,7 +681,7 @@ void PodcastService::loadAll()
     if (!dir.isEmpty()) {
         QDir d(dir);
         QStringList entries=d.entryList(QStringList() << "*"+constExt, QDir::Files|QDir::Readable|QDir::NoDot|QDir::NoDotDot);
-        foreach (const QString &e, entries) {
+        for (const QString &e: entries) {
             Podcast *podcast=new Podcast(dir+e);
             if (podcast->load()) {
                 podcasts.append(podcast);
@@ -697,7 +697,7 @@ void PodcastService::loadAll()
 
 void PodcastService::cancelAll()
 {
-    foreach (NetworkJob *j, rssJobs) {
+    for (NetworkJob *j: rssJobs) {
         disconnect(j, SIGNAL(finished()), this, SLOT(rssJobFinished()));
         j->cancelAndDelete();
     }
@@ -757,7 +757,7 @@ void PodcastService::rssJobFinished()
             podcast->name=ch.name;
             podcast->descr=ch.description;
             podcast->unplayedCount=ch.episodes.count();
-            foreach (const RssParser::Episode &ep, ch.episodes) {
+            for (const RssParser::Episode &ep: ch.episodes) {
                 Episode *episode=new Episode(ep.publicationDate, ep.name, ep.url, podcast);
                 episode->duration=ep.duration;
                 episode->descr=ep.description;
@@ -769,7 +769,7 @@ void PodcastService::rssJobFinished()
             emit dataChanged(QModelIndex(), QModelIndex());
             if (autoDownload) {
                 int ep=0;
-                foreach (Episode *episode, podcast->episodes) {
+                for (Episode *episode: podcast->episodes) {
                     downloadEpisode(podcast, QUrl(episode->url));
                     if (autoDownload<1000 && ++ep>=autoDownload) {
                         break;
@@ -784,10 +784,10 @@ void PodcastService::rssJobFinished()
             }
             QSet<QUrl> newEpisodes;
             QSet<QUrl> oldEpisodes;
-            foreach (Episode *episode, podcast->episodes) {
+            for (Episode *episode: podcast->episodes) {
                 newEpisodes.insert(episode->url);
             }
-            foreach (const RssParser::Episode &ep, ch.episodes) {
+            for (const RssParser::Episode &ep: ch.episodes) {
                 oldEpisodes.insert(ep.url);
             }
 
@@ -796,7 +796,7 @@ void PodcastService::rssJobFinished()
             if (added.count() || removed.count()) {
                 QModelIndex podcastIndex=createIndex(podcasts.indexOf(podcast), 0, (void *)podcast);
                 if (removed.count()) {
-                    foreach (const QUrl &s, removed) {
+                    for (const QUrl &s: removed) {
                         Episode *episode=podcast->getEpisode(s);
                         if (episode->localFile.isEmpty() || !QFile::exists(episode->localFile)) {
                             int idx=podcast->episodes.indexOf(episode);
@@ -812,7 +812,7 @@ void PodcastService::rssJobFinished()
                 if (added.count()) {
                     beginInsertRows(podcastIndex, podcast->episodes.count(), (podcast->episodes.count()+added.count())-1);
 
-                    foreach (const RssParser::Episode &ep, ch.episodes) {
+                    for (const RssParser::Episode &ep: ch.episodes) {
                         QString epUrl=ep.url.toString();
                         if (added.contains(epUrl)) {
                             Episode *episode=new Episode(ep.publicationDate, ep.name, ep.url, podcast);
@@ -851,7 +851,7 @@ void PodcastService::configure(QWidget *p)
 
 PodcastService::Podcast * PodcastService::getPodcast(const QUrl &url) const
 {
-    foreach (Podcast *podcast, podcasts) {
+    for (Podcast *podcast: podcasts) {
         if (podcast->url==url) {
             return podcast;
         }
@@ -864,7 +864,7 @@ void PodcastService::unSubscribe(Podcast *podcast)
     int row=podcasts.indexOf(podcast);
     if (row>=0) {
         QList<Episode *> episodes;
-        foreach (Episode *e, podcast->episodes) {
+        for (Episode *e: podcast->episodes) {
             episodes.append(e);
         }
         cancelDownloads(episodes);
@@ -881,7 +881,7 @@ void PodcastService::unSubscribe(Podcast *podcast)
 
 void PodcastService::refresh(const QModelIndexList &list)
 {
-    foreach (const QModelIndex &idx, list) {
+    for (const QModelIndex &idx: list) {
         Item *itm=static_cast<Item *>(idx.internalPointer());
         if (itm->isPodcast()) {
             refreshSubscription(static_cast<Podcast *>(itm));
@@ -891,7 +891,7 @@ void PodcastService::refresh(const QModelIndexList &list)
 
 void PodcastService::refreshAll()
 {
-    foreach (Podcast *pod, podcasts) {
+    for (Podcast *pod: podcasts) {
         refreshSubscription(pod);
     }
 }
@@ -911,7 +911,7 @@ void PodcastService::refreshSubscription(Podcast *item)
 
 bool PodcastService::processingUrl(const QUrl &url) const
 {
-    foreach (NetworkJob *j, rssJobs) {
+    for (NetworkJob *j: rssJobs) {
         if (j->origUrl()==url) {
             return true;
         }
@@ -937,7 +937,7 @@ bool PodcastService::downloadingEpisode(const QUrl &url) const
 
 void PodcastService::cancelAllDownloads()
 {
-    foreach (const DownloadEntry &e, toDownload) {
+    for (const DownloadEntry &e: toDownload) {
         updateEpisode(e.rssUrl, e.url, Episode::NotDownloading);
     }
 
@@ -947,7 +947,7 @@ void PodcastService::cancelAllDownloads()
 
 void PodcastService::downloadPodcasts(Podcast *pod, const QList<Episode *> &episodes)
 {
-    foreach (Episode *ep, episodes) {
+    for (Episode *ep: episodes) {
         downloadEpisode(pod, QUrl(ep->url));
     }
 }
@@ -956,7 +956,7 @@ void PodcastService::deleteDownloadedPodcasts(Podcast *pod, const QList<Episode 
 {
     cancelDownloads(episodes);
     bool modified=false;
-    foreach (Episode *ep, episodes) {
+    for (Episode *ep: episodes) {
         QString fileName=ep->localFile;
         if (!fileName.isEmpty()) {
             if (QFile::exists(fileName)) {
@@ -986,7 +986,7 @@ void PodcastService::deleteDownloadedPodcasts(Podcast *pod, const QList<Episode 
 void PodcastService::setPodcastsAsListened(Podcast *pod, const QList<Episode *> &episodes, bool listened)
 {
     bool modified=false;
-    foreach (Episode *ep, episodes) {
+    for (Episode *ep: episodes) {
         if (listened!=ep->played) {
             ep->played=listened;
             QModelIndex idx=createIndex(pod->episodes.indexOf(ep), 0, (void *)ep);
@@ -1033,7 +1033,7 @@ void PodcastService::downloadEpisode(const Podcast *podcast, const QUrl &episode
 void PodcastService::cancelDownloads(const QList<Episode *> episodes)
 {
     bool cancelDl=false;
-    foreach (Episode *e, episodes) {
+    for (Episode *e: episodes) {
         toDownload.removeAll(e->url);
         e->downloadProg=Episode::NotDownloading;
         QModelIndex idx=createIndex(e->parent->episodes.indexOf(e), 0, (void *)e);
@@ -1120,9 +1120,9 @@ void PodcastService::clearPartialDownloads()
 
     dest=Utils::fixPath(dest);
     QStringList sub=QDir(dest).entryList(QDir::Dirs|QDir::NoDotAndDotDot);
-    foreach (const QString &d, sub) {
+    for (const QString &d: sub) {
         QStringList partials=QDir(dest+d).entryList(QStringList() << QLatin1Char('*')+constPartialExt, QDir::Files);
-        foreach (const QString &p, partials) {
+        for (const QString &p: partials) {
             QFile::remove(dest+d+Utils::constDirSep+p);
         }
     }
@@ -1249,7 +1249,7 @@ void PodcastService::stopRssUpdateTimer()
 
 void PodcastService::updateRss()
 {
-    foreach (Podcast *podcast, podcasts) {
+    for (Podcast *podcast: podcasts) {
         const QUrl &url=podcast->url;
         updateUrls.insert(url);
         if (!processingUrl(url)) {
@@ -1265,8 +1265,8 @@ void PodcastService::currentMpdSong(const Song &s)
         if (path.isEmpty()) {
             path=s.file;
         }
-        foreach (Podcast *podcast, podcasts) {
-            foreach (Episode *episode, podcast->episodes) {
+        for (Podcast *podcast: podcasts) {
+            for (Episode *episode: podcast->episodes) {
                 if (episode->url==path || episode->localFile==path) {
                     if (!episode->played) {
                         episode->played=true;

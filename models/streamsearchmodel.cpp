@@ -217,7 +217,7 @@ void StreamSearchModel::fetchMore(const QModelIndex &index)
 QStringList StreamSearchModel::filenames(const QModelIndexList &indexes, bool addPrefix) const
 {
     QStringList fnames;
-    foreach(QModelIndex index, indexes) {
+    for (const QModelIndex &index: indexes) {
         StreamsModel::Item *item=static_cast<StreamsModel::Item *>(index.internalPointer());
         if (!item->isCategory() && !fnames.contains(item->url)) {
             fnames << StreamsModel::modifyUrl(item->url, addPrefix, item->name);
@@ -244,7 +244,7 @@ QStringList StreamSearchModel::mimeTypes() const
 void StreamSearchModel::clear()
 {
     cancelAll();
-    foreach (StreamsModel::Item *item, root->children) {
+    for (StreamsModel::Item *item: root->children) {
         StreamsModel::CategoryItem *cat=static_cast<StreamsModel::CategoryItem *>(item);
 		if (cat->children.count()) {
 			QModelIndex index = createIndex(root->children.indexOf(cat), 0, (void *)cat);
@@ -287,7 +287,7 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
     clear();
     currentSearch=searchTerm;
 
-    foreach (StreamsModel::Item *item, root->children) {
+    for (StreamsModel::Item *item: root->children) {
         QUrl searchUrl;
         QUrlQuery query;
         switch (root->children.indexOf(item)) {
@@ -339,7 +339,7 @@ void StreamSearchModel::cancelAll()
 {
     if (!jobs.isEmpty()) {
         QList<NetworkJob *> jobList=jobs.keys();
-        foreach (NetworkJob *j, jobList) {
+        for (NetworkJob *j: jobList) {
             j->cancelAndDelete();
         }
         jobs.clear();
@@ -391,7 +391,7 @@ QList<StreamsModel::Item *> StreamSearchModel::getStreams(StreamsModel::Category
 {
     QList<StreamsModel::Item *> streams;
     if (cat) {
-        foreach (StreamsModel::Item *i, cat->children) {
+        for (StreamsModel::Item *i: cat->children) {
             if (i->isCategory()) {
                 streams+=getStreams(static_cast<StreamsModel::CategoryItem *>(i));
             } else {

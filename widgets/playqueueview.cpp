@@ -345,7 +345,7 @@ QList<Song> PlayQueueView::selectedSongs() const
     const QModelIndexList selected = selectedIndexes();
     QList<Song> songs;
 
-    foreach (const QModelIndex &idx, selected) {
+    for (const QModelIndex &idx: selected) {
         Song song=idx.data(Cantata::Role_Song).value<Song>();
         if (!song.file.isEmpty() && !song.hasProtocolOrIsAbsolute()) {
             songs.append(song);

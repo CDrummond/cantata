@@ -39,7 +39,7 @@ bool SongDialog::songsOk(const QList<Song> &songs, const QString &base, bool isM
 {
     QWidget *wid=isVisible() ? this : parentWidget();
     int checked=0;
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         const QString sfile=s.filePath();
         const QString file=s.filePath(base);
         DBUG << "Checking dir:" << base << " song:" << sfile << " file:" << file;

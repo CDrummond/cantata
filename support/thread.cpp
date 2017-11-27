@@ -51,17 +51,17 @@ GLOBAL_STATIC(ThreadCleaner, instance)
 void ThreadCleaner::stopAll()
 {
     DBUG << "Remaining threads:" << threads.count();
-    foreach (Thread *thread, threads) {
+    for (Thread *thread: threads) {
         DBUG << "Cleanup" << thread->objectName();
         disconnect(thread, SIGNAL(finished()), this, SLOT(threadFinished()));
     }
 
-    foreach (Thread *thread, threads) {
+    for (Thread *thread: threads) {
         thread->stop();
     }
 
     QList<Thread *> stillRunning;
-    foreach (Thread *thread, threads) {
+    for (Thread *thread: threads) {
         if (thread->wait(250)) {
             delete thread;
         } else {
@@ -72,7 +72,7 @@ void ThreadCleaner::stopAll()
 
     // Terminate any still running threads...
     signal(SIGSEGV, segvHandler); // Ignore SEGV in case a thread throws an error...
-    foreach (Thread *thread, stillRunning) {
+    for (Thread *thread: stillRunning) {
         thread->terminate();
     }
 }

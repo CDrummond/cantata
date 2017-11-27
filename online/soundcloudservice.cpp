@@ -98,7 +98,7 @@ void SoundCloudService::jobFinished()
         QVariant result=QJsonDocument::fromJson(j->readAll()).toVariant();
         if (result.isValid()) {
             QVariantList list = result.toList();
-            foreach(const QVariant &item, list) {
+            for (const QVariant &item: list) {
                 QVariantMap details=item.toMap();
                 if (details["title"].toString().isEmpty()) {
                     continue;

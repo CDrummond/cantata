@@ -64,7 +64,7 @@ void MusicLibraryItemRoot::refreshIndexes()
     }
     m_indexes.clear();
     int i=0;
-    foreach (MusicLibraryItem *item, m_childItems) {
+    for (MusicLibraryItem *item: m_childItems) {
         m_indexes.insert(item->data(), i++);
     }
 }
@@ -98,7 +98,7 @@ QSet<Song> MusicLibraryItemRoot::allSongs(bool revertVa) const
 {
     QSet<Song> songs;
 
-    foreach (const MusicLibraryItem *child, m_childItems) {
+    for (const MusicLibraryItem *child: m_childItems) {
         if (MusicLibraryItem::Type_Song==child->itemType()) {
             if (revertVa) {
                 Song s=static_cast<const MusicLibraryItemSong *>(child)->song();
@@ -108,8 +108,8 @@ QSet<Song> MusicLibraryItemRoot::allSongs(bool revertVa) const
                 songs.insert(static_cast<const MusicLibraryItemSong *>(child)->song());
             }
         } else {
-            foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(child)->childItems()) {
-                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
+            for (const MusicLibraryItem *album: static_cast<const MusicLibraryItemContainer *>(child)->childItems()) {
+                for (const MusicLibraryItem *song: static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
                     if (revertVa) {
                         Song s=static_cast<const MusicLibraryItemSong *>(song)->song();
                         s.revertVariousArtists();
@@ -126,7 +126,7 @@ QSet<Song> MusicLibraryItemRoot::allSongs(bool revertVa) const
 
 void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres)
 {
-    foreach (const MusicLibraryItem *child, m_childItems) {
+    for (const MusicLibraryItem *child: m_childItems) {
         if (MusicLibraryItem::Type_Song==child->itemType()) {
             const Song &s=static_cast<const MusicLibraryItemSong *>(child)->song();
             artists.insert(s.artist);
@@ -137,8 +137,8 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
                 genres+=s.genres[i];
             }
         } else if (MusicLibraryItem::Type_Artist==child->itemType()) {
-            foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(child)->childItems()) {
-                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
+            for (const MusicLibraryItem *album: static_cast<const MusicLibraryItemContainer *>(child)->childItems()) {
+                for (const MusicLibraryItem *song: static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
                     const Song &s=static_cast<const MusicLibraryItemSong *>(song)->song();
                     artists.insert(s.artist);
                     albumArtists.insert(s.albumArtist());
@@ -163,7 +163,7 @@ void MusicLibraryItemRoot::updateSongFile(const Song &from, const Song &to)
     if (art) {
         MusicLibraryItemAlbum *alb=art->album(from, false);
         if (alb) {
-            foreach (MusicLibraryItem *song, alb->childItems()) {
+            for (MusicLibraryItem *song: alb->childItems()) {
                 if (static_cast<MusicLibraryItemSong *>(song)->file()==from.file) {
                     static_cast<MusicLibraryItemSong *>(song)->setFile(to.file);
                     return;
@@ -243,8 +243,8 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, MusicLibraryProgressM
     //Start with the document
     writer.writeStartElement(constTopTag);
     writer.writeAttribute(constVersionAttribute, QString::number(constVersion));
-    foreach (const MusicLibraryItem *a, childItems()) {
-        foreach (const MusicLibraryItem *al, static_cast<const MusicLibraryItemArtist *>(a)->childItems()) {
+    for (const MusicLibraryItem *a: childItems()) {
+        for (const MusicLibraryItem *al: static_cast<const MusicLibraryItemArtist *>(a)->childItems()) {
             total+=al->childCount();
             if (prog && prog->wasStopped()) {
                 return;
@@ -255,14 +255,14 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, MusicLibraryProgressM
     writer.writeAttribute(constnumTracksAttribute, QString::number(total));
 
     //Loop over all artist, albums and tracks.
-    foreach (const MusicLibraryItem *a, childItems()) {
+    for (const MusicLibraryItem *a: childItems()) {
         const MusicLibraryItemArtist *artist = static_cast<const MusicLibraryItemArtist *>(a);
-        foreach (const MusicLibraryItem *al, artist->childItems()) {
+        for (const MusicLibraryItem *al: artist->childItems()) {
             if (prog && prog->wasStopped()) {
                 return;
             }
             const MusicLibraryItemAlbum *album = static_cast<const MusicLibraryItemAlbum *>(al);
-            foreach (const MusicLibraryItem *t, album->childItems()) {
+            for (const MusicLibraryItem *t: album->childItems()) {
                 const MusicLibraryItemSong *track = static_cast<const MusicLibraryItemSong *>(t);
                 const Song &song=track->song();
                 writer.writeStartElement(constTrackElement);
@@ -486,7 +486,7 @@ void MusicLibraryItemRoot::add(const QSet<Song> &songs)
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
 
-    foreach (const Song &s, songs) {
+    for (const Song &s: songs) {
         if (s.isEmpty()) {
             continue;
         }
@@ -517,10 +517,10 @@ bool MusicLibraryItemRoot::update(const QSet<Song> &songs)
 
     bool updatedSongs=added.count()||removed.count();
 
-    foreach (const Song &s, removed) {
+    for (const Song &s: removed) {
         removeSongFromList(s);
     }
-    foreach (const Song &s, added) {
+    for (const Song &s: added) {
         addSongToList(s);
     }
     return updatedSongs;
@@ -529,7 +529,7 @@ bool MusicLibraryItemRoot::update(const QSet<Song> &songs)
 const MusicLibraryItem * MusicLibraryItemRoot::findSong(const Song &s) const
 {
     if (isFlat) {
-        foreach (const MusicLibraryItem *songItem, childItems()) {
+        for (const MusicLibraryItem *songItem: childItems()) {
             if (songItem->data()==s.displayTitle()) {
                 return songItem;
             }
@@ -539,7 +539,7 @@ const MusicLibraryItem * MusicLibraryItemRoot::findSong(const Song &s) const
         if (artistItem) {
             MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
             if (albumItem) {
-                foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
+                for (const MusicLibraryItem *songItem: albumItem->childItems()) {
                     if (songItem->data()==s.displayTitle() && static_cast<const MusicLibraryItemSong *>(songItem)->song().track==s.track) {
                         return songItem;
                     }
@@ -574,7 +574,7 @@ bool MusicLibraryItemRoot::updateSong(const Song &orig, const Song &edit)
 
     if (isFlat) {
         int songRow=0;
-        foreach (MusicLibraryItem *song, childItems()) {
+        for (MusicLibraryItem *song: childItems()) {
             if (static_cast<MusicLibraryItemSong *>(song)->song().file==orig.file) {
                 static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
                 QModelIndex idx=m_model->createIndex(songRow, 0, song);
@@ -593,7 +593,7 @@ bool MusicLibraryItemRoot::updateSong(const Song &orig, const Song &edit)
             return false;
         }
         int songRow=0;
-        foreach (MusicLibraryItem *song, albumItem->childItems()) {
+        for (MusicLibraryItem *song: albumItem->childItems()) {
             if (static_cast<MusicLibraryItemSong *>(song)->song().file==orig.file) {
                 static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
                 bool yearUpdated=orig.year!=edit.year && albumItem->updateYear();
@@ -637,7 +637,7 @@ void MusicLibraryItemRoot::addSongToList(const Song &s)
         }
     }
     quint32 year=albumItem->year();
-    foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
+    for (const MusicLibraryItem *songItem: albumItem->childItems()) {
         if (static_cast<const MusicLibraryItemSong *>(songItem)->song().file==s.file) {
             return;
         }
@@ -679,7 +679,7 @@ void MusicLibraryItemRoot::removeSongFromList(const Song &s)
     }
     MusicLibraryItem *songItem=0;
     int songRow=0;
-    foreach (MusicLibraryItem *song, albumItem->childItems()) {
+    for (MusicLibraryItem *song: albumItem->childItems()) {
         if (static_cast<MusicLibraryItemSong *>(song)->song().file==s.file) {
             songItem=song;
             break;

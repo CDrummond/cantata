@@ -45,7 +45,7 @@ void MenuButton::controlState()
     if (!menu()) {
         return;
     }
-    foreach (QAction *a, menu()->actions()) {
+    for (QAction *a: menu()->actions()) {
         if (a->isEnabled() && a->isVisible() && !a->isSeparator()) {
             setEnabled(true);
             return;

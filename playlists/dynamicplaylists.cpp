@@ -400,9 +400,9 @@ void DynamicPlaylists::parseRemote(const QStringList &response)
     Entry e;
     Rule r;
 
-    foreach (const QString &part, response) {
+    for (const QString &part: response) {
         QStringList lines=part.split('\n', QString::SkipEmptyParts);
-        foreach (const QString &s, lines) {
+        for (const QString &s: lines) {
             QString str=s.trimmed();
             if (str.isEmpty() || str.startsWith('#')) {
                 continue;
@@ -436,7 +436,7 @@ void DynamicPlaylists::parseRemote(const QStringList &response)
                     e.maxDuration=vals.at(1).toUInt();
                 }
             } else {
-                foreach (const QString &k, keys) {
+                for (const QString &k: keys) {
                     if (str.startsWith(k+constKeyValSep)) {
                         r.insert(k, str.mid(k.length()+1));
                     }

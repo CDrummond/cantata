@@ -217,7 +217,7 @@ bool RulesPlaylists::save(const Entry &e)
     if (Order_Random!=e.order) {
         str << constOrderKey << constKeyValSep << orderStr(e.order) << '\n';
     }
-    foreach (const Rule &rule, e.rules) {
+    for (const Rule &rule: e.rules) {
         if (!rule.isEmpty()) {
             str << constRuleKey << '\n';
             Rule::ConstIterator it(rule.constBegin());
@@ -301,7 +301,7 @@ void RulesPlaylists::loadLocal()
     QDir d(dirName);
     if (d.exists()) {
         QStringList rulesFiles=d.entryList(QStringList() << QChar('*')+constExtension);
-        foreach (const QString &rf, rulesFiles) {
+        for (const QString &rf: rulesFiles) {
             QFile f(dirName+rf);
             if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
                 QStringList keys=QStringList() << constArtistKey << constSimilarArtistsKey << constAlbumArtistKey << constDateKey
@@ -314,7 +314,7 @@ void RulesPlaylists::loadLocal()
                 QTextStream in(&f);
                 in.setCodec("UTF-8");
                 QStringList lines = in.readAll().split('\n', QString::SkipEmptyParts);
-                foreach (const QString &line, lines) {
+                for (const QString &line: lines) {
                     QString str=line.trimmed();
 
                     if (str.isEmpty() || str.startsWith('#')) {
@@ -343,7 +343,7 @@ void RulesPlaylists::loadLocal()
                     } else if (str.startsWith(constOrderAscendingKey+constKeyValSep)) {
                         e.orderAscending="true"==str.mid(constOrderAscendingKey.length()+1);
                     } else {
-                        foreach (const QString &k, keys) {
+                        for (const QString &k: keys) {
                             if (str.startsWith(k+constKeyValSep)) {
                                 r.insert(k, str.mid(k.length()+1));
                             }

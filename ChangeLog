@@ -22,6 +22,8 @@
     Thanks to Wolfgang Scherer.
 16. Add GUI option to control volume step.
 17. Add command-line options to set debugging and to disable network access.
+18. Reduce memory usage by correctly calculating cost of covers for in-memory
+    cache.
 
 2.2.0
 -----

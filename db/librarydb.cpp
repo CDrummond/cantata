@@ -453,7 +453,8 @@ public:
         if (limit>0) {
             sql+=" LIMIT "+QString::number(limit);
         }
-        query=QSqlQuery(sql, db);
+        query = QSqlQuery(db);
+        query.prepare(sql);
 
         for (const QVariant &value: boundValues) {
             query.addBindValue(value);

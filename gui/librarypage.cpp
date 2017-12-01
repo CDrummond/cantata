@@ -56,6 +56,11 @@ LibraryPage::LibraryPage(QWidget *p)
 
     config.beginGroup(SqlLibraryModel::groupingStr(MpdLibraryModel::self()->topLevel()));
     view->load(config);
+    view->setSearchToolTip(tr("<p>Enter a string to search artist, album, and track titles. To filter based on year, add <i>#year-range</i> to search string - e.g.</p><ul>"
+                              "<li><b><i>#2000</i></b> return tracks from 2000</li>"
+                              "<li><b><i>#1980-1989</i></b> return tracks from the 80's</li>"
+                              "<li><b><i>Blah #2000</i></b> to search for string <i>Blah</i> and only return tracks from 2000</li>"
+                              "</ul></p>"));
 
     showArtistImagesAction=new QAction(tr("Show Artist Images"), this);
     showArtistImagesAction->setCheckable(true);

@@ -1156,6 +1156,11 @@ bool ItemView::isSearchActive() const
     return searchWidget->isActive();
 }
 
+void ItemView::setSearchToolTip(const QString &str)
+{
+    searchWidget->setToolTip(str);
+}
+
 void ItemView::closeSearch()
 {
     if (searchWidget->isActive()) {

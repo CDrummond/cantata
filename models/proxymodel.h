@@ -69,6 +69,8 @@ protected:
     QStringList filterStrings;
     uint unmatchedStrings;
     const void *filter;
+    quint16 yearFrom;
+    quint16 yearTo;
 };
 
 #endif

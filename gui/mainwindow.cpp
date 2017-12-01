@@ -491,6 +491,11 @@ void MainWindow::init()
     } else {
         playQueueSearchWidget->setVisible(false);
     }
+    playQueueSearchWidget->setToolTip(tr("<p>Enter a string to search artist, album, title, etc. To filter based on year, add <i>#year-range</i> to search string - e.g.</p><ul>"
+                              "<li><b><i>#2000</i></b> return tracks from 2000</li>"
+                              "<li><b><i>#1980-1989</i></b> return tracks from the 80's</li>"
+                              "<li><b><i>Blah #2000</i></b> to search for string <i>Blah</i> and only return tracks from 2000</li>"
+                              "</ul></p>"));
     QList<QToolButton *> playbackBtns=QList<QToolButton *>() << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     QList<QToolButton *> controlBtns=QList<QToolButton *>() << menuButton << songInfoButton;
     int playbackIconSizeNonScaled=24==Icons::self()->toolbarPlayIcon.actualSize(QSize(24, 24)).width() ? 24 : 28;

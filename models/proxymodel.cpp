@@ -31,6 +31,10 @@
 
 bool ProxyModel::matchesFilter(const Song &s) const
 {
+    if (yearFrom>0 && yearTo>0 && (s.year<yearFrom || s.year>yearTo)) {
+        return false;
+    }
+
     QStringList strings;
 
     strings << s.albumArtist();
@@ -90,6 +94,10 @@ bool ProxyModel::matchesFilter(const QStringList &strings) const
     return false;
 }
 //#include <QDebug>
+
+static const quint16 constMinYear=1500;
+static const quint16 constMaxYear=2500; // 2500 (bit hopeful here :-) )
+
 bool ProxyModel::update(const QString &txt)
 {
     QString text=txt.length()<2 ? QString() : txt;
@@ -100,7 +108,33 @@ bool ProxyModel::update(const QString &txt)
     }
 
     bool wasEmpty=isEmpty();
-    filterStrings = text.split(' ', QString::SkipEmptyParts, Qt::CaseInsensitive);
+    filterStrings.clear();
+    yearFrom=yearTo=0;
+
+    QStringList parts = text.split(' ', QString::SkipEmptyParts, Qt::CaseInsensitive);
+
+    for (const auto &str: parts) {
+        if (str.startsWith('#')) {
+            QStringList parts=str.mid(1).split('-');
+            if (1==parts.length()) {
+                quint16 val=parts.at(0).simplified().toUInt();
+                if (val>=constMinYear && val<=constMaxYear) {
+                    yearFrom = yearTo = val;
+                    continue;
+                }
+            } else if (2==parts.length()) {
+                quint16 from=parts.at(0).simplified().toUInt();
+                quint16 to=parts.at(1).simplified().toUInt();
+                if (from>=constMinYear && from<=constMaxYear && to>=constMinYear && to<=constMaxYear) {
+                    yearFrom=from;
+                    yearTo=to;
+                    continue;
+                }
+            }
+        }
+        filterStrings.append(str);
+    }
+
     unmatchedStrings = 0;
     const int n = qMin(filterStrings.count(), (int)(sizeof(uint)*8));
     for ( int i = 0; i < n; ++i ) {

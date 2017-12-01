@@ -165,6 +165,7 @@ protected:
     QElapsedTimer timer;
     QString filter;
     QString genreFilter;
+    QString yearFilter;
     QMap<QString, QSet<QString> > detailsCache;
 };
 

@@ -128,6 +128,7 @@ public:
     void showIndex(const QModelIndex &idx, bool scrollTo);
     void setSearchVisible(bool v);
     bool isSearchActive() const;
+    void setSearchToolTip(const QString &str);
     void setStartClosed(bool sc);
     bool isStartClosed();
     void expandAll(const QModelIndex &index=QModelIndex());

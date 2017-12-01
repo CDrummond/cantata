@@ -419,12 +419,15 @@ public:
         }
     }
 
-    void setFilter(const QString &filter)
+    void setFilter(const QString &filter, const QString yearFilter)
     {
         if (!filter.isEmpty()) {
             whereClauses << "songs_fts match ?";
             boundValues << "\'"+filter+"\'";
             fts=true;
+        }
+        if (!yearFilter.isEmpty()) {
+            whereClauses << yearFilter;
         }
     }
 
@@ -669,7 +672,7 @@ QList<LibraryDb::Genre> LibraryDb::getGenres()
         }
         queryStr+="artistId";
         SqlQuery query(queryStr, *db);
-        query.setFilter(filter);
+        query.setFilter(filter, yearFilter);
 
         query.exec();
         DBUG << query.executedQuery();
@@ -701,12 +704,12 @@ QList<LibraryDb::Artist> LibraryDb::getArtists(const QString &genre)
     QMap<QString, int> albumMap;
     if (0!=currentVersion && db) {
         SqlQuery query("distinct artistId, albumId, artistSort", *db);
-        query.setFilter(filter);
+        query.setFilter(filter, yearFilter);
         if (!genre.isEmpty()) {
             query.addWhere("genre", genre);
         } else if (!genreFilter.isEmpty()) {
             query.addWhere("genre", genreFilter);
-        }
+        } 
         query.exec();
         DBUG << query.executedQuery();
         while (query.next()) {
@@ -747,7 +750,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
             queryString+=", artistId, artistSort";
         }
         SqlQuery query(queryString, *db);
-        query.setFilter(filter);
+        query.setFilter(filter, yearFilter);
         if (!artistId.isEmpty()) {
             query.addWhere("artistId", artistId);
         }
@@ -866,7 +869,7 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
     if (0!=currentVersion && db) {
         SqlQuery query("*", *db);
         if (useFilter) {
-            query.setFilter(filter);
+            query.setFilter(filter, yearFilter);
         }
         if (!artistId.isEmpty()) {
             query.addWhere("artistId", artistId);
@@ -876,7 +879,7 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
         }
         if (!genre.isEmpty()) {
             query.addWhere("genre", genre);
-        } else if (!genreFilter.isEmpty()) {
+        } else if (useFilter && !genreFilter.isEmpty()) {
             query.addWhere("genre", genreFilter);
         }
         query.exec();
@@ -989,6 +992,9 @@ LibraryDb::Album LibraryDb::getRandomAlbum(const QString &genre, const QString &
             query.addWhere("genre", genre);
         } else if (!genreFilter.isEmpty()) {
             query.addWhere("genre", genreFilter);
+        }
+        if (yearFilter>0) {
+            query.addWhere("year", yearFilter);
         }
         query.exec();
         DBUG << query.executedQuery();
@@ -1104,29 +1110,50 @@ bool LibraryDb::songExists(const Song &song)
     return query.next();
 }
 
+static const quint16 constMinYear=1500;
+static const quint16 constMaxYear=2500; // 2500 (bit hopeful here :-) )
+
 bool LibraryDb::setFilter(const QString &f, const QString &genre)
 {
     QString newFilter=f.trimmed().toLower();
-
+    QString year;
     if (!f.isEmpty()) {
         QStringList strings(newFilter.split(QRegExp("\\s+")));
         static QList<QLatin1Char> replaceChars=QList<QLatin1Char>() << QLatin1Char('(') << QLatin1Char(')') << QLatin1Char('"')
-                                                                    << QLatin1Char(':') << QLatin1Char('-');
+                                                                    << QLatin1Char(':') << QLatin1Char('-') << QLatin1Char('#');
         QStringList tokens;
         for (QString str: strings) {
+            if (str.startsWith('#')) {
+                QStringList parts=str.mid(1).split('-');
+                if (1==parts.length()) {
+                    int val=parts.at(0).simplified().toUInt();
+                    if (val>=constMinYear && val<=constMaxYear) {
+                        year = QLatin1String("year = ")+ QString::number(val);
+                        continue;
+                    }
+                } else if (2==parts.length()) {
+                    int from=parts.at(0).simplified().toUInt();
+                    int to=parts.at(1).simplified().toUInt();
+                    if (from>=constMinYear && from<=constMaxYear && to>=constMinYear && to<=constMaxYear) {
+                        year = QLatin1String("year >= ") + QString::number(qMin(from, to)) + QLatin1String(" AND year <= ") + QString::number(qMax(from, to));
+                        continue;
+                    }
+                }
+            }
             for (const QLatin1Char ch: replaceChars) {
                 str.replace(ch, '?');
             }
             if (str.length()>0) {
-                tokens.append(str+QLatin1String("* "));
+                tokens.append(str+QLatin1String("*"));
             }
         }
         newFilter=tokens.join(" ");
         DBUG << newFilter;
     }
-    bool modified=newFilter!=filter || genre!=genreFilter;
+    bool modified=newFilter!=filter || genre!=genreFilter || year!=yearFilter;
     filter=newFilter;
     genreFilter=genre;
+    yearFilter=year;
     return modified;
 }
 

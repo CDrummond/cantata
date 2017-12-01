@@ -24,6 +24,8 @@
 17. Add command-line options to set debugging and to disable network access.
 18. Reduce memory usage by correctly calculating cost of covers for in-memory
     cache.
+19. Make it possible to filter on year (or range of years) in library search
+    field.
 
 2.2.0
 -----

@@ -281,7 +281,7 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         }
         bg1=QColor(0xAB, 0xC7, 0xED);
         fg=Qt::black;
-        border = Qt::blue;
+        border = Qt::gray;
         break;
     case Information:
         if (useIcon) {
@@ -291,7 +291,7 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         // colors of highlighted items instead
         bg1=QColor(0x98, 0xBC, 0xE3);
         fg=Qt::black;
-        border = Qt::blue;
+        border = Qt::gray;
         break;
     case Warning:
         if (useIcon) {
@@ -299,7 +299,7 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         }
         bg1=QColor(0xED, 0xC6, 0x62);
         fg=Qt::black;
-        border = Qt::red;
+        border = Qt::gray;
         break;
     case Error:
         if (useIcon) {
@@ -307,7 +307,7 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         }
         bg1=QColor(0xeb, 0xbb, 0xbb);
         fg=Qt::black;
-        border = Qt::red;
+        border = Qt::gray;
         break;
     }
 

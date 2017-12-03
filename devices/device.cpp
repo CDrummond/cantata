@@ -359,7 +359,7 @@ void Device::applyUpdate()
         int newCount=newRows();
         if (newCount>0) {
             m_model->beginInsertRows(index(), 0, newCount-1);
-            for (MusicLibraryItem *item: update->childItems()) {
+            foreach (MusicLibraryItem *item, update->childItems()) {
                 item->setParent(this);
             }
             if (AudioCd!=devType()) {

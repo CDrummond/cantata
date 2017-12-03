@@ -443,7 +443,7 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
             QSet<quint16> tracks;
             QString shortestArtist;
             bool duplicateTrackNumbers=false;
-            for (MusicLibraryItemSong *s: (*it).songs) {
+            for (const MusicLibraryItemSong *s: (*it).songs) {
                 if (tracks.contains(s->track())) {
                     duplicateTrackNumbers=true;
                     break;
@@ -526,7 +526,7 @@ void MtpConnection::setMusicFolder(Storage &store)
 void MtpConnection::updateFilesAndFolders()
 {
     folderMap.clear();
-    for (const Storage st: storage) {
+    for (const Storage &st: storage) {
         if (abortRequested) {
             return;
         }

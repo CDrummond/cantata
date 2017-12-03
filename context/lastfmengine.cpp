@@ -141,7 +141,7 @@ void LastFmEngine::parseResponse()
         // Remove last.fm read more link (as we add our own!!)
         int end=text.lastIndexOf(QLatin1String("on Last.fm</a>"));
         if (-1!=end) {
-            int start=text.lastIndexOf(QLatin1String("<a href=\"http://www.last.fm/music/"), end);
+            int start=text.lastIndexOf(QLatin1String("<a href=\"https://www.last.fm/music/"), end);
             if (-1!=start) {
                 if (text.indexOf(QLatin1String("Read more about"), start)<end) {
                     text=text.left(start);

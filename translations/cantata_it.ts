@@ -1614,7 +1614,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="385"/>
         <source>Could not start dynamic helper. Please check all &lt;a href=&quot;https://github.com/CDrummond/cantata/wiki/Dynamic-Palylists-Helper&quot;&gt;dependencies&lt;/a&gt; are installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Non riesco ad avviare il dynamic helper. Prego controllare che tuttle le &gt;dipendenze&lt;/a&gt; siano installate &lt;a href=&quot;https://github.com/CDrummond/cantata/wiki/Dynamic-Palylists-Helper&quot;.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="496"/>
@@ -2340,7 +2340,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="397"/>
         <source>Show technical info</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra informazioni tecniche</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="405"/>
@@ -3150,7 +3150,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     <message>
         <location filename="../gui/mainwindow.cpp" line="301"/>
         <source>Add Local Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggioni File Locali</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="303"/>
@@ -3524,12 +3524,12 @@ Aggiungere i brani a quella scaletta?</translation>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1975"/>
         <source>Select Music Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona i File Musicali</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1975"/>
         <source>Music Files </source>
-        <translation type="unfinished"></translation>
+        <translation>File Musicali</translation>
     </message>
     <message numerus="yes">
         <location filename="../gui/mainwindow.cpp" line="2004"/>
@@ -4150,7 +4150,7 @@ Aggiungere i brani a quella scaletta?</translation>
     <message>
         <location filename="../gui/playbacksettings.ui" line="38"/>
         <source>Fadeout on stop:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfuma allo stop:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="48"/>
@@ -4193,16 +4193,16 @@ Aggiungere i brani a quella scaletta?</translation>
     <message>
         <location filename="../gui/playbacksettings.ui" line="112"/>
         <source>Crossfade between tracks:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfumatura incrociata tra le tracce:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="135"/>
         <source>Replay gain:</source>
-        <translation type="unfinished"></translation>
+        <translation>Replay gain:</translation>
     </message>
     <message>
         <source>&amp;Crossfade between tracks:</source>
-        <translation type="vanished">&amp;Crossfade tra le tracce:</translation>
+        <translation type="vanished">&amp;Sfumatura incrociata tra le tracce:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
@@ -4221,17 +4221,17 @@ Aggiungere i brani a quella scaletta?</translation>
     <message>
         <location filename="../gui/playbacksettings.ui" line="187"/>
         <source>Volume step:</source>
-        <translation type="unfinished"></translation>
+        <translation>Granularià volume:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="193"/>
         <source>&lt;p&gt;Amount to change volume by when using either the volume control keyboard shortcuts, or the mouse wheel over the toolbar volume control.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Quanto cambiare il volume quando si usano i controlli volume, le scorciatoie da tastiera oppure la rotella del mouse sul controllo volume nella barra strumenti.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="200"/>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="213"/>
@@ -6018,7 +6018,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="209"/>
         <source>MPD Client</source>
-        <translation type="unfinished"></translation>
+        <translation>Client MPD</translation>
     </message>
 </context>
 <context>
@@ -6796,17 +6796,17 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/serversettings.ui" line="189"/>
         <source>Auto update</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiornamento automatico</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="199"/>
         <source>If the server detects modifications automatically, there is no need to send an update command for certain actions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Se il server rileva automativamente le modifiche, non è necessario inviare un comando di aggiornamento per certe azioni.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="202"/>
         <source>Server detects changes automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Il server rileva automaticamente le modifiche</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="211"/>

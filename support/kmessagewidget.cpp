@@ -34,35 +34,6 @@
 #include <QStyle>
 #include <QAction>
 
-//---------------------------------------------------------------------
-// KMsgWidgetPrivate
-//---------------------------------------------------------------------
-#if 0
-class KMsgWidgetPrivate
-{
-public:
-    void init(KMsgWidget*);
-
-    KMsgWidget* q;
-    QFrame* content;
-    QLabel* iconLabel;
-    QLabel* textLabel;
-    QToolButton* closeButton;
-    QTimeLine* timeLine;
-
-    KMsgWidget::MessageType messageType;
-    bool wordWrap;
-    QList<QToolButton*> buttons;
-    QPixmap contentSnapShot;
-
-    void createLayout();
-    void updateSnapShot();
-    void updateLayout();
-    void slotTimeLineChanged(qreal);
-    void slotTimeLineFinished();
-};
-#endif
-
 void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
 {
     q = q_ptr;
@@ -77,18 +48,6 @@ void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
     content->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     wordWrap = false;
-
-    #ifdef Q_OS_MAC
-    bool closeOnLeft=true;
-    #else
-    bool closeOnLeft=Utils::Unity==Utils::currentDe();
-    #endif
-    if (closeOnLeft) {
-        iconLabel=0;
-    } else {
-        iconLabel = new QLabel(content);
-        iconLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    }
 
     textLabel = new SqueezedTextLabel(content);
     textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -131,16 +90,10 @@ void KMsgWidgetPrivate::createLayout()
     // AutoRaise reduces visual clutter, but we don't want to turn it on if
     // there are other buttons, otherwise the close button will look different
     // from the others.
-    closeButton->setAutoRaise(!iconLabel || buttons.isEmpty());
+    closeButton->setAutoRaise(buttons.isEmpty());
 
     if (wordWrap) {
         QGridLayout* layout = new QGridLayout(content);
-        // Set alignment to make sure icon does not move down if text wraps
-        if (iconLabel) {
-            layout->addWidget(iconLabel, 0, 0, 1, 1, Qt::AlignHCenter | Qt::AlignTop);
-        } else {
-            layout->addWidget(closeButton, 0, 0, 1, 1, Qt::AlignHCenter | Qt::AlignTop);
-        }
         layout->addWidget(textLabel, 0, 1);
         layout->setMargin(4);
 
@@ -153,27 +106,17 @@ void KMsgWidgetPrivate::createLayout()
             button->show();
             buttonLayout->addWidget(button);
         }
-        if (iconLabel) {
-            buttonLayout->addWidget(closeButton);
-        }
+        buttonLayout->addWidget(closeButton);
         layout->addItem(buttonLayout, 1, 0, 1, 2);
     } else {
         QHBoxLayout* layout = new QHBoxLayout(content);
-
-        if (iconLabel) {
-            layout->addWidget(iconLabel);
-        } else {
-            layout->addWidget(closeButton);
-        }
         layout->addWidget(textLabel);
 
         Q_FOREACH(QToolButton* button, buttons) {
             layout->addWidget(button);
         }
 
-        if (iconLabel) {
-            layout->addWidget(closeButton);
-        }
+        layout->addWidget(closeButton);
         layout->setMargin(4);
     };
 
@@ -271,22 +214,14 @@ KMsgWidget::MessageType KMsgWidget::messageType() const
 void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
 {
     d->messageType = type;
-    QIcon icon;
     QColor bg0, bg1, bg2, border, fg;
-    bool useIcon=d->iconLabel;
     switch (type) {
     case Positive:
-        if (useIcon) {
-            icon = QIcon::fromTheme("dialog-ok");
-        }
         bg1=QColor(0xAB, 0xC7, 0xED);
         fg=Qt::black;
         border = Qt::blue;
         break;
     case Information:
-        if (useIcon) {
-            icon = QIcon::fromTheme("dialog-information");
-        }
         // There is no "information" background role in KColorScheme, use the
         // colors of highlighted items instead
         bg1=QColor(0x98, 0xBC, 0xE3);
@@ -294,17 +229,11 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         border = Qt::blue;
         break;
     case Warning:
-        if (useIcon) {
-            icon = QIcon::fromTheme("dialog-warning");
-        }
         bg1=QColor(0xED, 0xC6, 0x62);
         fg=Qt::black;
         border = Qt::red;
         break;
     case Error:
-        if (useIcon) {
-            icon = QIcon::fromTheme("dialog-error");
-        }
         bg1=QColor(0xeb, 0xbb, 0xbb);
         fg=Qt::black;
         border = Qt::red;
@@ -334,25 +263,7 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         .arg(style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this) -1)
         .arg(fg.name())
         );
-
-    if (useIcon && !icon.isNull()) {
-        // Icon
-        const int size = Icon::stdSize(fontMetrics().height()*1.5);
-        d->iconLabel->setPixmap(icon.pixmap(size));
-    }
 }
-
-//QSize KMsgWidget::sizeHint() const
-//{
-//    ensurePolished();
-//    return d->content->sizeHint();
-//}
-
-//QSize KMsgWidget::minimumSizeHint() const
-//{
-//    ensurePolished();
-//    return d->content->minimumSizeHint();
-//}
 
 bool KMsgWidget::event(QEvent* event)
 {
@@ -385,13 +296,6 @@ void KMsgWidget::paintEvent(QPaintEvent* event)
         painter.setOpacity(d->timeLine->currentValue() * d->timeLine->currentValue());
         painter.drawPixmap(0, 0, d->contentSnapShot);
     }
-}
-
-void KMsgWidget::showEvent(QShowEvent* event)
-{
-    // Keep this method here to avoid breaking binary compatibility:
-    // QFrame::showEvent() used to be reimplemented.
-    QFrame::showEvent(event);
 }
 
 bool KMsgWidget::wordWrap() const

@@ -407,7 +407,9 @@ DeviceOptions DevicePropertiesWidget::settings()
         if (!opts.transcoderCodec.isEmpty()) {
             Encoders::Encoder enc=Encoders::getEncoder(opts.transcoderCodec);
 
-            opts.transcoderWhen=(DeviceOptions::TranscodeWhen)transcoderWhen->itemData(transcoderWhen->currentIndex()).toUInt();
+            if (transcoderWhen) {
+                opts.transcoderWhen=(DeviceOptions::TranscodeWhen)transcoderWhen->itemData(transcoderWhen->currentIndex()).toUInt();
+            }
             if (!enc.isNull() && transcoderValue->value()<enc.values.count()) {
                 opts.transcoderValue=enc.values.at(transcoderValue->value()).value;
             }

@@ -160,8 +160,6 @@ protected:
 
     void resizeEvent(QResizeEvent *event);
 
-    void showEvent(QShowEvent *event);
-
 private:
     KMsgWidgetPrivate *const d;
     friend class KMsgWidgetPrivate;
@@ -180,7 +178,6 @@ public:
 
     KMsgWidget* q;
     QFrame* content;
-    QLabel* iconLabel;
     SqueezedTextLabel* textLabel;
     QToolButton* closeButton;
     QTimeLine* timeLine;

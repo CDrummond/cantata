@@ -60,6 +60,8 @@ public:
         COL_COMPOSER,
         COL_PERFORMER,
         COL_RATING,
+        COL_FILENAME,
+        COL_PATH,
 
         COL_COUNT
     };

@@ -178,6 +178,8 @@ QString PlayQueueModel::headerText(int col)
     case COL_COMPOSER:  return tr("Composer");
     case COL_PERFORMER: return tr("Performer");
     case COL_RATING:    return tr("Rating");
+    case COL_FILENAME:  return tr("Filename");
+    case COL_PATH:      return tr("Path");
     default:            return QString();
     }
 }
@@ -256,8 +258,10 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     controlActions();
     shuffleAction->setEnabled(false);
     sortAction->setEnabled(false);
-    alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
-    alignments[COL_TRACK]=alignments[COL_LENGTH]=alignments[COL_DISC]=alignments[COL_YEAR]=alignments[COL_ORIGYEAR]=alignments[COL_PRIO]=int(Qt::AlignVCenter|Qt::AlignRight);
+    alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=
+            alignments[COL_PERFORMER]=alignments[COL_FILENAME]=alignments[COL_PATH]=int(Qt::AlignVCenter|Qt::AlignLeft);
+    alignments[COL_TRACK]=alignments[COL_LENGTH]=alignments[COL_DISC]=alignments[COL_YEAR]=alignments[COL_ORIGYEAR]=
+            alignments[COL_PRIO]=int(Qt::AlignVCenter|Qt::AlignRight);
     alignments[COL_RATING]=int(Qt::AlignVCenter|Qt::AlignHCenter);
 }
 
@@ -286,9 +290,9 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             return alignments[section];
         case Cantata::Role_InitiallyHidden:
             return COL_YEAR==section || COL_ORIGYEAR==section || COL_DISC==section || COL_GENRE==section || COL_PRIO==section ||
-                   COL_COMPOSER==section || COL_PERFORMER==section || COL_RATING==section;
+                   COL_COMPOSER==section || COL_PERFORMER==section || COL_RATING==section || COL_FILENAME==section || COL_PATH==section;
         case Cantata::Role_Hideable:
-            return COL_TITLE!=section && COL_ARTIST!=section;
+            return COL_LENGTH!=section;
         case Cantata::Role_Width:
             switch (section) {
             case COL_TRACK:     return 0.075;
@@ -304,6 +308,8 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             case COL_COMPOSER:  return 0.2;
             case COL_PERFORMER: return 0.2;
             case COL_RATING:    return 0.08;
+            case COL_FILENAME:  return 0.27;
+            case COL_PATH:      return 0.27;
             }
         case Cantata::Role_ContextMenuText:
             return COL_TRACK==section ? tr("# (Track Number)") : headerText(section);
@@ -546,6 +552,12 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 //            var.setValue(s.rating);
 //            return var;
 //        }
+        case COL_FILENAME:
+            return Utils::getFile(QUrl(song.file).path());
+        case COL_PATH: {
+            QString dir=Utils::getDir(QUrl(song.file).path());
+            return dir.endsWith("/") ? dir.left(dir.length()-1) : dir;
+        }
         default:
             break;
         }

@@ -59,6 +59,8 @@ QString PlaylistsModel::headerText(int col)
     case COL_GENRE:     return PlayQueueModel::headerText(PlayQueueModel::COL_GENRE);
     case COL_COMPOSER:  return PlayQueueModel::headerText(PlayQueueModel::COL_COMPOSER);
     case COL_PERFORMER: return PlayQueueModel::headerText(PlayQueueModel::COL_PERFORMER);
+    case COL_FILENAME:  return PlayQueueModel::headerText(PlayQueueModel::COL_FILENAME);
+    case COL_PATH:      return PlayQueueModel::headerText(PlayQueueModel::COL_PATH);
     default:            return QString();
     }
 }
@@ -90,7 +92,8 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     newAction=new QAction(MonoIcon::icon(FontAwesome::asterisk, Utils::monoIconColor()), tr("New Playlist..."), this);
     connect(newAction, SIGNAL(triggered()), this, SIGNAL(addToNew()));
     Action::initIcon(newAction);
-    alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=alignments[COL_PERFORMER]=int(Qt::AlignVCenter|Qt::AlignLeft);
+    alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=
+            alignments[COL_PERFORMER]=alignments[COL_FILENAME]=alignments[COL_PATH]=int(Qt::AlignVCenter|Qt::AlignLeft);
     alignments[COL_LENGTH]=alignments[COL_YEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
 }
 
@@ -210,8 +213,10 @@ QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, in
         case Qt::TextAlignmentRole:
             return alignments[section];
         case Cantata::Role_InitiallyHidden:
+            return COL_YEAR==section || COL_GENRE==section || COL_COMPOSER==section || COL_PERFORMER==section ||
+                    COL_FILENAME==section || COL_PATH==section;
         case Cantata::Role_Hideable:
-            return COL_YEAR==section || COL_GENRE==section || COL_COMPOSER==section || COL_PERFORMER==section;
+            return COL_LENGTH!=section;
         case Cantata::Role_Width:
             switch (section) {
             case COL_TITLE:     return 0.4;
@@ -222,6 +227,8 @@ QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, in
             case COL_LENGTH:    return 0.125;
             case COL_COMPOSER:  return 0.15;
             case COL_PERFORMER: return 0.15;
+            case COL_FILENAME:  return 0.15;
+            case COL_PATH:      return 0.15;
             }
         default:
             break;
@@ -440,6 +447,12 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     return s->composer();
                 case COL_PERFORMER:
                     return s->performer();
+                case COL_FILENAME:
+                    return Utils::getFile(QUrl(s->file).path());
+                case COL_PATH: {
+                    QString dir=Utils::getDir(QUrl(s->file).path());
+                    return dir.endsWith("/") ? dir.left(dir.length()-1) : dir;
+                }
                 default:
                     break;
                 }

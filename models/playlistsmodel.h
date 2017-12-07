@@ -54,6 +54,8 @@ public:
         COL_LENGTH,
         COL_COMPOSER,
         COL_PERFORMER,
+        COL_FILENAME,
+        COL_PATH,
 
         COL_COUNT
     };

@@ -26,7 +26,7 @@
     cache.
 19. Make it possible to filter on year (or range of years) in library and
     playqueue search fields.
-20. Add filename and path to table stlye playqueue options.
+20. Add filename and path to table stlye playqueue and playlist columns.
 
 2.2.0
 -----

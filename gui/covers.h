@@ -183,7 +183,7 @@ public:
         QString fileName;
     };
 
-    static void enableDebug();
+    static void enableDebug(bool verbose);
     static bool debugEnabled();
 
     static const QSize constMaxSize;

@@ -135,7 +135,9 @@ static void installDebugMessageHandler(const QString &cmdLine)
         } else if (QLatin1String("mpdparse")==area) {
             MPDParseUtils::enableDebug();
         } else if (QLatin1String("covers")==area) {
-            Covers::enableDebug();
+            Covers::enableDebug(false);
+        } else if (QLatin1String("covers-verbose")==area) {
+            Covers::enableDebug(true);
         } else if (QLatin1String("context-wikipedia")==area) {
             WikipediaEngine::enableDebug();
         } else if (QLatin1String("context-lastfm")==area) {

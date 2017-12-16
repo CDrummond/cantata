@@ -284,6 +284,8 @@ void LibraryPage::setView(int v)
 void LibraryPage::modelReset()
 {
     genreCombo->update(MpdLibraryModel::self()->getGenres());
+    int count = MpdLibraryModel::self()->trackCount();
+    view->setMinSearchDebounce(count <= 1250 ? 1000u : count < 1800 ? 1500u : 2000u);
 }
 
 void LibraryPage::groupByChanged()

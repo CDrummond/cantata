@@ -145,6 +145,7 @@ public:
     void goToTop();
     void setOpenAfterSearch(bool o) { openFirstLevelAfterSearch=o; }
     void setEnabled(bool en);
+    void setMinSearchDebounce(unsigned int val) { minSearchDebounce = val; }
 
 private:
     void setLevel(int level, bool haveChildren=true);
@@ -211,6 +212,7 @@ private:
     int searchResetLevel;
     bool openFirstLevelAfterSearch;
     bool initialised;
+    unsigned int minSearchDebounce;
 };
 
 #endif

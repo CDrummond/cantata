@@ -57,6 +57,7 @@ OnlineDbWidget::OnlineDbWidget(OnlineDbService *s, QWidget *p)
     connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
     view->setOpenAfterSearch(SqlLibraryModel::T_Album!=srv->topLevel());
     connect(StdActions::self()->addRandomAlbumToPlayQueueAction, SIGNAL(triggered()), SLOT(addRandomAlbum()));
+    connect(srv, SIGNAL(modelReset()), this, SLOT(modelReset()));
 }
 
 OnlineDbWidget::~OnlineDbWidget()
@@ -168,6 +169,12 @@ void OnlineDbWidget::addRandomAlbum()
         }
         emit add(files, /*replace ? MPDConnection::ReplaceAndplay : */MPDConnection::Append, 0, false);
     }
+}
+
+void OnlineDbWidget::modelReset()
+{
+    int count = srv->trackCount();
+    view->setMinSearchDebounce(count <= 1250 ? 1000u : count < 1800 ? 1500u : 2000u);
 }
 
 void OnlineDbWidget::doSearch()

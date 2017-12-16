@@ -174,7 +174,7 @@ void OnlineDbWidget::addRandomAlbum()
 void OnlineDbWidget::modelReset()
 {
     int count = srv->trackCount();
-    view->setMinSearchDebounce(count <= 1250 ? 1000u : count <= 1800 ? 1500u : 2000u);
+    view->setMinSearchDebounce(count <= 12500 ? 1000u : count <= 18000 ? 1500u : 2000u);
 }
 
 void OnlineDbWidget::doSearch()

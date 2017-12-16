@@ -45,6 +45,7 @@ private Q_SLOTS:
     void configure();
     void updateToPlayQueue(const QModelIndex &idx, bool replace);
     void addRandomAlbum();
+    void modelReset();
 
 private:
     void doSearch();

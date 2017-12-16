@@ -164,6 +164,7 @@ public:
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
     bool songExists(const Song &song);
     LibraryDb::Album getRandomAlbum(const QStringList &genres, const QStringList &artists) const { return db->getRandomAlbum(genres, artists); }
+    int trackCount() const;
 
 Q_SIGNALS:
     void error(const QString &str);

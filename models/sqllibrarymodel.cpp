@@ -547,6 +547,11 @@ bool SqlLibraryModel::songExists(const Song &song)
     return db->songExists(song);
 }
 
+int SqlLibraryModel::trackCount() const
+{
+    return db->trackCount();
+}
+
 void SqlLibraryModel::populate(const QModelIndexList &list) const
 {
     for (const QModelIndex &idx: list) {

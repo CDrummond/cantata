@@ -608,6 +608,7 @@ ItemView::ItemView(QWidget *p)
     , searchResetLevel(0)
     , openFirstLevelAfterSearch(false)
     , initialised(false)
+    , minSearchDebounce(250)
 {
     setupUi(this);
     if (!backAction) {
@@ -634,7 +635,7 @@ ItemView::ItemView(QWidget *p)
     ViewEventHandler *treeViewEventHandler=new ViewEventHandler(td, treeView);
     listView->installFilter(listViewEventHandler);
     treeView->installFilter(treeViewEventHandler);
-    connect(searchWidget, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
+    connect(searchWidget, SIGNAL(returnPressed()), this, SLOT(doSearch()));
     connect(searchWidget, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
     connect(searchWidget, SIGNAL(active(bool)), this, SLOT(searchActive(bool)));
     connect(treeView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
@@ -1514,12 +1515,15 @@ void ItemView::delaySearchItems()
             connect(searchTimer, SIGNAL(timeout()), this, SLOT(doSearch()));
         }
         int len=searchWidget->text().trimmed().length();
-        searchTimer->start(len<2 ? 1000 : len<4 ? 750 : 500);
+        searchTimer->start(qMin(qMax(minSearchDebounce, len<2 ? 1000u : len<4 ? 750u : 500u), 5000u));
     }
 }
 
 void ItemView::doSearch()
 {
+    if (searchTimer) {
+        searchTimer->stop();
+    }
     performedSearch=true;
     emit searchItems();
 }

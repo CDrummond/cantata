@@ -58,17 +58,19 @@
 GLOBAL_STATIC(Covers, instance)
 
 #include <QDebug>
-static bool debugIsEnabled=false;
-#define DBUG_CLASS(CLASS) if (debugIsEnabled) qWarning() << CLASS << QThread::currentThread()->objectName() << __FUNCTION__
+static int debugLevel=0;
+#define DBUG_CLASS(CLASS) if (debugLevel) qWarning() << CLASS << QThread::currentThread()->objectName() << __FUNCTION__
 #define DBUG DBUG_CLASS(metaObject()->className())
-void Covers::enableDebug()
+#define VERBOSE_DBUG_CLASS(CLASS) if (debugLevel>1) qWarning() << CLASS << QThread::currentThread()->objectName() << __FUNCTION__
+#define VERBOSE_DBUG VERBOSE_DBUG_CLASS(metaObject()->className())
+void Covers::enableDebug(bool verbose)
 {
-    debugIsEnabled=true;
+    debugLevel=verbose ? 2 : 1;
 }
 
 bool Covers::debugEnabled()
 {
-    return debugIsEnabled;
+    return debugLevel>0;
 }
 
 const QLatin1String Covers::constLastFmApiKey("5a854b839b10f8d46e630e8287c2299b");
@@ -314,6 +316,8 @@ static QImage loadScaledCover(const Song &song, int size)
             }
         }
     }
+    VERBOSE_DBUG_CLASS("Covers")  << song.albumArtist() << song.albumId() << size << "scaled cover NOT found";
+
     return QImage();
 }
 
@@ -1187,7 +1191,7 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
 
 QPixmap * Covers::get(const Song &song, int size, bool urgent)
 {
-//    DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << song.composer() << song.isArtistImageRequest() << song.isComposerImageRequest() << size << urgent;
+    VERBOSE_DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << song.composer() << song.isArtistImageRequest() << song.isComposerImageRequest() << size << urgent;
     QString key;
     QPixmap *pix=0;
     if (0==size) {
@@ -1219,7 +1223,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
             if (pix) {
                 if (size!=origSize) {
                     pix->setDevicePixelRatio(devicePixelRatio);
-                    DBUG << "Set pixel ratio of cover" << devicePixelRatio;
+                    VERBOSE_DBUG << "Set pixel ratio of cover" << devicePixelRatio;
                 }
                 cache.insert(key, pix, 1);
                 cacheSizes.insert(size);
@@ -1234,7 +1238,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                         pix=saveScaledCover(scale(song, img.img, size), song, size);
                         if (size!=origSize) {
                             pix->setDevicePixelRatio(devicePixelRatio);
-                            DBUG << "Set pixel ratio of saved scaled cover" << devicePixelRatio;
+                            VERBOSE_DBUG << "Set pixel ratio of saved scaled cover" << devicePixelRatio;
                         }
                         return pix;
                     } else if (constNoCover==img.fileName) {
@@ -1244,26 +1248,28 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                     pix=new QPixmap(QPixmap::fromImage(cached));
                     if (size!=origSize) {
                         pix->setDevicePixelRatio(devicePixelRatio);
-                        DBUG << "Set pixel ratio of loaded scaled cover" << devicePixelRatio;
+                        VERBOSE_DBUG << "Set pixel ratio of loaded scaled cover" << devicePixelRatio;
                     }
                     cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
                     cacheSizes.insert(size);
                     return pix;
                 }
             }
+            VERBOSE_DBUG << "Cached cover not found";
             tryToLoad(setSizeRequest(song, origSize));
 
             // Create a dummy image so that we dont keep on locating/loading/downloading files that do not exist!
             pix=new QPixmap(1, 1);
             if (size!=origSize) {
                 pix->setDevicePixelRatio(devicePixelRatio);
-                DBUG << "Set pixel ratio of dummy cover" << devicePixelRatio;
+                VERBOSE_DBUG << "Set pixel ratio of dummy cover" << devicePixelRatio;
             }
             cache.insert(key, pix, 1);
             cacheSizes.insert(size);
         }
 
         if (pix && pix->width()>1) {
+            VERBOSE_DBUG << "Found cached pixmap" << pix->width();
             return pix;
         }
     }

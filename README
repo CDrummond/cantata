@@ -650,7 +650,7 @@ The following debug areas may be used:
 
     MPD communications        mpd
     MPD Parsing               mpdparse
-    Covers                    covers
+    Covers                    covers (or covers-verbose)
     Wikipedia context info    context-wikipedia
     Last.fm context info      context-lastfm
     Combined context info     context-info

@@ -95,22 +95,23 @@ Song MpdLibraryDb::getCoverSong(const QString &artistId, const QString &albumId)
                 artistImageQuery->prepare("select * from songs where artistId=:artistId limit 1;");
             }
             query=artistImageQuery;
+            query->bindValue(":artistId", artistId);
         } else if (artistId.isEmpty()) {
             if (!albumIdOnlyCoverQuery) {
                 albumIdOnlyCoverQuery=new QSqlQuery(*db);
                 albumIdOnlyCoverQuery->prepare("select * from songs where albumId=:albumId limit 1;");
             }
-            albumIdOnlyCoverQuery->bindValue(":albumId", albumId);
             query=albumIdOnlyCoverQuery;
+            query->bindValue(":albumId", albumId);
         } else {
             if (!coverQuery) {
                 coverQuery=new QSqlQuery(*db);
                 coverQuery->prepare("select * from songs where artistId=:artistId and albumId=:albumId limit 1;");
             }
-            coverQuery->bindValue(":albumId", albumId);
             query=coverQuery;
+            query->bindValue(":albumId", albumId);
+            query->bindValue(":artistId", artistId);
         }
-        query->bindValue(":artistId", artistId);
         query->exec();
         DBUG << "coverquery" << query->executedQuery() << query->size();
         while (query->next()) {

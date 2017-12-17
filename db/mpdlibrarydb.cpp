@@ -136,8 +136,10 @@ void MpdLibraryDb::reset()
 {
     delete coverQuery;
     delete artistImageQuery;
+    delete albumIdOnlyCoverQuery;
     coverQuery=0;
     artistImageQuery=0;
+    albumIdOnlyCoverQuery=0;
     LibraryDb::reset();
 }
 

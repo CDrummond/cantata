@@ -1267,6 +1267,9 @@ void LibraryDb::reset()
 {
     bool removeDb=0!=db;
     delete insertSongQuery;
+    if (db) {
+        db->close();
+    }
     delete db;
 
     insertSongQuery=0;

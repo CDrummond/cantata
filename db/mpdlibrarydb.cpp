@@ -124,6 +124,7 @@ Song MpdLibraryDb::getCoverSong(const QString &artistId, const QString &albumId)
 void MpdLibraryDb::connectionChanged(const MPDConnectionDetails &details)
 {
     QString dbFile=databaseName(details);
+    DBUG << dbFileName << dbFile;
     if (dbFile!=dbFileName) {
         init(dbFile);
     } else {

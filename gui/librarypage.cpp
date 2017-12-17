@@ -95,7 +95,7 @@ LibraryPage::LibraryPage(QWidget *p)
     connect(showArtistImagesAction, SIGNAL(toggled(bool)), this, SLOT(showArtistImagesChanged(bool)));
     albumAlbumSortAction->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
     libraryAlbumSortAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
-    showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
+    showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel() && ItemView::Mode_IconTop!=view->viewMode());
     genreCombo->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
     init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu << genreCombo);
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(doSearch()));

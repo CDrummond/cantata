@@ -67,6 +67,10 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
         case T_Album:
             if (item->getSong().isEmpty()) {
                 Song song=static_cast<MpdLibraryDb *>(db)->getCoverSong(T_Album==topLevel() ? static_cast<AlbumItem *>(item)->getArtistId() : item->getParent()->getId(), item->getId());
+                if (song.isEmpty()) {
+                    COVERS_DBUG << "Failed to locate album cover song";
+                    return QVariant();
+                }
                 item->setSong(song);
                 COVERS_DBUG << "Set album cover song" << song.albumArtist() << song.album << song.file;
                 if (T_Genre==topLevel()) {
@@ -82,6 +86,10 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
             }
             if (item->getSong().isEmpty()) {
                 Song song=static_cast<MpdLibraryDb *>(db)->getCoverSong(item->getId());
+                if (song.isEmpty()) {
+                    COVERS_DBUG << "Failed to locate artist cover song";
+                    return QVariant();
+                }
                 COVERS_DBUG << "Set artist cover song" << song.albumArtist() << song.album << song.file;
                 if (song.useComposer()) {
                     song.setComposerImageRequest();

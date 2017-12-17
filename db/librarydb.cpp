@@ -934,7 +934,9 @@ int LibraryDb::trackCount()
     query.addWhere("type", 0);
     query.exec();
     DBUG << query.executedQuery();
-    return query.next() ? query.value(0).toInt() : 0;
+    int numTracks=query.next() ? query.value(0).toInt() : 0;
+    DBUG << numTracks;
+    return numTracks;
 }
 
 QList<Song> LibraryDb::songs(const QStringList &files, bool allowPlaylists) const

@@ -32,6 +32,7 @@
 #include <QDebug>
 
 GLOBAL_STATIC(MpdLibraryModel, instance)
+#define COVERS_DBUG if (Covers::verboseDebugEnabled()) qWarning() << metaObject()->className() << QThread::currentThread()->objectName() << __FUNCTION__
 
 MpdLibraryModel::MpdLibraryModel()
     : SqlLibraryModel(new MpdLibraryDb(0), 0)
@@ -61,11 +62,13 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
     case Cantata::Role_CoverSong: {
         QVariant v;
         Item *item = static_cast<Item *>(index.internalPointer());
+        COVERS_DBUG << index.data().toString() << item->getType() << role;
         switch (item->getType()) {
         case T_Album:
             if (item->getSong().isEmpty()) {
                 Song song=static_cast<MpdLibraryDb *>(db)->getCoverSong(T_Album==topLevel() ? static_cast<AlbumItem *>(item)->getArtistId() : item->getParent()->getId(), item->getId());
                 item->setSong(song);
+                COVERS_DBUG << "Set album cover song" << song.albumArtist() << song.album << song.file;
                 if (T_Genre==topLevel()) {
                     song.addGenre(item->getParent()->getParent()->getId());
                 }
@@ -74,10 +77,12 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
             break;
         case T_Artist:
             if (!showArtistImages && Cantata::Role_CoverSong==role) {
+                COVERS_DBUG << "Not showing artist images";
                 return QVariant();
             }
             if (item->getSong().isEmpty()) {
                 Song song=static_cast<MpdLibraryDb *>(db)->getCoverSong(item->getId());
+                COVERS_DBUG << "Set artist cover song" << song.albumArtist() << song.album << song.file;
                 if (song.useComposer()) {
                     song.setComposerImageRequest();
                 } else {

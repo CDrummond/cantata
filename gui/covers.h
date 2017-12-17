@@ -185,6 +185,7 @@ public:
 
     static void enableDebug(bool verbose);
     static bool debugEnabled();
+    static bool verboseDebugEnabled();
 
     static const QSize constMaxSize;
     static const QLatin1String constLastFmApiKey;

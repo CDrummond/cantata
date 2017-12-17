@@ -73,6 +73,11 @@ bool Covers::debugEnabled()
     return debugLevel>0;
 }
 
+bool Covers::verboseDebugEnabled()
+{
+    return debugLevel>1;
+}
+
 const QLatin1String Covers::constLastFmApiKey("5a854b839b10f8d46e630e8287c2299b");
 const QLatin1String Covers::constCoverDir("covers/");
 const QLatin1String Covers::constScaledCoverDir("covers-scaled/");

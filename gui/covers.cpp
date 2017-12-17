@@ -1273,6 +1273,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
             return pix;
         }
     }
+    VERBOSE_DBUG << "Use default pixmap";
     return defaultPix(song, size, origSize);
 }
 

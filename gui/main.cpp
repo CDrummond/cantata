@@ -71,20 +71,27 @@
 #include <QDateTime>
 #include <QByteArray>
 #include <QCommandLineParser>
+#include <iostream>
 
 static QMutex msgMutex;
 static bool firstMsg=true;
+static bool debugToFile=false;
 static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QString &msg)
 {
-    QMutexLocker locker(&msgMutex);
-    QFile f(Utils::cacheDir(QString(), true)+"cantata.log");
-    if (f.open(QIODevice::WriteOnly|QIODevice::Append|QIODevice::Text)) {
-        QTextStream stream(&f);
-        if (firstMsg) {
-            stream << "------------START------------" << endl;
-            firstMsg=false;
+    if (debugToFile) {
+        QMutexLocker locker(&msgMutex);
+        QFile f(Utils::cacheDir(QString(), true)+"cantata.log");
+        if (f.open(QIODevice::WriteOnly|QIODevice::Append|QIODevice::Text)) {
+            QTextStream stream(&f);
+            if (firstMsg) {
+                stream << "------------START------------" << endl;
+                firstMsg=false;
+            }
+            stream << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ") << " - " << msg << endl;
         }
-        stream << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ") << " - " << msg << endl;
+    } else {
+        std::cout << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ").toLatin1().constData()
+                  << " - " << msg.toLocal8Bit().constData() << std::endl;
     }
 }
 
@@ -169,7 +176,7 @@ static void installDebugMessageHandler(const QString &cmdLine)
         } else if (QLatin1String("custom-actions")==area) {
             CustomActions::enableDebug();
         } else if (QLatin1String("to-file")==area) {
-            qInstallMessageHandler(cantataQtMsgHandler);
+            debugToFile=true;
         }
         #ifdef ENABLE_TAGLIB
         else if (QLatin1String("tags")==area) {
@@ -192,6 +199,7 @@ static void installDebugMessageHandler(const QString &cmdLine)
         }
         #endif
     }
+    qInstallMessageHandler(cantataQtMsgHandler);
 }
 
 int main(int argc, char *argv[])

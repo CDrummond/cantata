@@ -48,6 +48,9 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QProxyStyle>
+#include <QDebug>
+
+#define DBUG if (Covers::verboseDebugEnabled()) qWarning() << metaObject()->className() << QThread::currentThread()->objectName() << __FUNCTION__
 
 static int detailedViewDecorationSize=22;
 static int simpleViewDecorationSize=16;
@@ -233,6 +236,7 @@ public:
         }
         if (pix.isNull() && (iconMode || index.data(Cantata::Role_ListImage).toBool())) {
             Song cSong=index.data(iconMode ? Cantata::Role_GridCoverSong : Cantata::Role_CoverSong).value<Song>();
+            DBUG << "Cover song" << cSong.albumArtist() << cSong.album << cSong.file;
             if (!cSong.isEmpty()) {
                 QPixmap *cp=Covers::self()->get(cSong, iconMode ? zoomedSize(view, gridCoverSize) : listCoverSize, getCoverInUiThread(index));
                 if (cp) {
@@ -241,6 +245,7 @@ public:
             }
         }
         if (pix.isNull()) {
+            DBUG << "No cover image, use decoration";
             int size=iconMode ? zoomedSize(view, gridCoverSize) : detailedViewDecorationSize;
             pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(size, size, selected &&
                                                                      textColor==qApp->palette().color(QPalette::HighlightedText)

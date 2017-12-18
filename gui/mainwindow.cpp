@@ -547,6 +547,7 @@ void MainWindow::init()
                     expandOrCollapse(false);
                 } else {
                     // Issue #1137 Under Windows, Cantata does not restore maximixed correctly if context is in sidebar
+                    resize(defaultSize);
                     QTimer::singleShot(0, this, SLOT(showMaximized()));
                     expandedSize=defaultSize;
                 }

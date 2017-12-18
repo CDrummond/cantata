@@ -29,6 +29,8 @@
 20. Add filename and path to table stlye playqueue and playlist columns.
 21. Adjust library search debounce based upon number of tracks in DB.
 22. Fix potential issue with missing covers when switching collections.
+23. Fix opening Cantata maximized under Windows if the info view is in the
+    sidebar.
 
 2.2.0
 -----

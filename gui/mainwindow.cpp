@@ -533,9 +533,11 @@ void MainWindow::init()
     expandedSize=Settings::self()->mainWindowSize();
     collapsedSize=Settings::self()->mainWindowCollapsedSize();
 
+    int width=playPauseTrackButton->width()*25;
+    QSize defaultSize(playPauseTrackButton->width()*25, playPauseTrackButton->height()*18);
+
     if (Settings::self()->firstRun() || (expandInterfaceAction->isChecked() && expandedSize.isEmpty())) {
-        int width=playPauseTrackButton->width()*25;
-        resize(playPauseTrackButton->width()*25, playPauseTrackButton->height()*18);
+        resize(defaultSize);
         splitter->setSizes(QList<int>() << width*0.4 << width*0.6);
     } else {
         if (expandInterfaceAction->isChecked()) {
@@ -544,8 +546,9 @@ void MainWindow::init()
                     resize(expandedSize);
                     expandOrCollapse(false);
                 } else {
-                    showMaximized();
-                    expandedSize=size();
+                    // Issue #1137 Under Windows, Cantata does not restore maximixed correctly if context is in sidebar
+                    QTimer::singleShot(0, this, SLOT(showMaximized()));
+                    expandedSize=defaultSize;
                 }
             }
         } else {

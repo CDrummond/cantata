@@ -246,6 +246,11 @@ QSize Settings::mainWindowCollapsedSize()
     return cfg.get("mainWindowCollapsedSize", QSize());
 }
 
+bool Settings::maximized()
+{
+    return cfg.get("maximized", false);
+}
+
 bool Settings::useSystemTray()
 {
     return cfg.get("useSystemTray", false);
@@ -738,6 +743,11 @@ void Settings::saveSplitterAutoHide(bool v)
 void Settings::saveMainWindowSize(const QSize &v)
 {
     cfg.set("mainWindowSize", v);
+}
+
+void Settings::saveMaximized(bool v)
+{
+    cfg.set("maximized", v);
 }
 
 void Settings::saveMainWindowCollapsedSize(const QSize &v)

@@ -120,6 +120,7 @@ protected:
     void showEvent(QShowEvent *event);
     #endif
     void closeEvent(QCloseEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
 private:
     #ifdef Q_OS_MAC
@@ -319,6 +320,7 @@ private:
     QPoint lastPos;
     QSize expandedSize;
     QSize collapsedSize;
+    QSize previousSize;
     Song current;
     Page *currentPage;
     Action *showPlayQueueAction;

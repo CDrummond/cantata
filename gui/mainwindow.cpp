@@ -542,14 +542,17 @@ void MainWindow::init()
     } else {
         if (expandInterfaceAction->isChecked()) {
             if (!expandedSize.isEmpty()) {
-                if (expandedSize.width()>1) {
+                if (!Settings::self()->maximized() && expandedSize.width()>1) {
                     resize(expandedSize);
                     expandOrCollapse(false);
                 } else {
-                    // Issue #1137 Under Windows, Cantata does not restore maximixed correctly if context is in sidebar
-                    resize(defaultSize);
+                    resize(expandedSize.width()>1 ? expandedSize : defaultSize);
+                    // Issue #1137 Under Windows, Cantata does not restore maximized correctly if context is in sidebar
+                    // ...so, set maximized after shown
                     QTimer::singleShot(0, this, SLOT(showMaximized()));
-                    expandedSize=defaultSize;
+                    if (expandedSize.width()<=1) {
+                        expandedSize=defaultSize;
+                    }
                 }
             }
         } else {
@@ -863,8 +866,10 @@ MainWindow::~MainWindow()
     Settings::self()->saveShowFullScreen(fullScreenAction->isChecked());
     if (!fullScreenAction->isChecked()) {
         if (expandInterfaceAction->isChecked()) {
-            Settings::self()->saveMainWindowSize(isMaximized() ? QSize(1, 1) : size());
+            Settings::self()->saveMaximized(isMaximized());
+            Settings::self()->saveMainWindowSize(isMaximized() ? previousSize : size());
         } else {
+            Settings::self()->saveMaximized(false);
             Settings::self()->saveMainWindowSize(expandedSize);
         }
         Settings::self()->saveMainWindowCollapsedSize(expandInterfaceAction->isChecked() ? collapsedSize : size());
@@ -1046,6 +1051,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
     } else if (canClose()) {
         QMainWindow::closeEvent(event);
     }
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    previousSize=event->oldSize();
+    QMainWindow::resizeEvent(event);
 }
 
 void MainWindow::playQueueItemsSelected(bool s)

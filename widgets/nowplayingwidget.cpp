@@ -255,7 +255,9 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     , pollCount(0)
 {
     track=new SqueezedTextLabel(this);
+    track->setTextInteractionFlags(Qt::TextSelectableByMouse);
     artist=new SqueezedTextLabel(this);
+    artist->setTextInteractionFlags(Qt::TextSelectableByMouse);
     slider=new PosSlider(this);
     time=new TimeLabel(this, slider);
     ratingWidget=new RatingWidget(this);

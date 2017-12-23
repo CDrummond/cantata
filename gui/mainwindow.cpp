@@ -2499,13 +2499,8 @@ void MainWindow::startContextTimer()
 int MainWindow::calcMinHeight()
 {
     return tabWidget->style()&FancyTabWidget::Side && tabWidget->style()&FancyTabWidget::Large
-            ? calcCollapsedSize()+(tabWidget->visibleCount()*tabWidget->tabSize().height())
+            ? toolbar->height()+(tabWidget->visibleCount()*tabWidget->tabSize().height())
             : Utils::scaleForDpi(256);
-}
-
-int MainWindow::calcCollapsedSize()
-{
-    return toolbar->height()+(menuBar() && menuBar()->isVisible() ? menuBar()->height() : 0);
 }
 
 void MainWindow::setCollapsedSize()
@@ -2513,7 +2508,7 @@ void MainWindow::setCollapsedSize()
     if (!expandInterfaceAction->isChecked()) {
         int w=width();
         adjustSize();
-        collapsedSize=QSize(w, calcCollapsedSize());
+        collapsedSize=QSize(w, toolbar->height());
         resize(collapsedSize);
         setFixedHeight(collapsedSize.height());
     }
@@ -2562,7 +2557,7 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
         }
     } else {
         // Width also sometimes expands, so make sure this is no larger than it was before...
-        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), calcCollapsedSize());
+        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), toolbar->height());
         resize(collapsedSize);
         setFixedHeight(size().height());
     }

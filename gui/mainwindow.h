@@ -260,7 +260,6 @@ private:
     void updateActionToolTips();
     void startContextTimer();
     int calcMinHeight();
-    int calcCollapsedSize();
     void setCollapsedSize();
 
 private Q_SLOTS:

@@ -21,7 +21,7 @@
 #  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 #  Boston, MA 02110-1301, USA.
 
-use IO::Socket::INET;
+use IO::Socket::IP;
 use POSIX;
 use File::stat;
 use File::Basename;
@@ -100,7 +100,7 @@ sub connectToMpd() {
         $sock = new IO::Socket::UNIX(Peer => $mpdHost, Type => 0);
         $connDetails=$mpdHost;
     } else {
-        $sock = new IO::Socket::INET(PeerAddr => $mpdHost, PeerPort => $mpdPort, Proto => 'tcp');
+        $sock = new IO::Socket::IP(PeerAddr => $mpdHost, PeerPort => $mpdPort, Proto => 'tcp');
         $connDetails="${mpdHost}:${mpdPort}";
     }
     if ($sock && $sock->connected()) {
@@ -1424,7 +1424,7 @@ sub writeToClient() {
 }
 
 sub httpServer() {
-    my $server = new IO::Socket::INET(Proto => 'tcp', LocalPort => $httpPort, Listen => SOMAXCONN, Reuse => 1);
+    my $server = new IO::Socket::IP(Proto => 'tcp', LocalPort => $httpPort, Listen => SOMAXCONN, Reuse => 1);
     $server or die "ERROR: Unable to create HTTP socket (${httpPort}): $!";
 
     print "Starting HTTP server on ${httpPort}\n";

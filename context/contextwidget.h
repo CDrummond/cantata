@@ -109,6 +109,9 @@ public:
     void updateImage(QImage img);
     void search();
 
+private:
+    void updatePalette();
+
 Q_SIGNALS:
     void findArtist(const QString &artist);
     void findAlbum(const QString &artist, const QString &album);
@@ -134,6 +137,7 @@ private:
     NetworkJob * getReply(QObject *obj);
 
 private:
+    bool shown;
     NetworkJob *job;
     bool alwaysCollapsed;
     int backdropType;

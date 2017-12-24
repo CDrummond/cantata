@@ -478,7 +478,6 @@ GroupedView::GroupedView(QWidget *parent, bool isPlayQueue)
     setSelectionBehavior(SelectRows);
     setForceSingleColumn(true);
     connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
-    setStyleSheet("QTreeView::branch { border: 0px; }");
     GroupedViewDelegate *delegate=new GroupedViewDelegate(this);
     setItemDelegate(delegate);
     if (isPlayQueue) {
@@ -870,4 +869,9 @@ void GroupedView::collapse(const QModelIndex &idx, bool singleOnly)
             }
         }
     }
+}
+
+void GroupedView::drawBranches(QPainter *, const QRect &, const QModelIndex &) const
+{
+    // Don't want any branch lines drawn!
 }

@@ -245,6 +245,7 @@ void ThinSplitter::reset()
 
 ContextWidget::ContextWidget(QWidget *parent)
     : QWidget(parent)
+    , shown(false)
     , job(0)
     , alwaysCollapsed(false)
     , backdropType(PlayQueueView::BI_Cover)
@@ -450,39 +451,45 @@ void ContextWidget::saveConfig()
 void ContextWidget::useDarkBackground(bool u)
 {
     if (u!=darkBackground) {
-        darkBackground=u;
-        QPalette pal=darkBackground ? palette() : parentWidget()->palette();
-        QColor prevLinkColor;
-        QColor linkCol;
-
-        if (darkBackground) {
-            QColor dark(32, 32, 32);
-            QColor light(240, 240, 240);
-            QColor linkVisited(164, 164, 164);
-            pal.setColor(QPalette::Window, dark);
-            pal.setColor(QPalette::Base, dark);
-            // Dont globally change window/button text - because this can mess up scrollbar buttons
-            // with some styles (e.g. plastique)
-//            pal.setColor(QPalette::WindowText, light);
-//            pal.setColor(QPalette::ButtonText, light);
-            pal.setColor(QPalette::Text, light);
-            pal.setColor(QPalette::Link, light);
-            pal.setColor(QPalette::LinkVisited, linkVisited);
-            prevLinkColor=appLinkColor;
-            linkCol=pal.color(QPalette::Link);
-        } else {
-            linkCol=appLinkColor;
-            prevLinkColor=QColor(240, 240, 240);
-        }
-        setPalette(pal);
-        artist->setPal(pal, linkCol, prevLinkColor);
-        album->setPal(pal, linkCol, prevLinkColor);
-        song->setPal(pal, linkCol, prevLinkColor);
-        if (viewSelector) {
-            viewSelector->setPalette(pal);
-        }
-        QWidget::update();
+        darkBackground = u;
+        updatePalette();
     }
+}
+
+void ContextWidget::updatePalette()
+{
+    QPalette pal=darkBackground ? palette() : parentWidget()->palette();
+    QColor prevLinkColor;
+    QColor linkCol;
+
+    if (darkBackground) {
+        QColor dark(32, 32, 32);
+        QColor light(240, 240, 240);
+        QColor linkVisited(164, 164, 164);
+        pal.setColor(QPalette::Window, dark);
+        pal.setColor(QPalette::Base, dark);
+        // Dont globally change window/button text - because this can mess up scrollbar buttons
+        // with some styles (e.g. plastique)
+        // pal.setColor(QPalette::WindowText, light);
+        // pal.setColor(QPalette::ButtonText, light);
+        pal.setColor(QPalette::Text, light);
+        pal.setColor(QPalette::Link, light);
+        pal.setColor(QPalette::LinkVisited, linkVisited);
+        prevLinkColor=appLinkColor;
+        linkCol=pal.color(QPalette::Link);
+    } else {
+        linkCol=appLinkColor;
+        prevLinkColor=QColor(240, 240, 240);
+        pal.setColor(QPalette::Base, pal.color(QPalette::Window));
+    }
+    setPalette(pal);
+    artist->setPal(pal, linkCol, prevLinkColor);
+    album->setPal(pal, linkCol, prevLinkColor);
+    song->setPal(pal, linkCol, prevLinkColor);
+    if (viewSelector) {
+        viewSelector->setPalette(pal);
+    }
+    QWidget::update();
 }
 
 void ContextWidget::showEvent(QShowEvent *e)
@@ -490,6 +497,13 @@ void ContextWidget::showEvent(QShowEvent *e)
     setWide(width()>minWidth && !alwaysCollapsed);
     if (backdropType) {
         updateBackdrop();
+    }
+    if (!shown) {
+        // Some styles (e.g Adwaita-Qt) draw base colour for scrollbar background.
+        // We need to fix this to use the window background. Therefore, the first
+        // time we are shown set the palette.
+        updatePalette();
+        shown = true;
     }
     QWidget::showEvent(e);
 }

@@ -95,6 +95,9 @@ public:
     void expand(const QModelIndex &idx, bool singleOnly=false);
     void collapse(const QModelIndex &idx, bool singleOnly=false);
 
+ private:
+    void drawBranches(QPainter *painter, const QRect &, const QModelIndex &) const;
+
 public Q_SLOTS:
     void updateRows(const QModelIndex &parent);
     void coverLoaded(const Song &song, int size);

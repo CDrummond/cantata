@@ -337,13 +337,13 @@ void SmartPlaylistsPage::addSongsToPlayQueue()
         files.append(songs.takeFirst().file);
     }
     if (!files.isEmpty()) {
-        emit add(files, command.action, command.priorty, command.decreasePriority);
+        emit add(files, command.action, command.priority, command.decreasePriority);
         view->clearSelection();
     }
     command.clear();
 }
 
-void SmartPlaylistsPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
+void SmartPlaylistsPage::addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority)
 {
     if (!name.isEmpty()) {
         return;
@@ -363,7 +363,7 @@ void SmartPlaylistsPage::addSelectionToPlaylist(const QString &name, int action,
         return;
     }
 
-    command = Command(pl, action, priorty, decreasePriority, command.id+1);
+    command = Command(pl, action, priority, decreasePriority, command.id+1);
 
     QList<RulesPlaylists::Rule>::ConstIterator it = pl.rules.constBegin();
     QList<RulesPlaylists::Rule>::ConstIterator end = pl.rules.constEnd();

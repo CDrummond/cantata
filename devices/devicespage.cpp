@@ -215,12 +215,12 @@ QList<Song> DevicesPage::selectedSongs(bool allowPlaylists) const
     return DevicesModel::self()->songs(proxy.mapToSource(selected));
 }
 
-void DevicesPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
+void DevicesPage::addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority)
 {
     QStringList files=playableUrls();
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files, action, priorty, decreasePriority);
+            emit add(files, action, priority, decreasePriority);
         } else {
             emit addSongsToPlaylist(name, files);
         }

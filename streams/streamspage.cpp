@@ -185,13 +185,13 @@ void StreamsBrowsePage::showEvent(QShowEvent *e)
     QWidget::showEvent(e);
 }
 
-void StreamsBrowsePage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
+void StreamsBrowsePage::addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority)
 {
     Q_UNUSED(name)
-    addItemsToPlayQueue(view->selectedIndexes(), action, priorty, decreasePriority);
+    addItemsToPlayQueue(view->selectedIndexes(), action, priority, decreasePriority);
 }
 
-void StreamsBrowsePage::addItemsToPlayQueue(const QModelIndexList &indexes, int action, quint8 priorty, bool decreasePriority)
+void StreamsBrowsePage::addItemsToPlayQueue(const QModelIndexList &indexes, int action, quint8 priority, bool decreasePriority)
 {
     if (indexes.isEmpty()) {
         return;
@@ -204,7 +204,7 @@ void StreamsBrowsePage::addItemsToPlayQueue(const QModelIndexList &indexes, int 
     QStringList files=StreamsModel::self()->filenames(mapped, true);
 
     if (!files.isEmpty()) {
-        emit add(files, action, priorty, decreasePriority);
+        emit add(files, action, priority, decreasePriority);
         view->clearSelection();
     }
 }
@@ -617,7 +617,7 @@ void StreamSearchPage::doSearch()
     model.search(view->searchText().trimmed(), false);
 }
 
-void StreamSearchPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
+void StreamSearchPage::addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority)
 {
     Q_UNUSED(name)
     QModelIndexList indexes=view->selectedIndexes();
@@ -632,7 +632,7 @@ void StreamSearchPage::addSelectionToPlaylist(const QString &name, int action, q
     QStringList files=StreamsModel::self()->filenames(mapped, true);
 
     if (!files.isEmpty()) {
-        emit add(files, action, priorty, decreasePriority);
+        emit add(files, action, priority, decreasePriority);
         view->clearSelection();
     }
 }

@@ -37,7 +37,7 @@ class SmartPlaylistsPage : public SinglePageWidget
 
     struct Command {
         Command(const RulesPlaylists::Entry &e=RulesPlaylists::Entry(), int a=0, quint8 prio=0, bool dec=false, quint32 i=0)
-            : playlist(e.name), action(a), priorty(prio), decreasePriority(dec), ratingFrom(e.ratingFrom), ratingTo(e.ratingTo),
+            : playlist(e.name), action(a), priority(prio), decreasePriority(dec), ratingFrom(e.ratingFrom), ratingTo(e.ratingTo),
               minDuration(e.minDuration), maxDuration(e.maxDuration), numTracks(e.numTracks), order(e.order), orderAscending(e.orderAscending),
               id(i) { }
         bool isEmpty() const { return playlist.isEmpty(); }
@@ -47,7 +47,7 @@ class SmartPlaylistsPage : public SinglePageWidget
         QString playlist;
 
         int action;
-        quint8 priorty;
+        quint8 priority;
         bool decreasePriority;
 
         QList<QByteArray> includeRules;
@@ -94,7 +94,7 @@ private:
     void enableWidgets(bool enable);
     void filterCommand();
     void addSongsToPlayQueue();
-    void addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority);
+    void addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority);
 
 private:
     PlaylistProxyModel proxy;

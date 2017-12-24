@@ -2119,7 +2119,7 @@ i18n: ectx: property (text), widget (QPushButton, connectButton)
     <message>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation type="vanished">Obecnie trwa pobieranie podcastu
 
 Wyjście z programu spowoduje przerwanie pobierania.</translation>
@@ -4418,7 +4418,7 @@ i18n: ectx: property (text), widget (QRadioButton, advanced)
         <translation type="vanished">Standardowa wielo-użytkownikowa/serwerowa konfiguracja</translation>
     </message>
     <message>
-        <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therfore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
+        <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therefore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:172
 i18n: ectx: property (text), widget (BuddyLabel, label_10)
 </extracomment>
@@ -8351,7 +8351,7 @@ Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="172"/>
-        <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therfore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
+        <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therefore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
         <translation>&lt;i&gt;Proszę wybrać tę opcję, jeśli kolekcja muzyki jest współdzielona, znajduje się na innej maszynie, jest już skonfigurowa albo ma być używana z innymi klientami (np. MPDroid). Wybranie tej opcji spowoduje, że program Cantata nie będzie mógł kontrolować uruchamiania i wyłączania serwera MPD. Dlatego należy się upewnić, że MPD jest już skonfigurowany i uruchomiony.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -9745,7 +9745,7 @@ Jeśli to wyszukiwanie się powiedzie, to znaleziony tekst zostanie przyporządk
         <location filename="../gui/mainwindow.cpp" line="1128"/>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation>Obecnie trwa pobieranie podcastu
 
 Wyjście z programu spowoduje przerwanie pobierania.</translation>
@@ -12239,7 +12239,7 @@ width x height</comment>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="565"/>
-        <source>Orignal Year</source>
+        <source>Original Year</source>
         <translation>Rok oryginału</translation>
     </message>
     <message>

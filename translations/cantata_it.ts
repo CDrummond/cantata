@@ -5741,7 +5741,7 @@ width x height</comment>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="565"/>
-        <source>Orignal Year</source>
+        <source>Original Year</source>
         <translation>Anno Originale</translation>
     </message>
     <message>

@@ -1145,7 +1145,7 @@ void MainWindow::showAboutDialog()
 bool MainWindow::canClose()
 {
     if (onlinePage->isDownloading() &&
-            MessageBox::No==MessageBox::warningYesNo(this, tr("A Podcast is currently being downloaded\n\nQuiting now will abort the download."),
+            MessageBox::No==MessageBox::warningYesNo(this, tr("A Podcast is currently being downloaded\n\nQuitting now will abort the download."),
                                                      QString(), GuiItem(tr("Abort download and quit")), GuiItem("Do not quit just yet"))) {
         return false;
     }

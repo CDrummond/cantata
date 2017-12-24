@@ -1886,7 +1886,7 @@ i18n: ectx: property (text), widget (QPushButton, connectButton)
     <message>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation type="vanished">Un podcast est actuellement en téléchargement
 
 Le téléchargement sera abandonné si vous quittez maintenant.</translation>
@@ -7224,7 +7224,7 @@ Cette action est définitive.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="172"/>
-        <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therfore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
+        <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therefore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8606,7 +8606,7 @@ Si cette recherche donne de nouveaux résultats, ils seront toujours associés a
         <location filename="../gui/mainwindow.cpp" line="1128"/>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation type="unfinished">Un podcast est actuellement en téléchargement
 
 Le téléchargement sera abandonné si vous quittez maintenant.</translation>
@@ -11063,7 +11063,7 @@ width x height</comment>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="565"/>
-        <source>Orignal Year</source>
+        <source>Original Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

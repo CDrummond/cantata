@@ -562,7 +562,7 @@ QString Song::toolTip() const
         addField(QObject::tr("Year"), QString::number(year), toolTip);
     }
     if (origYear>0) {
-        addField(QObject::tr("Orignal Year"), QString::number(origYear), toolTip);
+        addField(QObject::tr("Original Year"), QString::number(origYear), toolTip);
     }
     if (time>0) {
         addField(QObject::tr("Length"), Utils::formatTime(time, true), toolTip);

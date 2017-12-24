@@ -59,7 +59,7 @@ public:
     void init(int flags=All, const QList<QWidget *> &leftXtra=QList<QWidget *>(), const QList<QWidget *> &rightXtra=QList<QWidget *>());
     virtual QStringList selectedFiles(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists); return QStringList(); }
     virtual QList<Song> selectedSongs(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists); return QList<Song>(); }
-    virtual void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0, bool decreasePriority=false);
+    virtual void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false);
     virtual Song coverRequest() const { return Song(); }
     #ifdef ENABLE_DEVICES_SUPPORT
     virtual void addSelectionToDevice(const QString &udi) { Q_UNUSED(udi); }
@@ -80,7 +80,7 @@ Q_SIGNALS:
     void searchItems();
 
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void add(const QStringList &files, int action, quint8 priorty, bool decreasePriority);
+    void add(const QStringList &files, int action, quint8 priority, bool decreasePriority);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
 
 private Q_SLOTS:

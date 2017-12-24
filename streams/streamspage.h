@@ -53,7 +53,7 @@ public:
     StreamsBrowsePage(QWidget *p);
     virtual ~StreamsBrowsePage();
 
-    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0, bool decreasePriority=false);
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false);
     void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
@@ -85,7 +85,7 @@ private Q_SLOTS:
 
 private:
     void doSearch();
-    void addItemsToPlayQueue(const QModelIndexList &indexes, int action, quint8 priorty=0, bool decreasePriority=false);
+    void addItemsToPlayQueue(const QModelIndexList &indexes, int action, quint8 priority=0, bool decreasePriority=false);
     void addToFavourites();
 
 private:
@@ -118,7 +118,7 @@ private Q_SLOTS:
 
 private:
     void doSearch();
-    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0, bool decreasePriority=false);
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false);
     void addToFavourites();
 
 private:

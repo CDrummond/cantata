@@ -46,7 +46,7 @@ public:
     QString activeFsDeviceUdi() const;
     QStringList playableUrls() const;
     QList<Song> selectedSongs(bool allowPlaylists=false) const;
-    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0, bool decreasePriority=false);
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false);
     void focusSearch() { view->focusSearch(); }
     void refresh();
     void resort() { proxy.sort(); }

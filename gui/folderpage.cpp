@@ -179,7 +179,7 @@ QStringList FolderPage::selectedFiles(bool allowPlaylists) const
     return files;
 }
 
-void FolderPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
+void FolderPage::addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority)
 {
     QModelIndexList selected=view->selectedIndexes();
     QStringList dirs;
@@ -195,7 +195,7 @@ void FolderPage::addSelectionToPlaylist(const QString &name, int action, quint8 
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files, action, priorty, decreasePriority);
+            emit add(files, action, priority, decreasePriority);
         } else {
             emit addSongsToPlaylist(name, files);
         }

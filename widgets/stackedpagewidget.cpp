@@ -89,14 +89,14 @@ QList<Song> StackedPageWidget::selectedSongs(bool allowPlaylists) const
     return QList<Song>();
 }
 
-void StackedPageWidget::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
+void StackedPageWidget::addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority)
 {
     QWidget *w=currentWidget();
     if (dynamic_cast<SinglePageWidget *>(w)) {
-        return static_cast<SinglePageWidget *>(w)->addSelectionToPlaylist(name, action, priorty, decreasePriority);
+        return static_cast<SinglePageWidget *>(w)->addSelectionToPlaylist(name, action, priority, decreasePriority);
     }
     if (dynamic_cast<StackedPageWidget *>(w)) {
-        return static_cast<StackedPageWidget *>(w)->addSelectionToPlaylist(name, action, priorty, decreasePriority);
+        return static_cast<StackedPageWidget *>(w)->addSelectionToPlaylist(name, action, priority, decreasePriority);
     }
 }
 

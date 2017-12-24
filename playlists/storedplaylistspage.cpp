@@ -137,9 +137,9 @@ void StoredPlaylistsPage::clear()
 //    return PlaylistsModel::self()->filenames(mapped, true);
 //}
 
-void StoredPlaylistsPage::addSelectionToPlaylist(const QString &name, int action, quint8 priorty, bool decreasePriority)
+void StoredPlaylistsPage::addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority)
 {
-    addItemsToPlayList(view->selectedIndexes(), name, action, priorty, decreasePriority);
+    addItemsToPlayList(view->selectedIndexes(), name, action, priority, decreasePriority);
 }
 
 void StoredPlaylistsPage::setView(int mode)
@@ -287,7 +287,7 @@ void StoredPlaylistsPage::itemDoubleClicked(const QModelIndex &index)
     }
 }
 
-void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QString &name, int action, quint8 priorty, bool decreasePriority)
+void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QString &name, int action, quint8 priority, bool decreasePriority)
 {
     if (indexes.isEmpty()) {
         return;
@@ -295,7 +295,7 @@ void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, con
 
     // If we only have 1 item selected, see if it is a playlist. If so, we might be able to
     // just ask MPD to load it...
-    if (name.isEmpty() && 1==indexes.count() && 0==priorty && !proxy.enabled() && MPDConnection::Append==action) {
+    if (name.isEmpty() && 1==indexes.count() && 0==priority && !proxy.enabled() && MPDConnection::Append==action) {
         QModelIndex idx=proxy.mapToSource(*(indexes.begin()));
         PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
 
@@ -322,7 +322,7 @@ void StoredPlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, con
     QStringList files=PlaylistsModel::self()->filenames(proxy.mapToSource(indexes));
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files, action, priorty, decreasePriority);
+            emit add(files, action, priority, decreasePriority);
         } else {
             emit addSongsToPlaylist(name, files);
         }

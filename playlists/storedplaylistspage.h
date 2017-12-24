@@ -40,7 +40,7 @@ public:
     void updateRows();
     void clear();
     //QStringList selectedFiles() const;
-    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priorty=0, bool decreasePriority=false);
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false);
     void setView(int mode);
     #ifdef ENABLE_DEVICES_SUPPORT
     QList<Song> selectedSongs(bool allowPlaylists=false) const;
@@ -58,7 +58,7 @@ Q_SIGNALS:
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
 
 private:
-    void addItemsToPlayList(const QModelIndexList &indexes, const QString &name, int action, quint8 priorty=0, bool decreasePriority=false);
+    void addItemsToPlayList(const QModelIndexList &indexes, const QString &name, int action, quint8 priority=0, bool decreasePriority=false);
 
 public Q_SLOTS:
     void removeItems();

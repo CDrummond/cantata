@@ -637,6 +637,12 @@ void MainWindow::init()
     mainMenu->addAction(quitAction);
     menuButton->setIcon(Icons::self()->toolbarMenuIcon);
     menuButton->setAlignedMenu(mainMenu);
+
+    // Ensure no menubar? Issue #1147
+    QMenuBar *mb = menuBar();
+    if (mb) {
+        mb->deleteLater();
+    }
     #endif
 
     dynamicLabel->setVisible(false);

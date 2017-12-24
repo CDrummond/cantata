@@ -2029,7 +2029,7 @@ Non sarà possibile tornare indietro.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="172"/>
-        <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therfore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
+        <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therefore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
         <translation>&lt;i&gt;Scegli quest&apos;opzione se la tua collezione musica è condivisa tra più utenti, se l&apos;istanza MPD viene eseguita su un&apos;altra macchina, se hai già un&apos;impostazione personale di MPD, oppure se vuoi abilitare l&apos;acceso da altri client (es. MPDroid). Se selezionerai questa opzione, Cantata non potrà controllare l&apos;avvio e lo spegnimento del server MPD. Dovrai quindi assicurarti che MPD sia già configurato ed in esecuzione.&lt;/i&gt;</translation>
     </message>
     <message>

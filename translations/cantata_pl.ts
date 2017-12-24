@@ -4418,7 +4418,7 @@ i18n: ectx: property (text), widget (QRadioButton, advanced)
         <translation type="vanished">Standardowa wielo-użytkownikowa/serwerowa konfiguracja</translation>
     </message>
     <message>
-        <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therfore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
+        <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therefore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:172
 i18n: ectx: property (text), widget (BuddyLabel, label_10)
 </extracomment>
@@ -8351,7 +8351,7 @@ Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="172"/>
-        <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therfore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
+        <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therefore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
         <translation>&lt;i&gt;Proszę wybrać tę opcję, jeśli kolekcja muzyki jest współdzielona, znajduje się na innej maszynie, jest już skonfigurowa albo ma być używana z innymi klientami (np. MPDroid). Wybranie tej opcji spowoduje, że program Cantata nie będzie mógł kontrolować uruchamiania i wyłączania serwera MPD. Dlatego należy się upewnić, że MPD jest już skonfigurowany i uruchomiony.&lt;/i&gt;</translation>
     </message>
     <message>

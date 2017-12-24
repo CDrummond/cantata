@@ -5803,7 +5803,7 @@ If this search does find new lyrics, these will still be associated with the ori
         <location filename="../gui/mainwindow.cpp" line="1128"/>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

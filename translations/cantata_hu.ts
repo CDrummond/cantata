@@ -1976,7 +1976,7 @@ i18n: ectx: property (text), widget (QPushButton, connectButton)
     <message>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation type="vanished">Egy podcast letöltése folyamatban van.
 
 A kilépés megszakítja az adatfolyam letöltését.</translation>
@@ -9111,7 +9111,7 @@ Ha a kereső új dalszöveget talál, hozzákapcsolható az eredeti dalhoz és e
         <location filename="../gui/mainwindow.cpp" line="1128"/>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation type="unfinished">Egy podcast letöltése folyamatban van.
 
 A kilépés megszakítja az adatfolyam letöltését.</translation>

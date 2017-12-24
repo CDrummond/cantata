@@ -7572,7 +7572,7 @@ Wenn die Suche einen neuen Liedtext findet, dann wird dieser mit dem ursprüngli
         <location filename="../gui/mainwindow.cpp" line="1128"/>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation>Es wird gerade ein Podcast heruntergeladen.
 
 Wenn du jetzt das Programm beendest, wird der Download abgebrochen.</translation>

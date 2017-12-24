@@ -2119,7 +2119,7 @@ i18n: ectx: property (text), widget (QPushButton, connectButton)
     <message>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation type="vanished">Obecnie trwa pobieranie podcastu
 
 Wyjście z programu spowoduje przerwanie pobierania.</translation>
@@ -9745,7 +9745,7 @@ Jeśli to wyszukiwanie się powiedzie, to znaleziony tekst zostanie przyporządk
         <location filename="../gui/mainwindow.cpp" line="1128"/>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation>Obecnie trwa pobieranie podcastu
 
 Wyjście z programu spowoduje przerwanie pobierania.</translation>

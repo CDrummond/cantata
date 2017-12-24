@@ -2040,7 +2040,7 @@ i18n: ectx: property (text), widget (QPushButton, connectButton)
     <message>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation type="vanished">Podcastは現在ダウンロード中です
 
 終了すると、ダウンロードが中止されます。</translation>
@@ -9559,7 +9559,7 @@ If this search does find new lyrics, these will still be associated with the ori
         <location filename="../gui/mainwindow.cpp" line="1128"/>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation type="unfinished">Podcastは現在ダウンロード中です
 
 終了すると、ダウンロードが中止されます。</translation>

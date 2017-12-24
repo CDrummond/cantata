@@ -1886,7 +1886,7 @@ i18n: ectx: property (text), widget (QPushButton, connectButton)
     <message>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation type="vanished">Un podcast est actuellement en téléchargement
 
 Le téléchargement sera abandonné si vous quittez maintenant.</translation>
@@ -8606,7 +8606,7 @@ Si cette recherche donne de nouveaux résultats, ils seront toujours associés a
         <location filename="../gui/mainwindow.cpp" line="1128"/>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation type="unfinished">Un podcast est actuellement en téléchargement
 
 Le téléchargement sera abandonné si vous quittez maintenant.</translation>

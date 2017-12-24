@@ -3409,7 +3409,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
         <location filename="../gui/mainwindow.cpp" line="1128"/>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation>È in corso lo scaricamento di un podcast
 
 Uscire ora interromperà lo scaricamento.</translation>

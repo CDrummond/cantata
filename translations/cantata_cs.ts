@@ -2102,7 +2102,7 @@ i18n: ectx: property (text), widget (QPushButton, connectButton)
     <message>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation type="vanished">Zvukový záznam se nyní stahují.
 
 Pokud bude program ukončen nyní, bude stahování zrušeno.</translation>
@@ -9711,7 +9711,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
         <location filename="../gui/mainwindow.cpp" line="1128"/>
         <source>A Podcast is currently being downloaded
 
-Quiting now will abort the download.</source>
+Quitting now will abort the download.</source>
         <translation>Zvukový záznam se nyní stahují.
 
 Pokud bude program ukončen nyní, bude stahování zrušeno.</translation>

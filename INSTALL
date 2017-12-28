@@ -52,10 +52,10 @@ The following options may be passed to CMake:
         Support external devices (UMS, MTP, AudioCD)
         Default: ON
 
-    -DENABLE_REMOTE_DEVICES=ON
-        Support remote devices (accessed via sshfs, or samba). This is
-        EXPERIMENTAL - and requires ENABLE_DEVICES_SUPPORT to also be enabled.
-        Default: OFF
+    -DENABLE_REMOTE_DEVICES=OFF
+        Support remote devices (accessed via sshfs, or samba). This requires
+        ENABLE_DEVICES_SUPPORT to also be enabled.
+        Default: ON
 
     -DENABLE_UDISKS2=ON
         Build UDisks2 backend for solid-lite.

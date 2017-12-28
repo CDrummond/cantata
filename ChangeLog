@@ -35,6 +35,7 @@
     usage with IPv6. Thanks to Peter Marschall
 25. Improve appearance of scrollbar in play queue, and context view, under
     some styles (e.g. Adwaita-Qt)
+26. Enable remote (sshfs, samba) device support by default for Linux builds.
 
 2.2.0
 -----

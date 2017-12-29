@@ -3150,7 +3150,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     <message>
         <location filename="../gui/mainwindow.cpp" line="301"/>
         <source>Add Local Files</source>
-        <translation>Aggioni File Locali</translation>
+        <translation>Aggiungi File Locali</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="303"/>

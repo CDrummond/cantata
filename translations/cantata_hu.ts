@@ -6508,17 +6508,17 @@ ha a &quot;Cím&quot; &quot;Wibble - Wobble&quot;, akkor az &quot;Előadó&quot;
 <context>
     <name>ContextWidget</name>
     <message>
-        <location filename="../context/contextwidget.cpp" line="355"/>
+        <location filename="../context/contextwidget.cpp" line="356"/>
         <source>&amp;Artist</source>
         <translation type="unfinished">Előadó</translation>
     </message>
     <message>
-        <location filename="../context/contextwidget.cpp" line="356"/>
+        <location filename="../context/contextwidget.cpp" line="357"/>
         <source>Al&amp;bum</source>
         <translation type="unfinished">Al&amp;bum</translation>
     </message>
     <message>
-        <location filename="../context/contextwidget.cpp" line="357"/>
+        <location filename="../context/contextwidget.cpp" line="358"/>
         <source>&amp;Track</source>
         <translation type="unfinished">Szám</translation>
     </message>
@@ -6984,7 +6984,7 @@ Nem sikerült ebbe: &apos;%1&apos; másolni a fájlt!</translation>
         <translation type="unfinished">Nincs csatlakozva</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="920"/>
+        <location filename="../models/devicesmodel.cpp" line="919"/>
         <source>No Devices Attached</source>
         <translation type="unfinished">Nincs csatlakoztatott eszköz</translation>
     </message>
@@ -8322,12 +8322,12 @@ Ezt nem lehet visszavonni!</translation>
 <context>
     <name>ItemView</name>
     <message>
-        <location filename="../widgets/itemview.cpp" line="614"/>
+        <location filename="../widgets/itemview.cpp" line="620"/>
         <source>Go Back</source>
         <translation type="unfinished">Visszalépés</translation>
     </message>
     <message>
-        <location filename="../widgets/itemview.cpp" line="1307"/>
+        <location filename="../widgets/itemview.cpp" line="1318"/>
         <source>Updating...</source>
         <translation type="unfinished">Frissítés...</translation>
     </message>
@@ -8459,7 +8459,7 @@ Please choose another one.</source>
 <context>
     <name>LibraryDb</name>
     <message>
-        <location filename="../db/librarydb.cpp" line="553"/>
+        <location filename="../db/librarydb.cpp" line="557"/>
         <source>Database error - please check Qt SQLite driver is installed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8467,83 +8467,88 @@ Please choose another one.</source>
 <context>
     <name>LibraryPage</name>
     <message>
-        <location filename="../gui/librarypage.cpp" line="60"/>
+        <location filename="../gui/librarypage.cpp" line="59"/>
+        <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/librarypage.cpp" line="65"/>
         <source>Show Artist Images</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="62"/>
-        <location filename="../gui/librarypage.cpp" line="65"/>
+        <location filename="../gui/librarypage.cpp" line="67"/>
+        <location filename="../gui/librarypage.cpp" line="70"/>
         <source>Sort Albums</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="62"/>
+        <location filename="../gui/librarypage.cpp" line="67"/>
         <source>Name</source>
         <translation type="unfinished">Név</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="63"/>
+        <location filename="../gui/librarypage.cpp" line="68"/>
         <source>Year</source>
         <translation type="unfinished">Év</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="65"/>
+        <location filename="../gui/librarypage.cpp" line="70"/>
         <source>Album, Artist, Year</source>
         <translation type="unfinished">Album, Előadó, Év</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="66"/>
+        <location filename="../gui/librarypage.cpp" line="71"/>
         <source>Album, Year, Artist</source>
         <translation type="unfinished">Album, Év, Előadó</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="67"/>
+        <location filename="../gui/librarypage.cpp" line="72"/>
         <source>Artist, Album, Year</source>
         <translation type="unfinished">Előadó, Album, Év</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="68"/>
+        <location filename="../gui/librarypage.cpp" line="73"/>
         <source>Artist, Year, Album</source>
         <translation type="unfinished">Előadó, Év, Album</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="69"/>
+        <location filename="../gui/librarypage.cpp" line="74"/>
         <source>Year, Album, Artist</source>
         <translation type="unfinished">Év, Album, Előadó</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="70"/>
+        <location filename="../gui/librarypage.cpp" line="75"/>
         <source>Year, Artist, Album</source>
         <translation type="unfinished">Év, Előadó, Album</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="71"/>
+        <location filename="../gui/librarypage.cpp" line="76"/>
         <source>Modified Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="80"/>
+        <location filename="../gui/librarypage.cpp" line="85"/>
         <source>Group By</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="80"/>
+        <location filename="../gui/librarypage.cpp" line="85"/>
         <source>Genre</source>
         <translation type="unfinished">Műfaj</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="81"/>
+        <location filename="../gui/librarypage.cpp" line="86"/>
         <source>Artist</source>
         <translation type="unfinished">Előadó</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="82"/>
+        <location filename="../gui/librarypage.cpp" line="87"/>
         <source>Album</source>
         <translation type="unfinished">Lemez</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="189"/>
+        <location filename="../gui/librarypage.cpp" line="194"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
@@ -8552,7 +8557,7 @@ This cannot be undone.</source>
 Ezt nem lehet visszavonni!</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="190"/>
+        <location filename="../gui/librarypage.cpp" line="195"/>
         <source>Delete Songs</source>
         <translation type="unfinished">Dalok törlése</translation>
     </message>
@@ -8813,9 +8818,9 @@ Ha a kereső új dalszöveget talál, hozzákapcsolható az eredeti dalhoz és e
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="273"/>
-        <location filename="../gui/mainwindow.cpp" line="1278"/>
-        <location filename="../gui/mainwindow.cpp" line="1282"/>
-        <location filename="../gui/mainwindow.cpp" line="1288"/>
+        <location filename="../gui/mainwindow.cpp" line="1298"/>
+        <location filename="../gui/mainwindow.cpp" line="1302"/>
+        <location filename="../gui/mainwindow.cpp" line="1308"/>
         <source>Outputs</source>
         <translation type="unfinished">Kimenetek</translation>
     </message>
@@ -9020,26 +9025,31 @@ Ha a kereső új dalszöveget talál, hozzákapcsolható az eredeti dalhoz és e
         <translation type="unfinished">Info</translation>
     </message>
     <message>
+        <location filename="../gui/mainwindow.cpp" line="494"/>
+        <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show Menubar</source>
         <translation type="obsolete">Menüsáv megjelenítése</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="568"/>
+        <location filename="../gui/mainwindow.cpp" line="580"/>
         <source>&amp;Music</source>
         <translation type="unfinished">Zene</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="579"/>
+        <location filename="../gui/mainwindow.cpp" line="591"/>
         <source>&amp;Edit</source>
         <translation type="unfinished">Szerkesztés</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="588"/>
+        <location filename="../gui/mainwindow.cpp" line="600"/>
         <source>&amp;View</source>
         <translation type="unfinished">Nézet</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="592"/>
+        <location filename="../gui/mainwindow.cpp" line="604"/>
         <source>&amp;Queue</source>
         <translation type="unfinished">Sor</translation>
     </message>
@@ -9048,67 +9058,67 @@ Ha a kereső új dalszöveget talál, hozzákapcsolható az eredeti dalhoz és e
         <translation type="obsolete">Beállítások</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="602"/>
+        <location filename="../gui/mainwindow.cpp" line="614"/>
         <source>&amp;Help</source>
         <translation type="unfinished">Segítség</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="638"/>
+        <location filename="../gui/mainwindow.cpp" line="650"/>
         <source>Set Rating</source>
         <translation type="unfinished">Besorolás beállítása</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="643"/>
+        <location filename="../gui/mainwindow.cpp" line="655"/>
         <source>No Rating</source>
         <translation type="unfinished">Nincs besorolás</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="953"/>
+        <location filename="../gui/mainwindow.cpp" line="967"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation type="unfinished">A dinamikus lejátszási lista feltételeinek megfelelő fájl nem található.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1073"/>
+        <location filename="../gui/mainwindow.cpp" line="1093"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">Csatlakozás ehhez %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1109"/>
+        <location filename="../gui/mainwindow.cpp" line="1129"/>
         <source>Refresh MPD Database?</source>
         <translation type="unfinished">Adatbázist frissítsem?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1115"/>
+        <location filename="../gui/mainwindow.cpp" line="1135"/>
         <source>About Cantata</source>
         <translation type="unfinished">Cantata névjegye</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1116"/>
+        <location filename="../gui/mainwindow.cpp" line="1136"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2017 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1118"/>
+        <location filename="../gui/mainwindow.cpp" line="1138"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1119"/>
+        <location filename="../gui/mainwindow.cpp" line="1139"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">A tartalmi nézet háttere innen származik &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1120"/>
+        <location filename="../gui/mainwindow.cpp" line="1140"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation type="unfinished">A tartalmi nézet metaadatai innen származnak &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipédia&lt;/a&gt; és &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1121"/>
+        <location filename="../gui/mainwindow.cpp" line="1141"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">Fontold meg a kedvenc zenéd feltöltését ide &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1128"/>
+        <location filename="../gui/mainwindow.cpp" line="1148"/>
         <source>A Podcast is currently being downloaded
 
 Quitting now will abort the download.</source>
@@ -9117,100 +9127,100 @@ Quitting now will abort the download.</source>
 A kilépés megszakítja az adatfolyam letöltését.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1129"/>
+        <location filename="../gui/mainwindow.cpp" line="1149"/>
         <source>Abort download and quit</source>
         <translation type="unfinished">Letöltés megszakítása és kilépés</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1157"/>
+        <location filename="../gui/mainwindow.cpp" line="1177"/>
         <source>Please close other dialogs first.</source>
         <translation type="unfinished">Légy szíves zárd be előbb a másik párbeszédet!</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1278"/>
-        <location filename="../gui/mainwindow.cpp" line="1289"/>
+        <location filename="../gui/mainwindow.cpp" line="1298"/>
+        <location filename="../gui/mainwindow.cpp" line="1309"/>
         <source>Enabled: %1</source>
         <translation type="unfinished">Engedélyezve: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1282"/>
-        <location filename="../gui/mainwindow.cpp" line="1290"/>
+        <location filename="../gui/mainwindow.cpp" line="1302"/>
+        <location filename="../gui/mainwindow.cpp" line="1310"/>
         <source>Disabled: %1</source>
         <translation type="unfinished">Nincs engedélyezve: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1479"/>
-        <location filename="../gui/mainwindow.cpp" line="1502"/>
+        <location filename="../gui/mainwindow.cpp" line="1499"/>
+        <location filename="../gui/mainwindow.cpp" line="1522"/>
         <source>Server Information</source>
         <translation type="unfinished">Szerver-információk</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1482"/>
+        <location filename="../gui/mainwindow.cpp" line="1502"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Szerver&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protokoll:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Idő:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Játszott:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Kezelők:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Címkék:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1493"/>
+        <location filename="../gui/mainwindow.cpp" line="1513"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Adatbázis&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Előadók:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albumok:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Dalok:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Időtartam:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Frissítve:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1646"/>
+        <location filename="../gui/mainwindow.cpp" line="1666"/>
         <source>Cantata (%1)</source>
         <translation type="unfinished">Cantata (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1713"/>
+        <location filename="../gui/mainwindow.cpp" line="1733"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">Az MPD a következő hibát jelezte: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1784"/>
+        <location filename="../gui/mainwindow.cpp" line="1804"/>
         <source>Cantata</source>
         <translation type="unfinished">Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1784"/>
+        <location filename="../gui/mainwindow.cpp" line="1804"/>
         <source>Playback stopped</source>
         <translation type="unfinished">Lejátszás leállt</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1827"/>
+        <location filename="../gui/mainwindow.cpp" line="1847"/>
         <source>Remove all songs from play queue?</source>
         <translation type="unfinished">A lejátszási sorból minden számot töröl?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1878"/>
+        <location filename="../gui/mainwindow.cpp" line="1898"/>
         <source>Priority</source>
         <translation type="unfinished">Prioritás</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1878"/>
+        <location filename="../gui/mainwindow.cpp" line="1898"/>
         <source>Enter priority (0..255):</source>
         <translation type="unfinished">Add meg a prioritást (0-255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1879"/>
+        <location filename="../gui/mainwindow.cpp" line="1899"/>
         <source>Decrease priority for each subsequent track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1906"/>
+        <location filename="../gui/mainwindow.cpp" line="1926"/>
         <source>Playlist Name</source>
         <translation type="unfinished">Lejátszási lista neve</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1906"/>
+        <location filename="../gui/mainwindow.cpp" line="1926"/>
         <source>Enter a name for the playlist:</source>
         <translation type="unfinished">Írj be egy nevet a lejátszási listának:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1909"/>
+        <location filename="../gui/mainwindow.cpp" line="1929"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation type="unfinished">&apos;%1&apos; lefoglalva a kedvenc adatfolyamok tárolására, kérlek válassz másik nevet!</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1913"/>
+        <location filename="../gui/mainwindow.cpp" line="1933"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -9219,29 +9229,29 @@ Add to that playlist?</source>
 Hozzáadjam ahhoz a listához?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1914"/>
+        <location filename="../gui/mainwindow.cpp" line="1934"/>
         <source>Existing Playlist</source>
         <translation type="unfinished">Létező lejátszási lista</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1975"/>
+        <location filename="../gui/mainwindow.cpp" line="1995"/>
         <source>Select Music Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1975"/>
+        <location filename="../gui/mainwindow.cpp" line="1995"/>
         <source>Music Files </source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2004"/>
+        <location filename="../gui/mainwindow.cpp" line="2024"/>
         <source>%n Track(s)</source>
         <translation type="unfinished">
             <numerusform>%n Szám</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2006"/>
+        <location filename="../gui/mainwindow.cpp" line="2026"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n Szám (%1)</numerusform>
@@ -9404,7 +9414,7 @@ Hozzáadjam ahhoz a listához?</translation>
 <context>
     <name>NowPlayingWidget</name>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="322"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="324"/>
         <source>(Stream)</source>
         <translation type="unfinished">(Stream)</translation>
     </message>
@@ -9480,23 +9490,23 @@ Hozzáadjam ahhoz a listához?</translation>
         <translation type="unfinished">Beállítás</translation>
     </message>
     <message>
-        <location filename="../online/onlinedbwidget.cpp" line="114"/>
+        <location filename="../online/onlinedbwidget.cpp" line="115"/>
         <source>The music listing needs to be downloaded, this can consume over %1Mb of disk space</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/onlinedbwidget.cpp" line="115"/>
+        <location filename="../online/onlinedbwidget.cpp" line="116"/>
         <source>Dowload music listing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/onlinedbwidget.cpp" line="116"/>
-        <location filename="../online/onlinedbwidget.cpp" line="181"/>
+        <location filename="../online/onlinedbwidget.cpp" line="117"/>
+        <location filename="../online/onlinedbwidget.cpp" line="188"/>
         <source>Download</source>
         <translation type="unfinished">Letöltés</translation>
     </message>
     <message>
-        <location filename="../online/onlinedbwidget.cpp" line="181"/>
+        <location filename="../online/onlinedbwidget.cpp" line="188"/>
         <source>Re-download music listing?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9705,13 +9715,13 @@ Hozzáadjam ahhoz a listához?</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="169"/>
-        <location filename="../models/playqueuemodel.cpp" line="247"/>
+        <location filename="../models/playqueuemodel.cpp" line="249"/>
         <source>Artist</source>
         <translation type="unfinished">Előadó</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="170"/>
-        <location filename="../models/playqueuemodel.cpp" line="249"/>
+        <location filename="../models/playqueuemodel.cpp" line="251"/>
         <source>Album</source>
         <translation type="unfinished">Lemez</translation>
     </message>
@@ -9733,7 +9743,7 @@ Hozzáadjam ahhoz a listához?</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="174"/>
-        <location filename="../models/playqueuemodel.cpp" line="253"/>
+        <location filename="../models/playqueuemodel.cpp" line="255"/>
         <source>Year</source>
         <translation type="unfinished">Év</translation>
     </message>
@@ -9744,7 +9754,7 @@ Hozzáadjam ahhoz a listához?</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="176"/>
-        <location filename="../models/playqueuemodel.cpp" line="252"/>
+        <location filename="../models/playqueuemodel.cpp" line="254"/>
         <source>Genre</source>
         <translation type="unfinished">Műfaj</translation>
     </message>
@@ -9755,13 +9765,13 @@ Hozzáadjam ahhoz a listához?</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="178"/>
-        <location filename="../models/playqueuemodel.cpp" line="254"/>
+        <location filename="../models/playqueuemodel.cpp" line="256"/>
         <source>Composer</source>
         <translation type="unfinished">Zeneszerző</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="179"/>
-        <location filename="../models/playqueuemodel.cpp" line="255"/>
+        <location filename="../models/playqueuemodel.cpp" line="257"/>
         <source>Performer</source>
         <translation type="unfinished">Szereplő</translation>
     </message>
@@ -9771,57 +9781,67 @@ Hozzáadjam ahhoz a listához?</translation>
         <translation type="unfinished">Besorolás</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="225"/>
+        <location filename="../models/playqueuemodel.cpp" line="181"/>
+        <source>Filename</source>
+        <translation type="unfinished">Fájlnév</translation>
+    </message>
+    <message>
+        <location filename="../models/playqueuemodel.cpp" line="182"/>
+        <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/playqueuemodel.cpp" line="227"/>
         <source>Remove Duplicates</source>
         <translation type="unfinished">Másolatok eltávolítása</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="228"/>
+        <location filename="../models/playqueuemodel.cpp" line="230"/>
         <source>Undo</source>
         <translation type="unfinished">Visszavon</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="230"/>
+        <location filename="../models/playqueuemodel.cpp" line="232"/>
         <source>Redo</source>
         <translation type="unfinished">Újra végrehajt</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="236"/>
+        <location filename="../models/playqueuemodel.cpp" line="238"/>
         <source>Shuffle</source>
         <translation type="unfinished">Összekeverés</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="238"/>
+        <location filename="../models/playqueuemodel.cpp" line="240"/>
         <source>Tracks</source>
         <translation type="unfinished">Számok</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="239"/>
+        <location filename="../models/playqueuemodel.cpp" line="241"/>
         <source>Albums</source>
         <translation type="unfinished">Albumok</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="245"/>
+        <location filename="../models/playqueuemodel.cpp" line="247"/>
         <source>Sort By</source>
         <translation type="unfinished">Rendezés ... szerint</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="248"/>
+        <location filename="../models/playqueuemodel.cpp" line="250"/>
         <source>Album Artist</source>
         <translation type="unfinished">Album előadója</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="250"/>
+        <location filename="../models/playqueuemodel.cpp" line="252"/>
         <source>Track Title</source>
         <translation type="unfinished">Szám címe</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="251"/>
+        <location filename="../models/playqueuemodel.cpp" line="253"/>
         <source>Track Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="309"/>
+        <location filename="../models/playqueuemodel.cpp" line="315"/>
         <source># (Track Number)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10228,30 +10248,30 @@ Felülírjam?</translation>
 <context>
     <name>PlaylistsModel</name>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="90"/>
+        <location filename="../models/playlistsmodel.cpp" line="92"/>
         <source>New Playlist...</source>
         <translation type="unfinished">Új lejátszási lista...</translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="112"/>
+        <location filename="../models/playlistsmodel.cpp" line="115"/>
         <source>Stored Playlists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="117"/>
+        <location filename="../models/playlistsmodel.cpp" line="120"/>
         <source>Standard playlists</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/playlistsmodel.cpp" line="336"/>
-        <location filename="../models/playlistsmodel.cpp" line="347"/>
+        <location filename="../models/playlistsmodel.cpp" line="343"/>
+        <location filename="../models/playlistsmodel.cpp" line="354"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n Szám (%1)</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="345"/>
+        <location filename="../models/playlistsmodel.cpp" line="352"/>
         <source>Smart Playlist</source>
         <translation type="unfinished">Okos lejátszási lista</translation>
     </message>
@@ -11758,7 +11778,7 @@ width x height</comment>
         <translation type="unfinished">Következő</translation>
     </message>
     <message>
-        <location filename="../support/kmessagewidget.cpp" line="100"/>
+        <location filename="../support/kmessagewidget.cpp" line="59"/>
         <source>Close</source>
         <translation type="unfinished">Bezár</translation>
     </message>
@@ -11912,7 +11932,7 @@ width x height</comment>
         </translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="209"/>
+        <location filename="../gui/main.cpp" line="219"/>
         <source>MPD Client</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12689,12 +12709,12 @@ Kérlek válassz másik nevet.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="189"/>
-        <source>Auto update</source>
+        <source>Auto update:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="199"/>
-        <source>If the server detects modifications automatically, there is no need to send an update command for certain actions.</source>
+        <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send an update commands for certain actions.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -14419,53 +14439,53 @@ Felülírja?</translation>
         <translation type="unfinished">Megszakít</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="283"/>
+        <location filename="../tags/trackorganiser.cpp" line="282"/>
         <source>Source file does not exist!</source>
         <translation type="unfinished">A forrás nem létezik!</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="284"/>
-        <location filename="../tags/trackorganiser.cpp" line="303"/>
-        <location filename="../tags/trackorganiser.cpp" line="325"/>
-        <location filename="../tags/trackorganiser.cpp" line="346"/>
+        <location filename="../tags/trackorganiser.cpp" line="283"/>
+        <location filename="../tags/trackorganiser.cpp" line="302"/>
+        <location filename="../tags/trackorganiser.cpp" line="324"/>
+        <location filename="../tags/trackorganiser.cpp" line="345"/>
         <source>Skip</source>
         <translation type="unfinished">Kihagy</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="284"/>
-        <location filename="../tags/trackorganiser.cpp" line="303"/>
-        <location filename="../tags/trackorganiser.cpp" line="325"/>
-        <location filename="../tags/trackorganiser.cpp" line="346"/>
+        <location filename="../tags/trackorganiser.cpp" line="283"/>
+        <location filename="../tags/trackorganiser.cpp" line="302"/>
+        <location filename="../tags/trackorganiser.cpp" line="324"/>
+        <location filename="../tags/trackorganiser.cpp" line="345"/>
         <source>Auto Skip</source>
         <translation type="unfinished">Automatikusan kihagy</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="302"/>
+        <location filename="../tags/trackorganiser.cpp" line="301"/>
         <source>Destination file already exists!</source>
         <translation type="unfinished">A célfájl már létezik!</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="324"/>
+        <location filename="../tags/trackorganiser.cpp" line="323"/>
         <source>Failed to create destination folder!</source>
         <translation type="unfinished">Nem sikerült létrehozni a célkönyvtárat!</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="345"/>
+        <location filename="../tags/trackorganiser.cpp" line="344"/>
         <source>Failed to rename &apos;%1&apos; to &apos;%2&apos;</source>
         <translation type="unfinished">&apos;%1&apos;-t nem sikerült átnevezni &apos;%2&apos;-re</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="472"/>
+        <location filename="../tags/trackorganiser.cpp" line="471"/>
         <source>Remove the selected tracks from the list?</source>
         <translation type="unfinished">A kiválasztott számokat eltávolítsam a listából?</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="473"/>
+        <location filename="../tags/trackorganiser.cpp" line="472"/>
         <source>Remove Tracks</source>
         <translation type="unfinished">Számok eltávolítása</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="488"/>
+        <location filename="../tags/trackorganiser.cpp" line="487"/>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database.
 
 If you rename a file (or the folder it is within), then the rating associated with the song will be lost.</source>
@@ -14474,17 +14494,17 @@ If you rename a file (or the folder it is within), then the rating associated wi
 Ha a fájlt (vagy a könyvtárat, amiben van) átnevezed, akkor a dalra vonatkozó besorolás elveszik.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="548"/>
+        <location filename="../tags/trackorganiser.cpp" line="547"/>
         <source>Device has been removed!</source>
         <translation type="unfinished">Az eszköz el lett távolítva!</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="553"/>
+        <location filename="../tags/trackorganiser.cpp" line="552"/>
         <source>Device is not connected.</source>
         <translation type="unfinished">Az eszköz nem csatlakozik.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="558"/>
+        <location filename="../tags/trackorganiser.cpp" line="557"/>
         <source>Device is busy?</source>
         <translation type="unfinished">Az eszköz foglalt?</translation>
     </message>

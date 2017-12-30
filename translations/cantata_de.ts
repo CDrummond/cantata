@@ -6063,27 +6063,27 @@ Overwrite?</source>
     <message>
         <location filename="../gui/findmpddialog.ui" line="20"/>
         <source>Server Detection</source>
-        <translation type="unfinished"></translation>
+        <translation>MPDs im Netzwerk</translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.ui" line="26"/>
         <source>Please select your MPD. If you don&apos;t see your MPD listed here, check that zeroconf is activated in your MPD configuration or insert the host configuration manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte wähle den gewünschten MPD aus der Liste unten aus. Falls dein MPD nicht aufgelistet wird, überprüfe ob zeroconf in der Konfiguration des MPD aktiviert ist oder trage die Host-Konfiguration per Hand ein.</translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.cpp" line="28"/>
         <source>Name</source>
-        <translation type="unfinished">Name</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.cpp" line="28"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse</translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.cpp" line="28"/>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
 </context>
 <context>
@@ -11204,7 +11204,7 @@ Bitte wähle einen anderen Namen.</translation>
     <message>
         <location filename="../gui/serversettings.cpp" line="136"/>
         <source>Discover...</source>
-        <translation>Erkennen...</translation>
+        <translation>Suchen...</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.cpp" line="276"/>

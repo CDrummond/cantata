@@ -182,6 +182,7 @@ void PlayQueueView::setMode(ItemView::Mode m)
     case ItemView::Mode_Table:
         if (!treeView) {
             treeView=new PlayQueueTreeView(this);
+            treeView->setStyle(new PlayQueueTreeStyle());
             treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
             treeView->installFilter(new KeyEventHandler(treeView, removeFromAction));
             treeView->initHeader();

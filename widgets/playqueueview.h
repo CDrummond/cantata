@@ -30,6 +30,8 @@
 #include <QPixmap>
 #include <QImage>
 #include <QPropertyAnimation>
+#include <QProxyStyle>
+#include <QPainter>
 #include "tableview.h"
 #include "listview.h"
 #include "groupedview.h"
@@ -44,6 +46,29 @@ class QModelIndex;
 class Spinner;
 class PlayQueueView;
 class MessageOverlay;
+
+class PlayQueueTreeStyle : public QProxyStyle
+{
+public:
+    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+    {
+        if (element == QStyle::PE_IndicatorItemViewItemDrop && widget)
+        {
+            painter->setPen(QPen(QPalette::Highlight)); // make the drop indicator more visible
+            painter->setRenderHint(QPainter::Antialiasing, true);
+
+            QStyleOption opt(*option);
+            opt.rect.setLeft(0);                // let the drop indicator
+            opt.rect.setRight(widget->width()); // span a whole tree widget row
+
+            QProxyStyle::drawPrimitive(element, &opt, painter, widget);
+        }
+        else
+        {
+            QProxyStyle::drawPrimitive(element, option, painter, widget);
+        }
+    }
+};
 
 class PlayQueueTreeView : public TableView
 {

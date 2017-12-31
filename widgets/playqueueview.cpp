@@ -45,6 +45,26 @@
 // Exported by QtGui
 void qt_blurImage(QPainter *p, QImage &blurImage, qreal radius, bool quality, bool alphaOnly, int transposed = 0);
 
+class PlayQueueTreeStyle : public ProxyStyle
+{
+public:
+    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+    {
+        if (QStyle::PE_IndicatorItemViewItemDrop == element && widget) {
+            painter->setPen(QPen(QPalette::Highlight)); // make the drop indicator more visible
+            painter->setRenderHint(QPainter::Antialiasing, true);
+
+            QStyleOption opt(*option);
+            opt.rect.setLeft(0);                // let the drop indicator
+            opt.rect.setRight(widget->width()); // span a whole tree widget row
+
+            ProxyStyle::drawPrimitive(element, &opt, painter, widget);
+        } else {
+            ProxyStyle::drawPrimitive(element, option, painter, widget);
+        }
+    }
+};
+
 PlayQueueTreeView::PlayQueueTreeView(PlayQueueView *parent)
     : TableView(QLatin1String("playQueue"), parent, true)
     , view(parent)

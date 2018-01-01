@@ -52,7 +52,7 @@ public:
     {
         if (QStyle::PE_IndicatorItemViewItemDrop == element && widget) {
             painter->setPen(QPen(QPalette::Highlight)); // make the drop indicator more visible
-            painter->setRenderHint(QPainter::Antialiasing, true);
+            painter->setRenderHint(QPainter::Antialiasing, false);
 
             QStyleOption opt(*option);
             opt.rect.setLeft(0);                // let the drop indicator

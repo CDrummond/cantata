@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2011-2017 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2011-2018 Craig Drummond <craig.p.drummond@gmail.com>
  *
  */
 /*
@@ -1134,7 +1134,7 @@ void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this, tr("About Cantata"),
                        tr("<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>"
-                           "&copy; 2011-2017 Craig Drummond<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>").arg(PACKAGE_VERSION_STRING)+
+                           "&copy; 2011-2018 Craig Drummond<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>").arg(PACKAGE_VERSION_STRING)+
                        QLatin1String("<br/><br/><i><small>")+tr("Based upon <a href=\"http://lowblog.nl\">QtMPC</a> - &copy; 2007-2010 The QtMPC Authors<br/>")+
                        tr("Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+QLatin1String("<br/>")+
                        tr("Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a>")+

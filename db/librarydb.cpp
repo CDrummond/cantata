@@ -782,7 +782,6 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
                 }
             }
             s.type=(Song::Type)query.value(col++).toInt();
-            qWarning() << s.artist << s.type;
             int year=query.value(col++).toInt();
             if (Song::SingleTracks==s.type) {
                 s.album=Song::singleTracks();

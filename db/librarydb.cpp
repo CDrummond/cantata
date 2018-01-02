@@ -742,7 +742,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
         for (int i=0; i<Song::constNumGenres; ++i) {
             queryString+=", genre"+QString::number(i+1);
         }
-        queryString+=", year, time";
+        queryString+=", type, year, time";
         if (wantModified) {
             queryString+=", lastModified";
         }
@@ -760,10 +760,9 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
             query.addWhere("genre", genreFilter);
         }
         query.exec();
-        DBUG << query.executedQuery() << timer.elapsed();
         int count=0;
         QMap<QString, Album> entries;
-        QMap<QString, QSet<QString> > albumIdArtists; // MAp of albumId -> albumartists/composers
+        QMap<QString, QSet<QString> > albumIdArtists; // Map of albumId -> albumartists/composers
         while (query.next()) {
             count++;
             int col=0;
@@ -782,8 +781,15 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
                     s.addGenre(genre);
                 }
             }
-            album=s.displayAlbum();
+            s.type=(Song::Type)query.value(col++).toInt();
+            qWarning() << s.artist << s.type;
             int year=query.value(col++).toInt();
+            if (Song::SingleTracks==s.type) {
+                s.album=Song::singleTracks();
+                s.albumartist=Song::variousArtists();
+                year = 0;
+            }
+            album=s.displayAlbum();
             int time=query.value(col++).toInt();
             int lastModified=wantModified ? query.value(col++).toInt() : 0;
             QString artist=wantArtist ? query.value(col++).toString() : QString();

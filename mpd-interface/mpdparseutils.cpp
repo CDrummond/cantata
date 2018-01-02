@@ -733,7 +733,8 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
             } else {
                 if (setSingleTracks) {
                     currentSong.albumartist=Song::variousArtists();
-                    currentSong.album=QObject::tr("Single Tracks");
+                    currentSong.album=Song::singleTracks();
+                    currentSong.type=Song::SingleTracks;
                 }
                 currentSong.fillEmptyFields();
                 songs.append(currentSong);

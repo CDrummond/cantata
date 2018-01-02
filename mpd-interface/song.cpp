@@ -45,6 +45,7 @@ const QString Song::constForkedDaapdLocal=QLatin1String("file:");
 
 static QString unknownStr;
 static QString variousArtistsStr;
+static QString singleTracksStr;
 const QString & Song::unknown()
 {
     return unknownStr;
@@ -55,10 +56,16 @@ const QString & Song::variousArtists()
     return variousArtistsStr;
 }
 
+const QString & Song::singleTracks()
+{
+    return singleTracksStr;
+}
+
 void Song::initTranslations()
 {
     unknownStr=QObject::tr("Unknown");
     variousArtistsStr=QObject::tr("Various Artists");
+    singleTracksStr=QObject::tr("Single Tracks");
 }
 
 // When displaying albums, we use the 1st track's year as the year of the album.

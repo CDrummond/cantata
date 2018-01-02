@@ -183,6 +183,17 @@ static bool albumsSortModified(const LibraryDb::Album &a, const LibraryDb::Album
 
 static bool songSort(const Song &a, const Song &b)
 {
+    if (Song::SingleTracks==a.type && Song::SingleTracks==b.type) {
+        int cmp=a.title.localeAwareCompare(b.title);
+        if (0!=cmp) {
+            return cmp<0;
+        }
+        a.artist.localeAwareCompare(b.artist);
+        if (0!=cmp) {
+            return cmp<0;
+        }
+    }
+
     if (a.disc!=b.disc) {
         return a.disc<b.disc;
     }
@@ -908,6 +919,7 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
 //        qSort(songs.begin(), songs.end(), songsSortModified);
 //        break;
     default:
+        qSort(songs.begin(), songs.end(), songSort);
         break;
     }
     return songs;

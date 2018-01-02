@@ -6600,13 +6600,21 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="553"/>
-        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
-        <translation>Falls du in deiner Sammlung viele Interpreten mit nur einem Stück hast, kann es lästig sein, für jeden von diesen einen eigenen Eintrag in der Interpretenliste zu haben. Um das zu umgehen, kannst du solche Einzelstücke in einen gemeinsamen Ordner stecken und dessen Name unten angeben; Cantata gruppiert diese Stücke dann unter einem Album namens „Einzelne Stücke“ mit dem Album-Interpret „Diverse Interpreten“.</translation>
+        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos; You may enter a comma separated list of folder names (without preceeding or trailing path separators) below.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="563"/>
+        <source>Comma separated list of folders that contain single track files...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
+        <translation type="vanished">Falls du in deiner Sammlung viele Interpreten mit nur einem Stück hast, kann es lästig sein, für jeden von diesen einen eigenen Eintrag in der Interpretenliste zu haben. Um das zu umgehen, kannst du solche Einzelstücke in einen gemeinsamen Ordner stecken und dessen Name unten angeben; Cantata gruppiert diese Stücke dann unter einem Album namens „Einzelne Stücke“ mit dem Album-Interpret „Diverse Interpreten“.</translation>
+    </message>
+    <message>
         <source>Folder that contains single track files...</source>
-        <translation>Ordner mit Einzelstücken …</translation>
+        <translation type="vanished">Ordner mit Einzelstücken …</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="573"/>
@@ -8318,7 +8326,7 @@ Zu dieser hinzufügen?</translation>
 <context>
     <name>PlayQueueView</name>
     <message>
-        <location filename="../widgets/playqueueview.cpp" line="92"/>
+        <location filename="../widgets/playqueueview.cpp" line="112"/>
         <source>Remove</source>
         <translation>Entfernen</translation>
     </message>
@@ -9617,7 +9625,7 @@ Overwrite?</source>
         <translation>Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="547"/>
+        <location filename="../mpd-interface/song.cpp" line="554"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="69"/>
         <source>Artist</source>
         <translation>Interpret</translation>
@@ -9633,7 +9641,7 @@ Overwrite?</source>
         <translation>Album-Interpret</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="551"/>
+        <location filename="../mpd-interface/song.cpp" line="558"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="75"/>
         <source>Composer</source>
         <translation>Komponist</translation>
@@ -9644,19 +9652,19 @@ Overwrite?</source>
         <translation>Kommentar</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="553"/>
+        <location filename="../mpd-interface/song.cpp" line="560"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="79"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="546"/>
+        <location filename="../mpd-interface/song.cpp" line="553"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="81"/>
         <source>Title</source>
         <translation>Titel</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="560"/>
+        <location filename="../mpd-interface/song.cpp" line="567"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="83"/>
         <source>Genre</source>
         <translation>Genre</translation>
@@ -10005,7 +10013,7 @@ width x height</comment>
         <translation>„%1“ (%2:%3)</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdparseutils.cpp" line="736"/>
+        <location filename="../mpd-interface/song.cpp" line="68"/>
         <source>Single Tracks</source>
         <translation>Einzelne Stücke</translation>
     </message>
@@ -10015,59 +10023,59 @@ width x height</comment>
         <translation>Persönlich</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="60"/>
+        <location filename="../mpd-interface/song.cpp" line="66"/>
         <location filename="../support/utils.cpp" line="650"/>
         <source>Unknown</source>
         <translation>Unbekannt</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="61"/>
+        <location filename="../mpd-interface/song.cpp" line="67"/>
         <source>Various Artists</source>
         <translation>Diverse Interpreten</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="549"/>
+        <location filename="../mpd-interface/song.cpp" line="556"/>
         <source>Album artist</source>
         <translation>Album-Interpret</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="552"/>
+        <location filename="../mpd-interface/song.cpp" line="559"/>
         <source>Performer</source>
         <translation>Ausführender Künstler</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="555"/>
+        <location filename="../mpd-interface/song.cpp" line="562"/>
         <source>Track number</source>
         <translation>Stücknummer</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="558"/>
+        <location filename="../mpd-interface/song.cpp" line="565"/>
         <source>Disc number</source>
         <translation>Disc-Nummer</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="562"/>
+        <location filename="../mpd-interface/song.cpp" line="569"/>
         <source>Year</source>
         <translation>Jahr</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="565"/>
+        <location filename="../mpd-interface/song.cpp" line="572"/>
         <source>Original Year</source>
         <translation>Original-Jahr</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="568"/>
+        <location filename="../mpd-interface/song.cpp" line="575"/>
         <source>Length</source>
         <translation>Länge</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="749"/>
+        <location filename="../mpd-interface/song.cpp" line="756"/>
         <source>&lt;b&gt;%1&lt;/b&gt; on &lt;b&gt;%2&lt;/b&gt;</source>
         <comment>Song on Album</comment>
         <translation>&lt;b&gt;%1&lt;/b&gt; auf &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="750"/>
+        <location filename="../mpd-interface/song.cpp" line="757"/>
         <source>&lt;b&gt;%1&lt;/b&gt; by &lt;b&gt;%2&lt;/b&gt; on &lt;b&gt;%3&lt;/b&gt;</source>
         <comment>Song by Artist on Album</comment>
         <translation>&lt;b&gt;%1&lt;/b&gt; von &lt;b&gt;%2&lt;/b&gt; auf &lt;b&gt;%3&lt;/b&gt;</translation>

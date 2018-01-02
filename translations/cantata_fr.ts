@@ -7624,12 +7624,12 @@ Cette action est définitive.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="553"/>
-        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
+        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos; You may enter a comma separated list of folder names (without preceeding or trailing path separators) below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="563"/>
-        <source>Folder that contains single track files...</source>
+        <source>Comma separated list of folders that contain single track files...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9352,7 +9352,7 @@ Ajouter à cette liste de lecture ?</translation>
 <context>
     <name>PlayQueueView</name>
     <message>
-        <location filename="../widgets/playqueueview.cpp" line="92"/>
+        <location filename="../widgets/playqueueview.cpp" line="112"/>
         <source>Remove</source>
         <translation type="unfinished">Supprimer</translation>
     </message>
@@ -10643,7 +10643,7 @@ Remplacer ?</translation>
         <translation type="unfinished">Erreur inconnue</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="547"/>
+        <location filename="../mpd-interface/song.cpp" line="554"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="69"/>
         <source>Artist</source>
         <translation type="unfinished">Artiste</translation>
@@ -10659,7 +10659,7 @@ Remplacer ?</translation>
         <translation type="unfinished">Artiste de l&apos;album</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="551"/>
+        <location filename="../mpd-interface/song.cpp" line="558"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="75"/>
         <source>Composer</source>
         <translation type="unfinished">Compositeur</translation>
@@ -10670,19 +10670,19 @@ Remplacer ?</translation>
         <translation type="unfinished">Commentaire</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="553"/>
+        <location filename="../mpd-interface/song.cpp" line="560"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="79"/>
         <source>Album</source>
         <translation type="unfinished">Album</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="546"/>
+        <location filename="../mpd-interface/song.cpp" line="553"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="81"/>
         <source>Title</source>
         <translation type="unfinished">Titre</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="560"/>
+        <location filename="../mpd-interface/song.cpp" line="567"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="83"/>
         <source>Genre</source>
         <translation type="unfinished">Genre</translation>
@@ -11036,7 +11036,7 @@ width x height</comment>
         <translation type="unfinished">&quot;%1&quot; (%2:%3)</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdparseutils.cpp" line="736"/>
+        <location filename="../mpd-interface/song.cpp" line="68"/>
         <source>Single Tracks</source>
         <translation type="unfinished">Piste unique</translation>
     </message>
@@ -11046,59 +11046,59 @@ width x height</comment>
         <translation type="unfinished">Personnel</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="60"/>
+        <location filename="../mpd-interface/song.cpp" line="66"/>
         <location filename="../support/utils.cpp" line="650"/>
         <source>Unknown</source>
         <translation type="unfinished">Inconnu</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="61"/>
+        <location filename="../mpd-interface/song.cpp" line="67"/>
         <source>Various Artists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="549"/>
+        <location filename="../mpd-interface/song.cpp" line="556"/>
         <source>Album artist</source>
         <translation type="unfinished">Artiste de l&apos;album</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="552"/>
+        <location filename="../mpd-interface/song.cpp" line="559"/>
         <source>Performer</source>
         <translation type="unfinished">Interprète</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="555"/>
+        <location filename="../mpd-interface/song.cpp" line="562"/>
         <source>Track number</source>
         <translation type="unfinished">Piste numéro</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="558"/>
+        <location filename="../mpd-interface/song.cpp" line="565"/>
         <source>Disc number</source>
         <translation type="unfinished">Disque numéro</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="562"/>
+        <location filename="../mpd-interface/song.cpp" line="569"/>
         <source>Year</source>
         <translation type="unfinished">Année</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="565"/>
+        <location filename="../mpd-interface/song.cpp" line="572"/>
         <source>Original Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="568"/>
+        <location filename="../mpd-interface/song.cpp" line="575"/>
         <source>Length</source>
         <translation type="unfinished">Durée</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="749"/>
+        <location filename="../mpd-interface/song.cpp" line="756"/>
         <source>&lt;b&gt;%1&lt;/b&gt; on &lt;b&gt;%2&lt;/b&gt;</source>
         <comment>Song on Album</comment>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; sur &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="750"/>
+        <location filename="../mpd-interface/song.cpp" line="757"/>
         <source>&lt;b&gt;%1&lt;/b&gt; by &lt;b&gt;%2&lt;/b&gt; on &lt;b&gt;%3&lt;/b&gt;</source>
         <comment>Song by Artist on Album</comment>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; par &lt;b&gt;%2&lt;/b&gt; sur &lt;b&gt;%3&lt;/b&gt;</translation>

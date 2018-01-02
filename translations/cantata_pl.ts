@@ -8751,7 +8751,7 @@ Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="553"/>
-        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos; You may enter a comma separated list of folder names (without preceeding or trailing path separators) below.</source>
+        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos; You may enter a comma separated list of folder names (without leading or trailing path separators) below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9101,7 +9101,7 @@ Proszę wybrać inny skrót.</translation>
 <context>
     <name>LibraryDb</name>
     <message>
-        <location filename="../db/librarydb.cpp" line="557"/>
+        <location filename="../db/librarydb.cpp" line="568"/>
         <source>Database error - please check Qt SQLite driver is installed</source>
         <translation>Błąd bazy danych - proszę sprawdzić czy sterownik Qt SQLite jest zainstalowany</translation>
     </message>

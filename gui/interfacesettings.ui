@@ -550,7 +550,7 @@
           <item>
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named 'Single Tracks' with an album artist of 'Various Artists'</string>
+             <string>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named 'Single Tracks' with an album artist of 'Various Artists' You may enter a comma separated list of folder names (without preceeding or trailing path separators) below.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -560,7 +560,7 @@
           <item>
            <widget class="LineEdit" name="singleTracksFolders">
             <property name="placeholderText">
-             <string>Folder that contains single track files...</string>
+             <string>Comma separated list of folders that contain single track files...</string>
             </property>
            </widget>
           </item>

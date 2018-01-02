@@ -118,6 +118,7 @@ struct Song
 
     static const QString & unknown();
     static const QString & variousArtists();
+    static const QString & singleTracks();
     static void initTranslations();
     static const QString constCddaProtocol;
     static const QString constMopidyLocal;

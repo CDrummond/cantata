@@ -530,7 +530,7 @@ QString Song::trackAndTitleStr(bool showArtistIfDifferent) const
 //               QLatin1Char(' ')+(addArtist ? artistSong() : title);
 //    }
     return //(disc>0 ? (QString::number(disc)+QLatin1Char('.')) : QString())+
-           (track>0 ? (track>9 ? QString::number(track)+QLatin1Char(' ') : (QLatin1Char('0')+QString::number(track)+QLatin1Char(' '))) : QString())+
+           (track>0 && SingleTracks!=type ? (track>9 ? QString::number(track)+QLatin1Char(' ') : (QLatin1Char('0')+QString::number(track)+QLatin1Char(' '))) : QString())+
            (showArtistIfDifferent && diffArtist() ? artistSong() : title) +
            (origYear>0 && origYear != year ? QLatin1String(" (")+QString::number(origYear)+QLatin1Char(')') : QString());
 }

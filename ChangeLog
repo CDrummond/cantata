@@ -37,7 +37,8 @@
     some styles (e.g. Adwaita-Qt)
 26. Enable remote (sshfs, samba) device support by default for Linux builds.
 27. Improve table style playqueue drop indicator - thanks to padertux.
-28. Don't show year for 'Single Tracks'
+28. Don't show year for 'Single Tracks', and ignore any sort and musicbrainz
+    values.
 
 2.2.0
 -----

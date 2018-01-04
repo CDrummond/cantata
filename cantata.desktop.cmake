@@ -3,7 +3,7 @@ Type=Application
 Name=Cantata
 GenericName=Music Player Client
 GenericName[bs]=Muzički player klijent
-GenericName[da]=Musik afspiller
+GenericName[da]=Musikafspiller-klient
 GenericName[de]=Grafischer Musik Player Client
 GenericName[es]=Cliente de reproducción de música
 GenericName[fi]=Musiikkisoitinasiakas
@@ -32,6 +32,7 @@ Actions=Previous;PlayPause;Stop;StopAfterCurrent;Next;
 [Desktop Action Previous]
 Name=Previous Track
 Name[cs]=Předchozí skladba
+Name[da]=Forrige spor
 Name[de]=Vorheriges Stück
 Name[es]=Pista anterior
 Name[hu]=Előző szám
@@ -45,6 +46,7 @@ Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Previous
 [Desktop Action PlayPause]
 Name=Play/Pause
 Name[cs]=Přehrát/Pozastavit
+Name[da]=Afspil/pause
 Name[de]=Abspielen/Pause
 Name[es]=Reproducir/Pausa
 Name[hu]=Lejátszás/Szünet
@@ -58,6 +60,7 @@ Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote PlayPaus
 [Desktop Action Stop]
 Name=Stop
 Name[cs]=Zastavit
+Name[da]=Stop
 Name[de]=Stopp
 Name[es]=Detener
 Name[hu]=Állj
@@ -71,6 +74,7 @@ Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote Stop
 [Desktop Action StopAfterCurrent]
 Name=Stop After Current Track
 Name[cs]=Zastavit po současné skladbě
+Name[da]=Stop efter nuværende spor
 Name[de]=Stoppe nach aktuellem Stück
 Name[es]=Detener después de la pista actual
 Name[hu]=A mostani szám után leáll
@@ -84,6 +88,7 @@ Exec=@SHARE_INSTALL_PREFIX@/@CMAKE_PROJECT_NAME@/scripts/cantata-remote StopAfte
 [Desktop Action Next]
 Name=Next Track
 Name[cs]=Další skladba
+Name[da]=Næste spor
 Name[de]=Nächstes Stück
 Name[es]=Pista siguiente
 Name[hu]=Következő szám

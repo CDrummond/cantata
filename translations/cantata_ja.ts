@@ -7315,8 +7315,12 @@ Could not copy file to &apos;%1&apos;!</source>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
+        <source>If an artist name begins with &apos;The&apos;, then append this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation type="unfinished">アーティスト名が &apos;The&apos;で始まる場合は、フォルダ名の先頭に追加します。 例えば 「The Beatles」は「Beatles, The」になります</translation>
+        <translation type="obsolete">アーティスト名が &apos;The&apos;で始まる場合は、フォルダ名の先頭に追加します。 例えば 「The Beatles」は「Beatles, The」になります</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="205"/>
@@ -14280,8 +14284,12 @@ Overwrite?</source>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
+        <source>Failed to open package file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed top open package file.</source>
-        <translation type="unfinished">パッケージファイルを開くことができません。</translation>
+        <translation type="obsolete">パッケージファイルを開くことができません。</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>

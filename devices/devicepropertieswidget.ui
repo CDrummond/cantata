@@ -192,7 +192,7 @@
          <string>Append 'The' to artist names</string>
         </property>
         <property name="toolTip">
-         <string>If an artist name begins with 'The', then prepend this in the folder name. e.g. 'The Beatles' becomes 'Beatles, The'</string>
+         <string>If an artist name begins with 'The', then append this in the folder name. e.g. 'The Beatles' becomes 'Beatles, The'</string>
         </property>
        </widget>
       </item>

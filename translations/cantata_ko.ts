@@ -7435,8 +7435,12 @@ Could not copy file to &apos;%1&apos;!</source>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
+        <source>If an artist name begins with &apos;The&apos;, then append this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation type="unfinished">연주자가 &apos;The&apos;로 시작하면, 이를 폴더 이름 뒤에 붙입니다. 예. &apos;The Beatles&apos;는 &apos;Beatles, The&apos;가 됩니다</translation>
+        <translation type="obsolete">연주자가 &apos;The&apos;로 시작하면, 이를 폴더 이름 뒤에 붙입니다. 예. &apos;The Beatles&apos;는 &apos;Beatles, The&apos;가 됩니다</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="205"/>
@@ -14466,8 +14470,12 @@ Overwrite?</source>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
+        <source>Failed to open package file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed top open package file.</source>
-        <translation type="unfinished">패키지 파일을 열 수 없음.</translation>
+        <translation type="obsolete">패키지 파일을 열 수 없음.</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>

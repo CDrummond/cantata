@@ -6365,7 +6365,7 @@ Le fichier ne peut être copié vers &apos;%1&apos; !</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
-        <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
+        <source>If an artist name begins with &apos;The&apos;, then append this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13357,8 +13357,12 @@ Remplacer ?</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
+        <source>Failed to open package file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed top open package file.</source>
-        <translation type="unfinished">L&apos;ouverture de l&apos;archive a échoué.</translation>
+        <translation type="obsolete">L&apos;ouverture de l&apos;archive a échoué.</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>

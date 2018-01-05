@@ -178,7 +178,7 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
     Tar tar(fileName);
     if (!tar.open()) {
         if (showErrors) {
-            MessageBox::error(this, tr("Failed top open package file."));
+            MessageBox::error(this, tr("Failed to open package file."));
         }
         return false;
     }

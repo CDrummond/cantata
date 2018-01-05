@@ -7479,8 +7479,12 @@ Nie można skopiować pliku do &apos;%1&apos;!</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
+        <source>If an artist name begins with &apos;The&apos;, then append this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation>Jeżeli nazwa artysty rozpoczyna się od &apos;The&apos;, to dodaj predrostek do nazwy katalogu, np. &apos;The Beatles&apos; zmieni się w &apos;Beatles, The&apos;</translation>
+        <translation type="vanished">Jeżeli nazwa artysty rozpoczyna się od &apos;The&apos;, to dodaj predrostek do nazwy katalogu, np. &apos;The Beatles&apos; zmieni się w &apos;Beatles, The&apos;</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="205"/>
@@ -14555,8 +14559,12 @@ Nadpisać?</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
+        <source>Failed to open package file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed top open package file.</source>
-        <translation>Otwieranie pliku pakietu nie powiodło się.</translation>
+        <translation type="vanished">Otwieranie pliku pakietu nie powiodło się.</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>

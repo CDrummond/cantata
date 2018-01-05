@@ -5056,8 +5056,12 @@ Konnte die Datei nicht nach ‚%1‘ kopieren.</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
+        <source>If an artist name begins with &apos;The&apos;, then append this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation>Wenn ein Interpretenname mit „The“ beginnt, hänge dies im Ordnernamen hinten an, z. B. „The Beatles“ wird zu „Beatles, The“</translation>
+        <translation type="vanished">Wenn ein Interpretenname mit „The“ beginnt, hänge dies im Ordnernamen hinten an, z. B. „The Beatles“ wird zu „Beatles, The“</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="205"/>
@@ -12338,8 +12342,12 @@ Overwrite?</source>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
+        <source>Failed to open package file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed top open package file.</source>
-        <translation>Öffnen der Paketdatei fehlgeschlagen.</translation>
+        <translation type="vanished">Öffnen der Paketdatei fehlgeschlagen.</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>

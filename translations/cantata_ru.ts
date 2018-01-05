@@ -6883,7 +6883,7 @@ Could not copy file to &apos;%1&apos;!</source>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
-        <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
+        <source>If an artist name begins with &apos;The&apos;, then append this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13925,8 +13925,12 @@ Overwrite?</source>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
+        <source>Failed to open package file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed top open package file.</source>
-        <translation type="unfinished">Сбой открытия файла пакета</translation>
+        <translation type="obsolete">Сбой открытия файла пакета</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>

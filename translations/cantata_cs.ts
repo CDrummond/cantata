@@ -7457,8 +7457,12 @@ Nepodařilo se zkopírovat soubor do &apos;%1&apos;!</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
+        <source>If an artist name begins with &apos;The&apos;, then append this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation>Pokud začíná jméno umělce na The, potom je připojit před název složky, např. z The Beatles se stane Beatles, The</translation>
+        <translation type="vanished">Pokud začíná jméno umělce na The, potom je připojit před název složky, např. z The Beatles se stane Beatles, The</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="205"/>
@@ -14521,8 +14525,12 @@ Přepsat?</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
+        <source>Failed to open package file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed top open package file.</source>
-        <translation>Nepodařilo se otevřít soubor s balíčkem.</translation>
+        <translation type="vanished">Nepodařilo se otevřít soubor s balíčkem.</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>

@@ -1177,8 +1177,12 @@ Non è stato possibile copiare il file su &apos;%1&apos;!</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
+        <source>If an artist name begins with &apos;The&apos;, then append this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation>Se il nome di un artista inizia con &apos;The&apos;, allora postponilo nel nome della cartella. es. &apos;The Beatles&apos; diventa &apos;Beatles, The&apos;</translation>
+        <translation type="vanished">Se il nome di un artista inizia con &apos;The&apos;, allora postponilo nel nome della cartella. es. &apos;The Beatles&apos; diventa &apos;Beatles, The&apos;</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="205"/>
@@ -7981,8 +7985,12 @@ Sovrascrivere?</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
+        <source>Failed to open package file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed top open package file.</source>
-        <translation>Impossibile caricare il file pacchetto.</translation>
+        <translation type="vanished">Impossibile caricare il file pacchetto.</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>

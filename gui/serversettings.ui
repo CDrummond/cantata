@@ -196,7 +196,7 @@
          <item row="7" column="1">
           <widget class="QCheckBox" name="autoUpdate">
            <property name="toolTip">
-		   <string>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send an update commands for certain actions.&lt;/p&gt;</string>
+		   <string>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</string>
            </property>
            <property name="text">
             <string>Server detects changes automatically</string>

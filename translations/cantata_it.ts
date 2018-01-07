@@ -6832,7 +6832,7 @@ Prego scegliere un nome diverso.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="199"/>
-        <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send an update commands for certain actions.&lt;/p&gt;</source>
+        <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

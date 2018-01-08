@@ -94,7 +94,7 @@ public:
     {
     }
 
-    void parse(const QVariant &data)
+    void parse(const QVariant &data) override
     {
         for (const QVariant &resultVariant: data.toMap()[QLatin1String("results")].toList()) {
             QVariantMap result(resultVariant.toMap());
@@ -124,7 +124,7 @@ public:
     {
     }
 
-    void parse(const QVariant &data)
+    void parse(const QVariant &data) override
     {
         QVariantList list=data.toList();
         for (const QVariant &var: list) {

@@ -37,7 +37,7 @@ class NetworkJob : public QObject
 
 public:
     NetworkJob(QNetworkReply *j);
-    virtual ~NetworkJob();
+    ~NetworkJob() override;
 
     QNetworkReply * actualJob() const { return job; }
 
@@ -95,7 +95,7 @@ public:
     static NetworkAccessManager * self();
 
     NetworkAccessManager(QObject *parent=0);
-    virtual ~NetworkAccessManager() { }
+    ~NetworkAccessManager() override { }
 
     NetworkJob * get(const QNetworkRequest &req, int timeout=0);
     NetworkJob * get(const QUrl &url, int timeout=0) { return get(QNetworkRequest(url), timeout); }
@@ -103,7 +103,7 @@ public:
     QNetworkReply * postFormData(const QUrl &url, const QByteArray &data) { return postFormData(QNetworkRequest(url), data); }
 
 protected:
-    void timerEvent(QTimerEvent *e);
+    void timerEvent(QTimerEvent *e) override;
 
 private Q_SLOTS:
     void replyFinished();

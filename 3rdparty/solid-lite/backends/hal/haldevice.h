@@ -47,19 +47,19 @@ class HalDevice : public Solid::Ifaces::Device
 
 public:
     HalDevice(const QString &udi);
-    virtual ~HalDevice();
+    ~HalDevice() override;
 
-    virtual QString udi() const;
-    virtual QString parentUdi() const;
+    QString udi() const override;
+    QString parentUdi() const override;
 
-    virtual QString vendor() const;
-    virtual QString product() const;
-    virtual QString icon() const;
-    virtual QStringList emblems() const;
-    virtual QString description() const;
+    QString vendor() const override;
+    QString product() const override;
+    QString icon() const override;
+    QStringList emblems() const override;
+    QString description() const override;
 
-    virtual bool queryDeviceInterface(const Solid::DeviceInterface::Type &type) const;
-    virtual QObject *createDeviceInterface(const Solid::DeviceInterface::Type &type);
+    bool queryDeviceInterface(const Solid::DeviceInterface::Type &type) const override;
+    QObject *createDeviceInterface(const Solid::DeviceInterface::Type &type) override;
 
 public:
     QVariant prop(const QString &key) const;

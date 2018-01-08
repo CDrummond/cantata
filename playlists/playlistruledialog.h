@@ -35,7 +35,7 @@ class PlaylistRuleDialog : public Dialog, Ui::PlaylistRule
 
 public:
     PlaylistRuleDialog(QWidget *parent, bool isDynamic);
-    virtual ~PlaylistRuleDialog();
+    ~PlaylistRuleDialog() override;
 
     void createNew() { edit(RulesPlaylists::Rule(), true); }
     bool edit(const RulesPlaylists::Rule &rule, bool isAdd=false);
@@ -58,7 +58,7 @@ private Q_SLOTS:
     void enableOkButton();
 
 private:
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
 
 private:
     bool addingRules;

@@ -33,18 +33,18 @@ class UmsDevice : public FsDevice
 
 public:
     UmsDevice(MusicLibraryModel *m, Solid::Device &dev);
-    virtual ~UmsDevice();
+    ~UmsDevice() override;
 
-    void connectionStateChanged();
-    void toggle();
-    bool isConnected() const;
-    double usedCapacity();
-    QString capacityString();
-    qint64 freeSpace();
-    DevType devType() const { return Ums; }
-    void saveOptions();
-    void configure(QWidget *parent);
-    bool supportsDisconnect() const { return true; }
+    void connectionStateChanged() override;
+    void toggle() override;
+    bool isConnected() const override;
+    double usedCapacity() override;
+    QString capacityString() override;
+    qint64 freeSpace() override;
+    DevType devType() const override { return Ums; }
+    void saveOptions() override;
+    void configure(QWidget *parent) override;
+    bool supportsDisconnect() const override { return true; }
 
 private:
     void setup();

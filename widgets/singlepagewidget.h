@@ -51,29 +51,29 @@ public:
     static Action * createMenuGroup(const QString &name, const QList<MenuItem> &values, int currentVal, QWidget *parent, const char *slot);
 
     SinglePageWidget(QWidget *p);
-    virtual ~SinglePageWidget() { }
+    ~SinglePageWidget() override { }
     void addWidget(QWidget *w);
     virtual void setView(int v);
     ItemView::Mode viewMode() const { return view->viewMode(); }
-    void focusSearch();
+    void focusSearch() override;
     void init(int flags=All, const QList<QWidget *> &leftXtra=QList<QWidget *>(), const QList<QWidget *> &rightXtra=QList<QWidget *>());
     virtual QStringList selectedFiles(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists); return QStringList(); }
-    virtual QList<Song> selectedSongs(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists); return QList<Song>(); }
-    virtual void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false);
-    virtual Song coverRequest() const { return Song(); }
+    QList<Song> selectedSongs(bool allowPlaylists=false) const override { Q_UNUSED(allowPlaylists); return QList<Song>(); }
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false) override;
+    Song coverRequest() const override { return Song(); }
     #ifdef ENABLE_DEVICES_SUPPORT
-    virtual void addSelectionToDevice(const QString &udi) { Q_UNUSED(udi); }
-    virtual void deleteSongs() { }
+    void addSelectionToDevice(const QString &udi) override { Q_UNUSED(udi); }
+    void deleteSongs() override { }
     #endif
-    void showEvent(QShowEvent *e);
-    void hideEvent(QHideEvent *e);
+    void showEvent(QShowEvent *e) override;
+    void hideEvent(QHideEvent *e) override;
     QList<QAction *> createViewActions(QList<ItemView::Mode> modes);
     Action * createViewMenu(QList<ItemView::Mode> modes);
 
 public Q_SLOTS:
     virtual void doSearch() { }
     virtual void refresh() { }
-    virtual void controlActions();
+    void controlActions() override;
 
 Q_SIGNALS:
     void close();

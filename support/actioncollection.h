@@ -38,7 +38,7 @@ class ActionCollection : public QObject {
 
 public:
     explicit ActionCollection(QObject *parent);
-    virtual ~ActionCollection();
+    ~ActionCollection() override;
 
     static void setMainWidget(QWidget *w);
     static ActionCollection * get();
@@ -101,7 +101,7 @@ protected Q_SLOTS:
     virtual void slotActionTriggered();
 
 protected:
-    virtual void connectNotify(const QMetaMethod &signal);
+    void connectNotify(const QMetaMethod &signal) override;
 
 private Q_SLOTS:
     void slotActionHovered();

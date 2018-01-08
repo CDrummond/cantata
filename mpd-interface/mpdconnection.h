@@ -51,7 +51,7 @@ class MpdSocket : public QObject
     Q_OBJECT
 public:
     MpdSocket(QObject *parent);
-    virtual ~MpdSocket();
+    ~MpdSocket() override;
 
     void connectToHost(const QString &hostName, quint16 port, QIODevice::OpenMode mode = QIODevice::ReadWrite);
     void disconnectFromHost() {
@@ -257,7 +257,7 @@ public:
     static void enableDebug();
 
     MPDConnection();
-    ~MPDConnection();
+    ~MPDConnection() override;
 
     void start();
     const MPDConnectionDetails & getDetails() const { return details; }

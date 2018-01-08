@@ -40,7 +40,7 @@ class SyncCollectionWidget : public QWidget, Ui::SyncCollectionWidget
 
 public:
     SyncCollectionWidget(QWidget *parent, const QString &title);
-    virtual ~SyncCollectionWidget();
+    ~SyncCollectionWidget() override;
 
     void clear() { model.clear(); }
     void update(const QSet<Song> &songs);

@@ -40,25 +40,25 @@ class DevicesPage : public SinglePageWidget
 
 public:
     DevicesPage(QWidget *p);
-    virtual ~DevicesPage();
+    ~DevicesPage() override;
 
     void clear();
     QString activeFsDeviceUdi() const;
     QStringList playableUrls() const;
-    QList<Song> selectedSongs(bool allowPlaylists=false) const;
-    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false);
-    void focusSearch() { view->focusSearch(); }
-    void refresh();
+    QList<Song> selectedSongs(bool allowPlaylists=false) const override;
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false) override;
+    void focusSearch() override { view->focusSearch(); }
+    void refresh() override;
     void resort() { proxy.sort(); }
 
 public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);
     void searchItems();
-    void controlActions();
+    void controlActions() override;
     void copyToLibrary();
     void configureDevice();
     void refreshDevice();
-    void deleteSongs();
+    void deleteSongs() override;
     void addRemoteDevice();
     void forgetRemoteDevice();
     void sync();

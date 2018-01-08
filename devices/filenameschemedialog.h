@@ -47,7 +47,7 @@ private Q_SLOTS:
     void updateExample();
 
 private:
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
 
 private:
     DeviceOptions origOpts;

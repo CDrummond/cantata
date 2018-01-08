@@ -52,7 +52,7 @@ class CoverNameValidator : public QValidator
 
     CoverNameValidator(QObject *parent) : QValidator(parent) { }
 
-    State validate(QString &input, int &) const
+    State validate(QString &input, int &) const override
     {
         for (int i=0; i<input.length(); ++i) {
             if (!input[i].isLetterOrNumber() && '%'!=input[i] && ' '!=input[i] && '-'!=input[i]) {
@@ -71,7 +71,7 @@ class CollectionNameValidator : public QValidator
 
     CollectionNameValidator(QObject *parent) : QValidator(parent) { }
 
-    State validate(QString &input, int &) const
+    State validate(QString &input, int &) const override
     {
         return input.startsWith(MPDUser::constName) ? Invalid : Acceptable;
     }

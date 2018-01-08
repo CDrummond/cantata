@@ -35,7 +35,7 @@ class ProxyModel : public QSortFilterProxyModel
 {
 public:
     ProxyModel(QObject *parent) : QSortFilterProxyModel(parent), isSorted(false), filterEnabled(false), filter(0) { }
-    virtual ~ProxyModel() { }
+    ~ProxyModel() override { }
 
     bool update(const QString &text);
     const void * filterItem() const { return filter; }
@@ -47,11 +47,11 @@ public:
     const QString & filterText() const { return origFilterText; }
     void resort();
     void sort() { isSorted=false; sort(0); }
-    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
     QList<int> mapToSourceRows(const QModelIndexList &list) const;
-    QModelIndex mapToSource(const QModelIndex &idx) const { return QSortFilterProxyModel::mapToSource(idx); }
+    QModelIndex mapToSource(const QModelIndex &idx) const override { return QSortFilterProxyModel::mapToSource(idx); }
     QModelIndexList mapToSource(const QModelIndexList &list, bool leavesOnly=true) const;
-    QMimeData * mimeData(const QModelIndexList &indexes) const;
+    QMimeData * mimeData(const QModelIndexList &indexes) const override;
     QModelIndexList leaves(const QModelIndexList &list) const;
 
 protected:

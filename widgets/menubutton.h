@@ -36,7 +36,7 @@ public:
     void addSeparator();
 
 private:
-    bool eventFilter(QObject *o, QEvent *e);
+    bool eventFilter(QObject *o, QEvent *e) override;
 };
 
 #endif // MENUBUTTON_H

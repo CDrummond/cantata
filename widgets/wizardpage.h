@@ -33,10 +33,10 @@ class WizardPage : public QWizardPage
 {
 public:
     WizardPage(QWidget *parent = 0) : QWizardPage(parent) { }
-    virtual ~WizardPage() { }
+    ~WizardPage() override { }
 
     void setBackground(const Icon &i);
-    void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent *e) override;
 
 private:
     QPixmap pix;

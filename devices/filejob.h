@@ -40,7 +40,7 @@ public:
     static FileThread * self();
 
     FileThread();
-    ~FileThread();
+    ~FileThread() override;
     void addJob(FileJob *job);
     void stop();
 private:
@@ -59,7 +59,7 @@ public:
     }
 
     FileJob();
-    virtual ~FileJob() { }
+    ~FileJob() override { }
 
     void setPercent(int pc);
     bool wasStarted() const { return 0!=progressPercent && 100!=progressPercent; }
@@ -102,7 +102,7 @@ public:
         , temp(0)
         , copiedCover(false) {
     }
-    virtual ~CopyJob();
+    ~CopyJob() override;
 
     bool coverCopied() const { return copiedCover; }
 
@@ -112,7 +112,7 @@ protected:
     void copyCover(const QString &origSrcFile);
 
 private:
-    virtual void run();
+    void run() override;
 
 protected:
     QString srcFile;
@@ -132,7 +132,7 @@ public:
         , remLyrics(rl) {
     }
 private:
-    void run();
+    void run() override;
 private:
     QString fileName;
     bool remLyrics;
@@ -147,7 +147,7 @@ public:
         , coverFile(cf) {
     }
 private:
-    void run();
+    void run() override;
 private:
     QSet<QString> dirs;
     QString base;

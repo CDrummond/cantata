@@ -35,18 +35,18 @@ class OnlineSearchWidget : public SinglePageWidget
     Q_OBJECT
 public:
     OnlineSearchWidget(OnlineSearchService *s, QWidget *p);
-    virtual ~OnlineSearchWidget();
-    QStringList selectedFiles(bool allowPlaylists) const;
-    QList<Song> selectedSongs(bool allowPlaylists) const;
-    void setView(int) { }
-    void showEvent(QShowEvent *e);
+    ~OnlineSearchWidget() override;
+    QStringList selectedFiles(bool allowPlaylists) const override;
+    QList<Song> selectedSongs(bool allowPlaylists) const override;
+    void setView(int) override { }
+    void showEvent(QShowEvent *e) override;
 
 private Q_SLOTS:
     void headerClicked(int level);
     void statsUpdated(int songs, quint32 time);
 
 private:
-    void doSearch();
+    void doSearch() override;
 
 private:
     OnlineSearchService *srv;

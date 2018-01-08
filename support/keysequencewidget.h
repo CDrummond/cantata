@@ -98,9 +98,9 @@ public:
     explicit KeySequenceButton(KeySequenceWidget *d, QWidget *parent = 0);
 
 protected:
-    virtual bool event(QEvent *event);
-    virtual void keyPressEvent(QKeyEvent *event);
-    virtual void keyReleaseEvent(QKeyEvent *event);
+    bool event(QEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
 
 private:
     KeySequenceWidget *d;

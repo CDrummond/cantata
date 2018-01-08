@@ -38,8 +38,8 @@ class TableViewItemDelegate : public BasicItemDelegate
 {
 public:
     TableViewItemDelegate(QObject *p, int rc) : BasicItemDelegate(p), ratingCol(rc), ratingPainter(0) { }
-    virtual ~TableViewItemDelegate() { delete ratingPainter; }
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    ~TableViewItemDelegate() override { delete ratingPainter; }
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if (!index.isValid()) {
             return;

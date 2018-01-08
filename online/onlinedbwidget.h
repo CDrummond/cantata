@@ -33,10 +33,10 @@ class OnlineDbWidget : public SinglePageWidget
     Q_OBJECT
 public:
     OnlineDbWidget(OnlineDbService *s, QWidget *p);
-    virtual ~OnlineDbWidget();
-    QStringList selectedFiles(bool allowPlaylists) const;
-    QList<Song> selectedSongs(bool allowPlaylists) const;
-    void showEvent(QShowEvent *e);
+    ~OnlineDbWidget() override;
+    QStringList selectedFiles(bool allowPlaylists) const override;
+    QList<Song> selectedSongs(bool allowPlaylists) const override;
+    void showEvent(QShowEvent *e) override;
 
 private Q_SLOTS:
     void groupByChanged();
@@ -48,9 +48,9 @@ private Q_SLOTS:
     void modelReset();
 
 private:
-    void doSearch();
-    void refresh();
-    void controlActions();
+    void doSearch() override;
+    void refresh() override;
+    void controlActions() override;
 
 private:
     QString configGroup;

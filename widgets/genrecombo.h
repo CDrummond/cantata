@@ -32,12 +32,12 @@ class GenreCombo : public ComboBox
     Q_OBJECT
 public:
     GenreCombo(QWidget *p);
-    virtual ~GenreCombo() { }
+    ~GenreCombo() override { }
 
     const QSet<QString> & entries() const { return genres; }
 
-    void paintEvent(QPaintEvent *e);
-    bool event(QEvent *event);
+    void paintEvent(QPaintEvent *e) override;
+    bool event(QEvent *event) override;
 
 public Q_SLOTS:
     void update(const QSet<QString> &g);

@@ -57,9 +57,9 @@ public:
     static const QLatin1String constInfoExt;
 
     SongView(QWidget *p);
-    ~SongView();
+    ~SongView() override;
 
-    void update(const Song &s, bool force=false);
+    void update(const Song &s, bool force=false) override;
     void saveConfig();
 
 Q_SIGNALS:
@@ -91,7 +91,7 @@ private:
     void loadMetadata();
     void searchForInfo();
     void hideSpinner();
-    void abort();
+    void abort() override;
     QString mpdFileName() const;
     QString cacheFileName() const;
     void getLyrics();

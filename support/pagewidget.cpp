@@ -70,7 +70,7 @@ public:
         }
     }
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if (!index.isValid()) {
             return;
@@ -165,7 +165,7 @@ public:
         drawFocus(painter, option, option.rect);
     }
 
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if (standard) {
             return QStyledItemDelegate::sizeHint(option, index);
@@ -240,7 +240,7 @@ public:
     }
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event)
+    bool eventFilter(QObject *obj, QEvent *event) override
     {
         if (delegate) {
             if (QEvent::Enter==event->type()) {

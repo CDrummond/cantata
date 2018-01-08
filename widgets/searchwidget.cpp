@@ -35,7 +35,7 @@ class EscKeyEventHandler : public QObject
 public:
     EscKeyEventHandler(SearchWidget *v) : QObject(v), view(v) { }
 protected:
-    bool eventFilter(QObject *obj, QEvent *event)
+    bool eventFilter(QObject *obj, QEvent *event) override
     {
         if (view->hasFocus() && QEvent::KeyRelease==event->type()) {
             QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);

@@ -37,7 +37,7 @@ class Configuration : public QSettings
 public:
     static QLatin1String constMainGroup;
     Configuration(const QString &group=constMainGroup);
-    ~Configuration();
+    ~Configuration() override;
     
     QString      get(const QString &key, const QString &def)     { return contains(key) ? value(key).toString() : def; }
     QStringList  get(const QString &key, const QStringList &def) { return contains(key) ? value(key).toStringList() : def; }

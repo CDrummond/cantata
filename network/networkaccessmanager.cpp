@@ -242,9 +242,9 @@ struct FakeNetworkReply : public QNetworkReply
         setError(QNetworkReply::ConnectionRefusedError, QString());
         QTimer::singleShot(0, this, SIGNAL(finished()));
     }
-    void abort() { }
-    qint64 readData(char *, qint64) { return 0; }
-    qint64 writeData(const char *, qint64) { return 0; }
+    void abort() override { }
+    qint64 readData(char *, qint64) override { return 0; }
+    qint64 writeData(const char *, qint64) override { return 0; }
 };
 
 QNetworkReply * NetworkAccessManager::postFormData(QNetworkRequest req, const QByteArray &data)

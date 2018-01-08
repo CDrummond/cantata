@@ -39,11 +39,11 @@ class Block: public DeviceInterface, virtual public Solid::Ifaces::Block
 
 public:
     Block(Device *dev);
-    virtual ~Block();
+    ~Block() override;
 
-    virtual QString device() const;
-    virtual int deviceMinor() const;
-    virtual int deviceMajor() const;
+    QString device() const override;
+    int deviceMinor() const override;
+    int deviceMajor() const override;
 private:
     dev_t m_devNum;
     QString m_devFile;

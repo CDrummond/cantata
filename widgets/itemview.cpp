@@ -157,11 +157,11 @@ public:
     {
     }
 
-    virtual ~ListDelegate()
+    ~ListDelegate() override
     {
     }
 
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         Q_UNUSED(option)
         if (view && QListView::IconMode==view->viewMode()) {
@@ -182,7 +182,7 @@ public:
         }
     }
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if (!index.isValid()) {
             return;
@@ -411,11 +411,11 @@ public:
     {
     }
 
-    virtual ~TreeDelegate()
+    ~TreeDelegate() override
     {
     }
 
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if (noIcons) {
             return QStyledItemDelegate::sizeHint(option, index);
@@ -434,7 +434,7 @@ public:
         return sz;
     }
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if (!index.isValid()) {
             return;
@@ -539,13 +539,13 @@ public:
     void setSimple(bool s) { simpleStyle=s; }
     void setNoIcons(bool n) { noIcons=n; }
 
-    virtual bool getCoverInUiThread(const QModelIndex &idx) const
+    bool getCoverInUiThread(const QModelIndex &idx) const override
     {
         // Want album covers in artists view to load quickly...
         return idx.isValid() && idx.data(Cantata::Role_LoadCoverInUIThread).toBool();
     }
 
-    virtual QWidget * itemView() const { return treeView; }
+    QWidget * itemView() const override { return treeView; }
 
     bool simpleStyle;
     bool noIcons;

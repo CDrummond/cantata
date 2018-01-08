@@ -41,18 +41,18 @@ class HalManager : public Solid::Ifaces::DeviceManager
 
 public:
     HalManager(QObject *parent);
-    virtual ~HalManager();
+    ~HalManager() override;
 
-    virtual QString udiPrefix() const ;
-    virtual QSet<Solid::DeviceInterface::Type> supportedInterfaces() const;
+    QString udiPrefix() const override ;
+    QSet<Solid::DeviceInterface::Type> supportedInterfaces() const override;
 
     bool deviceExists(const QString &udi);
-    virtual QStringList allDevices();
+    QStringList allDevices() override;
 
-    virtual QStringList devicesFromQuery(const QString &parentUdi,
-                                         Solid::DeviceInterface::Type type);
+    QStringList devicesFromQuery(const QString &parentUdi,
+                                         Solid::DeviceInterface::Type type) override;
 
-    virtual QObject *createDevice(const QString &udi);
+    QObject *createDevice(const QString &udi) override;
 
 private Q_SLOTS:
     void slotDeviceAdded(const QString &udi);

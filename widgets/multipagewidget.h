@@ -48,7 +48,7 @@ class MultiPageWidget : public StackedPageWidget
 
 public:
     MultiPageWidget(QWidget *p);
-    virtual ~MultiPageWidget();
+    ~MultiPageWidget() override;
 
     void load(Configuration &config);
     void save(Configuration &config) const;

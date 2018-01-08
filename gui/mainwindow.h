@@ -108,19 +108,19 @@ public:
     };
 
     MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    ~MainWindow() override;
 
     int mpdVolume() const { return volumeSlider->value(); }
     QList<Song> selectedSongs() const;
     QStringList listActions() const;
 
 protected:
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent *event) override;
     #if defined Q_OS_WIN
     void showEvent(QShowEvent *event);
     #endif
-    void closeEvent(QCloseEvent *event);
-    void resizeEvent(QResizeEvent *event);
+    void closeEvent(QCloseEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     #ifdef Q_OS_MAC

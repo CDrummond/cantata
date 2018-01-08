@@ -51,10 +51,10 @@ class StreamsBrowsePage : public SinglePageWidget
 
 public:
     StreamsBrowsePage(QWidget *p);
-    virtual ~StreamsBrowsePage();
+    ~StreamsBrowsePage() override;
 
-    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false);
-    void showEvent(QShowEvent *e);
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false) override;
+    void showEvent(QShowEvent *e) override;
 
 Q_SIGNALS:
     void error(const QString &str);
@@ -62,8 +62,8 @@ Q_SIGNALS:
     void searchForStreams();
 
 public Q_SLOTS:
-    void removeItems();
-    void controlActions();
+    void removeItems() override;
+    void controlActions() override;
     void addToFavourites(const QList<StreamItem> &items);
 
 private Q_SLOTS:
@@ -84,7 +84,7 @@ private Q_SLOTS:
     void headerClicked(int level);
 
 private:
-    void doSearch();
+    void doSearch() override;
     void addItemsToPlayQueue(const QModelIndexList &indexes, int action, quint8 priority=0, bool decreasePriority=false);
     void addToFavourites();
 
@@ -106,8 +106,8 @@ class StreamSearchPage : public SinglePageWidget
     Q_OBJECT
 public:
     StreamSearchPage(QWidget *p);
-    virtual ~StreamSearchPage();
-    void showEvent(QShowEvent *e);
+    ~StreamSearchPage() override;
+    void showEvent(QShowEvent *e) override;
 
 Q_SIGNALS:
     void addToFavourites(const QList<StreamItem> &items);
@@ -117,8 +117,8 @@ private Q_SLOTS:
     void addedToFavourites(const QString &name);
 
 private:
-    void doSearch();
-    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false);
+    void doSearch() override;
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false) override;
     void addToFavourites();
 
 private:
@@ -132,7 +132,7 @@ class StreamsPage : public StackedPageWidget
     Q_OBJECT
 public:
     StreamsPage(QWidget *p);
-    virtual ~StreamsPage();
+    ~StreamsPage() override;
 
 private Q_SLOTS:
     void searchForStreams();

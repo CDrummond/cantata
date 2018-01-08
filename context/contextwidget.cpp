@@ -83,7 +83,7 @@ class ViewSelectorButton : public QToolButton
 {
 public:
     ViewSelectorButton(QWidget *p) : QToolButton(p) { }
-    void paintEvent(QPaintEvent *ev)
+    void paintEvent(QPaintEvent *ev) override
     {
         Q_UNUSED(ev)
         QPainter painter(this);

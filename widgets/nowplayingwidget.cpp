@@ -54,7 +54,7 @@ public:
         setBaseStyle(qApp->style());
     }
 
-    int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const
+    int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const override
     {
         if (QStyle::SH_Slider_AbsoluteSetButtons==stylehint) {
             return Qt::LeftButton|QProxyStyle::styleHint(stylehint, opt, widget, returnData);
@@ -107,7 +107,7 @@ public:
         Settings::self()->saveShowTimeRemaining(showRemaining);
     }
 
-    bool event(QEvent *e)
+    bool event(QEvent *e) override
     {
         switch (e->type()) {
         case QEvent::MouseButtonPress:

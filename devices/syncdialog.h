@@ -46,7 +46,7 @@ public:
     static int instanceCount();
 
     SyncDialog(QWidget *parent);
-    virtual ~SyncDialog();
+    ~SyncDialog() override;
 
     void sync(const QString &udi);
 
@@ -59,7 +59,7 @@ private Q_SLOTS:
 
 private:
     void updateSongs();
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
     Device * getDevice();
 
 private:

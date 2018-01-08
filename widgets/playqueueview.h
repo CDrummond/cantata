@@ -50,8 +50,8 @@ class PlayQueueTreeView : public TableView
 {
 public:
     PlayQueueTreeView(PlayQueueView *p);
-    virtual ~PlayQueueTreeView() { }
-    void paintEvent(QPaintEvent *e);
+    ~PlayQueueTreeView() override { }
+    void paintEvent(QPaintEvent *e) override;
 private:
     PlayQueueView *view;
 };
@@ -60,8 +60,8 @@ class PlayQueueGroupedView : public GroupedView
 {
 public:
     PlayQueueGroupedView(PlayQueueView *p);
-    virtual ~PlayQueueGroupedView();
-    void paintEvent(QPaintEvent *e);
+    ~PlayQueueGroupedView() override;
+    void paintEvent(QPaintEvent *e) override;
 private:
     PlayQueueView *view;
 };
@@ -79,7 +79,7 @@ public:
     };
 
     PlayQueueView(QWidget *parent=0);
-    virtual ~PlayQueueView();
+    ~PlayQueueView() override;
 
     void readConfig();
     void saveConfig();

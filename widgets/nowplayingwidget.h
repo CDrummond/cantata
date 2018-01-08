@@ -40,11 +40,11 @@ class PosSlider : public QSlider
     Q_OBJECT
 public:
     PosSlider(QWidget *p);
-    virtual ~PosSlider() { }
+    ~PosSlider() override { }
 
     void updateStyleSheet(const QColor &col);
-    void mouseMoveEvent(QMouseEvent *e);
-    void wheelEvent(QWheelEvent *ev);
+    void mouseMoveEvent(QMouseEvent *e) override;
+    void wheelEvent(QWheelEvent *ev) override;
     void setRange(int min, int max);
 
 Q_SIGNALS:
@@ -56,7 +56,7 @@ class NowPlayingWidget : public QWidget
     Q_OBJECT
 public:
     NowPlayingWidget(QWidget *p);
-    virtual ~NowPlayingWidget() { }
+    ~NowPlayingWidget() override { }
     void update(const Song &song);
     void startTimer();
     void stopTimer();

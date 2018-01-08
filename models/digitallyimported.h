@@ -42,7 +42,7 @@ public:
     static DigitallyImported * self();
 
     DigitallyImported();
-    ~DigitallyImported();
+    ~DigitallyImported() override;
 
     void addAuthHeader(QNetworkRequest &req) const;
     void load();

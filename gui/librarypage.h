@@ -35,15 +35,15 @@ class LibraryPage : public SinglePageWidget
 
 public:
     LibraryPage(QWidget *p);
-    virtual ~LibraryPage();
+    ~LibraryPage() override;
 
     void clear();
-    QStringList selectedFiles(bool allowPlaylists=false) const;
-    QList<Song> selectedSongs(bool allowPlaylists=false) const;
-    Song coverRequest() const;
+    QStringList selectedFiles(bool allowPlaylists=false) const override;
+    QList<Song> selectedSongs(bool allowPlaylists=false) const override;
+    Song coverRequest() const override;
     #ifdef ENABLE_DEVICES_SUPPORT
-    void addSelectionToDevice(const QString &udi);
-    void deleteSongs();
+    void addSelectionToDevice(const QString &udi) override;
+    void deleteSongs() override;
     #endif
     void showSongs(const QList<Song> &songs);
     void showArtist(const QString &artist);
@@ -69,9 +69,9 @@ private Q_SLOTS:
     void addRandomAlbum();
 
 private:
-    void setView(int v);
-    void doSearch();
-    void controlActions();
+    void setView(int v) override;
+    void doSearch() override;
+    void controlActions() override;
 
 private:
     GenreCombo *genreCombo;

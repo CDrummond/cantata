@@ -30,7 +30,7 @@ class SizeWidget : public QWidget
 {
 public:
     explicit SizeWidget(QWidget *parent = 0);
-    void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent *e) override;
 };
 
 #endif

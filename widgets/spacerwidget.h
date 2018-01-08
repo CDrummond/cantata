@@ -30,7 +30,7 @@ class SpacerWidget : public QWidget
 {
 public:
     SpacerWidget(QWidget *parent = 0);
-    virtual ~SpacerWidget() { }
+    ~SpacerWidget() override { }
 };
 
 #endif // SPACER_WIDGET_H

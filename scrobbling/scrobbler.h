@@ -72,7 +72,7 @@ public:
     static bool viaMpd(const QString &sc) { return !sc.startsWith("http"); }
 
     Scrobbler();
-    ~Scrobbler();
+    ~Scrobbler() override;
 
     QMap<QString, QString> availableScrobblers() { loadScrobblers(); return scrobblers; }
     void stop();

@@ -54,7 +54,7 @@ public:
 
     RatingWidget(QWidget *parent = 0);
 
-    QSize sizeHint() const { return rp.size(); }
+    QSize sizeHint() const override { return rp.size(); }
     int value() const { return val; }
     void setValue(int v);
     void setColor(const QColor &c);
@@ -64,10 +64,10 @@ Q_SIGNALS:
     void valueChanged(int v);
 
 protected:
-    void paintEvent(QPaintEvent *e);
-    void mousePressEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
-    void leaveEvent(QEvent *e);
+    void paintEvent(QPaintEvent *e) override;
+    void mousePressEvent(QMouseEvent *e) override;
+    void mouseMoveEvent(QMouseEvent *e) override;
+    void leaveEvent(QEvent *e) override;
 
 private:
     QRect contentsRect() const;

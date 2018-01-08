@@ -39,12 +39,12 @@ public:
 
     LastFmEngine(QObject *p);
 
-    QStringList getLangs() const;
-    virtual QString getPrefix(const QString &) const { return constLang; }
-    QString translateLinks(QString text) const;
+    QStringList getLangs() const override;
+    QString getPrefix(const QString &) const override { return constLang; }
+    QString translateLinks(QString text) const override;
 
 public Q_SLOTS:
-    void search(const QStringList &query, Mode mode);
+    void search(const QStringList &query, Mode mode) override;
 
 private Q_SLOTS:
     void parseResponse();

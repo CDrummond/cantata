@@ -35,7 +35,7 @@ class PlaybackSettings : public QWidget, private Ui::PlaybackSettings
 
 public:
     PlaybackSettings(QWidget *p);
-    virtual ~PlaybackSettings() { }
+    ~PlaybackSettings() override { }
 
     void load();
     void save();

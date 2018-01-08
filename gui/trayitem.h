@@ -43,7 +43,7 @@ class TrayItem : public QObject
     Q_OBJECT
 public:
     TrayItem(MainWindow *p);
-    virtual ~TrayItem() { }
+    ~TrayItem() override { }
 
     void showMessage(const QString &title, const QString &text, const QImage &img);
     void setup();

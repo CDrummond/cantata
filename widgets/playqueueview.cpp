@@ -48,7 +48,7 @@ void qt_blurImage(QPainter *p, QImage &blurImage, qreal radius, bool quality, bo
 class PlayQueueTreeStyle : public ProxyStyle
 {
 public:
-    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const override
     {
         if (QStyle::PE_IndicatorItemViewItemDrop == element && widget) {
             painter->setPen(QPen(QPalette::Highlight)); // make the drop indicator more visible

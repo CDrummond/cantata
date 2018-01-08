@@ -48,7 +48,7 @@ namespace Solid
         Q_OBJECT
     public:
         DeviceManagerPrivate();
-        ~DeviceManagerPrivate();
+        ~DeviceManagerPrivate() override;
 
         DevicePrivate *findRegisteredDevice(const QString &udi);
 

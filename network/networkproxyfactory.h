@@ -46,7 +46,7 @@ public:
     #ifdef ENABLE_PROXY_CONFIG
     void reloadSettings();
     #endif
-    QList<QNetworkProxy> queryProxy(const QNetworkProxyQuery& query);
+    QList<QNetworkProxy> queryProxy(const QNetworkProxyQuery& query) override;
 
 private:
     NetworkProxyFactory();

@@ -39,17 +39,17 @@ public:
     };
 
     ProxyStyle(int modView=VF_None);
-    virtual ~ProxyStyle() { }
+    ~ProxyStyle() override { }
     void setModifyViewFrame(int modView) { modViewFrame=modView; }
     int modifyViewFrame() const { return modViewFrame; }
-    void polish(QPalette &pal) { QProxyStyle::polish(pal); }
-    void polish(QApplication *app) { QProxyStyle::polish(app); }
-    void polish(QWidget *widget);
-    int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
-    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
+    void polish(QPalette &pal) override { QProxyStyle::polish(pal); }
+    void polish(QApplication *app) override { QProxyStyle::polish(app); }
+    void polish(QWidget *widget) override;
+    int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const override;
+    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const override;
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    QPixmap standardPixmap(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const;
-    QIcon standardIcon(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const;
+    QPixmap standardPixmap(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const override;
+    QIcon standardIcon(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const override;
     #endif
 
 private:

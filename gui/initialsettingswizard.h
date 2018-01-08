@@ -35,7 +35,7 @@ class InitialSettingsWizard : public QWizard, public Ui::InitialSettingsWizard
 
 public:
     InitialSettingsWizard(QWidget *p=0);
-    virtual ~InitialSettingsWizard();
+    ~InitialSettingsWizard() override;
     MPDConnectionDetails getDetails();
 
 Q_SIGNALS:
@@ -48,8 +48,8 @@ private Q_SLOTS:
     void showError(const QString &message);
     void dbError(const QString &message);
     void pageChanged(int p);
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
     void controlNextButton();
     #ifdef AVAHI_FOUND
     void adoptServerSettings(QString ip, QString port);

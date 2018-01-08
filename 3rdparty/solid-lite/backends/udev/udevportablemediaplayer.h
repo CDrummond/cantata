@@ -41,11 +41,11 @@ class PortableMediaPlayer : public DeviceInterface, virtual public Solid::Ifaces
 
 public:
     PortableMediaPlayer(UDevDevice *device);
-    virtual ~PortableMediaPlayer();
+    ~PortableMediaPlayer() override;
 
-    virtual QStringList supportedProtocols() const;
-    virtual QStringList supportedDrivers(QString protocol = QString()) const;
-    virtual QVariant driverHandle(const QString &driver) const;
+    QStringList supportedProtocols() const override;
+    QStringList supportedDrivers(QString protocol = QString()) const override;
+    QVariant driverHandle(const QString &driver) const override;
 
 private:
     /**

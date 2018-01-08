@@ -39,15 +39,15 @@ class StorageVolume: public Block, virtual public Solid::Ifaces::StorageVolume
 
 public:
     StorageVolume(Device *device);
-    virtual ~StorageVolume();
+    ~StorageVolume() override;
 
-    virtual QString encryptedContainerUdi() const;
-    virtual qulonglong size() const;
-    virtual QString uuid() const;
-    virtual QString label() const;
-    virtual QString fsType() const;
-    virtual Solid::StorageVolume::UsageType usage() const;
-    virtual bool isIgnored() const;
+    QString encryptedContainerUdi() const override;
+    qulonglong size() const override;
+    QString uuid() const override;
+    QString label() const override;
+    QString fsType() const override;
+    Solid::StorageVolume::UsageType usage() const override;
+    bool isIgnored() const override;
 };
 
 }

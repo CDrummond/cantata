@@ -4950,59 +4950,64 @@ Sovrascrivere?</translation>
         <translation>Mostra solo quelli non riprodotti</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="142"/>
+        <location filename="../online/podcastwidget.cpp" line="79"/>
+        <source>Configure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="146"/>
         <source>Unsubscribe from &apos;%1&apos;?</source>
         <translation>Rimuovere sottoscrizione da &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="188"/>
+        <location filename="../online/podcastwidget.cpp" line="192"/>
         <source>Do you wish to download the selected podcast episodes?</source>
         <translation>Vuoi scaricare gli episodi del podcast selezionati?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="202"/>
+        <location filename="../online/podcastwidget.cpp" line="206"/>
         <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
         <translation>Annulla gli scaricamenti degli episodi del podcast (sia l&apos;attuale che gli altri in coda)?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="212"/>
+        <location filename="../online/podcastwidget.cpp" line="216"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation>Vuoi cancellare i file degli episodi di podcast scaricati selezionati?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="228"/>
+        <location filename="../online/podcastwidget.cpp" line="232"/>
         <source>Do you wish to mark the selected podcast episodes as new?</source>
         <translation>Vuoi segnare come nuovi i file degli episodi di podcast selezionati?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="244"/>
+        <location filename="../online/podcastwidget.cpp" line="248"/>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
         <translation>Vuoi segnare come ascoltati i file degli episodi di podcast selezionati?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="280"/>
+        <location filename="../online/podcastwidget.cpp" line="284"/>
         <source>Refresh all subscriptions?</source>
         <translation>Aggiornare tutte le sottoscrizioni?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="280"/>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="284"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh</source>
         <translation>Aggiorna</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="280"/>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="284"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh All</source>
         <translation>Aggiorna Tutto</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh all subscriptions, or only those selected?</source>
         <translation>Aggiornare tutte le sottoscrizioni o solo quelli selezionati?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh Selected</source>
         <translation>Aggiorna Selezionati</translation>
     </message>

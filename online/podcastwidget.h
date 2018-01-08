@@ -50,11 +50,11 @@ private Q_SLOTS:
     void markAsNew();
     void markAsListened();
     void showUnplayedOnly(bool on);
+    void configure();
 
 private:
     void doSearch();
     void refresh();
-    void configure();
     void controlActions();
 
 private:

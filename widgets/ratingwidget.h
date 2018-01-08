@@ -52,7 +52,7 @@ class RatingWidget : public QWidget
 
 public:
 
-    RatingWidget(QWidget *parent = 0);
+    RatingWidget(QWidget *parent = nullptr);
 
     QSize sizeHint() const override { return rp.size(); }
     int value() const { return val; }

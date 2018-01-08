@@ -329,7 +329,7 @@ bool StorageAccess::requestPassphrase()
 
     QWidget *activeWindow = QApplication::activeWindow();
     uint wId = 0;
-    if (activeWindow!=0) {
+    if (activeWindow!=nullptr) {
         wId = (uint)activeWindow->winId();
     }
 
@@ -473,7 +473,7 @@ bool Solid::Backends::Hal::StorageAccess::callSystemMount()
     m_process = FstabHandling::callSystemCommand("mount", device,
                                                  this, SLOT(slotProcessFinished(int,QProcess::ExitStatus)));
 
-    return m_process!=0;
+    return m_process!=nullptr;
 }
 
 bool Solid::Backends::Hal::StorageAccess::callSystemUnmount()
@@ -482,7 +482,7 @@ bool Solid::Backends::Hal::StorageAccess::callSystemUnmount()
     m_process = FstabHandling::callSystemCommand("umount", device,
                                                  this, SLOT(slotProcessFinished(int,QProcess::ExitStatus)));
 
-    return m_process!=0;
+    return m_process!=nullptr;
 }
 
 void StorageAccess::callCryptoSetup(const QString &passphrase)

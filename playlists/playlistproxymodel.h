@@ -29,7 +29,7 @@
 class PlaylistProxyModel : public ProxyModel
 {
 public:
-    PlaylistProxyModel(QObject *parent = 0);
+    PlaylistProxyModel(QObject *parent = nullptr);
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 };
 

@@ -36,7 +36,7 @@ class MusicLibraryProxyModel : public ProxyModel
     Q_OBJECT
 
 public:
-    MusicLibraryProxyModel(QObject *parent = 0);
+    MusicLibraryProxyModel(QObject *parent = nullptr);
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
 

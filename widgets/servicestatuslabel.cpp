@@ -51,7 +51,7 @@ void ServiceStatusLabel::setStatus(bool on)
             ? palette().highlight().color().name()
             : palette().color(QPalette::Disabled, QPalette::WindowText).name();
 
-    int margin=style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this);
+    int margin=style()->pixelMetric(QStyle::PM_DefaultFrameWidth, nullptr, this);
     if (margin<2) {
         margin=2;
     }

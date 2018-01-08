@@ -32,7 +32,7 @@ class Icon;
 class WizardPage : public QWizardPage
 {
 public:
-    WizardPage(QWidget *parent = 0) : QWizardPage(parent) { }
+    WizardPage(QWidget *parent = nullptr) : QWizardPage(parent) { }
     ~WizardPage() override { }
 
     void setBackground(const Icon &i);

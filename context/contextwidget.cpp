@@ -246,16 +246,16 @@ void ThinSplitter::reset()
 ContextWidget::ContextWidget(QWidget *parent)
     : QWidget(parent)
     , shown(false)
-    , job(0)
+    , job(nullptr)
     , alwaysCollapsed(false)
     , backdropType(PlayQueueView::BI_Cover)
     , darkBackground(false)
     , fadeValue(1.0)
     , isWide(false)
-    , stack(0)
-    , onlineContext(0)
-    , splitter(0)
-    , viewSelector(0)
+    , stack(nullptr)
+    , onlineContext(nullptr)
+    , splitter(nullptr)
+    , viewSelector(nullptr)
 {
     QHBoxLayout *layout=new QHBoxLayout(this);
     mainStack=new QStackedWidget(this);
@@ -668,7 +668,7 @@ void ContextWidget::cancel()
 {
     if (job) {
         job->cancelAndDelete();
-        job=0;
+        job=nullptr;
     }
 }
 
@@ -963,13 +963,13 @@ NetworkJob * ContextWidget::getReply(QObject *obj)
 {
     NetworkJob *reply = qobject_cast<NetworkJob*>(obj);
     if (!reply) {
-        return 0;
+        return nullptr;
     }
 
     reply->deleteLater();
     if (reply!=job) {
-        return 0;
+        return nullptr;
     }
-    job=0;
+    job=nullptr;
     return reply;
 }

@@ -207,7 +207,7 @@ void StoredPlaylistsPage::savePlaylist()
         existing.append(proxy.data(proxy.index(i, 0, QModelIndex())).toString());
     }
 
-    QString name = InputDialog::getText(tr("Playlist Name"), tr("Enter a name for the playlist:"), lastPlaylist, existing, 0, this);
+    QString name = InputDialog::getText(tr("Playlist Name"), tr("Enter a name for the playlist:"), lastPlaylist, existing, nullptr, this);
     if (!name.isEmpty()) {
         lastPlaylist=name;
         emit savePlaylist(name, true);
@@ -225,7 +225,7 @@ void StoredPlaylistsPage::renamePlaylist()
             return;
         }
         QString name = static_cast<PlaylistsModel::PlaylistItem *>(item)->name;
-        QString newName = InputDialog::getText(tr("Rename Playlist"), tr("Enter new name for playlist:"), name, 0, this);
+        QString newName = InputDialog::getText(tr("Rename Playlist"), tr("Enter new name for playlist:"), name, nullptr, this);
 
         if (!newName.isEmpty() && name!=newName) {
             if (PlaylistsModel::self()->exists(newName)) {
@@ -279,7 +279,7 @@ void StoredPlaylistsPage::removeDuplicates()
 
 void StoredPlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
-    if (style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
+    if (style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, nullptr, this)
         || !static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist()) {
         QModelIndexList indexes;
         indexes.append(index);

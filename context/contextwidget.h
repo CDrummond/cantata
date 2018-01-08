@@ -96,7 +96,7 @@ public:
     static const QLatin1String constCacheDir;
     static const QLatin1String constFanArtApiKey;
 
-    ContextWidget(QWidget *parent=0);
+    ContextWidget(QWidget *parent=nullptr);
 
     void readConfig();
     void saveConfig();

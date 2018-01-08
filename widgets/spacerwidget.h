@@ -29,7 +29,7 @@
 class SpacerWidget : public QWidget
 {
 public:
-    SpacerWidget(QWidget *parent = 0);
+    SpacerWidget(QWidget *parent = nullptr);
     ~SpacerWidget() override { }
 };
 

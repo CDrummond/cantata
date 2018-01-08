@@ -117,7 +117,7 @@ QtIOCompressorPrivate::~QtIOCompressorPrivate()
 void QtIOCompressorPrivate::flushZlib(int flushMode)
 {
     // No input.
-    zlibStream.next_in = 0;
+    zlibStream.next_in = nullptr;
     zlibStream.avail_in = 0;
     int status;
     do {
@@ -388,7 +388,7 @@ bool QtIOCompressor::open(OpenMode mode)
     if (read) {
         d->state = QtIOCompressorPrivate::NotReadFirstByte;
         d->zlibStream.avail_in = 0;
-        d->zlibStream.next_in = 0;
+        d->zlibStream.next_in = nullptr;
         if (d->streamFormat == QtIOCompressor::ZlibFormat) {
             status = inflateInit(&d->zlibStream);
         } else {

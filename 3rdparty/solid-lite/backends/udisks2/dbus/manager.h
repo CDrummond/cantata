@@ -33,7 +33,7 @@ public:
     { return "org.freedesktop.DBus.ObjectManager"; }
 
 public:
-    OrgFreedesktopDBusObjectManagerInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
+    OrgFreedesktopDBusObjectManagerInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
     ~OrgFreedesktopDBusObjectManagerInterface() override;
 

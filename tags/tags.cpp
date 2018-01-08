@@ -266,7 +266,7 @@ static void setTxxxTag(TagLib::ID3v2::Tag *tag, const std::string &tagName, cons
 
 static void setRva2Tag(TagLib::ID3v2::Tag *tag, const std::string &tagName, double gain, double peak)
 {
-    TagLib::ID3v2::RelativeVolumeFrame *frame = NULL;
+    TagLib::ID3v2::RelativeVolumeFrame *frame = nullptr;
     TagLib::ID3v2::FrameList frameList = tag->frameList("RVA2");
     TagLib::ID3v2::FrameList::ConstIterator it = frameList.begin();
     for (; it != frameList.end(); ++it) {
@@ -456,7 +456,7 @@ static bool updateID3v2Tag(TagLib::ID3v2::Tag *tag, const char *tagName, const Q
         }
     } else {
         TagLib::ID3v2::TextIdentificationFrame *frame=frameList.isEmpty()
-                                ? 0 : dynamic_cast<TagLib::ID3v2::TextIdentificationFrame *>(frameList.front());
+                                ? nullptr : dynamic_cast<TagLib::ID3v2::TextIdentificationFrame *>(frameList.front());
 
         if (!frame) {
             frame = new TagLib::ID3v2::TextIdentificationFrame(tagName);
@@ -540,7 +540,7 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
 
     if (rating>-1) {
         int old=-1;
-        readID3v2Tags(tag, 0, 0, 0, 0, &old);
+        readID3v2Tags(tag, nullptr, nullptr, nullptr, nullptr, &old);
         if (old!=rating) {
             while (clearTxxxTag(tag, "FMPS_RATING"));
             setTxxxTag(tag, "FMPS_RATING", convertFromCantataRating(rating));
@@ -669,7 +669,7 @@ static bool writeAPETags(TagLib::APE::Tag *tag, const Song &from, const Song &to
 
     if (rating>-1) {
         int old=-1;
-        readAPETags(tag, 0, 0, 0, &old);
+        readAPETags(tag, nullptr, nullptr, nullptr, &old);
         if (old!=rating) {
             tag->addValue("FMPS_RATING", convertFromCantataRating(rating));
             changed=true;
@@ -845,7 +845,7 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
 
     if (rating>-1) {
         int old=-1;
-        readVorbisCommentTags(tag, 0, 0, 0, 0, &old);
+        readVorbisCommentTags(tag, nullptr, nullptr, nullptr, nullptr, &old);
         if (old!=rating) {
             tag->addField("FMPS_RATING", convertFromCantataRating(rating));
             changed=true;
@@ -986,7 +986,7 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
 
     if (rating>-1) {
         int old=-1;
-        readMP4Tags(tag, 0, 0, 0, 0, &old);
+        readMP4Tags(tag, nullptr, nullptr, nullptr, nullptr, &old);
         if (old!=rating) {
             TagLib::MP4::ItemListMap &map = tag->itemListMap();
             map["----:com.apple.iTunes:FMPS_Rating"] = TagLib::MP4::Item(TagLib::StringList(convertFromCantataRating(rating)));
@@ -1077,7 +1077,7 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
 
     if (rating>-1) {
         int old=-1;
-        readASFTags(tag, 0, &old);
+        readASFTags(tag, nullptr, &old);
         if (old!=rating) {
             tag->addAttribute("FMPS/Rating", TagLib::String(convertFromCantataRating(rating)));
             changed=true;
@@ -1310,7 +1310,7 @@ Song read(const QString &fileName)
         return song;
     }
 
-    readTags(fileref, &song, 0, 0, 0, 0);
+    readTags(fileref, &song, nullptr, nullptr, nullptr, nullptr);
     song.file=fileName;
     song.time=fileref.audioProperties() ? fileref.audioProperties()->length() : 0;
     return song;
@@ -1324,7 +1324,7 @@ QImage readImage(const QString &fileName)
         return img;
     }
 
-    readTags(fileref, 0, 0, &img, 0, 0);
+    readTags(fileref, nullptr, nullptr, &img, nullptr, nullptr);
     return img;
 }
 
@@ -1336,7 +1336,7 @@ QString readLyrics(const QString &fileName)
         return lyrics;
     }
 
-    readTags(fileref, 0, 0, 0, &lyrics, 0);
+    readTags(fileref, nullptr, nullptr, nullptr, &lyrics, nullptr);
     return lyrics;
 }
 
@@ -1406,7 +1406,7 @@ ReplayGain readReplaygain(const QString &fileName)
     }
 
     ReplayGain rg;
-    readTags(fileref, 0, &rg, 0, 0, 0);
+    readTags(fileref, nullptr, &rg, nullptr, nullptr, nullptr);
     return rg;
 }
 
@@ -1459,7 +1459,7 @@ int readRating(const QString &fileName)
     int rating=-1;
     TagLib::FileRef fileref = getFileRef(fileName);
     if (!fileref.isNull()) {
-        readTags(fileref, 0, 0, 0, 0, &rating);
+        readTags(fileref, nullptr, nullptr, nullptr, nullptr, &rating);
     }
     return rating;
 }

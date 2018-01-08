@@ -41,7 +41,7 @@ class MusicLibraryItemArtist : public MusicLibraryItemContainer
 public:
     static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
 
-    MusicLibraryItemArtist(const Song &song, MusicLibraryItemContainer *parent=0);
+    MusicLibraryItemArtist(const Song &song, MusicLibraryItemContainer *parent=nullptr);
     ~MusicLibraryItemArtist() override { }
 
     MusicLibraryItemAlbum * album(const Song &s, bool create=true);

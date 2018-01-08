@@ -79,7 +79,7 @@ class CoverNameValidator : public QValidator
 
 DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     : QWidget(parent)
-    , schemeDlg(0)
+    , schemeDlg(nullptr)
     , noCoverText(tr("Don't copy covers"))
     , embedCoverText(tr("Embed cover within each file"))
     , modified(false)
@@ -138,12 +138,12 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         replaceSpaces->setChecked(opts.replaceSpaces);
     } else {
         REMOVE(filenamesGroupBox)
-        filenameScheme=0;
-        vfatSafe=0;
-        asciiOnly=0;
-        ignoreThe=0;
-        replaceSpaces=0;
-        configFilename=0;
+        filenameScheme=nullptr;
+        vfatSafe=nullptr;
+        asciiOnly=nullptr;
+        ignoreThe=nullptr;
+        replaceSpaces=nullptr;
+        configFilename=nullptr;
     }
     origOpts=opts;
 

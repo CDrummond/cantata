@@ -31,8 +31,8 @@
 #include <QApplication>
 
 MessageOverlay::MessageOverlay(QObject *p)
-    : QWidget(0)
-    , timer(0)
+    : QWidget(nullptr)
+    , timer(nullptr)
     #ifdef Q_OS_MAC
     , closeOnLeft(true)
      #else

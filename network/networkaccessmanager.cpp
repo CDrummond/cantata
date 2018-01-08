@@ -51,7 +51,7 @@ NetworkJob::NetworkJob(NetworkAccessManager *p, const QUrl &u)
     : QObject(p)
     , numRedirects(0)
     , lastDownloadPc(0)
-    , job(0)
+    , job(nullptr)
     , origU(u)
 {
     QTimer::singleShot(0, this, SLOT(jobFinished()));
@@ -108,7 +108,7 @@ void NetworkJob::cancelJob()
         job->abort();
         job->close();
         job->deleteLater();
-        job=0;
+        job=nullptr;
     }
 }
 
@@ -158,7 +158,7 @@ void NetworkJob::jobDestroyed(QObject *o)
 {
     DBUG << (void *)this << (void *)job;
     if (o==job) {
-        job=0;
+        job=nullptr;
     }
 }
 
@@ -211,7 +211,7 @@ NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
     request.setRawHeader("User-Agent", userAgent);
 
     // Windows builds do not support HTTPS - unless QtNetwork is recompiled...
-    NetworkJob *reply=0;
+    NetworkJob *reply=nullptr;
     bool supportsSsl = false;
     #ifndef QT_NO_SSL
     supportsSsl = QSslSocket::supportsSsl();
@@ -237,7 +237,7 @@ NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
 
 struct FakeNetworkReply : public QNetworkReply
 {
-    FakeNetworkReply() : QNetworkReply(0)
+    FakeNetworkReply() : QNetworkReply(nullptr)
     {
         setError(QNetworkReply::ConnectionRefusedError, QString());
         QTimer::singleShot(0, this, SIGNAL(finished()));

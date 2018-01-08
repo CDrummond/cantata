@@ -42,7 +42,7 @@ public:
 
     static void setMainWidget(QWidget *w);
     static ActionCollection * get();
-    Action * createAction(const QString &name, const QString &text, const char *icon=0, const QString &whatsThis=QString());
+    Action * createAction(const QString &name, const QString &text, const char *icon=nullptr, const QString &whatsThis=QString());
     Action * createAction(const QString &name, const QString &text, const QIcon &icon, const QString &whatsThis=QString());
 
     /// Clears the entire action collection, deleting all actions.
@@ -75,13 +75,13 @@ public:
 
     QAction *addAction(const QString &name, QAction *action);
     Action *addAction(const QString &name, Action *action);
-    Action *addAction(const QString &name, const QObject *receiver = 0, const char *member = 0);
+    Action *addAction(const QString &name, const QObject *receiver = nullptr, const char *member = nullptr);
     void removeAction(QAction *action);
     QAction *takeAction(QAction *action);
 
     /// Create new action under the given name, add it to the collection and connect its triggered(bool) signal to the specified receiver.
     template<class ActionType>
-    ActionType *add(const QString &name, const QObject *receiver = 0, const char *member = 0) {
+    ActionType *add(const QString &name, const QObject *receiver = nullptr, const char *member = nullptr) {
         ActionType *a = new ActionType(this);
         if(receiver && member)
             connect(a, SIGNAL(triggered(bool)), receiver, member);

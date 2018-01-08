@@ -34,7 +34,7 @@ class CustomActions : public Action
 public:
     struct Command
     {
-        Command(const QString &n=QString(), const QString &c=QString(), Action *a=0) : name(n.trimmed()), cmd(c.trimmed()), act(a) { }
+        Command(const QString &n=QString(), const QString &c=QString(), Action *a=nullptr) : name(n.trimmed()), cmd(c.trimmed()), act(a) { }
         bool operator<(const Command &o) const;
         bool operator==(const Command &o) const { return name==o.name && cmd==o.cmd; }
         bool operator!=(const Command &o) const { return !(*this==o); }

@@ -68,7 +68,7 @@ public:
     void createDb();
     QVariant data(const QModelIndex &index, int role) const override;
     bool previouslyDownloaded() const;
-    bool isDownloading() { return 0!=job; }
+    bool isDownloading() { return nullptr!=job; }
     void open();
     void download(bool redownload);
     virtual OnlineXmlParser * createParser() = 0;

@@ -47,7 +47,7 @@ public:
         NumCategories
     };
 
-    StreamSearchModel(QObject *parent = 0);
+    StreamSearchModel(QObject *parent = nullptr);
     ~StreamSearchModel() override;
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &) const override;

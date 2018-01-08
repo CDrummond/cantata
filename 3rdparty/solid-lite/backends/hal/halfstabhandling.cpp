@@ -181,7 +181,7 @@ QProcess *Solid::Backends::Hal::FstabHandling::callSystemCommand(const QString &
         return process;
     } else {
         delete process;
-        return 0;
+        return nullptr;
     }
 }
 

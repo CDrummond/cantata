@@ -33,7 +33,7 @@ class OnlineDevice : public Device
     Q_OBJECT
 
 public:
-    OnlineDevice() : Device(0, QString(), QString()), lastProg(-1), overWrite(false), job(0) { }
+    OnlineDevice() : Device(nullptr, QString(), QString()), lastProg(-1), overWrite(false), job(nullptr) { }
     ~OnlineDevice() override { }
 
     bool isConnected() const override { return true; }

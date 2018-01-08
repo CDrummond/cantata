@@ -66,7 +66,7 @@ QModelIndex StreamSearchModel::index(int row, int column, const QModelIndex &par
     }
 
     const StreamsModel::CategoryItem * p = parent.isValid() ? static_cast<StreamsModel::CategoryItem *>(parent.internalPointer()) : root;
-    const StreamsModel::Item * c = row<p->children.count() ? p->children.at(row) : 0;
+    const StreamsModel::Item * c = row<p->children.count() ? p->children.at(row) : nullptr;
     return c ? createIndex(row, column, (void *)c) : QModelIndex();
 }
 

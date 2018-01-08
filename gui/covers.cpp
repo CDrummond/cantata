@@ -87,7 +87,7 @@ const QLatin1String Covers::constArtistImage("artist");
 const QLatin1String Covers::constComposerImage("composer");
 const QString Covers::constCoverInTagPrefix=QLatin1String("{tag}");
 
-static const char * constExtensions[]={".jpg", ".png", 0};
+static const char * constExtensions[]={".jpg", ".png", nullptr};
 static bool saveInMpdDir=true;
 static bool fetchCovers=true;
 static QString constNoCover=QLatin1String("{nocover}");
@@ -338,7 +338,7 @@ bool Covers::isPng(const QByteArray &data)
 
 const char * Covers::imageFormat(const QByteArray &data)
 {
-    return isJpg(data) ? "JPG" : (isPng(data) ? "PNG" : 0);
+    return isJpg(data) ? "JPG" : (isPng(data) ? "PNG" : nullptr);
 }
 
 QString Covers::encodeName(QString name)
@@ -556,7 +556,7 @@ const QStringList & Covers::standardNames()
 }
 
 CoverDownloader::CoverDownloader()
-    : manager(0)
+    : manager(nullptr)
 {
     thread=new Thread(metaObject()->className());
     moveToThread(thread);
@@ -954,7 +954,7 @@ NetworkAccessManager * CoverDownloader::network()
 }
 
 CoverLocator::CoverLocator()
-    : timer(0)
+    : timer(nullptr)
 {
     thread=new Thread(metaObject()->className());
     moveToThread(thread);
@@ -1013,7 +1013,7 @@ void CoverLocator::locate()
 }
 
 CoverLoader::CoverLoader()
-    : timer(0)
+    : timer(nullptr)
 {
     thread=new Thread(metaObject()->className());
     moveToThread(thread);
@@ -1070,9 +1070,9 @@ void CoverLoader::load()
 }
 
 Covers::Covers()
-    : downloader(0)
-    , locator(0)
-    , loader(0)
+    : downloader(nullptr)
+    , locator(nullptr)
+    , loader(nullptr)
 {
     devicePixelRatio=qApp->devicePixelRatio();
     cache.setMaxCost(10*1024*1024);
@@ -1091,17 +1091,17 @@ void Covers::stop()
         disconnect(downloader, SIGNAL(composerImage(Song,QImage,QString)), this, SLOT(composerImageDownloaded(Song,QImage,QString)));
         disconnect(downloader, SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverDownloaded(Song,QImage,QString)));
         downloader->stop();
-        downloader=0;
+        downloader=nullptr;
     }
     if (locator) {
         disconnect(locator, SIGNAL(located(QList<LocatedCover>)), this, SLOT(located(QList<LocatedCover>)));
         locator->stop();
-        locator=0;
+        locator=nullptr;
     }
     if (loader) {
         disconnect(loader, SIGNAL(loaded(QList<LoadedCover>)), this, SLOT(loaded(QList<LoadedCover>)));
         loader->stop();
-        loader=0;
+        loader=nullptr;
     }
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     cleanCdda();
@@ -1125,7 +1125,7 @@ void Covers::clearScaleCache()
 QPixmap * Covers::getScaledCover(const Song &song, int size)
 {
     if (size<4 || song.isUnknownAlbum()) {
-        return 0;
+        return nullptr;
     }
 //    DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId << size;
     QString key=cacheKey(song, size);
@@ -1144,13 +1144,13 @@ QPixmap * Covers::getScaledCover(const Song &song, int size)
         }
         cacheSizes.insert(size);
     }
-    return pix && pix->width()>1 ? pix : 0;
+    return pix && pix->width()>1 ? pix : nullptr;
 }
 
 QPixmap * Covers::saveScaledCover(const QImage &img, const Song &song, int size)
 {
     if (size<4) {
-        return 0;
+        return nullptr;
     }
 
     if (!isOnlineServiceImage(song)) {
@@ -1198,7 +1198,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
 {
     VERBOSE_DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << song.composer() << song.isArtistImageRequest() << song.isComposerImageRequest() << size << urgent;
     QString key;
-    QPixmap *pix=0;
+    QPixmap *pix=nullptr;
     if (0==size) {
         size=22;
     }

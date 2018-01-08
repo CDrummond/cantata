@@ -33,7 +33,7 @@ class PlaylistsProxyModel : public ProxyModel
     Q_OBJECT
 
 public:
-    PlaylistsProxyModel(QObject *parent = 0);
+    PlaylistsProxyModel(QObject *parent = nullptr);
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
     static bool compareNames(const QString &l, const QString &r) { return l.localeAwareCompare(r)<0; }
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;

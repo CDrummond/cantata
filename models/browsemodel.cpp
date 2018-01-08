@@ -55,7 +55,7 @@ QStringList BrowseModel::FolderItem::allEntries(bool allowPlaylists) const
 
 BrowseModel::BrowseModel(QObject *p)
     : ActionModel(p)
-    , root(new FolderItem("/", 0))
+    , root(new FolderItem("/", nullptr))
     , enabled(false)
     , dbVersion(0)
 {
@@ -114,7 +114,7 @@ QModelIndex BrowseModel::index(int row, int column, const QModelIndex &parent) c
         return QModelIndex();
     }
     const FolderItem * p = parent.isValid() ? static_cast<FolderItem *>(parent.internalPointer()) : root;
-    const Item * c = row<p->getChildCount() ? p->getChildren().at(row) : 0;
+    const Item * c = row<p->getChildCount() ? p->getChildren().at(row) : nullptr;
     return c ? createIndex(row, column, (void *)c) : QModelIndex();
 }
 
@@ -126,7 +126,7 @@ QModelIndex BrowseModel::parent(const QModelIndex &child) const
 
     const Item * const item = static_cast<Item *>(child.internalPointer());
     Item * const parentItem = item->getParent();
-    if (parentItem == root || 0==parentItem) {
+    if (parentItem == root || nullptr==parentItem) {
         return QModelIndex();
     }
 

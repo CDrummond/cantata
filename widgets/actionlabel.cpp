@@ -81,7 +81,7 @@ ActionLabel::~ActionLabel()
     if (0==--theUsageCount) {
         for (int i=0; i<constNumIcons; ++i) {
             delete theIcons[i];
-            theIcons[i]=NULL;
+            theIcons[i]=nullptr;
         }
     }
 }

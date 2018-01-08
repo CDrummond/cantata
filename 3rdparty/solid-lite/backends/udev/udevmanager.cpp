@@ -196,7 +196,7 @@ QObject *UDevManager::createDevice(const QString &udi_)
     if (d->isOfInterest(device) || QFile::exists(udi)) {
         return new UDevDevice(device);
     }
-    return 0;
+    return nullptr;
 }
 
 void UDevManager::slotDeviceAdded(const UdevQt::Device &device)

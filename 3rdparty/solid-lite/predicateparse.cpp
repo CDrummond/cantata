@@ -41,7 +41,7 @@ namespace PredicateParse
 struct ParsingData
 {
     ParsingData()
-        : result(0)
+        : result(nullptr)
     {}
 
     Solid::Predicate *result;
@@ -69,7 +69,7 @@ Solid::Predicate Solid::Predicate::fromString(const QString &predicate)
         result = Predicate(*data->result);
         delete data->result;
     }
-    s_parsingData->setLocalData(0);
+    s_parsingData->setLocalData(nullptr);
     return result;
 }
 
@@ -83,7 +83,7 @@ void PredicateParse_setResult(void *result)
 void PredicateParse_errorDetected(const char* s)
 {
     qWarning("ERROR from solid predicate parser: %s", s);
-    s_parsingData->localData()->result = 0;
+    s_parsingData->localData()->result = nullptr;
 }
 
 void PredicateParse_destroy(void *pred)
@@ -147,7 +147,7 @@ void *PredicateParse_newAnd(void *pred1, void *pred2)
     Solid::Predicate *p2 = (Solid::Predicate *)pred2;
 
     if (p1==data->result || p2==data->result) {
-        data->result = 0;
+        data->result = nullptr;
     }
 
     *result = *p1 & *p2;
@@ -168,7 +168,7 @@ void *PredicateParse_newOr(void *pred1, void *pred2)
     Solid::Predicate *p2 = (Solid::Predicate *)pred2;
 
     if (p1==data->result || p2==data->result) {
-        data->result = 0;
+        data->result = nullptr;
     }
 
     *result = *p1 | *p2;

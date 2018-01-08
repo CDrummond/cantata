@@ -67,8 +67,8 @@ VolumeSlider::VolumeSlider(QWidget *p)
     , lineWidth(0)
     , down(false)
     , fadingStop(false)
-    , muteAction(0)
-    , menu(0)
+    , muteAction(nullptr)
+    , menu(nullptr)
 {
     widthStep=4;
     setRange(0, 100);

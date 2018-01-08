@@ -42,7 +42,7 @@ public:
     static QModelIndexList sortIndexes(const QModelIndexList &list);
     static void drag(Qt::DropActions supportedActions, QAbstractItemView *view, const QModelIndexList &items);
 
-    TreeView(QWidget *parent=0, bool menuAlwaysAllowed=false);
+    TreeView(QWidget *parent=nullptr, bool menuAlwaysAllowed=false);
     ~TreeView() override;
 
     void setPageDefaults();

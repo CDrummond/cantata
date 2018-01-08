@@ -31,7 +31,7 @@ class TableView : public TreeView
     Q_OBJECT
 
 public:
-    TableView(const QString &cfgGroup, QWidget *parent=0, bool menuAlwaysAllowed=false);
+    TableView(const QString &cfgGroup, QWidget *parent=nullptr, bool menuAlwaysAllowed=false);
     ~TableView() override { }
     void setModel(QAbstractItemModel *m) override;
     void initHeader();

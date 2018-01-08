@@ -46,7 +46,7 @@ public:
     virtual ~MusicLibraryItem() { }
 
     MusicLibraryItemContainer * parentItem() const { return m_parentItem; }
-    virtual MusicLibraryItem * childItem(int) const { return 0; }
+    virtual MusicLibraryItem * childItem(int) const { return nullptr; }
     virtual int childCount() const { return 0; }
     int row() const;
     void setRow(int r) const { m_row=r+1; }

@@ -498,8 +498,8 @@ LibraryDb::LibraryDb(QObject *p, const QString &name)
     , dbName(name)
     , currentVersion(0)
     , newVersion(0)
-    , db(0)
-    , insertSongQuery(0)
+    , db(nullptr)
+    , insertSongQuery(nullptr)
 {
     DBUG;
 }
@@ -572,7 +572,7 @@ bool LibraryDb::init(const QString &dbFile)
     DBUG << (void *)db;
     if (!db->open()) {
         delete db;
-        db=0;
+        db=nullptr;
         DBUG << "Failed to open";
         return false;
     }
@@ -1012,7 +1012,7 @@ LibraryDb::Album LibraryDb::getRandomAlbum(const QString &genre, const QString &
         } else if (!genreFilter.isEmpty()) {
             query.addWhere("genre", genreFilter);
         }
-        if (yearFilter>0) {
+        if (yearFilter>nullptr) {
             query.addWhere("year", yearFilter);
         }
         query.exec();
@@ -1284,15 +1284,15 @@ Song LibraryDb::getSong(const QSqlQuery &query)
 
 void LibraryDb::reset()
 {
-    bool removeDb=0!=db;
+    bool removeDb=nullptr!=db;
     delete insertSongQuery;
     if (db) {
         db->close();
     }
     delete db;
 
-    insertSongQuery=0;
-    db=0;
+    insertSongQuery=nullptr;
+    db=nullptr;
     if (removeDb) {
         QSqlDatabase::removeDatabase(dbName);
     }

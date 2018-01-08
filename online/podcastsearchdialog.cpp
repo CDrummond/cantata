@@ -107,7 +107,7 @@ public:
                        result[QLatin1String("artworkUrl100")].toUrl(),
                        QString(),
                        result[QLatin1String("collectionViewUrl")].toString(),
-                       0);
+                       nullptr);
         }
     }
 };
@@ -134,7 +134,7 @@ public:
                        map[QLatin1String("logo_url")].toUrl(),
                        map[QLatin1String("description")].toString(),
                        map[QLatin1String("website")].toString(),
-                       0);
+                       nullptr);
         }
     }
 };
@@ -142,8 +142,8 @@ public:
 PodcastPage::PodcastPage(QWidget *p, const QString &n)
     : QWidget(p)
     , pageName(n)
-    , job(0)
-    , imageJob(0)
+    , job(nullptr)
+    , imageJob(nullptr)
 {
     tree = new QTreeWidget(this);
     tree->setItemDelegate(new BasicItemDelegate(tree));
@@ -189,7 +189,7 @@ void PodcastPage::cancel()
     spinner->stop();
     if (job) {
         job->cancelAndDelete();
-        job=0;
+        job=nullptr;
     }
 }
 
@@ -198,7 +198,7 @@ void PodcastPage::cancelImage()
     imageSpinner->stop();
     if (imageJob) {
         imageJob->cancelAndDelete();
-        imageJob=0;
+        imageJob=nullptr;
     }
 }
 
@@ -292,7 +292,7 @@ void PodcastPage::imageJobFinished()
         imageCache.insert(imageJob->property(constOrigUrlProperty).toUrl(), new QImage(img), img.byteCount());
         updateText();
     }
-    imageJob=0;
+    imageJob=nullptr;
 }
 
 void PodcastPage::jobFinished()
@@ -308,8 +308,8 @@ void PodcastPage::jobFinished()
     if (spinner) {
         spinner->stop();
     }
-    parseResonse(j->ok() ? j->actualJob() : 0);
-    job=0;
+    parseResonse(j->ok() ? j->actualJob() : nullptr);
+    job=nullptr;
 }
 
 void PodcastPage::openLink(const QUrl &url)
@@ -454,10 +454,10 @@ void OpmlBrowsePage::parseResonse(QIODevice *dev)
         parsed=parsed.categories.at(0);
     }
     for (const OpmlParser::Category &cat: parsed.categories) {
-        addCategory(cat, 0);
+        addCategory(cat, nullptr);
     }
     for (const OpmlParser::Podcast &pod: parsed.podcasts) {
-        addPodcast(pod, 0);
+        addPodcast(pod, nullptr);
     }
     if (!isLoadingFromCache && tree->topLevelItemCount()>0) {
         QString cacheFile=generateCacheFileName(url, true);
@@ -561,7 +561,7 @@ void PodcastUrlPage::parseResonse(QIODevice *dev)
         emit error(tr("Cantata only supports audio podcasts! The URL entered contains only video podcasts."));
         return;
     }
-    addPodcast(ch.name, currentUrl, ch.image, ch.description, QString(), 0);
+    addPodcast(ch.name, currentUrl, ch.image, ch.description, QString(), nullptr);
 }
 
 int PodcastSearchDialog::instanceCount()
@@ -660,7 +660,7 @@ void PodcastSearchDialog::msgWidgetVisible(bool v)
 void PodcastSearchDialog::pageChanged()
 {
     PageWidgetItem *pwi=pageWidget->currentPage();
-    PodcastPage *page=pwi ? qobject_cast<PodcastPage *>(pwi->widget()) : 0;
+    PodcastPage *page=pwi ? qobject_cast<PodcastPage *>(pwi->widget()) : nullptr;
     rssSelected(page ? page->currentRss() : QUrl());
 }
 

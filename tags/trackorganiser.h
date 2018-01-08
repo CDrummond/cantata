@@ -67,7 +67,7 @@ private:
     void slotButtonClicked(int button) override;
     void readOptions();
     #ifdef ENABLE_DEVICES_SUPPORT
-    Device * getDevice(QWidget *p=0);
+    Device * getDevice(QWidget *p=nullptr);
     #endif
     void doUpdate();
     void finish(bool ok);

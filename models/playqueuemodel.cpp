@@ -236,7 +236,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(removeDuplicatesAction, SIGNAL(triggered()), this, SLOT(removeDuplicates()));
 
     shuffleAction=new Action(tr("Shuffle"), this);
-    shuffleAction->setMenu(new QMenu(0));
+    shuffleAction->setMenu(new QMenu(nullptr));
     Action *shuffleTracksAction = new Action(tr("Tracks"), shuffleAction);
     Action *shuffleAlbumsAction = new Action(tr("Albums"), shuffleAction);
     connect(shuffleTracksAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(shuffle()));
@@ -245,7 +245,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     shuffleAction->menu()->addAction(shuffleAlbumsAction);
 
     sortAction=new Action(tr("Sort By"), this);
-    sortAction->setMenu(new QMenu(0));
+    sortAction->setMenu(new QMenu(nullptr));
     addSortAction(tr("Artist"), constSortByArtistKey);
     addSortAction(tr("Album Artist"), constSortByAlbumArtistKey);
     addSortAction(tr("Album"), constSortByAlbumKey);

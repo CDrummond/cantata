@@ -107,7 +107,7 @@ public:
         PAGE_CONTEXT
     };
 
-    MainWindow(QWidget *parent = 0);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
     int mpdVolume() const { return volumeSlider->value(); }

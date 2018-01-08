@@ -187,7 +187,7 @@ Device * Device::create(MusicLibraryModel *m, const QString &udi)
 
         if( ssa && (!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
                    (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus()) ) {
-            return 0;
+            return nullptr;
         }
 
         //HACK: ignore apple stuff until we have common MediaDeviceFactory.
@@ -198,7 +198,7 @@ Device * Device::create(MusicLibraryModel *m, const QString &udi)
 //             }
         }
     }
-    return 0;
+    return nullptr;
 }
 
 bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
@@ -280,7 +280,7 @@ QTemporaryFile * Device::copySongToTemp(Song &song)
         if (!QFile::copy(song.file, temp->fileName())) {
             temp->remove();
             delete temp;
-            temp=0;
+            temp=nullptr;
         }
     }
     return temp;
@@ -303,7 +303,7 @@ Device::Device(MusicLibraryModel *m, Solid::Device &dev, bool albumArtistSupport
     , configured(false)
     , solidDev(dev)
     , deviceId(dev.udi())
-    , update(0)
+    , update(nullptr)
     , needToFixVa(false)
     , jobAbortRequested(false)
     , transcoding(false)
@@ -317,7 +317,7 @@ Device::Device(MusicLibraryModel *m, const QString &name, const QString &id)
     : MusicLibraryItemRoot(name)
     , configured(false)
     , deviceId(id)
-    , update(0)
+    , update(nullptr)
     , needToFixVa(false)
     , jobAbortRequested(false)
     , transcoding(false)
@@ -369,7 +369,7 @@ void Device::applyUpdate()
         }
     }
     delete update;
-    update=0;
+    update=nullptr;
 }
 
 QModelIndex Device::index() const

@@ -53,7 +53,7 @@ private:
 
 SearchWidget::SearchWidget(QWidget *p)
      : QWidget(p)
-     , cat(0)
+     , cat(nullptr)
      , widgetIsActive(false)
 {
     QHBoxLayout *l=new QHBoxLayout(this);
@@ -95,7 +95,7 @@ void SearchWidget::setPermanent()
     setFocus();
     closeButton->setVisible(false);
     closeButton->deleteLater();
-    closeButton=0;
+    closeButton=nullptr;
     layout()->setSpacing(0);
 }
 

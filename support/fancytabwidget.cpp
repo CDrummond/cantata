@@ -242,7 +242,7 @@ FancyTabBar::FancyTabBar(QWidget *parent, bool text, int iSize, Pos pos)
     setMouseTracking(true); // Needed for hover events
     triggerTimer.setSingleShot(true);
 
-    QBoxLayout* layout=0;
+    QBoxLayout* layout=nullptr;
 
     if (Side!=pos) {
         setMinimumHeight(tabSizeHint().height());
@@ -473,12 +473,12 @@ void FancyTabBar::setCurrentIndex(int index)
 FancyTabWidget::FancyTabWidget(QWidget *parent)
     : QWidget(parent)
     , styleSetting(0)
-    , tabBar(NULL)
+    , tabBar(nullptr)
     , stack_(new QStackedWidget(this))
     , sideWidget(new QWidget)
     , sideLayout(new QVBoxLayout)
     , topLayout(new QVBoxLayout)
-    , menu(0)
+    , menu(nullptr)
     , proxyStyle(new FancyTabProxyStyle)
 {
     sideLayout->setSpacing(0);
@@ -576,7 +576,7 @@ void FancyTabWidget::setStyle(int s)
     }
     // Remove previous tab bar
     delete tabBar;
-    tabBar = NULL;
+    tabBar = nullptr;
 
     //   use_background_ = false;
     // Create new tab bar

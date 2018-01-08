@@ -108,9 +108,9 @@ public:
     /**
      * Constructs a KMsgWidget with the specified parent.
      */
-    explicit KMsgWidget(QWidget *parent = 0);
+    explicit KMsgWidget(QWidget *parent = nullptr);
 
-    explicit KMsgWidget(const QString &text, QWidget *parent = 0);
+    explicit KMsgWidget(const QString &text, QWidget *parent = nullptr);
 
     ~KMsgWidget() override;
 

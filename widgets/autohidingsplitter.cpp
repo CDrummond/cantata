@@ -65,7 +65,7 @@ class SplitterSizeAnimation:public QVariantAnimation
 public:
     SplitterSizeAnimation(QObject *parent)
         : QVariantAnimation(parent)
-        , splitter(0)
+        , splitter(nullptr)
     {
     }
     void setSplitter(QSplitter *splitter) {

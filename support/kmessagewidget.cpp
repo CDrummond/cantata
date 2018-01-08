@@ -260,7 +260,7 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         .arg(bg2.name())
         .arg(border.name())
         // DefaultFrameWidth returns the size of the external margin + border width. We know our border is 1px, so we subtract this from the frame normal QStyle FrameWidth to get our margin
-        .arg(style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this) -1)
+        .arg(style()->pixelMetric(QStyle::PM_DefaultFrameWidth, nullptr, this) -1)
         .arg(fg.name())
         );
 }

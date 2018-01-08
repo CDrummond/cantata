@@ -31,7 +31,7 @@ class OnlineDb : public LibraryDb
     Q_OBJECT
 public:
 
-    OnlineDb(const QString &serviceName, QObject *p=0);
+    OnlineDb(const QString &serviceName, QObject *p=nullptr);
     ~OnlineDb() override;
 
     bool init(const QString &dbFile) override;

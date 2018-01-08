@@ -142,11 +142,11 @@ Device * DevicesPage::activeFsDevice() const
     const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (selected.isEmpty()) {
-        return 0;
+        return nullptr;
     }
 
     QString udi;
-    Device *activeDev=0;
+    Device *activeDev=nullptr;
     for (const QModelIndex &idx: selected) {
         QModelIndex index = proxy.mapToSource(idx);
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
@@ -160,10 +160,10 @@ Device * DevicesPage::activeFsDevice() const
         if (item && MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);
             if (Device::Ums!=dev->devType() && Device::RemoteFs!=dev->devType()) {
-                return 0;
+                return nullptr;
             }
             if (activeDev) {
-                return 0;
+                return nullptr;
             }
             activeDev=dev;
         }

@@ -72,13 +72,13 @@ TrayItem::TrayItem(MainWindow *p)
     : QObject(p)
     #ifndef Q_OS_MAC
     , mw(p)
-    , trayItem(0)
-    , trayItemMenu(0)
+    , trayItem(nullptr)
+    , trayItemMenu(nullptr)
     #ifdef QT_QTDBUS_FOUND
-    , notification(0)
+    , notification(nullptr)
     #endif
-    , connectionsAction(0)
-    , outputsAction(0)
+    , connectionsAction(nullptr)
+    , outputsAction(nullptr)
     #endif
 {
 }
@@ -117,9 +117,9 @@ void TrayItem::setup()
         if (trayItem) {
             trayItem->setVisible(false);
             trayItem->deleteLater();
-            trayItem=0;
+            trayItem=nullptr;
             trayItemMenu->deleteLater();
-            trayItemMenu=0;
+            trayItemMenu=nullptr;
         }
         return;
     }
@@ -146,7 +146,7 @@ void TrayItem::setup()
 
     trayItem = new QSystemTrayIcon(this);
     trayItem->installEventFilter(new VolumeSliderEventHandler(this));
-    trayItemMenu = new QMenu(0);
+    trayItemMenu = new QMenu(nullptr);
     trayItemMenu->addAction(StdActions::self()->prevTrackAction);
     trayItemMenu->addAction(StdActions::self()->playPauseTrackAction);
     trayItemMenu->addAction(StdActions::self()->stopPlaybackAction);
@@ -265,7 +265,7 @@ static void copyMenu(Action *from, Action *to)
     to->setVisible(from->isVisible());
     if (to->isVisible()) {
         if (!to->menu()) {
-            to->setMenu(new QMenu(0));
+            to->setMenu(new QMenu(nullptr));
         }
         QMenu *m=to->menu();
         m->clear();

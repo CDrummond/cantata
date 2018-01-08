@@ -126,7 +126,7 @@ UltimateLyricsProvider * UltimateLyrics::providerByName(const QString &name) con
             return provider;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 UltimateLyricsProvider * UltimateLyrics::getNext(int &index)
@@ -141,7 +141,7 @@ UltimateLyricsProvider * UltimateLyrics::getNext(int &index)
             }
         }
     }
-    return 0;
+    return nullptr;
 }
 
 void UltimateLyrics::load()

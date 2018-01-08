@@ -60,7 +60,7 @@ static bool removeDir(const QString &d, const QStringList &types)
 
 StreamsSettings::StreamsSettings(QWidget *p)
     : Dialog(p, "StreamsDialog", QSize(400, 500))
-    , providerDialog(0)
+    , providerDialog(nullptr)
 {
     setCaption(tr("Configure Streams"));
     QWidget *mw=new QWidget(this);
@@ -336,5 +336,5 @@ QListWidgetItem *  StreamsSettings::get(const QString &name)
             return item;
         }
     }
-    return 0;
+    return nullptr;
 }

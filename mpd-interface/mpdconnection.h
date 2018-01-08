@@ -114,7 +114,7 @@ public:
                         : QAbstractSocket::UnconnectedState;
     }
     QNetworkProxy::ProxyType proxyType() const { return tcp ? tcp->proxy().type() : QNetworkProxy::NoProxy; }
-    bool isLocal() const { return 0!=local; }
+    bool isLocal() const { return nullptr!=local; }
     QString address() const { return tcp ? tcp->peerAddress().toString() : QString(); }
     QString errorString() const { return tcp ? tcp->errorString() : local ? local->errorString() : QLatin1String("No socket object?"); }
     QAbstractSocket::SocketError error() const {

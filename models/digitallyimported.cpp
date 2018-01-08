@@ -40,9 +40,9 @@ const QString DigitallyImported::constPublicValue=QLatin1String("public3");
 GLOBAL_STATIC(DigitallyImported, instance)
 
 DigitallyImported::DigitallyImported()
-    : job(0)
+    : job(nullptr)
     , streamType(0)
-    , timer(0)
+    , timer(nullptr)
 {
     load();
 }
@@ -55,7 +55,7 @@ void DigitallyImported::login()
 {
     if (job) {
         job->deleteLater();
-        job=0;
+        job=nullptr;
     }
     QNetworkRequest req(constAuthUrl);
     addAuthHeader(req);
@@ -67,7 +67,7 @@ void DigitallyImported::logout()
 {
     if (job) {
         job->deleteLater();
-        job=0;
+        job=nullptr;
     }
     listenHash=QString();
     expires=QDateTime();
@@ -154,7 +154,7 @@ void DigitallyImported::loginResponse()
     if (reply!=job) {
         return;
     }
-    job=0;
+    job=nullptr;
 
     status=listenHash=QString();
     const int httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();

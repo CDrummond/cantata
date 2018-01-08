@@ -55,7 +55,7 @@ public:
 
     static QString headerText(int col);
 
-    SearchModel(QObject *parent = 0);
+    SearchModel(QObject *parent = nullptr);
     ~SearchModel() override;
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &) const override;
@@ -84,7 +84,7 @@ Q_SIGNALS:
 protected:
     virtual Song & fixPath(Song &s) const { return s; }
     void results(const QList<Song> &songs);
-    const Song * toSong(const QModelIndex &index) const { return index.isValid() ? static_cast<const Song *>(index.internalPointer()) : 0; }
+    const Song * toSong(const QModelIndex &index) const { return index.isValid() ? static_cast<const Song *>(index.internalPointer()) : nullptr; }
 
 protected:
     bool multiCol;

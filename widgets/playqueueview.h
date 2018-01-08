@@ -78,7 +78,7 @@ public:
         BI_Custom
     };
 
-    PlayQueueView(QWidget *parent=0);
+    PlayQueueView(QWidget *parent=nullptr);
     ~PlayQueueView() override;
 
     void readConfig();

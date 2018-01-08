@@ -65,7 +65,7 @@ MusicLibraryItem * MusicLibraryItemContainer::childItem(const QString &name) con
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 void MusicLibraryItemContainer::resetRows()

@@ -70,7 +70,7 @@ GLOBAL_STATIC(PlaylistsModel, instance)
 PlaylistsModel::PlaylistsModel(QObject *parent)
     : ActionModel(parent)
     , multiCol(false)
-    , itemMenu(0)
+    , itemMenu(nullptr)
     , dropAdjust(0)
 {
     icn.addFile(":playlist.svg");
@@ -101,7 +101,7 @@ PlaylistsModel::~PlaylistsModel()
 {
     if (itemMenu) {
         itemMenu->deleteLater();
-        itemMenu=0;
+        itemMenu=nullptr;
     }
 }
 
@@ -816,7 +816,7 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
 
 void PlaylistsModel::removedFromPlaylist(const QString &name, const QList<quint32> &positions)
 {
-    PlaylistItem *pl=0;
+    PlaylistItem *pl=nullptr;
     if (0==positions.count() || !(pl=getPlaylist(name))) {
         emit listPlaylists();
         return;
@@ -852,7 +852,7 @@ void PlaylistsModel::removedFromPlaylist(const QString &name, const QList<quint3
 
 void PlaylistsModel::movedInPlaylist(const QString &name, const QList<quint32> &idx, quint32 pos)
 {
-    PlaylistItem *pl=0;
+    PlaylistItem *pl=nullptr;
     if (!(pl=getPlaylist(name)) || idx.count()>pl->songs.count()) {
         emit listPlaylists();
         return;
@@ -936,7 +936,7 @@ void PlaylistsModel::updateItemMenu(bool create)
         if (!create) {
             return;
         }
-        itemMenu = new MirrorMenu(0);
+        itemMenu = new MirrorMenu(nullptr);
     }
 
     itemMenu->clear();
@@ -961,7 +961,7 @@ PlaylistsModel::PlaylistItem * PlaylistsModel::getPlaylist(const QString &name)
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 void PlaylistsModel::clearPlaylists()
@@ -1022,7 +1022,7 @@ PlaylistsModel::SongItem * PlaylistsModel::PlaylistItem::getSong(const Song &son
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 quint32 PlaylistsModel::PlaylistItem::totalTime()

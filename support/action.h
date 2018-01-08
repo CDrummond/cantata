@@ -50,8 +50,8 @@ public:
     static const char * constTtForSettings;
 
     explicit Action(QObject *parent);
-    Action(const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
-    Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
+    Action(const QString &text, QObject *parent, const QObject *receiver = nullptr, const char *slot = nullptr, const QKeySequence &shortcut = 0);
+    Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver = nullptr, const char *slot = nullptr, const QKeySequence &shortcut = 0);
 
     QKeySequence shortcut(ShortcutTypes types = ActiveShortcut) const;
     void setShortcut(const QShortcut &shortcut, ShortcutTypes type = ShortcutTypes(ActiveShortcut | DefaultShortcut));

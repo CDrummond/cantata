@@ -69,8 +69,8 @@ public:
     struct PlaylistItem;
     struct SongItem : public Item, public Song
     {
-        SongItem() : parent(0) { }
-        SongItem(const Song &s, PlaylistItem *p=0) : Song(s), parent(p) { }
+        SongItem() : parent(nullptr) { }
+        SongItem(const Song &s, PlaylistItem *p=nullptr) : Song(s), parent(p) { }
         bool isPlaylist() override { return false; }
         PlaylistItem *parent;
     };
@@ -98,7 +98,7 @@ public:
     static PlaylistsModel * self();
     static QString headerText(int col);
 
-    PlaylistsModel(QObject *parent = 0);
+    PlaylistsModel(QObject *parent = nullptr);
     ~PlaylistsModel() override;
     QString name() const;
     QString title() const;
@@ -124,7 +124,7 @@ public:
     QStringList mimeTypes() const override;
     void getPlaylists();
     void clear();
-    bool exists(const QString &n) { return 0!=getPlaylist(n); }
+    bool exists(const QString &n) { return nullptr!=getPlaylist(n); }
     MirrorMenu * menu();
     static QString strippedText(QString s);
     void setMultiColumn(bool m) { multiCol=m; }

@@ -42,7 +42,7 @@ public:
         IsConfigurableRole
     };
 
-    ShortcutsModel(const QHash<QString, ActionCollection *> &actionCollections, QObject *parent = 0);
+    ShortcutsModel(const QHash<QString, ActionCollection *> &actionCollections, QObject *parent = nullptr);
     ~ShortcutsModel() override;
 
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
@@ -79,7 +79,7 @@ signals:
 
 private:
     struct Item {
-        inline Item() : row(-1), parentItem(0), collection(0), action(0) { }
+        inline Item() : row(-1), parentItem(nullptr), collection(nullptr), action(nullptr) { }
         inline ~Item() { qDeleteAll(actionItems); }
         int row;
         Item *parentItem;

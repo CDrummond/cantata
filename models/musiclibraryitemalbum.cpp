@@ -203,7 +203,7 @@ Song MusicLibraryItemAlbum::coverSong() const
         song.file=firstSong->file();
         #if defined ENABLE_DEVICES_SUPPORT
         MusicLibraryItemRoot *root=parentItem() && parentItem()->parentItem() && MusicLibraryItem::Type_Root==parentItem()->parentItem()->itemType()
-                                                ? static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem()) : 0;
+                                                ? static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem()) : nullptr;
         if (root) {
             #ifdef ENABLE_DEVICES_SUPPORT
             if (root->isDevice()) {

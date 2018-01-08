@@ -45,7 +45,7 @@ class MpdLibraryDb : public LibraryDb
 public:
     static void removeUnusedDbs();
 
-    MpdLibraryDb(QObject *p=0);
+    MpdLibraryDb(QObject *p=nullptr);
     ~MpdLibraryDb() override;
 
     Song getCoverSong(const QString &artistId, const QString &albumId=QString());

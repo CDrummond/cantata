@@ -81,7 +81,7 @@ void InputDialog::addExtraWidget(QWidget *w)
 
 void InputDialog::init(int type, const QString &caption, const QString &labelText)
 {
-    extra = 0;
+    extra = nullptr;
     setButtons(Ok|Cancel);
     QWidget *wid=new QWidget(this);
     QVBoxLayout *layout=new QVBoxLayout(wid);

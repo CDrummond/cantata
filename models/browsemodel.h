@@ -41,7 +41,7 @@ public:
     class Item
     {
     public:
-        Item(FolderItem *p=0)
+        Item(FolderItem *p=nullptr)
             : parent(p), row(0) { }
         virtual ~Item() { }
 
@@ -61,7 +61,7 @@ public:
     class TrackItem : public Item
     {
     public:
-        TrackItem(const Song &s, FolderItem *p=0)
+        TrackItem(const Song &s, FolderItem *p=nullptr)
             : Item(p)
             , song(s) { }
         ~TrackItem() override { }
@@ -83,7 +83,7 @@ public:
             State_Fetched
         };
 
-        FolderItem(const QString &n, const QString &pth, FolderItem *p=0)
+        FolderItem(const QString &n, const QString &pth, FolderItem *p=nullptr)
             : Item(p), name(n), path(pth), state(State_Initial) { }
         ~FolderItem() override { }
 

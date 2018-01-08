@@ -33,7 +33,7 @@ class OtherSettings;
 class ContextSettings : public QTabWidget {
     Q_OBJECT
 public:
-    ContextSettings(QWidget *p=0);
+    ContextSettings(QWidget *p=nullptr);
     ~ContextSettings() override { }
     void load();
     void save();

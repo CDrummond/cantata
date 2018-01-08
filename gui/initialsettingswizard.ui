@@ -66,7 +66,7 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This 'wizard' will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This 'wizard' will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -105,7 +105,7 @@
            </font>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;p&gt;Welcome to Cantata&lt;/p&gt;</string>
           </property>
           <property name="textInteractionFlags">
            <set>Qt::NoTextInteraction</set>

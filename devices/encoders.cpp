@@ -253,7 +253,7 @@ static void init()
                                       "without compromising on audio quality, FLAC is an excellent choice."),
                                 QObject::tr("The <a href=http://flac.sourceforge.net/documentation_tools_flac.html>"
                                      "compression level</a> is an integer value between 0 and 8 that represents "
-                                     "the tradeoff between file size and compression speed while encoding with <b>FLAC</b>.<br/> "
+                                     "the tradeoff between file size and compression speed while encoding with <b>FLAC</b>.<br/>"
                                      "Setting the compression level to <b>0</b> yields the shortest compression time but "
                                      "generates a comparably big file.<br/>"
                                      "On the other hand, a compression level of <b>8</b> makes compression quite slow but "

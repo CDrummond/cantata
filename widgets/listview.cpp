@@ -119,9 +119,9 @@ void ListView::addDefaultAction(QAction *act)
 void ListView::setBackgroundImage(const QIcon &icon)
 {
     QPalette pal=parentWidget()->palette();
-    if (!icon.isNull()) {
-        pal.setColor(QPalette::Base, Qt::transparent);
-    }
+//    if (!icon.isNull()) {
+//        pal.setColor(QPalette::Base, Qt::transparent);
+//    }
     #ifndef Q_OS_MAC
     setPalette(pal);
     #endif

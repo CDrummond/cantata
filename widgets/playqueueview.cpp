@@ -407,9 +407,9 @@ void PlayQueueView::updatePalette()
 {
     QPalette pal=palette();
 
-    if (BI_None!=backgroundImageType) {
-        pal.setColor(QPalette::Base, Qt::transparent);
-    }
+//    if (BI_None!=backgroundImageType) {
+//        pal.setColor(QPalette::Base, Qt::transparent);
+//    }
     if (groupedView) {
         #ifndef Q_OS_MAC
         groupedView->setPalette(pal);

@@ -7698,14 +7698,22 @@ Ezt nem lehet visszavonni!</translation>
         <translation type="unfinished">Légy üdvözölve a Cantata-ban</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="69"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata zenelejátszó kiszolgálóhoz (MPD) való, sokrétű és felhasználóbarát. Az MPD rugalmas, nagy tudású kiszolgáló oldali zenelejátszó alkalmazás.&lt;/p&gt;&lt;p&gt;Az MPD-ről további információk az MPD honlapján &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Ez a varázs végigvezet a Cantata megfelelő működéséhez szükséges alapbeállításokon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata zenelejátszó kiszolgálóhoz (MPD) való, sokrétű és felhasználóbarát. Az MPD rugalmas, nagy tudású kiszolgáló oldali zenelejátszó alkalmazás.&lt;/p&gt;&lt;p&gt;Az MPD-ről további információk az MPD honlapján &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Ez a varázs végigvezet a Cantata megfelelő működéséhez szükséges alapbeállításokon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Légy üdvözölve a Cantata-ban.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../gui/initialsettingswizard.ui" line="69"/>
+        <source>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="108"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Légy üdvözölve a Cantata-ban.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;p&gt;Welcome to Cantata&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="134"/>
@@ -8119,7 +8127,7 @@ Ezt nem lehet visszavonni!</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="553"/>
-        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos; You may enter a comma separated list of folder names (without leading or trailing path separators) below.</source>
+        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;. You may enter a comma separated list of folder names (without leading or trailing path separators) below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11037,8 +11045,12 @@ Felülírjam?</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="254"/>
+        <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="unfinished">A FLAC &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;tömörítési szintjét&lt;/a&gt; 0 és 8 közötti egész érték jelzi a  &lt;b&gt;FLAC&lt;/b&gt; általi a kódolás során a fájl mérete és a tömörítés sebessége közötti kompromisszumot. &lt;br/&gt;A tömörítés szintjét &lt;b&gt;0&lt;/b&gt;-ra állítva a tömörítési idő rövid lesz, de viszonylag nagy fájlt eredményez. &lt;br/&gt;Más részről ha a tömörítés szintje &lt;b&gt;8&lt;b&gt;, a tömörítés nagyon lassú lesz, de a legkisebb mérete adja. &lt;br/&gt; Mellesleg, mivel definíciója szerint a FLAC veszteségmentes kódoló, a kimeneti hangfájl minősége a tömörítés értékétől függetlenül azonos lesz.&lt;/br&gt;Minden &lt;b&gt;5&lt;b&gt; fölötti érték miközben drámaian növeli a tömörítési időt, a fájlméret csak kicsit lesz kisebb és nem ajánlott.</translation>
+        <translation type="obsolete">A FLAC &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;tömörítési szintjét&lt;/a&gt; 0 és 8 közötti egész érték jelzi a  &lt;b&gt;FLAC&lt;/b&gt; általi a kódolás során a fájl mérete és a tömörítés sebessége közötti kompromisszumot. &lt;br/&gt;A tömörítés szintjét &lt;b&gt;0&lt;/b&gt;-ra állítva a tömörítési idő rövid lesz, de viszonylag nagy fájlt eredményez. &lt;br/&gt;Más részről ha a tömörítés szintje &lt;b&gt;8&lt;b&gt;, a tömörítés nagyon lassú lesz, de a legkisebb mérete adja. &lt;br/&gt; Mellesleg, mivel definíciója szerint a FLAC veszteségmentes kódoló, a kimeneti hangfájl minősége a tömörítés értékétől függetlenül azonos lesz.&lt;/br&gt;Minden &lt;b&gt;5&lt;b&gt; fölötti érték miközben drámaian növeli a tömörítési időt, a fájlméret csak kicsit lesz kisebb és nem ajánlott.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="269"/>

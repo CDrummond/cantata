@@ -8276,14 +8276,22 @@ This cannot be undone.</source>
         <translation type="unfinished">칸타타로 맞이합니다</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="69"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;칸타타는 기능이 다양하고 사용하기가 편리한 Music Player Daemon (MPD) 클라이언트 입니다. MPD는 음악 연주에 사용되는 백그라운드 어플입니다.&lt;/p&gt;&lt;p&gt;MPD에 대한 더 많은 정보는, 다음 웹사이트를 참조 바랍니다. &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;이 &apos;마법사&apos;는 칸타타가 제대로 동작하기 위한 사용자의 기본 설정을 돕습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;칸타타는 기능이 다양하고 사용하기가 편리한 Music Player Daemon (MPD) 클라이언트 입니다. MPD는 음악 연주에 사용되는 백그라운드 어플입니다.&lt;/p&gt;&lt;p&gt;MPD에 대한 더 많은 정보는, 다음 웹사이트를 참조 바랍니다. &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;이 &apos;마법사&apos;는 칸타타가 제대로 동작하기 위한 사용자의 기본 설정을 돕습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;칸타타로 맞이합니다&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../gui/initialsettingswizard.ui" line="69"/>
+        <source>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="108"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;칸타타로 맞이합니다&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;p&gt;Welcome to Cantata&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="134"/>
@@ -8697,7 +8705,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="553"/>
-        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos; You may enter a comma separated list of folder names (without leading or trailing path separators) below.</source>
+        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;. You may enter a comma separated list of folder names (without leading or trailing path separators) below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11639,8 +11647,12 @@ Overwrite?</source>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="254"/>
+        <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="unfinished">&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt; 압축률&lt;/a&gt;은 &lt;b&gt;FLAC&lt;/b&gt;으로의 인코딩과정에서, 압축 속도와 파일 크기의 균형을 나타내는 0에서 8까지의 정수값입니다.&lt;br/&gt; 압축률을 &lt;b&gt;0&lt;/b&gt;으로 하면 압축 시간은 가장 짧지만 상대적으로 큰 파일 크기가 커지며&lt;br/&gt;반면에, 압축률을 &lt;b&gt;8&lt;/b&gt;로 하면, 압축은 오래 걸리지만 가장 작은 파일을 만듭니다.&lt;br/&gt;FLAC은 무손실 코덱이므로 압축률에 상관없이 음악 출력품질은 동일합니다.&lt;br/&gt;또한, &lt;b&gt;5&lt;/b&gt;이상의 값은 압축 시간을 늘이지만 파일 크기는 약간만 작아지므로 추천하지 않습니다.</translation>
+        <translation type="obsolete">&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt; 압축률&lt;/a&gt;은 &lt;b&gt;FLAC&lt;/b&gt;으로의 인코딩과정에서, 압축 속도와 파일 크기의 균형을 나타내는 0에서 8까지의 정수값입니다.&lt;br/&gt; 압축률을 &lt;b&gt;0&lt;/b&gt;으로 하면 압축 시간은 가장 짧지만 상대적으로 큰 파일 크기가 커지며&lt;br/&gt;반면에, 압축률을 &lt;b&gt;8&lt;/b&gt;로 하면, 압축은 오래 걸리지만 가장 작은 파일을 만듭니다.&lt;br/&gt;FLAC은 무손실 코덱이므로 압축률에 상관없이 음악 출력품질은 동일합니다.&lt;br/&gt;또한, &lt;b&gt;5&lt;/b&gt;이상의 값은 압축 시간을 늘이지만 파일 크기는 약간만 작아지므로 추천하지 않습니다.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="269"/>

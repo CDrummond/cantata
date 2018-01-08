@@ -39,6 +39,7 @@
 27. Improve table style playqueue drop indicator - thanks to padertux.
 28. Don't show year for 'Single Tracks', and ignore any sort and musicbrainz
     values.
+29. Add missing 'configure' option to podcast menu.
 
 2.2.0
 -----

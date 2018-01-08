@@ -11350,59 +11350,64 @@ Přepsat?</translation>
         <translation>Ukázat jen nepřehrané</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="142"/>
+        <location filename="../online/podcastwidget.cpp" line="79"/>
+        <source>Configure</source>
+        <translation type="unfinished">Nastavit</translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="146"/>
         <source>Unsubscribe from &apos;%1&apos;?</source>
         <translation>Odhlásit odběr z &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="188"/>
+        <location filename="../online/podcastwidget.cpp" line="192"/>
         <source>Do you wish to download the selected podcast episodes?</source>
         <translation>Chcete stáhnout vybrané díly zvukového záznamu?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="202"/>
+        <location filename="../online/podcastwidget.cpp" line="206"/>
         <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
         <translation>Zrušit stahování dílů zvukového záznamu (nynější a všechny zařazené)?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="212"/>
+        <location filename="../online/podcastwidget.cpp" line="216"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation>Chcete smazat stažené soubory vybraných dílů zvukového záznamu?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="228"/>
+        <location filename="../online/podcastwidget.cpp" line="232"/>
         <source>Do you wish to mark the selected podcast episodes as new?</source>
         <translation>Chcete označit vybrané díly zvukového záznamu jako nové?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="244"/>
+        <location filename="../online/podcastwidget.cpp" line="248"/>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
         <translation>Chcete označit vybrané díly zvukového záznamu jako poslechnuté?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="280"/>
+        <location filename="../online/podcastwidget.cpp" line="284"/>
         <source>Refresh all subscriptions?</source>
         <translation>Obnovit všechny odběry?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="280"/>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="284"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh</source>
         <translation>Obnovit</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="280"/>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="284"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh All</source>
         <translation>Obnovit vše</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh all subscriptions, or only those selected?</source>
         <translation>Obnovit všechny odběry nebo jen ty vybrané?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh Selected</source>
         <translation>Obnovit vybrané</translation>
     </message>

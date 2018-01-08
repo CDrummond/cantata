@@ -4910,59 +4910,64 @@ Overskriv?</translation>
         <translation>Vis kun uafspillede</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="142"/>
+        <location filename="../online/podcastwidget.cpp" line="79"/>
+        <source>Configure</source>
+        <translation type="unfinished">Konfigurer</translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="146"/>
         <source>Unsubscribe from &apos;%1&apos;?</source>
         <translation>Fjern abonnering fra &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="188"/>
+        <location filename="../online/podcastwidget.cpp" line="192"/>
         <source>Do you wish to download the selected podcast episodes?</source>
         <translation>Vil du downloade de valgte podcast-episoder?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="202"/>
+        <location filename="../online/podcastwidget.cpp" line="206"/>
         <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
         <translation>Annuller downloads af podcast-episoder (både nuværende og i kø)?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="212"/>
+        <location filename="../online/podcastwidget.cpp" line="216"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation>Vil du slete de downloadede filer af de valgte podcast-episoder?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="228"/>
+        <location filename="../online/podcastwidget.cpp" line="232"/>
         <source>Do you wish to mark the selected podcast episodes as new?</source>
         <translation>Vil du mærke de valgte podcast-episoder som nye?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="244"/>
+        <location filename="../online/podcastwidget.cpp" line="248"/>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
         <translation>Vil du mærke de valgte podcast-episoder som lyttede?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="280"/>
+        <location filename="../online/podcastwidget.cpp" line="284"/>
         <source>Refresh all subscriptions?</source>
         <translation>Genopfrisk alle abonneringer?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="280"/>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="284"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh</source>
         <translation>Genopfrisk</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="280"/>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="284"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh All</source>
         <translation>Genopfrisk alle</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh all subscriptions, or only those selected?</source>
         <translation>Genopfrisk alle abonneringer eller kun de valgte?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh Selected</source>
         <translation>Genopfrisk valgte</translation>
     </message>

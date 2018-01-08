@@ -75,6 +75,10 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     unplayedOnlyBtn->setDefaultAction(unplayedOnlyAction);
     menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                                                                << ItemView::Mode_DetailedTree << ItemView::Mode_List));
+
+    Action *configureAction=new Action(Icons::self()->configureIcon, tr("Configure"), this);
+    connect(configureAction, SIGNAL(triggered()), SLOT(configure()));
+    menu->addAction(configureAction);
     init(ReplacePlayQueue|AppendToPlayQueue|Refresh, QList<QWidget *>() << menu << unplayedOnlyBtn, QList<QWidget *>() << addSub);
 
     view->addAction(subscribeAction);
@@ -296,13 +300,7 @@ void PodcastWidget::refresh()
 
 void PodcastWidget::configure()
 {
-    PodcastSettingsDialog dlg(this);
-    if (QDialog::Accepted==dlg.exec()) {
-        int changes=dlg.changes();
-        if (changes&PodcastSettingsDialog::RssUpdate) {
-            srv->startRssUpdateTimer();
-        }
-    }
+    srv->configure(this);
 }
 
 void PodcastWidget::controlActions()

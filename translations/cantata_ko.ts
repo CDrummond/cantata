@@ -11286,59 +11286,64 @@ Overwrite?</source>
         <translation type="unfinished">안 들은 것만 보기</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="142"/>
+        <location filename="../online/podcastwidget.cpp" line="79"/>
+        <source>Configure</source>
+        <translation type="unfinished">설정</translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="146"/>
         <source>Unsubscribe from &apos;%1&apos;?</source>
         <translation type="unfinished">&apos;%1&apos;을 구독 취소할까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="188"/>
+        <location filename="../online/podcastwidget.cpp" line="192"/>
         <source>Do you wish to download the selected podcast episodes?</source>
         <translation type="unfinished">선택된 팟캐스트 에피소드를 내려받을까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="202"/>
+        <location filename="../online/podcastwidget.cpp" line="206"/>
         <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
         <translation type="unfinished">팟캐스트 에피소드 내려받기를 취소할까요 (지금과 대기 모두)?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="212"/>
+        <location filename="../online/podcastwidget.cpp" line="216"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation type="unfinished">선택된 팟캐스트 에피소드에서 내려받은 파일을 지울까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="228"/>
+        <location filename="../online/podcastwidget.cpp" line="232"/>
         <source>Do you wish to mark the selected podcast episodes as new?</source>
         <translation type="unfinished">선택된 팟캐스트 에피소드를 안 들은 것으로 할까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="244"/>
+        <location filename="../online/podcastwidget.cpp" line="248"/>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
         <translation type="unfinished">선택된 팟캐스트 에피소드를 읽은 것으로 할까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="280"/>
+        <location filename="../online/podcastwidget.cpp" line="284"/>
         <source>Refresh all subscriptions?</source>
         <translation type="unfinished">전체 구독을 새로 읽을까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="280"/>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="284"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh</source>
         <translation type="unfinished">새로 읽기</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="280"/>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="284"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh All</source>
         <translation type="unfinished">전체 새로 읽기</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh all subscriptions, or only those selected?</source>
         <translation type="unfinished">전체나 선택된 구독만 새로 읽을까요?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
+        <location filename="../online/podcastwidget.cpp" line="289"/>
         <source>Refresh Selected</source>
         <translation type="unfinished">선택 새로 읽기</translation>
     </message>

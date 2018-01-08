@@ -94,7 +94,7 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     updateCombo->addItem(tr("Every week"), 7*24*60);
 
     autoDownloadCombo->addItem(tr("Don't automatically download episodes"), 0);
-    autoDownloadCombo->addItem(tr("Latest episode").arg(1), 1);
+    autoDownloadCombo->addItem(tr("Latest episode"), 1);
     autoDownloadCombo->addItem(tr("Latest %1 episodes").arg(2), 2);
     autoDownloadCombo->addItem(tr("Latest %1 episodes").arg(5), 5);
     autoDownloadCombo->addItem(tr("Latest %1 episodes").arg(10), 10);

@@ -42,7 +42,7 @@ public:
     static void enableDebug();
 
     HttpStream(QObject *p);
-    virtual ~HttpStream() { }
+    ~HttpStream() override { }
     
 public Q_SLOTS:
     void setEnabled(bool e);

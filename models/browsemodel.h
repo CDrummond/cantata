@@ -64,10 +64,10 @@ public:
         TrackItem(const Song &s, FolderItem *p=0)
             : Item(p)
             , song(s) { }
-        virtual ~TrackItem() { }
+        ~TrackItem() override { }
 
-        virtual QString getText() const { return song.trackAndTitleStr(); }
-        virtual QString getSubText() const { return Song::Playlist==song.type || 0==song.time ? QString() : Utils::formatTime(song.time, true); }
+        QString getText() const override { return song.trackAndTitleStr(); }
+        QString getSubText() const override { return Song::Playlist==song.type || 0==song.time ? QString() : Utils::formatTime(song.time, true); }
         const Song & getSong() const { return song; }
 
     private:
@@ -85,15 +85,15 @@ public:
 
         FolderItem(const QString &n, const QString &pth, FolderItem *p=0)
             : Item(p), name(n), path(pth), state(State_Initial) { }
-        virtual ~FolderItem() { }
+        ~FolderItem() override { }
 
         void clear() { qDeleteAll(children); children.clear(); state=State_Initial; }
         const QList<Item *> getChildren() const { return children; }
-        virtual int getChildCount() const { return children.count();}
-        virtual bool isFolder() const { return true; }
+        int getChildCount() const override { return children.count();}
+        bool isFolder() const override { return true; }
         void add(Item *i);
-        virtual QString getText() const { return name; }
-        virtual QString getSubText() const { return QString(); }
+        QString getText() const override { return name; }
+        QString getSubText() const override { return QString(); }
         const QString & getPath() const { return path; }
         bool canFetchMore() const { return State_Initial==state; }
         bool isFetching() const { return State_Fetching==state; }
@@ -113,16 +113,16 @@ public:
     void load();
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QModelIndex parent(const QModelIndex &child) const;
-    int rowCount(const QModelIndex &parent) const;
-    int columnCount(const QModelIndex &parent) const;
-    bool hasChildren(const QModelIndex &index) const;
-    bool canFetchMore(const QModelIndex &index) const;
-    void fetchMore(const QModelIndex &index);
-    QVariant data(const QModelIndex &index, int role) const;
-    QMimeData * mimeData(const QModelIndexList &indexes) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+    QModelIndex parent(const QModelIndex &child) const override;
+    int rowCount(const QModelIndex &parent) const override;
+    int columnCount(const QModelIndex &parent) const override;
+    bool hasChildren(const QModelIndex &index) const override;
+    bool canFetchMore(const QModelIndex &index) const override;
+    void fetchMore(const QModelIndex &index) override;
+    QVariant data(const QModelIndex &index, int role) const override;
+    QMimeData * mimeData(const QModelIndexList &indexes) const override;
     QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists) const;
 
 Q_SIGNALS:

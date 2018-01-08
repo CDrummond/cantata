@@ -48,7 +48,7 @@ public:
         setIndentation(fontMetrics().width(QLatin1String("XX")));
     }
 
-    virtual ~PlaylistTableView() { }
+    ~PlaylistTableView() override { }
 };
 
 StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)

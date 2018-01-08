@@ -112,7 +112,7 @@ public:
 
     explicit KMsgWidget(const QString &text, QWidget *parent = 0);
 
-    ~KMsgWidget();
+    ~KMsgWidget() override;
 
     QString text() const;
 
@@ -130,7 +130,7 @@ public:
 
 //    QSize minimumSizeHint() const;
 
-    int heightForWidth(int width) const;
+    int heightForWidth(int width) const override;
 
 public Q_SLOTS:
     void setText(const QString &text);
@@ -154,11 +154,11 @@ public Q_SLOTS:
     void animatedHide();
 
 protected:
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event) override;
 
-    bool event(QEvent *event);
+    bool event(QEvent *event) override;
 
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     KMsgWidgetPrivate *const d;

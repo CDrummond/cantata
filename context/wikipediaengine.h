@@ -43,12 +43,12 @@ public:
     static const QStringList & getPreferedLangs() { return preferredLangs; }
     static void setIntroOnly(bool v) { introOnly=v; }
 
-    QString translateLinks(QString text) const;
-    QStringList getLangs() const { return getPreferedLangs(); }
-    QString getPrefix(const QString &key) const { return key.split(QLatin1Char(':')).back(); }
+    QString translateLinks(QString text) const override;
+    QStringList getLangs() const override { return getPreferedLangs(); }
+    QString getPrefix(const QString &key) const override { return key.split(QLatin1Char(':')).back(); }
 
 public Q_SLOTS:
-    void search(const QStringList &query, Mode mode);
+    void search(const QStringList &query, Mode mode) override;
     
 private:
     void requestTitles(const QStringList &query, Mode mode, const QString &lang);

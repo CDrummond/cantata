@@ -37,10 +37,10 @@ class TitleWidget : public QWidget
     Q_OBJECT
 public:
     TitleWidget(QWidget *p);
-    virtual ~TitleWidget() { }
+    ~TitleWidget() override { }
     void update(const Song &sng, const QIcon &icon, const QString &text, const QString &sub, bool showControls=false);
-    bool eventFilter(QObject *obj, QEvent *event);
-    void paintEvent(QPaintEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
 Q_SIGNALS:
     void clicked();

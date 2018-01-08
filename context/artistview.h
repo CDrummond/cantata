@@ -49,9 +49,9 @@ public:
     static const QLatin1String constSimilarInfoExt;
 
     ArtistView(QWidget *parent);
-    virtual ~ArtistView() { abort(); }
+    ~ArtistView() override { abort(); }
 
-    void update(const Song &s, bool force=false);
+    void update(const Song &s, bool force=false) override;
     const QList<LibraryDb::Album> &getArtistAlbums();
 
 Q_SIGNALS:
@@ -77,7 +77,7 @@ private:
     void requestSimilar();
     QStringList parseSimilarResponse(const QByteArray &resp);
     void buildSimilar(const QStringList &artists);
-    void abort();
+    void abort() override;
 
 private:
     Action *refreshAction;

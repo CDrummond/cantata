@@ -37,17 +37,17 @@ class UDevManager : public Solid::Ifaces::DeviceManager
 
 public:
     UDevManager(QObject *parent);
-    virtual ~UDevManager();
+    ~UDevManager() override;
 
-    virtual QString udiPrefix() const;
-    virtual QSet<Solid::DeviceInterface::Type> supportedInterfaces() const;
+    QString udiPrefix() const override;
+    QSet<Solid::DeviceInterface::Type> supportedInterfaces() const override;
 
-    virtual QStringList allDevices();
+    QStringList allDevices() override;
 
-    virtual QStringList devicesFromQuery(const QString &parentUdi,
-                                         Solid::DeviceInterface::Type type);
+    QStringList devicesFromQuery(const QString &parentUdi,
+                                         Solid::DeviceInterface::Type type) override;
 
-    virtual QObject *createDevice(const QString &udi);
+    QObject *createDevice(const QString &udi) override;
 
 private Q_SLOTS:
     void slotDeviceAdded(const UdevQt::Device &device);

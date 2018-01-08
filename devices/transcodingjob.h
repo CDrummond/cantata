@@ -32,12 +32,12 @@ class TranscodingJob : public CopyJob
 public:
     explicit TranscodingJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest,
                             const DeviceOptions &d=DeviceOptions(), int co=0, const Song &s=Song());
-    virtual ~TranscodingJob();
+    ~TranscodingJob() override;
 
-    void stop();
+    void stop() override;
 
 private:
-    void run();
+    void run() override;
 
 private Q_SLOTS:
     void processOutput();

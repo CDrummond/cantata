@@ -37,7 +37,7 @@ class OnlineXmlParser : public QObject
     Q_OBJECT
 public:
     OnlineXmlParser();
-    virtual ~OnlineXmlParser();
+    ~OnlineXmlParser() override;
     void start(NetworkJob *job);
     virtual int parse(QXmlStreamReader &xml) = 0;
 Q_SIGNALS:
@@ -63,10 +63,10 @@ class OnlineDbService : public SqlLibraryModel, public OnlineService
     Q_OBJECT
 public:
     OnlineDbService(LibraryDb *d, QObject *p);
-    virtual ~OnlineDbService() { }
+    ~OnlineDbService() override { }
 
     void createDb();
-    QVariant data(const QModelIndex &index, int role) const;
+    QVariant data(const QModelIndex &index, int role) const override;
     bool previouslyDownloaded() const;
     bool isDownloading() { return 0!=job; }
     void open();

@@ -55,7 +55,7 @@ namespace Ifaces
         /**
          * Destruct the Device object
          */
-        virtual ~Device();
+        ~Device() override;
 
 
         /**

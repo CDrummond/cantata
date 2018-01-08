@@ -35,16 +35,16 @@ class StoredPlaylistsPage : public SinglePageWidget
     Q_OBJECT
 public:
     StoredPlaylistsPage(QWidget *p);
-    virtual ~StoredPlaylistsPage();
+    ~StoredPlaylistsPage() override;
 
     void updateRows();
     void clear();
     //QStringList selectedFiles() const;
-    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false);
-    void setView(int mode);
+    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false) override;
+    void setView(int mode) override;
     #ifdef ENABLE_DEVICES_SUPPORT
-    QList<Song> selectedSongs(bool allowPlaylists=false) const;
-    void addSelectionToDevice(const QString &udi);
+    QList<Song> selectedSongs(bool allowPlaylists=false) const override;
+    void addSelectionToDevice(const QString &udi) override;
     #endif
 
 Q_SIGNALS:
@@ -61,7 +61,7 @@ private:
     void addItemsToPlayList(const QModelIndexList &indexes, const QString &name, int action, quint8 priority=0, bool decreasePriority=false);
 
 public Q_SLOTS:
-    void removeItems();
+    void removeItems() override;
 
 private Q_SLOTS:
     void savePlaylist();
@@ -74,8 +74,8 @@ private Q_SLOTS:
     void updateToPlayQueue(const QModelIndex &idx, bool replace);
 
 private:
-    void doSearch();
-    void controlActions();
+    void doSearch() override;
+    void controlActions() override;
 
 private:
     QString lastPlaylist;

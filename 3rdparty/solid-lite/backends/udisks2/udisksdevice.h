@@ -46,17 +46,17 @@ class Device: public Solid::Ifaces::Device
     Q_OBJECT
 public:
     Device(const QString &udi);
-    virtual ~Device();
+    ~Device() override;
 
-    virtual QObject* createDeviceInterface(const Solid::DeviceInterface::Type& type);
-    virtual bool queryDeviceInterface(const Solid::DeviceInterface::Type& type) const;
-    virtual QString description() const;
-    virtual QStringList emblems() const;
-    virtual QString icon() const;
-    virtual QString product() const;
-    virtual QString vendor() const;
-    virtual QString udi() const;
-    virtual QString parentUdi() const;
+    QObject* createDeviceInterface(const Solid::DeviceInterface::Type& type) override;
+    bool queryDeviceInterface(const Solid::DeviceInterface::Type& type) const override;
+    QString description() const override;
+    QStringList emblems() const override;
+    QString icon() const override;
+    QString product() const override;
+    QString vendor() const override;
+    QString udi() const override;
+    QString parentUdi() const override;
 
     QVariant prop(const QString &key) const;
     bool propertyExists(const QString &key) const;

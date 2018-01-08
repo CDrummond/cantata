@@ -32,12 +32,12 @@ class ComboBox : public QComboBox
 
 public:
     ComboBox(QWidget *p);
-    virtual ~ComboBox() { }
+    ~ComboBox() override { }
 
     void setEditable(bool editable);
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    void showPopup();
-    void hidePopup();
+    void showPopup() override;
+    void hidePopup() override;
     #endif
 
 Q_SIGNALS:

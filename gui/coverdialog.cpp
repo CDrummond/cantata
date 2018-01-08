@@ -158,7 +158,7 @@ public:
         f.setBold((true));
         setFont(f);
     }
-    bool isExisting() const { return true; }
+    bool isExisting() const override { return true; }
     const QImage & image() const { return img; }
 private:
     QImage img;
@@ -170,7 +170,7 @@ public:
     LocalCover(const QString &u, const QImage &i, QListWidget *parent)
         : CoverItem(u, QString(), i, Utils::getFile(u), parent, i.width(), i.height(), QFileInfo(u).size())
         , img(i) { }
-    bool isLocal() const { return true; }
+    bool isLocal() const override { return true; }
     const QImage & image() const { return img; }
 private:
     QImage img;

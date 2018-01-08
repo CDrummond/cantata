@@ -36,7 +36,7 @@ class CoverNameValidator : public QValidator
 
     CoverNameValidator(QObject *parent) : QValidator(parent) { }
 
-    State validate(QString &input, int &) const
+    State validate(QString &input, int &) const override
     {
         int dotCount(0);
 

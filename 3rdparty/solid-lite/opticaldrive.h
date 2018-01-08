@@ -99,7 +99,7 @@ namespace Solid
         /**
          * Destroys an OpticalDrive object.
          */
-        virtual ~OpticalDrive();
+        ~OpticalDrive() override;
 
 
         /**

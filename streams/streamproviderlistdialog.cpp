@@ -92,7 +92,7 @@ public:
         setFocusPolicy(Qt::NoFocus);
     }
 
-    void paintEvent(QPaintEvent *)
+    void paintEvent(QPaintEvent *) override
     {
         QStylePainter p(this);
         QStyleOptionToolButton opt;

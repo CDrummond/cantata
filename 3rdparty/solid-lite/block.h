@@ -61,7 +61,7 @@ namespace Solid
         /**
          * Destroys a Block object.
          */
-        virtual ~Block();
+        ~Block() override;
 
 
         /**

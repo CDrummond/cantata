@@ -51,7 +51,7 @@ public:
     struct Item : public Stream
     {
         Item(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QString &sub=QString()) : Stream(u, n), subText(sub), parent(p) { }
-        virtual ~Item() { }
+        ~Item() override { }
         QString modifiedName() const;
         QString subText;
         CategoryItem *parent;
@@ -74,8 +74,8 @@ public:
               canBookmark(false), addCatToModifiedName(modName), icon(i), cacheName(cn),
               bookmarksName(bn), configName(cn.isEmpty() ? bn : cn) { }
 
-        virtual ~CategoryItem() { qDeleteAll(children); }
-        virtual bool isCategory() const { return true; }
+        ~CategoryItem() override { qDeleteAll(children); }
+        bool isCategory() const override { return true; }
         virtual bool isFavourites() const { return false; }
         virtual bool isBuiltIn() const { return true; }
         virtual bool isDi() const { return false; }
@@ -115,9 +115,9 @@ public:
     {
         FavouritesCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i)
             : CategoryItem(u, n, p, i), importedOld(false) { }
-        QList<Item *> loadXml(QIODevice *dev);
-        bool isFavourites() const { return true; }
-        bool canReload() const { return false; }
+        QList<Item *> loadXml(QIODevice *dev) override;
+        bool isFavourites() const override { return true; }
+        bool canReload() const override { return false; }
         bool importedOld;
     };
 
@@ -126,7 +126,7 @@ public:
         IceCastCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
                             const QString &cn=QString(), const QString &bn=QString())
             : CategoryItem(u, n, p, i, cn, bn) { }
-        void addHeaders(QNetworkRequest &req);
+        void addHeaders(QNetworkRequest &req) override;
     };
 
     struct ShoutCastCategoryItem : public CategoryItem
@@ -134,8 +134,8 @@ public:
         ShoutCastCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
                               const QString &cn=QString(), const QString &bn=QString())
             : CategoryItem(u, n, p, i, cn, bn) { }
-        void addHeaders(QNetworkRequest &req);
-        NetworkJob * fetchSecondardyUrl();
+        void addHeaders(QNetworkRequest &req) override;
+        NetworkJob * fetchSecondardyUrl() override;
     };
 
     struct DirbleCategoryItem : public CategoryItem
@@ -149,35 +149,35 @@ public:
     {
         ListenLiveCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
             : CategoryItem(u, n, p, i, cn) { }
-        bool isListenLive() const { return true; }
-        bool isBuiltIn() const { return false; }
+        bool isListenLive() const override { return true; }
+        bool isBuiltIn() const override { return false; }
     };
 
     struct DiCategoryItem : public CategoryItem
     {
         DiCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
             : CategoryItem(u, n, p, i, cn, QString(), true) { }
-        void addHeaders(QNetworkRequest &req);
-        bool isDi() const { return true; }
-        bool isBuiltIn() const { return false; }
+        void addHeaders(QNetworkRequest &req) override;
+        bool isDi() const override { return true; }
+        bool isBuiltIn() const override { return false; }
     };
 
     struct SomaCategoryItem : public CategoryItem
     {
         SomaCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn, bool mod)
             : CategoryItem(u, n, p, i, cn, QString(), mod) { }
-        bool isSoma() const { return true; }
-        bool isBuiltIn() const { return false; }
+        bool isSoma() const override { return true; }
+        bool isBuiltIn() const override { return false; }
     };
 
     struct XmlCategoryItem : public CategoryItem
     {
         XmlCategoryItem(const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
             : CategoryItem(QLatin1String("-"), n, p, i, cn, QString(), true) { }
-        QList<Item *> loadCache();
-        bool canReload() const { return false; }
-        void removeCache() { }
-        bool isBuiltIn() const { return false; }
+        QList<Item *> loadCache() override;
+        bool canReload() const override { return false; }
+        void removeCache() override { }
+        bool isBuiltIn() const override { return false; }
     };
 
     struct Category
@@ -215,21 +215,21 @@ public:
 //    static bool validProtocol(const QString &file);
 
     StreamsModel(QObject *parent = 0);
-    ~StreamsModel();
+    ~StreamsModel() override;
     QString name() const;
     QString title() const;
     QString descr() const;
     const Icon & icon() const { return icn; }
-    QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &) const;
-    QVariant data(const QModelIndex &, int) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    bool hasChildren(const QModelIndex &index) const;
-    bool canFetchMore(const QModelIndex &index) const;
-    void fetchMore(const QModelIndex &index);
+    QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &) const override;
+    QVariant data(const QModelIndex &, int) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    bool hasChildren(const QModelIndex &index) const override;
+    bool canFetchMore(const QModelIndex &index) const override;
+    void fetchMore(const QModelIndex &index) override;
     void reload(const QModelIndex &index);
 
     bool exportFavourites(const QString &fileName);
@@ -253,8 +253,8 @@ public:
     CategoryItem * tuneInCat() const { return tuneIn; }
 
     QStringList filenames(const QModelIndexList &indexes, bool addPrefix) const;
-    QMimeData * mimeData(const QModelIndexList &indexes) const;
-    QStringList mimeTypes() const;
+    QMimeData * mimeData(const QModelIndexList &indexes) const override;
+    QStringList mimeTypes() const override;
 
     Action *addBookmarkAct() { return addBookmarkAction; }
     Action *addToFavouritesAct() { return addToFavouritesAction; }

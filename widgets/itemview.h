@@ -50,7 +50,7 @@ public:
 Q_SIGNALS:
     void backspacePressed();
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 protected:
     QAbstractItemView *view;
     QAction *deleteAct;
@@ -62,7 +62,7 @@ class ViewEventHandler : public KeyEventHandler
 public:
     ViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v);
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 private:
     ActionItemDelegate *delegate;
 };
@@ -97,7 +97,7 @@ public:
     static const QLatin1String constSearchCategoryKey;
 
     ItemView(QWidget *p=0);
-    virtual ~ItemView();
+    ~ItemView() override;
 
     void alwaysShowHeader();
     void load(Configuration &config);

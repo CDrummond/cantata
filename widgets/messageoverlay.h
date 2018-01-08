@@ -35,11 +35,11 @@ class MessageOverlay : public QWidget
 
 public:
     MessageOverlay(QObject *p);
-    virtual ~MessageOverlay() { }
+    ~MessageOverlay() override { }
 
     void setWidget(QWidget *widget);
     void setText(const QString &txt, int timeout=-1, bool allowCancel=true);
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *) override;
 
 Q_SIGNALS:
     void cancel();
@@ -48,7 +48,7 @@ private Q_SLOTS:
     void timeout();
 
 private:
-    bool eventFilter(QObject *o, QEvent *e);
+    bool eventFilter(QObject *o, QEvent *e) override;
     void setSizeAndPosition();
 
 private:

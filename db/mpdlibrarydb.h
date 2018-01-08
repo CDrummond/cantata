@@ -46,7 +46,7 @@ public:
     static void removeUnusedDbs();
 
     MpdLibraryDb(QObject *p=0);
-    ~MpdLibraryDb();
+    ~MpdLibraryDb() override;
 
     Song getCoverSong(const QString &artistId, const QString &albumId=QString());
 
@@ -58,8 +58,8 @@ public Q_SLOTS:
     void statsUpdated(const MPDStatsValues &stats);
 
 private:
-    void reset();
-    void updateFinished();
+    void reset() override;
+    void updateFinished() override;
 
 private:
     bool loading;

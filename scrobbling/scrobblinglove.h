@@ -31,7 +31,7 @@ class ScrobblingLove : public ToolButton
     Q_OBJECT
 public:
     ScrobblingLove(QWidget *p);
-    virtual ~ScrobblingLove() { }
+    ~ScrobblingLove() override { }
 
 private Q_SLOTS:
     void sendLove();

@@ -43,7 +43,7 @@ public:
 
     AlbumView(QWidget *p);
 
-    void update(const Song &song, bool force=false);
+    void update(const Song &song, bool force=false) override;
 
 Q_SIGNALS:
     void playSong(const QString &file);
@@ -64,7 +64,7 @@ private:
     void getTrackListing();
     void getDetails();
     void updateDetails(bool preservePos=false);
-    void abort();
+    void abort() override;
 
 private:
     QString currentArtist;

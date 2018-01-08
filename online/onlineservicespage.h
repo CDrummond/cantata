@@ -35,7 +35,7 @@ class OnlineServicesPage : public MultiPageWidget
 
 public:
     OnlineServicesPage(QWidget *p);
-    virtual ~OnlineServicesPage();
+    ~OnlineServicesPage() override;
 
     bool isDownloading();
     void cancelAll();

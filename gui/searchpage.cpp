@@ -42,7 +42,7 @@ public:
         setIndentation(0);
     }
 
-    virtual ~SearchTableView() { }
+    ~SearchTableView() override { }
 };
 
 SearchPage::SearchPage(QWidget *p)

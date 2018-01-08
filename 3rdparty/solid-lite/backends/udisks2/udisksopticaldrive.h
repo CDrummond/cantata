@@ -39,19 +39,19 @@ class OpticalDrive: public StorageDrive, virtual public Solid::Ifaces::OpticalDr
 
 public:
     OpticalDrive(Device *device);
-    virtual ~OpticalDrive();
+    ~OpticalDrive() override;
 
 Q_SIGNALS:
-    void ejectPressed(const QString &udi);
-    void ejectDone(Solid::ErrorType error, QVariant errorData, const QString &udi);
+    void ejectPressed(const QString &udi) override;
+    void ejectDone(Solid::ErrorType error, QVariant errorData, const QString &udi) override;
     void ejectRequested(const QString &udi);
 
 public:
-    virtual bool eject();
-    virtual QList<int> writeSpeeds() const;
-    virtual int writeSpeed() const;
-    virtual int readSpeed() const;
-    virtual Solid::OpticalDrive::MediumTypes supportedMedia() const;
+    bool eject() override;
+    QList<int> writeSpeeds() const override;
+    int writeSpeed() const override;
+    int readSpeed() const override;
+    Solid::OpticalDrive::MediumTypes supportedMedia() const override;
 
 private Q_SLOTS:
     void slotDBusReply(const QDBusMessage &reply);

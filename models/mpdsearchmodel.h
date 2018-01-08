@@ -32,11 +32,11 @@ class MpdSearchModel : public SearchModel
 
 public:
     MpdSearchModel(QObject *parent = 0);
-    ~MpdSearchModel();
+    ~MpdSearchModel() override;
 
-    QVariant data(const QModelIndex &index, int role) const;
-    void clear();
-    void search(const QString &key, const QString &value);
+    QVariant data(const QModelIndex &index, int role) const override;
+    void clear() override;
+    void search(const QString &key, const QString &value) override;
 
 Q_SIGNALS:
     void search(const QString &field, const QString &value, int id);

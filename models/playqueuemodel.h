@@ -88,15 +88,15 @@ public:
     static PlayQueueModel * self();
 
     PlayQueueModel(QObject *parent = 0);
-    ~PlayQueueModel();
-    QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &idx) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole);
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &) const { return COL_COUNT; }
-    QVariant data(const QModelIndex &, int) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    ~PlayQueueModel() override;
+    QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &idx) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &) const override { return COL_COUNT; }
+    QVariant data(const QModelIndex &, int) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     void updateCurrentSong(quint32 id);
     qint32 getIdByRow(qint32 row) const;
     qint32 getSongId(const QString &file) const;
@@ -104,11 +104,11 @@ public:
     qint32 getRowById(qint32 id) const;
     Song getSongByRow(const qint32 row) const;
     Song getSongById(qint32 id) const;
-    Qt::DropActions supportedDropActions() const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    QStringList mimeTypes() const;
-    QMimeData *mimeData(const QModelIndexList &indexes) const;
-    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+    Qt::DropActions supportedDropActions() const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    QStringList mimeTypes() const override;
+    QMimeData *mimeData(const QModelIndexList &indexes) const override;
+    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
     QStringList filenames();
     void clear();
     qint32 currentSong() const { return currentSongId; }

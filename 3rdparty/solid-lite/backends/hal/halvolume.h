@@ -37,15 +37,15 @@ class Volume : public Block, virtual public Solid::Ifaces::StorageVolume
 
 public:
     Volume(HalDevice *device);
-    virtual ~Volume();
+    ~Volume() override;
 
-    virtual bool isIgnored() const;
-    virtual Solid::StorageVolume::UsageType usage() const;
-    virtual QString fsType() const;
-    virtual QString label() const;
-    virtual QString uuid() const;
-    virtual qulonglong size() const;
-    virtual QString encryptedContainerUdi() const;
+    bool isIgnored() const override;
+    Solid::StorageVolume::UsageType usage() const override;
+    QString fsType() const override;
+    QString label() const override;
+    QString uuid() const override;
+    qulonglong size() const override;
+    QString encryptedContainerUdi() const override;
 };
 }
 }

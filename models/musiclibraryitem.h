@@ -70,15 +70,15 @@ class MusicLibraryItemContainer : public MusicLibraryItem
 {
 public:
     MusicLibraryItemContainer(const QString &data, MusicLibraryItemContainer *parent) : MusicLibraryItem(parent), m_itemData(data), m_isNew(false), m_rowsSet(false) { }
-    virtual ~MusicLibraryItemContainer() { clear(); }
+    ~MusicLibraryItemContainer() override { clear(); }
 
     virtual void append(MusicLibraryItem *i) { m_childItems.append(i); }
-    virtual MusicLibraryItem * childItem(int row) const { return m_childItems.value(row); }
+    MusicLibraryItem * childItem(int row) const override { return m_childItems.value(row); }
     MusicLibraryItem * childItem(const QString &name) const;
 
-    QString data() const { return m_itemData; }
+    QString data() const override { return m_itemData; }
     void setData(const QString &d) { m_itemData=d; }
-    int childCount() const { return m_childItems.count(); }
+    int childCount() const override { return m_childItems.count(); }
     const QList<MusicLibraryItem *> & childItems() const { return m_childItems; }
 
     void resetRows();

@@ -36,7 +36,7 @@ public Q_SLOTS:
     void setFilterString(const QString &filterString);
 
 protected:
-    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
     QString _filterString;

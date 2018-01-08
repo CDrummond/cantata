@@ -46,7 +46,7 @@ class VolumeSliderEventHandler : public QObject
 public:
     VolumeSliderEventHandler(QObject *p) : QObject(p) { }
 protected:
-    bool eventFilter(QObject *obj, QEvent *event)
+    bool eventFilter(QObject *obj, QEvent *event) override
     {
         if (QEvent::Wheel==event->type()) {
             int numDegrees = static_cast<QWheelEvent *>(event)->delta() / 8;

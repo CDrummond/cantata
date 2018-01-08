@@ -40,9 +40,9 @@ public:
     MusicLibraryItemSong(const Song &s, MusicLibraryItemContainer *parent)
         : MusicLibraryItem(parent), m_song(s) { }
 
-    virtual ~MusicLibraryItemSong() { }
+    ~MusicLibraryItemSong() override { }
 
-    QString data() const { return m_song.displayTitle(); }
+    QString data() const override { return m_song.displayTitle(); }
     const QString & file() const { return m_song.file; }
     void setSong(const Song &s) { m_song=s; }
     void setFile(const QString &f) { m_song.file=f; }
@@ -53,7 +53,7 @@ public:
     quint32 time() const { return m_song.time; }
     QString genre() const { return m_song.firstGenre(); }
     const Song & song() const { return m_song; }
-    Type itemType() const { return Type_Song; }
+    Type itemType() const override { return Type_Song; }
 
 protected:
     Song m_song;

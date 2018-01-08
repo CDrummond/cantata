@@ -41,7 +41,7 @@ namespace Ifaces
         /**
          * Destroys a Cdrom object.
          */
-        virtual ~OpticalDrive();
+        ~OpticalDrive() override;
 
         /**
          * Retrieves the medium types this drive supports.

@@ -30,7 +30,7 @@ class Application : public QApplication
 public:
     static void init();
     Application(int &argc, char **argv);
-    virtual ~Application() { }
+    ~Application() override { }
 
     bool start();
     void loadFiles();

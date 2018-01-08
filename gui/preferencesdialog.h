@@ -54,11 +54,11 @@ public:
     static int instanceCount();
 
     PreferencesDialog(QWidget *parent);
-    virtual ~PreferencesDialog();
+    ~PreferencesDialog() override;
 
 private:
-    void save();
-    void cancel();
+    void save() override;
+    void cancel() override;
 
 public Q_SLOTS:
     void showPage(const QString &page);

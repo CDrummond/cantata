@@ -32,9 +32,9 @@ class ToolButton : public QToolButton
 {
 public:
     explicit ToolButton(QWidget *parent = 0);
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
     void setMenu(QMenu *m);
-    void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent *e) override;
 
 private:
     mutable QSize sh;

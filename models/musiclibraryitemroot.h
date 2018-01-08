@@ -67,7 +67,7 @@ public:
         , isFlat(flatHierarchy)
         , m_model(0) {
     }
-    virtual ~MusicLibraryItemRoot() { }
+    ~MusicLibraryItemRoot() override { }
 
     virtual Icon icon() const { return Icon(); }
     virtual QImage image() const { return QImage(); }
@@ -87,7 +87,7 @@ public:
     void toXML(QXmlStreamWriter &writer, MusicLibraryProgressMonitor *prog=0) const;
     bool fromXML(const QString &filename, const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0, MusicLibraryErrorMonitor *em=0);
     bool fromXML(QXmlStreamReader &reader, const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0, MusicLibraryErrorMonitor *em=0);
-    Type itemType() const { return Type_Root; }
+    Type itemType() const override { return Type_Root; }
     void add(const QSet<Song> &songs);
     bool supportsAlbumArtistTag() const { return supportsAlbumArtist; }
     void setSupportsAlbumArtistTag(bool s) { supportsAlbumArtist=s; }

@@ -40,15 +40,15 @@ class GenericInterface : public DeviceInterface, virtual public Solid::Ifaces::G
 
 public:
     GenericInterface(HalDevice *device);
-    virtual ~GenericInterface();
+    ~GenericInterface() override;
 
-    virtual QVariant property(const QString &key) const;
-    virtual QMap<QString, QVariant> allProperties() const;
-    virtual bool propertyExists(const QString &key) const;
+    QVariant property(const QString &key) const override;
+    QMap<QString, QVariant> allProperties() const override;
+    bool propertyExists(const QString &key) const override;
 
 Q_SIGNALS:
-    void propertyChanged(const QMap<QString,int> &changes);
-    void conditionRaised(const QString &condition, const QString &reason);
+    void propertyChanged(const QMap<QString,int> &changes) override;
+    void conditionRaised(const QString &condition, const QString &reason) override;
 };
 }
 }

@@ -32,12 +32,12 @@ class SoundCloudService : public OnlineSearchService
 
 public:
     SoundCloudService(QObject *p);
-    virtual ~SoundCloudService() { }
+    ~SoundCloudService() override { }
 
-    QString name() const;
-    QString title() const;
-    QString descr() const;
-    void search(const QString &key, const QString &value);
+    QString name() const override;
+    QString title() const override;
+    QString descr() const override;
+    void search(const QString &key, const QString &value) override;
 
 private Q_SLOTS:
     void jobFinished();

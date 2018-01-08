@@ -36,8 +36,8 @@ class DynamicPlaylistsPage : public SinglePageWidget
 
 public:
     DynamicPlaylistsPage(QWidget *p);
-    virtual ~DynamicPlaylistsPage();
-    void setView(int) { }
+    ~DynamicPlaylistsPage() override;
+    void setView(int) override { }
 
 private Q_SLOTS:
     void remoteDynamicSupport(bool s);
@@ -51,11 +51,11 @@ private Q_SLOTS:
     void headerClicked(int level);
 
 private:
-    void doSearch();
-    void controlActions();
+    void doSearch() override;
+    void controlActions() override;
     void enableWidgets(bool enable);
-    void showEvent(QShowEvent *e);
-    void hideEvent(QHideEvent *e);
+    void showEvent(QShowEvent *e) override;
+    void hideEvent(QHideEvent *e) override;
 
 private:
     PlaylistProxyModel proxy;

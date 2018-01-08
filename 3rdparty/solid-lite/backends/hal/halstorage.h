@@ -37,14 +37,14 @@ class Storage : public Block, virtual public Solid::Ifaces::StorageDrive
 
 public:
     Storage(HalDevice *device);
-    virtual ~Storage();
+    ~Storage() override;
 
-    virtual Solid::StorageDrive::Bus bus() const;
-    virtual Solid::StorageDrive::DriveType driveType() const;
+    Solid::StorageDrive::Bus bus() const override;
+    Solid::StorageDrive::DriveType driveType() const override;
 
-    virtual bool isRemovable() const;
-    virtual bool isHotpluggable() const;
-    virtual qulonglong size() const;
+    bool isRemovable() const override;
+    bool isHotpluggable() const override;
+    qulonglong size() const override;
 };
 }
 }

@@ -32,12 +32,12 @@ class Spinner : public QWidget
 
 public:
     Spinner(QObject *p, bool inMiddle=false);
-    virtual ~Spinner() { }
+    ~Spinner() override { }
 
     void setWidget(QWidget *widget);
     void start();
     void stop();
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event) override;
     bool isActive() const { return active; }
 
 private Q_SLOTS:

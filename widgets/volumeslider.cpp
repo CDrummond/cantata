@@ -48,7 +48,7 @@ public:
         setBaseStyle(qApp->style());
     }
 
-    int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const
+    int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const override
     {
         if (SH_Slider_AbsoluteSetButtons==stylehint) {
             return Qt::LeftButton|QProxyStyle::styleHint(stylehint, opt, widget, returnData);

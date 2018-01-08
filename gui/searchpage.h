@@ -37,16 +37,16 @@ class SearchPage : public SinglePageWidget
 
 public:
     SearchPage(QWidget *p);
-    virtual ~SearchPage();
+    ~SearchPage() override;
 
-    void refresh();
+    void refresh() override;
     void clear();
-    void setView(int mode);
-    void showEvent(QShowEvent *e);
-    QStringList selectedFiles(bool allowPlaylists=false) const;
-    QList<Song> selectedSongs(bool allowPlaylists=false) const;
+    void setView(int mode) override;
+    void showEvent(QShowEvent *e) override;
+    QStringList selectedFiles(bool allowPlaylists=false) const override;
+    QList<Song> selectedSongs(bool allowPlaylists=false) const override;
     #ifdef ENABLE_DEVICES_SUPPORT
-    void addSelectionToDevice(const QString &udi);
+    void addSelectionToDevice(const QString &udi) override;
     #endif
     void setSearchCategory(const QString &cat);
 
@@ -61,8 +61,8 @@ public Q_SLOTS:
     void locateSongs();
 
 private:
-    void doSearch();
-    void controlActions();
+    void doSearch() override;
+    void controlActions() override;
 
 private:
     enum State

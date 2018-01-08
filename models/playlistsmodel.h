@@ -71,7 +71,7 @@ public:
     {
         SongItem() : parent(0) { }
         SongItem(const Song &s, PlaylistItem *p=0) : Song(s), parent(p) { }
-        bool isPlaylist() { return false; }
+        bool isPlaylist() override { return false; }
         PlaylistItem *parent;
     };
 
@@ -79,8 +79,8 @@ public:
     {
         PlaylistItem(quint32 k) : loaded(false), isSmartPlaylist(false), time(0), key(k) { }
         PlaylistItem(const Playlist &pl, quint32 k);
-        virtual ~PlaylistItem();
-        bool isPlaylist() { return true; }
+        ~PlaylistItem() override;
+        bool isPlaylist() override { return true; }
         SongItem * getSong(const Song &song, int offset);
         void clearSongs();
         quint32 totalTime();
@@ -99,29 +99,29 @@ public:
     static QString headerText(int col);
 
     PlaylistsModel(QObject *parent = 0);
-    ~PlaylistsModel();
+    ~PlaylistsModel() override;
     QString name() const;
     QString title() const;
     QString descr() const;
     const Icon & icon() const { return icn; }
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return COL_COUNT; }
-    bool canFetchMore(const QModelIndex &index) const;
-    void fetchMore(const QModelIndex &index);
-    bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &index) const;
-    QModelIndex index(int row, int col, const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &, int) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole);
-    bool setData(const QModelIndex &index, const QVariant &value, int role);
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    Qt::DropActions supportedDropActions() const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override { Q_UNUSED(parent) return COL_COUNT; }
+    bool canFetchMore(const QModelIndex &index) const override;
+    void fetchMore(const QModelIndex &index) override;
+    bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &index) const override;
+    QModelIndex index(int row, int col, const QModelIndex &parent) const override;
+    QVariant data(const QModelIndex &, int) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    Qt::DropActions supportedDropActions() const override;
     QStringList filenames(const QModelIndexList &indexes, bool filesOnly=false) const;
     QList<Song> songs(const QModelIndexList &indexes) const;
-    QMimeData * mimeData(const QModelIndexList &indexes) const;
-    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int /*col*/, const QModelIndex &parent);
-    QStringList mimeTypes() const;
+    QMimeData * mimeData(const QModelIndexList &indexes) const override;
+    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int /*col*/, const QModelIndex &parent) override;
+    QStringList mimeTypes() const override;
     void getPlaylists();
     void clear();
     bool exists(const QString &n) { return 0!=getPlaylist(n); }

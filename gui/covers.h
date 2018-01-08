@@ -65,7 +65,7 @@ public:
     };
 
     CoverDownloader();
-    ~CoverDownloader() { }
+    ~CoverDownloader() override { }
 
     void stop();
 
@@ -114,7 +114,7 @@ class CoverLocator : public QObject
     Q_OBJECT
 public:
     CoverLocator();
-    ~CoverLocator() { }
+    ~CoverLocator() override { }
 
     void stop();
 
@@ -147,7 +147,7 @@ class CoverLoader : public QObject
     Q_OBJECT
 public:
     CoverLoader();
-    ~CoverLoader() { }
+    ~CoverLoader() override { }
 
     void stop();
 

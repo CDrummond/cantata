@@ -44,7 +44,7 @@ public:
     TagEditor(QWidget *parent, const QList<Song> &songs,
               const QSet<QString> &existingArtists, const QSet<QString> &existingAlbumArtists, const QSet<QString> &existingComposers,
               const QSet<QString> &existingAlbums, const QSet<QString> &existingGenres, const QString &udi);
-    virtual ~TagEditor();
+    ~TagEditor() override;
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -57,14 +57,14 @@ private:
     void setLabelStates();
     void setVariousHint();
     void fillSong(Song &s, bool isAll, bool skipEmpty) const;
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
     void updateTrackName(int index, bool edited);
     void updateEditedStatus(int index);
     bool applyUpdates();
     #ifdef ENABLE_DEVICES_SUPPORT
     Device * getDevice(const QString &udi, QWidget *p);
     #endif
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
     void controlInitialActionsState();
 
 private Q_SLOTS:

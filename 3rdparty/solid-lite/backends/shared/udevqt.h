@@ -81,7 +81,7 @@ class Client : public QObject
     public:
         Client(QObject *parent = 0);
         Client(const QStringList &subsystemList, QObject *parent = 0);
-        ~Client();
+        ~Client() override;
 
         QStringList watchedSubsystems() const;
         void setWatchedSubsystems(const QStringList &subsystemList);

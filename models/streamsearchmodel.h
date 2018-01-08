@@ -48,21 +48,21 @@ public:
     };
 
     StreamSearchModel(QObject *parent = 0);
-    ~StreamSearchModel();
-    QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &) const;
-    QVariant data(const QModelIndex &, int) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    bool hasChildren(const QModelIndex &index) const;
-    bool canFetchMore(const QModelIndex &index) const;
-    void fetchMore(const QModelIndex &index);
+    ~StreamSearchModel() override;
+    QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &) const override;
+    QVariant data(const QModelIndex &, int) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    bool hasChildren(const QModelIndex &index) const override;
+    bool canFetchMore(const QModelIndex &index) const override;
+    void fetchMore(const QModelIndex &index) override;
 
     QStringList filenames(const QModelIndexList &indexes, bool addPrefix) const;
-    QMimeData * mimeData(const QModelIndexList &indexes) const;
-    QStringList mimeTypes() const;
+    QMimeData * mimeData(const QModelIndexList &indexes) const override;
+    QStringList mimeTypes() const override;
 
     void clear();
     void search(const QString &searchTerm, bool stationsOnly);

@@ -116,7 +116,7 @@ public:
     };
 
     Dialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize());
-    virtual ~Dialog();
+    ~Dialog() override;
 
     void setCaption(const QString &cap) { setWindowTitle(cap); }
     void setButtons(ButtonCodes buttons);
@@ -147,7 +147,7 @@ private:
     void create();
     QAbstractButton *getButton(ButtonCode button);
     void setButtonGuiItem(QDialogButtonBox::StandardButton button, const GuiItem &item);
-    virtual void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) override;
 
 private:
     int defButton;

@@ -42,17 +42,17 @@ class Cdrom : public Storage, virtual public Solid::Ifaces::OpticalDrive
 
 public:
     Cdrom(HalDevice *device);
-    virtual ~Cdrom();
+    ~Cdrom() override;
 
-    virtual Solid::OpticalDrive::MediumTypes supportedMedia() const;
-    virtual int readSpeed() const;
-    virtual int writeSpeed() const;
-    virtual QList<int> writeSpeeds() const;
-    virtual bool eject();
+    Solid::OpticalDrive::MediumTypes supportedMedia() const override;
+    int readSpeed() const override;
+    int writeSpeed() const override;
+    QList<int> writeSpeeds() const override;
+    bool eject() override;
 
 Q_SIGNALS:
-    void ejectPressed(const QString &udi);
-    void ejectDone(Solid::ErrorType error, QVariant errorData, const QString &udi);
+    void ejectPressed(const QString &udi) override;
+    void ejectDone(Solid::ErrorType error, QVariant errorData, const QString &udi) override;
     void ejectRequested(const QString &udi);
 
 private Q_SLOTS:

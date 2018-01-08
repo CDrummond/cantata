@@ -56,7 +56,7 @@ MusicLibraryItemArtist::MusicLibraryItemArtist(const Song &song, MusicLibraryIte
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)
 {
     MusicLibraryItemAlbum *albumItem=getAlbum(s.albumId());
-    return albumItem ? albumItem : (create ? createAlbum(s) : 0);
+    return albumItem ? albumItem : (create ? createAlbum(s) : nullptr);
 }
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::createAlbum(const Song &s)
@@ -99,7 +99,7 @@ Song MusicLibraryItemArtist::coverSong() const
 
     if (childCount()) {
         MusicLibraryItemAlbum *firstAlbum=static_cast<MusicLibraryItemAlbum *>(childItem(0));
-        MusicLibraryItemSong *firstSong=firstAlbum ? static_cast<MusicLibraryItemSong *>(firstAlbum->childItem(0)) : 0;
+        MusicLibraryItemSong *firstSong=firstAlbum ? static_cast<MusicLibraryItemSong *>(firstAlbum->childItem(0)) : nullptr;
 
         if (firstSong) {
             song.file=firstSong->file();
@@ -122,13 +122,13 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::getAlbum(const QString &key) con
 {
     if (m_indexes.count()==m_childItems.count()) {
         if (m_childItems.isEmpty()) {
-            return 0;
+            return nullptr;
         }
 
         QHash<QString, int>::ConstIterator idx=m_indexes.find(key);
 
         if (m_indexes.end()==idx) {
-            return 0;
+            return nullptr;
         }
 
         // Check index value is within range
@@ -142,7 +142,7 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::getAlbum(const QString &key) con
     }
 
     // Something wrong with m_indexes??? So, refresh them...
-    MusicLibraryItemAlbum *al=0;
+    MusicLibraryItemAlbum *al=nullptr;
     m_indexes.clear();
     QList<MusicLibraryItem *>::ConstIterator it=m_childItems.constBegin();
     QList<MusicLibraryItem *>::ConstIterator end=m_childItems.constEnd();

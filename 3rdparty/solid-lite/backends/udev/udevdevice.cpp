@@ -242,7 +242,7 @@ bool UDevDevice::queryDeviceInterface(const Solid::DeviceInterface::Type &type) 
 QObject *UDevDevice::createDeviceInterface(const Solid::DeviceInterface::Type &type)
 {
     if (!queryDeviceInterface(type)) {
-        return 0;
+        return nullptr;
     }
 
     switch (type) {
@@ -278,7 +278,7 @@ QObject *UDevDevice::createDeviceInterface(const Solid::DeviceInterface::Type &t
 */
     default:
   //      qFatal("Shouldn't happen");
-        return 0;
+        return nullptr;
     }
 }
 

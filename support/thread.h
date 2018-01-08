@@ -58,7 +58,7 @@ class Thread : public QThread
 {
     Q_OBJECT
 public:
-    Thread(const QString &name, QObject *p=0);
+    Thread(const QString &name, QObject *p=nullptr);
     ~Thread() override;
 
     // Make QThread::msleep accessible!
@@ -66,7 +66,7 @@ public:
 
     void run() override;
 
-    QTimer * createTimer(QObject *parent=0);
+    QTimer * createTimer(QObject *parent=nullptr);
     void deleteTimer(QTimer *timer);
 
 public Q_SLOTS:

@@ -52,7 +52,7 @@ public:
     class Item
     {
     public:
-        Item(Type t,  CollectionItem *p=0)
+        Item(Type t,  CollectionItem *p=nullptr)
             : type(t), parent(p) { }
         virtual ~Item() { }
 
@@ -78,7 +78,7 @@ public:
     class TrackItem : public Item
     {
     public:
-        TrackItem(const Song &s, CollectionItem *p=0)
+        TrackItem(const Song &s, CollectionItem *p=nullptr)
             : Item(T_Track, p) { setSong(s); }
         ~TrackItem() override { }
 
@@ -90,7 +90,7 @@ public:
     class CollectionItem : public Item
     {
     public:
-        CollectionItem(Type t, const QString &i, const QString &txt=QString(), const QString &sub=QString(), CollectionItem *p=0)
+        CollectionItem(Type t, const QString &i, const QString &txt=QString(), const QString &sub=QString(), CollectionItem *p=nullptr)
             : Item(t, p), id(i), text(txt), subText(sub) { }
         ~CollectionItem() override { qDeleteAll(children); }
 
@@ -112,7 +112,7 @@ public:
 
     class AlbumItem : public CollectionItem {
     public:
-        AlbumItem(const QString &ar, const QString &i, const QString &txt=QString(), const QString &sub=QString(), CollectionItem *p=0)
+        AlbumItem(const QString &ar, const QString &i, const QString &txt=QString(), const QString &sub=QString(), CollectionItem *p=nullptr)
             : CollectionItem(T_Album, i, txt, sub, p), artistId(ar) { }
         ~AlbumItem() override { }
 

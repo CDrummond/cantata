@@ -41,7 +41,7 @@ class MusicLibraryModel : public ActionModel
 {
     Q_OBJECT
 public:
-    MusicLibraryModel(QObject *parent=0);
+    MusicLibraryModel(QObject *parent=nullptr);
     ~MusicLibraryModel() override;
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &) const override;

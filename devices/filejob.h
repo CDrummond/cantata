@@ -99,7 +99,7 @@ public:
         , deviceOpts(d)
         , copyOpts(co)
         , song(s)
-        , temp(0)
+        , temp(nullptr)
         , copiedCover(false) {
     }
     ~CopyJob() override;

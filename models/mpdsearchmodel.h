@@ -31,7 +31,7 @@ class MpdSearchModel : public SearchModel
     Q_OBJECT
 
 public:
-    MpdSearchModel(QObject *parent = 0);
+    MpdSearchModel(QObject *parent = nullptr);
     ~MpdSearchModel() override;
 
     QVariant data(const QModelIndex &index, int role) const override;
@@ -49,7 +49,7 @@ private Q_SLOTS:
 
 private:
     void clearItems();
-    const Song * toSong(const QModelIndex &index) const { return index.isValid() ? static_cast<const Song *>(index.internalPointer()) : 0; }
+    const Song * toSong(const QModelIndex &index) const { return index.isValid() ? static_cast<const Song *>(index.internalPointer()) : nullptr; }
 
 private:
     int currentId;

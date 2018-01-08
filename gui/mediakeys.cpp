@@ -44,7 +44,7 @@ GLOBAL_STATIC(MediaKeys, instance)
 MediaKeys::MediaKeys()
 {
     #ifdef QT_QTDBUS_FOUND
-    gnome=0;
+    gnome=nullptr;
     #endif
 
     #ifdef CANTATA_USE_QXT_MEDIAKEYS
@@ -69,14 +69,14 @@ MediaKeys::~MediaKeys()
 void MediaKeys::start()
 {
     #ifdef QT_QTDBUS_FOUND
-    gnome=new GnomeMediaKeys(0);
+    gnome=new GnomeMediaKeys(nullptr);
     if (activate(gnome)) {
         DBUG << "Using Gnome";
         return;
     }
     DBUG << "Gnome failed";
     gnome->deleteLater();
-    gnome=0;
+    gnome=nullptr;
     #endif
 
     #ifdef CANTATA_USE_QXT_MEDIAKEYS
@@ -98,7 +98,7 @@ void MediaKeys::stop()
     if (gnome) {
         deactivate(gnome);
         gnome->deleteLater();
-        gnome=0;
+        gnome=nullptr;
     }
     #endif
 

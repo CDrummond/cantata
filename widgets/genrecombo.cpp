@@ -27,7 +27,7 @@
 #include "support/action.h"
 #include <QEvent>
 
-static Action *action=0;
+static Action *action=nullptr;
 
 GenreCombo::GenreCombo(QWidget *p)
      : ComboBox(p)
@@ -37,7 +37,7 @@ GenreCombo::GenreCombo(QWidget *p)
     setEditable(false);
     setFocusPolicy(Qt::NoFocus);
     if (!action) {
-        action=ActionCollection::get()->createAction("genrefilter", tr("Filter On Genre"), 0);
+        action=ActionCollection::get()->createAction("genrefilter", tr("Filter On Genre"), nullptr);
         action->setShortcut(Qt::ControlModifier+Qt::Key_G);
     }
     addAction(action);

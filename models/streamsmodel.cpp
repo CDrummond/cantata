@@ -142,7 +142,7 @@ StreamsModel::CategoryItem * StreamsModel::Item::getTopLevelCategory() const
     while (item->parent && item->parent->parent) {
         item=item->parent;
     }
-    return item && item->isCategory() ? static_cast<CategoryItem *>(item) : 0;
+    return item && item->isCategory() ? static_cast<CategoryItem *>(item) : nullptr;
 }
 
 void StreamsModel::CategoryItem::removeBookmarks()
@@ -231,7 +231,7 @@ StreamsModel::CategoryItem * StreamsModel::CategoryItem::getBookmarksCategory()
             return static_cast<CategoryItem *>(i);
         }
     }
-    return 0;
+    return nullptr;
 }
 
 StreamsModel::CategoryItem * StreamsModel::CategoryItem::createBookmarksCategory()
@@ -491,7 +491,7 @@ NetworkJob * StreamsModel::ShoutCastCategoryItem::fetchSecondardyUrl()
         job->setProperty(constOrigUrlProperty, url.toString());
         return job;
     }
-    return 0;
+    return nullptr;
 }
 
 void StreamsModel::DiCategoryItem::addHeaders(QNetworkRequest &req)
@@ -570,7 +570,7 @@ QModelIndex StreamsModel::index(int row, int column, const QModelIndex &parent) 
     }
 
     const CategoryItem * p = parent.isValid() ? static_cast<CategoryItem *>(parent.internalPointer()) : root;
-    const Item * c = row<p->children.count() ? p->children.at(row) : 0;
+    const Item * c = row<p->children.count() ? p->children.at(row) : nullptr;
     return c ? createIndex(row, column, (void *)c) : QModelIndex();
 }
 
@@ -1088,7 +1088,7 @@ void StreamsModel::jobFinished()
                             for (Item *ex: bookmarksCat->children) {
                                 if (ex->url==bm->url) {
                                     delete bm;
-                                    bm=0;
+                                    bm=nullptr;
                                     break;
                                 }
                             }
@@ -1188,7 +1188,7 @@ static StreamsModel::Item * getStream(StreamsModel::FavouritesCategoryItem *fav,
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 void StreamsModel::favouriteStreams(const QList<Stream> &streams)
@@ -1215,9 +1215,9 @@ void StreamsModel::favouriteStreams(const QList<Stream> &streams)
     } else {
         for (qint32 i=0; i<streams.count(); ++i) {
             Stream s=streams.at(i);
-            Item *si=i<favourites->children.count() ? favourites->children.at(i) : 0;
+            Item *si=i<favourites->children.count() ? favourites->children.at(i) : nullptr;
             if (!si || si->name!=s.name || si->url!=s.url) {
-                si=i<favourites->children.count() ? getStream(favourites, s, i) : 0;
+                si=i<favourites->children.count() ? getStream(favourites, s, i) : nullptr;
                 if (!si) {
                     beginInsertRows(idx, i, i);
                     favourites->children.insert(i, new Item(s.url, s.name, favourites));
@@ -1667,8 +1667,8 @@ QList<StreamsModel::Item *> StreamsModel::parseDirbleStations(QIODevice *dev, Ca
 
 StreamsModel::Item * StreamsModel::parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent, bool parseSubText)
 {
-    Item *item=0;
-    CategoryItem *cat=0;
+    Item *item=nullptr;
+    CategoryItem *cat=nullptr;
     while (!doc.atEnd()) {
         if (doc.isStartElement()) {
             QString text=doc.attributes().value("text").toString();
@@ -1730,7 +1730,7 @@ StreamsModel::Item * StreamsModel::parseSomaFmEntry(QXmlStreamReader &doc, Categ
         }
     }
 
-    return name.isEmpty() || url.isEmpty() ? 0 : new Item(url, name, parent);
+    return name.isEmpty() || url.isEmpty() ? nullptr : new Item(url, name, parent);
 }
 
 void StreamsModel::importOldFavourites()
@@ -1772,7 +1772,7 @@ void StreamsModel::loadInstalledProviders()
 
 StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &name, const Icon &icon, const QString &streamsFileName, bool replace)
 {
-    CategoryItem *cat=0;
+    CategoryItem *cat=nullptr;
     if (streamsFileName.endsWith(constSettingsFile)) {
         QFile file(streamsFileName);
         if (file.open(QIODevice::ReadOnly)) {
@@ -1801,7 +1801,7 @@ StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &n
     }
 
     if (!cat) {
-        return 0;
+        return nullptr;
     }
 
     cat->configName="x-"+name;

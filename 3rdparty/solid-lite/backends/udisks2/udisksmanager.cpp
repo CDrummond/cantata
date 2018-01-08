@@ -96,7 +96,7 @@ QObject* Manager::createDevice(const QString& udi)
     } else if (deviceCache().contains(udi)) {
         return new Device(udi);
     } else {
-        return 0;
+        return nullptr;
     }
 }
 

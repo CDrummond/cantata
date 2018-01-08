@@ -82,13 +82,13 @@ void Solid::ManagerBasePrivate::loadBackends()
             bool solidHalLegacyEnabled
                 = QString::fromLocal8Bit(qgetenv("SOLID_HAL_LEGACY")).toInt()==1;
             if (solidHalLegacyEnabled) {
-                m_backends << new Solid::Backends::Hal::HalManager(0);
+                m_backends << new Solid::Backends::Hal::HalManager(nullptr);
             } else {
 #               if defined(UDEV_FOUND)
-                    m_backends << new Solid::Backends::UDev::UDevManager(0);
+                    m_backends << new Solid::Backends::UDev::UDevManager(nullptr);
 #               endif
 #		if defined(WITH_SOLID_UDISKS2)
-                m_backends << new Solid::Backends::UDisks2::Manager(0)
+                m_backends << new Solid::Backends::UDisks2::Manager(nullptr)
 #		else
                 m_backends << new Solid::Backends::UDisks::UDisksManager(0)
 #		endif

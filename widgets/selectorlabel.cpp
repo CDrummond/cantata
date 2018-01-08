@@ -32,7 +32,7 @@ SelectorLabel::SelectorLabel(QWidget *p)
     : QLabel(p)
     , current(0)
     , useArrow(false)
-    , menu(0)
+    , menu(nullptr)
 {
     setAttribute(Qt::WA_Hover, true);
     menu=new QMenu(this);
@@ -136,13 +136,13 @@ QString SelectorLabel::itemData(int index) const
 QAction * SelectorLabel::action(int index) const
 {
     if (!menu) {
-        return 0;
+        return nullptr;
     }
 
     QList<QAction *> actions=menu->actions();
 
     if (index>=actions.count()) {
-        return 0;
+        return nullptr;
     }
     return actions.at(index);
 }

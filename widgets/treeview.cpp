@@ -84,7 +84,7 @@ bool TreeView::getForceSingleClick()
 
 TreeView::TreeView(QWidget *parent, bool menuAlwaysAllowed)
     : QTreeView(parent)
-    , eventFilter(0)
+    , eventFilter(nullptr)
     , forceSingleColumn(false)
     , alwaysAllowMenu(menuAlwaysAllowed)
 {

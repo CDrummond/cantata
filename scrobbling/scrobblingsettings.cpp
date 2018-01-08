@@ -68,7 +68,7 @@ ScrobblingSettings::ScrobblingSettings(QWidget *parent)
     } else {
         scrobblerName->setText(scrobbler->itemText(0));
         scrobbler->setVisible(false);
-        scrobblerLabel->setBuddy(0);
+        scrobblerLabel->setBuddy(nullptr);
     }
     scrobblerName->setVisible(scrobbler->count()<2);
     if (firstMpdClient.isEmpty()) {

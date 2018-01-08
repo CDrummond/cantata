@@ -137,7 +137,7 @@ static void update(QStandardItem *i, const RulesPlaylists::Rule &rule)
 PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
     : Dialog(parent, "PlaylistRulesDialog")
     , rules(m)
-    , dlg(0)
+    , dlg(nullptr)
 {
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);

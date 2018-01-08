@@ -46,7 +46,7 @@ public:
     static bool debugEnabled();
     static QString fixDevicePath(const QString &path);
 
-    DevicesModel(QObject *parent = 0);
+    DevicesModel(QObject *parent = nullptr);
     ~DevicesModel() override;
     QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &index) const override;

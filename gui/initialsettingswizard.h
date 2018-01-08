@@ -34,7 +34,7 @@ class InitialSettingsWizard : public QWizard, public Ui::InitialSettingsWizard
     Q_OBJECT
 
 public:
-    InitialSettingsWizard(QWidget *p=0);
+    InitialSettingsWizard(QWidget *p=nullptr);
     ~InitialSettingsWizard() override;
     MPDConnectionDetails getDetails();
 

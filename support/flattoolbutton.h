@@ -33,7 +33,7 @@ public:
     explicit FlatToolButton(QWidget *parent = 0);
     void paintEvent(QPaintEvent *e);
     #else
-    explicit FlatToolButton(QWidget *parent = 0) : QToolButton(parent) { setAutoRaise(true); }
+    explicit FlatToolButton(QWidget *parent = nullptr) : QToolButton(parent) { setAutoRaise(true); }
     #endif
 };
 

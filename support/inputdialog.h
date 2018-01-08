@@ -41,13 +41,13 @@ public:
     InputDialog(const QString &caption, const QString &label, int value, int minValue, int maxValue, int step, QWidget *parent);
 
     static QString getText(const QString &caption, const QString &label, QLineEdit::EchoMode echoMode, const QString &value=QString(),
-                           const QStringList &options=QStringList(), bool *ok=0, QWidget *parent=0);
+                           const QStringList &options=QStringList(), bool *ok=nullptr, QWidget *parent=nullptr);
 
     static int getInteger(const QString &caption, const QString &label, int value=0, int minValue=INT_MIN, int maxValue=INT_MAX,
-                          int step=1, int base=10, bool *ok=0, QWidget *parent=0);
+                          int step=1, int base=10, bool *ok=nullptr, QWidget *parent=nullptr);
 
     static QString getText(const QString &caption, const QString &label, const QString &value=QString(),
-                           const QStringList &options=QStringList(), bool *ok=0, QWidget *parent=0) {
+                           const QStringList &options=QStringList(), bool *ok=nullptr, QWidget *parent=nullptr) {
         return getText(caption, label, QLineEdit::Normal, value, options, ok, parent);
     }
 
@@ -60,7 +60,7 @@ public:
         return getText(caption, label, QLineEdit::Normal, value, QStringList(), ok, parent);
     }
 
-    static QString getPassword(const QString &value=QString(), bool *ok=0, QWidget *parent=0) {
+    static QString getPassword(const QString &value=QString(), bool *ok=nullptr, QWidget *parent=nullptr) {
         return getText(tr("Password"), tr("Please enter password:"), QLineEdit::Password, value, QStringList(), ok, parent);
     }
 

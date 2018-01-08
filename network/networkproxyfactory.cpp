@@ -52,7 +52,7 @@ NetworkProxyFactory::NetworkProxyFactory()
 
 NetworkProxyFactory * NetworkProxyFactory::self()
 {
-    static NetworkProxyFactory *instance=0;
+    static NetworkProxyFactory *instance=nullptr;
     if (!instance) {
         instance = new NetworkProxyFactory;
     }

@@ -60,10 +60,10 @@ GLOBAL_STATIC(HttpServer, instance)
 
 #ifdef ENABLE_HTTP_SERVER
 HttpServer::HttpServer()
-    : QObject(0)
-    , thread(0)
-    , socket(0)
-    , closeTimer(0)
+    : QObject(nullptr)
+    , thread(nullptr)
+    , socket(nullptr)
+    , closeTimer(nullptr)
 {
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QList<Song>,bool)), this, SLOT(cantataStreams(QList<Song>,bool)));
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QStringList)), this, SLOT(cantataStreams(QStringList)));
@@ -91,7 +91,7 @@ bool HttpServer::start()
 
     DBUG << "open new socket";
     quint16 prevPort=Settings::self()->httpAllocatedPort();
-    bool newThread=0==thread;
+    bool newThread=nullptr==thread;
     if (newThread) {
         thread=new Thread("HttpServer");
     }
@@ -114,7 +114,7 @@ void HttpServer::stop()
     if (socket) {
         DBUG;
         emit terminateSocket();
-        socket=0;
+        socket=nullptr;
     }
 }
 
@@ -126,7 +126,7 @@ void HttpServer::readConfig()
         return;
     }
 
-    bool wasStarted=0!=socket;
+    bool wasStarted=nullptr!=socket;
     stop();
     if (wasStarted) {
         start();
@@ -145,7 +145,7 @@ QString HttpServer::address() const
 
 bool HttpServer::isOurs(const QString &url) const
 {
-    if (0==socket || !url.startsWith(QLatin1String("http://"))) {
+    if (nullptr==socket || !url.startsWith(QLatin1String("http://"))) {
         return false;
     }
 

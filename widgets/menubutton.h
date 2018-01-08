@@ -30,7 +30,7 @@ class MenuButton : public ToolButton
 {
     Q_OBJECT
 public:
-    explicit MenuButton(QWidget *parent = 0);
+    explicit MenuButton(QWidget *parent = nullptr);
     void controlState();
     void setAlignedMenu(QMenu *m);
     void addSeparator();

@@ -36,7 +36,7 @@ QMap<QString /* UDI */, DeviceBackend*> DeviceBackend::s_backends;
 
 DeviceBackend* DeviceBackend::backendForUDI(const QString& udi, bool create)
 {
-    DeviceBackend *backend = 0;
+    DeviceBackend *backend = nullptr;
     if (udi.isEmpty()) {
         return backend;
     }

@@ -69,7 +69,7 @@ public:
     static int iconSize();
     static void drawPlayState(QPainter *painter, const QStyleOptionViewItem &option, const QRect &r, int state);
 
-    GroupedView(QWidget *parent=0, bool isPlayQueue=false);
+    GroupedView(QWidget *parent=nullptr, bool isPlayQueue=false);
     ~GroupedView() override;
 
     void setModel(QAbstractItemModel *model) override;

@@ -31,7 +31,7 @@ class QMenu;
 class ToolButton : public QToolButton
 {
 public:
-    explicit ToolButton(QWidget *parent = 0);
+    explicit ToolButton(QWidget *parent = nullptr);
     QSize sizeHint() const override;
     void setMenu(QMenu *m);
     void paintEvent(QPaintEvent *e) override;

@@ -29,7 +29,7 @@
 class SearchProxyModel : public ProxyModel
 {
 public:
-    SearchProxyModel(QObject *parent = 0);
+    SearchProxyModel(QObject *parent = nullptr);
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
 };
 

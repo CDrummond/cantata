@@ -39,7 +39,7 @@ class VolumeSlider : public QSlider
 public:
     static QColor clampColor(const QColor &col);
 
-    VolumeSlider(QWidget *p=0);
+    VolumeSlider(QWidget *p=nullptr);
     ~VolumeSlider() override { }
 
     void initActions();

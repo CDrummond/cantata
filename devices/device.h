@@ -136,7 +136,7 @@ public:
     virtual void saveCache();
     const QString & id() const override { return deviceId; }
     void applyUpdate();
-    bool haveUpdate() const { return 0!=update; }
+    bool haveUpdate() const { return nullptr!=update; }
     int newRows() const { return update ? update->childCount() : 0; }
     const DeviceOptions & options() const { return opts; }
     void setOptions(const DeviceOptions &o) { opts=o; saveOptions(); }

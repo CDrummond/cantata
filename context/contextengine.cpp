@@ -33,7 +33,7 @@ ContextEngine * ContextEngine::create(QObject *parent)
 
 ContextEngine::ContextEngine(QObject *p)
     : QObject(p)
-    , job(0)
+    , job(nullptr)
 {
 }
 
@@ -62,7 +62,7 @@ void ContextEngine::cancel()
 {
     if (job) {
         job->cancelAndDelete();
-        job=0;
+        job=nullptr;
     }
 }
 
@@ -70,13 +70,13 @@ NetworkJob * ContextEngine::getReply(QObject *obj)
 {
     NetworkJob *reply = qobject_cast<NetworkJob*>(obj);
     if (!reply) {
-        return 0;
+        return nullptr;
     }
 
     reply->deleteLater();
     if (reply!=job) {
-        return 0;
+        return nullptr;
     }
-    job=0;
+    job=nullptr;
     return reply;
 }

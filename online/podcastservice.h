@@ -60,7 +60,7 @@ public:
             QueuedForDownload = -2
         };
 
-        Episode(const QDateTime &d=QDateTime(), const QString &n=QString(), const QUrl &u=QUrl(), Podcast *p=0)
+        Episode(const QDateTime &d=QDateTime(), const QString &n=QString(), const QUrl &u=QUrl(), Podcast *p=nullptr)
             : Item(n, u), played(false), duration(0), publishedDate(d), parent(p), downloadProg(NotDownloading) { }
         ~Episode() override { }
         Song toSong() const;
@@ -134,7 +134,7 @@ public:
     int podcastCount() const { return podcasts.count(); }
     void clear();
     void configure(QWidget *p);
-    bool subscribedToUrl(const QUrl &url) { return 0!=getPodcast(url); }
+    bool subscribedToUrl(const QUrl &url) { return nullptr!=getPodcast(url); }
     void unSubscribe(Podcast *podcast);
     void refresh(const QModelIndexList &list);
     void refreshAll();
@@ -147,7 +147,7 @@ public:
     static QUrl fixUrl(const QUrl &orig);
     static bool isUrlOk(const QUrl &u) { return QLatin1String("http")==u.scheme() || QLatin1String("https")==u.scheme(); }
 
-    bool isDownloading() const { return 0!=downloadJob; }
+    bool isDownloading() const { return nullptr!=downloadJob; }
     void cancelAllDownloads();
     void downloadPodcasts(Podcast *pod, const QList<Episode *> &episodes);
     void deleteDownloadedPodcasts(Podcast *pod, const QList<Episode *> &episodes);

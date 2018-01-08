@@ -94,7 +94,7 @@ static QString checkHaveArtist(const QSet<QString> &mpdArtists, const QString &a
 
 ArtistView::ArtistView(QWidget *parent)
     : View(parent)
-    , currentSimilarJob(0)
+    , currentSimilarJob(nullptr)
 {
     engine=ContextEngine::create(this);
     refreshAction = ActionCollection::get()->createAction("refreshartist", tr("Refresh Artist Information"), Icons::self()->refreshIcon);
@@ -295,7 +295,7 @@ void ArtistView::handleSimilarReply()
             setBio();
         }
         reply->deleteLater();
-        currentSimilarJob=0;
+        currentSimilarJob=nullptr;
     }
 }
 
@@ -369,7 +369,7 @@ void ArtistView::abort()
     engine->cancel();
     if (currentSimilarJob) {
         currentSimilarJob->cancelAndDelete();
-        currentSimilarJob=0;
+        currentSimilarJob=nullptr;
     }
     hideSpinner();
 }

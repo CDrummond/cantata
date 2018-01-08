@@ -61,8 +61,8 @@ class AutohidingSplitter : public QSplitter
     Q_OBJECT
 
 public:
-    explicit AutohidingSplitter(Qt::Orientation orientation, QWidget *parent=0);
-    explicit AutohidingSplitter(QWidget *parent=0);
+    explicit AutohidingSplitter(Qt::Orientation orientation, QWidget *parent=nullptr);
+    explicit AutohidingSplitter(QWidget *parent=nullptr);
     ~AutohidingSplitter() override;
 
     void setAutohidable(int index, bool autohidable = true);

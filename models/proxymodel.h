@@ -34,7 +34,7 @@ class QMimeData;
 class ProxyModel : public QSortFilterProxyModel
 {
 public:
-    ProxyModel(QObject *parent) : QSortFilterProxyModel(parent), isSorted(false), filterEnabled(false), filter(0) { }
+    ProxyModel(QObject *parent) : QSortFilterProxyModel(parent), isSorted(false), filterEnabled(false), filter(nullptr) { }
     ~ProxyModel() override { }
 
     bool update(const QString &text);
@@ -42,7 +42,7 @@ public:
     void setFilterItem(void *f) { filter=f; }
     void setRootIndex(const QModelIndex &idx) { rootIndex=idx.isValid() ? mapToSource(idx) : idx; }
     bool isChildOfRoot(const QModelIndex &idx) const;
-    bool isEmpty() const { return filterStrings.isEmpty() && 0==filter; }
+    bool isEmpty() const { return filterStrings.isEmpty() && nullptr==filter; }
     bool enabled() const { return filterEnabled; }
     const QString & filterText() const { return origFilterText; }
     void resort();

@@ -90,9 +90,9 @@ static TextBrowser * createView(QWidget *parent)
 View::View(QWidget *parent, const QStringList &views)
     : QWidget(parent)
     , needToUpdate(false)
-    , spinner(0)
-    , selector(0)
-    , stack(0)
+    , spinner(nullptr)
+    , selector(nullptr)
+    , stack(nullptr)
 {
     QVBoxLayout *layout=new QVBoxLayout(this);
     header=new QLabel(this);

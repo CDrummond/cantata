@@ -60,7 +60,7 @@ const QLatin1String FsDevice::constDefCoverFileName("cover.jpg");
 const QLatin1String FsDevice::constAutoScanKey("auto_scan"); // Cantata extension!
 
 MusicScanner::MusicScanner()
-    : QObject(0)
+    : QObject(nullptr)
     , stopRequested(false)
     , count(0)
 {
@@ -123,7 +123,7 @@ void MusicScanner::stop()
 {
     stopRequested=true;
     thread->stop();
-    thread=0;
+    thread=nullptr;
 }
 
 void MusicScanner::scanFolder(MusicLibraryItemRoot *library, const QString &topLevel, const QString &f,
@@ -135,8 +135,8 @@ void MusicScanner::scanFolder(MusicLibraryItemRoot *library, const QString &topL
     if (level<4) {
         QDir d(f);
         QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
-        MusicLibraryItemArtist *artistItem = 0;
-        MusicLibraryItemAlbum *albumItem = 0;
+        MusicLibraryItemArtist *artistItem = nullptr;
+        MusicLibraryItemAlbum *albumItem = nullptr;
         for (const QFileInfo &info: entries) {
             if (stopRequested) {
                 return;
@@ -331,7 +331,7 @@ FsDevice::FsDevice(MusicLibraryModel *m, Solid::Device &dev)
     , state(Idle)
     , scanned(false)
     , cacheProgress(-1)
-    , scanner(0)
+    , scanner(nullptr)
 {
 }
 
@@ -340,7 +340,7 @@ FsDevice::FsDevice(MusicLibraryModel *m, const QString &name, const QString &id)
     , state(Idle)
     , scanned(false)
     , cacheProgress(-1)
-    , scanner(0)
+    , scanner(nullptr)
 {
 }
 
@@ -364,7 +364,7 @@ void FsDevice::rescan(bool full)
 
 void FsDevice::stop()
 {
-     if (0!=scanner) {
+     if (nullptr!=scanner) {
          stopScanner();
      }
 }
@@ -692,7 +692,7 @@ void FsDevice::stopScanner()
     disconnect(scanner, SIGNAL(savingCache(int)), this, SLOT(savingCache(int)));
     disconnect(scanner, SIGNAL(readingCache(int)), this, SLOT(readingCache(int)));
     scanner->deleteLater();
-    scanner=0;
+    scanner=nullptr;
 }
 
 void FsDevice::clear() const

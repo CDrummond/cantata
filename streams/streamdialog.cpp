@@ -36,7 +36,7 @@
 
 StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     : Dialog(parent)
-    , saveCheckbox(0)
+    , saveCheckbox(nullptr)
     , urlHandlers(MPDConnection::self()->urlHandlers())
 {
     QWidget *wid = new QWidget(this);

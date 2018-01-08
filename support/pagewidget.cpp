@@ -265,7 +265,7 @@ PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const QIcon &i
 {
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
     if (showHeader) {
-        QBoxLayout *titleLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
+        QBoxLayout *titleLayout=new QBoxLayout(QBoxLayout::LeftToRight, nullptr);
         titleLayout->addWidget(new QLabel("<b>"+header+"</b>", this));
         titleLayout->addItem(new QSpacerItem(16, 16, QSizePolicy::Expanding, QSizePolicy::Minimum));
 

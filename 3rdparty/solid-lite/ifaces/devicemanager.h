@@ -47,7 +47,7 @@ namespace Ifaces
         /**
          * Constructs a DeviceManager
          */
-        DeviceManager(QObject *parent = 0);
+        DeviceManager(QObject *parent = nullptr);
         /**
          * Destructs a DeviceManager object
          */

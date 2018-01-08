@@ -71,7 +71,7 @@ void OnlineXmlParser::doParsing(NetworkJob *job)
 OnlineDbService::OnlineDbService(LibraryDb *d, QObject *p)
     : SqlLibraryModel(d, p, T_Genre)
     , lastPc(-1)
-    , job(0)
+    , job(nullptr)
 {
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), this, SLOT(cover(Song,QImage,QString)));
 }
@@ -132,7 +132,7 @@ void OnlineDbService::abort()
 {
     if (job) {
         job->cancelAndDelete();
-        job=0;
+        job=nullptr;
     }
     db->abortUpdate();
 }
@@ -143,7 +143,7 @@ void OnlineDbService::cover(const Song &song, const QImage &img, const QString &
         return;
     }
 
-    const Item *genre=root ? root->getChild(song.genres[0]) : 0;
+    const Item *genre=root ? root->getChild(song.genres[0]) : nullptr;
     if (genre) {
         const Item *artist=static_cast<const CollectionItem *>(genre)->getChild(song.artistOrComposer());
         if (artist) {
@@ -204,7 +204,7 @@ void OnlineDbService::downloadFinished()
         updateStatus(QString());
         emit error(tr("Failed to download"));
     }
-    job=0;
+    job=nullptr;
 }
 
 void OnlineDbService::updateStats()

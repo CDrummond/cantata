@@ -50,7 +50,7 @@ public:
 
     struct Item : public Stream
     {
-        Item(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QString &sub=QString()) : Stream(u, n), subText(sub), parent(p) { }
+        Item(const QString &u, const QString &n=QString(), CategoryItem *p=nullptr, const QString &sub=QString()) : Stream(u, n), subText(sub), parent(p) { }
         ~Item() override { }
         QString modifiedName() const;
         QString subText;
@@ -68,7 +68,7 @@ public:
             Fetched
         };
 
-        CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
+        CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=nullptr, const QIcon &i=QIcon(),
                      const QString &cn=QString(), const QString &bn=QString(), bool modName=false)
             : Item(u, n, p), state(Initial), isAll(false), isBookmarks(false), supportsBookmarks(false),
               canBookmark(false), addCatToModifiedName(modName), icon(i), cacheName(cn),
@@ -82,7 +82,7 @@ public:
         virtual bool isSoma() const { return false; }
         virtual bool isListenLive() const { return false; }
         virtual void removeCache();
-        bool isTopLevel() const { return parent && 0==parent->parent; }
+        bool isTopLevel() const { return parent && nullptr==parent->parent; }
         virtual bool canReload() const { return !cacheName.isEmpty() || isTopLevel() || !url.isEmpty(); }
         void removeBookmarks();
         void saveBookmarks();
@@ -96,7 +96,7 @@ public:
         QList<Item *> loadXml(const QString &fileName);
         virtual QList<Item *> loadXml(QIODevice *dev);
         virtual void addHeaders(QNetworkRequest &) { }
-        virtual NetworkJob * fetchSecondardyUrl() { return 0; }
+        virtual NetworkJob * fetchSecondardyUrl() { return nullptr; }
 
         State state;
         bool isAll : 1;
@@ -123,7 +123,7 @@ public:
 
     struct IceCastCategoryItem : public CategoryItem
     {
-        IceCastCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
+        IceCastCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=nullptr, const QIcon &i=QIcon(),
                             const QString &cn=QString(), const QString &bn=QString())
             : CategoryItem(u, n, p, i, cn, bn) { }
         void addHeaders(QNetworkRequest &req) override;
@@ -131,7 +131,7 @@ public:
 
     struct ShoutCastCategoryItem : public CategoryItem
     {
-        ShoutCastCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
+        ShoutCastCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=nullptr, const QIcon &i=QIcon(),
                               const QString &cn=QString(), const QString &bn=QString())
             : CategoryItem(u, n, p, i, cn, bn) { }
         void addHeaders(QNetworkRequest &req) override;
@@ -140,7 +140,7 @@ public:
 
     struct DirbleCategoryItem : public CategoryItem
     {
-        DirbleCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
+        DirbleCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=nullptr, const QIcon &i=QIcon(),
                               const QString &cn=QString(), const QString &bn=QString())
             : CategoryItem(u, n, p, i, cn, bn) { }
     };
@@ -214,7 +214,7 @@ public:
     static QString modifyUrl(const QString &u,  bool addPrefix=true, const QString &name=QString());
 //    static bool validProtocol(const QString &file);
 
-    StreamsModel(QObject *parent = 0);
+    StreamsModel(QObject *parent = nullptr);
     ~StreamsModel() override;
     QString name() const;
     QString title() const;

@@ -35,7 +35,7 @@ class PlayQueueProxyModel : public ProxyModel
     Q_OBJECT
 
 public:
-    PlayQueueProxyModel(QObject *parent = 0);
+    PlayQueueProxyModel(QObject *parent = nullptr);
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
     QMimeData *mimeData(const QModelIndexList &indexes) const override;

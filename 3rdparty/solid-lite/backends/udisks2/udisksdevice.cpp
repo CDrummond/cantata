@@ -163,10 +163,10 @@ QStringList Device::interfaces() const
 QObject* Device::createDeviceInterface(const Solid::DeviceInterface::Type& type)
 {
     if (!queryDeviceInterface(type)) {
-        return 0;
+        return nullptr;
     }
 
-    DeviceInterface *iface = 0;
+    DeviceInterface *iface = nullptr;
     switch (type)
     {
     case Solid::DeviceInterface::GenericInterface:

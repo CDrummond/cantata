@@ -107,7 +107,7 @@ public:
                   udi,
                   "org.freedesktop.Hal.Device",
                   QDBusConnection::systemBus()),
-          cacheSynced(false), parent(0) { }
+          cacheSynced(false), parent(nullptr) { }
     void checkCache(const QString &key = QString());
 
     QDBusInterface device;
@@ -447,10 +447,10 @@ bool HalDevice::queryDeviceInterface(const Solid::DeviceInterface::Type &type) c
 QObject *HalDevice::createDeviceInterface(const Solid::DeviceInterface::Type &type)
 {
     if (!queryDeviceInterface(type)) {
-        return 0;
+        return nullptr;
     }
 
-    DeviceInterface *iface = 0;
+    DeviceInterface *iface = nullptr;
 
     switch (type)
     {

@@ -29,7 +29,7 @@
 class StateLabel : public BuddyLabel
 {
 public:
-    StateLabel(QWidget *parent=0)
+    StateLabel(QWidget *parent=nullptr)
         : BuddyLabel(parent)
         , on(false) {
     }

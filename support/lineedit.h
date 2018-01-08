@@ -29,7 +29,7 @@
 class LineEdit : public QLineEdit
 {
 public:
-    LineEdit(QWidget *parent = 0) : QLineEdit(parent) { setClearButtonEnabled(true); }
+    LineEdit(QWidget *parent = nullptr) : QLineEdit(parent) { setClearButtonEnabled(true); }
     void setReadOnly(bool e);
 };
 

@@ -166,7 +166,7 @@ static QString parse(const QByteArray &data)
 
 StreamFetcher::StreamFetcher(QObject *p)
     : QObject(p)
-    , job(0)
+    , job(nullptr)
     , row(0)
     , playQueueAction(true)
     , prio(0)
@@ -234,7 +234,7 @@ void StreamFetcher::doNext()
     }
 
     if (todo.isEmpty() && !done.isEmpty()) {
-        job=0;
+        job=nullptr;
         emit result(done, row, playQueueAction, prio, decreasePriority);
         emit status(QString());
     }
@@ -320,6 +320,6 @@ void StreamFetcher::cancelJob()
         disconnect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
         disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
         job->cancelAndDelete();
-        job=0;
+        job=nullptr;
     }
 }

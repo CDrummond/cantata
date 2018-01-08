@@ -162,7 +162,7 @@ Scrobbler::Track::Track(const Song &s)
 }
 
 Scrobbler::Scrobbler()
-    : QObject(0)
+    : QObject(nullptr)
     , scrobblingEnabled(false)
     , loveIsEnabled(false)
     , scrobbler("Last.fm")
@@ -176,8 +176,8 @@ Scrobbler::Scrobbler()
     , scrobbleViaMpd(false)
     , failedCount(0)
     , lastState(MPDState_Inactive)
-    , authJob(0)
-    , scrobbleJob(0)
+    , authJob(nullptr)
+    , scrobbleJob(nullptr)
 {
     hardFailTimer = new QTimer(this);
     hardFailTimer->setInterval(60*1000);
@@ -443,7 +443,7 @@ void Scrobbler::scrobbleNowPlaying()
     sign(params);
     DBUG << currentSong.title << currentSong.artist << currentSong.albumartist << currentSong.album << currentSong.track << currentSong.length;
     nowPlayingSent=true;
-    lastNowPlaying=time(NULL);
+    lastNowPlaying=time(nullptr);
     if (fakeScrobbling) {
         DBUG << "MSG" << params;
     } else {
@@ -533,7 +533,7 @@ void Scrobbler::scrobbleFinished()
     if (job==scrobbleJob) {
         QByteArray data=job->readAll();
         DBUG << job->errorString() << data << songQueue.size() << lastScrobbledSongs.size();
-        scrobbleJob=0;
+        scrobbleJob=nullptr;
 
         int errorCode=NoError;
         QXmlStreamReader reader(data);
@@ -646,7 +646,7 @@ void Scrobbler::authResp()
     if (job!=authJob) {
         return;
     }
-    authJob=0;
+    authJob=nullptr;
     sessionKey.clear();
 
     QByteArray data=job->readAll();
@@ -778,7 +778,7 @@ void Scrobbler::mpdStateUpdated(bool songChanged)
             nowPlayingTimer->pause();
             break;
         case MPDState_Playing: {
-            time_t now=time(NULL);
+            time_t now=time(nullptr);
             currentSong.timestamp = now-MPDStatus::self()->timeElapsed();
             DBUG << "Timestamp:" << currentSong.timestamp << "scrobbledCurrent:" << scrobbledCurrent << "nowPlayingSent:" << nowPlayingSent
                  << "now:" << now << "lastNowPlaying:" << lastNowPlaying << "isRepeat:" << isRepeat;
@@ -841,14 +841,14 @@ void Scrobbler::cancelJobs()
         authJob->close();
         authJob->abort();
         authJob->deleteLater();
-        authJob=0;
+        authJob=nullptr;
     }
     if (scrobbleJob) {
         disconnect(scrobbleJob, SIGNAL(finished()), this, SLOT(scrobbleFinished()));
         authJob->close();
         authJob->abort();
         authJob->deleteLater();
-        scrobbleJob=0;
+        scrobbleJob=nullptr;
     }
 }
 

@@ -327,17 +327,17 @@ void CoverPreview::wheelEvent(QWheelEvent *event)
 
 CoverDialog::CoverDialog(QWidget *parent)
     : Dialog(parent, "CoverDialog")
-    , existing(0)
+    , existing(nullptr)
     , currentQueryProviders(0)
-    , preview(0)
+    , preview(nullptr)
     , saving(false)
     , isArtist(false)
-    , spinner(0)
-    , msgOverlay(0)
+    , spinner(nullptr)
+    , msgOverlay(nullptr)
     , page(0)
-    , menu(0)
-    , showAction(0)
-    , removeAction(0)
+    , menu(nullptr)
+    , showAction(nullptr)
+    , removeAction(nullptr)
 {
     Configuration cfg(objectName());
     enabledProviders=cfg.get("enabledProviders", (int)Prov_All);
@@ -542,7 +542,7 @@ void CoverDialog::downloadJobFinished()
         QImage img=QImage::fromData(data, format);
         if (!img.isNull()) {
             bool isLarge=reply->property(constThumbProperty).toString().isEmpty();
-            QTemporaryFile *temp=0;
+            QTemporaryFile *temp=nullptr;
 
             if (isLarge || (reply->property(constThumbProperty).toString()==reply->property(constLargeProperty).toString())) {
                 temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX."+(format ? QString(QLatin1String(format)).toLower() : "png"));
@@ -563,7 +563,7 @@ void CoverDialog::downloadJobFinished()
                     tempFiles.prepend(temp);
                 } else {
                     delete temp;
-                    temp=0;
+                    temp=nullptr;
                 }
             }
             if (isLarge) {
@@ -577,7 +577,7 @@ void CoverDialog::downloadJobFinished()
                     }
                 }
             } else {
-                CoverItem *item=0;
+                CoverItem *item=nullptr;
                 img=cropImage(img, isArtist);
                 if (constLastFmHost==host) {
                     item=new LastFmCover(reply->property(constLargeProperty).toString(), url, img, list);
@@ -902,7 +902,7 @@ NetworkJob * CoverDialog::downloadImage(const QString &url, DownloadType dlType)
     DBUG << url << dlType;
     if (DL_Thumbnail==dlType) {
         if (currentUrls.contains(url)) {
-            return 0;
+            return nullptr;
         }
         currentUrls.insert(url);
     } else {
@@ -918,7 +918,7 @@ NetworkJob * CoverDialog::downloadImage(const QString &url, DownloadType dlType)
                             accept();
                         }
                     }
-                    return 0;
+                    return nullptr;
                 }
                 tmp->remove();
                 delete tmp;

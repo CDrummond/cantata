@@ -34,7 +34,7 @@ class ActionModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    ActionModel(QObject *p=0) : QAbstractItemModel(p) { }
+    ActionModel(QObject *p=nullptr) : QAbstractItemModel(p) { }
     ~ActionModel() override { }
     
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;

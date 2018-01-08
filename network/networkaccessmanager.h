@@ -94,7 +94,7 @@ public:
     static void disableNetworkAccess();
     static NetworkAccessManager * self();
 
-    NetworkAccessManager(QObject *parent=0);
+    NetworkAccessManager(QObject *parent=nullptr);
     ~NetworkAccessManager() override { }
 
     NetworkJob * get(const QNetworkRequest &req, int timeout=0);

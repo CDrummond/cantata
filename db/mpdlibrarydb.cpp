@@ -67,9 +67,9 @@ void MpdLibraryDb::removeUnusedDbs()
 MpdLibraryDb::MpdLibraryDb(QObject *p)
     : LibraryDb(p, "MPD")
     , loading(false)
-    , coverQuery(0)
-    , albumIdOnlyCoverQuery(0)
-    , artistImageQuery(0)
+    , coverQuery(nullptr)
+    , albumIdOnlyCoverQuery(nullptr)
+    , artistImageQuery(nullptr)
 {
     connect(MPDConnection::self(), SIGNAL(updatingLibrary(time_t)), this, SLOT(updateStarted(time_t)));
     connect(MPDConnection::self(), SIGNAL(librarySongs(QList<Song>*)), this, SLOT(insertSongs(QList<Song>*)));
@@ -88,7 +88,7 @@ Song MpdLibraryDb::getCoverSong(const QString &artistId, const QString &albumId)
 {
     DBUG << artistId << albumId;
     if (0!=currentVersion && db) {
-        QSqlQuery *query=0;
+        QSqlQuery *query=nullptr;
         if (albumId.isEmpty()) {
             if (!artistImageQuery) {
                 artistImageQuery=new QSqlQuery(*db);
@@ -137,9 +137,9 @@ void MpdLibraryDb::reset()
     delete coverQuery;
     delete artistImageQuery;
     delete albumIdOnlyCoverQuery;
-    coverQuery=0;
-    artistImageQuery=0;
-    albumIdOnlyCoverQuery=0;
+    coverQuery=nullptr;
+    artistImageQuery=nullptr;
+    albumIdOnlyCoverQuery=nullptr;
     LibraryDb::reset();
 }
 

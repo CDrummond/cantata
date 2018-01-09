@@ -56,7 +56,7 @@ int TrackOrganiser::instanceCount()
 
 TrackOrganiser::TrackOrganiser(QWidget *parent)
     : SongDialog(parent, "TrackOrganiser",  QSize(800, 500))
-    , schemeDlg(0)
+    , schemeDlg(nullptr)
     , autoSkip(false)
     , paused(false)
     , updated(false)
@@ -371,7 +371,7 @@ void TrackOrganiser::renameFile()
             QDir sArtistDir(sDir); sArtistDir.cdUp();
             QDir dDir(Utils::getDir(dest));
             #ifdef ENABLE_DEVICES_SUPPORT
-            Device *dev=deviceUdi.isEmpty() ? 0 : getDevice();
+            Device *dev=deviceUdi.isEmpty() ? nullptr : getDevice();
             if (sDir.absolutePath()!=dDir.absolutePath()) {
                 Device::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, dev ? dev->coverFile()
                                                                                            : QString(Covers::albumFileName(s)+QLatin1String(".jpg")));
@@ -546,17 +546,17 @@ Device * TrackOrganiser::getDevice(QWidget *p)
     if (!dev) {
         MessageBox::error(p ? p : this, tr("Device has been removed!"));
         reject();
-        return 0;
+        return nullptr;
     }
     if (!dev->isConnected()) {
         MessageBox::error(p ? p : this, tr("Device is not connected."));
         reject();
-        return 0;
+        return nullptr;
     }
     if (!dev->isIdle()) {
         MessageBox::error(p ? p : this, tr("Device is busy?"));
         reject();
-        return 0;
+        return nullptr;
     }
     return dev;
 }

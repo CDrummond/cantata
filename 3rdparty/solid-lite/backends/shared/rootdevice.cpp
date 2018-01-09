@@ -102,5 +102,5 @@ bool RootDevice::queryDeviceInterface(const Solid::DeviceInterface::Type&) const
 
 QObject* RootDevice::createDeviceInterface(const Solid::DeviceInterface::Type&)
 {
-    return 0;
+    return nullptr;
 }

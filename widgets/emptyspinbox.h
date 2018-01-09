@@ -37,20 +37,20 @@ public:
         setMaximum(3000);
     }
 
-    QSize sizeHint() const {
+    QSize sizeHint() const override {
         return QSpinBox::sizeHint()+QSize(fontMetrics().height()/2, 0);
     }
 
 protected:
-    virtual QValidator::State validate(QString &input, int &pos) const {
+    QValidator::State validate(QString &input, int &pos) const override {
         return input.isEmpty() ? QValidator::Acceptable : QSpinBox::validate(input, pos);
     }
 
-    virtual int valueFromText(const QString &text) const {
+    int valueFromText(const QString &text) const override {
         return text.isEmpty() ? minimum() : QSpinBox::valueFromText(text);
     }
 
-    virtual QString textFromValue(int val) const {
+    QString textFromValue(int val) const override {
         return val==minimum() ? QString() : QSpinBox::textFromValue(val);
     }
 };

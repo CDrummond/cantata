@@ -42,27 +42,27 @@ public:
     static QModelIndexList sortIndexes(const QModelIndexList &list);
     static void drag(Qt::DropActions supportedActions, QAbstractItemView *view, const QModelIndexList &items);
 
-    TreeView(QWidget *parent=0, bool menuAlwaysAllowed=false);
-    virtual ~TreeView();
+    TreeView(QWidget *parent=nullptr, bool menuAlwaysAllowed=false);
+    ~TreeView() override;
 
     void setPageDefaults();
     void setExpandOnClick();
-    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
     bool haveSelectedItems() const;
     bool haveUnSelectedItems() const;
-    void startDrag(Qt::DropActions supportedActions) { drag(supportedActions, this, selectedIndexes()); }
-    void mouseReleaseEvent(QMouseEvent *event);
-    QModelIndexList selectedIndexes() const { return selectedIndexes(true); }
+    void startDrag(Qt::DropActions supportedActions) override { drag(supportedActions, this, selectedIndexes()); }
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    QModelIndexList selectedIndexes() const override { return selectedIndexes(true); }
     QModelIndexList selectedIndexes(bool sorted) const;
     void expandAll(const QModelIndex &idx=QModelIndex(), bool singleLevelOnly=false);
     void collapseToLevel(int level, const QModelIndex &idx=QModelIndex());
     virtual void expand(const QModelIndex &idx, bool singleOnly=false);
     virtual void collapse(const QModelIndex &idx, bool singleOnly=false);
-    virtual void setModel(QAbstractItemModel *m);
+    void setModel(QAbstractItemModel *m) override;
     bool checkBoxClicked(const QModelIndex &idx) const;
     void setUseSimpleDelegate();
     void setBackgroundImage(const QIcon &icon);
-    void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent *e) override;
     void setForceSingleColumn(bool f) { forceSingleColumn=f; }
     void installFilter(QObject *f) { eventFilter=f; installEventFilter(f); }
     QObject * filter() const { return eventFilter; }

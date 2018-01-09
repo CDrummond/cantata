@@ -45,7 +45,7 @@ MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create
 {
     QString aa=songArtist(s);
     MusicLibraryItemArtist *artistItem=getArtist(aa);
-    return artistItem ? artistItem : (create ? createArtist(s) : 0);
+    return artistItem ? artistItem : (create ? createArtist(s) : nullptr);
 }
 
 MusicLibraryItemArtist * MusicLibraryItemRoot::createArtist(const Song &s, bool forceComposer)
@@ -483,8 +483,8 @@ void MusicLibraryItemRoot::add(const QSet<Song> &songs)
         return;
     }
 
-    MusicLibraryItemArtist *artistItem = 0;
-    MusicLibraryItemAlbum *albumItem = 0;
+    MusicLibraryItemArtist *artistItem = nullptr;
+    MusicLibraryItemAlbum *albumItem = nullptr;
 
     for (const Song &s: songs) {
         if (s.isEmpty()) {
@@ -547,7 +547,7 @@ const MusicLibraryItem * MusicLibraryItemRoot::findSong(const Song &s) const
             }
         }
     }
-    return 0;
+    return nullptr;
 }
 
 bool MusicLibraryItemRoot::songExists(const Song &s) const
@@ -677,7 +677,7 @@ void MusicLibraryItemRoot::removeSongFromList(const Song &s)
     if (!albumItem) {
         return;
     }
-    MusicLibraryItem *songItem=0;
+    MusicLibraryItem *songItem=nullptr;
     int songRow=0;
     for (MusicLibraryItem *song: albumItem->childItems()) {
         if (static_cast<MusicLibraryItemSong *>(song)->song().file==s.file) {
@@ -740,13 +740,13 @@ MusicLibraryItemArtist * MusicLibraryItemRoot::getArtist(const QString &key) con
 {
     if (m_indexes.count()==m_childItems.count()) {
         if (m_childItems.isEmpty()) {
-            return 0;
+            return nullptr;
         }
 
         QHash<QString, int>::ConstIterator idx=m_indexes.find(key);
 
         if (m_indexes.end()==idx) {
-            return 0;
+            return nullptr;
         }
 
         // Check index value is within range
@@ -760,7 +760,7 @@ MusicLibraryItemArtist * MusicLibraryItemRoot::getArtist(const QString &key) con
     }
 
     // Something wrong with m_indexes??? So, refresh them...
-    MusicLibraryItemArtist *ar=0;
+    MusicLibraryItemArtist *ar=nullptr;
     m_indexes.clear();
     QList<MusicLibraryItem *>::ConstIterator it=m_childItems.constBegin();
     QList<MusicLibraryItem *>::ConstIterator end=m_childItems.constEnd();

@@ -30,7 +30,7 @@
 class JamendoXmlParser : public OnlineXmlParser
 {
 public:
-    int parse(QXmlStreamReader &xml);
+    int parse(QXmlStreamReader &xml) override;
 private:
     void parseArtist(QList<Song> *songList, QXmlStreamReader &xml);
     void parseAlbum(Song &song, QList<Song> *songList, QXmlStreamReader &xml);
@@ -47,16 +47,16 @@ public:
     };
 
     JamendoService(QObject *p);
-    QVariant data(const QModelIndex &index, int role) const;
-    QString name() const;
-    QString title() const;
-    QString descr() const;
-    OnlineXmlParser * createParser();
-    QUrl listingUrl() const;
-    void configure(QWidget *p);
-    int averageSize() const { return 100; }
+    QVariant data(const QModelIndex &index, int role) const override;
+    QString name() const override;
+    QString title() const override;
+    QString descr() const override;
+    OnlineXmlParser * createParser() override;
+    QUrl listingUrl() const override;
+    void configure(QWidget *p) override;
+    int averageSize() const override { return 100; }
 private:
-    Song & fixPath(Song &s) const;
+    Song & fixPath(Song &s) const override;
 
 private:
     Format format;

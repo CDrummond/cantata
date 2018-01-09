@@ -126,7 +126,7 @@ const MusicLibraryItemRoot * MusicLibraryModel::root(const MusicLibraryItem *ite
         return root(item->parentItem());
     }
 
-    return 0;
+    return nullptr;
 }
 
 static QString parentData(const MusicLibraryItem *i)

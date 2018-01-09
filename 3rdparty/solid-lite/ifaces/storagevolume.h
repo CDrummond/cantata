@@ -40,7 +40,7 @@ namespace Ifaces
         /**
          * Destroys a StorageVolume object.
          */
-        virtual ~StorageVolume();
+        ~StorageVolume() override;
 
 
         /**

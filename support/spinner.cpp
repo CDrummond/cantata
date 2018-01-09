@@ -31,8 +31,8 @@
 #include <QScrollBar>
 
 Spinner::Spinner(QObject *p, bool inMiddle)
-    : QWidget(0)
-    , timer(0)
+    : QWidget(nullptr)
+    , timer(nullptr)
     , space(Utils::scaleForDpi(4))
     , value(0)
     , active(false)

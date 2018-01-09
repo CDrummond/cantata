@@ -37,14 +37,14 @@ public:
     const QString & fullText() const { return originalText; }
     void setTextElideMode(Qt::TextElideMode mode);
 
-    QSize minimumSizeHint() const {
+    QSize minimumSizeHint() const override {
         QSize sh = QLabel::minimumSizeHint();
         sh.setWidth(-1);
         return sh;
     }
 
-    QSize sizeHint() const { return QSize(fontMetrics().width(originalText), QLabel::sizeHint().height()); }
-    void resizeEvent(QResizeEvent *) { elideText(); }
+    QSize sizeHint() const override { return QSize(fontMetrics().width(originalText), QLabel::sizeHint().height()); }
+    void resizeEvent(QResizeEvent *) override { elideText(); }
 
 private:
     void elideText();

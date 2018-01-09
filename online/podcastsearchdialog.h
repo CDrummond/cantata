@@ -52,7 +52,7 @@ class PodcastPage : public QWidget
     Q_OBJECT
 public:
     PodcastPage(QWidget *p, const QString &n);
-    virtual ~PodcastPage() { cancel(); cancelImage(); }
+    ~PodcastPage() override { cancel(); cancelImage(); }
     
     const Icon & icon() const { return icn; }
     const QString & name() const { return pageName; }
@@ -95,12 +95,12 @@ class PodcastSearchPage : public PodcastPage
     Q_OBJECT
 public:
     PodcastSearchPage(QWidget *p, const QString &n, const QString &i, const QUrl &qu, const QString &qk, const QStringList &other=QStringList());
-    virtual ~PodcastSearchPage() { }
+    ~PodcastSearchPage() override { }
     
-    void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) override;
 
 private:
-    void parseResonse(QIODevice *dev);
+    void parseResonse(QIODevice *dev) override;
 
 private Q_SLOTS:
     virtual void doSearch();
@@ -120,15 +120,15 @@ class OpmlBrowsePage : public PodcastPage
     Q_OBJECT
 public:
     OpmlBrowsePage(QWidget *p, const QString &n, const QString &i, const QUrl &u);
-    virtual ~OpmlBrowsePage() { }
+    ~OpmlBrowsePage() override { }
 
-    void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) override;
 
 private Q_SLOTS:
     void reload();
 
 private:
-    void parseResonse(QIODevice *dev);
+    void parseResonse(QIODevice *dev) override;
     void addCategory(const OpmlParser::Category &cat, QTreeWidgetItem *p);
     void addPodcast(const OpmlParser::Podcast &pod, QTreeWidgetItem *p);
 
@@ -142,12 +142,12 @@ class PodcastUrlPage : public PodcastPage
     Q_OBJECT
 public:
     PodcastUrlPage(QWidget *p);
-    virtual ~PodcastUrlPage() { }
+    ~PodcastUrlPage() override { }
 
-    void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) override;
 
 private:
-    void parseResonse(QIODevice *dev);
+    void parseResonse(QIODevice *dev) override;
 
 private Q_SLOTS:
     void loadUrl();
@@ -167,7 +167,7 @@ public:
     static QString constExt;
 
     PodcastSearchDialog(PodcastService *s, QWidget *parent);
-    virtual ~PodcastSearchDialog();
+    ~PodcastSearchDialog() override;
 
 private Q_SLOTS:
     void rssSelected(const QUrl &url);
@@ -178,7 +178,7 @@ private Q_SLOTS:
 
 private:
     QList<PodcastPage *> loadDirectories(const QString &dir, bool isSystem, QSet<QString> &loaded);
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
 
 private:
     QUrl currentUrl;

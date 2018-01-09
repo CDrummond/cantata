@@ -37,11 +37,11 @@ class GroupedViewDelegate : public ActionItemDelegate
     Q_OBJECT
 public:
     GroupedViewDelegate(GroupedView *p);
-    virtual ~GroupedViewDelegate();
+    ~GroupedViewDelegate() override;
 
     QSize sizeHint(int type, bool isCollection) const;
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     int drawRatings(QPainter *painter, const Song &song, const QRect &r, const QFontMetrics &fm, const QColor &col) const;
 
 private:
@@ -69,10 +69,10 @@ public:
     static int iconSize();
     static void drawPlayState(QPainter *painter, const QStyleOptionViewItem &option, const QRect &r, int state);
 
-    GroupedView(QWidget *parent=0, bool isPlayQueue=false);
-    virtual ~GroupedView();
+    GroupedView(QWidget *parent=nullptr, bool isPlayQueue=false);
+    ~GroupedView() override;
 
-    void setModel(QAbstractItemModel *model);
+    void setModel(QAbstractItemModel *model) override;
     void setFilterActive(bool f);
     bool isFilterActive() const { return filterActive; }
     void setAutoExpand(bool ae) { autoExpand=ae; }
@@ -88,15 +88,15 @@ public:
                                                 (startClosed && controlledAlbums[collection].contains(key)) ||
                                                 (!startClosed && !controlledAlbums[collection].contains(key)); }
     void toggle(const QModelIndex &idx);
-    QModelIndexList selectedIndexes() const { return selectedIndexes(true); }
+    QModelIndexList selectedIndexes() const override { return selectedIndexes(true); }
     QModelIndexList selectedIndexes(bool sorted) const;
-    void dropEvent(QDropEvent *event);
+    void dropEvent(QDropEvent *event) override;
     void collectionRemoved(quint32 key);
-    void expand(const QModelIndex &idx, bool singleOnly=false);
-    void collapse(const QModelIndex &idx, bool singleOnly=false);
+    void expand(const QModelIndex &idx, bool singleOnly=false) override;
+    void collapse(const QModelIndex &idx, bool singleOnly=false) override;
 
  private:
-    void drawBranches(QPainter *painter, const QRect &, const QModelIndex &) const;
+    void drawBranches(QPainter *painter, const QRect &, const QModelIndex &) const override;
 
 public Q_SLOTS:
     void updateRows(const QModelIndex &parent);

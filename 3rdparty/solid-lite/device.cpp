@@ -96,7 +96,7 @@ Solid::Device &Solid::Device::operator=(const Solid::Device &device)
 
 bool Solid::Device::isValid() const
 {
-    return d->backendObject()!=0;
+    return d->backendObject()!=nullptr;
 }
 
 QString Solid::Device::udi() const
@@ -166,17 +166,17 @@ const Solid::DeviceInterface *Solid::Device::asDeviceInterface(const DeviceInter
 {
     Ifaces::Device *device = qobject_cast<Ifaces::Device *>(d->backendObject());
 
-    if (device!=0)
+    if (device!=nullptr)
     {
         DeviceInterface *iface = d->interface(type);
 
-        if (iface!=0) {
+        if (iface!=nullptr) {
             return iface;
         }
 
         QObject *dev_iface = device->createDeviceInterface(type);
 
-        if (dev_iface!=0)
+        if (dev_iface!=nullptr)
         {
             switch (type)
             {
@@ -250,7 +250,7 @@ const Solid::DeviceInterface *Solid::Device::asDeviceInterface(const DeviceInter
             }
         }
 
-        if (iface!=0)
+        if (iface!=nullptr)
         {
             // Lie on the constness since we're simply doing caching here
             const_cast<Device *>(this)->d->setInterface(type, iface);
@@ -261,7 +261,7 @@ const Solid::DeviceInterface *Solid::Device::asDeviceInterface(const DeviceInter
     }
     else
     {
-        return 0;
+        return nullptr;
     }
 }
 
@@ -279,13 +279,13 @@ Solid::DevicePrivate::~DevicePrivate()
     for (DeviceInterface *iface: m_ifaces) {
         delete iface->d_ptr->backendObject();
     }
-    setBackendObject(0);
+    setBackendObject(nullptr);
 }
 
 void Solid::DevicePrivate::_k_destroyed(QObject *object)
 {
     Q_UNUSED(object);
-    setBackendObject(0);
+    setBackendObject(nullptr);
 }
 
 void Solid::DevicePrivate::setBackendObject(Ifaces::Device *object)

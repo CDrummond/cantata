@@ -54,7 +54,7 @@ class CoverPreview : public Dialog
 
 public:
     CoverPreview(QWidget *p);
-    virtual ~CoverPreview() { }
+    ~CoverPreview() override { }
     void showImage(const QImage &img, const QString &u);
     void downloading(const QString &u);
     bool aboutToShow(const QString &u) const { return u==url; }
@@ -64,7 +64,7 @@ private Q_SLOTS:
 
 private:
     void scaleImage(int adjust);
-    void wheelEvent(QWheelEvent *event);
+    void wheelEvent(QWheelEvent *event) override;
 
 private:
     QString url;
@@ -92,7 +92,7 @@ public:
     };
 
     CoverDialog(QWidget *parent);
-    virtual ~CoverDialog();
+    ~CoverDialog() override;
 
     void show(const Song &s, const Covers::Image &current=Covers::Image());
     int imageSize() const { return iSize; }
@@ -131,10 +131,10 @@ private:
     void parseSpotifyQueryResponse(const QByteArray &resp);
     void parseITunesQueryResponse(const QByteArray &resp);
     void parseDeezerQueryResponse(const QByteArray &resp);
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
     bool saveCover(const QString &src, const QImage &img);
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
     void setSearching(bool s);
     void addProvider(QMenu *mnu, const QString &name, int bit, int value);
 

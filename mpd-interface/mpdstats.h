@@ -74,7 +74,7 @@ Q_SIGNALS:
 
 private:
     MPDStats();
-    ~MPDStats() {}
+    ~MPDStats() override {}
     MPDStats(const MPDStats&);
     MPDStats& operator=(const MPDStats& other);
 

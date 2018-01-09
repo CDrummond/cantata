@@ -73,8 +73,8 @@ class SmartPlaylistsPage : public SinglePageWidget
 
 public:
     SmartPlaylistsPage(QWidget *p);
-    virtual ~SmartPlaylistsPage();
-    void setView(int) { }
+    ~SmartPlaylistsPage() override;
+    void setView(int) override { }
 
 Q_SIGNALS:
     void search(const QByteArray &query, const QString &id);
@@ -89,12 +89,12 @@ private Q_SLOTS:
     void rating(const QString &file, quint8 val);
 
 private:
-    void doSearch();
-    void controlActions();
+    void doSearch() override;
+    void controlActions() override;
     void enableWidgets(bool enable);
     void filterCommand();
     void addSongsToPlayQueue();
-    void addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority);
+    void addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority) override;
 
 private:
     PlaylistProxyModel proxy;

@@ -28,8 +28,8 @@
 #include <QMetaMethod>
 
 static const char *constProp="Category";
-static ActionCollection *coll=0;
-static QWidget *mainWidget=0;
+static ActionCollection *coll=nullptr;
+static QWidget *mainWidget=nullptr;
 void ActionCollection::setMainWidget(QWidget *w)
 {
     mainWidget=w;
@@ -51,7 +51,7 @@ Action * ActionCollection::createAction(const QString &name, const QString &text
 {
     Action *act = static_cast<Action *>(addAction(name));
     act->setText(text);
-    if (0!=icon) {
+    if (nullptr!=icon) {
         if ('m'==icon[0] && 'e'==icon[1] && 'd'==icon[2] && 'i'==icon[3] && 'a'==icon[4] && '-'==icon[5]) {
             act->setIcon(Icon::getMediaIcon(icon));
         } else {
@@ -104,7 +104,7 @@ void ActionCollection::clear() {
 }
 
 QAction *ActionCollection::action(const QString &name) const {
-  return _actionByName.value(name, 0);
+  return _actionByName.value(name, nullptr);
 }
 
 QList<QAction *> ActionCollection::actions() const {
@@ -140,7 +140,7 @@ QAction *ActionCollection::addAction(const QString &name, QAction *action) {
     indexName = indexName.sprintf("unnamed-%p", (void *)action);
 
   // do we already have this action?
-  if(_actionByName.value(indexName, 0) == action)
+  if(_actionByName.value(indexName, nullptr) == action)
     return action;
   // or maybe another action under this name?
   if(QAction *oldAction = _actionByName.value(indexName))
@@ -177,7 +177,7 @@ void ActionCollection::removeAction(QAction *action) {
 
 QAction *ActionCollection::takeAction(QAction *action) {
   if(!unlistAction(action))
-    return 0;
+    return nullptr;
 
   for (QWidget *widget: _associatedWidgets) {
     widget->removeAction(action);

@@ -33,11 +33,11 @@ class MessageWidget : public KMsgWidget
 public:
 
     MessageWidget(QWidget *parent);
-    virtual ~MessageWidget();
+    ~MessageWidget() override;
     void setError(const QString &msg, bool showCloseButton=true) { setMessage(msg, Error, showCloseButton); }
     void setInformation(const QString &msg, bool showCloseButton=true) { setMessage(msg, Information, showCloseButton); }
     void setWarning(const QString &msg, bool showCloseButton=true) { setMessage(msg, Warning, showCloseButton); }
-    void setVisible(bool v);
+    void setVisible(bool v) override;
     bool isActive() const { return active; }
     void removeAllActions();
     void setActions(const QList<QAction *> acts);

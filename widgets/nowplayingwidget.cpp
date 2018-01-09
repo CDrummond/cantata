@@ -54,7 +54,7 @@ public:
         setBaseStyle(qApp->style());
     }
 
-    int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const
+    int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const override
     {
         if (QStyle::SH_Slider_AbsoluteSetButtons==stylehint) {
             return Qt::LeftButton|QProxyStyle::styleHint(stylehint, opt, widget, returnData);
@@ -107,7 +107,7 @@ public:
         Settings::self()->saveShowTimeRemaining(showRemaining);
     }
 
-    bool event(QEvent *e)
+    bool event(QEvent *e) override
     {
         switch (e->type()) {
         case QEvent::MouseButtonPress:
@@ -250,7 +250,7 @@ void PosSlider::setRange(int min, int max)
 
 NowPlayingWidget::NowPlayingWidget(QWidget *p)
     : QWidget(p)
-    , timer(0)
+    , timer(nullptr)
     , lastVal(0)
     , pollCount(0)
 {
@@ -271,8 +271,8 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     infoLabel->setFont(small);
     slider->setOrientation(Qt::Horizontal);
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
-    QBoxLayout *topLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
-    QBoxLayout *botLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
+    QBoxLayout *topLayout=new QBoxLayout(QBoxLayout::LeftToRight, nullptr);
+    QBoxLayout *botLayout=new QBoxLayout(QBoxLayout::LeftToRight, nullptr);
     int space=Utils::layoutSpacing(this);
     int pad=qMax(space, Utils::scaleForDpi(8));
     #ifdef Q_OS_MAC

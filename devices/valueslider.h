@@ -31,7 +31,7 @@ class ValueSlider : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ValueSlider(QWidget *parent=0);
+    explicit ValueSlider(QWidget *parent=nullptr);
 
     void setValues(const Encoders::Encoder &enc);
     void setValue(int value);

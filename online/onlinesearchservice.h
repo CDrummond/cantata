@@ -34,11 +34,11 @@ class OnlineSearchService : public SearchModel, public OnlineService
     Q_OBJECT
 public:
     OnlineSearchService(QObject *p);
-    virtual ~OnlineSearchService() { cancel(); }
+    ~OnlineSearchService() override { cancel(); }
 
-    QVariant data(const QModelIndex &index, int role) const;
-    Song & fixPath(Song &s) const;
-    virtual void search(const QString &key, const QString &value) =0;
+    QVariant data(const QModelIndex &index, int role) const override;
+    Song & fixPath(Song &s) const override;
+    void search(const QString &key, const QString &value) override =0;
     virtual void cancel();
 
 protected:

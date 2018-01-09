@@ -77,8 +77,8 @@ ActionDialog::ActionDialog(QWidget *parent)
     : Dialog(parent)
     , spaceRequired(0)
     , mpdConfigured(false)
-    , currentDev(0)
-    , songDialog(0)
+    , currentDev(nullptr)
+    , songDialog(nullptr)
 {
     iCount++;
     setButtons(Ok|Cancel);
@@ -179,7 +179,7 @@ void ActionDialog::controlInfoLabel()
 
 void ActionDialog::calcFileSize()
 {
-    Device *dev=0;
+    Device *dev=nullptr;
     int toCalc=qMin(50, songsToCalcSize.size());
     for (int i=0; i<toCalc; ++i) {
         Song s=songsToCalcSize.takeAt(0);
@@ -395,7 +395,7 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     actionedSongs.clear();
     skippedSongs.clear();
     currentPercent=0;
-    currentDev=0;
+    currentDev=nullptr;
     count=0;
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     albumsWithoutRgTags.clear();
@@ -479,7 +479,7 @@ void ActionDialog::slotButtonClicked(int button)
         paused=true;
         if (MessageBox::Yes==MessageBox::questionYesNo(this, tr("Are you sure you wish to stop?"), tr("Stop"),
                                                        StdGuiItem::stop(), StdGuiItem::cont())) {
-            Device *dev=0;
+            Device *dev=nullptr;
             if(Copy==mode || Sync==mode) {
                 dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi, false);
             } else if (!sourceUdi.isEmpty()) { // Must be a delete...
@@ -541,7 +541,7 @@ Device * ActionDialog::getDevice(const QString &udi, bool logErrors)
         MessageBox::error(parentWidget(), error);
     }
 
-    return 0;
+    return nullptr;
 }
 
 void ActionDialog::doNext()
@@ -601,7 +601,7 @@ void ActionDialog::doNext()
         }
         progressLabel->setText(formatSong(currentSong, false));
     } else if (Remove==mode && dirsToClean.count()) {
-        Device *dev=sourceUdi.isEmpty() ? 0 : DevicesModel::self()->device(sourceUdi);
+        Device *dev=sourceUdi.isEmpty() ? nullptr : DevicesModel::self()->device(sourceUdi);
         if (sourceUdi.isEmpty() || dev) {
             progressLabel->setText(tr("Clearing unused folders"));
             if (dev) {

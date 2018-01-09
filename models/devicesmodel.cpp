@@ -87,7 +87,7 @@ GLOBAL_STATIC(DevicesModel, instance)
 
 DevicesModel::DevicesModel(QObject *parent)
     : MusicLibraryModel(parent)
-    , itemMenu(0)
+    , itemMenu(nullptr)
     , enabled(false)
     , inhibitMenuUpdate(false)
 {
@@ -471,7 +471,7 @@ void DevicesModel::stop()
 Device * DevicesModel::device(const QString &udi)
 {
     int idx=indexOf(udi);
-    return idx<0 ? 0 : static_cast<Device *>(collections.at(idx));
+    return idx<0 ? nullptr : static_cast<Device *>(collections.at(idx));
 }
 
 void DevicesModel::setCover(const Song &song, const QImage &img, const QString &file)
@@ -581,7 +581,7 @@ void DevicesModel::deviceAdded(const QString &udi)
 
     Solid::Device device(udi);
     DBUG << "Solid device added udi:" << device.udi() << "product:" << device.product() << "vendor:" << device.vendor();
-    Solid::StorageAccess *ssa =0;
+    Solid::StorageAccess *ssa =nullptr;
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     Solid::OpticalDisc * opt = device.as<Solid::OpticalDisc>();
 
@@ -890,7 +890,7 @@ void DevicesModel::updateItemMenu()
     }
 
     if (!itemMenu) {
-        itemMenu = new MirrorMenu(0);
+        itemMenu = new MirrorMenu(nullptr);
     }
 
     itemMenu->clear();
@@ -922,7 +922,7 @@ void DevicesModel::updateItemMenu()
 
 QMimeData * DevicesModel::mimeData(const QModelIndexList &indexes) const
 {
-    QMimeData *mimeData=0;
+    QMimeData *mimeData=nullptr;
     QStringList paths=playableUrls(indexes);
 
     if (!paths.isEmpty()) {

@@ -56,7 +56,7 @@ int Icon::dlgIconSize()
     static int size=-1;
 
     if (-1==size) {
-        QMessageBox *box=new QMessageBox(0);
+        QMessageBox *box=new QMessageBox(nullptr);
         box->setVisible(false);
         box->setIcon(QMessageBox::Information);
         box->ensurePolished();

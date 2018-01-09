@@ -42,13 +42,13 @@ class StorageDrive: public Block, virtual public Solid::Ifaces::StorageDrive
 
 public:
     StorageDrive(Device *dev);
-    virtual ~StorageDrive();
+    ~StorageDrive() override;
 
-    virtual qulonglong size() const;
-    virtual bool isHotpluggable() const;
-    virtual bool isRemovable() const;
-    virtual Solid::StorageDrive::DriveType driveType() const;
-    virtual Solid::StorageDrive::Bus bus() const;
+    qulonglong size() const override;
+    bool isHotpluggable() const override;
+    bool isRemovable() const override;
+    Solid::StorageDrive::DriveType driveType() const override;
+    Solid::StorageDrive::Bus bus() const override;
 
 private:
     UdevQt::Device m_udevDevice;

@@ -174,7 +174,7 @@ bool Solid::Backends::Hal::Cdrom::callSystemEject()
     m_process = FstabHandling::callSystemCommand("eject", device,
                                                  this, SLOT(slotProcessFinished(int,QProcess::ExitStatus)));
 
-    return m_process!=0;
+    return m_process!=nullptr;
 }
 
 void Cdrom::slotDBusReply(const QDBusMessage &/*reply*/)

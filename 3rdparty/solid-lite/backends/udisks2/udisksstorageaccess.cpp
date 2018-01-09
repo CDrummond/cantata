@@ -332,7 +332,7 @@ bool StorageAccess::requestPassphrase()
 
     QWidget *activeWindow = QApplication::activeWindow();
     uint wId = 0;
-    if (activeWindow!=0)
+    if (activeWindow!=nullptr)
         wId = (uint)activeWindow->winId();
 
     QString appId = QCoreApplication::applicationName();

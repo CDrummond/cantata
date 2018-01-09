@@ -42,7 +42,7 @@ public:
     static void setup();
 
     ActionItemDelegate(QObject *p);
-    virtual ~ActionItemDelegate() { }
+    ~ActionItemDelegate() override { }
 
     static int constBorder;
     static int constActionBorder;
@@ -54,7 +54,7 @@ public:
     void setLargeIcons(bool l) { largeIcons=l; }
 
 public Q_SLOTS:
-    bool helpEvent(QHelpEvent *e, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index);
+    bool helpEvent(QHelpEvent *e, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
 public:
     QAction * getAction(const QModelIndex &index) const;

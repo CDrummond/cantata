@@ -51,12 +51,12 @@ public:
 
     MetaEngine(QObject *p);
 
-    QStringList getLangs() const;
-    QString getPrefix(const QString &key) const;
-    QString translateLinks(QString text) const;
+    QStringList getLangs() const override;
+    QString getPrefix(const QString &key) const override;
+    QString translateLinks(QString text) const override;
 
 public Q_SLOTS:
-    void search(const QStringList &query, Mode mode);
+    void search(const QStringList &query, Mode mode) override;
 
 private Q_SLOTS:
     void wikiResponse(const QString &html, const QString &lang);

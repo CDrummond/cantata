@@ -47,11 +47,11 @@ namespace Ifaces
         /**
          * Constructs a DeviceManager
          */
-        DeviceManager(QObject *parent = 0);
+        DeviceManager(QObject *parent = nullptr);
         /**
          * Destructs a DeviceManager object
          */
-        virtual ~DeviceManager();
+        ~DeviceManager() override;
 
         /**
          * Retrieves the prefix used for the UDIs off all the devices

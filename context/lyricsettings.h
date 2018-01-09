@@ -37,12 +37,12 @@ class LyricSettings : public ToggleList
     Q_OBJECT
 public:
     LyricSettings(QWidget *p);
-    virtual ~LyricSettings() { }
+    ~LyricSettings() override { }
 
     void load();
     void save();
 
-    void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) override;
 
 private:
     bool loadedXml;

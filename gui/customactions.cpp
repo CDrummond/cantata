@@ -52,10 +52,10 @@ bool CustomActions::Command::operator<(const Command &o) const
 }
 
 CustomActions::CustomActions()
-    : Action(tr("Custom Actions"), 0)
-    , mainWindow(0)
+    : Action(tr("Custom Actions"), nullptr)
+    , mainWindow(nullptr)
 {
-    QMenu *m=new QMenu(0);
+    QMenu *m=new QMenu(nullptr);
     setMenu(m);
     Configuration cfg(metaObject()->className());
     int count=cfg.get("count", 0);

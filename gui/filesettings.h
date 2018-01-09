@@ -30,7 +30,7 @@ class FileSettings : public QWidget, private Ui::FileSettings
 {
 public:
     FileSettings(QWidget *p);
-    virtual ~FileSettings() { }
+    ~FileSettings() override { }
 
     void load();
     void save();

@@ -92,7 +92,7 @@ public:
         setFocusPolicy(Qt::NoFocus);
     }
 
-    void paintEvent(QPaintEvent *)
+    void paintEvent(QPaintEvent *) override
     {
         QStylePainter p(this);
         QStyleOptionToolButton opt;
@@ -108,9 +108,9 @@ StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     , installed(MonoIcon::icon(FontAwesome::check, QColor(0, 220, 0)))
     , updateable(MonoIcon::icon(FontAwesome::angledoubledown, QColor(0, 0, 220)))
     , p(parent)
-    , job(0)
-    , spinner(0)
-    , msgOverlay(0)
+    , job(nullptr)
+    , spinner(nullptr)
+    , msgOverlay(nullptr)
 {
     QWidget *wid=new QWidget(this);
     QBoxLayout *l=new QBoxLayout(QBoxLayout::TopToBottom, wid);
@@ -149,7 +149,7 @@ StreamProviderListDialog::~StreamProviderListDialog()
     if (job) {
         disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
         job->cancelAndDelete();
-        job=0;
+        job=nullptr;
     }
 }
 
@@ -228,7 +228,7 @@ void StreamProviderListDialog::jobFinished()
     if (j!=job) {
         return;
     }
-    job=0;
+    job=nullptr;
 
     if (0==tree->topLevelItemCount()) {
         if (j->ok()) {
@@ -297,7 +297,7 @@ void StreamProviderListDialog::readProviders(QIODevice *dev)
                     if (url.isEmpty()) {
                         url=constProviderBaseUrl+name+".streams.gz";
                     }
-                    QTreeWidgetItem *cat=0;
+                    QTreeWidgetItem *cat=nullptr;
                     if (!categories.contains(currentCat)) {
                         cat=new QTreeWidgetItem(tree, QStringList() << catName(currentCat));
                         cat->setFlags(Qt::ItemIsEnabled);
@@ -373,7 +373,7 @@ void StreamProviderListDialog::slotButtonClicked(int button)
             if (job) {
                 disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                 job->cancelAndDelete();
-                job=0;
+                job=nullptr;
             }
             reject();
             // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!

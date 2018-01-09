@@ -46,10 +46,10 @@ TitleWidget::TitleWidget(QWidget *p)
     : QWidget(p)
     , pressed(false)
     , underMouse(false)
-    , controls(0)
+    , controls(nullptr)
 {
     QGridLayout *layout=new QGridLayout(this);
-    QVBoxLayout *textLayout=new QVBoxLayout(0);
+    QVBoxLayout *textLayout=new QVBoxLayout(nullptr);
     image=new QLabel(this);
     mainText=new SqueezedTextLabel(this);
     subText=new SqueezedTextLabel(this);

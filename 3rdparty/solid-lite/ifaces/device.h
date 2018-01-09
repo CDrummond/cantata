@@ -51,11 +51,11 @@ namespace Ifaces
         /**
          * Constructs a Device
          */
-        Device(QObject *parent = 0);
+        Device(QObject *parent = nullptr);
         /**
          * Destruct the Device object
          */
-        virtual ~Device();
+        ~Device() override;
 
 
         /**

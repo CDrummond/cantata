@@ -66,7 +66,7 @@ class Mpris : public QObject
 
 public:
     Mpris(QObject *p);
-    virtual ~Mpris();
+    ~Mpris() override;
 
     // org.mpris.MediaPlayer2.Player
     void Next() { StdActions::self()->nextTrackAction->trigger(); }

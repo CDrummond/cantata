@@ -33,7 +33,7 @@ class NoteLabel : public QWidget
     Q_OBJECT
 public:
     static void setText(QLabel *l, const QString &text);
-    NoteLabel(QWidget *parent=0);
+    NoteLabel(QWidget *parent=nullptr);
     void setText(const QString &text) { setText(label, text); }
     void appendText(const QString &text) { label->setText(label->text()+text); }
     QString text() const { return label->text(); }
@@ -46,7 +46,7 @@ class UrlNoteLabel : public QWidget
 {
     Q_OBJECT
 public:
-    UrlNoteLabel(QWidget *parent=0);
+    UrlNoteLabel(QWidget *parent=nullptr);
     void setText(const QString &text) { NoteLabel::setText(label, text); }
     void appendText(const QString &text) { label->setText(label->text()+text); }
     QString text() const { return label->text(); }
@@ -59,14 +59,14 @@ private:
 class PlainNoteLabel : public StateLabel
 {
 public:
-    PlainNoteLabel(QWidget *parent=0);
+    PlainNoteLabel(QWidget *parent=nullptr);
     void setText(const QString &text) { NoteLabel::setText(this, text); }
 };
 
 class PlainUrlNoteLabel : public UrlLabel
 {
 public:
-    PlainUrlNoteLabel(QWidget *parent=0);
+    PlainUrlNoteLabel(QWidget *parent=nullptr);
     void setText(const QString &text) { NoteLabel::setText(this, text); }
 };
 

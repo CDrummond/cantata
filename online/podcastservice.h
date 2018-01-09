@@ -60,9 +60,9 @@ public:
             QueuedForDownload = -2
         };
 
-        Episode(const QDateTime &d=QDateTime(), const QString &n=QString(), const QUrl &u=QUrl(), Podcast *p=0)
+        Episode(const QDateTime &d=QDateTime(), const QString &n=QString(), const QUrl &u=QUrl(), Podcast *p=nullptr)
             : Item(n, u), played(false), duration(0), publishedDate(d), parent(p), downloadProg(NotDownloading) { }
-        virtual ~Episode() { }
+        ~Episode() override { }
         Song toSong() const;
         bool played;
         int duration;
@@ -75,8 +75,8 @@ public:
     struct Podcast : public Item
     {
         Podcast(const QString &f=QString());
-        virtual ~Podcast() { qDeleteAll(episodes); }
-        virtual bool isPodcast() const { return true; }
+        ~Podcast() override { qDeleteAll(episodes); }
+        bool isPodcast() const override { return true; }
         bool load();
         bool save() const;
         void add(Episode *ep);
@@ -102,10 +102,10 @@ public:
         void showUnplayedOnly(bool on);
 
     private:
-        bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+        bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
         bool filterAcceptsPodcast(const Podcast *pod) const;
         bool filterAcceptsEpisode(const Episode *item) const;
-        bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+        bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
     private:
         bool unplayedOnly;
@@ -114,27 +114,27 @@ public:
     static const QLatin1String constName;
 
     PodcastService(QObject *p);
-    virtual ~PodcastService() { cancelAll(); }
+    ~PodcastService() override { cancelAll(); }
 
     Song & fixPath(Song &song) const;
-    QString name() const;
-    QString title() const;
-    QString descr() const;
-    int rowCount(const QModelIndex &index = QModelIndex()) const;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return 1; }
-    bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &index) const;
-    QModelIndex index(int row, int col, const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &, int) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    QMimeData * mimeData(const QModelIndexList &indexes) const;
+    QString name() const override;
+    QString title() const override;
+    QString descr() const override;
+    int rowCount(const QModelIndex &index = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override { Q_UNUSED(parent) return 1; }
+    bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &index) const override;
+    QModelIndex index(int row, int col, const QModelIndex &parent) const override;
+    QVariant data(const QModelIndex &, int) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    QMimeData * mimeData(const QModelIndexList &indexes) const override;
     QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const;
     QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists=false) const;
 
     int podcastCount() const { return podcasts.count(); }
     void clear();
     void configure(QWidget *p);
-    bool subscribedToUrl(const QUrl &url) { return 0!=getPodcast(url); }
+    bool subscribedToUrl(const QUrl &url) { return nullptr!=getPodcast(url); }
     void unSubscribe(Podcast *podcast);
     void refresh(const QModelIndexList &list);
     void refreshAll();
@@ -147,7 +147,7 @@ public:
     static QUrl fixUrl(const QUrl &orig);
     static bool isUrlOk(const QUrl &u) { return QLatin1String("http")==u.scheme() || QLatin1String("https")==u.scheme(); }
 
-    bool isDownloading() const { return 0!=downloadJob; }
+    bool isDownloading() const { return nullptr!=downloadJob; }
     void cancelAllDownloads();
     void downloadPodcasts(Podcast *pod, const QList<Episode *> &episodes);
     void deleteDownloadedPodcasts(Podcast *pod, const QList<Episode *> &episodes);

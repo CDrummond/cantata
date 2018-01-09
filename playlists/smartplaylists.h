@@ -35,14 +35,14 @@ public:
     static SmartPlaylists * self();
 
     SmartPlaylists();
-    virtual ~SmartPlaylists() { }
+    ~SmartPlaylists() override { }
 
-    QString name() const;
-    QString title() const;
-    QString descr() const;
-    QVariant data(const QModelIndex &index, int role) const;
-    int maxTracks() const { return 10000; }
-    int defaultNumTracks() const { return 100; }
+    QString name() const override;
+    QString title() const override;
+    QString descr() const override;
+    QVariant data(const QModelIndex &index, int role) const override;
+    int maxTracks() const override { return 10000; }
+    int defaultNumTracks() const override { return 100; }
 
 private:
     QIcon playlistIcon;

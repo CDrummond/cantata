@@ -41,15 +41,15 @@ class MusicLibraryModel : public ActionModel
 {
     Q_OBJECT
 public:
-    MusicLibraryModel(QObject *parent=0);
-    ~MusicLibraryModel();
-    QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &) const;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &i=QModelIndex()) const { Q_UNUSED(i) return 1; }
-    QVariant data(const QModelIndex &, int) const;
-    bool setData(const QModelIndex &idx, const QVariant &value, int role = Qt::EditRole);
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    MusicLibraryModel(QObject *parent=nullptr);
+    ~MusicLibraryModel() override;
+    QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &i=QModelIndex()) const override { Q_UNUSED(i) return 1; }
+    QVariant data(const QModelIndex &, int) const override;
+    bool setData(const QModelIndex &idx, const QVariant &value, int role = Qt::EditRole) override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
     void clear();
     void setSongs(const QSet<Song> &songs);
     void setSupportsAlbumArtistTag(bool s) { rootItem->setSupportsAlbumArtistTag(s); }

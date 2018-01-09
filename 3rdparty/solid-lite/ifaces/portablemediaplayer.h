@@ -42,7 +42,7 @@ namespace Ifaces
         /**
          * Destroys a portable media player object.
          */
-        virtual ~PortableMediaPlayer();
+        ~PortableMediaPlayer() override;
 
         /**
          * Retrieves known protocols this device can speak.  This list may be dependent

@@ -125,6 +125,6 @@ void SoundCloudService::jobFinished()
         }
     }
     results(songs);
-    job=0;
+    job=nullptr;
     emit dataChanged(QModelIndex(), QModelIndex());
 }

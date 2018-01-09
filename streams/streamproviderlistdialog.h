@@ -45,7 +45,7 @@ class StreamProviderListDialog : public Dialog
 
 public:
     StreamProviderListDialog(StreamsSettings *parent);
-    virtual ~StreamProviderListDialog();
+    ~StreamProviderListDialog() override;
     void show(const QSet<QString> &installed);
 
 private Q_SLOTS:
@@ -55,7 +55,7 @@ private Q_SLOTS:
 
 private:
     void readProviders(QIODevice *dev);
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
     void updateView(bool unCheck=false);
     void doNext();
     void setState(bool downloading);

@@ -346,7 +346,7 @@ PodcastService::Episode * PodcastService::Podcast::getEpisode(const QUrl &epUrl)
             return episode;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 void PodcastService::Podcast::setUnplayedCount()
@@ -386,8 +386,8 @@ const Song & PodcastService::Podcast::coverSong()
 
 PodcastService::PodcastService(QObject *p)
     : ActionModel(p)
-    , downloadJob(0)
-    , rssUpdateTimer(0)
+    , downloadJob(nullptr)
+    , rssUpdateTimer(nullptr)
 {
     QMetaObject::invokeMethod(this, "loadAll", Qt::QueuedConnection);
     icn.addFile(":"+constName);
@@ -595,7 +595,7 @@ Qt::ItemFlags PodcastService::flags(const QModelIndex &index) const
 
 QMimeData * PodcastService::mimeData(const QModelIndexList &indexes) const
 {
-    QMimeData *mimeData=0;
+    QMimeData *mimeData=nullptr;
     QStringList paths=filenames(indexes);
 
     if (!paths.isEmpty()) {
@@ -856,7 +856,7 @@ PodcastService::Podcast * PodcastService::getPodcast(const QUrl &url) const
             return podcast;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 void PodcastService::unSubscribe(Podcast *podcast)
@@ -1069,7 +1069,7 @@ void PodcastService::cancelDownload()
             QFile::remove(partial);
         }
         updateEpisode(downloadJob->property(constRssUrlProperty).toUrl(), downloadJob->origUrl(), Episode::NotDownloading);
-        downloadJob=0;
+        downloadJob=nullptr;
     }
 }
 
@@ -1167,7 +1167,7 @@ void PodcastService::downloadJobFinished()
         QFile::remove(partial);
     }
     updateEpisode(job->property(constRssUrlProperty).toUrl(), job->origUrl(), Episode::NotDownloading);
-    downloadJob=0;
+    downloadJob=nullptr;
     doNextDownload();
 }
 

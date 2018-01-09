@@ -43,7 +43,7 @@ class TrayItem : public QObject
     Q_OBJECT
 public:
     TrayItem(MainWindow *p);
-    virtual ~TrayItem() { }
+    ~TrayItem() override { }
 
     void showMessage(const QString &title, const QString &text, const QImage &img);
     void setup();
@@ -52,7 +52,7 @@ public:
     void setIcon(const QIcon &) { }
     void setToolTip(const QString &, const QString &, const QString &) { }
     #else
-    bool isActive() const { return 0!=trayItem; }
+    bool isActive() const { return nullptr!=trayItem; }
     void setIcon(const QIcon &icon) {
         if (trayItem) {
             trayItem->setIcon(icon);

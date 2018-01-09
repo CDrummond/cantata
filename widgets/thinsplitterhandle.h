@@ -30,12 +30,12 @@ class ThinSplitterHandle : public QSplitterHandle
 {
 public:
     ThinSplitterHandle(Qt::Orientation orientation, QSplitter *parent);
-    virtual ~ThinSplitterHandle() { }
+    ~ThinSplitterHandle() override { }
 
-    void resizeEvent(QResizeEvent *event);
-    void paintEvent(QPaintEvent *event);
-    bool event(QEvent *event);
-    QSize sizeHint() const { return QSize(0, 0); }
+    void resizeEvent(QResizeEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+    bool event(QEvent *event) override;
+    QSize sizeHint() const override { return QSize(0, 0); }
     void setHighlightUnderMouse() { highlightUnderMouse=true; }
 
 private:

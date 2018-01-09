@@ -94,7 +94,7 @@ public:
     static const QChar constKeyValSep;
 
     RulesPlaylists(const QString &iconFile, const QString &dir);
-    virtual ~RulesPlaylists() { }
+    ~RulesPlaylists() override { }
 
     virtual QString name() const =0;
     virtual QString title() const =0;
@@ -107,14 +107,14 @@ public:
     virtual int defaultNumTracks() const { return 10; }
     virtual bool saveRemote(const QString &string, const Entry &e) { Q_UNUSED(string); Q_UNUSED(e); return false; }
     virtual void stop(bool sendClear=false) { Q_UNUSED(sendClear) }
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex&) const { return 1; }
-    bool hasChildren(const QModelIndex &parent) const;
-    QModelIndex parent(const QModelIndex &index) const;
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &, int) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex&) const override { return 1; }
+    bool hasChildren(const QModelIndex &parent) const override;
+    QModelIndex parent(const QModelIndex &index) const override;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+    QVariant data(const QModelIndex &, int) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
     Entry entry(const QString &e);
     Entry entry(int row) const { return row>=0 && row<entryList.count() ? entryList.at(row) : Entry(); }
     bool exists(const QString &e) { return entryList.end()!=find(e); }

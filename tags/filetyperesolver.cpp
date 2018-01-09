@@ -51,7 +51,7 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
         bool readProperties,
         TagLib::AudioProperties::ReadStyle propertiesStyle) const
 {
-    TagLib::File* result = 0;
+    TagLib::File* result = nullptr;
 
     QString fn = QFile::decodeName(fileName);
     QString suffix = QFileInfo(fn).suffix();
@@ -105,7 +105,7 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
 
     if (result && !result->isValid()) {
         delete result;
-        result = 0;
+        result = nullptr;
     }
 
     return result;

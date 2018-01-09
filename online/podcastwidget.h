@@ -36,9 +36,9 @@ class PodcastWidget : public SinglePageWidget
     Q_OBJECT
 public:
     PodcastWidget(PodcastService *s, QWidget *p);
-    virtual ~PodcastWidget();
-    QStringList selectedFiles(bool allowPlaylists) const;
-    QList<Song> selectedSongs(bool allowPlaylists) const;
+    ~PodcastWidget() override;
+    QStringList selectedFiles(bool allowPlaylists) const override;
+    QList<Song> selectedSongs(bool allowPlaylists) const override;
 
 private Q_SLOTS:
     void headerClicked(int level);
@@ -53,9 +53,9 @@ private Q_SLOTS:
     void configure();
 
 private:
-    void doSearch();
-    void refresh();
-    void controlActions();
+    void doSearch() override;
+    void refresh() override;
+    void controlActions() override;
 
 private:
     PodcastService *srv;

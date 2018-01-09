@@ -40,8 +40,8 @@ Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
     : QDialog(parent)
     , defButton(0)
     , buttonTypes(0)
-    , mw(0)
-    , buttonBox(0)
+    , mw(nullptr)
+    , buttonBox(nullptr)
     , shown(false)
 {
     if (!name.isEmpty()) {
@@ -390,7 +390,7 @@ void Dialog::create()
 QAbstractButton *Dialog::getButton(ButtonCode button)
 {
     QDialogButtonBox::StandardButton mapped=mapType(button);
-    QAbstractButton *b=QDialogButtonBox::NoButton==mapped ? 0 : buttonBox->button(mapped);
+    QAbstractButton *b=QDialogButtonBox::NoButton==mapped ? nullptr : buttonBox->button(mapped);
     if (!b && userButtons.contains(button)) {
         b=userButtons[button];
     }

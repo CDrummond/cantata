@@ -52,7 +52,7 @@ public:
         Prop_All         = 0x03FF
     };
     DevicePropertiesWidget(QWidget *parent);
-    virtual ~DevicePropertiesWidget() { }
+    ~DevicePropertiesWidget() override { }
     void update(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props, int disabledProps);
     DeviceOptions settings();
     bool isModified() const { return modified; }

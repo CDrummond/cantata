@@ -59,19 +59,19 @@ public:
     static DynamicPlaylists * self();
 
     DynamicPlaylists();
-    virtual ~DynamicPlaylists() { }
+    ~DynamicPlaylists() override { }
 
-    QString name() const;
-    QString title() const;
-    QString descr() const;
-    bool isDynamic() const { return true; }
-    QVariant data(const QModelIndex &index, int role) const;
+    QString name() const override;
+    QString title() const override;
+    QString descr() const override;
+    bool isDynamic() const override { return true; }
+    QVariant data(const QModelIndex &index, int role) const override;
     const Icon & icon() const { return icn; }
-    bool isRemote() const { return usingRemote; }
-    bool saveRemote(const QString &string, const Entry &e);
-    void del(const QString &name);
+    bool isRemote() const override { return usingRemote; }
+    bool saveRemote(const QString &string, const Entry &e) override;
+    void del(const QString &name) override;
     void start(const QString &name);
-    void stop(bool sendClear=false);
+    void stop(bool sendClear=false) override;
     void toggle(const QString &name);
     bool isRunning();
     void helperMessage(const QString &message) {  Q_UNUSED(message) checkHelper(); }

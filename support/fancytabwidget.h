@@ -56,15 +56,15 @@ class FancyTabProxyStyle : public QProxyStyle
     Q_OBJECT
 
 public:
-    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const;
-    void drawControl(ControlElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const;
-    int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
-    void polish(QWidget *widget);
-    void polish(QApplication *app);
-    void polish(QPalette &palette);
+    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const override;
+    void drawControl(ControlElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const override;
+    int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const override;
+    void polish(QWidget *widget) override;
+    void polish(QApplication *app) override;
+    void polish(QPalette &palette) override;
 
 protected:
-    bool eventFilter(QObject *o, QEvent *e);
+    bool eventFilter(QObject *o, QEvent *e) override;
 };
 
 class FancyTabBar;
@@ -73,14 +73,14 @@ class FancyTab : public QWidget
 public:
     FancyTab(FancyTabBar *tabbar);
 
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
     QIcon icon;
     QString text;
     bool underMouse;
 
 protected:
-    void enterEvent(QEvent *);
-    void leaveEvent(QEvent *);
+    void enterEvent(QEvent *) override;
+    void leaveEvent(QEvent *) override;
 
 private:
     FancyTabBar *tabbar;
@@ -98,15 +98,15 @@ public:
     };
 
     FancyTabBar(QWidget *parent, bool text, int iSize, Pos pos);
-    ~FancyTabBar();
+    ~FancyTabBar() override;
 
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event) override;
     void paintTab(QPainter *painter, int tabIndex) const;
-    void mousePressEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *) override;
     bool validIndex(int index) const { return index >= 0 && index < tabs.count(); }
 
-    QSize sizeHint() const;
-    QSize minimumSizeHint() const;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
     void addTab(const QIcon &icon, const QString &label, const QString &tt);
     void addSpacer(int size = 40);

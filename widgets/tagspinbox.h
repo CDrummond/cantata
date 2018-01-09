@@ -33,7 +33,7 @@ public:
     static QString variousStr();
 
     TagSpinBox(QWidget *parent);
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
     void setVarious(bool v);
 
 private:

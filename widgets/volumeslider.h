@@ -39,17 +39,17 @@ class VolumeSlider : public QSlider
 public:
     static QColor clampColor(const QColor &col);
 
-    VolumeSlider(QWidget *p=0);
-    virtual ~VolumeSlider() { }
+    VolumeSlider(QWidget *p=nullptr);
+    ~VolumeSlider() override { }
 
     void initActions();
     void setFadingStop(bool f) { fadingStop=f; }
     void setColor(QColor col);
-    void paintEvent(QPaintEvent *ev);
-    void mousePressEvent(QMouseEvent *ev);
-    void mouseReleaseEvent(QMouseEvent *ev);
-    void contextMenuEvent(QContextMenuEvent *ev);
-    void wheelEvent(QWheelEvent *ev);
+    void paintEvent(QPaintEvent *ev) override;
+    void mousePressEvent(QMouseEvent *ev) override;
+    void mouseReleaseEvent(QMouseEvent *ev) override;
+    void contextMenuEvent(QContextMenuEvent *ev) override;
+    void wheelEvent(QWheelEvent *ev) override;
 
 private Q_SLOTS:
     void updateMpdStatus();

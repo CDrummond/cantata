@@ -43,7 +43,7 @@ class ServerSettings : public QWidget, private Ui::ServerSettings
 
 public:
     ServerSettings(QWidget *p);
-    virtual ~ServerSettings() { }
+    ~ServerSettings() override { }
 
     void load();
     void save();

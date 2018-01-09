@@ -37,9 +37,9 @@
 class TableViewItemDelegate : public BasicItemDelegate
 {
 public:
-    TableViewItemDelegate(QObject *p, int rc) : BasicItemDelegate(p), ratingCol(rc), ratingPainter(0) { }
-    virtual ~TableViewItemDelegate() { delete ratingPainter; }
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    TableViewItemDelegate(QObject *p, int rc) : BasicItemDelegate(p), ratingCol(rc), ratingPainter(nullptr) { }
+    ~TableViewItemDelegate() override { delete ratingPainter; }
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if (!index.isValid()) {
             return;
@@ -82,7 +82,7 @@ public:
 
 TableView::TableView(const QString &cfgGroup, QWidget *parent, bool menuAlwaysAllowed)
     : TreeView(parent, menuAlwaysAllowed)
-    , menu(0)
+    , menu(nullptr)
     , configGroup(cfgGroup)
     , menuIsForCol(-1)
 {

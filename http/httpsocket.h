@@ -39,7 +39,7 @@ class HttpSocket : public QTcpServer
 
 public:
     HttpSocket(const QString &iface, quint16 port);
-    virtual ~HttpSocket() { }
+    ~HttpSocket() override { }
 
     QString configuredInterface() { return cfgInterface; }
     quint16 boundPort();

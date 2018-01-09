@@ -122,14 +122,14 @@ AvahiDiscovery::AvahiDiscovery()
 
     /* create avahi client */
     int error;
-    m_client = avahi_client_new(getAvahiPoll(), AVAHI_CLIENT_IGNORE_USER_CONFIG, clientCallback, NULL, &error);
+    m_client = avahi_client_new(getAvahiPoll(), AVAHI_CLIENT_IGNORE_USER_CONFIG, clientCallback, nullptr, &error);
     if (!m_client) {
         DBUG << "Failed to create client: " << avahi_strerror(error);
         return;
     }
 
     /* create avahi browser */
-    m_browser = avahi_service_browser_new(m_client, AVAHI_IF_UNSPEC, AVAHI_PROTO_INET, "_mpd._tcp", NULL, AVAHI_LOOKUP_USE_MULTICAST, browseCallback, m_client);
+    m_browser = avahi_service_browser_new(m_client, AVAHI_IF_UNSPEC, AVAHI_PROTO_INET, "_mpd._tcp", nullptr, AVAHI_LOOKUP_USE_MULTICAST, browseCallback, m_client);
     if (!m_browser)  {
         DBUG << "Failed to create service browser: " << avahi_strerror(avahi_client_errno(m_client));
         return;

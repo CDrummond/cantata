@@ -33,8 +33,8 @@ class CoverLabel : public QLabel
 public:
     CoverLabel(QWidget *p);
 
-    bool event(QEvent *event);
-    void paintEvent(QPaintEvent *);
+    bool event(QEvent *event) override;
+    void paintEvent(QPaintEvent *) override;
     void updatePix();
     void deletePix();
 
@@ -49,7 +49,7 @@ class CoverWidget : public QWidget
 
 public:
     CoverWidget(QWidget *p);
-    virtual ~CoverWidget();
+    ~CoverWidget() override;
 
     void setSize(int min);
     void setEnabled(bool e);

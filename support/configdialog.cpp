@@ -287,7 +287,7 @@ void ConfigDialog::setH(int h)
 QWidget * ConfigDialog::getPage(const QString &id) const
 {
     if (!pages.contains(id)) {
-        return 0;
+        return nullptr;
     }
 
     #ifdef __APPLE__

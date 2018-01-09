@@ -40,14 +40,14 @@ class StackedPageWidget : public QStackedWidget, public Page
 
 public:
     StackedPageWidget(QWidget *p);
-    virtual ~StackedPageWidget();
+    ~StackedPageWidget() override;
 
     void setView(int v);
-    void focusSearch();
+    void focusSearch() override;
     QStringList selectedFiles(bool allowPlaylists) const;
-    QList<Song> selectedSongs(bool allowPlaylists) const;
-    void addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority);
-    void removeItems();
+    QList<Song> selectedSongs(bool allowPlaylists) const override;
+    void addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority) override;
+    void removeItems() override;
 
 Q_SIGNALS:
     void close();

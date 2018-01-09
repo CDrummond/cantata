@@ -80,7 +80,7 @@ static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeM
 
 CustomActionsSettings::CustomActionsSettings(QWidget *parent)
     : QWidget(parent)
-    , dlg(0)
+    , dlg(nullptr)
 {
     QGridLayout *layout=new QGridLayout(this);
     layout->setMargin(0);

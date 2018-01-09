@@ -37,14 +37,14 @@ class OpticalDisc : public Volume, virtual public Solid::Ifaces::OpticalDisc
 
 public:
     OpticalDisc(HalDevice *device);
-    virtual ~OpticalDisc();
+    ~OpticalDisc() override;
 
-    virtual Solid::OpticalDisc::ContentTypes availableContent() const;
-    virtual Solid::OpticalDisc::DiscType discType() const;
-    virtual bool isAppendable() const;
-    virtual bool isBlank() const;
-    virtual bool isRewritable() const;
-    virtual qulonglong capacity() const;
+    Solid::OpticalDisc::ContentTypes availableContent() const override;
+    Solid::OpticalDisc::DiscType discType() const override;
+    bool isAppendable() const override;
+    bool isBlank() const override;
+    bool isRewritable() const override;
+    qulonglong capacity() const override;
 };
 }
 }

@@ -56,7 +56,7 @@ public:
     static int instanceCount();
 
     ActionDialog(QWidget *parent);
-    virtual ~ActionDialog();
+    ~ActionDialog() override;
 
     void sync(const QString &devId, const QList<Song> &libSongs, const QList<Song> &devSongs);
     void copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs);
@@ -89,7 +89,7 @@ private:
     Device * getDevice(const QString &udi, bool logErrors=true);
     void configure(const QString &udi);
     void init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m);
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
     void setPage(int page, const StringPairList &msg=StringPairList(), const QString &header=QString());
     StringPairList formatSong(const Song &s, bool showFiles=false);
     bool refreshLibrary();

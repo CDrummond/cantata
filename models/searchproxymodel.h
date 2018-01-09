@@ -29,8 +29,8 @@
 class SearchProxyModel : public ProxyModel
 {
 public:
-    SearchProxyModel(QObject *parent = 0);
-    bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+    SearchProxyModel(QObject *parent = nullptr);
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
 };
 
 #endif

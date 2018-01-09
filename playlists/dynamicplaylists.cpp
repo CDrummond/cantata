@@ -126,12 +126,12 @@ const QString constFilename=QLatin1String("FILENAME:");
 
 DynamicPlaylists::DynamicPlaylists()
     : RulesPlaylists("dice", "dynamic")
-    , localTimer(0)
+    , localTimer(nullptr)
     , usingRemote(false)
-    , remoteTimer(0)
+    , remoteTimer(nullptr)
     , remotePollingEnabled(false)
     , statusTime(0)
-    , currentJob(0)
+    , currentJob(nullptr)
     , currentCommand(Unknown)
 {
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));

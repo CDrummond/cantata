@@ -36,10 +36,10 @@ class PlaylistsPage : public MultiPageWidget
     Q_OBJECT
 public:
     PlaylistsPage(QWidget *p);
-    virtual ~PlaylistsPage();
+    ~PlaylistsPage() override;
 
     #ifdef ENABLE_DEVICES_SUPPORT
-    void addSelectionToDevice(const QString &udi);
+    void addSelectionToDevice(const QString &udi) override;
     #endif
 
 Q_SIGNALS:

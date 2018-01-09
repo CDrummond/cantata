@@ -34,14 +34,14 @@ class InterfaceSettings : public QWidget, private Ui::InterfaceSettings
 
 public:
     InterfaceSettings(QWidget *p);
-    virtual ~InterfaceSettings() { }
+    ~InterfaceSettings() override { }
 
     void load();
     void save();
 
-    void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) override;
     void showPage(const QString &page);
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
 
 private:
     void addView(const QString &v, const QString &prop);

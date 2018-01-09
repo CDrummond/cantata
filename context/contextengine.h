@@ -43,7 +43,7 @@ public:
     static ContextEngine * create(QObject *parent);
 
     ContextEngine(QObject *p);
-    virtual ~ContextEngine();
+    ~ContextEngine() override;
     
     virtual QString translateLinks(QString text) const =0;
     virtual QStringList getLangs() const =0;

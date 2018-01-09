@@ -56,7 +56,7 @@ Solid::DeviceManagerPrivate::~DeviceManagerPrivate()
 {
     QList<QObject*> backends = managerBackends();
     for (QObject *backend: backends) {
-        disconnect(backend, 0, this, 0);
+        disconnect(backend, nullptr, this, nullptr);
     }
 
     for (QtPointer<DevicePrivate> dev: m_devicesMap) {
@@ -76,7 +76,7 @@ QList<Solid::Device> Solid::Device::allDevices()
     for (QObject *backendObj: backends) {
         Ifaces::DeviceManager *backend = qobject_cast<Ifaces::DeviceManager *>(backendObj);
 
-        if (backend == 0) continue;
+        if (backend == nullptr) continue;
 
         QStringList udis = backend->allDevices();
 
@@ -112,7 +112,7 @@ QList<Solid::Device> Solid::Device::listFromType(const DeviceInterface::Type &ty
     for (QObject *backendObj: backends) {
         Ifaces::DeviceManager *backend = qobject_cast<Ifaces::DeviceManager *>(backendObj);
 
-        if (backend == 0) continue;
+        if (backend == nullptr) continue;
         if (!backend->supportedInterfaces().contains(type)) continue;
 
         QStringList udis = backend->devicesFromQuery(parentUdi, type);
@@ -135,7 +135,7 @@ QList<Solid::Device> Solid::Device::listFromQuery(const Predicate &predicate,
     for (QObject *backendObj: backends) {
         Ifaces::DeviceManager *backend = qobject_cast<Ifaces::DeviceManager *>(backendObj);
 
-        if (backend == 0) continue;
+        if (backend == nullptr) continue;
 
         QSet<QString> udis;
         if (predicate.isValid()) {
@@ -186,9 +186,9 @@ void Solid::DeviceManagerPrivate::_k_deviceAdded(const QString &udi)
         // Ok, this one was requested somewhere was invalid
         // and now becomes magically valid!
 
-        if (dev && dev->backendObject() == 0) {
+        if (dev && dev->backendObject() == nullptr) {
             dev->setBackendObject(createBackendObject(udi));
-            Q_ASSERT(dev->backendObject()!=0);
+            Q_ASSERT(dev->backendObject()!=nullptr);
         }
     }
 
@@ -204,9 +204,9 @@ void Solid::DeviceManagerPrivate::_k_deviceRemoved(const QString &udi)
         // and now becomes magically invalid!
 
         if (dev) {
-            Q_ASSERT(dev->backendObject()!=0);
-            dev->setBackendObject(0);
-            Q_ASSERT(dev->backendObject()==0);
+            Q_ASSERT(dev->backendObject()!=nullptr);
+            dev->setBackendObject(nullptr);
+            Q_ASSERT(dev->backendObject()==nullptr);
         }
     }
 
@@ -252,22 +252,22 @@ Solid::Ifaces::Device *Solid::DeviceManagerPrivate::createBackendObject(const QS
     for (QObject *backendObj: backends) {
         Ifaces::DeviceManager *backend = qobject_cast<Ifaces::DeviceManager *>(backendObj);
 
-        if (backend == 0) continue;
+        if (backend == nullptr) continue;
         if (!udi.startsWith(backend->udiPrefix())) continue;
 
-        Ifaces::Device *iface = 0;
+        Ifaces::Device *iface = nullptr;
 
         QObject *object = backend->createDevice(udi);
         iface = qobject_cast<Ifaces::Device *>(object);
 
-        if (iface==0) {
+        if (iface==nullptr) {
             delete object;
         }
 
         return iface;
     }
 
-    return 0;
+    return nullptr;
 }
 
 Solid::DeviceManagerStorage::DeviceManagerStorage()

@@ -42,21 +42,21 @@ class StorageAccess : public DeviceInterface, virtual public Solid::Ifaces::Stor
 
 public:
     StorageAccess(HalDevice *device);
-    virtual ~StorageAccess();
+    ~StorageAccess() override;
 
-    virtual bool isAccessible() const;
-    virtual QString filePath() const;
-    virtual bool isIgnored() const;
-    virtual bool setup();
-    virtual bool teardown();
+    bool isAccessible() const override;
+    QString filePath() const override;
+    bool isIgnored() const override;
+    bool setup() override;
+    bool teardown() override;
 
 Q_SIGNALS:
-    void accessibilityChanged(bool accessible, const QString &udi);
-    void setupDone(Solid::ErrorType error, QVariant errorData, const QString &udi);
-    void teardownDone(Solid::ErrorType error, QVariant errorData, const QString &udi);
+    void accessibilityChanged(bool accessible, const QString &udi) override;
+    void setupDone(Solid::ErrorType error, QVariant errorData, const QString &udi) override;
+    void teardownDone(Solid::ErrorType error, QVariant errorData, const QString &udi) override;
     void ejectDone(Solid::ErrorType error, QVariant errorData, const QString &udi);
-    void setupRequested(const QString &udi);
-    void teardownRequested(const QString &udi);
+    void setupRequested(const QString &udi) override;
+    void teardownRequested(const QString &udi) override;
 
 private Q_SLOTS:
     void connectDBusSignals();

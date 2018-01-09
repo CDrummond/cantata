@@ -48,10 +48,10 @@ public:
         sort(0);
     }
 
-    virtual ~RulesSort() {
+    ~RulesSort() override {
     }
 
-    bool lessThan(const QModelIndex &left, const QModelIndex &right) const {
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const override {
         bool lInc=left.data(Qt::UserRole+2).toBool();
         bool rInc=right.data(Qt::UserRole+2).toBool();
 
@@ -137,7 +137,7 @@ static void update(QStandardItem *i, const RulesPlaylists::Rule &rule)
 PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
     : Dialog(parent, "PlaylistRulesDialog")
     , rules(m)
-    , dlg(0)
+    , dlg(nullptr)
 {
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);

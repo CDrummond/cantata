@@ -39,7 +39,7 @@ class WikipediaLoader : public QObject
     Q_OBJECT
 public:
     WikipediaLoader();
-    virtual ~WikipediaLoader();
+    ~WikipediaLoader() override;
 
 public Q_SLOTS:
     void load(const QByteArray &data);
@@ -66,12 +66,12 @@ public:
     static QString constSubDir;
 
     WikipediaSettings(QWidget *p);
-    virtual ~WikipediaSettings();
+    ~WikipediaSettings() override;
     
     void load();
     void save();
     void cancel();
-    void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) override;
 
 Q_SIGNALS:
     void load(const QByteArray &data);

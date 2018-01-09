@@ -40,12 +40,12 @@ class PlaylistRulesDialog : public Dialog, Ui::PlaylistRules
 
 public:
     PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m);
-    virtual ~PlaylistRulesDialog();
+    ~PlaylistRulesDialog() override;
 
     void edit(const QString &name);
 
 private:
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
     bool save();
     int indexOf(QStandardItem *item, bool diff=false);
 

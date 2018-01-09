@@ -63,7 +63,7 @@ void ComboBox::showPopup()
     QStyleOptionComboBox opt;
     initStyleOption(&opt);
     toggleState=false;
-    bool hack=0!=style()->styleHint(QStyle::SH_ComboBox_Popup, &opt, this, 0);
+    bool hack=0!=style()->styleHint(QStyle::SH_ComboBox_Popup, &opt, this, nullptr);
     if (hack && count()>(maxPopupItemCount-2)) {
         toggleState=!isEditable();
 

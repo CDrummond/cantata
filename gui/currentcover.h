@@ -38,7 +38,7 @@ class CurrentCover : public QObject
 public:
     static CurrentCover * self();
     CurrentCover();
-    virtual ~CurrentCover();
+    ~CurrentCover() override;
 
     void setEnabled(bool e);
     void update(const Song &s);

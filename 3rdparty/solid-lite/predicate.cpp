@@ -33,7 +33,7 @@ namespace Solid
 
         Private() : isValid(false), type(PropertyCheck),
                     compOperator(Predicate::Equals),
-                    operand1(0), operand2(0) {}
+                    operand1(nullptr), operand2(nullptr) {}
 
         bool isValid;
         Type type;
@@ -202,7 +202,7 @@ bool Solid::Predicate::matches(const Device &device) const
     {
         const DeviceInterface *iface = device.asDeviceInterface(d->ifaceType);
 
-        if (iface!=0)
+        if (iface!=nullptr)
         {
             const int index = iface->metaObject()->indexOfProperty(d->property.toLatin1());
             QMetaProperty metaProp = iface->metaObject()->property(index);

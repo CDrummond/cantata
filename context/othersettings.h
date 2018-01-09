@@ -32,7 +32,7 @@ class OtherSettings : public QWidget, private Ui::OtherSettings
 
 public:
     OtherSettings(QWidget *p);
-    virtual ~OtherSettings() { }
+    ~OtherSettings() override { }
 
     void load();
     void save();

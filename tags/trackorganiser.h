@@ -44,7 +44,7 @@ public:
     static int instanceCount();
 
     TrackOrganiser(QWidget *parent);
-    virtual ~TrackOrganiser();
+    ~TrackOrganiser() override;
 
     void show(const QList<Song> &songs, const QString &udi, bool forceUpdate=false);
 
@@ -64,10 +64,10 @@ private Q_SLOTS:
 
 private:
     void saveOptions();
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
     void readOptions();
     #ifdef ENABLE_DEVICES_SUPPORT
-    Device * getDevice(QWidget *p=0);
+    Device * getDevice(QWidget *p=nullptr);
     #endif
     void doUpdate();
     void finish(bool ok);

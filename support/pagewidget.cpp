@@ -70,7 +70,7 @@ public:
         }
     }
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if (!index.isValid()) {
             return;
@@ -165,7 +165,7 @@ public:
         drawFocus(painter, option, option.rect);
     }
 
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if (standard) {
             return QStyledItemDelegate::sizeHint(option, index);
@@ -240,7 +240,7 @@ public:
     }
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event)
+    bool eventFilter(QObject *obj, QEvent *event) override
     {
         if (delegate) {
             if (QEvent::Enter==event->type()) {
@@ -265,7 +265,7 @@ PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const QIcon &i
 {
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
     if (showHeader) {
-        QBoxLayout *titleLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
+        QBoxLayout *titleLayout=new QBoxLayout(QBoxLayout::LeftToRight, nullptr);
         titleLayout->addWidget(new QLabel("<b>"+header+"</b>", this));
         titleLayout->addItem(new QSpacerItem(16, 16, QSizePolicy::Expanding, QSizePolicy::Minimum));
 

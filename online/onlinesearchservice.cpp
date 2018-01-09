@@ -27,7 +27,7 @@
 
 OnlineSearchService::OnlineSearchService(QObject *p)
     : SearchModel(p)
-    , job(0)
+    , job(nullptr)
 {
 }
 
@@ -67,6 +67,6 @@ void OnlineSearchService::cancel()
 {
     if (job) {
         job->cancelAndDelete();
-        job=0;
+        job=nullptr;
     }
 }

@@ -93,7 +93,7 @@ namespace Solid
         /**
          * Destroys a StorageDrive object.
          */
-        virtual ~StorageDrive();
+        ~StorageDrive() override;
 
 
         /**

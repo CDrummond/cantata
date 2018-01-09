@@ -29,11 +29,11 @@
 class StreamsProxyModel : public ProxyModel
 {
 public:
-    StreamsProxyModel(QObject *parent = 0);
+    StreamsProxyModel(QObject *parent = nullptr);
 
     bool filterAcceptsItem(const void *i, QStringList strings) const;
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-    bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
 };
 
 #endif

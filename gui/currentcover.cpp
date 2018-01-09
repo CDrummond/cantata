@@ -116,10 +116,10 @@ QString CurrentCover::findIcon(const QStringList &names)
 GLOBAL_STATIC(CurrentCover, instance)
 
 CurrentCover::CurrentCover()
-    : QObject(0)
+    : QObject(nullptr)
     , enabled(false)
     , valid(false)
-    , timer(0)
+    , timer(nullptr)
 {
     img=stdImage(false);
     coverFileName=noCoverFileName;

@@ -124,7 +124,7 @@ private:
   {
   public:
 
-    Item() : m_widget(0), m_children(0), m_index(-1) {}
+    Item() : m_widget(nullptr), m_children(nullptr), m_index(-1) {}
     ~Item();
 
     void addChild(Item *item);
@@ -273,7 +273,7 @@ void AcceleratorManagerPrivate::traverseChildren(QWidget *widget, Item *item)
     // Ignore unless we have the direct parent
     if(qobject_cast<QWidget *>(w->parent()) != widget) continue;
 
-    if ( !w->isVisibleTo( widget ) || (w->isTopLevel() && qobject_cast<QMenu*>(w) == NULL) )
+    if ( !w->isVisibleTo( widget ) || (w->isTopLevel() && qobject_cast<QMenu*>(w) == nullptr) )
         continue;
 
     if ( AcceleratorManagerPrivate::ignored_widgets.contains( w ) )
@@ -876,13 +876,13 @@ void PopupAccelManager::setMenuEntries(const AccelStringList &list)
 void PopupAccelManager::manage(QMenu *popup)
 {
   // don't add more than one manager to a popup
-  if (popup->findChild<PopupAccelManager*>(QString()) == 0 )
+  if (popup->findChild<PopupAccelManager*>(QString()) == nullptr )
     new PopupAccelManager(popup);
 }
 
 void QWidgetStackAccelManager::manage( QStackedWidget *stack )
 {
-    if ( stack->findChild<QWidgetStackAccelManager*>(QString()) == 0 )
+    if ( stack->findChild<QWidgetStackAccelManager*>(QString()) == nullptr )
         new QWidgetStackAccelManager( stack );
 }
 

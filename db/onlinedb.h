@@ -31,10 +31,10 @@ class OnlineDb : public LibraryDb
     Q_OBJECT
 public:
 
-    OnlineDb(const QString &serviceName, QObject *p=0);
-    ~OnlineDb();
+    OnlineDb(const QString &serviceName, QObject *p=nullptr);
+    ~OnlineDb() override;
 
-    virtual bool init(const QString &dbFile);
+    bool init(const QString &dbFile) override;
     void create();
     QString getCoverUrl(const QString &artistId, const QString &albumId);
     int getStats();
@@ -46,7 +46,7 @@ public Q_SLOTS:
     void insertStats(int numArtists);
 
 private:
-    void reset();
+    void reset() override;
 
 private:
     QSqlQuery *insertCoverQuery;

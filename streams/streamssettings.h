@@ -35,7 +35,7 @@ class StreamsSettings : public Dialog, private Ui::StreamsSettings
 
 public:
     StreamsSettings(QWidget *p);
-    virtual ~StreamsSettings() { }
+    ~StreamsSettings() override { }
 
     void load();
     void save();
@@ -49,7 +49,7 @@ private Q_SLOTS:
     void installFromWeb();
 
 private:
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
     void remove();
     void configure();
     bool install(const QString &fileName, const QString &name, bool showErrors=true);

@@ -32,7 +32,7 @@ public:
     static void enableDebug();
 
     AvahiDiscovery();
-    ~AvahiDiscovery();
+    ~AvahiDiscovery() override;
 
 Q_SIGNALS:
     void mpdFound(QString name, QString address, int port);

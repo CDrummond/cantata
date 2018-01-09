@@ -39,7 +39,7 @@ class DeviceInterface : public QObject, virtual public Solid::Ifaces::DeviceInte
     Q_INTERFACES(Solid::Ifaces::DeviceInterface)
 public:
     DeviceInterface(HalDevice *device);
-    virtual ~DeviceInterface();
+    ~DeviceInterface() override;
 
 protected:
     HalDevice *m_device;

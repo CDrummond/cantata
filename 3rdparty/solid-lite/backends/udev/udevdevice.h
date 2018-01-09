@@ -39,25 +39,25 @@ class UDevDevice : public Solid::Ifaces::Device
 
 public:
     UDevDevice(const UdevQt::Device device);
-    virtual ~UDevDevice();
+    ~UDevDevice() override;
 
-    virtual QString udi() const;
+    QString udi() const override;
 
-    virtual QString parentUdi() const;
+    QString parentUdi() const override;
 
-    virtual QString vendor() const;
+    QString vendor() const override;
 
-    virtual QString product() const;
+    QString product() const override;
 
-    virtual QString icon() const;
+    QString icon() const override;
 
-    virtual QStringList emblems() const;
+    QStringList emblems() const override;
 
-    virtual QString description() const;
+    QString description() const override;
 
-    virtual bool queryDeviceInterface(const Solid::DeviceInterface::Type &type) const;
+    bool queryDeviceInterface(const Solid::DeviceInterface::Type &type) const override;
 
-    virtual QObject *createDeviceInterface(const Solid::DeviceInterface::Type &type);
+    QObject *createDeviceInterface(const Solid::DeviceInterface::Type &type) override;
 
     QString device() const;
 

@@ -44,12 +44,12 @@ class Manager: public Solid::Ifaces::DeviceManager
 
 public:
     Manager(QObject *parent);
-    virtual QObject* createDevice(const QString& udi);
-    virtual QStringList devicesFromQuery(const QString& parentUdi, Solid::DeviceInterface::Type type);
-    virtual QStringList allDevices();
-    virtual QSet< Solid::DeviceInterface::Type > supportedInterfaces() const;
-    virtual QString udiPrefix() const;
-    virtual ~Manager();
+    QObject* createDevice(const QString& udi) override;
+    QStringList devicesFromQuery(const QString& parentUdi, Solid::DeviceInterface::Type type) override;
+    QStringList allDevices() override;
+    QSet< Solid::DeviceInterface::Type > supportedInterfaces() const override;
+    QString udiPrefix() const override;
+    ~Manager() override;
 
 private Q_SLOTS:
     void slotInterfacesAdded(const QDBusObjectPath &object_path, const QVariantMapMap &interfaces_and_properties);

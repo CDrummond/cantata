@@ -36,7 +36,7 @@
 GLOBAL_STATIC(FileThread, instance)
 
 FileThread::FileThread()
-    : thread(0)
+    : thread(nullptr)
 {
 }
 
@@ -58,7 +58,7 @@ void FileThread::stop()
 {
     if (thread) {
         thread->stop();
-        thread=0;
+        thread=nullptr;
     }
 }
 

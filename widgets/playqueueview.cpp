@@ -48,7 +48,7 @@ void qt_blurImage(QPainter *p, QImage &blurImage, qreal radius, bool quality, bo
 class PlayQueueTreeStyle : public ProxyStyle
 {
 public:
-    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const override
     {
         if (QStyle::PE_IndicatorItemViewItemDrop == element && widget) {
             painter->setPen(QPen(QPalette::Highlight)); // make the drop indicator more visible
@@ -100,10 +100,10 @@ void PlayQueueGroupedView::paintEvent(QPaintEvent *e)
 PlayQueueView::PlayQueueView(QWidget *parent)
     : QStackedWidget(parent)
     , mode(ItemView::Mode_Count)
-    , groupedView(0)
-    , treeView(0)
-    , spinner(0)
-    , msgOverlay(0)
+    , groupedView(nullptr)
+    , treeView(nullptr)
+    , spinner(nullptr)
+    , msgOverlay(nullptr)
     , backgroundImageType(BI_None)
     , fadeValue(1.0)
     , backgroundOpacity(15)
@@ -219,12 +219,12 @@ void PlayQueueView::setMode(ItemView::Mode m)
         break;
     }
 
-    QAbstractItemModel *model=0;
+    QAbstractItemModel *model=nullptr;
     QList<QAction *> actions;
     if (ItemView::Mode_Count!=mode) {
         QAbstractItemView *v=view();
         model=v->model();
-        v->setModel(0);
+        v->setModel(nullptr);
         actions=v->actions();
     }
 

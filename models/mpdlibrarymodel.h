@@ -32,11 +32,11 @@ class MpdLibraryModel : public SqlLibraryModel
 public:
     static MpdLibraryModel * self();
     MpdLibraryModel();
-    QVariant data(const QModelIndex &index, int role) const;
+    QVariant data(const QModelIndex &index, int role) const override;
     void setUseArtistImages(bool u);
     bool useArtistImages() const { return showArtistImages; }
-    void load(Configuration &config);
-    void save(Configuration &config);
+    void load(Configuration &config) override;
+    void save(Configuration &config) override;
     void listSongs();
     void cancelListing();
 

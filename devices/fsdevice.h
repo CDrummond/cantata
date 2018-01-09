@@ -53,12 +53,12 @@ class MusicScanner : public QObject, public MusicLibraryProgressMonitor
 
 public:
     MusicScanner();
-    virtual ~MusicScanner();
+    ~MusicScanner() override;
 
     void stop();
-    bool wasStopped() const { return stopRequested; }
-    void readProgress(double pc);
-    void writeProgress(double pc);
+    bool wasStopped() const override { return stopRequested; }
+    void readProgress(double pc) override;
+    void writeProgress(double pc) override;
 
 public Q_SLOTS:
     void scan(const QString &folder, const QString &cacheFile, bool readCache, const QSet<FileOnlySong> &existingSongs);
@@ -112,24 +112,24 @@ public:
 
     FsDevice(MusicLibraryModel *m, Solid::Device &dev);
     FsDevice(MusicLibraryModel *m, const QString &name, const QString &id);
-    virtual ~FsDevice();
+    ~FsDevice() override;
 
-    void rescan(bool full=true);
-    void stop();
-    bool isRefreshing() const { return Idle!=state; }
-    QString path() const { return audioFolder; }
-    QString coverFile() const { return opts.coverName; }
-    void addSong(const Song &s, bool overwrite, bool copyCover);
-    void copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover);
-    void removeSong(const Song &s);
-    void cleanDirs(const QSet<QString> &dirs);
-    Covers::Image requestCover(const Song &s);
+    void rescan(bool full=true) override;
+    void stop() override;
+    bool isRefreshing() const override { return Idle!=state; }
+    QString path() const override { return audioFolder; }
+    QString coverFile() const override { return opts.coverName; }
+    void addSong(const Song &s, bool overwrite, bool copyCover) override;
+    void copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover) override;
+    void removeSong(const Song &s) override;
+    void cleanDirs(const QSet<QString> &dirs) override;
+    Covers::Image requestCover(const Song &s) override;
     QString cacheFileName() const;
     virtual void setAudioFolder() const { }
-    void saveCache();
-    void removeCache();
-    bool isStdFs() const { return true; }
-    bool canPlaySongs() const { return HttpServer::self()->isAlive(); }
+    void saveCache() override;
+    void removeCache() override;
+    bool isStdFs() const override { return true; }
+    bool canPlaySongs() const override { return HttpServer::self()->isAlive(); }
 
 Q_SIGNALS:
     // For talking to scanner...

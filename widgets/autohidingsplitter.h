@@ -43,17 +43,17 @@ class AutohidingSplitterHandle : public ThinSplitterHandle
 
 public:
     AutohidingSplitterHandle(Qt::Orientation orientation, QSplitter *parent) : ThinSplitterHandle(orientation, parent) { }
-    virtual ~AutohidingSplitterHandle() { }
+    ~AutohidingSplitterHandle() override { }
 
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
 
 Q_SIGNALS:
     void hoverStarted();
     void hoverFinished();
 
 protected:
-    virtual void enterEvent(QEvent *) { emit hoverStarted(); }
-    virtual void leaveEvent(QEvent *) { emit hoverFinished(); }
+    void enterEvent(QEvent *) override { emit hoverStarted(); }
+    void leaveEvent(QEvent *) override { emit hoverFinished(); }
 };
 
 class AutohidingSplitter : public QSplitter
@@ -61,27 +61,27 @@ class AutohidingSplitter : public QSplitter
     Q_OBJECT
 
 public:
-    explicit AutohidingSplitter(Qt::Orientation orientation, QWidget *parent=0);
-    explicit AutohidingSplitter(QWidget *parent=0);
-    virtual ~AutohidingSplitter();
+    explicit AutohidingSplitter(Qt::Orientation orientation, QWidget *parent=nullptr);
+    explicit AutohidingSplitter(QWidget *parent=nullptr);
+    ~AutohidingSplitter() override;
 
     void setAutohidable(int index, bool autohidable = true);
     void addWidget(QWidget *widget);
     bool restoreState( const QByteArray &state);
     QByteArray saveState() const;
-    bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event) override;
     bool isAutoHideEnabled() const { return autoHideEnabled; }
 
 public Q_SLOTS:
     void setAutoHideEnabled(bool en);
-    void setVisible(bool visible);
+    void setVisible(bool visible) override;
 
 protected:
-    virtual QSplitterHandle * createHandle();
-    void childEvent(QChildEvent *);
+    QSplitterHandle * createHandle() override;
+    void childEvent(QChildEvent *) override;
     void removeChild(QObject* pObject);
     void addChild(QObject *pObject);
-    void resizeEvent(QResizeEvent *);
+    void resizeEvent(QResizeEvent *) override;
 
 private Q_SLOTS:
     void widgetHoverStarted(int index);

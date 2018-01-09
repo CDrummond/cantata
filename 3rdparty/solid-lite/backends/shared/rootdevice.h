@@ -39,29 +39,29 @@ class RootDevice : public Solid::Ifaces::Device
 public:
     explicit RootDevice(const QString &udi, const QString &parentUdi = QString());
 
-    virtual ~RootDevice();
+    ~RootDevice() override;
 
-    virtual QString udi() const;
-    virtual QString parentUdi() const;
+    QString udi() const override;
+    QString parentUdi() const override;
 
-    virtual QString vendor() const;
+    QString vendor() const override;
     void setVendor(const QString &vendor);
 
-    virtual QString product() const;
+    QString product() const override;
     void setProduct(const QString &product);
 
-    virtual QString icon() const;
+    QString icon() const override;
     void setIcon(const QString &icon);
 
-    virtual QStringList emblems() const;
+    QStringList emblems() const override;
     void setEmblems(const QStringList &emblems);
 
-    virtual QString description() const;
+    QString description() const override;
     void setDescription(const QString &description);
 
-    virtual bool queryDeviceInterface(const Solid::DeviceInterface::Type &type) const;
+    bool queryDeviceInterface(const Solid::DeviceInterface::Type &type) const override;
 
-    virtual QObject *createDeviceInterface(const Solid::DeviceInterface::Type &type);
+    QObject *createDeviceInterface(const Solid::DeviceInterface::Type &type) override;
 private:
     QString m_udi;
     QString m_parentUdi;

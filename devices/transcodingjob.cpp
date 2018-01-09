@@ -28,7 +28,7 @@ TranscodingJob::TranscodingJob(const Encoders::Encoder &enc, int val, const QStr
     : CopyJob(src, dest, d, co, s)
     , encoder(enc)
     , value(val)
-    , process(0)
+    , process(nullptr)
     , duration(-1)
 {
 }
@@ -64,7 +64,7 @@ void TranscodingJob::stop()
     if (process) {
         process->close();
         process->deleteLater();
-        process=0;
+        process=nullptr;
         emit result(Device::Cancelled);
     }
 }

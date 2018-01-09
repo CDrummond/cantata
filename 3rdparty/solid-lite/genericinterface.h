@@ -74,7 +74,7 @@ namespace Solid
         /**
          * Destroys a Processor object.
          */
-        virtual ~GenericInterface();
+        ~GenericInterface() override;
 
 
         /**

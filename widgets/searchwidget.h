@@ -51,7 +51,7 @@ public:
     };
 
     SearchWidget(QWidget *p);
-    virtual ~SearchWidget() { }
+    ~SearchWidget() override { }
 
     void setText(const QString &t) { edit->setText(t); }
     QString text() const { return edit->text(); }

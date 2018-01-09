@@ -36,20 +36,20 @@ class ListView : public QListView
     Q_OBJECT
 
 public:
-    ListView(QWidget *parent=0);
-    virtual ~ListView();
+    ListView(QWidget *parent=nullptr);
+    ~ListView() override;
 
-    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
     bool haveSelectedItems() const;
     bool haveUnSelectedItems() const;
-    void startDrag(Qt::DropActions supportedActions) { TreeView::drag(supportedActions, this, selectedIndexes()); }
-    void mouseReleaseEvent(QMouseEvent *event);
-    QModelIndexList selectedIndexes() const { return selectedIndexes(true); }
+    void startDrag(Qt::DropActions supportedActions) override { TreeView::drag(supportedActions, this, selectedIndexes()); }
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    QModelIndexList selectedIndexes() const override { return selectedIndexes(true); }
     QModelIndexList selectedIndexes(bool sorted) const;
-    virtual void setModel(QAbstractItemModel *m);
+    void setModel(QAbstractItemModel *m) override;
     void addDefaultAction(QAction *act);
     void setBackgroundImage(const QIcon &icon);
-    void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent *e) override;
     void installFilter(QObject *f) { eventFilter=f; installEventFilter(f); }
     QObject * filter() const { return eventFilter; }
     double zoom() const { return zoomLevel; }

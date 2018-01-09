@@ -37,7 +37,7 @@ public:
     static void enableDebug();
 
     TagHelper(const QString &sockName, int parent);
-    ~TagHelper();
+    ~TagHelper() override;
 
 private Q_SLOTS:
     void dataReady();

@@ -45,12 +45,12 @@ class KeyEventHandler : public QObject
 {
     Q_OBJECT
 public:
-    KeyEventHandler(QAbstractItemView *v, QAction *a=0);
+    KeyEventHandler(QAbstractItemView *v, QAction *a=nullptr);
     void setDeleteAction(QAction *a) { deleteAct=a; }
 Q_SIGNALS:
     void backspacePressed();
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 protected:
     QAbstractItemView *view;
     QAction *deleteAct;
@@ -62,7 +62,7 @@ class ViewEventHandler : public KeyEventHandler
 public:
     ViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v);
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 private:
     ActionItemDelegate *delegate;
 };
@@ -96,8 +96,8 @@ public:
     static const QLatin1String constStartClosedKey;
     static const QLatin1String constSearchCategoryKey;
 
-    ItemView(QWidget *p=0);
-    virtual ~ItemView();
+    ItemView(QWidget *p=nullptr);
+    ~ItemView() override;
 
     void alwaysShowHeader();
     void load(Configuration &config);

@@ -65,7 +65,7 @@ class SplitterSizeAnimation:public QVariantAnimation
 public:
     SplitterSizeAnimation(QObject *parent)
         : QVariantAnimation(parent)
-        , splitter(0)
+        , splitter(nullptr)
     {
     }
     void setSplitter(QSplitter *splitter) {
@@ -73,7 +73,7 @@ public:
     }
 
 protected:
-    virtual QVariant interpolated(const QVariant &from, const QVariant &to, qreal progress) const {
+    QVariant interpolated(const QVariant &from, const QVariant &to, qreal progress) const override {
         QList<int> fromInt = from.value<QList<int> >();
         QList<int> toInt = to.value<QList<int> >();
         QList<int> returnValue;
@@ -82,7 +82,7 @@ protected:
         }
         return QVariant::fromValue(returnValue);
     }
-    virtual void updateCurrentValue(const QVariant &value) {
+    void updateCurrentValue(const QVariant &value) override {
         if (splitter) {
             splitter->setSizes(value.value<QList<int> >());
         }

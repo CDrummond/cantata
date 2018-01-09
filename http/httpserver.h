@@ -47,7 +47,7 @@ public:
 
     static HttpServer * self();
 
-    virtual ~HttpServer() { }
+    ~HttpServer() override { }
 
     #ifdef ENABLE_HTTP_SERVER
     HttpServer();

@@ -46,20 +46,20 @@ public:
     static bool debugEnabled();
     static QString fixDevicePath(const QString &path);
 
-    DevicesModel(QObject *parent = 0);
-    ~DevicesModel();
-    QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &index) const;
-    QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const { return QVariant(); }
-    int columnCount(const QModelIndex & = QModelIndex()) const { return 1; }
-    int rowCount(const QModelIndex &parent=QModelIndex()) const;
+    DevicesModel(QObject *parent = nullptr);
+    ~DevicesModel() override;
+    QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &index) const override;
+    QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const override { return QVariant(); }
+    int columnCount(const QModelIndex & = QModelIndex()) const override { return 1; }
+    int rowCount(const QModelIndex &parent=QModelIndex()) const override;
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres);
     QList<Song> songs(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
     QStringList filenames(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
-    int row(void *i) const { return collections.indexOf(static_cast<MusicLibraryItemRoot *>(i)); }
-    bool setData(const QModelIndex &index, const QVariant &value, int role);
-    QVariant data(const QModelIndex &, int) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    int row(void *i) const override { return collections.indexOf(static_cast<MusicLibraryItemRoot *>(i)); }
+    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
+    QVariant data(const QModelIndex &, int) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
     QStringList playableUrls(const QModelIndexList &indexes) const;
     void clear(bool clearConfig=true);
     MirrorMenu * menu() { return itemMenu; }
@@ -67,7 +67,7 @@ public:
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
     void stop();
-    QMimeData * mimeData(const QModelIndexList &indexes) const;
+    QMimeData * mimeData(const QModelIndexList &indexes) const override;
     #ifdef ENABLE_REMOTE_DEVICES
     void unmountRemote();
     #endif

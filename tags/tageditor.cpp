@@ -122,8 +122,8 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     , saving(false)
     , composerSupport(false)
     , commentSupport(false)
-    , readRatingsAct(0)
-    , writeRatingsAct(0)
+    , readRatingsAct(nullptr)
+    , writeRatingsAct(nullptr)
 {
     iCount++;
     bool ratingsSupport=false;
@@ -1118,7 +1118,7 @@ bool TagEditor::applyUpdates()
     DeviceOptions opts;
     QString udi;
     #ifdef ENABLE_DEVICES_SUPPORT
-    Device * dev=0;
+    Device * dev=nullptr;
     if (!deviceUdi.isEmpty()) {
         dev=getDevice(deviceUdi, this);
         if (!dev) {
@@ -1279,17 +1279,17 @@ Device * TagEditor::getDevice(const QString &udi, QWidget *p)
     if (!dev) {
         MessageBox::error(p ? p : this, tr("Device has been removed!"));
         reject();
-        return 0;
+        return nullptr;
     }
     if (!dev->isConnected()) {
         MessageBox::error(p ? p : this, tr("Device is not connected."));
         reject();
-        return 0;
+        return nullptr;
     }
     if (!dev->isIdle()) {
         MessageBox::error(p ? p : this, tr("Device is busy?"));
         reject();
-        return 0;
+        return nullptr;
     }
     return dev;
 }

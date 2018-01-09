@@ -97,7 +97,7 @@ void StreamsPage::addToFavourites()
 
 StreamsBrowsePage::StreamsBrowsePage(QWidget *p)
     : SinglePageWidget(p)
-    , settings(0)
+    , settings(nullptr)
 {
     QColor iconCol=Utils::monoIconColor();
     importAction = new Action(MonoIcon::icon(FontAwesome::arrowright, iconCol), tr("Import Streams Into Favorites"), this);
@@ -307,7 +307,7 @@ void StreamsBrowsePage::addBookmark()
     const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer());
 
     // TODO: In future, if other categories support bookmarking, then we will need to calculate parent here!!!
-    if (StreamsModel::self()->addBookmark(item->url, item->name, 0)) {
+    if (StreamsModel::self()->addBookmark(item->url, item->name, nullptr)) {
         view->showMessage(tr("Bookmark added"), constMsgDisplayTime);
     } else {
         view->showMessage(tr("Already bookmarked"), constMsgDisplayTime);
@@ -502,7 +502,7 @@ void StreamsBrowsePage::doSearch()
 {
     QString text=view->searchText().trimmed();
     if (!view->isSearchActive()) {
-        proxy.setFilterItem(0);
+        proxy.setFilterItem(nullptr);
     }
     proxy.update(view->isSearchActive() ? text : QString());
     if (proxy.enabled() && !text.isEmpty()) {

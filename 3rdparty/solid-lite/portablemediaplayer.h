@@ -67,7 +67,7 @@ namespace Solid
         /**
          * Destroys a portable media player object.
          */
-        virtual ~PortableMediaPlayer();
+        ~PortableMediaPlayer() override;
 
         /**
          * Get the Solid::DeviceInterface::Type of the PortableMediaPlayer device interface.

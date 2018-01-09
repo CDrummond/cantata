@@ -47,7 +47,7 @@ namespace Solid
         Q_OBJECT
     public:
         explicit DevicePrivate(const QString &udi);
-        ~DevicePrivate();
+        ~DevicePrivate() override;
 
         QString udi() const { return m_udi; }
 

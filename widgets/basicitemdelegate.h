@@ -31,10 +31,10 @@ class BasicItemDelegate : public QStyledItemDelegate
 public:
     static void drawLine(QPainter *p, const QRect &r, const QColor &color, bool fadeStart=true, bool fadeEnd=true, double alpha=0.1);
     BasicItemDelegate(QObject *p);
-    virtual ~BasicItemDelegate();
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    ~BasicItemDelegate() override;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 private:
-    bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject *object, QEvent *event) override;
 protected:
     bool trackMouse;
     bool underMouse;

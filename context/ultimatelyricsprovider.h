@@ -40,7 +40,7 @@ public:
     static void enableDebug();
 
     UltimateLyricsProvider();
-    virtual ~UltimateLyricsProvider();
+    ~UltimateLyricsProvider() override;
 
     typedef QPair<QString, QString> RuleItem;
     typedef QList<RuleItem> Rule;

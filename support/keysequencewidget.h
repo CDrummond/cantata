@@ -44,7 +44,7 @@ class KeySequenceWidget : public QWidget
 {
     Q_OBJECT
 public:
-    KeySequenceWidget(QWidget *parent = 0);
+    KeySequenceWidget(QWidget *parent = nullptr);
 
     void setModel(ShortcutsModel *model);
 
@@ -95,12 +95,12 @@ class KeySequenceButton : public QPushButton
 {
     Q_OBJECT
 public:
-    explicit KeySequenceButton(KeySequenceWidget *d, QWidget *parent = 0);
+    explicit KeySequenceButton(KeySequenceWidget *d, QWidget *parent = nullptr);
 
 protected:
-    virtual bool event(QEvent *event);
-    virtual void keyPressEvent(QKeyEvent *event);
-    virtual void keyReleaseEvent(QKeyEvent *event);
+    bool event(QEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
 
 private:
     KeySequenceWidget *d;

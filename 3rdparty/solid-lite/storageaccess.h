@@ -63,7 +63,7 @@ namespace Solid
         /**
          * Destroys a StorageAccess object.
          */
-        virtual ~StorageAccess();
+        ~StorageAccess() override;
 
 
         /**

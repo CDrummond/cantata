@@ -35,7 +35,7 @@ public:
 
     SongDialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize())
         : Dialog(parent, name, defSize) { }
-    virtual ~SongDialog() { }
+    ~SongDialog() override { }
 
 protected:
     bool songsOk(const QList<Song> &songs, const QString &base, bool isMpd);

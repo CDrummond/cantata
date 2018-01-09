@@ -70,7 +70,7 @@ QString SqlLibraryModel::groupingStr(Type m)
 SqlLibraryModel::SqlLibraryModel(LibraryDb *d, QObject *p, Type top)
     : ActionModel(p)
     , tl(top)
-    , root(0)
+    , root(nullptr)
     , db(d)
     , librarySort(LibraryDb::AS_YrAlAr)
     , albumSort(LibraryDb::AS_AlArYr)
@@ -83,7 +83,7 @@ void SqlLibraryModel::clear()
 {
     beginResetModel();
     delete root;
-    root=0;
+    root=nullptr;
     endResetModel();
 }
 
@@ -214,7 +214,7 @@ QModelIndex SqlLibraryModel::index(int row, int column, const QModelIndex &paren
         return QModelIndex();
     }
     const CollectionItem * p = parent.isValid() ? static_cast<CollectionItem *>(parent.internalPointer()) : root;
-    const Item * c = row<p->getChildCount() ? p->getChildren().at(row) : 0;
+    const Item * c = row<p->getChildCount() ? p->getChildren().at(row) : nullptr;
     return c ? createIndex(row, column, (void *)c) : QModelIndex();
 }
 
@@ -226,7 +226,7 @@ QModelIndex SqlLibraryModel::parent(const QModelIndex &child) const
 
     const Item * const item = static_cast<Item *>(child.internalPointer());
     Item * const parentItem = item->getParent();
-    if (parentItem == root || 0==parentItem) {
+    if (parentItem == root || nullptr==parentItem) {
         return QModelIndex();
     }
 
@@ -601,5 +601,5 @@ void SqlLibraryModel::CollectionItem::add(Item *i)
 const SqlLibraryModel::Item *SqlLibraryModel::CollectionItem::getChild(const QString &id) const
 {
     QMap<QString, Item *>::ConstIterator it=childMap.find(id);
-    return childMap.constEnd()==it ? 0 : it.value();
+    return childMap.constEnd()==it ? nullptr : it.value();
 }

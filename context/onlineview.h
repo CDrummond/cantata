@@ -32,7 +32,7 @@ class OnlineView : public View
 public:
     OnlineView(QWidget *p);
 
-    void update(const Song &song, bool force=false);
+    void update(const Song &song, bool force=false) override;
 };
 
 #endif

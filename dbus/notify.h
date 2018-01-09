@@ -41,7 +41,7 @@ class Notify : public QObject
 
 public:
     Notify(QObject *p);
-    virtual ~Notify() { }
+    ~Notify() override { }
 
     void show(const QString &title, const QString &text, const QImage &img);
     

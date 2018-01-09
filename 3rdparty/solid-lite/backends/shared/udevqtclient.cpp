@@ -27,7 +27,7 @@
 namespace UdevQt {
 
 ClientPrivate::ClientPrivate(Client *q_)
-    : udev(0), monitor(0), q(q_), monitorNotifier(0)
+    : udev(nullptr), monitor(nullptr), q(q_), monitorNotifier(nullptr)
 {
 }
 
@@ -68,7 +68,7 @@ void ClientPrivate::setWatchedSubsystems(const QStringList &subsystemList)
             QByteArray devType = subsysDevtype.mid(ix + 1).toLatin1();
             udev_monitor_filter_add_match_subsystem_devtype(newM, subsystem.constData(), devType.constData());
         } else {
-            udev_monitor_filter_add_match_subsystem_devtype(newM, subsysDevtype.toLatin1().constData(), NULL);
+            udev_monitor_filter_add_match_subsystem_devtype(newM, subsysDevtype.toLatin1().constData(), nullptr);
         }
     }
 
@@ -189,7 +189,7 @@ DeviceList Client::devicesByProperty(const QString &property, const QVariant &va
     if (value.isValid()) {
         udev_enumerate_add_match_property(en, property.toLatin1().constData(), value.toString().toLatin1().constData());
     } else {
-        udev_enumerate_add_match_property(en, property.toLatin1().constData(), NULL);
+        udev_enumerate_add_match_property(en, property.toLatin1().constData(), nullptr);
     }
 
     return d->deviceListFromEnumerate(en);
@@ -216,7 +216,7 @@ Device Client::deviceByDeviceFile(const QString &deviceFile)
     if (stat(deviceFile.toLatin1().constData(), &sb) != 0)
         return Device();
 
-    struct udev_device *ud = 0;
+    struct udev_device *ud = nullptr;
 
     if (S_ISBLK(sb.st_mode))
         ud = udev_device_new_from_devnum(d->udev, 'b', sb.st_rdev);

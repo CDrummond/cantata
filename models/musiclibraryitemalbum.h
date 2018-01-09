@@ -46,18 +46,18 @@ public:
     static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
 
     MusicLibraryItemAlbum(const Song &song, MusicLibraryItemContainer *parent);
-    virtual ~MusicLibraryItemAlbum();
+    ~MusicLibraryItemAlbum() override;
 
-    QString displayData(bool full=false) const;
+    QString displayData(bool full=false) const override;
     quint32 year() const { return m_year; }
     quint32 totalTime();
     quint32 trackCount();
-    void append(MusicLibraryItem *i);
+    void append(MusicLibraryItem *i) override;
     void remove(int row);
     void remove(MusicLibraryItemSong *i);
     void removeAll(const QSet<QString> &fileNames);
     QMap<QString, Song> getSongs(const QSet<QString> &fileNames) const;
-    Type itemType() const { return Type_Album; }
+    Type itemType() const override { return Type_Album; }
     bool updateYear();
     const QString & id() const { return m_id; }
     const QString & albumId() const { return m_id.isEmpty() ? m_itemData : m_id; }

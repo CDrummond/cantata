@@ -168,13 +168,13 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index) const
 {
     QList<Action *> actions=index.data(Cantata::Role_Actions).value<QList<Action *> >();
     if (actions.isEmpty()) {
-        return 0;
+        return nullptr;
     }
 
     QAbstractItemView *view=(QAbstractItemView *)parent();
     bool rtl = QApplication::isRightToLeft();
     QListView *lv=qobject_cast<QListView *>(view);
-    GroupedView *gv=lv ? 0 : qobject_cast<GroupedView *>(view);
+    GroupedView *gv=lv ? nullptr : qobject_cast<GroupedView *>(view);
     ActionPos actionPos=gv ? AP_HBottom : (lv && QListView::ListMode!=lv->viewMode() && (index.child(0, 0).isValid() || index.model()->canFetchMore(index)) ? AP_VTop : AP_HMiddle);
     QRect rect = view->visualRect(index);
     rect.moveTo(view->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
@@ -210,5 +210,5 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index) const
         ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect, iconSize);
     }
 
-    return 0;
+    return nullptr;
 }

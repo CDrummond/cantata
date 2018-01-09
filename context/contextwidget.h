@@ -48,7 +48,7 @@ class ViewSelector : public QWidget
     Q_OBJECT
 public:
     ViewSelector(QWidget *p);
-    virtual ~ViewSelector() { }
+    ~ViewSelector() override { }
     void addItem(const QString &label, const QVariant &data);
     QVariant itemData(int index) const;
     int count() { return buttons.count(); }
@@ -56,8 +56,8 @@ public:
     void setCurrentIndex(int index);
 
 private:
-    void wheelEvent(QWheelEvent *ev);
-    void paintEvent(QPaintEvent *);
+    void wheelEvent(QWheelEvent *ev) override;
+    void paintEvent(QPaintEvent *) override;
 
 private Q_SLOTS:
     void buttonActivated();
@@ -75,7 +75,7 @@ class ThinSplitter : public QSplitter
     Q_OBJECT
 public:
     ThinSplitter(QWidget *parent);
-    QSplitterHandle *createHandle();
+    QSplitterHandle *createHandle() override;
 
 public Q_SLOTS:
     void reset();
@@ -96,14 +96,14 @@ public:
     static const QLatin1String constCacheDir;
     static const QLatin1String constFanArtApiKey;
 
-    ContextWidget(QWidget *parent=0);
+    ContextWidget(QWidget *parent=nullptr);
 
     void readConfig();
     void saveConfig();
     void useDarkBackground(bool u);
     void update(const Song &s);
-    void showEvent(QShowEvent *e);
-    void paintEvent(QPaintEvent *e);
+    void showEvent(QShowEvent *e) override;
+    void paintEvent(QPaintEvent *e) override;
     float fade() { return fadeValue; }
     void setFade(float value);
     void updateImage(QImage img);
@@ -125,8 +125,8 @@ private Q_SLOTS:
 private:
     void setZoom();
     void setWide(bool w);
-    void resizeEvent(QResizeEvent *e);
-    bool eventFilter(QObject *o, QEvent *e);
+    void resizeEvent(QResizeEvent *e) override;
+    bool eventFilter(QObject *o, QEvent *e) override;
     void cancel();
     void updateBackdrop(bool force=false);
     void getBackdrop();

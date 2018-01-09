@@ -35,7 +35,7 @@ GLOBAL_STATIC(MpdLibraryModel, instance)
 #define COVERS_DBUG if (Covers::verboseDebugEnabled()) qWarning() << metaObject()->className() << QThread::currentThread()->objectName() << __FUNCTION__
 
 MpdLibraryModel::MpdLibraryModel()
-    : SqlLibraryModel(new MpdLibraryDb(0), 0)
+    : SqlLibraryModel(new MpdLibraryDb(nullptr), nullptr)
     , showArtistImages(false)
 {
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), this, SLOT(cover(Song,QImage,QString)));
@@ -195,7 +195,7 @@ void MpdLibraryModel::cover(const Song &song, const QImage &img, const QString &
     }
     switch(topLevel()) {
     case T_Genre: {
-        const Item *genre=root ? root->getChild(song.genres[0]) : 0;
+        const Item *genre=root ? root->getChild(song.genres[0]) : nullptr;
         if (genre) {
             const Item *artist=static_cast<const CollectionItem *>(genre)->getChild(song.artistOrComposer());
             if (artist) {
@@ -209,7 +209,7 @@ void MpdLibraryModel::cover(const Song &song, const QImage &img, const QString &
         break;
     }
     case T_Artist: {
-        const Item *artist=root ? root->getChild(song.artistOrComposer()) : 0;
+        const Item *artist=root ? root->getChild(song.artistOrComposer()) : nullptr;
         if (artist) {
             const Item *album=static_cast<const CollectionItem *>(artist)->getChild(song.albumId());
             if (album) {
@@ -220,7 +220,7 @@ void MpdLibraryModel::cover(const Song &song, const QImage &img, const QString &
         break;
     }
     case T_Album: {
-        const Item *album=root ? root->getChild(song.artistOrComposer()+song.albumId()) : 0;
+        const Item *album=root ? root->getChild(song.artistOrComposer()+song.albumId()) : nullptr;
         if (album) {
             QModelIndex idx=index(album->getRow(), 0, QModelIndex());
             emit dataChanged(idx, idx);
@@ -247,7 +247,7 @@ void MpdLibraryModel::artistImage(const Song &song, const QImage &img, const QSt
     }
     switch(topLevel()) {
     case T_Genre: {
-        const Item *genre=root ? root->getChild(song.genres[0]) : 0;
+        const Item *genre=root ? root->getChild(song.genres[0]) : nullptr;
         if (genre) {
             const Item *artist=static_cast<const CollectionItem *>(genre)->getChild(song.artistOrComposer());
             if (artist) {
@@ -258,7 +258,7 @@ void MpdLibraryModel::artistImage(const Song &song, const QImage &img, const QSt
         break;
     }
     case T_Artist: {
-        const Item *artist=root ? root->getChild(song.artistOrComposer()) : 0;
+        const Item *artist=root ? root->getChild(song.artistOrComposer()) : nullptr;
         if (artist) {
             QModelIndex idx=index(artist->getRow(), 0, QModelIndex());
             emit dataChanged(idx, idx);

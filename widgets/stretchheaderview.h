@@ -24,14 +24,14 @@ class StretchHeaderView : public QHeaderView {
   Q_OBJECT
 
 public:
-  StretchHeaderView(Qt::Orientation orientation, QWidget* parent = 0);
+  StretchHeaderView(Qt::Orientation orientation, QWidget* parent = nullptr);
 
   typedef double ColumnWidthType;
 
   static const int kMinimumColumnWidth;
   static const int kMagicNumber;
 
-  void setModel(QAbstractItemModel* model);
+  void setModel(QAbstractItemModel* model) override;
 
   // Serialises the proportional and actual column widths.  Use these instead
   // of QHeaderView::restoreState and QHeaderView::saveState to persist the
@@ -67,8 +67,8 @@ signals:
 
 protected:
   // QWidget
-  void mouseMoveEvent(QMouseEvent* e);
-  void resizeEvent(QResizeEvent* event);
+  void mouseMoveEvent(QMouseEvent* e) override;
+  void resizeEvent(QResizeEvent* event) override;
 
 private:
   // If the width of the given column is less than a sensible threshold, resize

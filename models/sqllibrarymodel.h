@@ -52,7 +52,7 @@ public:
     class Item
     {
     public:
-        Item(Type t,  CollectionItem *p=0)
+        Item(Type t,  CollectionItem *p=nullptr)
             : type(t), parent(p) { }
         virtual ~Item() { }
 
@@ -78,29 +78,29 @@ public:
     class TrackItem : public Item
     {
     public:
-        TrackItem(const Song &s, CollectionItem *p=0)
+        TrackItem(const Song &s, CollectionItem *p=nullptr)
             : Item(T_Track, p) { setSong(s); }
-        virtual ~TrackItem() { }
+        ~TrackItem() override { }
 
-        virtual const QString & getId() const { return getSong().file; }
-        virtual QString getText() const { return getSong().trackAndTitleStr(); }
-        virtual QString getSubText() const { return Utils::formatTime(getSong().time, true); }
+        const QString & getId() const override { return getSong().file; }
+        QString getText() const override { return getSong().trackAndTitleStr(); }
+        QString getSubText() const override { return Utils::formatTime(getSong().time, true); }
     };
 
     class CollectionItem : public Item
     {
     public:
-        CollectionItem(Type t, const QString &i, const QString &txt=QString(), const QString &sub=QString(), CollectionItem *p=0)
+        CollectionItem(Type t, const QString &i, const QString &txt=QString(), const QString &sub=QString(), CollectionItem *p=nullptr)
             : Item(t, p), id(i), text(txt), subText(sub) { }
-        virtual ~CollectionItem() { qDeleteAll(children); }
+        ~CollectionItem() override { qDeleteAll(children); }
 
         const QList<Item *> getChildren() const { return children; }
-        virtual int getChildCount() const { return children.count();}
+        int getChildCount() const override { return children.count();}
         void add(Item *i);
         const Item * getChild(const QString &id) const;
-        virtual const QString & getId() const { return id; }
-        virtual QString getText() const { return text; }
-        virtual QString getSubText() const { return subText; }
+        const QString & getId() const override { return id; }
+        QString getText() const override { return text; }
+        QString getSubText() const override { return subText; }
 
     private:
         QString id;
@@ -112,12 +112,12 @@ public:
 
     class AlbumItem : public CollectionItem {
     public:
-        AlbumItem(const QString &ar, const QString &i, const QString &txt=QString(), const QString &sub=QString(), CollectionItem *p=0)
+        AlbumItem(const QString &ar, const QString &i, const QString &txt=QString(), const QString &sub=QString(), CollectionItem *p=nullptr)
             : CollectionItem(T_Album, i, txt, sub, p), artistId(ar) { }
-        virtual ~AlbumItem() { }
+        ~AlbumItem() override { }
 
         const QString & getArtistId() const { return artistId; }
-        const QString getUniqueId() const { return artistId+getId(); }
+        const QString getUniqueId() const override { return artistId+getId(); }
 
     private:
         QString artistId;
@@ -139,16 +139,16 @@ public:
 
     void search(const QString &str, const QString &genre=QString());
 
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QModelIndex parent(const QModelIndex &child) const;
-    int rowCount(const QModelIndex &parent) const;
-    int columnCount(const QModelIndex &parent) const;
-    bool hasChildren(const QModelIndex &index) const;
-    bool canFetchMore(const QModelIndex &index) const;
-    void fetchMore(const QModelIndex &index);
-    QVariant data(const QModelIndex &index, int role) const;
-    QMimeData * mimeData(const QModelIndexList &indexes) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+    QModelIndex parent(const QModelIndex &child) const override;
+    int rowCount(const QModelIndex &parent) const override;
+    int columnCount(const QModelIndex &parent) const override;
+    bool hasChildren(const QModelIndex &index) const override;
+    bool canFetchMore(const QModelIndex &index) const override;
+    void fetchMore(const QModelIndex &index) override;
+    QVariant data(const QModelIndex &index, int role) const override;
+    QMimeData * mimeData(const QModelIndexList &indexes) const override;
 
     QList<Song> songs(const QModelIndexList &list, bool allowPlaylists) const;
     QStringList filenames(const QModelIndexList &list, bool allowPlaylists) const;

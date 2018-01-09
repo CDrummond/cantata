@@ -46,7 +46,7 @@ static QString localeFile()
 }
 
 WikipediaLoader::WikipediaLoader()
-    : QObject(0)
+    : QObject(nullptr)
 {
     thread=new Thread(metaObject()->className());
     moveToThread(thread);
@@ -83,9 +83,9 @@ void WikipediaLoader::load(const QByteArray &data)
 WikipediaSettings::WikipediaSettings(QWidget *p)
     : ToggleList(p)
     , state(Initial)
-    , job(0)
-    , spinner(0)
-    , loader(0)
+    , job(nullptr)
+    , spinner(nullptr)
+    , loader(nullptr)
 {
     label->setText(tr("Choose the wikipedia languages you want to use when searching for artist and album information."));
     reload=new Action(tr("Reload"), this);
@@ -151,7 +151,7 @@ void WikipediaSettings::cancel()
     if (job) {
         disconnect(job, SIGNAL(finished()), this, SLOT(parseLangs()));
         job->deleteLater();
-        job=0;
+        job=nullptr;
     }
 }
 
@@ -189,7 +189,7 @@ void WikipediaSettings::parseLangs()
     if (reply!=job) {
         return;
     }
-    job=0;
+    job=nullptr;
     QByteArray data=reply->readAll();
     parseLangs(data);
     QFile f(localeFile());

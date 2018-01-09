@@ -30,13 +30,13 @@ class ShortcutsModel;
 class ShortcutsFilter : public QSortFilterProxyModel {
     Q_OBJECT
 public:
-    ShortcutsFilter(QObject *parent = 0);
+    ShortcutsFilter(QObject *parent = nullptr);
 
 public Q_SLOTS:
     void setFilterString(const QString &filterString);
 
 protected:
-    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
     QString _filterString;
@@ -45,7 +45,7 @@ private:
 class ShortcutsSettingsWidget : public QWidget, private Ui::ShortcutsSettingsWidget {
     Q_OBJECT
 public:
-    ShortcutsSettingsWidget(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent = 0);
+    ShortcutsSettingsWidget(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent = nullptr);
 
     inline bool hasDefaults() const { return true; }
     QTreeView * view();

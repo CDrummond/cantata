@@ -31,7 +31,7 @@ class MultiMediaKeysInterface : public QObject
     Q_OBJECT
 public:
     MultiMediaKeysInterface(QObject *p) : QObject(p) { }
-    ~MultiMediaKeysInterface() { }
+    ~MultiMediaKeysInterface() override { }
 
     virtual bool activate()=0;
     virtual void deactivate()=0;

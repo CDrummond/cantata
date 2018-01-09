@@ -227,7 +227,7 @@ void MPDConnectionDetails::setDirReadable()
 
 MPDConnection::MPDConnection()
     : isInitialConnect(true)
-    , thread(0)
+    , thread(nullptr)
     , ver(0)
     , canUseStickers(false)
     , sock(this)
@@ -236,14 +236,14 @@ MPDConnection::MPDConnection()
     , lastUpdatePlayQueueVersion(0)
     , state(State_Blank)
     , isListingMusic(false)
-    , reconnectTimer(0)
+    , reconnectTimer(nullptr)
     , reconnectStart(0)
     , stopAfterCurrent(false)
     , currentSongId(-1)
     , songPos(0)
     , unmuteVol(-1)
     , isUpdatingDb(false)
-    , volumeFade(0)
+    , volumeFade(nullptr)
     , fadeDuration(0)
     , restoreVolume(-1)
 {
@@ -309,9 +309,9 @@ void MPDConnection::stop()
 
     if (thread) {
         thread->deleteTimer(connTimer);
-        connTimer=0;
+        connTimer=nullptr;
         thread->stop();
-        thread=0;
+        thread=nullptr;
     }
 }
 
@@ -495,7 +495,7 @@ void MPDConnection::reconnect()
         reconnectStart=0;
         return;
     }
-    time_t now=time(NULL);
+    time_t now=time(nullptr);
     ConnectionReturn status=connectToMPD();
     switch (status) {
     case Success:        
@@ -2407,8 +2407,8 @@ void MPDConnection::determineIfaceIp()
 
 MpdSocket::MpdSocket(QObject *parent)
     : QObject(parent)
-    , tcp(0)
-    , local(0)
+    , tcp(nullptr)
+    , local(nullptr)
 {
 }
 
@@ -2453,7 +2453,7 @@ void MpdSocket::deleteTcp()
         disconnect(tcp, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SIGNAL(stateChanged(QAbstractSocket::SocketState)));
         disconnect(tcp, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
         tcp->deleteLater();
-        tcp=0;
+        tcp=nullptr;
     }
 }
 
@@ -2463,7 +2463,7 @@ void MpdSocket::deleteLocal()
         disconnect(local, SIGNAL(stateChanged(QLocalSocket::LocalSocketState)), this, SLOT(localStateChanged(QLocalSocket::LocalSocketState)));
         disconnect(local, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
         local->deleteLater();
-        local=0;
+        local=nullptr;
     }
 }
 

@@ -31,7 +31,7 @@
 class MagnatuneXmlParser : public OnlineXmlParser
 {
 public:
-    int parse(QXmlStreamReader &xml);
+    int parse(QXmlStreamReader &xml) override;
 private:
     Song parseSong(QXmlStreamReader &xml);
 private:
@@ -65,16 +65,16 @@ public:
     static QString downloadTypeStr(DownloadType f, bool trans=false);
 
     MagnatuneService(QObject *p);
-    QVariant data(const QModelIndex &index, int role) const;
-    QString name() const;
-    QString title() const;
-    QString descr() const;
-    OnlineXmlParser * createParser();
-    QUrl listingUrl() const;
-    void configure(QWidget *p);
-    int averageSize() const { return 10; }
+    QVariant data(const QModelIndex &index, int role) const override;
+    QString name() const override;
+    QString title() const override;
+    QString descr() const override;
+    OnlineXmlParser * createParser() override;
+    QUrl listingUrl() const override;
+    void configure(QWidget *p) override;
+    int averageSize() const override { return 10; }
 private:
-    Song & fixPath(Song &s) const;
+    Song & fixPath(Song &s) const override;
 
 private:
     MemberShip membership;

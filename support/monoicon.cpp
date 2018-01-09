@@ -47,14 +47,14 @@ public:
     {
     }
 
-    virtual ~MonoIconEngine() {}
+    ~MonoIconEngine() override {}
 
-    MonoIconEngine * clone() const
+    MonoIconEngine * clone() const override
     {
         return new MonoIconEngine(fileName, fontAwesomeIcon, color, selectedColor);
     }
 
-    virtual void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state)
+    void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state) override
     {
         Q_UNUSED(state)
 
@@ -145,7 +145,7 @@ public:
         }
     }
 
-    virtual QPixmap pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state)
+    QPixmap pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state) override
     {
         QPixmap pix(size);
         pix.fill(Qt::transparent);

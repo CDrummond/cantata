@@ -47,12 +47,12 @@ static void setToolTip(Action *act, const QString &tt)
 
 static QMenu * priorityMenu()
 {
-    Action *prioHighestAction = new Action(QObject::tr("Highest Priority (255)"), 0);
-    Action *prioHighAction = new Action(QObject::tr("High Priority (200)"), 0);
-    Action *prioMediumAction = new Action(QObject::tr("Medium Priority (125)"), 0);
-    Action *prioLowAction = new Action(QObject::tr("Low Priority (50)"), 0);
-    Action *prioDefaultAction = new Action(QObject::tr("Default Priority (0)"), 0);
-    Action *prioCustomAction = new Action(QObject::tr("Custom Priority..."), 0);
+    Action *prioHighestAction = new Action(QObject::tr("Highest Priority (255)"), nullptr);
+    Action *prioHighAction = new Action(QObject::tr("High Priority (200)"), nullptr);
+    Action *prioMediumAction = new Action(QObject::tr("Medium Priority (125)"), nullptr);
+    Action *prioLowAction = new Action(QObject::tr("Low Priority (50)"), nullptr);
+    Action *prioDefaultAction = new Action(QObject::tr("Default Priority (0)"), nullptr);
+    Action *prioCustomAction = new Action(QObject::tr("Custom Priority..."), nullptr);
 
     prioHighestAction->setData(255);
     prioHighAction->setData(200);
@@ -95,33 +95,33 @@ StdActions::StdActions()
     appendToPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_P);
     replacePlayQueueAction->setShortcut(Qt::ControlModifier+Qt::Key_R);
 
-    addWithPriorityAction = new Action(QObject::tr("Add With Priority"), 0);
-    setPriorityAction = new Action(QObject::tr("Set Priority"), 0);
+    addWithPriorityAction = new Action(QObject::tr("Add With Priority"), nullptr);
+    setPriorityAction = new Action(QObject::tr("Set Priority"), nullptr);
     setPriorityAction->setMenu(priorityMenu());
     addWithPriorityAction->setMenu(priorityMenu());
 
-    addToStoredPlaylistAction = new Action(Icons::self()->playlistListIcon, QObject::tr("Add To Playlist"), 0);
+    addToStoredPlaylistAction = new Action(Icons::self()->playlistListIcon, QObject::tr("Add To Playlist"), nullptr);
     #ifdef TAGLIB_FOUND
     organiseFilesAction = ActionCollection::get()->createAction("orgfiles", QObject::tr("Organize Files"), MonoIcon::icon(FontAwesome::folderopeno, col));
-    editTagsAction = ActionCollection::get()->createAction("edittags", QObject::tr("Edit Track Information"), 0);
+    editTagsAction = ActionCollection::get()->createAction("edittags", QObject::tr("Edit Track Information"), nullptr);
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction = ActionCollection::get()->createAction("replaygain", QObject::tr("ReplayGain"), MonoIcon::icon(FontAwesome::barchart, col));
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction = new Action(MonoIcon::icon(FontAwesome::mobile, col), QObject::tr("Copy Songs To Device"), 0);
+    copyToDeviceAction = new Action(MonoIcon::icon(FontAwesome::mobile, col), QObject::tr("Copy Songs To Device"), nullptr);
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
-    deleteSongsAction = new Action(MonoIcon::icon(FontAwesome::trash, MonoIcon::constRed), QObject::tr("Delete Songs"), 0);
+    deleteSongsAction = new Action(MonoIcon::icon(FontAwesome::trash, MonoIcon::constRed), QObject::tr("Delete Songs"), nullptr);
     #endif
-    setCoverAction = new Action(QObject::tr("Set Image"), 0);
-    removeAction = new Action(Icons::self()->removeIcon, QObject::tr("Remove"), 0);
+    setCoverAction = new Action(QObject::tr("Set Image"), nullptr);
+    removeAction = new Action(Icons::self()->removeIcon, QObject::tr("Remove"), nullptr);
     searchAction = ActionCollection::get()->createAction("search", QObject::tr("Find"), Icons::self()->searchIcon);
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
 
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
 
     QMenu *addMenu=new QMenu();
-    addToPlayQueueMenuAction = new Action(QObject::tr("Add To Play Queue"), 0);
+    addToPlayQueueMenuAction = new Action(QObject::tr("Add To Play Queue"), nullptr);
     addMenu->addAction(appendToPlayQueueAction);
     addMenu->addAction(appendToPlayQueueAndPlayAction);
     addMenu->addAction(addToPlayQueueAndPlayAction);

@@ -29,8 +29,8 @@
 class SizeWidget : public QWidget
 {
 public:
-    explicit SizeWidget(QWidget *parent = 0);
-    void paintEvent(QPaintEvent *e);
+    explicit SizeWidget(QWidget *parent = nullptr);
+    void paintEvent(QPaintEvent *e) override;
 };
 
 #endif

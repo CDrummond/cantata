@@ -39,7 +39,7 @@ MountPoints::MountPoints()
         updateMountPoints();
     } else if (mounts) {
         mounts->deleteLater();
-        mounts=0;
+        mounts=nullptr;
     }
 }
 

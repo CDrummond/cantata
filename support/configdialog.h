@@ -58,7 +58,7 @@ class ConfigDialog : public
 
 public:
     ConfigDialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize(), bool instantApply=false);
-    virtual ~ConfigDialog();
+    ~ConfigDialog() override;
 
     void addPage(const QString &id, QWidget *widget, const QString &name, const QIcon &icon, const QString &header);
     bool setCurrentPage(const QString &id);
@@ -76,7 +76,7 @@ public:
     virtual void cancel()=0;
 
 public Q_SLOTS:
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
 
 private Q_SLOTS:
     void activatePage();

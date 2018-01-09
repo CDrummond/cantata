@@ -106,10 +106,10 @@ public:
     Device(MusicLibraryModel *m, const QString &name, const QString &id);
     #endif
 
-    virtual ~Device() { }
+    ~Device() override { }
 
-    Icon icon() const { return icn; }
-    Song fixPath(const Song &orig, bool fullPath) const;
+    Icon icon() const override { return icn; }
+    Song fixPath(const Song &orig, bool fullPath) const override;
     virtual QString coverFile() const { return QString(); }
     virtual bool isConnected() const=0;
     virtual void rescan(bool full=true)=0;
@@ -130,13 +130,13 @@ public:
     virtual qint64 freeSpace()=0;
     virtual DevType devType() const=0;
     virtual void removeCache() { }
-    virtual bool isDevice() const { return true; }
+    bool isDevice() const override { return true; }
 
     #ifdef ENABLE_DEVICES_SUPPORT
     virtual void saveCache();
-    const QString & id() const { return deviceId; }
+    const QString & id() const override { return deviceId; }
     void applyUpdate();
-    bool haveUpdate() const { return 0!=update; }
+    bool haveUpdate() const { return nullptr!=update; }
     int newRows() const { return update ? update->childCount() : 0; }
     const DeviceOptions & options() const { return opts; }
     void setOptions(const DeviceOptions &o) { opts=o; saveOptions(); }
@@ -145,11 +145,11 @@ public:
     bool isConfigured() { return configured; }
     virtual void abortJob() { jobAbortRequested=true; }
     bool abortRequested() const { return jobAbortRequested; }
-    virtual bool canPlaySongs() const { return false; }
+    bool canPlaySongs() const override { return false; }
     virtual bool supportsDisconnect() const { return false; }
     virtual bool isStdFs() const { return false; }
     virtual QString subText() { return QString(); }
-    QModelIndex index() const;
+    QModelIndex index() const override;
     void updateStatus();
 
 public Q_SLOTS:

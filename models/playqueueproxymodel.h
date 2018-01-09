@@ -35,11 +35,11 @@ class PlayQueueProxyModel : public ProxyModel
     Q_OBJECT
 
 public:
-    PlayQueueProxyModel(QObject *parent = 0);
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    PlayQueueProxyModel(QObject *parent = nullptr);
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
-    QMimeData *mimeData(const QModelIndexList &indexes) const;
-    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+    QMimeData *mimeData(const QModelIndexList &indexes) const override;
+    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
 };
 
 #endif

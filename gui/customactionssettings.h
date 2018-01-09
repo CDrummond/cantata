@@ -50,7 +50,7 @@ class CustomActionsSettings : public QWidget
     Q_OBJECT
 public:
     CustomActionsSettings(QWidget *parent);
-    ~CustomActionsSettings();
+    ~CustomActionsSettings() override;
 
     void load();
     void save();

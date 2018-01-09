@@ -140,16 +140,16 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     , httpStream(new HttpStream(this))
     #endif
-    , currentPage(0)
+    , currentPage(nullptr)
     #ifdef QT_QTDBUS_FOUND
-    , mpris(0)
+    , mpris(nullptr)
     #endif
-    , statusTimer(0)
-    , playQueueSearchTimer(0)
+    , statusTimer(nullptr)
+    , playQueueSearchTimer(nullptr)
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    , mpdAccessibilityTimer(0)
+    , mpdAccessibilityTimer(nullptr)
     #endif
-    , contextTimer(0)
+    , contextTimer(nullptr)
     , contextSwitchTime(0)
     , connectedState(CS_Init)
     , stopAfterCurrent(false)
@@ -294,7 +294,7 @@ void MainWindow::init()
     addPlayQueueToStoredPlaylistAction = new Action(Icons::self()->playlistListIcon, tr("Add To Stored Playlist"), this);
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction = new Action(StdActions::self()->copyToDeviceAction->icon(), Utils::strippedText(StdActions::self()->copyToDeviceAction->text()), this);
-    copyToDeviceAction->setMenu(DevicesModel::self()->menu()->duplicate(0));
+    copyToDeviceAction->setMenu(DevicesModel::self()->menu()->duplicate(nullptr));
     #endif
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", tr("Crop Others"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", tr("Add Stream URL"));
@@ -371,7 +371,7 @@ void MainWindow::init()
     connectionsGroup=new QActionGroup(connectionsAction->menu());
     outputsAction->setMenu(new QMenu(this));
     outputsAction->setVisible(false);
-    addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu()->duplicate(0));
+    addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu()->duplicate(nullptr));
 
     playPauseTrackButton->setDefaultAction(StdActions::self()->playPauseTrackAction);
     stopTrackButton->setDefaultAction(StdActions::self()->stopPlaybackAction);
@@ -648,7 +648,7 @@ void MainWindow::init()
     playQueue->setModel(&playQueueProxyModel);
     playQueue->addAction(playQueue->removeFromAct());
     ratingAction=new Action(tr("Set Rating"), this);
-    ratingAction->setMenu(new QMenu(0));
+    ratingAction->setMenu(new QMenu(nullptr));
     for (int i=0; i<((Song::Rating_Max/Song::Rating_Step)+1); ++i) {
         QString text;
         if (0==i) {
@@ -896,7 +896,7 @@ MainWindow::~MainWindow()
                                           ((isHidden() && Settings::SS_ShowMainWindow!=startupState) || (Settings::SS_HideMainWindow==startupState)));
     }
     Settings::self()->save();
-    disconnect(MPDConnection::self(), 0, 0, 0);
+    disconnect(MPDConnection::self(), nullptr, nullptr, nullptr);
     if (Settings::self()->stopOnExit()) {
         DynamicPlaylists::self()->stop();
     }
@@ -1390,7 +1390,7 @@ void MainWindow::initMpris()
     } else if (mpris) {
         disconnect(mpris, SIGNAL(showMainWindow()), this, SLOT(restoreWindow()));
         mpris->deleteLater();
-        mpris=0;
+        mpris=nullptr;
     }
     CurrentCover::self()->setEnabled(mpris || Settings::self()->showPopups() || 0!=Settings::self()->playQueueBackground() || Settings::self()->showCoverWidget());
     #endif
@@ -1441,7 +1441,7 @@ void MainWindow::readSettings()
         if (0==contextSwitchTime && contextTimer) {
             contextTimer->stop();
             contextTimer->deleteLater();
-            contextTimer=0;
+            contextTimer=nullptr;
         }
     }
     MPDConnection::self()->setVolumeFadeDuration(Settings::self()->stopFadeDuration());
@@ -1926,7 +1926,7 @@ void MainWindow::addToNewStoredPlaylist()
 {
     bool pq=playQueue->hasFocus();
     for(;;) {
-        QString name = InputDialog::getText(tr("Playlist Name"), tr("Enter a name for the playlist:"), QString(), 0, this);
+        QString name = InputDialog::getText(tr("Playlist Name"), tr("Enter a name for the playlist:"), QString(), nullptr, this);
 
         if (name==MPDConnection::constStreamsPlayListName) {
             MessageBox::error(this, tr("'%1' is used to store favorite streams, please choose another name.").arg(name));
@@ -2076,7 +2076,7 @@ void MainWindow::currentTabChanged(int index)
     case PAGE_DEVICES:   currentPage=devicesPage;   break;
     #endif
     case PAGE_SEARCH:    currentPage=searchPage;    break;
-    default:             currentPage=0;             break;
+    default:             currentPage=nullptr;             break;
     }
     if (currentPage) {
         currentPage->controlActions();

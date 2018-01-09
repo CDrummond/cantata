@@ -83,7 +83,7 @@ Solid::Device Solid::StorageVolume::encryptedContainer() const
     Ifaces::StorageVolume *iface
         = qobject_cast<Ifaces::StorageVolume*>(d->backendObject());
 
-    if (iface!=0) {
+    if (iface!=nullptr) {
         return Device(iface->encryptedContainerUdi());
     } else {
         return Device();

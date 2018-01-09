@@ -110,7 +110,7 @@ bool KeyEventHandler::eventFilter(QObject *obj, QEvent *event)
 }
 
 ViewEventHandler::ViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v)
-    : KeyEventHandler(v, 0)
+    : KeyEventHandler(v, nullptr)
     , delegate(d)
 {
 }
@@ -157,11 +157,11 @@ public:
     {
     }
 
-    virtual ~ListDelegate()
+    ~ListDelegate() override
     {
     }
 
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         Q_UNUSED(option)
         if (view && QListView::IconMode==view->viewMode()) {
@@ -182,7 +182,7 @@ public:
         }
     }
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if (!index.isValid()) {
             return;
@@ -382,7 +382,7 @@ public:
             opt.direction=QApplication::layoutDirection();
             opt.fontMetrics=textMetrics;
 
-            QApplication::style()->drawControl(QStyle::CE_ProgressBar, &opt, painter, 0L);
+            QApplication::style()->drawControl(QStyle::CE_ProgressBar, &opt, painter, nullptr);
         }
 
         if (drawBgnd && mouseOver) {
@@ -405,17 +405,17 @@ class TreeDelegate : public ListDelegate
 {
 public:
     TreeDelegate(QAbstractItemView *p)
-        : ListDelegate(0, p)
+        : ListDelegate(nullptr, p)
         , simpleStyle(true)
         , treeView(p)
     {
     }
 
-    virtual ~TreeDelegate()
+    ~TreeDelegate() override
     {
     }
 
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if (noIcons) {
             return QStyledItemDelegate::sizeHint(option, index);
@@ -434,7 +434,7 @@ public:
         return sz;
     }
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if (!index.isValid()) {
             return;
@@ -539,13 +539,13 @@ public:
     void setSimple(bool s) { simpleStyle=s; }
     void setNoIcons(bool n) { noIcons=n; }
 
-    virtual bool getCoverInUiThread(const QModelIndex &idx) const
+    bool getCoverInUiThread(const QModelIndex &idx) const override
     {
         // Want album covers in artists view to load quickly...
         return idx.isValid() && idx.data(Cantata::Role_LoadCoverInUIThread).toBool();
     }
 
-    virtual QWidget * itemView() const { return treeView; }
+    QWidget * itemView() const override { return treeView; }
 
     bool simpleStyle;
     bool noIcons;
@@ -587,7 +587,7 @@ QString ItemView::modeStr(Mode m)
 
 static const char *constPageProp="page";
 static const char *constAlwaysShowProp="always";
-static Action *backAction=0;
+static Action *backAction=nullptr;
 
 static const QLatin1String constZoomKey("gridZoom");
 const QLatin1String ItemView::constSearchActiveKey("searchActive");
@@ -601,14 +601,14 @@ static const double constZoomStep = 0.25;
 
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
-    , searchTimer(0)
-    , itemModel(0)
+    , searchTimer(nullptr)
+    , itemModel(nullptr)
     , currentLevel(0)
     , mode(Mode_SimpleTree)
-    , groupedView(0)
-    , tableView(0)
-    , spinner(0)
-    , msgOverlay(0)
+    , groupedView(nullptr)
+    , tableView(nullptr)
+    , spinner(nullptr)
+    , msgOverlay(nullptr)
     , performedSearch(false)
     , searchResetLevel(0)
     , openFirstLevelAfterSearch(false)
@@ -742,7 +742,7 @@ void ItemView::allowTableView(TableView *v)
         tableView->setParent(stackedWidget);
         stackedWidget->addWidget(tableView);
         tableView->setProperty(constPageProp, stackedWidget->count()-1);
-        ViewEventHandler *viewHandler=new ViewEventHandler(0, tableView);
+        ViewEventHandler *viewHandler=new ViewEventHandler(nullptr, tableView);
         tableView->installFilter(viewHandler);
         connect(tableView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
         connect(tableView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
@@ -799,13 +799,13 @@ void ItemView::setMode(Mode m)
     mode=m;
     int stackIndex=0;
     if (usingTreeView()) {
-        listView->setModel(0);
+        listView->setModel(nullptr);
         if (groupedView) {
-            groupedView->setModel(0);
+            groupedView->setModel(nullptr);
         }
         if (tableView) {
             tableView->saveHeader();
-            tableView->setModel(0);
+            tableView->setModel(nullptr);
         }
         treeView->setModel(itemModel);
         treeView->setHidden(false);
@@ -816,11 +816,11 @@ void ItemView::setMode(Mode m)
         }
         treeView->reset();
     } else if (Mode_GroupedTree==mode) {
-        treeView->setModel(0);
-        listView->setModel(0);
+        treeView->setModel(nullptr);
+        listView->setModel(nullptr);
         if (tableView) {
             tableView->saveHeader();
-            tableView->setModel(0);
+            tableView->setModel(nullptr);
         }
         groupedView->setHidden(false);
         treeView->setHidden(true);
@@ -831,10 +831,10 @@ void ItemView::setMode(Mode m)
         stackIndex=groupedView->property(constPageProp).toInt();
     } else if (Mode_Table==mode) {
         int w=view()->width();
-        treeView->setModel(0);
-        listView->setModel(0);
+        treeView->setModel(nullptr);
+        listView->setModel(nullptr);
         if (groupedView) {
-            groupedView->setModel(0);
+            groupedView->setModel(nullptr);
         }
         tableView->setHidden(false);
         treeView->setHidden(true);
@@ -847,13 +847,13 @@ void ItemView::setMode(Mode m)
         stackIndex=tableView->property(constPageProp).toInt();
     } else {
         stackIndex=1;
-        treeView->setModel(0);
+        treeView->setModel(nullptr);
         if (groupedView) {
-            groupedView->setModel(0);
+            groupedView->setModel(nullptr);
         }
         if (tableView) {
             tableView->saveHeader();
-            tableView->setModel(0);
+            tableView->setModel(nullptr);
         }
         listView->setModel(itemModel);
         goToTop();
@@ -1372,8 +1372,8 @@ void ItemView::setExpanded(const QModelIndex &idx, bool exp)
 QAction * ItemView::getAction(const QModelIndex &index)
 {
     QAbstractItemDelegate *abs=view()->itemDelegate();
-    ActionItemDelegate *d=abs ? qobject_cast<ActionItemDelegate *>(abs) : 0;
-    return d ? d->getAction(index) : 0;
+    ActionItemDelegate *d=abs ? qobject_cast<ActionItemDelegate *>(abs) : nullptr;
+    return d ? d->getAction(index) : nullptr;
 }
 
 void ItemView::itemClicked(const QModelIndex &index)

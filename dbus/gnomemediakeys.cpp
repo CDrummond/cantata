@@ -38,9 +38,9 @@ static const char * constMediaKeysPath = "/org/gnome/SettingsDaemon/MediaKeys";
 
 GnomeMediaKeys::GnomeMediaKeys(QObject *p)
     : MultiMediaKeysInterface(p)
-    , daemon(0)
-    , mk(0)
-    , watcher(0)
+    , daemon(nullptr)
+    , mk(nullptr)
+    , watcher(nullptr)
 {
 }
 
@@ -63,7 +63,7 @@ void GnomeMediaKeys::deactivate()
         disconnectDaemon();
         if (watcher) {
             watcher->deleteLater();
-            watcher=0;
+            watcher=nullptr;
         }
     }
 }
@@ -91,7 +91,7 @@ void GnomeMediaKeys::releaseKeys()
         mk->ReleaseMediaPlayerKeys(QCoreApplication::applicationName());
         disconnect(mk, SIGNAL(MediaPlayerKeyPressed(QString,QString)), this, SLOT(keyPressed(QString,QString)));
         mk->deleteLater();
-        mk=0;
+        mk=nullptr;
     }
 }
 
@@ -125,7 +125,7 @@ void GnomeMediaKeys::disconnectDaemon()
     if (daemon) {
         disconnect(daemon, SIGNAL(PluginActivated(QString)), this, SLOT(pluginActivated(QString)));
         daemon->deleteLater();
-        daemon=0;
+        daemon=nullptr;
     }
 }
 

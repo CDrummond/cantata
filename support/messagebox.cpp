@@ -119,7 +119,7 @@ class YesNoListDialog : public Dialog
 {
 public:
     YesNoListDialog(QWidget *p) : Dialog(p) { }
-    void slotButtonClicked(int b) {
+    void slotButtonClicked(int b) override {
         switch(b) {
         case Dialog::Ok:
         case Dialog::Yes:

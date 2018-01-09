@@ -50,7 +50,7 @@ class CacheItemCounter : public QObject
 
 public:
     CacheItemCounter(const QString &name, const QString &d, const QStringList &t);
-    ~CacheItemCounter();
+    ~CacheItemCounter() override;
 
 Q_SIGNALS:
     void count(int num, quint64 space);
@@ -78,7 +78,7 @@ public:
 
 public:
     CacheItem(const QString &title, const QString &d, const QStringList &t, QTreeWidget *parent, Type ty=Type_Other);
-    ~CacheItem();
+    ~CacheItem() override;
 
     void calculate();
     void clean();
@@ -110,9 +110,9 @@ class CacheTree : public QTreeWidget
 
 public:
     CacheTree(QWidget *parent);
-    ~CacheTree();
+    ~CacheTree() override;
 
-    void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) override;
 
 private:
     bool calculated;
@@ -124,7 +124,7 @@ class CacheSettings : public QWidget
 
 public:
     CacheSettings(QWidget *parent);
-    ~CacheSettings();
+    ~CacheSettings() override;
 
 private Q_SLOTS:
     void controlButton();

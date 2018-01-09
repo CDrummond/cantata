@@ -35,7 +35,7 @@ class ActionLabel : public QLabel
 
 public:
     ActionLabel(QWidget *parent);
-    ~ActionLabel();
+    ~ActionLabel() override;
     void startAnimation();
     void stopAnimation();
 

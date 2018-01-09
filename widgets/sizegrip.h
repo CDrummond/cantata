@@ -29,7 +29,7 @@
 class SizeGrip : public QWidget
 {
 public:
-    explicit SizeGrip(QWidget *parent = 0);
+    explicit SizeGrip(QWidget *parent = nullptr);
 };
 
 #endif

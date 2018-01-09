@@ -35,7 +35,7 @@ class EscKeyEventHandler : public QObject
 public:
     EscKeyEventHandler(SearchWidget *v) : QObject(v), view(v) { }
 protected:
-    bool eventFilter(QObject *obj, QEvent *event)
+    bool eventFilter(QObject *obj, QEvent *event) override
     {
         if (view->hasFocus() && QEvent::KeyRelease==event->type()) {
             QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
@@ -53,7 +53,7 @@ private:
 
 SearchWidget::SearchWidget(QWidget *p)
      : QWidget(p)
-     , cat(0)
+     , cat(nullptr)
      , widgetIsActive(false)
 {
     QHBoxLayout *l=new QHBoxLayout(this);
@@ -95,7 +95,7 @@ void SearchWidget::setPermanent()
     setFocus();
     closeButton->setVisible(false);
     closeButton->deleteLater();
-    closeButton=0;
+    closeButton=nullptr;
     layout()->setSpacing(0);
 }
 

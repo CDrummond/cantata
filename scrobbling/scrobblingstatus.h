@@ -31,7 +31,7 @@ class ScrobblingStatus : public QWidget
     Q_OBJECT
 public:
     ScrobblingStatus(QWidget *p);
-    virtual ~ScrobblingStatus() { }
+    ~ScrobblingStatus() override { }
 
     bool isChecked() const { return btn->isChecked(); }
 public Q_SLOTS:

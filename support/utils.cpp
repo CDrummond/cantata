@@ -811,7 +811,7 @@ void Utils::clearOldCache(const QString &sub, int maxAge)
 
 void Utils::touchFile(const QString &fileName)
 {
-    ::utime(QFile::encodeName(fileName).constData(), 0);
+    ::utime(QFile::encodeName(fileName).constData(), nullptr);
 }
 
 double Utils::smallFontFactor(const QFont &f)
@@ -872,7 +872,7 @@ bool Utils::limitedHeight(QWidget *w)
 
 void Utils::resizeWindow(QWidget *w, bool preserveWidth, bool preserveHeight)
 {
-    QWidget *window=w ? w->window() : 0;
+    QWidget *window=w ? w->window() : nullptr;
     if (window) {
         QSize was=window->size();
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);

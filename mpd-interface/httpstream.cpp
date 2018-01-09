@@ -46,8 +46,8 @@ HttpStream::HttpStream(QObject *p)
     , enabled(false)
     , state(MPDState_Inactive)
     , playStateChecks(0)
-    , playStateCheckTimer(0)
-    , player(0)
+    , playStateCheckTimer(nullptr)
+    , player(nullptr)
 {
 }
 
@@ -91,7 +91,7 @@ void HttpStream::streamUrl(const QString &url)
     if (player && player->property(constUrlProperty).toString()!=url) {
         player->stop();
         player->deleteLater();
-        player=0;
+        player=nullptr;
     }
     #endif
     if (!url.isEmpty() && !player) {

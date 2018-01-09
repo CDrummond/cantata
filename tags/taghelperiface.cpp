@@ -48,10 +48,10 @@ TagHelperIface::TagHelperIface()
     : msgStatus(true)
     , dataSize(0)
     , awaitingResponse(false)
-    , thread(0)
-    , proc(0)
-    , server(0)
-    , sock(0)
+    , thread(nullptr)
+    , proc(nullptr)
+    , server(nullptr)
+    , sock(nullptr)
 {
     qRegisterMetaType<QAbstractSocket::SocketError>("QAbstractSocket::SocketError");
     thread=new Thread(metaObject()->className());
@@ -68,7 +68,7 @@ void TagHelperIface::stop()
         sema.acquire();
         DBUG << "Stop thread";
         thread->stop();
-        thread=0;
+        thread=nullptr;
     }
 }
 
@@ -359,13 +359,13 @@ void TagHelperIface::stopHelper()
         sock->flush();
         sock->close();
         sock->deleteLater();
-        sock=0;
+        sock=nullptr;
     }
     if (server) {
         DBUG << "Server" << (void *)server;
         server->close();
         server->deleteLater();
-        server=0;
+        server=nullptr;
     }
     if (proc) {
         disconnect(proc, SIGNAL(finished(int)), this, SLOT(helperClosed()));
@@ -375,7 +375,7 @@ void TagHelperIface::stopHelper()
             proc->waitForFinished(10);
         }
         proc->deleteLater();
-        proc=0;
+        proc=nullptr;
     }
     setStatus(false);
 }

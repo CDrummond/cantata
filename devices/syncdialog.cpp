@@ -99,7 +99,7 @@ int SyncDialog::instanceCount()
 SyncDialog::SyncDialog(QWidget *parent)
     : Dialog(parent, "SyncDialog", QSize(680, 680))
     , state(State_Lists)
-    , currentDev(0)
+    , currentDev(nullptr)
 {
     iCount++;
 
@@ -260,12 +260,12 @@ Device * SyncDialog::getDevice()
     Device *dev=DevicesModel::self()->device(devUdi);
     if (!dev) {
         MessageBox::error(isVisible() ? this : parentWidget(), tr("Device has been removed!"));
-        return 0;
+        return nullptr;
     }
 
     if (currentDev && dev!=currentDev) {
         MessageBox::error(isVisible() ? this : parentWidget(), tr("Device has been changed?"));
-        return 0;
+        return nullptr;
     }
 
     if (dev->isIdle()) {
@@ -273,5 +273,5 @@ Device * SyncDialog::getDevice()
     }
 
     MessageBox::error(isVisible() ? this : parentWidget(), tr("Device is busy?"));
-    return 0;
+    return nullptr;
 }

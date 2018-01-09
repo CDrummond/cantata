@@ -41,14 +41,14 @@ class MultiPageWidget : public StackedPageWidget
 
     struct Entry
     {
-        Entry(SelectorButton *b=0, QWidget *p=0) : btn(b), page(p) { }
+        Entry(SelectorButton *b=nullptr, QWidget *p=nullptr) : btn(b), page(p) { }
         SelectorButton *btn;
         QWidget *page;
     };
 
 public:
     MultiPageWidget(QWidget *p);
-    virtual ~MultiPageWidget();
+    ~MultiPageWidget() override;
 
     void load(Configuration &config);
     void save(Configuration &config) const;

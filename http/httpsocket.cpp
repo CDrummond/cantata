@@ -184,7 +184,7 @@ static void getRange(const QStringList &params, qint32 &from, qint32 &to)
 }
 
 HttpSocket::HttpSocket(const QString &iface, quint16 port)
-    : QTcpServer(0)
+    : QTcpServer(nullptr)
     , cfgInterface(iface)
     , terminated(false)
 {

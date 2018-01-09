@@ -26,8 +26,8 @@
 
 Tar::Tar(const QString &fileName)
     : file(fileName)
-    , compressor(0)
-    , dev(0)
+    , compressor(nullptr)
+    , dev(nullptr)
 {
 }
 

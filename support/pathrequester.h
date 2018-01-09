@@ -34,7 +34,7 @@ class PathRequester : public QWidget
 public:
     static void setIcon(const QIcon &icn);
     PathRequester(QWidget *parent);
-    virtual ~PathRequester() { }
+    ~PathRequester() override { }
 
     QString text() const { return QDir::fromNativeSeparators(edit->text()); }
     void setText(const QString &t) { edit->setText(QDir::toNativeSeparators(t)); }

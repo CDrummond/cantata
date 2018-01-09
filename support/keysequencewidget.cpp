@@ -163,7 +163,7 @@ void KeySequenceButton::keyReleaseEvent(QKeyEvent *e)
 
 KeySequenceWidget::KeySequenceWidget(QWidget *parent)
     : QWidget(parent),
-    _shortcutsModel(0),
+    _shortcutsModel(nullptr),
     _isRecording(false),
     _modifierKeys(0)
 {

@@ -33,7 +33,7 @@ class UrlLabel : public QLabel
 
 public:
     UrlLabel(QWidget *p);
-    virtual ~UrlLabel() { }
+    ~UrlLabel() override { }
 
     void setText(const QString &t);
     void setProperty(const char *name, const QVariant &value);
@@ -42,8 +42,8 @@ Q_SIGNALS:
     void leftClickedUrl();
 
 protected:
-    void mousePressEvent(QMouseEvent *ev);
-    void mouseReleaseEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *ev) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
 
 private:
     bool pressed;

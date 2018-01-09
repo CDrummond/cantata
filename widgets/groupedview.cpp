@@ -188,7 +188,7 @@ static QString streamText(const Song &song, const QString &trackTitle, bool useN
 GroupedViewDelegate::GroupedViewDelegate(GroupedView *p)
     : ActionItemDelegate(p)
     , view(p)
-    , ratingPainter(0)
+    , ratingPainter(nullptr)
 {
 }
 

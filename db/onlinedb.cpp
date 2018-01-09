@@ -29,8 +29,8 @@ static const QString subDir("online");
 
 OnlineDb::OnlineDb(const QString &serviceName, QObject *p)
     : LibraryDb(p, serviceName)
-    , insertCoverQuery(0)
-    , getCoverQuery(0)
+    , insertCoverQuery(nullptr)
+    , getCoverQuery(nullptr)
 {
 }
 
@@ -81,8 +81,8 @@ void OnlineDb::reset()
 {
     delete insertCoverQuery;
     delete getCoverQuery;
-    insertCoverQuery=0;
-    getCoverQuery=0;
+    insertCoverQuery=nullptr;
+    getCoverQuery=nullptr;
     LibraryDb::reset();
 }
 

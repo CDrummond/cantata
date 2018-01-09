@@ -32,7 +32,7 @@ class ServiceStatusLabel : public QLabel
 
 public:
     ServiceStatusLabel(QWidget *p);
-    virtual ~ServiceStatusLabel() { }
+    ~ServiceStatusLabel() override { }
 
     void setText(const QString &txt, const QString &name);
     void setStatus(bool on);
@@ -41,8 +41,8 @@ Q_SIGNALS:
     void clicked();
 
 private:
-    void mousePressEvent(QMouseEvent *ev);
-    void mouseReleaseEvent(QMouseEvent *ev);
+    void mousePressEvent(QMouseEvent *ev) override;
+    void mouseReleaseEvent(QMouseEvent *ev) override;
 
 private:
     bool pressed;

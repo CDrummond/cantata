@@ -112,7 +112,7 @@ public:
     };
 
     LibraryDb(QObject *p, const QString &name);
-    ~LibraryDb();
+    ~LibraryDb() override;
 
     void clear();
     void erase();

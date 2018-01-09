@@ -39,7 +39,7 @@ public:
     static void enableDebug();
 
     StreamFetcher(QObject *p);
-    virtual ~StreamFetcher();
+    ~StreamFetcher() override;
 
     void get(const QStringList &items, int insertRow, int action, quint8 priority, bool decPriority);
 

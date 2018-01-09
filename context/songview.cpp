@@ -127,13 +127,13 @@ static QString actualFile(const Song &song)
 
 SongView::SongView(QWidget *p)
     : View(p, QStringList() << tr("Lyrics") << tr("Information") << tr("Metadata"))
-    , scrollTimer(0)
+    , scrollTimer(nullptr)
     , songPos(0)
     , currentProvider(-1)
     , currentRequest(0)
     , mode(Mode_Display)
-    , job(0)
-    , currentProv(0)
+    , job(nullptr)
+    , currentProv(nullptr)
     , lyricsNeedsUpdating(true)
     , infoNeedsUpdating(true)
     , metadataNeedsUpdating(true)
@@ -724,12 +724,12 @@ void SongView::abort()
 {
     if (job) {
         job->cancelAndDelete();
-        job=0;
+        job=nullptr;
     }
     currentProvider=-1;
     if (currentProv) {
         currentProv->abort();
-        currentProv=0;
+        currentProv=nullptr;
 
         text->setText(QString());
         // Set lyrics file anyway - so that editing is enabled!
@@ -796,7 +796,7 @@ void SongView::downloadFinished()
     if (reply) {
         reply->deleteLater();
         if (job==reply) {
-            job=0;
+            job=nullptr;
             if (reply->ok()) {
                 QString file=reply->property("file").toString();
                 if (!file.isEmpty() && file==currentSong.file) {

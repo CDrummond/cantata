@@ -78,23 +78,23 @@ public:
 
     RemoteFsDevice(MusicLibraryModel *m, const DeviceOptions &options, const Details &d);
     RemoteFsDevice(MusicLibraryModel *m, const Details &d);
-    virtual ~RemoteFsDevice();
+    ~RemoteFsDevice() override;
 
-    void toggle();
+    void toggle() override;
     void mount();
     void unmount();
-    bool supportsDisconnect() const { return !details.isLocalFile(); }
-    bool isConnected() const;
-    double usedCapacity();
-    QString capacityString();
-    qint64 freeSpace();
-    void saveOptions();
-    void configure(QWidget *parent);
-    DevType devType() const { return RemoteFs; }
-    bool canPlaySongs() const;
+    bool supportsDisconnect() const override { return !details.isLocalFile(); }
+    bool isConnected() const override;
+    double usedCapacity() override;
+    QString capacityString() override;
+    qint64 freeSpace() override;
+    void saveOptions() override;
+    void configure(QWidget *parent) override;
+    DevType devType() const override { return RemoteFs; }
+    bool canPlaySongs() const override;
     void destroy(bool removeFromConfig=true);
     const Details & getDetails() const { return details; }
-    QString subText() { return sub; }
+    QString subText() override { return sub; }
 
 private Q_SLOTS:
     void serviceAdded(const QString &name);
@@ -107,7 +107,7 @@ Q_SIGNALS:
 protected:
     void load();
     void setup();
-    void setAudioFolder() const;
+    void setAudioFolder() const override;
 
 private:
     bool isOldSshfs();

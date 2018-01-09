@@ -38,7 +38,7 @@ public:
     static void enableDebug();
     static ThreadCleaner * self();
     ThreadCleaner() { }
-    ~ThreadCleaner() { }
+    ~ThreadCleaner() override { }
 
     // This function must *ONLY* be called from GUI thread...
     void stopAll();
@@ -58,15 +58,15 @@ class Thread : public QThread
 {
     Q_OBJECT
 public:
-    Thread(const QString &name, QObject *p=0);
-    virtual ~Thread();
+    Thread(const QString &name, QObject *p=nullptr);
+    ~Thread() override;
 
     // Make QThread::msleep accessible!
     using QThread::msleep;
 
-    virtual void run();
+    void run() override;
 
-    QTimer * createTimer(QObject *parent=0);
+    QTimer * createTimer(QObject *parent=nullptr);
     void deleteTimer(QTimer *timer);
 
 public Q_SLOTS:

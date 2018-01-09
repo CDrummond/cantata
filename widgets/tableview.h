@@ -31,12 +31,12 @@ class TableView : public TreeView
     Q_OBJECT
 
 public:
-    TableView(const QString &cfgGroup, QWidget *parent=0, bool menuAlwaysAllowed=false);
-    virtual ~TableView() { }
-    void setModel(QAbstractItemModel *m);
+    TableView(const QString &cfgGroup, QWidget *parent=nullptr, bool menuAlwaysAllowed=false);
+    ~TableView() override { }
+    void setModel(QAbstractItemModel *m) override;
     void initHeader();
     void saveHeader();
-    virtual void scrollTo(const QModelIndex &index, ScrollHint hint);
+    void scrollTo(const QModelIndex &index, ScrollHint hint) override;
 
 private Q_SLOTS:
     void showMenu(const QPoint &pos);

@@ -33,23 +33,23 @@ class OnlineDevice : public Device
     Q_OBJECT
 
 public:
-    OnlineDevice() : Device(0, QString(), QString()), lastProg(-1), overWrite(false), job(0) { }
-    virtual ~OnlineDevice() { }
+    OnlineDevice() : Device(nullptr, QString(), QString()), lastProg(-1), overWrite(false), job(nullptr) { }
+    ~OnlineDevice() override { }
 
-    bool isConnected() const { return true; }
-    void rescan(bool) { }
-    bool isRefreshing() const { return false; }
-    void stop() { }
-    QString path() const { return QString(); }
-    void addSong(const Song&, bool, bool) { }
-    void copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover);
-    void removeSong(const Song&) { }
-    void cleanDirs(const QSet<QString>&) { }
-    double usedCapacity() { return 0.0; }
-    QString capacityString() { return QString(); }
-    qint64 freeSpace() { return 0; }
-    DevType devType() const { return RemoteFs; }
-    void saveOptions() { }
+    bool isConnected() const override { return true; }
+    void rescan(bool) override { }
+    bool isRefreshing() const override { return false; }
+    void stop() override { }
+    QString path() const override { return QString(); }
+    void addSong(const Song&, bool, bool) override { }
+    void copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover) override;
+    void removeSong(const Song&) override { }
+    void cleanDirs(const QSet<QString>&) override { }
+    double usedCapacity() override { return 0.0; }
+    QString capacityString() override { return QString(); }
+    qint64 freeSpace() override { return 0; }
+    DevType devType() const override { return RemoteFs; }
+    void saveOptions() override { }
 
 private Q_SLOTS:
     void downloadFinished();

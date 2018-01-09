@@ -48,7 +48,7 @@ static QString viewTypeString(ItemView::Mode mode)
 SinglePageWidget::SinglePageWidget(QWidget *p)
     : QWidget(p)
     , btnFlags(0)
-    , refreshAction(0)
+    , refreshAction(nullptr)
 {
     QGridLayout *layout=new QGridLayout(this);
     view=new ItemView(this);

@@ -37,7 +37,7 @@ public:
     void setUseArrow(bool a) { useArrow=a; }
     void clear() { if (menu) menu->clear(); }
     void addItem(const QString &text, const QString &data, const QString &tt=QString());
-    bool event(QEvent *e);
+    bool event(QEvent *e) override;
     int currentIndex() const { return current; }
     void setCurrentIndex(int v);
     QString itemData(int index) const;

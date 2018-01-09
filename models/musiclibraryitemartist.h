@@ -41,14 +41,14 @@ class MusicLibraryItemArtist : public MusicLibraryItemContainer
 public:
     static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
 
-    MusicLibraryItemArtist(const Song &song, MusicLibraryItemContainer *parent=0);
-    virtual ~MusicLibraryItemArtist() { }
+    MusicLibraryItemArtist(const Song &song, MusicLibraryItemContainer *parent=nullptr);
+    ~MusicLibraryItemArtist() override { }
 
     MusicLibraryItemAlbum * album(const Song &s, bool create=true);
     MusicLibraryItemAlbum * createAlbum(const Song &s);
     const QString & sortString() const { return m_sortString.isEmpty() ? m_itemData : m_sortString; }
     void remove(MusicLibraryItemAlbum *album);
-    Type itemType() const { return Type_Artist; }
+    Type itemType() const override { return Type_Artist; }
     // 'data' could be 'Composer' if we are set to use that, but need to save real artist...
     const QString & actualArtist() const { return m_actualArtist; }
     Song coverSong() const;

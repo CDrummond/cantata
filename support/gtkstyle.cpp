@@ -76,7 +76,7 @@ void GtkStyle::drawSelection(const QStyleOptionViewItem &opt, QPainter *painter,
         styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled|QStyle::State_Active;
         styleOpt.viewItemPosition = QStyleOptionViewItem::OnlyOne;
         styleOpt.rect=QRect(0, 0, opt.rect.width(), opt.rect.height());
-        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, &p, 0);
+        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, &p, nullptr);
         p.end();
         cache.insert(key, pix, pix->width()*pix->height());
     }

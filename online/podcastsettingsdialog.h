@@ -41,7 +41,7 @@ public:
     };
 
     PodcastSettingsDialog(QWidget *p);
-    virtual ~PodcastSettingsDialog() { }
+    ~PodcastSettingsDialog() override { }
 
     int changes() const { return changed; }
 
@@ -49,7 +49,7 @@ private Q_SLOTS:
     void checkSaveable();
 
 private:
-    void slotButtonClicked(int button);
+    void slotButtonClicked(int button) override;
 
 private:
     QComboBox *updateCombo;

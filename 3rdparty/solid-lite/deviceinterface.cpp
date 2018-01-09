@@ -38,13 +38,13 @@ Solid::DeviceInterface::DeviceInterface(DeviceInterfacePrivate &dd, QObject *bac
 Solid::DeviceInterface::~DeviceInterface()
 {
     delete d_ptr;
-    d_ptr = 0;
+    d_ptr = nullptr;
 }
 
 bool Solid::DeviceInterface::isValid() const
 {
     Q_D(const DeviceInterface);
-    return d->backendObject()!=0;
+    return d->backendObject()!=nullptr;
 }
 
 QString Solid::DeviceInterface::typeToString(Type type)
@@ -117,7 +117,7 @@ QString Solid::DeviceInterface::typeDescription(Type type)
 }
 
 Solid::DeviceInterfacePrivate::DeviceInterfacePrivate()
-    : m_devicePrivate(0)
+    : m_devicePrivate(nullptr)
 {
 
 }

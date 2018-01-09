@@ -34,10 +34,10 @@ class ActionModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    ActionModel(QObject *p=0) : QAbstractItemModel(p) { }
-    virtual ~ActionModel() { }
+    ActionModel(QObject *p=nullptr) : QAbstractItemModel(p) { }
+    ~ActionModel() override { }
     
-    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     virtual void resetModel() { beginResetModel(); endResetModel(); }
 };
 

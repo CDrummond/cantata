@@ -36,7 +36,7 @@
 SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title)
     : QWidget(parent)
     , performedSearch(false)
-    , searchTimer(0)
+    , searchTimer(nullptr)
 {
     setupUi(this);
     titleLabel->setText(title);

@@ -86,7 +86,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     proxy->load();
     addPage(QLatin1String("proxy"), proxy, tr("Proxy"), Icon("preferences-system-network"), tr("Proxy Settings"));
     #endif
-    shortcuts = new ShortcutsSettingsPage(0);
+    shortcuts = new ShortcutsSettingsPage(nullptr);
     addPage(QLatin1String("shortcuts"), shortcuts, tr("Shortcuts"), Icon(QStringList() << "preferences-desktop-keyboard" << "keyboard"),
             tr("Keyboard Shortcut Settings"));
     shortcuts->load();

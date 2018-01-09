@@ -39,7 +39,7 @@ namespace Ifaces
         /**
          * Destroys an OpticalDisc object.
          */
-        virtual ~OpticalDisc();
+        ~OpticalDisc() override;
 
 
         /**

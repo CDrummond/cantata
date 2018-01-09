@@ -29,13 +29,13 @@
 class BuddyLabel : public QLabel
 {
 public:
-    BuddyLabel(const QString &text, QWidget *p, QWidget *b=0);
-    BuddyLabel(QWidget *p, QWidget *b=0);
-    virtual ~BuddyLabel() { }
+    BuddyLabel(const QString &text, QWidget *p, QWidget *b=nullptr);
+    BuddyLabel(QWidget *p, QWidget *b=nullptr);
+    ~BuddyLabel() override { }
 
 protected:
-    bool event(QEvent *e);
-    void mouseReleaseEvent(QMouseEvent *);
+    bool event(QEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
 };
 
 #endif

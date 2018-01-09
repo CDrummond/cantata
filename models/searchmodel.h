@@ -55,21 +55,21 @@ public:
 
     static QString headerText(int col);
 
-    SearchModel(QObject *parent = 0);
-    ~SearchModel();
-    QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole);
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &) const { return COL_COUNT; }
-    QVariant data(const QModelIndex &, int) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    SearchModel(QObject *parent = nullptr);
+    ~SearchModel() override;
+    QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &) const override { return COL_COUNT; }
+    QVariant data(const QModelIndex &, int) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
 
     QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const;
     QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists=false) const;
-    QMimeData * mimeData(const QModelIndexList &indexes) const;
-    QStringList mimeTypes() const;
+    QMimeData * mimeData(const QModelIndexList &indexes) const override;
+    QStringList mimeTypes() const override;
 
     void refresh();
     virtual void clear();
@@ -84,7 +84,7 @@ Q_SIGNALS:
 protected:
     virtual Song & fixPath(Song &s) const { return s; }
     void results(const QList<Song> &songs);
-    const Song * toSong(const QModelIndex &index) const { return index.isValid() ? static_cast<const Song *>(index.internalPointer()) : 0; }
+    const Song * toSong(const QModelIndex &index) const { return index.isValid() ? static_cast<const Song *>(index.internalPointer()) : nullptr; }
 
 protected:
     bool multiCol;

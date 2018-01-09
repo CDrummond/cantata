@@ -82,7 +82,7 @@ AvahiTimeout::AvahiTimeout(const struct timeval *tv, AvahiTimeoutCallback cb, vo
 
 void AvahiTimeout::updateTimeout(const struct timeval *tv)
 {
-    if (0==tv) {
+    if (nullptr==tv) {
         timer.stop();
         return;
     }
@@ -102,7 +102,7 @@ void AvahiTimeout::timeout()
 }
 
 AvahiWatch::AvahiWatch(int f, AvahiWatchEvent ev, AvahiWatchCallback cb, void *ud)
-    : notifier(0)
+    : notifier(nullptr)
     , callback(cb)
     , event(ev)
     , prevEvent(static_cast<AvahiWatchEvent>(0))

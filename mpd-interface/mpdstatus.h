@@ -88,7 +88,7 @@ class MPDStatus : public QObject
 
 public:
     MPDStatus();
-    ~MPDStatus() {}
+    ~MPDStatus() override {}
 
     static MPDStatus * self();
 

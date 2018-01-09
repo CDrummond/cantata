@@ -43,14 +43,14 @@ class OpticalDisc: public StorageVolume, virtual public Solid::Ifaces::OpticalDi
 
 public:
     OpticalDisc(Device *dev);
-    virtual ~OpticalDisc();
+    ~OpticalDisc() override;
 
-    virtual qulonglong capacity() const;
-    virtual bool isRewritable() const;
-    virtual bool isBlank() const;
-    virtual bool isAppendable() const;
-    virtual Solid::OpticalDisc::DiscType discType() const;
-    virtual Solid::OpticalDisc::ContentTypes availableContent() const;
+    qulonglong capacity() const override;
+    bool isRewritable() const override;
+    bool isBlank() const override;
+    bool isAppendable() const override;
+    Solid::OpticalDisc::DiscType discType() const override;
+    Solid::OpticalDisc::ContentTypes availableContent() const override;
 
 private Q_SLOTS:
     void slotDrivePropertiesChanged(const QString & ifaceName, const QVariantMap & changedProps, const QStringList & invalidatedProps);

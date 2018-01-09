@@ -51,7 +51,7 @@ class MpdSocket : public QObject
     Q_OBJECT
 public:
     MpdSocket(QObject *parent);
-    virtual ~MpdSocket();
+    ~MpdSocket() override;
 
     void connectToHost(const QString &hostName, quint16 port, QIODevice::OpenMode mode = QIODevice::ReadWrite);
     void disconnectFromHost() {
@@ -114,7 +114,7 @@ public:
                         : QAbstractSocket::UnconnectedState;
     }
     QNetworkProxy::ProxyType proxyType() const { return tcp ? tcp->proxy().type() : QNetworkProxy::NoProxy; }
-    bool isLocal() const { return 0!=local; }
+    bool isLocal() const { return nullptr!=local; }
     QString address() const { return tcp ? tcp->peerAddress().toString() : QString(); }
     QString errorString() const { return tcp ? tcp->errorString() : local ? local->errorString() : QLatin1String("No socket object?"); }
     QAbstractSocket::SocketError error() const {
@@ -257,7 +257,7 @@ public:
     static void enableDebug();
 
     MPDConnection();
-    ~MPDConnection();
+    ~MPDConnection() override;
 
     void start();
     const MPDConnectionDetails & getDetails() const { return details; }

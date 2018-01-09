@@ -46,7 +46,7 @@ public:
     static QString subTag;
 
     View(QWidget *p, const QStringList &views=QStringList());
-    virtual ~View();
+    ~View() override;
 
     static QString encode(const QImage &img);
     static QString subHeader(const QString &str) { return "<"+subTag+">"+str+"</"+subTag+">"; }
@@ -58,7 +58,7 @@ public:
     void setPicSize(const QSize &sz);
     QSize picSize() const;
     QString createPicTag(const QImage &img, const QString &file);
-    void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) override;
     void showSpinner(bool enableCancel=true);
     void hideSpinner(bool disableCancel=true);
     void setEditable(bool e, int index=0);

@@ -40,6 +40,8 @@
 28. Don't show year for 'Single Tracks', and ignore any sort and musicbrainz
     values.
 29. Add missing 'configure' option to podcast menu.
+30. Add link in server settings page to wiki page on github explaining how
+    files are accessed.
 
 2.2.0
 -----

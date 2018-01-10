@@ -70,6 +70,8 @@ NoteLabel::NoteLabel(QWidget *parent)
     : QWidget(parent)
 {
     label=static_cast<StateLabel *>(init(this, false));
+    label->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    label->setOpenExternalLinks(true);
 }
 
 void NoteLabel::setProperty(const char *name, const QVariant &value)
@@ -97,6 +99,8 @@ PlainNoteLabel::PlainNoteLabel(QWidget *parent)
     : StateLabel(parent)
 {
     init(this);
+    setTextInteractionFlags(Qt::TextBrowserInteraction);
+    setOpenExternalLinks(true);
 }
 
 PlainUrlNoteLabel::PlainUrlNoteLabel(QWidget *parent)

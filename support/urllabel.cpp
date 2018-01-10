@@ -31,7 +31,6 @@ UrlLabel::UrlLabel(QWidget *p)
     : QLabel(p)
 {
     setCursor(QCursor(Qt::PointingHandCursor));
-    setContextMenuPolicy(Qt::NoContextMenu);
     setTextInteractionFlags(Qt::TextBrowserInteraction);
     setOpenExternalLinks(false);
     connect(this, SIGNAL(linkActivated(QString)), this, SIGNAL(leftClickedUrl()));

@@ -266,11 +266,6 @@
    <header>widgets/notelabel.h</header>
   </customwidget>
   <customwidget>
-   <class>PlainUrlNoteLabel</class>
-   <extends>QLabel</extends>
-   <header>widgets/notelabel.h</header>
-  </customwidget>
-  <customwidget>
    <class>RatingWidget</class>
    <extends>QWidget</extends>
    <header>widgets/ratingwidget.h</header>

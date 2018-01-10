@@ -40,13 +40,6 @@ public:
 
 Q_SIGNALS:
     void leftClickedUrl();
-
-protected:
-    void mousePressEvent(QMouseEvent *ev) override;
-    void mouseReleaseEvent(QMouseEvent *) override;
-
-private:
-    bool pressed;
 };
 
 #endif // URLLABEL_H

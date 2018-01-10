@@ -29,10 +29,12 @@
 
 UrlLabel::UrlLabel(QWidget *p)
     : QLabel(p)
-    , pressed(false)
 {
     setCursor(QCursor(Qt::PointingHandCursor));
     setContextMenuPolicy(Qt::NoContextMenu);
+    setTextInteractionFlags(Qt::TextBrowserInteraction);
+    setOpenExternalLinks(false);
+    connect(this, SIGNAL(linkActivated(QString)), this, SIGNAL(leftClickedUrl()));
 }
 
 void UrlLabel::setText(const QString &t)
@@ -47,19 +49,3 @@ void UrlLabel::setProperty(const char *name, const QVariant &value)
     }
 }
 
-void UrlLabel::mousePressEvent(QMouseEvent *ev)
-{
-    if (Qt::LeftButton==ev->buttons()) {
-        pressed=true;
-    }
-}
-
-void UrlLabel::mouseReleaseEvent(QMouseEvent *)
-{
-    if (pressed) {
-        pressed=false;
-        if (this==QApplication::widgetAt(QCursor::pos())) {
-            emit leftClickedUrl();
-        }
-    }
-}

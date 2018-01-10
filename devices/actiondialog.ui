@@ -524,11 +524,6 @@
    <header>widgets/actionlabel.h</header>
   </customwidget>
   <customwidget>
-   <class>UrlNoteLabel</class>
-   <extends>QLabel</extends>
-   <header>widgets/notelabel.h</header>
-  </customwidget>
-  <customwidget>
    <class>SplitLabelWidget</class>
    <extends>QLabel</extends>
    <header>devices/splitlabelwidget.h</header>

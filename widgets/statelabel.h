@@ -24,13 +24,13 @@
 #ifndef STATELABEL_H
 #define STATELABEL_H
 
-#include "support/buddylabel.h"
+#include <QLabel>
 
-class StateLabel : public BuddyLabel
+class StateLabel : public QLabel
 {
 public:
     StateLabel(QWidget *parent=nullptr)
-        : BuddyLabel(parent)
+        : QLabel(parent)
         , on(false) {
     }
 

@@ -25,6 +25,7 @@
 #include "support/utils.h"
 #include <QVBoxLayout>
 #include <QFont>
+#include <QVariant>
 
 static void init(QLabel *label)
 {
@@ -32,7 +33,6 @@ static void init(QLabel *label)
 
     label->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
     label->setWordWrap(true);
-    label->setTextInteractionFlags(Qt::NoTextInteraction);
     if (label->font().pointSize()>constMinFontSize) {
         label->setFont(Utils::smallFont(label->font()));
     }
@@ -61,9 +61,9 @@ static QLabel * init(QWidget *p, bool url)
     return label;
 }
 
-void NoteLabel::setText(QLabel *l, const QString &text)
+QString NoteLabel::formatText(const QString &text)
 {
-    l->setText(tr("<i><b>NOTE:</b> %1</i>").arg(text));
+    return tr("<i><b>NOTE:</b> %1</i>").arg(text);
 }
 
 NoteLabel::NoteLabel(QWidget *parent)
@@ -72,11 +72,25 @@ NoteLabel::NoteLabel(QWidget *parent)
     label=static_cast<StateLabel *>(init(this, false));
 }
 
+void NoteLabel::setProperty(const char *name, const QVariant &value)
+{
+    if (name && !strcmp(name, "text") && QVariant::String==value.type()) {
+        setText(value.toString());
+    }
+}
+
 UrlNoteLabel::UrlNoteLabel(QWidget *parent)
     : QWidget(parent)
 {
     label=static_cast<UrlLabel *>(init(this, true));
     connect(label, SIGNAL(leftClickedUrl()), this, SIGNAL(leftClickedUrl()));
+}
+
+void UrlNoteLabel::setProperty(const char *name, const QVariant &value)
+{
+    if (name && !strcmp(name, "text") && QVariant::String==value.type()) {
+        setText(value.toString());
+    }
 }
 
 PlainNoteLabel::PlainNoteLabel(QWidget *parent)

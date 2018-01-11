@@ -484,8 +484,8 @@ void OpmlBrowsePage::addCategory(const OpmlParser::Category &cat, QTreeWidgetIte
     for (const OpmlParser::Podcast &pod: cat.podcasts) {
         addPodcast(pod, catItem);
     }
-    for (const OpmlParser::Category &cat: cat.categories) {
-        addCategory(cat, catItem);
+    for (const OpmlParser::Category &subCat: cat.categories) {
+        addCategory(subCat, catItem);
     }
 }
 

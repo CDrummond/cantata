@@ -55,7 +55,6 @@
 #include "solid-lite/storagevolume.h"
 #include "solid-lite/opticaldisc.h"
 
-
 #include <QDebug>
 static bool debugIsEnabled=false;
 #define DBUG if (debugIsEnabled) qWarning() << metaObject()->className() << __FUNCTION__

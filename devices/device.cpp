@@ -54,6 +54,10 @@
 #include "solid-lite/genericinterface.h"
 #endif // ENABLE_DEVICES_SUPPORT
 
+#include <QDebug>
+#define DBUG_CLASS(CLASS) if (DevicesModel::debugEnabled()) qWarning() << CLASS << __FUNCTION__
+#define DBUG DBUG_CLASS(metaObject()->className())
+
 void Device::moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile)
 {
     QDir d(from);
@@ -158,8 +162,10 @@ Device * Device::create(MusicLibraryModel *m, const QString &udi)
 {
     Solid::Device device=Solid::Device(udi);
 
+    DBUG_CLASS("Device") << udi;
     if (device.is<Solid::OpticalDisc>()) {
         #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+        DBUG_CLASS("Device") << "AudioCD";
         return Encoders::getAvailable().isEmpty() ? 0 : new AudioCdDevice(m, device);
         #endif
     } else if (device.is<Solid::PortableMediaPlayer>()) {
@@ -175,6 +181,7 @@ Device * Device::create(MusicLibraryModel *m, const QString &udi)
                 QMap<QString, QVariant>::ConstIterator bus = properties.find(QLatin1String("BUSNUM"));
                 QMap<QString, QVariant>::ConstIterator dev = properties.find(QLatin1String("DEVNUM"));
 
+                DBUG_CLASS("Device") << "MTP";
                 return properties.constEnd()==bus || properties.end()==dev
                         ? 0
                         : new MtpDevice(m, device, bus.value().toUInt(), dev.value().toUInt());
@@ -182,11 +189,12 @@ Device * Device::create(MusicLibraryModel *m, const QString &udi)
         }
         #endif
     } else if (device.is<Solid::StorageAccess>()) {
-
+        DBUG_CLASS("Device") << "Storage";
         const Solid::StorageAccess* ssa = device.as<Solid::StorageAccess>();
 
         if( ssa && (!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
                    (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus()) ) {
+            DBUG_CLASS("Device") << "Not drive / usb ?";
             return nullptr;
         }
 
@@ -194,9 +202,11 @@ Device * Device::create(MusicLibraryModel *m, const QString &udi)
         if (!device.vendor().contains("apple", Qt::CaseInsensitive)) {
 //             Solid::StorageAccess *sa = device.as<Solid::StorageAccess>();
 //             if (QLatin1String("usb")==sa->bus) {
+                DBUG_CLASS("Device") << "UMS";
                 return new UmsDevice(m, device);
 //             }
         }
+        DBUG_CLASS("Device") << "Apple";
     }
     return nullptr;
 }

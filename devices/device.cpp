@@ -198,6 +198,7 @@ Device * Device::create(MusicLibraryModel *m, const QString &udi)
             return nullptr;
         }
 
+        DBUG_CLASS("Device") << "Vendor:" << device.vendor();
         //HACK: ignore apple stuff until we have common MediaDeviceFactory.
         if (!device.vendor().contains("apple", Qt::CaseInsensitive)) {
 //             Solid::StorageAccess *sa = device.as<Solid::StorageAccess>();
@@ -206,7 +207,6 @@ Device * Device::create(MusicLibraryModel *m, const QString &udi)
                 return new UmsDevice(m, device);
 //             }
         }
-        DBUG_CLASS("Device") << "Apple";
     }
     return nullptr;
 }

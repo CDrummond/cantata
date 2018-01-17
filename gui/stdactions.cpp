@@ -45,14 +45,35 @@ static void setToolTip(Action *act, const QString &tt)
     act->setProperty(Action::constTtForSettings, true);
 }
 
-static QMenu * priorityMenu()
+static QMenu * priorityMenu(bool isSet)
 {
-    Action *prioHighestAction = new Action(QObject::tr("Highest Priority (255)"), nullptr);
-    Action *prioHighAction = new Action(QObject::tr("High Priority (200)"), nullptr);
-    Action *prioMediumAction = new Action(QObject::tr("Medium Priority (125)"), nullptr);
-    Action *prioLowAction = new Action(QObject::tr("Low Priority (50)"), nullptr);
-    Action *prioDefaultAction = new Action(QObject::tr("Default Priority (0)"), nullptr);
-    Action *prioCustomAction = new Action(QObject::tr("Custom Priority..."), nullptr);
+    QString prefix(isSet ? "set" : "addwith");
+    Action *prioHighestAction = ActionCollection::get()->createAction(prefix+"priohighest", QObject::tr("Highest Priority (255)"));
+    Action *prioHighAction = ActionCollection::get()->createAction(prefix+"priohigh", QObject::tr("High Priority (200)"));
+    Action *prioMediumAction = ActionCollection::get()->createAction(prefix+"priomedium", QObject::tr("Medium Priority (125)"));
+    Action *prioLowAction = ActionCollection::get()->createAction(prefix+"priolow", QObject::tr("Low Priority (50)"));
+    Action *prioDefaultAction = ActionCollection::get()->createAction(prefix+"priodefault", QObject::tr("Default Priority (0)"));
+    Action *prioCustomAction = ActionCollection::get()->createAction(prefix+"priocustom", QObject::tr("Custom Priority..."));
+
+    prioHighestAction->setToolTip(isSet ? QObject::tr("Set Highest Priority (%1)").arg(255) : QObject::tr("Add With Highest Priority (%1)").arg(255));
+    prioHighAction->setToolTip(isSet ? QObject::tr("Set High Priority (%1)").arg(200) : QObject::tr("Add With High Priority (%1)").arg(200));
+    prioMediumAction->setToolTip(isSet ? QObject::tr("Set Medium Priority (%1)").arg(125) : QObject::tr("Add With Medium Priority (%1)").arg(125));
+    prioLowAction->setToolTip(isSet ? QObject::tr("Set Low Priority (%1)").arg(50) : QObject::tr("Add With Low Priority (%1)").arg(50));
+    prioDefaultAction->setToolTip(isSet ? QObject::tr("Set Default Priority (%1)").arg(0) : QObject::tr("Add With Default Priority (%1)").arg(0));
+    prioCustomAction->setToolTip(isSet ? QObject::tr("Set Custom Priority") : QObject::tr("Add With Custom Priority"));
+
+    prioHighestAction->setProperty(Action::constTtForSettings, true);
+    prioHighAction->setProperty(Action::constTtForSettings, true);
+    prioMediumAction->setProperty(Action::constTtForSettings, true);
+    prioLowAction->setProperty(Action::constTtForSettings, true);
+    prioDefaultAction->setProperty(Action::constTtForSettings, true);
+    prioCustomAction->setProperty(Action::constTtForSettings, true);
+
+    prioHighAction->setData(200);
+    prioMediumAction->setData(125);
+    prioLowAction->setData(50);
+    prioDefaultAction->setData(0);
+    prioCustomAction->setData(-1);
 
     prioHighestAction->setData(255);
     prioHighAction->setData(200);
@@ -97,24 +118,24 @@ StdActions::StdActions()
 
     addWithPriorityAction = new Action(QObject::tr("Add With Priority"), nullptr);
     setPriorityAction = new Action(QObject::tr("Set Priority"), nullptr);
-    setPriorityAction->setMenu(priorityMenu());
-    addWithPriorityAction->setMenu(priorityMenu());
+    setPriorityAction->setMenu(priorityMenu(true));
+    addWithPriorityAction->setMenu(priorityMenu(false));
 
-    addToStoredPlaylistAction = new Action(Icons::self()->playlistListIcon, QObject::tr("Add To Playlist"), nullptr);
+    addToStoredPlaylistAction = ActionCollection::get()->createAction("addtoplaylist", QObject::tr("Add To Playlist"), Icons::self()->playlistListIcon);
     #ifdef TAGLIB_FOUND
     organiseFilesAction = ActionCollection::get()->createAction("orgfiles", QObject::tr("Organize Files"), MonoIcon::icon(FontAwesome::folderopeno, col));
-    editTagsAction = ActionCollection::get()->createAction("edittags", QObject::tr("Edit Track Information"), nullptr);
+    editTagsAction = ActionCollection::get()->createAction("edittags", QObject::tr("Edit Track Information"));
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction = ActionCollection::get()->createAction("replaygain", QObject::tr("ReplayGain"), MonoIcon::icon(FontAwesome::barchart, col));
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction = new Action(MonoIcon::icon(FontAwesome::mobile, col), QObject::tr("Copy Songs To Device"), nullptr);
+    copyToDeviceAction = ActionCollection::get()->createAction("copytodevice", QObject::tr("Copy Songs To Device"), MonoIcon::icon(FontAwesome::mobile, col));
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
-    deleteSongsAction = new Action(MonoIcon::icon(FontAwesome::trash, MonoIcon::constRed), QObject::tr("Delete Songs"), nullptr);
+    deleteSongsAction = ActionCollection::get()->createAction("deletesongs", QObject::tr("Delete Songs"), MonoIcon::icon(FontAwesome::trash, MonoIcon::constRed));
     #endif
-    setCoverAction = new Action(QObject::tr("Set Image"), nullptr);
-    removeAction = new Action(Icons::self()->removeIcon, QObject::tr("Remove"), nullptr);
+    setCoverAction = ActionCollection::get()->createAction("setimage", QObject::tr("Set Image"));
+    removeAction = ActionCollection::get()->createAction("remove", QObject::tr("Remove"), Icons::self()->removeIcon);
     searchAction = ActionCollection::get()->createAction("search", QObject::tr("Find"), Icons::self()->searchIcon);
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
 

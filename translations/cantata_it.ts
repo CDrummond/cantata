@@ -1080,12 +1080,12 @@ Non è stato possibile copiare il file su &apos;%1&apos;!</translation>
 <context>
     <name>Device</name>
     <message>
-        <location filename="../devices/device.cpp" line="394"/>
+        <location filename="../devices/device.cpp" line="404"/>
         <source>Updating (%1)...</source>
         <translation>Aggiornamento (%1)...</translation>
     </message>
     <message>
-        <location filename="../devices/device.cpp" line="399"/>
+        <location filename="../devices/device.cpp" line="409"/>
         <source>Updating (%1%)...</source>
         <translation>Aggiornamento (%1%)...</translation>
     </message>
@@ -1274,37 +1274,37 @@ Non è stato possibile copiare il file su &apos;%1&apos;!</translation>
 <context>
     <name>DevicesModel</name>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="94"/>
+        <location filename="../models/devicesmodel.cpp" line="93"/>
         <source>Configure Device</source>
         <translation>Configura Dispositivo</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="95"/>
+        <location filename="../models/devicesmodel.cpp" line="94"/>
         <source>Refresh Device</source>
         <translation>Aggiorna Dispositivo</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="96"/>
+        <location filename="../models/devicesmodel.cpp" line="95"/>
         <source>Connect Device</source>
         <translation>Connetti Dispositivo</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="97"/>
+        <location filename="../models/devicesmodel.cpp" line="96"/>
         <source>Disconnect Device</source>
         <translation>Disconnetti Dispositivo</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="99"/>
+        <location filename="../models/devicesmodel.cpp" line="98"/>
         <source>Edit CD Details</source>
         <translation>Modifica Dettagli CD</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="345"/>
+        <location filename="../models/devicesmodel.cpp" line="344"/>
         <source>Not Connected</source>
         <translation>Non Connesso</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="919"/>
+        <location filename="../models/devicesmodel.cpp" line="918"/>
         <source>No Devices Attached</source>
         <translation>Nessun Dispositivo Collegato</translation>
     </message>
@@ -5540,187 +5540,247 @@ width x height</comment>
         <translation>Non elencare</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="77"/>
+        <location filename="../gui/stdactions.cpp" line="98"/>
         <source>Previous Track</source>
         <translation>Traccia Precedente</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="78"/>
+        <location filename="../gui/stdactions.cpp" line="99"/>
         <source>Next Track</source>
         <translation>Traccia Successiva</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="79"/>
+        <location filename="../gui/stdactions.cpp" line="100"/>
         <source>Play/Pause</source>
         <translation>Riproduci/Pausa</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="80"/>
+        <location filename="../gui/stdactions.cpp" line="101"/>
         <source>Stop</source>
         <translation>Ferma</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="81"/>
+        <location filename="../gui/stdactions.cpp" line="102"/>
         <source>Stop After Current Track</source>
         <translation>Ferma dopo la Traccia Corrente</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="82"/>
+        <location filename="../gui/stdactions.cpp" line="103"/>
         <source>Stop After Track</source>
         <translation>Ferma dopo la Traccia</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="83"/>
+        <location filename="../gui/stdactions.cpp" line="104"/>
         <source>Increase Volume</source>
         <translation>Aumenta Volume</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="84"/>
+        <location filename="../gui/stdactions.cpp" line="105"/>
         <source>Decrease Volume</source>
         <translation>Diminuisci Volume</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="85"/>
+        <location filename="../gui/stdactions.cpp" line="106"/>
         <source>Save As</source>
         <translation>Salva come</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="86"/>
+        <location filename="../gui/stdactions.cpp" line="107"/>
         <source>Append</source>
         <translation>Accoda</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="87"/>
+        <location filename="../gui/stdactions.cpp" line="108"/>
         <source>Append To Play Queue</source>
         <translation>Accoda alla Coda di Riproduzione</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="88"/>
+        <location filename="../gui/stdactions.cpp" line="109"/>
         <source>Append And Play</source>
         <translation>Accoda e Riproduci</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="89"/>
+        <location filename="../gui/stdactions.cpp" line="110"/>
         <source>Add And Play</source>
         <translation>Aggiungi e Riproduci</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="90"/>
+        <location filename="../gui/stdactions.cpp" line="111"/>
         <source>Append To Play Queue And Play</source>
         <translation>Accoda alla Coda di Riproduzione e Riproduci</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="91"/>
+        <location filename="../gui/stdactions.cpp" line="112"/>
         <source>Insert After Current</source>
         <translation>Inserisci dopo l&apos;Attuale</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="92"/>
+        <location filename="../gui/stdactions.cpp" line="113"/>
         <source>Append Random Album</source>
         <translation>Accoda un Album a Caso</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="93"/>
+        <location filename="../gui/stdactions.cpp" line="114"/>
         <source>Play Now (And Replace Play Queue)</source>
         <translation>Riproduci Ora (E Sostituisci la Coda di Riproduzione)</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="98"/>
+        <location filename="../gui/stdactions.cpp" line="119"/>
         <source>Add With Priority</source>
         <translation>Aggiungi con Priorità</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="99"/>
+        <location filename="../gui/stdactions.cpp" line="120"/>
         <source>Set Priority</source>
         <translation>Imposta Priorità</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="134"/>
+        <location filename="../gui/stdactions.cpp" line="155"/>
         <source>Zoom In</source>
         <translation>Aumenta Zoom</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="136"/>
+        <location filename="../gui/stdactions.cpp" line="157"/>
         <source>Zoom Out</source>
         <translation>Riduci Zoom</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="50"/>
+        <location filename="../gui/stdactions.cpp" line="51"/>
         <source>Highest Priority (255)</source>
         <translation>Piorità Massima (255)</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="51"/>
+        <location filename="../gui/stdactions.cpp" line="52"/>
         <source>High Priority (200)</source>
         <translation>Priorità Alta (200)</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="52"/>
+        <location filename="../gui/stdactions.cpp" line="53"/>
         <source>Medium Priority (125)</source>
         <translation>Piorità Media (125)</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="53"/>
+        <location filename="../gui/stdactions.cpp" line="54"/>
         <source>Low Priority (50)</source>
         <translation>Priorità Baassa (50)</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="54"/>
+        <location filename="../gui/stdactions.cpp" line="55"/>
         <source>Default Priority (0)</source>
         <translation>Priorità Predefinita (0)</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="55"/>
+        <location filename="../gui/stdactions.cpp" line="56"/>
         <source>Custom Priority...</source>
         <translation>Priorità Personalizzata...</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="103"/>
+        <location filename="../gui/stdactions.cpp" line="58"/>
+        <source>Set Highest Priority (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="58"/>
+        <source>Add With Highest Priority (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="59"/>
+        <source>Set High Priority (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="59"/>
+        <source>Add With High Priority (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="60"/>
+        <source>Set Medium Priority (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="60"/>
+        <source>Add With Medium Priority (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="61"/>
+        <source>Set Low Priority (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="61"/>
+        <source>Add With Low Priority (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="62"/>
+        <source>Set Default Priority (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="62"/>
+        <source>Add With Default Priority (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="63"/>
+        <source>Set Custom Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="63"/>
+        <source>Add With Custom Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/stdactions.cpp" line="124"/>
         <source>Add To Playlist</source>
         <translation>Aggiungi alla Scaletta</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="105"/>
+        <location filename="../gui/stdactions.cpp" line="126"/>
         <source>Organize Files</source>
         <translation>Organizza i File</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="106"/>
+        <location filename="../gui/stdactions.cpp" line="127"/>
         <source>Edit Track Information</source>
         <translation>Modifica Informazioni Traccia</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="109"/>
+        <location filename="../gui/stdactions.cpp" line="130"/>
         <source>ReplayGain</source>
         <translation>ReplayGain</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="112"/>
+        <location filename="../gui/stdactions.cpp" line="133"/>
         <source>Copy Songs To Device</source>
         <translation>Copia i Brani sul Dispositivo</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="114"/>
+        <location filename="../gui/stdactions.cpp" line="135"/>
         <source>Delete Songs</source>
         <translation>Cancella Brani</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="116"/>
+        <location filename="../gui/stdactions.cpp" line="137"/>
         <source>Set Image</source>
         <translation>Imposta Immagine</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="117"/>
+        <location filename="../gui/stdactions.cpp" line="138"/>
         <source>Remove</source>
         <translation>Rimuovi</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="118"/>
+        <location filename="../gui/stdactions.cpp" line="139"/>
         <source>Find</source>
         <translation>Trova</translation>
     </message>
     <message>
-        <location filename="../gui/stdactions.cpp" line="124"/>
+        <location filename="../gui/stdactions.cpp" line="145"/>
         <source>Add To Play Queue</source>
         <translation>Aggiungi alla Coda di Riproduzione</translation>
     </message>
@@ -6801,7 +6861,7 @@ Prego scegliere un nome diverso.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
-        <location filename="../gui/serversettings.cpp" line="107"/>
+        <location filename="../gui/serversettings.cpp" line="110"/>
         <source>Host:</source>
         <translation>Host:</translation>
     </message>
@@ -6907,67 +6967,72 @@ Prego scegliere un nome diverso.</translation>
         <translation>Questa cartella verrà usata anche per trovare i file musicali per la modifica di tag, ecc.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="136"/>
+        <location filename="../gui/serversettings.cpp" line="97"/>
+        <source>More information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/serversettings.cpp" line="139"/>
         <source>Discover...</source>
         <translation>Ricerca...</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="276"/>
+        <location filename="../gui/serversettings.cpp" line="279"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation>A che tipo di collezione ti vuoi connettere?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="277"/>
+        <location filename="../gui/serversettings.cpp" line="280"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation>Standard - la collezione musicale può venire condivisa, è su un&apos;altra macchina, è già configurata, oppure vuoi permettere l&apos;accesso da altri client (es. MPDroid)</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="280"/>
+        <location filename="../gui/serversettings.cpp" line="283"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation>Base - la collezione musicale non è condivisa con altri e Cantata configurerà e controllerà l&apos;istanza di MPD. Quest&apos;impostazione sarà esclusiva per Cantata e &lt;b&gt;non&lt;/b&gt; sarà accessibile ad altri client MPD.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="284"/>
+        <location filename="../gui/serversettings.cpp" line="287"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="284"/>
+        <location filename="../gui/serversettings.cpp" line="287"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation>Se desideri una configurazione di MPD avanzata (es. uscite audio multiple, supporto completo DSD, ecc) allora &lt;b&gt;dovrai&lt;/b&gt; scegliere &apos;Standard&apos;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="286"/>
+        <location filename="../gui/serversettings.cpp" line="289"/>
         <source>Add Collection</source>
         <translation>Aggiungi Collezione</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="286"/>
+        <location filename="../gui/serversettings.cpp" line="289"/>
         <source>Standard</source>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="286"/>
+        <location filename="../gui/serversettings.cpp" line="289"/>
         <source>Basic</source>
         <translation>Base</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="334"/>
+        <location filename="../gui/serversettings.cpp" line="337"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation>Cancellare &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="335"/>
+        <location filename="../gui/serversettings.cpp" line="338"/>
         <source>Delete</source>
         <translation>Cancella</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="388"/>
+        <location filename="../gui/serversettings.cpp" line="391"/>
         <source>New Collection %1</source>
         <translation>Nuova Collezione %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="406"/>
+        <location filename="../gui/serversettings.cpp" line="409"/>
         <source>Default</source>
         <translation>Predefinito</translation>
     </message>

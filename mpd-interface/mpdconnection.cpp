@@ -2467,15 +2467,10 @@ void MpdSocket::deleteLocal()
     }
 }
 
+// ONLY use this method to detect Non-MPD servers. The code which uses this will default to MPD
 MPDServerInfo::ResponseParameter MPDServerInfo::lsinfoResponseParameters[] = {
     // github
-    { "{lsinfo} Directory info not found for virtual-path '/",
-      true, MPDServerInfo::ForkedDaapd, "forked-daapd" },
-    // lower case since 2013, ubuntu 16.10 / upper case since 2015
-    { "{lsinfo} Unsupported URI scheme", true, MPDServerInfo::Mpd, "MPD" },
-    // ubuntu 11.10
-    { "ACK [50@0] {lsinfo} directory not found", false, MPDServerInfo::Mpd, "MPD" },
-    // ubuntu 16.10 (this seems too generic?)
+    { "{lsinfo} Directory info not found for virtual-path '/", true, MPDServerInfo::ForkedDaapd, "forked-daapd" },
     // { "ACK [50@0] {lsinfo} Not found", false, MPDServerInfo::Mopidy, "Mopidy" },
     // ubuntu 16.10
     { "OK", false, MPDServerInfo::ForkedDaapd, "forked-daapd" }
@@ -2528,8 +2523,9 @@ void MPDServerInfo::detect(void) {
     }
 
     if (isUndetermined()) {
-        setServerType(Unknown);
-        serverName = "unknown";
+        // Default to MPD if cannot determine otherwise. Cantata is an *MPD* client first and foremost.
+        setServerType(Mpd);
+        serverName = "MPD";
     }
 
     DBUG << "detected serverType:" << getServerName() << "(" << getServerType() << ")";

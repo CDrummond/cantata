@@ -45,9 +45,10 @@ static void setToolTip(Action *act, const QString &tt)
     act->setProperty(Action::constTtForSettings, true);
 }
 
-static QMenu * priorityMenu(bool isSet)
+static QMenu * priorityMenu(bool isSet, Action *parent)
 {
     QString prefix(isSet ? "set" : "addwith");
+    QString ttPrefix = Utils::strippedText(parent->text()) + QLatin1String(" > ");
     Action *prioHighestAction = ActionCollection::get()->createAction(prefix+"priohighest", QObject::tr("Highest Priority (255)"));
     Action *prioHighAction = ActionCollection::get()->createAction(prefix+"priohigh", QObject::tr("High Priority (200)"));
     Action *prioMediumAction = ActionCollection::get()->createAction(prefix+"priomedium", QObject::tr("Medium Priority (125)"));
@@ -55,12 +56,12 @@ static QMenu * priorityMenu(bool isSet)
     Action *prioDefaultAction = ActionCollection::get()->createAction(prefix+"priodefault", QObject::tr("Default Priority (0)"));
     Action *prioCustomAction = ActionCollection::get()->createAction(prefix+"priocustom", QObject::tr("Custom Priority..."));
 
-    prioHighestAction->setToolTip(isSet ? QObject::tr("Set Highest Priority (%1)").arg(255) : QObject::tr("Add With Highest Priority (%1)").arg(255));
-    prioHighAction->setToolTip(isSet ? QObject::tr("Set High Priority (%1)").arg(200) : QObject::tr("Add With High Priority (%1)").arg(200));
-    prioMediumAction->setToolTip(isSet ? QObject::tr("Set Medium Priority (%1)").arg(125) : QObject::tr("Add With Medium Priority (%1)").arg(125));
-    prioLowAction->setToolTip(isSet ? QObject::tr("Set Low Priority (%1)").arg(50) : QObject::tr("Add With Low Priority (%1)").arg(50));
-    prioDefaultAction->setToolTip(isSet ? QObject::tr("Set Default Priority (%1)").arg(0) : QObject::tr("Add With Default Priority (%1)").arg(0));
-    prioCustomAction->setToolTip(isSet ? QObject::tr("Set Custom Priority") : QObject::tr("Add With Custom Priority"));
+    prioHighestAction->setToolTip(ttPrefix + Utils::strippedText(prioHighestAction->text()));
+    prioHighAction->setToolTip(ttPrefix + Utils::strippedText(prioHighAction->text()));
+    prioMediumAction->setToolTip(ttPrefix + Utils::strippedText(prioMediumAction->text()));
+    prioLowAction->setToolTip(ttPrefix + Utils::strippedText(prioLowAction->text()));
+    prioDefaultAction->setToolTip(ttPrefix + Utils::strippedText(prioDefaultAction->text()));
+    prioCustomAction->setToolTip(ttPrefix + Utils::strippedText(prioCustomAction->text()));
 
     prioHighestAction->setProperty(Action::constTtForSettings, true);
     prioHighAction->setProperty(Action::constTtForSettings, true);
@@ -118,8 +119,8 @@ StdActions::StdActions()
 
     addWithPriorityAction = new Action(QObject::tr("Add With Priority"), nullptr);
     setPriorityAction = new Action(QObject::tr("Set Priority"), nullptr);
-    setPriorityAction->setMenu(priorityMenu(true));
-    addWithPriorityAction->setMenu(priorityMenu(false));
+    setPriorityAction->setMenu(priorityMenu(true, setPriorityAction));
+    addWithPriorityAction->setMenu(priorityMenu(false, addWithPriorityAction));
 
     addToStoredPlaylistAction = ActionCollection::get()->createAction("addtoplaylist", QObject::tr("Add To Playlist"), Icons::self()->playlistListIcon);
     #ifdef TAGLIB_FOUND

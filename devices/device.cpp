@@ -190,23 +190,15 @@ Device * Device::create(MusicLibraryModel *m, const QString &udi)
         #endif
     } else if (device.is<Solid::StorageAccess>()) {
         DBUG_CLASS("Device") << "Storage";
-        const Solid::StorageAccess* ssa = device.as<Solid::StorageAccess>();
 
-        if( ssa && (!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
-                   (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus()) ) {
+        if ( (!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
+             (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus()) ) {
             DBUG_CLASS("Device") << "Not drive / usb ?";
             return nullptr;
         }
 
-        DBUG_CLASS("Device") << "Vendor:" << device.vendor();
-        //HACK: ignore apple stuff until we have common MediaDeviceFactory.
-        if (!device.vendor().contains("apple", Qt::CaseInsensitive)) {
-//             Solid::StorageAccess *sa = device.as<Solid::StorageAccess>();
-//             if (QLatin1String("usb")==sa->bus) {
-                DBUG_CLASS("Device") << "UMS";
-                return new UmsDevice(m, device);
-//             }
-        }
+        DBUG_CLASS("Device") << "UMS, Vendor:" << device.vendor();
+        return new UmsDevice(m, device);
     }
     return nullptr;
 }

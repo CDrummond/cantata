@@ -43,6 +43,8 @@
 30. Add link in server settings page to wiki page on github explaining how
     files are accessed.
 31. Make more actions shortcut assignable.
+32. Adjust horizontal gap between icons in grid view to equal distribute icons
+    over space.
 
 2.2.0
 -----

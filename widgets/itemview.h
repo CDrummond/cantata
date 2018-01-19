@@ -189,6 +189,7 @@ private Q_SLOTS:
     void coverLoaded(const Song &song, int size);
     void zoomIn();
     void zoomOut();
+    void calcIconViewWidth();
 
 private:
     QAction * getAction(const QModelIndex &index);

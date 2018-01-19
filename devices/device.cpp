@@ -183,7 +183,7 @@ Device * Device::create(MusicLibraryModel *m, const QString &udi)
 
                 DBUG_CLASS("Device") << "MTP";
                 return properties.constEnd()==bus || properties.end()==dev
-                        ? 0
+                        ? nullptr
                         : new MtpDevice(m, device, bus.value().toUInt(), dev.value().toUInt());
             }
         }

@@ -332,12 +332,9 @@ void MainWindow::init()
     locateArtistAction = ActionCollection::get()->createAction("locateartist", tr("Artist"));
     locateAlbumAction = ActionCollection::get()->createAction("locatealbum", tr("Album"));
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", tr("Track"));
-    locateArtistAction->setToolTip(tr("Locate In Library / Artist"));
-    locateAlbumAction->setToolTip(tr("Locate In Library / Album"));
-    locateTrackAction->setToolTip(tr("Locate In Library / Track"));
-    locateArtistAction->setProperty(Action::constTtForSettings, true);
-    locateAlbumAction->setProperty(Action::constTtForSettings, true);
-    locateTrackAction->setProperty(Action::constTtForSettings, true);
+    locateArtistAction->setSettingsText(locateAction);
+    locateAlbumAction->setSettingsText(locateAction);
+    locateTrackAction->setSettingsText(locateAction);
     addAction(locateAction);
 
     QMenu *locateMenu=new QMenu();
@@ -349,8 +346,7 @@ void MainWindow::init()
     playNextAction = ActionCollection::get()->createAction("playnext", tr("Play next"));
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", Utils::strippedText(StdActions::self()->editTagsAction->text()), StdActions::self()->editTagsAction->icon());
-    editPlayQueueTagsAction->setToolTip(tr("Edit Track Information (Play Queue)"));
-    editPlayQueueTagsAction->setProperty(Action::constTtForSettings, true);
+    editPlayQueueTagsAction->setSettingsText(tr("Edit Track Information (Play Queue)"));
     #endif
     addAction(expandAllAction = ActionCollection::get()->createAction("expandall", tr("Expand All")));
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Down);
@@ -661,6 +657,7 @@ void MainWindow::init()
         Action *action=ActionCollection::get()->createAction(QLatin1String("rating")+QString::number(i), text);
         action->setProperty(constRatingKey, i*Song::Rating_Step);
         action->setShortcut(Qt::AltModifier+Qt::Key_0+i);
+        action->setSettingsText(ratingAction);
         ratingAction->menu()->addAction(action);
         connect(action, SIGNAL(triggered()), SLOT(setRating()));
     }

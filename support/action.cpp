@@ -87,20 +87,13 @@ void Action::updateToolTip(QAction *act)
     }
 }
 
-const char * Action::constTtForSettings="tt-for-settings";
+static const char * constSettingsText="tt-for-settings";
 
 QString Action::settingsText(QAction *act)
 {
-    if (act->property(constTtForSettings).toBool()) {
-        QString tt=Utils::stripAcceleratorMarkers(act->property(constPlainToolTipProperty).toString());
-        if (tt.isEmpty()) {
-            tt=Utils::stripAcceleratorMarkers(act->toolTip());
-        }
-        if (!tt.isEmpty()) {
-            return tt;
-        }
-    }
-    return Utils::stripAcceleratorMarkers(act->text());
+    return act->property(constSettingsText).isValid()
+            ? act->property(constSettingsText).toString()
+            : Utils::stripAcceleratorMarkers(act->text());
 }
 
 void Action::init() {
@@ -119,6 +112,14 @@ bool Action::isShortcutConfigurable() const {
 
 void Action::setShortcutConfigurable(bool b) {
   setProperty("isShortcutConfigurable", b);
+}
+
+void Action::setSettingsText(const QString &text) {
+    setProperty(constSettingsText, text);
+}
+
+void Action::setSettingsText(Action *parent) {
+    setSettingsText(Utils::strippedText(parent->text())+QLatin1String(" / ")+Utils::strippedText(text()));
 }
 
 QKeySequence Action::shortcut(ShortcutTypes type) const {

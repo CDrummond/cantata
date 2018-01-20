@@ -39,16 +39,9 @@
 
 GLOBAL_STATIC(StdActions, instance)
 
-static void setToolTip(Action *act, const QString &tt)
-{
-    act->setToolTip(tt);
-    act->setProperty(Action::constTtForSettings, true);
-}
-
 static QMenu * priorityMenu(bool isSet, Action *parent)
 {
     QString prefix(isSet ? "set" : "addwith");
-    QString ttPrefix = Utils::strippedText(parent->text()) + QLatin1String(" > ");
     Action *prioHighestAction = ActionCollection::get()->createAction(prefix+"priohighest", QObject::tr("Highest Priority (255)"));
     Action *prioHighAction = ActionCollection::get()->createAction(prefix+"priohigh", QObject::tr("High Priority (200)"));
     Action *prioMediumAction = ActionCollection::get()->createAction(prefix+"priomedium", QObject::tr("Medium Priority (125)"));
@@ -56,19 +49,12 @@ static QMenu * priorityMenu(bool isSet, Action *parent)
     Action *prioDefaultAction = ActionCollection::get()->createAction(prefix+"priodefault", QObject::tr("Default Priority (0)"));
     Action *prioCustomAction = ActionCollection::get()->createAction(prefix+"priocustom", QObject::tr("Custom Priority..."));
 
-    prioHighestAction->setToolTip(ttPrefix + Utils::strippedText(prioHighestAction->text()));
-    prioHighAction->setToolTip(ttPrefix + Utils::strippedText(prioHighAction->text()));
-    prioMediumAction->setToolTip(ttPrefix + Utils::strippedText(prioMediumAction->text()));
-    prioLowAction->setToolTip(ttPrefix + Utils::strippedText(prioLowAction->text()));
-    prioDefaultAction->setToolTip(ttPrefix + Utils::strippedText(prioDefaultAction->text()));
-    prioCustomAction->setToolTip(ttPrefix + Utils::strippedText(prioCustomAction->text()));
-
-    prioHighestAction->setProperty(Action::constTtForSettings, true);
-    prioHighAction->setProperty(Action::constTtForSettings, true);
-    prioMediumAction->setProperty(Action::constTtForSettings, true);
-    prioLowAction->setProperty(Action::constTtForSettings, true);
-    prioDefaultAction->setProperty(Action::constTtForSettings, true);
-    prioCustomAction->setProperty(Action::constTtForSettings, true);
+    prioHighestAction->setSettingsText(parent);
+    prioHighAction->setSettingsText(parent);
+    prioMediumAction->setSettingsText(parent);
+    prioLowAction->setSettingsText(parent);
+    prioDefaultAction->setSettingsText(parent);
+    prioCustomAction->setSettingsText(parent);
 
     prioHighAction->setData(200);
     prioMediumAction->setData(125);
@@ -106,10 +92,10 @@ StdActions::StdActions()
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", QObject::tr("Decrease Volume"));
     savePlayQueueAction = ActionCollection::get()->createAction("saveplayqueue", QObject::tr("Save As"), Icons::self()->savePlayQueueIcon);
     appendToPlayQueueAction = ActionCollection::get()->createAction("appendtoplayqueue", QObject::tr("Append"), Icons::self()->appendToPlayQueueIcon);
-    setToolTip(appendToPlayQueueAction, QObject::tr("Append To Play Queue"));
+    appendToPlayQueueAction->setSettingsText(QObject::tr("Append To Play Queue"));
     appendToPlayQueueAndPlayAction = ActionCollection::get()->createAction("appendtoplayqueueandplay", QObject::tr("Append And Play"));
     addToPlayQueueAndPlayAction = ActionCollection::get()->createAction("addtoplayqueueandplay", QObject::tr("Add And Play"));
-    setToolTip(appendToPlayQueueAndPlayAction, QObject::tr("Append To Play Queue And Play"));
+    appendToPlayQueueAndPlayAction->setSettingsText(QObject::tr("Append To Play Queue And Play"));
     insertAfterCurrentAction = ActionCollection::get()->createAction("insertintoplayqueue", QObject::tr("Insert After Current"));
     addRandomAlbumToPlayQueueAction = ActionCollection::get()->createAction("addrandomalbumtoplayqueue", QObject::tr("Append Random Album"));
     replacePlayQueueAction = ActionCollection::get()->createAction("replaceplayqueue", QObject::tr("Play Now (And Replace Play Queue)"), Icons::self()->replacePlayQueueIcon);

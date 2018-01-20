@@ -47,7 +47,6 @@ public:
     static void initIcon(QAction *act);
     static void updateToolTip(QAction *act);
     static QString settingsText(QAction *act);
-    static const char * constTtForSettings;
 
     explicit Action(QObject *parent);
     Action(const QString &text, QObject *parent, const QObject *receiver = nullptr, const char *slot = nullptr, const QKeySequence &shortcut = 0);
@@ -59,6 +58,9 @@ public:
 
     bool isShortcutConfigurable() const;
     void setShortcutConfigurable(bool configurable);
+
+    void setSettingsText(const QString &text);
+    void setSettingsText(Action *parent);
 
 signals:
     void triggered(Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers);

@@ -141,16 +141,6 @@
     </exclude>
     -->
   </provider>
-  <provider name="lyricsbay.com" charset="iso-8859-1" url="http://www.lyricsbay.com/{title}_lyrics-{artist}.html">
-    <urlFormat replace=" _@,;&amp;\/'&quot;" with="_"/>
-    <urlFormat replace="." with=""/>
-    <extract>
-      <item tag="&lt;div id=EchoTopic&gt;"/>
-    </extract>
-    <exclude>
-      <item tag="&lt;textarea name=&quot;songscpy&quot; id=&quot;songscpyid&quot; onclick=&quot;callselect('songscpyid','selectswf')&quot; rows=&quot;3&quot; cols=&quot;45&quot; READONLY&gt;"/>
-    </exclude>
-  </provider>
   <provider name="lyricsdownload.com" charset="utf-8" url="http://www.lyricsdownload.com/{artist}-{title}-lyrics.html">
     <urlFormat replace=" _@,;&amp;\/&quot;" with="-"/>
     <urlFormat replace="." with=""/>
@@ -324,14 +314,5 @@
       <item tag="&lt;div id=lyr_translation&gt;"/>
       <item begin="&lt;div&gt;" end="null"/>
     </extract>
-  </provider>
-  <!-- new -->
-  <provider name="leoslyrics.com" charset="iso-8859-1" url="http://www.leoslyrics.com/{artist}/{title}-lyrics/">
-    <urlFormat replace=" ._@,;&amp;\/&quot;" with="-"/>
-    <urlFormat replace="'" with="_"/>
-    <extract>
-      <item tag="&lt;div ondragstart=&quot;return false;&quot; onselectstart=&quot;return false;&quot; oncontextmenu=&quot;return false;&quot;&gt;"/>
-    </extract>
-    <invalidIndicator value="Sorry, you either followed an invalid link or that page no longer exists."/>
   </provider>
 </lyricproviders>

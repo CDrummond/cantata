@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lyricproviders>
-  <provider name="azlyrics.com" charset="utf-8" url="http://www.azlyrics.com/lyrics/{artist}/{title}.html">
+  <provider name="azlyrics.com" charset="utf-8" url="https://www.azlyrics.com/lyrics/{artist}/{title}.html">
     <urlFormat replace=" ._@,;&amp;\/()'&quot;-" with=""/>
     <extract>
       <item begin="&lt;!-- END OF RINGTONE 1 --&gt;" end="&lt;!-- RINGTONE 2 --&gt;"/>
@@ -14,7 +14,7 @@
       <item begin="[" end="]"/>
     </exclude>
   </provider>
-  <provider name="bollywoodlyrics.com (Bollywood songs)" charset="utf-8" url="http://www.bollywoodlyrics.com/lyric/{Title}">
+  <provider name="bollywoodlyrics.com (Bollywood songs)" charset="utf-8" url="https://www.bollywoodlyrics.com/lyric/{Title}">
     <urlFormat replace=" _@;\/&quot;'()[]" with="-"/>
     <urlFormat replace="?" with=""/>
     <extract>
@@ -51,7 +51,7 @@
       <item begin="&lt;script async src=&quot;" end="&lt;/script&gt;&lt;br&gt;"/>
     </exclude>
   </provider>
-  <provider name="elyrics.net" charset="iso-8859-1" url="http://www.elyrics.net/read/{a}/{artist}-lyrics/{title}-lyrics.html">
+  <provider name="elyrics.net" charset="iso-8859-1" url="https://www.elyrics.net/read/{a}/{artist}-lyrics/{title}-lyrics.html">
     <urlFormat replace=" _@;&amp;\/&quot;" with="-"/>
     <urlFormat replace="'" with="_"/>
     <extract> <!-- new -->
@@ -80,7 +80,7 @@
     </exclude>
     <invalidIndicator value="Couldn't find that page."/>
   </provider>
-  <provider name="Encyclopaedia Metallum" charset="utf-8" url="http://www.metal-archives.com/search/ajax-advanced/searching/songs/?songTitle={title}&amp;bandName={artist}&amp;ExactBandMatch=1">
+  <provider name="Encyclopaedia Metallum" charset="utf-8" url="https://www.metal-archives.com/search/ajax-advanced/searching/songs/?songTitle={title}&amp;bandName={artist}&amp;ExactBandMatch=1">
     <extract>
       <item url="http://www.metal-archives.com/release/ajax-view-lyrics/id/{id}"/>
       <item begin="id=\&quot;lyricsLink_" end="&quot;"/>
@@ -116,7 +116,7 @@
       <item tag="&lt;div class=&quot;middle_col_TracksLyrics&quot;&gt;"/>
     </extract>
   </provider>
-  <provider name="lyrics.com" charset="utf-8" url="http://www.lyrics.com/lyrics/{artist}/{title}.html">
+  <provider name="lyrics.com" charset="utf-8" url="https://www.lyrics.com/lyrics/{artist}/{title}.html">
     <urlFormat replace=" _@,;&amp;\/&quot;" with="-"/>
     <urlFormat replace="'." with=""/>
     <extract> <!-- new -->
@@ -128,7 +128,7 @@
     <invalidIndicator value="we do not have the lyric for this song"/>
     <invalidIndicator value="Your name will be printed as part of the credit when your lyric is approved"/>
   </provider>
-  <provider name="lyrics.wikia.com" charset="utf-8" url="http://lyrics.wikia.com/api.php">
+  <provider name="lyrics.wikia.com" charset="utf-8" url="https://lyrics.wikia.com/api.php">
     <!-- These are not used, as mediawiki API is used instead...
     <urlFormat replace=" _@;\&quot;" with="_"/>
     <urlFormat replace="?" with="%3F"/>
@@ -159,7 +159,7 @@
     </extract>
     <invalidIndicator value="We haven't lyrics of this song"/>
   </provider>
-  <provider name="lyricsmania.com" charset="iso-8859-1" url="http://www.lyricsmania.com/{title}_lyrics_{artist}.html">
+  <provider name="lyricsmania.com" charset="iso-8859-1" url="https://www.lyricsmania.com/{title}_lyrics_{artist}.html">
     <urlFormat replace=" _@;&amp;\/&quot;'." with="_"/>
     <extract> <!-- new -->
       <item tag="&lt;div id='songlyrics_h' class='dn'&gt;"/>
@@ -180,7 +180,7 @@
     </extract>
     <invalidIndicator value="Sorry, we have no"/>
   </provider>
-  <provider name="lyricsreg.com" charset="iso-8859-1" url="http://www.lyricsreg.com/lyrics/{artist}/{title}/">
+  <provider name="lyricsreg.com" charset="iso-8859-1" url="https://www.lyricsreg.com/lyrics/{artist}/{title}/">
     <urlFormat replace=" _@,;&amp;\/&quot;" with="+"/>
     <urlFormat replace="'." with=""/>
     <extract>
@@ -263,7 +263,7 @@
       <item tag="&lt;div id=&quot;songlyrics&quot;&gt;"/>
     </extract>
   </provider>
-  <provider name="songlyrics.com" charset="utf-8" url="http://www.songlyrics.com/{artist}/{title}-lyrics/">
+  <provider name="songlyrics.com" charset="utf-8" url="https://www.songlyrics.com/{artist}/{title}-lyrics/">
     <urlFormat replace=" ._@,;&amp;\/&quot;" with="-"/>
     <urlFormat replace="'" with="_"/>
     <extract>
@@ -315,7 +315,7 @@
       <item tag="&lt;div itemprop=description&gt;"/>
     </extract>
   </provider>
-  <provider name="vagalume.com.br (PORTUGUESE)" charset="iso-8859-1" url="http://vagalume.com.br/{artist}/{title}-traducao.html">
+  <provider name="vagalume.com.br (PORTUGUESE)" charset="iso-8859-1" url="https://www.vagalume.com.br/{artist}/{title}-traducao.html">
     <urlFormat replace=" _@,;&amp;\/'&quot;." with="-"/>
     <extract>
       <item tag="&lt;div class=&quot;tab_traducao sideBySide lyricArea tab_tra_pt&quot;&gt;"/>

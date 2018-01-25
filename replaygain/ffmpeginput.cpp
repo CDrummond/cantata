@@ -40,7 +40,21 @@ static QMutex mutex;
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000 // 1 second of 48khz 32bit audio
 #endif
 
-#define BUFFER_SIZE ((((AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2) * sizeof(int16_t)) + FF_INPUT_BUFFER_PADDING_SIZE)
+#if defined FF_INPUT_BUFFER_PADDING_SIZE
+    #define FFMPEG_INPUT_BUFFER_PADDING_SIZE FF_INPUT_BUFFER_PADDING_SIZE
+#elif defined AV_INPUT_BUFFER_PADDING_SIZE
+    #define FFMPEG_INPUT_BUFFER_PADDING_SIZE AV_INPUT_BUFFER_PADDING_SIZE
+#else
+    #define FFMPEG_INPUT_BUFFER_PADDING_SIZE 32
+#endif
+
+#define BUFFER_SIZE ((((AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2) * sizeof(int16_t)) + FFMPEG_INPUT_BUFFER_PADDING_SIZE)
+
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 89, 100) // Not 100% of version here!
+#define GET_CODEC_TYPE(A) A->codecpar->codec_type
+#else
+#define GET_CODEC_TYPE(A) A->codec->codec_type
+#endif
 
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 24, 0)
 #define AV_FREE(PKT) av_packet_unref(PKT)
@@ -151,7 +165,7 @@ FfmpegInput::FfmpegInput(const QString &fileName)
     if (ok) {
         handle->audioStream = -1;
         for (size_t j = 0; j < handle->formatContext->nb_streams; ++j) {
-            if (handle->formatContext->streams[j]->codec->codec_type ==
+            if (GET_CODEC_TYPE(handle->formatContext->streams[j]) ==
                     #if LIBAVCODEC_VERSION_MAJOR >= 53 || \
                         (LIBAVCODEC_VERSION_MAJOR == 52 && LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0))
                     AVMEDIA_TYPE_AUDIO
@@ -170,7 +184,12 @@ FfmpegInput::FfmpegInput(const QString &fileName)
 
     if (ok) {
         // Get a pointer to the codec context for the audio stream
+
+        #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 89, 100) // Not 100% of version here!
+        handle->codecContext = avcodec_alloc_context3(nullptr);
+        #else
         handle->codecContext = handle->formatContext->streams[handle->audioStream]->codec;
+        #endif
 
         // request float output if supported
         #if LIBAVCODEC_VERSION_MAJOR >= 54
@@ -178,8 +197,8 @@ FfmpegInput::FfmpegInput(const QString &fileName)
         #elif(LIBAVCODEC_VERSION_MAJOR == 53 && LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 4, 0))
         handle->codecContext->request_sample_fmt = SAMPLE_FMT_FLT;
         #endif
-        // Find the decoder for the video stream, and open codec...
-        handle->codec = avcodec_find_decoder(handle->codecContext->codec_id);
+        // Find the decoder for the audio stream, and open codec...
+        handle->codec = avcodec_find_decoder(handle->formatContext->audio_codec_id);
 
         QString floatCodec=QLatin1String(handle->codec->name)+QLatin1String("float");
         AVCodec *possibleFloatCodec = avcodec_find_decoder_by_name(floatCodec.toLatin1().constData());
@@ -345,11 +364,25 @@ size_t FfmpegInput::readFrames()
 #if LIBAVCODEC_VERSION_MAJOR >= 54
 static int decodePacket(FfmpegInput::Handle *handle)
 {
+    #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 89, 100) // Not 100% of version here!
+    int ret = avcodec_receive_frame(handle->codecContext, handle->frame);
+    handle->gotFrame = 0 == ret;
+    if (ret < 0) {
+        return ret;
+    }
+
+    ret = avcodec_send_packet(handle->codecContext, &handle->packet);
+    if (ret < 0) {
+        return ret;
+    }
+    return handle->packet.size;
+    #else
     int ret = avcodec_decode_audio4(handle->codecContext, handle->frame, &handle->gotFrame, &handle->packet);
     if (ret < 0) {
         return ret;
     }
     return FFMIN(ret, handle->packet.size);
+    #endif
 }
 
 size_t FfmpegInput::readOnePacket()

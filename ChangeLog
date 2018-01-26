@@ -46,6 +46,7 @@
 32. Adjust horizontal gap between icons in grid view to equal distribute icons
     over space.
 33. Update copy of ebur128
+34. Install QtMultimedia required dlls for windows.
 
 2.2.0
 -----

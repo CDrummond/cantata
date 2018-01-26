@@ -47,7 +47,7 @@ install(FILES ${QT_PLUGINS_DIR}/platforms/qwindows.dll DESTINATION ${CMAKE_INSTA
 install(FILES ${QT_PLUGINS_DIR}/sqldrivers/qsqlite.dll DESTINATION ${CMAKE_INSTALL_PREFIX}/sqldrivers/)
 
 # Qt MultiMedia
-install(FILES ${QT_PLUGINS_DIR}/mediaservice/dsengine.dll DESTINATION ${CMAKE_INSTALL_PREFIX}/mediaservice/)
+install(FILES ${QT_PLUGINS_DIR}/mediaservice/dsengine.dll ${QT_PLUGINS_DIR}/mediaservice/qtmedia_audioengine.dll DESTINATION ${CMAKE_INSTALL_PREFIX}/mediaservice/)
 
 # Qt, taglib, and zlib libraries...
 set(EXTRA_WIN_LIBS ${EXTRA_WIN_LIBS}

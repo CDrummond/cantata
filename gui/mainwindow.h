@@ -123,7 +123,7 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
 
 private:
-    #ifdef Q_OS_MAC
+    #if !defined Q_OS_WIN
     void addMenuAction(QMenu *menu, QAction *action);
     #endif
     void setupTrayIcon();
@@ -260,12 +260,14 @@ private:
     void updateActionToolTips();
     void startContextTimer();
     int calcMinHeight();
+    int calcCollapsedSize();
     void setCollapsedSize();
 
 private Q_SLOTS:
     void init();
     void toggleContext();
     void initMpris();
+    void toggleMenubar();
 
 private:
     int prevPage;
@@ -346,6 +348,7 @@ private:
     QTimer *playQueueSearchTimer;
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     QTimer *mpdAccessibilityTimer;
+    Action *showMenubarAction;
     #endif
     QTimer *contextTimer;
     int contextSwitchTime;

@@ -678,6 +678,13 @@ QString Settings::style()
     return cfg.get("style", QString());
 }
 
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
+bool Settings::showMenubar()
+{
+    return cfg.get("showMenubar", false);
+}
+#endif
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1148,6 +1155,13 @@ void Settings::saveStyle(const QString &v)
 {
     cfg.set("style", v);
 }
+
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
+void Settings::saveShowMenubar(bool v)
+{
+    cfg.set("showMenubar", v);
+}
+#endif
 
 void Settings::save()
 {

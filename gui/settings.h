@@ -143,6 +143,9 @@ public:
     QSet<QString> ignorePrefixes();
     bool mpris();
     QString style();
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    bool showMenubar();
+    #endif
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -243,6 +246,9 @@ public:
     void saveMpris(bool v);
     void saveReplayGain(const QString &conn, const QString &v);
     void saveStyle(const QString &v);
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    void saveShowMenubar(bool v);
+    #endif
     void save();
     void clearVersion();
 

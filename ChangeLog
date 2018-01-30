@@ -45,6 +45,9 @@
 31. Make more actions shortcut assignable.
 32. Adjust horizontal gap between icons in grid view to equal distribute icons
     over space.
+33. Update copy of ebur128
+34. Install QtMultimedia required dlls for windows.
+35. Re-add option to show menumbar for Linux builds if not run under GNOME.
 
 2.2.0
 -----

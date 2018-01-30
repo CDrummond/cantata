@@ -148,6 +148,7 @@ MainWindow::MainWindow(QWidget *parent)
     , playQueueSearchTimer(nullptr)
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     , mpdAccessibilityTimer(nullptr)
+    , showMenubarAction(nullptr)
     #endif
     , contextTimer(nullptr)
     , contextSwitchTime(0)
@@ -572,49 +573,94 @@ void MainWindow::init()
         }
     }
 
+    #ifndef Q_OS_WIN
     #ifdef Q_OS_MAC
-    QMenu *menu=new QMenu(tr("&Music"), this);
-    addMenuAction(menu, refreshDbAction);
-    menu->addSeparator();
-    addMenuAction(menu, connectionsAction);
-    addMenuAction(menu, outputsAction);
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    addMenuAction(menu, streamPlayAction);
-    #endif
-    menu->addSeparator();
-    addMenuAction(menu, quitAction);
-    menuBar()->addMenu(menu);
-    menu=new QMenu(tr("&Edit"), this);
-    addMenuAction(menu, PlayQueueModel::self()->undoAct());
-    addMenuAction(menu, PlayQueueModel::self()->redoAct());
-    menu->addSeparator();
-    addMenuAction(menu, StdActions::self()->searchAction);
-    addMenuAction(menu, searchPlayQueueAction);
-    menu->addSeparator();
-    addMenuAction(menu, prefAction);
-    menuBar()->addMenu(menu);
-    menu=new QMenu(tr("&View"), this);
-    addMenuAction(menu, expandInterfaceAction);
-    addMenuAction(menu, fullScreenAction);
-    menuBar()->addMenu(menu);
-    menu=new QMenu(tr("&Queue"), this);
-    addMenuAction(menu, clearPlayQueueAction);
-    addMenuAction(menu, StdActions::self()->savePlayQueueAction);
-    addMenuAction(menu, addStreamToPlayQueueAction);
-    addMenuAction(menum addLocalFilesToPlayQueue);
-    menu->addSeparator();
-    addMenuAction(menu, PlayQueueModel::self()->shuffleAct());
-    addMenuAction(menu, PlayQueueModel::self()->sortAct());
-    menuBar()->addMenu(menu);
-    OSXStyle::self()->initWindowMenu(this);
-    menu=new QMenu(tr("&Help"), this);
-    addMenuAction(menu, serverInfoAction);
-    addMenuAction(menu, aboutAction);
-    menuBar()->addMenu(menu);
-    menuButton->hide();
+    bool showMenubar = true;
     #else
+    bool showMenubar = Utils::Gnome!=Utils::currentDe() && Utils::Ubuntu_Gnome!=Utils::currentDe();
+    #endif
+    if (showMenubar) {
+        #ifndef Q_OS_MAC
+        showMenubarAction = ActionCollection::get()->createAction("showmenubar", tr("Show Menubar"));
+        showMenubarAction->setShortcut(Qt::ControlModifier+Qt::Key_M);
+        showMenubarAction->setCheckable(true);
+        connect(showMenubarAction, SIGNAL(toggled(bool)), this, SLOT(toggleMenubar()));
+        #endif
+
+        QMenu *menu=new QMenu(tr("&Music"), this);
+        addMenuAction(menu, refreshDbAction);
+        menu->addSeparator();
+        addMenuAction(menu, connectionsAction);
+        addMenuAction(menu, outputsAction);
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        addMenuAction(menu, streamPlayAction);
+        #endif
+        menu->addSeparator();
+        addMenuAction(menu, quitAction);
+        menuBar()->addMenu(menu);
+        menu=new QMenu(tr("&Edit"), this);
+        addMenuAction(menu, PlayQueueModel::self()->undoAct());
+        addMenuAction(menu, PlayQueueModel::self()->redoAct());
+        menu->addSeparator();
+        addMenuAction(menu, StdActions::self()->searchAction);
+        addMenuAction(menu, searchPlayQueueAction);
+        if (Utils::KDE!=Utils::currentDe()) {
+            menu->addSeparator();
+            addMenuAction(menu, prefAction);
+        }
+        menuBar()->addMenu(menu);
+        if (Utils::KDE!=Utils::currentDe()) {
+            menu=new QMenu(tr("&View"), this);
+            if (showMenubarAction) {
+                addMenuAction(menu, showMenubarAction);
+                menu->addSeparator();
+            }
+            addMenuAction(menu, expandInterfaceAction);
+            addMenuAction(menu, fullScreenAction);
+            //addMenuAction(menu, songInfoAction);
+            menuBar()->addMenu(menu);
+        }
+        menu=new QMenu(tr("&Queue"), this);
+        addMenuAction(menu, clearPlayQueueAction);
+        addMenuAction(menu, StdActions::self()->savePlayQueueAction);
+        addMenuAction(menu, addStreamToPlayQueueAction);
+        addMenuAction(menu, addLocalFilesToPlayQueueAction);
+        menu->addSeparator();
+        addMenuAction(menu, PlayQueueModel::self()->shuffleAct());
+        addMenuAction(menu, PlayQueueModel::self()->sortAct());
+        menuBar()->addMenu(menu);
+        if (Utils::KDE==Utils::currentDe()) {
+            menu=new QMenu(tr("&Settings"), this);
+            if (showMenubarAction) {
+                addMenuAction(menu, showMenubarAction);
+            }
+            addMenuAction(menu, expandInterfaceAction);
+            addMenuAction(menu, fullScreenAction);
+            //addMenuAction(menu, songInfoAction);
+            menu->addSeparator();
+            addMenuAction(menu, prefAction);
+            menuBar()->addMenu(menu);
+        }
+        #ifdef Q_OS_MAC
+        OSXStyle::self()->initWindowMenu(this);
+        #endif
+        menu=new QMenu(tr("&Help"), this);
+        addMenuAction(menu, serverInfoAction);
+        addMenuAction(menu, aboutAction);
+        menuBar()->addMenu(menu);
+    }
+    #endif // infdef Q_OS_WIN
+
+    #ifndef Q_OS_MAC
     QMenu *mainMenu=new QMenu(this);
     mainMenu->addAction(expandInterfaceAction);
+    #ifndef Q_OS_WIN
+    if (showMenubarAction) {
+        mainMenu->addAction(showMenubarAction);
+        showMenubarAction->setChecked(Settings::self()->showMenubar());
+        toggleMenubar();
+    }
+    #endif
     mainMenu->addAction(fullScreenAction);
     mainMenu->addAction(connectionsAction);
     mainMenu->addAction(outputsAction);
@@ -633,7 +679,7 @@ void MainWindow::init()
     mainMenu->addAction(quitAction);
     menuButton->setIcon(Icons::self()->toolbarMenuIcon);
     menuButton->setAlignedMenu(mainMenu);
-    #endif
+    #endif // ifndef Q_OS_MAC
 
     dynamicLabel->setVisible(false);
     stopDynamicButton->setVisible(false);
@@ -859,6 +905,11 @@ void MainWindow::init()
 
 MainWindow::~MainWindow()
 {
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    if (showMenubarAction) {
+        Settings::self()->saveShowMenubar(showMenubarAction->isChecked());
+    }
+    #endif
     bool hadCantataStreams=PlayQueueModel::self()->removeCantataStreams();
     Settings::self()->saveShowFullScreen(fullScreenAction->isChecked());
     if (!fullScreenAction->isChecked()) {
@@ -943,7 +994,7 @@ void MainWindow::triggerAction(const QString &name)
     }
 }
 
-#ifdef Q_OS_MAC
+#if !defined Q_OS_WIN
 void MainWindow::addMenuAction(QMenu *menu, QAction *action)
 {
     menu->addAction(action);
@@ -1390,6 +1441,17 @@ void MainWindow::initMpris()
         mpris=nullptr;
     }
     CurrentCover::self()->setEnabled(mpris || Settings::self()->showPopups() || 0!=Settings::self()->playQueueBackground() || Settings::self()->showCoverWidget());
+    #endif
+}
+
+void MainWindow::toggleMenubar()
+{
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    if (showMenubarAction) {
+        menuButton->setVisible(!showMenubarAction->isChecked());
+        menuBar()->setVisible(showMenubarAction->isChecked());
+        setCollapsedSize();
+    }
     #endif
 }
 
@@ -2499,8 +2561,17 @@ void MainWindow::startContextTimer()
 int MainWindow::calcMinHeight()
 {
     return tabWidget->style()&FancyTabWidget::Side && tabWidget->style()&FancyTabWidget::Large
-            ? toolbar->height()+(tabWidget->visibleCount()*tabWidget->tabSize().height())
+            ? calcCollapsedSize()+(tabWidget->visibleCount()*tabWidget->tabSize().height())
             : Utils::scaleForDpi(256);
+}
+
+int MainWindow::calcCollapsedSize()
+{
+    #if !defined Q_OS_MAC && !defined Q_OS_WIN
+    return toolbar->height()+(showMenubarAction && menuBar() && menuBar()->isVisible() ? menuBar()->height() : 0);
+    #else
+    return toolbar->height();
+    #endif
 }
 
 void MainWindow::setCollapsedSize()
@@ -2508,7 +2579,7 @@ void MainWindow::setCollapsedSize()
     if (!expandInterfaceAction->isChecked()) {
         int w=width();
         adjustSize();
-        collapsedSize=QSize(w, toolbar->height());
+        collapsedSize=QSize(w, calcCollapsedSize());
         resize(collapsedSize);
         setFixedHeight(collapsedSize.height());
     }
@@ -2557,7 +2628,7 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
         }
     } else {
         // Width also sometimes expands, so make sure this is no larger than it was before...
-        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), toolbar->height());
+        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), calcCollapsedSize());
         resize(collapsedSize);
         setFixedHeight(size().height());
     }

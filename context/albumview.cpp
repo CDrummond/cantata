@@ -33,6 +33,7 @@
 #include "support/actioncollection.h"
 #include "support/action.h"
 #include "models/mpdlibrarymodel.h"
+#include "mpd-interface/cuefile.h"
 #include <QScrollBar>
 #include <QFile>
 #include <QUrl>
@@ -44,6 +45,8 @@
 
 const QLatin1String AlbumView::constCacheDir("albums/");
 const QLatin1String AlbumView::constInfoExt(".html.gz");
+
+static const QLatin1String constScheme("cantata");
 
 static QString cacheFileName(const QString &artist, const QString &album, const QString &lang, bool createDir)
 {
@@ -159,7 +162,7 @@ void AlbumView::update(const Song &song, bool force)
 
 void AlbumView::playSong(const QUrl &url)
 {
-    if (QLatin1String("cantata")==url.scheme()) {
+    if (url.scheme() == constScheme) {
         emit playSong(url.path().mid(1)); // Remove leading /
     } else {
         QDesktopServices::openUrl(url);
@@ -175,9 +178,11 @@ void AlbumView::getTrackListing()
     if (!songs.isEmpty()) {
         trackList=View::subHeader(tr("Tracks"))+QLatin1String("<p><table>");
         for (const Song &s: songs) {
+            bool isCue = CueFile::isCue(s.file);
             trackList+=QLatin1String("<tr><td align='right'>")+QString::number(s.track)+
-                       QLatin1String("</td><td><a href=\"cantata:///")+s.file+"\">"+
-                       (s.file==currentSong.file ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+QLatin1String("</a></td></tr>");
+                       QLatin1String("</td><td>") + (isCue ? QString() : QLatin1String("<a href=\"cantata:///")+s.file+"\">") +
+                       (s.file==currentSong.file ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+
+                       (isCue ? QString() : QLatin1String("</a>")) + QLatin1String("</td></tr>");
         }
 
         trackList+=QLatin1String("</table></p>");

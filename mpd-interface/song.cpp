@@ -284,6 +284,12 @@ bool Song::isEmpty() const
     return (artist.isEmpty() && album.isEmpty() && title.isEmpty() && name().isEmpty()) || file.isEmpty();
 }
 
+bool Song::sameMetadata(const Song &o) const
+{
+    return disc == o.disc && track == o.track && time == o.time && year == o.year && origYear == o.origYear &&
+           artist == o.artist && albumartist == o.albumartist && album == o.album && title == o.title;
+}
+
 void Song::guessTags()
 {
     if (isEmpty() && !isStream()) {

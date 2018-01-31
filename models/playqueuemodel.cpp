@@ -28,6 +28,7 @@
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "mpd-interface/mpdstats.h"
+#include "mpd-interface/cuefile.h"
 #include "streams/streamfetcher.h"
 #include "streamsmodel.h"
 #include "http/httpserver.h"
@@ -56,6 +57,7 @@
 #include <QTextStream>
 #include <QSet>
 #include <QUrl>
+#include <QUrlQuery>
 #include <QTimer>
 #include <QApplication>
 #include <QMenu>
@@ -769,9 +771,31 @@ qint32 PlayQueueModel::getIdByRow(qint32 row) const
 
 qint32 PlayQueueModel::getSongId(const QString &file) const
 {
-    for (const Song &s: songs) {
-        if (s.file==file) {
-            return s.id;
+    if (CueFile::isCue(file)) {
+        QUrl u(file);
+        QUrlQuery q(u);
+        Song check;
+        check.album=q.queryItemValue("album");
+        check.artist=q.queryItemValue("artist");
+        check.albumartist=q.queryItemValue("albumartist");
+        check.album=q.queryItemValue("album");
+        check.title=q.queryItemValue("title");
+        check.disc=q.queryItemValue("disc").toUInt();
+        check.track=q.queryItemValue("track").toUInt();
+        check.time=q.queryItemValue("time").toUInt();
+        check.year=q.queryItemValue("year").toUInt();
+        check.origYear=q.queryItemValue("origYear").toUInt();
+
+        for (const Song &s: songs) {
+            if (s.sameMetadata(check)) {
+                return s.id;
+            }
+        }
+    } else {
+        for (const Song &s: songs) {
+            if (s.file==file) {
+                return s.id;
+            }
         }
     }
 

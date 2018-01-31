@@ -50,6 +50,7 @@
 35. Re-add option to show menumbar for Linux builds if not run under GNOME.
 36. Work-around Cantata preventing logout under GNOME/KDE if set to minimise
     to system tray and main window is open.
+37. Make track links in context view work with CUE files.
 
 2.2.0
 -----

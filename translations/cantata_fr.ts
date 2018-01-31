@@ -1846,7 +1846,7 @@ i18n: ectx: property (text), widget (QPushButton, connectButton)
     </message>
     <message>
         <source>Set Rating</source>
-        <translation type="vanished">Définir une note</translation>
+        <translation type="vanished">Donner une note</translation>
     </message>
     <message>
         <source>No Rating</source>
@@ -4112,7 +4112,7 @@ i18n: ectx: property (text), widget (BuddyLabel, coverNameLabel)
 i18n: file: gui/serversettings.ui:243
 i18n: ectx: property (text), widget (BuddyLabel, basicCoverNameLabel)
 </extracomment>
-        <translation type="vanished">Nom de la pochette:</translation>
+        <translation type="vanished">Nom des pochettes:</translation>
     </message>
     <message>
         <source>HTTP stream URL:</source>
@@ -8446,7 +8446,7 @@ Si cette recherche donne de nouveaux résultats, ils seront toujours associés a
     <message>
         <location filename="../gui/mainwindow.cpp" line="346"/>
         <source>Play next</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lire la suite</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="349"/>
@@ -8491,7 +8491,7 @@ Si cette recherche donne de nouveaux résultats, ils seront toujours associés a
     <message>
         <location filename="../gui/mainwindow.cpp" line="434"/>
         <source>Internet</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Internet</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="443"/>
@@ -9752,7 +9752,7 @@ Remplacer ?</translation>
     <message>
         <location filename="../models/playlistsmodel.cpp" line="115"/>
         <source>Stored Playlists</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Listes enregistrées</translation>
     </message>
     <message>
         <location filename="../models/playlistsmodel.cpp" line="120"/>
@@ -9852,12 +9852,12 @@ Remplacer ?</translation>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="253"/>
         <source>RSS:</source>
-        <translation type="unfinished">RSS:</translation>
+        <translation type="unfinished">RSS :</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="255"/>
         <source>Website:</source>
-        <translation type="unfinished">Site web:</translation>
+        <translation type="unfinished">Site web :</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="262"/>
@@ -10869,32 +10869,32 @@ width x height</comment>
     <message>
         <location filename="../gui/stdactions.cpp" line="94"/>
         <source>Append</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ajouter</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="95"/>
         <source>Append To Play Queue</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ajouter à la liste courante</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="96"/>
         <source>Append And Play</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ajouter et lire</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="97"/>
         <source>Add And Play</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ajouter en tête, et lire</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="98"/>
         <source>Append To Play Queue And Play</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ajouter à la liste courante, et lire</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="99"/>
         <source>Insert After Current</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Insérer après l&apos;actuel</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="100"/>
@@ -10904,7 +10904,7 @@ width x height</comment>
     <message>
         <location filename="../gui/stdactions.cpp" line="101"/>
         <source>Play Now (And Replace Play Queue)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lire maintenant (et remplacer la liste courante)</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="106"/>
@@ -10974,7 +10974,7 @@ width x height</comment>
     <message>
         <location filename="../gui/stdactions.cpp" line="117"/>
         <source>ReplayGain</source>
-        <translation type="unfinished">ReplayGain</translation>
+        <translation type="unfinished">ReplayGain</translation> 
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="120"/>
@@ -11053,7 +11053,7 @@ width x height</comment>
     <message>
         <location filename="../mpd-interface/song.cpp" line="67"/>
         <source>Various Artists</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Artistes divers</translation>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="556"/>
@@ -11083,7 +11083,7 @@ width x height</comment>
     <message>
         <location filename="../mpd-interface/song.cpp" line="572"/>
         <source>Original Year</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Année originale</translation>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="575"/>
@@ -11140,12 +11140,12 @@ width x height</comment>
     <message>
         <location filename="../scrobbling/scrobbler.cpp" line="98"/>
         <source>Invalid session key</source>
-        <translation type="unfinished">La clef de session est incorrecte</translation>
+        <translation type="unfinished">Clef de session incorrecte</translation>
     </message>
     <message>
         <location filename="../scrobbling/scrobbler.cpp" line="99"/>
         <source>Invalid API key</source>
-        <translation type="unfinished">La clef de l&apos;API est incorrecte</translation>
+        <translation type="unfinished">Clef de l&apos;API incorrecte</translation>
     </message>
     <message>
         <location filename="../scrobbling/scrobbler.cpp" line="100"/>
@@ -11160,7 +11160,7 @@ width x height</comment>
     <message>
         <location filename="../scrobbling/scrobbler.cpp" line="102"/>
         <source>Rate-limit exceeded</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Limite dépassée</translation>
     </message>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="215"/>
@@ -11200,7 +11200,7 @@ width x height</comment>
     <message>
         <location filename="../support/dialog.cpp" line="123"/>
         <source>&amp;Discard</source>
-        <translation type="unfinished">&amp;Annuler</translation>
+        <translation type="unfinished">&amp;Abandonner</translation>
     </message>
     <message>
         <location filename="../support/dialog.cpp" line="124"/>
@@ -11225,7 +11225,7 @@ width x height</comment>
     <message>
         <location filename="../support/dialog.cpp" line="128"/>
         <source>&amp;Overwrite</source>
-        <translation type="unfinished">&amp;Réécrire</translation>
+        <translation type="unfinished">&amp;Écraser</translation>
     </message>
     <message>
         <location filename="../support/dialog.cpp" line="129"/>
@@ -11299,37 +11299,37 @@ width x height</comment>
         <location filename="../support/utils.cpp" line="435"/>
         <location filename="../support/utils.cpp" line="443"/>
         <source>%1 B</source>
-        <translation type="unfinished">%1 B</translation>
+        <translation type="unfinished">%1 o</translation>
     </message>
     <message>
         <location filename="../support/utils.cpp" line="436"/>
         <source>%1 kB</source>
-        <translation type="unfinished">%1 kB</translation>
+        <translation type="unfinished">%1 ko</translation>
     </message>
     <message>
         <location filename="../support/utils.cpp" line="437"/>
         <source>%1 MB</source>
-        <translation type="unfinished">%1 MB</translation>
+        <translation type="unfinished">%1 Mo</translation>
     </message>
     <message>
         <location filename="../support/utils.cpp" line="439"/>
         <source>%1 GB</source>
-        <translation type="unfinished">%1 GB</translation>
+        <translation type="unfinished">%1 Go</translation>
     </message>
     <message>
         <location filename="../support/utils.cpp" line="444"/>
         <source>%1 KiB</source>
-        <translation type="unfinished">%1 Ko</translation>
+        <translation type="unfinished">%1 Kio</translation>
     </message>
     <message>
         <location filename="../support/utils.cpp" line="445"/>
         <source>%1 MiB</source>
-        <translation type="unfinished">%1 Mo</translation>
+        <translation type="unfinished">%1 Mio</translation>
     </message>
     <message>
         <location filename="../support/utils.cpp" line="447"/>
         <source>%1 GiB</source>
-        <translation type="unfinished">%1 Go</translation>
+        <translation type="unfinished">%1 Gio</translation>
     </message>
     <message>
         <location filename="../widgets/singlepagewidget.cpp" line="38"/>
@@ -12400,12 +12400,12 @@ Veuillez choisir un nom différent.</translation>
     <message>
         <location filename="../playlists/smartplaylists.cpp" line="44"/>
         <source>Smart Playlists</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Liste intelligente</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylists.cpp" line="49"/>
         <source>Rules based playlists</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Liste basée sur des règles</translation>
     </message>
 </context>
 <context>
@@ -13277,7 +13277,7 @@ Remplacer ?</translation>
     <message>
         <location filename="../models/streamsmodel.cpp" line="563"/>
         <source>Radio stations</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stations de radio</translation>
     </message>
     <message>
         <location filename="../models/streamsmodel.cpp" line="648"/>
@@ -13570,7 +13570,7 @@ Remplacer ?</translation>
     <message>
         <location filename="../tags/tageditor.ui" line="210"/>
         <source>Multiple genres should be separated via a comma (e.g. &apos;Rock,Hard Rock&apos;)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Les genres devraient être séparés par des virgules (ex &apos;Rock,Hard Rock&apos;)</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="217"/>

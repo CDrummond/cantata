@@ -95,7 +95,8 @@ static bool checkExtension(const QString &file)
 static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
 {
     QStringList useable;
-    for (const QString &path: urls) {
+    bool useServer = HttpServer::self()->isAlive();
+    for (const auto &path: urls) {
         QUrl u=percentEncoded ? QUrl::fromPercentEncoding(path.toUtf8()) : QUrl(path);
         #if defined ENABLE_DEVICES_SUPPORT && (defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND)
         QString cdDevice=AudioCdDevice::getDevice(u);
@@ -105,11 +106,29 @@ static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
         #endif
         if (QLatin1String("http")==u.scheme()) {
             useable.append(u.toString());
-        } else if ((u.scheme().isEmpty() || QLatin1String("file")==u.scheme()) && checkExtension(u.path())) {
-            if (HttpServer::self()->isAlive()) {
-                useable.append(HttpServer::self()->encodeUrl(u.path()));
-            } else if (MPDConnection::self()->localFilePlaybackSupported() && !u.path().startsWith(QLatin1String("/media/"))) {
-                useable.append(QLatin1String("file://")+u.path());
+        } else if (u.scheme().isEmpty() || QLatin1String("file")==u.scheme()) {
+            QStringList files;
+            QDir d(u.path());
+
+            if (d.exists()) {
+                for (const auto &f: d.entryInfoList(QDir::Files)) {
+                    if (checkExtension(f.fileName())) {
+                        files.append(f.absoluteFilePath());
+                    }
+                }
+            } else if (checkExtension(u.path())) {
+                files.append(u.path());
+            }
+
+            for (const auto &file : files) {
+                if (useServer) {
+                    QByteArray path = HttpServer::self()->encodeUrl(file);
+                    if (!path.isEmpty()) {
+                        useable.append(path);
+                    }
+                } else if (MPDConnection::self()->localFilePlaybackSupported() && !file.startsWith(QLatin1String("/media/"))) {
+                    useable.append(QLatin1String("file://")+file);
+                }
             }
         }
     }

@@ -62,8 +62,10 @@ set(solidlite_LIB_MOC_HDRS
     ifaces/devicemanager.h
     backends/shared/rootdevice.h
 )
-   macro_optional_find_package( UDev )
-   macro_log_feature( UDEV_FOUND "UDev" "UDev support for Solid" "http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html" FALSE "" "Allows Solid to use UDev to provide information about devices on Linux" )
+   if (NOT WIN32 AND NOT APPLE AND WITH_SOLID_UDISKS2)
+     find_package( UDev REQUIRED)
+     macro_log_feature( UDEV_FOUND "UDev" "UDev support for Solid" "http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html" FALSE "" "Allows Solid to use UDev to provide information about devices on Linux" )
+   endif()
    configure_file( config-solid.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-solid.h )
 
 

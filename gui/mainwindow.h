@@ -60,6 +60,7 @@ class QPropertyAnimation;
 class QActionGroup;
 class QDateTime;
 class QMenu;
+class QSessionManager;
 class TrayItem;
 class HttpStream;
 class MPDStatus;
@@ -162,6 +163,7 @@ public Q_SLOTS:
     void playQueueItemsSelected(bool s);
     void showPreferencesDialog(const QString &page=QString());
     void quit();
+    void commitDataRequest(QSessionManager &mgr);
     void updateSettings();
     void toggleOutput();
     void changeConnection();

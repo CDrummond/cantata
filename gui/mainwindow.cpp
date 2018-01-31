@@ -856,6 +856,7 @@ void MainWindow::init()
     connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
+    connect(qApp, SIGNAL(commitDataRequest(QSessionManager&)), SLOT(commitDataRequest(QSessionManager&)));
     #endif
     playQueueItemsSelected(false);
     playQueue->setFocus();
@@ -1090,12 +1091,10 @@ void MainWindow::showEvent(QShowEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (trayItem->isActive() && Settings::self()->minimiseOnClose()) {
+    if (trayItem->isActive() && Settings::self()->minimiseOnClose() && event->spontaneous()) {
         lastPos=pos();
         hide();
-        if (event->spontaneous()) {
-            event->ignore();
-        }
+        event->ignore();
     } else if (canClose()) {
         QMainWindow::closeEvent(event);
     }
@@ -1271,6 +1270,19 @@ void MainWindow::quit()
     }
     #endif
     qApp->quit();
+}
+
+void MainWindow::commitDataRequest(QSessionManager &mgr)
+{
+    Q_UNUSED(mgr)
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    if (isVisible() && trayItem->isActive() && Settings::self()->minimiseOnClose()) {
+        // Issue 1183 If We are using a tray item, and have window open - then cantata intercepts close events
+        // and hides the window. This seems to prevent the logout dialog appwaring under GNOME Shell.
+        // To work-around this if qApp emits commitDataRequest and our window is open, them close.
+        QMainWindow::close();
+    }
+    #endif
 }
 
 void MainWindow::checkMpdDir()

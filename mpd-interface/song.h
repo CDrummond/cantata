@@ -145,6 +145,7 @@ struct Song
     virtual ~Song() { }
     bool isEmpty() const;
     bool isDifferent(const Song &s) const { return file!=s.file || year!=s.year || artist!=s.artist || album!=s.album || title!=s.title || name()!=s.name(); }
+    bool sameMetadata(const Song &o) const;
     void guessTags();
     void revertGuessedTags();
     void fillEmptyFields();

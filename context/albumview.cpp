@@ -37,6 +37,7 @@
 #include <QScrollBar>
 #include <QFile>
 #include <QUrl>
+#include <QUrlQuery>
 #include <QMenu>
 #include <QTimer>
 #include <QCoreApplication>
@@ -164,6 +165,8 @@ void AlbumView::playSong(const QUrl &url)
 {
     if (url.scheme() == constScheme) {
         emit playSong(url.path().mid(1)); // Remove leading /
+    } else if (CueFile::isCue(url.toString())) {
+        emit playSong(url.toString());
     } else {
         QDesktopServices::openUrl(url);
     }
@@ -178,11 +181,31 @@ void AlbumView::getTrackListing()
     if (!songs.isEmpty()) {
         trackList=View::subHeader(tr("Tracks"))+QLatin1String("<p><table>");
         for (const Song &s: songs) {
-            bool isCue = CueFile::isCue(s.file);
-            trackList+=QLatin1String("<tr><td align='right'>")+QString::number(s.track)+
-                       QLatin1String("</td><td>") + (isCue ? QString() : QLatin1String("<a href=\"cantata:///")+s.file+"\">") +
-                       (s.file==currentSong.file ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+
-                       (isCue ? QString() : QLatin1String("</a>")) + QLatin1String("</td></tr>");
+            if (CueFile::isCue(s.file)) {
+                QUrl u(s.file);
+                QUrlQuery q(u);
+
+                q.addQueryItem("artist", s.artist);
+                q.addQueryItem("albumartist", s.albumartist);
+                q.addQueryItem("album", s.album);
+                q.addQueryItem("title", s.title);
+                q.addQueryItem("disc", QString::number(s.disc));
+                q.addQueryItem("track", QString::number(s.track));
+                q.addQueryItem("time", QString::number(s.time));
+                q.addQueryItem("year", QString::number(s.year));
+                q.addQueryItem("origYear", QString::number(s.origYear));
+                u.setQuery(q);
+
+                trackList+=QLatin1String("<tr><td align='right'>")+QString::number(s.track)+
+                           QLatin1String("</td><td><a href=\"")+u.toString()+QLatin1String("\">") +
+                           (s.sameMetadata(currentSong) ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+
+                           QLatin1String("</a></td></tr>");
+            } else {
+                trackList+=QLatin1String("<tr><td align='right'>")+QString::number(s.track)+
+                           QLatin1String("</td><td><a href=\"")+constScheme+QLatin1String(":///")+s.file+QLatin1String("\">") +
+                           (s.file==currentSong.file ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+
+                           QLatin1String("</a></td></tr>");
+            }
         }
 
         trackList+=QLatin1String("</table></p>");

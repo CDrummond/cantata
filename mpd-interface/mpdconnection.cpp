@@ -899,7 +899,11 @@ void MPDConnection::addAndPlay(const QString &file)
     if (response.ok) {
         MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
         QByteArray send = "command_list_begin\n";
-        send+="add "+encodeName(file)+'\n';
+        if (CueFile::isCue(file)) {
+            send += "load "+CueFile::getLoadLine(file)+'\n';
+        } else {
+            send+="add "+encodeName(file)+'\n';
+        }
         send+="play "+quote(sv.playlistLength)+'\n';
         send+="command_list_end";
         sendCommand(send);

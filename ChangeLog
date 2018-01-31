@@ -51,6 +51,7 @@
 36. Work-around Cantata preventing logout under GNOME/KDE if set to minimise
     to system tray and main window is open.
 37. Make track links in context view work with CUE files.
+38. Support dragging folder of music files onto playqueue.
 
 2.2.0
 -----

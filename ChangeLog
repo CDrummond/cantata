@@ -48,6 +48,8 @@
 33. Update copy of ebur128
 34. Install QtMultimedia required dlls for windows.
 35. Re-add option to show menumbar for Linux builds if not run under GNOME.
+36. Work-around Cantata preventing logout under GNOME/KDE if set to minimise
+    to system tray and main window is open.
 
 2.2.0
 -----

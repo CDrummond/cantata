@@ -127,6 +127,8 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     setupUi(this);
     addCueSupportTypes(cueSupport);
     addViewTypes(playQueueView, QList<ItemView::Mode>() << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
+    yearTag->addItem(tr("Use 'Year' tag to display & sort"));
+    yearTag->addItem(tr("Use 'Original Year' tag to display & sort, fallback to 'Year' if not set"));
 
     addView(tr("Play Queue"), QLatin1String("PlayQueuePage"));
     addView(tr("Library"), QLatin1String("LibraryPage"));
@@ -193,6 +195,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         connect(systemTrayPopup, SIGNAL(toggled(bool)), SLOT(systemTrayPopupToggled()));
     }
     #endif
+    setMinimumSize(750, 650);
 }
 
 void InterfaceSettings::load()
@@ -201,6 +204,7 @@ void InterfaceSettings::load()
     composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(constSep)));
     singleTracksFolders->setText(QStringList(Settings::self()->singleTracksFolders().toList()).join(QString(constSep)));
     selectEntry(cueSupport, Settings::self()->cueSupport());
+    yearTag->setCurrentIndex(Settings::self()->useOriginalYear() ? 1 : 0);
     #ifdef ENABLE_DEVICES_SUPPORT
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
     #endif
@@ -284,6 +288,7 @@ void InterfaceSettings::save()
     Settings::self()->saveComposerGenres(toSet(composerGenres->text()));
     Settings::self()->saveSingleTracksFolders(toSet(singleTracksFolders->text()));
     Settings::self()->saveCueSupport((MPDParseUtils::CueSupport)(cueSupport->itemData(cueSupport->currentIndex()).toInt()));
+    Settings::self()->saveUseOriginalYear(1==yearTag->currentIndex());
     #ifdef ENABLE_DEVICES_SUPPORT
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
     #endif

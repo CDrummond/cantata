@@ -685,6 +685,11 @@ bool Settings::showMenubar()
 }
 #endif
 
+bool Settings::useOriginalYear()
+{
+    return cfg.get("useOriginalYear", false);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1162,6 +1167,11 @@ void Settings::saveShowMenubar(bool v)
     cfg.set("showMenubar", v);
 }
 #endif
+
+void Settings::saveUseOriginalYear(bool v)
+{
+    cfg.set("useOriginalYear", v);
+}
 
 void Settings::save()
 {

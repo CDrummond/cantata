@@ -46,6 +46,8 @@ const QString Song::constForkedDaapdLocal=QLatin1String("file:");
 static QString unknownStr;
 static QString variousArtistsStr;
 static QString singleTracksStr;
+static bool useOrigYear = false;
+
 const QString & Song::unknown()
 {
     return unknownStr;
@@ -75,13 +77,13 @@ static QHash<QString, quint16> albumYears;
 
 void Song::storeAlbumYear(const Song &s)
 {
-    albumYears.insert(s.albumKey(), s.year);
+    albumYears.insert(s.albumKey(), s.displayYear());
 }
 
 int Song::albumYear(const Song &s)
 {
     QHash<QString, quint16>::ConstIterator it=albumYears.find(s.albumKey());
-    return it==albumYears.end() ? s.year : it.value();
+    return it==albumYears.end() ? s.displayYear() : it.value();
 }
 
 static int songType(const Song &s)
@@ -254,11 +256,20 @@ int Song::compareTo(const Song &o) const
         if (track!=o.track) {
             return track<o.track ? -1 : 1;
         }
-        if (year!=o.year) {
-            return year<o.year ? -1 : 1;
-        }
-        if (origYear!=o.origYear) {
-            return origYear<o.origYear ? -1 : 1;
+        if (useOrigYear) {
+            if (origYear!=o.origYear) {
+                return origYear<o.origYear ? -1 : 1;
+            }
+            if (year!=o.year) {
+                return year<o.year ? -1 : 1;
+            }
+        } else {
+            if (year!=o.year) {
+                return year<o.year ? -1 : 1;
+            }
+            if (origYear!=o.origYear) {
+                return origYear<o.origYear ? -1 : 1;
+            }
         }
         compare=title.localeAwareCompare(o.title);
         if (0!=compare) {
@@ -421,6 +432,16 @@ QString Song::sortString(const QString &str)
     return sort==str ? QString() : sort;
 }
 
+bool Song::useOriginalYear()
+{
+    return useOrigYear;
+}
+
+void Song::setUseOriginalYear(bool u)
+{
+    useOrigYear = u;
+}
+
 quint16 Song::setKey(int location)
 {
     if (isStandardStream()) {
@@ -478,6 +499,11 @@ void Song::addGenre(const QString &g)
             break;
         }
     }
+}
+
+quint16 Song::displayYear() const
+{
+    return useOrigYear && origYear>0 ? origYear : year;
 }
 
 QString Song::entryName() const

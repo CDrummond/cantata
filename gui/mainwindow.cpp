@@ -198,6 +198,7 @@ void MainWindow::init()
 
     // Need to set these values here, as used in library/device loading...
     Song::setComposerGenres(Settings::self()->composerGenres());
+    Song::setUseOriginalYear(Settings::self()->useOriginalYear());
 
     int hSpace=Utils::layoutSpacing(this);
     int vSpace=fontMetrics().height()<14 ? hSpace/2 : 0;

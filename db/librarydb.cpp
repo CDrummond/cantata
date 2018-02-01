@@ -200,8 +200,8 @@ static bool songSort(const Song &a, const Song &b)
     if (a.track!=b.track) {
         return a.track<b.track;
     }
-    if (a.year!=b.year) {
-        return a.year<b.year;
+    if (a.displayYear()!=b.displayYear()) {
+        return a.displayYear()<b.displayYear();
     }
     int cmp=a.title.localeAwareCompare(b.title);
     if (0!=cmp) {
@@ -237,8 +237,8 @@ static bool songsSortAlAr(const Song &a, const Song &b)
         return cmp<0;
     }
 
-//    if (a.year!=b.year) {
-//        return a.year<b.year;
+//    if (a.displayYear()!=b.displayYear()) {
+//        return a.displayYear()<b.displayYear();
 //    }
     return songSort(a, b);
 }
@@ -259,8 +259,8 @@ static bool songsSortArAl(const Song &a, const Song &b)
         return cmp<0;
     }
 
-//    if (a.year!=b.year) {
-//        return a.year<b.year;
+//    if (a.displayYear()!=b.displayYear()) {
+//        return a.displayYear()<b.displayYear();
 //    }
     return songSort(a, b);
 }
@@ -274,8 +274,8 @@ static bool songsSortArAl(const Song &a, const Song &b)
 //        return cmp<0;
 //    }
 
-//    if (a.year!=b.year) {
-//        return a.year<b.year;
+//    if (a.displayYear()!=b.displayYear()) {
+//        return a.displayYear()<b.displayYear();
 //    }
 
 //    const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
@@ -297,8 +297,8 @@ static bool songsSortArAl(const Song &a, const Song &b)
 //        return cmp<0;
 //    }
 
-//    if (a.year!=b.year) {
-//        return a.year<b.year;
+//    if (a.displayYear()!=b.displayYear()) {
+//        return a.displayYear()<b.displayYear();
 //    }
 
 //    const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
@@ -313,8 +313,8 @@ static bool songsSortArAl(const Song &a, const Song &b)
 
 //static bool songsSortYrAlAr(const Song &a, const Song &b)
 //{
-//    if (a.year!=b.year) {
-//        return a.year<b.year;
+//    if (a.displayYear()!=b.displayYear()) {
+//        return a.displayYear()<b.displayYear();
 //    }
 
 //    const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
@@ -336,8 +336,8 @@ static bool songsSortArAl(const Song &a, const Song &b)
 
 //static bool songsSortYrArAl(const Song &a, const Song &b)
 //{
-//    if (a.year!=b.year) {
-//        return a.year<b.year;
+//    if (a.displayYear()!=b.displayYear()) {
+//        return a.displayYear()<b.displayYear();
 //    }
 
 //    const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
@@ -753,7 +753,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
         for (int i=0; i<Song::constNumGenres; ++i) {
             queryString+=", genre"+QString::number(i+1);
         }
-        queryString+=", type, year, time";
+        queryString+=", type, year, origYear, time";
         if (wantModified) {
             queryString+=", lastModified";
         }
@@ -793,11 +793,12 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
                 }
             }
             s.type=(Song::Type)query.value(col++).toInt();
-            int year=query.value(col++).toInt();
+            s.year=query.value(col++).toInt();
+            s.origYear=query.value(col++).toInt();
             if (Song::SingleTracks==s.type) {
                 s.album=Song::singleTracks();
                 s.albumartist=Song::variousArtists();
-                year = 0;
+                s.year = s.origYear = 0;
             }
             album=s.displayAlbum();
             int time=query.value(col++).toInt();
@@ -812,13 +813,13 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
             QMap<QString, Album>::iterator it=entries.find(key);
 
             if (it==entries.end()) {
-                entries.insert(key, Album(album.isEmpty() ? albumId : album, albumId, albumSort, artist, artistSort, year, 1, time, lastModified, haveUniqueId));
+                entries.insert(key, Album(album.isEmpty() ? albumId : album, albumId, albumSort, artist, artistSort, s.displayYear(), 1, time, lastModified, haveUniqueId));
             } else {
                 Album &al=it.value();
                 if (wantModified) {
                     al.lastModified=qMax(al.lastModified, lastModified);
                 }
-                al.year=qMax(al.year, year);
+                al.year=qMax(al.year, (int)s.displayYear());
                 al.duration+=time;
                 al.trackCount++;
             }
@@ -1012,7 +1013,7 @@ LibraryDb::Album LibraryDb::getRandomAlbum(const QString &genre, const QString &
         } else if (!genreFilter.isEmpty()) {
             query.addWhere("genre", genreFilter);
         }
-        if (yearFilter>nullptr) {
+        if (!yearFilter.isEmpty()) {
             query.addWhere("year", yearFilter);
         }
         query.exec();
@@ -1147,14 +1148,23 @@ bool LibraryDb::setFilter(const QString &f, const QString &genre)
                 if (1==parts.length()) {
                     int val=parts.at(0).simplified().toUInt();
                     if (val>=constMinYear && val<=constMaxYear) {
-                        year = QLatin1String("year = ")+ QString::number(val);
+                        if (Song::useOriginalYear()) {
+                            year = QString().sprintf("( (origYear = %d) OR (origYear = 0 AND year = %d) )", val, val);
+                        } else {
+                            year = QString().sprintf("year = %d", val);
+                        }
                         continue;
                     }
                 } else if (2==parts.length()) {
                     int from=parts.at(0).simplified().toUInt();
                     int to=parts.at(1).simplified().toUInt();
                     if (from>=constMinYear && from<=constMaxYear && to>=constMinYear && to<=constMaxYear) {
-                        year = QLatin1String("year >= ") + QString::number(qMin(from, to)) + QLatin1String(" AND year <= ") + QString::number(qMax(from, to));
+                        if (Song::useOriginalYear()) {
+                            year = QString().sprintf("( (origYear >= %d AND origYear <= %d) OR (origYear = 0 AND year >= %d AND year <= %d))",
+                                                     qMin(from, to), qMax(from, to), qMin(from, to), qMax(from, to));
+                        } else {
+                            year = QString().sprintf("year >= %d AND year <= %d", qMin(from, to), qMax(from, to));
+                        }
                         continue;
                     }
                 }

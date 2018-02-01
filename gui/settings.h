@@ -146,6 +146,7 @@ public:
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     bool showMenubar();
     #endif
+    bool useOriginalYear();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -249,6 +250,7 @@ public:
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     void saveShowMenubar(bool v);
     #endif
+    void saveUseOriginalYear(bool v);
     void save();
     void clearVersion();
 

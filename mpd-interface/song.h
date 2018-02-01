@@ -134,6 +134,8 @@ struct Song
     static QSet<QString> ignorePrefixes();
     static void setIgnorePrefixes(const QSet<QString> &prefixes);
     static QString sortString(const QString &str);
+    static bool useOriginalYear();
+    static void setUseOriginalYear(bool u);
 
     Song();
     Song(const Song &o) { *this=o; }
@@ -152,6 +154,7 @@ struct Song
     quint16 setKey(int location);
     virtual void clear();
     void addGenre(const QString &g);
+    quint16 displayYear() const;
     QString entryName() const;
     QString artistOrComposer() const;
     QString albumName() const;
@@ -220,7 +223,7 @@ struct Song
     QString basicArtist() const;
     QString filePath() const { return decodePath(file, isCdda()); }
     QString filePath(const QString &base) const;
-    QString displayAlbum(bool useComp=true) const { return displayAlbum(useComp ? albumName() : album, year); }
+    QString displayAlbum(bool useComp=true) const { return displayAlbum(useComp ? albumName() : album, displayYear()); }
     QString describe(bool withMarkup=false) const;
     bool useComposer() const;
     void populateSorts();

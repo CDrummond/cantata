@@ -52,6 +52,7 @@
     to system tray and main window is open.
 37. Make track links in context view work with CUE files.
 38. Support dragging folder of music files onto playqueue.
+39. Add original date to playlist table columns.
 
 2.2.0
 -----

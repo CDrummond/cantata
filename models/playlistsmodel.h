@@ -50,6 +50,7 @@ public:
         COL_ARTIST,
         COL_ALBUM,
         COL_YEAR,
+        COL_ORIGYEAR,
         COL_GENRE,
         COL_LENGTH,
         COL_COMPOSER,

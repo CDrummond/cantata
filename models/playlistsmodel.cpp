@@ -56,6 +56,7 @@ QString PlaylistsModel::headerText(int col)
     case COL_ALBUM:     return PlayQueueModel::headerText(PlayQueueModel::COL_ALBUM);
     case COL_LENGTH:    return PlayQueueModel::headerText(PlayQueueModel::COL_LENGTH);
     case COL_YEAR:      return PlayQueueModel::headerText(PlayQueueModel::COL_YEAR);
+    case COL_ORIGYEAR:  return PlayQueueModel::headerText(PlayQueueModel::COL_ORIGYEAR);
     case COL_GENRE:     return PlayQueueModel::headerText(PlayQueueModel::COL_GENRE);
     case COL_COMPOSER:  return PlayQueueModel::headerText(PlayQueueModel::COL_COMPOSER);
     case COL_PERFORMER: return PlayQueueModel::headerText(PlayQueueModel::COL_PERFORMER);
@@ -94,7 +95,7 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     Action::initIcon(newAction);
     alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=
             alignments[COL_PERFORMER]=alignments[COL_FILENAME]=alignments[COL_PATH]=int(Qt::AlignVCenter|Qt::AlignLeft);
-    alignments[COL_LENGTH]=alignments[COL_YEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
+    alignments[COL_LENGTH]=alignments[COL_YEAR]=alignments[COL_ORIGYEAR]=int(Qt::AlignVCenter|Qt::AlignRight);
 }
 
 PlaylistsModel::~PlaylistsModel()
@@ -213,8 +214,8 @@ QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, in
         case Qt::TextAlignmentRole:
             return alignments[section];
         case Cantata::Role_InitiallyHidden:
-            return COL_YEAR==section || COL_GENRE==section || COL_COMPOSER==section || COL_PERFORMER==section ||
-                    COL_FILENAME==section || COL_PATH==section;
+            return COL_YEAR==section || COL_ORIGYEAR==section || COL_GENRE==section || COL_COMPOSER==section || COL_PERFORMER==section ||
+                   COL_FILENAME==section || COL_PATH==section;
         case Cantata::Role_Hideable:
             return COL_LENGTH!=section;
         case Cantata::Role_Width:
@@ -223,6 +224,7 @@ QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, in
             case COL_ARTIST:    return 0.15;
             case COL_ALBUM:     return 0.15;
             case COL_YEAR:      return 0.05;
+            case COL_ORIGYEAR:  return 0.05;
             case COL_GENRE:     return 0.125;
             case COL_LENGTH:    return 0.125;
             case COL_COMPOSER:  return 0.15;
@@ -323,6 +325,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     }
                     return pl->loaded && !pl->isSmartPlaylist ? Utils::formatTime(pl->totalTime()) : QVariant();
                 case COL_YEAR:
+                case COL_ORIGYEAR:
                 case COL_GENRE:
                     return QVariant();
                 default:
@@ -441,6 +444,11 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                         return QVariant();
                     }
                     return s->year;
+                case COL_ORIGYEAR:
+                    if (s->origYear <= 0) {
+                        return QVariant();
+                    }
+                    return s->origYear;
                 case COL_GENRE:
                     return s->displayGenre();
                 case COL_COMPOSER:

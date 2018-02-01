@@ -73,8 +73,8 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     ToolButton *unplayedOnlyBtn=new ToolButton(this);
     addSub->setDefaultAction(subscribeAction);
     unplayedOnlyBtn->setDefaultAction(unplayedOnlyAction);
-    menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
-                                                               << ItemView::Mode_DetailedTree << ItemView::Mode_List));
+    menu->addAction(createViewMenu(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
+                                                           << ItemView::Mode_DetailedTree << ItemView::Mode_List));
 
     Action *configureAction=new Action(Icons::self()->configureIcon, tr("Configure"), this);
     connect(configureAction, SIGNAL(triggered()), SLOT(configure()));

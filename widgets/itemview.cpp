@@ -823,6 +823,7 @@ void ItemView::setMode(Mode m)
         setBackgroundImage(QIcon());
     }
 
+    bool wasListView = usingListView();
     mode=m;
     int stackIndex=0;
     if (usingTreeView()) {
@@ -908,6 +909,9 @@ void ItemView::setMode(Mode m)
         setBackgroundImage(oldBgndIcon);
     }
     controlViewFrame();
+    if (wasListView && !usingListView()) {
+        goToTop();
+    }
 }
 
 QModelIndexList ItemView::selectedIndexes(bool sorted) const

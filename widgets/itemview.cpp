@@ -53,7 +53,7 @@
 #define COVERS_DBUG if (Covers::verboseDebugEnabled()) qWarning() << metaObject()->className() << QThread::currentThread()->objectName() << __FUNCTION__
 
 // Uncomment to have covers try to fill space. Disabled as causes flashing at the moment!
-//#define RESPONSIVE_LAYOUT
+#define RESPONSIVE_LAYOUT
 static int detailedViewDecorationSize=22;
 static int simpleViewDecorationSize=16;
 static int listCoverSize=22;
@@ -187,7 +187,7 @@ public:
         int viewCount = view->model() ? view->model()->rowCount(view->rootIndex()) : -1;
         int numItems = viewWidth/iconWidth;
         if (numItems>1 && viewCount>1 && (viewCount+1)>numItems) {
-            iconWidth=qMax(iconWidth-1, (int)(viewWidth/numItems)-2);
+            iconWidth=qMax(iconWidth-1, (int)(viewWidth/numItems)-3);
         }
         return iconWidth;
     }

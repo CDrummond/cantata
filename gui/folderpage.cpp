@@ -105,15 +105,11 @@ void FolderPage::controlActions()
         } else {
             trackSelected=true;
         }
-        if (folderSelected && trackSelected) {
-            enable=false;
-            break;
-        }
     }
 
     StdActions::self()->enableAddToPlayQueue(enable);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
-    bool fileActions = enable && trackSelected && MPDConnection::self()->getDetails().dirReadable;
+    bool fileActions = trackSelected && !folderSelected && MPDConnection::self()->getDetails().dirReadable;
     CustomActions::self()->setEnabled(fileActions);
     #ifdef TAGLIB_FOUND
     StdActions::self()->organiseFilesAction->setEnabled(fileActions);

@@ -50,7 +50,6 @@ public:
     void addDefaultAction(QAction *act);
     void setBackgroundImage(const QIcon &icon);
     void paintEvent(QPaintEvent *e) override;
-    void resizeEvent(QResizeEvent *e) override;
     void installFilter(QObject *f) { eventFilter=f; installEventFilter(f); }
     QObject * filter() const { return eventFilter; }
     double zoom() const { return zoomLevel; }
@@ -64,14 +63,12 @@ private Q_SLOTS:
 Q_SIGNALS:
     bool itemsSelected(bool);
     void itemDoubleClicked(const QModelIndex &idx);
-    void widthChanged();
 
 private:
     QObject *eventFilter;
     QMenu *menu;
     QPixmap bgnd;
     double zoomLevel;
-    int prevWidth;
 };
 
 #endif

@@ -40,7 +40,6 @@ ListView::ListView(QWidget *parent)
     , eventFilter(nullptr)
     , menu(nullptr)
     , zoomLevel(1.0)
-    , prevWidth(0)
 {
     setDragEnabled(true);
     setContextMenuPolicy(Qt::NoContextMenu);
@@ -139,15 +138,6 @@ void ListView::paintEvent(QPaintEvent *e)
         p.drawPixmap((sz.width()-bgnd.width())/2, (sz.height()-bgnd.height())/2, bgnd);
     }
     QListView::paintEvent(e);
-}
-
-void ListView::resizeEvent(QResizeEvent *e)
-{
-    QListView::resizeEvent(e);
-    if (IconMode==viewMode() && width()!=prevWidth) {
-        emit widthChanged();
-        prevWidth=width();
-    }
 }
 
 // Workaround for https://bugreports.qt-project.org/browse/QTBUG-18009

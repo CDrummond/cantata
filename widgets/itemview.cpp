@@ -154,7 +154,7 @@ public:
     ListDelegate(ListView *v, QAbstractItemView *p)
         : ActionItemDelegate(p)
         , view(v)
-        , iconWidth(0)
+        , viewGap(Utils::scaleForDpi(8))
     {
     }
 
@@ -163,34 +163,36 @@ public:
     }
 
     // Calculate width for each item in IconMode. The idea is to have the icons evenly spaced out.
-    void calcItemWidth() const
+    int calcItemWidth() const
     {
-        static const int constViewGap = Utils::scaleForDpi(8);
         int viewWidth = view->viewport()->width();
 
         // KVantum returns a -ve number for spacing if using overlay scrollbars. I /think/ this
         // is what messes the layout code. The subtracion below seems to work-around this - but
         // give a larger right-hand margin!
-        if (view->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing)<0) {
-            viewWidth-=3*constViewGap;
+        int sbarSpacing = view->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing);
+        if (sbarSpacing<0) {
+            viewWidth-=3*viewGap;
+        } else {
+            viewWidth-=sbarSpacing;
         }
 
-        iconWidth = zoomedSize(view, gridCoverSize)+constViewGap;
+        int standardWidth = zoomedSize(view, gridCoverSize)+viewGap;
+        int iconWidth = standardWidth;
+        int viewCount = view->model() ? view->model()->rowCount(view->rootIndex()) : -1;
         int numItems = viewWidth/iconWidth;
-        if (numItems>1) {
-            iconWidth=qMax(iconWidth-1, (int)(viewWidth/numItems)-constViewGap);
+        if (numItems>1 && viewCount>1 && (viewCount+1)>numItems) {
+            iconWidth=qMax(iconWidth-1, (int)(viewWidth/numItems)-2);
         }
+        return iconWidth;
     }
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         Q_UNUSED(option)
         if (view && QListView::IconMode==view->viewMode()) {
-            if (0==iconWidth) {
-                calcItemWidth();
-            }
 //            return QSize(zoomedSize(view, gridCoverSize)+8, zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*2.5));
-            return QSize(iconWidth, zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*2.5));
+            return QSize(calcItemWidth(), zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*2.5));
         } else {
             int imageSize = index.data(Cantata::Role_ListImage).toBool() ? listCoverSize : 0;
             // TODO: Any point to checking one-line here? All models return sub-text...
@@ -411,7 +413,11 @@ public:
         }
 
         if (drawBgnd && mouseOver) {
-            drawIcons(painter, AP_VTop==actionPos ? option.rect : r, mouseOver, rtl, actionPos, index);
+            QRect rect(AP_VTop==actionPos ? option.rect : r);
+            if (AP_VTop==actionPos) {
+                rect.adjust(0, 0, actionPosAdjust(), 0);
+            }
+            drawIcons(painter, rect, mouseOver, rtl, actionPos, index);
         }
         if (!iconMode) {
             BasicItemDelegate::drawLine(painter, option.rect, textColor);
@@ -421,10 +427,13 @@ public:
 
     virtual bool getCoverInUiThread(const QModelIndex &) const { return false; }
     virtual QWidget * itemView() const { return view; }
+    int actionPosAdjust() const {
+        return view && QListView::IconMode==view->viewMode() ? -(((calcItemWidth()-(zoomedSize(view, gridCoverSize)+viewGap))/2.0)+0.5) : 0;
+    }
 
 protected:
     ListView *view;
-    mutable int iconWidth;
+    int viewGap;
 };
 
 class TreeDelegate : public ListDelegate
@@ -677,7 +686,6 @@ ItemView::ItemView(QWidget *p)
     connect(listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(activateItem(const QModelIndex &)));
     connect(listView, SIGNAL(itemDoubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
-    connect(listView, SIGNAL(widthChanged()), this, SLOT(calcIconViewWidth()));
     connect(backAction, SIGNAL(triggered()), this, SLOT(backActivated()));
     connect(listViewEventHandler, SIGNAL(backspacePressed()), this, SLOT(backActivated()));
     connect(title, SIGNAL(addToPlayQueue()), this, SLOT(addTitleButtonClicked()));
@@ -1404,7 +1412,8 @@ QAction * ItemView::getAction(const QModelIndex &index)
 {
     QAbstractItemDelegate *abs=view()->itemDelegate();
     ActionItemDelegate *d=abs ? qobject_cast<ActionItemDelegate *>(abs) : nullptr;
-    return d ? d->getAction(index) : nullptr;
+    ListDelegate *l=abs ? dynamic_cast<ListDelegate *>(abs) : nullptr;
+    return d ? d->getAction(index, l ? l->actionPosAdjust() : 0) : nullptr;
 }
 
 void ItemView::itemClicked(const QModelIndex &index)
@@ -1518,7 +1527,6 @@ void ItemView::zoomIn()
         if (listView->zoom()+constZoomStep<=constMaxZoom) {
             listView->setZoom(listView->zoom()+constZoomStep);
             listView->setGridSize(zoomedSize(listView, iconGridSize));
-            calcIconViewWidth();
         }
     }
 }
@@ -1529,15 +1537,8 @@ void ItemView::zoomOut()
         if (listView->zoom()-constZoomStep>=constMinZoom) {
             listView->setZoom(listView->zoom()-constZoomStep);
             listView->setGridSize(zoomedSize(listView, iconGridSize));
-            calcIconViewWidth();
         }
     }
-}
-
-void ItemView::calcIconViewWidth()
-{
-    static_cast<ListDelegate *>(listView->itemDelegate())->calcItemWidth();
-    listView->viewport()->update();
 }
 
 void ItemView::delaySearchItems()

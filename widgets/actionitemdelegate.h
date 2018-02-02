@@ -57,7 +57,7 @@ public Q_SLOTS:
     bool helpEvent(QHelpEvent *e, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
 public:
-    QAction * getAction(const QModelIndex &index) const;
+    QAction * getAction(const QModelIndex &index, int adjust=0) const;
 
 private:
     QRect calcActionRect(bool rtl, ActionPos actionPos, const QRect &rect) const;

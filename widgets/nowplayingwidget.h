@@ -87,6 +87,7 @@ private Q_SLOTS:
     void released();
     void setRating(int v);
     void updateInfo();
+    void copyInfo();
 
 private:
     SqueezedTextLabel *track;

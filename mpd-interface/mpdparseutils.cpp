@@ -744,6 +744,9 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
             }
         }
     }
+    if (Loc_Browse==loc) {
+        qSort(songs);
+    }
     songList+=songs;
 }
 

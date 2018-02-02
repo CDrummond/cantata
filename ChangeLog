@@ -54,6 +54,7 @@
 38. Support dragging folder of music files onto playqueue.
 39. Add original date to playlist table columns.
 40. Add option to use 'Original Year' to display and sort albums.
+41. Sort folder view items, as MPD does not seem to sort playlist names.
 
 2.2.0
 -----

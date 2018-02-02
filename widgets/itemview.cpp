@@ -52,6 +52,8 @@
 
 #define COVERS_DBUG if (Covers::verboseDebugEnabled()) qWarning() << metaObject()->className() << QThread::currentThread()->objectName() << __FUNCTION__
 
+// Uncomment to have covers try to fill space. Disabled as causes flashing at the moment!
+//#define RESPONSIVE_LAYOUT
 static int detailedViewDecorationSize=22;
 static int simpleViewDecorationSize=16;
 static int listCoverSize=22;
@@ -154,7 +156,9 @@ public:
     ListDelegate(ListView *v, QAbstractItemView *p)
         : ActionItemDelegate(p)
         , view(v)
+        #ifdef RESPONSIVE_LAYOUT
         , viewGap(Utils::scaleForDpi(8))
+        #endif
     {
     }
 
@@ -162,6 +166,7 @@ public:
     {
     }
 
+    #ifdef RESPONSIVE_LAYOUT
     // Calculate width for each item in IconMode. The idea is to have the icons evenly spaced out.
     int calcItemWidth() const
     {
@@ -186,13 +191,16 @@ public:
         }
         return iconWidth;
     }
-
+    #endif
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         Q_UNUSED(option)
         if (view && QListView::IconMode==view->viewMode()) {
-//            return QSize(zoomedSize(view, gridCoverSize)+8, zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*2.5));
+            #ifdef RESPONSIVE_LAYOUT
             return QSize(calcItemWidth(), zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*2.5));
+            #else
+            return QSize(zoomedSize(view, gridCoverSize)+8, zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*2.5));
+            #endif
         } else {
             int imageSize = index.data(Cantata::Role_ListImage).toBool() ? listCoverSize : 0;
             // TODO: Any point to checking one-line here? All models return sub-text...
@@ -414,9 +422,11 @@ public:
 
         if (drawBgnd && mouseOver) {
             QRect rect(AP_VTop==actionPos ? option.rect : r);
+            #ifdef RESPONSIVE_LAYOUT
             if (AP_VTop==actionPos) {
                 rect.adjust(0, 0, actionPosAdjust(), 0);
             }
+            #endif
             drawIcons(painter, rect, mouseOver, rtl, actionPos, index);
         }
         if (!iconMode) {
@@ -427,13 +437,17 @@ public:
 
     virtual bool getCoverInUiThread(const QModelIndex &) const { return false; }
     virtual QWidget * itemView() const { return view; }
+    #ifdef RESPONSIVE_LAYOUT
     int actionPosAdjust() const {
         return view && QListView::IconMode==view->viewMode() ? -(((calcItemWidth()-(zoomedSize(view, gridCoverSize)+viewGap))/2.0)+0.5) : 0;
     }
+    #endif
 
 protected:
     ListView *view;
+    #ifdef RESPONSIVE_LAYOUT
     int viewGap;
+    #endif
 };
 
 class TreeDelegate : public ListDelegate
@@ -1412,8 +1426,12 @@ QAction * ItemView::getAction(const QModelIndex &index)
 {
     QAbstractItemDelegate *abs=view()->itemDelegate();
     ActionItemDelegate *d=abs ? qobject_cast<ActionItemDelegate *>(abs) : nullptr;
+    #ifdef RESPONSIVE_LAYOUT
     ListDelegate *l=abs ? dynamic_cast<ListDelegate *>(abs) : nullptr;
     return d ? d->getAction(index, l ? l->actionPosAdjust() : 0) : nullptr;
+    #else
+    return d ? d->getAction(index) : nullptr;
+    #endif
 }
 
 void ItemView::itemClicked(const QModelIndex &index)

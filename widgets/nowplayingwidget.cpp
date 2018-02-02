@@ -26,6 +26,8 @@
 #include "volumeslider.h"
 #include "mpd-interface/song.h"
 #include "gui/settings.h"
+#include "support/actioncollection.h"
+#include "support/action.h"
 #include "mpd-interface/mpdconnection.h"
 #include "models/playqueuemodel.h"
 #include "support/utils.h"
@@ -42,6 +44,7 @@
 #include <QToolTip>
 #include <QSpacerItem>
 #include <QToolButton>
+#include <QClipboard>
 
 static const int constPollMpd = 2; // Poll every 2 seconds when playing
 
@@ -255,9 +258,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     , pollCount(0)
 {
     track=new SqueezedTextLabel(this);
-    track->setTextInteractionFlags(Qt::TextSelectableByMouse);
     artist=new SqueezedTextLabel(this);
-    artist->setTextInteractionFlags(Qt::TextSelectableByMouse);
     slider=new PosSlider(this);
     time=new TimeLabel(this, slider);
     ratingWidget=new RatingWidget(this);
@@ -306,6 +307,14 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     connect(this, SIGNAL(setRating(QString,quint8)), MPDConnection::self(), SLOT(setRating(QString,quint8)));
     connect(PlayQueueModel::self(), SIGNAL(currentSongRating(QString,quint8)), this, SLOT(rating(QString,quint8)));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateInfo()));
+
+    Action *copy=ActionCollection::get()->createAction("copy-current-info", tr("Copy To Clipboard"));
+    copy->setSettingsText(tr("Now Playing")+QLatin1String(" / ")+Utils::strippedText(copy->text()));
+    artist->addAction(copy);
+    artist->setContextMenuPolicy(Qt::NoContextMenu);
+    track->addAction(copy);
+    track->setContextMenuPolicy(Qt::NoContextMenu);
+    connect(copy, SIGNAL(triggered()), SLOT(copyInfo()));
 }
 
 void NowPlayingWidget::update(const Song &song)
@@ -316,8 +325,8 @@ void NowPlayingWidget::update(const Song &song)
     ratingWidget->setValue(0);
     updateInfo();
     if (song.isEmpty()) {
-        track->setText(" ");
-        artist->setText(" ");
+        track->setText(QString());
+        artist->setText(QString());
     } else if (song.isStream() && !song.isCantataStream() && !song.isCdda() && !song.isDlnaStream()) {
         track->setText(name.isEmpty() ? Song::unknown() : name);
         if (song.artist.isEmpty() && song.title.isEmpty() && !name.isEmpty()) {
@@ -340,6 +349,9 @@ void NowPlayingWidget::update(const Song &song)
             artist->setText(song.artist+QString(" – ")+song.displayAlbum(false));
         }
     }
+
+    track->setContextMenuPolicy(track->fullText().isEmpty() ? Qt::NoContextMenu : Qt::ActionsContextMenu);
+    artist->setContextMenuPolicy(artist->fullText().isEmpty() ? Qt::NoContextMenu : Qt::ActionsContextMenu);
 }
 
 void NowPlayingWidget::startTimer()
@@ -476,6 +488,11 @@ void NowPlayingWidget::updateInfo()
         }
     }
     infoLabel->setText(info);
+}
+
+void NowPlayingWidget::copyInfo()
+{
+    QApplication::clipboard()->setText(track->text()+QLatin1Char(' ')+artist->text().replace(QString(" – "), QLatin1String(" ")));
 }
 
 void NowPlayingWidget::initColors()

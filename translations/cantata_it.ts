@@ -1178,7 +1178,7 @@ Non è stato possibile copiare il file su &apos;%1&apos;!</translation>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
         <source>If an artist name begins with &apos;The&apos;, then append this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Se il nome di un artista inizia con &apos;The&apos;, allora postponilo nel nome della cartella. es. &apos;The Beatles&apos; diventa &apos;Beatles, The&apos;</translation>
     </message>
     <message>
         <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
@@ -2022,12 +2022,12 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="69"/>
         <source>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantata è un client per Music Player Daemon (MPD) ricco di funzionalità e facile da usare. MPD è un'applicazione lato server flessibile e potente per la riproduzione di musica.&lt;/p&gt;&lt;p&gt;Per maggiori informazioni su MPD, prego fare riferimento al sito di MPD &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Questa &apos;configurazione guidata&apos; ti condurrà attraverso le impostazioni base necessarie al funzionamento di Cantata.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="108"/>
         <source>&lt;p&gt;Welcome to Cantata&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Benvenuto a Cantata</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="134"/>
@@ -2442,12 +2442,12 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="553"/>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;. You may enter a comma separated list of folder names (without leading or trailing path separators) below.</source>
-        <translation type="unfinished"></translation>
+        <translation>Se nella collezione hai molti artisti che contengono solamente una traccia singola, sarebbe scomodo che ognuno di essi abbia la propria voce nella lista degli artisti. Come soluzione alternativa, se metti queste tracce in una cartella separata, ed inserisci il nome della cartella qua sotto, allora Cantata li raggrupperà in un album chiamato &apos;Tracce Singole&apos; con come artista dell'album &apos;Artisti Vari&apos; Puoi inserire qua sotto una lista di nomi di cartelle separate da virgola (senza spazi vicino alle virgole).</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="563"/>
         <source>Comma separated list of folders that contain single track files...</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista di cartelle separate da virgole che contengono le tracce singole...</translation>
     </message>
     <message>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
@@ -2787,7 +2787,7 @@ Prego sceglierne un&apos;altra.</translation>
     <message>
         <location filename="../gui/librarypage.cpp" line="59"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci una stringa per cercare artista, album, titolo, ecc. Per filtrare in base all'anno, aggiungi &lt;i&gt;#intervallo-anni&lt;/i&gt; alla stringa di ricerca - es. &lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; restituisce le tracce del 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; restituisce le tracce degli anni '80;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; per cercare la stringa Blah &lt;i&gt;Blah&lt;/i&gt; e restituire solo le tracce del 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/librarypage.cpp" line="65"/>
@@ -3342,7 +3342,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     <message>
         <location filename="../gui/mainwindow.cpp" line="490"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci una stringa per cercare artista, album, titolo, ecc. Per filtrare in base all'anno, aggiungi &lt;i&gt;#intervallo-anni&lt;/i&gt; alla stringa di ricerca - es. &lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; restituisce le tracce del 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; restituisce le tracce degli anni '80;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; per cercare la stringa Blah &lt;i&gt;Blah&lt;/i&gt; e restituire solo le tracce del 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Show Menubar</source>
@@ -3415,7 +3415,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     <message>
         <location filename="../gui/mainwindow.cpp" line="1136"/>
         <source>Please refer to &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;Cantata&apos;s issue tracker&lt;/a&gt; for a list of known issues, and to report new issues.</source>
-        <translation type="unfinished"></translation>
+        <translation>Per la lista dei problemi conosciut e per riportarne di nuovi, prego fare riferimento all'issue tracker di Cantata &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1138"/>
@@ -4107,12 +4107,12 @@ Aggiungere i brani a quella scaletta?</translation>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="181"/>
         <source>Filename</source>
-        <translation type="unfinished">Nome file</translation>
+        <translation>Nome file</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="182"/>
         <source>Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Percorso</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="227"/>
@@ -4949,7 +4949,7 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="79"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>Configura</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="146"/>
@@ -5319,7 +5319,7 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../devices/encoders.cpp" line="254"/>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;livello di compressione&lt;/a&gt; è un valore intero compreso tra 0 e 8 che rappresenta il compromesso tra dimensione del file e velocità di compressione con&lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Impostando il livello di compressione a &lt;b&gt;0&lt;/b&gt; si ottiene il tempo di compressione più breve, ma anche un file comparabilmente più grande.&lt;br/&gt;D&apos;altra parte, un livello di compressione di &lt;b&gt;8&lt;/b&gt; rende al compressione abbastanza lenta, ma produce file più piccoli.&lt;br/&gt;Notare che, essendo FLAC per definizione un codec lossless, la qualità audio risultante è esattamente la stessa indipendentemente dal livello di compressione.&lt;br/&gt;Inoltre, livelli sopra al &lt;b&gt;5&lt;/b&gt; aumentano drammaticamente i tempi di compressione, ma creano dei file solo leggermente più piccoli, e non sono consigliati.</translation>
     </message>
     <message>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
@@ -6847,12 +6847,12 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/serversettings.ui" line="189"/>
         <source>Auto update:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiornamento automatico:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="199"/>
         <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Seleziona quest'opzione se il tuo server MPD rileva le modifiche (es. l'aggiunta di nuovi file) automaticamente. In quel caso, non c' bisogno che Cantata invii dei comandi di aggiornamenti per certe azioni.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Auto update</source>
@@ -6906,7 +6906,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/serversettings.cpp" line="97"/>
         <source>More information</source>
-        <translation type="unfinished"></translation>
+        <translation>Altre informazioni</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.cpp" line="139"/>
@@ -8010,7 +8010,7 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
         <source>Failed to open package file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile aprire il file pacchetto.</translation>
     </message>
     <message>
         <source>Failed top open package file.</source>

@@ -27,6 +27,7 @@
 #include "actionmodel.h"
 #include "mpd-interface/song.h"
 #include "support/utils.h"
+#include "support/icon.h"
 #include <QMap>
 
 struct MPDStatsValues;
@@ -109,6 +110,10 @@ public:
 
     BrowseModel(QObject *p);
 
+    QString name() const;
+    QString title() const;
+    QString descr() const;
+    const Icon & icon() const { return icn; }
     void clear();
     void load();
     bool isEnabled() const { return enabled; }
@@ -137,6 +142,7 @@ private:
     Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<Item*>(index.internalPointer()) : root; }
 
 private:
+    Icon icn;
     FolderItem *root;
     QMap<QString, FolderItem *> folderIndex;
     bool enabled;

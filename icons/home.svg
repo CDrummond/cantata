@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg18" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" version="1.1" clip-rule="evenodd" viewBox="0 0 5000 5000">
+ <defs id="defs9">
+  <style id="style2" type="text/css"><![CDATA[
+    .str1 {stroke:#434242;stroke-width:100}
+    .str0 {stroke:#434242;stroke-width:300;stroke-linecap:round}
+    .fil0 {fill:none}
+    .fil1 {fill:#434242}
+    .fil2 {fill:url(#id0)}
+   ]]></style>
+  <linearGradient id="id0" y2="1474.8" gradientUnits="userSpaceOnUse" y1="4260.2" x2="2500" x1="2500">
+   <stop id="stop4" stop-color="#008BFF" offset="0"/>
+   <stop id="stop6" stop-color="#0af" offset="1"/>
+  </linearGradient>
+ </defs>
+ <path id="path11" d="m300 2e3 2050-1600c100-50 200-50 300 0l2050 1500" stroke="#434242" stroke-linecap="round" stroke-width="300" class="fil0 str0" fill="none"/>
+ <path id="path13" d="m3500 1022 600 439v-861c0-55-45-100-100-100h-400c-55 0-100 45-100 100z" class="fil1" fill="#434242"/>
+ <path id="path15" d="m899 4700h901v-1500c0-110 90-200 200-200h900c110 0 200 90 200 200v1500h1001c165 0 300-135 300-300l-1-2e3 -1776-1328c-33-26-79-37-124-36s-92 14-127 40l-1773 1324-1 2e3c0 165 135 300 300 300z" stroke="#434242" stroke-width="100" class="fil2 str1" fill="#c86643"/>
+</svg>

@@ -739,14 +739,14 @@ void MainWindow::init()
     connect(DevicesModel::self(), SIGNAL(addToDevice(const QString &)), this, SLOT(addToDevice(const QString &)));
     connect(DevicesModel::self(), SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
     connect(libraryPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    connect(folderPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(folderPage->mpd(), SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(playlistsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(searchPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(StdActions::self()->deleteSongsAction, SIGNAL(triggered()), SLOT(deleteSongs()));
     connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
-    connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
+    connect(folderPage->mpd(), SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     #endif
     for (QAction *act: StdActions::self()->setPriorityAction->menu()->actions()) {
         connect(act, SIGNAL(triggered()), this, SLOT(addWithPriority()));
@@ -1057,7 +1057,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         }
     } else {
         libraryPage->clear();
-        folderPage->clear();
+        folderPage->mpd()->clear();
         PlaylistsModel::self()->clear();
         PlayQueueModel::self()->clear();
         searchPage->clear();
@@ -1131,7 +1131,7 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
 {
     if (!MPDConnection::self()->isConnected() || details!=MPDConnection::self()->getDetails()) {
         libraryPage->clear();
-        folderPage->clear();
+        folderPage->mpd()->clear();
         PlaylistsModel::self()->clear();
         PlayQueueModel::self()->clear();
         searchPage->clear();
@@ -2141,14 +2141,14 @@ void MainWindow::currentTabChanged(int index)
     controlDynamicButton();
     switch(index) {
     case PAGE_LIBRARY:   currentPage=libraryPage;   break;
-    case PAGE_FOLDERS:   folderPage->load();  currentPage=folderPage; break;
+    case PAGE_FOLDERS:   currentPage=folderPage;    break;
     case PAGE_PLAYLISTS: currentPage=playlistsPage; break;
     case PAGE_ONLINE:    currentPage=onlinePage;    break;
     #ifdef ENABLE_DEVICES_SUPPORT
     case PAGE_DEVICES:   currentPage=devicesPage;   break;
     #endif
     case PAGE_SEARCH:    currentPage=searchPage;    break;
-    default:             currentPage=nullptr;             break;
+    default:             currentPage=nullptr;       break;
     }
     if (currentPage) {
         currentPage->controlActions();
@@ -2333,7 +2333,7 @@ void MainWindow::showSearch()
     } else if (context->isVisible()) {
         context->search();
     } else if (currentPage && splitter->sizes().at(0)>0) {
-        if (currentPage==folderPage) {
+        if (currentPage==folderPage && folderPage->mpd()->isVisible()) {
             showTab(PAGE_SEARCH);
             if (PAGE_SEARCH==tabWidget->currentIndex()) {
                 searchPage->setSearchCategory("file");

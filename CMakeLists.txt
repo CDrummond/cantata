@@ -319,7 +319,7 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     gui/settings.cpp gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp gui/customactionssettings.cpp
     gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/customactions.cpp
     gui/folderpage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
-    gui/main.cpp gui/covers.cpp gui/currentcover.cpp
+    gui/main.cpp gui/covers.cpp gui/currentcover.cpp gui/mpdbrowsepage.cpp gui/localfolderpage.cpp
     devices/deviceoptions.cpp
     db/librarydb.cpp db/mpdlibrarydb.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/nowplayingwidget.cpp
@@ -340,7 +340,7 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp
     models/playlistsproxymodel.cpp models/playqueuemodel.cpp models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp
     models/browsemodel.cpp models/searchmodel.cpp models/streamsmodel.cpp models/searchproxymodel.cpp models/sqllibrarymodel.cpp
-    models/mpdlibrarymodel.cpp models/mpdsearchmodel.cpp models/playqueueproxymodel.cpp
+    models/mpdlibrarymodel.cpp models/mpdsearchmodel.cpp models/playqueueproxymodel.cpp models/localbrowsemodel.cpp
     mpd-interface/mpdconnection.cpp mpd-interface/mpdparseutils.cpp mpd-interface/mpdstats.cpp mpd-interface/mpdstatus.cpp
     mpd-interface/song.cpp mpd-interface/cuefile.cpp
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
@@ -356,12 +356,12 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     scrobbling/scrobblinglove.cpp
     http/httpserver.cpp)
 set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
-    gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h
+    gui/initialsettingswizard.h gui/mainwindow.h gui/mpdbrowsepage.h gui/librarypage.h gui/folderpage.h gui/localfolderpage.h
     gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h
     gui/coverdialog.h gui/searchpage.h gui/customactions.h gui/customactionssettings.h gui/covers.h gui/currentcover.h
     models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/actionmodel.h models/browsemodel.h  models/searchmodel.h models/sqllibrarymodel.h
-    models/mpdlibrarymodel.h models/mpdsearchmodel.h models/digitallyimported.h models/streamsearchmodel.h
+    models/mpdlibrarymodel.h models/mpdsearchmodel.h models/digitallyimported.h models/streamsearchmodel.h models/localbrowsemodel.h
     mpd-interface/mpdconnection.h mpd-interface/mpdstats.h mpd-interface/mpdstatus.h
     db/librarydb.h db/mpdlibrarydb.h
     network/networkaccessmanager.h

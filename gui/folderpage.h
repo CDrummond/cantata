@@ -24,49 +24,34 @@
 #ifndef FOLDERPAGE_H
 #define FOLDERPAGE_H
 
-#include "widgets/singlepagewidget.h"
+#include "widgets/multipagewidget.h"
 #include "models/browsemodel.h"
+#include "mpdbrowsepage.h"
 
-class Action;
+class MpdBrowsePage;
+class LocalFolderBrowsePage;
 
-class FolderPage : public SinglePageWidget
+class FolderPage : public MultiPageWidget
 {
     Q_OBJECT
 public:
     FolderPage(QWidget *p);
     ~FolderPage() override;
 
-    void setEnabled(bool e) { model.setEnabled(e); }
-    bool isEnabled() const { return model.isEnabled(); }
-    void load() { model.load(); }
-    void clear() { model.clear(); }
-    QStringList selectedFiles(bool allowPlaylists=false) const override;
-    QList<Song> selectedSongs(bool allowPlaylists=false) const override;
+    // TODO: Act on all pages...
+    void setEnabled(bool e) { mpdBrowse->setEnabled(e); }
+    bool isEnabled() const { return mpdBrowse->isEnabled(); }
+
+    MpdBrowsePage *mpd() { return mpdBrowse; }
+
     #ifdef ENABLE_DEVICES_SUPPORT
     void addSelectionToDevice(const QString &udi) override;
-    void deleteSongs() override;
     #endif
-    void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false) override;
-    void showEvent(QShowEvent *e) override;
-
-Q_SIGNALS:
-    void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
-    void deleteSongs(const QString &from, const QList<Song> &songs);
-
-public Q_SLOTS:
-    void itemDoubleClicked(const QModelIndex &);
-    void openFileManager();
-
-private Q_SLOTS:
-    void updateToPlayQueue(const QModelIndex &idx, bool replace);
 
 private:
-    void doSearch() override { }
-    void controlActions() override;
-
-private:
-    Action *browseAction;
-    BrowseModel model;
+    MpdBrowsePage *mpdBrowse;
+    LocalFolderBrowsePage *homeBrowse;
+    LocalFolderBrowsePage *rootBrowse;
 };
 
 #endif

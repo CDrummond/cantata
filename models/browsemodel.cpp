@@ -59,8 +59,24 @@ BrowseModel::BrowseModel(QObject *p)
     , enabled(false)
     , dbVersion(0)
 {
+    icn.addFile(":mpd.svg");
     connect(this, SIGNAL(listFolder(QString)), MPDConnection::self(), SLOT(listFolder(QString)));
     folderIndex.insert(root->getPath(), root);
+}
+
+QString BrowseModel::name() const
+{
+    return QLatin1String("mpdbrowse");
+}
+
+QString BrowseModel::title() const
+{
+    return tr("Server Folders");
+}
+
+QString BrowseModel::descr() const
+{
+    return tr("MPD virtual file-system");
 }
 
 void BrowseModel::clear()
@@ -181,6 +197,14 @@ void BrowseModel::fetchMore(const QModelIndex &index)
 QVariant BrowseModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
+        switch (role) {
+        case Cantata::Role_TitleText:
+            return title();
+        case Cantata::Role_SubText:
+            return descr();
+        case Qt::DecorationRole:
+            return icon();
+        }
         return QVariant();
     }
 

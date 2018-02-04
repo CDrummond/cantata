@@ -3,6 +3,10 @@
 <file alias="stars.svg">icons/stars.svg</file>
 <file alias="consume.svg">icons/consume.svg</file>
 
+<file alias="mpd.svg">icons/mpd.svg</file>
+<file alias="home.svg">icons/home.svg</file>
+<file alias="hdd.svg">icons/hdd.svg</file>
+
 <file alias="sidebar-library">icons/sidebar-library.svg</file>
 <file alias="sidebar-devices">icons/sidebar-devices.svg</file>
 <file alias="sidebar-folders">icons/sidebar-folders.svg</file>

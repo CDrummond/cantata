@@ -1901,7 +1901,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/findmpddialog.ui" line="26"/>
         <source>Please select your MPD. If you don&apos;t see your MPD listed here, check that zeroconf is activated in your MPD configuration or insert the host configuration manually.</source>
-        <translation>Selezionare il MPD. Se il tuo MPD non è in questa lista, verifica che nella tua configurazione di MPD sia attivato zeroconf oppure inserisci manualmente la configurazione del host.</translation>
+        <translation>Selezionare il server MPD. Se il tuo MPD non è in questa lista, verifica che nella tua configurazione di MPD sia attivato zeroconf oppure inserisci manualmente la configurazione del host.</translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.cpp" line="28"/>
@@ -2013,7 +2013,7 @@ Non sarà possibile tornare indietro.</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata è un client per Music Player Daemon (MPD) ricco di funzioni e semplice da usare. MPD è un&apos;aplicazione server potente e flessibile per la riproduzione di musica.&lt;/p&gt;&lt;p&gt;Per maggiori informazioni su MPD, fare riferimento al sito di MPD &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Questa guida ti condurrà attraverso l&apos;impostazione base necessaria a Cantata per funzionare correttamente.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata è un client per Music Player Daemon (MPD) ricco di funzionalità e semplice da usare. MPD è un&apos;applicazione server potente e flessibile per la riproduzione di musica.&lt;/p&gt;&lt;p&gt; Per maggiori informazioni su MPD, fare riferimento al sito di MPD &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Questa &apos;configurazione guidata&apos; ti condurrà attraverso le impostazioni base necessarie al funzionamento di Cantata.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2032,7 +2032,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="134"/>
         <source>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music. MPD may be started either system-wide, or on a per-user basis.&lt;br/&gt;&lt;br/&gt;Please select how you would like to have Cantata initially connect to (or startup) MPD:&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Cantata è un client per Music Player Daemon (MPD) ricco di funzioni e semplice da usare. MPD è un&apos;aplicazione server potente e flessibile per la riproduzione di musica.MPD può venire eseguito da sistema oppure su base utente. &lt;br/&gt;&lt;br/&gt;Prego selezionare come vuoi che Cantata si colleghi inizialmente (o avvi) MPD:&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Cantata è un client per Music Player Daemon (MPD) ricco di funzioni e semplice da usare. MPD è un&apos;aplicazione server potente e flessibile per la riproduzione di musica. MPD può venire eseguito da sistema oppure per singolo utente. &lt;br/&gt;&lt;br/&gt;Prego selezionare il modo in cui Cantata si collegherà inizialmente (o avvierà) MPD:&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="159"/>
@@ -2042,7 +2042,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="172"/>
         <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therefore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Scegli quest&apos;opzione se la tua collezione musica è condivisa tra più utenti, se l&apos;istanza MPD viene eseguita su un&apos;altra macchina, se hai già un&apos;impostazione personale di MPD, oppure se vuoi abilitare l&apos;acceso da altri client (es. MPDroid). Se selezionerai questa opzione, Cantata non potrà controllare l&apos;avvio e lo spegnimento del server MPD. Dovrai quindi assicurarti che MPD sia già configurato ed in esecuzione.&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;Scegli quest&apos;opzione se la tua collezione musicale è condivisa tra più utenti, se l&apos;istanza MPD viene eseguita su un&apos;altra macchina, se hai già un&apos;impostazione personale di MPD, oppure se vuoi abilitare l&apos;acceso da altri client (es. MPDroid). Se selezionerai questa opzione, Cantata non potrà controllare l&apos;avvio e lo spegnimento del server MPD. Dovrai quindi assicurarti che MPD sia già configurato ed in esecuzione.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="204"/>
@@ -2072,7 +2072,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="344"/>
         <source>The settings below are the basic settings required by Cantata. Please enter the relevant details, and use the &apos;Connect&apos; button to test the connection.</source>
-        <translation>Le impostazioni seguenti sono le impostazioni base richiesta da Cantata. Prego inserire i dettagli rilevanti e premere il pulsante &apos;Connect&apos; per provare la connessione.</translation>
+        <translation>Le impostazioni seguenti sono quelle necessarie richieste da Cantata. Prego inserire i dettagli rilevanti e premere il pulsante &apos;Connect&apos; per provare la connessione.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="378"/>
@@ -2163,12 +2163,12 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="798"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
-        <translation>Cantata raggrupperà le tracce in album usando il tag &apos;ArtistaAlbum&apos; se impostato, altrimenti ripiegherà sul tag &apos;Artista&apos;. Se hai album con artisti multipli, &lt;b&gt;dovrai&lt;b&gt; impostare il tag &quot;ArtistaAlbum&apos; per far sì che il raggruppamento funzioni correttamente.In quel scenario, suggeriamo di usare &apos;Artisti Vari&apos;.</translation>
+        <translation>Cantata raggrupperà le tracce in album usando il tag &apos;ArtistaAlbum&apos; se impostato, altrimenti ripiegherà sul tag &apos;Artista&apos;. Se hai album con artisti multipli, &lt;b&gt;dovrai&lt;b&gt; impostare il tag &quot;ArtistaAlbum&apos; per far sì che il raggruppamento funzioni correttamente. In quel caso, suggeriamo di usare &apos;Artisti Vari&apos;.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="830"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation>&lt;b&gt;Attenzione:&lt;/b&gt; Non sei attualmente un membro del gruppo &apos;users&apos;. Cantata funziona meglio (salvando copertine di album, testi, ecc. con i permessi corretti) se tu (o il tuo amministratore) ti aggiungi a questo gruppo. Se ti aggiungi dovrai fare logour e rientrare per far sì che la modifica abbia effetto.</translation>
+        <translation>&lt;b&gt;Attenzione:&lt;/b&gt; Non sei attualmente un membro del gruppo &apos;users&apos;. Cantata funziona meglio (salvando copertine di album, testi, ecc. con i permessi corretti) se ti aggiungi (o lo fa il tuo amministratore) a questo gruppo. Se ti aggiungi, per far sì che la modifica abbia effetto, dovrai fare logout e rientrare.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="60"/>
@@ -3346,7 +3346,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     </message>
     <message>
         <source>Show Menubar</source>
-        <translation type="vanished">Mostra la barra dei menu</translation>
+        <translation>Mostra la barra dei menu</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="576"/>
@@ -3370,7 +3370,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     </message>
     <message>
         <source>&amp;Settings</source>
-        <translation type="vanished">&amp;Impostazioni</translation>
+        <translation>&amp;Impostazioni</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="610"/>

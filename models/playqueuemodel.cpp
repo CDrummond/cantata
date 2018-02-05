@@ -92,6 +92,21 @@ static bool checkExtension(const QString &file)
     return pos>1 ? PlayQueueModel::constFileExtensions.contains(file.mid(pos+1).toLower()) : false;
 }
 
+static QStringList listFiles(const QDir &d, int level=5)
+{
+    QStringList files;
+    if (level) {
+        for (const auto &f: d.entryInfoList(QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot|QDir::NoSymLinks)) {
+            if (f.isDir()) {
+                files += listFiles(QDir(f.absoluteFilePath()), level-1);
+            } else if (checkExtension(f.fileName())) {
+                files.append(f.absoluteFilePath());
+            }
+        }
+    }
+    return files;
+}
+
 static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
 {
     QStringList useable;
@@ -111,11 +126,7 @@ static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
             QDir d(u.path());
 
             if (d.exists()) {
-                for (const auto &f: d.entryInfoList(QDir::Files)) {
-                    if (checkExtension(f.fileName())) {
-                        files.append(f.absoluteFilePath());
-                    }
-                }
+                files = listFiles(d);
             } else if (checkExtension(u.path())) {
                 files.append(u.path());
             }

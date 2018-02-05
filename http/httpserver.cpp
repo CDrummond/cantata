@@ -235,7 +235,7 @@ QByteArray HttpServer::encodeUrl(const QString &file)
     #endif
     s.file=file;
     #endif
-    return s.isEmpty() ? QByteArray() : encodeUrl(s);
+    return /*s.isEmpty() ? QByteArray() :*/ encodeUrl(s);
 }
 
 Song HttpServer::decodeUrl(const QString &url) const

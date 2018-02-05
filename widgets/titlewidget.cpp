@@ -43,9 +43,8 @@
 static int twHeight=-1;
 
 TitleWidget::TitleWidget(QWidget *p)
-    : QWidget(p)
+    : QListView(p)
     , pressed(false)
-    , underMouse(false)
     , controls(nullptr)
 {
     QGridLayout *layout=new QGridLayout(this);
@@ -105,9 +104,10 @@ TitleWidget::TitleWidget(QWidget *p)
     chevron->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
     if (-1==twHeight) {
         ToolButton tb;
-        twHeight=qMax((tb.iconSize().height()*2), size);
+        twHeight=qMax((int)((tb.iconSize().height()+6)*2.5), size);
     }
     setFixedHeight(twHeight);
+    setFocusPolicy(Qt::NoFocus);
 }
 
 void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text, const QString &sub, bool showControls)
@@ -130,10 +130,7 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
             ToolButton *replace=new ToolButton(this);
             add->QAbstractButton::setIcon(StdActions::self()->appendToPlayQueueAction->icon());
             replace->QAbstractButton::setIcon(StdActions::self()->replacePlayQueueAction->icon());
-            int size=qMax(add->iconSize().height()+6, (height()/2)-1);
-            if (size>(height()-1)) {
-                size--;
-            }
+            int size=add->iconSize().height()+6;
             add->setFixedSize(QSize(size, size));
             replace->setFixedSize(add->size());
             add->setToolTip(tr("Add All To Play Queue"));
@@ -175,24 +172,36 @@ bool TitleWidget::eventFilter(QObject *o, QEvent *event)
     switch(event->type()) {
     case QEvent::HoverEnter:
         if (isEnabled() && o==this) {
-            /*
+            QPalette pal = qApp->palette();
             #ifdef Q_OS_MAC
-            setStyleSheet(QString("QLabel{color:%1;}").arg(OSXStyle::self()->viewPalette().highlight().color().name()));
+            QColor col(OSXStyle::self()->viewPalette().color(QPalette::Highlight));
             #else
-            setStyleSheet(QLatin1String("QLabel{color:palette(highlight);}"));
+            QColor col(pal.color(QPalette::Highlight));
             #endif
-            */
-            underMouse = true;
+            col.setAlphaF(0.2);
+            pal.setColor(QPalette::Base, col);
+            setPalette(pal);
         }
         break;
     case QEvent::HoverLeave:
         if (isEnabled() && o==this) {
-            //setStyleSheet(QString());
-            underMouse = false;
+            QPalette pal = qApp->palette();
+            QColor col(pal.color(QPalette::Base));
+            pal.setColor(QPalette::Base, col);
+            setPalette(pal);
         }
         break;
     case QEvent::MouseButtonPress:
         if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && Qt::NoModifier==static_cast<QMouseEvent *>(event)->modifiers()) {
+            QPalette pal = qApp->palette();
+            #ifdef Q_OS_MAC
+            QColor col(OSXStyle::self()->viewPalette().color(QPalette::Highlight));
+            #else
+            QColor col(pal.color(QPalette::Highlight));
+            #endif
+            col.setAlphaF(0.5);
+            pal.setColor(QPalette::Base, col);
+            setPalette(pal);
             pressed=true;
         }
         break;
@@ -206,24 +215,6 @@ bool TitleWidget::eventFilter(QObject *o, QEvent *event)
         break;
     }
     return QWidget::eventFilter(o, event);
-}
-
-void TitleWidget::paintEvent(QPaintEvent *e)
-{
-    if (pressed || underMouse) {
-        QPainter p(this);
-        #ifdef Q_OS_MAC
-        QColor col = OSXStyle::self()->viewPalette().highlight().color();
-        #else
-        QColor col = palette().highlight().color();
-        #endif
-
-        QPainterPath path = Utils::buildPath(rect().adjusted(1, 1, -1, -1), 2.0);
-        p.setRenderHint(QPainter::Antialiasing);
-        col.setAlphaF(pressed ? 0.5 : 0.2);
-        p.fillPath(path, col);
-    }
-    QWidget::paintEvent(e);
 }
 
 void TitleWidget::coverRetrieved(const Song &s, const QImage &img, const QString &file)

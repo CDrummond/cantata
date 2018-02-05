@@ -57,14 +57,13 @@ SearchWidget::SearchWidget(QWidget *p)
      , widgetIsActive(false)
 {
     QHBoxLayout *l=new QHBoxLayout(this);
-    int spacing=qMin(2, Utils::layoutSpacing(this));
     #ifdef Q_OS_MAC
     l->setSpacing(2);
-    l->setContentsMargins(0, spacing, spacing, spacing);
+    l->setContentsMargins(0, 1, 1, 1);
     bool closeOnLeft=true;
     #else
     l->setSpacing(0);
-    l->setContentsMargins(0, spacing, 0, spacing);
+    l->setContentsMargins(0, 1, 0, 1);
     bool closeOnLeft=Utils::Unity==Utils::currentDe();
     #endif
     edit=new LineEdit(this);

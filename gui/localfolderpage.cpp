@@ -79,10 +79,7 @@ void LocalFolderBrowsePage::itemDoubleClicked(const QModelIndex &)
     if (1!=selected.size()) {
         return; //doubleclick should only have one selected item
     }
-
-    if (!static_cast<BrowseModel::Item *>(selected.at(0).internalPointer())->isFolder()) {
-        addSelectionToPlaylist();
-    }
+    addSelectionToPlaylist();
 }
 
 void LocalFolderBrowsePage::addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority)

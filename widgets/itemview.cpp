@@ -53,7 +53,7 @@
 #define COVERS_DBUG if (Covers::verboseDebugEnabled()) qWarning() << metaObject()->className() << QThread::currentThread()->objectName() << __FUNCTION__
 
 // Uncomment to have covers try to fill space. Disabled as causes flashing at the moment!
-#define RESPONSIVE_LAYOUT
+//#define RESPONSIVE_LAYOUT
 static int detailedViewDecorationSize=22;
 static int simpleViewDecorationSize=16;
 static int listCoverSize=22;

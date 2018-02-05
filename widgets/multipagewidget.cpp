@@ -58,11 +58,8 @@ public:
         if (size<72) {
             size=Utils::scaleForDpi(32);
         }
-        QPalette pal=mainText->palette();
         QColor col(mainText->palette().windowText().color());
-        col.setAlphaF(0.5);
-        pal.setColor(QPalette::ButtonText, col);
-        subText->setPalette(pal);
+        subText->setStyleSheet(QString("QLabel{color:rgba(%1, %2, %3, 0.5)}").arg(col.red()).arg(col.green()).arg(col.blue()));
 
         icon->setFixedSize(size, size);
         layout->addWidget(icon, 0, 0, 2, 1);

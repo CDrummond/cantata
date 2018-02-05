@@ -665,6 +665,7 @@ ItemView::ItemView(QWidget *p)
     , minSearchDebounce(250)
 {
     setupUi(this);
+    mainLayout->setSpacing(style()->pixelMetric(QStyle::PM_DefaultFrameWidth) > 1 ? 0 : 1);
     if (!backAction) {
         backAction=ActionCollection::get()->createAction("itemview-goback", tr("Go Back"));
         backAction->setShortcut(Qt::AltModifier+(Qt::LeftToRight==layoutDirection() ? Qt::Key_Left : Qt::Key_Right));

@@ -24,6 +24,7 @@
 #include "localfolderpage.h"
 #include "gui/stdactions.h"
 #include "gui/customactions.h"
+#include "models/playqueuemodel.h"
 #include "widgets/menubutton.h"
 
 LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
@@ -58,8 +59,6 @@ void LocalFolderBrowsePage::headerClicked(int level)
     }
 }
 
-#include <QDebug>
-
 void LocalFolderBrowsePage::itemDoubleClicked(const QModelIndex &)
 {
     const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
@@ -71,7 +70,16 @@ void LocalFolderBrowsePage::itemDoubleClicked(const QModelIndex &)
 
 void LocalFolderBrowsePage::addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority)
 {
-    qWarning() << name << action;
+    Q_UNUSED(priority)
+    Q_UNUSED(decreasePriority)
+
+    const QModelIndexList selected = view->selectedIndexes(true);
+    QStringList paths;
+
+    for (const auto &idx: selected) {
+        paths.append(model->filePath(proxy->mapToSource(idx)));
+    }
+    PlayQueueModel::self()->load(paths, action);
 }
 
 void LocalFolderBrowsePage::controlActions()

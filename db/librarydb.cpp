@@ -800,7 +800,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
                 s.albumartist=Song::variousArtists();
                 s.year = s.origYear = 0;
             }
-            album=s.displayAlbum();
+            album=s.albumName();
             int time=query.value(col++).toInt();
             int lastModified=wantModified ? query.value(col++).toInt() : 0;
             QString artist=wantArtist ? query.value(col++).toString() : QString();

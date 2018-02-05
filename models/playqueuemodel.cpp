@@ -25,7 +25,6 @@
  */
 
 #include "playqueuemodel.h"
-#include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdparseutils.h"
 #include "mpd-interface/mpdstats.h"
 #include "mpd-interface/cuefile.h"
@@ -724,11 +723,11 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
     return false;
 }
 
-void PlayQueueModel::load(const QStringList &urls)
+void PlayQueueModel::load(const QStringList &urls, int action)
 {
     QStringList useable=parseUrls(urls, false);
     if (useable.count()) {
-        addItems(useable, songs.count(), songs.isEmpty(), 0, false);
+        addItems(useable, songs.count(), action, 0, false);
     }
 }
 

@@ -24,29 +24,18 @@
 #include "localfolderpage.h"
 #include "gui/stdactions.h"
 #include "gui/customactions.h"
-#include "support/configuration.h"
 #include "widgets/menubutton.h"
 
 LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
     : SinglePageWidget(p)
 {
-    if (isHome) {
-        cfgGroup = QLatin1String("localbrowsehome");
-        model = new LocalBrowseModel(cfgGroup, tr("Home"), tr("Browse files in your home folder"), ":home.svg", this);
-    } else {
-        cfgGroup = QLatin1String("localbrowseroot");
-        model = new LocalBrowseModel(cfgGroup, tr("Root"), tr("Browse files on your computer"), ":hdd.svg", this);
-    }
+    model = isHome ? new LocalBrowseModel(QLatin1String("localbrowsehome"), tr("Home"), tr("Browse files in your home folder"), ":home.svg", this)
+                   : new LocalBrowseModel(QLatin1String("localbrowseroot"), tr("Root"), tr("Browse files on your computer"), ":hdd.svg", this);
     proxy = new FileSystemProxyModel(model);
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
-    Configuration config(cfgGroup);
-    view->setMode(ItemView::Mode_SimpleTree);
-    view->load(config);
-    MenuButton *menu=new MenuButton(this);
-    menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree));
-    init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu);
+    init(ReplacePlayQueue|AppendToPlayQueue);
 
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
     view->addAction(CustomActions::self());
@@ -58,8 +47,6 @@ LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
 
 LocalFolderBrowsePage::~LocalFolderBrowsePage()
 {
-    Configuration config(cfgGroup);
-    view->save(config);
     model->deleteLater();
     model=nullptr;
 }

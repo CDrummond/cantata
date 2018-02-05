@@ -48,7 +48,6 @@ private Q_SLOTS:
     void headerClicked(int level);
 
 private:
-    QString cfgGroup;
     LocalBrowseModel *model;
     FileSystemProxyModel *proxy;
 };

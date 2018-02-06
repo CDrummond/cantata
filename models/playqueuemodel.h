@@ -139,7 +139,7 @@ private:
     void addSortAction(const QString &name, const QString &key);
 
 public Q_SLOTS:
-    void load(const QStringList &urls, int action=MPDConnection::Append);
+    void load(const QStringList &urls, int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false);
     void addItems(const QStringList &items, int row, int action, quint8 priority, bool decreasePriority);
     void addItems(const QStringList &items, int action, quint8 priority, bool decreasePriority) { addItems(items, -1, action, priority, decreasePriority); }
     void addFiles(const QStringList &filenames, int row, int action, quint8 priority, bool decreasePriority=false);

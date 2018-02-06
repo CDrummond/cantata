@@ -27,6 +27,8 @@
 #include "widgets/singlepagewidget.h"
 #include "models/localbrowsemodel.h"
 
+class Action;
+
 class LocalFolderBrowsePage : public SinglePageWidget
 {
     Q_OBJECT
@@ -46,10 +48,12 @@ private:
 private Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);
     void headerClicked(int level);
+    void openFileManager();
 
 private:
     LocalBrowseModel *model;
     FileSystemProxyModel *proxy;
+    Action *browseAction;
 };
 
 #endif

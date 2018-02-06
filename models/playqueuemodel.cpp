@@ -758,11 +758,11 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
     return false;
 }
 
-void PlayQueueModel::load(const QStringList &urls, int action)
+void PlayQueueModel::load(const QStringList &urls, int action, quint8 priority, bool decreasePriority)
 {
     QStringList useable=parseUrls(urls, false);
     if (useable.count()) {
-        addItems(useable, songs.count(), action, 0, false);
+        addItems(useable, songs.count(), action, priority, decreasePriority);
     }
 }
 

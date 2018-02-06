@@ -52,6 +52,8 @@
 #endif
 #include <QPalette>
 #include <QFont>
+#include <QFile>
+#include <QDir>
 #include <QModelIndex>
 #include <QMimeData>
 #include <QTextStream>
@@ -79,17 +81,46 @@ static const QLatin1String constSortByPerformerKey("performer");
 static const QLatin1String constSortByTitleKey("title");
 static const QLatin1String constSortByNumberKey("track");
 
+static QSet<QString> constPlaylists = QSet<QString>() << QLatin1String("m3u") << QLatin1String("m3u8");
 QSet<QString> PlayQueueModel::constFileExtensions = QSet<QString>()
                                                   << QLatin1String("mp3") << QLatin1String("ogg") << QLatin1String("flac") << QLatin1String("wma") << QLatin1String("m4a")
                                                   << QLatin1String("m4b") << QLatin1String("mp4") << QLatin1String("m4p") << QLatin1String("wav") << QLatin1String("wv")
                                                   << QLatin1String("wvp") << QLatin1String("aiff") << QLatin1String("aif") << QLatin1String("aifc") << QLatin1String("ape")
                                                   << QLatin1String("spx") << QLatin1String("tta") << QLatin1String("mpc") << QLatin1String("mpp") << QLatin1String("mp+")
-                                                  << QLatin1String("dff") << QLatin1String("dsf");
+                                                  << QLatin1String("dff") << QLatin1String("dsf")
+                                                  // And playlists...
+                                                  << QLatin1String("m3u") << QLatin1String("m3u8");
 
-static bool checkExtension(const QString &file)
+static bool checkExtension(const QString &file, const QSet<QString> &exts = PlayQueueModel::constFileExtensions)
 {
     int pos=file.lastIndexOf('.');
-    return pos>1 ? PlayQueueModel::constFileExtensions.contains(file.mid(pos+1).toLower()) : false;
+    return pos>1 ? exts.contains(file.mid(pos+1).toLower()) : false;
+}
+
+static QStringList expandPlaylist(const QString &playlist)
+{
+    QStringList files;
+    QFile f(playlist);
+    QDir dir(Utils::getDir(playlist));
+
+    if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        QTextStream in(&f);
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            if (!line.startsWith(QLatin1Char('#'))) {
+                if (checkExtension(line)) {
+                    QString path = dir.filePath(line);
+                    if (QFile::exists(path)) { // Relative
+                        files.append(path);
+                    } else if (QFile::exists(line)) { // Absolute
+                        files.append(line);
+                    }
+                }
+            }
+        }
+        f.close();
+    }
+    return files;
 }
 
 static QStringList listFiles(const QDir &d, int level=5)
@@ -99,6 +130,8 @@ static QStringList listFiles(const QDir &d, int level=5)
         for (const auto &f: d.entryInfoList(QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot|QDir::NoSymLinks)) {
             if (f.isDir()) {
                 files += listFiles(QDir(f.absoluteFilePath()), level-1);
+            } else if (checkExtension(f.fileName(), constPlaylists)) {
+                files += expandPlaylist(f.absoluteFilePath());
             } else if (checkExtension(f.fileName())) {
                 files.append(f.absoluteFilePath());
             }
@@ -127,6 +160,8 @@ static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
 
             if (d.exists()) {
                 files = listFiles(d);
+            } else if (checkExtension(u.path(), constPlaylists)) {
+                files += expandPlaylist(u.path());
             } else if (checkExtension(u.path())) {
                 files.append(u.path());
             }

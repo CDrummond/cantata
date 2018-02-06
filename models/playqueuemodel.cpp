@@ -93,7 +93,7 @@ QSet<QString> PlayQueueModel::constFileExtensions = QSet<QString>()
 static bool checkExtension(const QString &file, const QSet<QString> &exts = PlayQueueModel::constFileExtensions)
 {
     int pos=file.lastIndexOf('.');
-    return pos>1 ? exts.contains(file.mid(pos+1).toLower()) : false;
+    return pos>0 ? exts.contains(file.mid(pos+1).toLower()) : false;
 }
 
 static QStringList expandPlaylist(const QString &playlist)

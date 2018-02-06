@@ -87,8 +87,14 @@ QVariant LocalBrowseModel::data(const QModelIndex &index, int role) const
     }
 
     switch (role) {
-    case Qt::DecorationRole:
-        return fileInfo(index).isDir() ? Icons::self()->folderListIcon : Icons::self()->audioListIcon;
+    case Qt::DecorationRole: {
+        QFileInfo info = fileInfo(index);
+        return info.isDir()
+                ? Icons::self()->folderListIcon
+                : MPDConnection::isPlaylist(info.fileName())
+                    ? Icons::self()->playlistListIcon
+                    : Icons::self()->audioListIcon;
+    }
     case Cantata::Role_Actions: {
         QVariant v;
         v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->appendToPlayQueueAction);

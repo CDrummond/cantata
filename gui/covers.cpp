@@ -291,7 +291,7 @@ static void clearScaledCache(const Song &song)
             }
         }
     } else {
-        QString subDir=Covers::encodeName(song.artist);
+        QString subDir=Covers::encodeName(song.albumArtist());
         for (int i=0; constExtensions[i]; ++i) {
             QString fileName=Covers::encodeName(song.album)+constExtensions[i];
             for (const QString &sizeDirName: sizeDirNames) {
@@ -821,14 +821,14 @@ void CoverDownloader::onlineJobFinished()
         QImage img=data.isEmpty() ? QImage() : QImage::fromData(data, Covers::imageFormat(data));
 
         bool png=Covers::isPng(data);
-        DBUG << "Got image" << id << song.artist << song.album << png;
+        DBUG << "Got image" << id << song.albumArtist() << song.album << png;
         if (!img.isNull()) {
             if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height()) {
                 img=img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             }
             QString cacheName=song.extraField(Song::OnlineImageCacheName);
             fileName=cacheName.isEmpty()
-                        ? Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.artist : (song.artist+" - "+song.album))+(png ? ".png" : ".jpg")
+                        ? Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.albumArtist() : (song.albumArtist()+" - "+song.album))+(png ? ".png" : ".jpg")
                         : cacheName;
             QFile f(fileName);
             if (f.open(QIODevice::WriteOnly)) {
@@ -843,13 +843,13 @@ void CoverDownloader::onlineJobFinished()
 void CoverDownloader::failed(const Job &job)
 {
     if (job.song.isArtistImageRequest()) {
-        DBUG << "artist image" << job.song.artist;
+        DBUG << "artist image" << job.song.albumArtist();
         emit artistImage(job.song, QImage(), QString());
     } else if (job.song.isComposerImageRequest()) {
         DBUG << "composer image" << job.song.composer();
         emit composerImage(job.song, QImage(), QString());
     } else {
-        DBUG << "cover image" << job.song.artist << job.song.album;
+        DBUG << "cover image" << job.song.albumArtist() << job.song.album;
         emit cover(job.song, QImage(), QString());
     }
 }
@@ -1052,7 +1052,7 @@ void CoverLoader::load()
     }
     QList<LoadedCover> covers;
     for (const LoadedCover &s: toDo) {
-        DBUG << s.song.artist << s.song.albumId() << s.song.size;
+        DBUG << s.song.albumArtist() << s.song.albumId() << s.song.size;
         int size=s.song.size;
         if (size<constRetinaScaleMaxSize) {
             size*=devicePixelRatio;
@@ -1447,7 +1447,7 @@ static Covers::Image findCoverInDir(const Song &song, const QString &dirName, co
 
 Covers::Image Covers::locateImage(const Song &song)
 {
-    DBUG_CLASS("Covers") << song.file << song.artist << song.albumartist << song.album << song.type;
+    DBUG_CLASS("Covers") << song.file << song.albumArtist() << song.albumartist << song.album << song.type;
     if (song.isFromOnlineService()) {
         QString id=song.onlineService();
         Covers::Image img;
@@ -1462,7 +1462,7 @@ Covers::Image Covers::locateImage(const Song &song)
 
         img.fileName=song.extraField(Song::OnlineImageCacheName);
         if (img.fileName.isEmpty()) {
-            img.fileName=Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.artist : (song.artist+" - "+song.album))+".jpg";
+            img.fileName=Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.albumArtist() : (song.albumArtist()+" - "+song.album))+".jpg";
             if (!QFile::exists(img.fileName)) {
                 img.fileName=Utils::changeExtension(img.fileName, ".png");
             }

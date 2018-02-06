@@ -737,9 +737,12 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
  */
 bool MPDConnection::isPlaylist(const QString &file)
 {
-    return file.endsWith(QLatin1String(".asx"), Qt::CaseInsensitive) || file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive) ||
-           file.endsWith(QLatin1String(".m3u"), Qt::CaseInsensitive) || file.endsWith(QLatin1String(".pls"), Qt::CaseInsensitive) ||
-           file.endsWith(QLatin1String(".xspf"), Qt::CaseInsensitive);
+    static QSet<QString> extensions = QSet<QString>() << QLatin1String("asx") << QLatin1String("cue")
+                                                      << QLatin1String("m3u") << QLatin1String("m3u8")
+                                                      << QLatin1String("pls") << QLatin1String("xspf");
+
+    int pos=file.lastIndexOf('.');
+    return pos>0 ? extensions.contains(file.mid(pos+1).toLower()) : false;
 }
 
 void MPDConnection::add(const QStringList &files, int action, quint8 priority, bool decreasePriority)

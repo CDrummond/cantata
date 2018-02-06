@@ -177,11 +177,10 @@ void SqlLibraryModel::libraryUpdated()
         QList<LibraryDb::Album> albums=db->getAlbums(QString(), QString(), albumSort);
         if (!albums.isEmpty())  {
             for (const LibraryDb::Album &album: albums) {
+                QString trackInfo = tr("%n Tracks (%1)", "", album.trackCount).arg(Utils::formatTime(album.duration, true));
                 root->add(new AlbumItem(T_Album==tl && album.identifyById ? QString() : album.artist,
                                         album.id, Song::displayAlbum(album.name, album.year),
-                                        T_Album==tl
-                                            ? album.artist
-                                            : tr("%n Tracks (%1)", "", album.trackCount).arg(Utils::formatTime(album.duration, true)), root));
+                                        T_Album==tl ? album.artist : trackInfo, T_Album==tl ? trackInfo : QString(), root));
             }
         }
         break;
@@ -366,11 +365,18 @@ QVariant SqlLibraryModel::data(const QModelIndex &index, int role) const
                 (0==item->getChildCount()
                  ? item->getText()
                  : (item->getText()+"<br/>"+data(index, Cantata::Role_SubText).toString()));
+    case Cantata::Role_TitleSubText:
+        if (T_Album==tl && T_Album==item->getType()) {
+            return static_cast<AlbumItem *>(item)->getTitleSub();
+        }
     case Cantata::Role_SubText:
         return item->getSubText();
     case Cantata::Role_ListImage:
         return T_Album==item->getType();
     case Cantata::Role_TitleText:
+        if (T_Album==item->getType()) {
+            return tr("%1 by %2").arg(item->getText()).arg(T_Album==tl ? item->getSubText() : item->getParent()->getText());
+        }
         return item->getText();
     case Cantata::Role_TitleActions:
         switch (item->getType()) {

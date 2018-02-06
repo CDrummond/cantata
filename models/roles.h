@@ -34,6 +34,7 @@ namespace Cantata {
         Role_BriefMainText,
         Role_SubText,
         Role_TitleText,
+        Role_TitleSubText,
         Role_TitleActions,
         Role_Image,
         Role_ListImage, // Should image been shown in list/tree view?

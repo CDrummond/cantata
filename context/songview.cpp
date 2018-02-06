@@ -116,11 +116,8 @@ static inline QString fixNewLines(const QString &o)
 static QString actualFile(const Song &song)
 {
     QString songFile=song.filePath();
-
     if (song.isCantataStream()) {
-        QUrl qu(songFile);
-        QUrlQuery u(qu);
-        songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
+        QUrl(songFile).path();
     }
     return songFile;
 }

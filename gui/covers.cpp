@@ -1633,13 +1633,15 @@ Covers::Image Covers::locateImage(const Song &song)
             }
             // Check if cover is already cached
             QString dir(Utils::cacheDir(constCoverDir, false));
-            for (int e=0; constExtensions[e]; ++e) {
-                DBUG_CLASS("Covers") << "Checking cache file" << QString(dir+artistOrComposer+constExtensions[e]);
-                if (QFile::exists(dir+artistOrComposer+constExtensions[e])) {
-                    QImage img=loadImage(dir+artistOrComposer+constExtensions[e]);
-                    if (!img.isNull()) {
-                        DBUG_CLASS("Covers") << "Got cached artist/composer image" << QString(dir+artistOrComposer+constExtensions[e]);
-                        return Image(img, dir+artistOrComposer+constExtensions[e]);
+            if (!dir.isEmpty()) {
+                for (int e=0; constExtensions[e]; ++e) {
+                    DBUG_CLASS("Covers") << "Checking cache file" << QString(dir+artistOrComposer+constExtensions[e]);
+                    if (QFile::exists(dir+artistOrComposer+constExtensions[e])) {
+                        QImage img=loadImage(dir+artistOrComposer+constExtensions[e]);
+                        if (!img.isNull()) {
+                            DBUG_CLASS("Covers") << "Got cached artist/composer image" << QString(dir+artistOrComposer+constExtensions[e]);
+                            return Image(img, dir+artistOrComposer+constExtensions[e]);
+                        }
                     }
                 }
             }
@@ -1668,13 +1670,15 @@ Covers::Image Covers::locateImage(const Song &song)
         }
         // Check if cover is already cached
         QString dir(Utils::cacheDir(constCoverDir+artist, false));
-        for (int e=0; constExtensions[e]; ++e) {
-            DBUG_CLASS("Covers") << "Checking cache file" << QString(dir+album+constExtensions[e]);
-            if (QFile::exists(dir+album+constExtensions[e])) {
-                QImage img=loadImage(dir+album+constExtensions[e]);
-                if (!img.isNull()) {
-                    DBUG_CLASS("Covers") << "Got cached cover image" << QString(dir+album+constExtensions[e]);
-                    return Image(img, dir+album+constExtensions[e]);
+        if (!dir.isEmpty()) {
+            for (int e=0; constExtensions[e]; ++e) {
+                DBUG_CLASS("Covers") << "Checking cache file" << QString(dir+album+constExtensions[e]);
+                if (QFile::exists(dir+album+constExtensions[e])) {
+                    QImage img=loadImage(dir+album+constExtensions[e]);
+                    if (!img.isNull()) {
+                        DBUG_CLASS("Covers") << "Got cached cover image" << QString(dir+album+constExtensions[e]);
+                        return Image(img, dir+album+constExtensions[e]);
+                    }
                 }
             }
         }

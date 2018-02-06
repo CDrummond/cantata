@@ -1609,10 +1609,14 @@ void ItemView::setTitle()
     if (!model) {
         return;
     }
+    QString sub = model->data(index, Cantata::Role_TitleSubText).toString();
+    if (sub.isEmpty()) {
+        sub = model->data(index, Cantata::Role_SubText).toString();
+    }
     title->update(model->data(index, Mode_IconTop==mode ? Cantata::Role_GridCoverSong : Cantata::Role_CoverSong).value<Song>(),
                   model->data(index, Qt::DecorationRole).value<QIcon>(),
                   model->data(index, Cantata::Role_TitleText).toString(),
-                  model->data(index, Cantata::Role_SubText).toString(),
+                  sub,
                   model->data(index, Cantata::Role_TitleActions).toBool());
 }
 

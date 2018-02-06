@@ -85,11 +85,11 @@ TitleWidget::TitleWidget(QWidget *p)
     textLayout->addWidget(mainText);
     textLayout->addWidget(subText);
     layout->addItem(textLayout, 0, 3, 2, 1);
-    mainText->installEventFilter(this);
-    subText->installEventFilter(this);
-    image->installEventFilter(this);
-    installEventFilter(this);
-    setAttribute(Qt::WA_Hover);
+    mainText->setAttribute(Qt::WA_TransparentForMouseEvents);
+    subText->setAttribute(Qt::WA_TransparentForMouseEvents);
+    image->setAttribute(Qt::WA_TransparentForMouseEvents);
+    viewport()->installEventFilter(this);
+    viewport()->setAttribute(Qt::WA_Hover);
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
@@ -169,9 +169,9 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
 
 bool TitleWidget::eventFilter(QObject *o, QEvent *event)
 {
-    switch(event->type()) {
-    case QEvent::HoverEnter:
-        if (isEnabled() && o==this) {
+    if (isEnabled()) {
+        switch(event->type()) {
+        case QEvent::HoverEnter: {
             QPalette pal = qApp->palette();
             #ifdef Q_OS_MAC
             QColor col(OSXStyle::self()->viewPalette().color(QPalette::Highlight));
@@ -181,38 +181,38 @@ bool TitleWidget::eventFilter(QObject *o, QEvent *event)
             col.setAlphaF(0.2);
             pal.setColor(QPalette::Base, col);
             setPalette(pal);
+            break;
         }
-        break;
-    case QEvent::HoverLeave:
-        if (isEnabled() && o==this) {
+        case QEvent::HoverLeave: {
             QPalette pal = qApp->palette();
             QColor col(pal.color(QPalette::Base));
             pal.setColor(QPalette::Base, col);
             setPalette(pal);
+            break;
         }
-        break;
-    case QEvent::MouseButtonPress:
-        if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && Qt::NoModifier==static_cast<QMouseEvent *>(event)->modifiers()) {
-            QPalette pal = qApp->palette();
-            #ifdef Q_OS_MAC
-            QColor col(OSXStyle::self()->viewPalette().color(QPalette::Highlight));
-            #else
-            QColor col(pal.color(QPalette::Highlight));
-            #endif
-            col.setAlphaF(0.5);
-            pal.setColor(QPalette::Base, col);
-            setPalette(pal);
-            pressed=true;
+        case QEvent::MouseButtonPress:
+            if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && Qt::NoModifier==static_cast<QMouseEvent *>(event)->modifiers()) {
+                QPalette pal = qApp->palette();
+                #ifdef Q_OS_MAC
+                QColor col(OSXStyle::self()->viewPalette().color(QPalette::Highlight));
+                #else
+                QColor col(pal.color(QPalette::Highlight));
+                #endif
+                col.setAlphaF(0.5);
+                pal.setColor(QPalette::Base, col);
+                setPalette(pal);
+                pressed=true;
+            }
+            break;
+        case QEvent::MouseButtonRelease:
+            if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && !QApplication::overrideCursor()) {
+                actions().first()->trigger();
+            }
+            pressed=false;
+            break;
+        default:
+            break;
         }
-        break;
-    case QEvent::MouseButtonRelease:
-        if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && !QApplication::overrideCursor()) {
-            actions().first()->trigger();
-        }
-        pressed=false;
-        break;
-    default:
-        break;
     }
     return QWidget::eventFilter(o, event);
 }

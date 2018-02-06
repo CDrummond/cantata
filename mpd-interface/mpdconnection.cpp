@@ -867,7 +867,6 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
         }
 
         send += "command_list_end";
-        qWarning() << send;
         sentOk=sendCommand(send).ok;
         if (!sentOk) {
             break;

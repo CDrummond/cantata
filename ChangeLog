@@ -56,6 +56,7 @@
 40. Add option to use 'Original Year' to display and sort albums.
 41. Sort folder view items, as MPD does not seem to sort playlist names.
 42. In folder view, allow to add folders and files at the same time.
+43. Support dragging m3u and m3u8 playlists onto playqueue.
 
 2.2.0
 -----

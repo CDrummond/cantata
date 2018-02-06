@@ -181,15 +181,15 @@ bool TitleWidget::eventFilter(QObject *o, QEvent *event)
             col.setAlphaF(0.2);
             pal.setColor(QPalette::Base, col);
             setPalette(pal);
-        }
             break;
+        }
         case QEvent::HoverLeave: {
             QPalette pal = qApp->palette();
             QColor col(pal.color(QPalette::Base));
             pal.setColor(QPalette::Base, col);
             setPalette(pal);
-        }
             break;
+        }
         case QEvent::MouseButtonPress:
             if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && Qt::NoModifier==static_cast<QMouseEvent *>(event)->modifiers()) {
                 QPalette pal = qApp->palette();

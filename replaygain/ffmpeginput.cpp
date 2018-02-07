@@ -183,13 +183,15 @@ FfmpegInput::FfmpegInput(const QString &fileName)
     }
 
     if (ok) {
-        // Get a pointer to the codec context for the audio stream
-
         #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 89, 100) // Not 100% of version here!
-        handle->codecContext = avcodec_alloc_context3(nullptr);
+        handle->codec=avcodec_find_decoder(handle->formatContext->streams[handle->audioStream]->codecpar->codec_id);
+        handle->codecContext=avcodec_alloc_context3(handle->codec);
+        if (avcodec_parameters_to_context(handle->codecContext, handle->formatContext->streams[handle->audioStream]->codecpar)<0) {
+            ok = false;
+        }
         #else
+        // Get a pointer to the codec context for the audio stream
         handle->codecContext = handle->formatContext->streams[handle->audioStream]->codec;
-        #endif
 
         // request float output if supported
         #if LIBAVCODEC_VERSION_MAJOR >= 54
@@ -197,23 +199,33 @@ FfmpegInput::FfmpegInput(const QString &fileName)
         #elif(LIBAVCODEC_VERSION_MAJOR == 53 && LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 4, 0))
         handle->codecContext->request_sample_fmt = SAMPLE_FMT_FLT;
         #endif
-        // Find the decoder for the audio stream, and open codec...
-        handle->codec = avcodec_find_decoder(handle->formatContext->audio_codec_id);
+        // Find the decoder for the video stream, and open codec...
+        handle->codec = avcodec_find_decoder(handle->codecContext->codec_id);
+        #endif
 
-        QString floatCodec=QLatin1String(handle->codec->name)+QLatin1String("float");
-        AVCodec *possibleFloatCodec = avcodec_find_decoder_by_name(floatCodec.toLatin1().constData());
-        if (possibleFloatCodec) {
-            handle->codec = possibleFloatCodec;
-        }
+        if (ok) {
+            QString floatCodec=QLatin1String(handle->codec->name)+QLatin1String("float");
+            AVCodec *possibleFloatCodec = avcodec_find_decoder_by_name(floatCodec.toLatin1().constData());
+            if (possibleFloatCodec) {
+                handle->codec = possibleFloatCodec;
+                #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 89, 100) // Not 100% of version here!
+                avcodec_free_context(&handle->codecContext);
+                handle->codecContext=avcodec_alloc_context3(handle->codec);
+                if (avcodec_parameters_to_context(handle->codecContext, handle->formatContext->streams[handle->audioStream]->codecpar)<0) {
+                    ok = false;
+                }
+                #endif
+            }
 
-        if (!handle->codec ||
-            #if LIBAVCODEC_VERSION_MAJOR >= 53
-            avcodec_open2(handle->codecContext, handle->codec, NULL) < 0)
-            #else
-            avcodec_open(handle->codecContext, handle->codec) < 0)
-            #endif
+            if (!handle->codec ||
+                    #if LIBAVCODEC_VERSION_MAJOR >= 53
+                    avcodec_open2(handle->codecContext, handle->codec, NULL) < 0)
+                    #else
+                    avcodec_open(handle->codecContext, handle->codec) < 0)
+                    #endif
             {
-            ok=false;
+                ok=false;
+            }
         }
     }
 
@@ -366,16 +378,19 @@ static int decodePacket(FfmpegInput::Handle *handle)
 {
     #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 89, 100) // Not 100% of version here!
     int ret = avcodec_receive_frame(handle->codecContext, handle->frame);
-    handle->gotFrame = 0 == ret;
-    if (ret < 0) {
-        return ret;
+    if (0 == ret) {
+        handle->gotFrame = true;
     }
-
-    ret = avcodec_send_packet(handle->codecContext, &handle->packet);
-    if (ret < 0) {
-        return ret;
+    if (AVERROR(EAGAIN) == ret) {
+        ret = 0;
     }
-    return handle->packet.size;
+    if (0 == ret) {
+        ret = avcodec_send_packet(handle->codecContext, &handle->packet);
+    }
+    if (AVERROR(EAGAIN) == ret) {
+        ret = 0;
+    }
+    return ret<0 ? ret : handle->packet.size;
     #else
     int ret = avcodec_decode_audio4(handle->codecContext, handle->frame, &handle->gotFrame, &handle->packet);
     if (ret < 0) {

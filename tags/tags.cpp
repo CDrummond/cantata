@@ -192,10 +192,14 @@ static TagLib::FileRef getFileRef(const QString &path)
     ensureFileTypeResolvers();
 
     #ifdef Q_OS_WIN
-    return TagLib::FileRef(reinterpret_cast<const wchar_t *>(path.utf16()), true, TagLib::AudioProperties::Fast);
+    TagLib::FileRef ref =  TagLib::FileRef(reinterpret_cast<const wchar_t *>(path.utf16()), true, TagLib::AudioProperties::Fast);
     #else
-    return TagLib::FileRef(QFile::encodeName(path).constData(), true, TagLib::AudioProperties::Fast);
+    TagLib::FileRef ref = TagLib::FileRef(QFile::encodeName(path).constData(), true, TagLib::AudioProperties::Fast);
     #endif
+    if (ref.isNull()) {
+        DBUG << "Failed to load" << path;
+    }
+    return ref;
 }
 
 static QPair<int, int> splitDiscNumber(const QString &value)
@@ -374,6 +378,7 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
                 if (pic && TagLib::ID3v2::AttachedPictureFrame::FrontCover==pic->type()) {
                     img->loadFromData((const uchar *) pic->picture().data(), pic->picture().size());
                     if (!img->isNull()) {
+                        DBUG << "Found front cover image";
                         found=true;
                     }
                 }
@@ -383,6 +388,7 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
                 // Just use first image!
                 TagLib::ID3v2::AttachedPictureFrame *pic=static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
                 img->loadFromData((const uchar *) pic->picture().data(), pic->picture().size());
+                DBUG << "Use first image";
             }
         }
     }
@@ -592,6 +598,7 @@ static void readAPETags(TagLib::APE::Tag *tag, Song *song, ReplayGain *rg, QImag
                 const TagLib::ByteVector &bytes=item.mid(pos);
                 QByteArray data(bytes.data(), bytes.size());
                 img->loadFromData(data);
+                DBUG << "Got COVER ART (FRONT)";
             }
         }
     }
@@ -733,6 +740,7 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
                     TagLib::FLAC::Picture pic;
 
                     if (pic.parse(bytes)) {
+                        DBUG << "METADATA_BLOCK_PICTURE";
                         img->loadFromData(QByteArray(pic.data().data(), pic.data().size()));
                     }
                 }
@@ -746,6 +754,11 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
             img->loadFromData(QByteArray::fromBase64(data));
             if (img->isNull()) {
                 img->loadFromData(data); // not base64??
+                if (!img->isNull()) {
+                    DBUG << "COVERART";
+                }
+            } else {
+                DBUG << "COVERART (base64)";
             }
         }
     }
@@ -891,6 +904,7 @@ static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImag
             if (!coverArtList.isEmpty()) {
                 TagLib::MP4::CoverArt coverArt = coverArtList.front();
                 img->loadFromData((const uchar *) coverArt.data().data(), coverArt.data().size());
+                DBUG << "covr";
             }
         }
     }

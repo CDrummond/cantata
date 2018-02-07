@@ -23,9 +23,8 @@
 
 #include <QCoreApplication>
 #include <QStringList>
-#include <QFile>
-#include <QTextStream>
 #include <QDateTime>
+#include <iostream>
 #include "tags.h"
 #include "taghelper.h"
 
@@ -38,19 +37,10 @@ static long __stdcall exceptionHandler(EXCEPTION_POINTERS *p)
 }
 #endif
 
-static QString logFileName;
-static bool firstMsg=true;
 static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QString &msg)
 {
-    QFile f(logFileName);
-    if (f.open(QIODevice::WriteOnly|QIODevice::Append|QIODevice::Text)) {
-        QTextStream stream(&f);
-        if (firstMsg) {
-            stream << "------------START------------" << endl;
-            firstMsg=false;
-        }
-        stream << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ") << " - " << msg << endl;
-    }
+    std::cout << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ").toLatin1().constData()
+              << " - " << msg.toLocal8Bit().constData() << std::endl;
 }
 
 int main(int argc, char *argv[])
@@ -61,13 +51,10 @@ int main(int argc, char *argv[])
     #endif
     QCoreApplication app(argc, argv);
     if (3==app.arguments().length() || 4==app.arguments().length()) {
-        if (4==app.arguments().length()) {
-            logFileName=app.arguments().at(3);
-            if (!logFileName.isEmpty()) {
-                qInstallMessageHandler(cantataQtMsgHandler);
-                TagHelper::enableDebug();
-                Tags::enableDebug();
-            }
+        if (4==app.arguments().length() && "true" == app.arguments().at(3)) {
+            qInstallMessageHandler(cantataQtMsgHandler);
+            TagHelper::enableDebug();
+            Tags::enableDebug();
         }
         new TagHelper(app.arguments().at(1), app.arguments().at(2).toInt());
         return app.exec();

@@ -50,7 +50,7 @@ LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
                                                                << ItemView::Mode_DetailedTree << ItemView::Mode_List));
     init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu);
 
-//    view->addAction(CustomActions::self());
+    view->addAction(CustomActions::self());
 //    #ifdef TAGLIB_FOUND
 //    view->addAction(StdActions::self()->editTagsAction);
 //    #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -99,6 +99,23 @@ void LocalFolderBrowsePage::openFileManager()
     QDesktopServices::openUrl(QUrl::fromLocalFile(model->filePath(proxy->mapToSource(selected.at(0)))));
 }
 
+QList<Song> LocalFolderBrowsePage::selectedSongs(bool allowPlaylists) const
+{
+    QList<Song> songs;
+    const QModelIndexList selected = view->selectedIndexes(true);
+    for (const auto &idx : selected) {
+        QString path = model->filePath(proxy->mapToSource(idx));
+        if (!allowPlaylists && MPDConnection::isPlaylist(path)) {
+            continue;
+        }
+        Song s;
+        s.file = path;
+        s.type = Song::LocalFile;
+        songs.append(s);
+    }
+    return songs;
+}
+
 void LocalFolderBrowsePage::itemDoubleClicked(const QModelIndex &)
 {
     const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
@@ -123,23 +140,23 @@ void LocalFolderBrowsePage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enable=selected.count()>0;
-//    bool trackSelected=false;
-//    bool folderSelected=false;
+    bool trackSelected=false;
+    bool folderSelected=false;
 
-//    for (const QModelIndex &idx: selected) {
-//        if (model->fileInfo(proxy->mapToSource(idx)).isDir()) {
-//            folderSelected=true;
-//        } else {
-//            trackSelected=true;
-//        }
-//    }
+    for (const QModelIndex &idx: selected) {
+        if (model->fileInfo(proxy->mapToSource(idx)).isDir()) {
+            folderSelected=true;
+        } else {
+            trackSelected=true;
+        }
+    }
     StdActions::self()->enableAddToPlayQueue(enable);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(false);
 
     CustomActions::self()->setEnabled(false);
 
-//    bool fileActions = trackSelected && !folderSelected;
-//    CustomActions::self()->setEnabled(fileActions);
+    bool fileActions = trackSelected && !folderSelected;
+    CustomActions::self()->setEnabled(fileActions);
 //    #ifdef TAGLIB_FOUND
 //    StdActions::self()->editTagsAction->setEnabled(fileActions);
 //    #ifdef ENABLE_REPLAYGAIN_SUPPORT

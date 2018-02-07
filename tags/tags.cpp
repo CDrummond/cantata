@@ -81,10 +81,6 @@
 #include <taglib/attachedpictureframe.h>
 #include <taglib/unsynchronizedlyricsframe.h>
 #include <taglib/popularimeterframe.h>
-#ifdef TAGLIB_EXTRAS_FOUND
-#include <taglib-extras/audiblefiletyperesolver.h>
-#include <taglib-extras/realmediafiletyperesolver.h>
-#endif
 
 namespace Tags
 {
@@ -187,11 +183,6 @@ static void ensureFileTypeResolvers()
     static bool alreadyAdded = false;
     if (!alreadyAdded) {
         alreadyAdded = true;
-
-        #ifdef TAGLIB_EXTRAS_FOUND
-        TagLib::FileRef::addFileTypeResolver(new AudibleFileTypeResolver);
-        TagLib::FileRef::addFileTypeResolver(new RealMediaFileTypeResolver);
-        #endif
         TagLib::FileRef::addFileTypeResolver(new Meta::Tag::FileTypeResolver());
     }
 }

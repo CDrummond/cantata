@@ -81,10 +81,6 @@
 #include <taglib/attachedpictureframe.h>
 #include <taglib/unsynchronizedlyricsframe.h>
 #include <taglib/popularimeterframe.h>
-#ifdef TAGLIB_EXTRAS_FOUND
-#include <taglib-extras/audiblefiletyperesolver.h>
-#include <taglib-extras/realmediafiletyperesolver.h>
-#endif
 
 namespace Tags
 {
@@ -187,11 +183,6 @@ static void ensureFileTypeResolvers()
     static bool alreadyAdded = false;
     if (!alreadyAdded) {
         alreadyAdded = true;
-
-        #ifdef TAGLIB_EXTRAS_FOUND
-        TagLib::FileRef::addFileTypeResolver(new AudibleFileTypeResolver);
-        TagLib::FileRef::addFileTypeResolver(new RealMediaFileTypeResolver);
-        #endif
         TagLib::FileRef::addFileTypeResolver(new Meta::Tag::FileTypeResolver());
     }
 }
@@ -201,10 +192,14 @@ static TagLib::FileRef getFileRef(const QString &path)
     ensureFileTypeResolvers();
 
     #ifdef Q_OS_WIN
-    return TagLib::FileRef(reinterpret_cast<const wchar_t *>(path.utf16()), true, TagLib::AudioProperties::Fast);
+    TagLib::FileRef ref =  TagLib::FileRef(reinterpret_cast<const wchar_t *>(path.utf16()), true, TagLib::AudioProperties::Fast);
     #else
-    return TagLib::FileRef(QFile::encodeName(path).constData(), true, TagLib::AudioProperties::Fast);
+    TagLib::FileRef ref = TagLib::FileRef(QFile::encodeName(path).constData(), true, TagLib::AudioProperties::Fast);
     #endif
+    if (ref.isNull()) {
+        DBUG << "Failed to load" << path;
+    }
+    return ref;
 }
 
 static QPair<int, int> splitDiscNumber(const QString &value)
@@ -295,6 +290,7 @@ static void setRva2Tag(TagLib::ID3v2::Tag *tag, const std::string &tagName, doub
 
 static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics, int *rating)
 {
+    DBUG;
     if (song) {
         const TagLib::ID3v2::FrameList &albumArtist = tag->frameListMap()["TPE2"];
 
@@ -383,6 +379,7 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
                 if (pic && TagLib::ID3v2::AttachedPictureFrame::FrontCover==pic->type()) {
                     img->loadFromData((const uchar *) pic->picture().data(), pic->picture().size());
                     if (!img->isNull()) {
+                        DBUG << "Found front cover image";
                         found=true;
                     }
                 }
@@ -392,6 +389,7 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
                 // Just use first image!
                 TagLib::ID3v2::AttachedPictureFrame *pic=static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
                 img->loadFromData((const uchar *) pic->picture().data(), pic->picture().size());
+                DBUG << "Use first image";
             }
         }
     }
@@ -475,6 +473,7 @@ static bool isId3V24(TagLib::ID3v2::Header *header)
 
 static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int rating)
 {
+    DBUG;
     bool changed=false;
 
     if (/*!from.isEmpty() &&*/ !to.isEmpty()) {
@@ -553,6 +552,7 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
 
 static void readAPETags(TagLib::APE::Tag *tag, Song *song, ReplayGain *rg, QImage *img, int *rating)
 {
+    DBUG;
     const TagLib::APE::ItemListMap &map = tag->itemListMap();
 
     if (song) {
@@ -601,6 +601,7 @@ static void readAPETags(TagLib::APE::Tag *tag, Song *song, ReplayGain *rg, QImag
                 const TagLib::ByteVector &bytes=item.mid(pos);
                 QByteArray data(bytes.data(), bytes.size());
                 img->loadFromData(data);
+                DBUG << "Use img from COVER ART (FRONT)";
             }
         }
     }
@@ -628,6 +629,7 @@ static bool updateAPETag(TagLib::APE::Tag *tag, const char *tagName, const QStri
 
 static bool writeAPETags(TagLib::APE::Tag *tag, const Song &from, const Song &to, const RgTags &rg, int rating)
 {
+    DBUG;
     bool changed=false;
 
     if (/*!from.isEmpty() &&*/ !to.isEmpty()) {
@@ -691,8 +693,21 @@ static TagLib::String readVorbisTag(TagLib::Ogg::XiphComment *tag, const char *f
     return TagLib::String();
 }
 
+#if TAGLIB_VERSION >= CANTATA_MAKE_VERSION(1,7,0)
+static void readFlacPicture(const TagLib::List<TagLib::FLAC::Picture*> &pics, QImage *img)
+{
+    if (!pics.isEmpty() && 1==pics.size()) {
+        TagLib::FLAC::Picture *picture = *(pics.begin());
+        QByteArray data(picture->data().data(), picture->data().size());
+        DBUG << "Use img from FLAC picture";
+        img->loadFromData(data);
+    }
+}
+#endif
+
 static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics, int *rating)
 {
+    DBUG;
     if (song) {
         TagLib::String str=readVorbisTag(tag, "ALBUMARTIST");
         if (str.isEmpty()) {
@@ -731,6 +746,7 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
         // METADATA_BLOCK_PICTURE is the Ogg standard way of encoding a covers.
         // https://wiki.xiph.org/index.php/VorbisComment#Cover_art
         if (map.contains("METADATA_BLOCK_PICTURE")) {
+            DBUG << "HAVE METADATA_BLOCK_PICTURE";
             TagLib::StringList block=map["METADATA_BLOCK_PICTURE"];
             if (!block.isEmpty()) {
                 TagLib::StringList::ConstIterator i = block.begin();
@@ -742,6 +758,7 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
                     TagLib::FLAC::Picture pic;
 
                     if (pic.parse(bytes)) {
+                        DBUG << "Use img from METADATA_BLOCK_PICTURE";
                         img->loadFromData(QByteArray(pic.data().data(), pic.data().size()));
                     }
                 }
@@ -755,8 +772,18 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
             img->loadFromData(QByteArray::fromBase64(data));
             if (img->isNull()) {
                 img->loadFromData(data); // not base64??
+                if (!img->isNull()) {
+                    DBUG << "Use img from COVERART";
+                }
+            } else {
+                DBUG << "Use img from COVERART (base64)";
             }
         }
+        #if TAGLIB_VERSION >= CANTATA_MAKE_VERSION(1,7,0)
+        if (img && img->isNull()) {
+            readFlacPicture(tag->pictureList(), img);
+        }
+        #endif
     }
 
     if (lyrics) {
@@ -770,17 +797,6 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
         *rating=convertToCantataRating(parseDoubleString(readVorbisTag(tag, "FMPS_RATING")));
     }
 }
-
-#if TAGLIB_VERSION >= CANTATA_MAKE_VERSION(1,7,0)
-static void readFlacPicture(const TagLib::List<TagLib::FLAC::Picture*> &pics, QImage *img)
-{
-    if (!pics.isEmpty() && 1==pics.size()) {
-        TagLib::FLAC::Picture *picture = *(pics.begin());
-        QByteArray data(picture->data().data(), picture->data().size());
-        img->loadFromData(data);
-    }
-}
-#endif
 
 static bool updateVorbisCommentTag(TagLib::Ogg::XiphComment *tag, const char *tagName, const QString &value)
 {
@@ -799,6 +815,7 @@ static bool updateVorbisCommentTag(TagLib::Ogg::XiphComment *tag, const char *ta
 
 static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int rating)
 {
+    DBUG;
     bool changed=false;
 
     if (/*!from.isEmpty() &&*/ !to.isEmpty()) {
@@ -858,6 +875,7 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
 #ifdef TAGLIB_MP4_FOUND
 static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics, int *rating)
 {
+    DBUG;
     TagLib::MP4::ItemListMap &map = tag->itemListMap();
 
     if (song) {
@@ -900,6 +918,7 @@ static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImag
             if (!coverArtList.isEmpty()) {
                 TagLib::MP4::CoverArt coverArt = coverArtList.front();
                 img->loadFromData((const uchar *) coverArt.data().data(), coverArt.data().size());
+                DBUG << "Use img from covr";
             }
         }
     }
@@ -933,6 +952,7 @@ static bool updateMP4Tag(TagLib::MP4::Tag *tag, const char *tagName, const QStri
 
 static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int rating)
 {
+    DBUG;
     bool changed=false;
 
     if (/*!from.isEmpty() &&*/ !to.isEmpty()) {
@@ -1001,6 +1021,7 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
 #ifdef TAGLIB_ASF_FOUND
 static void readASFTags(TagLib::ASF::Tag *tag, Song *song, int *rating)
 {
+    DBUG;
     if (song) {
         const TagLib::ASF::AttributeListMap &map = tag->attributeListMap();
 
@@ -1049,6 +1070,7 @@ static bool updateASFTag(TagLib::ASF::Tag *tag, const char *tagName, const QStri
 
 static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to, const RgTags &rg, int rating)
 {
+    DBUG;
     Q_UNUSED(rg)
     bool changed=false;
 
@@ -1090,6 +1112,7 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
 
 static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, QImage *img, QString *lyrics, int *rating)
 {
+    DBUG << (char *)(song ? "songs" : "") << (char *)(rg ? "rg" : "") << (char *)(img ? "img" : "") << (char *)(lyrics ? "lyrics" : "") << (char *)(rating ? "rating" : "");
     TagLib::Tag *tag=fileref.tag();
     if (song) {
         song->title=tString2QString(tag->title());
@@ -1129,11 +1152,6 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
     } else if (TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file())) {
         if (file->xiphComment()) {
             readVorbisCommentTags(file->xiphComment(), song, rg, img, lyrics, rating);
-            #if TAGLIB_VERSION >= CANTATA_MAKE_VERSION(1,7,0)
-            if (img && img->isNull()) {
-                readFlacPicture(file->pictureList(), img);
-            }
-            #endif
         } else if (file->ID3v2Tag() && !file->ID3v2Tag()->isEmpty()) {
             readID3v2Tags(file->ID3v2Tag(), song, rg, img, lyrics, rating);
 //         } else if (file->ID3v1Tag()) {

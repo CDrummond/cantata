@@ -57,8 +57,8 @@
 41. Sort folder view items, as MPD does not seem to sort playlist names.
 42. In folder view, allow to add folders and files at the same time.
 43. Support dragging m3u and m3u8 playlists onto playqueue.
-44. Add root and home local browse models, allowing to add local files to play
-    queue.
+44. Fix reading embedded covers from OGG files.
+45. Add root and home local browse models, allowing to add local files to play
 
 2.2.0
 -----

@@ -1152,6 +1152,7 @@ bool TagEditor::applyUpdates()
 
     int count=0;
     bool someTimedout=false;
+    bool isLocal=false;
     for (int idx: editedIndexes) {
         progress->setValue(progress->value()+1);
 
@@ -1165,6 +1166,9 @@ bool TagEditor::applyUpdates()
         Song orig=original.at(idx);
         Song edit=edited.at(idx);
 
+        if (orig.isLocalFile()) {
+            isLocal = true;
+        }
         if (ratingWidget && orig.rating!=edit.rating && edit.rating<=Song::Rating_Max) {
             emit setRating(orig.file, edit.rating);
         }
@@ -1195,7 +1199,7 @@ bool TagEditor::applyUpdates()
 //                }
             }
             updatedSongs.append(edit);
-            if (!renameFiles && !orig.isLocalFile() && file!=opts.createFilename(edit)) {
+            if (!renameFiles && !isLocal && file!=opts.createFilename(edit)) {
                 renameFiles=true;
             }
             break;
@@ -1228,7 +1232,7 @@ bool TagEditor::applyUpdates()
                 dev->saveCache();
             } else
             #endif
-            {
+            if (!isLocal) {
             //             MusicLibraryModel::self()->removeCache();
                 emit update();
             }

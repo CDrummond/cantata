@@ -163,6 +163,12 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         song.genres[0]=song.displayGenre();
         song.genres[1]=QString();
         original.append(song);
+        if (s.isLocalFile()) {
+            ratingsSupport = false;
+            composerSupport = true;
+            commentSupport = false;
+            baseDir = QString();
+        }
     }
 
     if (original.isEmpty()) {
@@ -1189,7 +1195,7 @@ bool TagEditor::applyUpdates()
 //                }
             }
             updatedSongs.append(edit);
-            if (!renameFiles && file!=opts.createFilename(edit)) {
+            if (!renameFiles && !orig.isLocalFile() && file!=opts.createFilename(edit)) {
                 renameFiles=true;
             }
             break;

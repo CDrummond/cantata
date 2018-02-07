@@ -28,6 +28,7 @@
 #include "widgets/menubutton.h"
 #include "support/monoicon.h"
 #include "support/configuration.h"
+#include "tags/tags.h"
 #include <QDesktopServices>
 
 LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
@@ -51,12 +52,12 @@ LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
     init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu);
 
     view->addAction(CustomActions::self());
-//    #ifdef TAGLIB_FOUND
-//    view->addAction(StdActions::self()->editTagsAction);
+    #ifdef TAGLIB_FOUND
+    view->addAction(StdActions::self()->editTagsAction);
 //    #ifdef ENABLE_REPLAYGAIN_SUPPORT
 //    view->addAction(StdActions::self()->replaygainAction);
 //    #endif
-//    #endif // TAGLIB_FOUND
+    #endif // TAGLIB_FOUND
     view->addAction(browseAction);
     view->closeSearch();
     view->alwaysShowHeader();
@@ -108,7 +109,7 @@ QList<Song> LocalFolderBrowsePage::selectedSongs(bool allowPlaylists) const
         if (!allowPlaylists && MPDConnection::isPlaylist(path)) {
             continue;
         }
-        Song s;
+        Song s = Tags::read(path);
         s.file = path;
         s.type = Song::LocalFile;
         songs.append(s);
@@ -140,14 +141,14 @@ void LocalFolderBrowsePage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enable=selected.count()>0;
-    bool trackSelected=false;
     bool folderSelected=false;
+    int numSelectedTracks=0;
 
     for (const QModelIndex &idx: selected) {
         if (model->fileInfo(proxy->mapToSource(idx)).isDir()) {
             folderSelected=true;
         } else {
-            trackSelected=true;
+            numSelectedTracks++;
         }
     }
     StdActions::self()->enableAddToPlayQueue(enable);
@@ -155,12 +156,12 @@ void LocalFolderBrowsePage::controlActions()
 
     CustomActions::self()->setEnabled(false);
 
-    bool fileActions = trackSelected && !folderSelected;
+    bool fileActions = numSelectedTracks>0 && numSelectedTracks<=250 && !folderSelected;
     CustomActions::self()->setEnabled(fileActions);
-//    #ifdef TAGLIB_FOUND
-//    StdActions::self()->editTagsAction->setEnabled(fileActions);
+    #ifdef TAGLIB_FOUND
+    StdActions::self()->editTagsAction->setEnabled(fileActions);
 //    #ifdef ENABLE_REPLAYGAIN_SUPPORT
 //    StdActions::self()->replaygainAction->setEnabled(fileActions);
 //    #endif
-//    #endif // TAGLIB_FOUND
+    #endif // TAGLIB_FOUND
 }

@@ -191,6 +191,9 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi, bool autoScan)
     enableButton(User1, origSongs.count());
     view->clear();
     for (const Song &s: origSongs) {
+        if (s.isLocalFile()) {
+            base = QString();
+        }
         new QTreeWidgetItem(view, QStringList() << s.albumArtist() << s.album << s.title);
     }
     Dialog::show();

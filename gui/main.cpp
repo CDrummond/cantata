@@ -178,7 +178,7 @@ static void installDebugMessageHandler(const QString &cmdLine)
         } else if (QLatin1String("to-file")==area) {
             debugToFile=true;
         }
-        #ifdef ENABLE_TAGLIB
+        #ifdef TAGLIB_FOUND
         else if (QLatin1String("tags")==area) {
             TagHelperIface::enableDebug();
         }

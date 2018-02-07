@@ -24,7 +24,6 @@
 #cmakedefine ENABLE_REMOTE_DEVICES 1
 #cmakedefine COMPLEX_TAGLIB_FILENAME 1
 #cmakedefine TAGLIB_FOUND 1
-#cmakedefine TAGLIB_EXTRAS_FOUND 1
 #cmakedefine TAGLIB_ASF_FOUND
 #cmakedefine TAGLIB_MP4_FOUND 1
 #cmakedefine TAGLIB_OPUS_FOUND 1

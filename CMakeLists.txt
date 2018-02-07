@@ -41,7 +41,6 @@ include(CPack)
 include(MacroLogFeature)
 
 option(ENABLE_TAGLIB "Enable TagLib library (required for tag editing, replaygain calculation, device support, etc)" ON)
-option(ENABLE_TAGLIB_EXTRAS "Enable TagLib-Extras library (used by tag editing, replaygain calculation, device support, etc)" ON)
 option(ENABLE_HTTP_STREAM_PLAYBACK "Enable playback of MPD HTTP streams (LibVLC or QtMultimedia)" ON)
 option(ENABLE_FFMPEG "Enable ffmpeg/libav libraries (required for replaygain calculation)" ON)
 option(ENABLE_MPG123 "Enable mpg123 libraries (required for replaygain calculation)" ON)
@@ -183,21 +182,10 @@ if (TAGLIB_FOUND)
     set(CMAKE_REQUIRED_INCLUDES)
     set(CMAKE_REQUIRED_LIBRARIES)
 
-    set(TAGLIB-EXTRAS_MIN_VERSION "1.0")
-    if (ENABLE_TAGLIB_EXTRAS)
-        find_package(Taglib-Extras)
-        macro_log_feature(TAGLIB-EXTRAS_FOUND "TagLib-Extras" "Tag editor, file organiser, etc." "http://taglib.github.io/")
-    endif ()
-    set(TAGLIB_EXTRAS_FOUND ${TAGLIB-EXTRAS_FOUND}) # we need a c-compatible name for the include file
-
     #include(CheckTagLibFileName)
     #check_taglib_filename(COMPLEX_TAGLIB_FILENAME)
 
     add_definitions(${TAGLIB_CFLAGS})
-    if (TAGLIB-EXTRAS_FOUND)
-        include_directories(${TAGLIB-EXTRAS_INCLUDES})
-        add_definitions(${TAGLIB-EXTRAS_CFLAGS})
-    endif ()
 
     if (ENABLE_FFMPEG)
         find_package(FFMPEG)

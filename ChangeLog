@@ -59,6 +59,7 @@
 43. Support dragging m3u and m3u8 playlists onto playqueue.
 44. Fix reading embedded covers from OGG files.
 45. Add root and home local browse models, allowing to add local files to play
+    queue.
 
 2.2.0
 -----

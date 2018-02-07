@@ -211,6 +211,7 @@ struct Song
     bool setAlbumArtist();
     static QString capitalize(const QString &s);
     bool capitalise();
+    bool isLocalFile() const { return LocalFile==type; }
     bool isStream() const { return Stream==type || CantataStream==type; }
     bool isStandardStream() const { return Stream==type && !isDlnaStream(); }
     bool isDlnaStream() const { return Stream==type && !albumArtist().isEmpty() && !album.isEmpty() && track>0; }

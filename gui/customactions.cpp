@@ -136,7 +136,7 @@ void CustomActions::doAction()
                 return;
             }
 
-            if (Song::LocalFile != songs.at(0).type) {
+            if (!songs.at(0).isLocalFile()) {
                 if (!MPDConnection::self()->getDetails().dirReadable) {
                     DBUG << "MPD dir is not readable";
                     return;

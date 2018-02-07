@@ -54,9 +54,9 @@ LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
     view->addAction(CustomActions::self());
     #ifdef TAGLIB_FOUND
     view->addAction(StdActions::self()->editTagsAction);
-//    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-//    view->addAction(StdActions::self()->replaygainAction);
-//    #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    view->addAction(StdActions::self()->replaygainAction);
+    #endif
     #endif // TAGLIB_FOUND
     view->addAction(browseAction);
     view->closeSearch();
@@ -142,11 +142,15 @@ void LocalFolderBrowsePage::controlActions()
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enable=selected.count()>0;
     bool folderSelected=false;
+    bool playlistSelected=false;
     int numSelectedTracks=0;
 
     for (const QModelIndex &idx: selected) {
-        if (model->fileInfo(proxy->mapToSource(idx)).isDir()) {
+        QFileInfo info = model->fileInfo(proxy->mapToSource(idx));
+        if (info.isDir()) {
             folderSelected=true;
+        } else if (MPDConnection::isPlaylist(info.fileName())) {
+            playlistSelected = true;
         } else {
             numSelectedTracks++;
         }
@@ -156,12 +160,11 @@ void LocalFolderBrowsePage::controlActions()
 
     CustomActions::self()->setEnabled(false);
 
-    bool fileActions = numSelectedTracks>0 && numSelectedTracks<=250 && !folderSelected;
-    CustomActions::self()->setEnabled(fileActions);
+    CustomActions::self()->setEnabled(numSelectedTracks>0 && !folderSelected);
     #ifdef TAGLIB_FOUND
-    StdActions::self()->editTagsAction->setEnabled(fileActions);
-//    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-//    StdActions::self()->replaygainAction->setEnabled(fileActions);
-//    #endif
+    StdActions::self()->editTagsAction->setEnabled(!playlistSelected && numSelectedTracks>0 && numSelectedTracks<=250 && !folderSelected);
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    StdActions::self()->replaygainAction->setEnabled(StdActions::self()->editTagsAction->isEnabled());
+    #endif
     #endif // TAGLIB_FOUND
 }

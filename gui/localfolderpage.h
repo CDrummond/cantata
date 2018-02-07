@@ -40,6 +40,7 @@ public:
     QString title() const { return model->title(); }
     QString descr() const { return model->descr(); }
     const Icon & icon() const { return model->icon(); }
+    QList<Song> selectedSongs(bool allowPlaylists=false) const override;
 
 private:
     QString configGroup() const;

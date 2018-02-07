@@ -82,7 +82,8 @@ struct Song
         Stream          = 3,
         CantataStream   = 4,
         Cdda            = 5,
-        OnlineSvrTrack  = 6
+        OnlineSvrTrack  = 6,
+        LocalFile       = 7
     };
 
     enum Blank {
@@ -105,8 +106,8 @@ struct Song
     quint16 time;
     quint16 track;
     quint16 origYear;
-    quint16 year : 12;
-    mutable Type type : 3;
+    quint16 year;
+    mutable Type type : 7;
     mutable bool guessed : 1;
     qint32 id;
     qint32 size;

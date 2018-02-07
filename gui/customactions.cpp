@@ -127,17 +127,21 @@ void CustomActions::doAction()
         DBUG << "No action";
         return;
     }
-    if (!MPDConnection::self()->getDetails().dirReadable) {
-        DBUG << "MPD dir is not readable";
-        return;
-    }
-    QString mpdDir=MPDConnection::self()->getDetails().dir;
+    QString mpdDir;
     for (const Command &cmd: commands) {
         if (cmd.act==act) {
             QList<Song> songs=mainWindow->selectedSongs();
             if (songs.isEmpty()) {
                 DBUG << "No selected songs?";
                 return;
+            }
+
+            if (Song::LocalFile != songs.at(0).type) {
+                if (!MPDConnection::self()->getDetails().dirReadable) {
+                    DBUG << "MPD dir is not readable";
+                    return;
+                }
+                mpdDir=MPDConnection::self()->getDetails().dir;
             }
             QStringList items;
             if (cmd.cmd.contains("%d")) {

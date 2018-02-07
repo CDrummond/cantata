@@ -27,20 +27,28 @@
 #include "models/playqueuemodel.h"
 #include "widgets/menubutton.h"
 #include "support/monoicon.h"
+#include "support/configuration.h"
 #include <QDesktopServices>
 
 LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
     : SinglePageWidget(p)
+    , isHomeFolder(isHome)
 {
     model = isHome ? new LocalBrowseModel(QLatin1String("localbrowsehome"), tr("Home"), tr("Browse files in your home folder"), ":home.svg", this)
                    : new LocalBrowseModel(QLatin1String("localbrowseroot"), tr("Root"), tr("Browse files on your computer"), ":hdd.svg", this);
     proxy = new FileSystemProxyModel(model);
+    view->setModel(proxy);
     browseAction = new Action(MonoIcon::icon(FontAwesome::folderopen, Utils::monoIconColor()), tr("Open In File Manager"), this);
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
     connect(browseAction, SIGNAL(triggered()), this, SLOT(openFileManager()));
-    init(ReplacePlayQueue|AppendToPlayQueue);
+    Configuration config(configGroup());
+    view->load(config);
+    MenuButton *menu=new MenuButton(this);
+    menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
+                                                               << ItemView::Mode_DetailedTree << ItemView::Mode_List));
+    init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu);
 
 //    view->addAction(CustomActions::self());
 //    #ifdef TAGLIB_FOUND
@@ -50,16 +58,28 @@ LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
 //    #endif
 //    #endif // TAGLIB_FOUND
     view->addAction(browseAction);
-    view->setModel(proxy);
     view->closeSearch();
     view->alwaysShowHeader();
-    view->view()->setRootIndex(proxy->mapFromSource(model->setRootPath(isHome ? QDir::homePath() : "/")));
+    setView(view->viewMode());
 }
 
 LocalFolderBrowsePage::~LocalFolderBrowsePage()
 {
+    Configuration config(configGroup());
+    view->save(config);
     model->deleteLater();
     model=nullptr;
+}
+
+QString LocalFolderBrowsePage::configGroup() const
+{
+    return isHomeFolder ? QLatin1String("localbrowsehome") : QLatin1String("localbrowseroot");
+}
+
+void LocalFolderBrowsePage::setView(int v)
+{
+    SinglePageWidget::setView(v);
+    view->view()->setRootIndex(proxy->mapFromSource(model->setRootPath(isHomeFolder ? QDir::homePath() : "/")));
 }
 
 void LocalFolderBrowsePage::headerClicked(int level)

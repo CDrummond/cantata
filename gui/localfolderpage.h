@@ -42,6 +42,8 @@ public:
     const Icon & icon() const { return model->icon(); }
 
 private:
+    QString configGroup() const;
+    void setView(int v) override;
     void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false) override;
     void controlActions() override;
 
@@ -51,6 +53,7 @@ private Q_SLOTS:
     void openFileManager();
 
 private:
+    bool isHomeFolder;
     LocalBrowseModel *model;
     FileSystemProxyModel *proxy;
     Action *browseAction;

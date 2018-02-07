@@ -75,7 +75,7 @@ LocalBrowseModel::LocalBrowseModel(const QString &name, const QString &title, co
 
 QVariant LocalBrowseModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid()) {
+    if (!index.isValid() || fileInfo(index).absoluteFilePath()==rootPath()) {
         switch (role) {
         case Cantata::Role_TitleText:
             return title();
@@ -94,6 +94,12 @@ QVariant LocalBrowseModel::data(const QModelIndex &index, int role) const
                 : MPDConnection::isPlaylist(info.fileName())
                     ? Icons::self()->playlistListIcon
                     : Icons::self()->audioListIcon;
+    }
+    case Cantata::Role_TitleText:
+        return QFileSystemModel::data(index, Qt::DisplayRole);
+    case Cantata::Role_SubText: {
+        QFileInfo info = fileInfo(index);
+        return info.isDir() ? QString() : Utils::formatByteSize(info.size());
     }
     case Cantata::Role_Actions: {
         QVariant v;

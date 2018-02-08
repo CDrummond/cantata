@@ -96,7 +96,20 @@ static bool checkExtension(const QString &file, const QSet<QString> &exts = Play
     return pos>0 ? exts.contains(file.mid(pos+1).toLower()) : false;
 }
 
-static QStringList expandPlaylist(const QString &playlist)
+static QString fileUrl(const QString &file, bool useServer, bool useLocal)
+{
+    if (useServer) {
+        QByteArray path = HttpServer::self()->encodeUrl(file);
+        if (!path.isEmpty()) {
+            return path;
+        }
+    } else if (useLocal && !file.startsWith(QLatin1String("/media/"))) {
+        return QLatin1String("file://")+file;
+    }
+    return QString();
+}
+
+static QStringList expandPlaylist(const QString &playlist, bool useServer, bool useLocal, const QSet<QString> &handlers)
 {
     QStringList files;
     QFile f(playlist);
@@ -107,12 +120,25 @@ static QStringList expandPlaylist(const QString &playlist)
         while (!in.atEnd()) {
             QString line = in.readLine();
             if (!line.startsWith(QLatin1Char('#'))) {
-                if (checkExtension(line)) {
-                    QString path = dir.filePath(line);
-                    if (QFile::exists(path)) { // Relative
-                        files.append(path);
-                    } else if (QFile::exists(line)) { // Absolute
-                        files.append(line);
+                int pos = line.indexOf(QLatin1String("://"));
+                QString handler = pos>0 ? line.left(pos+3).toLower() : QString();
+                if (!handler.isEmpty() && (QLatin1String("http://")==handler || QLatin1String("https://")==handler)) {
+                    // Radio stream?
+                    files.append(StreamsModel::constPrefix+line);
+                } else if (handlers.contains(handler)) {
+                    files.append(line);
+                } else {
+                    if (checkExtension(line)) {
+                        QString path = dir.filePath(line);
+                        QString fUrl;
+                        if (QFile::exists(path)) { // Relative
+                            fUrl=fileUrl(path, useServer, useLocal);
+                        } else if (QFile::exists(line)) { // Absolute
+                            fUrl=fileUrl(line, useServer, useLocal);
+                        }
+                        if (!fUrl.isEmpty()) {
+                            files.append(fUrl);
+                        }
                     }
                 }
             }
@@ -122,17 +148,20 @@ static QStringList expandPlaylist(const QString &playlist)
     return files;
 }
 
-static QStringList listFiles(const QDir &d, int level=5)
+static QStringList listFiles(const QDir &d, bool useServer, bool useLocal, const QSet<QString> &handlers, int level=5)
 {
     QStringList files;
     if (level) {
         for (const auto &f: d.entryInfoList(QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot|QDir::NoSymLinks)) {
             if (f.isDir()) {
-                files += listFiles(QDir(f.absoluteFilePath()), level-1);
+                files += listFiles(QDir(f.absoluteFilePath()), useServer, useLocal, handlers, level-1);
             } else if (checkExtension(f.fileName(), constPlaylists)) {
-                files += expandPlaylist(f.absoluteFilePath());
+                files += expandPlaylist(f.absoluteFilePath(), useServer, useLocal, handlers);
             } else if (checkExtension(f.fileName())) {
-                files.append(f.absoluteFilePath());
+                QString fUrl=fileUrl(f.absoluteFilePath(), useServer, useLocal);
+                if (!fUrl.isEmpty()) {
+                    files.append(fUrl);
+                }
             }
         }
     }
@@ -143,6 +172,8 @@ static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
 {
     QStringList useable;
     bool useServer = HttpServer::self()->isAlive();
+    bool useLocal = MPDConnection::self()->localFilePlaybackSupported();
+    QSet<QString> handlers = MPDConnection::self()->urlHandlers();
     for (const auto &path: urls) {
         QUrl u=percentEncoded ? QUrl::fromPercentEncoding(path.toUtf8()) : QUrl(path);
         #if defined ENABLE_DEVICES_SUPPORT && (defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND)
@@ -154,25 +185,16 @@ static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
         if (QLatin1String("http")==u.scheme()) {
             useable.append(u.toString());
         } else if (u.scheme().isEmpty() || QLatin1String("file")==u.scheme()) {
-            QStringList files;
             QDir d(u.path());
 
             if (d.exists()) {
-                files = listFiles(d);
+                useable = listFiles(d, useServer, useLocal, handlers);
             } else if (checkExtension(u.path(), constPlaylists)) {
-                files += expandPlaylist(u.path());
+                useable += expandPlaylist(u.path(), useServer, useLocal, handlers);
             } else if (checkExtension(u.path())) {
-                files.append(u.path());
-            }
-
-            for (const auto &file : files) {
-                if (useServer) {
-                    QByteArray path = HttpServer::self()->encodeUrl(file);
-                    if (!path.isEmpty()) {
-                        useable.append(path);
-                    }
-                } else if (MPDConnection::self()->localFilePlaybackSupported() && !file.startsWith(QLatin1String("/media/"))) {
-                    useable.append(QLatin1String("file://")+file);
+                QString fUrl = fileUrl(u.path(), useServer, useLocal);
+                if (!fUrl.isEmpty()) {
+                    useable.append(fUrl);
                 }
             }
         }
@@ -772,7 +794,6 @@ void PlayQueueModel::addItems(const QStringList &items, int row, int action, qui
 
     for (const QString &f: items) {
         QUrl u(f);
-
         if (u.scheme().startsWith(StreamsModel::constPrefix)) {
             haveRadioStream=true;
             break;

@@ -48,12 +48,12 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QProxyStyle>
+#include <QScrollBar>
 #include <QDebug>
 
 #define COVERS_DBUG if (Covers::verboseDebugEnabled()) qWarning() << metaObject()->className() << QThread::currentThread()->objectName() << __FUNCTION__
 
-// Uncomment to have covers try to fill space. Disabled as causes flashing at the moment!
-//#define RESPONSIVE_LAYOUT
+#define RESPONSIVE_LAYOUT
 static int detailedViewDecorationSize=22;
 static int simpleViewDecorationSize=16;
 static int listCoverSize=22;
@@ -179,7 +179,9 @@ public:
         if (sbarSpacing<0) {
             viewWidth-=3*viewGap;
         } else {
-            viewWidth-=sbarSpacing;
+            QScrollBar *sb=view->verticalScrollBar();
+            int sbarWidth=sb && sb->isVisible() ? 0 : view->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+            viewWidth-=sbarSpacing+sbarWidth;
         }
 
         int standardWidth = zoomedSize(view, gridCoverSize)+viewGap;

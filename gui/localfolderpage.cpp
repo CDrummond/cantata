@@ -38,12 +38,12 @@ LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
     model = isHome ? new LocalBrowseModel(QLatin1String("localbrowsehome"), tr("Home"), tr("Browse files in your home folder"), ":home.svg", this)
                    : new LocalBrowseModel(QLatin1String("localbrowseroot"), tr("Root"), tr("Browse files on your computer"), ":hdd.svg", this);
     proxy = new FileSystemProxyModel(model);
-    view->setModel(proxy);
     browseAction = new Action(MonoIcon::icon(FontAwesome::folderopen, Utils::monoIconColor()), tr("Open In File Manager"), this);
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
     connect(browseAction, SIGNAL(triggered()), this, SLOT(openFileManager()));
+    view->setModel(proxy);
     Configuration config(configGroup());
     view->load(config);
     MenuButton *menu=new MenuButton(this);
@@ -158,8 +158,7 @@ void LocalFolderBrowsePage::controlActions()
     StdActions::self()->enableAddToPlayQueue(enable);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(false);
 
-    CustomActions::self()->setEnabled(false);
-
+    browseAction->setEnabled(enable && 1==selected.count() && folderSelected);
     CustomActions::self()->setEnabled(numSelectedTracks>0 && !folderSelected);
     #ifdef TAGLIB_FOUND
     StdActions::self()->editTagsAction->setEnabled(!playlistSelected && numSelectedTracks>0 && numSelectedTracks<=250 && !folderSelected);

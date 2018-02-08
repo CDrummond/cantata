@@ -39,9 +39,10 @@ class VolumeSlider : public QSlider
 public:
     static QColor clampColor(const QColor &col);
 
-    VolumeSlider(QWidget *p=nullptr);
+    VolumeSlider(bool isMpd, QWidget *p=nullptr);
     ~VolumeSlider() override { }
 
+    void setActive(bool a) { isActive=a; }
     void initActions();
     void setFadingStop(bool f) { fadingStop=f; }
     void setColor(QColor col);
@@ -51,7 +52,12 @@ public:
     void contextMenuEvent(QContextMenuEvent *ev) override;
     void wheelEvent(QWheelEvent *ev) override;
 
+Q_SIGNALS:
+    void stateChanged();
+    void toggleMute();
+
 private Q_SLOTS:
+    void muteToggled();
     void updateMpdStatus();
     void increaseVolume();
     void decreaseVolume();
@@ -61,6 +67,8 @@ private:
     QPixmap generatePixmap(bool filled);
 
 private:
+    bool isMpdVol;
+    bool isActive;
     int lineWidth;
     bool down;
     bool fadingStop;

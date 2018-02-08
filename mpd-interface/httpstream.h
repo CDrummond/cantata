@@ -40,12 +40,18 @@ class HttpStream : public QObject
     
 public:
     static void enableDebug();
+    static HttpStream * self();
 
-    HttpStream(QObject *p);
+    HttpStream(QObject *p=nullptr);
     ~HttpStream() override { }
     
+Q_SIGNALS:
+    void isEnabled(bool en);
+
 public Q_SLOTS:
     void setEnabled(bool e);
+    void setVolume(int vol);
+    void toggleMute();
     
 private Q_SLOTS:
     void updateStatus();

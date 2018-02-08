@@ -25,6 +25,7 @@
 #include "mpdconnection.h"
 #include "mpdstatus.h"
 #include "gui/settings.h"
+#include "support/globalstatic.h"
 #ifndef LIBVLC_FOUND
 #include <QtMultimedia/QMediaPlayer>
 #endif
@@ -40,6 +41,8 @@ void HttpStream::enableDebug()
 {
     debugEnabled=true;
 }
+
+GLOBAL_STATIC(HttpStream, instance)
 
 HttpStream::HttpStream(QObject *p)
     : QObject(p)
@@ -73,6 +76,17 @@ void HttpStream::setEnabled(bool e)
             #endif
         }
     }
+    emit isEnabled(enabled);
+}
+
+void HttpStream::setVolume(int vol)
+{
+    Q_UNUSED(vol)
+}
+
+void HttpStream::toggleMute()
+{
+
 }
 
 void HttpStream::streamUrl(const QString &url)

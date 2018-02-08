@@ -47,6 +47,7 @@ private:
     void setView(int v) override;
     void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false) override;
     void controlActions() override;
+    void focusSearch() override { }
 
 private Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);

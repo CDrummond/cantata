@@ -207,19 +207,19 @@ void SearchPage::setSearchCategories()
     state=newState;
     QList<SearchWidget::Category> categories;
 
-    categories << SearchWidget::Category(tr("Artist:"), QLatin1String("artist"));
+    categories << SearchWidget::Category(tr("Artist:"), QLatin1String("artist"), tr("Search for songs by artist."));
 
     if (state&State_ComposerSupported) {
-        categories << SearchWidget::Category(tr("Composer:"), QLatin1String("composer"));
+        categories << SearchWidget::Category(tr("Composer:"), QLatin1String("composer"), tr("Search for songs by composer."));
     }
     if (state&State_PerformerSupported) {
-        categories << SearchWidget::Category(tr("Performer:"), QLatin1String("performer"));
+        categories << SearchWidget::Category(tr("Performer:"), QLatin1String("performer"), tr("Search for songs by performer."));
     }
-    categories << SearchWidget::Category(tr("Album:"), QLatin1String("album"))
-               << SearchWidget::Category(tr("Title:"), QLatin1String("title"))
-               << SearchWidget::Category(tr("Genre:"), QLatin1String("genre"));
+    categories << SearchWidget::Category(tr("Album:"), QLatin1String("album"), tr("Search for songs by album."))
+               << SearchWidget::Category(tr("Title:"), QLatin1String("title"), tr("Search for songs by title."))
+               << SearchWidget::Category(tr("Genre:"), QLatin1String("genre"), tr("Search for songs by genre."));
     if (state&State_CommmentSupported) {
-        categories << SearchWidget::Category(tr("Comment:"), QLatin1String("comment"));
+        categories << SearchWidget::Category(tr("Comment:"), QLatin1String("comment"), tr("Search for songs containing comment."));
     }
     categories << SearchWidget::Category(tr("Date:"), QLatin1String("date"),
                                          tr("Find songs be searching the 'Date' tag.<br/><br/>Usually just entering the year should suffice."));
@@ -232,8 +232,8 @@ void SearchPage::setSearchCategories()
                                              tr("Enter date (YYYY/MM/DD - e.g. 2015/01/31) to search for files modified since that date.<br/><br>"
                                                   "Or enter a number of days to find files that were modified in the previous number of days."));
     }
-    categories << SearchWidget::Category(tr("File:"), QLatin1String("file"))
-               << SearchWidget::Category(tr("Any:"), QLatin1String("any"));
+    categories << SearchWidget::Category(tr("File:"), QLatin1String("file"), tr("Search for songs by filename or path."))
+               << SearchWidget::Category(tr("Any:"), QLatin1String("any"), tr("Search got songs by any matching metadata."));
     view->setSearchCategories(categories);
 }
 

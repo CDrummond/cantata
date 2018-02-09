@@ -60,6 +60,7 @@
 44. Fix reading embedded covers from OGG files.
 45. Add root and home local browse models, allowing to add local files to play
     queue.
+46. Add volume control for HTTP stream playback.
 
 2.2.0
 -----

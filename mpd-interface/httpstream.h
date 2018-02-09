@@ -44,6 +44,7 @@ public:
 
     HttpStream(QObject *p=nullptr);
     ~HttpStream() override { }
+    bool isMuted() { return true; }
     
 Q_SIGNALS:
     void isEnabled(bool en);

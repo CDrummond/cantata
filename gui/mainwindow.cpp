@@ -95,7 +95,7 @@
 #include "widgets/groupedview.h"
 #include "widgets/actionitemdelegate.h"
 #include "widgets/icons.h"
-#include "widgets/volumeslider.h"
+#include "widgets/volumecontrol.h"
 #include "support/action.h"
 #include "support/actioncollection.h"
 #include "stdactions.h"
@@ -137,9 +137,6 @@ MainWindow::MainWindow(QWidget *parent)
     , lastState(MPDState_Inactive)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    , httpStream(new HttpStream(this))
-    #endif
     , currentPage(nullptr)
     #ifdef QT_QTDBUS_FOUND
     , mpris(nullptr)
@@ -808,7 +805,7 @@ void MainWindow::init()
     connect(singlePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setSingle(bool)));
     connect(consumePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setConsume(bool)));
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    connect(streamPlayAction, SIGNAL(triggered(bool)), httpStream, SLOT(setEnabled(bool)));
+    connect(streamPlayAction, SIGNAL(triggered(bool)), HttpStream::self(), SLOT(setEnabled(bool)));
     connect(MPDConnection::self(), SIGNAL(streamUrl(QString)), SLOT(streamUrl(QString)));
     #endif
     connect(playQueueSearchWidget, SIGNAL(returnPressed()), this, SLOT(searchPlayQueue()));
@@ -912,6 +909,9 @@ MainWindow::~MainWindow()
     if (showMenubarAction) {
         Settings::self()->saveShowMenubar(showMenubarAction->isChecked());
     }
+    #endif
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    HttpStream::self()->save();
     #endif
     bool hadCantataStreams=PlayQueueModel::self()->removeCantataStreams();
     Settings::self()->saveShowFullScreen(fullScreenAction->isChecked());
@@ -1160,7 +1160,7 @@ void MainWindow::streamUrl(const QString &u)
     streamPlayAction->setVisible(!u.isEmpty());
     streamPlayAction->setChecked(streamPlayAction->isVisible() && Settings::self()->playStream());
     streamPlayButton->setVisible(!u.isEmpty());
-    httpStream->setEnabled(streamPlayAction->isChecked());
+    HttpStream::self()->setEnabled(streamPlayAction->isChecked());
     leftSpacer->setVisible(loveTrack->isVisible() || scrobblingStatus->isVisible() || streamPlayButton->isVisible());
     #else
     Q_UNUSED(u)

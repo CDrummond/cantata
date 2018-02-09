@@ -24,6 +24,7 @@
 #include "volumeslider.h"
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdstatus.h"
+#include "mpd-interface/httpstream.h"
 #include "support/action.h"
 #include "support/actioncollection.h"
 #include "gui/stdactions.h"
@@ -58,15 +59,15 @@ public:
     }
 };
 
-
 static int widthStep=4;
 static int constHeightStep=2;
 
-VolumeSlider::VolumeSlider(QWidget *p)
+VolumeSlider::VolumeSlider(bool isMpd, QWidget *p)
     : QSlider(p)
+    , isMpdVol(isMpd)
+    , isActive(isMpd)
     , lineWidth(0)
     , down(false)
-    , fadingStop(false)
     , muteAction(nullptr)
     , menu(nullptr)
 {
@@ -97,18 +98,26 @@ void VolumeSlider::initActions()
     }
     muteAction = ActionCollection::get()->createAction("mute", tr("Mute"));
     addAction(muteAction);
-    connect(muteAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(toggleMute()));
-    connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateMpdStatus()));
+    connect(muteAction, SIGNAL(triggered()), this, SLOT(muteToggled()));
     connect(StdActions::self()->increaseVolumeAction, SIGNAL(triggered()), this, SLOT(increaseVolume()));
     connect(StdActions::self()->decreaseVolumeAction, SIGNAL(triggered()), this, SLOT(decreaseVolume()));
-    connect(this, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
+    if (isMpdVol) {
+        connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
+        connect(this, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
+        connect(this, SIGNAL(toggleMute()), MPDConnection::self(), SLOT(toggleMute()));
+    } else {
+        connect(this, SIGNAL(valueChanged(int)), HttpStream::self(), SLOT(setVolume(int)));
+        connect(this, SIGNAL(toggleMute()), HttpStream::self(), SLOT(toggleMute()));
+        connect(HttpStream::self(), SIGNAL(update()), this, SLOT(updateStatus()));
+        connect(HttpStream::self(), SIGNAL(isEnabled(bool)), this, SLOT(setEnabled(bool)));
+        connect(HttpStream::self(), SIGNAL(isEnabled(bool)), this, SIGNAL(stateChanged()));
+    }
     addAction(StdActions::self()->increaseVolumeAction);
     addAction(StdActions::self()->decreaseVolumeAction);
 }
 
-void VolumeSlider::setColor(QColor col)
+void VolumeSlider::setColor(const QColor &col)
 {
-    col=Utils::clampColor(col);
     if (col!=textCol) {
         textCol=col;
         generatePixmaps();
@@ -119,7 +128,7 @@ void VolumeSlider::paintEvent(QPaintEvent *)
 {
     bool reverse=isRightToLeft();
     QPainter p(this);
-    bool muted=MPDConnection::self()->isMuted();
+    bool muted = isMpdVol ? MPDConnection::self()->isMuted() : HttpStream::self()->isMuted();
     if (muted || !isEnabled()) {
         p.setOpacity(0.25);
     }
@@ -205,7 +214,8 @@ void VolumeSlider::contextMenuEvent(QContextMenuEvent *ev)
         }
     }
 
-    muteMenuAction->setText(MPDConnection::self()->isMuted() ? tr("Unmute") : tr("Mute"));
+    bool muted= isMpdVol ? MPDConnection::self()->isMuted() : HttpStream::self()->isMuted();
+    muteMenuAction->setText(muted ? tr("Unmute") : tr("Mute"));
     QAction *ret = menu->exec(mapToGlobal(ev->pos()));
     if (ret) {
         int val=ret->property(constValProp).toInt();
@@ -232,13 +242,16 @@ void VolumeSlider::wheelEvent(QWheelEvent *ev)
     }
 }
 
-void VolumeSlider::updateMpdStatus()
+void VolumeSlider::muteToggled()
 {
-    if (fadingStop) {
-        return;
+    if (isActive) {
+        emit toggleMute();
     }
+}
 
-    int volume=MPDStatus::self()->volume();
+void VolumeSlider::updateStatus()
+{
+    int volume=isMpdVol ? MPDStatus::self()->volume() : HttpStream::self()->volume();
 
     blockSignals(true);
     if (volume<0) {
@@ -246,15 +259,15 @@ void VolumeSlider::updateMpdStatus()
     } else {
         int unmuteVolume=-1;
         if (0==volume) {
-            unmuteVolume=MPDConnection::self()->unmuteVolume();
+            unmuteVolume=isMpdVol ? MPDConnection::self()->unmuteVolume() : HttpStream::self()->unmuteVolume();
             if (unmuteVolume>0) {
                 volume=unmuteVolume;
             }
         }
-        setEnabled(true);
         setToolTip(unmuteVolume>0 ? tr("Volume %1% (Muted)").arg(volume) : tr("Volume %1%").arg(volume));
         setValue(volume);
     }
+    bool wasEnabled=isEnabled();
     setEnabled(volume>=0);
     setVisible(volume>=0);
     update();
@@ -262,16 +275,23 @@ void VolumeSlider::updateMpdStatus()
     StdActions::self()->increaseVolumeAction->setEnabled(isEnabled());
     StdActions::self()->decreaseVolumeAction->setEnabled(isEnabled());
     blockSignals(false);
+    if (isEnabled()!=wasEnabled) {
+        emit stateChanged();
+    }
 }
 
 void VolumeSlider::increaseVolume()
 {
-    triggerAction(QAbstractSlider::SliderPageStepAdd);
+    if (isActive) {
+        triggerAction(QAbstractSlider::SliderPageStepAdd);
+    }
 }
 
 void VolumeSlider::decreaseVolume()
 {
-    triggerAction(QAbstractSlider::SliderPageStepSub);
+    if (isActive) {
+        triggerAction(QAbstractSlider::SliderPageStepSub);
+    }
 }
 
 void VolumeSlider::generatePixmaps()

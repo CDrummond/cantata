@@ -61,7 +61,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="VolumeSlider" name="volumeSlider"/>
+       <widget class="VolumeControl" name="volumeSlider"/>
       </item>
       <item>
        <spacer name="volumeSliderSpacer">
@@ -361,9 +361,9 @@
    <header>widgets/coverwidget.h</header>
   </customwidget>
   <customwidget>
-   <class>VolumeSlider</class>
+   <class>VolumeControl</class>
    <extends>QSlider</extends>
-   <header>widgets/volumeslider.h</header>
+   <header>widgets/volumecontrol.h</header>
   </customwidget>
   <customwidget>
    <class>ScrobblingStatus</class>

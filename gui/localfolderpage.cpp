@@ -28,7 +28,9 @@
 #include "widgets/menubutton.h"
 #include "support/monoicon.h"
 #include "support/configuration.h"
+#ifdef TAGLIB_FOUND
 #include "tags/tags.h"
+#endif
 #include <QDesktopServices>
 
 LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
@@ -109,7 +111,12 @@ QList<Song> LocalFolderBrowsePage::selectedSongs(bool allowPlaylists) const
         if (!allowPlaylists && MPDConnection::isPlaylist(path)) {
             continue;
         }
-        Song s = Tags::read(path);
+        Song s;
+
+        #ifdef TAGLIB_FOUND
+        s = Tags::read(path);
+        #endif
+
         s.file = path;
         s.type = Song::LocalFile;
         songs.append(s);

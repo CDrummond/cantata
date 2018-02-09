@@ -23,10 +23,13 @@
 
 #include "volumecontrol.h"
 #include "volumeslider.h"
-#include "widgets/selectorlabel.h"
+#include "selectorlabel.h"
+#include "support/configuration.h"
+#include "support/utils.h"
 #include <QVBoxLayout>
 #include <QStackedWidget>
 #include <QFontMetrics>
+#include <QTimer>
 
 VolumeControl::VolumeControl(QWidget *p)
     : QWidget(p)
@@ -38,37 +41,56 @@ VolumeControl::VolumeControl(QWidget *p)
     stack->addWidget(mpdVol);
     stack->addWidget(httpVol);
     label->ensurePolished();
-    int size = QFontMetrics(label->font()).height()+4;
+    QFont f(Utils::smallFont(label->font()));
+    int size = QFontMetrics(f).height()-2;
+    label->setFont(f);
     label->setFixedHeight(size);
     label->setUseArrow(true);
-    label->addItem(tr("MPD"), "mpd");
-    label->addItem(tr("HTTP"), "http");
+    label->addItem("MPD", "mpd");
+    label->addItem("HTTP", "http");
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setMargin(0);
-    layout->addItem(new QSpacerItem(0, size-2, QSizePolicy::Fixed, QSizePolicy::Fixed));
+    layout->addItem(new QSpacerItem(0, size, QSizePolicy::Fixed, QSizePolicy::Fixed));
     layout->addWidget(stack);
     layout->addWidget(label);
     mpdVol->ensurePolished();
-    setFixedSize(mpdVol->width(), (mpdVol->height()*2)+label->height());
+    setFixedSize(mpdVol->width(), mpdVol->height()+(size*2));
     connect(mpdVol, SIGNAL(stateChanged()), SLOT(stateChanged()));
     connect(httpVol, SIGNAL(stateChanged()), SLOT(stateChanged()));
     mpdVol->setEnabled(true);
     httpVol->setEnabled(false);
     label->setAlignment(Qt::AlignCenter);
+    label->setBold(false);
     stateChanged();
     connect(label, SIGNAL(activated(int)), SLOT(itemSelected(int)));
+    QTimer::singleShot(500, this, SLOT(selectControl()));
 }
 
 VolumeControl::~VolumeControl()
 {
+    Configuration(metaObject()->className()).set("control", label->itemData(stack->currentIndex()));
+}
 
+void VolumeControl::selectControl()
+{
+    QString ctrl = Configuration(metaObject()->className()).get("control", QString());
+    if (!ctrl.isEmpty()) {
+        for (int i=0; i<label->count(); ++i) {
+            if (label->itemData(i) == ctrl) {
+                label->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
 }
 
 void VolumeControl::setColor(const QColor &col)
 {
+    QColor c=Utils::clampColor(col);
     mpdVol->setColor(col);
     httpVol->setColor(col);
+    label->setColor(col);
 }
 
 void VolumeControl::initActions()
@@ -93,6 +115,7 @@ void VolumeControl::stateChanged()
     label->blockSignals(true);
     label->setCurrentIndex(stack->currentIndex());
     label->blockSignals(false);
+    setVisible(mpdVol->isEnabled() || httpVol->isEnabled());
 }
 
 void VolumeControl::itemSelected(int i)

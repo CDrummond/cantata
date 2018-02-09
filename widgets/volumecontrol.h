@@ -43,6 +43,7 @@ public:
     void setPageStep(int step);
 
 private Q_SLOTS:
+    void selectControl();
     void stateChanged();
     void itemSelected(int i);
 

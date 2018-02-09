@@ -130,7 +130,7 @@ void VolumeSlider::paintEvent(QPaintEvent *)
 {
     bool reverse=isRightToLeft();
     QPainter p(this);
-    bool muted=MPDConnection::self()->isMuted();
+    bool muted= isMpdVol ? MPDConnection::self()->isMuted() : HttpStream::self()->isMuted();
     if (muted || !isEnabled()) {
         p.setOpacity(0.25);
     }
@@ -216,7 +216,8 @@ void VolumeSlider::contextMenuEvent(QContextMenuEvent *ev)
         }
     }
 
-    muteMenuAction->setText(MPDConnection::self()->isMuted() ? tr("Unmute") : tr("Mute"));
+    bool muted= isMpdVol ? MPDConnection::self()->isMuted() : HttpStream::self()->isMuted();
+    muteMenuAction->setText(muted ? tr("Unmute") : tr("Mute"));
     QAction *ret = menu->exec(mapToGlobal(ev->pos()));
     if (ret) {
         int val=ret->property(constValProp).toInt();

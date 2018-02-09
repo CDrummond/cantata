@@ -59,7 +59,6 @@ public:
     }
 };
 
-
 static int widthStep=4;
 static int constHeightStep=2;
 
@@ -69,7 +68,6 @@ VolumeSlider::VolumeSlider(bool isMpd, QWidget *p)
     , isActive(isMpd)
     , lineWidth(0)
     , down(false)
-    , fadingStop(false)
     , muteAction(nullptr)
     , menu(nullptr)
 {
@@ -104,12 +102,13 @@ void VolumeSlider::initActions()
     connect(StdActions::self()->increaseVolumeAction, SIGNAL(triggered()), this, SLOT(increaseVolume()));
     connect(StdActions::self()->decreaseVolumeAction, SIGNAL(triggered()), this, SLOT(decreaseVolume()));
     if (isMpdVol) {
-        connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateMpdStatus()));
+        connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
         connect(this, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
         connect(this, SIGNAL(toggleMute()), MPDConnection::self(), SLOT(toggleMute()));
     } else {
         connect(this, SIGNAL(valueChanged(int)), HttpStream::self(), SLOT(setVolume(int)));
         connect(this, SIGNAL(toggleMute()), HttpStream::self(), SLOT(toggleMute()));
+        connect(HttpStream::self(), SIGNAL(update()), this, SLOT(updateStatus()));
         connect(HttpStream::self(), SIGNAL(isEnabled(bool)), this, SLOT(setEnabled(bool)));
         connect(HttpStream::self(), SIGNAL(isEnabled(bool)), this, SIGNAL(stateChanged()));
     }
@@ -117,9 +116,8 @@ void VolumeSlider::initActions()
     addAction(StdActions::self()->decreaseVolumeAction);
 }
 
-void VolumeSlider::setColor(QColor col)
+void VolumeSlider::setColor(const QColor &col)
 {
-    col=Utils::clampColor(col);
     if (col!=textCol) {
         textCol=col;
         generatePixmaps();
@@ -130,7 +128,7 @@ void VolumeSlider::paintEvent(QPaintEvent *)
 {
     bool reverse=isRightToLeft();
     QPainter p(this);
-    bool muted= isMpdVol ? MPDConnection::self()->isMuted() : HttpStream::self()->isMuted();
+    bool muted = isMpdVol ? MPDConnection::self()->isMuted() : HttpStream::self()->isMuted();
     if (muted || !isEnabled()) {
         p.setOpacity(0.25);
     }
@@ -251,13 +249,9 @@ void VolumeSlider::muteToggled()
     }
 }
 
-void VolumeSlider::updateMpdStatus()
+void VolumeSlider::updateStatus()
 {
-    if (fadingStop) {
-        return;
-    }
-
-    int volume=MPDStatus::self()->volume();
+    int volume=isMpdVol ? MPDStatus::self()->volume() : HttpStream::self()->volume();
 
     blockSignals(true);
     if (volume<0) {
@@ -265,7 +259,7 @@ void VolumeSlider::updateMpdStatus()
     } else {
         int unmuteVolume=-1;
         if (0==volume) {
-            unmuteVolume=MPDConnection::self()->unmuteVolume();
+            unmuteVolume=isMpdVol ? MPDConnection::self()->unmuteVolume() : HttpStream::self()->unmuteVolume();
             if (unmuteVolume>0) {
                 volume=unmuteVolume;
             }

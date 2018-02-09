@@ -910,6 +910,9 @@ MainWindow::~MainWindow()
         Settings::self()->saveShowMenubar(showMenubarAction->isChecked());
     }
     #endif
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    HttpStream::self()->save();
+    #endif
     bool hadCantataStreams=PlayQueueModel::self()->removeCantataStreams();
     Settings::self()->saveShowFullScreen(fullScreenAction->isChecked());
     if (!fullScreenAction->isChecked()) {

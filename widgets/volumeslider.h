@@ -44,8 +44,7 @@ public:
 
     void setActive(bool a) { isActive=a; }
     void initActions();
-    void setFadingStop(bool f) { fadingStop=f; }
-    void setColor(QColor col);
+    void setColor(const QColor &col);
     void paintEvent(QPaintEvent *ev) override;
     void mousePressEvent(QMouseEvent *ev) override;
     void mouseReleaseEvent(QMouseEvent *ev) override;
@@ -58,7 +57,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void muteToggled();
-    void updateMpdStatus();
+    void updateStatus();
     void increaseVolume();
     void decreaseVolume();
 
@@ -71,7 +70,6 @@ private:
     bool isActive;
     int lineWidth;
     bool down;
-    bool fadingStop;
     QColor textCol;
     QPixmap pixmaps[2];
     Action *muteAction;

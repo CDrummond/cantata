@@ -43,6 +43,8 @@ public:
     QString itemData(int index) const;
     QAction * action(int index) const;
     int count() const { return menu ? menu->actions().count() : 0; }
+    void setColor(const QColor &col) { textColor=col; }
+    void setBold(bool b) { bold=b; }
 
 Q_SIGNALS:
     void activated(int);
@@ -51,8 +53,10 @@ private Q_SLOTS:
     void itemSelected();
 
 private:
+    QColor textColor;
     int current;
     bool useArrow;
+    bool bold;
     QMenu *menu;
 };
 

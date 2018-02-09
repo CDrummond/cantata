@@ -43,11 +43,15 @@ public:
     static HttpStream * self();
 
     HttpStream(QObject *p=nullptr);
-    ~HttpStream() override { }
-    bool isMuted() { return true; }
+    ~HttpStream() override { save(); }
+    void save() const;
+    bool isMuted() const { return muted; }
+    int volume();
+    int unmuteVolume() const { return unmuteVol; }
     
 Q_SIGNALS:
     void isEnabled(bool en);
+    void update();
 
 public Q_SLOTS:
     void setEnabled(bool e);
@@ -65,8 +69,11 @@ private:
 
 private:
     bool enabled;
+    bool muted;
     int state;
     int playStateChecks;
+    int currentVolume;
+    int unmuteVol;
     QTimer *playStateCheckTimer;
 
     #ifdef LIBVLC_FOUND

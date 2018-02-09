@@ -111,7 +111,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
-    int mpdVolume() const { return volumeSlider->value(); }
     QList<Song> selectedSongs() const;
     QStringList listActions() const;
 

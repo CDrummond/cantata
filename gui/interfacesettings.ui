@@ -599,7 +599,7 @@
        <item>
         <widget class="NoteLabel" name="tweaksLabel">
          <property name="text">
-          <string>Changing 'Album &amp; Artist Sorting', 'Single Tracks', or 'CUE files' will require a DB refresh in order to take effect. Changing 'Composer Supprt' or 'Year tag' will require restarting Cantata.</string>
+          <string>Changing 'Album &amp; Artist Sorting', 'Single Tracks', or 'CUE files' will require a DB refresh in order to take effect. Changing 'Composer Support' or 'Year tag' will require restarting Cantata.</string>
          </property>
         </widget>
        </item>

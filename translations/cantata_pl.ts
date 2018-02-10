@@ -8795,7 +8795,7 @@ Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="602"/>
-        <source>Changing &apos;Album &amp; Artist Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Supprt&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
+        <source>Changing &apos;Album &amp; Artist Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -10465,139 +10465,139 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>PlayQueueModel</name>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="256"/>
+        <location filename="../models/playqueuemodel.cpp" line="267"/>
         <source>Title</source>
         <translation>Tytuł</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="257"/>
-        <location filename="../models/playqueuemodel.cpp" line="337"/>
+        <location filename="../models/playqueuemodel.cpp" line="268"/>
+        <location filename="../models/playqueuemodel.cpp" line="348"/>
         <source>Artist</source>
         <translation>Artysta</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="258"/>
-        <location filename="../models/playqueuemodel.cpp" line="339"/>
+        <location filename="../models/playqueuemodel.cpp" line="269"/>
+        <location filename="../models/playqueuemodel.cpp" line="350"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="259"/>
+        <location filename="../models/playqueuemodel.cpp" line="270"/>
         <source>#</source>
         <comment>Track number</comment>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="260"/>
+        <location filename="../models/playqueuemodel.cpp" line="271"/>
         <source>Length</source>
         <translation>Długość</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="261"/>
+        <location filename="../models/playqueuemodel.cpp" line="272"/>
         <source>Disc</source>
         <translation>Płyta</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="262"/>
-        <location filename="../models/playqueuemodel.cpp" line="343"/>
+        <location filename="../models/playqueuemodel.cpp" line="273"/>
+        <location filename="../models/playqueuemodel.cpp" line="354"/>
         <source>Year</source>
         <translation>Rok</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="263"/>
+        <location filename="../models/playqueuemodel.cpp" line="274"/>
         <source>Original Year</source>
         <translation>Rok oryginału</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="264"/>
-        <location filename="../models/playqueuemodel.cpp" line="342"/>
+        <location filename="../models/playqueuemodel.cpp" line="275"/>
+        <location filename="../models/playqueuemodel.cpp" line="353"/>
         <source>Genre</source>
         <translation>Gatunek</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="265"/>
+        <location filename="../models/playqueuemodel.cpp" line="276"/>
         <source>Priority</source>
         <translation>Priorytet</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="266"/>
-        <location filename="../models/playqueuemodel.cpp" line="344"/>
+        <location filename="../models/playqueuemodel.cpp" line="277"/>
+        <location filename="../models/playqueuemodel.cpp" line="355"/>
         <source>Composer</source>
         <translation>Kompozytor</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="267"/>
-        <location filename="../models/playqueuemodel.cpp" line="345"/>
+        <location filename="../models/playqueuemodel.cpp" line="278"/>
+        <location filename="../models/playqueuemodel.cpp" line="356"/>
         <source>Performer</source>
         <translation>Wykonawca</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="268"/>
+        <location filename="../models/playqueuemodel.cpp" line="279"/>
         <source>Rating</source>
         <translation>Ocena</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="269"/>
+        <location filename="../models/playqueuemodel.cpp" line="280"/>
         <source>Filename</source>
         <translation type="unfinished">Nazwa pliku</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="270"/>
+        <location filename="../models/playqueuemodel.cpp" line="281"/>
         <source>Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="315"/>
+        <location filename="../models/playqueuemodel.cpp" line="326"/>
         <source>Remove Duplicates</source>
         <translation>Usuń duplikaty</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="318"/>
+        <location filename="../models/playqueuemodel.cpp" line="329"/>
         <source>Undo</source>
         <translation>Cofnij</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="320"/>
+        <location filename="../models/playqueuemodel.cpp" line="331"/>
         <source>Redo</source>
         <translation>Ponów</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="326"/>
+        <location filename="../models/playqueuemodel.cpp" line="337"/>
         <source>Shuffle</source>
         <translation>Wymieszaj</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="328"/>
+        <location filename="../models/playqueuemodel.cpp" line="339"/>
         <source>Tracks</source>
         <translation>Utwory</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="329"/>
+        <location filename="../models/playqueuemodel.cpp" line="340"/>
         <source>Albums</source>
         <translation>Albumy</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="335"/>
+        <location filename="../models/playqueuemodel.cpp" line="346"/>
         <source>Sort By</source>
         <translation>Sortuj przy użyciu</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="338"/>
+        <location filename="../models/playqueuemodel.cpp" line="349"/>
         <source>Album Artist</source>
         <translation>Artysta albumu</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="340"/>
+        <location filename="../models/playqueuemodel.cpp" line="351"/>
         <source>Track Title</source>
         <translation>Tytuł utworu</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="341"/>
+        <location filename="../models/playqueuemodel.cpp" line="352"/>
         <source>Track Number</source>
         <translation>Numer utworu</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="403"/>
+        <location filename="../models/playqueuemodel.cpp" line="414"/>
         <source># (Track Number)</source>
         <translation># (Numer utworu)</translation>
     </message>
@@ -13458,7 +13458,7 @@ Proszę wybrać inną nazwę.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="236"/>
-        <source>Search got songs by any matching metadata.</source>
+        <source>Search for songs by any matching metadata.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -15206,17 +15206,17 @@ Nadpisać?</translation>
 <context>
     <name>TitleWidget</name>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="80"/>
+        <location filename="../widgets/titlewidget.cpp" line="74"/>
         <source>Click to go back</source>
         <translation>Kliknij aby pójść wstecz</translation>
     </message>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="136"/>
+        <location filename="../widgets/titlewidget.cpp" line="133"/>
         <source>Add All To Play Queue</source>
         <translation>Dodaj wszystko do kolejki odtwarzania</translation>
     </message>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="137"/>
+        <location filename="../widgets/titlewidget.cpp" line="134"/>
         <source>Add All And Replace Play Queue</source>
         <translation>Dodaj wszystko i zamień kolejkę odtwarzania</translation>
     </message>
@@ -15446,24 +15446,24 @@ Jeśli nazwa pliku zostanie zmieniona (albo nazwa folderu, który zawiera ten pl
 <context>
     <name>VolumeSlider</name>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="99"/>
-        <location filename="../widgets/volumeslider.cpp" line="210"/>
-        <location filename="../widgets/volumeslider.cpp" line="218"/>
+        <location filename="../widgets/volumeslider.cpp" line="102"/>
+        <location filename="../widgets/volumeslider.cpp" line="220"/>
+        <location filename="../widgets/volumeslider.cpp" line="233"/>
         <source>Mute</source>
         <translation>Wycisz</translation>
     </message>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="218"/>
+        <location filename="../widgets/volumeslider.cpp" line="233"/>
         <source>Unmute</source>
         <translation>Wyłącz wyciszenie</translation>
     </message>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="267"/>
+        <location filename="../widgets/volumeslider.cpp" line="290"/>
         <source>Volume %1% (Muted)</source>
         <translation>Głośność %1% (wyciszono)</translation>
     </message>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="267"/>
+        <location filename="../widgets/volumeslider.cpp" line="290"/>
         <source>Volume %1%</source>
         <translation>Głośność %1%</translation>
     </message>

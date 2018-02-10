@@ -8761,7 +8761,7 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="602"/>
-        <source>Changing &apos;Album &amp; Artist Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Supprt&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
+        <source>Changing &apos;Album &amp; Artist Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -10443,139 +10443,139 @@ Tento krok nelze vrátit zpět.</translation>
 <context>
     <name>PlayQueueModel</name>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="256"/>
+        <location filename="../models/playqueuemodel.cpp" line="267"/>
         <source>Title</source>
         <translation>Název</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="257"/>
-        <location filename="../models/playqueuemodel.cpp" line="337"/>
+        <location filename="../models/playqueuemodel.cpp" line="268"/>
+        <location filename="../models/playqueuemodel.cpp" line="348"/>
         <source>Artist</source>
         <translation>Umělec</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="258"/>
-        <location filename="../models/playqueuemodel.cpp" line="339"/>
+        <location filename="../models/playqueuemodel.cpp" line="269"/>
+        <location filename="../models/playqueuemodel.cpp" line="350"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="259"/>
+        <location filename="../models/playqueuemodel.cpp" line="270"/>
         <source>#</source>
         <comment>Track number</comment>
         <translation>Č.</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="260"/>
+        <location filename="../models/playqueuemodel.cpp" line="271"/>
         <source>Length</source>
         <translation>Délka</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="261"/>
+        <location filename="../models/playqueuemodel.cpp" line="272"/>
         <source>Disc</source>
         <translation>Disk</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="262"/>
-        <location filename="../models/playqueuemodel.cpp" line="343"/>
+        <location filename="../models/playqueuemodel.cpp" line="273"/>
+        <location filename="../models/playqueuemodel.cpp" line="354"/>
         <source>Year</source>
         <translation>Rok</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="263"/>
+        <location filename="../models/playqueuemodel.cpp" line="274"/>
         <source>Original Year</source>
         <translation>Původní rok</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="264"/>
-        <location filename="../models/playqueuemodel.cpp" line="342"/>
+        <location filename="../models/playqueuemodel.cpp" line="275"/>
+        <location filename="../models/playqueuemodel.cpp" line="353"/>
         <source>Genre</source>
         <translation>Žánr</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="265"/>
+        <location filename="../models/playqueuemodel.cpp" line="276"/>
         <source>Priority</source>
         <translation>Přednost</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="266"/>
-        <location filename="../models/playqueuemodel.cpp" line="344"/>
+        <location filename="../models/playqueuemodel.cpp" line="277"/>
+        <location filename="../models/playqueuemodel.cpp" line="355"/>
         <source>Composer</source>
         <translation>Skladatel</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="267"/>
-        <location filename="../models/playqueuemodel.cpp" line="345"/>
+        <location filename="../models/playqueuemodel.cpp" line="278"/>
+        <location filename="../models/playqueuemodel.cpp" line="356"/>
         <source>Performer</source>
         <translation>Účinkující</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="268"/>
+        <location filename="../models/playqueuemodel.cpp" line="279"/>
         <source>Rating</source>
         <translation>Hodnocení</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="269"/>
+        <location filename="../models/playqueuemodel.cpp" line="280"/>
         <source>Filename</source>
         <translation type="unfinished">Název souboru</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="270"/>
+        <location filename="../models/playqueuemodel.cpp" line="281"/>
         <source>Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="315"/>
+        <location filename="../models/playqueuemodel.cpp" line="326"/>
         <source>Remove Duplicates</source>
         <translation>Odstranit zdvojené</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="318"/>
+        <location filename="../models/playqueuemodel.cpp" line="329"/>
         <source>Undo</source>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="320"/>
+        <location filename="../models/playqueuemodel.cpp" line="331"/>
         <source>Redo</source>
         <translation>Znovu</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="326"/>
+        <location filename="../models/playqueuemodel.cpp" line="337"/>
         <source>Shuffle</source>
         <translation>Zamíchat</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="328"/>
+        <location filename="../models/playqueuemodel.cpp" line="339"/>
         <source>Tracks</source>
         <translation>Skladby</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="329"/>
+        <location filename="../models/playqueuemodel.cpp" line="340"/>
         <source>Albums</source>
         <translation>Alba</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="335"/>
+        <location filename="../models/playqueuemodel.cpp" line="346"/>
         <source>Sort By</source>
         <translation>Třídit podle</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="338"/>
+        <location filename="../models/playqueuemodel.cpp" line="349"/>
         <source>Album Artist</source>
         <translation>Umělec alba</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="340"/>
+        <location filename="../models/playqueuemodel.cpp" line="351"/>
         <source>Track Title</source>
         <translation>Název skladby</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="341"/>
+        <location filename="../models/playqueuemodel.cpp" line="352"/>
         <source>Track Number</source>
         <translation>Číslo skladby</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="403"/>
+        <location filename="../models/playqueuemodel.cpp" line="414"/>
         <source># (Track Number)</source>
         <translation>Číslo skladby</translation>
     </message>
@@ -13436,7 +13436,7 @@ Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="236"/>
-        <source>Search got songs by any matching metadata.</source>
+        <source>Search for songs by any matching metadata.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -15184,17 +15184,17 @@ Přepsat?</translation>
 <context>
     <name>TitleWidget</name>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="80"/>
+        <location filename="../widgets/titlewidget.cpp" line="74"/>
         <source>Click to go back</source>
         <translation>Klepněte pro návrat zpět</translation>
     </message>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="136"/>
+        <location filename="../widgets/titlewidget.cpp" line="133"/>
         <source>Add All To Play Queue</source>
         <translation>Přidat vše do řady skladeb k přehrání</translation>
     </message>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="137"/>
+        <location filename="../widgets/titlewidget.cpp" line="134"/>
         <source>Add All And Replace Play Queue</source>
         <translation>Přidat vše a nahradit řadu skladeb k přehrání</translation>
     </message>
@@ -15424,24 +15424,24 @@ Pokud soubor přejmenujete (nebo složku, v níž je), potom bude hodnocení spo
 <context>
     <name>VolumeSlider</name>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="99"/>
-        <location filename="../widgets/volumeslider.cpp" line="210"/>
-        <location filename="../widgets/volumeslider.cpp" line="218"/>
+        <location filename="../widgets/volumeslider.cpp" line="102"/>
+        <location filename="../widgets/volumeslider.cpp" line="220"/>
+        <location filename="../widgets/volumeslider.cpp" line="233"/>
         <source>Mute</source>
         <translation>Ztlumit</translation>
     </message>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="218"/>
+        <location filename="../widgets/volumeslider.cpp" line="233"/>
         <source>Unmute</source>
         <translation>Zrušit ztišení</translation>
     </message>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="267"/>
+        <location filename="../widgets/volumeslider.cpp" line="290"/>
         <source>Volume %1% (Muted)</source>
         <translation>Hlasitost: %1% (ztlumeno)</translation>
     </message>
     <message>
-        <location filename="../widgets/volumeslider.cpp" line="267"/>
+        <location filename="../widgets/volumeslider.cpp" line="290"/>
         <source>Volume %1%</source>
         <translation>Hlasitost %1%</translation>
     </message>

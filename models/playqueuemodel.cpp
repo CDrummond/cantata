@@ -199,7 +199,18 @@ static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
             }
         }
     }
-    return useable;
+
+    // Ensure we only have unqiue URLs...
+    QSet<QString> unique;
+    QStringList use;
+    for (const auto &u: useable) {
+        if (!unique.contains(u)) {
+            unique.insert(u);
+            use.append(u);
+        }
+    }
+
+    return use;
 }
 
 void PlayQueueModel::encode(QMimeData &mimeData, const QString &mime, const QStringList &values)

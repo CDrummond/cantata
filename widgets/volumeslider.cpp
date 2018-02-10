@@ -21,10 +21,13 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include "config.h"
 #include "volumeslider.h"
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdstatus.h"
+#ifdef ENABLE_HTTP_STREAM_PLAYBACK
 #include "mpd-interface/httpstream.h"
+#endif
 #include "support/action.h"
 #include "support/actioncollection.h"
 #include "gui/stdactions.h"
@@ -105,13 +108,16 @@ void VolumeSlider::initActions()
         connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
         connect(this, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
         connect(this, SIGNAL(toggleMute()), MPDConnection::self(), SLOT(toggleMute()));
-    } else {
+    }
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    else {
         connect(this, SIGNAL(valueChanged(int)), HttpStream::self(), SLOT(setVolume(int)));
         connect(this, SIGNAL(toggleMute()), HttpStream::self(), SLOT(toggleMute()));
         connect(HttpStream::self(), SIGNAL(update()), this, SLOT(updateStatus()));
         connect(HttpStream::self(), SIGNAL(isEnabled(bool)), this, SLOT(setEnabled(bool)));
         connect(HttpStream::self(), SIGNAL(isEnabled(bool)), this, SIGNAL(stateChanged()));
     }
+    #endif
     addAction(StdActions::self()->increaseVolumeAction);
     addAction(StdActions::self()->decreaseVolumeAction);
 }
@@ -128,7 +134,11 @@ void VolumeSlider::paintEvent(QPaintEvent *)
 {
     bool reverse=isRightToLeft();
     QPainter p(this);
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     bool muted = isMpdVol ? MPDConnection::self()->isMuted() : HttpStream::self()->isMuted();
+    #else
+    bool muted = MPDConnection::self()->isMuted();
+    #endif
     if (muted || !isEnabled()) {
         p.setOpacity(0.25);
     }
@@ -214,7 +224,12 @@ void VolumeSlider::contextMenuEvent(QContextMenuEvent *ev)
         }
     }
 
-    bool muted= isMpdVol ? MPDConnection::self()->isMuted() : HttpStream::self()->isMuted();
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    bool muted = isMpdVol ? MPDConnection::self()->isMuted() : HttpStream::self()->isMuted();
+    #else
+    bool muted = MPDConnection::self()->isMuted();
+    #endif
+
     muteMenuAction->setText(muted ? tr("Unmute") : tr("Mute"));
     QAction *ret = menu->exec(mapToGlobal(ev->pos()));
     if (ret) {
@@ -251,7 +266,11 @@ void VolumeSlider::muteToggled()
 
 void VolumeSlider::updateStatus()
 {
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     int volume=isMpdVol ? MPDStatus::self()->volume() : HttpStream::self()->volume();
+    #else
+    int volume=MPDStatus::self()->volume();
+    #endif
 
     blockSignals(true);
     if (volume<0) {
@@ -259,7 +278,11 @@ void VolumeSlider::updateStatus()
     } else {
         int unmuteVolume=-1;
         if (0==volume) {
+            #ifdef ENABLE_HTTP_STREAM_PLAYBACK
             unmuteVolume=isMpdVol ? MPDConnection::self()->unmuteVolume() : HttpStream::self()->unmuteVolume();
+            #else
+            unmuteVolume=MPDConnection::self()->unmuteVolume();
+            #endif
             if (unmuteVolume>0) {
                 volume=unmuteVolume;
             }

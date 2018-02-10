@@ -2418,7 +2418,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="602"/>
-        <source>Changing &apos;Album &amp; Artist Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Supprt&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
+        <source>Changing &apos;Album &amp; Artist Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6746,7 +6746,7 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="236"/>
-        <source>Search got songs by any matching metadata.</source>
+        <source>Search for songs by any matching metadata.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

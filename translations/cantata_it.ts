@@ -605,12 +605,12 @@ Se &apos;Titolo&apos; è &quot;Wibble - Wobble&quot;, allora &apos;Artista&apos;
     <message>
         <location filename="../models/browsemodel.cpp" line="74"/>
         <source>Server Folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Cartelle su Server</translation>
     </message>
     <message>
         <location filename="../models/browsemodel.cpp" line="79"/>
         <source>MPD virtual file-system</source>
-        <translation type="unfinished"></translation>
+        <translation>Filesystem virtuale di MPD</translation>
     </message>
     <message>
         <location filename="../models/browsemodel.cpp" line="244"/>
@@ -2459,22 +2459,22 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="573"/>
         <source>Miscellaneous</source>
-        <translation type="unfinished"></translation>
+        <translation>Varie</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="579"/>
         <source>CUE files:</source>
-        <translation type="unfinished"></translation>
+        <translation>File CUE:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="589"/>
         <source>Year tag:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tag Anno:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="602"/>
         <source>Changing &apos;Album &amp; Artist Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Supprt&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le modifiche ad &apos;Ordinamento Artista &amp; Album&apos;, &apos;Tracce Singole&apos;, o &apos;File CUE&apos; richiedono un aggiornamento del DB per avere effetto. Le modifiche a &apos;Supporto Compositore&apos; o &apos;Tag Anno&apos;richiedono il riavvio di Cantata.</translation>
     </message>
     <message>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
@@ -2552,12 +2552,12 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="130"/>
         <source>Use &apos;Year&apos; tag to display &amp; sort</source>
-        <translation type="unfinished"></translation>
+        <translation>Usa il tag &apos;Anno&apos; per visualizzazione &amp; ordinamento</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="131"/>
         <source>Use &apos;Original Year&apos; tag to display &amp; sort, fallback to &apos;Year&apos; if not set</source>
-        <translation type="unfinished"></translation>
+        <translation>Usa il tag &apos;Anno Originale&apos; per visualizzazione &amp; ordinamento, ripiega su &apos;Anno&apos; se non impostato</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="134"/>
@@ -2919,27 +2919,27 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="40"/>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Home</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="40"/>
         <source>Browse files in your home folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfoglia i file nella tua cartella home</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="41"/>
         <source>Root</source>
-        <translation type="unfinished"></translation>
+        <translation>Root</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="41"/>
         <source>Browse files on your computer</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfoglia i file nel tuo computer</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="43"/>
         <source>Open In File Manager</source>
-        <translation type="unfinished">Apri nel Gestore File</translation>
+        <translation>Apri nel Gestore File</translation>
     </message>
 </context>
 <context>
@@ -3665,21 +3665,21 @@ Aggiungere i brani a quella scaletta?</translation>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="44"/>
         <source>Open In File Manager</source>
-        <translation type="unfinished">Apri nel Gestore File</translation>
+        <translation>Apri nel Gestore File</translation>
     </message>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="228"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
-        <translation type="unfinished">Sicuro di voler cancellare i brani selezionati?
+        <translation>Sicuro di voler cancellare i brani selezionati?
 
 Non sarà possibile tornare indietro.</translation>
     </message>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="229"/>
         <source>Delete Songs</source>
-        <translation type="unfinished">Cancella Brani</translation>
+        <translation>Cancella Brani</translation>
     </message>
 </context>
 <context>
@@ -3824,12 +3824,12 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="311"/>
         <source>Copy To Clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia negli Appunti</translation>
     </message>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="312"/>
         <source>Now Playing</source>
-        <translation type="unfinished"></translation>
+        <translation>In riproduzione</translation>
     </message>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="333"/>
@@ -6786,7 +6786,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="210"/>
         <source>Search for songs by artist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca brani per artista.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="213"/>
@@ -6796,7 +6796,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="213"/>
         <source>Search for songs by composer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca brani per compositore.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="216"/>
@@ -6806,7 +6806,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="216"/>
         <source>Search for songs by performer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca brani per esecutore.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="218"/>
@@ -6816,7 +6816,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="218"/>
         <source>Search for songs by album.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca brani per album.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="219"/>
@@ -6826,7 +6826,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="219"/>
         <source>Search for songs by title.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca brani per titolo.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="220"/>
@@ -6836,7 +6836,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="220"/>
         <source>Search for songs by genre.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca brani per genere.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="222"/>
@@ -6846,7 +6846,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="222"/>
         <source>Search for songs containing comment.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca brani che contengono un commento.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="224"/>
@@ -6886,7 +6886,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="235"/>
         <source>Search for songs by filename or path.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca brani per nome file o percorso.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="236"/>
@@ -6896,7 +6896,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="236"/>
         <source>Search got songs by any matching metadata.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca brani rispetto a qualsiasi metadato corrispondente.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="242"/>
@@ -7618,7 +7618,7 @@ Ricaricare da disco, oppure cancellare la copia su disco e scaricare?</translati
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="378"/>
         <source>%1 by %2</source>
-        <translation type="unfinished">%1 di %2</translation>
+        <translation>%1 di %2</translation>
     </message>
 </context>
 <context>

@@ -152,7 +152,7 @@ static QStringList listFiles(const QDir &d, bool useServer, bool useLocal, const
 {
     QStringList files;
     if (level) {
-        for (const auto &f: d.entryInfoList(QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot|QDir::NoSymLinks)) {
+        for (const auto &f: d.entryInfoList(QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot|QDir::NoSymLinks, QDir::LocaleAware|QDir::IgnoreCase)) {
             if (f.isDir()) {
                 files += listFiles(QDir(f.absoluteFilePath()), useServer, useLocal, handlers, level-1);
             } else if (checkExtension(f.fileName(), constPlaylists)) {

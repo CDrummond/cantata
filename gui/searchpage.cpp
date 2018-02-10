@@ -233,7 +233,7 @@ void SearchPage::setSearchCategories()
                                                   "Or enter a number of days to find files that were modified in the previous number of days."));
     }
     categories << SearchWidget::Category(tr("File:"), QLatin1String("file"), tr("Search for songs by filename or path."))
-               << SearchWidget::Category(tr("Any:"), QLatin1String("any"), tr("Search got songs by any matching metadata."));
+               << SearchWidget::Category(tr("Any:"), QLatin1String("any"), tr("Search for songs by any matching metadata."));
     view->setSearchCategories(categories);
 }
 

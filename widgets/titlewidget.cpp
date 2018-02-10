@@ -34,7 +34,8 @@
 #include <QAction>
 #include <QImage>
 #include <QPixmap>
-#include <QGridLayout>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QEvent>
 #include <QMouseEvent>
 #include <QApplication>
@@ -47,7 +48,7 @@ TitleWidget::TitleWidget(QWidget *p)
     , pressed(false)
     , controls(nullptr)
 {
-    QGridLayout *layout=new QGridLayout(this);
+    QHBoxLayout *layout=new QHBoxLayout(this);
     QVBoxLayout *textLayout=new QVBoxLayout(nullptr);
     image=new QLabel(this);
     mainText=new SqueezedTextLabel(this);
@@ -67,24 +68,18 @@ TitleWidget::TitleWidget(QWidget *p)
     pal.setColor(QPalette::WindowText, col);
     subText->setPalette(pal);
     chevron->setFont(f);
-    int spacing=Utils::layoutSpacing(this);
     mainText->ensurePolished();
     subText->ensurePolished();
-    int size=mainText->sizeHint().height()+subText->sizeHint().height()+spacing;
-    if (size<72) {
-        size=Icon::stdSize(size);
-    }
-    int pad=Utils::scaleForDpi(6);
-    size=qMax(qMax(size, QFontMetrics(mainText->font()).height()+QFontMetrics(subText->font()).height()+spacing), Utils::scaleForDpi(40))+pad;
-    image->setFixedSize(size, size);
+    int size=qMax(QFontMetrics(mainText->font()).height()+QFontMetrics(subText->font()).height()+2, Utils::scaleForDpi(40));
     setToolTip(tr("Click to go back"));
-    spacing=qMin(4, spacing-1);
-    layout->addItem(new QSpacerItem(spacing, spacing), 0, 0, 2, 1);
-    layout->addWidget(chevron, 0, 1, 2, 1);
-    layout->addWidget(image, 0, 2, 2, 1);
+    layout->addWidget(chevron);
+    int spacing = Utils::layoutSpacing(this);
+    layout->addItem(new QSpacerItem(spacing, 1, QSizePolicy::Fixed, QSizePolicy::Fixed));
+    layout->addWidget(image);
+    layout->addItem(new QSpacerItem(spacing, 1, QSizePolicy::Fixed, QSizePolicy::Fixed));
     textLayout->addWidget(mainText);
     textLayout->addWidget(subText);
-    layout->addItem(textLayout, 0, 3, 2, 1);
+    layout->addItem(textLayout);
     mainText->setAttribute(Qt::WA_TransparentForMouseEvents);
     subText->setAttribute(Qt::WA_TransparentForMouseEvents);
     image->setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -94,18 +89,20 @@ TitleWidget::TitleWidget(QWidget *p)
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));
     layout->setMargin(0);
-    layout->setSpacing(spacing);
+    layout->setSpacing(2);
     textLayout->setMargin(0);
-    textLayout->setSpacing(spacing);
+    textLayout->setSpacing(2);
     mainText->setAlignment(Qt::AlignBottom);
     subText->setAlignment(Qt::AlignTop);
     image->setAlignment(Qt::AlignCenter);
     chevron->setAlignment(Qt::AlignCenter);
     chevron->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    int fw = qMax(3, frameWidth());
     if (-1==twHeight) {
         ToolButton tb;
-        twHeight=qMax((int)((tb.iconSize().height()+6)*2.5), size);
+        twHeight=qMax((int)((tb.iconSize().height()+6)*2)+(2*fw), size);
     }
+    image->setFixedSize(twHeight-(2*fw), twHeight-(2*fw));
     setFixedHeight(twHeight);
     setFocusPolicy(Qt::NoFocus);
 }
@@ -139,7 +136,7 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
             l->addWidget(add);
             connect(add, SIGNAL(clicked()), this, SIGNAL(addToPlayQueue()));
             connect(replace, SIGNAL(clicked()), this, SIGNAL(replacePlayQueue()));
-            static_cast<QGridLayout *>(layout())->addWidget(controls, 0, 4, 2, 1);
+            static_cast<QHBoxLayout *>(layout())->addWidget(controls);
         }
         controls->setVisible(true);
     }
@@ -242,7 +239,7 @@ void TitleWidget::coverRetrieved(const Song &s, const QImage &img, const QString
 void TitleWidget::setImage(const QImage &img)
 {
     double dpr=DEVICE_PIXEL_RATIO();
-    QPixmap pix=QPixmap::fromImage(img.scaled((image->width()-6)*dpr, (image->height()-6)*dpr, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    QPixmap pix=QPixmap::fromImage(img.scaled(image->width()*dpr, image->height()*dpr, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     pix.setDevicePixelRatio(dpr);
     image->setPixmap(pix);
 }

@@ -33,12 +33,14 @@ class CoverLabel : public QLabel
 public:
     CoverLabel(QWidget *p);
 
+    void updateToolTip(bool isEvent);
     bool event(QEvent *event) override;
     void paintEvent(QPaintEvent *) override;
     void updatePix();
     void deletePix();
 
 private:
+    QPoint lastTtPos;
     bool pressed;
     QPixmap pix;
 };

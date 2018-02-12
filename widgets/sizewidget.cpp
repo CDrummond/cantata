@@ -23,22 +23,24 @@
 
 #include "sizewidget.h"
 #include "toolbutton.h"
+#include "sizegrip.h"
 #include "support/combobox.h"
-#include <QHBoxLayout>
+
+static int swHeight=-1;
 
 SizeWidget::SizeWidget(QWidget *parent)
     : QWidget(parent)
 {
-    QHBoxLayout *lay=new QHBoxLayout(this);
-    ComboBox *combo=new ComboBox(this);
-    ToolButton *btn=new ToolButton(this);
-
-    lay->setMargin(0);
-    lay->setSpacing(0);
-    combo->setFixedWidth(0);
-    btn->setFixedWidth(0);
-    lay->addWidget(combo);
-    lay->addWidget(btn);
+    if (-1 == swHeight) {
+        ComboBox c(this);
+        ToolButton b(this);
+        SizeGrip g(this);
+        c.ensurePolished();
+        b.ensurePolished();
+        g.ensurePolished();
+        swHeight=qMax(c.sizeHint().height(), qMax(b.sizeHint().height(), g.sizeHint().height()));
+    }
+    setFixedHeight(swHeight);
 }
 
 void SizeWidget::paintEvent(QPaintEvent *e)

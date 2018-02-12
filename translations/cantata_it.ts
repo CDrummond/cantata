@@ -3153,8 +3153,8 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="249"/>
-        <source>Preferences</source>
-        <translation>Preferenze</translation>
+        <source>Preferences...</source>
+        <translation>Preferenze...</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="252"/>

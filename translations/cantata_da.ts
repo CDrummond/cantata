@@ -3125,8 +3125,8 @@ Hvis søgningen ikke finder nye sangtekster, vil de stadig være tilknyttet den 
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="249"/>
-        <source>Preferences</source>
-        <translation>Præferencer</translation>
+        <source>Preferences...</source>
+        <translation>Præferencer...</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="252"/>

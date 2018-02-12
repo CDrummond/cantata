@@ -245,7 +245,7 @@ void MainWindow::init()
 
     setWindowIcon(Icons::self()->appIcon);
 
-    prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? tr("Configure Cantata...") : tr("Preferences"),
+    prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? tr("Configure Cantata...") : tr("Preferences..."),
                                                      Icons::self()->configureIcon);
     connect(prefAction, SIGNAL(triggered()),this, SLOT(showPreferencesDialog()));
     quitAction = ActionCollection::get()->createAction("quit", tr("Quit"), MonoIcon::icon(FontAwesome::poweroff, MonoIcon::constRed, MonoIcon::constRed));

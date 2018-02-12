@@ -1834,8 +1834,8 @@ i18n: ectx: attribute (title), widget (QWidget, tab_5)
         <translation type="vanished">Cantata の設定...</translation>
     </message>
     <message>
-        <source>Preferences</source>
-        <translation type="vanished">設定</translation>
+        <source>Preferences...</source>
+        <translation type="vanished">設定...</translation>
     </message>
     <message>
         <source>Quit</source>

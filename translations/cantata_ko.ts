@@ -1892,8 +1892,8 @@ i18n: ectx: attribute (title), widget (QWidget, tab_5)
         <translation type="vanished">칸타타 설정...</translation>
     </message>
     <message>
-        <source>Preferences</source>
-        <translation type="vanished">설정</translation>
+        <source>Preferences...</source>
+        <translation type="vanished">설정...</translation>
     </message>
     <message>
         <source>Quit</source>

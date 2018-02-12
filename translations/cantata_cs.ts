@@ -1892,8 +1892,8 @@ i18n: ectx: attribute (title), widget (QWidget, tab_5)
         <translation type="vanished">Nastavit Cantatu...</translation>
     </message>
     <message>
-        <source>Preferences</source>
-        <translation type="vanished">Nastavení</translation>
+        <source>Preferences...</source>
+        <translation type="vanished">Nastavení...</translation>
     </message>
     <message>
         <source>Quit</source>

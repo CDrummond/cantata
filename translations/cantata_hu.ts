@@ -1783,8 +1783,8 @@ i18n: ectx: attribute (title), widget (QWidget, tab_5)
         <translation type="vanished">Cantata beállítása...</translation>
     </message>
     <message>
-        <source>Preferences</source>
-        <translation type="vanished">Testreszabás</translation>
+        <source>Preferences...</source>
+        <translation type="vanished">Testreszabás...</translation>
     </message>
     <message>
         <source>Quit</source>

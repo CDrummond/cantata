@@ -8855,8 +8855,8 @@ If this search does find new lyrics, these will still be associated with the ori
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="249"/>
-        <source>Preferences</source>
-        <translation type="unfinished">Настройки</translation>
+        <source>Preferences...</source>
+        <translation type="unfinished">Настройки...</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="252"/>

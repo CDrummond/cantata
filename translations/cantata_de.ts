@@ -7316,8 +7316,8 @@ Wenn die Suche einen neuen Liedtext findet, dann wird dieser mit dem ursprüngli
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="249"/>
-        <source>Preferences</source>
-        <translation>Einstellungen</translation>
+        <source>Preferences...</source>
+        <translation>Einstellungen...</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="252"/>

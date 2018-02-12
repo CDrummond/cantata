@@ -51,7 +51,7 @@ private:
     SearchWidget *view;
 };
 
-SearchWidget::SearchWidget(QWidget *p)
+SearchWidget::SearchWidget(QWidget *p, int extraSpace)
      : QWidget(p)
      , cat(nullptr)
      , widgetIsActive(false)
@@ -59,11 +59,11 @@ SearchWidget::SearchWidget(QWidget *p)
     QHBoxLayout *l=new QHBoxLayout(this);
     #ifdef Q_OS_MAC
     l->setSpacing(2);
-    l->setContentsMargins(0, 1, 1, 1);
+    l->setContentsMargins(0, 1, 1, 1+extraSpace);
     bool closeOnLeft=true;
     #else
     l->setSpacing(0);
-    l->setContentsMargins(0, 1, 0, 1);
+    l->setContentsMargins(0, 1, 0, 1+extraSpace);
     bool closeOnLeft=Utils::Unity==Utils::currentDe();
     #endif
     edit=new LineEdit(this);

@@ -27,6 +27,7 @@
 #include "support/icon.h"
 #include "gui/stdactions.h"
 #include "toolbutton.h"
+#include "groupedview.h"
 #ifdef Q_OS_MAC
 #include "support/osxstyle.h"
 #endif
@@ -40,8 +41,6 @@
 #include <QMouseEvent>
 #include <QApplication>
 #include <QPainter>
-
-static int twHeight=-1;
 
 TitleWidget::TitleWidget(QWidget *p)
     : QListView(p)
@@ -70,10 +69,10 @@ TitleWidget::TitleWidget(QWidget *p)
     chevron->setFont(f);
     mainText->ensurePolished();
     subText->ensurePolished();
-    int size=qMax(QFontMetrics(mainText->font()).height()+QFontMetrics(subText->font()).height()+2, Utils::scaleForDpi(40));
     setToolTip(tr("Click to go back"));
-    layout->addWidget(chevron);
     int spacing = Utils::layoutSpacing(this);
+    layout->addItem(new QSpacerItem(spacing, 1, QSizePolicy::Fixed, QSizePolicy::Fixed));
+    layout->addWidget(chevron);
     layout->addItem(new QSpacerItem(spacing, 1, QSizePolicy::Fixed, QSizePolicy::Fixed));
     layout->addWidget(image);
     layout->addItem(new QSpacerItem(spacing, 1, QSizePolicy::Fixed, QSizePolicy::Fixed));
@@ -97,13 +96,8 @@ TitleWidget::TitleWidget(QWidget *p)
     image->setAlignment(Qt::AlignCenter);
     chevron->setAlignment(Qt::AlignCenter);
     chevron->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-    int fw = qMax(3, frameWidth());
-    if (-1==twHeight) {
-        ToolButton tb;
-        twHeight=qMax((int)((tb.iconSize().height()+6)*2)+(2*fw), size);
-    }
-    image->setFixedSize(twHeight-(2*fw), twHeight-(2*fw));
-    setFixedHeight(twHeight);
+    image->setFixedSize(GroupedView::coverSize(), GroupedView::coverSize());
+    setFixedHeight(image->height()+((frameWidth()+2)*2));
     setFocusPolicy(Qt::NoFocus);
 }
 
@@ -127,7 +121,7 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
             ToolButton *replace=new ToolButton(this);
             add->QAbstractButton::setIcon(StdActions::self()->appendToPlayQueueAction->icon());
             replace->QAbstractButton::setIcon(StdActions::self()->replacePlayQueueAction->icon());
-            int size=add->iconSize().height()+6;
+            int size=qMin(add->iconSize().height()+6, height()/2);
             add->setFixedSize(QSize(size, size));
             replace->setFixedSize(add->size());
             add->setToolTip(tr("Add All To Play Queue"));

@@ -60,7 +60,7 @@ Solid::DeviceManagerPrivate::~DeviceManagerPrivate()
     }
 
     for (QtPointer<DevicePrivate> dev: m_devicesMap) {
-        if (!dev.data()->ref.deref()) {
+        if (dev.data() && !dev.data()->ref.deref()) {
             delete dev.data();
         }
     }

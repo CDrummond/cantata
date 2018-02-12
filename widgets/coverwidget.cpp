@@ -35,11 +35,14 @@
 #endif
 #include <QLinearGradient>
 #include <QPen>
+#include <QHelpEvent>
 #include <QMouseEvent>
 #include <QApplication>
 #include <QPainter>
 #include <QBoxLayout>
 #include <QSpacerItem>
+#include <QCursor>
+#include <QToolTip>
 
 static const int constBorder=1;
 
@@ -49,40 +52,62 @@ CoverLabel::CoverLabel(QWidget *p)
 {
 }
 
+void CoverLabel::updateToolTip(bool isEvent)
+{
+    if (!isEvent) {
+        if (!QToolTip::isVisible()) {
+            return;
+        }
+        QRect r=rect();
+        r.moveTo(mapToGlobal(pos()));
+        if (!r.contains(QCursor::pos())) {
+            setToolTip(QString());
+            return;
+        }
+    }
+
+    const Song &current=CurrentCover::self()->song();
+    if (current.isEmpty() || (current.isStream() && !current.isCantataStream() && !current.isCdda()) || OnlineService::showLogoAsCover(current)) {
+        setToolTip(QString());
+        return;
+    }
+    QString toolTip=QLatin1String("<table>");
+    const QImage &img=CurrentCover::self()->image();
+
+    if (!current.composer().isEmpty()) {
+        toolTip+=tr("<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>").arg(current.composer());
+    }
+    if (!current.performer().isEmpty() && current.performer()!=current.albumArtist()) {
+        toolTip+=tr("<tr><td align=\"right\"><b>Performer:</b></td><td>%1</td></tr>").arg(current.performer());
+    }
+    toolTip+=tr("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
+                "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
+                "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.albumArtist()).arg(current.album).arg(QString::number(current.year));
+    toolTip+="</table>";
+    if (!img.isNull()) {
+        if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height()) {
+            toolTip+=QString("<br/>%1").arg(View::encode(img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+        } else if (CurrentCover::self()->fileName().isEmpty() || !QFile::exists(CurrentCover::self()->fileName())) {
+            toolTip+=QString("<br/>%1").arg(View::encode(img));
+        } else {
+            toolTip+=QString("<br/><img src=\"%1\"/>").arg(CurrentCover::self()->fileName());
+        }
+    }
+    setToolTip(toolTip);
+
+    if (!isEvent && !lastTtPos.isNull()) {
+        QToolTip::hideText();
+        QToolTip::showText(lastTtPos, toolTip);
+    }
+}
+
 bool CoverLabel::event(QEvent *event)
 {
     switch(event->type()) {
-    case QEvent::ToolTip: {
-        const Song &current=CurrentCover::self()->song();
-        if (current.isEmpty() || (current.isStream() && !current.isCantataStream() && !current.isCdda()) || OnlineService::showLogoAsCover(current)) {
-            setToolTip(QString());
-            break;
-        }
-        QString toolTip=QLatin1String("<table>");
-        const QImage &img=CurrentCover::self()->image();
-
-        if (!current.composer().isEmpty()) {
-            toolTip+=tr("<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>").arg(current.composer());
-        }
-        if (!current.performer().isEmpty() && current.performer()!=current.albumArtist()) {
-            toolTip+=tr("<tr><td align=\"right\"><b>Performer:</b></td><td>%1</td></tr>").arg(current.performer());
-        }
-        toolTip+=tr("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
-                    "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
-                    "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.albumArtist()).arg(current.album).arg(QString::number(current.year));
-        toolTip+="</table>";
-        if (!img.isNull()) {
-            if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height()) {
-                toolTip+=QString("<br/>%1").arg(View::encode(img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-            } else if (CurrentCover::self()->fileName().isEmpty() || !QFile::exists(CurrentCover::self()->fileName())) {
-                toolTip+=QString("<br/>%1").arg(View::encode(img));
-            } else {
-                toolTip+=QString("<br/><img src=\"%1\"/>").arg(CurrentCover::self()->fileName());
-            }
-        }
-        setToolTip(toolTip);
+    case QEvent::ToolTip:
+        lastTtPos=static_cast<QHelpEvent *>(event)->globalPos();
+        updateToolTip(true);
         break;
-    }
     case QEvent::MouseButtonPress:
         if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && Qt::NoModifier==static_cast<QMouseEvent *>(event)->modifiers()) {
             pressed=true;
@@ -188,4 +213,5 @@ void CoverWidget::setEnabled(bool e)
 void CoverWidget::coverImage(const QImage &)
 {
     label->updatePix();
+    label->updateToolTip(false);
 }

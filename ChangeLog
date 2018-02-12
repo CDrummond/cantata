@@ -61,6 +61,7 @@
 45. Add root and home local browse models, allowing to add local files to play
     queue.
 46. Add volume control for HTTP stream playback.
+47. Update toolbar cover tooltip when song changes.
 
 2.2.0
 -----

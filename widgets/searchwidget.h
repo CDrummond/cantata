@@ -50,7 +50,7 @@ public:
         QString toolTip;
     };
 
-    SearchWidget(QWidget *p);
+    SearchWidget(QWidget *p, int extraSpace=0);
     ~SearchWidget() override { }
 
     void setText(const QString &t) { edit->setText(t); }

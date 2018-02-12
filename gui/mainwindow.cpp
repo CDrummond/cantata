@@ -244,7 +244,6 @@ void MainWindow::init()
     QColor iconCol=Utils::monoIconColor();
 
     setWindowIcon(Icons::self()->appIcon);
-    playQueueLayout->setSpacing(style()->pixelMetric(QStyle::PM_DefaultFrameWidth) > 1 ? 0 : 1);
 
     prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? tr("Configure Cantata...") : tr("Preferences"),
                                                      Icons::self()->configureIcon);

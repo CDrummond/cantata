@@ -147,13 +147,13 @@
        </property>
        <layout class="QVBoxLayout" name="playQueueLayout">
         <property name="spacing">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="margin">
          <number>0</number>
         </property>
         <item>
-         <widget class="SearchWidget" name="playQueueSearchWidget"/>
+         <widget class="PlayQueueSearchWidget" name="playQueueSearchWidget"/>
         </item>
         <item>
          <widget class="PlayQueueView" name="playQueue"/>
@@ -336,9 +336,9 @@
    <header>context/contextwidget.h</header>
   </customwidget>
   <customwidget>
-   <class>SearchWidget</class>
+   <class>PlayQueueSearchWidget</class>
    <extends>QLineEdit</extends>
-   <header>widgets/searchwidget.h</header>
+   <header>widgets/playqueuesearchwidget.h</header>
   </customwidget>
   <customwidget>
    <class>SpacerWidget</class>

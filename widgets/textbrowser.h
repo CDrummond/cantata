@@ -36,10 +36,24 @@ public:
     int zoom() const { return font().pointSize()-origZoomValue; }
     void setPicSize(const QSize &p) { pSize=p; }
     QSize picSize() const { return pSize; }
+    void setScaleImage(bool s);
+    bool scaleImage() const { return scaleImg; }
     void setPal(const QPalette &pal);
+    void setHtml(const QString &s) { haveImg=false; QTextBrowser::setHtml(s); }
+    void setText(const QString &s) { haveImg=false; QTextBrowser::setText(s); }
+
+    void resizeEvent(QResizeEvent *e) override;
+    bool eventFilter(QObject *obj, QEvent *ev) override;
+
+private:
+    void handleSizeChange();
+    QSize imageSize() const;
 
 private:
     int origZoomValue;
+    int lastImageSize;
+    bool scaleImg;
+    bool haveImg;
     QSize pSize;
 };
 

@@ -185,7 +185,7 @@ QString View::createPicTag(const QImage &img, const QString &file)
         return QString();
     }
     // No filename given, or file does not exist - therefore encode & scale image.
-    return encode(img.scaled(texts.at(0)->picSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    return encode(img);
 }
 
 void View::showEvent(QShowEvent *e)
@@ -287,4 +287,11 @@ void View::setHtml(const QString &h, int index)
 
 void View::abort()
 {
+}
+
+void View::setScaleImage(bool s)
+{
+    for (TextBrowser *t: texts) {
+        t->setScaleImage(s);
+    }
 }

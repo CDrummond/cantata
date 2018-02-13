@@ -76,6 +76,7 @@ Q_SIGNALS:
 
 protected Q_SLOTS:
     virtual void abort();
+    void setScaleImage(bool s);
 
 protected:
     Song currentSong;

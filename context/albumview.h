@@ -42,6 +42,7 @@ public:
     static const QLatin1String constInfoExt;
 
     AlbumView(QWidget *p);
+    ~AlbumView() override;
 
     void update(const Song &song, bool force=false) override;
 
@@ -69,6 +70,7 @@ private:
 private:
     QString currentArtist;
     Action *refreshAction;
+    Action *scaleCoverAction;
     ContextEngine *engine;
     int detailsReceived;
     QString pic;

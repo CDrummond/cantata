@@ -185,6 +185,13 @@ void AlbumView::playSong(const QUrl &url)
 
 void AlbumView::getTrackListing()
 {
+    if (currentSong.isNonMPD()) {
+        if (!pic.isEmpty()) {
+            updateDetails();
+        }
+        return;
+    }
+
     if (songs.isEmpty()) {
         songs=MpdLibraryModel::self()->getAlbumTracks(currentSong);
     }

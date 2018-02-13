@@ -145,6 +145,8 @@ section "install"
     file "icons\cantata\index.theme"
     file "icons\cantata\LICENSE"
     file "icons\cantata\AUTHORS"
+    setOutPath $INSTDIR\icons\cantata\128
+    file "icons\cantata\128\cantata.png"
     setOutPath $INSTDIR\icons\cantata\64
     file "icons\cantata\64\cantata.png"
     setOutPath $INSTDIR\icons\cantata\48
@@ -280,6 +282,7 @@ section "uninstall"
     delete "$INSTDIR\icons\cantata\LICENSE"
     delete "$INSTDIR\icons\cantata\AUTHORS"
     delete "$INSTDIR\icons\cantata\128\media-optical.png"
+    delete "$INSTDIR\icons\cantata\128\cantata.png"
     delete "$INSTDIR\icons\cantata\64\media-optical.png"
     delete "$INSTDIR\icons\cantata\64\cantata.png"
     delete "$INSTDIR\icons\cantata\48\media-optical.png"

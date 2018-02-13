@@ -52,6 +52,7 @@
 #include <QTimer>
 #include <QScrollBar>
 #include <QDesktopServices>
+#include <QUrl>
 #include <QUrlQuery>
 
 const QLatin1String SongView::constLyricsDir("lyrics/");
@@ -97,15 +98,6 @@ static inline QString mpdLyricsFilePath(const Song &song)
 static inline QString fixNewLines(const QString &o)
 {
     return QString(o).replace(QLatin1String("\n\n\n"), QLatin1String("\n\n")).replace("\n", "<br/>");
-}
-
-static QString actualFile(const Song &song)
-{
-    QString songFile=song.filePath();
-    if (song.isCantataStream()) {
-        QUrl(songFile).path();
-    }
-    return songFile;
 }
 
 SongView::SongView(QWidget *p)
@@ -364,11 +356,11 @@ void SongView::loadLyrics()
     }
     lyricsNeedsUpdating=false;
 
-    if (!MPDConnection::self()->getDetails().dir.isEmpty() && !currentSong.file.isEmpty() && !currentSong.isNonMPD()) {
-        QString songFile=actualFile(currentSong);
+    if (currentSong.isCantataStream() || (!MPDConnection::self()->getDetails().dir.isEmpty() && !currentSong.file.isEmpty() && !currentSong.isNonMPD())) {
+        QString songFile=currentSong.filePath(MPDConnection::self()->getDetails().dir);
         QString mpdLyrics=mpdLyricsFilePath(songFile);
 
-        if (MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/"))) {
+        if (!currentSong.isCantataStream() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/"))) {
             QUrl url(mpdLyrics);
             job=NetworkAccessManager::self()->get(url);
             job->setProperty("file", currentSong.file);
@@ -499,8 +491,8 @@ void SongView::loadMetadata()
     QMultiMap<int, QString> tags;
     QMultiMap<int, QString> audioProperties;
     #ifdef TAGLIB_FOUND
-    if (!currentSong.isStandardStream() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/"))) {
-        QString songFile=actualFile(currentSong);
+    if (currentSong.isCantataStream() || (!currentSong.isStandardStream() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/")))) {
+        QString songFile=currentSong.filePath(MPDConnection::self()->getDetails().dir);
         if (!songFile.isEmpty()) {
             static QMap<QString, MapEntry> tagMap;
             static QMap<QString, MapEntry> tagTimeMap;
@@ -543,7 +535,7 @@ void SongView::loadMetadata()
                 tagTimeMap.insert(QLatin1String("TAGGING TIME"), MapEntry(pos++, tr("Tagging time")));
             }
 
-            QMap<QString, QString> allTags=Tags::readAll(MPDConnection::self()->getDetails().dir+actualFile(currentSong));
+            QMap<QString, QString> allTags=Tags::readAll(songFile);
 
             if (!allTags.isEmpty()) {
                 QMap<QString, QString>::ConstIterator it=allTags.constBegin();
@@ -633,12 +625,12 @@ void SongView::loadMetadata()
     } else {
         tagInfo+=QLatin1String("<tr/>");
     }
-    if (MPDConnection::self()->getDetails().dirReadable) {
-        QString path=Utils::getDir(currentSong.filePath(MPDConnection::self()->getDetails().dir));
-        tagInfo+=createRow(tr("Filename"), QLatin1String("<a href=\"file://")+path+QLatin1String("\">")+
-                                             currentSong.filePath()+QLatin1String("</a>"));
+    QString songFile=currentSong.filePath(MPDConnection::self()->getDetails().dir);
+    if (QFile::exists(songFile)) {
+        tagInfo+=createRow(tr("Filename"), QLatin1String("<a href=\"file://")+songFile+QLatin1String("\">")+
+                                           songFile+QLatin1String("</a>"));
     } else {
-        tagInfo+=createRow(tr("Filename"), currentSong.filePath());
+        tagInfo+=createRow(tr("Filename"), songFile);
     }
     tagInfo+=QLatin1String("</table>");
 

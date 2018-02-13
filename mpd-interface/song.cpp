@@ -769,10 +769,18 @@ QString Song::basicArtist() const
 
 QString Song::filePath(const QString &base) const
 {
-    QString fileName=filePath();
-    bool haveAbsPath=fileName.startsWith("/"); // Utils::constDirSep
-    if (!haveAbsPath) {
-        return QString(base+fileName);
+    if (isCantataStream()) {
+        return QUrl(file).path();
+    }
+    if (isLocalFile()) {
+        return file;
+    }
+    QString fileName=decodePath(file, isCdda());
+    if (!base.isEmpty()) {
+        bool haveAbsPath=fileName.startsWith("/"); // Utils::constDirSep
+        if (!haveAbsPath) {
+            return QString(base+fileName);
+        }
     }
     return fileName;
 }

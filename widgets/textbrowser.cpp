@@ -24,9 +24,14 @@
 #include "textbrowser.h"
 #include <QImage>
 #include <QScrollBar>
+#include <QEvent>
+#include <QStyle>
 
 TextBrowser::TextBrowser(QWidget *p)
     : QTextBrowser(p)
+    , lastImageSize(0)
+    , scaleImg(false)
+    , haveImg(false)
 {
     origZoomValue=font().pointSize();
 }
@@ -39,7 +44,8 @@ QVariant TextBrowser::loadResource(int type, const QUrl &name)
             QImage img;
             img.load(name.path());
             if (!img.isNull()) {
-                return img.scaled(picSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                haveImg=true;
+                return img.scaled(imageSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
             }
         } else if (QLatin1String("data")==name.scheme()) {
             QByteArray encoded=name.toEncoded();
@@ -48,11 +54,26 @@ QVariant TextBrowser::loadResource(int type, const QUrl &name)
             QImage img;
             img.loadFromData(encoded);
             if (!img.isNull()) {
-                return img.scaled(picSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                haveImg=true;
+                return img.scaled(imageSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
             }
         }
     }
     return QTextBrowser::loadResource(type, name);
+}
+
+void TextBrowser::setScaleImage(bool s)
+{
+    if (s!=scaleImg) {
+        scaleImg=s;
+        verticalScrollBar()->removeEventFilter(this);
+        if (scaleImg) {
+            verticalScrollBar()->installEventFilter(this);
+        }
+        if (haveImg) {
+            setHtml(toHtml());
+        }
+    }
 }
 
 void TextBrowser::setPal(const QPalette &pal)
@@ -60,4 +81,45 @@ void TextBrowser::setPal(const QPalette &pal)
     setPalette(pal);
     verticalScrollBar()->setPalette(pal);
     horizontalScrollBar()->setPalette(pal);
+}
+
+void TextBrowser::resizeEvent(QResizeEvent *e)
+{
+    handleSizeChange();
+    QTextBrowser::resizeEvent(e);
+}
+
+bool TextBrowser::eventFilter(QObject *obj, QEvent *ev)
+{
+    if (obj==verticalScrollBar() && (QEvent::Show==ev->type() || QEvent::Hide==ev->type())) {
+        handleSizeChange();
+    }
+    return QTextBrowser::eventFilter(obj, ev);
+}
+
+void TextBrowser::handleSizeChange()
+{
+    if (haveImg && scaleImg) {
+        int imgSize=imageSize().width();
+        if (imgSize!=lastImageSize) {
+            lastImageSize=imgSize;
+            setHtml(toHtml());
+        }
+    }
+}
+
+QSize TextBrowser::imageSize() const
+{
+    if (!scaleImage()) {
+        return picSize();
+    }
+
+    int sbarSpacing = style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing);
+    if (sbarSpacing<0) {
+        return size()-QSize(4, 0);
+    } else {
+        QScrollBar *sb=verticalScrollBar();
+        int sbarWidth=sb && sb->isVisible() ? 0 : style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+        return size()-QSize(4 + sbarSpacing + sbarWidth, 0);
+    }
 }

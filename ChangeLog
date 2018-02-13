@@ -62,6 +62,7 @@
     queue.
 46. Add volume control for HTTP stream playback.
 47. Update toolbar cover tooltip when song changes.
+48. Add option to scale album cover in information view.
 
 2.2.0
 -----

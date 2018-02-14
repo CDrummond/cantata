@@ -129,7 +129,7 @@ void SmartPlaylistsPage::remove()
     }
 
     for (const QString &name: names) {
-        DynamicPlaylists::self()->del(name);
+        SmartPlaylists::self()->del(name);
     }
 }
 

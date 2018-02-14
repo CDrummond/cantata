@@ -422,7 +422,7 @@ void ContextWidget::readConfig()
         break;
    case PlayQueueView::BI_Custom:
         if (origType!=backdropType || backdropOpacity!=origOpacity || backdropBlur!=origBlur || origCustomBackdropFile!=customBackdropFile) {            
-            updateImage(QImage(customBackdropFile));
+            updateImage(customBackdropFile.isEmpty() ? QImage() : QImage(customBackdropFile));
         }
         break;
     }

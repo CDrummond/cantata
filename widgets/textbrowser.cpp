@@ -135,7 +135,7 @@ QSize TextBrowser::imageSize() const
         sz=size()-QSize(4 + sbarSpacing + sbarWidth, 0);
     }
     if (fullWidthImg || sz.width()<=picSize().width()) {
-        return sz;
+        return sz.width()<32 || sz.height()<32 ? QSize(32, 32) : sz;
     }
     return picSize();
 }

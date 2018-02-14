@@ -70,7 +70,7 @@ private:
 private:
     QString currentArtist;
     Action *refreshAction;
-    Action *scaleCoverAction;
+    Action *fullWidthCoverAction;
     ContextEngine *engine;
     int detailsReceived;
     QString pic;

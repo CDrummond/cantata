@@ -9072,14 +9072,19 @@ Please choose another one.</source>
         <translation type="unfinished">アルバム</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="194"/>
+        <location filename="../gui/librarypage.cpp" line="121"/>
+        <source>No music? Looks like your MPD is not configured correctly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/librarypage.cpp" line="195"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
         <translation type="unfinished">選択楽曲を削除しますか? 本操作はやり直しできません。</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="195"/>
+        <location filename="../gui/librarypage.cpp" line="196"/>
         <source>Delete Songs</source>
         <translation type="unfinished">楽曲を削除</translation>
     </message>
@@ -9828,14 +9833,19 @@ Add to that playlist?</source>
         <translation type="unfinished">ファイルマネージャで開く</translation>
     </message>
     <message>
-        <location filename="../gui/mpdbrowsepage.cpp" line="228"/>
+        <location filename="../gui/mpdbrowsepage.cpp" line="82"/>
+        <source>No folders? Looks like your MPD is not configured correctly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mpdbrowsepage.cpp" line="229"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
         <translation type="unfinished">選択楽曲を削除しますか? 本操作はやり直しできません。</translation>
     </message>
     <message>
-        <location filename="../gui/mpdbrowsepage.cpp" line="229"/>
+        <location filename="../gui/mpdbrowsepage.cpp" line="230"/>
         <source>Delete Songs</source>
         <translation type="unfinished">楽曲を削除</translation>
     </message>

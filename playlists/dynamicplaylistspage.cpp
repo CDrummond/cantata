@@ -68,17 +68,6 @@ DynamicPlaylistsPage::DynamicPlaylistsPage(QWidget *p)
     connect(DynamicPlaylists::self(), SIGNAL(loadingList()), view, SLOT(showSpinner()));
     connect(DynamicPlaylists::self(), SIGNAL(loadedList()), view, SLOT(hideSpinner()));
 
-    #ifdef Q_OS_WIN
-    remoteRunningLabel=new QLabel(this);
-    remoteRunningLabel->setStyleSheet(QString(".QLabel {"
-                          "background-color: rgba(235, 187, 187, 196);"
-                          "border-radius: 3px;"
-                          "border: 1px solid red;"
-                          "padding: 4px;"
-                          "margin: 1px;"
-                          "color: black; }"));
-    remoteRunningLabel->setText(tr("Remote dynamizer is not running."));
-    #endif
     DynamicPlaylists::self()->stopAct()->setEnabled(false);
     proxy.setSourceModel(DynamicPlaylists::self());
     view->setModel(&proxy);
@@ -90,9 +79,9 @@ DynamicPlaylistsPage::DynamicPlaylistsPage(QWidget *p)
     controls=QList<QWidget *>() << addBtn << editBtn << removeBtn << startBtn;
     init(0, QList<QWidget *>(), controls);
     #ifdef Q_OS_WIN
-    addWidget(remoteRunningLabel);
     enableWidgets(false);
     #endif
+    view->setInfoText(tr("Use the + icon (below) to create a new 'dynamic' playlist."));
 }
 
 DynamicPlaylistsPage::~DynamicPlaylistsPage()
@@ -122,7 +111,13 @@ void DynamicPlaylistsPage::controlActions()
 void DynamicPlaylistsPage::remoteDynamicSupport(bool s)
 {
     #ifdef Q_OS_WIN
-    remoteRunningLabel->setVisible(!s);
+    if (s) {
+        view->setInfoText(tr("Use the + icon (below) to create a new 'dynamic' playlist."));
+    } else {
+        view->setInfoText(tr("Remote dynamizer is not running. In order to support 'dynamic' playlists under Windows, Cantata requires "
+                             "its 'cantata-dynamic' script to be running on the MPD server."));
+    }
+
     enableWidgets(s);
     #endif
     view->setBackgroundImage(s ? Icon(QStringList() << "network-server-database.svg" << "applications-internet") : Icon());

@@ -978,6 +978,18 @@ void ItemView::setEnabled(bool en)
     }
 }
 
+void ItemView::setInfoText(const QString &info)
+{
+    listView->setInfoText(info);
+    treeView->setInfoText(info);
+    if (groupedView) {
+        groupedView->setInfoText(info);
+    }
+    if (tableView) {
+        tableView->setInfoText(info);
+    }
+}
+
 void ItemView::setLevel(int l, bool haveChildren)
 {
     currentLevel=l;

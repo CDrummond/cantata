@@ -90,6 +90,7 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     view->addSeparator();
     view->addAction(markAsNewAction);
     view->addAction(markAsListenedAction);
+    view->setInfoText(tr("Use the + icon (below) to add podcast subscriptions."));
 }
 
 PodcastWidget::~PodcastWidget()

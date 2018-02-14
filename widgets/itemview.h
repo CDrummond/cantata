@@ -146,6 +146,7 @@ public:
     void setOpenAfterSearch(bool o) { openFirstLevelAfterSearch=o; }
     void setEnabled(bool en);
     void setMinSearchDebounce(unsigned int val) { minSearchDebounce = val; }
+    void setInfoText(const QString &info);
 
 private:
     void setLevel(int level, bool haveChildren=true);

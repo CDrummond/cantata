@@ -70,6 +70,7 @@ SmartPlaylistsPage::SmartPlaylistsPage(QWidget *p)
     view->addAction(editAction);
     view->addAction(removeAction);
     view->alwaysShowHeader();
+    view->setInfoText(tr("Use the + icon (below) to create a new 'smart' playlist."));
 }
 
 SmartPlaylistsPage::~SmartPlaylistsPage()

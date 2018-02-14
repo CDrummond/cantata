@@ -104,6 +104,7 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     view->addAction(StdActions::self()->removeAction);
     view->addAction(removeDuplicatesAction);
     connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
+    view->setInfoText(tr("Either save the play queue, or use the context menu in the library, to create new playlists."));
 }
 
 StoredPlaylistsPage::~StoredPlaylistsPage()

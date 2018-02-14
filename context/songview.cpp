@@ -85,14 +85,9 @@ static QString lyricsOtherFileName(const Song &song)
 }
 #endif
 
-static inline QString mpdLyricsFilePath(const QString &songFile)
-{
-    return Utils::changeExtension(MPDConnection::self()->getDetails().dir+songFile, SongView::constExtension);
-}
-
 static inline QString mpdLyricsFilePath(const Song &song)
 {
-    return mpdLyricsFilePath(song.filePath());
+    return Utils::changeExtension(song.filePath(MPDConnection::self()->getDetails().dir), SongView::constExtension);
 }
 
 static inline QString fixNewLines(const QString &o)
@@ -358,7 +353,7 @@ void SongView::loadLyrics()
 
     if (currentSong.isCantataStream() || (!MPDConnection::self()->getDetails().dir.isEmpty() && !currentSong.file.isEmpty() && !currentSong.isNonMPD())) {
         QString songFile=currentSong.filePath(MPDConnection::self()->getDetails().dir);
-        QString mpdLyrics=mpdLyricsFilePath(songFile);
+        QString mpdLyrics=mpdLyricsFilePath(currentSong);
 
         if (!currentSong.isCantataStream() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/"))) {
             QUrl url(mpdLyrics);
@@ -368,7 +363,7 @@ void SongView::loadLyrics()
             return;
         } else {
             #ifdef TAGLIB_FOUND
-            QString tagLyrics=Tags::readLyrics(MPDConnection::self()->getDetails().dir+songFile);
+            QString tagLyrics=Tags::readLyrics(songFile);
 
             if (!tagLyrics.isEmpty()) {
                 text->setText(fixNewLines(tagLyrics));

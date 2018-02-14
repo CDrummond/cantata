@@ -26,8 +26,11 @@
 
 #include <QTextBrowser>
 
+class QTimer;
+
 class TextBrowser : public QTextBrowser
 {
+    Q_OBJECT
 public:
     TextBrowser(QWidget *p);
     QVariant loadResource(int type, const QUrl &name) override;
@@ -45,11 +48,15 @@ public:
     void resizeEvent(QResizeEvent *e) override;
     bool eventFilter(QObject *obj, QEvent *ev) override;
 
+private Q_SLOTS:
+    void refreshHtml();
+
 private:
     void handleSizeChange();
     QSize imageSize() const;
 
 private:
+    QTimer *timer;
     int origZoomValue;
     int lastImageSize;
     bool scaleImg;

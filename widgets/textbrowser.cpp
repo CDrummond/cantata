@@ -26,9 +26,11 @@
 #include <QScrollBar>
 #include <QEvent>
 #include <QStyle>
+#include <QTimer>
 
 TextBrowser::TextBrowser(QWidget *p)
     : QTextBrowser(p)
+    , timer(nullptr)
     , lastImageSize(0)
     , scaleImg(false)
     , haveImg(false)
@@ -97,13 +99,25 @@ bool TextBrowser::eventFilter(QObject *obj, QEvent *ev)
     return QTextBrowser::eventFilter(obj, ev);
 }
 
+void TextBrowser::refreshHtml()
+{
+    setHtml(toHtml());
+}
+
 void TextBrowser::handleSizeChange()
 {
     if (haveImg && scaleImg) {
         int imgSize=imageSize().width();
         if (imgSize!=lastImageSize) {
+            if (timer) {
+                timer->stop();
+            } else {
+                timer=new QTimer(this);
+                timer->setSingleShot(true);
+                connect(timer, SIGNAL(timeout()), SLOT(refreshHtml()));
+            }
             lastImageSize=imgSize;
-            setHtml(toHtml());
+            timer->start();
         }
     }
 }

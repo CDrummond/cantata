@@ -45,9 +45,7 @@
 #include <QWheelEvent>
 #include <QTimer>
 
-// Uncomment this #define to have header labels an images centered. Thsi is disabled, as the image
-// centering only works if there is some text larger than 1 line to be displayed underneath :-(
-//#define CONTEXT_CENTERED
+#define CONTEXT_CENTERED
 
 static QString headerTag;
 QString View::subTag;
@@ -59,7 +57,7 @@ QString View::encode(const QImage &img)
     buffer.open(QIODevice::WriteOnly);
     img.save(&buffer, "PNG");
     #ifdef CONTEXT_CENTERED
-    return QString("<tr><td align=\"center\"><img src=\"data:image/png;base64,%1\"/></td></tr>").arg(QString(buffer.data().toBase64()));
+    return QString("<table width=\"100%\"><tr><td align=\"center\"><img src=\"data:image/png;base64,%1\"/></td></tr></table>").arg(QString(buffer.data().toBase64()));
     #else
     return QString("<img src=\"data:image/png;base64,%1\"/>").arg(QString(buffer.data().toBase64()));
     #endif
@@ -154,7 +152,7 @@ void View::clear()
 void View::setHeader(const QString &str)
 {
     #ifdef CONTEXT_CENTERED
-    header->setText("<"+headerTag+" align=\"center\">"+str+"</"+headerTag+">");
+    header->setText("<"+headerTag+" width=\"100%\" align=\"center\">"+str+"</"+headerTag+">");
     #else
     header->setText("<"+headerTag+">"+str+"</"+headerTag+">");
     #endif
@@ -176,7 +174,7 @@ QString View::createPicTag(const QImage &img, const QString &file)
 {
     if (!file.isEmpty() && QFile::exists(file)) {
         #ifdef CONTEXT_CENTERED
-        return QString("<tr><td align=\"center\"><img src=\"%1\"/></td></tr>").arg(file);
+        return QString("<table width=\"100%\"><tr><td align=\"center\"><img src=\"%1\"/></td></tr></table>").arg(file);
         #else
         return QString("<img src=\"%1\"/>").arg(file);
         #endif

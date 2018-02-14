@@ -2920,7 +2920,12 @@ Prego sceglierne un&apos;altra.</translation>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="194"/>
+        <location filename="../gui/librarypage.cpp" line="121"/>
+        <source>No music? Looks like your MPD is not configured correctly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/librarypage.cpp" line="195"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
@@ -2929,7 +2934,7 @@ This cannot be undone.</source>
 Non sarà possibile tornare indietro.</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="195"/>
+        <location filename="../gui/librarypage.cpp" line="196"/>
         <source>Delete Songs</source>
         <translation>Cancella Brani</translation>
     </message>
@@ -3688,7 +3693,12 @@ Aggiungere i brani a quella scaletta?</translation>
         <translation>Apri nel Gestore File</translation>
     </message>
     <message>
-        <location filename="../gui/mpdbrowsepage.cpp" line="228"/>
+        <location filename="../gui/mpdbrowsepage.cpp" line="82"/>
+        <source>No folders? Looks like your MPD is not configured correctly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mpdbrowsepage.cpp" line="229"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
@@ -3697,7 +3707,7 @@ This cannot be undone.</source>
 Non sarà possibile tornare indietro.</translation>
     </message>
     <message>
-        <location filename="../gui/mpdbrowsepage.cpp" line="229"/>
+        <location filename="../gui/mpdbrowsepage.cpp" line="230"/>
         <source>Delete Songs</source>
         <translation>Cancella Brani</translation>
     </message>

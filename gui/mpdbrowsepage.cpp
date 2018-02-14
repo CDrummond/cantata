@@ -79,6 +79,7 @@ MpdBrowsePage::MpdBrowsePage(QWidget *p)
     view->closeSearch();
     view->alwaysShowHeader();
     connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
+    view->setInfoText(tr("No folders? Looks like your MPD is not configured correctly."));
 }
 
 MpdBrowsePage::~MpdBrowsePage()

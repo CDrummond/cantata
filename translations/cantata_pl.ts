@@ -9256,7 +9256,12 @@ Proszę wybrać inny skrót.</translation>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="194"/>
+        <location filename="../gui/librarypage.cpp" line="121"/>
+        <source>No music? Looks like your MPD is not configured correctly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/librarypage.cpp" line="195"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
@@ -9265,7 +9270,7 @@ This cannot be undone.</source>
 Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="195"/>
+        <location filename="../gui/librarypage.cpp" line="196"/>
         <source>Delete Songs</source>
         <translation>Usuń utwory</translation>
     </message>
@@ -10018,7 +10023,12 @@ Dodać do tej playlisty?</translation>
         <translation type="unfinished">Otwórz w menedżerze plików</translation>
     </message>
     <message>
-        <location filename="../gui/mpdbrowsepage.cpp" line="228"/>
+        <location filename="../gui/mpdbrowsepage.cpp" line="82"/>
+        <source>No folders? Looks like your MPD is not configured correctly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mpdbrowsepage.cpp" line="229"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
@@ -10027,7 +10037,7 @@ This cannot be undone.</source>
 Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
-        <location filename="../gui/mpdbrowsepage.cpp" line="229"/>
+        <location filename="../gui/mpdbrowsepage.cpp" line="230"/>
         <source>Delete Songs</source>
         <translation type="unfinished">Usuń utwory</translation>
     </message>

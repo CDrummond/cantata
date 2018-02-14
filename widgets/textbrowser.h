@@ -39,8 +39,8 @@ public:
     int zoom() const { return font().pointSize()-origZoomValue; }
     void setPicSize(const QSize &p) { pSize=p; }
     QSize picSize() const { return pSize; }
-    void setScaleImage(bool s);
-    bool scaleImage() const { return scaleImg; }
+    void setFullWidthImage(bool s);
+    bool fullWidthImage() const { return fullWidthImg; }
     void setPal(const QPalette &pal);
     void setHtml(const QString &s) { haveImg=false; QTextBrowser::setHtml(s); }
     void setText(const QString &s) { haveImg=false; QTextBrowser::setText(s); }
@@ -59,7 +59,7 @@ private:
     QTimer *timer;
     int origZoomValue;
     int lastImageSize;
-    bool scaleImg;
+    bool fullWidthImg;
     bool haveImg;
     QSize pSize;
 };

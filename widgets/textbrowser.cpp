@@ -32,7 +32,7 @@ TextBrowser::TextBrowser(QWidget *p)
     : QTextBrowser(p)
     , timer(nullptr)
     , lastImageSize(0)
-    , scaleImg(false)
+    , fullWidthImg(false)
     , haveImg(false)
 {
     origZoomValue=font().pointSize();
@@ -64,12 +64,12 @@ QVariant TextBrowser::loadResource(int type, const QUrl &name)
     return QTextBrowser::loadResource(type, name);
 }
 
-void TextBrowser::setScaleImage(bool s)
+void TextBrowser::setFullWidthImage(bool s)
 {
-    if (s!=scaleImg) {
-        scaleImg=s;
+    if (s!=fullWidthImg) {
+        fullWidthImg=s;
         verticalScrollBar()->removeEventFilter(this);
-        if (scaleImg) {
+        if (fullWidthImg) {
             verticalScrollBar()->installEventFilter(this);
         }
         if (haveImg) {
@@ -106,7 +106,7 @@ void TextBrowser::refreshHtml()
 
 void TextBrowser::handleSizeChange()
 {
-    if (haveImg && scaleImg) {
+    if (haveImg) {
         int imgSize=imageSize().width();
         if (imgSize!=lastImageSize) {
             if (timer) {
@@ -124,16 +124,18 @@ void TextBrowser::handleSizeChange()
 
 QSize TextBrowser::imageSize() const
 {
-    if (!scaleImage()) {
-        return picSize();
-    }
+    QSize sz;
 
     int sbarSpacing = style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing);
     if (sbarSpacing<0) {
-        return size()-QSize(4, 0);
+        sz=size()-QSize(4, 0);
     } else {
         QScrollBar *sb=verticalScrollBar();
         int sbarWidth=sb && sb->isVisible() ? 0 : style()->pixelMetric(QStyle::PM_ScrollBarExtent);
-        return size()-QSize(4 + sbarSpacing + sbarWidth, 0);
+        sz=size()-QSize(4 + sbarSpacing + sbarWidth, 0);
     }
+    if (fullWidthImg || sz.width()<=picSize().width()) {
+        return sz;
+    }
+    return picSize();
 }

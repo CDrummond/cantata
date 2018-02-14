@@ -67,10 +67,10 @@ AlbumView::AlbumView(QWidget *p)
 {
     engine=ContextEngine::create(this);
     refreshAction = ActionCollection::get()->createAction("refreshalbum", tr("Refresh Album Information"), Icons::self()->refreshIcon);
-    scaleCoverAction = ActionCollection::get()->createAction("scalealbumcover", tr("Scale Album Cover"));
-    scaleCoverAction->setCheckable(true);
+    fullWidthCoverAction = new Action(tr("Full Width Cover"), this);
+    fullWidthCoverAction->setCheckable(true);
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
-    connect(scaleCoverAction, SIGNAL(toggled(bool)), this, SLOT(setScaleImage(bool)));
+    connect(fullWidthCoverAction, SIGNAL(toggled(bool)), this, SLOT(setScaleImage(bool)));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), SLOT(coverUpdated(Song,QImage,QString)));
@@ -87,12 +87,12 @@ AlbumView::AlbumView(QWidget *p)
         connect(timer, SIGNAL(timeout()), this, SLOT(clearCache()));
         timer->start((int)((ArtistView::constCacheAge/2.0)*1000*24*60*60));
     }
-    scaleCoverAction->setChecked(Configuration(metaObject()->className()).get("scaleCover", false));
+    fullWidthCoverAction->setChecked(Configuration(metaObject()->className()).get("fullWidthCover", false));
 }
 
 AlbumView::~AlbumView()
 {
-    Configuration(metaObject()->className()).set("scaleCover", scaleCoverAction->isChecked());
+    Configuration(metaObject()->className()).set("fullWidthCover", fullWidthCoverAction->isChecked());
 }
 
 void AlbumView::showContextMenu(const QPoint &pos)
@@ -104,7 +104,7 @@ void AlbumView::showContextMenu(const QPoint &pos)
     } else {
         menu->addAction(refreshAction);
     }
-    menu->addAction(scaleCoverAction);
+    menu->addAction(fullWidthCoverAction);
     menu->exec(text->mapToGlobal(pos));
     delete menu;
 }

@@ -292,6 +292,6 @@ void View::abort()
 void View::setScaleImage(bool s)
 {
     for (TextBrowser *t: texts) {
-        t->setScaleImage(s);
+        t->setFullWidthImage(s);
     }
 }

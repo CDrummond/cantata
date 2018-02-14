@@ -243,6 +243,7 @@ void View::setPal(const QPalette &pal, const QColor &linkColor, const QColor &pr
     header->setPalette(hdrPal);
     if (selector) {
         selector->setPalette(hdrPal);
+        selector->setColor(pal.text().color());
     }
 }
 

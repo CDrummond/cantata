@@ -117,6 +117,7 @@ DevicesPage::DevicesPage(QWidget *p)
     #endif
     view->addSeparator();
     view->addAction(StdActions::self()->deleteSongsAction);
+    view->setInfoText(tr("Any supported devices will appear here when attached to your computer."));
 }
 
 DevicesPage::~DevicesPage()

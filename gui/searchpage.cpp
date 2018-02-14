@@ -84,6 +84,8 @@ SearchPage::SearchPage(QWidget *p)
     #endif
     #endif // TAGLIB_FOUND
     view->addAction(locateAction);
+    view->setInfoText(tr("Use the text field above to search for music in your library via MPD's search mechanism. "
+                         "Clicking the label next to the field will produce a menu allowing you to control the search area."));
 }
 
 SearchPage::~SearchPage()

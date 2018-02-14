@@ -66,6 +66,7 @@ public:
     void setForceSingleColumn(bool f) { forceSingleColumn=f; }
     void installFilter(QObject *f) { eventFilter=f; installEventFilter(f); }
     QObject * filter() const { return eventFilter; }
+    void setInfoText(const QString &i) { info=i; update(); }
 
 private Q_SLOTS:
     void correctSelection();
@@ -77,6 +78,7 @@ Q_SIGNALS:
     void itemActivated(const QModelIndex &index); // Only emitted if view is set to single-click
 
 private:
+    QString info;
     QObject *eventFilter;
     bool forceSingleColumn;
     bool alwaysAllowMenu;

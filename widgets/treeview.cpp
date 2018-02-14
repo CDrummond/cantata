@@ -333,6 +333,16 @@ void TreeView::paintEvent(QPaintEvent *e)
         p.fillRect(0, 0, sz.width(), sz.height(), QApplication::palette().color(QPalette::Base));
         p.drawPixmap((sz.width()-bgnd.width())/2, (sz.height()-bgnd.height())/2, bgnd);
     }
+    if (!info.isEmpty() && model() && 0==model()->rowCount()) {
+        QPainter p(viewport());
+        QColor col(palette().text().color());
+        col.setAlphaF(0.5);
+        QFont f(font());
+        f.setItalic(true);
+        p.setPen(col);
+        p.setFont(f);
+        p.drawText(rect().adjusted(8, 8, -16, -16), Qt::AlignCenter|Qt::TextWordWrap, info);
+    }
     QTreeView::paintEvent(e);
 }
 

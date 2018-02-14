@@ -54,6 +54,7 @@ public:
     QObject * filter() const { return eventFilter; }
     double zoom() const { return zoomLevel; }
     void setZoom(double l) { zoomLevel = l; }
+    void setInfoText(const QString &i) { info=i; update(); }
 
 private Q_SLOTS:
     void correctSelection();
@@ -65,6 +66,7 @@ Q_SIGNALS:
     void itemDoubleClicked(const QModelIndex &idx);
 
 private:
+    QString info;
     QObject *eventFilter;
     QMenu *menu;
     QPixmap bgnd;

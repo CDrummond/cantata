@@ -369,9 +369,10 @@ QString Covers::encodeName(QString name)
     return name;
 }
 
+static QString albumCoverName;
 QString Covers::albumFileName(const Song &song)
 {
-    QString coverName=MPDConnection::self()->getDetails().coverName;
+    QString coverName=albumCoverName;
     if (coverName.isEmpty()) {
         coverName=Covers::constFileName;
     }
@@ -382,30 +383,6 @@ QString Covers::albumFileName(const Song &song)
         coverName.replace(QLatin1String("%"), QLatin1String(""));
     }
     return coverName;
-}
-
-QString Covers::artistFileName(const Song &song)
-{
-    QString coverName=MPDConnection::self()->getDetails().coverName;
-    if (coverName.contains(QLatin1Char('%'))) {
-        QString rv=encodeName(song.isVariousArtists() ? song.basicArtist() : song.albumArtist());
-        if (!rv.isEmpty()) {
-            return rv;
-        }
-    }
-    return constArtistImage;
-}
-
-QString Covers::composerFileName(const Song &song)
-{
-    QString coverName=MPDConnection::self()->getDetails().coverName;
-    if (coverName.contains(QLatin1Char('%'))) {
-        QString rv=encodeName(song.composer());
-        if (!rv.isEmpty()) {
-            return rv;
-        }
-    }
-    return constComposerImage;
 }
 
 QString Covers::fixArtist(const QString &artist)
@@ -616,9 +593,9 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
 {
     QUrl u;
     QString coverName=job.song.isArtistImageRequest()
-                            ? Covers::artistFileName(job.song)
+                            ? Covers::constArtistImage
                             : job.song.isComposerImageRequest()
-                                ? Covers::composerFileName(job.song)
+                                ? Covers::constComposerImage
                                 : Covers::albumFileName(job.song);
     coverName+=constExtensions[JobHttpJpg==type ? 0 : 1];
     QString dir=Utils::getDir(job.filePath);
@@ -873,19 +850,20 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
     }
 
     if (job.song.isArtistImageRequest() || job.song.isComposerImageRequest()) {
-        if (saveInMpdDir && !job.song.isNonMPD() && canSaveTo(job.dir)) {
-            QString mpdDir=MPDConnection::self()->getDetails().dir;
-            if (!mpdDir.isEmpty() && job.dir.startsWith(mpdDir) && 2==job.dir.mid(mpdDir.length()).split(Utils::constDirSep, QString::SkipEmptyParts).count()) {
-                QDir d(job.dir);
-                d.cdUp();
-                savedName=save(mimeType, extension, d.absolutePath()+Utils::constDirSep+
-                               (job.song.isArtistImageRequest() ? Covers::artistFileName(job.song) : Covers::composerFileName(job.song)), img, raw);
-                if (!savedName.isEmpty()) {
-                    DBUG << job.song.file << savedName;
-                    return savedName;
-                }
-            }
-        }
+        // (As of 2.3.0) No longer save artist images into MPD dir
+//        if (saveInMpdDir && !job.song.isNonMPD() && canSaveTo(job.dir)) {
+//            QString mpdDir=MPDConnection::self()->getDetails().dir;
+//            if (!mpdDir.isEmpty() && job.dir.startsWith(mpdDir) && 2==job.dir.mid(mpdDir.length()).split(Utils::constDirSep, QString::SkipEmptyParts).count()) {
+//                QDir d(job.dir);
+//                d.cdUp();
+//                savedName=save(mimeType, extension, d.absolutePath()+Utils::constDirSep+
+//                               (job.song.isArtistImageRequest() ? Covers::artistFileName(job.song) : Covers::composerFileName(job.song)), img, raw);
+//                if (!savedName.isEmpty()) {
+//                    DBUG << job.song.file << savedName;
+//                    return savedName;
+//                }
+//            }
+//        }
 
         QString dir = Utils::cacheDir(Covers::constCoverDir, true);
         if (!dir.isEmpty()) {
@@ -1082,6 +1060,10 @@ void Covers::readConfig()
 {
     saveInMpdDir=Settings::self()->storeCoversInMpdDir();
     fetchCovers=Settings::self()->fetchCovers();
+    albumCoverName=Settings::self()->coverFilename();
+    if (!albumCoverName.isEmpty()) {
+        albumCoverName=constFileName;
+    }
 }
 
 void Covers::stop()
@@ -1524,12 +1506,10 @@ Covers::Image Covers::locateImage(const Song &song)
 
     QStringList coverFileNames;
     if (song.isArtistImageRequest()) {
-        QString artistFile=artistFileName(song);
         QString basicArtist=song.basicArtist();
-        coverFileNames=QStringList() << basicArtist+".jpg" << basicArtist+".png" << artistFile+".jpg" << artistFile+".png";
+        coverFileNames=QStringList() << basicArtist+".jpg" << basicArtist+".png" << constArtistImage+".jpg" << constArtistImage+".png";
     } else if (song.isComposerImageRequest()) {
-        QString composerFile=composerFileName(song);
-        coverFileNames=QStringList() << composerFile+".jpg" << composerFile+".png";
+        coverFileNames=QStringList() << constComposerImage+".jpg" << constComposerImage+".png";
     } else {
         QString mpdCover=albumFileName(song);
         if (!mpdCover.isEmpty()) {

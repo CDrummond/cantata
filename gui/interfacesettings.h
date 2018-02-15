@@ -59,6 +59,7 @@ private Q_SLOTS:
     void enablePlayQueueBackgroundOptions();
     void systemTrayCheckBoxToggled();
     void systemTrayPopupToggled();
+    void saveCoversInMpdDirToggled();
 
 private:
     bool loaded;

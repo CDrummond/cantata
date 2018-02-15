@@ -28,7 +28,7 @@ set(DEBIAN_PACKAGE_DESCRIPTION "Qt Client for MPD")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
 set(CPACK_PACKAGE_VERSION_MAJOR "2")
 set(CPACK_PACKAGE_VERSION_MINOR "2")
-set(CPACK_PACKAGE_VERSION_PATCH "50")
+set(CPACK_PACKAGE_VERSION_PATCH "51")
 set(CPACK_PACKAGE_VERSION_SPIN "")  # Use ".$number" - e.g. ".1"
 set(CPACK_PACKAGE_CONTACT "Craig Drummond <craig.p.drummond@gmail.com>")
 set(CANTATA_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")
@@ -305,7 +305,7 @@ include_directories(${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BIN
 
 set(CANTATA_SRCS ${CANTATA_SRCS}
     gui/settings.cpp gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp gui/customactionssettings.cpp
-    gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/customactions.cpp
+    gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/customactions.cpp
     gui/folderpage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
     gui/main.cpp gui/covers.cpp gui/currentcover.cpp gui/mpdbrowsepage.cpp gui/localfolderpage.cpp
     devices/deviceoptions.cpp
@@ -376,8 +376,7 @@ set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
     playlists/smartplaylistspage.h
     scrobbling/scrobbler.h scrobbling/scrobblingsettings.h scrobbling/scrobblingstatus.h scrobbling/scrobblinglove.h)
 set(CANTATA_UIS ${CANTATA_UIS}
-    gui/initialsettingswizard.ui gui/mainwindow.ui
-    gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui
+    gui/initialsettingswizard.ui gui/mainwindow.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui
     context/togglelist.ui context/othersettings.ui
     streams/digitallyimportedsettings.ui streams/streamssettings.ui
     playlists/playlistrule.ui playlists/playlistrules.ui

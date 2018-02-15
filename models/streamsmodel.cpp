@@ -1241,8 +1241,6 @@ void StreamsModel::favouriteStreams(const QList<Stream> &streams)
         }
     }
 
-    importOldFavourites();
-
     if (CategoryItem::Fetched!=favourites->state) {
         favourites->state=CategoryItem::Fetched;
         emit dataChanged(idx, idx);
@@ -1731,24 +1729,6 @@ StreamsModel::Item * StreamsModel::parseSomaFmEntry(QXmlStreamReader &doc, Categ
     }
 
     return name.isEmpty() || url.isEmpty() ? nullptr : new Item(url, name, parent);
-}
-
-void StreamsModel::importOldFavourites()
-{
-    if (!favourites->importedOld) {
-        if (Settings::self()->version()<CANTATA_MAKE_VERSION(1,3,54)) {
-            QString prevFile=Settings::self()->storeStreamsInMpdDir()
-                                ? MPDConnection::self()->getDetails().dir : Utils::dataDir(QString(), false);
-
-            if (!prevFile.isEmpty()) {
-                prevFile+="streams.xml.gz";
-                if (QFile::exists(prevFile)) {
-                    importIntoFavourites(prevFile);
-                }
-            }
-        }
-        favourites->importedOld=true;
-    }
 }
 
 void StreamsModel::loadInstalledProviders()

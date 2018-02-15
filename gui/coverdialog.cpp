@@ -1216,7 +1216,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
     QString destName;
     QString mpdDir;
     QString dirName;
-    bool saveInMpd=Settings::self()->storeCoversInMpdDir();
+    bool saveInMpd=!isArtist && Settings::self()->storeCoversInMpdDir();
 
     if (saveInMpd) {
         bool haveAbsPath=filePath.startsWith('/');
@@ -1232,7 +1232,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
         if (saveInMpd && !mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
             QDir d(dirName);
             d.cdUp();
-            destName=d.absolutePath()+'/'+Covers::artistFileName(song)+src.mid(src.length()-4);
+            destName=d.absolutePath()+'/'+Covers::constArtistImage+src.mid(src.length()-4);
         } else {
             destName=Utils::cacheDir(Covers::constCoverDir, true)+Covers::encodeName(song.albumArtist())+src.mid(src.length()-4);
         }

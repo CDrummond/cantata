@@ -204,8 +204,6 @@ public:
     static const QStringList &standardNames();
     static QString encodeName(QString name);
     static QString albumFileName(const Song &song);
-    static QString artistFileName(const Song &song);
-    static QString composerFileName(const Song &song);
     static QString fixArtist(const QString &artist);
     static bool isJpg(const QByteArray &data);
     static bool isPng(const QByteArray &data);

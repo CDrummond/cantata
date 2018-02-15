@@ -52,7 +52,6 @@ public:
     Icon streamIcon;
     Icon speakerIcon;
     Icon menuIcon;
-    Icon filesIcon;
 
     Icon playqueueIcon;
     Icon libraryIcon;

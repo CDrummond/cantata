@@ -311,7 +311,6 @@ private Q_SLOTS:
 private:
     bool loadCache(CategoryItem *cat);
     Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<Item*>(index.internalPointer()) : root; }
-    void importOldFavourites();
     void loadInstalledProviders();
 
 private:

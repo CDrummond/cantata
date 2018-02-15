@@ -387,8 +387,10 @@ void TrackOrganiser::renameFile()
             if (sArtistDir.exists() && dArtistDir.exists() && sArtistDir.absolutePath()!=sDir.absolutePath() && sArtistDir.absolutePath()!=dArtistDir.absolutePath()) {
                 QStringList artistImages;
                 QFileInfoList entries=sArtistDir.entryInfoList(QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot);
-                QString artistImage=Covers::artistFileName(s);
-                QSet<QString> acceptable=QSet<QString>() << artistImage+QLatin1String(".jpg") << artistImage+QLatin1String(".png")
+                QSet<QString> acceptable=QSet<QString>() << Covers::constArtistImage+QLatin1String(".jpg")
+                                                         << Covers::constArtistImage+QLatin1String(".png")
+                                                         << Covers::constComposerImage+QLatin1String(".jpg")
+                                                         << Covers::constComposerImage+QLatin1String(".png")
                                                          << ContextWidget::constBackdropFileName+QLatin1String(".jpg")
                                                          << ContextWidget::constBackdropFileName+QLatin1String(".png");
 

@@ -166,7 +166,6 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         details.port=grp.get("port", name.isEmpty() ? mpdDefaults.port : 6600);
         details.dir=grp.getDirPath("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music");
         details.password=grp.get("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
-        details.coverName=grp.get("coverName", QString());
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         details.streamUrl=grp.get("streamUrl", QString());
         #endif
@@ -180,7 +179,6 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         details.port=mpdDefaults.port;
         details.dir=mpdDefaults.dir;
         details.password=mpdDefaults.passwd;
-        details.coverName=QString();
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         details.streamUrl=QString();
         #endif
@@ -273,27 +271,29 @@ bool Settings::stopOnExit()
 
 bool Settings::storeCoversInMpdDir()
 {
-    return cfg.get("storeCoversInMpdDir", true);
+    return cfg.get("storeCoversInMpdDir", false);
 }
 
-bool Settings::storeLyricsInMpdDir()
+QString Settings::coverFilename()
 {
-    return cfg.get("storeLyricsInMpdDir", true);
-}
-
-bool Settings::storeStreamsInMpdDir()
-{
-    #ifdef Q_OS_WIN
-    bool def=false;
-    #else
-    bool def=version()>=CANTATA_MAKE_VERSION(0, 9, 50);
-    #endif
-    return cfg.get("storeStreamsInMpdDir", def);
-}
-
-bool Settings::storeBackdropsInMpdDir()
-{
-    return cfg.get("storeBackdropsInMpdDir", false);
+    QString name=cfg.get("coverFilename", QString());
+    // name is empty, so for old configs try to get from MPD settings
+    if (name.isEmpty() && version()<CANTATA_MAKE_VERSION(2, 2, 51)) {
+        QStringList groups=cfg.childGroups();
+        QList<MPDConnectionDetails> connections;
+        for (const QString &grp: groups) {
+            if (cfg.hasGroup(grp) && grp.startsWith("Connection")) {
+                Configuration cfg(grp);
+                name=cfg.get("coverName", QString());
+                if (!name.isEmpty()) {
+                    // Use 1st non-empty
+                    saveCoverFilename(name);
+                    return name;
+                }
+            }
+        }
+    }
+    return name;
 }
 
 int Settings::sidebar()
@@ -714,7 +714,6 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     grp.set("port", (int)v.port);
     grp.setDirPath("dir", v.dir);
     grp.set("passwd", v.password);
-    grp.set("coverName", v.coverName);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     grp.set("streamUrl", v.streamUrl);
     #endif
@@ -794,14 +793,9 @@ void Settings::saveStoreCoversInMpdDir(bool v)
     cfg.set("storeCoversInMpdDir", v);
 }
 
-void Settings::saveStoreLyricsInMpdDir(bool v)
+void Settings::saveCoverFilename(const QString &v)
 {
-    cfg.set("storeLyricsInMpdDir", v);
-}
-
-void Settings::saveStoreBackdropsInMpdDir(bool v)
-{
-    cfg.set("storeBackdropsInMpdDir", v);
+    cfg.set("coverFilename", v);
 }
 
 void Settings::saveSidebar(int v)

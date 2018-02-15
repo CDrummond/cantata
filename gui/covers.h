@@ -50,13 +50,13 @@ public:
     enum JobType {
         JobHttpJpg,
         JobHttpPng,
-        JobLastFm
+        JobRemote
     };
 
     struct Job
     {
         Job(const Song &s, const QString &d)
-            : song(s), filePath(s.filePath()), dir(d), type(JobLastFm), level(0) { }
+            : song(s), filePath(s.filePath()), dir(d), type(JobRemote), level(0) { }
         Song song;
         QString filePath;
         QString dir;
@@ -79,10 +79,10 @@ Q_SIGNALS:
 
 private:
     bool downloadViaHttp(Job &job, JobType type);
-    void downloadViaLastFm(Job &job);
+    void downloadViaRemote(Job &job);
 
 private Q_SLOTS:
-    void lastFmCallFinished();
+    void remoteCallFinished();
     void jobFinished();
     void onlineJobFinished();
 

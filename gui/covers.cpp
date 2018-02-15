@@ -582,7 +582,7 @@ void CoverDownloader::download(const Song &song)
 
     if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
         downloadViaHttp(job, JobHttpJpg);
-    } else if (fetchCovers) {
+    } else if (fetchCovers || job.song.isArtistImageRequest()) {
         downloadViaLastFm(job);
     } else {
         failed(job);
@@ -735,7 +735,7 @@ void CoverDownloader::jobFinished()
                     job.level=0;
                     downloadViaHttp(job, JobHttpPng);
                 }
-            } else if (fetchCovers && JobHttpPng==job.type && (!job.level || !downloadViaHttp(job, JobHttpPng)) && !job.song.isComposerImageRequest()) {
+            } else if ((fetchCovers || job.song.isArtistImageRequest()) && JobHttpPng==job.type && (!job.level || !downloadViaHttp(job, JobHttpPng)) && !job.song.isComposerImageRequest()) {
                 downloadViaLastFm(job);
             } else {
                 failed(job);

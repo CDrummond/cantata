@@ -609,7 +609,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="WizardPage" name="filesPage">
+  <widget class="WizardPage" name="coversPage">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <widget class="QLabel" name="label_6f">
@@ -620,7 +620,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Covers and Lyrics</string>
+       <string>Album Covers</string>
       </property>
      </widget>
     </item>
@@ -643,7 +643,7 @@
     <item>
      <widget class="QLabel" name="label_5f">
       <property name="text">
-       <string>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</string>
+       <string>&lt;p&gt;Cantata can download missing covers, and store these either in the music folder or within your personal cache folder.&lt;/p&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -673,44 +673,23 @@
      </spacer>
     </item>
     <item>
+     <widget class="QCheckBox" name="fetchCovers">
+      <property name="text">
+       <string>Fetch missing covers</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QCheckBox" name="storeCoversInMpdDir">
       <property name="text">
-       <string>Save downloaded covers, artist, and composer images, in music folder</string>
+       <string>Save downloaded covers into music folder</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QCheckBox" name="storeLyricsInMpdDir">
+     <widget class="NoteLabel" name="coverNote">
       <property name="text">
-       <string>Save downloaded lyrics in music folder</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QCheckBox" name="storeBackdropsInMpdDir">
-      <property name="text">
-       <string>Save downloaded backdrops in music folder</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="NoteLabel" name="persNote">
-      <property name="text">
-       <string>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="NoteLabel" name="persNote_2">
-      <property name="text">
-       <string>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. 'Artist/Album/Tracks'.</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="NoteLabel" name="httpNote">
-      <property name="text">
-       <string>The 'Music folder' is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</string>
+       <string>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</string>
       </property>
      </widget>
     </item>

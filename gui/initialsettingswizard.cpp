@@ -75,8 +75,10 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     groupWarningIcon->setPixmap(Icon("dialog-warning").pixmap(iconSize, iconSize));
     introPage->setBackground(Icons::self()->appIcon);
     connectionPage->setBackground(Icons::self()->audioFileIcon);
-    //coversPage->setBackground(Icons::self()->filesIcon);
+    coversPage->setBackground(Icons::self()->albumIconLarge);
     finishedPage->setBackground(Icon("dialog-ok"));
+    fetchCovers->setChecked(Settings::self()->fetchCovers());
+    storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
 
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     introStack->setCurrentIndex(MPDUser::self()->isSupported() ? 1 : 0);
@@ -113,7 +115,6 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     resize(sz);
     setMinimumSize(sz);
     #endif
-    httpNote->setOn(true);
 
     #ifdef AVAHI_FOUND
     discoveryButton = new QPushButton(tr("Discover..."), this);
@@ -198,17 +199,13 @@ void InitialSettingsWizard::pageChanged(int p)
         return;
     }
     if (PAGE_COVERS==p) {
-//        if (dir->text().trimmed().startsWith(QLatin1String("http:/"))) {
-//            storeCoversInMpdDir->setChecked(false);
-//            storeLyricsInMpdDir->setChecked(false);
-//            storeBackdropsInMpdDir->setChecked(false);
-//            httpNote->setVisible(true);
-//        } else {
-//            storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
-//            storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
-//            storeBackdropsInMpdDir->setChecked(Settings::self()->storeBackdropsInMpdDir());
-//            httpNote->setVisible(false);
-//        }
+        if (dir->text().trimmed().startsWith(QLatin1String("http:/"))) {
+            storeCoversInMpdDir->setChecked(false);
+            fetchCovers->setChecked(true);
+        } else {
+            storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
+            fetchCovers->setChecked(Settings::self()->fetchCovers());
+        }
     }
     button(NextButton)->setEnabled(PAGE_END!=p);
 }

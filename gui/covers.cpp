@@ -54,6 +54,8 @@
 #include <QXmlStreamReader>
 #include <QTimer>
 #include <QApplication>
+#include <QJsonParseError>
+#include <QJsonDocument>
 
 GLOBAL_STATIC(Covers, instance)
 
@@ -583,7 +585,7 @@ void CoverDownloader::download(const Song &song)
     if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
         downloadViaHttp(job, JobHttpJpg);
     } else if (fetchCovers || job.song.isArtistImageRequest()) {
-        downloadViaLastFm(job);
+        downloadViaRemote(job);
     } else {
         failed(job);
     }
@@ -622,28 +624,39 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
     return true;
 }
 
-void CoverDownloader::downloadViaLastFm(Job &job)
+void CoverDownloader::downloadViaRemote(Job &job)
 {
-    QUrl url("https://ws.audioscrobbler.com/2.0/");
-    QUrlQuery query;
+    QUrl url;
+    if (job.song.isArtistImageRequest()) {
+        url=QUrl("https://ws.audioscrobbler.com/2.0/");
+        QUrlQuery query;
 
-    query.addQueryItem("method", job.song.isArtistImageRequest() || job.song.isComposerImageRequest() ? "artist.getInfo" : "album.getInfo");
-    query.addQueryItem("api_key", Covers::constLastFmApiKey);
-    query.addQueryItem("autocorrect", "1");
-    query.addQueryItem("artist", Covers::fixArtist(job.song.albumArtist()));
-    if (!job.song.isArtistImageRequest()) {
-        query.addQueryItem("album", job.song.album);
+        query.addQueryItem("method", job.song.isArtistImageRequest() || job.song.isComposerImageRequest() ? "artist.getInfo" : "album.getInfo");
+        query.addQueryItem("api_key", Covers::constLastFmApiKey);
+        query.addQueryItem("autocorrect", "1");
+        query.addQueryItem("artist", Covers::fixArtist(job.song.albumArtist()));
+        if (!job.song.isArtistImageRequest()) {
+            query.addQueryItem("album", job.song.album);
+        }
+        url.setQuery(query);
+    } else {
+        url=QUrl("http://itunes.apple.com/search");
+        QUrlQuery query;
+        query.addQueryItem("term", Covers::fixArtist(job.song.albumArtist())+ " " + job.song.album);
+        query.addQueryItem("limit", QString::number(10));
+        query.addQueryItem("media", "music");
+        query.addQueryItem("entity", "album");
+        url.setQuery(query);
     }
-    url.setQuery(query);
 
     NetworkJob *j = network()->get(url);
-    connect(j, SIGNAL(finished()), this, SLOT(lastFmCallFinished()));
-    job.type=JobLastFm;
+    connect(j, SIGNAL(finished()), this, SLOT(remoteCallFinished()));
+    job.type=JobRemote;
     jobs.insert(j, job);
     DBUG << url.toString();
 }
 
-void CoverDownloader::lastFmCallFinished()
+void CoverDownloader::remoteCallFinished()
 {
     NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
     if (!reply) {
@@ -660,37 +673,55 @@ void CoverDownloader::lastFmCallFinished()
         jobs.erase(it);
         QString url;
 
-        if(reply->ok()) {
-            QXmlStreamReader doc(reply->readAll());
-            QString largeUrl;
-            bool inSection=false;
-            bool isArtistImage=job.song.isArtistImageRequest();
+        if (reply->ok()) {
+            if (job.song.isArtistImageRequest()) {
+                QXmlStreamReader doc(reply->readAll());
+                QString largeUrl;
+                bool inSection=false;
+                bool isArtistImage=job.song.isArtistImageRequest();
 
-            doc.setNamespaceProcessing(false);
-            while (!doc.atEnd()) {
-                doc.readNext();
+                doc.setNamespaceProcessing(false);
+                while (!doc.atEnd()) {
+                    doc.readNext();
 
-                if (doc.isStartElement()) {
-                    if (!inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
-                        inSection=true;
-                    } else if (inSection && QLatin1String("image")==doc.name()) {
-                        QString size=doc.attributes().value("size").toString();
-                        if (QLatin1String("extralarge")==size) {
-                            url = doc.readElementText();
-                        } else if (QLatin1String("large")==size) {
-                            largeUrl = doc.readElementText();
+                    if (doc.isStartElement()) {
+                        if (!inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
+                            inSection=true;
+                        } else if (inSection && QLatin1String("image")==doc.name()) {
+                            QString size=doc.attributes().value("size").toString();
+                            if (QLatin1String("extralarge")==size) {
+                                url = doc.readElementText();
+                            } else if (QLatin1String("large")==size) {
+                                largeUrl = doc.readElementText();
+                            }
+                            if (!url.isEmpty() && !largeUrl.isEmpty()) {
+                                break;
+                            }
                         }
-                        if (!url.isEmpty() && !largeUrl.isEmpty()) {
+                    } else if (doc.isEndElement() && inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
+                        break;
+                    }
+                }
+
+                if (url.isEmpty() && !largeUrl.isEmpty()) {
+                    url=largeUrl;
+                }
+            } else {
+                QJsonParseError jsonParseError;
+                QVariantMap parsed=QJsonDocument::fromJson(reply->readAll(), &jsonParseError).toVariant().toMap();
+                bool ok=QJsonParseError::NoError==jsonParseError.error;
+
+                if (ok && parsed.contains("results")) {
+                    QVariantList results=parsed["results"].toList();
+                    for (const QVariant &res: results) {
+                        QVariantMap item=res.toMap();
+                        if (item.contains("artworkUrl100")) {
+                            QString thumbUrl=item["artworkUrl100"].toString();
+                            url=QString(thumbUrl).replace("100x100", "600x600");
                             break;
                         }
                     }
-                } else if (doc.isEndElement() && inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
-                    break;
                 }
-            }
-
-            if (url.isEmpty() && !largeUrl.isEmpty()) {
-                url=largeUrl;
             }
         }
 
@@ -729,14 +760,14 @@ void CoverDownloader::jobFinished()
         }
 
         jobs.remove(it.key());
-        if (img.img.isNull() && JobLastFm!=job.type) {
+        if (img.img.isNull() && JobRemote!=job.type) {
             if (JobHttpJpg==job.type) {
                 if (!job.level || !downloadViaHttp(job, JobHttpJpg)) {
                     job.level=0;
                     downloadViaHttp(job, JobHttpPng);
                 }
             } else if ((fetchCovers || job.song.isArtistImageRequest()) && JobHttpPng==job.type && (!job.level || !downloadViaHttp(job, JobHttpPng)) && !job.song.isComposerImageRequest()) {
-                downloadViaLastFm(job);
+                downloadViaRemote(job);
             } else {
                 failed(job);
             }

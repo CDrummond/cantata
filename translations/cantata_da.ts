@@ -1728,29 +1728,24 @@ Det kan ikke fortrydes.</translation>
 <context>
     <name>FileSettings</name>
     <message>
-        <location filename="../gui/filesettings.ui" line="32"/>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation>Gem downloadede cover-, kunstner- og komponistbilleder, i musikmappe</translation>
+        <translation type="vanished">Gem downloadede cover-, kunstner- og komponistbilleder, i musikmappe</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="39"/>
         <source>Save downloaded lyrics in music folder</source>
-        <translation>Gem downloadede sangtekster i musikmappe</translation>
+        <translation type="vanished">Gem downloadede sangtekster i musikmappe</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="46"/>
         <source>Save downloaded backdrops in music folder</source>
-        <translation>Gem downloadede backdrops i musikmappe</translation>
+        <translation type="vanished">Gem downloadede backdrops i musikmappe</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="53"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation>Hvis du vælger at Cantata skal lagre covers, sangtekster eller backdrops, i musikmappen, og du ikke har skriveadgang til mappen, så vil Cantata gå tilbage til at gemme filerne i din personlige mellemlager-mappe.</translation>
+        <translation type="vanished">Hvis du vælger at Cantata skal lagre covers, sangtekster eller backdrops, i musikmappen, og du ikke har skriveadgang til mappen, så vil Cantata gå tilbage til at gemme filerne i din personlige mellemlager-mappe.</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="60"/>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation>Cantata kan kun gemme backdrops-, kunstner og komponistbilleder i musikmappens hierarki hvis den er 2 niveauer dyb. f.eks. &apos;Kunstner/Album/Spor&apos;.</translation>
+        <translation type="vanished">Cantata kan kun gemme backdrops-, kunstner og komponistbilleder i musikmappens hierarki hvis den er 2 niveauer dyb. f.eks. &apos;Kunstner/Album/Spor&apos;.</translation>
     </message>
 </context>
 <context>
@@ -2127,61 +2122,78 @@ Det kan ikke fortrydes.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="623"/>
-        <source>Covers and Lyrics</source>
-        <translation>Covers og sangtekster</translation>
+        <source>Album Covers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="646"/>
-        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Cantata downloader manglende covers og sangtekster fra internettet.&lt;/p&gt;&lt;p&gt;Bekræft venligst, for hver af dem, om Cantata skal lagre de relaterede filer i musikmappen, eller i dit personlige mellemlager/konfigurationsmappe.&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Cantata can download missing covers, and store these either in the music folder or within your personal cache folder.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
-        <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation>Gem downloadede cover-, kunstner- og komponistbilleder, i musikmappe</translation>
+        <source>Fetch missing covers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation>Gem downloadede sangtekster i musikmappe</translation>
+        <source>Save downloaded covers into music folder</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="692"/>
+        <source>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers and Lyrics</source>
+        <translation type="vanished">Covers og sangtekster</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
+        <translation type="vanished">&lt;p&gt;Cantata downloader manglende covers og sangtekster fra internettet.&lt;/p&gt;&lt;p&gt;Bekræft venligst, for hver af dem, om Cantata skal lagre de relaterede filer i musikmappen, eller i dit personlige mellemlager/konfigurationsmappe.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Save downloaded covers, artist, and composer images, in music folder</source>
+        <translation type="vanished">Gem downloadede cover-, kunstner- og komponistbilleder, i musikmappe</translation>
+    </message>
+    <message>
+        <source>Save downloaded lyrics in music folder</source>
+        <translation type="vanished">Gem downloadede sangtekster i musikmappe</translation>
+    </message>
+    <message>
         <source>Save downloaded backdrops in music folder</source>
-        <translation>Gem downloadede backdrops i musikmappe</translation>
+        <translation type="vanished">Gem downloadede backdrops i musikmappe</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="699"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation>Hvis du vælger at Cantata skal lagre covers, sangtekster eller backdrops, i musikmappen, og du ikke har skriveadgang til mappen, så vil Cantata gå tilbage til at gemme filerne i din personlige mellemlager-mappe.</translation>
+        <translation type="vanished">Hvis du vælger at Cantata skal lagre covers, sangtekster eller backdrops, i musikmappen, og du ikke har skriveadgang til mappen, så vil Cantata gå tilbage til at gemme filerne i din personlige mellemlager-mappe.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="706"/>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation>Cantata kan kun gemme backdrops-, kunstner og komponistbilleder i musikmappens hierarki hvis den er 2 niveauer dyb. f.eks. &apos;Kunstner/Album/Spor&apos;.</translation>
+        <translation type="vanished">Cantata kan kun gemme backdrops-, kunstner og komponistbilleder i musikmappens hierarki hvis den er 2 niveauer dyb. f.eks. &apos;Kunstner/Album/Spor&apos;.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="713"/>
         <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
-        <translation>&apos;Musikmappe&apos; er ikke sat til en HTTP-adresse, og Cantata kan, på nuværende tidspunkt, ikke uploade filer til eksterne HTTP-servere. Indstillingen ovenfor skal derfor forblive fravalgt.</translation>
+        <translation type="vanished">&apos;Musikmappe&apos; er ikke sat til en HTTP-adresse, og Cantata kan, på nuværende tidspunkt, ikke uploade filer til eksterne HTTP-servere. Indstillingen ovenfor skal derfor forblive fravalgt.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="743"/>
+        <location filename="../gui/initialsettingswizard.ui" line="722"/>
         <source>Finished!</source>
         <translation>Færdig!</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="766"/>
+        <location filename="../gui/initialsettingswizard.ui" line="745"/>
         <source>Cantata is now configured!&lt;br/&gt;&lt;br/&gt;Cantata&apos;s configuration dialog maybe used to customise Cantata&apos;s appearance, as well as to add extra MPD hosts, etc.</source>
         <translation>Cantata er nu konfigureret!&lt;br/&gt;&lt;br/&gt;Cantata&apos;s konfigurationsdialog kan bruges til at tilpasse Cantata&apos;s udseende og tilføje ekstra MPD-værter, osv.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="798"/>
+        <location filename="../gui/initialsettingswizard.ui" line="777"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation>Cantata grupperer spor i albummer ved at bruge &apos;Albumkunstner&apos;-mærkatet hvis det er sat, ellers bruges &apos;Kunstner&apos;-mærkatet. Hvis du har albummer med flere kunstnere, så &lt;b&gt;skal&lt;/b&gt; du sætte &apos;Albumkunstner&apos;-mærkatet for at grupperingen kan virke korrekt. I dette scenarie foreslås det at bruge &apos;Diverse kunstnere&apos;.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="830"/>
+        <location filename="../gui/initialsettingswizard.ui" line="809"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
         <translation>&lt;b&gt;Advarsel:&lt;/b&gt; Du er på nuværende tidspunkt ikke medlem af &apos;users&apos;-gruppen. Cantata virker bedre (gemme albumcovers, sangtekster, osv. med de korrekte tilladelser) hvis du (eller din administrator) tilføjer dig selv til gruppen. Hvis du tilføjer dig selv, så skal du logge ud og ind igen før det træder i kraft.</translation>
     </message>
@@ -2191,22 +2203,22 @@ Det kan ikke fortrydes.</translation>
         <translation>Ikke forbundet</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="122"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="120"/>
         <source>Discover...</source>
         <translation>Opdag...</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="169"/>
         <source>Connection Established</source>
         <translation>Forbindelse etableret</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="169"/>
         <source>Connection Failed</source>
         <translation>Forbindelse mislykkedes</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="184"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="182"/>
         <source>Cantata will now terminate</source>
         <translation>Cantata afsluttes nu</translation>
     </message>
@@ -2254,7 +2266,7 @@ Det kan ikke fortrydes.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="82"/>
         <location filename="../gui/interfacesettings.ui" line="137"/>
-        <location filename="../gui/interfacesettings.ui" line="675"/>
+        <location filename="../gui/interfacesettings.ui" line="736"/>
         <source>Style:</source>
         <translation>Stil:</translation>
     </message>
@@ -2275,7 +2287,7 @@ Det kan ikke fortrydes.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="128"/>
-        <location filename="../gui/interfacesettings.cpp" line="133"/>
+        <location filename="../gui/interfacesettings.cpp" line="151"/>
         <source>Play Queue</source>
         <translation>Afspilningskø</translation>
     </message>
@@ -2485,6 +2497,36 @@ Det kan ikke fortrydes.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/interfacesettings.ui" line="623"/>
+        <source>Covers</source>
+        <translation type="unfinished">Covers</translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="634"/>
+        <source>Fetch missing covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="641"/>
+        <source>Save downloaded covers into music folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="648"/>
+        <source>Filename:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="658"/>
+        <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Filnavnet (uden endelse) som downloadede covers skal gemmes som.&lt;br/&gt;Hvis det er tomt, så bruges &apos;cover&apos;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%kunstner% erstattes med albumkunstneren af den nuværende sang, og %album% erstattes med albummets navn.&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="667"/>
+        <source>If you enable &apos;Save downloaded covers into music folder&apos; you may need to clear the cache of any previous covers to force downloading of new covers. See &apos;Cache&apos; settings page for further details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>CUE Files</source>
         <translation type="vanished">CUE-filer</translation>
     </message>
@@ -2497,165 +2539,174 @@ Det kan ikke fortrydes.</translation>
         <translation type="vanished">Hvis noget af det som er ovenfor ændres kræver det en genopfriskning af databasen (og muligvis genstart af Cantata) før ændringerne træder i kraft.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="623"/>
+        <location filename="../gui/interfacesettings.ui" line="691"/>
         <source>General</source>
         <translation>Generelt</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="634"/>
         <source>Fetch missing covers from Last.fm</source>
-        <translation>Hent manglende covers fra Last.fm</translation>
+        <translation type="vanished">Hent manglende covers fra Last.fm</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="641"/>
+        <location filename="../gui/interfacesettings.ui" line="702"/>
         <source>Show delete action in context menus</source>
         <translation>Vis slet-handling i genvejsmenuer</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="648"/>
+        <location filename="../gui/interfacesettings.ui" line="709"/>
         <source>Enforce single-click activation of items</source>
         <translation>Aktivér poster med ét klik</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="655"/>
+        <location filename="../gui/interfacesettings.ui" line="716"/>
         <source>Show song information tooltips</source>
         <translation>Vis værktøjstips med information om sangen</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="662"/>
+        <location filename="../gui/interfacesettings.ui" line="723"/>
         <source>Language:</source>
         <translation>Sprog:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="690"/>
+        <location filename="../gui/interfacesettings.ui" line="751"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation>Cantata skal genstartes for at skifte &apos;Aktivér poster med ét klik&apos;-indstillingen.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="697"/>
+        <location filename="../gui/interfacesettings.ui" line="758"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation>Cantata skal genstartes for at skifte sprogindstillingen.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="704"/>
+        <location filename="../gui/interfacesettings.ui" line="765"/>
         <source>Changing the style setting will require a re-start of Cantata.</source>
         <translation>Cantata skal genstartes for at skifte stilindstillingen.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="130"/>
+        <location filename="../gui/interfacesettings.cpp" line="148"/>
         <source>Use &apos;Year&apos; tag to display &amp; sort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="131"/>
+        <location filename="../gui/interfacesettings.cpp" line="149"/>
         <source>Use &apos;Original Year&apos; tag to display &amp; sort, fallback to &apos;Year&apos; if not set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="134"/>
+        <location filename="../gui/interfacesettings.cpp" line="152"/>
         <source>Library</source>
         <translation>Bibliotek</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="135"/>
+        <location filename="../gui/interfacesettings.cpp" line="153"/>
         <source>Folders</source>
         <translation>Mapper</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="136"/>
+        <location filename="../gui/interfacesettings.cpp" line="154"/>
         <source>Playlists</source>
         <translation>Afspilningslister</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="137"/>
+        <location filename="../gui/interfacesettings.cpp" line="155"/>
         <source>Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts</source>
         <translation>Internet - Strømme, Jamendo, Maganatune, SoundCloud og Podcasts</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="139"/>
+        <location filename="../gui/interfacesettings.cpp" line="157"/>
         <source>Devices - UMS, MTP (e.g. Android), and AudioCDs</source>
         <translation>Enheder - UMS, MTP (f.eks. Android) og Lyd-CD&apos;er</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="143"/>
+        <location filename="../gui/interfacesettings.cpp" line="161"/>
         <source>Search (via MPD)</source>
         <translation>Søg (via MPD)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="144"/>
+        <location filename="../gui/interfacesettings.cpp" line="162"/>
         <source>Info - Current song information (artist, album, and lyrics)</source>
         <translation>Info - Information om nuværende sang (kunstner, album og sangtekster)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="149"/>
+        <location filename="../gui/interfacesettings.cpp" line="167"/>
         <source>Large</source>
         <translation>Store</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="150"/>
+        <location filename="../gui/interfacesettings.cpp" line="168"/>
         <source>Small</source>
         <translation>Små</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="151"/>
+        <location filename="../gui/interfacesettings.cpp" line="169"/>
         <source>Tab-bar</source>
         <translation>Fanebladslinje</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="152"/>
+        <location filename="../gui/interfacesettings.cpp" line="170"/>
         <source>Left</source>
         <translation>Venstre</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="152"/>
+        <location filename="../gui/interfacesettings.cpp" line="170"/>
         <source>Right</source>
         <translation>Højre</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="153"/>
+        <location filename="../gui/interfacesettings.cpp" line="171"/>
         <source>Top</source>
         <translation>Øverst</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="154"/>
+        <location filename="../gui/interfacesettings.cpp" line="172"/>
         <source>Bottom</source>
         <translation>Nederst</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="161"/>
+        <location filename="../gui/interfacesettings.cpp" line="179"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Billeder (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="162"/>
+        <location filename="../gui/interfacesettings.cpp" line="180"/>
         <source>10px</source>
         <comment>pixels</comment>
         <translation>10px</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="187"/>
+        <location filename="../gui/interfacesettings.cpp" line="205"/>
         <source>Notifications</source>
         <translation>Notifikationer</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="397"/>
+        <location filename="../gui/interfacesettings.cpp" line="219"/>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding  music to your library from devices.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.cpp" line="223"/>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.cpp" line="429"/>
         <source>English (en)</source>
         <translation>Engelsk (en)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="402"/>
-        <location filename="../gui/interfacesettings.cpp" line="419"/>
+        <location filename="../gui/interfacesettings.cpp" line="434"/>
+        <location filename="../gui/interfacesettings.cpp" line="451"/>
         <source>System default</source>
         <translation>Systemets standard</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="525"/>
+        <location filename="../gui/interfacesettings.cpp" line="557"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation>%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="530"/>
+        <location filename="../gui/interfacesettings.cpp" line="562"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation>%1 px</translation>
@@ -3729,12 +3780,12 @@ Det kan ikke fortrydes.</translation>
 <context>
     <name>MtpDevice</name>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1566"/>
+        <location filename="../devices/mtpdevice.cpp" line="1562"/>
         <source>Not Connected</source>
         <translation>Ikke forbundet</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1569"/>
+        <location filename="../devices/mtpdevice.cpp" line="1565"/>
         <source>%1 free</source>
         <translation>%1 ledig</translation>
     </message>
@@ -5107,117 +5158,115 @@ Overskriv?</translation>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="73"/>
+        <location filename="../gui/preferencesdialog.cpp" line="71"/>
         <source>Collection</source>
         <translation>Samling</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="73"/>
+        <location filename="../gui/preferencesdialog.cpp" line="71"/>
         <source>Collection Settings</source>
         <translation>Indstillinger for samling</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="72"/>
         <source>Playback</source>
         <translation>Afspilning</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="72"/>
         <source>Playback Settings</source>
         <translation>Indstillinger for afspilning</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Downloaded Files</source>
-        <translation>Downloadede filer</translation>
+        <translation type="vanished">Downloadede filer</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Downloaded Files Settings</source>
-        <translation>Indstillinger for downloadede filer</translation>
+        <translation type="vanished">Indstillinger for downloadede filer</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="76"/>
+        <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Interface</source>
         <translation>Brugerflade</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="76"/>
+        <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Interface Settings</source>
         <translation>Indstillinger for brugerflade</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="77"/>
+        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="77"/>
+        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Info View Settings</source>
         <translation>Indstillinger for info-visning</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="78"/>
+        <location filename="../gui/preferencesdialog.cpp" line="76"/>
         <source>Scrobbling</source>
         <translation>Scrobbling</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="78"/>
+        <location filename="../gui/preferencesdialog.cpp" line="76"/>
         <source>Scrobbling Settings</source>
         <translation>Indstillinger for scrobbling</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="82"/>
+        <location filename="../gui/preferencesdialog.cpp" line="80"/>
         <source>Audio CD</source>
         <translation>Lyd-CD</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="82"/>
+        <location filename="../gui/preferencesdialog.cpp" line="80"/>
         <source>Audio CD Settings</source>
         <translation>Indstillinger for lyd-CD</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="87"/>
+        <location filename="../gui/preferencesdialog.cpp" line="85"/>
         <source>Proxy</source>
         <translation>Proxy</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="87"/>
+        <location filename="../gui/preferencesdialog.cpp" line="85"/>
         <source>Proxy Settings</source>
         <translation>Indstillinger for proxy</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="90"/>
+        <location filename="../gui/preferencesdialog.cpp" line="88"/>
         <source>Shortcuts</source>
         <translation>Geneveje</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="91"/>
+        <location filename="../gui/preferencesdialog.cpp" line="89"/>
         <source>Keyboard Shortcut Settings</source>
         <translation>Indstillinger for tastaturgenveje</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="91"/>
         <source>Cache</source>
         <translation>Mellemlager</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="91"/>
         <source>Cached Items</source>
         <translation>Mellemlagrede elementer</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="94"/>
+        <location filename="../gui/preferencesdialog.cpp" line="92"/>
         <source>Custom Actions</source>
         <translation>Brugerdefinerede handlinger</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="96"/>
+        <location filename="../gui/preferencesdialog.cpp" line="94"/>
         <source>Cantata Preferences</source>
         <translation>Cantata-præferencer</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="98"/>
+        <location filename="../gui/preferencesdialog.cpp" line="96"/>
         <source>Configure</source>
         <translation>Konfigurer</translation>
     </message>
@@ -5810,8 +5859,8 @@ width x height</comment>
         <translation>Fejl i fortolkning ved indlæsning af mellemlager-fil. Tjek venligst dine sanges mærkater.</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="1295"/>
-        <location filename="../models/streamsmodel.cpp" line="1302"/>
+        <location filename="../models/streamsmodel.cpp" line="1293"/>
+        <location filename="../models/streamsmodel.cpp" line="1300"/>
         <source>Other</source>
         <translation>Anden</translation>
     </message>
@@ -6927,7 +6976,7 @@ Vælg venligst et andet navn.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
-        <location filename="../gui/serversettings.cpp" line="110"/>
+        <location filename="../gui/serversettings.cpp" line="94"/>
         <source>Host:</source>
         <translation>Vært:</translation>
     </message>
@@ -6938,159 +6987,154 @@ Vælg venligst et andet navn.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="126"/>
-        <location filename="../gui/serversettings.ui" line="277"/>
+        <location filename="../gui/serversettings.ui" line="253"/>
         <source>Music folder:</source>
         <translation>Musikmappe:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="139"/>
-        <location filename="../gui/serversettings.ui" line="290"/>
         <source>Cover filename:</source>
-        <translation>Cover-filnavn:</translation>
+        <translation type="vanished">Cover-filnavn:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="149"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Filnavnet (uden endelse) som downloadede covers skal gemmes som.&lt;br/&gt;Hvis det er tomt, så bruges &apos;cover&apos;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%kunstner% erstattes med albumkunstneren af den nuværende sang, og %album% erstattes med albummets navn.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation type="vanished">&lt;p&gt;Filnavnet (uden endelse) som downloadede covers skal gemmes som.&lt;br/&gt;Hvis det er tomt, så bruges &apos;cover&apos;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%kunstner% erstattes med albumkunstneren af den nuværende sang, og %album% erstattes med albummets navn.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="156"/>
+        <location filename="../gui/serversettings.ui" line="139"/>
         <source>HTTP stream URL:</source>
         <translation>HTTP strøm-URL:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="169"/>
+        <location filename="../gui/serversettings.ui" line="152"/>
         <source>Local file playback:</source>
         <translation>Afspilning af lokal fil:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="179"/>
+        <location filename="../gui/serversettings.ui" line="162"/>
         <source>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</source>
         <translation>Brug en simpel indbygget HTTP-server, så MPD kan afspille filer som er blevet sluppet i afspilningskøen.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="182"/>
+        <location filename="../gui/serversettings.ui" line="165"/>
         <source>Via in-built HTTP server</source>
         <translation>Via indbygget HTTP-server</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="189"/>
+        <location filename="../gui/serversettings.ui" line="172"/>
         <source>Auto update:</source>
         <translation>Automatisk opdatering:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="199"/>
+        <location filename="../gui/serversettings.ui" line="182"/>
         <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vælg denne valgmulighed hvis din MPD-server automatisk registrerer ændringer (f.eks. nyligt tilføjede filer). Hvis det er tilfældet behøver Cantata ikke at sende en opdateringskommando for bestemte handlinger.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="202"/>
+        <location filename="../gui/serversettings.ui" line="185"/>
         <source>Server detects changes automatically</source>
         <translation>Server registrerer automatisk ændringer</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="211"/>
+        <location filename="../gui/serversettings.ui" line="194"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation>&apos;Musikmappe&apos;-indstillingen bruges til at opslå cover-art. Den kan sættes til en HTTP-URL hvis din MPD er på en anden maskine, eller hvis covers kan tilgås via HTTP. Hvis den ikke er sat til en HTTP-URL, og du også har skrivetilladelser til mappen (og dens undermapper), så gemmer Cantata downloadede covers i den respektive albummappe.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="218"/>
-        <location filename="../gui/serversettings.ui" line="312"/>
         <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
-        <translation>Hvis der ikke er angivet nogen indstilling til &apos;Cover-filnavn&apos;, så vil Cantata bruge &lt;code&gt;cover&lt;/code&gt; som standard</translation>
+        <translation type="vanished">Hvis der ikke er angivet nogen indstilling til &apos;Cover-filnavn&apos;, så vil Cantata bruge &lt;code&gt;cover&lt;/code&gt; som standard</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="225"/>
+        <location filename="../gui/serversettings.ui" line="201"/>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
         <translation>&apos;HTTP strøm-URL&apos; bruges kun hvis du har konfigureret MPD til at outputte til en HTTP-strøm, og du vil have at Cantata skal kunne afspille strømmen.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="232"/>
+        <location filename="../gui/serversettings.ui" line="208"/>
         <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
         <translation>MPD afspiller for det meste kun sange i din samling. Nyere MPD&apos;er (fra v0.19 og frem) kan også afspille andre filer hvis du er forbundet til en lokal MPD-server (f.eks. når adressen er &apos;127.0.0.1&apos; eller &apos;localhost&apos;) For at det skal kunne virke, så skal MPD-serveren have læseadgang til der hvor filerne findes. Hvis du bruger en gammel MPD, en ikke-lokal MPD, eller hvis dine lokale filer ikke kan tilgås af andre brugere, så kan du vælge at bruge en simpel HTTP-server som leveres med Cantata. Serveren tillader kun adgang til filer i afspilningskøen , og kun mens Cantata kører.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="305"/>
+        <location filename="../gui/serversettings.ui" line="268"/>
         <source>If you change the &apos;Music folder&apos; setting, then you will need to manually update the music database. This can be performed by pressing the &apos;Refresh Database&apos; button in the &apos;Artists&apos; or &apos;Albums&apos; views.</source>
         <translation>Hvis du ændre &apos;Musikmappe&apos;-indstillingen, så skal du opdatere musikdatabasen manuelt. Det kan gøres ved at trykke på &apos;Genopfrisk database&apos;-knappen, i &apos;Kunstnere&apos;- eller &apos;Albummer&apos;-visningerne.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="90"/>
+        <location filename="../gui/serversettings.cpp" line="74"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, and transferring to (and from) devices.</source>
         <translation>Denne mappe bruges også til at finde musikfiler til mærkat-redigering, replay gain og overførsel til (og fra) enheder.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="93"/>
+        <location filename="../gui/serversettings.cpp" line="77"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, etc.</source>
         <translation>Denne mappe bruges også til at finde musikfiler til mærkat-redigering, replay gain, osv.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="97"/>
+        <location filename="../gui/serversettings.cpp" line="81"/>
         <source>More information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="139"/>
+        <location filename="../gui/serversettings.cpp" line="119"/>
         <source>Discover...</source>
         <translation>Opdag...</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="279"/>
+        <location filename="../gui/serversettings.cpp" line="259"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation>Hvilken type samling vil du oprette forbindelse til?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="280"/>
+        <location filename="../gui/serversettings.cpp" line="260"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation>Standard - musiksamling kan deles, er på en anden maskine, er allerede opsat, eller du vil aktivere adgang fra andre klienter (f.eks. MPDroid)</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="283"/>
+        <location filename="../gui/serversettings.cpp" line="263"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation>Grundlæggende - musiksamling deles ikke med andre, og Cantata konfigurerer og styrer MPD-instansen. Denne opsætning vil kun gælde for Cantata, og vil &lt;b&gt;ikke&lt;/b&gt; kunne tilgås af andre MPD-klienter.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="287"/>
+        <location filename="../gui/serversettings.cpp" line="267"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation>&lt;i&gt;&lt;b&gt;BEMÆRK:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="287"/>
+        <location filename="../gui/serversettings.cpp" line="267"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation>Hvis du har en avanceret MPD-opsætning (f.eks. flere lyd-outputs, fuld understøttelse af DSD, osv.), så &lt;b&gt;skal&lt;/b&gt; du vælge &apos;Standard&apos;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Add Collection</source>
         <translation>Tilføj samling</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Standard</source>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Basic</source>
         <translation>Grundlæggende</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="337"/>
+        <location filename="../gui/serversettings.cpp" line="317"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation>Slet &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="338"/>
+        <location filename="../gui/serversettings.cpp" line="318"/>
         <source>Delete</source>
         <translation>Slet</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="391"/>
+        <location filename="../gui/serversettings.cpp" line="371"/>
         <source>New Collection %1</source>
         <translation>Ny samling %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="409"/>
+        <location filename="../gui/serversettings.cpp" line="388"/>
         <source>Default</source>
         <translation>Standard</translation>
     </message>
@@ -7536,7 +7580,7 @@ Genindlæs fra disk, eller slet kopien på disken og download?</translation>
         <translation>Filnavn</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="849"/>
+        <location filename="../context/songview.cpp" line="844"/>
         <source>Fetching lyrics via %1</source>
         <translation>Henter sangtekster via %1</translation>
     </message>
@@ -8767,17 +8811,17 @@ Overskriv?</translation>
         <translation>Kunne ikke omdøbe &apos;%1&apos; til &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="471"/>
+        <location filename="../tags/trackorganiser.cpp" line="473"/>
         <source>Remove the selected tracks from the list?</source>
         <translation>Fjern de valgte spor fra listen?</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="472"/>
+        <location filename="../tags/trackorganiser.cpp" line="474"/>
         <source>Remove Tracks</source>
         <translation>Fjern spor</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="487"/>
+        <location filename="../tags/trackorganiser.cpp" line="489"/>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database.
 
 If you rename a file (or the folder it is within), then the rating associated with the song will be lost.</source>
@@ -8786,17 +8830,17 @@ If you rename a file (or the folder it is within), then the rating associated wi
 Hvis du omdøber en fil (eller mappen den er i), så mistes bedømmelsen som er tilknyttet sangen.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="547"/>
+        <location filename="../tags/trackorganiser.cpp" line="549"/>
         <source>Device has been removed!</source>
         <translation>Enheden er blevet fjernet!</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="552"/>
+        <location filename="../tags/trackorganiser.cpp" line="554"/>
         <source>Device is not connected.</source>
         <translation>Enheden er ikke forbundet.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="557"/>
+        <location filename="../tags/trackorganiser.cpp" line="559"/>
         <source>Device is busy?</source>
         <translation>Er enheden optaget?</translation>
     </message>

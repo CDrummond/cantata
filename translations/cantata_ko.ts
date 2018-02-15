@@ -7997,29 +7997,24 @@ This cannot be undone.</source>
 <context>
     <name>FileSettings</name>
     <message>
-        <location filename="../gui/filesettings.ui" line="32"/>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="unfinished">내려받은 음반, 연주자, 작곡가 이미지를 음악 폴더에 저장</translation>
+        <translation type="obsolete">내려받은 음반, 연주자, 작곡가 이미지를 음악 폴더에 저장</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="39"/>
         <source>Save downloaded lyrics in music folder</source>
-        <translation type="unfinished">내려받은 가사를 음악 폴더에 저장</translation>
+        <translation type="obsolete">내려받은 가사를 음악 폴더에 저장</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="46"/>
         <source>Save downloaded backdrops in music folder</source>
-        <translation type="unfinished">내려받은 배경을 음악 폴더에 저장</translation>
+        <translation type="obsolete">내려받은 배경을 음악 폴더에 저장</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="53"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="unfinished">음악폴더에 음반표지, 가사나 배경을 저장하는데 쓰기 권한이 없다면, 개인 캐시 폴더에 파일 저장합니다.</translation>
+        <translation type="obsolete">음악폴더에 음반표지, 가사나 배경을 저장하는데 쓰기 권한이 없다면, 개인 캐시 폴더에 파일 저장합니다.</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="60"/>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation type="unfinished">두 단계 이상이면 배경, 연주자, 작곡가 이미지만 음악 폴더에 저장할 수 있습니다. 즉 &apos;연주자/음반/곡&apos;.</translation>
+        <translation type="obsolete">두 단계 이상이면 배경, 연주자, 작곡가 이미지만 음악 폴더에 저장할 수 있습니다. 즉 &apos;연주자/음반/곡&apos;.</translation>
     </message>
 </context>
 <context>
@@ -8403,61 +8398,78 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="623"/>
-        <source>Covers and Lyrics</source>
-        <translation type="unfinished">음반표지와 가사</translation>
+        <source>Album Covers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="646"/>
-        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;인터넷으로부터 없는 음반표지와 가사를 내려받습니다.&lt;/p&gt;&lt;p&gt;이를 위하여, 음악폴더나 개인 캐시/설정 폴더에 내려받을 지를 확인합니다.&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Cantata can download missing covers, and store these either in the music folder or within your personal cache folder.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
-        <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="unfinished">내려받은 음반, 연주자, 작곡가 이미지를 음악 폴더에 저장</translation>
+        <source>Fetch missing covers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="unfinished">내려받은 가사를 음악 폴더에 저장</translation>
+        <source>Save downloaded covers into music folder</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="692"/>
+        <source>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers and Lyrics</source>
+        <translation type="obsolete">음반표지와 가사</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
+        <translation type="obsolete">&lt;p&gt;인터넷으로부터 없는 음반표지와 가사를 내려받습니다.&lt;/p&gt;&lt;p&gt;이를 위하여, 음악폴더나 개인 캐시/설정 폴더에 내려받을 지를 확인합니다.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Save downloaded covers, artist, and composer images, in music folder</source>
+        <translation type="obsolete">내려받은 음반, 연주자, 작곡가 이미지를 음악 폴더에 저장</translation>
+    </message>
+    <message>
+        <source>Save downloaded lyrics in music folder</source>
+        <translation type="obsolete">내려받은 가사를 음악 폴더에 저장</translation>
+    </message>
+    <message>
         <source>Save downloaded backdrops in music folder</source>
-        <translation type="unfinished">내려받은 배경을 음악 폴더에 저장</translation>
+        <translation type="obsolete">내려받은 배경을 음악 폴더에 저장</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="699"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="unfinished">음악폴더에 음반표지, 가사나 배경을 저장하는데 쓰기 권한이 없다면, 개인 캐시 폴더에 저장합니다.</translation>
+        <translation type="obsolete">음악폴더에 음반표지, 가사나 배경을 저장하는데 쓰기 권한이 없다면, 개인 캐시 폴더에 저장합니다.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="706"/>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation type="unfinished">두 단계 이상이면 배경, 연주자, 작곡가 이미지만 음악 폴더에 저장할 수 있습니다. 즉 &apos;연주자/음반/곡&apos;.</translation>
+        <translation type="obsolete">두 단계 이상이면 배경, 연주자, 작곡가 이미지만 음악 폴더에 저장할 수 있습니다. 즉 &apos;연주자/음반/곡&apos;.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="713"/>
         <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
-        <translation type="unfinished">&apos;음악 폴더&apos;가 HTTP 주소로 지정되어, 외부 HTTP 서버에 파일을 올릴 수 없습니다. 따라서 위의 설정은 사용하지 않아야 합니다.</translation>
+        <translation type="obsolete">&apos;음악 폴더&apos;가 HTTP 주소로 지정되어, 외부 HTTP 서버에 파일을 올릴 수 없습니다. 따라서 위의 설정은 사용하지 않아야 합니다.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="743"/>
+        <location filename="../gui/initialsettingswizard.ui" line="722"/>
         <source>Finished!</source>
         <translation type="unfinished">완료!</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="766"/>
+        <location filename="../gui/initialsettingswizard.ui" line="745"/>
         <source>Cantata is now configured!&lt;br/&gt;&lt;br/&gt;Cantata&apos;s configuration dialog maybe used to customise Cantata&apos;s appearance, as well as to add extra MPD hosts, etc.</source>
         <translation type="unfinished">이제 칸타타가 설정되었습니다!&lt;br/&gt;&lt;br/&gt;칸타타의 설정 대화창은 MPD 호스트 등을추가하는 것 이외에 외관을 개인화하는 데에 사용할 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="798"/>
+        <location filename="../gui/initialsettingswizard.ui" line="777"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation type="unfinished">칸타타는 &apos;음반연주자&apos; 태그가 있으면 이를 이용해서 곡을 음반으로 묶고, 아니라면 &apos;연주자&apos; 태그를 이용합니다. 여러연주자 음반을 제대로 묶기 위해서는 &lt;b&gt;반드시&lt;/b&gt; &apos;음반연주자&apos; 태그를 설정해야 합니다. 이때는 &apos;여러연주자&apos;를 사용하기를 추천합니다.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="830"/>
+        <location filename="../gui/initialsettingswizard.ui" line="809"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
         <translation type="unfinished">&lt;b&gt;경고:&lt;/b&gt; 지금 &apos;사용자&apos; 그룹에 포함되어 있지 않습니다. 이 그룹의 사용자라면 음반표지와 가사를 저장하는 등의 기능을 더 잘 수행합니다. 만약 본인이나 관리자가 사용자를 이 그룹에 추가하였다면 다시 로그인을 해야 합니다.</translation>
     </message>
@@ -8467,22 +8479,22 @@ This cannot be undone.</source>
         <translation type="unfinished">연결 안 됨</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="122"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="120"/>
         <source>Discover...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="169"/>
         <source>Connection Established</source>
         <translation type="unfinished">연결됨</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="169"/>
         <source>Connection Failed</source>
         <translation type="unfinished">연결 안 됨</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="184"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="182"/>
         <source>Cantata will now terminate</source>
         <translation type="unfinished">칸타타가 중지하지 않습니다</translation>
     </message>
@@ -8530,7 +8542,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="82"/>
         <location filename="../gui/interfacesettings.ui" line="137"/>
-        <location filename="../gui/interfacesettings.ui" line="675"/>
+        <location filename="../gui/interfacesettings.ui" line="736"/>
         <source>Style:</source>
         <translation type="unfinished">모양:</translation>
     </message>
@@ -8551,7 +8563,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="128"/>
-        <location filename="../gui/interfacesettings.cpp" line="133"/>
+        <location filename="../gui/interfacesettings.cpp" line="151"/>
         <source>Play Queue</source>
         <translation type="unfinished">연주순서</translation>
     </message>
@@ -8761,6 +8773,36 @@ This cannot be undone.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/interfacesettings.ui" line="623"/>
+        <source>Covers</source>
+        <translation type="unfinished">음반표지</translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="634"/>
+        <source>Fetch missing covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="641"/>
+        <source>Save downloaded covers into music folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="648"/>
+        <source>Filename:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="658"/>
+        <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;내려받은 표지를 저장할 확장자없는 파일이름.&lt;br/&gt;비어있으면 &apos;cover&apos;가 사용됩니다.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%은 지금 곡의 음반연주자로, %album%은 음반명으로 바뀝니다.&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="667"/>
+        <source>If you enable &apos;Save downloaded covers into music folder&apos; you may need to clear the cache of any previous covers to force downloading of new covers. See &apos;Cache&apos; settings page for further details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
         <translation type="obsolete">음원에 한 곡만을 가진 연주자가 많다면, 연주자 항목에 두기가 번거로울 수 있습니다. 해결 방법으로 이 곡들을 별도 폴더에 두고 이 폴더를 아래에 입력하면, &apos;여러 연주자&apos; 음반 연주자의 &apos;한 곡들&apos; 아래에 묶습니다</translation>
     </message>
@@ -8781,27 +8823,26 @@ This cannot be undone.</source>
         <translation type="obsolete">위 값을 바꾸면 데이터베이스 새로 읽어야 (그리고 칸타타를 다시 시작해야) 적용됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="623"/>
+        <location filename="../gui/interfacesettings.ui" line="691"/>
         <source>General</source>
         <translation type="unfinished">일반</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="634"/>
         <source>Fetch missing covers from Last.fm</source>
-        <translation type="unfinished">표지가 없으면 Last.fm에서 가져오기</translation>
+        <translation type="obsolete">표지가 없으면 Last.fm에서 가져오기</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="641"/>
+        <location filename="../gui/interfacesettings.ui" line="702"/>
         <source>Show delete action in context menus</source>
         <translation type="unfinished">메뉴에 지우기 보기</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="648"/>
+        <location filename="../gui/interfacesettings.ui" line="709"/>
         <source>Enforce single-click activation of items</source>
         <translation type="unfinished">한 번 클릭 사용</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="704"/>
+        <location filename="../gui/interfacesettings.ui" line="765"/>
         <source>Changing the style setting will require a re-start of Cantata.</source>
         <translation type="unfinished">모양을 바꾸면 다시 시작해야 합니다.</translation>
     </message>
@@ -8816,7 +8857,7 @@ This cannot be undone.</source>
         <translation type="obsolete">인터페이스를 터치 친화적으로 만들기</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="655"/>
+        <location filename="../gui/interfacesettings.ui" line="716"/>
         <source>Show song information tooltips</source>
         <translation type="unfinished">곡 정보 툴팁 보기</translation>
     </message>
@@ -8825,17 +8866,17 @@ This cannot be undone.</source>
         <translation type="obsolete">평점 표시 지원</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="662"/>
+        <location filename="../gui/interfacesettings.ui" line="723"/>
         <source>Language:</source>
         <translation type="unfinished">언어:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="690"/>
+        <location filename="../gui/interfacesettings.ui" line="751"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation type="unfinished">&apos;한 번 클릭 사용&apos; 설정을 바꾸면 다시 시작해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="697"/>
+        <location filename="../gui/interfacesettings.ui" line="758"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation type="unfinished">언어 설정을 바꾸면 다시 시작해야 합니다.</translation>
     </message>
@@ -8848,120 +8889,130 @@ This cannot be undone.</source>
         <translation type="obsolete">레티나 디스플레이 기능을 켜면 해당기기에서 아이콘이 보다 선명하게 보이지만, 해당기기가 아니면 덜 선명하게 보입니다. 이 설정을 바꾸면 다시 시작해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="130"/>
+        <location filename="../gui/interfacesettings.cpp" line="148"/>
         <source>Use &apos;Year&apos; tag to display &amp; sort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="131"/>
+        <location filename="../gui/interfacesettings.cpp" line="149"/>
         <source>Use &apos;Original Year&apos; tag to display &amp; sort, fallback to &apos;Year&apos; if not set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="134"/>
+        <location filename="../gui/interfacesettings.cpp" line="152"/>
         <source>Library</source>
         <translation type="unfinished">음원</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="135"/>
+        <location filename="../gui/interfacesettings.cpp" line="153"/>
         <source>Folders</source>
         <translation type="unfinished">폴더</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="136"/>
+        <location filename="../gui/interfacesettings.cpp" line="154"/>
         <source>Playlists</source>
         <translation type="unfinished">연주목록</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="137"/>
+        <location filename="../gui/interfacesettings.cpp" line="155"/>
         <source>Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts</source>
         <translation type="unfinished">인터넷 - 스트림, Jamendo, Magnatune, SoundCloud, 팟캐스트</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="139"/>
+        <location filename="../gui/interfacesettings.cpp" line="157"/>
         <source>Devices - UMS, MTP (e.g. Android), and AudioCDs</source>
         <translation type="unfinished">장치 - UMS, MTP (예, 안드로이드), 오디오CD</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="143"/>
+        <location filename="../gui/interfacesettings.cpp" line="161"/>
         <source>Search (via MPD)</source>
         <translation type="unfinished">찾기 (MPD를 통해서)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="144"/>
+        <location filename="../gui/interfacesettings.cpp" line="162"/>
         <source>Info - Current song information (artist, album, and lyrics)</source>
         <translation type="unfinished">정보 - 현재 곡 정보 (연주자, 음반, 가사)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="149"/>
+        <location filename="../gui/interfacesettings.cpp" line="167"/>
         <source>Large</source>
         <translation type="unfinished">크게</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="150"/>
+        <location filename="../gui/interfacesettings.cpp" line="168"/>
         <source>Small</source>
         <translation type="unfinished">작게</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="151"/>
+        <location filename="../gui/interfacesettings.cpp" line="169"/>
         <source>Tab-bar</source>
         <translation type="unfinished">꼬리표</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="152"/>
+        <location filename="../gui/interfacesettings.cpp" line="170"/>
         <source>Left</source>
         <translation type="unfinished">왼쪽</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="152"/>
+        <location filename="../gui/interfacesettings.cpp" line="170"/>
         <source>Right</source>
         <translation type="unfinished">오른쪽</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="153"/>
+        <location filename="../gui/interfacesettings.cpp" line="171"/>
         <source>Top</source>
         <translation type="unfinished">위</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="154"/>
+        <location filename="../gui/interfacesettings.cpp" line="172"/>
         <source>Bottom</source>
         <translation type="unfinished">아래</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="161"/>
+        <location filename="../gui/interfacesettings.cpp" line="179"/>
         <source>Images (*.png *.jpg)</source>
         <translation type="unfinished">이미지 (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="162"/>
+        <location filename="../gui/interfacesettings.cpp" line="180"/>
         <source>10px</source>
         <comment>pixels</comment>
         <translation type="unfinished">10화소</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="187"/>
+        <location filename="../gui/interfacesettings.cpp" line="205"/>
         <source>Notifications</source>
         <translation type="unfinished">알림</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="397"/>
+        <location filename="../gui/interfacesettings.cpp" line="219"/>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding  music to your library from devices.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.cpp" line="223"/>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.cpp" line="429"/>
         <source>English (en)</source>
         <translation type="unfinished">영어 (en)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="402"/>
-        <location filename="../gui/interfacesettings.cpp" line="419"/>
+        <location filename="../gui/interfacesettings.cpp" line="434"/>
+        <location filename="../gui/interfacesettings.cpp" line="451"/>
         <source>System default</source>
         <translation type="unfinished">시스템 기본값</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="525"/>
+        <location filename="../gui/interfacesettings.cpp" line="557"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation type="unfinished">%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="530"/>
+        <location filename="../gui/interfacesettings.cpp" line="562"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation type="unfinished">%1 px</translation>
@@ -10027,12 +10078,12 @@ This cannot be undone.</source>
 <context>
     <name>MtpDevice</name>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1566"/>
+        <location filename="../devices/mtpdevice.cpp" line="1562"/>
         <source>Not Connected</source>
         <translation type="unfinished">연결 안 됨</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1569"/>
+        <location filename="../devices/mtpdevice.cpp" line="1565"/>
         <source>%1 free</source>
         <translation type="unfinished">%1 남음</translation>
     </message>
@@ -11479,117 +11530,115 @@ Overwrite?</source>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="73"/>
+        <location filename="../gui/preferencesdialog.cpp" line="71"/>
         <source>Collection</source>
         <translation type="unfinished">음원</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="73"/>
+        <location filename="../gui/preferencesdialog.cpp" line="71"/>
         <source>Collection Settings</source>
         <translation type="unfinished">음원 설정</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="72"/>
         <source>Playback</source>
         <translation type="unfinished">연주</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="72"/>
         <source>Playback Settings</source>
         <translation type="unfinished">연주 설정</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Downloaded Files</source>
-        <translation type="unfinished">내려받은 파일</translation>
+        <translation type="obsolete">내려받은 파일</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Downloaded Files Settings</source>
-        <translation type="unfinished">내려받은 파일 설정</translation>
+        <translation type="obsolete">내려받은 파일 설정</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="76"/>
+        <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Interface</source>
         <translation type="unfinished">인터페이스</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="76"/>
+        <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Interface Settings</source>
         <translation type="unfinished">인터페이스 설정</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="77"/>
+        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Info</source>
         <translation type="unfinished">정보</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="77"/>
+        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Info View Settings</source>
         <translation type="unfinished">정보보기 설정</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="78"/>
+        <location filename="../gui/preferencesdialog.cpp" line="76"/>
         <source>Scrobbling</source>
         <translation type="unfinished">스크로블링</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="78"/>
+        <location filename="../gui/preferencesdialog.cpp" line="76"/>
         <source>Scrobbling Settings</source>
         <translation type="unfinished">스크로블링 설정</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="82"/>
+        <location filename="../gui/preferencesdialog.cpp" line="80"/>
         <source>Audio CD</source>
         <translation type="unfinished">오디오 CD</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="82"/>
+        <location filename="../gui/preferencesdialog.cpp" line="80"/>
         <source>Audio CD Settings</source>
         <translation type="unfinished">오디오 CD 설정</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="87"/>
+        <location filename="../gui/preferencesdialog.cpp" line="85"/>
         <source>Proxy</source>
         <translation type="unfinished">프락시</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="87"/>
+        <location filename="../gui/preferencesdialog.cpp" line="85"/>
         <source>Proxy Settings</source>
         <translation type="unfinished">프락시 설정</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="90"/>
+        <location filename="../gui/preferencesdialog.cpp" line="88"/>
         <source>Shortcuts</source>
         <translation type="unfinished">단축키</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="91"/>
+        <location filename="../gui/preferencesdialog.cpp" line="89"/>
         <source>Keyboard Shortcut Settings</source>
         <translation type="unfinished">키보드 단축키 설정</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="91"/>
         <source>Cache</source>
         <translation type="unfinished">캐시</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="91"/>
         <source>Cached Items</source>
         <translation type="unfinished">캐시항목</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="94"/>
+        <location filename="../gui/preferencesdialog.cpp" line="92"/>
         <source>Custom Actions</source>
         <translation type="unfinished">사용자 메뉴</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="96"/>
+        <location filename="../gui/preferencesdialog.cpp" line="94"/>
         <source>Cantata Preferences</source>
         <translation type="unfinished">칸타타 설정</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="98"/>
+        <location filename="../gui/preferencesdialog.cpp" line="96"/>
         <source>Configure</source>
         <translation type="unfinished">설정</translation>
     </message>
@@ -12286,8 +12335,8 @@ width x height</comment>
         <translation type="unfinished">캐시 파일을 읽는 오류를 분석하고, 곡 태그를 확인해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="1295"/>
-        <location filename="../models/streamsmodel.cpp" line="1302"/>
+        <location filename="../models/streamsmodel.cpp" line="1293"/>
+        <location filename="../models/streamsmodel.cpp" line="1300"/>
         <source>Other</source>
         <translation type="unfinished">기타</translation>
     </message>
@@ -13470,7 +13519,7 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
-        <location filename="../gui/serversettings.cpp" line="110"/>
+        <location filename="../gui/serversettings.cpp" line="94"/>
         <source>Host:</source>
         <translation type="unfinished">호스트:</translation>
     </message>
@@ -13481,159 +13530,154 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="126"/>
-        <location filename="../gui/serversettings.ui" line="277"/>
+        <location filename="../gui/serversettings.ui" line="253"/>
         <source>Music folder:</source>
         <translation type="unfinished">음악 폴더:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="139"/>
-        <location filename="../gui/serversettings.ui" line="290"/>
         <source>Cover filename:</source>
-        <translation type="unfinished">표지 파일이름:</translation>
+        <translation type="obsolete">표지 파일이름:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="149"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;내려받은 표지를 저장할 확장자없는 파일이름.&lt;br/&gt;비어있으면 &apos;cover&apos;가 사용됩니다.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%은 지금 곡의 음반연주자로, %album%은 음반명으로 바뀝니다.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;p&gt;내려받은 표지를 저장할 확장자없는 파일이름.&lt;br/&gt;비어있으면 &apos;cover&apos;가 사용됩니다.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%은 지금 곡의 음반연주자로, %album%은 음반명으로 바뀝니다.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="156"/>
+        <location filename="../gui/serversettings.ui" line="139"/>
         <source>HTTP stream URL:</source>
         <translation type="unfinished">HTTP 스트림 URL:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="169"/>
+        <location filename="../gui/serversettings.ui" line="152"/>
         <source>Local file playback:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="179"/>
+        <location filename="../gui/serversettings.ui" line="162"/>
         <source>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="182"/>
+        <location filename="../gui/serversettings.ui" line="165"/>
         <source>Via in-built HTTP server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="189"/>
+        <location filename="../gui/serversettings.ui" line="172"/>
         <source>Auto update:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="199"/>
+        <location filename="../gui/serversettings.ui" line="182"/>
         <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="202"/>
+        <location filename="../gui/serversettings.ui" line="185"/>
         <source>Server detects changes automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="211"/>
+        <location filename="../gui/serversettings.ui" line="194"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation type="unfinished">&apos;음악 폴더&apos; 설정은 음반표지를 찾기 위해 사용됩니다. MPD가 다른 기기에 있고 표지가 HTTP를 통해야 한다면, HTTP URL로 설정할 수 있습니다. HTTP URL로 설정되지 않고 이 폴더에 쓰기 권한이 있다면, 내려받은 표지를 각각의 음반 폴더에 저장합니다. 이 폴더는 장치로(부터) 전송하는 음악파일을 찾는데에도 사용됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="218"/>
-        <location filename="../gui/serversettings.ui" line="312"/>
         <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
-        <translation type="unfinished">&apos;표지 파일이름&apos;이 설정되지 않으면, 기본 &lt;code&gt;표지&lt;/code&gt;를 사용합니다</translation>
+        <translation type="obsolete">&apos;표지 파일이름&apos;이 설정되지 않으면, 기본 &lt;code&gt;표지&lt;/code&gt;를 사용합니다</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="225"/>
+        <location filename="../gui/serversettings.ui" line="201"/>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
         <translation type="unfinished">&apos;HTTP 스트림 URL&apos;은 MPD가 HTTP 스트림으로 출력하도록 설정되어있고, 칸타타로 그 스트림을 연주할 때에만 의미가 있습니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="232"/>
+        <location filename="../gui/serversettings.ui" line="208"/>
         <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="305"/>
+        <location filename="../gui/serversettings.ui" line="268"/>
         <source>If you change the &apos;Music folder&apos; setting, then you will need to manually update the music database. This can be performed by pressing the &apos;Refresh Database&apos; button in the &apos;Artists&apos; or &apos;Albums&apos; views.</source>
         <translation type="unfinished">&apos;음악폴더&apos; 설정을 바꾸면, 음악데이터베이스를 직접 업데이트해야 합니다. 이는 &apos;연주자&apos;나 &apos;음반&apos; 보기의 &apos;데이터베이스 새로 읽기&apos; 단추를 누르면 됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="90"/>
+        <location filename="../gui/serversettings.cpp" line="74"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, and transferring to (and from) devices.</source>
         <translation type="unfinished">이 폴더는 태그 수정, 리플레이게인, 장치로(부터) 전송할 음원을 찾기위해 사용됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="93"/>
+        <location filename="../gui/serversettings.cpp" line="77"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, etc.</source>
         <translation type="unfinished">이 폴더는 태그 수정, 리플레이게인 등을 위한 음원을 찾기위해 사용됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="97"/>
+        <location filename="../gui/serversettings.cpp" line="81"/>
         <source>More information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="139"/>
+        <location filename="../gui/serversettings.cpp" line="119"/>
         <source>Discover...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="279"/>
+        <location filename="../gui/serversettings.cpp" line="259"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation type="unfinished">어떤 형식의 음원에 연결할까요?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="280"/>
+        <location filename="../gui/serversettings.cpp" line="260"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation type="unfinished">표준 - 다른 기기에서 이미 설정된 음원을 공유하거나, 다른 클라이언트(예.MPDroid)에서 접속할 수 있습니다</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="283"/>
+        <location filename="../gui/serversettings.cpp" line="263"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation type="unfinished">기본 - 음원을 공유하지 않고 칸타타가 MPD를 설정하고 제어합니다. 이것은 칸타타만의 설정으로 다른 MPD 클라이언트에서는 접속이 &lt;b&gt;안&lt;/b&gt;됩니다.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="287"/>
+        <location filename="../gui/serversettings.cpp" line="267"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation type="unfinished">&lt;i&gt;&lt;b&gt;참고:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="287"/>
+        <location filename="../gui/serversettings.cpp" line="267"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation type="unfinished">MPD의 고급 설정을 하려면(예. 다중 오디오 출력, DSD 지원 등) &lt;b&gt;반드시&lt;/b&gt; &apos;표준&apos;을 선택해야 합니다</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Add Collection</source>
         <translation type="unfinished">음원 추가</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Standard</source>
         <translation type="unfinished">표준</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Basic</source>
         <translation type="unfinished">기본</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="337"/>
+        <location filename="../gui/serversettings.cpp" line="317"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation type="unfinished">&apos;%1&apos;을 지울까요?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="338"/>
+        <location filename="../gui/serversettings.cpp" line="318"/>
         <source>Delete</source>
         <translation type="unfinished">지우기</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="391"/>
+        <location filename="../gui/serversettings.cpp" line="371"/>
         <source>New Collection %1</source>
         <translation type="unfinished">새로운 음원 %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="409"/>
+        <location filename="../gui/serversettings.cpp" line="388"/>
         <source>Default</source>
         <translation type="unfinished">기본값</translation>
     </message>
@@ -14079,7 +14123,7 @@ Reload from disk, or delete disk copy and download?</source>
         <translation type="unfinished">파일이름</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="849"/>
+        <location filename="../context/songview.cpp" line="844"/>
         <source>Fetching lyrics via %1</source>
         <translation type="unfinished">%1에서 가사 가져옴</translation>
     </message>
@@ -15308,17 +15352,17 @@ Overwrite?</source>
         <translation type="unfinished">파일이름을 &apos;%1&apos;에서 &apos;%2&apos;로 바꿀 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="471"/>
+        <location filename="../tags/trackorganiser.cpp" line="473"/>
         <source>Remove the selected tracks from the list?</source>
         <translation type="unfinished">항목의 선택된 곡을 지울까요?</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="472"/>
+        <location filename="../tags/trackorganiser.cpp" line="474"/>
         <source>Remove Tracks</source>
         <translation type="unfinished">곡을 지움</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="487"/>
+        <location filename="../tags/trackorganiser.cpp" line="489"/>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database.
 
 If you rename a file (or the folder it is within), then the rating associated with the song will be lost.</source>
@@ -15327,17 +15371,17 @@ If you rename a file (or the folder it is within), then the rating associated wi
 파일 (또는 저장된 폴더) 이름을 바꾸면, 곡의 평점은 지워집니다.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="547"/>
+        <location filename="../tags/trackorganiser.cpp" line="549"/>
         <source>Device has been removed!</source>
         <translation type="unfinished">장치가 제거되었습니다!</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="552"/>
+        <location filename="../tags/trackorganiser.cpp" line="554"/>
         <source>Device is not connected.</source>
         <translation type="unfinished">장치가 연결되지 않았음.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="557"/>
+        <location filename="../tags/trackorganiser.cpp" line="559"/>
         <source>Device is busy?</source>
         <translation type="unfinished">장치가 사용 중입니까?</translation>
     </message>

@@ -8019,29 +8019,24 @@ Tento krok nelze vrátit zpět.</translation>
 <context>
     <name>FileSettings</name>
     <message>
-        <location filename="../gui/filesettings.ui" line="32"/>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation>Uložit stažené obaly, umělce a obrázky skladatelů ve složce s hudbou</translation>
+        <translation type="vanished">Uložit stažené obaly, umělce a obrázky skladatelů ve složce s hudbou</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="39"/>
         <source>Save downloaded lyrics in music folder</source>
-        <translation>Uložit stažená slova písně ve složce s hudbou</translation>
+        <translation type="vanished">Uložit stažená slova písně ve složce s hudbou</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="46"/>
         <source>Save downloaded backdrops in music folder</source>
-        <translation>Uložit stažená pozadí ve složce s hudbou</translation>
+        <translation type="vanished">Uložit stažená pozadí ve složce s hudbou</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="53"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation>Pokud se rozhodnete, že má Cantata ukládat obaly, texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
+        <translation type="vanished">Pokud se rozhodnete, že má Cantata ukládat obaly, texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="60"/>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation>Cantata může pozadí, umělce a obrázky skladatelů ukládat ve složkách s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou úrovní dolů. (např. &apos;Umělec/Album/Skladby&apos;.</translation>
+        <translation type="vanished">Cantata může pozadí, umělce a obrázky skladatelů ukládat ve složkách s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou úrovní dolů. (např. &apos;Umělec/Album/Skladby&apos;.</translation>
     </message>
 </context>
 <context>
@@ -8427,61 +8422,78 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="623"/>
-        <source>Covers and Lyrics</source>
-        <translation>Obaly a slova písně</translation>
+        <source>Album Covers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="646"/>
-        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Cantata stáhne chybějící obaly a texty písní z internetu.&lt;/p&gt;&lt;p&gt;U každého, prosím, potvrďte, zda chcete, aby Cantata soubory ukládala ve složce s hudbou, nebo ve vašich osobních složkách s vyrovnávací pamětí/pro ukládání nastavení.&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Cantata can download missing covers, and store these either in the music folder or within your personal cache folder.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
-        <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation>Uložit stažené obaly, umělce a obrázky skladatelů ve složce s hudbou</translation>
+        <source>Fetch missing covers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation>Uložit stažená slova písně ve složce s hudbou</translation>
+        <source>Save downloaded covers into music folder</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="692"/>
+        <source>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers and Lyrics</source>
+        <translation type="vanished">Obaly a slova písně</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
+        <translation type="vanished">&lt;p&gt;Cantata stáhne chybějící obaly a texty písní z internetu.&lt;/p&gt;&lt;p&gt;U každého, prosím, potvrďte, zda chcete, aby Cantata soubory ukládala ve složce s hudbou, nebo ve vašich osobních složkách s vyrovnávací pamětí/pro ukládání nastavení.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Save downloaded covers, artist, and composer images, in music folder</source>
+        <translation type="vanished">Uložit stažené obaly, umělce a obrázky skladatelů ve složce s hudbou</translation>
+    </message>
+    <message>
+        <source>Save downloaded lyrics in music folder</source>
+        <translation type="vanished">Uložit stažená slova písně ve složce s hudbou</translation>
+    </message>
+    <message>
         <source>Save downloaded backdrops in music folder</source>
-        <translation>Uložit stažená pozadí ve složce s hudbou</translation>
+        <translation type="vanished">Uložit stažená pozadí ve složce s hudbou</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="699"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation>Pokud se rozhodnete, že má Cantata ukládat obaly, texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
+        <translation type="vanished">Pokud se rozhodnete, že má Cantata ukládat obaly, texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="706"/>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation>Cantata může pozadí, umělce a obrázky skladatelů ukládat ve složkách s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou úrovní dolů. (např. &apos;Umělec/Album/Skladby&apos;.</translation>
+        <translation type="vanished">Cantata může pozadí, umělce a obrázky skladatelů ukládat ve složkách s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou úrovní dolů. (např. &apos;Umělec/Album/Skladby&apos;.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="713"/>
         <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
-        <translation>Složka s hudbou je nastavena na adresu HTTP a Cantata v současnosti nedokáže nahrávat soubory na vnější servery HTTP. Z tohoto důvodu by se nastavení výše měla ponechat zakázána.</translation>
+        <translation type="vanished">Složka s hudbou je nastavena na adresu HTTP a Cantata v současnosti nedokáže nahrávat soubory na vnější servery HTTP. Z tohoto důvodu by se nastavení výše měla ponechat zakázána.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="743"/>
+        <location filename="../gui/initialsettingswizard.ui" line="722"/>
         <source>Finished!</source>
         <translation>Dokončeno!</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="766"/>
+        <location filename="../gui/initialsettingswizard.ui" line="745"/>
         <source>Cantata is now configured!&lt;br/&gt;&lt;br/&gt;Cantata&apos;s configuration dialog maybe used to customise Cantata&apos;s appearance, as well as to add extra MPD hosts, etc.</source>
         <translation>Cantata je nyní nastavena!&lt;br/&gt;&lt;br/&gt;Dialog pro nastavení Cantaty může být použit k přizpůsobení vzhledu Cantaty, a rovněž pro přidání dalších serverů MPD, a tak dále.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="798"/>
+        <location filename="../gui/initialsettingswizard.ui" line="777"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation>Cantata skladby seskupí do alb pomocí značky AlbumUmělec, pokud je to tak nastaveno, jinak použije značku Umělec. Pokud máte alba s více umělci, &lt;b&gt;musíte&lt;/b&gt; nastavit značku AlbumUmělec, aby při seskupování pracovala správně. Při této možnosti se doporučuje použít Různí umělci.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="830"/>
+        <location filename="../gui/initialsettingswizard.ui" line="809"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
         <translation>&lt;b&gt;Varování:&lt;/b&gt; Nyní nejste členem skupiny uživatelé (users). Cantata bude pracovat lépe (ukládání obalů alb, textů písní atd. se správnými oprávněními), pokud vy (nebo váš správce systému) přidáte sebe sama do této skupiny. Pokud přidáte sebe sama, budete se muset odhlásit a zase přihlásit, aby se tato změna projevila.</translation>
     </message>
@@ -8491,22 +8503,22 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Nepřipojeno</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="122"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="120"/>
         <source>Discover...</source>
         <translation>Objevit...</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="169"/>
         <source>Connection Established</source>
         <translation>Spojení navázáno</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="169"/>
         <source>Connection Failed</source>
         <translation>Spojení se nezdařilo</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="184"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="182"/>
         <source>Cantata will now terminate</source>
         <translation>Cantata nyní skončí</translation>
     </message>
@@ -8554,7 +8566,7 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="82"/>
         <location filename="../gui/interfacesettings.ui" line="137"/>
-        <location filename="../gui/interfacesettings.ui" line="675"/>
+        <location filename="../gui/interfacesettings.ui" line="736"/>
         <source>Style:</source>
         <translation>Styl:</translation>
     </message>
@@ -8575,7 +8587,7 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="128"/>
-        <location filename="../gui/interfacesettings.cpp" line="133"/>
+        <location filename="../gui/interfacesettings.cpp" line="151"/>
         <source>Play Queue</source>
         <translation>Řada</translation>
     </message>
@@ -8785,6 +8797,36 @@ Tento krok nelze vrátit zpět.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/interfacesettings.ui" line="623"/>
+        <source>Covers</source>
+        <translation type="unfinished">Obaly</translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="634"/>
+        <source>Fetch missing covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="641"/>
+        <source>Save downloaded covers into music folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="648"/>
+        <source>Filename:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="658"/>
+        <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Souborový název (bez přípony), pod nímž se mají uložit stažené obaly.&lt;br/&gt; Jestliže bude ponecháno prázdné, použije se &quot;cover&quot;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% bude nahrazen umělcem alba současné písně, a %album% bude nahrazeno názvem alba.&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="667"/>
+        <source>If you enable &apos;Save downloaded covers into music folder&apos; you may need to clear the cache of any previous covers to force downloading of new covers. See &apos;Cache&apos; settings page for further details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
         <translation type="vanished">pokud máte ve své sbírce mnoho umělců, kteří mají jen jednu skladbu, potom může být těžkopádné mít pro každého z nich jejich vlastní záznam v seznamu umělců. Můžete to obejít tím, že tyto skladby umístíte do samostatné složky a níže zadáte název této složky. Potom bude Cantata tyto seskupovat pod albem nazvaným Jednotlivé skladby s umělcem alba Různí umělci</translation>
     </message>
@@ -8805,27 +8847,26 @@ Tento krok nelze vrátit zpět.</translation>
         <translation type="vanished">Změna čehokoli výše bude vyžadovat obnovení databáze (a možná opětovné spuštění Cantaty), aby se tato změna projevila.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="623"/>
+        <location filename="../gui/interfacesettings.ui" line="691"/>
         <source>General</source>
         <translation>Obecné</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="634"/>
         <source>Fetch missing covers from Last.fm</source>
-        <translation>Natáhnout chybějící obaly z Last.fm</translation>
+        <translation type="vanished">Natáhnout chybějící obaly z Last.fm</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="641"/>
+        <location filename="../gui/interfacesettings.ui" line="702"/>
         <source>Show delete action in context menus</source>
         <translation>Ukázat položku Smazat v nabídkách souvisejících činností</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="648"/>
+        <location filename="../gui/interfacesettings.ui" line="709"/>
         <source>Enforce single-click activation of items</source>
         <translation>Vynutit zapnutí položek jedním klepnutím</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="704"/>
+        <location filename="../gui/interfacesettings.ui" line="765"/>
         <source>Changing the style setting will require a re-start of Cantata.</source>
         <translation>Změna nastavení stylu vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
@@ -8840,7 +8881,7 @@ Tento krok nelze vrátit zpět.</translation>
         <translation type="obsolete">Udělat rozhraní dotekově přátelštější</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="655"/>
+        <location filename="../gui/interfacesettings.ui" line="716"/>
         <source>Show song information tooltips</source>
         <translation>Ukázat nástrojové rady s informacemi k písni</translation>
     </message>
@@ -8849,17 +8890,17 @@ Tento krok nelze vrátit zpět.</translation>
         <translation type="vanished">Podpora pro obrazovky retina (sítnice)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="662"/>
+        <location filename="../gui/interfacesettings.ui" line="723"/>
         <source>Language:</source>
         <translation>Jazyk:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="690"/>
+        <location filename="../gui/interfacesettings.ui" line="751"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation>Změna nastavení Vynutit zapnutí jedním klepnutím u položek vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="697"/>
+        <location filename="../gui/interfacesettings.ui" line="758"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation>Změna nastavení jazyka vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
@@ -8872,120 +8913,130 @@ Tento krok nelze vrátit zpět.</translation>
         <translation type="vanished">Povolení podpory pro obrazovky retina (retina = sítnice; obrazovky s vyšší hustotou pixelů, než jakou měly předchozí modely, firma Apple) povede k ostřejším ikonám na obrazovkách typu &quot;retina&quot;, ale může vést k méně ostrým ikonám na obrazovkách, které typu &quot;retina&quot; nejsou. Změna tohoto nastavení vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="130"/>
+        <location filename="../gui/interfacesettings.cpp" line="148"/>
         <source>Use &apos;Year&apos; tag to display &amp; sort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="131"/>
+        <location filename="../gui/interfacesettings.cpp" line="149"/>
         <source>Use &apos;Original Year&apos; tag to display &amp; sort, fallback to &apos;Year&apos; if not set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="134"/>
+        <location filename="../gui/interfacesettings.cpp" line="152"/>
         <source>Library</source>
         <translation>Knihovna</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="135"/>
+        <location filename="../gui/interfacesettings.cpp" line="153"/>
         <source>Folders</source>
         <translation>Složky</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="136"/>
+        <location filename="../gui/interfacesettings.cpp" line="154"/>
         <source>Playlists</source>
         <translation>Seznamy</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="137"/>
+        <location filename="../gui/interfacesettings.cpp" line="155"/>
         <source>Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts</source>
         <translation>Internet - proudy, Jamendo, Maganatune, SoundCloud, a zvukové záznamy</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="139"/>
+        <location filename="../gui/interfacesettings.cpp" line="157"/>
         <source>Devices - UMS, MTP (e.g. Android), and AudioCDs</source>
         <translation>Zařízení - UMS, MTP (např.  Android), a zvuková CD</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="143"/>
+        <location filename="../gui/interfacesettings.cpp" line="161"/>
         <source>Search (via MPD)</source>
         <translation>Hledání (přes MPD)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="144"/>
+        <location filename="../gui/interfacesettings.cpp" line="162"/>
         <source>Info - Current song information (artist, album, and lyrics)</source>
         <translation>Informace - informace o nynější písni (umělec, album a slova písně)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="149"/>
+        <location filename="../gui/interfacesettings.cpp" line="167"/>
         <source>Large</source>
         <translation>Velký</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="150"/>
+        <location filename="../gui/interfacesettings.cpp" line="168"/>
         <source>Small</source>
         <translation>Malý</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="151"/>
+        <location filename="../gui/interfacesettings.cpp" line="169"/>
         <source>Tab-bar</source>
         <translation>Pruh s kartami</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="152"/>
+        <location filename="../gui/interfacesettings.cpp" line="170"/>
         <source>Left</source>
         <translation>Vlevo</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="152"/>
+        <location filename="../gui/interfacesettings.cpp" line="170"/>
         <source>Right</source>
         <translation>Vpravo</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="153"/>
+        <location filename="../gui/interfacesettings.cpp" line="171"/>
         <source>Top</source>
         <translation>Nahoře</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="154"/>
+        <location filename="../gui/interfacesettings.cpp" line="172"/>
         <source>Bottom</source>
         <translation>Dole</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="161"/>
+        <location filename="../gui/interfacesettings.cpp" line="179"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Obrázky (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="162"/>
+        <location filename="../gui/interfacesettings.cpp" line="180"/>
         <source>10px</source>
         <comment>pixels</comment>
         <translation>10 px</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="187"/>
+        <location filename="../gui/interfacesettings.cpp" line="205"/>
         <source>Notifications</source>
         <translation>Oznámení</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="397"/>
+        <location filename="../gui/interfacesettings.cpp" line="219"/>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding  music to your library from devices.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.cpp" line="223"/>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.cpp" line="429"/>
         <source>English (en)</source>
         <translation>Angličtina (en)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="402"/>
-        <location filename="../gui/interfacesettings.cpp" line="419"/>
+        <location filename="../gui/interfacesettings.cpp" line="434"/>
+        <location filename="../gui/interfacesettings.cpp" line="451"/>
         <source>System default</source>
         <translation>Výchozí nastavení systému</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="525"/>
+        <location filename="../gui/interfacesettings.cpp" line="557"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation>%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="530"/>
+        <location filename="../gui/interfacesettings.cpp" line="562"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation>%1 px</translation>
@@ -10069,12 +10120,12 @@ Tento krok nelze vrátit zpět.</translation>
 <context>
     <name>MtpDevice</name>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1566"/>
+        <location filename="../devices/mtpdevice.cpp" line="1562"/>
         <source>Not Connected</source>
         <translation>Nepřipojeno</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1569"/>
+        <location filename="../devices/mtpdevice.cpp" line="1565"/>
         <source>%1 free</source>
         <translation>%1 volno</translation>
     </message>
@@ -11555,117 +11606,115 @@ Přepsat?</translation>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="73"/>
+        <location filename="../gui/preferencesdialog.cpp" line="71"/>
         <source>Collection</source>
         <translation>Sbírka</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="73"/>
+        <location filename="../gui/preferencesdialog.cpp" line="71"/>
         <source>Collection Settings</source>
         <translation>Nastavení sbírky</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="72"/>
         <source>Playback</source>
         <translation>Přehrávání</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="72"/>
         <source>Playback Settings</source>
         <translation>Nastavení přehrávání</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Downloaded Files</source>
-        <translation>Stažené soubory</translation>
+        <translation type="vanished">Stažené soubory</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Downloaded Files Settings</source>
-        <translation>Nastavení pro stažené soubory</translation>
+        <translation type="vanished">Nastavení pro stažené soubory</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="76"/>
+        <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Interface</source>
         <translation>Rozhraní</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="76"/>
+        <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Interface Settings</source>
         <translation>Nastavení rozhraní</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="77"/>
+        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Info</source>
         <translation>Informace</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="77"/>
+        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Info View Settings</source>
         <translation>Nastavení pohledu na informace</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="78"/>
+        <location filename="../gui/preferencesdialog.cpp" line="76"/>
         <source>Scrobbling</source>
         <translation>Odesílání informací o skladbách</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="78"/>
+        <location filename="../gui/preferencesdialog.cpp" line="76"/>
         <source>Scrobbling Settings</source>
         <translation>Nastavení odesílání informací o skladbách</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="82"/>
+        <location filename="../gui/preferencesdialog.cpp" line="80"/>
         <source>Audio CD</source>
         <translation>Audio CD</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="82"/>
+        <location filename="../gui/preferencesdialog.cpp" line="80"/>
         <source>Audio CD Settings</source>
         <translation>Nastavení zvukového CD</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="87"/>
+        <location filename="../gui/preferencesdialog.cpp" line="85"/>
         <source>Proxy</source>
         <translation>Proxy</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="87"/>
+        <location filename="../gui/preferencesdialog.cpp" line="85"/>
         <source>Proxy Settings</source>
         <translation>Nastavení proxy</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="90"/>
+        <location filename="../gui/preferencesdialog.cpp" line="88"/>
         <source>Shortcuts</source>
         <translation>Zkratky</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="91"/>
+        <location filename="../gui/preferencesdialog.cpp" line="89"/>
         <source>Keyboard Shortcut Settings</source>
         <translation>Nastavení klávesových zkratek</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="91"/>
         <source>Cache</source>
         <translation>Vyrovnávací paměť</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="91"/>
         <source>Cached Items</source>
         <translation>Položky ve vyrovnávací paměti</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="94"/>
+        <location filename="../gui/preferencesdialog.cpp" line="92"/>
         <source>Custom Actions</source>
         <translation>Vlastní činnosti</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="96"/>
+        <location filename="../gui/preferencesdialog.cpp" line="94"/>
         <source>Cantata Preferences</source>
         <translation>Nastavení Cantaty</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="98"/>
+        <location filename="../gui/preferencesdialog.cpp" line="96"/>
         <source>Configure</source>
         <translation>Nastavit</translation>
     </message>
@@ -12317,8 +12366,8 @@ width x height</comment>
         <translation>Chyba ve zpracování při nahrávání souboru s vyrovnávací pamětí. Prověřte, prosím, značky vaší písně.</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="1295"/>
-        <location filename="../models/streamsmodel.cpp" line="1302"/>
+        <location filename="../models/streamsmodel.cpp" line="1293"/>
+        <location filename="../models/streamsmodel.cpp" line="1300"/>
         <source>Other</source>
         <translation>Jiné</translation>
     </message>
@@ -13525,7 +13574,7 @@ Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
-        <location filename="../gui/serversettings.cpp" line="110"/>
+        <location filename="../gui/serversettings.cpp" line="94"/>
         <source>Host:</source>
         <translation>Server:</translation>
     </message>
@@ -13536,159 +13585,154 @@ Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="126"/>
-        <location filename="../gui/serversettings.ui" line="277"/>
+        <location filename="../gui/serversettings.ui" line="253"/>
         <source>Music folder:</source>
         <translation>Složka s hudbou:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="139"/>
-        <location filename="../gui/serversettings.ui" line="290"/>
         <source>Cover filename:</source>
-        <translation>Název souboru obalu:</translation>
+        <translation type="vanished">Název souboru obalu:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="149"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Souborový název (bez přípony), pod nímž se mají uložit stažené obaly.&lt;br/&gt; Jestliže bude ponecháno prázdné, použije se &quot;cover&quot;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% bude nahrazen umělcem alba současné písně, a %album% bude nahrazeno názvem alba.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation type="vanished">&lt;p&gt;Souborový název (bez přípony), pod nímž se mají uložit stažené obaly.&lt;br/&gt; Jestliže bude ponecháno prázdné, použije se &quot;cover&quot;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% bude nahrazen umělcem alba současné písně, a %album% bude nahrazeno názvem alba.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="156"/>
+        <location filename="../gui/serversettings.ui" line="139"/>
         <source>HTTP stream URL:</source>
         <translation>Adresa (URL) proudu HTTP:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="169"/>
+        <location filename="../gui/serversettings.ui" line="152"/>
         <source>Local file playback:</source>
         <translation>Přehrávání místního souboru:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="179"/>
+        <location filename="../gui/serversettings.ui" line="162"/>
         <source>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</source>
         <translation>Použijte jednoduchý vestavěný HTTP server pro umožnění MPD přehrávat soubory upuštěné do řady skladeb k přehrání.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="182"/>
+        <location filename="../gui/serversettings.ui" line="165"/>
         <source>Via in-built HTTP server</source>
         <translation>Přes vestavěný HTTP server</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="189"/>
+        <location filename="../gui/serversettings.ui" line="172"/>
         <source>Auto update:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="199"/>
+        <location filename="../gui/serversettings.ui" line="182"/>
         <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="202"/>
+        <location filename="../gui/serversettings.ui" line="185"/>
         <source>Server detects changes automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="211"/>
+        <location filename="../gui/serversettings.ui" line="194"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation>Nastavení pro hudební složku je používáno k vyhledání obrázků obalů. Může být nastaveno na adresu (URL) HTTP, pokud je vaše MPD na jiném stroji a obaly jsou přístupné přes HTTP. Pokud není nastaveno na adresu (URL) HTTP a vy máte i oprávnění pro zápis do této složky (a jejích podsložek), Cantata uloží všechny stažené obaly do příslušné složky s albem.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="218"/>
-        <location filename="../gui/serversettings.ui" line="312"/>
         <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
-        <translation>Pokud není nastaveno žádné nastavení pro název souboru s obalem, pak bude Cantata používat výchozí &lt;code&gt;obal&lt;/code&gt;</translation>
+        <translation type="vanished">Pokud není nastaveno žádné nastavení pro název souboru s obalem, pak bude Cantata používat výchozí &lt;code&gt;obal&lt;/code&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="225"/>
+        <location filename="../gui/serversettings.ui" line="201"/>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
         <translation>Adresa (URL) proudu HTTP se používá jen tehdy, když máte nastaveno MPD na výstup do proudu HTTP, a přejete si, aby Cantata mohla tento proud přehrávat.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="232"/>
+        <location filename="../gui/serversettings.ui" line="208"/>
         <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
         <translation>MPD obyčejně přehrává pouze písně ze sbírky. Novější MPD (od verze 0.19 a novější) dokáže přehrávat i jiné soubory, pokud jste připojeni k místnímu serveru MPD (např. adresa je 127.0.0.1 nebo localhost). Aby to pracovalo, server MPD potřebuje přístup ke čtení ke všem místům, kde jsou soubory umístěny. Používáte-li starší MPD, ne-místní MPD, nebo nejsou vaše místní soubory přístupné ostatním uživatelům, potom můžete zvolit použití jednoduchý HTTP server dodávaný s Cantatou. Tento server umožní přistupovat pouze k souborům v řadě skladeb k přehrání a jen když Cantata běží.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="305"/>
+        <location filename="../gui/serversettings.ui" line="268"/>
         <source>If you change the &apos;Music folder&apos; setting, then you will need to manually update the music database. This can be performed by pressing the &apos;Refresh Database&apos; button in the &apos;Artists&apos; or &apos;Albums&apos; views.</source>
         <translation>Pokud změníte nastavení pro složku s hudbou, budete muset hudební databázi obnovovat ručně. To je možné provádět stisknutím tlačítka Obnovit databázi v pohledech s umělci nebo alby.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="90"/>
+        <location filename="../gui/serversettings.cpp" line="74"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, and transferring to (and from) devices.</source>
         <translation>Tato složka se bude používat i na umísťování hudebních souborů pro upravování značek, vyrovnávání hlasitosti přehrávaných skladeb a přesunování na (a z) zařízení.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="93"/>
+        <location filename="../gui/serversettings.cpp" line="77"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, etc.</source>
         <translation>Tato složka se bude používat i na umísťování hudebních souborů pro upravování značek, vyrovnávání hlasitosti přehrávaných skladeb atd.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="97"/>
+        <location filename="../gui/serversettings.cpp" line="81"/>
         <source>More information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="139"/>
+        <location filename="../gui/serversettings.cpp" line="119"/>
         <source>Discover...</source>
         <translation>Objevit...</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="279"/>
+        <location filename="../gui/serversettings.cpp" line="259"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation>Který typ sbírky chcete připojit?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="280"/>
+        <location filename="../gui/serversettings.cpp" line="260"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation>Obvyklý - hudební sbírku může být sdílena, je na jiném stroji, nebo je již nastavena, nebo chcete povolit přístup z jiných klientů (např. MPDroid)</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="283"/>
+        <location filename="../gui/serversettings.cpp" line="263"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation>Základní - hudební sbírka není sdílena s ostatními, a Cantata nastaví a bude řídit instanci MPD. Toto nastavení bude pro Cantatu výlučné a &lt;b&gt;nebude&lt;/b&gt; přístupné pro jiné klienty MPD.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="287"/>
+        <location filename="../gui/serversettings.cpp" line="267"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation>&lt;i&gt;&lt;b&gt;POZNÁMKA:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="287"/>
+        <location filename="../gui/serversettings.cpp" line="267"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation>Pokud chcete mít pokročilé nastavení MPD (např. více výstupů zvuku, plnou podporu pro DSD atd.), potom &lt;b&gt;musíte&lt;/b&gt; vybrat Obvyklý</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Add Collection</source>
         <translation>Přidat sbírku</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Standard</source>
         <translation>Obvyklý</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Basic</source>
         <translation>Základní</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="337"/>
+        <location filename="../gui/serversettings.cpp" line="317"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation>Smazat &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="338"/>
+        <location filename="../gui/serversettings.cpp" line="318"/>
         <source>Delete</source>
         <translation>Smazat</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="391"/>
+        <location filename="../gui/serversettings.cpp" line="371"/>
         <source>New Collection %1</source>
         <translation>Nová sbírka %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="409"/>
+        <location filename="../gui/serversettings.cpp" line="388"/>
         <source>Default</source>
         <translation>Výchozí</translation>
     </message>
@@ -14134,7 +14178,7 @@ Nahrát znovu z disku, nebo smazat kopii na disku a stáhnout?</translation>
         <translation>Název souboru</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="849"/>
+        <location filename="../context/songview.cpp" line="844"/>
         <source>Fetching lyrics via %1</source>
         <translation>Natahují se slova písně přes %1</translation>
     </message>
@@ -15375,17 +15419,17 @@ Přepsat?</translation>
         <translation>Nepodařilo se přejmenovat &apos;%1&apos; na &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="471"/>
+        <location filename="../tags/trackorganiser.cpp" line="473"/>
         <source>Remove the selected tracks from the list?</source>
         <translation>Odstranit vybrané skladby ze seznamu?</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="472"/>
+        <location filename="../tags/trackorganiser.cpp" line="474"/>
         <source>Remove Tracks</source>
         <translation>Odstranit skladby</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="487"/>
+        <location filename="../tags/trackorganiser.cpp" line="489"/>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database.
 
 If you rename a file (or the folder it is within), then the rating associated with the song will be lost.</source>
@@ -15394,17 +15438,17 @@ If you rename a file (or the folder it is within), then the rating associated wi
 Pokud soubor přejmenujete (nebo složku, v níž je), potom bude hodnocení spojené s písní ztraceno.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="547"/>
+        <location filename="../tags/trackorganiser.cpp" line="549"/>
         <source>Device has been removed!</source>
         <translation>Zařízení bylo odstraněno!</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="552"/>
+        <location filename="../tags/trackorganiser.cpp" line="554"/>
         <source>Device is not connected.</source>
         <translation>Zařízení není připojeno.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="557"/>
+        <location filename="../tags/trackorganiser.cpp" line="559"/>
         <source>Device is busy?</source>
         <translation>Zařízení je zaneprázdněno?</translation>
     </message>

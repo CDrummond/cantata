@@ -183,14 +183,6 @@
     </extract>
     <invalidIndicator value="Page not Found"/>
   </provider>
-  <provider name="lyricstime.com" charset="iso-8859-1" url="http://www.lyricstime.com/{artist}-{title}-lyrics.html">
-    <urlFormat replace=" _@,;&amp;\/&quot;'" with="-"/>
-    <urlFormat replace="." with=""/>
-    <extract>
-      <item tag="&lt;div id=&quot;songlyrics&quot; &gt;"/>
-      <item tag="&lt;p&gt;"/>
-    </extract>
-  </provider>
   <provider name="lyriki.com" charset="utf-8" url="http://www.lyriki.com/{artist}:{title}">
     <urlFormat replace=" _@,;&amp;\/&quot;" with="_"/>
     <urlFormat replace="." with=""/>
@@ -245,13 +237,6 @@
       <item begin=" data-reactid=&quot;" end="&quot;&gt;"/>
     </exclude>
     <invalidIndicator value="We couldn't find that page."/>
-  </provider>
-  <provider name="seeklyrics.com" charset="iso-8859-1" url="http://www.seeklyrics.com/lyrics/{Artist}/{Title}.html">
-    <urlFormat replace=" _@,;&amp;\/'&quot;" with="-"/>
-    <urlFormat replace="." with=""/>
-    <extract>
-      <item tag="&lt;div id=&quot;songlyrics&quot;&gt;"/>
-    </extract>
   </provider>
   <provider name="songlyrics.com" charset="utf-8" url="https://www.songlyrics.com/{artist}/{title}-lyrics/">
     <urlFormat replace=" ._@,;&amp;\/&quot;" with="-"/>

@@ -191,6 +191,7 @@
       <item tag="&lt;p&gt;"/>
     </extract>
   </provider>
+  <!-- broken
   <provider name="metrolyrics.com" charset="utf-8" url="http://www.metrolyrics.com/{title}-lyrics-{artist}.html">
     <urlFormat replace=" _@,;&amp;\/&quot;" with="-"/>
     <urlFormat replace="'." with=""/>
@@ -200,7 +201,7 @@
     <extract>
       <item tag="&lt;div id=&quot;lyrics&quot;&gt;"/>
     </extract>
-    <extract> <!-- new -->
+    <extract>
       <item tag="&lt;div id=&quot;lyrics-body-text&quot;&gt;"/>
     </extract>
     <exclude>
@@ -208,6 +209,7 @@
     </exclude>
     <invalidIndicator value="These lyrics are missing"/>
   </provider>
+  -->
   <provider name="mp3lyrics.org" charset="utf-8" url="http://www.mp3lyrics.org/{a}/{artist}/{title}/">
     <urlFormat replace=" _@,;&amp;\/&quot;" with="-"/>
     <urlFormat replace="'." with=""/>

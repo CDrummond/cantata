@@ -153,11 +153,7 @@ void ExtractJob::run()
         Tags::update(destFile, Song(), song, 3);
 
         if (!stopRequested && !coverFile.isEmpty()) {
-            QString mpdCover=MPDConnection::self()->getDetails().coverName;
-            if (mpdCover.isEmpty()) {
-                mpdCover=Covers::constFileName;
-            }
-            copiedCover=Covers::copyImage(Utils::getDir(coverFile), Utils::getDir(destFile), Utils::getFile(coverFile), mpdCover+coverFile.mid(coverFile.length()-4), 0);
+            copiedCover=Covers::copyImage(Utils::getDir(coverFile), Utils::getDir(destFile), Utils::getFile(coverFile), Covers::albumFileName(song)+coverFile.mid(coverFile.length()-4), 0);
         }
 
         emit result(Device::Ok);

@@ -41,7 +41,7 @@
 enum Pages {
     PAGE_INTRO,
     PAGE_CONNECTION,
-    PAGE_FILES,
+    PAGE_COVERS,
     PAGE_END
 };
 
@@ -73,12 +73,9 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     groupWarningIcon->setVisible(showGroupWarning);
     int iconSize=Icon::dlgIconSize();
     groupWarningIcon->setPixmap(Icon("dialog-warning").pixmap(iconSize, iconSize));
-    storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
-    storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
-    storeBackdropsInMpdDir->setChecked(Settings::self()->storeBackdropsInMpdDir());
     introPage->setBackground(Icons::self()->appIcon);
     connectionPage->setBackground(Icons::self()->audioFileIcon);
-    filesPage->setBackground(Icons::self()->filesIcon);
+    //coversPage->setBackground(Icons::self()->filesIcon);
     finishedPage->setBackground(Icon("dialog-ok"));
 
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
@@ -200,18 +197,18 @@ void InitialSettingsWizard::pageChanged(int p)
         controlNextButton();
         return;
     }
-    if (PAGE_FILES==p) {
-        if (dir->text().trimmed().startsWith(QLatin1String("http:/"))) {
-            storeCoversInMpdDir->setChecked(false);
-            storeLyricsInMpdDir->setChecked(false);
-            storeBackdropsInMpdDir->setChecked(false);
-            httpNote->setVisible(true);
-        } else {
-            storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
-            storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
-            storeBackdropsInMpdDir->setChecked(Settings::self()->storeBackdropsInMpdDir());
-            httpNote->setVisible(false);
-        }
+    if (PAGE_COVERS==p) {
+//        if (dir->text().trimmed().startsWith(QLatin1String("http:/"))) {
+//            storeCoversInMpdDir->setChecked(false);
+//            storeLyricsInMpdDir->setChecked(false);
+//            storeBackdropsInMpdDir->setChecked(false);
+//            httpNote->setVisible(true);
+//        } else {
+//            storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
+//            storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
+//            storeBackdropsInMpdDir->setChecked(Settings::self()->storeBackdropsInMpdDir());
+//            httpNote->setVisible(false);
+//        }
     }
     button(NextButton)->setEnabled(PAGE_END!=p);
 }
@@ -242,8 +239,6 @@ void InitialSettingsWizard::controlNextButton()
 void InitialSettingsWizard::accept()
 {
     Settings::self()->saveConnectionDetails(getDetails());
-    Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
-    Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
 
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     if (basic->isChecked()) {

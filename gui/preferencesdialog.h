@@ -31,7 +31,6 @@ class ProxySettings;
 class ShortcutsSettingsPage;
 class ServerSettings;
 class PlaybackSettings;
-class FileSettings;
 class InterfaceSettings;
 class ContextSettings;
 struct MPDConnectionDetails;
@@ -72,7 +71,6 @@ Q_SIGNALS:
 private:
     ServerSettings *server;
     PlaybackSettings *playback;
-    FileSettings *files;
     InterfaceSettings *interface;
     ContextSettings *context;
     #ifdef ENABLE_PROXY_CONFIG

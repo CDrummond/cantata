@@ -27,7 +27,6 @@
 #include "interfacesettings.h"
 #include "serversettings.h"
 #include "playbacksettings.h"
-#include "filesettings.h"
 #include "context/contextsettings.h"
 #include "cachesettings.h"
 #include "customactionssettings.h"
@@ -57,7 +56,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     iCount++;
     server = new ServerSettings(this);
     playback = new PlaybackSettings(this);
-    files = new FileSettings(this);
     interface = new InterfaceSettings(this);
     context = new ContextSettings(this);
     cache = new CacheSettings(this);
@@ -65,14 +63,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     custom = new CustomActionsSettings(this);
     server->load();
     playback->load();
-    files->load();
+    //cover->load();
     interface->load();
     context->load();
     scrobbling->load();
     custom->load();
     addPage(QLatin1String("collection"), server, tr("Collection"), Icon("audio-x-generic"), tr("Collection Settings"));
     addPage(QLatin1String("playback"), playback, tr("Playback"), Icons::self()->speakerIcon, tr("Playback Settings"));
-    addPage(QLatin1String("files"), files, tr("Downloaded Files"), Icons::self()->filesIcon, tr("Downloaded Files Settings"));
+    //addPage(QLatin1String("cover"), files, tr("Covers"), Icons::self()->filesIcon, tr("Album Cover Settings"));
     addPage(QLatin1String("interface"), interface, tr("Interface"), Icon("preferences-other"), tr("Interface Settings"));
     addPage(QLatin1String("info"), context, tr("Info"), Icons::self()->contextIcon, tr("Info View Settings"));
     addPage(QLatin1String("scrobbling"), scrobbling, tr("Scrobbling"), Icons::self()->lastFmIcon, tr("Scrobbling Settings"));
@@ -126,7 +124,6 @@ void PreferencesDialog::writeSettings()
     // *Must* save server settings first, so that MPD settings go to the correct instance!
     server->save();
     playback->save();
-    files->save();
     interface->save();
     #ifdef ENABLE_PROXY_CONFIG
     proxy->save();

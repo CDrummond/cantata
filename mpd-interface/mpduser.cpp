@@ -246,7 +246,6 @@ void MPDUser::init(bool create)
 {
     if (create || det.dir.isEmpty() || det.hostname.isEmpty() || pidFileName.isEmpty()) {
         // Read coverFileName from Cantata settings...
-        det.coverName=Settings::self()->connectionDetails(constName).coverName;
         det.dirReadable=false;
 
         // Read music folder and socket from MPD conf file...

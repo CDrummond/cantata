@@ -46,23 +46,7 @@
     w->deleteLater(); \
     w=0;
 
-class CoverNameValidator : public QValidator
-{
-    public:
 
-    CoverNameValidator(QObject *parent) : QValidator(parent) { }
-
-    State validate(QString &input, int &) const override
-    {
-        for (int i=0; i<input.length(); ++i) {
-            if (!input[i].isLetterOrNumber() && '%'!=input[i] && ' '!=input[i] && '-'!=input[i]) {
-                return Invalid;
-            }
-        }
-
-        return Acceptable;
-    }
-};
 
 #ifdef ENABLE_SIMPLE_MPD_SUPPORT
 class CollectionNameValidator : public QValidator
@@ -109,11 +93,7 @@ ServerSettings::ServerSettings(QWidget *p)
     #if defined Q_OS_WIN
     hostLabel->setText(tr("Host:"));
     #endif
-    basicCoverName->setToolTip(coverName->toolTip());
-    basicCoverNameLabel->setToolTip(coverName->toolTip());
-    coverNameLabel->setToolTip(coverName->toolTip());
-    coverName->setValidator(new CoverNameValidator(this));
-    basicCoverName->setValidator(new CoverNameValidator(this));
+
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     name->setValidator(new CollectionNameValidator(this));
     #endif
@@ -194,7 +174,7 @@ void ServerSettings::save()
                 existingInConfig.removeAt(i);
                 found=true;
                 if (c.details.hostname!=e.hostname || c.details.port!=e.port || c.details.password!=e.password ||
-                    c.details.dir!=e.dir || c.details.coverName!=e.coverName
+                    c.details.dir!=e.dir
                     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
                     || c.details.streamUrl!=e.streamUrl
                     #endif
@@ -402,7 +382,6 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     if (details.name==MPDUser::constName) {
         basicDir->setText(Utils::convertPathForDisplay(details.dir));
-        basicCoverName->setText(details.coverName);
         stackedWidget->setCurrentIndex(1);
     } else {
     #endif
@@ -411,7 +390,6 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
         port->setValue(details.port);
         password->setText(details.password);
         dir->setText(Utils::convertPathForDisplay(details.dir));
-        coverName->setText(details.coverName);
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         streamUrl->setText(details.streamUrl);
         #endif
@@ -439,7 +417,6 @@ MPDConnectionDetails ServerSettings::getDetails() const
         details.port=port->value();
         details.password=password->text();
         details.dir=Utils::convertPathFromDisplay(dir->text());
-        details.coverName=coverName->text().trimmed();
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         details.streamUrl=streamUrl->text().trimmed();
         #endif
@@ -452,7 +429,6 @@ MPDConnectionDetails ServerSettings::getDetails() const
     else {
         details=MPDUser::self()->details(true);
         details.dir=Utils::convertPathFromDisplay(basicDir->text());
-        details.coverName=basicCoverName->text().trimmed();
         MPDUser::self()->setMusicFolder(details.dir);
     }
     #endif

@@ -64,7 +64,6 @@ Icons::Icons()
     speakerIcon=Icon(QStringList() << "speaker" << "audio-speakers" << "gnome-volume-control");
     repeatIcon=MonoIcon::icon(FontAwesome::refresh, stdColor);
     shuffleIcon=MonoIcon::icon(FontAwesome::random, stdColor);
-    filesIcon=Icon(QStringList() << "folder-downloads" << "folder-download" << "folder" << "go-down");
     albumIconSmall.addFile(":album32.svg");
     albumIconLarge.addFile(":album.svg");
     albumMonoIcon=MonoIcon::icon(":mono-album.svg", stdColor);

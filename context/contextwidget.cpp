@@ -911,41 +911,12 @@ void ContextWidget::downloadResponse()
     }
 
     if (!img.isNull()) {
-        bool saved=false;
-
-        if (Settings::self()->storeBackdropsInMpdDir() && !currentSong.isVariousArtists() &&
-            !currentSong.isNonMPD() && MPDConnection::self()->getDetails().dirReadable) {
-            QString mpdDir=MPDConnection::self()->getDetails().dir;
-            QString songDir=Utils::getDir(currentSong.file);
-            if (!mpdDir.isEmpty() && 2==songDir.split(Utils::constDirSep, QString::SkipEmptyParts).count()) {
-                QDir d(mpdDir+songDir);
-                d.cdUp();
-                QString fileName=Utils::fixPath(d.absolutePath())+constBackdropFileName+".jpg";
-                QFile f(fileName);
-                if (f.open(QIODevice::WriteOnly)) {
-                    f.write(data);
-                    f.close();
-                    DBUG << "Saved backdrop to" << fileName << "for artist" << currentArtist << ", current song" << currentSong.file;
-                    saved=true;
-                }
-            } else {
-                DBUG << "Not saving to mpd folder, mpd dir:" << mpdDir
-                     << "num parts:" << songDir.split(Utils::constDirSep, QString::SkipEmptyParts).count();
-            }
-        } else {
-            DBUG << "Not saving to mpd folder - set to save in mpd?" << Settings::self()->storeBackdropsInMpdDir()
-                 << "isVa:" << currentSong.isVariousArtists() << "isNonMPD:" << currentSong.isNonMPD()
-                 << "mpd readable:" << MPDConnection::self()->getDetails().dirReadable;
-        }
-
-        if (!saved) {
-            QString cacheName=cacheFileName(currentArtist, true);
-            QFile f(cacheName);
-            if (f.open(QIODevice::WriteOnly)) {
-                DBUG << "Saved backdrop to (cache)" << cacheName << "for artist" << currentArtist << ", current song" << currentSong.file;
-                f.write(data);
-                f.close();
-            }
+        QString cacheName=cacheFileName(currentArtist, true);
+        QFile f(cacheName);
+        if (f.open(QIODevice::WriteOnly)) {
+            DBUG << "Saved backdrop to (cache)" << cacheName << "for artist" << currentArtist << ", current song" << currentSong.file;
+            f.write(data);
+            f.close();
         }
     }
     updateImage(img);

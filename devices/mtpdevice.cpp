@@ -965,11 +965,7 @@ void MtpConnection::getSong(const Song &song, const QString &dest, bool fixVa, b
             File cover=getCoverDetils(song);
 
             if (0!=cover.id) {
-                QString mpdCover=MPDConnection::self()->getDetails().coverName;
-                if (mpdCover.isEmpty()) {
-                    mpdCover="cover";
-                }
-                QString fileName=QString(destDir+mpdCover+(cover.name.endsWith(".jpg", Qt::CaseInsensitive) ? ".jpg" : ".png"));
+                QString fileName=QString(destDir+Covers::albumFileName(song)+(cover.name.endsWith(".jpg", Qt::CaseInsensitive) ? ".jpg" : ".png"));
                 QByteArray fileNameUtf8=fileName.toUtf8();
                 copiedCover=0==LIBMTP_Get_File_To_File(device, cover.id, fileNameUtf8.constData(), 0, 0);
                 if (copiedCover) {

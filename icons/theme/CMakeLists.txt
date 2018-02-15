@@ -1,7 +1,6 @@
 set(ICON_FILES
 svg/audio-x-generic.svg
 svg/information.svg
-svg/folder-downloads.svg
 svg/folder-temp.svg
 svg/fork.svg
 svg/inode-directory.svg

@@ -159,7 +159,6 @@ section "install"
     file "icons\cantata\16\cantata.png"
     setOutPath $INSTDIR\icons\cantata\svg
     file "icons\cantata\svg\audio-x-generic.svg"
-    file "icons\cantata\svg\folder-downloads.svg"
     file "icons\cantata\svg\folder-temp.svg"
     file "icons\cantata\svg\fork.svg"
     file "icons\cantata\svg\information.svg"

@@ -618,6 +618,74 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab_4cvr">
+      <attribute name="title">
+       <string>Covers</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_7cvr">
+       <item>
+        <layout class="QFormLayout" name="formLayout_4cvr">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::ExpandingFieldsGrow</enum>
+         </property>
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="fetchCovers">
+           <property name="text">
+            <string>Fetch missing covers</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QCheckBox" name="saveCoversInMpdDir">
+           <property name="text">
+            <string>Save downloaded covers into Music folder</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="BuddyLabel" name="coverFilenameLabel">
+           <property name="text">
+            <string>Filename:</string>
+           </property>
+           <property name="buddy">
+            <cstring>coverFilename</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="LineEdit" name="coverFilename">
+           <property name="toolTip">
+            <string>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank 'cover' will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="NoteLabel" name="saveCoversInMpdDirLabel">
+         <property name="text">
+          <string>If you enable 'Save downloaded covers into Music folder' you may need to clear the cache of any previous covers to force downloading of new covers. See 'Cache' settings page for further details.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="NoteLabel" name="coverNameNoteLabel"/>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2cvr">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="tab_4">
       <attribute name="title">
        <string>General</string>
@@ -629,34 +697,27 @@
           <enum>QFormLayout::ExpandingFieldsGrow</enum>
          </property>
          <item row="0" column="0" colspan="2">
-          <widget class="QCheckBox" name="fetchCovers">
-           <property name="text">
-            <string>Fetch missing covers from Last.fm</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" colspan="2">
           <widget class="QCheckBox" name="showDeleteAction">
            <property name="text">
             <string>Show delete action in context menus</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0" colspan="2">
+         <item row="1" column="0" colspan="2">
           <widget class="QCheckBox" name="forceSingleClick">
            <property name="text">
             <string>Enforce single-click activation of items</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
+         <item row="2" column="0" colspan="2">
           <widget class="QCheckBox" name="infoTooltips">
            <property name="text">
             <string>Show song information tooltips</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item row="3" column="0">
           <widget class="BuddyLabel" name="langLabel">
            <property name="text">
             <string>Language:</string>
@@ -666,10 +727,10 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="3" column="1">
           <widget class="QComboBox" name="lang"/>
          </item>
-         <item row="5" column="0">
+         <item row="4" column="0">
           <widget class="BuddyLabel" name="styleLabel">
            <property name="text">
             <string>Style:</string>
@@ -679,7 +740,7 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
+         <item row="4" column="1">
           <widget class="QComboBox" name="styleOption"/>
          </item>
         </layout>

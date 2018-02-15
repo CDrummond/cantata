@@ -105,6 +105,24 @@ static inline QString getStrValue(QComboBox *box)
 static const char * constValueProperty="value";
 static const char * constSep=",";
 
+class CoverNameValidator : public QValidator
+{
+    public:
+
+    CoverNameValidator(QObject *parent) : QValidator(parent) { }
+
+    State validate(QString &input, int &) const override
+    {
+        for (int i=0; i<input.length(); ++i) {
+            if (!input[i].isLetterOrNumber() && '%'!=input[i] && ' '!=input[i] && '-'!=input[i]) {
+                return Invalid;
+            }
+        }
+
+        return Acceptable;
+    }
+};
+
 InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
     , loaded(false)
@@ -167,7 +185,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     connect(playQueueBackground_none, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
     connect(playQueueBackground_cover, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
     connect(playQueueBackground_custom, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
-
+    connect(saveCoversInMpdDir, SIGNAL(toggled(bool)), this, SLOT(saveCoversInMpdDirToggled()));
     if (!enableNotifications) {
         REMOVE(systemTrayPopup)
     }
@@ -194,6 +212,16 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
         connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(systemTrayCheckBoxToggled()));
         connect(systemTrayPopup, SIGNAL(toggled(bool)), SLOT(systemTrayPopupToggled()));
     }
+    #endif
+    coverFilenameLabel->setToolTip(coverFilename->toolTip());
+    coverFilename->setValidator(new CoverNameValidator(this));
+    #ifdef ENABLE_DEVICES_SUPPORT
+    coverNameNoteLabel->setText(tr("If no setting is specified for 'Filename', then Cantata will use a default of "
+                                   "<code>cover</code>. This filename is used when downloading covers, or when adding "
+                                   " music to your library from devices."));
+    #else
+    coverNameNoteLabel->setText(tr("If no setting is specified for 'Filename', then Cantata will use a default of "
+                                   "<code>cover</code>. This filename is used when downloading covers."));
     #endif
     setMinimumSize(750, 650);
 }
@@ -251,6 +279,8 @@ void InterfaceSettings::load()
         systemTrayPopup->setChecked(Settings::self()->showPopups());
     }
     fetchCovers->setChecked(Settings::self()->fetchCovers());
+    saveCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
+    coverFilename->setText(Settings::self()->coverFilename());
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
     for (int i=0; i<views->count(); ++i) {
@@ -327,6 +357,8 @@ void InterfaceSettings::save()
         Settings::self()->saveStartupState(Settings::SS_Previous);
     }
     Settings::self()->saveFetchCovers(fetchCovers->isChecked());
+    Settings::self()->saveStoreCoversInMpdDir(saveCoversInMpdDir->isChecked());
+    Settings::self()->saveCoverFilename(coverFilename->text().trimmed());
     if (loaded && lang) {
         Settings::self()->saveLang(lang->itemData(lang->currentIndex()).toString());
     }
@@ -550,4 +582,9 @@ void InterfaceSettings::systemTrayPopupToggled()
     if (systemTrayCheckBox && systemTrayPopup && systemTrayPopup->isChecked()) {
         systemTrayCheckBox->setChecked(true);
     }
+}
+
+void InterfaceSettings::saveCoversInMpdDirToggled()
+{
+    saveCoversInMpdDirLabel->setOn(saveCoversInMpdDir->isChecked() && saveCoversInMpdDir->isChecked()!=Settings::self()->storeCoversInMpdDir());
 }

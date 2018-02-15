@@ -185,7 +185,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     connect(playQueueBackground_none, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
     connect(playQueueBackground_cover, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
     connect(playQueueBackground_custom, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
-    connect(saveCoversInMpdDir, SIGNAL(toggled(bool)), this, SLOT(saveCoversInMpdDirToggled()));
+    connect(storeCoversInMpdDir, SIGNAL(toggled(bool)), this, SLOT(storeCoversInMpdDirToggled()));
     if (!enableNotifications) {
         REMOVE(systemTrayPopup)
     }
@@ -279,7 +279,7 @@ void InterfaceSettings::load()
         systemTrayPopup->setChecked(Settings::self()->showPopups());
     }
     fetchCovers->setChecked(Settings::self()->fetchCovers());
-    saveCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
+    storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
     coverFilename->setText(Settings::self()->coverFilename());
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
@@ -357,7 +357,7 @@ void InterfaceSettings::save()
         Settings::self()->saveStartupState(Settings::SS_Previous);
     }
     Settings::self()->saveFetchCovers(fetchCovers->isChecked());
-    Settings::self()->saveStoreCoversInMpdDir(saveCoversInMpdDir->isChecked());
+    Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
     Settings::self()->saveCoverFilename(coverFilename->text().trimmed());
     if (loaded && lang) {
         Settings::self()->saveLang(lang->itemData(lang->currentIndex()).toString());
@@ -584,7 +584,7 @@ void InterfaceSettings::systemTrayPopupToggled()
     }
 }
 
-void InterfaceSettings::saveCoversInMpdDirToggled()
+void InterfaceSettings::storeCoversInMpdDirToggled()
 {
-    saveCoversInMpdDirLabel->setOn(saveCoversInMpdDir->isChecked() && saveCoversInMpdDir->isChecked()!=Settings::self()->storeCoversInMpdDir());
+    storeCoversInMpdDirLabel->setOn(storeCoversInMpdDir->isChecked() && storeCoversInMpdDir->isChecked()!=Settings::self()->storeCoversInMpdDir());
 }

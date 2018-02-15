@@ -7441,29 +7441,16 @@ This cannot be undone.</source>
 <context>
     <name>FileSettings</name>
     <message>
-        <location filename="../gui/filesettings.ui" line="32"/>
-        <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/filesettings.ui" line="39"/>
         <source>Save downloaded lyrics in music folder</source>
-        <translation type="unfinished">Сохранять загруженные тексты песен в папке с музыкой</translation>
+        <translation type="obsolete">Сохранять загруженные тексты песен в папке с музыкой</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="46"/>
         <source>Save downloaded backdrops in music folder</source>
-        <translation type="unfinished">Сохранять загруженный фон/оформление в папке с музыкой</translation>
+        <translation type="obsolete">Сохранять загруженный фон/оформление в папке с музыкой</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="53"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="unfinished">Если в параметрах Cantata указано хранить слова песен, обложки дисков или фоновое оформление внутри папки с музыкой, но у пользователя нет доступа на запись в эту папку, то Cantata будет сохранять эти файлы в папке кеша пользователя.</translation>
-    </message>
-    <message>
-        <location filename="../gui/filesettings.ui" line="60"/>
-        <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Если в параметрах Cantata указано хранить слова песен, обложки дисков или фоновое оформление внутри папки с музыкой, но у пользователя нет доступа на запись в эту папку, то Cantata будет сохранять эти файлы в папке кеша пользователя.</translation>
     </message>
 </context>
 <context>
@@ -7849,61 +7836,66 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="623"/>
-        <source>Covers and Lyrics</source>
+        <source>Album Covers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="646"/>
-        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Cantata загружает отсутствующие обложки и слова песен из Интернета.&lt;/p&gt;&lt;p&gt;Для каждого загруженного элемента необходимо подтверждать, сохранять ли его в папке с музыкой или в папках с персональным кешем пользователя&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Cantata can download missing covers, and store these either in the music folder or within your personal cache folder.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
-        <source>Save downloaded covers, artist, and composer images, in music folder</source>
+        <source>Fetch missing covers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="unfinished">Сохранять загруженные тексты песен в папке с музыкой</translation>
-    </message>
-    <message>
-        <location filename="../gui/initialsettingswizard.ui" line="692"/>
-        <source>Save downloaded backdrops in music folder</source>
-        <translation type="unfinished">Сохранять загруженный фон/оформление в папке с музыкой</translation>
-    </message>
-    <message>
-        <location filename="../gui/initialsettingswizard.ui" line="699"/>
-        <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="unfinished">Если в параметрах Cantata указано хранить слова песен, обложки дисков или фоновое оформление внутри папки с музыкой, но у пользователя нет доступа на запись в эту папку, то Cantata будет сохранять эти файлы в папке кеша пользователя.</translation>
-    </message>
-    <message>
-        <location filename="../gui/initialsettingswizard.ui" line="706"/>
-        <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
+        <source>Save downloaded covers into music folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="713"/>
-        <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
-        <translation type="unfinished">Параметром для «Папки с музыкой» указан адрес HTTP, но в настоящий момент Cantata не может загружать файлы на внешние серверы HTTP. Поэтому параметры, указанные выше, нужно оставить без изменений.</translation>
+        <location filename="../gui/initialsettingswizard.ui" line="692"/>
+        <source>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="743"/>
+        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
+        <translation type="obsolete">&lt;p&gt;Cantata загружает отсутствующие обложки и слова песен из Интернета.&lt;/p&gt;&lt;p&gt;Для каждого загруженного элемента необходимо подтверждать, сохранять ли его в папке с музыкой или в папках с персональным кешем пользователя&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Save downloaded lyrics in music folder</source>
+        <translation type="obsolete">Сохранять загруженные тексты песен в папке с музыкой</translation>
+    </message>
+    <message>
+        <source>Save downloaded backdrops in music folder</source>
+        <translation type="obsolete">Сохранять загруженный фон/оформление в папке с музыкой</translation>
+    </message>
+    <message>
+        <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
+        <translation type="obsolete">Если в параметрах Cantata указано хранить слова песен, обложки дисков или фоновое оформление внутри папки с музыкой, но у пользователя нет доступа на запись в эту папку, то Cantata будет сохранять эти файлы в папке кеша пользователя.</translation>
+    </message>
+    <message>
+        <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
+        <translation type="obsolete">Параметром для «Папки с музыкой» указан адрес HTTP, но в настоящий момент Cantata не может загружать файлы на внешние серверы HTTP. Поэтому параметры, указанные выше, нужно оставить без изменений.</translation>
+    </message>
+    <message>
+        <location filename="../gui/initialsettingswizard.ui" line="722"/>
         <source>Finished!</source>
         <translation type="unfinished">Готово!</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="766"/>
+        <location filename="../gui/initialsettingswizard.ui" line="745"/>
         <source>Cantata is now configured!&lt;br/&gt;&lt;br/&gt;Cantata&apos;s configuration dialog maybe used to customise Cantata&apos;s appearance, as well as to add extra MPD hosts, etc.</source>
         <translation type="unfinished">Cantata теперь настроен! &lt;br/&gt;&lt;br/&gt;Диалоговое окно конфигурации может быть использовано для настройки внешнего вида Cantata, а также для добавления дополнительных хостов MPD и т.д.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="798"/>
+        <location filename="../gui/initialsettingswizard.ui" line="777"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation type="unfinished">Cantata группирует треки в альбомы с помощью тега «AlbumArtist», если он указан. В противном случае будет использован тег «Исполнитель». При наличии альбома с несколькими исполнителями, тег «AlbumArtist» &lt;b&gt;должен&lt;/b&gt; быть указан для корректной работы группировки треков. В этом сценарии рекомендуется использовать  тег «Несколько исполнителей».</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="830"/>
+        <location filename="../gui/initialsettingswizard.ui" line="809"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
         <translation type="unfinished">&lt;b&gt;Предупреждение:&lt;/b&gt; вы не являетесь членом группы &apos;users&apos;. Функционал программы Cantata улучшится (сохранение с правильными правами обложек, слов песен и т.п.) если вы (или ваш администратор) добавите своего пользователя в эту группу. Если вы будете делать это самостоятельно, то затем, для применения настройки, будет необходимо закончить текущий сеанс пользователя и снова войти в систему.</translation>
     </message>
@@ -7913,22 +7905,22 @@ This cannot be undone.</source>
         <translation type="unfinished">Не подключено</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="122"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="120"/>
         <source>Discover...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="169"/>
         <source>Connection Established</source>
         <translation type="unfinished">Соединение установлено</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="169"/>
         <source>Connection Failed</source>
         <translation type="unfinished">Сбой подключения</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="184"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="182"/>
         <source>Cantata will now terminate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7976,7 +7968,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="82"/>
         <location filename="../gui/interfacesettings.ui" line="137"/>
-        <location filename="../gui/interfacesettings.ui" line="675"/>
+        <location filename="../gui/interfacesettings.ui" line="736"/>
         <source>Style:</source>
         <translation type="unfinished">Стиль:</translation>
     </message>
@@ -7997,7 +7989,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="128"/>
-        <location filename="../gui/interfacesettings.cpp" line="133"/>
+        <location filename="../gui/interfacesettings.cpp" line="151"/>
         <source>Play Queue</source>
         <translation type="unfinished">Проиграть очередь</translation>
     </message>
@@ -8208,26 +8200,55 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="623"/>
+        <source>Covers</source>
+        <translation type="unfinished">Обложки</translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="634"/>
+        <source>Fetch missing covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="641"/>
+        <source>Save downloaded covers into music folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="648"/>
+        <source>Filename:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="658"/>
+        <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Имя файла (без расширения) для сохранения загруженных обложек.&lt;br/&gt;Если поле не заполнено, используется &apos;cover&apos;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% будет заменён на значение исполнителя текущей песни, а %album% — на название альбома.&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="667"/>
+        <source>If you enable &apos;Save downloaded covers into music folder&apos; you may need to clear the cache of any previous covers to force downloading of new covers. See &apos;Cache&apos; settings page for further details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="691"/>
         <source>General</source>
         <translation type="unfinished">Общее</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="634"/>
         <source>Fetch missing covers from Last.fm</source>
-        <translation type="unfinished">Получить недостающие обложки из Last.fm</translation>
+        <translation type="obsolete">Получить недостающие обложки из Last.fm</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="641"/>
+        <location filename="../gui/interfacesettings.ui" line="702"/>
         <source>Show delete action in context menus</source>
         <translation type="unfinished">Показать действие удаления в контекстных меню</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="648"/>
+        <location filename="../gui/interfacesettings.ui" line="709"/>
         <source>Enforce single-click activation of items</source>
         <translation type="unfinished">Включать одним щелчком</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="704"/>
+        <location filename="../gui/interfacesettings.ui" line="765"/>
         <source>Changing the style setting will require a re-start of Cantata.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8242,7 +8263,7 @@ This cannot be undone.</source>
         <translation type="obsolete">Более дружественный сенсорный интерфейс</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="655"/>
+        <location filename="../gui/interfacesettings.ui" line="716"/>
         <source>Show song information tooltips</source>
         <translation type="unfinished">Показывать подсказки с информацией о песне</translation>
     </message>
@@ -8251,17 +8272,17 @@ This cannot be undone.</source>
         <translation type="obsolete">Поддержка дисплеев Retina</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="662"/>
+        <location filename="../gui/interfacesettings.ui" line="723"/>
         <source>Language:</source>
         <translation type="unfinished">Язык:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="690"/>
+        <location filename="../gui/interfacesettings.ui" line="751"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation type="unfinished">Изменение параметра «Включать одним щелчком» требует перезапуска Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="697"/>
+        <location filename="../gui/interfacesettings.ui" line="758"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation type="unfinished">Изменение языкового параметра требует перезапуска Cantata</translation>
     </message>
@@ -8274,120 +8295,130 @@ This cannot be undone.</source>
         <translation type="obsolete">Включение поддержки для дисплеев Retina сделает иконки более чёткими на дисплеях Retina, и более расплывчатыми на других устройствах. Изменение этого параметра потребует перезапуска Cantata.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="130"/>
+        <location filename="../gui/interfacesettings.cpp" line="148"/>
         <source>Use &apos;Year&apos; tag to display &amp; sort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="131"/>
+        <location filename="../gui/interfacesettings.cpp" line="149"/>
         <source>Use &apos;Original Year&apos; tag to display &amp; sort, fallback to &apos;Year&apos; if not set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="134"/>
+        <location filename="../gui/interfacesettings.cpp" line="152"/>
         <source>Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="135"/>
+        <location filename="../gui/interfacesettings.cpp" line="153"/>
         <source>Folders</source>
         <translation type="unfinished">Папки</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="136"/>
+        <location filename="../gui/interfacesettings.cpp" line="154"/>
         <source>Playlists</source>
         <translation type="unfinished">Плейлисты</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="137"/>
+        <location filename="../gui/interfacesettings.cpp" line="155"/>
         <source>Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="139"/>
+        <location filename="../gui/interfacesettings.cpp" line="157"/>
         <source>Devices - UMS, MTP (e.g. Android), and AudioCDs</source>
         <translation type="unfinished">Устройства - UMS, MTP (например Android) и AudioCDs</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="143"/>
+        <location filename="../gui/interfacesettings.cpp" line="161"/>
         <source>Search (via MPD)</source>
         <translation type="unfinished">Поиск (через MPD)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="144"/>
+        <location filename="../gui/interfacesettings.cpp" line="162"/>
         <source>Info - Current song information (artist, album, and lyrics)</source>
         <translation type="unfinished">Информация - текущая информация о песне (исполнитель, альбом и текст)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="149"/>
+        <location filename="../gui/interfacesettings.cpp" line="167"/>
         <source>Large</source>
         <translation type="unfinished">Большой</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="150"/>
+        <location filename="../gui/interfacesettings.cpp" line="168"/>
         <source>Small</source>
         <translation type="unfinished">Маленький</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="151"/>
+        <location filename="../gui/interfacesettings.cpp" line="169"/>
         <source>Tab-bar</source>
         <translation type="unfinished">Панель вкладок</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="152"/>
+        <location filename="../gui/interfacesettings.cpp" line="170"/>
         <source>Left</source>
         <translation type="unfinished">Слева</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="152"/>
+        <location filename="../gui/interfacesettings.cpp" line="170"/>
         <source>Right</source>
         <translation type="unfinished">Справа</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="153"/>
+        <location filename="../gui/interfacesettings.cpp" line="171"/>
         <source>Top</source>
         <translation type="unfinished">Сверху</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="154"/>
+        <location filename="../gui/interfacesettings.cpp" line="172"/>
         <source>Bottom</source>
         <translation type="unfinished">Снизу</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="161"/>
+        <location filename="../gui/interfacesettings.cpp" line="179"/>
         <source>Images (*.png *.jpg)</source>
         <translation type="unfinished">Изображения (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="162"/>
+        <location filename="../gui/interfacesettings.cpp" line="180"/>
         <source>10px</source>
         <comment>pixels</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="187"/>
+        <location filename="../gui/interfacesettings.cpp" line="205"/>
         <source>Notifications</source>
         <translation type="unfinished">Уведомления</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="397"/>
+        <location filename="../gui/interfacesettings.cpp" line="219"/>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding  music to your library from devices.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.cpp" line="223"/>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.cpp" line="429"/>
         <source>English (en)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="402"/>
-        <location filename="../gui/interfacesettings.cpp" line="419"/>
+        <location filename="../gui/interfacesettings.cpp" line="434"/>
+        <location filename="../gui/interfacesettings.cpp" line="451"/>
         <source>System default</source>
         <translation type="unfinished">Системный</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="525"/>
+        <location filename="../gui/interfacesettings.cpp" line="557"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation type="unfinished">%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="530"/>
+        <location filename="../gui/interfacesettings.cpp" line="562"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation type="unfinished">%1 пикс</translation>
@@ -9453,12 +9484,12 @@ This cannot be undone.</source>
 <context>
     <name>MtpDevice</name>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1566"/>
+        <location filename="../devices/mtpdevice.cpp" line="1562"/>
         <source>Not Connected</source>
         <translation type="unfinished">Не подключено</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1569"/>
+        <location filename="../devices/mtpdevice.cpp" line="1565"/>
         <source>%1 free</source>
         <translation type="unfinished">%1 свободно</translation>
     </message>
@@ -10927,117 +10958,107 @@ Overwrite?</source>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="73"/>
+        <location filename="../gui/preferencesdialog.cpp" line="71"/>
         <source>Collection</source>
         <translation type="unfinished">Коллекция</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="73"/>
+        <location filename="../gui/preferencesdialog.cpp" line="71"/>
         <source>Collection Settings</source>
         <translation type="unfinished">Настройки коллекции</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="72"/>
         <source>Playback</source>
         <translation type="unfinished">Воспроизведение</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="72"/>
         <source>Playback Settings</source>
         <translation type="unfinished">Настройки воспроизведения</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="75"/>
-        <source>Downloaded Files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/preferencesdialog.cpp" line="75"/>
-        <source>Downloaded Files Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/preferencesdialog.cpp" line="76"/>
+        <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Interface</source>
         <translation type="unfinished">Интерфейс</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="76"/>
+        <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Interface Settings</source>
         <translation type="unfinished">Настройки интерфейса</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="77"/>
+        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Info</source>
         <translation type="unfinished">Инфо</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="77"/>
+        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Info View Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="78"/>
+        <location filename="../gui/preferencesdialog.cpp" line="76"/>
         <source>Scrobbling</source>
         <translation type="unfinished">Скробблинг</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="78"/>
+        <location filename="../gui/preferencesdialog.cpp" line="76"/>
         <source>Scrobbling Settings</source>
         <translation type="unfinished">Параметры скробблинга</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="82"/>
+        <location filename="../gui/preferencesdialog.cpp" line="80"/>
         <source>Audio CD</source>
         <translation type="unfinished">Аудио-CD</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="82"/>
+        <location filename="../gui/preferencesdialog.cpp" line="80"/>
         <source>Audio CD Settings</source>
         <translation type="unfinished">Настройки аудио-CD</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="87"/>
+        <location filename="../gui/preferencesdialog.cpp" line="85"/>
         <source>Proxy</source>
         <translation type="unfinished">Прокси</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="87"/>
+        <location filename="../gui/preferencesdialog.cpp" line="85"/>
         <source>Proxy Settings</source>
         <translation type="unfinished">Настройки прокси</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="90"/>
+        <location filename="../gui/preferencesdialog.cpp" line="88"/>
         <source>Shortcuts</source>
         <translation type="unfinished">Комбинации клавиш</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="91"/>
+        <location filename="../gui/preferencesdialog.cpp" line="89"/>
         <source>Keyboard Shortcut Settings</source>
         <translation type="unfinished">Настройки комбинаций клавиш</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="91"/>
         <source>Cache</source>
         <translation type="unfinished">Кеш</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="91"/>
         <source>Cached Items</source>
         <translation type="unfinished">Кешированные элементы</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="94"/>
+        <location filename="../gui/preferencesdialog.cpp" line="92"/>
         <source>Custom Actions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="96"/>
+        <location filename="../gui/preferencesdialog.cpp" line="94"/>
         <source>Cantata Preferences</source>
         <translation type="unfinished">Настроить Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="98"/>
+        <location filename="../gui/preferencesdialog.cpp" line="96"/>
         <source>Configure</source>
         <translation type="unfinished">Настройка</translation>
     </message>
@@ -11689,8 +11710,8 @@ width x height</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="1295"/>
-        <location filename="../models/streamsmodel.cpp" line="1302"/>
+        <location filename="../models/streamsmodel.cpp" line="1293"/>
+        <location filename="../models/streamsmodel.cpp" line="1300"/>
         <source>Other</source>
         <translation type="unfinished">Другое</translation>
     </message>
@@ -12897,7 +12918,7 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
-        <location filename="../gui/serversettings.cpp" line="110"/>
+        <location filename="../gui/serversettings.cpp" line="94"/>
         <source>Host:</source>
         <translation type="unfinished">Хост:</translation>
     </message>
@@ -12908,159 +12929,150 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="126"/>
-        <location filename="../gui/serversettings.ui" line="277"/>
+        <location filename="../gui/serversettings.ui" line="253"/>
         <source>Music folder:</source>
         <translation type="unfinished">Папка с музыкой:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="139"/>
-        <location filename="../gui/serversettings.ui" line="290"/>
         <source>Cover filename:</source>
-        <translation type="unfinished">Имя файла обложки:</translation>
+        <translation type="obsolete">Имя файла обложки:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="149"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Имя файла (без расширения) для сохранения загруженных обложек.&lt;br/&gt;Если поле не заполнено, используется &apos;cover&apos;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% будет заменён на значение исполнителя текущей песни, а %album% — на название альбома.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;p&gt;Имя файла (без расширения) для сохранения загруженных обложек.&lt;br/&gt;Если поле не заполнено, используется &apos;cover&apos;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% будет заменён на значение исполнителя текущей песни, а %album% — на название альбома.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="156"/>
+        <location filename="../gui/serversettings.ui" line="139"/>
         <source>HTTP stream URL:</source>
         <translation type="unfinished">Адрес потока HTTP:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="169"/>
+        <location filename="../gui/serversettings.ui" line="152"/>
         <source>Local file playback:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="179"/>
+        <location filename="../gui/serversettings.ui" line="162"/>
         <source>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="182"/>
+        <location filename="../gui/serversettings.ui" line="165"/>
         <source>Via in-built HTTP server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="189"/>
+        <location filename="../gui/serversettings.ui" line="172"/>
         <source>Auto update:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="199"/>
+        <location filename="../gui/serversettings.ui" line="182"/>
         <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="202"/>
+        <location filename="../gui/serversettings.ui" line="185"/>
         <source>Server detects changes automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="211"/>
+        <location filename="../gui/serversettings.ui" line="194"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="218"/>
-        <location filename="../gui/serversettings.ui" line="312"/>
-        <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/serversettings.ui" line="225"/>
+        <location filename="../gui/serversettings.ui" line="201"/>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
         <translation type="unfinished">«Адрес потока HTTP» используется только в том случае, если MPD настроен на вывод в поток HTTP, и Cantata должна иметь возможность проигрывать этот поток.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="232"/>
+        <location filename="../gui/serversettings.ui" line="208"/>
         <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="305"/>
+        <location filename="../gui/serversettings.ui" line="268"/>
         <source>If you change the &apos;Music folder&apos; setting, then you will need to manually update the music database. This can be performed by pressing the &apos;Refresh Database&apos; button in the &apos;Artists&apos; or &apos;Albums&apos; views.</source>
         <translation type="unfinished">При изменении параметра «Папка с музыкой» необходимо вручную обновить базу данных композиций. Это можно сделать, нажав кнопку «Обновить базу данных» в окне «Исполнители» или «Альбомы».</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="90"/>
+        <location filename="../gui/serversettings.cpp" line="74"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, and transferring to (and from) devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="93"/>
+        <location filename="../gui/serversettings.cpp" line="77"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, etc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="97"/>
+        <location filename="../gui/serversettings.cpp" line="81"/>
         <source>More information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="139"/>
+        <location filename="../gui/serversettings.cpp" line="119"/>
         <source>Discover...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="279"/>
+        <location filename="../gui/serversettings.cpp" line="259"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation type="unfinished">К какому типу коллекции необходимо подключиться?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="280"/>
+        <location filename="../gui/serversettings.cpp" line="260"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="283"/>
+        <location filename="../gui/serversettings.cpp" line="263"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="287"/>
+        <location filename="../gui/serversettings.cpp" line="267"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation type="unfinished">&lt;i&gt;&lt;b&gt;Примечание:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="287"/>
+        <location filename="../gui/serversettings.cpp" line="267"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Add Collection</source>
         <translation type="unfinished">Добавить коллекцию</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Standard</source>
         <translation type="unfinished">Стандартный</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Basic</source>
         <translation type="unfinished">Базовый</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="337"/>
+        <location filename="../gui/serversettings.cpp" line="317"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation type="unfinished">Удалить «%1»?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="338"/>
+        <location filename="../gui/serversettings.cpp" line="318"/>
         <source>Delete</source>
         <translation type="unfinished">Удалить</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="391"/>
+        <location filename="../gui/serversettings.cpp" line="371"/>
         <source>New Collection %1</source>
         <translation type="unfinished">Новая коллекция %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="409"/>
+        <location filename="../gui/serversettings.cpp" line="388"/>
         <source>Default</source>
         <translation type="unfinished">По умолчанию</translation>
     </message>
@@ -13506,7 +13518,7 @@ Reload from disk, or delete disk copy and download?</source>
         <translation type="unfinished">Имя файла</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="849"/>
+        <location filename="../context/songview.cpp" line="844"/>
         <source>Fetching lyrics via %1</source>
         <translation type="unfinished">Загрузка слов песни с %1</translation>
     </message>
@@ -14747,17 +14759,17 @@ Overwrite?</source>
         <translation type="unfinished">Не удалось переименовать «%1» в «%2»</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="471"/>
+        <location filename="../tags/trackorganiser.cpp" line="473"/>
         <source>Remove the selected tracks from the list?</source>
         <translation type="unfinished">Удалить выбранные треки из списка?</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="472"/>
+        <location filename="../tags/trackorganiser.cpp" line="474"/>
         <source>Remove Tracks</source>
         <translation type="unfinished">Удалить треки</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="487"/>
+        <location filename="../tags/trackorganiser.cpp" line="489"/>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database.
 
 If you rename a file (or the folder it is within), then the rating associated with the song will be lost.</source>
@@ -14766,17 +14778,17 @@ If you rename a file (or the folder it is within), then the rating associated wi
 При переименовании файла (или папки, в которой он хранится), рейтинг композиции будет потерян.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="547"/>
+        <location filename="../tags/trackorganiser.cpp" line="549"/>
         <source>Device has been removed!</source>
         <translation type="unfinished">Устройство было удалено.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="552"/>
+        <location filename="../tags/trackorganiser.cpp" line="554"/>
         <source>Device is not connected.</source>
         <translation type="unfinished">Устройство не подключено</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="557"/>
+        <location filename="../tags/trackorganiser.cpp" line="559"/>
         <source>Device is busy?</source>
         <translation type="unfinished">Устройство занято?</translation>
     </message>

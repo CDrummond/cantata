@@ -7875,29 +7875,24 @@ This cannot be undone.</source>
 <context>
     <name>FileSettings</name>
     <message>
-        <location filename="../gui/filesettings.ui" line="32"/>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="unfinished">ダウンロード済のカバー, アーティスト, 作曲家のイメージを音楽フォルダに保存する</translation>
+        <translation type="obsolete">ダウンロード済のカバー, アーティスト, 作曲家のイメージを音楽フォルダに保存する</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="39"/>
         <source>Save downloaded lyrics in music folder</source>
-        <translation type="unfinished">ダウンロード済みの歌詞を音楽フォルダに保存する</translation>
+        <translation type="obsolete">ダウンロード済みの歌詞を音楽フォルダに保存する</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="46"/>
         <source>Save downloaded backdrops in music folder</source>
-        <translation type="unfinished">ダウンロード済みのバックドロップを音楽フォルダに保存する</translation>
+        <translation type="obsolete">ダウンロード済みのバックドロップを音楽フォルダに保存する</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="53"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="unfinished">音楽フォルダ内にCantataのカバー、歌詞、または背景を保存することを選択した場合、このフォルダへの書き込みアクセス権がない場合、Cantataはファイルを自分のキャッシュフォルダに保存します。</translation>
+        <translation type="obsolete">音楽フォルダ内にCantataのカバー、歌詞、または背景を保存することを選択した場合、このフォルダへの書き込みアクセス権がない場合、Cantataはファイルを自分のキャッシュフォルダに保存します。</translation>
     </message>
     <message>
-        <location filename="../gui/filesettings.ui" line="60"/>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation type="unfinished">Cantataは、2レベルの深さまでならば、音楽フォルダ階層内の背景、アーティスト、および作曲家の画像のみを保存できます。 すなわち「Artist / Album / Tracks」と表示されます。</translation>
+        <translation type="obsolete">Cantataは、2レベルの深さまでならば、音楽フォルダ階層内の背景、アーティスト、および作曲家の画像のみを保存できます。 すなわち「Artist / Album / Tracks」と表示されます。</translation>
     </message>
 </context>
 <context>
@@ -8279,61 +8274,78 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="623"/>
-        <source>Covers and Lyrics</source>
-        <translation type="unfinished">カバーと歌詞</translation>
+        <source>Album Covers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="646"/>
-        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Cantata はインターネットから不明なカバーや歌詞をダウンロードします。&lt;/p&gt;&lt;p&gt;これらそれぞれについて、Cantataに関連するファイルをミュージックフォルダ内に保存するか、個人のキャッシュ/設定フォルダ内に保存するかを確認してください。&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Cantata can download missing covers, and store these either in the music folder or within your personal cache folder.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
-        <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="unfinished">ダウンロード済のカバー, アーティスト, 作曲家のイメージを音楽フォルダに保存する</translation>
+        <source>Fetch missing covers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="unfinished">ダウンロード済みの歌詞を音楽フォルダに保存する</translation>
+        <source>Save downloaded covers into music folder</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="692"/>
+        <source>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers and Lyrics</source>
+        <translation type="obsolete">カバーと歌詞</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
+        <translation type="obsolete">&lt;p&gt;Cantata はインターネットから不明なカバーや歌詞をダウンロードします。&lt;/p&gt;&lt;p&gt;これらそれぞれについて、Cantataに関連するファイルをミュージックフォルダ内に保存するか、個人のキャッシュ/設定フォルダ内に保存するかを確認してください。&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Save downloaded covers, artist, and composer images, in music folder</source>
+        <translation type="obsolete">ダウンロード済のカバー, アーティスト, 作曲家のイメージを音楽フォルダに保存する</translation>
+    </message>
+    <message>
+        <source>Save downloaded lyrics in music folder</source>
+        <translation type="obsolete">ダウンロード済みの歌詞を音楽フォルダに保存する</translation>
+    </message>
+    <message>
         <source>Save downloaded backdrops in music folder</source>
-        <translation type="unfinished">ダウンロード済みのバックドロップを音楽フォルダに保存する</translation>
+        <translation type="obsolete">ダウンロード済みのバックドロップを音楽フォルダに保存する</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="699"/>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="unfinished">音楽フォルダ内にCantataのカバー、歌詞、または背景を保存することを選択した場合、このフォルダへの書き込みアクセス権がない場合、Cantataはファイルを自分のキャッシュフォルダに保存します。</translation>
+        <translation type="obsolete">音楽フォルダ内にCantataのカバー、歌詞、または背景を保存することを選択した場合、このフォルダへの書き込みアクセス権がない場合、Cantataはファイルを自分のキャッシュフォルダに保存します。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="706"/>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation type="unfinished">Cantataは、2レベルの深さまでならば、音楽フォルダ階層内の背景、アーティスト、および作曲家の画像のみを保存できます。 すなわち「Artist / Album / Tracks」と表示されます。</translation>
+        <translation type="obsolete">Cantataは、2レベルの深さまでならば、音楽フォルダ階層内の背景、アーティスト、および作曲家の画像のみを保存できます。 すなわち「Artist / Album / Tracks」と表示されます。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="713"/>
         <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
-        <translation type="unfinished">&apos;Music folder&apos;はHTTPアドレスに設定されており、Cantataは現在、外部HTTPサーバーにファイルをアップロードできません。したがって、上記の設定は未チェックのままにしておく必要があります。</translation>
+        <translation type="obsolete">&apos;Music folder&apos;はHTTPアドレスに設定されており、Cantataは現在、外部HTTPサーバーにファイルをアップロードできません。したがって、上記の設定は未チェックのままにしておく必要があります。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="743"/>
+        <location filename="../gui/initialsettingswizard.ui" line="722"/>
         <source>Finished!</source>
         <translation type="unfinished">完了!</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="766"/>
+        <location filename="../gui/initialsettingswizard.ui" line="745"/>
         <source>Cantata is now configured!&lt;br/&gt;&lt;br/&gt;Cantata&apos;s configuration dialog maybe used to customise Cantata&apos;s appearance, as well as to add extra MPD hosts, etc.</source>
         <translation type="unfinished">Cantata が設定されました！&lt;br/&gt;&lt;br/&gt;Cantataの設定ダイアログは、Cantataの外観をカスタマイズするために使用されるほか、追加のMPDホストなどを追加するために使用されます。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="798"/>
+        <location filename="../gui/initialsettingswizard.ui" line="777"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation type="unfinished">Cantataは &apos;AlbumArtist&apos;タグが設定されている場合はトラックをアルバムにグループ化し、そうでない場合は &apos;Artist&apos;タグにフォールバックします。複数のアーティストを含むアルバムをお持ちの場合は、グループ化が正しく機能するように &apos;AlbumArtist&apos;タグを&lt;b&gt;設定&lt;/b&gt;する必要があります。このシナリオでは、「Various Artists」を使用することをお勧めします。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="830"/>
+        <location filename="../gui/initialsettingswizard.ui" line="809"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
         <translation type="unfinished">&lt;b&gt;注意:&lt;/b&gt; お使いのユーザアカウントは &apos;users&apos; グループのメンバーではありません. Cantata はあなた(もしくは管理者が)ユーザアカウントをこのグループに追加することにより より良く動作します (アルバムカバー, 歌詞, その他の保存が正しい許可で行われる)。グループに使用中のアカウントを追加した場合は一旦ログアウト ログインを行ってアプリケーションを再起動することでこの機能が動作します。</translation>
     </message>
@@ -8343,22 +8355,22 @@ This cannot be undone.</source>
         <translation type="unfinished">未接続</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="122"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="120"/>
         <source>Discover...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="169"/>
         <source>Connection Established</source>
         <translation type="unfinished">接続が確立しました</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="171"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="169"/>
         <source>Connection Failed</source>
         <translation type="unfinished">接続に失敗しました</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="184"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="182"/>
         <source>Cantata will now terminate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8406,7 +8418,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="82"/>
         <location filename="../gui/interfacesettings.ui" line="137"/>
-        <location filename="../gui/interfacesettings.ui" line="675"/>
+        <location filename="../gui/interfacesettings.ui" line="736"/>
         <source>Style:</source>
         <translation type="unfinished">スタイル:</translation>
     </message>
@@ -8427,7 +8439,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="128"/>
-        <location filename="../gui/interfacesettings.cpp" line="133"/>
+        <location filename="../gui/interfacesettings.cpp" line="151"/>
         <source>Play Queue</source>
         <translation type="unfinished">プレイキュー</translation>
     </message>
@@ -8637,6 +8649,36 @@ This cannot be undone.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/interfacesettings.ui" line="623"/>
+        <source>Covers</source>
+        <translation type="unfinished">カバー</translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="634"/>
+        <source>Fetch missing covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="641"/>
+        <source>Save downloaded covers into music folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="648"/>
+        <source>Filename:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="658"/>
+        <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;ダウンロードしたカバーを保存するためのファイル名（拡張子なし）。&lt;br/&gt;空白のままにしておくと、「cover」が使用されます。&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% は現在の曲のアルバムアーティストに置き換えられ、%album% はアルバム名に置き換えられます。&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="667"/>
+        <source>If you enable &apos;Save downloaded covers into music folder&apos; you may need to clear the cache of any previous covers to force downloading of new covers. See &apos;Cache&apos; settings page for further details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
         <translation type="obsolete">コレクションに単一のトラックしか含まれていないアーティストがたくさんいる場合は、それぞれのアーティストがアーティストのリストに独自のエントリを持つのは面倒です。これを回避するには、これらのトラックを別のフォルダに配置し、このフォルダ名を下に入力すると、Cantataはアルバムアーティストの「Various Artists」で「Single Tracks」という名前のアルバムをグループ化します</translation>
     </message>
@@ -8657,27 +8699,26 @@ This cannot be undone.</source>
         <translation type="obsolete">上記のいずれかを変更するには、影響を受けるためにDBリフレッシュが必要です（場合によってはCantataを再起動する必要があります）。</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="623"/>
+        <location filename="../gui/interfacesettings.ui" line="691"/>
         <source>General</source>
         <translation type="unfinished">一般設定</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="634"/>
         <source>Fetch missing covers from Last.fm</source>
-        <translation type="unfinished">未発見のカバーを Last.fm から取得する</translation>
+        <translation type="obsolete">未発見のカバーを Last.fm から取得する</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="641"/>
+        <location filename="../gui/interfacesettings.ui" line="702"/>
         <source>Show delete action in context menus</source>
         <translation type="unfinished">コンテキストメニュー内に削除を表示</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="648"/>
+        <location filename="../gui/interfacesettings.ui" line="709"/>
         <source>Enforce single-click activation of items</source>
         <translation type="unfinished">シングルクリックでのアイテムのアクティブ化を強制する</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="704"/>
+        <location filename="../gui/interfacesettings.ui" line="765"/>
         <source>Changing the style setting will require a re-start of Cantata.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8692,7 +8733,7 @@ This cannot be undone.</source>
         <translation type="obsolete">タッチ操作に適したインターフェースに変更</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="655"/>
+        <location filename="../gui/interfacesettings.ui" line="716"/>
         <source>Show song information tooltips</source>
         <translation type="unfinished">ツールチップに楽曲情報を表示</translation>
     </message>
@@ -8701,17 +8742,17 @@ This cannot be undone.</source>
         <translation type="obsolete">高解像度ディスプレへの対応</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="662"/>
+        <location filename="../gui/interfacesettings.ui" line="723"/>
         <source>Language:</source>
         <translation type="unfinished">言語:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="690"/>
+        <location filename="../gui/interfacesettings.ui" line="751"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation type="unfinished">「シングルクリックでのアイテムのアクティブ化を強制する」設定を変更するには、Cantataを再起動する必要があります。</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="697"/>
+        <location filename="../gui/interfacesettings.ui" line="758"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation type="unfinished">言語設定の変更時はCantataを再起動する必要があります。</translation>
     </message>
@@ -8724,120 +8765,130 @@ This cannot be undone.</source>
         <translation type="obsolete">高解像度ディスプレイのサポートを有効にすると、高解像度ディスプレイ上でより鮮明なアイコンが生成されるが、通常解像度のディスプレイ上ではあまり鮮明でないアイコンを生成することがあります。この設定を変更するには、Cantataを再起動する必要があります。</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="130"/>
+        <location filename="../gui/interfacesettings.cpp" line="148"/>
         <source>Use &apos;Year&apos; tag to display &amp; sort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="131"/>
+        <location filename="../gui/interfacesettings.cpp" line="149"/>
         <source>Use &apos;Original Year&apos; tag to display &amp; sort, fallback to &apos;Year&apos; if not set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="134"/>
+        <location filename="../gui/interfacesettings.cpp" line="152"/>
         <source>Library</source>
         <translation type="unfinished">ライブラリ</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="135"/>
+        <location filename="../gui/interfacesettings.cpp" line="153"/>
         <source>Folders</source>
         <translation type="unfinished">フォルダ</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="136"/>
+        <location filename="../gui/interfacesettings.cpp" line="154"/>
         <source>Playlists</source>
         <translation type="unfinished">プレイリスト</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="137"/>
+        <location filename="../gui/interfacesettings.cpp" line="155"/>
         <source>Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts</source>
         <translation type="unfinished">インターネット - Streams, Jamendo, Maganatune, SoundCloud, Podcast</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="139"/>
+        <location filename="../gui/interfacesettings.cpp" line="157"/>
         <source>Devices - UMS, MTP (e.g. Android), and AudioCDs</source>
         <translation type="unfinished">デバイス - UMS, MTP(例えば Android), オーディオCD</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="143"/>
+        <location filename="../gui/interfacesettings.cpp" line="161"/>
         <source>Search (via MPD)</source>
         <translation type="unfinished">検索(MPD経由)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="144"/>
+        <location filename="../gui/interfacesettings.cpp" line="162"/>
         <source>Info - Current song information (artist, album, and lyrics)</source>
         <translation type="unfinished">情報 - 現在の楽曲情報（アーティスト, アルバム, 歌詞）</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="149"/>
+        <location filename="../gui/interfacesettings.cpp" line="167"/>
         <source>Large</source>
         <translation type="unfinished">大</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="150"/>
+        <location filename="../gui/interfacesettings.cpp" line="168"/>
         <source>Small</source>
         <translation type="unfinished">小</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="151"/>
+        <location filename="../gui/interfacesettings.cpp" line="169"/>
         <source>Tab-bar</source>
         <translation type="unfinished">タブバー</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="152"/>
+        <location filename="../gui/interfacesettings.cpp" line="170"/>
         <source>Left</source>
         <translation type="unfinished">左</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="152"/>
+        <location filename="../gui/interfacesettings.cpp" line="170"/>
         <source>Right</source>
         <translation type="unfinished">右</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="153"/>
+        <location filename="../gui/interfacesettings.cpp" line="171"/>
         <source>Top</source>
         <translation type="unfinished">上</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="154"/>
+        <location filename="../gui/interfacesettings.cpp" line="172"/>
         <source>Bottom</source>
         <translation type="unfinished">下</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="161"/>
+        <location filename="../gui/interfacesettings.cpp" line="179"/>
         <source>Images (*.png *.jpg)</source>
         <translation type="unfinished">画像ファイル (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="162"/>
+        <location filename="../gui/interfacesettings.cpp" line="180"/>
         <source>10px</source>
         <comment>pixels</comment>
         <translation type="unfinished">10px</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="187"/>
+        <location filename="../gui/interfacesettings.cpp" line="205"/>
         <source>Notifications</source>
         <translation type="unfinished">通知</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="397"/>
+        <location filename="../gui/interfacesettings.cpp" line="219"/>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding  music to your library from devices.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.cpp" line="223"/>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.cpp" line="429"/>
         <source>English (en)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="402"/>
-        <location filename="../gui/interfacesettings.cpp" line="419"/>
+        <location filename="../gui/interfacesettings.cpp" line="434"/>
+        <location filename="../gui/interfacesettings.cpp" line="451"/>
         <source>System default</source>
         <translation type="unfinished">システム規定値</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="525"/>
+        <location filename="../gui/interfacesettings.cpp" line="557"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation type="unfinished">%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="530"/>
+        <location filename="../gui/interfacesettings.cpp" line="562"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation type="unfinished">%1 px</translation>
@@ -9899,12 +9950,12 @@ This cannot be undone.</source>
 <context>
     <name>MtpDevice</name>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1566"/>
+        <location filename="../devices/mtpdevice.cpp" line="1562"/>
         <source>Not Connected</source>
         <translation type="unfinished">未接続</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1569"/>
+        <location filename="../devices/mtpdevice.cpp" line="1565"/>
         <source>%1 free</source>
         <translation type="unfinished">%1 空き</translation>
     </message>
@@ -11345,117 +11396,115 @@ Overwrite?</source>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="73"/>
+        <location filename="../gui/preferencesdialog.cpp" line="71"/>
         <source>Collection</source>
         <translation type="unfinished">コネクション</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="73"/>
+        <location filename="../gui/preferencesdialog.cpp" line="71"/>
         <source>Collection Settings</source>
         <translation type="unfinished">コレクションの設定</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="72"/>
         <source>Playback</source>
         <translation type="unfinished">再生</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="72"/>
         <source>Playback Settings</source>
         <translation type="unfinished">再生設定</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Downloaded Files</source>
-        <translation type="unfinished">ダウンロード済ファイル</translation>
+        <translation type="obsolete">ダウンロード済ファイル</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Downloaded Files Settings</source>
-        <translation type="unfinished">ダウンロード済ファイルの設定</translation>
+        <translation type="obsolete">ダウンロード済ファイルの設定</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="76"/>
+        <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Interface</source>
         <translation type="unfinished">インタフェース</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="76"/>
+        <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Interface Settings</source>
         <translation type="unfinished">インタフェースの設定</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="77"/>
+        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Info</source>
         <translation type="unfinished">情報</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="77"/>
+        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Info View Settings</source>
         <translation type="unfinished">情報ビューの設定</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="78"/>
+        <location filename="../gui/preferencesdialog.cpp" line="76"/>
         <source>Scrobbling</source>
         <translation type="unfinished">Scrobbing</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="78"/>
+        <location filename="../gui/preferencesdialog.cpp" line="76"/>
         <source>Scrobbling Settings</source>
         <translation type="unfinished">Scrobbing 設定</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="82"/>
+        <location filename="../gui/preferencesdialog.cpp" line="80"/>
         <source>Audio CD</source>
         <translation type="unfinished">オーディオCD</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="82"/>
+        <location filename="../gui/preferencesdialog.cpp" line="80"/>
         <source>Audio CD Settings</source>
         <translation type="unfinished">Audio CD 設定</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="87"/>
+        <location filename="../gui/preferencesdialog.cpp" line="85"/>
         <source>Proxy</source>
         <translation type="unfinished">プロキシ</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="87"/>
+        <location filename="../gui/preferencesdialog.cpp" line="85"/>
         <source>Proxy Settings</source>
         <translation type="unfinished">プロキシ設定</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="90"/>
+        <location filename="../gui/preferencesdialog.cpp" line="88"/>
         <source>Shortcuts</source>
         <translation type="unfinished">ショートカット</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="91"/>
+        <location filename="../gui/preferencesdialog.cpp" line="89"/>
         <source>Keyboard Shortcut Settings</source>
         <translation type="unfinished">キーボード ショートカット 設定</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="91"/>
         <source>Cache</source>
         <translation type="unfinished">キャッシュ</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="91"/>
         <source>Cached Items</source>
         <translation type="unfinished">キャッシュ済アイテム</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="94"/>
+        <location filename="../gui/preferencesdialog.cpp" line="92"/>
         <source>Custom Actions</source>
         <translation type="unfinished">カスタムアクション</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="96"/>
+        <location filename="../gui/preferencesdialog.cpp" line="94"/>
         <source>Cantata Preferences</source>
         <translation type="unfinished">Cantata の設定</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="98"/>
+        <location filename="../gui/preferencesdialog.cpp" line="96"/>
         <source>Configure</source>
         <translation type="unfinished">設定</translation>
     </message>
@@ -12105,8 +12154,8 @@ width x height</comment>
         <translation type="unfinished">キャッシュファイル読込中の解析エラーです。楽曲タグを確認してください。</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="1295"/>
-        <location filename="../models/streamsmodel.cpp" line="1302"/>
+        <location filename="../models/streamsmodel.cpp" line="1293"/>
+        <location filename="../models/streamsmodel.cpp" line="1300"/>
         <source>Other</source>
         <translation type="unfinished">その他</translation>
     </message>
@@ -13284,7 +13333,7 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
-        <location filename="../gui/serversettings.cpp" line="110"/>
+        <location filename="../gui/serversettings.cpp" line="94"/>
         <source>Host:</source>
         <translation type="unfinished">ホスト:</translation>
     </message>
@@ -13295,159 +13344,154 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="126"/>
-        <location filename="../gui/serversettings.ui" line="277"/>
+        <location filename="../gui/serversettings.ui" line="253"/>
         <source>Music folder:</source>
         <translation type="unfinished">音楽フォルダ:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="139"/>
-        <location filename="../gui/serversettings.ui" line="290"/>
         <source>Cover filename:</source>
-        <translation type="unfinished">カバーファイル名:</translation>
+        <translation type="obsolete">カバーファイル名:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="149"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;ダウンロードしたカバーを保存するためのファイル名（拡張子なし）。&lt;br/&gt;空白のままにしておくと、「cover」が使用されます。&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% は現在の曲のアルバムアーティストに置き換えられ、%album% はアルバム名に置き換えられます。&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;p&gt;ダウンロードしたカバーを保存するためのファイル名（拡張子なし）。&lt;br/&gt;空白のままにしておくと、「cover」が使用されます。&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% は現在の曲のアルバムアーティストに置き換えられ、%album% はアルバム名に置き換えられます。&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="156"/>
+        <location filename="../gui/serversettings.ui" line="139"/>
         <source>HTTP stream URL:</source>
         <translation type="unfinished">HTTP ストリーム URL:</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="169"/>
+        <location filename="../gui/serversettings.ui" line="152"/>
         <source>Local file playback:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="179"/>
+        <location filename="../gui/serversettings.ui" line="162"/>
         <source>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="182"/>
+        <location filename="../gui/serversettings.ui" line="165"/>
         <source>Via in-built HTTP server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="189"/>
+        <location filename="../gui/serversettings.ui" line="172"/>
         <source>Auto update:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="199"/>
+        <location filename="../gui/serversettings.ui" line="182"/>
         <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="202"/>
+        <location filename="../gui/serversettings.ui" line="185"/>
         <source>Server detects changes automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="211"/>
+        <location filename="../gui/serversettings.ui" line="194"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation type="unfinished">「音楽フォルダ」の設定は、カバーアートを検索するために使用されます。MPDが別のマシンにあり、HTTPを介してカバーにアクセスできる場合は、HTTP URLに設定されます。それがHTTP URLに設定されておらず、このフォルダ（およびそのサブフォルダ）への書き込み権限もある場合、Cantataはダウンロードしたすべてのカバーをそれぞれのアルバムフォルダに保存します。</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="218"/>
-        <location filename="../gui/serversettings.ui" line="312"/>
         <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
-        <translation type="unfinished">&apos;カバー ファイル名&apos;を特定しない場合、Cantata は規定値の&lt;code&gt;cover&lt;/code&gt; を使用する</translation>
+        <translation type="obsolete">&apos;カバー ファイル名&apos;を特定しない場合、Cantata は規定値の&lt;code&gt;cover&lt;/code&gt; を使用する</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="225"/>
+        <location filename="../gui/serversettings.ui" line="201"/>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
         <translation type="unfinished">「HTTP Stream URL」は、HTTPストリームに出力するようにMPDが設定されていて、Cantataがそのストリームを再生できるようにしたい場合にのみ使用します。</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="232"/>
+        <location filename="../gui/serversettings.ui" line="208"/>
         <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.ui" line="305"/>
+        <location filename="../gui/serversettings.ui" line="268"/>
         <source>If you change the &apos;Music folder&apos; setting, then you will need to manually update the music database. This can be performed by pressing the &apos;Refresh Database&apos; button in the &apos;Artists&apos; or &apos;Albums&apos; views.</source>
         <translation type="unfinished">「ミュージックフォルダ」の設定を変更した場合、音楽データベースを手動で更新する必要があります。これは、 &apos;アーティスト&apos; または &apos;アルバム&apos; ビューの &apos;データベースの更新&apos; ボタンを押すことで実行できます。</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="90"/>
+        <location filename="../gui/serversettings.cpp" line="74"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, and transferring to (and from) devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="93"/>
+        <location filename="../gui/serversettings.cpp" line="77"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, etc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="97"/>
+        <location filename="../gui/serversettings.cpp" line="81"/>
         <source>More information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="139"/>
+        <location filename="../gui/serversettings.cpp" line="119"/>
         <source>Discover...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="279"/>
+        <location filename="../gui/serversettings.cpp" line="259"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation type="unfinished">どのタイプのコレクションに接続しますか？</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="280"/>
+        <location filename="../gui/serversettings.cpp" line="260"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation type="unfinished">標準 - ミュージックコレクションが共有されている、他のマシーンにあり既にセットアップ済、もしくは他のクライアントからアクセスを許可したい場合(例 MPDroid)</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="283"/>
+        <location filename="../gui/serversettings.cpp" line="263"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation type="unfinished">基本 - ミュージックコレクションが他の端末と共有されておらず、Cantata はMPDインスタンスを設定し制御します。本セットアップは Cantata でのみ適用され、他のMPDクライアントはアクセス&lt;b&gt;出来ません&lt;/b&gt;。</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="287"/>
+        <location filename="../gui/serversettings.cpp" line="267"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation type="unfinished">&lt;i&gt;&lt;b&gt;追記:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="287"/>
+        <location filename="../gui/serversettings.cpp" line="267"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation type="unfinished">高度なMPD設定（複数のオーディオ出力、完全なDSDサポートなど）を希望する場合、&apos;標準&apos;を選択する&lt;b&gt;必要があります&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Add Collection</source>
         <translation type="unfinished">コレクションの追加</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Standard</source>
         <translation type="unfinished">標準</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="289"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>Basic</source>
         <translation type="unfinished">基本</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="337"/>
+        <location filename="../gui/serversettings.cpp" line="317"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation type="unfinished">’%1’ を削除しますか?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="338"/>
+        <location filename="../gui/serversettings.cpp" line="318"/>
         <source>Delete</source>
         <translation type="unfinished">削除</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="391"/>
+        <location filename="../gui/serversettings.cpp" line="371"/>
         <source>New Collection %1</source>
         <translation type="unfinished">新規コレクション %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="409"/>
+        <location filename="../gui/serversettings.cpp" line="388"/>
         <source>Default</source>
         <translation type="unfinished">規定</translation>
     </message>
@@ -13891,7 +13935,7 @@ Reload from disk, or delete disk copy and download?</source>
         <translation type="unfinished">ファイル名</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="849"/>
+        <location filename="../context/songview.cpp" line="844"/>
         <source>Fetching lyrics via %1</source>
         <translation type="unfinished">%1 より歌詞を取得中</translation>
     </message>
@@ -15120,17 +15164,17 @@ Overwrite?</source>
         <translation type="unfinished">&apos;%1&apos; から &apos;%2&apos; への名前変更に失敗しました</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="471"/>
+        <location filename="../tags/trackorganiser.cpp" line="473"/>
         <source>Remove the selected tracks from the list?</source>
         <translation type="unfinished">リストから選択済トラックを削除しますか?</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="472"/>
+        <location filename="../tags/trackorganiser.cpp" line="474"/>
         <source>Remove Tracks</source>
         <translation type="unfinished">トラックの削除</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="487"/>
+        <location filename="../tags/trackorganiser.cpp" line="489"/>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database.
 
 If you rename a file (or the folder it is within), then the rating associated with the song will be lost.</source>
@@ -15139,17 +15183,17 @@ If you rename a file (or the folder it is within), then the rating associated wi
 ファイルの名前を変更する(もしくは楽曲のあるフォルダ名を変更する)と、その楽曲へのレーティングは失われます。</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="547"/>
+        <location filename="../tags/trackorganiser.cpp" line="549"/>
         <source>Device has been removed!</source>
         <translation type="unfinished">デバイスは取り外しされました!</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="552"/>
+        <location filename="../tags/trackorganiser.cpp" line="554"/>
         <source>Device is not connected.</source>
         <translation type="unfinished">デバイスが未接続です。</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="557"/>
+        <location filename="../tags/trackorganiser.cpp" line="559"/>
         <source>Device is busy?</source>
         <translation type="unfinished">デバイスが使用中?</translation>
     </message>

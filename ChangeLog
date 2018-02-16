@@ -62,16 +62,15 @@
     queue.
 46. Add volume control for HTTP stream playback.
 47. Update toolbar cover tooltip when song changes.
-48. Add option to scale album cover in information view.
-49. Fix deleting of smart playlists.
-50. Center images and headers in context view.
-51. Add option to make album cover in context view fill the album details
+48. Fix deleting of smart playlists.
+49. Center images and headers in context view.
+50. Add option to make album cover in context view fill the album details
     width.
-52. Cleanup some settings. No longer offer to save lyrics, artist images, and
+51. Cleanup some settings. No longer offer to save lyrics, artist images, and
     backdrops in MPD folder, just save in cache dir. Move cover filename
     setting into interface settings - in a new 'Covers' tab.
-53. Fetch missing covers from iTunes.
-54. Make sidebar change pages on mouse wheel events.
+52. Fetch missing covers from iTunes.
+53. Make sidebar change pages on mouse wheel events.
 
 2.2.0
 -----

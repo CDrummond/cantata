@@ -103,6 +103,7 @@ public:
     void paintEvent(QPaintEvent *event) override;
     void paintTab(QPainter *painter, int tabIndex) const;
     void mousePressEvent(QMouseEvent *) override;
+    void wheelEvent(QWheelEvent *ev) override;
     bool validIndex(int index) const { return index >= 0 && index < tabs.count(); }
 
     QSize sizeHint() const override;

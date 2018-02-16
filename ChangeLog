@@ -71,6 +71,7 @@
     backdrops in MPD folder, just save in cache dir. Move cover filename
     setting into interface settings - in a new 'Covers' tab.
 53. Fetch missing covers from iTunes.
+54. Make sidebar change pages on mouse wheel events.
 
 2.2.0
 -----

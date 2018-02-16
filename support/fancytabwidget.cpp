@@ -44,6 +44,7 @@
 #include <QStyleOption>
 #include <QHBoxLayout>
 #include <QMouseEvent>
+#include <QWheelEvent>
 #include <QPainter>
 #include <QSplitter>
 #include <QStackedWidget>
@@ -383,6 +384,21 @@ void FancyTabBar::mousePressEvent(QMouseEvent *e)
             break;
         }
     }
+}
+
+void FancyTabBar::wheelEvent(QWheelEvent *ev)
+{
+    int numDegrees = ev->delta() / 8;
+    int numSteps = numDegrees / -15;
+
+    if (numSteps>0) {
+        currentIdx=qMin(currentIdx+numSteps, tabs.size()-1);
+    } else if (numSteps<0) {
+        currentIdx=qMax(currentIdx+numSteps, 0);
+    }
+    update();
+    triggerTimer.start(0);
+    ev->accept();
 }
 
 void FancyTabBar::addTab(const QIcon &icon, const QString &label, const QString &tt)

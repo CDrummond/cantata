@@ -123,6 +123,7 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
     const QRect rect = tabOpt->rect;
     const bool selected = tabOpt->state&State_Selected;
     const bool underMouse = tabOpt->state&State_MouseOver;
+    bool active = tabOpt->state&State_Active;
     const bool verticalTabs = tabOpt->shape == QTabBar::RoundedWest;
     const QString text = tabOpt->text;
 
@@ -154,29 +155,32 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
         QColor col = option->palette.highlight().color();
         #endif
 
-        if (!selected) {
+        if (selected) {
+            #ifndef Q_OS_MAC
+            if (!active && option->palette.highlight().color()==QApplication::palette().color(QPalette::Active, QPalette::Highlight)) {
+                active = true;
+            }
+            #endif
+        } else {
             #if defined Q_OS_WIN
             col.setAlphaF(0.1);
             #else
             col.setAlphaF(0.2);
             #endif
         }
-        p->fillRect(rect, col);
+        p->fillRect(draw_rect, col);
     }
 
     int textFlags = Qt::AlignTop | Qt::AlignVCenter;
     #ifdef Q_OS_MAC
-    p->setPen(selected && option->state&State_Active
-              ? OSXStyle::self()->viewPalette().highlightedText().color() : OSXStyle::self()->viewPalette().foreground().color());
+    p->setPen(selected && active ? OSXStyle::self()->viewPalette().highlightedText().color() : OSXStyle::self()->viewPalette().foreground().color());
     #elif defined Q_OS_WIN
     p->setPen(QApplication::palette().foreground().color());
     #else
-    p->setPen(selected && option->state&State_Active
-              ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
+    p->setPen(selected && active ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
     #endif
 
-    drawIcon(tabOpt->icon, iconRect, p, tabOpt->iconSize,
-             selected && option->state&State_Active);
+    drawIcon(tabOpt->icon, iconRect, p, tabOpt->iconSize, selected && active);
 
     QString txt=text;
     txt.replace("&", "");

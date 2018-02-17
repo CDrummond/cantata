@@ -390,14 +390,17 @@ void FancyTabBar::wheelEvent(QWheelEvent *ev)
 {
     int numDegrees = ev->delta() / 8;
     int numSteps = numDegrees / -15;
+    int prevIndex = currentIdx;
 
     if (numSteps>0) {
         currentIdx=qMin(currentIdx+numSteps, tabs.size()-1);
     } else if (numSteps<0) {
         currentIdx=qMax(currentIdx+numSteps, 0);
     }
-    update();
-    triggerTimer.start(0);
+    if (currentIdx!=prevIndex) {
+        update();
+        triggerTimer.start(0);
+    }
     ev->accept();
 }
 

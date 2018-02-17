@@ -578,7 +578,9 @@ void MainWindow::init()
     bool showMenubar = Utils::Gnome!=Utils::currentDe() && Utils::Ubuntu_Gnome!=Utils::currentDe();
     #endif
     if (showMenubar) {
-        #ifndef Q_OS_MAC
+        #ifdef Q_OS_MAC
+        menuButton->setVisible(false);
+        #else
         showMenubarAction = ActionCollection::get()->createAction("showmenubar", tr("Show Menubar"));
         showMenubarAction->setShortcut(Qt::ControlModifier+Qt::Key_M);
         showMenubarAction->setCheckable(true);
@@ -609,10 +611,12 @@ void MainWindow::init()
         menuBar()->addMenu(menu);
         if (Utils::KDE!=Utils::currentDe()) {
             menu=new QMenu(tr("&View"), this);
+            #ifndef Q_OS_MAC
             if (showMenubarAction) {
                 addMenuAction(menu, showMenubarAction);
                 menu->addSeparator();
             }
+            #endif
             addMenuAction(menu, expandInterfaceAction);
             addMenuAction(menu, fullScreenAction);
             //addMenuAction(menu, songInfoAction);
@@ -629,9 +633,11 @@ void MainWindow::init()
         menuBar()->addMenu(menu);
         if (Utils::KDE==Utils::currentDe()) {
             menu=new QMenu(tr("&Settings"), this);
+            #ifndef Q_OS_MAC
             if (showMenubarAction) {
                 addMenuAction(menu, showMenubarAction);
             }
+            #endif
             addMenuAction(menu, expandInterfaceAction);
             addMenuAction(menu, fullScreenAction);
             //addMenuAction(menu, songInfoAction);
@@ -1845,7 +1851,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
     consumePlayQueueAction->setChecked(status->consume());
     updateNextTrack(status->nextSongId());
 
-    if (status->timeElapsed()<172800 && (!currentIsStream() || (status->timeTotal()>0 && status->timeElapsed()<=status->timeTotal()))) {
+    if (status->timeElapsed()<64800 && (!currentIsStream() || (status->timeTotal()>0 && status->timeElapsed()<=status->timeTotal()))) {
         if (status->state() == MPDState_Stopped || status->state() == MPDState_Inactive) {
             nowPlaying->setRange(0, 0);
         } else {

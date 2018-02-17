@@ -25,6 +25,7 @@
 #include "support/squeezedtextlabel.h"
 #include "support/utils.h"
 #include "support/icon.h"
+#include "support/proxystyle.h"
 #include "gui/stdactions.h"
 #include "toolbutton.h"
 #include "groupedview.h"
@@ -47,6 +48,7 @@ TitleWidget::TitleWidget(QWidget *p)
     , pressed(false)
     , controls(nullptr)
 {
+    setProperty(ProxyStyle::constModifyFrameProp, ProxyStyle::VF_Side|ProxyStyle::VF_Top);
     QHBoxLayout *layout=new QHBoxLayout(this);
     QVBoxLayout *textLayout=new QVBoxLayout(nullptr);
     image=new QLabel(this);

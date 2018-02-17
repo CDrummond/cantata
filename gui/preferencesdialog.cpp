@@ -92,6 +92,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     addPage(QLatin1String("custom"), custom, tr("Custom Actions"), Icon(QStringList() << "fork" << "gtk-execute"), tr("Custom Actions"));
     #ifdef Q_OS_MAC
     setCaption(tr("Cantata Preferences"));
+    setMinimumWidth(800);
     #else
     setCaption(tr("Configure"));
     #endif

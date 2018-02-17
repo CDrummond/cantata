@@ -76,7 +76,11 @@ public:
     virtual void cancel()=0;
 
 public Q_SLOTS:
+    #ifdef __APPLE__
+    void slotButtonClicked(int button);
+    #else
     void slotButtonClicked(int button) override;
+    #endif
 
 private Q_SLOTS:
     void activatePage();
@@ -85,10 +89,10 @@ private Q_SLOTS:
 
 private:
     #ifdef __APPLE__
-    void keyPressEvent(QKeyEvent *e);
-    void showEvent(QShowEvent *e);
-    void hideEvent(QHideEvent *e);
-    void closeEvent(QCloseEvent *e);
+    void keyPressEvent(QKeyEvent *e) override;
+    void showEvent(QShowEvent *e) override;
+    void hideEvent(QHideEvent *e) override;
+    void closeEvent(QCloseEvent *e) override;
     #endif
 
 private:

@@ -136,8 +136,8 @@ public:
     void resize(const QSize &sz);
 
     #ifdef Q_OS_MAC
-    virtual void hideEvent(QHideEvent *e);
-    virtual void closeEvent(QCloseEvent *e);
+    void hideEvent(QHideEvent *e) override;
+    void closeEvent(QCloseEvent *e) override;
     #endif
 
 private Q_SLOTS:

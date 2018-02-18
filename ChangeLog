@@ -71,6 +71,7 @@
     setting into interface settings - in a new 'Covers' tab.
 52. Fetch missing covers from iTunes.
 53. Make sidebar change pages on mouse wheel events.
+54. Allow to specify the max age of files to use in smart playlists.
 
 2.2.0
 -----

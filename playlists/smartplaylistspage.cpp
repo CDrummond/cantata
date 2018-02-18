@@ -180,10 +180,15 @@ void SmartPlaylistsPage::searchResponse(const QString &id, const QList<Song> &so
 
 void SmartPlaylistsPage::filterCommand()
 {
-    if (command.minDuration>0 || command.maxDuration>0) {
+    bool filterDuration = command.minDuration>0 || command.maxDuration>0;
+    bool filterAge = command.maxAge>0;
+
+    if (filterDuration || filterAge) {
+        uint maxAge=time(nullptr)-(command.maxAge*24*60*60);
         QSet<Song> toRemove;
         for (const auto &s: command.songs) {
-            if (command.minDuration>s.time || (command.maxDuration>0 && s.time>command.maxDuration)) {
+            if ((filterAge && s.lastModified<maxAge) ||
+                (filterDuration && ((command.minDuration>s.time || (command.maxDuration>0 && s.time>command.maxDuration))) ) ) {
                 toRemove.insert(s);
             } else {
                 command.toCheck.append(s.file);

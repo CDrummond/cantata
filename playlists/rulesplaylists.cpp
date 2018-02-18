@@ -208,10 +208,10 @@ bool RulesPlaylists::save(const Entry &e)
     if (e.numTracks >= minTracks() && e.numTracks <= maxTracks()) {
         str << constNumTracksKey << constKeyValSep << e.numTracks << '\n';
     }
-    if (e.ratingFrom!=0 || e.ratingTo!=0) {
+    if (0!=e.ratingFrom || 0!=e.ratingTo) {
         str << constRatingKey << constKeyValSep << e.ratingFrom << constRangeSep << e.ratingTo << '\n';
     }
-    if (e.minDuration!=0 || e.maxDuration!=0) {
+    if (0!=e.minDuration || 0!=e.maxDuration) {
         str << constDurationKey << constKeyValSep << e.minDuration << constRangeSep << e.maxDuration << '\n';
     }
     if (Order_Random!=e.order) {
@@ -342,6 +342,8 @@ void RulesPlaylists::loadLocal()
                         e.order=toOrder(str.mid(constOrderKey.length()+1));
                     } else if (str.startsWith(constOrderAscendingKey+constKeyValSep)) {
                         e.orderAscending="true"==str.mid(constOrderAscendingKey.length()+1);
+                    } else if (str.startsWith(constNumTracksKey+constKeyValSep)) {
+                        e.numTracks=str.mid(constNumTracksKey.length()+1).toUInt();
                     } else {
                         for (const QString &k: keys) {
                             if (str.startsWith(k+constKeyValSep)) {

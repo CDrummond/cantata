@@ -193,7 +193,7 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
 
     if (!rules->isDynamic()) {
         nameText->setPlaceholderText(tr("Name of Smart Rules"));
-        numberOfSongsLabel->setText(tr("Number of songs"));
+        numberOfSongsLabel->setText(tr("Number of songs:"));
     }
 
     static bool registered=false;

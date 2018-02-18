@@ -495,7 +495,7 @@ Se &apos;Titolo&apos; è &quot;Wibble - Wobble&quot;, allora &apos;Artista&apos;
     <message>
         <location filename="../context/albumview.cpp" line="70"/>
         <source>Full Width Cover</source>
-        <translation type="unfinished"></translation>
+        <translation>Copertina a tutta larghezza</translation>
     </message>
     <message>
         <location filename="../context/albumview.cpp" line="80"/>
@@ -1349,7 +1349,7 @@ Non è stato possibile copiare il file su &apos;%1&apos;!</translation>
     <message>
         <location filename="../devices/devicespage.cpp" line="120"/>
         <source>Any supported devices will appear here when attached to your computer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutti i dispositivi supportati, quando collegati al tuo computer, appariranno qua.</translation>
     </message>
     <message>
         <location filename="../devices/devicespage.cpp" line="409"/>
@@ -1703,12 +1703,12 @@ Non sarà possibile tornare indietro.</translation>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="84"/>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="115"/>
         <source>Use the + icon (below) to create a new &apos;dynamic&apos; playlist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usa l&apos;icona + (sotto) per creare una nuova scaletta &apos;dinamica&apos;.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="117"/>
         <source>Remote dynamizer is not running. In order to support &apos;dynamic&apos; playlists under Windows, Cantata requires its &apos;cantata-dynamic&apos; script to be running on the MPD server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il dynamizer remoto non è in esecusione. Per poter gestire le scalette &apos;dinamiche&apos; in Windows, Cantata dichiede che sul server MPD giri lo script &apos;cantata-dynamic&apos;.</translation>
     </message>
     <message>
         <source>Remote dynamizer is not running.</source>
@@ -2135,27 +2135,27 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="623"/>
         <source>Album Covers</source>
-        <translation type="unfinished"></translation>
+        <translation>Copertine Album</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="646"/>
         <source>&lt;p&gt;Cantata can download missing covers, and store these either in the music folder or within your personal cache folder.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Cantata può scaricare le copertine mancanti e memorizzarle sia nella cartella della musica che nella tua cartella cache personale.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation>Scarica copertine mancanti</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
         <source>Save downloaded covers into music folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva le copertine scaricate nella cartella della musica</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="692"/>
         <source>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>Se scegli che Cantata salvi le copertine nella cartella della musica e non hai i permessi di scrittura ad essa (oppure è impostata come indirizzo HTTP), allora Cantata salverà i file nella tua cartella cache personale.</translation>
     </message>
     <message>
         <source>Covers and Lyrics</source>
@@ -2511,32 +2511,32 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="623"/>
         <source>Covers</source>
-        <translation type="unfinished">Copertine</translation>
+        <translation>Copertine</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="634"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation>Scarica copertine mancanti</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="641"/>
         <source>Save downloaded covers into music folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva le copertine scaricate nella cartella della musica</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="648"/>
         <source>Filename:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome del file:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="658"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Nome file (senza estensione) con cui salvare le copertine scaricate.&lt;br/&gt;Se lasciato vuoto verrà usato &apos;cover&apos;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% verrà sostituito dall&apos;artista dell&apos;album del brano corrente, ed %album% verrà sostituito col nome dell&apos;album.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Nome file (senza estensione) con cui salvare le copertine scaricate.&lt;br/&gt;Se lasciato vuoto verrà usato &apos;cover&apos;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% verrà sostituito dall&apos;artista dell&apos;album del brano corrente, ed %album% verrà sostituito col nome dell&apos;album.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="667"/>
         <source>If you enable &apos;Save downloaded covers into music folder&apos; you may need to clear the cache of any previous covers to force downloading of new covers. See &apos;Cache&apos; settings page for further details.</source>
-        <translation type="unfinished"></translation>
+        <translation>Se abiliti &apos;Salva le copertine scaricate nella cartella della musica&apos; portesti dover eliminare dalla cache tutte le vecchie copertine per poter forzare lo scaricamento delle nuove copertine. Vedi la pagina delle impostazioni &apos;Cache&apos; per maggiori dettagli.</translation>
     </message>
     <message>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
@@ -2709,12 +2709,12 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="219"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding  music to your library from devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Se non è specificato nulla su &apos;Nome file&apos;, allora cantata userà &lt;code&gt;cover&lt;/code&gt; come nome predefinito. Questo nome viene usato quando si scaricano le copertine, oppure di aggiunge della musica alla tua libreria dai dispositivi.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="223"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Se non è specificato nulla su &apos;Nome file&apos;, allora cantata userà &lt;code&gt;cover&lt;/code&gt; come nome predefinito. Questo nome viene usato quando si scaricano le copertine.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="429"/>
@@ -2973,7 +2973,7 @@ Prego sceglierne un&apos;altra.</translation>
     <message>
         <location filename="../gui/librarypage.cpp" line="121"/>
         <source>No music? Looks like your MPD is not configured correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Niente musica? Forse il tuo MPD non è configurato correttamente.</translation>
     </message>
     <message>
         <location filename="../gui/librarypage.cpp" line="195"/>
@@ -3746,7 +3746,7 @@ Aggiungere i brani a quella scaletta?</translation>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="82"/>
         <source>No folders? Looks like your MPD is not configured correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuna cartella? Sembra che il tuo MPD non sia configurato correttamente.</translation>
     </message>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="229"/>
@@ -4663,17 +4663,17 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../playlists/playlistrules.ui" line="215"/>
         <source>Files added in the last:</source>
-        <translation type="unfinished"></translation>
+        <translation>File aggiunti negli ultimi:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="225"/>
         <source> days</source>
-        <translation type="unfinished"></translation>
+        <translation> giorni</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="228"/>
         <source>No Limit</source>
-        <translation type="unfinished">Nessun Limite</translation>
+        <translation>Nessun Limite</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="235"/>
@@ -5146,7 +5146,7 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="93"/>
         <source>Use the + icon (below) to add podcast subscriptions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usa l'icona + (sotto) per aggiungere le sottoscrizioni ai podcast.</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="147"/>
@@ -6880,7 +6880,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="87"/>
         <source>Use the text field above to search for music in your library via MPD&apos;s search mechanism. Clicking the label next to the field will produce a menu allowing you to control the search area.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usa il campo di testo qua sopra per cercare la musica nella tua libreria tramite il meccanismo di ricerca di MPD. Cliccando sull'etichetta a fianco del campo apparirà un menu che ti permetterà di controllare l'area di ricerca.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="212"/>
@@ -7316,7 +7316,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="73"/>
         <source>Use the + icon (below) to create a new &apos;smart&apos; playlist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usa l'icona + (sotto) per creare una nuova scaletta &apos;dinamica&apos;.</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="122"/>
@@ -7745,7 +7745,7 @@ Ricaricare da disco, oppure cancellare la copia su disco e scaricare?</translati
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="107"/>
         <source>Either save the play queue, or use the context menu in the library, to create new playlists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Per creare nuove scalette, puoi salvare la coda di ripoduzione, oppure usare il menu contestuale nella libreria.</translation>
     </message>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="189"/>

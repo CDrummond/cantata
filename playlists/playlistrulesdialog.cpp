@@ -173,6 +173,7 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
         REMOVE(orderLabel)
         REMOVE(order)
         REMOVE(orderAscending)
+        REMOVE(maxAge)
         orderLayout->deleteLater();
         numTracks->setValue(qMax(qMin(10, rules->maxTracks()), rules->minTracks()));
     } else {
@@ -229,6 +230,9 @@ void PlaylistRulesDialog::edit(const QString &name)
         order->setCurrentIndex(e.order);
         setOrder();
         orderAscending->setCurrentIndex(e.orderAscending ? 0 : 1);
+    }
+    if (maxAge) {
+        maxAge->setValue(e.maxAge);
     }
     show();
 }
@@ -412,6 +416,9 @@ bool PlaylistRulesDialog::save()
     if (order) {
         entry.order=(RulesPlaylists::Order)order->currentData().toInt();
         entry.orderAscending=0==orderAscending->currentIndex();
+    }
+    if (maxAge) {
+        entry.maxAge=maxAge->value();
     }
     from=minDuration->value();
     to=maxDuration->value();

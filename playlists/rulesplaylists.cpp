@@ -52,6 +52,7 @@ const QString RulesPlaylists::constDateKey=QLatin1String("Date");
 const QString RulesPlaylists::constRatingKey=QLatin1String("Rating");
 const QString RulesPlaylists::constDurationKey=QLatin1String("Duration");
 const QString RulesPlaylists::constNumTracksKey=QLatin1String("NumTracks");
+const QString RulesPlaylists::constMaxAgeKey=QLatin1String("MaxAge");
 const QString RulesPlaylists::constFileKey=QLatin1String("File");
 const QString RulesPlaylists::constExactKey=QLatin1String("Exact");
 const QString RulesPlaylists::constExcludeKey=QLatin1String("Exclude");
@@ -214,6 +215,9 @@ bool RulesPlaylists::save(const Entry &e)
     if (0!=e.minDuration || 0!=e.maxDuration) {
         str << constDurationKey << constKeyValSep << e.minDuration << constRangeSep << e.maxDuration << '\n';
     }
+    if (0!=e.maxAge) {
+        str << constMaxAgeKey << constKeyValSep << e.maxAge;
+    }
     if (Order_Random!=e.order) {
         str << constOrderKey << constKeyValSep << orderStr(e.order) << '\n';
     }
@@ -344,6 +348,8 @@ void RulesPlaylists::loadLocal()
                         e.orderAscending="true"==str.mid(constOrderAscendingKey.length()+1);
                     } else if (str.startsWith(constNumTracksKey+constKeyValSep)) {
                         e.numTracks=str.mid(constNumTracksKey.length()+1).toUInt();
+                    } else if (str.startsWith(constMaxAgeKey+constKeyValSep)) {
+                        e.maxAge=str.mid(constMaxAgeKey.length()+1).toUInt();
                     } else {
                         for (const QString &k: keys) {
                             if (str.startsWith(k+constKeyValSep)) {

@@ -66,6 +66,7 @@ public:
         int ratingTo = 0;
         int minDuration = 0;
         int maxDuration = 0;
+        int maxAge = 0;
         int numTracks = 10;
         Order order = Order_Random;
         bool orderAscending = true;
@@ -85,6 +86,7 @@ public:
     static const QString constRatingKey;
     static const QString constDurationKey;
     static const QString constNumTracksKey;
+    static const QString constMaxAgeKey;
     static const QString constFileKey;
     static const QString constExactKey;
     static const QString constExcludeKey;

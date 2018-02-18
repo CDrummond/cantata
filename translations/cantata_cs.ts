@@ -9575,9 +9575,9 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="272"/>
-        <location filename="../gui/mainwindow.cpp" line="1362"/>
-        <location filename="../gui/mainwindow.cpp" line="1366"/>
+        <location filename="../gui/mainwindow.cpp" line="1368"/>
         <location filename="../gui/mainwindow.cpp" line="1372"/>
+        <location filename="../gui/mainwindow.cpp" line="1378"/>
         <source>Outputs</source>
         <translation>Výstupy</translation>
     </message>
@@ -9789,102 +9789,102 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="582"/>
+        <location filename="../gui/mainwindow.cpp" line="584"/>
         <source>Show Menubar</source>
         <translation>Ukázat pruh s nabídkou</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="588"/>
+        <location filename="../gui/mainwindow.cpp" line="590"/>
         <source>&amp;Music</source>
         <translation>&amp;Hudba</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="599"/>
+        <location filename="../gui/mainwindow.cpp" line="601"/>
         <source>&amp;Edit</source>
         <translation>Úp&amp;ravy</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="611"/>
+        <location filename="../gui/mainwindow.cpp" line="613"/>
         <source>&amp;View</source>
         <translation>&amp;Pohled</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="621"/>
+        <location filename="../gui/mainwindow.cpp" line="625"/>
         <source>&amp;Queue</source>
         <translation>Řa&amp;da</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="631"/>
+        <location filename="../gui/mainwindow.cpp" line="635"/>
         <source>&amp;Settings</source>
         <translation>&amp;Nastavení</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="645"/>
+        <location filename="../gui/mainwindow.cpp" line="651"/>
         <source>&amp;Help</source>
         <translation>Nápo&amp;věda</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="690"/>
+        <location filename="../gui/mainwindow.cpp" line="696"/>
         <source>Set Rating</source>
         <translation>Nastavit hodnocení</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="695"/>
+        <location filename="../gui/mainwindow.cpp" line="701"/>
         <source>No Rating</source>
         <translation>Žádné hodnocení</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1017"/>
+        <location filename="../gui/mainwindow.cpp" line="1023"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation>Nepodařilo se najít žádné písně odpovídající pravidlům dynamického seznamu skladeb.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1141"/>
+        <location filename="../gui/mainwindow.cpp" line="1147"/>
         <source>Connecting to %1</source>
         <translation>Připojuje se k %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1177"/>
+        <location filename="../gui/mainwindow.cpp" line="1183"/>
         <source>Refresh MPD Database?</source>
         <translation>Obnovit databázi MPD?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1183"/>
+        <location filename="../gui/mainwindow.cpp" line="1189"/>
         <source>About Cantata</source>
         <translation>O programu Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1184"/>
+        <location filename="../gui/mainwindow.cpp" line="1190"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Klient pro MPD.&lt;br/&gt;&lt;br/&gt;© Craig Drummond 2011-2016.&lt;br/&gt;Vydáno pod &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1187"/>
+        <location filename="../gui/mainwindow.cpp" line="1193"/>
         <source>Please refer to &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;Cantata&apos;s issue tracker&lt;/a&gt; for a list of known issues, and to report new issues.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1189"/>
+        <location filename="../gui/mainwindow.cpp" line="1195"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation>Založeno na &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - © 2007-2010  Autoři QtMPC&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1190"/>
+        <location filename="../gui/mainwindow.cpp" line="1196"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation>Pozadí pohledu na souvislosti díky laskavosti &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1191"/>
+        <location filename="../gui/mainwindow.cpp" line="1197"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation>Popisná data pohledu na souvislosti díky laskavosti &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1192"/>
+        <location filename="../gui/mainwindow.cpp" line="1198"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation>Zvažte, prosím, nahrání vašeho vlastního fanouškovského umění na &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1199"/>
+        <location filename="../gui/mainwindow.cpp" line="1205"/>
         <source>A Podcast is currently being downloaded
 
 Quitting now will abort the download.</source>
@@ -9893,100 +9893,100 @@ Quitting now will abort the download.</source>
 Pokud bude program ukončen nyní, bude stahování zrušeno.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1200"/>
+        <location filename="../gui/mainwindow.cpp" line="1206"/>
         <source>Abort download and quit</source>
         <translation>Zrušit stahování a ukončit</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1228"/>
+        <location filename="../gui/mainwindow.cpp" line="1234"/>
         <source>Please close other dialogs first.</source>
         <translation>Nejprve, prosím, zavřete další dialogy.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1362"/>
-        <location filename="../gui/mainwindow.cpp" line="1373"/>
+        <location filename="../gui/mainwindow.cpp" line="1368"/>
+        <location filename="../gui/mainwindow.cpp" line="1379"/>
         <source>Enabled: %1</source>
         <translation>Povoleno: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1366"/>
-        <location filename="../gui/mainwindow.cpp" line="1374"/>
+        <location filename="../gui/mainwindow.cpp" line="1372"/>
+        <location filename="../gui/mainwindow.cpp" line="1380"/>
         <source>Disabled: %1</source>
         <translation>Zakázáno: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1574"/>
-        <location filename="../gui/mainwindow.cpp" line="1597"/>
+        <location filename="../gui/mainwindow.cpp" line="1580"/>
+        <location filename="../gui/mainwindow.cpp" line="1603"/>
         <source>Server Information</source>
         <translation>Informace o serveru</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1577"/>
+        <location filename="../gui/mainwindow.cpp" line="1583"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protokol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Doba provozu:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Přehrává se:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Ovladače:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Značky:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1588"/>
+        <location filename="../gui/mainwindow.cpp" line="1594"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Databáze&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Umělci:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Alba:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Písně:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Doba trvání:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Obnoveno:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1741"/>
+        <location filename="../gui/mainwindow.cpp" line="1747"/>
         <source>Cantata (%1)</source>
         <translation>Cantata (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1808"/>
+        <location filename="../gui/mainwindow.cpp" line="1814"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD nahlásilo následující chybu: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1879"/>
+        <location filename="../gui/mainwindow.cpp" line="1885"/>
         <source>Cantata</source>
         <translation>Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1879"/>
+        <location filename="../gui/mainwindow.cpp" line="1885"/>
         <source>Playback stopped</source>
         <translation>Přehrávání zastaveno</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1922"/>
+        <location filename="../gui/mainwindow.cpp" line="1928"/>
         <source>Remove all songs from play queue?</source>
         <translation>Odstranit všechny písně z řady skladeb k přehrání?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1973"/>
+        <location filename="../gui/mainwindow.cpp" line="1979"/>
         <source>Priority</source>
         <translation>Přednost</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1973"/>
+        <location filename="../gui/mainwindow.cpp" line="1979"/>
         <source>Enter priority (0..255):</source>
         <translation>Zadejte přednost (0 ... 255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1974"/>
+        <location filename="../gui/mainwindow.cpp" line="1980"/>
         <source>Decrease priority for each subsequent track</source>
         <translation>Zmenšit přednost každé následné skladby</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2001"/>
+        <location filename="../gui/mainwindow.cpp" line="2007"/>
         <source>Playlist Name</source>
         <translation>Název seznamu skladeb</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2001"/>
+        <location filename="../gui/mainwindow.cpp" line="2007"/>
         <source>Enter a name for the playlist:</source>
         <translation>Zadejte název pro seznam skladeb:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2004"/>
+        <location filename="../gui/mainwindow.cpp" line="2010"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation>&apos;%1&apos; se používá na ukládání oblíbených proudů. Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2008"/>
+        <location filename="../gui/mainwindow.cpp" line="2014"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -9995,22 +9995,22 @@ Add to that playlist?</source>
 Přidat do tohoto seznamu skladeb?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2009"/>
+        <location filename="../gui/mainwindow.cpp" line="2015"/>
         <source>Existing Playlist</source>
         <translation>Existující seznam skladeb</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2070"/>
+        <location filename="../gui/mainwindow.cpp" line="2076"/>
         <source>Select Music Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2070"/>
+        <location filename="../gui/mainwindow.cpp" line="2076"/>
         <source>Music Files </source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2099"/>
+        <location filename="../gui/mainwindow.cpp" line="2105"/>
         <source>%n Track(s)</source>
         <translation>
             <numerusform>Skladby: %n</numerusform>
@@ -10019,7 +10019,7 @@ Přidat do tohoto seznamu skladeb?</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2101"/>
+        <location filename="../gui/mainwindow.cpp" line="2107"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>Skladby: %n (%1)</numerusform>
@@ -10980,11 +10980,26 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="215"/>
+        <source>Files added in the last:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="225"/>
+        <source> days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="228"/>
+        <source>No Limit</source>
+        <translation type="unfinished">Bez omezení</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="235"/>
         <source>Order songs:</source>
         <translation>Řadit písně:</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrules.ui" line="240"/>
+        <location filename="../playlists/playlistrules.ui" line="260"/>
         <source>About Rules</source>
         <translation>O pravidlech</translation>
     </message>
@@ -11007,7 +11022,7 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Bez omezení</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="336"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="340"/>
         <source>About dynamic rules</source>
         <translation>O dynamických pravidlech</translation>
     </message>
@@ -11017,47 +11032,47 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Chytrá pravidla</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="185"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="186"/>
         <source>Ascending</source>
         <translation>Vzestupně</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="186"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="187"/>
         <source>Descending</source>
         <translation>Sestupně</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="195"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="196"/>
         <source>Name of Smart Rules</source>
         <translation>Název chytrých pravidel</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="196"/>
-        <source>Number of songs</source>
-        <translation>Počet písní</translation>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="197"/>
+        <source>Number of songs:</source>
+        <translation>Počet písní:</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="338"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="342"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cantata se ve vaší knihovně poptá s využitím všech uvedených pravidel. Seznam pravidel &lt;i&gt;zahrnout&lt;/i&gt; se použije k sestavení množiny písní, jež lze použít. Seznam pravidel &lt;i&gt;vyloučit&lt;/i&gt; se použije k sestavení množiny písní, jež použít nelze. Pokud nejsou žádná pravidla typu &lt;i&gt;zahrnout&lt;/i&gt;, Cantata bude předpokládat, že lze použít všechny písně (kromě těch s typem &lt;i&gt;vyloučit&lt;/i&gt;).&lt;/p&gt;&lt;p&gt;Např. aby Cantata hledala &quot;Rockové písně od Wibble NEBO písně různých umělců&quot;, je potřeba následující: &lt;ul&gt;&lt;li&gt;Zahrnout Umělec alba=Wibble Žánr=Rock&lt;/li&gt;&lt;li&gt;Zahrnout Umělec alba=Různí umělci&lt;/li&gt;&lt;/ul&gt; Aby Cantata hledala &quot;Písně od Wibble ale ne ty na albu Abc&quot;, je potřeba následující: &lt;ul&gt;&lt;li&gt;Zahrnout Umělec alba=Wibble&lt;/li&gt;&lt;li&gt;Vyloučit Umělec alba=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Po vytvoření skupiny použitelných písní Cantata náhodně vybere písně, aby udržovala řadu skladeb k přehrání naplněnu určeným počtem položek (výchozí počet je 10). Pokud bylo stanoveno rozmezí hodnocení, potom budou použity jen písně s hodnocením v tomto rozmezí. Stejně tak, pokud byla stanovena doba trvání.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="353"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="357"/>
         <source>About smart rules</source>
         <translation>O chytrých pravidlech</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="355"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="359"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will add the desired number of songs to the play queue. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cantata se ve vaší knihovně poptá s využitím všech uvedených pravidel. Seznam pravidel &lt;i&gt;zahrnout&lt;/i&gt; se použije k sestavení množiny písní, jež lze použít. Seznam pravidel &lt;i&gt;vyloučit&lt;/i&gt; se použije k sestavení množiny písní, jež použít nelze. Pokud nejsou žádná pravidla typu &lt;i&gt;zahrnout&lt;/i&gt;, Cantata bude předpokládat, že lze použít všechny písně (kromě těch s typem &lt;i&gt;vyloučit&lt;/i&gt;).&lt;/p&gt;&lt;p&gt;Např. aby Cantata hledala &quot;Rockové písně od Wibble NEBO písně různých umělců&quot;, je potřeba následující: &lt;ul&gt;&lt;li&gt;Zahrnout Umělec alba=Wibble Žánr=Rock&lt;/li&gt;&lt;li&gt;Zahrnout Umělec alba=Různí umělci&lt;/li&gt;&lt;/ul&gt; Aby Cantata hledala &quot;Písně od Wibble ale ne ty na albu Abc&quot;, je potřeba následující: &lt;ul&gt;&lt;li&gt;Zahrnout Umělec alba=Wibble&lt;/li&gt;&lt;li&gt;Vyloučit Umělec alba=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Po vytvoření skupiny použitelných písní Cantata přidá požadovaný počet písní do řady skladeb k přehrání. Pokud bylo stanoveno rozmezí hodnocení, potom budou použity jen písně s hodnocením v tomto rozmezí. Stejně tak, pokud byla stanovena doba trvání.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="383"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="387"/>
         <source>Failed to save %1</source>
         <translation>Nepodařilo se uložit %1</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="401"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="405"/>
         <source>A set of rules named &apos;%1&apos; already exists!
 
 Overwrite?</source>
@@ -11066,12 +11081,12 @@ Overwrite?</source>
 Přepsat?</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="402"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="406"/>
         <source>Overwrite Rules</source>
         <translation>Přepsat pravidla</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="445"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="452"/>
         <source>Saving %1</source>
         <translation>Ukládá se %1</translation>
     </message>
@@ -11714,7 +11729,7 @@ Přepsat?</translation>
         <translation>Nastavení Cantaty</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="96"/>
+        <location filename="../gui/preferencesdialog.cpp" line="97"/>
         <source>Configure</source>
         <translation>Nastavit</translation>
     </message>
@@ -13229,52 +13244,52 @@ Vyberte, prosím, jiný název.</translation>
         <translation type="vanished"> - Hodnocení: %1...%2</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="92"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="93"/>
         <source>Album Artist</source>
         <translation>Umělec alba</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="93"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="94"/>
         <source>Artist</source>
         <translation>Umělec</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="94"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="95"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="95"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="96"/>
         <source>Composer</source>
         <translation>Skladatel</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="96"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="97"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="97"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="98"/>
         <source>Genre</source>
         <translation>Žánr</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="98"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="99"/>
         <source>Rating</source>
         <translation>Hodnocení</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="99"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="100"/>
         <source>File Age</source>
         <translation>Stáří souboru</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="101"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="102"/>
         <source>Random</source>
         <translation>Náhodné</translation>
     </message>
     <message numerus="yes">
-        <location filename="../playlists/rulesplaylists.cpp" line="168"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="169"/>
         <source>%n Rule(s)</source>
         <translation>
             <numerusform>Pravidla: %n</numerusform>
@@ -13283,17 +13298,17 @@ Vyberte, prosím, jiný název.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="168"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="169"/>
         <source>, Rating: %1..%2</source>
         <translation>, Hodnocení: %1..%2</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="171"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="172"/>
         <source>Ascending</source>
         <translation>Vzestupně</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="171"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="172"/>
         <source>Descending</source>
         <translation>Sestupně</translation>
     </message>
@@ -13857,8 +13872,8 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="168"/>
-        <location filename="../playlists/smartplaylistspage.cpp" line="195"/>
-        <location filename="../playlists/smartplaylistspage.cpp" line="298"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="200"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="303"/>
         <source>Failed to locate any matching songs</source>
         <translation>Nepodařilo se najít žádnou odpovídající píseň</translation>
     </message>
@@ -15282,17 +15297,17 @@ Přepsat?</translation>
 <context>
     <name>TitleWidget</name>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="72"/>
+        <location filename="../widgets/titlewidget.cpp" line="74"/>
         <source>Click to go back</source>
         <translation>Klepněte pro návrat zpět</translation>
     </message>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="127"/>
+        <location filename="../widgets/titlewidget.cpp" line="129"/>
         <source>Add All To Play Queue</source>
         <translation>Přidat vše do řady skladeb k přehrání</translation>
     </message>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="128"/>
+        <location filename="../widgets/titlewidget.cpp" line="130"/>
         <source>Add All And Replace Play Queue</source>
         <translation>Přidat vše a nahradit řadu skladeb k přehrání</translation>
     </message>

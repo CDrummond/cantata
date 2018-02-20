@@ -62,6 +62,7 @@
 #include <QTimer>
 #include <QApplication>
 #include <QMenu>
+#include <QXmlStreamReader>
 
 GLOBAL_STATIC(PlayQueueModel, instance)
 
@@ -80,7 +81,9 @@ static const QLatin1String constSortByPerformerKey("performer");
 static const QLatin1String constSortByTitleKey("title");
 static const QLatin1String constSortByNumberKey("track");
 
-static QSet<QString> constPlaylists = QSet<QString>() << QLatin1String("m3u") << QLatin1String("m3u8");
+static QSet<QString> constM3uPlaylists = QSet<QString>() << QLatin1String("m3u") << QLatin1String("m3u8");
+static const QString constPlsPlaylist = QLatin1String("pls");
+static const QString constXspfPlaylist = QLatin1String("xspf");
 QSet<QString> PlayQueueModel::constFileExtensions = QSet<QString>()
                                                   << QLatin1String("mp3") << QLatin1String("ogg") << QLatin1String("flac") << QLatin1String("wma") << QLatin1String("m4a")
                                                   << QLatin1String("m4b") << QLatin1String("mp4") << QLatin1String("m4p") << QLatin1String("wav") << QLatin1String("wv")
@@ -88,12 +91,17 @@ QSet<QString> PlayQueueModel::constFileExtensions = QSet<QString>()
                                                   << QLatin1String("spx") << QLatin1String("tta") << QLatin1String("mpc") << QLatin1String("mpp") << QLatin1String("mp+")
                                                   << QLatin1String("dff") << QLatin1String("dsf")
                                                   // And playlists...
-                                                  << QLatin1String("m3u") << QLatin1String("m3u8");
+                                                  << QLatin1String("m3u") << QLatin1String("m3u8") << constPlsPlaylist << constXspfPlaylist;
 
-static bool checkExtension(const QString &file, const QSet<QString> &exts = PlayQueueModel::constFileExtensions)
+static inline QString getExtension(const QString &file)
 {
     int pos=file.lastIndexOf('.');
-    return pos>0 ? exts.contains(file.mid(pos+1).toLower()) : false;
+    return pos>0 ? file.mid(pos+1).toLower() : QString();
+}
+
+static inline bool checkExtension(const QString &file, const QSet<QString> &exts = PlayQueueModel::constFileExtensions)
+{
+    return exts.contains(getExtension(file));
 }
 
 static QString fileUrl(const QString &file, bool useServer, bool useLocal)
@@ -109,7 +117,32 @@ static QString fileUrl(const QString &file, bool useServer, bool useLocal)
     return QString();
 }
 
-static QStringList expandPlaylist(const QString &playlist, bool useServer, bool useLocal, const QSet<QString> &handlers)
+static QString checkUrl(const QString &url,  const QDir &dir, bool useServer, bool useLocal, const QSet<QString> &handlers)
+{
+    int pos = url.indexOf(QLatin1String("://"));
+    QString handler = pos>0 ? url.left(pos+3).toLower() : QString();
+    if (!handler.isEmpty() && (QLatin1String("http://")==handler || QLatin1String("https://")==handler)) {
+        // Radio stream?
+        return StreamsModel::constPrefix+url;
+    } else if (handlers.contains(handler)) {
+        return url;
+    } else {
+        if (checkExtension(url)) {
+            QString path = dir.filePath(url);
+            QString fUrl;
+            if (QFile::exists(path)) { // Relative
+                fUrl=fileUrl(path, useServer, useLocal);
+            } else if (QFile::exists(url)) { // Absolute
+                fUrl=fileUrl(url, useServer, useLocal);
+            }
+            if (!fUrl.isEmpty()) {
+                return fUrl;
+            }
+        }
+    }
+}
+
+static QStringList expandM3uPlaylist(const QString &playlist, bool useServer, bool useLocal, const QSet<QString> &handlers)
 {
     QStringList files;
     QFile f(playlist);
@@ -120,31 +153,82 @@ static QStringList expandPlaylist(const QString &playlist, bool useServer, bool 
         while (!in.atEnd()) {
             QString line = in.readLine();
             if (!line.startsWith(QLatin1Char('#'))) {
-                int pos = line.indexOf(QLatin1String("://"));
-                QString handler = pos>0 ? line.left(pos+3).toLower() : QString();
-                if (!handler.isEmpty() && (QLatin1String("http://")==handler || QLatin1String("https://")==handler)) {
-                    // Radio stream?
-                    files.append(StreamsModel::constPrefix+line);
-                } else if (handlers.contains(handler)) {
-                    files.append(line);
-                } else {
-                    if (checkExtension(line)) {
-                        QString path = dir.filePath(line);
-                        QString fUrl;
-                        if (QFile::exists(path)) { // Relative
-                            fUrl=fileUrl(path, useServer, useLocal);
-                        } else if (QFile::exists(line)) { // Absolute
-                            fUrl=fileUrl(line, useServer, useLocal);
-                        }
-                        if (!fUrl.isEmpty()) {
-                            files.append(fUrl);
-                        }
-                    }
+                QString url = checkUrl(line, dir, useServer, useLocal, handlers);
+                if (!url.isEmpty()) {
+                    files.append(url);
                 }
             }
         }
         f.close();
     }
+    return files;
+}
+
+static QStringList expandPlsPlaylist(const QString &playlist, bool useServer, bool useLocal, const QSet<QString> &handlers)
+{
+    QStringList files;
+    QFile f(playlist);
+    QDir dir(Utils::getDir(playlist));
+    QMap<unsigned int, QString> titles;
+    QMap<unsigned int, QString> urls;
+
+    if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        QTextStream in(&f);
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            if (line.startsWith(QLatin1String("File"))) {
+                QStringList parts=line.split("=");
+                if (2==parts.length()) {
+                    QString path=parts[1].trimmed();
+                    unsigned int num=parts[0].left(4).toUInt();
+                    QString url=checkUrl(path, dir, useServer, useLocal, handlers);
+                    if (!url.isEmpty()) {
+                        urls.insert(num, url);
+                    }
+                }
+            } else if (line.startsWith(QLatin1String("Title"))) {
+                QStringList parts=line.split("=");
+                if (2==parts.length()) {
+                    titles.insert(parts[0].left(5).toUInt(), parts[1].trimmed());
+                }
+            }
+        }
+        f.close();
+    }
+
+    auto it = urls.constBegin();
+    auto end = urls.constEnd();
+    for (; it!=end; ++it) {
+        if (titles.contains(it.key()) && (it.value().startsWith(QLatin1String("http://")) || it.value().startsWith("https://"))) {
+            files.append(it.value()+"#"+titles[it.key()]);
+        } else {
+            files.append(it.value());
+        }
+    }
+    return files;
+}
+
+static QStringList expandXspfPlaylist(const QString &playlist, bool useServer, bool useLocal, const QSet<QString> &handlers)
+{
+    QStringList files;
+    QFile f(playlist);
+
+    if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        QXmlStreamReader reader(&f);
+        QDir dir(Utils::getDir(playlist));
+
+        while (!reader.atEnd()) {
+            reader.readNext();
+            if (QXmlStreamReader::StartElement==reader.tokenType() && QLatin1String("location")==reader.name()) {
+                QString url=checkUrl(reader.readElementText().trimmed(), dir, useServer, useLocal, handlers);
+                if (!url.isEmpty()) {
+                    files.append(url);
+                }
+            }
+        }
+        f.close();
+    }
+
     return files;
 }
 
@@ -155,8 +239,12 @@ static QStringList listFiles(const QDir &d, bool useServer, bool useLocal, const
         for (const auto &f: d.entryInfoList(QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot|QDir::NoSymLinks, QDir::LocaleAware|QDir::IgnoreCase)) {
             if (f.isDir()) {
                 files += listFiles(QDir(f.absoluteFilePath()), useServer, useLocal, handlers, level-1);
-            } else if (checkExtension(f.fileName(), constPlaylists)) {
-                files += expandPlaylist(f.absoluteFilePath(), useServer, useLocal, handlers);
+            } else if (checkExtension(f.fileName(), constM3uPlaylists)) {
+                files += expandM3uPlaylist(f.absoluteFilePath(), useServer, useLocal, handlers);
+            } else if (constPlsPlaylist == getExtension(f.fileName())) {
+                files += expandPlsPlaylist(f.absoluteFilePath(), useServer, useLocal, handlers);
+            } else if (constXspfPlaylist == getExtension(f.fileName())) {
+                files += expandXspfPlaylist(f.absoluteFilePath(), useServer, useLocal, handlers);
             } else if (checkExtension(f.fileName())) {
                 QString fUrl=fileUrl(f.absoluteFilePath(), useServer, useLocal);
                 if (!fUrl.isEmpty()) {
@@ -189,8 +277,12 @@ static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
 
             if (d.exists()) {
                 useable = listFiles(d, useServer, useLocal, handlers);
-            } else if (checkExtension(u.path(), constPlaylists)) {
-                useable += expandPlaylist(u.path(), useServer, useLocal, handlers);
+            } else if (checkExtension(u.path(), constM3uPlaylists)) {
+                useable += expandM3uPlaylist(u.path(), useServer, useLocal, handlers);
+            } else if (constPlsPlaylist == getExtension(u.path())) {
+                useable += expandPlsPlaylist(u.path(), useServer, useLocal, handlers);
+            } else if (constXspfPlaylist == getExtension(u.path())) {
+                useable += expandXspfPlaylist(u.path(), useServer, useLocal, handlers);
             } else if (checkExtension(u.path())) {
                 QString fUrl = fileUrl(u.path(), useServer, useLocal);
                 if (!fUrl.isEmpty()) {

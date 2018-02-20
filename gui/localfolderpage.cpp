@@ -50,7 +50,7 @@ LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
     view->load(config);
     MenuButton *menu=new MenuButton(this);
     menu->addActions(createViewActions(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
-                                                               << ItemView::Mode_DetailedTree << ItemView::Mode_List));
+                                                               << ItemView::Mode_DetailedTree));
     init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu);
 
     view->addAction(CustomActions::self());

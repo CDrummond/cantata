@@ -277,6 +277,8 @@ void InterfaceSettings::load()
     }
     if (systemTrayPopup) {
         systemTrayPopup->setChecked(Settings::self()->showPopups());
+        popupTitleFormat->setText(Settings::self()->popupTitleFormat());
+        popupTextFormat->setText(Settings::self()->popupTextFormat());
     }
     fetchCovers->setChecked(Settings::self()->fetchCovers());
     storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
@@ -348,6 +350,8 @@ void InterfaceSettings::save()
     Settings::self()->saveShowTechnicalInfo(showTechnicalInfo->isChecked());
     Settings::self()->saveUseSystemTray(systemTrayCheckBox && systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup && systemTrayPopup->isChecked());
+    Settings::self()->savePopupTitleFormat(popupTitleFormat->text());
+    Settings::self()->savePopupTextFormat(popupTextFormat->text());
     Settings::self()->saveMinimiseOnClose(minimiseOnClose && minimiseOnClose->isChecked());
     if (!startupState || startupStateShow->isChecked()) {
         Settings::self()->saveStartupState(Settings::SS_ShowMainWindow);

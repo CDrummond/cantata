@@ -420,6 +420,30 @@
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="popupTitleLabel">
+         <property name="text">
+          <string>Popup format (fields to use: %file, %time, %album, %artist, %albumartist, %title, %track, %disk, %origyear, %year)</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="LineEdit" name="popupTitleFormat">
+          <property name="placeholderText">
+           <string>Popup title format</string>
+          </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="LineEdit" name="popupTextFormat">
+          <property name="placeholderText">
+           <string>Popup text format</string>
+          </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="systemTrayCheckBox">
          <property name="enabled">
           <bool>true</bool>

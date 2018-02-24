@@ -30,6 +30,7 @@
 #if !defined CANTATA_NO_UI_FUNCTIONS
 #include "online/onlineservice.h"
 #endif
+#include "support/utils.h"
 #include <QStringList>
 #include <QSet>
 #include <QChar>
@@ -801,6 +802,21 @@ QString Song::describe(bool withMarkup) const
         descr=descr.replace("</b>", "");
     }
     return descr;
+}
+
+QString Song::format(QString format) const
+{
+    format.replace("%file", file);
+    /*format.replace("%time", Utils::formatTime(time, true));*/
+    format.replace("%album", album);
+    format.replace("%artist", artist);
+    format.replace("%albumartist", albumartist);
+    format.replace("%title", title);
+    format.replace("%track", QString::number(track));
+    format.replace("%disk", QString::number(disc));
+    format.replace("%origyear", QString::number(origYear));
+    format.replace("%year", QString::number(year));
+    return format;
 }
 
 bool Song::useComposer() const

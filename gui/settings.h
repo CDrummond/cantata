@@ -58,6 +58,8 @@ public:
     bool useSystemTray();
     bool minimiseOnClose();
     bool showPopups();
+    QString popupTitleFormat();
+    QString popupTextFormat();
     bool stopOnExit();
     bool storeCoversInMpdDir();
     QString coverFilename();
@@ -161,6 +163,8 @@ public:
     void saveUseSystemTray(bool v);
     void saveMinimiseOnClose(bool v);
     void saveShowPopups(bool v);
+    void savePopupTitleFormat(const QString &v);
+    void savePopupTextFormat(const QString &v);
     void saveStoreCoversInMpdDir(bool v);
     void saveCoverFilename(const QString &v);
     void saveLibraryArtistImage(bool v);

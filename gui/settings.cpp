@@ -264,6 +264,16 @@ bool Settings::showPopups()
     return cfg.get("showPopups", false);
 }
 
+QString Settings::popupTitleFormat()
+{
+    return cfg.get("popupTitleFormat", QString());
+}
+
+QString Settings::popupTextFormat()
+{
+    return cfg.get("popupTextFormat", QString());
+}
+
 bool Settings::stopOnExit()
 {
     return cfg.get("stopOnExit", false);
@@ -781,6 +791,16 @@ void Settings::saveMinimiseOnClose(bool v)
 void Settings::saveShowPopups(bool v)
 {
     cfg.set("showPopups", v);
+}
+
+void Settings::savePopupTitleFormat(const QString &v)
+{
+    cfg.set("popupTitleFormat", v);
+}
+
+void Settings::savePopupTextFormat(const QString &v)
+{
+    cfg.set("popupTextFormat", v);
 }
 
 void Settings::saveStopOnExit(bool v)

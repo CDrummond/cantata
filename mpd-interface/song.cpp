@@ -785,22 +785,54 @@ QString Song::filePath(const QString &base) const
     return fileName;
 }
 
-QString Song::describe(bool withMarkup) const
+QString Song::describe() const
 {
     QString albumText=album.isEmpty() ? name() : displayAlbum(album, Song::albumYear(*this));
 
     if (title.isEmpty()) {
-        return withMarkup ? albumText : (QLatin1String("<b>")+albumText+QLatin1String("</b>"));
+        return QLatin1String("<b>")+albumText+QLatin1String("</b>");
     }
-    QString descr=artist.isEmpty()
+    return artist.isEmpty()
                     ? QObject::tr("<b>%1</b> on <b>%2</b>", "Song on Album").arg(title).arg(albumText)
                     : QObject::tr("<b>%1</b> by <b>%2</b> on <b>%3</b>", "Song by Artist on Album").arg(title).arg(artist).arg(albumText);
+}
 
-    if (!withMarkup) {
-        descr=descr.replace("<b>", "");
-        descr=descr.replace("</b>", "");
+QString Song::mainText() const
+{
+    if (isEmpty()) {
+        return QString();
     }
-    return descr;
+
+    QString n = name();
+    if (isStream() && !isCantataStream() && !isCdda() && !isDlnaStream()) {
+        return n.isEmpty() ? Song::unknown() : n;
+    } else if (title.isEmpty() && artist.isEmpty() && (!n.isEmpty() || !file.isEmpty())) {
+        return n.isEmpty() ? file : n;
+    } else {
+        return title+(origYear>0 && !Song::useOriginalYear() && origYear!=year ? QLatin1String(" (")+QString::number(origYear)+QLatin1Char(')') : QString());
+    }
+}
+
+QString Song::subText() const
+{
+    if (isEmpty()) {
+        return QString();
+    }
+
+    if (isStream() && !isCantataStream() && !isCdda() && !isDlnaStream()) {
+        if (artist.isEmpty() && title.isEmpty() && !name().isEmpty()) {
+            return QObject::tr("(Stream)");
+        } else {
+            return artist.isEmpty() ? title : artistSong();
+        }
+    } else if (album.isEmpty() && artist.isEmpty()) {
+        return mainText().isEmpty() ? QString() : Song::unknown();
+    } else if (album.isEmpty()) {
+        return artist;
+    } else {
+        // Artist here is always artist, and not album artist or composer
+        return artist + QString(" – ")+displayAlbum(false);
+    }
 }
 
 bool Song::useComposer() const

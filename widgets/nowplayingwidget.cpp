@@ -319,37 +319,12 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
 
 void NowPlayingWidget::update(const Song &song)
 {
-    QString name=song.name();
     currentSongFile=song.file;
     ratingWidget->setEnabled(!song.isEmpty() && Song::Standard==song.type);
     ratingWidget->setValue(0);
     updateInfo();
-    if (song.isEmpty()) {
-        track->setText(QString());
-        artist->setText(QString());
-    } else if (song.isStream() && !song.isCantataStream() && !song.isCdda() && !song.isDlnaStream()) {
-        track->setText(name.isEmpty() ? Song::unknown() : name);
-        if (song.artist.isEmpty() && song.title.isEmpty() && !name.isEmpty()) {
-            artist->setText(tr("(Stream)"));
-        } else {
-            artist->setText(song.artist.isEmpty() ? song.title : song.artistSong());
-        }
-    } else {
-        if (song.title.isEmpty() && song.artist.isEmpty() && (!name.isEmpty() || !song.file.isEmpty())) {
-            track->setText(name.isEmpty() ? song.file : name);
-        } else {
-            track->setText(song.title+(song.origYear>0 && !Song::useOriginalYear() && song.origYear!=song.year ? QLatin1String(" (")+QString::number(song.origYear)+QLatin1Char(')') : QString()));
-        }
-        if (song.album.isEmpty() && song.artist.isEmpty()) {
-            artist->setText(track->fullText().isEmpty() ? QString() : Song::unknown());
-        } else if (song.album.isEmpty()) {
-            artist->setText(song.artist);
-        } else {
-            // Artist here is always artist, and not album artist or composer
-            artist->setText(song.artist+QString(" – ")+song.displayAlbum(false));
-        }
-    }
-
+    track->setText(song.mainText());
+    artist->setText(song.subText());
     track->setContextMenuPolicy(track->fullText().isEmpty() ? Qt::NoContextMenu : Qt::ActionsContextMenu);
     artist->setContextMenuPolicy(artist->fullText().isEmpty() ? Qt::NoContextMenu : Qt::ActionsContextMenu);
 }

@@ -225,7 +225,10 @@ struct Song
     QString basicArtist() const;
     QString filePath(const QString &base=QString()) const;
     QString displayAlbum(bool useComp=true) const { return displayAlbum(useComp ? albumName() : album, displayYear()); }
-    QString describe(bool withMarkup=false) const;
+    QString describe() const;
+    // Main text + sub text for now-playing and notifications
+    QString mainText() const;
+    QString subText() const;
     bool useComposer() const;
     void populateSorts();
 //    QString basicDescription() const;

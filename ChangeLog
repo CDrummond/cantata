@@ -72,6 +72,7 @@
 52. Fetch missing covers from iTunes.
 53. Make sidebar change pages on mouse wheel events.
 54. Allow to specify the max age of files to use in smart playlists.
+55. Use same format for notifications as for now playing widget.
 
 2.2.0
 -----

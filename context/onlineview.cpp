@@ -40,7 +40,7 @@ void OnlineView::update(const Song &song, bool force)
             needToUpdate=true;
             return;
         }
-        setHeader(song.describe(true));
+        setHeader(song.describe());
         Covers::Image cImg=Covers::self()->requestImage(song, true);
         if (!cImg.img.isNull()) {
             setHtml(createPicTag(cImg.img, cImg.fileName));

@@ -67,7 +67,7 @@ public:
         int minDuration = 0;
         int maxDuration = 0;
         int maxAge = 0;
-        int numTracks = 10;
+        int numTracks = 0;
         Order order = Order_Random;
         bool orderAscending = true;
     };

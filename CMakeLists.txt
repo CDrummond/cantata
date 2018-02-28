@@ -572,6 +572,8 @@ QT5_ADD_RESOURCES(CANTATA_RC_SRCS ${CANTATA_RCS})
 QT5_WRAP_UI(CANTATA_UI_HDRS ${CANTATA_UIS})
 QT5_WRAP_CPP(CANTATA_MOC_SRCS ${CANTATA_MOC_HDRS})
 
+add_subdirectory(3rdparty/kcategorizedview)
+    
 if (WIN32)
     add_definitions(-DQXT_STATIC)
     add_subdirectory(3rdparty/qxt)

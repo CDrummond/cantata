@@ -28,7 +28,7 @@
 #include "config.h"
 #include "gui/currentcover.h"
 
-static inline qulonglong convertTime(qulonglong t)
+static inline qlonglong convertTime(qlonglong t)
 {
     return t*1000000;
 }
@@ -90,7 +90,7 @@ QString Mpris::PlaybackStatus() const
     }
 }
 
-qulonglong Mpris::Position() const
+qlonglong Mpris::Position() const
 {
     // Cant use MPDStatus, as we dont poll for track position, but use a timer instead!
     //return MPDStatus::self()->timeElapsed();

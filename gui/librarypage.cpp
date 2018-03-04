@@ -49,6 +49,7 @@ LibraryPage::LibraryPage(QWidget *p)
     view->setModel(MpdLibraryModel::self());
     connect(MpdLibraryModel::self(), SIGNAL(modelReset()), this, SLOT(modelReset()));
 
+    view->allowCategorized();
     // Settings...
     Configuration config(metaObject()->className());
     view->setMode(ItemView::Mode_DetailedTree);
@@ -79,7 +80,7 @@ LibraryPage::LibraryPage(QWidget *p)
     MenuButton *menu=new MenuButton(this);
     viewAction=createViewMenu(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                               << ItemView::Mode_DetailedTree << ItemView::Mode_List
-                              << ItemView::Mode_IconTop);
+                              << ItemView::Mode_IconTop << ItemView::Mode_Categorized);
     menu->addAction(viewAction);
 
     menu->addAction(createMenuGroup(tr("Group By"), QList<MenuItem>() << MenuItem(tr("Genre"), SqlLibraryModel::T_Genre)

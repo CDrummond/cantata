@@ -40,6 +40,7 @@ class Icon;
 class TableView;
 class QMenu;
 class Configuration;
+class KCategorizedView;
 
 class KeyEventHandler : public QObject
 {
@@ -84,6 +85,7 @@ public:
 
         Mode_List,
         Mode_IconTop,
+        Mode_Categorized,
 
         Mode_Count
     };
@@ -104,6 +106,7 @@ public:
     void save(Configuration &config);
     void allowGroupedView();
     void allowTableView(TableView *v);
+    void allowCategorized();
     void addAction(QAction *act);
     void addSeparator();
     void setMode(Mode m);
@@ -206,6 +209,7 @@ private:
     QSize listGridSize;
     GroupedView *groupedView;
     TableView *tableView;
+    KCategorizedView *categorizedView;
     Spinner *spinner;
     MessageOverlay *msgOverlay;
     QIcon bgndIcon;

@@ -572,8 +572,6 @@ QT5_ADD_RESOURCES(CANTATA_RC_SRCS ${CANTATA_RCS})
 QT5_WRAP_UI(CANTATA_UI_HDRS ${CANTATA_UIS})
 QT5_WRAP_CPP(CANTATA_MOC_SRCS ${CANTATA_MOC_HDRS})
 
-add_subdirectory(3rdparty/kcategorizedview)
-    
 if (WIN32)
     add_definitions(-DQXT_STATIC)
     add_subdirectory(3rdparty/qxt)
@@ -617,6 +615,9 @@ else ()
     ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
     install(TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 endif ()
+
+add_subdirectory(3rdparty/kcategorizedview)
+target_link_libraries(cantata kcategorizedview)
 
 if (WIN32 OR APPLE OR HAIKU)
     add_subdirectory(3rdparty/qtsingleapplication)

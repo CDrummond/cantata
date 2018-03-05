@@ -175,12 +175,43 @@ void SqlLibraryModel::libraryUpdated()
     }
     case T_Album: {
         QList<LibraryDb::Album> albums=db->getAlbums(QString(), QString(), albumSort);
+        categories.clear();
         if (!albums.isEmpty())  {
+            QMap<QString, int> knownCats;
             for (const LibraryDb::Album &album: albums) {
+                QString name;
+                switch(albumSort) {
+                case LibraryDb::AS_AlArYr:
+                case LibraryDb::AS_AlYrAr:
+                    name=album.name.left(1);
+                    break;
+                case LibraryDb::AS_ArAlYr:
+                case LibraryDb::AS_ArYrAl:
+                    name=album.artist;
+                    break;
+                case LibraryDb::AS_YrAlAr:
+                case LibraryDb::AS_YrArAl:
+                    name=QString::number(album.year);
+                    break;
+                case LibraryDb::AS_Modified:
+                    // TODO????
+                    break;
+                }
+
+                const auto existing = knownCats.find(name);
+                int cat = -1;
+                if (!name.isEmpty()) {
+                    if (knownCats.constEnd()==existing) {
+                        cat=categories.size();
+                        categories.append(name);
+                    } else {
+                        cat=existing.value();
+                    }
+                }
                 QString trackInfo = tr("%n Tracks (%1)", "", album.trackCount).arg(Utils::formatTime(album.duration, true));
                 root->add(new AlbumItem(T_Album==tl && album.identifyById ? QString() : album.artist,
                                         album.id, Song::displayAlbum(album.name, album.year),
-                                        T_Album==tl ? album.artist : trackInfo, T_Album==tl ? trackInfo : QString(), root));
+                                        T_Album==tl ? album.artist : trackInfo, T_Album==tl ? trackInfo : QString(), root, cat));
             }
         }
         break;

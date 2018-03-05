@@ -41,6 +41,7 @@ class TableView;
 class QMenu;
 class Configuration;
 class KCategorizedView;
+class KCategorizedSortFilterProxyModel;
 
 class KeyEventHandler : public QObject
 {
@@ -210,6 +211,7 @@ private:
     GroupedView *groupedView;
     TableView *tableView;
     KCategorizedView *categorizedView;
+    KCategorizedSortFilterProxyModel *categorizedProxy;
     Spinner *spinner;
     MessageOverlay *msgOverlay;
     QIcon bgndIcon;

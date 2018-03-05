@@ -41,7 +41,9 @@
 #include "support/actioncollection.h"
 #include "support/configuration.h"
 #include "support/flattoolbutton.h"
+#include "kcategorizedview/kcategorydrawer.h"
 #include "kcategorizedview/kcategorizedview.h"
+#include "kcategorizedview/kcategorizedsortfilterproxymodel.h"
 #include <QStyleOption>
 #include <QStyle>
 #include <QPainter>
@@ -661,6 +663,7 @@ ItemView::ItemView(QWidget *p)
     , groupedView(nullptr)
     , tableView(nullptr)
     , categorizedView(nullptr)
+    , categorizedProxy(nullptr)
     , spinner(nullptr)
     , msgOverlay(nullptr)
     , performedSearch(false)
@@ -826,6 +829,7 @@ void ItemView::allowCategorized()
         #ifdef Q_OS_MAC
         categorizedView->setAttribute(Qt::WA_MacShowFocusRect, 0);
         #endif
+        categorizedView->setCategoryDrawer(new KCategoryDrawer(categorizedView));
     }
 }
 
@@ -886,6 +890,9 @@ void ItemView::setMode(Mode m)
             tableView->setModel(nullptr);
         }
         if (categorizedView) {
+            if (categorizedProxy) {
+                categorizedProxy->setSourceModel(nullptr);
+            }
             categorizedView->setModel(nullptr);
         }
         treeView->setModel(itemModel);
@@ -904,6 +911,9 @@ void ItemView::setMode(Mode m)
             tableView->setModel(nullptr);
         }
         if (categorizedView) {
+            if (categorizedProxy) {
+                categorizedProxy->setSourceModel(nullptr);
+            }
             categorizedView->setModel(nullptr);
         }
         groupedView->setHidden(false);
@@ -921,6 +931,9 @@ void ItemView::setMode(Mode m)
             groupedView->setModel(nullptr);
         }
         if (categorizedView) {
+            if (categorizedProxy) {
+                categorizedProxy->setSourceModel(nullptr);
+            }
             categorizedView->setModel(nullptr);
         }
         tableView->setHidden(false);
@@ -944,7 +957,12 @@ void ItemView::setMode(Mode m)
         }
         categorizedView->setHidden(false);
         treeView->setHidden(true);
-        categorizedView->setModel(itemModel);
+        if (!categorizedProxy) {
+            categorizedProxy=new KCategorizedSortFilterProxyModel(this);
+        }
+        categorizedProxy->setSourceModel(itemModel);
+        categorizedView->setModel(categorizedProxy);
+        categorizedProxy->setCategorizedModel(true);
         //if (dynamic_cast<ProxyModel *>(itemModel)) {
         //    static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
         //}
@@ -960,6 +978,9 @@ void ItemView::setMode(Mode m)
             tableView->setModel(nullptr);
         }
         if (categorizedView) {
+            if (categorizedProxy) {
+                categorizedProxy->setSourceModel(nullptr);
+            }
             categorizedView->setModel(nullptr);
         }
         listView->setModel(itemModel);

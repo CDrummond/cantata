@@ -530,7 +530,7 @@ void KCategorizedView::setModel(QAbstractItemModel *model)
     QListView::setModel(model);
 
     // if the model already had information inserted, update our data structures to it
-    if (model->rowCount()) {
+    if (model && model->rowCount()) {
         slotLayoutChanged();
     }
 }

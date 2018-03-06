@@ -40,8 +40,7 @@ class Icon;
 class TableView;
 class QMenu;
 class Configuration;
-class KCategorizedView;
-class KCategorizedSortFilterProxyModel;
+class CategorizedView;
 
 class KeyEventHandler : public QObject
 {
@@ -210,8 +209,7 @@ private:
     QSize listGridSize;
     GroupedView *groupedView;
     TableView *tableView;
-    KCategorizedView *categorizedView;
-    KCategorizedSortFilterProxyModel *categorizedProxy;
+    CategorizedView *categorizedView;
     Spinner *spinner;
     MessageOverlay *msgOverlay;
     QIcon bgndIcon;

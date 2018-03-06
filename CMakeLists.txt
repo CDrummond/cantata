@@ -317,7 +317,7 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp widgets/songdialog.cpp widgets/stretchheaderview.cpp
     widgets/tableview.cpp widgets/thinsplitterhandle.cpp widgets/coverwidget.cpp widgets/ratingwidget.cpp widgets/notelabel.cpp
     widgets/selectorlabel.cpp widgets/titlewidget.cpp widgets/multipagewidget.cpp widgets/singlepagewidget.cpp widgets/stackedpagewidget.cpp
-    widgets/mirrormenu.cpp widgets/genrecombo.cpp widgets/volumecontrol.cpp
+    widgets/mirrormenu.cpp widgets/genrecombo.cpp widgets/volumecontrol.cpp widgets/categorizedview.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
     context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp context/togglelist.cpp
@@ -359,7 +359,7 @@ set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
     widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h widgets/tableview.h
     widgets/coverwidget.h widgets/ratingwidget.h widgets/selectorlabel.h widgets/titlewidget.h widgets/multipagewidget.h
     widgets/stackedpagewidget.h widgets/mirrormenu.h widgets/genrecombo.h widgets/menubutton.h widgets/songdialog.h widgets/notelabel.h
-    widgets/volumecontrol.h widgets/textbrowser.h
+    widgets/volumecontrol.h widgets/textbrowser.h widgets/categorizedview.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h context/contextsettings.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h

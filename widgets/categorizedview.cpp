@@ -97,10 +97,14 @@ void CategorizedView::mouseReleaseEvent(QMouseEvent *event)
 QModelIndexList CategorizedView::selectedIndexes(bool sorted) const
 {
     QModelIndexList indexes=selectionModel() ? selectionModel()->selectedIndexes() : QModelIndexList();
-    if (sorted) {
-        qSort(indexes);
+    QModelIndexList actual;
+    for (const auto &idx: indexes) {
+        actual.append(proxy->mapToSource(idx));
     }
-    return indexes;
+    if (sorted) {
+        qSort(actual);
+    }
+    return actual;
 }
 
 void CategorizedView::setModel(QAbstractItemModel *m)

@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2011-2018 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) s2018 Craig Drummond <craig.p.drummond@gmail.com>
  *
  * ----
  *
@@ -21,23 +21,23 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef LISTVIEW_H
-#define LISTVIEW_H
+#ifndef CATEGORIZEDVIEW_H
+#define CATEGORIZEDVIEW_H
 
-#include <QListView>
-#include <QPixmap>
+#include "kcategorizedview/kcategorizedview.h"
 #include "treeview.h"
 
 class QIcon;
 class QMenu;
+class KCategorizedSortFilterProxyModel;
 
-class ListView : public QListView
+class CategorizedView : public KCategorizedView
 {
     Q_OBJECT
 
 public:
-    ListView(QWidget *parent=nullptr);
-    ~ListView() override;
+    CategorizedView(QWidget *parent=nullptr);
+    ~CategorizedView() override;
 
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
     bool haveSelectedItems() const;
@@ -71,6 +71,7 @@ private:
     QMenu *menu;
     QPixmap bgnd;
     double zoomLevel;
+    KCategorizedSortFilterProxyModel *proxy;
 };
 
 #endif

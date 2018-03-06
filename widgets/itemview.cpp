@@ -24,6 +24,7 @@
 #include "itemview.h"
 #include "groupedview.h"
 #include "tableview.h"
+#include "categorizedview.h"
 #include "messageoverlay.h"
 #include "models/roles.h"
 #include "gui/covers.h"
@@ -41,9 +42,6 @@
 #include "support/actioncollection.h"
 #include "support/configuration.h"
 #include "support/flattoolbutton.h"
-#include "kcategorizedview/kcategorydrawer.h"
-#include "kcategorizedview/kcategorizedview.h"
-#include "kcategorizedview/kcategorizedsortfilterproxymodel.h"
 #include <QStyleOption>
 #include <QStyle>
 #include <QPainter>
@@ -145,18 +143,30 @@ static inline double subTextAlpha(bool selected)
     return selected ? 0.7 : 0.5;
 }
 
-static int zoomedSize(ListView *view, int size) {
-    return view ? view->zoom()*size : size;
+static int zoomedSize(QListView *view, int size) {
+    return view
+            ? qobject_cast<ListView *>(view)
+              ? static_cast<ListView *>(view)->zoom()*size
+              : qobject_cast<CategorizedView *>(view)
+                ? static_cast<CategorizedView *>(view)->zoom()*size
+                : size
+            : size;
 }
 
-static QSize zoomedSize(ListView *view, QSize size) {
-    return view ? view->zoom()*size : size;
+static QSize zoomedSize(QListView *view, QSize size) {
+    return view
+            ? qobject_cast<ListView *>(view)
+              ? static_cast<ListView *>(view)->zoom()*size
+              : qobject_cast<CategorizedView *>(view)
+                ? static_cast<CategorizedView *>(view)->zoom()*size
+                : size
+            : size;
 }
 
 class ListDelegate : public ActionItemDelegate
 {
 public:
-    ListDelegate(ListView *v, QAbstractItemView *p)
+    ListDelegate(QListView *v, QAbstractItemView *p)
         : ActionItemDelegate(p)
         , view(v)
         #ifdef RESPONSIVE_LAYOUT
@@ -449,7 +459,7 @@ public:
     #endif
 
 protected:
-    ListView *view;
+    QListView *view;
     #ifdef RESPONSIVE_LAYOUT
     int viewGap;
     #endif
@@ -663,7 +673,6 @@ ItemView::ItemView(QWidget *p)
     , groupedView(nullptr)
     , tableView(nullptr)
     , categorizedView(nullptr)
-    , categorizedProxy(nullptr)
     , spinner(nullptr)
     , msgOverlay(nullptr)
     , performedSearch(false)
@@ -815,12 +824,12 @@ void ItemView::allowTableView(TableView *v)
 void ItemView::allowCategorized()
 {
     if (!categorizedView) {
-        categorizedView=new KCategorizedView(stackedWidget);
+        categorizedView=new CategorizedView(stackedWidget);
         categorizedView->setParent(stackedWidget);
         stackedWidget->addWidget(categorizedView);
         categorizedView->setProperty(constPageProp, stackedWidget->count()-1);
         ViewEventHandler *viewHandler=new ViewEventHandler(nullptr, categorizedView);
-        // TODO categorizedView->installFilter(viewHandler);
+        categorizedView->installFilter(viewHandler);
         connect(categorizedView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
         connect(categorizedView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(categorizedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
@@ -829,7 +838,7 @@ void ItemView::allowCategorized()
         #ifdef Q_OS_MAC
         categorizedView->setAttribute(Qt::WA_MacShowFocusRect, 0);
         #endif
-        categorizedView->setCategoryDrawer(new KCategoryDrawer(categorizedView));
+        categorizedView->setItemDelegate(new ListDelegate(categorizedView, categorizedView));
     }
 }
 
@@ -890,9 +899,6 @@ void ItemView::setMode(Mode m)
             tableView->setModel(nullptr);
         }
         if (categorizedView) {
-            if (categorizedProxy) {
-                categorizedProxy->setSourceModel(nullptr);
-            }
             categorizedView->setModel(nullptr);
         }
         treeView->setModel(itemModel);
@@ -911,9 +917,6 @@ void ItemView::setMode(Mode m)
             tableView->setModel(nullptr);
         }
         if (categorizedView) {
-            if (categorizedProxy) {
-                categorizedProxy->setSourceModel(nullptr);
-            }
             categorizedView->setModel(nullptr);
         }
         groupedView->setHidden(false);
@@ -931,9 +934,6 @@ void ItemView::setMode(Mode m)
             groupedView->setModel(nullptr);
         }
         if (categorizedView) {
-            if (categorizedProxy) {
-                categorizedProxy->setSourceModel(nullptr);
-            }
             categorizedView->setModel(nullptr);
         }
         tableView->setHidden(false);
@@ -957,16 +957,9 @@ void ItemView::setMode(Mode m)
         }
         categorizedView->setHidden(false);
         treeView->setHidden(true);
-        if (!categorizedProxy) {
-            categorizedProxy=new KCategorizedSortFilterProxyModel(this);
-        }
-        categorizedProxy->setSourceModel(itemModel);
-        categorizedView->setModel(categorizedProxy);
-        categorizedProxy->setCategorizedModel(true);
-        //if (dynamic_cast<ProxyModel *>(itemModel)) {
-        //    static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
-        //}
+        categorizedView->setModel(itemModel);
         stackIndex=categorizedView->property(constPageProp).toInt();
+        categorizedView->setGridSize(zoomedSize(listView, iconGridSize));
     } else {
         stackIndex=1;
         treeView->setModel(nullptr);
@@ -978,9 +971,6 @@ void ItemView::setMode(Mode m)
             tableView->setModel(nullptr);
         }
         if (categorizedView) {
-            if (categorizedProxy) {
-                categorizedProxy->setSourceModel(nullptr);
-            }
             categorizedView->setModel(nullptr);
         }
         listView->setModel(itemModel);
@@ -1023,7 +1013,7 @@ QModelIndexList ItemView::selectedIndexes(bool sorted) const
     } else if (Mode_Table==mode) {
         return tableView->selectedIndexes(sorted);
     } else if (Mode_Categorized==mode) {
-        return QModelIndexList(); // categorizedView->selectedIndexes(sorted); TODO
+        return categorizedView->selectedIndexes(sorted);
     }
     return listView->selectedIndexes(sorted);
 }
@@ -1070,7 +1060,7 @@ void ItemView::setInfoText(const QString &info)
         tableView->setInfoText(info);
     }
     if (categorizedView) {
-        // TODO categorizedView->setInfoText(info);
+        categorizedView->setInfoText(info);
     }
 }
 
@@ -1254,12 +1244,11 @@ void ItemView::setDeleteAction(QAction *act)
         }
     }
     if (categorizedView) {
-        // TODO
-        //if (!categorizedView->filter() || !qobject_cast<KeyEventHandler *>(categorizedView->filter())) {
-        //    categorizedView->installEventFilter(new KeyEventHandler(categorizedView, act));
-        //} else {
-        //    static_cast<KeyEventHandler *>(categorizedView->filter())->setDeleteAction(act);
-        //}
+        if (!categorizedView->filter() || !qobject_cast<KeyEventHandler *>(categorizedView->filter())) {
+            categorizedView->installEventFilter(new KeyEventHandler(categorizedView, act));
+        } else {
+            static_cast<KeyEventHandler *>(categorizedView->filter())->setDeleteAction(act);
+        }
     }
 }
 
@@ -1411,7 +1400,7 @@ void ItemView::setBackgroundImage(const QIcon &icon)
     } else if (Mode_Table==mode && tableView) {
         tableView->setBackgroundImage(bgndIcon);
     } else if (Mode_Categorized==mode && categorizedView) {
-        // TODO categorizedView->setBackgroundImage(bgndIcon);
+        categorizedView->setBackgroundImage(bgndIcon);
     } else if (Mode_List==mode || Mode_IconTop==mode) {
         listView->setBackgroundImage(bgndIcon);
     }

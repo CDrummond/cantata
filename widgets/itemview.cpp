@@ -172,6 +172,7 @@ public:
         #ifdef RESPONSIVE_LAYOUT
         , viewGap(Utils::scaleForDpi(8))
         #endif
+        , isCategorizedView(v && qobject_cast<CategorizedView *>(v))
     {
     }
 
@@ -246,7 +247,7 @@ public:
         QStyleOptionViewItem opt(option);
         opt.showDecorationSelected=true;
 
-        if (!underMouse) {
+        if (!isCategorizedView && !underMouse) {
             if (mouseOver && !selected) {
                 drawBgnd=false;
             }
@@ -463,6 +464,7 @@ protected:
     #ifdef RESPONSIVE_LAYOUT
     int viewGap;
     #endif
+    bool isCategorizedView;
 };
 
 class TreeDelegate : public ListDelegate
@@ -828,8 +830,9 @@ void ItemView::allowCategorized()
         categorizedView->setParent(stackedWidget);
         stackedWidget->addWidget(categorizedView);
         categorizedView->setProperty(constPageProp, stackedWidget->count()-1);
-        ViewEventHandler *viewHandler=new ViewEventHandler(nullptr, categorizedView);
-        categorizedView->installFilter(viewHandler);
+        //KCategorizedView seems to handle mouse-over events better
+        //ViewEventHandler *viewHandler=new ViewEventHandler(nullptr, categorizedView);
+        //categorizedView->installFilter(viewHandler);
         connect(categorizedView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
         connect(categorizedView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(categorizedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));

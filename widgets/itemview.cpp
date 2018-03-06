@@ -834,9 +834,9 @@ void ItemView::allowCategorized()
         //ViewEventHandler *viewHandler=new ViewEventHandler(nullptr, categorizedView);
         //categorizedView->installFilter(viewHandler);
         connect(categorizedView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
-        connect(categorizedView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
-        connect(categorizedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
-        connect(categorizedView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
+        connect(categorizedView, SIGNAL(activated(const QModelIndex &)), this, SLOT(activateItem(const QModelIndex &)));
+        connect(categorizedView, SIGNAL(itemDoubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
+        connect(categorizedView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
         categorizedView->setProperty(ProxyStyle::constModifyFrameProp, ProxyStyle::VF_Side|ProxyStyle::VF_Top);
         #ifdef Q_OS_MAC
         categorizedView->setAttribute(Qt::WA_MacShowFocusRect, 0);

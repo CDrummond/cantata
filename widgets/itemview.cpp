@@ -172,7 +172,6 @@ public:
         #ifdef RESPONSIVE_LAYOUT
         , viewGap(Utils::scaleForDpi(8))
         #endif
-        , isListView(v && qobject_cast<ListView *>(v))
     {
     }
 
@@ -213,11 +212,10 @@ public:
         Q_UNUSED(option)
         if (view && QListView::IconMode==view->viewMode()) {
             #ifdef RESPONSIVE_LAYOUT
-            if (isListView) {
-                return QSize(calcItemWidth(), zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*2.5));
-            }
-            #endif
+            return QSize(calcItemWidth(), zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*2.5));
+            #else
             return QSize(zoomedSize(view, gridCoverSize)+8, zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*2.5));
+            #endif
         } else {
             int imageSize = index.data(Cantata::Role_ListImage).toBool() ? listCoverSize : 0;
             // TODO: Any point to checking one-line here? All models return sub-text...
@@ -440,7 +438,7 @@ public:
         if (drawBgnd && mouseOver) {
             QRect rect(AP_VTop==actionPos ? option.rect : r);
             #ifdef RESPONSIVE_LAYOUT
-            if (isListView && AP_VTop==actionPos) {
+            if (AP_VTop==actionPos) {
                 rect.adjust(0, 0, actionPosAdjust(), 0);
             }
             #endif
@@ -456,7 +454,7 @@ public:
     virtual QWidget * itemView() const { return view; }
     #ifdef RESPONSIVE_LAYOUT
     int actionPosAdjust() const {
-        return isListView && view && QListView::IconMode==view->viewMode() ? -(((calcItemWidth()-(zoomedSize(view, gridCoverSize)+viewGap))/2.0)+0.5) : 0;
+        return view && QListView::IconMode==view->viewMode() ? -(((calcItemWidth()-(zoomedSize(view, gridCoverSize)+viewGap))/2.0)+0.5) : 0;
     }
     #endif
 
@@ -465,7 +463,6 @@ protected:
     #ifdef RESPONSIVE_LAYOUT
     int viewGap;
     #endif
-    bool isListView;
 };
 
 class TreeDelegate : public ListDelegate

@@ -233,3 +233,5 @@ void SyncCollectionWidget::itemActivated(const QModelIndex &index)
         tree->setExpanded(index, !tree->isExpanded(index));
     }
 }
+
+#include "moc_synccollectionwidget.cpp"

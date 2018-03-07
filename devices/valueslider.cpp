@@ -101,3 +101,5 @@ void ValueSlider::onSliderChanged(int value)
     midLabel->setText(text);
     emit valueChanged(value);
 }
+
+#include "moc_valueslider.cpp"

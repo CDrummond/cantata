@@ -1283,3 +1283,5 @@ void PodcastService::currentMpdSong(const Song &s)
         }
     }
 }
+
+#include "moc_podcastservice.cpp"

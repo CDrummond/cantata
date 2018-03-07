@@ -153,3 +153,5 @@ void ShortcutsSettingsWidget::toggledCustomOrDefault() {
 void ShortcutsSettingsWidget::save() {
   _shortcutsModel->commit();
 }
+
+#include "moc_shortcutssettingswidget.cpp"

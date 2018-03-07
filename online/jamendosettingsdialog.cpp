@@ -46,3 +46,5 @@ bool JamendoSettingsDialog::run(bool mp3)
     fmt->setCurrentIndex(mp3 ? 0 : 1);
     return QDialog::Accepted==Dialog::exec();
 }
+
+#include "moc_jamendosettingsdialog.cpp"

@@ -258,3 +258,5 @@ void InitialSettingsWizard::reject()
     QTimer::singleShot(0, qApp, SLOT(quit()));
     QDialog::reject();
 }
+
+#include "moc_initialsettingswizard.cpp"

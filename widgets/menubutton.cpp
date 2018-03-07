@@ -111,3 +111,5 @@ bool MenuButton::eventFilter(QObject *o, QEvent *e)
 
     return ToolButton::eventFilter(o, e);
 }
+
+#include "moc_menubutton.cpp"

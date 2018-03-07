@@ -661,3 +661,5 @@ void StreamSearchPage::addedToFavourites(const QString &name)
 {
     view->showMessage(tr("Added '%1'' to favorites").arg(name), constMsgDisplayTime);
 }
+
+#include "moc_streamspage.cpp"

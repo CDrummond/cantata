@@ -109,3 +109,5 @@ void StackedPageWidget::removeItems()
         static_cast<StackedPageWidget *>(w)->removeItems();
     }
 }
+
+#include "moc_stackedpagewidget.cpp"

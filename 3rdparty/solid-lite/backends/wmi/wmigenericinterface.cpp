@@ -53,4 +53,4 @@ bool GenericInterface::propertyExists(const QString &key) const
     return m_device->propertyExists(key);
 }
 
-//#include "backends/wmi/wmigenericinterface.moc"
+#include "backends/wmi/moc_wmigenericinterface.cpp"

@@ -51,3 +51,5 @@ void ScrobblingStatus::scrobblerChanged()
 {
     btn->setToolTip(tr("%1: Scrobble Tracks").arg(Scrobbler::self()->activeScrobbler()));
 }
+
+#include "moc_scrobblingstatus.cpp"

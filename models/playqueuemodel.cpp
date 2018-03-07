@@ -1695,3 +1695,5 @@ QStringList PlayQueueModel::filenames()
     }
     return names;
 }
+
+#include "moc_playqueuemodel.cpp"

@@ -160,3 +160,5 @@ QAction * SelectorLabel::action(int index) const
     }
     return actions.at(index);
 }
+
+#include "moc_selectorlabel.cpp"

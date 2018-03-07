@@ -70,7 +70,6 @@ endif()
 
 if (AVAHI_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS} gui/findmpddialog.cpp gui/avahidiscovery.cpp gui/avahipoll.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/findmpddialog.h gui/avahidiscovery.cpp gui/avahipoll.h gui/avahidiscovery.h)
     set(CANTATA_UIS ${CANTATA_UIS} gui/findmpddialog.ui)
 
     set(CANTATA_LIBS ${CANTATA_LIBS} ${AVAHI_LIBRARIES})
@@ -214,6 +213,7 @@ find_package(Qt5Concurrent REQUIRED)
 find_package(Qt5Svg REQUIRED)
 find_package(Qt5Sql REQUIRED)
 
+set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_STANDARD 11)
 
@@ -256,19 +256,16 @@ if (ENABLE_HTTP_STREAM_PLAYBACK)
         set(CANTATA_LIBS ${CANTATA_LIBS} ${Qt5Multimedia_LIBRARIES})
     endif ()
     set(CANTATA_SRCS ${CANTATA_SRCS} mpd-interface/httpstream.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} mpd-interface/httpstream.h)
 endif ()
 
 find_package(ZLIB REQUIRED)
 
 if (APPLE)
     set(CANTATA_SRCS ${CANTATA_SRCS} mac/dockmenu.cpp mac/macnotify.mm)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} mac/dockmenu.h)
     find_package(IOKit)
     if (IOKIT_FOUND)
         set(CANTATA_LIBS ${CANTATA_LIBS} ${IOKIT_LIBRARY})
         set(CANTATA_SRCS ${CANTATA_SRCS} mac/powermanagement.cpp)
-        set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} mac/powermanagement.h)
     endif ()
     find_package(Foundation REQUIRED)
     set(CANTATA_LIBS ${CANTATA_LIBS} ${FOUNDATION_LIBRARY})
@@ -307,7 +304,7 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     gui/settings.cpp gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp gui/customactionssettings.cpp
     gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/customactions.cpp
     gui/folderpage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
-    gui/main.cpp gui/covers.cpp gui/currentcover.cpp gui/mpdbrowsepage.cpp gui/localfolderpage.cpp
+    gui/main.cpp gui/covers.cpp gui/currentcover.cpp gui/mpdbrowsepage.cpp gui/localfolderpage.cpp gui/multimediakeysinterface.cpp
     devices/deviceoptions.cpp
     db/librarydb.cpp db/mpdlibrarydb.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/nowplayingwidget.cpp
@@ -343,38 +340,6 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     scrobbling/scrobbler.cpp scrobbling/pausabletimer.cpp scrobbling/scrobblingsettings.cpp scrobbling/scrobblingstatus.cpp
     scrobbling/scrobblinglove.cpp
     http/httpserver.cpp)
-set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
-    gui/initialsettingswizard.h gui/mainwindow.h gui/mpdbrowsepage.h gui/librarypage.h gui/folderpage.h gui/localfolderpage.h
-    gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h
-    gui/coverdialog.h gui/searchpage.h gui/customactions.h gui/customactionssettings.h gui/covers.h gui/currentcover.h
-    models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
-    models/playqueueproxymodel.h models/actionmodel.h models/browsemodel.h  models/searchmodel.h models/sqllibrarymodel.h
-    models/mpdlibrarymodel.h models/mpdsearchmodel.h models/digitallyimported.h models/streamsearchmodel.h models/localbrowsemodel.h
-    mpd-interface/mpdconnection.h mpd-interface/mpdstats.h mpd-interface/mpdstatus.h
-    db/librarydb.h db/mpdlibrarydb.h
-    network/networkaccessmanager.h
-    streams/streamfetcher.h
-    widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/nowplayingwidget.h widgets/actionlabel.h
-    widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h widgets/singlepagewidget.h
-    widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h widgets/tableview.h
-    widgets/coverwidget.h widgets/ratingwidget.h widgets/selectorlabel.h widgets/titlewidget.h widgets/multipagewidget.h
-    widgets/stackedpagewidget.h widgets/mirrormenu.h widgets/genrecombo.h widgets/menubutton.h widgets/songdialog.h widgets/notelabel.h
-    widgets/volumecontrol.h widgets/textbrowser.h widgets/categorizedview.h
-    context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h context/contextsettings.h
-    context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
-    context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
-    context/lyricsettings.h context/onlineview.h
-    streams/streamspage.h streams/digitallyimportedsettings.h streams/streamssettings.h
-    streams/streamdialog.h models/streamsmodel.h streams/streamproviderlistdialog.h
-    online/onlineservicespage.h online/onlinedbservice.h online/onlinedbwidget.h online/magnatunesettingsdialog.h
-    online/soundcloudservice.h online/onlinesearchwidget.h online/podcastservice.h online/podcastsearchdialog.h
-    online/podcastsettingsdialog.h online/podcastwidget.h  online/jamendoservice.h online/jamendosettingsdialog.h online/magnatuneservice.h
-    online/onlinesearchservice.h
-    db/onlinedb.h
-    playlists/dynamicplaylists.h playlists/playlistruledialog.h playlists/dynamicplaylistspage.h playlists/playlistrulesdialog.h
-    playlists/playlistspage.h playlists/storedplaylistspage.h playlists/rulesplaylists.h playlists/smartplaylists.h
-    playlists/smartplaylistspage.h
-    scrobbling/scrobbler.h scrobbling/scrobblingsettings.h scrobbling/scrobblingstatus.h scrobbling/scrobblinglove.h)
 set(CANTATA_UIS ${CANTATA_UIS}
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui
     context/togglelist.ui context/othersettings.ui
@@ -398,17 +363,13 @@ endif ()
 
 if (ENABLE_HTTP_SERVER)
     set(CANTATA_SRCS ${CANTATA_SRCS} http/httpsocket.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} http/httpserver.h http/httpsocket.h)
 endif ()
 
 if (QT_QTDBUS_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS} dbus/gnomemediakeys.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/gnomemediakeys.h)
     set_SOURCE_FILES_PROPERTIES(dbus/org.gnome.SettingsDaemon.xml dbus/org.gnome.SettingsDaemon.MediaKeys.xml PROPERTIES NO_NAMESPACE TRUE)
     set(CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/powermanagement.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/mpris.h dbus/powermanagement.h)
     set(CANTATA_SRCS ${CANTATA_SRCS} dbus/notify.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/notify.h)
 
     qt5_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.Player.xml dbus/mpris.h Mpris)
     qt5_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.root.xml dbus/mpris.h Mpris)
@@ -424,14 +385,12 @@ endif ()
 
 if (NOT WIN32 AND NOT APPLE)
     set(CANTATA_SRCS ${CANTATA_SRCS} devices/mountpoints.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mountpoints.h)
 endif ()
 
 set(CANTATA_RCS cantata.qrc cantata_media.qrc)
 
 if (TAGLIB_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS}  tags/tageditor.cpp tags/trackorganiser.cpp devices/filenameschemedialog.cpp widgets/tagspinbox.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} tags/tageditor.h tags/trackorganiser.h devices/filenameschemedialog.h devices/device.h widgets/tagspinbox.h)
     set(CANTATA_UIS ${CANTATA_UIS} tags/tageditor.ui tags/trackorganiser.ui devices/filenameschemedialog.ui)
 
     # Cantata still links to taglib, even if external tag reader/writer is used, because JamendoService uses taglib for ID3 genres.
@@ -450,39 +409,32 @@ if (TAGLIB_FOUND)
 
     if (FFMPEG_FOUND OR MPG123_FOUND)
         set(CANTATA_SRCS ${CANTATA_SRCS} replaygain/albumscanner.cpp replaygain/rgdialog.cpp replaygain/tagreader.cpp replaygain/jobcontroller.cpp)
-        set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} replaygain/albumscanner.h replaygain/rgdialog.h replaygain/tagreader.h replaygain/jobcontroller.h)
         set(ENABLE_REPLAYGAIN_SUPPORT 1)
         add_subdirectory(replaygain)
     endif ()
     set(CANTATA_SRCS ${CANTATA_SRCS} tags/taghelperiface.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} tags/taghelperiface.h)
     add_subdirectory(tags)
 
     if (ENABLE_DEVICES_SUPPORT)
         add_subdirectory(3rdparty/solid-lite)
         if (MTP_FOUND)
             set(CANTATA_SRCS ${CANTATA_SRCS} devices/mtpdevice.cpp)
-            set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mtpdevice.h)
             include_directories(${MTP_INCLUDE_DIR})
             set(CANTATA_LIBS ${CANTATA_LIBS} ${MTP_LIBRARIES})
         endif ()
         if (CDDB_FOUND OR MUSICBRAINZ5_FOUND)
             if (CDDB_FOUND)
                 set(CANTATA_SRCS ${CANTATA_SRCS} devices/cddbinterface.cpp)
-                set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/cddbinterface.h)
                 include_directories(${CDDB_INCLUDE_DIR})
                 set(CANTATA_LIBS ${CANTATA_LIBS} ${CDDB_LIBS})
             endif ()
             if (MUSICBRAINZ5_FOUND)
                 set(CANTATA_SRCS ${CANTATA_SRCS} devices/musicbrainz.cpp)
-                set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/musicbrainz.h)
                 include_directories(${MUSICBRAINZ5_INCLUDE_DIRS})
                 set(CANTATA_LIBS ${CANTATA_LIBS} ${MUSICBRAINZ5_LIBRARIES})
             endif ()
             set(CANTATA_SRCS ${CANTATA_SRCS} devices/audiocddevice.cpp devices/cddbselectiondialog.cpp
                  devices/cdparanoia.cpp devices/audiocdsettings.cpp devices/extractjob.cpp devices/albumdetailsdialog.cpp)
-            set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/audiocddevice.h devices/extractjob.h
-                 devices/albumdetailsdialog.h devices/cddbselectiondialog.h devices/audiocdsettings.h)
             set(CANTATA_UIS ${CANTATA_UIS} devices/albumdetails.ui devices/audiocdsettings.ui)
             # If CDDB/MusicBrainz5 found - then CDParanoia must have been!
             if (CDIOPARANOIA_FOUND)
@@ -501,19 +453,12 @@ if (TAGLIB_FOUND)
                 devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp
                 devices/synccollectionwidget.cpp
                 online/onlinedevice.cpp models/musiclibrarymodel.cpp)
-        set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/devicespage.h devices/filejob.h
-                devices/fsdevice.h devices/umsdevice.h models/devicesmodel.h
-                devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
-                devices/transcodingjob.h devices/valueslider.h devices/syncdialog.h
-                devices/synccollectionwidget.h online/onlinedevice.h models/musiclibrarymodel.h)
         set(CANTATA_UIS ${CANTATA_UIS} devices/actiondialog.ui devices/devicepropertieswidget.ui
                 devices/synccollectionwidget.ui)
 
         if (ENABLE_REMOTE_DEVICES)
             set(CANTATA_SRCS ${CANTATA_SRCS} devices/remotefsdevice.cpp devices/remotedevicepropertiesdialog.cpp
                 devices/remotedevicepropertieswidget.cpp)
-            set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/remotefsdevice.h devices/remotedevicepropertiesdialog.h
-                devices/remotedevicepropertieswidget.h)
             set(CANTATA_UIS ${CANTATA_UIS} devices/remotedevicepropertieswidget.ui)
             qt5_add_dbus_interfaces(CANTATA_SRCS devices/mounter/${PROJECT_REV_URL}.mounter.xml)
             add_subdirectory(devices/mounter)
@@ -529,12 +474,10 @@ endif ()
 
 if (ENABLE_PROXY_CONFIG)
     set(CANTATA_SRCS ${CANTATA_SRCS} network/proxysettings.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} network/proxysettings.h)
     set(CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui)
 endif ()
 
 if (WIN32 OR APPLE OR HAIKU)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/singleapplication.h)
     set(CANTATA_SRCS ${CANTATA_SRCS} gui/singleapplication.cpp)
 endif ()
 if (WIN32)
@@ -566,21 +509,19 @@ elseif (APPLE)
 endif ()
 
 set(CANTATA_SRCS ${CANTATA_SRCS} gui/shortcutssettingspage.cpp gui/mediakeys.cpp)
-set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/multimediakeysinterface.h)
 
 QT5_ADD_RESOURCES(CANTATA_RC_SRCS ${CANTATA_RCS})
 QT5_WRAP_UI(CANTATA_UI_HDRS ${CANTATA_UIS})
-QT5_WRAP_CPP(CANTATA_MOC_SRCS ${CANTATA_MOC_HDRS})
 
 if (WIN32)
     add_definitions(-DQXT_STATIC)
     add_subdirectory(3rdparty/qxt)
     set(CANTATA_SRCS ${CANTATA_SRCS} gui/qxtmediakeys.cpp)
     set(CMAKE_BUILD_TYPE "Release")
-    ADD_EXECUTABLE(cantata WIN32 ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
+    ADD_EXECUTABLE(cantata WIN32 ${CANTATA_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
     install(TARGETS cantata DESTINATION ${CMAKE_INSTALL_PREFIX})
 elseif (APPLE)
-    ADD_EXECUTABLE(cantata MACOSX_BUNDLE ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
+    ADD_EXECUTABLE(cantata MACOSX_BUNDLE ${CANTATA_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
 
     set(BREW_OPENSSL_PATH /usr/local/opt/openssl/lib)
     if (EXISTS ${BREW_OPENSSL_PATH}/libcrypto.1.0.0.dylib AND EXISTS ${BREW_OPENSSL_PATH}/libssl.1.0.0.dylib)
@@ -609,10 +550,10 @@ elseif (APPLE)
         install_qt5_executable(cantata.app "qjpeg;qsvg;qsvgicon;qcocoa;qsqlite")
     endif (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_LIBVLC)
 elseif (HAIKU)
-    ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
+    ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
     install(TARGETS cantata DESTINATION ${CMAKE_INSTALL_PREFIX})
 else ()
-    ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
+    ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
     install(TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 endif ()
 

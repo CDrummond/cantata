@@ -146,3 +146,5 @@ AvahiDiscovery::~AvahiDiscovery()
         avahi_client_free(m_client);
     }
 }
+
+#include "moc_avahidiscovery.cpp"

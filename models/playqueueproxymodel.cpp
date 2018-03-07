@@ -65,3 +65,5 @@ bool PlayQueueProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction act
     const QModelIndex sourceIndex = mapToSource(index(row, column, parent));
     return sourceModel()->dropMimeData(data, action, sourceIndex.row(), sourceIndex.column(), sourceIndex.parent());
 }
+
+#include "moc_playqueueproxymodel.cpp"

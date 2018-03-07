@@ -123,3 +123,5 @@ void Spinner::setPosition()
         move(desired);
     }
 }
+
+#include "moc_spinner.cpp"

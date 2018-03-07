@@ -452,3 +452,5 @@ void StreamProviderListDialog::setState(bool downloading)
         statusText->setText(updateText);
     }
 }
+
+#include "moc_streamproviderlistdialog.cpp"

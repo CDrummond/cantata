@@ -108,3 +108,5 @@ void OnlineDevice::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
         emit progress(prog);
     }
 }
+
+#include "moc_onlinedevice.cpp"

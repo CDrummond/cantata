@@ -84,3 +84,5 @@ void LyricsDialog::changed()
     Song s=song();
     enableButton(Ok, !s.artist.isEmpty() && !s.title.isEmpty() && (s.artist!=prev.artist || s.title!=prev.title));
 }
+
+#include "moc_lyricsdialog.cpp"

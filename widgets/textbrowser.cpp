@@ -139,3 +139,5 @@ QSize TextBrowser::imageSize() const
     }
     return picSize();
 }
+
+#include "moc_textbrowser.cpp"

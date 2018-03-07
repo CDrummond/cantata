@@ -238,3 +238,5 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
     }
     return det;
 }
+
+#include "moc_remotedevicepropertieswidget.cpp"

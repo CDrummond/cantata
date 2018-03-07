@@ -76,3 +76,5 @@ void ServiceStatusLabel::mouseReleaseEvent(QMouseEvent *ev)
     }
 }
 
+
+#include "moc_servicestatuslabel.cpp"

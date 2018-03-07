@@ -115,3 +115,5 @@ void PowerManagement::prepareForSleep(bool s)
         emit resuming();
     }
 }
+
+#include "moc_powermanagement.cpp"

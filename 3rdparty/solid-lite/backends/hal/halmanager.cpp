@@ -191,4 +191,4 @@ void HalManager::slotDeviceRemoved(const QString &udi)
     emit deviceRemoved(udi);
 }
 
-//#include "backends/hal/halmanager.moc"
+#include "backends/hal/moc_halmanager.cpp"

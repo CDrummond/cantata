@@ -74,4 +74,4 @@ QString Solid::Ifaces::Device::deviceDBusPath() const
     return QString("/org/kde/solid/Device_") + QString::fromLatin1(encodedUdi);
 }
 
-//#include "ifaces/device.moc"
+#include "ifaces/moc_device.cpp"

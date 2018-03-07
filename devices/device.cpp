@@ -402,3 +402,5 @@ void Device::updatePercentage(int pc)
 }
 
 #endif // ENABLE_DEVICES_SUPPORT
+
+#include "moc_device.cpp"

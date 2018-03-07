@@ -78,3 +78,5 @@ void AvahiService::stop()
         resolver=0;
     }
 }
+
+#include "moc_avahiservice.cpp"

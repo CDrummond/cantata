@@ -334,3 +334,5 @@ void SearchModel::results(const QList<Song> &songs)
     emit statsUpdated(songList.size(), time);
     emit searched();
 }
+
+#include "moc_searchmodel.cpp"

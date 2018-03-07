@@ -55,3 +55,5 @@ void TagSpinBox::setVarious(bool v)
     isVarious=v;
     lineEdit()->setPlaceholderText(isVarious ? variousText : QString());
 }
+
+#include "moc_tagspinbox.cpp"

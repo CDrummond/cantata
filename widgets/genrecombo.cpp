@@ -123,3 +123,5 @@ bool GenreCombo::event(QEvent *event)
     }
     return ComboBox::event(event);
 }
+
+#include "moc_genrecombo.cpp"

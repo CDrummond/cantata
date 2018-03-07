@@ -49,3 +49,5 @@ void OnlineView::update(const Song &song, bool force)
         }
     }
 }
+
+#include "moc_onlineview.cpp"

@@ -361,3 +361,5 @@ void HttpServer::ifaceIp(const QString &ip)
 }
 
 #endif
+
+#include "moc_httpserver.cpp"

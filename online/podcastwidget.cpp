@@ -317,3 +317,5 @@ void PodcastWidget::controlActions()
     markAsNewAction->setEnabled(!selected.isEmpty());
     markAsListenedAction->setEnabled(!selected.isEmpty());
 }
+
+#include "moc_podcastwidget.cpp"

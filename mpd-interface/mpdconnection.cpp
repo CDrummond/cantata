@@ -2559,3 +2559,5 @@ void MPDServerInfo::reset(void) {
     serverName = "undetermined";
     topLevelLsinfo = "lsinfo";
 }
+
+#include "moc_mpdconnection.cpp"

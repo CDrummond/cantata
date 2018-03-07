@@ -120,4 +120,4 @@ qulonglong Storage::size() const
   return m_device->prop("storage.size").toULongLong();
 }
 
-//#include "backends/hal/halstorage.moc"
+#include "backends/hal/moc_halstorage.cpp"

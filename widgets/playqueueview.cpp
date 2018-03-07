@@ -505,3 +505,5 @@ void PlayQueueView::drawBackdrop(QWidget *widget, const QSize &size)
         }
     }
 }
+
+#include "moc_playqueueview.cpp"

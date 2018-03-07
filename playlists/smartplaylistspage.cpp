@@ -476,3 +476,5 @@ void SmartPlaylistsPage::addSelectionToPlaylist(const QString &name, int action,
     }
     emit search(command.includeRules.takeFirst(), "I:"+QString::number(command.id));
 }
+
+#include "moc_smartplaylistspage.cpp"

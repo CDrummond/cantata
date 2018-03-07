@@ -431,3 +431,5 @@ void StoredPlaylistsPage::updateToPlayQueue(const QModelIndex &idx, bool replace
         emit add(files, replace ? MPDConnection::ReplaceAndplay : MPDConnection::Append, 0, false);
     }
 }
+
+#include "moc_storedplaylistspage.cpp"

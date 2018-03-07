@@ -253,4 +253,4 @@ Device Client::deviceBySubsystemAndName(const QString &subsystem, const QString 
 
 }
 
-//#include "udevqt.moc"
+#include "moc_udevqt.cpp"

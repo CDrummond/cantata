@@ -146,3 +146,5 @@ AvahiWatchEvent AvahiWatch::previousEvent()
 {
     return prevEvent;
 }
+
+#include "moc_avahipoll.cpp"

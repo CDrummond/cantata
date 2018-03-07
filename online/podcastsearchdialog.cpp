@@ -721,3 +721,5 @@ void PodcastSearchDialog::slotButtonClicked(int button)
         break;
     }
 }
+
+#include "moc_podcastsearchdialog.cpp"

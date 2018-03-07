@@ -612,3 +612,5 @@ bool WindowManager::AppEventFilter::appMouseEvent(QObject *object, QEvent *event
     }
     return true;
 }
+
+#include "moc_windowmanager.cpp"

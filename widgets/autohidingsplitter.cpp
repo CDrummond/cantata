@@ -511,3 +511,5 @@ void AutohidingSplitter::updateAfterSplitterMoved(int pos, int index)
     expandedSizes[index-1]+=currentTemporarySizes.at(index-1)-previousTemporarySizes.at(index-1);
     expandedSizes[index]+=currentTemporarySizes.at(index)-previousTemporarySizes.at(index);
 }
+
+#include "moc_autohidingsplitter.cpp"

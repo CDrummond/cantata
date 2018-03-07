@@ -284,3 +284,5 @@ void MultiPageWidget::sortItems()
         layout->insertWidget(view->layout()->count()-1, entries[key].btn);
     }
 }
+
+#include "moc_multipagewidget.cpp"

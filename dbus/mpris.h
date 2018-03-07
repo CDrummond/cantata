@@ -89,7 +89,7 @@ public:
     void SetShuffle(bool s) { emit setRandom(s); }
     double Volume() const { return MPDStatus::self()->volume()/100.0; }
     void SetVolume(double v) { emit setVolume(v*100); }
-    qulonglong Position() const;
+    qlonglong Position() const;
     double MinimumRate() const { return 1.0; }
     double MaximumRate() const { return 1.0; }
     bool CanControl() const { return true; }

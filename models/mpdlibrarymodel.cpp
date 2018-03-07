@@ -285,3 +285,5 @@ void MpdLibraryModel::artistImage(const Song &song, const QImage &img, const QSt
         break;
     }
 }
+
+#include "moc_mpdlibrarymodel.cpp"

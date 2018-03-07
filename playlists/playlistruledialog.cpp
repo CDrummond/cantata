@@ -266,3 +266,5 @@ void PlaylistRuleDialog::slotButtonClicked(int button)
 
     Dialog::slotButtonClicked(button);
 }
+
+#include "moc_playlistruledialog.cpp"

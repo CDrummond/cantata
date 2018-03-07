@@ -142,3 +142,5 @@ void DigitallyImportedSettings::setState()
     expiryLabel->setVisible(expiry->isVisible());
     loginButton->setText(DigitallyImported::self()->loggedIn() ? tr("Logout") : tr("Login"));
 }
+
+#include "moc_digitallyimportedsettings.cpp"

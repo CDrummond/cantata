@@ -767,3 +767,5 @@ void FsDevice::cacheStatus(const QString &msg, int prog)
         setStatusMessage(tr("%1 %2%","Message percent").arg(msg).arg(cacheProgress));
     }
 }
+
+#include "moc_fsdevice.cpp"

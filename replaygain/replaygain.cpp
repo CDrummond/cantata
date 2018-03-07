@@ -166,3 +166,5 @@ void ReplayGain::scannerDone()
         createScanner(index);
     }
 }
+
+#include "moc_replaygain.cpp"

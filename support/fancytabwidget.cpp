@@ -807,3 +807,5 @@ QStringList FancyTabWidget::hiddenPages() const
     }
     return pages;
 }
+
+#include "moc_fancytabwidget.cpp"

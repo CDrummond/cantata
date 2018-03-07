@@ -56,3 +56,5 @@ void ScrobblingLove::scrobblerChanged()
                 ? tr("%1: Loved Current Track").arg(Scrobbler::self()->activeScrobbler())
                 : tr("%1: Love Current Track").arg(Scrobbler::self()->activeScrobbler()));
 }
+
+#include "moc_scrobblinglove.cpp"

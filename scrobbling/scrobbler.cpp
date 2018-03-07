@@ -899,3 +899,5 @@ QString Scrobbler::scrobblerUrl()
     }
     return scrobblers[scrobbler];
 }
+
+#include "moc_scrobbler.cpp"

@@ -103,3 +103,5 @@ void MirrorMenu::menuDestroyed(QObject *obj)
         menus.removeAll(static_cast<QMenu *>(obj));
     }
 }
+
+#include "moc_mirrormenu.cpp"

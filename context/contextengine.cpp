@@ -80,3 +80,5 @@ NetworkJob * ContextEngine::getReply(QObject *obj)
     job=nullptr;
     return reply;
 }
+
+#include "moc_contextengine.cpp"

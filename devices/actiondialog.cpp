@@ -956,3 +956,5 @@ void ActionDialog::cacheSaved()
     emit completed();
     accept();
 }
+
+#include "moc_actiondialog.cpp"

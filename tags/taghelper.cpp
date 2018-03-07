@@ -176,3 +176,5 @@ void TagHelper::process()
     data.clear();
     dataSize=0;
 }
+
+#include "moc_taghelper.cpp"

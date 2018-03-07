@@ -155,4 +155,4 @@ qulonglong OpticalDisc::capacity() const
     return m_device->prop("volume.disc.capacity").toULongLong();
 }
 
-//#include "backends/hal/halopticaldisc.moc"
+#include "backends/hal/moc_halopticaldisc.cpp"

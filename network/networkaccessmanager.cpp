@@ -277,3 +277,5 @@ void NetworkAccessManager::timerEvent(QTimerEvent *e)
         job->abortJob();
     }
 }
+
+#include "moc_networkaccessmanager.cpp"

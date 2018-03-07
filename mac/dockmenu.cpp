@@ -42,3 +42,5 @@ void DockMenu::update(MPDStatus * const status)
     playPauseAction->setEnabled(status->playlistLength()>0);
     playPauseAction->setText(MPDState_Playing==status->state() ? tr("Pause") : tr("Play"));
 }
+
+#include "moc_dockmenu.cpp"

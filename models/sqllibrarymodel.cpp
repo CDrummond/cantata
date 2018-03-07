@@ -351,6 +351,9 @@ void SqlLibraryModel::fetchMore(const QModelIndex &index)
 QVariant SqlLibraryModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
+        if (Cantata::Role_CatergizedHasSubText==role) {
+            return T_Album!=tl || LibraryDb::AS_ArAlYr==albumSort || LibraryDb::AS_ArYrAl==albumSort;
+        }
         return QVariant();
     }
 

@@ -149,3 +149,5 @@ void PreferencesDialog::cancel()
 {
     server->cancel();
 }
+
+#include "moc_preferencesdialog.cpp"

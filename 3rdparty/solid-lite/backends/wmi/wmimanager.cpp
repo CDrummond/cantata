@@ -268,4 +268,4 @@ const QString&  WmiManager::WmiEventSink::query() const {
 }
 
 
-//#include "backends/wmi/wmimanager.moc"
+#include "backends/wmi/moc_wmimanager.cpp"

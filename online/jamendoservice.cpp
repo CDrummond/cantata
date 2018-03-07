@@ -405,3 +405,5 @@ void JamendoService::configure(QWidget *p)
         }
     }
 }
+
+#include "moc_jamendoservice.cpp"

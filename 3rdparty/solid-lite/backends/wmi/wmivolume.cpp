@@ -76,4 +76,4 @@ QString Solid::Backends::Wmi::Volume::encryptedContainerUdi() const
     return this->uuid();
 }
 
-//#include "backends/wmi/wmivolume.moc"
+#include "backends/wmi/moc_wmivolume.cpp"

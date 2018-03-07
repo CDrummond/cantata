@@ -111,3 +111,5 @@ void OtherSettings::enableContextBackdropOptions()
     contextBackdropBlur->setEnabled(contextBackdropOpacity->isEnabled());
     contextBackdropBlurLabel->setEnabled(contextBackdropOpacity->isEnabled());
 }
+
+#include "moc_othersettings.cpp"

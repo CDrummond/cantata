@@ -231,3 +231,5 @@ void DigitallyImported::controlTimer()
         }
     }
 }
+
+#include "moc_digitallyimported.cpp"

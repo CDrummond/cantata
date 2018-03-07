@@ -214,3 +214,5 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index, int adjust) co
 
     return nullptr;
 }
+
+#include "moc_actionitemdelegate.cpp"

@@ -1326,3 +1326,5 @@ void CoverDialog::addProvider(QMenu *mnu, const QString &name, int bit, int valu
     connect(act, SIGNAL(toggled(bool)), this, SLOT(updateProviders()));
     providers.insert(bit, act);
 }
+
+#include "moc_coverdialog.cpp"

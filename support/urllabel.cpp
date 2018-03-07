@@ -48,3 +48,5 @@ void UrlLabel::setProperty(const char *name, const QVariant &value)
     }
 }
 
+
+#include "moc_urllabel.cpp"

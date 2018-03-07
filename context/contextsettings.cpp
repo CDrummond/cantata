@@ -50,3 +50,5 @@ void ContextSettings::save()
     lyrics->save();
     other->save();
 }
+
+#include "moc_contextsettings.cpp"

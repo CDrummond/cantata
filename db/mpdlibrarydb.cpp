@@ -157,3 +157,5 @@ void MpdLibraryDb::statsUpdated(const MPDStatsValues &stats)
         emit loadLibrary();
     }
 }
+
+#include "moc_mpdlibrarydb.cpp"

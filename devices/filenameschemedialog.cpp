@@ -163,3 +163,5 @@ void FilenameSchemeDialog::updateExample()
     example->setText(exampleStr);
     origOpts.scheme=saveScheme;
 }
+
+#include "moc_filenameschemedialog.cpp"

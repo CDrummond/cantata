@@ -515,3 +515,5 @@ bool HttpSocket::write(QTcpSocket *socket, char *buffer, qint32 bytesRead, bool 
     }
     return true;
 }
+
+#include "moc_httpsocket.cpp"

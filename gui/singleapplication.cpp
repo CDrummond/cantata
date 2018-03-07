@@ -86,3 +86,5 @@ void SingleApplication::load(const QStringList &files)
     }
 }
 
+
+#include "moc_singleapplication.cpp"

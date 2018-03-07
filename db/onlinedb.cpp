@@ -131,3 +131,5 @@ QString OnlineDb::getCoverUrl(const QString &artistId, const QString &albumId)
     }
     return QString();
 }
+
+#include "moc_onlinedb.cpp"

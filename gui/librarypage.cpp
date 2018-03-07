@@ -470,3 +470,5 @@ void LibraryPage::controlActions()
     }
     StdActions::self()->addRandomAlbumToPlayQueueAction->setVisible(allowRandomAlbum);
 }
+
+#include "moc_librarypage.cpp"

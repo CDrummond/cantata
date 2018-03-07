@@ -275,3 +275,5 @@ Device * SyncDialog::getDevice()
     MessageBox::error(isVisible() ? this : parentWidget(), tr("Device is busy?"));
     return nullptr;
 }
+
+#include "moc_syncdialog.cpp"

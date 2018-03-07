@@ -104,3 +104,5 @@ void StreamDialog::changed()
     enableOk=enableOk && validProtocol;
     enableButton(Ok, enableOk);
 }
+
+#include "moc_streamdialog.cpp"

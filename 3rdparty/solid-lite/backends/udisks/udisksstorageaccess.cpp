@@ -387,4 +387,4 @@ bool UDisksStorageAccess::callCryptoTeardown(bool actOnParent)
                               SLOT(slotDBusError(QDBusError)));
 }
 
-//#include "backends/udisks/udisksstorageaccess.moc"
+#include "backends/udisks/moc_udisksstorageaccess.cpp"

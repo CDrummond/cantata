@@ -234,3 +234,5 @@ void MpdBrowsePage::deleteSongs()
     }
 }
 #endif
+
+#include "moc_mpdbrowsepage.cpp"

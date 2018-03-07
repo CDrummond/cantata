@@ -217,3 +217,5 @@ void OnlineDbService::updateStats()
     }
     updateStatus(QString());
 }
+
+#include "moc_onlinedbservice.cpp"

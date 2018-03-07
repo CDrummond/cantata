@@ -62,4 +62,4 @@ QString Block::device() const
     return drive;
 }
 
-//#include "backends/wmi/wmiblock.moc"
+#include "backends/wmi/moc_wmiblock.cpp"

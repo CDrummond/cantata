@@ -115,3 +115,5 @@ void ToggleList::selectedChanged(QListWidgetItem *item)
     }
     removeButton->setEnabled(item);
 }
+
+#include "moc_togglelist.cpp"

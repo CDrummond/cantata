@@ -93,3 +93,5 @@ void Avahi::removeService(int, int, const QString &name, const QString &, const 
         emit serviceRemoved(name);
     }
 }
+
+#include "moc_avahi.cpp"

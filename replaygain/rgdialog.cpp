@@ -649,3 +649,5 @@ void RgDialog::closeEvent(QCloseEvent *event)
         Dialog::closeEvent(event);
     }
 }
+
+#include "moc_rgdialog.cpp"

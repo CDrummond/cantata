@@ -395,3 +395,5 @@ void TreeView::itemWasClicked(const QModelIndex &index)
         setExpanded(index, !isExpanded(index));
     }
 }
+
+#include "moc_treeview.cpp"

@@ -327,3 +327,5 @@ void UmsDevice::saveProperties(const QString &newPath, const DeviceOptions &newO
         emit renamed();
     }
 }
+
+#include "moc_umsdevice.cpp"

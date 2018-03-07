@@ -144,3 +144,5 @@ void Action::setShortcut(const QKeySequence &key, ShortcutTypes type) {
   if(type & ActiveShortcut)
     QAction::setShortcut(key);
 }
+
+#include "moc_action.cpp"

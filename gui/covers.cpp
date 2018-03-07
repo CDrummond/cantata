@@ -1092,7 +1092,7 @@ void Covers::readConfig()
     saveInMpdDir=Settings::self()->storeCoversInMpdDir();
     fetchCovers=Settings::self()->fetchCovers();
     albumCoverName=Settings::self()->coverFilename();
-    if (!albumCoverName.isEmpty()) {
+    if (albumCoverName.isEmpty()) {
         albumCoverName=constFileName;
     }
 }
@@ -1895,3 +1895,5 @@ QString Covers::getFilename(const Song &s)
     mutex.unlock();
     return f;
 }
+
+#include "moc_covers.cpp"

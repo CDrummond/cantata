@@ -563,3 +563,5 @@ Device * TrackOrganiser::getDevice(QWidget *p)
     return dev;
 }
 #endif
+
+#include "moc_trackorganiser.cpp"

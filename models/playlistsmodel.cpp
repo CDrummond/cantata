@@ -1042,3 +1042,5 @@ quint32 PlaylistsModel::PlaylistItem::totalTime()
     }
     return time;
 }
+
+#include "moc_playlistsmodel.cpp"

@@ -366,3 +366,5 @@ void KMsgWidget::animatedHide()
     }
 }
 
+
+#include "moc_kmessagewidget.cpp"

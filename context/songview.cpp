@@ -893,3 +893,5 @@ bool SongView::setLyricsFromFile(const QString &filePath)
 
     return false;
 }
+
+#include "moc_songview.cpp"

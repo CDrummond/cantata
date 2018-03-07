@@ -87,3 +87,5 @@ void CddbSelectionDialog::updateTracks()
     }
     tracks->setColumnHidden(0, sameArtist);
 }
+
+#include "moc_cddbselectiondialog.cpp"

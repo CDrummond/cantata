@@ -87,3 +87,5 @@ void MagnatuneSettingsDialog::membershipChanged(int i)
     passLabel->setEnabled(0!=i);
     // dl->setEnabled(MagnatuneService::MB_Download==i); // TODO: Magnatune downloads!
 }
+
+#include "moc_magnatunesettingsdialog.cpp"

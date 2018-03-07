@@ -387,3 +387,5 @@ Qt::ItemFlags MusicLibraryModel::flags(const QModelIndex &index) const
     }
     return Qt::ItemIsDropEnabled;
 }
+
+#include "moc_musiclibrarymodel.cpp"

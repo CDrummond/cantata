@@ -187,3 +187,5 @@ void CustomActions::doAction()
     }
     DBUG << "Command not found";
 }
+
+#include "moc_customactions.cpp"

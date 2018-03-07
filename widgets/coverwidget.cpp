@@ -215,3 +215,5 @@ void CoverWidget::coverImage(const QImage &)
     label->updatePix();
     label->updateToolTip(false);
 }
+
+#include "moc_coverwidget.cpp"

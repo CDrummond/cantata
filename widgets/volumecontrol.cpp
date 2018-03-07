@@ -126,3 +126,5 @@ void VolumeControl::itemSelected(int i)
         httpVol->setActive(1==stack->currentIndex());
     }
 }
+
+#include "moc_volumecontrol.cpp"

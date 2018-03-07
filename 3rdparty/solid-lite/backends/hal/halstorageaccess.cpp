@@ -513,4 +513,4 @@ bool StorageAccess::callCryptoTeardown()
                               SLOT(slotDBusError(QDBusError)));
 }
 
-//#include "backends/hal/halstorageaccess.moc"
+#include "backends/hal/moc_halstorageaccess.cpp"

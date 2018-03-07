@@ -119,3 +119,5 @@ void ComboBox::hidePopup()
     QComboBox::hidePopup();
 }
 #endif
+
+#include "moc_combobox.cpp"

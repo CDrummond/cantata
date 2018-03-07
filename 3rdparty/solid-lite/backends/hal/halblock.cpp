@@ -50,4 +50,4 @@ QString Block::device() const
     return m_device->prop("block.device").toString();
 }
 
-//#include "backends/hal/halblock.moc"
+#include "backends/hal/moc_halblock.cpp"

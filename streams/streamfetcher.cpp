@@ -323,3 +323,5 @@ void StreamFetcher::cancelJob()
         job=nullptr;
     }
 }
+
+#include "moc_streamfetcher.cpp"

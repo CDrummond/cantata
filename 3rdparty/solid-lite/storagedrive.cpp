@@ -90,5 +90,4 @@ bool Solid::StorageDrive::isInUse() const
     return inUse;
 }
 
-//#include "storagedrive.moc"
-
+#include "moc_storagedrive.cpp"

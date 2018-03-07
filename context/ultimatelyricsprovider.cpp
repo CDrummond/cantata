@@ -419,3 +419,5 @@ void UltimateLyricsProvider::doUrlReplace(const QString &tag, const QString &val
     }
     u.replace(tag, urlEncode(valueCopy), Qt::CaseInsensitive);
 }
+
+#include "moc_ultimatelyricsprovider.cpp"

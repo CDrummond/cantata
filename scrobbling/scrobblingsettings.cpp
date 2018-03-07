@@ -160,3 +160,5 @@ void ScrobblingSettings::scrobblerChanged()
     }
     controlLoginButton();
 }
+
+#include "moc_scrobblingsettings.cpp"

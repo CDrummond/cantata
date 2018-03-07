@@ -329,3 +329,5 @@ bool CddbInterface::checkConnection()
     socket.close();
     return ok;
 }
+
+#include "moc_cddbinterface.cpp"

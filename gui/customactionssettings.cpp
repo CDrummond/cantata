@@ -182,3 +182,5 @@ void CustomActionsSettings::delCommand()
         }
     }
 }
+
+#include "moc_customactionssettings.cpp"

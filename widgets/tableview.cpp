@@ -257,3 +257,5 @@ void TableView::alignmentChanged()
     }
 }
 
+
+#include "moc_tableview.cpp"

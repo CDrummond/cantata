@@ -150,3 +150,5 @@ void PodcastSettingsDialog::slotButtonClicked(int button)
         break;
     }
 }
+
+#include "moc_podcastsettingsdialog.cpp"

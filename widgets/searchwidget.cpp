@@ -197,3 +197,5 @@ void SearchWidget::categoryActivated(int c)
         setToolTip(a->toolTip());
     }
 }
+
+#include "moc_searchwidget.cpp"

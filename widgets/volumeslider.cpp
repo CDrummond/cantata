@@ -346,3 +346,5 @@ QPixmap VolumeSlider::generatePixmap(bool filled)
     }
     return pix;
 }
+
+#include "moc_volumeslider.cpp"

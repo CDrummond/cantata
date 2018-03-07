@@ -64,3 +64,5 @@ void PathRequester::setEnabled(bool e)
     edit->setEnabled(e);
     btn->setEnabled(e);
 }
+
+#include "moc_pathrequester.cpp"

@@ -87,3 +87,5 @@ void OnlineSearchWidget::doSearch()
 {
     srv->search(QString(), view->searchText());
 }
+
+#include "moc_onlinesearchwidget.cpp"

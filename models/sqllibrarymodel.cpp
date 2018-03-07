@@ -640,3 +640,5 @@ const SqlLibraryModel::Item *SqlLibraryModel::CollectionItem::getChild(const QSt
     QMap<QString, Item *>::ConstIterator it=childMap.find(id);
     return childMap.constEnd()==it ? nullptr : it.value();
 }
+
+#include "moc_sqllibrarymodel.cpp"

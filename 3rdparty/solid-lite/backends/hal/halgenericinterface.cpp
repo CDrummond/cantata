@@ -53,4 +53,4 @@ bool GenericInterface::propertyExists(const QString &key) const
     return m_device->propertyExists(key);
 }
 
-//#include "backends/hal/halgenericinterface.moc"
+#include "backends/hal/moc_halgenericinterface.cpp"

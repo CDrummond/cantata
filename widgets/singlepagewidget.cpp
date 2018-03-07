@@ -228,3 +228,5 @@ void SinglePageWidget::controlActions()
     }
     StdActions::self()->addRandomAlbumToPlayQueueAction->setVisible(false);
 }
+
+#include "moc_singlepagewidget.cpp"

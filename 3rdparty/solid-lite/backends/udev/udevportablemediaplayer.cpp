@@ -149,4 +149,4 @@ QString PortableMediaPlayer::mediaPlayerInfoFilePath() const
     return filename;
 }
 
-//#include "backends/udev/udevportablemediaplayer.moc"
+#include "backends/udev/moc_udevportablemediaplayer.cpp"

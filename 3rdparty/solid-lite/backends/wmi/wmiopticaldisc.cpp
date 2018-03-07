@@ -110,4 +110,4 @@ bool OpticalDisc::isWriteable() const
     return !val & 0x80001;//read only
 }
 
-#include "backends/wmi/wmiopticaldisc.moc"
+#include "backends/wmi/moc_wmiopticaldisc.cpp"

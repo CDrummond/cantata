@@ -65,3 +65,5 @@ bool SongDialog::songsOk(const QList<Song> &songs, const QString &base, bool isM
 
     return true;
 }
+
+#include "moc_songdialog.cpp"

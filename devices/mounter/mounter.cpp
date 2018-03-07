@@ -245,3 +245,5 @@ void Mounter::timeout()
         startTimer();
     }
 }
+
+#include "moc_mounter.cpp"

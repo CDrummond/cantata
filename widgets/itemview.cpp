@@ -1267,6 +1267,8 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
         if (scrollTo) {
             v->scrollTo(idx, QAbstractItemView::PositionAtTop);
         }
+    } else if (Mode_Categorized==mode) {
+        // TODO
     } else {
         if (idx.parent().isValid()) {
             QList<QModelIndex> indexes;

@@ -94,7 +94,7 @@ public:
             : Item(t, p), id(i), text(txt), subText(sub) { }
         ~CollectionItem() override { qDeleteAll(children); }
 
-        const QList<Item *> getChildren() const { return children; }
+        const QList<Item *> & getChildren() const { return children; }
         int getChildCount() const override { return children.count();}
         void add(Item *i);
         const Item * getChild(const QString &id) const;

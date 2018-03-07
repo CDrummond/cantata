@@ -294,3 +294,5 @@ void View::setScaleImage(bool s)
         t->setFullWidthImage(s);
     }
 }
+
+#include "moc_view.cpp"

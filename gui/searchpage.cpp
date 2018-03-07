@@ -252,3 +252,5 @@ void SearchPage::locateSongs()
         emit locate(songs);
     }
 }
+
+#include "moc_searchpage.cpp"

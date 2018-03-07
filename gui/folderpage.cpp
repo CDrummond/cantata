@@ -55,3 +55,5 @@ void FolderPage::addSelectionToDevice(const QString &udi)
     }
 }
 #endif
+
+#include "moc_folderpage.cpp"

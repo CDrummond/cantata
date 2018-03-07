@@ -173,3 +173,5 @@ void GnomeMediaKeys::pluginActivated(const QString &name)
         grabKeys();
     }
 }
+
+#include "moc_gnomemediakeys.cpp"

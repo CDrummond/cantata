@@ -96,3 +96,5 @@ void MessageWidget::setActions(const QList<QAction *> acts)
         addAction(a);
     }
 }
+
+#include "moc_messagewidget.cpp"

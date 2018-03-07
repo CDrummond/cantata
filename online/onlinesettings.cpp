@@ -103,3 +103,5 @@ void OnlineSettings::configure()
         srv->configure(this);
     }
 }
+
+#include "moc_onlinesettings.cpp"

@@ -239,3 +239,5 @@ void TitleWidget::setImage(const QImage &img)
     pix.setDevicePixelRatio(dpr);
     image->setPixmap(pix);
 }
+
+#include "moc_titlewidget.cpp"

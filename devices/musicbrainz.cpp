@@ -387,3 +387,5 @@ void MusicBrainz::lookup(bool full)
         emit matches(m);
     }
 }
+
+#include "moc_musicbrainz.cpp"

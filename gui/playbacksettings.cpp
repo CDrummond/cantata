@@ -182,3 +182,5 @@ void PlaybackSettings::showAboutReplayGain()
                                        "<li><i>Auto</i> - Volume will be adjusted using the track's ReplayGain tags if random play is activated, otherwise the album's tags will be used.</li>"
                                        "</ul>"));
 }
+
+#include "moc_playbacksettings.cpp"

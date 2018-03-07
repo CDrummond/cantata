@@ -1628,3 +1628,5 @@ void MtpDevice::deleteTemp()
         tempFile=0;
     }
 }
+
+#include "moc_mtpdevice.cpp"

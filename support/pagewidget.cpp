@@ -381,3 +381,5 @@ void PageWidget::setFocus()
     list->setFocus();
 }
 
+
+#include "moc_pagewidget.cpp"

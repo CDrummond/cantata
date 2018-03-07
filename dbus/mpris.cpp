@@ -242,3 +242,5 @@ QString Mpris::currentTrackId() const
 {
     return QString("/org/mpris/MediaPlayer2/Track/%1").arg(QString::number(currentSong.id));
 }
+
+#include "moc_mpris.cpp"

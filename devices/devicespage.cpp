@@ -619,3 +619,5 @@ void DevicesPage::editDetails()
     }
     #endif
 }
+
+#include "moc_devicespage.cpp"

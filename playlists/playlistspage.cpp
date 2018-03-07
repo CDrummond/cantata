@@ -59,3 +59,5 @@ void PlaylistsPage::addSelectionToDevice(const QString &udi)
     }
 }
 #endif
+
+#include "moc_playlistspage.cpp"

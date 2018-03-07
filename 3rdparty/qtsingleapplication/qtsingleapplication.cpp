@@ -367,3 +367,5 @@ void QtSingleApplication::activateWindow()
 
     \obsolete
 */
+
+#include "moc_qtsingleapplication.cpp"

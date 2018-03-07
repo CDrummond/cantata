@@ -437,3 +437,5 @@ void Dialog::closeEvent(QCloseEvent *e)
     QDialog::closeEvent(e);
 }
 #endif
+
+#include "moc_dialog.cpp"

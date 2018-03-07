@@ -70,4 +70,4 @@ qulonglong Solid::OpticalDisc::capacity() const
     return_SOLID_CALL(Ifaces::OpticalDisc *, d->backendObject(), 0, capacity());
 }
 
-//#include "opticaldisc.moc"
+#include "moc_opticaldisc.cpp"

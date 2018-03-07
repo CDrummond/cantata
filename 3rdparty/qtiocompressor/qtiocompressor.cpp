@@ -622,3 +622,5 @@ bool QtIOCompressor::checkGzipSupport(const char * const versionString)
 
     return true;
 }
+
+#include "moc_qtiocompressor.cpp"

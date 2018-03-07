@@ -31,4 +31,4 @@ DeviceInterface::~DeviceInterface()
 {
 }
 
-//#include "backends/hal/haldeviceinterface.moc"
+#include "backends/hal/moc_haldeviceinterface.cpp"

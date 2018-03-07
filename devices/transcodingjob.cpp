@@ -153,3 +153,5 @@ inline qint64 TranscodingJob::computeProgress(const QString &output)
         return -1;
     }
 }
+
+#include "moc_transcodingjob.cpp"

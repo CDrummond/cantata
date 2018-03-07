@@ -114,3 +114,5 @@ void AlbumScanner::procFinished()
     setFinished(true);
     emit done();
 }
+
+#include "moc_albumscanner.cpp"

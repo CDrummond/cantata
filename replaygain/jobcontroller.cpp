@@ -119,3 +119,5 @@ void JobController::jobDone()
     }
     startJobs();
 }
+
+#include "moc_jobcontroller.cpp"

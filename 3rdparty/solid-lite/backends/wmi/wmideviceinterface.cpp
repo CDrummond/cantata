@@ -31,4 +31,4 @@ DeviceInterface::~DeviceInterface()
 {
 }
 
-//#include "backends/wmi/wmideviceinterface.moc"
+#include "backends/wmi/moc_wmideviceinterface.cpp"

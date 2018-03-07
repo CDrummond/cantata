@@ -103,3 +103,5 @@ void RemoteDevicePropertiesDialog::slotButtonClicked(int button)
         break;
     }
 }
+
+#include "moc_remotedevicepropertiesdialog.cpp"

@@ -435,3 +435,5 @@ MPDConnectionDetails ServerSettings::getDetails() const
     details.setDirReadable();
     return details;
 }
+
+#include "moc_serversettings.cpp"

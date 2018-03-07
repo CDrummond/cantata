@@ -210,3 +210,5 @@ void QtLocalPeer::receiveConnection()
     emit messageReceived(uMsg); //### (might take a long time to return)
     emit messageReceived(QString::fromUtf8(uMsg));
 }
+
+#include "moc_qtlocalpeer.cpp"

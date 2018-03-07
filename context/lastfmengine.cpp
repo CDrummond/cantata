@@ -184,3 +184,5 @@ QString LastFmEngine::parseResponse(const QByteArray &data, const QString &first
 
     return QString();
 }
+
+#include "moc_lastfmengine.cpp"

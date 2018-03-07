@@ -44,3 +44,5 @@ void MPDStatus::update(const MPDStatusValues &v)
     setGuessedElapsed(v.timeElapsed);
     emit updated();
 }
+
+#include "moc_mpdstatus.cpp"

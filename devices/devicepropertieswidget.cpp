@@ -432,3 +432,5 @@ void DevicePropertiesWidget::setSize()
 {
     Utils::resizeWindow(this, true, false);
 }
+
+#include "moc_devicepropertieswidget.cpp"

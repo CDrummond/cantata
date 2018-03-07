@@ -72,3 +72,5 @@ void OnlineServicesPage::cancelAll()
 {
     podcast->cancelAll();
 }
+
+#include "moc_onlineservicespage.cpp"

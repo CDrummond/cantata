@@ -68,3 +68,5 @@ QVariant SmartPlaylists::data(const QModelIndex &index, int role) const
         return RulesPlaylists::data(index, role);
     }
 }
+
+#include "moc_smartplaylists.cpp"

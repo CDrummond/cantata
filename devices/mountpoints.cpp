@@ -70,3 +70,5 @@ bool MountPoints::isMounted(const QString &mp) const
 {
     return current.contains(mp.endsWith('/') ? mp.left(mp.length()-1) : mp);
 }
+
+#include "moc_mountpoints.cpp"

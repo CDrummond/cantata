@@ -216,3 +216,5 @@ QTreeWidget * OSXStyle::viewWidget()
     }
     return view;
 }
+
+#include "moc_osxstyle.cpp"

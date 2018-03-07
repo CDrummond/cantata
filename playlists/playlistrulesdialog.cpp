@@ -476,3 +476,5 @@ int PlaylistRulesDialog::indexOf(QStandardItem *item, bool diff)
     }
     return -1;
 }
+
+#include "moc_playlistrulesdialog.cpp"

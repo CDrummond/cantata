@@ -241,3 +241,5 @@ void CleanJob::run()
     emit percent(100);
     emit result(Device::Ok);
 }
+
+#include "moc_filejob.cpp"

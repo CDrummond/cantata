@@ -443,3 +443,5 @@ void TagHelperIface::setStatus(bool st)
         sema.release();
     }
 }
+
+#include "moc_taghelperiface.cpp"

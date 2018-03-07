@@ -10,20 +10,17 @@ if (FFMPEG_FOUND OR MPG123_FOUND)
     endif ()
 
     set(CANTATA_RG_SRCS ${CANTATA_RG_SRCS} main.cpp replaygain.cpp trackscanner.cpp jobcontroller.cpp ../support/thread.cpp)
-    set(CANTATA_RG_MOC_HDRS ${CANTATA_RG_MOC_HDRS} replaygain.h trackscanner.h jobcontroller.h ../support/thread.h)
-
-        QT5_WRAP_CPP(CANTATA_RG_MOC_SRCS ${CANTATA_RG_MOC_HDRS})
 
     if (WIN32)
         set(CMAKE_BUILD_TYPE "Release")
-        ADD_EXECUTABLE(cantata-replaygain WIN32 ${CANTATA_RG_SRCS} ${CANTATA_RG_MOC_SRCS} ${CANTATA_PO})
+        ADD_EXECUTABLE(cantata-replaygain WIN32 ${CANTATA_RG_SRCS} ${CANTATA_PO})
         install(TARGETS cantata-replaygain DESTINATION ${CMAKE_INSTALL_PREFIX})
     elseif (APPLE)
         set(CMAKE_BUILD_TYPE "Release")
-        ADD_EXECUTABLE(cantata-replaygain ${CANTATA_RG_SRCS} ${CANTATA_RG_MOC_SRCS} ${CANTATA_PO})
+        ADD_EXECUTABLE(cantata-replaygain ${CANTATA_RG_SRCS} ${CANTATA_PO})
 #        install(TARGETS cantata-replaygain DESTINATION ${MACOSX_BUNDLE_APP_DIR})
     else ()
-        ADD_EXECUTABLE(cantata-replaygain ${CANTATA_RG_SRCS} ${CANTATA_RG_MOC_SRCS})
+        ADD_EXECUTABLE(cantata-replaygain ${CANTATA_RG_SRCS})
         install(TARGETS cantata-replaygain RUNTIME DESTINATION ${LINUX_LIB_DIR}/cantata)
     endif ()
 

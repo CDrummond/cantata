@@ -270,3 +270,5 @@ void HttpStream::stopTimer()
     }
     playStateChecks=0;
 }
+
+#include "moc_httpstream.cpp"

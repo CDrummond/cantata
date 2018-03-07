@@ -402,3 +402,5 @@ bool KeySequenceWidget::isKeySequenceAvailable(const QKeySequence &seq)
     }
     return true;
 }
+
+#include "moc_keysequencewidget.cpp"

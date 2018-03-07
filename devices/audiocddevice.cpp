@@ -449,3 +449,5 @@ void AudioCdDevice::updateDetails()
         emit updatedDetails(tracks);
     }
 }
+
+#include "moc_audiocddevice.cpp"

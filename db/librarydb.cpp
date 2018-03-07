@@ -1323,3 +1323,5 @@ void LibraryDb::clearSongs(bool startTransaction)
         db->commit();
     }
 }
+
+#include "moc_librarydb.cpp"

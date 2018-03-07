@@ -203,3 +203,5 @@ void UltimateLyrics::setEnabled(const QStringList &enabled)
     qSort(providers.begin(), providers.end(), compareLyricProviders);
     Settings::self()->saveLyricProviders(enabled);
 }
+
+#include "moc_ultimatelyrics.cpp"

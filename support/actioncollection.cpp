@@ -319,3 +319,5 @@ bool ActionCollection::unlistAction(QAction *action) {
 
   return true;
 }
+
+#include "moc_actioncollection.cpp"

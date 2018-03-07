@@ -2690,3 +2690,5 @@ void MainWindow::restoreWindow()
         move(lastPos);
     }
 }
+
+#include "moc_mainwindow.cpp"

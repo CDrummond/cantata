@@ -875,3 +875,5 @@ void GroupedView::drawBranches(QPainter *, const QRect &, const QModelIndex &) c
 {
     // Don't want any branch lines drawn!
 }
+
+#include "moc_groupedview.cpp"

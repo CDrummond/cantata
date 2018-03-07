@@ -1640,3 +1640,5 @@ void ItemView::controlViewFrame()
                                 ? ProxyStyle::VF_Side
                                 : (searchWidget->isActive() ? ProxyStyle::VF_Side : (ProxyStyle::VF_Side|ProxyStyle::VF_Top)));
 }
+
+#include "moc_itemview.cpp"

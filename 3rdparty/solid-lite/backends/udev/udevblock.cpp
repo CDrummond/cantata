@@ -46,4 +46,4 @@ QString Block::device() const
     return m_device->property("DEVNAME").toString();
 }
 
-//#include "backends/udev/udevblock.moc"
+#include "backends/udev/moc_udevblock.cpp"

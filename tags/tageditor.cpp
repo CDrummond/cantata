@@ -1326,3 +1326,5 @@ void TagEditor::controlInitialActionsState()
         }
     }
 }
+
+#include "moc_tageditor.cpp"

@@ -326,3 +326,5 @@ QByteArray StretchHeaderView::SaveState() const {
 
   return ret;
 }
+
+#include "moc_stretchheaderview.cpp"

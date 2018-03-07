@@ -41,3 +41,5 @@ void TagReader::run()
     }
     setFinished(true);
 }
+
+#include "moc_tagreader.cpp"

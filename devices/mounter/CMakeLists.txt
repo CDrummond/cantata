@@ -1,9 +1,7 @@
 set(CANTATA_MOUNTER_SRCS main.cpp mounter.cpp)
-set(CANTATA_MOUNTER_MOC_HDRS mounter.h)
-qt5_wrap_cpp( CANTATA_MOUNTER_MOC_SRCS ${CANTATA_MOUNTER_MOC_HDRS} )
 qt5_add_dbus_adaptor(CANTATA_MOUNTER_SRCS mpd.cantata.mounter.xml mounter.h Mounter )
 
-add_executable( cantata-mounter ${CANTATA_MOUNTER_SRCS} ${CANTATA_MOUNTER_MOC_SRCS} )
+add_executable( cantata-mounter ${CANTATA_MOUNTER_SRCS} )
 install(TARGETS cantata-mounter RUNTIME DESTINATION lib/cantata)
 configure_file(mpd.cantata.mounter.service.cmake ${CMAKE_CURRENT_BINARY_DIR}/mpd.cantata.mounter.service)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mpd.cantata.mounter.service DESTINATION ${SHARE_INSTALL_PREFIX}/dbus-1/system-services/ )

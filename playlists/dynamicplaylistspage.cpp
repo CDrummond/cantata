@@ -220,3 +220,5 @@ void DynamicPlaylistsPage::hideEvent(QHideEvent *e)
     DynamicPlaylists::self()->enableRemotePolling(false);
     SinglePageWidget::hideEvent(e);
 }
+
+#include "moc_dynamicplaylistspage.cpp"

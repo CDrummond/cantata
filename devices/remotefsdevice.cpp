@@ -698,3 +698,5 @@ QString RemoteFsDevice::settingsFileName() const
     }
     return audioFolder+constCantataSettingsFile;
 }
+
+#include "moc_remotefsdevice.cpp"

@@ -588,3 +588,5 @@ void InterfaceSettings::storeCoversInMpdDirToggled()
 {
     storeCoversInMpdDirLabel->setOn(storeCoversInMpdDir->isChecked() && storeCoversInMpdDir->isChecked()!=Settings::self()->storeCoversInMpdDir());
 }
+
+#include "moc_interfacesettings.cpp"

@@ -152,3 +152,5 @@ QString InputDialog::getText(const QString &caption, const QString &label, QLine
         return value;
     }
 }
+
+#include "moc_inputdialog.cpp"

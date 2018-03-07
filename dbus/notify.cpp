@@ -124,3 +124,5 @@ void Notify::callFinished(QDBusPendingCallWatcher *watcher)
         lastTime = QDateTime::currentDateTime();
     }
 }
+
+#include "moc_notify.cpp"

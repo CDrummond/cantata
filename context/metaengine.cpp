@@ -112,3 +112,5 @@ void MetaEngine::lastFmResponse(const QString &html, const QString &lang)
         responses[LastFm]=Response(html.isEmpty() ? constBlankResp : html, lang);
     }
 }
+
+#include "moc_metaengine.cpp"

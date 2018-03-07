@@ -150,3 +150,5 @@ void MessageOverlay::setSizeAndPosition()
         move(desiredPos);
     }
 }
+
+#include "moc_messageoverlay.cpp"

@@ -110,3 +110,5 @@ QVariant LocalBrowseModel::data(const QModelIndex &index, int role) const
         return QFileSystemModel::data(index, role);
     }
 }
+
+#include "moc_localbrowsemodel.cpp"

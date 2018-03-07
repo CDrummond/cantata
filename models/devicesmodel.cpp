@@ -944,3 +944,5 @@ void DevicesModel::play(const QList<Song> &songs)
         }
     }
 }
+
+#include "moc_devicesmodel.cpp"

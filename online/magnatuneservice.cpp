@@ -264,3 +264,5 @@ void MagnatuneService::configure(QWidget *p)
         cfg.set("username", username);
         cfg.set("password", password);    }
 }
+
+#include "moc_magnatuneservice.cpp"

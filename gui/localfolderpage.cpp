@@ -174,3 +174,5 @@ void LocalFolderBrowsePage::controlActions()
     #endif
     #endif // TAGLIB_FOUND
 }
+
+#include "moc_localfolderpage.cpp"

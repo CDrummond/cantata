@@ -120,4 +120,4 @@ QString Solid::Backends::Hal::Volume::encryptedContainerUdi() const
     return m_device->prop("volume.crypto_luks.clear.backing_volume").toString();
 }
 
-//#include "backends/hal/halvolume.moc"
+#include "backends/hal/moc_halvolume.cpp"

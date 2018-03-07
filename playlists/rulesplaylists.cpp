@@ -368,3 +368,5 @@ void RulesPlaylists::loadLocal()
     }
     endResetModel();
 }
+
+#include "moc_rulesplaylists.cpp"

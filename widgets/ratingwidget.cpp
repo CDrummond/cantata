@@ -189,3 +189,5 @@ int RatingWidget::valueForPos(const QPoint &pos) const
     }
     return (raw*Song::Rating_Max)+0.5;
 }
+
+#include "moc_ratingwidget.cpp"

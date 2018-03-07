@@ -43,3 +43,5 @@ void MPDStats::update(const MPDStatsValues &v)
     values=v;
     emit updated();
 }
+
+#include "moc_mpdstats.cpp"

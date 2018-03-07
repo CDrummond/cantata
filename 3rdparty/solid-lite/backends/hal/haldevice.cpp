@@ -848,4 +848,4 @@ QString HalDevice::volumeDescription() const
     return description;
 }
 
-//#include "backends/hal/haldevice.moc"
+#include "backends/hal/moc_haldevice.cpp"

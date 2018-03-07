@@ -159,3 +159,5 @@ void ExtractJob::run()
         emit result(Device::Ok);
     }
 }
+
+#include "moc_extractjob.cpp"

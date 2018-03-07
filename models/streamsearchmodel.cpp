@@ -401,3 +401,5 @@ QList<StreamsModel::Item *> StreamSearchModel::getStreams(StreamsModel::Category
     }
     return streams;
 }
+
+#include "moc_streamsearchmodel.cpp"

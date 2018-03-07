@@ -142,3 +142,5 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
 
     return QSortFilterProxyModel::lessThan(left, right);
 }
+
+#include "moc_musiclibraryproxymodel.cpp"

@@ -108,3 +108,5 @@ void ActionLabel::rotateIcon()
 
     setPixmap(*theIcons[count]);
 }
+
+#include "moc_actionlabel.cpp"

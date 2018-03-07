@@ -944,3 +944,5 @@ NetworkJob * ContextWidget::getReply(QObject *obj)
     job=nullptr;
     return reply;
 }
+
+#include "moc_contextwidget.cpp"

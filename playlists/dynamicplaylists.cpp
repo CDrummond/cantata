@@ -716,3 +716,5 @@ void DynamicPlaylists::remoteDynamicSupported(bool s)
 //        #endif
     }
 }
+
+#include "moc_dynamicplaylists.cpp"

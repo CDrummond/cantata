@@ -482,3 +482,5 @@ void NowPlayingWidget::initColors()
     ratingWidget->setColor(Utils::clampColor(track->palette().buttonText().color()));
     infoLabel->setPalette(btn.palette());
 }
+
+#include "moc_nowplayingwidget.cpp"

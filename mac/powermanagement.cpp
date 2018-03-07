@@ -68,3 +68,5 @@ void PowerManagement::emitResuming()
 {
     emit resuming();
 }
+
+#include "moc_powermanagement.cpp"

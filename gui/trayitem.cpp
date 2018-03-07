@@ -279,3 +279,5 @@ void TrayItem::updateOutputs()
     copyMenu(mw->outputsAction, outputsAction);
     #endif
 }
+
+#include "moc_trayitem.cpp"

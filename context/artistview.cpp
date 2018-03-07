@@ -473,3 +473,5 @@ void ArtistView::clearCache()
 {
     Utils::clearOldCache(constCacheDir, constCacheAge);
 }
+
+#include "moc_artistview.cpp"

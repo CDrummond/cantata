@@ -70,3 +70,5 @@ void OnlineSearchService::cancel()
         job=nullptr;
     }
 }
+
+#include "moc_onlinesearchservice.cpp"

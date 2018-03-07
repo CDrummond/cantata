@@ -329,3 +329,5 @@ void BrowseModel::folderContents(const QString &path, const QStringList &folders
 		endInsertRows();
 	}
 }
+
+#include "moc_browsemodel.cpp"

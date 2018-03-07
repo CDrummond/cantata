@@ -403,3 +403,5 @@ void AlbumDetailsDialog::coverSelected(const QImage &img, const QString &fileNam
         cover->setPixmap(QPixmap::fromImage(coverImage.img.scaled(cover->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
     }
 }
+
+#include "moc_albumdetailsdialog.cpp"

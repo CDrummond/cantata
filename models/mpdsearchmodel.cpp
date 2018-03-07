@@ -125,3 +125,5 @@ void MpdSearchModel::ratingResult(const QString &file, quint8 r)
         }
     }
 }
+
+#include "moc_mpdsearchmodel.cpp"

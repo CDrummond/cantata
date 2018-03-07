@@ -702,4 +702,4 @@ void WmiDevice::slotCondition(const QString &condition, const QString &reason)
     emit conditionRaised(condition, reason);
 }
 
-//#include "backends/wmi/wmidevice.moc"
+#include "backends/wmi/moc_wmidevice.cpp"

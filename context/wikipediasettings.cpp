@@ -253,3 +253,5 @@ void WikipediaSettings::hideSpinner()
         spinner->stop();
     }
 }
+
+#include "moc_wikipediasettings.cpp"

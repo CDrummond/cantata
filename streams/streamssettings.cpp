@@ -338,3 +338,5 @@ QListWidgetItem *  StreamsSettings::get(const QString &name)
     }
     return nullptr;
 }
+
+#include "moc_streamssettings.cpp"

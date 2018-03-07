@@ -339,3 +339,5 @@ void AlbumView::clearDetails()
     engine->cancel();
     detailsReceived=0;
 }
+
+#include "moc_albumview.cpp"

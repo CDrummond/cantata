@@ -69,3 +69,5 @@ void DevicePropertiesDialog::slotButtonClicked(int button)
 
     Dialog::slotButtonClicked(button);
 }
+
+#include "moc_devicepropertiesdialog.cpp"

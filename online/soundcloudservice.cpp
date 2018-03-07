@@ -128,3 +128,5 @@ void SoundCloudService::jobFinished()
     job=nullptr;
     emit dataChanged(QModelIndex(), QModelIndex());
 }
+
+#include "moc_soundcloudservice.cpp"

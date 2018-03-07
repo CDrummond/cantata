@@ -348,3 +348,5 @@ void CacheSettings::updateSpace()
     }
     spaceLabel->update(space);
 }
+
+#include "moc_cachesettings.cpp"

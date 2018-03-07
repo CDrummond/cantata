@@ -235,3 +235,5 @@ void ShortcutsModel::defaults() {
     }
   }
 }
+
+#include "moc_shortcutsmodel.cpp"

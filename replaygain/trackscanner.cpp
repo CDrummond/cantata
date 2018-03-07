@@ -213,3 +213,5 @@ void TrackScanner::setFinishedStatus(bool f)
     input=0;
     setFinished(f);
 }
+
+#include "moc_trackscanner.cpp"

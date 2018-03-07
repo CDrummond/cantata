@@ -90,3 +90,5 @@ void ProxySettings::toggleMode()
     proxyPassword->setVisible(showManual);
     proxyPasswordLabel->setVisible(showManual);
 }
+
+#include "moc_proxysettings.cpp"

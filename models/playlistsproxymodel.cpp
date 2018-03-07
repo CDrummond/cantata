@@ -81,3 +81,5 @@ bool PlaylistsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &r
 
     return false;
 }
+
+#include "moc_playlistsproxymodel.cpp"

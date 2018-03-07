@@ -247,3 +247,5 @@ void CurrentCover::setDefault()
     emit coverFile(coverFileName);
     emit coverImage(QImage());
 }
+
+#include "moc_currentcover.cpp"

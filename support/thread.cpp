@@ -126,3 +126,5 @@ void Thread::deleteTimer(QTimer *timer)
         timer->deleteLater();
     }
 }
+
+#include "moc_thread.cpp"

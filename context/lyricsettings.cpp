@@ -68,3 +68,5 @@ void LyricSettings::showEvent(QShowEvent *e)
     }
     QWidget::showEvent(e);
 }
+
+#include "moc_lyricsettings.cpp"

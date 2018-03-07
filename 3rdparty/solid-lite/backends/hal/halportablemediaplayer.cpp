@@ -65,4 +65,4 @@ QVariant PortableMediaPlayer::driverHandle(const QString &driver) const
     return QVariant();
 }
 
-//#include "backends/hal/halportablemediaplayer.moc"
+#include "backends/hal/moc_halportablemediaplayer.cpp"

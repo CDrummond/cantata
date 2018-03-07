@@ -108,3 +108,5 @@ PlainUrlNoteLabel::PlainUrlNoteLabel(QWidget *parent)
 {
     init(this);
 }
+
+#include "moc_notelabel.cpp"

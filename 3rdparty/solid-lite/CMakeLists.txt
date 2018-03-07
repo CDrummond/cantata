@@ -45,23 +45,6 @@ set(solidlite_LIB_SRCS
    backends/shared/rootdevice.cpp
 )
 
-set(solidlite_LIB_MOC_HDRS
-    block.h
-    deviceinterface.h
-    devicemanager_p.h
-    devicenotifier.h
-    device_p.h
-    genericinterface.h
-    portablemediaplayer.h
-    storageaccess.h
-    storagedrive.h
-    opticaldrive.h
-    storagevolume.h
-    opticaldisc.h
-    ifaces/device.h
-    ifaces/devicemanager.h
-    backends/shared/rootdevice.h
-)
    if (NOT WIN32 AND NOT APPLE AND WITH_SOLID_UDISKS2)
      find_package( UDev REQUIRED)
      macro_log_feature( UDEV_FOUND "UDev" "UDev support for Solid" "http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html" FALSE "" "Allows Solid to use UDev to provide information about devices on Linux" )
@@ -82,15 +65,6 @@ set(solidlite_LIB_MOC_HDRS
       backends/shared/udevqtdevice.cpp
       )
 
-      set(solidlite_LIB_MOC_HDRS ${solidlite_LIB_MOC_HDRS}
-      backends/udev/udevblock.h
-      backends/udev/udevdevice.h
-      backends/udev/udevdeviceinterface.h
-      backends/udev/udevgenericinterface.h
-      backends/udev/udevmanager.h
-      backends/udev/udevportablemediaplayer.h
-      backends/shared/udevqt.h
-      )
       # check for media-player-info (runtime-only optional dependency)
       set(XDG_DATA_DIRS_ENV $ENV{XDG_DATA_DIRS})  # if(ENV{..}) does not work for me
       if(XDG_DATA_DIRS_ENV)
@@ -133,19 +107,6 @@ set(solidlite_LIB_MOC_HDRS
    backends/hal/halstorage.cpp
    backends/hal/halvolume.cpp
    )
-   set(solidlite_LIB_MOC_HDRS ${solidlite_LIB_MOC_HDRS}
-   backends/hal/halblock.h
-   backends/hal/halcdrom.h
-   backends/hal/haldevice.h
-   backends/hal/haldeviceinterface.h
-   backends/hal/halgenericinterface.h
-   backends/hal/halmanager.h
-   backends/hal/halopticaldisc.h
-   backends/hal/halportablemediaplayer.h
-   backends/hal/halstorageaccess.h
-   backends/hal/halstorage.h
-   backends/hal/halvolume.h
-   )
 
     # FIXME: this should work on more Unix systems
     if (CMAKE_SYSTEM_NAME MATCHES Linux)
@@ -166,20 +127,6 @@ set(solidlite_LIB_MOC_HDRS
             backends/udisks2/udisksgenericinterface.cpp
             backends/udisks2/dbus/manager.cpp
             )
-            set(solidlite_LIB_MOC_HDRS ${solidlite_LIB_MOC_HDRS}
-            backends/udisks2/udisksblock.h
-            backends/udisks2/udisksdevicebackend.h
-            backends/udisks2/udisksdevice.h
-            backends/udisks2/udisksdeviceinterface.h
-            backends/udisks2/udisksgenericinterface.h
-            backends/udisks2/udisksmanager.h
-            backends/udisks2/udisksopticaldisc.h
-            backends/udisks2/udisksopticaldrive.h
-            backends/udisks2/udisksstorageaccess.h
-            backends/udisks2/udisksstoragedrive.h
-            backends/udisks2/udisksstoragevolume.h
-            backends/udisks2/dbus/manager.h
-            )
         else ( )
             message(STATUS "Building Solid UDisks backend." )
             set(solidlite_LIB_SRCS ${solidlite_LIB_SRCS}
@@ -194,18 +141,6 @@ set(solidlite_LIB_MOC_HDRS
             backends/udisks/udisksstorageaccess.cpp
             backends/udisks/udisksgenericinterface.cpp
             )
-            set(solidlite_LIB_MOC_HDRS ${solidlite_LIB_MOC_HDRS}
-            backends/udisks/udisksblock.h
-            backends/udisks/udisksdevice.h
-            backends/udisks/udisksdeviceinterface.h
-            backends/udisks/udisksgenericinterface.h
-            backends/udisks/udisksopticaldisc.h
-            backends/udisks/udisksopticaldrive.h
-            backends/udisks/udisksmanager.h
-            backends/udisks/udisksstorageaccess.h
-            backends/udisks/udisksstoragedrive.h
-            backends/udisks/udisksstoragevolume.h
-            )
         endif ( )
    endif ()
 
@@ -219,12 +154,6 @@ if(APPLE)
    backends/iokit/cfhelper.cpp
    backends/iokit/iokitdeviceinterface.cpp
    backends/iokit/iokitgenericinterface.cpp
-   )
-   set(solidlite_LIB_MOC_HDRS ${solidlite_LIB_MOC_HDRS}
-   backends/iokit/iokitdevice.h
-   backends/iokit/iokitdeviceinterface.h
-   backends/iokit/iokitgenericinterface.h
-   backends/iokit/iokitmanager.h
    )
 endif(APPLE)
 
@@ -257,19 +186,6 @@ if(WIN32)
        backends/wmi/wmivolume.cpp
 
        )
-       set(solidlite_LIB_MOC_HDRS ${solidlite_LIB_MOC_HDRS}
-       backends/wmi/wmiblock.h
-       backends/wmi/wmicdrom.h
-       backends/wmi/wmidevice.h
-       backends/wmi/wmideviceinterface.h
-       backends/wmi/wmigenericinterface.h
-       backends/wmi/wmimanager.h
-       backends/wmi/wmiopticaldisc.h
-       backends/wmi/wmiportablemediaplayer.h
-       backends/wmi/wmistorageaccess.h
-       backends/wmi/wmistorage.h
-       backends/wmi/wmivolume.h
-       )
     endif()
 endif()
 
@@ -286,9 +202,7 @@ if(APPLE)
    set(solidlite_OPTIONAL_LIBS ${IOKIT_LIBRARY})
 endif()
 
-QT5_WRAP_CPP(solidlite_LIB_MOC_SRCS ${solidlite_LIB_MOC_HDRS} )
-add_library(solidlite ${solidlite_LIB_SRCS} ${solidlite_LIB_MOC_SRCS})
-# set_target_properties(solidlite PROPERTIES AUTOMOC TRUE)
+add_library(solidlite ${solidlite_LIB_SRCS})
 
 if ( UDEV_FOUND )
    set(solidlite_OPTIONAL_LIBS ${solidlite_OPTIONAL_LIBS} ${UDEV_LIBS})

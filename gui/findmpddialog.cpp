@@ -74,3 +74,5 @@ void FindMpdDialog::okClicked()
         emit serverChosen(tableWidget->item(addressIndex.row(), addressIndex.column())->text(), tableWidget->item(portIndex.row(), portIndex.column())->text());
     }
 }
+
+#include "moc_findmpddialog.cpp"

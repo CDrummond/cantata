@@ -81,3 +81,5 @@ void AudioCdSettings::save()
     Settings::self()->saveUseCddb(cdLookup->itemData(cdLookup->currentIndex()).toBool());
     #endif
 }
+
+#include "moc_audiocdsettings.cpp"

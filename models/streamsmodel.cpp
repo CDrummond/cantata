@@ -1829,3 +1829,5 @@ QString StreamsModel::modifyUrl(const QString &u, bool addPrefix, const QString 
 {
     return MPDParseUtils::addStreamName(!addPrefix || !u.startsWith("http:") ? u : (constPrefix+u), name);
 }
+
+#include "moc_streamsmodel.cpp"

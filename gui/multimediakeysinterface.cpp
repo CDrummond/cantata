@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2011-2018 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2018 Craig Drummond <craig.p.drummond@gmail.com>
  *
  * ----
  *
@@ -21,27 +21,4 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "actionmodel.h"
-#include "gui/stdactions.h"
-#include "roles.h"
-
-QVariant ActionModel::data(const QModelIndex &index, int role) const
-{
-    QVariant v;
-    Q_UNUSED(index)
-    switch(role) {
-    case Cantata::Role_Actions:
-        v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->appendToPlayQueueAction);
-        break;
-    case Cantata::Role_RatingCol:
-        return -1;
-    case Cantata::Role_TitleText:
-        return data(index, Qt::DisplayRole);
-    default:
-        break;
-    }
-    return v;
-}
-
-
-#include "moc_actionmodel.cpp"
+#include "moc_multimediakeysinterface.cpp"

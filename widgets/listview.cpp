@@ -176,3 +176,5 @@ void ListView::checkDoubleClick(const QModelIndex &idx)
     }
     emit itemDoubleClicked(idx);
 }
+
+#include "moc_listview.cpp"

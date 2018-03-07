@@ -458,3 +458,5 @@ void ConfigDialog::macButtonPressed(QAbstractButton *b)
     Q_UNUSED(b)
     #endif
 }
+
+#include "moc_configdialog.cpp"

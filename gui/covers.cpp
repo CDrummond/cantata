@@ -1895,3 +1895,5 @@ QString Covers::getFilename(const Song &s)
     mutex.unlock();
     return f;
 }
+
+#include "moc_covers.cpp"

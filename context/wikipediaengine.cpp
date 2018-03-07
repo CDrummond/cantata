@@ -596,3 +596,5 @@ void WikipediaEngine::parsePage()
         emit searchResult(resp, hostLang);
     }
 }
+
+#include "moc_wikipediaengine.cpp"

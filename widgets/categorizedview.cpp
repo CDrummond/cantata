@@ -68,7 +68,7 @@ CategorizedView::~CategorizedView()
 
 void CategorizedView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-    KCategorizedView::selectionChanged(selected, deselected);
+    //KCategorizedView::selectionChanged(selected, deselected);
     bool haveSelection=haveSelectedItems();
 
     setContextMenuPolicy(haveSelection ? Qt::ActionsContextMenu : (menu ? Qt::CustomContextMenu : Qt::NoContextMenu));

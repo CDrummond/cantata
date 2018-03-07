@@ -183,7 +183,7 @@ void SqlLibraryModel::libraryUpdated()
                 switch(albumSort) {
                 case LibraryDb::AS_AlArYr:
                 case LibraryDb::AS_AlYrAr:
-                    name=album.name.left(1);
+                    name=album.name.at(0).toUpper();
                     break;
                 case LibraryDb::AS_ArAlYr:
                 case LibraryDb::AS_ArYrAl:

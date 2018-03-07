@@ -212,10 +212,11 @@ public:
     {
         Q_UNUSED(option)
         if (view && QListView::IconMode==view->viewMode()) {
+            double textSpace = !isCategorizedView || view->model()->data(QModelIndex(), Cantata::Role_CatergizedHasSubText).toBool() ? 2.5 : 1.75;
             #ifdef RESPONSIVE_LAYOUT
-            return QSize(calcItemWidth(), zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*2.5));
+            return QSize(calcItemWidth(), zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*textSpace));
             #else
-            return QSize(zoomedSize(view, gridCoverSize)+8, zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*2.5));
+            return QSize(zoomedSize(view, gridCoverSize)+8, zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*textSpace));
             #endif
         } else {
             int imageSize = index.data(Cantata::Role_ListImage).toBool() ? listCoverSize : 0;
@@ -244,6 +245,8 @@ public:
         bool active=option.state&QStyle::State_Active;
         bool drawBgnd=true;
         bool iconMode = view && QListView::IconMode==view->viewMode();
+        bool iconSubText = iconMode && (!isCategorizedView || view->model()->data(QModelIndex(), Cantata::Role_CatergizedHasSubText).toBool());
+
         QStyleOptionViewItem opt(option);
         opt.showDecorationSelected=true;
 
@@ -303,7 +306,7 @@ public:
                                                                         ? QIcon::Selected : QIcon::Normal);
         }
 
-        bool oneLine = childText.isEmpty();
+        bool oneLine = !iconSubText || childText.isEmpty();
         ActionPos actionPos = iconMode ? AP_VTop : AP_HMiddle;
         bool rtl = QApplication::isRightToLeft();
 

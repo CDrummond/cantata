@@ -69,6 +69,9 @@ namespace Cantata {
         Role_ContextMenuText,
         Role_RatingCol,
 
+        // CategorizedView
+        Role_CatergizedHasSubText,
+
         // PlayQueueModel...
         Role_Time
     };

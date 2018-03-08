@@ -198,16 +198,18 @@ void SqlLibraryModel::libraryUpdated()
                     break;
                 }
 
-                const auto existing = knownCats.find(name);
                 int cat = -1;
                 if (!name.isEmpty()) {
+                    const auto existing = knownCats.find(name);
                     if (knownCats.constEnd()==existing) {
                         cat=categories.size();
                         categories.append(name);
+                        knownCats.insert(name, cat);
                     } else {
                         cat=existing.value();
                     }
                 }
+
                 QString trackInfo = tr("%n Tracks (%1)", "", album.trackCount).arg(Utils::formatTime(album.duration, true));
                 root->add(new AlbumItem(T_Album==tl && album.identifyById ? QString() : album.artist,
                                         album.id, Song::displayAlbum(album.name, album.year),

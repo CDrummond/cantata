@@ -194,3 +194,10 @@ void CategorizedView::checkDoubleClick(const QModelIndex &idx)
     }
     emit itemDoubleClicked(idx);
 }
+
+void CategorizedView::rowsInserted(const QModelIndex &parent, int start, int end)
+{
+    if (parent==rootIndex()) {
+        KCategorizedView::rowsInserted(parent, start, end);
+    }
+}

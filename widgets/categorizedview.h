@@ -55,15 +55,24 @@ public:
     double zoom() const { return zoomLevel; }
     void setZoom(double l) { zoomLevel = l; }
     void setInfoText(const QString &i) { info=i; update(); }
+    void setRootIndex(const QModelIndex &idx) override;
+    QModelIndex rootIndex() const;
+    QModelIndex indexAt(const QPoint &point) const override { return indexAt(point, false); }
+    QModelIndex indexAt(const QPoint &point, bool ensureFromSource) const;
+    void setPlain(bool plain);
 
 private Q_SLOTS:
     void correctSelection();
     void showCustomContextMenu(const QPoint &pos);
     void checkDoubleClick(const QModelIndex &idx);
+    void checkClicked(const QModelIndex &idx);
+    void checkActivated(const QModelIndex &idx);
 
 Q_SIGNALS:
     bool itemsSelected(bool);
     void itemDoubleClicked(const QModelIndex &idx);
+    void itemClicked(const QModelIndex &idx);
+    void itemActivated(const QModelIndex &idx);
 
 private:
     void rowsInserted(const QModelIndex &parent, int start, int end) override;

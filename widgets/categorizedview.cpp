@@ -55,11 +55,12 @@ CategorizedView::CategorizedView(QWidget *parent)
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(showCustomContextMenu(const QPoint &)));
     connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(checkDoubleClick(const QModelIndex &)));
+    connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(checkClicked(const QModelIndex &)));
+    connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(checkActivated(const QModelIndex &)));
 
     setViewMode(QListView::IconMode);
     setResizeMode(QListView::Adjust);
     setWordWrap(true);
-    setDragDropMode(QAbstractItemView::DragOnly);
 }
 
 CategorizedView::~CategorizedView()
@@ -98,9 +99,11 @@ QModelIndexList CategorizedView::selectedIndexes(bool sorted) const
 {
     QModelIndexList indexes=selectionModel() ? selectionModel()->selectedIndexes() : QModelIndexList();
     QModelIndexList actual;
+
     for (const auto &idx: indexes) {
         actual.append(proxy->mapToSource(idx));
     }
+
     if (sorted) {
         qSort(actual);
     }
@@ -168,6 +171,29 @@ void CategorizedView::paintEvent(QPaintEvent *e)
     KCategorizedView::paintEvent(e);
 }
 
+void CategorizedView::setRootIndex(const QModelIndex &idx)
+{
+    KCategorizedView::setRootIndex(idx.model()==proxy->sourceModel() ? proxy->mapFromSource(idx) : idx);
+}
+
+QModelIndex CategorizedView::rootIndex() const
+{
+    QModelIndex idx=KCategorizedView::rootIndex();
+    return idx.model()==proxy ? proxy->mapToSource(idx) : idx;
+}
+
+QModelIndex CategorizedView::indexAt(const QPoint &point, bool ensureFromSource) const
+{
+    QModelIndex idx=KCategorizedView::indexAt(point);
+    return ensureFromSource && idx.model()==proxy ? proxy->mapToSource(idx) : idx;
+}
+
+void CategorizedView::setPlain(bool plain)
+{
+    proxy->setCategorizedModel(!plain);
+    setViewMode(plain ? QListView::ListMode : QListView::IconMode);
+}
+
 // Workaround for https://bugreports.qt-project.org/browse/QTBUG-18009
 void CategorizedView::correctSelection()
 {
@@ -192,12 +218,22 @@ void CategorizedView::checkDoubleClick(const QModelIndex &idx)
     if (!TreeView::getForceSingleClick() && idx.model() && idx.model()->rowCount(idx)) {
         return;
     }
-    emit itemDoubleClicked(idx);
+    emit itemDoubleClicked(idx.model()==proxy ? proxy->mapToSource(idx) : idx);
+}
+
+void CategorizedView::checkClicked(const QModelIndex &idx)
+{
+    emit itemClicked(idx.model()==proxy ? proxy->mapToSource(idx) : idx);
+}
+
+void CategorizedView::checkActivated(const QModelIndex &idx)
+{
+    emit itemActivated(idx.model()==proxy ? proxy->mapToSource(idx) : idx);
 }
 
 void CategorizedView::rowsInserted(const QModelIndex &parent, int start, int end)
 {
-    if (parent==rootIndex()) {
+    if (parent==KCategorizedView::rootIndex()) {
         KCategorizedView::rowsInserted(parent, start, end);
     }
 }

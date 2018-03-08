@@ -82,10 +82,10 @@ public:
         Mode_GroupedTree,
 
         Mode_Table,
+        Mode_Categorized,
 
         Mode_List,
         Mode_IconTop,
-        Mode_Categorized,
 
         Mode_Count
     };

@@ -36,6 +36,48 @@
 #include <QModelIndex>
 #include <QApplication>
 
+class CategoryDrawer : public KCategoryDrawer
+{
+public:
+    CategoryDrawer(KCategorizedView *view)
+        : KCategoryDrawer(view) {
+    }
+
+    ~CategoryDrawer() override {
+    }
+
+    void drawCategory(const QModelIndex &index,
+                                       int /*sortRole*/,
+                                       const QStyleOption &option,
+                                       QPainter *painter) const
+    {
+//        painter->setRenderHint(QPainter::Antialiasing);
+
+        const QString category = index.model()->data(index, KCategorizedSortFilterProxyModel::CategoryDisplayRole).toString();
+        QFont font(QApplication::font());
+        font.setBold(true);
+        const QFontMetrics fontMetrics = QFontMetrics(font);
+
+        QRect textRect(option.rect);
+        textRect.setTop(textRect.top() + 2);
+        textRect.setLeft(textRect.left() + 2);
+        textRect.setHeight(fontMetrics.height());
+        textRect.setRight(textRect.right() - 2);
+
+        painter->save();
+        painter->setFont(font);
+        QColor penColor(option.palette.text().color());
+        painter->setPen(penColor);
+        painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, category);
+
+        penColor.setAlphaF(0.5);
+        painter->setPen(penColor);
+        textRect.adjust(0, 4, 0, 4);
+        painter->drawLine(textRect.bottomLeft(), textRect.bottomRight());
+        painter->restore();
+    }
+};
+
 CategorizedView::CategorizedView(QWidget *parent)
     : KCategorizedView(parent)
     , eventFilter(nullptr)
@@ -44,7 +86,7 @@ CategorizedView::CategorizedView(QWidget *parent)
 {
     proxy=new KCategorizedSortFilterProxyModel(this);
     proxy->setCategorizedModel(true);
-    setCategoryDrawer(new KCategoryDrawer(this));
+    setCategoryDrawer(new CategoryDrawer(this));
     setDragEnabled(true);
     setContextMenuPolicy(Qt::NoContextMenu);
     setDragDropMode(QAbstractItemView::DragOnly);

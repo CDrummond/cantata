@@ -306,7 +306,7 @@ public:
                                                                         ? QIcon::Selected : QIcon::Normal);
         }
 
-        bool oneLine = !iconSubText || childText.isEmpty();
+        bool oneLine = (iconMode && !iconSubText) || childText.isEmpty();
         ActionPos actionPos = iconMode ? AP_VTop : AP_HMiddle;
         bool rtl = QApplication::isRightToLeft();
 
@@ -315,7 +315,7 @@ public:
         }
 
         painter->save();
-        painter->setClipRect(r);
+        //painter->setClipRect(r);
 
         QFont textFont(index.data(Qt::FontRole).value<QFont>());
         QFontMetrics textMetrics(textFont);
@@ -837,9 +837,9 @@ void ItemView::allowCategorized()
         //ViewEventHandler *viewHandler=new ViewEventHandler(nullptr, categorizedView);
         //categorizedView->installFilter(viewHandler);
         connect(categorizedView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
-        connect(categorizedView, SIGNAL(activated(const QModelIndex &)), this, SLOT(activateItem(const QModelIndex &)));
+        connect(categorizedView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(activateItem(const QModelIndex &)));
         connect(categorizedView, SIGNAL(itemDoubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
-        connect(categorizedView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
+        connect(categorizedView, SIGNAL(itemClicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
         categorizedView->setProperty(ProxyStyle::constModifyFrameProp, ProxyStyle::VF_Side|ProxyStyle::VF_Top);
         #ifdef Q_OS_MAC
         categorizedView->setAttribute(Qt::WA_MacShowFocusRect, 0);
@@ -1028,10 +1028,18 @@ void ItemView::goToTop()
 {
     setLevel(0);
     prevTopIndex.clear();
-    if (dynamic_cast<ProxyModel *>(itemModel)) {
-        static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
+    if (usingListView()) {
+        if (dynamic_cast<ProxyModel *>(itemModel)) {
+            static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
+        }
+        listView->setRootIndex(QModelIndex());
+    } else if (Mode_Categorized==mode) {
+        categorizedView->setRootIndex(QModelIndex());
+        categorizedView->setPlain(false);
+        // Setting grid size causes categorizedview to re-lyout items. If we don't do this
+        // then items are all messed up!
+        categorizedView->setGridSizeOwn(categorizedView->gridSize());
     }
-    listView->setRootIndex(QModelIndex());
     setTitle();
     emit rootIndexSet(QModelIndex());
 }
@@ -1508,26 +1516,43 @@ void ItemView::backActivated()
 
     emit headerClicked(currentLevel);
 
-    if (!usingListView() || 0==currentLevel) {
+    if (!(usingListView() || Mode_Categorized==mode) || 0==currentLevel) {
         return;
     }
     setLevel(currentLevel-1);
-    if (dynamic_cast<ProxyModel *>(itemModel)) {
-        static_cast<ProxyModel *>(itemModel)->setRootIndex(listView->rootIndex().parent());
+
+    if (usingListView()) {
+        if (dynamic_cast<ProxyModel *>(itemModel)) {
+            static_cast<ProxyModel *>(itemModel)->setRootIndex(listView->rootIndex().parent());
+        }
+        listView->setRootIndex(listView->rootIndex().parent());
+        emit rootIndexSet(listView->rootIndex().parent());
+    } else {
+        categorizedView->setRootIndex(categorizedView->rootIndex().parent());
+        categorizedView->setPlain(false);
+        // Setting grid size causes categorizedview to re-lyout items. If we don't do this
+        // then items are all messed up!
+        categorizedView->setGridSizeOwn(categorizedView->gridSize());
+        emit rootIndexSet(categorizedView->rootIndex().parent());
     }
-    listView->setRootIndex(listView->rootIndex().parent());
-    emit rootIndexSet(listView->rootIndex().parent());
     setTitle();
 
-    if (prevTopIndex.isEmpty()) return;
+    if (prevTopIndex.isEmpty()) {
+        return;
+    }
+
     QModelIndex prevTop = prevTopIndex.takeLast();
-    if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
-        QModelIndex idx=static_cast<QSortFilterProxyModel *>(listView->model())->mapFromSource(prevTop);
-        if (idx.isValid()) {
-            listView->scrollTo(idx, QAbstractItemView::PositionAtTop);
+    if (usingListView()) {
+        if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
+            QModelIndex idx=static_cast<QSortFilterProxyModel *>(listView->model())->mapFromSource(prevTop);
+            if (idx.isValid()) {
+                listView->scrollTo(idx, QAbstractItemView::PositionAtTop);
+            }
+        } else {
+            listView->scrollTo(prevTop, QAbstractItemView::PositionAtTop);
         }
     } else {
-        listView->scrollTo(prevTop, QAbstractItemView::PositionAtTop);
+        categorizedView->scrollTo(prevTop, QAbstractItemView::PositionAtTop);
     }
 }
 
@@ -1587,8 +1612,36 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
             tableView->setExpanded(index, !tableView->TreeView::isExpanded(index));
         }
     } else if (Mode_Categorized==mode) {
-        // TODO
-    } else if (index.isValid() && (index.child(0, 0).isValid() || itemModel->canFetchMore(index)) && index!=listView->rootIndex()) {
+        if (index == categorizedView->rootIndex()) {
+            return;
+        }
+        if (itemModel->canFetchMore(index)) {
+            itemModel->fetchMore(index);
+        }
+        QModelIndex fistChild=index.child(0, 0);
+        if (!fistChild.isValid()) {
+            return;
+        }
+
+        QModelIndex curTop=categorizedView->indexAt(QPoint(8, 24), true);
+        //if (qobject_cast<QSortFilterProxyModel *>(categorizedView->model())) {
+        //    curTop=static_cast<QSortFilterProxyModel *>(categorizedView->model())->mapToSource(curTop);
+        //}
+        prevTopIndex.append(curTop);
+        bool haveChildren=itemModel->canFetchMore(fistChild);
+        setLevel(currentLevel+1, haveChildren || fistChild.child(0, 0).isValid());
+        categorizedView->setPlain(!haveChildren);
+        categorizedView->setRootIndex(index);
+        setTitle();
+
+//        if (dynamic_cast<ProxyModel *>(itemModel)) {
+//            static_cast<ProxyModel *>(itemModel)->setRootIndex(index);
+//        }
+        if (emitRootSet) {
+            emit rootIndexSet(index);
+        }
+        categorizedView->scrollToTop();
+    } else if (usingListView() && (index.isValid() && (index.child(0, 0).isValid() || itemModel->canFetchMore(index)) && index!=listView->rootIndex())) {
         if (itemModel->canFetchMore(index)) {
             itemModel->fetchMore(index);
         }

@@ -66,6 +66,9 @@ Q_SIGNALS:
     void itemDoubleClicked(const QModelIndex &idx);
 
 private:
+    void rowsInserted(const QModelIndex &parent, int start, int end) override;
+
+private:
     QString info;
     QObject *eventFilter;
     QMenu *menu;

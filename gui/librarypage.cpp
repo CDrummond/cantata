@@ -120,6 +120,13 @@ LibraryPage::LibraryPage(QWidget *p)
     connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
     view->setOpenAfterSearch(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
     view->setInfoText(tr("No music? Looks like your MPD is not configured correctly."));
+
+    for (QAction *act: viewAction->menu()->actions()) {
+        if (ItemView::Mode_Categorized==act->property(constValProp).toInt()) {
+            act->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
+            break;
+        }
+    }
 }
 
 LibraryPage::~LibraryPage()
@@ -315,9 +322,12 @@ void LibraryPage::groupByChanged()
     }
     view->load(config);
     for (QAction *act: viewAction->menu()->actions()) {
-        if (act->property(constValProp).toInt()==view->viewMode()) {
+        int viewMode = act->property(constValProp).toInt();
+        if (viewMode==view->viewMode()) {
             act->setChecked(true);
-            break;
+        }
+        if (ItemView::Mode_Categorized==viewMode) {
+            act->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
         }
     }
     view->setOpenAfterSearch(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());

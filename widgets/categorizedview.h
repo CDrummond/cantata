@@ -59,6 +59,7 @@ public:
     QModelIndex rootIndex() const;
     QModelIndex indexAt(const QPoint &point) const override { return indexAt(point, false); }
     QModelIndex indexAt(const QPoint &point, bool ensureFromSource) const;
+    QModelIndex mapFromSource(const QModelIndex &idx) const;
     void setPlain(bool plain);
 
 private Q_SLOTS:

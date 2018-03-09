@@ -230,6 +230,11 @@ QModelIndex CategorizedView::indexAt(const QPoint &point, bool ensureFromSource)
     return ensureFromSource && idx.model()==proxy ? proxy->mapToSource(idx) : idx;
 }
 
+QModelIndex CategorizedView::mapFromSource(const QModelIndex &idx) const
+{
+    return idx.model()==proxy->sourceModel() ? proxy->mapFromSource(idx) : idx;
+}
+
 void CategorizedView::setPlain(bool plain)
 {
     proxy->setCategorizedModel(!plain);

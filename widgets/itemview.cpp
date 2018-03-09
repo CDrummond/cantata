@@ -1709,7 +1709,9 @@ void ItemView::replaceTitleButtonClicked()
 void ItemView::coverLoaded(const Song &song, int size)
 {
     Q_UNUSED(song)
-    if (Mode_BasicTree==mode || Mode_GroupedTree==mode || !isVisible() || (Mode_IconTop==mode && size!=zoomedSize(listView, gridCoverSize)) || (Mode_IconTop!=mode && size!=listCoverSize)) {
+
+    if (Mode_BasicTree==mode || Mode_GroupedTree==mode || !isVisible() || (Mode_IconTop==mode && size!=zoomedSize(listView, gridCoverSize)) ||
+        (Mode_IconTop!=mode && Mode_Categorized!=mode && size!=listCoverSize) || (Mode_Categorized==mode && size!=zoomedSize(categorizedView, gridCoverSize))) {
         return;
     }
     view()->viewport()->update();

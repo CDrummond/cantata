@@ -70,7 +70,11 @@ SmartPlaylistsPage::SmartPlaylistsPage(QWidget *p)
     view->addAction(editAction);
     view->addAction(removeAction);
     view->alwaysShowHeader();
-    view->setInfoText(tr("Use the + icon (below) to create a new 'smart' playlist."));
+    view->setInfoText(tr("A 'smart' playlist contains a set of rules to select tracks from your music library to play. "
+                         "The playlist also controls the order in which tracks are added. "
+                         "Unlike 'dynamic' playlists, the play queue is not dynamically updated.")
+                      +QLatin1String("\n\n\n")+
+                      tr("Use the + icon (below) to create a new 'smart' playlist."));
 }
 
 SmartPlaylistsPage::~SmartPlaylistsPage()

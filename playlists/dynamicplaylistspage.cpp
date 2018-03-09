@@ -81,7 +81,15 @@ DynamicPlaylistsPage::DynamicPlaylistsPage(QWidget *p)
     #ifdef Q_OS_WIN
     enableWidgets(false);
     #endif
-    view->setInfoText(tr("Use the + icon (below) to create a new 'dynamic' playlist."));
+    #ifndef Q_OS_WIN
+    QString
+    #endif
+    infoStr = tr("A 'dynamic' playlist contains a set of rules to select tracks from your music library to play. "
+                 "The play queue is filled with random tracks matching your criteria, and the play queue will be "
+                 "dynamically updated after tracks are played.")
+              +QLatin1String("\n\n\n")+
+              tr("Use the + icon (below) to create a new 'dynamic' playlist.");
+    view->setInfoText(infoStr);
 }
 
 DynamicPlaylistsPage::~DynamicPlaylistsPage()
@@ -112,12 +120,11 @@ void DynamicPlaylistsPage::remoteDynamicSupport(bool s)
 {
     #ifdef Q_OS_WIN
     if (s) {
-        view->setInfoText(tr("Use the + icon (below) to create a new 'dynamic' playlist."));
+        view->setInfoText(infoStr);
     } else {
         view->setInfoText(tr("Remote dynamizer is not running. In order to support 'dynamic' playlists under Windows, Cantata requires "
                              "its 'cantata-dynamic' script to be running on the MPD server."));
     }
-
     enableWidgets(s);
     #endif
     view->setBackgroundImage(s ? Icon(QStringList() << "network-server-database.svg" << "applications-internet") : Icon());

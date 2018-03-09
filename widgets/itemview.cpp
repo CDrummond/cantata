@@ -1565,13 +1565,14 @@ void ItemView::setExpanded(const QModelIndex &idx, bool exp)
 
 QAction * ItemView::getAction(const QModelIndex &index)
 {
+    QModelIndex idx = Mode_Categorized==mode ? categorizedView->mapFromSource(index) : index;
     QAbstractItemDelegate *abs=view()->itemDelegate();
     ActionItemDelegate *d=abs ? qobject_cast<ActionItemDelegate *>(abs) : nullptr;
     #ifdef RESPONSIVE_LAYOUT
     ListDelegate *l=abs ? dynamic_cast<ListDelegate *>(abs) : nullptr;
-    return d ? d->getAction(index, l ? l->actionPosAdjust() : 0) : nullptr;
+    return d ? d->getAction(idx, l ? l->actionPosAdjust() : 0) : nullptr;
     #else
-    return d ? d->getAction(index) : nullptr;
+    return d ? d->getAction(idx) : nullptr;
     #endif
 }
 
@@ -1691,6 +1692,8 @@ void ItemView::addTitleButtonClicked()
 {
     if ((Mode_List==mode || Mode_IconTop==mode) && view()->rootIndex().isValid()) {
         emit updateToPlayQueue(view()->rootIndex(), false);
+    } else if (Mode_Categorized==mode && categorizedView->rootIndex().isValid()) {
+        emit updateToPlayQueue(categorizedView->rootIndex(), false);
     }
 }
 
@@ -1698,6 +1701,8 @@ void ItemView::replaceTitleButtonClicked()
 {
     if ((Mode_List==mode || Mode_IconTop==mode) && view()->rootIndex().isValid()) {
         emit updateToPlayQueue(view()->rootIndex(), true);
+    } else if (Mode_Categorized==mode && categorizedView->rootIndex().isValid()) {
+        emit updateToPlayQueue(categorizedView->rootIndex(), true);
     }
 }
 

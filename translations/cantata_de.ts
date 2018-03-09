@@ -5686,13 +5686,17 @@ This cannot be undone.</source>
         <translation type="unfinished">Entfernen</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="84"/>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="115"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="87"/>
+        <source>A &apos;dynamic&apos; playlist contains a set of rules to select tracks from your music library to play. The play queue is filled with random tracks matching your criteria, and the play queue will be dynamically updated after tracks are played.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="91"/>
         <source>Use the + icon (below) to create a new &apos;dynamic&apos; playlist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="117"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="125"/>
         <source>Remote dynamizer is not running. In order to support &apos;dynamic&apos; playlists under Windows, Cantata requires its &apos;cantata-dynamic&apos; script to be running on the MPD server.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5701,14 +5705,14 @@ This cannot be undone.</source>
         <translation type="obsolete">Entfernter Dynamizer ist nicht aktiv.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="149"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="156"/>
         <source>Are you sure you wish to remove the selected rules?
 
 This cannot be undone.</source>
         <translation type="unfinished">Bist du sicher, dass du die ausgewählten Regeln entfernen möchtest? Dies kann nicht rückgängig gemacht werden.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="150"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="157"/>
         <source>Remove Dynamic Rules</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6906,12 +6910,12 @@ Dies kann nicht rückgängig gemacht werden.</translation>
 <context>
     <name>ItemView</name>
     <message>
-        <location filename="../widgets/itemview.cpp" line="671"/>
+        <location filename="../widgets/itemview.cpp" line="691"/>
         <source>Go Back</source>
         <translation>Zurück</translation>
     </message>
     <message>
-        <location filename="../widgets/itemview.cpp" line="1385"/>
+        <location filename="../widgets/itemview.cpp" line="1495"/>
         <source>Updating...</source>
         <translation>Aktualisiere …</translation>
     </message>
@@ -7053,93 +7057,93 @@ Bitte wähle ein anderes.</translation>
 <context>
     <name>LibraryPage</name>
     <message>
-        <location filename="../gui/librarypage.cpp" line="59"/>
+        <location filename="../gui/librarypage.cpp" line="60"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="65"/>
+        <location filename="../gui/librarypage.cpp" line="66"/>
         <source>Show Artist Images</source>
         <translation>Interpreten-Bilder anzeigen</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="67"/>
-        <location filename="../gui/librarypage.cpp" line="70"/>
+        <location filename="../gui/librarypage.cpp" line="68"/>
+        <location filename="../gui/librarypage.cpp" line="71"/>
         <source>Sort Albums</source>
         <translation>Alben sortieren</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="67"/>
+        <location filename="../gui/librarypage.cpp" line="68"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="68"/>
+        <location filename="../gui/librarypage.cpp" line="69"/>
         <source>Year</source>
         <translation>Jahr</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="70"/>
+        <location filename="../gui/librarypage.cpp" line="71"/>
         <source>Album, Artist, Year</source>
         <translation>Album, Interpret, Jahr</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="71"/>
+        <location filename="../gui/librarypage.cpp" line="72"/>
         <source>Album, Year, Artist</source>
         <translation>Album, Jahr, Interpret</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="72"/>
+        <location filename="../gui/librarypage.cpp" line="73"/>
         <source>Artist, Album, Year</source>
         <translation>Interpret, Album, Jahr</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="73"/>
+        <location filename="../gui/librarypage.cpp" line="74"/>
         <source>Artist, Year, Album</source>
         <translation>Interpret, Jahr, Album</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="74"/>
+        <location filename="../gui/librarypage.cpp" line="75"/>
         <source>Year, Album, Artist</source>
         <translation>Jahr, Album, Interpret</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="75"/>
+        <location filename="../gui/librarypage.cpp" line="76"/>
         <source>Year, Artist, Album</source>
         <translation>Jahr, Interpret, Album</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="76"/>
+        <location filename="../gui/librarypage.cpp" line="77"/>
         <source>Modified Date</source>
         <translation>Änderungsdatum</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="85"/>
+        <location filename="../gui/librarypage.cpp" line="86"/>
         <source>Group By</source>
         <translation>Gruppieren nach</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="85"/>
+        <location filename="../gui/librarypage.cpp" line="86"/>
         <source>Genre</source>
         <translation>Genre</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="86"/>
+        <location filename="../gui/librarypage.cpp" line="87"/>
         <source>Artist</source>
         <translation>Interpret</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="87"/>
+        <location filename="../gui/librarypage.cpp" line="88"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="121"/>
+        <location filename="../gui/librarypage.cpp" line="122"/>
         <source>No music? Looks like your MPD is not configured correctly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="195"/>
+        <location filename="../gui/librarypage.cpp" line="203"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
@@ -7148,7 +7152,7 @@ This cannot be undone.</source>
 Dies kann nicht rückgängig gemacht werden.</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="196"/>
+        <location filename="../gui/librarypage.cpp" line="204"/>
         <source>Delete Songs</source>
         <translation>Stücke löschen</translation>
     </message>
@@ -8068,9 +8072,8 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="333"/>
         <source>(Stream)</source>
-        <translation>(Stream)</translation>
+        <translation type="vanished">(Stream)</translation>
     </message>
 </context>
 <context>
@@ -8365,139 +8368,139 @@ Dies kann nicht rückgängig gemacht werden.</translation>
 <context>
     <name>PlayQueueModel</name>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="267"/>
+        <location filename="../models/playqueuemodel.cpp" line="359"/>
         <source>Title</source>
         <translation>Titel</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="268"/>
-        <location filename="../models/playqueuemodel.cpp" line="348"/>
+        <location filename="../models/playqueuemodel.cpp" line="360"/>
+        <location filename="../models/playqueuemodel.cpp" line="440"/>
         <source>Artist</source>
         <translation>Interpret</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="269"/>
-        <location filename="../models/playqueuemodel.cpp" line="350"/>
+        <location filename="../models/playqueuemodel.cpp" line="361"/>
+        <location filename="../models/playqueuemodel.cpp" line="442"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="270"/>
+        <location filename="../models/playqueuemodel.cpp" line="362"/>
         <source>#</source>
         <comment>Track number</comment>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="271"/>
+        <location filename="../models/playqueuemodel.cpp" line="363"/>
         <source>Length</source>
         <translation>Länge</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="272"/>
+        <location filename="../models/playqueuemodel.cpp" line="364"/>
         <source>Disc</source>
         <translation>Disc</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="273"/>
-        <location filename="../models/playqueuemodel.cpp" line="354"/>
+        <location filename="../models/playqueuemodel.cpp" line="365"/>
+        <location filename="../models/playqueuemodel.cpp" line="446"/>
         <source>Year</source>
         <translation>Jahr</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="274"/>
+        <location filename="../models/playqueuemodel.cpp" line="366"/>
         <source>Original Year</source>
         <translation>Original-Jahr</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="275"/>
-        <location filename="../models/playqueuemodel.cpp" line="353"/>
+        <location filename="../models/playqueuemodel.cpp" line="367"/>
+        <location filename="../models/playqueuemodel.cpp" line="445"/>
         <source>Genre</source>
         <translation>Genre</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="276"/>
+        <location filename="../models/playqueuemodel.cpp" line="368"/>
         <source>Priority</source>
         <translation>Priorität</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="277"/>
-        <location filename="../models/playqueuemodel.cpp" line="355"/>
+        <location filename="../models/playqueuemodel.cpp" line="369"/>
+        <location filename="../models/playqueuemodel.cpp" line="447"/>
         <source>Composer</source>
         <translation>Komponist</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="278"/>
-        <location filename="../models/playqueuemodel.cpp" line="356"/>
+        <location filename="../models/playqueuemodel.cpp" line="370"/>
+        <location filename="../models/playqueuemodel.cpp" line="448"/>
         <source>Performer</source>
         <translation>Ausführender Künstler</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="279"/>
+        <location filename="../models/playqueuemodel.cpp" line="371"/>
         <source>Rating</source>
         <translation>Bewertung</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="280"/>
+        <location filename="../models/playqueuemodel.cpp" line="372"/>
         <source>Filename</source>
         <translation type="unfinished">Dateiname</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="281"/>
+        <location filename="../models/playqueuemodel.cpp" line="373"/>
         <source>Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="326"/>
+        <location filename="../models/playqueuemodel.cpp" line="418"/>
         <source>Remove Duplicates</source>
         <translation>Duplikate entfernen</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="329"/>
+        <location filename="../models/playqueuemodel.cpp" line="421"/>
         <source>Undo</source>
         <translation>Rückgängig</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="331"/>
+        <location filename="../models/playqueuemodel.cpp" line="423"/>
         <source>Redo</source>
         <translation>Rückgängig rückgängig</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="337"/>
+        <location filename="../models/playqueuemodel.cpp" line="429"/>
         <source>Shuffle</source>
         <translation>Durchmischen</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="339"/>
+        <location filename="../models/playqueuemodel.cpp" line="431"/>
         <source>Tracks</source>
         <translation>Stücke</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="340"/>
+        <location filename="../models/playqueuemodel.cpp" line="432"/>
         <source>Albums</source>
         <translation>Alben</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="346"/>
+        <location filename="../models/playqueuemodel.cpp" line="438"/>
         <source>Sort By</source>
         <translation>Sortieren nach</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="349"/>
+        <location filename="../models/playqueuemodel.cpp" line="441"/>
         <source>Album Artist</source>
         <translation>Album-Interpret</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="351"/>
+        <location filename="../models/playqueuemodel.cpp" line="443"/>
         <source>Track Title</source>
         <translation>Stücktitel</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="352"/>
+        <location filename="../models/playqueuemodel.cpp" line="444"/>
         <source>Track Number</source>
         <translation>Stücknummer</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="414"/>
+        <location filename="../models/playqueuemodel.cpp" line="506"/>
         <source># (Track Number)</source>
         <translation># (Stücknummer)</translation>
     </message>
@@ -10287,6 +10290,11 @@ width x height</comment>
         <translation>&lt;b&gt;%1&lt;/b&gt; von &lt;b&gt;%2&lt;/b&gt; auf &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
+        <location filename="../mpd-interface/song.cpp" line="824"/>
+        <source>(Stream)</source>
+        <translation type="unfinished">(Stream)</translation>
+    </message>
+    <message>
         <location filename="../scrobbling/scrobbler.cpp" line="91"/>
         <source>Invalid service</source>
         <translation>Ungültiger Dienst</translation>
@@ -10539,6 +10547,11 @@ width x height</comment>
         <location filename="../widgets/singlepagewidget.cpp" line="43"/>
         <source>Grid</source>
         <translation>Raster</translation>
+    </message>
+    <message>
+        <location filename="../widgets/singlepagewidget.cpp" line="45"/>
+        <source>Categorized</source>
+        <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
         <source>%n Track(s)</source>
@@ -11618,12 +11631,12 @@ Bitte wähle einen anderen Namen.</translation>
 <context>
     <name>SinglePageWidget</name>
     <message>
-        <location filename="../widgets/singlepagewidget.cpp" line="104"/>
+        <location filename="../widgets/singlepagewidget.cpp" line="105"/>
         <source>Refresh</source>
         <translation>Aktualisieren</translation>
     </message>
     <message>
-        <location filename="../widgets/singlepagewidget.cpp" line="198"/>
+        <location filename="../widgets/singlepagewidget.cpp" line="199"/>
         <source>View</source>
         <translation>Ansicht</translation>
     </message>
@@ -11660,11 +11673,16 @@ Bitte wähle einen anderen Namen.</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="73"/>
+        <source>A &apos;smart&apos; playlist contains a set of rules to select tracks from your music library to play. The playlist also controls the order in which tracks are added. Unlike &apos;dynamic&apos; playlists, the play queue is not dynamically updated.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/smartplaylistspage.cpp" line="77"/>
         <source>Use the + icon (below) to create a new &apos;smart&apos; playlist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/smartplaylistspage.cpp" line="122"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="126"/>
         <source>Are you sure you wish to remove the selected rules?
 
 This cannot be undone.</source>
@@ -11673,14 +11691,14 @@ This cannot be undone.</source>
 Dies kann nicht rückgängig gemacht werden.</translation>
     </message>
     <message>
-        <location filename="../playlists/smartplaylistspage.cpp" line="123"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="127"/>
         <source>Remove Smart Rules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/smartplaylistspage.cpp" line="168"/>
-        <location filename="../playlists/smartplaylistspage.cpp" line="200"/>
-        <location filename="../playlists/smartplaylistspage.cpp" line="303"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="172"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="204"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="307"/>
         <source>Failed to locate any matching songs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12029,7 +12047,7 @@ Von der Platte neu laden, oder die lokale Version löschen und neu herunterladen
 <context>
     <name>SqlLibraryModel</name>
     <message numerus="yes">
-        <location filename="../models/sqllibrarymodel.cpp" line="162"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="163"/>
         <source>%n Artist(s)</source>
         <translation>
             <numerusform>Ein Interpret</numerusform>
@@ -12037,17 +12055,62 @@ Von der Platte neu laden, oder die lokale Version löschen und neu herunterladen
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/sqllibrarymodel.cpp" line="171"/>
-        <location filename="../models/sqllibrarymodel.cpp" line="282"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="172"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="345"/>
         <source>%n Album(s)</source>
         <translation>
             <numerusform>Ein Album</numerusform>
             <numerusform>%n Alben</numerusform>
         </translation>
     </message>
+    <message>
+        <location filename="../models/sqllibrarymodel.cpp" line="210"/>
+        <source>Modified in the last week</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/sqllibrarymodel.cpp" line="212"/>
+        <source>Modified in the last 2 weeks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/sqllibrarymodel.cpp" line="214"/>
+        <source>Modified in the last 30 days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/sqllibrarymodel.cpp" line="216"/>
+        <source>Modified in the last 60 days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/sqllibrarymodel.cpp" line="218"/>
+        <source>Modified in the last 90 days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/sqllibrarymodel.cpp" line="220"/>
+        <source>Modified in the last year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/sqllibrarymodel.cpp" line="222"/>
+        <source>Modified in the last 2 years</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/sqllibrarymodel.cpp" line="224"/>
+        <source>Modified in the last 3 years</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/sqllibrarymodel.cpp" line="226"/>
+        <source>Modified more than 3 years ago</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location filename="../models/sqllibrarymodel.cpp" line="180"/>
-        <location filename="../models/sqllibrarymodel.cpp" line="294"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="243"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="357"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>Ein Stück (%1)</numerusform>
@@ -12055,17 +12118,17 @@ Von der Platte neu laden, oder die lokale Version löschen und neu herunterladen
         </translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="353"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="419"/>
         <source>Cue Sheet</source>
         <translation>Cue-Sheet</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="353"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="419"/>
         <source>Playlist</source>
         <translation>Wiedergabeliste</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="378"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="444"/>
         <source>%1 by %2</source>
         <translation type="unfinished">%1 von %2</translation>
     </message>
@@ -13273,18 +13336,12 @@ Wenn du eine Datei (oder den Ordner, der sie enthält) umbenennst, geht die mit 
     <name>TrayItem</name>
     <message>
         <location filename="../gui/trayitem.cpp" line="179"/>
-        <location filename="../gui/trayitem.cpp" line="235"/>
-        <location filename="../gui/trayitem.cpp" line="241"/>
-        <location filename="../gui/trayitem.cpp" line="253"/>
         <source>Cantata</source>
         <translation>Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/trayitem.cpp" line="219"/>
-        <location filename="../gui/trayitem.cpp" line="238"/>
-        <location filename="../gui/trayitem.cpp" line="249"/>
         <source>Now playing</source>
-        <translation>Spielt gerade</translation>
+        <translation type="vanished">Spielt gerade</translation>
     </message>
 </context>
 <context>

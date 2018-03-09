@@ -65,6 +65,7 @@ private:
     Action *toggleAction;
     QList<QWidget *> controls;
     #ifdef Q_OS_WIN
+    QString infoStr;
     QLabel *remoteRunningLabel;
     #endif
 };

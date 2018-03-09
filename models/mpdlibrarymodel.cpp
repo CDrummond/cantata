@@ -28,6 +28,7 @@
 #include "gui/settings.h"
 #include "gui/covers.h"
 #include "roles.h"
+#include "kcategorizedview/kcategorizedsortfilterproxymodel.h"
 #include <QTimer>
 #include <QDebug>
 
@@ -107,6 +108,21 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
             break;
         }
         return v;
+    }
+    case KCategorizedSortFilterProxyModel::CategoryDisplayRole: {
+        Item *item = static_cast<Item *>(index.internalPointer());
+        if (T_Album==item->getType()) {
+            int cat = static_cast<AlbumItem *>(item)->getCategory();
+            return cat>=0 && cat<categories.length() ? categories.at(cat) : "";
+        }
+        break;
+    }
+    case KCategorizedSortFilterProxyModel::CategorySortRole: {
+        Item *item = static_cast<Item *>(index.internalPointer());
+        if (T_Album==item->getType()) {
+            return (long long)static_cast<AlbumItem *>(item)->getCategory();
+        }
+        break;
     }
     }
     return SqlLibraryModel::data(index, role);

@@ -42,6 +42,7 @@ static QString viewTypeString(ItemView::Mode mode)
     case ItemView::Mode_List:         return QObject::tr("List");
     case ItemView::Mode_IconTop:      return QObject::tr("Grid");
     case ItemView::Mode_Table:        return QObject::tr("Table");
+    case ItemView::Mode_Categorized:  return QObject::tr("Categorized");
     }
 }
 

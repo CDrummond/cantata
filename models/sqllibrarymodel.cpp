@@ -28,6 +28,7 @@
 #include "support/configuration.h"
 #include "roles.h"
 #include <QMimeData>
+#include <time.h>
 
 static QString parentData(const SqlLibraryModel::Item *i)
 {
@@ -175,12 +176,74 @@ void SqlLibraryModel::libraryUpdated()
     }
     case T_Album: {
         QList<LibraryDb::Album> albums=db->getAlbums(QString(), QString(), albumSort);
+        categories.clear();
         if (!albums.isEmpty())  {
+            time_t now = time(nullptr);
+            const time_t aDay = 24 * 60 * 60;
+            time_t week = now - (7 * aDay);
+            time_t week2 = now - (14 * aDay);
+            time_t days30 = now - (30 * aDay);
+            time_t days60 = now - (60 * aDay);
+            time_t days90 = now - (90 * aDay);
+            time_t year = now - (365 * aDay);
+            time_t year2 = now - (365 * 2 * aDay);
+            time_t year3 = now - (35 * 3 * aDay);
+
+            QMap<QString, int> knownCats;
             for (const LibraryDb::Album &album: albums) {
+                QString name;
+                switch(albumSort) {
+                case LibraryDb::AS_AlArYr:
+                case LibraryDb::AS_AlYrAr:
+                    name=album.sort.isEmpty() ? album.name.at(0).toUpper() : album.sort.at(0).toUpper();
+                    break;
+                case LibraryDb::AS_ArAlYr:
+                case LibraryDb::AS_ArYrAl:
+                    name=album.artist;
+                    break;
+                case LibraryDb::AS_YrAlAr:
+                case LibraryDb::AS_YrArAl:
+                    name=QString::number(album.year);
+                    break;
+                case LibraryDb::AS_Modified:
+                    if (album.lastModified>=week) {
+                        name = tr("Modified in the last week");
+                    } else if (album.lastModified>=week2) {
+                        name = tr("Modified in the last 2 weeks");
+                    } else if (album.lastModified>=days30) {
+                        name = tr("Modified in the last 30 days");
+                    } else if (album.lastModified>=days60) {
+                        name = tr("Modified in the last 60 days");
+                    } else if (album.lastModified>=days90) {
+                        name = tr("Modified in the last 90 days");
+                    } else if (album.lastModified>=year) {
+                        name = tr("Modified in the last year");
+                    } else if (album.lastModified>=year2) {
+                        name = tr("Modified in the last 2 years");
+                    } else if (album.lastModified>=year3) {
+                        name = tr("Modified in the last 3 years");
+                    } else {
+                        name = tr("Modified more than 3 years ago");
+                    }
+                    break;
+                }
+
+                int cat = -1;
+                if (!name.isEmpty()) {
+                    const auto existing = knownCats.find(name);
+                    if (knownCats.constEnd()==existing) {
+                        cat=categories.size();
+                        categories.append(name);
+                        knownCats.insert(name, cat);
+                    } else {
+                        cat=existing.value();
+                    }
+                }
+
                 QString trackInfo = tr("%n Tracks (%1)", "", album.trackCount).arg(Utils::formatTime(album.duration, true));
                 root->add(new AlbumItem(T_Album==tl && album.identifyById ? QString() : album.artist,
                                         album.id, Song::displayAlbum(album.name, album.year),
-                                        T_Album==tl ? album.artist : trackInfo, T_Album==tl ? trackInfo : QString(), root));
+                                        T_Album==tl ? album.artist : trackInfo, T_Album==tl ? trackInfo : QString(), root, cat));
             }
         }
         break;
@@ -320,6 +383,9 @@ void SqlLibraryModel::fetchMore(const QModelIndex &index)
 QVariant SqlLibraryModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
+        if (Cantata::Role_CatergizedHasSubText==role) {
+            return T_Album!=tl || LibraryDb::AS_ArAlYr==albumSort || LibraryDb::AS_ArYrAl==albumSort;
+        }
         return QVariant();
     }
 

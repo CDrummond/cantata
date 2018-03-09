@@ -314,7 +314,7 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp widgets/songdialog.cpp widgets/stretchheaderview.cpp
     widgets/tableview.cpp widgets/thinsplitterhandle.cpp widgets/coverwidget.cpp widgets/ratingwidget.cpp widgets/notelabel.cpp
     widgets/selectorlabel.cpp widgets/titlewidget.cpp widgets/multipagewidget.cpp widgets/singlepagewidget.cpp widgets/stackedpagewidget.cpp
-    widgets/mirrormenu.cpp widgets/genrecombo.cpp widgets/volumecontrol.cpp
+    widgets/mirrormenu.cpp widgets/genrecombo.cpp widgets/volumecontrol.cpp widgets/categorizedview.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
     context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp context/togglelist.cpp
@@ -556,6 +556,9 @@ else ()
     ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
     install(TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 endif ()
+
+add_subdirectory(3rdparty/kcategorizedview)
+target_link_libraries(cantata kcategorizedview)
 
 if (WIN32 OR APPLE OR HAIKU)
     add_subdirectory(3rdparty/qtsingleapplication)

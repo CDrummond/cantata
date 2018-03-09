@@ -35,6 +35,7 @@
 #include <QPaintEvent>
 #include <QModelIndex>
 #include <QApplication>
+#include <QLinearGradient>
 
 class CategoryDrawer : public KCategoryDrawer
 {
@@ -46,34 +47,42 @@ public:
     ~CategoryDrawer() override {
     }
 
-    void drawCategory(const QModelIndex &index,
-                                       int /*sortRole*/,
-                                       const QStyleOption &option,
-                                       QPainter *painter) const
+    void drawCategory(const QModelIndex &index, int /*sortRole*/, const QStyleOption &option, QPainter *painter) const
     {
-//        painter->setRenderHint(QPainter::Antialiasing);
-
         const QString category = index.model()->data(index, KCategorizedSortFilterProxyModel::CategoryDisplayRole).toString();
         QFont font(QApplication::font());
         font.setBold(true);
         const QFontMetrics fontMetrics = QFontMetrics(font);
 
-        QRect textRect(option.rect);
-        textRect.setTop(textRect.top() + 2);
-        textRect.setLeft(textRect.left() + 2);
-        textRect.setHeight(fontMetrics.height());
-        textRect.setRight(textRect.right() - 2);
+        QRect r(option.rect);
+        r.setTop(r.top() + 2);
+        r.setLeft(r.left() + 2);
+        r.setHeight(fontMetrics.height());
+        r.setRight(r.right() - 2);
 
         painter->save();
         painter->setFont(font);
-        QColor penColor(option.palette.text().color());
-        painter->setPen(penColor);
-        painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, category);
+        QColor col(option.palette.text().color());
+        painter->setPen(col);
+        painter->drawText(r, Qt::AlignLeft | Qt::AlignVCenter, category);
 
-        penColor.setAlphaF(0.5);
-        painter->setPen(penColor);
-        textRect.adjust(0, 4, 0, 4);
-        painter->drawLine(textRect.bottomLeft(), textRect.bottomRight());
+        r.adjust(0, 4, 0, 4);
+
+        double alpha=0.5;
+        double fadeSize=64.0;
+        double fadePos=fadeSize/r.width();
+        QLinearGradient grad(r.bottomLeft(), r.bottomRight());
+
+        col.setAlphaF(Qt::RightToLeft==option.direction ? 0.0 : alpha);
+        grad.setColorAt(0, col);
+        col.setAlphaF(alpha);
+        grad.setColorAt(fadePos, col);
+        grad.setColorAt(1.0-fadePos, col);
+        col.setAlphaF(Qt::LeftToRight==option.direction ? 0.0 : alpha);
+        grad.setColorAt(1, col);
+        painter->setPen(QPen(grad, 1));
+
+        painter->drawLine(r.bottomLeft(), r.bottomRight());
         painter->restore();
     }
 };

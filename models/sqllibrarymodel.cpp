@@ -28,6 +28,7 @@
 #include "support/configuration.h"
 #include "roles.h"
 #include <QMimeData>
+#include <time.h>
 
 static QString parentData(const SqlLibraryModel::Item *i)
 {
@@ -177,6 +178,17 @@ void SqlLibraryModel::libraryUpdated()
         QList<LibraryDb::Album> albums=db->getAlbums(QString(), QString(), albumSort);
         categories.clear();
         if (!albums.isEmpty())  {
+            time_t now = time(nullptr);
+            const time_t aDay = 24 * 60 * 60;
+            time_t week = now - (7 * aDay);
+            time_t week2 = now - (14 * aDay);
+            time_t days30 = now - (30 * aDay);
+            time_t days60 = now - (60 * aDay);
+            time_t days90 = now - (90 * aDay);
+            time_t year = now - (365 * aDay);
+            time_t year2 = now - (365 * 2 * aDay);
+            time_t year3 = now - (35 * 3 * aDay);
+
             QMap<QString, int> knownCats;
             for (const LibraryDb::Album &album: albums) {
                 QString name;
@@ -194,7 +206,25 @@ void SqlLibraryModel::libraryUpdated()
                     name=QString::number(album.year);
                     break;
                 case LibraryDb::AS_Modified:
-                    // TODO????
+                    if (album.lastModified>=week) {
+                        name = tr("Modified in the last week");
+                    } else if (album.lastModified>=week2) {
+                        name = tr("Modified in the last 2 weeks");
+                    } else if (album.lastModified>=days30) {
+                        name = tr("Modified in the last 30 days");
+                    } else if (album.lastModified>=days60) {
+                        name = tr("Modified in the last 60 days");
+                    } else if (album.lastModified>=days90) {
+                        name = tr("Modified in the last 90 days");
+                    } else if (album.lastModified>=year) {
+                        name = tr("Modified in the last year");
+                    } else if (album.lastModified>=year2) {
+                        name = tr("Modified in the last 2 years");
+                    } else if (album.lastModified>=year3) {
+                        name = tr("Modified in the last 3 years");
+                    } else {
+                        name = tr("Modified more than 3 years ago");
+                    }
                     break;
                 }
 

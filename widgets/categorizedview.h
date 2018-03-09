@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2011-2018 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) s2018 Craig Drummond <craig.p.drummond@gmail.com>
  *
  * ----
  *
@@ -21,23 +21,23 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef LISTVIEW_H
-#define LISTVIEW_H
+#ifndef CATEGORIZEDVIEW_H
+#define CATEGORIZEDVIEW_H
 
-#include <QListView>
-#include <QPixmap>
+#include "kcategorizedview/kcategorizedview.h"
 #include "treeview.h"
 
 class QIcon;
 class QMenu;
+class KCategorizedSortFilterProxyModel;
 
-class ListView : public QListView
+class CategorizedView : public KCategorizedView
 {
     Q_OBJECT
 
 public:
-    ListView(QWidget *parent=nullptr);
-    ~ListView() override;
+    CategorizedView(QWidget *parent=nullptr);
+    ~CategorizedView() override;
 
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
     bool haveSelectedItems() const;
@@ -55,15 +55,28 @@ public:
     double zoom() const { return zoomLevel; }
     void setZoom(double l) { zoomLevel = l; }
     void setInfoText(const QString &i) { info=i; update(); }
+    void setRootIndex(const QModelIndex &idx) override;
+    QModelIndex rootIndex() const;
+    QModelIndex indexAt(const QPoint &point) const override { return indexAt(point, false); }
+    QModelIndex indexAt(const QPoint &point, bool ensureFromSource) const;
+    QModelIndex mapFromSource(const QModelIndex &idx) const;
+    void setPlain(bool plain);
 
 private Q_SLOTS:
     void correctSelection();
     void showCustomContextMenu(const QPoint &pos);
     void checkDoubleClick(const QModelIndex &idx);
+    void checkClicked(const QModelIndex &idx);
+    void checkActivated(const QModelIndex &idx);
 
 Q_SIGNALS:
     bool itemsSelected(bool);
     void itemDoubleClicked(const QModelIndex &idx);
+    void itemClicked(const QModelIndex &idx);
+    void itemActivated(const QModelIndex &idx);
+
+private:
+    void rowsInserted(const QModelIndex &parent, int start, int end) override;
 
 private:
     QString info;
@@ -71,6 +84,7 @@ private:
     QMenu *menu;
     QPixmap bgnd;
     double zoomLevel;
+    KCategorizedSortFilterProxyModel *proxy;
 };
 
 #endif

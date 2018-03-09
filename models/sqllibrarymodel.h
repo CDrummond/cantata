@@ -113,17 +113,19 @@ public:
     class AlbumItem : public CollectionItem {
     public:
         AlbumItem(const QString &ar, const QString &i, const QString &txt=QString(), const QString &sub=QString(),
-                  const QString &tSub=QString(), CollectionItem *p=nullptr)
-            : CollectionItem(T_Album, i, txt, sub, p), artistId(ar), titleSub(tSub) { }
+                  const QString &tSub=QString(), CollectionItem *p=nullptr, int cat=-1)
+            : CollectionItem(T_Album, i, txt, sub, p), artistId(ar), titleSub(tSub), category(cat) { }
         ~AlbumItem() override { }
 
         const QString & getArtistId() const { return artistId; }
         const QString getUniqueId() const override { return artistId+getId(); }
         const QString & getTitleSub() const {return titleSub; }
+        int getCategory() { return category; }
 
     private:
         QString artistId;
         QString titleSub;
+        int category;
     };
 
     SqlLibraryModel(LibraryDb *d, QObject *p, Type top=T_Artist);
@@ -191,6 +193,7 @@ protected:
     LibraryDb *db;
     LibraryDb::AlbumSort librarySort;
     LibraryDb::AlbumSort albumSort;
+    QStringList categories;
 };
 
 #endif

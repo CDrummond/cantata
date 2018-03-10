@@ -40,7 +40,9 @@ static void setupIconTheme(Application *app)
 Application::Application(int &argc, char **argv)
     : QApplication(argc, argv)
 {
+    #if QT_VERSION >= 0x050700
     setDesktopFileName(QLatin1String("cantata.desktop"));
+    #endif
 }
 
 bool Application::start()

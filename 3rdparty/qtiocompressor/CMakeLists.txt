@@ -1,11 +1,4 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(IOCOMPRESSOR-SOURCES
-    qtiocompressor.cpp
-)
-
-include_directories(${QTINCLUDES} ${ZLIB_INCLUDE_DIRS})
-
-ADD_LIBRARY(qtiocompressor STATIC
-    ${IOCOMPRESSOR-SOURCES}
-)
+include_directories(${QTINCLUDES} ${ZLIB_INCLUDE_DIRS} ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+ADD_LIBRARY(qtiocompressor STATIC qtiocompressor.cpp)

@@ -60,6 +60,11 @@ int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWid
     return SH_DialogButtonBox_ButtonsHaveIcons == hint ? false : baseStyle()->styleHint(hint, option, widget, returnData);
 }
 
+int ProxyStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
+{
+    return PM_MessageBoxIconSize==metric ? 64 : baseStyle()->pixelMetric(metric, option, widget);
+}
+
 void ProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     baseStyle()->drawPrimitive(element, option, painter, widget);

@@ -46,6 +46,7 @@ public:
     void polish(QApplication *app) override { QProxyStyle::polish(app); }
     void polish(QWidget *widget) override;
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const override;
+    int pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const override;
     void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const override;
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     QPixmap standardPixmap(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const override;

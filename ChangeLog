@@ -74,6 +74,7 @@
 54. Allow to specify the max age of files to use in smart playlists.
 55. Use same format for notifications as for now playing widget.
 56. Add 'Categorized' view for albums in library.
+57. Remove actions from desktop file - MPRIS should be used for these.
 
 2.2.0
 -----

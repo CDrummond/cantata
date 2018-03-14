@@ -123,6 +123,8 @@ void SoundCloudService::jobFinished()
                 songs.append(song);
             }
         }
+    } else {
+        ApiKeys::self()->isLimitReached(j->actualJob(), ApiKeys::SoundCloud);
     }
     results(songs);
     job=nullptr;

@@ -57,7 +57,7 @@ ApiKeysSettings::ApiKeysSettings(QWidget *p)
                                 "Most of these require an application's developer to register with the service, and obtain an API Key. "
                                 "Cantata contains the keys required to access these services. Unfortunately, some of these services have "
                                 "a usage limit per API key. Therefore, some of Cantata's features may not function if the key (which is shared "
-                                "with all Cantata users) has reached its usage limit for a month. To work-around this, you can register with a "
+                                "with all Cantata users) has reached its monthly usage limit. To work-around this, you can register with a "
                                 "service yourself, and configure Cantata to use your personal API key. This key may be entered below. For any "
                                 "blank values below, Cantata will use its default key."), this);
     label->setWordWrap(true);

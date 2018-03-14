@@ -24,22 +24,24 @@
 #include "apikeys.h"
 #include "support/configuration.h"
 #include "support/globalstatic.h"
-#include <QObject>
+#include <QNetworkReply>
 
 GLOBAL_STATIC(ApiKeys, instance)
+
+static const int constMaxLimitAge = 30 * 60;
 
 ApiKeys::ApiKeys()
 {    
     defaultKeys[LastFm]="5a854b839b10f8d46e630e8287c2299b";
     defaultKeys[FanArt]="ee86404cb429fa27ac32a1a3c117b006";
     defaultKeys[Dirble]="1035d2834bdc7195b8929ad7f70a8410f02c633e";
-    defaultKeys[Shoutcast]="fa1669MuiRPorUBw";
+    defaultKeys[ShoutCast]="fa1669MuiRPorUBw";
     defaultKeys[SoundCloud]="0cb23dce473528973ce74815bd36a334";
 
     queryItems[LastFm]="api_key";
     queryItems[FanArt]="api_key";
     queryItems[Dirble]="token";
-    queryItems[Shoutcast]="k";
+    queryItems[ShoutCast]="k";
     queryItems[SoundCloud]="client_id";
 }
 
@@ -73,7 +75,7 @@ QList<ApiKeys::Details> ApiKeys::getDetails()
     list.append(Details(LastFm, "LastFM", userKeys[LastFm], "https://www.last.fm/api"));
     list.append(Details(FanArt, "FanArt", userKeys[FanArt], "https://fanart.tv/get-an-api-key/"));
     list.append(Details(Dirble, "Dirble", userKeys[Dirble], "https://dirble.com/developer/"));
-    list.append(Details(Shoutcast, "Shoutcast", userKeys[Shoutcast], "https://shoutcast.com/Developer"));
+    list.append(Details(ShoutCast, "SHOUTcast", userKeys[ShoutCast], "https://shoutcast.com/Developer"));
     list.append(Details(SoundCloud, "Soundcloud", userKeys[SoundCloud], "https://developers.soundcloud.com/"));
     return list;
 }
@@ -112,3 +114,47 @@ QString ApiKeys::addKey(const QString &url, Service srv)
     }
     return url;
 }
+
+void ApiKeys::setLimitReached(Service srv)
+{
+    limitReached.insert(get(srv), time(nullptr));
+}
+
+bool ApiKeys::isLimitReached(Service srv)
+{
+    time_t now=time(nullptr);
+
+    const auto it=limitReached.find(get(srv));
+    if (it != limitReached.constEnd()) {
+        if ((now-it.value())>constMaxLimitAge) {
+            limitReached.erase(it);
+            return false;
+        }
+        return true;
+    }
+}
+
+bool ApiKeys::isLimitReached(const QNetworkReply *job, Service srv)
+{
+    if (isLimitReached(srv)) {
+        return true;
+    }
+
+    bool reached = false;
+    switch (srv) {
+    case Dirble:
+        reached = 299 ==job->error();
+        break;
+    // TODO: Error codes for other services???
+    default:
+        break;
+    }
+
+    if (reached) {
+        setLimitReached(srv);
+        emit error(tr("The API call limit has been exceeded for %1, please try again later or register for your own API key.").arg(getDetails().at(srv).name));
+    }
+    return reached;
+}
+
+#include "moc_apikeys.cpp"

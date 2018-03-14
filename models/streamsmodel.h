@@ -138,7 +138,7 @@ public:
             : CategoryItem(u, n, p, i, cn, bn) { }
         void addHeaders(QNetworkRequest &req) override;
         NetworkJob * fetchSecondardyUrl() override;
-        QString fullUrl() const override { return ApiKeys::self()->addKey(url, ApiKeys::Shoutcast); }
+        QString fullUrl() const override { return ApiKeys::self()->addKey(url, ApiKeys::ShoutCast); }
     };
 
     struct DirbleCategoryItem : public CategoryItem

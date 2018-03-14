@@ -311,7 +311,7 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
             if (0==bitrate) {
                 bitrate=getParam("bitrate", search);
             }
-            ApiKeys::self()->addKey(query, ApiKeys::Shoutcast);
+            ApiKeys::self()->addKey(query, ApiKeys::ShoutCast);
             query.addQueryItem("search", search);
             query.addQueryItem("limit", QString::number(limit<1 ? 100 : limit));
             if (bitrate>=32 && bitrate<=512) {
@@ -361,13 +361,12 @@ void StreamSearchModel::jobFinished()
         cat->state=StreamsModel::CategoryItem::Fetched;
         jobs.remove(job);
         QModelIndex index=cat==root ? QModelIndex() : createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
+        StreamsModel::Item *i=cat;
+        while (i->parent && i->parent!=root) {
+            i=i->parent;
+        }
         if (job->ok()) {
             QList<StreamsModel::Item *> newItems;
-
-            StreamsModel::Item *i=cat;
-            while (i->parent && i->parent!=root) {
-                i=i->parent;
-            }
             switch(root->children.indexOf(i)) {
             case TuneIn:    newItems=StreamsModel::parseRadioTimeResponse(job->actualJob(), cat, true); break;
             case ShoutCast: newItems=StreamsModel::parseShoutCastSearchResponse(job->actualJob(), cat); break;
@@ -378,6 +377,12 @@ void StreamSearchModel::jobFinished()
                 beginInsertRows(index, cat->children.count(), (cat->children.count()+newItems.count())-1);
                 cat->children+=newItems;
                 endInsertRows();
+            }
+        } else {
+            switch(root->children.indexOf(i)) {
+            case ShoutCast: ApiKeys::self()->isLimitReached(job->actualJob(), ApiKeys::ShoutCast); break;
+            case Dirble:    ApiKeys::self()->isLimitReached(job->actualJob(), ApiKeys::Dirble); break;
+            default : break;
             }
         }
         emit dataChanged(index, index);

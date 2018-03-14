@@ -46,6 +46,7 @@
 #include "streams/streamdialog.h"
 #include "searchpage.h"
 #include "customactions.h"
+#include "apikeys.h"
 #include "support/gtkstyle.h"
 #include "widgets/mirrormenu.h"
 #ifdef ENABLE_DEVICES_SUPPORT
@@ -791,6 +792,7 @@ void MainWindow::init()
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
     connect(MPDConnection::self(), SIGNAL(connectionNotChanged(QString)), SLOT(mpdConnectionName(QString)));
     connect(MpdLibraryModel::self(), SIGNAL(error(QString)), SLOT(showError(QString)));
+    connect(ApiKeys::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(refreshDbAction, SIGNAL(triggered()), this, SLOT(refreshDbPromp()));
     connect(doDbRefreshAction, SIGNAL(triggered()), MpdLibraryModel::self(), SLOT(clearDb()));
     connect(doDbRefreshAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(update()));

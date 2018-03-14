@@ -476,7 +476,7 @@ NetworkJob * StreamsModel::ShoutCastCategoryItem::fetchSecondardyUrl()
         // Get stations...
         QUrl url(QLatin1String("http://")+constShoutCastHost+QLatin1String("/legacy/genresearch"));
         QUrlQuery query;
-        ApiKeys::self()->addKey(query, ApiKeys::Shoutcast);
+        ApiKeys::self()->addKey(query, ApiKeys::ShoutCast);
         query.addQueryItem("genre", name);
         url.setQuery(query);
 
@@ -1051,10 +1051,11 @@ void StreamsModel::jobFinished()
         }
 
         QModelIndex index=createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
+        QString url=job->origUrl().toString();
+
         if (job->ok()) {
             QList<Item *> newItems;
             if (cat!=favourites && QLatin1String("http")==job->url().scheme()) {
-                QString url=job->origUrl().toString();
                 if (constRadioTimeHost==job->origUrl().host()) {
                     newItems=parseRadioTimeResponse(job->actualJob(), cat);
                 } else if (constIceCastUrl==url) {
@@ -1116,6 +1117,12 @@ void StreamsModel::jobFinished()
                 if (cat!=favourites) {
                     cat->saveCache();
                 }
+            }
+        } else {
+            if (constShoutCastHost==job->origUrl().host()) {
+                ApiKeys::self()->isLimitReached(job->actualJob(), ApiKeys::ShoutCast);
+            } else if (constDirbleHost==job->origUrl().host()) {
+                ApiKeys::self()->isLimitReached(job->actualJob(), ApiKeys::Dirble);
             }
         }
         emit dataChanged(index, index);
@@ -1577,7 +1584,7 @@ QList<StreamsModel::Item *> StreamsModel::parseShoutCastLinks(QXmlStreamReader &
         doc.readNext();
         if (doc.isStartElement() && QLatin1String("genre")==doc.name()) {
             newItems.append(new ShoutCastCategoryItem(ApiKeys::self()->addKey(QLatin1String("http://")+constShoutCastHost+QLatin1String("/genre/secondary?parentid=")+
-                                                                              doc.attributes().value("id").toString()+QLatin1String("&f=xml"), ApiKeys::Shoutcast),
+                                                                              doc.attributes().value("id").toString()+QLatin1String("&f=xml"), ApiKeys::ShoutCast),
                                                       doc.attributes().value("name").toString(), cat));
         } else if (doc.isEndElement() && QLatin1String("genrelist")==doc.name()) {
             return newItems;

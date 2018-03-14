@@ -94,7 +94,6 @@ public:
 
     static const QLatin1String constBackdropFileName;
     static const QLatin1String constCacheDir;
-    static const QLatin1String constFanArtApiKey;
 
     ContextWidget(QWidget *parent=nullptr);
 

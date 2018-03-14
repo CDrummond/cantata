@@ -23,6 +23,7 @@
 
 #include "artistview.h"
 #include "gui/covers.h"
+#include "gui/apikeys.h"
 #include "support/utils.h"
 #include "network/networkaccessmanager.h"
 #include "qtiocompressor/qtiocompressor.h"
@@ -354,7 +355,7 @@ void ArtistView::requestSimilar()
     QUrlQuery query;
 
     query.addQueryItem("method", "artist.getSimilar");
-    query.addQueryItem("api_key", Covers::constLastFmApiKey);
+    ApiKeys::self()->addKey(query, ApiKeys::LastFm);
     query.addQueryItem("autocorrect", "1");
     query.addQueryItem("artist", Covers::fixArtist(currentSong.artist));
     url.setQuery(query);

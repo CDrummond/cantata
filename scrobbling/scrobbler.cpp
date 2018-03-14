@@ -28,7 +28,7 @@
 #include "scrobbler.h"
 #include "pausabletimer.h"
 #include "config.h"
-#include "gui/covers.h"
+#include "gui/apikeys.h"
 #include "network/networkaccessmanager.h"
 #include "mpd-interface/mpdconnection.h"
 #include "support/globalstatic.h"
@@ -113,7 +113,7 @@ static QString md5(const QString &s)
 static void sign(QMap<QString, QString> &params)
 {
     QString s;
-    params[QLatin1String("api_key")] = Covers::constLastFmApiKey;
+    params[QLatin1String("api_key")] = ApiKeys::self()->get(ApiKeys::LastFm);
     QStringList keys=params.keys();
     keys.sort();
     for (const QString &k: keys) {

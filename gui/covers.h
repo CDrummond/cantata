@@ -188,7 +188,6 @@ public:
     static bool verboseDebugEnabled();
 
     static const QSize constMaxSize;
-    static const QLatin1String constLastFmApiKey;
     static const QLatin1String constCoverDir;
     static const QLatin1String constScaledCoverDir;
     static const QLatin1String constFileName;

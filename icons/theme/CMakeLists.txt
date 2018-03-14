@@ -8,6 +8,7 @@ svg/network-server-database.svg
 svg/preferences-desktop-keyboard.svg
 svg/preferences-other.svg
 svg/speaker.svg
+svg/key.svg
 svg64/dialog-error.svg
 svg64/dialog-information.svg
 svg64/dialog-question.svg

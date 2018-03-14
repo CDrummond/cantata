@@ -40,6 +40,7 @@
 #endif
 #include "shortcutssettingspage.h"
 #include "scrobbling/scrobblingsettings.h"
+#include "apikeyssettings.h"
 #include <QDesktopWidget>
 #include <QTimer>
 
@@ -61,6 +62,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     cache = new CacheSettings(this);
     scrobbling = new ScrobblingSettings(this);
     custom = new CustomActionsSettings(this);
+    apiKeys = new ApiKeysSettings(this);
     server->load();
     playback->load();
     //cover->load();
@@ -90,6 +92,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     shortcuts->load();
     addPage(QLatin1String("cache"), cache, tr("Cache"), Icon(QStringList() << "folder-temp" << "folder"), tr("Cached Items"));
     addPage(QLatin1String("custom"), custom, tr("Custom Actions"), Icon(QStringList() << "fork" << "gtk-execute"), tr("Custom Actions"));
+    addPage(QLatin1String("apikeys"), apiKeys, tr("Service Keys"), Icon("key"), tr("Service API Keys"));
     #ifdef Q_OS_MAC
     setCaption(tr("Cantata Preferences"));
     setMinimumWidth(800);
@@ -136,6 +139,7 @@ void PreferencesDialog::writeSettings()
     context->save();
     scrobbling->save();
     custom->save();
+    apiKeys->save();
     Settings::self()->save();
     emit settingsSaved();
 }

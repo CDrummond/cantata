@@ -64,13 +64,8 @@ GLOBAL_STATIC(StreamsModel, instance)
 
 const QString StreamsModel::constSubDir=QLatin1String("streams");
 const QString StreamsModel::constCacheExt=QLatin1String(".xml.gz");
-
-const QString StreamsModel::constShoutCastApiKey=QLatin1String("fa1669MuiRPorUBw");
 const QString StreamsModel::constShoutCastHost=QLatin1String("api.shoutcast.com");
-
-const QString StreamsModel::constDirbleApiKey=QLatin1String("1035d2834bdc7195b8929ad7f70a8410f02c633e");
 const QString StreamsModel::constDirbleHost=QLatin1String("api.dirble.com");
-
 const QString StreamsModel::constCompressedXmlFile=QLatin1String("streams.xml.gz");
 const QString StreamsModel::constXmlFile=QLatin1String("streams.xml");
 const QString StreamsModel::constSettingsFile=QLatin1String("settings.json");
@@ -88,8 +83,8 @@ static const QString constDiChannelListHost=QLatin1String("api.v2.audioaddict.co
 static const QString constDiChannelListUrl=QLatin1String("http://")+constDiChannelListHost+("/v1/%1/mobile/batch_update?asset_group_key=mobile_icons&stream_set_key=");
 static const QString constDiStdUrl=QLatin1String("http://%1/public3/%2.pls");
 
-static QString constShoutCastUrl=QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/genre/primary?f=xml&k=")+StreamsModel::constShoutCastApiKey;
-static QString constDirbleUrl=QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/categories/primary?token=")+StreamsModel::constDirbleApiKey;
+static QString constShoutCastUrl=QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/genre/primary?f=xml");
+static QString constDirbleUrl=QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/categories/primary");
 
 static const QLatin1String constBookmarksDir=QLatin1String("bookmarks");
 
@@ -179,7 +174,7 @@ void StreamsModel::CategoryItem::saveBookmarks()
                          for (Item *i: cat->children) {
                              doc.writeStartElement("bookmark");
                              doc.writeAttribute("name", i->name);
-                             doc.writeAttribute("url", i->url);
+                             doc.writeAttribute("url", i->fullUrl());
                              doc.writeEndElement();
                          }
                          doc.writeEndElement();
@@ -317,7 +312,7 @@ static void saveStream(QXmlStreamWriter &doc, const StreamsModel::Item *item)
 {
     doc.writeStartElement("stream");
     doc.writeAttribute("name", item->name);
-    doc.writeAttribute("url", item->url);
+    doc.writeAttribute("url", item->fullUrl());
     doc.writeEndElement();
 }
 
@@ -435,7 +430,7 @@ QList<StreamsModel::Item *> StreamsModel::FavouritesCategoryItem::loadXml(QIODev
     QSet<QString> existingNames;
 
     for (Item *i: children) {
-        existingUrls.insert(i->url);
+        existingUrls.insert(i->fullUrl());
         existingNames.insert(i->name);
     }
 
@@ -477,11 +472,11 @@ void StreamsModel::ShoutCastCategoryItem::addHeaders(QNetworkRequest &req)
 
 NetworkJob * StreamsModel::ShoutCastCategoryItem::fetchSecondardyUrl()
 {
-    if (url!=constShoutCastUrl) {
+    if (!url.startsWith(constShoutCastUrl)) {
         // Get stations...
         QUrl url(QLatin1String("http://")+constShoutCastHost+QLatin1String("/legacy/genresearch"));
         QUrlQuery query;
-        query.addQueryItem("k", constShoutCastApiKey);
+        ApiKeys::self()->addKey(query, ApiKeys::Shoutcast);
         query.addQueryItem("genre", name);
         url.setQuery(query);
 
@@ -639,7 +634,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         if (!Settings::self()->infoTooltips()) {
             return QVariant();
         }
-        return item->isCategory() ? item->name : (item->name+QLatin1String("<br><small><i>")+item->url+QLatin1String("</i></small>"));
+        return item->isCategory() ? item->name : (item->name+QLatin1String("<br><small><i>")+item->fullUrl()+QLatin1String("</i></small>"));
     case Cantata::Role_SubText:
         if (item->isCategory()) {
             const CategoryItem *cat=static_cast<const CategoryItem *>(item);
@@ -725,13 +720,13 @@ void StreamsModel::fetchMore(const QModelIndex &index)
         if (!cat->isFavourites() && !loadCache(cat)) {
             QNetworkRequest req;
             if (cat->isDi()) {
-                req=QNetworkRequest(constDiChannelListUrl.arg(cat->url.split(".").at(1)));
+                req=QNetworkRequest(constDiChannelListUrl.arg(cat->fullUrl().split(".").at(1)));
             } else {
-                req=QNetworkRequest(cat->url);
+                req=QNetworkRequest(cat->fullUrl());
             }
             cat->addHeaders(req);
             NetworkJob *job=NetworkAccessManager::self()->get(req);
-            job->setProperty(constOrigUrlProperty, cat->url);
+            job->setProperty(constOrigUrlProperty, cat->fullUrl());
             if (jobs.isEmpty()) {
                 emit loading();
             }
@@ -777,7 +772,7 @@ void StreamsModel::importIntoFavourites(const QString &fileName)
     QList<Item *> newItems=favourites->CategoryItem::loadXml(fileName);
     if (!newItems.isEmpty()) {
         for (Item *i: newItems) {
-            emit saveFavouriteStream(i->url, i->name);
+            emit saveFavouriteStream(i->fullUrl(), i->name);
         }
         qDeleteAll(newItems);
     }
@@ -800,7 +795,7 @@ bool StreamsModel::addToFavourites(const QString &url, const QString &name)
     QSet<QString> existingNames;
 
     for (Item *i: favourites->children) {
-        if (i->url==url) {
+        if (i->fullUrl()==url) {
             return false;
         }
         existingNames.insert(i->name);
@@ -822,7 +817,7 @@ bool StreamsModel::addToFavourites(const QString &url, const QString &name)
 QString StreamsModel::favouritesNameForUrl(const QString &u)
 {
     for (Item *i: favourites->children) {
-        if (i->url==u) {
+        if (i->fullUrl()==u) {
             return i->name;
         }
     }
@@ -861,7 +856,7 @@ bool StreamsModel::addBookmark(const QString &url, const QString &name, Category
         }
 
         for (Item *i: bookmarkCat->children) {
-            if (i->url==url) {
+            if (i->fullUrl()==url) {
                 return false;
             }
         }
@@ -923,8 +918,8 @@ QModelIndex StreamsModel::favouritesIndex() const
 
 static QString addDiHash(const StreamsModel::Item *item)
 {
-    return ( (item->parent && item->parent->isDi()) || DigitallyImported::self()->isDiUrl(item->url) )
-            ? DigitallyImported::self()->modifyUrl(item->url) : item->url;
+    return ( (item->parent && item->parent->isDi()) || DigitallyImported::self()->isDiUrl(item->fullUrl()) )
+            ? DigitallyImported::self()->modifyUrl(item->fullUrl()) : item->fullUrl();
 }
 
 QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPrefix) const
@@ -1086,7 +1081,7 @@ void StreamsModel::jobFinished()
                         QList<Item *> newBookmarks;
                         for (Item *bm: bookmarks) {
                             for (Item *ex: bookmarksCat->children) {
-                                if (ex->url==bm->url) {
+                                if (ex->fullUrl()==bm->fullUrl()) {
                                     delete bm;
                                     bm=nullptr;
                                     break;
@@ -1183,7 +1178,7 @@ static StreamsModel::Item * getStream(StreamsModel::FavouritesCategoryItem *fav,
         if (++i<offset) {
             continue;
         }
-        if (s->name==stream.name && s->url==stream.url) {
+        if (s->name==stream.name && s->fullUrl()==stream.url) {
             return s;
         }
     }
@@ -1216,7 +1211,7 @@ void StreamsModel::favouriteStreams(const QList<Stream> &streams)
         for (qint32 i=0; i<streams.count(); ++i) {
             Stream s=streams.at(i);
             Item *si=i<favourites->children.count() ? favourites->children.at(i) : nullptr;
-            if (!si || si->name!=s.name || si->url!=s.url) {
+            if (!si || si->name!=s.name || si->fullUrl()!=s.url) {
                 si=i<favourites->children.count() ? getStream(favourites, s, i) : nullptr;
                 if (!si) {
                     beginInsertRows(idx, i, i);
@@ -1385,7 +1380,7 @@ QList<StreamsModel::Item *> StreamsModel::parseDigitallyImportedResponse(QIODevi
 {
     QList<Item *> newItems;
     QVariantMap data=QJsonDocument::fromJson(dev->readAll()).toVariant().toMap();
-    QString listenHost=QLatin1String("listen.")+QUrl(cat->url).host().remove("www.");
+    QString listenHost=QLatin1String("listen.")+QUrl(cat->fullUrl()).host().remove("www.");
 
     if (data.contains("channel_filters")) {
         QVariantList filters = data["channel_filters"].toList();
@@ -1581,8 +1576,8 @@ QList<StreamsModel::Item *> StreamsModel::parseShoutCastLinks(QXmlStreamReader &
     while (!doc.atEnd()) {
         doc.readNext();
         if (doc.isStartElement() && QLatin1String("genre")==doc.name()) {
-            newItems.append(new ShoutCastCategoryItem(QLatin1String("http://")+constShoutCastHost+QLatin1String("/genre/secondary?parentid=")+
-                                                      doc.attributes().value("id").toString()+QLatin1String("&f=xml&k=")+constShoutCastApiKey,
+            newItems.append(new ShoutCastCategoryItem(ApiKeys::self()->addKey(QLatin1String("http://")+constShoutCastHost+QLatin1String("/genre/secondary?parentid=")+
+                                                                              doc.attributes().value("id").toString()+QLatin1String("&f=xml"), ApiKeys::Shoutcast),
                                                       doc.attributes().value("name").toString(), cat));
         } else if (doc.isEndElement() && QLatin1String("genrelist")==doc.name()) {
             return newItems;
@@ -1624,8 +1619,9 @@ QList<StreamsModel::Item *> StreamsModel::parseDirbleResponse(QIODevice *dev, Ca
     if (!data.isEmpty()) {
         for (const QVariant &d: data) {
             QVariantMap map = d.toMap();
-            newItems.append(new DirbleCategoryItem(QLatin1String("http://")+constDirbleHost+QLatin1String("/v2/category/")+map["id"].toString()+
-                                                   QLatin1String("/stations?token=")+StreamsModel::constDirbleApiKey, map["title"].toString(), cat));
+            newItems.append(new DirbleCategoryItem(ApiKeys::self()->addKey(QLatin1String("http://")+constDirbleHost+QLatin1String("/v2/category/")+map["id"].toString()+
+                                                                           QLatin1String("/stations"), ApiKeys::Dirble),
+                                                   map["title"].toString(), cat));
         }
     }
     return newItems;

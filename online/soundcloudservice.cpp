@@ -22,6 +22,7 @@
  */
 
 #include "soundcloudservice.h"
+#include "gui/apikeys.h"
 #include "network/networkaccessmanager.h"
 #include "mpd-interface/mpdconnection.h"
 #include <QUrl>
@@ -29,7 +30,6 @@
 #include <QJsonDocument>
 
 static const QLatin1String constName("soundcloud");
-static const QLatin1String constApiKey("0cb23dce473528973ce74815bd36a334");
 static const QLatin1String constUrl("https://api.soundcloud.com/tracks");
 
 SoundCloudService::SoundCloudService(QObject *p)
@@ -72,7 +72,7 @@ void SoundCloudService::search(const QString &key, const QString &value)
 
     QUrl searchUrl(constUrl);
     QUrlQuery query;
-    query.addQueryItem("client_id", constApiKey);
+    ApiKeys::self()->addKey(query, ApiKeys::SoundCloud);
     query.addQueryItem("q", currentValue);
     searchUrl.setQuery(query);
 
@@ -106,7 +106,7 @@ void SoundCloudService::jobFinished()
                 Song song;
                 QUrl url = details["stream_url"].toUrl();
                 QUrlQuery query;
-                query.addQueryItem("client_id", constApiKey);
+                ApiKeys::self()->addKey(query, ApiKeys::SoundCloud);
                 url.setQuery(query);
                 // MPD does not seem to support https :-(
                 if (QLatin1String("https")==url.scheme() && !MPDConnection::self()->urlHandlers().contains(QLatin1String("https"))) {

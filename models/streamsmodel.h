@@ -27,6 +27,7 @@
 #include "config.h"
 #include <QString>
 
+#include "gui/apikeys.h"
 #include "actionmodel.h"
 #include "mpd-interface/stream.h"
 #include "mpd-interface/playlist.h"
@@ -57,6 +58,7 @@ public:
         CategoryItem *parent;
         virtual bool isCategory() const { return false; }
         CategoryItem *getTopLevelCategory() const;
+        virtual QString fullUrl() const { return url; }
     };
     
     struct CategoryItem : public Item
@@ -136,6 +138,7 @@ public:
             : CategoryItem(u, n, p, i, cn, bn) { }
         void addHeaders(QNetworkRequest &req) override;
         NetworkJob * fetchSecondardyUrl() override;
+        QString fullUrl() const override { return ApiKeys::self()->addKey(url, ApiKeys::Shoutcast); }
     };
 
     struct DirbleCategoryItem : public CategoryItem
@@ -143,6 +146,7 @@ public:
         DirbleCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=nullptr, const QIcon &i=QIcon(),
                               const QString &cn=QString(), const QString &bn=QString())
             : CategoryItem(u, n, p, i, cn, bn) { }
+        QString fullUrl() const override { return ApiKeys::self()->addKey(url, ApiKeys::Dirble); }
     };
 
     struct ListenLiveCategoryItem : public CategoryItem
@@ -195,13 +199,8 @@ public:
     static const QString constPrefix;
     static const QString constSubDir;
     static const QString constCacheExt;
-
-    static const QString constShoutCastApiKey;
     static const QString constShoutCastHost;
-
-    static const QString constDirbleApiKey;
     static const QString constDirbleHost;
-
     static const QString constCompressedXmlFile;
     static const QString constXmlFile;
     static const QString constSettingsFile;

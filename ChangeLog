@@ -76,6 +76,7 @@
 56. Add 'Categorized' view for albums in library.
 57. Remove actions from desktop file - MPRIS should be used for these.
 58. Set message box icon size to 64px.
+59. Add settings page to configure API keys.
 
 2.2.0
 -----

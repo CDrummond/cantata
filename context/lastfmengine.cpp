@@ -24,6 +24,7 @@
 #include "lastfmengine.h"
 #include "network/networkaccessmanager.h"
 #include "gui/covers.h"
+#include "gui/apikeys.h"
 #include "config.h"
 #include <QUrlQuery>
 #include <QXmlStreamReader>
@@ -81,7 +82,7 @@ void LastFmEngine::search(const QStringList &query, Mode mode)
         break;
     }
 
-    urlQuery.addQueryItem("api_key", Covers::constLastFmApiKey);
+    ApiKeys::self()->addKey(urlQuery, ApiKeys::LastFm);
     urlQuery.addQueryItem("autocorrect", "1");
     urlQuery.addQueryItem("artist", Covers::fixArtist(fixedQuery.at(0)));
 

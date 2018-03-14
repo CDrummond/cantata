@@ -22,6 +22,7 @@
  */
 
 #include "coverdialog.h"
+#include "apikeys.h"
 #include "support/messagebox.h"
 #include "widgets/listview.h"
 #include "network/networkaccessmanager.h"
@@ -709,7 +710,7 @@ void CoverDialog::sendLastFmQuery(const QString &fixedQuery, int page)
     url.setScheme("https");
     url.setHost(constLastFmHost);
     url.setPath("/2.0/");
-    query.addQueryItem("api_key", Covers::constLastFmApiKey);
+    ApiKeys::self()->addKey(query, ApiKeys::LastFm);
     query.addQueryItem("limit", QString::number(20));
     query.addQueryItem("page", QString::number(page+1));
     query.addQueryItem(isArtist ? "artist" : "album", fixedQuery);

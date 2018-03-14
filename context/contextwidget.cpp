@@ -28,9 +28,10 @@
 #include "onlineview.h"
 #include "mpd-interface/song.h"
 #include "support/utils.h"
+#include "gui/apikeys.h"
 #include "gui/covers.h"
-#include "network/networkaccessmanager.h"
 #include "gui/settings.h"
+#include "network/networkaccessmanager.h"
 #include "wikipediaengine.h"
 #include "support/gtkstyle.h"
 #include "widgets/playqueueview.h"
@@ -70,8 +71,6 @@ void ContextWidget::enableDebug()
 }
 
 const QLatin1String ContextWidget::constBackdropFileName("backdrop");
-//const QLatin1String ContextWidget::constHtbApiKey(0); // API key required
-const QLatin1String ContextWidget::constFanArtApiKey("ee86404cb429fa27ac32a1a3c117b006");
 const QLatin1String ContextWidget::constCacheDir("backdrops/");
 
 static QString cacheFileName(const QString &artist, bool createDir)
@@ -839,7 +838,7 @@ void ContextWidget::musicbrainzResponse()
         QUrl url("http://webservice.fanart.tv/v3/music/"+id);
         QUrlQuery query;
 
-        query.addQueryItem("api_key", constFanArtApiKey);
+        ApiKeys::self()->addKey(query, ApiKeys::FanArt);
         url.setQuery(query);
 
         job=NetworkAccessManager::self()->get(url);

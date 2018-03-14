@@ -44,6 +44,7 @@ class ProxySettings;
 #endif
 class ScrobblingSettings;
 class CustomActionsSettings;
+class ApiKeysSettings;
 
 class PreferencesDialog : public ConfigDialog
 {
@@ -83,6 +84,7 @@ private:
     #endif
     ScrobblingSettings *scrobbling;
     CustomActionsSettings *custom;
+    ApiKeysSettings *apiKeys;
 };
 
 #endif

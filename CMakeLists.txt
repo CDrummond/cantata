@@ -305,6 +305,7 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/customactions.cpp
     gui/folderpage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
     gui/main.cpp gui/covers.cpp gui/currentcover.cpp gui/mpdbrowsepage.cpp gui/localfolderpage.cpp gui/multimediakeysinterface.cpp
+    gui/apikeys.cpp gui/apikeyssettings.cpp
     devices/deviceoptions.cpp
     db/librarydb.cpp db/mpdlibrarydb.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/nowplayingwidget.cpp

@@ -311,7 +311,7 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
             if (0==bitrate) {
                 bitrate=getParam("bitrate", search);
             }
-            query.addQueryItem("k", StreamsModel::constShoutCastApiKey);
+            ApiKeys::self()->addKey(query, ApiKeys::Shoutcast);
             query.addQueryItem("search", search);
             query.addQueryItem("limit", QString::number(limit<1 ? 100 : limit));
             if (bitrate>=32 && bitrate<=512) {
@@ -321,7 +321,7 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
         }
         case Dirble:
             searchUrl=QUrl(item->url+searchTerm);
-            query.addQueryItem("token", StreamsModel::constDirbleApiKey);
+            ApiKeys::self()->addKey(query, ApiKeys::Dirble);
             break;
         }
 

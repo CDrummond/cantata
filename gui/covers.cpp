@@ -28,6 +28,7 @@
 #include "network/networkaccessmanager.h"
 #include "settings.h"
 #include "config.h"
+#include "apikeys.h"
 #include "devices/deviceoptions.h"
 #include "support/thread.h"
 #include "online/onlineservice.h"
@@ -80,7 +81,6 @@ bool Covers::verboseDebugEnabled()
     return debugLevel>1;
 }
 
-const QLatin1String Covers::constLastFmApiKey("5a854b839b10f8d46e630e8287c2299b");
 const QLatin1String Covers::constCoverDir("covers/");
 const QLatin1String Covers::constScaledCoverDir("covers-scaled/");
 const QLatin1String Covers::constCddaCoverDir("cdda/");
@@ -632,7 +632,7 @@ void CoverDownloader::downloadViaRemote(Job &job)
         QUrlQuery query;
 
         query.addQueryItem("method", job.song.isArtistImageRequest() || job.song.isComposerImageRequest() ? "artist.getInfo" : "album.getInfo");
-        query.addQueryItem("api_key", Covers::constLastFmApiKey);
+        ApiKeys::self()->addKey(query, ApiKeys::LastFm);
         query.addQueryItem("autocorrect", "1");
         query.addQueryItem("artist", Covers::fixArtist(job.song.albumArtist()));
         if (!job.song.isArtistImageRequest()) {

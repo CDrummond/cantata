@@ -31,6 +31,7 @@
 #include <QDesktopServices>
 #include <QLabel>
 #include <QUrl>
+#include <QPainter>
 
 class ApiKeyDelegate : public BasicItemDelegate
 {
@@ -44,6 +45,22 @@ public:
             return BasicItemDelegate::createEditor(parent, option, index);
         }
         return nullptr;
+    }
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
+    {
+        if (index.isValid() && 1==index.column()) {
+            QStyleOptionViewItem opt=option;
+            opt.palette.setColor(QPalette::Text, opt.palette.color(QPalette::Link));
+            BasicItemDelegate::paint(painter, opt, index);
+            painter->setPen(opt.palette.color(opt.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Link));
+            QRect r=opt.rect;
+            int pad=3;
+            int w = qMin(r.width()-(2*pad), opt.fontMetrics.width(index.data().toString()));
+            painter->drawLine(r.x()+pad, r.y()+r.height()-2, r.x()+w-1, r.y()+r.height()-2);
+        } else {
+            BasicItemDelegate::paint(painter, option, index);
+        }
     }
 };
 

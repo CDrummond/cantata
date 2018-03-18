@@ -5707,22 +5707,22 @@ Si &apos;Titre&apos; est &quot;Toto - Tata&quot;, alors &apos;Artiste&apos; devi
 <context>
     <name>ApiKeysSettings</name>
     <message>
-        <location filename="../gui/apikeyssettings.cpp" line="56"/>
+        <location filename="../gui/apikeyssettings.cpp" line="73"/>
         <source>Cantata uses various internet services to provide covers, radio stream listings, etc. Most of these require an application&apos;s developer to register with the service, and obtain an API Key. Cantata contains the keys required to access these services. Unfortunately, some of these services have a usage limit per API key. Therefore, some of Cantata&apos;s features may not function if the key (which is shared with all Cantata users) has reached its monthly usage limit. To work-around this, you can register with a service yourself, and configure Cantata to use your personal API key. This key may be entered below. For any blank values below, Cantata will use its default key.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/apikeyssettings.cpp" line="68"/>
+        <location filename="../gui/apikeyssettings.cpp" line="85"/>
         <source>Service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/apikeyssettings.cpp" line="68"/>
+        <location filename="../gui/apikeyssettings.cpp" line="85"/>
         <source>Service URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/apikeyssettings.cpp" line="68"/>
+        <location filename="../gui/apikeyssettings.cpp" line="85"/>
         <source>API Key</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9849,13 +9849,13 @@ Cette action est définitive.</translation>
         <translation type="obsolete">Vide</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="167"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="168"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="173"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="174"/>
         <source>No Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="340"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="346"/>
         <source>About dynamic rules</source>
         <translation type="unfinished">À propos des règles dynamiques</translation>
     </message>
@@ -9865,47 +9865,56 @@ Cette action est définitive.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="186"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="159"/>
+        <source>Each playlist requires a unique name, enter that above.
+
+Use the &apos;Add&apos; button to add a &apos;rule&apos; to control which artists, genres, etc you want included in the playlist. Any rules added will be listed here. A playlist with no rules will use songs from your whole music library.
+
+Use the settings below to restrict the range of songs added.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="192"/>
         <source>Ascending</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="187"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="193"/>
         <source>Descending</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="196"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="202"/>
         <source>Name of Smart Rules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="197"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="203"/>
         <source>Number of songs:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="342"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="348"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="357"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="363"/>
         <source>About smart rules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="359"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="365"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will add the desired number of songs to the play queue. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="387"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="393"/>
         <source>Failed to save %1</source>
         <translation type="unfinished">La sauvegarde de %1 a échoué</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="405"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="411"/>
         <source>A set of rules named &apos;%1&apos; already exists!
 
 Overwrite?</source>
@@ -9914,12 +9923,12 @@ Overwrite?</source>
 Remplacer ?</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="406"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="412"/>
         <source>Overwrite Rules</source>
         <translation type="unfinished">Remplacer les règles</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="452"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="458"/>
         <source>Saving %1</source>
         <translation type="unfinished">Sauvegarde de %1</translation>
     </message>

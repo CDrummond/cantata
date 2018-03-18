@@ -156,6 +156,12 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
         connect(rules, SIGNAL(saved(bool)), SLOT(saved(bool)));
     }
 
+    rulesList->setInfoText(tr("Each playlist requires a unique name, enter that above.\n\n"
+                              "Use the 'Add' button to add a 'rule' to control which artists, genres, etc you want included in the playlist. "
+                              "Any rules added will be listed here. "
+                              "A playlist with no rules will use songs from your whole music library.\n\n"
+                              "Use the settings below to restrict the range of songs added."));
+
     messageWidget->setVisible(false);
     model=new QStandardItemModel(this);
     proxy=new RulesSort(this);

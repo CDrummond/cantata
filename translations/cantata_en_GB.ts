@@ -6283,8 +6283,134 @@ width x height</comment>
         </translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="219"/>
+        <location filename="../gui/main.cpp" line="137"/>
+        <source>mpd - MPD communication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="138"/>
+        <source>mpdparse - Parsing of MPD response</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="139"/>
+        <source>covers - Cover fetching, and loading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="140"/>
+        <source>covers-verbose - Cover fetching, and loading (verbose) </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="141"/>
+        <source>context-wikipedia - Wikipedia info in context view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="142"/>
+        <source>context-lastfm - Last.fm info in context view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="143"/>
+        <source>context-widget - General debug in context view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="144"/>
+        <source>context-lyrics - Lyrics in context view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="145"/>
+        <source>dynamic - Dynamic playlists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="146"/>
+        <source>stream-fetcher - Fetching of stream URLs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="147"/>
+        <source>http-server - Built-in HTTP server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="148"/>
+        <source>song-dialog - Song dialogs (tags, replaygain, organiser)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="149"/>
+        <source>network-access - Network access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="150"/>
+        <source>threads - Threads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="151"/>
+        <source>scrobbler - Scrobbling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="152"/>
+        <source>sql - SQL access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="153"/>
+        <source>media-keys - Media-keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="154"/>
+        <source>custom-actions - Custom actions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="156"/>
+        <source>tags - Tag reading/writing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="159"/>
+        <source>devices - Device support</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="162"/>
+        <source>http-stream - Playback of MPD output streams</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="165"/>
+        <source>avahi - Auto-discovery of MPD servers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="253"/>
         <source>MPD Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="256"/>
+        <source>Comma-separated list of debug areas - possible values:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="257"/>
+        <source>Log debug messages to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="258"/>
+        <source>Disable network access</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -132,6 +132,41 @@ static void removeOldFiles()
     removeOldFiles(Utils::cacheDir("magnatune"), QStringList() << "*.xml.gz");
 }
 
+static QString debugAreas()
+{
+    return  QObject::tr("mpd - MPD communication")+QLatin1Char('\n')
+            +QObject::tr("mpdparse - Parsing of MPD response")+QLatin1Char('\n')
+            +QObject::tr("covers - Cover fetching, and loading")+QLatin1Char('\n')
+            +QObject::tr("covers-verbose - Cover fetching, and loading (verbose) ")+QLatin1Char('\n')
+            +QObject::tr("context-wikipedia - Wikipedia info in context view")+QLatin1Char('\n')
+            +QObject::tr("context-lastfm - Last.fm info in context view")+QLatin1Char('\n')
+            +QObject::tr("context-widget - General debug in context view")+QLatin1Char('\n')
+            +QObject::tr("context-lyrics - Lyrics in context view")+QLatin1Char('\n')
+            +QObject::tr("dynamic - Dynamic playlists")+QLatin1Char('\n')
+            +QObject::tr("stream-fetcher - Fetching of stream URLs")+QLatin1Char('\n')
+            +QObject::tr("http-server - Built-in HTTP server")+QLatin1Char('\n')
+            +QObject::tr("song-dialog - Song dialogs (tags, replaygain, organiser)")+QLatin1Char('\n')
+            +QObject::tr("network-access - Network access")+QLatin1Char('\n')
+            +QObject::tr("threads - Threads")+QLatin1Char('\n')
+            +QObject::tr("scrobbler - Scrobbling")+QLatin1Char('\n')
+            +QObject::tr("sql - SQL access")+QLatin1Char('\n')
+            +QObject::tr("media-keys - Media-keys")+QLatin1Char('\n')
+            +QObject::tr("custom-actions - Custom actions")+QLatin1Char('\n')
+            #ifdef TAGLIB_FOUND
+            +QObject::tr("tags - Tag reading/writing")+QLatin1Char('\n')
+            #endif
+            #ifdef ENABLE_DEVICES_SUPPORT
+            +QObject::tr("devices - Device support")+QLatin1Char('\n')
+            #endif
+            #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+            +QObject::tr("http-stream - Playback of MPD output streams")+QLatin1Char('\n')
+            #endif
+            #ifdef AVAHI_FOUND
+            +QObject::tr("avahi - Auto-discovery of MPD servers")+QLatin1Char('\n')
+            #endif
+            ;
+}
+
 static void installDebugMessageHandler(const QString &cmdLine)
 {
     QStringList items=cmdLine.split(",", QString::SkipEmptyParts);
@@ -175,8 +210,6 @@ static void installDebugMessageHandler(const QString &cmdLine)
             MediaKeys::enableDebug();
         } else if (QLatin1String("custom-actions")==area) {
             CustomActions::enableDebug();
-        } else if (QLatin1String("to-file")==area) {
-            debugToFile=true;
         }
         #ifdef TAGLIB_FOUND
         else if (QLatin1String("tags")==area) {
@@ -214,14 +247,17 @@ int main(int argc, char *argv[])
     #endif
 
     Application app(argc, argv);
+    app.setApplicationVersion(PACKAGE_VERSION_STRING);
 
     QCommandLineParser cmdLineParser;
     cmdLineParser.setApplicationDescription(QObject::tr("MPD Client"));
     cmdLineParser.addHelpOption();
     cmdLineParser.addVersionOption();
-    QCommandLineOption debugOption(QStringList() << "d" << "debug", "Set debug areas", "debug", "");
-    QCommandLineOption noNetworkOption(QStringList() << "n" << "no-network", "Disable network access", "", "false");
+    QCommandLineOption debugOption(QStringList() << "d" << "debug", QObject::tr("Comma-separated list of debug areas - possible values:\n")+debugAreas(), "debug", "");
+    QCommandLineOption debugToFileOption(QStringList() << "f" << "debug-to-file", QObject::tr("Log debug messages to %1").arg(Utils::cacheDir(QString(), true)+"cantata.log"), "", "false");
+    QCommandLineOption noNetworkOption(QStringList() << "n" << "no-network", QObject::tr("Disable network access"), "", "false");
     cmdLineParser.addOption(debugOption);
+    cmdLineParser.addOption(debugToFileOption);
     cmdLineParser.addOption(noNetworkOption);
     cmdLineParser.process(app);
 
@@ -252,6 +288,7 @@ int main(int argc, char *argv[])
     removeOldFiles();
     if (cmdLineParser.isSet(debugOption)) {
         installDebugMessageHandler(cmdLineParser.value(debugOption));
+        debugToFile=cmdLineParser.isSet(debugToFileOption);
     }
 
     // Translations

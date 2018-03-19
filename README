@@ -671,10 +671,10 @@ The following debug areas may be used:
     Media keys                media-keys
     Cusrtom actions           custom-actions
 
-To log debug to a file, use the "to-file" debug area. e.g. To log MPD
-communications and cover access to a file, start cantata as follows:
+To log debug to a file use --debug-to-file. e.g. To log MPD communications and
+cover access to a file, start cantata as follows:
 
-    cantata --debug=mpd,covers,to-file
+    cantata --debug=mpd,covers --debug-to-file
 
 
 The loccation of the debug file will vary dependant upon OS. On Linux systems

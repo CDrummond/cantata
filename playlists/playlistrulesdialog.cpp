@@ -196,7 +196,8 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
     }
 
     controlButtons();
-    resize(500, 240);
+    rulesList->setMinimumSize(Utils::scaleForDpi(400), Utils::scaleForDpi(160));
+    resize(Utils::scaleForDpi(500), Utils::scaleForDpi(240));
 
     if (!rules->isDynamic()) {
         numberOfSongsLabel->setText(tr("Number of songs:"));

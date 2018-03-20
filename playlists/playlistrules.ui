@@ -36,7 +36,7 @@
    <item>
     <widget class="LineEdit" name="nameText" native="true">
      <property name="placeholderText" stdset="0">
-      <string>Name of Dynamic Rules</string>
+      <string>Name of playlist</string>
      </property>
     </widget>
    </item>

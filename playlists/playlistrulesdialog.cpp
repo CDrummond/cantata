@@ -144,7 +144,7 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
     setMainWidget(mainWidet);
     setButtons(Ok|Cancel);
     enableButton(Ok, false);
-    setCaption(rules->isDynamic() ? tr("Dynamic Rules") : tr("Smart Rules"));
+    setCaption(rules->isDynamic() ? tr("Dynamic Playlist") : tr("Smart Playlist"));
     setAttribute(Qt::WA_DeleteOnClose);
     connect(addBtn, SIGNAL(clicked()), SLOT(add()));
     connect(editBtn, SIGNAL(clicked()), SLOT(edit()));
@@ -199,7 +199,6 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
     resize(500, 240);
 
     if (!rules->isDynamic()) {
-        nameText->setPlaceholderText(tr("Name of Smart Rules"));
         numberOfSongsLabel->setText(tr("Number of songs:"));
     }
 

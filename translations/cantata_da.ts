@@ -4608,9 +4608,13 @@ Det kan ikke fortrydes.</translation>
 <context>
     <name>PlaylistRules</name>
     <message>
-        <location filename="../playlists/playlistrules.ui" line="39"/>
         <source>Name of Dynamic Rules</source>
-        <translation>Navn på dynamiske regler</translation>
+        <translation type="vanished">Navn på dynamiske regler</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="39"/>
+        <source>Name of playlist</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="71"/>
@@ -4683,14 +4687,12 @@ Det kan ikke fortrydes.</translation>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
         <source>Dynamic Rules</source>
-        <translation>Dynamiske regler</translation>
+        <translation type="vanished">Dynamiske regler</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
         <source>Smart Rules</source>
-        <translation>Smarte regler</translation>
+        <translation type="vanished">Smarte regler</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="159"/>
@@ -4718,42 +4720,51 @@ Use the settings below to restrict the range of songs added.</source>
         <translation>Faldende</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="202"/>
         <source>Name of Smart Rules</source>
-        <translation>Navn på smarte regler</translation>
+        <translation type="vanished">Navn på smarte regler</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="203"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
+        <source>Dynamic Playlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
+        <source>Smart Playlist</source>
+        <translation type="unfinished">Smart afspilningsliste</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="202"/>
         <source>Number of songs:</source>
         <translation>Antal sange:</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="346"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="345"/>
         <source>About dynamic rules</source>
         <translation>Om dynamiske regler</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="348"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="347"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cantata vil forespørge dit bibliotek ved brug af alle de viste regler. Listen med &lt;i&gt;Inkluder&lt;/i&gt;-regler bruges til at bygge et sæt af sange som kan bruges. Listen med &lt;i&gt;Ekskluder&lt;/i&gt;-regler bruges til at bygge et sæt af sange som ikke kan bruges. Hvis der ikke er nogen &lt;i&gt;Inkluder&lt;/i&gt;-regler, antager Cantata at alle sange kan bruges (undtagen undtagen dem i &lt;i&gt;Ekskluder&lt;/i&gt;).&lt;/p&gt;&lt;p&gt;For f.eks. at få Cantata til at lede efter &apos;Rock-sange af D-A-D ELLER sange af Diverse kunstnere&apos;, så skal du bruge følgende: &lt;ul&gt;&lt;li&gt;Inkluder Albumkunstner=D-A-D Genre=Rock&lt;/li&gt;&lt;li&gt;Inkluder Albumkunstner=Diverse kunstnere&lt;/li&gt;&lt;/ul&gt; For at få Cantata til at lede efter &apos;Sange af D-A-D men ikke fra album Abc&apos;, så skal du bruge følgende: &lt;ul&gt;&lt;li&gt;Inkluder Albumkunstner=D-A-D&lt;/li&gt;&lt;li&gt;Ekskluder Albumkunstner=D-A-D Album=Abc&lt;/li&gt;&lt;/ul&gt;Efter sættet af anvendelige sange er blevet oprettet, vil Cantata tilfældigt vælge sange for at holde afspilningskøen fuld med det angivne antal poster (10 som standard). Hvis et område af bedømmelser er blevet angivet, så vil kun sange med en bedømmelse inden for området blive brugt. På samme måde hvis en varighed er sat.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="363"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="362"/>
         <source>About smart rules</source>
         <translation>Om smarte regler</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="365"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="364"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will add the desired number of songs to the play queue. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cantata vil forespørge dit bibliotek ved brug af alle de viste regler. Listen med &lt;i&gt;Inkluder&lt;/i&gt;-regler bruges til at bygge et sæt af sange som kan bruges. Listen med &lt;i&gt;Ekskluder&lt;/i&gt;-regler bruges til at bygge et sæt af sange som ikke kan bruges. Hvis der ikke er nogen &lt;i&gt;Inkluder&lt;/i&gt;-regler, antager Cantata at alle sange kan bruges (undtagen undtagen dem i &lt;i&gt;Ekskluder&lt;/i&gt;).&lt;/p&gt;&lt;p&gt;For f.eks. at få Cantata til at lede efter &apos;Rock-sange af D-A-D ELLER sange af Diverse kunstnere&apos;, så skal du bruge følgende: &lt;ul&gt;&lt;li&gt;Inkluder Albumkunstner=D-A-D Genre=Rock&lt;/li&gt;&lt;li&gt;Inkluder Albumkunstner=Diverse kunstnere&lt;/li&gt;&lt;/ul&gt; For at få Cantata til at lede efter &apos;Sange af D-A-D men ikke fra album Abc&apos;, så skal du bruge følgende: &lt;ul&gt;&lt;li&gt;Inkluder Albumkunstner=D-A-D&lt;/li&gt;&lt;li&gt;Ekskluder Albumkunstner=D-A-D Album=Abc&lt;/li&gt;&lt;/ul&gt;Efter sættet af anvendelige sange er blevet oprettet, vil Cantata tilføje det ønskede antal sange til afspilningskøen. Hvis et område af bedømmelser er blevet angivet, så vil kun sange med en bedømmelse inden for området blive brugt. På samme måde hvis en varighed er sat.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="393"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="392"/>
         <source>Failed to save %1</source>
         <translation>Kunne ikke gemme %1</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="411"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="410"/>
         <source>A set of rules named &apos;%1&apos; already exists!
 
 Overwrite?</source>
@@ -4762,12 +4773,12 @@ Overwrite?</source>
 Overskriv?</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="412"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="411"/>
         <source>Overwrite Rules</source>
         <translation>Overskriv regler</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="458"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="457"/>
         <source>Saving %1</source>
         <translation>Gemmer %1</translation>
     </message>

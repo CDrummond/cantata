@@ -9751,9 +9751,13 @@ Jeśli to wyszukiwanie się powiedzie, to znaleziony tekst zostanie przyporządk
         <translation>Znajdź w kolejce odtwarzania</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="323"/>
         <source>Play Stream</source>
-        <translation>Odtwarzaj strumień</translation>
+        <translation type="vanished">Odtwarzaj strumień</translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="323"/>
+        <source>Play HTTP Output Stream</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="331"/>
@@ -11081,7 +11085,7 @@ Ta operacja nie może być cofnięta.</translation>
         <translation>Brak limitu</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="345"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="346"/>
         <source>About dynamic rules</source>
         <translation>Informacje o dynamicznych regułach</translation>
     </message>
@@ -11127,32 +11131,32 @@ Use the settings below to restrict the range of songs added.</source>
         <translation type="unfinished">Inteligentna lista odtwarzania</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="202"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="203"/>
         <source>Number of songs:</source>
         <translation>Ilość utworów:</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="347"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="348"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Program Cantata będzie odpytywać bibliotekę przy użyciu podanych reguł. Lista reguł oznaczona jako &lt;i&gt;Zawiera&lt;/i&gt; zostanie użyta do zbudowania zbioru utworów, które mogą zostać dodane. Lista reguł oznaczona jako &lt;i&gt;Nie zawiera&lt;/i&gt; zostanie użyta do zbudowania zbioru utworów, które nie mogą zostać dodane. Jeśli nie ma reguł oznaczonych jako &lt;i&gt;Zawiera&lt;/i&gt;, program Cantata założy że wszystkie utwory (z wyłączeniem utworów ze zbioru &lt;i&gt;Nie zawiera&lt;/i&gt;) mogą zostać dodane.&lt;/p&gt;&lt;p&gt;Np. aby wyszukać utwory &apos;z gatunku Rock w wykonaniu Wibble ALBO utwory w wykonaniu Various Artists&apos;, należy użyć następujących reguł: &lt;ul&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Wibble Gatunek=Rock&lt;/li&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Various Artists&lt;/li&gt;&lt;/ul&gt; Aby wyszukać utwory &apos;w wykonaniu Wibble ale nie z albumu Abc&apos;, należy użyć następujących reguł: &lt;ul&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Wibble&lt;/li&gt;&lt;li&gt;Nie zawiera ArtystaAlbumu=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Po utworzeniu zbioru uworów program Cantata losowo wybierze z niego utwory tak aby kolejka odtwarzania miała określoną liczbę elementów (domyślnie 10). Jeżeli zakres ocen zostanie ustawiony, to tylko utwory o takich ocenach będą dodane. Analogicznie można ustawić zakres długości.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="362"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="363"/>
         <source>About smart rules</source>
         <translation>O inteligentnych regułach</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="364"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="365"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will add the desired number of songs to the play queue. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Program Cantata będzie odpytywać bibliotekę przy użyciu podanych reguł. Lista reguł oznaczona jako &lt;i&gt;Zawiera&lt;/i&gt; zostanie użyta do zbudowania zbioru utworów, które mogą zostać dodane. Lista reguł oznaczona jako &lt;i&gt;Nie zawiera&lt;/i&gt; zostanie użyta do zbudowania zbioru utworów, które nie mogą zostać dodane. Jeśli nie ma reguł oznaczonych jako &lt;i&gt;Zawiera&lt;/i&gt;, program Cantata założy że wszystkie utwory (z wyłączeniem utworów ze zbioru &lt;i&gt;Nie zawiera&lt;/i&gt;) mogą zostać dodane.&lt;/p&gt;&lt;p&gt;Np. aby wyszukać utwory &apos;z gatunku Rock w wykonaniu Wibble ALBO utwory w wykonaniu Various Artists&apos;, należy użyć następujących reguł: &lt;ul&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Wibble Gatunek=Rock&lt;/li&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Various Artists&lt;/li&gt;&lt;/ul&gt; Aby wyszukać utwory &apos;w wykonaniu Wibble ale nie z albumu Abc&apos;, należy użyć następujących reguł: &lt;ul&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Wibble&lt;/li&gt;&lt;li&gt;Nie zawiera ArtystaAlbumu=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Po utworzeniu zbioru uworów program Cantata doda określoną ilość utworów do kolejki. Jeżeli zakres ocen zostanie ustawiony, to tylko utwory o takich ocenach będą dodane. Analogicznie można ustawić zakres długości.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="392"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="393"/>
         <source>Failed to save %1</source>
         <translation>Nie powiodło się zapisywanie %1</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="410"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="411"/>
         <source>A set of rules named &apos;%1&apos; already exists!
 
 Overwrite?</source>
@@ -11161,12 +11165,12 @@ Overwrite?</source>
 Nadpisać?</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="411"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="412"/>
         <source>Overwrite Rules</source>
         <translation>Nadpisz reguły</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="457"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="458"/>
         <source>Saving %1</source>
         <translation>Zapisywanie %1</translation>
     </message>

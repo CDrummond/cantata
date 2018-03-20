@@ -9691,9 +9691,13 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="unfinished">연주순서에서 찾기</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="323"/>
         <source>Play Stream</source>
-        <translation type="unfinished">스트림 연주</translation>
+        <translation type="obsolete">스트림 연주</translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="323"/>
+        <source>Play HTTP Output Stream</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="331"/>
@@ -11005,7 +11009,7 @@ This cannot be undone.</source>
         <translation type="unfinished">무제한</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="345"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="346"/>
         <source>About dynamic rules</source>
         <translation type="unfinished">활동 규정에 대하여</translation>
     </message>
@@ -11051,32 +11055,32 @@ Use the settings below to restrict the range of songs added.</source>
         <translation type="unfinished">고급 연주목록</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="202"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="203"/>
         <source>Number of songs:</source>
         <translation type="unfinished">곡 수:</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="347"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="348"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;칸타타는 아래의 모든 규정을 이용하여 음원을 찾습니다. &lt;i&gt;포함&lt;/i&gt; 규정은 사용될 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;제외&lt;/i&gt; 규정은 사용되지 않을 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;포함&lt;/i&gt; 규정이 없으면 모든 곡으로 (&lt;i&gt;제외&lt;/i&gt;부터의 가로줄) 생각합니다.&lt;/p&gt;&lt;p&gt;예. &apos;어떤이 또는 여러 연주자의 Rock 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이 장르=Rock&lt;/li&gt;&lt;li&gt;포함 음반연주자=여러연주자&lt;/li&gt;&lt;/ul&gt; &apos;다른 음반이 아닌 어떤이의 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이&lt;/li&gt;&lt;li&gt;제외 음반연주자=어떤이 음반=다른&lt;/li&gt;&lt;/ul&gt;사용할 곡이 만들어진 다음, 칸타타는 무작위 곡을 골라 정해진 곡 수(기본 10곡)만큼의 연주순서를 만듭니다. 평점이 지정되면, 그 평점의 곡들만 사용됩니다. 곡 길이도 마찬가지입니다.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="362"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="363"/>
         <source>About smart rules</source>
         <translation type="unfinished">스마트 규정에 대하여</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="364"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="365"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will add the desired number of songs to the play queue. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;칸타타는 아래의 모든 규정을 이용하여 음원을 찾습니다. &lt;i&gt;포함&lt;/i&gt; 규정은 사용될 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;제외&lt;/i&gt; 규정은 사용되지 않을 일련의 곡을 만드는 데에 쓰입니다. &lt;i&gt;포함&lt;/i&gt; 규정이 없으면 모든 곡으로 (&lt;i&gt;제외&lt;/i&gt;부터의 가로줄) 생각합니다.&lt;/p&gt;&lt;p&gt;예. &apos;어떤이 또는 여러 연주자의 Rock 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이 장르=Rock&lt;/li&gt;&lt;li&gt;포함 음반연주자=여러연주자&lt;/li&gt;&lt;/ul&gt; &apos;다른 음반이 아닌 어떤이의 곡&apos;을 찾는다면, 아래와 같습니다: &lt;ul&gt;&lt;li&gt;포함 음반연주자=어떤이&lt;/li&gt;&lt;li&gt;제외 음반연주자=어떤이 음반=다른&lt;/li&gt;&lt;/ul&gt;사용할 곡이 만들어진 다음, 칸타타는 원하는 곡 수를 연주순서에 추가합니다. 평점이 지정되면, 그 평점의 곡들만 사용됩니다. 곡 길이도 마찬가지입니다.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="392"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="393"/>
         <source>Failed to save %1</source>
         <translation type="unfinished">%1 저장 안 됨</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="410"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="411"/>
         <source>A set of rules named &apos;%1&apos; already exists!
 
 Overwrite?</source>
@@ -11085,12 +11089,12 @@ Overwrite?</source>
 덮어쓸까요?</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="411"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="412"/>
         <source>Overwrite Rules</source>
         <translation type="unfinished">규정 덮어쓰기</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="457"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="458"/>
         <source>Saving %1</source>
         <translation type="unfinished">%1로 저장함</translation>
     </message>

@@ -214,10 +214,11 @@ public:
         if (view && QListView::IconMode==view->viewMode()) {
             double textSpace = !isCategorizedView || view->model()->data(QModelIndex(), Cantata::Role_CatergizedHasSubText).toBool() ? 2.5 : 1.75;
             #ifdef RESPONSIVE_LAYOUT
-            return QSize(calcItemWidth(), zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*textSpace));
-            #else
-            return QSize(zoomedSize(view, gridCoverSize)+8, zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*textSpace));
+            if (!isCategorizedView) {
+                return QSize(calcItemWidth(), zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*textSpace));
+            }
             #endif
+            return QSize(zoomedSize(view, gridCoverSize)+8, zoomedSize(view, gridCoverSize)+(QApplication::fontMetrics().height()*textSpace));
         } else {
             int imageSize = index.data(Cantata::Role_ListImage).toBool() ? listCoverSize : 0;
             // TODO: Any point to checking one-line here? All models return sub-text...
@@ -442,7 +443,7 @@ public:
         if (drawBgnd && mouseOver) {
             QRect rect(AP_VTop==actionPos ? option.rect : r);
             #ifdef RESPONSIVE_LAYOUT
-            if (AP_VTop==actionPos) {
+            if (!isCategorizedView && AP_VTop==actionPos) {
                 rect.adjust(0, 0, actionPosAdjust(), 0);
             }
             #endif
@@ -458,7 +459,7 @@ public:
     virtual QWidget * itemView() const { return view; }
     #ifdef RESPONSIVE_LAYOUT
     int actionPosAdjust() const {
-        return view && QListView::IconMode==view->viewMode() ? -(((calcItemWidth()-(zoomedSize(view, gridCoverSize)+viewGap))/2.0)+0.5) : 0;
+        return !isCategorizedView && view && QListView::IconMode==view->viewMode() ? -(((calcItemWidth()-(zoomedSize(view, gridCoverSize)+viewGap))/2.0)+0.5) : 0;
     }
     #endif
 

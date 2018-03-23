@@ -70,6 +70,7 @@ public:
     bool isEnabled() const { return slider->isEnabled(); }
     void initColors();
     QColor textColor() const { return track->palette().windowText().color(); }
+    void resizeEvent(QResizeEvent *ev) override;
 
 Q_SIGNALS:
     void sliderReleased();
@@ -88,6 +89,9 @@ private Q_SLOTS:
     void setRating(int v);
     void updateInfo();
     void copyInfo();
+
+private:
+    void controlWidgets();
 
 private:
     SqueezedTextLabel *track;

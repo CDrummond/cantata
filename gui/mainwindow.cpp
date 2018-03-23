@@ -130,7 +130,9 @@ static int nextKey(int &key)
     return k;
 }
 
-static const char *constRatingKey="rating";
+static const char * constRatingKey="rating";
+static const char * constUserSettingProp = "user-setting-1";
+static const char * constUserSetting2Prop = "user-setting-2";
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -189,6 +191,7 @@ void MainWindow::init()
     QDBusConnection::sessionBus().registerObject("/cantata", this);
     #endif
     setMinimumHeight(Utils::scaleForDpi(480));
+    setMinimumWidth(Utils::scaleForDpi(400));
     QWidget *widget = new QWidget(this);
     setupUi(widget);
     setCentralWidget(widget);
@@ -324,9 +327,7 @@ void MainWindow::init()
     streamPlayAction->setCheckable(true);
     streamPlayAction->setChecked(false);
     streamPlayAction->setVisible(false);
-    streamPlayButton->setDefaultAction(streamPlayAction);
     #endif
-    streamPlayButton->setVisible(false);
 
     locateAction = new Action(Icons::self()->searchIcon, tr("Locate In Library"), this);
     locateArtistAction = ActionCollection::get()->createAction("locateartist", tr("Artist"));
@@ -1113,6 +1114,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 {
     previousSize=event->oldSize();
     QMainWindow::resizeEvent(event);
+    controlView();
 }
 
 void MainWindow::playQueueItemsSelected(bool s)
@@ -1166,9 +1168,7 @@ void MainWindow::streamUrl(const QString &u)
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction->setVisible(!u.isEmpty());
     streamPlayAction->setChecked(streamPlayAction->isVisible() && Settings::self()->playStream());
-    streamPlayButton->setVisible(!u.isEmpty());
     HttpStream::self()->setEnabled(streamPlayAction->isChecked());
-    leftSpacer->setVisible(loveTrack->isVisible() || scrobblingStatus->isVisible() || streamPlayButton->isVisible());
     #else
     Q_UNUSED(u)
     #endif
@@ -1502,10 +1502,11 @@ void MainWindow::readSettings()
     PowerManagement::self()->setInhibitSuspend(Settings::self()->inhibitSuspend());
     #endif
     context->readConfig();
-    tabWidget->setHiddenPages(Settings::self()->hiddenPages());
-    tabWidget->setStyle(Settings::self()->sidebar());
-    coverWidget->setEnabled(Settings::self()->showCoverWidget());
-    stopTrackButton->setVisible(Settings::self()->showStopButton());
+    tabWidget->setProperty(constUserSettingProp, Settings::self()->hiddenPages());
+    tabWidget->setProperty(constUserSetting2Prop, Settings::self()->sidebar());
+    coverWidget->setProperty(constUserSettingProp, Settings::self()->showCoverWidget());
+    stopTrackButton->setProperty(constUserSettingProp, Settings::self()->showStopButton());
+    controlView(true);
     #if defined Q_OS_WIN
     if (thumbnailTooolbar) {
         thumbnailTooolbar->readSettings();
@@ -1527,7 +1528,6 @@ void MainWindow::readSettings()
     MPDConnection::self()->setVolumeFadeDuration(Settings::self()->stopFadeDuration());
     MPDParseUtils::setSingleTracksFolders(Settings::self()->singleTracksFolders());
     MPDParseUtils::setCueFileSupport(Settings::self()->cueSupport());
-    leftSpacer->setVisible(loveTrack->isVisible() || scrobblingStatus->isVisible() || streamPlayButton->isVisible());
     volumeSlider->setPageStep(Settings::self()->volumeStep());
 }
 
@@ -2603,6 +2603,75 @@ void MainWindow::setCollapsedSize()
         collapsedSize=QSize(w, calcCollapsedSize());
         resize(collapsedSize);
         setFixedHeight(collapsedSize.height());
+    }
+}
+
+void MainWindow::controlView(bool forceUpdate)
+{
+    static int lastWidth=-1;
+    static bool collapsed=false;
+
+    if (forceUpdate || -1==lastWidth || qAbs(lastWidth-width())>20) {
+        bool stopEnabled = stopTrackButton->property(constUserSettingProp).toBool();
+        bool coverWidgetEnabled = coverWidget->property(constUserSettingProp).toBool();
+        int tabWidgetStyle = tabWidget->property(constUserSetting2Prop).toBool();
+        QStringList tabWidgetPages = tabWidget->property(constUserSettingProp).toStringList();
+
+        if ((!stopEnabled && !coverWidgetEnabled) || width()<Utils::scaleForDpi(450)) {
+            stopTrackButton->setVisible(false);
+            coverWidget->setEnabled(false);
+        } else if (stopEnabled && coverWidgetEnabled) {
+            if (width()>Utils::scaleForDpi(550)) {
+                stopTrackButton->setVisible(true);
+                coverWidget->setEnabled(true);
+            } else if (width()>Utils::scaleForDpi(450)) {
+                stopTrackButton->setVisible(false);
+                coverWidget->setEnabled(true);
+            }
+        } else {
+            coverWidget->setEnabled(coverWidgetEnabled);
+            stopTrackButton->setVisible(stopEnabled);
+        }
+
+        if (width()>Utils::scaleForDpi(450)) {
+            if (forceUpdate || collapsed) {
+                int index=tabWidget->currentIndex();
+                if (forceUpdate || tabWidget->style()!=tabWidgetStyle) {
+                    tabWidget->setStyle(tabWidgetStyle);
+                }
+                tabWidget->setHiddenPages(tabWidgetPages);
+                tabWidget->setCurrentIndex(index);
+            }
+            collapsed=false;
+        } else {
+            if (forceUpdate || !collapsed) {
+                int index=tabWidget->currentIndex();
+                int smallStyle=FancyTabWidget::Small|FancyTabWidget::Top|FancyTabWidget::IconOnly;
+                if (forceUpdate || tabWidget->style()!=smallStyle) {
+                    tabWidget->setStyle(smallStyle);
+                }
+                tabWidgetPages.removeAll(QLatin1String("PlayQueuePage"));
+                tabWidgetPages.removeAll(QLatin1String("ContextPage"));
+                tabWidget->setHiddenPages(tabWidgetPages);
+
+                if (forceUpdate && !isVisible() && PAGE_PLAYQUEUE!=index && PAGE_CONTEXT!=index) {
+                    QString page=Settings::self()->page();
+                    for (int i=0; i<tabWidget->count(); ++i) {
+                        if (tabWidget->widget(i)->metaObject()->className()==page) {
+                            index=i;
+                            break;
+                        }
+                    }
+                }
+
+                tabWidget->setCurrentIndex(index);
+            }
+            collapsed=true;
+        }
+        savePlayQueueButton->setVisible(width()>Utils::scaleForDpi(410));
+        centerPlayQueueButton->setVisible(width()>(Utils::scaleForDpi(410)+centerPlayQueueButton->width()));
+        leftSpacer->setVisible(centerPlayQueueButton->isVisible() && (loveTrack->isVisible() || scrobblingStatus->isVisible()));
+        midSpacer->setVisible(centerPlayQueueButton->isVisible());
     }
 }
 

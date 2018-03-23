@@ -47,6 +47,7 @@
 #include <QClipboard>
 
 static const int constPollMpd = 2; // Poll every 2 seconds when playing
+static const char * constUserSettingProp = "user-setting";
 
 class PosSliderProxyStyle : public QProxyStyle
 {
@@ -381,8 +382,9 @@ int NowPlayingWidget::value() const
 
 void NowPlayingWidget::readConfig()
 {
-    ratingWidget->setVisible(Settings::self()->showRatingWidget());
-    infoLabel->setVisible(Settings::self()->showTechnicalInfo());
+    ratingWidget->setProperty(constUserSettingProp, Settings::self()->showRatingWidget());
+    infoLabel->setProperty(constUserSettingProp, Settings::self()->showTechnicalInfo());
+    controlWidgets();
 }
 
 void NowPlayingWidget::saveConfig()
@@ -462,7 +464,7 @@ void NowPlayingWidget::updateInfo()
             info+=ext;
         }
     }
-    infoLabel->setText(info);
+    infoLabel->setText(QLatin1Char(' ') + info);
 }
 
 void NowPlayingWidget::copyInfo()
@@ -481,6 +483,34 @@ void NowPlayingWidget::initColors()
     slider->updateStyleSheet(track->palette().windowText().color());
     ratingWidget->setColor(Utils::clampColor(track->palette().buttonText().color()));
     infoLabel->setPalette(btn.palette());
+}
+
+void NowPlayingWidget::resizeEvent(QResizeEvent *ev)
+{
+    QWidget::resizeEvent(ev);
+    controlWidgets();
+}
+
+void NowPlayingWidget::controlWidgets()
+{
+    bool rwEnabled=ratingWidget->property(constUserSettingProp).toBool();
+    bool infoEnabled=infoLabel->property(constUserSettingProp).toBool();
+
+    if ((!rwEnabled && !infoEnabled) || width()<Utils::scaleForDpi(280)) {
+        ratingWidget->setVisible(false);
+        infoLabel->setVisible(false);
+    } else if (rwEnabled && infoEnabled) {
+        if (width()>Utils::scaleForDpi(390)) {
+            ratingWidget->setVisible(true);
+            infoLabel->setVisible(true);
+        } else if (width()>Utils::scaleForDpi(280)) {
+            ratingWidget->setVisible(true);
+            infoLabel->setVisible(false);
+        }
+    } else {
+        infoLabel->setVisible(infoEnabled);
+        ratingWidget->setVisible(rwEnabled);
+    }
 }
 
 #include "moc_nowplayingwidget.cpp"

@@ -78,6 +78,8 @@
 58. Set message box icon size to 64px.
 59. Add settings page to configure API keys.
 60. Fix small side-bar when at top, or bottom.
+61. Try to make UI responseive to available width. Hide toolbar and statusbar
+    items in insufficient space. Switch view type when narrow.
 
 2.2.0
 -----

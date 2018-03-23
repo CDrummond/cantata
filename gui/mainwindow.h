@@ -263,6 +263,7 @@ private:
     int calcMinHeight();
     int calcCollapsedSize();
     void setCollapsedSize();
+    void controlView(bool forceUpdate=false);
 
 private Q_SLOTS:
     void init();

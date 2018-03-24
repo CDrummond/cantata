@@ -266,6 +266,7 @@ private:
     void controlView(bool forceUpdate=false);
 
 private Q_SLOTS:
+    void controlPlayQueueButtons();
     void init();
     void toggleContext();
     void initMpris();

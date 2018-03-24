@@ -852,6 +852,7 @@ void MainWindow::init()
     connect(collapseAllAction, SIGNAL(triggered()), this, SLOT(collapseAll()));
     connect(addStreamToPlayQueueAction, SIGNAL(triggered()), this, SLOT(addStreamToPlayQueue()));
     connect(addLocalFilesToPlayQueueAction, SIGNAL(triggered()), this, SLOT(addLocalFilesToPlayQueue()));
+    connect(splitter, SIGNAL(splitterMoved(int, int)), this, SLOT(controlPlayQueueButtons()));
     connect(StdActions::self()->setCoverAction, SIGNAL(triggered()), SLOT(setCover()));
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     connect(StdActions::self()->replaygainAction, SIGNAL(triggered()), SLOT(replayGain()));
@@ -909,6 +910,7 @@ void MainWindow::init()
     } else {
         show();
     }
+    controlPlayQueueButtons();
 }
 
 MainWindow::~MainWindow()
@@ -2668,11 +2670,15 @@ void MainWindow::controlView(bool forceUpdate)
             }
             collapsed=true;
         }
-        savePlayQueueButton->setVisible(width()>Utils::scaleForDpi(410));
-        centerPlayQueueButton->setVisible(width()>(Utils::scaleForDpi(410)+centerPlayQueueButton->width()));
-        leftSpacer->setVisible(centerPlayQueueButton->isVisible() && (loveTrack->isVisible() || scrobblingStatus->isVisible()));
-        midSpacer->setVisible(centerPlayQueueButton->isVisible());
     }
+}
+
+void MainWindow::controlPlayQueueButtons()
+{
+    savePlayQueueButton->setVisible(playQueueWidget->width()>Utils::scaleForDpi(410));
+    centerPlayQueueButton->setVisible(playQueueWidget->width()>(Utils::scaleForDpi(410)+centerPlayQueueButton->width()));
+    leftSpacer->setVisible(centerPlayQueueButton->isVisible() && (loveTrack->isVisible() || scrobblingStatus->isVisible()));
+    midSpacer->setVisible(centerPlayQueueButton->isVisible());
 }
 
 void MainWindow::expandOrCollapse(bool saveCurrentSize)

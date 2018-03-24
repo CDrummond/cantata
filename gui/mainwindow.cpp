@@ -2637,8 +2637,9 @@ void MainWindow::controlView(bool forceUpdate)
             stopTrackButton->setVisible(stopEnabled);
         }
 
-        if (responsiveSidebar) {
-            if (width()>Utils::scaleForDpi(450)) {
+        bool shouldNotBeCollapsed = width()>Utils::scaleForDpi(450);
+        if (responsiveSidebar || (forceUpdate && collapsed && shouldNotBeCollapsed)) {
+            if (shouldNotBeCollapsed) {
                 if (forceUpdate || collapsed) {
                     int index=tabWidget->currentIndex();
                     if (forceUpdate || tabWidget->style()!=tabWidgetStyle) {

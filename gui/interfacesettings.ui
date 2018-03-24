@@ -116,6 +116,16 @@
               </property>
              </widget>
             </item>
+            <item row="4" column="0" colspan="2">
+             <widget class="QCheckBox" name="responsiveSidebar">
+              <property name="text">
+               <string>Automatically change style when insufficient space</string>
+              </property>
+              <property name="toolTip">
+               <string>&lt;p&gt;Change to a small top bar (containing all views) when the window is narrow.&lt;/p&gt;</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>

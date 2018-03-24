@@ -357,6 +357,7 @@ private:
     int contextSwitchTime;
     enum { CS_Init, CS_Connected, CS_Disconnected } connectedState;
     bool stopAfterCurrent;
+    bool responsiveSidebar;
     #if defined Q_OS_WIN
     ThumbnailToolBar *thumbnailTooolbar;
     #endif

@@ -154,6 +154,7 @@ MainWindow::MainWindow(QWidget *parent)
     , contextSwitchTime(0)
     , connectedState(CS_Init)
     , stopAfterCurrent(false)
+    , responsiveSidebar(false)
     #if defined Q_OS_WIN
     , thumbnailTooolbar(0)
     #endif
@@ -1508,6 +1509,7 @@ void MainWindow::readSettings()
     tabWidget->setProperty(constUserSetting2Prop, Settings::self()->sidebar());
     coverWidget->setProperty(constUserSettingProp, Settings::self()->showCoverWidget());
     stopTrackButton->setProperty(constUserSettingProp, Settings::self()->showStopButton());
+    responsiveSidebar=Settings::self()->responsiveSidebar();
     controlView(true);
     #if defined Q_OS_WIN
     if (thumbnailTooolbar) {
@@ -2635,42 +2637,44 @@ void MainWindow::controlView(bool forceUpdate)
             stopTrackButton->setVisible(stopEnabled);
         }
 
-        if (width()>Utils::scaleForDpi(450)) {
-            if (forceUpdate || collapsed) {
-                int index=tabWidget->currentIndex();
-                if (forceUpdate || tabWidget->style()!=tabWidgetStyle) {
-                    tabWidget->setStyle(tabWidgetStyle);
+        if (responsiveSidebar) {
+            if (width()>Utils::scaleForDpi(450)) {
+                if (forceUpdate || collapsed) {
+                    int index=tabWidget->currentIndex();
+                    if (forceUpdate || tabWidget->style()!=tabWidgetStyle) {
+                        tabWidget->setStyle(tabWidgetStyle);
+                    }
+                    tabWidget->setHiddenPages(tabWidgetPages);
+                    tabWidget->setCurrentIndex(index);
+                    controlPlayQueueButtons();
                 }
-                tabWidget->setHiddenPages(tabWidgetPages);
-                tabWidget->setCurrentIndex(index);
-                controlPlayQueueButtons();
-            }
-            collapsed=false;
-        } else {
-            if (forceUpdate || !collapsed) {
-                int index=tabWidget->currentIndex();
-                int smallStyle=FancyTabWidget::Small|FancyTabWidget::Top|FancyTabWidget::IconOnly;
-                if (forceUpdate || tabWidget->style()!=smallStyle) {
-                    tabWidget->setStyle(smallStyle);
-                }
-                tabWidgetPages.removeAll(QLatin1String("PlayQueuePage"));
-                tabWidgetPages.removeAll(QLatin1String("ContextPage"));
-                tabWidget->setHiddenPages(tabWidgetPages);
+                collapsed=false;
+            } else {
+                if (forceUpdate || !collapsed) {
+                    int index=tabWidget->currentIndex();
+                    int smallStyle=FancyTabWidget::Small|FancyTabWidget::Top|FancyTabWidget::IconOnly;
+                    if (forceUpdate || tabWidget->style()!=smallStyle) {
+                        tabWidget->setStyle(smallStyle);
+                    }
+                    tabWidgetPages.removeAll(QLatin1String("PlayQueuePage"));
+                    tabWidgetPages.removeAll(QLatin1String("ContextPage"));
+                    tabWidget->setHiddenPages(tabWidgetPages);
 
-                if (forceUpdate && !isVisible() && PAGE_PLAYQUEUE!=index && PAGE_CONTEXT!=index) {
-                    QString page=Settings::self()->page();
-                    for (int i=0; i<tabWidget->count(); ++i) {
-                        if (tabWidget->widget(i)->metaObject()->className()==page) {
-                            index=i;
-                            break;
+                    if (forceUpdate && !isVisible() && PAGE_PLAYQUEUE!=index && PAGE_CONTEXT!=index) {
+                        QString page=Settings::self()->page();
+                        for (int i=0; i<tabWidget->count(); ++i) {
+                            if (tabWidget->widget(i)->metaObject()->className()==page) {
+                                index=i;
+                                break;
+                            }
                         }
                     }
-                }
 
-                tabWidget->setCurrentIndex(index);
-                controlPlayQueueButtons();
+                    tabWidget->setCurrentIndex(index);
+                    controlPlayQueueButtons();
+                }
+                collapsed=true;
             }
-            collapsed=true;
         }
     }
 }

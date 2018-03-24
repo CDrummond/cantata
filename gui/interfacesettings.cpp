@@ -293,6 +293,7 @@ void InterfaceSettings::load()
     sbIconsOnly->setChecked(sidebar&FancyTabWidget::IconOnly);
     sbAutoHide->setChecked(Settings::self()->splitterAutoHide());
     sbAutoHideChanged();
+    responsiveSidebar->setChecked(Settings::self()->responsiveSidebar());
     viewItemChanged(views->item(0));
     setPlayQueueBackgroundOpacityLabel();
     setPlayQueueBackgroundBlurLabel();
@@ -379,6 +380,7 @@ void InterfaceSettings::save()
     }
     Settings::self()->saveSidebar(sidebar);
     Settings::self()->saveSplitterAutoHide(sbAutoHide->isChecked());
+    Settings::self()->saveResponsiveSidebar(responsiveSidebar->isChecked());
     if (enableMpris) {
         Settings::self()->saveMpris(enableMpris->isChecked());
     }

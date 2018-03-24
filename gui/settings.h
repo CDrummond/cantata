@@ -145,6 +145,7 @@ public:
     bool showMenubar();
     #endif
     bool useOriginalYear();
+    bool responsiveSidebar();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -248,6 +249,7 @@ public:
     void saveShowMenubar(bool v);
     #endif
     void saveUseOriginalYear(bool v);
+    void saveResponsiveSidebar(bool v);
     void save();
     void clearVersion();
 

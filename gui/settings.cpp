@@ -690,6 +690,11 @@ bool Settings::useOriginalYear()
     return cfg.get("useOriginalYear", false);
 }
 
+bool Settings::responsiveSidebar()
+{
+    return cfg.get("responsiveSidebar", true);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1165,6 +1170,11 @@ void Settings::saveShowMenubar(bool v)
 void Settings::saveUseOriginalYear(bool v)
 {
     cfg.set("useOriginalYear", v);
+}
+
+void Settings::saveResponsiveSidebar(bool v)
+{
+    cfg.set("responsiveSidebar", v);
 }
 
 void Settings::save()

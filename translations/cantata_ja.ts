@@ -8452,8 +8452,8 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="82"/>
-        <location filename="../gui/interfacesettings.ui" line="137"/>
-        <location filename="../gui/interfacesettings.ui" line="736"/>
+        <location filename="../gui/interfacesettings.ui" line="147"/>
+        <location filename="../gui/interfacesettings.ui" line="746"/>
         <source>Style:</source>
         <translation type="unfinished">スタイル:</translation>
     </message>
@@ -8473,243 +8473,253 @@ This cannot be undone.</source>
         <translation type="unfinished">自動的に隠す</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="128"/>
+        <location filename="../gui/interfacesettings.ui" line="122"/>
+        <source>Automatically change style when insufficient space</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="125"/>
+        <source>&lt;p&gt;Change to a small top bar (containing all views) when the window is narrow.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="138"/>
         <location filename="../gui/interfacesettings.cpp" line="151"/>
         <source>Play Queue</source>
         <translation type="unfinished">プレイキュー</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="150"/>
+        <location filename="../gui/interfacesettings.ui" line="160"/>
         <source>Initially collapse albums</source>
         <translation type="unfinished">初期動作時はアルバムをたたむ</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="157"/>
+        <location filename="../gui/interfacesettings.ui" line="167"/>
         <source>Automatically expand current album</source>
         <translation type="unfinished">現在のアルバムを自動的に拡大する</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="164"/>
+        <location filename="../gui/interfacesettings.ui" line="174"/>
         <source>Scroll to current track</source>
         <translation type="unfinished">現在のトラックまでスクロールする</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="171"/>
+        <location filename="../gui/interfacesettings.ui" line="181"/>
         <source>Prompt before clearing</source>
         <translation type="unfinished">クリア作業実施前に警告する</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="178"/>
+        <location filename="../gui/interfacesettings.ui" line="188"/>
         <source>Separate action (and shortcut) for play queue search</source>
         <translation type="unfinished">プレイキュー検索のためのセパレートアクション (とショートカット)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="207"/>
+        <location filename="../gui/interfacesettings.ui" line="217"/>
         <source>Background Image</source>
         <translation type="unfinished">背景イメージ</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="213"/>
+        <location filename="../gui/interfacesettings.ui" line="223"/>
         <source>None</source>
         <translation type="unfinished">なし</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="220"/>
+        <location filename="../gui/interfacesettings.ui" line="230"/>
         <source>Current album cover</source>
         <translation type="unfinished">現在のアルバムカバー</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="227"/>
+        <location filename="../gui/interfacesettings.ui" line="237"/>
         <source>Custom image:</source>
         <translation type="unfinished">カスタム イメージ：</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="247"/>
+        <location filename="../gui/interfacesettings.ui" line="257"/>
         <source>Blur:</source>
         <translation type="unfinished">ブラー:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="293"/>
+        <location filename="../gui/interfacesettings.ui" line="303"/>
         <source>10px</source>
         <translation type="unfinished">10px</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="305"/>
+        <location filename="../gui/interfacesettings.ui" line="315"/>
         <source>Opacity:</source>
         <translation type="unfinished">透明度:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="351"/>
+        <location filename="../gui/interfacesettings.ui" line="361"/>
         <source>40%</source>
         <translation type="unfinished">40%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="367"/>
+        <location filename="../gui/interfacesettings.ui" line="377"/>
         <source>Toolbar</source>
         <translation type="unfinished">ツールバー</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="376"/>
+        <location filename="../gui/interfacesettings.ui" line="386"/>
         <source>Show stop button</source>
         <translation type="unfinished">停止ボタンを表示</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="383"/>
+        <location filename="../gui/interfacesettings.ui" line="393"/>
         <source>Show cover of current track</source>
         <translation type="unfinished">現トラックのカバーを表示</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="390"/>
+        <location filename="../gui/interfacesettings.ui" line="400"/>
         <source>Show track rating</source>
         <translation type="unfinished">トラックのレーティングを表示</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="397"/>
+        <location filename="../gui/interfacesettings.ui" line="407"/>
         <source>Show technical info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="405"/>
+        <location filename="../gui/interfacesettings.ui" line="415"/>
         <source>External</source>
         <translation type="unfinished">外部</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="411"/>
+        <location filename="../gui/interfacesettings.ui" line="421"/>
         <source>Enable MPRIS D-BUS interface</source>
         <translation type="unfinished">MPRIS D-BUS インタフェースを有効化</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="418"/>
+        <location filename="../gui/interfacesettings.ui" line="428"/>
         <source>Show popup messages when changing tracks</source>
         <translation type="unfinished">トラック変更時にポップアップメッセージを表示</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="428"/>
+        <location filename="../gui/interfacesettings.ui" line="438"/>
         <source>Show icon in notification area</source>
         <translation type="unfinished">通知エリアにアイコンを表示</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="438"/>
+        <location filename="../gui/interfacesettings.ui" line="448"/>
         <source>Minimize to notification area when closed</source>
         <translation type="unfinished">閉じた際に通知エリアを最小化する</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="445"/>
+        <location filename="../gui/interfacesettings.ui" line="455"/>
         <source>On Start-up</source>
         <translation type="unfinished">起動時</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="451"/>
+        <location filename="../gui/interfacesettings.ui" line="461"/>
         <source>Show main window</source>
         <translation type="unfinished">メインウィンドウを表示</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="458"/>
+        <location filename="../gui/interfacesettings.ui" line="468"/>
         <source>Hide main window</source>
         <translation type="unfinished">メインウィンドウを隠す</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="465"/>
+        <location filename="../gui/interfacesettings.ui" line="475"/>
         <source>Restore previous state</source>
         <translation type="unfinished">以前の状態を復元する</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="489"/>
+        <location filename="../gui/interfacesettings.ui" line="499"/>
         <source>Tweaks</source>
         <translation type="unfinished">微調整</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="495"/>
+        <location filename="../gui/interfacesettings.ui" line="505"/>
         <source>Artist &amp;&amp; Album Sorting</source>
         <translation type="unfinished">アーティスト &amp;&amp; アルバムソート</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="501"/>
+        <location filename="../gui/interfacesettings.ui" line="511"/>
         <source>Enter a (comma separated) list of prefixes to ignore when sorting artist and albums. e.g. if set to &apos;The&apos; then &apos;The Beatles&apos; would be sorted by &apos;Beatles&apos;</source>
         <translation type="unfinished">アーティストとアルバムを並べ替えるときに無視するプレフィックスのリスト（カンマ区切り）を入力します。例えば &apos;The&apos;に設定した場合、 &apos;The Beatles&apos;は &apos;Beatles&apos;によってソートされます</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="511"/>
+        <location filename="../gui/interfacesettings.ui" line="521"/>
         <source>Enter comma separated list of prefixes...</source>
         <translation type="unfinished">コンマ区切りのプレフィックスのリストを入力してください...</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="521"/>
+        <location filename="../gui/interfacesettings.ui" line="531"/>
         <source>Composer Support</source>
         <translation type="unfinished">作曲家のサポート</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="527"/>
+        <location filename="../gui/interfacesettings.ui" line="537"/>
         <source>By default, Cantata uses the &apos;Album Artist&apos; tag (or &apos;Artist&apos; tag if a song has no &apos;Album Artist&apos;) to group songs and albums. For certain genres, e.g &apos;Classical&apos;, it may be preferable to use the &apos;Composer&apos; tag (if set) to perform this grouping. Please enter a (comma separated) list of the genres with which you would like Cantata to use the &apos;Composer&apos; tag.</source>
         <translation type="unfinished">既定では、Cantataは曲とアルバムをグループ化するために &apos;Album Artist&apos;タグ（&apos;Album Artist&apos;がない場合は&apos;Artist&apos;タグ）を使用します。&apos;Classical&apos;などの特定のジャンルについては、このグループ化を実行するために&apos;Composer&apos;タグ（設定されている場合）を使用することが好ましい場合があります。Cantataに &apos;Composer&apos;タグを使用させたいジャンルの（カンマ区切りの）リストを入力してください。</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="537"/>
+        <location filename="../gui/interfacesettings.ui" line="547"/>
         <source>Enter comma separated list of genres...</source>
         <translation type="unfinished">コンマ区切りのジャンルのリストを入力してください...</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="547"/>
+        <location filename="../gui/interfacesettings.ui" line="557"/>
         <source>Single Tracks</source>
         <translation type="unfinished">シングルトラック</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="553"/>
+        <location filename="../gui/interfacesettings.ui" line="563"/>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;. You may enter a comma separated list of folder names (without leading or trailing path separators) below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="563"/>
+        <location filename="../gui/interfacesettings.ui" line="573"/>
         <source>Comma separated list of folders that contain single track files...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="573"/>
+        <location filename="../gui/interfacesettings.ui" line="583"/>
         <source>Miscellaneous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="579"/>
+        <location filename="../gui/interfacesettings.ui" line="589"/>
         <source>CUE files:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="589"/>
+        <location filename="../gui/interfacesettings.ui" line="599"/>
         <source>Year tag:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="602"/>
+        <location filename="../gui/interfacesettings.ui" line="612"/>
         <source>Changing &apos;Album &amp; Artist Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="623"/>
+        <location filename="../gui/interfacesettings.ui" line="633"/>
         <source>Covers</source>
         <translation type="unfinished">カバー</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="634"/>
+        <location filename="../gui/interfacesettings.ui" line="644"/>
         <source>Fetch missing covers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="641"/>
+        <location filename="../gui/interfacesettings.ui" line="651"/>
         <source>Save downloaded covers into music folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="648"/>
+        <location filename="../gui/interfacesettings.ui" line="658"/>
         <source>Filename:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="658"/>
+        <location filename="../gui/interfacesettings.ui" line="668"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;ダウンロードしたカバーを保存するためのファイル名（拡張子なし）。&lt;br/&gt;空白のままにしておくと、「cover」が使用されます。&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% は現在の曲のアルバムアーティストに置き換えられ、%album% はアルバム名に置き換えられます。&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="667"/>
+        <location filename="../gui/interfacesettings.ui" line="677"/>
         <source>If you enable &apos;Save downloaded covers into music folder&apos; you may need to clear the cache of any previous covers to force downloading of new covers. See &apos;Cache&apos; settings page for further details.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8734,7 +8744,7 @@ This cannot be undone.</source>
         <translation type="obsolete">上記のいずれかを変更するには、影響を受けるためにDBリフレッシュが必要です（場合によってはCantataを再起動する必要があります）。</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="691"/>
+        <location filename="../gui/interfacesettings.ui" line="701"/>
         <source>General</source>
         <translation type="unfinished">一般設定</translation>
     </message>
@@ -8743,17 +8753,17 @@ This cannot be undone.</source>
         <translation type="obsolete">未発見のカバーを Last.fm から取得する</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="702"/>
+        <location filename="../gui/interfacesettings.ui" line="712"/>
         <source>Show delete action in context menus</source>
         <translation type="unfinished">コンテキストメニュー内に削除を表示</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="709"/>
+        <location filename="../gui/interfacesettings.ui" line="719"/>
         <source>Enforce single-click activation of items</source>
         <translation type="unfinished">シングルクリックでのアイテムのアクティブ化を強制する</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="765"/>
+        <location filename="../gui/interfacesettings.ui" line="775"/>
         <source>Changing the style setting will require a re-start of Cantata.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8768,7 +8778,7 @@ This cannot be undone.</source>
         <translation type="obsolete">タッチ操作に適したインターフェースに変更</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="716"/>
+        <location filename="../gui/interfacesettings.ui" line="726"/>
         <source>Show song information tooltips</source>
         <translation type="unfinished">ツールチップに楽曲情報を表示</translation>
     </message>
@@ -8777,17 +8787,17 @@ This cannot be undone.</source>
         <translation type="obsolete">高解像度ディスプレへの対応</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="723"/>
+        <location filename="../gui/interfacesettings.ui" line="733"/>
         <source>Language:</source>
         <translation type="unfinished">言語:</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="751"/>
+        <location filename="../gui/interfacesettings.ui" line="761"/>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <translation type="unfinished">「シングルクリックでのアイテムのアクティブ化を強制する」設定を変更するには、Cantataを再起動する必要があります。</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="758"/>
+        <location filename="../gui/interfacesettings.ui" line="768"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <translation type="unfinished">言語設定の変更時はCantataを再起動する必要があります。</translation>
     </message>
@@ -8906,24 +8916,24 @@ This cannot be undone.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="429"/>
+        <location filename="../gui/interfacesettings.cpp" line="431"/>
         <source>English (en)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="434"/>
-        <location filename="../gui/interfacesettings.cpp" line="451"/>
+        <location filename="../gui/interfacesettings.cpp" line="436"/>
+        <location filename="../gui/interfacesettings.cpp" line="453"/>
         <source>System default</source>
         <translation type="unfinished">システム規定値</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="557"/>
+        <location filename="../gui/interfacesettings.cpp" line="559"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation type="unfinished">%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="562"/>
+        <location filename="../gui/interfacesettings.cpp" line="564"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation type="unfinished">%1 px</translation>
@@ -8932,12 +8942,12 @@ This cannot be undone.</source>
 <context>
     <name>ItemView</name>
     <message>
-        <location filename="../widgets/itemview.cpp" line="691"/>
+        <location filename="../widgets/itemview.cpp" line="692"/>
         <source>Go Back</source>
         <translation type="unfinished">戻る</translation>
     </message>
     <message>
-        <location filename="../widgets/itemview.cpp" line="1495"/>
+        <location filename="../widgets/itemview.cpp" line="1496"/>
         <source>Updating...</source>
         <translation type="unfinished">更新中...</translation>
     </message>
@@ -9408,7 +9418,7 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="unfinished">フルスクリーンから戻る</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="249"/>
+        <location filename="../gui/mainwindow.cpp" line="253"/>
         <source>Configure Cantata...</source>
         <translation type="unfinished">Cantata の設定...</translation>
     </message>
@@ -9417,150 +9427,150 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="obsolete">設定</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="249"/>
+        <location filename="../gui/mainwindow.cpp" line="253"/>
         <source>Preferences...</source>
         <translation type="unfinished">設定...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="252"/>
+        <location filename="../gui/mainwindow.cpp" line="256"/>
         <source>Quit</source>
         <translation type="unfinished">終了</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="255"/>
+        <location filename="../gui/mainwindow.cpp" line="259"/>
         <source>About Cantata...</source>
         <translation type="unfinished">Cantata について...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="262"/>
+        <location filename="../gui/mainwindow.cpp" line="266"/>
         <source>Show Window</source>
         <translation type="unfinished">ウィンドウを表示</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="265"/>
+        <location filename="../gui/mainwindow.cpp" line="269"/>
         <source>Server information...</source>
         <translation type="unfinished">サーバー情報...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="268"/>
+        <location filename="../gui/mainwindow.cpp" line="272"/>
         <source>Refresh Database</source>
         <translation type="unfinished">データベースの更新</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="269"/>
+        <location filename="../gui/mainwindow.cpp" line="273"/>
         <source>Refresh</source>
         <translation type="unfinished">更新</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="271"/>
+        <location filename="../gui/mainwindow.cpp" line="275"/>
         <source>Connect</source>
         <translation type="unfinished">接続</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="272"/>
+        <location filename="../gui/mainwindow.cpp" line="276"/>
         <source>Collection</source>
         <translation type="unfinished">コネクション</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="273"/>
-        <location filename="../gui/mainwindow.cpp" line="1370"/>
-        <location filename="../gui/mainwindow.cpp" line="1374"/>
-        <location filename="../gui/mainwindow.cpp" line="1380"/>
+        <location filename="../gui/mainwindow.cpp" line="277"/>
+        <location filename="../gui/mainwindow.cpp" line="1373"/>
+        <location filename="../gui/mainwindow.cpp" line="1377"/>
+        <location filename="../gui/mainwindow.cpp" line="1383"/>
         <source>Outputs</source>
         <translation type="unfinished">出力先</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="274"/>
+        <location filename="../gui/mainwindow.cpp" line="278"/>
         <source>Stop After Track</source>
         <translation type="unfinished">トラック再生後停止</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="280"/>
+        <location filename="../gui/mainwindow.cpp" line="284"/>
         <source>Seek forward (%1 seconds)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="281"/>
+        <location filename="../gui/mainwindow.cpp" line="285"/>
         <source>Seek backward (%1 seconds)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="294"/>
+        <location filename="../gui/mainwindow.cpp" line="298"/>
         <source>Add To Stored Playlist</source>
         <translation type="unfinished">格納済プレイリストに追加</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="299"/>
+        <location filename="../gui/mainwindow.cpp" line="303"/>
         <source>Crop Others</source>
         <translation type="unfinished">その他の切取</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="300"/>
+        <location filename="../gui/mainwindow.cpp" line="304"/>
         <source>Add Stream URL</source>
         <translation type="unfinished">ストリーム URLの追加</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="301"/>
+        <location filename="../gui/mainwindow.cpp" line="305"/>
         <source>Add Local Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="303"/>
+        <location filename="../gui/mainwindow.cpp" line="307"/>
         <source>Clear</source>
         <translation type="unfinished">クリア</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="305"/>
+        <location filename="../gui/mainwindow.cpp" line="309"/>
         <source>Center On Current Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="306"/>
+        <location filename="../gui/mainwindow.cpp" line="310"/>
         <source>Expanded Interface</source>
         <translation type="unfinished">拡張インターフェース</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="308"/>
+        <location filename="../gui/mainwindow.cpp" line="312"/>
         <source>Show Current Song Information</source>
         <translation type="unfinished">現再生中の楽曲情報を表示</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="311"/>
+        <location filename="../gui/mainwindow.cpp" line="315"/>
         <source>Full Screen</source>
         <translation type="unfinished">フルスクリーン</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="315"/>
+        <location filename="../gui/mainwindow.cpp" line="319"/>
         <source>Random</source>
         <translation type="unfinished">ランダム</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="316"/>
+        <location filename="../gui/mainwindow.cpp" line="320"/>
         <source>Repeat</source>
         <translation type="unfinished">リピート</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="317"/>
+        <location filename="../gui/mainwindow.cpp" line="321"/>
         <source>Single</source>
         <translation type="unfinished">シングル</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="317"/>
+        <location filename="../gui/mainwindow.cpp" line="321"/>
         <source>When &apos;Single&apos; is activated, playback is stopped after current song, or song is repeated if &apos;Repeat&apos; is enabled.</source>
         <translation type="unfinished">’シングル&apos; 有効時、プレイバックは現在の楽曲再生後停止するか、&apos;リピート&apos;設定が有効な場合は現楽曲が繰り返し再生されます。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="318"/>
+        <location filename="../gui/mainwindow.cpp" line="322"/>
         <source>Consume</source>
         <translation type="unfinished">コンシューム</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="318"/>
+        <location filename="../gui/mainwindow.cpp" line="322"/>
         <source>When consume is activated, a song is removed from the play queue after it has been played.</source>
         <translation type="unfinished">コンシュームが有効な際、現在の楽曲再生が完了した際に楽曲がプレイキューから削除されます。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="319"/>
+        <location filename="../gui/mainwindow.cpp" line="323"/>
         <source>Find in Play Queue</source>
         <translation type="unfinished">プレイキュー内で捜索</translation>
     </message>
@@ -9569,197 +9579,197 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="obsolete">再生ストリーム</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="323"/>
+        <location filename="../gui/mainwindow.cpp" line="327"/>
         <source>Play HTTP Output Stream</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="331"/>
+        <location filename="../gui/mainwindow.cpp" line="333"/>
         <source>Locate In Library</source>
         <translation type="unfinished">ライブラリ内での捜索</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="332"/>
+        <location filename="../gui/mainwindow.cpp" line="334"/>
         <source>Artist</source>
         <translation type="unfinished">アーティスト</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="333"/>
+        <location filename="../gui/mainwindow.cpp" line="335"/>
         <source>Album</source>
         <translation type="unfinished">アルバム</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="334"/>
+        <location filename="../gui/mainwindow.cpp" line="336"/>
         <source>Track</source>
         <translation type="unfinished">トラック</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="346"/>
+        <location filename="../gui/mainwindow.cpp" line="348"/>
         <source>Play next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="349"/>
+        <location filename="../gui/mainwindow.cpp" line="351"/>
         <source>Edit Track Information (Play Queue)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="351"/>
+        <location filename="../gui/mainwindow.cpp" line="353"/>
         <source>Expand All</source>
         <translation type="unfinished">すべて拡張する</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="353"/>
+        <location filename="../gui/mainwindow.cpp" line="355"/>
         <source>Collapse All</source>
         <translation type="unfinished">すべて折りたたむ</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="355"/>
+        <location filename="../gui/mainwindow.cpp" line="357"/>
         <source>Cancel</source>
         <translation type="unfinished">キャンセル</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="409"/>
+        <location filename="../gui/mainwindow.cpp" line="411"/>
         <source>Play Queue</source>
         <translation type="unfinished">プレイキュー</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="414"/>
+        <location filename="../gui/mainwindow.cpp" line="416"/>
         <source>Library</source>
         <translation type="unfinished">ライブラリ</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="419"/>
+        <location filename="../gui/mainwindow.cpp" line="421"/>
         <source>Folders</source>
         <translation type="unfinished">フォルダ</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="425"/>
+        <location filename="../gui/mainwindow.cpp" line="427"/>
         <source>Playlists</source>
         <translation type="unfinished">プレイリスト</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="434"/>
+        <location filename="../gui/mainwindow.cpp" line="436"/>
         <source>Internet</source>
         <translation type="unfinished">インターネット</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="443"/>
+        <location filename="../gui/mainwindow.cpp" line="445"/>
         <source>Devices</source>
         <translation type="unfinished">デバイス</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="450"/>
+        <location filename="../gui/mainwindow.cpp" line="452"/>
         <source>Search</source>
         <translation type="unfinished">検索</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="455"/>
+        <location filename="../gui/mainwindow.cpp" line="457"/>
         <source>Info</source>
         <translation type="unfinished">情報</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="490"/>
+        <location filename="../gui/mainwindow.cpp" line="492"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="585"/>
+        <location filename="../gui/mainwindow.cpp" line="587"/>
         <source>Show Menubar</source>
         <translation type="unfinished">メニューバーの表示</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="591"/>
+        <location filename="../gui/mainwindow.cpp" line="593"/>
         <source>&amp;Music</source>
         <translation type="unfinished">ミュージック(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="602"/>
+        <location filename="../gui/mainwindow.cpp" line="604"/>
         <source>&amp;Edit</source>
         <translation type="unfinished">編集(&amp;E)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="614"/>
+        <location filename="../gui/mainwindow.cpp" line="616"/>
         <source>&amp;View</source>
         <translation type="unfinished">ビュー(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="626"/>
+        <location filename="../gui/mainwindow.cpp" line="628"/>
         <source>&amp;Queue</source>
         <translation type="unfinished">キュー(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="636"/>
+        <location filename="../gui/mainwindow.cpp" line="638"/>
         <source>&amp;Settings</source>
         <translation type="unfinished">設定(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="652"/>
+        <location filename="../gui/mainwindow.cpp" line="654"/>
         <source>&amp;Help</source>
         <translation type="unfinished">ヘルプ(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="697"/>
+        <location filename="../gui/mainwindow.cpp" line="699"/>
         <source>Set Rating</source>
         <translation type="unfinished">レーティングの設定</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="702"/>
+        <location filename="../gui/mainwindow.cpp" line="704"/>
         <source>No Rating</source>
         <translation type="unfinished">レーティングなし</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1025"/>
+        <location filename="../gui/mainwindow.cpp" line="1029"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation type="unfinished">ダイナミックプレイリストルールに一致する楽曲が捜索出来ませんでした。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1149"/>
+        <location filename="../gui/mainwindow.cpp" line="1154"/>
         <source>Connecting to %1</source>
         <translation type="unfinished">%1 に接続中</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1185"/>
+        <location filename="../gui/mainwindow.cpp" line="1188"/>
         <source>Refresh MPD Database?</source>
         <translation type="unfinished">MPD データベースを更新しますか?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1191"/>
+        <location filename="../gui/mainwindow.cpp" line="1194"/>
         <source>About Cantata</source>
         <translation type="unfinished">Cantata について</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1192"/>
+        <location filename="../gui/mainwindow.cpp" line="1195"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation type="unfinished">&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1195"/>
+        <location filename="../gui/mainwindow.cpp" line="1198"/>
         <source>Please refer to &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;Cantata&apos;s issue tracker&lt;/a&gt; for a list of known issues, and to report new issues.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1197"/>
+        <location filename="../gui/mainwindow.cpp" line="1200"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation type="unfinished">Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1198"/>
+        <location filename="../gui/mainwindow.cpp" line="1201"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">コンテキストビューの背景 &lt;a href=&quot;http://fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt; の協賛</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1199"/>
+        <location filename="../gui/mainwindow.cpp" line="1202"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation type="unfinished">コンテキストビューのメータデータは&lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; と &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt; の協賛</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1200"/>
+        <location filename="../gui/mainwindow.cpp" line="1203"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished">あなたのミュージックファンアートを&lt;a href=&quot;http://fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;にアップロードしてください</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1207"/>
+        <location filename="../gui/mainwindow.cpp" line="1210"/>
         <source>A Podcast is currently being downloaded
 
 Quitting now will abort the download.</source>
@@ -9768,100 +9778,100 @@ Quitting now will abort the download.</source>
 終了すると、ダウンロードが中止されます。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1208"/>
+        <location filename="../gui/mainwindow.cpp" line="1211"/>
         <source>Abort download and quit</source>
         <translation type="unfinished">ダウンロードを中止し終了する</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1236"/>
+        <location filename="../gui/mainwindow.cpp" line="1239"/>
         <source>Please close other dialogs first.</source>
         <translation type="unfinished">他のダイアログを先に閉じてください。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1370"/>
-        <location filename="../gui/mainwindow.cpp" line="1381"/>
+        <location filename="../gui/mainwindow.cpp" line="1373"/>
+        <location filename="../gui/mainwindow.cpp" line="1384"/>
         <source>Enabled: %1</source>
         <translation type="unfinished">有効化済: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1374"/>
-        <location filename="../gui/mainwindow.cpp" line="1382"/>
+        <location filename="../gui/mainwindow.cpp" line="1377"/>
+        <location filename="../gui/mainwindow.cpp" line="1385"/>
         <source>Disabled: %1</source>
         <translation type="unfinished">無効化済: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1582"/>
-        <location filename="../gui/mainwindow.cpp" line="1605"/>
+        <location filename="../gui/mainwindow.cpp" line="1586"/>
+        <location filename="../gui/mainwindow.cpp" line="1609"/>
         <source>Server Information</source>
         <translation type="unfinished">サーバー情報</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1585"/>
+        <location filename="../gui/mainwindow.cpp" line="1589"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;サーバー&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;プロトコル:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;稼働時間:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;再生中:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;ハンドラ:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;タグ:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1596"/>
+        <location filename="../gui/mainwindow.cpp" line="1600"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation type="unfinished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;データベース&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;アーティスト:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;アルバム:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;楽曲:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1749"/>
+        <location filename="../gui/mainwindow.cpp" line="1753"/>
         <source>Cantata (%1)</source>
         <translation type="unfinished">Cantata (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1816"/>
+        <location filename="../gui/mainwindow.cpp" line="1820"/>
         <source>MPD reported the following error: %1</source>
         <translation type="unfinished">MPDが以下のエラーを返しました: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1887"/>
+        <location filename="../gui/mainwindow.cpp" line="1891"/>
         <source>Cantata</source>
         <translation type="unfinished">Canata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1887"/>
+        <location filename="../gui/mainwindow.cpp" line="1891"/>
         <source>Playback stopped</source>
         <translation type="unfinished">再生が停止しました</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1930"/>
+        <location filename="../gui/mainwindow.cpp" line="1934"/>
         <source>Remove all songs from play queue?</source>
         <translation type="unfinished">プレイキューからすべての楽曲を削除しますか?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1981"/>
+        <location filename="../gui/mainwindow.cpp" line="1985"/>
         <source>Priority</source>
         <translation type="unfinished">プライオリティ</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1981"/>
+        <location filename="../gui/mainwindow.cpp" line="1985"/>
         <source>Enter priority (0..255):</source>
         <translation type="unfinished">プライオリティを入力 (0..255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1982"/>
+        <location filename="../gui/mainwindow.cpp" line="1986"/>
         <source>Decrease priority for each subsequent track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2009"/>
+        <location filename="../gui/mainwindow.cpp" line="2013"/>
         <source>Playlist Name</source>
         <translation type="unfinished">プレイリスト名</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2009"/>
+        <location filename="../gui/mainwindow.cpp" line="2013"/>
         <source>Enter a name for the playlist:</source>
         <translation type="unfinished">プレイリスト名を入力:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2012"/>
+        <location filename="../gui/mainwindow.cpp" line="2016"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation type="unfinished">&apos;%1&apos; はお気に入りのストリームを保存するために使用されています、他の名前を選択してください。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2016"/>
+        <location filename="../gui/mainwindow.cpp" line="2020"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -9870,29 +9880,29 @@ Add to that playlist?</source>
 プレイリストに追加しますか?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2017"/>
+        <location filename="../gui/mainwindow.cpp" line="2021"/>
         <source>Existing Playlist</source>
         <translation type="unfinished">存在するプレイリスト</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2078"/>
+        <location filename="../gui/mainwindow.cpp" line="2082"/>
         <source>Select Music Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2078"/>
+        <location filename="../gui/mainwindow.cpp" line="2082"/>
         <source>Music Files </source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2107"/>
+        <location filename="../gui/mainwindow.cpp" line="2111"/>
         <source>%n Track(s)</source>
         <translation type="unfinished">
             <numerusform>%n トラック</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2109"/>
+        <location filename="../gui/mainwindow.cpp" line="2113"/>
         <source>%n Tracks (%1)</source>
         <translation type="unfinished">
             <numerusform>%n トラック (%1)</numerusform>
@@ -10080,12 +10090,12 @@ This cannot be undone.</source>
 <context>
     <name>NowPlayingWidget</name>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="311"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="312"/>
         <source>Copy To Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="312"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="313"/>
         <source>Now Playing</source>
         <translation type="unfinished"></translation>
     </message>

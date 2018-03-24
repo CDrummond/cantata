@@ -2643,6 +2643,7 @@ void MainWindow::controlView(bool forceUpdate)
                 }
                 tabWidget->setHiddenPages(tabWidgetPages);
                 tabWidget->setCurrentIndex(index);
+                controlPlayQueueButtons();
             }
             collapsed=false;
         } else {
@@ -2667,6 +2668,7 @@ void MainWindow::controlView(bool forceUpdate)
                 }
 
                 tabWidget->setCurrentIndex(index);
+                controlPlayQueueButtons();
             }
             collapsed=true;
         }

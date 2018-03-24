@@ -2618,7 +2618,7 @@ void MainWindow::controlView(bool forceUpdate)
     if (forceUpdate || -1==lastWidth || qAbs(lastWidth-width())>20) {
         bool stopEnabled = stopTrackButton->property(constUserSettingProp).toBool();
         bool coverWidgetEnabled = coverWidget->property(constUserSettingProp).toBool();
-        int tabWidgetStyle = tabWidget->property(constUserSetting2Prop).toBool();
+        int tabWidgetStyle = tabWidget->property(constUserSetting2Prop).toInt();
         QStringList tabWidgetPages = tabWidget->property(constUserSettingProp).toStringList();
 
         if ((!stopEnabled && !coverWidgetEnabled) || width()<Utils::scaleForDpi(450)) {
@@ -2637,9 +2637,8 @@ void MainWindow::controlView(bool forceUpdate)
             stopTrackButton->setVisible(stopEnabled);
         }
 
-        bool shouldNotBeCollapsed = width()>Utils::scaleForDpi(450);
-        if (responsiveSidebar || (forceUpdate && collapsed && shouldNotBeCollapsed)) {
-            if (shouldNotBeCollapsed) {
+        if (responsiveSidebar || forceUpdate) {
+            if (!responsiveSidebar || width()>Utils::scaleForDpi(450)) {
                 if (forceUpdate || collapsed) {
                     int index=tabWidget->currentIndex();
                     if (forceUpdate || tabWidget->style()!=tabWidgetStyle) {
@@ -2650,7 +2649,7 @@ void MainWindow::controlView(bool forceUpdate)
                     controlPlayQueueButtons();
                 }
                 collapsed=false;
-            } else {
+            } else if (responsiveSidebar) {
                 if (forceUpdate || !collapsed) {
                     int index=tabWidget->currentIndex();
                     int smallStyle=FancyTabWidget::Small|FancyTabWidget::Top|FancyTabWidget::IconOnly;

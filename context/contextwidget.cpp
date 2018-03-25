@@ -333,6 +333,9 @@ void ContextWidget::setWide(bool w)
         splitter->addWidget(album);
         splitter->setVisible(true);
         splitter->addWidget(song);
+        splitter->setCollapsible(0, false);
+        splitter->setCollapsible(1, false);
+        splitter->setCollapsible(2, false);
         if (resetSplitter) {
             splitter->reset();
         } else if (!state.isEmpty()) {

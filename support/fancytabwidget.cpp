@@ -289,7 +289,7 @@ QSize FancyTabBar::tabSizeHint() const
         }
         return QSize(qMax(icnSize + spacing, maxTw), icnSize + spacing + fm.height() + padding);
     } else {
-        return QSize(icnSize + spacing, icnSize + spacing + padding);
+        return QSize(icnSize + spacing + padding, icnSize + spacing + padding);
     }
 }
 

@@ -134,6 +134,7 @@ View::View(QWidget *parent, const QStringList &views)
     cancelJobAction->setEnabled(false);
     connect(cancelJobAction, SIGNAL(triggered()), SLOT(abort()));
     text=texts.at(0);
+    setMinimumWidth(Utils::scaleForDpi(300));
 }
 
 View::~View()

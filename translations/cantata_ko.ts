@@ -8814,7 +8814,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="612"/>
-        <source>Changing &apos;Album &amp; Artist Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
+        <source>Changing &apos;Artist &amp; Album Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9031,7 +9031,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="219"/>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding  music to your library from devices.</source>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

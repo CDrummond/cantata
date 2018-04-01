@@ -2550,7 +2550,7 @@ Non sarà possibile tornare indietro.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="612"/>
-        <source>Changing &apos;Album &amp; Artist Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
+        <source>Changing &apos;Artist &amp; Album Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
         <translation>Le modifiche ad &apos;Ordinamento Artista &amp; Album&apos;, &apos;Tracce Singole&apos;, o &apos;File CUE&apos; richiedono un aggiornamento del DB per avere effetto. Le modifiche a &apos;Supporto Compositore&apos; o &apos;Tag Anno&apos;richiedono il riavvio di Cantata.</translation>
     </message>
     <message>
@@ -2753,7 +2753,7 @@ Non sarà possibile tornare indietro.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="219"/>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding  music to your library from devices.</source>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
         <translation>Se non è specificato nulla su &apos;Nome file&apos;, allora cantata userà &lt;code&gt;cover&lt;/code&gt; come nome predefinito. Questo nome viene usato quando si scaricano le copertine, oppure di aggiunge della musica alla tua libreria dai dispositivi.</translation>
     </message>
     <message>

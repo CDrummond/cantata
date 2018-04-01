@@ -2460,7 +2460,7 @@ Det kan ikke fortrydes.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="612"/>
-        <source>Changing &apos;Album &amp; Artist Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
+        <source>Changing &apos;Artist &amp; Album Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
         <translation>Ændring af &apos;Sortering af kunstner og album&apos;, &apos;Ét spor&apos; eller &apos;CUE-filer&apos; kræver en genopfriskning af databasen for at træde i kraft. Ændring af &apos;Understøttelse af komponist&apos; eller &apos;Year-mærkat&apos; kræver at Cantata genstartes.</translation>
     </message>
     <message>
@@ -2631,7 +2631,7 @@ Det kan ikke fortrydes.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="219"/>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding  music to your library from devices.</source>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
         <translation>Hvis der ikke er angivet nogen indstilling til &apos;Filnavn&apos;, så bruger Cantata &lt;code&gt;cover&lt;/code&gt; som standard. Filnavnet bruges ved download af covers eller når der tilføjes musik til dit bibliotek fra enheder.</translation>
     </message>
     <message>

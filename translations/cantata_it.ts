@@ -513,7 +513,7 @@ Se &apos;Titolo&apos; è &quot;Wibble - Wobble&quot;, allora &apos;Artista&apos;
     <message>
         <location filename="../gui/apikeys.cpp" line="155"/>
         <source>The API call limit has been exceeded for %1, please try again later or register for your own API key.</source>
-        <translation type="unfinished"></translation>
+        <translation>È stato superato il limite di chiamate per le API di %1, si prega di provare più tardi o di registrare la propria chiave API personale.</translation>
     </message>
 </context>
 <context>
@@ -521,22 +521,22 @@ Se &apos;Titolo&apos; è &quot;Wibble - Wobble&quot;, allora &apos;Artista&apos;
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="73"/>
         <source>Cantata uses various internet services to provide covers, radio stream listings, etc. Most of these require an application&apos;s developer to register with the service, and obtain an API Key. Cantata contains the keys required to access these services. Unfortunately, some of these services have a usage limit per API key. Therefore, some of Cantata&apos;s features may not function if the key (which is shared with all Cantata users) has reached its monthly usage limit. To work-around this, you can register with a service yourself, and configure Cantata to use your personal API key. This key may be entered below. For any blank values below, Cantata will use its default key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantata utilizza diversi servizi in internet per fornire copertine, liste di flussi radio, ecc. La maggior parte di questi richiedono che lo sviluppatore di un'applicazione si registri al servizio per ottenere una chiave API. Cantata contiene le chiavi necessarie ad accedere a questi servizi. Sfortunatamente, alcuni di questi servizi hanno un limite di utilizzo per chiave API. Quindi alcune delle funzioni di Cantata potrebbero non funzionare se la chiave (che è condivisa tra tutti gli utenti di Cantata) ha raggiunto il proprio limite d'utilizzo mensile. Per aggirare il problema, puoi registrati da solo ad un servizio e configurare Cantata per utilizzare la tua chiave API personale. Questa chiave può essere inserita sotto. In caso di valore vuoto, Cantata userà la propria chiave predefinita.</translation>
     </message>
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="85"/>
         <source>Service</source>
-        <translation type="unfinished"></translation>
+        <translation>Servizio</translation>
     </message>
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="85"/>
         <source>Service URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL Servizio</translation>
     </message>
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="85"/>
         <source>API Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiave API</translation>
     </message>
 </context>
 <context>
@@ -1733,7 +1733,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="87"/>
         <source>A &apos;dynamic&apos; playlist contains a set of rules to select tracks from your music library to play. The play queue is filled with random tracks matching your criteria, and the play queue will be dynamically updated after tracks are played.</source>
-        <translation type="unfinished"></translation>
+        <translation>Una scaletta &apos;dinamica&apos; contiene un insieme di regole per scegliere delle tracce da riprodurre dalla tua libreria. La coda di riproduzione viene riempita di tracce casuali che soddifano il tuo criterio, e viene aggiornata dinamicamente dopo che le tracce sono state riprodotte.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="91"/>
@@ -2335,12 +2335,12 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="122"/>
         <source>Automatically change style when insufficient space</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambia automaticamente lo stile quando non c'è spazio sufficiente.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="125"/>
         <source>&lt;p&gt;Change to a small top bar (containing all views) when the window is narrow.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Cambia per avere una barra superiore piccola (contenente tutte le viste) quando la finestra è stretta.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="138"/>
@@ -3459,7 +3459,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     <message>
         <location filename="../gui/mainwindow.cpp" line="327"/>
         <source>Play HTTP Output Stream</source>
-        <translation type="unfinished"></translation>
+        <translation>Riproduci il flusso d'uscita HTTP</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="348"/>
@@ -4668,7 +4668,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../playlists/playlistrules.ui" line="39"/>
         <source>Name of playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome della scaletta</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="71"/>
@@ -4755,7 +4755,12 @@ Non sarà possibile tornare indietro.</translation>
 Use the &apos;Add&apos; button to add a &apos;rule&apos; to control which artists, genres, etc you want included in the playlist. Any rules added will be listed here. A playlist with no rules will use songs from your whole music library.
 
 Use the settings below to restrict the range of songs added.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogni scaletta richiede un nome univoco, inseriscilo sopra.
+
+Usa il pulsante &apos;Aggiungi&apos; per aggiungere una &apos;regola&apos; per controllare quali artisti, generi, ecc vuoi includere nella scaletta. Ogni regola aggiunta verrà indicata qua. Una scaletta senza regole utilizzerà le canzoni di tutta la libreria musicale.
+
+Usa le impostazioni sotto per ridurre l'intervallo di canzoni aggiunte.
+        </translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="173"/>
@@ -4780,12 +4785,12 @@ Use the settings below to restrict the range of songs added.</source>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
         <source>Dynamic Playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Scaletta Dinamica</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
         <source>Smart Playlist</source>
-        <translation type="unfinished">Playlist Intelligente</translation>
+        <translation>Scaletta Intelligente</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="203"/>
@@ -5390,12 +5395,12 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="95"/>
         <source>Service Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiavi del servizio</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="95"/>
         <source>Service API Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiavi API del servizio</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="97"/>
@@ -6088,7 +6093,7 @@ width x height</comment>
     <message>
         <location filename="../mpd-interface/song.cpp" line="824"/>
         <source>(Stream)</source>
-        <translation type="unfinished">(Flusso)</translation>
+        <translation>(Flusso)</translation>
     </message>
     <message>
         <location filename="../scrobbling/scrobbler.cpp" line="91"/>
@@ -6347,117 +6352,117 @@ width x height</comment>
     <message>
         <location filename="../widgets/singlepagewidget.cpp" line="45"/>
         <source>Categorized</source>
-        <translation type="unfinished"></translation>
+        <translation>Categorizzato</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="137"/>
         <source>mpd - MPD communication</source>
-        <translation type="unfinished"></translation>
+        <translation>mpd - Comunicazione con MPD</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="138"/>
         <source>mpdparse - Parsing of MPD response</source>
-        <translation type="unfinished"></translation>
+        <translation>mpdparse - Analisi della risposta di MPD</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="139"/>
         <source>covers - Cover fetching, and loading</source>
-        <translation type="unfinished"></translation>
+        <translation>covers - Recupero e caricamento delle copertine</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="140"/>
         <source>covers-verbose - Cover fetching, and loading (verbose) </source>
-        <translation type="unfinished"></translation>
+        <translation>covers-verbose - Recupero e caricamento delle copertine (verboso)</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="141"/>
         <source>context-wikipedia - Wikipedia info in context view</source>
-        <translation type="unfinished"></translation>
+        <translation>context-wikipedia - Informazioni di Wikipedia nella vista contestuale</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="142"/>
         <source>context-lastfm - Last.fm info in context view</source>
-        <translation type="unfinished"></translation>
+        <translation>context-lastfm - Informazioni di Last.fm nella vista contestuale</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="143"/>
         <source>context-widget - General debug in context view</source>
-        <translation type="unfinished"></translation>
+        <translation>context-widget - Debug generale nella vista contestuale</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="144"/>
         <source>context-lyrics - Lyrics in context view</source>
-        <translation type="unfinished"></translation>
+        <translation>context-lyrics - Testi nella vista contestuale</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="145"/>
         <source>dynamic - Dynamic playlists</source>
-        <translation type="unfinished"></translation>
+        <translation>dynamic - Scalette dinamiche</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="146"/>
         <source>stream-fetcher - Fetching of stream URLs</source>
-        <translation type="unfinished"></translation>
+        <translation>stream-fetcher - Recupero degli URL dei flussi</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="147"/>
         <source>http-server - Built-in HTTP server</source>
-        <translation type="unfinished"></translation>
+        <translation>http-server - Server HTTP integrato</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="148"/>
         <source>song-dialog - Song dialogs (tags, replaygain, organiser)</source>
-        <translation type="unfinished"></translation>
+        <translation>song-dialogs - Finestre di dialogo delle canzoni (tag, replaygain, organinizza)</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="149"/>
         <source>network-access - Network access</source>
-        <translation type="unfinished"></translation>
+        <translation>network-access - Accesso alla rete</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="150"/>
         <source>threads - Threads</source>
-        <translation type="unfinished"></translation>
+        <translation>threads - Threads</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="151"/>
         <source>scrobbler - Scrobbling</source>
-        <translation type="unfinished"></translation>
+        <translation>scrobbler - Scrobbling</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="152"/>
         <source>sql - SQL access</source>
-        <translation type="unfinished"></translation>
+        <translation>sql - Accesso SQL</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="153"/>
         <source>media-keys - Media-keys</source>
-        <translation type="unfinished"></translation>
+        <translation>media-keys - Tasti Multimediali</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="154"/>
         <source>custom-actions - Custom actions</source>
-        <translation type="unfinished"></translation>
+        <translation>custom-actions - Azioni personalizzate</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="156"/>
         <source>tags - Tag reading/writing</source>
-        <translation type="unfinished"></translation>
+        <translation>tags - Lettura/scrittura tag</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="159"/>
         <source>devices - Device support</source>
-        <translation type="unfinished"></translation>
+        <translation>devices - Supporto dispositivi</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="162"/>
         <source>http-stream - Playback of MPD output streams</source>
-        <translation type="unfinished"></translation>
+        <translation>http-stream - Riprodusione del flusso d'uscita di MPD</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="165"/>
         <source>avahi - Auto-discovery of MPD servers</source>
-        <translation type="unfinished"></translation>
+        <translation>avahi - Riverca automatica dei server MPD</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="253"/>
@@ -6468,17 +6473,17 @@ width x height</comment>
         <location filename="../gui/main.cpp" line="256"/>
         <source>Comma-separated list of debug areas - possible values:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Lista di aree di debug separata da virgole - valori possibili:</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="257"/>
         <source>Log debug messages to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Registra i messaggi di debug su %1</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="258"/>
         <source>Disable network access</source>
-        <translation type="unfinished"></translation>
+        <translation>Disabilita accesso alla rete</translation>
     </message>
 </context>
 <context>
@@ -7530,7 +7535,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="73"/>
         <source>A &apos;smart&apos; playlist contains a set of rules to select tracks from your music library to play. The playlist also controls the order in which tracks are added. Unlike &apos;dynamic&apos; playlists, the play queue is not dynamically updated.</source>
-        <translation type="unfinished"></translation>
+        <translation>Una scaletta &apos;intelligente&apos; contiene un insieme di regole per selezionare delle tracce dalla libreria musicale. La scaletta controlla anche l'ordine in cui le tracce vengono aggiunte. A differenza delle scalette &apos;dinamiche&apos;, la coda di riproduzione non viene aggiornata dinamicamente.</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="77"/>
@@ -7922,47 +7927,47 @@ Ricaricare da disco, oppure cancellare la copia su disco e scaricare?</translati
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="210"/>
         <source>Modified in the last week</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificate nell'ultima settmana</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="212"/>
         <source>Modified in the last 2 weeks</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificate nelle ultime 2 settimane</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="214"/>
         <source>Modified in the last 30 days</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificate negli ultimi 30 giorni</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="216"/>
         <source>Modified in the last 60 days</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificate negli ultimi 60 giorni</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="218"/>
         <source>Modified in the last 90 days</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificate negli ultimi 90 giorni</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="220"/>
         <source>Modified in the last year</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificate nell'ultimo anno</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="222"/>
         <source>Modified in the last 2 years</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificate negli ultimi 2 anni</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="224"/>
         <source>Modified in the last 3 years</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificate negli ultimi 3 anni</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="226"/>
         <source>Modified more than 3 years ago</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificate più di 3 anni fa</translation>
     </message>
     <message numerus="yes">
         <location filename="../models/sqllibrarymodel.cpp" line="243"/>

@@ -82,7 +82,7 @@ QList<ApiKeys::Details> ApiKeys::getDetails()
 
 const QString & ApiKeys::get(Service srv)
 {
-    if (srv>0 && srv<NumServices) {
+    if (srv>=0 && srv<NumServices) {
         return userKeys[srv].isEmpty() ? defaultKeys[srv] : userKeys[srv];
     } else {
         return defaultKeys[0];
@@ -91,21 +91,21 @@ const QString & ApiKeys::get(Service srv)
 
 void ApiKeys::set(Service srv, const QString &key)
 {
-    if (srv>0 && srv<NumServices) {
+    if (srv>=0 && srv<NumServices) {
         userKeys[srv]=key.trimmed();
     }
 }
 
 void ApiKeys::addKey(QUrlQuery &query, Service srv)
 {
-    if (srv>0 && srv<NumServices) {
+    if (srv>=0 && srv<NumServices) {
         query.addQueryItem(queryItems[srv], get(srv));
     }
 }
 
 QString ApiKeys::addKey(const QString &url, Service srv)
 {
-    if (srv>0 && srv<NumServices) {
+    if (srv>=0 && srv<NumServices) {
         if (-1==url.indexOf("?")) {
             return url+"?"+queryItems[srv]+"="+get(srv);
         } else {

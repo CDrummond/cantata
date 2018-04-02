@@ -160,7 +160,7 @@ i18n: ectx: property (text), widget (StateLabel, artistLabel)
     </message>
     <message>
         <source>Scroll Lyrics</source>
-        <translation type="vanished">가사 올리기</translation>
+        <translation type="vanished">가사 넘기기</translation>
     </message>
     <message>
         <source>Refresh Lyrics</source>
@@ -1734,7 +1734,7 @@ i18n: ectx: property (text), widget (QLabel, label_2)
     </message>
     <message>
         <source>To have Cantata call external commands (e.g. to edit tags with another application), add an entry for the command below. When at least one command command is defined, a &apos;Custom Actions&apos; entry will be added to the context menus in the Library, Folders, and Playlists views.</source>
-        <translation type="vanished">외부 명령어 (예. 다른 어플로 태그 수정)를 사용하려면, 아래 항목을 추가합니다. 명령어가 정의되면, &apos;사용자 메뉴&apos; 항목이 음원, 폴더, 음원목록에 추가됩니다.</translation>
+        <translation type="vanished">외부 명령어 (예. 다른 어플로 태그 수정)를 사용하려면, 아래 항목을 추가합니다. 명령어가 정의되면, &apos;사용자 메뉴&apos; 항목이 음원, 폴더, 연주목록에 추가됩니다.</translation>
     </message>
     <message>
         <source>Command</source>
@@ -1758,7 +1758,7 @@ i18n: ectx: property (text), widget (QLabel, label_2)
     </message>
     <message>
         <source>Grouped Albums</source>
-        <translation type="vanished">앨범으로 묶음</translation>
+        <translation type="vanished">음반으로 묶음</translation>
     </message>
     <message>
         <source>Table</source>
@@ -1973,15 +1973,15 @@ i18n: ectx: property (text), widget (QPushButton, connectButton)
     </message>
     <message>
         <source>Repeat</source>
-        <translation type="vanished">반복</translation>
+        <translation type="vanished">다시</translation>
     </message>
     <message>
         <source>Single</source>
-        <translation type="vanished">단일</translation>
+        <translation type="vanished">한 곡만</translation>
     </message>
     <message>
         <source>When &apos;Single&apos; is activated, playback is stopped after current song, or song is repeated if &apos;Repeat&apos; is enabled.</source>
-        <translation type="vanished">&apos;단일&apos;이 선택되면, 지금 곡 다음에 연주를 멈춥니다. &apos;반복&apos;이 선택되면, 곡은 반복됩니다.</translation>
+        <translation type="vanished">&apos;한 곡만&apos;이 선택되면, 지금 곡 다음에 연주를 멈춥니다. &apos;다시&apos;가 선택되면, 곡은 다시 됩니다.</translation>
     </message>
     <message>
         <source>Consume</source>
@@ -2137,7 +2137,7 @@ Quitting now will abort the download.</source>
     </message>
     <message>
         <source>MPD reported the following error: %1</source>
-        <translation type="vanished">MPD가 다음 오류를 보고함: %1</translation>
+        <translation type="vanished">MPD가 다음 오류를 알림: %1</translation>
     </message>
     <message>
         <source>Cantata</source>
@@ -2596,7 +2596,7 @@ i18n: ectx: property (text), widget (NoteLabel, musicFolderNoteLabel_2)
     </message>
     <message>
         <source>Append To Play Queue</source>
-        <translation type="vanished">연주목록에 덧붙이기</translation>
+        <translation type="vanished">연주순서에 덧붙이기</translation>
     </message>
     <message>
         <source>Append And Play</source>
@@ -2608,7 +2608,7 @@ i18n: ectx: property (text), widget (NoteLabel, musicFolderNoteLabel_2)
     </message>
     <message>
         <source>Append To Play Queue And Play</source>
-        <translation type="vanished">연주목록에 덧붙이고 연주</translation>
+        <translation type="vanished">연주순서에 덧붙이고 연주</translation>
     </message>
     <message>
         <source>Insert After Current</source>
@@ -3370,7 +3370,7 @@ i18n: ectx: property (text), widget (BuddyLabel, label_3)
     </message>
     <message>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="vanished">선택된 팟캐스트 에피소드를 읽은 것으로 할까요?</translation>
+        <translation type="vanished">선택된 팟캐스트 에피소드를 들은 것으로 할까요?</translation>
     </message>
     <message>
         <source>Refresh all subscriptions?</source>
@@ -4343,7 +4343,7 @@ i18n: ectx: property (text), widget (NoteLabel, persNote_2)
         <extracomment>i18n: file: gui/initialsettingswizard.ui:14
 i18n: ectx: property (windowTitle), widget (QWizard, InitialSettingsWizard)
 </extracomment>
-        <translation type="vanished">처음으로 칸타타 실행</translation>
+        <translation type="vanished">칸타타 첫 실행</translation>
     </message>
     <message>
         <source>Welcome to Cantata</source>
@@ -4357,7 +4357,7 @@ i18n: ectx: property (text), widget (QLabel, label)
         <extracomment>i18n: file: gui/initialsettingswizard.ui:69
 i18n: ectx: property (text), widget (QLabel, label_2)
 </extracomment>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;칸타타는 기능이 다양하고 사용하기가 편리한 Music Player Daemon (MPD) 클라이언트 입니다. MPD는 음악 연주에 사용되는 백그라운드 어플입니다.&lt;/p&gt;&lt;p&gt;MPD에 대한 더 많은 정보는, 다음 웹사이트를 참조 바랍니다. &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;이 &apos;마법사&apos;는 칸타타가 제대로 동작하기 위한 사용자의 기본 설정을 돕습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;칸타타는 기능이 다양하고 사용하기가 편리한 Music Player Daemon (MPD) 클라이언트 입니다. MPD는 음악 연주에 사용되는 백그라운드 어플입니다.&lt;/p&gt;&lt;p&gt;MPD에 대한 더 많은 정보는, 다음 웹사이트 &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;를 참조하시기 바랍니다.&lt;/p&gt;&lt;p&gt;이 &apos;마법사&apos;는 칸타타가 제대로 동작하기 위한 사용자의 기본 설정을 돕습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -4406,7 +4406,7 @@ i18n: ectx: property (text), widget (BuddyLabel, label_9)
         <extracomment>i18n: file: gui/initialsettingswizard.ui:259
 i18n: ectx: property (text), widget (QLabel, label_11)
 </extracomment>
-        <translation type="vanished">MPD에 대한 더 많은 정보는 웹사이트&lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;를 참조합니다.&lt;br/&gt;&lt;br/&gt;이 &apos;마법사&apos;는 칸타타가 제대로 작동하기 위한 기본 설정을 돕습니다.</translation>
+        <translation type="vanished">MPD에 대한 더 많은 정보는 웹사이트 &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;를 참조하시기 바랍니다.&lt;br/&gt;&lt;br/&gt;이 &apos;마법사&apos;는 칸타타가 제대로 작동하기 위한 기본 설정을 돕습니다.</translation>
     </message>
     <message>
         <source>Connection details</source>
@@ -4420,7 +4420,7 @@ i18n: ectx: property (text), widget (QLabel, label_3)
         <extracomment>i18n: file: gui/initialsettingswizard.ui:344
 i18n: ectx: property (text), widget (QLabel, label_4)
 </extracomment>
-        <translation type="vanished">아래 설정은 칸타타에서 기본적으로 필요한 정보입니다. 관련 상세정보를 입력해 주시고, 연결해 보려면 &apos;연결&apos; 단추를 누릅니다.</translation>
+        <translation type="vanished">아래 설정은 칸타타에서 기본적으로 필요한 정보입니다. 관련 상세정보를 입력하고, 연결해 보려면 &apos;연결&apos; 단추를 누릅니다.</translation>
     </message>
     <message>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art, lyrics, etc. If your MPD instance is on a remote host, you may set this to a HTTP URL.</source>
@@ -4518,7 +4518,7 @@ i18n: ectx: property (text), widget (QLabel, label_2)
         <extracomment>i18n: file: gui/interfacesettings.ui:61
 i18n: ectx: property (text), widget (NoteLabel, sbPlayQueueLabel)
 </extracomment>
-        <translation type="vanished">위에서 &apos;연주목록&apos;이 선택되지 않으면, 다른 보기의 옆에 보입니다. 위에서 &apos;정보보기&apos;가 선택되지 않으면, 곡 정보를 보는 도구 모음에 단추가 추가됩니다.</translation>
+        <translation type="vanished">위에서 &apos;연주순서&apos;가 선택되지 않으면, 다른 보기의 옆에 보입니다. 위에서 &apos;정보보기&apos;가 선택되지 않으면, 곡 정보를 보는 도구 모음에 단추가 추가됩니다.</translation>
     </message>
     <message>
         <source>Style:</source>
@@ -4587,7 +4587,7 @@ i18n: ectx: property (text), widget (QCheckBox, playQueueConfirmClear)
         <extracomment>i18n: file: gui/interfacesettings.ui:178
 i18n: ectx: property (text), widget (QCheckBox, playQueueSearch)
 </extracomment>
-        <translation type="vanished">연주목록에서 찾기 (또는 단축키)</translation>
+        <translation type="vanished">연주순서에서 찾기 (또는 단축키)</translation>
     </message>
     <message>
         <source>Current album cover</source>
@@ -4741,7 +4741,7 @@ i18n: ectx: property (placeholderText), widget (LineEdit, composerGenres)
         <extracomment>i18n: file: gui/interfacesettings.ui:546
 i18n: ectx: property (text), widget (QLabel, label_3)
 </extracomment>
-        <translation type="vanished">음원에 한 곡만을 가진 연주자가 많다면, 연주자 항목에 두기가 번거로울 수 있습니다. 해결 방법으로 이 곡들을 별도 폴더에 두고 이 폴더를 아래에 입력하면, &apos;여러 연주자&apos; 음반 연주자의 &apos;한 곡들&apos; 아래에 묶습니다</translation>
+        <translation type="vanished">음원에 한 곡만 가진 연주자가 많다면, 연주자 항목에 두기가 번거로울 수 있습니다. 해결 방법으로 이 곡들을 별도 폴더에 두고 이 폴더를 아래에 입력하면, &apos;여러 연주자&apos; 음반 연주자의 &apos;한 곡들&apos; 아래에 묶습니다</translation>
     </message>
     <message>
         <source>Folder that contains single track files...</source>
@@ -4974,7 +4974,7 @@ i18n: ectx: property (text), widget (BuddyLabel, basicCoverNameLabel)
         <extracomment>i18n: file: gui/serversettings.ui:149
 i18n: ectx: property (toolTip), widget (LineEdit, coverName)
 </extracomment>
-        <translation type="vanished">&lt;p&gt;내려받은 표지를 저장할 확장자없는 파일이름.&lt;br/&gt;비어있으면 &apos;cover&apos;가 사용됩니다.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%은 지금 곡의 음반연주자로, %album%은 음반명으로 바뀝니다.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation type="vanished">&lt;p&gt;내려받은 표지를 저장할 확장자없는 파일이름.&lt;br/&gt;비어있으면 &apos;cover&apos;가 사용됩니다.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%는 지금 곡의 음반연주자로, %album%은 음반명으로 바뀝니다.&lt;/i&gt;&lt;/p&gt;</translation>
         <extra-po-flags>no-c-format</extra-po-flags>
     </message>
     <message>
@@ -5981,7 +5981,7 @@ Overwrite?</source>
     </message>
     <message>
         <source>%1 [modified]</source>
-        <translation type="vanished">%1 [바뀜]ㄱ</translation>
+        <translation type="vanished">%1 [바뀜]</translation>
     </message>
     <message>
         <source>Would you also like to rename your song files, so as to match your tags?</source>
@@ -5993,7 +5993,7 @@ Overwrite?</source>
     </message>
     <message>
         <source>Abort renaming of files?</source>
-        <translation type="vanished">파일 이름 바꾸기를 취소할까요?</translation>
+        <translation type="vanished">파일명 바꾸기를 취소할까요?</translation>
     </message>
     <message>
         <source>Source file does not exist!</source>
@@ -6129,11 +6129,11 @@ Please check that the device is still attached.</source>
     </message>
     <message>
         <source>Add All To Play Queue</source>
-        <translation type="vanished">모두 연주목록에 추가</translation>
+        <translation type="vanished">모두 연주순서에 추가</translation>
     </message>
     <message>
         <source>Add All And Replace Play Queue</source>
-        <translation type="vanished">모두 추가하고 연주목록 바꾸기</translation>
+        <translation type="vanished">모두 추가하고 연주순서 바꾸기</translation>
     </message>
     <message>
         <source>Mute</source>
@@ -6754,7 +6754,7 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
     <message>
         <location filename="../context/albumview.cpp" line="70"/>
         <source>Full Width Cover</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">음반표지 꽉 찬 너비</translation>
     </message>
     <message>
         <location filename="../context/albumview.cpp" line="80"/>
@@ -6772,7 +6772,7 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
     <message>
         <location filename="../gui/apikeys.cpp" line="155"/>
         <source>The API call limit has been exceeded for %1, please try again later or register for your own API key.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1의 API 호출 횟수를 넘어서, 나중이나 본인의 API 키로 다시 시작해 보시기 바랍니다.</translation>
     </message>
 </context>
 <context>
@@ -6780,22 +6780,22 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="73"/>
         <source>Cantata uses various internet services to provide covers, radio stream listings, etc. Most of these require an application&apos;s developer to register with the service, and obtain an API Key. Cantata contains the keys required to access these services. Unfortunately, some of these services have a usage limit per API key. Therefore, some of Cantata&apos;s features may not function if the key (which is shared with all Cantata users) has reached its monthly usage limit. To work-around this, you can register with a service yourself, and configure Cantata to use your personal API key. This key may be entered below. For any blank values below, Cantata will use its default key.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">칸타타는 음반표지, 라디오 스트림 목록 등을 제공하기 위해서 다양한 인터넷 서비스를 사용합니다. 대부분 서비스를 등록하고 API 키를 얻어야 합니다. 칸타타는 서비스에 접근하기 위한 키를 가지고 있습니다. 하지만 일부 서비스는 API 키 사용에 한계가 있습니다. 따라서 공용키가 월간 한계에 이르면 일부 칸타타 기능이 동작하지 않을 수 있습니다. 이를 해결하기 위해서 직접 개인 서비스를 등록하거나, 개인 API 키를 사용하도록 설정할 수 있습니다. 이 키는 아래에 입력할 수 있습니다. 모든 빈 칸은 칸타타의 기본 키를 사용합니다.</translation>
     </message>
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="85"/>
         <source>Service</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">서비스</translation>
     </message>
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="85"/>
         <source>Service URL</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">서비스 URL</translation>
     </message>
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="85"/>
         <source>API Key</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">API 키</translation>
     </message>
 </context>
 <context>
@@ -6899,12 +6899,12 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
     <message>
         <location filename="../models/browsemodel.cpp" line="74"/>
         <source>Server Folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">서버 폴더</translation>
     </message>
     <message>
         <location filename="../models/browsemodel.cpp" line="79"/>
         <source>MPD virtual file-system</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">MPD 가상 파일시스템</translation>
     </message>
     <message>
         <location filename="../models/browsemodel.cpp" line="244"/>
@@ -7347,7 +7347,7 @@ Could not copy file to &apos;%1&apos;!</source>
     <message>
         <location filename="../gui/customactionssettings.cpp" line="87"/>
         <source>To have Cantata call external commands (e.g. to edit tags with another application), add an entry for the command below. When at least one command command is defined, a &apos;Custom Actions&apos; entry will be added to the context menus in the Library, Folders, and Playlists views.</source>
-        <translation type="unfinished">외부 명령어 (예. 다른 어플로 태그 수정)를 사용하려면, 아래 항목을 추가합니다. 명령어가 정의되면, &apos;사용자 메뉴&apos; 항목이 음원, 폴더, 음원목록에 추가됩니다.</translation>
+        <translation type="unfinished">외부 명령어 (예. 다른 어플로 태그 수정)를 사용하려면, 아래 항목을 추가합니다. 명령어가 정의되면, &apos;사용자 메뉴&apos; 항목이 음원, 폴더, 연주목록에 추가됩니다.</translation>
     </message>
     <message>
         <location filename="../gui/customactionssettings.cpp" line="101"/>
@@ -7482,7 +7482,7 @@ Could not copy file to &apos;%1&apos;!</source>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
         <source>If an artist name begins with &apos;The&apos;, then append this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">연주자가 &apos;The&apos;로 시작하면, 이를 폴더 이름 뒤에 붙입니다. 예. &apos;The Beatles&apos;는 &apos;Beatles, The&apos;가 됩니다</translation>
     </message>
     <message>
         <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
@@ -7556,7 +7556,7 @@ Could not copy file to &apos;%1&apos;!</source>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
         <source>Always transcode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">항상 변환함</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="235"/>
@@ -7638,7 +7638,7 @@ Could not copy file to &apos;%1&apos;!</source>
     <message>
         <location filename="../devices/devicespage.cpp" line="120"/>
         <source>Any supported devices will appear here when attached to your computer.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">컴퓨터에 연결된 모든 지원 장치가 보입니다.</translation>
     </message>
     <message>
         <location filename="../devices/devicespage.cpp" line="409"/>
@@ -7927,7 +7927,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="385"/>
         <source>Could not start dynamic helper. Please check all &lt;a href=&quot;https://github.com/CDrummond/cantata/wiki/Dynamic-Palylists-Helper&quot;&gt;dependencies&lt;/a&gt; are installed.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">동적 도움말을 시작할 수 없습니다. 모든 &lt;a href=&quot;https://github.com/CDrummond/cantata/wiki/Dynamic-Palylists-Helper&quot;&gt;dependencies&lt;/a&gt;가 설치되었는 지 확인바랍니다.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="496"/>
@@ -7991,17 +7991,17 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="87"/>
         <source>A &apos;dynamic&apos; playlist contains a set of rules to select tracks from your music library to play. The play queue is filled with random tracks matching your criteria, and the play queue will be dynamically updated after tracks are played.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;동적&apos; 연주목록은 음원에서 연주할 곡을 선택하는 규칙을 포함하고 있습니다. 조건에 맞는 곡은 무작위로 연주순서에 채워지는데, 이 연주순서는 곡이 연주된 다음 동적으로 업데이트 됩니다.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="91"/>
         <source>Use the + icon (below) to create a new &apos;dynamic&apos; playlist.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">새로운 &apos;동적&apos; 연주목록을 만들려면 아래 + 아이콘을 사용합니다.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="125"/>
         <source>Remote dynamizer is not running. In order to support &apos;dynamic&apos; playlists under Windows, Cantata requires its &apos;cantata-dynamic&apos; script to be running on the MPD server.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">원격 활동자가 실행 중이 아닙니다. 윈도에서 &apos;동적&apos; 연주목록을 사용하려면, MPD 서버에서 실행되는 &apos;cantata-dynamic&apos; 스크립트가 있어야 합니다.</translation>
     </message>
     <message>
         <source>Remote dynamizer is not running.</source>
@@ -8221,12 +8221,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/findmpddialog.ui" line="20"/>
         <source>Server Detection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">서버 감지</translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.ui" line="26"/>
         <source>Please select your MPD. If you don&apos;t see your MPD listed here, check that zeroconf is activated in your MPD configuration or insert the host configuration manually.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">MPD를 선택합니다. MPD가 없으면 MPD 설정에서 zeroconf가 활성화되어 있는지 확인하거나 서버 설정을 직접 입력해야 합니다.</translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.cpp" line="28"/>
@@ -8236,12 +8236,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/findmpddialog.cpp" line="28"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">주소</translation>
     </message>
     <message>
         <location filename="../gui/findmpddialog.cpp" line="28"/>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">포트</translation>
     </message>
 </context>
 <context>
@@ -8325,7 +8325,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="14"/>
         <source>Cantata First Run</source>
-        <translation type="unfinished">처음으로 칸타타 실행</translation>
+        <translation type="unfinished">칸타타 첫 실행</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="46"/>
@@ -8334,7 +8334,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;칸타타는 기능이 다양하고 사용하기가 편리한 Music Player Daemon (MPD) 클라이언트 입니다. MPD는 음악 연주에 사용되는 백그라운드 어플입니다.&lt;/p&gt;&lt;p&gt;MPD에 대한 더 많은 정보는, 다음 웹사이트를 참조 바랍니다. &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;이 &apos;마법사&apos;는 칸타타가 제대로 동작하기 위한 사용자의 기본 설정을 돕습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;칸타타는 기능이 다양하고 사용하기가 편리한 Music Player Daemon (MPD) 클라이언트 입니다. MPD는 음악 연주에 사용되는 백그라운드 어플입니다.&lt;/p&gt;&lt;p&gt;MPD에 대한 더 많은 정보는, 다음 웹사이트 &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;를 참조하시기 바랍니다.&lt;/p&gt;&lt;p&gt;이 &apos;마법사&apos;는 칸타타가 제대로 동작하기 위한 사용자의 기본 설정을 돕습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -8343,12 +8343,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="69"/>
         <source>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;칸타타는 기능이 다양하고 사용하기 쉬운 Music Player Daemon (MPD) 클라이언트입니다. MPD는 유연하고, 강력한 음악 서버 프로그램입니다.&lt;/p&gt;&lt;p&gt;MPD에 대한 더 많은 정보는 MPD 웹사이트 &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;를 참조하시기 바랍니다.&lt;/p&gt;&lt;p&gt;이 &apos;마법사&apos;는 칸타타가 제대로 동작하기 위한 기본 설정을 안내합니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="108"/>
         <source>&lt;p&gt;Welcome to Cantata&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;칸타타로 맞이합니다&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="134"/>
@@ -8383,7 +8383,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="259"/>
         <source>For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.</source>
-        <translation type="unfinished">MPD에 대한 더 많은 정보는 웹사이트&lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;를 참조합니다.&lt;br/&gt;&lt;br/&gt;이 &apos;마법사&apos;는 칸타타가 제대로 작동하기 위한 기본 설정을 돕습니다.</translation>
+        <translation type="unfinished">MPD에 대한 더 많은 정보는 웹사이트 &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;를 참조하시기 바랍니다.&lt;br/&gt;&lt;br/&gt;이 &apos;마법사&apos;는 칸타타가 제대로 작동하기 위한 기본 설정을 돕습니다.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="321"/>
@@ -8393,7 +8393,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="344"/>
         <source>The settings below are the basic settings required by Cantata. Please enter the relevant details, and use the &apos;Connect&apos; button to test the connection.</source>
-        <translation type="unfinished">아래 설정은 칸타타에서 기본적으로 필요한 정보입니다. 관련 상세정보를 입력해 주시고, 연결해 보려면 &apos;연결&apos; 단추를 누릅니다.</translation>
+        <translation type="unfinished">아래 설정은 칸타타에서 기본적으로 필요한 정보입니다. 관련 상세정보를 입력하고, 연결해 보려면 &apos;연결&apos; 단추를 누릅니다.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="378"/>
@@ -8434,27 +8434,27 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="623"/>
         <source>Album Covers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">음반표지</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="646"/>
         <source>&lt;p&gt;Cantata can download missing covers, and store these either in the music folder or within your personal cache folder.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;칸타타는 없는 음반표지를 내려받아 음악 폴더나 개인 캐시 폴더에 저장할 수 있습니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">없는 음반표지 가져오기</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
         <source>Save downloaded covers into music folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">내려받은 음반표지를 음악 폴더에 저장하기</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="692"/>
         <source>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">음반표지를 저장하려는 음악 폴더에 쓰기 권한이 없거나 HTTP 주소로 지정되어 있으면, 개인 캐시 폴더에 대신 저장합니다.</translation>
     </message>
     <message>
         <source>Covers and Lyrics</source>
@@ -8516,7 +8516,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="120"/>
         <source>Discover...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">찾기...</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="169"/>
@@ -8567,7 +8567,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="61"/>
         <source>If &apos;Play Queue&apos; is not checked above, then it will appear to the side of the other views. If &apos;Info&apos; is not checked above, then a button will be added to the toolbar allowing you to access song information.</source>
-        <translation type="unfinished">위에서 &apos;연주목록&apos;이 선택되지 않으면, 다른 보기의 옆에 보입니다. 위에서 &apos;정보보기&apos;가 선택되지 않으면, 곡 정보를 보는 도구 모음에 단추가 추가됩니다.</translation>
+        <translation type="unfinished">위에서 &apos;연주순서&apos;가 선택되지 않으면, 다른 보기의 옆에 보입니다. 위에서 &apos;정보보기&apos;가 선택되지 않으면, 곡 정보를 보는 도구 모음에 단추가 추가됩니다.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="71"/>
@@ -8599,12 +8599,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="122"/>
         <source>Automatically change style when insufficient space</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">공간이 좁으면 자동으로 스타일 바꾸기</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="125"/>
         <source>&lt;p&gt;Change to a small top bar (containing all views) when the window is narrow.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;창이 좁으면 (모든 뷰의) 작은 툴바로 바꿉니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="138"/>
@@ -8635,7 +8635,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="188"/>
         <source>Separate action (and shortcut) for play queue search</source>
-        <translation type="unfinished">연주목록에서 찾기 (또는 단축키)</translation>
+        <translation type="unfinished">연주순서에서 찾기 (또는 단축키)</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="217"/>
@@ -8700,7 +8700,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="407"/>
         <source>Show technical info</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">곡 형식 보기</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="415"/>
@@ -8790,32 +8790,32 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="563"/>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;. You may enter a comma separated list of folder names (without leading or trailing path separators) below.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">음원에 한 곡만 가진 연주자가 많다면, 연주자 항목에 두기가 번거로울 수 있습니다. 해결 방법으로 이 곡들을 별도 폴더에 두고 이 폴더를 아래에 입력하면, &apos;여러 연주자&apos; 음반 연주자의 &apos;한 곡들&apos; 아래에 묶습니다. 아래에 쉼표로 구분된 폴더 이름을 (앞뒤 경로 구분없이) 입력할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="573"/>
         <source>Comma separated list of folders that contain single track files...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">한 곡만 가지고 쉼표로 나누어진 폴더...</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="583"/>
         <source>Miscellaneous</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">기타</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="589"/>
         <source>CUE files:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CUE 파일:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="599"/>
         <source>Year tag:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">연도 태그:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="612"/>
         <source>Changing &apos;Artist &amp; Album Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">바뀐 &apos;연주자와 음반 정렬&apos;, &apos;한 곡들&apos;, &apos;CUE 파일&apos;이 반영되려면 DB를 다시 읽어야 합니다. &apos;작곡가 지원&apos;이나 &apos;연도 태그&apos;가 바뀌면 칸타타를 다시 시작해야 합니다.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="633"/>
@@ -8825,31 +8825,31 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="644"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">없는 음반표지 가져오기</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="651"/>
         <source>Save downloaded covers into music folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">내려받은 음반표지를 음악 폴더에 저장하기</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="658"/>
         <source>Filename:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">파일명:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="668"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;내려받은 표지를 저장할 확장자없는 파일이름.&lt;br/&gt;비어있으면 &apos;cover&apos;가 사용됩니다.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%은 지금 곡의 음반연주자로, %album%은 음반명으로 바뀝니다.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;내려받은 표지를 저장할 확장자없는 파일이름.&lt;br/&gt;비어있으면 &apos;cover&apos;가 사용됩니다.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%는 지금 곡의 음반연주자로, %album%은 음반명으로 바뀝니다.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="677"/>
         <source>If you enable &apos;Save downloaded covers into music folder&apos; you may need to clear the cache of any previous covers to force downloading of new covers. See &apos;Cache&apos; settings page for further details.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;내려받은 음반표지를 음악 폴더에 저장하기&apos;를 선택하면 새 음반표지를 내려받기 위해서 이전 것을 지울 필요가 있습니다. 자세한 내용은 &apos;캐시&apos; 설정을 보시기 바랍니다.</translation>
     </message>
     <message>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
-        <translation type="obsolete">음원에 한 곡만을 가진 연주자가 많다면, 연주자 항목에 두기가 번거로울 수 있습니다. 해결 방법으로 이 곡들을 별도 폴더에 두고 이 폴더를 아래에 입력하면, &apos;여러 연주자&apos; 음반 연주자의 &apos;한 곡들&apos; 아래에 묶습니다</translation>
+        <translation type="obsolete">음원에 한 곡만 가진 연주자가 많다면, 연주자 항목에 두기가 번거로울 수 있습니다. 해결 방법으로 이 곡들을 별도 폴더에 두고 이 폴더를 아래에 입력하면, &apos;여러 연주자&apos; 음반 연주자의 &apos;한 곡들&apos; 아래에 묶습니다</translation>
     </message>
     <message>
         <source>Folder that contains single track files...</source>
@@ -8936,12 +8936,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="148"/>
         <source>Use &apos;Year&apos; tag to display &amp; sort</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;연도&apos; 태그를 사용하여 보여주고 정렬</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="149"/>
         <source>Use &apos;Original Year&apos; tag to display &amp; sort, fallback to &apos;Year&apos; if not set</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;원본 연도&apos; 태그를 사용하여 보여주고 정렬, 없으면 &apos;연도&apos; 사용</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="152"/>
@@ -9032,12 +9032,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="219"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;파일명&apos; 설정이 없으면  &lt;code&gt;cover&lt;/code&gt;를 기본 사용합니다. 이 파일명은 음반표지를 내려받거나, 장치로부터 음원에 음악을 추가할 때 사용됩니다.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="223"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;파일명&apos; 설정이 없으면, &lt;code&gt;cover&lt;/code&gt;를 기본 사용합니다. 이 파일명은 음반표지를 내려받을 때 사용됩니다.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="431"/>
@@ -9213,7 +9213,7 @@ Please choose another one.</source>
     <message>
         <location filename="../gui/librarypage.cpp" line="60"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;연주자, 음반, 제목 등 찾을 문자열을 입력합니다. 연도 필터를 쓰려면, 찾을 &lt;i&gt;#연도-범위&lt;/i&gt;를 추가합니다 - 예.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt;은 2000년부터의 곡을 보여줍니다&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt;은 80년대의 곡을 보여줍니다&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;무엇 #2000&lt;/i&gt;&lt;/b&gt;은 &lt;i&gt;무엇&lt;/i&gt; 문자열과 2000년부터의 곡을 보여줍니다&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/librarypage.cpp" line="66"/>
@@ -9294,7 +9294,7 @@ Please choose another one.</source>
     <message>
         <location filename="../gui/librarypage.cpp" line="122"/>
         <source>No music? Looks like your MPD is not configured correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">음악이 없나요? MPD가 제대로 설정되지 않은 것 같습니다.</translation>
     </message>
     <message>
         <location filename="../gui/librarypage.cpp" line="203"/>
@@ -9316,22 +9316,22 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="40"/>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">홈</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="40"/>
         <source>Browse files in your home folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">홈 폴더의 파일 열기</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="41"/>
         <source>Root</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">루트</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="41"/>
         <source>Browse files on your computer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">컴퓨터의 파일 열기</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="43"/>
@@ -9420,7 +9420,7 @@ If this search does find new lyrics, these will still be associated with the ori
         <location filename="../mpd-interface/mpdconnection.cpp" line="706"/>
         <location filename="../mpd-interface/mpdconnection.cpp" line="713"/>
         <source>MPD reported the following error: %1</source>
-        <translation type="unfinished">MPD가 다음 오류를 보고함: %1</translation>
+        <translation type="unfinished">MPD가 다음 오류를 알림: %1</translation>
     </message>
     <message>
         <location filename="../mpd-interface/mpdconnection.cpp" line="710"/>
@@ -9638,7 +9638,7 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.cpp" line="305"/>
         <source>Add Local Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">로컬 파일 추가</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="307"/>
@@ -9673,17 +9673,17 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.cpp" line="320"/>
         <source>Repeat</source>
-        <translation type="unfinished">반복</translation>
+        <translation type="unfinished">다시</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="321"/>
         <source>Single</source>
-        <translation type="unfinished">단일</translation>
+        <translation type="unfinished">한 곡만</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="321"/>
         <source>When &apos;Single&apos; is activated, playback is stopped after current song, or song is repeated if &apos;Repeat&apos; is enabled.</source>
-        <translation type="unfinished">&apos;단일&apos;이 선택되면, 지금 곡 다음에 연주를 멈춥니다. &apos;반복&apos;이 선택되면, 곡은 반복됩니다.</translation>
+        <translation type="unfinished">&apos;한 곡만&apos;이 선택되면, 지금 곡 다음에 연주를 멈춥니다. &apos;다시&apos;가 선택되면, 곡은 다시 됩니다.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="322"/>
@@ -9707,7 +9707,7 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.cpp" line="327"/>
         <source>Play HTTP Output Stream</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">HTTP 스트림 연주</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="333"/>
@@ -9797,7 +9797,7 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.cpp" line="492"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;연주자, 음반, 제목 등 찾을 문자열을 입력합니다. 연도 필터를 쓰려면, 찾을 &lt;i&gt;#연도-범위&lt;/i&gt;를 추가합니다 - 예.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt;은 2000년부터의 곡을 보여줍니다&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt;은 80년대의 곡을 보여줍니다&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;무엇 #2000&lt;/i&gt;&lt;/b&gt;은 &lt;i&gt;무엇&lt;/i&gt; 문자열과 2000년부터의 곡을 보여줍니다&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="587"/>
@@ -9872,7 +9872,7 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.cpp" line="1198"/>
         <source>Please refer to &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;Cantata&apos;s issue tracker&lt;/a&gt; for a list of known issues, and to report new issues.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">알려지거나 새로운 문제는 &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;칸타타 이슈 확인&lt;/a&gt;을 참조하시기 바랍니다.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1200"/>
@@ -9949,7 +9949,7 @@ Quitting now will abort the download.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1820"/>
         <source>MPD reported the following error: %1</source>
-        <translation type="unfinished">MPD가 다음 오류를 보고함: %1</translation>
+        <translation type="unfinished">MPD가 다음 오류를 알림: %1</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1891"/>
@@ -10013,12 +10013,12 @@ Add to that playlist?</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2082"/>
         <source>Select Music Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">음악 파일 선택</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2082"/>
         <source>Music Files </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">음악 파일</translation>
     </message>
     <message numerus="yes">
         <location filename="../gui/mainwindow.cpp" line="2111"/>
@@ -10061,7 +10061,7 @@ Add to that playlist?</source>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="82"/>
         <source>No folders? Looks like your MPD is not configured correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">폴더가 없나요? MPD가 제대로 설정되지 않은 것 같습니다.</translation>
     </message>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="229"/>
@@ -10220,12 +10220,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="312"/>
         <source>Copy To Clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">클립보드로 복사</translation>
     </message>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="313"/>
         <source>Now Playing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">지금 연주 중</translation>
     </message>
     <message>
         <source>(Stream)</source>
@@ -10601,7 +10601,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="373"/>
         <source>Path</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">경로</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="418"/>
@@ -10681,7 +10681,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/playbacksettings.ui" line="38"/>
         <source>Fadeout on stop:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">정지시 소리 줄임:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="48"/>
@@ -10724,12 +10724,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/playbacksettings.ui" line="112"/>
         <source>Crossfade between tracks:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">곡간 소리 줄임:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="135"/>
         <source>Replay gain:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">리플레이 게인:</translation>
     </message>
     <message>
         <source>&amp;Crossfade between tracks:</source>
@@ -10752,17 +10752,17 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/playbacksettings.ui" line="187"/>
         <source>Volume step:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">음량 단계:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="193"/>
         <source>&lt;p&gt;Amount to change volume by when using either the volume control keyboard shortcuts, or the mouse wheel over the toolbar volume control.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;키보드 단축키나 툴바 음량 위 마우스 휠로 음량을 조정할 때의 변화량.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="200"/>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"> %</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="213"/>
@@ -10932,7 +10932,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/playlistrules.ui" line="39"/>
         <source>Name of playlist</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">연주목록 이름</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="71"/>
@@ -10979,12 +10979,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/playlistrules.ui" line="215"/>
         <source>Files added in the last:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">최근 추가된 파일:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="225"/>
         <source> days</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"> 일</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="228"/>
@@ -11038,7 +11038,11 @@ This cannot be undone.</source>
 Use the &apos;Add&apos; button to add a &apos;rule&apos; to control which artists, genres, etc you want included in the playlist. Any rules added will be listed here. A playlist with no rules will use songs from your whole music library.
 
 Use the settings below to restrict the range of songs added.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">모든 연주목록에 필요한 고유한 이름을 위에 입력합니다.
+
+연주목록에 포함된 연주자, 장르 등을 관리할 &apos;규칙&apos;을 추가하려면 &apos;추가&apos; 단추를 씁니다. 추가된 모든 규칙은 여기에 보입니다. 규칙이 없는 연주목록은 전체 음원을 사용합니다.
+
+추가된 곡의 범위를 한정하려면 아래 설정을 사용합니다.</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="192"/>
@@ -11057,7 +11061,7 @@ Use the settings below to restrict the range of songs added.</source>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
         <source>Dynamic Playlist</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">동적 연주목록</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
@@ -11542,7 +11546,7 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastwidget.cpp" line="93"/>
         <source>Use the + icon (below) to add podcast subscriptions.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">팟캐스트 구독을 추가하려면 아래 + 아이콘을 사용합니다.</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="147"/>
@@ -11572,7 +11576,7 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastwidget.cpp" line="249"/>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="unfinished">선택된 팟캐스트 에피소드를 읽은 것으로 할까요?</translation>
+        <translation type="unfinished">선택된 팟캐스트 에피소드를 들은 것으로 할까요?</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="285"/>
@@ -11718,12 +11722,12 @@ Overwrite?</source>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="95"/>
         <source>Service Keys</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">서비스 키</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="95"/>
         <source>Service API Keys</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">서비스 API 키</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="97"/>
@@ -11920,7 +11924,7 @@ Overwrite?</source>
     <message>
         <location filename="../devices/encoders.cpp" line="254"/>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt; 압축률&lt;/a&gt;은 &lt;b&gt;FLAC&lt;/b&gt;으로의 인코딩과정에서, 압축 속도와 파일 크기의 균형을 나타내는 0에서 8까지의 정수값입니다.&lt;br/&gt; 압축률을 &lt;b&gt;0&lt;/b&gt;으로 하면 압축 시간은 가장 짧지만 상대적으로 큰 파일 크기가 커지며&lt;br/&gt;반면에, 압축률을 &lt;b&gt;8&lt;/b&gt;로 하면, 압축은 오래 걸리지만 가장 작은 파일을 만듭니다.&lt;br/&gt;FLAC은 무손실 코덱이므로 압축률에 상관없이 음악 출력품질은 동일합니다.&lt;br/&gt;또한, &lt;b&gt;5&lt;/b&gt;이상의 값은 압축 시간을 늘이지만 파일 크기는 약간만 작아지므로 추천하지 않습니다.</translation>
     </message>
     <message>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
@@ -12114,7 +12118,7 @@ width x height</comment>
         <location filename="../gui/interfacesettings.cpp" line="56"/>
         <location filename="../widgets/singlepagewidget.cpp" line="41"/>
         <source>Grouped Albums</source>
-        <translation type="unfinished">앨범으로 묶음</translation>
+        <translation type="unfinished">음반으로 묶음</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="57"/>
@@ -12290,7 +12294,7 @@ width x height</comment>
     <message>
         <location filename="../gui/stdactions.cpp" line="95"/>
         <source>Append To Play Queue</source>
-        <translation type="unfinished">연주목록에 덧붙이기</translation>
+        <translation type="unfinished">연주순서에 덧붙이기</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="96"/>
@@ -12305,7 +12309,7 @@ width x height</comment>
     <message>
         <location filename="../gui/stdactions.cpp" line="98"/>
         <source>Append To Play Queue And Play</source>
-        <translation type="unfinished">연주목록에 덧붙이고 연주</translation>
+        <translation type="unfinished">연주순서에 덧붙이고 연주</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="99"/>
@@ -12335,12 +12339,12 @@ width x height</comment>
     <message>
         <location filename="../gui/stdactions.cpp" line="142"/>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">확대</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="144"/>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">축소</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="45"/>
@@ -12780,7 +12784,7 @@ width x height</comment>
     <message>
         <location filename="../widgets/singlepagewidget.cpp" line="45"/>
         <source>Categorized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">나누기</translation>
     </message>
     <message numerus="yes">
         <source>%n Track(s)</source>
@@ -12845,133 +12849,133 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="137"/>
         <source>mpd - MPD communication</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">mpd - MPD 통신</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="138"/>
         <source>mpdparse - Parsing of MPD response</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">mpdparse - MPD 응답 분석</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="139"/>
         <source>covers - Cover fetching, and loading</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">covers - 음반표지 가져오고 읽기</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="140"/>
         <source>covers-verbose - Cover fetching, and loading (verbose) </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">covers-verbose - 음반표지 가져오고 읽기 (자세히) </translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="141"/>
         <source>context-wikipedia - Wikipedia info in context view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">context-wikipedia - 위키피디아 정보</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="142"/>
         <source>context-lastfm - Last.fm info in context view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">context-lastfm - Last.fm 정보</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="143"/>
         <source>context-widget - General debug in context view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">context-widget - 일반 디버그</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="144"/>
         <source>context-lyrics - Lyrics in context view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">context-lyrics - 가사</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="145"/>
         <source>dynamic - Dynamic playlists</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">dynamic - 동적 연주목록</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="146"/>
         <source>stream-fetcher - Fetching of stream URLs</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">stream-fetcher - URL 스트림 가져오기</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="147"/>
         <source>http-server - Built-in HTTP server</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http-server - 내장 HTTP 서버</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="148"/>
         <source>song-dialog - Song dialogs (tags, replaygain, organiser)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">song-dialog - 곡 정보 (태그, 리플레이 게인, 작곡가)</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="149"/>
         <source>network-access - Network access</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">network-access - 네트워크 접속</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="150"/>
         <source>threads - Threads</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">threads - 쓰레드</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="151"/>
         <source>scrobbler - Scrobbling</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">scrobbler - 스크로블링</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="152"/>
         <source>sql - SQL access</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">sql - SQL 접근</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="153"/>
         <source>media-keys - Media-keys</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">media-keys - 미디어 키</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="154"/>
         <source>custom-actions - Custom actions</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">custom-actions - 사용자 동작</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="156"/>
         <source>tags - Tag reading/writing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">tags - 태그 읽기/쓰기</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="159"/>
         <source>devices - Device support</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">devices - 장치 지원</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="162"/>
         <source>http-stream - Playback of MPD output streams</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http-stream - MPD 스트림 연주</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="165"/>
         <source>avahi - Auto-discovery of MPD servers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">avahi - MPD 서버 자동 찾기</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="253"/>
         <source>MPD Client</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">MPD 클라이언트</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="256"/>
         <source>Comma-separated list of debug areas - possible values:
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">쉼표로 나누어진 디버그 목록 - 가능한 값:</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="257"/>
         <source>Log debug messages to %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">디버그 로그 메시지를 %1로</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="258"/>
         <source>Disable network access</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">네트워크 접속 사용 안 함</translation>
     </message>
 </context>
 <context>
@@ -13586,7 +13590,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="87"/>
         <source>Use the text field above to search for music in your library via MPD&apos;s search mechanism. Clicking the label next to the field will produce a menu allowing you to control the search area.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">MPD의 찾기로 음원에서 찾으려면 위 문자 입력칸을 이용합니다. 입력칸 옆의 표를 누르면 찾을 범위를 조정할 메뉴가 나옵니다.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="212"/>
@@ -13596,7 +13600,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="212"/>
         <source>Search for songs by artist.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">연주자로 곡을 찾습니다.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="215"/>
@@ -13606,7 +13610,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="215"/>
         <source>Search for songs by composer.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">작곡가로 곡을 찾습니다.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="218"/>
@@ -13616,7 +13620,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="218"/>
         <source>Search for songs by performer.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">연주자로 곡을 찾습니다.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="220"/>
@@ -13626,7 +13630,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="220"/>
         <source>Search for songs by album.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">음반으로 곡을 찾습니다.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="221"/>
@@ -13636,7 +13640,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="221"/>
         <source>Search for songs by title.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">제목으로 곡을 찾습니다.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="222"/>
@@ -13646,7 +13650,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="222"/>
         <source>Search for songs by genre.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">장르로 곡을 찾습니다.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="224"/>
@@ -13656,7 +13660,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="224"/>
         <source>Search for songs containing comment.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">설명으로 곡을 찾습니다.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="226"/>
@@ -13696,7 +13700,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="237"/>
         <source>Search for songs by filename or path.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">파일명이나 경로로 곡을 찾습니다.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="238"/>
@@ -13706,7 +13710,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="238"/>
         <source>Search for songs by any matching metadata.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">메타데이터로 곡을 찾습니다.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="244"/>
@@ -13769,7 +13773,7 @@ Please choose a different name.</source>
     </message>
     <message>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt;내려받은 표지를 저장할 확장자없는 파일이름.&lt;br/&gt;비어있으면 &apos;cover&apos;가 사용됩니다.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%은 지금 곡의 음반연주자로, %album%은 음반명으로 바뀝니다.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;p&gt;내려받은 표지를 저장할 확장자없는 파일이름.&lt;br/&gt;비어있으면 &apos;cover&apos;가 사용됩니다.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%는 지금 곡의 음반연주자로, %album%은 음반명으로 바뀝니다.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="139"/>
@@ -13779,32 +13783,32 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/serversettings.ui" line="152"/>
         <source>Local file playback:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">로컬 파일 재생:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="162"/>
         <source>Use a simple in-built HTTP server to allow MPD to playback files dropped onto the playqueue.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">내장된 HTTP 서버로 연주순서에 끌어놓은 파일을 MPD로 재생합니다.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="165"/>
         <source>Via in-built HTTP server</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">내장된 HTTP 서버 사용</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="172"/>
         <source>Auto update:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">자동 업데이트:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="182"/>
         <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;이 옵션으로 MPD 서버가 바뀐 것을 (예. 새로 추가된 파일) 자동으로 감지합니다. 그러면 칸타타가 업데이트 명령어를 보낼 필요가 없습니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="185"/>
         <source>Server detects changes automatically</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">서버 변경 자동 감지</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="194"/>
@@ -13823,7 +13827,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/serversettings.ui" line="208"/>
         <source>MPD usually only plays songs from within your collection. Newer MPD&apos;s (from v0.19 onwards) can also playback other files if you are connected to a local MPD server (e.g. address is &apos;127.0.0.1&apos; or &apos;localhost&apos;) For this to work, the MPD server needs read-access to wherever the files are located. If you are using an older MPD, a non-local MPD, or your local files are not accessible to other users, then you may elect to use the simple HTTP server that is supplied with Cantata. This server will only allow access to files in the playqueue, and only whilst Cantata is running.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">MPD는 대게 음원의 곡들만 재생합니다. 최근 MPD는 (v0.19 이후부터) 로컬 MPD 서버에 연결되어 있으면 다른 파일도 재생할 수 있습니다(예. 주소가 &apos;127.0.0.1&apos; 또는 &apos;localhost&apos;). 이를 위해서는 MPD 서버에서 해당 파일의 읽기 권한이 있어야 합니다. 이전 MPD에서 로컬 MPD가 아니거나 다른 사용자가 로컬 파일에 접근할 수 없으면, 칸타타의 간단한 HTTP 서버를 이용해도 됩니다. 이 서버는 실행되는 칸타타의 연주순서에서만 파일을 불러올 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="268"/>
@@ -13843,12 +13847,12 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/serversettings.cpp" line="81"/>
         <source>More information</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">자세한 내용</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.cpp" line="119"/>
         <source>Discover...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">찾기...</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.cpp" line="259"/>
@@ -14013,12 +14017,12 @@ Please choose a different name.</source>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="73"/>
         <source>A &apos;smart&apos; playlist contains a set of rules to select tracks from your music library to play. The playlist also controls the order in which tracks are added. Unlike &apos;dynamic&apos; playlists, the play queue is not dynamically updated.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;스마트&apos; 연주목록은 음원에서 연주할 곡을 선택하는 규칙을 포함하고 있습니다. 연주목록은 곡이 추가되는 순서도 조정합니다. &apos;동적&apos; 연주목록과는 달리 이 연주목록은 동적으로 업데이트되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="77"/>
         <source>Use the + icon (below) to create a new &apos;smart&apos; playlist.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">새로운 &apos;스마트&apos; 연주목록을 만들려면 아래 + 아이콘을 사용합니다.</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="126"/>
@@ -14083,7 +14087,7 @@ Please check that the device is still attached.</source>
     <message>
         <location filename="../context/songview.cpp" line="112"/>
         <source>Scroll Lyrics</source>
-        <translation type="unfinished">가사 올리기</translation>
+        <translation type="unfinished">가사 넘기기</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="113"/>
@@ -14403,47 +14407,47 @@ Reload from disk, or delete disk copy and download?</source>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="210"/>
         <source>Modified in the last week</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">지난 주 수정됨</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="212"/>
         <source>Modified in the last 2 weeks</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">2주 전 수정됨</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="214"/>
         <source>Modified in the last 30 days</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">30일 전 수정됨</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="216"/>
         <source>Modified in the last 60 days</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">60일 전 수정됨</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="218"/>
         <source>Modified in the last 90 days</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">90일 전 수정됨</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="220"/>
         <source>Modified in the last year</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">지난 해 수정됨</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="222"/>
         <source>Modified in the last 2 years</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">2년 전 수정됨</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="224"/>
         <source>Modified in the last 3 years</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">3년 전 수정됨</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="226"/>
         <source>Modified more than 3 years ago</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">3년 이전에 수정됨</translation>
     </message>
     <message numerus="yes">
         <location filename="../models/sqllibrarymodel.cpp" line="243"/>
@@ -14489,7 +14493,7 @@ Reload from disk, or delete disk copy and download?</source>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="107"/>
         <source>Either save the play queue, or use the context menu in the library, to create new playlists.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">연주목록을 새로 만들려면 연주목록을 저장하거나 음원의 메뉴를 이용합니다.</translation>
     </message>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="189"/>
@@ -15006,7 +15010,7 @@ Overwrite?</source>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
         <source>Failed to open package file.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">패키지 파일을 열 수 없습니다.</translation>
     </message>
     <message>
         <source>Failed top open package file.</source>
@@ -15431,7 +15435,7 @@ Overwrite?</source>
     <message>
         <location filename="../tags/tageditor.cpp" line="893"/>
         <source>%1 [modified]</source>
-        <translation type="unfinished">%1 [바뀜]ㄱ</translation>
+        <translation type="unfinished">%1 [바뀜]</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="1210"/>
@@ -15501,12 +15505,12 @@ Overwrite?</source>
     <message>
         <location filename="../widgets/titlewidget.cpp" line="129"/>
         <source>Add All To Play Queue</source>
-        <translation type="unfinished">모두 연주목록에 추가</translation>
+        <translation type="unfinished">모두 연주순서에 추가</translation>
     </message>
     <message>
         <location filename="../widgets/titlewidget.cpp" line="130"/>
         <source>Add All And Replace Play Queue</source>
-        <translation type="unfinished">모두 추가하고 연주목록 바꾸기</translation>
+        <translation type="unfinished">모두 추가하고 연주순서 바꾸기</translation>
     </message>
 </context>
 <context>
@@ -15587,7 +15591,7 @@ Overwrite?</source>
     <message>
         <location filename="../tags/trackorganiser.cpp" line="165"/>
         <source>Abort renaming of files?</source>
-        <translation type="unfinished">파일 이름 바꾸기를 취소할까요?</translation>
+        <translation type="unfinished">파일명 바꾸기를 취소할까요?</translation>
     </message>
     <message>
         <location filename="../tags/trackorganiser.cpp" line="165"/>

@@ -80,6 +80,7 @@
 60. Fix small side-bar when at top, or bottom.
 61. Try to make UI responseive to available width. Hide toolbar and statusbar
     items in insufficient space. Switch view type when narrow.
+62. For Linux GCC builds, print stack trace on crash.
 
 2.2.0
 -----

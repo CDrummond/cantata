@@ -451,6 +451,22 @@ bool Covers::copyImage(const QString &sourceDir, const QString &destDir, const Q
     } else { // no scaling, and same image type, so we can just copy...
         ok=QFile::copy(sourceDir+coverFile, destDir+destName);
         DBUG_CLASS("Covers") << "Copying from" << QString(sourceDir+coverFile) << "to" << QString(destDir+destName) << ok;
+        if (!ok) {
+            DBUG_CLASS("Covers") << "Copy failed";
+            QFile src(sourceDir+coverFile);
+            if (src.open(QIODevice::ReadOnly)) {
+                QByteArray data = src.readAll();
+                DBUG_CLASS("Covers") << "Read" << data.length() << "from" << QString(sourceDir+coverFile);
+                src.close();
+                QFile dest(destDir+destName);
+                if (dest.open(QIODevice::WriteOnly)) {
+                    quint64 written = dest.write(data);
+                    DBUG_CLASS("Covers") << "Wrote" << written << "to" << QString(destDir+destName);
+                    dest.close();
+                    ok=true;
+                }
+            }
+        }
     }
     if (ok) {
         Utils::setFilePerms(destDir+destName);

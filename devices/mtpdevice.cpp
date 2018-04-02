@@ -93,7 +93,7 @@ static uint16_t fileReceiver(void *params, void *priv, uint32_t sendlen, unsigne
     return LIBMTP_HANDLER_RETURN_OK;
 }
 
-MtpConnection::MtpConnection(unsigned int bus, unsigned int dev, bool aaSupport)
+MtpConnection::MtpConnection(const QString &id, unsigned int bus, unsigned int dev, bool aaSupport)
     : device(0)
     #ifdef MTP_CLEAN_ALBUMS
     , albums(0)
@@ -108,7 +108,7 @@ MtpConnection::MtpConnection(unsigned int bus, unsigned int dev, bool aaSupport)
     size=0;
     used=0;
     LIBMTP_Init();
-    thread=new Thread(metaObject()->className());
+    thread=new Thread(metaObject()->className()+QLatin1String("::")+id);
     moveToThread(thread);
     thread->start();
 }
@@ -1186,7 +1186,7 @@ MtpDevice::MtpDevice(MusicLibraryModel *m, Solid::Device &dev, unsigned int busN
         registeredTypes=true;
     }
 
-    connection=new MtpConnection(busNum, devNum, supportsAlbumArtistTag());
+    connection=new MtpConnection(data(), busNum, devNum, supportsAlbumArtistTag());
     connect(this, SIGNAL(updateLibrary(const DeviceOptions &)), connection, SLOT(updateLibrary(const DeviceOptions &)));
     connect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
     connect(connection, SIGNAL(progress(int)), this, SLOT(emitProgress(int)));

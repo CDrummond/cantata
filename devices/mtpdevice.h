@@ -68,7 +68,7 @@ public:
         QString musicPath;
     };
 
-    MtpConnection(unsigned int bus, unsigned int dev, bool aaSupport);
+    MtpConnection(const QString &id, unsigned int bus, unsigned int dev, bool aaSupport);
     virtual ~MtpConnection();
 
     bool isConnected() const { return 0!=device; }

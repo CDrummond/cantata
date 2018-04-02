@@ -59,12 +59,12 @@ const QLatin1String FsDevice::constUseCacheKey("use_cache"); // Cantata extensio
 const QLatin1String FsDevice::constDefCoverFileName("cover.jpg");
 const QLatin1String FsDevice::constAutoScanKey("auto_scan"); // Cantata extension!
 
-MusicScanner::MusicScanner()
+MusicScanner::MusicScanner(const QString &id)
     : QObject(nullptr)
     , stopRequested(false)
     , count(0)
 {
-    thread=new Thread(metaObject()->className());
+    thread=new Thread(metaObject()->className()+QLatin1String("::")+id);
     moveToThread(thread);
     thread->start();
 }
@@ -651,7 +651,7 @@ void FsDevice::initScaner()
              qRegisterMetaType<QSet<FileOnlySong> >("QSet<FileOnlySong>");
              registeredTypes=true;
         }
-        scanner=new MusicScanner();
+        scanner=new MusicScanner(data());
         connect(scanner, SIGNAL(libraryUpdated(MusicLibraryItemRoot *)), this, SLOT(libraryUpdated(MusicLibraryItemRoot *)));
         connect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
         connect(scanner, SIGNAL(cacheSaved()), this, SLOT(savedCache()));

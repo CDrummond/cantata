@@ -476,8 +476,10 @@ bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString
     for (int e=0; constExtensions[e]; ++e) {
         names+=song.albumArtist()+QLatin1String(" - ")+song.album+constExtensions[e];
     }
+    DBUG_CLASS("Covers") << names;
     for (const QString &coverFile: names) {
         if (fExists(destDir, coverFile)) {
+            DBUG_CLASS("Covers") << coverFile << "already exists";
             return true;
         }
     }
@@ -494,6 +496,7 @@ bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString
                     destName=coverFile;
                 }
             }
+            DBUG_CLASS("Covers") << "Found cover to copy" << sourceDir << coverFile << "copying as" << destName;
             copyImage(sourceDir, destDir, coverFile, destName, maxSize);
             return true;
         }
@@ -508,6 +511,7 @@ bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString
         QString dir(Utils::cacheDir(constCoverDir+artist, false));
         for (int e=0; constExtensions[e]; ++e) {
             if (QFile::exists(dir+album+constExtensions[e])) {
+                DBUG_CLASS("Covers") << "Copying cover from cache" << QString(album+constExtensions[e]) << "copying as" << destName;
                 copyImage(dir, destDir, album+constExtensions[e], destName, maxSize);
                 return true;
             }

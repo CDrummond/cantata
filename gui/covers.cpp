@@ -136,6 +136,18 @@ static const QString typeFromRaw(const QByteArray &raw)
     return QString();
 }
 
+static const QString typeFromFilename(const QString &fileName)
+{
+    QFile f(fileName);
+    if (f.open(QIODevice::ReadOnly)) {
+        QByteArray header=f.read(10);
+        f.reset();
+        return typeFromRaw(header).toLatin1();
+    }
+
+    return QString();
+}
+
 static QString save(const QString &mimeType, const QString &extension, const QString &filePrefix, const QImage &img, const QByteArray &raw)
 {
     if (!mimeType.isEmpty() && extension==mimeType) {
@@ -185,7 +197,6 @@ static QImage loadImage(const QString &fileName)
     }
     return img;
 }
-
 
 static inline bool isOnlineServiceImage(const Song &s)
 {
@@ -426,34 +437,24 @@ QString Covers::fixArtist(const QString &artist)
 
 const QSize Covers::constMaxSize(600, 600);
 
-//bool Covers::isCoverFile(const QString &file)
-//{
-//    return standardNames().contains(file);
-//}
-
-static bool fExists(const QString &dir, const QString &file)
-{
-    return QFile::exists(dir+file);
-}
-
-static bool fCopy(const QString &sDir, const QString &sFile, const QString &dDir, const QString &dFile)
-{
-    return QFile::copy(sDir+sFile, dDir+dFile);
-}
-
 bool Covers::copyImage(const QString &sourceDir, const QString &destDir, const QString &coverFile, const QString &destName, unsigned short maxSize)
 {
-    QImage img(sourceDir+coverFile);
+    QImage img=loadImage(sourceDir+coverFile);
     bool ok=false;
     if (maxSize>0 && (img.width()>maxSize || img.height()>maxSize)) { // Need to scale image...
         img=img.scaled(QSize(maxSize, maxSize), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         ok=img.save(destDir+destName);
-    } else if (destName.right(4)!=coverFile.right(4)) { // Diff extensions, so need to convert image type...
+        DBUG_CLASS("Covers") << "Rescaling image from" << QString(sourceDir+coverFile) << img.width() << "x" << img.height() << "to" << QString(destDir+destName) << maxSize << ok;
+    } else if (destName.right(4)!=typeFromFilename(sourceDir+coverFile)) { // Diff extensions, so need to convert image type...
         ok=img.save(destDir+destName);
+        DBUG_CLASS("Covers") << "Converting image type from" << QString(sourceDir+coverFile) << "to" << QString(destDir+destName) << ok;
     } else { // no scaling, and same image type, so we can just copy...
-        ok=fCopy(sourceDir, coverFile, destDir, destName);
+        ok=QFile::copy(sourceDir+coverFile, destDir+destName);
+        DBUG_CLASS("Covers") << "Copying from" << QString(sourceDir+coverFile) << "to" << QString(destDir+destName) << ok;
     }
-    Utils::setFilePerms(destDir+destName);
+    if (ok) {
+        Utils::setFilePerms(destDir+destName);
+    }
     return ok;
 }
 
@@ -478,7 +479,7 @@ bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString
     }
     DBUG_CLASS("Covers") << names;
     for (const QString &coverFile: names) {
-        if (fExists(destDir, coverFile)) {
+        if (QFile::exists(destDir+coverFile)) {
             DBUG_CLASS("Covers") << coverFile << "already exists";
             return true;
         }
@@ -486,7 +487,7 @@ bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString
 
     // No cover found, try to copy from source folder
     for (const QString &coverFile: names) {
-        if (fExists(sourceDir, coverFile)) {
+        if (QFile::exists(sourceDir+coverFile)) {
             QString destName(name);
             if (destName.isEmpty()) { // copying into mpd dir, so we want cover.jpg/png...
                 if (standardNames().at(0)!=coverFile) { // source is not 'cover.xxx'

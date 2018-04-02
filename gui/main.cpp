@@ -164,6 +164,7 @@ static QString debugAreas()
             #ifdef AVAHI_FOUND
             +QObject::tr("avahi - Auto-discovery of MPD servers")+QLatin1Char('\n')
             #endif
+            // TODO: 2.4 +QObject::tr("all - Enable all debug")+QLatin1Char('\n')
             ;
 }
 
@@ -172,62 +173,81 @@ static void installDebugMessageHandler(const QString &cmdLine)
     QStringList items=cmdLine.split(",", QString::SkipEmptyParts);
 
     for (const auto &area: items) {
-        if (QLatin1String("mpd")==area) {
+        bool all = QLatin1String("all")==area;
+        if (all || QLatin1String("mpd")==area) {
             MPDConnection::enableDebug();
-        } else if (QLatin1String("mpdparse")==area) {
+        }
+        if (all || QLatin1String("mpdparse")==area) {
             MPDParseUtils::enableDebug();
-        } else if (QLatin1String("covers")==area) {
+        }
+        if (all || QLatin1String("covers")==area) {
             Covers::enableDebug(false);
-        } else if (QLatin1String("covers-verbose")==area) {
+        }
+        if (all || QLatin1String("covers-verbose")==area) {
             Covers::enableDebug(true);
-        } else if (QLatin1String("context-wikipedia")==area) {
+        }
+        if (all || QLatin1String("context-wikipedia")==area) {
             WikipediaEngine::enableDebug();
-        } else if (QLatin1String("context-lastfm")==area) {
+        }
+        if (all || QLatin1String("context-lastfm")==area) {
             LastFmEngine::enableDebug();
-        } else if (QLatin1String("context-info")==area) {
+        }
+        if (all || QLatin1String("context-info")==area) {
             MetaEngine::enableDebug();
-        } else if (QLatin1String("context-widget")==area) {
+        }
+        if (all || QLatin1String("context-widget")==area) {
             ContextWidget::enableDebug();
-        } else if (QLatin1String("dynamic")==area) {
+        }
+        if (all || QLatin1String("dynamic")==area) {
             DynamicPlaylists::enableDebug();
-        } else if (QLatin1String("stream-fetcher")==area) {
+        }
+        if (all || QLatin1String("stream-fetcher")==area) {
             StreamFetcher::enableDebug();
-        } else if (QLatin1String("http-server")==area) {
+        }
+        if (all || QLatin1String("http-server")==area) {
             HttpServer::enableDebug();
-        } else if (QLatin1String("song-dialog")==area) {
+        }
+        if (all || QLatin1String("song-dialog")==area) {
             SongDialog::enableDebug();
-        } else if (QLatin1String("network-access")==area) {
+        }
+        if (all || QLatin1String("network-access")==area) {
             NetworkAccessManager::enableDebug();
-        } else if (QLatin1String("context-lyrics")==area) {
+        }
+        if (all || QLatin1String("context-lyrics")==area) {
             UltimateLyricsProvider::enableDebug();
-        } else if (QLatin1String("threads")==area) {
+        }
+        if (all || QLatin1String("threads")==area) {
             ThreadCleaner::enableDebug();
-        } else if (QLatin1String("scrobbler")==area) {
+        }
+        if (all || QLatin1String("scrobbler")==area) {
             Scrobbler::enableDebug();
-        } else if (QLatin1String("sql")==area) {
+        }
+        if (all || QLatin1String("sql")==area) {
             LibraryDb::enableDebug();
-        } else if (QLatin1String("media-keys")==area) {
+        }
+        if (all || QLatin1String("media-keys")==area) {
             MediaKeys::enableDebug();
-        } else if (QLatin1String("custom-actions")==area) {
+        }
+        if (all || QLatin1String("custom-actions")==area) {
             CustomActions::enableDebug();
         }
         #ifdef TAGLIB_FOUND
-        else if (QLatin1String("tags")==area) {
+        if (all || QLatin1String("tags")==area) {
             TagHelperIface::enableDebug();
         }
         #endif
         #ifdef ENABLE_DEVICES_SUPPORT
-        else if (QLatin1String("devices")==area) {
+        if (all || QLatin1String("devices")==area) {
             DevicesModel::enableDebug();
         }
         #endif
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-        else if (QLatin1String("http-stream")==area) {
+        if (all || QLatin1String("http-stream")==area) {
             HttpStream::enableDebug();
         }
         #endif
         #ifdef AVAHI_FOUND
-        else if (QLatin1String("avahi")==area) {
+        if (all || QLatin1String("avahi")==area) {
             AvahiDiscovery::enableDebug();
         }
         #endif

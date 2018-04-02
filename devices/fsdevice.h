@@ -52,7 +52,7 @@ class MusicScanner : public QObject, public MusicLibraryProgressMonitor
     Q_OBJECT
 
 public:
-    MusicScanner();
+    MusicScanner(const QString &id);
     ~MusicScanner() override;
 
     void stop();

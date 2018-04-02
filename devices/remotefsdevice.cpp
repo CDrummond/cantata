@@ -375,7 +375,6 @@ void RemoteFsDevice::mount()
         proc->setProperty("mount", true);
 
         if (!askPass.isEmpty()) {
-            qWarning() << "SET ENV";
             QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
             env.insert("SSH_ASKPASS", askPass);
             proc->setProcessEnvironment(env);

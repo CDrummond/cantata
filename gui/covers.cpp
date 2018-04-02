@@ -502,6 +502,23 @@ bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString
         }
     }
 
+    DBUG_CLASS("Covers") << "Try to locate any image in source folder";
+    QStringList files=QDir(sourceDir).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
+    for (const QString &coverFile: files) {
+        QString destName(name);
+        if (destName.isEmpty()) { // copying into mpd dir, so we want cover.jpg/png...
+            if (standardNames().at(0)!=coverFile) { // source is not 'cover.xxx'
+                QString ext(coverFile.endsWith(constExtensions[0]) ? constExtensions[0] : constExtensions[1]);
+                destName=mpdCover+ext;
+            } else {
+                destName=coverFile;
+            }
+        }
+        DBUG_CLASS("Covers") << "Found cover to copy" << sourceDir << coverFile << "copying as" << destName;
+        copyImage(sourceDir, destDir, coverFile, destName, maxSize);
+        return true;
+    }
+
     QString destName(name);
     if (!destName.isEmpty()) {
         // Copying ONTO a device

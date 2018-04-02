@@ -37,6 +37,7 @@
 #include <QDBusConnection>
 #include <QTimer>
 #include <QProcess>
+#include <QProcessEnvironment>
 #include <QDir>
 #include <QFile>
 #include <stdio.h>
@@ -315,15 +316,12 @@ void RemoteFsDevice::mount()
 
     QString cmd;
     QStringList args;
+    QString askPass;
     if (!details.isLocalFile() && !details.isEmpty()) {
         // If user has added 'IdentityFile' to extra options, then no password prompting is required...
         bool needAskPass=!details.extraOptions.contains("IdentityFile=");
 
         if (needAskPass) {
-            if (ttyname(0)) {
-                emit error(tr("Password prompting does not work when cantata is started from the commandline."));
-                return;
-            }
             QStringList askPassList;
             if (Utils::KDE==Utils::currentDe()) {
                 askPassList << QLatin1String("ksshaskpass") << QLatin1String("ssh-askpass") << QLatin1String("ssh-askpass-gnome");
@@ -331,7 +329,6 @@ void RemoteFsDevice::mount()
                 askPassList << QLatin1String("ssh-askpass-gnome") << QLatin1String("ssh-askpass") << QLatin1String("ksshaskpass");
             }
 
-            QString askPass;
             for (const QString &ap: askPassList) {
                 askPass=Utils::findExe(ap);
                 if (!askPass.isEmpty()) {
@@ -344,14 +341,23 @@ void RemoteFsDevice::mount()
                 return;
             }
         }
-        cmd=Utils::findExe("sshfs");
+        QString sshfs=Utils::findExe("sshfs");
+        if (sshfs.isEmpty()) {
+            emit error(tr("\"sshfs\" is not installed!"));
+            return;
+        }
+        cmd=Utils::findExe("setsid");
         if (!cmd.isEmpty()) {
-            if (!QDir(mountPoint(details, true)).entryList(QDir::NoDot|QDir::NoDotDot|QDir::AllEntries|QDir::Hidden).isEmpty()) {
-                emit error(tr("Mount point (\"%1\") is not empty!").arg(mountPoint(details, true)));
+            QString mp=mountPoint(details, true);
+            if (mp.isEmpty()) {
+                emit error("Failed to determine mount point"); // TODO: 2.4 make translatable. For now, error should never happen!
+            }
+            if (!QDir(mp).entryList(QDir::NoDot|QDir::NoDotDot|QDir::AllEntries|QDir::Hidden).isEmpty()) {
+                emit error(tr("Mount point (\"%1\") is not empty!").arg(mp));
                 return;
             }
 
-            args << details.url.userName()+QChar('@')+details.url.host()+QChar(':')+details.url.path()<< QLatin1String("-p")
+            args << sshfs << details.url.userName()+QChar('@')+details.url.host()+QChar(':')+details.url.path()<< QLatin1String("-p")
                  << QString::number(details.url.port()) << mountPoint(details, true)
                  << QLatin1String("-o") << QLatin1String("ServerAliveInterval=15");
             //<< QLatin1String("-o") << QLatin1String("Ciphers=arcfour");
@@ -359,7 +365,7 @@ void RemoteFsDevice::mount()
                 args << details.extraOptions.split(' ', QString::SkipEmptyParts);
             }
         } else {
-            emit error(tr("\"sshfs\" is not installed!"));
+            emit error(tr("\"sshfs\" is not installed!").replace("sshfs", "setsid")); // TODO: 2.4 use correct string!
         }
     }
 
@@ -367,6 +373,13 @@ void RemoteFsDevice::mount()
         setStatusMessage(tr("Connecting..."));
         proc=new QProcess(this);
         proc->setProperty("mount", true);
+
+        if (!askPass.isEmpty()) {
+            qWarning() << "SET ENV";
+            QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+            env.insert("SSH_ASKPASS", askPass);
+            proc->setProcessEnvironment(env);
+        }
         connect(proc, SIGNAL(finished(int)), SLOT(procFinished(int)));
         proc->start(cmd, args, QIODevice::ReadOnly);
     }

@@ -2612,6 +2612,10 @@ void MainWindow::setCollapsedSize()
 
 void MainWindow::controlView(bool forceUpdate)
 {
+    if (!stopTrackButton || !coverWidget || !tabWidget) {
+        return;
+    }
+
     static int lastWidth=-1;
     static bool collapsed=false;
 

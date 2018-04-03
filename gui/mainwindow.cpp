@@ -159,6 +159,10 @@ MainWindow::MainWindow(QWidget *parent)
     , thumbnailTooolbar(0)
     #endif
 {
+    stopTrackButton=nullptr;
+    coverWidget=nullptr;
+    tabWidget=nullptr;
+
     #if defined Q_OS_MAC || defined Q_OS_WIN
     init();
     #else

@@ -14,7 +14,7 @@ extern "C" {
 
 #define EBUR128_VERSION_MAJOR 1
 #define EBUR128_VERSION_MINOR 2
-#define EBUR128_VERSION_PATCH 3
+#define EBUR128_VERSION_PATCH 4
 
 #include <stddef.h>       /* for size_t */
 
@@ -175,7 +175,7 @@ int ebur128_change_parameters(ebur128_state* st,
 
 /** \brief Set the maximum window duration.
  *
- *  Set the maximum duration that will be used for ebur128_window_loudness().
+ *  Set the maximum duration that will be used for ebur128_loudness_window().
  *  Note that this destroys the current content of the audio buffer.
  *
  *  @param st library state.

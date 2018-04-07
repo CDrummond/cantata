@@ -212,7 +212,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                         ? !song.title.isEmpty() && !song.name().isEmpty()
                         : !song.title.isEmpty() && !song.artist.isEmpty() && !song.album.isEmpty();
         if (useable) {
-            MacNotify::showMessage(song.mainText(), song.subText(), , CurrentCover::self()->image());
+            MacNotify::showMessage(song.mainText(), song.subText(), CurrentCover::self()->image());
         }
     }
     #else

@@ -44,8 +44,8 @@
 **
 ****************************************************************************/
 
-#ifndef QTSINGLEAPLICATION_H
-#define QTSINGLEAPLICATION_H
+#ifndef QTSA_QTSINGLEAPLICATION_H
+#define QTSA_QTSINGLEAPLICATION_H
 
 #include <QApplication>
 

@@ -256,14 +256,14 @@ static QStringList listFiles(const QDir &d, bool useServer, bool useLocal, const
     return files;
 }
 
-static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
+static QStringList parseUrls(const QStringList &urls)
 {
     QStringList useable;
     bool useServer = HttpServer::self()->isAlive();
     bool useLocal = MPDConnection::self()->localFilePlaybackSupported();
     QSet<QString> handlers = MPDConnection::self()->urlHandlers();
     for (const auto &path: urls) {
-        QUrl u=percentEncoded ? QUrl::fromPercentEncoding(path.toUtf8()) : QUrl(path);
+        QUrl u=path.indexOf("://")>2 ? QUrl(path) : QUrl::fromLocalFile(path);
         #if defined ENABLE_DEVICES_SUPPORT && (defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND)
         QString cdDevice=AudioCdDevice::getDevice(u);
         if (!cdDevice.isEmpty()) {
@@ -874,7 +874,7 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         addItems(decode(*data, constFileNameMimeType), row, false, 0, false);
         return true;
     } else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->getDetails().isLocal()*/) {
-        QStringList useable=parseUrls(decode(*data, constUriMimeType), true);
+        QStringList useable=parseUrls(decode(*data, constUriMimeType));
         if (useable.count()) {
             addItems(useable, row, false, 0, false);
             return true;
@@ -885,7 +885,7 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
 
 void PlayQueueModel::load(const QStringList &urls, int action, quint8 priority, bool decreasePriority)
 {
-    QStringList useable=parseUrls(urls, false);
+    QStringList useable=parseUrls(urls);
     if (useable.count()) {
         addItems(useable, songs.count(), action, priority, decreasePriority);
     }

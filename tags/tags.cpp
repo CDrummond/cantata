@@ -779,7 +779,7 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
                 DBUG << "Use img from COVERART (base64)";
             }
         }
-        #if TAGLIB_VERSION >= CANTATA_MAKE_VERSION(1,7,0)
+        #if TAGLIB_VERSION >= CANTATA_MAKE_VERSION(1,11,0)
         if (img && img->isNull()) {
             readFlacPicture(tag->pictureList(), img);
         }

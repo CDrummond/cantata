@@ -82,7 +82,7 @@ QString LocalFolderBrowsePage::configGroup() const
 void LocalFolderBrowsePage::setView(int v)
 {
     SinglePageWidget::setView(v);
-    view->view()->setRootIndex(proxy->mapFromSource(model->setRootPath(isHomeFolder ? QDir::homePath() : "/")));
+    view->view()->setRootIndex(proxy->mapFromSource(model->setRootPath(isHomeFolder ? QDir::homePath() : QDir::rootPath())));
 }
 
 void LocalFolderBrowsePage::headerClicked(int level)

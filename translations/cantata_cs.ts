@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="cs_CZ">
+<TS version="2.0" language="cs_CZ">
 <context>
     <name></name>
     <message>
         <source>Refresh Album Information</source>
-        <translation type="vanished">Obnovit informace o albu</translation>
+        <translation>Obnovit informace o albu</translation>
     </message>
     <message>
         <source>Album</source>
-        <translation type="vanished">Album</translation>
+        <translation>Album</translation>
     </message>
     <message>
         <source>Tracks</source>
         <extracomment>i18n: file: devices/albumdetails.ui:136
 i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 </extracomment>
-        <translation type="vanished">Skladby</translation>
+        <translation>Skladby</translation>
     </message>
     <message>
         <source>Refresh Artist Information</source>
-        <translation type="vanished">Obnovit informace o umělci</translation>
+        <translation>Obnovit informace o umělci</translation>
     </message>
     <message>
         <source>Artist</source>
         <extracomment>i18n: file: devices/albumdetails.ui:163
 i18n: ectx: property (text), widget (QTreeWidget, tracks)
 </extracomment>
-        <translation type="vanished">Umělec</translation>
+        <translation>Umělec</translation>
     </message>
     <message>
         <source>Albums</source>
-        <translation type="vanished">Alba</translation>
+        <translation>Alba</translation>
     </message>
     <message>
         <source>Web Links</source>
-        <translation type="vanished">Internetové odkazy</translation>
+        <translation>Internetové odkazy</translation>
     </message>
     <message>
         <source>Similar Artists</source>
-        <translation type="vanished">Podobní umělci</translation>
+        <translation>Podobní umělci</translation>
     </message>
     <message>
         <source>Lyrics Providers</source>
-        <translation type="vanished">Poskytovatelé textů písní</translation>
+        <translation>Poskytovatelé textů písní</translation>
     </message>
     <message>
         <source>Wikipedia Languages</source>
-        <translation type="vanished">Jazyky Wikipedie</translation>
+        <translation>Jazyky Wikipedie</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="vanished">Jiné</translation>
+        <translation>Jiné</translation>
     </message>
     <message>
         <source>Reset Spacing</source>
-        <translation type="vanished">Nastavit znovu řádkování</translation>
+        <translation>Nastavit znovu řádkování</translation>
     </message>
     <message>
         <source>&amp;Artist</source>
-        <translation type="vanished">&amp;Umělec</translation>
+        <translation>&amp;Umělec</translation>
     </message>
     <message>
         <source>Al&amp;bum</source>
-        <translation type="vanished">&amp;Album</translation>
+        <translation>&amp;Album</translation>
     </message>
     <message>
         <source>&amp;Track</source>
-        <translation type="vanished">&amp;Skladba</translation>
+        <translation>&amp;Skladba</translation>
     </message>
     <message>
         <source>Read more on last.fm</source>
-        <translation type="vanished">Číst více na Last.fm</translation>
+        <translation>Číst více na Last.fm</translation>
     </message>
     <message>
         <source>If Cantata has failed to find lyrics, or has found the wrong ones, use this dialog to enter new search details. For example, the current song may actually be a cover-version - if so, then searching for lyrics by the original artist might help.
 
 If this search does find new lyrics, these will still be associated with the original song title and artist as displayed in Cantata.</source>
-        <translation type="vanished">Pokud se Cantatě nepodařilo najít slova písně, nebo našla špatná, použijte tento dialog pro zadání nových podrobností hledání. Například může být nynější píseň ve skutečnosti přezpívaná verze. Je-li tomu tak, může pomoci hledání slov písně podle původního umělce.
+        <translation>Pokud se Cantatě nepodařilo najít slova písně, nebo našla špatná, použijte tento dialog pro zadání nových podrobností hledání. Například může být nynější píseň ve skutečnosti přezpívaná verze. Je-li tomu tak, může pomoci hledání slov písně podle původního umělce.
 
 Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s původním názvem písně a umělcem, jak je zobrazen v Cantatě.</translation>
     </message>
@@ -96,7 +96,7 @@ i18n: ectx: property (text), widget (BuddyLabel, label_4)
 i18n: file: tags/tageditor.ui:54
 i18n: ectx: property (text), widget (StateLabel, titleLabel)
 </extracomment>
-        <translation type="vanished">Název:</translation>
+        <translation>Název:</translation>
     </message>
     <message>
         <source>Artist:</source>
@@ -113,156 +113,156 @@ i18n: ectx: property (text), widget (BuddyLabel, label)
 i18n: file: tags/tageditor.ui:67
 i18n: ectx: property (text), widget (StateLabel, artistLabel)
 </extracomment>
-        <translation type="vanished">Umělec:</translation>
+        <translation>Umělec:</translation>
     </message>
     <message>
         <source>Search For Lyrics</source>
-        <translation type="vanished">Hledat slova písně</translation>
+        <translation>Hledat slova písně</translation>
     </message>
     <message>
         <source>Choose the websites you want to use when searching for lyrics.</source>
-        <translation type="vanished">Vyberte stránky, které chcete použít při hledání textů písní.</translation>
+        <translation>Vyberte stránky, které chcete použít při hledání textů písní.</translation>
     </message>
     <message>
         <source>Song Information</source>
-        <translation type="vanished">Informace o písni</translation>
+        <translation>Informace o písni</translation>
     </message>
     <message>
         <source>Images (*.png *.jpg)</source>
-        <translation type="vanished">Obrázky (*.png *.jpg)</translation>
+        <translation>Obrázky (*.png *.jpg)</translation>
     </message>
     <message>
         <source>10px</source>
         <comment>pixels</comment>
-        <translation type="vanished">10 px</translation>
+        <translation>10 px</translation>
     </message>
     <message>
         <source>%1%</source>
         <comment>value%</comment>
-        <translation type="vanished">%1%</translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <source>%1 px</source>
         <comment>pixels</comment>
-        <translation type="vanished">%1 px</translation>
+        <translation>%1 px</translation>
     </message>
     <message>
         <source>Lyrics</source>
-        <translation type="vanished">Slova písně</translation>
+        <translation>Slova písně</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation type="vanished">Informace</translation>
+        <translation>Informace</translation>
     </message>
     <message>
         <source>Metadata</source>
-        <translation type="vanished">Popisná data</translation>
+        <translation>Popisná data</translation>
     </message>
     <message>
         <source>Scroll Lyrics</source>
-        <translation type="vanished">Projíždět text písně</translation>
+        <translation>Projíždět text písně</translation>
     </message>
     <message>
         <source>Refresh Lyrics</source>
-        <translation type="vanished">Obnovit slova písně</translation>
+        <translation>Obnovit slova písně</translation>
     </message>
     <message>
         <source>Edit Lyrics</source>
-        <translation type="vanished">Upravit slova písně</translation>
+        <translation>Upravit slova písně</translation>
     </message>
     <message>
         <source>Delete Lyrics File</source>
-        <translation type="vanished">Smazat soubor se slovy písně</translation>
+        <translation>Smazat soubor se slovy písně</translation>
     </message>
     <message>
         <source>Refresh Track Information</source>
-        <translation type="vanished">Obnovit informace o skladbě</translation>
+        <translation>Obnovit informace o skladbě</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Zrušit</translation>
+        <translation>Zrušit</translation>
     </message>
     <message>
         <source>Track</source>
         <extracomment>i18n: file: devices/albumdetails.ui:158
 i18n: ectx: property (text), widget (QTreeWidget, tracks)
 </extracomment>
-        <translation type="vanished">Skladba</translation>
+        <translation>Skladba</translation>
     </message>
     <message>
         <source>Reload lyrics?
 
 Reload from disk, or delete disk copy and download?</source>
-        <translation type="vanished">Nahrát text písně znovu?
+        <translation>Nahrát text písně znovu?
 
 Nahrát znovu z disku, nebo smazat kopii na disku a stáhnout?</translation>
     </message>
     <message>
         <source>Reload</source>
-        <translation type="vanished">Nahrát znovu</translation>
+        <translation>Nahrát znovu</translation>
     </message>
     <message>
         <source>Reload From Disk</source>
-        <translation type="vanished">Nahrát znovu z disku</translation>
+        <translation>Nahrát znovu z disku</translation>
     </message>
     <message>
         <source>Download</source>
-        <translation type="vanished">Stáhnout</translation>
+        <translation>Stáhnout</translation>
     </message>
     <message>
         <source>Current playing song has changed, still perform search?</source>
-        <translation type="vanished">Nyní hrající píseň se změnila. Pořád ještě provést hledání?</translation>
+        <translation>Nyní hrající píseň se změnila. Pořád ještě provést hledání?</translation>
     </message>
     <message>
         <source>Song Changed</source>
-        <translation type="vanished">Píseň změněna</translation>
+        <translation>Píseň změněna</translation>
     </message>
     <message>
         <source>Perform Search</source>
-        <translation type="vanished">Provést hledání</translation>
+        <translation>Provést hledání</translation>
     </message>
     <message>
         <source>Delete lyrics file?</source>
-        <translation type="vanished">Smazat soubor se slovy písně?</translation>
+        <translation>Smazat soubor se slovy písně?</translation>
     </message>
     <message>
         <source>Delete File</source>
-        <translation type="vanished">Smazat soubor</translation>
+        <translation>Smazat soubor</translation>
     </message>
     <message>
         <source>Album artist</source>
-        <translation type="vanished">Umělec alba</translation>
+        <translation>Umělec alba</translation>
     </message>
     <message>
         <source>Composer</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:102
 i18n: ectx: property (text), widget (QPushButton, composer)
 </extracomment>
-        <translation type="vanished">Skladatel</translation>
+        <translation>Skladatel</translation>
     </message>
     <message>
         <source>Lyricist</source>
-        <translation type="vanished">Textař</translation>
+        <translation>Textař</translation>
     </message>
     <message>
         <source>Conductor</source>
-        <translation type="vanished">Dirigent</translation>
+        <translation>Dirigent</translation>
     </message>
     <message>
         <source>Remixer</source>
-        <translation type="vanished">Autor předělávky</translation>
+        <translation>Autor předělávky</translation>
     </message>
     <message>
         <source>Subtitle</source>
-        <translation type="vanished">Podnázev</translation>
+        <translation>Podnázev</translation>
     </message>
     <message>
         <source>Track number</source>
-        <translation type="vanished">Číslo skladby</translation>
+        <translation>Číslo skladby</translation>
     </message>
     <message>
         <source>Disc number</source>
-        <translation type="vanished">Číslo disku</translation>
+        <translation>Číslo disku</translation>
     </message>
     <message>
         <source>Genre</source>
@@ -275,183 +275,183 @@ i18n: ectx: property (text), widget (QPushButton, genre)
 i18n: file: dynamic/dynamicrule.ui:128
 i18n: ectx: property (text), widget (BuddyLabel, label_5)
 </extracomment>
-        <translation type="vanished">Žánr</translation>
+        <translation>Žánr</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="vanished">Datum</translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <source>Original date</source>
-        <translation type="vanished">Původní datum</translation>
+        <translation>Původní datum</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation type="vanished">Poznámka</translation>
+        <translation>Poznámka</translation>
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="vanished">Autorské právo</translation>
+        <translation>Autorské právo</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="vanished">Štítek</translation>
+        <translation>Štítek</translation>
     </message>
     <message>
         <source>Catalogue number</source>
-        <translation type="vanished">Katalogové číslo</translation>
+        <translation>Katalogové číslo</translation>
     </message>
     <message>
         <source>Title sort</source>
-        <translation type="vanished">Třídění podle názvu</translation>
+        <translation>Třídění podle názvu</translation>
     </message>
     <message>
         <source>Artist sort</source>
-        <translation type="vanished">Třídění podle umělce</translation>
+        <translation>Třídění podle umělce</translation>
     </message>
     <message>
         <source>Album artist sort</source>
-        <translation type="vanished">Třídění podle alba a umělce</translation>
+        <translation>Třídění podle alba a umělce</translation>
     </message>
     <message>
         <source>Album sort</source>
-        <translation type="vanished">Třídění podle alba</translation>
+        <translation>Třídění podle alba</translation>
     </message>
     <message>
         <source>Encoded by</source>
-        <translation type="vanished">Zákodováno</translation>
+        <translation>Zákodováno</translation>
     </message>
     <message>
         <source>Encoder</source>
-        <translation type="vanished">Kodér</translation>
+        <translation>Kodér</translation>
     </message>
     <message>
         <source>Mood</source>
-        <translation type="vanished">Nálada</translation>
+        <translation>Nálada</translation>
     </message>
     <message>
         <source>Media</source>
-        <translation type="vanished">Média</translation>
+        <translation>Média</translation>
     </message>
     <message>
         <source>Bitrate</source>
-        <translation type="vanished">Datový tok</translation>
+        <translation>Datový tok</translation>
     </message>
     <message>
         <source>Sample rate</source>
-        <translation type="vanished">Vzorkovací kmitočet</translation>
+        <translation>Vzorkovací kmitočet</translation>
     </message>
     <message>
         <source>Channels</source>
-        <translation type="vanished">Kanály</translation>
+        <translation>Kanály</translation>
     </message>
     <message>
         <source>Tagging time</source>
-        <translation type="vanished">Čas značkování</translation>
+        <translation>Čas značkování</translation>
     </message>
     <message>
         <source>Performer (%1)</source>
-        <translation type="vanished">Účinkující (%1)</translation>
+        <translation>Účinkující (%1)</translation>
     </message>
     <message>
         <source>%1 kb/s</source>
-        <translation type="vanished">%1 kb/s</translation>
+        <translation>%1 kb/s</translation>
     </message>
     <message>
         <source>%1 Hz</source>
-        <translation type="vanished">%1 Hz</translation>
+        <translation>%1 Hz</translation>
     </message>
     <message>
         <source>Bits</source>
-        <translation type="vanished">Bity</translation>
+        <translation>Bity</translation>
     </message>
     <message>
         <source>Performer</source>
-        <translation type="vanished">Účinkující</translation>
+        <translation>Účinkující</translation>
     </message>
     <message>
         <source>Year</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:174
 i18n: ectx: property (text), widget (QPushButton, year)
 </extracomment>
-        <translation type="vanished">Rok</translation>
+        <translation>Rok</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="vanished">Název souboru</translation>
+        <translation>Název souboru</translation>
     </message>
     <message>
         <source>Fetching lyrics via %1</source>
-        <translation type="vanished">Natahují se slova písně přes %1</translation>
+        <translation>Natahují se slova písně přes %1</translation>
     </message>
     <message>
         <source>(Polish Translations)</source>
-        <translation type="vanished">Polština</translation>
+        <translation>Polština</translation>
     </message>
     <message>
         <source>(Portuguese Translations)</source>
-        <translation type="vanished">Portugalština</translation>
+        <translation>Portugalština</translation>
     </message>
     <message>
         <source>Track listing</source>
-        <translation type="vanished">Seznam skladeb</translation>
+        <translation>Seznam skladeb</translation>
     </message>
     <message>
         <source>Read more on wikipedia</source>
-        <translation type="vanished">Číst víc na Wikipedii</translation>
+        <translation>Číst víc na Wikipedii</translation>
     </message>
     <message>
         <source>Open in browser</source>
-        <translation type="vanished">Otevřít v prohlížeči</translation>
+        <translation>Otevřít v prohlížeči</translation>
     </message>
     <message>
         <source>artist|band|singer|vocalist|musician</source>
         <comment>Search pattern for an artist or band, separated by |</comment>
-        <translation type="vanished">umělec|skupina|pěvec|zpěvák|zpěvačka|hudebník</translation>
+        <translation>umělec|skupina|pěvec|zpěvák|zpěvačka|hudebník</translation>
     </message>
     <message>
         <source>album|score|soundtrack</source>
         <comment>Search pattern for an album, separated by |</comment>
-        <translation type="vanished">album|hudba|zvukový záznam</translation>
+        <translation>album|hudba|zvukový záznam</translation>
     </message>
     <message>
         <source>Choose the wikipedia languages you want to use when searching for artist and album information.</source>
-        <translation type="vanished">Vyberte jazyky na Wikipedii, které chcete použít při hledání umělců a informací o albech</translation>
+        <translation>Vyberte jazyky na Wikipedii, které chcete použít při hledání umělců a informací o albech</translation>
     </message>
     <message>
         <source>Cantata is playing a track</source>
-        <translation type="vanished">Cantata přehrává skladbu</translation>
+        <translation>Cantata přehrává skladbu</translation>
     </message>
     <message>
         <source>&lt;b&gt;INVALID&lt;/b&gt;</source>
-        <translation type="vanished">&lt;b&gt;NEPLATNÝ&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;NEPLATNÝ&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;i&gt;(When different)&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;(Když jiný)&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;(Když jiný)&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Artists:%1, Albums:%2, Songs:%3</source>
-        <translation type="vanished">Umělci:%1, Alba:%2, Písně:%3</translation>
+        <translation>Umělci:%1, Alba:%2, Písně:%3</translation>
     </message>
     <message>
         <source>%1 free</source>
-        <translation type="vanished">%1 volno</translation>
+        <translation>%1 volno</translation>
     </message>
     <message>
         <source>Local Music Library</source>
-        <translation type="vanished">Místní hudební knihovna</translation>
+        <translation>Místní hudební knihovna</translation>
     </message>
     <message>
         <source>Audio CD</source>
-        <translation type="vanished">Audio CD</translation>
+        <translation>Audio CD</translation>
     </message>
     <message>
         <source>There is insufficient space left on the destination device.
 
 The selected songs consume %1, but there is only %2 left.
 The songs will need to be transcoded to a smaller filesize in order to be successfully copied.</source>
-        <translation type="vanished">Na cílovém zařízení nezbývá dost místa.
+        <translation>Na cílovém zařízení nezbývá dost místa.
 
 Vybrané písně zabírají %1, ale zbývá jen %2.
 Písně bude třeba překódovat na menší velikost souborů, aby mohly být úspěšně zkopírovány.</translation>
@@ -460,177 +460,177 @@ Písně bude třeba překódovat na menší velikost souborů, aby mohly být ú
         <source>There is insufficient space left on the destination.
 
 The selected songs consume %1, but there is only %2 left.</source>
-        <translation type="vanished">V cíli nezbývá dost místa.
+        <translation>V cíli nezbývá dost místa.
 
 Vybrané písně zabírají %1, ale zbývá jen %2.</translation>
     </message>
     <message>
         <source>Copy Songs To Library</source>
-        <translation type="vanished">Kopírovat písně do knihovny</translation>
+        <translation>Kopírovat písně do knihovny</translation>
     </message>
     <message>
         <source>Copy Songs To Device</source>
-        <translation type="vanished">Kopírovat písně do zařízení</translation>
+        <translation>Kopírovat písně do zařízení</translation>
     </message>
     <message>
         <source>Copy Songs</source>
-        <translation type="vanished">Kopírovat písně</translation>
+        <translation>Kopírovat písně</translation>
     </message>
     <message>
         <source>Delete Songs</source>
-        <translation type="vanished">Smazat písně</translation>
+        <translation>Smazat písně</translation>
     </message>
     <message>
         <source>You have not configured the destination device.
 
 Continue with the default settings?</source>
-        <translation type="vanished">Nenastavil jste cílové zařízení.
+        <translation>Nenastavil jste cílové zařízení.
 
 Pokračovat s výchozím nastavením?</translation>
     </message>
     <message>
         <source>Not Configured</source>
-        <translation type="vanished">Nenastaveno</translation>
+        <translation>Nenastaveno</translation>
     </message>
     <message>
         <source>Use Defaults</source>
-        <translation type="vanished">Použít výchozí nastavení</translation>
+        <translation>Použít výchozí nastavení</translation>
     </message>
     <message>
         <source>You have not configured the source device.
 
 Continue with the default settings?</source>
-        <translation type="vanished">Nenastavil jste zdrojové zařízení.
+        <translation>Nenastavil jste zdrojové zařízení.
 
 Pokračovat s výchozím nastavením?</translation>
     </message>
     <message>
         <source>Are you sure you wish to stop?</source>
-        <translation type="vanished">Opravdu chcete zastavit?</translation>
+        <translation>Opravdu chcete zastavit?</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="vanished">Zastavit</translation>
+        <translation>Zastavit</translation>
     </message>
     <message>
         <source>Device has been removed!</source>
-        <translation type="vanished">Zařízení bylo odstraněno!</translation>
+        <translation>Zařízení bylo odstraněno!</translation>
     </message>
     <message>
         <source>Device is not connected!</source>
-        <translation type="vanished">Zařízení není připojeno!</translation>
+        <translation>Zařízení není připojeno!</translation>
     </message>
     <message>
         <source>Device is busy?</source>
-        <translation type="vanished">Zařízení je zaneprázdněno?</translation>
+        <translation>Zařízení je zaneprázdněno?</translation>
     </message>
     <message>
         <source>Device has been changed?</source>
-        <translation type="vanished">Zařízení bylo změněno?</translation>
+        <translation>Zařízení bylo změněno?</translation>
     </message>
     <message>
         <source>Clearing unused folders</source>
-        <translation type="vanished">Uklízí se nepoužívané složky</translation>
+        <translation>Uklízí se nepoužívané složky</translation>
     </message>
     <message>
         <source>Calculate ReplayGain for ripped tracks?</source>
-        <translation type="vanished">Spočítat vyrovnání hlasitosti skladeb pro vytažené skladby?</translation>
+        <translation>Spočítat vyrovnání hlasitosti skladeb pro vytažené skladby?</translation>
     </message>
     <message>
         <source>ReplayGain</source>
-        <translation type="vanished">Vyrovnání hlasitosti</translation>
+        <translation>Vyrovnání hlasitosti</translation>
     </message>
     <message>
         <source>Calculate</source>
-        <translation type="vanished">Spočítat</translation>
+        <translation>Spočítat</translation>
     </message>
     <message>
         <source>The destination filename already exists!</source>
-        <translation type="vanished">Cílový souborový název již existuje!</translation>
+        <translation>Cílový souborový název již existuje!</translation>
     </message>
     <message>
         <source>Song already exists!</source>
-        <translation type="vanished">Píseň již existuje!</translation>
+        <translation>Píseň již existuje!</translation>
     </message>
     <message>
         <source>Song does not exist!</source>
-        <translation type="vanished">Píseň neexistuje!</translation>
+        <translation>Píseň neexistuje!</translation>
     </message>
     <message>
         <source>Failed to create destination folder!&lt;br/&gt;Please check you have sufficient permissions.</source>
-        <translation type="vanished">Nepodařilo se vytvořit cílovou složku!&lt;br/&gt;Prověřte, prosím, zda máte dostatečná oprávnění.</translation>
+        <translation>Nepodařilo se vytvořit cílovou složku!&lt;br/&gt;Prověřte, prosím, zda máte dostatečná oprávnění.</translation>
     </message>
     <message>
         <source>Source file no longer exists?</source>
-        <translation type="vanished">Zdrojový soubor už neexistuje?</translation>
+        <translation>Zdrojový soubor už neexistuje?</translation>
     </message>
     <message>
         <source>Failed to copy.</source>
-        <translation type="vanished">Nepodařilo se zkopírovat.</translation>
+        <translation>Nepodařilo se zkopírovat.</translation>
     </message>
     <message>
         <source>Failed to delete.</source>
-        <translation type="vanished">Nepodařilo se smazat.</translation>
+        <translation>Nepodařilo se smazat.</translation>
     </message>
     <message>
         <source>Not connected to device.</source>
-        <translation type="vanished">Nepřipojeno k zařízení.</translation>
+        <translation>Nepřipojeno k zařízení.</translation>
     </message>
     <message>
         <source>Selected codec is not available.</source>
-        <translation type="vanished">Vybraný kodek není dostupný.</translation>
+        <translation>Vybraný kodek není dostupný.</translation>
     </message>
     <message>
         <source>Transcoding failed.</source>
-        <translation type="vanished">Překódování se nezdařilo.</translation>
+        <translation>Překódování se nezdařilo.</translation>
     </message>
     <message>
         <source>Failed to create temporary file.&lt;br/&gt;(Required for transcoding to MTP devices.)</source>
-        <translation type="vanished">Nepodařilo se vytvořit dočasný soubor.&lt;br/&gt;(Požadováno pro překódování na zařízení MTP.)</translation>
+        <translation>Nepodařilo se vytvořit dočasný soubor.&lt;br/&gt;(Požadováno pro překódování na zařízení MTP.)</translation>
     </message>
     <message>
         <source>Failed to read source file.</source>
-        <translation type="vanished">Nepodařilo se přečíst zdrojový soubor.</translation>
+        <translation>Nepodařilo se přečíst zdrojový soubor.</translation>
     </message>
     <message>
         <source>Failed to write to destination file.</source>
-        <translation type="vanished">Nepodařilo se  zapsat do cílového souboru.</translation>
+        <translation>Nepodařilo se  zapsat do cílového souboru.</translation>
     </message>
     <message>
         <source>No space left on device.</source>
-        <translation type="vanished">Na zařízení není žádné místo.</translation>
+        <translation>Na zařízení není žádné místo.</translation>
     </message>
     <message>
         <source>Failed to update metadata.</source>
-        <translation type="vanished">Nepodařilo se zaktualizovat popisná data.</translation>
+        <translation>Nepodařilo se zaktualizovat popisná data.</translation>
     </message>
     <message>
         <source>Failed to download track.</source>
-        <translation type="vanished">Nepodařilo se stáhnout skladbu.</translation>
+        <translation>Nepodařilo se stáhnout skladbu.</translation>
     </message>
     <message>
         <source>Failed to lock device.</source>
-        <translation type="vanished">Nepodařilo se uzamknout zařízení.</translation>
+        <translation>Nepodařilo se uzamknout zařízení.</translation>
     </message>
     <message>
         <source>Local Music Library Properties</source>
-        <translation type="vanished">Vlastnosti místní hudební knihovny</translation>
+        <translation>Vlastnosti místní hudební knihovny</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="vanished">Chyba</translation>
+        <translation>Chyba</translation>
     </message>
     <message>
         <source>Skip</source>
-        <translation type="vanished">Přeskočit</translation>
+        <translation>Přeskočit</translation>
     </message>
     <message>
         <source>Auto Skip</source>
-        <translation type="vanished">Automaticky přeskočit</translation>
+        <translation>Automaticky přeskočit</translation>
     </message>
     <message>
         <source>Retry</source>
-        <translation type="vanished">Zkusit znovu</translation>
+        <translation>Zkusit znovu</translation>
     </message>
     <message>
         <source>Album:</source>
@@ -643,821 +643,821 @@ i18n: ectx: property (text), widget (BuddyLabel, label_3)
 i18n: file: tags/tageditor.ui:106
 i18n: ectx: property (text), widget (StateLabel, albumLabel)
 </extracomment>
-        <translation type="vanished">Album:</translation>
+        <translation>Album:</translation>
     </message>
     <message>
         <source>Track:</source>
         <extracomment>i18n: file: tags/tageditor.ui:34
 i18n: ectx: property (text), widget (StateLabel, trackNameLabel)
 </extracomment>
-        <translation type="vanished">Skladba:</translation>
+        <translation>Skladba:</translation>
     </message>
     <message>
         <source>Source file:</source>
-        <translation type="vanished">Zdrojový soubor:</translation>
+        <translation>Zdrojový soubor:</translation>
     </message>
     <message>
         <source>Destination file:</source>
-        <translation type="vanished">Cílový soubor:</translation>
+        <translation>Cílový soubor:</translation>
     </message>
     <message>
         <source>File:</source>
-        <translation type="vanished">Soubor:</translation>
+        <translation>Soubor:</translation>
     </message>
     <message>
         <source>Calculating...</source>
-        <translation type="vanished">Počítá se...</translation>
+        <translation>Počítá se...</translation>
     </message>
     <message>
         <source>%1 (Estimated)</source>
         <comment>time (Estimated)</comment>
-        <translation type="vanished">%1 (odhadováno)</translation>
+        <translation>%1 (odhadováno)</translation>
     </message>
     <message>
         <source>Time remaining:</source>
-        <translation type="vanished">Zbývající čas:</translation>
+        <translation>Zbývající čas:</translation>
     </message>
     <message>
         <source>Saving cache</source>
-        <translation type="vanished">Ukládá se vyrovnávací paměť</translation>
+        <translation>Ukládá se vyrovnávací paměť</translation>
     </message>
     <message>
         <source>Apply &quot;Various Artists&quot; Workaround</source>
-        <translation type="vanished">Použít zařazení pod Různí umělci</translation>
+        <translation>Použít zařazení pod Různí umělci</translation>
     </message>
     <message>
         <source>Revert &quot;Various Artists&quot; Workaround</source>
-        <translation type="vanished">Zvrátit zařazení pod Různí umělci</translation>
+        <translation>Zvrátit zařazení pod Různí umělci</translation>
     </message>
     <message>
         <source>Capitalize</source>
-        <translation type="vanished">Psát velkými písmeny</translation>
+        <translation>Psát velkými písmeny</translation>
     </message>
     <message>
         <source>Adjust Track Numbers</source>
-        <translation type="vanished">Upravit čísla skladeb</translation>
+        <translation>Upravit čísla skladeb</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation type="vanished">Nástroje</translation>
+        <translation>Nástroje</translation>
     </message>
     <message>
         <source>Apply &quot;Various Artists&quot; workaround?</source>
-        <translation type="vanished">Použít zařazení pod Různí umělci?</translation>
+        <translation>Použít zařazení pod Různí umělci?</translation>
     </message>
     <message>
         <source>This will set &apos;Album artist&apos; and &apos;Artist&apos; to &quot;Various Artists&quot;, and set &apos;Title&apos; to &quot;TrackArtist - TrackTitle&quot;</source>
-        <translation type="vanished">Toto nastaví Umělce alba a Umělce na Různí umělci, a nastaví Název na &quot;Umělec skladby - Název skladby&quot;</translation>
+        <translation>Toto nastaví Umělce alba a Umělce na Různí umělci, a nastaví Název na &quot;Umělec skladby - Název skladby&quot;</translation>
     </message>
     <message>
         <source>Revert &quot;Various Artists&quot; workaround?</source>
-        <translation type="vanished">Zvrátit zařazení pod Různí umělci?</translation>
+        <translation>Zvrátit zařazení pod Různí umělci?</translation>
     </message>
     <message>
         <source>Where the &apos;Album artist&apos; is the same as &apos;Artist&apos; and the &apos;Title&apos; is of the format &quot;TrackArtist - TrackTitle&quot;, &apos;Artist&apos; will be taken from &apos;Title&apos; and &apos;Title&apos; itself will be set to just the title. e.g. 
 If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; will be set to &quot;Wibble&quot; and &apos;Title&apos; will be set to &quot;Wobble&quot;</source>
-        <translation type="vanished">Tam, kde Umělec alba je stejný jako Umělec a Název je ve formátu &quot;Umělec skladby - Název skladby&quot;, se Umělec vezme z Názvu a samotný název se nastaví na prostý Název.
+        <translation>Tam, kde Umělec alba je stejný jako Umělec a Název je ve formátu &quot;Umělec skladby - Název skladby&quot;, se Umělec vezme z Názvu a samotný název se nastaví na prostý Název.
 Např. Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &quot;Wibble&quot; a Název na &quot;Wobble&quot;</translation>
     </message>
     <message>
         <source>Revert</source>
-        <translation type="vanished">Vrátit</translation>
+        <translation>Vrátit</translation>
     </message>
     <message>
         <source>Capitalize the first letter of &apos;Title&apos;, &apos;Artist&apos;, &apos;Album artist&apos;, and &apos;Album&apos;?</source>
-        <translation type="vanished">Psát velkým písmenem první písmeno Názvu, Umělce, Umělce alba a Alba?</translation>
+        <translation>Psát velkým písmenem první písmeno Názvu, Umělce, Umělce alba a Alba?</translation>
     </message>
     <message>
         <source>Adjust track number by:</source>
-        <translation type="vanished">Upravit číslo skladby o:</translation>
+        <translation>Upravit číslo skladby o:</translation>
     </message>
     <message>
         <source>Reading disc</source>
-        <translation type="vanished">Čte se disk</translation>
+        <translation>Čte se disk</translation>
     </message>
     <message>
         <source>CDDB</source>
-        <translation type="vanished">CDDB</translation>
+        <translation>CDDB</translation>
     </message>
     <message>
         <source>MusicBrainz</source>
-        <translation type="vanished">MusicBrainz</translation>
+        <translation>MusicBrainz</translation>
     </message>
     <message>
         <source>Data Track</source>
-        <translation type="vanished">Datová stopa</translation>
+        <translation>Datová stopa</translation>
     </message>
     <message>
         <source>Failed to open CD device</source>
-        <translation type="vanished">Nepodařilo se otevřít zařízení CD</translation>
+        <translation>Nepodařilo se otevřít zařízení CD</translation>
     </message>
     <message>
         <source>Track %1</source>
-        <translation type="vanished">Stopa %1</translation>
+        <translation>Stopa %1</translation>
     </message>
     <message>
         <source>Failed to create CDDB connection</source>
-        <translation type="vanished">Nepodařilo se vytvořit připojení CDDB</translation>
+        <translation>Nepodařilo se vytvořit připojení CDDB</translation>
     </message>
     <message>
         <source>Failed to contact CDDB server, please check CDDB and network settings</source>
-        <translation type="vanished">Nepodařilo se spojit se se serverem CDDB. Prověřte, prosím, nastavení CDDB a sítě</translation>
+        <translation>Nepodařilo se spojit se se serverem CDDB. Prověřte, prosím, nastavení CDDB a sítě</translation>
     </message>
     <message>
         <source>No matches found in CDDB</source>
-        <translation type="vanished">V CDDB nenalezeny žádné shody</translation>
+        <translation>V CDDB nenalezeny žádné shody</translation>
     </message>
     <message>
         <source>CDDB error: %1</source>
-        <translation type="vanished">Chyba CDDB: %1</translation>
+        <translation>Chyba CDDB: %1</translation>
     </message>
     <message>
         <source>Multiple matches were found. Please choose the relevant one from below:</source>
-        <translation type="vanished">Bylo nalezeno více shod. Vyberte, prosím, náležitou shodu z uvedených níže:</translation>
+        <translation>Bylo nalezeno více shod. Vyberte, prosím, náležitou shodu z uvedených níže:</translation>
     </message>
     <message>
         <source>Title</source>
         <extracomment>i18n: file: devices/albumdetails.ui:168
 i18n: ectx: property (text), widget (QTreeWidget, tracks)
 </extracomment>
-        <translation type="vanished">Název</translation>
+        <translation>Název</translation>
     </message>
     <message>
         <source>Disc Selection</source>
-        <translation type="vanished">Výběr disku</translation>
+        <translation>Výběr disku</translation>
     </message>
     <message>
         <source>%1 - %2 Disc %3 (%4)</source>
         <comment>artist - album Disc disc (year)</comment>
-        <translation type="vanished">%1 - %2 Disk %3 (%4)</translation>
+        <translation>%1 - %2 Disk %3 (%4)</translation>
     </message>
     <message>
         <source>%1 - %2 (%3)</source>
         <comment>artist - album (year)</comment>
-        <translation type="vanished">%1 - %2 (%3)</translation>
+        <translation>%1 - %2 (%3)</translation>
     </message>
     <message>
         <source>Updating (%1)...</source>
-        <translation type="vanished">Obnovuje se (%1)...</translation>
+        <translation>Obnovuje se (%1)...</translation>
     </message>
     <message>
         <source>Updating (%1%)...</source>
-        <translation type="vanished">Obnovuje se (%1%)...</translation>
+        <translation>Obnovuje se (%1%)...</translation>
     </message>
     <message>
         <source>Device Properties</source>
-        <translation type="vanished">Vlastnosti zařízení</translation>
+        <translation>Vlastnosti zařízení</translation>
     </message>
     <message>
         <source>Don&apos;t copy covers</source>
-        <translation type="vanished">Nekopírovat obaly</translation>
+        <translation>Nekopírovat obaly</translation>
     </message>
     <message>
         <source>Embed cover within each file</source>
-        <translation type="vanished">Vložit obal do každého souboru</translation>
+        <translation>Vložit obal do každého souboru</translation>
     </message>
     <message>
         <source>No maximum size</source>
-        <translation type="vanished">Žádná největší velikost</translation>
+        <translation>Žádná největší velikost</translation>
     </message>
     <message>
         <source>400 pixels</source>
-        <translation type="vanished">400 pixelů</translation>
+        <translation>400 pixelů</translation>
     </message>
     <message>
         <source>300 pixels</source>
-        <translation type="vanished">300 pixelů</translation>
+        <translation>300 pixelů</translation>
     </message>
     <message>
         <source>200 pixels</source>
-        <translation type="vanished">200 pixelů</translation>
+        <translation>200 pixelů</translation>
     </message>
     <message>
         <source>100 pixels</source>
-        <translation type="vanished">100 pixelů</translation>
+        <translation>100 pixelů</translation>
     </message>
     <message>
         <source>&lt;p&gt;When copying tracks to a device, and the &apos;Album Artist&apos; is set to &apos;Various Artists&apos;, then Cantata will set the &apos;Artist&apos; tag of all tracks to &apos;Various Artists&apos; and the track &apos;Title&apos; tag to &apos;TrackArtist - TrackTitle&apos;.&lt;hr/&gt; When copying from a device, Cantata will check if &apos;Album Artist&apos; and &apos;Artist&apos; are both set to &apos;Various Artists&apos;. If so, it will attempt to extract the real artist from the &apos;Title&apos; tag, and remove the artist name from the &apos;Title&apos; tag.&lt;/p&gt;</source>
-        <translation type="vanished">&lt;p&gt;Když se skladby kopírují na zařízení, a &apos;Umělec alba&apos; je nastaven na &apos;Různí umělci&apos;, Cantata nastaví značku &apos;Umělec&apos; u všech skladeb na &apos;Různí umělci&apos; a značku &apos;Název&apos; skladby na &apos;Umělec skladby - Název skladby&apos;.&lt;hr/&gt; Když se kopíruje ze zařízení, Cantata prověří, zda jsou &apos;Umělec alba&apos; a &apos;Umělec&apos; oba nastaveni na &apos;Různí umělci&apos;. Pokud ano, pokusí se vytáhnout skutečného umělce ze značky &apos;Název&apos; a odstranit umělcovo jméno ze značky &apos;Název&apos;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Když se skladby kopírují na zařízení, a &apos;Umělec alba&apos; je nastaven na &apos;Různí umělci&apos;, Cantata nastaví značku &apos;Umělec&apos; u všech skladeb na &apos;Různí umělci&apos; a značku &apos;Název&apos; skladby na &apos;Umělec skladby - Název skladby&apos;.&lt;hr/&gt; Když se kopíruje ze zařízení, Cantata prověří, zda jsou &apos;Umělec alba&apos; a &apos;Umělec&apos; oba nastaveni na &apos;Různí umělci&apos;. Pokud ano, pokusí se vytáhnout skutečného umělce ze značky &apos;Název&apos; a odstranit umělcovo jméno ze značky &apos;Název&apos;.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;If you enable this, then Cantata will create a cache of the device&apos;s music library. This will help to speed up subsequent library scans (as the cache file will be used instead of having to read the tags of each file.)&lt;hr/&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you use another application to update the device&apos;s library, then this cache will become out-of-date. To rectify this, simply click on the &apos;refresh&apos; icon in the device list. This will cause the cache file to be removed, and the contents of the device re-scanned.&lt;/p&gt;</source>
-        <translation type="vanished">&lt;p&gt;Pokud toto povolíte, Cantata vytvoří vyrovnávací paměť hudební knihovny zařízení. To pomůže urychlit následné prohledávání knihovny (protože namísto čtení značky u každého souboru se použije vyrovnávací paměť.)&lt;hr/&gt;&lt;b&gt;POZNÁMKA:&lt;/b&gt; Pokud na obnovu knihovny zařízení použijete jiný program, potom se tato vyrovnávací paměť stane zastaralou. Abyste to dal do pořádku, jednoduše klepněte na ikonu pro &apos;obnovu&apos; v seznamu zařízení. To způsobí odstranění souboru s vyrovnávací pamětí a opětovné znovuprohledání obsahu zařízení.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Pokud toto povolíte, Cantata vytvoří vyrovnávací paměť hudební knihovny zařízení. To pomůže urychlit následné prohledávání knihovny (protože namísto čtení značky u každého souboru se použije vyrovnávací paměť.)&lt;hr/&gt;&lt;b&gt;POZNÁMKA:&lt;/b&gt; Pokud na obnovu knihovny zařízení použijete jiný program, potom se tato vyrovnávací paměť stane zastaralou. Abyste to dal do pořádku, jednoduše klepněte na ikonu pro &apos;obnovu&apos; v seznamu zařízení. To způsobí odstranění souboru s vyrovnávací pamětí a opětovné znovuprohledání obsahu zařízení.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Do not transcode</source>
-        <translation type="vanished">Nepřekódovat</translation>
+        <translation>Nepřekódovat</translation>
     </message>
     <message>
         <source>Transcode to %1</source>
-        <translation type="vanished">Překódovat do %1</translation>
+        <translation>Překódovat do %1</translation>
     </message>
     <message>
         <source>%1 (%2 free)</source>
         <comment>name (size free)</comment>
-        <translation type="vanished">%1 (%2 volné)</translation>
+        <translation>%1 (%2 volné)</translation>
     </message>
     <message>
         <source>Copy To Library</source>
-        <translation type="vanished">Kopírovat do knihovny</translation>
+        <translation>Kopírovat do knihovny</translation>
     </message>
     <message>
         <source>Synchronise</source>
-        <translation type="vanished">Seřídit</translation>
+        <translation>Seřídit</translation>
     </message>
     <message>
         <source>Forget Device</source>
-        <translation type="vanished">Zapomenout zařízení</translation>
+        <translation>Zapomenout zařízení</translation>
     </message>
     <message>
         <source>Add Device</source>
-        <translation type="vanished">Přidat zařízení</translation>
+        <translation>Přidat zařízení</translation>
     </message>
     <message>
         <source>Lookup album and track details?</source>
-        <translation type="vanished">Vyhledat podrobnosti alba a skladby?</translation>
+        <translation>Vyhledat podrobnosti alba a skladby?</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="vanished">Obnovit</translation>
+        <translation>Obnovit</translation>
     </message>
     <message>
         <source>Via CDDB</source>
-        <translation type="vanished">Pomocí CDDB</translation>
+        <translation>Pomocí CDDB</translation>
     </message>
     <message>
         <source>Via MusicBrainz</source>
-        <translation type="vanished">Pomocí MusicBrainz</translation>
+        <translation>Pomocí MusicBrainz</translation>
     </message>
     <message>
         <source>Which type of refresh do you wish to perform?</source>
-        <translation type="vanished">Který typ aktualizace chcete provést?</translation>
+        <translation>Který typ aktualizace chcete provést?</translation>
     </message>
     <message>
         <source>Partial - Only new songs are scanned (quick)</source>
-        <translation type="vanished">Částečný - Jsou prohledány pouze nové písně (rychlé)</translation>
+        <translation>Částečný - Jsou prohledány pouze nové písně (rychlé)</translation>
     </message>
     <message>
         <source>Full - All songs are rescanned (slow)</source>
-        <translation type="vanished">Úplný - Jsou prohledány všechny písně (pomalé)</translation>
+        <translation>Úplný - Jsou prohledány všechny písně (pomalé)</translation>
     </message>
     <message>
         <source>Partial</source>
-        <translation type="vanished">Částečný</translation>
+        <translation>Částečný</translation>
     </message>
     <message>
         <source>Full</source>
-        <translation type="vanished">Úplný</translation>
+        <translation>Úplný</translation>
     </message>
     <message>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
-        <translation type="vanished">Opravdu chcete odstranit vybrané písně?
+        <translation>Opravdu chcete odstranit vybrané písně?
 
 Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <source>Are you sure you wish to forget &apos;%1&apos;?</source>
-        <translation type="vanished">Opravdu chcete zapomenout na &apos;%1&apos;?</translation>
+        <translation>Opravdu chcete zapomenout na &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Are you sure you wish to eject Audio CD &apos;%1 - %2&apos;?</source>
-        <translation type="vanished">Opravdu chcete vysunout zvukové CD &apos;%1 - %2&apos;?</translation>
+        <translation>Opravdu chcete vysunout zvukové CD &apos;%1 - %2&apos;?</translation>
     </message>
     <message>
         <source>Eject</source>
-        <translation type="vanished">Vysunout</translation>
+        <translation>Vysunout</translation>
     </message>
     <message>
         <source>Are you sure you wish to disconnect &apos;%1&apos;?</source>
-        <translation type="vanished">Opravdu chcete odpojit &apos;%1&apos;?</translation>
+        <translation>Opravdu chcete odpojit &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Disconnect</source>
-        <translation type="vanished">Odpojit</translation>
+        <translation>Odpojit</translation>
     </message>
     <message>
         <source>Please close other dialogs first.</source>
-        <translation type="vanished">Nejprve, prosím, zavřete další dialogy</translation>
+        <translation>Nejprve, prosím, zavřete další dialogy</translation>
     </message>
     <message>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding&gt;Advanced Audio Coding&lt;/a&gt; (AAC) is a patented lossy codec for digital audio.&lt;br&gt;AAC generally achieves better sound quality than MP3 at similar bit rates. It is a reasonable choice for the iPod and some other portable music players.</source>
         <comment>Feel free to redirect the english Wikipedia link to a local version, if it exists.</comment>
-        <translation type="vanished">&lt;a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding&gt;Advanced Audio Coding&lt;/a&gt; (AAC) je patentovaný ztrátový kodek pro digitální zvuk.&lt;br&gt;AAC všeobecně dosahuje při podobných datových tocích lepší jakosti zvuku než MP3. Je rozumnou volbou pro iPod a některé další přenosné přehrávače hudby. Provedení není zdarma.</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding&gt;Advanced Audio Coding&lt;/a&gt; (AAC) je patentovaný ztrátový kodek pro digitální zvuk.&lt;br&gt;AAC všeobecně dosahuje při podobných datových tocích lepší jakosti zvuku než MP3. Je rozumnou volbou pro iPod a některé další přenosné přehrávače hudby. Provedení není zdarma.</translation>
     </message>
     <message>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;AAC&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;average bitrate&lt;/a&gt; of the encoded track.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;200kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation type="vanished">Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku skladby.&lt;br&gt;Kodér &lt;b&gt;AAC&lt;/b&gt; používaný Cantatou podporuje nastavení&lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;proměnlivého datového toku (VBR)&lt;/a&gt;, což znamená, že hodnota datového toku kolísá podle skladby vycházejíc ze složitosti zvukového obsahu. Složitější úseky dat jsou kódovány s větším datovým tokem než ty méně složité; tento přístup přináší úhrnně lepší jakost a menší soubor než stálý datový tok bitrate po celou dobu skladby.&lt;br&gt;Z tohoto důvodu je měřítko datového toku v tomto posuvníku jen odhadem &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;průměrného datového toku&lt;/a&gt; kódované skladby.&lt;br&gt;&lt;b&gt;150 kb/s&lt;/b&gt; je dobrou volbou pro poslech hudby v přenosném přehrávači.&lt;br/&gt;Cokoli pod &lt;b&gt;120 kb/s&lt;/b&gt; může být hudebně neuspokojivé a cokoli nad &lt;b&gt;200 kb/s&lt;/b&gt; je pravděpodobně až přespříliš.</translation>
+        <translation>Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku skladby.&lt;br&gt;Kodér &lt;b&gt;AAC&lt;/b&gt; používaný Cantatou podporuje nastavení&lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;proměnlivého datového toku (VBR)&lt;/a&gt;, což znamená, že hodnota datového toku kolísá podle skladby vycházejíc ze složitosti zvukového obsahu. Složitější úseky dat jsou kódovány s větším datovým tokem než ty méně složité; tento přístup přináší úhrnně lepší jakost a menší soubor než stálý datový tok bitrate po celou dobu skladby.&lt;br&gt;Z tohoto důvodu je měřítko datového toku v tomto posuvníku jen odhadem &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;průměrného datového toku&lt;/a&gt; kódované skladby.&lt;br&gt;&lt;b&gt;150 kb/s&lt;/b&gt; je dobrou volbou pro poslech hudby v přenosném přehrávači.&lt;br/&gt;Cokoli pod &lt;b&gt;120 kb/s&lt;/b&gt; může být hudebně neuspokojivé a cokoli nad &lt;b&gt;200 kb/s&lt;/b&gt; je pravděpodobně až přespříliš.</translation>
     </message>
     <message>
         <source>Expected average bitrate for variable bitrate encoding</source>
-        <translation type="vanished">Očekávaný datový tok pro kódování proměnlivého datového toku</translation>
+        <translation>Očekávaný datový tok pro kódování proměnlivého datového toku</translation>
     </message>
     <message>
         <source>Smaller file</source>
-        <translation type="vanished">Menší soubor</translation>
+        <translation>Menší soubor</translation>
     </message>
     <message>
         <source>Better sound quality</source>
-        <translation type="vanished">Lepší kvalita zvuku</translation>
+        <translation>Lepší kvalita zvuku</translation>
     </message>
     <message>
         <source>&lt;a href=http://en.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) is a patented digital audio codec using a form of lossy data compression.&lt;br&gt;In spite of its shortcomings, it is a common format for consumer audio storage, and is widely supported on portable music players.</source>
         <comment>Feel free to redirect the english Wikipedia link to a local version, if it exists.</comment>
-        <translation type="vanished">&lt;a href=http://en.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) je patentem chráněný digitální zvukový kodek, který používá druh ztrátového zhuštění dat.&lt;br&gt;Navzdory svým slabinám je to běžný formát pro spotřebitelské ukládání zvuku a je široce podporován v přenosných přehrávačích hudby.</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) je patentem chráněný digitální zvukový kodek, který používá druh ztrátové komprimace dat.&lt;br&gt;Navzdory svým slabinám je to běžný formát pro spotřebitelské ukládání zvuku a je široce podporován v přenosných přehrávačích hudby.</translation>
     </message>
     <message>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;MP3&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;205kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation type="vanished">Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku skladby.&lt;br&gt;Kodér &lt;b&gt;MP3&lt;/b&gt;&lt;/b&gt; používaný Cantatou podporuje nastavení&lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;proměnlivého datového toku (VBR)&lt;/a&gt;, což znamená, že hodnota datového toku kolísá podle skladby vycházejíc ze složitosti zvukového obsahu. Složitější úseky dat jsou kódovány s větším datovým tokem, než jsou kódovány ty méně složité; tento přístup přináší úhrnně lepší jakost a menší soubor než stálý datový tok po celou dobu skladby.&lt;br&gt;Z tohoto důvodu je měřítko datového toku v tomto posuvníku jen odhadem &lt;a href=http://wwwffmpeg.org/faq.html#&gt;průměrného datového toku&lt;/a&gt; kódované skladby.&lt;br&gt;&lt;b&gt;160 kb/s&lt;/b&gt; je dobrou volbou pro poslech hudby v přenosném přehrávači.&lt;br/&gt;Cokoli pod &lt;b&gt;120 kb/s&lt;/b&gt; může být hudebně neuspokojivé a cokoli nad &lt;b&gt;205 kb/s&lt;/b&gt; je pravděpodobně až přespříliš.</translation>
+        <translation>Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku skladby.&lt;br&gt;Kodér &lt;b&gt;MP3&lt;/b&gt;&lt;/b&gt; používaný Cantatou podporuje nastavení&lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;proměnlivého datového toku (VBR)&lt;/a&gt;, což znamená, že hodnota datového toku kolísá podle skladby vycházejíc ze složitosti zvukového obsahu. Složitější úseky dat jsou kódovány s větším datovým tokem, než jsou kódovány ty méně složité; tento přístup přináší úhrnně lepší jakost a menší soubor než stálý datový tok po celou dobu skladby.&lt;br&gt;Z tohoto důvodu je měřítko datového toku v tomto posuvníku jen odhadem &lt;a href=http://wwwffmpeg.org/faq.html#&gt;průměrného datového toku&lt;/a&gt; kódované skladby.&lt;br&gt;&lt;b&gt;160 kb/s&lt;/b&gt; je dobrou volbou pro poslech hudby v přenosném přehrávači.&lt;br/&gt;Cokoli pod &lt;b&gt;120 kb/s&lt;/b&gt; může být hudebně neuspokojivé a cokoli nad &lt;b&gt;205 kb/s&lt;/b&gt; je pravděpodobně až přespříliš.</translation>
     </message>
     <message>
         <source>Ogg Vorbis</source>
-        <translation type="vanished">Ogg Vorbis</translation>
+        <translation>Ogg Vorbis</translation>
     </message>
     <message>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Vorbis&gt;Ogg Vorbis&lt;/a&gt; is an open and royalty-free audio codec for lossy audio compression.&lt;br&gt;It produces smaller files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around excellent choice, especially for portable music players that support it.</source>
         <comment>Feel free to redirect the english Wikipedia link to a local version, if it exists.</comment>
-        <translation type="vanished">&lt;a href=http://en.wikipedia.org/wiki/Vorbis&gt;Ogg Vorbis&lt;/a&gt; je otevřený kodek bez poplatků za užívání pro ztrátové zhuštění zvuku.&lt;br&gt;Vyrábí menší soubory než MP3 při stejné nebo vyšší kvalitě. Ogg Vorbis je všestranně vynikající, skvělou, výbornou, znamenitou a prvotřídní volbou pro přenosné přehrávače hudby, které jej podporují.</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/Vorbis&gt;Ogg Vorbis&lt;/a&gt; je otevřený kodek bez poplatků za užívání pro ztrátovou komprimaci zvuku.&lt;br&gt;Vyrábí menší soubory než MP3 při stejné nebo vyšší jakosti. Ogg Vorbis je všestranně vynikající, skvělou, výbornou, znamenitou a prvotřídní volbou pro přenosné přehrávače hudby, které jej podporují.</translation>
     </message>
     <message>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Vorbis&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;The Vorbis encoder uses a quality rating between -1 and 10 to define a certain expected audio quality level. The bitrate measure in this slider is just a rough estimate (provided by Vorbis) of the average bitrate of the encoded track given a quality value. In fact, with newer and more efficient Vorbis versions the actual bitrate is even lower.&lt;br&gt;&lt;b&gt;5&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;3&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;8&lt;/b&gt; is probably overkill.</source>
-        <translation type="vanished">Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku skladby.&lt;br&gt;Kodér &lt;b&gt;Vorbis&lt;/b&gt;&lt;/b&gt; používaný Cantatou podporuje nastavení&lt;a href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder&gt;proměnlivého datového toku (VBR)&lt;/a&gt;, což znamená, že hodnota datového toku kolísá podle skladby vycházejíc ze složitosti zvukového obsahu. Složitější úseky dat jsou kódovány s větším datovým tokem, než jsou kódovány ty méně složité; tento přístup přináší úhrnně lepší jakost a menší soubor, než jaký dává stálý datový tok po celou dobu skladby.&lt;br&gt;Kodér Vorbis používá při hodnocení jakosti parametr &quot;-q&quot;, což je hodnota mezi -1 a 10, aby stanovil určitou očekávanou úroveň kvality zvuku. Měřítko datového toku v tomto posuvníku je jen hrubým odhadem (obstaraným Vorbisem) průměrného datového toku kódované skladby daný hodnotou q. Vlastně je s novějšími a účinnějšími verzemi kodéru Vorbis skutečný datový tok dokonce nižší.&lt;br&gt;&lt;b&gt;-q5&lt;/b&gt; je dobrou volbou pro poslech hudby v přenosném přehrávači.&lt;br/&gt;Cokoli pod &lt;b&gt;-q3&lt;/b&gt; může být hudebně neuspokojivé a cokoli nad &lt;b&gt;-q8&lt;/b&gt; je pravděpodobně až přespříliš.</translation>
+        <translation>Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku skladby.&lt;br&gt;Kodér &lt;b&gt;Vorbis&lt;/b&gt;&lt;/b&gt; používaný Cantatou podporuje nastavení&lt;a href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder&gt;proměnlivého datového toku (VBR)&lt;/a&gt;, což znamená, že hodnota datového toku kolísá podle skladby vycházejíc ze složitosti zvukového obsahu. Složitější úseky dat jsou kódovány s větším datovým tokem, než jsou kódovány ty méně složité; tento přístup přináší úhrnně lepší jakost a menší soubor, než jaký dává stálý datový tok po celou dobu skladby.&lt;br&gt;Kodér Vorbis používá při hodnocení jakosti parametr &quot;-q&quot;, což je hodnota mezi -1 a 10, aby stanovil určitou očekávanou úroveň kvality zvuku. Měřítko datového toku v tomto posuvníku je jen hrubým odhadem (obstaraným Vorbisem) průměrného datového toku kódované skladby daný hodnotou q. Vlastně je s novějšími a účinnějšími verzemi kodéru Vorbis skutečný datový tok dokonce nižší.&lt;br&gt;&lt;b&gt;-q5&lt;/b&gt; je dobrou volbou pro poslech hudby v přenosném přehrávači.&lt;br/&gt;Cokoli pod &lt;b&gt;-q3&lt;/b&gt; může být hudebně neuspokojivé a cokoli nad &lt;b&gt;-q8&lt;/b&gt; je pravděpodobně až přespříliš.</translation>
     </message>
     <message>
         <source>Quality rating</source>
-        <translation type="vanished">Hodnocení jakosti</translation>
+        <translation>Hodnocení jakosti</translation>
     </message>
     <message>
         <source>Opus</source>
-        <translation type="vanished">Opus</translation>
+        <translation>Opus</translation>
     </message>
     <message>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Opus_(audio_format)&gt;Opus&lt;/a&gt; is a patent-free digital audio codec using a form of lossy data compression.</source>
         <comment>Feel free to redirect the english Wikipedia link to a local version, if it exists.</comment>
-        <translation type="vanished">&lt;a href=http://en.wikipedia.org/wiki/Opus_(audio_format)&gt;Opus&lt;/a&gt; digitální audio kodek nezatížený patenty používající ztrátovou kompresi dat.</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/Opus_(audio_format)&gt;Opus&lt;/a&gt; digitální audio kodek nezatížený patenty používající ztrátovou kompresi dat.</translation>
     </message>
     <message>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Opus&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;100kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;256kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation type="vanished">Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku skladby.&lt;br&gt;Kodér &lt;b&gt;Opus&lt;/b&gt;&lt;/b&gt; používaný Cantatou podporuje nastavení&lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;proměnlivého datového toku (VBR)&lt;/a&gt;, což znamená, že hodnota datového toku kolísá podle skladby vycházejíc ze složitosti zvukového obsahu. Složitější úseky dat jsou kódovány s větším datovým tokem, než jsou kódovány ty méně složité; tento přístup přináší úhrnně lepší jakost a menší soubor než stálý datový tok po celou dobu skladby.&lt;br&gt;Z tohoto důvodu je měřítko datového toku v tomto posuvníku jen odhadem průměrného datového toku kódované skladby.&lt;br&gt;&lt;b&gt;128 kb/s&lt;/b&gt; je dobrou volbou pro poslech hudby v přenosném přehrávači.&lt;br/&gt;Cokoli pod &lt;b&gt;100 kb/s&lt;/b&gt; může být hudebně neuspokojivé a cokoli nad &lt;b&gt;256 kb/s&lt;/b&gt; je pravděpodobně až přespříliš.</translation>
+        <translation>Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku skladby.&lt;br&gt;Kodér &lt;b&gt;Opus&lt;/b&gt;&lt;/b&gt; používaný Cantatou podporuje nastavení&lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;proměnlivého datového toku (VBR)&lt;/a&gt;, což znamená, že hodnota datového toku kolísá podle skladby vycházejíc ze složitosti zvukového obsahu. Složitější úseky dat jsou kódovány s větším datovým tokem, než jsou kódovány ty méně složité; tento přístup přináší úhrnně lepší jakost a menší soubor než stálý datový tok po celou dobu skladby.&lt;br&gt;Z tohoto důvodu je měřítko datového toku v tomto posuvníku jen odhadem průměrného datového toku kódované skladby.&lt;br&gt;&lt;b&gt;128 kb/s&lt;/b&gt; je dobrou volbou pro poslech hudby v přenosném přehrávači.&lt;br/&gt;Cokoli pod &lt;b&gt;100 kb/s&lt;/b&gt; může být hudebně neuspokojivé a cokoli nad &lt;b&gt;256 kb/s&lt;/b&gt; je pravděpodobně až přespříliš.</translation>
     </message>
     <message>
         <source>Apple Lossless</source>
-        <translation type="vanished">Apple Lossless</translation>
+        <translation>Apple Lossless</translation>
     </message>
     <message>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) is an audio codec for lossless compression of digital music.&lt;br&gt;Recommended only for Apple music players and players that do not support FLAC.</source>
         <comment>Feel free to redirect the english Wikipedia link to a local version, if it exists.</comment>
-        <translation type="vanished">&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) je zvukový kodek pro bezztrátové zhuštění digitální hudby.&lt;br&gt;Doporučováno pouze pro hudební přehrávače od firmy Apple a přehrávače nepodporující FLAC.</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) je zvukový kodek pro bezztrátovou komprimaci digitální hudby.&lt;br&gt;Doporučováno pouze pro hudební přehrávače od firmy Apple a přehrávače nepodporující FLAC.</translation>
     </message>
     <message>
         <source>FLAC</source>
-        <translation type="vanished">FLAC</translation>
+        <translation>FLAC</translation>
     </message>
     <message>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) is an open and royalty-free codec for lossless compression of digital music.&lt;br&gt;If you wish to store your music without compromising on audio quality, FLAC is an excellent choice.</source>
         <comment>Feel free to redirect the english Wikipedia link to a local version, if it exists.</comment>
-        <translation type="vanished">&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) je otevřený kodek bez poplatků za užívání pro bezztrátové zhuštění digitální hudby.&lt;br&gt;Pokud si svou hudbu přejete ukládat bez ústupků, co se týče jakosti zvuku, FLAC je prostě excelentní, tedy vynikající, skvělou, výbornou, znamenitou a prvotřídní volbou.</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) je otevřený kodek bez poplatků za užívání pro bezztrátovou komprimaci digitální hudby.&lt;br&gt;Pokud si svou hudbu přejete ukládat bez ústupků, co se týče jakosti zvuku, FLAC je prostě excelentní, tedy vynikající, skvělou, výbornou, znamenitou a prvotřídní volbou.</translation>
     </message>
     <message>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="vanished">&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;Úroveň zhuštění&lt;/a&gt; je hodnota celého čísla ležící mezi 0 a 8, která představuje vyvážení mezi velikostí souboru a rychlostí zhuštění během kódování s &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Nastavení úrovně zhuštění na &lt;b&gt;0&lt;/b&gt; dává nejkratší čas zhuštění, ale způsobuje srovnatelně velký soubor&lt;br/&gt;Na druhou stranu úroveň zhuštění &lt;b&gt;8&lt;/b&gt; dělá zhušťování docela pomalým,ale vytvoří nejmenší soubor.&lt;br/&gt;Uvědomte si, že vzhledem k tomu, že FLAC je ze své podstaty bezeztrátový kodek, je zvuková jakost výstupu přesně tatáž bez ohledu na úroveň zhuštění.&lt;br/&gt;Úrovně nad &lt;b&gt;5&lt;/b&gt; kromě toho napínavě zvyšují čas zhuštění, ale vytvářejí jen nepatrně menší soubor, a nedoporučují se.</translation>
+        <translation>&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;Úroveň komprimace&lt;/a&gt; je hodnota celého čísla ležící mezi 0 a 8, která představuje vyvážení mezi velikostí souboru a rychlostí komprimace během kódování s &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Nastavení úrovně komprimace na &lt;b&gt;0&lt;/b&gt; dává nejkratší čas komprimace, ale způsobuje srovnatelně velký soubor&lt;br/&gt;Na druhou stranu úroveň zhuštění &lt;b&gt;8&lt;/b&gt; dělá komprimaci docela pomalou,ale vytvoří nejmenší soubor.&lt;br/&gt;Uvědomte si, že vzhledem k tomu, že FLAC je ze své podstaty bezeztrátový kodek, je zvuková jakost výstupu přesně tatáž bez ohledu na úroveň komprimace.&lt;br/&gt;Úrovně nad &lt;b&gt;5&lt;/b&gt; kromě toho napínavě zvyšují čas komprimace, ale vytvářejí jen nepatrně menší soubor, a nedoporučují se.</translation>
     </message>
     <message>
         <source>Compression level</source>
-        <translation type="vanished">Úroveň zhuštění</translation>
+        <translation>Úroveň komprimace</translation>
     </message>
     <message>
         <source>Faster compression</source>
-        <translation type="vanished">Rychlejší zhuštění</translation>
+        <translation>Rychlejší komprimace</translation>
     </message>
     <message>
         <source>Windows Media Audio</source>
-        <translation type="vanished">Windows Media Audio</translation>
+        <translation>Windows Media Audio</translation>
     </message>
     <message>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) is a proprietary codec developed by Microsoft for lossy audio compression.&lt;br&gt;Recommended only for portable music players that do not support Ogg Vorbis.</source>
         <comment>Feel free to redirect the english Wikipedia link to a local version, if it exists.</comment>
-        <translation type="vanished">&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) je kodek, který je patentově chráněn, vyvíjený firmou Microsoft pro ztrátové zhuštění zvuku.&lt;br&gt;Doporučován jen pro přenosné přehrávače hudby, jež nepodporují formát Ogg Vorbis.</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) je kodek, který je patentově chráněn, vyvíjený firmou Microsoft pro ztrátovou komprimaci zvuku.&lt;br&gt;Doporučován jen pro přenosné přehrávače hudby, jež nepodporují formát Ogg Vorbis.</translation>
     </message>
     <message>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;Due to the limitations of the proprietary &lt;b&gt;WMA&lt;/b&gt; format and the difficulty of reverse-engineering a proprietary encoder, the WMA encoder used by Cantata sets a &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;constant bitrate (CBR)&lt;/a&gt; setting.&lt;br&gt;For this reason, the bitrate measure in this slider is a pretty accurate estimate of the bitrate of the encoded track.&lt;br&gt;&lt;b&gt;136kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;112kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;182kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation type="vanished">Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku skladby.&lt;br&gt;V důsledku omezení patentově chráněného formátu &lt;b&gt;WMA&lt;/b&gt; a obtížnosti obráceného inženýrství soukromého kodéru, kodér WMA používaný Amarokem nastavuje &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;stálý datový tok (CBR).&lt;br&gt;Z tohoto důvodu je měřítko datového toku v tomto posuvníku slušným odhadem datového toku kódované skladby.&lt;br&gt;&lt;b&gt;136kb/s&lt;/b&gt; je dobrou volbou pro poslech hudby v přenosném přehrávači.&lt;br/&gt;Cokoli pod &lt;b&gt;112kb/s&lt;/b&gt; může být hudebně neuspokojivé a cokoli nad &lt;b&gt;182kb/s&lt;/b&gt; je pravděpodobně až přespříliš.</translation>
+        <translation>Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku skladby.&lt;br&gt;V důsledku omezení patentově chráněného formátu &lt;b&gt;WMA&lt;/b&gt; a obtížnosti obráceného inženýrství soukromého kodéru, kodér WMA používaný Amarokem nastavuje &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;stálý datový tok (CBR).&lt;br&gt;Z tohoto důvodu je měřítko datového toku v tomto posuvníku slušným odhadem datového toku kódované skladby.&lt;br&gt;&lt;b&gt;136kb/s&lt;/b&gt; je dobrou volbou pro poslech hudby v přenosném přehrávači.&lt;br/&gt;Cokoli pod &lt;b&gt;112kb/s&lt;/b&gt; může být hudebně neuspokojivé a cokoli nad &lt;b&gt;182kb/s&lt;/b&gt; je pravděpodobně až přespříliš.</translation>
     </message>
     <message>
         <source>Filename Scheme</source>
-        <translation type="vanished">Schéma názvu souboru</translation>
+        <translation>Schéma názvu souboru</translation>
     </message>
     <message>
         <source>Various Artists</source>
         <comment>Example album artist</comment>
-        <translation type="vanished">Různí umělci</translation>
+        <translation>Různí umělci</translation>
     </message>
     <message>
         <source>Wibble</source>
         <comment>Example artist</comment>
-        <translation type="vanished">Wibble</translation>
+        <translation>Wibble</translation>
     </message>
     <message>
         <source>Vivaldi</source>
         <comment>Example composer</comment>
-        <translation type="vanished">Vivaldi</translation>
+        <translation>Vivaldi</translation>
     </message>
     <message>
         <source>Now 5001</source>
         <comment>Example album</comment>
-        <translation type="vanished">Nyní 5001</translation>
+        <translation>Nyní 5001</translation>
     </message>
     <message>
         <source>Wobble</source>
         <comment>Example song name</comment>
-        <translation type="vanished">Výkyv</translation>
+        <translation>Výkyv</translation>
     </message>
     <message>
         <source>Dance</source>
         <comment>Example genre</comment>
-        <translation type="vanished">Tanec</translation>
+        <translation>Tanec</translation>
     </message>
     <message>
         <source>The following variables will be replaced with their corresponding meaning for each track name.</source>
-        <translation type="vanished">Následující proměnné budou nahrazeny jejich odpovídajícím významem pro každý název skladby.</translation>
+        <translation>Následující proměnné budou nahrazeny jejich odpovídajícím významem pro každý název skladby.</translation>
     </message>
     <message>
         <source>&lt;tr&gt;&lt;th&gt;&lt;em&gt;Variable&lt;/em&gt;&lt;/th&gt;&lt;th&gt;&lt;em&gt;Button&lt;/em&gt;&lt;/th&gt;&lt;th&gt;&lt;em&gt;Description&lt;/em&gt;&lt;/th&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;th&gt;&lt;em&gt;Proměnná&lt;/em&gt;&lt;/th&gt;&lt;th&gt;&lt;em&gt;Tlačítko&lt;/em&gt;&lt;/th&gt;&lt;th&gt;&lt;em&gt;Popis&lt;/em&gt;&lt;/th&gt;&lt;/tr&gt;</translation>
+        <translation>&lt;tr&gt;&lt;th&gt;&lt;em&gt;Proměnná&lt;/em&gt;&lt;/th&gt;&lt;th&gt;&lt;em&gt;Tlačítko&lt;/em&gt;&lt;/th&gt;&lt;th&gt;&lt;em&gt;Popis&lt;/em&gt;&lt;/th&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
         <source>Updating...</source>
-        <translation type="vanished">Obnovuje se...</translation>
+        <translation>Obnovuje se...</translation>
     </message>
     <message>
         <source>Reading cache</source>
-        <translation type="vanished">Čte se vyrovnávací paměť</translation>
+        <translation>Čte se vyrovnávací paměť</translation>
     </message>
     <message>
         <source>%1 %2%</source>
         <comment>Message percent</comment>
-        <translation type="vanished">%1 %2%</translation>
+        <translation>%1 %2%</translation>
     </message>
     <message>
         <source>Connecting to device...</source>
-        <translation type="vanished">Připojuje se k zařízení...</translation>
+        <translation>Připojuje se k zařízení...</translation>
     </message>
     <message>
         <source>No devices found</source>
-        <translation type="vanished">Nenalezeno žádné zařízení</translation>
+        <translation>Nenalezeno žádné zařízení</translation>
     </message>
     <message>
         <source>Connected to device</source>
-        <translation type="vanished">Připojeno k zařízení</translation>
+        <translation>Připojeno k zařízení</translation>
     </message>
     <message>
         <source>Disconnected from device</source>
-        <translation type="vanished">Odpojeno od zařízení</translation>
+        <translation>Odpojeno od zařízení</translation>
     </message>
     <message>
         <source>Updating folders...</source>
-        <translation type="vanished">Obnovují se složky...</translation>
+        <translation>Obnovují se složky...</translation>
     </message>
     <message>
         <source>Updating files...</source>
-        <translation type="vanished">Obnovují se soubory...</translation>
+        <translation>Obnovují se soubory...</translation>
     </message>
     <message>
         <source>Updating tracks...</source>
-        <translation type="vanished">Obnovují se skladby...</translation>
+        <translation>Obnovují se skladby...</translation>
     </message>
     <message>
         <source>Not Connected</source>
-        <translation type="vanished">Nepřipojeno</translation>
+        <translation>Nepřipojeno</translation>
     </message>
     <message>
         <source>%1 (Disc %2)</source>
-        <translation type="vanished">%1 (Disk %2)</translation>
+        <translation>%1 (Disk %2)</translation>
     </message>
     <message>
         <source>No matches found in MusicBrainz</source>
-        <translation type="vanished">V MusicBrainz nenalezeny žádné shody</translation>
+        <translation>V MusicBrainz nenalezeny žádné shody</translation>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="vanished">Spojení</translation>
+        <translation>Spojení</translation>
     </message>
     <message>
         <source>Music Library</source>
-        <translation type="vanished">Hudební knihovna</translation>
+        <translation>Hudební knihovna</translation>
     </message>
     <message>
         <source>A remote device named &apos;%1&apos; already exists!
 
 Please choose a different name.</source>
-        <translation type="vanished">Vzdálené zařízení s názvem &quot;&apos;%1&quot; již existuje!
+        <translation>Vzdálené zařízení s názvem &quot;&apos;%1&quot; již existuje!
 
 Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
         <source>Samba Share</source>
-        <translation type="vanished">Sdílení Samba</translation>
+        <translation>Sdílení Samba</translation>
     </message>
     <message>
         <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="vanished">Sdílení Samba (automatické zjištění hostitele a přípojky)</translation>
+        <translation>Sdílení Samba (automatické zjištění hostitele a přípojky)</translation>
     </message>
     <message>
         <source>Secure Shell (sshfs)</source>
-        <translation type="vanished">Bezpečný shell (sshfs)</translation>
+        <translation>Bezpečný shell (sshfs)</translation>
     </message>
     <message>
         <source>Locally Mounted Folder</source>
-        <translation type="vanished">Místně připojená složka</translation>
+        <translation>Místně připojená složka</translation>
     </message>
     <message>
         <source>Available</source>
-        <translation type="vanished">Dostupné</translation>
+        <translation>Dostupné</translation>
     </message>
     <message>
         <source>Not Available</source>
-        <translation type="vanished">Nedostupné</translation>
+        <translation>Nedostupné</translation>
     </message>
     <message>
         <source>Failed to resolve connection details for %1</source>
-        <translation type="vanished">Nepodařilo se vyřešit podrobnosti připojení pro %1</translation>
+        <translation>Nepodařilo se vyřešit podrobnosti připojení pro %1</translation>
     </message>
     <message>
         <source>Connecting...</source>
-        <translation type="vanished">Připojuje se...</translation>
+        <translation>Připojuje se...</translation>
     </message>
     <message>
         <source>Password prompting does not work when cantata is started from the commandline.</source>
-        <translation type="vanished">Výzva k zadání hesla nepracuje, když je Cantata spuštěna z příkazového řádku.</translation>
+        <translation>Výzva k zadání hesla nepracuje, když je Cantata spuštěna z příkazového řádku.</translation>
     </message>
     <message>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
-        <translation type="vanished">Žádný vhodný program ssh-askpass není nainstalován! Toto je vyžadováno pro zadávání hesel</translation>
+        <translation>Žádný vhodný program ssh-askpass není nainstalován! Toto je vyžadováno pro zadávání hesel</translation>
     </message>
     <message>
         <source>Mount point (&quot;%1&quot;) is not empty!</source>
-        <translation type="vanished">Bod připojení (&quot;%1&quot;) není prázdný!</translation>
+        <translation>Bod připojení (&quot;%1&quot;) není prázdný!</translation>
     </message>
     <message>
         <source>&quot;sshfs&quot; is not installed!</source>
-        <translation type="vanished">&quot;sshfs&quot; není nainstalován!</translation>
+        <translation>&quot;sshfs&quot; není nainstalován!</translation>
     </message>
     <message>
         <source>Disconnecting...</source>
-        <translation type="vanished">Odpojuje se...</translation>
+        <translation>Odpojuje se...</translation>
     </message>
     <message>
         <source>&quot;fusermount&quot; is not installed!</source>
-        <translation type="vanished">&quot;fusermount&quot; není nainstalován!</translation>
+        <translation>&quot;fusermount&quot; není nainstalován!</translation>
     </message>
     <message>
         <source>Failed to connect to &quot;%1&quot;</source>
-        <translation type="vanished">Nepodařilo se připojit k &quot;%1&quot;</translation>
+        <translation>Nepodařilo se připojit k &quot;%1&quot;</translation>
     </message>
     <message>
         <source>Failed to disconnect from &quot;%1&quot;</source>
-        <translation type="vanished">Nepodařilo se odpojit od &quot;%1&quot;</translation>
+        <translation>Nepodařilo se odpojit od &quot;%1&quot;</translation>
     </message>
     <message>
         <source>Capacity Unknown</source>
-        <translation type="vanished">Neznámá velikost</translation>
+        <translation>Neznámá velikost</translation>
     </message>
     <message>
         <source>Search</source>
         <extracomment>i18n: file: gui/coverdialog.ui:23
 i18n: ectx: property (text), widget (QPushButton, search)
 </extracomment>
-        <translation type="vanished">Hledat</translation>
+        <translation>Hledat</translation>
     </message>
     <message>
         <source>Check Items</source>
-        <translation type="vanished">Zaškrtnout položky</translation>
+        <translation>Zaškrtnout položky</translation>
     </message>
     <message>
         <source>Uncheck Items</source>
-        <translation type="vanished">Zrušit zaškrtnutí položek</translation>
+        <translation>Zrušit zaškrtnutí položek</translation>
     </message>
     <message>
         <source>Library:</source>
-        <translation type="vanished">Knihovna:</translation>
+        <translation>Knihovna:</translation>
     </message>
     <message>
         <source>Device:</source>
-        <translation type="vanished">Zařízení:</translation>
+        <translation>Zařízení:</translation>
     </message>
     <message>
         <source>Loading all songs from library, please wait...</source>
-        <translation type="vanished">Nahrávají se všechny písně v knihovně. Počkejte, prosím...</translation>
+        <translation>Nahrávají se všechny písně v knihovně. Počkejte, prosím...</translation>
     </message>
     <message>
         <source>&lt;code&gt;Library&lt;/code&gt; lists only songs that are in your library, but not on the device. Likewise &lt;code&gt;Device&lt;/code&gt; lists songs that are only on the device.&lt;br/&gt;Select songs from &lt;code&gt;Library&lt;/code&gt; that you would like to copy to &lt;code&gt;Device&lt;/code&gt;, and select songs from &lt;code&gt;Device&lt;/code&gt; that you would like to copy to &lt;code&gt;Library&lt;/code&gt;. Then press the &lt;code&gt;Synchronize&lt;/code&gt; button.</source>
-        <translation type="vanished">&lt;code&gt;Knihovna&lt;/code&gt; uvádí pouze písně, které jsou v knihovně, ale ne na zařízení. Stejně tak &lt;code&gt;Zařízení&lt;/code&gt; uvádí písně, které jsou  jen na zařízení.&lt;br/&gt;Vyberte písně z &lt;code&gt;knihovny&lt;/code&gt;, jež chcete zkopírovat do &lt;code&gt;zařízení&lt;/code&gt;, a vyberte písně ze &lt;code&gt;zařízení&lt;/code&gt;, jež chcete zkopírovat do &lt;code&gt;knihovny&lt;/code&gt;. Potom stiskněte tlačítko &lt;code&gt;Seřídit&lt;/code&gt;.</translation>
+        <translation>&lt;code&gt;Knihovna&lt;/code&gt; uvádí pouze písně, které jsou v knihovně, ale ne na zařízení. Stejně tak &lt;code&gt;Zařízení&lt;/code&gt; uvádí písně, které jsou  jen na zařízení.&lt;br/&gt;Vyberte písně z &lt;code&gt;knihovny&lt;/code&gt;, jež chcete zkopírovat do &lt;code&gt;zařízení&lt;/code&gt;, a vyberte písně ze &lt;code&gt;zařízení&lt;/code&gt;, jež chcete zkopírovat do &lt;code&gt;knihovny&lt;/code&gt;. Potom stiskněte tlačítko &lt;code&gt;Seřídit&lt;/code&gt;.</translation>
     </message>
     <message>
         <source>Synchronize</source>
-        <translation type="vanished">Seřídit</translation>
+        <translation>Seřídit</translation>
     </message>
     <message>
         <source>Device and library are in sync.</source>
-        <translation type="vanished">Zařízení a knihovna jsou vzájemně seřízeny.</translation>
+        <translation>Zařízení a knihovna jsou vzájemně seřízeny.</translation>
     </message>
     <message>
         <source>Loading all songs from library, please wait...%1%...</source>
-        <translation type="vanished">Nahrávají se všechny písně z knihovny. Počkejte, prosím... %1%...</translation>
+        <translation>Nahrávají se všechny písně z knihovny. Počkejte, prosím... %1%...</translation>
     </message>
     <message>
         <source>Not Scanned</source>
-        <translation type="vanished">Neprohledáno</translation>
+        <translation>Neprohledáno</translation>
     </message>
     <message>
         <source> (recommended)</source>
-        <translation type="vanished"> (doporučeno)</translation>
+        <translation> (doporučeno)</translation>
     </message>
     <message>
         <source>Empty filename.</source>
-        <translation type="vanished">Prázdný název souboru.</translation>
+        <translation>Prázdný název souboru.</translation>
     </message>
     <message>
         <source>Invalid filename. (%1)</source>
-        <translation type="vanished">Neplatný název souboru. (%1)</translation>
+        <translation>Neplatný název souboru. (%1)</translation>
     </message>
     <message>
         <source>Failed to save %1.</source>
-        <translation type="vanished">Nepodařilo se uložit %1.</translation>
+        <translation>Nepodařilo se uložit %1.</translation>
     </message>
     <message>
         <source>Failed to delete rules file. (%1)</source>
-        <translation type="vanished">Nepodařilo se smazat soubor s pravidly. (%1)</translation>
+        <translation>Nepodařilo se smazat soubor s pravidly. (%1)</translation>
     </message>
     <message>
         <source>Invalid command. (%1)</source>
-        <translation type="vanished">Neplatný příkaz. (%1)</translation>
+        <translation>Neplatný příkaz. (%1)</translation>
     </message>
     <message>
         <source>Could not remove active rules link.</source>
-        <translation type="vanished">Nepodařilo se odstranit odkaz na činná pravidla.</translation>
+        <translation>Nepodařilo se odstranit odkaz na činná pravidla.</translation>
     </message>
     <message>
         <source>Active rules is not a link.</source>
-        <translation type="vanished">Činná pravidla není odkaz.</translation>
+        <translation>Činná pravidla není odkaz.</translation>
     </message>
     <message>
         <source>Could not create active rules link.</source>
-        <translation type="vanished">Nepodařilo se vytvořit odkaz na činná pravidla.</translation>
+        <translation>Nepodařilo se vytvořit odkaz na činná pravidla.</translation>
     </message>
     <message>
         <source>Rules file, %1, does not exist.</source>
-        <translation type="vanished">Soubor s pravidly, %1, neexistuje.</translation>
+        <translation>Soubor s pravidly, %1, neexistuje.</translation>
     </message>
     <message>
         <source>Incorrect arguments supplied.</source>
-        <translation type="vanished">Poskytnuty nesprávné argumenty.</translation>
+        <translation>Poskytnuty nesprávné argumenty.</translation>
     </message>
     <message>
         <source>Unknown method called.</source>
-        <translation type="vanished">Zavolána neznámá metoda.</translation>
+        <translation>Zavolána neznámá metoda.</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation type="vanished">Neznámá chyba</translation>
+        <translation>Neznámá chyba</translation>
     </message>
     <message>
         <source>Start Dynamic Playlist</source>
-        <translation type="vanished">Spustit dynamický seznam skladeb</translation>
+        <translation>Spustit dynamický seznam skladeb</translation>
     </message>
     <message>
         <source>Stop Dynamic Mode</source>
-        <translation type="vanished">Zastavit dynamický režim</translation>
+        <translation>Zastavit dynamický režim</translation>
     </message>
     <message>
         <source>Dynamic Playlists</source>
-        <translation type="vanished">Dynamické seznamy skladeb</translation>
+        <translation>Dynamické seznamy skladeb</translation>
     </message>
     <message>
         <source>Dynamically generated playlists</source>
-        <translation type="vanished">Dynamicky tvořené seznamy skladeb</translation>
+        <translation>Dynamicky tvořené seznamy skladeb</translation>
     </message>
     <message>
         <source> - Rating: %1..%2</source>
-        <translation type="vanished"> - Hodnocení: %1...%2</translation>
+        <translation> - Hodnocení: %1...%2</translation>
     </message>
     <message>
         <source>You need to install &quot;perl&quot; on your system in order for Cantata&apos;s dynamic mode to function.</source>
-        <translation type="vanished">Aby pracoval dynamický režim Cantaty, musíte do vašeho systému nainstalovat &quot;perl&quot;.</translation>
+        <translation>Aby pracoval dynamický režim Cantaty, musíte do vašeho systému nainstalovat &quot;perl&quot;.</translation>
     </message>
     <message>
         <source>Failed to locate rules file - %1</source>
-        <translation type="vanished">Nepodařilo se najít soubor s pravidly - %1</translation>
+        <translation>Nepodařilo se najít soubor s pravidly - %1</translation>
     </message>
     <message>
         <source>Failed to remove previous rules file - %1</source>
-        <translation type="vanished">Nepodařilo se odstranit předchozí soubor s pravidly - %1</translation>
+        <translation>Nepodařilo se odstranit předchozí soubor s pravidly - %1</translation>
     </message>
     <message>
         <source>Failed to install rules file - %1 -&gt; %2</source>
-        <translation type="vanished">Nepodařilo se nainstalovat soubor s pravidly - %1 -&gt; %2</translation>
+        <translation>Nepodařilo se nainstalovat soubor s pravidly - %1 -&gt; %2</translation>
     </message>
     <message>
         <source>Dynamizer has been terminated.</source>
-        <translation type="vanished">Dynamizátor byl ukončen.</translation>
+        <translation>Dynamizátor byl ukončen.</translation>
     </message>
     <message>
         <source>Saving rule</source>
-        <translation type="vanished">Ukládá se pravidlo</translation>
+        <translation>Ukládá se pravidlo</translation>
     </message>
     <message>
         <source>Deleting rule</source>
-        <translation type="vanished">Maže se pravidlo</translation>
+        <translation>Maže se pravidlo</translation>
     </message>
     <message>
         <source>Awaiting response for previous command. (%1)</source>
-        <translation type="vanished">Očekává se odpověď na předchozí příkaz. (%1)</translation>
+        <translation>Očekává se odpověď na předchozí příkaz. (%1)</translation>
     </message>
     <message>
         <source>Failed to save %1. (%2)</source>
-        <translation type="vanished">Nepodařilo se uložit %1. (%2)</translation>
+        <translation>Nepodařilo se uložit %1. (%2)</translation>
     </message>
     <message>
         <source>Failed to control dynamizer state. (%1)</source>
-        <translation type="vanished">Nepodařilo se zkontrolovat stav dynamizátoru. (%1)</translation>
+        <translation>Nepodařilo se zkontrolovat stav dynamizátoru. (%1)</translation>
     </message>
     <message>
         <source>Failed to set the current dynamic rules. (%1)</source>
-        <translation type="vanished">Nepodařilo se nastavit nynější dynamická pravidla. (%1)</translation>
+        <translation>Nepodařilo se nastavit nynější dynamická pravidla. (%1)</translation>
     </message>
     <message>
         <source>Add</source>
         <extracomment>i18n: file: dynamic/dynamicrules.ui:71
 i18n: ectx: property (text), widget (QPushButton, addBtn)
 </extracomment>
-        <translation type="vanished">Přidat</translation>
+        <translation>Přidat</translation>
     </message>
     <message>
         <source>Edit</source>
         <extracomment>i18n: file: dynamic/dynamicrules.ui:78
 i18n: ectx: property (text), widget (QPushButton, editBtn)
 </extracomment>
-        <translation type="vanished">Upravit</translation>
+        <translation>Upravit</translation>
     </message>
     <message>
         <source>Remove</source>
         <extracomment>i18n: file: dynamic/dynamicrules.ui:85
 i18n: ectx: property (text), widget (QPushButton, removeBtn)
 </extracomment>
-        <translation type="vanished">Odstranit</translation>
+        <translation>Odstranit</translation>
     </message>
     <message>
         <source>Remote dynamizer is not running.</source>
-        <translation type="vanished">Vzdálený dynamizátor neběží.</translation>
+        <translation>Vzdálený dynamizátor neběží.</translation>
     </message>
     <message>
         <source>Are you sure you wish to remove the selected rules?
 
 This cannot be undone.</source>
-        <translation type="vanished">Opravdu chcete odstranit vybraná pravidla?
+        <translation>Opravdu chcete odstranit vybraná pravidla?
 
 Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <source>Remove Dynamic Rules</source>
-        <translation type="vanished">Odstranit dynamická pravidla</translation>
+        <translation>Odstranit dynamická pravidla</translation>
     </message>
     <message>
         <source>Dynamic Rule</source>
-        <translation type="vanished">Dynamické pravidlo</translation>
+        <translation>Dynamické pravidlo</translation>
     </message>
     <message>
         <source>&lt;i&gt;&lt;b&gt;ERROR&lt;/b&gt;: &apos;From Year&apos; should be less than &apos;To Year&apos;&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;&lt;b&gt;CHYBA&lt;/b&gt;: &apos;Od roku&apos; má být menší než &apos;Do roku&apos;&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;&lt;b&gt;CHYBA&lt;/b&gt;: &apos;Od roku&apos; má být menší než &apos;Do roku&apos;&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; Date range is too large (can only be a maximum of %1 years)&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;&lt;b&gt;CHYBA&lt;/b&gt;: Rozsah data je příliš velký (může být nanejvýš jen %1 roků)&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;&lt;b&gt;CHYBA&lt;/b&gt;: Rozsah data je příliš velký (může být nanejvýš jen %1 roků)&lt;/i&gt;</translation>
     </message>
     <message>
         <source>SimilarArtists</source>
-        <translation type="vanished">Podobní umělci</translation>
+        <translation>Podobní umělci</translation>
     </message>
     <message>
         <source>AlbumArtist</source>
-        <translation type="vanished">Umělec alba</translation>
+        <translation>Umělec alba</translation>
     </message>
     <message>
         <source>Include</source>
-        <translation type="vanished">Zahrnout</translation>
+        <translation>Zahrnout</translation>
     </message>
     <message>
         <source>Exclude</source>
-        <translation type="vanished">Vyloučit</translation>
+        <translation>Vyloučit</translation>
     </message>
     <message>
         <source> (Exact)</source>
-        <translation type="vanished">(Přesné)</translation>
+        <translation>(Přesné)</translation>
     </message>
     <message>
         <source>Dynamic Rules</source>
-        <translation type="vanished">Dynamická pravidla</translation>
+        <translation>Dynamická pravidla</translation>
     </message>
     <message>
         <source>None</source>
@@ -1482,114 +1482,114 @@ i18n: ectx: property (specialValueText), widget (QSpinBox, crossfading)
 i18n: file: support/shortcutssettingswidget.ui:78
 i18n: ectx: property (text), widget (QLabel, defaultShortcut)
 </extracomment>
-        <translation type="vanished">Žádné</translation>
+        <translation>Žádné</translation>
     </message>
     <message>
         <source>About dynamic rules</source>
-        <translation type="vanished">O dynamických pravidlech</translation>
+        <translation>O dynamických pravidlech</translation>
     </message>
     <message>
         <source>Failed to save %1</source>
-        <translation type="vanished">Nepodařilo se uložit %1</translation>
+        <translation>Nepodařilo se uložit %1</translation>
     </message>
     <message>
         <source>A set of rules named &apos;%1&apos; already exists!
 
 Overwrite?</source>
-        <translation type="vanished">Seznam pravidel pojmenovaný &apos;%1&apos; již existuje!
+        <translation>Seznam pravidel pojmenovaný &apos;%1&apos; již existuje!
 
 Přepsat?</translation>
     </message>
     <message>
         <source>Overwrite Rules</source>
-        <translation type="vanished">Přepsat pravidla</translation>
+        <translation>Přepsat pravidla</translation>
     </message>
     <message>
         <source>Saving %1</source>
-        <translation type="vanished">Ukládá se %1</translation>
+        <translation>Ukládá se %1</translation>
     </message>
     <message>
         <source>Deleting...</source>
-        <translation type="vanished">Maže se...</translation>
+        <translation>Maže se...</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="vanished">Název</translation>
+        <translation>Název</translation>
     </message>
     <message>
         <source>Item Count</source>
-        <translation type="vanished">Počet položek</translation>
+        <translation>Počet položek</translation>
     </message>
     <message>
         <source>Space Used</source>
-        <translation type="vanished">Použité místo</translation>
+        <translation>Použité místo</translation>
     </message>
     <message>
         <source>Total space used: %1</source>
-        <translation type="vanished">Celkové použité místo: %1</translation>
+        <translation>Celkové použité místo: %1</translation>
     </message>
     <message>
         <source>Cantata caches various pieces of information (covers, lyrics, etc). Below is a summary of Cantata&apos;s current cache usage.</source>
-        <translation type="vanished">Cantata ukládá různé kousky údajů (obaly, slova písní atd.) do vyrovnávací paměti. Dole je přehled nynějšího využití vyrovnávací paměti Cantatou.</translation>
+        <translation>Cantata ukládá různé kousky údajů (obaly, slova písní atd.) do vyrovnávací paměti. Dole je přehled nynějšího využití vyrovnávací paměti Cantatou.</translation>
     </message>
     <message>
         <source>Covers</source>
-        <translation type="vanished">Obaly</translation>
+        <translation>Obaly</translation>
     </message>
     <message>
         <source>Scaled Covers</source>
-        <translation type="vanished">Obaly se změněnou velikostí</translation>
+        <translation>Obaly se změněnou velikostí</translation>
     </message>
     <message>
         <source>Backdrops</source>
-        <translation type="vanished">Pozadí</translation>
+        <translation>Pozadí</translation>
     </message>
     <message>
         <source>Artist Information</source>
-        <translation type="vanished">Informace o umělci</translation>
+        <translation>Informace o umělci</translation>
     </message>
     <message>
         <source>Album Information</source>
-        <translation type="vanished">Informace o albu</translation>
+        <translation>Informace o albu</translation>
     </message>
     <message>
         <source>Track Information</source>
-        <translation type="vanished">Informace o skladbě</translation>
+        <translation>Informace o skladbě</translation>
     </message>
     <message>
         <source>Stream Listings</source>
-        <translation type="vanished">Soupisy proudů</translation>
+        <translation>Soupisy proudů</translation>
     </message>
     <message>
         <source>Podcast Directories</source>
-        <translation type="vanished">Adresáře se záznamy (podcasty)</translation>
+        <translation>Adresáře se záznamy (podcasty)</translation>
     </message>
     <message>
         <source>Scrobble Tracks</source>
-        <translation type="vanished">Odesílat informace o skladbách</translation>
+        <translation>Odesílat informace o skladbách</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="vanished">Smazat vše</translation>
+        <translation>Smazat vše</translation>
     </message>
     <message>
         <source>Delete all &apos;%1&apos; items?</source>
-        <translation type="vanished">Smazat všech &apos;%1&apos; položek?</translation>
+        <translation>Smazat všech &apos;%1&apos; položek?</translation>
     </message>
     <message>
         <source>Delete Cache Items</source>
-        <translation type="vanished">Smazat položky ve vyrovnávací paměti</translation>
+        <translation>Smazat položky ve vyrovnávací paměti</translation>
     </message>
     <message>
         <source>Delete items from all selected categories?</source>
-        <translation type="vanished">Smazat položky z vybraných skupin?</translation>
+        <translation>Smazat položky z vybraných skupin?</translation>
     </message>
     <message>
         <source>%1
 %2 x %3 (%4)</source>
         <comment>name
 width x height (file size)</comment>
-        <translation type="vanished">%1
+        <translation>%1
 %2 x %3 (%4)</translation>
     </message>
     <message>
@@ -1597,80 +1597,80 @@ width x height (file size)</comment>
 %2 x %3</source>
         <comment>name
 width x height</comment>
-        <translation type="vanished">%1
+        <translation>%1
 %2 x %3</translation>
     </message>
     <message>
         <source>Current Cover</source>
-        <translation type="vanished">Nynější obal</translation>
+        <translation>Nynější obal</translation>
     </message>
     <message>
         <source>CoverArt Archive</source>
-        <translation type="vanished">Archiv obalů</translation>
+        <translation>Archiv obalů</translation>
     </message>
     <message>
         <source>Image</source>
-        <translation type="vanished">Obrázek</translation>
+        <translation>Obrázek</translation>
     </message>
     <message>
         <source>Downloading...</source>
-        <translation type="vanished">Stahuje se...</translation>
+        <translation>Stahuje se...</translation>
     </message>
     <message>
         <source>Image (%1 x %2 %3%)</source>
         <comment>Image (width x height zoom%)</comment>
-        <translation type="vanished">Obrázek (%1 x %2 %3%)</translation>
+        <translation>Obrázek (%1 x %2 %3%)</translation>
     </message>
     <message>
         <source>An image already exists for this artist, and the file is not writeable.</source>
-        <translation type="vanished">Pro tohoto umělce již existuje jeden obrázek. Soubor však není zapisovatelný.</translation>
+        <translation>Pro tohoto umělce již existuje jeden obrázek. Soubor však není zapisovatelný.</translation>
     </message>
     <message>
         <source>A cover already exists for this album, and the file is not writeable.</source>
-        <translation type="vanished">Pro toto album již existuje jeden obrázek. Soubor však není zapisovatelný.</translation>
+        <translation>Pro toto album již existuje jeden obrázek. Soubor však není zapisovatelný.</translation>
     </message>
     <message>
         <source>&apos;%1&apos; Artist Image</source>
-        <translation type="vanished">&apos;%1&apos; Obrázek umělce</translation>
+        <translation>&apos;%1&apos; Obrázek umělce</translation>
     </message>
     <message>
         <source>&apos;%1 - %2&apos; Album Cover</source>
         <comment>&apos;Artist - Album&apos; Album Cover</comment>
-        <translation type="vanished">&apos;%1 - %2&apos; Obal alba</translation>
+        <translation>&apos;%1 - %2&apos; Obal alba</translation>
     </message>
     <message>
         <source>Failed to set cover!
 
 Could not download to temporary file!</source>
-        <translation type="vanished">Nepodařilo se nastavit obal!
+        <translation>Nepodařilo se nastavit obal!
 
 Nepodařilo se stáhnout do dočasného souboru!</translation>
     </message>
     <message>
         <source>Failed to download image!</source>
-        <translation type="vanished">Nepodařilo se stáhnout obrázek!</translation>
+        <translation>Nepodařilo se stáhnout obrázek!</translation>
     </message>
     <message>
         <source>Load Local Cover</source>
-        <translation type="vanished">Nahrát místní obal</translation>
+        <translation>Nahrát místní obal</translation>
     </message>
     <message>
         <source>File is already in list!</source>
-        <translation type="vanished">Soubor je již v seznamu!</translation>
+        <translation>Soubor je již v seznamu!</translation>
     </message>
     <message>
         <source>Failed to read image!</source>
-        <translation type="vanished">Nepodařilo se přečíst obrázek!</translation>
+        <translation>Nepodařilo se přečíst obrázek!</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="vanished">Zobrazit</translation>
+        <translation>Zobrazit</translation>
     </message>
     <message>
         <source>Failed to set cover!
 
 Could not make copy!</source>
-        <translation type="vanished">Nepodařilo se nastavit obal!
+        <translation>Nepodařilo se nastavit obal!
 
 Nepodařilo se udělat kopii!</translation>
     </message>
@@ -1678,7 +1678,7 @@ Nepodařilo se udělat kopii!</translation>
         <source>Failed to set cover!
 
 Could not backup original!</source>
-        <translation type="vanished">Nepodařilo se nastavit obal!
+        <translation>Nepodařilo se nastavit obal!
 
 Nepodařilo se zazálohovat originál!</translation>
     </message>
@@ -1686,17 +1686,17 @@ Nepodařilo se zazálohovat originál!</translation>
         <source>Failed to set cover!
 
 Could not copy file to &apos;%1&apos;!</source>
-        <translation type="vanished">Nepodařilo se nastavit obal!
+        <translation>Nepodařilo se nastavit obal!
 
 Nepodařilo se zkopírovat soubor do &apos;%1&apos;!</translation>
     </message>
     <message>
         <source>Searching...</source>
-        <translation type="vanished">Hledá se...</translation>
+        <translation>Hledá se...</translation>
     </message>
     <message>
         <source>Custom Actions</source>
-        <translation type="vanished">Vlastní činnosti</translation>
+        <translation>Vlastní činnosti</translation>
     </message>
     <message>
         <source>Name:</source>
@@ -1713,546 +1713,546 @@ i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
 i18n: file: gui/serversettings.ui:63
 i18n: ectx: property (text), widget (QLabel, label_2)
 </extracomment>
-        <translation type="vanished">Název:</translation>
+        <translation>Název:</translation>
     </message>
     <message>
         <source>Command:</source>
-        <translation type="vanished">Příkaz:</translation>
+        <translation>Příkaz:</translation>
     </message>
     <message>
         <source>In the command line above, %f will be replaced with the file list and %d with the folder list. If neither are supplied, the the list of files will be appended to the command.</source>
-        <translation type="vanished">V příkazovém řádku výše bude %f nahrazeno seznamem souborů a %d seznamem složek. pokud není dodán ani jeden z nich, bude k příkazu připojen seznam souborů.</translation>
+        <translation>V příkazovém řádku výše bude %f nahrazeno seznamem souborů a %d seznamem složek. pokud není dodán ani jeden z nich, bude k příkazu připojen seznam souborů.</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
         <source>Add New Command</source>
-        <translation type="vanished">Přidat nový příkaz</translation>
+        <translation>Přidat nový příkaz</translation>
     </message>
     <message>
         <source>Edit Command</source>
-        <translation type="vanished">Upravit příkaz</translation>
+        <translation>Upravit příkaz</translation>
     </message>
     <message>
         <source>To have Cantata call external commands (e.g. to edit tags with another application), add an entry for the command below. When at least one command command is defined, a &apos;Custom Actions&apos; entry will be added to the context menus in the Library, Folders, and Playlists views.</source>
-        <translation type="vanished">Aby Cantata volala vnější příkazy (např. úprava značek v jiném programu), přidejte položku pro příkaz níže. Když je stanoven alespoň jeden příkaz, bude do nabídek souvisejících činností v pohledech na knihovnu, na složky a na seznamy skladeb přidána položka Vlastní činnosti.</translation>
+        <translation>Aby Cantata volala vnější příkazy (např. úprava značek v jiném programu), přidejte položku pro příkaz níže. Když je stanoven alespoň jeden příkaz, bude do nabídek souvisejících činností v pohledech na knihovnu, na složky a na seznamy skladeb přidána položka Vlastní činnosti.</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="vanished">Příkaz</translation>
+        <translation>Příkaz</translation>
     </message>
     <message>
         <source>Remove the selected commands?</source>
-        <translation type="vanished">Odstranit vybrané příkazy?</translation>
+        <translation>Odstranit vybrané příkazy?</translation>
     </message>
     <message>
         <source>Open In File Manager</source>
-        <translation type="vanished">Otevřít ve správci souborů</translation>
+        <translation>Otevřít ve správci souborů</translation>
     </message>
     <message>
         <source>Connection Established</source>
-        <translation type="vanished">Spojení navázáno</translation>
+        <translation>Spojení navázáno</translation>
     </message>
     <message>
         <source>Connection Failed</source>
-        <translation type="vanished">Spojení se nezdařilo</translation>
+        <translation>Spojení se nezdařilo</translation>
     </message>
     <message>
         <source>Grouped Albums</source>
-        <translation type="vanished">Seskupená alba</translation>
+        <translation>Seskupená alba</translation>
     </message>
     <message>
         <source>Table</source>
-        <translation type="vanished">Tabulka</translation>
+        <translation>Tabulka</translation>
     </message>
     <message>
         <source>Parse in Library view, and show in Folders view</source>
-        <translation type="vanished">Zpracovat v pohledu na knihovnu a ukázat v pohledu na složky</translation>
+        <translation>Zpracovat v pohledu na knihovnu a ukázat v pohledu na složky</translation>
     </message>
     <message>
         <source>Only show in Folders view</source>
-        <translation type="vanished">Ukázat jen v pohledu na složky</translation>
+        <translation>Ukázat jen v pohledu na složky</translation>
     </message>
     <message>
         <source>Do not list</source>
-        <translation type="vanished">Neuvádět</translation>
+        <translation>Neuvádět</translation>
     </message>
     <message>
         <source>Play Queue</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:128
 i18n: ectx: attribute (title), widget (QWidget, tab_5)
 </extracomment>
-        <translation type="vanished">Řada</translation>
+        <translation>Řada</translation>
     </message>
     <message>
         <source>Library</source>
-        <translation type="vanished">Knihovna</translation>
+        <translation>Knihovna</translation>
     </message>
     <message>
         <source>Folders</source>
-        <translation type="vanished">Složky</translation>
+        <translation>Složky</translation>
     </message>
     <message>
         <source>Playlists</source>
-        <translation type="vanished">Seznamy</translation>
+        <translation>Seznamy</translation>
     </message>
     <message>
         <source>Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts</source>
-        <translation type="vanished">Internet - proudy, Jamendo, Maganatune, SoundCloud, a zvukové záznamy</translation>
+        <translation>Internet - proudy, Jamendo, Maganatune, SoundCloud, a zvukové záznamy</translation>
     </message>
     <message>
         <source>Devices - UMS, MTP (e.g. Android), and AudioCDs</source>
-        <translation type="vanished">Zařízení - UMS, MTP (např.  Android), a zvuková CD</translation>
+        <translation>Zařízení - UMS, MTP (např.  Android), a zvuková CD</translation>
     </message>
     <message>
         <source>Search (via MPD)</source>
-        <translation type="vanished">Hledání (přes MPD)</translation>
+        <translation>Hledání (přes MPD)</translation>
     </message>
     <message>
         <source>Info - Current song information (artist, album, and lyrics)</source>
-        <translation type="vanished">Informace - informace o nynější písni (umělec, album a slova písně)</translation>
+        <translation>Informace - informace o nynější písni (umělec, album a slova písně)</translation>
     </message>
     <message>
         <source>Large</source>
-        <translation type="vanished">Velký</translation>
+        <translation>Velký</translation>
     </message>
     <message>
         <source>Small</source>
-        <translation type="vanished">Malý</translation>
+        <translation>Malý</translation>
     </message>
     <message>
         <source>Tab-bar</source>
-        <translation type="vanished">Pruh s kartami</translation>
+        <translation>Pruh s kartami</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="vanished">Vlevo</translation>
+        <translation>Vlevo</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="vanished">Vpravo</translation>
+        <translation>Vpravo</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="vanished">Nahoře</translation>
+        <translation>Nahoře</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="vanished">Dole</translation>
+        <translation>Dole</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="vanished">Oznámení</translation>
+        <translation>Oznámení</translation>
     </message>
     <message>
         <source>System default</source>
-        <translation type="vanished">Výchozí nastavení systému</translation>
+        <translation>Výchozí nastavení systému</translation>
     </message>
     <message>
         <source>Show Artist Images</source>
-        <translation type="vanished">Ukázat obrázky umělců</translation>
+        <translation>Ukázat obrázky umělců</translation>
     </message>
     <message>
         <source>Sort Albums</source>
-        <translation type="vanished">Třídit alba</translation>
+        <translation>Třídit alba</translation>
     </message>
     <message>
         <source>Album, Artist, Year</source>
-        <translation type="vanished">Album, umělec, rok</translation>
+        <translation>Album, umělec, rok</translation>
     </message>
     <message>
         <source>Album, Year, Artist</source>
-        <translation type="vanished">Album, rok, umělec</translation>
+        <translation>Album, rok, umělec</translation>
     </message>
     <message>
         <source>Artist, Album, Year</source>
-        <translation type="vanished">Umělec, album, rok</translation>
+        <translation>Umělec, album, rok</translation>
     </message>
     <message>
         <source>Artist, Year, Album</source>
-        <translation type="vanished">Umělec, rok, album</translation>
+        <translation>Umělec, rok, album</translation>
     </message>
     <message>
         <source>Year, Album, Artist</source>
-        <translation type="vanished">Rok, album, umělec</translation>
+        <translation>Rok, album, umělec</translation>
     </message>
     <message>
         <source>Year, Artist, Album</source>
-        <translation type="vanished">Rok, umělec, album</translation>
+        <translation>Rok, umělec, album</translation>
     </message>
     <message>
         <source>Modified Date</source>
-        <translation type="vanished">Datum změny</translation>
+        <translation>Datum změny</translation>
     </message>
     <message>
         <source>Group By</source>
-        <translation type="vanished">Seskupit podle</translation>
+        <translation>Seskupit podle</translation>
     </message>
     <message>
         <source>Configure Cantata...</source>
-        <translation type="vanished">Nastavit Cantatu...</translation>
+        <translation>Nastavit Cantatu...</translation>
     </message>
     <message>
         <source>Preferences...</source>
-        <translation type="vanished">Nastavení...</translation>
+        <translation>Nastavení...</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="vanished">Ukončit</translation>
+        <translation>Ukončit</translation>
     </message>
     <message>
         <source>About Cantata...</source>
         <comment>Qt-only</comment>
-        <translation type="vanished">O programu Cantata</translation>
+        <translation>O programu Cantata</translation>
     </message>
     <message>
         <source>Show Window</source>
-        <translation type="vanished">Ukázat okno</translation>
+        <translation>Ukázat okno</translation>
     </message>
     <message>
         <source>Server information...</source>
-        <translation type="vanished">Informace o serveru...</translation>
+        <translation>Informace o serveru...</translation>
     </message>
     <message>
         <source>Refresh Database</source>
-        <translation type="vanished">Obnovit databázi</translation>
+        <translation>Obnovit databázi</translation>
     </message>
     <message>
         <source>Connect</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:472
 i18n: ectx: property (text), widget (QPushButton, connectButton)
 </extracomment>
-        <translation type="vanished">Spojit</translation>
+        <translation>Spojit</translation>
     </message>
     <message>
         <source>Collection</source>
-        <translation type="vanished">Sbírka</translation>
+        <translation>Sbírka</translation>
     </message>
     <message>
         <source>Outputs</source>
-        <translation type="vanished">Výstupy</translation>
+        <translation>Výstupy</translation>
     </message>
     <message>
         <source>Stop After Track</source>
-        <translation type="vanished">Zastavit po skladbě</translation>
+        <translation>Zastavit po skladbě</translation>
     </message>
     <message>
         <source>Add To Stored Playlist</source>
-        <translation type="vanished">Přidat do uloženého seznamu skladeb</translation>
+        <translation>Přidat do uloženého seznamu skladeb</translation>
     </message>
     <message>
         <source>Crop Others</source>
-        <translation type="vanished">Vystřihnout jiné</translation>
+        <translation>Vystřihnout jiné</translation>
     </message>
     <message>
         <source>Add Stream URL</source>
-        <translation type="vanished">Přidat adresu proudu</translation>
+        <translation>Přidat adresu proudu</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="vanished">Vyprázdnit</translation>
+        <translation>Vyprázdnit</translation>
     </message>
     <message>
         <source>Center On Current Track</source>
-        <translation type="vanished">Zaměřit na nynější skladbu</translation>
+        <translation>Zaměřit na nynější skladbu</translation>
     </message>
     <message>
         <source>Expanded Interface</source>
-        <translation type="vanished">Rozšířené rozhraní</translation>
+        <translation>Rozšířené rozhraní</translation>
     </message>
     <message>
         <source>Show Current Song Information</source>
-        <translation type="vanished">Ukázat informace o nynější skladbě</translation>
+        <translation>Ukázat informace o nynější skladbě</translation>
     </message>
     <message>
         <source>Full Screen</source>
-        <translation type="vanished">Na celou obrazovku</translation>
+        <translation>Na celou obrazovku</translation>
     </message>
     <message>
         <source>Random</source>
-        <translation type="vanished">Náhodné</translation>
+        <translation>Náhodné</translation>
     </message>
     <message>
         <source>Repeat</source>
-        <translation type="vanished">Opakování</translation>
+        <translation>Opakování</translation>
     </message>
     <message>
         <source>Single</source>
-        <translation type="vanished">Jednotlivé</translation>
+        <translation>Jednotlivé</translation>
     </message>
     <message>
         <source>When &apos;Single&apos; is activated, playback is stopped after current song, or song is repeated if &apos;Repeat&apos; is enabled.</source>
-        <translation type="vanished">Když jsou zapnuty jednotlivé skladby, je přehrávání zastaveno po nynější písni, nebo je píseň opakována, pokud je povolen režim opakování.</translation>
+        <translation>Když jsou zapnuty jednotlivé skladby, je přehrávání zastaveno po nynější písni, nebo je píseň opakována, pokud je povolen režim opakování.</translation>
     </message>
     <message>
         <source>Consume</source>
-        <translation type="vanished">Sníst</translation>
+        <translation>Sníst</translation>
     </message>
     <message>
         <source>When consume is activated, a song is removed from the play queue after it has been played.</source>
-        <translation type="vanished">Když je zapnuto snězení, píseň je odstraněna z řady skladeb k přehrání, poté co byla přehrána</translation>
+        <translation>Když je zapnuto snězení, píseň je odstraněna z řady skladeb k přehrání, poté co byla přehrána</translation>
     </message>
     <message>
         <source>Find in Play Queue</source>
-        <translation type="vanished">Hledat v řadě skladeb k přehrání</translation>
+        <translation>Hledat v řadě skladeb k přehrání</translation>
     </message>
     <message>
         <source>Play Stream</source>
-        <translation type="vanished">Přehrát proud</translation>
+        <translation>Přehrát proud</translation>
     </message>
     <message>
         <source>Locate In Library</source>
-        <translation type="vanished">Najít v knihovně</translation>
+        <translation>Najít v knihovně</translation>
     </message>
     <message>
         <source>Expand All</source>
-        <translation type="vanished">Rozbalit vše</translation>
+        <translation>Rozbalit vše</translation>
     </message>
     <message>
         <source>Collapse All</source>
-        <translation type="vanished">Složit vše</translation>
+        <translation>Složit vše</translation>
     </message>
     <message>
         <source>Internet</source>
-        <translation type="vanished">Internet</translation>
+        <translation>Internet</translation>
     </message>
     <message>
         <source>Devices</source>
-        <translation type="vanished">Zařízení</translation>
+        <translation>Zařízení</translation>
     </message>
     <message>
         <source>Info</source>
-        <translation type="vanished">Informace</translation>
+        <translation>Informace</translation>
     </message>
     <message>
         <source>Show Menubar</source>
-        <translation type="vanished">Ukázat pruh s nabídkou</translation>
+        <translation>Ukázat pruh s nabídkou</translation>
     </message>
     <message>
         <source>&amp;Music</source>
-        <translation type="vanished">&amp;Hudba</translation>
+        <translation>&amp;Hudba</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation type="vanished">Úp&amp;ravy</translation>
+        <translation>Úp&amp;ravy</translation>
     </message>
     <message>
         <source>&amp;View</source>
-        <translation type="vanished">&amp;Pohled</translation>
+        <translation>&amp;Pohled</translation>
     </message>
     <message>
         <source>&amp;Queue</source>
-        <translation type="vanished">Řa&amp;da</translation>
+        <translation>Řa&amp;da</translation>
     </message>
     <message>
         <source>&amp;Settings</source>
-        <translation type="vanished">&amp;Nastavení</translation>
+        <translation>&amp;Nastavení</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="vanished">Nápo&amp;věda</translation>
+        <translation>Nápo&amp;věda</translation>
     </message>
     <message>
         <source>Set Rating</source>
-        <translation type="vanished">Nastavit hodnocení</translation>
+        <translation>Nastavit hodnocení</translation>
     </message>
     <message>
         <source>No Rating</source>
-        <translation type="vanished">Žádné hodnocení</translation>
+        <translation>Žádné hodnocení</translation>
     </message>
     <message>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
-        <translation type="vanished">Nepodařilo se najít žádné písně odpovídající pravidlům dynamického seznamu skladeb.</translation>
+        <translation>Nepodařilo se najít žádné písně odpovídající pravidlům dynamického seznamu skladeb.</translation>
     </message>
     <message>
         <source>Connecting to %1</source>
-        <translation type="vanished">Připojuje se k %1</translation>
+        <translation>Připojuje se k %1</translation>
     </message>
     <message>
         <source>Refresh MPD Database?</source>
-        <translation type="vanished">Obnovit databázi MPD?</translation>
+        <translation>Obnovit databázi MPD?</translation>
     </message>
     <message>
         <source>About Cantata</source>
         <comment>Qt-only</comment>
-        <translation type="vanished">O programu Cantata</translation>
+        <translation>O programu Cantata</translation>
     </message>
     <message>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <comment>Qt-only</comment>
-        <translation type="vanished">&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Klient pro MPD.&lt;br/&gt;&lt;br/&gt;© Craig Drummond 2011-2016.&lt;br/&gt;Vydáno pod &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</translation>
+        <translation>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Klient pro MPD.&lt;br/&gt;&lt;br/&gt;© Craig Drummond 2011-2016.&lt;br/&gt;Vydáno pod &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
-        <translation type="vanished">Založeno na &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - © 2007-2010  Autoři QtMPC&lt;br/&gt;</translation>
+        <translation>Založeno na &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - © 2007-2010  Autoři QtMPC&lt;br/&gt;</translation>
     </message>
     <message>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <comment>Qt-only</comment>
-        <translation type="vanished">Pozadí pohledu na souvislosti díky laskavosti &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
+        <translation>Pozadí pohledu na souvislosti díky laskavosti &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <comment>Qt-only</comment>
-        <translation type="vanished">Popisná data pohledu na souvislosti díky laskavosti &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</translation>
+        <translation>Popisná data pohledu na souvislosti díky laskavosti &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
-        <translation type="vanished">Zvažte, prosím, nahrání vašeho vlastního fanouškovského umění na &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
+        <translation>Zvažte, prosím, nahrání vašeho vlastního fanouškovského umění na &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
         <source>A Podcast is currently being downloaded
 
 Quitting now will abort the download.</source>
-        <translation type="vanished">Zvukový záznam se nyní stahují.
+        <translation>Zvukový záznam se nyní stahují.
 
 Pokud bude program ukončen nyní, bude stahování zrušeno.</translation>
     </message>
     <message>
         <source>Abort download and quit</source>
-        <translation type="vanished">Zrušit stahování a ukončit.</translation>
+        <translation>Zrušit stahování a ukončit.</translation>
     </message>
     <message>
         <source>Enabled: %1</source>
-        <translation type="vanished">Povoleno: %1</translation>
+        <translation>Povoleno: %1</translation>
     </message>
     <message>
         <source>Disabled: %1</source>
-        <translation type="vanished">Zakázáno: %1</translation>
+        <translation>Zakázáno: %1</translation>
     </message>
     <message>
         <source>Server Information</source>
-        <translation type="vanished">Informace o serveru</translation>
+        <translation>Informace o serveru</translation>
     </message>
     <message>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protokol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Doba provozu:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Přehrává se:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Ovladače:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Značky:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
+        <translation>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protokol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Doba provozu:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Přehrává se:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Ovladače:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Značky:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Databáze&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Umělci:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Alba:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Písně:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Doba trvání:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Obnoveno:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
+        <translation>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Databáze&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Umělci:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Alba:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Písně:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Doba trvání:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Obnoveno:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
         <source>Cantata (%1)</source>
-        <translation type="vanished">Cantata (%1)</translation>
+        <translation>Cantata (%1)</translation>
     </message>
     <message>
         <source>MPD reported the following error: %1</source>
-        <translation type="vanished">MPD nahlásilo následující chybu: %1</translation>
+        <translation>MPD nahlásilo následující chybu: %1</translation>
     </message>
     <message>
         <source>Cantata</source>
-        <translation type="vanished">Cantata</translation>
+        <translation>Cantata</translation>
     </message>
     <message>
         <source>Playback stopped</source>
-        <translation type="vanished">Přehrávání zastaveno</translation>
+        <translation>Přehrávání zastaveno</translation>
     </message>
     <message>
         <source>Remove all songs from play queue?</source>
-        <translation type="vanished">Odstranit všechny písně z řady skladeb k přehrání?</translation>
+        <translation>Odstranit všechny písně z řady skladeb k přehrání?</translation>
     </message>
     <message>
         <source>Priority</source>
-        <translation type="vanished">Přednost</translation>
+        <translation>Přednost</translation>
     </message>
     <message>
         <source>Enter priority (0..255):</source>
-        <translation type="vanished">Zadejte přednost (0..255):</translation>
+        <translation>Zadejte přednost (0..255):</translation>
     </message>
     <message>
         <source>Playlist Name</source>
-        <translation type="vanished">Název seznamu skladeb</translation>
+        <translation>Název seznamu skladeb</translation>
     </message>
     <message>
         <source>Enter a name for the playlist:</source>
-        <translation type="vanished">Zadejte název pro seznam skladeb:</translation>
+        <translation>Zadejte název pro seznam skladeb:</translation>
     </message>
     <message>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
-        <translation type="vanished">&apos;%1&apos; se používá na ukládání oblíbených proudů. Vyberte, prosím, jiný název.</translation>
+        <translation>&apos;%1&apos; se používá na ukládání oblíbených proudů. Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
-        <translation type="vanished">Seznam skladeb pojmenovaný &apos;%1&apos; již existuje!
+        <translation>Seznam skladeb pojmenovaný &apos;%1&apos; již existuje!
 
 Přidat do tohoto seznamu skladeb?</translation>
     </message>
     <message>
         <source>Existing Playlist</source>
-        <translation type="vanished">Existující seznam skladeb</translation>
+        <translation>Existující seznam skladeb</translation>
     </message>
     <message>
         <source>Auto</source>
-        <translation type="vanished">Automaticky</translation>
+        <translation>Automaticky</translation>
     </message>
     <message>
         <source>&lt;i&gt;Connected to %1&lt;br/&gt;The entries below apply to the currently connected MPD collection.&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;Připojeno k %1.&lt;br/&gt;Záznamy níže použít na nyní připojenou sbírku MPD.&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;Připojeno k %1.&lt;br/&gt;Záznamy níže použít na nyní připojenou sbírku MPD.&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;i&gt;Not Connected!&lt;br/&gt;The entries below cannot be modified, as Cantata is not connected to MPD.&lt;/i&gt;</source>
         <extracomment>i18n: file: gui/playbacksettings.ui:94
 i18n: ectx: property (text), widget (QLabel, messageLabel)
 </extracomment>
-        <translation type="vanished">&lt;i&gt;Nepřipojeno.&lt;br/&gt;Záznamy níže nelze změnit, protože Cantata není připojena k MPD.&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;Nepřipojeno.&lt;br/&gt;Záznamy níže nelze změnit, protože Cantata není připojena k MPD.&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Replay Gain is a proposed standard published in 2001 to normalize the perceived loudness of computer audio formats such as MP3 and Ogg Vorbis. It works on a track/album basis, and is now supported in a growing number of players.&lt;br/&gt;&lt;br/&gt;The following ReplayGain settings may be used:&lt;ul&gt;&lt;li&gt;&lt;i&gt;None&lt;/i&gt; - No ReplayGain is applied.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Track&lt;/i&gt; - Volume will be adjusted using the track&apos;s ReplayGain tags.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Album&lt;/i&gt; - Volume will be adjusted using the albums&apos;s ReplayGain tags.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Auto&lt;/i&gt; - Volume will be adjusted using the track&apos;s ReplayGain tags if random play is activated, otherwise the album&apos;s tags will be used.&lt;/li&gt;&lt;/ul&gt;</source>
-        <translation type="vanished">Vyrovnání hlasitosti (Replay Gain) je navržený standard zveřejněný v roce 2001 k normalizaci vnímané hlasitosti počítačových zvukových formátů, jako jsou MP3 a Ogg Vorbis. Pracuje na základě skladba/album, a je nyní podporován rostoucím počtem přehrávačů.&lt;br/&gt;&lt;br/&gt;Je možné použít následující nastavení vyrovnání hlasitosti:&lt;ul&gt;&lt;li&gt;&lt;i&gt;Žádné&lt;/i&gt; - Není použito žádné vyrovnání hlasitosti.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Skladba&lt;/i&gt; - Hlasitost je upravena za použití značek pro vyrovnání hlasitosti u skladby.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Album&lt;/i&gt; - Hlasitost je upravena za použití značek  pro vyrovnání hlasitosti u alba.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Automaticky&lt;/i&gt; - Hlasitost je upravena za použití značek pro vyrovnání hlasitosti u skladby, v případě že je zapnuto náhodné přehrávání, jinak se použijí značky u alba.&lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation>Vyrovnání hlasitosti (Replay Gain) je navržený standard zveřejněný v roce 2001 k normalizaci vnímané hlasitosti počítačových zvukových formátů, jako jsou MP3 a Ogg Vorbis. Pracuje na základě skladba/album, a je nyní podporován rostoucím počtem přehrávačů.&lt;br/&gt;&lt;br/&gt;Je možné použít následující nastavení vyrovnání hlasitosti:&lt;ul&gt;&lt;li&gt;&lt;i&gt;Žádné&lt;/i&gt; - Není použito žádné vyrovnání hlasitosti.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Skladba&lt;/i&gt; - Hlasitost je upravena za použití značek pro vyrovnání hlasitosti u skladby.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Album&lt;/i&gt; - Hlasitost je upravena za použití značek  pro vyrovnání hlasitosti u alba.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Automaticky&lt;/i&gt; - Hlasitost je upravena za použití značek pro vyrovnání hlasitosti u skladby, v případě že je zapnuto náhodné přehrávání, jinak se použijí značky u alba.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="vanished">Přejmenovat</translation>
+        <translation>Přejmenovat</translation>
     </message>
     <message>
         <source>Remove Duplicates</source>
-        <translation type="vanished">Odstranit zdvojené</translation>
+        <translation>Odstranit zdvojené</translation>
     </message>
     <message>
         <source>Initially Collapse Albums</source>
-        <translation type="vanished">Na začátku alba složit</translation>
+        <translation>Na začátku alba složit</translation>
     </message>
     <message>
         <source>Are you sure you wish to remove the selected playlists?
 
 This cannot be undone.</source>
-        <translation type="vanished">Opravdu chcete odstranit vybrané seznamy skladeb?
+        <translation>Opravdu chcete odstranit vybrané seznamy skladeb?
 
 Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <source>Remove Playlists</source>
-        <translation type="vanished">Odstranit seznamy skladeb</translation>
+        <translation>Odstranit seznamy skladeb</translation>
     </message>
     <message>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Overwrite?</source>
-        <translation type="vanished">Seznam skladeb pojmenovaný &apos;%1&apos; již existuje!
+        <translation>Seznam skladeb pojmenovaný &apos;%1&apos; již existuje!
 
 Přepsat?</translation>
     </message>
     <message>
         <source>Overwrite Playlist</source>
-        <translation type="vanished">Přepsat seznam skladeb</translation>
+        <translation>Přepsat seznam skladeb</translation>
     </message>
     <message>
         <source>Rename Playlist</source>
-        <translation type="vanished">Přejmenovat seznam skladeb</translation>
+        <translation>Přejmenovat seznam skladeb</translation>
     </message>
     <message>
         <source>Enter new name for playlist:</source>
-        <translation type="vanished">Zadejte nový název pro seznam skladeb:</translation>
+        <translation>Zadejte nový název pro seznam skladeb:</translation>
     </message>
     <message>
         <source>Cannot add songs from &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="vanished">Nelze přidat písně z &apos;%1&apos; do &apos;%2&apos;</translation>
+        <translation>Nelze přidat písně z &apos;%1&apos; do &apos;%2&apos;</translation>
     </message>
     <message numerus="yes">
         <source>1 Track</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>Jedna skladba</numerusform>
             <numerusform>%1 skladby</numerusform>
             <numerusform>%1 skladeb</numerusform>
@@ -2261,7 +2261,7 @@ Přepsat?</translation>
     </message>
     <message numerus="yes">
         <source>1 Track (%2)</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>Jedna skladba (%2)</numerusform>
             <numerusform>%1 skladby (%2)</numerusform>
             <numerusform>%1 skladeb (%2)</numerusform>
@@ -2270,7 +2270,7 @@ Přepsat?</translation>
     </message>
     <message numerus="yes">
         <source>1 Album</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>Jedno album</numerusform>
             <numerusform>%1 alba</numerusform>
             <numerusform>%1 alb</numerusform>
@@ -2279,7 +2279,7 @@ Přepsat?</translation>
     </message>
     <message numerus="yes">
         <source>1 Artist</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>Jeden umělec</numerusform>
             <numerusform>%1 umělci</numerusform>
             <numerusform>%1 umělců</numerusform>
@@ -2288,7 +2288,7 @@ Přepsat?</translation>
     </message>
     <message numerus="yes">
         <source>1 Stream</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>Jeden proud</numerusform>
             <numerusform>%1 proudy</numerusform>
             <numerusform>%1 proudů</numerusform>
@@ -2297,7 +2297,7 @@ Přepsat?</translation>
     </message>
     <message numerus="yes">
         <source>1 Entry</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>Jedna položka</numerusform>
             <numerusform>%1 položky</numerusform>
             <numerusform>%1 položek</numerusform>
@@ -2306,7 +2306,7 @@ Přepsat?</translation>
     </message>
     <message numerus="yes">
         <source>1 Rule</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>Jedno pravidlo</numerusform>
             <numerusform>%1 pravidla</numerusform>
             <numerusform>%1 pravidel</numerusform>
@@ -2315,7 +2315,7 @@ Přepsat?</translation>
     </message>
     <message numerus="yes">
         <source>1 Podcast</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>Jeden záznam</numerusform>
             <numerusform>%1 záznamy</numerusform>
             <numerusform>%1 záznamů</numerusform>
@@ -2324,7 +2324,7 @@ Přepsat?</translation>
     </message>
     <message numerus="yes">
         <source>1 Episode</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>Jeden díl</numerusform>
             <numerusform>%1 díly</numerusform>
             <numerusform>%1 dílů</numerusform>
@@ -2333,7 +2333,7 @@ Přepsat?</translation>
     </message>
     <message numerus="yes">
         <source>1 Update available</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>Jedna aktualizace dostupná</numerusform>
             <numerusform>%1 aktualizace dostupné</numerusform>
             <numerusform>%1 aktualizací dostupných</numerusform>
@@ -2342,81 +2342,81 @@ Přepsat?</translation>
     </message>
     <message>
         <source>Collection Settings</source>
-        <translation type="vanished">Nastavení sbírky</translation>
+        <translation>Nastavení sbírky</translation>
     </message>
     <message>
         <source>Playback</source>
         <extracomment>i18n: file: gui/playbacksettings.ui:29
 i18n: ectx: property (title), widget (QGroupBox, stopPlaybackBox)
 </extracomment>
-        <translation type="vanished">Přehrávání</translation>
+        <translation>Přehrávání</translation>
     </message>
     <message>
         <source>Playback Settings</source>
-        <translation type="vanished">Nastavení přehrávání</translation>
+        <translation>Nastavení přehrávání</translation>
     </message>
     <message>
         <source>Downloaded Files</source>
-        <translation type="vanished">Stažené soubory</translation>
+        <translation>Stažené soubory</translation>
     </message>
     <message>
         <source>Downloaded Files Settings</source>
-        <translation type="vanished">Nastavení pro stažené soubory</translation>
+        <translation>Nastavení pro stažené soubory</translation>
     </message>
     <message>
         <source>Interface</source>
-        <translation type="vanished">Rozhraní</translation>
+        <translation>Rozhraní</translation>
     </message>
     <message>
         <source>Interface Settings</source>
-        <translation type="vanished">Nastavení rozhraní</translation>
+        <translation>Nastavení rozhraní</translation>
     </message>
     <message>
         <source>Info View Settings</source>
-        <translation type="vanished">Nastavení pohledu na informace</translation>
+        <translation>Nastavení pohledu na informace</translation>
     </message>
     <message>
         <source>Scrobbling</source>
-        <translation type="vanished">Odesílání informací o skladbách</translation>
+        <translation>Odesílání informací o skladbách</translation>
     </message>
     <message>
         <source>Scrobbling Settings</source>
-        <translation type="vanished">Nastavení odesílání informací o skladbách</translation>
+        <translation>Nastavení odesílání informací o skladbách</translation>
     </message>
     <message>
         <source>Audio CD Settings</source>
-        <translation type="vanished">Nastavení zvukového CD</translation>
+        <translation>Nastavení zvukového CD</translation>
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="vanished">Proxy</translation>
+        <translation>Proxy</translation>
     </message>
     <message>
         <source>Proxy Settings</source>
         <comment>Qt-only</comment>
-        <translation type="vanished">Nastavení proxy</translation>
+        <translation>Nastavení proxy</translation>
     </message>
     <message>
         <source>Shortcuts</source>
         <comment>Qt-only</comment>
-        <translation type="vanished">Zkratky</translation>
+        <translation>Zkratky</translation>
     </message>
     <message>
         <source>Keyboard Shortcut Settings</source>
         <comment>Qt-only</comment>
-        <translation type="vanished">Nastavení klávesových zkratek</translation>
+        <translation>Nastavení klávesových zkratek</translation>
     </message>
     <message>
         <source>Cache</source>
-        <translation type="vanished">Vyrovnávací paměť</translation>
+        <translation>Vyrovnávací paměť</translation>
     </message>
     <message>
         <source>Cached Items</source>
-        <translation type="vanished">Položky ve vyrovnávací paměti</translation>
+        <translation>Položky ve vyrovnávací paměti</translation>
     </message>
     <message>
         <source>Cantata Preferences</source>
-        <translation type="vanished">Nastavení Cantaty</translation>
+        <translation>Nastavení Cantaty</translation>
     </message>
     <message>
         <source>Configure</source>
@@ -2433,7 +2433,7 @@ i18n: ectx: property (toolTip), widget (QToolButton, configureDestButton)
 i18n: file: gui/coverdialog.ui:37
 i18n: ectx: property (toolTip), widget (MenuButton, configureButton)
 </extracomment>
-        <translation type="vanished">Nastavit</translation>
+        <translation>Nastavit</translation>
     </message>
     <message>
         <source>Composer:</source>
@@ -2450,11 +2450,11 @@ i18n: ectx: property (text), widget (BuddyLabel, composerLabel)
 i18n: file: tags/tageditor.ui:93
 i18n: ectx: property (text), widget (StateLabel, composerLabel)
 </extracomment>
-        <translation type="vanished">Skladatel:</translation>
+        <translation>Skladatel:</translation>
     </message>
     <message>
         <source>Performer:</source>
-        <translation type="vanished">Účinkující:</translation>
+        <translation>Účinkující:</translation>
     </message>
     <message>
         <source>Genre:</source>
@@ -2467,7 +2467,7 @@ i18n: ectx: property (text), widget (BuddyLabel, label_3)
 i18n: file: tags/tageditor.ui:145
 i18n: ectx: property (text), widget (StateLabel, genreLabel)
 </extracomment>
-        <translation type="vanished">Žánr:</translation>
+        <translation>Žánr:</translation>
     </message>
     <message>
         <source>Comment:</source>
@@ -2480,31 +2480,31 @@ i18n: ectx: property (text), widget (BuddyLabel, commentLabel)
 i18n: file: tags/tageditor.ui:195
 i18n: ectx: property (text), widget (StateLabel, commentLabel)
 </extracomment>
-        <translation type="vanished">Poznámka:</translation>
+        <translation>Poznámka:</translation>
     </message>
     <message>
         <source>Date:</source>
-        <translation type="vanished">Datum:</translation>
+        <translation>Datum:</translation>
     </message>
     <message>
         <source>Find songs be searching the &apos;Date&apos; tag.&lt;br/&gt;&lt;br/&gt;Usually just entering the year should suffice.</source>
-        <translation type="vanished">Najít písně hledáním ve značce Datum. &lt;br/&gt;&lt;br/&gt;Obvykle by mělo stačit jen zadat rok.</translation>
+        <translation>Najít písně hledáním ve značce Datum. &lt;br/&gt;&lt;br/&gt;Obvykle by mělo stačit jen zadat rok.</translation>
     </message>
     <message>
         <source>Modified:</source>
-        <translation type="vanished">Změněno:</translation>
+        <translation>Změněno:</translation>
     </message>
     <message>
         <source>Enter date (YYYY/MM/DD - e.g. 2015/01/31) to search for files modified since that date.&lt;br/&gt;&lt;br&gt;Or enter a number of days to find files that were modified in the previous number of days.</source>
-        <translation type="vanished">Zadejte datum (RRRR/MM/DD - např. 2015/01/31) k vyhledání souborů změněných od toho databázi.&lt;br/&gt;&lt;br&gt;</translation>
+        <translation>Zadejte datum (RRRR/MM/DD - např. 2015/01/31) k vyhledání souborů změněných od toho databázi.&lt;br/&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <source>Any:</source>
-        <translation type="vanished">Jakékoli:</translation>
+        <translation>Jakékoli:</translation>
     </message>
     <message>
         <source>No tracks found.</source>
-        <translation type="vanished">Nenalezeny žádné skladby</translation>
+        <translation>Nenalezeny žádné skladby</translation>
     </message>
     <message>
         <source>Host:</source>
@@ -2529,529 +2529,529 @@ i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
 i18n: file: network/proxysettings.ui:63
 i18n: ectx: property (text), widget (BuddyLabel, proxyHostLabel)
 </extracomment>
-        <translation type="vanished">Server:</translation>
+        <translation>Server:</translation>
     </message>
     <message>
         <source>Which type of collection do you wish to connect to?</source>
-        <translation type="vanished">Který typ sbírky chcete připojit?</translation>
+        <translation>Který typ sbírky chcete připojit?</translation>
     </message>
     <message>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
-        <translation type="vanished">Obvyklý - hudební sbírku může být sdílena, je na jiném stroji, nebo je již nastavena, nebo chcete povolit přístup z jiných klientů (např. MPDroid)</translation>
+        <translation>Obvyklý - hudební sbírku může být sdílena, je na jiném stroji, nebo je již nastavena, nebo chcete povolit přístup z jiných klientů (např. MPDroid)</translation>
     </message>
     <message>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
-        <translation type="vanished">Základní - hudební sbírka není sdílena s ostatními, a Cantata nastaví a bude řídit instanci MPD. Toto nastavení bude pro Cantatu výlučné a &lt;b&gt;nebude&lt;/b&gt; přístupné pro jiné klienty MPD.</translation>
+        <translation>Základní - hudební sbírka není sdílena s ostatními, a Cantata nastaví a bude řídit instanci MPD. Toto nastavení bude pro Cantatu výlučné a &lt;b&gt;nebude&lt;/b&gt; přístupné pro jiné klienty MPD.</translation>
     </message>
     <message>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:236
 i18n: ectx: property (text), widget (NoteLabel, musicFolderNoteLabel_2)
 </extracomment>
-        <translation type="vanished">Pokud chcete mít pokročilé nastavení MPD (např. více výstupů zvuku, plnou podporu pro DSD atd.), potom &lt;b&gt;musíte&lt;/b&gt; vybrat Obvyklý</translation>
+        <translation>Pokud chcete mít pokročilé nastavení MPD (např. více výstupů zvuku, plnou podporu pro DSD atd.), potom &lt;b&gt;musíte&lt;/b&gt; vybrat Obvyklý</translation>
     </message>
     <message>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;&lt;b&gt;POZNÁMKA:&lt;/b&gt; %1&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;&lt;b&gt;POZNÁMKA:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Add Collection</source>
-        <translation type="vanished">Přidat sbírku</translation>
+        <translation>Přidat sbírku</translation>
     </message>
     <message>
         <source>Standard</source>
-        <translation type="vanished">Obvyklý</translation>
+        <translation>Obvyklý</translation>
     </message>
     <message>
         <source>Basic</source>
-        <translation type="vanished">Základní</translation>
+        <translation>Základní</translation>
     </message>
     <message>
         <source>Delete &apos;%1&apos;?</source>
-        <translation type="vanished">Smazat &apos;%1&apos;?</translation>
+        <translation>Smazat &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="vanished">Smazat</translation>
+        <translation>Smazat</translation>
     </message>
     <message>
         <source>New Collection %1</source>
-        <translation type="vanished">Nová sbírka %1</translation>
+        <translation>Nová sbírka %1</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="vanished">Výchozí</translation>
+        <translation>Výchozí</translation>
     </message>
     <message>
         <source>Previous Track</source>
-        <translation type="vanished">Předchozí skladba</translation>
+        <translation>Předchozí skladba</translation>
     </message>
     <message>
         <source>Next Track</source>
-        <translation type="vanished">Další skladba</translation>
+        <translation>Další skladba</translation>
     </message>
     <message>
         <source>Play/Pause</source>
-        <translation type="vanished">Přehrát/Pozastavit</translation>
+        <translation>Přehrát/Pozastavit</translation>
     </message>
     <message>
         <source>Stop After Current Track</source>
-        <translation type="vanished">Zastavit po současné skladbě</translation>
+        <translation>Zastavit po současné skladbě</translation>
     </message>
     <message>
         <source>Increase Volume</source>
-        <translation type="vanished">Zvýšit hlasitost</translation>
+        <translation>Zvýšit hlasitost</translation>
     </message>
     <message>
         <source>Decrease Volume</source>
-        <translation type="vanished">Snížit hlasitost</translation>
+        <translation>Snížit hlasitost</translation>
     </message>
     <message>
         <source>Save As</source>
-        <translation type="vanished">Uložit jako</translation>
+        <translation>Uložit jako</translation>
     </message>
     <message>
         <source>Append</source>
-        <translation type="vanished">Připojit</translation>
+        <translation>Připojit</translation>
     </message>
     <message>
         <source>Append To Play Queue</source>
-        <translation type="vanished">Připojit do řady skladeb k přehrání</translation>
+        <translation>Připojit do řady skladeb k přehrání</translation>
     </message>
     <message>
         <source>Append And Play</source>
-        <translation type="vanished">Připojit a přehrát</translation>
+        <translation>Připojit a přehrát</translation>
     </message>
     <message>
         <source>Add And Play</source>
-        <translation type="vanished">Přidat a přehrát</translation>
+        <translation>Přidat a přehrát</translation>
     </message>
     <message>
         <source>Append To Play Queue And Play</source>
-        <translation type="vanished">Připojit do řady skladeb k přehrání a přehrát</translation>
+        <translation>Připojit do řady skladeb k přehrání a přehrát</translation>
     </message>
     <message>
         <source>Insert After Current</source>
-        <translation type="vanished">Vložit po nynější</translation>
+        <translation>Vložit po nynější</translation>
     </message>
     <message>
         <source>Append Random Album</source>
-        <translation type="vanished">Připojit náhodné album</translation>
+        <translation>Připojit náhodné album</translation>
     </message>
     <message>
         <source>Play Now (And Replace Play Queue)</source>
-        <translation type="vanished">Přehrát nyní (a nahradit řadu skladeb k přehrání)</translation>
+        <translation>Přehrát nyní (a nahradit řadu skladeb k přehrání)</translation>
     </message>
     <message>
         <source>Add With Priority</source>
-        <translation type="vanished">Přidat s předností</translation>
+        <translation>Přidat s předností</translation>
     </message>
     <message>
         <source>Set Priority</source>
-        <translation type="vanished">Nastavit přednost</translation>
+        <translation>Nastavit přednost</translation>
     </message>
     <message>
         <source>Highest Priority (255)</source>
-        <translation type="vanished">Nejvyšší přednost (255)</translation>
+        <translation>Nejvyšší přednost (255)</translation>
     </message>
     <message>
         <source>High Priority (200)</source>
-        <translation type="vanished">Vysoká přednost (200)</translation>
+        <translation>Vysoká přednost (200)</translation>
     </message>
     <message>
         <source>Medium Priority (125)</source>
-        <translation type="vanished">Střední přednost (125)</translation>
+        <translation>Střední přednost (125)</translation>
     </message>
     <message>
         <source>Low Priority (50)</source>
-        <translation type="vanished">Nízká přednost (50)</translation>
+        <translation>Nízká přednost (50)</translation>
     </message>
     <message>
         <source>Default Priority (0)</source>
-        <translation type="vanished">Výchozí přednost (0)</translation>
+        <translation>Výchozí přednost (0)</translation>
     </message>
     <message>
         <source>Custom Priority...</source>
-        <translation type="vanished">Vlastní přednost...</translation>
+        <translation>Vlastní přednost...</translation>
     </message>
     <message>
         <source>Add To Playlist</source>
-        <translation type="vanished">Přidat do seznamu skladeb</translation>
+        <translation>Přidat do seznamu skladeb</translation>
     </message>
     <message>
         <source>Organize Files</source>
-        <translation type="vanished">Uspořádat soubory</translation>
+        <translation>Uspořádat soubory</translation>
     </message>
     <message>
         <source>Edit Track Information</source>
-        <translation type="vanished">Upravit informace o skladbě</translation>
+        <translation>Upravit informace o skladbě</translation>
     </message>
     <message>
         <source>Set Image</source>
-        <translation type="vanished">Nastavit obrázek</translation>
+        <translation>Nastavit obrázek</translation>
     </message>
     <message>
         <source>Find</source>
-        <translation type="vanished">Najít</translation>
+        <translation>Najít</translation>
     </message>
     <message>
         <source>Add To Play Queue</source>
-        <translation type="vanished">Přidat do řady skladeb k přehrání</translation>
+        <translation>Přidat do řady skladeb k přehrání</translation>
     </message>
     <message>
         <source>Now playing</source>
-        <translation type="vanished">Nyní se hraje</translation>
+        <translation>Nyní se hraje</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="vanished">Přehrát</translation>
+        <translation>Přehrát</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation type="vanished">Pozastavit</translation>
+        <translation>Pozastavit</translation>
     </message>
     <message>
         <source>Cue Sheet</source>
-        <translation type="vanished">List CUE</translation>
+        <translation>List CUE</translation>
     </message>
     <message>
         <source>Playlist</source>
-        <translation type="vanished">Seznam skladeb</translation>
+        <translation>Seznam skladeb</translation>
     </message>
     <message>
         <source>Configure Device</source>
-        <translation type="vanished">Nastavit zařízení</translation>
+        <translation>Nastavit zařízení</translation>
     </message>
     <message>
         <source>Refresh Device</source>
-        <translation type="vanished">Obnovit zařízení</translation>
+        <translation>Obnovit zařízení</translation>
     </message>
     <message>
         <source>Connect Device</source>
-        <translation type="vanished">Připojit zařízení</translation>
+        <translation>Připojit zařízení</translation>
     </message>
     <message>
         <source>Disconnect Device</source>
-        <translation type="vanished">Odpojit zařízení</translation>
+        <translation>Odpojit zařízení</translation>
     </message>
     <message>
         <source>Edit CD Details</source>
-        <translation type="vanished">Upravit podrobnosti CD</translation>
+        <translation>Upravit podrobnosti CD</translation>
     </message>
     <message>
         <source>No Devices Attached</source>
-        <translation type="vanished">Nepřipojeno žádné zařízení</translation>
+        <translation>Nepřipojeno žádné zařízení</translation>
     </message>
     <message>
         <source>Not logged in</source>
-        <translation type="vanished">Nepřihlášen</translation>
+        <translation>Nepřihlášen</translation>
     </message>
     <message>
         <source>Logged in</source>
-        <translation type="vanished">Přihlášen</translation>
+        <translation>Přihlášen</translation>
     </message>
     <message>
         <source>No subscriptions</source>
-        <translation type="vanished">Žádné odběry</translation>
+        <translation>Žádné odběry</translation>
     </message>
     <message>
         <source>You do not have an active subscription</source>
-        <translation type="vanished">Nemáte žádný činný odběr</translation>
+        <translation>Nemáte žádný činný odběr</translation>
     </message>
     <message>
         <source>Logged in (expiry:%1)</source>
-        <translation type="vanished">Přihlášen (vypršení: %1)</translation>
+        <translation>Přihlášen (vypršení: %1)</translation>
     </message>
     <message>
         <source>Session expired</source>
-        <translation type="vanished">Sezení vypršelo</translation>
+        <translation>Sezení vypršelo</translation>
     </message>
     <message>
         <source>Parse error loading cache file, please check your songs tags.</source>
-        <translation type="vanished">Chyba ve zpracování při nahrávání souboru s vyrovnávací pamětí. Prověřte, prosím, značky vaší písně.</translation>
+        <translation>Chyba ve zpracování při nahrávání souboru s vyrovnávací pamětí. Prověřte, prosím, značky vaší písně.</translation>
     </message>
     <message>
         <source>%1 by %2</source>
         <comment>Album by Artist</comment>
-        <translation type="vanished">%1 od %2</translation>
+        <translation>%1 od %2</translation>
     </message>
     <message>
         <source>New Playlist...</source>
-        <translation type="vanished">Nový seznam skladeb...</translation>
+        <translation>Nový seznam skladeb...</translation>
     </message>
     <message>
         <source>Stored Playlists</source>
-        <translation type="vanished">Uložené seznamy skladeb</translation>
+        <translation>Uložené seznamy skladeb</translation>
     </message>
     <message>
         <source>Standard playlists</source>
-        <translation type="vanished">Obvyklé seznamy skladeb</translation>
+        <translation>Obvyklé seznamy skladeb</translation>
     </message>
     <message>
         <source>Smart Playlist</source>
-        <translation type="vanished">Chytrý seznam skladeb</translation>
+        <translation>Chytrý seznam skladeb</translation>
     </message>
     <message>
         <source>#</source>
         <comment>Track number</comment>
-        <translation type="vanished">Č.</translation>
+        <translation>Č.</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="vanished">Délka</translation>
+        <translation>Délka</translation>
     </message>
     <message>
         <source>Disc</source>
-        <translation type="vanished">Disk</translation>
+        <translation>Disk</translation>
     </message>
     <message>
         <source>Rating</source>
-        <translation type="vanished">Hodnocení</translation>
+        <translation>Hodnocení</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="vanished">Zpět</translation>
+        <translation>Zpět</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="vanished">Znovu</translation>
+        <translation>Znovu</translation>
     </message>
     <message>
         <source>Shuffle</source>
-        <translation type="vanished">Zamíchat</translation>
+        <translation>Zamíchat</translation>
     </message>
     <message>
         <source>Sort By</source>
-        <translation type="vanished">Třídit podle</translation>
+        <translation>Třídit podle</translation>
     </message>
     <message>
         <source>Album Artist</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:82
 i18n: ectx: property (text), widget (QPushButton, albumArtist)
 </extracomment>
-        <translation type="vanished">Umělec alba</translation>
+        <translation>Umělec alba</translation>
     </message>
     <message>
         <source>Track Title</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:122
 i18n: ectx: property (text), widget (QPushButton, trackTitle)
 </extracomment>
-        <translation type="vanished">Název skladby</translation>
+        <translation>Název skladby</translation>
     </message>
     <message>
         <source># (Track Number)</source>
-        <translation type="vanished">Číslo skladby</translation>
+        <translation>Číslo skladby</translation>
     </message>
     <message>
         <source>TuneIn</source>
-        <translation type="vanished">TuneIn</translation>
+        <translation>TuneIn</translation>
     </message>
     <message>
         <source>ShoutCast</source>
-        <translation type="vanished">ShoutCast</translation>
+        <translation>ShoutCast</translation>
     </message>
     <message>
         <source>Dirble</source>
-        <translation type="vanished">Dirble</translation>
+        <translation>Dirble</translation>
     </message>
     <message>
         <source>Stream Search</source>
-        <translation type="vanished">Hledání proudu</translation>
+        <translation>Hledání proudu</translation>
     </message>
     <message>
         <source>Search for radio streams</source>
-        <translation type="vanished">Hledat rozhlasové proudy</translation>
+        <translation>Hledat rozhlasové proudy</translation>
     </message>
     <message>
         <source>Enter string to search</source>
-        <translation type="vanished">Zadejte hledaný řetězec</translation>
+        <translation>Zadejte hledaný řetězec</translation>
     </message>
     <message>
         <source>Not Loaded</source>
-        <translation type="vanished">Nenahráno</translation>
+        <translation>Nenahráno</translation>
     </message>
     <message>
         <source>Loading...</source>
-        <translation type="vanished">Nahrává se...</translation>
+        <translation>Nahrává se...</translation>
     </message>
     <message>
         <source>Bookmarks</source>
-        <translation type="vanished">Záložky</translation>
+        <translation>Záložky</translation>
     </message>
     <message>
         <source>IceCast</source>
-        <translation type="vanished">IceCast</translation>
+        <translation>IceCast</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation type="vanished">Oblíbené</translation>
+        <translation>Oblíbené</translation>
     </message>
     <message>
         <source>Bookmark Category</source>
-        <translation type="vanished">Skupina záložky</translation>
+        <translation>Skupina záložky</translation>
     </message>
     <message>
         <source>Add Stream To Favorites</source>
-        <translation type="vanished">Přidat proud do oblíbených</translation>
+        <translation>Přidat proud do oblíbených</translation>
     </message>
     <message>
         <source>Configure Digitally Imported</source>
-        <translation type="vanished">Nastavit Digitally Imported</translation>
+        <translation>Nastavit Digitally Imported</translation>
     </message>
     <message>
         <source>Streams</source>
-        <translation type="vanished">Proudy</translation>
+        <translation>Proudy</translation>
     </message>
     <message>
         <source>Radio stations</source>
-        <translation type="vanished">Rozhlasové stanice</translation>
+        <translation>Rozhlasové stanice</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="vanished">Neznámý</translation>
+        <translation>Neznámý</translation>
     </message>
     <message>
         <source>&quot;%1&quot;</source>
         <comment>name (host)</comment>
-        <translation type="vanished">&quot;%1&quot;</translation>
+        <translation>&quot;%1&quot;</translation>
     </message>
     <message>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
-        <translation type="vanished">&quot;%1&quot; (%2:%3)</translation>
+        <translation>&quot;%1&quot; (%2:%3)</translation>
     </message>
     <message>
         <source>Connection to %1 failed</source>
-        <translation type="vanished">Nepodařilo se připojit k %1</translation>
+        <translation>Nepodařilo se připojit k %1</translation>
     </message>
     <message>
         <source>Connection to %1 failed - please check your proxy settings</source>
-        <translation type="vanished">Nepodařilo se připojit k %1 - Prověřte, prosím, nastavení vaší proxy</translation>
+        <translation>Nepodařilo se připojit k %1 - Prověřte, prosím, nastavení vaší proxy</translation>
     </message>
     <message>
         <source>Connection to %1 failed - incorrect password</source>
-        <translation type="vanished">Nepodařilo se připojit k %1 - nesprávné heslo</translation>
+        <translation>Nepodařilo se připojit k %1 - nesprávné heslo</translation>
     </message>
     <message>
         <source>Failed to send command to %1 - not connected</source>
-        <translation type="vanished">Nepodařilo se poslat příkaz %1 - nepřipojeno</translation>
+        <translation>Nepodařilo se poslat příkaz %1 - nepřipojeno</translation>
     </message>
     <message>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
-        <translation type="vanished">Nepodařilo se nahrát. Ověřte, prosím, zda má mpd oprávnění ke čtení.</translation>
+        <translation>Nepodařilo se nahrát. Ověřte, prosím, zda má mpd oprávnění ke čtení.</translation>
     </message>
     <message>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
-        <translation type="vanished">Nepodařilo se nahrát. MPD může přehrát jen místní soubory, pokud je připojen přes místní zásuvku.</translation>
+        <translation>Nepodařilo se nahrát. MPD může přehrát jen místní soubory, pokud je připojen přes místní zásuvku.</translation>
     </message>
     <message>
         <source>Failed to send command. Disconnected from %1</source>
-        <translation type="vanished">Nepodařilo se poslat příkaz. Odpojeno od %1</translation>
+        <translation>Nepodařilo se poslat příkaz. Odpojeno od %1</translation>
     </message>
     <message>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
-        <translation type="vanished">Nepodařilo se přejmenovat &lt;b&gt;%1&lt;/b&gt; na &lt;b&gt;%2&lt;/b&gt;</translation>
+        <translation>Nepodařilo se přejmenovat &lt;b&gt;%1&lt;/b&gt; na &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="vanished">Nepodařilo se uložit &lt;b&gt;%1&lt;/b&gt;!</translation>
+        <translation>Nepodařilo se uložit &lt;b&gt;%1&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
-        <translation type="vanished">Nelze přidat části seznamu v souboru CUE do seznamu skladeb!</translation>
+        <translation>Nelze přidat části seznamu v souboru CUE do seznamu skladeb!</translation>
     </message>
     <message>
         <source>You cannot add a playlist to another playlist!</source>
-        <translation type="vanished">Nelze přidat seznam skladeb do jiného seznamu skladeb!</translation>
+        <translation>Nelze přidat seznam skladeb do jiného seznamu skladeb!</translation>
     </message>
     <message>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
-        <translation type="vanished">Nepodařilo se poslat &apos;%1&apos; %2. Ověřte, prosím, že %2 je zaregistrováno u MPD.</translation>
+        <translation>Nepodařilo se poslat &apos;%1&apos; %2. Ověřte, prosím, že %2 je zaregistrováno u MPD.</translation>
     </message>
     <message>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
-        <translation type="vanished">Nelze uložit hodnocení, jelikož příkaz lepiče MPD není podporován.</translation>
+        <translation>Nelze uložit hodnocení, jelikož příkaz lepiče MPD není podporován.</translation>
     </message>
     <message>
         <source>Single Tracks</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:540
 i18n: ectx: property (title), widget (QGroupBox, groupBox_3)
 </extracomment>
-        <translation type="vanished">Jednotlivé skladby</translation>
+        <translation>Jednotlivé skladby</translation>
     </message>
     <message>
         <source>Personal</source>
-        <translation type="vanished">Osobní</translation>
+        <translation>Osobní</translation>
     </message>
     <message>
         <source>Various Artists</source>
-        <translation type="vanished">Různí umělci</translation>
+        <translation>Různí umělci</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; on &lt;b&gt;%2&lt;/b&gt;</source>
         <comment>Song on Album</comment>
-        <translation type="vanished">&lt;b&gt;%1&lt;/b&gt; na &lt;b&gt;%2&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; na &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; by &lt;b&gt;%2&lt;/b&gt; on &lt;b&gt;%3&lt;/b&gt;</source>
         <comment>Song by Artist on Album</comment>
-        <translation type="vanished">&lt;b&gt;%1&lt;/b&gt; od &lt;b&gt;%2&lt;/b&gt; na &lt;b&gt;%3&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; od &lt;b&gt;%2&lt;/b&gt; na &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
         <source>No proxy</source>
-        <translation type="vanished">Žádná proxy</translation>
+        <translation>Žádná proxy</translation>
     </message>
     <message>
         <source>Use the system proxy settings</source>
-        <translation type="vanished">Použít systémové nastavení proxy</translation>
+        <translation>Použít systémové nastavení proxy</translation>
     </message>
     <message>
         <source>Manual proxy configuration</source>
-        <translation type="vanished">Ruční nastavení proxy</translation>
+        <translation>Ruční nastavení proxy</translation>
     </message>
     <message>
         <source>The world&apos;s largest digital service for free music</source>
-        <translation type="vanished">Největší světová digitální služba pro volnou hudbu</translation>
+        <translation>Největší světová digitální služba pro volnou hudbu</translation>
     </message>
     <message>
         <source>Jamendo Settings</source>
-        <translation type="vanished">Nastavení pro Jamendo</translation>
+        <translation>Nastavení pro Jamendo</translation>
     </message>
     <message>
         <source>MP3</source>
-        <translation type="vanished">MP3</translation>
+        <translation>MP3</translation>
     </message>
     <message>
         <source>Ogg</source>
-        <translation type="vanished">Ogg</translation>
+        <translation>Ogg</translation>
     </message>
     <message>
         <source>Streaming format:</source>
-        <translation type="vanished">Formát přenosu:</translation>
+        <translation>Formát přenosu:</translation>
     </message>
     <message>
         <source>Streaming</source>
-        <translation type="vanished">Přenos</translation>
+        <translation>Přenos</translation>
     </message>
     <message>
         <source>MP3 128k</source>
-        <translation type="vanished">MP3 128k</translation>
+        <translation>MP3 128k</translation>
     </message>
     <message>
         <source>MP3 VBR</source>
-        <translation type="vanished">MP3 VBR</translation>
+        <translation>MP3 VBR</translation>
     </message>
     <message>
         <source>WAV</source>
-        <translation type="vanished">WAV</translation>
+        <translation>WAV</translation>
     </message>
     <message>
         <source>Online music from magnatune.com</source>
-        <translation type="vanished">Internetová hudba z magnatune.com</translation>
+        <translation>Internetová hudba z magnatune.com</translation>
     </message>
     <message>
         <source>Magnatune Settings</source>
-        <translation type="vanished">Nastavení pro Magnatune</translation>
+        <translation>Nastavení pro Magnatune</translation>
     </message>
     <message>
         <source>Username:</source>
@@ -3068,7 +3068,7 @@ i18n: ectx: property (text), widget (BuddyLabel, userLabel)
 i18n: file: streams/digitallyimportedsettings.ui:51
 i18n: ectx: property (text), widget (BuddyLabel, label_2)
 </extracomment>
-        <translation type="vanished">Uživatelské jméno:</translation>
+        <translation>Uživatelské jméno:</translation>
     </message>
     <message>
         <source>Password:</source>
@@ -3101,316 +3101,316 @@ i18n: ectx: property (text), widget (BuddyLabel, passLabel)
 i18n: file: streams/digitallyimportedsettings.ui:64
 i18n: ectx: property (text), widget (BuddyLabel, label_3)
 </extracomment>
-        <translation type="vanished">Heslo:</translation>
+        <translation>Heslo:</translation>
     </message>
     <message>
         <source>Membership:</source>
-        <translation type="vanished">Členství:</translation>
+        <translation>Členství:</translation>
     </message>
     <message>
         <source>Downloads:</source>
-        <translation type="vanished">Stahování:</translation>
+        <translation>Stahování:</translation>
     </message>
     <message>
         <source>Failed to parse</source>
-        <translation type="vanished">Nepodařilo se zpracovat</translation>
+        <translation>Nepodařilo se zpracovat</translation>
     </message>
     <message>
         <source>Downloading...%1%</source>
-        <translation type="vanished">Stahuje se... %1%</translation>
+        <translation>Stahuje se... %1%</translation>
     </message>
     <message>
         <source>Parsing music list....</source>
-        <translation type="vanished">Zpracovává se seznam s hudbou...</translation>
+        <translation>Zpracovává se seznam s hudbou...</translation>
     </message>
     <message>
         <source>Failed to download</source>
-        <translation type="vanished">Nepodařilo se stáhnout</translation>
+        <translation>Nepodařilo se stáhnout</translation>
     </message>
     <message>
         <source>The music listing needs to be downloaded, this can consume over %1Mb of disk space</source>
-        <translation type="vanished">Je třeba stáhnout seznamu hudby. To může spotřebovat přes %1 MB místa na disku</translation>
+        <translation>Je třeba stáhnout seznamu hudby. To může spotřebovat přes %1 MB místa na disku</translation>
     </message>
     <message>
         <source>Dowload music listing?</source>
-        <translation type="vanished">Stáhnout seznam hudby</translation>
+        <translation>Stáhnout seznam hudby</translation>
     </message>
     <message>
         <source>Re-download music listing?</source>
-        <translation type="vanished">Stáhnout seznam hudby znovu?</translation>
+        <translation>Stáhnout seznam hudby znovu?</translation>
     </message>
     <message>
         <source>RSS:</source>
-        <translation type="vanished">RSS:</translation>
+        <translation>RSS:</translation>
     </message>
     <message>
         <source>Website:</source>
-        <translation type="vanished">Stránky:</translation>
+        <translation>Stránky:</translation>
     </message>
     <message>
         <source>Podcast details</source>
-        <translation type="vanished">Podrobnosti záznamu</translation>
+        <translation>Podrobnosti záznamu</translation>
     </message>
     <message>
         <source>Select a podcast to display its details</source>
-        <translation type="vanished">Vybrat záznam pro zobrazení jeho podrobností</translation>
+        <translation>Vybrat záznam pro zobrazení jeho podrobností</translation>
     </message>
     <message>
         <source>Enter search term...</source>
-        <translation type="vanished">Zadat hledaný pojem...</translation>
+        <translation>Zadat hledaný pojem...</translation>
     </message>
     <message>
         <source>Failed to fetch podcasts from %1</source>
-        <translation type="vanished">Nepodařilo se natáhnout zvukové záznamy z %1</translation>
+        <translation>Nepodařilo se natáhnout zvukové záznamy z %1</translation>
     </message>
     <message>
         <source>There was a problem parsing the response from %1</source>
-        <translation type="vanished">Nastaly potíže se zpracováním odpovědi z %1</translation>
+        <translation>Nastaly potíže se zpracováním odpovědi z %1</translation>
     </message>
     <message>
         <source>Failed to download directory listing</source>
-        <translation type="vanished">Nepodařilo se stáhnout soupis adresáře</translation>
+        <translation>Nepodařilo se stáhnout soupis adresáře</translation>
     </message>
     <message>
         <source>Failed to parse directory listing</source>
-        <translation type="vanished">Nepodařilo se zpracovat soupis adresáře</translation>
+        <translation>Nepodařilo se zpracovat soupis adresáře</translation>
     </message>
     <message>
         <source>URL</source>
-        <translation type="vanished">Adresa (URL)</translation>
+        <translation>Adresa (URL)</translation>
     </message>
     <message>
         <source>Enter podcast URL...</source>
-        <translation type="vanished">Zadejte adresu zvukového záznamu (URL)...</translation>
+        <translation>Zadejte adresu zvukového záznamu (URL)...</translation>
     </message>
     <message>
         <source>Load</source>
-        <translation type="vanished">Nahrát</translation>
+        <translation>Nahrát</translation>
     </message>
     <message>
         <source>Enter podcast URL below, and press &apos;Load&apos;</source>
-        <translation type="vanished">Zadejte adresu zvukového záznamu (URL) níže a stiskněte Nahrát</translation>
+        <translation>Zadejte adresu zvukového záznamu (URL) níže a stiskněte Nahrát</translation>
     </message>
     <message>
         <source>Invalid URL!</source>
-        <translation type="vanished">Neplatná adresa (URL)!</translation>
+        <translation>Neplatná adresa (URL)!</translation>
     </message>
     <message>
         <source>Failed to fetch podcast!</source>
-        <translation type="vanished">Nepodařilo se natáhnout zvukový záznam!</translation>
+        <translation>Nepodařilo se natáhnout zvukový záznam!</translation>
     </message>
     <message>
         <source>Failed to parse podcast.</source>
-        <translation type="vanished">Nepodařilo se zpracovat zvukový záznam.</translation>
+        <translation>Nepodařilo se zpracovat zvukový záznam.</translation>
     </message>
     <message>
         <source>Cantata only supports audio podcasts! The URL entered contains only video podcasts.</source>
-        <translation type="vanished">Cantata podporuje pouze záznamy zvuku! Zadaná adresa (URL) obsahuje jen záznamy obrazu.</translation>
+        <translation>Cantata podporuje pouze záznamy zvuku! Zadaná adresa (URL) obsahuje jen záznamy obrazu.</translation>
     </message>
     <message>
         <source>Subscribe</source>
-        <translation type="vanished">Odebírat</translation>
+        <translation>Odebírat</translation>
     </message>
     <message>
         <source>Enter URL</source>
-        <translation type="vanished">Zadat adresu (URL)</translation>
+        <translation>Zadat adresu (URL)</translation>
     </message>
     <message>
         <source>Manual podcast URL</source>
-        <translation type="vanished">Ruční adresa zvukového záznamu (URL)</translation>
+        <translation>Ruční adresa zvukového záznamu (URL)</translation>
     </message>
     <message>
         <source>Search %1</source>
-        <translation type="vanished">Hledat %1</translation>
+        <translation>Hledat %1</translation>
     </message>
     <message>
         <source>Search for podcasts on %1</source>
-        <translation type="vanished">Hledat zvukové záznamy na %1</translation>
+        <translation>Hledat zvukové záznamy na %1</translation>
     </message>
     <message>
         <source>Add Podcast Subscription</source>
-        <translation type="vanished">Přidat odběr zvukového záznamu</translation>
+        <translation>Přidat odběr zvukového záznamu</translation>
     </message>
     <message>
         <source>Browse %1</source>
-        <translation type="vanished">Procházet %1</translation>
+        <translation>Procházet %1</translation>
     </message>
     <message>
         <source>Browse %1 podcasts</source>
-        <translation type="vanished">Procházet %1 zvukových záznamů</translation>
+        <translation>Procházet %1 zvukových záznamů</translation>
     </message>
     <message>
         <source>You are already subscribed to this podcast!</source>
-        <translation type="vanished">Již jste přihlášen k odběru tohoto záznamu!</translation>
+        <translation>Již jste přihlášen k odběru tohoto záznamu!</translation>
     </message>
     <message>
         <source>Subscription added</source>
-        <translation type="vanished">Odběr přidán</translation>
+        <translation>Odběr přidán</translation>
     </message>
     <message>
         <source>Subscribe to RSS feeds</source>
-        <translation type="vanished">Odebírat kanál RSS</translation>
+        <translation>Odebírat kanál RSS</translation>
     </message>
     <message>
         <source>%1 (%2)</source>
         <comment>podcast name (num unplayed episodes)</comment>
-        <translation type="vanished">%1 (%2)</translation>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>(Downloading: %1%)</source>
-        <translation type="vanished">(Stahuje se: %1%)</translation>
+        <translation>(Stahuje se: %1%)</translation>
     </message>
     <message>
         <source>Failed to parse %1</source>
-        <translation type="vanished">Nepodařilo se zpracovat %1</translation>
+        <translation>Nepodařilo se zpracovat %1</translation>
     </message>
     <message>
         <source>Cantata only supports audio podcasts! %1 contains only video podcasts.</source>
-        <translation type="vanished">Cantata podporuje pouze záznamy zvuku! %1 obsahuje jen záznamy obrazu.</translation>
+        <translation>Cantata podporuje pouze záznamy zvuku! %1 obsahuje jen záznamy obrazu.</translation>
     </message>
     <message>
         <source>Failed to download %1</source>
-        <translation type="vanished">Nepodařilo se stáhnout %1</translation>
+        <translation>Nepodařilo se stáhnout %1</translation>
     </message>
     <message>
         <source>Check for new episodes:</source>
-        <translation type="vanished">Podívat se po nových dílech:</translation>
+        <translation>Podívat se po nových dílech:</translation>
     </message>
     <message>
         <source>Download episodes to:</source>
-        <translation type="vanished">Stáhnout díly do:</translation>
+        <translation>Stáhnout díly do:</translation>
     </message>
     <message>
         <source>Download automatically:</source>
-        <translation type="vanished">Stáhnout automaticky:</translation>
+        <translation>Stáhnout automaticky:</translation>
     </message>
     <message>
         <source>Podcast Settings</source>
-        <translation type="vanished">Nastavení záznamu</translation>
+        <translation>Nastavení záznamu</translation>
     </message>
     <message>
         <source>Manually</source>
-        <translation type="vanished">Ručně</translation>
+        <translation>Ručně</translation>
     </message>
     <message>
         <source>Every 15 minutes</source>
-        <translation type="vanished">Každých 15 minut</translation>
+        <translation>Každých 15 minut</translation>
     </message>
     <message>
         <source>Every 30 minutes</source>
-        <translation type="vanished">Každých 30 minut</translation>
+        <translation>Každých 30 minut</translation>
     </message>
     <message>
         <source>Every hour</source>
-        <translation type="vanished">Každou hodinu</translation>
+        <translation>Každou hodinu</translation>
     </message>
     <message>
         <source>Every 2 hours</source>
-        <translation type="vanished">Každé 2 hodiny</translation>
+        <translation>Každé 2 hodiny</translation>
     </message>
     <message>
         <source>Every 6 hours</source>
-        <translation type="vanished">Každých 6 hodin</translation>
+        <translation>Každých 6 hodin</translation>
     </message>
     <message>
         <source>Every 12 hours</source>
-        <translation type="vanished">Každých 12 hodin</translation>
+        <translation>Každých 12 hodin</translation>
     </message>
     <message>
         <source>Every day</source>
-        <translation type="vanished">Každý den</translation>
+        <translation>Každý den</translation>
     </message>
     <message>
         <source>Every week</source>
-        <translation type="vanished">Každý týden</translation>
+        <translation>Každý týden</translation>
     </message>
     <message>
         <source>Don&apos;t automatically download episodes</source>
-        <translation type="vanished">Nestahovat díly automaticky</translation>
+        <translation>Nestahovat díly automaticky</translation>
     </message>
     <message>
         <source>Latest episode</source>
-        <translation type="vanished">Poslední díl</translation>
+        <translation>Poslední díl</translation>
     </message>
     <message>
         <source>Latest %1 episodes</source>
-        <translation type="vanished">Poslední %1 díly</translation>
+        <translation>Poslední %1 díly</translation>
     </message>
     <message>
         <source>All episodes</source>
-        <translation type="vanished">Všechny díly</translation>
+        <translation>Všechny díly</translation>
     </message>
     <message>
         <source>Add Subscription</source>
-        <translation type="vanished">Přidat odběr</translation>
+        <translation>Přidat odběr</translation>
     </message>
     <message>
         <source>Remove Subscription</source>
-        <translation type="vanished">Odstranit odběr</translation>
+        <translation>Odstranit odběr</translation>
     </message>
     <message>
         <source>Download Episodes</source>
-        <translation type="vanished">Stáhnout díly</translation>
+        <translation>Stáhnout díly</translation>
     </message>
     <message>
         <source>Delete Downloaded Episodes</source>
-        <translation type="vanished">Smazat stažené díly</translation>
+        <translation>Smazat stažené díly</translation>
     </message>
     <message>
         <source>Cancel Download</source>
-        <translation type="vanished">Zrušit stahování</translation>
+        <translation>Zrušit stahování</translation>
     </message>
     <message>
         <source>Mark Episodes As New</source>
-        <translation type="vanished">Označit díly jako nové</translation>
+        <translation>Označit díly jako nové</translation>
     </message>
     <message>
         <source>Mark Episodes As Listened</source>
-        <translation type="vanished">Označit díly jako poslechnuté</translation>
+        <translation>Označit díly jako poslechnuté</translation>
     </message>
     <message>
         <source>Unsubscribe from &apos;%1&apos;?</source>
-        <translation type="vanished">Odhlásit odběr z &apos;%1&apos;?</translation>
+        <translation>Odhlásit odběr z &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Do you wish to download the selected podcast episodes?</source>
-        <translation type="vanished">Chcete stáhnout vybrané díly zvukového záznamu?</translation>
+        <translation>Chcete stáhnout vybrané díly zvukového záznamu?</translation>
     </message>
     <message>
         <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
-        <translation type="vanished">Zrušit stahování dílů zvukového záznamu (nynější a všechny zařazené)?</translation>
+        <translation>Zrušit stahování dílů zvukového záznamu (nynější a všechny zařazené)?</translation>
     </message>
     <message>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
-        <translation type="vanished">Chcete smazat stažené soubory vybraných dílů zvukového záznamu?</translation>
+        <translation>Chcete smazat stažené soubory vybraných dílů zvukového záznamu?</translation>
     </message>
     <message>
         <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation type="vanished">Chcete označit vybrané díly zvukového záznamu jako nové?</translation>
+        <translation>Chcete označit vybrané díly zvukového záznamu jako nové?</translation>
     </message>
     <message>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="vanished">Chcete označit vybrané díly zvukového záznamu jako poslechnuté?</translation>
+        <translation>Chcete označit vybrané díly zvukového záznamu jako poslechnuté?</translation>
     </message>
     <message>
         <source>Refresh all subscriptions?</source>
-        <translation type="vanished">Obnovit všechny odběry?</translation>
+        <translation>Obnovit všechny odběry?</translation>
     </message>
     <message>
         <source>Refresh All</source>
-        <translation type="vanished">Obnovit vše</translation>
+        <translation>Obnovit vše</translation>
     </message>
     <message>
         <source>Refresh all subscriptions, or only those selected?</source>
-        <translation type="vanished">Obnovit všechny odběry nebo jen ty vybrané?</translation>
+        <translation>Obnovit všechny odběry nebo jen ty vybrané?</translation>
     </message>
     <message>
         <source>Refresh Selected</source>
-        <translation type="vanished">Obnovit vybrané</translation>
+        <translation>Obnovit vybrané</translation>
     </message>
     <message>
         <source>Search for tracks from soundcloud.com</source>
-        <translation type="vanished">Hledat skladby na soundcloud.com</translation>
+        <translation>Hledat skladby na soundcloud.com</translation>
     </message>
     <message>
         <source>Background Image</source>
@@ -3423,14 +3423,14 @@ i18n: ectx: property (title), widget (QGroupBox, groupBox)
 i18n: file: gui/interfacesettings.ui:207
 i18n: ectx: property (title), widget (QGroupBox, groupBox)
 </extracomment>
-        <translation type="vanished">Obrázek pozadí</translation>
+        <translation>Obrázek pozadí</translation>
     </message>
     <message>
         <source>Artist image</source>
         <extracomment>i18n: file: context/othersettings.ui:39
 i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_artist)
 </extracomment>
-        <translation type="vanished">Obrázek umělce</translation>
+        <translation>Obrázek umělce</translation>
     </message>
     <message>
         <source>Custom image:</source>
@@ -3443,7 +3443,7 @@ i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_custom)
 i18n: file: gui/interfacesettings.ui:227
 i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_custom)
 </extracomment>
-        <translation type="vanished">Vlastní obrázek:</translation>
+        <translation>Vlastní obrázek:</translation>
     </message>
     <message>
         <source>Blur:</source>
@@ -3456,7 +3456,7 @@ i18n: ectx: property (text), widget (QLabel, label_4b)
 i18n: file: gui/interfacesettings.ui:247
 i18n: ectx: property (text), widget (QLabel, label_4b)
 </extracomment>
-        <translation type="vanished">Rozmazání:</translation>
+        <translation>Rozmazání:</translation>
     </message>
     <message>
         <source>10px</source>
@@ -3469,7 +3469,7 @@ i18n: ectx: property (text), widget (QLabel, contextBackdropBlurLabel)
 i18n: file: gui/interfacesettings.ui:293
 i18n: ectx: property (text), widget (QLabel, playQueueBackgroundBlurLabel)
 </extracomment>
-        <translation type="vanished">10 px</translation>
+        <translation>10 px</translation>
     </message>
     <message>
         <source>Opacity:</source>
@@ -3482,7 +3482,7 @@ i18n: ectx: property (text), widget (QLabel, label_4)
 i18n: file: gui/interfacesettings.ui:305
 i18n: ectx: property (text), widget (QLabel, label_4)
 </extracomment>
-        <translation type="vanished">Neprůhlednost:</translation>
+        <translation>Neprůhlednost:</translation>
     </message>
     <message>
         <source>40%</source>
@@ -3495,7 +3495,7 @@ i18n: ectx: property (text), widget (QLabel, contextBackdropOpacityLabel)
 i18n: file: gui/interfacesettings.ui:351
 i18n: ectx: property (text), widget (QLabel, playQueueBackgroundOpacityLabel)
 </extracomment>
-        <translation type="vanished">40 %</translation>
+        <translation>40 %</translation>
         <extra-po-flags>no-c-format</extra-po-flags>
     </message>
     <message>
@@ -3503,14 +3503,14 @@ i18n: ectx: property (text), widget (QLabel, playQueueBackgroundOpacityLabel)
         <extracomment>i18n: file: context/othersettings.ui:167
 i18n: ectx: property (text), widget (BuddyLabel, contextSwitchTimeLabel)
 </extracomment>
-        <translation type="vanished">Automaticky přepnout do pohledu po:</translation>
+        <translation>Automaticky přepnout do pohledu po:</translation>
     </message>
     <message>
         <source>Do not auto-switch</source>
         <extracomment>i18n: file: context/othersettings.ui:177
 i18n: ectx: property (specialValueText), widget (QSpinBox, contextSwitchTime)
 </extracomment>
-        <translation type="vanished">Nepřepínat automaticky</translation>
+        <translation>Nepřepínat automaticky</translation>
     </message>
     <message>
         <source> ms</source>
@@ -3523,49 +3523,49 @@ i18n: ectx: property (suffix), widget (QSpinBox, contextSwitchTime)
 i18n: file: gui/playbacksettings.ui:51
 i18n: ectx: property (suffix), widget (QSpinBox, stopFadeDuration)
 </extracomment>
-        <translation type="vanished"> ms</translation>
+        <translation> ms</translation>
     </message>
     <message>
         <source>Dark background</source>
         <extracomment>i18n: file: context/othersettings.ui:193
 i18n: ectx: property (text), widget (QCheckBox, contextDarkBackground)
 </extracomment>
-        <translation type="vanished">Tmavé pozadí</translation>
+        <translation>Tmavé pozadí</translation>
     </message>
     <message>
         <source>Darken background, and use white text, regardless of current color palette.</source>
         <extracomment>i18n: file: context/othersettings.ui:196
 i18n: ectx: property (toolTip), widget (QCheckBox, contextDarkBackground)
 </extracomment>
-        <translation type="vanished">Ztmavit pozadí a použít bílý text, bez ohledu na nynější barevnou paletu.</translation>
+        <translation>Ztmavit pozadí a použít bílý text, bez ohledu na nynější barevnou paletu.</translation>
     </message>
     <message>
         <source>Always collapse into a single pane</source>
         <extracomment>i18n: file: context/othersettings.ui:203
 i18n: ectx: property (text), widget (QCheckBox, contextAlwaysCollapsed)
 </extracomment>
-        <translation type="vanished">Vždy složit do jednoho pole</translation>
+        <translation>Vždy složit do jednoho pole</translation>
     </message>
     <message>
         <source>Only show &apos;Artist&apos;, &apos;Album&apos;, or &apos;Track&apos; even if sufficient width to show all three.</source>
         <extracomment>i18n: file: context/othersettings.ui:206
 i18n: ectx: property (toolTip), widget (QCheckBox, contextAlwaysCollapsed)
 </extracomment>
-        <translation type="vanished">Ukázat jen umělce, album nebo skladbu, i když je dost místa na ukázání všech tří.</translation>
+        <translation>Ukázat jen umělce, album nebo skladbu, i když je dost místa na ukázání všech tří.</translation>
     </message>
     <message>
         <source>Only show basic wikipedia text</source>
         <extracomment>i18n: file: context/othersettings.ui:213
 i18n: ectx: property (text), widget (QCheckBox, wikipediaIntroOnly)
 </extracomment>
-        <translation type="vanished">Ukázat jen základní text na Wikipedii</translation>
+        <translation>Ukázat jen základní text na Wikipedii</translation>
     </message>
     <message>
         <source>Cantata only shows a trimmed down version of wikipedia pages (no images, links, etc). This trimming is not always 100% accurate, which is why Cantata defaults to only showing the introduction. If you elect to show the full article, then there may be parsing errors. You will also need to remove any currently cached articles (using the &apos;Cache&apos; page).</source>
         <extracomment>i18n: file: context/othersettings.ui:220
 i18n: ectx: property (text), widget (NoteLabel, wikipediaIntroOnlyNote)
 </extracomment>
-        <translation type="vanished">Cantata ukáže pouze zkrácenou verzi stránek na Wikipedii (žádné obrázky, odkazy atd.). Toto ořezání obsahu není vždy stoprocentně přesné. To je důvodem toho, proč Cantata ve výchozím nastavení ukazuje pouze úvod. Pokud si zvolíte zobrazení celého článku, mohou se vyskytnout chyby ve zpracování. Také budete muset odstranit všechny články, které jsou nyní uloženy ve vyrovnávací paměti (pomocí stránky Vyrovnávací paměť)</translation>
+        <translation>Cantata ukáže pouze zkrácenou verzi stránek na Wikipedii (žádné obrázky, odkazy atd.). Toto ořezání obsahu není vždy stoprocentně přesné. To je důvodem toho, proč Cantata ve výchozím nastavení ukazuje pouze úvod. Pokud si zvolíte zobrazení celého článku, mohou se vyskytnout chyby ve zpracování. Také budete muset odstranit všechny články, které jsou nyní uloženy ve vyrovnávací paměti (pomocí stránky Vyrovnávací paměť)</translation>
         <extra-po-flags>no-c-format</extra-po-flags>
     </message>
     <message>
@@ -3573,28 +3573,28 @@ i18n: ectx: property (text), widget (NoteLabel, wikipediaIntroOnlyNote)
         <extracomment>i18n: file: context/togglelist.ui:17
 i18n: ectx: property (text), widget (QLabel, label_2)
 </extracomment>
-        <translation type="vanished">Dostupné:</translation>
+        <translation>Dostupné:</translation>
     </message>
     <message>
         <source>Selected:</source>
         <extracomment>i18n: file: context/togglelist.ui:24
 i18n: ectx: property (text), widget (QLabel, label_3)
 </extracomment>
-        <translation type="vanished">Vybrané:</translation>
+        <translation>Vybrané:</translation>
     </message>
     <message>
         <source>Calculating size of files to be copied, please wait...</source>
         <extracomment>i18n: file: devices/actiondialog.ui:86
 i18n: ectx: property (text), widget (QLabel, fileS)
 </extracomment>
-        <translation type="vanished">Počítá se velikost souborů ke zkopírování. Počkejte, prosím...</translation>
+        <translation>Počítá se velikost souborů ke zkopírování. Počkejte, prosím...</translation>
     </message>
     <message>
         <source>Copy songs from:</source>
         <extracomment>i18n: file: devices/actiondialog.ui:180
 i18n: ectx: property (text), widget (QLabel, label)
 </extracomment>
-        <translation type="vanished">Kopírovat písně z:</translation>
+        <translation>Kopírovat písně z:</translation>
     </message>
     <message>
         <source>(Needs configuring)</source>
@@ -3607,42 +3607,42 @@ i18n: ectx: property (text), widget (QLabel, configureSourceLabel)
 i18n: file: devices/actiondialog.ui:264
 i18n: ectx: property (text), widget (QLabel, configureDestLabel)
 </extracomment>
-        <translation type="vanished">(Potřeba nastavit)</translation>
+        <translation>(Potřeba nastavit)</translation>
     </message>
     <message>
         <source>Copy songs to:</source>
         <extracomment>i18n: file: devices/actiondialog.ui:233
 i18n: ectx: property (text), widget (QLabel, label_3)
 </extracomment>
-        <translation type="vanished">Kopírovat písně do:</translation>
+        <translation>Kopírovat písně do:</translation>
     </message>
     <message>
         <source>Destination format:</source>
         <extracomment>i18n: file: devices/actiondialog.ui:296
 i18n: ectx: property (text), widget (QLabel, codecLabel)
 </extracomment>
-        <translation type="vanished">Cílový formát:</translation>
+        <translation>Cílový formát:</translation>
     </message>
     <message>
         <source>Overwrite songs</source>
         <extracomment>i18n: file: devices/actiondialog.ui:310
 i18n: ectx: property (text), widget (QCheckBox, overwrite)
 </extracomment>
-        <translation type="vanished">Přepsat písně</translation>
+        <translation>Přepsat písně</translation>
     </message>
     <message>
         <source>To copy:</source>
         <extracomment>i18n: file: devices/actiondialog.ui:317
 i18n: ectx: property (text), widget (QLabel, songCountLabel)
 </extracomment>
-        <translation type="vanished">Ke kopírování:</translation>
+        <translation>Ke kopírování:</translation>
     </message>
     <message>
         <source>Album Details</source>
         <extracomment>i18n: file: devices/albumdetails.ui:26
 i18n: ectx: property (title), widget (QGroupBox, groupBox)
 </extracomment>
-        <translation type="vanished">Podrobnosti alba</translation>
+        <translation>Podrobnosti alba</translation>
     </message>
     <message>
         <source>Year:</source>
@@ -3655,84 +3655,84 @@ i18n: ectx: property (text), widget (BuddyLabel, label_4)
 i18n: file: tags/tageditor.ui:158
 i18n: ectx: property (text), widget (StateLabel, yearLabel)
 </extracomment>
-        <translation type="vanished">Rok:</translation>
+        <translation>Rok:</translation>
     </message>
     <message>
         <source>Disc:</source>
         <extracomment>i18n: file: devices/albumdetails.ui:102
 i18n: ectx: property (text), widget (BuddyLabel, label_6)
 </extracomment>
-        <translation type="vanished">Disk:</translation>
+        <translation>Disk:</translation>
     </message>
     <message>
         <source>Single artist</source>
         <extracomment>i18n: file: devices/albumdetails.ui:115
 i18n: ectx: property (text), widget (QCheckBox, singleArtist)
 </extracomment>
-        <translation type="vanished">Umělec písně</translation>
+        <translation>Umělec písně</translation>
     </message>
     <message>
         <source>Album and Track Information Retrieval</source>
         <extracomment>i18n: file: devices/audiocdsettings.ui:29
 i18n: ectx: property (title), widget (QGroupBox, groupBox)
 </extracomment>
-        <translation type="vanished">Vyhledání informací o albu a skladbě</translation>
+        <translation>Vyhledání informací o albu a skladbě</translation>
     </message>
     <message>
         <source>Initially look up via:</source>
         <extracomment>i18n: file: devices/audiocdsettings.ui:38
 i18n: ectx: property (text), widget (BuddyLabel, cdLookupLabel)
 </extracomment>
-        <translation type="vanished">Zpočátku vyhledávat pomocí:</translation>
+        <translation>Zpočátku vyhledávat pomocí:</translation>
     </message>
     <message>
         <source>CDDB Host:</source>
         <extracomment>i18n: file: devices/audiocdsettings.ui:51
 i18n: ectx: property (text), widget (BuddyLabel, cddbHostLabel)
 </extracomment>
-        <translation type="vanished">Server CDDB:</translation>
+        <translation>Server CDDB:</translation>
     </message>
     <message>
         <source>CDDB Port:</source>
         <extracomment>i18n: file: devices/audiocdsettings.ui:64
 i18n: ectx: property (text), widget (BuddyLabel, cddbPortLabel)
 </extracomment>
-        <translation type="vanished">Přípojka CDDB:</translation>
+        <translation>Přípojka CDDB:</translation>
     </message>
     <message>
         <source>Lookup information as soon as CD is inserted</source>
         <extracomment>i18n: file: devices/audiocdsettings.ui:84
 i18n: ectx: property (text), widget (QCheckBox, cdAuto)
 </extracomment>
-        <translation type="vanished">Vyhledat informace, jakmile je CD vloženo</translation>
+        <translation>Vyhledat informace, jakmile je CD vloženo</translation>
     </message>
     <message>
         <source>Audio Extraction</source>
         <extracomment>i18n: file: devices/audiocdsettings.ui:94
 i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 </extracomment>
-        <translation type="vanished">Vytažení zvuku</translation>
+        <translation>Vytažení zvuku</translation>
     </message>
     <message>
         <source>Full paranoia mode (best quality)</source>
         <extracomment>i18n: file: devices/audiocdsettings.ui:100
 i18n: ectx: property (text), widget (QCheckBox, paranoiaFull)
 </extracomment>
-        <translation type="vanished">Úplný režim paranoia (nejlepší kvalita):</translation>
+        <translation>Úplný režim paranoia (nejlepší kvalita):</translation>
     </message>
     <message>
         <source>Never skip on read error</source>
         <extracomment>i18n: file: devices/audiocdsettings.ui:107
 i18n: ectx: property (text), widget (QCheckBox, paranoiaNeverSkip)
 </extracomment>
-        <translation type="vanished">Nikdy nepřeskakovat při chybě čtení</translation>
+        <translation>Nikdy nepřeskakovat při chybě čtení</translation>
     </message>
     <message>
         <source>These settings are only valid, and editable, when the device is connected.</source>
         <extracomment>i18n: file: devices/devicepropertieswidget.ui:20
 i18n: ectx: property (text), widget (PlainNoteLabel, remoteDeviceNote)
 </extracomment>
-        <translation type="vanished">Tato nastavení jsou platná, a upravitelná, jen když je zařízení připojeno.</translation>
+        <translation>Tato nastavení jsou platná, a upravitelná, jen když je zařízení připojeno.</translation>
     </message>
     <message>
         <source>Music folder:</source>
@@ -3757,49 +3757,49 @@ i18n: ectx: property (text), widget (BuddyLabel, dirLabel)
 i18n: file: gui/serversettings.ui:230
 i18n: ectx: property (text), widget (BuddyLabel, dirLabel_2)
 </extracomment>
-        <translation type="vanished">Složka s hudbou:</translation>
+        <translation>Složka s hudbou:</translation>
     </message>
     <message>
         <source>Copy album covers as:</source>
         <extracomment>i18n: file: devices/devicepropertieswidget.ui:58
 i18n: ectx: property (text), widget (BuddyLabel, albumCoversLabel)
 </extracomment>
-        <translation type="vanished">Kopírovat obaly alb jako:</translation>
+        <translation>Kopírovat obaly alb jako:</translation>
     </message>
     <message>
         <source>Maximum cover size:</source>
         <extracomment>i18n: file: devices/devicepropertieswidget.ui:75
 i18n: ectx: property (text), widget (BuddyLabel, coverMaxSizeLabel)
 </extracomment>
-        <translation type="vanished">Největší velikost obalu:</translation>
+        <translation>Největší velikost obalu:</translation>
     </message>
     <message>
         <source>Default volume:</source>
         <extracomment>i18n: file: devices/devicepropertieswidget.ui:95
 i18n: ectx: property (text), widget (QLabel, defaultVolumeLabel)
 </extracomment>
-        <translation type="vanished">Výchozí svazek:</translation>
+        <translation>Výchozí svazek:</translation>
     </message>
     <message>
         <source>&apos;Various Artists&apos; workaround</source>
         <extracomment>i18n: file: devices/devicepropertieswidget.ui:102
 i18n: ectx: property (text), widget (QCheckBox, fixVariousArtists)
 </extracomment>
-        <translation type="vanished">Ošetření pro Různí umělci</translation>
+        <translation>Ošetření pro Různí umělci</translation>
     </message>
     <message>
         <source>Automatically scan music when attached</source>
         <extracomment>i18n: file: devices/devicepropertieswidget.ui:109
 i18n: ectx: property (text), widget (QCheckBox, autoScan)
 </extracomment>
-        <translation type="vanished">Automaticky prohledat hudbu při připojení</translation>
+        <translation>Automaticky prohledat hudbu při připojení</translation>
     </message>
     <message>
         <source>Use cache</source>
         <extracomment>i18n: file: devices/devicepropertieswidget.ui:116
 i18n: ectx: property (text), widget (QCheckBox, useCache)
 </extracomment>
-        <translation type="vanished">Použít vyrovnávací paměť</translation>
+        <translation>Použít vyrovnávací paměť</translation>
     </message>
     <message>
         <source>Filenames</source>
@@ -3812,7 +3812,7 @@ i18n: ectx: property (title), widget (QGroupBox, filenamesGroupBox)
 i18n: file: tags/trackorganiser.ui:25
 i18n: ectx: property (title), widget (QGroupBox, optionsBox)
 </extracomment>
-        <translation type="vanished">Názvy souborů</translation>
+        <translation>Názvy souborů</translation>
     </message>
     <message>
         <source>Filename scheme:</source>
@@ -3825,7 +3825,7 @@ i18n: ectx: property (text), widget (BuddyLabel, label_6)
 i18n: file: tags/trackorganiser.ui:61
 i18n: ectx: property (text), widget (BuddyLabel, label_6)
 </extracomment>
-        <translation type="vanished">Schéma názvu souboru:</translation>
+        <translation>Schéma názvu souboru:</translation>
     </message>
     <message>
         <source>VFAT safe</source>
@@ -3838,7 +3838,7 @@ i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
 i18n: file: tags/trackorganiser.ui:71
 i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
 </extracomment>
-        <translation type="vanished">VFAT bezpečný</translation>
+        <translation>VFAT bezpečný</translation>
     </message>
     <message>
         <source>Use only ASCII characters</source>
@@ -3851,7 +3851,7 @@ i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
 i18n: file: tags/trackorganiser.ui:78
 i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
 </extracomment>
-        <translation type="vanished">Použít pouze znaky ASCII</translation>
+        <translation>Použít pouze znaky ASCII</translation>
     </message>
     <message>
         <source>Replace spaces with underscores</source>
@@ -3864,7 +3864,7 @@ i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
 i18n: file: tags/trackorganiser.ui:85
 i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
 </extracomment>
-        <translation type="vanished">Nahradit mezery podtržítky</translation>
+        <translation>Nahradit mezery podtržítky</translation>
     </message>
     <message>
         <source>Append &apos;The&apos; to artist names</source>
@@ -3877,154 +3877,154 @@ i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
 i18n: file: tags/trackorganiser.ui:92
 i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
 </extracomment>
-        <translation type="vanished">Připojit The ke jménům umělců</translation>
+        <translation>Připojit The ke jménům umělců</translation>
     </message>
     <message>
         <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
         <extracomment>i18n: file: devices/devicepropertieswidget.ui:195
 i18n: ectx: property (toolTip), widget (QCheckBox, ignoreThe)
 </extracomment>
-        <translation type="vanished">Pokud začíná jméno umělce na The, potom je připojit před název složky, např. z The Beatles se stane Beatles, The</translation>
+        <translation>Pokud začíná jméno umělce na The, potom je připojit před název složky, např. z The Beatles se stane Beatles, The</translation>
     </message>
     <message>
         <source>Transcoding</source>
         <extracomment>i18n: file: devices/devicepropertieswidget.ui:205
 i18n: ectx: property (title), widget (QGroupBox, transcoderFrame)
 </extracomment>
-        <translation type="vanished">Překódování</translation>
+        <translation>Překódování</translation>
     </message>
     <message>
         <source>Only transcode if source file is of a different format</source>
         <extracomment>i18n: file: devices/devicepropertieswidget.ui:214
 i18n: ectx: property (text), widget (QCheckBox, transcoderWhenDifferent)
 </extracomment>
-        <translation type="vanished">Překódovat pouze, když zdrojový soubor je v jiném formátu</translation>
+        <translation>Překódovat pouze, když zdrojový soubor je v jiném formátu</translation>
     </message>
     <message>
         <source>Example:</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:38
 i18n: ectx: property (text), widget (QLabel, label_album_example)
 </extracomment>
-        <translation type="vanished">Příklad:</translation>
+        <translation>Příklad:</translation>
     </message>
     <message>
         <source>About filename schemes</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:67
 i18n: ectx: property (text), widget (UrlLabel, help)
 </extracomment>
-        <translation type="vanished">O schématech pro názvy souborů</translation>
+        <translation>O schématech pro názvy souborů</translation>
     </message>
     <message>
         <source>The artist of the album. For most albums, this will be the same as the &lt;i&gt;Track Artist.&lt;/i&gt; For compilations, this will often be &lt;i&gt;Various Artists.&lt;/i&gt;</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:79
 i18n: ectx: property (toolTip), widget (QPushButton, albumArtist)
 </extracomment>
-        <translation type="vanished">Umělec alba. U většiny alb je totožný s &lt;i&gt;umělcem skladby.&lt;/i&gt; U sbírek půjde často o &lt;i&gt;různé umělce.&lt;/i&gt;</translation>
+        <translation>Umělec alba. U většiny alb je totožný s &lt;i&gt;umělcem skladby.&lt;/i&gt; U sbírek půjde často o &lt;i&gt;různé umělce.&lt;/i&gt;</translation>
     </message>
     <message>
         <source>The name of the album.</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:89
 i18n: ectx: property (toolTip), widget (QPushButton, albumTitle)
 </extracomment>
-        <translation type="vanished">Název alba.</translation>
+        <translation>Název alba.</translation>
     </message>
     <message>
         <source>Album Title</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:92
 i18n: ectx: property (text), widget (QPushButton, albumTitle)
 </extracomment>
-        <translation type="vanished">Název alba</translation>
+        <translation>Název alba</translation>
     </message>
     <message>
         <source>The composer.</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:99
 i18n: ectx: property (toolTip), widget (QPushButton, composer)
 </extracomment>
-        <translation type="vanished">Skladatel.</translation>
+        <translation>Skladatel.</translation>
     </message>
     <message>
         <source>The artist of each track.</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:109
 i18n: ectx: property (toolTip), widget (QPushButton, trackArtist)
 </extracomment>
-        <translation type="vanished">Umělec každé skladby.</translation>
+        <translation>Umělec každé skladby.</translation>
     </message>
     <message>
         <source>Track Artist</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:112
 i18n: ectx: property (text), widget (QPushButton, trackArtist)
 </extracomment>
-        <translation type="vanished">Umělec skladby</translation>
+        <translation>Umělec skladby</translation>
     </message>
     <message>
         <source>The track title (without &lt;i&gt;Track Artist&lt;/i&gt;).</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:119
 i18n: ectx: property (toolTip), widget (QPushButton, trackTitle)
 </extracomment>
-        <translation type="vanished">Název skladby (bez &lt;i&gt;umělce skladby&lt;/i&gt;).</translation>
+        <translation>Název skladby (bez &lt;i&gt;umělce skladby&lt;/i&gt;).</translation>
     </message>
     <message>
         <source>The track title (with &lt;i&gt;Track Artist&lt;/i&gt;, if different to &lt;i&gt;Album Artist&lt;/i&gt;).</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:141
 i18n: ectx: property (toolTip), widget (QPushButton, trackArtistAndTitle)
 </extracomment>
-        <translation type="vanished">Název skladby (s &lt;i&gt;umělcem skladby&lt;/i&gt;, pokud se liší od &lt;i&gt;umělce alba&lt;/i&gt;).</translation>
+        <translation>Název skladby (s &lt;i&gt;umělcem skladby&lt;/i&gt;, pokud se liší od &lt;i&gt;umělce alba&lt;/i&gt;).</translation>
     </message>
     <message>
         <source>Track Title (+Artist)</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:144
 i18n: ectx: property (text), widget (QPushButton, trackArtistAndTitle)
 </extracomment>
-        <translation type="vanished">Název skladby (+Umělec)</translation>
+        <translation>Název skladby (+Umělec)</translation>
     </message>
     <message>
         <source>The track number.</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:151
 i18n: ectx: property (toolTip), widget (QPushButton, trackNo)
 </extracomment>
-        <translation type="vanished">Číslo skladby.</translation>
+        <translation>Číslo skladby.</translation>
     </message>
     <message>
         <source>Track #</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:154
 i18n: ectx: property (text), widget (QPushButton, trackNo)
 </extracomment>
-        <translation type="vanished">Skladba #</translation>
+        <translation>Skladba #</translation>
     </message>
     <message>
         <source>The album number of a multi-album album. Often compilations consist of several albums.</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:161
 i18n: ectx: property (toolTip), widget (QPushButton, cdNo)
 </extracomment>
-        <translation type="vanished">Číslo alba v případě alba složeného z více alb. Kompilace se často skládají z více alb.</translation>
+        <translation>Číslo alba v případě alba složeného z více alb. Kompilace se často skládají z více alb.</translation>
     </message>
     <message>
         <source>CD #</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:164
 i18n: ectx: property (text), widget (QPushButton, cdNo)
 </extracomment>
-        <translation type="vanished">CD #</translation>
+        <translation>CD #</translation>
     </message>
     <message>
         <source>The year of the album&apos;s release.</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:171
 i18n: ectx: property (toolTip), widget (QPushButton, year)
 </extracomment>
-        <translation type="vanished">Rok vydání alba.</translation>
+        <translation>Rok vydání alba.</translation>
     </message>
     <message>
         <source>The genre of the album.</source>
         <extracomment>i18n: file: devices/filenameschemedialog.ui:181
 i18n: ectx: property (toolTip), widget (QPushButton, genre)
 </extracomment>
-        <translation type="vanished">Žánr alba.</translation>
+        <translation>Žánr alba.</translation>
     </message>
     <message>
         <source>These settings are only editable when the device is not connected.</source>
         <extracomment>i18n: file: devices/remotedevicepropertieswidget.ui:17
 i18n: ectx: property (text), widget (PlainNoteLabel, connectionNote)
 </extracomment>
-        <translation type="vanished">Tato nastavení jsou upravitelná, jen když není zařízení připojeno.</translation>
+        <translation>Tato nastavení jsou upravitelná, jen když není zařízení připojeno.</translation>
     </message>
     <message>
         <source>Type:</source>
@@ -4041,7 +4041,7 @@ i18n: ectx: property (text), widget (BuddyLabel, label_9)
 i18n: file: network/proxysettings.ui:39
 i18n: ectx: property (text), widget (BuddyLabel, proxyTypeLabel)
 </extracomment>
-        <translation type="vanished">Typ:</translation>
+        <translation>Typ:</translation>
     </message>
     <message>
         <source>Options</source>
@@ -4054,7 +4054,7 @@ i18n: ectx: property (title), widget (QGroupBox, groupBox)
 i18n: file: gui/interfacesettings.ui:71
 i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
 </extracomment>
-        <translation type="vanished">Volby</translation>
+        <translation>Volby</translation>
     </message>
     <message>
         <source>Port:</source>
@@ -4071,7 +4071,7 @@ i18n: ectx: property (text), widget (BuddyLabel, portLabel)
 i18n: file: network/proxysettings.ui:76
 i18n: ectx: property (text), widget (BuddyLabel, proxyPortLabel)
 </extracomment>
-        <translation type="vanished">Přípojka:</translation>
+        <translation>Přípojka:</translation>
     </message>
     <message>
         <source>User:</source>
@@ -4088,7 +4088,7 @@ i18n: ectx: property (text), widget (BuddyLabel, userLabel_2x)
 i18n: file: devices/remotedevicepropertieswidget.ui:319
 i18n: ectx: property (text), widget (BuddyLabel, userLabel)
 </extracomment>
-        <translation type="vanished">Uživatel:</translation>
+        <translation>Uživatel:</translation>
     </message>
     <message>
         <source>Domain:</source>
@@ -4101,7 +4101,7 @@ i18n: ectx: property (text), widget (BuddyLabel, label_2)
 i18n: file: devices/remotedevicepropertieswidget.ui:212
 i18n: ectx: property (text), widget (BuddyLabel, label_2x)
 </extracomment>
-        <translation type="vanished">Doména:</translation>
+        <translation>Doména:</translation>
     </message>
     <message>
         <source>Share:</source>
@@ -4114,7 +4114,7 @@ i18n: ectx: property (text), widget (BuddyLabel, folderLabel_2)
 i18n: file: devices/remotedevicepropertieswidget.ui:242
 i18n: ectx: property (text), widget (BuddyLabel, folderLabel_x2)
 </extracomment>
-        <translation type="vanished">Sdílení:</translation>
+        <translation>Sdílení:</translation>
     </message>
     <message>
         <source>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata&apos;s config file. To have Cantata prompt for the password before accessing the share, set the password to &apos;-&apos;</source>
@@ -4127,14 +4127,14 @@ i18n: ectx: property (text), widget (PlainNoteLabel, label_4)
 i18n: file: devices/remotedevicepropertieswidget.ui:257
 i18n: ectx: property (text), widget (PlainNoteLabel, label_4x)
 </extracomment>
-        <translation type="vanished">Pokud zde zadáte heslo, bude uloženo &lt;b&gt;nezašifrované&lt;/b&gt; v souboru s nastavením pro Cantatu. Aby Cantata vyzvala k zadání hesla před přístupem k sdílení, nastavte heslo na &apos;-&apos;</translation>
+        <translation>Pokud zde zadáte heslo, bude uloženo &lt;b&gt;nezašifrované&lt;/b&gt; v souboru s nastavením pro Cantatu. Aby Cantata vyzvala k zadání hesla před přístupem k sdílení, nastavte heslo na &apos;-&apos;</translation>
     </message>
     <message>
         <source>Service name:</source>
         <extracomment>i18n: file: devices/remotedevicepropertieswidget.ui:186
 i18n: ectx: property (text), widget (BuddyLabel, hostLabel_2x)
 </extracomment>
-        <translation type="vanished">Název služby:</translation>
+        <translation>Název služby:</translation>
     </message>
     <message>
         <source>Folder:</source>
@@ -4147,35 +4147,35 @@ i18n: ectx: property (text), widget (BuddyLabel, folderLabel)
 i18n: file: devices/remotedevicepropertieswidget.ui:390
 i18n: ectx: property (text), widget (BuddyLabel, label)
 </extracomment>
-        <translation type="vanished">Složka:</translation>
+        <translation>Složka:</translation>
     </message>
     <message>
         <source>Extra Options:</source>
         <extracomment>i18n: file: devices/remotedevicepropertieswidget.ui:345
 i18n: ectx: property (text), widget (BuddyLabel, sshExtraLabel)
 </extracomment>
-        <translation type="vanished">Další volby:</translation>
+        <translation>Další volby:</translation>
     </message>
     <message>
         <source>Due to the way sshfs works, a suitable ssh-askpass application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter the password.</source>
         <extracomment>i18n: file: devices/remotedevicepropertieswidget.ui:360
 i18n: ectx: property (text), widget (PlainNoteLabel, label_5)
 </extracomment>
-        <translation type="vanished">Kvůli způsobu, jakým sshfs pracuje, bude k zadání hesla vyžadován vhodný program ssh-askpass (ksshaskpass, ssh-askpass-gnome, atd.).</translation>
+        <translation>Kvůli způsobu, jakým sshfs pracuje, bude k zadání hesla vyžadován vhodný program ssh-askpass (ksshaskpass, ssh-askpass-gnome, atd.).</translation>
     </message>
     <message>
         <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
         <extracomment>i18n: file: devices/remotedevicepropertieswidget.ui:410
 i18n: ectx: property (text), widget (PlainNoteLabel, infoLabel)
 </extracomment>
-        <translation type="vanished">Tento dialog se používá jen pro přidání vzdálených zařízení (např. přes Samba), nebo pro přístup k místně připojeným složkám. Pro běžné přehrávače záznamů, připojené přes USB, Cantata zobrazí zařízení automaticky, když je připojeno.</translation>
+        <translation>Tento dialog se používá jen pro přidání vzdálených zařízení (např. přes Samba), nebo pro přístup k místně připojeným složkám. Pro běžné přehrávače záznamů, připojené přes USB, Cantata zobrazí zařízení automaticky, když je připojeno.</translation>
     </message>
     <message>
         <source>Name of Dynamic Rules</source>
         <extracomment>i18n: file: dynamic/dynamicrules.ui:39
 i18n: ectx: property (placeholderText), widget (LineEdit, nameText)
 </extracomment>
-        <translation type="vanished">Název pro dynamická pravidla</translation>
+        <translation>Název pro dynamická pravidla</translation>
     </message>
     <message>
         <source> - </source>
@@ -4188,7 +4188,7 @@ i18n: ectx: property (text), widget (QLabel, ratingToLabel)
 i18n: file: dynamic/dynamicrules.ui:166
 i18n: ectx: property (text), widget (QLabel, rangeLabel2)
 </extracomment>
-        <translation type="vanished"> - </translation>
+        <translation> - </translation>
     </message>
     <message>
         <source> seconds</source>
@@ -4201,49 +4201,49 @@ i18n: ectx: property (suffix), widget (QSpinBox, minDuration)
 i18n: file: dynamic/dynamicrules.ui:173
 i18n: ectx: property (suffix), widget (QSpinBox, maxDuration)
 </extracomment>
-        <translation type="vanished"> sekund</translation>
+        <translation> sekund</translation>
     </message>
     <message>
         <source>About Rules</source>
         <extracomment>i18n: file: dynamic/dynamicrules.ui:209
 i18n: ectx: property (text), widget (UrlLabel, aboutLabel)
 </extracomment>
-        <translation type="vanished">O pravidlech</translation>
+        <translation>O pravidlech</translation>
     </message>
     <message>
         <source>Include songs that match the following:</source>
         <extracomment>i18n: file: dynamic/dynamicrule.ui:37
 i18n: ectx: property (text), item, widget (QComboBox, typeCombo)
 </extracomment>
-        <translation type="vanished">Zahrnout písně odpovídající následujícímu:</translation>
+        <translation>Zahrnout písně odpovídající následujícímu:</translation>
     </message>
     <message>
         <source>Exclude songs that match the following:</source>
         <extracomment>i18n: file: dynamic/dynamicrule.ui:42
 i18n: ectx: property (text), item, widget (QComboBox, typeCombo)
 </extracomment>
-        <translation type="vanished">Vyloučit písně odpovídající následujícímu:</translation>
+        <translation>Vyloučit písně odpovídající následujícímu:</translation>
     </message>
     <message>
         <source>Artists similar to:</source>
         <extracomment>i18n: file: dynamic/dynamicrule.ui:63
 i18n: ectx: property (text), widget (BuddyLabel, similarArtistsText_label)
 </extracomment>
-        <translation type="vanished">Umělci podobní:</translation>
+        <translation>Umělci podobní:</translation>
     </message>
     <message>
         <source>Album Artist:</source>
         <extracomment>i18n: file: dynamic/dynamicrule.ui:76
 i18n: ectx: property (text), widget (BuddyLabel, label_2)
 </extracomment>
-        <translation type="vanished">Umělec alba</translation>
+        <translation>Umělec alba</translation>
     </message>
     <message>
         <source>From Year:</source>
         <extracomment>i18n: file: dynamic/dynamicrule.ui:141
 i18n: ectx: property (text), widget (BuddyLabel, label_6)
 </extracomment>
-        <translation type="vanished">Od roku:</translation>
+        <translation>Od roku:</translation>
     </message>
     <message>
         <source>Any</source>
@@ -4256,42 +4256,42 @@ i18n: ectx: property (specialValueText), widget (QSpinBox, dateFromSpin)
 i18n: file: dynamic/dynamicrule.ui:180
 i18n: ectx: property (specialValueText), widget (QSpinBox, dateToSpin)
 </extracomment>
-        <translation type="vanished">Jakýkoli</translation>
+        <translation>Jakýkoli</translation>
     </message>
     <message>
         <source>To Year:</source>
         <extracomment>i18n: file: dynamic/dynamicrule.ui:164
 i18n: ectx: property (text), widget (BuddyLabel, label_6x)
 </extracomment>
-        <translation type="vanished">Do roku:</translation>
+        <translation>Do roku:</translation>
     </message>
     <message>
         <source>Exact match</source>
         <extracomment>i18n: file: dynamic/dynamicrule.ui:213
 i18n: ectx: property (text), widget (QCheckBox, exactCheck)
 </extracomment>
-        <translation type="vanished">Přesná shoda</translation>
+        <translation>Přesná shoda</translation>
     </message>
     <message>
         <source>Only enter values for the tags you wish to be search on.</source>
         <extracomment>i18n: file: dynamic/dynamicrule.ui:241
 i18n: ectx: property (text), widget (NoteLabel, label_7)
 </extracomment>
-        <translation type="vanished">Zadejte hodnoty pouze pro značky, které si přejete hledat.</translation>
+        <translation>Zadejte hodnoty pouze pro značky, které si přejete hledat.</translation>
     </message>
     <message>
         <source>For genre, end string with an asterisk to match various genres. e.g &apos;rock*&apos; matches &apos;Hard Rock&apos; and &apos;Rock and Roll&apos;.</source>
         <extracomment>i18n: file: dynamic/dynamicrule.ui:248
 i18n: ectx: property (text), widget (NoteLabel, label_7x)
 </extracomment>
-        <translation type="vanished">Když má žánr odpovídat různým žánrům, ukončete řetězec hvězdičkou. Např. &apos;rock*&apos; odpovídá &apos;Hard Rock&apos; a &apos;Rock and Roll&apos;.</translation>
+        <translation>Když má žánr odpovídat různým žánrům, ukončete řetězec hvězdičkou. Např. &apos;rock*&apos; odpovídá &apos;Hard Rock&apos; a &apos;Rock and Roll&apos;.</translation>
     </message>
     <message>
         <source>Add a local file</source>
         <extracomment>i18n: file: gui/coverdialog.ui:30
 i18n: ectx: property (toolTip), widget (FlatToolButton, addFileButton)
 </extracomment>
-        <translation type="vanished">Přidat místní soubor</translation>
+        <translation>Přidat místní soubor</translation>
     </message>
     <message>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
@@ -4304,7 +4304,7 @@ i18n: ectx: property (text), widget (QCheckBox, storeCoversInMpdDir)
 i18n: file: gui/initialsettingswizard.ui:675
 i18n: ectx: property (text), widget (QCheckBox, storeCoversInMpdDir)
 </extracomment>
-        <translation type="vanished">Uložit stažené obaly, umělce a obrázky skladatelů ve složce s hudbou</translation>
+        <translation>Uložit stažené obaly, umělce a obrázky skladatelů ve složce s hudbou</translation>
     </message>
     <message>
         <source>Save downloaded lyrics in music folder</source>
@@ -4317,7 +4317,7 @@ i18n: ectx: property (text), widget (QCheckBox, storeLyricsInMpdDir)
 i18n: file: gui/initialsettingswizard.ui:682
 i18n: ectx: property (text), widget (QCheckBox, storeLyricsInMpdDir)
 </extracomment>
-        <translation type="vanished">Uložit stažená slova písně ve složce s hudbou</translation>
+        <translation>Uložit stažená slova písně ve složce s hudbou</translation>
     </message>
     <message>
         <source>Save downloaded backdrops in music folder</source>
@@ -4330,7 +4330,7 @@ i18n: ectx: property (text), widget (QCheckBox, storeBackdropsInMpdDir)
 i18n: file: gui/initialsettingswizard.ui:689
 i18n: ectx: property (text), widget (QCheckBox, storeBackdropsInMpdDir)
 </extracomment>
-        <translation type="vanished">Uložit stažená pozadí ve složce s hudbou</translation>
+        <translation>Uložit stažená pozadí ve složce s hudbou</translation>
     </message>
     <message>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
@@ -4343,7 +4343,7 @@ i18n: ectx: property (text), widget (NoteLabel, label_2)
 i18n: file: gui/initialsettingswizard.ui:696
 i18n: ectx: property (text), widget (NoteLabel, persNote)
 </extracomment>
-        <translation type="vanished">Pokud se rozhodnete, že má Cantata ukládat obaly, texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
+        <translation>Pokud se rozhodnete, že má Cantata ukládat obaly, texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
     </message>
     <message>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
@@ -4356,189 +4356,189 @@ i18n: ectx: property (text), widget (NoteLabel, persNote_2)
 i18n: file: gui/initialsettingswizard.ui:703
 i18n: ectx: property (text), widget (NoteLabel, persNote_2)
 </extracomment>
-        <translation type="vanished">Cantata může pozadí, umělce a obrázky skladatelů ukládat ve složkách s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou úrovní dolů. (např. &apos;Umělec/Album/Skladby&apos;.</translation>
+        <translation>Cantata může pozadí, umělce a obrázky skladatelů ukládat ve složkách s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou úrovní dolů. (např. &apos;Umělec/Album/Skladby&apos;.</translation>
     </message>
     <message>
         <source>Cantata First Run</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:14
 i18n: ectx: property (windowTitle), widget (QWizard, InitialSettingsWizard)
 </extracomment>
-        <translation type="vanished">První spuštění Cantaty</translation>
+        <translation>První spuštění Cantaty</translation>
     </message>
     <message>
         <source>Welcome to Cantata</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:46
 i18n: ectx: property (text), widget (QLabel, label)
 </extracomment>
-        <translation type="vanished">Vítejte v Cantatě</translation>
+        <translation>Vítejte v Cantatě</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:69
 i18n: ectx: property (text), widget (QLabel, label_2)
 </extracomment>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata je klient pro Music Player Daemon (MPD). MPD je program pružný, schopný, běžící na pozadí (server), k přehrávání hudby.&lt;/p&gt;&lt;p&gt;Více informací o MPD naleznete na stránkách MPD &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Tento průvodce vás provede základními nastaveními, která jsou potřeba pro to, aby Cantata pracovala správně.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata je klient pro Music Player Daemon (MPD). MPD je program pružný, schopný, běžící na pozadí (server), k přehrávání hudby.&lt;/p&gt;&lt;p&gt;Více informací o MPD naleznete na stránkách MPD &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Tento průvodce vás provede základními nastaveními, která jsou potřeba pro to, aby Cantata pracovala správně.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:108
 i18n: ectx: property (text), widget (QLabel, label_7)
 </extracomment>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vítejte v Cantatě&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vítejte v Cantatě&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music. MPD may be started either system-wide, or on a per-user basis.&lt;br/&gt;&lt;br/&gt;Please select how you would like to have Cantata initially connect to (or startup) MPD:&lt;/p&gt;</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:134
 i18n: ectx: property (text), widget (QLabel, label_8)
 </extracomment>
-        <translation type="vanished">&lt;p&gt;Cantata je klient pro Music Player Daemon (MPD). MPD je program běžící na pozadí, který se používá k přehrávání hudby. MPD lze spustit buď pro celý systém, anebo uživatelsky.&lt;br/&gt;&lt;br/&gt;Vyberte, prosím, jak chcete, aby byla Cantata na začátku připojena k (nebo spouštěna) MPD:&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Cantata je klient pro Music Player Daemon (MPD). MPD je program běžící na pozadí, který se používá k přehrávání hudby. MPD lze spustit buď pro celý systém, anebo uživatelsky.&lt;br/&gt;&lt;br/&gt;Vyberte, prosím, jak chcete, aby byla Cantata na začátku připojena k (nebo spouštěna) MPD:&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Standard multi-user/server setup</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:159
 i18n: ectx: property (text), widget (QRadioButton, advanced)
 </extracomment>
-        <translation type="vanished">Standardní nastavení pro více uživatelů/server</translation>
+        <translation>Standardní nastavení pro více uživatelů/server</translation>
     </message>
     <message>
         <source>&lt;i&gt;Select this option if your music collection is shared between users, your MPD instance is running on another machine, you already have a personal MPD setup, or you wish to enable access from other clients (e.g. MPDroid). If you select this option then Cantata itself cannot control the starting and stopping of the MPD server. You will therefore need to ensure that MPD is already configured and running.&lt;/i&gt;</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:172
 i18n: ectx: property (text), widget (BuddyLabel, label_10)
 </extracomment>
-        <translation type="vanished">&lt;i&gt;Tuto volbu vyberte v případě, že vaše sbírka je sdílena mezi uživateli, vaše instance MPD běží na jiném stroji, když již máte osobní nastavení MPD, nebo chcete povolit přístup z jiných klientů (např. MPDroid). Pokud vyberete tuto volbu, Cantata sama nedokáže řídit spouštění a zastavování serveru MPD. Z toho důvodu budete muset zajistit, aby MPD bylo již nastaveno a běželo.&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;Tuto volbu vyberte v případě, že vaše sbírka je sdílena mezi uživateli, vaše instance MPD běží na jiném stroji, když již máte osobní nastavení MPD, nebo chcete povolit přístup z jiných klientů (např. MPDroid). Pokud vyberete tuto volbu, Cantata sama nedokáže řídit spouštění a zastavování serveru MPD. Z toho důvodu budete muset zajistit, aby MPD bylo již nastaveno a běželo.&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Basic single user setup</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:204
 i18n: ectx: property (text), widget (QRadioButton, basic)
 </extracomment>
-        <translation type="vanished">Základní nastavení pro jednoho uživatele</translation>
+        <translation>Základní nastavení pro jednoho uživatele</translation>
     </message>
     <message>
         <source>&lt;i&gt;Select this option if your music collection is not shared with others, and you wish Cantata to configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients (e.g. MPDroid)&lt;/i&gt;</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:217
 i18n: ectx: property (text), widget (BuddyLabel, label_9)
 </extracomment>
-        <translation type="vanished">&lt;i&gt;Vyberte tuto volbu, pokud vaše hudební sbírka není sdílena s ostatními, a vy chcete, aby aby Cantata nastavila a řídila instanci MPD. Toto nastavení bude pro Cantatu výlučné a &lt;b&gt;nebude&lt;/b&gt; přístupné pro jiné klienty (např. MPDroid)&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;Vyberte tuto volbu, pokud vaše hudební sbírka není sdílena s ostatními, a vy chcete, aby aby Cantata nastavila a řídila instanci MPD. Toto nastavení bude pro Cantatu výlučné a &lt;b&gt;nebude&lt;/b&gt; přístupné pro jiné klienty (např. MPDroid)&lt;/i&gt;</translation>
     </message>
     <message>
         <source>For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:259
 i18n: ectx: property (text), widget (QLabel, label_11)
 </extracomment>
-        <translation type="vanished">Více informací o MPD naleznete na stránkách MPD &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Tento průvodce vás provede základními nastaveními, která jsou potřeba pro to, aby Cantata pracovala správně.</translation>
+        <translation>Více informací o MPD naleznete na stránkách MPD &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Tento průvodce vás provede základními nastaveními, která jsou potřeba pro to, aby Cantata pracovala správně.</translation>
     </message>
     <message>
         <source>Connection details</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:321
 i18n: ectx: property (text), widget (QLabel, label_3)
 </extracomment>
-        <translation type="vanished">Podrobnosti spojení</translation>
+        <translation>Podrobnosti spojení</translation>
     </message>
     <message>
         <source>The settings below are the basic settings required by Cantata. Please enter the relevant details, and use the &apos;Connect&apos; button to test the connection.</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:344
 i18n: ectx: property (text), widget (QLabel, label_4)
 </extracomment>
-        <translation type="vanished">Nastavení níže jsou základní nastavení požadovaná Cantatou. Zadejte, prosím, náležité podrobnosti a použijte tlačítko Spojit pro vyzkoušení spojení.</translation>
+        <translation>Nastavení níže jsou základní nastavení požadovaná Cantatou. Zadejte, prosím, náležité podrobnosti a použijte tlačítko Spojit pro vyzkoušení spojení.</translation>
     </message>
     <message>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art, lyrics, etc. If your MPD instance is on a remote host, you may set this to a HTTP URL.</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:481
 i18n: ectx: property (text), widget (NoteLabel, musicFolderNoteLabel)
 </extracomment>
-        <translation type="vanished">Nastavení složky s hudbou je používáno k vyhledávání obalu alba, textu písně atd. Pokud se vaše instance MPD nachází na vzdáleném počítači, můžete tuto nastavit na adresu HTTP.</translation>
+        <translation>Nastavení složky s hudbou je používáno k vyhledávání obalu alba, textu písně atd. Pokud se vaše instance MPD nachází na vzdáleném počítači, můžete tuto nastavit na adresu HTTP.</translation>
     </message>
     <message>
         <source>Music folder</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:511
 i18n: ectx: property (text), widget (QLabel, label_13)
 </extracomment>
-        <translation type="vanished">Složka s hudbou</translation>
+        <translation>Složka s hudbou</translation>
     </message>
     <message>
         <source>Please choose the folder containing your music collection.</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:534
 i18n: ectx: property (text), widget (QLabel, label_12)
 </extracomment>
-        <translation type="vanished">Prosím, vyberte složku, která obsahuje vaši hudební sbírku.</translation>
+        <translation>Prosím, vyberte složku, která obsahuje vaši hudební sbírku.</translation>
     </message>
     <message>
         <source>Covers and Lyrics</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:620
 i18n: ectx: property (text), widget (QLabel, label_6f)
 </extracomment>
-        <translation type="vanished">Obaly a slova písně</translation>
+        <translation>Obaly a slova písně</translation>
     </message>
     <message>
         <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:643
 i18n: ectx: property (text), widget (QLabel, label_5f)
 </extracomment>
-        <translation type="vanished">&lt;p&gt;Cantata stáhne chybějící obaly a texty písní z internetu.&lt;/p&gt;&lt;p&gt;U každého, prosím, potvrďte, zda chcete, aby Cantata soubory ukládala ve složce s hudbou, nebo ve vašich osobních složkách s vyrovnávací pamětí/pro ukládání nastavení.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Cantata stáhne chybějící obaly a texty písní z internetu.&lt;/p&gt;&lt;p&gt;U každého, prosím, potvrďte, zda chcete, aby Cantata soubory ukládala ve složce s hudbou, nebo ve vašich osobních složkách s vyrovnávací pamětí/pro ukládání nastavení.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:710
 i18n: ectx: property (text), widget (NoteLabel, httpNote)
 </extracomment>
-        <translation type="vanished">Složka s hudbou je nastavena na adresu HTTP a Cantata v současnosti nedokáže nahrávat soubory na vnější servery HTTP. Z tohoto důvodu by se nastavení výše měla ponechat zakázána.</translation>
+        <translation>Složka s hudbou je nastavena na adresu HTTP a Cantata v současnosti nedokáže nahrávat soubory na vnější servery HTTP. Z tohoto důvodu by se nastavení výše měla ponechat zakázána.</translation>
     </message>
     <message>
         <source>Finished!</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:740
 i18n: ectx: property (text), widget (QLabel, label_6)
 </extracomment>
-        <translation type="vanished">Dokončeno!</translation>
+        <translation>Dokončeno!</translation>
     </message>
     <message>
         <source>Cantata is now configured!&lt;br/&gt;&lt;br/&gt;Cantata&apos;s configuration dialog maybe used to customise Cantata&apos;s appearance, as well as to add extra MPD hosts, etc.</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:763
 i18n: ectx: property (text), widget (QLabel, label_5)
 </extracomment>
-        <translation type="vanished">Cantata je nyní nastavena!&lt;br/&gt;&lt;br/&gt;Dialog pro nastavení Cantaty může být použit k přizpůsobení vzhledu Cantaty, a rovněž pro přidání dalších serverů MPD, a tak dále.</translation>
+        <translation>Cantata je nyní nastavena!&lt;br/&gt;&lt;br/&gt;Dialog pro nastavení Cantaty může být použit k přizpůsobení vzhledu Cantaty, a rovněž pro přidání dalších serverů MPD, a tak dále.</translation>
     </message>
     <message>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:795
 i18n: ectx: property (text), widget (NoteLabel, albumArtistsNoteLabel)
 </extracomment>
-        <translation type="vanished">Cantata skladby seskupí do alb pomocí značky AlbumUmělec, pokud je to tak nastaveno, jinak použije značku Umělec. Pokud máte alba s více umělci, &lt;b&gt;musíte&lt;/b&gt; nastavit značku AlbumUmělec, aby při seskupování pracovala správně. Při této možnosti se doporučuje použít Různí umělci.</translation>
+        <translation>Cantata skladby seskupí do alb pomocí značky AlbumUmělec, pokud je to tak nastaveno, jinak použije značku Umělec. Pokud máte alba s více umělci, &lt;b&gt;musíte&lt;/b&gt; nastavit značku AlbumUmělec, aby při seskupování pracovala správně. Při této možnosti se doporučuje použít Různí umělci.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
         <extracomment>i18n: file: gui/initialsettingswizard.ui:827
 i18n: ectx: property (text), widget (QLabel, groupWarningLabel)
 </extracomment>
-        <translation type="vanished">&lt;b&gt;Varování:&lt;/b&gt; Nyní nejste členem skupiny uživatelé (users). Cantata bude pracovat lépe (ukládání obalů alb, textů písní atd. se správnými oprávněními), pokud vy (nebo váš správce systému) přidáte sebe sama do této skupiny. Pokud přidáte sebe sama, budete se muset odhlásit a zase přihlásit, aby se tato změna projevila.</translation>
+        <translation>&lt;b&gt;Varování:&lt;/b&gt; Nyní nejste členem skupiny uživatelé (users). Cantata bude pracovat lépe (ukládání obalů alb, textů písní atd. se správnými oprávněními), pokud vy (nebo váš správce systému) přidáte sebe sama do této skupiny. Pokud přidáte sebe sama, budete se muset odhlásit a zase přihlásit, aby se tato změna projevila.</translation>
     </message>
     <message>
         <source>Sidebar</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:36
 i18n: ectx: attribute (title), widget (QWidget, sidebarTab)
 </extracomment>
-        <translation type="vanished">Postranní panel</translation>
+        <translation>Postranní panel</translation>
     </message>
     <message>
         <source>Views</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:42
 i18n: ectx: property (title), widget (QGroupBox, viewsGroup)
 </extracomment>
-        <translation type="vanished">Pohledy</translation>
+        <translation>Pohledy</translation>
     </message>
     <message>
         <source>Use the checkboxes below to configure which views will appear in the sidebar.</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:48
 i18n: ectx: property (text), widget (QLabel, label_2)
 </extracomment>
-        <translation type="vanished">Použijte zaškrtávací okénka níže k nastavení pohledů, které se objeví v postranním panelu.</translation>
+        <translation>Použijte zaškrtávací okénka níže k nastavení pohledů, které se objeví v postranním panelu.</translation>
     </message>
     <message>
         <source>If &apos;Play Queue&apos; is not checked above, then it will appear to the side of the other views. If &apos;Info&apos; is not checked above, then a button will be added to the toolbar allowing you to access song information.</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:61
 i18n: ectx: property (text), widget (NoteLabel, sbPlayQueueLabel)
 </extracomment>
-        <translation type="vanished">Pokud není řada skladeb k přehrání výše zaškrtnuta, potom se objeví po straně ostatních pohledů. Pokud nejsou výše zaškrtnuty informace, pak bude do nástrojového pruhu přidáno tlačítko umožňující přístup k informacím o písni.</translation>
+        <translation>Pokud není řada skladeb k přehrání výše zaškrtnuta, potom se objeví po straně ostatních pohledů. Pokud nejsou výše zaškrtnuty informace, pak bude do nástrojového pruhu přidáno tlačítko umožňující přístup k informacím o písni.</translation>
     </message>
     <message>
         <source>Style:</source>
@@ -4551,273 +4551,273 @@ i18n: ectx: property (text), widget (BuddyLabel, sbStyleLabel)
 i18n: file: gui/interfacesettings.ui:137
 i18n: ectx: property (text), widget (BuddyLabel, playQueueViewLabel)
 </extracomment>
-        <translation type="vanished">Styl:</translation>
+        <translation>Styl:</translation>
     </message>
     <message>
         <source>Position:</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:95
 i18n: ectx: property (text), widget (BuddyLabel, sbPositionLabel)
 </extracomment>
-        <translation type="vanished">Poloha:</translation>
+        <translation>Poloha:</translation>
     </message>
     <message>
         <source>Only show icons, no text</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:108
 i18n: ectx: property (text), widget (QCheckBox, sbIconsOnly)
 </extracomment>
-        <translation type="vanished">Ukázat jen ikony, žádný text</translation>
+        <translation>Ukázat jen ikony, žádný text</translation>
     </message>
     <message>
         <source>Auto-hide</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:115
 i18n: ectx: property (text), widget (QCheckBox, sbAutoHide)
 </extracomment>
-        <translation type="vanished">Automatické skrývání</translation>
+        <translation>Automatické skrývání</translation>
     </message>
     <message>
         <source>Initially collapse albums</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:150
 i18n: ectx: property (text), widget (QCheckBox, playQueueStartClosed)
 </extracomment>
-        <translation type="vanished">Na začátku alba složit</translation>
+        <translation>Na začátku alba složit</translation>
     </message>
     <message>
         <source>Automatically expand current album</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:157
 i18n: ectx: property (text), widget (QCheckBox, playQueueAutoExpand)
 </extracomment>
-        <translation type="vanished">Automaticky rozbalit nynější album</translation>
+        <translation>Automaticky rozbalit nynější album</translation>
     </message>
     <message>
         <source>Scroll to current track</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:164
 i18n: ectx: property (text), widget (QCheckBox, playQueueScroll)
 </extracomment>
-        <translation type="vanished">Projíždět k nynější skladbě</translation>
+        <translation>Projíždět k nynější skladbě</translation>
     </message>
     <message>
         <source>Prompt before clearing</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:171
 i18n: ectx: property (text), widget (QCheckBox, playQueueConfirmClear)
 </extracomment>
-        <translation type="vanished">Vyzvat před vyprázdněním</translation>
+        <translation>Vyzvat před vyprázdněním</translation>
     </message>
     <message>
         <source>Separate action (and shortcut) for play queue search</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:178
 i18n: ectx: property (text), widget (QCheckBox, playQueueSearch)
 </extracomment>
-        <translation type="vanished">Samostatná činnost (a klávesová zkratka) pro hledání v řadě skladeb určených k přehrání</translation>
+        <translation>Samostatná činnost (a klávesová zkratka) pro hledání v řadě skladeb určených k přehrání</translation>
     </message>
     <message>
         <source>Current album cover</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:220
 i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_cover)
 </extracomment>
-        <translation type="vanished">Obal nynějšího alba</translation>
+        <translation>Obal nynějšího alba</translation>
     </message>
     <message>
         <source>Toolbar</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:367
 i18n: ectx: attribute (title), widget (QWidget, toolbarTab)
 </extracomment>
-        <translation type="vanished">Nástrojový pruh</translation>
+        <translation>Nástrojový pruh</translation>
     </message>
     <message>
         <source>Show stop button</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:376
 i18n: ectx: property (text), widget (QCheckBox, showStopButton)
 </extracomment>
-        <translation type="vanished">Ukázat tlačítko pro zastavení</translation>
+        <translation>Ukázat tlačítko pro zastavení</translation>
     </message>
     <message>
         <source>Show cover of current track</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:383
 i18n: ectx: property (text), widget (QCheckBox, showCoverWidget)
 </extracomment>
-        <translation type="vanished">Ukázat obal nynější skladby</translation>
+        <translation>Ukázat obal nynější skladby</translation>
     </message>
     <message>
         <source>Show track rating</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:390
 i18n: ectx: property (text), widget (QCheckBox, showRatingWidget)
 </extracomment>
-        <translation type="vanished">Ukázat hodnocení skladby</translation>
+        <translation>Ukázat hodnocení skladby</translation>
     </message>
     <message>
         <source>External</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:398
 i18n: ectx: attribute (title), widget (QWidget, tab_7)
 </extracomment>
-        <translation type="vanished">Vnější</translation>
+        <translation>Vnější</translation>
     </message>
     <message>
         <source>Enable MPRIS D-BUS interface</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:404
 i18n: ectx: property (text), widget (QCheckBox, enableMpris)
 </extracomment>
-        <translation type="vanished">Povolit rozhraní MPRIS D-BUS</translation>
+        <translation>Povolit rozhraní MPRIS D-BUS</translation>
     </message>
     <message>
         <source>Show popup messages when changing tracks</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:411
 i18n: ectx: property (text), widget (QCheckBox, systemTrayPopup)
 </extracomment>
-        <translation type="vanished">Ukázat vyskakovací zprávy při změnách skladeb</translation>
+        <translation>Ukázat vyskakovací zprávy při změnách skladeb</translation>
     </message>
     <message>
         <source>Show icon in notification area</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:421
 i18n: ectx: property (text), widget (QCheckBox, systemTrayCheckBox)
 </extracomment>
-        <translation type="vanished">Ukázat ikonu v oznamovací oblasti</translation>
+        <translation>Ukázat ikonu v oznamovací oblasti</translation>
     </message>
     <message>
         <source>Minimize to notification area when closed</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:431
 i18n: ectx: property (text), widget (QCheckBox, minimiseOnClose)
 </extracomment>
-        <translation type="vanished">Při zavření zmenšit do oznamovací oblasti</translation>
+        <translation>Při zavření zmenšit do oznamovací oblasti</translation>
     </message>
     <message>
         <source>On Start-up</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:438
 i18n: ectx: property (title), widget (QGroupBox, startupState)
 </extracomment>
-        <translation type="vanished">Při spuštění</translation>
+        <translation>Při spuštění</translation>
     </message>
     <message>
         <source>Show main window</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:444
 i18n: ectx: property (text), widget (QRadioButton, startupStateShow)
 </extracomment>
-        <translation type="vanished">Ukázat hlavní okno</translation>
+        <translation>Ukázat hlavní okno</translation>
     </message>
     <message>
         <source>Hide main window</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:451
 i18n: ectx: property (text), widget (QRadioButton, startupStateHide)
 </extracomment>
-        <translation type="vanished">Skrýt hlavní okno</translation>
+        <translation>Skrýt hlavní okno</translation>
     </message>
     <message>
         <source>Restore previous state</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:458
 i18n: ectx: property (text), widget (QRadioButton, startupStateRestore)
 </extracomment>
-        <translation type="vanished">Obnovit předchozí stav</translation>
+        <translation>Obnovit předchozí stav</translation>
     </message>
     <message>
         <source>Tweaks</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:482
 i18n: ectx: attribute (title), widget (QWidget, tab_4z)
 </extracomment>
-        <translation type="vanished">Doladění</translation>
+        <translation>Doladění</translation>
     </message>
     <message>
         <source>Artist &amp;&amp; Album Sorting</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:488
 i18n: ectx: property (title), widget (QGroupBox, groupBox_2p)
 </extracomment>
-        <translation type="vanished">Třídění umělců a alb</translation>
+        <translation>Třídění umělců a alb</translation>
     </message>
     <message>
         <source>Enter a (comma separated) list of prefixes to ignore when sorting artist and albums. e.g. if set to &apos;The&apos; then &apos;The Beatles&apos; would be sorted by &apos;Beatles&apos;</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:494
 i18n: ectx: property (text), widget (QLabel, labelp)
 </extracomment>
-        <translation type="vanished">Zadejte (čárkou oddělený) seznam předpon, které se budou při třídění umělců a alb přehlížet, např. pokud nastaveno na The, potom se The Beatles budou třídit podle Beatles</translation>
+        <translation>Zadejte (čárkou oddělený) seznam předpon, které se budou při třídění umělců a alb přehlížet, např. pokud nastaveno na The, potom se The Beatles budou třídit podle Beatles</translation>
     </message>
     <message>
         <source>Enter comma separated list of prefixes...</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:504
 i18n: ectx: property (placeholderText), widget (LineEdit, ignorePrefixes)
 </extracomment>
-        <translation type="vanished">Zadejte čárkou oddělený seznam předpon...</translation>
+        <translation>Zadejte čárkou oddělený seznam předpon...</translation>
     </message>
     <message>
         <source>Composer Support</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:514
 i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 </extracomment>
-        <translation type="vanished">Podpora pro skladatele</translation>
+        <translation>Podpora pro skladatele</translation>
     </message>
     <message>
         <source>By default, Cantata uses the &apos;Album Artist&apos; tag (or &apos;Artist&apos; tag if a song has no &apos;Album Artist&apos;) to group songs and albums. For certain genres, e.g &apos;Classical&apos;, it may be preferable to use the &apos;Composer&apos; tag (if set) to perform this grouping. Please enter a (comma separated) list of the genres with which you would like Cantata to use the &apos;Composer&apos; tag.</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:520
 i18n: ectx: property (text), widget (QLabel, label)
 </extracomment>
-        <translation type="vanished">Ve výchozím nastavení Cantata používá značku Umělec alba (nebo značku Umělec, pokud píseň nemá žádného umělce alba) k seskupení písní a alb. U některých žánrů, např. Klasický, může být lepší použít značku Skladatel (pokud nastaven) k provedení tohoto seskupení. Zadejte, prosím, (čárkou oddělený) seznam žánrů, u nichž chcete, aby Cantata použila značku Skladatel.</translation>
+        <translation>Ve výchozím nastavení Cantata používá značku Umělec alba (nebo značku Umělec, pokud píseň nemá žádného umělce alba) k seskupení písní a alb. U některých žánrů, např. Klasický, může být lepší použít značku Skladatel (pokud nastaven) k provedení tohoto seskupení. Zadejte, prosím, (čárkou oddělený) seznam žánrů, u nichž chcete, aby Cantata použila značku Skladatel.</translation>
     </message>
     <message>
         <source>Enter comma separated list of genres...</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:530
 i18n: ectx: property (placeholderText), widget (LineEdit, composerGenres)
 </extracomment>
-        <translation type="vanished">Zadejte čárkou oddělený seznam žánrů...</translation>
+        <translation>Zadejte čárkou oddělený seznam žánrů...</translation>
     </message>
     <message>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:546
 i18n: ectx: property (text), widget (QLabel, label_3)
 </extracomment>
-        <translation type="vanished">pokud máte ve své sbírce mnoho umělců, kteří mají jen jednu skladbu, potom může být těžkopádné mít pro každého z nich jejich vlastní záznam v seznamu umělců. Můžete to obejít tím, že tyto skladby umístíte do samostatné složky a níže zadáte název této složky. Potom bude Cantata tyto seskupovat pod albem nazvaným Jednotlivé skladby s umělcem alba Různí umělci</translation>
+        <translation>pokud máte ve své sbírce mnoho umělců, kteří mají jen jednu skladbu, potom může být těžkopádné mít pro každého z nich jejich vlastní záznam v seznamu umělců. Můžete to obejít tím, že tyto skladby umístíte do samostatné složky a níže zadáte název této složky. Potom bude Cantata tyto seskupovat pod albem nazvaným Jednotlivé skladby s umělcem alba Různí umělci</translation>
     </message>
     <message>
         <source>Folder that contains single track files...</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:556
 i18n: ectx: property (placeholderText), widget (LineEdit, singleTracksFolders)
 </extracomment>
-        <translation type="vanished">Složka, která obsahuje soubory s jednotlivými skladbami...</translation>
+        <translation>Složka, která obsahuje soubory s jednotlivými skladbami...</translation>
     </message>
     <message>
         <source>CUE Files</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:566
 i18n: ectx: property (title), widget (QGroupBox, groupBox_3xx)
 </extracomment>
-        <translation type="vanished">Soubory CUE</translation>
+        <translation>Soubory CUE</translation>
     </message>
     <message>
         <source>A cue file is a metadata file which describes how the tracks of a CD are laid out.</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:572
 i18n: ectx: property (text), widget (QLabel, label_3x)
 </extracomment>
-        <translation type="vanished">Soubor CUE je soubor s popisnými údaji, který popisuje, jak jsou skladby na CD rozloženy.</translation>
+        <translation>Soubor CUE je soubor s popisnými údaji, který popisuje, jak jsou skladby na CD rozloženy.</translation>
     </message>
     <message>
         <source>Changing any of the above will require a DB refresh (and possibly restarting Cantata) in order to take affect.</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:588
 i18n: ectx: property (text), widget (NoteLabel, tweaksLabel)
 </extracomment>
-        <translation type="vanished">Změna čehokoli výše bude vyžadovat obnovení databáze (a možná opětovné spuštění Cantaty), aby se tato změna projevila.</translation>
+        <translation>Změna čehokoli výše bude vyžadovat obnovení databáze (a možná opětovné spuštění Cantaty), aby se tato změna projevila.</translation>
     </message>
     <message>
         <source>General</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:609
 i18n: ectx: attribute (title), widget (QWidget, tab_4)
 </extracomment>
-        <translation type="vanished">Obecné</translation>
+        <translation>Obecné</translation>
     </message>
     <message>
         <source>Fetch missing covers from Last.fm</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:620
 i18n: ectx: property (text), widget (QCheckBox, fetchCovers)
 </extracomment>
-        <translation type="vanished">Natáhnout chybějící obaly z Last.fm</translation>
+        <translation>Natáhnout chybějící obaly z Last.fm</translation>
     </message>
     <message>
         <source>Show delete action in context menus</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:627
 i18n: ectx: property (text), widget (QCheckBox, showDeleteAction)
 </extracomment>
-        <translation type="vanished">Ukázat položku Smazat v nabídkách souvisejících činností</translation>
+        <translation>Ukázat položku Smazat v nabídkách souvisejících činností</translation>
     </message>
     <message>
         <source>Enforce single-click activation of items</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:634
 i18n: ectx: property (text), widget (QCheckBox, forceSingleClick)
 </extracomment>
-        <translation type="vanished">Vynutit zapnutí položek jedním klepnutím</translation>
+        <translation>Vynutit zapnutí položek jedním klepnutím</translation>
     </message>
     <message>
         <source>&lt;p&gt;This will change Cantata&apos;s interface as detailed:
@@ -4825,7 +4825,7 @@ i18n: ectx: property (text), widget (QCheckBox, forceSingleClick)
         <extracomment>i18n: file: gui/interfacesettings.ui:642
 i18n: ectx: property (toolTip), widget (QCheckBox, touchFriendly)
 </extracomment>
-        <translation type="vanished">&lt;p&gt;Toto změní rozhraní Cantaty, jak je to popsáno dále:
+        <translation>&lt;p&gt;Toto změní rozhraní Cantaty, jak je to popsáno dále:
 &lt;ul&gt;&lt;li&gt;Tlačítka pro přehrávání a ovládání budou o 33 % širší&lt;/li&gt;&lt;li&gt;Pohledy budou odstrčitelné.&lt;/li&gt;&lt;li&gt;Pro táhnutí položek budete potřebovat najet do horního levého rohu&lt;/li&gt;&lt;li&gt;Posuvníky budou široké jen několik pixelů&lt;/li&gt;&lt;li&gt;Činnosti (např. Přidat do řady skladeb k přehrání) budou vždy viditelné (ne jen tehdy, když je položka pod myší)&lt;/li&gt;&lt;li&gt;Otočná tlačítka budou mít tlačítka + a - na straně textového pole.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
         <extra-po-flags>no-c-format</extra-po-flags>
     </message>
@@ -4834,147 +4834,147 @@ i18n: ectx: property (toolTip), widget (QCheckBox, touchFriendly)
         <extracomment>i18n: file: gui/interfacesettings.ui:645
 i18n: ectx: property (text), widget (QCheckBox, touchFriendly)
 </extracomment>
-        <translation type="vanished">Udělat rozhraní dotekově přátelštější</translation>
+        <translation>Udělat rozhraní dotekově přátelštější</translation>
     </message>
     <message>
         <source>Show song information tooltips</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:652
 i18n: ectx: property (text), widget (QCheckBox, infoTooltips)
 </extracomment>
-        <translation type="vanished">Ukázat nástrojové rady s informacemi k písni</translation>
+        <translation>Ukázat nástrojové rady s informacemi k písni</translation>
     </message>
     <message>
         <source>Support retina displays</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:659
 i18n: ectx: property (text), widget (QCheckBox, retinaSupport)
 </extracomment>
-        <translation type="vanished">Podpora pro obrazovky retina (sítnice)</translation>
+        <translation>Podpora pro obrazovky retina (sítnice)</translation>
     </message>
     <message>
         <source>Language:</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:666
 i18n: ectx: property (text), widget (BuddyLabel, langLabel)
 </extracomment>
-        <translation type="vanished">Jazyk:</translation>
+        <translation>Jazyk:</translation>
     </message>
     <message>
         <source>Changing the &apos;Enforce single-click activation of items&apos; setting will require a re-start of Cantata.</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:681
 i18n: ectx: property (text), widget (NoteLabel, singleClickLabel)
 </extracomment>
-        <translation type="vanished">Změna nastavení Vynutit zapnutí jedním klepnutím u položek vyžaduje opětovné spuštění Cantaty.</translation>
+        <translation>Změna nastavení Vynutit zapnutí jedním klepnutím u položek vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
     <message>
         <source>Changing the language setting will require a re-start of Cantata.</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:688
 i18n: ectx: property (text), widget (NoteLabel, langNoteLabel)
 </extracomment>
-        <translation type="vanished">Změna nastavení jazyka vyžaduje opětovné spuštění Cantaty.</translation>
+        <translation>Změna nastavení jazyka vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
     <message>
         <source>Changing the &apos;touch friendly&apos; setting will require a re-start of Cantata.</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:695
 i18n: ectx: property (text), widget (NoteLabel, touchFriendlyNoteLabel)
 </extracomment>
-        <translation type="vanished">Změna nastavení rozhraní na dotykově přátelské vyžaduje opětovné spuštění Cantaty.</translation>
+        <translation>Změna nastavení rozhraní na dotykově přátelské vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
     <message>
         <source>Enabling support for retina displays will produce sharper icons on the retina display, but may produce less sharp icons on non-retina displays. Changing this setting will require a re-start of Cantata.</source>
         <extracomment>i18n: file: gui/interfacesettings.ui:702
 i18n: ectx: property (text), widget (NoteLabel, retinaSupportNoteLabel)
 </extracomment>
-        <translation type="vanished">Povolení podpory pro obrazovky retina (retina = sítnice; obrazovky s vyšší hustotou pixelů, než jakou měly předchozí modely, firma Apple) povede k ostřejším ikonám na obrazovkách typu &quot;retina&quot;, ale může vést k méně ostrým ikonám na obrazovkách, které typu &quot;retina&quot; nejsou. Změna tohoto nastavení vyžaduje opětovné spuštění Cantaty.</translation>
+        <translation>Povolení podpory pro obrazovky retina (retina = sítnice; obrazovky s vyšší hustotou pixelů, než jakou měly předchozí modely, firma Apple) povede k ostřejším ikonám na obrazovkách typu &quot;retina&quot;, ale může vést k méně ostrým ikonám na obrazovkách, které typu &quot;retina&quot; nejsou. Změna tohoto nastavení vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
     <message>
         <source>[Dynamic]</source>
         <extracomment>i18n: file: gui/mainwindow.ui:181
 i18n: ectx: property (text), widget (QLabel, dynamicLabel)
 </extracomment>
-        <translation type="vanished">[Dynamický]</translation>
+        <translation>[Dynamický]</translation>
     </message>
     <message>
         <source>Exit Full Screen</source>
         <extracomment>i18n: file: gui/mainwindow.ui:204
 i18n: ectx: property (text), widget (UrlLabel, fullScreenLabel)
 </extracomment>
-        <translation type="vanished">Opustit režim zobrazení na celou obrazovku</translation>
+        <translation>Opustit režim zobrazení na celou obrazovku</translation>
     </message>
     <message>
         <source>Fa&amp;deout on stop:</source>
         <extracomment>i18n: file: gui/playbacksettings.ui:38
 i18n: ectx: property (text), widget (BuddyLabel, label_6b)
 </extracomment>
-        <translation type="vanished">Postupné &amp;zeslabení zvuku při zastavení:</translation>
+        <translation>Postupné &amp;zeslabení zvuku při zastavení:</translation>
     </message>
     <message>
         <source>Stop playback on exit</source>
         <extracomment>i18n: file: gui/playbacksettings.ui:58
 i18n: ectx: property (text), widget (QCheckBox, stopOnExit)
 </extracomment>
-        <translation type="vanished">Zastavit přehrávání při ukončení</translation>
+        <translation>Zastavit přehrávání při ukončení</translation>
     </message>
     <message>
         <source>Inhibit suspend whilst playing</source>
         <extracomment>i18n: file: gui/playbacksettings.ui:65
 i18n: ectx: property (text), widget (QCheckBox, inhibitSuspend)
 </extracomment>
-        <translation type="vanished">Bránit uspání při přehrávání</translation>
+        <translation>Bránit uspání při přehrávání</translation>
     </message>
     <message>
         <source>If you press and hold the stop button, then a menu will be shown allowing you to choose whether to stop playback now, or after the current track. (The stop button can be enabled in the Interface/Toolbar section)</source>
         <extracomment>i18n: file: gui/playbacksettings.ui:72
 i18n: ectx: property (text), widget (NoteLabel, noteLabel)
 </extracomment>
-        <translation type="vanished">Pokud stisknete a podržíte tlačítko pro zastavení, ukáže se nabídka, v níž si budete moci zvolit, zda se má přehrávání zastavit nyní, nebo po nynější skladbě. (Tlačítko pro zastavení lze povolit v části nastavení Rozhraní/Nástrojový pruh)</translation>
+        <translation>Pokud stisknete a podržíte tlačítko pro zastavení, ukáže se nabídka, v níž si budete moci zvolit, zda se má přehrávání zastavit nyní, nebo po nynější skladbě. (Tlačítko pro zastavení lze povolit v části nastavení Rozhraní/Nástrojový pruh)</translation>
     </message>
     <message>
         <source>Output</source>
         <extracomment>i18n: file: gui/playbacksettings.ui:88
 i18n: ectx: property (title), widget (QGroupBox, outputBox)
 </extracomment>
-        <translation type="vanished">Výstup</translation>
+        <translation>Výstup</translation>
     </message>
     <message>
         <source>&amp;Crossfade between tracks:</source>
         <extracomment>i18n: file: gui/playbacksettings.ui:112
 i18n: ectx: property (text), widget (BuddyLabel, crossfadingLabel)
 </extracomment>
-        <translation type="vanished">&amp;Prolínání mezi skladbami:</translation>
+        <translation>&amp;Prolínání mezi skladbami:</translation>
     </message>
     <message>
         <source> s</source>
         <extracomment>i18n: file: gui/playbacksettings.ui:125
 i18n: ectx: property (suffix), widget (QSpinBox, crossfading)
 </extracomment>
-        <translation type="vanished"> s</translation>
+        <translation> s</translation>
     </message>
     <message>
         <source>Replay &amp;gain:</source>
         <extracomment>i18n: file: gui/playbacksettings.ui:135
 i18n: ectx: property (text), widget (BuddyLabel, replayGainLabel)
 </extracomment>
-        <translation type="vanished">Vyrovnání &amp;hlasitosti:</translation>
+        <translation>Vyrovnání &amp;hlasitosti:</translation>
     </message>
     <message>
         <source>About replay gain</source>
         <extracomment>i18n: file: gui/playbacksettings.ui:178
 i18n: ectx: property (text), widget (UrlLabel, aboutReplayGain)
 </extracomment>
-        <translation type="vanished">O vyrovnání hlasitosti</translation>
+        <translation>O vyrovnání hlasitosti</translation>
     </message>
     <message>
         <source>Use the checkboxes below to control the active outputs.</source>
         <extracomment>i18n: file: gui/playbacksettings.ui:187
 i18n: ectx: property (text), widget (QLabel, outputsViewLabel)
 </extracomment>
-        <translation type="vanished">Použijte zaškrtávací okénka níže k ovládání činných výstupů.</translation>
+        <translation>Použijte zaškrtávací okénka níže k ovládání činných výstupů.</translation>
     </message>
     <message>
         <source>Collection:</source>
         <extracomment>i18n: file: gui/serversettings.ui:35
 i18n: ectx: property (text), widget (QLabel, label)
 </extracomment>
-        <translation type="vanished">Sbírka:</translation>
+        <translation>Sbírka:</translation>
     </message>
     <message>
         <source>Cover filename:</source>
@@ -4987,14 +4987,14 @@ i18n: ectx: property (text), widget (BuddyLabel, coverNameLabel)
 i18n: file: gui/serversettings.ui:243
 i18n: ectx: property (text), widget (BuddyLabel, basicCoverNameLabel)
 </extracomment>
-        <translation type="vanished">Název souboru obalu:</translation>
+        <translation>Název souboru obalu:</translation>
     </message>
     <message>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
         <extracomment>i18n: file: gui/serversettings.ui:149
 i18n: ectx: property (toolTip), widget (LineEdit, coverName)
 </extracomment>
-        <translation type="vanished">&lt;p&gt;Souborový název (bez přípony), pod nímž se mají uložit stažené obaly.&lt;br/&gt; Jestliže bude ponecháno prázdné, použije se &quot;cover&quot;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% bude nahrazen umělcem alba současné písně, a %album% bude nahrazeno názvem alba.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Souborový název (bez přípony), pod nímž se mají uložit stažené obaly.&lt;br/&gt; Jestliže bude ponecháno prázdné, použije se &quot;cover&quot;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% bude nahrazen umělcem alba současné písně, a %album% bude nahrazeno názvem alba.&lt;/i&gt;&lt;/p&gt;</translation>
         <extra-po-flags>no-c-format</extra-po-flags>
     </message>
     <message>
@@ -5002,14 +5002,14 @@ i18n: ectx: property (toolTip), widget (LineEdit, coverName)
         <extracomment>i18n: file: gui/serversettings.ui:156
 i18n: ectx: property (text), widget (BuddyLabel, streamUrlLabel)
 </extracomment>
-        <translation type="vanished">Adresa (URL) proudu HTTP:</translation>
+        <translation>Adresa (URL) proudu HTTP:</translation>
     </message>
     <message>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <extracomment>i18n: file: gui/serversettings.ui:171
 i18n: ectx: property (text), widget (NoteLabel, musicFolderNoteLabel)
 </extracomment>
-        <translation type="vanished">Nastavení pro hudební složku je používáno k vyhledání obrázků obalů. Může být nastaveno na adresu (URL) HTTP, pokud je vaše MPD na jiném stroji a obaly jsou přístupné přes HTTP. Pokud není nastaveno na adresu (URL) HTTP a vy máte i oprávnění pro zápis do této složky (a jejích podsložek), Cantata uloží všechny stažené obaly do příslušné složky s albem.</translation>
+        <translation>Nastavení pro hudební složku je používáno k vyhledání obrázků obalů. Může být nastaveno na adresu (URL) HTTP, pokud je vaše MPD na jiném stroji a obaly jsou přístupné přes HTTP. Pokud není nastaveno na adresu (URL) HTTP a vy máte i oprávnění pro zápis do této složky (a jejích podsložek), Cantata uloží všechny stažené obaly do příslušné složky s albem.</translation>
     </message>
     <message>
         <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
@@ -5022,63 +5022,63 @@ i18n: ectx: property (text), widget (NoteLabel, coverNameNoteLabel)
 i18n: file: gui/serversettings.ui:265
 i18n: ectx: property (text), widget (NoteLabel, basicCoverNameNoteLabel)
 </extracomment>
-        <translation type="vanished">Pokud není nastaveno žádné nastavení pro název souboru s obalem, pak bude Cantata používat výchozí &lt;code&gt;obal&lt;/code&gt;</translation>
+        <translation>Pokud není nastaveno žádné nastavení pro název souboru s obalem, pak bude Cantata používat výchozí &lt;code&gt;obal&lt;/code&gt;</translation>
     </message>
     <message>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
         <extracomment>i18n: file: gui/serversettings.ui:185
 i18n: ectx: property (text), widget (NoteLabel, streamUrlNoteLabel)
 </extracomment>
-        <translation type="vanished">Adresa (URL) proudu HTTP se používá jen tehdy, když máte nastaveno MPD na výstup do proudu HTTP, a přejete si, aby Cantata mohla tento proud přehrávat.</translation>
+        <translation>Adresa (URL) proudu HTTP se používá jen tehdy, když máte nastaveno MPD na výstup do proudu HTTP, a přejete si, aby Cantata mohla tento proud přehrávat.</translation>
     </message>
     <message>
         <source>If you change the &apos;Music folder&apos; setting, then you will need to manually update the music database. This can be performed by pressing the &apos;Refresh Database&apos; button in the &apos;Artists&apos; or &apos;Albums&apos; views.</source>
         <extracomment>i18n: file: gui/serversettings.ui:258
 i18n: ectx: property (text), widget (NoteLabel, basicMusicFolderNoteLabel)
 </extracomment>
-        <translation type="vanished">Pokud změníte nastavení pro složku s hudbou, budete muset hudební databázi obnovovat ručně. To je možné provádět stisknutím tlačítka Obnovit databázi v pohledech s umělci nebo alby.</translation>
+        <translation>Pokud změníte nastavení pro složku s hudbou, budete muset hudební databázi obnovovat ručně. To je možné provádět stisknutím tlačítka Obnovit databázi v pohledech s umělci nebo alby.</translation>
     </message>
     <message>
         <source>Mode:</source>
         <extracomment>i18n: file: network/proxysettings.ui:26
 i18n: ectx: property (text), widget (BuddyLabel, modeLabel)
 </extracomment>
-        <translation type="vanished">Režim:</translation>
+        <translation>Režim:</translation>
     </message>
     <message>
         <source>HTTP Proxy</source>
         <extracomment>i18n: file: network/proxysettings.ui:50
 i18n: ectx: property (text), item, widget (QComboBox, proxyType)
 </extracomment>
-        <translation type="vanished">Proxy HTTP</translation>
+        <translation>Proxy HTTP</translation>
     </message>
     <message>
         <source>SOCKS Proxy</source>
         <extracomment>i18n: file: network/proxysettings.ui:55
 i18n: ectx: property (text), item, widget (QComboBox, proxyType)
 </extracomment>
-        <translation type="vanished">Proxy SOCKS</translation>
+        <translation>Proxy SOCKS</translation>
     </message>
     <message>
         <source>Use the checkboxes below to configure the list of active services.</source>
         <extracomment>i18n: file: online/onlinesettings.ui:12
 i18n: ectx: property (text), widget (QLabel, label)
 </extracomment>
-        <translation type="vanished">Použijte zaškrtávací okénka níže k nastavení seznamu činných služeb.</translation>
+        <translation>Použijte zaškrtávací okénka níže k nastavení seznamu činných služeb.</translation>
     </message>
     <message>
         <source>Configure Service</source>
         <extracomment>i18n: file: online/onlinesettings.ui:47
 i18n: ectx: property (text), widget (QPushButton, configureButton)
 </extracomment>
-        <translation type="vanished">Nastavit službu</translation>
+        <translation>Nastavit službu</translation>
     </message>
     <message>
         <source>Scrobble using:</source>
         <extracomment>i18n: file: scrobbling/scrobblingsettings.ui:32
 i18n: ectx: property (text), widget (BuddyLabel, scrobblerLabel)
 </extracomment>
-        <translation type="vanished">Odesílat informace o skladbách pomocí:</translation>
+        <translation>Odesílat informace o skladbách pomocí:</translation>
     </message>
     <message>
         <source>Status:</source>
@@ -5091,7 +5091,7 @@ i18n: ectx: property (text), widget (QLabel, statusLabel)
 i18n: file: streams/digitallyimportedsettings.ui:94
 i18n: ectx: property (text), widget (BuddyLabel, label_5)
 </extracomment>
-        <translation type="vanished">Stav:</translation>
+        <translation>Stav:</translation>
     </message>
     <message>
         <source>Login</source>
@@ -5104,1018 +5104,1018 @@ i18n: ectx: property (text), widget (QPushButton, loginButton)
 i18n: file: streams/digitallyimportedsettings.ui:120
 i18n: ectx: property (text), widget (QPushButton, loginButton)
 </extracomment>
-        <translation type="vanished">Přihlášení</translation>
+        <translation>Přihlášení</translation>
     </message>
     <message>
         <source>Scrobble tracks</source>
         <extracomment>i18n: file: scrobbling/scrobblingsettings.ui:131
 i18n: ectx: property (text), widget (QCheckBox, enableScrobbling)
 </extracomment>
-        <translation type="vanished">Odesílat informace o skladbách</translation>
+        <translation>Odesílat informace o skladbách</translation>
     </message>
     <message>
         <source>Show &apos;Love&apos; button</source>
         <extracomment>i18n: file: scrobbling/scrobblingsettings.ui:138
 i18n: ectx: property (text), widget (QCheckBox, showLove)
 </extracomment>
-        <translation type="vanished">Ukázat tlačítko pro ukázání náklonnosti k písničce</translation>
+        <translation>Ukázat tlačítko pro ukázání náklonnosti k písničce</translation>
     </message>
     <message>
         <source>You can listen for free without an account, but Premium members can listen to higher quality streams without advertisements. Visit &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt; to upgrade to a premium account.</source>
         <extracomment>i18n: file: streams/digitallyimportedsettings.ui:29
 i18n: ectx: property (text), widget (QLabel, label)
 </extracomment>
-        <translation type="vanished">Můžete poslouchat zdarma bez účtu, ale členové Premium mohou poslouchat proudy o vyšší kvalitě a bez reklam. Navštivte stránky &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt;, kde můžete udělat povýšení na prémiový účet.</translation>
+        <translation>Můžete poslouchat zdarma bez účtu, ale členové Premium mohou poslouchat proudy o vyšší kvalitě a bez reklam. Navštivte stránky &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt;, kde můžete udělat povýšení na prémiový účet.</translation>
     </message>
     <message>
         <source>Premium Account</source>
         <extracomment>i18n: file: streams/digitallyimportedsettings.ui:42
 i18n: ectx: property (title), widget (QGroupBox, groupBox)
 </extracomment>
-        <translation type="vanished">Prémiový účet</translation>
+        <translation>Prémiový účet</translation>
     </message>
     <message>
         <source>Stream type:</source>
         <extracomment>i18n: file: streams/digitallyimportedsettings.ui:81
 i18n: ectx: property (text), widget (BuddyLabel, label_4)
 </extracomment>
-        <translation type="vanished">Typ proudu:</translation>
+        <translation>Typ proudu:</translation>
     </message>
     <message>
         <source>Session expiry:</source>
         <extracomment>i18n: file: streams/digitallyimportedsettings.ui:127
 i18n: ectx: property (text), widget (QLabel, expiryLabel)
 </extracomment>
-        <translation type="vanished">Vypršení sezení:</translation>
+        <translation>Vypršení sezení:</translation>
     </message>
     <message>
         <source>These settings apply to Digitally Imported, JazzRadio.com, RockRadio.com, and Sky.fm</source>
         <extracomment>i18n: file: streams/digitallyimportedsettings.ui:157
 i18n: ectx: property (text), widget (NoteLabel, noteLabel)
 </extracomment>
-        <translation type="vanished">Tato nastavení se použijí na Digitally Imported, JazzRadio.com, RockRadio.com, and Sky.fm.</translation>
+        <translation>Tato nastavení se použijí na Digitally Imported, JazzRadio.com, RockRadio.com, and Sky.fm.</translation>
     </message>
     <message>
         <source>If you enter account details, then a &apos;DI&apos; status item will appear under the list of streams. This will indicate if you are logged in or not.</source>
         <extracomment>i18n: file: streams/digitallyimportedsettings.ui:164
 i18n: ectx: property (text), widget (NoteLabel, note2Label)
 </extracomment>
-        <translation type="vanished">Pokud zadáte podrobnosti účtu, stav &apos;DI&apos; (Digitally Imported) se objeví pod seznamem proudů. To ukáže, zda jste přihlášen nebo nejste.</translation>
+        <translation>Pokud zadáte podrobnosti účtu, stav &apos;DI&apos; (Digitally Imported) se objeví pod seznamem proudů. To ukáže, zda jste přihlášen nebo nejste.</translation>
     </message>
     <message>
         <source>Use the checkboxes below to configure the list of active providers.</source>
         <extracomment>i18n: file: streams/streamssettings.ui:12
 i18n: ectx: property (text), widget (QLabel, label)
 </extracomment>
-        <translation type="vanished">Použijte zaškrtávací okénka níže k nastavení seznamu činných poskytovatelů.</translation>
+        <translation>Použijte zaškrtávací okénka níže k nastavení seznamu činných poskytovatelů.</translation>
     </message>
     <message>
         <source>Built-in categories are shown in italic, and these cannot be removed.</source>
         <extracomment>i18n: file: streams/streamssettings.ui:25
 i18n: ectx: property (text), widget (PlainNoteLabel, note)
 </extracomment>
-        <translation type="vanished">Vestavěné skupiny jsou zobrazovány kurzívou, a tyto nelze odstranit.</translation>
+        <translation>Vestavěné skupiny jsou zobrazovány kurzívou, a tyto nelze odstranit.</translation>
     </message>
     <message>
         <source>Search:</source>
         <extracomment>i18n: file: support/shortcutssettingswidget.ui:22
 i18n: ectx: property (text), widget (BuddyLabel, label_2)
 </extracomment>
-        <translation type="vanished">Hledání:</translation>
+        <translation>Hledání:</translation>
     </message>
     <message>
         <source>Shortcut for Selected Action</source>
         <extracomment>i18n: file: support/shortcutssettingswidget.ui:65
 i18n: ectx: property (title), widget (QGroupBox, actionBox)
 </extracomment>
-        <translation type="vanished">Zkratka pro vybranou činnost</translation>
+        <translation>Zkratka pro vybranou činnost</translation>
     </message>
     <message>
         <source>Default:</source>
         <extracomment>i18n: file: support/shortcutssettingswidget.ui:71
 i18n: ectx: property (text), widget (QRadioButton, useDefault)
 </extracomment>
-        <translation type="vanished">Výchozí:</translation>
+        <translation>Výchozí:</translation>
     </message>
     <message>
         <source>Custom:</source>
         <extracomment>i18n: file: support/shortcutssettingswidget.ui:85
 i18n: ectx: property (text), widget (QRadioButton, useCustom)
 </extracomment>
-        <translation type="vanished">Vlastní:</translation>
+        <translation>Vlastní:</translation>
     </message>
     <message>
         <source>Album artist:</source>
         <extracomment>i18n: file: tags/tageditor.ui:80
 i18n: ectx: property (text), widget (StateLabel, albumArtistLabel)
 </extracomment>
-        <translation type="vanished">Umělec alba:</translation>
+        <translation>Umělec alba:</translation>
     </message>
     <message>
         <source>Track number:</source>
         <extracomment>i18n: file: tags/tageditor.ui:119
 i18n: ectx: property (text), widget (StateLabel, trackLabel)
 </extracomment>
-        <translation type="vanished">Číslo skladby:</translation>
+        <translation>Číslo skladby:</translation>
     </message>
     <message>
         <source>Disc number:</source>
         <extracomment>i18n: file: tags/tageditor.ui:132
 i18n: ectx: property (text), widget (StateLabel, discLabel)
 </extracomment>
-        <translation type="vanished">Číslo disku:</translation>
+        <translation>Číslo disku:</translation>
     </message>
     <message>
         <source>Rating:</source>
         <extracomment>i18n: file: tags/tageditor.ui:171
 i18n: ectx: property (text), widget (StateLabel, ratingLabel)
 </extracomment>
-        <translation type="vanished">Hodnocení:</translation>
+        <translation>Hodnocení:</translation>
     </message>
     <message>
         <source>&lt;i&gt;(Various)&lt;/i&gt;</source>
         <extracomment>i18n: file: tags/tageditor.ui:186
 i18n: ectx: property (text), widget (QLabel, ratingVarious)
 </extracomment>
-        <translation type="vanished">&lt;i&gt;(Různé)&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;(Různé)&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Multiple genres should be separated via a comma (e.g. &apos;Rock,Hard Rock&apos;)</source>
         <extracomment>i18n: file: tags/tageditor.ui:210
 i18n: ectx: property (text), widget (PlainNoteLabel, label_7x)
 </extracomment>
-        <translation type="vanished">Více žánrů se musí oddělit čárkou (např. &apos;Rock;Hard Rock&apos;)</translation>
+        <translation>Více žánrů se musí oddělit čárkou (např. &apos;Rock;Hard Rock&apos;)</translation>
     </message>
     <message>
         <source>Ratings are stored in an external database, and &lt;b&gt;not&lt;/b&gt; in the song&apos;s file.</source>
         <extracomment>i18n: file: tags/tageditor.ui:217
 i18n: ectx: property (text), widget (PlainNoteLabel, ratingNoteLabel)
 </extracomment>
-        <translation type="vanished">Hodnocení jsou ukládána ve vnější databázi, &lt;b&gt;ne&lt;/b&gt; v souboru s písní.</translation>
+        <translation>Hodnocení jsou ukládána ve vnější databázi, &lt;b&gt;ne&lt;/b&gt; v souboru s písní.</translation>
     </message>
     <message>
         <source>Original Name</source>
         <extracomment>i18n: file: tags/trackorganiser.ui:115
 i18n: ectx: property (text), widget (QTreeWidget, files)
 </extracomment>
-        <translation type="vanished">Původní název</translation>
+        <translation>Původní název</translation>
     </message>
     <message>
         <source>New Name</source>
         <extracomment>i18n: file: tags/trackorganiser.ui:120
 i18n: ectx: property (text), widget (QTreeWidget, files)
 </extracomment>
-        <translation type="vanished">Nový název</translation>
+        <translation>Nový název</translation>
     </message>
     <message>
         <source>Ratings will be lost if a file is renamed.</source>
         <extracomment>i18n: file: tags/trackorganiser.ui:130
 i18n: ectx: property (text), widget (UrlNoteLabel, ratingsNote)
 </extracomment>
-        <translation type="vanished">Hodnocení budou ztracena, pokud bude soubor přejmenován.</translation>
+        <translation>Hodnocení budou ztracena, pokud bude soubor přejmenován.</translation>
     </message>
     <message>
         <source>Your names</source>
         <comment>NAME OF TRANSLATORS</comment>
-        <translation type="vanished">Pavel Fric</translation>
+        <translation>Pavel Fric</translation>
     </message>
     <message>
         <source>Your emails</source>
         <comment>EMAIL OF TRANSLATORS</comment>
-        <translation type="vanished">pavelfric@seznam.cz</translation>
+        <translation>pavelfric@seznam.cz</translation>
     </message>
     <message>
         <source>Show All Tracks</source>
-        <translation type="vanished">Ukázat všechny skladby</translation>
+        <translation>Ukázat všechny skladby</translation>
     </message>
     <message>
         <source>Show Untagged Tracks</source>
-        <translation type="vanished">Ukázat skladby bez značek</translation>
+        <translation>Ukázat skladby bez značek</translation>
     </message>
     <message>
         <source>Remove From List</source>
-        <translation type="vanished">Odstranit ze seznamu</translation>
+        <translation>Odstranit ze seznamu</translation>
     </message>
     <message>
         <source>Album Gain</source>
-        <translation type="vanished">Zesílení alba</translation>
+        <translation>Zesílení alba</translation>
     </message>
     <message>
         <source>Track Gain</source>
-        <translation type="vanished">Zesílení skladby</translation>
+        <translation>Zesílení skladby</translation>
     </message>
     <message>
         <source>Album Peak</source>
-        <translation type="vanished">Vrchol alba</translation>
+        <translation>Vrchol alba</translation>
     </message>
     <message>
         <source>Track Peak</source>
-        <translation type="vanished">Vrchol skladby</translation>
+        <translation>Vrchol skladby</translation>
     </message>
     <message>
         <source>Scan</source>
-        <translation type="vanished">Prohledat</translation>
+        <translation>Prohledat</translation>
     </message>
     <message>
         <source>Update ReplayGain tags in tracks?</source>
-        <translation type="vanished">Obnovit značky pro vyrovnání hlasitosti ve skladbách?</translation>
+        <translation>Obnovit značky pro vyrovnání hlasitosti ve skladbách?</translation>
     </message>
     <message>
         <source>Update Tags</source>
-        <translation type="vanished">Obnovit značky</translation>
+        <translation>Obnovit značky</translation>
     </message>
     <message>
         <source>Abort scanning of tracks?</source>
-        <translation type="vanished">Zrušit prohledávání značek?</translation>
+        <translation>Zrušit prohledávání značek?</translation>
     </message>
     <message>
         <source>Abort</source>
-        <translation type="vanished">Přerušit</translation>
+        <translation>Přerušit</translation>
     </message>
     <message>
         <source>Abort reading of existing tags?</source>
-        <translation type="vanished">Zrušit čtení stávajících značek?</translation>
+        <translation>Zrušit čtení stávajících značek?</translation>
     </message>
     <message>
         <source>Scan &lt;b&gt;all&lt;/b&gt; tracks?&lt;br/&gt;&lt;br/&gt;&lt;i&gt;All tracks have existing ReplayGain tags.&lt;/i&gt;</source>
-        <translation type="vanished">Prohledat &lt;b&gt;všechny&lt;/b&gt; skladby?&lt;br/&gt;&lt;br/&gt;&lt;i&gt;Všechny skladby mají existující značky pro vyrovnání hlasitost.&lt;/i&gt;</translation>
+        <translation>Prohledat &lt;b&gt;všechny&lt;/b&gt; skladby?&lt;br/&gt;&lt;br/&gt;&lt;i&gt;Všechny skladby mají existující značky pro vyrovnání hlasitost.&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Do you wish to scan all tracks, or only tracks without existing tags?</source>
-        <translation type="vanished">Chcete prohledat všechny skladby, nebo pouze soubory bez existujících značek?</translation>
+        <translation>Chcete prohledat všechny skladby, nebo pouze soubory bez existujících značek?</translation>
     </message>
     <message>
         <source>Untagged Tracks</source>
-        <translation type="vanished">Skladby bez značek</translation>
+        <translation>Skladby bez značek</translation>
     </message>
     <message>
         <source>All Tracks</source>
-        <translation type="vanished">Všechny skladby</translation>
+        <translation>Všechny skladby</translation>
     </message>
     <message>
         <source>Scanning tracks...</source>
-        <translation type="vanished">Prohledávají se skladby...</translation>
+        <translation>Prohledávají se skladby...</translation>
     </message>
     <message>
         <source>Reading existing tags...</source>
-        <translation type="vanished">Čtou se stávající značky...</translation>
+        <translation>Čtou se stávající značky...</translation>
     </message>
     <message>
         <source>%1 (Corrupt tags?)</source>
         <comment>filename (Corrupt tags?)</comment>
-        <translation type="vanished">%1 (poškozené značky?)</translation>
+        <translation>%1 (poškozené značky?)</translation>
     </message>
     <message>
         <source>Failed to update the tags of the following tracks:</source>
-        <translation type="vanished">Nepodařilo se zaktualizovat značky následujících skladeb:</translation>
+        <translation>Nepodařilo se zaktualizovat značky následujících skladeb:</translation>
     </message>
     <message>
         <source>Device is not connected.</source>
-        <translation type="vanished">Zařízení není připojeno.</translation>
+        <translation>Zařízení není připojeno.</translation>
     </message>
     <message>
         <source>%1 dB</source>
-        <translation type="vanished">%1 dB</translation>
+        <translation>%1 dB</translation>
     </message>
     <message>
         <source>Failed</source>
-        <translation type="vanished">Nepodařilo se</translation>
+        <translation>Nepodařilo se</translation>
     </message>
     <message>
         <source>Original: %1 dB</source>
-        <translation type="vanished">Původní: %1 dB</translation>
+        <translation>Původní: %1 dB</translation>
     </message>
     <message>
         <source>Original: %1</source>
-        <translation type="vanished">Původní: %1</translation>
+        <translation>Původní: %1</translation>
     </message>
     <message>
         <source>Remove the selected tracks from the list?</source>
-        <translation type="vanished">Odstranit vybrané skladby ze seznamu?</translation>
+        <translation>Odstranit vybrané skladby ze seznamu?</translation>
     </message>
     <message>
         <source>Remove Tracks</source>
-        <translation type="vanished">Odstranit skladby</translation>
+        <translation>Odstranit skladby</translation>
     </message>
     <message>
         <source>Invalid service</source>
-        <translation type="vanished">Neplatná služba</translation>
+        <translation>Neplatná služba</translation>
     </message>
     <message>
         <source>Invalid method</source>
-        <translation type="vanished">Neplatná metoda</translation>
+        <translation>Neplatná metoda</translation>
     </message>
     <message>
         <source>Authentication failed</source>
-        <translation type="vanished">Ověření se nezdařilo</translation>
+        <translation>Ověření se nezdařilo</translation>
     </message>
     <message>
         <source>Invalid format</source>
-        <translation type="vanished">Neplatný formát</translation>
+        <translation>Neplatný formát</translation>
     </message>
     <message>
         <source>Invalid parameters</source>
-        <translation type="vanished">Neplatné parametry</translation>
+        <translation>Neplatné parametry</translation>
     </message>
     <message>
         <source>Invalid resource specified</source>
-        <translation type="vanished">Zadán neplatný zdroj</translation>
+        <translation>Zadán neplatný zdroj</translation>
     </message>
     <message>
         <source>Operation failed</source>
-        <translation type="vanished">Operace se nezdařila</translation>
+        <translation>Operace se nezdařila</translation>
     </message>
     <message>
         <source>Invalid session key</source>
-        <translation type="vanished">Neplatný klíč sezení</translation>
+        <translation>Neplatný klíč sezení</translation>
     </message>
     <message>
         <source>Invalid API key</source>
-        <translation type="vanished">Neplatný klíč API</translation>
+        <translation>Neplatný klíč API</translation>
     </message>
     <message>
         <source>Service offline</source>
-        <translation type="vanished">Služba není dostupná</translation>
+        <translation>Služba není dostupná</translation>
     </message>
     <message>
         <source>Last.fm is currently busy, please try again in a few minutes</source>
-        <translation type="vanished">Služba Last.fm je nyní zaneprázdněna. Zkuste to, prosím, znovu za několik minut</translation>
+        <translation>Služba Last.fm je nyní zaneprázdněna. Zkuste to, prosím, znovu za několik minut</translation>
     </message>
     <message>
         <source>Rate-limit exceeded</source>
-        <translation type="vanished">Překročeno omezení na počet hodnocení</translation>
+        <translation>Překročeno omezení na počet hodnocení</translation>
     </message>
     <message>
         <source>%1 error: %2</source>
-        <translation type="vanished">%1 chyba: %2</translation>
+        <translation>%1 chyba: %2</translation>
     </message>
     <message>
         <source>%1: Loved Current Track</source>
-        <translation type="vanished">%1: Nynější skladba byla zařazena mezi oblíbené</translation>
+        <translation>%1: Nynější skladba byla zařazena mezi oblíbené</translation>
     </message>
     <message>
         <source>%1: Love Current Track</source>
-        <translation type="vanished">%1: Zařadit nynější skladbu mezi oblíbené</translation>
+        <translation>%1: Zařadit nynější skladbu mezi oblíbené</translation>
     </message>
     <message>
         <source>%1 (via MPD)</source>
         <comment>scrobbler name (via MPD)</comment>
-        <translation type="vanished">%1 (přes MPD)</translation>
+        <translation>%1 (přes MPD)</translation>
     </message>
     <message>
         <source>If you use a scrobbler which is marked as &apos;(via MPD)&apos; (such as %1), then you will need to have this already started and running. Cantata can only &apos;Love&apos; tracks via this, and cannot enable/disable scrobbling.</source>
-        <translation type="vanished">Pokud použijete odesílání údajů o skladbách (scrobbler), což je označeno jako &apos;(přes MPD)&apos; (například %1), potom musíte mít tuto službu již spuštěnu a běžící. Cantata umí skladby Zařadit mezi oblíbené jen pomocí této služby, a neumí odesílání údajů o skladbách zakázat/povolit.</translation>
+        <translation>Pokud použijete odesílání údajů o skladbách (scrobbler), což je označeno jako &apos;(přes MPD)&apos; (například %1), potom musíte mít tuto službu již spuštěnu a běžící. Cantata umí skladby Zařadit mezi oblíbené jen pomocí této služby, a neumí odesílání údajů o skladbách zakázat/povolit.</translation>
     </message>
     <message>
         <source>Authenticating...</source>
-        <translation type="vanished">Ověřuje se pravost...</translation>
+        <translation>Ověřuje se pravost...</translation>
     </message>
     <message>
         <source>Authenticated</source>
-        <translation type="vanished">Pravost ověřena</translation>
+        <translation>Pravost ověřena</translation>
     </message>
     <message>
         <source>Not Authenticated</source>
-        <translation type="vanished">Pravost neověřena</translation>
+        <translation>Pravost neověřena</translation>
     </message>
     <message>
         <source>%1: Scrobble Tracks</source>
-        <translation type="vanished">%1: Odesílat informace o skladbách</translation>
+        <translation>%1: Odesílat informace o skladbách</translation>
     </message>
     <message>
         <source>Digitally Imported Settings</source>
-        <translation type="vanished">Nastavení pro Digitally Imported</translation>
+        <translation>Nastavení pro Digitally Imported</translation>
     </message>
     <message>
         <source>MP3 256k</source>
-        <translation type="vanished">MP3 256k</translation>
+        <translation>MP3 256k</translation>
     </message>
     <message>
         <source>AAC 64k</source>
-        <translation type="vanished">AAC 64k</translation>
+        <translation>AAC 64k</translation>
     </message>
     <message>
         <source>AAC 128k</source>
-        <translation type="vanished">AAC 128k</translation>
+        <translation>AAC 128k</translation>
     </message>
     <message>
         <source>Logout</source>
-        <translation type="vanished">Odhlásit se</translation>
+        <translation>Odhlásit se</translation>
     </message>
     <message>
         <source>URL:</source>
-        <translation type="vanished">Adresa (URL):</translation>
+        <translation>Adresa (URL):</translation>
     </message>
     <message>
         <source>Add Stream</source>
-        <translation type="vanished">Přidat proud</translation>
+        <translation>Přidat proud</translation>
     </message>
     <message>
         <source>Edit Stream</source>
-        <translation type="vanished">Upravit proud</translation>
+        <translation>Upravit proud</translation>
     </message>
     <message>
         <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; Invalid protocol&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;&lt;b&gt;CHYBA:&lt;/b&gt; Neplatný protokol&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;&lt;b&gt;CHYBA:&lt;/b&gt; Neplatný protokol&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Loading %1</source>
-        <translation type="vanished">Nahrává se %1</translation>
+        <translation>Nahrává se %1</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation type="vanished">Nainstalováno</translation>
+        <translation>Nainstalováno</translation>
     </message>
     <message>
         <source>Update available</source>
-        <translation type="vanished">Aktualizace dostupná</translation>
+        <translation>Aktualizace dostupná</translation>
     </message>
     <message>
         <source>Check the providers you wish to install/update.</source>
-        <translation type="vanished">Prověřit poskytovatele, které si přejete nainstalovat/aktualizovat.</translation>
+        <translation>Prověřit poskytovatele, které si přejete nainstalovat/aktualizovat.</translation>
     </message>
     <message>
         <source>Install/Update Stream Providers</source>
-        <translation type="vanished">Nainstalovat/Aktualizovat poskytovatele proudů</translation>
+        <translation>Nainstalovat/Aktualizovat poskytovatele proudů</translation>
     </message>
     <message>
         <source>Downloading list...</source>
-        <translation type="vanished">Stahuje se seznam...</translation>
+        <translation>Stahuje se seznam...</translation>
     </message>
     <message>
         <source>Digitally Imported</source>
-        <translation type="vanished">Digitally Imported</translation>
+        <translation>Digitally Imported</translation>
     </message>
     <message>
         <source>Local and National Radio (ListenLive)</source>
-        <translation type="vanished">Místní a národní rádio (Poslouchat živě)</translation>
+        <translation>Místní a národní rádio (Poslouchat živě)</translation>
     </message>
     <message>
         <source>Failed to download list of stream providers!</source>
-        <translation type="vanished">Nepodařilo se stáhnout seznam poskytovatelů proudů!</translation>
+        <translation>Nepodařilo se stáhnout seznam poskytovatelů proudů!</translation>
     </message>
     <message>
         <source>Installing/updating %1</source>
-        <translation type="vanished">Instaluje se/Aktualizuje se %1</translation>
+        <translation>Instaluje se/Aktualizuje se %1</translation>
     </message>
     <message>
         <source>Failed to install &apos;%1&apos;</source>
-        <translation type="vanished">Nepodařilo se nainstalovat &apos;%1&apos;</translation>
+        <translation>Nepodařilo se nainstalovat &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Failed to download &apos;%1&apos;</source>
-        <translation type="vanished">Nepodařilo se stáhnout &apos;%1&apos;</translation>
+        <translation>Nepodařilo se stáhnout &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Install/update the selected stream providers?</source>
-        <translation type="vanished">Nainstalovat/Aktualizovat poskytovatele vybraných proudů?</translation>
+        <translation>Nainstalovat/Aktualizovat poskytovatele vybraných proudů?</translation>
     </message>
     <message>
         <source>Install the selected stream providers?</source>
-        <translation type="vanished">Nainstalovat poskytovatele vybraných proudů?</translation>
+        <translation>Nainstalovat poskytovatele vybraných proudů?</translation>
     </message>
     <message>
         <source>Update the selected stream providers?</source>
-        <translation type="vanished">Aktualizovat poskytovatele vybraných proudů?</translation>
+        <translation>Aktualizovat poskytovatele vybraných proudů?</translation>
     </message>
     <message>
         <source>Install/Update</source>
-        <translation type="vanished">Instalovat/Aktualizovat</translation>
+        <translation>Instalovat/Aktualizovat</translation>
     </message>
     <message>
         <source>Abort installation/update?</source>
-        <translation type="vanished">Zrušit instalaci/aktualizaci?</translation>
+        <translation>Zrušit instalaci/aktualizaci?</translation>
     </message>
     <message>
         <source>Downloading %1</source>
-        <translation type="vanished">Stahuje se %1</translation>
+        <translation>Stahuje se %1</translation>
     </message>
     <message>
         <source>Update all updateable providers</source>
-        <translation type="vanished">Aktualizovat všechny aktualizovatelné poskytovatele</translation>
+        <translation>Aktualizovat všechny aktualizovatelné poskytovatele</translation>
     </message>
     <message>
         <source>Import Streams Into Favorites</source>
-        <translation type="vanished">Zavést proudy do oblíbených</translation>
+        <translation>Zavést proudy do oblíbených</translation>
     </message>
     <message>
         <source>Export Favorite Streams</source>
-        <translation type="vanished">Vyvést oblíbené proudy</translation>
+        <translation>Vyvést oblíbené proudy</translation>
     </message>
     <message>
         <source>Add New Stream To Favorites</source>
-        <translation type="vanished">Přidat nový proud do oblíbených</translation>
+        <translation>Přidat nový proud do oblíbených</translation>
     </message>
     <message>
         <source>Seatch For Streams</source>
-        <translation type="vanished">Hledat rozhlasové proudy</translation>
+        <translation>Hledat rozhlasové proudy</translation>
     </message>
     <message>
         <source>Digitally Imported</source>
         <comment>Service name</comment>
-        <translation type="vanished">Digitally Imported</translation>
+        <translation>Digitally Imported</translation>
     </message>
     <message>
         <source>Import Streams</source>
-        <translation type="vanished">Zavést proudy</translation>
+        <translation>Zavést proudy</translation>
     </message>
     <message>
         <source>XML Streams (*.xml *.xml.gz *.cantata)</source>
-        <translation type="vanished">Proudy XML (*.xml *.xml.gz *.cantata)</translation>
+        <translation>Proudy XML (*.xml *.xml.gz *.cantata)</translation>
     </message>
     <message>
         <source>Export Streams</source>
-        <translation type="vanished">Vyvést proudy</translation>
+        <translation>Vyvést proudy</translation>
     </message>
     <message>
         <source>XML Streams (*.xml.gz)</source>
-        <translation type="vanished">Proudy XML (*.xml.gz)</translation>
+        <translation>Proudy XML (*.xml.gz)</translation>
     </message>
     <message>
         <source>Failed to create &apos;%1&apos;!</source>
-        <translation type="vanished">Nepodařilo se vytvořit &apos;%1&apos;!</translation>
+        <translation>Nepodařilo se vytvořit &apos;%1&apos;!</translation>
     </message>
     <message>
         <source>Stream &apos;%1&apos; already exists!</source>
-        <translation type="vanished">Proud &apos;%1&apos; již existuje!</translation>
+        <translation>Proud &apos;%1&apos; již existuje!</translation>
     </message>
     <message>
         <source>A stream named &apos;%1&apos; already exists!</source>
-        <translation type="vanished">Proud pojmenovaný &apos;%1&apos; již existuje!</translation>
+        <translation>Proud pojmenovaný &apos;%1&apos; již existuje!</translation>
     </message>
     <message>
         <source>Bookmark added</source>
-        <translation type="vanished">Záložka přidána</translation>
+        <translation>Záložka přidána</translation>
     </message>
     <message>
         <source>Already bookmarked</source>
-        <translation type="vanished">Již opatřeno záložkou</translation>
+        <translation>Již opatřeno záložkou</translation>
     </message>
     <message>
         <source>Already in favorites</source>
-        <translation type="vanished">Již v oblíbených</translation>
+        <translation>Již v oblíbených</translation>
     </message>
     <message>
         <source>Reload &apos;%1&apos; streams?</source>
-        <translation type="vanished">Nahrát znovu &apos;%1&apos; proudů?</translation>
+        <translation>Nahrát znovu &apos;%1&apos; proudů?</translation>
     </message>
     <message>
         <source>Are you sure you wish to remove bookmark to &apos;%1&apos;?</source>
-        <translation type="vanished">Opravdu chcete odstranit záložku k &apos;%1&apos;?</translation>
+        <translation>Opravdu chcete odstranit záložku k &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Are you sure you wish to remove all &apos;%1&apos; bookmarks?</source>
-        <translation type="vanished">Opravdu chcete odstranit všech &apos;%1&apos; záložek?</translation>
+        <translation>Opravdu chcete odstranit všech &apos;%1&apos; záložek?</translation>
     </message>
     <message>
         <source>Are you sure you wish to remove the %1 selected streams?</source>
-        <translation type="vanished">Opravdu chcete odstranit %1 vybrané proudy?</translation>
+        <translation>Opravdu chcete odstranit %1 vybrané proudy?</translation>
     </message>
     <message>
         <source>Are you sure you wish to remove &apos;%1&apos;?</source>
-        <translation type="vanished">Opravdu chcete odstranit &apos;%1&apos;?</translation>
+        <translation>Opravdu chcete odstranit &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Added &apos;%1&apos;&apos; to favorites</source>
-        <translation type="vanished">Přidáno &quot;%1&apos;&apos; do oblíbených</translation>
+        <translation>Přidáno &quot;%1&apos;&apos; do oblíbených</translation>
     </message>
     <message>
         <source>Configure Streams</source>
-        <translation type="vanished">Nastavit proudy</translation>
+        <translation>Nastavit proudy</translation>
     </message>
     <message>
         <source>From File...</source>
-        <translation type="vanished">Ze souboru...</translation>
+        <translation>Ze souboru...</translation>
     </message>
     <message>
         <source>Download...</source>
-        <translation type="vanished">Stáhnout...</translation>
+        <translation>Stáhnout...</translation>
     </message>
     <message>
         <source>Configure Provider</source>
-        <translation type="vanished">Nastavit poskytovatele</translation>
+        <translation>Nastavit poskytovatele</translation>
     </message>
     <message>
         <source>Install</source>
-        <translation type="vanished">Instalovat</translation>
+        <translation>Instalovat</translation>
     </message>
     <message>
         <source>Install Streams</source>
-        <translation type="vanished">Nainstalovat proudy</translation>
+        <translation>Nainstalovat proudy</translation>
     </message>
     <message>
         <source>Cantata Streams (*.streams)</source>
-        <translation type="vanished">Proudy Cantata (*.streams)</translation>
+        <translation>Proudy Cantata (*.streams)</translation>
     </message>
     <message>
         <source>A category named &apos;%1&apos; already exists!
 
 Overwrite?</source>
-        <translation type="vanished">Skupina pojmenovaná &apos;%1&apos; již existuje!
+        <translation>Skupina pojmenovaná &apos;%1&apos; již existuje!
 
 Přepsat?</translation>
     </message>
     <message>
         <source>Failed top open package file.</source>
-        <translation type="vanished">Nepodařilo se otevřít soubor s balíčkem.</translation>
+        <translation>Nepodařilo se otevřít soubor s balíčkem.</translation>
     </message>
     <message>
         <source>Invalid file format!</source>
-        <translation type="vanished">Neplatný souborový formát!</translation>
+        <translation>Neplatný souborový formát!</translation>
     </message>
     <message>
         <source>Failed to create stream category folder!</source>
-        <translation type="vanished">Nepodařilo se vytvořit složku pro skupinu proudu!</translation>
+        <translation>Nepodařilo se vytvořit složku pro skupinu proudu!</translation>
     </message>
     <message>
         <source>Failed to save stream list!</source>
-        <translation type="vanished">Nepodařilo se uložit seznam proudu.</translation>
+        <translation>Nepodařilo se uložit seznam proudu.</translation>
     </message>
     <message>
         <source>Failed to remove streams folder!</source>
-        <translation type="vanished">Nepodařilo se odstranit složku s proudy!</translation>
+        <translation>Nepodařilo se odstranit složku s proudy!</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="vanished">&amp;OK</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Zrušit</translation>
+        <translation>&amp;Zrušit</translation>
     </message>
     <message>
         <source>&amp;Yes</source>
-        <translation type="vanished">&amp;Ano</translation>
+        <translation>&amp;Ano</translation>
     </message>
     <message>
         <source>&amp;No</source>
-        <translation type="vanished">&amp;Ne</translation>
+        <translation>&amp;Ne</translation>
     </message>
     <message>
         <source>&amp;Discard</source>
-        <translation type="vanished">Za&amp;hodit</translation>
+        <translation>Za&amp;hodit</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="vanished">&amp;Uložit</translation>
+        <translation>&amp;Uložit</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="vanished">&amp;Použít</translation>
+        <translation>&amp;Použít</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="vanished">&amp;Zavřít</translation>
+        <translation>&amp;Zavřít</translation>
     </message>
     <message>
         <source>&amp;Overwrite</source>
-        <translation type="vanished">&amp;Přepsat</translation>
+        <translation>&amp;Přepsat</translation>
     </message>
     <message>
         <source>&amp;Reset</source>
-        <translation type="vanished">Nastavit &amp;znovu</translation>
+        <translation>Nastavit &amp;znovu</translation>
     </message>
     <message>
         <source>&amp;Continue</source>
-        <translation type="vanished">&amp;Pokračovat</translation>
+        <translation>&amp;Pokračovat</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation type="vanished">&amp;Smazat</translation>
+        <translation>&amp;Smazat</translation>
     </message>
     <message>
         <source>&amp;Stop</source>
-        <translation type="vanished">&amp;Zastavit</translation>
+        <translation>&amp;Zastavit</translation>
     </message>
     <message>
         <source>&amp;Remove</source>
-        <translation type="vanished">&amp;Odstranit</translation>
+        <translation>&amp;Odstranit</translation>
     </message>
     <message>
         <source>&amp;Previous</source>
-        <translation type="vanished">&amp;Předchozí</translation>
+        <translation>&amp;Předchozí</translation>
     </message>
     <message>
         <source>&amp;Next</source>
-        <translation type="vanished">&amp;Další</translation>
+        <translation>&amp;Další</translation>
     </message>
     <message>
         <source>Configure...</source>
-        <translation type="vanished">Nastavit...</translation>
+        <translation>Nastavit...</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="vanished">Heslo</translation>
+        <translation>Heslo</translation>
     </message>
     <message>
         <source>Please enter password:</source>
-        <translation type="vanished">Zadejte, prosím, heslo:</translation>
+        <translation>Zadejte, prosím, heslo:</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="vanished">Zavřít</translation>
+        <translation>Zavřít</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation type="vanished">Varování</translation>
+        <translation>Varování</translation>
     </message>
     <message>
         <source>Question</source>
-        <translation type="vanished">Otázka</translation>
+        <translation>Otázka</translation>
     </message>
     <message>
         <source>&amp;Window</source>
-        <translation type="vanished">&amp;Okno</translation>
+        <translation>&amp;Okno</translation>
     </message>
     <message>
         <source>Minimize</source>
-        <translation type="vanished">Zmenšit</translation>
+        <translation>Zmenšit</translation>
     </message>
     <message>
         <source>Zoom</source>
-        <translation type="vanished">Zvětšení</translation>
+        <translation>Zvětšení</translation>
     </message>
     <message>
         <source>Select Folder</source>
-        <translation type="vanished">Vybrat složku</translation>
+        <translation>Vybrat složku</translation>
     </message>
     <message>
         <source>Select File</source>
-        <translation type="vanished">Vybrat soubor</translation>
+        <translation>Vybrat soubor</translation>
     </message>
     <message>
         <source>%1 B</source>
-        <translation type="vanished">%1 B</translation>
+        <translation>%1 B</translation>
     </message>
     <message>
         <source>%1 kB</source>
-        <translation type="vanished">%1 KB</translation>
+        <translation>%1 KB</translation>
     </message>
     <message>
         <source>%1 MB</source>
-        <translation type="vanished">%1 MB</translation>
+        <translation>%1 MB</translation>
     </message>
     <message>
         <source>%1 GB</source>
-        <translation type="vanished">%1 GB</translation>
+        <translation>%1 GB</translation>
     </message>
     <message>
         <source>%1 KiB</source>
-        <translation type="vanished">%1 KiB</translation>
+        <translation>%1 KiB</translation>
     </message>
     <message>
         <source>%1 MiB</source>
-        <translation type="vanished">%1 MiB</translation>
+        <translation>%1 MiB</translation>
     </message>
     <message>
         <source>%1 GiB</source>
-        <translation type="vanished">%1 GiB</translation>
+        <translation>%1 GiB</translation>
     </message>
     <message>
         <source>Tags</source>
-        <translation type="vanished">Značky</translation>
+        <translation>Značky</translation>
     </message>
     <message>
         <source>Set &apos;Album Artist&apos; from &apos;Artist&apos;</source>
-        <translation type="vanished">Nastavit Umělec alba z Umělec</translation>
+        <translation>Nastavit Umělec alba z Umělec</translation>
     </message>
     <message>
         <source>Read Ratings from File</source>
-        <translation type="vanished">Načíst hodnocení ze souboru</translation>
+        <translation>Načíst hodnocení ze souboru</translation>
     </message>
     <message>
         <source>Write Ratings to File</source>
-        <translation type="vanished">Zapsat hodnocení do souboru</translation>
+        <translation>Zapsat hodnocení do souboru</translation>
     </message>
     <message>
         <source>All tracks</source>
-        <translation type="vanished">Všechny skladby</translation>
+        <translation>Všechny skladby</translation>
     </message>
     <message>
         <source>Apply &quot;Various Artists&quot; workaround to &lt;b&gt;all&lt;/b&gt; tracks?</source>
-        <translation type="vanished">Použít zařazení pod Různí umělci na &lt;b&gt;všechny&lt;/b&gt; skladby?</translation>
+        <translation>Použít zařazení pod Různí umělci na &lt;b&gt;všechny&lt;/b&gt; skladby?</translation>
     </message>
     <message>
         <source>&lt;i&gt;This will set &apos;Album artist&apos; and &apos;Artist&apos; to &quot;Various Artists&quot;, and set &apos;Title&apos; to &quot;TrackArtist - TrackTitle&quot;&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;Toto nastaví Umělce alba a Umělce na Různí umělci, a nastaví Název na &quot;Umělec skladby - Název skladby&quot;&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;Toto nastaví Umělce alba a Umělce na Různí umělci, a nastaví Název na &quot;Umělec skladby - Název skladby&quot;&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Revert &quot;Various Artists&quot; workaround on &lt;b&gt;all&lt;/b&gt; tracks?</source>
-        <translation type="vanished">Zvrátit zařazení pod Různí umělci pro &lt;b&gt;všechny&lt;/b&gt; skladby?</translation>
+        <translation>Zvrátit zařazení pod Různí umělci pro &lt;b&gt;všechny&lt;/b&gt; skladby?</translation>
     </message>
     <message>
         <source>Revert &quot;Various Artists&quot; workaround</source>
-        <translation type="vanished">Zvrátit zařazení pod Různí umělci</translation>
+        <translation>Zvrátit zařazení pod Různí umělci</translation>
     </message>
     <message>
         <source>&lt;i&gt;Where the &apos;Album artist&apos; is the same as &apos;Artist&apos; and the &apos;Title&apos; is of the format &quot;TrackArtist - TrackTitle&quot;, &apos;Artist&apos; will be taken from &apos;Title&apos; and &apos;Title&apos; itself will be set to just the title. e.g. &lt;br/&gt;&lt;br/&gt;If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; will be set to &quot;Wibble&quot; and &apos;Title&apos; will be set to &quot;Wobble&quot;&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;Tam, kde Umělec alba je stejný jako Umělec a Název je ve formátu &quot;Umělec skladby - Název skladby&quot;, se Umělec vezme z Názvu a samotný název se nastaví na prostý Název. Např. &lt;br/&gt;&lt;br/&gt;Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &quot;Wibble&quot; a Název na &quot;Wobble&quot;&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;Tam, kde Umělec alba je stejný jako Umělec a Název je ve formátu &quot;Umělec skladby - Název skladby&quot;, se Umělec vezme z Názvu a samotný název se nastaví na prostý Název. Např. &lt;br/&gt;&lt;br/&gt;Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &quot;Wibble&quot; a Název na &quot;Wobble&quot;&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Set &apos;Album Artist&apos; from &apos;Artist&apos; (if &apos;Album Artist&apos; is empty) for &lt;b&gt;all&lt;/b&gt; tracks?</source>
-        <translation type="vanished">Nastavit Umělec alba z Umělec (pokud je Umělec alba prázdný) pro &lt;b&gt;všechny&lt;/b&gt; skladby?</translation>
+        <translation>Nastavit Umělec alba z Umělec (pokud je Umělec alba prázdný) pro &lt;b&gt;všechny&lt;/b&gt; skladby?</translation>
     </message>
     <message>
         <source>Set &apos;Album Artist&apos; from &apos;Artist&apos; (if &apos;Album Artist&apos; is empty)?</source>
-        <translation type="vanished">Nastavit Umělec alba z Umělec (pokud je Umělec alba prázdný)?</translation>
+        <translation>Nastavit Umělec alba z Umělec (pokud je Umělec alba prázdný)?</translation>
     </message>
     <message>
         <source>Album Artist from Artist</source>
-        <translation type="vanished">Umělec alba z Umělec</translation>
+        <translation>Umělec alba z Umělec</translation>
     </message>
     <message>
         <source>Capitalize the first letter of text fields (e.g. &apos;Title&apos;, &apos;Artist&apos;, etc) of &lt;b&gt;all&lt;/b&gt; tracks?</source>
-        <translation type="vanished">Psát velkým písmenem první písmeno textových polí (např. Název, Umělec, Umělec alba, Album atd.) u &lt;b&gt;všech&lt;/b&gt; skladeb?</translation>
+        <translation>Psát velkým písmenem první písmeno textových polí (např. Název, Umělec, Umělec alba, Album atd.) u &lt;b&gt;všech&lt;/b&gt; skladeb?</translation>
     </message>
     <message>
         <source>Capitalize the first letter of text fields (e.g. &apos;Title&apos;, &apos;Artist&apos;, etc)?</source>
-        <translation type="vanished">Psát velkým písmenem první písmeno textových polí (např. Název, Umělec, Umělec alba, Album atd.)?</translation>
+        <translation>Psát velkým písmenem první písmeno textových polí (např. Název, Umělec, Umělec alba, Album atd.)?</translation>
     </message>
     <message>
         <source>Adjust the value of each track number by:</source>
-        <translation type="vanished">Upravit hodnotu čísla každé skladby o:</translation>
+        <translation>Upravit hodnotu čísla každé skladby o:</translation>
     </message>
     <message>
         <source>Read ratings for all tracks from the music files?</source>
-        <translation type="vanished">Načíst hodnocení u všech skladeb z hudebních souborů?</translation>
+        <translation>Načíst hodnocení u všech skladeb z hudebních souborů?</translation>
     </message>
     <message>
         <source>Read rating from music file?</source>
-        <translation type="vanished">Načíst hodnocení z hudebního souboru?</translation>
+        <translation>Načíst hodnocení z hudebního souboru?</translation>
     </message>
     <message>
         <source>Ratings</source>
-        <translation type="vanished">Hodnocení</translation>
+        <translation>Hodnocení</translation>
     </message>
     <message>
         <source>Read Ratings</source>
-        <translation type="vanished">Načíst hodnocení</translation>
+        <translation>Načíst hodnocení</translation>
     </message>
     <message>
         <source>Read Rating</source>
-        <translation type="vanished">Načíst hodnocení</translation>
+        <translation>Načíst hodnocení</translation>
     </message>
     <message>
         <source>Read, and updated, ratings from the following tracks:</source>
-        <translation type="vanished">Načíst aktualizovaná hodnocení z následujících skladeb:</translation>
+        <translation>Načíst aktualizovaná hodnocení z následujících skladeb:</translation>
     </message>
     <message>
         <source>Not all Song ratings have been read from MPD!</source>
-        <translation type="vanished">Ne všechna hodnocení písní byla načtena z MPD!</translation>
+        <translation>Ne všechna hodnocení písní byla načtena z MPD!</translation>
     </message>
     <message>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database. In order to save these into the actual file, Cantata must first read them from MPD.</source>
-        <translation type="vanished">Hodnocení písní nejsou uložena v souborech s písněmi, ale uvnitř databáze MPD. Pro jejich uložení do skutečného souboru je Cantata nejprve musí načíst z MPD.</translation>
+        <translation>Hodnocení písní nejsou uložena v souborech s písněmi, ale uvnitř databáze MPD. Pro jejich uložení do skutečného souboru je Cantata nejprve musí načíst z MPD.</translation>
     </message>
     <message>
         <source>Song rating has not been read from MPD!</source>
-        <translation type="vanished">Hodnocení písně nebylo načteno z MPD!</translation>
+        <translation>Hodnocení písně nebylo načteno z MPD!</translation>
     </message>
     <message>
         <source>Write ratings for all tracks to the music files?</source>
-        <translation type="vanished">Načíst hodnocení u všech skladeb do hudebních souborů?</translation>
+        <translation>Načíst hodnocení u všech skladeb do hudebních souborů?</translation>
     </message>
     <message>
         <source>Write rating to music file?</source>
-        <translation type="vanished">Zapsat hodnocení do hudebního souboru?</translation>
+        <translation>Zapsat hodnocení do hudebního souboru?</translation>
     </message>
     <message>
         <source>Write Ratings</source>
-        <translation type="vanished">Zapsat hodnocení</translation>
+        <translation>Zapsat hodnocení</translation>
     </message>
     <message>
         <source>Write Rating</source>
-        <translation type="vanished">Zapsat hodnocení</translation>
+        <translation>Zapsat hodnocení</translation>
     </message>
     <message>
         <source>Failed to write ratings of the following tracks:</source>
-        <translation type="vanished">Nepodařilo se zapsat hodnocení následujících skladeb:</translation>
+        <translation>Nepodařilo se zapsat hodnocení následujících skladeb:</translation>
     </message>
     <message>
         <source>Failed to write rating to music file!</source>
-        <translation type="vanished">Nepodařilo se zapsat hodnocení do hudebního souboru!</translation>
+        <translation>Nepodařilo se zapsat hodnocení do hudebního souboru!</translation>
     </message>
     <message>
         <source>All tracks [modified]</source>
-        <translation type="vanished">Všechny skladby [změněno]</translation>
+        <translation>Všechny skladby [změněno]</translation>
     </message>
     <message>
         <source>%1 [modified]</source>
-        <translation type="vanished">%1 [změněno]</translation>
+        <translation>%1 [změněno]</translation>
     </message>
     <message>
         <source>Would you also like to rename your song files, so as to match your tags?</source>
-        <translation type="vanished">Chcete také přejmenovat své soubory s písněmi tak, aby se shodovaly se značkami?</translation>
+        <translation>Chcete také přejmenovat své soubory s písněmi tak, aby se shodovaly se značkami?</translation>
     </message>
     <message>
         <source>Rename Files</source>
-        <translation type="vanished">Přejmenovat soubory</translation>
+        <translation>Přejmenovat soubory</translation>
     </message>
     <message>
         <source>Abort renaming of files?</source>
-        <translation type="vanished">Zrušit přejmenování souborů?</translation>
+        <translation>Zrušit přejmenování souborů?</translation>
     </message>
     <message>
         <source>Source file does not exist!</source>
-        <translation type="vanished">Zdrojový soubor neexistuje!</translation>
+        <translation>Zdrojový soubor neexistuje!</translation>
     </message>
     <message>
         <source>Destination file already exists!</source>
-        <translation type="vanished">Cílový soubor již existuje!</translation>
+        <translation>Cílový soubor již existuje!</translation>
     </message>
     <message>
         <source>Failed to create destination folder!</source>
-        <translation type="vanished">Nepodařilo se vytvořit cílovou složku!</translation>
+        <translation>Nepodařilo se vytvořit cílovou složku!</translation>
     </message>
     <message>
         <source>Failed to rename &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="vanished">Nepodařilo se přejmenovat &apos;%1&apos; na &apos;%2&apos;</translation>
+        <translation>Nepodařilo se přejmenovat &apos;%1&apos; na &apos;%2&apos;</translation>
     </message>
     <message>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database.
 
 If you rename a file (or the folder it is within), then the rating associated with the song will be lost.</source>
-        <translation type="vanished">Hodnocení písní nejsou uložena v souborech s písněmi, ale uvnitř databáze MPD.
+        <translation>Hodnocení písní nejsou uložena v souborech s písněmi, ale uvnitř databáze MPD.
 
 Pokud soubor přejmenujete (nebo složku, v níž je), potom bude hodnocení spojené s písní ztraceno.</translation>
     </message>
     <message>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Skladatel:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
+        <translation>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Skladatel:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Performer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Účinkující:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
+        <translation>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Účinkující:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Umělec:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Rok: &lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
+        <translation>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Umělec:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Rok: &lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
         <source>Filter On Genre</source>
-        <translation type="vanished">Filtr na žánr</translation>
+        <translation>Filtr na žánr</translation>
     </message>
     <message>
         <source>All Genres</source>
-        <translation type="vanished">Všechny žánry</translation>
+        <translation>Všechny žánry</translation>
     </message>
     <message>
         <source>Go Back</source>
-        <translation type="vanished">Jít zpět</translation>
+        <translation>Jít zpět</translation>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="vanished">Nabídka</translation>
+        <translation>Nabídka</translation>
     </message>
     <message>
         <source>(Stream)</source>
-        <translation type="vanished">(Proud)</translation>
+        <translation>(Proud)</translation>
     </message>
     <message>
         <source>Search...</source>
-        <translation type="vanished">Hledání...</translation>
+        <translation>Hledání...</translation>
     </message>
     <message>
         <source>Close Search Bar</source>
-        <translation type="vanished">Zavřít vyhledávací pole</translation>
+        <translation>Zavřít vyhledávací pole</translation>
     </message>
     <message>
         <source>Logged into %1</source>
-        <translation type="vanished">Přihlášen k %1</translation>
+        <translation>Přihlášen k %1</translation>
     </message>
     <message>
         <source>&lt;b&gt;NOT&lt;/b&gt; logged into %1</source>
-        <translation type="vanished">&lt;b&gt;NENÍ&lt;/b&gt;přihlášen k %1</translation>
+        <translation>&lt;b&gt;NENÍ&lt;/b&gt;přihlášen k %1</translation>
     </message>
     <message>
         <source>Basic Tree (No Icons)</source>
-        <translation type="vanished">Základní strom (žádné ikony)</translation>
+        <translation>Základní strom (žádné ikony)</translation>
     </message>
     <message>
         <source>Simple Tree</source>
-        <translation type="vanished">Jednoduchý strom</translation>
+        <translation>Jednoduchý strom</translation>
     </message>
     <message>
         <source>Detailed Tree</source>
-        <translation type="vanished">Podrobný strom</translation>
+        <translation>Podrobný strom</translation>
     </message>
     <message>
         <source>List</source>
-        <translation type="vanished">Seznam</translation>
+        <translation>Seznam</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="vanished">Mřížka</translation>
+        <translation>Mřížka</translation>
     </message>
     <message>
         <source>View</source>
-        <translation type="vanished">Pohled</translation>
+        <translation>Pohled</translation>
     </message>
     <message>
         <source>Cannot access song files!
 
 Please check Cantata&apos;s &quot;Music folder&quot; setting, and MPD&apos;s &quot;music_directory&quot; setting.</source>
-        <translation type="vanished">Nelze přistupovat k souborům s písněmi!
+        <translation>Nelze přistupovat k souborům s písněmi!
 
 Prověřte, prosím, nastavení složky s hudbou Cantaty a nastavení adresáře s hudbou MPD (music_directory).</translation>
     </message>
@@ -6123,153 +6123,153 @@ Prověřte, prosím, nastavení složky s hudbou Cantaty a nastavení adresáře
         <source>Cannot access song files!
 
 Please check that the device is still attached.</source>
-        <translation type="vanished">Nelze přistupovat k souborům s písněmi!
+        <translation>Nelze přistupovat k souborům s písněmi!
 
 Prověřte, prosím, že zařízení je stále ještě připojeno.</translation>
     </message>
     <message>
         <source>Stretch Columns To Fit Window</source>
-        <translation type="vanished">Roztáhnout sloupce tak, aby se vešly do okna</translation>
+        <translation>Roztáhnout sloupce tak, aby se vešly do okna</translation>
     </message>
     <message>
         <source>Center</source>
-        <translation type="vanished">Střed</translation>
+        <translation>Střed</translation>
     </message>
     <message>
         <source>Alignment</source>
-        <translation type="vanished">Zarovnání</translation>
+        <translation>Zarovnání</translation>
     </message>
     <message>
         <source>(Various)</source>
-        <translation type="vanished">(Různí)</translation>
+        <translation>(Různí)</translation>
     </message>
     <message>
         <source>Click to go back</source>
-        <translation type="vanished">Klepněte pro návrat zpět</translation>
+        <translation>Klepněte pro návrat zpět</translation>
     </message>
     <message>
         <source>Add All To Play Queue</source>
-        <translation type="vanished">Přidat vše do řady skladeb k přehrání</translation>
+        <translation>Přidat vše do řady skladeb k přehrání</translation>
     </message>
     <message>
         <source>Add All And Replace Play Queue</source>
-        <translation type="vanished">Přidat vše a nahradit řadu skladeb k přehrání</translation>
+        <translation>Přidat vše a nahradit řadu skladeb k přehrání</translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation type="vanished">Ztlumit</translation>
+        <translation>Ztlumit</translation>
     </message>
     <message>
         <source>Unmute</source>
-        <translation type="vanished">Zrušit ztišení</translation>
+        <translation>Zrušit ztišení</translation>
     </message>
     <message>
         <source>Volume %1% (Muted)</source>
-        <translation type="vanished">Hlasitost: %1% (ztlumeno)</translation>
+        <translation>Hlasitost: %1% (ztlumeno)</translation>
     </message>
     <message>
         <source>Volume %1%</source>
-        <translation type="vanished">Hlasitost %1%</translation>
+        <translation>Hlasitost %1%</translation>
     </message>
     <message>
         <source>1 Track</source>
         <comment>Singular</comment>
-        <translation type="vanished">Skladby: 1</translation>
+        <translation>Skladby: 1</translation>
     </message>
     <message>
         <source>%1 Tracks</source>
         <comment>Plural (N!=1)</comment>
-        <translation type="vanished">Skladby: %1</translation>
+        <translation>Skladby: %1</translation>
     </message>
     <message>
         <source>1 Track (%1)</source>
         <comment>Singular</comment>
-        <translation type="vanished">Skladby: 1 (%1)</translation>
+        <translation>Skladby: 1 (%1)</translation>
     </message>
     <message>
         <source>%1 Tracks (%2)</source>
         <comment>Plural (N!=1)</comment>
-        <translation type="vanished">Skladby: %1 (%2)</translation>
+        <translation>Skladby: %1 (%2)</translation>
     </message>
     <message>
         <source>1 Album</source>
         <comment>Singular</comment>
-        <translation type="vanished">Alba: 1</translation>
+        <translation>Alba: 1</translation>
     </message>
     <message>
         <source>%1 Albums</source>
         <comment>Plural (N!=1)</comment>
-        <translation type="vanished">Alba: %1</translation>
+        <translation>Alba: %1</translation>
     </message>
     <message>
         <source>1 Artist</source>
         <comment>Singular</comment>
-        <translation type="vanished">Umělci: 1</translation>
+        <translation>Umělci: 1</translation>
     </message>
     <message>
         <source>%1 Artists</source>
         <comment>Plural (N!=1)</comment>
-        <translation type="vanished">Umělci: %1</translation>
+        <translation>Umělci: %1</translation>
     </message>
     <message>
         <source>1 Stream</source>
         <comment>Singular</comment>
-        <translation type="vanished">Proudy: 1</translation>
+        <translation>Proudy: 1</translation>
     </message>
     <message>
         <source>%1 Streams</source>
         <comment>Plural (N!=1)</comment>
-        <translation type="vanished">Proudy: %1</translation>
+        <translation>Proudy: %1</translation>
     </message>
     <message>
         <source>1 Entry</source>
         <comment>Singular</comment>
-        <translation type="vanished">Položky: 1</translation>
+        <translation>Položky: 1</translation>
     </message>
     <message>
         <source>%1 Entries</source>
         <comment>Plural (N!=1)</comment>
-        <translation type="vanished">Položky: %1</translation>
+        <translation>Položky: %1</translation>
     </message>
     <message>
         <source>1 Rule</source>
         <comment>Singular</comment>
-        <translation type="vanished">Pravidla: 1</translation>
+        <translation>Pravidla: 1</translation>
     </message>
     <message>
         <source>%1 Rules</source>
         <comment>Plural (N!=1)</comment>
-        <translation type="vanished">Pravidla: %1</translation>
+        <translation>Pravidla: %1</translation>
     </message>
     <message>
         <source>1 Podcast</source>
         <comment>Singular</comment>
-        <translation type="vanished">Jeden záznam</translation>
+        <translation>Jeden záznam</translation>
     </message>
     <message>
         <source>%1 Podcasts</source>
         <comment>Plural (N!=1)</comment>
-        <translation type="vanished">Záznamy: %1</translation>
+        <translation>Záznamy: %1</translation>
     </message>
     <message>
         <source>1 Episode</source>
         <comment>Singular</comment>
-        <translation type="vanished">Jeden díl</translation>
+        <translation>Jeden díl</translation>
     </message>
     <message>
         <source>%1 Episodes</source>
         <comment>Plural (N!=1)</comment>
-        <translation type="vanished">Díly: %1</translation>
+        <translation>Díly: %1</translation>
     </message>
     <message>
         <source>1 Update available</source>
         <comment>Singular</comment>
-        <translation type="vanished">Jedna aktualizace dostupná</translation>
+        <translation>Jedna aktualizace dostupná</translation>
     </message>
     <message>
         <source>%1 Updates available</source>
         <comment>Plural (N!=1)</comment>
-        <translation type="vanished">%1 aktualizací dostupných</translation>
+        <translation>%1 aktualizací dostupných</translation>
     </message>
 </context>
 <context>
@@ -6774,7 +6774,7 @@ Např. Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &
     <message>
         <location filename="../context/albumview.cpp" line="70"/>
         <source>Full Width Cover</source>
-        <translation type="unfinished"></translation>
+        <translation>Obal v celé šířce</translation>
     </message>
     <message>
         <location filename="../context/albumview.cpp" line="80"/>
@@ -6792,7 +6792,7 @@ Např. Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &
     <message>
         <location filename="../gui/apikeys.cpp" line="155"/>
         <source>The API call limit has been exceeded for %1, please try again later or register for your own API key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Omezení na volání API bylo překročeno pro %1. Zkuste to, prosím, později znovu nebo zaregistrujte svůj vlastní klíč API.</translation>
     </message>
 </context>
 <context>
@@ -6800,22 +6800,22 @@ Např. Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="73"/>
         <source>Cantata uses various internet services to provide covers, radio stream listings, etc. Most of these require an application&apos;s developer to register with the service, and obtain an API Key. Cantata contains the keys required to access these services. Unfortunately, some of these services have a usage limit per API key. Therefore, some of Cantata&apos;s features may not function if the key (which is shared with all Cantata users) has reached its monthly usage limit. To work-around this, you can register with a service yourself, and configure Cantata to use your personal API key. This key may be entered below. For any blank values below, Cantata will use its default key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantata používá kvůli poskytování obalů, seznamů datových proudů rádií atd. různé internetové služby. Většina z nich vyžaduje, aby se vývojář programu přihlásil u služby a dostal klíč API. Cantata obsahuje klíče požadované pro přistupování k těmto službám. Naneštěstí mají omezení na počet užití klíče API. Proto nemusí některé z funkcí Cantaty pracovat, pokud klíč (jenž je sdílen se všemi uživateli Cantaty) dosáhl svého omezení počtu užití za měsíc. Abyste to ochcali, můžete se u služby zaregistrovat sami a Cantatu nastavit tak, aby používala váš vlastní klíč API. Tento klíč je možno zadat níže.. V případě jakýchkoli prázdných hodnot níže Cantata použije svůj výchozí klíč.</translation>
     </message>
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="85"/>
         <source>Service</source>
-        <translation type="unfinished"></translation>
+        <translation>Služba</translation>
     </message>
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="85"/>
         <source>Service URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresa (URL) služby</translation>
     </message>
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="85"/>
         <source>API Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Klíč API</translation>
     </message>
 </context>
 <context>
@@ -6921,12 +6921,12 @@ Např. Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &
     <message>
         <location filename="../models/browsemodel.cpp" line="74"/>
         <source>Server Folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Serverové složky</translation>
     </message>
     <message>
         <location filename="../models/browsemodel.cpp" line="79"/>
         <source>MPD virtual file-system</source>
-        <translation type="unfinished"></translation>
+        <translation>Virtuální souborový systém MPD</translation>
     </message>
     <message>
         <location filename="../models/browsemodel.cpp" line="244"/>
@@ -7504,11 +7504,11 @@ Nepodařilo se zkopírovat soubor do &apos;%1&apos;!</translation>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
         <source>If an artist name begins with &apos;The&apos;, then append this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokud začíná jméno umělce na The, potom je připojit k názvu složky, např. z The Beatles se stane Beatles, The</translation>
     </message>
     <message>
         <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation type="vanished">Pokud začíná jméno umělce na The, potom je připojit před název složky, např. z The Beatles se stane Beatles, The</translation>
+        <translation>Pokud začíná jméno umělce na The, potom je připojit před název složky, např. z The Beatles se stane Beatles, The</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="205"/>
@@ -7578,7 +7578,7 @@ Nepodařilo se zkopírovat soubor do &apos;%1&apos;!</translation>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
         <source>Always transcode</source>
-        <translation type="unfinished"></translation>
+        <translation>Překódovat vždy</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="235"/>
@@ -7660,7 +7660,7 @@ Nepodařilo se zkopírovat soubor do &apos;%1&apos;!</translation>
     <message>
         <location filename="../devices/devicespage.cpp" line="120"/>
         <source>Any supported devices will appear here when attached to your computer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zde se objeví všechna podporovaná zařízení, když jsou připojena k počítači.</translation>
     </message>
     <message>
         <location filename="../devices/devicespage.cpp" line="409"/>
@@ -7949,7 +7949,7 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="385"/>
         <source>Could not start dynamic helper. Please check all &lt;a href=&quot;https://github.com/CDrummond/cantata/wiki/Dynamic-Palylists-Helper&quot;&gt;dependencies&lt;/a&gt; are installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepodařilo se spustit dynamického pomocníka. Prověřte, prosím, že jsou nainstalovány všechny &lt;a href=&quot;https://github.com/CDrummond/cantata/wiki/Dynamic-Palylists-Helper&quot;&gt;závislosti&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="496"/>
@@ -8013,21 +8013,21 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="87"/>
         <source>A &apos;dynamic&apos; playlist contains a set of rules to select tracks from your music library to play. The play queue is filled with random tracks matching your criteria, and the play queue will be dynamically updated after tracks are played.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dynamický seznam skladeb obsahuje pro výběr skladeb k přehrávání z vaší hudební sbírky sadu pravidel. Řada skladeb k přehrání je naplněna náhodnými skladbami podle vámi stanovených hledisek a řada skladeb k přehrání bude po odehrání skladeb dynamicky obnovována.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="91"/>
         <source>Use the + icon (below) to create a new &apos;dynamic&apos; playlist.</source>
-        <translation type="unfinished"></translation>
+        <translation>K vytvoření nového dynamického seznamu skladeb použijte znaménko + (níže).</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="125"/>
         <source>Remote dynamizer is not running. In order to support &apos;dynamic&apos; playlists under Windows, Cantata requires its &apos;cantata-dynamic&apos; script to be running on the MPD server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vzdálený dynamizátor neběží. Pro podporu dynamických seznamů skladeb v operačním systému Windows Cantata vyžaduje, aby na serveru MPD běžel její skript &apos;cantata-dynamic&apos;.</translation>
     </message>
     <message>
         <source>Remote dynamizer is not running.</source>
-        <translation type="vanished">Vzdálený dynamizátor neběží.</translation>
+        <translation>Vzdálený dynamizátor neběží.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="156"/>
@@ -8055,23 +8055,23 @@ Tento krok nelze vrátit zpět.</translation>
     <name>FileSettings</name>
     <message>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="vanished">Uložit stažené obaly, umělce a obrázky skladatelů ve složce s hudbou</translation>
+        <translation>Uložit stažené obaly, umělce a obrázky skladatelů ve složce s hudbou</translation>
     </message>
     <message>
         <source>Save downloaded lyrics in music folder</source>
-        <translation type="vanished">Uložit stažená slova písně ve složce s hudbou</translation>
+        <translation>Uložit stažená slova písně ve složce s hudbou</translation>
     </message>
     <message>
         <source>Save downloaded backdrops in music folder</source>
-        <translation type="vanished">Uložit stažená pozadí ve složce s hudbou</translation>
+        <translation>Uložit stažená pozadí ve složce s hudbou</translation>
     </message>
     <message>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="vanished">Pokud se rozhodnete, že má Cantata ukládat obaly, texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
+        <translation>Pokud se rozhodnete, že má Cantata ukládat obaly, texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
     </message>
     <message>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation type="vanished">Cantata může pozadí, umělce a obrázky skladatelů ukládat ve složkách s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou úrovní dolů. (např. &apos;Umělec/Album/Skladby&apos;.</translation>
+        <translation>Cantata může pozadí, umělce a obrázky skladatelů ukládat ve složkách s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou úrovní dolů. (např. &apos;Umělec/Album/Skladby&apos;.</translation>
     </message>
 </context>
 <context>
@@ -8270,19 +8270,19 @@ Tento krok nelze vrátit zpět.</translation>
     <name>FolderPage</name>
     <message>
         <source>Open In File Manager</source>
-        <translation type="vanished">Otevřít ve správci souborů</translation>
+        <translation>Otevřít ve správci souborů</translation>
     </message>
     <message>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
-        <translation type="vanished">Opravdu chcete odstranit vybrané písně?
+        <translation>Opravdu chcete odstranit vybrané písně?
 
 Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <source>Delete Songs</source>
-        <translation type="vanished">Smazat písně</translation>
+        <translation>Smazat písně</translation>
     </message>
 </context>
 <context>
@@ -8358,21 +8358,21 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata je klient pro Music Player Daemon (MPD). MPD je program pružný, schopný, běžící na pozadí (server), k přehrávání hudby.&lt;/p&gt;&lt;p&gt;Více informací o MPD naleznete na stránkách MPD &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Tento průvodce vás provede základními nastaveními, která jsou potřeba pro to, aby Cantata pracovala správně.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata je klient pro Music Player Daemon (MPD). MPD je program pružný, schopný, běžící na pozadí (server), k přehrávání hudby.&lt;/p&gt;&lt;p&gt;Více informací o MPD naleznete na stránkách MPD &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Tento průvodce vás provede základními nastaveními, která jsou potřeba pro to, aby Cantata pracovala správně.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vítejte v Cantatě&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vítejte v Cantatě&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="69"/>
         <source>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Cantata je klient pro Music Player Daemon (MPD). MPD je program pružný, schopný, běžící na pozadí (server), k přehrávání hudby.&lt;/p&gt;&lt;p&gt;Více informací o MPD naleznete na stránkách MPD &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Tento průvodce vás provede základními nastaveními, která jsou potřeba pro to, aby Cantata pracovala správně.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="108"/>
         <source>&lt;p&gt;Welcome to Cantata&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Vítejte v Cantatě&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="134"/>
@@ -8458,59 +8458,59 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="623"/>
         <source>Album Covers</source>
-        <translation type="unfinished"></translation>
+        <translation>Obaly alb</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="646"/>
         <source>&lt;p&gt;Cantata can download missing covers, and store these either in the music folder or within your personal cache folder.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Cantata umí stahovat chybějící obaly, a ukládat je buď do složky s hudbou nebo do vaší osobní složky pro ukládání vyrovnávací paměti..&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation>Natáhnout chybějící obaly</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
         <source>Save downloaded covers into music folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Uložit stažené obaly ve složce s hudbou</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="692"/>
         <source>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokud se rozhodnete, že má Cantata ukládat obaly do složky s hudbou, a nemáte přístupová práva pro zápis do této složky (nebo to musíte nastavit jako adresu HTTP), Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
     </message>
     <message>
         <source>Covers and Lyrics</source>
-        <translation type="vanished">Obaly a slova písně</translation>
+        <translation>Obaly a slova písně</translation>
     </message>
     <message>
         <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
-        <translation type="vanished">&lt;p&gt;Cantata stáhne chybějící obaly a texty písní z internetu.&lt;/p&gt;&lt;p&gt;U každého, prosím, potvrďte, zda chcete, aby Cantata soubory ukládala ve složce s hudbou, nebo ve vašich osobních složkách s vyrovnávací pamětí/pro ukládání nastavení.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Cantata stáhne chybějící obaly a texty písní z internetu.&lt;/p&gt;&lt;p&gt;U každého, prosím, potvrďte, zda chcete, aby Cantata soubory ukládala ve složce s hudbou, nebo ve vašich osobních složkách s vyrovnávací pamětí/pro ukládání nastavení.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="vanished">Uložit stažené obaly, umělce a obrázky skladatelů ve složce s hudbou</translation>
+        <translation>Uložit stažené obaly, umělce a obrázky skladatelů ve složce s hudbou</translation>
     </message>
     <message>
         <source>Save downloaded lyrics in music folder</source>
-        <translation type="vanished">Uložit stažená slova písně ve složce s hudbou</translation>
+        <translation>Uložit stažená slova písně ve složce s hudbou</translation>
     </message>
     <message>
         <source>Save downloaded backdrops in music folder</source>
-        <translation type="vanished">Uložit stažená pozadí ve složce s hudbou</translation>
+        <translation>Uložit stažená pozadí ve složce s hudbou</translation>
     </message>
     <message>
         <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="vanished">Pokud se rozhodnete, že má Cantata ukládat obaly, texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
+        <translation>Pokud se rozhodnete, že má Cantata ukládat obaly, texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
     </message>
     <message>
         <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation type="vanished">Cantata může pozadí, umělce a obrázky skladatelů ukládat ve složkách s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou úrovní dolů. (např. &apos;Umělec/Album/Skladby&apos;.</translation>
+        <translation>Cantata může pozadí, umělce a obrázky skladatelů ukládat ve složkách s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou úrovní dolů. (např. &apos;Umělec/Album/Skladby&apos;.</translation>
     </message>
     <message>
         <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
-        <translation type="vanished">Složka s hudbou je nastavena na adresu HTTP a Cantata v současnosti nedokáže nahrávat soubory na vnější servery HTTP. Z tohoto důvodu by se nastavení výše měla ponechat zakázána.</translation>
+        <translation>Složka s hudbou je nastavena na adresu HTTP a Cantata v současnosti nedokáže nahrávat soubory na vnější servery HTTP. Z tohoto důvodu by se nastavení výše měla ponechat zakázána.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="722"/>
@@ -8623,12 +8623,12 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="122"/>
         <source>Automatically change style when insufficient space</source>
-        <translation type="unfinished"></translation>
+        <translation>Automaticky změnit při nedostatku místa styl</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="125"/>
         <source>&lt;p&gt;Change to a small top bar (containing all views) when the window is narrow.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Proměnit do malého pruhu nahoře (obsahujícího všechny pohledy), když je okno úzké.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="138"/>
@@ -8724,7 +8724,7 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="407"/>
         <source>Show technical info</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat technické údaje</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="415"/>
@@ -8814,82 +8814,82 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="563"/>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;. You may enter a comma separated list of folder names (without leading or trailing path separators) below.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokud máte ve své hudební sbírce mnoho umělců s jen jednou skladbou, může být těžkopádné mít pro každého z nich vlastní záznam v seznamu umělců. Dá se to obejít tak, že tyto skladby umístíte do samostatné složky a její název zadáte níže, načež je Cantata seskupí pod albem pojmenovaným Jednotlivé skladby s umělcem alba Různí umělci. Níže můžete zadat seznam názvů složek oddělených čárkou (bez oddělovačů cest na začátku nebo na konci).</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="573"/>
         <source>Comma separated list of folders that contain single track files...</source>
-        <translation type="unfinished"></translation>
+        <translation>Čárkou oddělený seznam složek, jež obsahují soubory o jedné skladbě...</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="583"/>
         <source>Miscellaneous</source>
-        <translation type="unfinished"></translation>
+        <translation>Různé</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="589"/>
         <source>CUE files:</source>
-        <translation type="unfinished"></translation>
+        <translation>Soubory CUE:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="599"/>
         <source>Year tag:</source>
-        <translation type="unfinished"></translation>
+        <translation>Značka pro rok:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="612"/>
         <source>Changing &apos;Artist &amp; Album Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
-        <translation type="unfinished"></translation>
+        <translation>Změna v Třídění umělců a alb, Jednotlivé skladby nebo Soubory CUE bude, aby se projevila, vyžadovat obnovení databáze. Změna v Podpora pro skladatele nebo Značka pro rok bude vyžadovat opětovné spuštění Cantaty.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="633"/>
         <source>Covers</source>
-        <translation type="unfinished">Obaly</translation>
+        <translation>Obaly</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="644"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation>Natáhnout chybějící obaly</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="651"/>
         <source>Save downloaded covers into music folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Uložit stažené obaly ve složce s hudbou</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="658"/>
         <source>Filename:</source>
-        <translation type="unfinished"></translation>
+        <translation>Název souboru:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="668"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Souborový název (bez přípony), pod nímž se mají uložit stažené obaly.&lt;br/&gt; Jestliže bude ponecháno prázdné, použije se &quot;cover&quot;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% bude nahrazen umělcem alba současné písně, a %album% bude nahrazeno názvem alba.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Souborový název (bez přípony), pod nímž se mají uložit stažené obaly.&lt;br/&gt; Jestliže bude ponecháno prázdné, použije se &quot;cover&quot;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% bude nahrazen umělcem alba současné písně, a %album% bude nahrazeno názvem alba.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="677"/>
         <source>If you enable &apos;Save downloaded covers into music folder&apos; you may need to clear the cache of any previous covers to force downloading of new covers. See &apos;Cache&apos; settings page for further details.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokud povolíte Uložit stažené obaly ve složce s hudbou, může být potřeba vyprázdnění vyrovnávací paměti všech předchozích obalů, aby se vynutilo stažení nových obalů. Na další podrobnosti se podívejte v nastavení pro vyrovnávací paměť.</translation>
     </message>
     <message>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
-        <translation type="vanished">pokud máte ve své sbírce mnoho umělců, kteří mají jen jednu skladbu, potom může být těžkopádné mít pro každého z nich jejich vlastní záznam v seznamu umělců. Můžete to obejít tím, že tyto skladby umístíte do samostatné složky a níže zadáte název této složky. Potom bude Cantata tyto seskupovat pod albem nazvaným Jednotlivé skladby s umělcem alba Různí umělci</translation>
+        <translation>pokud máte ve své sbírce mnoho umělců, kteří mají jen jednu skladbu, potom může být těžkopádné mít pro každého z nich jejich vlastní záznam v seznamu umělců. Můžete to obejít tím, že tyto skladby umístíte do samostatné složky a níže zadáte název této složky. Potom bude Cantata tyto seskupovat pod albem nazvaným Jednotlivé skladby s umělcem alba Různí umělci</translation>
     </message>
     <message>
         <source>Folder that contains single track files...</source>
-        <translation type="vanished">Složka, která obsahuje soubory s jednotlivými skladbami...</translation>
+        <translation>Složka, která obsahuje soubory s jednotlivými skladbami...</translation>
     </message>
     <message>
         <source>CUE Files</source>
-        <translation type="vanished">Soubory CUE</translation>
+        <translation>Soubory CUE</translation>
     </message>
     <message>
         <source>A cue file is a metadata file which describes how the tracks of a CD are laid out.</source>
-        <translation type="vanished">Soubor CUE je soubor s popisnými údaji, který popisuje, jak jsou skladby na CD rozloženy.</translation>
+        <translation>Soubor CUE je soubor s popisnými údaji, který popisuje, jak jsou skladby na CD rozloženy.</translation>
     </message>
     <message>
         <source>Changing any of the above will require a DB refresh (and possibly restarting Cantata) in order to take affect.</source>
-        <translation type="vanished">Změna čehokoli výše bude vyžadovat obnovení databáze (a možná opětovné spuštění Cantaty), aby se tato změna projevila.</translation>
+        <translation>Změna čehokoli výše bude vyžadovat obnovení databáze (a možná opětovné spuštění Cantaty), aby se tato změna projevila.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="701"/>
@@ -8898,7 +8898,7 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <source>Fetch missing covers from Last.fm</source>
-        <translation type="vanished">Natáhnout chybějící obaly z Last.fm</translation>
+        <translation>Natáhnout chybějící obaly z Last.fm</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="712"/>
@@ -8932,7 +8932,7 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <source>Support retina displays</source>
-        <translation type="vanished">Podpora pro obrazovky retina (sítnice)</translation>
+        <translation>Podpora pro obrazovky retina (sítnice)</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="733"/>
@@ -8955,17 +8955,17 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <source>Enabling support for retina displays will produce sharper icons on the retina display, but may produce less sharp icons on non-retina displays. Changing this setting will require a re-start of Cantata.</source>
-        <translation type="vanished">Povolení podpory pro obrazovky retina (retina = sítnice; obrazovky s vyšší hustotou pixelů, než jakou měly předchozí modely, firma Apple) povede k ostřejším ikonám na obrazovkách typu &quot;retina&quot;, ale může vést k méně ostrým ikonám na obrazovkách, které typu &quot;retina&quot; nejsou. Změna tohoto nastavení vyžaduje opětovné spuštění Cantaty.</translation>
+        <translation>Povolení podpory pro obrazovky retina (retina = sítnice; obrazovky s vyšší hustotou pixelů, než jakou měly předchozí modely, firma Apple) povede k ostřejším ikonám na obrazovkách typu &quot;retina&quot;, ale může vést k méně ostrým ikonám na obrazovkách, které typu &quot;retina&quot; nejsou. Změna tohoto nastavení vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="148"/>
         <source>Use &apos;Year&apos; tag to display &amp; sort</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít značku Rok pro zobrazení a třídění</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="149"/>
         <source>Use &apos;Original Year&apos; tag to display &amp; sort, fallback to &apos;Year&apos; if not set</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít značku Původní rok pro zobrazení a třídění, vrátit se k značce Rok, není-li nastavena</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="152"/>
@@ -9056,12 +9056,12 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="219"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokud není pro Název souboru zadáno žádné nastavení, Cantata použije výchozí &lt;code&gt;obal&lt;/code&gt;. Tento název souboru se používá při stahování obalů, nebo při přidávání hudby do knihovny ze zařízení.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="223"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokud není pro Název souboru zadáno žádné nastavení, Cantata použije výchozí &lt;code&gt;obal&lt;/code&gt;. Tento název souboru se používá při stahování obalů.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="431"/>
@@ -9239,7 +9239,7 @@ Vyberte, prosím, jinou.</translation>
     <message>
         <location filename="../gui/librarypage.cpp" line="60"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Zadejte řetězec pro hledání umělce, alba,názvu atd. Pro filtrování založené na roku do řetězce k vyhledání přidejte &lt;i&gt;#year-range&lt;/i&gt; - např.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; vrátí skladby z roku 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; vrátí skladby z 80. let&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; bude hledat řetězec &lt;i&gt;Blah&lt;/i&gt; a vrátí skladby pouze z roku 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/librarypage.cpp" line="66"/>
@@ -9320,7 +9320,7 @@ Vyberte, prosím, jinou.</translation>
     <message>
         <location filename="../gui/librarypage.cpp" line="122"/>
         <source>No music? Looks like your MPD is not configured correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Žádná hudba? Vypadá to na to, že MPD není nastaven správně.</translation>
     </message>
     <message>
         <location filename="../gui/librarypage.cpp" line="203"/>
@@ -9342,27 +9342,27 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="40"/>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Domovská složka</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="40"/>
         <source>Browse files in your home folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Procházet soubory v domovské složce</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="41"/>
         <source>Root</source>
-        <translation type="unfinished"></translation>
+        <translation>Kořen</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="41"/>
         <source>Browse files on your computer</source>
-        <translation type="unfinished"></translation>
+        <translation>Procházet soubory v počítači</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="43"/>
         <source>Open In File Manager</source>
-        <translation type="unfinished">Otevřít ve správci souborů</translation>
+        <translation>Otevřít ve správci souborů</translation>
     </message>
 </context>
 <context>
@@ -9567,7 +9567,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
     <message>
         <location filename="../gui/mainwindow.ui" line="204"/>
         <source>Exit Full Screen</source>
-        <translation>Opustit režim zobrazení na celou obrazovku</translation>
+        <translation>Opustit režim na celou obrazovku</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="253"/>
@@ -9576,7 +9576,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="vanished">Nastavení</translation>
+        <translation>Nastavení</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="256"/>
@@ -9659,7 +9659,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
     <message>
         <location filename="../gui/mainwindow.cpp" line="305"/>
         <source>Add Local Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidat místní soubory</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="307"/>
@@ -9723,7 +9723,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
     </message>
     <message>
         <source>Play Stream</source>
-        <translation type="vanished">Přehrát proud</translation>
+        <translation>Přehrát proud</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="333"/>
@@ -9747,25 +9747,25 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
     </message>
     <message>
         <source>Locate In Library / Artist</source>
-        <translation type="vanished">Najít v knihovna/umělec</translation>
+        <translation>Najít v knihovna/umělec</translation>
     </message>
     <message>
         <source>Locate In Library / Album</source>
-        <translation type="vanished">Najít v knihovna/album</translation>
+        <translation>Najít v knihovna/album</translation>
     </message>
     <message>
         <source>Locate In Library / Track</source>
-        <translation type="vanished">Najít v knihovna/skladba</translation>
+        <translation>Najít v knihovna/skladba</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="253"/>
         <source>Preferences...</source>
-        <translation type="unfinished">Nastavení...</translation>
+        <translation>Nastavení...</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="327"/>
         <source>Play HTTP Output Stream</source>
-        <translation type="unfinished"></translation>
+        <translation>Přehrát proud s výstupem HTTP</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="348"/>
@@ -9835,7 +9835,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
     <message>
         <location filename="../gui/mainwindow.cpp" line="492"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Zadejte řetězec pro hledání umělce, alba,názvu atd. Pro filtrování založené na roku do řetězce k vyhledání přidejte &lt;i&gt;#year-range&lt;/i&gt; - např.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; vrátí skladby z roku 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; vrátí skladby z 80. let&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; bude hledat řetězec &lt;i&gt;Blah&lt;/i&gt; a vrátí skladby pouze z roku 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="587"/>
@@ -9910,7 +9910,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
     <message>
         <location filename="../gui/mainwindow.cpp" line="1198"/>
         <source>Please refer to &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;Cantata&apos;s issue tracker&lt;/a&gt; for a list of known issues, and to report new issues.</source>
-        <translation type="unfinished"></translation>
+        <translation>Podívejte se, prosím, ve &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;sledování problémů s Cantatou&lt;/a&gt; na seznam známých potíží a nahlašte nové věci.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1200"/>
@@ -10051,12 +10051,12 @@ Přidat do tohoto seznamu skladeb?</translation>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2082"/>
         <source>Select Music Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybrat hudební soubory</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2082"/>
         <source>Music Files </source>
-        <translation type="unfinished"></translation>
+        <translation>Hudební soubory</translation>
     </message>
     <message numerus="yes">
         <location filename="../gui/mainwindow.cpp" line="2111"/>
@@ -10098,26 +10098,26 @@ Přidat do tohoto seznamu skladeb?</translation>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="44"/>
         <source>Open In File Manager</source>
-        <translation type="unfinished">Otevřít ve správci souborů</translation>
+        <translation>Otevřít ve správci souborů</translation>
     </message>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="82"/>
         <source>No folders? Looks like your MPD is not configured correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Žádné složky? Vypadá to na to, že MPD není nastaven správně.</translation>
     </message>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="229"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
-        <translation type="unfinished">Opravdu chcete odstranit vybrané písně?
+        <translation>Opravdu chcete odstranit vybrané písně?
 
 Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="230"/>
         <source>Delete Songs</source>
-        <translation type="unfinished">Smazat písně</translation>
+        <translation>Smazat písně</translation>
     </message>
 </context>
 <context>
@@ -10270,16 +10270,16 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="312"/>
         <source>Copy To Clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopírovat do schránky</translation>
     </message>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="313"/>
         <source>Now Playing</source>
-        <translation type="unfinished"></translation>
+        <translation>Nyní se přehrává</translation>
     </message>
     <message>
         <source>(Stream)</source>
-        <translation type="vanished">(Proud)</translation>
+        <translation>(Proud)</translation>
     </message>
 </context>
 <context>
@@ -10650,12 +10650,12 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="372"/>
         <source>Filename</source>
-        <translation type="unfinished">Název souboru</translation>
+        <translation>Název souboru</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="373"/>
         <source>Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Cesta</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="418"/>
@@ -10690,7 +10690,7 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="438"/>
         <source>Sort By</source>
-        <translation>Třídit podle</translation>
+        <translation>Řadit dle</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="441"/>
@@ -10730,12 +10730,12 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <source>Fa&amp;deout on stop:</source>
-        <translation type="vanished">Postupné &amp;zeslabení zvuku při zastavení:</translation>
+        <translation>Postupné &amp;zeslabení zvuku při zastavení:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="38"/>
         <source>Fadeout on stop:</source>
-        <translation type="unfinished"></translation>
+        <translation>Postupné zeslabení zvuku při zastavení:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="48"/>
@@ -10778,16 +10778,16 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../gui/playbacksettings.ui" line="112"/>
         <source>Crossfade between tracks:</source>
-        <translation type="unfinished"></translation>
+        <translation>Prolínání mezi skladbami:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="135"/>
         <source>Replay gain:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyrovnání hlasitosti:</translation>
     </message>
     <message>
         <source>&amp;Crossfade between tracks:</source>
-        <translation type="vanished">&amp;Prolínání mezi skladbami:</translation>
+        <translation>&amp;Prolínání mezi skladbami:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
@@ -10796,7 +10796,7 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <source>Replay &amp;gain:</source>
-        <translation type="vanished">Vyrovnání &amp;hlasitosti:</translation>
+        <translation>Vyrovnání &amp;hlasitosti:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="178"/>
@@ -10806,17 +10806,17 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../gui/playbacksettings.ui" line="187"/>
         <source>Volume step:</source>
-        <translation type="unfinished"></translation>
+        <translation>Krokování hlasitosti:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="193"/>
         <source>&lt;p&gt;Amount to change volume by when using either the volume control keyboard shortcuts, or the mouse wheel over the toolbar volume control.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Množství pro změnu hlasitosti při užití buď klávesových zkratek pro ovládání hlasitosti nebo kolečka myši nad ovládáním hlasitosti v nástrojovém panelu.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="200"/>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="213"/>
@@ -10981,12 +10981,12 @@ Tento krok nelze vrátit zpět.</translation>
     <name>PlaylistRules</name>
     <message>
         <source>Name of Dynamic Rules</source>
-        <translation type="vanished">Název pro dynamická pravidla</translation>
+        <translation>Název pro dynamická pravidla</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="39"/>
         <source>Name of playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Název seznamu skladeb</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="71"/>
@@ -11033,17 +11033,17 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../playlists/playlistrules.ui" line="215"/>
         <source>Files added in the last:</source>
-        <translation type="unfinished"></translation>
+        <translation>Naposledy přidané soubory:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="225"/>
         <source> days</source>
-        <translation type="unfinished"></translation>
+        <translation>dnů</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="228"/>
         <source>No Limit</source>
-        <translation type="unfinished">Bez omezení</translation>
+        <translation>Bez omezení</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="235"/>
@@ -11060,7 +11060,7 @@ Tento krok nelze vrátit zpět.</translation>
     <name>PlaylistRulesDialog</name>
     <message>
         <source>Dynamic Rules</source>
-        <translation type="vanished">Dynamická pravidla</translation>
+        <translation>Dynamická pravidla</translation>
     </message>
     <message>
         <source>None</source>
@@ -11079,7 +11079,7 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <source>Smart Rules</source>
-        <translation type="vanished">Chytrá pravidla</translation>
+        <translation>Chytrá pravidla</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="159"/>
@@ -11088,7 +11088,11 @@ Tento krok nelze vrátit zpět.</translation>
 Use the &apos;Add&apos; button to add a &apos;rule&apos; to control which artists, genres, etc you want included in the playlist. Any rules added will be listed here. A playlist with no rules will use songs from your whole music library.
 
 Use the settings below to restrict the range of songs added.</source>
-        <translation type="unfinished"></translation>
+        <translation>Každý seznam skladeb vyžaduje jedinečný název. Zadejte jej výše.
+
+Použijte tlačítko Přidat pro přidání pravidla, kterým budete řídit, které umělce, žánry atd. chcete zahrnout do seznamu skladeb. Všechna přidaná pravidla budou uvedena zde. Seznam skladeb bez pravidel bude používat písně z celé hudební knihovny.
+
+Použijte nastavení níže k omezení rozsahu přidaných písní.</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="192"/>
@@ -11102,17 +11106,17 @@ Use the settings below to restrict the range of songs added.</source>
     </message>
     <message>
         <source>Name of Smart Rules</source>
-        <translation type="vanished">Název chytrých pravidel</translation>
+        <translation>Název chytrých pravidel</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
         <source>Dynamic Playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Dynamický seznamy skladeb</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
         <source>Smart Playlist</source>
-        <translation type="unfinished">Chytrý seznam skladeb</translation>
+        <translation>Chytrý seznam skladeb</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="203"/>
@@ -11613,12 +11617,12 @@ Přepsat?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="79"/>
         <source>Configure</source>
-        <translation type="unfinished">Nastavit</translation>
+        <translation>Nastavit</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="93"/>
         <source>Use the + icon (below) to add podcast subscriptions.</source>
-        <translation type="unfinished"></translation>
+        <translation>K přidání odběru zvukového záznamu použijte znaménko + (níže).</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="147"/>
@@ -11710,11 +11714,11 @@ Přepsat?</translation>
     </message>
     <message>
         <source>Downloaded Files</source>
-        <translation type="vanished">Stažené soubory</translation>
+        <translation>Stažené soubory</translation>
     </message>
     <message>
         <source>Downloaded Files Settings</source>
-        <translation type="vanished">Nastavení pro stažené soubory</translation>
+        <translation>Nastavení pro stažené soubory</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="76"/>
@@ -11794,12 +11798,12 @@ Přepsat?</translation>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="95"/>
         <source>Service Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Klíče služby</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="95"/>
         <source>Service API Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Klíče API služby</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="97"/>
@@ -11925,7 +11929,7 @@ Přepsat?</translation>
     <message>
         <location filename="../devices/encoders.cpp" line="115"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) is a patented digital audio codec using a form of lossy data compression.&lt;br&gt;In spite of its shortcomings, it is a common format for consumer audio storage, and is widely supported on portable music players.</source>
-        <translation>&lt;a href=http://en.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) je patentem chráněný digitální zvukový kodek, který používá druh ztrátového zhuštění dat.&lt;br&gt;Navzdory svým slabinám je to běžný formát pro spotřebitelské ukládání zvuku a je široce podporován v přenosných přehrávačích hudby.</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) je patentem chráněný digitální zvukový kodek, který používá druh ztrátové komprimace dat.&lt;br&gt;Navzdory svým slabinám je to běžný formát pro spotřebitelské ukládání zvuku a je široce podporován v přenosných přehrávačích hudby.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="119"/>
@@ -11940,7 +11944,7 @@ Přepsat?</translation>
     <message>
         <location filename="../devices/encoders.cpp" line="152"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Vorbis&gt;Ogg Vorbis&lt;/a&gt; is an open and royalty-free audio codec for lossy audio compression.&lt;br&gt;It produces smaller files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around excellent choice, especially for portable music players that support it.</source>
-        <translation>&lt;a href=http://en.wikipedia.org/wiki/Vorbis&gt;Ogg Vorbis&lt;/a&gt; je otevřený kodek bez poplatků za užívání pro ztrátové zhuštění zvuku.&lt;br&gt;Vyrábí menší soubory než MP3 při stejné nebo vyšší kvalitě. Ogg Vorbis je všestranně vynikající, skvělou, výbornou, znamenitou a prvotřídní volbou pro přenosné přehrávače hudby, které jej podporují.</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/Vorbis&gt;Ogg Vorbis&lt;/a&gt; je otevřený kodek bez poplatků za užívání pro ztrátovou komprimaci zvuku.&lt;br&gt;Vyrábí menší soubory než MP3 při stejné nebo vyšší jakosti. Ogg Vorbis je všestranně vynikající, skvělou, výbornou, znamenitou a prvotřídní volbou pro přenosné přehrávače hudby, které jej podporují.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="157"/>
@@ -11981,7 +11985,7 @@ Přepsat?</translation>
     <message>
         <location filename="../devices/encoders.cpp" line="234"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) is an audio codec for lossless compression of digital music.&lt;br&gt;Recommended only for Apple music players and players that do not support FLAC.</source>
-        <translation>&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) je zvukový kodek pro bezztrátové zhuštění digitální hudby.&lt;br&gt;Doporučováno pouze pro hudební přehrávače od firmy Apple a přehrávače nepodporující FLAC.</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) je zvukový kodek pro bezztrátovou komprimaci digitální hudby.&lt;br&gt;Doporučováno pouze pro hudební přehrávače od firmy Apple a přehrávače nepodporující FLAC.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="249"/>
@@ -11991,26 +11995,26 @@ Přepsat?</translation>
     <message>
         <location filename="../devices/encoders.cpp" line="250"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) is an open and royalty-free codec for lossless compression of digital music.&lt;br&gt;If you wish to store your music without compromising on audio quality, FLAC is an excellent choice.</source>
-        <translation>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) je otevřený kodek bez poplatků za užívání pro bezztrátové zhuštění digitální hudby.&lt;br&gt;Pokud si svou hudbu přejete ukládat bez ústupků, co se týče jakosti zvuku, FLAC je prostě excelentní, tedy vynikající, skvělou, výbornou, znamenitou a prvotřídní volbou.</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) je otevřený kodek bez poplatků za užívání pro bezztrátovou komprimaci digitální hudby.&lt;br&gt;Pokud si svou hudbu přejete ukládat bez ústupků, co se týče jakosti zvuku, FLAC je prostě excelentní, tedy vynikající, skvělou, výbornou, znamenitou a prvotřídní volbou.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="254"/>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;Úroveň komprimace&lt;/a&gt; je hodnota celého čísla ležící mezi 0 a 8, která představuje vyvážení mezi velikostí souboru a rychlostí komprimace během kódování s &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Nastavení úrovně komprimace na &lt;b&gt;0&lt;/b&gt; dává nejkratší čas komprimace, ale způsobuje srovnatelně velký soubor&lt;br/&gt;Na druhou stranu úroveň zhuštění &lt;b&gt;8&lt;/b&gt; dělá komprimaci docela pomalou,ale vytvoří nejmenší soubor.&lt;br/&gt;Uvědomte si, že vzhledem k tomu, že FLAC je ze své podstaty bezeztrátový kodek, je zvuková jakost výstupu přesně tatáž bez ohledu na úroveň komprimace.&lt;br/&gt;Úrovně nad &lt;b&gt;5&lt;/b&gt; kromě toho napínavě zvyšují čas komprimace, ale vytvářejí jen nepatrně menší soubor, a nedoporučují se.</translation>
     </message>
     <message>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="vanished">&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;Úroveň zhuštění&lt;/a&gt; je hodnota celého čísla ležící mezi 0 a 8, která představuje vyvážení mezi velikostí souboru a rychlostí zhuštění během kódování s &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Nastavení úrovně zhuštění na &lt;b&gt;0&lt;/b&gt; dává nejkratší čas zhuštění, ale způsobuje srovnatelně velký soubor&lt;br/&gt;Na druhou stranu úroveň zhuštění &lt;b&gt;8&lt;/b&gt; dělá zhušťování docela pomalým,ale vytvoří nejmenší soubor.&lt;br/&gt;Uvědomte si, že vzhledem k tomu, že FLAC je ze své podstaty bezeztrátový kodek, je zvuková jakost výstupu přesně tatáž bez ohledu na úroveň zhuštění.&lt;br/&gt;Úrovně nad &lt;b&gt;5&lt;/b&gt; kromě toho napínavě zvyšují čas zhuštění, ale vytvářejí jen nepatrně menší soubor, a nedoporučují se.</translation>
+        <translation>&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;Úroveň komprimace&lt;/a&gt; je hodnota celého čísla ležící mezi 0 a 8, která představuje vyvážení mezi velikostí souboru a rychlostí komprimace během kódování s &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Nastavení úrovně komprimace na &lt;b&gt;0&lt;/b&gt; dává nejkratší čas komprimace, ale způsobuje srovnatelně velký soubor&lt;br/&gt;Na druhou stranu úroveň zhuštění &lt;b&gt;8&lt;/b&gt; dělá komprimaci docela pomalou,ale vytvoří nejmenší soubor.&lt;br/&gt;Uvědomte si, že vzhledem k tomu, že FLAC je ze své podstaty bezeztrátový kodek, je zvuková jakost výstupu přesně tatáž bez ohledu na úroveň komprimace.&lt;br/&gt;Úrovně nad &lt;b&gt;5&lt;/b&gt; kromě toho napínavě zvyšují čas komprimace, ale vytvářejí jen nepatrně menší soubor, a nedoporučují se.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="269"/>
         <source>Compression level</source>
-        <translation>Úroveň zhuštění</translation>
+        <translation>Úroveň komprimace</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="279"/>
         <source>Faster compression</source>
-        <translation>Rychlejší zhuštění</translation>
+        <translation>Rychlejší komprimace</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="286"/>
@@ -12020,7 +12024,7 @@ Přepsat?</translation>
     <message>
         <location filename="../devices/encoders.cpp" line="287"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) is a proprietary codec developed by Microsoft for lossy audio compression.&lt;br&gt;Recommended only for portable music players that do not support Ogg Vorbis.</source>
-        <translation>&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) je kodek, který je patentově chráněn, vyvíjený firmou Microsoft pro ztrátové zhuštění zvuku.&lt;br&gt;Doporučován jen pro přenosné přehrávače hudby, jež nepodporují formát Ogg Vorbis.</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) je kodek, který je patentově chráněn, vyvíjený firmou Microsoft pro ztrátové komprimaci zvuku.&lt;br&gt;Doporučován jen pro přenosné přehrávače hudby, jež nepodporují formát Ogg Vorbis.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="291"/>
@@ -12552,7 +12556,7 @@ width x height</comment>
     <message>
         <location filename="../mpd-interface/song.cpp" line="824"/>
         <source>(Stream)</source>
-        <translation type="unfinished">(Proud)</translation>
+        <translation>(Proud)</translation>
     </message>
     <message>
         <location filename="../scrobbling/scrobbler.cpp" line="91"/>
@@ -12811,7 +12815,7 @@ width x height</comment>
     <message>
         <location filename="../widgets/singlepagewidget.cpp" line="45"/>
         <source>Categorized</source>
-        <translation type="unfinished"></translation>
+        <translation>Roztříděno do skupin</translation>
     </message>
     <message numerus="yes">
         <source>%n Track(s)</source>
@@ -12896,133 +12900,133 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="137"/>
         <source>mpd - MPD communication</source>
-        <translation type="unfinished"></translation>
+        <translation>mpd - spojení s MPD</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="138"/>
         <source>mpdparse - Parsing of MPD response</source>
-        <translation type="unfinished"></translation>
+        <translation>mpdparse - zpracování odpovědi MPD</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="139"/>
         <source>covers - Cover fetching, and loading</source>
-        <translation type="unfinished"></translation>
+        <translation>covers - natahování obalů a jejich nahrávání</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="140"/>
         <source>covers-verbose - Cover fetching, and loading (verbose) </source>
-        <translation type="unfinished"></translation>
+        <translation>covers-verbose - natahování obalů a jejich nahrávání (podrobné)</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="141"/>
         <source>context-wikipedia - Wikipedia info in context view</source>
-        <translation type="unfinished"></translation>
+        <translation>context-wikipedia - údaje z Wikipedie v pohledu se souvisejícími informacemi</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="142"/>
         <source>context-lastfm - Last.fm info in context view</source>
-        <translation type="unfinished"></translation>
+        <translation>context-lastfm - údaje z Last.fm v pohledu se souvisejícími informacemi</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="143"/>
         <source>context-widget - General debug in context view</source>
-        <translation type="unfinished"></translation>
+        <translation>context-widget - obecné ladění v pohledu se souvisejícími informacemi</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="144"/>
         <source>context-lyrics - Lyrics in context view</source>
-        <translation type="unfinished"></translation>
+        <translation>context-lyrics - texty písní v pohledu se souvisejícími informacemi</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="145"/>
         <source>dynamic - Dynamic playlists</source>
-        <translation type="unfinished"></translation>
+        <translation>dynamic - dynamické seznamy skladeb</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="146"/>
         <source>stream-fetcher - Fetching of stream URLs</source>
-        <translation type="unfinished"></translation>
+        <translation>stream-fetcher - natahování adres (URL) proudů</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="147"/>
         <source>http-server - Built-in HTTP server</source>
-        <translation type="unfinished"></translation>
+        <translation>http-server - vestavěný server HTTP</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="148"/>
         <source>song-dialog - Song dialogs (tags, replaygain, organiser)</source>
-        <translation type="unfinished"></translation>
+        <translation>song-dialog - písňové dialogy (značky, vyrovnání hlasitosti, organizátor)</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="149"/>
         <source>network-access - Network access</source>
-        <translation type="unfinished"></translation>
+        <translation>network-access - přístup k síti</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="150"/>
         <source>threads - Threads</source>
-        <translation type="unfinished"></translation>
+        <translation>threads - vlákna</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="151"/>
         <source>scrobbler - Scrobbling</source>
-        <translation type="unfinished"></translation>
+        <translation>scrobbler - odesílání informací o skladbách</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="152"/>
         <source>sql - SQL access</source>
-        <translation type="unfinished"></translation>
+        <translation>sql - přístup k SQL</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="153"/>
         <source>media-keys - Media-keys</source>
-        <translation type="unfinished"></translation>
+        <translation>media-keys - multimediální klávesy</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="154"/>
         <source>custom-actions - Custom actions</source>
-        <translation type="unfinished"></translation>
+        <translation>custom-actions - vlastní činnosti</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="156"/>
         <source>tags - Tag reading/writing</source>
-        <translation type="unfinished"></translation>
+        <translation>tags - čtení/zápis značek</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="159"/>
         <source>devices - Device support</source>
-        <translation type="unfinished"></translation>
+        <translation>devices - podpora pro zařízení</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="162"/>
         <source>http-stream - Playback of MPD output streams</source>
-        <translation type="unfinished"></translation>
+        <translation>http-stream - přehrávání proudů s výstupem MPD</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="165"/>
         <source>avahi - Auto-discovery of MPD servers</source>
-        <translation type="unfinished"></translation>
+        <translation>avahi - automatické zjištění serverů MPD</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="253"/>
         <source>MPD Client</source>
-        <translation type="unfinished"></translation>
+        <translation>Klient MPD</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="256"/>
         <source>Comma-separated list of debug areas - possible values:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Čárkou oddělený seznam oblastí ladění - možné hodnoty:</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="257"/>
         <source>Log debug messages to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisovat zprávy ladění do %1</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="258"/>
         <source>Disable network access</source>
-        <translation type="unfinished"></translation>
+        <translation>Zakázat přístup k síti</translation>
     </message>
 </context>
 <context>
@@ -13455,7 +13459,7 @@ Vyberte, prosím, jiný název.</translation>
     <name>RulesPlaylists</name>
     <message>
         <source> - Rating: %1..%2</source>
-        <translation type="vanished"> - Hodnocení: %1...%2</translation>
+        <translation> - Hodnocení: %1...%2</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="93"/>
@@ -13639,7 +13643,7 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="87"/>
         <source>Use the text field above to search for music in your library via MPD&apos;s search mechanism. Clicking the label next to the field will produce a menu allowing you to control the search area.</source>
-        <translation type="unfinished"></translation>
+        <translation>Použijte textové pole výše k hledání hudby ve vaší knihovně pomocí vyhledávacího mechanismu MPD. Klepnutí na štítek vedle pole vyvolá nabídku umožňující ovládat oblast hledání.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="212"/>
@@ -13649,7 +13653,7 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="212"/>
         <source>Search for songs by artist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hledat písně podle umělce.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="215"/>
@@ -13659,7 +13663,7 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="215"/>
         <source>Search for songs by composer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hledat písně podle skladatele.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="218"/>
@@ -13669,7 +13673,7 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="218"/>
         <source>Search for songs by performer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hledat písně podle účinkujícího.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="220"/>
@@ -13679,7 +13683,7 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="220"/>
         <source>Search for songs by album.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hledat písně podle alba.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="221"/>
@@ -13689,7 +13693,7 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="221"/>
         <source>Search for songs by title.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hledat písně podle názvu.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="222"/>
@@ -13699,7 +13703,7 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="222"/>
         <source>Search for songs by genre.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hledat písně podle žánru.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="224"/>
@@ -13709,7 +13713,7 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="224"/>
         <source>Search for songs containing comment.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hledat písně obsahující poznámku.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="226"/>
@@ -13749,7 +13753,7 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="237"/>
         <source>Search for songs by filename or path.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hledat písně podle názvu souboru nebo cesty.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="238"/>
@@ -13759,7 +13763,7 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../gui/searchpage.cpp" line="238"/>
         <source>Search for songs by any matching metadata.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hledat písně podle jakýchkoli odpovídajících popisných údajů.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="244"/>
@@ -13820,11 +13824,11 @@ Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
         <source>Cover filename:</source>
-        <translation type="vanished">Název souboru obalu:</translation>
+        <translation>Název souboru obalu:</translation>
     </message>
     <message>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="vanished">&lt;p&gt;Souborový název (bez přípony), pod nímž se mají uložit stažené obaly.&lt;br/&gt; Jestliže bude ponecháno prázdné, použije se &quot;cover&quot;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% bude nahrazen umělcem alba současné písně, a %album% bude nahrazeno názvem alba.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Souborový název (bez přípony), pod nímž se mají uložit stažené obaly.&lt;br/&gt; Jestliže bude ponecháno prázdné, použije se &quot;cover&quot;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% bude nahrazen umělcem alba současné písně, a %album% bude nahrazeno názvem alba.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="139"/>
@@ -13849,17 +13853,17 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../gui/serversettings.ui" line="172"/>
         <source>Auto update:</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatická aktualizace:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="182"/>
         <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Vyberte tuto volbu, pokud server MPD zjistí změny (např. nově přidané soubory) automaticky. Pokud je tomu tak, Cantata nemusí posílat příkazy k aktualizaci pro určité činnosti.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="185"/>
         <source>Server detects changes automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Server zjišťuje změny automaticky</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="194"/>
@@ -13868,7 +13872,7 @@ Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
         <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
-        <translation type="vanished">Pokud není nastaveno žádné nastavení pro název souboru s obalem, pak bude Cantata používat výchozí &lt;code&gt;obal&lt;/code&gt;</translation>
+        <translation>Pokud není nastaveno žádné nastavení pro název souboru s obalem, pak bude Cantata používat výchozí &lt;code&gt;obal&lt;/code&gt;</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="201"/>
@@ -13898,7 +13902,7 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../gui/serversettings.cpp" line="81"/>
         <source>More information</source>
-        <translation type="unfinished"></translation>
+        <translation>Více informací</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.cpp" line="119"/>
@@ -14068,12 +14072,12 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="73"/>
         <source>A &apos;smart&apos; playlist contains a set of rules to select tracks from your music library to play. The playlist also controls the order in which tracks are added. Unlike &apos;dynamic&apos; playlists, the play queue is not dynamically updated.</source>
-        <translation type="unfinished"></translation>
+        <translation>Chytrý seznam skladeb obsahuje pro výběr skladeb k přehrávání z vaší hudební sbírky sadu pravidel. Seznam skladeb také ovládá pořadí, v němž jsou skladby přidány. Na rozdíl od dynamických seznamů skladeb řada skladeb k přehrání není automaticky obnovována.</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="77"/>
         <source>Use the + icon (below) to create a new &apos;smart&apos; playlist.</source>
-        <translation type="unfinished"></translation>
+        <translation>K vytvoření nového chytrého seznamu skladeb použijte znaménko + (níže).</translation>
     </message>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="126"/>
@@ -14462,47 +14466,47 @@ Nahrát znovu z disku, nebo smazat kopii na disku a stáhnout?</translation>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="210"/>
         <source>Modified in the last week</source>
-        <translation type="unfinished"></translation>
+        <translation>Změněno v posledním týdnu</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="212"/>
         <source>Modified in the last 2 weeks</source>
-        <translation type="unfinished"></translation>
+        <translation>Změněno v posledních 2 týdnech</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="214"/>
         <source>Modified in the last 30 days</source>
-        <translation type="unfinished"></translation>
+        <translation>Změněno v posledních 30 dnech</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="216"/>
         <source>Modified in the last 60 days</source>
-        <translation type="unfinished"></translation>
+        <translation>Změněno v posledních 60 dnech</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="218"/>
         <source>Modified in the last 90 days</source>
-        <translation type="unfinished"></translation>
+        <translation>Změněno v posledních 90 dnech</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="220"/>
         <source>Modified in the last year</source>
-        <translation type="unfinished"></translation>
+        <translation>Změněno v posledním roce</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="222"/>
         <source>Modified in the last 2 years</source>
-        <translation type="unfinished"></translation>
+        <translation>Změněno v posledních 2 letech</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="224"/>
         <source>Modified in the last 3 years</source>
-        <translation type="unfinished"></translation>
+        <translation>Změněno v posledních 3 letech</translation>
     </message>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="226"/>
         <source>Modified more than 3 years ago</source>
-        <translation type="unfinished"></translation>
+        <translation>Změněno před více než 3 lety</translation>
     </message>
     <message numerus="yes">
         <location filename="../models/sqllibrarymodel.cpp" line="243"/>
@@ -14527,7 +14531,7 @@ Nahrát znovu z disku, nebo smazat kopii na disku a stáhnout?</translation>
     <message>
         <location filename="../models/sqllibrarymodel.cpp" line="444"/>
         <source>%1 by %2</source>
-        <translation type="unfinished">%1 od %2</translation>
+        <translation>%1 od %2</translation>
     </message>
 </context>
 <context>
@@ -14550,7 +14554,7 @@ Nahrát znovu z disku, nebo smazat kopii na disku a stáhnout?</translation>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="107"/>
         <source>Either save the play queue, or use the context menu in the library, to create new playlists.</source>
-        <translation type="unfinished"></translation>
+        <translation>K vytvoření nových seznamů skladeb buď uložte řadu skladeb k přehrání, nebo použijte související nabídku.</translation>
     </message>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="189"/>
@@ -15073,11 +15077,11 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
         <source>Failed to open package file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepodařilo se otevřít soubor s balíčkem.</translation>
     </message>
     <message>
         <source>Failed top open package file.</source>
-        <translation type="vanished">Nepodařilo se otevřít soubor s balíčkem.</translation>
+        <translation>Nepodařilo se otevřít soubor s balíčkem.</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>
@@ -15741,7 +15745,7 @@ Pokud soubor přejmenujete (nebo složku, v níž je), potom bude hodnocení spo
     </message>
     <message>
         <source>Now playing</source>
-        <translation type="vanished">Nyní se hraje</translation>
+        <translation>Nyní se hraje</translation>
     </message>
 </context>
 <context>

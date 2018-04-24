@@ -105,18 +105,18 @@ struct CueEntry {
         this->date = date;
     }
 };
-static const qint64 constMsecPerSec  = 1000;
+static const double constMsecPerSec  = 1000.0;
 
-static qint64 indexToMarker(const QString& index)
+static double indexToMarker(const QString &index)
 {
     QRegExp indexRegexp(constIndexRegExp);
     if (!indexRegexp.exactMatch(index)) {
-        return -1;
+        return -1.0;
     }
 
     QStringList splitted = indexRegexp.capturedTexts().mid(1, -1);
     qlonglong frames = splitted.at(0).toLongLong() * 60 * 75 + splitted.at(1).toLongLong() * 75 + splitted.at(2).toLongLong();
-    return (frames * constMsecPerSec) / 75;
+    return (frames * constMsecPerSec) / 75.0;
 }
 
 // This and the constFileLineRegExp do most of the "dirty" work, namely: splitting the raw .cue
@@ -136,11 +136,11 @@ static QStringList splitCueLine(const QString &line)
 // last song in the .cue file.
 static bool updateSong(const CueEntry &entry, const QString &nextIndex, Song &song)
 {
-    qint64 beginning = indexToMarker(entry.index);
-    qint64 end = indexToMarker(nextIndex);
+    double beginning = indexToMarker(entry.index);
+    double end = indexToMarker(nextIndex);
 
     // incorrect indices (we won't be able to calculate beginning or end)
-    if (-1==beginning || -1==end) {
+    if (beginning<0 || end<0) {
         return false;
     }
 
@@ -150,7 +150,7 @@ static bool updateSong(const CueEntry &entry, const QString &nextIndex, Song &so
     song.albumartist=entry.albumArtist;
     song.addGenre(entry.genre);
     song.year=entry.date.toInt();
-    song.time=(end-beginning)/constMsecPerSec;
+    song.time=(quint16)(((end-beginning)/constMsecPerSec)+0.5);
     if (!entry.composer.isEmpty()) {
         song.setComposer(entry.composer);
     } else if (!entry.albumComposer.isEmpty()) {

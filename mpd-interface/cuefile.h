@@ -33,6 +33,8 @@ struct Song;
 // is UTF compatible only.
 namespace CueFile
 {
+    extern void enableDebug();
+
     extern bool isCue(const QString &str);
     extern QByteArray getLoadLine(const QString &str);
     extern bool parse(const QString &fileName, const QString &dir, QList<Song> &songList, QSet<QString> &files);

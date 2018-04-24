@@ -40,6 +40,7 @@
 // To enable debug...
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdparseutils.h"
+#include "mpd-interface/cuefile.h"
 #include "covers.h"
 #include "context/wikipediaengine.h"
 #include "context/lastfmengine.h"
@@ -136,6 +137,7 @@ static QString debugAreas()
 {
     return  QObject::tr("mpd - MPD communication")+QLatin1Char('\n')
             +QObject::tr("mpdparse - Parsing of MPD response")+QLatin1Char('\n')
+            +QLatin1String("cue - Cue file parsing")+QLatin1Char('\n') // TODO: 2.4 tr
             +QObject::tr("covers - Cover fetching, and loading")+QLatin1Char('\n')
             +QObject::tr("covers-verbose - Cover fetching, and loading (verbose) ")+QLatin1Char('\n')
             +QObject::tr("context-wikipedia - Wikipedia info in context view")+QLatin1Char('\n')
@@ -179,6 +181,9 @@ static void installDebugMessageHandler(const QString &cmdLine)
         }
         if (all || QLatin1String("mpdparse")==area) {
             MPDParseUtils::enableDebug();
+        }
+        if (all || QLatin1String("cue")==area) {
+            CueFile::enableDebug();
         }
         if (all || QLatin1String("covers")==area) {
             Covers::enableDebug(false);

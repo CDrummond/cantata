@@ -82,6 +82,7 @@
     items in insufficient space. Switch view type when narrow.
 62. For Linux GCC builds, print stack trace on crash.
 63. Add Suru icon for Ubuntu builds.
+64. Be more lenient when parsing times from CUE files.
 
 2.2.0
 -----

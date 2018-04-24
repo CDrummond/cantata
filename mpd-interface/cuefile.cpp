@@ -37,8 +37,16 @@
 #include <QUrl>
 #include <QUrlQuery>
 
+#include <QDebug>
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << "CueFile"
+void CueFile::enableDebug()
+{
+    debugEnabled=true;
+}
+
 static const QString constFileLineRegExp = QLatin1String("(\\S+)\\s+(?:\"([^\"]+)\"|(\\S+))\\s*(?:\"([^\"]+)\"|(\\S+))?");
-static const QString constIndexRegExp = QLatin1String("(\\d{2,3}):(\\d{2}):(\\d{2})");
+static const QString constIndexRegExp = QLatin1String("(\\d{1,3}):(\\d{2}):(\\d{2})");
 static const QString constPerformer = QLatin1String("performer");
 static const QString constTitle = QLatin1String("title");
 static const QString constSongWriter = QLatin1String("songwriter");
@@ -141,6 +149,7 @@ static bool updateSong(const CueEntry &entry, const QString &nextIndex, Song &so
 
     // incorrect indices (we won't be able to calculate beginning or end)
     if (beginning<0 || end<0) {
+        DBUG << "Failed to update" << entry.title << beginning << end;
         return false;
     }
 
@@ -163,10 +172,10 @@ static bool updateSong(const CueEntry &entry, const QString &nextIndex, Song &so
 // last song in the .cue file.
 static bool updateLastSong(const CueEntry &entry, Song &song)
 {
-    qint64 beginning = indexToMarker(entry.index);
+    double beginning = indexToMarker(entry.index);
 
     // incorrect index (we won't be able to calculate beginning)
-    if (-1==beginning ) {
+    if (beginning<0) {
         return false;
     }
 
@@ -204,34 +213,35 @@ static const QList<QTextCodec *> & codecList()
 
 bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &songList, QSet<QString> &files)
 {
-     QScopedPointer<QTextStream> textStream;
-     QString decoded;
-     QFile f(dir+fileName);
-     if (f.open(QIODevice::ReadOnly)) {
-         // First attempt to use QTextDecoder to decode cue file contents into a QString
-         QByteArray contents=f.readAll();
-         for (QTextCodec *codec: codecList()) {
-             QTextDecoder decoder(codec);
-             decoded=decoder.toUnicode(contents);
-             if (!decoder.hasFailure()) {
-                 textStream.reset(new QTextStream(&decoded, QIODevice::ReadOnly));
-                 break;
-             }
-         }
-         f.close();
+    DBUG << fileName;
+    QScopedPointer<QTextStream> textStream;
+    QString decoded;
+    QFile f(dir+fileName);
+    if (f.open(QIODevice::ReadOnly)) {
+        // First attempt to use QTextDecoder to decode cue file contents into a QString
+        QByteArray contents=f.readAll();
+        for (QTextCodec *codec: codecList()) {
+            QTextDecoder decoder(codec);
+            decoded=decoder.toUnicode(contents);
+            if (!decoder.hasFailure()) {
+                textStream.reset(new QTextStream(&decoded, QIODevice::ReadOnly));
+                break;
+            }
+        }
+        f.close();
 
-         if (!textStream) {
-             decoded.clear();
-             // Failed to use text decoders, fall back to old method...
-             f.open(QIODevice::ReadOnly|QIODevice::Text);
-             textStream.reset(new QTextStream(&f));
-             textStream->setCodec(QTextCodec::codecForUtfText(f.peek(1024), QTextCodec::codecForName("UTF-8")));
-         }
-     }
+        if (!textStream) {
+            decoded.clear();
+            // Failed to use text decoders, fall back to old method...
+            f.open(QIODevice::ReadOnly|QIODevice::Text);
+            textStream.reset(new QTextStream(&f));
+            textStream->setCodec(QTextCodec::codecForUtfText(f.peek(1024), QTextCodec::codecForName("UTF-8")));
+        }
+    }
 
-     if (!textStream) {
-         return false;
-     }
+    if (!textStream) {
+        return false;
+    }
 
     // read the first line already
     QString line = textStream->readLine();
@@ -322,6 +332,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 // the beginning of another track's definition - we're saving the current one
                 // for later (if it's valid of course)
                 // please note that the same code is repeated just after this 'do-while' loop
+                DBUG << validFile << index << trackType;
                 if (validFile && !index.isEmpty() && (trackType.isEmpty() || trackType == constAudioTrackType)) {
                     entries.append(CueEntry(file, index, trackNo, disc, title, artist, albumArtist, album, composer, albumComposer, genre, date));
                 }
@@ -357,11 +368,13 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
         } while (!(line = textStream->readLine()).isNull());
 
         // we didn't add the last song yet...
+        DBUG << validFile << index << trackType;
         if (validFile && !index.isEmpty() && (trackType.isEmpty() || trackType == constAudioTrackType)) {
             entries.append(CueEntry(file, index, trackNo, disc, title, artist, albumArtist, album, composer, albumComposer, genre, date));
         }
     }
 
+    DBUG << "num etries:" << entries.length();
     // finalize parsing songs
     for(int i = 0; i < entries.length(); i++) {
         CueEntry entry = entries.at(i);

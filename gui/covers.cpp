@@ -1122,7 +1122,7 @@ Covers::Covers()
     , loader(nullptr)
 {
     devicePixelRatio=qApp->devicePixelRatio();
-    cache.setMaxCost(10*1024*1024);
+    cache.setMaxCost(15*1024*1024*devicePixelRatio);
 }
 
 void Covers::readConfig()

@@ -573,6 +573,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                 continue;
             }
 
+            DBUG << currentSong.file;
             if (Song::Playlist==currentSong.type) {
                 // lsinfo will return all stored playlists - but this is deprecated.
                 if (!parsePlaylists) {
@@ -623,9 +624,10 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                 bool canSplitCue=mpdVersion>=CANTATA_MAKE_VERSION(0,17,0);
                 bool parseCue=canSplitCue && currentSong.isCueFile() && !mpdDir.startsWith(constHttpProtocol) && QFile::exists(mpdDir+currentSong.file);
                 bool cueParseStatus=false;
+                double lastTrackIndex=0.0;
                 if (parseCue) {
                     DBUG << "Parsing cue file:" << currentSong.file << "mpdDir:" << mpdDir;
-                    cueParseStatus=CueFile::parse(currentSong.file, mpdDir, cueSongs, cueFiles);
+                    cueParseStatus=CueFile::parse(currentSong.file, mpdDir, cueSongs, cueFiles, lastTrackIndex);
                     if (!cueParseStatus) {
                         DBUG << "Failed to parse cue file!";
                         continue;
@@ -661,7 +663,6 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
 
                         bool setTimeFromSource=origFiles.size()==cueSongs.size();
                         DBUG << "setTimeFromSource" << setTimeFromSource << "at" << albumTime << "#c" << cueFiles.size();
-                        quint32 usedAlbumTime=0;
                         for (const Song &orig: cueSongs) {
                             Song s=orig;
                             Song albumSong=origFiles[s.name()];
@@ -688,14 +689,10 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                             }
                             if (0==s.time && setTimeFromSource) {
                                 s.time=albumSong.time;
-                            } else if (0!=albumTime && 1==cueFiles.size()) {
-                                DBUG << s.title << s.time << albumTime << usedAlbumTime;
+                            } else if (0==s.time && 1==cueFiles.size()) {
+                                DBUG << "XX" << s.title << s.time << albumTime << (lastTrackIndex/1000.0);
                                 // Try to set duration of last track by subtracting previous track durations from album duration...
-                                if (0==s.time) {
-                                    s.time=albumTime-usedAlbumTime;
-                                } else {
-                                    usedAlbumTime+=s.time;
-                                }
+                                s.time=albumTime-(lastTrackIndex/1000.0);
                             }
                             DBUG << s.title << s.time;
                             fixedCueSongs.append(s);

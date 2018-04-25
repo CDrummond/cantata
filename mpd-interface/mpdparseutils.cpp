@@ -690,7 +690,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                             if (0==s.time && setTimeFromSource) {
                                 s.time=albumSong.time;
                             } else if (0==s.time && 1==cueFiles.size()) {
-                                DBUG << "XX" << s.title << s.time << albumTime << (lastTrackIndex/1000.0);
+                                DBUG << "Set time of last track" << s.title << s.time << albumTime << (lastTrackIndex/1000.0);
                                 // Try to set duration of last track by subtracting previous track durations from album duration...
                                 s.time=albumTime-(lastTrackIndex/1000.0);
                             }

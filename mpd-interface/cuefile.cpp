@@ -170,7 +170,7 @@ static bool updateSong(const CueEntry &entry, const QString &nextIndex, Song &so
 
 // Updates the song with data from the .cue entry. This one must be used only for the
 // last song in the .cue file.
-static bool updateLastSong(const CueEntry &entry, Song &song)
+static bool updateLastSong(const CueEntry &entry, Song &song, double &lastTrackIndex)
 {
     double beginning = indexToMarker(entry.index);
 
@@ -178,6 +178,7 @@ static bool updateLastSong(const CueEntry &entry, Song &song)
     if (beginning<0) {
         return false;
     }
+    lastTrackIndex = beginning;
 
     song.title=entry.title;
     song.artist=entry.artist;
@@ -211,7 +212,7 @@ static const QList<QTextCodec *> & codecList()
     return codecs;
 }
 
-bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &songList, QSet<QString> &files)
+bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &songList, QSet<QString> &files, double &lastTrackIndex)
 {
     DBUG << fileName;
     QScopedPointer<QTextStream> textStream;
@@ -397,7 +398,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
             }
         } else {
             // incorrect index?
-            if (!updateLastSong(entry, song)) {
+            if (!updateLastSong(entry, song, lastTrackIndex)) {
                 continue;
             }
         }

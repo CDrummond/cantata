@@ -47,7 +47,7 @@ public:
     ~CategoryDrawer() override {
     }
 
-    void drawCategory(const QModelIndex &index, int /*sortRole*/, const QStyleOption &option, QPainter *painter) const
+    void drawCategory(const QModelIndex &index, int /*sortRole*/, const QStyleOption &option, QPainter *painter) const override
     {
         const QString category = index.model()->data(index, KCategorizedSortFilterProxyModel::CategoryDisplayRole).toString();
         QFont font(QApplication::font());

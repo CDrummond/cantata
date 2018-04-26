@@ -211,6 +211,7 @@ void MainWindow::init()
     toolbarLayout->setContentsMargins(hSpace, vSpace, hSpace, vSpace);
     toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setWindowTitle("Cantata");
+    QWidget *tb=toolbar;
     #ifdef Q_OS_MAC
     setUnifiedTitleAndToolBarOnMac(true);
     QToolBar *topToolBar = addToolBar("ToolBar");
@@ -244,6 +245,7 @@ void MainWindow::init()
     toolbar->ensurePolished();
     toolbar->adjustSize();
     coverWidget->setSize(toolbar->height()-(vSpace*2));
+    tb->setMinimumHeight(toolbar->height());
     nowPlaying->initColors();
     nowPlaying->adjustSize();
     nowPlaying->setFixedHeight(nowPlaying->height());

@@ -197,6 +197,7 @@ void SqlLibraryModel::libraryUpdated()
                 case LibraryDb::AS_AlYrAr:
                     name=album.sort.isEmpty() ? album.name.at(0).toUpper() : album.sort.at(0).toUpper();
                     break;
+		default:
                 case LibraryDb::AS_ArAlYr:
                 case LibraryDb::AS_ArYrAl:
                     name=album.artist;

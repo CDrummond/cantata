@@ -117,7 +117,7 @@ static QString fileUrl(const QString &file, bool useServer, bool useLocal)
     return QString();
 }
 
-static QString checkUrl(const QString &url,  const QDir &dir, bool useServer, bool useLocal, const QSet<QString> &handlers)
+static QString checkUrl(const QString &url, const QDir &dir, bool useServer, bool useLocal, const QSet<QString> &handlers)
 {
     int pos = url.indexOf(QLatin1String("://"));
     QString handler = pos>0 ? url.left(pos+3).toLower() : QString();
@@ -126,20 +126,15 @@ static QString checkUrl(const QString &url,  const QDir &dir, bool useServer, bo
         return StreamsModel::constPrefix+url;
     } else if (handlers.contains(handler)) {
         return url;
-    } else {
-        if (checkExtension(url)) {
-            QString path = dir.filePath(url);
-            QString fUrl;
-            if (QFile::exists(path)) { // Relative
-                fUrl=fileUrl(path, useServer, useLocal);
-            } else if (QFile::exists(url)) { // Absolute
-                fUrl=fileUrl(url, useServer, useLocal);
-            }
-            if (!fUrl.isEmpty()) {
-                return fUrl;
-            }
+    } else if (checkExtension(url)) {
+        QString path = dir.filePath(url);
+        if (QFile::exists(path)) { // Relative
+            return fileUrl(path, useServer, useLocal);
+        } else if (QFile::exists(url)) { // Absolute
+            return fileUrl(url, useServer, useLocal);
         }
     }
+    return QString();
 }
 
 static QStringList expandM3uPlaylist(const QString &playlist, bool useServer, bool useLocal, const QSet<QString> &handlers)

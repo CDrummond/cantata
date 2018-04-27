@@ -6647,7 +6647,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="281"/>
         <source>Failed to resolve connection details for %1</source>
-        <translation>Impossibile risolbere i dettagli per la connessione di %1</translation>
+        <translation>Impossibile risolvere i dettagli per la connessione di %1</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="296"/>

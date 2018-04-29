@@ -1,3 +1,8 @@
+2.3.1
+-----
+1. Update some translations.
+2. Set Smart rules 'files added in the last days' limit to 10*365
+
 2.3.0
 -----
  1. Only disable system tray support if org.kde.StatusNotifierWatcher is not

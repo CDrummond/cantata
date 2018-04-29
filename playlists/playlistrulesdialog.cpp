@@ -183,6 +183,7 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
         orderLayout->deleteLater();
         numTracks->setValue(qMax(qMin(10, rules->maxTracks()), rules->minTracks()));
     } else {
+        maxAge->setRange(0, 10*365);
         numTracks->setValue(qMax(qMin(100, rules->maxTracks()), rules->minTracks()));
 
         for (int i=0; i<RulesPlaylists::Order_Count; ++i) {

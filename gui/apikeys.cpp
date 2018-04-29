@@ -132,6 +132,7 @@ bool ApiKeys::isLimitReached(Service srv)
         }
         return true;
     }
+    return false;
 }
 
 bool ApiKeys::isLimitReached(const QNetworkReply *job, Service srv)

@@ -172,6 +172,7 @@ QByteArray HttpServer::encodeUrl(const Song &s)
     #ifdef Q_OS_WIN
     // Use a query item, as s.file might have a driver specifier
     query.addQueryItem("file", s.file);
+    url.setPath("/"+Utils::getFile(s.file));
     #else
     url.setPath(s.file);
     #endif

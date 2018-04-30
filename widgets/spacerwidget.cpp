@@ -34,7 +34,7 @@ SpacerWidget::SpacerWidget(QWidget *parent)
     if (0==fixedWidth) {
         ToolButton tb(parent);
         tb.ensurePolished();
-        fixedWidth=tb.sizeHint().width()*0.75;
+        fixedWidth=tb.sizeHint().width()*0.5;
     }
     setFixedWidth(fixedWidth);
 }

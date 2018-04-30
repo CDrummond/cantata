@@ -3,6 +3,7 @@
 1. Update some translations.
 2. Set Smart rules 'files added in the last days' limit to 10*365
 3. Only sort playlists in folders view, and place these after tracks.
+4. Reduce width of statusbar spacer.
 
 2.3.0
 -----

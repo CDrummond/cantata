@@ -223,7 +223,13 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     coverNameNoteLabel->setText(tr("If no setting is specified for 'Filename', then Cantata will use a default of "
                                    "<code>cover</code>. This filename is used when downloading covers."));
     #endif
-    setMinimumSize(750, 650);
+
+    QFont f = Utils::smallFont(ignorePrefixesLabel->font());
+    f.setItalic(true);
+    ignorePrefixesLabel->setFont(f);
+    composerGenresLabel->setFont(f);
+    singleTracksFoldersLabel->setFont(f);
+    setMinimumSize(Utils::scaleForDpi(720), Utils::scaleForDpi(620));
 }
 
 void InterfaceSettings::load()

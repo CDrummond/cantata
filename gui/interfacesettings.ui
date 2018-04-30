@@ -506,7 +506,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2p">
           <item>
-           <widget class="QLabel" name="labelp">
+           <widget class="QLabel" name="ignorePrefixesLabel">
             <property name="text">
              <string>Enter a (comma separated) list of prefixes to ignore when sorting artist and albums. e.g. if set to 'The' then 'The Beatles' would be sorted by 'Beatles'</string>
             </property>
@@ -532,7 +532,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="composerGenresLabel">
             <property name="text">
              <string>By default, Cantata uses the 'Album Artist' tag (or 'Artist' tag if a song has no 'Album Artist') to group songs and albums. For certain genres, e.g 'Classical', it may be preferable to use the 'Composer' tag (if set) to perform this grouping. Please enter a (comma separated) list of the genres with which you would like Cantata to use the 'Composer' tag.</string>
             </property>
@@ -558,7 +558,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_8">
           <item>
-           <widget class="QLabel" name="label_3">
+           <widget class="QLabel" name="singleTracksFoldersLabel">
             <property name="text">
              <string>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named 'Single Tracks' with an album artist of 'Various Artists'. You may enter a comma separated list of folder names (without leading or trailing path separators) below.</string>
             </property>

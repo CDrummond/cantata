@@ -278,6 +278,7 @@ private:
     qint32 lastSongId;
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
+    bool singlePane;
     Action *prefAction;
     Action *refreshDbAction;
     Action *doDbRefreshAction;

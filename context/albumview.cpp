@@ -66,11 +66,15 @@ AlbumView::AlbumView(QWidget *p)
     , detailsReceived(0)
 {
     engine=ContextEngine::create(this);
+    #ifndef Q_OS_WIN
+    // Full width covers not working under windows. Issue #1252
     refreshAction = ActionCollection::get()->createAction("refreshalbum", tr("Refresh Album Information"), Icons::self()->refreshIcon);
     fullWidthCoverAction = new Action(tr("Full Width Cover"), this);
     fullWidthCoverAction->setCheckable(true);
-    connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
     connect(fullWidthCoverAction, SIGNAL(toggled(bool)), this, SLOT(setScaleImage(bool)));
+    fullWidthCoverAction->setChecked(Configuration(metaObject()->className()).get("fullWidthCover", false));
+    #endif
+    connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), SLOT(coverUpdated(Song,QImage,QString)));
@@ -87,12 +91,13 @@ AlbumView::AlbumView(QWidget *p)
         connect(timer, SIGNAL(timeout()), this, SLOT(clearCache()));
         timer->start((int)((ArtistView::constCacheAge/2.0)*1000*24*60*60));
     }
-    fullWidthCoverAction->setChecked(Configuration(metaObject()->className()).get("fullWidthCover", false));
 }
 
 AlbumView::~AlbumView()
 {
+    #ifndef Q_OS_WIN
     Configuration(metaObject()->className()).set("fullWidthCover", fullWidthCoverAction->isChecked());
+    #endif
 }
 
 void AlbumView::showContextMenu(const QPoint &pos)
@@ -104,7 +109,9 @@ void AlbumView::showContextMenu(const QPoint &pos)
     } else {
         menu->addAction(refreshAction);
     }
+    #ifndef Q_OS_WIN
     menu->addAction(fullWidthCoverAction);
+    #endif
     menu->exec(text->mapToGlobal(pos));
     delete menu;
 }

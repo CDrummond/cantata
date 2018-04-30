@@ -1,16 +1,17 @@
 2.3.1
 -----
-1. Update some translations.
-2. Set Smart rules 'files added in the last days' limit to 10*365
-3. Only sort playlists in folders view, and place these after tracks.
-4. Reduce width of statusbar spacer.
-5. Move scrobling 'love' button into toolbar. Use unfilled heart before loved,
-   and filled when loved.
-6. Better control of playqueue status bar buttons when contracting/expanding.
-7. For windows, when adding local files (served via internal HTTP server) add
-   the real file path as a query item.
-8. Use smaller text for help text in Tweaks section of preferences dialog.
-9. Fix playback of local non-MPD files under Windows.
+ 1. Update some translations.
+ 2. Set Smart rules 'files added in the last days' limit to 10*365
+ 3. Only sort playlists in folders view, and place these after tracks.
+ 4. Reduce width of statusbar spacer.
+ 5. Move scrobling 'love' button into toolbar. Use unfilled heart before loved,
+    and filled when loved.
+ 6. Better control of playqueue status bar buttons when contracting/expanding.
+ 7. For windows, when adding local files (served via internal HTTP server) add
+    the real file path as a query item.
+ 8. Use smaller text for help text in Tweaks section of preferences dialog.
+ 9. Fix playback of local non-MPD files under Windows.
+10. Stretching albums covers not working under Windows, so just remove option.
 
 2.3.0
 -----

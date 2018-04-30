@@ -70,7 +70,9 @@ private:
 private:
     QString currentArtist;
     Action *refreshAction;
+    #ifndef Q_OS_WIN
     Action *fullWidthCoverAction;
+    #endif
     ContextEngine *engine;
     int detailsReceived;
     QString pic;

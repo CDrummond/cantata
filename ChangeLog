@@ -6,6 +6,7 @@
 4. Reduce width of statusbar spacer.
 5. Move scrobling 'love' button into toolbar. Use unfilled heart before loved,
    and filled when loved.
+6. Better control of playqueue status bar buttons when contracting/expanding.
 
 2.3.0
 -----

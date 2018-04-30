@@ -140,6 +140,7 @@ MainWindow::MainWindow(QWidget *parent)
     , lastState(MPDState_Inactive)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
+    , singlePane(false)
     , currentPage(nullptr)
     #ifdef QT_QTDBUS_FOUND
     , mpris(nullptr)
@@ -2619,11 +2620,11 @@ void MainWindow::setCollapsedSize()
 void MainWindow::controlView(bool forceUpdate)
 {
     if (!stopTrackButton || !coverWidget || !tabWidget) {
+        controlPlayQueueButtons();
         return;
     }
 
     static int lastWidth=-1;
-    static bool collapsed=false;
 
     if (forceUpdate || -1==lastWidth || qAbs(lastWidth-width())>20) {
         bool stopEnabled = stopTrackButton->property(constUserSettingProp).toBool();
@@ -2649,18 +2650,17 @@ void MainWindow::controlView(bool forceUpdate)
 
         if (responsiveSidebar || forceUpdate) {
             if (!responsiveSidebar || width()>Utils::scaleForDpi(450)) {
-                if (forceUpdate || collapsed) {
+                if (forceUpdate || singlePane) {
                     int index=tabWidget->currentIndex();
                     if (forceUpdate || tabWidget->style()!=tabWidgetStyle) {
                         tabWidget->setStyle(tabWidgetStyle);
                     }
                     tabWidget->setHiddenPages(tabWidgetPages);
                     tabWidget->setCurrentIndex(index);
-                    controlPlayQueueButtons();
                 }
-                collapsed=false;
+                singlePane=false;
             } else if (responsiveSidebar) {
-                if (forceUpdate || !collapsed) {
+                if (forceUpdate || !singlePane) {
                     int index=tabWidget->currentIndex();
                     int smallStyle=FancyTabWidget::Small|FancyTabWidget::Top|FancyTabWidget::IconOnly;
                     if (forceUpdate || tabWidget->style()!=smallStyle) {
@@ -2681,19 +2681,19 @@ void MainWindow::controlView(bool forceUpdate)
                     }
 
                     tabWidget->setCurrentIndex(index);
-                    controlPlayQueueButtons();
                 }
-                collapsed=true;
+                singlePane=true;
             }
         }
     }
+    controlPlayQueueButtons();
 }
 
 void MainWindow::controlPlayQueueButtons()
 {
-    savePlayQueueButton->setVisible(playQueueWidget->width()>Utils::scaleForDpi(410));
-    centerPlayQueueButton->setVisible(playQueueWidget->width()>(Utils::scaleForDpi(410)+centerPlayQueueButton->width()));
-    midSpacer->setVisible(centerPlayQueueButton->isVisible());
+    savePlayQueueButton->setVisible(singlePane || playQueueWidget->width()>Utils::scaleForDpi(320));
+    centerPlayQueueButton->setVisible(singlePane || playQueueWidget->width()>(Utils::scaleForDpi(320)+centerPlayQueueButton->width()));
+    midSpacer->setVisible(singlePane || centerPlayQueueButton->isVisible());
 }
 
 void MainWindow::expandOrCollapse(bool saveCurrentSize)

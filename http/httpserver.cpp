@@ -169,7 +169,12 @@ QByteArray HttpServer::encodeUrl(const Song &s)
     url.setScheme("http");
     url.setHost(currentIfaceIp);
     url.setPort(socket->serverPort());
+    #ifdef Q_OS_WIN
+    // Use a query item, as s.file might have a driver specifier
+    query.addQueryItem("file", s.file);
+    #else
     url.setPath(s.file);
+    #endif
     if (!s.album.isEmpty()) {
         query.addQueryItem("album", s.album);
     }
@@ -285,11 +290,12 @@ Song HttpServer::decodeUrl(const QUrl &url) const
         if (q.hasQueryItem("onlineservice")) {
             s.setIsFromOnlineService(q.queryItemValue("onlineservice"));
         }
-        s.file=url.path();
-        s.type=Song::CantataStream;
         #ifdef Q_OS_WIN
-        s.file=fixWindowsPath(s.file);
+        s.file=fixWindowsPath(q.queryItemValue("file"));
+        #else
+        s.file=url.path();
         #endif
+        s.type=Song::CantataStream;
         #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
         if (s.file.startsWith(Song::constCddaProtocol)) {
             s.type=Song::Cdda;

@@ -7,6 +7,8 @@
 5. Move scrobling 'love' button into toolbar. Use unfilled heart before loved,
    and filled when loved.
 6. Better control of playqueue status bar buttons when contracting/expanding.
+7. For windows, when adding local files (served via internal HTTP server) add
+   the real file path as a query item.
 
 2.3.0
 -----

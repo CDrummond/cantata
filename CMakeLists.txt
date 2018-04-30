@@ -338,8 +338,7 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     online/onlinesearchwidget.cpp online/podcastservice.cpp online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp
     online/podcastsettingsdialog.cpp online/podcastwidget.cpp online/onlinesearchservice.cpp
     db/onlinedb.cpp
-    scrobbling/scrobbler.cpp scrobbling/pausabletimer.cpp scrobbling/scrobblingsettings.cpp scrobbling/scrobblingstatus.cpp
-    scrobbling/scrobblinglove.cpp
+    scrobbling/scrobbler.cpp scrobbling/pausabletimer.cpp scrobbling/scrobblingsettings.cpp scrobbling/scrobblinglove.cpp
     http/httpserver.cpp)
 set(CANTATA_UIS ${CANTATA_UIS}
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui

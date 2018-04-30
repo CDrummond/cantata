@@ -2693,7 +2693,6 @@ void MainWindow::controlPlayQueueButtons()
 {
     savePlayQueueButton->setVisible(playQueueWidget->width()>Utils::scaleForDpi(410));
     centerPlayQueueButton->setVisible(playQueueWidget->width()>(Utils::scaleForDpi(410)+centerPlayQueueButton->width()));
-    leftSpacer->setVisible(centerPlayQueueButton->isVisible() && (loveTrack->isVisible() || scrobblingStatus->isVisible()));
     midSpacer->setVisible(centerPlayQueueButton->isVisible());
 }
 

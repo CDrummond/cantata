@@ -23,12 +23,15 @@
 
 #include "scrobblinglove.h"
 #include "scrobbler.h"
-#include "widgets/icons.h"
+#include "support/monoicon.h"
+#include "support/utils.h"
 
 ScrobblingLove::ScrobblingLove(QWidget *p)
     : ToolButton(p)
 {
-    setIcon(Icons::self()->addToFavouritesIcon);
+    love = MonoIcon::icon(FontAwesome::hearto, Utils::monoIconColor());
+    loved = MonoIcon::icon(FontAwesome::heart, Utils::monoIconColor());
+    setIcon(love);
     connect(Scrobbler::self(), SIGNAL(loveEnabled(bool)), SLOT(setVisible(bool)));
     connect(Scrobbler::self(), SIGNAL(songChanged(bool)), SLOT(songChanged(bool)));
     connect(Scrobbler::self(), SIGNAL(scrobblerChanged()), SLOT(scrobblerChanged()));
@@ -39,7 +42,6 @@ ScrobblingLove::ScrobblingLove(QWidget *p)
 
 void ScrobblingLove::sendLove()
 {
-    setEnabled(false);
     Scrobbler::self()->love();
     scrobblerChanged();
 }
@@ -52,7 +54,8 @@ void ScrobblingLove::songChanged(bool valid)
 
 void ScrobblingLove::scrobblerChanged()
 {
-    setToolTip(Scrobbler::self()->lovedTrack()
+    setIcon(isEnabled() && Scrobbler::self()->lovedTrack() ? loved : love);
+    setToolTip(isEnabled() && Scrobbler::self()->lovedTrack()
                 ? tr("%1: Loved Current Track").arg(Scrobbler::self()->activeScrobbler())
                 : tr("%1: Love Current Track").arg(Scrobbler::self()->activeScrobbler()));
 }

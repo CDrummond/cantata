@@ -25,6 +25,7 @@
 #define SCROBBLING_LOVE_H
 
 #include "widgets/toolbutton.h"
+#include <QIcon>
 
 class ScrobblingLove : public ToolButton
 {
@@ -37,6 +38,10 @@ private Q_SLOTS:
     void sendLove();
     void songChanged(bool valid);
     void scrobblerChanged();
+
+private:
+    QIcon love;
+    QIcon loved;
 };
 
 #endif

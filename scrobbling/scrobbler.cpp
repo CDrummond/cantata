@@ -305,6 +305,10 @@ void Scrobbler::setDetails(const QString &s, const QString &u, const QString &p)
 
 void Scrobbler::love()
 {
+    if (lovedTrack()) {
+        return;
+    }
+
     lovePending=false;
     if (!loveIsEnabled) {
         return;

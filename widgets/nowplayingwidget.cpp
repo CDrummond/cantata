@@ -31,6 +31,7 @@
 #include "mpd-interface/mpdconnection.h"
 #include "models/playqueuemodel.h"
 #include "support/utils.h"
+#include "scrobbling/scrobblinglove.h"
 #ifdef Q_OS_MAC
 #include "support/osxstyle.h"
 #endif
@@ -264,6 +265,10 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     time=new TimeLabel(this, slider);
     ratingWidget=new RatingWidget(this);
     infoLabel=new QLabel(this);
+    ScrobblingLove *love = new ScrobblingLove(this);
+    ratingWidget->ensurePolished();
+    int loveSize = ratingWidget->height()+Utils::scaleForDpi(2);
+    love->setFixedSize(loveSize, loveSize);
     QFont f=track->font();
     QFont small=Utils::smallFont(f);
     f.setBold(true);
@@ -289,6 +294,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     botLayout->setSpacing(space/2);
     topLayout->addWidget(track);
     topLayout->addWidget(ratingWidget);
+    topLayout->addWidget(love);
     topLayout->addWidget(infoLabel);
     layout->addLayout(topLayout);
     botLayout->addWidget(artist);

@@ -206,15 +206,6 @@
            </widget>
           </item>
           <item>
-           <widget class="ScrobblingLove" name="loveTrack"/>
-          </item>
-          <item>
-           <widget class="ScrobblingStatus" name="scrobblingStatus"/>
-          </item>
-          <item>
-           <widget class="SpacerWidget" name="leftSpacer" native="true"/>
-          </item>
-          <item>
            <widget class="ToolButton" name="repeatButton">
             <property name="checkable">
              <bool>true</bool>
@@ -354,16 +345,6 @@
    <class>VolumeControl</class>
    <extends>QSlider</extends>
    <header>widgets/volumecontrol.h</header>
-  </customwidget>
-  <customwidget>
-   <class>ScrobblingStatus</class>
-   <extends>QToolButton</extends>
-   <header>scrobbling/scrobblingstatus.h</header>
-  </customwidget>
-  <customwidget>
-   <class>ScrobblingLove</class>
-   <extends>QToolButton</extends>
-   <header>scrobbling/scrobblinglove.h</header>
   </customwidget>
   <customwidget>
    <class>UrlLabel</class>

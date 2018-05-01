@@ -208,7 +208,7 @@ void MainWindow::init()
     Song::setUseOriginalYear(Settings::self()->useOriginalYear());
 
     int hSpace=Utils::layoutSpacing(this);
-    int vSpace=fontMetrics().height()<14 ? hSpace/2 : 0;
+    int vSpace=Utils::scaleForDpi(2);
     toolbarLayout->setContentsMargins(hSpace, vSpace, hSpace, vSpace);
     toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setWindowTitle("Cantata");
@@ -236,10 +236,15 @@ void MainWindow::init()
         topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
         topToolBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         topToolBar->setContentsMargins(0, 0, 0, 0);
+        QLayout *l=topToolBar->layout();
+        if (l) {
+            l->setMargin(0);
+            l->setSpacing(0);
+        }
         topToolBar->ensurePolished();
         toolbar=topToolBar;
     } else {
-        toolbar->setFixedHeight(qMax(54, (int)(fontMetrics().height()*3.5)+(toolbarLayout->spacing()*3)+(vSpace*2)));
+        toolbar->setFixedHeight(qMax(54, (int)(fontMetrics().height()*3.25)+(toolbarLayout->spacing()*3)+(vSpace*2)));
     }
     #endif
 

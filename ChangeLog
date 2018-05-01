@@ -17,6 +17,7 @@
 12. When playing, only poll MPD every 5 seconds.
 13. When updating play seekbar from MPDStatus, only upate if more than 1
     second from calculated position.
+14. Slightly reduce height of toolbar.
 
 2.3.0
 -----

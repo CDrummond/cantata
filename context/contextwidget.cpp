@@ -517,6 +517,18 @@ void ContextWidget::paintEvent(QPaintEvent *e)
 
     if (darkBackground) {
         p.fillRect(r, palette().background().color());
+    } else {
+        QColor col = palette().windowText().color();
+        col.setAlphaF(0.15);
+        p.setPen(col);
+        p.drawLine(r.topLeft(), r.topRight());
+        if (parentWidget() && parentWidget()->parentWidget() && 0==qstrcmp(parentWidget()->parentWidget()->metaObject()->className(), "QStackedWidget")) {
+            if (Qt::LeftToRight==layoutDirection()) {
+                p.drawLine(r.topLeft()+QPoint(0, 1), r.bottomLeft());
+            } else {
+                p.drawLine(r.topRight()+QPoint(0, 1), r.bottomRight());
+            }
+        }
     }
     if (backdropType) {
         if (!oldBackdrop.isNull()) {

@@ -14,6 +14,9 @@
 10. Stretching albums covers not working under Windows, so just remove option.
 11. Don't enable AA_EnableHighDpiScaling for windows builds, seems to
     interfere with fractional scaling.
+12. When playing, only poll MPD every 5 seconds.
+13. When updating play seekbar from MPDStatus, only upate if more than 1
+    second from calculated position.
 
 2.3.0
 -----

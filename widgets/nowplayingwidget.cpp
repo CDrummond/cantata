@@ -47,7 +47,7 @@
 #include <QToolButton>
 #include <QClipboard>
 
-static const int constPollMpd = 2; // Poll every 2 seconds when playing
+static const int constPollMpd = 5; // Poll every X seconds when playing
 static const char * constUserSettingProp = "user-setting";
 
 class PosSliderProxyStyle : public QProxyStyle
@@ -359,10 +359,12 @@ void NowPlayingWidget::stopTimer()
 
 void NowPlayingWidget::setValue(int v)
 {
-    startTime.restart();
-    lastVal=v;
-    slider->setValue(v);
-    updateTimes();
+    if (qAbs(v-slider->value())>1 || MPDState_Playing!=MPDStatus::self()->state()) {
+        startTime.restart();
+        lastVal=v;
+        slider->setValue(v);
+        updateTimes();
+    }
 }
 
 void NowPlayingWidget::setRange(int min, int max)

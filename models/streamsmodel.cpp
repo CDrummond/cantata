@@ -165,7 +165,7 @@ void StreamsModel::CategoryItem::saveBookmarks()
                      QFile file(categoryBookmarksName(bookmarksName, true));
                      QtIOCompressor compressor(&file);
                      compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-                     if (compressor.open(QIODevice::WriteOnly)) {
+                     if (compressor.open(QIODevice::WriteOnly|QIODevice::Text)) {
                          QXmlStreamWriter doc(&compressor);
                          doc.writeStartDocument();
                          doc.writeStartElement("bookmarks");
@@ -202,7 +202,7 @@ QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadBookmarks()
     QFile file(fileName);
     QtIOCompressor compressor(&file);
     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (compressor.open(QIODevice::ReadOnly)) {
+    if (compressor.open(QIODevice::ReadOnly|QIODevice::Text)) {
         QXmlStreamReader doc(&compressor);
         while (!doc.atEnd()) {
             doc.readNext();
@@ -300,11 +300,11 @@ bool StreamsModel::CategoryItem::saveXml(const QString &fileName, bool format) c
     QFile file(fileName);
 
     if (fileName.endsWith(".xml")) {
-        return file.open(QIODevice::WriteOnly) && saveXml(&file, format);
+        return file.open(QIODevice::WriteOnly|QIODevice::Text) && saveXml(&file, format);
     } else {
         QtIOCompressor compressor(&file);
         compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-        return compressor.open(QIODevice::WriteOnly) && saveXml(&compressor, format);
+        return compressor.open(QIODevice::WriteOnly|QIODevice::Text) && saveXml(&compressor, format);
     }
 }
 
@@ -364,7 +364,7 @@ bool StreamsModel::CategoryItem::saveXml(QIODevice *dev, bool format) const
 QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(const QString &fileName)
 {
     QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly)) {
+    if (!file.open(QIODevice::ReadOnly|QIODevice::Text)) {
         return QList<StreamsModel::Item *>();
     }
     // Check for gzip header...
@@ -375,7 +375,7 @@ QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(const QString &f
     QtIOCompressor compressor(&file);
     if (isCompressed) {
         compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-        if (!compressor.open(QIODevice::ReadOnly)) {
+        if (!compressor.open(QIODevice::ReadOnly|QIODevice::Text)) {
             return QList<StreamsModel::Item *>();
         }
     }
@@ -1314,7 +1314,7 @@ QList<StreamsModel::Item *> StreamsModel::parseIceCastResponse(QIODevice *dev, C
     QList<Item *> newItems;
     QtIOCompressor compressor(dev);
     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    compressor.open(QIODevice::ReadOnly);
+    compressor.open(QIODevice::ReadOnly|QIODevice::Text);
     QXmlStreamReader doc(&compressor);
     QSet<QString> names;
     QMap<QString, QList<Item *> > genres;
@@ -1758,7 +1758,7 @@ StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &n
     CategoryItem *cat=nullptr;
     if (streamsFileName.endsWith(constSettingsFile)) {
         QFile file(streamsFileName);
-        if (file.open(QIODevice::ReadOnly)) {
+        if (file.open(QIODevice::ReadOnly|QIODevice::Text)) {
             QVariantMap map=QJsonDocument::fromJson(file.readAll()).toVariant().toMap();
             QString type=map["type"].toString();
             QString url=map["url"].toString();

@@ -704,7 +704,7 @@ void Scrobbler::loadCache()
     QFile file(fileName);
     QtIOCompressor compressor(&file);
     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (compressor.open(QIODevice::ReadOnly)) {
+    if (compressor.open(QIODevice::ReadOnly|QIODevice::Text)) {
         QXmlStreamReader reader(&compressor);
         while (!reader.atEnd()) {
             reader.readNext();
@@ -742,7 +742,7 @@ void Scrobbler::saveCache()
     QFile file(fileName);
     QtIOCompressor compressor(&file);
     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (compressor.open(QIODevice::WriteOnly)) {
+    if (compressor.open(QIODevice::WriteOnly|QIODevice::Text)) {
         QXmlStreamWriter writer(&compressor);
         writer.setAutoFormatting(false);
         writer.writeStartDocument();
@@ -874,7 +874,7 @@ void Scrobbler::loadScrobblers()
             }
 
             QFile f(dir+"scrobblers.xml");
-            if (f.open(QIODevice::ReadOnly)) {
+            if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
                 QXmlStreamReader doc(&f);
                 while (!doc.atEnd()) {
                     doc.readNext();

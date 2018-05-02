@@ -229,7 +229,7 @@ void ArtistView::loadBio()
             QFile f(cachedFile);
             QtIOCompressor compressor(&f);
             compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-            if (compressor.open(QIODevice::ReadOnly)) {
+            if (compressor.open(QIODevice::ReadOnly|QIODevice::Text)) {
                 QString data=QString::fromUtf8(compressor.readAll());
 
                 if (!data.isEmpty()) {
@@ -321,7 +321,7 @@ void ArtistView::setBio()
 
     if (webLinks.isEmpty()) {
         QFile file(CANTATA_SYS_CONFIG_DIR+"weblinks.xml");
-        if (file.open(QIODevice::ReadOnly)) {
+        if (file.open(QIODevice::ReadOnly|QIODevice::Text)) {
             QXmlStreamReader reader(&file);
             while (!reader.atEnd()) {
                 reader.readNext();
@@ -384,7 +384,7 @@ void ArtistView::searchResponse(const QString &resp, const QString &lang)
         QFile f(cacheFileName(currentSong.artist, lang, false, true));
         QtIOCompressor compressor(&f);
         compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-        if (compressor.open(QIODevice::WriteOnly)) {
+        if (compressor.open(QIODevice::WriteOnly|QIODevice::Text)) {
             compressor.write(resp.toUtf8().constData());
         }
     }

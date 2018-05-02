@@ -190,7 +190,7 @@ void MusicLibraryItemRoot::toXML(const QString &filename, MusicLibraryProgressMo
     QFile file(filename);
     QtIOCompressor compressor(&file);
     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (!compressor.open(QIODevice::WriteOnly)) {
+    if (!compressor.open(QIODevice::WriteOnly|QIODevice::Text)) {
         return;
     }
 
@@ -351,7 +351,7 @@ bool MusicLibraryItemRoot::fromXML(const QString &filename, const QString &baseF
     QFile file(filename);
     QtIOCompressor compressor(&file);
     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (!compressor.open(QIODevice::ReadOnly)) {
+    if (!compressor.open(QIODevice::ReadOnly|QIODevice::Text)) {
         return false;
     }
     QXmlStreamReader reader(&compressor);

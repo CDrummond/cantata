@@ -33,7 +33,7 @@ MountPoints::MountPoints()
     : token(0)
 {
     mounts=new QFile("/proc/mounts", this);
-    if (mounts && mounts->open(QIODevice::ReadOnly)) {
+    if (mounts && mounts->open(QIODevice::ReadOnly|QIODevice::Text)) {
         QSocketNotifier *notifier = new QSocketNotifier(mounts->handle(), QSocketNotifier::Exception, mounts);
         connect(notifier,  SIGNAL(activated(int)), this, SLOT(updateMountPoints()));
         updateMountPoints();

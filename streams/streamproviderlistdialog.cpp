@@ -183,7 +183,7 @@ void StreamProviderListDialog::getProviderList()
     }
     #ifdef TEST_PROVIDERS
     QFile f("list.xml");
-    if (f.open(QIODevice::ReadOnly)) {
+    if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
         readProviders(&f);
     }
     #else

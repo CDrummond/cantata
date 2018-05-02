@@ -50,7 +50,7 @@ void OnlineXmlParser::doParsing(NetworkJob *job)
 {
     QtIOCompressor comp(job->actualJob());
     comp.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (comp.open(QIODevice::ReadOnly)) {
+    if (comp.open(QIODevice::ReadOnly|QIODevice::Text)) {
         QXmlStreamReader reader;
         reader.setDevice(&comp);
         emit startUpdate();

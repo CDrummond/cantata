@@ -2696,6 +2696,10 @@ void MainWindow::controlView(bool forceUpdate)
 
 void MainWindow::controlPlayQueueButtons()
 {
+    if (!savePlayQueueButton || !centerPlayQueueButton || !midSpacer) {
+        return;
+    }
+
     savePlayQueueButton->setVisible(singlePane || playQueueWidget->width()>Utils::scaleForDpi(320));
     centerPlayQueueButton->setVisible(singlePane || playQueueWidget->width()>(Utils::scaleForDpi(320)+centerPlayQueueButton->width()));
     midSpacer->setVisible(singlePane || centerPlayQueueButton->isVisible());

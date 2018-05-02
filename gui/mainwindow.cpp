@@ -223,6 +223,14 @@ void MainWindow::init()
     topToolBar->addWidget(toolbar);
     topToolBar->setMovable(false);
     topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
+
+    topToolBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    topToolBar->setContentsMargins(0, 0, 0, 0);
+    QLayout *l=topToolBar->layout();
+    if (l) {
+        l->setMargin(0);
+        l->setSpacing(0);
+    }
     topToolBar->ensurePolished();
     toolbar=topToolBar;
     #elif !defined Q_OS_WIN

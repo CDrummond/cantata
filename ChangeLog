@@ -22,6 +22,8 @@
 16. Update suru icon - was a little too small.
 17. Don't attempt to align main menu for Windows < 10, as Qt seems to add some
     menu animation that just looks weird when menu is moved.
+18. When searching on 'any', do a second search on 'file' and combine results.
+    Looks as if MPD does not search filenames/paths when using 'any.'
 
 2.3.0
 -----

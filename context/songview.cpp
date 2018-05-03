@@ -361,30 +361,40 @@ void SongView::loadLyrics()
             job->setProperty("file", currentSong.file);
             connect(job, SIGNAL(finished()), this, SLOT(downloadFinished()));
             return;
-        } else {
-            #ifdef TAGLIB_FOUND
-            QString tagLyrics=Tags::readLyrics(songFile);
+        }
+    }
 
-            if (!tagLyrics.isEmpty()) {
-                text->setText(fixNewLines(tagLyrics));
-                setMode(Mode_Display);
-//                    controls->setVisible(false);
-                return;
-            }
-            #endif
-            // Stop here if we found lyrics in the cache dir.
-            if (setLyricsFromFile(mpdLyrics)) {
-                lyricsFile=mpdLyrics;
-                setMode(Mode_Display);
-                return;
-            }
-            // Try .txt extension
-            mpdLyrics=Utils::changeExtension(mpdLyrics, ".txt");
-            if (setLyricsFromFile(mpdLyrics)) {
-                lyricsFile=mpdLyrics;
-                setMode(Mode_Display);
-                return;
-            }
+    loadLyricsFromFile();
+}
+
+void SongView::loadLyricsFromFile()
+{
+    if (currentSong.isCantataStream() || (!MPDConnection::self()->getDetails().dir.isEmpty() && !currentSong.file.isEmpty() && !currentSong.isNonMPD())) {
+        QString songFile=currentSong.filePath(MPDConnection::self()->getDetails().dir);
+        QString mpdLyrics=mpdLyricsFilePath(currentSong);
+
+        #ifdef TAGLIB_FOUND
+        QString tagLyrics=Tags::readLyrics(songFile);
+
+        if (!tagLyrics.isEmpty()) {
+            text->setText(fixNewLines(tagLyrics));
+            setMode(Mode_Display);
+            //                    controls->setVisible(false);
+            return;
+        }
+        #endif
+        // Stop here if we found lyrics in the cache dir.
+        if (setLyricsFromFile(mpdLyrics)) {
+            lyricsFile=mpdLyrics;
+            setMode(Mode_Display);
+            return;
+        }
+        // Try .txt extension
+        mpdLyrics=Utils::changeExtension(mpdLyrics, ".txt");
+        if (setLyricsFromFile(mpdLyrics)) {
+            lyricsFile=mpdLyrics;
+            setMode(Mode_Display);
+            return;
         }
     }
 
@@ -780,7 +790,7 @@ void SongView::downloadFinished()
             }
         }
     }
-    getLyrics();
+    loadLyricsFromFile();
 }
 
 void SongView::lyricsReady(int id, QString lyrics)
@@ -882,7 +892,6 @@ bool SongView::setLyricsFromFile(const QString &filePath)
     if (f.exists() && f.open(QIODevice::ReadOnly|QIODevice::Text)) {
         // Read the file using a QTextStream so we get automatic UTF8 detection.
         QTextStream inputStream(&f);
-
         text->setText(fixNewLines(inputStream.readAll()));
         cancelJobAction->setEnabled(false);
         hideSpinner();

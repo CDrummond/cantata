@@ -1838,6 +1838,26 @@ void MPDConnection::search(const QString &field, const QString &value, int id)
         Response response=sendCommand(cmd);
         if (response.ok) {
             songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Search);
+
+            if (QLatin1String("any")==field) {
+                // When searching on 'any' MPD ignores filename/paths! So, do another
+                // search on these, and combine results.
+                response=sendCommand("search file "+encodeName(value));
+                if (response.ok) {
+                    QList<Song> otherSongs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Search);
+                    if (!otherSongs.isEmpty()) {
+                        QSet<QString> fileNames;
+                        for (const auto &s: songs) {
+                            fileNames.insert(s.file);
+                        }
+                        for (const auto &s: otherSongs) {
+                            if (!fileNames.contains(s.file)) {
+                                songs.append(s);
+                            }
+                        }
+                    }
+                }
+            }
             qSort(songs);
         }
     }

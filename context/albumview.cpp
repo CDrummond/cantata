@@ -68,12 +68,12 @@ AlbumView::AlbumView(QWidget *p)
     engine=ContextEngine::create(this);
     #ifndef Q_OS_WIN
     // Full width covers not working under windows. Issue #1252
-    refreshAction = ActionCollection::get()->createAction("refreshalbum", tr("Refresh Album Information"), Icons::self()->refreshIcon);
     fullWidthCoverAction = new Action(tr("Full Width Cover"), this);
     fullWidthCoverAction->setCheckable(true);
     connect(fullWidthCoverAction, SIGNAL(toggled(bool)), this, SLOT(setScaleImage(bool)));
     fullWidthCoverAction->setChecked(Configuration(metaObject()->className()).get("fullWidthCover", false));
     #endif
+    refreshAction = ActionCollection::get()->createAction("refreshalbum", tr("Refresh Album Information"), Icons::self()->refreshIcon);
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), SLOT(coverRetrieved(Song,QImage,QString)));

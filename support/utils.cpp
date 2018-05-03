@@ -58,7 +58,7 @@ const QLatin1Char Utils::constDirSep('/');
 const QLatin1String Utils::constDirSepStr("/");
 const char * Utils::constDirSepCharStr="/";
 
-static const QLatin1String constHttp("http://");
+static const QLatin1String constHttp("http:");
 
 QString Utils::fixPath(const QString &dir, bool ensureEndsInSlash)
 {

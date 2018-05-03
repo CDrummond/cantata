@@ -287,6 +287,10 @@ void ArtistView::handleSimilarReply()
                 QFile f(cacheFileName(reply->property(constNameKey).toString(), QString(), true, true));
                 if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
                     QTextStream stream(&f);
+                    #ifdef Q_OS_WIN
+                    stream.setCodec("UTF-8");
+                    stream.setGenerateByteOrderMark(true);
+                    #endif
                     for (const QString &artist: artists) {
                         stream << artist << endl;
                     }

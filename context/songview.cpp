@@ -827,7 +827,12 @@ bool SongView::saveFile(const QString &fileName)
     QFile f(fileName);
 
     if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
-        QTextStream(&f) << text->toPlainText();
+        QTextStream stream(&f);
+        #ifdef Q_OS_WIN
+        stream.setCodec("UTF-8");
+        stream.setGenerateByteOrderMark(true);
+        #endif
+        stream << text->toPlainText();
         f.close();
         lyricsFile=fileName;
         return true;

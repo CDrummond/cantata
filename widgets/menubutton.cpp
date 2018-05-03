@@ -31,6 +31,14 @@
 #include <QDesktopWidget>
 #include <QProxyStyle>
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <VersionHelpers.h>
+#ifndef _WIN32_WINNT_WIN10
+#define _WIN32_WINNT_WIN10 0x0A00
+#endif
+#endif
+
 MenuButton::MenuButton(QWidget *parent)
     : ToolButton(parent)
 {
@@ -57,6 +65,11 @@ void MenuButton::controlState()
 void MenuButton::setAlignedMenu(QMenu *m)
 {
     QToolButton::setMenu(m);
+    #ifdef Q_OS_WIN
+    if (!IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_WIN10), LOBYTE(_WIN32_WINNT_WIN10), 0)) {
+        return;
+    }
+    #endif
     m->installEventFilter(this);
 }
 

@@ -87,6 +87,7 @@ private Q_SLOTS:
 
 private:
     void loadLyrics();
+    void loadLyricsFromFile();
     void loadInfo();
     void loadMetadata();
     void searchForInfo();

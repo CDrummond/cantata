@@ -415,7 +415,7 @@ QString Covers::fixArtist(const QString &artist)
             }
 
             QFile f(dir+QLatin1String("/tag_fixes.xml"));
-            if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            if (f.open(QIODevice::ReadOnly)) {
                 QXmlStreamReader doc(&f);
                 while (!doc.atEnd()) {
                     doc.readNext();

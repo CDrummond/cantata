@@ -111,7 +111,7 @@ void WikipediaSettings::showEvent(QShowEvent *e)
             QFile f(fileName);
             QtIOCompressor compressor(&f);
             compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-            if (compressor.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            if (compressor.open(QIODevice::ReadOnly)) {
                 data=compressor.readAll();
             }
         }
@@ -195,7 +195,7 @@ void WikipediaSettings::parseLangs()
     QFile f(localeFile());
     QtIOCompressor compressor(&f);
     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (compressor.open(QIODevice::WriteOnly|QIODevice::Text)) {
+    if (compressor.open(QIODevice::WriteOnly)) {
         compressor.write(data);
     }
 }

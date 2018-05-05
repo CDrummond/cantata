@@ -407,7 +407,7 @@ void OpmlBrowsePage::showEvent(QShowEvent *e)
         QString cacheFile=generateCacheFileName(url, false);
         if (!cacheFile.isEmpty() && QFile::exists(cacheFile)) {
             QFile f(cacheFile);
-            if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            if (f.open(QIODevice::ReadOnly)) {
                 parseResonse(&f);
                 if (tree->topLevelItemCount()>0) {
                     Utils::touchFile(cacheFile);
@@ -463,7 +463,7 @@ void OpmlBrowsePage::parseResonse(QIODevice *dev)
         QString cacheFile=generateCacheFileName(url, true);
         if (!cacheFile.isEmpty()) {
             QFile f(cacheFile);
-            if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
+            if (f.open(QIODevice::WriteOnly)) {
                 f.write(data);
             }
         }
@@ -674,7 +674,7 @@ QList<PodcastPage *> PodcastSearchDialog::loadDirectories(const QString &dir, bo
 
     QFile file(dir+QLatin1String("/podcast_directories.xml"));
 
-    if (file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+    if (file.open(QIODevice::ReadOnly)) {
         QXmlStreamReader reader(&file);
         while (!reader.atEnd()) {
             reader.readNext();

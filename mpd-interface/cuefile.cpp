@@ -218,14 +218,14 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
     QScopedPointer<QTextStream> textStream;
     QString decoded;
     QFile f(dir+fileName);
-    if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
+    if (f.open(QIODevice::ReadOnly)) {
         // First attempt to use QTextDecoder to decode cue file contents into a QString
         QByteArray contents=f.readAll();
         for (QTextCodec *codec: codecList()) {
             QTextDecoder decoder(codec);
             decoded=decoder.toUnicode(contents);
             if (!decoder.hasFailure()) {
-                textStream.reset(new QTextStream(&decoded, QIODevice::ReadOnly|QIODevice::Text));
+                textStream.reset(new QTextStream(&decoded, QIODevice::ReadOnly));
                 break;
             }
         }

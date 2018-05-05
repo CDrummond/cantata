@@ -248,7 +248,7 @@ void AlbumView::getDetails()
             QFile f(cachedFile);
             QtIOCompressor compressor(&f);
             compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-            if (compressor.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            if (compressor.open(QIODevice::ReadOnly)) {
                 QByteArray data=compressor.readAll();
 
                 if (!data.isEmpty()) {
@@ -303,7 +303,7 @@ void AlbumView::searchResponse(const QString &resp, const QString &lang)
             QFile f(cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, lang, true));
             QtIOCompressor compressor(&f);
             compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-            if (compressor.open(QIODevice::WriteOnly|QIODevice::Text)) {
+            if (compressor.open(QIODevice::WriteOnly)) {
                 compressor.write(resp.toUtf8().constData());
             }
         }

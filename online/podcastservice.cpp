@@ -235,7 +235,7 @@ bool PodcastService::Podcast::load()
     QFile file(fileName);
     QtIOCompressor compressor(&file);
     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (!compressor.open(QIODevice::ReadOnly|QIODevice::Text)) {
+    if (!compressor.open(QIODevice::ReadOnly)) {
         return false;
     }
 
@@ -291,7 +291,7 @@ bool PodcastService::Podcast::save() const
     QFile file(fileName);
     QtIOCompressor compressor(&file);
     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (!compressor.open(QIODevice::WriteOnly|QIODevice::Text)) {
+    if (!compressor.open(QIODevice::WriteOnly)) {
         return false;
     }
 
@@ -1194,7 +1194,7 @@ void PodcastService::downloadReadyRead()
                 break;
             }
             if (!f.isOpen()) {
-                if (!f.open(QIODevice::Append|QIODevice::Text)) {
+                if (!f.open(QIODevice::Append)) {
                     return;
                 }
             }

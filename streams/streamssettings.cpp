@@ -213,7 +213,7 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
     }
 
     QFile streamsFile(dir+Utils::constDirSep+streamsName);
-    if (!streamsFile.open(QIODevice::WriteOnly|QIODevice::Text)) {
+    if (!streamsFile.open(QIODevice::WriteOnly)) {
         if (showErrors) {
             MessageBox::error(this, tr("Failed to save stream list!"));
         }

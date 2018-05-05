@@ -445,7 +445,7 @@ void SongView::loadInfo()
             QFile f(cachedFile);
             QtIOCompressor compressor(&f);
             compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-            if (compressor.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            if (compressor.open(QIODevice::ReadOnly)) {
                 QByteArray data=compressor.readAll();
 
                 if (!data.isEmpty()) {
@@ -671,7 +671,7 @@ void SongView::infoSearchResponse(const QString &resp, const QString &lang)
             QFile f(infoCacheFileName(currentSong, lang, true));
             QtIOCompressor compressor(&f);
             compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-            if (compressor.open(QIODevice::WriteOnly|QIODevice::Text)) {
+            if (compressor.open(QIODevice::WriteOnly)) {
                 compressor.write(resp.toUtf8().constData());
             }
         }
@@ -826,7 +826,7 @@ bool SongView::saveFile(const QString &fileName)
 {
     QFile f(fileName);
 
-    if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
+    if (f.open(QIODevice::WriteOnly)) {
         QTextStream stream(&f);
         #ifdef Q_OS_WIN
         stream.setCodec("UTF-8");
@@ -894,7 +894,7 @@ bool SongView::setLyricsFromFile(const QString &filePath)
 {
     QFile f(filePath);
 
-    if (f.exists() && f.open(QIODevice::ReadOnly|QIODevice::Text)) {
+    if (f.exists() && f.open(QIODevice::ReadOnly)) {
         // Read the file using a QTextStream so we get automatic UTF8 detection.
         QTextStream inputStream(&f);
         text->setText(fixNewLines(inputStream.readAll()));

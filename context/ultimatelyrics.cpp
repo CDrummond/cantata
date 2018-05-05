@@ -160,7 +160,7 @@ void UltimateLyrics::load()
         QFileInfoList files=QDir(d).entryInfoList(QStringList() << QLatin1String("lyrics_*.xml"), QDir::NoDotAndDotDot|QDir::Files);
         for (const QFileInfo &f: files) {
             QFile file(f.absoluteFilePath());
-            if (file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            if (file.open(QIODevice::ReadOnly)) {
                 QXmlStreamReader reader(&file);
                 while (!reader.atEnd()) {
                     reader.readNext();

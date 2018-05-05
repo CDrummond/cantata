@@ -25,6 +25,7 @@
 18. When searching on 'any', do a second search on 'file' and combine results.
     Looks as if MPD does not search filenames/paths when using 'any.'
 19. Fix UTF8 file saving under Windows.
+20. Fix preference dialog size under windows.
 
 2.3.0
 -----

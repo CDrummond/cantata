@@ -36,6 +36,8 @@
 #include <QLatin1Char>
 #include <QtAlgorithms>
 #include <QUrl>
+#include <QMutex>
+#include <QMutexLocker>
 
 //static const quint8 constOnlineDiscId=0xEE;
 
@@ -384,9 +386,11 @@ struct KeyStore
 };
 
 static QHash<int, KeyStore> storeMap;
+static QMutex storeMapMutex;
 
 void Song::clearKeyStore(int location)
 {
+    QMutexLocker locker(&storeMapMutex);
     storeMap.remove(location);
 }
 
@@ -449,9 +453,11 @@ quint16 Song::setKey(int location)
         return 0;
     }
 
-    KeyStore &store=storeMap[location];
     QString songKey(albumKey());
+    QMutexLocker locker(&storeMapMutex);
+    KeyStore &store=storeMap[location];
     QHash<QString, quint16>::ConstIterator it=store.keys.find(songKey);
+
     if (it!=store.keys.end()) {
         key=it.value();
     } else {

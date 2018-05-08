@@ -29,6 +29,7 @@
 21. Fix enabling of add/replace play queue actions for Jamendo/Magnatune.
 22. Use JSON to encode song details when adding online tracks.
 23. Don't allow slashes, asterisks, or question marks in collection name.
+24. Don't overwrite genre with file type for Jamendo.
 
 2.3.0
 -----

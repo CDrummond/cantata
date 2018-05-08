@@ -28,6 +28,7 @@
 20. Fix preference dialog size under windows.
 21. Fix enabling of add/replace play queue actions for Jamendo/Magnatune.
 22. Use JSON to encode song details when adding online tracks.
+23. Don't allow slashes, asterisks, or question marks in collection name.
 
 2.3.0
 -----

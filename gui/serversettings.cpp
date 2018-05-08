@@ -46,9 +46,6 @@
     w->deleteLater(); \
     w=0;
 
-
-
-#ifdef ENABLE_SIMPLE_MPD_SUPPORT
 class CollectionNameValidator : public QValidator
 {
     public:
@@ -57,10 +54,17 @@ class CollectionNameValidator : public QValidator
 
     State validate(QString &input, int &) const override
     {
-        return input.startsWith(MPDUser::constName) ? Invalid : Acceptable;
+        #ifdef ENABLE_SIMPLE_MPD_SUPPORT
+        if (input.startsWith(MPDUser::constName)) {
+            return Invalid;
+        }
+        #endif
+        if (-1!=input.indexOf("/") || -1!=input.indexOf("\\") || -1!=input.indexOf("*") || -1!=input.indexOf("?")) {
+            return Invalid;
+        }
+        return Acceptable;
     }
 };
-#endif
 
 ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)
@@ -94,9 +98,7 @@ ServerSettings::ServerSettings(QWidget *p)
     hostLabel->setText(tr("Host:"));
     #endif
 
-    #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     name->setValidator(new CollectionNameValidator(this));
-    #endif
     #ifndef ENABLE_HTTP_STREAM_PLAYBACK
     REMOVE(streamUrlLabel)
     REMOVE(streamUrl)

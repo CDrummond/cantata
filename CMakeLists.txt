@@ -452,7 +452,7 @@ if (TAGLIB_FOUND)
                 devices/devicepropertiesdialog.cpp devices/encoders.cpp devices/freespaceinfo.cpp
                 devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp
                 devices/synccollectionwidget.cpp
-                online/onlinedevice.cpp models/musiclibrarymodel.cpp)
+                models/musiclibrarymodel.cpp)
         set(CANTATA_UIS ${CANTATA_UIS} devices/actiondialog.ui devices/devicepropertieswidget.ui
                 devices/synccollectionwidget.ui)
 

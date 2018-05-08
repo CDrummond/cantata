@@ -30,6 +30,7 @@
 22. Use JSON to encode song details when adding online tracks.
 23. Don't allow slashes, asterisks, or question marks in collection name.
 24. Don't overwrite genre with file type for Jamendo.
+26. Allow adding Jamendo/Magnatune tracks to stored playlists.
 
 2.3.0
 -----

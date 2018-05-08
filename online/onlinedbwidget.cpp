@@ -56,6 +56,7 @@ OnlineDbWidget::OnlineDbWidget(OnlineDbService *s, QWidget *p)
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));
     connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
     view->setOpenAfterSearch(SqlLibraryModel::T_Album!=srv->topLevel());
+    view->addAction(StdActions::self()->addToStoredPlaylistAction);
     connect(StdActions::self()->addRandomAlbumToPlayQueueAction, SIGNAL(triggered()), SLOT(addRandomAlbum()));
     connect(srv, SIGNAL(modelReset()), this, SLOT(modelReset()));
 }
@@ -196,6 +197,7 @@ void OnlineDbWidget::controlActions()
     bool enable=selected.count()>0;
 
     StdActions::self()->enableAddToPlayQueue(enable);
+    StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
 
     bool allowRandomAlbum=isVisible() && !selected.isEmpty();
     if (allowRandomAlbum) {

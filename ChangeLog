@@ -27,6 +27,7 @@
 19. Fix UTF8 file saving under Windows.
 20. Fix preference dialog size under windows.
 21. Fix enabling of add/replace play queue actions for Jamendo/Magnatune.
+22. Use JSON to encode song details when adding online tracks.
 
 2.3.0
 -----

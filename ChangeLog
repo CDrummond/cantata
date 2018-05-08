@@ -26,6 +26,7 @@
     Looks as if MPD does not search filenames/paths when using 'any.'
 19. Fix UTF8 file saving under Windows.
 20. Fix preference dialog size under windows.
+21. Fix enabling of add/replace play queue actions for Jamendo/Magnatune.
 
 2.3.0
 -----

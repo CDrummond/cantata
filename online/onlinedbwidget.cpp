@@ -193,6 +193,10 @@ void OnlineDbWidget::refresh()
 void OnlineDbWidget::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
+    bool enable=selected.count()>0;
+
+    StdActions::self()->enableAddToPlayQueue(enable);
+
     bool allowRandomAlbum=isVisible() && !selected.isEmpty();
     if (allowRandomAlbum) {
         for (const QModelIndex &idx: selected) {

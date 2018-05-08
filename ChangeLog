@@ -31,6 +31,8 @@
 23. Don't allow slashes, asterisks, or question marks in collection name.
 24. Don't overwrite genre with file type for Jamendo.
 26. Allow adding Jamendo/Magnatune tracks to stored playlists.
+27. Add "--collection" commandline option to control the initial collection to
+    use.
 
 2.3.0
 -----

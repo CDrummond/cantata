@@ -241,7 +241,7 @@ Song & MagnatuneService::fixPath(Song &s) const
         s.file=url.toString();
     // TODO: Magnatune downloads!
     //    if (MB_Download==membership) {
-    //        s.genre=downloadTypeStr(download);
+    //        ???
     //    }
     }
     s.setIsFromOnlineService(name());

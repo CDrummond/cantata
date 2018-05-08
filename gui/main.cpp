@@ -363,9 +363,11 @@ int main(int argc, char *argv[])
     QCommandLineOption debugOption(QStringList() << "d" << "debug", QObject::tr("Comma-separated list of debug areas - possible values:\n")+debugAreas(), "debug", "");
     QCommandLineOption debugToFileOption(QStringList() << "f" << "debug-to-file", QObject::tr("Log debug messages to %1").arg(Utils::cacheDir(QString(), true)+"cantata.log"), "", "false");
     QCommandLineOption noNetworkOption(QStringList() << "n" << "no-network", QObject::tr("Disable network access"), "", "false");
+    QCommandLineOption collectionOption(QStringList() << "c" << "collection", "Collection name", "collection", ""); // TODO: 2.4 tr
     cmdLineParser.addOption(debugOption);
     cmdLineParser.addOption(debugToFileOption);
     cmdLineParser.addOption(noNetworkOption);
+    cmdLineParser.addOption(collectionOption);
     cmdLineParser.process(app);
 
     if (!app.start()) {
@@ -413,6 +415,17 @@ int main(int argc, char *argv[])
         InitialSettingsWizard wz;
         if (QDialog::Rejected==wz.exec()) {
             return 0;
+        }
+    } else if (cmdLineParser.isSet(collectionOption)) {
+        QString col = cmdLineParser.value(collectionOption);
+        if (!col.isEmpty() && col!=Settings::self()->currentConnection()) {
+            auto collections = Settings::self()->allConnections();
+            for (const auto &c: collections) {
+                if (c.name==col) {
+                    Settings::self()->saveCurrentConnection(col);
+                    break;
+                }
+            }
         }
     }
     MainWindow mw;

@@ -18,7 +18,7 @@
 13. When updating play seekbar from MPDStatus, only upate if more than 1
     second from calculated position.
 14. Slightly reduce height of toolbar.
-15. Add a slight border to context view when in sidebar.
+15. Add a slight border to context view.
 16. Update suru icon - was a little too small.
 17. Don't attempt to align main menu for Windows < 10, as Qt seems to add some
     menu animation that just looks weird when menu is moved.
@@ -30,8 +30,8 @@
 22. Use JSON to encode song details when adding online tracks.
 23. Don't allow slashes, asterisks, or question marks in collection name.
 24. Don't overwrite genre with file type for Jamendo.
-26. Allow adding Jamendo/Magnatune tracks to stored playlists.
-27. Add "--collection" commandline option to control the initial collection to
+25. Allow adding Jamendo/Magnatune tracks to stored playlists.
+26. Add "--collection" commandline option to control the initial collection to
     use.
 
 2.3.0

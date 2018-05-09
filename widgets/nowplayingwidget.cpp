@@ -267,7 +267,8 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     infoLabel=new QLabel(this);
     ScrobblingLove *love = new ScrobblingLove(this);
     ratingWidget->ensurePolished();
-    int loveSize = ratingWidget->height()+Utils::scaleForDpi(2);
+    int loveSize = ratingWidget->height()+Utils::scaleForDpi(4);
+    love->setIconSize(QSize(ratingWidget->height(), ratingWidget->height()));
     love->setFixedSize(loveSize, loveSize);
     QFont f=track->font();
     QFont small=Utils::smallFont(f);

@@ -250,6 +250,9 @@ CacheSettings::CacheSettings(QWidget *parent)
     int col=0;
     QLabel *label=new QLabel(tr("Cantata caches various pieces of information (covers, lyrics, etc). Below is a summary of Cantata's "
                                   "current cache usage."), this);
+    QFont f(Utils::smallFont(label->font()));
+    f.setItalic(true);
+    label->setFont(f);
     label->setWordWrap(true);
     layout->addWidget(label, row++, col, 1, 2);
     layout->addItem(new QSpacerItem(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed), row++, 0);

@@ -77,6 +77,9 @@ ApiKeysSettings::ApiKeysSettings(QWidget *p)
                                 "with all Cantata users) has reached its monthly usage limit. To work-around this, you can register with a "
                                 "service yourself, and configure Cantata to use your personal API key. This key may be entered below. For any "
                                 "blank values below, Cantata will use its default key."), this);
+    QFont f(Utils::smallFont(label->font()));
+    f.setItalic(true);
+    label->setFont(f);
     label->setWordWrap(true);
     layout->addWidget(label);
     layout->addItem(new QSpacerItem(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed));

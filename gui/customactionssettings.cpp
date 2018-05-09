@@ -86,6 +86,9 @@ CustomActionsSettings::CustomActionsSettings(QWidget *parent)
     layout->setMargin(0);
     QLabel *label=new QLabel(tr("To have Cantata call external commands (e.g. to edit tags with another application), add an entry for the command below. When at least one command "
                                   "command is defined, a 'Custom Actions' entry will be added to the context menus in the Library, Folders, and Playlists views."), this);
+    QFont f(Utils::smallFont(label->font()));
+    f.setItalic(true);
+    label->setFont(f);
     label->setWordWrap(true);
     layout->addWidget(label, 0, 0, 1, 2);
     tree=new QTreeWidget(this);

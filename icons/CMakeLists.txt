@@ -52,6 +52,7 @@ if (NOT HAIKU)
 	        update_iconcache(Suru)
 	    endif (INSTALL_UBUNTU_ICONS)
 	
+            install(FILES cantata-panel-light.svg DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/icons/cantata/svg)
 	endif (NOT WIN32 AND NOT APPLE)
 	
 	add_subdirectory(theme)

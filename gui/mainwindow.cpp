@@ -163,6 +163,9 @@ MainWindow::MainWindow(QWidget *parent)
     stopTrackButton=nullptr;
     coverWidget=nullptr;
     tabWidget=nullptr;
+    savePlayQueueButton=nullptr;
+    centerPlayQueueButton=nullptr;
+    midSpacer=nullptr;
 
     #if defined Q_OS_MAC || defined Q_OS_WIN
     init();

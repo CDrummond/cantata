@@ -140,6 +140,9 @@ bool ApiKeys::isLimitReached(const QNetworkReply *job, Service srv)
     if (isLimitReached(srv)) {
         return true;
     }
+    if (!job) {
+        return false;
+    }
 
     bool reached = false;
     switch (srv) {

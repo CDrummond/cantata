@@ -33,6 +33,7 @@
 25. Allow adding Jamendo/Magnatune tracks to stored playlists.
 26. Add "--collection" commandline option to control the initial collection to
     use.
+27. Fix crash if try to expand dirble and --no-network passed to Cantata.
 
 2.3.0
 -----

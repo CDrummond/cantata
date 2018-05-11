@@ -277,6 +277,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     artist->setFont(small);
     time->setFont(small);
     infoLabel->setFont(small);
+    infoLabel->setAlignment((Qt::LeftToRight==infoLabel->layoutDirection() ? Qt::AlignLeft : Qt::AlignRight)|Qt::AlignVCenter);
     slider->setOrientation(Qt::Horizontal);
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
     QBoxLayout *topLayout=new QBoxLayout(QBoxLayout::LeftToRight, nullptr);

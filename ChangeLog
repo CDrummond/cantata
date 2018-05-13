@@ -34,6 +34,8 @@
 26. Add "--collection" commandline option to control the initial collection to
     use.
 27. Fix crash if try to expand dirble and --no-network passed to Cantata.
+28. Modify name of supplied font-awesome font to Cantata-FontAwesome, so as to
+    avoid conflicts with any system installed font.
 
 2.3.0
 -----

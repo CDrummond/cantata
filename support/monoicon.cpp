@@ -82,9 +82,9 @@ public:
                 } else {
                     // Load fontawesome, if it is not already loaded
                     if (fontAwesomeFontName.isEmpty()) {
-                        QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(Utils::systemDir(QLatin1String("fonts"))+QLatin1String("fontawesome-webfont.ttf")));
+                        QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(Utils::systemDir(QLatin1String("fonts"))+QLatin1String("Cantata-FontAwesome.ttf")));
                         if (!loadedFontFamilies.empty()) {
-                            fontAwesomeFontName= loadedFontFamilies.at(0);
+                            fontAwesomeFontName = loadedFontFamilies.at(0);
                         }
                     }
                     fontName=fontAwesomeFontName;

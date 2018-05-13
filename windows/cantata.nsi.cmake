@@ -133,7 +133,7 @@ section "install"
     file "mediaservice\dsengine.dll"
     file "mediaservice\qtmedia_audioengine.dll"
     setOutPath $INSTDIR\fonts
-    file "fonts\fontawesome-webfont.ttf"
+    file "fonts\Cantata-FontAwesome.ttf"
     setOutPath $INSTDIR\icons
     file "icons\bbc.svg"
     file "icons\cbc.svg"
@@ -271,6 +271,7 @@ section "uninstall"
  
     delete "$INSTDIR\fonts\fontawesome-4.3.0.ttf"
     delete "$INSTDIR\fonts\fontawesome-webfont.ttf"
+    delete "$INSTDIR\fonts\Cantata-FontAwesome.ttf"
     delete "$INSTDIR\icons\bbc.svg"
     delete "$INSTDIR\icons\cbc.svg"
     delete "$INSTDIR\icons\npr.svg"

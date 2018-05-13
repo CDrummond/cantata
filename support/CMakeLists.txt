@@ -9,11 +9,11 @@ set (SUPPORT_SRCS icon.cpp fancytabwidget.cpp messagewidget.cpp buddylabel.cpp a
      pagewidget.cpp combobox.cpp configdialog.cpp monoicon.cpp)
 
 if (APPLE)
-    install(FILES fontawesome-webfont.ttf DESTINATION ${MACOSX_BUNDLE_RESOURCES}/fonts)
+    install(FILES Cantata-FontAwesome.ttf DESTINATION ${MACOSX_BUNDLE_RESOURCES}/fonts)
 elseif (WIN32)
-    install(FILES fontawesome-webfont.ttf DESTINATION ${CMAKE_INSTALL_PREFIX}/fonts)
+    install(FILES Cantata-FontAwesome.ttf DESTINATION ${CMAKE_INSTALL_PREFIX}/fonts)
 else ()
-    install(FILES fontawesome-webfont.ttf DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/fonts)
+    install(FILES Cantata-FontAwesome.ttf DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/fonts)
 endif ()
 
 if (APPLE)

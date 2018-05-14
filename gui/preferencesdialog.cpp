@@ -41,6 +41,7 @@
 #include "shortcutssettingspage.h"
 #include "scrobbling/scrobblingsettings.h"
 #include "apikeyssettings.h"
+#include "support/monoicon.h"
 #include <QDesktopWidget>
 #include <QTimer>
 
@@ -65,34 +66,32 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     apiKeys = new ApiKeysSettings(this);
     server->load();
     playback->load();
-    //cover->load();
     interface->load();
     context->load();
     scrobbling->load();
     custom->load();
-    addPage(QLatin1String("collection"), server, tr("Collection"), Icon("audio-x-generic"), tr("Collection Settings"));
-    addPage(QLatin1String("playback"), playback, tr("Playback"), Icons::self()->speakerIcon, tr("Playback Settings"));
-    //addPage(QLatin1String("cover"), files, tr("Covers"), Icons::self()->filesIcon, tr("Album Cover Settings"));
-    addPage(QLatin1String("interface"), interface, tr("Interface"), Icon("preferences-other"), tr("Interface Settings"));
-    addPage(QLatin1String("info"), context, tr("Info"), Icons::self()->contextIcon, tr("Info View Settings"));
-    addPage(QLatin1String("scrobbling"), scrobbling, tr("Scrobbling"), Icons::self()->lastFmIcon, tr("Scrobbling Settings"));
+    QColor iconColor = Utils::clampColor(palette().text().color());
+    addPage(QLatin1String("collection"), server, tr("Collection"), MonoIcon::icon(FontAwesome::music, iconColor), tr("Collection Settings"));
+    addPage(QLatin1String("playback"), playback, tr("Playback"), MonoIcon::icon(FontAwesome::volumeup, iconColor), tr("Playback Settings"));
+    addPage(QLatin1String("interface"), interface, tr("Interface"), MonoIcon::icon(FontAwesome::cog, iconColor), tr("Interface Settings"));
+    addPage(QLatin1String("info"), context, tr("Info"), MonoIcon::icon(FontAwesome::infocircle, iconColor), tr("Info View Settings"));
+    addPage(QLatin1String("scrobbling"), scrobbling, tr("Scrobbling"), MonoIcon::icon(FontAwesome::lastfm, iconColor), tr("Scrobbling Settings"));
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd = new AudioCdSettings(0);
     audiocd->load();
-    addPage(QLatin1String("cd"), audiocd, tr("Audio CD"), Icons::self()->albumIcon(32), tr("Audio CD Settings"));
+    addPage(QLatin1String("cd"), audiocd, tr("Audio CD"), Icons::self()->albumMonoIcon, tr("Audio CD Settings"));
     #endif
     #ifdef ENABLE_PROXY_CONFIG
     proxy = new ProxySettings(0);
     proxy->load();
-    addPage(QLatin1String("proxy"), proxy, tr("Proxy"), Icon("preferences-system-network"), tr("Proxy Settings"));
+    addPage(QLatin1String("proxy"), proxy, tr("Proxy"), MonoIcon::icon(FontAwesome::globe, iconColor), tr("Proxy Settings"));
     #endif
     shortcuts = new ShortcutsSettingsPage(nullptr);
-    addPage(QLatin1String("shortcuts"), shortcuts, tr("Shortcuts"), Icon(QStringList() << "preferences-desktop-keyboard" << "keyboard"),
-            tr("Keyboard Shortcut Settings"));
+    addPage(QLatin1String("shortcuts"), shortcuts, tr("Shortcuts"), MonoIcon::icon(FontAwesome::keyboardo, iconColor), tr("Keyboard Shortcut Settings"));
     shortcuts->load();
-    addPage(QLatin1String("cache"), cache, tr("Cache"), Icon(QStringList() << "folder-temp" << "folder"), tr("Cached Items"));
-    addPage(QLatin1String("custom"), custom, tr("Custom Actions"), Icon(QStringList() << "fork" << "gtk-execute"), tr("Custom Actions"));
-    addPage(QLatin1String("apikeys"), apiKeys, tr("Service Keys"), Icon("key"), tr("Service API Keys"));
+    addPage(QLatin1String("cache"), cache, tr("Cache"), MonoIcon::icon(FontAwesome::foldero, iconColor), tr("Cached Items"));
+    addPage(QLatin1String("custom"), custom, tr("Custom Actions"), MonoIcon::icon(FontAwesome::rocket, iconColor), tr("Custom Actions"));
+    addPage(QLatin1String("apikeys"), apiKeys, tr("Service Keys"), MonoIcon::icon(FontAwesome::key, iconColor), tr("Service API Keys"));
     #ifdef Q_OS_MAC
     setCaption(tr("Cantata Preferences"));
     setMinimumWidth(800);

@@ -55,8 +55,6 @@ if (NOT HAIKU)
             install(FILES cantata-panel-light.svg DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/icons/cantata/svg)
 	endif (NOT WIN32 AND NOT APPLE)
 	
-	add_subdirectory(theme)
-
 	#if (APPLE)
 	#    install(FILES trayicon-mono-dark.svg DESTINATION ${CANTATA_ICON_INSTALL_PREFIX}/scalable/apps RENAME cantata-panel.svg)
 	#endif (APPLE)

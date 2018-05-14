@@ -40,6 +40,7 @@
 #include "filejob.h"
 #include "support/configuration.h"
 #include "support/thread.h"
+#include "support/monoicon.h"
 #include <QTimer>
 #include <QDir>
 #include <QTemporaryFile>
@@ -1212,6 +1213,9 @@ MtpDevice::MtpDevice(MusicLibraryModel *m, Solid::Device &dev, unsigned int busN
         setData(opts.name);
     }
     icn=Icon("multimedia-player");
+    if (icn.isNull()) {
+        icn=MonoIcon::icon(FontAwesome::mobilephone, Utils::clampColor(qApp->palette().text().color()));
+    }
 }
 
 MtpDevice::~MtpDevice()

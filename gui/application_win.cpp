@@ -23,14 +23,12 @@
 
 #include "application_win.h"
 #include "config.h"
-#include <QIcon>
 #include <windows.h>
 
 Application::Application(int &argc, char **argv)
     : SingleApplication(argc, argv)
 {
     installNativeEventFilter(this);
-    QIcon::setThemeName(QLatin1String("cantata"));
     setAttribute(Qt::AA_DontShowIconsInMenus, true);
 }
 

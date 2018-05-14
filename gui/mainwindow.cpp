@@ -1393,11 +1393,11 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         if (!switchedOn.isEmpty() && switchedOff.isEmpty()) {
             QStringList names=switchedOn.toList();
             qSort(names);
-            trayItem->showMessage(tr("Outputs"), tr("Enabled: %1").arg(names.join(QLatin1String(", "))), Icons::self()->speakerIcon.pixmap(64, 64).toImage());
+            trayItem->showMessage(tr("Outputs"), tr("Enabled: %1").arg(names.join(QLatin1String(", "))));
         } else if (!switchedOff.isEmpty() && switchedOn.isEmpty()) {
             QStringList names=switchedOff.toList();
             qSort(names);
-            trayItem->showMessage(tr("Outputs"), tr("Disabled: %1").arg(names.join(QLatin1String(", "))), Icons::self()->speakerIcon.pixmap(64, 64).toImage());
+            trayItem->showMessage(tr("Outputs"), tr("Disabled: %1").arg(names.join(QLatin1String(", "))));
         } else if (!switchedOn.isEmpty() && !switchedOff.isEmpty()) {
             QStringList on=switchedOn.toList();
             qSort(on);
@@ -1405,7 +1405,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
             qSort(off);
             trayItem->showMessage(tr("Outputs"),
                                   tr("Enabled: %1").arg(on.join(QLatin1String(", ")))+QLatin1Char('\n')+
-                                  tr("Disabled: %1").arg(off.join(QLatin1String(", "))), Icons::self()->speakerIcon.pixmap(64, 64).toImage());
+                                  tr("Disabled: %1").arg(off.join(QLatin1String(", "))));
         }
     }
     setProperty(constMpdEnabledOuptuts, QStringList() << enabledMpd.toList());

@@ -216,7 +216,7 @@ void PodcastPage::addPodcast(const QString &title, const QUrl &url, const QUrl &
     podItem->setData(0, ImageUrlRole, image);
     podItem->setData(0, DescriptionRole, description);
     podItem->setData(0, WebPageUrlRole, webPage);
-    podItem->setIcon(0, Icons::self()->audioFileIcon);
+    podItem->setIcon(0, Icons::self()->audioListIcon);
 }
 
 static QString encode(const QImage &img)
@@ -480,7 +480,7 @@ void OpmlBrowsePage::addCategory(const OpmlParser::Category &cat, QTreeWidgetIte
                                : new QTreeWidgetItem(tree, QStringList() << cat.name);
 
     catItem->setData(0, IsPodcastRole, false);
-    catItem->setIcon(0, Icons::self()->folderIcon);
+    catItem->setIcon(0, Icons::self()->folderListIcon);
     for (const OpmlParser::Podcast &pod: cat.podcasts) {
         addPodcast(pod, catItem);
     }

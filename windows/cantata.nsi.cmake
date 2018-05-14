@@ -141,42 +141,6 @@ section "install"
     file "icons\podcasts.png"
     file "icons\soundcloud.png"
     file "icons\stream.png"
-    setOutPath $INSTDIR\icons\cantata
-    file "icons\cantata\index.theme"
-    file "icons\cantata\LICENSE"
-    file "icons\cantata\AUTHORS"
-    setOutPath $INSTDIR\icons\cantata\128
-    file "icons\cantata\128\cantata.png"
-    setOutPath $INSTDIR\icons\cantata\64
-    file "icons\cantata\64\cantata.png"
-    setOutPath $INSTDIR\icons\cantata\48
-    file "icons\cantata\48\cantata.png"
-    setOutPath $INSTDIR\icons\cantata\32
-    file "icons\cantata\32\cantata.png"
-    setOutPath $INSTDIR\icons\cantata\22
-    file "icons\cantata\22\cantata.png"
-    setOutPath $INSTDIR\icons\cantata\16
-    file "icons\cantata\16\cantata.png"
-    setOutPath $INSTDIR\icons\cantata\svg
-    file "icons\cantata\svg\audio-x-generic.svg"
-    file "icons\cantata\svg\folder-temp.svg"
-    file "icons\cantata\svg\fork.svg"
-    file "icons\cantata\svg\information.svg"
-    file "icons\cantata\svg\inode-directory.svg"
-    file "icons\cantata\svg\key.svg"
-    file "icons\cantata\svg\network-server-database.svg"
-    file "icons\cantata\svg\preferences-desktop-keyboard.svg"
-    file "icons\cantata\svg\preferences-other.svg"
-    @CANTATA_PROXY_ICON_INSTALL@
-    @CANTATA_DEVICES_ICON_INSTALL@
-    @CANTATA_REMOTE_DEVICES_ICON_INSTALL@
-    file "icons\cantata\svg\speaker.svg"
-    file "icons\cantata\svg\cantata.svg"
-    setOutPath $INSTDIR\icons\cantata\svg64
-    file "icons\cantata\svg64\dialog-error.svg"
-    file "icons\cantata\svg64\dialog-information.svg"
-    file "icons\cantata\svg64\dialog-question.svg"
-    file "icons\cantata\svg64\dialog-warning.svg"
 
     setOutPath $INSTDIR\imageformats
     file "imageformats\qjpeg.dll"

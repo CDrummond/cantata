@@ -43,8 +43,8 @@ public:
     Icon albumIconSmall;
     Icon albumMonoIcon;
     Icon podcastIcon;
-    Icon folderIcon;
-    Icon audioFileIcon;
+    Icon folderListIcon;
+    Icon audioListIcon;
     Icon singleIcon;
     Icon consumeIcon;
     Icon repeatIcon;
@@ -58,14 +58,12 @@ public:
     Icon foldersIcon;
     Icon playlistsIcon;
     Icon onlineIcon;
-    Icon contextIcon;
     Icon searchTabIcon;
     Icon infoIcon;
     Icon infoSidebarIcon;
     #ifdef ENABLE_DEVICES_SUPPORT
     Icon devicesIcon;
     #endif
-    QIcon lastFmIcon;
 
     Icon toolbarMenuIcon;
     Icon toolbarPrevIcon;
@@ -93,13 +91,11 @@ public:
     QIcon minusIcon;
     QIcon addIcon;
     QIcon addBookmarkIcon;
-    QIcon audioListIcon;
     QIcon playlistListIcon;
     QIcon dynamicListIcon;
     QIcon rssListIcon;
     QIcon savedRssListIcon;
     QIcon clockIcon;
-    QIcon folderListIcon;
     QIcon streamListIcon;
     QIcon streamCategoryIcon;
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK

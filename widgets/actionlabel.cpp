@@ -61,7 +61,7 @@ ActionLabel::ActionLabel(QWidget *parent)
     setAlignment(Qt::AlignCenter);
 
     if(0==theUsageCount++) {
-        QImage img(Icons::self()->audioFileIcon.pixmap(iconSize, iconSize).toImage());
+        QImage img(Icons::self()->audioListIcon.pixmap(iconSize, iconSize).toImage());
         double increment=360.0/constNumIcons;
 
         for(int i=0; i<constNumIcons; ++i) {

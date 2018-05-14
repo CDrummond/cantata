@@ -36,6 +36,7 @@
 #include "mpd-interface/mpdconnection.h"
 #include "gui/covers.h"
 #include "gui/settings.h"
+#include "widgets/icons.h"
 #include <QDir>
 #include <QUrl>
 #include <QUrlQuery>
@@ -89,6 +90,9 @@ AudioCdDevice::AudioCdDevice(MusicLibraryModel *m, Solid::Device &dev)
     , autoPlay(false)
 {
     icn=Icon("media-optical");
+    if (icn.isNull()) {
+        icn=Icons::self()->albumMonoIcon;
+    }
     drive=dev.parent().as<Solid::OpticalDrive>();
     Solid::Block *block=dev.as<Solid::Block>();
     if (block) {

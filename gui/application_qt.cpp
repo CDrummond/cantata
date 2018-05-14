@@ -26,16 +26,6 @@
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDir>
-#include <QIcon>
-
-static void setupIconTheme(Application *app)
-{
-    QIcon::setThemeSearchPaths(QStringList() << CANTATA_SYS_ICONS_DIR << QIcon::themeSearchPaths());
-    QIcon::setThemeName(QLatin1String("cantata"));
-    if (Utils::KDE!=Utils::currentDe()) {
-        app->setAttribute(Qt::AA_DontShowIconsInMenus, true);
-    }
-}
 
 Application::Application(int &argc, char **argv)
     : QApplication(argc, argv)
@@ -48,7 +38,9 @@ Application::Application(int &argc, char **argv)
 bool Application::start()
 {
     if (QDBusConnection::sessionBus().registerService(CANTATA_REV_URL)) {
-        setupIconTheme(this);
+        if (Utils::KDE!=Utils::currentDe()) {
+            setAttribute(Qt::AA_DontShowIconsInMenus, true);
+        }
         return true;
     }
     loadFiles();

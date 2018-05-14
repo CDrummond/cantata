@@ -42,6 +42,10 @@ ProxyStyle::ProxyStyle(int modView)
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     editClearIcon=MonoIcon::icon(FontAwesome::timescircle, QColor(128, 128, 128), QColor(128, 128, 128));
     #endif
+    errorIcon=MonoIcon::icon(FontAwesome::timescircleo, MonoIcon::constRed, MonoIcon::constRed);
+    warningIcon=MonoIcon::icon(FontAwesome::exclamationtriangle, QColor(0xff, 0x99, 0x00), QColor(0xff, 0x99, 0x00));
+    questionIcon=MonoIcon::icon(FontAwesome::questioncircle, QColor(0x1a, 0x8c, 0xff), QColor(0x1a, 0x8c, 0xff));
+    infoIcon=MonoIcon::icon(FontAwesome::infocircle, QColor(0x1a, 0x8c, 0xff), QColor(0x1a, 0x8c, 0xff));
 }
 
 void ProxyStyle::polish(QWidget *widget)
@@ -92,21 +96,43 @@ void ProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *opt
     }
 }
 
-#if !defined Q_OS_WIN && !defined Q_OS_MAC
 QPixmap ProxyStyle::standardPixmap(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const
 {
     QPixmap pixmap=baseStyle()->standardPixmap(sp, opt, widget);
-    if (SP_LineEditClearButton==sp) {
+    switch (sp) {
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    case SP_LineEditClearButton:
         return editClearIcon.pixmap(pixmap.size());
+    #endif
+    case SP_MessageBoxCritical:
+        return errorIcon.pixmap(pixmap.size());
+    case SP_MessageBoxWarning:
+        return warningIcon.pixmap(pixmap.size());
+    case SP_MessageBoxQuestion:
+        return questionIcon.pixmap(pixmap.size());
+    case SP_MessageBoxInformation:
+        return infoIcon.pixmap(pixmap.size());
+    default:
+        return pixmap;
     }
-    return pixmap;
 }
 
 QIcon ProxyStyle::standardIcon(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const
 {
-    if (SP_LineEditClearButton==sp) {
+    switch (sp) {
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    case SP_LineEditClearButton:
         return editClearIcon;
+    #endif
+    case SP_MessageBoxCritical:
+        return errorIcon;
+    case SP_MessageBoxWarning:
+        return warningIcon;
+    case SP_MessageBoxQuestion:
+        return questionIcon;
+    case SP_MessageBoxInformation:
+        return infoIcon;
+    default:
+        return baseStyle()->standardIcon(sp, opt, widget);
     }
-    return baseStyle()->standardIcon(sp, opt, widget);
 }
-#endif

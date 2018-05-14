@@ -28,6 +28,7 @@
 #include "actiondialog.h"
 #include "support/inputdialog.h"
 #include "support/utils.h"
+#include "support/monoicon.h"
 #include "http/httpserver.h"
 #include "support/configuration.h"
 #include "mountpoints.h"
@@ -220,6 +221,13 @@ RemoteFsDevice::RemoteFsDevice(MusicLibraryModel *m, const DeviceOptions &option
             : constSshfsProtocol==details.url.scheme()
                 ? Icon(QStringList() << "folder-network" << "utilities-terminal")
                 : Icon(QStringList() << "folder-samba" << "network-server");
+    if (icn.isNull()) {
+        icn=MonoIcon::icon(details.isLocalFile()
+                            ? FontAwesome::foldero
+                            : constSshfsProtocol==details.url.scheme()
+                                ? FontAwesome::linux_os
+                                : FontAwesome::windows, Utils::clampColor(qApp->palette().text().color()));
+    }
 }
 
 RemoteFsDevice::RemoteFsDevice(MusicLibraryModel *m, const Details &d)

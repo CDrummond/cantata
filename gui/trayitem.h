@@ -45,7 +45,7 @@ public:
     TrayItem(MainWindow *p);
     ~TrayItem() override { }
 
-    void showMessage(const QString &title, const QString &text, const QImage &img);
+    void showMessage(const QString &title, const QString &text, const QImage &img=QImage());
     void setup();
     #ifdef Q_OS_MAC
     bool isActive() const { return false; }

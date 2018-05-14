@@ -74,7 +74,7 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     int iconSize=Icon::dlgIconSize();
     groupWarningIcon->setPixmap(Icon("dialog-warning").pixmap(iconSize, iconSize));
     introPage->setBackground(Icons::self()->appIcon);
-    connectionPage->setBackground(Icons::self()->audioFileIcon);
+    connectionPage->setBackground(Icons::self()->audioListIcon);
     coversPage->setBackground(Icons::self()->albumIconLarge);
     finishedPage->setBackground(Icon("dialog-ok"));
     fetchCovers->setChecked(Settings::self()->fetchCovers());

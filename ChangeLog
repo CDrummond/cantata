@@ -37,6 +37,7 @@
 28. Modify name of supplied font-awesome font to Cantata-FontAwesome, so as to
     avoid conflicts with any system installed font.
 29. Remove custom icon theme, and just use FontAwesome.
+30. Show technical info to the left of ratings.
 
 2.3.0
 -----

@@ -295,9 +295,9 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     topLayout->setSpacing(space/2);
     botLayout->setSpacing(space/2);
     topLayout->addWidget(track);
+    topLayout->addWidget(infoLabel);
     topLayout->addWidget(ratingWidget);
     topLayout->addWidget(love);
-    topLayout->addWidget(infoLabel);
     layout->addLayout(topLayout);
     botLayout->addWidget(artist);
     botLayout->addWidget(time);
@@ -474,7 +474,11 @@ void NowPlayingWidget::updateInfo()
             info+=ext;
         }
     }
-    infoLabel->setText(QLatin1Char(' ') + info);
+    if (info.isEmpty()) {
+        infoLabel->setText(QString());
+    } else {
+        infoLabel->setText(info+QLatin1Char(' '));
+    }
 }
 
 void NowPlayingWidget::copyInfo()

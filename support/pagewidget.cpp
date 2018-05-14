@@ -118,10 +118,10 @@ public:
 
         const QString text = index.model()->data(index, Qt::DisplayRole).toString();
         const QIcon icon = index.model()->data(index, Qt::DecorationRole).value<QIcon>();
-        const QPixmap pixmap = icon.pixmap(iconSize, iconSize);
+        const QPixmap pixmap = icon.pixmap(iconSize, iconSize, option.state&QStyle::State_Selected ? QIcon::Selected : QIcon::Normal);
 
         QFontMetrics fm = painter->fontMetrics();
-        QSize layoutSize = pixmap.size() / pixmap.DEVICE_PIXEL_RATIO();
+        QSize layoutSize = pixmap.isNull() ? QSize(iconSize, iconSize) : (pixmap.size() / pixmap.DEVICE_PIXEL_RATIO());
 
         QTextLayout iconTextLayout(text, option.font);
         QTextOption textOption(Qt::AlignHCenter);
@@ -157,7 +157,9 @@ public:
             painter->setPen(option.palette.color(cg, QPalette::Text));
         }
 
-        painter->drawPixmap(option.rect.x() + (option.rect.width()/2)-(layoutSize.width()/2), option.rect.y() + 5, pixmap);
+        if (!pixmap.isNull()) {
+            painter->drawPixmap(option.rect.x() + (option.rect.width()/2)-(layoutSize.width()/2), option.rect.y() + 5, pixmap);
+        }
         if (!text.isEmpty()) {
             iconTextLayout.draw(painter, QPoint(option.rect.x() + (option.rect.width()/2)-(maxWidth/2), option.rect.y() + layoutSize.height()+7));
         }
@@ -180,7 +182,7 @@ public:
 
         QFontMetrics fm = option.fontMetrics;
         int gap = fm.height();
-        QSize layoutSize = pixmap.size() / pixmap.DEVICE_PIXEL_RATIO();
+        QSize layoutSize = pixmap.isNull() ? QSize(iconSize, iconSize) : (pixmap.size() / pixmap.DEVICE_PIXEL_RATIO());
 
         if (layoutSize.height() == 0) {
             /**

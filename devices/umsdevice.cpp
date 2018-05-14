@@ -23,6 +23,7 @@
 
 #include "umsdevice.h"
 #include "support/utils.h"
+#include "support/monoicon.h"
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "actiondialog.h"
@@ -58,6 +59,9 @@ UmsDevice::UmsDevice(MusicLibraryModel *m, Solid::Device &dev)
     setup();
     icn=Icon(QStringList() << "drive-removable-media-usb-pendrive" << "drive-removable-media-usb"
                            << "multimedia-player");
+    if (icn.isNull()) {
+        icn=MonoIcon::icon(FontAwesome::usb, Utils::clampColor(qApp->palette().text().color()));
+    }
 }
 
 UmsDevice::~UmsDevice()

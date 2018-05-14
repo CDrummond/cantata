@@ -56,12 +56,9 @@ Icons::Icons()
         streamIcon.addFile(iconFile);
     }
     if (streamIcon.isNull()) {
-        streamIcon=Icon("applications-internet");
+        streamIcon=MonoIcon::icon(FontAwesome::globe, stdColor);
     }
     podcastIcon=MonoIcon::icon(FontAwesome::podcast, stdColor);
-    audioFileIcon=Icon("audio-x-generic");
-    folderIcon=Icon("inode-directory");
-    speakerIcon=Icon(QStringList() << "speaker" << "audio-speakers" << "gnome-volume-control");
     repeatIcon=MonoIcon::icon(FontAwesome::refresh, stdColor);
     shuffleIcon=MonoIcon::icon(FontAwesome::random, stdColor);
     albumIconSmall.addFile(":album32.svg");
@@ -71,7 +68,6 @@ Icons::Icons()
     genreIcon=MonoIcon::icon(":genre.svg", stdColor);
     appIcon=Icon("cantata");
 
-    lastFmIcon=MonoIcon::icon(FontAwesome::lastfmsquare, MonoIcon::constRed, MonoIcon::constRed);
     replacePlayQueueIcon=MonoIcon::icon(FontAwesome::play, stdColor);
     appendToPlayQueueIcon=MonoIcon::icon(FontAwesome::plus, stdColor);
     centrePlayQueueOnTrackIcon=MonoIcon::icon(Qt::RightToLeft==QApplication::layoutDirection() ? FontAwesome::chevronleft : FontAwesome::chevronright, stdColor);
@@ -109,14 +105,6 @@ Icons::Icons()
     upIcon=MonoIcon::icon(FontAwesome::chevronup, stdColor);
     downIcon=MonoIcon::icon(FontAwesome::chevrondown, stdColor);
     cancelIcon=MonoIcon::icon(FontAwesome::close, MonoIcon::constRed, MonoIcon::constRed);
-
-    #if !defined Q_OS_WIN
-    if (QLatin1String("gnome")==QIcon::themeName()) {
-        QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
-        contextIcon=MonoIcon::icon(QLatin1String(":sidebar-info"), col);
-    } else
-    #endif
-        contextIcon=Icon(QStringList() << "dialog-information" << "information");
 }
 
 void Icons::initSidebarIcons()

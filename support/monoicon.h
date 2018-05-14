@@ -594,6 +594,7 @@ namespace FontAwesome {
     unlockalt               =           0xf13e,
     unsorted                =           0xf0dc,
     upload                  =           0xf093,
+    usb                     =           0xf287,
     usd                     =           0xf155,
     user                    =           0xf007,
     usermd                  =           0xf0f0,

@@ -160,7 +160,7 @@ void PlaybackSettings::mpdConnectionStateChanged(bool c)
     crossfadingLabel->setEnabled(c);
     replayGainLabel->setEnabled(rgSupported);
     replayGain->setEnabled(rgSupported);
-    messageIcon->setPixmap(Icon(c ? "dialog-information" : "dialog-warning").pixmap(messageIcon->minimumSize()));
+    messageIcon->setPixmap(style()->standardIcon(c ? QStyle::SP_MessageBoxInformation : QStyle::SP_MessageBoxWarning).pixmap(messageIcon->minimumSize()));
     if (c) {
         messageLabel->setText(tr("<i>Connected to %1<br/>The entries below apply to the currently connected MPD collection.</i>")
                                  .arg(MPDConnection::self()->getDetails().description()));

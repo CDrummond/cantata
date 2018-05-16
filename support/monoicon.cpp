@@ -82,7 +82,9 @@ public:
                 } else {
                     // Load fontawesome, if it is not already loaded
                     if (fontAwesomeFontName.isEmpty()) {
-                        QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(Utils::systemDir(QLatin1String("fonts"))+QLatin1String("Cantata-FontAwesome.ttf")));
+                        Q_INIT_RESOURCE(support);
+
+                        QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(":/font.ttf"));
                         if (!loadedFontFamilies.empty()) {
                             fontAwesomeFontName = loadedFontFamilies.at(0);
                         }

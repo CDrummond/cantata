@@ -1109,15 +1109,16 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
-#if defined Q_OS_WIN
 void MainWindow::showEvent(QShowEvent *event)
 {
+    #if defined Q_OS_WIN
     if (!thumbnailTooolbar) {
         thumbnailTooolbar=new ThumbnailToolBar(this);
     }
     QMainWindow::showEvent(event);
+    #endif
+    controlView();
 }
-#endif
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {

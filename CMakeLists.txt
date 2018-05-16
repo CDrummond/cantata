@@ -574,15 +574,6 @@ endif ()
 
 if (WIN32)
     target_link_libraries(cantata qxt)
-    install(FILES tags/tag_fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/config/)
-elseif (APPLE)
-    install(FILES tags/tag_fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
-            DESTINATION ${MACOSX_BUNDLE_RESOURCES}/config/)
-else ()
-    install(FILES tags/tag_fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
-            DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/config/)
-    install(FILES mpd-interface/mpd.conf.template DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/mpd)
 endif (WIN32)
 
 add_subdirectory(icons)

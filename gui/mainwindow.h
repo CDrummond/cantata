@@ -116,9 +116,7 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
-    #if defined Q_OS_WIN
-    void showEvent(QShowEvent *event);
-    #endif
+    void showEvent(QShowEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 

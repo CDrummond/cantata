@@ -254,7 +254,7 @@ void MPDUser::init(bool create)
         QString playlists;
         if (create && !QFile::exists(cfgName)) {
             // Conf file does not exist, so we need to create one...
-            QFile cfgTemplate(CANTATA_SYS_MPD_DIR+constConfigFile+".template");
+            QFile cfgTemplate(":"+constConfigFile+".template");
 
             if (cfgTemplate.open(QIODevice::ReadOnly|QIODevice::Text)) {
                 QFile cfgFile(cfgName);

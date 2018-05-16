@@ -46,6 +46,7 @@
 <file alias="scrobblers.xml">scrobbling/scrobblers.xml</file>
 <file alias="weblinks.xml">context/weblinks.xml</file>
 <file alias="tag_fixes.xml">tags/tag_fixes.xml</file>
+<file alias="mpd.conf.template">mpd-interface/mpd.conf.template</file>
 
 </qresource>
 </RCC>

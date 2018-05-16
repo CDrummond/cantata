@@ -186,12 +186,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::init()
 {
-    #if !defined Q_OS_MAC && !defined Q_OS_WIN
-    // Work-aroud Qt5Ct incorrectly setting icon theme
-    QIcon::setThemeSearchPaths(QStringList() << CANTATA_SYS_ICONS_DIR << QIcon::themeSearchPaths());
-    QIcon::setThemeName(QLatin1String("cantata"));
-    #endif
-
     QPoint p=pos();
     ActionCollection::setMainWidget(this);
     trayItem=new TrayItem(this);

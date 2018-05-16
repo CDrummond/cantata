@@ -742,6 +742,11 @@ QString Utils::helper(const QString &app)
     #elif defined Q_OS_MAC
     return fixPath(QCoreApplication::applicationDirPath())+app;
     #else
+    // Check for helpers in same folder as main exe, so that can test dev versions without install.
+    QString local = fixPath(QCoreApplication::applicationDirPath())+app;
+    if (QFile::exists(local)) {
+        return local;
+    }
     return QString(INSTALL_PREFIX "/" LINUX_LIB_DIR "/")+QCoreApplication::applicationName()+constDirSep+app;
     #endif
 }

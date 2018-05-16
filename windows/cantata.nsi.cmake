@@ -117,11 +117,6 @@ section "install"
     file "libwinpthread-1.dll"
     file "libz-1.dll"
     @CANTATA_SSL_WIN_NSIS_INSTALL@
-    setOutPath $INSTDIR\config
-    file "config\lyrics_providers.xml"
-    file "config\scrobblers.xml"
-    file "config\tag_fixes.xml"
-    file "config\weblinks.xml"
     setOutPath $INSTDIR\iconengines
     file "iconengines\qsvgicon.dll"
     setOutPath $INSTDIR\sqldrivers

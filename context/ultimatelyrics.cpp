@@ -150,31 +150,36 @@ void UltimateLyrics::load()
         return;
     }
 
-    QStringList dirs=QStringList() << Utils::dataDir() << CANTATA_SYS_CONFIG_DIR;
+    QStringList files;
+    QString userDir=Utils::dataDir();
+
+    if (!userDir.isEmpty()) {
+        QFileInfoList files=QDir(userDir).entryInfoList(QStringList() << QLatin1String("lyrics_*.xml"), QDir::NoDotAndDotDot|QDir::Files);
+        for (const QFileInfo &f: files) {
+            files.append(f.absoluteFilePath());
+        }
+    }
+
+    files.append(":lyrics_providers.xml");
 
     QSet<QString> providerNames;
-    for (const QString &d: dirs) {
-        if (d.isEmpty()) {
-            continue;
-        }
-        QFileInfoList files=QDir(d).entryInfoList(QStringList() << QLatin1String("lyrics_*.xml"), QDir::NoDotAndDotDot|QDir::Files);
-        for (const QFileInfo &f: files) {
-            QFile file(f.absoluteFilePath());
-            if (file.open(QIODevice::ReadOnly)) {
-                QXmlStreamReader reader(&file);
-                while (!reader.atEnd()) {
-                    reader.readNext();
 
-                    if (QLatin1String("provider")==reader.name()) {
-                        QString name=reader.attributes().value("name").toString();
+    for (const auto &f: files) {
+        QFile file(f);
+        if (file.open(QIODevice::ReadOnly)) {
+            QXmlStreamReader reader(&file);
+            while (!reader.atEnd()) {
+                reader.readNext();
 
-                        if (!providerNames.contains(name)) {
-                            UltimateLyricsProvider *provider = parseProvider(&reader);
-                            if (provider) {
-                                providers << provider;
-                                connect(provider, SIGNAL(lyricsReady(int,QString)), this, SIGNAL(lyricsReady(int,QString)));
-                                providerNames.insert(name);
-                            }
+                if (QLatin1String("provider")==reader.name()) {
+                    QString name=reader.attributes().value("name").toString();
+
+                    if (!providerNames.contains(name)) {
+                        UltimateLyricsProvider *provider = parseProvider(&reader);
+                        if (provider) {
+                            providers << provider;
+                            connect(provider, SIGNAL(lyricsReady(int,QString)), this, SIGNAL(lyricsReady(int,QString)));
+                            providerNames.insert(name);
                         }
                     }
                 }

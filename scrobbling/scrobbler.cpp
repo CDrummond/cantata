@@ -867,15 +867,19 @@ void Scrobbler::reset()
 void Scrobbler::loadScrobblers()
 {
     if (scrobblers.isEmpty()) {
-        QStringList dirs=QStringList() << Utils::dataDir() << CANTATA_SYS_CONFIG_DIR;
-        for (const QString &dir: dirs) {
-            if (dir.isEmpty()) {
-                continue;
-            }
+        QStringList files;
+        QString userDir=Utils::dataDir();
 
-            QFile f(dir+"scrobblers.xml");
-            if (f.open(QIODevice::ReadOnly)) {
-                QXmlStreamReader doc(&f);
+        if (!userDir.isEmpty()) {
+            files.append(Utils::fixPath(userDir)+QLatin1String("scrobblers.xml"));
+        }
+
+        files.append(":scrobblers.xml");
+
+        for (const auto &f: files) {
+            QFile file(f);
+            if (file.open(QIODevice::ReadOnly)) {
+                QXmlStreamReader doc(&file);
                 while (!doc.atEnd()) {
                     doc.readNext();
                     if (doc.isStartElement() && QLatin1String("scrobbler")==doc.name()) {

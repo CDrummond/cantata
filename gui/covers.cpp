@@ -408,15 +408,20 @@ QString Covers::fixArtist(const QString &artist)
     static bool initialised=false;
     if (!initialised) {
         initialised=true;
-        QStringList dirs=QStringList() << Utils::dataDir() << CANTATA_SYS_CONFIG_DIR;
-        for (const QString &dir: dirs) {
-            if (dir.isEmpty()) {
-                continue;
-            }
 
-            QFile f(dir+QLatin1String("/tag_fixes.xml"));
-            if (f.open(QIODevice::ReadOnly)) {
-                QXmlStreamReader doc(&f);
+        QStringList files;
+        QString userDir=Utils::dataDir();
+
+        if (!userDir.isEmpty()) {
+            files.append(Utils::fixPath(userDir)+QLatin1String("tag_fixes.xml"));
+        }
+
+        files.append(":tag_fixes.xml");
+
+        for (const auto &f: files) {
+            QFile file(f);
+            if (file.open(QIODevice::ReadOnly)) {
+                QXmlStreamReader doc(&file);
                 while (!doc.atEnd()) {
                     doc.readNext();
                     if (doc.isStartElement() && QLatin1String("artist")==doc.name()) {

@@ -132,8 +132,6 @@ section "install"
     setOutPath $INSTDIR\mediaservice
     file "mediaservice\dsengine.dll"
     file "mediaservice\qtmedia_audioengine.dll"
-    setOutPath $INSTDIR\fonts
-    file "fonts\Cantata-FontAwesome.ttf"
     setOutPath $INSTDIR\icons
     file "icons\bbc.svg"
     file "icons\cbc.svg"

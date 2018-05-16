@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <directories>
 <directory name="DigitalPodcast" url="http://www.digitalpodcast.com/opml/digitalpodcastnoadult.opml"/>
-<directory name="BBC" url="http://www.bbc.co.uk/radio/opml/bbc_podcast_opml.opml" icon="bbc.svg"/>
-<!-- <directory name="NPR" url="http://www.npr.org/podcasts.opml" icon="npr.svg"/> -->
-<directory name="CBC" url="http://www.cbc.ca/podcasts.opml" icon="cbc.svg"/>
+<directory name="BBC" url="http://www.bbc.co.uk/radio/opml/bbc_podcast_opml.opml" icon=":bbc"/>
+<!-- <directory name="NPR" url="http://www.npr.org/podcasts.opml" icon=":npr"/> -->
+<directory name="CBC" url="http://www.cbc.ca/podcasts.opml" icon=":cbc"/>
 <!-- <directory name="New York Times" url="http://www.nytimes.com/services/xml/rss/nyt/index.opml"/> -->
 <!-- <directory name="Podfeed.net" url="http://www.podfeed.net/opml/directory.opml"/> -->
 </directories>

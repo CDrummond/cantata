@@ -22,6 +22,9 @@
 <file alias="podcasts">online/icons/podcasts.svg</file>
 <file alias="itunes">online/icons/itunes.svg</file>
 <file alias="gpodder">online/icons/gpodder.svg</file>
+<file alias="bbc">online/icons/bbc.svg</file>
+<file alias="cbc">online/icons/cbc.svg</file>
+<file alias="podcast_directories.xml">online/podcast_directories.xml</file>
 
 <file alias="favourites">streams/icons/favourites.svg</file>
 <file alias="icecast">streams/icons/icecast.svg</file>

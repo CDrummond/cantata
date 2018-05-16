@@ -119,7 +119,6 @@ section "install"
     @CANTATA_SSL_WIN_NSIS_INSTALL@
     setOutPath $INSTDIR\config
     file "config\lyrics_providers.xml"
-    file "config\podcast_directories.xml"
     file "config\scrobblers.xml"
     file "config\tag_fixes.xml"
     file "config\weblinks.xml"
@@ -133,9 +132,6 @@ section "install"
     file "mediaservice\dsengine.dll"
     file "mediaservice\qtmedia_audioengine.dll"
     setOutPath $INSTDIR\icons
-    file "icons\bbc.svg"
-    file "icons\cbc.svg"
-    file "icons\npr.svg"
     file "icons\podcasts.png"
     file "icons\soundcloud.png"
     file "icons\stream.png"

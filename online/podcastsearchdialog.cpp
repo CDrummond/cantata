@@ -608,7 +608,7 @@ PodcastSearchDialog::PodcastSearchDialog(PodcastService *s, QWidget *parent)
 
     QSet<QString> loaded;
     pages << loadDirectories(Utils::dataDir(), false, loaded);
-    pages << loadDirectories(CANTATA_SYS_CONFIG_DIR, true, loaded);
+    pages << loadDirectories(QString(), true, loaded);
 
     for (PodcastPage *p: pages) {
         connect(p, SIGNAL(rssSelected(QUrl)), SLOT(rssSelected(QUrl)));
@@ -668,11 +668,11 @@ QList<PodcastPage *> PodcastSearchDialog::loadDirectories(const QString &dir, bo
 {
     QList<PodcastPage *> pages;
 
-    if (dir.isEmpty()) {
+    if (dir.isEmpty() && !isSystem) {
         return pages;
     }
 
-    QFile file(dir+QLatin1String("/podcast_directories.xml"));
+    QFile file(isSystem ? QLatin1String(":podcast_directories.xml") : (dir+QLatin1String("/podcast_directories.xml")));
 
     if (file.open(QIODevice::ReadOnly)) {
         QXmlStreamReader reader(&file);
@@ -682,7 +682,7 @@ QList<PodcastPage *> PodcastSearchDialog::loadDirectories(const QString &dir, bo
                 QString url=reader.attributes().value(QLatin1String("url")).toString();
                 if (!loaded.contains(url)) {
                     QString icon=reader.attributes().value(QLatin1String("icon")).toString();
-                    if (!icon.isEmpty()) {
+                    if (!icon.isEmpty() && !icon.startsWith(":")) {
                         icon=dir+(isSystem ? "../icons/" : "")+icon;
                     }
                     OpmlBrowsePage *page=new OpmlBrowsePage(pageWidget,

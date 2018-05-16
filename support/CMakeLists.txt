@@ -9,24 +9,14 @@ set (SUPPORT_SRCS icon.cpp fancytabwidget.cpp messagewidget.cpp buddylabel.cpp a
      pagewidget.cpp combobox.cpp configdialog.cpp monoicon.cpp)
 
 if (APPLE)
-    install(FILES Cantata-FontAwesome.ttf DESTINATION ${MACOSX_BUNDLE_RESOURCES}/fonts)
-elseif (WIN32)
-    install(FILES Cantata-FontAwesome.ttf DESTINATION ${CMAKE_INSTALL_PREFIX}/fonts)
-else ()
-    install(FILES Cantata-FontAwesome.ttf DESTINATION ${SHARE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}/fonts)
-endif ()
-
-if (APPLE)
     set(SUPPORT_SRCS ${SUPPORT_SRCS} osxstyle.cpp flattoolbutton.cpp windowmanager.cpp)
 endif ()
 
 set(SUPPORT_SRCS ${SUPPORT_SRCS} pathrequester.cpp kmessagewidget.cpp dialog.cpp shortcutsmodel.cpp
     shortcutssettingswidget.cpp keysequencewidget.cpp acceleratormanager.cpp urllabel.cpp)
 set(SUPPORT_UIS shortcutssettingswidget.ui)
- if (Qt5Gui_VERSION_MAJOR LESS 5 OR Qt5Gui_VERSION_MINOR LESS 2)
- endif ()
 
 qt5_wrap_ui(SUPPORT_UI_HDRS ${SUPPORT_UIS})
-qt5_add_resources(SUPPORT_RC_SRCS ${SUPPORT_RCS})
+qt5_add_resources(SUPPORT_RC_SRCS support.qrc)
 
 add_library(support STATIC ${SUPPORT_SRCS} ${SUPPORT_UI_HDRS} ${SUPPORT_RC_SRCS})

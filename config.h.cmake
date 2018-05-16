@@ -54,7 +54,6 @@
 #define CANTATA_REV_URL "@PROJECT_REV_URL@"
 #define CANTATA_URL "@PROJECT_URL@"
 
-#define CANTATA_SYS_CONFIG_DIR  Utils::systemDir(QLatin1String("config"))
 #define CANTATA_SYS_ICONS_DIR   Utils::systemDir(QLatin1String("icons"))
 #define CANTATA_SYS_MPD_DIR     Utils::systemDir(QLatin1String("mpd"))
 #define CANTATA_SYS_TRANS_DIR   Utils::systemDir(QLatin1String("translations"))

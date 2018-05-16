@@ -24,7 +24,6 @@
 <file alias="gpodder">online/icons/gpodder.svg</file>
 <file alias="bbc">online/icons/bbc.svg</file>
 <file alias="cbc">online/icons/cbc.svg</file>
-<file alias="podcast_directories.xml">online/podcast_directories.xml</file>
 
 <file alias="favourites">streams/icons/favourites.svg</file>
 <file alias="icecast">streams/icons/icecast.svg</file>
@@ -41,6 +40,12 @@
 <file alias="playlist.svg">icons/playlist.svg</file>
 <file alias="radio.svg">icons/radio.svg</file>
 <file alias="gradcap.svg">icons/gradcap.svg</file>
+
+<file alias="podcast_directories.xml">online/podcast_directories.xml</file>
+<file alias="lyrics_providers.xml">context/lyrics_providers.xml</file>
+<file alias="scrobblers.xml">scrobbling/scrobblers.xml</file>
+<file alias="weblinks.xml">context/weblinks.xml</file>
+<file alias="tag_fixes.xml">tags/tag_fixes.xml</file>
 
 </qresource>
 </RCC>

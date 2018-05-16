@@ -324,7 +324,7 @@ void ArtistView::setBio()
     }
 
     if (webLinks.isEmpty()) {
-        QFile file(CANTATA_SYS_CONFIG_DIR+"weblinks.xml");
+        QFile file(":weblinks.xml");
         if (file.open(QIODevice::ReadOnly)) {
             QXmlStreamReader reader(&file);
             while (!reader.atEnd()) {

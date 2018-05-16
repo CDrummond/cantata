@@ -106,7 +106,6 @@ public:
                     } else if (FontAwesome::list==fontAwesomeIcon && pixelSize%constHalfScale) {
                         pixelSize+=1;
                     }
-
                 }
 
                 font.setPixelSize(pixelSize);

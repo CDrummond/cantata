@@ -73,7 +73,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     QColor iconColor = Utils::clampColor(palette().text().color());
     addPage(QLatin1String("collection"), server, tr("Collection"), MonoIcon::icon(FontAwesome::music, iconColor), tr("Collection Settings"));
     addPage(QLatin1String("playback"), playback, tr("Playback"), MonoIcon::icon(FontAwesome::volumeup, iconColor), tr("Playback Settings"));
-    addPage(QLatin1String("interface"), interface, tr("Interface"), MonoIcon::icon(FontAwesome::cog, iconColor), tr("Interface Settings"));
+    addPage(QLatin1String("interface"), interface, tr("Interface"), MonoIcon::icon(FontAwesome::sliders, iconColor), tr("Interface Settings"));
     addPage(QLatin1String("info"), context, tr("Info"), MonoIcon::icon(FontAwesome::infocircle, iconColor), tr("Info View Settings"));
     addPage(QLatin1String("scrobbling"), scrobbling, tr("Scrobbling"), MonoIcon::icon(FontAwesome::lastfm, iconColor), tr("Scrobbling Settings"));
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND

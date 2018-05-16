@@ -63,6 +63,11 @@ option(ENABLE_MUSICBRAINZ "Enable MusicBrianz libraries (either this or CDDB req
 option(ENABLE_MTP "Enable MTP library (required to support MTP devices)" ON)
 option(ENABLE_AVAHI "Enable automatic mpd server discovery" ${UNIX})
 
+# Build all apps into top-level folder, so that can run dev versions without install
+if (NOT WIN32 AND NOT APPLE)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+endif()
+
 if(ENABLE_AVAHI)
     find_package(Avahi)
     macro_log_feature(AVAHI_FOUND "Avahi Support" "Automatic MPD-Server Detection" "https://www.avahi.org/" FALSE "" "")

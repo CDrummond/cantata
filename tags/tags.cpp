@@ -1157,6 +1157,11 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
+        #if TAGLIB_VERSION >= CANTATA_MAKE_VERSION(1,7,0)
+        if (img && img->isNull()) {
+            readFlacPicture(file->pictureList(), img);
+        }
+        #endif
     #ifdef TAGLIB_MP4_FOUND
     } else if (TagLib::MP4::File *file = dynamic_cast< TagLib::MP4::File * >(fileref.file())) {
         TagLib::MP4::Tag *tag = dynamic_cast< TagLib::MP4::Tag * >(file->tag());

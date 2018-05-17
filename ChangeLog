@@ -40,6 +40,7 @@
 30. Show technical info to the left of ratings.
 31. Embed FontAwesome into Cantata.
 32. Remove "New York Times" podcast directory - not available?
+33. Fix loading of FLAC images with older TagLib.
 
 2.3.0
 -----

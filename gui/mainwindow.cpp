@@ -928,7 +928,7 @@ void MainWindow::init()
     } else {
         show();
     }
-    controlPlayQueueButtons();
+    QTimer::singleShot(0, this, SLOT(controlPlayQueueButtons()));
 }
 
 MainWindow::~MainWindow()
@@ -1115,8 +1115,8 @@ void MainWindow::showEvent(QShowEvent *event)
     if (!thumbnailTooolbar) {
         thumbnailTooolbar=new ThumbnailToolBar(this);
     }
-    QMainWindow::showEvent(event);
     #endif
+    QMainWindow::showEvent(event);
     controlView();
 }
 

@@ -407,7 +407,8 @@ int main(int argc, char *argv[])
     #else
     loadTranslation("qt", QLibraryInfo::location(QLibraryInfo::TranslationsPath), lang);
     #endif
-    loadTranslation("cantata", CANTATA_SYS_TRANS_DIR, lang);
+    QString local = Utils::fixPath(QCoreApplication::applicationDirPath())+"translations";
+    loadTranslation("cantata", QDir(local).exists() ? local : CANTATA_SYS_TRANS_DIR, lang);
 
     Application::init();
 

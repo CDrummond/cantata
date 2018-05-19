@@ -236,7 +236,8 @@ void InitialSettingsWizard::controlNextButton()
 void InitialSettingsWizard::accept()
 {
     Settings::self()->saveConnectionDetails(getDetails());
-
+    Settings::self()->saveFetchCovers(fetchCovers->isChecked());
+    Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     if (basic->isChecked()) {
         Settings::self()->saveCurrentConnection(MPDUser::constName);

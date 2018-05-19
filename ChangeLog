@@ -42,6 +42,7 @@
 32. Remove "New York Times" podcast directory - not available?
 33. Fix loading of FLAC images with older TagLib.
 34. Fix saving of 'Fadeout on stop' duration.
+35. Fix covers settings from wizard not being saved.
 
 2.3.0
 -----

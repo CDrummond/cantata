@@ -90,6 +90,7 @@ void PlaybackSettings::load()
 void PlaybackSettings::save()
 {
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
+    Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
     #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     Settings::self()->saveInhibitSuspend(inhibitSuspend->isChecked());
     #endif

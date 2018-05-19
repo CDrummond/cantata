@@ -1656,7 +1656,9 @@ void MPDConnection::listFolder(const QString &folder)
 
 void MPDConnection::listPlaylists()
 {
-    Response response=sendCommand("listplaylists");
+    // Don't report errors here. If user has disabled playlists, then MPD will report an error
+    // Issues #1090 #1284
+    Response response=sendCommand("listplaylists", false);
     if (response.ok) {
         QList<Playlist> playlists=MPDParseUtils::parsePlaylists(response.data);
         playlists.removeAll((Playlist(constStreamsPlayListName)));

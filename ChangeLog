@@ -43,6 +43,8 @@
 33. Fix loading of FLAC images with older TagLib.
 34. Fix saving of 'Fadeout on stop' duration.
 35. Fix covers settings from wizard not being saved.
+36. Don't report errors when listing playlists, as MPD reports error if user
+    has disabled these.
 
 2.3.0
 -----

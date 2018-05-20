@@ -99,6 +99,21 @@
     </extract>
     <invalidIndicator value="Verifique se o nome do seu arquivo e sua"/>
   </provider>
+  <provider name="genius.com" charset="utf-8" url="https://www.genius.com/{artist}-{title}-lyrics">
+    <urlFormat replace="_@!;\/&quot;'()[]" with=""/>
+    <urlFormat replace=" " with="-"/>
+    <urlFormat replace="ä" with="a"/>
+    <urlFormat replace="ö" with="o"/>
+    <urlFormat replace="ū" with="u"/>
+    <extract>
+      <item tag="&lt;div class=&quot;lyrics&quot;&gt;"/>
+    </extract>
+    <exclude>
+      <item begin="&lt;!--" end="--&gt;"/>
+      <item begin="&lt;a href=" end="&gt;"/>
+      <item begin="&lt;/a" end="&gt;"/>
+    </exclude>
+  </provider>
   <provider name="lololyrics.com" charset="utf-8" url="http://api.lololyrics.com/0.5/getLyric?artist={artist}&amp;track={title}">
     <urlFormat replace="_@,;&amp;\/&quot;#" with="_"/>
     <extract>

@@ -47,6 +47,8 @@
     has disabled these.
 37. Add genius.com to list of lyrics providers.
 38. Cache lyrics using 'basic' artist name - e.g. X ft. Y => X
+39. When looking for lyrics, remove "ft. X", "featuring X", etc, from song
+    title as well as artist.
 
 2.3.0
 -----

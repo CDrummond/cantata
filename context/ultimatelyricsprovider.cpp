@@ -78,7 +78,7 @@ static QString doTagReplace(QString str, const Song &song)
         str.replace(constArtistArg, artistFixed);
         str.replace(constArtistFirstCharArg, firstChar(artistFixed));
         str.replace(constAlbumArg, song.album);
-        str.replace(constTitleArg, song.title);
+        str.replace(constTitleArg, song.basicTitle());
         str.replace(constYearArg, QString::number(song.year));
         str.replace(constTrackNoArg, QString::number(song.track));
     }
@@ -216,6 +216,7 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
     }
 
     QString artistFixed=metadata.basicArtist();
+    QString titleFixed=metadata.basicTitle();
     QString urlText(url);
 
     if (QLatin1String("lyrics.wikia.com")==name) {
@@ -223,7 +224,7 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
         QUrlQuery query;
 
         query.addQueryItem(QLatin1String("artist"), artistFixed);
-        query.addQueryItem(QLatin1String("song"), metadata.title);
+        query.addQueryItem(QLatin1String("song"), titleFixed);
         query.addQueryItem(QLatin1String("func"), QLatin1String("getSong"));
         query.addQueryItem(QLatin1String("fmt"), QLatin1String("xml"));
         url.setQuery(query);
@@ -246,9 +247,9 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
         doUrlReplace(constAlbumArg, metadata.album, urlText);
         doUrlReplace(constAlbumLowerArg, metadata.album.toLower(), urlText);
         doUrlReplace(constAlbumLowerNoSpaceArg, noSpace(metadata.album.toLower()), urlText);
-        doUrlReplace(constTitleArg, metadata.title, urlText);
-        doUrlReplace(constTitleLowerArg, metadata.title.toLower(), urlText);
-        doUrlReplace(constTitleCaseArg, titleCase(metadata.title), urlText);
+        doUrlReplace(constTitleArg, titleFixed, urlText);
+        doUrlReplace(constTitleLowerArg, titleFixed.toLower(), urlText);
+        doUrlReplace(constTitleCaseArg, titleCase(titleFixed), urlText);
         doUrlReplace(constYearArg, QString::number(metadata.year), urlText);
         doUrlReplace(constTrackNoArg, QString::number(metadata.track), urlText);
     }

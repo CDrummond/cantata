@@ -62,7 +62,7 @@ const QLatin1String SongView::constInfoExt(".html.gz");
 
 static QString infoCacheFileName(const Song &song, const QString &lang, bool createDir)
 {
-    QString dir=Utils::cacheDir(SongView::constCacheDir+Covers::encodeName(song.artist)+Utils::constDirSep, createDir);
+    QString dir=Utils::cacheDir(SongView::constCacheDir+Covers::encodeName(song.basicArtist())+Utils::constDirSep, createDir);
     if (dir.isEmpty()) {
         return QString();
     }
@@ -71,7 +71,7 @@ static QString infoCacheFileName(const Song &song, const QString &lang, bool cre
 
 static QString lyricsCacheFileName(const Song &song, bool createDir=false)
 {
-    QString dir=Utils::cacheDir(SongView::constLyricsDir+Covers::encodeName(song.artist)+Utils::constDirSep, createDir);
+    QString dir=Utils::cacheDir(SongView::constLyricsDir+Covers::encodeName(song.basicArtist())+Utils::constDirSep, createDir);
     if (dir.isEmpty()) {
         return QString();
     }
@@ -81,7 +81,7 @@ static QString lyricsCacheFileName(const Song &song, bool createDir=false)
 #if !defined Q_OS_WIN && !defined Q_OS_MAC
 static QString lyricsOtherFileName(const Song &song)
 {
-    return QDir::homePath()+"/.lyrics/"+Covers::encodeName(song.artist)+" - "+Covers::encodeName(song.title)+".txt";
+    return QDir::homePath()+"/.lyrics/"+Covers::encodeName(song.basicArtist())+" - "+Covers::encodeName(song.title)+".txt";
 }
 #endif
 
@@ -656,7 +656,7 @@ void SongView::refreshInfo()
 void SongView::searchForInfo()
 {
     cancelInfoJobAction->setEnabled(true);
-    engine->search(QStringList() << currentSong.artist << currentSong.title, ContextEngine::Track);
+    engine->search(QStringList() << currentSong.basicArtist() << currentSong.title, ContextEngine::Track);
     showSpinner(false);
 }
 

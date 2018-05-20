@@ -46,6 +46,7 @@
 36. Don't report errors when listing playlists, as MPD reports error if user
     has disabled these.
 37. Add genius.com to list of lyrics providers.
+38. Cache lyrics using 'basic' artist name - e.g. X ft. Y => X
 
 2.3.0
 -----

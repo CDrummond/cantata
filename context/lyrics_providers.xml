@@ -100,11 +100,23 @@
     <invalidIndicator value="Verifique se o nome do seu arquivo e sua"/>
   </provider>
   <provider name="genius.com" charset="utf-8" url="https://www.genius.com/{artist}-{title}-lyrics">
-    <urlFormat replace="_@!;\/&quot;'()[]" with=""/>
-    <urlFormat replace=" " with="-"/>
-    <urlFormat replace="ä" with="a"/>
-    <urlFormat replace="ö" with="o"/>
-    <urlFormat replace="ū" with="u"/>
+      <urlFormat replace="_@!#%^*+;\/&quot;'()[]" with=""/>
+      <urlFormat replace=" " with="-"/>
+      <!-- When $ is used as the dollar sign it is ommitted from the url
+           When $ is used instead of 's',
+           in some cases it is replaced by 's'(Too $hort -> too-short)
+           in other cases it is ommited ($uicideboy$ -> uicideboy)
+           I chose to ommit it though, in some cases it's gonna be problematic -->
+      <urlFormat replace="$" with=""/>
+      <urlFormat replace="ÄÂÀÁÃäâàáã" with="a"/>
+      <urlFormat replace="ËÊÈÉëêèé" with="e"/>
+      <urlFormat replace="ÏÌïì" with="i"/>
+      <urlFormat replace="ÖÔÒÓÕöôòóõ" with="o"/>
+      <urlFormat replace="ÜŪÙÚüūùú" with="u"/>
+      <urlFormat replace="ŸÝÿý" with="i"/>
+      <urlFormat replace="Ññ" with="n"/>
+      <urlFormat replace="Çç" with="c"/>
+      <urlFormat replace="ß" with="ss"/>
     <extract>
       <item tag="&lt;div class=&quot;lyrics&quot;&gt;"/>
     </extract>

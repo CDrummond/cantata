@@ -753,24 +753,34 @@ QString Song::albumKey() const
     return albumArtist()+QLatin1Char(':')+albumId()+QLatin1Char(':')+QString::number(disc);
 }
 
+static QString basic(const QString &str)
+{
+    QStringList toStrip=QStringList() << QLatin1String("ft. ") << QLatin1String("feat. ") << QLatin1String("featuring ") << QLatin1String("f. ");
+    QStringList prefixes=QStringList() << QLatin1String(" ") << QLatin1String(" (") << QLatin1String(" [");
+
+    for (const QString &s: toStrip) {
+        for (const QString &p: prefixes) {
+            int strip = str.toLower().indexOf(p+s);
+            if (-1!=strip) {
+                return str.mid(0, strip);
+            }
+        }
+    }
+    return str;
+}
+
 QString Song::basicArtist() const
 {
     if (!albumartist.isEmpty() && (artist.isEmpty() || albumartist==artist || (albumartist.length()<artist.length() && artist.startsWith(albumartist)))) {
         return albumartist;
     }
 
-    QStringList toStrip=QStringList() << QLatin1String("ft. ") << QLatin1String("feat. ") << QLatin1String("featuring ") << QLatin1String("f. ");
-    QStringList prefixes=QStringList() << QLatin1String(" ") << QLatin1String(" (") << QLatin1String(" [");
+    return basic(artist);
+}
 
-    for (const QString &s: toStrip) {
-        for (const QString &p: prefixes) {
-            int strip = artist.toLower().indexOf(p+s);
-            if (-1!=strip) {
-                return artist.mid(0, strip);
-            }
-        }
-    }
-    return artist;
+QString Song::basicTitle() const
+{
+    return basic(title);
 }
 
 QString Song::filePath(const QString &base) const

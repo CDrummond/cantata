@@ -223,6 +223,7 @@ struct Song
     bool isCueFile() const { return Playlist==type && file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive); }
     bool isFromCue() const { return CueFile::isCue(file); }
     QString basicArtist() const;
+    QString basicTitle() const;
     QString filePath(const QString &base=QString()) const;
     QString displayAlbum(bool useComp=true) const { return displayAlbum(useComp ? albumName() : album, displayYear()); }
     QString describe() const;

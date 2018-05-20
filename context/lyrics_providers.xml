@@ -117,6 +117,7 @@
       <urlFormat replace="Ññ" with="n"/>
       <urlFormat replace="Çç" with="c"/>
       <urlFormat replace="ß" with="ss"/>
+      <urlFormat replace="&amp;" with="and"/>
     <extract>
       <item tag="&lt;div class=&quot;lyrics&quot;&gt;"/>
     </extract>

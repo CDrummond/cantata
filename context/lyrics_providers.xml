@@ -111,7 +111,6 @@
       <urlFormat replace="ÄÂÀÁÃäâàáã" with="a"/>
       <urlFormat replace="ËÊÈÉëêèé" with="e"/>
       <urlFormat replace="ÏÌïì" with="i"/>
-      <urlFormat replace="&" with="and"/>
       <urlFormat replace="ÖÔÒÓÕöôòóõ" with="o"/>
       <urlFormat replace="ÜŪÙÚüūùú" with="u"/>
       <urlFormat replace="ŸÝÿý" with="y"/>

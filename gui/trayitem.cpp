@@ -162,11 +162,10 @@ void TrayItem::setup()
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(copyAction(mw->quitAction));
     trayItem->setContextMenu(trayItemMenu);
-    QIcon icon=QIcon::fromTheme(QIcon::hasThemeIcon("cantata-panel") ? "cantata-panel" : "cantata");
-    #if !defined Q_OS_MAC && !defined Q_OS_WIN
-    if (Utils::Ubuntu_Gnome==Utils::currentDe()) {
-        icon=QIcon::fromTheme("cantata-panel-light");
-    }
+    #if defined Q_OS_MAC || defined Q_OS_WIN
+    QIcon icon=QIcon::fromTheme("cantata");
+    #else
+    QIcon icon=QIcon::fromTheme(QIcon::hasThemeIcon("cantata-symbolic") ? "cantata-symbolic" : "cantata");
     // Bug: 660 If installed to non-standard folder, QIcon::fromTheme does not seem to find icon. Therefore
     // add icon files here...
     if (icon.isNull()) {

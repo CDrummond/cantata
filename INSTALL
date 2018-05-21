@@ -62,7 +62,7 @@ The following options may be passed to CMake:
         Default: ON
 
     -DINSTALL_UBUNTU_ICONS=<ON if Ubuntu, OFF otherwise>
-        Install monochrome system tray icons for Ubuntu.
+        Install Suru icons for Ubuntu.
 
     -DCANTATA_HELPERS_LIB_DIR=<subdir>
         For 64 bit builds, this may be used to control the lib sub-dir

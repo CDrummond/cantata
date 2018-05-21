@@ -595,7 +595,7 @@ void MainWindow::init()
     #ifdef Q_OS_MAC
     bool showMenubar = true;
     #else
-    bool showMenubar = Utils::Gnome!=Utils::currentDe() && Utils::Ubuntu_Gnome!=Utils::currentDe();
+    bool showMenubar = Utils::Gnome!=Utils::currentDe();
     #endif
     if (showMenubar) {
         #ifdef Q_OS_MAC

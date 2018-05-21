@@ -907,7 +907,7 @@ Utils::Desktop Utils::currentDe()
         } else if (desktop.contains("kde")) {
             de=KDE;
         } else if (desktop.contains("gnome") || desktop.contains("pantheon")) {
-            de=desktop.contains("ubuntu") ? Ubuntu_Gnome : Gnome;
+            de=Gnome;
         } else {
             QByteArray kde=qgetenv("KDE_FULL_SESSION");
             if ("true"==kde) {
@@ -927,9 +927,9 @@ bool Utils::useSystemTray()
     #elif defined Q_OS_WIN
     return true;
     #elif QT_QTDBUS_FOUND
-    return Ubuntu_Gnome==currentDe() || Gnome==currentDe() ? QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.StatusNotifierWatcher") : true;
+    return Gnome==currentDe() ? QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.StatusNotifierWatcher") : true;
     #else
-    return Ubuntu_Gnome!=currentDe() && Gnome!=currentDe();
+    return Gnome!=currentDe();
     #endif
 }
 

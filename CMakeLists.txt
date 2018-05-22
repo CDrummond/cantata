@@ -515,6 +515,12 @@ endif ()
 
 set(CANTATA_SRCS ${CANTATA_SRCS} gui/shortcutssettingspage.cpp gui/mediakeys.cpp)
 
+if (WIN32 OR APPLE)
+    set(CANTATA_RCS ${CANTATA_RCS} cantata_icon.qrc)
+else()
+    add_subdirectory(icons)
+endif()
+
 QT5_ADD_RESOURCES(CANTATA_RC_SRCS ${CANTATA_RCS})
 QT5_WRAP_UI(CANTATA_UI_HDRS ${CANTATA_UIS})
 
@@ -576,7 +582,6 @@ if (WIN32)
     target_link_libraries(cantata qxt)
 endif (WIN32)
 
-add_subdirectory(icons)
 add_subdirectory(translations)
 add_subdirectory(support)
 add_subdirectory(3rdparty/qtiocompressor)

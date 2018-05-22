@@ -66,7 +66,18 @@ Icons::Icons()
     albumMonoIcon=MonoIcon::icon(":mono-album.svg", stdColor);
     artistIcon=MonoIcon::icon(":artist.svg", stdColor);
     genreIcon=MonoIcon::icon(":genre.svg", stdColor);
+    #if defined Q_OS_MAC || defined Q_OS_WIN
+    appIcon.addFile(":cantata.svg");
+    appIcon.addFile(":cantata16.png");
+    appIcon.addFile(":cantata22.png");
+    appIcon.addFile(":cantata24.png");
+    appIcon.addFile(":cantata32.png");
+    appIcon.addFile(":cantata48.png");
+    appIcon.addFile(":cantata64.png");
+    appIcon.addFile(":cantata128.png");
+    #else
     appIcon=Icon("cantata");
+    #endif
 
     replacePlayQueueIcon=MonoIcon::icon(FontAwesome::play, stdColor);
     appendToPlayQueueIcon=MonoIcon::icon(FontAwesome::plus, stdColor);

@@ -98,13 +98,17 @@ public:
                     font.setBold(true);
                 } else if (pixelSize>10) {
                     static const int constScale=14;
-                    static const int constHalfScale=constScale/2;
-                    pixelSize=((pixelSize/constScale)*constScale)+((pixelSize%constScale)>=constHalfScale ? constScale : 0);
-                    pixelSize=qMin(pixelSize, rect.height());
-                    if (FontAwesome::bars==fontAwesomeIcon && pixelSize%constHalfScale) {
-                        pixelSize-=1;
-                    } else if (FontAwesome::list==fontAwesomeIcon && pixelSize%constHalfScale) {
-                        pixelSize+=1;
+
+                    if (pixelSize>=(constScale*2)) {
+                        pixelSize=((pixelSize/constScale)*constScale);
+                    } else {
+                        static const int constHalfScale=constScale/2;
+                        pixelSize=((pixelSize/constScale)*constScale)+((pixelSize%constScale)>=constHalfScale ? constHalfScale : 0);
+                        if (pixelSize%constScale) {
+                            if (FontAwesome::list==fontAwesomeIcon && pixelSize%constHalfScale) {
+                                pixelSize+=2;
+                            }
+                        }
                     }
                 }
 

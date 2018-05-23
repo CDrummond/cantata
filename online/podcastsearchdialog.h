@@ -94,7 +94,7 @@ class PodcastSearchPage : public PodcastPage
 {
     Q_OBJECT
 public:
-    PodcastSearchPage(QWidget *p, const QString &n, const QString &i, const QUrl &qu, const QString &qk, const QStringList &other=QStringList());
+    PodcastSearchPage(QWidget *p, const QString &n, int i, const QUrl &qu, const QString &qk, const QStringList &other=QStringList());
     ~PodcastSearchPage() override { }
     
     void showEvent(QShowEvent *e) override;
@@ -119,7 +119,7 @@ class OpmlBrowsePage : public PodcastPage
 {
     Q_OBJECT
 public:
-    OpmlBrowsePage(QWidget *p, const QString &n, const QString &i, const QUrl &u);
+    OpmlBrowsePage(QWidget *p, const QString &n, const QIcon &i, const QUrl &u);
     ~OpmlBrowsePage() override { }
 
     void showEvent(QShowEvent *e) override;

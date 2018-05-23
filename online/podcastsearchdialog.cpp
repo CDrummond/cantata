@@ -32,6 +32,7 @@
 #include "podcastservice.h"
 #include "support/utils.h"
 #include "support/action.h"
+#include "support/monoicon.h"
 #include "widgets/textbrowser.h"
 #include "support/messagewidget.h"
 #include "gui/covers.h"
@@ -87,7 +88,7 @@ public:
     ITunesSearchPage(QWidget *p)
         : PodcastSearchPage(p,
                             QLatin1String("iTunes"),
-                            QLatin1String("itunes"),
+                            FontAwesome::apple,
                             QUrl(QLatin1String("http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStoreServices.woa/wa/wsSearch")),
                             QLatin1String("term"),
                             QStringList() << QLatin1String("country") << QLatin1String("US") << QLatin1String("media") << QLatin1String("podcast"))
@@ -118,7 +119,7 @@ public:
     GPodderSearchPage(QWidget *p)
         : PodcastSearchPage(p,
                             QLatin1String("GPodder"),
-                            QLatin1String("gpodder"),
+                            FontAwesome::podcast,
                             QUrl(QLatin1String("http://gpodder.net/search.json")),
                             QLatin1String("q"))
     {
@@ -317,7 +318,7 @@ void PodcastPage::openLink(const QUrl &url)
     QDesktopServices::openUrl(url);
 }
 
-PodcastSearchPage::PodcastSearchPage(QWidget *p, const QString &n, const QString &i, const QUrl &qu, const QString &qk, const QStringList &other)
+PodcastSearchPage::PodcastSearchPage(QWidget *p, const QString &n, int i, const QUrl &qu, const QString &qk, const QStringList &other)
     : PodcastPage(p, n)
     , queryUrl(qu)
     , queryKey(qk)
@@ -342,7 +343,7 @@ PodcastSearchPage::PodcastSearchPage(QWidget *p, const QString &n, const QString
     mainLayout->addLayout(viewLayout);
     connect(search, SIGNAL(returnPressed()), SLOT(doSearch()));
     connect(searchButton, SIGNAL(clicked()), SLOT(doSearch()));
-    icn.addFile(":"+i);
+    icn=MonoIcon::icon((FontAwesome::icon)i, Utils::monoIconColor());
 }
 
 void PodcastSearchPage::showEvent(QShowEvent *e)
@@ -385,7 +386,7 @@ void PodcastSearchPage::parseResonse(QIODevice *dev)
     parse(data);
 }
 
-OpmlBrowsePage::OpmlBrowsePage(QWidget *p, const QString &n, const QString &i, const QUrl &u)
+OpmlBrowsePage::OpmlBrowsePage(QWidget *p, const QString &n, const QIcon &i, const QUrl &u)
     : PodcastPage(p, n)
     , loaded(false)
     , url(u)
@@ -398,7 +399,7 @@ OpmlBrowsePage::OpmlBrowsePage(QWidget *p, const QString &n, const QString &i, c
     tree->addAction(act);
     connect(act, SIGNAL(triggered()), this, SLOT(reload()));
     tree->setContextMenuPolicy(Qt::ActionsContextMenu);
-    icn.addFile(i.isEmpty() || !QFile::exists(i) ? ":podcasts" : i);
+    icn=i;
 }
 
 void OpmlBrowsePage::showEvent(QShowEvent *e)
@@ -517,7 +518,7 @@ PodcastUrlPage::PodcastUrlPage(QWidget *p)
     mainLayout->addLayout(viewLayout);
     connect(urlEntry, SIGNAL(returnPressed()), SLOT(loadUrl()));
     connect(loadButton, SIGNAL(clicked()), SLOT(loadUrl()));
-    icn.addFile(":podcasts");
+    icn=Icons::self()->rssListIcon;
 }
 
 void PodcastUrlPage::showEvent(QShowEvent *e)
@@ -681,10 +682,21 @@ QList<PodcastPage *> PodcastSearchDialog::loadDirectories(const QString &dir, bo
             if (reader.isStartElement() && QLatin1String("directory")==reader.name()) {
                 QString url=reader.attributes().value(QLatin1String("url")).toString();
                 if (!loaded.contains(url)) {
-                    QString icon=reader.attributes().value(QLatin1String("icon")).toString();
-                    if (!icon.isEmpty() && !icon.startsWith(":")) {
-                        icon=dir+(isSystem ? "../icons/" : "")+icon;
+                    QString iconName=reader.attributes().value(QLatin1String("icon")).toString();
+                    QIcon icon;
+
+                    if (iconName.isEmpty()) {
+                        icon=Icons::self()->rssListIcon;
+                    } else if (iconName.startsWith(":")) {
+                        icon= MonoIcon::icon(iconName, Utils::monoIconColor());
+                    } else {
+                        icon.addFile(iconName);
                     }
+
+                    if (icon.isNull()) {
+                        icon=Icons::self()->rssListIcon;
+                    }
+
                     OpmlBrowsePage *page=new OpmlBrowsePage(pageWidget,
                                                             reader.attributes().value(QLatin1String("name")).toString(),
                                                             icon,

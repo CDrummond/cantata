@@ -353,16 +353,8 @@ void StreamProviderListDialog::slotButtonClicked(int button)
                 processItems.append(i);
             }
         }
-        QString message;
-        if (install && update) {
-            message=tr("Install/update the selected stream providers?");
-        } else if (install) {
-            message=tr("Install the selected stream providers?");
-        } else if (update) {
-            message=tr("Update the selected stream providers?");
-        }
 
-        if (!message.isEmpty() && MessageBox::Yes==MessageBox::questionYesNo(this, message, tr("Install/Update"))) {
+        if (install || update) {
             setState(true);
             doNext();
         }

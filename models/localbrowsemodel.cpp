@@ -63,13 +63,13 @@ bool FileSystemProxyModel::lessThan(const QModelIndex &left, const QModelIndex &
     return l.fileName().toLower().localeAwareCompare(r.fileName().toLower())<0;
 }
 
-LocalBrowseModel::LocalBrowseModel(const QString &name, const QString &title, const QString &descr, const QString &icon, QObject *p)
+LocalBrowseModel::LocalBrowseModel(const QString &name, const QString &title, const QString &descr, const QIcon &icon, QObject *p)
     : QFileSystemModel(p)
     , pathName(name)
     , pathTitle(title)
     , pathDescr(descr)
+    , icn(icon)
 {
-    icn.addFile(icon);
     setFilter(QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot|QDir::Drives);
 }
 

@@ -1212,10 +1212,7 @@ MtpDevice::MtpDevice(MusicLibraryModel *m, Solid::Device &dev, unsigned int busN
         DBUG << "setName" << opts.name;
         setData(opts.name);
     }
-    icn=Icon("multimedia-player");
-    if (icn.isNull()) {
-        icn=MonoIcon::icon(FontAwesome::mobilephone, Utils::clampColor(qApp->palette().text().color()));
-    }
+    icn=MonoIcon::icon(FontAwesome::mobilephone, Utils::monoIconColor());
 }
 
 MtpDevice::~MtpDevice()

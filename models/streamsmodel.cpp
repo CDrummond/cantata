@@ -27,6 +27,7 @@
 #include "widgets/icons.h"
 #include "network/networkaccessmanager.h"
 #include "support/utils.h"
+#include "support/monoicon.h"
 #include "gui/settings.h"
 #include "playqueuemodel.h"
 #include "roles.h"
@@ -35,7 +36,6 @@
 #include "support/actioncollection.h"
 #include "digitallyimported.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include "support/utils.h"
 #include "config.h"
 #include "support/globalstatic.h"
 #include <QModelIndex>
@@ -87,13 +87,6 @@ static QString constShoutCastUrl=QLatin1String("http://")+StreamsModel::constSho
 static QString constDirbleUrl=QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/categories/primary");
 
 static const QLatin1String constBookmarksDir=QLatin1String("bookmarks");
-
-static QIcon getIcon(const QString &name)
-{
-    QIcon icon;
-    icon.addFile(":"+name);
-    return icon.isNull() ? Icons::self()->streamCategoryIcon : icon;
-}
 
 static Icon getExternalIcon(const QString &path, QStringList files=QStringList() << StreamsModel::constSvgIcon <<  StreamsModel::constPngIcon)
 {
@@ -498,18 +491,19 @@ StreamsModel::StreamsModel(QObject *parent)
     : ActionModel(parent)
     , root(new CategoryItem(QString(), "root"))
 {
-    icn.addFile(":radio.svg");
-    tuneIn=new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), tr("TuneIn"), root, getIcon("tunein"), QString(), "tunein");
+    QColor col = Utils::monoIconColor();
+    icn=MonoIcon::icon(":radio.svg", col);
+    tuneIn=new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), tr("TuneIn"), root, MonoIcon::icon(":tunein.svg", col), QString(), "tunein");
     tuneIn->supportsBookmarks=true;
     root->children.append(tuneIn);
-    root->children.append(new IceCastCategoryItem(constIceCastUrl, tr("IceCast"), root, getIcon("icecast"), "icecast"));
-    shoutCast=new ShoutCastCategoryItem(constShoutCastUrl, tr("ShoutCast"), root, getIcon("shoutcast"));
+    root->children.append(new IceCastCategoryItem(constIceCastUrl, tr("IceCast"), root, MonoIcon::icon(FontAwesome::cube, col), "icecast"));
+    shoutCast=new ShoutCastCategoryItem(constShoutCastUrl, tr("ShoutCast"), root, MonoIcon::icon(":shoutcast.svg", col));
     shoutCast->configName="shoutcast";
     root->children.append(shoutCast);
-    dirble=new DirbleCategoryItem(constDirbleUrl, tr("Dirble"), root, getIcon("dirble"));
+    dirble=new DirbleCategoryItem(constDirbleUrl, tr("Dirble"), root, MonoIcon::icon(":dirble.svg", col));
     dirble->configName="dirble";
     root->children.append(dirble);
-    favourites=new FavouritesCategoryItem(constFavouritesUrl, tr("Favorites"), root, getIcon("favourites"));
+    favourites=new FavouritesCategoryItem(constFavouritesUrl, tr("Favorites"), root, MonoIcon::icon(FontAwesome::heart, MonoIcon::constRed));
     root->children.append(favourites);
     loadInstalledProviders();
     addBookmarkAction = new Action(Icons::self()->addBookmarkIcon, tr("Bookmark Category"), this);

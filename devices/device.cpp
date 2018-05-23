@@ -47,6 +47,7 @@
 #include "models/musiclibraryitemalbum.h"
 #include "models/musiclibraryitemsong.h"
 #include "models/musiclibrarymodel.h"
+#include "widgets/icons.h"
 #include "solid-lite/portablemediaplayer.h"
 #include "solid-lite/storageaccess.h"
 #include "solid-lite/storagedrive.h"
@@ -311,7 +312,7 @@ Device::Device(MusicLibraryModel *m, Solid::Device &dev, bool albumArtistSupport
     , transcoding(false)
 {
     m_model=m;
-    icn=Icon(solidDev.isValid() ? solidDev.icon() : QLatin1String("inode-directory"));
+    icn=Icons::self()->folderListIcon;
     m_itemData[0]=m_itemData[0].toUpper();
 }
 

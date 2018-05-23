@@ -28,6 +28,8 @@
 #include "network/networkaccessmanager.h"
 #include "gui/stdactions.h"
 #include "gui/settings.h"
+#include "support/monoicon.h"
+#include "support/utils.h"
 #include <QString>
 #include <QVariant>
 #include <QXmlStreamReader>
@@ -36,21 +38,15 @@
 #include <QUrl>
 #include <QUrlQuery>
 
-static QIcon getIcon(const QString &name)
-{
-    QIcon icon;
-    icon.addFile(":"+name);
-    return icon.isNull() ? Icons::self()->streamCategoryIcon : icon;
-}
-
 StreamSearchModel::StreamSearchModel(QObject *parent)
     : ActionModel(parent)
     , root(new StreamsModel::CategoryItem(QString(), "root"))
 {
     // ORDER *MUST* MATCH Category ENUM!!!!!
-    root->children.append(new StreamsModel::CategoryItem("http://opml.radiotime.com/Search.ashx", tr("TuneIn"), root, getIcon("tunein")));
-    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist"), tr("ShoutCast"), root, getIcon("shoutcast")));
-    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/search/"), tr("Dirble"), root, getIcon("dirble")));
+    root->children.append(new StreamsModel::CategoryItem("http://opml.radiotime.com/Search.ashx", tr("TuneIn"), root, MonoIcon::icon(":tunein.svg", Utils::monoIconColor())));
+    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist"), tr("ShoutCast"), root, MonoIcon::icon(":shoutcast.svg", Utils::monoIconColor())));
+    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/search/"), tr("Dirble"), root, MonoIcon::icon(":dirble.svg", Utils::monoIconColor())));
+    icon = MonoIcon::icon(FontAwesome::search, Utils::monoIconColor());
 }
 
 StreamSearchModel::~StreamSearchModel()
@@ -112,7 +108,7 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
         case Cantata::Role_SubText:
             return tr("Search for radio streams");
         case Qt::DecorationRole:
-            return Icon("edit-find");
+            return icon;
         }
         return QVariant();
     }

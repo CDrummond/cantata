@@ -25,6 +25,7 @@
 #include "podcastsettingsdialog.h"
 #include "rssparser.h"
 #include "support/utils.h"
+#include "support/monoicon.h"
 #include "gui/settings.h"
 #include "widgets/icons.h"
 #include "mpd-interface/mpdconnection.h"
@@ -390,7 +391,7 @@ PodcastService::PodcastService(QObject *p)
     , rssUpdateTimer(nullptr)
 {
     QMetaObject::invokeMethod(this, "loadAll", Qt::QueuedConnection);
-    icn.addFile(":"+constName);
+    icn=MonoIcon::icon(FontAwesome::rsssquare, Utils::monoIconColor());
     useCovers(name(), true);
     clearPartialDownloads();
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(currentMpdSong(const Song &)));

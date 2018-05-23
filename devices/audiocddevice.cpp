@@ -89,10 +89,7 @@ AudioCdDevice::AudioCdDevice(MusicLibraryModel *m, Solid::Device &dev)
     , lookupInProcess(false)
     , autoPlay(false)
 {
-    icn=Icon("media-optical");
-    if (icn.isNull()) {
-        icn=Icons::self()->albumMonoIcon;
-    }
+    icn=Icons::self()->albumMonoIcon;
     drive=dev.parent().as<Solid::OpticalDrive>();
     Solid::Block *block=dev.as<Solid::Block>();
     if (block) {

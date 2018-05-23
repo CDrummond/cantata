@@ -66,7 +66,6 @@ public:
     QString descr() const override;
     bool isDynamic() const override { return true; }
     QVariant data(const QModelIndex &index, int role) const override;
-    const Icon & icon() const { return icn; }
     bool isRemote() const override { return usingRemote; }
     bool saveRemote(const QString &string, const Entry &e) override;
     void del(const QString &name) override;

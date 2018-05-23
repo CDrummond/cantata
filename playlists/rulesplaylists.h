@@ -30,7 +30,6 @@
 #include <QString>
 #include <QStringList>
 #include "models/actionmodel.h"
-#include "support/icon.h"
 
 class RulesPlaylists : public ActionModel
 {
@@ -95,14 +94,14 @@ public:
     static const QChar constRangeSep;
     static const QChar constKeyValSep;
 
-    RulesPlaylists(const QString &iconFile, const QString &dir);
+    RulesPlaylists(int icon, const QString &dir);
     ~RulesPlaylists() override { }
 
     virtual QString name() const =0;
     virtual QString title() const =0;
     virtual QString descr() const =0;
     virtual bool isDynamic() const { return false; }
-    const Icon & icon() const { return icn; }
+    const QIcon & icon() const { return icn; }
     virtual bool isRemote() const { return false; }
     virtual int minTracks() const { return 10; }
     virtual int maxTracks() const { return 500; }
@@ -131,7 +130,7 @@ protected:
     void updateEntry(const Entry &e);
 
 protected:
-    Icon icn;
+    QIcon icn;
     QString rulesDir;
     QList<Entry> entryList;
     QString currentEntry;

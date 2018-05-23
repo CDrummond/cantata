@@ -31,6 +31,7 @@
 #include "gui/settings.h"
 #include "support/actioncollection.h"
 #include "support/globalstatic.h"
+#include "support/monoicon.h"
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
@@ -125,7 +126,7 @@ const QString constOk=QLatin1String("0");
 const QString constFilename=QLatin1String("FILENAME:");
 
 DynamicPlaylists::DynamicPlaylists()
-    : RulesPlaylists("dice", "dynamic")
+    : RulesPlaylists(FontAwesome::random, "dynamic")
     , localTimer(nullptr)
     , usingRemote(false)
     , remoteTimer(nullptr)
@@ -172,7 +173,7 @@ QVariant DynamicPlaylists::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case Qt::DecorationRole:
-        return IS_ACTIVE(entryList.at(index.row()).name) ? Icons::self()->replacePlayQueueIcon : Icons::self()->dynamicListIcon;
+        return IS_ACTIVE(entryList.at(index.row()).name) ? Icons::self()->replacePlayQueueIcon : icn;
     case Cantata::Role_Actions: {
         QVariant v;
         v.setValue<QList<Action *> >(QList<Action *>() << (IS_ACTIVE(entryList.at(index.row()).name) ? stopAction : startAction));

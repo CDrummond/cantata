@@ -33,7 +33,7 @@ class LocalBrowseModel : public QFileSystemModel
     Q_OBJECT
 
 public:
-    LocalBrowseModel(const QString &name, const QString &title, const QString &descr, const QString &icon, QObject *p);
+    LocalBrowseModel(const QString &name, const QString &title, const QString &descr, const QIcon &icon, QObject *p);
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 

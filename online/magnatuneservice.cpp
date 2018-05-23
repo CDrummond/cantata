@@ -27,6 +27,7 @@
 #include "models/roles.h"
 #include "support/icon.h"
 #include "support/configuration.h"
+#include "support/monoicon.h"
 #include <QXmlStreamReader>
 #include <QUrl>
 
@@ -157,7 +158,7 @@ static MagnatuneService::DownloadType toDownloadType(const QString &f)
 MagnatuneService::MagnatuneService(QObject *p)
     : OnlineDbService(new OnlineDb(constName, p), p)
 {
-    icn.addFile(":"+constName);
+    icn=MonoIcon::icon(":magnatune.svg", Utils::monoIconColor());
     useCovers(name());
     Configuration cfg(constName);
     membership=toMembership(cfg.get("membership", membershipStr(MB_None)));

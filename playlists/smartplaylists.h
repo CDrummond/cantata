@@ -24,7 +24,6 @@
 #ifndef SMART_PLAYLISTS_H
 #define SMART_PLAYLISTS_H
 
-#include <QIcon>
 #include "rulesplaylists.h"
 
 class SmartPlaylists : public RulesPlaylists
@@ -43,9 +42,6 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     int maxTracks() const override { return 10000; }
     int defaultNumTracks() const override { return 100; }
-
-private:
-    QIcon playlistIcon;
 };
 
 #endif

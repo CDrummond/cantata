@@ -27,6 +27,8 @@
 #include "models/roles.h"
 #include "support/icon.h"
 #include "support/configuration.h"
+#include "support/utils.h"
+#include "support/monoicon.h"
 #include <QXmlStreamReader>
 #include <QUrl>
 
@@ -319,7 +321,7 @@ static JamendoService::Format toFormat(const QString &f)
 JamendoService::JamendoService(QObject *p)
     : OnlineDbService(new OnlineDb(constName, p), p)
 {
-    icn.addFile(":"+constName);
+    icn=MonoIcon::icon(FontAwesome::playcircleo, Utils::monoIconColor());
     useCovers(name());
     Configuration cfg(constName);
     format=toFormat(cfg.get("format", formatStr(FMT_MP3)));

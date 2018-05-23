@@ -28,6 +28,8 @@
 #include "gui/settings.h"
 #include "mpd-interface/mpdconnection.h"
 #include "mpd-interface/mpdstats.h"
+#include "support/monoicon.h"
+#include "support/utils.h"
 #include <QMimeData>
 
 void BrowseModel::FolderItem::add(Item *i)
@@ -59,7 +61,7 @@ BrowseModel::BrowseModel(QObject *p)
     , enabled(false)
     , dbVersion(0)
 {
-    icn.addFile(":mpd.svg");
+    icn=MonoIcon::icon(FontAwesome::server, Utils::monoIconColor());
     connect(this, SIGNAL(listFolder(QString)), MPDConnection::self(), SLOT(listFolder(QString)));
     folderIndex.insert(root->getPath(), root);
 }

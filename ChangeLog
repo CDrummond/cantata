@@ -50,6 +50,7 @@
 39. When looking for lyrics, remove "ft. X", "featuring X", etc, from song
     title as well as artist.
 40. Fix adding streams from provider dialog.
+41. Reduce number of confirmation dialogs.
 
 2.3.0
 -----

@@ -217,7 +217,7 @@ static QString catName(int cat) {
     case Cat_ListenLive:        return QObject::tr("Local and National Radio (ListenLive)");
     }
 }
-
+#include <QDebug>
 void StreamProviderListDialog::jobFinished()
 {
     NetworkJob *j=qobject_cast<NetworkJob *>(sender());
@@ -247,7 +247,7 @@ void StreamProviderListDialog::jobFinished()
         QTreeWidgetItem *item=*(processItems.begin());
         if (j->ok()) {
             statusText->setText(tr("Installing/updating %1").arg(item->text(0)));
-            QTemporaryFile temp(QDir::tempPath()+"/cantata_XXXXXX.streams");
+            QTemporaryFile temp("cantata_XXXXXX.streams");
             temp.setAutoRemove(true);
             temp.open();
             temp.write(j->readAll());

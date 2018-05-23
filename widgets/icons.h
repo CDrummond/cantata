@@ -92,7 +92,7 @@ public:
     QIcon addIcon;
     QIcon addBookmarkIcon;
     QIcon playlistListIcon;
-    QIcon dynamicListIcon;
+    QIcon smartPlaylistIcon;
     QIcon rssListIcon;
     QIcon savedRssListIcon;
     QIcon clockIcon;

@@ -28,6 +28,7 @@
 #include "widgets/menubutton.h"
 #include "support/monoicon.h"
 #include "support/configuration.h"
+#include "support/utils.h"
 #ifdef TAGLIB_FOUND
 #include "tags/tags.h"
 #endif
@@ -37,10 +38,11 @@ LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
     : SinglePageWidget(p)
     , isHomeFolder(isHome)
 {
-    model = isHome ? new LocalBrowseModel(QLatin1String("localbrowsehome"), tr("Home"), tr("Browse files in your home folder"), ":home.svg", this)
-                   : new LocalBrowseModel(QLatin1String("localbrowseroot"), tr("Root"), tr("Browse files on your computer"), ":hdd.svg", this);
+    QColor col = Utils::monoIconColor();
+    model = isHome ? new LocalBrowseModel(QLatin1String("localbrowsehome"), tr("Home"), tr("Browse files in your home folder"), MonoIcon::icon(FontAwesome::home, col), this)
+                   : new LocalBrowseModel(QLatin1String("localbrowseroot"), tr("Root"), tr("Browse files on your computer"), MonoIcon::icon(FontAwesome::hddo, col), this);
     proxy = new FileSystemProxyModel(model);
-    browseAction = new Action(MonoIcon::icon(FontAwesome::folderopen, Utils::monoIconColor()), tr("Open In File Manager"), this);
+    browseAction = new Action(MonoIcon::icon(FontAwesome::folderopen, col), tr("Open In File Manager"), this);
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(headerClicked(int)), SLOT(headerClicked(int)));

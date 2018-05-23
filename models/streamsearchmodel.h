@@ -87,6 +87,7 @@ private:
     QMap<NetworkJob *, StreamsModel::CategoryItem *> jobs;
     StreamsModel::CategoryItem *root;
     QString currentSearch;
+    QIcon icon;
 };
 
 #endif

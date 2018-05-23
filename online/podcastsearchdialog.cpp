@@ -686,7 +686,7 @@ QList<PodcastPage *> PodcastSearchDialog::loadDirectories(const QString &dir, bo
                     QIcon icon;
 
                     if (iconName.isEmpty()) {
-                        icon=Icons::self()->rssListIcon;
+                        icon=MonoIcon::icon(FontAwesome::rsssquare, Utils::monoIconColor());
                     } else if (iconName.startsWith(":")) {
                         icon= MonoIcon::icon(iconName, Utils::monoIconColor());
                     } else {
@@ -694,7 +694,7 @@ QList<PodcastPage *> PodcastSearchDialog::loadDirectories(const QString &dir, bo
                     }
 
                     if (icon.isNull()) {
-                        icon=Icons::self()->rssListIcon;
+                        icon=MonoIcon::icon(FontAwesome::rsssquare, Utils::monoIconColor());
                     }
 
                     OpmlBrowsePage *page=new OpmlBrowsePage(pageWidget,

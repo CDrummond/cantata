@@ -3,10 +3,6 @@
 <file alias="stars.svg">icons/stars.svg</file>
 <file alias="consume.svg">icons/consume.svg</file>
 
-<file alias="mpd.svg">icons/mpd.svg</file>
-<file alias="home.svg">icons/home.svg</file>
-<file alias="hdd.svg">icons/hdd.svg</file>
-
 <file alias="sidebar-library">icons/sidebar-library.svg</file>
 <file alias="sidebar-devices">icons/sidebar-devices.svg</file>
 <file alias="sidebar-folders">icons/sidebar-folders.svg</file>
@@ -16,28 +12,20 @@
 <file alias="sidebar-playqueue">icons/sidebar-playqueue.svg</file>
 <file alias="sidebar-search">icons/sidebar-search.svg</file>
 
-<file alias="soundcloud">online/icons/soundcloud.svg</file>
-<file alias="jamendo">online/icons/jamendo.svg</file>
-<file alias="magnatune">online/icons/magnatune.svg</file>
-<file alias="podcasts">online/icons/podcasts.svg</file>
+<file alias="magnatune.svg">online/icons/magnatune.svg</file>
 <file alias="bbc">online/icons/bbc.svg</file>
 <file alias="cbc">online/icons/cbc.svg</file>
 
-<file alias="favourites">streams/icons/favourites.svg</file>
-<file alias="icecast">streams/icons/icecast.svg</file>
-<file alias="shoutcast">streams/icons/shoutcast.svg</file>
-<file alias="tunein">streams/icons/tunein.svg</file>
-<file alias="dirble">streams/icons/dirble.svg</file>
+<file alias="shoutcast.svg">streams/icons/shoutcast.svg</file>
+<file alias="tunein.svg">streams/icons/tunein.svg</file>
+<file alias="dirble.svg">streams/icons/dirble.svg</file>
 
 <file alias="album.svg">icons/media-optical.svg</file>
 <file alias="album32.svg">icons/media-optical32.svg</file>
 <file alias="mono-album.svg">icons/view-media-album.svg</file>
 <file alias="artist.svg">icons/view-media-artist.svg</file>
 <file alias="genre.svg">icons/view-media-genre.svg</file>
-<file alias="dice.svg">icons/dice.svg</file>
-<file alias="playlist.svg">icons/playlist.svg</file>
 <file alias="radio.svg">icons/radio.svg</file>
-<file alias="gradcap.svg">icons/gradcap.svg</file>
 
 <file alias="podcast_directories.xml">online/podcast_directories.xml</file>
 <file alias="lyrics_providers.xml">context/lyrics_providers.xml</file>

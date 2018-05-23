@@ -29,9 +29,8 @@
 GLOBAL_STATIC(SmartPlaylists, instance)
 
 SmartPlaylists::SmartPlaylists()
-    : RulesPlaylists("gradcap", "smart")
+    : RulesPlaylists(FontAwesome::graduationcap, "smart")
 {
-    playlistIcon=MonoIcon::icon(FontAwesome::graduationcap, Utils::monoIconColor());
 }
 
 QString SmartPlaylists::name() const
@@ -61,7 +60,7 @@ QVariant SmartPlaylists::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case Qt::DecorationRole:
-        return playlistIcon;
+        return icn;
     case Cantata::Role_Actions:
         return ActionModel::data(index, role);
     default:

@@ -25,6 +25,8 @@
 #include "gui/apikeys.h"
 #include "network/networkaccessmanager.h"
 #include "mpd-interface/mpdconnection.h"
+#include "support/utils.h"
+#include "support/monoicon.h"
 #include <QUrl>
 #include <QUrlQuery>
 #include <QJsonDocument>
@@ -35,7 +37,7 @@ static const QLatin1String constUrl("https://api.soundcloud.com/tracks");
 SoundCloudService::SoundCloudService(QObject *p)
     : OnlineSearchService(p)
 {
-    icn.addFile(":"+constName);
+    icn=MonoIcon::icon(FontAwesome::soundcloud, Utils::monoIconColor());
 }
 
 QString SoundCloudService::name() const

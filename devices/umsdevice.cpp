@@ -57,11 +57,7 @@ UmsDevice::UmsDevice(MusicLibraryModel *m, Solid::Device &dev)
     defaultName=data()+details;
     setData(defaultName);
     setup();
-    icn=Icon(QStringList() << "drive-removable-media-usb-pendrive" << "drive-removable-media-usb"
-                           << "multimedia-player");
-    if (icn.isNull()) {
-        icn=MonoIcon::icon(FontAwesome::usb, Utils::clampColor(qApp->palette().text().color()));
-    }
+    icn=MonoIcon::icon(FontAwesome::usb, Utils::monoIconColor());
 }
 
 UmsDevice::~UmsDevice()

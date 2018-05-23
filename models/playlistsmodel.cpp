@@ -74,7 +74,7 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     , itemMenu(nullptr)
     , dropAdjust(0)
 {
-    icn.addFile(":playlist.svg");
+    icn=Icons::self()->playlistListIcon;
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(MPDConnection::self(), SIGNAL(playlistsRetrieved(const QList<Playlist> &)), this, SLOT(setPlaylists(const QList<Playlist> &)));
     connect(MPDConnection::self(), SIGNAL(playlistInfoRetrieved(const QString &, const QList<Song> &)), this, SLOT(playlistInfoRetrieved(const QString &, const QList<Song> &)));
@@ -345,7 +345,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 ? pl->visibleName()
                 : pl->visibleName()+"\n"+tr("%n Tracks (%1)", "", pl->songs.count()).arg(Utils::formatTime(pl->totalTime()));
         case Qt::DecorationRole:
-            return multiCol ? QVariant() : (pl->isSmartPlaylist ? Icons::self()->dynamicListIcon : Icons::self()->playlistListIcon);
+            return multiCol ? QVariant() : (pl->isSmartPlaylist ? Icons::self()->smartPlaylistIcon : Icons::self()->playlistListIcon);
         case Cantata::Role_SubText:
             if (!pl->loaded) {
                 pl->loaded=true;

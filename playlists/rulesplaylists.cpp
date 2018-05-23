@@ -24,6 +24,7 @@
 #include "dynamicplaylists.h"
 #include "config.h"
 #include "support/utils.h"
+#include "support/monoicon.h"
 #include "widgets/icons.h"
 #include "models/roles.h"
 #include "gui/settings.h"
@@ -103,10 +104,10 @@ QString RulesPlaylists::orderName(Order order)
     }
 }
 
-RulesPlaylists::RulesPlaylists(const QString &iconFile, const QString &dir)
+RulesPlaylists::RulesPlaylists(int icon, const QString &dir)
     : rulesDir(dir)
 {
-    icn.addFile(":"+iconFile+".svg");
+    icn=MonoIcon::icon((FontAwesome::icon)icon, Utils::monoIconColor());
     loadLocal();
 }
 

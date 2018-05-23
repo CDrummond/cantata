@@ -216,18 +216,11 @@ RemoteFsDevice::RemoteFsDevice(MusicLibraryModel *m, const DeviceOptions &option
 //    details.path=Utils::fixPath(details.path);
     load();
     mount();
-    icn=details.isLocalFile()
-            ? Icon("inode-directory")
-            : constSshfsProtocol==details.url.scheme()
-                ? Icon(QStringList() << "folder-network" << "utilities-terminal")
-                : Icon(QStringList() << "folder-samba" << "network-server");
-    if (icn.isNull()) {
-        icn=MonoIcon::icon(details.isLocalFile()
-                            ? FontAwesome::foldero
-                            : constSshfsProtocol==details.url.scheme()
-                                ? FontAwesome::linux_os
-                                : FontAwesome::windows, Utils::clampColor(qApp->palette().text().color()));
-    }
+    icn=MonoIcon::icon(details.isLocalFile()
+                       ? FontAwesome::foldero
+                       : constSshfsProtocol==details.url.scheme()
+                         ? FontAwesome::linux_os
+                         : FontAwesome::windows, Utils::monoIconColor());
 }
 
 RemoteFsDevice::RemoteFsDevice(MusicLibraryModel *m, const Details &d)
@@ -241,7 +234,11 @@ RemoteFsDevice::RemoteFsDevice(MusicLibraryModel *m, const Details &d)
 {
 //    details.path=Utils::fixPath(details.path);
     setup();
-    icn=Icon(details.isLocalFile() ? "inode-directory" : (constSshfsProtocol==details.url.scheme() ? "utilities-terminal" : "network-server"));
+    icn=MonoIcon::icon(details.isLocalFile()
+                       ? FontAwesome::foldero
+                       : constSshfsProtocol==details.url.scheme()
+                         ? FontAwesome::linux_os
+                         : FontAwesome::windows, Utils::monoIconColor());
 }
 
 RemoteFsDevice::~RemoteFsDevice() {

@@ -100,7 +100,7 @@ Icons::Icons()
     addBookmarkIcon=MonoIcon::icon(FontAwesome::bookmark, stdColor);
     audioListIcon=MonoIcon::icon(FontAwesome::music, stdColor);
     playlistListIcon=MonoIcon::icon(FontAwesome::list, stdColor);
-    dynamicListIcon=MonoIcon::icon(FontAwesome::cube, stdColor);
+    smartPlaylistIcon=MonoIcon::icon(FontAwesome::graduationcap, stdColor);
     rssListIcon=MonoIcon::icon(FontAwesome::rss, stdColor);
     savedRssListIcon=MonoIcon::icon(FontAwesome::rsssquare, stdColor);
     clockIcon=MonoIcon::icon(FontAwesome::clocko, stdColor);

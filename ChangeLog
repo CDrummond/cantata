@@ -49,6 +49,7 @@
 38. Cache lyrics using 'basic' artist name - e.g. X ft. Y => X
 39. When looking for lyrics, remove "ft. X", "featuring X", etc, from song
     title as well as artist.
+40. Fix adding streams from provider dialog.
 
 2.3.0
 -----

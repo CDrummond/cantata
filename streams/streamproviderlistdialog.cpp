@@ -217,7 +217,7 @@ static QString catName(int cat) {
     case Cat_ListenLive:        return QObject::tr("Local and National Radio (ListenLive)");
     }
 }
-#include <QDebug>
+
 void StreamProviderListDialog::jobFinished()
 {
     NetworkJob *j=qobject_cast<NetworkJob *>(sender());
@@ -234,8 +234,8 @@ void StreamProviderListDialog::jobFinished()
         if (j->ok()) {
             readProviders(j->actualJob());
         } else {
-            MessageBox::error(this, tr("Failed to download list of stream providers!"));
             slotButtonClicked(Close);
+            MessageBox::error(parentWidget(), tr("Failed to download list of stream providers!"));
         }
         if (spinner) {
             spinner->stop();

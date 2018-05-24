@@ -18,7 +18,7 @@
 
 <file alias="shoutcast.svg">streams/icons/shoutcast.svg</file>
 <file alias="tunein.svg">streams/icons/tunein.svg</file>
-<file alias="dirble.svg">streams/icons/dirble.svg</file>
+<file alias="station.svg">streams/icons/station.svg</file>
 
 <file alias="album.svg">icons/media-optical.svg</file>
 <file alias="album32.svg">icons/media-optical32.svg</file>

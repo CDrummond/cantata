@@ -500,7 +500,7 @@ StreamsModel::StreamsModel(QObject *parent)
     shoutCast=new ShoutCastCategoryItem(constShoutCastUrl, tr("ShoutCast"), root, MonoIcon::icon(":shoutcast.svg", col));
     shoutCast->configName="shoutcast";
     root->children.append(shoutCast);
-    dirble=new DirbleCategoryItem(constDirbleUrl, tr("Dirble"), root, MonoIcon::icon(":dirble.svg", col));
+    dirble=new DirbleCategoryItem(constDirbleUrl, tr("Dirble"), root, MonoIcon::icon(":station.svg", col));
     dirble->configName="dirble";
     root->children.append(dirble);
     favourites=new FavouritesCategoryItem(constFavouritesUrl, tr("Favorites"), root, MonoIcon::icon(FontAwesome::heart, MonoIcon::constRed));

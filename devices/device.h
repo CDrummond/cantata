@@ -108,7 +108,7 @@ public:
 
     ~Device() override { }
 
-    Icon icon() const override { return icn; }
+    QIcon icon() const override { return icn; }
     Song fixPath(const Song &orig, bool fullPath) const override;
     virtual QString coverFile() const { return QString(); }
     virtual bool isConnected() const=0;
@@ -186,7 +186,7 @@ protected:
     bool needToFixVa;
     bool jobAbortRequested;
     bool transcoding;
-    Icon icn;
+    QIcon icn;
 };
 
 #endif

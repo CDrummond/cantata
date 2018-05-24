@@ -29,7 +29,6 @@
 #include "mpd-interface/song.h"
 #include "gui/page.h"
 
-class Icon;
 class SelectorButton;
 class SizeWidget;
 class QLabel;

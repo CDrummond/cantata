@@ -32,7 +32,6 @@
 
 class QTimer;
 class Action;
-class Icon;
 
 class SyncCollectionWidget : public QWidget, Ui::SyncCollectionWidget
 {

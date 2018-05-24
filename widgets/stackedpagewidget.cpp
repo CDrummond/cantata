@@ -22,7 +22,6 @@
  */
 
 #include "stackedpagewidget.h"
-#include "support/icon.h"
 #include "support/utils.h"
 #include "support/squeezedtextlabel.h"
 #include "support/proxystyle.h"

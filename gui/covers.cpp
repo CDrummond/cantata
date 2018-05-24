@@ -1234,7 +1234,7 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
     key+=QString::number(size);
     QPixmap *pix=cache.object(key);
     if (!pix) {
-        const Icon &icn=song.isArtistImageRequest() || song.isComposerImageRequest()
+        const QIcon &icn=song.isArtistImageRequest() || song.isComposerImageRequest()
                 ? Icons::self()->artistIcon
                 : podcast
                     ? Icons::self()->podcastIcon

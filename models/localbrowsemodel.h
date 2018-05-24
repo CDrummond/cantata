@@ -40,13 +40,13 @@ public:
     QString name() const { return pathName; }
     QString title() const { return pathTitle; }
     QString descr() const { return pathDescr; }
-    const Icon & icon() const { return icn; }
+    const QIcon & icon() const { return icn; }
 
 private:
     QString pathName;
     QString pathTitle;
     QString pathDescr;
-    Icon icn;
+    QIcon icn;
 };
 
 class FileSystemProxyModel : public QSortFilterProxyModel

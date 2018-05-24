@@ -218,7 +218,7 @@ public:
     QString name() const;
     QString title() const;
     QString descr() const;
-    const Icon & icon() const { return icn; }
+    const QIcon & icon() const { return icn; }
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
@@ -263,7 +263,7 @@ public:
     void save();
     QList<Category> getCategories() const;
     void setHiddenCategories(const QSet<QString> &cats);
-    CategoryItem * addInstalledProvider(const QString &name, const Icon &icon, const QString &streamsFileName, bool replace);
+    CategoryItem * addInstalledProvider(const QString &name, const QIcon &icon, const QString &streamsFileName, bool replace);
     void removeInstalledProvider(const QString &key);
 
     QModelIndex categoryIndex(const CategoryItem *cat) const;
@@ -324,7 +324,7 @@ private:
     Action *configureDiAction;
     Action *reloadAction;
     QList<Item *> hiddenCategories;
-    Icon icn;
+    QIcon icn;
 };
 
 #endif

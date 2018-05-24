@@ -222,7 +222,7 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
     streamsFile.write(streamFile);
     streamsFile.close();
 
-    Icon icn;
+    QIcon icn;
     if (!icon.isEmpty()) {
         QFile iconFile(dir+Utils::constDirSep+iconName);
         if (iconFile.open(QIODevice::WriteOnly)) {

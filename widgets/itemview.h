@@ -36,7 +36,6 @@ class QTimer;
 class GroupedView;
 class ActionItemDelegate;
 class MessageOverlay;
-class Icon;
 class TableView;
 class QMenu;
 class Configuration;

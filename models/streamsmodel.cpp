@@ -88,18 +88,18 @@ static QString constDirbleUrl=QLatin1String("http://")+StreamsModel::constDirble
 
 static const QLatin1String constBookmarksDir=QLatin1String("bookmarks");
 
-static Icon getExternalIcon(const QString &path, QStringList files=QStringList() << StreamsModel::constSvgIcon <<  StreamsModel::constPngIcon)
+static QIcon getExternalIcon(const QString &path, QStringList files=QStringList() << StreamsModel::constSvgIcon <<  StreamsModel::constPngIcon)
 {
     for (const QString &file: files) {
         QString iconFile=path+Utils::constDirSep+file;
         if (QFile::exists(iconFile)) {
-            Icon icon;
+            QIcon icon;
             icon.addFile(iconFile);
             return icon;
         }
     }
 
-    return Icon();
+    return QIcon();
 }
 
 static QString categoryCacheName(const QString &name, bool createDir=false)
@@ -224,11 +224,7 @@ StreamsModel::CategoryItem * StreamsModel::CategoryItem::getBookmarksCategory()
 
 StreamsModel::CategoryItem * StreamsModel::CategoryItem::createBookmarksCategory()
 {
-    Icon icon=Icon("bookmarks");
-    if (icon.isNull()) {
-        icon=Icon("user-bookmarks");
-    }
-    CategoryItem *bookmarkCat = new CategoryItem(QString(), tr("Bookmarks"), this, icon);
+    CategoryItem *bookmarkCat = new CategoryItem(QString(), tr("Bookmarks"), this, MonoIcon::icon(FontAwesome::bookmark, Utils::monoIconColor()));
     bookmarkCat->state=CategoryItem::Fetched;
     bookmarkCat->isBookmarks=true;
     return bookmarkCat;
@@ -1747,7 +1743,7 @@ void StreamsModel::loadInstalledProviders()
     }
 }
 
-StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &name, const Icon &icon, const QString &streamsFileName, bool replace)
+StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &name, const QIcon &icon, const QString &streamsFileName, bool replace)
 {
     CategoryItem *cat=nullptr;
     if (streamsFileName.endsWith(constSettingsFile)) {

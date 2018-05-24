@@ -47,6 +47,7 @@
 #endif
 #include <QFile>
 #include <QTimer>
+#include <QStyle>
 #ifdef QT_QTDBUS_FOUND
 #include <QDBusConnection>
 #endif
@@ -87,8 +88,8 @@ ActionDialog::ActionDialog(QWidget *parent)
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
     setMainWidget(mainWidet);
-    errorIcon->setPixmap(QIcon::fromTheme("dialog-error").pixmap(64, 64));
-    skipIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(64, 64));
+    errorIcon->setPixmap(style()->standardIcon(QStyle::SP_MessageBoxCritical).pixmap(64, 64));
+    skipIcon->setPixmap(style()->standardIcon(QStyle::SP_MessageBoxWarning).pixmap(64, 64));
     configureSourceButton->setIcon(Icons::self()->configureIcon);
     configureDestButton->setIcon(Icons::self()->configureIcon);
     connect(configureSourceButton, SIGNAL(clicked()), SLOT(configureSource()));

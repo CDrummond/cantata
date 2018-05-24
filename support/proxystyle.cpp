@@ -100,10 +100,8 @@ QPixmap ProxyStyle::standardPixmap(StandardPixmap sp, const QStyleOption *opt, c
 {
     QPixmap pixmap=baseStyle()->standardPixmap(sp, opt, widget);
     switch (sp) {
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     case SP_LineEditClearButton:
         return editClearIcon.pixmap(pixmap.size());
-    #endif
     case SP_MessageBoxCritical:
         return errorIcon.pixmap(pixmap.size());
     case SP_MessageBoxWarning:
@@ -120,10 +118,8 @@ QPixmap ProxyStyle::standardPixmap(StandardPixmap sp, const QStyleOption *opt, c
 QIcon ProxyStyle::standardIcon(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const
 {
     switch (sp) {
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     case SP_LineEditClearButton:
         return editClearIcon;
-    #endif
     case SP_MessageBoxCritical:
         return errorIcon;
     case SP_MessageBoxWarning:

@@ -26,6 +26,7 @@
 #include "settings.h"
 #include "support/utils.h"
 #include "support/icon.h"
+#include "support/monoicon.h"
 #include "widgets/icons.h"
 #include "models/mpdlibrarymodel.h"
 #ifdef ENABLE_SIMPLE_MPD_SUPPORT
@@ -66,8 +67,8 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     dir->setText(det.dir);
     introPage->setBackground(Icons::self()->appIcon);
     connectionPage->setBackground(Icons::self()->audioListIcon);
-    coversPage->setBackground(Icons::self()->albumIconLarge);
-    finishedPage->setBackground(Icon("dialog-ok"));
+    coversPage->setBackground(Icons::self()->albumMonoIcon);
+    finishedPage->setBackground(MonoIcon::icon(FontAwesome::check, Utils::monoIconColor()));
     fetchCovers->setChecked(Settings::self()->fetchCovers());
     storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
 

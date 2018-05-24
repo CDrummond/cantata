@@ -372,8 +372,8 @@ public:
                     painter->drawPixmap(r.x()+r.width()-layoutSize.width(), r.y()+((r.height()-layoutSize.height())/2), layoutSize.width(), layoutSize.height(), pix);
                     r.adjust(3, 0, -(3+adjust), 0);
                 } else {
-                    painter->drawPixmap(r.x(), r.y()+((r.height()-layoutSize.height())/2), layoutSize.width(), layoutSize.height(), pix);
-                    r.adjust(adjust+3, 0, -3, 0);
+                    painter->drawPixmap(r.x()+2, r.y()+((r.height()-layoutSize.height())/2), layoutSize.width(), layoutSize.height(), pix);
+                    r.adjust(adjust+5, 0, -3, 0);
                 }
             }
         }

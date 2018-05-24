@@ -1,4 +1,4 @@
-file(GLOB TS_FILES *.ts)
+file(GLOB TS_FILES cantata_*.ts)
 foreach (TS_FILE ${TS_FILES})
     get_filename_component(TRANS ${TS_FILE} NAME_WE)
     list(APPEND CANTATA_TRANS "${TRANS}")

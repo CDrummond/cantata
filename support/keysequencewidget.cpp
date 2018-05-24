@@ -32,6 +32,7 @@
 #include <QIcon>
 #include <QMessageBox>
 #include <QToolButton>
+#include <QStyle>
 
 // This defines the unicode symbols for special keys (kCommandUnicode and friends)
 #ifdef Q_OS_MAC
@@ -172,17 +173,13 @@ KeySequenceWidget::KeySequenceWidget(QWidget *parent)
 
     _keyButton = new KeySequenceButton(this, this);
     _keyButton->setFocusPolicy(Qt::StrongFocus);
-    _keyButton->setIcon(QIcon::fromTheme("configure"));
     _keyButton->setToolTip(tr("Click on the button, then enter the shortcut like you would in the program.\nExample for Ctrl+a: hold the Ctrl key and press a."));
     layout->addWidget(_keyButton);
 
     _clearButton = new QToolButton(this);
     layout->addWidget(_clearButton);
 
-    if (qApp->isLeftToRight())
-        _clearButton->setIcon(QIcon::fromTheme("edit-clear-locationbar-rtl", QIcon::fromTheme("edit-clear")));
-    else
-        _clearButton->setIcon(QIcon::fromTheme("edit-clear-locationbar-ltr", QIcon::fromTheme("edit-clear")));
+    _clearButton->setIcon(style()->standardIcon(QStyle::SP_LineEditClearButton));
 
     setLayout(layout);
 

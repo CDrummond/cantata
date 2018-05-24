@@ -44,7 +44,7 @@ PathRequester::PathRequester(QWidget *parent)
     layout->addWidget(edit);
     layout->addWidget(btn);
     btn->setAutoRaise(true);
-    btn->setIcon(icon.isNull() ? QIcon::fromTheme("document-open") : icon);
+    btn->setIcon(icon);
     connect(btn, SIGNAL(clicked(bool)), SLOT(choose()));
     connect(edit, SIGNAL(textChanged(const QString &)), SIGNAL(textChanged(const QString &)));
 }

@@ -52,11 +52,7 @@ Action * ActionCollection::createAction(const QString &name, const QString &text
     Action *act = static_cast<Action *>(addAction(name));
     act->setText(text);
     if (nullptr!=icon) {
-        if ('m'==icon[0] && 'e'==icon[1] && 'd'==icon[2] && 'i'==icon[3] && 'a'==icon[4] && '-'==icon[5]) {
-            act->setIcon(Icon::getMediaIcon(icon));
-        } else {
-            act->setIcon(Icon(icon));
-        }
+        act->setIcon(Icon::get(icon));
     }
     if (!whatsThis.isEmpty()) {
         act->setWhatsThis(whatsThis);

@@ -65,7 +65,7 @@ static void themes(const QString &theme, QStringList &iconThemes)
 void CurrentCover::initIconThemes()
 {
     if (iconThemes.isEmpty()) {
-        themes(Icon::currentTheme(), iconThemes);
+        themes(QIcon::themeName(), iconThemes);
     }
 }
 

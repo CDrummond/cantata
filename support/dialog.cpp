@@ -281,7 +281,7 @@ void Dialog::setButtonGuiItem(ButtonCode button, const GuiItem &item)
         b->setText(item.text);
         if (style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons)) {
             if (!item.icon.isEmpty()) {
-                b->setIcon(Icon(item.icon));
+                b->setIcon(Icon::get(item.icon));
             } else if (item.monoIcon>0) {
                 b->setIcon(monoIcon(item));
             } else {
@@ -298,7 +298,7 @@ void Dialog::setButtonGuiItem(QDialogButtonBox::StandardButton button, const Gui
         b->setText(item.text);
         if (style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons)) {
             if (!item.icon.isEmpty()) {
-                b->setIcon(Icon(item.icon));
+                b->setIcon(Icon::get(item.icon));
             } else if (item.monoIcon>0) {
                 b->setIcon(monoIcon(item));
             } else {

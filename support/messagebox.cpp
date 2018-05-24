@@ -102,12 +102,12 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
     if (!yesText.text.isEmpty()) {
         QAbstractButton *btn=box.button(QMessageBox::Yes);
         btn->setText(yesText.text);
-        btn->setIcon(!yesText.icon.isEmpty() && btnIcons ? Icon(yesText.icon) : Icon());
+        btn->setIcon(!yesText.icon.isEmpty() && btnIcons ? Icon::get(yesText.icon) : QIcon());
     }
     if (!noText.text.isEmpty()) {
         QAbstractButton *btn=box.button(QMessageBox::No);
         btn->setText(noText.text);
-        btn->setIcon(!noText.icon.isEmpty() && btnIcons ? Icon(noText.icon) : Icon());
+        btn->setIcon(!noText.icon.isEmpty() && btnIcons ? Icon::get(noText.icon) : QIcon());
     }
     AcceleratorManager::manage(&box);
     return -1==box.exec() ? Cancel : map(box.standardButton(box.clickedButton()));

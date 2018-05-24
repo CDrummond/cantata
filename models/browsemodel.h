@@ -113,7 +113,7 @@ public:
     QString name() const;
     QString title() const;
     QString descr() const;
-    const Icon & icon() const { return icn; }
+    const QIcon & icon() const { return icn; }
     void clear();
     void load();
     bool isEnabled() const { return enabled; }
@@ -142,7 +142,7 @@ private:
     Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<Item*>(index.internalPointer()) : root; }
 
 private:
-    Icon icn;
+    QIcon icn;
     FolderItem *root;
     QMap<QString, FolderItem *> folderIndex;
     bool enabled;

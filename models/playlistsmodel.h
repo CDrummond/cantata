@@ -104,7 +104,7 @@ public:
     QString name() const;
     QString title() const;
     QString descr() const;
-    const Icon & icon() const { return icn; }
+    const QIcon & icon() const { return icn; }
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override { Q_UNUSED(parent) return COL_COUNT; }
     bool canFetchMore(const QModelIndex &index) const override;
@@ -163,7 +163,7 @@ private:
     quint32 allocateKey();
 
 private:
-    Icon icn;
+    QIcon icn;
     bool multiCol;
     QList<PlaylistItem *> items;
     QSet<quint32> usedKeys;

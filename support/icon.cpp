@@ -89,48 +89,6 @@ void Icon::init(QToolButton *btn, bool setFlat)
     }
 }
 
-Icon Icon::getMediaIcon(const QString &name)
-{
-    static QList<QIcon::Mode> modes=QList<QIcon::Mode>() << QIcon::Normal << QIcon::Disabled << QIcon::Active << QIcon::Selected;
-    Icon icn;
-    Icon icon(name);
-
-    for (QIcon::Mode mode: modes) {
-        icn.addPixmap(icon.pixmap(QSize(64, 64), mode).scaled(QSize(28, 28), Qt::KeepAspectRatio, Qt::SmoothTransformation), mode);
-        icn.addPixmap(icon.pixmap(QSize(48, 48), mode), mode);
-        icn.addPixmap(icon.pixmap(QSize(32, 32), mode), mode);
-        icn.addPixmap(icon.pixmap(QSize(24, 24), mode), mode);
-        icn.addPixmap(icon.pixmap(QSize(22, 22), mode), mode);
-        icn.addPixmap(icon.pixmap(QSize(16, 16), mode), mode);
-    }
-
-    return icn;
-}
-
-Icon Icon::create(const QString &name, const QList<int> &sizes, bool andSvg)
-{
-    Icon icon;
-    for (int s: sizes) {
-        icon.addFile(QLatin1Char(':')+name+QString::number(s), QSize(s, s));
-    }
-    if (andSvg) {
-        icon.addFile(QLatin1Char(':')+name+QLatin1String(".svg"));
-    }
-    return icon;
-}
-
-Icon::Icon(const QStringList &names)
-{
-    for (const QString &name: names) {
-        Icon icn(name);
-        if (!icn.isNull()) {
-            *this=icn;
-            return;
-        }
-    }
-    *this=Icon("unknown");
-}
-
 QPixmap Icon::getScaledPixmap(const QIcon &icon, int w, int h, int base)
 {
     QList<QSize> sizes=icon.availableSizes();

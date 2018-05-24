@@ -54,7 +54,7 @@ public:
     PodcastPage(QWidget *p, const QString &n);
     ~PodcastPage() override { cancel(); cancelImage(); }
     
-    const Icon & icon() const { return icn; }
+    const QIcon & icon() const { return icn; }
     const QString & name() const { return pageName; }
     QUrl currentRss() const;
 
@@ -87,7 +87,7 @@ protected:
     TextBrowser *text;
     NetworkJob *job;
     NetworkJob *imageJob;
-    Icon icn;
+    QIcon icn;
 };
 
 class PodcastSearchPage : public PodcastPage

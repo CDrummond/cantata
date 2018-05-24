@@ -28,7 +28,7 @@
 #include "mpd-interface/song.h"
 
 class QImage;
-class Icon;
+class QIcon;
 class SqueezedTextLabel;
 class QLabel;
 

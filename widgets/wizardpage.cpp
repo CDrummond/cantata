@@ -27,7 +27,7 @@
 #include <QPainter>
 #include <QStyle>
 
-void WizardPage::setBackground(const Icon &i)
+void WizardPage::setBackground(const QIcon &i)
 {
     int size=fontMetrics().height()*10;
     size=((int)(size/4))*4;

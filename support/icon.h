@@ -28,27 +28,18 @@
 
 class QToolButton;
 
-class Icon : public QIcon
+namespace Icon
 {
-public:
-    explicit Icon(const QString &icon) : QIcon(QIcon::fromTheme(icon)) { }
-    Icon(const QIcon &i) : QIcon(i) { }
-    Icon(const QStringList &names);
-    Icon() { }
-
-    static int stdSize(int s);
-    static int dlgIconSize();
-    static void init(QToolButton *btn, bool setFlat=true);
-    static Icon getMediaIcon(const QString &name);
-    static QString currentTheme() { return QIcon::themeName(); }
-    static Icon create(const QString &name, const QList<int> &sizes, bool andSvg=false);
+    extern int stdSize(int s);
+    extern int dlgIconSize();
+    extern void init(QToolButton *btn, bool setFlat=true);
+    inline QIcon get(const QString &name) { return name.startsWith(":") || name.startsWith("/") ? QIcon(name) : QIcon::fromTheme(name); }
 
     enum Std {
         Close,
         Clear
     };
-    static QPixmap getScaledPixmap(const QIcon &icon, int w, int h, int base);
-    QPixmap getScaledPixmap(int w, int h, int base) const { return getScaledPixmap(*this, w, h, base); }
-};
+    extern QPixmap getScaledPixmap(const QIcon &icon, int w, int h, int base);
+}
 
 #endif

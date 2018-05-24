@@ -326,7 +326,7 @@ Device::Device(MusicLibraryModel *m, const QString &name, const QString &id)
     , transcoding(false)
 {
     m_model=m;
-    icn=Icon(solidDev.isValid() ? solidDev.icon() : QLatin1String("inode-directory"));
+    icn=solidDev.isValid() ? Icon::get(solidDev.icon()) : Icons::self()->folderListIcon;
 }
 
 void Device::saveCache()

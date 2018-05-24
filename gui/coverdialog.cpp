@@ -824,8 +824,8 @@ void CoverDialog::menuRequested(const QPoint &pos)
 {
     if (!menu) {
         menu=new QMenu(list);
-        showAction=menu->addAction(Icon("zoom-original"), tr("Display"));
-        removeAction=menu->addAction(Icon("list-remove"), tr("Remove"));
+        showAction=menu->addAction(tr("Display"));
+        removeAction=menu->addAction(tr("Remove"));
         connect(showAction, SIGNAL(triggered()), SLOT(showImage()));
         connect(removeAction, SIGNAL(triggered()), SLOT(removeImages()));
     }

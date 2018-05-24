@@ -43,13 +43,13 @@ public:
     virtual QString name() const =0;
     virtual QString title() const =0;
     virtual QString descr() const =0;
-    const Icon & icon() const { return icn; }
+    const QIcon & icon() const { return icn; }
 
 protected:
     static void useCovers(const QString &name, bool onlyIfCache=false);
 
 protected:
-    Icon icn;
+    QIcon icn;
 };
 
 #endif

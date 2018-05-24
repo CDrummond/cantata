@@ -69,7 +69,7 @@ public:
     }
     ~MusicLibraryItemRoot() override { }
 
-    virtual Icon icon() const { return Icon(); }
+    virtual QIcon icon() const { return QIcon(); }
     virtual QImage image() const { return QImage(); }
     virtual Song fixPath(const Song &orig, bool) const { return orig; }
     virtual const QString & id() const { return m_itemData; }

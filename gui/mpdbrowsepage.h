@@ -43,7 +43,7 @@ public:
     QString name() const { return model.name(); }
     QString title() const { return model.title(); }
     QString descr() const { return model.descr(); }
-    const Icon & icon() const { return model.icon(); }
+    const QIcon & icon() const { return model.icon(); }
     QStringList selectedFiles(bool allowPlaylists=false) const override;
     QList<Song> selectedSongs(bool allowPlaylists=false) const override;
     #ifdef ENABLE_DEVICES_SUPPORT

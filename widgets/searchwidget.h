@@ -32,8 +32,6 @@
 #include <QList>
 #include <QPair>
 
-class Icon;
-
 class SearchWidget : public QWidget
 {
     Q_OBJECT

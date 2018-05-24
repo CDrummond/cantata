@@ -27,6 +27,7 @@
 #include "widgets/icons.h"
 #include "support/action.h"
 #include "support/configuration.h"
+#include "support/monoicon.h"
 #include "mpd-interface/mpdconnection.h"
 #include "support/messagebox.h"
 #include "gui/stdactions.h"
@@ -127,7 +128,10 @@ void DynamicPlaylistsPage::remoteDynamicSupport(bool s)
     }
     enableWidgets(s);
     #endif
-    view->setBackgroundImage(s ? Icon(QStringList() << "network-server-database.svg" << "applications-internet") : Icon());
+    if (s && server.isNull()) {
+        server = MonoIcon::icon(FontAwesome::server, Utils::monoIconColor());
+    }
+    view->setBackgroundImage(s ? server : QIcon());
 }
 
 void DynamicPlaylistsPage::add()

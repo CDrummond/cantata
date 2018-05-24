@@ -29,7 +29,7 @@
 #include "gui/page.h"
 #include <QMap>
 
-class Icon;
+class QIcon;
 class SelectorButton;
 class SizeWidget;
 class QLabel;
@@ -54,7 +54,7 @@ public:
     void save(Configuration &config) const;
     void setInfoText(const QString &text);
     void addPage(const QString &name, const QString &icon, const QString &text, const QString &subText, QWidget *widget);
-    void addPage(const QString &name, const Icon &icon, const QString &text, const QString &subText, QWidget *widget);
+    void addPage(const QString &name, const QIcon &icon, const QString &text, const QString &subText, QWidget *widget);
     void removePage(const QString &name);
     void sortItems();
     bool onMainPage() const { return mainPage==currentWidget(); }

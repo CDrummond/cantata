@@ -27,7 +27,7 @@
 #include <QWizardPage>
 #include <QPixmap>
 
-class Icon;
+class QIcon;
 
 class WizardPage : public QWizardPage
 {
@@ -35,7 +35,7 @@ public:
     WizardPage(QWidget *parent = nullptr) : QWizardPage(parent) { }
     ~WizardPage() override { }
 
-    void setBackground(const Icon &i);
+    void setBackground(const QIcon &i);
     void paintEvent(QPaintEvent *e) override;
 
 private:

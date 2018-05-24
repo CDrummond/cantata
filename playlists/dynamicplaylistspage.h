@@ -68,6 +68,7 @@ private:
     QString infoStr;
     QLabel *remoteRunningLabel;
     #endif
+    QIcon server;
 };
 
 #endif

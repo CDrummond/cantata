@@ -76,7 +76,7 @@ Icons::Icons()
     appIcon.addFile(":cantata64.png");
     appIcon.addFile(":cantata128.png");
     #else
-    appIcon=Icon("cantata");
+    appIcon=QIcon::fromTheme("cantata");
     #endif
 
     replacePlayQueueIcon=MonoIcon::icon(FontAwesome::play, stdColor);
@@ -151,7 +151,7 @@ void Icons::initToolbarIcons(QColor toolbarText)
     toolbarMenuIcon=MonoIcon::icon(FontAwesome::bars, toolbarText);
 }
 
-const Icon &Icons::albumIcon(int size, bool mono) const
+const QIcon & Icons::albumIcon(int size, bool mono) const
 {
     return !mono || albumMonoIcon.isNull()
                 ? size<48 ? albumIconSmall : albumIconLarge

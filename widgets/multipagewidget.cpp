@@ -43,7 +43,7 @@
 class SelectorButton : public ToolButton
 {
 public:
-    SelectorButton(const QString &t, const QString &s, const Icon &icn, QWidget *p)
+    SelectorButton(const QString &t, const QString &s, const QIcon &icn, QWidget *p)
         : ToolButton(p)
     {
         QGridLayout *layout=new QGridLayout(this);
@@ -70,7 +70,7 @@ public:
         subText->setAlignment(Qt::AlignTop);
         icon->setAlignment(Qt::AlignCenter);
         double dpr=DEVICE_PIXEL_RATIO();
-        QPixmap pix=icn.getScaledPixmap(icon->width()*dpr, icon->height()*dpr, 96*dpr);
+        QPixmap pix=Icon::getScaledPixmap(icn, icon->width()*dpr, icon->height()*dpr, 96*dpr);
         pix.setDevicePixelRatio(dpr);
         icon->setPixmap(pix);
         setAutoRaise(true);
@@ -196,12 +196,12 @@ void MultiPageWidget::setInfoText(const QString &text)
 
 void MultiPageWidget::addPage(const QString &name, const QString &icon, const QString &text, const QString &subText, QWidget *widget)
 {
-    Icon i;
+    QIcon i;
     i.addFile(":"+icon);
     addPage(name, i, text, subText, widget);
 }
 
-void MultiPageWidget::addPage(const QString &name, const Icon &icon, const QString &text, const QString &subText, QWidget *widget)
+void MultiPageWidget::addPage(const QString &name, const QIcon &icon, const QString &text, const QString &subText, QWidget *widget)
 {
     if (entries.contains(name)) {
         return;

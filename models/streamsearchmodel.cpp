@@ -45,7 +45,7 @@ StreamSearchModel::StreamSearchModel(QObject *parent)
     // ORDER *MUST* MATCH Category ENUM!!!!!
     root->children.append(new StreamsModel::CategoryItem("http://opml.radiotime.com/Search.ashx", tr("TuneIn"), root, MonoIcon::icon(":tunein.svg", Utils::monoIconColor())));
     root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist"), tr("ShoutCast"), root, MonoIcon::icon(":shoutcast.svg", Utils::monoIconColor())));
-    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/search/"), tr("Dirble"), root, MonoIcon::icon(":dirble.svg", Utils::monoIconColor())));
+    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/search/"), tr("Dirble"), root, MonoIcon::icon(":station.svg", Utils::monoIconColor())));
     icon = MonoIcon::icon(FontAwesome::search, Utils::monoIconColor());
 }
 

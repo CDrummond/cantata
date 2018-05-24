@@ -314,6 +314,7 @@ void StreamsSettings::slotButtonClicked(int button)
         remove();
         break;
     case Close:
+        save();
         reject();
         // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
         Dialog::slotButtonClicked(button);

@@ -146,22 +146,22 @@ MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const Q
     case Error:
         dlg->setCaption(title.isEmpty() ? QObject::tr("Error") : title);
         dlg->setButtons(Dialog::Ok);
-        iconLabel->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
+        iconLabel->setPixmap(qApp->style()->standardIcon(QStyle::SP_MessageBoxCritical).pixmap(iconSize, iconSize));
         break;
     case Question:
         dlg->setCaption(title.isEmpty() ? QObject::tr("Question") : title);
         dlg->setButtons(Dialog::Yes|Dialog::No);
-        iconLabel->setPixmap(Icon("dialog-question").pixmap(iconSize, iconSize));
+        iconLabel->setPixmap(qApp->style()->standardIcon(QStyle::SP_MessageBoxQuestion).pixmap(iconSize, iconSize));
         break;
     case Warning:
         dlg->setCaption(title.isEmpty() ? QObject::tr("Warning") : title);
         dlg->setButtons(Dialog::Yes|Dialog::No);
-        iconLabel->setPixmap(Icon("dialog-warning").pixmap(iconSize, iconSize));
+        iconLabel->setPixmap(qApp->style()->standardIcon(QStyle::SP_MessageBoxWarning).pixmap(iconSize, iconSize));
         break;
     case Information:
         dlg->setCaption(title.isEmpty() ? QObject::tr("Information") : title);
         dlg->setButtons(Dialog::Ok);
-        iconLabel->setPixmap(Icon("dialog-information").pixmap(iconSize, iconSize));
+        iconLabel->setPixmap(qApp->style()->standardIcon(QStyle::SP_MessageBoxInformation).pixmap(iconSize, iconSize));
         break;
     }
     lay->addWidget(iconLabel, 0, 0, 1, 1);

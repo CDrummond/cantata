@@ -269,9 +269,9 @@ QTemporaryFile * Device::copySongToTemp(Song &song)
 
     int index=song.file.lastIndexOf('.');
     if (index>0) {
-        temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX"+song.file.mid(index));
+        temp=new QTemporaryFile("cantata_XXXXXX"+song.file.mid(index));
     } else {
-        temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX");
+        temp=new QTemporaryFile("cantata_XXXXXX");
     }
 
     temp->setAutoRemove(false);

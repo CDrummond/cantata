@@ -546,7 +546,7 @@ void CoverDialog::downloadJobFinished()
             QTemporaryFile *temp=nullptr;
 
             if (isLarge || (reply->property(constThumbProperty).toString()==reply->property(constLargeProperty).toString())) {
-                temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX."+(format ? QString(QLatin1String(format)).toLower() : "png"));
+                temp=new QTemporaryFile("cantata_XXXXXX."+(format ? QString(QLatin1String(format)).toLower() : "png"));
 
                 if (temp->open()) {
                     if (!format) {

@@ -754,9 +754,9 @@ static QTemporaryFile * saveImageToTemp(const QImage &img, const QString &name)
 
     int index=name.lastIndexOf('.');
     if (index>0) {
-        temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX"+name.mid(index));
+        temp=new QTemporaryFile("cantata_XXXXXX"+name.mid(index));
     } else {
-        temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX");
+        temp=new QTemporaryFile("cantata_XXXXXX");
     }
     img.save(temp);
     temp->close();
@@ -1339,7 +1339,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
 
     if (transcoding) {
         deleteTemp();
-        tempFile=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX."+encoder.extension);
+        tempFile=new QTemporaryFile("cantata_XXXXXX."+encoder.extension);
         tempFile->setAutoRemove(false);
 
         if (!tempFile->open()) {

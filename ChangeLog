@@ -51,6 +51,7 @@
     title as well as artist.
 40. Fix adding streams from provider dialog.
 41. Reduce number of confirmation dialogs.
+42. Remove group warning from initial wizard.
 
 2.3.0
 -----

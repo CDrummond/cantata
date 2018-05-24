@@ -64,15 +64,6 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     port->setValue(det.port);
     password->setText(det.password);
     dir->setText(det.dir);
-    #if defined Q_OS_WIN || defined Q_OS_MAC
-    bool showGroupWarning=false;
-    #else
-    bool showGroupWarning=0==Utils::getGroupId();
-    #endif
-    groupWarningLabel->setVisible(showGroupWarning);
-    groupWarningIcon->setVisible(showGroupWarning);
-    int iconSize=Icon::dlgIconSize();
-    groupWarningIcon->setPixmap(Icon("dialog-warning").pixmap(iconSize, iconSize));
     introPage->setBackground(Icons::self()->appIcon);
     connectionPage->setBackground(Icons::self()->audioListIcon);
     coversPage->setBackground(Icons::self()->albumIconLarge);

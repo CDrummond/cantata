@@ -61,7 +61,7 @@ void ProxyStyle::polish(QWidget *widget)
 
 int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
 {
-    return SH_DialogButtonBox_ButtonsHaveIcons == hint ? false : baseStyle()->styleHint(hint, option, widget, returnData);
+    return SH_DialogButtonBox_ButtonsHaveIcons == hint && Utils::KDE!=Utils::currentDe() ? false : baseStyle()->styleHint(hint, option, widget, returnData);
 }
 
 int ProxyStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const

@@ -54,6 +54,7 @@
 42. Remove group warning from initial wizard.
 43. Fix saving stream settings.
 44. Fix usage of podcast cover in title widget.
+45. Fix playback of downloaded podcasts.
 
 2.3.0
 -----

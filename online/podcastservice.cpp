@@ -649,15 +649,14 @@ QList<Song> PodcastService::songs(const QModelIndexList &indexes, bool allowPlay
 
 Song & PodcastService::fixPath(Song &song) const
 {
-    song.setPodcastLocalPath(QString());
     song.setIsFromOnlineService(constName);
     song.artist=title();
     if (!song.podcastLocalPath().isEmpty() && QFile::exists(song.podcastLocalPath())) {
-        if (MPDConnection::self()->localFilePlaybackSupported()) {
-            song.file=QLatin1String("file://")+song.podcastLocalPath();
-        } else if (HttpServer::self()->isAlive()) {
+        if (HttpServer::self()->isAlive()) {
             song.file=song.podcastLocalPath();
             song.file=HttpServer::self()->encodeUrl(song);
+        } else if (MPDConnection::self()->localFilePlaybackSupported()) {
+            song.file=QLatin1String("file://")+song.podcastLocalPath();
         }
         return song;
     }

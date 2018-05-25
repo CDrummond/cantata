@@ -26,6 +26,7 @@
 
 #include <QProxyStyle>
 #include <QIcon>
+#include <QMap>
 
 class ProxyStyle : public QProxyStyle
 {
@@ -53,13 +54,7 @@ public:
 
 private:
     int modViewFrame;
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    QIcon editClearIcon;
-    #endif
-    QIcon errorIcon;
-    QIcon warningIcon;
-    QIcon questionIcon;
-    QIcon infoIcon;
+    QMap<StandardPixmap, QIcon> icons;
 };
 
 #endif

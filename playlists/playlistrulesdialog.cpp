@@ -25,11 +25,13 @@
 #include "playlistruledialog.h"
 #include "support/messagebox.h"
 #include "widgets/basicitemdelegate.h"
+#include "widgets/icons.h"
 #include <QIcon>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QSortFilterProxyModel>
 #include <QSpinBox>
+#include <QStyle>
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -156,6 +158,11 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
         connect(rules, SIGNAL(saved(bool)), SLOT(saved(bool)));
     }
 
+    if (style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons)) {
+        addBtn->setIcon(Icons::self()->addIcon);
+        editBtn->setIcon(Icons::self()->editIcon);
+        removeBtn->setIcon(Icons::self()->removeIcon);
+    }
     rulesList->setInfoText(tr("Each playlist requires a unique name, enter that above.\n\n"
                               "Use the 'Add' button to add a 'rule' to control which artists, genres, etc you want included in the playlist. "
                               "Any rules added will be listed here. "

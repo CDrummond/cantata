@@ -40,14 +40,15 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     , srv(s)
     , proxy(this)
 {
+    QIcon newIcon = MonoIcon::icon(FontAwesome::asterisk, Utils::monoIconColor());
     subscribeAction = new Action(Icons::self()->addNewItemIcon, tr("Add Subscription"), this);
     unSubscribeAction = new Action(Icons::self()->removeIcon, tr("Remove Subscription"), this);
     downloadAction = new Action(Icons::self()->downloadIcon, tr("Download Episodes"), this);
     deleteAction = new Action(MonoIcon::icon(FontAwesome::trash, MonoIcon::constRed, MonoIcon::constRed), tr("Delete Downloaded Episodes"), this);
     cancelDownloadAction = new Action(Icons::self()->cancelIcon, tr("Cancel Download"), this);
-    markAsNewAction = new Action(MonoIcon::icon(FontAwesome::asterisk, Utils::monoIconColor()), tr("Mark Episodes As New"), this);
+    markAsNewAction = new Action(newIcon, tr("Mark Episodes As New"), this);
     markAsListenedAction = new Action(tr("Mark Episodes As Listened"), this);
-    unplayedOnlyAction = new Action(Icons::self()->rssListIcon, tr("Show Unplayed Only"), this);
+    unplayedOnlyAction = new Action(newIcon, tr("Show Unplayed Only"), this);
     unplayedOnlyAction->setCheckable(true);
 
     proxy.setSourceModel(srv);

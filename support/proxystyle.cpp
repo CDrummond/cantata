@@ -39,13 +39,23 @@ const char * ProxyStyle::constModifyFrameProp="mod-frame";
 ProxyStyle::ProxyStyle(int modView)
     : modViewFrame(modView)
 {
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    editClearIcon=MonoIcon::icon(FontAwesome::timescircle, QColor(128, 128, 128), QColor(128, 128, 128));
-    #endif
-    errorIcon=MonoIcon::icon(FontAwesome::timescircleo, MonoIcon::constRed, MonoIcon::constRed);
-    warningIcon=MonoIcon::icon(FontAwesome::exclamationtriangle, QColor(0xff, 0x99, 0x00), QColor(0xff, 0x99, 0x00));
-    questionIcon=MonoIcon::icon(FontAwesome::questioncircle, QColor(0x1a, 0x8c, 0xff), QColor(0x1a, 0x8c, 0xff));
-    infoIcon=MonoIcon::icon(FontAwesome::infocircle, QColor(0x1a, 0x8c, 0xff), QColor(0x1a, 0x8c, 0xff));
+    icons.insert(SP_LineEditClearButton, MonoIcon::icon(FontAwesome::timescircle, QColor(128, 128, 128), QColor(128, 128, 128)));
+    icons.insert(SP_MessageBoxCritical, MonoIcon::icon(FontAwesome::timescircleo, MonoIcon::constRed, MonoIcon::constRed));
+    icons.insert(SP_MessageBoxWarning, MonoIcon::icon(FontAwesome::exclamationtriangle, QColor(0xff, 0x99, 0x00), QColor(0xff, 0x99, 0x00)));
+    icons.insert(SP_MessageBoxQuestion, MonoIcon::icon(FontAwesome::questioncircle, QColor(0x1a, 0x8c, 0xff), QColor(0x1a, 0x8c, 0xff)));
+    icons.insert(SP_MessageBoxInformation, MonoIcon::icon(FontAwesome::infocircle, QColor(0x1a, 0x8c, 0xff), QColor(0x1a, 0x8c, 0xff)));
+
+    QColor monoCol = Utils::monoIconColor();
+    icons.insert(SP_DialogCancelButton, MonoIcon::icon(FontAwesome::ban, monoCol, monoCol));
+    icons.insert(SP_DialogHelpButton, MonoIcon::icon(FontAwesome::lifering, monoCol, monoCol));
+    icons.insert(SP_DialogOpenButton, MonoIcon::icon(FontAwesome::foldero, monoCol, monoCol));
+    icons.insert(SP_DialogSaveButton, MonoIcon::icon(FontAwesome::save, monoCol, monoCol));
+    icons.insert(SP_DialogCloseButton, MonoIcon::icon(FontAwesome::close, MonoIcon::constRed, MonoIcon::constRed));
+    icons.insert(SP_DialogApplyButton, MonoIcon::icon(FontAwesome::check, monoCol, monoCol));
+    icons.insert(SP_DialogResetButton, MonoIcon::icon(FontAwesome::undo, monoCol, monoCol));
+    icons.insert(SP_DialogDiscardButton, MonoIcon::icon(FontAwesome::trash, MonoIcon::constRed, MonoIcon::constRed));
+    icons.insert(SP_DialogYesButton, MonoIcon::icon(FontAwesome::check, monoCol, monoCol));
+    icons.insert(SP_DialogNoButton, MonoIcon::icon(FontAwesome::times, MonoIcon::constRed, MonoIcon::constRed));
 }
 
 void ProxyStyle::polish(QWidget *widget)
@@ -99,36 +109,12 @@ void ProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *opt
 QPixmap ProxyStyle::standardPixmap(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const
 {
     QPixmap pixmap=baseStyle()->standardPixmap(sp, opt, widget);
-    switch (sp) {
-    case SP_LineEditClearButton:
-        return editClearIcon.pixmap(pixmap.size());
-    case SP_MessageBoxCritical:
-        return errorIcon.pixmap(pixmap.size());
-    case SP_MessageBoxWarning:
-        return warningIcon.pixmap(pixmap.size());
-    case SP_MessageBoxQuestion:
-        return questionIcon.pixmap(pixmap.size());
-    case SP_MessageBoxInformation:
-        return infoIcon.pixmap(pixmap.size());
-    default:
-        return pixmap;
-    }
+    const auto icon = icons.find(sp);
+    return icon==icons.constEnd() ? pixmap : icon.value().pixmap(pixmap.size());
 }
 
 QIcon ProxyStyle::standardIcon(StandardPixmap sp, const QStyleOption *opt, const QWidget *widget) const
 {
-    switch (sp) {
-    case SP_LineEditClearButton:
-        return editClearIcon;
-    case SP_MessageBoxCritical:
-        return errorIcon;
-    case SP_MessageBoxWarning:
-        return warningIcon;
-    case SP_MessageBoxQuestion:
-        return questionIcon;
-    case SP_MessageBoxInformation:
-        return infoIcon;
-    default:
-        return baseStyle()->standardIcon(sp, opt, widget);
-    }
+    const auto icon = icons.find(sp);
+    return icon==icons.constEnd() ? baseStyle()->standardIcon(sp, opt, widget) : icon.value();
 }

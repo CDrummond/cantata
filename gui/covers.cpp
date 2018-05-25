@@ -206,6 +206,17 @@ static inline bool isOnlineServiceImage(const Song &s)
 static Covers::Image serviceImage(const Song &s)
 {
     Covers::Image img;
+
+    if (s.hasExtraField(Song::OnlineImageCacheName)) {
+        img.fileName=s.extraField(Song::OnlineImageCacheName);
+        if (!img.fileName.isEmpty()) {
+            img.img=loadImage(img.fileName);
+            if (!img.img.isNull()) {
+                DBUG_CLASS("Covers") << s.onlineService() << img.fileName;
+                return img;
+            }
+        }
+    }
     img.fileName=OnlineService::iconPath(s.onlineService());
     if (!img.fileName.isEmpty()) {
         img.img=loadImage(img.fileName);

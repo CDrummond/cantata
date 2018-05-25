@@ -77,6 +77,7 @@ public:
         }
         bool mouseOver=option.state&QStyle::State_MouseOver;
         bool selected=option.state&QStyle::State_Selected;
+        bool active=option.state&QStyle::State_Active;
 
         if (standard) {
             if (GtkStyle::isActive()) {
@@ -118,7 +119,11 @@ public:
 
         const QString text = index.model()->data(index, Qt::DisplayRole).toString();
         const QIcon icon = index.model()->data(index, Qt::DecorationRole).value<QIcon>();
-        const QPixmap pixmap = icon.pixmap(iconSize, iconSize, option.state&QStyle::State_Selected ? QIcon::Selected : QIcon::Normal);
+        const QPixmap pixmap = icon.pixmap(iconSize, iconSize,
+                                           selected &&
+                                           ( active ||
+                                             option.palette.brush(QPalette::Inactive, QPalette::HighlightedText).color()==
+                                             option.palette.brush(QPalette::Active, QPalette::HighlightedText).color()) ? QIcon::Selected : QIcon::Normal);
 
         QFontMetrics fm = painter->fontMetrics();
         QSize layoutSize = pixmap.isNull() ? QSize(iconSize, iconSize) : (pixmap.size() / pixmap.DEVICE_PIXEL_RATIO());
@@ -132,7 +137,7 @@ public:
         QPen pen = painter->pen();
         QPalette::ColorGroup cg = option.state & QStyle::State_Enabled
                 ? QPalette::Normal : QPalette::Disabled;
-        if (cg == QPalette::Normal && !(option.state & QStyle::State_Active)) {
+        if (cg == QPalette::Normal && !active) {
             cg = QPalette::Inactive;
         }
 

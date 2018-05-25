@@ -250,6 +250,7 @@ void PodcastWidget::markAsListened()
 
 void PodcastWidget::showUnplayedOnly(bool on)
 {
+    view->goToTop();
     proxy.showUnplayedOnly(on);
 }
 

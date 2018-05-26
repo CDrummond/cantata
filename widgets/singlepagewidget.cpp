@@ -114,7 +114,6 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
     if (!left.isEmpty()) {
         QHBoxLayout *ll=new QHBoxLayout();
         ll->setMargin(0);
-        ll->setSpacing(0);
         for (QWidget *b: left) {
             Application::fixSize(b);
             ll->addWidget(b);
@@ -124,7 +123,6 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
     if (!right.isEmpty()) {
         QHBoxLayout *rl=new QHBoxLayout();
         rl->setMargin(0);
-        rl->setSpacing(0);
         for (QWidget *b: right) {
             Application::fixSize(b);
             rl->addWidget(b);

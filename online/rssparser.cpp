@@ -113,7 +113,7 @@ static Episode parseEpisode(QXmlStreamReader &reader)
         const QStringRef name = reader.name();
         if (reader.isStartElement()) {
             if (QLatin1String("title")==name) {
-                ep.name=reader.readElementText();
+                ep.name=reader.readElementText().simplified();
             } else if (QLatin1String("duration")==name && constITunesNameSpace==reader.namespaceUri()) {
                 QStringList parts = reader.readElementText().split(':');
                 if (2==parts.count()) {
@@ -182,7 +182,7 @@ Channel RssParser::parse(QIODevice *dev, bool getEpisodes, bool getDescription)
             if (reader.isStartElement()) {
                 const QStringRef name = reader.name();
                 if (ch.name.isEmpty() && QLatin1String("title")==name) {
-                    ch.name=reader.readElementText();
+                    ch.name=reader.readElementText().simplified();
                 } else if (QLatin1String("image")==name && ch.image.isEmpty()) {
                     if (constITunesNameSpace==reader.namespaceUri()) {
                         ch.image=reader.attributes().value(QLatin1String("href")).toString();

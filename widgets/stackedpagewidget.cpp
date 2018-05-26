@@ -26,7 +26,6 @@
 #include "support/squeezedtextlabel.h"
 #include "support/proxystyle.h"
 #include "listview.h"
-#include "sizewidget.h"
 #include "singlepagewidget.h"
 #include <QGridLayout>
 #include <QToolButton>

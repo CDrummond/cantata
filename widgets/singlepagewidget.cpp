@@ -22,11 +22,11 @@
  */
 
 #include "singlepagewidget.h"
-#include "widgets/sizewidget.h"
 #include "widgets/spacerwidget.h"
 #include "widgets/toolbutton.h"
 #include "widgets/icons.h"
 #include "gui/stdactions.h"
+#include "gui/application.h"
 #include "mpd-interface/mpdconnection.h"
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -53,10 +53,10 @@ SinglePageWidget::SinglePageWidget(QWidget *p)
 {
     QGridLayout *layout=new QGridLayout(this);
     view=new ItemView(this);
+    QWidget *sizer=new QWidget(this);
+    Application::fixSize(sizer);
     layout->addWidget(view, 1, 0, 1, 5);
-//    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Preferred), 2, 1, 1, 1);
-    layout->addWidget(new SizeWidget(this), 2, 2, 1, 1);
-//    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Preferred), 2, 3, 1, 1);
+    layout->addWidget(sizer, 2, 2, 1, 1);
     layout->setMargin(0);
     layout->setSpacing(0);
     connect(view, SIGNAL(searchItems()), this, SIGNAL(searchItems()));
@@ -67,6 +67,7 @@ SinglePageWidget::SinglePageWidget(QWidget *p)
 
 void SinglePageWidget::addWidget(QWidget *w)
 {
+    Application::fixSize(w);
     static_cast<QGridLayout *>(layout())->addWidget(w, 0, 0, 1, 5);
 }
 
@@ -112,14 +113,20 @@ void SinglePageWidget::init(int flags, const QList<QWidget *> &leftXtra, const Q
 
     if (!left.isEmpty()) {
         QHBoxLayout *ll=new QHBoxLayout();
+        ll->setMargin(0);
+        ll->setSpacing(0);
         for (QWidget *b: left) {
+            Application::fixSize(b);
             ll->addWidget(b);
         }
         static_cast<QGridLayout *>(layout())->addItem(ll, 2, 0, 1, 1);
     }
     if (!right.isEmpty()) {
         QHBoxLayout *rl=new QHBoxLayout();
+        rl->setMargin(0);
+        rl->setSpacing(0);
         for (QWidget *b: right) {
+            Application::fixSize(b);
             rl->addWidget(b);
         }
         static_cast<QGridLayout *>(layout())->addItem(rl, 2, 4, 1, 1);

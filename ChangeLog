@@ -56,6 +56,7 @@
 44. Fix usage of podcast cover in title widget.
 45. Fix playback of downloaded podcasts.
 46. Simplify whitespace of podcast name and episode names.
+47. Fix saving of podcast images to JPG.
 
 2.3.0
 -----

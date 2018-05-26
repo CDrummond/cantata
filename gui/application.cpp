@@ -113,9 +113,9 @@ void Application::fixSize(QWidget *widget)
         tb->setFixedSize(fixedHeight, fixedHeight);
     } else {
         #ifdef Q_OS_MAC
-        // TODO: Why is this +8 required for macOS? If its not used, library page's statusbar is larger
+        // TODO: Why is this +(2*focus) required for macOS? If its not used, library page's statusbar is larger
         // than the rest - due to genre combo?
-        widget->setFixedHeight(fixedHeight+8);
+        widget->setFixedHeight(fixedHeight+(2*widget->style()->pixelMetric(QStyle::PM_FocusFrameHMargin)));
         #else
         widget->setFixedHeight(fixedHeight);
         #endif

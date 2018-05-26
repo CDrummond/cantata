@@ -8241,7 +8241,7 @@ Si está búsqueda ofrece letras nuevas, seguirán asociadas al título de la ca
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="348"/>
-        <source>Play next</source>
+        <source>Play Next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

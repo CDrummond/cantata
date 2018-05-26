@@ -9113,7 +9113,7 @@ Ha a kereső új dalszöveget talál, hozzákapcsolható az eredeti dalhoz és e
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="348"/>
-        <source>Play next</source>
+        <source>Play Next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

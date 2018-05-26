@@ -22,6 +22,7 @@
  */
 
 #include "multipagewidget.h"
+#include "gui/application.h"
 #include "support/icon.h"
 #include "support/utils.h"
 #include "support/squeezedtextlabel.h"
@@ -31,7 +32,6 @@
 #include "support/osxstyle.h"
 #endif
 #include "listview.h"
-#include "sizewidget.h"
 #include "singlepagewidget.h"
 #include "toolbutton.h"
 #include <QGridLayout>
@@ -127,7 +127,8 @@ MultiPageWidget::MultiPageWidget(QWidget *p)
     mainPage=new QWidget(this);
     QVBoxLayout *mainLayout=new QVBoxLayout(mainPage);
     infoLabel=new QLabel(mainPage);
-    sizer=new SizeWidget(mainPage);
+    QWidget *sizer=new QWidget(mainPage);
+    Application::fixSize(sizer);
     QScrollArea *scroll = new QScrollArea(this);
     view = new QWidget(scroll);
     QVBoxLayout *layout = new QVBoxLayout(view);

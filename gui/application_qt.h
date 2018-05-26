@@ -29,6 +29,7 @@ class Application : public QApplication
 {
 public:
     static void init();
+    static void fixSize(QWidget *widget);
     Application(int &argc, char **argv);
     ~Application() override { }
 

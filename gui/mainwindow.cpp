@@ -25,6 +25,7 @@
  */
 
 #include "mainwindow.h"
+#include "application.h"
 #include "support/thread.h"
 #include "trayitem.h"
 #include "support/messagebox.h"
@@ -535,6 +536,13 @@ void MainWindow::init()
 
     playPauseTrackButton->setIconSize(QSize(playPauseIconSize, playPauseIconSize));
     playPauseTrackButton->setFixedSize(QSize(playPauseIconSize+6, playPauseIconSize+6));
+
+    QList<QWidget *> pqWidgets = QList<QWidget *>() << stopDynamicButton << dynamicLabel << playQueueStatsLabel << fullScreenLabel
+                                                    << repeatButton << singleButton << randomButton << consumeButton << midSpacer
+                                                    << centerPlayQueueButton << savePlayQueueButton << clearPlayQueueButton << sizeGrip;
+    for (const auto &item: pqWidgets) {
+        Application::fixSize(item);
+    }
 
     if (fullScreenAction->isEnabled()) {
         fullScreenAction->setChecked(Settings::self()->showFullScreen());

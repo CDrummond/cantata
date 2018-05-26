@@ -70,7 +70,6 @@ private:
     QWidget *mainPage;
     QWidget *view;
     QLabel *infoLabel;
-    SizeWidget *sizer;
     QMap<QString, Entry> entries;
 };
 

@@ -33,9 +33,12 @@
 #include "tags/taghelperiface.h"
 #include "scrobbling/scrobbler.h"
 #include "support/fancytabwidget.h"
+#include "support/combobox.h"
 #include "widgets/itemview.h"
 #include "widgets/groupedview.h"
 #include "widgets/actionitemdelegate.h"
+#include "widgets/toolbutton.h"
+#include "widgets/sizegrip.h"
 #include "http/httpserver.h"
 #include "config.h"
 
@@ -87,4 +90,34 @@ void Application::init()
     FancyTabWidget::setup();
     GroupedView::setup();
     ActionItemDelegate::setup();
+}
+
+void Application::fixSize(QWidget *widget)
+{
+    static int fixedHeight = -1;
+    if (-1 == fixedHeight) {
+        ComboBox c(widget);
+        ToolButton b(widget);
+        SizeGrip g(widget);
+        c.ensurePolished();
+        b.ensurePolished();
+        g.ensurePolished();
+        fixedHeight=qMax(24, qMax(c.sizeHint().height(), qMax(b.sizeHint().height(), g.sizeHint().height())));
+        if (fixedHeight%2) {
+            fixedHeight--;
+        }
+    }
+
+    QToolButton *tb=qobject_cast<QToolButton *>(widget);
+    if (tb) {
+        tb->setFixedSize(fixedHeight, fixedHeight);
+    } else {
+        #ifdef Q_OS_MAC
+        // TODO: Why is this +8 required for macOS? If its not used, library page's statusbar is larger
+        // than the rest - due to genre combo?
+        widget->setFixedHeight(fixedHeight+8);
+        #else
+        widget->setFixedHeight(fixedHeight);
+        #endif
+    }
 }

@@ -159,7 +159,7 @@
          <widget class="PlayQueueView" name="playQueue"/>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="hlayout">
+         <layout class="QHBoxLayout" name="playQueueBottomLayout">
           <property name="spacing">
            <number>1</number>
           </property>
@@ -252,9 +252,6 @@
            <widget class="ToolButton" name="clearPlayQueueButton"/>
           </item>
           <item>
-           <widget class="SizeWidget" name="sizeWidget"/>
-          </item>
-          <item>
            <widget class="SizeGrip" name="sizeGrip" native="true"/>
           </item>
          </layout>
@@ -325,11 +322,6 @@
    <class>SpacerWidget</class>
    <extends>QWidget</extends>
    <header>widgets/spacerwidget.h</header>
-  </customwidget>
-  <customwidget>
-   <class>SizeWidget</class>
-   <extends>QWidget</extends>
-   <header>widgets/sizewidget.h</header>
   </customwidget>
   <customwidget>
    <class>SizeGrip</class>

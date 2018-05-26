@@ -3325,7 +3325,7 @@ Hvis søgningen ikke finder nye sangtekster, vil de stadig være tilknyttet den 
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="348"/>
-        <source>Play next</source>
+        <source>Play Next</source>
         <translation>Afspil næste</translation>
     </message>
     <message>

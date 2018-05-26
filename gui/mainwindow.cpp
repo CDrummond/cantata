@@ -363,7 +363,7 @@ void MainWindow::init()
     locateMenu->addAction(locateTrackAction);
     locateAction->setMenu(locateMenu);
 
-    playNextAction = ActionCollection::get()->createAction("playnext", tr("Play next"));
+    playNextAction = ActionCollection::get()->createAction("playnext", tr("Play Next"));
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", Utils::strippedText(StdActions::self()->editTagsAction->text()), StdActions::self()->editTagsAction->icon());
     editPlayQueueTagsAction->setSettingsText(tr("Edit Track Information (Play Queue)"));

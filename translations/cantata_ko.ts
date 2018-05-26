@@ -9731,7 +9731,7 @@ If this search does find new lyrics, these will still be associated with the ori
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="348"/>
-        <source>Play next</source>
+        <source>Play Next</source>
         <translation type="unfinished">다음 곡 재생</translation>
     </message>
     <message>

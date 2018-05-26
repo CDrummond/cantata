@@ -9791,7 +9791,7 @@ Jeśli to wyszukiwanie się powiedzie, to znaleziony tekst zostanie przyporządk
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="348"/>
-        <source>Play next</source>
+        <source>Play Next</source>
         <translation>Odtwarzaj następny</translation>
     </message>
     <message>

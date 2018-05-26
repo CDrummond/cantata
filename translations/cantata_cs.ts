@@ -9769,7 +9769,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="348"/>
-        <source>Play next</source>
+        <source>Play Next</source>
         <translation>Přehrát další</translation>
     </message>
     <message>

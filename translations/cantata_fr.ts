@@ -8588,7 +8588,7 @@ Si cette recherche donne de nouveaux résultats, ils seront toujours associés a
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="348"/>
-        <source>Play next</source>
+        <source>Play Next</source>
         <translation type="unfinished">Lire la suite</translation>
     </message>
     <message>

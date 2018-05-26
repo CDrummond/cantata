@@ -117,7 +117,11 @@ void Application::fixSize(QWidget *widget)
         // than the rest - due to genre combo?
         widget->setFixedHeight(fixedHeight+(2*widget->style()->pixelMetric(QStyle::PM_FocusFrameHMargin)));
         #else
-        widget->setFixedHeight(fixedHeight);
+        if (0==qstrcmp("QWidget", widget->metaObject()->className())) {
+            widget->setFixedHeight(fixedHeight+Utils::scaleForDpi(4));
+        } else {
+            widget->setFixedHeight(fixedHeight);
+        }
         #endif
     }
 }

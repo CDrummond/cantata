@@ -892,10 +892,16 @@ void CoverDownloader::onlineJobFinished()
             fileName=cacheName.isEmpty()
                         ? Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.albumArtist() : (song.albumArtist()+" - "+song.album))+(png ? ".png" : ".jpg")
                         : cacheName;
-            QFile f(fileName);
-            if (f.open(QIODevice::WriteOnly)) {
+            if (png && !cacheName.isEmpty()) {
+                QImage img=QImage::fromData(data, Covers::imageFormat(data));
+                img.save(fileName, "JPG");
                 DBUG << "Saved image to" << fileName;
-                f.write(data);
+            } else {
+                QFile f(fileName);
+                if (f.open(QIODevice::WriteOnly)) {
+                    DBUG << "Saved image to" << fileName;
+                    f.write(data);
+                }
             }
         }
         emit cover(job.song, img, fileName);

@@ -803,6 +803,12 @@ These steps assume the following structure:
 6. Build 'install' project via QtCreator
 
 
+If Qt Creator is not installed, or calling CMake from the commandline, you may
+need to set CMAKE_PREFIX_PATH e.g.
+
+    export CMAKE_PREFIX_PATH=/usr/local/Cellar/qt5/5.9.1/lib/cmake/:${CMAKE_PREFIX_PATH}
+
+
 Create Installer
 ----------------
 

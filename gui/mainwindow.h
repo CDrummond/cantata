@@ -265,7 +265,6 @@ private:
 
 private Q_SLOTS:
     void controlPlayQueueButtons();
-    void init();
     void toggleContext();
     void initMpris();
     void toggleMenubar();

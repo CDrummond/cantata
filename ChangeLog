@@ -57,6 +57,7 @@
 45. Fix playback of downloaded podcasts.
 46. Simplify whitespace of podcast name and episode names.
 47. Fix saving of podcast images to JPG.
+48. Remove qt5ct work-around.
 
 2.3.0
 -----

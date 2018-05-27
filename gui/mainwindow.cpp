@@ -168,25 +168,6 @@ MainWindow::MainWindow(QWidget *parent)
     centerPlayQueueButton=nullptr;
     midSpacer=nullptr;
 
-    #if defined Q_OS_MAC || defined Q_OS_WIN
-    init();
-    #else
-    if ("qt5ct"==qgetenv("QT_QPA_PLATFORMTHEME")) {
-        // Work-aroud Qt5Ct colour scheme issues. Qt5Ct applies its palette after Cantata's main window
-        // is shown. Issue 944
-        // TODO: The real fix would be for Cantata to properly repect colour scheme changes
-        show();
-        resize(0, 0);
-        QTimer::singleShot(5, this, SLOT(init()));
-    }
-    else {
-        init();
-    }
-    #endif
-}
-
-void MainWindow::init()
-{
     QPoint p=pos();
     ActionCollection::setMainWidget(this);
     trayItem=new TrayItem(this);

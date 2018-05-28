@@ -74,7 +74,7 @@ HttpServer::HttpServer()
 bool HttpServer::isAlive() const
 {
     // started on demand, but only start if allowed
-    return Settings::self()->connectionDetails().allowLocalStreaming;
+    return MPDConnection::self()->getDetails().allowLocalStreaming;
 }
 
 bool HttpServer::start()

@@ -195,7 +195,7 @@ QString MPDConnection::Response::getError(const QByteArray &command)
 MPDConnectionDetails::MPDConnectionDetails()
     : port(6600)
     , dirReadable(false)
-    , allowLocalStreaming(false)
+    , allowLocalStreaming(true)
     , autoUpdate(false)
 {
 }
@@ -218,6 +218,23 @@ QString MPDConnectionDetails::description() const
     } else {
         return QObject::tr("\"%1\" (%2:%3)", "name (host:port)").arg(getName()).arg(hostname).arg(QString::number(port));
     }
+}
+
+MPDConnectionDetails MPDConnectionDetails::operator=(const MPDConnectionDetails &o)
+{
+    name=o.name;
+    hostname=o.hostname;
+    port=o.port;
+    password=o.password;
+    dir=o.dir;
+    dirReadable=o.dirReadable;
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    streamUrl=o.streamUrl;
+    #endif
+    replayGain=o.replayGain;
+    allowLocalStreaming=o.allowLocalStreaming;
+    autoUpdate=o.autoUpdate;
+    return *this;
 }
 
 void MPDConnectionDetails::setDirReadable()

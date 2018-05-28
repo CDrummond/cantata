@@ -79,6 +79,7 @@ MPDUser::MPDUser()
     mpdExe=Utils::findExe("mpd");
     #endif
     det.name=constName;
+    det.allowLocalStreaming=true;
 }
 
 bool MPDUser::isSupported()

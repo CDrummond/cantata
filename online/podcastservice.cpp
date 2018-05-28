@@ -1024,7 +1024,7 @@ void PodcastService::downloadEpisode(const Podcast *podcast, const QUrl &episode
     if (downloadingEpisode(episode)) {
         return;
     }
-    dest=Utils::fixPath(dest)+Utils::fixPath(encodeName(podcast->name))+Utils::getFile(episode.toString());
+    dest=Utils::fixPath(dest)+Utils::fixPath(encodeName(podcast->name))+Utils::getFile(episode.path());
     toDownload.append(DownloadEntry(episode, podcast->url, dest));
     updateEpisode(podcast->url, episode, Episode::QueuedForDownload);
     doNextDownload();

@@ -220,7 +220,7 @@ QString MPDConnectionDetails::description() const
     }
 }
 
-MPDConnectionDetails MPDConnectionDetails::operator=(const MPDConnectionDetails &o)
+MPDConnectionDetails & MPDConnectionDetails::operator=(const MPDConnectionDetails &o)
 {
     name=o.name;
     hostname=o.hostname;

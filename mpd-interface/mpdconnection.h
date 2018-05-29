@@ -146,7 +146,7 @@ struct MPDConnectionDetails {
     QString description() const;
     bool isLocal() const { return hostname.startsWith('/'); }
     bool isEmpty() const { return hostname.isEmpty() || (!isLocal() && 0==port); }
-    MPDConnectionDetails operator=(const MPDConnectionDetails &o);
+    MPDConnectionDetails & operator=(const MPDConnectionDetails &o);
     bool operator==(const MPDConnectionDetails &o) const { return hostname==o.hostname && isLocal()==o.isLocal() && (isLocal() || port==o.port) && password==o.password; }
     bool operator!=(const MPDConnectionDetails &o) const { return !(*this==o); }
     bool operator<(const MPDConnectionDetails &o) const { return name.localeAwareCompare(o.name)<0; }

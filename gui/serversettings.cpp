@@ -422,9 +422,9 @@ MPDConnectionDetails ServerSettings::getDetails() const
         details.streamUrl=streamUrl->text().trimmed();
         #endif
         #ifdef ENABLE_HTTP_SERVER
-        details.allowLocalStreaming=allowLocalStreaming->checkState() == Qt::Checked;
+        details.allowLocalStreaming=allowLocalStreaming->isChecked();
         #endif
-        details.autoUpdate=autoUpdate->checkState() == Qt::Checked;
+        details.autoUpdate=autoUpdate->isChecked();
     }
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT
     else {

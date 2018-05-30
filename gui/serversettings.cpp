@@ -283,8 +283,7 @@ void ServerSettings::add()
         details.port=6600;
         details.hostname=QLatin1String("localhost");
         details.dir=QLatin1String("/var/lib/mpd/music/");
-        // disable local streaming by default
-        details.allowLocalStreaming=false;
+        details.allowLocalStreaming=true;
         details.autoUpdate=false;
         combo->addItem(details.name);
     #ifdef ENABLE_SIMPLE_MPD_SUPPORT

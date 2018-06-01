@@ -281,7 +281,7 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
             searchUrl=QUrl(item->url);
             ApiKeys::self()->addKey(query, ApiKeys::ShoutCast);
             query.addQueryItem("search", searchTerm);
-            query.addQueryItem("limit", QString::number(250));
+            query.addQueryItem("limit", QString::number(200));
             break;
         }
         case Dirble:

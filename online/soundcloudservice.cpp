@@ -76,7 +76,7 @@ void SoundCloudService::search(const QString &key, const QString &value)
     QUrlQuery query;
     ApiKeys::self()->addKey(query, ApiKeys::SoundCloud);
     query.addQueryItem("q", currentValue);
-    query.addQueryItem("limit", QString::number(250));
+    query.addQueryItem("limit", QString::number(200));
     searchUrl.setQuery(query);
 
     QNetworkRequest req(searchUrl);

@@ -105,8 +105,8 @@ public:
                         static const int constHalfScale=constScale/2;
                         pixelSize=((pixelSize/constScale)*constScale)+((pixelSize%constScale)>=constHalfScale ? constHalfScale : 0);
                         if (pixelSize%constScale) {
-                            if (FontAwesome::list==fontAwesomeIcon && pixelSize%constHalfScale) {
-                                pixelSize+=2;
+                            if (FontAwesome::list==fontAwesomeIcon) {
+                                pixelSize-=2;
                             }
                         }
                     }

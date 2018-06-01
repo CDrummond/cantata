@@ -299,6 +299,7 @@ sub saveRule() {
     my @genreList=@{ $_[3] };
     my $ruleMatch=$_[4];
     my $isInclude=$_[5];
+    my $maxAge=$_[6];
     my @type=();
 
     if ($isInclude == 1) {
@@ -329,15 +330,21 @@ sub saveRule() {
                     if ($genre ne "") {
                         $type[$ruleNum]=$type[$ruleNum]." Genre \"${genre}\"";
                     }
+                    if ($isInclude && $maxAge>0) {
+                        $type[$ruleNum]=$type[$ruleNum]." modified-since ${maxAge}";
+                    }
                     $ruleNum++;
                 }
-            } elsif ($artist ne "" || $genre ne "" || $rule ne "") {
+            } elsif ($artist ne "" || $genre ne "" || $rule ne "" || ($isInclude && $maxAge>0)) {
                 $type[$ruleNum]="${ruleMatch} $rule";
                 if ($artist ne "") {
                     $type[$ruleNum]=$type[$ruleNum]." Artist \"${artist}\"";
                 }
                 if ($genre ne "") {
                     $type[$ruleNum]=$type[$ruleNum]." Genre \"${genre}\"";
+                }
+                if ($maxAge>0) {
+                    $type[$ruleNum]=$type[$ruleNum]." modified-since ${maxAge}";
                 }
                 $ruleNum++;
             }
@@ -408,6 +415,7 @@ sub readRules() {
             my @similarArtists=();
             my $isInclude=1;
             my $currentRule="";
+            my $maxAge=0;
             @includeRules=();
             @excludeRules=();
             $ratingFrom=0;
@@ -430,7 +438,7 @@ sub readRules() {
                     }
                     if ($key=~ m/^(Rule)/) { # New rule...
                         if (length($currentRule)>1 || scalar(@similarArtists)>0 || scalar(@dates)>0 || scalar(@genres)>0) {
-                            &saveRule($currentRule, \@dates, \@similarArtists, \@genres, $ruleMatch, $isInclude);
+                            &saveRule($currentRule, \@dates, \@similarArtists, \@genres, $ruleMatch, $isInclude, $maxAge);
                         }
                         $currentRule="";
                         @dates=();
@@ -466,6 +474,10 @@ sub readRules() {
                             if ($playQueueDesiredLength % 2 > 0) {
                                 $playQueueDesiredLength += 1;
                             }
+                        }
+                    } elsif ($key=~ m/^(MaxAge)/) {
+                        if ($val > 0) {
+                            $maxAge = time() - ($val * 24 * 60 * 60);
                         }
                     } else {
                         if ($key eq "Date") {
@@ -538,7 +550,9 @@ sub readRules() {
             }
 
             if (length($currentRule)>1 || scalar(@similarArtists)>0 || scalar(@dates)>0 || scalar(@genres)>0) {
-                &saveRule($currentRule, \@dates, \@similarArtists, \@genres, $ruleMatch, $isInclude);
+                &saveRule($currentRule, \@dates, \@similarArtists, \@genres, $ruleMatch, $isInclude, $maxAge);
+            } elsif ($maxAge>0 && 0 == scalar(@includeRules)) {
+                &saveRule("", "", "", "", "find", 1, $maxAge); # No include rules but have max-age, so create a rule
             }
 
             if (1==$testMode) {

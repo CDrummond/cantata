@@ -181,16 +181,15 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
     maxDuration->setSpecialValueText(tr("No Limit"));
 
     numTracks->setRange(rules->minTracks(), rules->maxTracks());
+    maxAge->setRange(0, 10*365);
 
     if (rules->isDynamic()) {
         REMOVE(orderLabel)
         REMOVE(order)
         REMOVE(orderAscending)
-        REMOVE(maxAge)
         orderLayout->deleteLater();
         numTracks->setValue(qMax(qMin(10, rules->maxTracks()), rules->minTracks()));
     } else {
-        maxAge->setRange(0, 10*365);
         numTracks->setValue(qMax(qMin(100, rules->maxTracks()), rules->minTracks()));
 
         for (int i=0; i<RulesPlaylists::Order_Count; ++i) {
@@ -245,9 +244,7 @@ void PlaylistRulesDialog::edit(const QString &name)
         setOrder();
         orderAscending->setCurrentIndex(e.orderAscending ? 0 : 1);
     }
-    if (maxAge) {
-        maxAge->setValue(e.maxAge);
-    }
+    maxAge->setValue(e.maxAge);
     show();
 }
 
@@ -431,9 +428,7 @@ bool PlaylistRulesDialog::save()
         entry.order=(RulesPlaylists::Order)order->currentData().toInt();
         entry.orderAscending=0==orderAscending->currentIndex();
     }
-    if (maxAge) {
-        entry.maxAge=maxAge->value();
-    }
+    entry.maxAge=maxAge->value();
     from=minDuration->value();
     to=maxDuration->value();
     if (to>0) {

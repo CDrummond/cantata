@@ -217,7 +217,7 @@ bool RulesPlaylists::save(const Entry &e)
         str << constDurationKey << constKeyValSep << e.minDuration << constRangeSep << e.maxDuration << '\n';
     }
     if (0!=e.maxAge) {
-        str << constMaxAgeKey << constKeyValSep << e.maxAge;
+        str << constMaxAgeKey << constKeyValSep << e.maxAge << '\n';
     }
     if (Order_Random!=e.order) {
         str << constOrderKey << constKeyValSep << orderStr(e.order) << '\n';

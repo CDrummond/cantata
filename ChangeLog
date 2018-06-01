@@ -61,6 +61,7 @@
 49. When saving podcasts, remove queries from filename.
 50. Limit SoundCloud results to 200 matches.
 51. Fix loading of MPD playlists the very first time Cantata is started.
+52. Add file max-age to dynamic playlist rules.
 
 2.3.0
 -----

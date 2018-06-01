@@ -26,6 +26,8 @@
 #include "settings.h"
 #include "support/proxystyle.h"
 #include "models/mpdlibrarymodel.h"
+#include "models/playlistsmodel.h"
+#include "models/streamsmodel.h"
 #include "support/utils.h"
 #include "mpd-interface/mpdstats.h"
 #include "mpd-interface/mpdstatus.h"
@@ -78,6 +80,8 @@ void Application::init()
     #endif
     Scrobbler::self();
     MpdLibraryModel::self();
+    PlaylistsModel::self();
+    StreamsModel::self();
 
     // Ensure this is started before any MPD connection
     HttpServer::self();

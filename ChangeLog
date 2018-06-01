@@ -60,6 +60,7 @@
 48. Remove qt5ct work-around.
 49. When saving podcasts, remove queries from filename.
 50. Limit SoundCloud results to 250 matches.
+51. Fix loading of MPD playlists the very first time Cantata is started.
 
 2.3.0
 -----

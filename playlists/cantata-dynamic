@@ -254,10 +254,6 @@ $numMpdSongs=0;
 
 $ratingFrom=0;
 $ratingTo=0;
-# If we have no include rules, then song list is taken from tracks with ratings
-# Therefore, there is no need to subsequently filter - and ratingFilter would be
-# set to 0
-$ratingFilter=1;
 $lastRatingFrom=0;
 $lastRatingTo=0;
 
@@ -643,16 +639,16 @@ sub getRatedSongs() {
 
 # Is a file with rating from .. rating to?
 sub checkSongRatingInRange() {
-    if ($ratingFilter = 0) {
-        # Rating filter disabled - i,e. had no include rule, so song list is
-        # taken from those with a rating...
-        return 1;
-    }
     if ($ratingFrom<=0 && $ratingTo<=0) { # No filter, so must be in range!
         return 1;
     }
     if ($numMpdSongs<1) { # No songs!
         return 0;
+    }
+    if (0 == scalar(@includeRules)) {
+        # There were no include rules, so all files matching rating range were chose.
+        # Therefore, no need to check ratings now.
+        return 1;
     }
     my $file=shift;
     my @entries = &getEntries("sticker get song \"${file}\" rating", 'sticker');

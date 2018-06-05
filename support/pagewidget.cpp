@@ -120,10 +120,15 @@ public:
         const QString text = index.model()->data(index, Qt::DisplayRole).toString();
         const QIcon icon = index.model()->data(index, Qt::DecorationRole).value<QIcon>();
         const QPixmap pixmap = icon.pixmap(iconSize, iconSize,
+                                           #ifdef Q_OS_WIN
+                                           QIcon::Normal
+                                           #else
                                            selected &&
-                                           ( active ||
-                                             option.palette.brush(QPalette::Inactive, QPalette::HighlightedText).color()==
-                                             option.palette.brush(QPalette::Active, QPalette::HighlightedText).color()) ? QIcon::Selected : QIcon::Normal);
+                                            ( active ||
+                                              option.palette.brush(QPalette::Inactive, QPalette::HighlightedText).color()==
+                                              option.palette.brush(QPalette::Active, QPalette::HighlightedText).color()) ? QIcon::Selected : QIcon::Normal
+                                           #endif
+                                           );
 
         QFontMetrics fm = painter->fontMetrics();
         QSize layoutSize = pixmap.isNull() ? QSize(iconSize, iconSize) : (pixmap.size() / pixmap.DEVICE_PIXEL_RATIO());

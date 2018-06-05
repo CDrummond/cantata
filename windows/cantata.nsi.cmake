@@ -220,7 +220,7 @@ section "uninstall"
     delete "$INSTDIR\sqldrivers\qsqlite4.dll"
     delete "$INSTDIR\sqldrivers\qsqlite.dll"
     delete "$INSTDIR\mediaservice\dsengine.dll"
-    delete "$INSTDIR\qtmedia_audioengine.dll"
+    delete "$INSTDIR\mediaservice\qtmedia_audioengine.dll"
  
     delete "$INSTDIR\fonts\fontawesome-4.3.0.ttf"
     delete "$INSTDIR\fonts\fontawesome-webfont.ttf"

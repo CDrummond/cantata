@@ -139,7 +139,7 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
         #ifdef Q_OS_MAC
         QColor col = OSXStyle::self()->viewPalette().highlight().color();
         #elif defined Q_OS_WIN
-        QColor col = option->palette.highlight().color();
+        QColor col = active ? option->palette.highlight().color() : QColor(96, 96, 96);
         col.setAlphaF(0.25);
         #else
         QColor col = option->palette.highlight().color();
@@ -429,7 +429,7 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
         #ifdef Q_OS_MAC
         QColor col = OSXStyle::self()->viewPalette().highlight().color();
         #elif defined Q_OS_WIN
-        QColor col = palette().highlight().color();
+        QColor col = palette().currentColorGroup()==QPalette::Active ? palette().highlight().color() : QColor(96, 96, 96);
         col.setAlphaF(0.25);
         #else
         QColor col = palette().highlight().color();

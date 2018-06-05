@@ -806,11 +806,11 @@ These steps assume the following structure:
 If Qt Creator is not installed, or calling CMake from the commandline, you may
 need to set CMAKE_PREFIX_PATH e.g.
 
-    export CMAKE_PREFIX_PATH=/usr/local/Cellar/qt5/5.9.1/lib/cmake/:${CMAKE_PREFIX_PATH}
+    export CMAKE_PREFIX_PATH=/usr/local/Cellar/qt/5.9.1/lib/cmake/:${CMAKE_PREFIX_PATH}
 
 Ensure 'lrelease' (required to build Cantata translations) is in PATH, e.g.
 
-    export PATH=/usr/local/Cellar/qt5/5.9.1/bin/:${PATH}
+    export PATH=/usr/local/Cellar/qt/5.9.1/bin/:${PATH}
 
 
 Create Installer

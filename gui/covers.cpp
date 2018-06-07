@@ -1591,7 +1591,6 @@ Covers::Image Covers::locateImage(const Song &song)
     bool haveAbsPath=songFile.startsWith(Utils::constDirSep);
 
     if (song.isCantataStream()) {
-        songFile=QUrl(songFile).path();
         DBUG_CLASS("Covers") << "Stream file" << songFile;
     }
 
@@ -1622,7 +1621,7 @@ Covers::Image Covers::locateImage(const Song &song)
     }
 
     if (!songFile.isEmpty() && !songFile.startsWith("http:/") && !song.isCdda() &&
-        (haveAbsPath || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://")) ) ) ) {
+        (haveAbsPath || song.isCantataStream() || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://")) ) ) ) {
         dirName=song.isCantataStream() ? Utils::getDir(songFile)
                                        : songFile.endsWith(Utils::constDirSep)
                                             ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile

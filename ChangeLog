@@ -1,3 +1,7 @@
+2.3.2
+-----
+1. Store actual song path for local files (mainly affects windows)
+
 2.3.1
 -----
  1. Update some translations.

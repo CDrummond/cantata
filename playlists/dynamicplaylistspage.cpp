@@ -80,7 +80,7 @@ DynamicPlaylistsPage::DynamicPlaylistsPage(QWidget *p)
     controls=QList<QWidget *>() << addBtn << editBtn << removeBtn << startBtn;
     init(0, QList<QWidget *>(), controls);
     #ifdef Q_OS_WIN
-    enableWidgets(false);
+    remoteDynamicSupport(false);
     #endif
     #ifndef Q_OS_WIN
     QString

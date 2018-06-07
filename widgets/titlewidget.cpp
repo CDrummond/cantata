@@ -26,6 +26,7 @@
 #include "support/utils.h"
 #include "support/icon.h"
 #include "support/proxystyle.h"
+#include "support/monoicon.h"
 #include "gui/stdactions.h"
 #include "toolbutton.h"
 #include "groupedview.h"
@@ -54,7 +55,12 @@ TitleWidget::TitleWidget(QWidget *p)
     image=new QLabel(this);
     mainText=new SqueezedTextLabel(this);
     subText=new SqueezedTextLabel(this);
-    QLabel *chevron=new QLabel(QChar(Qt::RightToLeft==layoutDirection() ? 0x203A : 0x2039), this);
+    QLabel *chevron=new QLabel(this);
+    ToolButton tb(this);
+    tb.setIcon(StdActions::self()->appendToPlayQueueAction->icon());
+    tb.ensurePolished();
+    chevron->setPixmap(MonoIcon::icon(Qt::LeftToRight==layoutDirection() ? FontAwesome::chevronleft : FontAwesome::chevronright, Utils::monoIconColor()).pixmap(tb.iconSize()));
+    chevron->setFixedSize(tb.iconSize());
     QFont f=mainText->font();
     subText->setFont(Utils::smallFont(f));
     mainText->setFont(f);
@@ -121,8 +127,8 @@ void TitleWidget::update(const Song &sng, const QIcon &icon, const QString &text
             l->setSpacing(0);
             ToolButton *add=new ToolButton(this);
             ToolButton *replace=new ToolButton(this);
-            add->QAbstractButton::setIcon(StdActions::self()->appendToPlayQueueAction->icon());
-            replace->QAbstractButton::setIcon(StdActions::self()->replacePlayQueueAction->icon());
+            add->setIcon(StdActions::self()->appendToPlayQueueAction->icon());
+            replace->setIcon(StdActions::self()->replacePlayQueueAction->icon());
             int size=qMin(add->iconSize().height()+6, height()/2);
             add->setFixedSize(QSize(size, size));
             replace->setFixedSize(add->size());

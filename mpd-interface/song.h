@@ -66,7 +66,7 @@ struct Song
 
         // These are not real tags - but fields used elsewhere in the code...
         PodcastPublishedDate = 0x0100,
-        PodcastLocalPath     = 0x0200,
+        LocalPath            = 0x0200, // Podcasts and HTTP files
         PodcastImage         = 0x0400,
         OnlineServiceName    = 0x0800,
         OnlineImageUrl       = 0x1000,
@@ -271,8 +271,8 @@ struct Song
     QString podcastImage() const { return extraField(PodcastImage); }
     void setPodcastPublishedDate(const QString &pd) { setExtraField(PodcastPublishedDate, pd); }
     QString podcastPublishedDate() const { return extraField(PodcastPublishedDate); }
-    QString podcastLocalPath() const { return extraField(PodcastLocalPath); }
-    void setPodcastLocalPath(const QString &l) { setExtraField(PodcastLocalPath, l); }
+    QString localPath() const { return extraField(LocalPath); }
+    void setLocalPath(const QString &l) { setExtraField(LocalPath, l); }
 
     QString decodedPath() const { return extraField(DecodedPath); }
     void setDecodedPath(const QString &v) { setExtraField(DecodedPath, v); }

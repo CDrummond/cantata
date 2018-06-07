@@ -786,7 +786,8 @@ QString Song::basicTitle() const
 QString Song::filePath(const QString &base) const
 {
     if (isCantataStream()) {
-        return QUrl(file).path();
+        QString p = localPath();
+        return p.isEmpty() ? QUrl(file).path() : p;
     }
     if (isLocalFile()) {
         return file;

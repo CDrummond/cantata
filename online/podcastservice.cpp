@@ -201,7 +201,7 @@ Song PodcastService::Episode::toSong() const
     song.artist=parent->name;
     song.time=duration;
     if (!localFile.isEmpty()) {
-        song.setPodcastLocalPath(localFile);
+        song.setLocalPath(localFile);
     }
     return song;
 }
@@ -651,12 +651,12 @@ Song & PodcastService::fixPath(Song &song) const
 {
     song.setIsFromOnlineService(constName);
     song.artist=title();
-    if (!song.podcastLocalPath().isEmpty() && QFile::exists(song.podcastLocalPath())) {
+    if (!song.localPath().isEmpty() && QFile::exists(song.localPath())) {
         if (HttpServer::self()->isAlive()) {
-            song.file=song.podcastLocalPath();
+            song.file=song.localPath();
             song.file=HttpServer::self()->encodeUrl(song);
         } else if (MPDConnection::self()->localFilePlaybackSupported()) {
-            song.file=QLatin1String("file://")+song.podcastLocalPath();
+            song.file=QLatin1String("file://")+song.localPath();
         }
         return song;
     }

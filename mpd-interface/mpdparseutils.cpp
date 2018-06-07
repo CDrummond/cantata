@@ -385,6 +385,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             if (!mod.title.isEmpty()) {
                 mod.id=song.id;
                 song=mod;
+                song.setLocalPath(mod.file);
             }
             modifiedFile=true;
         } else

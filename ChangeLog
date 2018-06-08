@@ -1,6 +1,8 @@
 2.3.2
 -----
 1. Store actual song path for local files (mainly affects windows)
+2. When using Track Organizer to rename music tracks, rename any other files
+   that have the same basename as the music file.
 
 2.3.1
 -----

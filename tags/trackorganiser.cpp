@@ -356,18 +356,19 @@ void TrackOrganiser::renameFile()
             }
         }
 
-        // If file was renamed, then also rename any lyrics file...
+        // If file was renamed, then also rename any other matching files...
+        QDir sDir(Utils::getDir(source));
         if (renamed) {
-            QString lyricsSource=Utils::changeExtension(source, SongView::constExtension);
-            QString lyricsDest=Utils::changeExtension(dest, SongView::constExtension);
-
-            if (QFile::exists(lyricsSource) && !QFile::exists(lyricsDest)) {
-                QFile::rename(lyricsSource, lyricsDest);
+            QFileInfoList files = sDir.entryInfoList(QStringList() << Utils::changeExtension(Utils::getFile(source), ".*"));
+            for (const auto &file : files) {
+                QString destFile = Utils::changeExtension(dest, "."+file.suffix());
+                if (!QFile::exists(destFile)) {
+                    QFile::rename(file.absoluteFilePath(), destFile);
+                }
             }
         }
 
         if (!skip) {
-            QDir sDir(Utils::getDir(source));
             QDir sArtistDir(sDir); sArtistDir.cdUp();
             QDir dDir(Utils::getDir(dest));
             #ifdef ENABLE_DEVICES_SUPPORT

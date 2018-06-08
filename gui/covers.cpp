@@ -577,7 +577,7 @@ const QStringList & Covers::standardNames()
     if (!coverFileNames) {
         coverFileNames=new QStringList();
         QStringList fileNames;
-        fileNames << Covers::constFileName << QLatin1String("AlbumArt") << QLatin1String("folder");
+        fileNames << Covers::constFileName << QLatin1String("albumart") << QLatin1String("folder");
         for (const QString &fileName: fileNames) {
             for (int e=0; constExtensions[e]; ++e) {
                 *coverFileNames << fileName+constExtensions[e];

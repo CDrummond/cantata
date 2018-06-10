@@ -64,30 +64,11 @@ void Device::moveDir(const QString &from, const QString &to, const QString &base
     QDir d(from);
     if (d.exists()) {
         QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
-        QList<QString> extraFiles;
-        QSet<QString> others=Covers::standardNames().toSet();
-        others << coverFile << "albumart.pamp";
-        if (!coverFile.isEmpty()) {
-            if (coverFile.endsWith(QLatin1String(".jpg"))) {
-                others << coverFile.left(coverFile.length()-4)+QLatin1String(".png");
-            } else if (coverFile.endsWith(QLatin1String(".png"))) {
-                others << coverFile.left(coverFile.length()-4)+QLatin1String(".jpg");
-            }
-        }
+        QSet<QString> fileTypes=QSet<QString>() << "jpg" << "png" << "pamp" << "txt" << "lyrics";
 
         for (const QFileInfo &info: entries) {
-            if (info.isDir()) {
-                return;
-            }
-            if (!others.contains(info.fileName()) && !MPDConnection::isPlaylist(info.fileName())) {
-                return;
-            }
-            extraFiles.append(info.fileName());
-        }
-
-        for (const QString &f: extraFiles) {
-            if (!QFile::rename(from+'/'+f, to+'/'+f)) {
-                return;
+            if (!info.isDir() && (MPDConnection::isPlaylist(info.fileName()) || fileTypes.contains(info.suffix().toLower()))) {
+                QFile::rename(from+'/'+info.fileName(), to+'/'+info.fileName());
             }
         }
         cleanDir(from, base, coverFile);

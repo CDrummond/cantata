@@ -3,6 +3,7 @@
 1. Store actual song path for local files (mainly affects windows)
 2. When using Track Organizer to rename music tracks, rename any other files
    that have the same basename as the music file.
+3. Install cantata.png to use as Windows tray icon.
 
 2.3.1
 -----

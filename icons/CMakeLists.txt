@@ -1,6 +1,4 @@
-if (WIN32)
-    install(FILES cantata64.png DESTINATION ${CMAKE_INSTALL_PREFIX}/icons/ RENAME cantata.png)
-elseif (NOT HAIKU AND NOT APPLE)
+if (NOT HAIKU AND NOT WIN32 AND NOT APPLE)
     macro (update_iconcache ICON_THEME)
         # Update mtime of hicolor icon theme dir.
         # We don't always have touch command (e.g. on Windows), so instead create

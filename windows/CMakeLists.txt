@@ -14,7 +14,7 @@ set(QT_TRANSLATIONS_DIR ${QT_DIR}/translations)
 
 configure_file(cantata.nsi.cmake ${CMAKE_CURRENT_BINARY_DIR}/cantata.nsi)
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cantata.nsi cantata.ico LICENSE.txt "Cantata README.txt" "Qt License (LGPL V2).txt" "TagLib README.txt" DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cantata.nsi cantata.ico LICENSE.txt "Cantata README.txt" DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 # Qt image formats...
 install(FILES ${QT_PLUGINS_DIR}/imageformats/qjpeg.dll ${QT_PLUGINS_DIR}/imageformats/qsvg.dll DESTINATION ${CMAKE_INSTALL_PREFIX}/imageformats/)
@@ -53,3 +53,4 @@ install(FILES ${qt_translations} DESTINATION ${CMAKE_INSTALL_PREFIX}/translation
 
 install(FILES ${EXTRA_WIN_LIBS} DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES LICENSE.txt DESTINATION ${CMAKE_INSTALL_PREFIX} RENAME "Cantata License (GPL V3).txt")
+install(FILES ../icons/cantata32.png DESTINATION ${CMAKE_INSTALL_PREFIX}/icons/ RENAME cantata.png)

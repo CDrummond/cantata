@@ -163,7 +163,8 @@ void TrayItem::setup()
     trayItemMenu->addAction(copyAction(mw->quitAction));
     trayItem->setContextMenu(trayItemMenu);
     #if defined Q_OS_MAC || defined Q_OS_WIN
-    QIcon icon=QIcon::fromTheme("cantata");
+    QIcon icon;
+    icon.addFile(CANTATA_SYS_ICONS_DIR+"cantata.png");
     #else
     QIcon icon=QIcon::fromTheme(Utils::Gnome==Utils::currentDe() ? "cantata-symbolic" : "cantata");
     // Bug: 660 If installed to non-standard folder, QIcon::fromTheme does not seem to find icon. Therefore

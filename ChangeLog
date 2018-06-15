@@ -4,7 +4,7 @@
 2. When using Track Organizer to rename music tracks, rename any other files
    that have the same basename as the music file.
 3. Install cantata.png to use as Windows tray icon.
-4. Remove internal Samba shre mounting code, this had some privilege
+4. Remove internal Samba share mounting code, this had some privilege
    escalation issues, and is not well tested.
 
 2.3.1

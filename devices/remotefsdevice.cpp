@@ -32,9 +32,6 @@
 #include "http/httpserver.h"
 #include "support/configuration.h"
 #include "mountpoints.h"
-#include "mounterinterface.h"
-#include "avahi/avahi.h"
-#include "avahi/avahiservice.h"
 #include <QDBusConnection>
 #include <QTimer>
 #include <QProcess>
@@ -47,10 +44,6 @@
 const QLatin1String RemoteFsDevice::constPromptPassword("-");
 const QLatin1String RemoteFsDevice::constSshfsProtocol("sshfs");
 const QLatin1String RemoteFsDevice::constFileProtocol("file");
-const QLatin1String RemoteFsDevice::constDomainQuery("domain");
-const QLatin1String RemoteFsDevice::constSambaProtocol("smb");
-const QLatin1String RemoteFsDevice::constServiceNameQuery("name");
-const QLatin1String RemoteFsDevice::constSambaAvahiProtocol("smb-avahi");
 
 static const QLatin1String constCfgPrefix("RemoteFsDevice-");
 static const QLatin1String constCfgKey("remoteFsDevices");
@@ -95,14 +88,12 @@ void RemoteFsDevice::Details::save() const
 
 static inline bool isValid(const RemoteFsDevice::Details &d)
 {
-    return d.isLocalFile() || RemoteFsDevice::constSshfsProtocol==d.url.scheme() ||
-           RemoteFsDevice::constSambaProtocol==d.url.scheme() || RemoteFsDevice::constSambaAvahiProtocol==d.url.scheme();
+    return d.isLocalFile() || RemoteFsDevice::constSshfsProtocol==d.url.scheme();
 }
 
 static inline bool isMountable(const RemoteFsDevice::Details &d)
 {
-    return RemoteFsDevice::constSshfsProtocol==d.url.scheme() ||
-           RemoteFsDevice::constSambaProtocol==d.url.scheme() || RemoteFsDevice::constSambaAvahiProtocol==d.url.scheme();
+    return RemoteFsDevice::constSshfsProtocol==d.url.scheme();
 }
 
 QList<Device *> RemoteFsDevice::loadAll(MusicLibraryModel *m)
@@ -168,22 +159,6 @@ void RemoteFsDevice::destroy(bool removeFromConfig)
     deleteLater();
 }
 
-void RemoteFsDevice::serviceAdded(const QString &name)
-{
-    if (name==details.serviceName && constSambaAvahiProtocol==details.url.scheme()) {
-        sub=tr("Available");
-        updateStatus();
-    }
-}
-
-void RemoteFsDevice::serviceRemoved(const QString &name)
-{
-    if (name==details.serviceName && constSambaAvahiProtocol==details.url.scheme()) {
-        sub=tr("Not Available");
-        updateStatus();
-    }
-}
-
 QString RemoteFsDevice::createUdi(const QString &n)
 {
     return constCfgPrefix+n;
@@ -209,7 +184,6 @@ RemoteFsDevice::RemoteFsDevice(MusicLibraryModel *m, const DeviceOptions &option
     , currentMountStatus(false)
     , details(d)
     , proc(0)
-    , mounterIface(0)
     , messageSent(false)
 {
     opts=options;
@@ -229,7 +203,6 @@ RemoteFsDevice::RemoteFsDevice(MusicLibraryModel *m, const Details &d)
     , currentMountStatus(false)
     , details(d)
     , proc(0)
-    , mounterIface(0)
     , messageSent(false)
 {
 //    details.path=Utils::fixPath(details.path);
@@ -254,20 +227,6 @@ void RemoteFsDevice::toggle()
     }
 }
 
-MpdCantataMounterInterface * RemoteFsDevice::mounter()
-{
-    if (!mounterIface) {
-        if (!QDBusConnection::systemBus().interface()->isServiceRegistered(MpdCantataMounterInterface::staticInterfaceName())) {
-            QDBusConnection::systemBus().interface()->startService(MpdCantataMounterInterface::staticInterfaceName());
-        }
-        mounterIface=new MpdCantataMounterInterface(MpdCantataMounterInterface::staticInterfaceName(),
-                                                              "/Mounter", QDBusConnection::systemBus(), this);
-        connect(mounterIface, SIGNAL(mountStatus(const QString &, int, int)), SLOT(mountStatus(const QString &, int, int)));
-        connect(mounterIface, SIGNAL(umountStatus(const QString &, int, int)), SLOT(umountStatus(const QString &, int, int)));
-    }
-    return mounterIface;
-}
-
 void RemoteFsDevice::mount()
 {
     if (details.isLocalFile()) {
@@ -278,44 +237,6 @@ void RemoteFsDevice::mount()
     }
 
     if (messageSent) {
-        return;
-    }
-    if (constSambaAvahiProtocol==details.url.scheme()) {
-        Details det=details;
-        AvahiService *srv=Avahi::self()->getService(det.serviceName);
-        if (!srv || srv->getHost().isEmpty() || 0==srv->getPort()) {
-            emit error(tr("Failed to resolve connection details for %1").arg(details.name));
-            return;
-        }
-        if (constPromptPassword==det.url.password()) {
-            bool ok=false;
-            QString passwd=InputDialog::getPassword(QString(), &ok, QApplication::activeWindow());
-            if (!ok) {
-                return;
-            }
-            det.url.setPassword(passwd);
-        }
-        det.url.setScheme(constSambaProtocol);
-        det.url.setHost(srv->getHost());
-        det.url.setPort(srv->getPort());
-        mounter()->mount(det.url.toString(), mountPoint(details, true), getuid(), getgid(), getpid());
-        setStatusMessage(tr("Connecting..."));
-        messageSent=true;
-        return;
-    }
-    if (constSambaProtocol==details.url.scheme()) {
-        Details det=details;
-        if (constPromptPassword==det.url.password()) {
-            bool ok=false;
-            QString passwd=InputDialog::getPassword(QString(), &ok, QApplication::activeWindow());
-            if (!ok) {
-                return;
-            }
-            det.url.setPassword(passwd);
-        }
-        mounter()->mount(det.url.toString(), mountPoint(details, true), getuid(), getgid(), getpid());
-        setStatusMessage(tr("Connecting..."));
-        messageSent=true;
         return;
     }
 
@@ -400,12 +321,6 @@ void RemoteFsDevice::unmount()
     }
 
     if (messageSent) {
-        return;
-    }
-    if (constSambaProtocol==details.url.scheme() || constSambaAvahiProtocol==details.url.scheme()) {
-        mounter()->umount(mountPoint(details, false), getpid());
-        setStatusMessage(tr("Disconnecting..."));
-        messageSent=true;
         return;
     }
 
@@ -571,26 +486,6 @@ qint64 RemoteFsDevice::freeSpace()
 
 void RemoteFsDevice::load()
 {
-    if (RemoteFsDevice::constSambaAvahiProtocol==details.url.scheme()) {
-        // Start Avahi listener...
-        Avahi::self();
-        QUrlQuery q(details.url);
-        if (q.hasQueryItem(constServiceNameQuery)) {
-            details.serviceName=q.queryItemValue(constServiceNameQuery);
-        }
-
-        if (!details.serviceName.isEmpty()) {
-            AvahiService *srv=Avahi::self()->getService(details.serviceName);
-            if (!srv || srv->getHost().isEmpty()) {
-                sub=tr("Not Available");
-            } else {
-                sub=tr("Available");
-            }
-        }
-        connect(Avahi::self(), SIGNAL(serviceAdded(QString)), SLOT(serviceAdded(QString)));
-        connect(Avahi::self(), SIGNAL(serviceRemoved(QString)), SLOT(serviceRemoved(QString)));
-    }
-
     if (isConnected()) {
         setAudioFolder();
         readOpts(settingsFileName(), opts, true);

@@ -6606,18 +6606,8 @@ Prego scegliere un nome diverso.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="410"/>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
-        <translation>Questa finestra viene usata solamente per aggiungere dispositivi remoti (es. tramite Samba), o per accedere a cartelle montate localmente. Per i lettori musicali normali collegati via USB, Cantata mostrerà automaticamente quando il dispositivo è collegato.</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="49"/>
-        <source>Samba Share</source>
-        <translation>Condivisione Samba</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="50"/>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation>Samba Share (Trova automaticamente host e porta)</translation>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <translation>Questa finestra viene usata solamente per aggiungere dispositivi remoti (es. tramite sshfs), o per accedere a cartelle montate localmente. Per i lettori musicali normali collegati via USB, Cantata mostrerà automaticamente quando il dispositivo è collegato.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="51"/>

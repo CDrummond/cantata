@@ -28,7 +28,6 @@
 #include "config.h"
 #include <QUrl>
 
-class MpdCantataMounterInterface;
 class QProcess;
 class RemoteFsDevice : public FsDevice
 {
@@ -66,10 +65,6 @@ public:
     static const QLatin1String constPromptPassword;
     static const QLatin1String constSshfsProtocol;
     static const QLatin1String constFileProtocol;
-    static const QLatin1String constDomainQuery;
-    static const QLatin1String constSambaProtocol;
-    static const QLatin1String constServiceNameQuery;
-    static const QLatin1String constSambaAvahiProtocol;
 
     static QList<Device *> loadAll(MusicLibraryModel *m);
     static Device *create(MusicLibraryModel *m, const DeviceOptions &options, const Details &d);
@@ -96,10 +91,6 @@ public:
     const Details & getDetails() const { return details; }
     QString subText() override { return sub; }
 
-private Q_SLOTS:
-    void serviceAdded(const QString &name);
-    void serviceRemoved(const QString &name);
-
 Q_SIGNALS:
     void udiChanged();
     void connectionStateHasChanged(const QString &id, bool connected);
@@ -111,7 +102,6 @@ protected:
 
 private:
     bool isOldSshfs();
-    MpdCantataMounterInterface * mounter();
     QString settingsFileName() const;
 
 protected Q_SLOTS:
@@ -127,7 +117,6 @@ protected:
     Details details;
     QProcess *proc;
 //     QString audioFolderSetting;
-    MpdCantataMounterInterface *mounterIface;
     bool messageSent;
     QString sub;
     friend class DevicesModel;

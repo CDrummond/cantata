@@ -1156,14 +1156,6 @@ Please choose a different name.</source>
 다른 이름을 선택해야 합니다.</translation>
     </message>
     <message>
-        <source>Samba Share</source>
-        <translation type="vanished">삼바 공유</translation>
-    </message>
-    <message>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="vanished">삼바 공유 (호스트와 포트 자동 검색)</translation>
-    </message>
-    <message>
         <source>Secure Shell (sshfs)</source>
         <translation type="vanished">보안 셸 (sshfs)</translation>
     </message>
@@ -4144,11 +4136,11 @@ i18n: ectx: property (text), widget (PlainNoteLabel, label_5)
         <translation type="vanished">sshfs의 작동 원리에 따라, 비밀번호 입력을 위해서는 적당한 ssh-askpass 응용프로그램 (ksshaskpass, ssh-askpass-gnome, 등.)이 필요합니다.</translation>
     </message>
     <message>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
         <extracomment>i18n: file: devices/remotedevicepropertieswidget.ui:410
 i18n: ectx: property (text), widget (PlainNoteLabel, infoLabel)
 </extracomment>
-        <translation type="vanished">이 대화상자는 원격장치를 추가(예. Samba)하거나 로컬 마운트된 폴더에 연결할 때만 사용됩니다. 일반 미디어 연주기나 USB 장치는 연결되면 자동으로 표시됩니다.</translation>
+        <translation type="vanished">이 대화상자는 원격장치를 추가(예. sshfs)하거나 로컬 마운트된 폴더에 연결할 때만 사용됩니다. 일반 미디어 연주기나 USB 장치는 연결되면 자동으로 표시됩니다.</translation>
     </message>
     <message>
         <source>Name of Dynamic Rules</source>
@@ -13098,18 +13090,8 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="410"/>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
-        <translation type="unfinished">이 대화상자는 원격장치를 추가(예. Samba)하거나 로컬 마운트된 폴더에 연결할 때만 사용됩니다. 일반 미디어 연주기나 USB 장치는 연결되면 자동으로 표시됩니다.</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="49"/>
-        <source>Samba Share</source>
-        <translation type="unfinished">삼바 공유</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="50"/>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="unfinished">삼바 공유 (호스트와 포트 자동 검색)</translation>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <translation type="unfinished">이 대화상자는 원격장치를 추가(예. sshfs)하거나 로컬 마운트된 폴더에 연결할 때만 사용됩니다. 일반 미디어 연주기나 USB 장치는 연결되면 자동으로 표시됩니다.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="51"/>

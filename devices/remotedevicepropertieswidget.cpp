@@ -31,8 +31,6 @@
 #include "config.h"
 
 enum Type {
-    Type_Samba,
-    Type_SambaAvahi,
     Type_SshFs,
     Type_File
 };
@@ -46,29 +44,18 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     if (qobject_cast<QTabWidget *>(parent)) {
         verticalLayout->setMargin(4);
     }
-    type->addItem(tr("Samba Share"), (int)Type_Samba);
-    type->addItem(tr("Samba Share (Auto-discover host and port)"), (int)Type_SambaAvahi);
     type->addItem(tr("Secure Shell (sshfs)"), (int)Type_SshFs);
     type->addItem(tr("Locally Mounted Folder"), (int)Type_File);
 }
 
 void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool create, bool isConnected)
 {
-    int t=create
-            ? Type_Samba
-            : d.isLocalFile()
-                ? Type_File
-                : d.url.scheme()==RemoteFsDevice::constSshfsProtocol
-                    ? Type_SshFs
-                    : d.url.scheme()==RemoteFsDevice::constSambaProtocol
-                        ? Type_Samba
-                        : Type_SambaAvahi;
+    int t=d.isLocalFile() ? Type_File : Type_SshFs;
     setEnabled(d.isLocalFile() || !isConnected);
     infoLabel->setVisible(create);
     orig=d;
     name->setText(d.name);
     sshPort->setValue(22);
-    smbPort->setValue(445);
 
     connectionNote->setVisible(!d.isLocalFile() && isConnected);
     sshFolder->setText(QString());
@@ -90,39 +77,6 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     case Type_File:
         fileFolder->setText(d.url.path());
         break;
-    case Type_Samba: {
-        smbShare->setText(d.url.path());
-        if (0!=d.url.port()) {
-            smbPort->setValue(d.url.port());
-        }
-        smbHost->setText(d.url.host());
-        smbUser->setText(d.url.userName());
-        smbPassword->setText(d.url.password());
-        QUrlQuery q(d.url);
-        if (q.hasQueryItem(RemoteFsDevice::constDomainQuery)) {
-            smbDomain->setText(q.queryItemValue(RemoteFsDevice::constDomainQuery));
-        } else {
-            smbDomain->setText(QString());
-        }
-        break;
-    }
-    case Type_SambaAvahi: {
-        smbAvahiShare->setText(d.url.path());
-        smbAvahiUser->setText(d.url.userName());
-        smbAvahiPassword->setText(d.url.password());
-        QUrlQuery q(d.url);
-        if (q.hasQueryItem(RemoteFsDevice::constDomainQuery)) {
-            smbAvahiDomain->setText(q.queryItemValue(RemoteFsDevice::constDomainQuery));
-        } else {
-            smbAvahiDomain->setText(QString());
-        }
-        if (q.hasQueryItem(RemoteFsDevice::constServiceNameQuery)) {
-            smbAvahiName->setText(q.queryItemValue(RemoteFsDevice::constServiceNameQuery));
-        } else {
-            smbAvahiName->setText(QString());
-        }
-        break;
-    }
     }
 
     name->setEnabled(d.isLocalFile() || !isConnected);
@@ -142,17 +96,6 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     connect(sshPort, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
     connect(sshExtra, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(fileFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(smbHost, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(smbUser, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(smbPassword, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(smbDomain, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(smbShare, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(smbPort, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
-    connect(smbAvahiName, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(smbAvahiUser, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(smbAvahiPassword, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(smbAvahiDomain, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(smbAvahiShare, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     modified=false;
     setType();
     checkSaveable();
@@ -163,9 +106,6 @@ void RemoteDevicePropertiesWidget::setType()
     if (Type_SshFs==type->itemData(type->currentIndex()).toInt() && 0==sshPort->value()) {
         sshPort->setValue(22);
     }
-    if (Type_Samba==type->itemData(type->currentIndex()).toInt() && 0==smbPort->value()) {
-        smbPort->setValue(445);
-    }
 }
 
 void RemoteDevicePropertiesWidget::checkSaveable()
@@ -173,9 +113,6 @@ void RemoteDevicePropertiesWidget::checkSaveable()
     RemoteFsDevice::Details det=details();
     modified=det!=orig;
     saveable=!det.isEmpty();
-    if (saveable && Type_SambaAvahi==type->itemData(type->currentIndex()).toInt()) {
-        saveable=!smbAvahiName->text().trimmed().isEmpty();
-    }
     emit updated();
 }
 
@@ -204,37 +141,7 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
         det.url.setScheme(RemoteFsDevice::constFileProtocol);
         break;
     }
-    case Type_Samba:
-        det.url.setHost(smbHost->text().trimmed());
-        det.url.setUserName(smbUser->text().trimmed());
-        det.url.setPath(smbShare->text().trimmed());
-        det.url.setPort(smbPort->value());
-        det.url.setScheme(RemoteFsDevice::constSambaProtocol);
-        det.url.setPassword(smbPassword->text().trimmed());
-        if (!smbDomain->text().trimmed().isEmpty()) {
-            QUrlQuery q;
-            q.addQueryItem(RemoteFsDevice::constDomainQuery, smbDomain->text().trimmed());
-            det.url.setQuery(q);
-        }
-        break;
-    case Type_SambaAvahi:
-        det.url.setUserName(smbAvahiUser->text().trimmed());
-        det.url.setPath(smbAvahiShare->text().trimmed());
-        det.url.setPort(0);
-        det.url.setScheme(RemoteFsDevice::constSambaAvahiProtocol);
-        det.url.setPassword(smbAvahiPassword->text().trimmed());
-        if (!smbDomain->text().trimmed().isEmpty() || !smbAvahiName->text().trimmed().isEmpty()) {
-            QUrlQuery q;
-            if (!smbDomain->text().trimmed().isEmpty()) {
-                q.addQueryItem(RemoteFsDevice::constDomainQuery, smbAvahiDomain->text().trimmed());
-            }
-            if (!smbAvahiName->text().trimmed().isEmpty()) {
-                det.serviceName=smbAvahiName->text().trimmed();
-                q.addQueryItem(RemoteFsDevice::constServiceNameQuery, det.serviceName);
-            }
-            det.url.setQuery(q);
-        }
-        break;
+
     }
     return det;
 }

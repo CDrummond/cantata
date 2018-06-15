@@ -1156,14 +1156,6 @@ Please choose a different name.</source>
 Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
-        <source>Samba Share</source>
-        <translation>Sdílení Samba</translation>
-    </message>
-    <message>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation>Sdílení Samba (automatické zjištění hostitele a přípojky)</translation>
-    </message>
-    <message>
         <source>Secure Shell (sshfs)</source>
         <translation>Bezpečný shell (sshfs)</translation>
     </message>
@@ -4164,11 +4156,11 @@ i18n: ectx: property (text), widget (PlainNoteLabel, label_5)
         <translation>Kvůli způsobu, jakým sshfs pracuje, bude k zadání hesla vyžadován vhodný program ssh-askpass (ksshaskpass, ssh-askpass-gnome, atd.).</translation>
     </message>
     <message>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
         <extracomment>i18n: file: devices/remotedevicepropertieswidget.ui:410
 i18n: ectx: property (text), widget (PlainNoteLabel, infoLabel)
 </extracomment>
-        <translation>Tento dialog se používá jen pro přidání vzdálených zařízení (např. přes Samba), nebo pro přístup k místně připojeným složkám. Pro běžné přehrávače záznamů, připojené přes USB, Cantata zobrazí zařízení automaticky, když je připojeno.</translation>
+        <translation>Tento dialog se používá jen pro přidání vzdálených zařízení (např. přes sshfs), nebo pro přístup k místně připojeným složkám. Pro běžné přehrávače záznamů, připojené přes USB, Cantata zobrazí zařízení automaticky, když je připojeno.</translation>
     </message>
     <message>
         <source>Name of Dynamic Rules</source>
@@ -13149,18 +13141,8 @@ Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="410"/>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
-        <translation>Tento dialog se používá jen pro přidání vzdálených zařízení (např. přes Samba), nebo pro přístup k místně připojeným složkám. Pro běžné přehrávače záznamů, připojené přes USB, Cantata zobrazí zařízení automaticky, když je připojeno.</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="49"/>
-        <source>Samba Share</source>
-        <translation>Sdílení Samba</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="50"/>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation>Sdílení Samba (automatické zjištění hostitele a přípojky)</translation>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <translation>Tento dialog se používá jen pro přidání vzdálených zařízení (např. přes sshfs), nebo pro přístup k místně připojeným složkám. Pro běžné přehrávače záznamů, připojené přes USB, Cantata zobrazí zařízení automaticky, když je připojeno.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="51"/>

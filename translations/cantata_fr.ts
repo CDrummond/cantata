@@ -1086,14 +1086,6 @@ Please choose a different name.</source>
 Veuillez choisir un nom différent.</translation>
     </message>
     <message>
-        <source>Samba Share</source>
-        <translation type="obsolete">Partage Samba</translation>
-    </message>
-    <message>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="obsolete">Partage Samba (découverte automatique de l&apos;hôte et du port)</translation>
-    </message>
-    <message>
         <source>Secure Shell (sshfs)</source>
         <translation type="obsolete">Secure Shell (sshfs)</translation>
     </message>
@@ -12175,18 +12167,8 @@ Veuillez choisir un nom différent.</translation>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="410"/>
         <location filename="../build/ui_remotedevicepropertieswidget.h" line="450"/>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
-        <translation>Cette boite de dialogue n&apos;est utilisée ue pour ajouter des périphériques distants (par exemple via samba) ou pour acceder à des dossiers montés localement. Pour des lecteurs standards, connectés par USB, Cantata les affiche automatiquement lors de leur branchement.</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="49"/>
-        <source>Samba Share</source>
-        <translation>Partage Samba</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="50"/>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation>Partage Samba (découverte automatique de l&apos;hôte et du port)</translation>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <translation>Cette boite de dialogue n&apos;est utilisée ue pour ajouter des périphériques distants (par exemple via sshfs) ou pour acceder à des dossiers montés localement. Pour des lecteurs standards, connectés par USB, Cantata les affiche automatiquement lors de leur branchement.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="51"/>

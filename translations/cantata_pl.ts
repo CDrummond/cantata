@@ -1171,14 +1171,6 @@ Please choose a different name.</source>
 Proszę wybrać inną nazwę.</translation>
     </message>
     <message>
-        <source>Samba Share</source>
-        <translation type="vanished">Udziały Samby</translation>
-    </message>
-    <message>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="vanished">Udziały Samby (Automatycznie wykryj hosta i porty)</translation>
-    </message>
-    <message>
         <source>Secure Shell (sshfs)</source>
         <translation type="vanished">Bezpieczna powłoka (sshfs)</translation>
     </message>
@@ -4181,11 +4173,11 @@ i18n: ectx: property (text), widget (PlainNoteLabel, label_5)
         <translation type="vanished">W związku z mechanizmem działania sshfs, odpowiednia aplikacja typu ssh-askpass (ksshaskpass, ssh-askpass-gnome, itp.) konieczna jest do wpisania hasła.</translation>
     </message>
     <message>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
         <extracomment>i18n: file: devices/remotedevicepropertieswidget.ui:410
 i18n: ectx: property (text), widget (PlainNoteLabel, infoLabel)
 </extracomment>
-        <translation type="vanished">To okno dialogowe jest używane jedynie do dodawania zdalnych urządzeń (np. za pomocą protokołu Samba) albo w celu dostępu do lokalnie zamontowanych katalogów. W przypadku normalnych odtwarzaczy mediów podłączonych przez USB Cantata automatycznie wyświetli urządzenie gdy będzie ono podłączone.</translation>
+        <translation type="vanished">To okno dialogowe jest używane jedynie do dodawania zdalnych urządzeń (np. za pomocą protokołu sshfs) albo w celu dostępu do lokalnie zamontowanych katalogów. W przypadku normalnych odtwarzaczy mediów podłączonych przez USB Cantata automatycznie wyświetli urządzenie gdy będzie ono podłączone.</translation>
     </message>
     <message>
         <source>Name of Dynamic Rules</source>
@@ -13176,18 +13168,8 @@ Proszę wybrać inną nazwę.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="410"/>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
-        <translation>To okno dialogowe jest używane jedynie do dodawania zdalnych urządzeń (np. za pomocą protokołu Samba) albo w celu dostępu do lokalnie zamontowanych katalogów. W przypadku normalnych odtwarzaczy mediów podłączonych przez USB Cantata automatycznie wyświetli urządzenie gdy będzie ono podłączone.</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="49"/>
-        <source>Samba Share</source>
-        <translation>Udziały Samby</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="50"/>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation>Udziały Samby (Automatycznie wykryj hosta i porty)</translation>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <translation>To okno dialogowe jest używane jedynie do dodawania zdalnych urządzeń (np. za pomocą protokołu sshfs) albo w celu dostępu do lokalnie zamontowanych katalogów. W przypadku normalnych odtwarzaczy mediów podłączonych przez USB Cantata automatycznie wyświetli urządzenie gdy będzie ono podłączone.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="51"/>

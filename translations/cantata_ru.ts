@@ -1144,14 +1144,6 @@ Please choose a different name.</source>
 Выберите другое название.</translation>
     </message>
     <message>
-        <source>Samba Share</source>
-        <translation type="vanished">Общий ресурс Samba</translation>
-    </message>
-    <message>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="vanished">Общий ресурс Samba (авто-определение порта и хоста)</translation>
-    </message>
-    <message>
         <source>Secure Shell (sshfs)</source>
         <translation type="vanished">Secure Shell (sshfs)</translation>
     </message>
@@ -3836,11 +3828,11 @@ i18n: ectx: property (text), widget (PlainNoteLabel, label_5)
         <translation type="vanished">В связи с особенностями работы sshfs, для ввода пароля требуется подходящее приложение ssh-askpass (ksshaskpass, ssh-askpass-gnome, и т.п.).</translation>
     </message>
     <message>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
         <extracomment>i18n: file: devices/remotedevicepropertieswidget.ui:410
 i18n: ectx: property (text), widget (PlainNoteLabel, infoLabel)
 </extracomment>
-        <translation type="vanished">Этот диалог используется только для добавления удалённых устройств (например, с помощью Samba) или для доступа к локально смонтированным папкам. Обычные устройства, подключенные через USB, Cantata показывает автоматически в момент подключения.</translation>
+        <translation type="vanished">Этот диалог используется только для добавления удалённых устройств (например, с помощью sshfs) или для доступа к локально смонтированным папкам. Обычные устройства, подключенные через USB, Cantata показывает автоматически в момент подключения.</translation>
     </message>
     <message>
         <source>Name of Dynamic Rules</source>
@@ -12481,18 +12473,8 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="410"/>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
-        <translation type="unfinished">Этот диалог используется только для добавления удалённых устройств (например, с помощью Samba) или для доступа к локально смонтированным папкам. Обычные устройства, подключенные через USB, Cantata показывает автоматически в момент подключения.</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="49"/>
-        <source>Samba Share</source>
-        <translation type="unfinished">Общий ресурс Samba</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="50"/>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="unfinished">Общий ресурс Samba (авто-определение порта и хоста)</translation>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <translation type="unfinished">Этот диалог используется только для добавления удалённых устройств (например, с помощью sshfs) или для доступа к локально смонтированным папкам. Обычные устройства, подключенные через USB, Cantata показывает автоматически в момент подключения.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="51"/>

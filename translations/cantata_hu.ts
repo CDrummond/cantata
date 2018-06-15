@@ -1144,14 +1144,6 @@ Please choose a different name.</source>
 Kérlek válassz másik nevet.</translation>
     </message>
     <message>
-        <source>Samba Share</source>
-        <translation type="vanished">Szamba-megosztás</translation>
-    </message>
-    <message>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="vanished">Szamba-megosztás (kiszolgáló és port automatikus felderítése)</translation>
-    </message>
-    <message>
         <source>Secure Shell (sshfs)</source>
         <translation type="vanished">Biztonságos héj (sshfs)</translation>
     </message>
@@ -3816,11 +3808,11 @@ i18n: ectx: property (text), widget (PlainNoteLabel, label_5)
         <translation type="vanished">Az sshfs működéséből eredően jelszó beviteléhez egy megfelelő ssh-askpass alkalamzás  (ksshaskpass, ssh-askpass-gnome, stb.) szükséges.</translation>
     </message>
     <message>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
         <extracomment>i18n: file: devices/remotedevicepropertieswidget.ui:410
 i18n: ectx: property (text), widget (PlainNoteLabel, infoLabel)
 </extracomment>
-        <translation type="vanished">Ez a párbeszéd csak távoli (pl. Samba-n keresztül csatlakozott), vagy helyi csatolású eszközök, hozzáadásához és leválasztásához való. A szokáos, USB-n csatlakozott médialejátszókat a Cantata csatlakozáskor automatikusan megjeleníti.</translation>
+        <translation type="vanished">Ez a párbeszéd csak távoli (pl. sshfs keresztül csatlakozott), vagy helyi csatolású eszközök, hozzáadásához és leválasztásához való. A szokáos, USB-n csatlakozott médialejátszókat a Cantata csatlakozáskor automatikusan megjeleníti.</translation>
     </message>
     <message>
         <source>Name of Dynamic Rules</source>
@@ -12429,18 +12421,8 @@ Kérlek válassz másik nevet.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="410"/>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
-        <translation type="unfinished">Ez a párbeszéd csak távoli (pl. Samba-n keresztül csatlakozott), vagy helyi csatolású eszközök, hozzáadásához és leválasztásához való. A szokáos, USB-n csatlakozott médialejátszókat a Cantata csatlakozáskor automatikusan megjeleníti.</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="49"/>
-        <source>Samba Share</source>
-        <translation type="unfinished">Szamba-megosztás</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="50"/>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="unfinished">Szamba-megosztás (kiszolgáló és port automatikus felderítése)</translation>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <translation type="unfinished">Ez a párbeszéd csak távoli (pl. sshfs keresztül csatlakozott), vagy helyi csatolású eszközök, hozzáadásához és leválasztásához való. A szokáos, USB-n csatlakozott médialejátszókat a Cantata csatlakozáskor automatikusan megjeleníti.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="51"/>

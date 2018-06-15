@@ -1148,14 +1148,6 @@ Please choose a different name.</source>
 他の名前を選択してください。</translation>
     </message>
     <message>
-        <source>Samba Share</source>
-        <translation type="vanished">Samba 共有</translation>
-    </message>
-    <message>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="vanished">Samba 共有(ホストとポートを自動検索)</translation>
-    </message>
-    <message>
         <source>Secure Shell (sshfs)</source>
         <translation type="vanished">Secure Shell (sshfs)</translation>
     </message>
@@ -4062,11 +4054,11 @@ i18n: ectx: property (text), widget (PlainNoteLabel, label_5)
         <translation type="vanished">sshfsの仕組みのため、適切なssh-askpassアプリケーション（ksshaskpass、ssh-askpass-gnomeなど）がパスワードを入力する必要があります。</translation>
     </message>
     <message>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
         <extracomment>i18n: file: devices/remotedevicepropertieswidget.ui:410
 i18n: ectx: property (text), widget (PlainNoteLabel, infoLabel)
 </extracomment>
-        <translation type="vanished">このダイアログは、リモートデバイスを（Samba経由などで）追加する場合や、ローカルにマウントされたフォルダにアクセスする場合にのみ使用します。 USBを介して接続された通常のメディアプレーヤーの場合、Cantataはデバイスが接続されると自動的にデバイスを表示します。</translation>
+        <translation type="vanished">このダイアログは、リモートデバイスを（sshfs経由などで）追加する場合や、ローカルにマウントされたフォルダにアクセスする場合にのみ使用します。 USBを介して接続された通常のメディアプレーヤーの場合、Cantataはデバイスが接続されると自動的にデバイスを表示します。</translation>
     </message>
     <message>
         <source>Name of Dynamic Rules</source>
@@ -12900,18 +12892,8 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="410"/>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
-        <translation type="unfinished">このダイアログは、リモートデバイスを（Samba経由などで）追加する場合や、ローカルにマウントされたフォルダにアクセスする場合にのみ使用します。 USBを介して接続された通常のメディアプレーヤーの場合、Cantataはデバイスが接続されると自動的にデバイスを表示します。</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="49"/>
-        <source>Samba Share</source>
-        <translation type="unfinished">Samba 共有</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="50"/>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="unfinished">Samba 共有(ホストとポートを自動検索)</translation>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <translation type="unfinished">このダイアログは、リモートデバイスを（sshfs経由などで）追加する場合や、ローカルにマウントされたフォルダにアクセスする場合にのみ使用します。 USBを介して接続された通常のメディアプレーヤーの場合、Cantataはデバイスが接続されると自動的にデバイスを表示します。</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="51"/>

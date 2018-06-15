@@ -1028,14 +1028,6 @@ i18n: ectx: property (text), widget (QTreeWidget, tracks)
         <translation type="vanished">Biblioteca de música</translation>
     </message>
     <message>
-        <source>Samba Share</source>
-        <translation type="vanished">Recurso compartido Samba</translation>
-    </message>
-    <message>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="vanished">Samba Share (Detectar automáticamente host y port)</translation>
-    </message>
-    <message>
         <source>Secure Shell (sshfs)</source>
         <translation type="vanished">Secure Shell (sshfs)</translation>
     </message>
@@ -11548,18 +11540,8 @@ Please choose a different name.</source>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="410"/>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="49"/>
-        <source>Samba Share</source>
-        <translation type="unfinished">Recurso compartido Samba</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="50"/>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="unfinished">Samba Share (Detectar automáticamente host y port)</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="51"/>

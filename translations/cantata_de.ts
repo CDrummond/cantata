@@ -888,14 +888,6 @@ i18n: ectx: property (text), widget (QTreeWidget, tracks)
         <translation type="vanished">Musikbibliothek</translation>
     </message>
     <message>
-        <source>Samba Share</source>
-        <translation type="vanished">Samba-Freigabe</translation>
-    </message>
-    <message>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="vanished">Samba-Freigabe (Automatisch Host und Port finden)</translation>
-    </message>
-    <message>
         <source>Secure Shell (sshfs)</source>
         <translation type="vanished">Secure Shell (sshfs)</translation>
     </message>
@@ -10942,18 +10934,8 @@ Bitte wähle einen anderen Namen.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="410"/>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
-        <translation>Dieser Dialog dient nur dem Hinzufügen externer Geräte (z. B. via Samba) und dem Öffnen local eingehängter Verzeichnisse. Gewöhnliche über USB verbundene Media-Player zeigt Cantata automatisch an, sobald sie verbunden sind.</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="49"/>
-        <source>Samba Share</source>
-        <translation>Samba-Freigabe</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="50"/>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation>Samba-Freigabe (Host und Port automatisch finden)</translation>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <translation>Dieser Dialog dient nur dem Hinzufügen externer Geräte (z. B. via sshfs) und dem Öffnen local eingehängter Verzeichnisse. Gewöhnliche über USB verbundene Media-Player zeigt Cantata automatisch an, sobald sie verbunden sind.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.cpp" line="51"/>

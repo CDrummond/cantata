@@ -1,7 +1,7 @@
 PROJECT(cantata)
 
-#  NOTE: If PROJECT_URL, or PROJECT_REV_URL, are changed, then cantata-dynamic, and README will need updating.
-#        dbus/mpd.cantata.xml and devices/mounter/mpd.cantata.mounter.xml will also need renaming/updating.
+#  NOTE: If PROJECT_URL, or PROJECT_REV_URL, are changed, then cantata-dynamic, README, and
+#        dbus/mpd.cantata.xml will need renaming/updating.
 set(PROJECT_URL "cantata.mpd")
 set(PROJECT_REV_URL "mpd.cantata")
 
@@ -408,9 +408,6 @@ if (TAGLIB_FOUND)
     if (ENABLE_DEVICES_SUPPORT)
         set(CANTATA_LIBS ${CANTATA_LIBS} solidlite)
     endif ()
-    if (ENABLE_DEVICES_SUPPORT AND ENABLE_REMOTE_DEVICES AND NOT WIN32 AND NOT APPLE)
-        set(CANTATA_LIBS ${CANTATA_LIBS} avahi)
-    endif ()
 
     if (FFMPEG_FOUND OR MPG123_FOUND)
         set(CANTATA_SRCS ${CANTATA_SRCS} replaygain/albumscanner.cpp replaygain/rgdialog.cpp replaygain/tagreader.cpp replaygain/jobcontroller.cpp)
@@ -465,9 +462,6 @@ if (TAGLIB_FOUND)
             set(CANTATA_SRCS ${CANTATA_SRCS} devices/remotefsdevice.cpp devices/remotedevicepropertiesdialog.cpp
                 devices/remotedevicepropertieswidget.cpp)
             set(CANTATA_UIS ${CANTATA_UIS} devices/remotedevicepropertieswidget.ui)
-            qt5_add_dbus_interfaces(CANTATA_SRCS devices/mounter/${PROJECT_REV_URL}.mounter.xml)
-            add_subdirectory(devices/mounter)
-            add_subdirectory(devices/avahi)
         endif ()
     else (ENABLE_DEVICES_SUPPORT)
         set(CANTATA_SRCS ${CANTATA_SRCS} devices/device.cpp)

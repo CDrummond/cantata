@@ -137,7 +137,7 @@ static QString debugAreas()
 {
     return  QObject::tr("mpd - MPD communication")+QLatin1Char('\n')
             +QObject::tr("mpdparse - Parsing of MPD response")+QLatin1Char('\n')
-            +QLatin1String("cue - Cue file parsing")+QLatin1Char('\n') // TODO: 2.4 tr
+            +QObject::tr("cue - Cue file parsing")+QLatin1Char('\n')
             +QObject::tr("covers - Cover fetching, and loading")+QLatin1Char('\n')
             +QObject::tr("covers-verbose - Cover fetching, and loading (verbose) ")+QLatin1Char('\n')
             +QObject::tr("context-wikipedia - Wikipedia info in context view")+QLatin1Char('\n')
@@ -166,7 +166,7 @@ static QString debugAreas()
             #ifdef AVAHI_FOUND
             +QObject::tr("avahi - Auto-discovery of MPD servers")+QLatin1Char('\n')
             #endif
-            // TODO: 2.4 +QObject::tr("all - Enable all debug")+QLatin1Char('\n')
+            +QObject::tr("all - Enable all debug")+QLatin1Char('\n')
             ;
 }
 
@@ -363,7 +363,7 @@ int main(int argc, char *argv[])
     QCommandLineOption debugOption(QStringList() << "d" << "debug", QObject::tr("Comma-separated list of debug areas - possible values:\n")+debugAreas(), "debug", "");
     QCommandLineOption debugToFileOption(QStringList() << "f" << "debug-to-file", QObject::tr("Log debug messages to %1").arg(Utils::cacheDir(QString(), true)+"cantata.log"), "", "false");
     QCommandLineOption noNetworkOption(QStringList() << "n" << "no-network", QObject::tr("Disable network access"), "", "false");
-    QCommandLineOption collectionOption(QStringList() << "c" << "collection", "Collection name", "collection", ""); // TODO: 2.4 tr
+    QCommandLineOption collectionOption(QStringList() << "c" << "collection", QObject::tr("Collection name"), "collection", "");
     cmdLineParser.addOption(debugOption);
     cmdLineParser.addOption(debugToFileOption);
     cmdLineParser.addOption(noNetworkOption);

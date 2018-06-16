@@ -251,12 +251,14 @@ static QStringList listFiles(const QDir &d, bool useServer, bool useLocal, const
     return files;
 }
 
-static QStringList parseUrls(const QStringList &urls)
+QStringList PlayQueueModel::parseUrls(const QStringList &urls)
 {
     QStringList useable;
     bool useServer = HttpServer::self()->isAlive();
     bool useLocal = MPDConnection::self()->localFilePlaybackSupported();
     QSet<QString> handlers = MPDConnection::self()->urlHandlers();
+    bool haveLocalFiles = false;
+
     for (const auto &path: urls) {
         QUrl u=path.indexOf("://")>2 ? QUrl(path) : QUrl::fromLocalFile(path);
         #if defined ENABLE_DEVICES_SUPPORT && (defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND)
@@ -268,6 +270,7 @@ static QStringList parseUrls(const QStringList &urls)
         if (QLatin1String("http")==u.scheme()) {
             useable.append(u.toString());
         } else if (u.scheme().isEmpty() || QLatin1String("file")==u.scheme()) {
+            haveLocalFiles = true;
             QDir d(u.path());
 
             if (d.exists()) {
@@ -287,9 +290,19 @@ static QStringList parseUrls(const QStringList &urls)
         }
     }
 
+    QStringList use;
+
+    if (haveLocalFiles && !useServer && !useLocal) {
+        #ifdef ENABLE_HTTP_SERVER
+        emit error(tr("Cannot add local files. Please enable in-built HTTP server, or configure MPD for local file playback."));
+        #else
+        emit error(tr("Cannot add local files. Please configure MPD for local file playback."));
+        #endif
+        return use;
+    }
+
     // Ensure we only have unqiue URLs...
     QSet<QString> unique;
-    QStringList use;
     for (const auto &u: useable) {
         if (!unique.contains(u)) {
             unique.insert(u);
@@ -297,6 +310,9 @@ static QStringList parseUrls(const QStringList &urls)
         }
     }
 
+    if (use.isEmpty()) {
+        emit error(tr("Unable to add local files. No suitable files found."));
+    }
     return use;
 }
 

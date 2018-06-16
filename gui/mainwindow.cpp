@@ -789,6 +789,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(PlayQueueModel::self(), SIGNAL(streamsFetched()), playQueue, SLOT(hideSpinner()));
     connect(PlayQueueModel::self(), SIGNAL(updateCurrent(Song)), SLOT(updateCurrentSong(Song)));
     connect(PlayQueueModel::self(), SIGNAL(streamFetchStatus(QString)), playQueue, SLOT(streamFetchStatus(QString)));
+    connect(PlayQueueModel::self(), SIGNAL(error(QString)), SLOT(showError(QString)));
     connect(playQueue, SIGNAL(cancelStreamFetch()), PlayQueueModel::self(), SLOT(cancelStreamFetch()));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));

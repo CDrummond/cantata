@@ -137,6 +137,7 @@ private:
     void saveHistory(const QList<Song> &prevList);
     void controlActions();
     void addSortAction(const QString &name, const QString &key);
+    QStringList parseUrls(const QStringList &urls);
 
 public Q_SLOTS:
     void load(const QStringList &urls, int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false);
@@ -178,6 +179,7 @@ Q_SIGNALS:
     void addAndPlay(const QString &file);
     void startPlayingSongId(qint32 id);
     void currentSongRating(const QString &file, quint8 r);
+    void error(const QString &str);
 
 private:
     QList<Song> songs;

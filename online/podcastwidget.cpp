@@ -153,32 +153,34 @@ void PodcastWidget::unSubscribe()
 }
 
 enum GetEp {
-    GetEp_Downloaded,
-    GetEp_NotDownloaded,
-    GetEp_Listened,
-    GetEp_NotListened
+    GetEp_Downloaded     = 0x01,
+    GetEp_NotDownloaded  = 0x02,
+    GetEp_Listened       = 0x04,
+    GetEp_NotListened    = 0x08
 };
 
-static QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > getEpisodes(PodcastService::Proxy &proxy, const QModelIndexList &selected, GetEp get)
+static bool useEpisode(const PodcastService::Episode *episode, int get)
+{
+    return ! ((get&GetEp_Downloaded && episode->localFile.isEmpty()) ||
+              (get&GetEp_NotDownloaded && !episode->localFile.isEmpty()) ||
+              (get&GetEp_Listened && !episode->played) ||
+              (get&GetEp_NotListened && episode->played) );
+}
+
+static QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > getEpisodes(PodcastService::Proxy &proxy, const QModelIndexList &selected, int get)
 {
     QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls;
     for (const QModelIndex &idx: selected) {
         PodcastService::Item *item=static_cast<PodcastService::Item *>(proxy.mapToSource(idx).internalPointer());
         if (item->isPodcast()) {
             for (PodcastService::Episode *episode: static_cast<PodcastService::Podcast *>(item)->episodes) {
-                if ((GetEp_Downloaded==get && !episode->localFile.isEmpty()) ||
-                    (GetEp_NotDownloaded==get && episode->localFile.isEmpty()) ||
-                    (GetEp_Listened==get && episode->played) ||
-                    (GetEp_NotListened==get && !episode->played)) {
+                if (useEpisode(episode, get)) {
                     urls[static_cast<PodcastService::Podcast *>(item)].insert(episode);
                 }
             }
         } else {
             PodcastService::Episode *episode=static_cast<PodcastService::Episode *>(item);
-            if ((GetEp_Downloaded==get && !episode->localFile.isEmpty()) ||
-                (GetEp_NotDownloaded==get && episode->localFile.isEmpty()) ||
-                (GetEp_Listened==get && episode->played) ||
-                (GetEp_NotListened==get && !episode->played)) {
+            if (useEpisode(episode, get)) {
                 urls[episode->parent].insert(episode);
             }
         }
@@ -188,7 +190,7 @@ static QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > getEpis
 
 void PodcastWidget::download()
 {
-    QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls=getEpisodes(proxy, view->selectedIndexes(true), GetEp_NotDownloaded);
+    QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls=getEpisodes(proxy, view->selectedIndexes(true), GetEp_NotDownloaded|(unplayedOnlyAction->isChecked() ? GetEp_NotListened : 0));
 
     if (!urls.isEmpty()) {
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());

@@ -140,7 +140,7 @@ Q_SIGNALS:
     void startPlayingSongId(qint32);
     void setVolume(int);
     void outputs();
-    void enableOutput(int id, bool);
+    void enableOutput(quint32 id, bool);
     void setPriority(const QList<qint32> &ids, quint8 priority, bool decreasePriority);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
     void showPreferencesPage(const QString &page);

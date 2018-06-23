@@ -1606,7 +1606,7 @@ void MPDConnection::outputs()
     }
 }
 
-void MPDConnection::enableOutput(int id, bool enable)
+void MPDConnection::enableOutput(quint32 id, bool enable)
 {
     if (sendCommand((enable ? "enableoutput " : "disableoutput ")+quote(id)).ok) {
         outputs();

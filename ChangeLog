@@ -6,6 +6,7 @@
 3. Install cantata.png to use as Windows tray icon.
 4. Remove internal Samba share mounting code, this had some privilege
    escalation issues, and is not well tested.
+5. Use 32-bit unsigned int to store output IDs.
 
 2.3.1
 -----

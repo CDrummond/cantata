@@ -31,8 +31,8 @@
 
 struct Output
 {
-    Output(quint8 i, bool en, QString n) : id(i), enabled(en), name(n) { }
-    Output() : id(0xFF), enabled(false) { }
+    Output(quint32 i, bool en, QString n) : id(i), enabled(en), name(n) { }
+    Output() : id(0xFFFFFFFF), enabled(false) { }
 
     Output(const Output &o) { *this=o; }
 
@@ -49,7 +49,7 @@ struct Output
 
     virtual ~Output() { }
 
-    quint8 id;
+    quint32 id;
     bool enabled;
     QString name;
 };

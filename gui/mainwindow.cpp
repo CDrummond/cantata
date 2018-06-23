@@ -770,7 +770,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->addToPlayQueueAndPlayAction, SIGNAL(triggered()), this, SLOT(addToPlayQueueAndPlay()));
     connect(StdActions::self()->insertAfterCurrentAction, SIGNAL(triggered()), this, SLOT(insertIntoPlayQueue()));
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
-    connect(this, SIGNAL(enableOutput(int, bool)), MPDConnection::self(), SLOT(enableOutput(int, bool)));
+    connect(this, SIGNAL(enableOutput(quint32, bool)), MPDConnection::self(), SLOT(enableOutput(quint32, bool)));
     connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
     connect(this, SIGNAL(pause(bool)), MPDConnection::self(), SLOT(setPause(bool)));
     connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(play()));
@@ -1567,7 +1567,7 @@ void MainWindow::toggleOutput()
 {
     QAction *act=qobject_cast<QAction *>(sender());
     if (act) {
-        emit enableOutput(act->data().toInt(), act->isChecked());
+        emit enableOutput(act->data().toUInt(), act->isChecked());
     }
 }
 
@@ -1766,7 +1766,7 @@ void MainWindow::updateCurrentSong(Song song, bool wasEmpty)
     if (song.isCdda()) {
         emit getStatus();
         if (song.isUnknownAlbum()) {
-            Song pqSong=PlayQueueModel::self()->getSongById(song    .id);
+            Song pqSong=PlayQueueModel::self()->getSongById(song.id);
             if (!pqSong.isEmpty()) {
                 song=pqSong;
             }

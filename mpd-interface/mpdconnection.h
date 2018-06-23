@@ -333,7 +333,7 @@ public Q_SLOTS:
 
     // Output
     void outputs();
-    void enableOutput(int id, bool enable);
+    void enableOutput(quint32 id, bool enable);
 
     // Miscellaneous
     void getStats();

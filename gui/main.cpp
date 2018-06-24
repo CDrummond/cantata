@@ -369,8 +369,9 @@ int main(int argc, char *argv[])
     cmdLineParser.addOption(noNetworkOption);
     cmdLineParser.addOption(collectionOption);
     cmdLineParser.process(app);
+    QStringList files = cmdLineParser.positionalArguments();
 
-    if (!app.start()) {
+    if (!app.start(files)) {
         return 0;
     }
 
@@ -433,7 +434,7 @@ int main(int argc, char *argv[])
     #if defined Q_OS_WIN || defined Q_OS_MAC
     app.setActivationWindow(&mw);
     #endif // !defined Q_OS_MAC
-    app.loadFiles();
+    app.loadFiles(files);
 
     return app.exec();
 }

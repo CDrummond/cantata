@@ -30,12 +30,13 @@ Application::Application(int &argc, char **argv)
 {
 }
 
-bool Application::start()
+bool Application::start(const QStringList &files)
 {
+    Q_UNUSED(files)
     return true;
 }
 
-void Application::loadFiles()
+void Application::loadFiles(const QStringList &files)
 {
-
+    Q_UNUSED(files)
 }

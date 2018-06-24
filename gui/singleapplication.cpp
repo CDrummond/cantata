@@ -32,16 +32,10 @@ SingleApplication::SingleApplication(int &argc, char **argv)
     connect(this, SIGNAL(reconnect()), MPDConnection::self(), SLOT(reconnect()));
 }
 
-bool SingleApplication::start()
+bool SingleApplication::start(const QStringList &files)
 {
     if (isRunning()) {
-        QStringList args(arguments());
-        if (args.count()>1) {
-            args.takeAt(0);
-            sendMessage(args.join("\n"));
-        } else {
-            sendMessage(QString());
-        }
+        sendMessage(files.join("\n"));
         return false;
     }
 
@@ -51,7 +45,7 @@ bool SingleApplication::start()
 void SingleApplication::message(const QString &msg)
 {
     if (!msg.isEmpty()) {
-        load(msg.split("\n"));
+        loadFiles(msg.split("\n"));
     }
     MainWindow *mw=qobject_cast<MainWindow *>(activationWindow());
     if (mw) {
@@ -59,16 +53,7 @@ void SingleApplication::message(const QString &msg)
     }
 }
 
-void SingleApplication::loadFiles()
-{
-    QStringList args(arguments());
-    if (args.count()>1) {
-        args.takeAt(0);
-        load(args);
-    }
-}
-
-void SingleApplication::load(const QStringList &files)
+void SingleApplication::loadFiles(const QStringList &files)
 {
     if (files.isEmpty()) {
         return;

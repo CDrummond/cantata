@@ -35,7 +35,7 @@ Application::Application(int &argc, char **argv)
     #endif
 }
 
-bool Application::start()
+bool Application::start(const QStringList &files)
 {
     if (QDBusConnection::sessionBus().registerService(CANTATA_REV_URL)) {
         if (Utils::KDE!=Utils::currentDe()) {
@@ -43,20 +43,18 @@ bool Application::start()
         }
         return true;
     }
-    loadFiles();
+    loadFiles(files);
     // ...and activate window!
     QDBusConnection::sessionBus().send(QDBusMessage::createMethodCall("mpd.cantata", "/org/mpris/MediaPlayer2", "", "Raise"));
     return false;
 }
 
-void Application::loadFiles()
+void Application::loadFiles(const QStringList &files)
 {
-    QStringList args(arguments());
-    if (args.count()>1) {
-        args.takeAt(0);
+    if (!files.isEmpty()) {
         QDBusMessage m = QDBusMessage::createMethodCall("mpd.cantata", "/cantata", "", "load");
         QList<QVariant> a;
-        a.append(args);
+        a.append(files);
         m.setArguments(a);
         QDBusConnection::sessionBus().send(m);
     }

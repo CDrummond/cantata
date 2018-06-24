@@ -33,8 +33,8 @@ public:
     Application(int &argc, char **argv);
     ~Application() override { }
 
-    bool start();
-    void loadFiles();
+    bool start(const QStringList &files);
+    void loadFiles(const QStringList &files);
 };
 
 #endif

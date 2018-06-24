@@ -34,8 +34,8 @@ public:
     SingleApplication(int &argc, char **argv);
     virtual ~SingleApplication() { }
 
-    bool start();
-    void loadFiles();
+    bool start(const QStringList &files);
+    void loadFiles(const QStringList &files);
 
 private:
     void load(const QStringList &files);

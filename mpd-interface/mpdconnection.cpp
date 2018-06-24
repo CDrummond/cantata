@@ -1914,7 +1914,7 @@ void MPDConnection::search(const QByteArray &query, const QString &id)
                             if (val>=min && val<=max) {
                                 Response resp = sendCommand("find file " + encodeName(QString::fromUtf8(sticker.file)) , false, false);
                                 if (resp.ok) {
-                                    songs.append(MPDParseUtils::parseSong(response.data, MPDParseUtils::Loc_Search));
+                                    songs += MPDParseUtils::parseSong(resp.data, MPDParseUtils::Loc_Search);
                                 }
                             }
                         }

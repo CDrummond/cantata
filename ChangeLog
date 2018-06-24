@@ -9,6 +9,7 @@
 5. Use 32-bit unsigned int to store output IDs.
 6. When marking podcast episodes for download, and 'show only uplayed' is
    checked, then only download unplayed episodes.
+7. Fix smart playlists with a rating range and no song include/exclude rules.
 
 2.3.1
 -----

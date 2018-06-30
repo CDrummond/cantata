@@ -44,7 +44,7 @@ option(ENABLE_TAGLIB "Enable TagLib library (required for tag editing, replaygai
 option(ENABLE_HTTP_STREAM_PLAYBACK "Enable playback of MPD HTTP streams (LibVLC or QtMultimedia)" ON)
 option(ENABLE_FFMPEG "Enable ffmpeg/libav libraries (required for replaygain calculation)" ON)
 option(ENABLE_MPG123 "Enable mpg123 libraries (required for replaygain calculation)" ON)
-option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" OFF)
+option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" ON)
 option(ENABLE_HTTP_SERVER "Enable internal HTTP server to play non-MPD files" ON)
 if (WIN32 OR APPLE OR HAIKU)
     option(ENABLE_DEVICES_SUPPORT "Enable suport for external devices" OFF)

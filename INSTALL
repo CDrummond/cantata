@@ -40,10 +40,10 @@ The following options may be passed to CMake:
         Enable usage of internal HTTP server for non-MPD file playback.
         Default: ON
 
-    -DENABLE_PROXY_CONFIG=ON
+    -DENABLE_PROXY_CONFIG=OFF
         Enable support for proxy settings in config dialog. If disabled,
         system proxy settings are used.
-        Default: OFF
+        Default: ON
 
 
     Linux specific:

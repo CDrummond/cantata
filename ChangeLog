@@ -10,6 +10,7 @@
 6. When marking podcast episodes for download, and 'show only uplayed' is
    checked, then only download unplayed episodes.
 7. Fix smart playlists with a rating range and no song include/exclude rules.
+8. Enable proxy config settings page by default.
 
 2.3.1
 -----

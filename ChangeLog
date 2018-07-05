@@ -11,6 +11,7 @@
    checked, then only download unplayed episodes.
 7. Fix smart playlists with a rating range and no song include/exclude rules.
 8. Enable proxy config settings page by default.
+9. Add Portuguese translation - thanks to Wanderson Gonçalves Pereira
 
 2.3.1
 -----

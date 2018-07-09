@@ -2266,7 +2266,7 @@ void MainWindow::locateTrack()
     }
     Song s = songs.first();
     if (locateAlbumAction==act) {
-        libraryPage->showAlbum(s.albumArtist(), s.album);
+        libraryPage->showAlbum(s.albumArtist(), s.albumId());
     }
     if (locateArtistAction==act) {
         libraryPage->showArtist(s.albumArtist());

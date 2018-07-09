@@ -1,17 +1,18 @@
 2.3.2
 -----
-1. Store actual song path for local files (mainly affects windows)
-2. When using Track Organizer to rename music tracks, rename any other files
-   that have the same basename as the music file.
-3. Install cantata.png to use as Windows tray icon.
-4. Remove internal Samba share mounting code, this had some privilege
-   escalation issues, and is not well tested.
-5. Use 32-bit unsigned int to store output IDs.
-6. When marking podcast episodes for download, and 'show only uplayed' is
-   checked, then only download unplayed episodes.
-7. Fix smart playlists with a rating range and no song include/exclude rules.
-8. Enable proxy config settings page by default.
-9. Add Portuguese translation - thanks to Wanderson Gonçalves Pereira
+ 1. Store actual song path for local files (mainly affects windows)
+ 2. When using Track Organizer to rename music tracks, rename any other files
+    that have the same basename as the music file.
+ 3. Install cantata.png to use as Windows tray icon.
+ 4. Remove internal Samba share mounting code, this had some privilege
+    escalation issues, and is not well tested.
+ 5. Use 32-bit unsigned int to store output IDs.
+ 6. When marking podcast episodes for download, and 'show only uplayed' is
+    checked, then only download unplayed episodes.
+ 7. Fix smart playlists with a rating range and no song include/exclude rules.
+ 8. Enable proxy config settings page by default.
+ 9. Add Portuguese translation - thanks to Wanderson Gonçalves Pereira
+10. Fix 'Locate In Library / Album' for albums with musicbrainz ID.
 
 2.3.1
 -----

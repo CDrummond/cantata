@@ -13,8 +13,9 @@
  8. Enable proxy config settings page by default.
  9. Add Brazilian Portuguese translation - thanks to Wanderson Gonçalves Pereira
 10. Fix 'Locate In Library / Album' for albums with musicbrainz ID.
-11. Fix libVLC crash with invalid HTTP streams - check with QUrl that URL is
-    valid and scheme starts with http.
+11. Check HTTP stream URLs are valid URLs, and scheme starts with http.
+12. Due to reports of crashes in libvlc code, default to using QtMultiMedia
+    for HTTP stream playback on Linux builds (already default for Mac/Win).
 
 2.3.1
 -----

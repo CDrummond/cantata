@@ -34,7 +34,7 @@ The following options may be passed to CMake:
         Enable usage of libVLC for MPD HTTP stream playback. Bug report 493
         (https://github.com/CDrummond/cantata/issues/493) contains
         more information.
-        Default: ON (Linux) OFF (Windows/Mac)
+        Default: OFF
 
     -DENABLE_HTTP_SERVER=ON
         Enable usage of internal HTTP server for non-MPD file playback.

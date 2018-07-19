@@ -156,7 +156,8 @@ void HttpStream::streamUrl(const QString &url)
         player=nullptr;
     }
     #endif
-    if (!url.isEmpty() && !player) {
+    QUrl qUrl(url);
+    if (!url.isEmpty() && qUrl.isValid() && qUrl.scheme().startsWith("http") && !player) {
         #ifdef LIBVLC_FOUND
         instance = libvlc_new(0, NULL);
         QByteArray byteArrayUrl = url.toUtf8();
@@ -165,7 +166,7 @@ void HttpStream::streamUrl(const QString &url)
         libvlc_media_release(media);
         #else
         player=new QMediaPlayer(this);
-        player->setMedia(QUrl(url));
+        player->setMedia(qUrl);
         player->setProperty(constUrlProperty, url);
         #endif
         muted=false;

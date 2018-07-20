@@ -51,7 +51,6 @@ public:
 private:
     MpdBrowsePage *mpdBrowse;
     LocalFolderBrowsePage *homeBrowse;
-    LocalFolderBrowsePage *rootBrowse;
 };
 
 #endif

@@ -16,6 +16,7 @@
 11. Check HTTP stream URLs are valid URLs, and scheme starts with http.
 12. Due to reports of crashes in libvlc code, default to using QtMultiMedia
     for HTTP stream playback on Linux builds (already default for Mac/Win).
+13. Add all drives (apart from A and B) to folder page for windows.
 
 2.3.1
 -----

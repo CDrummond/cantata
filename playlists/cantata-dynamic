@@ -456,6 +456,11 @@ sub readRules() {
                                 $ratingFrom=$ratingTo;
                                 $ratingTo=$tmp;
                             }
+                            # Check id we have a rating range of 0..MAX - if so, then we need to include
+                            # all songs => cant't filter on rating. Issue #1334
+                            if ($ratingFrom == 0 && $ratingTo == 10) {
+                                $ratingTo = 0
+                            }
                         }
                     } elsif ($key=~ m/^(Duration)/) {
                         my @vals = split("-", $val);

@@ -607,7 +607,7 @@ endif ()
 
 macro_display_feature_log()
 
-if ( (NOT WIN32 AND NOT APPLE AND ( (NOT ENABLE_SIMPLE_MPD_SUPPORT)  OR (NOT ENABLE_DEVICES_SUPPORT) OR (ENABLE_DEVICES_SUPPORT AND NOT ENABLE_REMOTE_DEVICES) ) ) OR (NOT ENABLE_HTTP_STREAM_PLAYBACK) )
+if ( (NOT WIN32 AND NOT APPLE AND ( (NOT ENABLE_SIMPLE_MPD_SUPPORT)  OR (NOT ENABLE_DEVICES_SUPPORT) OR (ENABLE_DEVICES_SUPPORT AND NOT ENABLE_REMOTE_DEVICES) ) ) OR (NOT ENABLE_HTTP_STREAM_PLAYBACK) OR (NOT ENABLE_PROXY_CONFIG))
     message("-----------------------------------------------------------------------------")
     message("-- The following STANDARD options have been DISABLED.")
     message("-----------------------------------------------------------------------------")
@@ -624,14 +624,9 @@ if ( (NOT WIN32 AND NOT APPLE AND ( (NOT ENABLE_SIMPLE_MPD_SUPPORT)  OR (NOT ENA
     if (NOT ENABLE_HTTP_STREAM_PLAYBACK)
         message("    * MPD HTTP Streams - Playback MPD HTTP output stream via libVLC.")
     endif ()
-    message("")
-endif ()
-
-if (ENABLE_PROXY_CONFIG)
-    message("-----------------------------------------------------------------------------")
-    message("-- The following NON STANDARD options have been ENABLED.")
-    message("-----------------------------------------------------------------------------")
-    if (ENABLE_PROXY_CONFIG)
+    if (NOT ENABLE_PROXY_CONFIG)
         message("    * Proxy Configuration")
     endif ()
+
+    message("")
 endif ()

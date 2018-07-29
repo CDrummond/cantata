@@ -34,34 +34,14 @@
 #endif
 #include <QDesktopServices>
 
-#ifdef Q_OS_WIN
-LocalFolderBrowsePage::LocalFolderBrowsePage(const QString &d, QWidget *p)
-    : SinglePageWidget(p)
-    , drive(d)
-    , isHomeFolder(d.isEmpty())
-{
-    create();
-}
-#endif
 LocalFolderBrowsePage::LocalFolderBrowsePage(bool isHome, QWidget *p)
     : SinglePageWidget(p)
     , isHomeFolder(isHome)
 {
-    create();
-}
-
-void LocalFolderBrowsePage::create()
-{
     QColor col = Utils::monoIconColor();
     model = isHomeFolder
             ? new LocalBrowseModel(QLatin1String("localbrowsehome"), tr("Home"), tr("Browse files in your home folder"), MonoIcon::icon(FontAwesome::home, col), this)
-            : new LocalBrowseModel(QLatin1String("localbrowseroot"),
-                                   #ifdef Q_OS_WIN
-                                   drive.toUpper()+QLatin1Char(':'),
-                                   #else
-                                   tr("Root"),
-                                   #endif
-                                   tr("Browse files on your computer"), MonoIcon::icon(FontAwesome::hddo, col), this);
+            : new LocalBrowseModel(QLatin1String("localbrowseroot"), tr("Root"), tr("Browse files on your computer"), MonoIcon::icon(FontAwesome::hddo, col), this);
     proxy = new FileSystemProxyModel(model);
     browseAction = new Action(MonoIcon::icon(FontAwesome::folderopen, col), tr("Open In File Manager"), this);
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
@@ -99,18 +79,14 @@ LocalFolderBrowsePage::~LocalFolderBrowsePage()
 
 QString LocalFolderBrowsePage::configGroup() const
 {
-    #ifdef Q_OS_WIN
-    return isHomeFolder ? QLatin1String("localbrowsehome") : (QLatin1String("localbrowsedrive")+drive);
-    #else
     return isHomeFolder ? QLatin1String("localbrowsehome") : QLatin1String("localbrowseroot");
-    #endif
 }
 
 void LocalFolderBrowsePage::setView(int v)
 {
     SinglePageWidget::setView(v);
     #ifdef Q_OS_WIN
-    view->view()->setRootIndex(proxy->mapFromSource(model->setRootPath(isHomeFolder ? QDir::homePath() : (drive+":/"))));
+    view->view()->setRootIndex(proxy->mapFromSource(model->setRootPath(isHomeFolder ? QDir::homePath() : (":/"))));
     #else
     view->view()->setRootIndex(proxy->mapFromSource(model->setRootPath(isHomeFolder ? QDir::homePath() : QDir::rootPath())));
     #endif

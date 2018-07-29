@@ -16,7 +16,8 @@
 11. Check HTTP stream URLs are valid URLs, and scheme starts with http.
 12. Due to reports of crashes in libvlc code, default to using QtMultiMedia
     for HTTP stream playback on Linux builds (already default for Mac/Win).
-13. Add all drives (apart from A and B) to folder page for windows.
+13. Use ":/" as root path for windows folder browse, seems to then list each
+    drive.
 14. If a dynamic playlist has rating 0..5 stars, then include all songs (even
     those without an explicit rating).
 

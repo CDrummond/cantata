@@ -35,18 +35,8 @@ FolderPage::FolderPage(QWidget *p)
     homeBrowse=new LocalFolderBrowsePage(true, this);
     addPage(homeBrowse->name(), homeBrowse->icon(), homeBrowse->title(), homeBrowse->descr(), homeBrowse);
 
-    #ifdef Q_OS_WIN
-    for (const auto &drive: QDir::drives()) {
-        QString letter = drive.absoluteFilePath().left(1);
-        if (QLatin1String("A")!=letter && QLatin1String("B")!=letter) {
-            LocalFolderBrowsePage *dirBrowse=new LocalFolderBrowsePage(letter, this);
-        }
-        addPage(dirBrowse->name(), dirBrowse->icon(), dirBrowse->title(), dirBrowse->descr(), dirBrowse);
-    }
-    #else
     LocalFolderBrowsePage *rootBrowse=new LocalFolderBrowsePage(false, this);
     addPage(rootBrowse->name(), rootBrowse->icon(), rootBrowse->title(), rootBrowse->descr(), rootBrowse);
-    #endif
 
     Configuration config(metaObject()->className());
     load(config);

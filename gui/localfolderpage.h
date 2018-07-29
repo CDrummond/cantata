@@ -33,9 +33,6 @@ class LocalFolderBrowsePage : public SinglePageWidget
 {
     Q_OBJECT
 public:
-    #ifdef Q_OS_WIN
-    LocalFolderBrowsePage(const QString &d, QWidget *p);
-    #endif
     LocalFolderBrowsePage(bool isHome, QWidget *p);
     ~LocalFolderBrowsePage() override;
 
@@ -45,12 +42,7 @@ public:
     const QIcon & icon() const { return model->icon(); }
     QList<Song> selectedSongs(bool allowPlaylists=false) const override;
 
-    #ifdef Q_OS_WIN
-    const QString & driveLetter() const { return drive; }
-    #endif
-
 private:
-    void create();
     QString configGroup() const;
     void setView(int v) override;
     void addSelectionToPlaylist(const QString &name=QString(), int action=MPDConnection::Append, quint8 priority=0, bool decreasePriority=false) override;
@@ -63,9 +55,6 @@ private Q_SLOTS:
     void openFileManager();
 
 private:
-    #ifdef Q_OS_WIN
-    QString drive;
-    #endif
     bool isHomeFolder;
     LocalBrowseModel *model;
     FileSystemProxyModel *proxy;

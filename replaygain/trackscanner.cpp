@@ -29,6 +29,7 @@
 #ifdef FFMPEG_FOUND
 #include "ffmpeginput.h"
 #endif
+#include <QSettings>
 
 #define RG_REFERENCE_LEVEL -18.0
 
@@ -42,6 +43,16 @@ double TrackScanner::clamp(double v)
 
 double TrackScanner::reference(double v)
 {
+    static double rgReferenceLevel = 1.0;
+
+    if (rgReferenceLevel>0.0) {
+        QSettings s;
+        s.beginGroup("General");
+        rgReferenceLevel = s.contains("rgReferenceLevel") ? s.value("rgReferenceLevel").toDouble() : RG_REFERENCE_LEVEL;
+        if (rgReferenceLevel > 0.0 || rgReferenceLevel < -64.0) {
+            rgReferenceLevel = RG_REFERENCE_LEVEL;
+        }
+    }
     return clamp(RG_REFERENCE_LEVEL-v);
 }
 

@@ -26,6 +26,7 @@
 #include <QTimer>
 #include <stdio.h>
 #include "replaygain.h"
+#include "config.h"
 
 int main(int argc, char *argv[])
 {
@@ -38,6 +39,9 @@ int main(int argc, char *argv[])
     for (int i=0; i<argc-1; ++i) {
         fileNames.append(QString::fromUtf8(argv[i+1]));
     }
+
+    QCoreApplication::setApplicationName(PACKAGE_NAME);
+    QCoreApplication::setOrganizationName(ORGANIZATION_NAME);
 
     QCoreApplication app(argc, argv);
     ReplayGain *rg=new ReplayGain(fileNames);

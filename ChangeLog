@@ -20,9 +20,6 @@
     drive.
 14. If a dynamic playlist has rating 0..5 stars, then include all songs (even
     those without an explicit rating).
-15. Add non-GUI rgReferenceLevel config item to set the reference level for
-    ReplayGain scanning. e.g. add 'rgReferenceLevel=-16.0" to the "General"
-    section.
 
 2.3.1
 -----

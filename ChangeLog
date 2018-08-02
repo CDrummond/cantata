@@ -20,6 +20,8 @@
     drive.
 14. If a dynamic playlist has rating 0..5 stars, then include all songs (even
     those without an explicit rating).
+15. Ubuntu icon theme is now named Yaru, so install there.
+16. Don't install Yaru icon by default.
 
 2.3.1
 -----

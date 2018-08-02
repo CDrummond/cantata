@@ -61,8 +61,9 @@ The following options may be passed to CMake:
         Build UDisks2 backend for solid-lite.
         Default: ON
 
-    -DINSTALL_UBUNTU_ICONS=<ON if Ubuntu, OFF otherwise>
-        Install Suru icons for Ubuntu.
+    -DINSTALL_UBUNTU_ICONS=ON
+        Install Yaru icons for Ubuntu.
+        Default: OFF
 
     -DCANTATA_HELPERS_LIB_DIR=<subdir>
         For 64 bit builds, this may be used to control the lib sub-dir

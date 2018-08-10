@@ -30,12 +30,13 @@
 static QSet<QString> lockedDevices;
 static QMutex mutex;
 
-CdParanoia::CdParanoia(const QString &device, bool full, bool noSkip, bool playback)
+CdParanoia::CdParanoia(const QString &device, bool full, bool noSkip, bool playback, int offset)
     : drive(0)
     , paranoia(0)
     , paranoiaMode(0)
     , neverSkip(noSkip)
     , maxRetries(20)
+    , seekOffst(offset)
 {
     QMutexLocker locker(&mutex);
     if (!lockedDevices.contains(device)) {
@@ -103,9 +104,9 @@ qint16 * CdParanoia::read()
 int CdParanoia::seek(long sector, int mode)
 {
     #ifdef CDIOPARANOIA_FOUND
-    return paranoia ? cdio_paranoia_seek(paranoia, sector, mode) : -1;
+    return paranoia ? cdio_paranoia_seek(paranoia, sector+seekOffst, mode) : -1;
     #else
-    return paranoia ? paranoia_seek(paranoia, sector, mode) : -1;
+    return paranoia ? paranoia_seek(paranoia, sector+seekOffst, mode) : -1;
     #endif
 }
 

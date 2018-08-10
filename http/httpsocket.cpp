@@ -292,7 +292,7 @@ void HttpSocket::readClient()
                     QStringList parts=song.file.split("/", QString::SkipEmptyParts);
                     if (parts.length()>=3) {
                         QString dev=QLatin1Char('/')+parts.at(1)+QLatin1Char('/')+parts.at(2);
-                        CdParanoia cdparanoia(dev, false, false, true);
+                        CdParanoia cdparanoia(dev, false, false, true, Settings::self()->paranoiaOffset());
 
                         if (cdparanoia) {
                             int firstSector = cdparanoia.firstSectorOfTrack(song.id);

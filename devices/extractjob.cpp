@@ -87,7 +87,7 @@ void ExtractJob::run()
         emit result(Device::Cancelled);
     } else {
         QStringList encParams=encoder.params(value, encoder.transcoder ? "pipe:" : "-", destFile);
-        CdParanoia cdparanoia(srcFile, Settings::self()->paranoiaFull(), Settings::self()->paranoiaNeverSkip());
+        CdParanoia cdparanoia(srcFile, Settings::self()->paranoiaFull(), Settings::self()->paranoiaNeverSkip(), false, Settings::self()->paranoiaOffset());
 
         if (!cdparanoia) {
             emit result(Device::FailedToLockDevice);

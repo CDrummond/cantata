@@ -537,6 +537,11 @@ bool Settings::paranoiaNeverSkip()
 {
     return cfg.get("paranoiaNeverSkip", true);
 }
+
+int Settings::paranoiaOffset()
+{
+    return cfg.get("paranoiaOffset", 0);
+}
 #endif
 
 #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
@@ -1011,6 +1016,11 @@ void Settings::saveParanoiaFull(bool v)
 void Settings::saveParanoiaNeverSkip(bool v)
 {
     cfg.set("paranoiaNeverSkip", v);
+}
+
+void Settings::saveParanoiaOffset(int v)
+{
+    cfg.set("paranoiaOffset", v);
 }
 #endif
 

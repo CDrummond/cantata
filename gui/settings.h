@@ -108,6 +108,7 @@ public:
     bool cdAuto();
     bool paranoiaFull();
     bool paranoiaNeverSkip();
+    int paranoiaOffset();
     #endif
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
     bool useCddb();
@@ -211,6 +212,7 @@ public:
     void saveCdAuto(bool v);
     void saveParanoiaFull(bool v);
     void saveParanoiaNeverSkip(bool v);
+    void saveParanoiaOffset(int v);
     #endif
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
     void saveUseCddb(bool v);

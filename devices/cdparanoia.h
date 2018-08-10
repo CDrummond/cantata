@@ -51,7 +51,7 @@ extern "C" {
 class CdParanoia
 {
 public:
-    CdParanoia(const QString &device, bool full, bool noSkip, bool playback=false);
+    explicit CdParanoia(const QString &device, bool full, bool noSkip, bool playback, int offset);
     ~CdParanoia();
 
     inline operator bool() const { return !dev.isEmpty(); }
@@ -90,6 +90,7 @@ private:
     int paranoiaMode;
     bool neverSkip;
     int maxRetries;
+    int seekOffst;
 };
 
 #endif

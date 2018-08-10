@@ -154,16 +154,6 @@ static QList<QByteArray> split(const QByteArray &a)
     return rv;
 }
 
-static bool isFromMpd(const QStringList &params)
-{
-    for (const QString &str: params) {
-        if (str.startsWith("User-Agent:") && str.contains("Music Player Daemon")) {
-            return true;
-        }
-    }
-    return false;
-}
-
 static void getRange(const QStringList &params, qint32 &from, qint32 &to)
 {
     for (const QString &str: params) {
@@ -279,13 +269,6 @@ void HttpSocket::readClient()
             QStringList params = QString(socket->readAll()).split(QRegExp("[\r\n][\r\n]*"));
 
             DBUG << "params" << params << "tokens" << tokens;
-            if (!isFromMpd(params)) {
-                sendErrorResponse(socket, 400);
-                socket->close();
-                DBUG << "Not from MPD";
-                return;
-            }
-
             QUrl url(QUrl::fromEncoded(tokens[1]));
             QUrlQuery q(url);
             bool ok=false;

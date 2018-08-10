@@ -2,6 +2,8 @@
 -----
 1. For Opus files, use R128_TRACK_GAIN and R128_ALBUM_GAIN to store replaygain
    values.
+2. Remove user-agent checking when serving local files, this is easily
+   fake-able and breaks playback to forked-daap (and mopidy?)
 
 2.3.2
 -----

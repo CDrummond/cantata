@@ -89,7 +89,7 @@ QSet<QString> PlayQueueModel::constFileExtensions = QSet<QString>()
                                                   << QLatin1String("m4b") << QLatin1String("mp4") << QLatin1String("m4p") << QLatin1String("wav") << QLatin1String("wv")
                                                   << QLatin1String("wvp") << QLatin1String("aiff") << QLatin1String("aif") << QLatin1String("aifc") << QLatin1String("ape")
                                                   << QLatin1String("spx") << QLatin1String("tta") << QLatin1String("mpc") << QLatin1String("mpp") << QLatin1String("mp+")
-                                                  << QLatin1String("dff") << QLatin1String("dsf")
+                                                  << QLatin1String("dff") << QLatin1String("dsf") << QLatin1String("opus")
                                                   // And playlists...
                                                   << QLatin1String("m3u") << QLatin1String("m3u8") << constPlsPlaylist << constXspfPlaylist;
 

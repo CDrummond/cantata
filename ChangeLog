@@ -5,6 +5,7 @@
 2. Remove user-agent checking when serving local files, this is easily
    fake-able and breaks playback to forked-daap (and mopidy?)
 3. Add '.opus' to list of recognised extensions for local files.
+4. Initialise network proxy factory when starting.
 
 2.3.2
 -----

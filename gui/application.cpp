@@ -42,6 +42,7 @@
 #include "widgets/toolbutton.h"
 #include "widgets/sizegrip.h"
 #include "http/httpserver.h"
+#include "network/networkproxyfactory.h"
 #include "config.h"
 
 void Application::init()
@@ -78,6 +79,7 @@ void Application::init()
     #ifdef ENABLE_TAGLIB
     TagHelperIface::self();
     #endif
+    NetworkProxyFactory::self();
     Scrobbler::self();
     MpdLibraryModel::self();
     PlaylistsModel::self();

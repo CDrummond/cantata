@@ -194,7 +194,14 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi, bool autoScan)
         if (s.isLocalFile()) {
             base = QString();
         }
-        new QTreeWidgetItem(view, QStringList() << s.albumArtist() << s.album << s.title);
+        QString aa = s.albumArtist();
+        const QString &al = s.album;
+        const QString &t = s.title;
+        if (aa.isEmpty() && al.isEmpty() && t.isEmpty()) {
+            new QTreeWidgetItem(view, QStringList() << "-" << "-" << Utils::getFile(s.file));
+        } else {
+            new QTreeWidgetItem(view, QStringList() << s.albumArtist() << s.album << s.title);
+        }
     }
     Dialog::show();
     startReadingTags();
@@ -278,7 +285,9 @@ void RgDialog::startScanning()
     for (int i=0; i<origSongs.count(); ++i) {
         if (!removedItems.contains(i) && (all || !origTags.contains(i))) {
             const Song &sng=origSongs.at(i);
-            groupedTracks[sng.albumArtist()+" -- "+sng.album].append(i);
+            QString aa = sng.albumArtist();
+            const QString &al = sng.album;
+            groupedTracks[aa.isEmpty() && al.isEmpty() ? (Utils::getFile(sng.file)+" -- "+QString::number(i)) : (sng.albumArtist()+" -- "+sng.album)].append(i);
         }
     }
     QMap<QString, QList<int> >::ConstIterator it(groupedTracks.constBegin());

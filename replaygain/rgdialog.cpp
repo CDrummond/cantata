@@ -492,14 +492,18 @@ void RgDialog::scannerDone()
             QTreeWidgetItem *item=view->topLevelItem(it.key());
             if (it.value().ok) {
                 item->setText(COL_TRACKGAIN, tr("%1 dB").arg(Utils::formatNumber(updatedTags.trackGain, 2)));
-                item->setText(COL_TRACKPEAK, Utils::formatNumber(updatedTags.trackPeak, 6));
+                if (!Utils::equal(updatedTags.trackPeak, 0.0)) {
+                    item->setText(COL_TRACKPEAK, Utils::formatNumber(updatedTags.trackPeak, 6));
+                }
             } else {
                 item->setText(COL_TRACKGAIN, tr("Failed"));
                 item->setText(COL_TRACKPEAK, tr("Failed"));
             }
             if (s->albumValues().ok) {
                 item->setText(COL_ALBUMGAIN, tr("%1 dB").arg(Utils::formatNumber(updatedTags.albumGain, 2)));
-                item->setText(COL_ALBUMPEAK, Utils::formatNumber(updatedTags.albumPeak, 6));
+                if (!Utils::equal(updatedTags.albumPeak, 0.0)) {
+                    item->setText(COL_ALBUMPEAK, Utils::formatNumber(updatedTags.albumPeak, 6));
+                }
             } else {
                 item->setText(COL_ALBUMGAIN, tr("Failed"));
                 item->setText(COL_ALBUMPEAK, tr("Failed"));
@@ -514,7 +518,7 @@ void RgDialog::scannerDone()
                     item->setToolTip(COL_TRACKGAIN, tr("Original: %1 dB").arg(Utils::formatNumber(t.trackGain, 2)));
                     diff=true;
                 }
-                if (!Utils::equal(t.trackPeak, updatedTags.trackPeak, 0.000001)) {
+                if (!Utils::equal(updatedTags.trackPeak, 0.0) && !Utils::equal(t.trackPeak, updatedTags.trackPeak, 0.000001)) {
                     item->setFont(COL_TRACKPEAK, italic);
                     item->setToolTip(COL_TRACKPEAK, tr("Original: %1").arg(Utils::formatNumber(t.trackPeak, 6)));
                     diff=true;
@@ -524,7 +528,7 @@ void RgDialog::scannerDone()
                     item->setToolTip(COL_ALBUMGAIN, tr("Original: %1 dB").arg(Utils::formatNumber(t.albumGain, 2)));
                     diffAlbum=true;
                 }
-                if (!Utils::equal(t.albumPeak, updatedTags.albumPeak, 0.000001)) {
+                if (!Utils::equal(updatedTags.albumPeak, 0.0) && !Utils::equal(t.albumPeak, updatedTags.albumPeak, 0.000001)) {
                     item->setFont(COL_ALBUMPEAK, italic);
                     item->setToolTip(COL_ALBUMPEAK, tr("Original: %1").arg(Utils::formatNumber(t.albumPeak, 6)));
                     diffAlbum=true;
@@ -582,9 +586,13 @@ void RgDialog::songTags(int index, Tags::ReplayGain tags)
                 return;
             }
             item->setText(COL_TRACKGAIN, tr("%1 dB").arg(Utils::formatNumber(tags.trackGain, 2)));
-            item->setText(COL_TRACKPEAK, Utils::formatNumber(tags.trackPeak, 6));
+            if (!Utils::equal(tags.trackPeak, 0.0)) {
+                item->setText(COL_TRACKPEAK, Utils::formatNumber(tags.trackPeak, 6));
+            }
             item->setText(COL_ALBUMGAIN, tr("%1 dB").arg(Utils::formatNumber(tags.albumGain, 2)));
-            item->setText(COL_ALBUMPEAK, Utils::formatNumber(tags.albumPeak, 6));
+            if (!Utils::equal(tags.albumPeak, 0.0)) {
+                item->setText(COL_ALBUMPEAK, Utils::formatNumber(tags.albumPeak, 6));
+            }
         }
     }
 }

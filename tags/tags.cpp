@@ -743,16 +743,14 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
     if (rg) {
         if (readR128Tags) {
             rg->trackGain=parseRgString(readVorbisTag(tag, "R128_TRACK_GAIN", "REPLAYGAIN_TRACK_GAIN"));
+            rg->albumGain=parseRgString(readVorbisTag(tag, "R128_ALBUM_GAIN", "REPLAYGAIN_ALBUM_GAIN"));
+            rg->trackPeak=rg->albumPeak=0.0;
         } else {
             rg->trackGain=parseRgString(readVorbisTag(tag, "REPLAYGAIN_TRACK_GAIN"));
-        }
-        rg->trackPeak=parseRgString(readVorbisTag(tag, "REPLAYGAIN_TRACK_PEAK"));
-        if (readR128Tags) {
-            rg->albumGain=parseRgString(readVorbisTag(tag, "R128_ALBUM_GAIN", "REPLAYGAIN_ALBUM_GAIN"));
-        } else {
+            rg->trackPeak=parseRgString(readVorbisTag(tag, "REPLAYGAIN_TRACK_PEAK"));
             rg->albumGain=parseRgString(readVorbisTag(tag, "REPLAYGAIN_ALBUM_GAIN"));
+            rg->albumPeak=parseRgString(readVorbisTag(tag, "REPLAYGAIN_ALBUM_PEAK"));
         }
-        rg->albumPeak=parseRgString(readVorbisTag(tag, "REPLAYGAIN_ALBUM_PEAK"));
     }
 
     if (img) {
@@ -858,14 +856,23 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
 
     if (!rg.null) {
         RgTagsStrings rgs(rg);
-        tag->addField(writeR128Tags ? "R128_TRACK_GAIN" : "REPLAYGAIN_TRACK_GAIN", rgs.trackGain);
-        tag->addField("REPLAYGAIN_TRACK_PEAK", rgs.trackPeak);
-        if (rg.albumMode) {
-            tag->addField(writeR128Tags ? "R128_ALBUM_GAIN" : "REPLAYGAIN_ALBUM_GAIN", rgs.albumGain);
-            tag->addField("REPLAYGAIN_ALBUM_PEAK", rgs.albumPeak);
+        if (writeR128Tags) {
+            tag->addField("R128_TRACK_GAIN", rgs.trackGain);
+            if (rg.albumMode) {
+                tag->addField("R128_ALBUM_GAIN", rgs.albumGain);
+            } else {
+                tag->removeField("R128_ALBUM_GAIN");
+            }
         } else {
-            tag->removeField(writeR128Tags ? "R128_ALBUM_GAIN" : "REPLAYGAIN_ALBUM_GAIN");
-            tag->removeField("REPLAYGAIN_ALBUM_PEAK");
+            tag->addField("REPLAYGAIN_TRACK_GAIN", rgs.trackGain);
+            tag->addField("REPLAYGAIN_TRACK_PEAK", rgs.trackPeak);
+            if (rg.albumMode) {
+                tag->addField("REPLAYGAIN_ALBUM_GAIN", rgs.albumGain);
+                tag->addField("REPLAYGAIN_ALBUM_PEAK", rgs.albumPeak);
+            } else {
+                tag->removeField("REPLAYGAIN_ALBUM_GAIN");
+                tag->removeField("REPLAYGAIN_ALBUM_PEAK");
+            }
         }
         changed=true;
     }

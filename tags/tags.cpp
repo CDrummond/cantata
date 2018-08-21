@@ -105,19 +105,22 @@ TagLib::String qString2TString(const QString &str)
     return val.isEmpty() ? TagLib::String::null : TagLib::String(val.toUtf8().data(), TagLib::String::UTF8);
 }
 
-static inline int convertToCantataRating(double r) {
+static inline int convertToCantataRating(double r)
+{
     return qRound(r*10.0);
     //return qRound((r*10.0)/2.0);
 }
 
-static std::string convertFromCantataRating(int rating) {
+static std::string convertFromCantataRating(int rating)
+{
     std::stringstream ss;
     ss.precision(2);
     ss << std::fixed << (rating/10.0);
     return ss.str();
 }
 
-static double parseDoubleString(const TagLib::String &str) {
+static double parseDoubleString(const TagLib::String &str)
+{
     if (str.isEmpty()) {
         return 0.0;
     }
@@ -127,6 +130,19 @@ static double parseDoubleString(const TagLib::String &str) {
     double v=s.toDouble(&ok);
 
     return ok ? v : 0.0;
+}
+
+static int parseIntString(const TagLib::String &str)
+{
+    if (str.isEmpty()) {
+        return 0;
+    }
+
+    QString s=tString2QString(str);
+    bool ok=false;
+    int v=s.toInt(&ok);
+
+    return ok ? v : 0;
 }
 
 static double parseRgString(const TagLib::String &str)
@@ -165,7 +181,8 @@ struct RgTags : public ReplayGain
 
 struct RgTagsStrings
 {
-    RgTagsStrings(const RgTags &rg) {
+    RgTagsStrings(const RgTags &rg)
+    {
         std::stringstream ss;
         ss.precision(2);
         ss << std::fixed;
@@ -681,17 +698,10 @@ static bool writeAPETags(TagLib::APE::Tag *tag, const Song &from, const Song &to
     return changed;
 }
 
-static TagLib::String readVorbisTag(TagLib::Ogg::XiphComment *tag, const char *field, const char *altField=nullptr)
+static TagLib::String readVorbisTag(TagLib::Ogg::XiphComment *tag, const char *field)
 {
     if (tag->contains(field)) {
         const TagLib::StringList &list = tag->fieldListMap()[field];
-        if (!list.isEmpty()) {
-            return list.front();
-        }
-    }
-
-    if (altField && tag->contains(altField)) {
-        const TagLib::StringList &list = tag->fieldListMap()[altField];
         if (!list.isEmpty()) {
             return list.front();
         }
@@ -712,8 +722,35 @@ static void readFlacPicture(const TagLib::List<TagLib::FLAC::Picture*> &pics, QI
 }
 #endif
 
-static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics, int *rating, bool readR128Tags=false)
+#ifdef TAGLIB_OPUS_FOUND
+static int16_t toOpusGain(double gain)
 {
+    gain = 256 * gain + 0.5;
+    return gain < -32768
+            ? -32768
+            : gain < 32767 ? static_cast<int16_t>(floor(gain)) : 32767;
+}
+
+static double fromOpusGain(int16_t gain)
+{
+    return (double)gain/256.0;
+}
+
+static std::string toString(int16_t val)
+{
+    std::stringstream ss;
+    ss << val;
+    return ss.str();
+}
+
+#endif
+
+static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics, int *rating, TagLib::Ogg::File *file=nullptr)
+{
+    #ifndef TAGLIB_OPUS_FOUND
+    Q_UNUSED(file)
+    #endif
+
     DBUG;
     if (song) {
         TagLib::String str=readVorbisTag(tag, "ALBUMARTIST");
@@ -741,11 +778,17 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
     }
 
     if (rg) {
-        if (readR128Tags) {
-            rg->trackGain=parseRgString(readVorbisTag(tag, "R128_TRACK_GAIN", "REPLAYGAIN_TRACK_GAIN"));
-            rg->albumGain=parseRgString(readVorbisTag(tag, "R128_ALBUM_GAIN", "REPLAYGAIN_ALBUM_GAIN"));
+        #ifdef TAGLIB_OPUS_FOUND
+        if (file) {
+            TagLib::ByteVector header = static_cast<TagLib::Ogg::Opus::File *>(file)->packet(0);
+            int16_t opusHeaderGain = header.toShort(16, false);
+            DBUG << "opusHeaderGain" << opusHeaderGain;
+            rg->trackGain=fromOpusGain(parseIntString(readVorbisTag(tag, "R128_TRACK_GAIN")) + opusHeaderGain);
+            rg->albumGain=fromOpusGain(parseIntString(readVorbisTag(tag, "R128_ALBUM_GAIN")) + opusHeaderGain);
             rg->trackPeak=rg->albumPeak=0.0;
-        } else {
+        } else
+        #endif
+        {
             rg->trackGain=parseRgString(readVorbisTag(tag, "REPLAYGAIN_TRACK_GAIN"));
             rg->trackPeak=parseRgString(readVorbisTag(tag, "REPLAYGAIN_TRACK_PEAK"));
             rg->albumGain=parseRgString(readVorbisTag(tag, "REPLAYGAIN_ALBUM_GAIN"));
@@ -826,8 +869,12 @@ static bool updateVorbisCommentTag(TagLib::Ogg::XiphComment *tag, const char *ta
     return false;
 }
 
-static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int rating, bool writeR128Tags=false)
+static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int rating, TagLib::Ogg::File *file=nullptr)
 {
+    #ifndef TAGLIB_OPUS_FOUND
+    Q_UNUSED(file)
+    #endif
+
     DBUG;
     bool changed=false;
 
@@ -855,15 +902,45 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
     }
 
     if (!rg.null) {
-        RgTagsStrings rgs(rg);
-        if (writeR128Tags) {
-            tag->addField("R128_TRACK_GAIN", rgs.trackGain);
+        #ifdef TAGLIB_OPUS_FOUND
+        if (file) {
+            TagLib::ByteVector header = static_cast<TagLib::Ogg::Opus::File *>(file)->packet(0);
+            double opusHeaderGainCurrent = header.toShort(16, false) / 256.0;
+
+#if 0
+            double opusHeaderGain = opusHeaderGainCurrent + (rg.albumMode ? rg.albumGain : rg.trackGain); // - 5.0;
+            int16_t opusHeaderGainInt = toOpusGain(opusHeaderGain);
+            double opusCorrectionDb = opusHeaderGainCurrent - (opusHeaderGainInt / 256.0);
+
+            DBUG << "opusHeaderGain" << opusHeaderGainCurrent << opusHeaderGain << opusHeaderGainInt;
+
+            header[16] = static_cast<char>(static_cast<uint16_t>(opusHeaderGainInt) & 0xff);
+            header[17] = static_cast<char>(static_cast<uint16_t>(opusHeaderGainInt) >> 8);
+
+            static_cast<TagLib::Ogg::Opus::File *>(file)->setPacket(0, header);
+
+            tag->addField("R128_TRACK_GAIN", toString(toOpusGain(rg.trackGain + opusCorrectionDb)));
             if (rg.albumMode) {
-                tag->addField("R128_ALBUM_GAIN", rgs.albumGain);
+                tag->addField("R128_ALBUM_GAIN", toString(toOpusGain(rg.albumGain + opusCorrectionDb)));
             } else {
                 tag->removeField("R128_ALBUM_GAIN");
             }
-        } else {
+#endif
+            tag->addField("R128_TRACK_GAIN", toString(toOpusGain(rg.trackGain + opusHeaderGainCurrent)));
+            if (rg.albumMode) {
+                tag->addField("R128_ALBUM_GAIN", toString(toOpusGain(rg.albumGain + opusHeaderGainCurrent)));
+            } else {
+                tag->removeField("R128_ALBUM_GAIN");
+            }
+
+            tag->removeField("REPLAYGAIN_TRACK_GAIN");
+            tag->removeField("REPLAYGAIN_TRACK_PEAK");
+            tag->removeField("REPLAYGAIN_ALBUM_GAIN");
+            tag->removeField("REPLAYGAIN_ALBUM_PEAK");
+        } else
+        #endif
+        {
+            RgTagsStrings rgs(rg);
             tag->addField("REPLAYGAIN_TRACK_GAIN", rgs.trackGain);
             tag->addField("REPLAYGAIN_TRACK_PEAK", rgs.trackPeak);
             if (rg.albumMode) {
@@ -1168,7 +1245,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
     #ifdef TAGLIB_OPUS_FOUND
     } else if (TagLib::Ogg::Opus::File *file = dynamic_cast< TagLib::Ogg::Opus::File * >(fileref.file())) {
         if (file->tag()) {
-            readVorbisCommentTags(file->tag(), song, rg, img, lyrics, rating, true);
+            readVorbisCommentTags(file->tag(), song, rg, img, lyrics, rating, file);
         }
     #endif
     } else if (TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file())) {
@@ -1289,7 +1366,7 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
     #ifdef TAGLIB_OPUS_FOUND
     } else if (TagLib::Ogg::Opus::File *file = dynamic_cast< TagLib::Ogg::Opus::File * >(fileref.file())) {
         if (file->tag()) {
-            changed=writeVorbisCommentTags(file->tag(), from, to, rg, img, rating, true) || changed;
+            changed=writeVorbisCommentTags(file->tag(), from, to, rg, img, rating, file) || changed;
         }
     #endif
     } else if (TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file())) {

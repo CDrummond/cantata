@@ -925,13 +925,14 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
             } else {
                 tag->removeField("R128_ALBUM_GAIN");
             }
-#endif
+#else
             tag->addField("R128_TRACK_GAIN", toString(toOpusGain(rg.trackGain + opusHeaderGainCurrent)));
             if (rg.albumMode) {
                 tag->addField("R128_ALBUM_GAIN", toString(toOpusGain(rg.albumGain + opusHeaderGainCurrent)));
             } else {
                 tag->removeField("R128_ALBUM_GAIN");
             }
+#endif
 
             tag->removeField("REPLAYGAIN_TRACK_GAIN");
             tag->removeField("REPLAYGAIN_TRACK_PEAK");

@@ -82,6 +82,8 @@
 #include <taglib/unsynchronizedlyricsframe.h>
 #include <taglib/popularimeterframe.h>
 
+#define R128_RG_DIFF 5.0
+
 namespace Tags
 {
 
@@ -783,8 +785,8 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
             TagLib::ByteVector header = static_cast<TagLib::Ogg::Opus::File *>(file)->packet(0);
             int16_t opusHeaderGain = header.toShort(16, false);
             DBUG << "opusHeaderGain" << opusHeaderGain;
-            rg->trackGain=fromOpusGain(parseIntString(readVorbisTag(tag, "R128_TRACK_GAIN")) + opusHeaderGain);
-            rg->albumGain=fromOpusGain(parseIntString(readVorbisTag(tag, "R128_ALBUM_GAIN")) + opusHeaderGain);
+            rg->trackGain=fromOpusGain(parseIntString(readVorbisTag(tag, "R128_TRACK_GAIN")) + opusHeaderGain) + R128_RG_DIFF;
+            rg->albumGain=fromOpusGain(parseIntString(readVorbisTag(tag, "R128_ALBUM_GAIN")) + opusHeaderGain) + R128_RG_DIFF;
             rg->trackPeak=rg->albumPeak=0.0;
         } else
         #endif
@@ -926,9 +928,10 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
                 tag->removeField("R128_ALBUM_GAIN");
             }
 #else
-            tag->addField("R128_TRACK_GAIN", toString(toOpusGain(rg.trackGain + opusHeaderGainCurrent)));
+            // R128 Uses reference level of 28, but replaygain -18, subtract 5 to make equal
+            tag->addField("R128_TRACK_GAIN", toString(toOpusGain(rg.trackGain + opusHeaderGainCurrent - R128_RG_DIFF)));
             if (rg.albumMode) {
-                tag->addField("R128_ALBUM_GAIN", toString(toOpusGain(rg.albumGain + opusHeaderGainCurrent)));
+                tag->addField("R128_ALBUM_GAIN", toString(toOpusGain(rg.albumGain + opusHeaderGainCurrent - R128_RG_DIFF)));
             } else {
                 tag->removeField("R128_ALBUM_GAIN");
             }

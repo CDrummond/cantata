@@ -9,6 +9,8 @@
 5. If artist, album, and title are empty in replaygain dialog, then show
    filename in title column.
 6. Opus does not use replaygain peak tags, so do not write.
+7. Use same 'album key' for all discs in an album, so that playqueue groups
+   them together, and shuffle by albums keeps them together.
 
 2.3.2
 -----

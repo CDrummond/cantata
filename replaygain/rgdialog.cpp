@@ -215,13 +215,13 @@ void RgDialog::slotButtonClicked(int button)
 
     switch (button) {
     case Ok:
-        if (MessageBox::Yes==MessageBox::questionYesNo(this, tr("Update ReplayGain tags in tracks?"), tr("Update Tags"),
-                                                       GuiItem(tr("Update Tags")), StdGuiItem::cancel())) {
+        //if (MessageBox::Yes==MessageBox::questionYesNo(this, tr("Update ReplayGain tags in tracks?"), tr("Update Tags"),
+        //                                               GuiItem(tr("Update Tags")), StdGuiItem::cancel())) {
             if (saveTags()) {
                 stopScanning();
                 accept();
             }
-        }
+        //}
         break;
     case User1:
         startScanning();

@@ -11,6 +11,7 @@
 6. Opus does not use replaygain peak tags, so do not write.
 7. Use same 'album key' for all discs in an album, so that playqueue groups
    them together, and shuffle by albums keeps them together.
+8. Remove confirmation dialog when saving replaygain tags.
 
 2.3.2
 -----

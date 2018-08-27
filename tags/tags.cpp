@@ -82,7 +82,10 @@
 #include <taglib/unsynchronizedlyricsframe.h>
 #include <taglib/popularimeterframe.h>
 
-#define R128_RG_DIFF 5.0
+// loundess-scanner defines this as 5.0? But on tests with MPD 0.20.21 with FLAC and OPUS
+// then using 0 made playback the same
+// #define R128_RG_DIFF 5.0
+#define R128_RG_DIFF 0.0
 
 namespace Tags
 {
@@ -785,8 +788,13 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
             TagLib::ByteVector header = static_cast<TagLib::Ogg::Opus::File *>(file)->packet(0);
             int16_t opusHeaderGain = header.toShort(16, false);
             DBUG << "opusHeaderGain" << opusHeaderGain;
-            rg->trackGain=fromOpusGain(parseIntString(readVorbisTag(tag, "R128_TRACK_GAIN")) + opusHeaderGain) + R128_RG_DIFF;
-            rg->albumGain=fromOpusGain(parseIntString(readVorbisTag(tag, "R128_ALBUM_GAIN")) + opusHeaderGain) + R128_RG_DIFF;
+            rg->trackGain=fromOpusGain(parseIntString(readVorbisTag(tag, "R128_TRACK_GAIN")) + opusHeaderGain);
+            rg->albumGain=fromOpusGain(parseIntString(readVorbisTag(tag, "R128_ALBUM_GAIN")) + opusHeaderGain);
+            if (!Utils::equal(rg->trackGain, 0, 0.0000001) || !Utils::equal(rg->albumGain, 0, 0.0000001))
+            {
+                rg->trackGain+=R128_RG_DIFF;
+                rg->albumGain+=R128_RG_DIFF;
+            }
             rg->trackPeak=rg->albumPeak=0.0;
         } else
         #endif

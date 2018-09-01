@@ -1115,11 +1115,11 @@ Veuillez choisir un nom différent.</translation>
     </message>
     <message>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
-        <translation type="obsolete">Aucune application ssh-sakpass est disponible ! Cette dépendance est requise pour la saisie du mot de passe.</translation>
+        <translation type="obsolete">Aucune application ssh-sakpass n&apos;est disponible ! Cette dépendance est requise pour la saisie du mot de passe.</translation>
     </message>
     <message>
         <source>Mount point (&quot;%1&quot;) is not empty!</source>
-        <translation type="obsolete">Le point de montage (&quot;%1&quot;) nest pas vide !</translation>
+        <translation type="obsolete">Le point de montage (&quot;%1&quot;) n&apos;est pas vide !</translation>
     </message>
     <message>
         <source>&quot;sshfs&quot; is not installed!</source>
@@ -3641,7 +3641,7 @@ i18n: ectx: property (text), widget (BuddyLabel, sshExtraLabel)
         <extracomment>i18n: file: devices/remotedevicepropertieswidget.ui:360
 i18n: ectx: property (text), widget (PlainNoteLabel, label_5)
 </extracomment>
-        <translation type="obsolete">Aucune application ssh-sakpass est disponible ! Cette dépendance est requise pour la saisie du mot de passe.</translation>
+        <translation type="obsolete">Aucune application ssh-sakpass n&apos;est disponible ! Cette dépendance est requise pour la saisie du mot de passe.</translation>
     </message>
     <message>
         <source>Name of Dynamic Rules</source>
@@ -8903,7 +8903,7 @@ Si cette recherche donne de nouveaux résultats, ils seront toujours associés a
     <message>
         <location filename="../gui/mainwindow.cpp" line="1205"/>
         <source>Please refer to &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;Cantata&apos;s issue tracker&lt;/a&gt; for a list of known issues, and to report new issues.</source>
-        <translation>Visitez &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;le tracker de bug de Cantata,&lt;/a&gt; pour une liste de bugs connus ou pour en reporter de nouveuax.</translation>
+        <translation>Visitez &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;le tracker de bug de Cantata,&lt;/a&gt; pour une liste de bugs connus ou pour en reporter de nouveaux.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1207"/>
@@ -12162,7 +12162,7 @@ Veuillez choisir un nom différent.</translation>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="360"/>
         <location filename="../build/ui_remotedevicepropertieswidget.h" line="448"/>
         <source>Due to the way sshfs works, a suitable ssh-askpass application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter the password.</source>
-        <translation>Aucune application ssh-sakpass est disponible ! Cette dépendance est requise pour la saisie du mot de passe.</translation>
+        <translation>Aucune application ssh-sakpass n&apos;est disponible ! Cette dépendance est requise pour la saisie du mot de passe.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="410"/>
@@ -12214,12 +12214,12 @@ Veuillez choisir un nom différent.</translation>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="345"/>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
-        <translation>Aucune application ssh-sakpass est disponible ! Cette dépendance est requise pour la saisie du mot de passe.</translation>
+        <translation>Aucune application ssh-sakpass n&apos;est disponible ! Cette dépendance est requise pour la saisie du mot de passe.</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="361"/>
         <source>Mount point (&quot;%1&quot;) is not empty!</source>
-        <translation>Le point de montage (&quot;%1&quot;) nest pas vide !</translation>
+        <translation>Le point de montage (&quot;%1&quot;) n&apos;est pas vide !</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="351"/>

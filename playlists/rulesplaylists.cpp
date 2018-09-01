@@ -220,7 +220,8 @@ bool RulesPlaylists::save(const Entry &e)
         str << constMaxAgeKey << constKeyValSep << e.maxAge << '\n';
     }
     if (Order_Random!=e.order) {
-        str << constOrderKey << constKeyValSep << orderStr(e.order) << '\n';
+        str << constOrderKey << constKeyValSep << orderStr(e.order) << '\n'
+            << constOrderAscendingKey << constKeyValSep << (e.orderAscending ? "true" : "false") << '\n';
     }
     for (const Rule &rule: e.rules) {
         if (!rule.isEmpty()) {

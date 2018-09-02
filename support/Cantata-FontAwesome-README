@@ -1,0 +1,14 @@
+Cantata-FontAwesome.ttf is a modified version of FontAwesome 4.7 The font file
+has been modified so that the family name is now 'Cantata-FontAwesome'
+
+FontAwesome 5.0 is not compatible with FontAwesome 4.x - if a system were to
+have FontAwesome 5.0 installed, and Cantata used the system installed font,
+then Cantata would have **many** missing icons. Therefore, the only way to
+ensure Cantata **always** loads a 4.7 FontAwesome was to bundle a local version
+whose name had been changed to be Cantata specific.
+
+FontAwesome is licensed using SIL OFL 1.1 A copy of this license is included
+in this folder - OFL.txt
+
+https://fontawesome.com/v4.7.0/license/
+

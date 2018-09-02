@@ -35,6 +35,7 @@
 #include "support/monoicon.h"
 #include "widgets/textbrowser.h"
 #include "support/messagewidget.h"
+#include "support/flattoolbutton.h"
 #include "gui/covers.h"
 #include "rssparser.h"
 #include "podcastservice.h"
@@ -47,6 +48,7 @@
 #include <QHeaderView>
 #include <QStringList>
 #include <QFile>
+#include <QFileDialog>
 #include <QXmlStreamReader>
 #include <QCryptographicHash>
 #include <QCache>
@@ -506,18 +508,23 @@ PodcastUrlPage::PodcastUrlPage(QWidget *p)
     mainLayout->setMargin(0);
     urlEntry=new LineEdit(p);
     urlEntry->setPlaceholderText(tr("Enter podcast URL..."));
-    loadButton=new QPushButton(tr("Load"), p);
+    QPushButton *loadButton=new QPushButton(tr("Load"), p);
+    FlatToolButton *pathReq=new FlatToolButton(p);
+    pathReq->setIcon(MonoIcon::icon(FontAwesome::foldero, Utils::monoIconColor()));
+    pathReq->setToolTip(tr("Load local podcast file"));
     QWidget::setTabOrder(urlEntry, loadButton);
     QWidget::setTabOrder(loadButton, tree);
     searchLayout->addWidget(urlEntry);
     searchLayout->addWidget(loadButton);
+    searchLayout->addWidget(pathReq);
     viewLayout->addWidget(tree, 1);
     viewLayout->addWidget(text, 0);
-    mainLayout->addWidget(new QLabel(tr("Enter podcast URL below, and press 'Load'"), this));
+    mainLayout->addWidget(new QLabel(tr("Enter podcast URL below, and press 'Load', or press the folder icon to load a local podcast file."), this));
     mainLayout->addLayout(searchLayout);
     mainLayout->addLayout(viewLayout);
     connect(urlEntry, SIGNAL(returnPressed()), SLOT(loadUrl()));
     connect(loadButton, SIGNAL(clicked()), SLOT(loadUrl()));
+    connect(pathReq, SIGNAL(clicked()), SLOT(openPath()));
     icn=Icons::self()->rssListIcon;
 }
 
@@ -547,13 +554,32 @@ void PodcastUrlPage::loadUrl()
     }
 }
 
+void PodcastUrlPage::openPath()
+{
+    QString path = QFileDialog::getOpenFileName(this, QString(), QDir::homePath(), tr("Podcasts (*.xml, *.rss, *.opml"));
+
+    if (!path.isEmpty()) {
+        QFile f(path);
+        if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            parse(&f);
+        } else {
+            emit error(tr("Failed to read file!"));
+        }
+    }
+}
 void PodcastUrlPage::parseResonse(QIODevice *dev)
 {
     if (!dev) {
         emit error(tr("Failed to fetch podcast!"));
         return;
     }
-    QByteArray data = dev->readAll();
+    auto data = dev->readAll();
+    parse(dev);
+}
+
+void PodcastUrlPage::parse(QIODevice *dev)
+{
+    auto data = dev->readAll();
     QBuffer buf(&data);
     RssParser::Channel ch=RssParser::parse(&buf, false, true);
     if (ch.isValid()) {

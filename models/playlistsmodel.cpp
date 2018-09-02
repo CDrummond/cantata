@@ -479,6 +479,10 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return (s->artist.isEmpty() ? QString() : (s->artist+QString(" – ")))+
                    (s->displayAlbum().isEmpty() ? QString() : (s->displayAlbum()+QString(" – ")))+
                    (s->time>0 ? Utils::formatTime(s->time) : QString());
+        case Cantata::Role_TextColor:
+            if (s->isInvalid()) {
+                return MonoIcon::constRed;
+            }
         default:
             return ActionModel::data(index, role);
         }

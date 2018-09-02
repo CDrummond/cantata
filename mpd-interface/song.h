@@ -206,6 +206,7 @@ struct Song
     bool isVariousArtists() const { return isVariousArtists(albumArtist()); }
     bool diffArtist() const;
     bool isUnknownAlbum() const;
+    bool isInvalid() const;
     bool fixVariousArtists();
     bool revertVariousArtists();
     bool setAlbumArtist();

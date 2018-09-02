@@ -412,6 +412,10 @@ void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
     }
 
     GroupedView::drawPlayState(painter, option, r, state);
+    QVariant col = index.data(Cantata::Role_TextColor);
+    if (col.isValid()) {
+        textColor = col.value<QColor>();
+    }
     painter->setPen(textColor);
 
     int ratingsStart=rtl ? 0 : drawRatings(painter, song, r, fm, option.palette.color(QPalette::Active, QPalette::Text)); // TODO!!!

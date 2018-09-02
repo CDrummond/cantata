@@ -57,6 +57,8 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     renamePlaylistAction = new Action(Icons::self()->editIcon, tr("Rename"), this);
     removeDuplicatesAction=new Action(tr("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
+    removeInvalidAction=new Action(tr("Remove Invalid Tracks"), this);
+    removeInvalidAction->setEnabled(false);
 
     view->allowGroupedView();
     view->allowTableView(new PlaylistTableView(view));
@@ -79,6 +81,7 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     connect(StdActions::self()->savePlayQueueAction, SIGNAL(triggered()), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
     connect(removeDuplicatesAction, SIGNAL(triggered()), this, SLOT(removeDuplicates()));
+    connect(removeInvalidAction, SIGNAL(triggered()), this, SLOT(removeInvalid()));
     connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
     connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
     intitiallyCollapseAction=new Action(tr("Initially Collapse Albums"), this);
@@ -103,6 +106,7 @@ StoredPlaylistsPage::StoredPlaylistsPage(QWidget *p)
     view->addAction(renamePlaylistAction);
     view->addAction(StdActions::self()->removeAction);
     view->addAction(removeDuplicatesAction);
+    view->addAction(removeInvalidAction);
     connect(view, SIGNAL(updateToPlayQueue(QModelIndex,bool)), this, SLOT(updateToPlayQueue(QModelIndex,bool)));
     view->setInfoText(tr("Either save the play queue, or use the context menu in the library, to create new playlists."));
 }
@@ -278,6 +282,31 @@ void StoredPlaylistsPage::removeDuplicates()
     }
 }
 
+void StoredPlaylistsPage::removeInvalid()
+{
+    const QModelIndexList items = view->selectedIndexes(false); // Dont need sorted selection here...
+
+    if (1==items.size()) {
+        QModelIndex index = proxy.mapToSource(items.first());
+        PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(index.internalPointer());
+        if (!item->isPlaylist()) {
+            return;
+        }
+
+        PlaylistsModel::PlaylistItem *pl=static_cast<PlaylistsModel::PlaylistItem *>(item);
+        QList<quint32> toRemove;
+        for (quint32 i=0; i<pl->songs.count(); ++i) {
+            const auto song = pl->songs.at(i);
+            if (song->isInvalid()) {
+                toRemove.append(i);
+            }
+        }
+        if (!toRemove.isEmpty()) {
+            emit removeFromPlaylist(pl->name, toRemove);
+        }
+    }
+}
+
 void StoredPlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
     if (style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, nullptr, this)
@@ -387,6 +416,7 @@ void StoredPlaylistsPage::controlActions()
 
     renamePlaylistAction->setEnabled(canRename);
     removeDuplicatesAction->setEnabled(enableActions && !allSmartPlaylists);
+    removeInvalidAction->setEnabled(enableActions && !allSmartPlaylists);
     StdActions::self()->removeAction->setEnabled(enableActions && !allSmartPlaylists);
     StdActions::self()->enableAddToPlayQueue(enableActions);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(enableActions);

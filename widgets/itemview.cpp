@@ -42,6 +42,7 @@
 #include "support/actioncollection.h"
 #include "support/configuration.h"
 #include "support/flattoolbutton.h"
+#include "support/monoicon.h"
 #include <QStyleOption>
 #include <QStyle>
 #include <QPainter>
@@ -380,7 +381,10 @@ public:
 
         QRect textRect;
         QTextOption textOpt(AP_VTop==actionPos ? Qt::AlignHCenter|Qt::AlignVCenter : Qt::AlignVCenter);
-
+        QVariant col = index.data(Cantata::Role_TextColor);
+        if (col.isValid()) {
+            textColor = col.value<QColor>();
+        }
         textOpt.setWrapMode(QTextOption::NoWrap);
         if (oneLine) {
             textRect=QRect(r.x(), r.y()+((r.height()-textHeight)/2), r.width(), textHeight);
@@ -566,6 +570,10 @@ public:
             }
         }
 
+        QVariant col = index.data(Cantata::Role_TextColor);
+        if (col.isValid()) {
+            textColor = col.value<QColor>();
+        }
         if (text.count()>0) {
             QFont textFont(QApplication::font());
             QFontMetrics textMetrics(textFont);

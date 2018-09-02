@@ -45,6 +45,8 @@ namespace Cantata {
         Role_Actions,
         Role_LoadCoverInUIThread,
 
+        Role_TextColor,
+
         // GroupedView...
         Role_Key,
         Role_Id,

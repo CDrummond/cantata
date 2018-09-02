@@ -66,6 +66,7 @@ void AudioCdSettings::load()
         }
     }
     #endif
+    paranoiaOffset->setValue(Settings::self()->paranoiaOffset());
 }
 
 void AudioCdSettings::save()
@@ -80,6 +81,7 @@ void AudioCdSettings::save()
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
     Settings::self()->saveUseCddb(cdLookup->itemData(cdLookup->currentIndex()).toBool());
     #endif
+    Settings::self()->saveParanoiaOffset(paranoiaOffset->value());
 }
 
 #include "moc_audiocdsettings.cpp"

@@ -92,19 +92,49 @@
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
       <string>Audio Extraction</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
+     </property>     
+     <layout class="QFormLayout" name="formLayout_x">
+      <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
+      <item row="0" column="0" colspan="2">
        <widget class="QCheckBox" name="paranoiaFull">
         <property name="text">
          <string>Full paranoia mode (best quality)</string>
         </property>
        </widget>
       </item>
-      <item>
+      <item row="1" column="0" colspan="2">
        <widget class="QCheckBox" name="paranoiaNeverSkip">
         <property name="text">
          <string>Never skip on read error</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="BuddyLabel" name="paranoiaOffsetLabel">
+        <property name="text">
+         <string>Read offset:</string>
+        </property>
+        <property name="buddy">
+         <cstring>paranoiaOffset</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="paranoiaOffset">
+        <property name="minimum">
+         <number>-8192</number>
+        </property>
+        <property name="maximum">
+         <number>8192</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="NoteLabel" name="paranoiaOffsetNoteLabel">
+        <property name="text">
+         <string>'Read offset' is used so that cdparanoia knows what offset to use to rip complete tracks, and not lose the beginning or end of tracks. A comprehensive list of offset values for most CD-ROM and DVD drives is available at &lt;a href=&quot;http://www.accuraterip.com/driveoffsets.htm&quot;&gt;http://www.accuraterip.com/driveoffsets.htm&lt;/a&gt;</string>
         </property>
        </widget>
       </item>
@@ -131,6 +161,11 @@
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>support/buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>NoteLabel</class>
+   <extends>QLabel</extends>
+   <header>widgets/notelabel.h</header>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>

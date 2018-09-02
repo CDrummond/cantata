@@ -220,6 +220,30 @@ void PodcastPage::addPodcast(const QString &title, const QUrl &url, const QUrl &
     podItem->setIcon(0, Icons::self()->audioListIcon);
 }
 
+void PodcastPage::addCategory(const OpmlParser::Category &cat, QTreeWidgetItem *p)
+{
+    if (cat.categories.isEmpty() && cat.podcasts.isEmpty()) {
+        return;
+    }
+
+    QTreeWidgetItem *catItem=p ? new QTreeWidgetItem(p, QStringList() << cat.name)
+                               : new QTreeWidgetItem(tree, QStringList() << cat.name);
+
+    catItem->setData(0, IsPodcastRole, false);
+    catItem->setIcon(0, Icons::self()->folderListIcon);
+    for (const OpmlParser::Podcast &pod: cat.podcasts) {
+        addPodcast(pod, catItem);
+    }
+    for (const OpmlParser::Category &subCat: cat.categories) {
+        addCategory(subCat, catItem);
+    }
+}
+
+void PodcastPage::addPodcast(const OpmlParser::Podcast &pod, QTreeWidgetItem *p)
+{
+    addPodcast(pod.name, pod.url, pod.image, pod.description, pod.htmlUrl, p);
+}
+
 static QString encode(const QImage &img)
 {
     QByteArray bytes;
@@ -471,30 +495,6 @@ void OpmlBrowsePage::parseResonse(QIODevice *dev)
     }
 }
 
-void OpmlBrowsePage::addCategory(const OpmlParser::Category &cat, QTreeWidgetItem *p)
-{
-    if (cat.categories.isEmpty() && cat.podcasts.isEmpty()) {
-        return;
-    }
-
-    QTreeWidgetItem *catItem=p ? new QTreeWidgetItem(p, QStringList() << cat.name)
-                               : new QTreeWidgetItem(tree, QStringList() << cat.name);
-
-    catItem->setData(0, IsPodcastRole, false);
-    catItem->setIcon(0, Icons::self()->folderListIcon);
-    for (const OpmlParser::Podcast &pod: cat.podcasts) {
-        addPodcast(pod, catItem);
-    }
-    for (const OpmlParser::Category &subCat: cat.categories) {
-        addCategory(subCat, catItem);
-    }
-}
-
-void OpmlBrowsePage::addPodcast(const OpmlParser::Podcast &pod, QTreeWidgetItem *p)
-{
-    PodcastPage::addPodcast(pod.name, pod.url, pod.image, pod.description, pod.htmlUrl, p);
-}
-
 PodcastUrlPage::PodcastUrlPage(QWidget *p)
     : PodcastPage(p, tr("URL"))
 {
@@ -553,16 +553,31 @@ void PodcastUrlPage::parseResonse(QIODevice *dev)
         emit error(tr("Failed to fetch podcast!"));
         return;
     }
-    RssParser::Channel ch=RssParser::parse(dev, false, true);
-    if (!ch.isValid()) {
-        emit error(tr("Failed to parse podcast."));
-        return;
+    QByteArray data = dev->readAll();
+    QBuffer buf(&data);
+    RssParser::Channel ch=RssParser::parse(&buf, false, true);
+    if (ch.isValid()) {
+        if (ch.video) {
+            emit error(tr("Cantata only supports audio podcasts! The URL entered contains only video podcasts."));
+        } else {
+            addPodcast(ch.name, currentUrl, ch.image, ch.description, QString(), nullptr);
+        }
+    } else {
+        OpmlParser::Category parsed=OpmlParser::parse(data);
+        if (parsed.categories.isEmpty() && parsed.podcasts.isEmpty()) {
+            emit error(tr("Failed to parse podcast."));
+        } else {
+            if (1==parsed.categories.count() && parsed.podcasts.isEmpty()) {
+                parsed=parsed.categories.at(0);
+            }
+            for (const OpmlParser::Category &cat: parsed.categories) {
+                addCategory(cat, nullptr);
+            }
+            for (const OpmlParser::Podcast &pod: parsed.podcasts) {
+                addPodcast(pod, nullptr);
+            }
+        }
     }
-    if (!ch.isValid()) {
-        emit error(tr("Cantata only supports audio podcasts! The URL entered contains only video podcasts."));
-        return;
-    }
-    addPodcast(ch.name, currentUrl, ch.image, ch.description, QString(), nullptr);
 }
 
 int PodcastSearchDialog::instanceCount()

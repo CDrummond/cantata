@@ -3,6 +3,7 @@
 1. Add 'Read offset' setting for AudioCDs.
 2. Show invalid files in playlists using red text.
 3. Add 'Remove Invalid Tracks' to playlist context menu.
+4. Allow OPML URLs in podcast add URL dialog.
 
 2.3.3
 -----

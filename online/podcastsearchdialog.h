@@ -68,6 +68,8 @@ protected:
     void cancel();
     void cancelImage();
     void addPodcast(const QString &title, const QUrl &url, const QUrl &image, const QString &description, const QString &webPage, QTreeWidgetItem *p);
+    void addCategory(const OpmlParser::Category &cat, QTreeWidgetItem *p);
+    void addPodcast(const OpmlParser::Podcast &pod, QTreeWidgetItem *p);
 
 private Q_SLOTS:
     void selectionChanged();
@@ -129,8 +131,6 @@ private Q_SLOTS:
 
 private:
     void parseResonse(QIODevice *dev) override;
-    void addCategory(const OpmlParser::Category &cat, QTreeWidgetItem *p);
-    void addPodcast(const OpmlParser::Podcast &pod, QTreeWidgetItem *p);
 
 private:
     bool loaded;

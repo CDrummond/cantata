@@ -1,3 +1,6 @@
+2.4.0
+-----
+
 2.3.3
 -----
 1. For Opus files, use R128_TRACK_GAIN and R128_ALBUM_GAIN to store replaygain

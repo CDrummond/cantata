@@ -29,7 +29,6 @@
 #include <QList>
 #include <QUrl>
 
-class QPushButton;
 class LineEdit;
 class QTreeWidget;
 class NetworkJob;
@@ -148,13 +147,14 @@ public:
 
 private:
     void parseResonse(QIODevice *dev) override;
+    void parse(QIODevice *dev);
 
 private Q_SLOTS:
     void loadUrl();
+    void openPath();
 
 protected:
     LineEdit *urlEntry;
-    QPushButton *loadButton;
     QUrl currentUrl;
 };
 

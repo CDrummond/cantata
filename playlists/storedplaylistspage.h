@@ -67,6 +67,7 @@ private Q_SLOTS:
     void savePlaylist();
     void renamePlaylist();
     void removeDuplicates();
+    void removeInvalid();
     void itemDoubleClicked(const QModelIndex &index);
     void updated(const QModelIndex &index);
     void headerClicked(int level);
@@ -81,6 +82,7 @@ private:
     QString lastPlaylist;
     Action *renamePlaylistAction;
     Action *removeDuplicatesAction;
+    Action *removeInvalidAction;
     Action *intitiallyCollapseAction;
     PlaylistsProxyModel proxy;
 };

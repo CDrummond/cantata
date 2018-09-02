@@ -473,6 +473,11 @@ bool Song::isUnknownAlbum() const
     return (album.isEmpty() || album==unknownStr) && (albumArtist().isEmpty() || albumArtist()==unknownStr);
 }
 
+bool Song::isInvalid() const
+{
+    return 0==time && guessed && !file.contains("://") && (genres[0].isEmpty() || genres[0]==unknownStr) && name().isEmpty();
+}
+
 void Song::clear()
 {
     id = -1;

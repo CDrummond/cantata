@@ -157,6 +157,7 @@ public:
     void cancelAll();
     void startRssUpdateTimer();
     void stopRssUpdateTimer();
+    bool exportSubscriptions(const QString &name);
 
 Q_SIGNALS:
     void error(const QString &msg);

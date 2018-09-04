@@ -5,6 +5,7 @@
 3. Add 'Remove Invalid Tracks' to playlist context menu.
 4. Allow OPML URLs in podcast add URL dialog.
 5. Allow to read local RSS/OPML files in podcast search dialog.
+6. Add action to export current podcast subscriptions to OPML file.
 
 2.3.3
 -----

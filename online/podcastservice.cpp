@@ -44,6 +44,7 @@
 #include <QXmlStreamWriter>
 #include <QCryptographicHash>
 #include <QMimeData>
+#include <QDateTime>
 #include <stdio.h>
 
 PodcastService::Proxy::Proxy(QObject *parent)
@@ -1245,6 +1246,40 @@ void PodcastService::stopRssUpdateTimer()
     if (rssUpdateTimer) {
         rssUpdateTimer->stop();
     }
+}
+
+bool PodcastService::exportSubscriptions(const QString &name)
+{
+    QFile f(name);
+    if (!f.open(QIODevice::Text|QIODevice::WriteOnly)) {
+        return false;
+    }
+    QString date = QDateTime::currentDateTime().toString(Qt::RFC2822Date);
+    QXmlStreamWriter writer(&f);
+    writer.writeStartDocument();
+    writer.writeStartElement(QLatin1String("opml"));
+    writer.writeAttribute(QLatin1String("version"), QLatin1String("1.1"));
+    writer.writeStartElement(QLatin1String("head"));
+    writer.writeTextElement(QLatin1String("title"), QLatin1String("Cantata Podcasts"));
+    writer.writeTextElement(QLatin1String("dateCreated"), date);
+    writer.writeTextElement(QLatin1String("dateModified"), date);
+
+    writer.writeEndElement(); // head
+    writer.writeStartElement(QLatin1String("body"));
+    for (Podcast *podcast: podcasts) {
+        writer.writeStartElement(QLatin1String("outline"));
+        writer.writeAttribute(QLatin1String("text"), podcast->name);
+        writer.writeAttribute(QLatin1String("description"), podcast->descr);
+        writer.writeAttribute(QLatin1String("type"), QLatin1String("rss"));
+        writer.writeAttribute(QLatin1String("xmlUrl"), podcast->url.toEncoded());
+        writer.writeAttribute(QLatin1String("imageUrl"), podcast->imageUrl.toEncoded());
+        writer.writeEndElement(); // outline
+    }
+    writer.writeEndElement(); // body
+    writer.writeEndElement(); // opml
+    writer.writeEndDocument();
+    f.close();
+    return true;
 }
 
 void PodcastService::updateRss()

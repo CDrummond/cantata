@@ -51,6 +51,7 @@ private Q_SLOTS:
     void markAsListened();
     void showUnplayedOnly(bool on);
     void configure();
+    void exportSubscriptions();
 
 private:
     void doSearch() override;
@@ -68,6 +69,7 @@ private:
     Action *markAsNewAction;
     Action *markAsListenedAction;
     Action *unplayedOnlyAction;
+    Action *exportAction;
 };
 
 #endif

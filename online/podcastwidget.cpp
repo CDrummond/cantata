@@ -34,6 +34,7 @@
 #include "support/monoicon.h"
 #include "support/utils.h"
 #include <QTimer>
+#include <QFileDialog>
 
 PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     : SinglePageWidget(p)
@@ -50,6 +51,7 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     markAsListenedAction = new Action(tr("Mark Episodes As Listened"), this);
     unplayedOnlyAction = new Action(newIcon, tr("Show Unplayed Only"), this);
     unplayedOnlyAction->setCheckable(true);
+    exportAction = new Action(tr("Export Current Subscriptions"), this);
 
     proxy.setSourceModel(srv);
     view->setModel(&proxy);
@@ -65,6 +67,7 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     connect(markAsNewAction, SIGNAL(triggered()), this, SLOT(markAsNew()));
     connect(markAsListenedAction, SIGNAL(triggered()), this, SLOT(markAsListened()));
     connect(unplayedOnlyAction, SIGNAL(toggled(bool)), this, SLOT(showUnplayedOnly(bool)));
+    connect(exportAction, SIGNAL(triggered()), SLOT(exportSubscriptions()));
 
     view->setMode(ItemView::Mode_DetailedTree);
     Configuration config(metaObject()->className());
@@ -80,6 +83,7 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     Action *configureAction=new Action(Icons::self()->configureIcon, tr("Configure"), this);
     connect(configureAction, SIGNAL(triggered()), SLOT(configure()));
     menu->addAction(configureAction);
+    menu->addAction(exportAction);
     init(ReplacePlayQueue|AppendToPlayQueue|Refresh, QList<QWidget *>() << menu << unplayedOnlyBtn, QList<QWidget *>() << addSub);
 
     view->addAction(subscribeAction);
@@ -294,6 +298,22 @@ void PodcastWidget::refresh()
 void PodcastWidget::configure()
 {
     srv->configure(this);
+}
+
+void PodcastWidget::exportSubscriptions()
+{
+    if (0==srv->podcastCount()) {
+        return;
+    }
+
+    QString filename = QFileDialog::getSaveFileName(this, tr("Export Podcast Subscriptions"), QDir::homePath(), QString(".opml"));
+    if (filename.isEmpty()) {
+        return;
+    }
+
+    if (!srv->exportSubscriptions(filename)) {
+        MessageBox::error(this, tr("Export failed!"));
+    }
 }
 
 void PodcastWidget::controlActions()

@@ -755,7 +755,8 @@ QString Song::albumKey() const
 
 static QString basic(const QString &str)
 {
-    QStringList toStrip=QStringList() << QLatin1String("ft. ") << QLatin1String("feat. ") << QLatin1String("featuring ") << QLatin1String("f. ");
+    QStringList toStrip=QStringList() << QLatin1String("ft. ") << QLatin1String("feat. ") << QLatin1String("featuring ") << QLatin1String("f. ")
+                                      << QLatin1String("prod. ") << QLatin1String("prod ") << QLatin1String("producer ") << QLatin1String("produced ") ;
     QStringList prefixes=QStringList() << QLatin1String(" ") << QLatin1String(" (") << QLatin1String(" [");
 
     for (const QString &s: toStrip) {

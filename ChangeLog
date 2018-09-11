@@ -1,18 +1,20 @@
 2.3.3
 -----
-1. For Opus files, use R128_TRACK_GAIN and R128_ALBUM_GAIN to store replaygain
-   values.
-2. Remove user-agent checking when serving local files, this is easily
-   fake-able and breaks playback to forked-daap (and mopidy?)
-3. Add '.opus' to list of recognised extensions for local files.
-4. Initialise network proxy factory when starting.
-5. If artist, album, and title are empty in replaygain dialog, then show
-   filename in title column.
-6. Opus does not use replaygain peak tags, so do not write.
-7. Use same 'album key' for all discs in an album, so that playqueue groups
-   them together, and shuffle by albums keeps them together.
-8. Remove confirmation dialog when saving replaygain tags.
-9. Fix saving 'Descending' order for smart playlists.
+ 1. For Opus files, use R128_TRACK_GAIN and R128_ALBUM_GAIN to store replaygain
+    values.
+ 2. Remove user-agent checking when serving local files, this is easily
+    fake-able and breaks playback to forked-daap (and mopidy?)
+ 3. Add '.opus' to list of recognised extensions for local files.
+ 4. Initialise network proxy factory when starting.
+ 5. If artist, album, and title are empty in replaygain dialog, then show
+    filename in title column.
+ 6. Opus does not use replaygain peak tags, so do not write.
+ 7. Use same 'album key' for all discs in an album, so that playqueue groups
+    them together, and shuffle by albums keeps them together.
+ 8. Remove confirmation dialog when saving replaygain tags.
+ 9. Fix saving 'Descending' order for smart playlists.
+10. When getting 'basic' title of song, also remove any 'prod. XXX', etc.
+    values.
 
 2.3.2
 -----

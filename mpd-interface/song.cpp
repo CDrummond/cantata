@@ -753,10 +753,10 @@ QString Song::albumKey() const
     return albumArtist()+QLatin1Char(':')+albumId(); //+QLatin1Char(':')+QString::number(disc);
 }
 
-static QString basic(const QString &str)
+static QString basic(const QString &str, const QStringList &extraToStrip=QStringList())
 {
     QStringList toStrip=QStringList() << QLatin1String("ft. ") << QLatin1String("feat. ") << QLatin1String("featuring ") << QLatin1String("f. ")
-                                      << QLatin1String("prod. ") << QLatin1String("prod ") << QLatin1String("producer ") << QLatin1String("produced ") ;
+                                      << extraToStrip;
     QStringList prefixes=QStringList() << QLatin1String(" ") << QLatin1String(" (") << QLatin1String(" [");
 
     for (const QString &s: toStrip) {
@@ -781,7 +781,7 @@ QString Song::basicArtist() const
 
 QString Song::basicTitle() const
 {
-    return basic(title);
+    return basic(title, QStringList() << QLatin1String("prod. ") << QLatin1String("prod ") << QLatin1String("producer ") << QLatin1String("produced by "));
 }
 
 QString Song::filePath(const QString &base) const

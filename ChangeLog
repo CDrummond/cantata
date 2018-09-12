@@ -15,6 +15,7 @@
  9. Fix saving 'Descending' order for smart playlists.
 10. When getting 'basic' title of song, also remove any 'prod. XXX', etc.
     values.
+11. Allow .jpeg as extension from cover dialog.
 
 2.3.2
 -----

@@ -439,7 +439,7 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
     Add other images in the source folder? #716
     if (!isArtist) {
         QString dirName=MPDConnection::self()->getDetails().dir+Utils::getDir(s.file);
-        QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
+        QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.jpeg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
         qWarning() << files;
         for (const QString &f: files) {
             QString fileName=dirName+f;
@@ -803,7 +803,7 @@ void CoverDialog::cancelQuery()
 
 void CoverDialog::addLocalFile()
 {
-    QString fileName=QFileDialog::getOpenFileName(this, tr("Load Local Cover"), QDir::homePath(), tr("Images (*.png *.jpg)"));
+    QString fileName=QFileDialog::getOpenFileName(this, tr("Load Local Cover"), QDir::homePath(), tr("Images (*.png *.jpg *.jpeg)"));
 
     if (!fileName.isEmpty()) {
         if (currentLocalCovers.contains(fileName)) {
@@ -1188,10 +1188,14 @@ void CoverDialog::slotButtonClicked(int button)
 bool CoverDialog::saveCover(const QString &src, const QImage &img)
 {
     QString filePath=song.filePath();
+    QString ext = Utils::getExtension(src);
+    if (0==ext.compare(".jpeg", Qt::CaseInsensitive)) {
+        ext = ".jpg";
+    }
     if (song.isCdda()) {
         QString dir = Utils::cacheDir(Covers::constCddaCoverDir, true);
         if (!dir.isEmpty()) {
-            QString destName=dir+filePath.mid(Song::constCddaProtocol.length())+src.mid(src.length()-4);
+            QString destName=dir+filePath.mid(Song::constCddaProtocol.length())+ext;
             if (QFile::exists(destName)) {
                 QFile::remove(destName);
             }
@@ -1233,16 +1237,16 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
         if (saveInMpd && !mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
             QDir d(dirName);
             d.cdUp();
-            destName=d.absolutePath()+'/'+Covers::constArtistImage+src.mid(src.length()-4);
+            destName=d.absolutePath()+'/'+Covers::constArtistImage+ext;
         } else {
-            destName=Utils::cacheDir(Covers::constCoverDir, true)+Covers::encodeName(song.albumArtist())+src.mid(src.length()-4);
+            destName=Utils::cacheDir(Covers::constCoverDir, true)+Covers::encodeName(song.albumArtist())+ext;
         }
     } else {
         if (saveInMpd) {
-            destName=dirName+Covers::albumFileName(song)+src.mid(src.length()-4);
+            destName=dirName+Covers::albumFileName(song)+ext;
         } else { // Save to cache dir...
             QString dir(Utils::cacheDir(Covers::constCoverDir+Covers::encodeName(song.albumArtist()), true));
-            destName=dir+Covers::encodeName(song.album)+src.mid(src.length()-4);
+            destName=dir+Covers::encodeName(song.album)+ext;
         }
     }
 
@@ -1283,7 +1287,7 @@ void CoverDialog::dropEvent(QDropEvent *event)
         for (const QUrl &url: urls) {
             if (url.scheme().isEmpty() || "file"==url.scheme()) {
                 QString path=url.path();
-                if (!currentLocalCovers.contains(path) && (path.endsWith(".jpg", Qt::CaseInsensitive) || path.endsWith(".png", Qt::CaseInsensitive))) {
+                if (!currentLocalCovers.contains(path) && (path.endsWith(".jpg", Qt::CaseInsensitive) || path.endsWith(".jpeg", Qt::CaseInsensitive) || path.endsWith(".png", Qt::CaseInsensitive))) {
                     QImage img(path);
                     if (!img.isNull()) {
                         currentLocalCovers.insert(path);

@@ -1597,9 +1597,9 @@ Covers::Image Covers::locateImage(const Song &song)
     QStringList coverFileNames;
     if (song.isArtistImageRequest()) {
         QString basicArtist=song.basicArtist();
-        coverFileNames=QStringList() << basicArtist+".jpg" << basicArtist+".png" << constArtistImage+".jpg" << constArtistImage+".png";
+        coverFileNames=QStringList() << basicArtist+".jpg" << basicArtist+".png" << basicArtist+".jpeg" << constArtistImage+".jpg" << constArtistImage+".png" << constArtistImage+".jpeg";
     } else if (song.isComposerImageRequest()) {
-        coverFileNames=QStringList() << constComposerImage+".jpg" << constComposerImage+".png";
+        coverFileNames=QStringList() << constComposerImage+".jpg" << constComposerImage+".png" << constComposerImage+".jpeg";
     } else {
         QString mpdCover=albumFileName(song);
         if (!mpdCover.isEmpty()) {
@@ -1875,7 +1875,7 @@ void Covers::cleanCdda()
         QStringList entries=d.entryList(QDir::Files|QDir::NoSymLinks|QDir::NoDotAndDotDot);
 
         for (const QString &f: entries) {
-            if (f.endsWith(".jpg") || f.endsWith(".png")) {
+            if (f.endsWith(".jpg") || f.endsWith(".jpeg") || f.endsWith(".png")) {
                 QFile::remove(dir+f);
             }
         }

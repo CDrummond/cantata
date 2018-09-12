@@ -65,6 +65,7 @@ namespace Utils
 
     extern QString getDir(const QString &file);
     extern QString getFile(const QString &file);
+    extern QString getExtension(const QString &file);
     extern QString changeExtension(const QString &file, const QString &extension);
     extern bool isDirReadable(const QString &dir);
 

@@ -16,6 +16,7 @@
 10. When getting 'basic' title of song, also remove any 'prod. XXX', etc.
     values.
 11. Allow .jpeg as extension from cover dialog.
+12. Fix QMediaPlayer stuck with network streams - thanks to theirix
 
 2.3.2
 -----

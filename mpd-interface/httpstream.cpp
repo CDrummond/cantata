@@ -137,6 +137,8 @@ void HttpStream::toggleMute()
     }
 }
 
+static const char *constUrlProperty="url";
+
 void HttpStream::streamUrl(const QString &url)
 {
     MPDStatus * const status = MPDStatus::self();
@@ -149,7 +151,6 @@ void HttpStream::streamUrl(const QString &url)
         player=0;
     }
     #else
-    static const char *constUrlProperty="url";
     if (player && player->property(constUrlProperty).toString()!=url) {
         player->stop();
         player->deleteLater();
@@ -189,7 +190,15 @@ void HttpStream::updateStatus()
 
     MPDStatus * const status = MPDStatus::self();
     DBUG << status->state() << state;
-    if (status->state()==state) {
+
+    // evaluates to true when it is needed to start or restart media player
+    bool playerNeedsToStart = status->state() == MPDState_Playing &&
+           (QMediaPlayer::PlayingState!=player->state() ||
+            QMediaPlayer::InvalidMedia == player->mediaStatus() ||
+            QMediaPlayer::EndOfMedia == player->mediaStatus() ||
+            QMediaPlayer::NoMedia == player->mediaStatus());
+
+    if (status->state()==state && !playerNeedsToStart) {
         return;
     }
 
@@ -203,7 +212,14 @@ void HttpStream::updateStatus()
             startTimer();
         }
         #else
-        if (QMediaPlayer::PlayingState!=player->state()) {
+        if (playerNeedsToStart)
+        {
+            QString url = player->property(constUrlProperty).toString();
+            if (!url.isEmpty())
+            {
+              DBUG << "Setting media" << url;
+              player->setMedia(QUrl(url));
+            }
             player->play();
             startTimer();
         }

@@ -192,11 +192,14 @@ void HttpStream::updateStatus()
     DBUG << status->state() << state;
 
     // evaluates to true when it is needed to start or restart media player
-    bool playerNeedsToStart = status->state() == MPDState_Playing &&
+    bool playerNeedsToStart = status->state() == MPDState_Playing;
+    #ifndef LIBVLC_FOUND
+    playerNeedsToStart = playerNeedsToStart &&
            (QMediaPlayer::PlayingState!=player->state() ||
             QMediaPlayer::InvalidMedia == player->mediaStatus() ||
             QMediaPlayer::EndOfMedia == player->mediaStatus() ||
             QMediaPlayer::NoMedia == player->mediaStatus());
+    #endif
 
     if (status->state()==state && !playerNeedsToStart) {
         return;

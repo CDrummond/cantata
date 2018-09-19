@@ -2649,7 +2649,7 @@ void MainWindow::controlView(bool forceUpdate)
             stopTrackButton->setVisible(stopEnabled);
         }
 
-        if (responsiveSidebar || forceUpdate) {
+        if (expandInterfaceAction->isChecked() && (responsiveSidebar || forceUpdate)) {
             if (!responsiveSidebar || width()>Utils::scaleForDpi(450)) {
                 if (forceUpdate || singlePane) {
                     int index=tabWidget->currentIndex();
@@ -2742,6 +2742,7 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
         if (lastMax) {
             showMaximized();
         }
+        controlView();
     } else {
         // Width also sometimes expands, so make sure this is no larger than it was before...
         collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), calcCollapsedSize());

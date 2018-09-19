@@ -106,6 +106,10 @@ void HttpStream::setVolume(int vol)
 
 int HttpStream::volume()
 {
+    if (!enabled) {
+        return -1;
+    }
+
     int vol=currentVolume;
     if (player && !isMuted()) {
         #ifdef LIBVLC_FOUND

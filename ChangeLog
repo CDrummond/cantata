@@ -20,6 +20,8 @@
 13. Always show volume control.
 14. Fix 'Show Current Song Information' (i) toolbar button showing when
     interface is collpased and resized.
+15. When expand intrface, don't shrink width. Conversely, when collapsing
+    don't expand width.
 
 2.3.2
 -----

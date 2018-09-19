@@ -56,13 +56,18 @@ VolumeControl::VolumeControl(QWidget *p)
     layout->addWidget(label);
     mpdVol->ensurePolished();
     setFixedSize(mpdVol->width(), mpdVol->height()+(size*2));
-    connect(mpdVol, SIGNAL(stateChanged()), SLOT(stateChanged()));
     connect(httpVol, SIGNAL(stateChanged()), SLOT(stateChanged()));
     mpdVol->setEnabled(true);
     httpVol->setEnabled(false);
     label->setAlignment(Qt::AlignCenter);
     label->setBold(false);
-    stateChanged();
+
+    stack->setCurrentIndex(0);
+    label->setCurrentIndex(0);
+    mpdVol->setActive(true);
+    httpVol->setActive(false);
+    label->setVisible(false);
+
     connect(label, SIGNAL(activated(int)), SLOT(itemSelected(int)));
     QTimer::singleShot(500, this, SLOT(selectControl()));
 }
@@ -107,15 +112,13 @@ void VolumeControl::setPageStep(int step)
 
 void VolumeControl::stateChanged()
 {
-    stack->setCurrentIndex((sender()==httpVol && httpVol->isEnabled()) ||
-                           (sender()==mpdVol && !mpdVol->isEnabled() && httpVol->isEnabled()) ? 1 : 0);
+    stack->setCurrentIndex(httpVol->isEnabled() ? 1 : 0);
     mpdVol->setActive(0==stack->currentIndex());
     httpVol->setActive(1==stack->currentIndex());
-    label->setVisible(mpdVol->isEnabled() && httpVol->isEnabled());
+    label->setVisible(httpVol->isEnabled());
     label->blockSignals(true);
     label->setCurrentIndex(stack->currentIndex());
     label->blockSignals(false);
-    setVisible(mpdVol->isEnabled() || httpVol->isEnabled());
 }
 
 void VolumeControl::itemSelected(int i)

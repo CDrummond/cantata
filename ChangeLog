@@ -17,6 +17,7 @@
     values.
 11. Allow .jpeg as extension from cover dialog.
 12. Fix QMediaPlayer stuck with network streams - thanks to theirix
+13. Always show volume control.
 
 2.3.2
 -----

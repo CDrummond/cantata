@@ -2734,18 +2734,14 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
     adjustSize();
 
     if (showing) {
-        bool adjustWidth=size().width()!=expandedSize.width();
-        bool adjustHeight=size().height()!=expandedSize.height();
-        if (adjustWidth || adjustHeight) {
-            resize(adjustWidth ? expandedSize.width() : size().width(), adjustHeight ? expandedSize.height() : size().height());
-        }
+        resize(qMax(prevWidth, expandedSize.width()), expandedSize.height());
         if (lastMax) {
             showMaximized();
         }
         controlView();
     } else {
         // Width also sometimes expands, so make sure this is no larger than it was before...
-        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), calcCollapsedSize());
+        collapsedSize=QSize(collapsedSize.isValid() ? qMin(collapsedSize.width(), prevWidth) : prevWidth, calcCollapsedSize());
         resize(collapsedSize);
         setFixedHeight(size().height());
     }

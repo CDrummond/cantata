@@ -62,6 +62,7 @@ private Q_SLOTS:
     void updateStatus();
     void streamUrl(const QString &url);
     void checkPlayer();
+    void bufferingProgress(int progress);
 
 private:
     void startTimer();

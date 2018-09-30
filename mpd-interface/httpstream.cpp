@@ -172,7 +172,7 @@ void HttpStream::streamUrl(const QString &url)
         #else
         player=new QMediaPlayer(this);
         player->setMedia(qUrl);
-        player->setProperty(constUrlProperty, url);
+        connect(player, &QMediaPlayer::bufferStatusChanged, this, &HttpStream::bufferingProgress);
         #endif
         muted=false;
         setVolume(Configuration(metaObject()->className()).get("volume", currentVolume));
@@ -184,6 +184,18 @@ void HttpStream::streamUrl(const QString &url)
         state=MPDState_Inactive;
     }
     emit update();
+}
+
+void HttpStream::bufferingProgress(int progress)
+{
+    MPDStatus * const status = MPDStatus::self();
+    if (status->state() == MPDState_Playing) {
+        if (progress == 100) {
+            player->play();
+        } else {
+            player->pause();
+        }
+    }
 }
 
 void HttpStream::updateStatus()
@@ -198,11 +210,7 @@ void HttpStream::updateStatus()
     // evaluates to true when it is needed to start or restart media player
     bool playerNeedsToStart = status->state() == MPDState_Playing;
     #ifndef LIBVLC_FOUND
-    playerNeedsToStart = playerNeedsToStart &&
-           (QMediaPlayer::PlayingState!=player->state() ||
-            QMediaPlayer::InvalidMedia == player->mediaStatus() ||
-            QMediaPlayer::EndOfMedia == player->mediaStatus() ||
-            QMediaPlayer::NoMedia == player->mediaStatus());
+    playerNeedsToStart = playerNeedsToStart && player->state() == QMediaPlayer::StoppedState;
     #endif
 
     if (status->state()==state && !playerNeedsToStart) {
@@ -219,56 +227,50 @@ void HttpStream::updateStatus()
             startTimer();
         }
         #else
-        if (playerNeedsToStart)
-        {
-            QString url = player->property(constUrlProperty).toString();
+        if (playerNeedsToStart) {
+            QUrl url = player->media().canonicalUrl();
             if (!url.isEmpty())
             {
               DBUG << "Setting media" << url;
-              player->setMedia(QUrl(url));
+              player->setMedia(url);
             }
-            player->play();
-            startTimer();
         }
         #endif
         break;
     case MPDState_Paused:
+        #ifndef LIBVLC_FOUND
+        player->stop();
+        #endif
     case MPDState_Inactive:
     case MPDState_Stopped:
         #ifdef LIBVLC_FOUND
         libvlc_media_player_stop(player);
+        stopTimer();
         #else
         player->stop();
         #endif
-        stopTimer();
         break;
     default:
+        #ifdef LIBVLC_FOUND
         stopTimer();
+        #endif
         break;
     }
 }
 
 void HttpStream::checkPlayer()
 {
+    #ifdef LIBVLC_FOUND
     if (0==--playStateChecks) {
         stopTimer();
         DBUG << "Max checks reached";
     }
-    #ifdef LIBVLC_FOUND
     if (libvlc_Playing==libvlc_media_player_get_state(player)) {
         DBUG << "Playing";
         stopTimer();
     } else {
         DBUG << "Try again";
         libvlc_media_player_play(player);
-    }
-    #else
-    if (QMediaPlayer::PlayingState==player->state()) {
-        DBUG << "Playing";
-        stopTimer();
-    } else {
-        DBUG << "Try again";
-        player->play();
     }
     #endif
 }

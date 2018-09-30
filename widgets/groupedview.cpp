@@ -381,7 +381,7 @@ void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
         }
 
         int td=index.data(Cantata::Role_AlbumDuration).toUInt();
-        QString totalDuration=td>0 ? Utils::formatTime(td) : QString();
+        QString totalDuration=td>0 && td!=song.time ? Utils::formatTime(td) : QString();
         QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
         int totalDurationWidth=fm.width(totalDuration)+8;
         QRect textRect(r.x(), r.y(), r.width()-(rtl ? (4*constBorder) : totalDurationWidth), textHeight);

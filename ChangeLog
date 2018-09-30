@@ -22,6 +22,8 @@
     interface is collpased and resized.
 15. When expand intrface, don't shrink width. Conversely, when collapsing
     don't expand width.
+16. In grouped style playqueue, only show album duration if there is more than
+    one track from the album.
 
 2.3.2
 -----

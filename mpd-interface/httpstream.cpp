@@ -186,6 +186,7 @@ void HttpStream::streamUrl(const QString &url)
     emit update();
 }
 
+#ifndef LIBVLC_FOUND
 void HttpStream::bufferingProgress(int progress)
 {
     MPDStatus * const status = MPDStatus::self();
@@ -197,6 +198,7 @@ void HttpStream::bufferingProgress(int progress)
         }
     }
 }
+#endif
 
 void HttpStream::updateStatus()
 {

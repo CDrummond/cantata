@@ -62,7 +62,9 @@ private Q_SLOTS:
     void updateStatus();
     void streamUrl(const QString &url);
     void checkPlayer();
+#ifndef LIBVLC_FOUND
     void bufferingProgress(int progress);
+#endif
 
 private:
     void startTimer();

@@ -852,6 +852,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(locateArtistAction, SIGNAL(triggered()), this, SLOT(locateTrack()));
     connect(this, SIGNAL(playNext(QList<quint32>,quint32,quint32)), MPDConnection::self(), SLOT(move(QList<quint32>,quint32,quint32)));
     connect(playNextAction, SIGNAL(triggered()), this, SLOT(moveSelectionAfterCurrentSong()));
+    connect(qApp, SIGNAL(paletteChanged(const QPalette &)), this, SLOT(paletteChanged()));
 
     connect(StdActions::self()->searchAction, SIGNAL(triggered()), SLOT(showSearch()));
     connect(searchPlayQueueAction, SIGNAL(triggered()), this, SLOT(showPlayQueueSearch()));
@@ -1485,6 +1486,23 @@ void MainWindow::toggleMenubar()
         setCollapsedSize();
     }
     #endif
+}
+
+void MainWindow::paletteChanged()
+{
+    nowPlaying->initColors();
+    nowPlaying->setFixedHeight(nowPlaying->height());
+    volumeSlider->setColor(nowPlaying->textColor());
+
+    Icons::self()->initToolbarIcons(nowPlaying->textColor());
+    StdActions::self()->prevTrackAction->setIcon(Icons::self()->toolbarPrevIcon);
+    StdActions::self()->nextTrackAction->setIcon(Icons::self()->toolbarNextIcon);
+    StdActions::self()->playPauseTrackAction->setIcon(MPDState_Playing==MPDStatus::self()->state() ? Icons::self()->toolbarPauseIcon : Icons::self()->toolbarPlayIcon);
+    StdActions::self()->stopPlaybackAction->setIcon(Icons::self()->toolbarStopIcon);
+    StdActions::self()->stopAfterCurrentTrackAction->setIcon(Icons::self()->toolbarStopIcon);
+    StdActions::self()->stopAfterTrackAction->setIcon(Icons::self()->toolbarStopIcon);
+    songInfoAction->setIcon(Icons::self()->infoIcon);
+    menuButton->setIcon(Icons::self()->toolbarMenuIcon);
 }
 
 void MainWindow::readSettings()

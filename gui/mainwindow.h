@@ -268,6 +268,7 @@ private Q_SLOTS:
     void toggleContext();
     void initMpris();
     void toggleMenubar();
+    void paletteChanged();
 
 private:
     int prevPage;

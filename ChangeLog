@@ -25,6 +25,7 @@
 16. In grouped style playqueue, only show album duration if there is more than
     one track from the album.
 17. Don't try to reduce brackets when showing album name and year.
+18. Add option to sort smart playlists by title.
 
 2.3.2
 -----

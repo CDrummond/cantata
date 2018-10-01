@@ -44,6 +44,7 @@ public:
         Order_Date,
         Order_Genre,
         Order_Rating,
+        Order_Title,
         Order_Age,
         Order_Random,
 

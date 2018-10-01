@@ -82,6 +82,7 @@ QString RulesPlaylists::orderStr(Order order)
     case Order_Date:        return constDateKey;
     case Order_Genre:       return constGenreKey;
     case Order_Rating:      return constRatingKey;
+    case Order_Title:       return constOrderKey;
     case Order_Age:         return "Age";
     default:
     case Order_Random:      return "Random";
@@ -98,6 +99,7 @@ QString RulesPlaylists::orderName(Order order)
     case Order_Date:        return tr("Date");
     case Order_Genre:       return tr("Genre");
     case Order_Rating:      return tr("Rating");
+    case Order_Title:       return tr("Title");
     case Order_Age:         return tr("File Age");
     default:
     case Order_Random: return tr("Random");

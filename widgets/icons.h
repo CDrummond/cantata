@@ -34,7 +34,7 @@ public:
 
     Icons();
     void initSidebarIcons();
-    void initToolbarIcons(QColor toolbarText);
+    void initToolbarIcons(const QColor &toolbarText);
     QIcon appIcon;
     QIcon genreIcon;
     QIcon artistIcon;

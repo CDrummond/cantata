@@ -277,6 +277,7 @@ private:
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
     bool singlePane;
+    bool shown;
     Action *prefAction;
     Action *refreshDbAction;
     Action *doDbRefreshAction;

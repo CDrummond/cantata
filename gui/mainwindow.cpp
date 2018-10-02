@@ -142,6 +142,7 @@ MainWindow::MainWindow(QWidget *parent)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
     , singlePane(false)
+    , shown(false)
     , currentPage(nullptr)
     #ifdef QT_QTDBUS_FOUND
     , mpris(nullptr)
@@ -1109,6 +1110,11 @@ void MainWindow::showEvent(QShowEvent *event)
     #endif
     QMainWindow::showEvent(event);
     controlView();
+    if (!shown) {
+        shown=true;
+        // Work-around for qt5ct palette issues...
+        QTimer::singleShot(0, this, SLOT(paletteChanged()));
+    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -1490,8 +1496,12 @@ void MainWindow::toggleMenubar()
 
 void MainWindow::paletteChanged()
 {
+    QColor before = nowPlaying->textColor();
     nowPlaying->initColors();
-    nowPlaying->setFixedHeight(nowPlaying->height());
+    if (before == nowPlaying->textColor()) {
+        return;
+    }
+
     volumeSlider->setColor(nowPlaying->textColor());
 
     Icons::self()->initToolbarIcons(nowPlaying->textColor());

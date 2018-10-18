@@ -211,7 +211,9 @@ void HttpStream::updateStatus()
 
     // evaluates to true when it is needed to start or restart media player
     bool playerNeedsToStart = status->state() == MPDState_Playing;
-    #ifndef LIBVLC_FOUND
+    #ifdef LIBVLC_FOUND
+    playerNeedsToStart = playerNeedsToStart && libvlc_media_player_get_state(player) != libvlc_Playing;
+    #else
     playerNeedsToStart = playerNeedsToStart && player->state() == QMediaPlayer::StoppedState;
     #endif
 
@@ -223,17 +225,15 @@ void HttpStream::updateStatus()
     switch (status->state()) {
     case MPDState_Playing:
         // Only start playback if not aready playing
+        if (playerNeedsToStart) {
         #ifdef LIBVLC_FOUND
-        if (libvlc_Playing!=libvlc_media_player_get_state(player)) {
             libvlc_media_player_play(player);
             startTimer();
-        }
         #else
-        if (playerNeedsToStart) {
             QUrl url = player->media().canonicalUrl();
             player->setMedia(url);
-        }
         #endif
+        }
         break;
     case MPDState_Paused:
         #ifndef LIBVLC_FOUND

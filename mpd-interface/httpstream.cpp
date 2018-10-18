@@ -141,8 +141,6 @@ void HttpStream::toggleMute()
     }
 }
 
-static const char *constUrlProperty="url";
-
 void HttpStream::streamUrl(const QString &url)
 {
     DBUG << url;
@@ -154,10 +152,13 @@ void HttpStream::streamUrl(const QString &url)
         player=0;
     }
     #else
-    if (player && player->property(constUrlProperty).toString()!=url) {
-        player->stop();
-        player->deleteLater();
-        player=nullptr;
+    if (player) {
+        QMediaContent media = player->media();
+        if (media != nullptr && media.canonicalUrl() != url) {
+            player->stop();
+            player->deleteLater();
+            player = nullptr;
+        }
     }
     #endif
     QUrl qUrl(url);

@@ -231,11 +231,7 @@ void HttpStream::updateStatus()
         #else
         if (playerNeedsToStart) {
             QUrl url = player->media().canonicalUrl();
-            if (!url.isEmpty())
-            {
-              DBUG << "Setting media" << url;
-              player->setMedia(url);
-            }
+            player->setMedia(url);
         }
         #endif
         break;

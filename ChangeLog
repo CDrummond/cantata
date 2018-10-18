@@ -28,6 +28,7 @@
 18. Add option to sort smart playlists by title.
 19. Change toolbar colours if palette changes.
 20. Add another qt5ct palette work-around.
+21. Don't stop library scan just because of failure in 1 directory.
 
 2.3.2
 -----

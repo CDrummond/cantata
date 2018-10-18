@@ -2124,9 +2124,7 @@ bool MPDConnection::recursivelyListDir(const QString &dir, QList<Song> &songs)
             songs.clear();
         }
         for (const QString &sub: subDirs) {
-            if (!recursivelyListDir(sub, songs)) {
-                return false;
-            }
+            recursivelyListDir(sub, songs);
         }
 
         if (topLevel && !songs.isEmpty()) {

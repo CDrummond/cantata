@@ -145,7 +145,6 @@ static const char *constUrlProperty="url";
 
 void HttpStream::streamUrl(const QString &url)
 {
-    MPDStatus * const status = MPDStatus::self();
     DBUG << url;
     #ifdef LIBVLC_FOUND
     if (player) {

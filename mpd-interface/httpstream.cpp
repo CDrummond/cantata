@@ -236,9 +236,6 @@ void HttpStream::updateStatus()
         }
         break;
     case MPDState_Paused:
-        #ifndef LIBVLC_FOUND
-        player->stop();
-        #endif
     case MPDState_Inactive:
     case MPDState_Stopped:
         #ifdef LIBVLC_FOUND

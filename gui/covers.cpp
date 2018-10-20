@@ -1269,7 +1269,7 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
 
 QPixmap * Covers::get(const Song &song, int size, bool urgent)
 {
-    VERBOSE_DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << song.composer() << song.isArtistImageRequest() << song.isComposerImageRequest() << size << urgent;
+    VERBOSE_DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << song.composer() << song.isArtistImageRequest() << song.isComposerImageRequest() << size << urgent << song.type << song.isStandardStream() << isOnlineServiceImage(song);
     QString key;
     QPixmap *pix=nullptr;
     if (0==size) {
@@ -1299,6 +1299,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                 }
             }
             if (pix) {
+                VERBOSE_DBUG_CLASS("Covers") << "Got standard image";
                 if (size!=origSize) {
                     pix->setDevicePixelRatio(devicePixelRatio);
                     VERBOSE_DBUG << "Set pixel ratio of cover" << devicePixelRatio;

@@ -218,10 +218,10 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #ifdef ENABLE_DEVICES_SUPPORT
     coverNameNoteLabel->setText(tr("If no setting is specified for 'Filename', then Cantata will use a default of "
                                    "<code>cover</code>. This filename is used when downloading covers, or when adding "
-                                   "music to your library from devices."));
+                                   "music to your library from devices. This should be specified <b>without</b> an extension."));
     #else
     coverNameNoteLabel->setText(tr("If no setting is specified for 'Filename', then Cantata will use a default of "
-                                   "<code>cover</code>. This filename is used when downloading covers."));
+                                   "<code>cover</code>. This filename is used when downloading covers. This should be specified <b>without</b> an extension."));
     #endif
 
     QFont f = Utils::smallFont(ignorePrefixesLabel->font());

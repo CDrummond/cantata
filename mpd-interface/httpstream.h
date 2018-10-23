@@ -37,7 +37,7 @@ class QTimer;
 class HttpStream : public QObject
 {
     Q_OBJECT
-    
+
 public:
     static void enableDebug();
     static HttpStream * self();
@@ -48,7 +48,7 @@ public:
     bool isMuted() const { return muted; }
     int volume();
     int unmuteVolume() const { return unmuteVol; }
-    
+
 Q_SIGNALS:
     void isEnabled(bool en);
     void update();
@@ -57,7 +57,7 @@ public Q_SLOTS:
     void setEnabled(bool e);
     void setVolume(int vol);
     void toggleMute();
-    
+
 private Q_SLOTS:
     void updateStatus();
     void streamUrl(const QString &url);
@@ -85,8 +85,7 @@ private:
     libvlc_media_t *media;
     #else
     QMediaPlayer *player;
-    #endif    
+    #endif
 };
 
 #endif
-

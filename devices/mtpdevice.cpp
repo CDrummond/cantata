@@ -580,6 +580,12 @@ void MtpConnection::updateStorage()
         LIBMTP_devicestorage_struct *s=device->storage;
         while (s) {
             QString volumeIdentifier=QString::fromUtf8(s->VolumeIdentifier);
+            if (volumeIdentifier.isEmpty()) {
+                volumeIdentifier=QString::fromUtf8(s->StorageDescription);
+            }
+            if (volumeIdentifier.isEmpty()) {
+                volumeIdentifier="ID:"+QString::number(s->id);
+            }
             QList<Storage>::Iterator it=storage.begin();
             QList<Storage>::Iterator end=storage.end();
             for ( ;it!=end; ++it) {

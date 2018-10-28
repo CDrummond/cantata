@@ -47,11 +47,13 @@ public:
     QList<Song> selectedSongs(bool allowPlaylists=false) const override;
     #ifdef ENABLE_DEVICES_SUPPORT
     void addSelectionToDevice(const QString &udi) override;
+    void deleteSongs() override;
     #endif
     void setSearchCategory(const QString &cat);
 
 Q_SIGNALS:
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
+    void deleteSongs(const QString &from, const QList<Song> &songs);
     void locate(const QList<Song> &songs);
 
 public Q_SLOTS:   

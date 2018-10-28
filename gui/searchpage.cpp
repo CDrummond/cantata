@@ -28,6 +28,7 @@
 #include "customactions.h"
 #include "support/utils.h"
 #include "support/icon.h"
+#include "support/messagebox.h"
 #include "widgets/tableview.h"
 #include "widgets/menubutton.h"
 #include "widgets/icons.h"
@@ -81,6 +82,15 @@ SearchPage::SearchPage(QWidget *p)
     #ifdef TAGLIB_FOUND
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(StdActions::self()->copyToDeviceAction);
+    #endif
+    view->addAction(StdActions::self()->organiseFilesAction);
+    view->addAction(StdActions::self()->editTagsAction);
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    view->addAction(StdActions::self()->replaygainAction);
+    #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    view->addSeparator();
+    view->addAction(StdActions::self()->deleteSongsAction);
     #endif
     #endif // TAGLIB_FOUND
     view->addAction(locateAction);
@@ -156,6 +166,19 @@ void SearchPage::addSelectionToDevice(const QString &udi)
         view->clearSelection();
     }
 }
+
+void SearchPage::deleteSongs()
+{
+    QList<Song> songs=selectedSongs();
+
+    if (!songs.isEmpty()) {
+        if (MessageBox::Yes==MessageBox::warningYesNo(this, tr("Are you sure you wish to delete the selected songs?\n\nThis cannot be undone."),
+                                                      tr("Delete Songs"), StdGuiItem::del(), StdGuiItem::cancel())) {
+            emit deleteSongs(QString(), songs);
+        }
+        view->clearSelection();
+    }
+}
 #endif
 
 void SearchPage::doSearch()
@@ -186,6 +209,19 @@ void SearchPage::controlActions()
     StdActions::self()->enableAddToPlayQueue(enable);
     CustomActions::self()->setEnabled(enable);
     locateAction->setEnabled(enable);
+
+    StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
+    #ifdef TAGLIB_FOUND
+    StdActions::self()->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);
+    StdActions::self()->editTagsAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    StdActions::self()->replaygainAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
+    #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    StdActions::self()->deleteSongsAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
+    StdActions::self()->copyToDeviceAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
+    #endif
+    #endif // TAGLIB_FOUND
 }
 
 void SearchPage::setSearchCategory(const QString &cat)

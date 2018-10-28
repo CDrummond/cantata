@@ -760,6 +760,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(folderPage->mpd(), SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
+    connect(searchPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     #endif
     for (QAction *act: StdActions::self()->setPriorityAction->menu()->actions()) {
         connect(act, SIGNAL(triggered()), this, SLOT(addWithPriority()));

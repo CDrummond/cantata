@@ -1484,6 +1484,68 @@ void MPDConnection::getTagTypes()
     }
 }
 
+void MPDConnection::getCover(const Song &song)
+{
+    int dataToRead = -1;
+    int imageSize = 0;
+    QByteArray imageData;
+    bool firstRun = true;
+    QString path=Utils::getDir(song.file);
+    while (dataToRead != 0) {
+        Response response=sendCommand("albumart "+encodeName(path)+" "+QByteArray::number(firstRun ? 0 : (imageSize - dataToRead)));
+        if (!response.ok) {
+            DBUG << "albumart query failed";
+            break;
+        }
+
+        static const QByteArray constSize("size: ");
+        static const QByteArray constBinary("binary: ");
+
+        auto sizeStart = strstr(response.data.constData(), constSize.constData());
+        if (!sizeStart) {
+            DBUG << "Failed to get size start";
+            break;
+        }
+        auto sizeEnd = strchr(sizeStart, '\n');
+        if (!sizeEnd) {
+            DBUG << "Failed to get size end";
+            break;
+        }
+
+        auto chunkSizeStart = strstr(sizeEnd, constBinary.constData());
+        if (!chunkSizeStart) {
+            DBUG << "Failed to get chunk size start";
+            break;
+        }
+        auto chunkSizeEnd = strchr(chunkSizeStart, '\n');
+        if (!chunkSizeEnd) {
+            DBUG << "Failed to chunk size end";
+            break;
+        }
+
+        if (firstRun) {
+            imageSize = QByteArray(sizeStart+constSize.length(), sizeEnd-(sizeStart+constSize.length())).toUInt();
+            imageData.reserve(imageSize);
+            dataToRead = imageSize;
+            firstRun = false;
+            DBUG << "image size" << imageSize;
+        }
+
+        int chunkSize = QByteArray(chunkSizeStart+constBinary.length(), chunkSizeEnd-(chunkSizeStart+constBinary.length())).toUInt();
+        DBUG << "image size" << chunkSize;
+
+        if (chunkSize>(chunkSizeEnd-response.data.constData())) {
+            DBUG << "Invalid chunk size";
+            break;
+        }
+
+        imageData.append(chunkSizeEnd+1, chunkSize);
+        dataToRead -= chunkSize;
+    }
+
+    DBUG << dataToRead << imageData.size();
+    emit albumArt(song, 0==dataToRead ? imageData : QByteArray());
+}
 
 /*
  * Data is written during idle.
@@ -2520,7 +2582,7 @@ MPDServerInfo::ResponseParameter MPDServerInfo::lsinfoResponseParameters[] = {
     { "OK", false, MPDServerInfo::ForkedDaapd, "forked-daapd" }
 };
 
-void MPDServerInfo::detect(void) {
+void MPDServerInfo::detect() {
     MPDConnection *conn;
 
     if (!isUndetermined()) {
@@ -2591,7 +2653,7 @@ void MPDServerInfo::detect(void) {
     }
 }
 
-void MPDServerInfo::reset(void) {
+void MPDServerInfo::reset() {
     setServerType(MPDServerInfo::Undetermined);
     serverName = "undetermined";
     topLevelLsinfo = "lsinfo";

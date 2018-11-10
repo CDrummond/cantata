@@ -48,6 +48,7 @@ class CoverDownloader : public QObject
 
 public:
     enum JobType {
+        JobMpd,
         JobHttpJpg,
         JobHttpPng,
         JobRemote
@@ -76,12 +77,15 @@ Q_SIGNALS:
     void cover(const Song &song, const QImage &img, const QString &file);
     void artistImage(const Song &song, const QImage &img, const QString &file);
     void composerImage(const Song &song, const QImage &img, const QString &file);
+    void mpdCover(const Song &song);
 
 private:
+    void downloadViaMpd(Job &job);
     bool downloadViaHttp(Job &job, JobType type);
     void downloadViaRemote(Job &job);
 
 private Q_SLOTS:
+    void mpdAlbumArt(const Song &song, const QByteArray &data);
     void remoteCallFinished();
     void jobFinished();
     void onlineJobFinished();

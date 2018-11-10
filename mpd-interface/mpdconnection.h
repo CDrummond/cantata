@@ -184,18 +184,18 @@ public:
         lsinfoCommand += "\"";
     };
 
-    void reset(void);
-    void detect(void);
+    void reset();
+    void detect();
 
-    ServerType getServerType(void) const { return serverType;}
-    bool isUndetermined(void) const { return serverType == Undetermined; }
-    bool isMpd(void) const { return serverType == Mpd; }
-    bool isMopidy(void) const { return serverType == Mopidy; }
-    bool isForkedDaapd(void) const { return serverType == ForkedDaapd; }
-    bool isPlayQueueIdValid(void) const { return serverType != ForkedDaapd; }
+    ServerType getServerType() const { return serverType;}
+    bool isUndetermined() const { return serverType == Undetermined; }
+    bool isMpd() const { return serverType == Mpd; }
+    bool isMopidy() const { return serverType == Mopidy; }
+    bool isForkedDaapd() const { return serverType == ForkedDaapd; }
+    bool isPlayQueueIdValid() const { return serverType != ForkedDaapd; }
 
-    const QString &getServerName(void) const { return serverName;}
-    const QByteArray &getTopLevelLsinfo(void) const { return topLevelLsinfo; }
+    const QString &getServerName() const { return serverName;}
+    const QByteArray &getTopLevelLsinfo() const { return topLevelLsinfo; }
 
 private:
     void setServerType(ServerType newServerType) { serverType = newServerType; }
@@ -273,6 +273,7 @@ public:
     bool originalDateTagSupported() const { return tagTypes.contains(QLatin1String("OriginalDate")); }
     bool modifiedFindSupported() const { return ver>=CANTATA_MAKE_VERSION(0, 19, 0); }
     bool replaygainSupported() const { return ver>=CANTATA_MAKE_VERSION(0, 16, 0); }
+    bool supportsCoverDownload() const { ver>=CANTATA_MAKE_VERSION(0, 21, 0) && isMpd(); }
     bool localFilePlaybackSupported() const;
     bool stickersSupported() const { return canUseStickers; }
 
@@ -280,10 +281,10 @@ public:
     static bool isPlaylist(const QString &file);
     int unmuteVolume() { return unmuteVol; }
     bool isMuted() { return -1!=unmuteVol; }
-    bool isMpd(void) const { return serverInfo.isMpd(); }
-    bool isMopidy(void) const { return serverInfo.isMopidy(); }
-    bool isForkedDaapd(void) const { return serverInfo.isForkedDaapd(); }
-    bool isPlayQueueIdValid(void) const { return serverInfo.isPlayQueueIdValid(); }
+    bool isMpd() const { return serverInfo.isMpd(); }
+    bool isMopidy() const { return serverInfo.isMopidy(); }
+    bool isForkedDaapd() const { return serverInfo.isForkedDaapd(); }
+    bool isPlayQueueIdValid() const { return serverInfo.isPlayQueueIdValid(); }
     void setVolumeFadeDuration(int f) { fadeDuration=f; }
     QString ipAddress() const { return details.isLocal() ? QString() : sock.address(); }
 
@@ -340,6 +341,7 @@ public Q_SLOTS:
     void getStatus();
     void getUrlHandlers();
     void getTagTypes();
+    void getCover(const Song &song);
 
     // Database
     void loadLibrary();
@@ -437,6 +439,8 @@ Q_SIGNALS:
     void stickerDbChanged();
 
     void ifaceIp(const QString &addr);
+
+    void albumArt(const Song &song, const QByteArray &data);
 
 private Q_SLOTS:
     void idleDataReady();

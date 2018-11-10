@@ -31,6 +31,7 @@
 21. Don't stop library scan just because of failure in 1 directory.
 22. Handle empty VolumeIdentifier in MTP devices.
 23. Add more actions to search page results.
+24. For MPD>=21, use its albumart protocol to fetch covers.
 
 2.3.2
 -----

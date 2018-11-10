@@ -594,6 +594,8 @@ CoverDownloader::CoverDownloader()
     thread=new Thread(metaObject()->className());
     moveToThread(thread);
     thread->start();
+    connect(this, SIGNAL(mpdCover(Song)), MPDConnection::self(), SLOT(getCover(Song)));
+    connect(MPDConnection::self(), SIGNAL(albumArt(Song,QByteArray)), this, SLOT(mpdAlbumArt(Song,QByteArray)));
 }
 
 void CoverDownloader::stop()
@@ -636,13 +638,22 @@ void CoverDownloader::download(const Song &song)
 
     Job job(song, dirName);
 
-    if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
+    if (!song.isArtistImageRequest() && !song.isComposerImageRequest() && MPDConnection::self()->supportsCoverDownload()) {
+        downloadViaMpd(job);
+    } else if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
         downloadViaHttp(job, JobHttpJpg);
     } else if (fetchCovers || job.song.isArtistImageRequest()) {
         downloadViaRemote(job);
     } else {
         failed(job);
     }
+}
+
+void CoverDownloader::downloadViaMpd(Job &job)
+{
+    job.type=JobMpd;
+    emit mpdCover(job.song);
+    jobs.insert(nullptr, job);
 }
 
 bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
@@ -708,6 +719,40 @@ void CoverDownloader::downloadViaRemote(Job &job)
     job.type=JobRemote;
     jobs.insert(j, job);
     DBUG << url.toString();
+}
+
+void CoverDownloader::mpdAlbumArt(const Song &song, const QByteArray &data)
+{
+    QHash<NetworkJob *, Job>::Iterator it=findJob(Job(song, QString()));
+    QHash<NetworkJob *, Job>::Iterator end(jobs.end());
+
+    if (it!=end) {
+        Covers::Image img;
+        img.img= data.isEmpty() ? QImage() : QImage::fromData(data, Covers::imageFormat(data));
+        Job job=it.value();
+
+        if (!img.img.isNull() && img.img.size().width()<32) {
+            img.img = QImage();
+        }
+
+        jobs.remove(it.key());
+        if (img.img.isNull()) {
+            downloadViaHttp(job, JobHttpJpg);
+        } else {
+            if (!img.img.isNull()) {
+                if (img.img.size().width()>Covers::constMaxSize.width() || img.img.size().height()>Covers::constMaxSize.height()) {
+                    img.img=img.img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                }
+                img.fileName=saveImg(job, img.img, data);
+                if (!img.fileName.isEmpty()) {
+                    clearScaledCache(job.song);
+                }
+            }
+
+            DBUG << "got cover image" << img.fileName;
+            emit cover(job.song, img.img, img.fileName);
+        }
+    }
 }
 
 void CoverDownloader::remoteCallFinished()

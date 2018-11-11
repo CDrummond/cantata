@@ -273,7 +273,7 @@ public:
     bool originalDateTagSupported() const { return tagTypes.contains(QLatin1String("OriginalDate")); }
     bool modifiedFindSupported() const { return ver>=CANTATA_MAKE_VERSION(0, 19, 0); }
     bool replaygainSupported() const { return ver>=CANTATA_MAKE_VERSION(0, 16, 0); }
-    bool supportsCoverDownload() const { ver>=CANTATA_MAKE_VERSION(0, 21, 0) && isMpd(); }
+    bool supportsCoverDownload() const { return ver>=CANTATA_MAKE_VERSION(0, 21, 0) && isMpd(); }
     bool localFilePlaybackSupported() const;
     bool stickersSupported() const { return canUseStickers; }
 

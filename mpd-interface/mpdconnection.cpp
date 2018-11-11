@@ -1532,9 +1532,10 @@ void MPDConnection::getCover(const Song &song)
         }
 
         int chunkSize = QByteArray(chunkSizeStart+constBinary.length(), chunkSizeEnd-(chunkSizeStart+constBinary.length())).toUInt();
-        DBUG << "image size" << chunkSize;
+        DBUG << "chunk size" << chunkSize;
 
-        if (chunkSize>(chunkSizeEnd-response.data.constData())) {
+        int startOfChunk=(chunkSizeEnd+1)-response.data.constData();
+        if (startOfChunk+chunkSize > response.data.length()) {
             DBUG << "Invalid chunk size";
             break;
         }

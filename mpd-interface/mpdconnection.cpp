@@ -712,6 +712,18 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             // setting commands are not supported. So, if we get this error then just ignore it.
             if (!isMpd() && (command.startsWith("crossfade ") || command.startsWith("replay_gain_mode "))) {
                 emitError=false;
+            } else if (isMpd() && command.startsWith("albumart ")) {
+                // MPD will report a generic "file not found" error if it can't find album art; this can happen
+                // several times in a large playlist so hide this from the GUI (but report it using DBUG here).
+                emitError=false;
+                const auto start = command.indexOf(' ');
+                const auto end = command.lastIndexOf(' ') - start;
+                if (start > 0 && (end > 0 && (start + end) < command.length())) {
+                    const QString filename = command.mid(start, end);
+                    DBUG << "MPD reported no album art for" << filename;
+                } else {
+                    DBUG << "MPD albumart command was malformed:" << command;
+                }
             }
             if (emitError) {
                 if ((command.startsWith("add ") || command.startsWith("command_list_begin\nadd ")) && -1!=command.indexOf("\"file:///")) {

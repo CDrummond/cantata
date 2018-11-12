@@ -98,6 +98,7 @@ private:
 
 private:
     QHash<NetworkJob *, Job> jobs;
+    QHash<QString, Job> mpdJobs;
 
 private:
     Thread *thread;

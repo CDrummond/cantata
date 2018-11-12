@@ -653,7 +653,7 @@ void CoverDownloader::downloadViaMpd(Job &job)
 {
     job.type=JobMpd;
     emit mpdCover(job.song);
-    jobs.insert(nullptr, job);
+    mpdJobs.insert(job.song.file, job);
 }
 
 bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
@@ -723,10 +723,8 @@ void CoverDownloader::downloadViaRemote(Job &job)
 
 void CoverDownloader::mpdAlbumArt(const Song &song, const QByteArray &data)
 {
-    QHash<NetworkJob *, Job>::Iterator it=findJob(Job(song, QString()));
-    QHash<NetworkJob *, Job>::Iterator end(jobs.end());
-
-    if (it!=end) {
+    QHash<QString, Job>::Iterator it = mpdJobs.find(song.file);
+    if (it!=mpdJobs.end()) {
         Covers::Image img;
         img.img= data.isEmpty() ? QImage() : QImage::fromData(data, Covers::imageFormat(data));
         Job job=it.value();
@@ -735,7 +733,7 @@ void CoverDownloader::mpdAlbumArt(const Song &song, const QByteArray &data)
             img.img = QImage();
         }
 
-        jobs.remove(it.key());
+        mpdJobs.remove(it.key());
         if (img.img.isNull()) {
             downloadViaHttp(job, JobHttpJpg);
         } else {
@@ -752,6 +750,8 @@ void CoverDownloader::mpdAlbumArt(const Song &song, const QByteArray &data)
             DBUG << "got cover image" << img.fileName;
             emit cover(job.song, img.img, img.fileName);
         }
+    } else {
+       DBUG << "missing job for " << song.file;
     }
 }
 

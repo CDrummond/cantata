@@ -32,6 +32,7 @@
 22. Handle empty VolumeIdentifier in MTP devices.
 23. Add more actions to search page results.
 24. For MPD>=21, use its albumart protocol to fetch covers.
+25. When copying tracks to a device, only update cache if configured to do so.
 
 2.3.2
 -----

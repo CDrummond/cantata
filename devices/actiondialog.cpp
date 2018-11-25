@@ -847,7 +847,7 @@ bool ActionDialog::refreshLibrary()
             emit update();
             Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);
 
-            if (dev) {
+            if (dev && dev->options().useCache) {
                 connect(dev, SIGNAL(cacheSaved()), this, SLOT(cacheSaved()));
                 dev->saveCache();
                 progressLabel->setText(tr("Saving cache"));
@@ -863,7 +863,7 @@ bool ActionDialog::refreshLibrary()
                     (Remove==mode && !sourceUdi.isEmpty()) ) {
             Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);
 
-            if (dev) {
+            if (dev && dev->options().useCache) {
                 connect(dev, SIGNAL(cacheSaved()), this, SLOT(cacheSaved()));
                 dev->saveCache();
                 progressLabel->setText(tr("Saving cache"));

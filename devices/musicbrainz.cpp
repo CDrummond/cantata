@@ -91,7 +91,7 @@ static QString calculateDiscId(const QList<Track> &tracks)
     sha.addData(temp, strlen(temp));
 
     for(int i = 0; i < 100; i++) {
-        long offset;
+        int offset;
         if (0==i) {
             offset = tracks[numTracks].offset;
         } else if (i <= numTracks) {
@@ -100,7 +100,7 @@ static QString calculateDiscId(const QList<Track> &tracks)
             offset = 0;
         }
 
-        sprintf(temp, "%08lX", offset);
+        sprintf(temp, "%08X", offset);
         sha.addData(temp, strlen(temp));
     }
 
@@ -192,7 +192,7 @@ void MusicBrainz::readDisc()
         }
         te.cdte_track = CDROM_LEADOUT;
         if (0==ioctl(fd, CDROMREADTOCENTRY, &te)) {
-            tracks.append((te.cdte_addr.lba+secondsToFrames(2))/secondsToFrames(1));
+            tracks.append((te.cdte_addr.lba+secondsToFrames(2)));
         }
     }
     #endif
@@ -217,6 +217,7 @@ void MusicBrainz::readDisc()
             s.albumartist=initial.artist;
             s.album=initial.name;
             s.id=s.track;
+
             s.time=framesToSeconds((next.offset-trk.offset)-(next.isData ? constDataTrackAdjust : 0));
             s.file=QString("%1.wav").arg(s.track);
             s.year=initial.year;

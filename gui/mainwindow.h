@@ -154,7 +154,7 @@ public Q_SLOTS:
     void mpdConnectionName(const QString &name);
     void hideWindow();
     void restoreWindow();
-    void load(const QStringList &urls) { PlayQueueModel::self()->load(urls); }
+    void load(const QStringList &urls) { PlayQueueModel::self()->load(urls, MPDConnection::AppendAndPlay); }
     void showAboutDialog();
     void mpdConnectionStateChanged(bool connected);
     void playQueueItemsSelected(bool s);

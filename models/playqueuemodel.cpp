@@ -927,7 +927,7 @@ void PlayQueueModel::addFiles(const QStringList &filenames, int row, int action,
     if (MPDConnection::ReplaceAndplay==action) {
         emit filesAdded(filenames, 0, 0, MPDConnection::ReplaceAndplay, priority, decreasePriority);
     } else if (songs.isEmpty()) {
-         emit filesAdded(filenames, 0, 0, MPDConnection::Append, priority, decreasePriority);
+         emit filesAdded(filenames, 0, 0, action, priority, decreasePriority);
     } else if (row < 0) {
         emit filesAdded(filenames, songs.size(), songs.size(), action, priority, decreasePriority);
     } else {

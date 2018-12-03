@@ -34,6 +34,7 @@
 24. For MPD>=21, use its albumart protocol to fetch covers.
 25. When copying tracks to a device, only update cache if configured to do so.
 26. Fix MusicBrainz disc ID calculation.
+27. When loading URLs via commandline use AppendAndPlay.
 
 2.3.2
 -----

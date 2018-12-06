@@ -6,7 +6,7 @@
     <message>
         <location filename="../devices/actiondialog.ui" line="86"/>
         <source>Calculating size of files to be copied, please wait...</source>
-        <translation>Calcolando la dimensione dei file da coipare, attendere...</translation>
+        <translation>Calcolando la dimensione dei file da copiare, attendere...</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="180"/>
@@ -85,7 +85,7 @@ The selected songs consume %1, but there is only %2 left.
 The songs will need to be transcoded to a smaller filesize in order to be successfully copied.</source>
         <translation>Non c&apos;è abbastanza spazio disponibile sul dispositivo di destinazione.
 
-I brani selezionati occupano %1, ma si sono solamente %2 disponibili.
+I brani selezionati occupano %1, ma ci sono solamente %2 disponibili.
 I brani dovranno essere trascodificati ad una dimensione di file inferiore per poter venire copiati.</translation>
     </message>
     <message>
@@ -95,7 +95,7 @@ I brani dovranno essere trascodificati ad una dimensione di file inferiore per p
 The selected songs consume %1, but there is only %2 left.</source>
         <translation>Non c&apos;è abbastanza spazio disponibile sulla destinazione.
 
-I brani selezionati occupano %1, ma si sono solamente %2 disponibili.</translation>
+I brani selezionati occupano %1, ma ci sono solamente %2 disponibili.</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="303"/>
@@ -677,7 +677,7 @@ Se &apos;Titolo&apos; è &quot;Wibble - Wobble&quot;, allora &apos;Artista&apos;
     <message>
         <location filename="../gui/cachesettings.cpp" line="251"/>
         <source>Cantata caches various pieces of information (covers, lyrics, etc). Below is a summary of Cantata&apos;s current cache usage.</source>
-        <translation>Cantata memorizza in cache diverse informazioni (coperine, testi, ecc). Qua sotto c&apos;è un riassuto dell&apos;attuale utilizzo di cache di Cantata.</translation>
+        <translation>Cantata memorizza nella cache diverse informazioni (coperine, testi, ecc). Qua sotto c&apos;è un riassuto dell&apos;attuale utilizzo di cache di Cantata.</translation>
     </message>
     <message>
         <location filename="../gui/cachesettings.cpp" line="260"/>
@@ -1089,7 +1089,7 @@ Non è stato possibile copiare il file su &apos;%1&apos;!</translation>
     <message>
         <location filename="../gui/customactionssettings.cpp" line="87"/>
         <source>To have Cantata call external commands (e.g. to edit tags with another application), add an entry for the command below. When at least one command command is defined, a &apos;Custom Actions&apos; entry will be added to the context menus in the Library, Folders, and Playlists views.</source>
-        <translation>Per far chiamare dei comandi esterni a Cantata (es. per modificare i tag con un&apos;altra applicazione), aggiungere una voce per il comando sottostante. Quando viene definito almeno un comando, una voce &apos;Azioni Personalizzate&apos; verrà aggiunta ai menu contestuali nelle viste Libreria, Cartelle e Scalette.</translation>
+        <translation>Per richiamare dei comandi esterni a Cantata (es. per modificare i tag con un&apos;altra applicazione), aggiungere una voce per il comando sottostante. Quando viene definito almeno un comando, una voce &apos;Azioni Personalizzate&apos; verrà aggiunta ai menu contestuali nelle viste Libreria, Cartelle e Scalette.</translation>
     </message>
     <message>
         <location filename="../gui/customactionssettings.cpp" line="101"/>
@@ -1501,12 +1501,12 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../models/digitallyimported.cpp" line="181"/>
         <source>You do not have an active subscription</source>
-        <translation>Non possieti una sottoscrizione attiva</translation>
+        <translation>Non possiedi una sottoscrizione attiva</translation>
     </message>
     <message>
         <location filename="../models/digitallyimported.cpp" line="200"/>
         <source>Logged in (expiry:%1)</source>
-        <translation>Regostrato (scadenza: %1)</translation>
+        <translation>Registrato (scadenza: %1)</translation>
     </message>
     <message>
         <location filename="../models/digitallyimported.cpp" line="208"/>
@@ -2027,7 +2027,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../widgets/genrecombo.cpp" line="40"/>
         <source>Filter On Genre</source>
-        <translation>FIltra sul Genere</translation>
+        <translation>Filtra per Genere</translation>
     </message>
     <message>
         <location filename="../widgets/genrecombo.cpp" line="62"/>
@@ -2754,12 +2754,12 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="219"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
-        <translation>Se non è specificato nulla su &apos;Nome file&apos;, allora cantata userà &lt;code&gt;cover&lt;/code&gt; come nome predefinito. Questo nome viene usato quando si scaricano le copertine, oppure di aggiunge della musica alla tua libreria dai dispositivi.</translation>
+        <translation>Se non è specificato nulla su &apos;Nome file&apos;, allora Cantata userà &lt;code&gt;cover&lt;/code&gt; come nome predefinito. Questo nome viene usato quando si scaricano le copertine, oppure di aggiunge della musica alla tua libreria dai dispositivi.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="223"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
-        <translation>Se non è specificato nulla su &apos;Nome file&apos;, allora cantata userà &lt;code&gt;cover&lt;/code&gt; come nome predefinito. Questo nome viene usato quando si scaricano le copertine.</translation>
+        <translation>Se non è specificato nulla su &apos;Nome file&apos;, allora Cantata userà &lt;code&gt;cover&lt;/code&gt; come nome predefinito. Questo nome viene usato quando si scaricano le copertine.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="431"/>
@@ -2848,7 +2848,7 @@ Non sarà possibile tornare indietro.</translation>
         <location filename="../support/keysequencewidget.cpp" line="176"/>
         <source>Click on the button, then enter the shortcut like you would in the program.
 Example for Ctrl+a: hold the Ctrl key and press a.</source>
-        <translation>Clicca sul pulsante, quindi inserisci la scorciatoria che vorresti nel programma.
+        <translation>Clicca sul pulsante, quindi inserisci la scorciatoia che vorresti nel programma.
 Esempio per Ctrl+a: teni premuto il tasto Ctrl e premi a.</translation>
     </message>
     <message>
@@ -2891,19 +2891,19 @@ Esempio per Ctrl+a: teni premuto il tasto Ctrl e premi a.</translation>
         <location filename="../support/keysequencewidget.cpp" line="383"/>
         <location filename="../support/keysequencewidget.cpp" line="389"/>
         <source>Shortcut Conflict</source>
-        <translation>Conflitto di Scorciatorie</translation>
+        <translation>Conflitto di Scorciatoie</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="384"/>
         <source>The &quot;%1&quot; shortcut is already in use, and cannot be configured.
 Please choose another one.</source>
-        <translation>La scorciatoria &quot;%1&quot; è già in uso e non può essere configurata.
+        <translation>La scorciatoia &quot;%1&quot; è già in uso e non può essere configurata.
 Prego sceglierne un&apos;altra.</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="390"/>
         <source>The &quot;%1&quot; shortcut is ambiguous with the shortcut for the following action:</source>
-        <translation>La scorciatoria &quot;%1&quot; si può confondere con la scorciatoria per la seguente azione:</translation>
+        <translation>La scorciatoia &quot;%1&quot; si può confondere con la scorciatoia per la seguente azione:</translation>
     </message>
     <message>
         <location filename="../support/keysequencewidget.cpp" line="392"/>
@@ -3285,7 +3285,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     <message>
         <location filename="../gui/mainwindow.cpp" line="259"/>
         <source>About Cantata...</source>
-        <translation>Informazoni su Cantata...</translation>
+        <translation>Informazioni su Cantata...</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="266"/>
@@ -3479,7 +3479,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     <message>
         <location filename="../gui/mainwindow.cpp" line="355"/>
         <source>Collapse All</source>
-        <translation>Contrai Tutto</translation>
+        <translation>Riduci Tutto</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="357"/>
@@ -3604,7 +3604,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     <message>
         <location filename="../gui/mainwindow.cpp" line="1198"/>
         <source>Please refer to &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;Cantata&apos;s issue tracker&lt;/a&gt; for a list of known issues, and to report new issues.</source>
-        <translation>Per la lista dei problemi conosciut e per riportarne di nuovi, prego fare riferimento all&apos;issue tracker di Cantata &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;</translation>
+        <translation>Per la lista dei problemi conosciuti e per riportarne di nuovi, prego fare riferimento all&apos;issue tracker di Cantata &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1200"/>
@@ -4444,7 +4444,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/playbacksettings.ui" line="72"/>
         <source>If you press and hold the stop button, then a menu will be shown allowing you to choose whether to stop playback now, or after the current track. (The stop button can be enabled in the Interface/Toolbar section)</source>
-        <translation>Se prmi e teini premuto il pulsante di stop, apparirà un menu da cui potrai scegliere se fermare la riproduzione ora oppure dopo la traccia attuale. (È possibile abilitare il pulsante di stop nella sezione Interfaccia/Barra degli strumenti</translation>
+        <translation>Se premi e tieni premuto il pulsante di stop, apparirà un menu da cui potrai scegliere se fermare la riproduzione ora oppure dopo la traccia attuale. (È possibile abilitare il pulsante di stop nella sezione Interfaccia/Barra degli strumenti</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="88"/>
@@ -4916,7 +4916,7 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="598"/>
         <source>Manual podcast URL</source>
-        <translation>URL maniale del podcast</translation>
+        <translation>URL manuale del podcast</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="602"/>
@@ -5189,7 +5189,7 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="46"/>
         <source>Delete Downloaded Episodes</source>
-        <translation>Candella gli Episodi Scaricati</translation>
+        <translation>Cancella gli Episodi Scaricati</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="47"/>
@@ -6002,7 +6002,7 @@ width x height</comment>
     <message>
         <location filename="../models/musiclibraryitemroot.cpp" line="388"/>
         <source>Parse error loading cache file, please check your songs tags.</source>
-        <translation>Errore di lettura caricandi il file di cache, prego verifica i tag dei tuoi brani.</translation>
+        <translation>Errore di lettura durante il caricament del file di cache, prego verifica i tag dei tuoi brani.</translation>
     </message>
     <message>
         <location filename="../models/streamsmodel.cpp" line="1295"/>
@@ -6412,7 +6412,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="148"/>
         <source>song-dialog - Song dialogs (tags, replaygain, organiser)</source>
-        <translation>song-dialogs - Finestre di dialogo delle canzoni (tag, replaygain, organinizza)</translation>
+        <translation>song-dialogs - Finestre di dialogo delle canzoni (tag, replaygain, organizza)</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="149"/>

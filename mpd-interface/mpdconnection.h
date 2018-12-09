@@ -382,7 +382,7 @@ public Q_SLOTS:
     void setRating(const QStringList &files, quint8 val);
     void getRating(const QString &file);
 
-    void seek();
+    void seek(qint32 offset=0);
 
 Q_SIGNALS:
     void connectionChanged(const MPDConnectionDetails &details);

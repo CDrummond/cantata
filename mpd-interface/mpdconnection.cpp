@@ -1289,12 +1289,14 @@ void MPDConnection::playFirstTrack(bool emitErrors)
     sendCommand("play 0", emitErrors);
 }
 
-void MPDConnection::seek()
+void MPDConnection::seek(qint32 offset)
 {
-    QObject *s=sender();
-    int offset=s ? s->property("offset").toInt() : 0;
     if (0==offset) {
-        return;
+        QObject *s=sender();
+        offset=s ? s->property("offset").toInt() : 0;
+        if (0==offset) {
+            return;
+        }
     }
     toggleStopAfterCurrent(false);
     Response response=sendCommand("status");

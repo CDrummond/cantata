@@ -201,6 +201,7 @@ public:
     static const QString constCacheExt;
     static const QString constShoutCastHost;
     static const QString constDirbleHost;
+    static const QString constCommunityHost;
     static const QString constCompressedXmlFile;
     static const QString constXmlFile;
     static const QString constSettingsFile;
@@ -294,6 +295,7 @@ public:
     static QList<Item *> parseShoutCastStations(QXmlStreamReader &doc, CategoryItem *cat);
     QList<Item *> parseDirbleResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
     static QList<Item *> parseDirbleStations(QIODevice *dev, CategoryItem *cat);
+    static QList<Item *> parseCommunityStations(QIODevice *dev, CategoryItem *cat);
     static Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent, bool parseSubText=false);
     static Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
 

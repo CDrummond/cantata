@@ -66,6 +66,7 @@ const QString StreamsModel::constSubDir=QLatin1String("streams");
 const QString StreamsModel::constCacheExt=QLatin1String(".xml.gz");
 const QString StreamsModel::constShoutCastHost=QLatin1String("api.shoutcast.com");
 const QString StreamsModel::constDirbleHost=QLatin1String("api.dirble.com");
+const QString StreamsModel::constCommunityHost=QLatin1String("www.radio-browser.info");
 const QString StreamsModel::constCompressedXmlFile=QLatin1String("streams.xml.gz");
 const QString StreamsModel::constXmlFile=QLatin1String("streams.xml");
 const QString StreamsModel::constSettingsFile=QLatin1String("settings.json");
@@ -1650,6 +1651,29 @@ QList<StreamsModel::Item *> StreamsModel::parseDirbleStations(QIODevice *dev, Ca
             if (!url.isEmpty() && !added.contains(url)) {
                 added.insert(url);
                 newItems.append(new Item(url, name, cat, QString::number(bitrate)));
+            }
+        }
+    }
+    return newItems;
+}
+
+QList<StreamsModel::Item *> StreamsModel::parseCommunityStations(QIODevice *dev, CategoryItem *cat)
+{
+    QList<Item *> newItems;
+    QVariantList data=QJsonDocument::fromJson(dev->readAll()).toVariant().toList();
+
+    QSet<QString> added;
+    for (const QVariant &d: data) {
+        QVariantMap map = d.toMap();
+        QString name=map["name"].toString().trimmed().simplified();
+        if (!name.isEmpty()) {
+            QString url=map["url"].toString().trimmed().simplified();
+
+            if (!url.isEmpty() && !added.contains(url)) {
+                added.insert(url);
+                QString bitrate=map["bitrate"].toString().trimmed().simplified();
+                QString codec=map["codec"].toString().trimmed().simplified();
+                newItems.append(new Item(url, name, cat, bitrate.isEmpty() ? codec : (bitrate + " kbps" + (codec.isEmpty() ? "" : (", "+codec)))));
             }
         }
     }

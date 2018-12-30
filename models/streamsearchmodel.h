@@ -44,6 +44,7 @@ public:
         TuneIn,
         ShoutCast,
         Dirble,
+        CommunityRadio,
         NumCategories
     };
 
